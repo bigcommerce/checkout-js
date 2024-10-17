@@ -76,6 +76,7 @@ interface CreditCardPaymentMethodState {
     focusedHostedFieldType?: HostedFieldType;
     isAddingNewCard: boolean;
     selectedInstrumentId?: string;
+    isLoadingState: boolean;
 }
 
 class CreditCardPaymentMethod extends Component<
@@ -89,6 +90,7 @@ class CreditCardPaymentMethod extends Component<
 > {
     state: CreditCardPaymentMethodState = {
         isAddingNewCard: false,
+        isLoadingState: true,
     };
 
     async componentDidMount(): Promise<void> {
@@ -148,6 +150,7 @@ class CreditCardPaymentMethod extends Component<
         const {
             deinitializePayment,
             initializePayment,
+            isInitializing,
             method,
             onUnhandledError = noop,
             setValidationSchema,
@@ -156,6 +159,12 @@ class CreditCardPaymentMethod extends Component<
         const { isAddingNewCard, selectedInstrumentId } = this.state;
 
         setValidationSchema(method, this.getValidationSchema());
+
+        if (_prevProps.isInitializing !== isInitializing && isInitializing) {
+            this.setState(() => ({
+                isLoadingState: false,
+            }));
+        }
 
         if (
             selectedInstrumentId !== prevState.selectedInstrumentId ||
@@ -198,7 +207,7 @@ class CreditCardPaymentMethod extends Component<
 
         const selectedInstrument = this.getSelectedInstrument();
         const shouldShowCreditCardFieldset = !shouldShowInstrumentFieldset || isAddingNewCard;
-        const isLoading = isInitializing || isLoadingInstruments;
+        const isLoading = isInitializing || isLoadingInstruments || this.state.isLoadingState;
         const shouldShowNumberField = selectedInstrument
             ? isInstrumentCardNumberRequiredProp(selectedInstrument)
             : false;
