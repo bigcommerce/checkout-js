@@ -87,10 +87,6 @@ const StripeUPEPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         return getAppliedStyles(parentContainer, properties);
     };
 
-    // const accordionCollapseListener = (collapseElement: () => void) => {
-    //     collapseStripeElement.current = collapseElement;
-    // };
-
     const initializeStripePayment = useCallback(
         async (options: PaymentInitializeOptions) => {
             const formInput = getStylesFromElement(`${containerId}--input`, [
