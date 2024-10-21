@@ -13,8 +13,6 @@ import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getAddressFormFields } from '../address/formField.mock';
 import { getAddressContent } from '../address/SingleLineStaticAddress';
-import { getCart } from '../cart/carts.mock';
-import { getPhysicalItem } from '../cart/lineItem.mock';
 import { getCheckout } from '../checkout/checkouts.mock';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
@@ -51,17 +49,6 @@ describe('MultiShippingFormV2 Component', () => {
         jest.spyOn(checkoutState.data, 'getShippingAddressFields').mockReturnValue(
             getAddressFormFields(),
         );
-        jest.spyOn(checkoutState.data, 'getCart').mockReturnValue({
-            ...getCart(),
-            lineItems: {
-                physicalItems: [
-                    {
-                        ...getPhysicalItem(),
-                        quantity: 3,
-                    },
-                ],
-            },
-        } as Cart);
 
         jest.spyOn(checkoutState.data, 'getShippingAddress').mockReturnValue(getShippingAddress());
 
@@ -76,7 +63,10 @@ describe('MultiShippingFormV2 Component', () => {
 
         jest.spyOn(checkoutState.data, 'getConsignments').mockReturnValue([getConsignment()]);
 
-        jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue(getCheckout());
+        jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
+            ...getCheckout(),
+            consignments: [getConsignment()],
+        });
     });
 
     it('renders shipping destination 1', () => {
@@ -92,8 +82,8 @@ describe('MultiShippingFormV2 Component', () => {
             </CheckoutProvider>,
         );
 
-        expect(screen.getByText('Shipping destination 1')).toBeInTheDocument();
+        expect(screen.getByText('Destination #1')).toBeInTheDocument();
         expect(screen.getByText(getAddressContent(address))).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Add shipping destination' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Add new destination' })).toBeInTheDocument();
     });
 });
