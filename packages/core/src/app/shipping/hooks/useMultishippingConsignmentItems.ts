@@ -134,7 +134,7 @@ export const useMultiShippingConsignmentItems = (): MultiShippingConsignmentItem
         consignments,
     } = checkout;
 
-    const { mappedDataConsignmentsList, unassignedItems } =
+    const { digitalItems, mappedDataConsignmentsList, unassignedItems } =
         mapConsignmentsItems(lineItems, consignments);
 
     const getMappedDataConsignmentById = (
@@ -143,9 +143,17 @@ export const useMultiShippingConsignmentItems = (): MultiShippingConsignmentItem
         return mappedDataConsignmentsList.find((consignment) => consignment.id === consignmentId);
     };
 
+    const unassignedItemsResult: UnassignedItems = {
+        ...unassignedItems,
+        lineItems: [
+            ...unassignedItems.lineItems,
+            ...digitalItems,
+        ],
+    };
+
     return {
         getMappedDataConsignmentById,
-        unassignedItems,
+        unassignedItems: unassignedItemsResult,
         mappedDataConsignmentsList,
     };
 };
