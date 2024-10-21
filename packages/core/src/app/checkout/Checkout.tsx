@@ -173,6 +173,7 @@ class Checkout extends Component<
     componentWillUnmount(): void {
         if (this.unsubscribeFromConsignments) {
             this.unsubscribeFromConsignments();
+
             this.unsubscribeFromConsignments = undefined;
         }
 
