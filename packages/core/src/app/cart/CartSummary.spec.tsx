@@ -38,7 +38,7 @@ describe('CartSummary Component', () => {
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
                     <ExtensionProvider checkoutService={checkoutService}>
-                        <CartSummary />
+                        <CartSummary isMultiShippingMode={false} />
                     </ExtensionProvider>
                 </LocaleContext.Provider>
             </CheckoutProvider>,
@@ -58,7 +58,7 @@ describe('CartSummary Component', () => {
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
                     <ExtensionProvider checkoutService={checkoutService}>
-                        <CartSummary />
+                        <CartSummary isMultiShippingMode={false} />
                     </ExtensionProvider>
                 </LocaleContext.Provider>
             </CheckoutProvider>,

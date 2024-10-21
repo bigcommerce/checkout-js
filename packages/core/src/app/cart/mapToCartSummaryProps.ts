@@ -1,5 +1,7 @@
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 
+import { isExperimentEnabled } from '../common/utility';
+
 import { WithCheckoutCartSummaryProps } from './CartSummary';
 import mapToRedeemableProps from './mapToRedeemableProps';
 
@@ -23,8 +25,13 @@ export default function mapToCartSummaryProps(
 
     const { isStoreCreditApplied, grandTotal } = checkout;
     const { storeCredit } = customer;
+    const isNewMultiShippingUIEnabled = isExperimentEnabled(
+        config.checkoutSettings,
+        'PROJECT-4159.improve_multi_address_shipping_ui',
+    );
 
     return {
+        isNewMultiShippingUIEnabled,
         checkout,
         shopperCurrency: config.shopperCurrency,
         cartUrl: config.links.cartLink,

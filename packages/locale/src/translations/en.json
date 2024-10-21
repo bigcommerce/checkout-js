@@ -57,6 +57,7 @@
             "discount_text": "Discount",
             "downloads_action": "Go to Downloads",
             "edit_cart_action": "Edit Cart",
+            "edit_multi_shipping_cart_message": "New items will default to Shipping Destination #1. Reallocate if you want them shipped to other destinations.",
             "estimated_total_text": "Estimated Total",
             "free_text": "Free",
             "gift_certificate_text": "Gift Certificate",
@@ -81,6 +82,7 @@
             "consistency_error": "Your checkout could not be processed because some details have changed. Please review your order and try again."
         },
         "common": {
+            "confirm_action": "Confirm",
             "cancel_action": "Cancel",
             "close_action": "Close",
             "continue_action": "Continue",

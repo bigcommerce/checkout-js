@@ -523,6 +523,8 @@ class Checkout extends Component<
     }
 
     private renderCartSummary(): ReactNode {
+        const { isMultiShippingMode } = this.state;
+
         return (
             <MobileView>
                 {(matched) => {
@@ -530,7 +532,7 @@ class Checkout extends Component<
                         return (
                             <LazyContainer>
                                 <Extension region={ExtensionRegion.SummaryAfter} />
-                                <CartSummaryDrawer />
+                                <CartSummaryDrawer isMultiShippingMode={isMultiShippingMode} />
                             </LazyContainer>
                         );
                     }
@@ -538,7 +540,7 @@ class Checkout extends Component<
                     return (
                         <aside className="layout-cart">
                             <LazyContainer>
-                                <CartSummary />
+                                <CartSummary isMultiShippingMode={isMultiShippingMode} />
                                 <Extension region={ExtensionRegion.SummaryAfter} />
                             </LazyContainer>
                         </aside>
