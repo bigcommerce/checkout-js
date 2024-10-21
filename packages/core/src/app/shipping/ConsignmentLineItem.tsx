@@ -70,6 +70,7 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
                     <h3>{consignment.lineItems.length} items allocated</h3>
                     <a
                         className="expand-items-button"
+                        data-test="expand-items-button"
                         href="#"
                         onClick={preventDefault(toggleShowItems)}
                     >
