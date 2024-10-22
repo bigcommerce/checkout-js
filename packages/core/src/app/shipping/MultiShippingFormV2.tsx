@@ -9,8 +9,9 @@ import { Button, ButtonVariant } from '../ui/button';
 
 import ConsignmentListItem from './ConsignmentListItem';
 import hasSelectedShippingOptions from './hasSelectedShippingOptions';
-import { MappedDataConsignment, useMultiShippingConsignmentItems } from './hooks/useMultishippingConsignmentItems';
+import { useMultiShippingConsignmentItems } from './hooks/useMultishippingConsignmentItems';
 import MultiShippingFormV2Footer from './MultiShippingFormV2Footer';
+import { MappedDataConsignment } from './MultishippingV2Type';
 import './MultiShippingFormV2.scss';
 import NewConsignment from './NewConsignment';
 

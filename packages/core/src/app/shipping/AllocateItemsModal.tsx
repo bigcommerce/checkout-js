@@ -1,7 +1,6 @@
 import { Address, ConsignmentLineItem } from "@bigcommerce/checkout-sdk";
 import { FormikProps } from "formik";
 import React, { FunctionComponent } from "react";
-import { number, object } from "yup";
 
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { withLanguage, WithLanguageProps } from "@bigcommerce/checkout/locale";
@@ -13,8 +12,8 @@ import { Button } from "../ui/button";
 import { Form } from "../ui/form";
 import { Modal, ModalHeader } from "../ui/modal";
 
-import { MultiShippingTableItemWithType, UnassignedItems } from "./hooks/useMultishippingConsignmentItems";
 import LeftToAllocateItemsTable from "./LeftToAllocateItemsTable";
+import { UnassignedItems } from "./MultishippingV2Type";
 
 export interface AllocateItemsModalFormValues {
     [key: string]: number;
@@ -134,19 +133,5 @@ export default withLanguage(
             return values;
         },
         enableReinitialize: true,
-        validationSchema: ({ unassignedItems }: AllocateItemsModalProps) => {
-            // TODO: This will change when we get latest designs for error handling
-            const createItemSchema = (item: MultiShippingTableItemWithType) => {
-                return number()
-                    .integer()
-                    .min(0)
-                    .max(item.quantity, `You can't allocate more than ${item.quantity} items`)
-            };
-            const schemaObject = Object.fromEntries(
-                unassignedItems.lineItems.map((item) => [item.id.toString(), createItemSchema(item)]),
-            );
-
-            return object().shape(schemaObject);
-        }
     })(AllocateItemsModal),
 );

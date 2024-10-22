@@ -9,7 +9,7 @@ import { ErrorModal } from "../common/error";
 import { EMPTY_ARRAY, isFloatingLabelEnabled } from "../common/utility";
 
 import { AssignItemFailedError, AssignItemInvalidAddressError } from "./errors";
-import { MappedDataConsignment } from "./hooks/useMultishippingConsignmentItems";
+import { MappedDataConsignment } from "./MultishippingV2Type";
 
 interface ConsignmentAddressSelectorProps {
     consignment?: MappedDataConsignment;

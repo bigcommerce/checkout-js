@@ -1,5 +1,10 @@
 @import '../ui/Base';
 
+$quantity-input-container-width: 60%;
+$allocate-items-table-first-column-width: 50%;
+$allocate-items-table-column-width: 25%;
+$allocate-items-table-image-width: 20%;
+
 .consignment-container {
     border: 1px solid color("greys", "light");
     border-radius: $global-radius;
@@ -99,11 +104,11 @@
                 border-top: container("border");
                 border-bottom: container("border");
                 th:first-child {
-                    width: 50%;
+                    width: $allocate-items-table-first-column-width;
                     text-align: left;
                 }
                 th {
-                    width: 25%;
+                    width: $allocate-items-table-column-width;
                     padding: spacing("base");
                     text-align: right;
                 }
@@ -116,16 +121,14 @@
                 border-top: container("border");
                 border-bottom: container("border");
                 td:first-child {
-                    width: 100%;
                     text-align: left;
                 }
                 td {
-                    width: 25%;
                     padding: spacing("base");
                     text-align: right;
                     div {
                         float: right;
-                        width: 60%;
+                        width: $quantity-input-container-width;
                         input {
                             text-align: right;
                             padding: spacing("half");
@@ -141,7 +144,7 @@
 
             .left-to-allocate-item-figure {
                 margin: 0;
-                width: 20%;
+                width: $allocate-items-table-image-width;
                 padding-right: spacing("half");
             }
             

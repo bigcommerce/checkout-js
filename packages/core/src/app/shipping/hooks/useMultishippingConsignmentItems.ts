@@ -1,40 +1,8 @@
-import { Consignment, LineItemMap, LineItemOption, PhysicalItem } from "@bigcommerce/checkout-sdk";
+import { Consignment, LineItemMap } from "@bigcommerce/checkout-sdk";
 
 import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
 
-export enum LineItemType {
-    Physical,
-    Digital,
-    GiftCertificate,
-    Custom,
-}
-
-export interface MultiShippingTableItem {
-    name: string;
-    options?: LineItemOption[];
-    giftWrapping?: PhysicalItem['giftWrapping'];
-    sku: string;
-    quantity: number;
-    id: string | number;
-    imageUrl?: string;
-}
-
-export interface MultiShippingTableItemWithType extends MultiShippingTableItem {
-    type: LineItemType;
-}
-
-export interface ConsignmentItem {
-    lineItems: MultiShippingTableItemWithType[];
-    hasDigitalItems: boolean;
-    shippableItemsCount: number;
-}
-
-export type UnassignedItems = ConsignmentItem;
-
-export interface MappedDataConsignment extends Consignment, ConsignmentItem {
-    consignmentNumber: number;
-}
-
+import { LineItemType, MappedDataConsignment, MultiShippingTableItemWithType, UnassignedItems } from "../MultishippingV2Type";
 
 interface MultiShippingConsignmentItemsHook {
     getMappedDataConsignmentById: (consignmentId: string) => MappedDataConsignment | undefined;
@@ -50,12 +18,10 @@ function mapConsignmentsItems(
     lineItems: LineItemMap,
     consignments: Consignment[],
 ): {
-    mappedDataConsignmentsList: MappedDataConsignment[];
-    assignedItems: MultiShippingTableItemWithType[];
+        mappedDataConsignmentsList: MappedDataConsignment[];
     unassignedItems: UnassignedItems;
     digitalItems: MultiShippingTableItemWithType[];
-} {
-    const assignedItemsMap = new Map<string, MultiShippingTableItemWithType>();
+    } {
     const unassignedItemsMap = new Map<string, MultiShippingTableItemWithType>();
     const digitalItemsMap = new Map<string, MultiShippingTableItemWithType>();
 
@@ -78,7 +44,6 @@ function mapConsignmentsItems(
             const item = unassignedItemsMap.get(itemId);
 
             if (item) {
-                assignedItemsMap.set(itemId, item);
                 consignmentLineItems.push(item);
                 unassignedItemsMap.delete(itemId);
             }
@@ -102,9 +67,8 @@ function mapConsignmentsItems(
     };
 
     const digitalItems = Array.from(digitalItemsMap.values());
-    const assignedItems = Array.from(assignedItemsMap.values());
 
-    return { mappedDataConsignmentsList, assignedItems, unassignedItems, digitalItems };
+    return { mappedDataConsignmentsList, unassignedItems, digitalItems };
 }
 
 const defaultMultiShippingConsignmentItems: MultiShippingConsignmentItemsHook = {

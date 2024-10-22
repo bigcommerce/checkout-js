@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 
 import ConsignmentAddressSelector from './ConsignmentAddressSelector';
 import ConsignmentLineItem from './ConsignmentLineItem';
-import { MappedDataConsignment } from './hooks/useMultishippingConsignmentItems';
+import { MappedDataConsignment } from './MultishippingV2Type';
 
 export interface ConsignmentListItemProps {
     consignment: MappedDataConsignment;

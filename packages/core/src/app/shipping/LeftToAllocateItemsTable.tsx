@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 
 import { FormField, TextInput } from "../ui/form";
 
-import { MultiShippingTableItemWithType } from "./hooks/useMultishippingConsignmentItems";
+import { MultiShippingTableItemWithType } from "./MultishippingV2Type";
 
 interface LeftToAllocateItemsTableProps {
     items: MultiShippingTableItemWithType[];

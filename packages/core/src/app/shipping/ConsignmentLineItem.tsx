@@ -8,7 +8,8 @@ import { IconChevronDown, IconChevronUp } from "../ui/icon";
 
 import AllocateItemsModal from "./AllocateItemsModal";
 import { AssignItemFailedError } from "./errors";
-import { MappedDataConsignment, useMultiShippingConsignmentItems } from "./hooks/useMultishippingConsignmentItems";
+import { useMultiShippingConsignmentItems } from "./hooks/useMultishippingConsignmentItems";
+import { MappedDataConsignment } from "./MultishippingV2Type";
 
 interface ConsignmentLineItemProps {
     consignmentNumber: number;
@@ -19,17 +20,9 @@ interface ConsignmentLineItemProps {
 const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ consignmentNumber, consignment, onUnhandledError }: ConsignmentLineItemProps) => {
     const [isOpenAllocateItemsModal, setIsOpenAllocateItemsModal] = useState(false);
     const [showItems, setShowItems] = useState(true);
+
     const { unassignedItems } = useMultiShippingConsignmentItems();
-
     const { checkoutService: { assignItemsToAddress: assignItem } } = useCheckout();
-
-    const filteredLineItems = unassignedItems.lineItems.filter(
-        (item) => !consignment.lineItemIds.includes(item.id.toString()),
-    );
-    const filteredUnassignedItems = {
-        ...unassignedItems,
-        lineItems: filteredLineItems
-    };
 
     const toggleAllocateItemsModal = () => {
         setIsOpenAllocateItemsModal(!isOpenAllocateItemsModal);
@@ -63,7 +56,7 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
                 isOpen={isOpenAllocateItemsModal}
                 onAllocateItems={handleAllocateItems}
                 onRequestClose={toggleAllocateItemsModal}
-                unassignedItems={filteredUnassignedItems}
+                unassignedItems={unassignedItems}
             />
             <div className="consignment-line-item-header">
                 <div>
