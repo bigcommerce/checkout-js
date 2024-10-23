@@ -18,13 +18,18 @@ export default memoize(function getFormFieldsValidationSchema({
     return object({
         ...formFields
             .filter(({ custom }) => !custom)
-            .reduce((schema, { name, required, label }) => {
+            .reduce((schema, { name, required, label, maxLength }) => {
                 schema[name] = string();
 
                 if (required) {
                     schema[name] = schema[name]
                         .trim()
-                        .required(translate('required', { label, name }));
+                        .required(translate('required', { label, name}));
+                }
+
+                if (name === 'address1' && maxLength) {
+                    schema[name] = schema[name]
+                        .max(maxLength, translate('max', { label, name, max: maxLength }));
                 }
 
                 schema[name] = schema[name].matches(
