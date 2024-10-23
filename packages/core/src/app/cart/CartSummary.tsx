@@ -16,15 +16,26 @@ export type WithCheckoutCartSummaryProps = {
     storeCurrency: StoreCurrency;
     shopperCurrency: ShopperCurrency;
     storeCreditAmount?: number;
+    isNewMultiShippingUIEnabled: boolean;
 } & RedeemableProps;
 
-const CartSummary: FunctionComponent<WithCheckoutCartSummaryProps> = ({ cartUrl, ...props }) => {
-    const headerLink = isBuyNowCart() ? null : <EditLink url={cartUrl} />;
+const CartSummary: FunctionComponent<
+    WithCheckoutCartSummaryProps & {
+        isMultiShippingMode: boolean;
+    }
+> = ({ cartUrl, isMultiShippingMode, isNewMultiShippingUIEnabled, ...props }) => {
+    const headerLink = isBuyNowCart() ? null : (
+        <EditLink
+            isMultiShippingMode={isNewMultiShippingUIEnabled && isMultiShippingMode}
+            url={cartUrl}
+        />
+    );
 
     return withRedeemable(OrderSummary)({
         ...props,
         cartUrl,
         headerLink,
+        isNewMultiShippingUIEnabled,
     });
 };
 

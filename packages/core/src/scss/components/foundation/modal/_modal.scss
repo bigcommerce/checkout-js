@@ -67,7 +67,7 @@
             }
         }
 
-        &.modal--error {
+        &.modal--error,&.modal--confirm {
             padding-bottom: spacing("half");
             padding-left: #{spacing("half") + spacing("double")};
             padding-right: spacing("double");

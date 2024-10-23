@@ -28,7 +28,7 @@ describe('CartSummary Component', () => {
         component = mount(
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
-                    <CartSummaryDrawer />
+                    <CartSummaryDrawer isMultiShippingMode={false} />
                 </LocaleContext.Provider>
             </CheckoutProvider>,
         );
