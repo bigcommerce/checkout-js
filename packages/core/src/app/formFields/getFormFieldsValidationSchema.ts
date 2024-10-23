@@ -14,6 +14,8 @@ export interface FormFieldValues {
 export default memoize(function getFormFieldsValidationSchema({
     formFields,
     translate = () => undefined,
+    googleMapsAutocompleteEnabled = false,
+    googleAutocompleteMaxLengthExperiment = false,
 }: FormFieldsValidationSchemaOptions): ObjectSchema<FormFieldValues> {
     return object({
         ...formFields
@@ -27,9 +29,9 @@ export default memoize(function getFormFieldsValidationSchema({
                         .required(translate('required', { label, name}));
                 }
 
-                if (name === 'address1' && maxLength) {
+                if (name === 'address1' && maxLength && googleMapsAutocompleteEnabled && googleAutocompleteMaxLengthExperiment) {
                     schema[name] = schema[name]
-                        .max(maxLength, translate('max', { label, name, max: maxLength }));
+                        .max(maxLength, translate('max', { label, name, max: maxLength + 1 }));
                 }
 
                 schema[name] = schema[name].matches(
