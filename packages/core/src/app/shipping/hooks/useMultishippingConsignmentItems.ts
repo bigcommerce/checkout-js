@@ -5,7 +5,6 @@ import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
 import { LineItemType, MappedDataConsignment, MultiShippingTableItemWithType, UnassignedItems } from "../MultishippingV2Type";
 
 interface MultiShippingConsignmentItemsHook {
-    getMappedDataConsignmentById: (consignmentId: string) => MappedDataConsignment | undefined;
     unassignedItems: UnassignedItems;
     mappedDataConsignmentsList: MappedDataConsignment[];
 }
@@ -19,8 +18,7 @@ function mapConsignmentsItems(
     consignments: Consignment[],
 ): {
         mappedDataConsignmentsList: MappedDataConsignment[];
-    unassignedItems: UnassignedItems;
-    digitalItems: MultiShippingTableItemWithType[];
+        unassignedItems: UnassignedItems;
     } {
     const unassignedItemsMap = new Map<string, MultiShippingTableItemWithType>();
     const digitalItemsMap = new Map<string, MultiShippingTableItemWithType>();
@@ -66,13 +64,10 @@ function mapConsignmentsItems(
         shippableItemsCount: calculateShippableItemsCount(unassignedItemsList),
     };
 
-    const digitalItems = Array.from(digitalItemsMap.values());
-
-    return { mappedDataConsignmentsList, unassignedItems, digitalItems };
+    return { mappedDataConsignmentsList, unassignedItems };
 }
 
 const defaultMultiShippingConsignmentItems: MultiShippingConsignmentItemsHook = {
-    getMappedDataConsignmentById: () => undefined,
     unassignedItems: {
         lineItems: [],
         hasDigitalItems: false,
@@ -98,25 +93,17 @@ export const useMultiShippingConsignmentItems = (): MultiShippingConsignmentItem
         consignments,
     } = checkout;
 
-    const { digitalItems, mappedDataConsignmentsList, unassignedItems } =
+    const { mappedDataConsignmentsList, unassignedItems } =
         mapConsignmentsItems(lineItems, consignments);
-
-    const getMappedDataConsignmentById = (
-        consignmentId: string,
-    ): MappedDataConsignment | undefined => {
-        return mappedDataConsignmentsList.find((consignment) => consignment.id === consignmentId);
-    };
 
     const unassignedItemsResult: UnassignedItems = {
         ...unassignedItems,
         lineItems: [
             ...unassignedItems.lineItems,
-            ...digitalItems,
         ],
     };
 
     return {
-        getMappedDataConsignmentById,
         unassignedItems: unassignedItemsResult,
         mappedDataConsignmentsList,
     };
