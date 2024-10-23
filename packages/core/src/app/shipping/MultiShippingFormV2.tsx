@@ -1,10 +1,11 @@
 import React, { FunctionComponent, useMemo, useState } from 'react';
 
-import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
 import { withFormikExtended } from '../common/form';
 import { EMPTY_ARRAY } from '../common/utility';
+import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
 
 import ConsignmentListItem from './ConsignmentListItem';
@@ -41,7 +42,7 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
             data: { getConsignments, getConfig },
         },
     } = useCheckout();
-    const { unassignedItems, mappedDataConsignmentsList } = useMultiShippingConsignmentItems();
+    const { unassignedItems: { shippableItemsCount }, mappedDataConsignmentsList } = useMultiShippingConsignmentItems();
 
     const consignments = getConsignments() || EMPTY_ARRAY;
     const config = getConfig();
@@ -64,8 +65,23 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
         setIsAddShippingDestination(true);
     }
 
+    const hasUnassignedItems = shippableItemsCount > 0;
+
+    const alertMessage = (shippableItemsCount: number): React.JSX.Element  => {
+        if (shippableItemsCount > 0) {
+            return shippableItemsCount > 1
+                ? <TranslatedString data={{ itemCount: shippableItemsCount }} id="shipping.multishipping_item_to_allocate_message_plural" />
+                : <TranslatedString id="shipping.multishipping_item_to_allocate_message" />;
+        }
+        
+        return <TranslatedString id="shipping.multishipping_all_items_allocated_message" />;
+    }
+
     return (
         <>
+            <Alert type={hasUnassignedItems ? AlertType.Info : AlertType.Success}>
+                    {alertMessage(shippableItemsCount)}
+            </Alert>
             {mappedDataConsignmentsList.map((consignment: MappedDataConsignment) => (
                 <ConsignmentListItem
                     consignment={consignment}
@@ -87,7 +103,7 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
                     setIsAddShippingDestination={setIsAddShippingDestination}
                 />)
             }
-            {unassignedItems.shippableItemsCount > 0 && 
+            {hasUnassignedItems && 
                 <Button className='add-consignment-button' onClick={handleAddShippingDestination} variant={ButtonVariant.Secondary}>
                     Add new destination
                 </Button>
