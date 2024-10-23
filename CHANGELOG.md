@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.535.0](https://github.com/bigcommerce/checkout-js/compare/v1.534.6...v1.535.0) (2024-10-23)
+
+
+### Features
+
+* **checkout:** CHECKOUT-8599 Add Confirmation Modal for Multi-shipping ([#2055](https://github.com/bigcommerce/checkout-js/issues/2055)) ([7950f36](https://github.com/bigcommerce/checkout-js/commit/7950f36cc392989229d87e8417c686c3b3f94c82))
+
 ### [1.534.6](https://github.com/bigcommerce/checkout-js/compare/v1.534.5...v1.534.6) (2024-10-22)
 
 ### [1.534.5](https://github.com/bigcommerce/checkout-js/compare/v1.534.4...v1.534.5) (2024-10-22)
