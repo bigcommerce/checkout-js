@@ -26,12 +26,7 @@ const ConfirmationModal = ({
         <Modal
             additionalModalClassName="modal--confirm"
             footer={
-                <Button
-                    onClick={action}
-                    size={ButtonSize.Small}
-                    testId="edit-multi-shipping-cart-confirm-button"
-                    variant={ButtonVariant.Primary}
-                >
+                <Button onClick={action} size={ButtonSize.Small} variant={ButtonVariant.Primary}>
                     <TranslatedString id="common.confirm_action" />
                 </Button>
             }

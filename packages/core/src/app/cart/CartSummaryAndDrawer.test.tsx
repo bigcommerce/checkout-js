@@ -31,7 +31,7 @@ describe('Edit Cart Component', () => {
     beforeEach(() => {
         Object.defineProperty(window, 'location', {
             value: {
-                replace: jest.fn(),
+                assign: jest.fn(),
                 pathname: '/checkout',
             },
             writable: true,
@@ -65,10 +65,13 @@ describe('Edit Cart Component', () => {
         );
 
         screen.getByText('Edit Cart').click();
-        expect(screen.getByTestId('edit-multi-shipping-cart-confirm-button')).toBeInTheDocument();
+        expect(screen.getByRole('link', { name: 'Close'})).toBeInTheDocument();
+        expect(screen.getAllByRole('alert')).toHaveLength(2);
         screen.getByText('Confirm').click();
 
-        expect(window.top?.location.href).toBe('https://store-k1drp8k8.bcapp.dev/cart.php');
+        expect(window.location.assign).toHaveBeenCalledWith(
+            'https://store-k1drp8k8.bcapp.dev/cart.php',
+        );
     });
 
     it('renders confirmation modal when using multi-shipping and CartSummaryDawer', () => {
@@ -84,9 +87,12 @@ describe('Edit Cart Component', () => {
 
         screen.getByText('Show Details').click();
         screen.getByText('Edit Cart').click();
-        expect(screen.getByTestId('edit-multi-shipping-cart-confirm-button')).toBeInTheDocument();
+        expect(screen.getAllByRole('link', { name: 'Close'})).toHaveLength(2);
+        expect(screen.getAllByRole('alert')).toHaveLength(2);
         screen.getByText('Confirm').click();
 
-        expect(window.top?.location.href).toBe('https://store-k1drp8k8.bcapp.dev/cart.php');
+        expect(window.location.assign).toHaveBeenCalledWith(
+            'https://store-k1drp8k8.bcapp.dev/cart.php',
+        );
     });
 });

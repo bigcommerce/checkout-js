@@ -14,9 +14,7 @@ const EditLink: FunctionComponent<EditLinkProps> = ({ className, url, isMultiShi
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const gotoCartPage = () => {
-        if (window.top) {
-            window.top.location.href = url;
-        }
+        window.location.assign(url);
     };
 
     if (isMultiShippingMode) {
