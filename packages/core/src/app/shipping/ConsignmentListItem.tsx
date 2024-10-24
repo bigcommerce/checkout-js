@@ -1,10 +1,11 @@
-import { Consignment } from '@bigcommerce/checkout-sdk';
-import React from "react";
+import React, { FunctionComponent } from "react";
 
 import ConsignmentAddressSelector from './ConsignmentAddressSelector';
+import ConsignmentLineItem from './ConsignmentLineItem';
+import { MultiShippingConsignmentData } from './MultishippingV2Type';
 
 export interface ConsignmentListItemProps {
-    consignment: Consignment;
+    consignment: MultiShippingConsignmentData;
     consignmentNumber: number;
     defaultCountryCode?: string;
     countriesWithAutocomplete: string[];
@@ -12,7 +13,7 @@ export interface ConsignmentListItemProps {
     onUnhandledError(error: Error): void;
 }
 
-const ConsignmentListItem = ({
+const ConsignmentListItem: FunctionComponent<ConsignmentListItemProps> = ({
     consignment,
     consignmentNumber,
     countriesWithAutocomplete,
@@ -20,10 +21,9 @@ const ConsignmentListItem = ({
     isLoading,
     onUnhandledError
 }: ConsignmentListItemProps) => {
-
     return (
         <div className='consignment-container'>
-            <h3 className='consignment-header'>Shipping destination {consignmentNumber}</h3>
+            <h3 className='consignment-header'>Destination #{consignmentNumber}</h3>
             <ConsignmentAddressSelector
                 consignment={consignment}
                 countriesWithAutocomplete={countriesWithAutocomplete}
@@ -31,6 +31,11 @@ const ConsignmentListItem = ({
                 isLoading={isLoading}
                 onUnhandledError={onUnhandledError}
                 selectedAddress={consignment.shippingAddress}
+            />
+            <ConsignmentLineItem
+                consignment={consignment}
+                consignmentNumber={consignmentNumber}
+                onUnhandledError={onUnhandledError}
             />
         </div>
     )

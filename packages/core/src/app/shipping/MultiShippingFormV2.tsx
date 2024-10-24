@@ -1,4 +1,3 @@
-import { Consignment } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, useMemo, useState } from 'react';
 
 import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
@@ -10,7 +9,9 @@ import { Button, ButtonVariant } from '../ui/button';
 
 import ConsignmentListItem from './ConsignmentListItem';
 import hasSelectedShippingOptions from './hasSelectedShippingOptions';
+import { useMultiShippingConsignmentItems } from './hooks/useMultishippingConsignmentItems';
 import MultiShippingFormV2Footer from './MultiShippingFormV2Footer';
+import { MultiShippingConsignmentData } from './MultishippingV2Type';
 import './MultiShippingFormV2.scss';
 import NewConsignment from './NewConsignment';
 
@@ -40,6 +41,7 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
             data: { getConsignments, getConfig },
         },
     } = useCheckout();
+    const { unassignedItems, consignmentList } = useMultiShippingConsignmentItems();
 
     const consignments = getConsignments() || EMPTY_ARRAY;
     const config = getConfig();
@@ -64,10 +66,10 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
 
     return (
         <>
-            {consignments.map((consignment: Consignment, index: number) => (
+            {consignmentList.map((consignment: MultiShippingConsignmentData) => (
                 <ConsignmentListItem
                     consignment={consignment}
-                    consignmentNumber={index + 1}
+                    consignmentNumber={consignment.consignmentNumber}
                     countriesWithAutocomplete={countriesWithAutocomplete}
                     defaultCountryCode={defaultCountryCode}
                     isLoading={isLoading}
@@ -82,11 +84,14 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
                     defaultCountryCode={defaultCountryCode}
                     isLoading={isLoading}
                     onUnhandledError={onUnhandledError}
+                    setIsAddShippingDestination={setIsAddShippingDestination}
                 />)
             }
-            <Button className='add-consignment-button' onClick={handleAddShippingDestination} variant={ButtonVariant.Secondary}>
-                Add shipping destination
-            </Button>
+            {unassignedItems.shippableItemsCount > 0 && 
+                <Button className='add-consignment-button' onClick={handleAddShippingDestination} variant={ButtonVariant.Secondary}>
+                    Add new destination
+                </Button>
+            }
             <MultiShippingFormV2Footer
                 isLoading={isLoading}
                 shouldDisableSubmit={shouldDisableSubmit}

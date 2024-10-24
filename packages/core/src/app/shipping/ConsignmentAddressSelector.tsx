@@ -1,4 +1,4 @@
-import { Address, Consignment, ConsignmentCreateRequestBody } from "@bigcommerce/checkout-sdk";
+import { Address, ConsignmentCreateRequestBody } from "@bigcommerce/checkout-sdk";
 import React, { useState } from "react";
 
 import { TranslatedString } from "@bigcommerce/checkout/locale";
@@ -9,9 +9,10 @@ import { ErrorModal } from "../common/error";
 import { EMPTY_ARRAY, isFloatingLabelEnabled } from "../common/utility";
 
 import { AssignItemFailedError, AssignItemInvalidAddressError } from "./errors";
+import { MultiShippingConsignmentData } from "./MultishippingV2Type";
 
 interface ConsignmentAddressSelectorProps {
-    consignment?: Consignment;
+    consignment?: MultiShippingConsignmentData;
     defaultCountryCode?: string;
     countriesWithAutocomplete: string[];
     isLoading: boolean;
@@ -34,21 +35,21 @@ const ConsignmentAddressSelector = ({
 
     const {
         checkoutState: {
-            data: { getCart, getShippingCountries, getCustomer, getConfig, getShippingAddressFields: getFields },
+            data: { getShippingCountries, getCustomer, getConfig, getShippingAddressFields: getFields },
         },
         checkoutService: { assignItemsToAddress: assignItem, createCustomerAddress },
     } = useCheckout();
 
-    const cart = getCart();
     const countries = getShippingCountries() || EMPTY_ARRAY;
     const customer = getCustomer();
     const config = getConfig();
 
-    if (!config || !cart || !customer) {
+    if (!config || !customer) {
         return null;
     }
 
     const isFloatingLabelEnabledFlag = isFloatingLabelEnabled(config.checkoutSettings);
+    // TODO: add filter for addresses 
     const addresses = customer.addresses || EMPTY_ARRAY;
     const {
         checkoutSettings: {
@@ -71,15 +72,10 @@ const ConsignmentAddressSelector = ({
             return;
         }
 
-        const cartLineItems = [...cart.lineItems.physicalItems, ...(cart.lineItems.customItems || EMPTY_ARRAY)];
-        const consignmentLineItems = consignment.lineItemIds.map(lineItemId => (
-            { itemId: lineItemId, quantity: cartLineItems.find(({ id }) => id === lineItemId)?.quantity || 0 }
-        ));
-
         try {
             await assignItem({
                 address,
-                lineItems: consignmentLineItems,
+                lineItems: consignment.lineItems.map(({ id, quantity }) => ({ itemId: id, quantity })),
             });
 
         } catch (error) {
