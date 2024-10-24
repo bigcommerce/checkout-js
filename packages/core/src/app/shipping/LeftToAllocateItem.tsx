@@ -29,6 +29,7 @@ const LeftToAllocateItem: FunctionComponent<LeftToAllocateItemProps> = ({ item, 
                     additionalClassName={error ? "form-field--error" : ""}
                     input={({ field }) => <TextInput
                         {...field}
+                        aria-label={`Quantity of ${item.name}`}
                         disabled={item.quantity === 0}
                         id={field.name}
                         min={0}
