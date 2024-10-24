@@ -27,6 +27,7 @@ export type TranslateValidationErrorFunction = (
 export interface FormFieldsValidationSchemaOptions {
     formFields: FormField[];
     translate?: TranslateValidationErrorFunction;
+    validateGoogleMapAutoCompleteMaxLength?: boolean;
 }
 
 export interface CustomFormFieldValues {

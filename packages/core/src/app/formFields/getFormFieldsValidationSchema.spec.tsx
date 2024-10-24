@@ -123,4 +123,49 @@ describe('getFormFielsValidationSchema', () => {
             expect(spy).toHaveBeenCalled();
         });
     });
+
+    describe('google autocomplete validation', () => {
+        it('throws error for google maps autocomplete validation for max length', async () => {
+            const formFieldsWithMaxLength = formFields.map(field => {
+                const { name } = field;
+                return name === 'address1' ? { ...field, maxLength: 20 } : field;
+            });
+    
+    
+            const schema = getFormFieldsValidationSchema({ formFields: formFieldsWithMaxLength, translate, validateGoogleMapAutoCompleteMaxLength: true });
+            const errors = await schema
+                .validate({
+                    ...getShippingAddress(),
+                    address1: 'this is a long address 1 from somewhere',
+                })
+                .catch((error: ValidationError) => error.message);
+            
+
+            expect(translate).toHaveBeenCalledWith('max', {
+                label: 'Address Line 1',
+                name: 'address1',
+                max: 20,
+            });
+            expect(errors).toBe('address1 must be at most 20 characters');
+        });
+
+        it('throws no error for max length validation if google autocomplete is not enabled', async () => {
+            const spy = jest.fn();
+            const formFieldsWithMaxLength = formFields.map(field => {
+                const { name } = field;
+                return name === 'address1' ? { ...field, maxLength: 20 } : field;
+            });
+    
+    
+            const schema = getFormFieldsValidationSchema({ formFields: formFieldsWithMaxLength, translate });
+            await schema
+                .validate({
+                    ...getShippingAddress(),
+                    address1: 'this is a long address 1 from somewhere',
+                })
+                .then(spy);
+
+            expect(spy).toHaveBeenCalled();
+        });
+    });
 });
