@@ -11,7 +11,7 @@ import ConsignmentListItem from './ConsignmentListItem';
 import hasSelectedShippingOptions from './hasSelectedShippingOptions';
 import { useMultiShippingConsignmentItems } from './hooks/useMultishippingConsignmentItems';
 import MultiShippingFormV2Footer from './MultiShippingFormV2Footer';
-import { MappedDataConsignment } from './MultishippingV2Type';
+import { MultiShippingConsignmentData } from './MultishippingV2Type';
 import './MultiShippingFormV2.scss';
 import NewConsignment from './NewConsignment';
 
@@ -41,7 +41,7 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
             data: { getConsignments, getConfig },
         },
     } = useCheckout();
-    const { unassignedItems, mappedDataConsignmentsList } = useMultiShippingConsignmentItems();
+    const { unassignedItems, consignmentList } = useMultiShippingConsignmentItems();
 
     const consignments = getConsignments() || EMPTY_ARRAY;
     const config = getConfig();
@@ -66,7 +66,7 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
 
     return (
         <>
-            {mappedDataConsignmentsList.map((consignment: MappedDataConsignment) => (
+            {consignmentList.map((consignment: MultiShippingConsignmentData) => (
                 <ConsignmentListItem
                     consignment={consignment}
                     consignmentNumber={consignment.consignmentNumber}

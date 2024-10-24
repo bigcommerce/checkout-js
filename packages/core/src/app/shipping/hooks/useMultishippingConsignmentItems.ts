@@ -2,11 +2,11 @@ import { Consignment, LineItemMap } from "@bigcommerce/checkout-sdk";
 
 import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
 
-import { LineItemType, MappedDataConsignment, MultiShippingTableItemWithType, UnassignedItems } from "../MultishippingV2Type";
+import { LineItemType, MultiShippingConsignmentData, MultiShippingTableData, MultiShippingTableItemWithType } from "../MultishippingV2Type";
 
 interface MultiShippingConsignmentItemsHook {
-    unassignedItems: UnassignedItems;
-    mappedDataConsignmentsList: MappedDataConsignment[];
+    unassignedItems: MultiShippingTableData;
+    consignmentList: MultiShippingConsignmentData[];
 }
 
 const calculateShippableItemsCount = (items: MultiShippingTableItemWithType[]): number => {
@@ -17,13 +17,13 @@ function mapConsignmentsItems(
     lineItems: LineItemMap,
     consignments: Consignment[],
 ): {
-        mappedDataConsignmentsList: MappedDataConsignment[];
-        unassignedItems: UnassignedItems;
+        consignmentList: MultiShippingConsignmentData[];
+        unassignedItems: MultiShippingTableData;
     } {
     const unassignedItemsMap = new Map<string, MultiShippingTableItemWithType>();
     const digitalItemsMap = new Map<string, MultiShippingTableItemWithType>();
 
-    const mappedDataConsignmentsList: MappedDataConsignment[] = [];
+    const consignmentList: MultiShippingConsignmentData[] = [];
 
     lineItems.physicalItems.forEach((item) =>
         unassignedItemsMap.set(item.id.toString(), { ...item, type: LineItemType.Physical }),
@@ -47,7 +47,7 @@ function mapConsignmentsItems(
             }
         });
 
-        mappedDataConsignmentsList.push({
+        consignmentList.push({
             ...consignment,
             consignmentNumber: index + 1,
             hasDigitalItems: false,
@@ -58,13 +58,13 @@ function mapConsignmentsItems(
 
     const unassignedItemsList = Array.from(unassignedItemsMap.values());
 
-    const unassignedItems: UnassignedItems = {
+    const unassignedItems: MultiShippingTableData = {
         lineItems: unassignedItemsList,
         hasDigitalItems: digitalItemsMap.size > 0,
         shippableItemsCount: calculateShippableItemsCount(unassignedItemsList),
     };
 
-    return { mappedDataConsignmentsList, unassignedItems };
+    return { consignmentList, unassignedItems };
 }
 
 const defaultMultiShippingConsignmentItems: MultiShippingConsignmentItemsHook = {
@@ -73,7 +73,7 @@ const defaultMultiShippingConsignmentItems: MultiShippingConsignmentItemsHook = 
         hasDigitalItems: false,
         shippableItemsCount: 0,
     },
-    mappedDataConsignmentsList: [],
+    consignmentList: [],
 };
 
 export const useMultiShippingConsignmentItems = (): MultiShippingConsignmentItemsHook => {
@@ -93,10 +93,10 @@ export const useMultiShippingConsignmentItems = (): MultiShippingConsignmentItem
         consignments,
     } = checkout;
 
-    const { mappedDataConsignmentsList, unassignedItems } =
+    const { consignmentList, unassignedItems } =
         mapConsignmentsItems(lineItems, consignments);
 
-    const unassignedItemsResult: UnassignedItems = {
+    const unassignedItemsResult: MultiShippingTableData = {
         ...unassignedItems,
         lineItems: [
             ...unassignedItems.lineItems,
@@ -105,6 +105,6 @@ export const useMultiShippingConsignmentItems = (): MultiShippingConsignmentItem
 
     return {
         unassignedItems: unassignedItemsResult,
-        mappedDataConsignmentsList,
+        consignmentList,
     };
 };

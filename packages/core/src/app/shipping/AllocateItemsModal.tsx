@@ -13,7 +13,7 @@ import { Form } from "../ui/form";
 import { Modal, ModalHeader } from "../ui/modal";
 
 import LeftToAllocateItemsTable from "./LeftToAllocateItemsTable";
-import { UnassignedItems } from "./MultishippingV2Type";
+import { MultiShippingTableData } from "./MultishippingV2Type";
 
 export interface AllocateItemsModalFormValues {
     [key: string]: number;
@@ -24,7 +24,7 @@ interface AllocateItemsModalProps {
     isOpen: boolean;
     onRequestClose?(): void;
     address: Address;
-    unassignedItems: UnassignedItems;
+    unassignedItems: MultiShippingTableData;
     onAllocateItems(consignmentLineItems: ConsignmentLineItem[]): void;
 }
 

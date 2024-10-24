@@ -9,10 +9,10 @@ import { ErrorModal } from "../common/error";
 import { EMPTY_ARRAY, isFloatingLabelEnabled } from "../common/utility";
 
 import { AssignItemFailedError, AssignItemInvalidAddressError } from "./errors";
-import { MappedDataConsignment } from "./MultishippingV2Type";
+import { MultiShippingConsignmentData } from "./MultishippingV2Type";
 
 interface ConsignmentAddressSelectorProps {
-    consignment?: MappedDataConsignment;
+    consignment?: MultiShippingConsignmentData;
     defaultCountryCode?: string;
     countriesWithAutocomplete: string[];
     isLoading: boolean;

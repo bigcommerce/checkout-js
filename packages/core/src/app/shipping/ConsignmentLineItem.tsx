@@ -9,11 +9,11 @@ import { IconChevronDown, IconChevronUp } from "../ui/icon";
 import AllocateItemsModal from "./AllocateItemsModal";
 import { AssignItemFailedError } from "./errors";
 import { useMultiShippingConsignmentItems } from "./hooks/useMultishippingConsignmentItems";
-import { MappedDataConsignment } from "./MultishippingV2Type";
+import { MultiShippingConsignmentData } from "./MultishippingV2Type";
 
 interface ConsignmentLineItemProps {
     consignmentNumber: number;
-    consignment: MappedDataConsignment;
+    consignment: MultiShippingConsignmentData;
     onUnhandledError(error: Error): void;
 }
 
@@ -48,6 +48,8 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
         setShowItems(!showItems);
     }
 
+    const itemsCount = consignment.shippableItemsCount;
+
     return (
         <div>
             <AllocateItemsModal
@@ -60,7 +62,7 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
             />
             <div className="consignment-line-item-header">
                 <div>
-                    <h3>{consignment.lineItems.length} items allocated</h3>
+                    <h3>{itemsCount > 1 ? `${itemsCount} items` : `${itemsCount} item`} allocated</h3>
                     <a
                         className="expand-items-button"
                         data-test="expand-items-button"

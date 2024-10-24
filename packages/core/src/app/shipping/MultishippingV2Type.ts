@@ -21,12 +21,12 @@ export interface MultiShippingTableItemWithType extends MultiShippingTableItem {
     type: LineItemType;
 }
 
-export interface UnassignedItems {
+export interface MultiShippingTableData {
     lineItems: MultiShippingTableItemWithType[];
     hasDigitalItems: boolean;
     shippableItemsCount: number;
 };
 
-export interface MappedDataConsignment extends Consignment, UnassignedItems {
+export interface MultiShippingConsignmentData extends Consignment, MultiShippingTableData {
     consignmentNumber: number;
 }

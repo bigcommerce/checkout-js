@@ -2,10 +2,10 @@ import React, { FunctionComponent } from "react";
 
 import ConsignmentAddressSelector from './ConsignmentAddressSelector';
 import ConsignmentLineItem from './ConsignmentLineItem';
-import { MappedDataConsignment } from './MultishippingV2Type';
+import { MultiShippingConsignmentData } from './MultishippingV2Type';
 
 export interface ConsignmentListItemProps {
-    consignment: MappedDataConsignment;
+    consignment: MultiShippingConsignmentData;
     consignmentNumber: number;
     defaultCountryCode?: string;
     countriesWithAutocomplete: string[];
