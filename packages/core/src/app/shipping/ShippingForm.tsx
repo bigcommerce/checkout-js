@@ -100,7 +100,7 @@ const ShippingForm = ({
     isFloatingLabelEnabled,
     isInitialValueLoaded,
     isNewMultiShippingUIEnabled,
-    isGoogleMapsMaxLengthValidationExperimentEnabled,
+    validateGoogleMapAutoCompleteMaxLength,
 }: ShippingFormProps & WithLanguageProps) => {
     const { isPayPalFastlaneEnabled, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
 

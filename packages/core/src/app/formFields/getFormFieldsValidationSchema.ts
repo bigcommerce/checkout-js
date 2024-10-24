@@ -30,7 +30,7 @@ export default memoize(function getFormFieldsValidationSchema({
 
                 if (name === 'address1' && maxLength && validateGoogleMapAutoCompleteMaxLength) {
                     schema[name] = schema[name]
-                        .max(maxLength, translate('max', { label, name, max: maxLength + 1 }));
+                        .max(maxLength, translate('max', { label, name, max: maxLength }));
                 }
 
                 schema[name] = schema[name].matches(
