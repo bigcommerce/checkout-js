@@ -1,10 +1,11 @@
 import { Address, ConsignmentLineItem } from "@bigcommerce/checkout-sdk";
 import { FormikProps } from "formik";
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useMemo } from "react";
+import { number, object } from "yup";
 
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { TranslatedString, withLanguage, WithLanguageProps } from "@bigcommerce/checkout/locale";
-import { ButtonVariant } from "@bigcommerce/checkout/ui";
+import { Alert, AlertType, ButtonVariant } from "@bigcommerce/checkout/ui";
 
 import { getAddressContent } from "../address/SingleLineStaticAddress";
 import { withFormikExtended } from "../common/form";
@@ -13,7 +14,7 @@ import { Form } from "../ui/form";
 import { Modal, ModalHeader } from "../ui/modal";
 
 import LeftToAllocateItemsTable from "./LeftToAllocateItemsTable";
-import { MultiShippingTableData } from "./MultishippingV2Type";
+import { LineItemType, MultiShippingTableData, MultiShippingTableItemWithType } from "./MultishippingV2Type";
 
 export interface AllocateItemsModalFormValues {
     [key: string]: number;
@@ -37,6 +38,7 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
     setValues,
     dirty,
     submitForm,
+    errors,
 }: AllocateItemsModalProps & FormikProps<AllocateItemsModalFormValues>) => {
 
     const leftItemsTotal = unassignedItems.shippableItemsCount;
@@ -61,6 +63,20 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
         setValues(values);
     }
 
+    const formErrors = useMemo(() => {
+        const errorKeys = Object.keys(errors);
+
+        return errorKeys.reduce((acc, key) => {
+            const error = errors[key];
+
+            if (error) {
+                acc.push(error);
+            }
+
+            return Array.from(new Set(acc));
+        }, [] as string[]);
+    }, [errors]);
+
     const modalFooter = (
         <>
             <Button disabled={!dirty} onClick={submitForm} type="submit" variant={ButtonVariant.Primary}>Allocate</Button>
@@ -81,7 +97,14 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
             onRequestClose={onRequestClose}
         >
             <Form>
-                <h3>{getAddressContent(address)}</h3>
+                <h4>{getAddressContent(address)}</h4>
+                {formErrors.length > 0 && (
+                    <div className="form-errors">
+                        {formErrors.map((error, index) => (
+                            <Alert key={index} type={AlertType.Error}>{error}</Alert>
+                        ))}
+                    </div>
+                )}
                 {unassignedItems.lineItems.length
                     ? <>
                         <div className="left-to-allocate-items-table-actions">
@@ -103,7 +126,10 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
                                 </a>
                             </div>
                         </div>
-                        <LeftToAllocateItemsTable items={unassignedItems.lineItems} />
+                        <LeftToAllocateItemsTable
+                            formErrors={errors}
+                            items={unassignedItems.lineItems}
+                        />
                     </>
                     : null
                 }
@@ -132,5 +158,29 @@ export default withLanguage(
             return values;
         },
         enableReinitialize: true,
+        validationSchema: ({ unassignedItems }: AllocateItemsModalProps) => {
+            const createItemSchema = (item: MultiShippingTableItemWithType) => {
+                const baseSchema = number()
+                    .required('Quantity is required')
+                    .integer('Quantity must be an integer')
+                    .min(0, 'Quantity cannot be less than 0')
+                    .max(item.quantity, 'Quantity cannot exceed "Left to allocate" amount.')
+
+                if (item.type === LineItemType.Custom) {
+                    return baseSchema
+                        .oneOf([0, item.quantity], 'All quantities of this custom product must be allocated to the same destination, as it was created specifically for this draft order.')
+                }
+
+                return baseSchema;
+            };
+
+            const schemaObject = Object.fromEntries(
+                unassignedItems.lineItems.map((item) => [item.id.toString(), createItemSchema(item)]),
+            );
+
+            return object().shape(schemaObject);
+        },
+        validateOnBlur: true,
+        validateOnChange: false,
     })(AllocateItemsModal),
 );
