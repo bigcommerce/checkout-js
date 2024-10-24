@@ -35,8 +35,8 @@ const subscribeToConsignmentsSelector = createSelector(
     },
 );
 
-const isLoadingSelector = createSelector(
-    (_: CheckoutSelectors, { isUpdatingAddress }: ShippingOptionsProps) => isUpdatingAddress,
+export const isLoadingSelector = createSelector(
+    (_: CheckoutSelectors, isUpdatingAddress?: boolean) => isUpdatingAddress,
     ({ statuses }: CheckoutSelectors) => statuses.isLoadingShippingOptions,
     ({ statuses }: CheckoutSelectors) => statuses.isSelectingShippingOption,
     ({ statuses }: CheckoutSelectors) => statuses.isUpdatingConsignment,
@@ -97,7 +97,7 @@ export function mapToShippingOptions(
         cart,
         consignments,
         invalidShippingMessage: shippingQuoteFailedMessage,
-        isLoading: isLoadingSelector(checkoutState, props),
+        isLoading: isLoadingSelector(checkoutState, props.isUpdatingAddress),
         isSelectingShippingOption,
         methodId,
         selectShippingOption: checkoutService.selectConsignmentShippingOption,
