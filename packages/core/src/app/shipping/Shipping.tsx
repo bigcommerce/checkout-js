@@ -410,8 +410,6 @@ export function mapToShippingProps({
             'CHECKOUT-8776.google_autocomplete_max_length_validation',
         ) && Boolean(googleMapsApiKey);
 
-    console.log('validateGoogleMapAutoCompleteMaxLength', googleMapsApiKey, validateGoogleMapAutoCompleteMaxLength);
-
     const shippingAddress =
         !shouldShowMultiShipping && consignments.length > 1 ? undefined : getShippingAddress();
 
