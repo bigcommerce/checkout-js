@@ -3,7 +3,7 @@ import { FormikProps } from "formik";
 import React, { FunctionComponent } from "react";
 
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
-import { withLanguage, WithLanguageProps } from "@bigcommerce/checkout/locale";
+import { TranslatedString, withLanguage, WithLanguageProps } from "@bigcommerce/checkout/locale";
 import { ButtonVariant } from "@bigcommerce/checkout/ui";
 
 import { getAddressContent } from "../address/SingleLineStaticAddress";
@@ -41,8 +41,9 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
 
     const leftItemsTotal = unassignedItems.shippableItemsCount;
 
-    const allocationPendingMessage = `${leftItemsTotal} ${leftItemsTotal === 1 ? 'item left to allocate' : 'items left to allocate'
-        }`;
+    const allocationPendingMessage = leftItemsTotal > 1
+        ? <TranslatedString data={{ itemCount: leftItemsTotal }} id="shipping.multishipping_item_to_allocate_message_plural" />
+        : <TranslatedString id="shipping.multishipping_item_to_allocate_message" />;
 
     const handleSelectAll = () => {
         const values: AllocateItemsModalFormValues = {};
