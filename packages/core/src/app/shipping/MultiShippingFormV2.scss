@@ -5,6 +5,10 @@ $allocate-items-table-first-column-width: 50%;
 $allocate-items-table-column-width: 25%;
 $allocate-items-table-image-width: 20%;
 
+.alertBox {
+    border-radius: $global-radius;
+}
+
 .consignment-container {
     border: 1px solid color("greys", "light");
     border-radius: $global-radius;

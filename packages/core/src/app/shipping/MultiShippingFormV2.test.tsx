@@ -143,6 +143,8 @@ describe('MultiShippingFormV2 Component', () => {
         expect(screen.getByText('Destination #1')).toBeInTheDocument();
         expect(screen.getByText(getAddressContent(address))).toBeInTheDocument();
 
+        expect(screen.getByText('2 items left to allocate')).toBeInTheDocument();
+
         const addShippingDestinationButton = screen.getByRole('button', { name: 'Add new destination' });
 
         expect(addShippingDestinationButton).toBeInTheDocument();
@@ -183,5 +185,94 @@ describe('MultiShippingFormV2 Component', () => {
         const allocateItemsModalHeader = within(allocateItemsModal).getByText('Destination #2');
 
         expect(allocateItemsModalHeader).toBeInTheDocument();
+    });
+
+    it('displays 1 item left to allocate banner', async () => {
+        jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
+            ...getCheckout(),
+            consignments: [{
+                ...getConsignment(),
+                lineItemIds: [
+                    getPhysicalItem().id.toString(),
+                ]
+            }],
+            cart: {
+                ...getCart(),
+                lineItems: {
+                    ...getCart().lineItems,
+                    physicalItems: [{
+                        ...getPhysicalItem(),
+                        quantity: 2,
+                    },
+                    {
+                        ...getPhysicalItem(),
+                        id: '2',
+                        quantity: 1,
+                    }],
+                },
+            },
+        });
+
+        const address = getShippingAddress();
+
+        render(
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <ExtensionProvider checkoutService={checkoutService}>
+                        <MultiShippingFormV2 {...defaultProps} />
+                    </ExtensionProvider>
+                </LocaleContext.Provider>
+            </CheckoutProvider>,
+        );
+
+        expect(screen.getByText('Destination #1')).toBeInTheDocument();
+        expect(screen.getByText(getAddressContent(address))).toBeInTheDocument();
+
+        expect(screen.getByText('1 item left to allocate')).toBeInTheDocument();
+    });
+
+    it('displays all items are allocated banner', async () => {
+        jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
+            ...getCheckout(),
+            consignments: [{
+                ...getConsignment(),
+                lineItemIds: [
+                    getPhysicalItem().id.toString(),
+                    '2',
+                ]
+            }],
+            cart: {
+                ...getCart(),
+                lineItems: {
+                    ...getCart().lineItems,
+                    physicalItems: [{
+                        ...getPhysicalItem(),
+                        quantity: 2,
+                    },
+                    {
+                        ...getPhysicalItem(),
+                        id: '2',
+                        quantity: 1,
+                    }],
+                },
+            },
+        });
+
+        const address = getShippingAddress();
+
+        render(
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <ExtensionProvider checkoutService={checkoutService}>
+                        <MultiShippingFormV2 {...defaultProps} />
+                    </ExtensionProvider>
+                </LocaleContext.Provider>
+            </CheckoutProvider>,
+        );
+
+        expect(screen.getByText('Destination #1')).toBeInTheDocument();
+        expect(screen.getByText(getAddressContent(address))).toBeInTheDocument();
+
+        expect(screen.getByText('All items are allocated.')).toBeInTheDocument();
     });
 });
