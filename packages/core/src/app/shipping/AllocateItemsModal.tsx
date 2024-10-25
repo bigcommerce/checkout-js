@@ -66,7 +66,7 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
     const formErrors = useMemo(() => {
         const errorKeys = Object.keys(errors);
 
-        return errorKeys.reduce((acc, key) => {
+        return errorKeys.reduce((acc: string[], key: string) => {
             const error = errors[key];
 
             if (error) {
@@ -74,7 +74,7 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
             }
 
             return Array.from(new Set(acc));
-        }, [] as string[]);
+        }, []);
     }, [errors]);
 
     const modalFooter = (
