@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.536.0](https://github.com/bigcommerce/checkout-js/compare/v1.535.1...v1.536.0) (2024-10-28)
+
+
+### Features
+
+* **checkout:** CHECKOUT-8598 Display Items Allocated Banner ([d1fe457](https://github.com/bigcommerce/checkout-js/commit/d1fe457a9e3abb4af6f6a59fb301d98c68e632c1))
+
 ### [1.535.1](https://github.com/bigcommerce/checkout-js/compare/v1.535.0...v1.535.1) (2024-10-24)
 
 ## [1.535.0](https://github.com/bigcommerce/checkout-js/compare/v1.534.6...v1.535.0) (2024-10-23)
