@@ -57,6 +57,7 @@ export interface SingleShippingFormProps {
     shouldShowOrderComments: boolean;
     isFloatingLabelEnabled?: boolean;
     isInitialValueLoaded: boolean;
+    validateGoogleMapAutoCompleteMaxLength: boolean;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     deleteConsignments(): Promise<Address | undefined>;
     getFields(countryCode?: string): FormField[];
@@ -348,6 +349,7 @@ export default withLanguage(
             language,
             getFields,
             methodId,
+            validateGoogleMapAutoCompleteMaxLength,
         }: SingleShippingFormProps & WithLanguageProps) =>
             shouldHaveCustomValidation(methodId)
                 ? object({
@@ -363,6 +365,7 @@ export default withLanguage(
                           getAddressFormFieldsValidationSchema({
                               language,
                               formFields: getFields(formValues && formValues.countryCode),
+                              validateGoogleMapAutoCompleteMaxLength,
                           }),
                       ),
                   }),

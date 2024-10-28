@@ -45,6 +45,7 @@ export interface ShippingFormProps {
     isFloatingLabelEnabled?: boolean;
     isInitialValueLoaded: boolean;
     isNewMultiShippingUIEnabled: boolean;
+    validateGoogleMapAutoCompleteMaxLength: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     deleteConsignments(): Promise<Address | undefined>;
@@ -99,6 +100,7 @@ const ShippingForm = ({
     isFloatingLabelEnabled,
     isInitialValueLoaded,
     isNewMultiShippingUIEnabled,
+    validateGoogleMapAutoCompleteMaxLength,
 }: ShippingFormProps & WithLanguageProps) => {
     const { isPayPalFastlaneEnabled, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
 
@@ -176,6 +178,7 @@ const ShippingForm = ({
             shouldShowSaveAddress={shouldShowSaveAddress}
             signOut={signOut}
             updateAddress={updateAddress}
+            validateGoogleMapAutoCompleteMaxLength={validateGoogleMapAutoCompleteMaxLength}
         />
     );
 };
