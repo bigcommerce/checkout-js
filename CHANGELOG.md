@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.536.2](https://github.com/bigcommerce/checkout-js/compare/v1.536.1...v1.536.2) (2024-10-28)
+
+
+### Bug Fixes
+
+* **shipping:** CHECKOUT-8776 Add validation of form field for max length for google autocomplete ([#2064](https://github.com/bigcommerce/checkout-js/issues/2064)) ([137b502](https://github.com/bigcommerce/checkout-js/commit/137b5029fdf9333072bede0deca52569eea5e0b1))
+
 ### [1.536.1](https://github.com/bigcommerce/checkout-js/compare/v1.536.0...v1.536.1) (2024-10-28)
 
 ## [1.536.0](https://github.com/bigcommerce/checkout-js/compare/v1.535.1...v1.536.0) (2024-10-28)
