@@ -134,7 +134,7 @@ function appConfig(options, argv) {
                         entrypoints: true,
                         transform: assets => transformManifest(assets, appVersion),
                         output: 'manifest-app.json',
-                        integrity: true,
+                        integrity: isProduction,
                     }),
                     new BuildHookPlugin({
                         onSuccess() {
@@ -297,7 +297,7 @@ function loaderConfig(options, argv) {
                         entrypoints: true,
                         transform: assets => transformManifest(assets, appVersion),
                         output: 'manifest-loader.json',
-                        integrity: true,
+                        integrity: isProduction,
                         done(_, { compilation: { errors = [] } }) {
                             if (errors.length) {
                                 return;
