@@ -57,6 +57,7 @@
             "discount_text": "Korting",
             "downloads_action": "Ga naar Downloads",
             "edit_cart_action": "Winkelmandje bewerken",
+            "edit_multi_shipping_cart_message": "New items will default to Shipping Destination #1. Reallocate if you want them shipped to other destinations.",
             "estimated_total_text": "Geschat totaal",
             "free_text": "Gratis",
             "gift_certificate_text": "Cadeaubon",
@@ -81,6 +82,7 @@
             "consistency_error": "Je betaling kon niet worden verwerkt omdat er gegevens zijn veranderd. Controleer je bestelling en probeer het opnieuw."
         },
         "common": {
+            "confirm_action": "Bevestigen",
             "cancel_action": "Annuleren",
             "close_action": "Sluiten",
             "continue_action": "Doorgaan",
@@ -512,6 +514,8 @@
             "multishipping_guest_intro": "Om uw artikelen naar meerdere adressen te verzenden, moet u:",
             "multishipping_guest_sign_in": "inloggen in uw account",
             "multishipping_guest_create": "of <a href=\"{url}\" target=\"_blank\">een account aanmaken</a> voordat u verder gaat.",
+            "multishipping_item_to_allocate_message": "{count, plural, one{1 item left to allocate} other{{count} items left to allocate}}",
+            "multishipping_all_items_allocated_message": "All items are allocated.",
             "ship_to_multi": "Verzenden naar meerdere adressen",
             "ship_to_single": "Verzenden naar een enkel adres",
             "shipping_heading": "Verzending",

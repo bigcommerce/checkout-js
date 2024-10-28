@@ -57,6 +57,7 @@
             "discount_text": "Rabat",
             "downloads_action": "Gå til downloads",
             "edit_cart_action": "Rediger indkøbskurv",
+            "edit_multi_shipping_cart_message": "Nye varer vil som standard blive sendt til forsendelsesdestination nr. 1. Tildel dem igen, hvis du vil have dem sendt til andre destinationer.",
             "estimated_total_text": "Anslået samlet beløb",
             "free_text": "Gratis",
             "gift_certificate_text": "Gavekort",
@@ -81,6 +82,7 @@
             "consistency_error": "Din betaling kunne ikke behandles, fordi nogle oplysninger er ændret. Gennemgå din ordre, og prøv igen."
         },
         "common": {
+            "confirm_action": "Bekræft",
             "cancel_action": "Annuller",
             "close_action": "Luk",
             "continue_action": "Fortsæt",
@@ -512,6 +514,8 @@
             "multishipping_guest_intro": "Hvis du vil sende dine varer til flere adresser, skal du",
             "multishipping_guest_sign_in": "logge på din konto",
             "multishipping_guest_create": "eller <a href=\"{url}\" target=\"_blank\">oprette en konto</a>, før du fortsætter.",
+            "multishipping_item_to_allocate_message": "{count, plural, one{1 item left to allocate} other{{count} items left to allocate}}",
+            "multishipping_all_items_allocated_message": "All items are allocated.",
             "ship_to_multi": "Send til flere adresser",
             "ship_to_single": "Send til en enkelt adresse",
             "shipping_heading": "Forsendelse",

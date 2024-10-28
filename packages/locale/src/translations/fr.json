@@ -57,6 +57,7 @@
             "discount_text": "Remise",
             "downloads_action": "Accéder aux téléchargements",
             "edit_cart_action": "Modifier le panier",
+            "edit_multi_shipping_cart_message": "Les nouveaux articles seront placés par défaut sur la destination d'expédition n° 1. Réaffectez-les si vous voulez qu'ils soient expédiés vers d'autres destinations.",
             "estimated_total_text": "Total estimé",
             "free_text": "Gratuit",
             "gift_certificate_text": "Chèque-cadeau",
@@ -81,6 +82,7 @@
             "consistency_error": "Impossible de traiter votre paiement car certaines informations ont été modifiées. Veuillez vérifier votre commande et réessayer."
         },
         "common": {
+            "confirm_action": "Confirmer",
             "cancel_action": "Annuler",
             "close_action": "Fermer",
             "continue_action": "Continuer",
@@ -512,6 +514,8 @@
             "multishipping_guest_intro": "Pour expédier vos articles à plusieurs adresses, vous devez",
             "multishipping_guest_sign_in": "vous connecter à votre compte",
             "multishipping_guest_create": "ou <a href=\"{url}\" target=\"_blank\">créer un compte</a> avant de continuer.",
+            "multishipping_item_to_allocate_message": "{count, plural, one{1 item left to allocate} other{{count} items left to allocate}}",
+            "multishipping_all_items_allocated_message": "All items are allocated.",
             "ship_to_multi": "Livrer à plusieurs adresses",
             "ship_to_single": "Livrer à une seule adresse",
             "shipping_heading": "Livraison",

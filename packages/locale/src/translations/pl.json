@@ -57,6 +57,7 @@
             "discount_text": "Rabat",
             "downloads_action": "Przejdź do Pobrania",
             "edit_cart_action": "Edytuj koszyk",
+            "edit_multi_shipping_cart_message": "New items will default to Shipping Destination #1. Reallocate if you want them shipped to other destinations.",
             "estimated_total_text": "Szacunkowa suma",
             "free_text": "Bezpłatna strona",
             "gift_certificate_text": "Bon podarunkowy",
@@ -81,6 +82,7 @@
             "consistency_error": "Nie można zrealizować płatności, ponieważ niektóre szczegóły uległy zmianie. Sprawdź zamówienie i spróbuj ponownie."
         },
         "common": {
+            "confirm_action": "Potwierdź",
             "cancel_action": "Anuluj",
             "close_action": "Zamknij",
             "continue_action": "Kontynuuj",
@@ -512,6 +514,8 @@
             "multishipping_guest_intro": "Aby wysłać swoje przedmioty na wiele adresów, musisz",
             "multishipping_guest_sign_in": "zaloguj się na swoje konto",
             "multishipping_guest_create": "lub <a href=\"{url}\" target=\"_blank\">utworzyć konto</a> przed przystąpieniem do pracy.",
+            "multishipping_item_to_allocate_message": "{count, plural, one{1 item left to allocate} other{{count} items left to allocate}}",
+            "multishipping_all_items_allocated_message": "All items are allocated.",
             "ship_to_multi": "Wysyłka na wiele adresów",
             "ship_to_single": "Wyślij na jeden adres",
             "shipping_heading": "Wysyłka",

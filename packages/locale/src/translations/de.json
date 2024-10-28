@@ -57,6 +57,7 @@
             "discount_text": "Rabatt",
             "downloads_action": "Zu Downloads",
             "edit_cart_action": "Warenkorb bearbeiten",
+            "edit_multi_shipping_cart_message": "Für neue Artikel wird standardmäßig die Lieferadresse Nr. 1 gewählt. Ändern Sie die Zuweisung, wenn Sie möchten, dass sie an andere Ziele versendet werden.",
             "estimated_total_text": "Geschätzter Gesamtbetrag",
             "free_text": "Kostenlos",
             "gift_certificate_text": "Geschenkgutschein",
@@ -81,6 +82,7 @@
             "consistency_error": "Ihr Zahlungsvorgang konnte nicht bearbeitet werden, da sich einige Angaben geändert haben. Bitte überprüfen Sie Ihre Bestellung und versuchen Sie es erneut."
         },
         "common": {
+            "confirm_action": "Bestätigen",
             "cancel_action": "Abbrechen",
             "close_action": "Schließen",
             "continue_action": "Fortfahren",
@@ -512,6 +514,8 @@
             "multishipping_guest_intro": "Um Ihre Artikel an mehrere Adressen zu versenden, müssen Sie",
             "multishipping_guest_sign_in": "sich in Ihrem Konto anmelden",
             "multishipping_guest_create": "oder <a href=\"{url}\" target=\"_blank\">ein Konto erstellen</a>, bevor Sie fortfahren.",
+            "multishipping_item_to_allocate_message": "{count, plural, one{1 item left to allocate} other{{count} items left to allocate}}",
+            "multishipping_all_items_allocated_message": "All items are allocated.",
             "ship_to_multi": "An mehrere Adressen versenden",
             "ship_to_single": "An eine einzelne Adresse versenden",
             "shipping_heading": "Versand",

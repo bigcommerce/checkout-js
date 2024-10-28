@@ -57,6 +57,7 @@
             "discount_text": "Rabatt",
             "downloads_action": "Gå till nedladdningar",
             "edit_cart_action": "Redigera kundvagn",
+            "edit_multi_shipping_cart_message": "Nya objekt skickas som standard till leveransdestination nr 1. Byt destination om du vill att de ska skickas någon annanstans.",
             "estimated_total_text": "Beräknad totalsumma",
             "free_text": "Gratis",
             "gift_certificate_text": "Presentkort",
@@ -81,6 +82,7 @@
             "consistency_error": "Din utcheckning kunde inte behandlas eftersom vissa detaljer har ändrats. Granska din beställning och försök igen."
         },
         "common": {
+            "confirm_action": "Bekräfta",
             "cancel_action": "Annullera",
             "close_action": "Stäng",
             "continue_action": "Fortsätt",
@@ -512,6 +514,8 @@
             "multishipping_guest_intro": "För att skicka dina varor till flera adresser måste du",
             "multishipping_guest_sign_in": "logga in på ditt konto",
             "multishipping_guest_create": "eller <a href=\"{url}\" target=\"_blank\">skapa ett konto</a> innan du fortsätter.",
+            "multishipping_item_to_allocate_message": "{count, plural, one{1 item left to allocate} other{{count} items left to allocate}}",
+            "multishipping_all_items_allocated_message": "All items are allocated.",
             "ship_to_multi": "Skicka till flera adresser",
             "ship_to_single": "Skicka till en enda adress",
             "shipping_heading": "Frakt",

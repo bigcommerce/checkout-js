@@ -57,6 +57,7 @@
             "discount_text": "Rabatt",
             "downloads_action": "Gå til nedlastinger",
             "edit_cart_action": "Rediger handlekurv",
+            "edit_multi_shipping_cart_message": "New items will default to Shipping Destination #1. Reallocate if you want them shipped to other destinations.",
             "estimated_total_text": "Estimert totalsum",
             "free_text": "Kostnadsfrie",
             "gift_certificate_text": "Gavekort",
@@ -81,6 +82,7 @@
             "consistency_error": "Kassen din kunne ikke behandles fordi noen detaljer er endret. Se igjennom bestillingen din og prøv igjen."
         },
         "common": {
+            "confirm_action": "Bekreft",
             "cancel_action": "Avbryt",
             "close_action": "Lukk",
             "continue_action": "Fortsett",
@@ -512,6 +514,8 @@
             "multishipping_guest_intro": "For å sende varene dine til flere adresser må du",
             "multishipping_guest_sign_in": "logge på kontoen din",
             "multishipping_guest_create": "eller <a href=\"{url}\" target=\"_blank\">opprette en konto</a> før du fortsetter.",
+            "multishipping_item_to_allocate_message": "{count, plural, one{1 item left to allocate} other{{count} items left to allocate}}",
+            "multishipping_all_items_allocated_message": "All items are allocated.",
             "ship_to_multi": "Send til flere adresser",
             "ship_to_single": "Send til én enkelt adresse",
             "shipping_heading": "Frakt",
