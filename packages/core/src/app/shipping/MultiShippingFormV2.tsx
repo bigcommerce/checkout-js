@@ -1,7 +1,8 @@
 import React, { FunctionComponent, useMemo, useState } from 'react';
 
-import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { Alert, AlertType } from '@bigcommerce/checkout/ui';
 
 import { withFormikExtended } from '../common/form';
 import { EMPTY_ARRAY } from '../common/utility';
@@ -41,7 +42,7 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
             data: { getConsignments, getConfig },
         },
     } = useCheckout();
-    const { unassignedItems, consignmentList } = useMultiShippingConsignmentItems();
+    const { unassignedItems: { shippableItemsCount }, consignmentList } = useMultiShippingConsignmentItems();
 
     const consignments = getConsignments() || EMPTY_ARRAY;
     const config = getConfig();
@@ -64,8 +65,23 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
         setIsAddShippingDestination(true);
     }
 
+    const hasUnassignedItems = shippableItemsCount > 0;
+
+    const renderAllocatedBanner = (shippableItemsCount: number): React.JSX.Element  => {
+        if (shippableItemsCount > 0) {
+            return <Alert type={AlertType.Info}>
+                <TranslatedString data={{ count: shippableItemsCount }} id="shipping.multishipping_item_to_allocate_message" />
+            </Alert>;
+        }
+
+        return <Alert type={AlertType.Success}>
+            <TranslatedString id="shipping.multishipping_all_items_allocated_message" />
+        </Alert>;
+    }
+
     return (
         <>
+            {renderAllocatedBanner(shippableItemsCount)}
             {consignmentList.map((consignment: MultiShippingConsignmentData) => (
                 <ConsignmentListItem
                     consignment={consignment}
@@ -87,7 +103,7 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
                     setIsAddShippingDestination={setIsAddShippingDestination}
                 />)
             }
-            {unassignedItems.shippableItemsCount > 0 && 
+            {hasUnassignedItems && 
                 <Button className='add-consignment-button' onClick={handleAddShippingDestination} variant={ButtonVariant.Secondary}>
                     Add new destination
                 </Button>
