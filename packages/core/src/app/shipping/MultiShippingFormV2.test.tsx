@@ -146,7 +146,7 @@ describe('MultiShippingFormV2 Component', () => {
         expect(screen.getByText('Destination #1')).toBeInTheDocument();
         expect(screen.getByText(getAddressContent(address))).toBeInTheDocument();
 
-        expect(screen.getByText('2 items left to allocate')).toBeInTheDocument();
+        expect(screen.getByText('3 items left to allocate')).toBeInTheDocument();
 
         const addShippingDestinationButton = screen.getByRole('button', { name: 'Add new destination' });
 
