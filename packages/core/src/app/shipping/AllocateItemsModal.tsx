@@ -158,17 +158,17 @@ export default withLanguage(
             return values;
         },
         enableReinitialize: true,
-        validationSchema: ({ unassignedItems }: AllocateItemsModalProps) => {
+        validationSchema: ({ language, unassignedItems }: AllocateItemsModalProps & WithLanguageProps) => {
             const createItemSchema = (item: MultiShippingTableItemWithType) => {
                 const baseSchema = number()
-                    .required('Quantity is required')
-                    .integer('Quantity must be an integer')
-                    .min(0, 'Quantity cannot be less than 0')
-                    .max(item.quantity, 'Quantity cannot exceed "Left to allocate" amount.')
+                    .required(language.translate('shipping.quantity_required_error'))
+                    .integer(language.translate('shipping.quantity_invalid_error'))
+                    .min(0, language.translate('shipping.quantity_min_error'))
+                    .max(item.quantity, language.translate('shipping.quantity_max_error'))
 
                 if (item.type === LineItemType.Custom) {
                     return baseSchema
-                        .oneOf([0, item.quantity], 'All quantities of this custom product must be allocated to the same destination, as it was created specifically for this draft order.')
+                        .oneOf([0, item.quantity], language.translate('shipping.custom_item_quantity_error'))
                 }
 
                 return baseSchema;

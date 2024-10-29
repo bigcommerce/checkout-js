@@ -96,15 +96,8 @@ export const useMultiShippingConsignmentItems = (): MultiShippingConsignmentItem
     const { consignmentList, unassignedItems } =
         mapConsignmentsItems(lineItems, consignments);
 
-    const unassignedItemsResult: MultiShippingTableData = {
-        ...unassignedItems,
-        lineItems: [
-            ...unassignedItems.lineItems,
-        ],
-    };
-
     return {
-        unassignedItems: unassignedItemsResult,
+        unassignedItems,
         consignmentList,
     };
 };
