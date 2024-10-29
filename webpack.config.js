@@ -1,6 +1,6 @@
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 const EventEmitter = require('events');
-const { copyFileSync, readFileSync } = require('fs');
+const { copyFileSync } = require('fs');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { join } = require('path');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
@@ -134,7 +134,7 @@ function appConfig(options, argv) {
                         entrypoints: true,
                         transform: assets => transformManifest(assets, appVersion),
                         output: 'manifest-app.json',
-                        integrity: true,
+                        integrity: isProduction,
                     }),
                     new BuildHookPlugin({
                         onSuccess() {
@@ -263,18 +263,13 @@ function loaderConfig(options, argv) {
                             let wasTriggeredBefore = false;
 
                             eventEmitter.on('app:done', () => {
-                                if (!wasTriggeredBefore || !isProduction) {
-                                    const manifestJsonFile = join(__dirname, isProduction ? 'dist' : 'build', 'manifest-app.json');
+                                if (!wasTriggeredBefore) {
                                     const definePlugin = new DefinePlugin({
                                         LIBRARY_NAME: JSON.stringify(LIBRARY_NAME),
                                         PRELOAD_ASSETS: JSON.stringify(PRELOAD_ASSETS),
-                                        MANIFEST_JSON: DefinePlugin.runtimeValue(() => {
-                                            try {
-                                                return readFileSync(manifestJsonFile, 'utf-8');
-                                            } catch (error) {
-                                                console.error('Error reading the manifest json file:', error);
-                                            }
-                                        }, [manifestJsonFile]),
+                                        MANIFEST_JSON: JSON.stringify(require(
+                                          join(__dirname, isProduction ? 'dist' : 'build', 'manifest-app.json')
+                                        )),
                                     });
 
                                     definePlugin.apply(compiler);
@@ -302,7 +297,7 @@ function loaderConfig(options, argv) {
                         entrypoints: true,
                         transform: assets => transformManifest(assets, appVersion),
                         output: 'manifest-loader.json',
-                        integrity: true,
+                        integrity: isProduction,
                         done(_, { compilation: { errors = [] } }) {
                             if (errors.length) {
                                 return;
