@@ -206,7 +206,7 @@ describe('MultiShippingFormV2 Component', () => {
         expect(within(allocateItemsModal).getByRole('button', { name: 'Allocate' })).toBeEnabled();
 
         await userEvent.click(within(allocateItemsModal).getByRole('button', { name: 'Allocate' }));
-        expect(within(allocateItemsModal).getByText('Quantity cannot exceed "Left to allocate" amount.')).toBeInTheDocument();
+        expect(within(allocateItemsModal).getByText(localeContext.language.translate('shipping.quantity_max_error'))).toBeInTheDocument();
 
         await userEvent.clear(physicalItemQuantityInput);
         await userEvent.type(physicalItemQuantityInput, '1');
@@ -222,7 +222,7 @@ describe('MultiShippingFormV2 Component', () => {
         expect(customItemQuantityInput).toHaveValue(5);
 
         await userEvent.click(within(allocateItemsModal).getByRole('button', { name: 'Allocate' }));
-        expect(within(allocateItemsModal).getByText('All quantities of this custom product must be allocated to the same destination, as it was created specifically for this draft order.')).toBeInTheDocument();
+        expect(within(allocateItemsModal).getByText(localeContext.language.translate('shipping.custom_item_quantity_error'))).toBeInTheDocument();
 
         await userEvent.clear(customItemQuantityInput);
         await userEvent.type(customItemQuantityInput, `${getCustomItem().quantity}`);
