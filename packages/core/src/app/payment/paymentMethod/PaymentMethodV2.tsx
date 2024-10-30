@@ -1,4 +1,4 @@
-import { CheckoutSelectors, PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { PaymentMethod } from '@bigcommerce/checkout-sdk';
 import React, { ComponentType } from 'react';
 
 import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
@@ -17,7 +17,6 @@ import resolvePaymentMethod from '../resolvePaymentMethod';
 import withPayment, { WithPaymentProps } from '../withPayment';
 
 import { default as PaymentMethodV1 } from './PaymentMethod';
-import PaymentMethodId from './PaymentMethodId';
 
 export interface PaymentMethodProps {
     method: PaymentMethod;
@@ -27,17 +26,6 @@ export interface PaymentMethodProps {
         query: PaymentMethodResolveId,
     ): ComponentType<ResolvedPaymentMethodProps> | undefined;
     onUnhandledError(error: Error): void;
-}
-
-function shouldUsePaymentMethodV1(method: PaymentMethod, checkoutState: CheckoutSelectors) {
-
-    if (method.id === PaymentMethodId.SquareV2) {
-        return !checkoutState.data.getConfig()?.checkoutSettings.features[
-            'PROJECT-4113.squarev2_web_payments_sdk'
-        ];
-    }
-
-    return false;
 }
 
 const PaymentMethodContainer: ComponentType<
@@ -82,7 +70,7 @@ const PaymentMethodContainer: ComponentType<
         type: method.type,
     });
 
-    if (!ResolvedPaymentMethod || shouldUsePaymentMethodV1(method, checkoutState)) {
+    if (!ResolvedPaymentMethod) {
         return (
             <PaymentMethodV1
                 isEmbedded={isEmbedded}
