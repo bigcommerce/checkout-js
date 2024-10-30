@@ -47,7 +47,7 @@ export function loadFiles(options?: LoadFilesOptions): Promise<LoadFilesResult> 
     const scripts = Promise.all(js.filter(path => !path.startsWith('loader')).map((path) =>
         getScriptLoader().loadScript(joinPaths(publicPath, path), {
             async: false,
-            attributes: isIntegrityHashExperimentEnabled ? {
+            attributes: isIntegrityHashExperimentEnabled && integrity[path] ? {
                 crossorigin: 'anonymous',
                 integrity: integrity[path],
             } : {},
@@ -57,7 +57,7 @@ export function loadFiles(options?: LoadFilesOptions): Promise<LoadFilesResult> 
     const stylesheets = Promise.all(css.map((path) =>
         getStylesheetLoader().loadStylesheet(joinPaths(publicPath, path), {
             prepend: true,
-            attributes: isIntegrityHashExperimentEnabled ? {
+            attributes: isIntegrityHashExperimentEnabled && integrity[path] ? {
                 crossorigin: 'anonymous',
                 integrity: integrity[path],
             } : {},
