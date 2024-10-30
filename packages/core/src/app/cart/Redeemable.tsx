@@ -127,7 +127,7 @@ const RedeemableForm: FunctionComponent<
         [],
     );
 
-    const renderErrorMessage = useCallback((errorCode: string) => {
+    const renderErrorMessage = useCallback((errorCode: string, errorMessage?: string) => {
         switch (errorCode) {
             case 'min_purchase':
                 return <TranslatedString id="redeemable.coupon_min_order_total" />;
@@ -136,7 +136,7 @@ const RedeemableForm: FunctionComponent<
                 return <TranslatedString id="redeemable.coupon_location_error" />;
 
             default:
-                return <TranslatedString id="redeemable.code_invalid_error" />;
+                return errorMessage || <TranslatedString id="redeemable.code_invalid_error" />;
         }
     }, []);
 
@@ -149,7 +149,7 @@ const RedeemableForm: FunctionComponent<
                             appliedRedeemableError.errors &&
                             appliedRedeemableError.errors[0] && (
                                 <Alert type={AlertType.Error}>
-                                    {renderErrorMessage(appliedRedeemableError.errors[0].code)}
+                                    {renderErrorMessage(appliedRedeemableError.errors[0].code, appliedRedeemableError.errors[0].message)}
                                 </Alert>
                             )}
 
