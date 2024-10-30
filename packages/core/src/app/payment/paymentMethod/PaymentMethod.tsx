@@ -26,7 +26,6 @@ import PaypalCommerceCreditCardPaymentMethod from './PaypalCommerceCreditCardPay
 import PaypalExpressPaymentMethod from './PaypalExpressPaymentMethod';
 import PaypalPaymentsProPaymentMethod from './PaypalPaymentsProPaymentMethod';
 import PPSDKPaymentMethod from './PPSDKPaymentMethod';
-import SquarePaymentMethod from './SquarePaymentMethod';
 import WorldpayCreditCardPaymentMethod from './WorldpayCreditCardPaymentMethod';
 
 export interface PaymentMethodProps {
@@ -64,10 +63,6 @@ const PaymentMethodComponent: FunctionComponent<
         return <PPSDKPaymentMethod {...props} />;
     }
 
-
-    if (method.id === PaymentMethodId.SquareV2) {
-        return <SquarePaymentMethod {...props} />;
-    }
 
     if (method.id === PaymentMethodId.CCAvenueMars) {
         return <CCAvenueMarsPaymentMethod {...props} />;
