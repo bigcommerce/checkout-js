@@ -66,12 +66,103 @@ $allocate-items-table-image-width: 20%;
 }
 
 .allocate-items-modal {
+    .modal-header {
+        padding-bottom: spacing("base");
+    }
+
     .modal-body {
         padding-top: 0;
 
-        h3 {
-            margin-bottom: #{spacing("single") + spacing("half")};
-            font-weight: fontWeight("normal");
+        h4 {
+            margin-bottom: #{spacing("base")};
+        }
+
+        .form-errors {
+            margin-bottom: spacing("base");
+        }
+
+        .left-to-allocate-items-table-actions {
+            display: flex;
+            margin-bottom: spacing("base");
+            justify-content: space-between;
+            
+            p {
+                margin-bottom: 0;
+            }
+    
+            div {
+                display: flex;
+                gap: spacing("single");
+            }
+        }
+    
+        .left-to-allocate-items-table {
+            margin-top: spacing("base");
+            border-left: none;
+            border-right: none;
+        
+            thead {
+                background: none;
+                tr {
+                    border-top: container("border");
+                    border-bottom: container("border");
+                    th:first-child {
+                        width: $allocate-items-table-first-column-width;
+                        text-align: left;
+                    }
+                    th {
+                        width: $allocate-items-table-column-width;
+                        padding: spacing("base");
+                        text-align: right;
+                    }
+                }
+            }
+    
+            
+            tbody {
+                tr {
+                    border-top: container("border");
+                    border-bottom: container("border");
+                    td:first-child {
+                        text-align: left;
+                    }
+                    td {
+                        padding: spacing("base");
+                        text-align: right;
+                        div {
+                            float: right;
+                            width: $quantity-input-container-width;
+                            input {
+                                text-align: right;
+                                padding: spacing("half");
+                            }
+                        }
+                    }
+                }
+            }
+    
+            .left-to-allocate-item-name-container {
+                display: flex;
+                align-items: center;
+    
+                .left-to-allocate-item-figure {
+                    margin: 0;
+                    width: $allocate-items-table-image-width;
+                    padding-right: spacing("half");
+                }
+                
+                .left-to-allocate-item-name {
+                    p {
+                        margin-bottom: 0;
+                    }
+    
+                    .left-to-allocate-item-options {
+                        color: color("greys");
+                        font-size: fontSize("tiny");
+                        margin: 0;
+                    }
+                }
+            }  
         }
     }
 
@@ -80,89 +171,5 @@ $allocate-items-table-image-width: 20%;
             margin-left: 0;
             border: none;
         }
-    }
-
-    .left-to-allocate-items-table-actions {
-        display: flex;
-        margin-bottom: spacing("base");
-        justify-content: space-between;
-        
-        p {
-            margin-bottom: 0;
-        }
-
-        div {
-            display: flex;
-            gap: spacing("half");
-        }
-    }
-
-    .left-to-allocate-items-table {
-        margin-top: spacing("base");
-        border-left: none;
-        border-right: none;
-    
-        thead {
-            background: none;
-            tr {
-                border-top: container("border");
-                border-bottom: container("border");
-                th:first-child {
-                    width: $allocate-items-table-first-column-width;
-                    text-align: left;
-                }
-                th {
-                    width: $allocate-items-table-column-width;
-                    padding: spacing("base");
-                    text-align: right;
-                }
-            }
-        }
-
-        
-        tbody {
-            tr {
-                border-top: container("border");
-                border-bottom: container("border");
-                td:first-child {
-                    text-align: left;
-                }
-                td {
-                    padding: spacing("base");
-                    text-align: right;
-                    div {
-                        float: right;
-                        width: $quantity-input-container-width;
-                        input {
-                            text-align: right;
-                            padding: spacing("half");
-                        }
-                    }
-                }
-            }
-        }
-
-        .left-to-allocate-item-name-container {
-            display: flex;
-            align-items: center;
-
-            .left-to-allocate-item-figure {
-                margin: 0;
-                width: $allocate-items-table-image-width;
-                padding-right: spacing("half");
-            }
-            
-            .left-to-allocate-item-name {
-                p {
-                    margin-bottom: 0;
-                }
-
-                .left-to-allocate-item-options {
-                    color: color("greys");
-                    font-size: fontSize("tiny");
-                    margin: 0;
-                }
-            }
-        }  
     }
 }

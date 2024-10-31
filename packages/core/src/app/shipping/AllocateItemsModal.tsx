@@ -1,10 +1,11 @@
 import { Address, ConsignmentLineItem } from "@bigcommerce/checkout-sdk";
 import { FormikProps } from "formik";
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useMemo } from "react";
+import { number, object } from "yup";
 
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { TranslatedString, withLanguage, WithLanguageProps } from "@bigcommerce/checkout/locale";
-import { ButtonVariant } from "@bigcommerce/checkout/ui";
+import { Alert, AlertType, ButtonVariant } from "@bigcommerce/checkout/ui";
 
 import { getAddressContent } from "../address/SingleLineStaticAddress";
 import { withFormikExtended } from "../common/form";
@@ -13,7 +14,7 @@ import { Form } from "../ui/form";
 import { Modal, ModalHeader } from "../ui/modal";
 
 import LeftToAllocateItemsTable from "./LeftToAllocateItemsTable";
-import { MultiShippingTableData } from "./MultishippingV2Type";
+import { LineItemType, MultiShippingTableData, MultiShippingTableItemWithType } from "./MultishippingV2Type";
 
 export interface AllocateItemsModalFormValues {
     [key: string]: number;
@@ -37,6 +38,7 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
     setValues,
     dirty,
     submitForm,
+    errors,
 }: AllocateItemsModalProps & FormikProps<AllocateItemsModalFormValues>) => {
 
     const leftItemsTotal = unassignedItems.shippableItemsCount;
@@ -61,6 +63,20 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
         setValues(values);
     }
 
+    const formErrors = useMemo(() => {
+        const errorKeys = Object.keys(errors);
+
+        return errorKeys.reduce((acc: string[], key: string) => {
+            const error = errors[key];
+
+            if (error) {
+                acc.push(error);
+            }
+
+            return Array.from(new Set(acc));
+        }, []);
+    }, [errors]);
+
     const modalFooter = (
         <>
             <Button disabled={!dirty} onClick={submitForm} type="submit" variant={ButtonVariant.Primary}>Allocate</Button>
@@ -81,7 +97,14 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
             onRequestClose={onRequestClose}
         >
             <Form>
-                <h3>{getAddressContent(address)}</h3>
+                <h4>{getAddressContent(address)}</h4>
+                {formErrors.length > 0 && (
+                    <div className="form-errors">
+                        {formErrors.map((error, index) => (
+                            <Alert key={index} type={AlertType.Error}>{error}</Alert>
+                        ))}
+                    </div>
+                )}
                 {unassignedItems.lineItems.length
                     ? <>
                         <div className="left-to-allocate-items-table-actions">
@@ -103,7 +126,10 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
                                 </a>
                             </div>
                         </div>
-                        <LeftToAllocateItemsTable items={unassignedItems.lineItems} />
+                        <LeftToAllocateItemsTable
+                            formErrors={errors}
+                            items={unassignedItems.lineItems}
+                        />
                     </>
                     : null
                 }
@@ -132,5 +158,29 @@ export default withLanguage(
             return values;
         },
         enableReinitialize: true,
+        validationSchema: ({ language, unassignedItems }: AllocateItemsModalProps & WithLanguageProps) => {
+            const createItemSchema = (item: MultiShippingTableItemWithType) => {
+                const baseSchema = number()
+                    .required(language.translate('shipping.quantity_required_error'))
+                    .integer(language.translate('shipping.quantity_invalid_error'))
+                    .min(0, language.translate('shipping.quantity_min_error'))
+                    .max(item.quantity, language.translate('shipping.quantity_max_error'))
+
+                if (item.type === LineItemType.Custom) {
+                    return baseSchema
+                        .oneOf([0, item.quantity], language.translate('shipping.custom_item_quantity_error'))
+                }
+
+                return baseSchema;
+            };
+
+            const schemaObject = Object.fromEntries(
+                unassignedItems.lineItems.map((item) => [item.id.toString(), createItemSchema(item)]),
+            );
+
+            return object().shape(schemaObject);
+        },
+        validateOnBlur: true,
+        validateOnChange: false,
     })(AllocateItemsModal),
 );

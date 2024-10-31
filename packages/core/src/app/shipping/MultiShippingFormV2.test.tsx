@@ -15,7 +15,7 @@ import { render, screen, waitFor, within } from '@bigcommerce/checkout/test-util
 import { getAddressFormFields } from '../address/formField.mock';
 import { getAddressContent } from '../address/SingleLineStaticAddress';
 import { getCart } from '../cart/carts.mock';
-import { getPhysicalItem } from '../cart/lineItem.mock';
+import { getCustomItem, getPhysicalItem } from '../cart/lineItem.mock';
 import { getCheckout } from '../checkout/checkouts.mock';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
@@ -103,13 +103,12 @@ describe('MultiShippingFormV2 Component', () => {
         });
     });
 
-    it('adds new shipping destination and open allocate items modal', async () => {
-
+    it('adds new shipping destination and open allocate items modal and validate quantity input', async () => {
         jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
             ...getCheckout(),
             consignments: [{
                 ...getConsignment(),
-                lineItemIds: ['2']
+                lineItemIds: ['1']
             }],
             cart: {
                 ...getCart(),
@@ -117,13 +116,17 @@ describe('MultiShippingFormV2 Component', () => {
                     ...getCart().lineItems,
                     physicalItems: [{
                         ...getPhysicalItem(),
+                        id: '1',
+                        name: 'Product 1',
                         quantity: 2,
                     },
                     {
                         ...getPhysicalItem(),
                         id: '2',
+                        name: 'Product 2',
                         quantity: 1,
                     }],
+                    customItems: [getCustomItem()],
                 },
             },
         });
@@ -143,7 +146,7 @@ describe('MultiShippingFormV2 Component', () => {
         expect(screen.getByText('Destination #1')).toBeInTheDocument();
         expect(screen.getByText(getAddressContent(address))).toBeInTheDocument();
 
-        expect(screen.getByText('2 items left to allocate')).toBeInTheDocument();
+        expect(screen.getByText('3 items left to allocate')).toBeInTheDocument();
 
         const addShippingDestinationButton = screen.getByRole('button', { name: 'Add new destination' });
 
@@ -185,6 +188,51 @@ describe('MultiShippingFormV2 Component', () => {
         const allocateItemsModalHeader = within(allocateItemsModal).getByText('Destination #2');
 
         expect(allocateItemsModalHeader).toBeInTheDocument();
+
+        await waitFor(() => {
+            expect(within(allocateItemsModal).queryByText('Product 1')).not.toBeInTheDocument();
+        });
+        expect(within(allocateItemsModal).getByText('Product 2')).toBeInTheDocument();
+
+        const physicalItemQuantityInput = within(allocateItemsModal).getByLabelText('Quantity of Product 2');
+
+        expect(physicalItemQuantityInput).toBeInTheDocument();
+        expect(physicalItemQuantityInput).toHaveValue(0);
+        expect(within(allocateItemsModal).getByRole('button', { name: 'Allocate' })).toBeDisabled();
+
+        await userEvent.type(physicalItemQuantityInput, '5');
+
+        expect(physicalItemQuantityInput).toHaveValue(5);
+        expect(within(allocateItemsModal).getByRole('button', { name: 'Allocate' })).toBeEnabled();
+
+        await userEvent.click(within(allocateItemsModal).getByRole('button', { name: 'Allocate' }));
+        expect(within(allocateItemsModal).getByText(localeContext.language.translate('shipping.quantity_max_error'))).toBeInTheDocument();
+
+        await userEvent.clear(physicalItemQuantityInput);
+        await userEvent.type(physicalItemQuantityInput, '1');
+        expect(physicalItemQuantityInput).toHaveValue(1);
+
+        const customItemQuantityInput = within(allocateItemsModal).getByLabelText('Quantity of Custom item');
+
+        expect(customItemQuantityInput).toBeInTheDocument();
+        expect(customItemQuantityInput).toHaveValue(0);
+
+        await userEvent.type(customItemQuantityInput, '5');
+
+        expect(customItemQuantityInput).toHaveValue(5);
+
+        await userEvent.click(within(allocateItemsModal).getByRole('button', { name: 'Allocate' }));
+        expect(within(allocateItemsModal).getByText(localeContext.language.translate('shipping.custom_item_quantity_error'))).toBeInTheDocument();
+
+        await userEvent.clear(customItemQuantityInput);
+        await userEvent.type(customItemQuantityInput, `${getCustomItem().quantity}`);
+        expect(customItemQuantityInput).toHaveValue(getCustomItem().quantity);
+
+        await userEvent.click(within(allocateItemsModal).getByRole('button', { name: 'Allocate' }));
+
+        await waitFor(() => {
+            expect(allocateItemsModal).not.toBeInTheDocument();
+        });
     });
 
     it('displays 1 item left to allocate banner', async () => {
