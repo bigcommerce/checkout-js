@@ -89,7 +89,7 @@ describe('MultiShippingFormV2 Component', () => {
         expect(screen.getByText(getAddressContent(address))).toBeInTheDocument();
 
         // eslint-disable-next-line testing-library/no-node-access
-        const destination1 = screen.getByText('Destination #1').parentElement;
+        const destination1 = screen.getByText('Destination #1').parentElement?.parentElement;
 
         expect(within(destination1).getByText('Canvas Laundry Cart', { exact: false })).toBeInTheDocument();
 
@@ -322,5 +322,54 @@ describe('MultiShippingFormV2 Component', () => {
         expect(screen.getByText(getAddressContent(address))).toBeInTheDocument();
 
         expect(screen.getByText('All items are allocated.')).toBeInTheDocument();
+    });
+
+    it('removes a consignment', async () => {
+        jest.spyOn(checkoutService, 'deleteConsignment').mockReturnValue(
+            Promise.resolve(checkoutService.getState()),
+        );
+        
+        jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
+            ...getCheckout(),
+            consignments: [{
+                ...getConsignment(),
+                lineItemIds: [
+                    getPhysicalItem().id.toString(),
+                ]
+            }],
+            cart: {
+                ...getCart(),
+                lineItems: {
+                    ...getCart().lineItems,
+                    physicalItems: [{
+                        ...getPhysicalItem(),
+                        quantity: 2,
+                    },
+                    {
+                        ...getPhysicalItem(),
+                        id: '2',
+                        quantity: 1,
+                    }],
+                },
+            },
+        });
+
+        render(
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <ExtensionProvider checkoutService={checkoutService}>
+                        <MultiShippingFormV2 {...defaultProps} />
+                    </ExtensionProvider>
+                </LocaleContext.Provider>
+            </CheckoutProvider>,
+        );
+
+        const closeButton = screen.getByTestId('delete-consignment-button');
+
+        expect(closeButton).toBeInTheDocument();
+
+        await userEvent.click(closeButton);
+
+        expect(checkoutService.deleteConsignment).toHaveBeenCalledWith(getConsignment().id);
     });
 });

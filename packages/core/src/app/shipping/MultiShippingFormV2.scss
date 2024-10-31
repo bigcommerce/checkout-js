@@ -17,8 +17,13 @@ $allocate-items-table-image-width: 20%;
 }
 
 .consignment-header {
-    font-size: fontSize("small");
-    margin: 0 0 spacing("single");
+    display: flex;
+    justify-content: space-between;
+
+    h3 {
+        font-size: fontSize("small");
+        margin: 0 0 spacing("single");
+    }
 }
 
 .add-consignment-button {
