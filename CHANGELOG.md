@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.539.0](https://github.com/bigcommerce/checkout-js/compare/v1.538.0...v1.539.0) (2024-10-31)
+
+
+### Features
+
+* **payment:** STRIPE-489 Stripe accordion toggle ([21e0e54](https://github.com/bigcommerce/checkout-js/commit/21e0e5416f9b380bd50f0d093a016b17eb595a2d))
+
 ## [1.538.0](https://github.com/bigcommerce/checkout-js/compare/v1.537.2...v1.538.0) (2024-10-31)
 
 
