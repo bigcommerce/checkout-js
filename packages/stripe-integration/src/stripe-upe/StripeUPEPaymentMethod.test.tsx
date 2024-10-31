@@ -5,6 +5,7 @@ import {
     createLanguageService,
     PaymentInitializeOptions,
     PaymentMethod,
+    WithStripeUPEPaymentInitializeOptions,
 } from '@bigcommerce/checkout-sdk';
 import { render } from '@testing-library/react';
 import { Formik } from 'formik';
@@ -29,6 +30,7 @@ import {
     getPaymentMethod,
     getStoreConfig,
 } from '@bigcommerce/checkout/test-mocks';
+import { AccordionContext, AccordionContextProps } from '@bigcommerce/checkout/ui';
 
 import StripeUPEPaymentMethod from './StripeUPEPaymentMethod';
 
@@ -44,6 +46,8 @@ describe('when using StripeUPE payment', () => {
         Promise<CheckoutSelectors>,
         [options: PaymentInitializeOptions]
     >;
+    let onToggleMock: jest.Mock;
+    let accordionContextValues: AccordionContextProps;
 
     beforeEach(() => {
         checkoutService = createCheckoutService();
@@ -53,6 +57,11 @@ describe('when using StripeUPE payment', () => {
         initializePayment = jest
             .spyOn(checkoutService, 'initializePayment')
             .mockResolvedValue(checkoutState);
+        onToggleMock = jest.fn();
+        accordionContextValues = {
+            onToggle: onToggleMock,
+            selectedItemId: 'stripeupe-stripe_ocs',
+        };
 
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
 
@@ -84,9 +93,11 @@ describe('when using StripeUPE payment', () => {
         PaymentMethodTest = (props) => (
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
-                    <Formik initialValues={{}} onSubmit={noop}>
-                        <StripeUPEPaymentMethod {...props} />
-                    </Formik>
+                    <AccordionContext.Provider value={accordionContextValues}>
+                        <Formik initialValues={{}} onSubmit={noop}>
+                            <StripeUPEPaymentMethod {...props} />
+                        </Formik>
+                    </AccordionContext.Provider>
                 </LocaleContext.Provider>
             </CheckoutProvider>
         );
@@ -108,6 +119,8 @@ describe('when using StripeUPE payment', () => {
                 containerId: 'stripe-pay_now-component-field',
                 onError: expect.any(Function),
                 render: expect.any(Function),
+                paymentMethodSelect: expect.any(Function),
+                handleClosePaymentMethod: expect.any(Function),
                 style: {
                     fieldBackground: '',
                     fieldBorder: '',
@@ -139,6 +152,8 @@ describe('when using StripeUPE payment', () => {
                 containerId: 'stripe-pay_now-component-field',
                 onError: expect.any(Function),
                 render: expect.any(Function),
+                paymentMethodSelect: expect.any(Function),
+                handleClosePaymentMethod: expect.any(Function),
                 style: {
                     fieldBackground: '',
                     fieldBorder: '',
@@ -180,8 +195,71 @@ describe('when using StripeUPE payment', () => {
                     },
                     onError: expect.any(Function),
                     render: expect.any(Function),
+                    paymentMethodSelect: expect.any(Function),
+                    handleClosePaymentMethod: expect.any(Function),
                 },
             }),
         );
+    });
+
+    describe('# Stripe OCS accordion', () => {
+        let collapseElementMock: jest.Mock;
+
+        beforeEach(() => {
+            collapseElementMock = jest.fn();
+        });
+
+        afterEach(() => {
+            jest.clearAllMocks();
+        });
+
+        it('should call collapse BC accordion when stripe accordion item is selected', () => {
+            jest.spyOn(checkoutService, 'initializePayment').mockImplementation(
+                (options: WithStripeUPEPaymentInitializeOptions) => {
+                    options.stripeupe?.paymentMethodSelect?.('methodId');
+
+                    return Promise.resolve(checkoutState);
+                },
+            );
+            render(<PaymentMethodTest {...defaultProps} method={method} />);
+
+            expect(onToggleMock).toHaveBeenCalled();
+        });
+
+        it('should collapse stripe accordion when BC accordion item selected', () => {
+            jest.spyOn(checkoutService, 'initializePayment').mockImplementation(
+                (options: WithStripeUPEPaymentInitializeOptions) => {
+                    options.stripeupe?.handleClosePaymentMethod?.(collapseElementMock);
+
+                    return Promise.resolve(checkoutState);
+                },
+            );
+
+            const { rerender } = render(<PaymentMethodTest {...defaultProps} method={method} />);
+
+            accordionContextValues.selectedItemId = 'nonStripeItem';
+
+            rerender(<PaymentMethodTest {...defaultProps} method={method} />);
+
+            expect(collapseElementMock).toHaveBeenCalled();
+        });
+
+        it('should not collapse stripe accordion when Stripe accordion item selected', () => {
+            jest.spyOn(checkoutService, 'initializePayment').mockImplementation(
+                (options: WithStripeUPEPaymentInitializeOptions) => {
+                    options.stripeupe?.handleClosePaymentMethod?.(collapseElementMock);
+
+                    return Promise.resolve(checkoutState);
+                },
+            );
+
+            const { rerender } = render(<PaymentMethodTest {...defaultProps} method={method} />);
+
+            accordionContextValues.selectedItemId = 'stripeupe-card';
+
+            rerender(<PaymentMethodTest {...defaultProps} method={method} />);
+
+            expect(collapseElementMock).not.toHaveBeenCalled();
+        });
     });
 });
