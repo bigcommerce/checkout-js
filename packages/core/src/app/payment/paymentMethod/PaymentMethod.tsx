@@ -17,7 +17,6 @@ import CCAvenueMarsPaymentMethod from './CCAvenueMarsPaymentMethod';
 import HostedCreditCardPaymentMethod from './HostedCreditCardPaymentMethod';
 import HostedPaymentMethod from './HostedPaymentMethod';
 import MasterpassPaymentMethod from './MasterpassPaymentMethod';
-import MonerisPaymentMethod from './MonerisPaymentMethod';
 import OpyPaymentMethod from './OpyPaymentMethod';
 import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodProviderType from './PaymentMethodProviderType';
@@ -98,10 +97,6 @@ const PaymentMethodComponent: FunctionComponent<
         method.id === PaymentMethodId.PaypalPaymentsPro
     ) {
         return <PaypalPaymentsProPaymentMethod {...props} />;
-    }
-    
-    if (method.id === PaymentMethodId.Moneris) {
-        return <MonerisPaymentMethod {...props} />;
     }
 
     if (method.id === PaymentMethodId.WorldpayAccess) {
