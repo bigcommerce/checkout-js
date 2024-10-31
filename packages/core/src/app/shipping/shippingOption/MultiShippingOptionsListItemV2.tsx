@@ -37,6 +37,7 @@ export const MultiShippingOptionsListItemV2: FunctionComponent<
             <ul>
                 <RadioInput
                     checked={selectedShippingOptionId === shippingOption.id}
+                    id={`shippingOption-${shippingOption.id}`}
                     key={shippingOption.id}
                     label={label}
                     name={`${consignmentId}-shippingMethod`}
