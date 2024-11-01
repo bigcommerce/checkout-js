@@ -74,8 +74,6 @@ const NewConsignment = ({
             if (error instanceof AssignItemFailedError) {
                 onUnhandledError(error);
             }
-        } finally {
-            toggleAllocateItemsModal();
         }
     };
 

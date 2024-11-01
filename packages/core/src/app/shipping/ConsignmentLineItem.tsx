@@ -6,10 +6,12 @@ import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
 
 import { IconChevronDown, IconChevronUp } from "../ui/icon";
 
+import { getItemContent } from "./AllocatedItemsList";
 import AllocateItemsModal from "./AllocateItemsModal";
-import { AssignItemFailedError } from "./errors";
+import { AssignItemFailedError, UnassignItemError } from "./errors";
+import { useDeallocateItem } from "./hooks/useDeallocateItem";
 import { useMultiShippingConsignmentItems } from "./hooks/useMultishippingConsignmentItems";
-import { MultiShippingConsignmentData } from "./MultishippingV2Type";
+import { MultiShippingConsignmentData, MultiShippingTableItemWithType } from "./MultishippingV2Type";
 
 interface ConsignmentLineItemProps {
     consignmentNumber: number;
@@ -23,12 +25,13 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
 
     const { unassignedItems } = useMultiShippingConsignmentItems();
     const { checkoutService: { assignItemsToAddress: assignItem } } = useCheckout();
+    const deleteItem = useDeallocateItem();
 
     const toggleAllocateItemsModal = () => {
         setIsOpenAllocateItemsModal(!isOpenAllocateItemsModal);
     }
 
-    const handleAllocateItems = async (consignmentLineItems: ConsignmentLineItem[]) => {
+    const handleAssignItems = async (consignmentLineItems: ConsignmentLineItem[]) => {
         try {
             await assignItem({
                 address: consignment.address,
@@ -44,6 +47,27 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
         }
     }
 
+    const handleUnassignItems = async (itemToDelete: MultiShippingTableItemWithType) => {
+        try {
+            const consignmentRequest = {
+                address: consignment.address,
+                shippingAddress: consignment.shippingAddress,
+                lineItems: [
+                    {
+                        quantity: itemToDelete.quantity,
+                        itemId: itemToDelete.id,
+                    },
+                ],
+            }
+
+            await deleteItem(consignmentRequest, itemToDelete.id.toString(), consignment);
+        } catch (error) {
+            if (error instanceof Error) {
+                onUnhandledError(new UnassignItemError(error));
+            }
+        }
+    }
+
     const toggleShowItems = () => {
         setShowItems(!showItems);
     }
@@ -54,10 +78,12 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
         <div>
             <AllocateItemsModal
                 address={consignment.shippingAddress}
+                assignedItems={consignment}
                 consignmentNumber={consignmentNumber}
                 isOpen={isOpenAllocateItemsModal}
-                onAllocateItems={handleAllocateItems}
+                onAllocateItems={handleAssignItems}
                 onRequestClose={toggleAllocateItemsModal}
+                onUnassignItem={handleUnassignItems}
                 unassignedItems={unassignedItems}
             />
             <div className="consignment-line-item-header">
@@ -94,13 +120,7 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
                 ? <ul className="consignment-line-item-list">
                     {consignment.lineItems.map(lineItem => (
                         <li key={lineItem.id}>
-                            <span>
-                                <strong>{`${lineItem.quantity} x `}</strong>
-                                {lineItem.name}
-                                {lineItem.options?.length
-                                    ? <span className="line-item-options">{` - ${lineItem.options.map(option => option.value).join('/ ')}`}</span>
-                                    : ''}
-                            </span>
+                            {getItemContent(lineItem)}
                         </li>
                     ))}
                 </ul>

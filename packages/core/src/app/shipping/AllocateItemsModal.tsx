@@ -13,6 +13,7 @@ import { Button } from "../ui/button";
 import { Form } from "../ui/form";
 import { Modal, ModalHeader } from "../ui/modal";
 
+import AllocatedItemsList from "./AllocatedItemsList";
 import LeftToAllocateItemsTable from "./LeftToAllocateItemsTable";
 import { LineItemType, MultiShippingTableData, MultiShippingTableItemWithType } from "./MultishippingV2Type";
 
@@ -26,7 +27,9 @@ interface AllocateItemsModalProps {
     onRequestClose?(): void;
     address: Address;
     unassignedItems: MultiShippingTableData;
-    onAllocateItems(consignmentLineItems: ConsignmentLineItem[]): void;
+    assignedItems?: MultiShippingTableData;
+    onAllocateItems(consignmentLineItems: ConsignmentLineItem[]): Promise<void>;
+    onUnassignItem?(itemToDelete: MultiShippingTableItemWithType): Promise<void>;
 }
 
 const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProps<AllocateItemsModalFormValues>> = ({
@@ -34,11 +37,13 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
     isOpen,
     onRequestClose,
     address,
+    assignedItems,
     unassignedItems,
     setValues,
     dirty,
     submitForm,
     errors,
+    onUnassignItem,
 }: AllocateItemsModalProps & FormikProps<AllocateItemsModalFormValues>) => {
 
     const leftItemsTotal = unassignedItems.shippableItemsCount;
@@ -77,9 +82,12 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
         }, []);
     }, [errors]);
 
+    const hasItemsAssigned = !!assignedItems && assignedItems.lineItems.length > 0 && !!onUnassignItem;
+    const hasUnassignedItems = !!unassignedItems && unassignedItems.lineItems.length > 0;
+
     const modalFooter = (
         <>
-            <Button disabled={!dirty} onClick={submitForm} type="submit" variant={ButtonVariant.Primary}>Allocate</Button>
+            <Button disabled={!dirty} onClick={submitForm} type="submit" variant={ButtonVariant.Primary}>{hasItemsAssigned ? 'Save' : 'Allocate'}</Button>
             <Button onClick={onRequestClose} variant={ButtonVariant.Secondary}>Cancel</Button>
         </>
     );
@@ -111,7 +119,10 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
                                 <TranslatedString id="shipping.multishipping_digital_item_no_shipping_banner" />
                                 </Alert>
                 )}
-                {unassignedItems.lineItems.length
+                {hasItemsAssigned && (
+                    <AllocatedItemsList assignedItems={assignedItems} onUnassignItem={onUnassignItem} />
+                )}
+                {hasUnassignedItems
                     ? <>
                         <div className="left-to-allocate-items-table-actions">
                             <p>{allocationPendingMessage}</p>
@@ -146,13 +157,14 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
 
 export default withLanguage(
     withFormikExtended<AllocateItemsModalProps & WithLanguageProps, AllocateItemsModalFormValues>({
-        handleSubmit: (values, { props: { onAllocateItems } }) => {
+        handleSubmit: async (values, { props: { onAllocateItems }, resetForm }) => {
             const consignmentLineItems = Object.keys(values).filter(key => values[key] > 0).map((lineItemId: string) => ({
                 itemId: lineItemId,
                 quantity: values[lineItemId],
             }));
 
-            onAllocateItems(consignmentLineItems);
+            await onAllocateItems(consignmentLineItems);
+            resetForm();
         },
         mapPropsToValues: ({ unassignedItems }) => {
             const values: AllocateItemsModalFormValues = {};
