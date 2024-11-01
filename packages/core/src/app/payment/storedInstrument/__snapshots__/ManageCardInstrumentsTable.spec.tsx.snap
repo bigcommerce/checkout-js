@@ -146,7 +146,7 @@ exports[`ManageCardInstrumentsTable matches snapshot with rendered output 1`] = 
           4444
         </td>
         <td
-          class=""
+          class="instrumentModal-instrumentExpiry--expired"
           data-test="manage-instrument-expiry"
         >
           10/2024
