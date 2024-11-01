@@ -189,6 +189,8 @@ describe('MultiShippingFormV2 Component', () => {
 
         expect(allocateItemsModalHeader).toBeInTheDocument();
 
+        expect(screen.getByText('Shipping isn\'t required for digital products, thus it\'s not displayed here.')).toBeInTheDocument();
+
         await waitFor(() => {
             expect(within(allocateItemsModal).queryByText('Product 1')).not.toBeInTheDocument();
         });

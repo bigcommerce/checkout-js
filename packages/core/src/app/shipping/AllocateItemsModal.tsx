@@ -96,6 +96,7 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
             isOpen={isOpen}
             onRequestClose={onRequestClose}
         >
+                        
             <Form>
                 <h4>{getAddressContent(address)}</h4>
                 {formErrors.length > 0 && (
@@ -104,6 +105,11 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
                             <Alert key={index} type={AlertType.Error}>{error}</Alert>
                         ))}
                     </div>
+                )}
+                {unassignedItems.hasDigitalItems && (
+                            <Alert type={AlertType.Info}>
+                                <TranslatedString id="shipping.multishipping_digital_item_no_shipping_banner" />
+                                </Alert>
                 )}
                 {unassignedItems.lineItems.length
                     ? <>
