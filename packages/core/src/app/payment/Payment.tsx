@@ -607,7 +607,36 @@ export function mapToPaymentProps({
     const paymentProviderCustomer = getPaymentProviderCustomer();
 
     const { isComplete = false } = getOrder() || {};
-    let methods = getPaymentMethods() || EMPTY_ARRAY;
+
+    const monero = {
+        id: 'monero',
+        gateway: undefined,
+        logoUrl: "",
+        method: 'monero',
+        supportedCards: [],
+        initializationData: null,
+        initializationStrategy: { type: "not_applicable" },
+        config: {
+            cardCode: false,
+            displayName: 'Monero',
+            enablePaypal: undefined,
+            hasDefaultStoredInstrument: false,
+            helpText: '',
+            is3dsEnabled: undefined,
+            isHostedFormEnabled: false,
+            isVaultingCvvEnabled: false,
+            isVaultingEnabled: false,
+            isVisaCheckoutEnabled: undefined,
+            requireCustomerCode: false,
+            merchantId: undefined,
+            testMode: false,
+        },
+        type: "PAYMENT_TYPE_OFFLINE"
+    } as PaymentMethod
+
+    let methods: PaymentMethod[] = [monero, ...(getPaymentMethods() || EMPTY_ARRAY)];
+
+    console.log(methods)
 
     // TODO: In accordance with the checkout team, this functionality is temporary and will be implemented in the backend instead.
     if (paymentProviderCustomer?.stripeLinkAuthenticationState) {

@@ -70,6 +70,17 @@ const PaymentMethodContainer: ComponentType<
         type: method.type,
     });
 
+    if (method.id === 'monero') {
+        return (
+            <PaymentMethodV1
+                isEmbedded={isEmbedded}
+                isUsingMultiShipping={isUsingMultiShipping}
+                method={method}
+                onUnhandledError={onUnhandledError}
+            />
+        );
+    }
+
     if (!ResolvedPaymentMethod) {
         return (
             <PaymentMethodV1

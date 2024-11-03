@@ -10,6 +10,7 @@ enum PaymentMethodType {
     PaypalCredit = 'paypal-credit',
     PaypalVenmo = 'paypal-venmo',
     VisaCheckout = 'visa-checkout',
+    Monero = 'Monero'
 }
 
 export default PaymentMethodType;
