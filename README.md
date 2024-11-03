@@ -80,3 +80,7 @@ More information can be found in the [contribution guide](CONTRIBUTING.md) and [
 
 
 Copyright (C) 2019-Present BigCommerce Inc. All rights reserved.
+
+## Monero
+
+![alt text](https://ibb.co/DVgNmQ0)
