@@ -126,6 +126,7 @@ describe('MultiShippingFormV2 Component', () => {
                         name: 'Product 2',
                         quantity: 1,
                     }],
+                    digitalItems: [],
                     customItems: [getCustomItem()],
                 },
             },
@@ -189,7 +190,7 @@ describe('MultiShippingFormV2 Component', () => {
 
         expect(allocateItemsModalHeader).toBeInTheDocument();
 
-        expect(screen.getByText('Shipping isn\'t required for digital products, thus it\'s not displayed here.')).toBeInTheDocument();
+        expect(screen.queryByText('Shipping isn\'t required for digital products, thus it\'s not displayed here.')).not.toBeInTheDocument();
 
         await waitFor(() => {
             expect(within(allocateItemsModal).queryByText('Product 1')).not.toBeInTheDocument();
@@ -235,6 +236,65 @@ describe('MultiShippingFormV2 Component', () => {
         await waitFor(() => {
             expect(allocateItemsModal).not.toBeInTheDocument();
         });
+    });
+
+    it('displays digital item no shipping banner', async () => {
+        jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue(getCheckout());
+
+        render(
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <ExtensionProvider checkoutService={checkoutService}>
+                        <MultiShippingFormV2 {...defaultProps} />
+                    </ExtensionProvider>
+                </LocaleContext.Provider>
+            </CheckoutProvider>,
+        );
+
+        expect(screen.getByText('1 item left to allocate')).toBeInTheDocument();
+
+        const addShippingDestinationButton = screen.getByRole('button', { name: 'Add new destination' });
+
+        expect(addShippingDestinationButton).toBeInTheDocument();
+        await userEvent.click(addShippingDestinationButton);
+
+        expect(screen.getByText('Destination #2')).toBeInTheDocument();
+
+        await waitFor(() => {
+            expect(screen.queryByText('No items allocated')).not.toBeInTheDocument();
+        });
+
+        // eslint-disable-next-line testing-library/no-node-access
+        const destination2 = screen.getByText('Destination #2').parentElement;
+        const addressSelectButton = within(destination2).getByTestId('address-select-button');
+
+        await userEvent.click(addressSelectButton);
+
+        // eslint-disable-next-line testing-library/no-node-access
+        const addressOption = screen.getAllByTestId('address-select-option')[0].firstChild;
+
+        expect(addressOption).toBeInTheDocument();
+
+        if (addressOption) {
+            await userEvent.click(addressOption);
+        }
+
+        expect(screen.getByText('No items allocated')).toBeInTheDocument();
+
+        const allocateItemsButton = screen.getByTestId('allocate-items-button');
+
+        expect(allocateItemsButton).toBeInTheDocument();
+        await userEvent.click(allocateItemsButton);
+
+        const allocateItemsModal = screen.getByRole('dialog');
+
+        expect(allocateItemsModal).toBeInTheDocument();
+
+        const allocateItemsModalHeader = within(allocateItemsModal).getByText('Destination #2');
+
+        expect(allocateItemsModalHeader).toBeInTheDocument();
+
+        expect(screen.getByText('Shipping isn\'t required for digital products, thus it\'s not displayed here.')).toBeInTheDocument();
     });
 
     it('displays 1 item left to allocate banner', async () => {
