@@ -77,7 +77,7 @@ const NewConsignment = ({
         } finally {
             toggleAllocateItemsModal();
         }
-    }
+    };
 
     return (
         <div className='consignment-container'>

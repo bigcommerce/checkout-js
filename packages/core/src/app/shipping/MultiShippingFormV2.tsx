@@ -58,6 +58,7 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
     const {
         checkoutSettings: {
             enableOrderComments: shouldShowOrderComments,
+            shippingQuoteFailedMessage,
         },
     } = config;
 
@@ -91,6 +92,7 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
                     isLoading={isLoading}
                     key={consignment.id}
                     onUnhandledError={onUnhandledError}
+                    shippingQuoteFailedMessage={shippingQuoteFailedMessage}
                 />
             ))}
             {(consignments.length === 0 || isAddShippingDestination) && (

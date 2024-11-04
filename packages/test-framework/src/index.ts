@@ -1,3 +1,7 @@
 export { expect, test } from './fixture/CheckoutFixtures';
 export * from './fixture/pagePreset';
-export { CheckoutPageNodeObject } from './react-testing-library-support';
+export {
+    CheckoutPageNodeObject,
+    cartReadyForMultiShipping,
+    consignment,
+} from './react-testing-library-support';

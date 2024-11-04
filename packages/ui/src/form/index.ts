@@ -18,3 +18,4 @@ export {
 } from './LoadingSkeleton';
 export { Label } from './Label';
 export { FormFieldContainer } from './FormFieldContainer';
+export { RadioInput } from './RadioInput';

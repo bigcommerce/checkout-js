@@ -32,6 +32,7 @@ export {
     TextInput,
     TextInputIframeContainer,
     WalletButtonsContainerSkeleton,
+    RadioInput,
 } from './form';
 export {
     CreditCardIcon,
