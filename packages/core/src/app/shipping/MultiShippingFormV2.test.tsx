@@ -383,7 +383,138 @@ describe('MultiShippingFormV2 Component', () => {
         expect(screen.getByText('Destination #1')).toBeInTheDocument();
         expect(screen.getByText(getAddressContent(address))).toBeInTheDocument();
 
-        expect(screen.getByText('All items are allocated.')).toBeInTheDocument();
+        expect(screen.getByText(localeContext.language.translate('shipping.multishipping_all_items_allocated_message'))).toBeInTheDocument();
+    });
+
+    it('edits consignment line items', async () => {
+        jest.spyOn(checkoutService, 'deleteConsignment').mockResolvedValue({} as CheckoutSelectors);
+        jest.spyOn(checkoutService, 'createConsignments').mockResolvedValue({} as CheckoutSelectors);
+
+        jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
+            ...getCheckout(),
+            consignments: [{
+                ...getConsignment(),
+                lineItemIds: [
+                    getPhysicalItem().id.toString(),
+                    "2",
+                ]
+            }],
+            cart: {
+                ...getCart(),
+                lineItems: {
+                    ...getCart().lineItems,
+                    physicalItems: [{
+                        ...getPhysicalItem(),
+                        quantity: 2,
+                    },
+                    {
+                        ...getPhysicalItem(),
+                        id: '2',
+                        name: 'Product 2',
+                        quantity: 1,
+                    }],
+                },
+            },
+        });
+
+        const address = getShippingAddress();
+
+        render(
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <ExtensionProvider checkoutService={checkoutService}>
+                        <MultiShippingFormV2 {...defaultProps} />
+                    </ExtensionProvider>
+                </LocaleContext.Provider>
+            </CheckoutProvider>,
+        );
+
+        expect(screen.getByText('Destination #1')).toBeInTheDocument();
+        expect(screen.getByText(getAddressContent(address))).toBeInTheDocument();
+        expect(screen.getByText(localeContext.language.translate('shipping.multishipping_all_items_allocated_message'))).toBeInTheDocument();
+
+        const reAllocateItemsButton = screen.getByTestId('reallocate-items-button');
+
+        expect(reAllocateItemsButton).toBeInTheDocument();
+        await userEvent.click(reAllocateItemsButton);
+
+        const reAllocateItemsModal = screen.getByRole('dialog');
+
+        expect(reAllocateItemsModal).toBeInTheDocument();
+        expect(within(reAllocateItemsModal).getByText('Canvas Laundry Cart')).toBeInTheDocument();
+
+        const removeItemButton = within(reAllocateItemsModal).getByTestId(`remove-${getPhysicalItem().id.toString()}-button`);
+
+        expect(removeItemButton).toBeInTheDocument();
+
+        await userEvent.click(removeItemButton);
+
+        expect(checkoutService.createConsignments).toHaveBeenCalled();
+        expect(checkoutService.deleteConsignment).not.toHaveBeenCalled();
+    });
+
+    it('deletes consignment when deleting last consignment line item', async () => {
+        jest.spyOn(checkoutService, 'deleteConsignment').mockResolvedValue({} as CheckoutSelectors);
+
+        jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
+            ...getCheckout(),
+            consignments: [{
+                ...getConsignment(),
+                lineItemIds: [
+                    getPhysicalItem().id.toString(),
+                ]
+            }],
+            cart: {
+                ...getCart(),
+                lineItems: {
+                    ...getCart().lineItems,
+                    physicalItems: [{
+                        ...getPhysicalItem(),
+                        quantity: 2,
+                    },
+                    {
+                        ...getPhysicalItem(),
+                        id: '2',
+                        name: 'Product 2',
+                        quantity: 1,
+                    }],
+                },
+            },
+        });
+
+        const address = getShippingAddress();
+
+        render(
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <ExtensionProvider checkoutService={checkoutService}>
+                        <MultiShippingFormV2 {...defaultProps} />
+                    </ExtensionProvider>
+                </LocaleContext.Provider>
+            </CheckoutProvider>,
+        );
+
+        expect(screen.getByText('Destination #1')).toBeInTheDocument();
+        expect(screen.getByText(getAddressContent(address))).toBeInTheDocument();
+        expect(screen.getByText('1 item left to allocate')).toBeInTheDocument();
+
+        const reAllocateItemsButton = screen.getByTestId('reallocate-items-button');
+
+        expect(reAllocateItemsButton).toBeInTheDocument();
+        await userEvent.click(reAllocateItemsButton);
+
+        const reAllocateItemsModal = screen.getByRole('dialog');
+
+        expect(reAllocateItemsModal).toBeInTheDocument();
+        expect(within(reAllocateItemsModal).getByText('Canvas Laundry Cart')).toBeInTheDocument();
+
+        const removeItemButton = within(reAllocateItemsModal).getByTestId(`remove-${getPhysicalItem().id.toString()}-button`);
+
+        expect(removeItemButton).toBeInTheDocument();
+
+        await userEvent.click(removeItemButton);
+
+        expect(checkoutService.deleteConsignment).toHaveBeenCalled();
     });
 
     it('removes a consignment', async () => {

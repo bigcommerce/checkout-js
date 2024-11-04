@@ -14,7 +14,12 @@ export const getItemContent = (lineItem: MultiShippingTableItemWithType) => {
     </span>;
 };
 
-const AllocatedItemsList = ({ assignedItems, onUnassignItem }: { assignedItems: MultiShippingTableData, onUnassignItem(itemToDelete: MultiShippingTableItemWithType): Promise<void> }) => {
+interface AllocatedItemsListProps {
+    assignedItems: MultiShippingTableData;
+    onUnassignItem(itemToDelete: MultiShippingTableItemWithType): void;
+}
+
+const AllocatedItemsList = ({ assignedItems, onUnassignItem }: AllocatedItemsListProps) => {
     return (
         <div className="allocated-line-items">
             <h3>{assignedItems.shippableItemsCount > 1 ? `${assignedItems.shippableItemsCount} items` : `${assignedItems.shippableItemsCount} item`} allocated</h3>
@@ -22,7 +27,7 @@ const AllocatedItemsList = ({ assignedItems, onUnassignItem }: { assignedItems: 
                 {assignedItems.lineItems.map(item => (
                     <li key={item.id}>
                         {getItemContent(item)}
-                        <span onClick={() => onUnassignItem(item)}>
+                        <span data-test={`remove-${item.id.toString()}-button`} onClick={() => onUnassignItem(item)}>
                             <IconClose />
                         </span>
                     </li>

@@ -28,8 +28,8 @@ interface AllocateItemsModalProps {
     address: Address;
     unassignedItems: MultiShippingTableData;
     assignedItems?: MultiShippingTableData;
-    onAllocateItems(consignmentLineItems: ConsignmentLineItem[]): Promise<void>;
-    onUnassignItem?(itemToDelete: MultiShippingTableItemWithType): Promise<void>;
+    onAllocateItems(consignmentLineItems: ConsignmentLineItem[]): void;
+    onUnassignItem?(itemToDelete: MultiShippingTableItemWithType): void;
 }
 
 const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProps<AllocateItemsModalFormValues>> = ({
@@ -157,14 +157,13 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
 
 export default withLanguage(
     withFormikExtended<AllocateItemsModalProps & WithLanguageProps, AllocateItemsModalFormValues>({
-        handleSubmit: async (values, { props: { onAllocateItems }, resetForm }) => {
+        handleSubmit: (values, { props: { onAllocateItems } }) => {
             const consignmentLineItems = Object.keys(values).filter(key => values[key] > 0).map((lineItemId: string) => ({
                 itemId: lineItemId,
                 quantity: values[lineItemId],
             }));
 
-            await onAllocateItems(consignmentLineItems);
-            resetForm();
+            onAllocateItems(consignmentLineItems);
         },
         mapPropsToValues: ({ unassignedItems }) => {
             const values: AllocateItemsModalFormValues = {};

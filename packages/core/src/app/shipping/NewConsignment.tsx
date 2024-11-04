@@ -69,11 +69,13 @@ const NewConsignment = ({
                 address: selectedAddress,
                 lineItems: consignmentLineItems,
             });
-            setIsAddShippingDestination(false);
         } catch (error) {
             if (error instanceof AssignItemFailedError) {
                 onUnhandledError(error);
             }
+        } finally {
+            toggleAllocateItemsModal();
+            setIsAddShippingDestination(false);
         }
     };
 
