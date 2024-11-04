@@ -28,6 +28,7 @@ package-lock.json @bigcommerce/team-checkout @bigcommerce/team-integrations @big
 /packages/stripe-integration @bigcommerce/team-integrations
 /packages/klarna-integration @bigcommerce/team-integrations
 /packages/amazon-pay-v2-integration @bigcommerce/team-integrations
+/packages/moneris-integration @bigcommerce/team-integrations
 
 # Core
 /packages/core/payment/paymentMethod/AffirmPaymentMethod.tsx @bigcommerce/team-integrations
