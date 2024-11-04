@@ -16,8 +16,8 @@
             "country_label": "Land",
             "country_required_error": "Landet er påkrævet",
             "custom_required_error": "{label} er påkrævet",
-            "custom_min_error": "{label} skal være større end {min}",
-            "custom_max_error": "{label} skal være mindre end {max}",
+            "custom_min_error": "{label} should be no less than {min} characters",
+            "custom_max_error": "{label} should be no more than {max} characters",
             "invalid_characters_error": "{label} indeholder ugyldige tegn",
             "custom_valid_error": "{label} er ikke gyldig",
             "edit_address_action": "Rediger adresse",
@@ -57,6 +57,7 @@
             "discount_text": "Rabat",
             "downloads_action": "Gå til downloads",
             "edit_cart_action": "Rediger indkøbskurv",
+            "edit_multi_shipping_cart_message": "Nye varer vil som standard blive sendt til forsendelsesdestination nr. 1. Tildel dem igen, hvis du vil have dem sendt til andre destinationer.",
             "estimated_total_text": "Anslået samlet beløb",
             "free_text": "Gratis",
             "gift_certificate_text": "Gavekort",
@@ -81,6 +82,7 @@
             "consistency_error": "Din betaling kunne ikke behandles, fordi nogle oplysninger er ændret. Gennemgå din ordre, og prøv igen."
         },
         "common": {
+            "confirm_action": "Bekræft",
             "cancel_action": "Annuller",
             "close_action": "Luk",
             "continue_action": "Fortsæt",
@@ -512,13 +514,20 @@
             "multishipping_guest_intro": "Hvis du vil sende dine varer til flere adresser, skal du",
             "multishipping_guest_sign_in": "logge på din konto",
             "multishipping_guest_create": "eller <a href=\"{url}\" target=\"_blank\">oprette en konto</a>, før du fortsætter.",
+            "multishipping_item_to_allocate_message": "{count, plural, one{1 element tilbage at tildele} other{{count} elementer tilbage at tildele}}",
+            "multishipping_all_items_allocated_message": "Alle elementer er tildelt.",
             "ship_to_multi": "Send til flere adresser",
             "ship_to_single": "Send til en enkelt adresse",
             "shipping_heading": "Forsendelse",
             "shipping_method_label": "Forsendelsesmetode",
             "shipping_option_expired_error": "Den fragtpris, du fik oplyst, er ikke længere gyldig. Klik på OK for at se de mest opdaterede forsendelsespriser.",
             "shipping_option_expired_heading": "Din fragtpris er blevet opdateret",
-            "view_shipping_options_action": "Se andre muligheder"
+            "view_shipping_options_action": "Se andre muligheder",
+            "quantity_required_error": "Quantity is required",
+            "quantity_invalid_error": "Quantity must be a number",
+            "quantity_max_error": "Quantity cannot exceed \"Left to allocate\" amount.",
+            "quantity_min_error": "Quantity cannot be less than 0",
+            "custom_item_quantity_error": "All quantities of this custom product must be allocated to the same destination, as it was created specifically for this draft order."
         },
         "social": {
             "share_action": "Del",

@@ -16,8 +16,8 @@
             "country_label": "Land",
             "country_required_error": "Land krävs",
             "custom_required_error": "{label} måste anges",
-            "custom_min_error": "{label} ska vara större än {min}",
-            "custom_max_error": "{label} ska vara mindre än {max}",
+            "custom_min_error": "{label} får inte vara mindre än {min} tecken",
+            "custom_max_error": "{label} får inte vara mer än {max} tecken",
             "invalid_characters_error": "{label} innehåller ogiltiga tecken",
             "custom_valid_error": "{label} är inte giltig",
             "edit_address_action": "Redigera adress",
@@ -57,6 +57,7 @@
             "discount_text": "Rabatt",
             "downloads_action": "Gå till nedladdningar",
             "edit_cart_action": "Redigera kundvagn",
+            "edit_multi_shipping_cart_message": "Nya objekt skickas som standard till leveransdestination nr 1. Byt destination om du vill att de ska skickas någon annanstans.",
             "estimated_total_text": "Beräknad totalsumma",
             "free_text": "Gratis",
             "gift_certificate_text": "Presentkort",
@@ -81,6 +82,7 @@
             "consistency_error": "Din utcheckning kunde inte behandlas eftersom vissa detaljer har ändrats. Granska din beställning och försök igen."
         },
         "common": {
+            "confirm_action": "Bekräfta",
             "cancel_action": "Annullera",
             "close_action": "Stäng",
             "continue_action": "Fortsätt",
@@ -512,13 +514,20 @@
             "multishipping_guest_intro": "För att skicka dina varor till flera adresser måste du",
             "multishipping_guest_sign_in": "logga in på ditt konto",
             "multishipping_guest_create": "eller <a href=\"{url}\" target=\"_blank\">skapa ett konto</a> innan du fortsätter.",
+            "multishipping_item_to_allocate_message": "{count, plural, one{1 artikel kvar att tilldela} other{{count} artiklar kvar att tilldela}}",
+            "multishipping_all_items_allocated_message": "Alla artiklar har tilldelats.",
             "ship_to_multi": "Skicka till flera adresser",
             "ship_to_single": "Skicka till en enda adress",
             "shipping_heading": "Frakt",
             "shipping_method_label": "Fraktmetod:",
             "shipping_option_expired_error": "Fraktpriset du såg tidigare är inte längre giltigt. Klicka på OK för att se de senaste fraktpriserna.",
             "shipping_option_expired_heading": "Ditt fraktpris har uppdaterats",
-            "view_shipping_options_action": "Se andra alternativ"
+            "view_shipping_options_action": "Se andra alternativ",
+            "quantity_required_error": "Kvantitet krävs",
+            "quantity_invalid_error": "Kvantitet måste vara ett tal",
+            "quantity_max_error": "Kvantiteten får inte överstiga mängden ”Kvar att tilldela”.",
+            "quantity_min_error": "Kvantiteten får inte vara mindre än 0",
+            "custom_item_quantity_error": "Alla kvantiteter av denna specialprodukt måste tilldelas samma destination, eftersom den skapades specifikt för detta beställningsutkast."
         },
         "social": {
             "share_action": "Dela med sig",

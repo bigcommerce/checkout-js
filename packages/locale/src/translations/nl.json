@@ -16,8 +16,8 @@
             "country_label": "Land",
             "country_required_error": "Land is vereist",
             "custom_required_error": "{label} is vereist",
-            "custom_min_error": "{label} moet groter zijn dan {min}",
-            "custom_max_error": "{label} moet kleiner zijn dan {max}",
+            "custom_min_error": "{label} should be no less than {min} characters",
+            "custom_max_error": "{label} should be no more than {max} characters",
             "invalid_characters_error": "{label} bevat ongeldige tekens",
             "custom_valid_error": "{label} is niet geldig",
             "edit_address_action": "Adres bewerken",
@@ -57,6 +57,7 @@
             "discount_text": "Korting",
             "downloads_action": "Ga naar Downloads",
             "edit_cart_action": "Winkelmandje bewerken",
+            "edit_multi_shipping_cart_message": "Nieuwe artikelen worden standaard toegewezen aan verzendbestemming 1. Wijs ze opnieuw toe als je ze naar andere bestemmingen wilt laten verzenden.",
             "estimated_total_text": "Geschat totaal",
             "free_text": "Gratis",
             "gift_certificate_text": "Cadeaubon",
@@ -81,6 +82,7 @@
             "consistency_error": "Je betaling kon niet worden verwerkt omdat er gegevens zijn veranderd. Controleer je bestelling en probeer het opnieuw."
         },
         "common": {
+            "confirm_action": "Bevestigen",
             "cancel_action": "Annuleren",
             "close_action": "Sluiten",
             "continue_action": "Doorgaan",
@@ -512,13 +514,20 @@
             "multishipping_guest_intro": "Om uw artikelen naar meerdere adressen te verzenden, moet u:",
             "multishipping_guest_sign_in": "inloggen in uw account",
             "multishipping_guest_create": "of <a href=\"{url}\" target=\"_blank\">een account aanmaken</a> voordat u verder gaat.",
+            "multishipping_item_to_allocate_message": "{count, plural, one{1 item over om toe te wijzen} other{{count} items over om toe te wijzen}}",
+            "multishipping_all_items_allocated_message": "Alle artikelen zijn toegewezen.",
             "ship_to_multi": "Verzenden naar meerdere adressen",
             "ship_to_single": "Verzenden naar een enkel adres",
             "shipping_heading": "Verzending",
             "shipping_method_label": "Verzendmethode",
             "shipping_option_expired_error": "De aan u opgegeven verzendkosten zijn niet langer geldig. Klik op OK om de meest actuele verzendkosten te zien.",
             "shipping_option_expired_heading": "Uw verzendkosten zijn bijgewerkt",
-            "view_shipping_options_action": "Andere opties weergeven"
+            "view_shipping_options_action": "Andere opties weergeven",
+            "quantity_required_error": "Quantity is required",
+            "quantity_invalid_error": "Quantity must be a number",
+            "quantity_max_error": "Quantity cannot exceed \"Left to allocate\" amount.",
+            "quantity_min_error": "Quantity cannot be less than 0",
+            "custom_item_quantity_error": "All quantities of this custom product must be allocated to the same destination, as it was created specifically for this draft order."
         },
         "social": {
             "share_action": "Delen",
