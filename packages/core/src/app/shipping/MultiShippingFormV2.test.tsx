@@ -190,7 +190,7 @@ describe('MultiShippingFormV2 Component', () => {
 
         expect(allocateItemsModalHeader).toBeInTheDocument();
 
-        expect(screen.queryByText('Shipping isn\'t required for digital products, thus it\'s not displayed here.')).not.toBeInTheDocument();
+        expect(screen.queryByText(localeContext.language.translate('shipping.multishipping_digital_item_no_shipping_banner'))).not.toBeInTheDocument();
 
         await waitFor(() => {
             expect(within(allocateItemsModal).queryByText('Product 1')).not.toBeInTheDocument();
@@ -294,7 +294,7 @@ describe('MultiShippingFormV2 Component', () => {
 
         expect(allocateItemsModalHeader).toBeInTheDocument();
 
-        expect(screen.getByText('Shipping isn\'t required for digital products, thus it\'s not displayed here.')).toBeInTheDocument();
+        expect(screen.getByText(localeContext.language.translate('shipping.multishipping_digital_item_no_shipping_banner'))).toBeInTheDocument();
     });
 
     it('displays 1 item left to allocate banner', async () => {
