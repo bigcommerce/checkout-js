@@ -42,13 +42,13 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
             data: { getConsignments, getConfig },
         },
     } = useCheckout();
-    const { unassignedItems: { shippableItemsCount }, consignmentList } = useMultiShippingConsignmentItems();
+    const { unassignedItems: { lineItems: unassignedLineItems, shippableItemsCount }, consignmentList } = useMultiShippingConsignmentItems();
 
     const consignments = getConsignments() || EMPTY_ARRAY;
     const config = getConfig();
 
     const shouldDisableSubmit = useMemo(() => {
-        return isLoading || !hasSelectedShippingOptions(consignments);
+        return isLoading || !!unassignedLineItems.length || !hasSelectedShippingOptions(consignments);
     }, [isLoading, consignments]);
 
     if (!config) {

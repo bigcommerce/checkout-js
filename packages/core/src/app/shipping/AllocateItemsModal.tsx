@@ -40,15 +40,30 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
     assignedItems,
     unassignedItems,
     setValues,
+    values,
     dirty,
     submitForm,
     errors,
     onUnassignItem,
 }: AllocateItemsModalProps & FormikProps<AllocateItemsModalFormValues>) => {
 
-    const leftItemsTotal = unassignedItems.shippableItemsCount;
+    const allocatedOrSelectedItemsMessage = useMemo(() => {
+        const leftItemsTotal = unassignedItems.shippableItemsCount;
 
-    const allocationPendingMessage = <TranslatedString data={{ count: leftItemsTotal }} id="shipping.multishipping_item_to_allocate_message" />;
+        if (values && dirty) {
+            const selectedItems = Object.keys(values).reduce((acc, key) => {
+                if (values[key] > 0) {
+                    acc += values[key];
+                }
+
+                return acc;
+            }, 0);
+
+            return <TranslatedString data={{ count: `${selectedItems}/${leftItemsTotal}` }} id="shipping.multishipping_items_selected_message" />;
+        }
+
+        return <TranslatedString data={{ count: leftItemsTotal }} id="shipping.multishipping_item_to_allocate_message" />;
+    }, [values]);
 
     const handleSelectAll = () => {
         const values: AllocateItemsModalFormValues = {};
@@ -87,8 +102,8 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
 
     const modalFooter = (
         <>
-            <Button disabled={!dirty} onClick={submitForm} type="submit" variant={ButtonVariant.Primary}>{hasItemsAssigned ? 'Save' : 'Allocate'}</Button>
             <Button onClick={onRequestClose} variant={ButtonVariant.Secondary}>Cancel</Button>
+            <Button disabled={!dirty} onClick={submitForm} type="submit" variant={ButtonVariant.Primary}>{hasItemsAssigned ? 'Save' : 'Allocate'}</Button>
         </>
     );
 
@@ -125,7 +140,7 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
                 {hasUnassignedItems
                     ? <>
                         <div className="left-to-allocate-items-table-actions">
-                            <p>{allocationPendingMessage}</p>
+                            <p>{allocatedOrSelectedItemsMessage}</p>
                             <div>
                                 <a
                                     data-test="clear-all-items-button"
