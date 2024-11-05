@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.542.0](https://github.com/bigcommerce/checkout-js/compare/v1.541.0...v1.542.0) (2024-11-05)
+
+
+### Features
+
+* **checkout:** CHECKOUT-8597 Choose Multi-shipping Shipping Method ([#2080](https://github.com/bigcommerce/checkout-js/issues/2080)) ([1e6fc6a](https://github.com/bigcommerce/checkout-js/commit/1e6fc6aab985cffa2cb0a90cf1225e8e97c005f7))
+* **checkout:** CHECKOUT-8597 Improve tests ([#2092](https://github.com/bigcommerce/checkout-js/issues/2092)) ([0016fea](https://github.com/bigcommerce/checkout-js/commit/0016fea223c1870cae3a12d16b4cbfd8984ff498))
+* **checkout:** CHECKOUT-8600 Add digital item no shipping banner ([b13216f](https://github.com/bigcommerce/checkout-js/commit/b13216f16f987c5f3bb7e5da0a8eb357aeca5e46))
+* **checkout:** CHECKOUT-8777 Delete a consignment ([8088115](https://github.com/bigcommerce/checkout-js/commit/80881153c46e62a6f5397087a63961055022012b))
+* **checkout:** CHECKOUT-8790 Display detailed error when applying coupon fails on checkout ([#2075](https://github.com/bigcommerce/checkout-js/issues/2075)) ([19bd4fb](https://github.com/bigcommerce/checkout-js/commit/19bd4fbfd21b1c1e649457529dec41199dde5980))
+
 ## [1.541.0](https://github.com/bigcommerce/checkout-js/compare/v1.540.1...v1.541.0) (2024-11-04)
 
 
