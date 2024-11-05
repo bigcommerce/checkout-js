@@ -24,6 +24,7 @@ describe('Stripe Shipping Component', () => {
         defaultProps = {
             isBillingSameAsShipping: true,
             isMultiShippingMode: false,
+            isNewMultiShippingUIEnabled: false,
             cartHasChanged: false,
             step: {
                 isActive: true,

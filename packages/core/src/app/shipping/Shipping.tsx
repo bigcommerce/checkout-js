@@ -156,6 +156,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                 isInitialValueLoaded={shouldRenderWhileLoading ? !isInitializing : true}
                 isLoading={ isInitializing }
                 isMultiShippingMode={isMultiShippingMode}
+                isNewMultiShippingUIEnabled={isNewMultiShippingUIEnabled}
                 isShippingMethodLoading={ this.props.isLoading }
                 onMultiShippingChange={ this.handleMultiShippingModeSwitch }
                 onSubmit={this.handleSingleShippingSubmit}
@@ -171,6 +172,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                     <ShippingHeader
                         isGuest={isGuest}
                         isMultiShippingMode={isMultiShippingMode}
+                        isNewMultiShippingUIEnabled={isNewMultiShippingUIEnabled}
                         onMultiShippingChange={this.handleMultiShippingModeSwitch}
                         shouldShowMultiShipping={shouldShowMultiShipping}
                     />
@@ -201,9 +203,11 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         const {
             consignments,
             isMultiShippingMode,
+            isNewMultiShippingUIEnabled,
             onToggleMultiShipping = noop,
             onUnhandledError = noop,
             updateShippingAddress,
+            deleteConsignments,
         } = this.props;
 
         if (isMultiShippingMode && consignments.length > 1) {
@@ -212,6 +216,18 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             try {
                 // Collapse all consignments into one
                 await updateShippingAddress(consignments[0].shippingAddress);
+            } catch (error) {
+                onUnhandledError(error);
+            } finally {
+                this.setState({ isInitializing: false });
+            }
+        }
+
+        if (!isMultiShippingMode && isNewMultiShippingUIEnabled) {
+            this.setState({ isInitializing: true });
+
+            try {
+                await deleteConsignments();
             } catch (error) {
                 onUnhandledError(error);
             } finally {
