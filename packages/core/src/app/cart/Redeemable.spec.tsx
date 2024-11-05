@@ -24,7 +24,13 @@ describe('CartSummary Component', () => {
         errors: [{ code: 'min_purchase' }],
     } as RequestError;
     const appliedError = {
+        errors: [{ code: '', message: 'Specific error message'}],
+    } as RequestError;
+    const appliedErrorWithoutMessage = {
         errors: [{}],
+    } as RequestError;
+    const appliedErrorWitEmptyStringMessage = {
+        errors: [{code: '', message: ''}],
     } as RequestError;
 
     const RedeemableTestComponent = (props: RedeemableProps) => (
@@ -86,6 +92,52 @@ describe('CartSummary Component', () => {
         });
     });
 
+    describe('when coupon code is not collapsed When there is applied error without error message', () => {
+        beforeEach(() => {
+            component = mount(
+              <RedeemableTestComponent
+                appliedRedeemableError={appliedErrorWithoutMessage}
+                applyCoupon={applyCoupon}
+                applyGiftCertificate={applyGiftCertificate}
+                clearError={clearError}
+                isApplyingRedeemable={true}
+                onRemovedCoupon={onRemovedCoupon}
+                onRemovedGiftCertificate={onRemovedGiftCertificate}
+                shouldCollapseCouponCode={false}
+              />,
+            );
+        });
+
+        it('renders the generic coupon invalid error', () => {
+            expect(component.find(Alert).find(TranslatedString).prop('id')).toBe(
+              'redeemable.code_invalid_error',
+            );
+        });
+    });
+
+    describe('when coupon code is not collapsed When there is applied error with empty error message', () => {
+        beforeEach(() => {
+            component = mount(
+              <RedeemableTestComponent
+                appliedRedeemableError={appliedErrorWitEmptyStringMessage}
+                applyCoupon={applyCoupon}
+                applyGiftCertificate={applyGiftCertificate}
+                clearError={clearError}
+                isApplyingRedeemable={true}
+                onRemovedCoupon={onRemovedCoupon}
+                onRemovedGiftCertificate={onRemovedGiftCertificate}
+                shouldCollapseCouponCode={false}
+              />,
+            );
+        });
+
+        it('renders the generic coupon invalid error', () => {
+            expect(component.find(Alert).find(TranslatedString).prop('id')).toBe(
+              'redeemable.code_invalid_error',
+            );
+        });
+    });
+
     describe('when coupon code is collapsed', () => {
         beforeEach(() => {
             component = mount(
@@ -115,9 +167,7 @@ describe('CartSummary Component', () => {
 
             it('renders error', () => {
                 expect(component.find(Alert)).toHaveLength(1);
-                expect(component.find(Alert).text()).toEqual(
-                    localeContext.language.translate('redeemable.code_invalid_error'),
-                );
+                expect(component.find(Alert).text()).toBe('Specific error message');
             });
 
             it('renders redeemable form', () => {
@@ -182,6 +232,68 @@ describe('CartSummary Component', () => {
 
                     expect(applyGiftCertificate).toHaveBeenCalledWith('foo');
                 });
+            });
+        });
+    });
+
+    describe('when coupon code is collapsed When there is applied error without error message', () => {
+        beforeEach(() => {
+            component = mount(
+              <RedeemableTestComponent
+                appliedRedeemableError={appliedErrorWithoutMessage}
+                applyCoupon={applyCoupon}
+                applyGiftCertificate={applyGiftCertificate}
+                clearError={clearError}
+                onRemovedCoupon={onRemovedCoupon}
+                onRemovedGiftCertificate={onRemovedGiftCertificate}
+                shouldCollapseCouponCode={true}
+              />,
+            );
+        });
+
+        it('renders redeemable toggle link', () => {
+            expect(component.find('[data-test="redeemable-label"]')).toHaveLength(1);
+            expect(component.find('.redeemable-entry')).toHaveLength(0);
+        });
+
+        describe('when redeemable is clicked', () => {
+            beforeEach(async () => {
+                component.find('[data-test="redeemable-label"]').simulate('click');
+
+                await new Promise((resolve) => process.nextTick(resolve));
+            });
+
+            it('renders error', () => {
+                expect(component.find(Alert)).toHaveLength(1);
+                expect(component.find(Alert).text()).toEqual(
+                  localeContext.language.translate('redeemable.code_invalid_error'),
+                );
+            });
+
+            it('renders redeemable form', () => {
+                expect(component.find('.redeemable-entry')).toHaveLength(1);
+
+                const input = component.find('[data-test="redeemableEntry-input"]');
+
+                expect(input).toHaveLength(1);
+
+                const submit = component.find('[data-test="redeemableEntry-submit"]');
+
+                expect(submit).toHaveLength(1);
+                expect(submit.hasClass('is-loading')).toBe(false);
+                expect(submit.prop('disabled')).toBeFalsy();
+            });
+
+            it('renders form error when button is clicked', async () => {
+                component.find('[data-test="redeemableEntry-submit"]').simulate('click');
+
+                await new Promise((resolve) => process.nextTick(resolve));
+
+                component.update();
+
+                expect(
+                  component.find('[data-test="redeemable-code-field-error-message"]'),
+                ).toHaveLength(1);
             });
         });
     });
