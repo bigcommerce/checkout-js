@@ -185,12 +185,12 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         isInitialValueLoaded={shouldRenderWhileLoading ? !isInitializing : true}
                         isMultiShippingMode={isMultiShippingMode}
                         isNewMultiShippingUIEnabled={isNewMultiShippingUIEnabled}
-                        validateGoogleMapAutoCompleteMaxLength={validateGoogleMapAutoCompleteMaxLength}
                         onMultiShippingSubmit={this.handleMultiShippingSubmit}
                         onSingleShippingSubmit={this.handleSingleShippingSubmit}
                         onUseNewAddress={this.handleUseNewAddress}
                         shouldShowSaveAddress={!isGuest}
                         updateAddress={updateShippingAddress}
+                        validateGoogleMapAutoCompleteMaxLength={validateGoogleMapAutoCompleteMaxLength}
                     />
                 </div>
             </AddressFormSkeleton>
@@ -362,6 +362,7 @@ export function mapToShippingProps({
             isLoadingShippingCountries,
             isUpdatingBillingAddress,
             isUpdatingCheckout,
+            isDeletingConsignment,
         },
     } = checkoutState;
 
@@ -393,7 +394,8 @@ export function mapToShippingProps({
         isCreatingConsignments() ||
         isUpdatingBillingAddress() ||
         isUpdatingCheckout() ||
-        isCreatingCustomerAddress();
+        isCreatingCustomerAddress() ||
+        isDeletingConsignment();
     const shouldShowMultiShipping =
         hasMultiShippingEnabled && !methodId && shippableItemsCount > 1;
     const isNewMultiShippingUIEnabled =

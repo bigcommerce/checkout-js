@@ -1,9 +1,15 @@
 import React, { FunctionComponent } from 'react';
 
+import { preventDefault } from "@bigcommerce/checkout/dom-utils";
+import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
+
+import { IconClose, IconSize } from "../ui/icon";
+
 import ConsignmentAddressSelector from './ConsignmentAddressSelector';
 import ConsignmentLineItem from './ConsignmentLineItem';
 import { MultiShippingConsignmentData } from './MultishippingV2Type';
 import { MultiShippingOptionsV2 } from './shippingOption/MultiShippingOptionsV2';
+
 
 export interface ConsignmentListItemProps {
     consignment: MultiShippingConsignmentData;
@@ -24,9 +30,26 @@ const ConsignmentListItem: FunctionComponent<ConsignmentListItemProps> = ({
     shippingQuoteFailedMessage,
     onUnhandledError,
 }: ConsignmentListItemProps) => {
+
+    const { checkoutService: { deleteConsignment } } = useCheckout();
+
+    const handleClose = async () => {
+        await deleteConsignment(consignment.id);
+    }
+
     return (
-        <div className="consignment-container">
-            <h3 className="consignment-header">Destination #{consignmentNumber}</h3>
+        <div className='consignment-container'>
+            <div className='consignment-header'>
+                <h3>Destination #{consignmentNumber}</h3>
+                    <a
+                        className="delete-consignment"
+                        data-test="delete-consignment-button"
+                        href="#"
+                        onClick={preventDefault(handleClose)}
+                    >
+                        <IconClose size={IconSize.Small}/>
+                    </a>
+            </div>
             <ConsignmentAddressSelector
                 consignment={consignment}
                 countriesWithAutocomplete={countriesWithAutocomplete}
