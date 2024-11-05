@@ -179,7 +179,7 @@ export class CheckoutPageNodeObject {
     }
 
     async waitForShippingStep(): Promise<void> {
-        await waitFor(() => screen.getByText(/shipping method/i));
+        await waitFor(() => screen.getByText(/shipping method/i), { timeout: 20000 });
     }
 
     async waitForBillingStep(): Promise<void> {

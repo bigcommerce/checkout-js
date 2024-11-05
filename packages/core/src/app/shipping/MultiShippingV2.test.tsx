@@ -108,7 +108,7 @@ describe('Multi-shipping V2', () => {
 
         render(<CheckoutTest {...defaultProps} />);
 
-        // await checkout.waitForShippingStep();
+        await checkout.waitForShippingStep();
 
         checkout.updateCheckout('post', '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments', {
             ...cartReadyForMultiShipping,
