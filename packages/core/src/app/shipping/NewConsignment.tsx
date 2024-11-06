@@ -69,19 +69,21 @@ const NewConsignment = ({
                 address: selectedAddress,
                 lineItems: consignmentLineItems,
             });
-            setIsAddShippingDestination(false);
         } catch (error) {
             if (error instanceof AssignItemFailedError) {
                 onUnhandledError(error);
             }
         } finally {
             toggleAllocateItemsModal();
+            setIsAddShippingDestination(false);
         }
     };
 
     return (
         <div className='consignment-container'>
-            <h3 className='consignment-header'>Destination #{consignmentNumber}</h3>
+            <div className='consignment-header'>
+                <h3>Destination #{consignmentNumber}</h3>
+            </div>
             <ConsignmentAddressSelector
                 countriesWithAutocomplete={countriesWithAutocomplete}
                 defaultCountryCode={defaultCountryCode}

@@ -13,6 +13,7 @@ import { Button } from "../ui/button";
 import { Form } from "../ui/form";
 import { Modal, ModalHeader } from "../ui/modal";
 
+import AllocatedItemsList from "./AllocatedItemsList";
 import LeftToAllocateItemsTable from "./LeftToAllocateItemsTable";
 import { LineItemType, MultiShippingTableData, MultiShippingTableItemWithType } from "./MultishippingV2Type";
 
@@ -26,7 +27,9 @@ interface AllocateItemsModalProps {
     onRequestClose?(): void;
     address: Address;
     unassignedItems: MultiShippingTableData;
+    assignedItems?: MultiShippingTableData;
     onAllocateItems(consignmentLineItems: ConsignmentLineItem[]): void;
+    onUnassignItem?(itemToDelete: MultiShippingTableItemWithType): void;
 }
 
 const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProps<AllocateItemsModalFormValues>> = ({
@@ -34,16 +37,33 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
     isOpen,
     onRequestClose,
     address,
+    assignedItems,
     unassignedItems,
     setValues,
+    values,
     dirty,
     submitForm,
     errors,
+    onUnassignItem,
 }: AllocateItemsModalProps & FormikProps<AllocateItemsModalFormValues>) => {
 
-    const leftItemsTotal = unassignedItems.shippableItemsCount;
+    const allocatedOrSelectedItemsMessage = useMemo(() => {
+        const leftItemsTotal = unassignedItems.shippableItemsCount;
 
-    const allocationPendingMessage = <TranslatedString data={{ count: leftItemsTotal }} id="shipping.multishipping_item_to_allocate_message" />;
+        if (values && dirty) {
+            const selectedItems = Object.keys(values).reduce((acc, key) => {
+                if (values[key] > 0) {
+                    acc += values[key];
+                }
+
+                return acc;
+            }, 0);
+
+            return <TranslatedString data={{ count: `${selectedItems}/${leftItemsTotal}` }} id="shipping.multishipping_items_selected_message" />;
+        }
+
+        return <TranslatedString data={{ count: leftItemsTotal }} id="shipping.multishipping_item_to_allocate_message" />;
+    }, [values]);
 
     const handleSelectAll = () => {
         const values: AllocateItemsModalFormValues = {};
@@ -77,10 +97,13 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
         }, []);
     }, [errors]);
 
+    const hasItemsAssigned = !!assignedItems && assignedItems.lineItems.length > 0 && !!onUnassignItem;
+    const hasUnassignedItems = !!unassignedItems && unassignedItems.lineItems.length > 0;
+
     const modalFooter = (
         <>
-            <Button disabled={!dirty} onClick={submitForm} type="submit" variant={ButtonVariant.Primary}>Allocate</Button>
             <Button onClick={onRequestClose} variant={ButtonVariant.Secondary}>Cancel</Button>
+            <Button disabled={!dirty} onClick={submitForm} type="submit" variant={ButtonVariant.Primary}>{hasItemsAssigned ? 'Save' : 'Allocate'}</Button>
         </>
     );
 
@@ -111,10 +134,13 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
                                 <TranslatedString id="shipping.multishipping_digital_item_no_shipping_banner" />
                                 </Alert>
                 )}
-                {unassignedItems.lineItems.length
+                {hasItemsAssigned && (
+                    <AllocatedItemsList assignedItems={assignedItems} onUnassignItem={onUnassignItem} />
+                )}
+                {hasUnassignedItems
                     ? <>
                         <div className="left-to-allocate-items-table-actions">
-                            <p>{allocationPendingMessage}</p>
+                            <p>{allocatedOrSelectedItemsMessage}</p>
                             <div>
                                 <a
                                     data-test="clear-all-items-button"

@@ -176,6 +176,42 @@ $allocate-items-table-image-width: 20%;
                 }
             }
         }
+
+        .allocated-line-items {
+            border: 1px solid color("greys", "light");
+            border-radius: $global-radius;
+            margin-bottom: spacing("base");
+            padding: spacing("base");
+
+            .allocated-line-items-list {
+                list-style: none;
+                margin: 0;
+
+                li {
+                    display: flex;
+                    gap: spacing("base");
+                    font-size: fontSize("smallest");
+                    line-height: lineHeight("large");
+                    .line-item-options {
+                        color: color("greys");
+                    }
+                }
+
+                li:not(:last-child) {
+                    margin-bottom: spacing("quarter");
+                }
+            }
+
+            h3 {
+                margin-bottom: spacing("base");
+                font-size: fontSize("base");
+            }
+
+            svg {
+                fill: color("greys", "dark");
+                cursor: pointer;
+            }
+        }
     }
 
     .modal-footer {
