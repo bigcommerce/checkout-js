@@ -1,0 +1,35 @@
+@import '../ui/Base';
+
+.staticMultiConsignmentContainer {
+    ul {
+        list-style: none;
+        margin: 0;
+    }
+
+    & + .staticMultiConsignmentContainer {
+        margin-top: spacing("half");
+    }
+
+    .staticMultiConsignment {
+        width: 100%;
+        border: container("border");
+        border-radius: $global-radius;
+        padding: spacing("base");
+        margin-bottom: spacing("base");
+    
+        .staticMultiConsignment-header {
+            font-size: fontSize("small");
+            margin: 0 0 spacing("base");
+        }
+
+        .staticConsignment-items {
+            border-top: container("border");
+            margin-top: spacing("half");
+            padding-top: spacing("half");
+            
+            .line-item-options {
+                color: color("greys");
+            }
+        }
+    }
+}

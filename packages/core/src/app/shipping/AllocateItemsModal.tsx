@@ -113,7 +113,7 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
             footer={modalFooter}
             header={
                 <ModalHeader>
-                    Destination #{consignmentNumber}
+                    <TranslatedString data={{ consignmentNumber }} id="shipping.multishipping_consignment_index_heading" />
                 </ModalHeader>
             }
             isOpen={isOpen}
