@@ -505,10 +505,10 @@
     "street": "1 Plymouth Street",
     "suburb": "Murray Bridge",
     "state": "SA",
-    "postcode": "5253"
+    "postcode": "5253",
     "phone": "08 8531 1550",
     "latitude": -35.1271743,
-    "longitude": 139.2534009,
+    "longitude": 139.2534009
   },
   {
     "company": "Roof Racks Galore Adelaide",
@@ -518,7 +518,7 @@
     "postcode": "5000",
     "phone": "08 8211 7600",
     "latitude": -34.9347535,
-    "longitude": 138.5989839,
+    "longitude": 138.5989839
   },
   {
     "company": "TJM Hobart",
