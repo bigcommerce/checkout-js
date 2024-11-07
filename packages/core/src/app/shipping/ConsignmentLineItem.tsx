@@ -6,8 +6,8 @@ import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
 
 import { IconChevronDown, IconChevronUp } from "../ui/icon";
 
-import { getItemContent } from "./AllocatedItemsList";
 import AllocateItemsModal from "./AllocateItemsModal";
+import ConsignmentLineItemDetail from "./ConsignmentLineItemDetail";
 import { AssignItemFailedError, UnassignItemError } from "./errors";
 import { useDeallocateItem } from "./hooks/useDeallocateItem";
 import { useMultiShippingConsignmentItems } from "./hooks/useMultishippingConsignmentItems";
@@ -117,13 +117,7 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
                 </a>
             </div>
             {showItems
-                ? <ul className="consignment-line-item-list">
-                    {consignment.lineItems.map(lineItem => (
-                        <li key={lineItem.id}>
-                            {getItemContent(lineItem)}
-                        </li>
-                    ))}
-                </ul>
+                ? <ConsignmentLineItemDetail lineItems={consignment.lineItems} />
                 : null
             }       
         </div>

@@ -2,17 +2,8 @@ import React from "react";
 
 import { IconClose } from "../ui/icon";
 
+import { getItemContent } from "./ConsignmentLineItemDetail";
 import { MultiShippingTableData, MultiShippingTableItemWithType } from "./MultishippingV2Type";
-
-export const getItemContent = (lineItem: MultiShippingTableItemWithType) => {
-    return <span>
-        <strong>{`${lineItem.quantity} x `}</strong>
-        {lineItem.name}
-        {lineItem.options?.length
-            ? <span className="line-item-options">{` - ${lineItem.options.map(option => option.value).join('/ ')}`}</span>
-            : ''}
-    </span>;
-};
 
 interface AllocatedItemsListProps {
     assignedItems: MultiShippingTableData;
