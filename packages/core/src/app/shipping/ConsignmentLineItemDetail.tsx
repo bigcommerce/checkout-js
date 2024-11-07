@@ -15,7 +15,7 @@ const renderProductOptionDetails = (item: MultiShippingTableItemWithType | Physi
     return (<span className="line-item-options">{` - ${item.options.map(option => option.value).join(' / ')}`}</span>);
 }
 
-export const getItemContent = (item: MultiShippingTableItemWithType | PhysicalItem) => {
+export const renderItemContent = (item: MultiShippingTableItemWithType | PhysicalItem) => {
     return <span>
         <strong>{item.quantity} x </strong>{item.name}
         {renderProductOptionDetails(item)}
@@ -30,7 +30,7 @@ const ConsignmentLineItemDetail: FunctionComponent<ConsignmentLineItemDetailProp
         <ul className="consignment-line-item-list">
         {lineItems.map((item) => (
             <li key={item.id}>
-                {getItemContent(item)}
+                {renderItemContent(item)}
             </li>
         ))}
     </ul>

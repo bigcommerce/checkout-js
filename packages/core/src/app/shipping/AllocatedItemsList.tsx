@@ -2,7 +2,7 @@ import React from "react";
 
 import { IconClose } from "../ui/icon";
 
-import { getItemContent } from "./ConsignmentLineItemDetail";
+import { renderItemContent } from "./ConsignmentLineItemDetail";
 import { MultiShippingTableData, MultiShippingTableItemWithType } from "./MultishippingV2Type";
 
 interface AllocatedItemsListProps {
@@ -17,7 +17,7 @@ const AllocatedItemsList = ({ assignedItems, onUnassignItem }: AllocatedItemsLis
             <ul className="allocated-line-items-list">
                 {assignedItems.lineItems.map(item => (
                     <li key={item.id}>
-                        {getItemContent(item)}
+                        {renderItemContent(item)}
                         <span data-test={`remove-${item.id.toString()}-button`} onClick={() => onUnassignItem(item)}>
                             <IconClose />
                         </span>
