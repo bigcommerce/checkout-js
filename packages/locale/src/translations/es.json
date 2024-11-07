@@ -16,8 +16,8 @@
             "country_label": "País",
             "country_required_error": "El campo de país es obligatorio.",
             "custom_required_error": "El campo {label} es obligatorio",
-            "custom_min_error": "{label} debe ser mayor que {min}",
-            "custom_max_error": "{label} debe ser menor que {max}",
+            "custom_min_error": "{label} should be no less than {min} characters",
+            "custom_max_error": "{label} should be no more than {max} characters",
             "invalid_characters_error": "El campo {label} contiene caracteres no válidos",
             "custom_valid_error": "El campo {label} no es válido",
             "edit_address_action": "Editar dirección",
@@ -57,6 +57,7 @@
             "discount_text": "Descuento",
             "downloads_action": "Ir a descargas",
             "edit_cart_action": "Editar carrito",
+            "edit_multi_shipping_cart_message": "Los nuevos artículos tendrán como destino de envío predeterminado el n.º 1. Reasígnalos si quieres que se envíen a otros destinos.",
             "estimated_total_text": "Total estimado",
             "free_text": "Gratis",
             "gift_certificate_text": "Cupón de regalo",
@@ -81,6 +82,7 @@
             "consistency_error": "No se ha podido procesar tu pago porque algunos datos han cambiado. Revisa tu pedido y vuelve a intentarlo."
         },
         "common": {
+            "confirm_action": "Confirmar",
             "cancel_action": "Cancelar",
             "close_action": "Cerrar",
             "continue_action": "Continuar",
@@ -512,13 +514,20 @@
             "multishipping_guest_intro": "Para enviar sus artículos a varias direcciones, debe",
             "multishipping_guest_sign_in": "iniciar sesión en su cuenta",
             "multishipping_guest_create": "o <a href=\"{url}\" target=\"_blank\">crear una cuenta</a> antes de continuar.",
+            "multishipping_item_to_allocate_message": "{count, plural, one{1 artículo por asignar} other{{count} artículos por asignar}}",
+            "multishipping_all_items_allocated_message": "Todos los artículos están asignados.",
             "ship_to_multi": "Enviar a varias direcciones",
             "ship_to_single": "Enviar a una sola dirección",
             "shipping_heading": "Envío",
             "shipping_method_label": "Método de envío",
             "shipping_option_expired_error": "El precio de envío que se le presupuestó ya no es válido. Haga clic en Aceptar para ver los precios de envío más recientes.",
             "shipping_option_expired_heading": "El precio de envío se ha actualizado",
-            "view_shipping_options_action": "Ver otras opciones"
+            "view_shipping_options_action": "Ver otras opciones",
+            "quantity_required_error": "Quantity is required",
+            "quantity_invalid_error": "Quantity must be a number",
+            "quantity_max_error": "Quantity cannot exceed \"Left to allocate\" amount.",
+            "quantity_min_error": "Quantity cannot be less than 0",
+            "custom_item_quantity_error": "All quantities of this custom product must be allocated to the same destination, as it was created specifically for this draft order."
         },
         "social": {
             "share_action": "Compartir",

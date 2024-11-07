@@ -16,8 +16,8 @@
             "country_label": "国家",
             "country_required_error": "国は必須項目です",
             "custom_required_error": "{label}が必要です",
-            "custom_min_error": "{label}は{min}文字以上でなければなりません",
-            "custom_max_error": "{label}は{max}文字以下でなければなりません",
+            "custom_min_error": "{label} should be no less than {min} characters",
+            "custom_max_error": "{label} should be no more than {max} characters",
             "invalid_characters_error": "{label}に無効な文字が含まれています",
             "custom_valid_error": "{label}は無効です",
             "edit_address_action": "アドレスを編集",
@@ -57,6 +57,7 @@
             "discount_text": "割引",
             "downloads_action": "ダウンロードに移動",
             "edit_cart_action": "カートを編集",
+            "edit_multi_shipping_cart_message": "New items will default to Shipping Destination #1. Reallocate if you want them shipped to other destinations.",
             "estimated_total_text": "見積合計",
             "free_text": "無料",
             "gift_certificate_text": "商品券",
@@ -81,6 +82,7 @@
             "consistency_error": "一部の詳細が変更されたため、支払を処理できませんでした。ご注文内容をご確認の上、再度お試しください。"
         },
         "common": {
+            "confirm_action": "確認",
             "cancel_action": "キャンセル",
             "close_action": "閉じる",
             "continue_action": "続ける",
@@ -512,13 +514,20 @@
             "multishipping_guest_intro": "複数の住所に商品を配送するには",
             "multishipping_guest_sign_in": "アカウントにサインインする",
             "multishipping_guest_create": "または<a href=\"{url}\" target=\"_blank\">アカウントを作成</a>してください。",
+            "multishipping_item_to_allocate_message": "{count, plural, one{1 item left to allocate} other{{count} items left to allocate}}",
+            "multishipping_all_items_allocated_message": "All items are allocated.",
             "ship_to_multi": "複数の住所に配送する",
             "ship_to_single": "一か所の住所に配送する",
             "shipping_heading": "配送",
             "shipping_method_label": "配送方法",
             "shipping_option_expired_error": "提示された送料は有効ではなくなりました。[OK]をクリックすると、最新の送料が表示されます。",
             "shipping_option_expired_heading": "送料が更新されました",
-            "view_shipping_options_action": "その他のオプションを参照"
+            "view_shipping_options_action": "その他のオプションを参照",
+            "quantity_required_error": "Quantity is required",
+            "quantity_invalid_error": "Quantity must be a number",
+            "quantity_max_error": "Quantity cannot exceed \"Left to allocate\" amount.",
+            "quantity_min_error": "Quantity cannot be less than 0",
+            "custom_item_quantity_error": "All quantities of this custom product must be allocated to the same destination, as it was created specifically for this draft order."
         },
         "social": {
             "share_action": "共有",
