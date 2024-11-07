@@ -150,13 +150,15 @@ class OrderConfirmation extends Component<
 
                 const couponDiscount = order?.coupons?.reduce((partialSum, coupon) => partialSum + coupon.discountedAmount, 0);
                 const discountTotal = (order?.discountAmount || 0) + (couponDiscount || 0);
+
+                const subtotalAfterDiscount = (order?.baseAmount || 0) - discountTotal;
                 
                 const expertVoiceData: ExpertVoiceData = {
                     orderId: orderId.toString(),
                     orderDiscountCode: order?.coupons?.map(({code}) => code).join(',') || '',
                     orderDiscount: discountTotal?.toFixed(2) || '',
                     orderShipping: order?.shippingCostTotal?.toFixed(2) || '', // info.shippingCostBeforeDiscount also exists, but I assume we want after discount
-                    orderSubtotal: order?.baseAmount?.toFixed(2) || '',
+                    orderSubtotal: subtotalAfterDiscount.toFixed(2) || '',
                     orderTax: order?.taxTotal?.toFixed(2) || '',
                     orderCurrency: order?.currency?.code || 'USD', // currency code
                     orderTotal: order?.orderAmount?.toFixed(2) || '',
