@@ -22,6 +22,7 @@ export interface OrderSummaryProps {
     shopperCurrency: ShopperCurrency;
     additionalLineItems?: ReactNode;
     hasSubscription?: boolean;
+    cartSummary?: boolean;
 }
 
 const SavingBanner: FunctionComponent<any> = props => {
@@ -67,6 +68,7 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
     storeCurrency,
     shopperCurrency,
     headerLink,
+    cartSummary = false,
     additionalLineItems,
     lineItems,
     total,
@@ -80,7 +82,7 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
         <article className="cart optimizedCheckout-orderSummary" data-test="cart">
             <OrderSummaryHeader>
                 {headerLink}
-                <div className={`payments-method ${!hasSubscription ? 'full-method' : ''}`}>
+                {cartSummary && <div className={`payments-method ${!hasSubscription ? 'full-method' : ''}`}>
                     <div className="payment-icon visacard-icon" />
                     <div className="payment-icon diners-icon" />
                     <div className="payment-icon mastercard-icon" />
@@ -91,7 +93,7 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
                         (<><div className="payment-icon paypal-icon" /><div className="payment-icon gpay-icon" /></>)
                     }
 
-                </div>
+                </div>}
             </OrderSummaryHeader>
 
             <OrderSummarySection>
