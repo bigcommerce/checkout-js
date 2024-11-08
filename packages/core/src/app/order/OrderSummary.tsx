@@ -78,22 +78,21 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
 
     return (
         <article className="cart optimizedCheckout-orderSummary" data-test="cart">
-            <OrderSummaryHeader>{headerLink}</OrderSummaryHeader>
-
-            <div className="cart-section optimizedCheckout-orderSummary-cartSection">
+            <OrderSummaryHeader>
+                {headerLink}
                 <div className={`payments-method ${!hasSubscription ? 'full-method' : ''}`}>
-                    <div className="payment-icon visacard-icon"></div>
-                    <div className="payment-icon diners-icon"></div>
-                    <div className="payment-icon mastercard-icon"></div>
-                    <div className="payment-icon amex-icon"></div>
-                    <div className="payment-icon discover-icon"></div>
-                    <div className="payment-icon jcb-icon"></div>
+                    <div className="payment-icon visacard-icon" />
+                    <div className="payment-icon diners-icon" />
+                    <div className="payment-icon mastercard-icon" />
+                    <div className="payment-icon amex-icon" />
+                    <div className="payment-icon discover-icon" />
+                    <div className="payment-icon jcb-icon" />
                     {   !hasSubscription &&
-                        (<><div className="payment-icon paypal-icon"></div><div className="payment-icon gpay-icon"></div></>)
+                        (<><div className="payment-icon paypal-icon" /><div className="payment-icon gpay-icon" /></>)
                     }
 
                 </div>
-            </div>
+            </OrderSummaryHeader>
 
             <OrderSummarySection>
                 <OrderSummaryItems displayLineItemsCount currency={storeCurrency} items={nonBundledLineItems} />
