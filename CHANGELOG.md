@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.545.0](https://github.com/bigcommerce/checkout-js/compare/v1.544.0...v1.545.0) (2024-11-08)
+
+
+### Features
+
+* **payment:** PI-1564 Refactor the existing `Moneris` components in … ([#2082](https://github.com/bigcommerce/checkout-js/issues/2082)) ([2781bb2](https://github.com/bigcommerce/checkout-js/commit/2781bb2dda1dd9e87ae81f5733472720502255af))
+
 ## [1.544.0](https://github.com/bigcommerce/checkout-js/compare/v1.543.0...v1.544.0) (2024-11-07)
 
 
