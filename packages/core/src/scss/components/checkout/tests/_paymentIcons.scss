@@ -72,10 +72,27 @@
     padding: 0.5em;
 }
 
+.cart-header {
+    display: flex !important;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cart-title {
+    display: block;
+}
+
 .payments-method {
     display: flex;
+    width: 100%;
     flex-wrap: nowrap;
     gap: 8px;
+    padding-top: calc(1.5rem + 12px);
+
+    @include breakpoint("large") {
+        padding-top: 1rem;
+    }
 
     &.full-method {
         align-items: center;

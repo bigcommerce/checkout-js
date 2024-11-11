@@ -28,6 +28,7 @@ const CartSummary: FunctionComponent<WithCheckoutCartSummaryProps> = ({ cartUrl,
         ...props,
         cartUrl,
         headerLink,
+        cartSummary: true
     });
 };
 
