@@ -21,6 +21,7 @@ export interface OrderSummaryDrawerProps {
     lineItems: LineItemMap;
     total: number;
     headerLink: ReactNode;
+    cartSummary?: boolean;
     isUpdatedCartSummayModal?: boolean,
     storeCurrency: StoreCurrency;
     shopperCurrency: ShopperCurrencyType;
@@ -31,6 +32,7 @@ const OrderSummaryDrawer: FunctionComponent<
     OrderSummaryDrawerProps & OrderSummarySubtotalsProps
 > = ({
     additionalLineItems,
+    cartSummary,
     coupons,
     discountAmount,
     giftCertificates,
@@ -56,6 +58,7 @@ const OrderSummaryDrawer: FunctionComponent<
             <OrderSummaryModal
                 {...props}
                 additionalLineItems={additionalLineItems}
+                cartSummary={cartSummary}
                 coupons={coupons}
                 discountAmount={discountAmount}
                 fees={fees}
@@ -79,6 +82,7 @@ const OrderSummaryDrawer: FunctionComponent<
         ),
         [
             additionalLineItems,
+            cartSummary,
             coupons,
             discountAmount,
             giftCertificates,

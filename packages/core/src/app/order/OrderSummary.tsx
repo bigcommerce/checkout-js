@@ -27,6 +27,7 @@ export interface OrderSummaryProps {
     shopperCurrency: ShopperCurrency;
     additionalLineItems?: ReactNode;
     hasSubscription?: boolean;
+    cartSummary?: boolean;
 }
 
 const getBasePrice = async (items: any[], currencyCode: string, callback: (arg0: number) => void) => {
@@ -112,6 +113,7 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
     storeCurrency,
     shopperCurrency,
     headerLink,
+    cartSummary = false,
     additionalLineItems,
     lineItems,
     total,
@@ -123,7 +125,21 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
 
     return (
         <article className="cart optimizedCheckout-orderSummary" data-test="cart">
-            <OrderSummaryHeader>{headerLink}</OrderSummaryHeader>
+            <OrderSummaryHeader>
+                {headerLink}
+                {cartSummary && <div className={`payments-method ${!hasSubscription ? 'full-method' : ''}`}>
+                    <div className="payment-icon visacard-icon" />
+                    <div className="payment-icon diners-icon" />
+                    <div className="payment-icon mastercard-icon" />
+                    <div className="payment-icon amex-icon" />
+                    <div className="payment-icon discover-icon" />
+                    <div className="payment-icon jcb-icon" />
+                    {   !hasSubscription &&
+                        (<><div className="payment-icon paypal-icon" /><div className="payment-icon gpay-icon" /></>)
+                    }
+
+                </div>}
+            </OrderSummaryHeader>
 
             <OrderSummarySection>
                 <OrderSummaryItems displayLineItemsCount currency={storeCurrency} items={nonBundledLineItems} />

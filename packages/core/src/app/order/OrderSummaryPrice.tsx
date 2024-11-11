@@ -114,7 +114,7 @@ const ConfidenceBlock: FunctionComponent<any> = props => {
                                 <li>Scheduled shipping, direct to you</li>
                             </ul></>)
                     }
-                    <div className={`payments-method ${!hasSubscription ? 'full-method' : ''}`}>
+                    {/* <div className={`payments-method ${!hasSubscription ? 'full-method' : ''}`}>
                         <div className="payment-icon visacard-icon"></div>
                         <div className="payment-icon diners-icon"></div>
                         <div className="payment-icon mastercard-icon"></div>
@@ -125,7 +125,7 @@ const ConfidenceBlock: FunctionComponent<any> = props => {
                             (<><div className="payment-icon paypal-icon"></div><div className="payment-icon gpay-icon"></div></>)
                         }
 
-                    </div>
+                    </div> */}
                 </div>
             </>
     );
