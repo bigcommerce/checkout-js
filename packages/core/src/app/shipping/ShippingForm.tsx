@@ -17,7 +17,6 @@ import {
 import React from 'react';
 
 import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 import MultiShippingForm, { MultiShippingFormValues } from './MultiShippingForm';
 import MultiShippingFormV2 from './MultiShippingFormV2';
@@ -102,11 +101,6 @@ const ShippingForm = ({
     isNewMultiShippingUIEnabled,
     validateGoogleMapAutoCompleteMaxLength,
 }: ShippingFormProps & WithLanguageProps) => {
-    const { isPayPalFastlaneEnabled, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
-
-    const shippingAddresses = isPayPalFastlaneEnabled && isGuest
-        ? paypalFastlaneAddresses
-        : addresses;
 
     const getMultiShippingForm = () => {
         if (isGuest) {
@@ -127,7 +121,7 @@ const ShippingForm = ({
         }
 
         return <MultiShippingForm
-            addresses={shippingAddresses}
+            addresses={addresses}
             assignItem={assignItem}
             cart={cart}
             cartHasChanged={cartHasChanged}
@@ -153,7 +147,7 @@ const ShippingForm = ({
         getMultiShippingForm()
     ) : (
         <SingleShippingForm
-            addresses={shippingAddresses}
+            addresses={addresses}
             cartHasChanged={cartHasChanged}
             consignments={consignments}
             countries={countries}
