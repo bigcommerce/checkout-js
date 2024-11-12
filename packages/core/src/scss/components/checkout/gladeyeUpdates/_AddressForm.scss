@@ -4,19 +4,23 @@ body {
     .dynamic-form-field--lastName,
     .dynamic-form-field--phone,
     .dynamic-form-field--city,
-    .dynamic-form-field--addressLine2 {
-      @include breakpoint('small') {
-        flex-basis: 50%;
-      }
-    }
-
+    .dynamic-form-field--addressLine2,
     .dynamic-form-field--province,
     .dynamic-form-field--provinceCode,
     .dynamic-form-field--postCode,
     .dynamic-form-field--countryCode {
       @include breakpoint('small') {
-        flex-basis: 33.33%;
+        flex-basis: 50%;
       }
     }
+
+    // .dynamic-form-field--province,
+    // .dynamic-form-field--provinceCode,
+    // .dynamic-form-field--postCode,
+    // .dynamic-form-field--countryCode {
+    //   @include breakpoint('small') {
+    //     flex-basis: 33.33%;
+    //   }
+    // }
   }
 }
