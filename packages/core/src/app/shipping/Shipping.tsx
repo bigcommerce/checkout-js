@@ -210,29 +210,19 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             deleteConsignments,
         } = this.props;
 
-        if (isMultiShippingMode && consignments.length > 1) {
+        try {
             this.setState({ isInitializing: true });
 
-            try {
+            if (isMultiShippingMode && consignments.length > 1) {
                 // Collapse all consignments into one
                 await updateShippingAddress(consignments[0].shippingAddress);
-            } catch (error) {
-                onUnhandledError(error);
-            } finally {
-                this.setState({ isInitializing: false });
-            }
-        }
-
-        if (!isMultiShippingMode && isNewMultiShippingUIEnabled) {
-            this.setState({ isInitializing: true });
-
-            try {
+            } else if (!isMultiShippingMode && isNewMultiShippingUIEnabled) {
                 await deleteConsignments();
-            } catch (error) {
-                onUnhandledError(error);
-            } finally {
-                this.setState({ isInitializing: false });
             }
+        } catch (error) {
+            onUnhandledError(error);
+        } finally {
+            this.setState({ isInitializing: false });
         }
 
         onToggleMultiShipping();

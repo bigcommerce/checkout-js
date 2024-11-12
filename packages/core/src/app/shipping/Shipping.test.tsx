@@ -140,7 +140,7 @@ describe('Shipping component', () => {
             });
         });
 
-        it.only('opens confirmation dialog on clicking the link and calls onToggleMultiShipping when confirm is clicked', async () => {
+        it('opens confirmation dialog on clicking the link and calls onToggleMultiShipping when confirm is clicked', async () => {
             render(<ComponentTest {...defaultProps} isMultiShippingMode={true} />);
 
             const shippingModeToggle = await screen.findByTestId("shipping-mode-toggle");
