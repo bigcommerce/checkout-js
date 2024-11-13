@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "appVersion": "1.545.1",
+  "appVersion": "1.545.2",
   "dynamicChunks": {
     "js": [
       "108-d39362c8.js",
@@ -27,7 +27,7 @@
     "runtime-9f785d38.js",
     "polyfill-ce2969f5.js",
     "sentry-d353dd52.js",
-    "transients-2abc3c7f.js",
+    "transients-00294e51.js",
     "vendors-596a73f4.js",
     "checkout-7563c1c0.js"
   ],
@@ -56,7 +56,7 @@
     "sentry-d353dd52.js": "sha256-TgQOUsOuhMkW8zq0np0/DfkfsFX93NBSRzfEAkhyDck= sha384-yRse4vsXBubCuYyplC5WGqEL+oLFzfb+g+lCorE5WsbpEHEiEHhUBJmOGWPhK3O/ sha512-IrLYHoWcqL0qwMvZ8Bq8xd9JoKj3IN/zSz+Va54CyD2jC3bZzKcoOLpaSWDkLQFyXYjb7VEvXceShMnFkDjfug==",
     "shipping-c8749eaa.css": "sha256-V8QqJF/yCkiNROWsh4M3/sG0OS8VzjxjgGoEn6GD0vw= sha384-/eAgWCrrHCmf1aBFGaqRdsRquM/p6N/fTTYUqp7sVxwcLN1XceWguEQgCxzAwwYP sha512-VuV2JYTHkjGQfbrXM7t3JOq0jztSNxVxPpyagzt/WuEYKI9VnJY8eG+7lSdDV4MbCX/469W3/vvX1u2tGu+GCQ==",
     "shipping-f335f404.js": "sha256-DsvQTUjLUEFnwrXXxfMtyS3H6HK0Iza6DtiwibmTfVk= sha384-1Sur6r6jPHObwx3A5UANCyQ0FgEukS5EBpoWaUeswofveJJRhCySbsOUszyWOpb5 sha512-TGVn5mFfmXke0jyZUzft9aPfuXKK/OmX6/t/9mzq2q5T8r14vmB+tArksTj7xoAbi9VfjnvfbiacrZbo/u3t1g==",
-    "transients-2abc3c7f.js": "sha256-QpOd6Q12mJLpLx083tkOA9OrutUDSyFIvtR1D0c+fcM= sha384-3ggG87n4ms4idtJj1OV6GZk1b3qgOr+7PD4Ab9XaLFv4mIKAcYyYo5BVn7gHQlLB sha512-IZUw9XKrVBkcj9IMfpX1aO6l7EUQwprFsxSuEvX3uODW3NnFghoQ7tzALdBj3kfSPKbg4xuSiWGkBLGK7JqC+A==",
+    "transients-00294e51.js": "sha256-b7ANc9bgz+5n66TV1Ru2Q/k6x7Gl/WV9ydymF8uuAt4= sha384-zc2gcEWmkzez4LIBbiHWidXDji2Ws7FR2JoKFTLwbm4TD6D+4ZXBWY21H27nZJHG sha512-eryRjoQS9WBkf2aWzanpQtc44f3CX0LVU2eizS1svOFzYO/efyWw48d4I2SKhzRfIcFO75j8yItHYiND/JeXmw==",
     "vendors-596a73f4.js": "sha256-FQcoHuq18jFsa068QDGR+qqb2VHqHaJG3YiqUv6lkKQ= sha384-tow4Pna2pjIKGPx+Lxsw9sWlNdupZJxaU/tWi8jFMFq1TtOriC6u/Zr+cbY7X8y2 sha512-qStkRC3xOA5QTjDeLtNefxIZuLBhsL9phhuTYR7bN2XKPpenE1neSfWAQ7Ft0xyo/l6Q4gWx3oUQZANSakoGLw=="
   }
 }
