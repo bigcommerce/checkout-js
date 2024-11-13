@@ -36,6 +36,7 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
     onUnhandledError,
 }: MultiShippingFormV2Props) => {
     const [isAddShippingDestination, setIsAddShippingDestination] = useState(false);
+    const [errorConsignmentNumber, setErrorConsignmentNumber] = useState<number | undefined>();
 
     const {
         checkoutState: {
@@ -47,8 +48,9 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
     const consignments = getConsignments() || EMPTY_ARRAY;
     const config = getConfig();
 
+    const isEveryConsignmentHasShippingOption = hasSelectedShippingOptions(consignments);
     const shouldDisableSubmit = useMemo(() => {
-        return isLoading || !!unassignedLineItems.length || !hasSelectedShippingOptions(consignments);
+        return isLoading || !!unassignedLineItems.length || !isEveryConsignmentHasShippingOption;
     }, [isLoading, consignments]);
 
     if (!config) {
@@ -63,8 +65,23 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
     } = config;
 
     const handleAddShippingDestination = () => {
-        setIsAddShippingDestination(true);
-    }
+        if (
+            consignments.length > 0 &&
+            !isAddShippingDestination &&
+            !isEveryConsignmentHasShippingOption
+        ) {
+            const errorConsignmentIndex = consignments.findIndex(
+                (consignment) => !consignment.selectedShippingOption,
+            );
+
+            setErrorConsignmentNumber(errorConsignmentIndex + 1);
+        } else if (isAddShippingDestination) {
+            setErrorConsignmentNumber(consignments.length + 1);
+        } else {
+            setErrorConsignmentNumber(undefined);
+            setIsAddShippingDestination(true);
+        }
+    };
 
     const hasUnassignedItems = shippableItemsCount > 0;
 
@@ -79,6 +96,9 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
             <TranslatedString id="shipping.multishipping_all_items_allocated_message" />
         </Alert>;
     }
+    const resetErrorConsignmentNumber = () => {
+        setErrorConsignmentNumber(undefined);
+    };
 
     return (
         <>
@@ -92,6 +112,7 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
                     isLoading={isLoading}
                     key={consignment.id}
                     onUnhandledError={onUnhandledError}
+                    resetErrorConsignmentNumber={resetErrorConsignmentNumber}
                     shippingQuoteFailedMessage={shippingQuoteFailedMessage}
                 />
             ))}
@@ -105,11 +126,21 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
                     setIsAddShippingDestination={setIsAddShippingDestination}
                 />)
             }
-            {hasUnassignedItems && 
+            {hasUnassignedItems &&
                 <Button className='add-consignment-button' onClick={handleAddShippingDestination} variant={ButtonVariant.Secondary}>
                     Add new destination
                 </Button>
             }
+            {Boolean(errorConsignmentNumber) && (
+                <div className="form-field--error">
+                    <span className="form-inlineMessage">
+                        <TranslatedString
+                            data={{ consignmentNumber: errorConsignmentNumber }}
+                            id="shipping.multishipping_consignment_not_completed_error"
+                        />
+                    </span>
+                </div>
+            )}
             <MultiShippingFormV2Footer
                 isLoading={isLoading}
                 shouldDisableSubmit={shouldDisableSubmit}

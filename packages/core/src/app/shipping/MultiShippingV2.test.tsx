@@ -8,6 +8,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
+import { act } from 'react-dom/test-utils';
 
 import {
     AnalyticsContextProps,
@@ -110,21 +111,61 @@ describe('Multi-shipping V2', () => {
 
         await checkout.waitForShippingStep();
 
-        checkout.updateCheckout('post', '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments', {
-            ...cartReadyForMultiShipping,
-            consignments: [
-                {
-                    ...consignment,
-                },
-            ],
+        checkout.updateCheckout(
+            'post',
+            '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments',
+            {
+                ...cartReadyForMultiShipping,
+                consignments: [
+                    {
+                        ...consignment,
+                        availableShippingOptions: undefined,
+                        selectedShippingOption: undefined,
+                    },
+                ],
+            },
+        );
+        // eslint-disable-next-line testing-library/no-unnecessary-act
+        await act(async () => {
+            await userEvent.click(screen.getByText(/Ship to multiple addresses/i));
+            await userEvent.click(screen.getByText(/Enter a new address/i));
+            await userEvent.click(screen.getByText(/789 Test Ave/i));
+            await userEvent.click(screen.getByText(/Allocate items/i));
+            await userEvent.click(screen.getByText(/Select all items left/i));
+            await userEvent.click(screen.getByRole('button', { name: 'Allocate' }));
+            await userEvent.click(
+                await screen.findByRole('button', { name: 'Add new destination' }),
+            );
         });
 
-        await userEvent.click(screen.getByText(/Ship to multiple addresses/i));
-        await userEvent.click(screen.getByText(/Enter a new address/i));
+        checkout.updateCheckout(
+            'post',
+            '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments',
+            {
+                ...cartReadyForMultiShipping,
+                consignments: [
+                    {
+                        ...consignment,
+                    },
+                ],
+            },
+        );
+
+        expect(
+            screen.getByText(
+                "Unfortunately one or more items in your cart can't be shipped to your location. Please choose a different delivery address.",
+            ),
+        ).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Please complete the address, item allocation, and method selection for Destination #1.',
+            ),
+        ).toBeInTheDocument();
+
+        await userEvent.click(
+            screen.getByText(/checkout test, 130 Pitt St, Sydney, New South Wales, AU, 2000/i),
+        );
         await userEvent.click(screen.getByText(/123 Example St/i));
-        await userEvent.click(screen.getByText(/Allocate items/i));
-        await userEvent.click(screen.getByText(/Select all items left/i));
-        await userEvent.click(screen.getByRole('button', { name: 'Allocate' }));
 
         expect(await screen.findAllByRole('radio')).toHaveLength(2);
         expect(screen.getByLabelText(/Pickup In Store/i)).toBeInTheDocument();
@@ -155,5 +196,10 @@ describe('Multi-shipping V2', () => {
             .getAttribute('value');
 
         expect(selectedShippingOptionValue2).toBe('option-id-flat-rate');
+        expect(
+            screen.queryByText(
+                'Please complete the address, item allocation, and method selection for Destination #1.',
+            ),
+        ).not.toBeInTheDocument();
     });
 });

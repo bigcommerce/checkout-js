@@ -152,9 +152,19 @@ describe('MultiShippingFormV2 Component', () => {
         const addShippingDestinationButton = screen.getByRole('button', { name: 'Add new destination' });
 
         expect(addShippingDestinationButton).toBeInTheDocument();
+
+        await userEvent.click(addShippingDestinationButton);
+
+        expect(screen.queryByText(/Please complete the address/i)).not.toBeInTheDocument();
+
         await userEvent.click(addShippingDestinationButton);
 
         expect(screen.getByText('Destination #2')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Please complete the address, item allocation, and method selection for Destination #2.',
+            ),
+        ).toBeInTheDocument();
 
         await waitFor(() => {
             expect(screen.queryByText('No items allocated')).not.toBeInTheDocument();
@@ -521,7 +531,7 @@ describe('MultiShippingFormV2 Component', () => {
         jest.spyOn(checkoutService, 'deleteConsignment').mockReturnValue(
             Promise.resolve(checkoutService.getState()),
         );
-        
+
         jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
             ...getCheckout(),
             consignments: [{

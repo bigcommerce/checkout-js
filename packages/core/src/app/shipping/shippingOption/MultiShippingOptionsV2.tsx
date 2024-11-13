@@ -12,16 +12,21 @@ interface MultiShippingOptionsV2Props {
     consignment: Consignment;
     isLoading: boolean;
     shippingQuoteFailedMessage: string;
+    resetErrorConsignmentNumber(): void;
 }
 
 export const MultiShippingOptionsV2 = ({
     consignment,
     isLoading,
+    resetErrorConsignmentNumber,
     shippingQuoteFailedMessage,
 }: MultiShippingOptionsV2Props) => {
     const { checkoutService, checkoutState } = useCheckout();
 
-    const selectShippingOption = checkoutService.selectConsignmentShippingOption;
+    const selectShippingOption = async (consignmentId: string, shippingOptionId: string) => {
+        await checkoutService.selectConsignmentShippingOption(consignmentId, shippingOptionId);
+        resetErrorConsignmentNumber();
+    };
     const isLoadingOptions = isLoadingSelector(checkoutState, isLoading)(consignment.id);
 
     return (
