@@ -24,6 +24,7 @@ export interface MultiShippingTableItemWithType extends MultiShippingTableItem {
 export interface MultiShippingTableData {
     lineItems: MultiShippingTableItemWithType[];
     hasDigitalItems: boolean;
+    hasSplitItems: boolean;
     shippableItemsCount: number;
 };
 

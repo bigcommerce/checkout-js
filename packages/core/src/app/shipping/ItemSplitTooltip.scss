@@ -1,0 +1,15 @@
+@import '../ui/Base';
+
+.item-split-tooltip {
+    .icon {
+        margin-left: spacing("quarter");
+        svg {
+            cursor: help;
+            padding-bottom: spacing("eighth");
+        }
+    }
+}
+
+.tooltip--basic {
+    border-radius: $global-radius;
+}

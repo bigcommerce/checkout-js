@@ -425,11 +425,13 @@ describe('MultiShippingFormV2 Component', () => {
                     physicalItems: [{
                         ...getPhysicalItem(),
                         quantity: 2,
+                        sku: 'sku1',
                     },
                     {
                         ...getPhysicalItem(),
                         id: '2',
                         name: 'Product 2',
+                        sku: 'sku2',
                         quantity: 1,
                     }],
                 },
@@ -461,6 +463,8 @@ describe('MultiShippingFormV2 Component', () => {
 
         expect(reAllocateItemsModal).toBeInTheDocument();
         expect(within(reAllocateItemsModal).getByText('Canvas Laundry Cart')).toBeInTheDocument();
+
+        expect(within(reAllocateItemsModal).queryByTestId('split-item-tooltip')).not.toBeInTheDocument();
 
         const removeItemButton = within(reAllocateItemsModal).getByTestId(`remove-${getPhysicalItem().id.toString()}-button`);
 
@@ -576,6 +580,8 @@ describe('MultiShippingFormV2 Component', () => {
             </CheckoutProvider>,
         );
 
+        expect(screen.queryByTestId('split-item-tooltip')).not.toBeInTheDocument();
+
         const closeButton = screen.getByTestId('delete-consignment-button');
 
         expect(closeButton).toBeInTheDocument();
@@ -583,5 +589,61 @@ describe('MultiShippingFormV2 Component', () => {
         await userEvent.click(closeButton);
 
         expect(checkoutService.deleteConsignment).toHaveBeenCalledWith(getConsignment().id);
+    });
+
+    it('displays split item tooltip', async () => {
+        jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
+            ...getCheckout(),
+            consignments: [{
+                ...getConsignment(),
+                lineItemIds: [
+                    '1',
+                    '2',
+                ]
+            }],
+            cart: {
+                ...getCart(),
+                lineItems: {
+                    ...getCart().lineItems,
+                    physicalItems: [
+                        {
+                            ...getPhysicalItem(),
+                            id: '1',
+                        },
+                        {
+                            ...getPhysicalItem(),
+                            id: '2',
+                        },
+                        {
+                            ...getPhysicalItem(),
+                            id: '3',
+                        },
+                        {
+                            ...getPhysicalItem(),
+                            id: '4',
+                        },
+                    ],
+                },
+            },
+        });
+
+        render(
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <ExtensionProvider checkoutService={checkoutService}>
+                        <MultiShippingFormV2 {...defaultProps} />
+                    </ExtensionProvider>
+                </LocaleContext.Provider>
+            </CheckoutProvider>,
+        );
+
+        expect(screen.getByTestId('split-item-tooltip')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByTestId('reallocate-items-button'));
+
+        const reAllocateItemsModal = screen.getByRole('dialog');
+
+        expect(reAllocateItemsModal).toBeInTheDocument();
+        expect(within(reAllocateItemsModal).getAllByTestId('split-item-tooltip')).toHaveLength(2);
     });
 });

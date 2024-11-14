@@ -520,6 +520,7 @@
             "multishipping_items_selected_message": "{count} items selected",
             "multishipping_all_items_allocated_message": "All items are allocated.",
             "multishipping_digital_item_no_shipping_banner": "Shipping isn't required for digital products, thus it's not displayed here.",
+            "multishipping_item_split_tooltip_message": "These item quantities are split into a separate row due to a quantity-based promotion or custom price.",
             "ship_to_multi": "Ship to multiple addresses",
             "ship_to_single": "Ship to a single address",
             "ship_to_single_action": "Ship to a Single Address instead",

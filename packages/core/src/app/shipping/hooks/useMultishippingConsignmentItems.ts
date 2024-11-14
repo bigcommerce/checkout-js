@@ -3,6 +3,7 @@ import { Consignment, LineItemMap } from "@bigcommerce/checkout-sdk";
 import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
 
 import { LineItemType, MultiShippingConsignmentData, MultiShippingTableData, MultiShippingTableItemWithType } from "../MultishippingV2Type";
+import { generateItemHash } from "../utils";
 
 interface MultiShippingConsignmentItemsHook {
     unassignedItems: MultiShippingTableData;
@@ -12,6 +13,27 @@ interface MultiShippingConsignmentItemsHook {
 const calculateShippableItemsCount = (items: MultiShippingTableItemWithType[]): number => {
     return items.reduce((total, item) => total + item.quantity, 0);
 };
+
+const hasSplitItem = (
+    items: MultiShippingTableItemWithType[],
+    itemHashMap: Map<string, string>,
+  ): boolean => {
+    const processedHashes = new Set<string>();
+  
+    return items.some((item) => {
+      const hash = itemHashMap.get(item.id.toString());
+  
+      if (hash && processedHashes.has(hash)) {
+        return true;
+      }
+  
+      if (hash) {
+        processedHashes.add(hash);
+      }
+  
+      return false;
+    });
+  };
 
 function mapConsignmentsItems(
     lineItems: LineItemMap,
@@ -23,10 +45,14 @@ function mapConsignmentsItems(
     const unassignedItemsMap = new Map<string, MultiShippingTableItemWithType>();
     const digitalItemsMap = new Map<string, MultiShippingTableItemWithType>();
 
+    const itemHashMap = new Map<string, string>();
+
     const consignmentList: MultiShippingConsignmentData[] = [];
 
-    lineItems.physicalItems.forEach((item) =>
-        unassignedItemsMap.set(item.id.toString(), { ...item, type: LineItemType.Physical }),
+    lineItems.physicalItems.forEach((item) => {
+        unassignedItemsMap.set(item.id.toString(), { ...item, type: LineItemType.Physical });
+        itemHashMap.set(item.id.toString(), generateItemHash(item));
+    }
     );
     lineItems.customItems?.forEach((item) =>
         unassignedItemsMap.set(item.id, { ...item, type: LineItemType.Custom }),
@@ -51,6 +77,7 @@ function mapConsignmentsItems(
             ...consignment,
             consignmentNumber: index + 1,
             hasDigitalItems: false,
+            hasSplitItems: hasSplitItem(consignmentLineItems, itemHashMap),
             shippableItemsCount: calculateShippableItemsCount(consignmentLineItems),
             lineItems: consignmentLineItems,
         });
@@ -61,6 +88,7 @@ function mapConsignmentsItems(
     const unassignedItems: MultiShippingTableData = {
         lineItems: unassignedItemsList,
         hasDigitalItems: digitalItemsMap.size > 0,
+        hasSplitItems: hasSplitItem(unassignedItemsList, itemHashMap),
         shippableItemsCount: calculateShippableItemsCount(unassignedItemsList),
     };
 
@@ -71,6 +99,7 @@ const defaultMultiShippingConsignmentItems: MultiShippingConsignmentItemsHook = 
     unassignedItems: {
         lineItems: [],
         hasDigitalItems: false,
+        hasSplitItems: false,
         shippableItemsCount: 0,
     },
     consignmentList: [],

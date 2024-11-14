@@ -11,6 +11,7 @@ import ConsignmentLineItemDetail from "./ConsignmentLineItemDetail";
 import { AssignItemFailedError, UnassignItemError } from "./errors";
 import { useDeallocateItem } from "./hooks/useDeallocateItem";
 import { useMultiShippingConsignmentItems } from "./hooks/useMultishippingConsignmentItems";
+import { ItemSplitTooltip } from "./ItemSplitTooltip";
 import { MultiShippingConsignmentData, MultiShippingTableItemWithType } from "./MultishippingV2Type";
 
 interface ConsignmentLineItemProps {
@@ -88,7 +89,12 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
             />
             <div className="consignment-line-item-header">
                 <div>
-                    <h3>{itemsCount > 1 ? `${itemsCount} items` : `${itemsCount} item`} allocated</h3>
+                    <h3>{itemsCount > 1 ? `${itemsCount} items` : `${itemsCount} item`} allocated </h3>
+
+                    {consignment.hasSplitItems && (
+                        <ItemSplitTooltip />
+                    )}
+                    
                     <a
                         className="expand-items-button"
                         data-test="expand-items-button"
