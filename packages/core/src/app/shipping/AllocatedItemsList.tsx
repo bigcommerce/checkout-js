@@ -5,6 +5,7 @@ import { IconClose } from "../ui/icon";
 import { renderItemContent } from "./ConsignmentLineItemDetail";
 import { ItemSplitTooltip } from "./ItemSplitTooltip";
 import { MultiShippingTableData, MultiShippingTableItemWithType } from "./MultishippingV2Type";
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 interface AllocatedItemsListProps {
     assignedItems: MultiShippingTableData;
@@ -15,7 +16,7 @@ const AllocatedItemsList = ({ assignedItems, onUnassignItem }: AllocatedItemsLis
     return (
         <div className="allocated-line-items">
             <h3>
-                {assignedItems.shippableItemsCount > 1 ? `${assignedItems.shippableItemsCount} items` : `${assignedItems.shippableItemsCount} item`} allocated 
+                <TranslatedString data={{ count: assignedItems.shippableItemsCount }} id="shipping.multishipping_item_allocated_message" />
                 {assignedItems.hasSplitItems && (
                     <ItemSplitTooltip />
                 )}
