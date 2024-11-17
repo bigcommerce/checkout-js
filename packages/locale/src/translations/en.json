@@ -510,7 +510,7 @@
             "select_shipping_address_text": "Please select a shipping address in order to see shipping quotes",
             "shipping_address_heading": "Shipping Address",
             "multishipping_consignment_index_heading": "Destination #{consignmentNumber}",
-            "multishipping_consignment_not_completed_error": "Please complete the address, item allocation, and method selection for Destination #{consignmentNumber}.",
+            "multishipping_incomplete_consignment_error": "Please complete the address, item allocation, and method selection for Destination #{consignmentNumber}.",
             "multishipping_address_heading": "Choose where to ship each item",
             "multishipping_address_heading_guest": "Please sign in first",
             "multishipping_guest_intro": "To ship your items to multiple addresses you need to",

@@ -65,11 +65,7 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
     } = config;
 
     const handleAddShippingDestination = () => {
-        if (
-            consignments.length > 0 &&
-            !isAddShippingDestination &&
-            !isEveryConsignmentHasShippingOption
-        ) {
+        if (!isAddShippingDestination && !isEveryConsignmentHasShippingOption) {
             const errorConsignmentIndex = consignments.findIndex(
                 (consignment) => !consignment.selectedShippingOption,
             );
@@ -136,7 +132,7 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
                     <span className="form-inlineMessage">
                         <TranslatedString
                             data={{ consignmentNumber: errorConsignmentNumber }}
-                            id="shipping.multishipping_consignment_not_completed_error"
+                            id="shipping.multishipping_incomplete_consignment_error"
                         />
                     </span>
                 </div>
