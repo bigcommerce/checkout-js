@@ -21,7 +21,7 @@ export const LoadingSkeleton: FunctionComponent<LoadingSkeletonProps> = ({
                 <div
                     className="loading-skeleton"
                     style={
-                        isLoading ? { position: 'absolute', left: '100%', top: '-100%' } : undefined
+                        isLoading ? { position: 'absolute', left: '0%', top: '-300%' } : undefined
                     }
                 >
                     {children}

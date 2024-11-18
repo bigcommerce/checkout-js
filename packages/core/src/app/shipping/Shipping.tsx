@@ -213,11 +213,18 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         try {
             this.setState({ isInitializing: true });
 
-            if (isMultiShippingMode && consignments.length > 1) {
+            if (isNewMultiShippingUIEnabled) {
+                if (isMultiShippingMode && consignments.length) {
+                    // Collapse all consignments into one
+                    await updateShippingAddress(consignments[0].shippingAddress);
+                }
+                else {
+                    await deleteConsignments();
+                }
+            }
+            else if (isMultiShippingMode && consignments.length > 1) {
                 // Collapse all consignments into one
                 await updateShippingAddress(consignments[0].shippingAddress);
-            } else if (!isMultiShippingMode && isNewMultiShippingUIEnabled) {
-                await deleteConsignments();
             }
         } catch (error) {
             onUnhandledError(error);
