@@ -42,6 +42,8 @@ describe('Multi-shipping V2', () => {
     let embeddedMessengerMock: EmbeddedCheckoutMessenger;
     let analyticsTracker: AnalyticsEvents;
 
+    const language = getLanguageService();
+
     beforeAll(() => {
         checkout = new CheckoutPageNodeObject();
         checkout.goto();
@@ -158,7 +160,9 @@ describe('Multi-shipping V2', () => {
         ).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Please complete the address, item allocation, and method selection for Destination #1.',
+                language.translate('shipping.multishipping_incomplete_consignment_error', {
+                    consignmentNumber: 1,
+                }),
             ),
         ).toBeInTheDocument();
 
@@ -198,7 +202,9 @@ describe('Multi-shipping V2', () => {
         expect(selectedShippingOptionValue2).toBe('option-id-flat-rate');
         expect(
             screen.queryByText(
-                'Please complete the address, item allocation, and method selection for Destination #1.',
+                language.translate('shipping.multishipping_incomplete_consignment_error', {
+                    consignmentNumber: 1,
+                }),
             ),
         ).not.toBeInTheDocument();
     });

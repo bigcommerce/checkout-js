@@ -8,7 +8,11 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
-import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
+import {
+    createLocaleContext,
+    LocaleContext,
+    LocaleContextType,
+} from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { render, screen, waitFor, within } from '@bigcommerce/checkout/test-utils';
 
@@ -162,7 +166,12 @@ describe('MultiShippingFormV2 Component', () => {
         expect(screen.getByText('Destination #2')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Please complete the address, item allocation, and method selection for Destination #2.',
+                localeContext.language.translate(
+                    'shipping.multishipping_incomplete_consignment_error',
+                    {
+                        consignmentNumber: 2,
+                    },
+                ),
             ),
         ).toBeInTheDocument();
 
