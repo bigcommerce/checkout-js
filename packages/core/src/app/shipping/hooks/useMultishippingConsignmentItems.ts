@@ -20,19 +20,19 @@ const hasSplitItem = (
   ): boolean => {
     const processedHashes = new Set<string>();
   
-    return items.some((item) => {
+    for (const item of items) {
       const hash = itemHashMap.get(item.id.toString());
+
+      if (!hash) continue;
   
-      if (hash && processedHashes.has(hash)) {
+      if (processedHashes.has(hash)) {
         return true;
       }
   
-      if (hash) {
-        processedHashes.add(hash);
-      }
+      processedHashes.add(hash);
+    }
   
-      return false;
-    });
+    return false;
   };
 
 function mapConsignmentsItems(
