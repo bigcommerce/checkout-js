@@ -2,9 +2,11 @@ import { ConsignmentLineItem } from "@bigcommerce/checkout-sdk";
 import React, { FunctionComponent, useState } from "react";
 
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
 
 import { IconChevronDown, IconChevronUp } from "../ui/icon";
+import { isMobileView } from "../ui/responsive";
 
 import AllocateItemsModal from "./AllocateItemsModal";
 import ConsignmentLineItemDetail from "./ConsignmentLineItemDetail";
@@ -13,7 +15,6 @@ import { useDeallocateItem } from "./hooks/useDeallocateItem";
 import { useMultiShippingConsignmentItems } from "./hooks/useMultishippingConsignmentItems";
 import { ItemSplitTooltip } from "./ItemSplitTooltip";
 import { MultiShippingConsignmentData, MultiShippingTableItemWithType } from "./MultishippingV2Type";
-import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 interface ConsignmentLineItemProps {
     consignmentNumber: number;
@@ -74,6 +75,8 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
         setShowItems(!showItems);
     }
 
+    const isMobileViewUI = isMobileView();
+
     const itemsCount = consignment.shippableItemsCount;
 
     return (
@@ -104,12 +107,12 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
                     >
                         {showItems ? (
                             <>
-                                <TranslatedString id="shipping.multishipping_item_hide_items_message" />
+                                {!isMobileViewUI && <TranslatedString id="shipping.multishipping_item_hide_items_message" />}
                                 <IconChevronUp />
                             </>
                         ) : (
                             <>
-                                <TranslatedString id="shipping.multishipping_item_show_items_message" />
+                                {!isMobileViewUI && <TranslatedString id="shipping.multishipping_item_show_items_message" />}
                                 <IconChevronDown />
                             </>
                         )}

@@ -155,7 +155,7 @@ describe('Shipping component', () => {
             expect(within(confirmationModal).getByText(localeContext.language.translate('shipping.ship_to_single_action'))).toBeInTheDocument();
             expect(within(confirmationModal).getByText(localeContext.language.translate('shipping.ship_to_single_message'))).toBeInTheDocument();
 
-            await userEvent.click(within(confirmationModal).getByText('Confirm'));
+            await userEvent.click(within(confirmationModal).getByText(localeContext.language.translate('common.proceed_action')));
 
             expect(defaultProps.onToggleMultiShipping).toHaveBeenCalled();
         });

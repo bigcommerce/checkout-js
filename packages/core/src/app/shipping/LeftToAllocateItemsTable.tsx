@@ -1,10 +1,13 @@
 import { FormikErrors } from "formik";
 import React, { FunctionComponent } from "react";
 
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
+import { isMobileView } from "../ui/responsive";
+
 import { AllocateItemsModalFormValues } from "./AllocateItemsModal";
 import LeftToAllocateItem from "./LeftToAllocateItem";
 import { MultiShippingTableItemWithType } from "./MultishippingV2Type";
-import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 interface LeftToAllocateItemsTableProps {
     items: MultiShippingTableItemWithType[];
@@ -12,12 +15,14 @@ interface LeftToAllocateItemsTableProps {
 }
 
 const LeftToAllocateItemsTable: FunctionComponent<LeftToAllocateItemsTableProps> = ({ items, formErrors }: LeftToAllocateItemsTableProps) => {
+    const isMobileViewUI = isMobileView();
+
     return (
         <table className="table left-to-allocate-items-table">
             <thead>
                 <tr>
                     <th><TranslatedString id="shipping.multishipping_left_to_allocate_items_table_item" /></th>
-                    <th><TranslatedString id="shipping.multishipping_left_to_allocate_items_table_left_to_allocate" /></th>
+                    {!isMobileViewUI && <th><TranslatedString id="shipping.multishipping_left_to_allocate_items_table_left_to_allocate" /></th>}
                     <th><TranslatedString id="shipping.multishipping_left_to_allocate_items_table_quantity" /></th>
                 </tr>
             </thead>

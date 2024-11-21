@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
@@ -13,6 +13,7 @@ interface ConfirmationModalProps {
     isModalOpen: boolean;
     onRequestClose: () => void;
     action: () => void;
+    actionButtonLabel?: string | ReactNode;
 }
 
 const ConfirmationModal = ({
@@ -20,6 +21,7 @@ const ConfirmationModal = ({
     messageId,
     isModalOpen,
     action,
+    actionButtonLabel,
     onRequestClose,
 }: ConfirmationModalProps) => {
     return (
@@ -27,7 +29,7 @@ const ConfirmationModal = ({
             additionalModalClassName="modal--confirm"
             footer={
                 <Button onClick={action} size={ButtonSize.Small} variant={ButtonVariant.Primary}>
-                    <TranslatedString id="common.confirm_action" />
+                    {actionButtonLabel ?? <TranslatedString id="common.confirm_action" />}
                 </Button>
             }
             header={
