@@ -2,17 +2,8 @@ import React from "react";
 
 import { IconClose } from "../ui/icon";
 
+import { renderItemContent } from "./ConsignmentLineItemDetail";
 import { MultiShippingTableData, MultiShippingTableItemWithType } from "./MultishippingV2Type";
-
-export const getItemContent = (lineItem: MultiShippingTableItemWithType) => {
-    return <span>
-        <strong>{`${lineItem.quantity} x `}</strong>
-        {lineItem.name}
-        {lineItem.options?.length
-            ? <span className="line-item-options">{` - ${lineItem.options.map(option => option.value).join('/ ')}`}</span>
-            : ''}
-    </span>;
-};
 
 interface AllocatedItemsListProps {
     assignedItems: MultiShippingTableData;
@@ -26,7 +17,7 @@ const AllocatedItemsList = ({ assignedItems, onUnassignItem }: AllocatedItemsLis
             <ul className="allocated-line-items-list">
                 {assignedItems.lineItems.map(item => (
                     <li key={item.id}>
-                        {getItemContent(item)}
+                        {renderItemContent(item)}
                         <span data-test={`remove-${item.id.toString()}-button`} onClick={() => onUnassignItem(item)}>
                             <IconClose />
                         </span>

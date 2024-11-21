@@ -44,7 +44,7 @@ exports[`CheckoutButtonContainer displays wallet buttons for guest checkout 1`] 
     </div>
     <div
       class="loading-skeleton"
-      style="position:absolute;left:100%;top:-100%"
+      style="position:absolute;left:0%;top:-300%"
     >
       <div
         class="checkoutRemote"
@@ -126,7 +126,7 @@ exports[`CheckoutButtonContainer hides wallet buttons with CSS when payment step
     </div>
     <div
       class="loading-skeleton"
-      style="position:absolute;left:100%;top:-100%"
+      style="position:absolute;left:0%;top:-300%"
     >
       <div
         class="checkoutRemote"
@@ -202,7 +202,7 @@ exports[`CheckoutButtonContainer removes Paypal commerce wallet buttons when pay
     </div>
     <div
       class="loading-skeleton"
-      style="position:absolute;left:100%;top:-100%"
+      style="position:absolute;left:0%;top:-300%"
     >
       <div
         class="checkoutRemote"

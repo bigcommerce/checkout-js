@@ -82,9 +82,11 @@ const NewConsignment = ({
 
     return (
         <div className='consignment-container'>
-            <h3 className='consignment-header'>
-                <TranslatedString data={{ consignmentNumber }} id="shipping.multishipping_consignment_index_heading" />
-            </h3>
+            <div className='consignment-header'>
+                <h3>
+                    <TranslatedString data={{ consignmentNumber }} id="shipping.multishipping_consignment_index_heading" />
+                </h3>
+            </div>
             <ConsignmentAddressSelector
                 countriesWithAutocomplete={countriesWithAutocomplete}
                 defaultCountryCode={defaultCountryCode}

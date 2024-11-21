@@ -42,15 +42,17 @@ const ConsignmentListItem: FunctionComponent<ConsignmentListItemProps> = ({
     return (
         <div className='consignment-container'>
             <div className='consignment-header'>
-                <h3><TranslatedString data={{ consignmentNumber }} id="shipping.multishipping_consignment_index_heading" /></h3>
-                    <a
-                        className="delete-consignment"
-                        data-test="delete-consignment-button"
-                        href="#"
-                        onClick={preventDefault(handleClose)}
-                    >
-                        <IconClose size={IconSize.Small}/>
-                    </a>
+                <h3>
+                    <TranslatedString data={{ consignmentNumber }} id="shipping.multishipping_consignment_index_heading" />
+                </h3>
+                <a
+                    className="delete-consignment"
+                    data-test="delete-consignment-button"
+                    href="#"
+                    onClick={preventDefault(handleClose)}
+                >
+                    <IconClose size={IconSize.Small} />
+                </a>
             </div>
             <ConsignmentAddressSelector
                 consignment={consignment}

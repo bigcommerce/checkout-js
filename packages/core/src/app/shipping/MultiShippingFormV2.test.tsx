@@ -162,7 +162,7 @@ describe('MultiShippingFormV2 Component', () => {
 
         // eslint-disable-next-line testing-library/no-node-access
         const destination2 = screen.getByText('Destination #2').parentElement?.parentElement;
-        const addressSelectButton = within(destination2).getAllByTestId('address-select-button')[1];
+        const addressSelectButton = within(destination2).getByTestId('address-select-button');
 
         await userEvent.click(addressSelectButton);
 

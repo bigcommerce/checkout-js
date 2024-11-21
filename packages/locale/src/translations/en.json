@@ -521,6 +521,8 @@
             "multishipping_digital_item_no_shipping_banner": "Shipping isn't required for digital products, thus it's not displayed here.",
             "ship_to_multi": "Ship to multiple addresses",
             "ship_to_single": "Ship to a single address",
+            "ship_to_single_action": "Ship to a Single Address instead",
+            "ship_to_single_message": "If you proceed, all progress for multiple addresses will be lost. This action cannot be undone.",
             "shipping_heading": "Shipping",
             "shipping_method_label": "Shipping Method",
             "shipping_option_expired_error": "The shipping price you were quoted is no longer valid. Click OK to see the most up-to-date shipping prices.",

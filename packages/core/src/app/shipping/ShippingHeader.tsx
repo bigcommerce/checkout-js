@@ -1,9 +1,10 @@
 import { ExtensionRegion } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, memo } from 'react';
+import React, { FunctionComponent, memo, useState } from 'react';
 
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { ConfirmationModal } from '@bigcommerce/checkout/ui';
 
 import { Legend } from '../ui/form';
 
@@ -12,6 +13,7 @@ interface ShippingHeaderProps {
     isGuest: boolean;
     shouldShowMultiShipping: boolean;
     onMultiShippingChange(): void;
+    isNewMultiShippingUIEnabled: boolean;
 }
 
 const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
@@ -19,7 +21,17 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
     isGuest,
     onMultiShippingChange,
     shouldShowMultiShipping,
+    isNewMultiShippingUIEnabled,
 }) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleShipToSingleConfirmation = () => {
+        setIsModalOpen(false);
+        onMultiShippingChange();
+    }
+
+    const showConfirmationModal = shouldShowMultiShipping && isNewMultiShippingUIEnabled && isMultiShippingMode;
+
     return (
         <>
             <Extension region={ExtensionRegion.ShippingShippingAddressFormBefore} />
@@ -36,7 +48,25 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
                     />
                 </Legend>
 
-                {shouldShowMultiShipping && (
+                {showConfirmationModal && (
+                    <>
+                        <ConfirmationModal
+                            action={handleShipToSingleConfirmation}
+                            headerId="shipping.ship_to_single_action"
+                            isModalOpen={isModalOpen}
+                            messageId="shipping.ship_to_single_message"
+                            onRequestClose={() => setIsModalOpen(false)}
+                        />
+                        <a
+                            data-test="shipping-mode-toggle"
+                            href="#"
+                            onClick={preventDefault(() => setIsModalOpen(true))}
+                        >
+                            <TranslatedString id="shipping.ship_to_single" />
+                        </a>
+                    </>
+                )}
+                {!showConfirmationModal && shouldShowMultiShipping && (
                     <a
                         data-test="shipping-mode-toggle"
                         href="#"
