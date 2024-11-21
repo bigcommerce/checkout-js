@@ -13,6 +13,7 @@ import { useDeallocateItem } from "./hooks/useDeallocateItem";
 import { useMultiShippingConsignmentItems } from "./hooks/useMultishippingConsignmentItems";
 import { ItemSplitTooltip } from "./ItemSplitTooltip";
 import { MultiShippingConsignmentData, MultiShippingTableItemWithType } from "./MultishippingV2Type";
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 interface ConsignmentLineItemProps {
     consignmentNumber: number;
@@ -103,12 +104,12 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
                     >
                         {showItems ? (
                             <>
-                                Hide items
+                                <TranslatedString id="shipping.multishipping_item_hide_items_message" />
                                 <IconChevronUp />
                             </>
                         ) : (
                             <>
-                                Show items
+                                <TranslatedString id="shipping.multishipping_item_show_items_message" />
                                 <IconChevronDown />
                             </>
                         )}
@@ -119,7 +120,7 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
                     href="#"
                     onClick={preventDefault(toggleAllocateItemsModal)}
                 >
-                    Reallocate items
+                    <TranslatedString id="shipping.multishipping_item_reallocated_message" />
                 </a>
             </div>
             {showItems
