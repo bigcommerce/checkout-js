@@ -21,6 +21,7 @@ export interface ConsignmentListItemProps {
     isLoading: boolean;
     shippingQuoteFailedMessage: string;
     onUnhandledError(error: Error): void;
+    resetErrorConsignmentNumber(): void;
 }
 
 const ConsignmentListItem: FunctionComponent<ConsignmentListItemProps> = ({
@@ -31,13 +32,15 @@ const ConsignmentListItem: FunctionComponent<ConsignmentListItemProps> = ({
     isLoading,
     shippingQuoteFailedMessage,
     onUnhandledError,
+    resetErrorConsignmentNumber,
 }: ConsignmentListItemProps) => {
 
     const { checkoutService: { deleteConsignment } } = useCheckout();
 
     const handleClose = async () => {
         await deleteConsignment(consignment.id);
-    }
+        resetErrorConsignmentNumber();
+    };
 
     return (
         <div className='consignment-container'>
@@ -70,6 +73,7 @@ const ConsignmentListItem: FunctionComponent<ConsignmentListItemProps> = ({
             <MultiShippingOptionsV2
                 consignment={consignment}
                 isLoading={isLoading}
+                resetErrorConsignmentNumber={resetErrorConsignmentNumber}
                 shippingQuoteFailedMessage={shippingQuoteFailedMessage}
             />
         </div>
