@@ -5,21 +5,26 @@ import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/
 
 
 import { AddressSelectProps } from './AddressSelect';
-import StaticAddress from './StaticAddress';
 import SingleLineStaticAddress from './SingleLineStaticAddress';
+import StaticAddress from './StaticAddress';
 
-type AddressSelectButtonProps = Pick<AddressSelectProps, 'selectedAddress' | 'addresses' | 'type' | 'showSingleLineAddress'>;
+type AddressSelectButtonProps = Pick<AddressSelectProps, 'selectedAddress' | 'addresses' | 'type' | 'showSingleLineAddress' | 'placeholderText'>;
 
 const AddressSelectButton: FunctionComponent<AddressSelectButtonProps & WithLanguageProps> = ({
     selectedAddress,
     language,
     type,
     showSingleLineAddress,
+    placeholderText,
 }) => {
     const [ariaExpanded, setAriaExpanded] = useState(false);
 
     const SelectedAddress = () => {
         if (!selectedAddress) {
+            if (placeholderText) {
+                return <TranslatedString id={placeholderText} />;
+            }
+
             return <TranslatedString id="address.enter_address_action" />;
         }
 

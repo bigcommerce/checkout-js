@@ -20,9 +20,10 @@ interface ConsignmentLineItemProps {
     consignmentNumber: number;
     consignment: MultiShippingConsignmentData;
     onUnhandledError(error: Error): void;
+    isLoading: boolean;
 }
 
-const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ consignmentNumber, consignment, onUnhandledError }: ConsignmentLineItemProps) => {
+const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ consignmentNumber, consignment, onUnhandledError, isLoading }: ConsignmentLineItemProps) => {
     const [isOpenAllocateItemsModal, setIsOpenAllocateItemsModal] = useState(false);
     const [showItems, setShowItems] = useState(true);
 
@@ -85,6 +86,7 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
                 address={consignment.shippingAddress}
                 assignedItems={consignment}
                 consignmentNumber={consignmentNumber}
+                isLoading={isLoading}
                 isOpen={isOpenAllocateItemsModal}
                 onAllocateItems={handleAssignItems}
                 onRequestClose={toggleAllocateItemsModal}
