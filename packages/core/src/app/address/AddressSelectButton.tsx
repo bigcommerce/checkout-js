@@ -21,11 +21,7 @@ const AddressSelectButton: FunctionComponent<AddressSelectButtonProps & WithLang
 
     const SelectedAddress = () => {
         if (!selectedAddress) {
-            if (placeholderText) {
-                return <TranslatedString id={placeholderText} />;
-            }
-
-            return <TranslatedString id="address.enter_address_action" />;
+            return placeholderText ?? <TranslatedString id="address.enter_address_action" />;
         }
 
         return showSingleLineAddress

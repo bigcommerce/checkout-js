@@ -21,7 +21,7 @@ export interface AddressSelectProps {
     showSingleLineAddress?: boolean;
     onSelectAddress(address: Address): void;
     onUseNewAddress(currentAddress?: Address): void;
-    placeholderText?: string;
+    placeholderText?: React.JSX.Element;
 }
 
 const AddressSelectMenu: FunctionComponent<AddressSelectProps> = ({

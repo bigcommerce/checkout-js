@@ -146,7 +146,7 @@ const ConsignmentAddressSelector = ({
                 addresses={addresses}
                 onSelectAddress={handleSelectAddress}
                 onUseNewAddress={handleUseNewAddress}
-                placeholderText="shipping.choose_shipping_address"
+                placeholderText={<TranslatedString id="shipping.choose_shipping_address" />}
                 selectedAddress={selectedAddress}
                 showSingleLineAddress
                 type={AddressType.Shipping}
