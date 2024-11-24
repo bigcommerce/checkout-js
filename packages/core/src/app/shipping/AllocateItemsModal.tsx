@@ -103,8 +103,8 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
 
     const modalFooter = (
         <>
-            <Button onClick={onRequestClose} variant={ButtonVariant.Secondary}>Cancel</Button>
-            <Button disabled={!dirty} onClick={submitForm} type="submit" variant={ButtonVariant.Primary}>{hasItemsAssigned ? 'Save' : 'Allocate'}</Button>
+            <Button onClick={onRequestClose} variant={ButtonVariant.Secondary}><TranslatedString id="shipping.multishipping_items_allocate_cancel" /></Button>
+            <Button disabled={!dirty} onClick={submitForm} type="submit" variant={ButtonVariant.Primary}>{hasItemsAssigned ? <TranslatedString id="shipping.multishipping_items_allocate_save" /> : <TranslatedString id="shipping.multishipping_items_allocate_allocate" />}</Button>
         </>
     );
 
@@ -154,14 +154,14 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
                                     href="#"
                                     onClick={preventDefault(handleClearAll)}
                                 >
-                                    Clear all
+                                    <TranslatedString id="shipping.multishipping_items_allocate_clear_all" />
                                 </a>
                                 <a
                                     data-test="allocate-all-items-button"
                                     href="#"
                                     onClick={preventDefault(handleSelectAll)}
                                 >
-                                    Select all items left
+                                    <TranslatedString id="shipping.multishipping_items_allocate_select_all_items_left" />
                                 </a>
                             </div>
                         </div>

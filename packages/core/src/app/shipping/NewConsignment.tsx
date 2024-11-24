@@ -105,13 +105,13 @@ const NewConsignment = ({
                     unassignedItems={unassignedItems}
                 />
                 <div className="new-consignment-line-item-header">
-                    <p>No items allocated</p>
+                    <p><TranslatedString id="shipping.multishipping_no_items_allocated_message" /></p>
                     <a
                         data-test="allocate-items-button"
                         href="#"
                         onClick={preventDefault(toggleAllocateItemsModal)}
                     >
-                        Allocate items
+                        <TranslatedString id="shipping.multishipping_allocate_items" />
                     </a>
                 </div>
             </>

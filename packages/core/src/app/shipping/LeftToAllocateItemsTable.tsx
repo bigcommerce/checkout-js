@@ -4,6 +4,7 @@ import React, { FunctionComponent } from "react";
 import { AllocateItemsModalFormValues } from "./AllocateItemsModal";
 import LeftToAllocateItem from "./LeftToAllocateItem";
 import { MultiShippingTableItemWithType } from "./MultishippingV2Type";
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 interface LeftToAllocateItemsTableProps {
     items: MultiShippingTableItemWithType[];
@@ -15,9 +16,9 @@ const LeftToAllocateItemsTable: FunctionComponent<LeftToAllocateItemsTableProps>
         <table className="table left-to-allocate-items-table">
             <thead>
                 <tr>
-                    <th>Item</th>
-                    <th>Left to allocate</th>
-                    <th>Quantity</th>
+                    <th><TranslatedString id="shipping.multishipping_left_to_allocate_items_table_item" /></th>
+                    <th><TranslatedString id="shipping.multishipping_left_to_allocate_items_table_left_to_allocate" /></th>
+                    <th><TranslatedString id="shipping.multishipping_left_to_allocate_items_table_quantity" /></th>
                 </tr>
             </thead>
             <tbody>

@@ -124,7 +124,7 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
             }
             {hasUnassignedItems &&
                 <Button className='add-consignment-button' onClick={handleAddShippingDestination} variant={ButtonVariant.Secondary}>
-                    Add new destination
+                    <TranslatedString id="shipping.multishipping_add_new_destination" />
                 </Button>
             }
             {Boolean(errorConsignmentNumber) && (
