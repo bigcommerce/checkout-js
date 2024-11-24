@@ -35,6 +35,7 @@ const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
                 'is-readonly': !isEditable,
                 'is-clickable': isEditable && !isActive,
                 'is-active': isActive,
+                'is-complete': isComplete,
             })}
             onClick={preventDefault(isEditable && onEdit ? () => onEdit(type) : noop)}
         >
