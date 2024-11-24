@@ -95,7 +95,7 @@ $allocate-items-table-image-width: 20%;
                 margin-bottom: 0;
             }
 
-            div {
+            .button-group {
                 display: flex;
                 gap: spacing("single");
             }
@@ -200,16 +200,16 @@ $allocate-items-table-image-width: 20%;
                 li:not(:last-child) {
                     margin-bottom: spacing("quarter");
                 }
+
+                svg {
+                    fill: color("greys", "dark");
+                    cursor: pointer;
+                }
             }
 
             h3 {
                 margin-bottom: spacing("base");
                 font-size: fontSize("base");
-            }
-
-            svg {
-                fill: color("greys", "dark");
-                cursor: pointer;
             }
         }
     }

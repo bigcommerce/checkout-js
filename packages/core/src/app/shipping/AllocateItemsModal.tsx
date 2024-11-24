@@ -14,6 +14,7 @@ import { Form } from "../ui/form";
 import { Modal, ModalHeader } from "../ui/modal";
 
 import AllocatedItemsList from "./AllocatedItemsList";
+import { ItemSplitTooltip } from "./ItemSplitTooltip";
 import LeftToAllocateItemsTable from "./LeftToAllocateItemsTable";
 import { LineItemType, MultiShippingTableData, MultiShippingTableItemWithType } from "./MultishippingV2Type";
 
@@ -140,8 +141,14 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
                 {hasUnassignedItems
                     ? <>
                         <div className="left-to-allocate-items-table-actions">
-                            <p>{allocatedOrSelectedItemsMessage}</p>
-                            <div>
+                            <p>
+                                {allocatedOrSelectedItemsMessage}
+                                {unassignedItems.hasSplitItems && (
+                                    <ItemSplitTooltip />
+                                )}
+                            </p>
+
+                            <div className="button-group">
                                 <a
                                     data-test="clear-all-items-button"
                                     href="#"
