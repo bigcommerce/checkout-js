@@ -4,6 +4,7 @@ import {
     ExtensionRegion,
 } from '@bigcommerce/checkout-sdk';
 
+import { ErrorLevelType, ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { getCart, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
 import { getExtensions } from './Extension.mock';
@@ -13,6 +14,9 @@ import { ExtensionService } from './ExtensionService';
 describe('ExtensionService', () => {
     const remover = jest.fn();
     const dispatch = jest.fn();
+    const errorLogger: ErrorLogger = {
+        log: jest.fn(),
+    };
     const checkoutService = createCheckoutService();
 
     let extensionService: ExtensionService;
@@ -32,7 +36,7 @@ describe('ExtensionService', () => {
             getExtensions()[0],
         );
 
-        extensionService = new ExtensionService(checkoutService, dispatch);
+        extensionService = new ExtensionService(checkoutService, dispatch, errorLogger);
     });
 
     it('loads extensions', async () => {
@@ -81,16 +85,21 @@ describe('ExtensionService', () => {
     });
 
     it('catches error while rendering an extension', async () => {
+        const error = new Error('XXX');
+
         jest.spyOn(console, 'error').mockImplementation();
-        jest.spyOn(checkoutService, 'renderExtension').mockRejectedValue(new Error('XXX'));
+        jest.spyOn(checkoutService, 'renderExtension').mockRejectedValue(error);
 
         await extensionService.renderExtension(
             ExtensionRegionContainer.ShippingShippingAddressFormBefore,
             ExtensionRegion.ShippingShippingAddressFormBefore,
         );
 
-        expect(console.error).toHaveBeenCalledWith(
-            'The extension (123) at region (shipping.shippingAddressForm.before) failed to initialize. Error: XXX',
+        expect(errorLogger.log).toHaveBeenCalledWith(
+            error,
+            { errorCode: 'checkoutExtension' },
+            ErrorLevelType.Error,
+            { extensionId: '123', region: ExtensionRegion.ShippingShippingAddressFormBefore },
         );
     });
 

@@ -6,6 +6,8 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
+import { ErrorLevelType, ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
+
 import { ExtensionAction } from './ExtensionProvider';
 import * as handlerFactories from './handlers';
 import { CommandHandler } from './handlers/CommandHandler';
@@ -16,6 +18,7 @@ export class ExtensionService {
     constructor(
         private checkoutService: CheckoutService,
         private dispatch: React.Dispatch<ExtensionAction>,
+        private errorLogger: ErrorLogger,
     ) {}
 
     async loadExtensions(): Promise<void> {
@@ -64,9 +67,11 @@ export class ExtensionService {
             this.registerHandlers(extension);
         } catch (error: unknown) {
             if (error instanceof Error) {
-                // eslint-disable-next-line no-console
-                console.error(
-                    `The extension (${extension.id}) at region (${region}) failed to initialize. Error: ${error.message}`,
+                this.errorLogger.log(
+                    error,
+                    { errorCode: 'checkoutExtension' },
+                    ErrorLevelType.Error,
+                    { extensionId: extension.id, region },
                 );
             }
         }
