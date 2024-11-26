@@ -154,19 +154,4 @@ describe('ShippingOptions Component', () => {
             defaultProps.invalidShippingMessage,
         );
     });
-
-    it('does not render shipping options if initial value is not yet loaded', () => {
-        const updatedProps = {
-            ...defaultProps,
-            isInitialValueLoaded: false,
-        };
-
-        const component = mount(
-            <TestWrap>
-                <ShippingOptionsForm {...updatedProps} />
-            </TestWrap>,
-        );
-
-        expect(component.find(ShippingOptionsList)).toHaveLength(0);
-    });
 });

@@ -80,6 +80,20 @@ describe('ExtensionService', () => {
         );
     });
 
+    it('catches error while rendering an extension', async () => {
+        jest.spyOn(console, 'error').mockImplementation();
+        jest.spyOn(checkoutService, 'renderExtension').mockRejectedValue(new Error('XXX'));
+
+        await extensionService.renderExtension(
+            ExtensionRegionContainer.ShippingShippingAddressFormBefore,
+            ExtensionRegion.ShippingShippingAddressFormBefore,
+        );
+
+        expect(console.error).toHaveBeenCalledWith(
+            'The extension (123) at region (shipping.shippingAddressForm.before) failed to initialize. Error: XXX',
+        );
+    });
+
     it('adds and removes command handlers', async () => {
         await extensionService.renderExtension(
             ExtensionRegionContainer.ShippingShippingAddressFormBefore,

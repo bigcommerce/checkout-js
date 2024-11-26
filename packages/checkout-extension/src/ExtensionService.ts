@@ -58,9 +58,18 @@ export class ExtensionService {
             return;
         }
 
-        await this.checkoutService.renderExtension(container, region);
+        try {
+            await this.checkoutService.renderExtension(container, region);
 
-        this.registerHandlers(extension);
+            this.registerHandlers(extension);
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                // eslint-disable-next-line no-console
+                console.error(
+                    `The extension (${extension.id}) at region (${region}) failed to initialize. Error: ${error.message}`,
+                );
+            }
+        }
     }
 
     removeListeners(region: ExtensionRegion): void {

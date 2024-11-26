@@ -57,7 +57,6 @@ class ShippingOptionsForm extends PureComponent<
             isLoading,
             shouldShowShippingOptions,
             invalidShippingMessage,
-            isInitialValueLoaded,
             methodId
         } = this.props;
 
@@ -87,20 +86,18 @@ class ShippingOptionsForm extends PureComponent<
                     <div className="shippingOptions-container form-fieldset" key={consignment.id}>
                         {isMultiShippingMode && this.renderConsignment(consignment)}
 
-                        {isInitialValueLoaded && (
-                            <ShippingOptionsList
-                                consignmentId={consignment.id}
-                                inputName={getRadioInputName(consignment.id)}
-                                isLoading={isLoading(consignment.id)}
-                                isMultiShippingMode = {isMultiShippingMode}
-                                onSelectedOption={selectShippingOption}
-                                selectedShippingOptionId={
-                                    consignment.selectedShippingOption &&
-                                    consignment.selectedShippingOption.id
-                                }
-                                shippingOptions={consignment.availableShippingOptions}
-                            />
-                        )}
+                        <ShippingOptionsList
+                            consignmentId={consignment.id}
+                            inputName={getRadioInputName(consignment.id)}
+                            isLoading={isLoading(consignment.id)}
+                            isMultiShippingMode = {isMultiShippingMode}
+                            onSelectedOption={selectShippingOption}
+                            selectedShippingOptionId={
+                                consignment.selectedShippingOption &&
+                                consignment.selectedShippingOption.id
+                            }
+                            shippingOptions={consignment.availableShippingOptions}
+                        />
 
                         {(!consignment.availableShippingOptions ||
                             !consignment.availableShippingOptions.length) && (
