@@ -105,7 +105,11 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
 
     const modalFooter = (
         <>
-            <Button onClick={onRequestClose} variant={ButtonVariant.Secondary}>
+            <Button
+                disabled={isLoading}
+                onClick={onRequestClose}
+                variant={ButtonVariant.Secondary}
+            >
                 <TranslatedString id="shipping.multishipping_items_allocate_cancel" />
             </Button>
             <Button
