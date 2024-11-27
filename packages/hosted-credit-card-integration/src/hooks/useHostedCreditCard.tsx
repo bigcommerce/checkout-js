@@ -1,8 +1,8 @@
 import {
     CardInstrument,
     CheckoutSelectors,
-    HostedFormOptions,
     LanguageService,
+    LegacyHostedFormOptions,
     PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
 import { compact, forIn } from 'lodash';
@@ -83,7 +83,7 @@ export const useHostedCreditCard = ({
         );
 
     const getHostedFormOptions = useCallback(
-        async (selectedInstrument: CardInstrument): Promise<HostedFormOptions> => {
+        async (selectedInstrument: CardInstrument): Promise<LegacyHostedFormOptions> => {
             const styleProps = ['color', 'fontFamily', 'fontSize', 'fontWeight'];
             const isInstrumentCardNumberRequired = selectedInstrument
                 ? isInstrumentCardNumberRequiredProp(selectedInstrument, method)
