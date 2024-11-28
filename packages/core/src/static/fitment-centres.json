@@ -699,5 +699,15 @@
     "phone": "02 6947 1959",
     "latitude": -35.2959,
     "longitude": 148.2122
+  },
+  {
+    "company": "Opposite Lock Wodonga",
+    "street": "87 Thomas Mitchell Dr",
+    "suburb": "Wodonga",
+    "state": "VIC",
+    "postcode": "3690",
+    "phone": "02 6056 4414",
+    "latitude": -36.13442,
+    "longitude": 146.903297
   }
 ]
