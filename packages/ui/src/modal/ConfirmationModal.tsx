@@ -13,7 +13,7 @@ interface ConfirmationModalProps {
     isModalOpen: boolean;
     onRequestClose: () => void;
     action: () => void;
-    actionButtonLabel?: string | ReactNode;
+    actionButtonLabel?: ReactNode;
 }
 
 const ConfirmationModal = ({
