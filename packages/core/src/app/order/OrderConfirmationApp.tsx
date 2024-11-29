@@ -59,7 +59,7 @@ class OrderConfirmationApp extends Component<OrderConfirmationAppProps> {
                 <LocaleProvider checkoutService={this.checkoutService}>
                     <CheckoutProvider checkoutService={this.checkoutService}>
                         <AnalyticsProvider checkoutService={this.checkoutService}>
-                            <ExtensionProvider checkoutService={this.checkoutService}>
+                            <ExtensionProvider checkoutService={this.checkoutService} errorLogger={createErrorLogger()}>
                                 <OrderConfirmation
                                     {...this.props}
                                     createAccount={this.createAccount}

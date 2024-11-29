@@ -61,7 +61,10 @@ export default class CheckoutApp extends Component<CheckoutAppProps> {
                 <LocaleProvider checkoutService={this.checkoutService}>
                     <CheckoutProvider checkoutService={this.checkoutService}>
                         <AnalyticsProvider checkoutService={this.checkoutService}>
-                            <ExtensionProvider checkoutService={this.checkoutService}>
+                            <ExtensionProvider
+                                checkoutService={this.checkoutService}
+                                errorLogger={createErrorLogger()}
+                            >
                                 <Checkout
                                     {...this.props}
                                     createEmbeddedMessenger={createEmbeddedCheckoutMessenger}
