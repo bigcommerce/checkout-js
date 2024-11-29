@@ -6,7 +6,7 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
 
 import { IconChevronDown, IconChevronUp } from "../ui/icon";
-import { isMobileView } from "../ui/responsive";
+import { isMobileView as isMobileViewUI } from "../ui/responsive";
 
 import AllocateItemsModal from "./AllocateItemsModal";
 import ConsignmentLineItemDetail from "./ConsignmentLineItemDetail";
@@ -75,7 +75,7 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
         setShowItems(!showItems);
     }
 
-    const isMobileViewUI = isMobileView();
+    const isMobileView = isMobileViewUI();
 
     const itemsCount = consignment.shippableItemsCount;
 
@@ -107,12 +107,12 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
                     >
                         {showItems ? (
                             <>
-                                {!isMobileViewUI && <TranslatedString id="shipping.multishipping_item_hide_items_message" />}
+                                {!isMobileView && <TranslatedString id="shipping.multishipping_item_hide_items_message" />}
                                 <IconChevronUp />
                             </>
                         ) : (
                             <>
-                                {!isMobileViewUI && <TranslatedString id="shipping.multishipping_item_show_items_message" />}
+                                {!isMobileView && <TranslatedString id="shipping.multishipping_item_show_items_message" />}
                                 <IconChevronDown />
                             </>
                         )}
