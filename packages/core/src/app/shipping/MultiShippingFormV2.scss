@@ -1,9 +1,11 @@
 @import '../ui/Base';
 
 $quantity-input-container-width: 60%;
+$quantity-input-container-width-small-screen: 90%;
 $allocate-items-table-first-column-width: 50%;
 $allocate-items-table-column-width: 25%;
 $allocate-items-table-image-width: 20%;
+$allocate-items-table-image-width-small-screen: 40%;
 
 .alertBox {
     border-radius: $global-radius;
@@ -34,7 +36,7 @@ $allocate-items-table-image-width: 20%;
     list-style: none;
     margin-left: 0;
     li {
-        font-size: fontSize("smallest");
+        font-weight: fontWeight("normal");
         line-height: lineHeight("large");
         .line-item-options {
             color: color("greys");
@@ -47,9 +49,6 @@ $allocate-items-table-image-width: 20%;
     h3 {
         margin-bottom: spacing("base");
         font-size: fontSize("base");
-    }
-    p {
-        margin: 0;
     }
     a {
         margin-left: spacing("base");
@@ -68,19 +67,57 @@ $allocate-items-table-image-width: 20%;
             }
         }
     }
+
+    a {
+        margin-left: 0;
+
+        @include breakpoint("small") {
+            margin-left: spacing("base");
+        }
+    }
 }
 
-.allocate-items-modal {
+.modal.modal--afterOpen.modal.modal--confirm {
+    min-height: 0;
+    top: 50%;
+    bottom: auto;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    .modal-footer {
+        display: flex;
+        justify-content: flex-end;
+
+        button {
+            width: fit-content;
+        }
+    }
+}
+
+.modal.modal--afterOpen.allocate-items-modal {
+    min-height: 0;
+    max-height: 96vh;
+    top: 50%;
+    right: auto;
+    bottom: auto;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    @include breakpoint("small") {
+        max-height: 75vh;
+    }
+
     .modal-header {
         padding-bottom: spacing("base");
+
+        h4 {
+            margin-top: spacing("base");
+            margin-bottom: 0;
+        }
     }
 
     .modal-body {
-        padding-top: 0;
-
-        h4 {
-            margin-bottom: #{spacing("base")};
-        }
+        padding-bottom: 0;
 
         .form-errors {
             margin-bottom: spacing("base");
@@ -90,6 +127,12 @@ $allocate-items-table-image-width: 20%;
             display: flex;
             margin-bottom: spacing("base");
             justify-content: space-between;
+            flex-direction: column-reverse;
+            gap: spacing("half");
+
+            @include breakpoint("small") {
+                flex-direction: row;
+            }
 
             p {
                 margin-bottom: 0;
@@ -142,7 +185,11 @@ $allocate-items-table-image-width: 20%;
 
                         div {
                             float: right;
-                            width: $quantity-input-container-width;
+                            width: $quantity-input-container-width-small-screen;
+
+                            @include breakpoint("small") {
+                                width: $quantity-input-container-width;
+                            }
 
                             input {
                                 text-align: right;
@@ -159,8 +206,12 @@ $allocate-items-table-image-width: 20%;
 
                 .left-to-allocate-item-figure {
                     margin: 0;
-                    width: $allocate-items-table-image-width;
+                    width: $allocate-items-table-image-width-small-screen;
                     padding-right: spacing("half");
+
+                    @include breakpoint("small") {
+                        width: $allocate-items-table-image-width;
+                    }
                 }
 
                 .left-to-allocate-item-name {
@@ -190,7 +241,7 @@ $allocate-items-table-image-width: 20%;
                 li {
                     display: flex;
                     gap: spacing("base");
-                    font-size: fontSize("smallest");
+                    font-weight: fontWeight("normal");
                     line-height: lineHeight("large");
                     .line-item-options {
                         color: color("greys");
@@ -215,9 +266,20 @@ $allocate-items-table-image-width: 20%;
     }
 
     .modal-footer {
+        display: flex;
+        justify-content: flex-end;
+
         button {
             margin-left: 0;
             border: none;
+            width: fit-content;
+            margin-bottom: 0;
+        }
+
+        @include breakpoint("small") {
+            button {
+                margin-left: spacing("base");
+            }
         }
     }
 }

@@ -1,0 +1,13 @@
+@import '../ui/Base';
+
+.shipping-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-bottom: spacing("base");
+
+    @include breakpoint("small") {
+        flex-direction: row;
+        align-items: center;
+        padding-bottom: 0;
+    }
+}

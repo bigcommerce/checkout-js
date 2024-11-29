@@ -12,7 +12,6 @@ import ConsignmentLineItem from './ConsignmentLineItem';
 import { MultiShippingConsignmentData } from './MultishippingV2Type';
 import { MultiShippingOptionsV2 } from './shippingOption/MultiShippingOptionsV2';
 
-
 export interface ConsignmentListItemProps {
     consignment: MultiShippingConsignmentData;
     consignmentNumber: number;

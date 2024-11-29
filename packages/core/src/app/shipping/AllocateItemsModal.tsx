@@ -113,16 +113,17 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
             additionalModalClassName="allocate-items-modal"
             footer={modalFooter}
             header={
-                <ModalHeader>
-                    <TranslatedString data={{ consignmentNumber }} id="shipping.multishipping_consignment_index_heading" />
-                </ModalHeader>
+                <>
+                    <ModalHeader>
+                        <TranslatedString data={{ consignmentNumber }} id="shipping.multishipping_consignment_index_heading" />
+                    </ModalHeader>
+                    <h4>{getAddressContent(address)}</h4>
+                </>
             }
             isOpen={isOpen}
             onRequestClose={onRequestClose}
-        >
-                        
+        > 
             <Form>
-                <h4>{getAddressContent(address)}</h4>
                 {formErrors.length > 0 && (
                     <div className="form-errors">
                         {formErrors.map((error, index) => (

@@ -1,4 +1,5 @@
 import { ExtensionRegion } from '@bigcommerce/checkout-sdk';
+import classNames from 'classnames';
 import React, { FunctionComponent, memo, useState } from 'react';
 
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
@@ -7,6 +8,7 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { ConfirmationModal } from '@bigcommerce/checkout/ui';
 
 import { Legend } from '../ui/form';
+import './ShippingHeader.scss';
 
 interface ShippingHeaderProps {
     isMultiShippingMode: boolean;
@@ -35,7 +37,7 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
     return (
         <>
             <Extension region={ExtensionRegion.ShippingShippingAddressFormBefore} />
-            <div className="form-legend-container">
+            <div className={classNames('form-legend-container', { 'shipping-header': isNewMultiShippingUIEnabled })}>
                 <Legend testId="shipping-address-heading">
                     <TranslatedString
                         id={
@@ -52,6 +54,7 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
                     <>
                         <ConfirmationModal
                             action={handleShipToSingleConfirmation}
+                            actionButtonLabel={<TranslatedString id="common.proceed_action" />}
                             headerId="shipping.ship_to_single_action"
                             isModalOpen={isModalOpen}
                             messageId="shipping.ship_to_single_message"
