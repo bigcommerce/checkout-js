@@ -12,6 +12,7 @@ import { localizeAddress } from '@bigcommerce/checkout/locale';
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 
 import { withCheckout } from '../checkout';
+import { isExperimentEnabled } from '../common/utility';
 
 import AddressType from './AddressType';
 import isValidAddress from './isValidAddress';
@@ -30,18 +31,26 @@ export interface StaticAddressEditableProps extends StaticAddressProps {
 interface WithCheckoutStaticAddressProps {
     countries?: Country[];
     fields?: FormField[];
+    validateAddressFieldsExperimentEnabled?: boolean;
 }
 
 const StaticAddress: FunctionComponent<
     StaticAddressEditableProps & WithCheckoutStaticAddressProps
-> = ({ countries, fields, address: addressWithoutLocalization }) => {
-    const address = localizeAddress(addressWithoutLocalization, countries);
-    const isValid = !fields
-        ? !isEmpty(address)
-        : isValidAddress(
-              address,
-              fields.filter((field) => !field.custom),
-          );
+    > = ({
+        countries,
+        fields,
+        address: addressWithoutLocalization,
+        validateAddressFieldsExperimentEnabled
+    }) => {
+        const address = localizeAddress(addressWithoutLocalization, countries);
+        let isValid = !isEmpty(address);
+        
+        if (!!fields && !validateAddressFieldsExperimentEnabled) {
+            isValid = isValidAddress(
+                address,
+                fields.filter((field) => !field.custom),
+            );
+        }
 
     return !isValid ? null : (
         <div className="vcard checkout-address--static" data-test="static-address">
@@ -90,9 +99,17 @@ export function mapToStaticAddressProps(
 ): WithCheckoutStaticAddressProps | null {
     const {
         checkoutState: {
-            data: { getBillingCountries, getShippingCountries, getBillingAddressFields, getShippingAddressFields },
+            data: { getConfig, getBillingCountries, getShippingCountries, getBillingAddressFields, getShippingAddressFields },
         },
     } = context;
+
+    const config = getConfig();
+
+    const validateAddressFieldsExperimentEnabled =
+        isExperimentEnabled(
+            config?.checkoutSettings,
+            'CHECKOUT-7560_address_fields_max_length_validation',
+        );
 
     return {
         countries: type === AddressType.Billing
@@ -104,6 +121,7 @@ export function mapToStaticAddressProps(
                 : type === AddressType.Shipping
                 ? getShippingAddressFields(address.countryCode)
                 : undefined,
+        validateAddressFieldsExperimentEnabled,
     };
 }
 

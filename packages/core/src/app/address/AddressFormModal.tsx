@@ -31,6 +31,7 @@ export interface AddressFormProps {
     getFields(countryCode?: string): FormField[];
     onSaveAddress(address: AddressFormValues): void;
     onRequestClose?(): void;
+    validateAddressFields: boolean;
 }
 
 const SaveAddress: FunctionComponent<
@@ -101,11 +102,12 @@ const SaveAddressForm = withLanguage(
             company: '',
             shouldSaveAddress: false,
         }),
-        validationSchema: ({ language, getFields }: AddressFormProps & WithLanguageProps) =>
+        validationSchema: ({ language, getFields, validateAddressFields }: AddressFormProps & WithLanguageProps) =>
             lazy<Partial<AddressFormValues>>((values) =>
                 getAddressFormFieldsValidationSchema({
                     language,
                     formFields: getFields(values && values.countryCode),
+                    validateAddressFields,
                 }),
             ),
     })(SaveAddress),

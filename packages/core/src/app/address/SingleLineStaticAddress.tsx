@@ -4,6 +4,8 @@ import React from "react";
 
 import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
 
+import { isExperimentEnabled } from '../common/utility';
+
 import AddressType from "./AddressType";
 import isValidAddress from "./isValidAddress";
 
@@ -36,9 +38,16 @@ export const getAddressContent: (value: Address) => string = ({
 const SingleLineStaticAddress = ({ address, type }: SingleLineStaticAddressProps) => {
     const {
         checkoutState: {
-            data: { getBillingAddressFields, getShippingAddressFields },
+            data: { getConfig, getBillingAddressFields, getShippingAddressFields },
         }
     } = useCheckout();
+
+    const config = getConfig();
+    const validateAddressFieldsExperimentEnabled =
+        isExperimentEnabled(
+            config?.checkoutSettings,
+            'CHECKOUT-7560_address_fields_max_length_validation',
+        );
 
     const fields =
         type === AddressType.Billing
@@ -47,12 +56,15 @@ const SingleLineStaticAddress = ({ address, type }: SingleLineStaticAddressProps
                 ? getShippingAddressFields(address.countryCode)
                 : undefined;
 
-    const isValid = !fields
-        ? !isEmpty(address)
-        : isValidAddress(
+    let isValid = !isEmpty(address);
+    
+    if (!!fields && !validateAddressFieldsExperimentEnabled) {
+        isValid = isValidAddress(
             address,
             fields.filter((field) => !field.custom),
         );
+    }
+
 
     return !isValid ? null : (
         <div className="vcard checkout-address--static" data-test="static-address">

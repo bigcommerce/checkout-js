@@ -6,7 +6,7 @@ import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
 
 import { AddressFormModal, AddressFormValues, AddressSelect, AddressType, isValidAddress, mapAddressFromFormValues } from "../address";
 import { ErrorModal } from "../common/error";
-import { EMPTY_ARRAY, isFloatingLabelEnabled } from "../common/utility";
+import { EMPTY_ARRAY, isExperimentEnabled, isFloatingLabelEnabled } from "../common/utility";
 
 import { AssignItemFailedError, AssignItemInvalidAddressError } from "./errors";
 import { MultiShippingConsignmentData } from "./MultishippingV2Type";
@@ -57,8 +57,14 @@ const ConsignmentAddressSelector = ({
         },
     } = config;
 
+    const validateAddressFields =
+        isExperimentEnabled(
+            config.checkoutSettings,
+            'CHECKOUT-7560_address_fields_max_length_validation',
+        );
+
     const handleSelectAddress = async (address: Address) => {
-        if (!isValidAddress(address, getFields(address.countryCode))) {
+        if (!isValidAddress(address, getFields(address.countryCode), validateAddressFields)) {
             return onUnhandledError(new AssignItemInvalidAddressError());
         }
 
@@ -96,7 +102,7 @@ const ConsignmentAddressSelector = ({
     const handleSaveAddress = async (addressFormValues: AddressFormValues) => {
         const address = mapAddressFromFormValues(addressFormValues);
 
-        if (!isValidAddress(address, getFields(address.countryCode))) {
+        if (!isValidAddress(address, getFields(address.countryCode), validateAddressFields)) {
             return onUnhandledError(new AssignItemInvalidAddressError());
         }
 
@@ -141,6 +147,7 @@ const ConsignmentAddressSelector = ({
                 isOpen={isOpenNewAddressModal}
                 onRequestClose={handleCloseAddAddressForm}
                 onSaveAddress={handleSaveAddress}
+                validateAddressFields={validateAddressFields}
             />
             <AddressSelect
                 addresses={addresses}
