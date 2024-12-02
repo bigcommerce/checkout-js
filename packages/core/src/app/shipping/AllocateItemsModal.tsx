@@ -31,6 +31,7 @@ interface AllocateItemsModalProps {
     assignedItems?: MultiShippingTableData;
     onAllocateItems(consignmentLineItems: ConsignmentLineItem[]): void;
     onUnassignItem?(itemToDelete: MultiShippingTableItemWithType): void;
+    isLoading: boolean;
 }
 
 const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProps<AllocateItemsModalFormValues>> = ({
@@ -46,6 +47,7 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
     submitForm,
     errors,
     onUnassignItem,
+    isLoading,
 }: AllocateItemsModalProps & FormikProps<AllocateItemsModalFormValues>) => {
 
     const allocatedOrSelectedItemsMessage = useMemo(() => {
@@ -103,8 +105,25 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
 
     const modalFooter = (
         <>
-            <Button onClick={onRequestClose} variant={ButtonVariant.Secondary}><TranslatedString id="shipping.multishipping_items_allocate_cancel" /></Button>
-            <Button disabled={!dirty} onClick={submitForm} type="submit" variant={ButtonVariant.Primary}>{hasItemsAssigned ? <TranslatedString id="shipping.multishipping_items_allocate_save" /> : <TranslatedString id="shipping.multishipping_items_allocate_allocate" />}</Button>
+            <Button
+                disabled={isLoading}
+                onClick={onRequestClose}
+                variant={ButtonVariant.Secondary}
+            >
+                <TranslatedString id="shipping.multishipping_items_allocate_cancel" />
+            </Button>
+            <Button
+                disabled={!dirty}
+                isLoading={isLoading}
+                onClick={submitForm}
+                type="submit"
+                variant={ButtonVariant.Primary}
+            >
+                {hasItemsAssigned 
+                    ? <TranslatedString id="shipping.multishipping_items_allocate_save" /> 
+                    : <TranslatedString id="shipping.multishipping_items_allocate_allocate" />
+                }
+            </Button>
         </>
     );
 

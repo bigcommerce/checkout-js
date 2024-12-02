@@ -117,6 +117,7 @@ const ShippingForm = ({
 
         if (isNewMultiShippingUIEnabled) {
             return <MultiShippingFormV2
+                cartHasChanged={cartHasChanged}
                 countriesWithAutocomplete={countriesWithAutocomplete}
                 customerMessage={customerMessage}
                 defaultCountryCode={shippingAddress?.countryCode}

@@ -21,6 +21,7 @@ export interface AddressSelectProps {
     showSingleLineAddress?: boolean;
     onSelectAddress(address: Address): void;
     onUseNewAddress(currentAddress?: Address): void;
+    placeholderText?: React.JSX.Element;
 }
 
 const AddressSelectMenu: FunctionComponent<AddressSelectProps> = ({
@@ -65,6 +66,7 @@ const AddressSelect = ({
     showSingleLineAddress,
     onSelectAddress,
     onUseNewAddress,
+    placeholderText,
 }: AddressSelectProps) => {
     const { shouldShowPayPalFastlaneLabel } = usePayPalFastlaneAddress();
 
@@ -94,6 +96,7 @@ const AddressSelect = ({
                 >
                     <AddressSelectButton
                         addresses={addresses}
+                        placeholderText={placeholderText}
                         selectedAddress={selectedAddress}
                         showSingleLineAddress={showSingleLineAddress}
                         type={type}

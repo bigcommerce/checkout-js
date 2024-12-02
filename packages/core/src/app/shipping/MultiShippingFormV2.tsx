@@ -21,6 +21,7 @@ interface MultiShippingFormV2Values {
 }
 
 export interface MultiShippingFormV2Props {
+    cartHasChanged: boolean;
     customerMessage: string;
     defaultCountryCode?: string;
     countriesWithAutocomplete: string[];
@@ -34,6 +35,7 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
     defaultCountryCode,
     isLoading,
     onUnhandledError,
+    cartHasChanged,
 }: MultiShippingFormV2Props) => {
     const [isAddShippingDestination, setIsAddShippingDestination] = useState(false);
     const [errorConsignmentNumber, setErrorConsignmentNumber] = useState<number | undefined>();
@@ -138,6 +140,7 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
                 </div>
             )}
             <MultiShippingFormV2Footer
+                cartHasChanged={cartHasChanged}
                 isLoading={isLoading}
                 shouldDisableSubmit={shouldDisableSubmit}
                 shouldShowOrderComments={shouldShowOrderComments}
