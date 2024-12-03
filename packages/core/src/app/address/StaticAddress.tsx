@@ -31,7 +31,7 @@ export interface StaticAddressEditableProps extends StaticAddressProps {
 interface WithCheckoutStaticAddressProps {
     countries?: Country[];
     fields?: FormField[];
-    validateAddressFieldsExperimentEnabled?: boolean;
+    validateAddressFields?: boolean;
 }
 
 const StaticAddress: FunctionComponent<
@@ -40,12 +40,12 @@ const StaticAddress: FunctionComponent<
         countries,
         fields,
         address: addressWithoutLocalization,
-        validateAddressFieldsExperimentEnabled
+        validateAddressFields
     }) => {
         const address = localizeAddress(addressWithoutLocalization, countries);
         let isValid = !isEmpty(address);
         
-        if (!!fields && !validateAddressFieldsExperimentEnabled) {
+        if (!!fields && !validateAddressFields) {
             isValid = isValidAddress(
                 address,
                 fields.filter((field) => !field.custom),
@@ -105,7 +105,7 @@ export function mapToStaticAddressProps(
 
     const config = getConfig();
 
-    const validateAddressFieldsExperimentEnabled =
+    const validateAddressFields =
         isExperimentEnabled(
             config?.checkoutSettings,
             'CHECKOUT-7560_address_fields_max_length_validation',
@@ -121,7 +121,7 @@ export function mapToStaticAddressProps(
                 : type === AddressType.Shipping
                 ? getShippingAddressFields(address.countryCode)
                 : undefined,
-        validateAddressFieldsExperimentEnabled,
+        validateAddressFields,
     };
 }
 

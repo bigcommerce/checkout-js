@@ -128,6 +128,7 @@ describe('getFormFielsValidationSchema', () => {
         it('throws error for google maps autocomplete validation for max length', async () => {
             const formFieldsWithMaxLength = formFields.map(field => {
                 const { name } = field;
+                
                 return name === 'address1' ? { ...field, maxLength: 20 } : field;
             });
     
@@ -153,11 +154,12 @@ describe('getFormFielsValidationSchema', () => {
             const spy = jest.fn();
             const formFieldsWithMaxLength = formFields.map(field => {
                 const { name } = field;
+                
                 return name === 'address1' ? { ...field, maxLength: 20 } : field;
             });
     
-    
             const schema = getFormFieldsValidationSchema({ formFields: formFieldsWithMaxLength, translate });
+            
             await schema
                 .validate({
                     ...getShippingAddress(),
@@ -173,9 +175,11 @@ describe('getFormFielsValidationSchema', () => {
         it('throws error for address field 1 validation for max length', async () => {
             const formFieldsWithMaxLength = formFields.map(field => {
                 const { name } = field;
+                
                 if(name === 'address1') {
                     return { ...field, maxLength: 15 };
                 }
+                
                 return field;
             });
     
@@ -199,9 +203,11 @@ describe('getFormFielsValidationSchema', () => {
         it('throws error for address field 2 validation for max length', async () => {
             const formFieldsWithMaxLength = formFields.map(field => {
                 const { name } = field;
+                
                 if(name === 'address2') {
                     return { ...field, maxLength: 10 };
                 }
+                
                 return field;
             });
     
@@ -226,10 +232,12 @@ describe('getFormFielsValidationSchema', () => {
             const spy = jest.fn();
             const formFieldsWithMaxLength = formFields.map(field => {
                 const { name } = field;
+                
                 return name === 'address1' ? { ...field, maxLength: 20 } : field;
             });
     
             const schema = getFormFieldsValidationSchema({ formFields: formFieldsWithMaxLength, translate });
+            
             await schema
                 .validate({
                     ...getShippingAddress(),
