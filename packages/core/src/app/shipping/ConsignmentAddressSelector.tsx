@@ -102,10 +102,6 @@ const ConsignmentAddressSelector = ({
     const handleSaveAddress = async (addressFormValues: AddressFormValues) => {
         const address = mapAddressFromFormValues(addressFormValues);
 
-        if (!isValidAddress(address, getFields(address.countryCode), validateAddressFields)) {
-            return onUnhandledError(new AssignItemInvalidAddressError());
-        }
-
         await handleSelectAddress(address);
 
         try {
@@ -147,7 +143,6 @@ const ConsignmentAddressSelector = ({
                 isOpen={isOpenNewAddressModal}
                 onRequestClose={handleCloseAddAddressForm}
                 onSaveAddress={handleSaveAddress}
-                validateAddressFields={validateAddressFields}
             />
             <AddressSelect
                 addresses={addresses}

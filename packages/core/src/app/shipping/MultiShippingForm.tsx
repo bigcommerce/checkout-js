@@ -101,7 +101,6 @@ class MultiShippingForm extends PureComponent<
             countriesWithAutocomplete,
             googleMapsApiKey,
             isFloatingLabelEnabled,
-            validateAddressFields,
         } = this.props;
 
         const { items, itemAddingAddress, createCustomerAddressError } = this.state;
@@ -130,7 +129,6 @@ class MultiShippingForm extends PureComponent<
                     isOpen={!!itemAddingAddress}
                     onRequestClose={this.handleCloseAddAddressForm}
                     onSaveAddress={this.handleSaveAddress}
-                    validateAddressFields={validateAddressFields}
                 />
 
                 <Form>
