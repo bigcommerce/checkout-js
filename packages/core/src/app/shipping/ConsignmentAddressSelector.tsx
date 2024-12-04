@@ -10,6 +10,7 @@ import { EMPTY_ARRAY, isFloatingLabelEnabled } from "../common/utility";
 
 import { AssignItemFailedError, AssignItemInvalidAddressError } from "./errors";
 import { MultiShippingConsignmentData } from "./MultishippingV2Type";
+import { setRecommendedOrMissingShippingOption } from './MultiShippingSelectShippingOption';
 
 interface ConsignmentAddressSelectorProps {
     consignment?: MultiShippingConsignmentData;
@@ -35,9 +36,19 @@ const ConsignmentAddressSelector = ({
 
     const {
         checkoutState: {
-            data: { getShippingCountries, getCustomer, getConfig, getShippingAddressFields: getFields },
+            data: {
+                getShippingCountries,
+                getCustomer,
+                getConfig,
+                getConsignments: getPreviousConsignments,
+                getShippingAddressFields: getFields,
+            },
         },
-        checkoutService: { assignItemsToAddress: assignItem, createCustomerAddress },
+        checkoutService: {
+            assignItemsToAddress: assignItem,
+            createCustomerAddress,
+            selectConsignmentShippingOption,
+        },
     } = useCheckout();
 
     const countries = getShippingCountries() || EMPTY_ARRAY;
@@ -49,7 +60,7 @@ const ConsignmentAddressSelector = ({
     }
 
     const isFloatingLabelEnabledFlag = isFloatingLabelEnabled(config.checkoutSettings);
-    // TODO: add filter for addresses 
+    // TODO: add filter for addresses
     const addresses = customer.addresses || EMPTY_ARRAY;
     const {
         checkoutSettings: {
@@ -73,11 +84,22 @@ const ConsignmentAddressSelector = ({
         }
 
         try {
-            await assignItem({
+            const {
+                data: { getConsignments },
+            } = await assignItem({
                 address,
                 lineItems: consignment.lineItems.map(({ id, quantity }) => ({ itemId: id, quantity })),
             });
 
+            const currentConsignments = getConsignments();
+
+            if (currentConsignments) {
+                await setRecommendedOrMissingShippingOption(
+                    getPreviousConsignments() ?? [],
+                    currentConsignments,
+                    selectConsignmentShippingOption,
+                );
+            }
         } catch (error) {
             if (error instanceof Error) {
                 onUnhandledError(new AssignItemFailedError(error));

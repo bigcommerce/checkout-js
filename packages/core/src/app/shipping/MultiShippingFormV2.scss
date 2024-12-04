@@ -102,7 +102,7 @@ $allocate-items-table-image-width-small-screen: 40%;
     bottom: auto;
     left: 50%;
     transform: translate(-50%, -50%);
-    
+
     @include breakpoint("small") {
         max-height: 75vh;
     }
@@ -289,9 +289,5 @@ $allocate-items-table-image-width-small-screen: 40%;
 }
 
 .shipping-option-item {
-    display: block;
-
-    ul{
-        margin: 0 0 spacing("quarter") 0;
-    }
+    margin: 0 0 spacing("quarter") 0;
 }

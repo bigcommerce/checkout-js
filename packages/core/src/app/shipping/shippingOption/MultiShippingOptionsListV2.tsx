@@ -1,5 +1,5 @@
 import { ShippingOption } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, memo, useCallback } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
@@ -20,19 +20,12 @@ const MultiShippingOptionsListV2: FunctionComponent<MultiShippingOptionsListV2Pr
     selectedShippingOptionId,
     onSelectedOption,
 }) => {
-    const handleSelect = useCallback(
-        (value: string) => {
-            onSelectedOption(consignmentId, value);
-        },
-        [consignmentId, onSelectedOption],
-    );
-
     return (
         <LoadingOverlay isLoading={isLoading}>
             {shippingOptions.map((shippingOption) => (
                 <MultiShippingOptionsListItemV2
                     consignmentId={consignmentId}
-                    handleSelect={handleSelect}
+                    handleSelect={onSelectedOption}
                     key={shippingOption.id}
                     selectedShippingOptionId={selectedShippingOptionId}
                     shippingOption={shippingOption}
