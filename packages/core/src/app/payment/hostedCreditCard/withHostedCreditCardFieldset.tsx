@@ -1,7 +1,7 @@
 import {
     CardInstrument,
-    HostedFormOptions,
     Instrument,
+    LegacyHostedFormOptions,
     PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
 import { compact, forIn } from 'lodash';
@@ -44,7 +44,7 @@ export interface WithInjectedHostedCreditCardFieldsetProps {
     hostedFieldset: ReactNode;
     hostedStoredCardValidationSchema: ObjectSchema<HostedInstrumentValidationSchemaShape>;
     hostedValidationSchema: ObjectSchema<HostedCreditCardValidationSchemaShape>;
-    getHostedFormOptions(selectedInstrument?: CardInstrument): Promise<HostedFormOptions>;
+    getHostedFormOptions(selectedInstrument?: CardInstrument): Promise<LegacyHostedFormOptions>;
     getHostedStoredCardValidationFieldset(selectedInstrument?: CardInstrument): ReactNode;
 }
 
@@ -89,7 +89,7 @@ export default function withHostedCreditCardFieldset<
 
         const getHostedFormOptions: (
             selectedInstrument?: CardInstrument,
-        ) => Promise<HostedFormOptions> = useCallback(
+        ) => Promise<LegacyHostedFormOptions> = useCallback(
             async (selectedInstrument) => {
                 const styleProps = ['color', 'fontFamily', 'fontSize', 'fontWeight'];
                 const isInstrumentCardNumberRequired = selectedInstrument
