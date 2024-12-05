@@ -5,7 +5,6 @@ import {
     FormField,
     ShippingInitializeOptions,
 } from '@bigcommerce/checkout-sdk';
-import { isEmpty } from 'lodash';
 import React, { FunctionComponent, memo } from 'react';
 
 import { localizeAddress } from '@bigcommerce/checkout/locale';
@@ -15,7 +14,7 @@ import { withCheckout } from '../checkout';
 import { isExperimentEnabled } from '../common/utility';
 
 import AddressType from './AddressType';
-import isValidAddress from './isValidAddress';
+import isValidStaticAddress from './isValidStaticAddress';
 
 import './StaticAddress.scss';
 
@@ -40,17 +39,10 @@ const StaticAddress: FunctionComponent<
         countries,
         fields,
         address: addressWithoutLocalization,
-        validateAddressFields
+        validateAddressFields = false,
     }) => {
-        const address = localizeAddress(addressWithoutLocalization, countries);
-        let isValid = !isEmpty(address);
-        
-        if (!!fields && !validateAddressFields) {
-            isValid = isValidAddress(
-                address,
-                fields.filter((field) => !field.custom),
-            );
-        }
+    const address = localizeAddress(addressWithoutLocalization, countries);
+    const isValid = isValidStaticAddress(address, validateAddressFields, fields);
 
     return !isValid ? null : (
         <div className="vcard checkout-address--static" data-test="static-address">

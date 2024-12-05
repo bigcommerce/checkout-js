@@ -1,5 +1,4 @@
 import { Address } from '@bigcommerce/checkout-sdk';
-import { isEmpty } from 'lodash';
 import React from "react";
 
 import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
@@ -7,7 +6,7 @@ import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
 import { isExperimentEnabled } from '../common/utility';
 
 import AddressType from "./AddressType";
-import isValidAddress from "./isValidAddress";
+import isValidStaticAddress from './isValidStaticAddress';
 
 export interface SingleLineStaticAddressProps {
     address: Address;
@@ -56,15 +55,7 @@ const SingleLineStaticAddress = ({ address, type }: SingleLineStaticAddressProps
                 ? getShippingAddressFields(address.countryCode)
                 : undefined;
 
-    let isValid = !isEmpty(address);
-    
-    if (!!fields && !validateAddressFields) {
-        isValid = isValidAddress(
-            address,
-            fields.filter((field) => !field.custom),
-        );
-    }
-
+    const isValid = isValidStaticAddress(address, validateAddressFields, fields);
 
     return !isValid ? null : (
         <div className="vcard checkout-address--static" data-test="static-address">
