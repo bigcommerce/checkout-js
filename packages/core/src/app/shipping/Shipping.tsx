@@ -31,6 +31,7 @@ import { PaymentMethodId } from '../payment/paymentMethod';
 import { UnassignItemError } from './errors';
 import getShippableItemsCount from './getShippableItemsCount';
 import getShippingMethodId from './getShippingMethodId';
+import hasPromotionalItems from './hasPromotionalItems';
 import { MultiShippingFormValues } from './MultiShippingForm';
 import ShippingForm from './ShippingForm';
 import ShippingHeader from './ShippingHeader';
@@ -53,6 +54,7 @@ export interface ShippingProps {
 export interface WithCheckoutShippingProps {
     billingAddress?: Address;
     cart: Cart;
+    cartHasPromotionalItems: boolean;
     consignments: Consignment[];
     countries: Country[];
     countriesWithAutocomplete: string[];
@@ -109,10 +111,17 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             loadShippingOptions,
             onReady = noop,
             onUnhandledError = noop,
+            cartHasPromotionalItems,
+            isMultiShippingMode,
+            isNewMultiShippingUIEnabled,
         } = this.props;
 
         try {
             await Promise.all([loadShippingAddressFields(), loadShippingOptions(), loadBillingAddressFields()]);
+
+            if(cartHasPromotionalItems && isMultiShippingMode && isNewMultiShippingUIEnabled) {
+                await this.handleMultiShippingModeSwitch();
+            }
 
             onReady();
         } catch (error) {
@@ -138,6 +147,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             isFloatingLabelEnabled,
             shouldRenderStripeForm,
             shouldRenderWhileLoading,
+            cartHasPromotionalItems,
             ...shippingFormProps
         } = this.props;
 
@@ -170,6 +180,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             <AddressFormSkeleton isLoading={isInitializing} renderWhileLoading={shouldRenderWhileLoading}>
                 <div className="checkout-form">
                     <ShippingHeader
+                        cartHasPromotionalItems={cartHasPromotionalItems}
                         isGuest={isGuest}
                         isMultiShippingMode={isMultiShippingMode}
                         isNewMultiShippingUIEnabled={isNewMultiShippingUIEnabled}
@@ -436,6 +447,7 @@ export function mapToShippingProps({
         assignItem: checkoutService.assignItemsToAddress,
         billingAddress: getBillingAddress(),
         cart,
+        cartHasPromotionalItems: hasPromotionalItems(cart),
         consignments,
         countries: getShippingCountries() || EMPTY_ARRAY,
         countriesWithAutocomplete,
