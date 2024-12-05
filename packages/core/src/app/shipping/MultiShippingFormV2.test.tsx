@@ -79,7 +79,7 @@ describe('MultiShippingFormV2 Component', () => {
         });
     });
 
-    it('renders correct allocate items in banner if bundled items are present', async () => {
+    it('renders correct allocated items in banner if bundled items are present', async () => {
         jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
             ...getCheckout(),
             consignments: [],

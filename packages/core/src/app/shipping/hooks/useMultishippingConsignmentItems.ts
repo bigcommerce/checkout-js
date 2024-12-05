@@ -81,8 +81,6 @@ function mapConsignmentsItems(
             }
         });
 
-        console.log(consignmentLineItems);
-
         consignmentList.push({
             ...consignment,
             consignmentNumber: index + 1,
