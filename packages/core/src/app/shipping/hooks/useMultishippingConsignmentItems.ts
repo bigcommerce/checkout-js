@@ -10,6 +10,15 @@ interface MultiShippingConsignmentItemsHook {
     consignmentList: MultiShippingConsignmentData[];
 }
 
+// TODO: consolidate this from /app/order/removeBundledItems
+function removeBundledItems(lineItems: LineItemMap): LineItemMap {
+    return {
+        ...lineItems,
+        physicalItems: lineItems.physicalItems.filter((item) => typeof item.parentId !== 'string'),
+        digitalItems: lineItems.digitalItems.filter((item) => typeof item.parentId !== 'string'),
+    };
+}
+
 const calculateShippableItemsCount = (items: MultiShippingTableItemWithType[]): number => {
     return items.reduce((total, item) => total + item.quantity, 0);
 };
@@ -52,8 +61,7 @@ function mapConsignmentsItems(
     lineItems.physicalItems.forEach((item) => {
         unassignedItemsMap.set(item.id.toString(), { ...item, type: LineItemType.Physical });
         itemHashMap.set(item.id.toString(), generateItemHash(item));
-    }
-    );
+    });
     lineItems.customItems?.forEach((item) =>
         unassignedItemsMap.set(item.id, { ...item, type: LineItemType.Custom }),
     );
@@ -72,6 +80,8 @@ function mapConsignmentsItems(
                 unassignedItemsMap.delete(itemId);
             }
         });
+
+        console.log(consignmentLineItems);
 
         consignmentList.push({
             ...consignment,
@@ -122,8 +132,10 @@ export const useMultiShippingConsignmentItems = (): MultiShippingConsignmentItem
         consignments,
     } = checkout;
 
+    const nonBundledLineItems = removeBundledItems(lineItems);
+
     const { consignmentList, unassignedItems } =
-        mapConsignmentsItems(lineItems, consignments);
+        mapConsignmentsItems(nonBundledLineItems, consignments);
 
     return {
         unassignedItems,
