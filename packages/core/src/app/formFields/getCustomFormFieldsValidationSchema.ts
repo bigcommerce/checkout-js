@@ -28,6 +28,7 @@ export interface FormFieldsValidationSchemaOptions {
     formFields: FormField[];
     translate?: TranslateValidationErrorFunction;
     validateGoogleMapAutoCompleteMaxLength?: boolean;
+    validateAddressFields?: boolean;
 }
 
 export interface CustomFormFieldValues {

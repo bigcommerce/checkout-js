@@ -5,8 +5,8 @@ import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/
 
 
 import { AddressSelectProps } from './AddressSelect';
-import StaticAddress from './StaticAddress';
 import SingleLineStaticAddress from './SingleLineStaticAddress';
+import StaticAddress from './StaticAddress';
 
 type AddressSelectButtonProps = Pick<AddressSelectProps, 'selectedAddress' | 'addresses' | 'type' | 'showSingleLineAddress'>;
 

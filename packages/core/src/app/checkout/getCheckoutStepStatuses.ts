@@ -172,8 +172,13 @@ const getShippingStepStatus = createSelector(
     },
     ({ data }: CheckoutSelectors) => data.getConfig(),
     (shippingAddress, consignments, cart, shippingAddressFields, config) => {
+        const validateAddressFields =
+            isExperimentEnabled(
+                config?.checkoutSettings,
+                'CHECKOUT-7560_address_fields_max_length_validation'
+            );
         const hasAddress = shippingAddress
-            ? isValidAddress(shippingAddress, shippingAddressFields)
+            ? isValidAddress(shippingAddress, shippingAddressFields, validateAddressFields)
             : false;
         const hasOptions = consignments ? hasSelectedShippingOptions(consignments) : false;
         const hasUnassignedItems =

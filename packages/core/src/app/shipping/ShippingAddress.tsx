@@ -31,6 +31,7 @@ export interface ShippingAddressProps {
     shouldShowSaveAddress?: boolean;
     hasRequestedShippingOptions: boolean;
     isFloatingLabelEnabled?: boolean;
+    validateAddressFields: boolean;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     initialize(options: ShippingInitializeOptions): Promise<CheckoutSelectors>;
     onAddressSelect(address: Address): void;
@@ -56,6 +57,7 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = (props) => {
         addresses,
         shouldShowSaveAddress,
         isFloatingLabelEnabled,
+        validateAddressFields,
     } = props;
 
     const { shouldShowPayPalFastlaneShippingForm } = usePayPalFastlaneAddress();
@@ -103,6 +105,7 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = (props) => {
             onFieldChange={handleFieldChange}
             onUseNewAddress={onUseNewAddress}
             shouldShowSaveAddress={shouldShowSaveAddress}
+            validateAddressFields={validateAddressFields}
         />
     );
 };
