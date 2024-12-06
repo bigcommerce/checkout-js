@@ -10,7 +10,7 @@ import { EMPTY_ARRAY, isFloatingLabelEnabled } from "../common/utility";
 
 import { AssignItemFailedError, AssignItemInvalidAddressError } from "./errors";
 import { MultiShippingConsignmentData } from "./MultishippingV2Type";
-import { setRecommendedOrMissingShippingOption } from './MultiShippingSelectShippingOption';
+import { setRecommendedOrMissingShippingOption } from './utils';
 
 interface ConsignmentAddressSelectorProps {
     consignment?: MultiShippingConsignmentData;
@@ -93,7 +93,7 @@ const ConsignmentAddressSelector = ({
 
             const currentConsignments = getConsignments();
 
-            if (currentConsignments) {
+            if (currentConsignments && currentConsignments.length > 0) {
                 await setRecommendedOrMissingShippingOption(
                     getPreviousConsignments() ?? [],
                     currentConsignments,

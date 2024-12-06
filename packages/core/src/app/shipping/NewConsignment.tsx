@@ -12,7 +12,7 @@ import AllocateItemsModal from "./AllocateItemsModal";
 import ConsignmentAddressSelector from './ConsignmentAddressSelector';
 import { AssignItemFailedError } from "./errors";
 import { useMultiShippingConsignmentItems } from "./hooks/useMultishippingConsignmentItems";
-import { setRecommendedOrMissingShippingOption } from './MultiShippingSelectShippingOption';
+import { setRecommendedOrMissingShippingOption } from './utils';
 
 interface NewConsignmentProps {
     consignmentNumber: number;
@@ -88,7 +88,7 @@ const NewConsignment = ({
             setIsAddShippingDestination(false);
             resetErrorConsignmentNumber();
 
-            if (currentConsignments) {
+            if (currentConsignments && currentConsignments.length > 0) {
                 await setRecommendedOrMissingShippingOption(
                     getPreviousConsignments() ?? [],
                     currentConsignments,

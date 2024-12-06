@@ -24,15 +24,18 @@ export const setRecommendedOrMissingShippingOption = async (
             if (previousShippingOptionId) {
                 // eslint-disable-next-line no-await-in-loop
                 await selectConsignmentShippingOption(consignment.id, previousShippingOptionId);
-            } else {
-                const recommendedOption = consignment.availableShippingOptions?.find(
-                    (option) => option.isRecommended,
-                );
 
-                if (recommendedOption) {
-                    // eslint-disable-next-line no-await-in-loop
-                    await selectConsignmentShippingOption(consignment.id, recommendedOption.id);
-                }
+                // eslint-disable-next-line no-continue
+                continue;
+            }
+
+            const recommendedOption = consignment.availableShippingOptions?.find(
+                (option) => option.isRecommended,
+            );
+
+            if (recommendedOption) {
+                // eslint-disable-next-line no-await-in-loop
+                await selectConsignmentShippingOption(consignment.id, recommendedOption.id);
             }
         }
     }
