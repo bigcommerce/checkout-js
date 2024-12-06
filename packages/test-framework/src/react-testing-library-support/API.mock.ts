@@ -519,7 +519,10 @@ const cartReadyForMultiShipping = {
         ...cart.cart,
         lineItems: {
             ...cart.cart.lineItems,
-            physicalItems: [physicalItem, { ...physicalItem, id: 'y', quantity: 2, sku: 'CLC2' }],
+            physicalItems: [
+                physicalItem,
+                { ...physicalItem, id: 'y', quantity: 2, sku: 'CLC2', name: 'Item 2' },
+            ],
         },
     },
     customer: {
@@ -589,6 +592,7 @@ const cartReadyForMultiShipping = {
             name: 'Discount Group',
         },
     },
+    consignment: [consignment],
 };
 
 const cartWithoutPhysicalItem = {

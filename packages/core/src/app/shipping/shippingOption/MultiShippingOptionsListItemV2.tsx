@@ -1,5 +1,5 @@
 import { ShippingOption } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, useCallback, useEffect } from 'react';
+import React, { FunctionComponent } from 'react';
 
 import { RadioInput } from '@bigcommerce/checkout/ui';
 
@@ -9,7 +9,7 @@ interface MultiShippingOptionsListItemV2Props {
     consignmentId: string;
     selectedShippingOptionId?: string;
     shippingOption: ShippingOption;
-    handleSelect: (value: string) => void;
+    handleSelect: (consignmentId: string, shippingOptionId: string) => void;
 }
 
 export const MultiShippingOptionsListItemV2: FunctionComponent<
@@ -22,29 +22,22 @@ export const MultiShippingOptionsListItemV2: FunctionComponent<
         </>
     );
 
-    const selectThisOption = useCallback(() => {
-        handleSelect(shippingOption.id);
-    }, [handleSelect, shippingOption.id]);
-
-    useEffect(() => {
-        if (!selectedShippingOptionId && shippingOption.isRecommended) {
-            selectThisOption();
-        }
-    }, [selectedShippingOptionId, shippingOption.isRecommended, selectThisOption]);
+    const selectThisOption = () => {
+        handleSelect(consignmentId, shippingOption.id);
+    };
 
     return (
-        <button className="shipping-option-item" onClick={selectThisOption}>
-            <ul>
-                <RadioInput
-                    checked={selectedShippingOptionId === shippingOption.id}
-                    id={`shippingOption-${shippingOption.id}`}
-                    key={shippingOption.id}
-                    label={label}
-                    name={`${consignmentId}-shippingMethod`}
-                    readOnly
-                    value={shippingOption.id}
-                />
-            </ul>
-        </button>
+        <ul className="shipping-option-item">
+            <RadioInput
+                checked={selectedShippingOptionId === shippingOption.id}
+                id={`shippingOption-${consignmentId}-${shippingOption.id}`}
+                key={`key-${consignmentId}-${shippingOption.id}`}
+                label={label}
+                name={`${consignmentId}-shippingMethod`}
+                onClick={selectThisOption}
+                readOnly
+                value={shippingOption.id}
+            />
+        </ul>
     );
 };

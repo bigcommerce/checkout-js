@@ -1,4 +1,4 @@
-import { ConsignmentCreateRequestBody, ConsignmentLineItem } from "@bigcommerce/checkout-sdk";
+import { Consignment, ConsignmentCreateRequestBody, ConsignmentLineItem } from "@bigcommerce/checkout-sdk";
 import { find } from "lodash";
 import React, { useMemo, useState } from "react";
 
@@ -12,14 +12,16 @@ import AllocateItemsModal from "./AllocateItemsModal";
 import ConsignmentAddressSelector from './ConsignmentAddressSelector';
 import { AssignItemFailedError } from "./errors";
 import { useMultiShippingConsignmentItems } from "./hooks/useMultishippingConsignmentItems";
+import { setRecommendedOrMissingShippingOption } from './utils';
 
 interface NewConsignmentProps {
     consignmentNumber: number;
     defaultCountryCode?: string;
     countriesWithAutocomplete: string[];
     isLoading: boolean;
+    setIsAddShippingDestination: React.Dispatch<React.SetStateAction<boolean>>;
     onUnhandledError(error: Error): void;
-    setIsAddShippingDestination: React.Dispatch<React.SetStateAction<boolean>>
+    resetErrorConsignmentNumber(): void;
 }
 
 const NewConsignment = ({
@@ -28,6 +30,7 @@ const NewConsignment = ({
     defaultCountryCode,
     isLoading,
     onUnhandledError,
+    resetErrorConsignmentNumber,
     setIsAddShippingDestination,
 }: NewConsignmentProps) => {
     const [consignmentRequest, setConsignmentRequest] = useState<ConsignmentCreateRequestBody | undefined>();
@@ -36,9 +39,9 @@ const NewConsignment = ({
 
     const {
         checkoutState: {
-            data: { getShippingCountries },
+            data: { getShippingCountries, getConsignments: getPreviousConsignments },
         },
-        checkoutService: { assignItemsToAddress: assignItem },
+        checkoutService: { assignItemsToAddress: assignItem, selectConsignmentShippingOption },
     } = useCheckout();
 
     const selectedAddress = useMemo(() => {
@@ -61,15 +64,21 @@ const NewConsignment = ({
     }
 
     const handleAllocateItems = async (consignmentLineItems: ConsignmentLineItem[]) => {
+        let currentConsignments: Consignment[] | undefined;
+
         if (!selectedAddress) {
             return;
         }
 
         try {
-            await assignItem({
+            const {
+                data: { getConsignments },
+            } = await assignItem({
                 address: selectedAddress,
                 lineItems: consignmentLineItems,
             });
+
+            currentConsignments = getConsignments();
         } catch (error) {
             if (error instanceof AssignItemFailedError) {
                 onUnhandledError(error);
@@ -77,6 +86,15 @@ const NewConsignment = ({
         } finally {
             toggleAllocateItemsModal();
             setIsAddShippingDestination(false);
+            resetErrorConsignmentNumber();
+
+            if (currentConsignments && currentConsignments.length > 0) {
+                await setRecommendedOrMissingShippingOption(
+                    getPreviousConsignments() ?? [],
+                    currentConsignments,
+                    selectConsignmentShippingOption,
+                );
+            }
         }
     };
 

@@ -119,6 +119,7 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
                     defaultCountryCode={defaultCountryCode}
                     isLoading={isLoading}
                     onUnhandledError={onUnhandledError}
+                    resetErrorConsignmentNumber={resetErrorConsignmentNumber}
                     setIsAddShippingDestination={setIsAddShippingDestination}
                 />)
             }
