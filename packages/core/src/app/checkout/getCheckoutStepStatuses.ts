@@ -124,6 +124,11 @@ const getBillingStepStatus = createSelector(
             };
         }
 
+        const isUsingGooglePay =
+            checkout && checkout.payments
+                ? checkout.payments.some((payment) => (payment?.providerId || '').startsWith('googlepay'))
+                : false;
+
         const isUsingPaypal =
             checkout && checkout.payments
                 ? checkout.payments.some(
@@ -139,7 +144,7 @@ const getBillingStepStatus = createSelector(
                             .includes(payment.providerId))
                 : false;
 
-        if (isUsingPaypal) {
+        if (isUsingPaypal || isUsingGooglePay) {
             return {
                 type: CheckoutStepType.Billing,
                 isActive: false,
