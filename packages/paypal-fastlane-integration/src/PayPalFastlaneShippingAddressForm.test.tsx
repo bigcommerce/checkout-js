@@ -2,7 +2,10 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { getCustomer } from '@bigcommerce/checkout/test-mocks';
 import { createCheckoutService } from '@bigcommerce/checkout-sdk';
-import PayPalFastlaneShippingAddressForm, { PayPalFastlaneStaticAddressProps } from './PayPalFastlaneShippingAddressForm';
+import PayPalFastlaneShippingAddressForm, {
+    PayPalFastlaneAddressComponentRef,
+    PayPalFastlaneStaticAddressProps
+} from './PayPalFastlaneShippingAddressForm';
 
 jest.mock('@bigcommerce/checkout/locale', () => ({
     __esModule: true,
@@ -29,6 +32,7 @@ describe('PayPalFastlaneShippingAddressForm', () => {
     beforeEach(() => {
         defaultProps = {
             address: getCustomer().addresses[0],
+            paypalFastlaneShippingComponentRef: React.createRef<PayPalFastlaneAddressComponentRef>(),
             formFields: [
                 {
                     custom: false,

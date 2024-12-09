@@ -393,7 +393,7 @@ describe('ShippingForm Component', () => {
                 <CheckoutProvider checkoutService={checkoutService}>
                     <LocaleContext.Provider value={localeContext}>
                         <ExtensionProvider checkoutService={checkoutService}>
-                            <ShippingForm {...ShippingFormProps} methodId={PaymentMethodId.BraintreeAcceleratedCheckout} />
+                            <ShippingForm {...ShippingFormProps} methodId="notPPFastlaneMethodID" />
                         </ExtensionProvider>
                     </LocaleContext.Provider>
                 </CheckoutProvider>,
@@ -402,82 +402,6 @@ describe('ShippingForm Component', () => {
             expect(component.find(SingleShippingForm).props()).toEqual(
                 expect.objectContaining({
                     addresses: defaultProps.addresses,
-                }),
-            );
-            expect(initializeMock).not.toHaveBeenCalled();
-        });
-
-        it('renders SingleShippingForm with paypal addresses list for guests when PayPal Fastlane enabled', () => {
-            const initializeMock = jest.fn();
-            const shippingFormProps = {
-                ...defaultProps,
-                initialize: initializeMock,
-                isGuest: true,
-            };
-            const paypalFastlaneAddresses: CustomerAddress[] = [
-                {
-                    ...getShippingAddress(),
-                    id: 123,
-                    type: 'paypal-address',
-                }
-            ];
-
-            (usePayPalFastlaneAddress as jest.Mock).mockReturnValue({
-                isPayPalFastlaneEnabled: true,
-                paypalFastlaneAddresses,
-            });
-
-            component = mount(
-                <CheckoutProvider checkoutService={checkoutService}>
-                    <LocaleContext.Provider value={localeContext}>
-                        <ExtensionProvider checkoutService={checkoutService}>
-                            <ShippingForm {...shippingFormProps} methodId={PaymentMethodId.BraintreeAcceleratedCheckout} />
-                        </ExtensionProvider>
-                    </LocaleContext.Provider>
-                </CheckoutProvider>,
-            );
-
-            expect(component.find(SingleShippingForm).props()).toEqual(
-                expect.objectContaining({
-                    addresses: paypalFastlaneAddresses,
-                }),
-            );
-        });
-
-        it('renders shipping for with paypal fastlane addresses without strategy initialization if there is preselected shipping method id', () => {
-            const initializeMock = jest.fn();
-            const shippingFormProps = {
-                ...defaultProps,
-                initialize: initializeMock,
-                isGuest: true,
-            };
-            const paypalFastlaneAddresses: CustomerAddress[] = [
-                {
-                    ...getShippingAddress(),
-                    id: 123,
-                    type: 'paypal-address',
-                }
-            ];
-
-            (usePayPalFastlaneAddress as jest.Mock).mockReturnValue({
-                isPayPalFastlaneEnabled: true,
-                paypalFastlaneAddresses,
-                shouldShowPayPalFastlaneShippingForm: true,
-            });
-
-            component = mount(
-                <CheckoutProvider checkoutService={checkoutService}>
-                    <LocaleContext.Provider value={localeContext}>
-                        <ExtensionProvider checkoutService={checkoutService}>
-                            <ShippingForm {...shippingFormProps} methodId="notPPFastlaneMethodID" />
-                        </ExtensionProvider>
-                    </LocaleContext.Provider>
-                </CheckoutProvider>,
-            );
-
-            expect(component.find(SingleShippingForm).props()).toEqual(
-                expect.objectContaining({
-                    addresses: paypalFastlaneAddresses,
                 }),
             );
             expect(initializeMock).not.toHaveBeenCalled();
