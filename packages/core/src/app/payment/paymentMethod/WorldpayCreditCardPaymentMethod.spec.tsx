@@ -19,7 +19,6 @@ import { getCart } from '../../cart/carts.mock';
 import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
 import { getConsignment } from '../../shipping/consignment.mock';
-import { LoadingOverlay } from '../../ui/loading';
 import { Modal, ModalProps } from '../../ui/modal';
 import {
     withHostedCreditCardFieldset,
@@ -204,18 +203,6 @@ describe('WorldpayCreditCardPaymentMethod', () => {
         component.unmount();
 
         expect(defaultProps.deinitializePayment).toHaveBeenCalled();
-    });
-
-    it('renders loading overlay while waiting for method to initialize', () => {
-        let component: ReactWrapper;
-
-        component = mount(<WorldpayCreditCardPaymentMethodTest {...defaultProps} isInitializing />);
-
-        expect(component.find(LoadingOverlay).prop('isLoading')).toBe(true);
-
-        component = mount(<WorldpayCreditCardPaymentMethodTest {...defaultProps} />);
-
-        expect(component.find(LoadingOverlay).prop('isLoading')).toBe(false);
     });
 
     it('renders modal that hosts worldpay payment page', async () => {

@@ -196,16 +196,31 @@ describe('CreditCardPaymentMethod', () => {
         expect(defaultProps.deinitializePayment).toHaveBeenCalled();
     });
 
-    it('renders loading overlay while waiting for method to initialize', () => {
+    it('renders loading overlay while waiting for method to initialize', async () => {
         let component: ReactWrapper;
+        const mockInitializePayment = jest.fn().mockImplementation(() => {
+            return new Promise((resolve) => resolve(true));
+        });
 
         component = mount(<CreditCardPaymentMethodTest {...defaultProps} isInitializing />);
 
         expect(component.find(LoadingOverlay).prop('isLoading')).toBe(true);
 
-        component = mount(<CreditCardPaymentMethodTest {...defaultProps} />);
+        component = mount(
+            <CreditCardPaymentMethodTest
+                {...defaultProps}
+                initializePayment={mockInitializePayment}
+                isInitializing={false}
+            />
+        );
 
-        expect(component.find(LoadingOverlay).prop('isLoading')).toBe(false);
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        component.update();
+
+        const loadingOverlay = component.find(LoadingOverlay);
+        expect(loadingOverlay.prop('isLoading')).toBe(false);
+
     });
 
     it('renders credit card fieldset', () => {
