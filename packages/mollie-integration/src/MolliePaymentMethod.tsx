@@ -1,6 +1,6 @@
 import {
     CardInstrument,
-    HostedFormOptions,
+    LegacyHostedFormOptions,
     PaymentInitializeOptions,
 } from '@bigcommerce/checkout-sdk';
 import { compact, forIn, some } from 'lodash';
@@ -75,7 +75,7 @@ const MolliePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
     const getHostedFormOptions: (
         selectedInstrument?: CardInstrument,
-    ) => Promise<HostedFormOptions> = useCallback(
+    ) => Promise<LegacyHostedFormOptions> = useCallback(
         async (selectedInstrument) => {
             const styleProps = ['color', 'fontFamily', 'fontSize', 'fontWeight'];
             const isInstrumentCardNumberRequired = selectedInstrument
