@@ -1,35 +1,5 @@
 [
   {
-    "company": "AMA Group Gemini Pinkenba",
-    "street": "48 Randle Rd",
-    "suburb": "Pinkenba",
-    "state": "QLD",
-    "postcode": "4008",
-    "phone": "07 3557 5594",
-    "latitude": -27.42761,
-    "longitude": 153.1086
-  },
-  {
-    "company": "AMA Group Mackay",
-    "street": "13-15 Corporate Dr",
-    "suburb": "Paget",
-    "state": "QLD",
-    "postcode": "4740",
-    "phone": "07 4952 3244",
-    "latitude": -21.18459,
-    "longitude": 149.15547
-  },
-  {
-    "company": "AMA Group Townsville",
-    "street": "9 Vesuvius St",
-    "suburb": "Garbutt",
-    "state": "QLD",
-    "postcode": "4814",
-    "phone": "07 4779 9422",
-    "latitude": -19.27308,
-    "longitude": 146.76805
-  },
-  {
     "company": "Bobs Tyre Centre Hervey Bay",
     "street": "93 Main St",
     "suburb": "Pialba",
