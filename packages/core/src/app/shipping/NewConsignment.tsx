@@ -99,6 +99,7 @@ const NewConsignment = ({
                 <AllocateItemsModal
                     address={selectedAddress}
                     consignmentNumber={consignmentNumber}
+                    isLoading={isLoading}
                     isOpen={isOpenAllocateItemsModal}
                     onAllocateItems={handleAllocateItems}
                     onRequestClose={toggleAllocateItemsModal}

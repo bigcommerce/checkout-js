@@ -77,6 +77,12 @@ $allocate-items-table-image-width-small-screen: 40%;
     }
 }
 
+.modal.modal--afterOpen {
+    .button--tertiary {
+        border: none;
+    }
+}
+
 .modal.modal--afterOpen.modal.modal--confirm {
     min-height: 0;
     top: 50%;

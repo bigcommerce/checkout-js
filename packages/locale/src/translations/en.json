@@ -551,7 +551,8 @@
             "quantity_invalid_error": "Quantity must be a number",
             "quantity_max_error": "Quantity cannot exceed \"Left to allocate\" amount.",
             "quantity_min_error": "Quantity cannot be less than 0",
-            "custom_item_quantity_error": "All quantities of this custom product must be allocated to the same destination, as it was created specifically for this draft order."
+            "custom_item_quantity_error": "All quantities of this custom product must be allocated to the same destination, as it was created specifically for this draft order.",
+            "choose_shipping_address": "Choose a shipping address"
         },
         "social": {
             "share_action": "Share",
