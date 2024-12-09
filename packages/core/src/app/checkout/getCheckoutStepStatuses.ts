@@ -89,7 +89,8 @@ const getBillingStepStatus = createSelector(
             ? data.getBillingAddressFields(billingAddress.countryCode)
             : EMPTY_ARRAY;
     },
-    (checkout, billingAddress, billingAddressFields) => {
+    ({ data }: CheckoutSelectors) => data.getConfig(),
+    (checkout, billingAddress, billingAddressFields, config) => {
         const hasAddress = billingAddress
             ? isValidAddress(billingAddress, billingAddressFields)
             : false;
@@ -124,6 +125,15 @@ const getBillingStepStatus = createSelector(
             };
         }
 
+        const isGooglePayBillingAddressEditingEnabled = isExperimentEnabled(
+            config?.checkoutSettings,
+            'experiment name will be added here after adding it in LD',
+        );
+        const isUsingGooglePay =
+            isGooglePayBillingAddressEditingEnabled && (checkout && checkout.payments
+                ? checkout.payments.some((payment) => (payment?.providerId || '').startsWith('googlepay'))
+                : false);
+
         const isUsingPaypal =
             checkout && checkout.payments
                 ? checkout.payments.some(
@@ -139,7 +149,7 @@ const getBillingStepStatus = createSelector(
                             .includes(payment.providerId))
                 : false;
 
-        if (isUsingPaypal) {
+        if (isUsingPaypal || isUsingGooglePay) {
             return {
                 type: CheckoutStepType.Billing,
                 isActive: false,
