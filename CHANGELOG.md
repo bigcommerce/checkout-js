@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.546.1](https://github.com/bigcommerce/checkout-js/compare/v1.546.0...v1.546.1) (2024-12-10)
+
+
+### Bug Fixes
+
+* **shipping:** CHECKOUT-7560 add max length validation for address fields ([#2112](https://github.com/bigcommerce/checkout-js/issues/2112)) ([701985a](https://github.com/bigcommerce/checkout-js/commit/701985a8c9fed6b99c906fa27aee976c69d7cf78))
+* **shipping:** CHECKOUT-8872 Fix Missing Shipping Option ([#2114](https://github.com/bigcommerce/checkout-js/issues/2114)) ([d722410](https://github.com/bigcommerce/checkout-js/commit/d722410ce984e4574094d99a674a97460a2ecbe7))
+
 ## [1.546.0](https://github.com/bigcommerce/checkout-js/compare/v1.545.2...v1.546.0) (2024-12-09)
 
 
