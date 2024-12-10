@@ -37,7 +37,7 @@ describe('StaticAddress Component', () => {
                 ...getStoreConfig().checkoutSettings,
                 features: {
                     ...getStoreConfig().checkoutSettings.features,
-                    "CHECKOUT-7560_address_fields_max_length_validation": false,
+                    "CHECKOUT-7560.address_fields_max_length_validation": false,
                 }
             },
         });
@@ -162,7 +162,7 @@ describe('StaticAddress Component', () => {
                 ...getStoreConfig().checkoutSettings,
                 features: {
                     ...getStoreConfig().checkoutSettings.features,
-                    "CHECKOUT-7560_address_fields_max_length_validation": true,
+                    "CHECKOUT-7560.address_fields_max_length_validation": true,
                 }
             },
         });

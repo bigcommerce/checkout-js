@@ -45,7 +45,7 @@ const SingleLineStaticAddress = ({ address, type }: SingleLineStaticAddressProps
     const validateAddressFields =
         isExperimentEnabled(
             config?.checkoutSettings,
-            'CHECKOUT-7560_address_fields_max_length_validation',
+            'CHECKOUT-7560.address_fields_max_length_validation',
         );
 
     const fields =
