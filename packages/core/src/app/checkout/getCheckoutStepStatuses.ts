@@ -127,7 +127,7 @@ const getBillingStepStatus = createSelector(
 
         const isGooglePayBillingAddressEditingEnabled = isExperimentEnabled(
             config?.checkoutSettings,
-            'experiment name will be added here after adding it in LD',
+            'STRIPE-546.allow_billing_address_editing_for_all_Google_Pay_providers',
         );
         const isUsingGooglePay =
             isGooglePayBillingAddressEditingEnabled && (checkout && checkout.payments
