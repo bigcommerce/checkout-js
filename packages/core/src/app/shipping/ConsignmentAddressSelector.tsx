@@ -71,7 +71,7 @@ const ConsignmentAddressSelector = ({
     const validateAddressFields =
         isExperimentEnabled(
             config.checkoutSettings,
-            'CHECKOUT-7560_address_fields_max_length_validation',
+            'CHECKOUT-7560.address_fields_max_length_validation',
         );
 
     const handleSelectAddress = async (address: Address) => {
