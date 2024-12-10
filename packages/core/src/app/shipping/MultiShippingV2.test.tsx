@@ -178,7 +178,7 @@ describe('Multi-shipping V2', () => {
         // eslint-disable-next-line testing-library/no-unnecessary-act
         await act(async () => {
             await userEvent.click(screen.getByText(/Ship to multiple addresses/i));
-            await userEvent.click(screen.getByText(/Enter a new address/i));
+            await userEvent.click(screen.getByText(/Choose a shipping address/i));
             await userEvent.click(screen.getByText(/789 Test Ave/i));
             await userEvent.click(screen.getByText(/Allocate items/i));
             await userEvent.type(screen.getByLabelText('Quantity of Item 2'), '1');
