@@ -66,4 +66,43 @@ describe('isValidAddress()', () => {
             expect(output).toBe(false);
         });
     });
+
+    describe('address fields max length validation', () => {
+        it('returns false if address exceeds max length and experiment is on', () => {
+            const formFieldsWithMaxLength = getFormFields().map(field => {
+                const { name } = field;
+                
+                if(name === 'address1') {
+                    return { ...field, maxLength: 20 };
+                }
+                else if (name === 'address2') {
+                    return { ...field, maxLength: 10 };
+                }
+                
+                return field;
+            });
+            
+            expect(isValidAddress({ ...getAddress(), address1: 'this is a long address 1 from somewhere' }, formFieldsWithMaxLength, true )).toBe(false);
+            expect(isValidAddress({ ...getAddress(), address2: 'this is a long address 2' }, formFieldsWithMaxLength, true )).toBe(false);
+        });
+
+        it('returns true if address exceeds max length and experiment is off', () => {
+            const formFieldsWithMaxLength = getFormFields().map(field => {
+                const { name } = field;
+                
+                if(name === 'address1') {
+                    return { ...field, maxLength: 20 };
+                }
+                else if (name === 'address2') {
+                    return { ...field, maxLength: 10 };
+                }
+                
+                return field;
+            });
+            
+            expect(isValidAddress({ ...getAddress(), address1: 'this is a long address 1 from somewhere' }, formFieldsWithMaxLength, false )).toBe(true);
+            expect(isValidAddress({ ...getAddress(), address2: 'this is a long address 2' }, formFieldsWithMaxLength, false )).toBe(true);
+        });
+    })
+    
 });

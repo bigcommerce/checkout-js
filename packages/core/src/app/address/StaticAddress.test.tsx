@@ -9,6 +9,7 @@ import React, { FunctionComponent } from 'react';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
+import { getStoreConfig } from '../config/config.mock';
 import { getCountries } from '../geography/countries.mock';
 
 import { getAddress } from './address.mock';
@@ -29,6 +30,17 @@ describe('StaticAddress Component', () => {
         defaultProps = {
             address: getAddress(),
         };
+
+        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
+            ...getStoreConfig(),
+            checkoutSettings: {
+                ...getStoreConfig().checkoutSettings,
+                features: {
+                    ...getStoreConfig().checkoutSettings.features,
+                    "CHECKOUT-7560_address_fields_max_length_validation": false,
+                }
+            },
+        });
 
         jest.spyOn(checkoutState.data, 'getBillingCountries').mockReturnValue(getCountries());
         jest.spyOn(checkoutState.data, 'getShippingCountries').mockReturnValue(getCountries());
@@ -137,6 +149,31 @@ describe('StaticAddress Component', () => {
                     customFields: [{ fieldId: 'foobar', fieldValue: '' }],
                 }}
                 type={AddressType.Billing}
+            />,
+        );
+
+        expect(screen.getByTestId('static-address')).toBeInTheDocument();
+    });
+
+    it('renders component even if required fields are missing when experiment is on', () => {
+        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
+            ...getStoreConfig(),
+            checkoutSettings: {
+                ...getStoreConfig().checkoutSettings,
+                features: {
+                    ...getStoreConfig().checkoutSettings.features,
+                    "CHECKOUT-7560_address_fields_max_length_validation": true,
+                }
+            },
+        });
+
+        render(
+            <StaticAddressTest
+                address={{
+                    ...defaultProps.address,
+                    address1: '',
+                }}
+                type={AddressType.Shipping}
             />,
         );
 
