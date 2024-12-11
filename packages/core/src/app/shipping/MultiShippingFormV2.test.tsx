@@ -96,7 +96,13 @@ describe('MultiShippingFormV2 Component', () => {
             </CheckoutProvider>,
         );
 
-        await userEvent.click(screen.getByRole('button', { name: 'Add new destination' }));
+        await userEvent.click(
+            screen.getByRole('button', {
+                name: localeContext.language.translate(
+                    'shipping.multishipping_add_new_destination',
+                ),
+            }),
+        );
 
         expect(screen.getByText('Destination #1')).toBeInTheDocument();
         expect(
@@ -230,7 +236,11 @@ describe('MultiShippingFormV2 Component', () => {
 
         expect(screen.getByText('3 items left to allocate')).toBeInTheDocument();
 
-        const addShippingDestinationButton = screen.getByRole('button', { name: 'Add new destination' });
+        const addShippingDestinationButton = screen.getByRole('button', {
+            name: localeContext.language.translate(
+                'shipping.multishipping_add_new_destination',
+            ),
+        });
 
         expect(addShippingDestinationButton).toBeInTheDocument();
 
@@ -349,7 +359,9 @@ describe('MultiShippingFormV2 Component', () => {
 
         expect(screen.getByText('1 item left to allocate')).toBeInTheDocument();
 
-        const addShippingDestinationButton = screen.getByRole('button', { name: 'Add new destination' });
+        const addShippingDestinationButton = screen.getByRole('button', {
+            name: localeContext.language.translate('shipping.multishipping_add_new_destination'),
+        });
 
         expect(addShippingDestinationButton).toBeInTheDocument();
         await userEvent.click(addShippingDestinationButton);
