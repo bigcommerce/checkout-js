@@ -31,13 +31,12 @@ export interface MultiShippingFormV2Props {
 }
 
 const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
-    countriesWithAutocomplete,
-    defaultCountryCode,
-    isLoading,
-    onUnhandledError,
-    cartHasChanged,
-}: MultiShippingFormV2Props) => {
-    const [isAddShippingDestination, setIsAddShippingDestination] = useState(false);
+                                                                              countriesWithAutocomplete,
+                                                                              defaultCountryCode,
+                                                                              isLoading,
+                                                                              onUnhandledError,
+                                                                              cartHasChanged,
+                                                                          }: MultiShippingFormV2Props) => {
     const [errorConsignmentNumber, setErrorConsignmentNumber] = useState<number | undefined>();
 
     const {
@@ -49,6 +48,10 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
 
     const consignments = getConsignments() || EMPTY_ARRAY;
     const config = getConfig();
+
+    const [isAddShippingDestination, setIsAddShippingDestination] = useState(
+        consignments.length === 0,
+    );
 
     const isEveryConsignmentHasShippingOption = hasSelectedShippingOptions(consignments);
     const shouldDisableSubmit = useMemo(() => {
@@ -114,7 +117,7 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
                     shippingQuoteFailedMessage={shippingQuoteFailedMessage}
                 />
             ))}
-            {(consignments.length === 0 || isAddShippingDestination) && (
+            {isAddShippingDestination && (
                 <NewConsignment
                     consignmentNumber={consignments.length === 0 ? 1 : (consignments.length + 1)}
                     countriesWithAutocomplete={countriesWithAutocomplete}
