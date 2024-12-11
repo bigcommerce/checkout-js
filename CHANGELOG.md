@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.546.5](https://github.com/bigcommerce/checkout-js/compare/v1.546.4...v1.546.5) (2024-12-11)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-8824 Fix Error Message for First Consignment ([#2123](https://github.com/bigcommerce/checkout-js/issues/2123)) ([a17e4e0](https://github.com/bigcommerce/checkout-js/commit/a17e4e043363f48b400690b8a7b580a0514a88a1))
+
 ### [1.546.4](https://github.com/bigcommerce/checkout-js/compare/v1.546.3...v1.546.4) (2024-12-11)
 
 ### [1.546.3](https://github.com/bigcommerce/checkout-js/compare/v1.546.2...v1.546.3) (2024-12-11)
