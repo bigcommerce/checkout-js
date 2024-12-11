@@ -31,12 +31,12 @@ export interface MultiShippingFormV2Props {
 }
 
 const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
-                                                                              countriesWithAutocomplete,
-                                                                              defaultCountryCode,
-                                                                              isLoading,
-                                                                              onUnhandledError,
-                                                                              cartHasChanged,
-                                                                          }: MultiShippingFormV2Props) => {
+    countriesWithAutocomplete,
+    defaultCountryCode,
+    isLoading,
+    onUnhandledError,
+    cartHasChanged,
+}: MultiShippingFormV2Props) => {
     const [errorConsignmentNumber, setErrorConsignmentNumber] = useState<number | undefined>();
 
     const {
