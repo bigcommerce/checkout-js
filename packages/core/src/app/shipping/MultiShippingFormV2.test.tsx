@@ -79,6 +79,44 @@ describe('MultiShippingFormV2 Component', () => {
         });
     });
 
+    it('shows error when creating a new destination if destination 1 is incomplete.', async () => {
+        jest.spyOn(checkoutState.data, 'getConsignments').mockReturnValue([]);
+        jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
+            ...getCheckout(),
+            consignments: [],
+        });
+
+        render(
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <ExtensionProvider checkoutService={checkoutService} errorLogger={errorLogger} >
+                        <MultiShippingFormV2 {...defaultProps} />
+                    </ExtensionProvider>
+                </LocaleContext.Provider>
+            </CheckoutProvider>,
+        );
+
+        await userEvent.click(
+            screen.getByRole('button', {
+                name: localeContext.language.translate(
+                    'shipping.multishipping_add_new_destination',
+                ),
+            }),
+        );
+
+        expect(screen.getByText('Destination #1')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                localeContext.language.translate(
+                    'shipping.multishipping_incomplete_consignment_error',
+                    {
+                        consignmentNumber: 1,
+                    },
+                ),
+            ),
+        ).toBeInTheDocument();
+    });
+
     it('renders correct allocated items in banner if bundled items are present', async () => {
         jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
             ...getCheckout(),
@@ -198,7 +236,11 @@ describe('MultiShippingFormV2 Component', () => {
 
         expect(screen.getByText('3 items left to allocate')).toBeInTheDocument();
 
-        const addShippingDestinationButton = screen.getByRole('button', { name: 'Add new destination' });
+        const addShippingDestinationButton = screen.getByRole('button', {
+            name: localeContext.language.translate(
+                'shipping.multishipping_add_new_destination',
+            ),
+        });
 
         expect(addShippingDestinationButton).toBeInTheDocument();
 
@@ -317,7 +359,9 @@ describe('MultiShippingFormV2 Component', () => {
 
         expect(screen.getByText('1 item left to allocate')).toBeInTheDocument();
 
-        const addShippingDestinationButton = screen.getByRole('button', { name: 'Add new destination' });
+        const addShippingDestinationButton = screen.getByRole('button', {
+            name: localeContext.language.translate('shipping.multishipping_add_new_destination'),
+        });
 
         expect(addShippingDestinationButton).toBeInTheDocument();
         await userEvent.click(addShippingDestinationButton);
