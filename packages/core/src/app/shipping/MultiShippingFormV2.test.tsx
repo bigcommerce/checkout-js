@@ -8,6 +8,7 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
+import { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import {
     createLocaleContext,
     LocaleContext,
@@ -21,14 +22,13 @@ import { getAddressContent } from '../address/SingleLineStaticAddress';
 import { getCart } from '../cart/carts.mock';
 import { getCustomItem, getPhysicalItem } from '../cart/lineItem.mock';
 import { getCheckout } from '../checkout/checkouts.mock';
+import { createErrorLogger } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
 
 import { getConsignment } from './consignment.mock';
 import MultiShippingFormV2, { MultiShippingFormV2Props } from './MultiShippingFormV2';
 import { getShippingAddress } from './shipping-addresses.mock';
-import { createErrorLogger } from '../common/error';
-import { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 
 describe('MultiShippingFormV2 Component', () => {
     let checkoutService: CheckoutService;

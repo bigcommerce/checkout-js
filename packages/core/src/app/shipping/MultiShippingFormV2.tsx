@@ -75,6 +75,12 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
                 (consignment) => !consignment.selectedShippingOption,
             );
 
+            if(errorConsignmentIndex === -1) {
+                setIsAddShippingDestination(true);
+                
+                return;
+            }
+            
             setErrorConsignmentNumber(errorConsignmentIndex + 1);
         } else if (isAddShippingDestination) {
             setErrorConsignmentNumber(consignments.length + 1);
