@@ -77,6 +77,7 @@ describe('Shipping component', () => {
         jest.spyOn(checkoutState.data, 'getCart').mockReturnValue({
             ...getCart(),
             lineItems: {
+                ...getCart().lineItems,
                 physicalItems: [
                     {
                         ...getPhysicalItem(),
@@ -156,6 +157,78 @@ describe('Shipping component', () => {
             expect(within(confirmationModal).getByText(localeContext.language.translate('shipping.ship_to_single_message'))).toBeInTheDocument();
 
             await userEvent.click(within(confirmationModal).getByText(localeContext.language.translate('common.proceed_action')));
+
+            expect(defaultProps.onToggleMultiShipping).toHaveBeenCalled();
+        });
+
+        it('opens information dialog on clicking `ship to multiple address` when promotional item is present in the cart', async () => {
+            jest.spyOn(checkoutState.data, 'getCart').mockReturnValue({
+                ...getCart(),
+                lineItems: {
+                    ...getCart().lineItems,
+                    physicalItems: [
+                        {
+                            ...getPhysicalItem(),
+                            quantity: 3,
+                        },
+                        {
+                            ...getPhysicalItem(),
+                            id: '123',
+                            quantity: 1,
+                            addedByPromotion: true,
+                        }
+                    ],
+                },
+            } as Cart);
+            
+            render(<ComponentTest {...defaultProps} isMultiShippingMode={false} />);
+
+            const shippingModeToggle = await screen.findByTestId("shipping-mode-toggle");
+
+            expect(shippingModeToggle.innerHTML).toBe(localeContext.language.translate('shipping.ship_to_multi'));
+
+            await userEvent.click(shippingModeToggle);
+
+            const confirmationModal = await screen.findByRole('dialog');
+
+            expect(confirmationModal).toBeInTheDocument();
+            expect(within(confirmationModal).getByText(localeContext.language.translate('shipping.multishipping_unavailable_action'))).toBeInTheDocument();
+            expect(within(confirmationModal).getByText(localeContext.language.translate('shipping.multishipping_unavailable_message'))).toBeInTheDocument();
+
+            await userEvent.click(within(confirmationModal).getByText(localeContext.language.translate('common.back_action')));
+
+            expect(defaultProps.onToggleMultiShipping).not.toHaveBeenCalled();
+        });
+
+        it('opens information dialog on mount and when multishipping mode is ON and promotional item is present in the cart', async () => {
+            jest.spyOn(checkoutState.data, 'getCart').mockReturnValue({
+                ...getCart(),
+                lineItems: {
+                    ...getCart().lineItems,
+                    physicalItems: [
+                        {
+                            ...getPhysicalItem(),
+                            quantity: 3,
+                        },
+                        {
+                            ...getPhysicalItem(),
+                            id: '123',
+                            quantity: 1,
+                            addedByPromotion: true,
+                        }
+                    ],
+                },
+            } as Cart);
+            
+            render(<ComponentTest {...defaultProps} isMultiShippingMode={true} />);
+
+            const confirmationModal = await screen.findByRole('dialog');
+
+            expect(confirmationModal).toBeInTheDocument();
+            expect(within(confirmationModal).getByText(localeContext.language.translate('shipping.multishipping_unavailable_action'))).toBeInTheDocument();
+            expect(within(confirmationModal).getByText(localeContext.language.translate('shipping.checkout_switched_to_single_shipping'))).toBeInTheDocument();
+
+            await userEvent.click(within(confirmationModal).getByText(localeContext.language.translate('common.ok_action')));
 
             expect(defaultProps.onToggleMultiShipping).toHaveBeenCalled();
         });
