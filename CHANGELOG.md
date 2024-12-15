@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.547.0](https://github.com/bigcommerce/checkout-js/compare/v1.546.6...v1.547.0) (2024-12-15)
+
+
+### Features
+
+* **shipping:** CHECKOUT-8861 Handle promotional item in multishipping ([#2118](https://github.com/bigcommerce/checkout-js/issues/2118)) ([c4571f0](https://github.com/bigcommerce/checkout-js/commit/c4571f0f8c519a6c98dec180e48c92c57005207e))
+
 ### [1.546.6](https://github.com/bigcommerce/checkout-js/compare/v1.546.5...v1.546.6) (2024-12-12)
 
 ### [1.546.5](https://github.com/bigcommerce/checkout-js/compare/v1.546.4...v1.546.5) (2024-12-11)
