@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.548.0](https://github.com/bigcommerce/checkout-js/compare/v1.547.0...v1.548.0) (2024-12-16)
+
+
+### Features
+
+* **payment:** STRIPE-488 add Google Pay error text ([2c9758b](https://github.com/bigcommerce/checkout-js/commit/2c9758b3b8f73139c18c7fc173a81a8fa697f20b))
+
 ## [1.547.0](https://github.com/bigcommerce/checkout-js/compare/v1.546.6...v1.547.0) (2024-12-15)
 
 
