@@ -393,6 +393,7 @@
                 "expired_card": "Your card has expired. Please try again with a valid card.",
                 "gateway_error": "Something went wrong on the server. Please try again at a later time.",
                 "general_error": "Error while processing payment request.",
+                "google_pay_try_other_card": "Select a different card or log out of Google Pay to try the payment again.",
                 "hosted_form_error": "Unable to process the payment because invalid data was supplied with the transaction.",
                 "incorrect_address": "Your billing address couldn't be verified. Please check your billing address details and try again.",
                 "incorrect_amount": "Unable to process the payment because invalid data was supplied with the transaction.",
