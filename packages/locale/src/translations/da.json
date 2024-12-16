@@ -82,6 +82,7 @@
             "consistency_error": "Din betaling kunne ikke behandles, fordi nogle oplysninger er ændret. Gennemgå din ordre, og prøv igen."
         },
         "common": {
+            "back_action": "Back",
             "confirm_action": "Bekræft",
             "cancel_action": "Annuller",
             "close_action": "Luk",
@@ -551,7 +552,11 @@
             "quantity_invalid_error": "Mængden skal være et tal",
             "quantity_max_error": "Mængden må ikke overstige beløbet “Tilbage til tildeling”.",
             "quantity_min_error": "Mængden kan ikke være mindre end 0",
-            "custom_item_quantity_error": "Alle mængder af dette brugerdefinerede produkt skal tildeles den samme destination, da det blev oprettet specifikt til dette ordreudkast."
+            "custom_item_quantity_error": "Alle mængder af dette brugerdefinerede produkt skal tildeles den samme destination, da det blev oprettet specifikt til dette ordreudkast.",
+            "choose_shipping_address": "Vælg en leveringsadresse",
+            "multishipping_unavailable_action": "Multi-Address Shipping Unavailable",
+            "multishipping_unavailable_message": "Multi-address shipping is unavailable when a promotion adds a free item to your cart.",
+            "checkout_switched_to_single_shipping": "Your checkout has been automatically updated to use a single shipping address. Shipping to multiple addresses is unavailable when a promotional free item is in your cart."
         },
         "social": {
             "share_action": "Del",

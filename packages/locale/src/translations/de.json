@@ -82,6 +82,7 @@
             "consistency_error": "Ihr Zahlungsvorgang konnte nicht bearbeitet werden, da sich einige Angaben geändert haben. Bitte überprüfen Sie Ihre Bestellung und versuchen Sie es erneut."
         },
         "common": {
+            "back_action": "Back",
             "confirm_action": "Bestätigen",
             "cancel_action": "Abbrechen",
             "close_action": "Schließen",
@@ -551,7 +552,11 @@
             "quantity_invalid_error": "Die Menge muss eine Zahl sein",
             "quantity_max_error": "Die Menge darf den Betrag „Noch zuzuweisen“ nicht überschreiten.",
             "quantity_min_error": "Die Menge kann nicht kleiner als 0 sein",
-            "custom_item_quantity_error": "Alle Mengen dieses benutzerdefinierten Produkts müssen demselben Zielort zugewiesen werden, da es speziell für diesen Bestellentwurf erstellt wurde."
+            "custom_item_quantity_error": "Alle Mengen dieses benutzerdefinierten Produkts müssen demselben Zielort zugewiesen werden, da es speziell für diesen Bestellentwurf erstellt wurde.",
+            "choose_shipping_address": "Wählen Sie eine Versandadresse",
+            "multishipping_unavailable_action": "Multi-Address Shipping Unavailable",
+            "multishipping_unavailable_message": "Multi-address shipping is unavailable when a promotion adds a free item to your cart.",
+            "checkout_switched_to_single_shipping": "Your checkout has been automatically updated to use a single shipping address. Shipping to multiple addresses is unavailable when a promotional free item is in your cart."
         },
         "social": {
             "share_action": "Freigeben",
