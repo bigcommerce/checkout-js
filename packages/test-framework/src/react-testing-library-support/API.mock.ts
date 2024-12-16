@@ -2,6 +2,9 @@ import { Checkout, Consignment, PhysicalItem } from '@bigcommerce/checkout-sdk';
 
 const timeString = new Date().toISOString();
 
+const shippingQuoteFailedMessage =
+    "Unfortunately one or more items in your cart can't be shipped to your location. Please choose a different delivery address.";
+
 const checkoutSettings = {
     context: {
         flashMessages: [],
@@ -35,8 +38,7 @@ const checkoutSettings = {
             orderTermsAndConditionsLink: '',
             orderTermsAndConditionsType: 'textarea',
             privacyPolicyUrl: '',
-            shippingQuoteFailedMessage:
-                "Unfortunately one or more items in your cart can't be shipped to your location. Please choose a different delivery address.",
+            shippingQuoteFailedMessage,
             isAccountCreationEnabled: true,
             realtimeShippingProviders: ['Fedex', 'UPS', 'USPS'],
             remoteCheckoutProviders: null,
@@ -346,8 +348,8 @@ const physicalItem: PhysicalItem = {
     variantId: 71,
     productId: 103,
     sku: 'CLC',
-    name: '[Sample] Canvas Laundry Cart',
-    url: 'https://store.url/canvas-laundry-cart/',
+    name: 'Item X',
+    url: 'https://store.url/item-x/',
     quantity: 1,
     brand: 'OFS',
     isTaxable: true,
@@ -369,6 +371,57 @@ const physicalItem: PhysicalItem = {
     categoryNames: ['Shop All', 'Utility'],
 };
 
+const shippingAddress1 = {
+    firstName: 'First',
+    lastName: 'Address',
+    company: '',
+    address1: '111 Testing Rd',
+    address2: '',
+    city: 'Cityville',
+    stateOrProvince: 'State',
+    stateOrProvinceCode: 'ST',
+    country: 'Country',
+    countryCode: 'CC',
+    postalCode: '10000',
+    phone: '0000000000',
+    type: 'residential',
+    customFields: [],
+};
+
+const shippingAddress2 = {
+    firstName: 'Second',
+    lastName: 'Address',
+    company: '',
+    address1: '222 Testing Rd',
+    address2: '',
+    city: 'Townsville',
+    stateOrProvince: 'State',
+    stateOrProvinceCode: 'ST',
+    country: 'Country',
+    countryCode: 'CC',
+    postalCode: '20000',
+    phone: '0000000001',
+    type: 'residential',
+    customFields: [],
+};
+
+const shippingAddress3 = {
+    firstName: 'Third',
+    lastName: 'Address',
+    company: '',
+    address1: '333 Testing Rd',
+    address2: '',
+    city: 'Villageburg',
+    stateOrProvince: 'State',
+    stateOrProvinceCode: 'ST',
+    country: 'Country',
+    countryCode: 'CC',
+    postalCode: '30000',
+    phone: '0000000002',
+    type: 'residential',
+    customFields: [],
+};
+
 const consignment: Consignment = {
     id: 'consignment-1',
     shippingCost: 0,
@@ -385,35 +438,11 @@ const consignment: Consignment = {
         isRecommended: true,
     },
     shippingAddress: {
-        firstName: 'checkout',
-        lastName: 'test',
-        company: '',
-        address1: '130 Pitt St',
-        address2: '',
-        city: 'Sydney',
-        stateOrProvince: 'New South Wales',
-        stateOrProvinceCode: 'NSW',
-        country: 'Australia',
-        countryCode: 'AU',
-        postalCode: '2000',
-        phone: '',
-        customFields: [],
+        ...shippingAddress1,
         shouldSaveAddress: true,
     },
     address: {
-        firstName: 'checkout',
-        lastName: 'test',
-        company: '',
-        address1: '130 Pitt St',
-        address2: '',
-        city: 'Sydney',
-        stateOrProvince: 'New South Wales',
-        stateOrProvinceCode: 'NSW',
-        country: 'Australia',
-        countryCode: 'AU',
-        postalCode: '2000',
-        phone: '',
-        customFields: [],
+        ...shippingAddress1,
         shouldSaveAddress: true,
     },
     availableShippingOptions: [
@@ -521,7 +550,8 @@ const cartReadyForMultiShipping = {
             ...cart.cart.lineItems,
             physicalItems: [
                 physicalItem,
-                { ...physicalItem, id: 'y', quantity: 2, sku: 'CLC2', name: 'Item 2' },
+                { ...physicalItem, id: 'y', quantity: 2, sku: 'CLC2', name: 'Item Y' },
+                { ...physicalItem, id: 'z', quantity: 2, sku: 'CLC3', name: 'Item Z' },
             ],
         },
     },
@@ -534,55 +564,16 @@ const cartReadyForMultiShipping = {
         fullName: 'John Doe',
         addresses: [
             {
+                ...shippingAddress1,
                 id: 1,
-                firstName: 'First',
-                lastName: 'Address',
-                company: '',
-                address1: '123 Example St',
-                address2: '',
-                city: 'Cityville',
-                stateOrProvince: 'State',
-                stateOrProvinceCode: 'ST',
-                country: 'Country',
-                countryCode: 'CC',
-                postalCode: '10000',
-                phone: '0000000000',
-                type: 'residential',
-                customFields: [],
             },
             {
                 id: 2,
-                firstName: 'Second',
-                lastName: 'Address',
-                company: '',
-                address1: '456 Sample Rd',
-                address2: '',
-                city: 'Townsville',
-                stateOrProvince: 'State',
-                stateOrProvinceCode: 'ST',
-                country: 'Country',
-                countryCode: 'CC',
-                postalCode: '20000',
-                phone: '0000000001',
-                type: 'residential',
-                customFields: [],
+                ...shippingAddress2,
             },
             {
                 id: 3,
-                firstName: 'Third',
-                lastName: 'Address',
-                company: '',
-                address1: '789 Test Ave',
-                address2: '',
-                city: 'Villageburg',
-                stateOrProvince: 'State',
-                stateOrProvinceCode: 'ST',
-                country: 'Country',
-                countryCode: 'CC',
-                postalCode: '30000',
-                phone: '0000000002',
-                type: 'residential',
-                customFields: [],
+                ...shippingAddress3,
             },
         ],
         storeCredit: 0,
@@ -592,7 +583,7 @@ const cartReadyForMultiShipping = {
             name: 'Discount Group',
         },
     },
-    consignment: [consignment],
+    consignment: [],
 };
 
 const cartWithoutPhysicalItem = {
@@ -1063,4 +1054,7 @@ export {
     consignment,
     formFields,
     payments,
+    shippingAddress2,
+    shippingAddress3,
+    shippingQuoteFailedMessage,
 };
