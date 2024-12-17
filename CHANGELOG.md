@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.548.2](https://github.com/bigcommerce/checkout-js/compare/v1.548.1...v1.548.2) (2024-12-17)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-8892 Update Digital Item Price Mapping ([#2130](https://github.com/bigcommerce/checkout-js/issues/2130)) ([1edb0aa](https://github.com/bigcommerce/checkout-js/commit/1edb0aafa10b871414b93a01fd055e38193ecbe9))
+
 ### [1.548.1](https://github.com/bigcommerce/checkout-js/compare/v1.548.0...v1.548.1) (2024-12-16)
 
 ## [1.548.0](https://github.com/bigcommerce/checkout-js/compare/v1.547.0...v1.548.0) (2024-12-16)
