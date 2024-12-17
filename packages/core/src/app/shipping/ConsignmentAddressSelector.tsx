@@ -45,7 +45,7 @@ const ConsignmentAddressSelector = ({
             },
         },
         checkoutService: {
-            assignItemsToAddress: assignItem,
+            updateConsignment,
             createCustomerAddress,
             selectConsignmentShippingOption,
         },
@@ -92,8 +92,10 @@ const ConsignmentAddressSelector = ({
         try {
             const {
                 data: { getConsignments },
-            } = await assignItem({
+            } = await updateConsignment({
+                id: consignment.id,
                 address,
+                shippingAddress: address,
                 lineItems: consignment.lineItems.map(({ id, quantity }) => ({ itemId: id, quantity })),
             });
 
