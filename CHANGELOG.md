@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.549.0](https://github.com/bigcommerce/checkout-js/compare/v1.548.3...v1.549.0) (2024-12-17)
+
+
+### Features
+
+* **payment:** PAYPAL-4827 fixed fastlane shipping strategy bug ([7e71706](https://github.com/bigcommerce/checkout-js/commit/7e7170690efef4d92c8f9b3688dddc47104be300))
+
 ### [1.548.3](https://github.com/bigcommerce/checkout-js/compare/v1.548.2...v1.548.3) (2024-12-17)
 
 
