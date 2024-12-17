@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.550.0](https://github.com/bigcommerce/checkout-js/compare/v1.549.0...v1.550.0) (2024-12-17)
+
+
+### Features
+
+* **payment:** STRIPE-546 allow billing address edit on Google Pay ([237a0f8](https://github.com/bigcommerce/checkout-js/commit/237a0f89e0b36d9d9a49833ba0a629ed444a7718))
+
 ## [1.549.0](https://github.com/bigcommerce/checkout-js/compare/v1.548.3...v1.549.0) (2024-12-17)
 
 
