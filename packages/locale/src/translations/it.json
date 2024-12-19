@@ -82,6 +82,7 @@
             "consistency_error": "Impossibile elaborare il checkout perché alcuni dettagli sono cambiati. Controlla l'ordine e riprova."
         },
         "common": {
+            "back_action": "Back",
             "confirm_action": "Conferma",
             "cancel_action": "Annulla",
             "close_action": "Chiudi",
@@ -551,7 +552,11 @@
             "quantity_invalid_error": "La quantità deve essere un numero",
             "quantity_max_error": "La quantità non può superare l'importo \"Rimasto da assegnare\".",
             "quantity_min_error": "La quantità non può essere inferiore a 0",
-            "custom_item_quantity_error": "Tutte le quantità di questo prodotto personalizzato devono essere assegnate alla stessa destinazione, poiché il prodotto è stato creato appositamente per questa bozza d'ordine."
+            "custom_item_quantity_error": "Tutte le quantità di questo prodotto personalizzato devono essere assegnate alla stessa destinazione, poiché il prodotto è stato creato appositamente per questa bozza d'ordine.",
+            "choose_shipping_address": "Scegli un indirizzo di spedizione",
+            "multishipping_unavailable_action": "Multi-Address Shipping Unavailable",
+            "multishipping_unavailable_message": "Multi-address shipping is unavailable when a promotion adds a free item to your cart.",
+            "checkout_switched_to_single_shipping": "Your checkout has been automatically updated to use a single shipping address. Shipping to multiple addresses is unavailable when a promotional free item is in your cart."
         },
         "social": {
             "share_action": "Condividi",
