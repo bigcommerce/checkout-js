@@ -232,5 +232,27 @@ describe('Shipping component', () => {
 
             expect(defaultProps.onToggleMultiShipping).toHaveBeenCalled();
         });
+
+        it('does not show `ship to multiple address` if only 1 bundled product is present in the cart', async () => {
+            jest.spyOn(checkoutState.data, 'getCart').mockReturnValue({
+                ...getCart(),
+                lineItems: {
+                    physicalItems: [
+                        {
+                            ...getPhysicalItem(),
+                        },
+                        {
+                            ...getPhysicalItem(),
+                            id: '123',
+                            parentId: getPhysicalItem().id,
+                        }
+                    ],
+                },
+            } as Cart);
+
+            render(<ComponentTest {...defaultProps} isMultiShippingMode={false} />);
+
+            expect(screen.queryByTestId("shipping-mode-toggle")).not.toBeInTheDocument();
+        });
     });
 });
