@@ -82,7 +82,7 @@
             "consistency_error": "Din betaling kunne ikke behandles, fordi nogle oplysninger er ændret. Gennemgå din ordre, og prøv igen."
         },
         "common": {
-            "back_action": "Back",
+            "back_action": "Tilbage",
             "confirm_action": "Bekræft",
             "cancel_action": "Annuller",
             "close_action": "Luk",
@@ -393,6 +393,7 @@
                 "expired_card": "Dit kort er udløbet. Prøv igen med et gyldigt kort.",
                 "gateway_error": "Noget gik galt på serveren. Prøv igen på et senere tidspunkt.",
                 "general_error": "Fejl under behandling af betalingsanmodningen.",
+                "google_pay_try_other_card": "Vælg et andet kort, eller log ud af Google Pay for at prøve betalingen igen.",
                 "hosted_form_error": "Betalingen kunne ikke behandles, fordi der blev leveret ugyldige data med transaktionen.",
                 "incorrect_address": "Din faktureringsadresse kunne ikke bekræftes. Tjek dine faktureringsadresseoplysninger, og prøv igen.",
                 "incorrect_amount": "Betalingen kunne ikke behandles, fordi der blev leveret ugyldige data med transaktionen.",
@@ -554,9 +555,9 @@
             "quantity_min_error": "Mængden kan ikke være mindre end 0",
             "custom_item_quantity_error": "Alle mængder af dette brugerdefinerede produkt skal tildeles den samme destination, da det blev oprettet specifikt til dette ordreudkast.",
             "choose_shipping_address": "Vælg en leveringsadresse",
-            "multishipping_unavailable_action": "Multi-Address Shipping Unavailable",
-            "multishipping_unavailable_message": "Multi-address shipping is unavailable when a promotion adds a free item to your cart.",
-            "checkout_switched_to_single_shipping": "Your checkout has been automatically updated to use a single shipping address. Shipping to multiple addresses is unavailable when a promotional free item is in your cart."
+            "multishipping_unavailable_action": "Forsendelse til flere adresser er ikke tilgængelig",
+            "multishipping_unavailable_message": "Forsendelse til flere adresser er ikke tilgængelig, når en kampagne føjer en gratis vare til din indkøbskurv.",
+            "checkout_switched_to_single_shipping": "Din betaling er automatisk opdateret til at bruge én enkelt leveringsadresse. Forsendelse til flere adresser er ikke muligt, når der er en gratis kampagnevare i din indkøbskurv."
         },
         "social": {
             "share_action": "Del",

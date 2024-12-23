@@ -82,7 +82,7 @@
             "consistency_error": "Nie można zrealizować płatności, ponieważ niektóre szczegóły uległy zmianie. Sprawdź zamówienie i spróbuj ponownie."
         },
         "common": {
-            "back_action": "Back",
+            "back_action": "Powrót",
             "confirm_action": "Potwierdź",
             "cancel_action": "Anuluj",
             "close_action": "Zamknij",
@@ -393,6 +393,7 @@
                 "expired_card": "Twoja karta straciła ważność. Spróbuj ponownie z ważną kartą.",
                 "gateway_error": "Coś poszło nie tak na serwerze. Spróbuj ponownie w późniejszym terminie.",
                 "general_error": "Błąd podczas przetwarzania żądania zapłaty.",
+                "google_pay_try_other_card": "Select a different card or log out of Google Pay to try the payment again.",
                 "hosted_form_error": "Nie można przetworzyć płatności, ponieważ w transakcji podano nieprawidłowe dane.",
                 "incorrect_address": "Twój adres rozliczeniowy nie został zweryfikowany. Sprawdź dane adresu rozliczeniowego i spróbuj ponownie.",
                 "incorrect_amount": "Nie można przetworzyć płatności, ponieważ w transakcji podano nieprawidłowe dane.",

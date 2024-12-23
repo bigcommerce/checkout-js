@@ -82,7 +82,7 @@
             "consistency_error": "一部の詳細が変更されたため、支払を処理できませんでした。ご注文内容をご確認の上、再度お試しください。"
         },
         "common": {
-            "back_action": "Back",
+            "back_action": "戻る",
             "confirm_action": "確認",
             "cancel_action": "キャンセル",
             "close_action": "閉じる",
@@ -393,6 +393,7 @@
                 "expired_card": "カードが期限切れとなっています。 有効なカードでもう一度お試しください。",
                 "gateway_error": "サーバーに問題が発生しました。 後でもう一度お試しください。",
                 "general_error": "支払リクエストの処理中にエラーが発生しました。",
+                "google_pay_try_other_card": "Select a different card or log out of Google Pay to try the payment again.",
                 "hosted_form_error": "取引に無効なデータが提供されたため、支払を処理することができません。",
                 "incorrect_address": "請求先住所を確認できませんでした。請求先住所の詳細を確認して、もう一度やり直してください。",
                 "incorrect_amount": "取引に無効なデータが提供されたため、支払を処理することができません。",
