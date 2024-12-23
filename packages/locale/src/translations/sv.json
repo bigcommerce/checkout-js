@@ -82,7 +82,7 @@
             "consistency_error": "Din utcheckning kunde inte behandlas eftersom vissa detaljer har ändrats. Granska din beställning och försök igen."
         },
         "common": {
-            "back_action": "Back",
+            "back_action": "Tillbaka",
             "confirm_action": "Bekräfta",
             "cancel_action": "Annullera",
             "close_action": "Stäng",
@@ -393,6 +393,7 @@
                 "expired_card": "Ditt kort har gått ut. Försök igen med ett giltigt kort.",
                 "gateway_error": "Någonting gick fel på servern. Vänligen försök igen vid ett senare tillfälle.",
                 "general_error": "Fel vid bearbetning av betalningsförfrågan.",
+                "google_pay_try_other_card": "Välj ett annat kort eller logga ut från Google Pay för att försöka genomföra betalningen på nytt.",
                 "hosted_form_error": "Det gick inte att bearbeta betalningen eftersom att ogiltigt e-postmeddelande levererades med transaktionen.",
                 "incorrect_address": "Din faktureringsadress kunde inte verifieras. Kontrollera din faktureringsadress och försök igen.",
                 "incorrect_amount": "Det gick inte att bearbeta betalningen eftersom att ogiltigt e-postmeddelande levererades med transaktionen.",
@@ -554,9 +555,9 @@
             "quantity_min_error": "Kvantiteten får inte vara mindre än 0",
             "custom_item_quantity_error": "Alla kvantiteter av denna specialprodukt måste tilldelas samma destination, eftersom den skapades specifikt för detta beställningsutkast.",
             "choose_shipping_address": "Välj en leveransadress",
-            "multishipping_unavailable_action": "Multi-Address Shipping Unavailable",
-            "multishipping_unavailable_message": "Multi-address shipping is unavailable when a promotion adds a free item to your cart.",
-            "checkout_switched_to_single_shipping": "Your checkout has been automatically updated to use a single shipping address. Shipping to multiple addresses is unavailable when a promotional free item is in your cart."
+            "multishipping_unavailable_action": "Leverans till flera adresser är inte tillgängligt",
+            "multishipping_unavailable_message": "Leverans till flera adresser är inte möjlig när en kampanj lägger till en gratisartikel i kundvagnen.",
+            "checkout_switched_to_single_shipping": "Din kassa har automatiskt uppdaterats till att använda enbart en leveransadress. Leverans till flera adresser är inte möjlig när en gratis kampanjartikel finns i din kundvagn."
         },
         "social": {
             "share_action": "Dela med sig",

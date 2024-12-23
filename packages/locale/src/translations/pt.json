@@ -82,7 +82,7 @@
             "consistency_error": "Sua finalização de compra não pôde ser processada porque alguns detalhes mudaram. Revise o pedido e tente novamente."
         },
         "common": {
-            "back_action": "Back",
+            "back_action": "Retornar",
             "confirm_action": "Confirmar",
             "cancel_action": "Cancelar",
             "close_action": "Fechar",
@@ -393,6 +393,7 @@
                 "expired_card": "Seu cartão expirou. Tente novamente com um cartão válido.",
                 "gateway_error": "Ocorreu um erro no servidor. Tente novamente mais tarde.",
                 "general_error": "Erro no processamento da solicitação de pagamento.",
+                "google_pay_try_other_card": "Select a different card or log out of Google Pay to try the payment again.",
                 "hosted_form_error": "Não foi possível processar o pagamento porque foram informados dados inválidos com a transação.",
                 "incorrect_address": "Não foi possível confirmar seu endereço de cobrança. Confira o seu endereço de cobrança e tente novamente.",
                 "incorrect_amount": "Não foi possível processar o pagamento porque foram informados dados inválidos com a transação.",

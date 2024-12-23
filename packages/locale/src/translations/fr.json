@@ -82,7 +82,7 @@
             "consistency_error": "Impossible de traiter votre paiement car certaines informations ont été modifiées. Veuillez vérifier votre commande et réessayer."
         },
         "common": {
-            "back_action": "Back",
+            "back_action": "Retour",
             "confirm_action": "Confirmer",
             "cancel_action": "Annuler",
             "close_action": "Fermer",
@@ -393,6 +393,7 @@
                 "expired_card": "Votre carte a expiré. Veuillez réessayer avec une carte en cours de validité.",
                 "gateway_error": "Une erreur s'est produite sur le serveur. Veuillez réessayer ultérieurement.",
                 "general_error": "Erreur lors du traitement de la demande de paiement.",
+                "google_pay_try_other_card": "Sélectionnez une autre carte ou déconnectez-vous de Google Pay pour réessayer le paiement.",
                 "hosted_form_error": "Impossible de traiter le paiement car des données invalides ont été indiquées lors de la transaction.",
                 "incorrect_address": "Impossible de confirmer votre adresse de facturation. Veuillez vérifier votre adresse de facturation et réessayer.",
                 "incorrect_amount": "Impossible de traiter le paiement car des données invalides ont été indiquées lors de la transaction.",
@@ -554,9 +555,9 @@
             "quantity_min_error": "La quantité ne peut pas être inférieure à 0",
             "custom_item_quantity_error": "Toutes les quantités de ce produit personnalisé doivent être attribuées à la même destination, car il a été créé spécifiquement pour cette commande préliminaire.",
             "choose_shipping_address": "Choisissez une adresse de livraison",
-            "multishipping_unavailable_action": "Multi-Address Shipping Unavailable",
-            "multishipping_unavailable_message": "Multi-address shipping is unavailable when a promotion adds a free item to your cart.",
-            "checkout_switched_to_single_shipping": "Your checkout has been automatically updated to use a single shipping address. Shipping to multiple addresses is unavailable when a promotional free item is in your cart."
+            "multishipping_unavailable_action": "Livraison multi-adresses indisponible",
+            "multishipping_unavailable_message": "La livraison à des adresses multiples n'est pas disponible lorsqu'une promotion permet d'ajouter un article gratuit à votre panier.",
+            "checkout_switched_to_single_shipping": "Votre paiement a été automatiquement mis à jour pour utiliser une seule adresse de livraison. La livraison à des adresses multiples n'est pas disponible lorsqu'un article promotionnel gratuit se trouve dans votre panier."
         },
         "social": {
             "share_action": "Partager",

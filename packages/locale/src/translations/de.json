@@ -82,7 +82,7 @@
             "consistency_error": "Ihr Zahlungsvorgang konnte nicht bearbeitet werden, da sich einige Angaben geändert haben. Bitte überprüfen Sie Ihre Bestellung und versuchen Sie es erneut."
         },
         "common": {
-            "back_action": "Back",
+            "back_action": "Zurück",
             "confirm_action": "Bestätigen",
             "cancel_action": "Abbrechen",
             "close_action": "Schließen",
@@ -393,6 +393,7 @@
                 "expired_card": "Ihre Karte ist abgelaufen. Bitte versuchen Sie es noch einmal mit einer gültigen Karte.",
                 "gateway_error": "Es gab ein Problem mit dem Server. Bitte versuchen Sie es später noch einmal.",
                 "general_error": "Fehler beim Verarbeiten der Zahlungsanfrage.",
+                "google_pay_try_other_card": "Select a different card or log out of Google Pay to try the payment again.",
                 "hosted_form_error": "Die Zahlung konnte nicht verarbeitet werden, weil bei der Transaktion ungültige Daten angegeben wurden.",
                 "incorrect_address": "Ihre Rechnungsadresse konnte nicht verifiziert werden. Bitte überprüfen Sie die Angaben Ihrer Rechnungsadresse und versuchen Sie es erneut.",
                 "incorrect_amount": "Die Zahlung konnte nicht verarbeitet werden, weil bei der Transaktion ungültige Daten angegeben wurden.",

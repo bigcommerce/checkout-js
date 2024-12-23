@@ -82,7 +82,7 @@
             "consistency_error": "No se pudo procesar tu pago porque cambiaron algunos datos. Revisa tu pedido e inténtalo nuevamente."
         },
         "common": {
-            "back_action": "Back",
+            "back_action": "Regresar",
             "confirm_action": "Confirmar",
             "cancel_action": "Cancelar",
             "close_action": "Cerrar",
@@ -393,6 +393,7 @@
                 "expired_card": "Su tarjeta ha vencido. Inténtelo de nuevo con una tarjeta válida.",
                 "gateway_error": "Algo salió mal en el servidor. Vuelve a intentarlo más tarde.",
                 "general_error": "Error al procesar la solicitud de pago.",
+                "google_pay_try_other_card": "Select a different card or log out of Google Pay to try the payment again.",
                 "hosted_form_error": "No se puede procesar el pago porque se proporcionaron datos no válidos con la transacción.",
                 "incorrect_address": "Tu dirección de facturación no pudo verificarse. Revísala y vuelve a intentarlo.",
                 "incorrect_amount": "No se puede procesar el pago porque se proporcionaron datos no válidos con la transacción.",

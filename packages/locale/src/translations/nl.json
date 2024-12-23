@@ -82,7 +82,7 @@
             "consistency_error": "Je betaling kon niet worden verwerkt omdat er gegevens zijn veranderd. Controleer je bestelling en probeer het opnieuw."
         },
         "common": {
-            "back_action": "Back",
+            "back_action": "Terug",
             "confirm_action": "Bevestigen",
             "cancel_action": "Annuleren",
             "close_action": "Sluiten",
@@ -393,6 +393,7 @@
                 "expired_card": "Uw kaart is verlopen. Probeer het opnieuw met een geldige kaart.",
                 "gateway_error": "Er is iets misgegaan op de server. Probeer het later opnieuw.",
                 "general_error": "Fout bij het verwerken van betalingsverzoek.",
+                "google_pay_try_other_card": "Select a different card or log out of Google Pay to try the payment again.",
                 "hosted_form_error": "Kan de betaling niet verwerken omdat er ongeldige gegevens zijn opgegeven bij de transactie.",
                 "incorrect_address": "Uw factuuradres kan niet worden geverifieerd. Controleer uw factuuradresgegevens en probeer het opnieuw.",
                 "incorrect_amount": "Kan de betaling niet verwerken omdat er ongeldige gegevens zijn opgegeven bij de transactie.",
