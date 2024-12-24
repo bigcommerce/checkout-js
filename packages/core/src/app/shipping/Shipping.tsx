@@ -430,7 +430,6 @@ export function mapToShippingProps({
     } = config;
 
     const methodId = getShippingMethodId(checkout, config);
-    const shippableItemsCount = getShippableItemsCount(cart);
     const isLoading =
         isLoadingShippingOptions() ||
         isSelectingShippingOption() ||
@@ -440,13 +439,15 @@ export function mapToShippingProps({
         isUpdatingCheckout() ||
         isCreatingCustomerAddress() ||
         isDeletingConsignment();
-    const shouldShowMultiShipping =
-        hasMultiShippingEnabled && !methodId && shippableItemsCount > 1;
+
     const isNewMultiShippingUIEnabled =
         isExperimentEnabled(
             config.checkoutSettings,
             'PROJECT-4159.improve_multi_address_shipping_ui',
         );
+    const shippableItemsCount = getShippableItemsCount(cart, isNewMultiShippingUIEnabled);
+    const shouldShowMultiShipping =
+        hasMultiShippingEnabled && !methodId && shippableItemsCount > 1;
 
     const countriesWithAutocomplete = ['US', 'CA', 'AU', 'NZ', 'GB'];
 
