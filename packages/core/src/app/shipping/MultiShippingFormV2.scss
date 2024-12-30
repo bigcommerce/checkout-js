@@ -80,6 +80,7 @@ $allocate-items-table-image-width-small-screen: 40%;
 .modal.modal--afterOpen {
     .button--tertiary {
         border: none;
+        background-color: transparent;
     }
 }
 
@@ -221,15 +222,15 @@ $allocate-items-table-image-width-small-screen: 40%;
                 }
 
                 .left-to-allocate-item-name {
-                    p {
-                        margin-bottom: 0;
-                    }
+                    margin-bottom: spacing("quarter");
+                    color: color("greys", "dark");
+                    font-weight: fontWeight("medium");
+                }
 
-                    .left-to-allocate-item-options {
-                        color: color("greys");
-                        font-size: fontSize("tiny");
-                        margin: 0;
-                    }
+                .left-to-allocate-item-option {
+                    font-size: fontSize("smallest");
+                    margin: 0;
+                    line-height: lineHeight("small");
                 }
             }
         }
@@ -260,7 +261,12 @@ $allocate-items-table-image-width-small-screen: 40%;
 
                 svg {
                     fill: color("greys", "dark");
+                    border-radius: $global-radius;
                     cursor: pointer;
+
+                    &:hover {
+                        background-color: color("greys", "light");;
+                    }
                 }
             }
 
@@ -291,6 +297,7 @@ $allocate-items-table-image-width-small-screen: 40%;
 }
 
 .shipping-option-header {
+    font-size: fontSize("base");
     margin: spacing("base") 0;
 }
 

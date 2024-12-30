@@ -113,7 +113,7 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
                 <TranslatedString id="shipping.multishipping_items_allocate_cancel" />
             </Button>
             <Button
-                disabled={!dirty}
+                disabled={!hasItemsAssigned && !dirty}
                 isLoading={isLoading}
                 onClick={submitForm}
                 type="submit"

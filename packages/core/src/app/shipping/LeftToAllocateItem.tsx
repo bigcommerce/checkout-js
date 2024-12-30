@@ -21,8 +21,8 @@ const LeftToAllocateItem: FunctionComponent<LeftToAllocateItemProps> = ({ item, 
                 <figure className="left-to-allocate-item-figure">
                     {item.imageUrl && <img alt={item.name} src={item.imageUrl} />}
                 </figure>
-                <div className="left-to-allocate-item-name">
-                    <p>{item.name}</p>
+                <div>
+                    <p className="left-to-allocate-item-name">{item.name}</p>
                     {item.options?.map(option => (
                         <p className="left-to-allocate-item-option" key={option.nameId}>{option.name}: {option.value}</p>
                     ))}
