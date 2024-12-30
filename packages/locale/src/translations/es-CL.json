@@ -393,7 +393,7 @@
                 "expired_card": "Su tarjeta ha vencido. Inténtelo de nuevo con una tarjeta válida.",
                 "gateway_error": "Algo salió mal en el servidor. Vuelve a intentarlo más tarde.",
                 "general_error": "Error al procesar la solicitud de pago.",
-                "google_pay_try_other_card": "Select a different card or log out of Google Pay to try the payment again.",
+                "google_pay_try_other_card": "Selecciona una tarjeta diferente o cierra sesión en Google Pay para intentar el pago de nuevo.",
                 "hosted_form_error": "No se puede procesar el pago porque se proporcionaron datos no válidos con la transacción.",
                 "incorrect_address": "Tu dirección de facturación no pudo verificarse. Revísala y vuelve a intentarlo.",
                 "incorrect_amount": "No se puede procesar el pago porque se proporcionaron datos no válidos con la transacción.",
@@ -555,9 +555,9 @@
             "quantity_min_error": "La cantidad no puede ser menor que 0",
             "custom_item_quantity_error": "Todas las cantidades de este producto personalizado deben asignarse al mismo destino, ya que se creó específicamente para este pedido provisional.",
             "choose_shipping_address": "Elige una dirección de envío",
-            "multishipping_unavailable_action": "Multi-Address Shipping Unavailable",
-            "multishipping_unavailable_message": "Multi-address shipping is unavailable when a promotion adds a free item to your cart.",
-            "checkout_switched_to_single_shipping": "Your checkout has been automatically updated to use a single shipping address. Shipping to multiple addresses is unavailable when a promotional free item is in your cart."
+            "multishipping_unavailable_action": "Envío a varias direcciones no disponible",
+            "multishipping_unavailable_message": "El envío a varias direcciones no está disponible cuando una promoción agrega un artículo gratis a tu carrito.",
+            "checkout_switched_to_single_shipping": "Tu proceso de pago se ha actualizado automáticamente para que se use una única dirección de envío. El envío a varias direcciones no está disponible cuando tienes un artículo promocional gratuito en tu carrito."
         },
         "social": {
             "share_action": "Compartir",

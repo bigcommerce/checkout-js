@@ -393,7 +393,7 @@
                 "expired_card": "Uw kaart is verlopen. Probeer het opnieuw met een geldige kaart.",
                 "gateway_error": "Er is iets misgegaan op de server. Probeer het later opnieuw.",
                 "general_error": "Fout bij het verwerken van betalingsverzoek.",
-                "google_pay_try_other_card": "Select a different card or log out of Google Pay to try the payment again.",
+                "google_pay_try_other_card": "Selecteer een andere kaart of log uit van Google Pay om de betaling opnieuw te proberen.",
                 "hosted_form_error": "Kan de betaling niet verwerken omdat er ongeldige gegevens zijn opgegeven bij de transactie.",
                 "incorrect_address": "Uw factuuradres kan niet worden geverifieerd. Controleer uw factuuradresgegevens en probeer het opnieuw.",
                 "incorrect_amount": "Kan de betaling niet verwerken omdat er ongeldige gegevens zijn opgegeven bij de transactie.",
@@ -555,9 +555,9 @@
             "quantity_min_error": "Aantal mag niet kleiner zijn dan 0",
             "custom_item_quantity_error": "Alle aantallen van dit aangepaste product moeten worden toegewezen aan dezelfde bestemming, omdat het speciaal is gemaakt voor deze conceptbestelling.",
             "choose_shipping_address": "Kies een verzendadres",
-            "multishipping_unavailable_action": "Multi-Address Shipping Unavailable",
-            "multishipping_unavailable_message": "Multi-address shipping is unavailable when a promotion adds a free item to your cart.",
-            "checkout_switched_to_single_shipping": "Your checkout has been automatically updated to use a single shipping address. Shipping to multiple addresses is unavailable when a promotional free item is in your cart."
+            "multishipping_unavailable_action": "Verzending naar meerdere adressen is niet beschikbaar",
+            "multishipping_unavailable_message": "Verzending naar meerdere adressen is niet beschikbaar wanneer een promotie een gratis artikel aan je winkelwagen toevoegt.",
+            "checkout_switched_to_single_shipping": "Je afrekenproces is automatisch bijgewerkt om één verzendadres te gebruiken. Verzending naar meerdere adressen is niet beschikbaar wanneer je winkelwagen een gratis promotieartikel bevat."
         },
         "social": {
             "share_action": "Delen",

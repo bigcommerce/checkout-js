@@ -393,7 +393,7 @@
                 "expired_card": "Twoja karta straciła ważność. Spróbuj ponownie z ważną kartą.",
                 "gateway_error": "Coś poszło nie tak na serwerze. Spróbuj ponownie w późniejszym terminie.",
                 "general_error": "Błąd podczas przetwarzania żądania zapłaty.",
-                "google_pay_try_other_card": "Select a different card or log out of Google Pay to try the payment again.",
+                "google_pay_try_other_card": "Wybierz inną kartę lub wyloguj się z usługi Google Pay, aby spróbować ponownie dokonać płatności.",
                 "hosted_form_error": "Nie można przetworzyć płatności, ponieważ w transakcji podano nieprawidłowe dane.",
                 "incorrect_address": "Twój adres rozliczeniowy nie został zweryfikowany. Sprawdź dane adresu rozliczeniowego i spróbuj ponownie.",
                 "incorrect_amount": "Nie można przetworzyć płatności, ponieważ w transakcji podano nieprawidłowe dane.",
@@ -555,9 +555,9 @@
             "quantity_min_error": "Ilość nie może być mniejsza niż 0",
             "custom_item_quantity_error": "Wszystkie ilości tego niestandardowego produktu muszą być przypisane do tego samego miejsca docelowego, ponieważ został utworzony specjalnie do tej wersji roboczej zamówienia.",
             "choose_shipping_address": "Wybierz adres wysyłki",
-            "multishipping_unavailable_action": "Multi-Address Shipping Unavailable",
-            "multishipping_unavailable_message": "Multi-address shipping is unavailable when a promotion adds a free item to your cart.",
-            "checkout_switched_to_single_shipping": "Your checkout has been automatically updated to use a single shipping address. Shipping to multiple addresses is unavailable when a promotional free item is in your cart."
+            "multishipping_unavailable_action": "Wysyłka na wiele adresów jest niedostępna",
+            "multishipping_unavailable_message": "Wysyłka na wiele adresów jest niedostępna, gdy do Twojego koszyka został dodany promocyjnie darmowy przedmiot.",
+            "checkout_switched_to_single_shipping": "Koszyk został automatycznie zaktualizowany. Będzie używany jeden adres wysyłkowy. Wysyłka na wiele adresów jest niedostępna, gdy w koszyku znajduje się promocyjny darmowy przedmiot."
         },
         "social": {
             "share_action": "Udostępnij",
