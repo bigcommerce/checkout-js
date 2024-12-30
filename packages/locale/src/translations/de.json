@@ -393,7 +393,7 @@
                 "expired_card": "Ihre Karte ist abgelaufen. Bitte versuchen Sie es noch einmal mit einer gültigen Karte.",
                 "gateway_error": "Es gab ein Problem mit dem Server. Bitte versuchen Sie es später noch einmal.",
                 "general_error": "Fehler beim Verarbeiten der Zahlungsanfrage.",
-                "google_pay_try_other_card": "Select a different card or log out of Google Pay to try the payment again.",
+                "google_pay_try_other_card": "Wählen Sie eine andere Karte oder melden Sie sich von Google Pay ab, um die Zahlung erneut zu versuchen.",
                 "hosted_form_error": "Die Zahlung konnte nicht verarbeitet werden, weil bei der Transaktion ungültige Daten angegeben wurden.",
                 "incorrect_address": "Ihre Rechnungsadresse konnte nicht verifiziert werden. Bitte überprüfen Sie die Angaben Ihrer Rechnungsadresse und versuchen Sie es erneut.",
                 "incorrect_amount": "Die Zahlung konnte nicht verarbeitet werden, weil bei der Transaktion ungültige Daten angegeben wurden.",
@@ -555,9 +555,9 @@
             "quantity_min_error": "Die Menge kann nicht kleiner als 0 sein",
             "custom_item_quantity_error": "Alle Mengen dieses benutzerdefinierten Produkts müssen demselben Zielort zugewiesen werden, da es speziell für diesen Bestellentwurf erstellt wurde.",
             "choose_shipping_address": "Wählen Sie eine Versandadresse",
-            "multishipping_unavailable_action": "Multi-Address Shipping Unavailable",
-            "multishipping_unavailable_message": "Multi-address shipping is unavailable when a promotion adds a free item to your cart.",
-            "checkout_switched_to_single_shipping": "Your checkout has been automatically updated to use a single shipping address. Shipping to multiple addresses is unavailable when a promotional free item is in your cart."
+            "multishipping_unavailable_action": "Versand an mehrere Adressen nicht möglich",
+            "multishipping_unavailable_message": "Der Versand an mehrere Adressen ist nicht möglich, wenn aufgrund einer Werbeaktion ein kostenloser Artikel zu Ihrem Warenkorb hinzugefügt wird.",
+            "checkout_switched_to_single_shipping": "Ihr Checkout wurde automatisch aktualisiert, um eine einzige Lieferadresse zu verwenden. Der Versand an mehrere Adressen ist nicht möglich, wenn sich ein kostenloser Werbeartikel in Ihrem Warenkorb befindet."
         },
         "social": {
             "share_action": "Freigeben",
