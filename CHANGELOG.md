@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.553.2](https://github.com/bigcommerce/checkout-js/compare/v1.553.1...v1.553.2) (2025-01-08)
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-5026 updated import source for isPayPalCommerceFastlaneMethod method ([bbed00c](https://github.com/bigcommerce/checkout-js/commit/bbed00c86c961aea34bedec0f4b03493ad53176e))
+
 ### [1.553.1](https://github.com/bigcommerce/checkout-js/compare/v1.553.0...v1.553.1) (2025-01-08)
 
 
