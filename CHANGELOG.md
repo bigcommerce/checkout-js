@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.553.1](https://github.com/bigcommerce/checkout-js/compare/v1.553.0...v1.553.1) (2025-01-08)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-8919 resolve cosmetic ui issues for new multishipping ([#2136](https://github.com/bigcommerce/checkout-js/issues/2136)) ([ac6e339](https://github.com/bigcommerce/checkout-js/commit/ac6e3390b09a8e080607b9d5380f0b2950e1a576))
+
 ## [1.553.0](https://github.com/bigcommerce/checkout-js/compare/v1.552.1...v1.553.0) (2025-01-06)
 
 
