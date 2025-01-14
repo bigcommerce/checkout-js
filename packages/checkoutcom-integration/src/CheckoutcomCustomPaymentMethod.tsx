@@ -41,7 +41,10 @@ const CheckoutcomCustomPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
     const billingAddress = checkoutState.data.getBillingAddress();
 
-    if (!isCheckoutcomPaymentMethod(checkoutCustomMethod) || isIdealHostedPageExperimentOn) {
+    if (
+        !isCheckoutcomPaymentMethod(checkoutCustomMethod) ||
+        (checkoutCustomMethod === 'ideal' && isIdealHostedPageExperimentOn)
+    ) {
         return null;
     }
 
