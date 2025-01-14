@@ -39,6 +39,7 @@ describe('when using Checkoutcom payment', () => {
     let defaultProps: PaymentMethodProps;
     let localeContext: LocaleContextType;
     let fawryMethod: PaymentMethod;
+    let idealMethod: PaymentMethod;
     let alternateMethodA: PaymentMethod;
     let alternateMethodB: PaymentMethod;
     let PaymentMethodTest: FunctionComponent<PaymentMethodProps>;
@@ -72,7 +73,11 @@ describe('when using Checkoutcom payment', () => {
             id: 'fawry',
             gateway: PaymentMethodId.Checkoutcom,
         };
-
+        idealMethod = {
+            ...getPaymentMethod(),
+            id: 'ideal',
+            gateway: PaymentMethodId.Checkoutcom,
+        };
         alternateMethodA = {
             ...getPaymentMethod(),
             id: 'oxxo',
@@ -216,5 +221,22 @@ describe('when using Checkoutcom payment', () => {
         await new Promise((resolve) => process.nextTick(resolve));
 
         expect(defaultProps.onUnhandledError).toHaveBeenCalled();
+    });
+
+    it('does not render the fields when ideal experiment is on', () => {
+        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
+            ...getStoreConfig(),
+            checkoutSettings: {
+                ...getStoreConfig().checkoutSettings,
+                features: {
+                    ...getStoreConfig().checkoutSettings.features,
+                    'PI-2979.checkoutcom_enable_ideal_hosted_page': true,
+                },
+            },
+        });
+
+        const { container } = render(<PaymentMethodTest {...defaultProps} method={idealMethod} />);
+
+        expect(container.firstChild).toBeNull();
     });
 });
