@@ -104,6 +104,8 @@ describe('ExtensionService', () => {
     });
 
     it('adds and removes command handlers', async () => {
+        jest.spyOn(checkoutService, 'clearExtensionCache').mockReturnValue();
+
         await extensionService.renderExtension(
             ExtensionRegionContainer.ShippingShippingAddressFormBefore,
             ExtensionRegion.ShippingShippingAddressFormBefore,
@@ -130,6 +132,7 @@ describe('ExtensionService', () => {
         extensionService.removeListeners(ExtensionRegion.ShippingShippingAddressFormBefore);
 
         expect(remover).toBeCalledTimes(3);
+        expect(checkoutService.clearExtensionCache).toHaveBeenCalled();
     });
 
     describe('isRegionInUse()', () => {

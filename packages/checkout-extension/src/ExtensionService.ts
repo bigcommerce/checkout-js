@@ -78,6 +78,8 @@ export class ExtensionService {
     }
 
     removeListeners(region: ExtensionRegion): void {
+        this.checkoutService.clearExtensionCache(region);
+
         const extension = this.checkoutService.getState().data.getExtensionByRegion(region);
 
         if (!extension) {
