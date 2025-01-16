@@ -206,6 +206,29 @@ describe('Payment', () => {
         );
     });
 
+    it('does not render methods with braintreelocalmethods id', async () => {
+        const expectedPaymentMethods = paymentMethods.filter(
+            (method) => method.id !== PaymentMethodId.BraintreeLocalPaymentMethod,
+        );
+
+        paymentMethods[3] = {
+            ...getPaymentMethod(),
+            id: 'braintreelocalmethods',
+        };
+
+        const container = mount(<PaymentTest {...defaultProps} />);
+
+        await new Promise((resolve) => process.nextTick(resolve));
+        container.update();
+
+        expect(container.find(PaymentForm).props()).toEqual(
+            expect.objectContaining({
+                methods: expectedPaymentMethods,
+                onSubmit: expect.any(Function),
+            }),
+        );
+    });
+
     it('passes initialisation status to payment form', async () => {
         jest.spyOn(checkoutState.statuses, 'isInitializingPayment').mockReturnValue(true);
 
