@@ -104,7 +104,7 @@ describe('ExtensionService', () => {
     });
 
     it('adds and removes command handlers', async () => {
-        jest.spyOn(checkoutService, 'clearExtensionCache');
+        jest.spyOn(checkoutService, 'clearExtensionCache').mockReturnValue();
 
         await extensionService.renderExtension(
             ExtensionRegionContainer.ShippingShippingAddressFormBefore,
