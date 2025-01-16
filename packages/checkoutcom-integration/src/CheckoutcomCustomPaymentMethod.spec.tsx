@@ -239,4 +239,21 @@ describe('when using Checkoutcom payment', () => {
 
         expect(container.firstChild).toBeNull();
     });
+
+    it('renders the fields for other APMs when ideal experiment is on', () => {
+        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
+            ...getStoreConfig(),
+            checkoutSettings: {
+                ...getStoreConfig().checkoutSettings,
+                features: {
+                    ...getStoreConfig().checkoutSettings.features,
+                    'PI-2979.checkoutcom_enable_ideal_hosted_page': true,
+                },
+            },
+        });
+
+        const { container } = render(<PaymentMethodTest {...defaultProps} method={fawryMethod} />);
+
+        expect(container.firstChild).not.toBeNull();
+    });
 });
