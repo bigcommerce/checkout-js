@@ -4,28 +4,12 @@ import { CheckoutButton } from '@bigcommerce/checkout/checkout-button-integratio
 import {
     CheckoutButtonProps,
     CheckoutButtonResolveId,
-    EmbeddedCheckoutUnsupportedError,
-    isEmbedded,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 
 import './GooglePayButton.scss';
 
 const GooglePayButton: FunctionComponent<CheckoutButtonProps> = (props) => {
-    const { language, onUnhandledError } = props;
-
-    if (isEmbedded()) {
-        onUnhandledError(
-            new EmbeddedCheckoutUnsupportedError(
-                language.translate('embedded_checkout.unsupported_error', {
-                    methods: 'googlepay',
-                }),
-            ),
-        );
-
-        return null;
-    }
-
     return <CheckoutButton checkoutButtonContainerClass="google-pay-top-button" {...props} />;
 };
 
