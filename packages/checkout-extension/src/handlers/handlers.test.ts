@@ -1,12 +1,16 @@
 import {
+    Checkout,
     CheckoutService,
+    Consignment,
     createCheckoutService,
     ExtensionCommandType,
+    ExtensionMessageType,
 } from '@bigcommerce/checkout-sdk';
 
 import { ExtensionActionType, getExtensions } from '../';
 
 import { HandlerProps } from './CommandHandler';
+import { createGetConsignmentHandler } from './createGetConsignmentHandler';
 import { createReloadCheckoutHandler } from './createReloadCheckoutHandler';
 import { createSetIframeStyleHandler } from './createSetIframeStyleHandler';
 import { createShowLoadingIndicatorHandler } from './createShowLoadingIndicatorHandler';
@@ -34,9 +38,6 @@ describe('Handlers', () => {
 
             handler.handler({
                 type: ExtensionCommandType.ReloadCheckout,
-                payload: {
-                    extensionId: '123',
-                },
             });
 
             expect(loadCheckout).toHaveBeenCalled();
@@ -56,7 +57,6 @@ describe('Handlers', () => {
             handler.handler({
                 type: ExtensionCommandType.SetIframeStyle,
                 payload: {
-                    extensionId: '123',
                     style,
                 },
             });
@@ -73,7 +73,6 @@ describe('Handlers', () => {
             handler.handler({
                 type: ExtensionCommandType.ShowLoadingIndicator,
                 payload: {
-                    extensionId: '123',
                     show,
                 },
             });
@@ -82,6 +81,33 @@ describe('Handlers', () => {
                 type: ExtensionActionType.SHOW_LOADING_INDICATOR,
                 payload: show,
             });
+        });
+    });
+
+    describe('createGetConsignmentHandler', () => {
+        it('posts a message to an extension', () => {
+            const handler = createGetConsignmentHandler(handlerProps);
+            const consignments: Consignment[] = [];
+
+            jest.spyOn(checkoutService, 'postMessageToExtension');
+            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+            jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue({
+                consignments,
+            } as Checkout);
+
+            handler.handler({
+                type: ExtensionCommandType.GetConsignments,
+            });
+
+            expect(checkoutService.postMessageToExtension).toHaveBeenCalledWith(
+                getExtensions()[0].id,
+                {
+                    type: ExtensionMessageType.GetConsignments,
+                    payload: {
+                        consignments,
+                    },
+                },
+            );
         });
     });
 });
