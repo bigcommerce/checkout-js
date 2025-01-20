@@ -645,6 +645,10 @@ export function mapToPaymentProps({
             return !!method.initializationData.showInCheckout;
         }
 
+        if (method.id === PaymentMethodId.BraintreeLocalPaymentMethod) {
+            return false;
+        }
+
         return true;
     });
 
