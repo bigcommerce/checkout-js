@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.555.0](https://github.com/bigcommerce/checkout-js/compare/v1.554.0...v1.555.0) (2025-01-20)
+
+
+### Features
+
+* **payment:** PI-3048 [Checkout.com] Remove issuers dropdown and sending BIC ([#2141](https://github.com/bigcommerce/checkout-js/issues/2141)) ([81e445e](https://github.com/bigcommerce/checkout-js/commit/81e445e62aaa6a6a18f93e69e0609cf17faf663e))
+
 ## [1.554.0](https://github.com/bigcommerce/checkout-js/compare/v1.553.5...v1.554.0) (2025-01-20)
 
 
