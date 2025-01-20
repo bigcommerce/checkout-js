@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.554.0](https://github.com/bigcommerce/checkout-js/compare/v1.553.5...v1.554.0) (2025-01-20)
+
+
+### Features
+
+* **checkout:** CHECKOUT-8959 Update Reload Checkout Handler ([#2146](https://github.com/bigcommerce/checkout-js/issues/2146)) ([aee153c](https://github.com/bigcommerce/checkout-js/commit/aee153ca61e39af0aa5523117a1efc6a796226bd))
+
 ### [1.553.5](https://github.com/bigcommerce/checkout-js/compare/v1.553.4...v1.553.5) (2025-01-16)
 
 
