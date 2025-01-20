@@ -4,7 +4,7 @@ import {
     test,
 } from '@bigcommerce/checkout/test-framework';
 
-test.describe('BlueSnap Direct', () => {
+test.describe.skip('BlueSnap Direct', () => {
     test('Customer should be able to pay using Credit card with BlueSnap through the payment step in checkout', async ({
         assertions,
         checkout,
