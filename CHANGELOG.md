@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.556.0](https://github.com/bigcommerce/checkout-js/compare/v1.555.0...v1.556.0) (2025-01-20)
+
+
+### Features
+
+* **payment:** PAYPAL-4987 fixed credit card duplication when initializing BT LPM ([5ca9f8b](https://github.com/bigcommerce/checkout-js/commit/5ca9f8b5ccc5c4b24bb810ea5a4af5ca023809b8))
+
 ## [1.555.0](https://github.com/bigcommerce/checkout-js/compare/v1.554.0...v1.555.0) (2025-01-20)
 
 
