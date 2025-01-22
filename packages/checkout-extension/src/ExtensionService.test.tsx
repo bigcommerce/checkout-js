@@ -131,7 +131,7 @@ describe('ExtensionService', () => {
 
         extensionService.removeListeners(ExtensionRegion.ShippingShippingAddressFormBefore);
 
-        expect(remover).toBeCalledTimes(3);
+        expect(remover).toBeCalledTimes(4);
         expect(checkoutService.clearExtensionCache).toHaveBeenCalled();
     });
 
