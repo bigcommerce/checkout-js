@@ -170,10 +170,6 @@ export class Checkout {
             addressAppendText,
         });
 
-        if (!isBillingAddressSame) await this.page.locator('label[for="sameAsBilling"]').click();
-        if (!shouldSaveAddress)
-            await this.page.locator('label[for="shippingAddress.shouldSaveAddress"]').click();
-
         await this.page.locator('#checkout-shipping-options').waitFor({ state: 'visible' });
 
         const firstShippingMethod = this.page
@@ -181,6 +177,15 @@ export class Checkout {
             .nth(0);
 
         await firstShippingMethod.click();
+
+        if (!shouldSaveAddress) {
+            await this.page.getByText('Save this address in my address book.').click();
+        }
+
+        if (!isBillingAddressSame) {
+            await this.page.locator('label[for="sameAsBilling"]').click();
+        }
+
         await this.page.locator('#checkout-shipping-continue').click();
     }
 
