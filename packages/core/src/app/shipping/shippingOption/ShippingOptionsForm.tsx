@@ -195,4 +195,5 @@ export default withAnalytics(withFormikExtended<ShippingOptionsFormProps, Shippi
 
         return { shippingOptionIds };
     },
+    enableReinitialize: true,
 })(ShippingOptionsForm));
