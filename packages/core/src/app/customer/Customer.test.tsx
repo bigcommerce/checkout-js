@@ -13,6 +13,7 @@ import { render, screen } from "@bigcommerce/checkout/test-utils";
 import Checkout, { CheckoutProps } from "../checkout/Checkout";
 import { createErrorLogger } from "../common/error";
 import { createEmbeddedCheckoutStylesheet, createEmbeddedCheckoutSupport } from "../embeddedCheckout";
+import faker from "@faker-js/faker";
 
 describe('Customer Component', () => {
     let checkout: CheckoutPageNodeObject;
@@ -96,15 +97,17 @@ describe('Customer Component', () => {
 
         await checkout.waitForShippingStep();
 
-        expect(screen.getByText('test@example.com')).toBeInTheDocument();
+        expect(screen.getByText(cartWithBillingEmail.billingAddress.email)).toBeInTheDocument();
 
         await userEvent.click(screen.getByRole('button', {
             name: 'Edit'
         }))
 
         await checkout.waitForCustomerStep();
+
+        const newEmail = faker.internet.email();
         await userEvent.clear(await screen.findByLabelText('Email'));
-        await userEvent.type(await screen.findByLabelText('Email'), 'test1@example.com');
+        await userEvent.type(await screen.findByLabelText('Email'), newEmail);
 
         checkout.updateCheckout(
             'put',
@@ -113,13 +116,13 @@ describe('Customer Component', () => {
                 ...cartWithBillingEmail,
                 billingAddress: {
                     ...cartWithBillingEmail.billingAddress,
-                    email: 'test1@example.com',
+                    email: newEmail,
                 }
             }
         );
 
         await userEvent.click(await screen.findByText('Continue'));
 
-        expect(screen.getByText('test1@example.com')).toBeInTheDocument();
+        expect(screen.getByText(newEmail)).toBeInTheDocument();
     });
 });
