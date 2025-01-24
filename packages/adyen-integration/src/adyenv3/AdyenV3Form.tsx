@@ -75,6 +75,9 @@ const AdyenV3Form: FunctionComponent<AdyenV3FormProps & PaymentMethodProps> = ({
     const isInstrumentCardCodeRequired = isInstrumentCardCodeRequiredSelector(checkoutState);
     const isInstrumentCardNumberRequired = isInstrumentCardNumberRequiredSelector(checkoutState);
 
+    const { getConfig } = checkoutState.data;
+    const isIdealHostedPageExperimentOn =
+        getConfig()?.checkoutSettings.features['PI-2456.adyen_enable_ideal_hosted_page'];
     const {
         hidePaymentSubmitButton,
         disableSubmit,
@@ -92,6 +95,7 @@ const AdyenV3Form: FunctionComponent<AdyenV3FormProps & PaymentMethodProps> = ({
                 disableSubmit={disableSubmit}
                 hideContentWhenSignedOut
                 hidePaymentSubmitButton={hidePaymentSubmitButton}
+                hideWidget={method.method === 'ideal' && isIdealHostedPageExperimentOn}
                 initializePayment={initializePayment}
                 instruments={instruments}
                 isAccountInstrument={isAccountInstrument}
