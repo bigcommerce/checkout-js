@@ -10,7 +10,6 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import faker from '@faker-js/faker';
 import userEvent from '@testing-library/user-event';
-import { c } from 'msw/lib/glossary-2792c6da';
 import React, { FunctionComponent } from 'react';
 
 import { AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
