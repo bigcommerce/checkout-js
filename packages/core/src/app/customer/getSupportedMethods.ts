@@ -1,3 +1,5 @@
+import { CheckoutSettings } from '@bigcommerce/checkout-sdk';
+
 import { isApplePayWindow } from "../common/utility";
 
 const APPLE_PAY = 'applepay';
@@ -6,6 +8,7 @@ const APPLE_PAY = 'applepay';
 export const SUPPORTED_METHODS: string[] = [
     'amazonpay',
     APPLE_PAY,
+    'chasepay',
     'braintreevisacheckout',
     'braintreepaypal',
     'braintreepaypalcredit',
@@ -28,9 +31,10 @@ export const SUPPORTED_METHODS: string[] = [
     'googlepaytdonlinemart',
 ];
 
-export const getSupportedMethodIds = (methodIds: string[]): string[] => {
+export const getSupportedMethodIds = (methodIds: string[], features: CheckoutSettings['features'] = {}): string[] => {
     return methodIds.filter((methodId) => {
-        if (methodId === APPLE_PAY && !isApplePayWindow(window)) {
+        // TODO: this check have to be deleted after implementation of Apple Pay for third party browsers will be tested and released
+        if (methodId === APPLE_PAY && !isApplePayWindow(window) && !features['PAYPAL-4324.applepay_web_browser_support']) {
             return false;
         }
 

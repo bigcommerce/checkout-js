@@ -16,4 +16,12 @@ describe('getSupportedMethods', () => {
 
         expect(filteredMethods).toEqual(['amazonpay']);
     });
+
+    it('do not filter applepay it experiment is enabled', () => {
+        const methods = ['amazonpay', 'applepay'];
+
+        const filteredMethods = getSupportedMethodIds(methods, { 'PAYPAL-4324.applepay_web_browser_support': true });
+
+        expect(filteredMethods).toEqual(['amazonpay', 'applepay']);
+    });
 });

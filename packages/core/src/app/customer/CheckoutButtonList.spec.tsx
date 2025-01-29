@@ -36,7 +36,7 @@ describe('CheckoutButtonList', () => {
                 <CheckoutButtonList
                     deinitialize={noop}
                     initialize={noop}
-                    methodIds={['amazonpay', 'braintreevisacheckout', 'foobar']}
+                    methodIds={['amazonpay', 'braintreevisacheckout']}
                 />
             </LocaleContext.Provider>,
         );
