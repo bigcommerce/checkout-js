@@ -1,4 +1,5 @@
 import { CheckoutService, createCheckoutService, createEmbeddedCheckoutMessenger, EmbeddedCheckoutMessenger } from "@bigcommerce/checkout-sdk";
+import faker from "@faker-js/faker";
 import userEvent from "@testing-library/user-event";
 import { noop } from "lodash";
 import React, { FunctionComponent } from 'react';
@@ -13,7 +14,6 @@ import { render, screen } from "@bigcommerce/checkout/test-utils";
 import Checkout, { CheckoutProps } from "../checkout/Checkout";
 import { createErrorLogger } from "../common/error";
 import { createEmbeddedCheckoutStylesheet, createEmbeddedCheckoutSupport } from "../embeddedCheckout";
-import faker from "@faker-js/faker";
 
 describe('Customer Component', () => {
     let checkout: CheckoutPageNodeObject;
@@ -106,6 +106,7 @@ describe('Customer Component', () => {
         await checkout.waitForCustomerStep();
 
         const newEmail = faker.internet.email();
+
         await userEvent.clear(await screen.findByLabelText('Email'));
         await userEvent.type(await screen.findByLabelText('Email'), newEmail);
 

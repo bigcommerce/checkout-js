@@ -5,7 +5,6 @@ import {
     CheckoutSelectors,
     CheckoutService,
     createCheckoutService,
-    Customer as CustomerData,
     StoreConfig,
 } from '@bigcommerce/checkout-sdk';
 import faker from '@faker-js/faker';
@@ -15,15 +14,14 @@ import React, { FunctionComponent } from 'react';
 import { AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
-import { render, screen, waitFor, within } from '@bigcommerce/checkout/test-utils';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import { getBillingAddress } from '../billing/billingAddresses.mock';
 import { getCart } from '../cart/carts.mock';
 import { getCheckout } from '../checkout/checkouts.mock';
+import CheckoutStepType from '../checkout/CheckoutStepType';
 import { getStoreConfig } from '../config/config.mock';
 
 import Customer, { CustomerProps, WithCheckoutCustomerProps } from './Customer';
-import { getGuestCustomer } from './customers.mock';
 import CustomerViewType from './CustomerViewType';
 
 describe('Customer Guest', () => {
@@ -33,12 +31,17 @@ describe('Customer Guest', () => {
     let checkout: Checkout;
     let cart: Cart;
     let config: StoreConfig;
-    let customer: CustomerData;
     const defaultProps = {
         isSubscribed: false,
         isWalletButtonsOnTop: false,
         onSubscribeToNewsletter: jest.fn(),
-        step: {} as CheckoutStepStatus,
+        step: {
+            isActive: true,
+            isComplete: false,
+            isEditable: true,
+            isRequired: true,
+            type: CheckoutStepType.Customer,
+        },
     };
 
     beforeEach(() => {
@@ -46,7 +49,6 @@ describe('Customer Guest', () => {
         localeContext = createLocaleContext(getStoreConfig());
         checkout = getCheckout();
         cart = getCart();
-        customer = getGuestCustomer();
         config = getStoreConfig();
 
         jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue(checkout);
