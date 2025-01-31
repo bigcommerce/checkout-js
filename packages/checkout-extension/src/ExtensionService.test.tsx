@@ -108,7 +108,7 @@ describe('ExtensionService', () => {
         );
     });
 
-    it('adds and removes command handlers', async () => {
+    it('adds and removes command or query handlers', async () => {
         jest.spyOn(checkoutService, 'clearExtensionCache').mockReturnValue();
 
         await extensionService.renderExtension(
@@ -133,20 +133,6 @@ describe('ExtensionService', () => {
             ExtensionCommandType.ShowLoadingIndicator,
             expect.any(Function),
         );
-
-        extensionService.removeListeners(ExtensionRegion.ShippingShippingAddressFormBefore);
-
-        expect(commandHandlerRemover).toBeCalledTimes(3);
-        expect(checkoutService.clearExtensionCache).toHaveBeenCalled();
-    });
-
-    it('adds and removes query handlers', async () => {
-        jest.spyOn(checkoutService, 'clearExtensionCache').mockReturnValue();
-
-        await extensionService.renderExtension(
-            ExtensionRegionContainer.ShippingShippingAddressFormBefore,
-            ExtensionRegion.ShippingShippingAddressFormBefore,
-        );
         expect(checkoutService.handleExtensionQuery).toHaveBeenNthCalledWith(
             1,
             '123',
@@ -156,7 +142,8 @@ describe('ExtensionService', () => {
 
         extensionService.removeListeners(ExtensionRegion.ShippingShippingAddressFormBefore);
 
-        expect(queryHandlerRemover).toBeCalledTimes(2);
+        expect(commandHandlerRemover).toBeCalledTimes(3);
+        expect(queryHandlerRemover).toBeCalledTimes(1);
         expect(checkoutService.clearExtensionCache).toHaveBeenCalled();
     });
 

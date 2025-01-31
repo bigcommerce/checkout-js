@@ -140,6 +140,7 @@ export class ExtensionService {
                     this.checkoutService.handleExtensionQuery(
                         extension.id,
                         handlerFactory.queryType,
+                        // eslint-disable-next-line @typescript-eslint/no-misused-promises
                         handlerFactory.handler,
                     ),
                 );
