@@ -1,6 +1,7 @@
 import {
     createCheckoutService,
     ExtensionCommandType,
+    ExtensionQueryType,
     ExtensionRegion,
 } from '@bigcommerce/checkout-sdk';
 
@@ -12,7 +13,8 @@ import { ExtensionRegionContainer } from './ExtensionRegionContainer';
 import { ExtensionService } from './ExtensionService';
 
 describe('ExtensionService', () => {
-    const remover = jest.fn();
+    const commandHandlerRemover = jest.fn();
+    const queryHandlerRemover = jest.fn();
     const dispatch = jest.fn();
     const errorLogger: ErrorLogger = {
         log: jest.fn(),
@@ -28,7 +30,10 @@ describe('ExtensionService', () => {
         jest.spyOn(checkoutService, 'renderExtension').mockReturnValue(
             Promise.resolve(checkoutService.getState()),
         );
-        jest.spyOn(checkoutService, 'handleExtensionCommand').mockReturnValue(remover);
+        jest.spyOn(checkoutService, 'handleExtensionCommand').mockReturnValue(
+            commandHandlerRemover,
+        );
+        jest.spyOn(checkoutService, 'handleExtensionQuery').mockReturnValue(queryHandlerRemover);
         jest.spyOn(checkoutService.getState().data, 'getExtensions').mockReturnValue(
             getExtensions(),
         );
@@ -131,7 +136,27 @@ describe('ExtensionService', () => {
 
         extensionService.removeListeners(ExtensionRegion.ShippingShippingAddressFormBefore);
 
-        expect(remover).toBeCalledTimes(4);
+        expect(commandHandlerRemover).toBeCalledTimes(3);
+        expect(checkoutService.clearExtensionCache).toHaveBeenCalled();
+    });
+
+    it('adds and removes query handlers', async () => {
+        jest.spyOn(checkoutService, 'clearExtensionCache').mockReturnValue();
+
+        await extensionService.renderExtension(
+            ExtensionRegionContainer.ShippingShippingAddressFormBefore,
+            ExtensionRegion.ShippingShippingAddressFormBefore,
+        );
+        expect(checkoutService.handleExtensionQuery).toHaveBeenNthCalledWith(
+            1,
+            '123',
+            ExtensionQueryType.GetConsignments,
+            expect.any(Function),
+        );
+
+        extensionService.removeListeners(ExtensionRegion.ShippingShippingAddressFormBefore);
+
+        expect(queryHandlerRemover).toBeCalledTimes(2);
         expect(checkoutService.clearExtensionCache).toHaveBeenCalled();
     });
 

@@ -56,7 +56,7 @@ describe('queryHandlers', () => {
             );
         });
 
-        it('posts consignments[] in remote API to an extension', () => {
+        it('reloads checkout if useCache is false', () => {
             const handler = createGetConsignmentHandler(handlerProps);
 
             jest.spyOn(checkoutService, 'loadCheckout').mockResolvedValue(
