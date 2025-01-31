@@ -2,6 +2,7 @@ import {
     CheckoutService,
     Extension,
     ExtensionCommandMap,
+    ExtensionQueryMap,
     ExtensionRegion,
 } from '@bigcommerce/checkout-sdk';
 import React from 'react';
@@ -9,8 +10,9 @@ import React from 'react';
 import { ErrorLevelType, ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 
 import { ExtensionAction } from './ExtensionProvider';
-import * as handlerFactories from './handlers';
-import { CommandHandler } from './handlers/CommandHandler';
+import { CommandHandler, QueryHandler } from './handler';
+import * as commandHandlerFactories from './handler/commandHandlers';
+import * as queryHandlerFactories from './handler/queryHandlers';
 
 export class ExtensionService {
     private handlers: { [extensionId: string]: Array<() => void> } = {};
@@ -116,14 +118,28 @@ export class ExtensionService {
             this.handlers[extension.id] = [];
         }
 
-        Object.values(handlerFactories).forEach((createHandlerFactory) => {
-            const handlerFactory = createHandlerFactory(handlerProps);
+        Object.values(commandHandlerFactories).forEach((createCommandHandlerFactory) => {
+            const handlerFactory = createCommandHandlerFactory(handlerProps);
 
             if (this.isCommandHandler(handlerFactory.commandType, handlerFactory)) {
                 this.handlers[extension.id].push(
                     this.checkoutService.handleExtensionCommand(
                         extension.id,
                         handlerFactory.commandType,
+                        handlerFactory.handler,
+                    ),
+                );
+            }
+        });
+
+        Object.values(queryHandlerFactories).forEach((createQueryHandlerFactory) => {
+            const handlerFactory = createQueryHandlerFactory(handlerProps);
+
+            if (this.isQueryHandler(handlerFactory.queryType, handlerFactory)) {
+                this.handlers[extension.id].push(
+                    this.checkoutService.handleExtensionQuery(
+                        extension.id,
+                        handlerFactory.queryType,
                         handlerFactory.handler,
                     ),
                 );
@@ -136,5 +152,12 @@ export class ExtensionService {
         handler: CommandHandler<any>,
     ): handler is CommandHandler<T> {
         return handler.commandType === type;
+    }
+
+    private isQueryHandler<T extends keyof ExtensionQueryMap>(
+        type: T,
+        handler: QueryHandler<any>,
+    ): handler is QueryHandler<T> {
+        return handler.queryType === type;
     }
 }

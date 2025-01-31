@@ -1,9 +1,9 @@
 import { CheckoutService, Extension, ExtensionCommandMap } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
-import { ExtensionAction } from '../ExtensionProvider';
+import { ExtensionAction } from '../../ExtensionProvider';
 
-export interface HandlerProps {
+export interface CommandHandlerProps {
     checkoutService: CheckoutService;
     dispatch: React.Dispatch<ExtensionAction>;
     extension: Extension;

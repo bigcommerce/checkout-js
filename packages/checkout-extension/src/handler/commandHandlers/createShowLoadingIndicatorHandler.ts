@@ -1,12 +1,12 @@
 import { ExtensionCommandType } from '@bigcommerce/checkout-sdk';
 
-import { ExtensionActionType } from '../ExtensionProvider';
+import { ExtensionActionType } from '../../ExtensionProvider';
 
-import { CommandHandler, HandlerProps } from './CommandHandler';
+import { CommandHandler, CommandHandlerProps } from './CommandHandler';
 
 export function createShowLoadingIndicatorHandler({
     dispatch,
-}: HandlerProps): CommandHandler<ExtensionCommandType.ShowLoadingIndicator> {
+}: CommandHandlerProps): CommandHandler<ExtensionCommandType.ShowLoadingIndicator> {
     return {
         commandType: ExtensionCommandType.ShowLoadingIndicator,
         handler: (data) => {

@@ -1,22 +1,18 @@
 import {
-    Checkout,
     CheckoutService,
-    Consignment,
     createCheckoutService,
     ExtensionCommandType,
-    ExtensionMessageType,
 } from '@bigcommerce/checkout-sdk';
 
-import { ExtensionActionType, getExtensions } from '../';
+import { ExtensionActionType, getExtensions } from '../../index';
 
-import { HandlerProps } from './CommandHandler';
-import { createGetConsignmentHandler } from './createGetConsignmentHandler';
+import { CommandHandlerProps } from './CommandHandler';
 import { createReloadCheckoutHandler } from './createReloadCheckoutHandler';
 import { createSetIframeStyleHandler } from './createSetIframeStyleHandler';
 import { createShowLoadingIndicatorHandler } from './createShowLoadingIndicatorHandler';
 
-describe('Handlers', () => {
-    let handlerProps: HandlerProps;
+describe('commandHandlers', () => {
+    let handlerProps: CommandHandlerProps;
     let checkoutService: CheckoutService;
 
     const dispatch = jest.fn();
@@ -81,33 +77,6 @@ describe('Handlers', () => {
                 type: ExtensionActionType.SHOW_LOADING_INDICATOR,
                 payload: show,
             });
-        });
-    });
-
-    describe('createGetConsignmentHandler', () => {
-        it('posts a message to an extension', () => {
-            const handler = createGetConsignmentHandler(handlerProps);
-            const consignments: Consignment[] = [];
-
-            jest.spyOn(checkoutService, 'postMessageToExtension');
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-            jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue({
-                consignments,
-            } as Checkout);
-
-            handler.handler({
-                type: ExtensionCommandType.GetConsignments,
-            });
-
-            expect(checkoutService.postMessageToExtension).toHaveBeenCalledWith(
-                getExtensions()[0].id,
-                {
-                    type: ExtensionMessageType.GetConsignments,
-                    payload: {
-                        consignments,
-                    },
-                },
-            );
         });
     });
 });

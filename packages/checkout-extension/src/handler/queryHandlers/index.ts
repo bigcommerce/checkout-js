@@ -1,0 +1,1 @@
+export { createGetConsignmentHandler } from './createGetConsignmentHandler';

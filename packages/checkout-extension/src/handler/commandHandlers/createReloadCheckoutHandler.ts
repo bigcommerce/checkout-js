@@ -1,10 +1,10 @@
 import { ExtensionCommandType } from '@bigcommerce/checkout-sdk';
 
-import { CommandHandler, HandlerProps } from './CommandHandler';
+import { CommandHandler, CommandHandlerProps } from './CommandHandler';
 
 export function createReloadCheckoutHandler({
     checkoutService,
-}: HandlerProps): CommandHandler<ExtensionCommandType.ReloadCheckout> {
+}: CommandHandlerProps): CommandHandler<ExtensionCommandType.ReloadCheckout> {
     return {
         commandType: ExtensionCommandType.ReloadCheckout,
         handler: () => {
