@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.558.0](https://github.com/bigcommerce/checkout-js/compare/v1.557.5...v1.558.0) (2025-02-03)
+
+
+### Features
+
+* **extension:** CHECKOUT-8974 Introduce Query Handler ([#2157](https://github.com/bigcommerce/checkout-js/issues/2157)) ([ab3f58e](https://github.com/bigcommerce/checkout-js/commit/ab3f58ecd96ddf48c1ae2f4bd723a5f4b8dd716e))
+
 ### [1.557.5](https://github.com/bigcommerce/checkout-js/compare/v1.557.4...v1.557.5) (2025-02-03)
 
 ### [1.557.4](https://github.com/bigcommerce/checkout-js/compare/v1.557.3...v1.557.4) (2025-01-30)
