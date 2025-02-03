@@ -1,10 +1,10 @@
 import { ExtensionCommandType } from '@bigcommerce/checkout-sdk';
 
-import { CommandHandler, HandlerProps } from './CommandHandler';
+import { CommandHandler, CommandHandlerProps } from './CommandHandler';
 
 export function createSetIframeStyleHandler({
     extension,
-}: HandlerProps): CommandHandler<ExtensionCommandType.SetIframeStyle> {
+}: CommandHandlerProps): CommandHandler<ExtensionCommandType.SetIframeStyle> {
     return {
         commandType: ExtensionCommandType.SetIframeStyle,
         handler: (data) => {
