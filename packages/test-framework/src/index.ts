@@ -3,6 +3,7 @@ export * from './fixture/pagePreset';
 export {
     CheckoutPageNodeObject,
     cartReadyForMultiShipping,
+    cartWithBillingEmail,
     consignment,
     shippingAddress2,
     shippingAddress3,
