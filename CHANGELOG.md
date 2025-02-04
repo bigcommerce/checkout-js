@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.559.0](https://github.com/bigcommerce/checkout-js/compare/v1.558.1...v1.559.0) (2025-02-04)
+
+
+### Features
+
+* **payment:** PAYPAL-5038 added onUnhandledError ([a253ab8](https://github.com/bigcommerce/checkout-js/commit/a253ab84760517c5c2cd434f1ed18890fdfdc403))
+
 ### [1.558.1](https://github.com/bigcommerce/checkout-js/compare/v1.558.0...v1.558.1) (2025-02-03)
 
 ## [1.558.0](https://github.com/bigcommerce/checkout-js/compare/v1.557.5...v1.558.0) (2025-02-03)
