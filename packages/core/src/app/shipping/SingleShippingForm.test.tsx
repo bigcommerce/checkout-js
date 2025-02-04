@@ -31,6 +31,7 @@ describe('SingleShippingForm', () => {
         isInitialValueLoaded: true,
         isLoading: false,
         isShippingStepPending: false,
+        shippingFormRenderTimestamp: undefined,
         onSubmit: jest.fn(),
         getFields: jest.fn(() => addressFormFields),
         onUnhandledError: jest.fn(),
@@ -236,7 +237,7 @@ describe('SingleShippingForm', () => {
             countries: [],
             getFields: jest.fn(() => []),
         });
-        
+
         rerender(createSingleShippingFormComponent({
             updateAddress,
             isInitialValueLoaded: true,
@@ -360,5 +361,53 @@ describe('SingleShippingForm', () => {
         renderSingleShippingFormComponent({ methodId: 'amazonpay' });
 
         expect(screen.queryByTestId('billingSameAsShipping')).not.toBeInTheDocument();
+    });
+
+    it('re-renders itself when shippingFormRenderTimestamp is changed', async () => {
+        const customField = {
+            custom: true,
+            default: 'BigCommerce',
+            id: 'custom',
+            label: 'Custom',
+            name: 'custom',
+            required: false,
+        };
+
+        const { rerender } = renderSingleShippingFormComponent({
+            getFields: () => [...addressFormFields, customField],
+            shippingFormRenderTimestamp: 1,
+        });
+
+        expect(screen.getByTestId('customInput-text')).toHaveValue('BigCommerce');
+
+        rerender(
+            createSingleShippingFormComponent({
+                getFields: () => [
+                    ...addressFormFields,
+                    {
+                        ...customField,
+                        default: 'BigCommerce Sydney',
+                    },
+                ],
+                shippingFormRenderTimestamp: 1,
+            }),
+        );
+
+        expect(screen.getByTestId('customInput-text')).toHaveValue('BigCommerce');
+
+        rerender(
+            createSingleShippingFormComponent({
+                getFields: () => [
+                    ...addressFormFields,
+                    {
+                        ...customField,
+                        default: 'BigCommerce Sydney',
+                    },
+                ],
+                shippingFormRenderTimestamp: 2,
+            }),
+        );
+
+        expect(screen.getByTestId('customInput-text')).toHaveValue('BigCommerce Sydney');
     });
 });

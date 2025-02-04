@@ -11,5 +11,5 @@ export interface CommandHandlerProps {
 
 export interface CommandHandler<T extends keyof ExtensionCommandMap> {
     commandType: T;
-    handler: (command: ExtensionCommandMap[T]) => void;
+    handler: (command: ExtensionCommandMap[T]) => Promise<void> | void;
 }

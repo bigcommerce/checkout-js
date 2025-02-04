@@ -59,6 +59,7 @@ export interface SingleShippingFormProps {
     isInitialValueLoaded: boolean;
     validateGoogleMapAutoCompleteMaxLength: boolean;
     validateAddressFields: boolean;
+    shippingFormRenderTimestamp: number | undefined;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     deleteConsignments(): Promise<Address | undefined>;
     getFields(countryCode?: string): FormField[];
@@ -87,7 +88,7 @@ interface SingleShippingFormState {
 function shouldHaveCustomValidation(methodId?: string): boolean {
     const methodIdsWithoutCustomValidation: string[] = [
         PaymentMethodId.BraintreeAcceleratedCheckout,
-        PaymentMethodId.PayPalCommerceAcceleratedCheckout
+        PaymentMethodId.PayPalCommerceAcceleratedCheckout,
     ];
 
     return Boolean(methodId && !methodIdsWithoutCustomValidation.includes(methodId));
@@ -135,6 +136,28 @@ class SingleShippingForm extends PureComponent<
             },
             props.shippingAutosaveDelay ?? SHIPPING_AUTOSAVE_DELAY,
         );
+    }
+
+    componentDidUpdate({ shippingFormRenderTimestamp }: SingleShippingFormProps) {
+        const {
+            shippingFormRenderTimestamp: newShippingFormRenderTimestamp,
+            setValues,
+            getFields,
+            shippingAddress,
+            isBillingSameAsShipping,
+            customerMessage,
+        } = this.props;
+
+        if (newShippingFormRenderTimestamp !== shippingFormRenderTimestamp) {
+            setValues({
+                billingSameAsShipping: isBillingSameAsShipping,
+                orderComment: customerMessage,
+                shippingAddress: mapAddressToFormValues(
+                    getFields(shippingAddress && shippingAddress.countryCode),
+                    shippingAddress,
+                ),
+            });
+        }
     }
 
     render(): ReactNode {
@@ -370,7 +393,7 @@ export default withLanguage(
                               language,
                               formFields: getFields(formValues && formValues.countryCode),
                               validateGoogleMapAutoCompleteMaxLength,
-                              validateAddressFields
+                              validateAddressFields,
                           }),
                       ),
                   }),
