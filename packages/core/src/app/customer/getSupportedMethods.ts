@@ -34,7 +34,7 @@ export const SUPPORTED_METHODS: string[] = [
 export const getSupportedMethodIds = (methodIds: string[], features: CheckoutSettings['features'] = {}): string[] => {
     return methodIds.filter((methodId) => {
         // TODO: this check have to be deleted after implementation of Apple Pay for third party browsers will be tested and released
-        if (methodId === APPLE_PAY && !isApplePayWindow(window) && !features['PAYPAL-4324.applepay_web_browser_support']) {
+        if (methodId === APPLE_PAY && !isApplePayWindow(window) && !(features['PAYPAL-4324.applepay_web_browser_support'] ?? true)) {
             return false;
         }
 
