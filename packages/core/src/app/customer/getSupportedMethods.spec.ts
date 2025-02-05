@@ -1,6 +1,10 @@
+import { getStoreConfig } from '../config/config.mock';
+
 import { getSupportedMethodIds } from './getSupportedMethods';
 
 describe('getSupportedMethods', () => {
+    const defaultStoreConfig = getStoreConfig();
+
     it('filters out unsupported methods', () => {
         const methods = ['amazonpay', 'test'];
 
@@ -12,7 +16,9 @@ describe('getSupportedMethods', () => {
     it('filters out applepay if not supported methods', () => {
         const methods = ['amazonpay', 'applepay'];
 
-        const filteredMethods = getSupportedMethodIds(methods, { 'PAYPAL-4324.applepay_web_browser_support': false });
+        defaultStoreConfig.checkoutSettings.features['PAYPAL-4324.applepay_web_browser_support'] = false;
+
+        const filteredMethods = getSupportedMethodIds(methods, defaultStoreConfig.checkoutSettings);
 
         expect(filteredMethods).toEqual(['amazonpay']);
     });
@@ -20,7 +26,9 @@ describe('getSupportedMethods', () => {
     it('do not filter applepay it experiment is enabled', () => {
         const methods = ['amazonpay', 'applepay'];
 
-        const filteredMethods = getSupportedMethodIds(methods, { 'PAYPAL-4324.applepay_web_browser_support': true });
+        defaultStoreConfig.checkoutSettings.features['PAYPAL-4324.applepay_web_browser_support'] = true;
+
+        const filteredMethods = getSupportedMethodIds(methods, defaultStoreConfig.checkoutSettings);
 
         expect(filteredMethods).toEqual(['amazonpay', 'applepay']);
     });
@@ -28,7 +36,7 @@ describe('getSupportedMethods', () => {
     it('do not filter applepay if experiment in undefined', () => {
         const methods = ['amazonpay', 'applepay'];
 
-        const filteredMethods = getSupportedMethodIds(methods, {});
+        const filteredMethods = getSupportedMethodIds(methods, defaultStoreConfig.checkoutSettings);
 
         expect(filteredMethods).toEqual(['amazonpay', 'applepay']);
     });

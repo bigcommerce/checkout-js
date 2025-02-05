@@ -13,7 +13,7 @@ export interface CheckoutButtonListProps {
     isShowingWalletButtonsOnTop?: boolean;
     hideText?: boolean;
     checkEmbeddedSupport?(methodIds: string[]): void;
-    features: CheckoutSettings['features'];
+    checkoutSettings: CheckoutSettings;
     deinitialize(options: CustomerRequestOptions): void;
     initialize(options: CustomerInitializeOptions): void;
     onError?(error: Error): void;
@@ -25,12 +25,12 @@ const CheckoutButtonList: FunctionComponent<CheckoutButtonListProps> = ({
     onError,
     isInitializing = false,
     isShowingWalletButtonsOnTop= false,
-    features,
+    checkoutSettings,
     methodIds = [],
     hideText = false,
     ...rest
 }) => {
-    const supportedMethodIds = getSupportedMethodIds(methodIds, features);
+    const supportedMethodIds = getSupportedMethodIds(methodIds, checkoutSettings);
 
     if (supportedMethodIds.length === 0) {
         return null;
