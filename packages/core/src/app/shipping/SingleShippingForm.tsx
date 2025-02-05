@@ -59,7 +59,7 @@ export interface SingleShippingFormProps {
     isInitialValueLoaded: boolean;
     validateGoogleMapAutoCompleteMaxLength: boolean;
     validateAddressFields: boolean;
-    shippingFormRenderTimestamp: number | undefined;
+    shippingFormRenderTimestamp?: number;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     deleteConsignments(): Promise<Address | undefined>;
     getFields(countryCode?: string): FormField[];
@@ -182,6 +182,7 @@ class SingleShippingForm extends PureComponent<
             isShippingStepPending,
             isFloatingLabelEnabled,
             validateAddressFields,
+            shippingFormRenderTimestamp,
         } = this.props;
 
         const { isResettingAddress, isUpdatingShippingData, hasRequestedShippingOptions } =
@@ -229,6 +230,7 @@ class SingleShippingForm extends PureComponent<
                     isInitialValueLoaded={isInitialValueLoaded}
                     isLoading={isLoading || isUpdatingShippingData}
                     isMultiShippingMode={false}
+                    shippingFormRenderTimestamp={shippingFormRenderTimestamp}
                     shouldDisableSubmit={this.shouldDisableSubmit()}
                     shouldShowOrderComments={shouldShowOrderComments}
                     shouldShowShippingOptions={isValid}

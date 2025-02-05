@@ -15,6 +15,7 @@ export interface ShippingOptionsProps {
     isMultiShippingMode: boolean;
     isUpdatingAddress?: boolean;
     shouldShowShippingOptions: boolean;
+    shippingFormRenderTimestamp?: number;
 }
 
 export interface WithCheckoutShippingOptionsProps {
