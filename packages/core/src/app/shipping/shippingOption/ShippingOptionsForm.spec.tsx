@@ -12,7 +12,7 @@ import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api'
 import { getCart } from '../../cart/carts.mock';
 import { getConsignment } from '../consignment.mock';
 
-import ShippingOptionsForm, { ShippingOptionsFormProps } from './ShippingOptionsForm';
+import ShippingOptionsForm from './ShippingOptionsForm';
 import ShippingOptionsList from './ShippingOptionsList';
 
 describe('ShippingOptions Component', () => {
@@ -27,7 +27,7 @@ describe('ShippingOptions Component', () => {
         },
     ];
     let triggerConsignmentsUpdated: (state: CheckoutSelectors) => void;
-    const defaultProps: ShippingOptionsFormProps = {
+    const defaultProps = {
         isInitialValueLoaded: true,
         isMultiShippingMode: true,
         consignments,
@@ -40,6 +40,8 @@ describe('ShippingOptions Component', () => {
         }) as any,
         selectShippingOption: jest.fn(() => Promise.resolve()) as any,
         isLoading: jest.fn(() => false),
+        shippingFormRenderTimestamp: undefined,
+        setValues: jest.fn(),
     };
 
     const checkoutService = createCheckoutService();
@@ -68,6 +70,17 @@ describe('ShippingOptions Component', () => {
         expect(component.find(ShippingOptionsList)).toHaveLength(2);
 
         expect(component.find('.shippingOptions-panel-message')).toHaveLength(0);
+    });
+
+    it('does not reset the form when shippingFormRenderTimestamp is undefined', async () => {
+        const component = mount(
+            <TestWrap>
+                <ShippingOptionsForm {...defaultProps} />
+            </TestWrap>,
+        );
+
+        expect(component.find(ShippingOptionsList)).toHaveLength(2);
+        expect(defaultProps.setValues).not.toHaveBeenCalled();
     });
 
     it('selects default shipping option once per consignment when updated consignment has no shipping option', async () => {
