@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.561.0](https://github.com/bigcommerce/checkout-js/compare/v1.560.1...v1.561.0) (2025-02-06)
+
+
+### Features
+
+* **payment:** PAYPAL-4324 Added experiment for Apple Pay ([#2154](https://github.com/bigcommerce/checkout-js/issues/2154)) ([d377464](https://github.com/bigcommerce/checkout-js/commit/d377464bfcce8eb84f54f635ab7e8bca406f5e15))
+
 ### [1.560.1](https://github.com/bigcommerce/checkout-js/compare/v1.560.0...v1.560.1) (2025-02-06)
 
 ## [1.560.0](https://github.com/bigcommerce/checkout-js/compare/v1.559.0...v1.560.0) (2025-02-06)
