@@ -1,7 +1,7 @@
 import { Checkout, Customer } from '@bigcommerce/checkout-sdk';
 import { every } from 'lodash';
 
-import { SUPPORTED_METHODS } from './CheckoutButtonList';
+import { SUPPORTED_METHODS } from './getSupportedMethods';
 
 const SUPPORTED_SIGNOUT_METHODS = ['amazonpay'];
 

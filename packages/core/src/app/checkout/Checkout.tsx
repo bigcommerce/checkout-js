@@ -205,7 +205,9 @@ class Checkout extends Component<
             }), extensionService.loadExtensions()]);
 
             const providers = data.getConfig()?.checkoutSettings?.remoteCheckoutProviders || [];
-            const supportedProviders = getSupportedMethodIds(providers);
+            const checkoutSettings = data.getConfig()?.checkoutSettings;
+
+            const supportedProviders = getSupportedMethodIds(providers, checkoutSettings);
 
             if (providers.length > 0) {
                 const configs = await loadPaymentMethodByIds(supportedProviders);

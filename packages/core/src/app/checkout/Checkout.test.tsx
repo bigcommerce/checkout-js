@@ -237,7 +237,7 @@ describe('Checkout', () => {
 
             await checkout.waitForCustomerStep();
 
-            const error = new Error('Apple pay is not supported');
+            const error = new Error('Unable to proceed because payment method data is unavailable or not properly configured.');
 
             expect(defaultProps.errorLogger.log).toHaveBeenCalledWith(error);
         });

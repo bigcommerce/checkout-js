@@ -1,40 +1,11 @@
-import { CustomerInitializeOptions, CustomerRequestOptions } from '@bigcommerce/checkout-sdk';
+import { CheckoutSettings, CustomerInitializeOptions, CustomerRequestOptions } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
-import { isApplePayWindow } from '../common/utility';
-
 import CheckoutButton from './CheckoutButton';
 import { AmazonPayV2Button, ApplePayButton, PayPalCommerceButton } from './customWalletButton';
-
-const APPLE_PAY = 'applepay';
-
-// TODO: The API should tell UI which payment method offers its own checkout button
-export const SUPPORTED_METHODS: string[] = [
-    'amazonpay',
-    APPLE_PAY,
-    'braintreevisacheckout',
-    'braintreepaypal',
-    'braintreepaypalcredit',
-    'chasepay',
-    'masterpass',
-    'paypalcommerce',
-    'paypalcommercevenmo',
-    'paypalcommercecredit',
-    'googlepayadyenv2',
-    'googlepayadyenv3',
-    'googlepayauthorizenet',
-    'googlepaybnz',
-    'googlepaybraintree',
-    'googlepaypaypalcommerce',
-    'googlepaycheckoutcom',
-    'googlepaycybersourcev2',
-    'googlepayorbital',
-    'googlepaystripe',
-    'googlepaystripeupe',
-    'googlepayworldpayaccess',
-];
+import { getSupportedMethodIds } from './getSupportedMethods';
 
 export interface CheckoutButtonListProps {
     methodIds?: string[];
@@ -42,20 +13,11 @@ export interface CheckoutButtonListProps {
     isShowingWalletButtonsOnTop?: boolean;
     hideText?: boolean;
     checkEmbeddedSupport?(methodIds: string[]): void;
+    checkoutSettings: CheckoutSettings;
     deinitialize(options: CustomerRequestOptions): void;
     initialize(options: CustomerInitializeOptions): void;
     onError?(error: Error): void;
     onClick?(methodId: string): void;
-}
-
-export const filterUnsupportedMethodIds = (methodIds:string[]): string[] => {
-    return (methodIds).filter((methodId) => {
-        if (methodId === APPLE_PAY && !isApplePayWindow(window)) {
-            return false;
-        }
-
-        return SUPPORTED_METHODS.indexOf(methodId) !== -1;
-    });
 }
 
 const CheckoutButtonList: FunctionComponent<CheckoutButtonListProps> = ({
@@ -63,11 +25,12 @@ const CheckoutButtonList: FunctionComponent<CheckoutButtonListProps> = ({
     onError,
     isInitializing = false,
     isShowingWalletButtonsOnTop= false,
-    methodIds,
+    checkoutSettings,
+    methodIds = [],
     hideText = false,
     ...rest
 }) => {
-    const supportedMethodIds = filterUnsupportedMethodIds(methodIds ?? []);
+    const supportedMethodIds = getSupportedMethodIds(methodIds, checkoutSettings);
 
     if (supportedMethodIds.length === 0) {
         return null;
@@ -96,7 +59,7 @@ const CheckoutButtonList: FunctionComponent<CheckoutButtonListProps> = ({
             )}
 
             <div className="checkoutRemote">
-                {supportedMethodIds.map((methodId) => {
+                {methodIds.map((methodId) => {
                     if (methodId === 'applepay') {
                         return (
                             <ApplePayButton

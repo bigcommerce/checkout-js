@@ -121,7 +121,10 @@ function mapToCheckoutButtonContainerProps({
         }
      } = checkoutState;
     const config = getConfig();
-    const availableMethodIds = getSupportedMethodIds(config?.checkoutSettings.remoteCheckoutProviders ?? []);
+    const checkoutSettings = config?.checkoutSettings;
+    const providers = config?.checkoutSettings.remoteCheckoutProviders ?? [];
+
+    const availableMethodIds = getSupportedMethodIds(providers, checkoutSettings);
     const customer = getCustomer();
 
     if (!isPaymentDataRequired()) {
