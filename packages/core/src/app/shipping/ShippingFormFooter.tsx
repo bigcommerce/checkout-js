@@ -19,6 +19,7 @@ export interface ShippingFormFooterProps {
     shouldDisableSubmit: boolean;
     isInitialValueLoaded: boolean;
     isLoading: boolean;
+    shippingFormRenderTimestamp?: number;
 }
 
 const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
@@ -29,6 +30,7 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
     shouldDisableSubmit,
     isInitialValueLoaded,
     isLoading,
+    shippingFormRenderTimestamp,
 }) => {
     return (
         <>
@@ -55,6 +57,7 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
                     isInitialValueLoaded={isInitialValueLoaded}
                     isMultiShippingMode={isMultiShippingMode}
                     isUpdatingAddress={isLoading}
+                    shippingFormRenderTimestamp={shippingFormRenderTimestamp}
                     shouldShowShippingOptions={shouldShowShippingOptions}
                 />
             </Fieldset>

@@ -17,7 +17,21 @@ import { ShippingOptionsProps, WithCheckoutShippingOptionsProps } from './Shippi
 import './ShippingOptionsForm.scss';
 import ShippingOptionsList from './ShippingOptionsList';
 
-export type ShippingOptionsFormProps = ShippingOptionsProps & WithCheckoutShippingOptionsProps & AnalyticsContextProps;
+export type ShippingOptionsFormProps = ShippingOptionsProps &
+    WithCheckoutShippingOptionsProps &
+    AnalyticsContextProps;
+
+const getShippingOptionIds = ({ consignments }: ShippingOptionsFormProps) => {
+    const shippingOptionIds: { [id: string]: string } = {};
+
+    (consignments || []).forEach((consignment) => {
+        shippingOptionIds[consignment.id] = consignment.selectedShippingOption
+            ? consignment.selectedShippingOption.id
+            : '';
+    });
+
+    return { shippingOptionIds };
+};
 
 class ShippingOptionsForm extends PureComponent<
     ShippingOptionsFormProps & FormikProps<ShippingOptionsFormValues>
@@ -30,15 +44,21 @@ class ShippingOptionsForm extends PureComponent<
         this.unsubscribe = subscribeToConsignments(this.selectDefaultShippingOptions);
     }
 
-    componentDidUpdate(): void {
+    componentDidUpdate({ shippingFormRenderTimestamp }: ShippingOptionsFormProps): void {
         const {
             analyticsTracker,
             consignments,
-            shouldShowShippingOptions
+            shouldShowShippingOptions,
+            shippingFormRenderTimestamp: newShippingFormRenderTimestamp,
+            setValues,
         } = this.props;
 
         if (consignments?.length && shouldShowShippingOptions) {
             analyticsTracker.showShippingMethods();
+        }
+
+        if (newShippingFormRenderTimestamp !== shippingFormRenderTimestamp) {
+            setValues(getShippingOptionIds(this.props));
         }
     }
 
@@ -57,7 +77,7 @@ class ShippingOptionsForm extends PureComponent<
             isLoading,
             shouldShowShippingOptions,
             invalidShippingMessage,
-            methodId
+            methodId,
         } = this.props;
 
         if (!consignments?.length || !shouldShowShippingOptions) {
@@ -90,7 +110,7 @@ class ShippingOptionsForm extends PureComponent<
                             consignmentId={consignment.id}
                             inputName={getRadioInputName(consignment.id)}
                             isLoading={isLoading(consignment.id)}
-                            isMultiShippingMode = {isMultiShippingMode}
+                            isMultiShippingMode={isMultiShippingMode}
                             onSelectedOption={selectShippingOption}
                             selectedShippingOptionId={
                                 consignment.selectedShippingOption &&
@@ -182,17 +202,9 @@ export interface ShippingOptionsFormValues {
     };
 }
 
-export default withAnalytics(withFormikExtended<ShippingOptionsFormProps, ShippingOptionsFormValues>({
-    handleSubmit: noop,
-    mapPropsToValues({ consignments }) {
-        const shippingOptionIds: { [id: string]: string } = {};
-
-        (consignments || []).forEach((consignment) => {
-            shippingOptionIds[consignment.id] = consignment.selectedShippingOption
-                ? consignment.selectedShippingOption.id
-                : '';
-        });
-
-        return { shippingOptionIds };
-    },
-})(ShippingOptionsForm));
+export default withAnalytics(
+    withFormikExtended<ShippingOptionsFormProps, ShippingOptionsFormValues>({
+        handleSubmit: noop,
+        mapPropsToValues: getShippingOptionIds,
+    })(ShippingOptionsForm),
+);

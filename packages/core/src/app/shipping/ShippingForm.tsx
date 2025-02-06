@@ -22,6 +22,7 @@ import MultiShippingForm, { MultiShippingFormValues } from './MultiShippingForm'
 import MultiShippingFormV2 from './MultiShippingFormV2';
 import MultiShippingGuestForm from './MultiShippingGuestForm';
 import SingleShippingForm, { SingleShippingFormValues } from './SingleShippingForm';
+import { useExtensions } from '@bigcommerce/checkout/checkout-extension';
 
 export interface ShippingFormProps {
     addresses: CustomerAddress[];
@@ -104,6 +105,10 @@ const ShippingForm = ({
       validateAddressFields,
   }: ShippingFormProps & WithLanguageProps) => {
 
+    const {
+        extensionState: { shippingFormRenderTimestamp },
+    } = useExtensions();
+
     const getMultiShippingForm = () => {
         if (isGuest) {
             return (
@@ -172,6 +177,7 @@ const ShippingForm = ({
             onSubmit={onSingleShippingSubmit}
             onUnhandledError={onUnhandledError}
             shippingAddress={shippingAddress}
+            shippingFormRenderTimestamp={shippingFormRenderTimestamp}
             shouldShowOrderComments={shouldShowOrderComments}
             shouldShowSaveAddress={shouldShowSaveAddress}
             signOut={signOut}

@@ -6,9 +6,22 @@ export const extensionReducer = (
 ): ExtensionState => {
     switch (action.type) {
         case ExtensionActionType.SHOW_LOADING_INDICATOR:
-            return { ...state, isShowingLoadingIndicator: action.payload };
+            if (typeof action.payload === 'boolean') {
+                return { ...state, isShowingLoadingIndicator: action.payload };
+            }
+
+            break;
+
+        case ExtensionActionType.RE_RENDER_SHIPPING_FORM:
+            if (typeof action.payload === 'number') {
+                return { ...state, shippingFormRenderTimestamp: action.payload };
+            }
+
+            break;
 
         default:
             return state;
     }
+
+    return state;
 };
