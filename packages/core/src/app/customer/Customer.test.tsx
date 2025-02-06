@@ -25,6 +25,7 @@ import {
     CheckoutPageNodeObject,
     CheckoutPreset,
     checkoutWithBillingEmail,
+    checkoutWithMultiShippingCart,
 } from '@bigcommerce/checkout/test-framework';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
@@ -149,5 +150,61 @@ describe('Customer Component', () => {
         await userEvent.click(await screen.findByText('Continue'));
 
         expect(screen.getByText(newEmail)).toBeInTheDocument();
+    });
+
+    it('creates a new customer', async () => {
+        const customerEmail = faker.internet.email();
+
+        checkout.use(CheckoutPreset.CheckoutWithDigitalCart);
+
+        render(<CheckoutTest {...defaultProps} />);
+
+        await checkout.waitForCustomerStep();
+
+        await userEvent.click(screen.getByText('Sign in now'));
+        await userEvent.click(screen.getByText('Create an account'));
+        await userEvent.type(await screen.findByLabelText('First Name'), faker.name.firstName());
+        await userEvent.type(await screen.findByLabelText('Last Name'), faker.name.lastName());
+        await userEvent.type(await screen.findByLabelText('Email'), customerEmail);
+        await userEvent.type(await screen.findByLabelText('Password'), 'abc');
+        await userEvent.click(screen.getByText('Create Account'));
+
+        expect(await screen.findByText('Password needs to contain a number')).toBeInTheDocument();
+
+        await userEvent.type(await screen.findByLabelText('Password'), '123');
+        await userEvent.click(screen.getByText('Create Account'));
+
+        expect(await screen.findByText('Password is too short')).toBeInTheDocument();
+
+        checkout.updateCheckout('get', '/checkout/*', {
+            ...checkoutWithBillingEmail,
+            billingAddress: {
+                id: 'xx',
+                firstName: '',
+                lastName: '',
+                email: customerEmail,
+                company: '',
+                address1: '',
+                address2: '',
+                city: '',
+                shouldSaveAddress: false,
+                stateOrProvince: '',
+                stateOrProvinceCode: '',
+                country: '',
+                countryCode: '',
+                postalCode: '',
+                phone: '',
+                customFields: [],
+            },
+            customer: checkoutWithMultiShippingCart.customer,
+        });
+
+        await userEvent.type(await screen.findByLabelText('Password'), 'makeItLonger');
+        await userEvent.click(screen.getByText('Create Account'));
+
+        await checkout.waitForShippingStep();
+
+        expect(await screen.findByText(customerEmail)).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Sign Out' })).toBeInTheDocument();
     });
 });
