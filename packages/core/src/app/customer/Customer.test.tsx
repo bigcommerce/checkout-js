@@ -137,7 +137,7 @@ describe('Customer Component', () => {
         checkout.updateCheckout(
             'put',
             '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/billing-address/billing-address-id',
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+             
             {
                 ...checkoutWithBillingEmail,
                 billingAddress: {
