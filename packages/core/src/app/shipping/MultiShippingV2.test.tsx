@@ -22,8 +22,9 @@ import {
     CheckoutProvider,
 } from '@bigcommerce/checkout/payment-integration-api';
 import {
-    cartReadyForMultiShipping,
     CheckoutPageNodeObject,
+    CheckoutPreset,
+    checkoutReadyForMultiShipping,
     consignment,
     shippingAddress2,
     shippingAddress3,
@@ -125,7 +126,7 @@ describe('Multi-shipping V2', () => {
 
         jest.spyOn(checkoutService, 'selectConsignmentShippingOption');
 
-        checkout.use('cartReadyForMultiShipping');
+        checkout.use(CheckoutPreset.CheckoutReadyForMultiShipping);
 
         render(<CheckoutTest {...defaultProps} />);
 
@@ -149,7 +150,7 @@ describe('Multi-shipping V2', () => {
             'post',
             '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments',
             {
-                ...cartReadyForMultiShipping,
+                ...checkoutReadyForMultiShipping,
                 consignments: [
                     {
                         ...consignment,
@@ -163,7 +164,7 @@ describe('Multi-shipping V2', () => {
             'put',
             '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments/consignment-1',
             {
-                ...cartReadyForMultiShipping,
+                ...checkoutReadyForMultiShipping,
                 consignments: [consignment],
             },
         );
@@ -208,7 +209,7 @@ describe('Multi-shipping V2', () => {
             'post',
             '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments',
             {
-                ...cartReadyForMultiShipping,
+                ...checkoutReadyForMultiShipping,
                 consignments: [
                     {
                         ...consignment,
@@ -226,7 +227,7 @@ describe('Multi-shipping V2', () => {
             'put',
             '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments/consignment-1',
             {
-                ...cartReadyForMultiShipping,
+                ...checkoutReadyForMultiShipping,
                 consignments: [
                     {
                         ...consignment,
@@ -244,7 +245,7 @@ describe('Multi-shipping V2', () => {
             'put',
             '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments/consignment-2',
             {
-                ...cartReadyForMultiShipping,
+                ...checkoutReadyForMultiShipping,
                 consignments: [
                     {
                         ...consignment,
@@ -286,7 +287,7 @@ describe('Multi-shipping V2', () => {
 
         jest.spyOn(checkoutService, 'selectConsignmentShippingOption');
 
-        checkout.use('cartReadyForMultiShipping');
+        checkout.use(CheckoutPreset.CheckoutReadyForMultiShipping);
 
         render(<CheckoutTest {...defaultProps} />);
 
@@ -298,7 +299,7 @@ describe('Multi-shipping V2', () => {
             'post',
             '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments',
             {
-                ...cartReadyForMultiShipping,
+                ...checkoutReadyForMultiShipping,
                 consignments: [
                     {
                         ...consignment,
@@ -339,7 +340,7 @@ describe('Multi-shipping V2', () => {
             'put',
             '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments/consignment-1',
             {
-                ...cartReadyForMultiShipping,
+                ...checkoutReadyForMultiShipping,
                 consignments: [consignment],
             },
         );

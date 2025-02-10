@@ -4,14 +4,15 @@ import { RequestHandler, rest } from 'msw';
 import { SetupServer, setupServer } from 'msw/node';
 
 import {
-    cart,
-    cartReadyForMultiShipping,
-    cartWithBillingEmail,
-    cartWithCustomShippingAndBilling,
-    cartWithoutPhysicalItem,
-    cartWithPromotions,
-    cartWithShippingAddress,
-    cartWithShippingAndBilling,
+    CheckoutPreset,
+    checkoutReadyForBillingStepWithSingleShipping,
+    checkoutReadyForCustomerStep,
+    checkoutReadyForCustomerStepWithDigitalCart,
+    checkoutReadyForCustomerStepWithPromotions,
+    checkoutReadyForMultiShipping,
+    checkoutReadyForPaymentStep,
+    checkoutReadyForPaymentStepWithCustomShippingOption,
+    checkoutReadyForShippingStepWithGuestEmail,
     checkoutSettings,
     checkoutSettingsWithCustomErrorFlashMessage,
     checkoutSettingsWithErrorFlashMessage,
@@ -19,14 +20,16 @@ import {
     countries,
     formFields,
     payments,
-} from './API.mock';
+} from './mocks';
 
 export class CheckoutPageNodeObject {
     private server: SetupServer;
 
     constructor() {
         const defaultHandlers = [
-            rest.get('/api/storefront/checkout/*', (_, res, ctx) => res(ctx.json(cart))),
+            rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
+                res(ctx.json(checkoutReadyForCustomerStep)),
+            ),
             rest.get('/api/storefront/checkout-settings', (_, res, ctx) =>
                 res(ctx.json(checkoutSettings)),
             ),
@@ -36,8 +39,9 @@ export class CheckoutPageNodeObject {
                 res(ctx.json(countries)),
             ),
             rest.post('/api/storefront/checkouts/*/billing-address', (_, res, ctx) =>
-                res(ctx.json(cartWithBillingEmail)),
+                res(ctx.json(checkoutReadyForShippingStepWithGuestEmail)),
             ),
+            rest.post('/api/storefront/subscriptions', (_, res, ctx) => res(ctx.json({}))),
             rest.get('/api/storefront/checkout-extensions', (_, res, ctx) => res(ctx.json([]))),
         ];
 
@@ -87,65 +91,65 @@ export class CheckoutPageNodeObject {
         this.server.use(handler);
     }
 
-    use(preset: string): void {
+    use(preset: CheckoutPreset): void {
         switch (preset) {
-            case 'CartWithBillingEmail':
+            case CheckoutPreset.CheckoutWithBillingEmail:
                 this.server.use(
                     rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
-                        res(ctx.json(cartWithBillingEmail)),
+                        res(ctx.json(checkoutReadyForShippingStepWithGuestEmail)),
                     ),
                 );
                 break;
 
-            case 'CartWithPromotions':
+            case CheckoutPreset.CheckoutWithPromotions:
                 this.server.use(
                     rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
-                        res(ctx.json(cartWithPromotions)),
+                        res(ctx.json(checkoutReadyForCustomerStepWithPromotions)),
                     ),
                 );
                 break;
 
-            case 'CartWithShippingAddress':
+            case CheckoutPreset.CheckoutWithShippingAddress:
                 this.server.use(
                     rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
-                        res(ctx.json(cartWithShippingAddress)),
+                        res(ctx.json(checkoutReadyForBillingStepWithSingleShipping)),
                     ),
                 );
                 break;
 
-            case 'CartWithShippingAndBilling':
+            case CheckoutPreset.CheckoutWithShippingAndBilling:
                 this.server.use(
                     rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
-                        res(ctx.json(cartWithShippingAndBilling)),
+                        res(ctx.json(checkoutReadyForPaymentStep)),
                     ),
                 );
                 break;
 
-            case 'cartReadyForMultiShipping':
+            case CheckoutPreset.CheckoutReadyForMultiShipping:
                 this.server.use(
                     rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
-                        res(ctx.json(cartReadyForMultiShipping)),
+                        res(ctx.json(checkoutReadyForMultiShipping)),
                     ),
                 );
                 break;
 
-            case 'CartWithCustomShippingAndBilling':
+            case CheckoutPreset.CheckoutWithCustomShippingAndBilling:
                 this.server.use(
                     rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
-                        res(ctx.json(cartWithCustomShippingAndBilling)),
+                        res(ctx.json(checkoutReadyForPaymentStepWithCustomShippingOption)),
                     ),
                 );
                 break;
 
-            case 'CartWithoutPhysicalItem':
+            case CheckoutPreset.CheckoutWithoutPhysicalItem:
                 this.server.use(
                     rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
-                        res(ctx.json(cartWithoutPhysicalItem)),
+                        res(ctx.json(checkoutReadyForCustomerStepWithDigitalCart)),
                     ),
                 );
                 break;
 
-            case 'CustomErrorFlashMessage':
+            case CheckoutPreset.CustomErrorFlashMessage:
                 this.server.use(
                     rest.get('/api/storefront/checkout-settings', (_, res, ctx) =>
                         res(ctx.json(checkoutSettingsWithCustomErrorFlashMessage)),
@@ -153,7 +157,7 @@ export class CheckoutPageNodeObject {
                 );
                 break;
 
-            case 'ErrorFlashMessage':
+            case CheckoutPreset.ErrorFlashMessage:
                 this.server.use(
                     rest.get('/api/storefront/checkout-settings', (_, res, ctx) =>
                         res(ctx.json(checkoutSettingsWithErrorFlashMessage)),
@@ -161,7 +165,7 @@ export class CheckoutPageNodeObject {
                 );
                 break;
 
-            case 'UnsupportedProvider':
+            case CheckoutPreset.UnsupportedProvider:
                 this.server.use(
                     rest.get('/api/storefront/checkout-settings', (_, res, ctx) =>
                         res(ctx.json(checkoutSettingsWithUnsupportedProvider)),

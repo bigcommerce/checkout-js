@@ -1,19 +1,39 @@
-import { CheckoutService, createCheckoutService, createEmbeddedCheckoutMessenger, EmbeddedCheckoutMessenger } from "@bigcommerce/checkout-sdk";
-import faker from "@faker-js/faker";
-import userEvent from "@testing-library/user-event";
-import { noop } from "lodash";
+import {
+    Checkout as CheckoutObject,
+    CheckoutService,
+    createCheckoutService,
+    createEmbeddedCheckoutMessenger,
+    EmbeddedCheckoutMessenger,
+} from '@bigcommerce/checkout-sdk';
+import faker from '@faker-js/faker';
+import userEvent from '@testing-library/user-event';
+import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
-import { AnalyticsContextProps, AnalyticsEvents, AnalyticsProviderMock } from "@bigcommerce/checkout/analytics";
-import { ExtensionProvider } from "@bigcommerce/checkout/checkout-extension";
-import { getLanguageService, LocaleProvider } from "@bigcommerce/checkout/locale";
-import { CHECKOUT_ROOT_NODE_ID, CheckoutProvider } from "@bigcommerce/checkout/payment-integration-api";
-import { cartWithBillingEmail, CheckoutPageNodeObject } from "@bigcommerce/checkout/test-framework";
-import { render, screen } from "@bigcommerce/checkout/test-utils";
+import {
+    AnalyticsContextProps,
+    AnalyticsEvents,
+    AnalyticsProviderMock,
+} from '@bigcommerce/checkout/analytics';
+import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
+import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
+import {
+    CHECKOUT_ROOT_NODE_ID,
+    CheckoutProvider,
+} from '@bigcommerce/checkout/payment-integration-api';
+import {
+    CheckoutPageNodeObject,
+    CheckoutPreset,
+    checkoutReadyForShippingStepWithGuestEmail,
+} from '@bigcommerce/checkout/test-framework';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import Checkout, { CheckoutProps } from "../checkout/Checkout";
-import { createErrorLogger } from "../common/error";
-import { createEmbeddedCheckoutStylesheet, createEmbeddedCheckoutSupport } from "../embeddedCheckout";
+import Checkout, { CheckoutProps } from '../checkout/Checkout';
+import { createErrorLogger } from '../common/error';
+import {
+    createEmbeddedCheckoutStylesheet,
+    createEmbeddedCheckoutSupport,
+} from '../embeddedCheckout';
 
 describe('Customer Component', () => {
     let checkout: CheckoutPageNodeObject;
@@ -91,35 +111,39 @@ describe('Customer Component', () => {
     });
 
     it('edit guest customer email', async () => {
-        checkout.use('CartWithBillingEmail');
+        checkout.use(CheckoutPreset.CheckoutWithBillingEmail);
 
         render(<CheckoutTest {...defaultProps} />);
 
         await checkout.waitForShippingStep();
 
-        expect(screen.getByText(cartWithBillingEmail.billingAddress.email)).toBeInTheDocument();
+        expect(screen.getByText('test@example.com')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByRole('button', {
-            name: 'Edit'
-        }))
+        await userEvent.click(
+            screen.getByRole('button', {
+                name: 'Edit',
+            }),
+        );
 
         await checkout.waitForCustomerStep();
 
         const newEmail = faker.internet.email();
 
+        await userEvent.click(screen.getByTestId('should-subscribe-checkbox'));
         await userEvent.clear(await screen.findByLabelText('Email'));
         await userEvent.type(await screen.findByLabelText('Email'), newEmail);
 
         checkout.updateCheckout(
             'put',
-            '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/billing-address/undefined',
+            '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/billing-address/billing-address-id',
+            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
             {
-                ...cartWithBillingEmail,
+                ...checkoutReadyForShippingStepWithGuestEmail,
                 billingAddress: {
-                    ...cartWithBillingEmail.billingAddress,
+                    ...checkoutReadyForShippingStepWithGuestEmail.billingAddress,
                     email: newEmail,
-                }
-            }
+                },
+            } as CheckoutObject,
         );
 
         await userEvent.click(await screen.findByText('Continue'));
