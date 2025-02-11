@@ -4,19 +4,19 @@ import { RequestHandler, rest } from 'msw';
 import { SetupServer, setupServer } from 'msw/node';
 
 import {
+    checkout,
     CheckoutPreset,
-    checkoutReadyForBillingStepWithSingleShipping,
-    checkoutReadyForCustomerStep,
-    checkoutReadyForCustomerStepWithDigitalCart,
-    checkoutReadyForCustomerStepWithPromotions,
-    checkoutReadyForMultiShipping,
-    checkoutReadyForPaymentStep,
-    checkoutReadyForPaymentStepWithCustomShippingOption,
-    checkoutReadyForShippingStepWithGuestEmail,
     checkoutSettings,
     checkoutSettingsWithCustomErrorFlashMessage,
     checkoutSettingsWithErrorFlashMessage,
     checkoutSettingsWithUnsupportedProvider,
+    checkoutWithBillingEmail,
+    checkoutWithCustomShippingAndBilling,
+    checkoutWithDigitalCart,
+    checkoutWithMultiShippingCart,
+    checkoutWithPromotions,
+    checkoutWithShipping,
+    checkoutWithShippingAndBilling,
     countries,
     formFields,
     payments,
@@ -27,9 +27,7 @@ export class CheckoutPageNodeObject {
 
     constructor() {
         const defaultHandlers = [
-            rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
-                res(ctx.json(checkoutReadyForCustomerStep)),
-            ),
+            rest.get('/api/storefront/checkout/*', (_, res, ctx) => res(ctx.json(checkout))),
             rest.get('/api/storefront/checkout-settings', (_, res, ctx) =>
                 res(ctx.json(checkoutSettings)),
             ),
@@ -39,10 +37,11 @@ export class CheckoutPageNodeObject {
                 res(ctx.json(countries)),
             ),
             rest.post('/api/storefront/checkouts/*/billing-address', (_, res, ctx) =>
-                res(ctx.json(checkoutReadyForShippingStepWithGuestEmail)),
+                res(ctx.json(checkoutWithBillingEmail)),
             ),
             rest.post('/api/storefront/subscriptions', (_, res, ctx) => res(ctx.json({}))),
             rest.get('/api/storefront/checkout-extensions', (_, res, ctx) => res(ctx.json([]))),
+            rest.post('/api/storefront/customer', (_, res, ctx) => res(ctx.json({}))),
         ];
 
         this.server = setupServer(...defaultHandlers);
@@ -65,7 +64,7 @@ export class CheckoutPageNodeObject {
     updateCheckout(
         method: 'get' | 'put' | 'delete' | 'post',
         url: string,
-        checkout: Checkout,
+        checkoutMock: Checkout,
     ): void {
         let handler: RequestHandler;
 
@@ -73,19 +72,19 @@ export class CheckoutPageNodeObject {
 
         switch (method) {
             case 'delete':
-                handler = rest.delete(storeFrontUrl, (_, res, ctx) => res(ctx.json(checkout)));
+                handler = rest.delete(storeFrontUrl, (_, res, ctx) => res(ctx.json(checkoutMock)));
                 break;
 
             case 'put':
-                handler = rest.put(storeFrontUrl, (_, res, ctx) => res(ctx.json(checkout)));
+                handler = rest.put(storeFrontUrl, (_, res, ctx) => res(ctx.json(checkoutMock)));
                 break;
 
             case 'post':
-                handler = rest.post(storeFrontUrl, (_, res, ctx) => res(ctx.json(checkout)));
+                handler = rest.post(storeFrontUrl, (_, res, ctx) => res(ctx.json(checkoutMock)));
                 break;
 
             default:
-                handler = rest.get(storeFrontUrl, (_, res, ctx) => res(ctx.json(checkout)));
+                handler = rest.get(storeFrontUrl, (_, res, ctx) => res(ctx.json(checkoutMock)));
         }
 
         this.server.use(handler);
@@ -96,39 +95,7 @@ export class CheckoutPageNodeObject {
             case CheckoutPreset.CheckoutWithBillingEmail:
                 this.server.use(
                     rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
-                        res(ctx.json(checkoutReadyForShippingStepWithGuestEmail)),
-                    ),
-                );
-                break;
-
-            case CheckoutPreset.CheckoutWithPromotions:
-                this.server.use(
-                    rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
-                        res(ctx.json(checkoutReadyForCustomerStepWithPromotions)),
-                    ),
-                );
-                break;
-
-            case CheckoutPreset.CheckoutWithShippingAddress:
-                this.server.use(
-                    rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
-                        res(ctx.json(checkoutReadyForBillingStepWithSingleShipping)),
-                    ),
-                );
-                break;
-
-            case CheckoutPreset.CheckoutWithShippingAndBilling:
-                this.server.use(
-                    rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
-                        res(ctx.json(checkoutReadyForPaymentStep)),
-                    ),
-                );
-                break;
-
-            case CheckoutPreset.CheckoutReadyForMultiShipping:
-                this.server.use(
-                    rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
-                        res(ctx.json(checkoutReadyForMultiShipping)),
+                        res(ctx.json(checkoutWithBillingEmail)),
                     ),
                 );
                 break;
@@ -136,15 +103,47 @@ export class CheckoutPageNodeObject {
             case CheckoutPreset.CheckoutWithCustomShippingAndBilling:
                 this.server.use(
                     rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
-                        res(ctx.json(checkoutReadyForPaymentStepWithCustomShippingOption)),
+                        res(ctx.json(checkoutWithCustomShippingAndBilling)),
                     ),
                 );
                 break;
 
-            case CheckoutPreset.CheckoutWithoutPhysicalItem:
+            case CheckoutPreset.CheckoutWithDigitalCart:
                 this.server.use(
                     rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
-                        res(ctx.json(checkoutReadyForCustomerStepWithDigitalCart)),
+                        res(ctx.json(checkoutWithDigitalCart)),
+                    ),
+                );
+                break;
+
+            case CheckoutPreset.CheckoutWithMultiShipping:
+                this.server.use(
+                    rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
+                        res(ctx.json(checkoutWithMultiShippingCart)),
+                    ),
+                );
+                break;
+
+            case CheckoutPreset.CheckoutWithPromotions:
+                this.server.use(
+                    rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
+                        res(ctx.json(checkoutWithPromotions)),
+                    ),
+                );
+                break;
+
+            case CheckoutPreset.CheckoutWithShipping:
+                this.server.use(
+                    rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
+                        res(ctx.json(checkoutWithShipping)),
+                    ),
+                );
+                break;
+
+            case CheckoutPreset.CheckoutWithShippingAndBilling:
+                this.server.use(
+                    rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
+                        res(ctx.json(checkoutWithShippingAndBilling)),
                     ),
                 );
                 break;

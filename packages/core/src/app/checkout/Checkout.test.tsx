@@ -160,7 +160,7 @@ describe('Checkout', () => {
         });
 
         it('does not render shipping checkout step if not required', async () => {
-            checkout.use(CheckoutPreset.CheckoutWithoutPhysicalItem);
+            checkout.use(CheckoutPreset.CheckoutWithDigitalCart);
 
             render(<CheckoutTest {...defaultProps} />);
 
@@ -178,7 +178,7 @@ describe('Checkout', () => {
         });
 
         it('tracks a step viewed when a step is expanded', async () => {
-            checkout.use(CheckoutPreset.CheckoutWithShippingAddress);
+            checkout.use(CheckoutPreset.CheckoutWithShipping);
 
             render(<CheckoutTest {...defaultProps} />);
 
@@ -294,7 +294,7 @@ describe('Checkout', () => {
 
     describe('billing step', () => {
         it('renders billing component when billing step is active', async () => {
-            checkout.use(CheckoutPreset.CheckoutWithShippingAddress);
+            checkout.use(CheckoutPreset.CheckoutWithShipping);
 
             render(<CheckoutTest {...defaultProps} />);
 
@@ -309,7 +309,7 @@ describe('Checkout', () => {
         });
 
         it('renders shipping component with summary data', async () => {
-            checkout.use(CheckoutPreset.CheckoutWithShippingAddress);
+            checkout.use(CheckoutPreset.CheckoutWithShipping);
 
             render(<CheckoutTest {...defaultProps} />);
 
@@ -327,7 +327,7 @@ describe('Checkout', () => {
                 throw error;
             });
 
-            checkout.use(CheckoutPreset.CheckoutWithShippingAddress);
+            checkout.use(CheckoutPreset.CheckoutWithShipping);
 
             render(<CheckoutTest {...defaultProps} />);
 

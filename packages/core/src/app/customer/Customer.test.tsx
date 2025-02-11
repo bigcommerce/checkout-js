@@ -24,7 +24,7 @@ import {
 import {
     CheckoutPageNodeObject,
     CheckoutPreset,
-    checkoutReadyForShippingStepWithGuestEmail,
+    checkoutWithBillingEmail,
 } from '@bigcommerce/checkout/test-framework';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
@@ -138,9 +138,9 @@ describe('Customer Component', () => {
             '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/billing-address/billing-address-id',
             // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
             {
-                ...checkoutReadyForShippingStepWithGuestEmail,
+                ...checkoutWithBillingEmail,
                 billingAddress: {
-                    ...checkoutReadyForShippingStepWithGuestEmail.billingAddress,
+                    ...checkoutWithBillingEmail.billingAddress,
                     email: newEmail,
                 },
             } as CheckoutObject,

@@ -40,7 +40,7 @@ const checkoutSettings = {
             remoteCheckoutProviders: null,
             providerWithCustomCheckout: null,
             isAnalyticsEnabled: false,
-            isStorefrontSpamProtectionEnabled: true,
+            isStorefrontSpamProtectionEnabled: false,
             googleMapsApiKey: 'x',
             googleRecaptchaSitekey: 'x',
             features: {},

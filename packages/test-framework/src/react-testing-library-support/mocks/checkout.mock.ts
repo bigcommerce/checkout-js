@@ -129,7 +129,7 @@ const consignment: Consignment = {
     ],
 };
 
-const checkoutReadyForCustomerStep: Checkout = {
+const checkout: Checkout = {
     id: 'xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx',
     cart: {
         id: 'xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx',
@@ -202,19 +202,19 @@ const checkoutReadyForCustomerStep: Checkout = {
     fees: [],
 };
 
-const checkoutReadyForCustomerStepWithDigitalCart: Checkout = {
-    ...checkoutReadyForCustomerStep,
+const checkoutWithDigitalCart: Checkout = {
+    ...checkout,
     cart: {
-        ...checkoutReadyForCustomerStep.cart,
+        ...checkout.cart,
         lineItems: {
-            ...checkoutReadyForCustomerStep.cart.lineItems,
+            ...checkout.cart.lineItems,
             physicalItems: [],
         },
     },
 };
 
-const checkoutReadyForCustomerStepWithPromotions: Checkout = {
-    ...checkoutReadyForCustomerStep,
+const checkoutWithPromotions: Checkout = {
+    ...checkout,
     promotions: [
         {
             banners: [
@@ -225,8 +225,8 @@ const checkoutReadyForCustomerStepWithPromotions: Checkout = {
     ],
 };
 
-const checkoutReadyForShippingStepWithGuestEmail: Checkout = {
-    ...checkoutReadyForCustomerStep,
+const checkoutWithBillingEmail: Checkout = {
+    ...checkout,
     billingAddress: {
         id: 'billing-address-id',
         firstName: '',
@@ -247,13 +247,13 @@ const checkoutReadyForShippingStepWithGuestEmail: Checkout = {
     },
 };
 
-const checkoutReadyForBillingStepWithSingleShipping: Checkout = {
-    ...checkoutReadyForShippingStepWithGuestEmail,
+const checkoutWithShipping: Checkout = {
+    ...checkoutWithBillingEmail,
     consignments: [consignment],
 };
 
-const checkoutReadyForPaymentStep: Checkout = {
-    ...checkoutReadyForBillingStepWithSingleShipping,
+const checkoutWithShippingAndBilling: Checkout = {
+    ...checkoutWithShipping,
     billingAddress: {
         id: 'billing-address-id',
         firstName: 'checkout',
@@ -274,11 +274,11 @@ const checkoutReadyForPaymentStep: Checkout = {
     },
 };
 
-const checkoutReadyForPaymentStepWithCustomShippingOption = {
-    ...checkoutReadyForPaymentStep,
+const checkoutWithCustomShippingAndBilling = {
+    ...checkoutWithShippingAndBilling,
     consignments: [
         {
-            ...checkoutReadyForPaymentStep.consignments[0],
+            ...checkoutWithShippingAndBilling.consignments[0],
             selectedShippingOption: {
                 id: '',
                 type: 'custom',
@@ -292,12 +292,12 @@ const checkoutReadyForPaymentStepWithCustomShippingOption = {
     ],
 };
 
-const checkoutReadyForMultiShipping = {
-    ...checkoutReadyForCustomerStep,
+const checkoutWithMultiShippingCart = {
+    ...checkout,
     cart: {
-        ...checkoutReadyForCustomerStep.cart,
+        ...checkout.cart,
         lineItems: {
-            ...checkoutReadyForCustomerStep.cart.lineItems,
+            ...checkout.cart.lineItems,
             physicalItems: [
                 physicalItem,
                 { ...physicalItem, id: 'y', quantity: 2, sku: 'CLC2', name: 'Item Y' },
@@ -338,12 +338,12 @@ const checkoutReadyForMultiShipping = {
 
 enum CheckoutPreset {
     CheckoutWithBillingEmail = 'CheckoutWithBillingEmail',
-    CheckoutWithPromotions = 'CheckoutWithPromotions',
-    CheckoutWithShippingAddress = 'CheckoutWithShippingAddress',
-    CheckoutWithShippingAndBilling = 'CheckoutWithShippingAndBilling',
-    CheckoutReadyForMultiShipping = 'CheckoutReadyForMultiShipping',
     CheckoutWithCustomShippingAndBilling = 'CheckoutWithCustomShippingAndBilling',
-    CheckoutWithoutPhysicalItem = 'CheckoutWithoutPhysicalItem',
+    CheckoutWithDigitalCart = 'CheckoutWithDigitalCart',
+    CheckoutWithMultiShipping = 'CheckoutWithMultiShipping',
+    CheckoutWithPromotions = 'CheckoutWithPromotions',
+    CheckoutWithShipping = 'CheckoutWithShipping',
+    CheckoutWithShippingAndBilling = 'CheckoutWithShippingAndBilling',
     CustomErrorFlashMessage = 'CustomErrorFlashMessage',
     ErrorFlashMessage = 'ErrorFlashMessage',
     UnsupportedProvider = 'UnsupportedProvider',
@@ -351,14 +351,14 @@ enum CheckoutPreset {
 
 export {
     CheckoutPreset,
-    checkoutReadyForCustomerStep,
-    checkoutReadyForCustomerStepWithDigitalCart,
-    checkoutReadyForCustomerStepWithPromotions,
-    checkoutReadyForShippingStepWithGuestEmail,
-    checkoutReadyForMultiShipping,
-    checkoutReadyForBillingStepWithSingleShipping,
-    checkoutReadyForPaymentStep,
-    checkoutReadyForPaymentStepWithCustomShippingOption,
+    checkout,
+    checkoutWithBillingEmail,
+    checkoutWithCustomShippingAndBilling,
+    checkoutWithDigitalCart,
+    checkoutWithMultiShippingCart,
+    checkoutWithPromotions,
+    checkoutWithShipping,
+    checkoutWithShippingAndBilling,
     consignment,
     shippingAddress2,
     shippingAddress3,
