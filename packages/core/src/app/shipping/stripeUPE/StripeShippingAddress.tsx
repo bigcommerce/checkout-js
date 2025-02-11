@@ -118,9 +118,7 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
             }
 
             const names = name?.split(' ');
-
-            // @ts-ignore
-            const country = availableShippingList?.find(country => country.code === address.country).name;
+            const country = availableShippingList?.find(country => country.code === address.country)?.name;
             const state = StripeStateMapper(address.country, address.state);
             const shippingValue = {
                 firstName: firstName || names[0],
