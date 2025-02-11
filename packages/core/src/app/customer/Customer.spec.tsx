@@ -22,7 +22,6 @@ import CheckoutStepType from '../checkout/CheckoutStepType';
 import { getStoreConfig } from '../config/config.mock';
 import { PaymentMethodId } from '../payment/paymentMethod';
 
-import CreateAccountForm from './CreateAccountForm';
 import Customer, { CustomerProps, WithCheckoutCustomerProps } from './Customer';
 import { getCustomer, getGuestCustomer } from './customers.mock';
 import CustomerViewType from './CustomerViewType';
@@ -246,24 +245,6 @@ describe('Customer', () => {
             component.update();
 
             expect(component.find(GuestForm).exists()).toBe(true);
-        });
-
-        it('renders create account form if type is create account', async () => {
-            jest.spyOn(checkoutService.getState().data, 'getCustomer').mockReturnValue(undefined);
-
-            jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue({
-                ...getStoreConfig(),
-                checkoutSettings: {
-                    ...getStoreConfig().checkoutSettings,
-                },
-            });
-
-            const component = mount(<CustomerTest {...defaultProps} viewType={CustomerViewType.CreateAccount} />);
-
-            await new Promise((resolve) => process.nextTick(resolve));
-            component.update();
-
-            expect(component.find(CreateAccountForm).exists()).toBe(true);
         });
 
         it('passes data to guest form', async () => {

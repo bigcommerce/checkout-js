@@ -8,6 +8,7 @@ import {
 import faker from '@faker-js/faker';
 import userEvent from '@testing-library/user-event';
 import { noop } from 'lodash';
+import { rest } from 'msw';
 import React, { FunctionComponent } from 'react';
 
 import {
@@ -153,6 +154,11 @@ describe('Customer Component', () => {
     });
 
     it('creates a new customer', async () => {
+        // ✅cancel form
+        // ✅renders all fields based on formFields(Rendering custom form field creates a formik warning)
+        // ✅check password strength
+        // ✅create customer
+
         const customerEmail = faker.internet.email();
 
         checkout.use(CheckoutPreset.CheckoutWithDigitalCart);
@@ -162,6 +168,8 @@ describe('Customer Component', () => {
         await checkout.waitForCustomerStep();
 
         await userEvent.click(screen.getByText('Sign in now'));
+        await userEvent.click(screen.getByText('Create an account'));
+        await userEvent.click(screen.getByText('Cancel'));
         await userEvent.click(screen.getByText('Create an account'));
         await userEvent.type(await screen.findByLabelText('First Name'), faker.name.firstName());
         await userEvent.type(await screen.findByLabelText('Last Name'), faker.name.lastName());
@@ -200,9 +208,13 @@ describe('Customer Component', () => {
         });
 
         await userEvent.type(await screen.findByLabelText('Password'), 'makeItLonger');
-        await userEvent.click(screen.getByText('Create Account'));
+        await userEvent.click(screen.getByTestId('field_30-text'));
+        await userEvent.tab();
 
-        await checkout.waitForShippingStep();
+        expect(screen.getByText('Referral Code is required')).toBeInTheDocument();
+
+        await userEvent.type(await screen.findByLabelText('Referral Code'), 'bigcommerce');
+        await userEvent.click(screen.getByText('Create Account'));
 
         expect(await screen.findByText(customerEmail)).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Sign Out' })).toBeInTheDocument();

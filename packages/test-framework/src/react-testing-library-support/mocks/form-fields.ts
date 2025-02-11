@@ -280,6 +280,17 @@ const formFields = {
                 minlength: 7,
             },
         },
+        {
+            id: 'field_30',
+            name: 'field_30',
+            custom: true,
+            label: 'Referral Code',
+            required: true,
+            default: '',
+            maxLength: null,
+            type: 'string',
+            fieldType: 'text',
+        },
     ],
 };
 
