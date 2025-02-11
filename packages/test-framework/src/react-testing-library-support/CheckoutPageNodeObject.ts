@@ -42,6 +42,7 @@ export class CheckoutPageNodeObject {
             rest.post('/api/storefront/subscriptions', (_, res, ctx) => res(ctx.json({}))),
             rest.get('/api/storefront/checkout-extensions', (_, res, ctx) => res(ctx.json([]))),
             rest.post('/api/storefront/customer', (_, res, ctx) => res(ctx.json({}))),
+            rest.post('/internalapi/v1/checkout/customer', (_, res, ctx) => res(ctx.json({}))),
         ];
 
         this.server = setupServer(...defaultHandlers);

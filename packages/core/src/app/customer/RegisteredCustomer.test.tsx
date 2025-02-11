@@ -112,6 +112,8 @@ describe('Registered Customer', () => {
     });
 
     it('displays error message if invalid email', async () => {
+        const password = faker.internet.password();
+        
         jest.spyOn(checkoutService, 'signInCustomer').mockResolvedValue({} as CheckoutSelectors);
 
         render(<CustomerTest viewType={CustomerViewType.Login} {...defaultProps} />);

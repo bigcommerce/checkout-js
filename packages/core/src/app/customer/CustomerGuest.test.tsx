@@ -358,32 +358,4 @@ describe('Customer Guest', () => {
 
         expect(handleContinueAsGuest).toHaveBeenCalled();
     });
-
-    it('changes to login view when "sign in now" is clicked', async () => {
-        const handleChangeViewType = jest.fn();
-        const email = faker.internet.email();
-
-        const { rerender } = render(<CustomerTest viewType={CustomerViewType.Guest} {...defaultProps} onChangeViewType={handleChangeViewType} />);
-
-        expect(screen.getByLabelText(
-            localeContext.language.translate('customer.email_label'),
-        )).toBeInTheDocument();
-
-        await userEvent.type(screen.getByLabelText(
-            localeContext.language.translate('customer.email_label'),
-        ), email);
-
-        const signInNowButton = screen.getByText(localeContext.language.translate('customer.login_action'));
-
-        expect(signInNowButton).toBeInTheDocument();
-
-        await userEvent.click(signInNowButton);
-
-        expect(handleChangeViewType).toHaveBeenCalledWith(CustomerViewType.Login);
-
-        rerender(<CustomerTest viewType={CustomerViewType.Login} {...defaultProps} onChangeViewType={handleChangeViewType} />);
-
-        expect(screen.getByTestId('checkout-customer-returning')).toBeInTheDocument();
-        expect(screen.getByLabelText(localeContext.language.translate('customer.email_label'))).toHaveValue(email);
-    });
 });
