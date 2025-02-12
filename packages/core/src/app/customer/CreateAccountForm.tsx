@@ -43,7 +43,7 @@ function transformFormFieldsData(formFields: FormField[], defaultShouldSubscribe
         if (field.name === 'acceptsMarketingEmails') {
             const { options } = field;
             const items = options?.items || [];
-            
+
             const updatedItems = items.map(item => {
                 return {
                     value: defaultShouldSubscribe ? '1' : item.value,
@@ -71,6 +71,8 @@ const CreateAccountForm: FunctionComponent<
             return;
         }
 
+        // TODO: CHECKOUT-9010 Cover 'Customer registration failure due to using an existing email' in functional tests repo
+        /* istanbul ignore next */
         if (isRequestError(createAccountError) && createAccountError.status === 409) {
             const splitMessage = createAccountError.message.split(':');
 
