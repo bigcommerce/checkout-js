@@ -71,7 +71,8 @@ const CreateAccountForm: FunctionComponent<
             return;
         }
 
-        /* istanbul ignore next */ // Tested by playwright
+        // TODO: CHECKOUT-9010 Cover 'Customer registration failure due to using an existing email' in functional tests repo
+        /* istanbul ignore next */
         if (isRequestError(createAccountError) && createAccountError.status === 409) {
             const splitMessage = createAccountError.message.split(':');
 
