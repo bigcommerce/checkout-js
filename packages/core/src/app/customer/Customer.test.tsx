@@ -8,7 +8,6 @@ import {
 import faker from '@faker-js/faker';
 import userEvent from '@testing-library/user-event';
 import { noop } from 'lodash';
-import { rest } from 'msw';
 import React, { FunctionComponent } from 'react';
 
 import {
