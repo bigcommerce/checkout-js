@@ -14,6 +14,7 @@ import React, { FunctionComponent } from 'react';
 import { AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { getGuestCustomer } from '@bigcommerce/checkout/test-mocks';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getCart } from '../cart/carts.mock';
@@ -37,6 +38,7 @@ describe('Customer Guest', () => {
         onSubscribeToNewsletter: jest.fn(),
         step: {
             isActive: true,
+            isBusy: false,
             isComplete: false,
             isEditable: true,
             isRequired: true,
@@ -357,5 +359,120 @@ describe('Customer Guest', () => {
         });
 
         expect(handleContinueAsGuest).toHaveBeenCalled();
+    });
+
+    it('enforces login if API returns 429 error', async () => {
+        const email = faker.internet.email();
+        const onChangeViewType = jest.fn();
+
+        jest.spyOn(checkoutService, 'continueAsGuest').mockRejectedValue({ type: 'error', status: 429 });
+
+        const { rerender } = render(
+            <CustomerTest
+                onChangeViewType={onChangeViewType}
+                viewType={CustomerViewType.Guest}
+                {...defaultProps}
+            />,
+        );
+
+        const emailField = screen.getByLabelText(
+            localeContext.language.translate('customer.email_label'),
+        );
+
+        await userEvent.type(emailField, email);
+        await userEvent.click(
+            screen.getByRole('button', {
+                name: localeContext.language.translate('customer.continue'),
+            }),
+        );
+
+        expect(onChangeViewType).toHaveBeenCalledWith(CustomerViewType.EnforcedLogin);
+
+        rerender(<CustomerTest viewType={CustomerViewType.EnforcedLogin} {...defaultProps} />);
+
+        expect(screen.getByText(/Guest checkout is temporarily disabled/i)).toBeInTheDocument();
+    });
+
+    it('suggests login if shouldEncourageSignIn is true', async () => {
+        const email = faker.internet.email();
+        const onChangeViewType = jest.fn();
+        const getCustomerMock = () => ({
+            ...getGuestCustomer(),
+            shouldEncourageSignIn: true,
+        });
+
+        jest.spyOn(checkoutService, 'continueAsGuest').mockResolvedValue({
+            data: {
+                getCustomer: getCustomerMock,
+                getPaymentProviderCustomer: () => undefined,
+            },
+        } as CheckoutSelectors);
+
+        const { rerender } = render(
+            <CustomerTest
+                onChangeViewType={onChangeViewType}
+                viewType={CustomerViewType.Guest}
+                {...defaultProps}
+            />,
+        );
+
+        const emailField = screen.getByLabelText(
+            localeContext.language.translate('customer.email_label'),
+        );
+
+        await userEvent.type(emailField, email);
+        await userEvent.click(
+            screen.getByRole('button', {
+                name: localeContext.language.translate('customer.continue'),
+            }),
+        );
+
+        expect(onChangeViewType).toHaveBeenCalledWith(CustomerViewType.SuggestedLogin);
+
+        rerender(<CustomerTest viewType={CustomerViewType.SuggestedLogin} {...defaultProps} />);
+
+        expect(
+            screen.getByText(
+                `Looks like you have an account. Sign in with ${email} for a faster checkout.`,
+            ),
+        ).toBeInTheDocument();
+    });
+
+    it('shows cancellable enforced login if API returns 403 error', async () => {
+        const email = faker.internet.email();
+        const onChangeViewType = jest.fn();
+
+        jest.spyOn(checkoutService, 'continueAsGuest').mockRejectedValue({ type: 'error', status: 403 });
+
+        const { rerender } = render(
+            <CustomerTest
+                onChangeViewType={onChangeViewType}
+                viewType={CustomerViewType.Guest}
+                {...defaultProps}
+            />,
+        );
+
+        const emailField = screen.getByLabelText(
+            localeContext.language.translate('customer.email_label'),
+        );
+
+        await userEvent.type(emailField, email);
+        await userEvent.click(
+            screen.getByRole('button', {
+                name: localeContext.language.translate('customer.continue'),
+            }),
+        );
+
+        expect(onChangeViewType).toHaveBeenCalledWith(CustomerViewType.CancellableEnforcedLogin);
+
+        rerender(
+            <CustomerTest viewType={CustomerViewType.CancellableEnforcedLogin} {...defaultProps} />,
+        );
+
+        expect(
+            screen.getByText(
+                `Looks like you have an account. Please sign in to proceed with ${email}, or use another email.`,
+            ),
+        ).toBeInTheDocument();
     });
 });
