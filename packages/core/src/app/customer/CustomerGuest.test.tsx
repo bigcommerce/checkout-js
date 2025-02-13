@@ -396,14 +396,13 @@ describe('Customer Guest', () => {
     it('suggests login if shouldEncourageSignIn is true', async () => {
         const email = faker.internet.email();
         const onChangeViewType = jest.fn();
-        const getCustomerMock = () => ({
-            ...getGuestCustomer(),
-            shouldEncourageSignIn: true,
-        });
 
         jest.spyOn(checkoutService, 'continueAsGuest').mockResolvedValue({
             data: {
-                getCustomer: getCustomerMock,
+                getCustomer: () => ({
+                    ...getGuestCustomer(),
+                    shouldEncourageSignIn: true,
+                }),
                 getPaymentProviderCustomer: () => undefined,
             },
         } as CheckoutSelectors);
@@ -436,6 +435,42 @@ describe('Customer Guest', () => {
                 `Looks like you have an account. Sign in with ${email} for a faster checkout.`,
             ),
         ).toBeInTheDocument();
+    });
+
+    it('does not render SuggestedLogin form if Stripe link is authenticated', async () => {
+        const email = faker.internet.email();
+        const onChangeViewType = jest.fn();
+
+        jest.spyOn(checkoutService, 'continueAsGuest').mockResolvedValue({
+            data: {
+                getCustomer: () => ({
+                    ...getGuestCustomer(),
+                    shouldEncourageSignIn: true,
+                }),
+                getPaymentProviderCustomer: () => ({ stripeLinkAuthenticationState: true }),
+            },
+        } as CheckoutSelectors);
+
+        render(
+            <CustomerTest
+                onChangeViewType={onChangeViewType}
+                viewType={CustomerViewType.Guest}
+                {...defaultProps}
+            />,
+        );
+
+        const emailField = screen.getByLabelText(
+            localeContext.language.translate('customer.email_label'),
+        );
+
+        await userEvent.type(emailField, email);
+        await userEvent.click(
+            screen.getByRole('button', {
+                name: localeContext.language.translate('customer.continue'),
+            }),
+        );
+
+        expect(onChangeViewType).not.toHaveBeenCalled();
     });
 
     it('shows cancellable enforced login if API returns 403 error', async () => {

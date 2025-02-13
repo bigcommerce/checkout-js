@@ -22,6 +22,7 @@ import CheckoutStepType from '../checkout/CheckoutStepType';
 import { getStoreConfig } from '../config/config.mock';
 import { PaymentMethodId } from '../payment/paymentMethod';
 
+import CreateAccountForm from './CreateAccountForm';
 import Customer, { CustomerProps, WithCheckoutCustomerProps } from './Customer';
 import { getCustomer, getGuestCustomer } from './customers.mock';
 import CustomerViewType from './CustomerViewType';
@@ -99,20 +100,72 @@ describe('Customer', () => {
     });
 
     describe('when view type is "guest"', () => {
+        it('matches snapshot', async () => {
+            const component = mount(<CustomerTest
+                viewType={CustomerViewType.Guest} {...defaultProps} />);
+
+            await new Promise((resolve) => process.nextTick(resolve));
+            component.update();
+
+            expect(component.render()).toMatchSnapshot();
+        });
+
+        it('renders guest form by default', async () => {
+            const component = mount(<CustomerTest viewType={CustomerViewType.Guest} {...defaultProps} />);
+
+            await new Promise((resolve) => process.nextTick(resolve));
+            component.update();
+
+            expect(component.find(GuestForm).exists()).toBe(true);
+        });
+
+        it('renders guest form in loading state if the payment method is executing', async () => {
+            const component = mount(
+                <CustomerTest
+                    {...defaultProps}
+                    isExecutingPaymentMethodCheckout={true}
+                    viewType={CustomerViewType.Guest}
+                />
+            );
+
+            await new Promise((resolve) => process.nextTick(resolve));
+            component.update();
+
+            expect(component.find(GuestForm).props()).toMatchObject({
+                isLoading: true,
+            });
+        });
+
+        it('renders guest form in loading state if there is a process running before switching to the next step', async () => {
+            const component = mount(
+                <CustomerTest
+                    {...defaultProps}
+                    isContinuingAsGuest={true}
+                    isExecutingPaymentMethodCheckout={false}
+                    viewType={CustomerViewType.Guest}
+                />
+            );
+
+            await new Promise((resolve) => process.nextTick(resolve));
+            component.update();
+
+            expect(component.find(GuestForm).props()).toMatchObject({
+                isLoading: true,
+            });
+        });
+
         it('renders stripe guest form if enabled', async () => {
-            const steps = {
-                isActive: true,
+            const steps = { isActive: true,
                 isComplete: true,
                 isEditable: true,
                 isRequired: true,
                 isBusy: false,
-                type: CheckoutStepType.Customer
-            };
+                type: CheckoutStepType.Customer };
 
             jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(configStripeUpe);
 
             const component = mount(
-                <CustomerTest {...defaultProps} step={steps} viewType={CustomerViewType.Guest} />
+                <CustomerTest {...defaultProps} step={ steps } viewType={ CustomerViewType.Guest } />
             );
 
             await new Promise(resolve => process.nextTick(resolve));
@@ -146,19 +199,179 @@ describe('Customer', () => {
             expect(component.find(GuestForm).exists()).toBe(true);
         });
 
-        it('renders CancellableEnforcedLogin if continue as guest fails with code 403', async () => {
-            jest.spyOn(checkoutService, 'continueAsGuest').mockRejectedValue({
-                status: 403,
-                type: '',
+        it('calls onUnhandledError if initialize was failed', async () => {
+            jest.spyOn(checkoutService, 'initializeCustomer').mockRejectedValue(new Error());
+
+            const unhandledError = jest.fn();
+
+            mount(<CustomerTest {...defaultProps} onUnhandledError={ unhandledError } providerWithCustomCheckout='bolt' viewType={ CustomerViewType.Guest } />);
+            await new Promise(resolve => process.nextTick(resolve));
+
+            expect(unhandledError).toHaveBeenCalledWith(expect.any(Error));
+        });
+
+        it('calls onUnhandledError if deinitialize was failed', async () => {
+            jest.spyOn(checkoutService, 'deinitializeCustomer').mockRejectedValue(new Error());
+
+            const unhandledError = jest.fn();
+
+            const component = mount(<CustomerTest {...defaultProps} onUnhandledError={ unhandledError } viewType={ CustomerViewType.Guest }/>);
+
+            await new Promise(resolve => process.nextTick(resolve));
+            component.unmount();
+            await new Promise(resolve => process.nextTick(resolve));
+
+            expect(unhandledError).toHaveBeenCalled();
+        });
+
+        it('renders guest form if billing address is undefined', async () => {
+            jest.spyOn(checkoutService.getState().data, 'getBillingAddress').mockReturnValue(
+                undefined,
+            );
+
+            const component = mount(<CustomerTest  {...defaultProps}viewType={CustomerViewType.Guest} />);
+
+            await new Promise((resolve) => process.nextTick(resolve));
+            component.update();
+
+            expect(component.find(GuestForm).exists()).toBe(true);
+        });
+
+        it('renders guest form if customer is undefined', async () => {
+            jest.spyOn(checkoutService.getState().data, 'getCustomer').mockReturnValue(undefined);
+
+            const component = mount(<CustomerTest {...defaultProps} viewType={CustomerViewType.Guest} />);
+
+            await new Promise((resolve) => process.nextTick(resolve));
+            component.update();
+
+            expect(component.find(GuestForm).exists()).toBe(true);
+        });
+
+        it('renders create account form if type is create account', async () => {
+            jest.spyOn(checkoutService.getState().data, 'getCustomer').mockReturnValue(undefined);
+
+            jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue({
+                ...getStoreConfig(),
+                checkoutSettings: {
+                    ...getStoreConfig().checkoutSettings,
+                },
             });
 
+            const component = mount(<CustomerTest {...defaultProps} viewType={CustomerViewType.CreateAccount} />);
+
+            await new Promise((resolve) => process.nextTick(resolve));
+            component.update();
+
+            expect(component.find(CreateAccountForm).exists()).toBe(true);
+        });
+
+        it('passes data to guest form', async () => {
+            const component = mount(<CustomerTest {...defaultProps} isSubscribed={false} viewType={CustomerViewType.Guest} />);
+
+            await new Promise((resolve) => process.nextTick(resolve));
+            component.update();
+
+            expect(component.find(GuestForm).props()).toMatchObject({
+                canSubscribe: config.shopperConfig.showNewsletterSignup,
+                defaultShouldSubscribe: config.shopperConfig.defaultNewsletterSignup,
+                email: billingAddress.email,
+            });
+        });
+
+        it('continues checkout as guest and does not send consent if not required', async () => {
+            jest.spyOn(checkoutService, 'continueAsGuest').mockReturnValue(
+                Promise.resolve(checkoutService.getState()),
+            );
+
+            const handleNewsletterSubscription=jest.fn();
+            const component = mount(<CustomerTest
+                {...defaultProps}
+                isSubscribed={true}
+                onSubscribeToNewsletter={handleNewsletterSubscription}
+                viewType={CustomerViewType.Guest}
+            />);
+
+            await new Promise((resolve) => process.nextTick(resolve));
+            component.update();
+
+            (component.find(GuestForm) as ReactWrapper<GuestFormProps>).prop('onContinueAsGuest')({
+                email: ' test@bigcommerce.com ',
+                shouldSubscribe: true,
+            });
+
+            expect(checkoutService.continueAsGuest).toHaveBeenCalledWith({
+                email: 'test@bigcommerce.com',
+                acceptsMarketingNewsletter: true,
+                acceptsAbandonedCartEmails: true,
+            });
+        });
+
+        it('only subscribes to newsletter if allowed by customer', async () => {
+            jest.spyOn(checkoutService.getState().data, 'getBillingAddress').mockReturnValue({
+                ...billingAddress,
+                id: '',
+            });
+            jest.spyOn(checkoutService, 'continueAsGuest').mockReturnValue(
+                Promise.resolve(checkoutService.getState()),
+            );
+
+            const subscribeToNewsletter = jest.fn();
+            const handleNewsletterSubscription = jest.fn();
+            const component = mount(<CustomerTest
+                {...defaultProps}
+                isSubscribed={false}
+                onSubscribeToNewsletter={handleNewsletterSubscription}
+                viewType={CustomerViewType.Guest}
+            />);
+
+            await new Promise((resolve) => process.nextTick(resolve));
+            component.update();
+
+            (component.find(GuestForm) as ReactWrapper<GuestFormProps>).prop('onContinueAsGuest')({
+                email: 'test@bigcommerce.com',
+                shouldSubscribe: false,
+            });
+
+            expect(checkoutService.continueAsGuest).toHaveBeenCalledWith({
+                email: 'test@bigcommerce.com',
+                acceptsMarketingNewsletter: undefined,
+                acceptsAbandonedCartEmails: undefined,
+            });
+
+            expect(subscribeToNewsletter).not.toHaveBeenCalled();
+        });
+
+        it('changes to login view when "show login" event is received', async () => {
             const handleChangeViewType = jest.fn();
+            const component = mount(
+                <CustomerTest
+                    {...defaultProps}
+                    onChangeViewType={handleChangeViewType}
+                    viewType={CustomerViewType.Guest}
+                />,
+            );
+
+            await new Promise((resolve) => process.nextTick(resolve));
+            component.update();
+
+            (component.find(GuestForm) as ReactWrapper<GuestFormProps>).prop('onShowLogin')();
+
+            expect(handleChangeViewType).toHaveBeenCalledWith(CustomerViewType.Login);
+        });
+
+        it('triggers completion callback if customer successfully continued as guest', async () => {
+            jest.spyOn(checkoutService, 'continueAsGuest').mockReturnValue(
+                Promise.resolve(checkoutService.getState()),
+            );
+
+            const handleContinueAsGuest = jest.fn();
             const handleNewsletterSubscription = jest.fn();
             const component = mount(
                 <CustomerTest
                     {...defaultProps}
                     isSubscribed={false}
-                    onChangeViewType={handleChangeViewType}
+                    onContinueAsGuest={handleContinueAsGuest}
                     onSubscribeToNewsletter={handleNewsletterSubscription}
                     viewType={CustomerViewType.Guest}
                 />,
@@ -173,71 +386,21 @@ describe('Customer', () => {
             });
 
             await new Promise((resolve) => process.nextTick(resolve));
-            component.update();
 
-            expect(handleChangeViewType).toHaveBeenCalledWith(
-                CustomerViewType.CancellableEnforcedLogin,
-            );
+            expect(handleContinueAsGuest).toHaveBeenCalled();
         });
 
-        it('does not render SuggestedLogin form if Stripe link is authenticated', async () => {
-            jest.spyOn(checkoutService.getState().data, 'getCustomer').mockReturnValue({
-                ...getCustomer(),
-                isGuest: true,
-                shouldEncourageSignIn: true,
-            } as CustomerData);
+        it('triggers completion callback if continueAsGuest fails with update_subscriptions', async () => {
+            const error = { type: 'update_subscriptions' };
 
-            jest.spyOn(checkoutService, 'continueAsGuest').mockReturnValue(
-                Promise.resolve(checkoutService.getState()),
-            );
-            jest.spyOn(
-                checkoutService.getState().data,
-                'getPaymentProviderCustomer',
-            ).mockReturnValue({ stripeLinkAuthenticationState: true });
+            jest.spyOn(checkoutService, 'continueAsGuest').mockRejectedValue(error);
 
-            const handleChangeViewType = jest.fn();
-            const component = mount(
-                <CustomerTest
-                    {...defaultProps}
-                    onChangeViewType={handleChangeViewType}
-                    viewType={CustomerViewType.Guest}
-                />,
-            );
-
-            await new Promise((resolve) => process.nextTick(resolve));
-            component.update();
-
-            (component.find(GuestForm) as ReactWrapper<GuestFormProps>).prop('onContinueAsGuest')({
-                email: 'test@bigcommerce.com',
-                shouldSubscribe: false,
-            });
-
-            await new Promise((resolve) => process.nextTick(resolve));
-            component.update();
-
-            expect(handleChangeViewType).not.toHaveBeenCalledWith(CustomerViewType.SuggestedLogin);
-
-            (checkoutService.getState().data.getCustomer as jest.Mock).mockRestore();
-        });
-
-        it('renders SuggestedLogin form if continue as guest returns truthy shouldEncourageSignIn', async () => {
-            jest.spyOn(checkoutService.getState().data, 'getCustomer').mockReturnValue({
-                ...getCustomer(),
-                isGuest: true,
-                shouldEncourageSignIn: true,
-            } as any);
-
-            jest.spyOn(checkoutService, 'continueAsGuest').mockReturnValue(
-                Promise.resolve(checkoutService.getState()),
-            );
-
-            const handleChangeViewType = jest.fn();
+            const handleContinueAsGuest = jest.fn();
             const handleNewsletterSubscription = jest.fn();
             const component = mount(
                 <CustomerTest
                     {...defaultProps}
-                    isSubscribed={true}
-                    onChangeViewType={handleChangeViewType}
+                    onContinueAsGuest={handleContinueAsGuest}
                     onSubscribeToNewsletter={handleNewsletterSubscription}
                     viewType={CustomerViewType.Guest}
                 />,
@@ -248,32 +411,24 @@ describe('Customer', () => {
 
             (component.find(GuestForm) as ReactWrapper<GuestFormProps>).prop('onContinueAsGuest')({
                 email: 'test@bigcommerce.com',
-                shouldSubscribe: false,
+                shouldSubscribe: true,
             });
 
             await new Promise((resolve) => process.nextTick(resolve));
-            component.update();
 
-            expect(handleChangeViewType).toHaveBeenCalledWith(CustomerViewType.SuggestedLogin);
-
-            (checkoutService.getState().data.getCustomer as jest.Mock).mockRestore();
+            expect(handleContinueAsGuest).toHaveBeenCalled();
         });
 
-        it('renders EnforcedLogin form if continue as guest fails with code 429', async () => {
+        it('triggers error callback if customer is unable to continue as guest', async () => {
             jest.spyOn(checkoutService, 'continueAsGuest').mockRejectedValue({
-                status: 429,
-                type: '',
+                type: 'unknown_error',
             });
 
-            const handleChangeViewType = jest.fn();
-
-            const handleNewsletterSubscription = jest.fn();
+            const handleError = jest.fn();
             const component = mount(
                 <CustomerTest
                     {...defaultProps}
-                    isSubscribed={true}
-                    onChangeViewType={handleChangeViewType}
-                    onSubscribeToNewsletter={handleNewsletterSubscription}
+                    onContinueAsGuestError={handleError}
                     viewType={CustomerViewType.Guest}
                 />,
             );
@@ -287,9 +442,26 @@ describe('Customer', () => {
             });
 
             await new Promise((resolve) => process.nextTick(resolve));
+
+            expect(handleError).toHaveBeenCalled();
+        });
+
+        it('retains draft email address when switching to login view', async () => {
+            const component = mount(<CustomerTest {...defaultProps} viewType={CustomerViewType.Guest} />);
+
+            await new Promise((resolve) => process.nextTick(resolve));
             component.update();
 
-            expect(handleChangeViewType).toHaveBeenCalledWith(CustomerViewType.EnforcedLogin);
+            (component.find(GuestForm) as ReactWrapper<GuestFormProps>).prop('onChangeEmail')(
+                'test@bigcommerce.com',
+            );
+
+            component.setProps({ viewType: CustomerViewType.Login });
+            component.update();
+
+            expect((component.find(LoginForm) as ReactWrapper<LoginFormProps>).prop('email')).toBe(
+                'test@bigcommerce.com',
+            );
         });
     });
 
@@ -325,95 +497,6 @@ describe('Customer', () => {
             expect(component.find(EmailLoginForm).exists()).toBe(false);
 
             expect(component.find('[data-test="customer-signin-link"]').exists()).toBe(false);
-        });
-    });
-
-    describe('when view type is "cancellable_enforced_login"', () => {
-        it('renders login form', async () => {
-            const component = mount(
-                <CustomerTest {...defaultProps} viewType={CustomerViewType.CancellableEnforcedLogin} />,
-            );
-
-            await new Promise((resolve) => process.nextTick(resolve));
-            component.update();
-
-            expect(component.find(LoginForm).prop('viewType')).toEqual(
-                CustomerViewType.CancellableEnforcedLogin,
-            );
-        });
-    });
-
-    describe('when view type is "suggested_login"', () => {
-        it('renders login form', async () => {
-            const component = mount(<CustomerTest {...defaultProps} viewType={CustomerViewType.SuggestedLogin} />);
-
-            await new Promise((resolve) => process.nextTick(resolve));
-            component.update();
-
-            expect(component.find(LoginForm).prop('viewType')).toEqual(
-                CustomerViewType.SuggestedLogin,
-            );
-        });
-    });
-
-    describe('when view type is "enforced_login"', () => {
-        it('renders login form', async () => {
-            const component = mount(<CustomerTest {...defaultProps} viewType={CustomerViewType.EnforcedLogin} />);
-
-            await new Promise((resolve) => process.nextTick(resolve));
-            component.update();
-
-            expect(component.find(LoginForm).prop('viewType')).toEqual(
-                CustomerViewType.EnforcedLogin,
-            );
-        });
-
-        it('calls sendLoginEmail and renders form when sign-in email link is clicked', async () => {
-            const sendLoginEmail = jest.fn(() => new Promise<void>((resolve) => resolve()) as any);
-            const component = mount(
-                <CustomerTest
-                    {...defaultProps}
-                    email="foo@bar.com"
-                    isSignInEmailEnabled={true}
-                    sendLoginEmail={sendLoginEmail}
-                    viewType={CustomerViewType.EnforcedLogin}
-                />,
-            );
-
-            await new Promise((resolve) => process.nextTick(resolve));
-            component.update();
-
-            component.find('[data-test="customer-signin-link"]').simulate('click');
-            component.update();
-            await new Promise((resolve) => process.nextTick(resolve));
-            component.update();
-
-            expect(sendLoginEmail).toHaveBeenCalledWith({ email: 'foo@bar.com' });
-            expect(component.find(EmailLoginForm).prop('emailHasBeenRequested')).toBe(true);
-        });
-
-        it('renders EmailLoginForm even when sendLoginForm is rejected', async () => {
-            const sendLoginEmail = jest.fn(() => new Promise((_, reject) => reject()) as any);
-            const component = mount(
-                <CustomerTest
-                    {...defaultProps}
-                    email="foo@bar.com"
-                    isSignInEmailEnabled={true}
-                    sendLoginEmail={sendLoginEmail}
-                    viewType={CustomerViewType.EnforcedLogin}
-                />,
-            );
-
-            await new Promise((resolve) => process.nextTick(resolve));
-            component.update();
-
-            component.find('[data-test="customer-signin-link"]').simulate('click');
-            component.update();
-            await new Promise((resolve) => process.nextTick(resolve));
-            component.update();
-
-            expect(sendLoginEmail).toHaveBeenCalledWith({ email: 'foo@bar.com' });
-            expect(component.find(EmailLoginForm).prop('emailHasBeenRequested')).toBe(true);
         });
     });
 });
