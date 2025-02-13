@@ -137,7 +137,6 @@ describe('Customer Component', () => {
         checkout.updateCheckout(
             'put',
             '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/billing-address/billing-address-id',
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
             {
                 ...checkoutWithBillingEmail,
                 billingAddress: {
@@ -216,6 +215,45 @@ describe('Customer Component', () => {
         await userEvent.click(screen.getByText('Create Account'));
 
         expect(await screen.findByText(customerEmail)).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Sign Out' })).toBeInTheDocument();
+    });
+    
+    it('changes from guest to login view and logs in', async () => {
+        const email = faker.internet.email();
+        const password = faker.internet.password();
+
+        checkout.use(CheckoutPreset.CheckoutWithDigitalCart);
+
+        render(<CheckoutTest {...defaultProps} />);
+
+        await checkout.waitForCustomerStep();
+
+        await userEvent.type(await screen.findByLabelText('Email'), email);
+        await userEvent.click(await screen.findByText('Sign in now'));
+
+        // eslint-disable-next-line jest-dom/prefer-to-have-attribute
+        expect(screen.getByLabelText('Email').getAttribute('value')).toBe(email);
+
+        await userEvent.type(await screen.findByLabelText('Password'), password);
+
+        checkout.updateCheckout(
+            'get',
+            '/checkout/*',
+            {
+                ...checkoutWithBillingEmail,
+                billingAddress: {
+                    ...checkoutWithBillingEmail.billingAddress,
+                    email,
+                },
+                customer: checkoutWithMultiShippingCart.customer,
+            } as CheckoutObject,
+        );
+
+        await userEvent.click(await screen.findByText('Sign In'));
+
+        await checkout.waitForShippingStep();
+
+        expect(await screen.findByText(email)).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Sign Out' })).toBeInTheDocument();
     });
 });
