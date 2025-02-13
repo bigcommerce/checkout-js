@@ -9,13 +9,14 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import faker from '@faker-js/faker';
 import userEvent from '@testing-library/user-event';
+import { response } from 'msw';
 import React, { FunctionComponent } from 'react';
 
 import { AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { getCart, getCheckout, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
-import { render, screen } from '@bigcommerce/checkout/test-utils';
+import { render, screen, within } from '@bigcommerce/checkout/test-utils';
 
 import CheckoutStepType from '../checkout/CheckoutStepType';
 
@@ -35,6 +36,7 @@ describe('Registered Customer', () => {
         onSubscribeToNewsletter: jest.fn(),
         step: {
             isActive: true,
+            isBusy: false,
             isComplete: false,
             isEditable: true,
             isRequired: true,
@@ -143,7 +145,6 @@ describe('Registered Customer', () => {
 
     it('displays error message if password is missing', async () => {
         const email = faker.internet.email();
-        const password = faker.internet.password();
 
         jest.spyOn(checkoutService, 'signInCustomer').mockResolvedValue({} as CheckoutSelectors);
 
@@ -250,6 +251,160 @@ describe('Registered Customer', () => {
         const forgotPasswordLink = screen.getByText(localeContext.language.translate('customer.forgot_password_action'));
 
         expect(forgotPasswordLink).toBeInTheDocument();
-        expect(forgotPasswordLink).toHaveAttribute('href', config.links.forgotPassword);
+        expect(forgotPasswordLink).toHaveAttribute('href', config.links.forgotPasswordLink);
+    });
+
+    it('does not display sign in link anchor tag', async () => {
+        render(<CustomerTest viewType={CustomerViewType.Login} {...defaultProps} />);
+
+        expect(screen.queryByText(localeContext.language.translate('login_email.text'))).not.toBeInTheDocument();
+    });
+
+    it('displays an error if email is not registered for a sign in link', async () => {
+        jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue({
+            ...config,
+            checkoutSettings: { ...config.checkoutSettings, isSignInEmailEnabled: true }
+        });
+        jest.spyOn(checkoutService, 'sendSignInEmail').mockRejectedValue({
+            type: 'unknown_error',
+        });
+
+        const error = Object.assign(new Error(), { status: 404 });
+
+        jest.spyOn(checkoutService.getState().errors, 'getSignInEmailError').mockReturnValue(error);
+
+        render(<CustomerTest viewType={CustomerViewType.Login} {...defaultProps} />);
+
+        const signInLinkButton = screen.getByTestId('customer-signin-link');
+
+        await userEvent.click(signInLinkButton);
+
+        expect(screen.getByText(localeContext.language.translate('login_email.text'))).toBeInTheDocument();
+
+        const modal = screen.getByTestId("modal-body");
+
+        expect(modal).toBeInTheDocument();
+
+        // @ts-ignore
+        const modalEmailInput = within(modal).getByRole('textbox', { id: 'email' });
+        const email = faker.internet.email();
+
+        await userEvent.type(modalEmailInput, email);
+
+        const submitButton = screen.getByRole('button', { name: /send/i });
+
+        await userEvent.click(submitButton);
+
+        expect(screen.getByText(localeContext.language.translate('login_email.error_not_found'))).toBeInTheDocument();
+    });
+
+    it('displays an error if there is a server error for a sign in link', async () => {
+        jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue({
+            ...config,
+            checkoutSettings: { ...config.checkoutSettings, isSignInEmailEnabled: true }
+        });
+        jest.spyOn(checkoutService, 'sendSignInEmail').mockRejectedValue({
+            type: 'unknown_error',
+        });
+
+        const error = Object.assign(new Error(), { status: 422 });
+
+        jest.spyOn(checkoutService.getState().errors, 'getSignInEmailError').mockReturnValue(error);
+
+        render(<CustomerTest viewType={CustomerViewType.Login} {...defaultProps} />);
+
+        const signInLinkButton = screen.getByTestId('customer-signin-link');
+
+        await userEvent.click(signInLinkButton);
+
+        expect(screen.getByText(localeContext.language.translate('login_email.text'))).toBeInTheDocument();
+
+        const modal = screen.getByTestId("modal-body");
+
+        expect(modal).toBeInTheDocument();
+
+        // @ts-ignore
+        const modalEmailInput = within(modal).getByRole('textbox', { id: 'email' });
+        const email = faker.internet.email();
+
+        await userEvent.type(modalEmailInput, email);
+
+        const submitButton = screen.getByRole('button', { name: /send/i });
+
+        await userEvent.click(submitButton);
+
+        expect(screen.getByText(localeContext.language.translate('login_email.error_server'))).toBeInTheDocument();
+    });
+
+    it('displays message to check email if customer is registered and sign in link is clicked', async () => {
+        jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue({
+            ...config,
+            checkoutSettings: { ...config.checkoutSettings, isSignInEmailEnabled: true }
+        });
+        jest.spyOn(checkoutService, 'sendSignInEmail').mockResolvedValue({} as CheckoutSelectors);
+        jest.spyOn(checkoutService.getState().data, 'getSignInEmail').mockReturnValue({
+            sent_email: 'sign_in',
+            expiry: 900,
+        });
+
+        render(<CustomerTest viewType={CustomerViewType.Login} {...defaultProps} />);
+
+        const signInLinkButton = screen.getByTestId('customer-signin-link');
+
+        await userEvent.click(signInLinkButton);
+
+        expect(screen.getByText(localeContext.language.translate('login_email.text'))).toBeInTheDocument();
+
+        const modal = screen.getByTestId("modal-body");
+
+        expect(modal).toBeInTheDocument();
+
+        // @ts-ignore
+        const modalEmailInput = within(modal).getByRole('textbox', { id: 'email' });
+        const email = faker.internet.email();
+
+        await userEvent.type(modalEmailInput, email);
+
+        const submitButton = screen.getByRole('button', { name: /send/i });
+
+        await userEvent.click(submitButton);
+
+        expect(screen.getByText(localeContext.language.translate('login_email.sent_text'))).toBeInTheDocument();
+    });
+
+    it('displays message to reset password if customer is registered and sign in link request is made too many times', async () => {
+        jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue({
+            ...config,
+            checkoutSettings: { ...config.checkoutSettings, isSignInEmailEnabled: true }
+        });
+        jest.spyOn(checkoutService, 'sendSignInEmail').mockResolvedValue({} as CheckoutSelectors);
+        jest.spyOn(checkoutService.getState().data, 'getSignInEmail').mockReturnValue({
+            sent_email: 'reset_password',
+            expiry: -2,
+        });
+
+        render(<CustomerTest viewType={CustomerViewType.Login} {...defaultProps} />);
+
+        const signInLinkButton = screen.getByTestId('customer-signin-link');
+
+        await userEvent.click(signInLinkButton);
+
+        expect(screen.getByText(localeContext.language.translate('login_email.text'))).toBeInTheDocument();
+
+        const modal = screen.getByTestId("modal-body");
+
+        expect(modal).toBeInTheDocument();
+
+        // @ts-ignore
+        const modalEmailInput = within(modal).getByRole('textbox', { id: 'email' });
+        const email = faker.internet.email();
+
+        await userEvent.type(modalEmailInput, email);
+
+        const submitButton = screen.getByRole('button', { name: /send/i });
+
+        await userEvent.click(submitButton);
+
+        expect(screen.getByText(localeContext.language.translate('customer.reset_password_before_login_error'))).toBeInTheDocument();
     });
 });
