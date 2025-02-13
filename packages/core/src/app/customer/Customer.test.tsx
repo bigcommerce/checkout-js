@@ -137,7 +137,6 @@ describe('Customer Component', () => {
         checkout.updateCheckout(
             'put',
             '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/billing-address/billing-address-id',
-             
             {
                 ...checkoutWithBillingEmail,
                 billingAddress: {
