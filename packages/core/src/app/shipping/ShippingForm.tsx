@@ -16,13 +16,13 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
+import { useExtensions } from '@bigcommerce/checkout/checkout-extension';
 import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 
 import MultiShippingForm, { MultiShippingFormValues } from './MultiShippingForm';
 import MultiShippingFormV2 from './MultiShippingFormV2';
 import MultiShippingGuestForm from './MultiShippingGuestForm';
 import SingleShippingForm, { SingleShippingFormValues } from './SingleShippingForm';
-import { useExtensions } from '@bigcommerce/checkout/checkout-extension';
 
 export interface ShippingFormProps {
     addresses: CustomerAddress[];
@@ -45,8 +45,6 @@ export interface ShippingFormProps {
     isFloatingLabelEnabled?: boolean;
     isInitialValueLoaded: boolean;
     isNewMultiShippingUIEnabled: boolean;
-    validateGoogleMapAutoCompleteMaxLength: boolean;
-    validateAddressFields: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     deleteConsignments(): Promise<Address | undefined>;
@@ -101,8 +99,6 @@ const ShippingForm = ({
       isFloatingLabelEnabled,
       isInitialValueLoaded,
       isNewMultiShippingUIEnabled,
-      validateGoogleMapAutoCompleteMaxLength,
-      validateAddressFields,
   }: ShippingFormProps & WithLanguageProps) => {
 
     const {
@@ -148,7 +144,6 @@ const ShippingForm = ({
             onUnhandledError={onUnhandledError}
             onUseNewAddress={onUseNewAddress}
             shouldShowOrderComments={shouldShowOrderComments}
-            validateAddressFields={validateAddressFields}
         />;
     };
 
@@ -182,8 +177,6 @@ const ShippingForm = ({
             shouldShowSaveAddress={shouldShowSaveAddress}
             signOut={signOut}
             updateAddress={updateAddress}
-            validateAddressFields={validateAddressFields}
-            validateGoogleMapAutoCompleteMaxLength={validateGoogleMapAutoCompleteMaxLength}
         />
     );
 };

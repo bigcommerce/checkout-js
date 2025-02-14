@@ -74,8 +74,6 @@ export interface WithCheckoutShippingProps {
     shouldRenderWhileLoading: boolean;
     providerWithCustomCheckout?: string;
     isFloatingLabelEnabled?: boolean;
-    validateGoogleMapAutoCompleteMaxLength: boolean;
-    validateAddressFields: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
     deinitializeShippingMethod(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     deleteConsignments(): Promise<Address | undefined>;
@@ -141,8 +139,6 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             isGuest,
             shouldShowMultiShipping,
             isNewMultiShippingUIEnabled,
-            validateGoogleMapAutoCompleteMaxLength,
-            validateAddressFields,
             customer,
             updateShippingAddress,
             initializeShippingMethod,
@@ -222,8 +218,6 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         onUseNewAddress={this.handleUseNewAddress}
                         shouldShowSaveAddress={!isGuest}
                         updateAddress={updateShippingAddress}
-                        validateAddressFields={validateAddressFields}
-                        validateGoogleMapAutoCompleteMaxLength={validateGoogleMapAutoCompleteMaxLength}
                     />
                 </div>
             </AddressFormSkeleton>
@@ -451,18 +445,6 @@ export function mapToShippingProps({
 
     const countriesWithAutocomplete = ['US', 'CA', 'AU', 'NZ', 'GB'];
 
-    const validateGoogleMapAutoCompleteMaxLength =
-        isExperimentEnabled(
-            config.checkoutSettings,
-            'CHECKOUT-8776.google_autocomplete_max_length_validation',
-        ) && Boolean(googleMapsApiKey);
-
-    const validateAddressFields =
-        isExperimentEnabled(
-            config.checkoutSettings,
-            'CHECKOUT-7560.address_fields_max_length_validation',
-        );
-
     const shippingAddress =
         !shouldShowMultiShipping && consignments.length > 1 ? undefined : getShippingAddress();
 
@@ -499,8 +481,6 @@ export function mapToShippingProps({
         shouldRenderWhileLoading: features['CHECKOUT-8300.improve_extension_performance'] ?? true,
         shouldShowMultiShipping,
         isNewMultiShippingUIEnabled,
-        validateGoogleMapAutoCompleteMaxLength,
-        validateAddressFields,
         shouldShowOrderComments: enableOrderComments,
         signOut: checkoutService.signOutCustomer,
         unassignItem: checkoutService.unassignItemsToAddress,

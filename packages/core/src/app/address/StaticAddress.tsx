@@ -2,19 +2,17 @@ import {
     Address,
     CheckoutSelectors,
     Country,
-    FormField,
     ShippingInitializeOptions,
 } from '@bigcommerce/checkout-sdk';
+import { isEmpty } from 'lodash';
 import React, { FunctionComponent, memo } from 'react';
 
 import { localizeAddress } from '@bigcommerce/checkout/locale';
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 
 import { withCheckout } from '../checkout';
-import { isExperimentEnabled } from '../common/utility';
 
 import AddressType from './AddressType';
-import isValidStaticAddress from './isValidStaticAddress';
 
 import './StaticAddress.scss';
 
@@ -29,20 +27,16 @@ export interface StaticAddressEditableProps extends StaticAddressProps {
 
 interface WithCheckoutStaticAddressProps {
     countries?: Country[];
-    fields?: FormField[];
-    validateAddressFields?: boolean;
 }
 
 const StaticAddress: FunctionComponent<
     StaticAddressEditableProps & WithCheckoutStaticAddressProps
     > = ({
         countries,
-        fields,
         address: addressWithoutLocalization,
-        validateAddressFields = false,
     }) => {
     const address = localizeAddress(addressWithoutLocalization, countries);
-    const isValid = isValidStaticAddress(address, validateAddressFields, fields);
+    const isValid = !isEmpty(address);
 
     return !isValid ? null : (
         <div className="vcard checkout-address--static" data-test="static-address">
@@ -87,33 +81,18 @@ const StaticAddress: FunctionComponent<
 
 export function mapToStaticAddressProps(
     context: CheckoutContextProps,
-    { address, type }: StaticAddressProps,
+    { type }: StaticAddressProps,
 ): WithCheckoutStaticAddressProps | null {
     const {
         checkoutState: {
-            data: { getConfig, getBillingCountries, getShippingCountries, getBillingAddressFields, getShippingAddressFields },
+            data: { getBillingCountries, getShippingCountries },
         },
     } = context;
-
-    const config = getConfig();
-
-    const validateAddressFields =
-        isExperimentEnabled(
-            config?.checkoutSettings,
-            'CHECKOUT-7560.address_fields_max_length_validation',
-        );
 
     return {
         countries: type === AddressType.Billing
             ? getBillingCountries()
             : getShippingCountries(),
-        fields:
-            type === AddressType.Billing
-                ? getBillingAddressFields(address.countryCode)
-                : type === AddressType.Shipping
-                ? getShippingAddressFields(address.countryCode)
-                : undefined,
-        validateAddressFields,
     };
 }
 

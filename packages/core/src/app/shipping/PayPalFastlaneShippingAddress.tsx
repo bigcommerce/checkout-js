@@ -138,7 +138,6 @@ export const PayPalFastlaneShippingAddress: FC<PayPalFastlaneShippingAddressProp
                     onFieldChange={handleFieldChange}
                     onUseNewAddress={props.onUseNewAddress}
                     shouldShowSaveAddress={props.shouldShowSaveAddress}
-                    validateAddressFields={props.validateAddressFields}
                 />
             )}
         </LoadingOverlay>
