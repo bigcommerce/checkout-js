@@ -132,8 +132,7 @@ describe('getFormFielsValidationSchema', () => {
                 return name === 'address1' ? { ...field, maxLength: 20 } : field;
             });
     
-    
-            const schema = getFormFieldsValidationSchema({ formFields: formFieldsWithMaxLength, translate, validateGoogleMapAutoCompleteMaxLength: true });
+            const schema = getFormFieldsValidationSchema({ formFields: formFieldsWithMaxLength, translate });
             const errors = await schema
                 .validate({
                     ...getShippingAddress(),
@@ -149,26 +148,6 @@ describe('getFormFielsValidationSchema', () => {
             });
             expect(errors).toBe('address1 must be at most 20 characters');
         });
-
-        it('throws no error for max length validation if google autocomplete is not enabled', async () => {
-            const spy = jest.fn();
-            const formFieldsWithMaxLength = formFields.map(field => {
-                const { name } = field;
-                
-                return name === 'address1' ? { ...field, maxLength: 20 } : field;
-            });
-    
-            const schema = getFormFieldsValidationSchema({ formFields: formFieldsWithMaxLength, translate });
-            
-            await schema
-                .validate({
-                    ...getShippingAddress(),
-                    address1: 'this is a long address 1 from somewhere',
-                })
-                .then(spy);
-
-            expect(spy).toHaveBeenCalled();
-        });
     });
 
     describe('address fields max length validation', () => {
@@ -183,7 +162,7 @@ describe('getFormFielsValidationSchema', () => {
                 return field;
             });
     
-            const schema = getFormFieldsValidationSchema({ formFields: formFieldsWithMaxLength, translate, validateAddressFields: true });
+            const schema = getFormFieldsValidationSchema({ formFields: formFieldsWithMaxLength, translate });
             const errors = await schema
                 .validate({
                     ...getShippingAddress(),
@@ -211,7 +190,7 @@ describe('getFormFielsValidationSchema', () => {
                 return field;
             });
     
-            const schema = getFormFieldsValidationSchema({ formFields: formFieldsWithMaxLength, translate, validateAddressFields: true });
+            const schema = getFormFieldsValidationSchema({ formFields: formFieldsWithMaxLength, translate });
             const errors = await schema
                 .validate({
                     ...getShippingAddress(),
@@ -226,26 +205,6 @@ describe('getFormFielsValidationSchema', () => {
                 max: 10,
             });
             expect(errors).toBe('address2 must be at most 10 characters');
-        });
-
-        it('throws no error for max length validation if address validation experiment is not enabled', async () => {
-            const spy = jest.fn();
-            const formFieldsWithMaxLength = formFields.map(field => {
-                const { name } = field;
-                
-                return name === 'address1' ? { ...field, maxLength: 20 } : field;
-            });
-    
-            const schema = getFormFieldsValidationSchema({ formFields: formFieldsWithMaxLength, translate });
-            
-            await schema
-                .validate({
-                    ...getShippingAddress(),
-                    address1: 'this is a long address 1 from somewhere',
-                })
-                .then(spy);
-
-            expect(spy).toHaveBeenCalled();
         });
     });
 });
