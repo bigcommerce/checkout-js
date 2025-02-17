@@ -347,6 +347,7 @@ enum CheckoutPreset {
     CustomErrorFlashMessage = 'CustomErrorFlashMessage',
     ErrorFlashMessage = 'ErrorFlashMessage',
     UnsupportedProvider = 'UnsupportedProvider',
+    RemoteProviders = 'RemoteProviders',
 }
 
 export {
