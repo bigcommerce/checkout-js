@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.562.0](https://github.com/bigcommerce/checkout-js/compare/v1.561.4...v1.562.0) (2025-02-17)
+
+
+### Features
+
+* **checkout:** CHECKOUT-8994 Create New Customer Test ([#2163](https://github.com/bigcommerce/checkout-js/issues/2163)) ([2c20525](https://github.com/bigcommerce/checkout-js/commit/2c20525159e04de8d8ce28abcc6395881ef53ab4))
+
 ### [1.561.4](https://github.com/bigcommerce/checkout-js/compare/v1.561.3...v1.561.4) (2025-02-11)
 
 
