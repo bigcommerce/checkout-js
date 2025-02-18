@@ -57,8 +57,6 @@ export interface SingleShippingFormProps {
     shouldShowOrderComments: boolean;
     isFloatingLabelEnabled?: boolean;
     isInitialValueLoaded: boolean;
-    validateGoogleMapAutoCompleteMaxLength: boolean;
-    validateAddressFields: boolean;
     shippingFormRenderTimestamp?: number;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     deleteConsignments(): Promise<Address | undefined>;
@@ -181,7 +179,6 @@ class SingleShippingForm extends PureComponent<
             values: { shippingAddress: addressForm },
             isShippingStepPending,
             isFloatingLabelEnabled,
-            validateAddressFields,
             shippingFormRenderTimestamp,
         } = this.props;
 
@@ -216,7 +213,6 @@ class SingleShippingForm extends PureComponent<
                         onUseNewAddress={this.onUseNewAddress}
                         shippingAddress={shippingAddress}
                         shouldShowSaveAddress={shouldShowSaveAddress}
-                        validateAddressFields={validateAddressFields}
                     />
                     {shouldShowBillingSameAsShipping && (
                         <div className="form-body">
@@ -377,8 +373,6 @@ export default withLanguage(
             language,
             getFields,
             methodId,
-            validateGoogleMapAutoCompleteMaxLength,
-            validateAddressFields,
         }: SingleShippingFormProps & WithLanguageProps) =>
             shouldHaveCustomValidation(methodId)
                 ? object({
@@ -394,8 +388,6 @@ export default withLanguage(
                           getAddressFormFieldsValidationSchema({
                               language,
                               formFields: getFields(formValues && formValues.countryCode),
-                              validateGoogleMapAutoCompleteMaxLength,
-                              validateAddressFields,
                           }),
                       ),
                   }),

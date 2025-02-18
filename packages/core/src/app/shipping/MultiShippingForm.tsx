@@ -49,7 +49,6 @@ export interface MultiShippingFormProps {
     googleMapsApiKey?: string;
     isFloatingLabelEnabled?: boolean;
     isInitialValueLoaded: boolean;
-    validateAddressFields: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
     createCustomerAddress(address: AddressRequestBody): void;
     getFields(countryCode?: string): FormField[];
@@ -217,9 +216,9 @@ class MultiShippingForm extends PureComponent<
         itemId: string,
         itemKey: string,
     ) => Promise<void> = async (address, itemId, itemKey) => {
-        const { assignItem, onUnhandledError, getFields, validateAddressFields } = this.props;
+        const { assignItem, onUnhandledError, getFields } = this.props;
 
-        if (!isValidAddress(address, getFields(address.countryCode), validateAddressFields)) {
+        if (!isValidAddress(address, getFields(address.countryCode))) {
             return onUnhandledError(new AssignItemInvalidAddressError());
         }
 
