@@ -340,10 +340,6 @@ const checkoutSettingsWithRemoteProviders = {
         ...checkoutSettings.storeConfig,
         checkoutSettings: {
             ...checkoutSettings.storeConfig.checkoutSettings,
-            checkoutUserExperienceSettings: {
-                walletButtonsOnTop: true,
-                floatingLabelEnabled: false,
-            },
             remoteCheckoutProviders: ['applepay'],
         },
     },

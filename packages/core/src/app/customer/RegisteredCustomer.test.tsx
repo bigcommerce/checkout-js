@@ -407,7 +407,7 @@ describe('Registered Customer', () => {
         expect(screen.getByText(localeContext.language.translate('customer.reset_password_before_login_error'))).toBeInTheDocument();
     });
 
-    it('does not render sign-in email link when is embedded checkout', () => {
+    it('does not render sign-in email link in embedded checkout', () => {
         render(
             <CustomerTest
                 {...defaultProps}
