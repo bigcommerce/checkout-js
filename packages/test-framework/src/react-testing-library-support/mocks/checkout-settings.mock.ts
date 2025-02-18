@@ -334,11 +334,26 @@ const checkoutSettingsWithCustomErrorFlashMessage = {
         ],
     },
 };
+const checkoutSettingsWithRemoteProviders = {
+    ...checkoutSettings,
+    storeConfig: {
+        ...checkoutSettings.storeConfig,
+        checkoutSettings: {
+            ...checkoutSettings.storeConfig.checkoutSettings,
+            checkoutUserExperienceSettings: {
+                walletButtonsOnTop: true,
+                floatingLabelEnabled: false,
+            },
+            remoteCheckoutProviders: ['applepay'],
+        },
+    },
+};
 
 export {
     checkoutSettings,
     checkoutSettingsWithCustomErrorFlashMessage,
     checkoutSettingsWithErrorFlashMessage,
     checkoutSettingsWithUnsupportedProvider,
+    checkoutSettingsWithRemoteProviders,
     shippingQuoteFailedMessage,
 };

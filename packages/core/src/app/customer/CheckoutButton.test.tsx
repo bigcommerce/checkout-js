@@ -1,6 +1,7 @@
-import { mount } from 'enzyme';
 import { noop } from 'lodash';
 import React from 'react';
+
+import { render } from '@bigcommerce/checkout/test-utils';
 
 import CheckoutButton from './CheckoutButton';
 
@@ -10,7 +11,7 @@ describe('CheckoutButton', () => {
         const onError = jest.fn();
         const onClick = jest.fn();
 
-        mount(
+        render(
             <CheckoutButton
                 containerId="foobarContainer"
                 deinitialize={noop}
@@ -36,7 +37,7 @@ describe('CheckoutButton', () => {
         const onError = jest.fn();
         const onClick = jest.fn();
 
-        const component = mount(
+        const { unmount } = render(
             <CheckoutButton
                 containerId="foobarContainer"
                 deinitialize={deinitialize}
@@ -47,7 +48,7 @@ describe('CheckoutButton', () => {
             />,
         );
 
-        component.unmount();
+        unmount();
 
         expect(deinitialize).toHaveBeenCalled();
     });

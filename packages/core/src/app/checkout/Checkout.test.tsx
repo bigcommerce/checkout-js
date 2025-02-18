@@ -243,6 +243,20 @@ describe('Checkout', () => {
 
             expect(defaultProps.errorLogger.log).toHaveBeenCalledWith(error);
         });
+
+        it('renders checkout button container with ApplePay', async () => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-member-access
+            (window as any).ApplePaySession = {};
+
+            checkout.use(CheckoutPreset.RemoteProviders);
+            checkout.use(CheckoutPreset.CheckoutWithBillingEmail);
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForShippingStep();
+
+            expect(screen.getByText('Check out faster with:')).toBeInTheDocument();
+        });
     });
 
     describe('shipping step', () => {

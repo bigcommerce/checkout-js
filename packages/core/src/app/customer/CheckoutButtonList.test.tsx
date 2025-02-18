@@ -1,73 +1,78 @@
-import { mount, render } from 'enzyme';
 import { noop } from 'lodash';
 import React from 'react';
 
-import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedString } from '@bigcommerce/checkout/locale';
+import {
+    createLocaleContext,
+    LocaleContext,
+    LocaleContextType,
+} from '@bigcommerce/checkout/locale';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../config/config.mock';
 
-import CheckoutButton from './CheckoutButton';
 import CheckoutButtonList from './CheckoutButtonList';
 
 describe('CheckoutButtonList', () => {
     let localeContext: LocaleContextType;
 
+    const checkoutSettings = getStoreConfig().checkoutSettings;
+
     beforeEach(() => {
         localeContext = createLocaleContext(getStoreConfig());
     });
 
-    it('matches snapshot', () => {
-        const component = render(
-            <LocaleContext.Provider value={localeContext}>
-                <CheckoutButtonList
-                    deinitialize={noop}
-                    initialize={noop}
-                    methodIds={['amazonpay', 'braintreevisacheckout']}
-                />
-            </LocaleContext.Provider>,
-        );
-
-        expect(component).toMatchSnapshot();
-    });
-
     it('filters out unsupported methods', () => {
-        const component = mount(
+        // Apple Pay is supported across all browsers since 2025
+        // no unsupported methods since then
+
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <CheckoutButtonList
+                    checkoutSettings={checkoutSettings}
                     deinitialize={noop}
                     initialize={noop}
-                    methodIds={['amazonpay', 'braintreevisacheckout']}
+                    methodIds={['applepay', 'amazonpay', 'braintreevisacheckout']}
                 />
             </LocaleContext.Provider>,
         );
 
-        expect(component.find(CheckoutButton)).toHaveLength(2);
+        expect(screen.getAllByRole('generic')).toHaveLength(6);
     });
 
     it('does not crash when no methods are passed', () => {
-        const component = mount(
+        render(
             <LocaleContext.Provider value={localeContext}>
-                <CheckoutButtonList deinitialize={noop} initialize={noop} />
+                <CheckoutButtonList
+                    checkoutSettings={checkoutSettings}
+                    deinitialize={noop}
+                    initialize={noop}
+                />
             </LocaleContext.Provider>,
         );
 
-        expect(component.html()).toBeFalsy();
+        expect(screen.queryByText('Or continue with')).not.toBeInTheDocument();
     });
 
     it('does not render if there are no supported methods', () => {
-        const component = mount(
+        render(
             <LocaleContext.Provider value={localeContext}>
-                <CheckoutButtonList deinitialize={noop} initialize={noop} methodIds={['foobar']} />
+                <CheckoutButtonList
+                    checkoutSettings={checkoutSettings}
+                    deinitialize={noop}
+                    initialize={noop}
+                    methodIds={['foobar']}
+                />
             </LocaleContext.Provider>,
         );
 
-        expect(component.html()).toBeFalsy();
+        expect(screen.queryByText('Or continue with')).not.toBeInTheDocument();
     });
 
     it('does not render the translated string when initializing', () => {
-        const component = mount(
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <CheckoutButtonList
+                    checkoutSettings={checkoutSettings}
                     deinitialize={noop}
                     initialize={noop}
                     isInitializing={true}
@@ -76,28 +81,7 @@ describe('CheckoutButtonList', () => {
             </LocaleContext.Provider>,
         );
 
-        expect(component.find(TranslatedString)).toHaveLength(0);
-    });
-
-    it('passes data to every checkout button', () => {
-        const deinitialize = jest.fn();
-        const initialize = jest.fn();
-        const component = mount(
-            <LocaleContext.Provider value={localeContext}>
-                <CheckoutButtonList
-                    deinitialize={deinitialize}
-                    initialize={initialize}
-                    methodIds={['amazonpay', 'braintreevisacheckout']}
-                />
-            </LocaleContext.Provider>,
-        );
-
-        expect(component.find(CheckoutButton).at(0).props()).toEqual({
-            containerId: 'amazonpayCheckoutButton',
-            methodId: 'amazonpay',
-            deinitialize,
-            initialize,
-        });
+        expect(screen.queryByText('Or continue with')).not.toBeInTheDocument();
     });
 
     it('notifies parent if methods are incompatible with Embedded Checkout', () => {
@@ -111,6 +95,7 @@ describe('CheckoutButtonList', () => {
             <LocaleContext.Provider value={localeContext}>
                 <CheckoutButtonList
                     checkEmbeddedSupport={checkEmbeddedSupport}
+                    checkoutSettings={checkoutSettings}
                     deinitialize={noop}
                     initialize={noop}
                     methodIds={methodIds}

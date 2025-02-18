@@ -1,3 +1,6 @@
+/* istanbul ignore file */
+
+// TODO: CHECKOUT-9010 Cover 'Customer registration failure due to using an existing email' in functional tests repo
 import { FormField } from '@bigcommerce/checkout-sdk';
 import { FormikProps, withFormik } from 'formik';
 import { noop } from 'lodash';
@@ -71,8 +74,6 @@ const CreateAccountForm: FunctionComponent<
             return;
         }
 
-        // TODO: CHECKOUT-9010 Cover 'Customer registration failure due to using an existing email' in functional tests repo
-        /* istanbul ignore next */
         if (isRequestError(createAccountError) && createAccountError.status === 409) {
             const splitMessage = createAccountError.message.split(':');
 

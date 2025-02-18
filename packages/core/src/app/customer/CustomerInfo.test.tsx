@@ -3,11 +3,12 @@ import {
     CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
-import { mount, render } from 'enzyme';
+import userEvent from '@testing-library/user-event';
 import React, { FunctionComponent } from 'react';
 
 import { LocaleProvider } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getBillingAddress } from '../billing/billingAddresses.mock';
 import { getCheckout } from '../checkout/checkouts.mock';
@@ -42,23 +43,14 @@ describe('CustomerInfo', () => {
         );
     });
 
-    it('matches snapshot', () => {
-        expect(render(<CustomerInfoTest />)).toMatchSnapshot();
-    });
-
     describe('when customer is guest', () => {
         it("displays billing address's email", () => {
-            const component = mount(<CustomerInfoTest />);
+            const email = getBillingAddress().email ?? '';
 
-            expect(component.find('[data-test="customer-info"]').text()).toEqual(
-                getBillingAddress().email,
-            );
-        });
+            render(<CustomerInfoTest />);
 
-        it('does not render sign-out button', () => {
-            const component = mount(<CustomerInfoTest />);
-
-            expect(component.exists('[testId="sign-out-link"]')).toBe(false);
+            expect(screen.getByText(email)).toBeInTheDocument();
+            expect(screen.queryByTestId('sign-out-link')).not.toBeInTheDocument();
         });
     });
 
@@ -68,27 +60,25 @@ describe('CustomerInfo', () => {
         });
 
         it("displays customer's email", () => {
-            const component = mount(<CustomerInfoTest />);
+            render(<CustomerInfoTest />);
 
-            expect(component.find('[data-test="customer-info"]').text()).toEqual(
-                getCustomer().email,
-            );
+            expect(screen.getByText(getCustomer().email)).toBeInTheDocument();
         });
 
         it('renders sign-out button if customer can sign out', () => {
-            const component = mount(<CustomerInfoTest />);
+            render(<CustomerInfoTest />);
 
-            expect(component.exists('[testId="sign-out-link"]')).toBe(true);
+            expect(screen.getByTestId('sign-out-link')).toBeInTheDocument();
         });
 
-        it('signs out customer when they click on "sign out" button', () => {
+        it('signs out customer when they click on "sign out" button', async () => {
             jest.spyOn(checkoutService, 'signOutCustomer').mockReturnValue(
                 Promise.resolve(checkoutService.getState()),
             );
 
-            const component = mount(<CustomerInfoTest />);
+            render(<CustomerInfoTest />);
 
-            component.find('[data-test="sign-out-link"]').simulate('click');
+            await userEvent.click(screen.getByTestId('sign-out-link'));
 
             expect(checkoutService.signOutCustomer).toHaveBeenCalled();
         });
@@ -99,9 +89,10 @@ describe('CustomerInfo', () => {
             );
 
             const handleSignOut = jest.fn();
-            const component = mount(<CustomerInfoTest onSignOut={handleSignOut} />);
 
-            component.find('[data-test="sign-out-link"]').simulate('click');
+            render(<CustomerInfoTest onSignOut={handleSignOut} />);
+
+            await userEvent.click(screen.getByTestId('sign-out-link'));
 
             await new Promise((resolve) => process.nextTick(resolve));
 
@@ -114,9 +105,10 @@ describe('CustomerInfo', () => {
             });
 
             const handleSignOut = jest.fn();
-            const component = mount(<CustomerInfoTest onSignOut={handleSignOut} />);
 
-            component.find('[data-test="sign-out-link"]').simulate('click');
+            render(<CustomerInfoTest onSignOut={handleSignOut} />);
+
+            await userEvent.click(screen.getByTestId('sign-out-link'));
 
             await new Promise((resolve) => process.nextTick(resolve));
 
@@ -129,9 +121,10 @@ describe('CustomerInfo', () => {
             });
 
             const handleError = jest.fn();
-            const component = mount(<CustomerInfoTest onSignOutError={handleError} />);
 
-            component.find('[data-test="sign-out-link"]').simulate('click');
+            render(<CustomerInfoTest onSignOutError={handleError} />);
+
+            await userEvent.click(screen.getByTestId('sign-out-link'));
 
             await new Promise((resolve) => process.nextTick(resolve));
 

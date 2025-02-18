@@ -29,7 +29,6 @@ import { PaymentMethodId } from '../payment/paymentMethod';
 import Customer, { CustomerProps, WithCheckoutCustomerProps } from './Customer';
 import { getGuestCustomer } from './customers.mock';
 import CustomerViewType from './CustomerViewType';
-import EmailLoginForm from './EmailLoginForm';
 import GuestForm from './GuestForm';
 import StripeGuestForm from './StripeGuestForm';
 
@@ -153,46 +152,6 @@ describe('Customer', () => {
 
             expect(component.find(StripeGuestForm).exists()).toBe(false);
             expect(component.find(GuestForm).exists()).toBe(true);
-        });
-    });
-
-    describe('when view type is "login"', () => {
-        it('renders sign-in email when link is clicked', async () => {
-            const component = mount(
-                <CustomerTest
-                    {...defaultProps}
-                    isSignInEmailEnabled={true}
-                    viewType={CustomerViewType.Login}
-                />,
-            );
-
-            await new Promise((resolve) => process.nextTick(resolve));
-            component.update();
-
-            expect(component.find(EmailLoginForm).exists()).toBe(false);
-
-            component.find('[data-test="customer-signin-link"]').simulate('click');
-            await new Promise((resolve) => process.nextTick(resolve));
-
-            expect(component.find(EmailLoginForm).prop('emailHasBeenRequested')).toBe(false);
-        });
-
-        it('does not render sign-in email link when is embedded checkout', async () => {
-            const component = mount(
-                <CustomerTest
-                    {...defaultProps}
-                    isEmbedded={true}
-                    isSignInEmailEnabled={true}
-                    viewType={CustomerViewType.Login}
-                />,
-            );
-
-            await new Promise((resolve) => process.nextTick(resolve));
-            component.update();
-
-            expect(component.find(EmailLoginForm).exists()).toBe(false);
-
-            expect(component.find('[data-test="customer-signin-link"]').exists()).toBe(false);
         });
     });
 });

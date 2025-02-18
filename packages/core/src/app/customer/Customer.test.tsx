@@ -217,7 +217,7 @@ describe('Customer Component', () => {
         expect(await screen.findByText(customerEmail)).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Sign Out' })).toBeInTheDocument();
     });
-    
+
     it('changes from guest to login view and logs in', async () => {
         const email = faker.internet.email();
         const password = faker.internet.password();

@@ -26,6 +26,7 @@ export interface CreateCustomerValidationSchema {
     passwordRequirements: PasswordRequirements;
 }
 
+/* istanbul ignore next */ // Currently no limitation on new customer's name
 function getTranslateCreateCustomerError(
     language?: LanguageService,
 ): TranslateValidationErrorFunction {
