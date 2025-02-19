@@ -23,6 +23,15 @@
             margin-bottom: 15px;
 
             .form-field {
+                position: relative;
+                .required-label {
+                    position: absolute;
+                        font-size: 0.8rem; 
+                        color: #757575; 
+                        top: 0;
+                        right: 0;
+                        font-weight: normal;
+                    }
                 .form-input {
                     width: 100%;
                     padding: 10px;
@@ -36,5 +45,25 @@
                 }
             }
         }
+    }
+}
+.spinner {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-top: 3px solid #223d62;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: 8px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
     }
 }

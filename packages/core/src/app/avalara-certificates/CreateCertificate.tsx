@@ -1,39 +1,20 @@
-import React, { useEffect,useState } from 'react';
+import React, {useState } from 'react';
 import { Modal, ModalHeader } from '../ui/modal';
 import { withCheckout } from '../checkout';
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 //import CertificateSelect from './CertificateSelect';
-import { fetchCertificateDetails, createCertificate, getFormData } from './services/LambdaService';
+import {  createCertificate, getFormData } from './services/LambdaService';
 import CertificateForm from './CertificateForm';
 import { Address} from '@bigcommerce/checkout-sdk';
-import { CertificateDetail, CreateCertificateProps, CertificateFormValues,Customer} from './types'
+import {  CreateCertificateProps, CertificateFormValues,Customer} from './types'
 
-const CreateCertificate: React.FC<CreateCertificateProps> = ({ customer, certIds, shippingAddress }) => {
-    const [certificateDetails, setCertificateDetails] = useState<CertificateDetail[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+
+const CreateCertificate: React.FC<CreateCertificateProps & { checkoutService: any }> = ({ customer, shippingAddress, checkoutService}) => {
+    //const [certificateDetails, setCertificateDetails] = useState<CertificateDetail[]>([]);
+    //const [loading, setLoading] = useState(true);
+    //const [error, setError] = useState<string | null>(null);
     const [isOpen, setIsOpen] = React.useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
-    useEffect(() => {
-        if (certIds.length === 0) return;
-        const fetchDetails = async () => {
-            try {
-                if (certIds.length > 0) {
-                    const details = await Promise.all(certIds.map(certId => fetchCertificateDetails(certId)));
-                    setCertificateDetails(details);
-                } else {
-                    setCertificateDetails([]);
-                }
-            } catch (error) {
-                console.error('Error :', error);
-                setError('Failed to load certificate details');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchDetails();
-    }, [certIds, shippingAddress]);
      const onAfterOpen = () => {
         console.log('after open');
     };
@@ -59,8 +40,34 @@ const CreateCertificate: React.FC<CreateCertificateProps> = ({ customer, certIds
             const result = await createCertificate(formData);
             if (result) {
                 setShowSuccess(true);
-                setTimeout(() => {
-                    window.location.reload();
+                setTimeout(async () => {
+                    try {
+                        const response = await checkoutService.loadCheckout();
+                        let shippingAddress = response.data.getShippingAddress();
+                        if (shippingAddress) {
+                            await checkoutService.updateShippingAddress(shippingAddress);
+                        }
+                        try {
+                            const checkoutData = await checkoutService.loadCheckout();
+                            const updateData = {
+                                cart: checkoutData.data.getCart(),
+                                shippingAddress: checkoutData.data.getShippingAddress(),
+                                billingAddress: checkoutData.data.getBillingAddress(),
+                                customer: checkoutData.data.getCustomer(),
+                                customerMessage: "",
+                            };
+
+                            await checkoutService.updateCheckout(updateData);
+                        } catch (error) {
+                            console.error("Error en updateCheckout:", error);
+                        }
+
+                        setShowSuccess(false);
+                        setIsOpen(false);
+                        //window.location.reload();
+                    } catch (error) {
+                        console.error('Error reloading checkout:', error);
+                    }
                 }, 3000);
             }
         } catch (error) {
@@ -70,20 +77,14 @@ const CreateCertificate: React.FC<CreateCertificateProps> = ({ customer, certIds
     if (customer.isGuest) {
         return (
             <p>
-                Please <a href="{`/login.php`}" rel="noopener noreferrer">sign in</a> to apply tax exemption certificates to this transaction.
+                Please <a href="/login.php?from=checkout" rel="noopener noreferrer">sign in</a> to apply tax exemption certificates to this transaction.
             </p>
         );
     }
-    if (loading) {
-        return <p>Checking if any certificates apply to this transaction...</p>;
-    } else if (error) {
-        return <p>{error}</p>;
-    } else if (!certificateDetails.length) {
-        return <p>No exemption certificates found.</p>;
-    } else {
+    else {
         return (
             <>
-                <div>
+                {/* <div>
                     <span>Certificate Applied:</span>
                     {certificateDetails.length > 0 ? (
                         certificateDetails.map((details, index) => {
@@ -104,7 +105,7 @@ const CreateCertificate: React.FC<CreateCertificateProps> = ({ customer, certIds
                     ) : (
                         <p>No exemption certificates found.</p>
                     )}
-                </div>
+                </div> */}
                 <a onClick={() => showModal()} > Add Tax Exempt Certificate  </a>
                 <Modal
                     additionalModalClassName="modal--big"
@@ -138,8 +139,10 @@ interface WithCheckoutCustomerInfoProps {
 }
 
 function mapToWithCheckoutCustomerInfoProps({
-  checkoutState,
-}: CheckoutContextProps): WithCheckoutCustomerInfoProps | null {
+    checkoutState,
+    checkoutService,
+}: CheckoutContextProps): WithCheckoutCustomerInfoProps & { checkoutService: any } | null {
+
     const {
         data: { getBillingAddress, getCheckout, getCustomer, getShippingAddress },
     } = checkoutState;
@@ -148,18 +151,15 @@ function mapToWithCheckoutCustomerInfoProps({
     const checkout = getCheckout();
     const customer = getCustomer();
     const shippingAddress = getShippingAddress();
-
     if (!billingAddress || !checkout || !customer || !shippingAddress) {
         return null;
     }
-  if (!billingAddress || !checkout || !customer) {
-    return null;
-  }
 
     return {
         email: billingAddress.email || customer.email,
         customer,
         shippingAddress,
+        checkoutService, 
     };
 }
 

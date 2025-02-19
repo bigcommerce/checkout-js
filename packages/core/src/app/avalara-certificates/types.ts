@@ -27,6 +27,6 @@ export interface OptionType {
 
 export interface CreateCertificateProps {
     customer: Customer;
-    certIds: number[];
+   // certIds: number[];
     shippingAddress: Address;
 }

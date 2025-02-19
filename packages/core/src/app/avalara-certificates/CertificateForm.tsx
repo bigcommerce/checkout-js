@@ -29,6 +29,7 @@ const CertificateForm = ({
     handleChange,
     handleSubmit,
     setFieldValue,
+    isSubmitting,
 }: FormikProps<CertificateFormValues>) => {
     const [reasons, setReasons] = useState<string[]>([]);
     useEffect(() => {
@@ -48,6 +49,7 @@ const CertificateForm = ({
                     <div className="form-row">
                         <div className="form-field">
                             <label htmlFor="region">Regions Covered by Certificate</label>
+                            <span className="required-label">Required</span>
                             <select
                                 name="region"
                                 id="region"
@@ -69,6 +71,7 @@ const CertificateForm = ({
                     <div className="form-row">
                         <div className="form-field">
                             <label htmlFor="exemptionReason">Reason for Exemption</label>
+                            <span className="required-label">Required</span>
                             <select
                                 name="exemptionReason"
                                 id="exemptionReason"
@@ -92,6 +95,7 @@ const CertificateForm = ({
                     <div className="form-row">
                         <div className="form-field">
                             <label htmlFor="effectiveDate">Effective Date</label>
+                            <span className="required-label">Required</span>
                             <input
                                 type="date"
                                 name="effectiveDate"
@@ -108,6 +112,7 @@ const CertificateForm = ({
                     <div className="form-row">
                         <div className="form-field">
                             <label htmlFor="entityUseCode">Entity Use Code</label>
+                            <span className="required-label">Optional</span>
                             <input
                                 type="text"
                                 name="entityUseCode"
@@ -122,6 +127,7 @@ const CertificateForm = ({
                     <div className="form-row">
                         <div className="form-field">
                             <label htmlFor="exemptionDescription">Exemption Description</label>
+                            <span className="required-label">Optional</span>
                             <input
                                 type="text"
                                 name="exemptionDescription"
@@ -136,6 +142,7 @@ const CertificateForm = ({
                     <div className="form-row">
                         <div className="form-field">
                             <label htmlFor="certificateLabels">Certificate Labels</label>
+                            <span className="required-label">Optional</span>
                             <Select
                                 id="certificateLabels"
                                 name="certificateLabels"
@@ -149,8 +156,15 @@ const CertificateForm = ({
                 </div>
 
                 <div className="form-actions">
-                    <button type="submit" className="button button--primary">
-                        Create Certificate
+                    <button type="submit" className="button button--primary" disabled={isSubmitting}>
+                        {isSubmitting ? (
+                            <>
+                                Creating Certificate...
+                                <span className="spinner"></span>
+                            </>
+                        ) : (
+                            'Create Certificate'
+                        )}
                     </button>
                 </div>
 
