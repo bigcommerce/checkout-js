@@ -1,3 +1,5 @@
+/* istanbul ignore file */ // Pending removal: Deprecated old multi-shipping UI
+
 import { Address, CustomerAddress } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo, useCallback } from 'react';
 

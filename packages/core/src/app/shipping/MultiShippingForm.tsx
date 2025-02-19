@@ -1,3 +1,5 @@
+/* istanbul ignore file */ // Pending removal: Deprecated old multi-shipping UI
+
 import {
     Address,
     AddressRequestBody,
