@@ -9,7 +9,6 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import faker from '@faker-js/faker';
 import userEvent from '@testing-library/user-event';
-import { response } from 'msw';
 import React, { FunctionComponent } from 'react';
 
 import { AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
@@ -115,7 +114,7 @@ describe('Registered Customer', () => {
 
     it('displays error message if invalid email', async () => {
         const password = faker.internet.password();
-        
+
         jest.spyOn(checkoutService, 'signInCustomer').mockResolvedValue({} as CheckoutSelectors);
 
         render(<CustomerTest viewType={CustomerViewType.Login} {...defaultProps} />);
@@ -406,5 +405,18 @@ describe('Registered Customer', () => {
         await userEvent.click(submitButton);
 
         expect(screen.getByText(localeContext.language.translate('customer.reset_password_before_login_error'))).toBeInTheDocument();
+    });
+
+    it('does not render sign-in email link in embedded checkout', () => {
+        render(
+            <CustomerTest
+                {...defaultProps}
+                isEmbedded={true}
+                isSignInEmailEnabled={true}
+                viewType={CustomerViewType.Login}
+            />,
+        );
+
+        expect(screen.queryByTestId('customer-signin-link')).not.toBeInTheDocument();
     });
 });

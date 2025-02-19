@@ -4,11 +4,13 @@ import { RequestHandler, rest } from 'msw';
 import { SetupServer, setupServer } from 'msw/node';
 
 import {
+    applepayMethod,
     checkout,
     CheckoutPreset,
     checkoutSettings,
     checkoutSettingsWithCustomErrorFlashMessage,
     checkoutSettingsWithErrorFlashMessage,
+    checkoutSettingsWithRemoteProviders,
     checkoutSettingsWithUnsupportedProvider,
     checkoutWithBillingEmail,
     checkoutWithCustomShippingAndBilling,
@@ -43,6 +45,9 @@ export class CheckoutPageNodeObject {
             rest.get('/api/storefront/checkout-extensions', (_, res, ctx) => res(ctx.json([]))),
             rest.post('/api/storefront/customer', (_, res, ctx) => res(ctx.json({}))),
             rest.post('/internalapi/v1/checkout/customer', (_, res, ctx) => res(ctx.json({}))),
+            rest.get('/api/storefront/payments/applepay', (_, res, ctx) =>
+                res(ctx.json(applepayMethod)),
+            ),
         ];
 
         this.server = setupServer(...defaultHandlers);
@@ -169,6 +174,14 @@ export class CheckoutPageNodeObject {
                 this.server.use(
                     rest.get('/api/storefront/checkout-settings', (_, res, ctx) =>
                         res(ctx.json(checkoutSettingsWithUnsupportedProvider)),
+                    ),
+                );
+                break;
+
+            case CheckoutPreset.RemoteProviders:
+                this.server.use(
+                    rest.get('/api/storefront/checkout-settings', (_, res, ctx) =>
+                        res(ctx.json(checkoutSettingsWithRemoteProviders)),
                     ),
                 );
                 break;
