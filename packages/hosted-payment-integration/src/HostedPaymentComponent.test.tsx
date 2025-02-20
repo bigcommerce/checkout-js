@@ -3,15 +3,11 @@ import {
     CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
-import { mount, ReactWrapper } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
-import {
-    AccountInstrumentFieldset,
-    StoreInstrumentFieldset,
-} from '@bigcommerce/checkout/instrument-utils';
 import {
     createLocaleContext,
     LocaleContext,
@@ -31,7 +27,6 @@ import {
     getPaymentMethod,
     getStoreConfig,
 } from '@bigcommerce/checkout/test-mocks';
-import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentComponent';
 
@@ -62,6 +57,8 @@ describe('HostedPaymentMethod', () => {
 
         jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(true);
 
+        jest.spyOn(checkoutService, 'loadInstruments').mockResolvedValue(checkoutState);
+
         defaultProps = {
             checkoutService,
             checkoutState,
@@ -87,17 +84,17 @@ describe('HostedPaymentMethod', () => {
     });
 
     it('initializes payment method when component mounts', () => {
-        mount(<HostedPaymentMethodTest {...defaultProps} />);
+        render(<HostedPaymentMethodTest {...defaultProps} />);
 
         expect(defaultProps.initializePayment).toHaveBeenCalled();
     });
 
     it('deinitializes payment method when component unmounts', () => {
-        const component = mount(<HostedPaymentMethodTest {...defaultProps} />);
+        const { unmount } = render(<HostedPaymentMethodTest {...defaultProps} />);
 
         expect(defaultProps.deinitializePayment).not.toHaveBeenCalled();
 
-        component.unmount();
+        unmount();
 
         expect(defaultProps.deinitializePayment).toHaveBeenCalled();
     });
@@ -107,31 +104,31 @@ describe('HostedPaymentMethod', () => {
             throw new Error();
         });
 
-        mount(<HostedPaymentMethodTest {...defaultProps} />).unmount();
+        const { unmount } = render(<HostedPaymentMethodTest {...defaultProps} />);
+
+        unmount();
 
         expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(expect.any(Error));
     });
 
     it('renders loading overlay while waiting for method to initialize if description is provided', () => {
-        let component: ReactWrapper;
-
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        component = mount(
+        const { unmount } = render(
             <HostedPaymentMethodTest {...defaultProps} description="Hello world" isInitializing />,
         );
 
-        expect(component.find(LoadingOverlay).prop('isLoading')).toBe(true);
+        expect(screen.getByRole('status')).toBeInTheDocument();
+        expect(screen.queryByTestId('loading-overlay')).not.toBeInTheDocument();
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        component = mount(<HostedPaymentMethodTest {...defaultProps} description="Hello world" />);
+        unmount();
+        render(<HostedPaymentMethodTest {...defaultProps} isInitializing={false} />);
 
-        expect(component.find(LoadingOverlay).prop('isLoading')).toBe(false);
+        expect(screen.queryByRole('status')).not.toBeInTheDocument();
     });
 
     it('does not render loading overlay if there is no description', () => {
-        const component = mount(<HostedPaymentMethodTest {...defaultProps} isInitializing />);
+        render(<HostedPaymentMethodTest {...defaultProps} isInitializing />);
 
-        expect(component.find(LoadingOverlay)).toHaveLength(0);
+        expect(screen.queryByRole('status')).not.toBeInTheDocument();
     });
 
     describe('if stored instrument feature is available', () => {
@@ -146,7 +143,7 @@ describe('HostedPaymentMethod', () => {
         });
 
         it('loads stored instruments when component mounts', async () => {
-            mount(<HostedPaymentMethodTest {...defaultProps} />);
+            render(<HostedPaymentMethodTest {...defaultProps} />);
 
             await new Promise((resolve) => process.nextTick(resolve));
 
@@ -154,9 +151,9 @@ describe('HostedPaymentMethod', () => {
         });
 
         it('shows instruments fieldset when there is at least one stored instrument', () => {
-            const component = mount(<HostedPaymentMethodTest {...defaultProps} />);
-
-            expect(component.find(AccountInstrumentFieldset)).toHaveLength(1);
+            render(<HostedPaymentMethodTest {...defaultProps} />);
+            expect(screen.getByText('Stored accounts')).toBeInTheDocument();
+            expect(screen.getByTestId('instrument-select-note')).toBeInTheDocument();
         });
 
         it('shows the instrument fieldset when there are instruments, but no trusted stored instruments', () => {
@@ -167,9 +164,10 @@ describe('HostedPaymentMethod', () => {
                 })),
             );
 
-            const component = mount(<HostedPaymentMethodTest {...defaultProps} />);
+            render(<HostedPaymentMethodTest {...defaultProps} />);
 
-            expect(component.find(AccountInstrumentFieldset)).toHaveLength(1);
+            expect(screen.getByText('Stored accounts')).toBeInTheDocument();
+            expect(screen.getByTestId('instrument-select-note')).toBeInTheDocument();
         });
 
         it('shows the instrument fieldset and stored instrument when there is a trusted store instrument', () => {
@@ -180,38 +178,41 @@ describe('HostedPaymentMethod', () => {
                 })),
             );
 
-            const component = mount(<HostedPaymentMethodTest {...defaultProps} />);
+            render(<HostedPaymentMethodTest {...defaultProps} />);
 
-            expect(component.find(AccountInstrumentFieldset)).toHaveLength(1);
-            expect(component.find(StoreInstrumentFieldset)).toHaveLength(1);
+            expect(screen.getByText('Stored accounts')).toBeInTheDocument();
+            expect(screen.getByTestId('instrument-select-externalId')).toBeInTheDocument();
+            expect(screen.getByTestId('account-instrument-fieldset')).toBeInTheDocument();
+            expect(screen.getByText('test@external-id.com')).toBeInTheDocument();
         });
 
         it('does not show instruments fieldset when there are no stored instruments', () => {
             jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue([]);
 
-            const component = mount(<HostedPaymentMethodTest {...defaultProps} />);
-
-            expect(component.find(AccountInstrumentFieldset)).toHaveLength(0);
+            render(<HostedPaymentMethodTest {...defaultProps} />);
+            expect(screen.queryByTestId('account-instrument-fieldset')).not.toBeInTheDocument();
+            expect(screen.queryByText('test@external-id.com')).not.toBeInTheDocument();
         });
 
         it('does not show instruments fieldset when starting from the cart', () => {
             jest.spyOn(checkoutState.data, 'isPaymentDataSubmitted').mockReturnValue(true);
 
-            const component = mount(<HostedPaymentMethodTest {...defaultProps} />);
+            render(<HostedPaymentMethodTest {...defaultProps} />);
 
-            expect(component.find(AccountInstrumentFieldset)).toHaveLength(0);
+            expect(screen.queryByTestId('account-instrument-fieldset')).not.toBeInTheDocument();
         });
 
         it('shows save account checkbox when there are no stored instruments', () => {
             jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue([]);
 
-            const container = mount(<HostedPaymentMethodTest {...defaultProps} />);
-
-            expect(container.find('input[name="shouldSaveInstrument"]').exists()).toBe(true);
+            render(<HostedPaymentMethodTest {...defaultProps} />);
+            expect(
+                screen.getByText('Save this account for future transactions'),
+            ).toBeInTheDocument();
         });
 
         it('uses PaymentMethod to retrieve instruments', () => {
-            mount(<HostedPaymentMethodTest {...defaultProps} />);
+            render(<HostedPaymentMethodTest {...defaultProps} />);
 
             expect(checkoutState.data.getInstruments).toHaveBeenCalledWith(defaultProps.method);
         });
@@ -223,7 +224,7 @@ describe('HostedPaymentMethod', () => {
         });
 
         it('throws an error if cart data is not available in state', () => {
-            expect(() => mount(<HostedPaymentMethodTest {...defaultProps} />)).toThrow(Error);
+            expect(() => render(<HostedPaymentMethodTest {...defaultProps} />)).toThrow(Error);
         });
     });
 });
