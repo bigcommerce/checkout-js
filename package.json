@@ -14,6 +14,7 @@
     "build": "nx run core:build",
     "build:server": "http-server dist",
     "dev": "nx run core:dev",
+    "dev:vm": "WEBPACK_DONE='rsync -rvc --progress --delete --compress-level=9 build store.bcdev:/opt/bigcommerce_app/vagrant_code/vendor/bower_components/checkout/' npm run dev",
     "dev:server": "http-server build --cors",
     "e2e": "npm run build && npx playwright install && PORT=5005 MODE=REPLAY npx playwright test",
     "release": "echo 'Please do not release locally, use CircleCi'",
@@ -42,7 +43,7 @@
   "prettier": "@bigcommerce/eslint-config/prettier",
   "homepage": "https://github.com/bigcommerce/checkout-js#readme",
   "dependencies": {
-    "@bigcommerce/checkout-sdk": "^1.711.0",
+    "@bigcommerce/checkout-sdk": "^1.711.1",
     "@bigcommerce/citadel": "^2.15.1",
     "@bigcommerce/form-poster": "^1.2.2",
     "@bigcommerce/memoize": "^1.0.0",
