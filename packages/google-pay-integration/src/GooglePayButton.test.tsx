@@ -1,8 +1,7 @@
 import { createCheckoutService, createLanguageService } from '@bigcommerce/checkout-sdk';
-import { mount } from 'enzyme';
+import { render } from '@testing-library/react';
 import React from 'react';
 
-import { CheckoutButton } from '@bigcommerce/checkout/checkout-button-integration';
 import { CheckoutButtonProps, isEmbedded } from '@bigcommerce/checkout/payment-integration-api';
 
 import GooglePayButton from './GooglePayButton';
@@ -32,15 +31,15 @@ describe('GooglePayButton', () => {
     });
 
     it('delegates to default checkout button if checkout is not embedded', () => {
-        const component = mount(<GooglePayButton {...defaultProps} />);
+        const { container } = render(<GooglePayButton {...defaultProps} />);
 
-        expect(component.find(CheckoutButton)).toHaveLength(1);
+        expect(container.querySelector('#button-container')).toBeInTheDocument();
     });
 
     it('calls error callback if checkout is embedded', () => {
         (isEmbedded as jest.Mock).mockReturnValue(true);
 
-        mount(<GooglePayButton {...defaultProps} />);
+        render(<GooglePayButton {...defaultProps} />);
 
         expect(defaultProps.onUnhandledError).toHaveBeenCalled();
     });
