@@ -176,6 +176,8 @@ describe('Checkout', () => {
 
             expect(checkoutService.updateBillingAddress).toHaveBeenCalled();
             expect(screen.getByText(payments[0].config.displayName)).toBeInTheDocument();
+
+            jest.unmock('lodash');
         });
     });
 });
