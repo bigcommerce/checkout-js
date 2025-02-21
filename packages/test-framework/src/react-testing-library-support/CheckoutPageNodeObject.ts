@@ -1,5 +1,6 @@
 import { Checkout } from '@bigcommerce/checkout-sdk';
 import { screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { RequestHandler, rest } from 'msw';
 import { SetupServer, setupServer } from 'msw/node';
 
@@ -20,8 +21,10 @@ import {
     checkoutWithShipping,
     checkoutWithShippingAndBilling,
     countries,
+    customer,
     formFields,
     payments,
+    shippingAddress,
 } from './mocks';
 
 export class CheckoutPageNodeObject {
@@ -205,5 +208,20 @@ export class CheckoutPageNodeObject {
 
     async waitForPaymentStep(): Promise<void> {
         await waitFor(() => screen.getByText(/place order/i));
+    }
+
+    async fillShippingAddress(): Promise<void> {
+        await userEvent.type(await screen.findByLabelText('First Name'), customer.firstName);
+        await userEvent.type(screen.getByLabelText('Last Name'), customer.lastName);
+        await userEvent.type(
+            screen.getByRole('textbox', { name: /address/i }),
+            shippingAddress.address1,
+        );
+        await userEvent.type(screen.getByLabelText('City'), shippingAddress.city);
+        await userEvent.selectOptions(
+            screen.getByTestId('countryCodeInput-select'),
+            shippingAddress.countryCode,
+        );
+        await userEvent.type(screen.getByLabelText('Postal Code'), shippingAddress.postalCode);
     }
 }

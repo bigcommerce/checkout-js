@@ -3,8 +3,8 @@ const countries = {
     data: [
         {
             id: 1,
-            code: 'AF',
-            name: 'Afghanistan',
+            code: 'CC',
+            name: 'Dummy Country Name',
             hasPostalCodes: true,
             requiresState: false,
             subdivisions: [],
