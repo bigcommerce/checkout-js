@@ -1,258 +1,181 @@
-import '@testing-library/jest-dom';
 import {
-    CheckoutSelectors,
     CheckoutService,
     createCheckoutService,
+    createEmbeddedCheckoutMessenger,
+    EmbeddedCheckoutMessenger,
 } from '@bigcommerce/checkout-sdk';
 import userEvent from '@testing-library/user-event';
+import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
-import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import {
-    createLocaleContext,
-    LocaleContext,
-    LocaleContextType,
-} from '@bigcommerce/checkout/locale';
-import { CheckoutProvider, PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
-import { render, screen, within } from '@bigcommerce/checkout/test-utils';
+    AnalyticsContextProps,
+    AnalyticsEvents,
+    AnalyticsProviderMock,
+} from '@bigcommerce/checkout/analytics';
+import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
+import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
+import {
+    CHECKOUT_ROOT_NODE_ID,
+    CheckoutProvider,
+} from '@bigcommerce/checkout/payment-integration-api';
+import {
+    CheckoutPageNodeObject,
+    CheckoutPreset,
+    checkoutWithBillingEmail,
+    checkoutWithShipping,
+    checkoutWithShippingAndBilling,
+    consignment,
+    payments,
+} from '@bigcommerce/checkout/test-framework';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import { getAddressFormFields } from '../address/formField.mock';
-import { getCart } from '../cart/carts.mock';
-import { getPhysicalItem } from '../cart/lineItem.mock';
-import { getCheckout } from '../checkout/checkouts.mock';
-import CheckoutStepType from '../checkout/CheckoutStepType';
-import { getStoreConfig } from '../config/config.mock';
-import { getCustomer } from '../customer/customers.mock';
-import { getConsignment } from '../shipping/consignment.mock';
+import { Checkout, CheckoutProps } from '../checkout';
+import { createErrorLogger } from '../common/error';
+import {
+    createEmbeddedCheckoutStylesheet,
+    createEmbeddedCheckoutSupport,
+} from '../embeddedCheckout';
 
-import Shipping, { ShippingProps, WithCheckoutShippingProps } from './Shipping';
-import { getShippingAddress } from './shipping-addresses.mock';
-
-describe('Shipping component', () => {
-    let localeContext: LocaleContextType;
+describe('Checkout', () => {
+    let checkout: CheckoutPageNodeObject;
+    let CheckoutTest: FunctionComponent<CheckoutProps>;
     let checkoutService: CheckoutService;
-    let checkoutState: CheckoutSelectors;
-    let defaultProps: ShippingProps;
-    let ComponentTest: FunctionComponent<ShippingProps> & Partial<WithCheckoutShippingProps>;
+    let defaultProps: CheckoutProps & AnalyticsContextProps;
+    let embeddedMessengerMock: EmbeddedCheckoutMessenger;
+    let analyticsTracker: Partial<AnalyticsEvents>;
+
+    beforeAll(() => {
+        checkout = new CheckoutPageNodeObject();
+        checkout.goto();
+    });
+
+    afterEach(() => {
+        checkout.resetHandlers();
+    });
+
+    afterAll(() => {
+        checkout.close();
+    });
 
     beforeEach(() => {
-        localeContext = createLocaleContext(getStoreConfig());
+        window.scrollTo = jest.fn();
+
         checkoutService = createCheckoutService();
-
-        checkoutState = checkoutService.getState();
-
+        embeddedMessengerMock = createEmbeddedCheckoutMessenger({
+            parentOrigin: 'https://store.url',
+        });
+        analyticsTracker = {
+            checkoutBegin: jest.fn(),
+            trackStepViewed: jest.fn(),
+            trackStepCompleted: jest.fn(),
+            exitCheckout: jest.fn(),
+        };
         defaultProps = {
-            isBillingSameAsShipping: true,
-            isMultiShippingMode: false,
-            onToggleMultiShipping: jest.fn(),
-            cartHasChanged: false,
-            onSignIn: jest.fn(),
-            step: {
-                isActive: true,
-                isComplete: true,
-                isEditable: true,
-                isRequired: true,
-                type: CheckoutStepType.Shipping
-            },
-            providerWithCustomCheckout: PaymentMethodId.StripeUPE,
-            isShippingMethodLoading: true,
-            navigateNextStep: jest.fn(),
-            onUnhandledError: jest.fn(),
+            checkoutId: 'x',
+            containerId: CHECKOUT_ROOT_NODE_ID,
+            createEmbeddedMessenger: () => embeddedMessengerMock,
+            embeddedStylesheet: createEmbeddedCheckoutStylesheet(),
+            embeddedSupport: createEmbeddedCheckoutSupport(getLanguageService()),
+            errorLogger: createErrorLogger(),
+            analyticsTracker,
         };
 
-        jest.spyOn(checkoutService, 'loadShippingAddressFields').mockResolvedValue(
-            {} as CheckoutSelectors,
-        );
+        jest.spyOn(defaultProps.errorLogger, 'log').mockImplementation(noop);
 
-        jest.spyOn(checkoutService, 'loadBillingAddressFields').mockResolvedValue(
-            {} as CheckoutSelectors,
-        );
-
-        jest.spyOn(checkoutService, 'loadShippingOptions').mockResolvedValue(
-            {} as CheckoutSelectors,
-        );
-
-        jest.spyOn(checkoutService, 'deleteConsignment').mockResolvedValue({} as CheckoutSelectors);
-
-        jest.spyOn(checkoutState.data, 'getCart').mockReturnValue({
-            ...getCart(),
-            lineItems: {
-                ...getCart().lineItems,
-                physicalItems: [
-                    {
-                        ...getPhysicalItem(),
-                        quantity: 3,
-                    },
-                ],
-            },
-        } as Cart);
-
-        jest.spyOn(checkoutState.data, 'getShippingAddress').mockReturnValue(getShippingAddress());
-
-        jest.spyOn(checkoutState.data, 'getBillingAddress').mockReturnValue(undefined);
-
-        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
-
-        jest.spyOn(checkoutState.data, 'getShippingAddressFields').mockReturnValue(
-            getAddressFormFields(),
-        );
-
-        jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue({
-            ...getCustomer(),
-            addresses: [],
-        });
-
-        jest.spyOn(checkoutState.data, 'getConsignments').mockReturnValue([getConsignment()]);
-
-        jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue(getCheckout());
-
-        jest.spyOn(checkoutService, 'updateBillingAddress').mockResolvedValue(
-            {} as CheckoutSelectors,
-        );
-        jest.spyOn(checkoutService, 'updateCheckout').mockResolvedValue({} as CheckoutSelectors);
-        jest.spyOn(checkoutService, 'updateShippingAddress').mockResolvedValue(
-            {} as CheckoutSelectors,
-        );
-
-        ComponentTest = (props) => (
+        CheckoutTest = (props) => (
             <CheckoutProvider checkoutService={checkoutService}>
-                <LocaleContext.Provider value={localeContext}>
-                    <ExtensionProvider checkoutService={checkoutService}>
-                        <Shipping {...props} />
-                    </ExtensionProvider>
-                </LocaleContext.Provider>
+                <LocaleProvider checkoutService={checkoutService}>
+                    <AnalyticsProviderMock>
+                        <ExtensionProvider
+                            checkoutService={checkoutService}
+                            errorLogger={{
+                                log: jest.fn(),
+                            }}
+                        >
+                            <Checkout {...props} />
+                        </ExtensionProvider>
+                    </AnalyticsProviderMock>
+                </LocaleProvider>
             </CheckoutProvider>
         );
     });
 
+    describe('Shipping step happy paths', () => {
+        it('completes the shipping step as a guest and goes to payment step', async () => {
+            jest.spyOn(checkoutService, 'updateShippingAddress');
+            jest.spyOn(checkoutService, 'updateBillingAddress');
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+            jest.mock('lodash', () => ({
+                ...jest.requireActual('lodash'),
+                debounce: (fn) => {
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                    fn.cancel = jest.fn();
 
-    describe('when new multishipping ui is enabled', () => {
-        beforeEach(async () => {
-            jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
-                ...getStoreConfig(),
-                checkoutSettings: {
-                    ...getStoreConfig().checkoutSettings,
-                    hasMultiShippingEnabled: true,
-                    features: {
-                        ...getStoreConfig().checkoutSettings.features,
-                        "PROJECT-4159.improve_multi_address_shipping_ui": true,
-                    },
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+                    return fn;
                 },
-            });
-        });
+            }));
 
-        it('opens confirmation dialog on clicking the link and calls onToggleMultiShipping when confirm is clicked', async () => {
-            render(<ComponentTest {...defaultProps} isMultiShippingMode={true} />);
+            checkout.use(CheckoutPreset.CheckoutWithBillingEmail);
 
-            const shippingModeToggle = await screen.findByTestId("shipping-mode-toggle");
+            const { container } = render(<CheckoutTest {...defaultProps} />);
 
-            expect(shippingModeToggle.innerHTML).toBe('Ship to a single address');
+            await checkout.waitForShippingStep();
 
-            await userEvent.click(shippingModeToggle);
-
-            const confirmationModal = await screen.findByRole('dialog');
-
-            expect(confirmationModal).toBeInTheDocument();
-            expect(within(confirmationModal).getByText(localeContext.language.translate('shipping.ship_to_single_action'))).toBeInTheDocument();
-            expect(within(confirmationModal).getByText(localeContext.language.translate('shipping.ship_to_single_message'))).toBeInTheDocument();
-
-            await userEvent.click(within(confirmationModal).getByText(localeContext.language.translate('common.proceed_action')));
-
-            expect(defaultProps.onToggleMultiShipping).toHaveBeenCalled();
-        });
-
-        it('opens information dialog on clicking `ship to multiple address` when promotional item is present in the cart', async () => {
-            jest.spyOn(checkoutState.data, 'getCart').mockReturnValue({
-                ...getCart(),
-                lineItems: {
-                    ...getCart().lineItems,
-                    physicalItems: [
+            checkout.updateCheckout(
+                'post',
+                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments',
+                {
+                    ...checkoutWithBillingEmail,
+                    consignments: [
                         {
-                            ...getPhysicalItem(),
-                            quantity: 3,
+                            ...consignment,
+                            selectedShippingOption: undefined,
                         },
-                        {
-                            ...getPhysicalItem(),
-                            id: '123',
-                            quantity: 1,
-                            addedByPromotion: true,
-                        }
                     ],
                 },
-            } as Cart);
-            
-            render(<ComponentTest {...defaultProps} isMultiShippingMode={false} />);
-
-            const shippingModeToggle = await screen.findByTestId("shipping-mode-toggle");
-
-            expect(shippingModeToggle.innerHTML).toBe(localeContext.language.translate('shipping.ship_to_multi'));
-
-            await userEvent.click(shippingModeToggle);
-
-            const confirmationModal = await screen.findByRole('dialog');
-
-            expect(confirmationModal).toBeInTheDocument();
-            expect(within(confirmationModal).getByText(localeContext.language.translate('shipping.multishipping_unavailable_action'))).toBeInTheDocument();
-            expect(within(confirmationModal).getByText(localeContext.language.translate('shipping.multishipping_unavailable_message'))).toBeInTheDocument();
-
-            await userEvent.click(within(confirmationModal).getByText(localeContext.language.translate('common.back_action')));
-
-            expect(defaultProps.onToggleMultiShipping).not.toHaveBeenCalled();
-        });
-
-        it('opens information dialog on mount and when multishipping mode is ON and promotional item is present in the cart', async () => {
-            jest.spyOn(checkoutState.data, 'getCart').mockReturnValue({
-                ...getCart(),
-                lineItems: {
-                    ...getCart().lineItems,
-                    physicalItems: [
-                        {
-                            ...getPhysicalItem(),
-                            quantity: 3,
-                        },
-                        {
-                            ...getPhysicalItem(),
-                            id: '123',
-                            quantity: 1,
-                            addedByPromotion: true,
-                        }
-                    ],
+            );
+            checkout.updateCheckout(
+                'put',
+                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments/consignment-1',
+                {
+                    ...checkoutWithShipping,
                 },
-            } as Cart);
-            
-            render(<ComponentTest {...defaultProps} isMultiShippingMode={true} />);
+            );
 
-            const confirmationModal = await screen.findByRole('dialog');
+            await checkout.fillShippingAddress();
 
-            expect(confirmationModal).toBeInTheDocument();
-            expect(within(confirmationModal).getByText(localeContext.language.translate('shipping.multishipping_unavailable_action'))).toBeInTheDocument();
-            expect(within(confirmationModal).getByText(localeContext.language.translate('shipping.checkout_switched_to_single_shipping'))).toBeInTheDocument();
+            expect(checkoutService.updateShippingAddress).toHaveBeenCalled();
+            expect(
+                screen.getByRole('radio', { name: 'Pickup In Store $3.00' }),
+            ).toBeInTheDocument();
+            expect(screen.getByRole('radio', { name: 'Flat Rate $10.00' })).toBeInTheDocument();
+            // eslint-disable-next-line testing-library/no-container,testing-library/no-node-access
+            expect(container.getElementsByClassName('shippingOptions-skeleton').length).toBe(0);
+            // eslint-disable-next-line testing-library/no-container,testing-library/no-node-access
+            expect(container.getElementsByClassName('form-checklist-item--selected').length).toBe(
+                1,
+            );
+            // eslint-disable-next-line jest-dom/prefer-to-have-attribute
+            expect(
+                screen.getByTestId('billingSameAsShipping').hasAttribute('checked'),
+            ).toBeTruthy();
 
-            await userEvent.click(within(confirmationModal).getByText(localeContext.language.translate('common.ok_action')));
-
-            expect(defaultProps.onToggleMultiShipping).toHaveBeenCalled();
-        });
-
-        it('does not show `ship to multiple address` if only 1 bundled product is present in the cart', async () => {
-            jest.spyOn(checkoutState.data, 'getCart').mockReturnValue({
-                ...getCart(),
-                lineItems: {
-                    physicalItems: [
-                        {
-                            ...getPhysicalItem(),
-                        },
-                        {
-                            ...getPhysicalItem(),
-                            id: '123',
-                            parentId: getPhysicalItem().id,
-                        }
-                    ],
+            checkout.updateCheckout(
+                'put',
+                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/billing-address/billing-address-id*',
+                {
+                    ...checkoutWithShippingAndBilling,
                 },
-            } as Cart);
+            );
 
-            render(<ComponentTest {...defaultProps} isMultiShippingMode={false} />);
+            await userEvent.click(screen.getByRole('button', { name: 'Continue' }));
 
-            expect(screen.queryByTestId("shipping-mode-toggle")).not.toBeInTheDocument();
+            await checkout.waitForPaymentStep();
+
+            expect(checkoutService.updateBillingAddress).toHaveBeenCalled();
+            expect(screen.getByText(payments[0].config.displayName)).toBeInTheDocument();
         });
     });
 });

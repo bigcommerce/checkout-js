@@ -1,4 +1,4 @@
-import { Checkout, Consignment, PhysicalItem } from '@bigcommerce/checkout-sdk';
+import { Checkout, Consignment, Customer, PhysicalItem } from '@bigcommerce/checkout-sdk';
 
 const timeString = new Date().toISOString();
 
@@ -40,7 +40,7 @@ const shippingAddress1 = {
     city: 'Cityville',
     stateOrProvince: 'State',
     stateOrProvinceCode: 'ST',
-    country: 'Country',
+    country: 'Dummy Country Name',
     countryCode: 'CC',
     postalCode: '10000',
     phone: '0000000000',
@@ -127,6 +127,35 @@ const consignment: Consignment = {
             additionalDescription: '',
         },
     ],
+};
+
+const customer: Customer = {
+    id: 1,
+    isGuest: false,
+    email: 'user@example.com',
+    firstName: 'John',
+    lastName: 'Doe',
+    fullName: 'John Doe',
+    addresses: [
+        {
+            ...shippingAddress1,
+            id: 1,
+        },
+        {
+            id: 2,
+            ...shippingAddress2,
+        },
+        {
+            id: 3,
+            ...shippingAddress3,
+        },
+    ],
+    storeCredit: 0,
+    shouldEncourageSignIn: true,
+    customerGroup: {
+        id: 1,
+        name: 'Discount Group',
+    },
 };
 
 const checkout: Checkout = {
@@ -256,9 +285,9 @@ const checkoutWithShippingAndBilling: Checkout = {
     ...checkoutWithShipping,
     billingAddress: {
         id: 'billing-address-id',
-        firstName: 'checkout',
-        lastName: 'test',
-        email: 'test@example.com',
+        firstName: customer.firstName,
+        lastName: customer.lastName,
+        email: customer.email,
         company: '',
         address1: '130 Pitt St',
         address2: '',
@@ -305,34 +334,7 @@ const checkoutWithMultiShippingCart = {
             ],
         },
     },
-    customer: {
-        id: 1,
-        isGuest: false,
-        email: 'user@example.com',
-        firstName: 'John',
-        lastName: 'Doe',
-        fullName: 'John Doe',
-        addresses: [
-            {
-                ...shippingAddress1,
-                id: 1,
-            },
-            {
-                id: 2,
-                ...shippingAddress2,
-            },
-            {
-                id: 3,
-                ...shippingAddress3,
-            },
-        ],
-        storeCredit: 0,
-        shouldEncourageSignIn: true,
-        customerGroup: {
-            id: 1,
-            name: 'Discount Group',
-        },
-    },
+    customer,
     consignment: [],
 };
 
@@ -361,6 +363,8 @@ export {
     checkoutWithShipping,
     checkoutWithShippingAndBilling,
     consignment,
+    customer,
+    shippingAddress1 as shippingAddress,
     shippingAddress2,
     shippingAddress3,
 };
