@@ -30,7 +30,7 @@ import {
 } from '@bigcommerce/checkout/test-framework';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import { Checkout, CheckoutProps } from '../checkout';
+import Checkout, { CheckoutProps } from '../checkout/Checkout';
 import { createErrorLogger } from '../common/error';
 import {
     createEmbeddedCheckoutStylesheet,
