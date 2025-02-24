@@ -338,11 +338,11 @@ const customFormFields = [
         type: 'string',
         options: {
             rows: 3,
-        }
+        },
     },
     {
         custom: true,
-        default: "",
+        default: '',
         fieldType: 'date',
         id: 'field_29',
         label: 'Custom Date',
@@ -350,58 +350,58 @@ const customFormFields = [
         required: true,
         type: 'date',
         maxLength: null,
-        min: "2020-01-01",
-        max: "2024-12-31"
+        min: '2020-01-01',
+        max: '2024-12-31',
     },
     {
-        id: "field_31",
-        name: "field_31",
+        id: 'field_31',
+        name: 'field_31',
         custom: true,
-        label: "Custom Checkbox",
+        label: 'Custom Checkbox',
         required: true,
         default: null,
         maxLength: null,
-        type: "array",
-        fieldType: "checkbox",
+        type: 'array',
+        fieldType: 'checkbox',
         options: {
             items: [
                 {
-                    value: "0",
-                    label: "1"
+                    value: '0',
+                    label: '1',
                 },
                 {
-                    value: "1",
-                    label: "2"
+                    value: '1',
+                    label: '2',
                 },
                 {
-                    value: "2",
-                    label: "3"
-                }
-            ]
-        }
+                    value: '2',
+                    label: '3',
+                },
+            ],
+        },
     },
     {
-        id: "field_32",
-        name: "field_32",
+        id: 'field_32',
+        name: 'field_32',
         custom: true,
-        label: "Custom Radio",
+        label: 'Custom Radio',
         required: true,
         default: null,
         maxLength: null,
-        type: "array",
-        fieldType: "radio",
+        type: 'array',
+        fieldType: 'radio',
         options: {
             items: [
                 {
-                    value: "0",
-                    label: "yes"
+                    value: '0',
+                    label: 'yes',
                 },
                 {
-                    value: "1",
-                    label: "no"
-                }
-            ]
-        }
+                    value: '1',
+                    label: 'no',
+                },
+            ],
+        },
     },
     {
         custom: true,

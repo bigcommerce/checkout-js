@@ -116,13 +116,15 @@ export class CheckoutPageNodeObject {
                         res(ctx.json(checkoutWithBillingEmail)),
                     ),
                     rest.get('/api/storefront/form-fields', (_, res, ctx) =>
-                        res(ctx.json({
-                            ...formFields,
-                            shippingAddress: [
-                                ...formFields.shippingAddress,
-                                ...customFormFields,
-                            ],
-                        })),
+                        res(
+                            ctx.json({
+                                ...formFields,
+                                shippingAddress: [
+                                    ...formFields.shippingAddress,
+                                    ...customFormFields,
+                                ],
+                            }),
+                        ),
                     ),
                 );
                 break;
