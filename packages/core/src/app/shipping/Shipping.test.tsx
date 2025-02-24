@@ -102,17 +102,14 @@ describe('Checkout', () => {
     });
 
     describe('Shipping step happy paths', () => {
-        it('completes the shipping step as a guest and goes to payment step', async () => {
+        it('completes the shipping step as a guest and goes to the payment step by default', async () => {
             jest.spyOn(checkoutService, 'updateShippingAddress');
             jest.spyOn(checkoutService, 'updateBillingAddress');
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             jest.mock('lodash', () => ({
                 ...jest.requireActual('lodash'),
                 debounce: (fn) => {
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
                     fn.cancel = jest.fn();
 
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
                     return fn;
                 },
             }));
@@ -176,6 +173,61 @@ describe('Checkout', () => {
 
             expect(checkoutService.updateBillingAddress).toHaveBeenCalled();
             expect(screen.getByText(payments[0].config.displayName)).toBeInTheDocument();
+
+            jest.unmock('lodash');
+        });
+
+        it('completes the shipping step as a guest and goes to the billing step', async () => {
+            jest.spyOn(checkoutService, 'updateBillingAddress');
+            jest.mock('lodash', () => ({
+                ...jest.requireActual('lodash'),
+                debounce: (fn) => {
+
+                    fn.cancel = jest.fn();
+
+
+                    return fn;
+                },
+            }));
+
+            checkout.use(CheckoutPreset.CheckoutWithBillingEmail);
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForShippingStep();
+
+            expect(screen.getByRole('button', { name: 'Edit' })).toBeInTheDocument();
+
+            checkout.updateCheckout(
+                'post',
+                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments',
+                {
+                    ...checkoutWithBillingEmail,
+                    consignments: [
+                        {
+                            ...consignment,
+                            selectedShippingOption: undefined,
+                        },
+                    ],
+                },
+            );
+            checkout.updateCheckout(
+                'put',
+                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments/consignment-1',
+                {
+                    ...checkoutWithShipping,
+                },
+            );
+
+            await checkout.fillShippingAddress();
+            await userEvent.click(screen.getByTestId('billingSameAsShipping'));
+            await userEvent.click(screen.getByRole('button', { name: 'Continue' }));
+            await checkout.waitForBillingStep();
+
+            expect(checkoutService.updateBillingAddress).not.toHaveBeenCalled();
+            // one `edit` button is for the cart, the other is for the shipping address.
+            expect(screen.getAllByRole('button', { name: 'Edit' })).toHaveLength(2);
+            expect(screen.getByLabelText('First Name')).toBeInTheDocument();
 
             jest.unmock('lodash');
         });
