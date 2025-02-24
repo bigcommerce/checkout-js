@@ -50,7 +50,7 @@ export function getTranslateAddressError(
         }
 
         if (type === 'min' && min) {
-            return language.translate(`address.custom_max_error`, { label, min });
+            return language.translate(`address.custom_min_error`, { label, min });
         }
 
         if (type === 'invalid') {

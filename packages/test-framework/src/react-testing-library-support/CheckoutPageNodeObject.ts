@@ -22,6 +22,7 @@ import {
     checkoutWithShippingAndBilling,
     countries,
     customer,
+    customFormFields,
     formFields,
     payments,
     shippingAddress,
@@ -105,6 +106,23 @@ export class CheckoutPageNodeObject {
                 this.server.use(
                     rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
                         res(ctx.json(checkoutWithBillingEmail)),
+                    ),
+                );
+                break;
+
+            case CheckoutPreset.CheckoutWithBillingEmailAndCustomFormFields:
+                this.server.use(
+                    rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
+                        res(ctx.json(checkoutWithBillingEmail)),
+                    ),
+                    rest.get('/api/storefront/form-fields', (_, res, ctx) =>
+                        res(ctx.json({
+                            ...formFields,
+                            shippingAddress: [
+                                ...formFields.shippingAddress,
+                                ...customFormFields,
+                            ],
+                        })),
                     ),
                 );
                 break;
