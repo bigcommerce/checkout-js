@@ -1,4 +1,3 @@
-import { render, screen } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
@@ -9,6 +8,7 @@ import {
     LocaleContextType,
 } from '@bigcommerce/checkout/locale';
 import { getPaymentMethod, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import {
     HostedFieldPaymentMethodComponent,
@@ -40,19 +40,22 @@ describe('HostedFieldPaymentMethod', () => {
         );
     });
 
-    it('initializes payment method when component mounts', () => {
+    it('renders fields and initializes payment method when component mounts', () => {
         render(<HostedFieldPaymentMethodTest {...defaultProps} />);
 
         expect(defaultProps.initializePayment).toHaveBeenCalled();
+        expect(screen.getByText('Credit Card Number')).toBeInTheDocument();
     });
 
-    it('deinitializes payment method when component unmounts', () => {
+    it('deinitializes payment method and does not render fields when user leaves payment process', () => {
         const { unmount } = render(<HostedFieldPaymentMethodTest {...defaultProps} />);
 
         expect(defaultProps.deinitializePayment).not.toHaveBeenCalled();
+        expect(screen.getByText('Credit Card Number')).toBeInTheDocument();
 
         unmount();
         expect(defaultProps.deinitializePayment).toHaveBeenCalled();
+        expect(screen.queryByText('Credit Card Number')).not.toBeInTheDocument();
     });
 
     it('renders loading overlay while waiting for method to initialize', () => {

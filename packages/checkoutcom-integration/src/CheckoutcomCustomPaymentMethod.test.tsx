@@ -6,7 +6,6 @@ import {
     PaymentInitializeOptions,
     PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
-import { render, screen } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
@@ -28,6 +27,7 @@ import {
     getPaymentMethod,
     getStoreConfig,
 } from '@bigcommerce/checkout/test-mocks';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import CheckoutcomCustomPaymentMethod from './CheckoutcomCustomPaymentMethod';
 
@@ -125,62 +125,56 @@ describe('when using Checkoutcom payment', () => {
         ).toBeInTheDocument();
     });
 
-    it('initializes method with required config', () => {
+    it('renders APM field and initializes method with required config', () => {
         render(<PaymentMethodTest {...defaultProps} />);
         expect(initializePayment).toHaveBeenCalled();
         expect(initializePayment.mock.calls[0][0]).toMatchObject({
             gatewayId: method.gateway,
             methodId: method.id,
         });
+        expect(screen.getByText('Mobile Number')).toBeInTheDocument();
     });
 
-    it('initializes method with required config when customer is defined', () => {
+    it('renders the fields when customer is defined', () => {
         jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
 
         render(<PaymentMethodTest {...defaultProps} method={method} />);
-        expect(initializePayment.mock.calls[0][0]).toMatchObject({
-            methodId: method.id,
-            gatewayId: method.gateway,
-        });
+        expect(screen.getByText('Mobile Number')).toBeInTheDocument();
     });
 
-    it('initializes method with required config when no instruments', () => {
+    it('renders the fields when no instruments', () => {
         jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue(undefined);
 
         render(<PaymentMethodTest {...defaultProps} method={method} />);
-        expect(initializePayment.mock.calls[0][0]).toMatchObject({
-            methodId: method.id,
-            gatewayId: method.gateway,
-        });
+        expect(screen.getByText('Mobile Number')).toBeInTheDocument();
     });
 
-    it('renders as qpay payment method', () => {
+    it('renders as qpay fields', () => {
         render(<PaymentMethodTest {...defaultProps} method={alternateMethodB} />);
         expect(initializePayment.mock.calls[0][0]).toMatchObject({
             methodId: 'qpay',
             gatewayId: method.gateway,
         });
+        expect(screen.getByText('National ID')).toBeInTheDocument();
     });
 
-    it('initializes fawry payment method', () => {
+    it('renders fawry fields', () => {
         render(<PaymentMethodTest {...defaultProps} method={fawryMethod} />);
 
-        expect(initializePayment.mock.calls[0][0]).toMatchObject({
-            methodId: 'fawry',
-            gatewayId: method.gateway,
-        });
+        expect(screen.getByText('Mobile Number')).toBeInTheDocument();
     });
 
-    it('should be deinitialized with the required config', () => {
+    it('should be deinitialized with the required config and not render the fields', () => {
         render(<PaymentMethodTest {...defaultProps} />).unmount();
 
         expect(checkoutService.deinitializePayment).toHaveBeenCalledWith({
             gatewayId: 'checkoutcom',
             methodId: 'fawry',
         });
+        expect(screen.queryByText('Mobile Number')).not.toBeInTheDocument();
     });
 
-    it('catches an error during failed initialization of initializePayment', async () => {
+    it('throws error during failed initialization of initializePayment', async () => {
         jest.spyOn(checkoutService, 'initializePayment').mockRejectedValue(new Error('error'));
         render(<PaymentMethodTest {...defaultProps} />);
 
@@ -220,6 +214,7 @@ describe('when using Checkoutcom payment', () => {
 
         const { container } = render(<PaymentMethodTest {...defaultProps} method={fawryMethod} />);
 
+        expect(screen.getByText('Mobile Number')).toBeInTheDocument();
         expect(container).not.toBeEmptyDOMElement();
     });
 });

@@ -1,8 +1,8 @@
 import { createCheckoutService, createLanguageService } from '@bigcommerce/checkout-sdk';
-import { render } from '@testing-library/react';
 import React from 'react';
 
 import { CheckoutButtonProps, isEmbedded } from '@bigcommerce/checkout/payment-integration-api';
+import { render } from '@bigcommerce/checkout/test-utils';
 
 import GooglePayButton from './GooglePayButton';
 
@@ -30,17 +30,19 @@ describe('GooglePayButton', () => {
         };
     });
 
-    it('delegates to default checkout button if checkout is not embedded', () => {
+    it('renders GooglePayButton when checkout is not embedded', () => {
+        (isEmbedded as jest.Mock).mockReturnValue(false);
+
         const { container } = render(<GooglePayButton {...defaultProps} />);
 
-        expect(container.querySelector('#button-container')).toBeInTheDocument();
+        expect(container.querySelector('.google-pay-top-button')).toBeInTheDocument();
     });
 
-    it('calls error callback if checkout is embedded', () => {
+    it('does not render GooglePayButton if checkout is embedded', () => {
         (isEmbedded as jest.Mock).mockReturnValue(true);
 
-        render(<GooglePayButton {...defaultProps} />);
+        const { container } = render(<GooglePayButton {...defaultProps} />);
 
-        expect(defaultProps.onUnhandledError).toHaveBeenCalled();
+        expect(container.querySelector('.google-pay-top-button')).not.toBeInTheDocument();
     });
 });

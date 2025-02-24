@@ -3,7 +3,6 @@ import {
     CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
-import { fireEvent, render, screen } from '@testing-library/react';
 import { EventEmitter } from 'events';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
@@ -33,6 +32,7 @@ import {
     getPaymentMethod,
     getStoreConfig,
 } from '@bigcommerce/checkout/test-mocks';
+import { fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
 
 import checkoutcomCustomFormFields, { ccDocumentField } from './CheckoutcomCustomFormFields';
 
@@ -251,7 +251,20 @@ describe('CheckoutCustomFormFields', () => {
             ).toBeInTheDocument();
         });
 
-        it('should call toggleSubmitButton on checkbox checked', () => {
+        it('renders form with initial values', () => {
+            render(
+                <CheckoutcomAPMsTest
+                    {...sepaProps}
+                    cardFieldset={
+                        <SepaFormFieldset debtor={billingAddress} method={sepaProps.method} />
+                    }
+                />,
+            );
+
+            expect(paymentForm.disableSubmit).toHaveBeenLastCalledWith(sepaProps.method, true);
+        });
+
+        it('submit button is toggled when user checks permission checkbox', () => {
             render(
                 <CheckoutcomAPMsTest
                     {...sepaProps}
@@ -268,11 +281,12 @@ describe('CheckoutCustomFormFields', () => {
             );
 
             fireEvent.click(permissionChangeCheckbox);
-
             expect(paymentForm.disableSubmit).toHaveBeenLastCalledWith(sepaProps.method, false);
+            fireEvent.click(permissionChangeCheckbox);
+            expect(paymentForm.disableSubmit).toHaveBeenLastCalledWith(sepaProps.method, true);
         });
 
-        it('should call disableSubmit on useEffect cleanup function', () => {
+        it('submit button should be disabled on useEffect cleanup function', () => {
             render(
                 <CheckoutcomAPMsTest
                     {...sepaProps}
