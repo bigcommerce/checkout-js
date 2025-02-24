@@ -3,7 +3,6 @@ import {
     CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
-import { render, screen } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
@@ -27,6 +26,7 @@ import {
     getPaymentMethod,
     getStoreConfig,
 } from '@bigcommerce/checkout/test-mocks';
+import { fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
 
 import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentComponent';
 
@@ -89,14 +89,14 @@ describe('HostedPaymentMethod', () => {
         expect(defaultProps.initializePayment).toHaveBeenCalled();
     });
 
-    it('deinitializes payment method when component unmounts', () => {
-        const { unmount } = render(<HostedPaymentMethodTest {...defaultProps} />);
+    it('does not render fields and deinitializes payment method when component unmounts', () => {
+        const { unmount, container } = render(<HostedPaymentMethodTest {...defaultProps} />);
 
         expect(defaultProps.deinitializePayment).not.toHaveBeenCalled();
-
         unmount();
 
         expect(defaultProps.deinitializePayment).toHaveBeenCalled();
+        expect(container).toBeEmptyDOMElement();
     });
 
     it('calls onUnhandledError if deinitialize was failed', () => {
@@ -111,7 +111,7 @@ describe('HostedPaymentMethod', () => {
         expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(expect.any(Error));
     });
 
-    it('renders loading overlay while waiting for method to initialize if description is provided', () => {
+    it('shows loading overlay while waiting for method to initialize if description is provided', () => {
         const { unmount } = render(
             <HostedPaymentMethodTest {...defaultProps} description="Hello world" isInitializing />,
         );
@@ -125,7 +125,7 @@ describe('HostedPaymentMethod', () => {
         expect(screen.queryByRole('status')).not.toBeInTheDocument();
     });
 
-    it('does not render loading overlay if there is no description', () => {
+    it('does not show loading overlay if there is no description', () => {
         render(<HostedPaymentMethodTest {...defaultProps} isInitializing />);
 
         expect(screen.queryByRole('status')).not.toBeInTheDocument();
@@ -142,12 +142,13 @@ describe('HostedPaymentMethod', () => {
             jest.spyOn(checkoutService, 'loadInstruments').mockResolvedValue(checkoutState);
         });
 
-        it('loads stored instruments when component mounts', async () => {
+        it('shows stored instruments when component mounts', async () => {
             render(<HostedPaymentMethodTest {...defaultProps} />);
 
             await new Promise((resolve) => process.nextTick(resolve));
 
             expect(checkoutService.loadInstruments).toHaveBeenCalled();
+            expect(screen.getByTestId('account-instrument-select')).toBeInTheDocument();
         });
 
         it('shows instruments fieldset when there is at least one stored instrument', () => {
@@ -194,7 +195,16 @@ describe('HostedPaymentMethod', () => {
             expect(screen.queryByText('test@external-id.com')).not.toBeInTheDocument();
         });
 
-        it('does not show instruments fieldset when starting from the cart', () => {
+        it('shows a message when no saved instruments', () => {
+            render(<HostedPaymentMethodTest {...defaultProps} />);
+            fireEvent.click(screen.getByText('Manage'));
+
+            expect(
+                screen.getByText('You do not have any stored payment methods.'),
+            ).toBeInTheDocument();
+        });
+
+        it('does not show instruments fieldset when user is starting from the cart', () => {
             jest.spyOn(checkoutState.data, 'isPaymentDataSubmitted').mockReturnValue(true);
 
             render(<HostedPaymentMethodTest {...defaultProps} />);
