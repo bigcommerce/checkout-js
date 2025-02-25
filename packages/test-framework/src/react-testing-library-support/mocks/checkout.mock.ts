@@ -158,6 +158,18 @@ const customer: Customer = {
     },
 };
 
+const customerWithoutSavedAddresses: Customer = {
+    id: 1,
+    isGuest: false,
+    email: 'user@example.com',
+    firstName: 'John',
+    lastName: 'Doe',
+    fullName: 'John Doe',
+    addresses: [],
+    storeCredit: 0,
+    shouldEncourageSignIn: true,
+};
+
 const checkout: Checkout = {
     id: 'xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx',
     cart: {
@@ -338,6 +350,15 @@ const checkoutWithMultiShippingCart = {
     consignment: [],
 };
 
+const checkoutWithLoggedInCustomer: Checkout = {
+    ...checkoutWithBillingEmail,
+    cart: {
+        ...checkout.cart,
+        customerId: customerWithoutSavedAddresses.id,
+    },
+    customer: customerWithoutSavedAddresses,
+};
+
 enum CheckoutPreset {
     CheckoutWithBillingEmail = 'CheckoutWithBillingEmail',
     CheckoutWithBillingEmailAndCustomFormFields = 'CheckoutWithBillingEmailAndCustomFormFields',
@@ -351,6 +372,7 @@ enum CheckoutPreset {
     ErrorFlashMessage = 'ErrorFlashMessage',
     UnsupportedProvider = 'UnsupportedProvider',
     RemoteProviders = 'RemoteProviders',
+    CheckoutWithLoggedInCustomer = 'CheckoutWithLoggedInCustomer',
 }
 
 export {
@@ -365,6 +387,8 @@ export {
     checkoutWithShippingAndBilling,
     consignment,
     customer,
+    customerWithoutSavedAddresses,
+    checkoutWithLoggedInCustomer,
     shippingAddress1 as shippingAddress,
     shippingAddress2,
     shippingAddress3,

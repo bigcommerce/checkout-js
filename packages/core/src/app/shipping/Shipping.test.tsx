@@ -157,7 +157,7 @@ describe('Shipping step', () => {
             );
             // eslint-disable-next-line jest-dom/prefer-to-have-attribute
             expect(
-                screen.getByTestId('billingSameAsShipping').hasAttribute('checked'),
+                screen.getByLabelText('My billing address is the same as my shipping address.').hasAttribute('checked'),
             ).toBeTruthy();
 
             checkout.updateCheckout(
@@ -207,7 +207,7 @@ describe('Shipping step', () => {
             );
 
             await checkout.fillShippingAddress();
-            await userEvent.click(screen.getByTestId('billingSameAsShipping'));
+            await userEvent.click(screen.getByLabelText('My billing address is the same as my shipping address.'));
             await userEvent.click(screen.getByRole('button', { name: 'Continue' }));
             await checkout.waitForBillingStep();
 
@@ -215,6 +215,72 @@ describe('Shipping step', () => {
             // one `edit` button is for the cart, the other is for the shipping address.
             expect(screen.getAllByRole('button', { name: 'Edit' })).toHaveLength(2);
             expect(screen.getByLabelText('First Name')).toBeInTheDocument();
+        });
+
+        it('completes the shipping step as a customer with new address and goes to the payment step by default', async () => {
+            checkout.use(CheckoutPreset.CheckoutWithLoggedInCustomer);
+
+            const { container } = render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForShippingStep();
+
+            checkout.updateCheckout(
+                'post',
+                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments',
+                {
+                    ...checkoutWithBillingEmail,
+                    consignments: [
+                        {
+                            ...consignment,
+                            selectedShippingOption: undefined,
+                        },
+                    ],
+                },
+            );
+            checkout.updateCheckout(
+                'put',
+                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments/consignment-1',
+                {
+                    ...checkoutWithShipping,
+                },
+            );
+
+            await checkout.fillShippingAddress();
+
+            expect(checkoutService.updateShippingAddress).toHaveBeenCalled();
+            expect(
+                screen.getByRole('radio', { name: 'Pickup In Store $3.00' }),
+            ).toBeInTheDocument();
+            expect(screen.getByRole('radio', { name: 'Flat Rate $10.00' })).toBeInTheDocument();
+            // eslint-disable-next-line testing-library/no-container,testing-library/no-node-access
+            expect(container.getElementsByClassName('shippingOptions-skeleton').length).toBe(0);
+            // eslint-disable-next-line testing-library/no-container,testing-library/no-node-access
+            expect(container.getElementsByClassName('form-checklist-item--selected').length).toBe(
+                1,
+            );
+            // eslint-disable-next-line jest-dom/prefer-to-have-attribute
+            expect(
+                screen.getByLabelText('My billing address is the same as my shipping address.').hasAttribute('checked'),
+            ).toBeTruthy();
+            // eslint-disable-next-line jest-dom/prefer-to-have-attribute
+            expect(
+                screen.getByLabelText('Save this address in my address book.').hasAttribute('checked'),
+            ).toBeTruthy();
+
+            checkout.updateCheckout(
+                'put',
+                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/billing-address/billing-address-id*',
+                {
+                    ...checkoutWithShippingAndBilling,
+                },
+            );
+
+            await userEvent.click(screen.getByRole('button', { name: 'Continue' }));
+
+            await checkout.waitForPaymentStep();
+
+            expect(checkoutService.updateBillingAddress).toHaveBeenCalled();
+            expect(screen.getByText(payments[0].config.displayName)).toBeInTheDocument();
         });
     });
 
