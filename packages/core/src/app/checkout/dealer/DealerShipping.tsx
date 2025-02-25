@@ -179,19 +179,19 @@ interface DealerState {
   ammoFFLRequiredStates: any;
   ammoStateFFLRequired: boolean;
   ammoSelectedState: string;
-  customShippingFirstName: string;
-  customShippingFirstNameError: boolean;
-  customShippingLastName: string;
-  customShippingLastNameError: boolean;
-  customShippingCompany: string;
-  customShippingPhone: string;
-  customShippingAddress: string;
-  customShippingAddressError: boolean;
-  customShippingApartment: string;
-  customShippingCity: string;
-  customShippingCityError: boolean;
-  customShippingPostal: string;
-  customShippingPostalError: boolean;
+  customFirstNameInput: string;
+  customFirstNameInputError: boolean;
+  customLastNameInput: string;
+  customLastNameInputError: boolean;
+  customCompanyInput: string;
+  customPhoneInput: string;
+  customAddressLine1Input: string;
+  customAddressLine1InputError: boolean;
+  customAddressLine2Input: string;
+  customCityInput: string;
+  customCityInputError: boolean;
+  customPostCodeInput: string;
+  customPostCodeInputError: boolean;
   withAmmoSubscription: boolean;
 }
 
@@ -229,19 +229,19 @@ class DealerShipping extends React.PureComponent<
       ammoStateFFLRequired: null,
       announcement: '',
       createCustomerAddressError: null,
-      customShippingAddress: '',
-      customShippingAddressError: false,
-      customShippingApartment: '',
-      customShippingCity: '',
-      customShippingCityError: false,
-      customShippingCompany: '',
-      customShippingFirstName: '',
-      customShippingFirstNameError: false,
-      customShippingLastName: '',
-      customShippingLastNameError: false,
-      customShippingPhone: '',
-      customShippingPostal: '',
-      customShippingPostalError: false,
+      customAddressLine1Input: '',
+      customAddressLine1InputError: false,
+      customAddressLine2Input: '',
+      customCityInput: '',
+      customCityInputError: false,
+      customCompanyInput: '',
+      customFirstNameInput: '',
+      customFirstNameInputError: false,
+      customLastNameInput: '',
+      customLastNameInputError: false,
+      customPhoneInput: '',
+      customPostCodeInput: '',
+      customPostCodeInputError: false,
       isLoading: true,
       isUpdatingShippingData: false,
       itemAddingAddress: null,
@@ -256,16 +256,16 @@ class DealerShipping extends React.PureComponent<
     this.debouncedAssignCustomShippingAddress = debounce(async () => {
       const { assignItem } = this.props;
       const address = {
-        firstName: this.state.customShippingFirstName,
-        lastName: this.state.customShippingLastName,
-        phone: this.state.customShippingPhone,
-        company: this.state.customShippingCompany,
-        address1: this.state.customShippingAddress,
-        address2: this.state.customShippingApartment,
-        city: this.state.customShippingCity,
+        firstName: this.state.customFirstNameInput,
+        lastName: this.state.customLastNameInput,
+        phone: this.state.customPhoneInput,
+        company: this.state.customCompanyInput,
+        address1: this.state.customAddressLine1Input,
+        address2: this.state.customAddressLine2Input,
+        city: this.state.customCityInput,
         stateOrProvinceCode: this.state.ammoSelectedState,
         shouldSaveAddress: false,
-        postalCode: this.state.customShippingPostal,
+        postalCode: this.state.customPostCodeInput,
         localizedCountry: 'United States',
         countryCode: 'US',
       };
@@ -373,7 +373,19 @@ class DealerShipping extends React.PureComponent<
     });
   };
 
-  onChangeCustomShippingField: () => void = (value, stateKey) => {
+  onChangeCustomShippingField: () => void = (value, fieldId) => {
+    const fieldIdToStateMap = {
+      firstNameInput: 'customFirstNameInput',
+      lastNameInput: 'customLastNameInput',
+      companyInput: 'customCompanyInput',
+      phoneInput: 'customPhoneInput',
+      addressLine1Input: 'customAddressLine1Input',
+      addressLine2Input: 'customAddressLine2Input',
+      cityInput: 'customCityInput',
+      postCodeInput: 'customPostCodeInput',
+    };
+
+    const stateKey = fieldIdToStateMap[fieldId];
     const stateKeyError = `${stateKey}Error`;
 
     this.setState(
@@ -383,11 +395,11 @@ class DealerShipping extends React.PureComponent<
       },
       () => {
         if (
-          this.state.customShippingFirstName != '' &&
-          this.state.customShippingLastName != '' &&
-          this.state.customShippingAddress != '' &&
-          this.state.customShippingCity != '' &&
-          this.state.customShippingPostal != ''
+          this.state.customFirstNameInput != '' &&
+          this.state.customLastNameInput != '' &&
+          this.state.customAddressLine1Input != '' &&
+          this.state.customCityInput != '' &&
+          this.state.customPostCodeInput != ''
         ) {
           this.debouncedAssignCustomShippingAddress();
         }
@@ -629,11 +641,19 @@ class DealerShipping extends React.PureComponent<
         {this.state.ammoStateFFLRequired == false && (
           <CustomShippingForm
             onChangeCustomShippingField={this.onChangeCustomShippingField}
-            customShippingFirstNameError={this.state.customShippingFirstNameError}
-            customShippingLastNameError={this.state.customShippingLastNameError}
-            customShippingAddressError={this.state.customShippingAddressError}
-            customShippingCityError={this.state.customShippingCityError}
-            customShippingPostalError={this.state.customShippingPostalError}
+            firstNameInput={this.state.customFirstNameInput}
+            firstNameInputError={this.state.customFirstNameInputError}
+            lastNameInput={this.state.customLastNameInput}
+            lastNameInputError={this.state.customLastNameInputError}
+            companyInput={this.state.customCompanyInput}
+            phoneInput={this.state.customPhoneInput}
+            addressLine1Input={this.state.customAddressLine1Input}
+            addressLine1InputError={this.state.customAddressLine1InputError}
+            addressLine2Input={this.state.customAddressLine2Input}
+            cityInput={this.state.customCityInput}
+            cityInputError={this.state.customCityInputError}
+            postCodeInput={this.state.customPostCodeInput}
+            postCodeInputError={this.state.customPostCodeInputError}
           />
         )}
 
@@ -786,7 +806,7 @@ class DealerShipping extends React.PureComponent<
 
     if (this.state.ammoStateFFLRequired == false) {
       if (this.validateCustomShippingFields() == false) {
-        break;
+        return;
       }
     }
 
@@ -804,11 +824,11 @@ class DealerShipping extends React.PureComponent<
   private validateCustomShippingFields: () => void = () => {
     let isValid = true;
     const fields = [
-      'customShippingFirstName',
-      'customShippingLastName',
-      'customShippingAddress',
-      'customShippingCity',
-      'customShippingPostal',
+      'customFirstNameInput',
+      'customLastNameInput',
+      'customAddressLine1Input',
+      'customCityInput',
+      'customPostCodeInput',
     ];
 
     for (let stateKey of fields) {

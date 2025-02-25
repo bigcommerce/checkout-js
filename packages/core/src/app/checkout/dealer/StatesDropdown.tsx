@@ -29,6 +29,7 @@ export default class StatesDropdown extends React.PureComponent<
           <select
             className="form-select optimizedCheckout-form-select"
             onChange={this.props.validateSelectedState}
+            id="provinceCodeInput"
           >
             <option value="">Select a state</option>
             <option value="AL">Alabama</option>
