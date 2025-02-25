@@ -83,18 +83,14 @@ describe('Shipping step', () => {
         };
 
         jest.spyOn(defaultProps.errorLogger, 'log').mockImplementation(noop);
-
         jest.spyOn(checkoutService, 'updateShippingAddress');
         jest.spyOn(checkoutService, 'updateBillingAddress');
 
-         
         jest.mock('lodash', () => ({
             ...jest.requireActual('lodash'),
             debounce: (fn) => {
-                 
                 fn.cancel = jest.fn();
 
-                 
                 return fn;
             },
         }));
@@ -281,13 +277,13 @@ describe('Shipping step', () => {
         await userEvent.type(screen.getByLabelText('Custom Message'), 'Custom message text');
         await userEvent.type(screen.getByLabelText('Custom Number'), '123');
 
-        // bug to be fixed (should be no more than 6 characters)
+        // TODO: CHECKOUT-9049 bug to be fixed (should be no more than 6 characters)
         expect(screen.getByText('Custom Number should be no more than 6 characters')).toBeInTheDocument();
 
         await userEvent.clear(screen.getByLabelText('Custom Number'));
         await userEvent.type(screen.getByLabelText('Custom Number'), '2');
 
-        // bug to be fixed (should be no less than 2 characters)
+        // TODO: CHECKOUT-9049 bug to be fixed (should be no less than 2 characters)
         expect(screen.getByText('Custom Number should be no less than 2 characters')).toBeInTheDocument();
 
         await userEvent.clear(screen.getByLabelText('Custom Number'));
