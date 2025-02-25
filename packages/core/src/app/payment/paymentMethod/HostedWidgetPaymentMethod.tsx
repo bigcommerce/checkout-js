@@ -123,8 +123,7 @@ class HostedWidgetPaymentMethod extends Component<
             if (isInstrumentFeatureAvailable({
                 config: this.props.config,
                 customer: this.props.customer,
-                isUsingMultiShipping: this.props.isUsingMultiShipping,
-                paymentMethod: this.props.paymentMethod, 
+                paymentMethod: this.props.paymentMethod,
                 shouldSavingCardsBeEnabled: this.props.shouldSavingCardsBeEnabled,
         })) {
                 await loadInstruments();
@@ -215,8 +214,7 @@ class HostedWidgetPaymentMethod extends Component<
         const isInstrumentFeature = isInstrumentFeatureAvailable({
             config: this.props.config,
             customer: this.props.customer,
-            isUsingMultiShipping: this.props.isUsingMultiShipping,
-            paymentMethod: this.props.paymentMethod, 
+            paymentMethod: this.props.paymentMethod,
             shouldSavingCardsBeEnabled: this.props.shouldSavingCardsBeEnabled,
         })
         const { isAddingNewCard, selectedInstrumentId = this.getDefaultInstrumentId() } =
@@ -364,8 +362,7 @@ class HostedWidgetPaymentMethod extends Component<
         if (isInstrumentFeatureAvailable({
                 config: this.props.config,
                 customer: this.props.customer,
-                isUsingMultiShipping: this.props.isUsingMultiShipping,
-                paymentMethod: this.props.paymentMethod, 
+                paymentMethod: this.props.paymentMethod,
                 shouldSavingCardsBeEnabled: this.props.shouldSavingCardsBeEnabled,
         }) && selectedInstrument) {
             return storedCardValidationSchema || null;

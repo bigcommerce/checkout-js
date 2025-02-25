@@ -313,7 +313,7 @@ const mapFromCheckoutProps: MapToPropsFactory<
     WithCheckoutContextProps,
     WithHostedCreditCardFieldsetProps & ConnectFormikProps<PaymentFormValues>
 > = () => {
-    return ({ checkoutState }, { isUsingMultiShipping = false, method }) => {
+    return ({ checkoutState }, { method }) => {
         const {
             data: { getConfig, getCustomer },
         } = checkoutState;
@@ -328,7 +328,6 @@ const mapFromCheckoutProps: MapToPropsFactory<
         const isInstrumentFeatureAvailableProp = isInstrumentFeatureAvailable({
             config,
             customer,
-            isUsingMultiShipping,
             paymentMethod: method,
         });
 
