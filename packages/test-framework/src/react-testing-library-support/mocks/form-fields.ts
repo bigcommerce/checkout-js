@@ -294,4 +294,127 @@ const formFields = {
     ],
 };
 
-export { formFields };
+const customFormFields = [
+    {
+        custom: true,
+        default: '',
+        fieldType: 'text',
+        id: 'field_25',
+        label: 'Custom Text',
+        name: 'field_25',
+        required: true,
+        type: 'string',
+    },
+    {
+        custom: true,
+        default: '',
+        fieldType: 'dropdown',
+        id: 'field_27',
+        label: 'Custom Dropdown',
+        name: 'field_27',
+        options: {
+            items: [
+                {
+                    value: '0',
+                    label: 'Foo',
+                },
+                {
+                    value: '1',
+                    label: 'Bar',
+                },
+            ],
+        },
+        required: true,
+        type: 'array',
+    },
+    {
+        custom: true,
+        default: undefined,
+        fieldType: 'multiline',
+        id: 'field_28',
+        label: 'Custom Message',
+        name: 'field_28',
+        required: true,
+        type: 'string',
+        options: {
+            rows: 3,
+        },
+    },
+    {
+        custom: true,
+        default: '',
+        fieldType: 'date',
+        id: 'field_29',
+        label: 'Custom Date',
+        name: 'field_29',
+        required: true,
+        type: 'date',
+        maxLength: null,
+        min: '2020-01-01',
+        max: '2024-12-31',
+    },
+    {
+        id: 'field_31',
+        name: 'field_31',
+        custom: true,
+        label: 'Custom Checkbox',
+        required: true,
+        default: null,
+        maxLength: null,
+        type: 'array',
+        fieldType: 'checkbox',
+        options: {
+            items: [
+                {
+                    value: '0',
+                    label: '1',
+                },
+                {
+                    value: '1',
+                    label: '2',
+                },
+                {
+                    value: '2',
+                    label: '3',
+                },
+            ],
+        },
+    },
+    {
+        id: 'field_32',
+        name: 'field_32',
+        custom: true,
+        label: 'Custom Radio',
+        required: true,
+        default: null,
+        maxLength: null,
+        type: 'array',
+        fieldType: 'radio',
+        options: {
+            items: [
+                {
+                    value: '0',
+                    label: 'yes',
+                },
+                {
+                    value: '1',
+                    label: 'no',
+                },
+            ],
+        },
+    },
+    {
+        custom: true,
+        default: undefined,
+        fieldType: 'text',
+        id: 'field_33',
+        label: 'Custom Number',
+        name: 'field_33',
+        required: true,
+        type: 'integer',
+        min: 3,
+        max: 5,
+    },
+];
+
+export { formFields, customFormFields };

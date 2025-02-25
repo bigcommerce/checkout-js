@@ -231,9 +231,7 @@ describe('Customer Component', () => {
         await userEvent.type(await screen.findByLabelText('Email'), email);
         await userEvent.click(await screen.findByText('Sign in now'));
 
-        // eslint-disable-next-line jest-dom/prefer-to-have-attribute
-        expect(screen.getByLabelText('Email').getAttribute('value')).toBe(email);
-
+        expect(screen.getByLabelText('Email')).toHaveDisplayValue(email);
         await userEvent.type(await screen.findByLabelText('Password'), password);
 
         checkout.updateCheckout(

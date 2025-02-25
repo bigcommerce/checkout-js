@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`CheckboxFormField matches snapshot with rendered output 1`] = `"<div class="form-field"><input id="foobar" type="checkbox" class="form-checkbox optimizedCheckout-form-checkbox" name="foobar" value="true" checked=""><label for="foobar" class="form-label optimizedCheckout-form-label">Foobar</label></div>"`;

@@ -340,6 +340,7 @@ const checkoutWithMultiShippingCart = {
 
 enum CheckoutPreset {
     CheckoutWithBillingEmail = 'CheckoutWithBillingEmail',
+    CheckoutWithBillingEmailAndCustomFormFields = 'CheckoutWithBillingEmailAndCustomFormFields',
     CheckoutWithCustomShippingAndBilling = 'CheckoutWithCustomShippingAndBilling',
     CheckoutWithDigitalCart = 'CheckoutWithDigitalCart',
     CheckoutWithMultiShipping = 'CheckoutWithMultiShipping',

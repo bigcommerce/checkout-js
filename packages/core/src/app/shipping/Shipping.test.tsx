@@ -28,7 +28,7 @@ import {
     consignment,
     payments,
 } from '@bigcommerce/checkout/test-framework';
-import { render, screen } from '@bigcommerce/checkout/test-utils';
+import { render, screen, within } from '@bigcommerce/checkout/test-utils';
 
 import Checkout, { CheckoutProps } from '../checkout/Checkout';
 import { createErrorLogger } from '../common/error';
@@ -37,7 +37,7 @@ import {
     createEmbeddedCheckoutSupport,
 } from '../embeddedCheckout';
 
-describe('Checkout', () => {
+describe('Shipping step', () => {
     let checkout: CheckoutPageNodeObject;
     let CheckoutTest: FunctionComponent<CheckoutProps>;
     let checkoutService: CheckoutService;
@@ -51,6 +51,7 @@ describe('Checkout', () => {
     });
 
     afterEach(() => {
+        jest.unmock('lodash');
         checkout.resetHandlers();
     });
 
@@ -82,6 +83,17 @@ describe('Checkout', () => {
         };
 
         jest.spyOn(defaultProps.errorLogger, 'log').mockImplementation(noop);
+        jest.spyOn(checkoutService, 'updateShippingAddress');
+        jest.spyOn(checkoutService, 'updateBillingAddress');
+
+        jest.mock('lodash', () => ({
+            ...jest.requireActual('lodash'),
+            debounce: (fn) => {
+                fn.cancel = jest.fn();
+
+                return fn;
+            },
+        }));
 
         CheckoutTest = (props) => (
             <CheckoutProvider checkoutService={checkoutService}>
@@ -103,17 +115,6 @@ describe('Checkout', () => {
 
     describe('Shipping step happy paths', () => {
         it('completes the shipping step as a guest and goes to the payment step by default', async () => {
-            jest.spyOn(checkoutService, 'updateShippingAddress');
-            jest.spyOn(checkoutService, 'updateBillingAddress');
-            jest.mock('lodash', () => ({
-                ...jest.requireActual('lodash'),
-                debounce: (fn) => {
-                    fn.cancel = jest.fn();
-
-                    return fn;
-                },
-            }));
-
             checkout.use(CheckoutPreset.CheckoutWithBillingEmail);
 
             const { container } = render(<CheckoutTest {...defaultProps} />);
@@ -173,23 +174,9 @@ describe('Checkout', () => {
 
             expect(checkoutService.updateBillingAddress).toHaveBeenCalled();
             expect(screen.getByText(payments[0].config.displayName)).toBeInTheDocument();
-
-            jest.unmock('lodash');
         });
 
         it('completes the shipping step as a guest and goes to the billing step', async () => {
-            jest.spyOn(checkoutService, 'updateBillingAddress');
-            jest.mock('lodash', () => ({
-                ...jest.requireActual('lodash'),
-                debounce: (fn) => {
-
-                    fn.cancel = jest.fn();
-
-
-                    return fn;
-                },
-            }));
-
             checkout.use(CheckoutPreset.CheckoutWithBillingEmail);
 
             render(<CheckoutTest {...defaultProps} />);
@@ -228,8 +215,98 @@ describe('Checkout', () => {
             // one `edit` button is for the cart, the other is for the shipping address.
             expect(screen.getAllByRole('button', { name: 'Edit' })).toHaveLength(2);
             expect(screen.getByLabelText('First Name')).toBeInTheDocument();
-
-            jest.unmock('lodash');
         });
+    });
+
+    it('renders and validates shipping form built-in and customfields', async () => {
+        checkout.use(CheckoutPreset.CheckoutWithBillingEmailAndCustomFormFields);
+        render(<CheckoutTest {...defaultProps} />);
+
+        await checkout.waitForShippingStep();
+
+        checkout.updateCheckout(
+            'post',
+            '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments',
+            {
+                ...checkoutWithBillingEmail,
+                consignments: [
+                    {
+                        ...consignment,
+                        selectedShippingOption: undefined,
+                    },
+                ],
+            },
+        );
+        checkout.updateCheckout(
+            'put',
+            '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments/consignment-1',
+            {
+                ...checkoutWithShipping,
+            },
+        );
+        checkout.updateCheckout(
+            'put',
+            '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/billing-address/billing-address-id*',
+            {
+                ...checkoutWithShippingAndBilling,
+            },
+        );
+
+        await userEvent.click(screen.getByRole('button', { name: 'Continue' }));
+
+        expect(screen.getByText('First Name is required')).toBeInTheDocument();
+        expect(screen.getByText('Last Name is required')).toBeInTheDocument();
+        expect(screen.getByText('Address is required')).toBeInTheDocument();
+        expect(screen.getByText('City is required')).toBeInTheDocument();
+        expect(screen.getByText('Postal Code is required')).toBeInTheDocument();
+        expect(screen.getByText('Custom Text is required')).toBeInTheDocument();
+        expect(screen.getByText('Custom Date is required')).toBeInTheDocument();
+        expect(screen.getByText('Custom Number is required')).toBeInTheDocument();
+        expect(screen.getByText('Custom Checkbox is required')).toBeInTheDocument();
+        expect(screen.getByText('Custom Radio is required')).toBeInTheDocument();
+        expect(screen.getByText('Custom Dropdown is required')).toBeInTheDocument();
+
+        await checkout.fillShippingAddress();
+        await userEvent.type(screen.getByLabelText('Custom Text'), 'Custom Text');
+        await userEvent.click(screen.getByPlaceholderText('DD/MM/YYYY'));
+        await userEvent.type(screen.getByPlaceholderText('DD/MM/YYYY'), '01/01/2015');
+        await userEvent.keyboard('{enter}');
+
+        expect(screen.getByPlaceholderText('DD/MM/YYYY')).toHaveDisplayValue('01/01/2020');
+
+        await userEvent.type(screen.getByLabelText('Custom Message'), 'Custom message text');
+        await userEvent.type(screen.getByLabelText('Custom Number'), '123');
+
+        // TODO: CHECKOUT-9049 bug to be fixed (should be no more than 6 characters)
+        expect(screen.getByText('Custom Number should be no more than 6 characters')).toBeInTheDocument();
+
+        await userEvent.clear(screen.getByLabelText('Custom Number'));
+        await userEvent.type(screen.getByLabelText('Custom Number'), '2');
+
+        // TODO: CHECKOUT-9049 bug to be fixed (should be no less than 2 characters)
+        expect(screen.getByText('Custom Number should be no less than 2 characters')).toBeInTheDocument();
+
+        await userEvent.clear(screen.getByLabelText('Custom Number'));
+        await userEvent.type(screen.getByLabelText('Custom Number'), '3');
+
+        const customCheckbox = screen.getByText('Custom Checkbox');
+
+        // eslint-disable-next-line testing-library/no-node-access
+        await userEvent.click(within(customCheckbox.parentElement).getByLabelText('1'));
+        // eslint-disable-next-line testing-library/no-node-access
+        await userEvent.click(within(customCheckbox.parentElement).getByLabelText('2'));
+
+        const customDropdown = screen.getByLabelText('Custom Dropdown');
+
+        await userEvent.selectOptions(customDropdown, '1');
+
+        const customRadio = screen.getByText('Custom Radio');
+
+        // eslint-disable-next-line testing-library/no-node-access
+        await userEvent.click(within(customRadio.parentElement).getByText('yes'));
+
+        await userEvent.click(screen.getByRole('button', { name: 'Continue' }));
+
+        expect(checkoutService.updateShippingAddress).toHaveBeenCalled();
     });
 });
