@@ -27,6 +27,7 @@ import {
     checkoutWithShippingAndBilling,
     consignment,
     payments,
+    shippingQuoteFailedMessage,
 } from '@bigcommerce/checkout/test-framework';
 import { render, screen, within } from '@bigcommerce/checkout/test-utils';
 
@@ -308,5 +309,90 @@ describe('Shipping step', () => {
         await userEvent.click(screen.getByRole('button', { name: 'Continue' }));
 
         expect(checkoutService.updateShippingAddress).toHaveBeenCalled();
+    });
+
+    describe('Shipping options', () => {
+        it('sees the quote failed message when no shipping option available', async () => {
+            jest.spyOn(checkoutService, 'updateShippingAddress');
+            jest.mock('lodash', () => ({
+                ...jest.requireActual('lodash'),
+                debounce: (fn) => {
+                    fn.cancel = jest.fn();
+
+                    return fn;
+                },
+            }));
+
+            checkout.use(CheckoutPreset.CheckoutWithBillingEmail);
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForShippingStep();
+
+            const checkoutMock = {
+                ...checkoutWithBillingEmail,
+                consignments: [
+                    {
+                        ...consignment,
+                        selectedShippingOption: undefined,
+                        availableShippingOptions: undefined,
+                    },
+                ],
+            };
+
+            checkout.updateCheckout(
+                'post',
+                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments',
+                checkoutMock,
+            );
+            checkout.updateCheckout(
+                'put',
+                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments/consignment-1',
+                checkoutMock,
+            );
+
+            await checkout.fillShippingAddress();
+
+            expect(checkoutService.updateShippingAddress).toHaveBeenCalled();
+            expect(
+                screen.getByText(shippingQuoteFailedMessage),
+            ).toBeInTheDocument();
+        });
+
+        it('selects another shipping option', async () => {
+            jest.spyOn(checkoutService, 'updateShippingAddress');
+            jest.spyOn(checkoutService, 'selectConsignmentShippingOption');
+
+            checkout.use(CheckoutPreset.CheckoutWithBillingEmail);
+
+            const  { container } = render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForShippingStep();
+
+            checkout.updateCheckout(
+                'post',
+                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments',
+                checkoutWithShipping,
+            );
+            checkout.updateCheckout(
+                'put',
+                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments/consignment-1',
+                {
+                    ...checkoutWithShipping,
+                },
+            );
+
+            await checkout.fillShippingAddress();
+
+            expect(checkoutService.updateShippingAddress).toHaveBeenCalled();
+            // eslint-disable-next-line testing-library/no-container,testing-library/no-node-access
+            expect(container.getElementsByClassName('form-checklist-item--selected')[0]).toHaveTextContent('Pickup In Store$3.00');
+
+            await userEvent.click(screen.getByRole('radio', {name: 'Flat Rate $10.00'}));
+
+            expect(checkoutService.selectConsignmentShippingOption).toHaveBeenCalled();
+            // eslint-disable-next-line testing-library/no-container,testing-library/no-node-access
+            expect(container.getElementsByClassName('form-checklist-item--selected')[0]).toHaveTextContent('Flat Rate$10.00');
+        });
     });
 });
