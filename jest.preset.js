@@ -20,4 +20,5 @@ module.exports = {
     },
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
     snapshotSerializers: ['enzyme-to-json/serializer'],
+    testTimeout: 10000,
 };

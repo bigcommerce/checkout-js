@@ -16,6 +16,7 @@ import {
     checkoutWithBillingEmail,
     checkoutWithCustomShippingAndBilling,
     checkoutWithDigitalCart,
+    checkoutWithLoggedInCustomer,
     checkoutWithMultiShippingCart,
     checkoutWithPromotions,
     checkoutWithShipping,
@@ -125,6 +126,14 @@ export class CheckoutPageNodeObject {
                                 ],
                             }),
                         ),
+                    ),
+                );
+                break;
+
+            case CheckoutPreset.CheckoutWithLoggedInCustomer:
+                this.server.use(
+                    rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
+                        res(ctx.json(checkoutWithLoggedInCustomer)),
                     ),
                 );
                 break;
