@@ -159,15 +159,8 @@ const customer: Customer = {
 };
 
 const customerWithoutSavedAddresses: Customer = {
-    id: 1,
-    isGuest: false,
-    email: 'user@example.com',
-    firstName: 'John',
-    lastName: 'Doe',
-    fullName: 'John Doe',
+    ...customer,
     addresses: [],
-    storeCredit: 0,
-    shouldEncourageSignIn: true,
 };
 
 const checkout: Checkout = {
