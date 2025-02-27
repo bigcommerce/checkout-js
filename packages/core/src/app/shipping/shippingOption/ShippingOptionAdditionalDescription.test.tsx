@@ -26,7 +26,6 @@ describe('ShippingOptionAdditionalDescription Component', () => {
 
         expect(screen.getByText(longDescription)).toHaveClass('shippingOption-additionalDescription--collapsed');
 
-
         await userEvent.click(screen.getByText('Show more'));
 
         expect(screen.getByText(longDescription)).toHaveClass('shippingOption-additionalDescription--expanded');
