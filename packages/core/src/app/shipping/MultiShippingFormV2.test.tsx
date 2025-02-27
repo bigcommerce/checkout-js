@@ -27,9 +27,9 @@ import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
 
 import { getConsignment } from './consignment.mock';
+import { AssignItemFailedError, AssignItemInvalidAddressError } from './errors';
 import MultiShippingFormV2, { MultiShippingFormV2Props } from './MultiShippingFormV2';
 import { getShippingAddress } from './shipping-addresses.mock';
-import {AssignItemFailedError, AssignItemInvalidAddressError} from './errors';
 
 describe('MultiShippingFormV2 Component', () => {
     let checkoutService: CheckoutService;
