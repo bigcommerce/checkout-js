@@ -22,7 +22,8 @@ import {
 import {
     CheckoutPageNodeObject,
     CheckoutPreset,
-    checkoutWithBillingEmail, checkoutWithMultiShippingCart,
+    checkoutWithBillingEmail,
+    checkoutWithMultiShippingCart,
     checkoutWithShipping,
     checkoutWithShippingAndBilling,
     consignment,
