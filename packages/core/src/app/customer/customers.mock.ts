@@ -44,7 +44,7 @@ export function getCustomer(): Customer {
             },
             {
                 ...getShippingAddress(),
-                id:76,
+                id:7,
                 type: 'residential',
                 address1: 'Infinity Testing Way',
                 firstName: 'Invalid Address',

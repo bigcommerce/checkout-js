@@ -118,7 +118,7 @@ describe('MultiShippingFormV2 Component', () => {
         ).toBeInTheDocument();
     });
 
-    it('shows AssignItemInvalidAddressError when selecting an invalid address', async () => {
+    it('shows AssignItemInvalidAddressError and AssignItemFailedError', async () => {
         render(
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
