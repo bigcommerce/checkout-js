@@ -36,6 +36,20 @@ export function getCustomer(): Customer {
                 id: 5,
                 type: 'residential',
             },
+            {
+                ...getShippingAddress(),
+                id: 6,
+                type: 'residential',
+                address1: '67890 Testing Way',
+            },
+            {
+                ...getShippingAddress(),
+                id:7,
+                type: 'residential',
+                address1: 'Infinity Testing Way',
+                firstName: 'Invalid Address',
+                lastName: '',
+            },
         ],
         isGuest: false,
         customerGroup: {

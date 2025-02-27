@@ -340,7 +340,7 @@ const checkoutWithMultiShippingCart = {
         },
     },
     customer,
-    consignment: [],
+    consignments: [],
 };
 
 const checkoutWithLoggedInCustomer: Checkout = {

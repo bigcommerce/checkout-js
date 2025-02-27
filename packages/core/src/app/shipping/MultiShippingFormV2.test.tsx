@@ -27,6 +27,7 @@ import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
 
 import { getConsignment } from './consignment.mock';
+import { AssignItemFailedError, AssignItemInvalidAddressError } from './errors';
 import MultiShippingFormV2, { MultiShippingFormV2Props } from './MultiShippingFormV2';
 import { getShippingAddress } from './shipping-addresses.mock';
 
@@ -115,6 +116,27 @@ describe('MultiShippingFormV2 Component', () => {
                 ),
             ),
         ).toBeInTheDocument();
+    });
+
+    it('shows AssignItemInvalidAddressError and AssignItemFailedError', async () => {
+        render(
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <ExtensionProvider checkoutService={checkoutService} errorLogger={errorLogger} >
+                        <MultiShippingFormV2 {...defaultProps} />
+                    </ExtensionProvider>
+                </LocaleContext.Provider>
+            </CheckoutProvider>,
+        );
+
+        await userEvent.click(screen.getByText(/12345 Testing Way/));
+        await userEvent.click(screen.getByText(/Infinity Testing Way/));
+
+        expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(new AssignItemInvalidAddressError());
+
+        await userEvent.click(screen.getByText(/67890 Testing Way/));
+
+        expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(new AssignItemFailedError(new Error()));
     });
 
     it('renders correct allocated items in banner if bundled items are present', async () => {

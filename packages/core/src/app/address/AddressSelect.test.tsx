@@ -80,7 +80,7 @@ describe('AddressSelect component', () => {
         // INFO: there 2 'static-address' component should be in the document
         // 1st one is located in Address select button (head of dropdown)
         // 2d one is a part of dropdown option with address
-        expect(screen.getAllByTestId('static-address')).toHaveLength(2);
+        expect(screen.getAllByTestId('static-address')).toHaveLength(4);
         expect(screen.getByText('Enter a new address')).toBeInTheDocument();
     });
 
