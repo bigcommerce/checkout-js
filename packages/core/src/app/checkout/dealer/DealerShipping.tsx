@@ -44,6 +44,7 @@ import { retry, EMPTY_ARRAY } from '../../common/utility';
 import { Form } from '../../ui/form';
 
 import getShippableLineItems from './getShippableLineItems';
+import CountryDropdown from './CountryDropdown';
 
 import './DealerShipping.scss';
 
@@ -266,8 +267,8 @@ class DealerShipping extends React.PureComponent<
         stateOrProvinceCode: this.state.ammoSelectedState,
         shouldSaveAddress: false,
         postalCode: this.state.customPostCodeInput,
-        localizedCountry: 'United States',
         countryCode: 'US',
+        localizedCountry: 'United States',
       };
       const lineItems = this.props.cart.lineItems.physicalItems.map((item) => {
         let container = {};
@@ -654,6 +655,12 @@ class DealerShipping extends React.PureComponent<
             cityInputError={this.state.customCityInputError}
             postCodeInput={this.state.customPostCodeInput}
             postCodeInputError={this.state.customPostCodeInputError}
+            countryDropdown={
+              <CountryDropdown
+                countries={countries}
+                selectedCountry="US" // Default to US
+              />
+            }
           />
         )}
 

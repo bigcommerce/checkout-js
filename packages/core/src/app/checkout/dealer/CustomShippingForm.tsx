@@ -16,6 +16,7 @@ interface CustomShippingFormProps {
   postCodeInput: string;
   postCodeInputError: boolean;
   onChangeCustomShippingField: any;
+  countryDropdown?: React.ReactNode;
 }
 
 interface CustomShippingFormState {}
@@ -52,6 +53,7 @@ export default class CustomShippingForm extends React.PureComponent<
             </label>
             <input
               aria-labelledby="firstNameInput-label firstNameInput-field-error-message"
+              autoComplete="given-name"
               id="firstNameInput"
               type="text"
               className="form-input optimizedCheckout-form-input"
@@ -85,6 +87,7 @@ export default class CustomShippingForm extends React.PureComponent<
             </label>
             <input
               aria-labelledby="lastNameInput-label lastNameInput-field-error-message"
+              autoComplete="family-name"
               id="lastNameInput"
               type="text"
               className="form-input optimizedCheckout-form-input"
@@ -113,6 +116,7 @@ export default class CustomShippingForm extends React.PureComponent<
             </label>
             <input
               aria-labelledby="companyInput-label companyInput-field-error-message"
+              autoComplete="organization"
               id="companyInput"
               type="text"
               className="form-input optimizedCheckout-form-input"
@@ -129,6 +133,7 @@ export default class CustomShippingForm extends React.PureComponent<
             </label>
             <input
               aria-labelledby="phoneInput-label phoneInput-field-error-message"
+              autoComplete="tel"
               id="phoneInput"
               type="tel"
               className="form-input optimizedCheckout-form-input"
@@ -150,6 +155,7 @@ export default class CustomShippingForm extends React.PureComponent<
             </label>
             <input
               aria-labelledby="addressLine1Input-label addressLine1Input-field-error-message"
+              autoComplete="address-line1"
               id="addressLine1Input"
               type="text"
               className="form-input optimizedCheckout-form-input"
@@ -181,6 +187,7 @@ export default class CustomShippingForm extends React.PureComponent<
             </label>
             <input
               aria-labelledby="addressLine2Input-label addressLine2Input-field-error-message"
+              autoComplete="address-line2"
               id="addressLine2Input"
               type="text"
               className="form-input optimizedCheckout-form-input"
@@ -190,6 +197,10 @@ export default class CustomShippingForm extends React.PureComponent<
             />
           </div>
         </div>
+
+        {/* Render the country dropdown */}
+        {this.props.countryDropdown}
+
         <div
           className={
             'dynamic-form-field dynamic-form-field--city ' +
@@ -202,6 +213,7 @@ export default class CustomShippingForm extends React.PureComponent<
             </label>
             <input
               aria-labelledby="cityInput-label cityInput-field-error-message"
+              autoComplete="address-level2"
               id="cityInput"
               type="text"
               className="form-input optimizedCheckout-form-input"
@@ -235,6 +247,7 @@ export default class CustomShippingForm extends React.PureComponent<
             </label>
             <input
               aria-labelledby="postCodeInput-label postCodeInput-field-error-message"
+              autoComplete="postal-code"
               id="postCodeInput"
               type="text"
               className="form-input optimizedCheckout-form-input"
