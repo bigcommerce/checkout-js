@@ -379,7 +379,7 @@ const mapFromCheckoutProps: MapToPropsFactory<
     );
 
     return (context, props) => {
-        const { isUsingMultiShipping = false, method } = props;
+        const { method } = props;
 
         const { checkoutService, checkoutState } = context;
 
@@ -399,7 +399,6 @@ const mapFromCheckoutProps: MapToPropsFactory<
         const isInstrumentFeatureAvailableProp = isInstrumentFeatureAvailable({
             config,
             customer,
-            isUsingMultiShipping,
             paymentMethod: method,
         });
 
