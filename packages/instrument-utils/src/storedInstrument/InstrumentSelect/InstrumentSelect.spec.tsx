@@ -13,6 +13,7 @@ import {
     getCardInstrument,
     getInstruments,
     getStoreConfig,
+    getYear,
 } from '@bigcommerce/checkout/test-mocks';
 
 import { isCardInstrument } from '../../guards';
@@ -58,7 +59,7 @@ describe('InstrumentSelect', () => {
         );
 
         expect(component.find('[data-test="instrument-select-expiry"]').at(0).text()).toBe(
-            'Expires 02/2025',
+            `Expires 02/${getYear(1)}`,
         );
     });
 

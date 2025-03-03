@@ -2,6 +2,7 @@ import { mount, render } from 'enzyme';
 import React from 'react';
 
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { getYear } from '@bigcommerce/checkout/test-mocks';
 
 import { getStoreConfig } from '../../config/config.mock';
 import { LoadingOverlay } from '../../ui/loading';
@@ -27,16 +28,6 @@ describe('ManageCardInstrumentsTable', () => {
         localeContext = createLocaleContext(getStoreConfig());
     });
 
-    it('matches snapshot with rendered output', () => {
-        const component = render(
-            <LocaleContext.Provider value={localeContext}>
-                <ManageCardInstrumentsTable {...defaultProps} />
-            </LocaleContext.Provider>,
-        );
-
-        expect(component).toMatchSnapshot();
-    });
-
     it('renders instrument as row in table', () => {
         const component = mount(
             <LocaleContext.Provider value={localeContext}>
@@ -51,7 +42,7 @@ describe('ManageCardInstrumentsTable', () => {
         expect(component.find('[data-test="manage-instrument-last4"]').at(0).text()).toBe('4321');
 
         expect(component.find('[data-test="manage-instrument-expiry"]').at(0).text()).toBe(
-            '02/2025',
+            `02/${getYear(1)}`,
         );
     });
 

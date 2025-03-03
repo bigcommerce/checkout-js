@@ -38,6 +38,7 @@ import {
     getPaymentFormServiceMock,
     getPaymentMethod,
     getStoreConfig,
+    getYear,
 } from '@bigcommerce/checkout/test-mocks';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
@@ -395,7 +396,7 @@ describe('HostedWidgetPaymentMethod', () => {
                     iin: '11111111',
                     last4: '4321',
                     expiryMonth: '02',
-                    expiryYear: '2025',
+                    expiryYear: getYear(1),
                     brand: 'visa',
                     trustedShippingAddress: true,
                     defaultInstrument: true,

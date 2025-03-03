@@ -1,3 +1,5 @@
+import { getYear } from '@bigcommerce/checkout/test-mocks';
+
 import mapToOrderRequestBody from './mapToOrderRequestBody';
 
 describe('mapToOrderRequestBody()', () => {
@@ -22,7 +24,7 @@ describe('mapToOrderRequestBody()', () => {
                     ccCvv: '123',
                     ccExpiry: {
                         month: '12',
-                        year: '2023',
+                        year: getYear(-2),
                     },
                     ccName: 'Big Shopper',
                     ccNumber: '4111111111111111',
