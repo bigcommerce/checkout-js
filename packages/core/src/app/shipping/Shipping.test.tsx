@@ -146,7 +146,7 @@ describe('Shipping step', () => {
                 },
             );
 
-            await checkout.fillShippingAddress();
+            await checkout.fillAddressForm();
 
             expect(checkoutService.updateShippingAddress).toHaveBeenCalled();
             expect(
@@ -210,7 +210,7 @@ describe('Shipping step', () => {
                 },
             );
 
-            await checkout.fillShippingAddress();
+            await checkout.fillAddressForm();
             await userEvent.click(screen.getByLabelText('My billing address is the same as my shipping address.'));
             await userEvent.click(screen.getByRole('button', { name: 'Continue' }));
             await checkout.waitForBillingStep();
@@ -249,7 +249,7 @@ describe('Shipping step', () => {
                 },
             );
 
-            await checkout.fillShippingAddress();
+            await checkout.fillAddressForm();
 
             expect(checkoutService.updateShippingAddress).toHaveBeenCalled();
             expect(
@@ -550,7 +550,7 @@ describe('Shipping step', () => {
         expect(screen.getByText('Custom Radio is required')).toBeInTheDocument();
         expect(screen.getByText('Custom Dropdown is required')).toBeInTheDocument();
 
-        await checkout.fillShippingAddress();
+        await checkout.fillAddressForm();
         await userEvent.type(screen.getByLabelText('Custom Text'), 'Custom Text');
         await userEvent.click(screen.getByPlaceholderText('DD/MM/YYYY'));
         await userEvent.type(screen.getByPlaceholderText('DD/MM/YYYY'), '01/01/2015');
@@ -634,7 +634,7 @@ describe('Shipping step', () => {
                 checkoutMock,
             );
 
-            await checkout.fillShippingAddress();
+            await checkout.fillAddressForm();
 
             expect(checkoutService.updateShippingAddress).toHaveBeenCalled();
             expect(
@@ -665,7 +665,7 @@ describe('Shipping step', () => {
                 },
             );
 
-            await checkout.fillShippingAddress();
+            await checkout.fillAddressForm();
 
             expect(checkoutService.updateShippingAddress).toHaveBeenCalled();
             // eslint-disable-next-line testing-library/no-container,testing-library/no-node-access
