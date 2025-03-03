@@ -15,6 +15,7 @@ import React, { FunctionComponent } from 'react';
 import { AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { getYear } from '@bigcommerce/checkout/test-mocks';
 
 import { getCart } from '../cart/carts.mock';
 import { getCheckout, getCheckoutPayment } from '../checkout/checkouts.mock';
@@ -627,7 +628,7 @@ describe('Payment', () => {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         form.prop('onSubmit')!({
             ccCvv: '123',
-            ccExpiry: '10 / 25',
+            ccExpiry: `10 / ${getYear(1).slice(2)}`,
             ccName: 'test',
             ccNumber: '4111 1111 1111 1111',
             paymentProviderRadio: selectedPaymentMethod.id,
@@ -641,7 +642,7 @@ describe('Payment', () => {
                     ccCvv: '123',
                     ccExpiry: {
                         month: '10',
-                        year: '2025',
+                        year: getYear(1),
                     },
                     ccName: 'test',
                     ccNumber: '4111111111111111',

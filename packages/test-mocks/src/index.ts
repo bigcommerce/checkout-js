@@ -35,3 +35,4 @@ export {
 export { getPromotion } from './promotion.mock';
 export { getShippingAddress } from './shipping-address.mock';
 export { getShippingOption, getShippingOptionPickUpStore } from './shippingMethod.mock';
+export { getYear } from './getYear';

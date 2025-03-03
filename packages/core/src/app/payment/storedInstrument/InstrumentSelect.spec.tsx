@@ -5,6 +5,7 @@ import React from 'react';
 import { Omit } from 'utility-types';
 
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { getYear } from '@bigcommerce/checkout/test-mocks';
 
 import { getStoreConfig } from '../../config/config.mock';
 
@@ -51,7 +52,7 @@ describe('InstrumentSelect', () => {
         );
 
         expect(component.find('[data-test="instrument-select-expiry"]').at(0).text()).toBe(
-            'Expires 02/2025',
+            `Expires 02/${getYear(1)}`,
         );
     });
 
