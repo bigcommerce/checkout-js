@@ -416,7 +416,7 @@ describe('Shipping step', () => {
             expect(screen.getByText(payments[0].config.displayName)).toBeInTheDocument();
         });
 
-        it('selects the invalid customer address and completes the shipping step', async () => {
+        it('selects the invalid customer address, fills the address form and finally completes the shipping step', async () => {
             checkout.use(CheckoutPreset.CheckoutWithCustomerHavingInvalidAddress);
 
             const { container } = render(<CheckoutTest {...defaultProps} />);
@@ -470,7 +470,6 @@ describe('Shipping step', () => {
 
             expect(checkoutService.updateShippingAddress).toHaveBeenCalled();
 
-            // screen.debug(undefined, Infinity);
             expect(
                 screen.getByRole('radio', { name: 'Pickup In Store $3.00' }),
             ).toBeInTheDocument();
