@@ -23,11 +23,13 @@ import {
     CheckoutPageNodeObject,
     CheckoutPreset,
     checkoutWithBillingEmail,
+    checkoutWithCustomerHavingInvalidAddress,
     checkoutWithMultiShippingCart,
     checkoutWithShipping,
     checkoutWithShippingAndBilling,
     consignment,
     payments,
+    shippingAddress,
     shippingQuoteFailedMessage,
 } from '@bigcommerce/checkout/test-framework';
 import { render, screen, within } from '@bigcommerce/checkout/test-utils';
@@ -219,7 +221,7 @@ describe('Shipping step', () => {
             expect(screen.getByLabelText('First Name')).toBeInTheDocument();
         });
 
-        it('completes the shipping step as a customer with new address and goes to the payment step by default', async () => {
+        it('completes the shipping step as a customer with no saved address and goes to the payment step by default', async () => {
             checkout.use(CheckoutPreset.CheckoutWithLoggedInCustomer);
 
             const { container } = render(<CheckoutTest {...defaultProps} />);
@@ -267,6 +269,221 @@ describe('Shipping step', () => {
             // eslint-disable-next-line jest-dom/prefer-to-have-attribute
             expect(
                 screen.getByLabelText('Save this address in my address book.').hasAttribute('checked'),
+            ).toBeTruthy();
+
+            checkout.updateCheckout(
+                'put',
+                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/billing-address/billing-address-id*',
+                {
+                    ...checkoutWithShippingAndBilling,
+                },
+            );
+
+            await userEvent.click(screen.getByRole('button', { name: 'Continue' }));
+
+            await checkout.waitForPaymentStep();
+
+            expect(checkoutService.updateBillingAddress).toHaveBeenCalled();
+            expect(screen.getByText(payments[0].config.displayName)).toBeInTheDocument();
+        });
+
+        it('selects the valid customer address and completes the shipping step', async () => {
+            checkout.use(CheckoutPreset.CheckoutWithMultiShipping);
+
+            const { container } = render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForShippingStep();
+
+            checkout.updateCheckout(
+                'post',
+                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments',
+                {
+                    ...checkoutWithBillingEmail,
+                    consignments: [
+                        {
+                            ...consignment,
+                            selectedShippingOption: undefined,
+                        },
+                    ],
+                },
+            );
+            checkout.updateCheckout(
+                'put',
+                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments/consignment-1',
+                {
+                    ...checkoutWithShipping,
+                },
+            );
+
+            checkout.updateCheckout(
+                'put',
+                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/billing-address/billing-address-id*',
+                {
+                    ...checkoutWithShippingAndBilling,
+                },
+            );
+
+            expect(screen.getByTestId('address-select-button')).toBeInTheDocument();
+            await userEvent.click(screen.getByTestId('address-select-button'));
+            await userEvent.click(screen.getByText(/111 Testing Rd/i));
+
+            expect(checkoutService.updateShippingAddress).toHaveBeenCalled();
+            expect(
+                screen.getByRole('radio', { name: 'Pickup In Store $3.00' }),
+            ).toBeInTheDocument();
+            expect(screen.getByRole('radio', { name: 'Flat Rate $10.00' })).toBeInTheDocument();
+            // eslint-disable-next-line testing-library/no-container,testing-library/no-node-access
+            expect(container.getElementsByClassName('shippingOptions-skeleton').length).toBe(0);
+            // eslint-disable-next-line testing-library/no-container,testing-library/no-node-access
+            expect(container.getElementsByClassName('form-checklist-item--selected').length).toBe(
+                1,
+            );
+            // eslint-disable-next-line jest-dom/prefer-to-have-attribute
+            expect(
+                screen.getByLabelText('My billing address is the same as my shipping address.').hasAttribute('checked'),
+            ).toBeTruthy();
+
+            await userEvent.click(screen.getByRole('button', { name: 'Continue' }));
+
+            await checkout.waitForPaymentStep();
+
+            expect(checkoutService.updateBillingAddress).toHaveBeenCalled();
+            expect(screen.getByText(payments[0].config.displayName)).toBeInTheDocument();
+        });
+
+        it('enters new address for the customer with saved address and completes the shipping step', async () => {
+            checkout.use(CheckoutPreset.CheckoutWithMultiShipping);
+
+            const { container } = render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForShippingStep();
+
+            checkout.updateCheckout(
+                'post',
+                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments',
+                {
+                    ...checkoutWithBillingEmail,
+                    consignments: [
+                        {
+                            ...consignment,
+                            selectedShippingOption: undefined,
+                        },
+                    ],
+                },
+            );
+            checkout.updateCheckout(
+                'put',
+                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments/consignment-1',
+                {
+                    ...checkoutWithShipping,
+                },
+            );
+
+            checkout.updateCheckout(
+                'put',
+                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/billing-address/billing-address-id*',
+                {
+                    ...checkoutWithShippingAndBilling,
+                },
+            );
+
+            expect(screen.getByTestId('address-select-button')).toBeInTheDocument();
+            await userEvent.click(screen.getByTestId('address-select-button'));
+            await userEvent.click(screen.getByTestId('add-new-address'));
+            await checkout.fillShippingAddress();
+
+            expect(checkoutService.updateShippingAddress).toHaveBeenCalled();
+            expect(
+                screen.getByRole('radio', { name: 'Pickup In Store $3.00' }),
+            ).toBeInTheDocument();
+            expect(screen.getByRole('radio', { name: 'Flat Rate $10.00' })).toBeInTheDocument();
+            // eslint-disable-next-line testing-library/no-container,testing-library/no-node-access
+            expect(container.getElementsByClassName('shippingOptions-skeleton').length).toBe(0);
+            // eslint-disable-next-line testing-library/no-container,testing-library/no-node-access
+            expect(container.getElementsByClassName('form-checklist-item--selected').length).toBe(
+                1,
+            );
+            // eslint-disable-next-line jest-dom/prefer-to-have-attribute
+            expect(
+                screen.getByLabelText('My billing address is the same as my shipping address.').hasAttribute('checked'),
+            ).toBeTruthy();
+
+            await userEvent.click(screen.getByRole('button', { name: 'Continue' }));
+
+            await checkout.waitForPaymentStep();
+
+            expect(checkoutService.updateBillingAddress).toHaveBeenCalled();
+            expect(screen.getByText(payments[0].config.displayName)).toBeInTheDocument();
+        });
+
+        it('selects the invalid customer address and completes the shipping step', async () => {
+            checkout.use(CheckoutPreset.CheckoutWithCustomerHavingInvalidAddress);
+
+            const { container } = render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForShippingStep();
+
+            checkout.updateCheckout(
+                'post',
+                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments',
+                {
+                    ...checkoutWithCustomerHavingInvalidAddress,
+                    consignments: [],
+                },
+            );
+            expect(screen.getByTestId('address-select-button')).toBeInTheDocument();
+            await userEvent.click(screen.getByTestId('address-select-button'));
+            await userEvent.click(screen.getByText(/Fourth/i));
+
+            await userEvent.click(screen.getByRole('button', { name: 'Continue' }));
+
+            expect(await screen.findByLabelText('First Name')).toHaveDisplayValue('Fourth');
+            expect(await screen.findByLabelText('Last Name')).toHaveDisplayValue('Address');
+            expect(screen.getByText('Address is required')).toBeInTheDocument();
+            expect(screen.getByLabelText('Save this address in my address book.')).toBeInTheDocument();
+
+            checkout.updateCheckout(
+                'post',
+                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments',
+                {
+                    ...checkoutWithShipping,
+                    consignments: [
+                        {
+                            ...consignment,
+                            selectedShippingOption: undefined,
+                        },
+                    ],
+                },
+            );
+            checkout.updateCheckout(
+                'put',
+                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments/consignment-1',
+                {
+                    ...checkoutWithShipping,
+                },
+            );
+
+            await userEvent.type(
+                screen.getByRole('textbox', { name: /address/i }),
+                shippingAddress.address1,
+            );
+
+            expect(checkoutService.updateShippingAddress).toHaveBeenCalled();
+
+            // screen.debug(undefined, Infinity);
+            expect(
+                screen.getByRole('radio', { name: 'Pickup In Store $3.00' }),
+            ).toBeInTheDocument();
+            expect(screen.getByRole('radio', { name: 'Flat Rate $10.00' })).toBeInTheDocument();
+            // eslint-disable-next-line testing-library/no-container,testing-library/no-node-access
+            expect(container.getElementsByClassName('shippingOptions-skeleton').length).toBe(0);
+            // eslint-disable-next-line testing-library/no-container,testing-library/no-node-access
+            expect(container.getElementsByClassName('form-checklist-item--selected').length).toBe(
+                1,
+            );
+            // eslint-disable-next-line jest-dom/prefer-to-have-attribute
+            expect(
+                screen.getByLabelText('My billing address is the same as my shipping address.').hasAttribute('checked'),
             ).toBeTruthy();
 
             checkout.updateCheckout(
