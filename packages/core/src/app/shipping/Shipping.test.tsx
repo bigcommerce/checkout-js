@@ -23,6 +23,7 @@ import {
     CheckoutPageNodeObject,
     CheckoutPreset,
     checkoutWithBillingEmail,
+    checkoutWithMultiShippingCart,
     checkoutWithShipping,
     checkoutWithShippingAndBilling,
     consignment,
@@ -460,5 +461,32 @@ describe('Shipping step', () => {
             // eslint-disable-next-line testing-library/no-container,testing-library/no-node-access
             expect(container.getElementsByClassName('form-checklist-item--selected')[0]).toHaveTextContent('Flat Rate$10.00');
         });
+    });
+
+    it('renders multi-shipping static consignments', async () => {
+        checkout.use(CheckoutPreset.CheckoutWithMultiShipping);
+        checkout.updateCheckout('get',
+            '/checkout/*',
+            {
+            ...checkoutWithMultiShippingCart,
+            consignments: [
+                {
+                    ...consignment,
+                    lineItemIds: ['x', 'y'],
+                },
+                {
+                    ...consignment,
+                    id: 'consignment-2',
+                    lineItemIds: ['z'],
+                },
+            ],
+        });
+
+        render(<CheckoutTest {...defaultProps} />);
+
+        await checkout.waitForBillingStep();
+
+        expect(screen.getByText('Destination #1')).toBeInTheDocument();
+        expect(screen.getByText('Destination #2')).toBeInTheDocument();
     });
 });
