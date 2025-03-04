@@ -326,8 +326,8 @@ const checkoutWithCustomShippingAndBilling = {
     ],
 };
 
-const checkoutWithMultiShippingCart = {
-    ...checkout,
+const checkoutWithMultiShippingCart: Checkout = {
+    ...checkoutWithBillingEmail,
     cart: {
         ...checkout.cart,
         lineItems: {
@@ -352,6 +352,27 @@ const checkoutWithLoggedInCustomer: Checkout = {
     customer: customerWithoutSavedAddresses,
 };
 
+const checkoutWithCustomerHavingInvalidAddress: Checkout = {
+    ...checkoutWithBillingEmail,
+    cart: {
+        ...checkout.cart,
+        customerId: customerWithoutSavedAddresses.id,
+    },
+    customer: {
+        ...customer,
+        addresses: [
+            ...customer.addresses,
+            {
+                id: 4,
+                ...shippingAddress1,
+                firstName: 'Fourth',
+                lastName: 'Address',
+                address1: '',
+            },
+        ],
+    },
+};
+
 enum CheckoutPreset {
     CheckoutWithBillingEmail = 'CheckoutWithBillingEmail',
     CheckoutWithBillingEmailAndCustomFormFields = 'CheckoutWithBillingEmailAndCustomFormFields',
@@ -366,6 +387,7 @@ enum CheckoutPreset {
     UnsupportedProvider = 'UnsupportedProvider',
     RemoteProviders = 'RemoteProviders',
     CheckoutWithLoggedInCustomer = 'CheckoutWithLoggedInCustomer',
+    CheckoutWithCustomerHavingInvalidAddress = 'CheckoutWithCustomerHavingInvalidAddress',
 }
 
 export {
@@ -382,6 +404,7 @@ export {
     customer,
     customerWithoutSavedAddresses,
     checkoutWithLoggedInCustomer,
+    checkoutWithCustomerHavingInvalidAddress,
     shippingAddress1 as shippingAddress,
     shippingAddress2,
     shippingAddress3,

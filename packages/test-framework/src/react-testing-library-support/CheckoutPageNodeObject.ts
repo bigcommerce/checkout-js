@@ -14,6 +14,7 @@ import {
     checkoutSettingsWithRemoteProviders,
     checkoutSettingsWithUnsupportedProvider,
     checkoutWithBillingEmail,
+    checkoutWithCustomerHavingInvalidAddress,
     checkoutWithCustomShippingAndBilling,
     checkoutWithDigitalCart,
     checkoutWithLoggedInCustomer,
@@ -134,6 +135,14 @@ export class CheckoutPageNodeObject {
                 this.server.use(
                     rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
                         res(ctx.json(checkoutWithLoggedInCustomer)),
+                    ),
+                );
+                break;
+
+            case CheckoutPreset.CheckoutWithCustomerHavingInvalidAddress:
+                this.server.use(
+                    rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
+                        res(ctx.json(checkoutWithCustomerHavingInvalidAddress)),
                     ),
                 );
                 break;
