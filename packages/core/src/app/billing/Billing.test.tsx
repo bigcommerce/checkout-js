@@ -34,7 +34,7 @@ import {
     createEmbeddedCheckoutSupport,
 } from '../embeddedCheckout';
 
-describe('Shipping step', () => {
+describe('Billing step', () => {
     let checkout: CheckoutPageNodeObject;
     let CheckoutTest: FunctionComponent<CheckoutProps>;
     let checkoutService: CheckoutService;
