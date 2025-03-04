@@ -38,10 +38,18 @@ describe('StripeShippingAddress Component', () => {
     const renderTestComponent = (props?: Partial<StripeShippingAddressProps>) => 
         render(<StripeShippingAddress {...defaultProps} {...props} />);
 
-    const getInitializeMock = (onChangeShippingPayload?: StripeShippingEvent): jest.Mock => 
+    const getInitializeMock = (
+        onChangeShippingPayload?: StripeShippingEvent,
+        stripeExperiments: Record<string, boolean> = {},
+    ): jest.Mock => 
         jest.fn((options) => {
-            const { getStyles = noop, onChangeShipping = noop} = options.stripeupe || {};
-
+            const {
+                getStyles = noop,
+                onChangeShipping = noop,
+                setStripeExperiments = noop,
+            } = options.stripeupe || {};
+            
+            setStripeExperiments(stripeExperiments);
             onChangeShipping(onChangeShippingPayload || stripeEvent);
             getStyles();
 
@@ -104,6 +112,7 @@ describe('StripeShippingAddress Component', () => {
                 getStripeState: expect.any(Function),
                 gatewayId: 'stripeupe',
                 methodId: 'card',
+                setStripeExperiments: expect.any(Function),
             },
         });
         expect(defaultProps.onAddressSelect).toHaveBeenCalled();
@@ -350,5 +359,50 @@ describe('StripeShippingAddress Component', () => {
         renderTestComponent();
 
         expect(getAppliedStylesMock).not.toHaveBeenCalled();
+    });
+
+    describe('State code mapping for Spain', () => {
+        const stripeAddressES: StripeShippingEvent = {
+            ...stripeEvent,
+            value: {
+                ...stripeEvent.value,
+                address: {
+                    ...stripeEvent.value.address,
+                    country: 'ES',
+                    state: 'GI',
+                },
+            },
+        };
+
+        it('renders StripeShippingAddress with ES state code mapping', async () => {
+            defaultProps.initialize = getInitializeMock(stripeAddressES);
+    
+            renderTestComponent();
+    
+            expect(defaultProps.onAddressSelect).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    stateOrProvince: 'GIRO',
+                    stateOrProvinceCode: 'GIRO',
+                }),
+            );
+        });
+
+        it('renders StripeShippingAddress without ES state code mapping', async () => {
+            defaultProps.initialize = getInitializeMock(
+                stripeAddressES,
+                {
+                    isStripeStateMappingDisabledForES: true,
+                }
+            );
+    
+            renderTestComponent();
+    
+            expect(defaultProps.onAddressSelect).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    stateOrProvince: 'GI',
+                    stateOrProvinceCode: 'GI',
+                }),
+            );
+        });
     });
 });

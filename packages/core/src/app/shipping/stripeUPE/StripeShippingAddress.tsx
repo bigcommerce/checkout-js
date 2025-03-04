@@ -8,7 +8,7 @@ import {
     StripeShippingEvent
 } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
-import React, { FunctionComponent, memo, useCallback, useEffect, useState } from 'react';
+import React, { FunctionComponent, memo, useCallback, useEffect, useRef, useState } from 'react';
 
 import { getAppliedStyles } from '@bigcommerce/checkout/dom-utils';
 
@@ -69,6 +69,7 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
         phone: '',
         customFields: [],
     });
+    const isStripeStateMappingDisabledForES = useRef(false);
 
     const handleLoading = useCallback(() => {
         if (isStripeLoading) {
@@ -119,7 +120,7 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
 
             const names = name?.split(' ');
             const country = availableShippingList?.find(country => country.code === address.country)?.name;
-            const state = StripeStateMapper(address.country, address.state);
+            const state = StripeStateMapper(address.country, address.state, isStripeStateMappingDisabledForES.current);
             const shippingValue = {
                 firstName: firstName || names[0],
                 lastName: lastName || names[1],
@@ -152,6 +153,10 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
         }
 
     }, [availableShippingList, onAddressSelect]);
+
+    const setStripeExperiments = (experiments: Record<string, boolean>): void => {
+        isStripeStateMappingDisabledForES.current = experiments.isStripeStateMappingDisabledForES;
+    };
 
     const initializeShipping = useCallback(
         memoizeOne(
@@ -200,6 +205,7 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
                 availableCountries: allowedCountries,
                 getStyles: getStripeStyles,
                 getStripeState: StripeStateMapper,
+                setStripeExperiments,
                 gatewayId: 'stripeupe',
                 methodId: 'card',
             },
