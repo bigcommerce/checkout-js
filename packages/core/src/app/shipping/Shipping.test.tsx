@@ -390,7 +390,7 @@ describe('Shipping step', () => {
             expect(screen.getByTestId('address-select-button')).toBeInTheDocument();
             await userEvent.click(screen.getByTestId('address-select-button'));
             await userEvent.click(screen.getByTestId('add-new-address'));
-            await checkout.fillShippingAddress();
+            await checkout.fillAddressForm();
 
             expect(checkoutService.updateShippingAddress).toHaveBeenCalled();
             expect(
