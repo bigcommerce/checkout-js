@@ -109,63 +109,61 @@ describe('Billing step', () => {
         );
     });
 
-    describe('Billing step happy paths', () => {
-        it('completes the billing step as a guest and goes to the payment step', async () => {
-            checkout.use(CheckoutPreset.CheckoutWithShipping);
+    it('completes the billing step as a guest and goes to the payment step', async () => {
+        checkout.use(CheckoutPreset.CheckoutWithShipping);
 
-            render(<CheckoutTest {...defaultProps} />);
+        render(<CheckoutTest {...defaultProps} />);
 
-            await checkout.waitForBillingStep();
+        await checkout.waitForBillingStep();
 
-            await checkout.fillAddressForm();
+        await checkout.fillAddressForm();
 
-            checkout.updateCheckout(
-                'put',
-                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/billing-address/billing-address-id*',
-                {
-                    ...checkoutWithShippingAndBilling,
-                },
-            );
+        checkout.updateCheckout(
+            'put',
+            '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/billing-address/billing-address-id*',
+            {
+                ...checkoutWithShippingAndBilling,
+            },
+        );
 
-            await userEvent.click(screen.getByRole('button', { name: 'Continue' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Continue' }));
 
-            await checkout.waitForPaymentStep();
+        await checkout.waitForPaymentStep();
 
-            expect(checkoutService.updateBillingAddress).toHaveBeenCalled();
-            expect(screen.getByText(payments[0].config.displayName)).toBeInTheDocument();
-        });
+        expect(checkoutService.updateBillingAddress).toHaveBeenCalled();
+        expect(screen.getByText(payments[0].config.displayName)).toBeInTheDocument();
+    });
 
-        it('edit the billing address and goes back to the payment step', async () => {
-            checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
+    it('edit the billing address and goes back to the payment step', async () => {
+        checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
 
-            render(<CheckoutTest {...defaultProps} />);
+        render(<CheckoutTest {...defaultProps} />);
 
-            await checkout.waitForPaymentStep();
+        await checkout.waitForPaymentStep();
 
-            expect(screen.getByText(payments[0].config.displayName)).toBeInTheDocument();
+        expect(screen.getByText(payments[0].config.displayName)).toBeInTheDocument();
 
-            await userEvent.click(screen.getAllByRole('button', { name: 'Edit' })[2]);
+        await userEvent.click(screen.getAllByRole('button', { name: 'Edit' })[2]);
 
-            await checkout.waitForBillingStep();
+        await checkout.waitForBillingStep();
 
-            await checkout.fillAddressForm();
+        await checkout.fillAddressForm();
 
-            expect(screen.queryByLabelText('Save this address in my address book.')).not.toBeInTheDocument();
+        expect(screen.queryByLabelText('Save this address in my address book.')).not.toBeInTheDocument();
 
-            checkout.updateCheckout(
-                'put',
-                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/billing-address/billing-address-id*',
-                {
-                    ...checkoutWithShippingAndBilling,
-                },
-            );
+        checkout.updateCheckout(
+            'put',
+            '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/billing-address/billing-address-id*',
+            {
+                ...checkoutWithShippingAndBilling,
+            },
+        );
 
-            await userEvent.click(screen.getByRole('button', { name: 'Continue' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Continue' }));
 
-            await checkout.waitForPaymentStep();
+        await checkout.waitForPaymentStep();
 
-            expect(checkoutService.updateBillingAddress).toHaveBeenCalled();
-            expect(screen.getByText(payments[0].config.displayName)).toBeInTheDocument();
-        });
+        expect(checkoutService.updateBillingAddress).toHaveBeenCalled();
+        expect(screen.getByText(payments[0].config.displayName)).toBeInTheDocument();
     });
 });
