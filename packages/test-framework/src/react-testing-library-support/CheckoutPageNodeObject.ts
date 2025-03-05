@@ -248,7 +248,7 @@ export class CheckoutPageNodeObject {
         await waitFor(() => screen.getByText(/place order/i));
     }
 
-    async fillShippingAddress(): Promise<void> {
+    async fillAddressForm(): Promise<void> {
         await userEvent.type(await screen.findByLabelText('First Name'), customer.firstName);
         await userEvent.type(screen.getByLabelText('Last Name'), customer.lastName);
         await userEvent.type(
