@@ -1,4 +1,6 @@
+/* eslint-disable testing-library/no-unnecessary-act */
 import {
+    BillingAddress,
     CheckoutService,
     createCheckoutService,
     createEmbeddedCheckoutMessenger,
@@ -22,10 +24,15 @@ import {
 import {
     CheckoutPageNodeObject,
     CheckoutPreset,
+    checkoutWithShipping,
     checkoutWithShippingAndBilling,
+    customer,
     payments,
+    shippingAddress,
+    shippingAddress2,
+    shippingAddress3,
 } from '@bigcommerce/checkout/test-framework';
-import { render, screen } from '@bigcommerce/checkout/test-utils';
+import { act, render, screen } from '@bigcommerce/checkout/test-utils';
 
 import Checkout, { CheckoutProps } from '../checkout/Checkout';
 import { createErrorLogger } from '../common/error';
@@ -41,6 +48,11 @@ describe('Billing step', () => {
     let defaultProps: CheckoutProps & AnalyticsContextProps;
     let embeddedMessengerMock: EmbeddedCheckoutMessenger;
     let analyticsTracker: Partial<AnalyticsEvents>;
+
+    const checkoutWithCustomer = {
+        ...checkoutWithShipping,
+        customer,
+    }
 
     beforeAll(() => {
         checkout = new CheckoutPageNodeObject();
@@ -165,5 +177,155 @@ describe('Billing step', () => {
 
         expect(checkoutService.updateBillingAddress).toHaveBeenCalled();
         expect(screen.getByText(payments[0].config.displayName)).toBeInTheDocument();
+    });
+
+    describe('registered customer', () => {
+        it('completes the billing step after selecting a valid address', async () => {
+            checkout.updateCheckout(
+                'get',
+                '/checkout/*',
+                checkoutWithCustomer
+            );
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForBillingStep();
+
+            checkout.updateCheckout(
+                'put',
+                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/billing-address/billing-address-id',
+                {
+                    ...checkoutWithShippingAndBilling,
+                    billingAddress: {
+                        ...checkoutWithShippingAndBilling.billingAddress,
+                        firstName: shippingAddress3.firstName,
+                        lastName: shippingAddress3.lastName,
+                        address1: shippingAddress3.address1,
+                        city: shippingAddress3.city,
+                        stateOrProvince: shippingAddress3.stateOrProvince,
+                        stateOrProvinceCode: shippingAddress3.stateOrProvinceCode,
+                        country: shippingAddress3.country,
+                        countryCode: shippingAddress3.countryCode,
+                        postalCode: shippingAddress3.postalCode,
+                        phone: shippingAddress3.phone,
+                    } as BillingAddress,
+                }
+            );
+
+            await act(async () => {
+                await userEvent.click(screen.getByText('Enter a new address'));
+                await userEvent.click(screen.getByText(shippingAddress3.address1));
+
+                expect(checkoutService.updateBillingAddress).toHaveBeenCalled();
+                expect(screen.queryByLabelText('First Name')).not.toBeInTheDocument();
+                expect(screen.queryByRole('textbox', { name: /address/i })).not.toBeInTheDocument();
+
+                await userEvent.click(screen.getByText('Continue'));
+            });
+
+            await checkout.waitForPaymentStep();
+
+            expect(screen.getByText(payments[0].config.displayName)).toBeInTheDocument();
+        });
+
+        it('completes the billing step after selecting an invalid address', async () => {
+            const invalidBillingAddress = {
+                ...checkoutWithShippingAndBilling.billingAddress,
+                firstName: '',
+                lastName: shippingAddress3.lastName,
+                address1: shippingAddress3.address1,
+                city: shippingAddress3.city,
+                stateOrProvince: shippingAddress3.stateOrProvince,
+                stateOrProvinceCode: shippingAddress3.stateOrProvinceCode,
+                country: shippingAddress3.country,
+                countryCode: shippingAddress3.countryCode,
+                postalCode: shippingAddress3.postalCode,
+                phone: shippingAddress3.phone,
+            } as BillingAddress;
+
+            checkout.updateCheckout(
+                'get',
+                '/checkout/*',
+                checkoutWithCustomer
+            );
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForBillingStep();
+
+            checkout.updateCheckout(
+                'put',
+                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/billing-address/billing-address-id',
+                {
+                    ...checkoutWithShippingAndBilling,
+                    billingAddress: invalidBillingAddress,
+                }
+            );
+
+            await act(async () => {
+                await userEvent.click(screen.getByText('Enter a new address'));
+                await userEvent.click(screen.getByText(shippingAddress3.address1));
+            });
+
+            expect(checkoutService.updateBillingAddress).toHaveBeenCalled();
+            expect(screen.getByLabelText('First Name')).toBeInTheDocument();
+            expect(screen.getByRole('textbox', { name: /address/i })).toHaveDisplayValue(shippingAddress3.address1);
+
+            checkout.updateCheckout(
+                'put',
+                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/billing-address/billing-address-id',
+                {
+                    ...checkoutWithShippingAndBilling,
+                    billingAddress: {
+                        ...invalidBillingAddress,
+                        firstName: shippingAddress3.firstName,
+                    },
+                }
+            );
+
+            await act(async () => {
+                await userEvent.type(await screen.findByLabelText('First Name'), shippingAddress3.address1);
+                await userEvent.click(screen.getByText('Continue'));
+            });
+
+            await checkout.waitForPaymentStep();
+
+            expect(screen.getByText(payments[0].config.displayName)).toBeInTheDocument();
+        });
+
+        it('completes the billing step after creating a new address even with existing addresses', async () => {
+            checkout.updateCheckout(
+                'get',
+                '/checkout/*',
+                checkoutWithCustomer
+            );
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForBillingStep();
+
+            expect(screen.getByLabelText('First Name')).toBeInTheDocument();
+            expect(screen.getByRole('textbox', { name: /address/i })).toHaveDisplayValue('');
+
+            await userEvent.click(screen.getByText('Enter a new address'));
+
+            expect(screen.getAllByText(shippingAddress.address1)).toHaveLength(2); // another one in Shipping step
+            expect(screen.getByText(shippingAddress2.address1)).toBeInTheDocument();
+            expect(screen.getByText(shippingAddress3.address1)).toBeInTheDocument();
+
+            checkout.updateCheckout(
+                'put',
+                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/billing-address/billing-address-id',
+                checkoutWithShippingAndBilling,
+            );
+
+            await userEvent.click(screen.getByText('First Name'));
+            await checkout.fillAddressForm();
+            await userEvent.click(screen.getByText('Continue'));
+            await checkout.waitForPaymentStep();
+
+            expect(checkoutService.updateBillingAddress).toHaveBeenCalled();
+            expect(screen.getByText(payments[0].config.displayName)).toBeInTheDocument();
+        });
     });
 });
