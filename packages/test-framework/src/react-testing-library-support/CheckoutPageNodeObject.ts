@@ -125,6 +125,7 @@ export class CheckoutPageNodeObject {
                                     ...formFields.shippingAddress,
                                     ...customFormFields,
                                 ],
+                                billingAddress: [...formFields.billingAddress, ...customFormFields],
                             }),
                         ),
                     ),
