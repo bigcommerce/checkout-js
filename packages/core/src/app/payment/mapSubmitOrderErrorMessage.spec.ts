@@ -291,4 +291,15 @@ describe('mapSubmitOrderErrorTitle()', () => {
 
         expect(title).toEqual(translate('common.error_heading'));
     });
+
+    it('returns correct title when error type is not "missing_shipping_method"', () => {
+        const title = mapSubmitOrderErrorTitle(
+            {
+                type: 'missing_shipping_method',
+            },
+            translate,
+        );
+
+        expect(title).toEqual(translate('common.missing_shipping_method_heading'));
+    });
 });
