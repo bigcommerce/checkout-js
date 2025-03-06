@@ -24,8 +24,11 @@ import {
 import {
     CheckoutPageNodeObject,
     CheckoutPreset,
+    checkoutWithBillingEmail,
+    checkoutWithDigitalCart,
     checkoutWithShipping,
     checkoutWithShippingAndBilling,
+    consignment,
     customer,
     payments,
     shippingAddress,
@@ -35,6 +38,7 @@ import {
 import { act, render, screen } from '@bigcommerce/checkout/test-utils';
 
 import Checkout, { CheckoutProps } from '../checkout/Checkout';
+import { getCheckoutPayment } from '../checkout/checkouts.mock';
 import { createErrorLogger } from '../common/error';
 import {
     createEmbeddedCheckoutStylesheet,
@@ -177,6 +181,111 @@ describe('Billing step', () => {
 
         expect(checkoutService.updateBillingAddress).toHaveBeenCalled();
         expect(screen.getByText(payments[0].config.displayName)).toBeInTheDocument();
+    });
+
+    it('should show order comments', async () => {
+        checkout.updateCheckout(
+            'get',
+            '/checkout/*',
+            {
+                ...checkoutWithBillingEmail,
+                cart: checkoutWithDigitalCart.cart,
+            },
+        );
+
+        render(<CheckoutTest {...defaultProps} />);
+
+        await checkout.waitForBillingStep();
+
+        expect(screen.getAllByText('Order Comments')).toHaveLength(2);
+    });
+
+    it('should show PoweredByPayPalFastlaneLabel', async () => {
+        checkout.updateCheckout(
+            'get',
+            '/checkout/*',
+            {
+                ...checkoutWithShipping,
+                billingAddress:checkoutWithBillingEmail.billingAddress,
+                payments:[
+                    getCheckoutPayment(),
+                ],
+            },
+        );
+
+        render(<CheckoutTest {...defaultProps} />);
+
+        await checkout.waitForPaymentStep();
+
+        expect(screen.getByText('Managed by Amazon Pay')).toBeInTheDocument();
+    });
+
+    it('should show PoweredByPayPalFastlaneLabel and custom form fields', async () => {
+        checkout.use(CheckoutPreset.CheckoutWithBillingEmailAndCustomFormFields);
+        checkout.updateCheckout(
+            'get',
+            '/checkout/*',
+            {
+                ...checkoutWithShipping,
+                billingAddress:checkoutWithBillingEmail.billingAddress,
+                consignments: [
+                    {
+                        ...consignment,
+                        shippingAddress:{
+                            ...consignment.shippingAddress,
+                            'customFields': [
+                                {
+                                    'fieldId': 'field_25',
+                                    'fieldValue': 'Custom Text'
+                                },
+                                {
+                                    'fieldId': 'field_27',
+                                    'fieldValue': '1'
+                                },
+                                {
+                                    'fieldId': 'field_28',
+                                    'fieldValue': 'Custom message text'
+                                },
+                                {
+                                    'fieldId': 'field_29',
+                                    'fieldValue': '2020-01-01'
+                                },
+                                {
+                                    'fieldId': 'field_31',
+                                    'fieldValue': ['0', '1']
+                                },
+                                {
+                                    'fieldId': 'field_32',
+                                    'fieldValue': '0'
+                                },
+                                {
+                                    'fieldId': 'field_33',
+                                    'fieldValue': 3
+                                }
+                            ]
+                        },
+
+                    }
+                ],
+                payments:[
+                    getCheckoutPayment(),
+                ],
+            },
+        );
+
+        render(<CheckoutTest {...defaultProps} />);
+
+        await checkout.waitForBillingStep();
+
+        await userEvent.click(screen.getByRole('button', { name: 'Continue' }));
+
+        expect(screen.getByText('Managed by Amazon Pay')).toBeInTheDocument();
+        expect(screen.getByText('Custom Text is required')).toBeInTheDocument();
+        expect(screen.getByText('Custom Date is required')).toBeInTheDocument();
+        expect(screen.getByText('Custom Number is required')).toBeInTheDocument();
+        expect(screen.getByText('Custom Checkbox is required')).toBeInTheDocument();
+        expect(screen.getByText('Custom Radio is required')).toBeInTheDocument();
+        expect(screen.getByText('Custom Dropdown is required')).toBeInTheDocument();
     });
 
     describe('registered customer', () => {
