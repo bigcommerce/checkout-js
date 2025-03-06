@@ -94,6 +94,7 @@
             "error_heading": "Something's gone wrong",
             "leave_warning": "Are you sure you want to leave? Data you have entered may not be saved.",
             "loading_text": "Loading",
+            "missing_shipping_method_heading": "Missing shipping method",
             "ok_action": "Ok",
             "error_code": "Error code:",
             "request_id": "Request ID:",

@@ -71,5 +71,9 @@ export function mapSubmitOrderErrorTitle(
         return translate('common.unavailable_heading');
     }
 
+    if (error.type === 'missing_shipping_method') {
+        return translate('common.missing_shipping_method_heading');
+    }
+
     return translate('common.error_heading');
 }
