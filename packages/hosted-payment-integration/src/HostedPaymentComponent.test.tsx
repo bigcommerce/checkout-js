@@ -3,6 +3,7 @@ import {
     CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
+import userEvent from '@testing-library/user-event';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
@@ -26,7 +27,7 @@ import {
     getPaymentMethod,
     getStoreConfig,
 } from '@bigcommerce/checkout/test-mocks';
-import { fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentComponent';
 
@@ -195,9 +196,9 @@ describe('HostedPaymentMethod', () => {
             expect(screen.queryByText('test@external-id.com')).not.toBeInTheDocument();
         });
 
-        it('shows a message when no saved instruments', () => {
+        it('shows a message when no saved instruments', async () => {
             render(<HostedPaymentMethodTest {...defaultProps} />);
-            fireEvent.click(screen.getByText('Manage'));
+            await userEvent.click(screen.getByText('Manage'));
 
             expect(
                 screen.getByText('You do not have any stored payment methods.'),

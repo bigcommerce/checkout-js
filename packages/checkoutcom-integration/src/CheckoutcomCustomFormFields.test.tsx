@@ -3,6 +3,7 @@ import {
     CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
+import userEvent from '@testing-library/user-event';
 import { EventEmitter } from 'events';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
@@ -32,7 +33,7 @@ import {
     getPaymentMethod,
     getStoreConfig,
 } from '@bigcommerce/checkout/test-mocks';
-import { fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import checkoutcomCustomFormFields, { ccDocumentField } from './CheckoutcomCustomFormFields';
 
@@ -227,6 +228,7 @@ describe('CheckoutCustomFormFields', () => {
     describe('Sepa form fieldset', () => {
         const SepaFormFieldset = checkoutcomCustomFormFields.sepa;
         const sepaProps = getAPMProps.sepa();
+        const user = userEvent.setup();
 
         it('should render the sepa fieldset', () => {
             render(
@@ -264,7 +266,7 @@ describe('CheckoutCustomFormFields', () => {
             expect(paymentForm.disableSubmit).toHaveBeenLastCalledWith(sepaProps.method, true);
         });
 
-        it('submit button is toggled when user checks permission checkbox', () => {
+        it('submit button is toggled when user checks permission checkbox', async () => {
             render(
                 <CheckoutcomAPMsTest
                     {...sepaProps}
@@ -280,9 +282,9 @@ describe('CheckoutCustomFormFields', () => {
                 }),
             );
 
-            fireEvent.click(permissionChangeCheckbox);
+            await user.click(permissionChangeCheckbox);
             expect(paymentForm.disableSubmit).toHaveBeenLastCalledWith(sepaProps.method, false);
-            fireEvent.click(permissionChangeCheckbox);
+            await user.click(permissionChangeCheckbox);
             expect(paymentForm.disableSubmit).toHaveBeenLastCalledWith(sepaProps.method, true);
         });
 
@@ -306,6 +308,7 @@ describe('CheckoutCustomFormFields', () => {
     describe('iDeal', () => {
         const IdealFormFieldset = checkoutcomCustomFormFields.ideal;
         const idealProps = getAPMProps.ideal();
+        const user = userEvent.setup();
 
         it('Shopper is able to see iDeal Payment Method', () => {
             render(
@@ -321,7 +324,7 @@ describe('CheckoutCustomFormFields', () => {
             ).toBeInTheDocument();
         });
 
-        it('Shopper selects an Issuer from dropdown', () => {
+        it('Shopper selects an Issuer from dropdown', async () => {
             render(
                 <CheckoutcomAPMsTest
                     {...idealProps}
@@ -329,7 +332,7 @@ describe('CheckoutCustomFormFields', () => {
                 />,
             );
 
-            fireEvent.click(
+            await user.click(
                 screen.getByRole('button', {
                     name: 'Your bank',
                 }),
@@ -343,8 +346,8 @@ describe('CheckoutCustomFormFields', () => {
                 screen.getAllByRole('button', {
                     name: 'INGBNL2A / Issuer Simulation V3 - ING',
                 }),
-            ).not.toHaveLength(2);
-            fireEvent.click(screen.getByText('INGBNL2A / Issuer Simulation V3 - ING'));
+            ).toHaveLength(1);
+            await user.click(screen.getByText('INGBNL2A / Issuer Simulation V3 - ING'));
 
             expect(
                 screen.getAllByRole('button', {
