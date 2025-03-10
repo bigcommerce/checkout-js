@@ -4,10 +4,8 @@ import {
     createCheckoutService,
     createLanguageService,
 } from '@bigcommerce/checkout-sdk';
-import { mount } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
-import { HostedPaymentComponent } from '@bigcommerce/checkout/hosted-payment-integration';
 import {
     createLocaleContext,
     LocaleContext,
@@ -23,6 +21,7 @@ import {
     getPaymentFormServiceMock,
     getStoreConfig,
 } from '@bigcommerce/checkout/test-mocks';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import AffirmPaymentMethod from './AffirmPaymentMethod';
 
@@ -75,8 +74,10 @@ describe('When using Affirm Payment Method', () => {
     });
 
     it('Shopper is able to see Affirm Payment Method', () => {
-        const component = mount(<PaymentMethodTest {...defaultProps} />);
+        render(<PaymentMethodTest {...defaultProps} />);
 
-        expect(component.find(HostedPaymentComponent)).toHaveLength(1);
+        expect(
+            screen.getByText(localeContext.language.translate('payment.affirm_body_text')),
+        ).toBeInTheDocument();
     });
 });
