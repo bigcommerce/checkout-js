@@ -35,8 +35,6 @@ describe('CreditCardFieldset', () => {
             </LocaleContext.Provider>,
         );
 
-        screen.debug();
-
         expect(screen.getByRole('textbox', { name: 'Credit Card Number' })).toBeInTheDocument();
         expect(screen.getByRole('textbox', { name: 'Expiration' })).toBeInTheDocument();
         expect(screen.getByRole('textbox', { name: 'Name on Card' })).toBeInTheDocument();
