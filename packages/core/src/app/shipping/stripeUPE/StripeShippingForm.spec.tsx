@@ -1,323 +1,226 @@
-import { createCheckoutService } from '@bigcommerce/checkout-sdk';
-import { mount, ReactWrapper } from 'enzyme';
+import { createCheckoutService, StripeShippingEvent } from '@bigcommerce/checkout-sdk';
+import userEvent from '@testing-library/user-event';
 import React from 'react';
+import { act } from 'react-dom/test-utils';
 
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getAddressFormFields } from '../../address/formField.mock';
 import CheckoutStepType from '../../checkout/CheckoutStepType';
+import ConsoleErrorLogger from '../../common/error/ConsoleErrorLogger';
 import { getStoreConfig } from '../../config/config.mock';
-import BillingSameAsShippingField from '../BillingSameAsShippingField';
 import { getShippingAddress } from '../shipping-addresses.mock';
-import SingleShippingForm, {
-    SHIPPING_AUTOSAVE_DELAY,
-    SingleShippingFormProps,
-} from '../SingleShippingForm';
 
-describe('SingleShippingForm', () => {
-    const checkoutService = createCheckoutService();
+import StripeShippingForm from './StripeShippingForm';
+
+
+
+let hasSelectedShippingOptionsReturn = false;
+
+jest.mock(
+    '../hasSelectedShippingOptions',
+    () => () => hasSelectedShippingOptionsReturn,
+);
+
+describe('StripeShippingForm', () => {
     const addressFormFields = getAddressFormFields().filter(({ custom }) => !custom);
-    let localeContext: LocaleContextType;
-    let component: ReactWrapper;
-    let defaultProps: SingleShippingFormProps;
+    const checkoutService = createCheckoutService();
+    const errorLogger = new ConsoleErrorLogger();
+    const { customFields, ...rest } = getShippingAddress();
+    const localeContext: LocaleContextType = createLocaleContext(getStoreConfig());
 
-    beforeEach(() => {
-        localeContext = createLocaleContext(getStoreConfig());
-        defaultProps = {
-            isMultiShippingMode: false,
-            countries: [],
-            countriesWithAutocomplete: [],
-            shippingAddress: getShippingAddress(),
-            customerMessage: '',
-            addresses: [],
-            shouldShowOrderComments: true,
-            consignments: [],
-            cartHasChanged: false,
-            isLoading: false,
-            step: { isActive: true,
-                isComplete: true,
-                isEditable: true,
-                isRequired: true,
-                type: CheckoutStepType.Shipping },
-            isShippingMethodLoading: false,
-            customerEmail: 'foo@test.com',
-            isShippingStepPending: false,
-            onSubmit: jest.fn(),
-            getFields: jest.fn(() => addressFormFields),
-            onUnhandledError: jest.fn(),
-            deinitialize: jest.fn(),
-            signOut: jest.fn(),
-            initialize: jest.fn(),
-            updateAddress: jest.fn(),
-            deleteConsignments: jest.fn(),
-            isStripeLoading: jest.fn(),
-        };
+    const defaultProps = {
+        isShippingMethodLoading: false,
+        step: {
+            isActive: true,
+            isBusy: false,
+            isComplete: false,
+            isEditable: true,
+            isRequired: true,
+            type: CheckoutStepType.Shipping,
+        },
+        isBillingSameAsShipping: false,
+        isInitialValueLoaded: false,
+        isMultiShippingMode: false,
+        countries: [],
+        countriesWithAutocomplete: [],
+        shippingAddress: rest,
+        customerMessage: '',
+        addresses: [],
+        shouldShowOrderComments: true,
+        consignments: [],
+        cartHasChanged: false,
+        isLoading: false,
+        isShippingStepPending: false,
+        onSubmit: jest.fn(),
+        getFields: jest.fn(() => addressFormFields),
+        onUnhandledError: jest.fn(),
+        deinitialize: jest.fn(),
+        signOut: jest.fn(),
+        initialize: jest.fn(),
+        updateAddress: jest.fn(),
+        deleteConsignments: jest.fn(),
+    };
 
-        component = mount(
-            <CheckoutProvider checkoutService={checkoutService}>
-                <LocaleContext.Provider value={localeContext}>
-                    <ExtensionProvider checkoutService={checkoutService}>
-                        <SingleShippingForm {...defaultProps} />
-                    </ExtensionProvider>
-                </LocaleContext.Provider>
-            </CheckoutProvider>
-        );
+   const renderContainer = (props = {}) => render(
+     <CheckoutProvider checkoutService={checkoutService}>
+         <LocaleContext.Provider value={localeContext}>
+             <ExtensionProvider checkoutService={checkoutService} errorLogger={errorLogger}>
+                 <StripeShippingForm {...defaultProps} {...props} />
+             </ExtensionProvider>
+         </LocaleContext.Provider>
+     </CheckoutProvider>
+     );
+
+   afterEach(() => {
+       jest.clearAllMocks();
+   })
+
+    it('renders form with a correct parameters', async () => {
+        const { container } = renderContainer({ isLoading: false });
+
+        expect(defaultProps.initialize).toHaveBeenCalled();
+        expect(defaultProps.getFields).toHaveBeenCalledTimes(3);
+        expect(defaultProps.getFields).toHaveBeenCalledWith("US");
+        expect(container.querySelector('#StripeUpeShipping')).toBeInTheDocument();
     });
 
-    it('calls updateAddress with last event during a given timeframe', (done) => {
-        component
-            .find('input[name="shippingAddress.address1"]')
-            .simulate('change', { target: { value: 'foo 1', name: 'shippingAddress.address1' } });
+    it('disables submit button when loading', async () => {
+       hasSelectedShippingOptionsReturn = true;
+       renderContainer({ isLoading: true });
 
-        component
-            .find('input[name="shippingAddress.address1"]')
-            .simulate('change', { target: { value: 'foo 2', name: 'shippingAddress.address1' } });
+       const button = screen.getByRole('button', { name: /continue/i });
 
-        setTimeout(() => {
-            expect(defaultProps.updateAddress).toHaveBeenCalledTimes(1);
-            expect(defaultProps.updateAddress).toHaveBeenCalledWith(
-                {
-                    ...getShippingAddress(),
-                    address1: 'foo 2',
-                },
-                {
-                    params: {
-                        include: {
-                            'consignments.availableShippingOptions': true,
-                        },
-                    },
-                },
+       expect(button).toBeInTheDocument();
+       expect(button).toBeDisabled();
+   })
+
+    it('disables submit button if form is not valid', async () => {
+        hasSelectedShippingOptionsReturn = true;
+
+        renderContainer({ isValid: false, isLoading: false, shippingAddress: null });
+
+        const button = screen.getByRole('button', { name: /continue/i });
+
+        expect(button).toBeInTheDocument();
+
+        if (button) {
+            await userEvent.click(
+                button,
             );
 
-            done();
-        }, SHIPPING_AUTOSAVE_DELAY * 1.1);
-    });
+            expect(defaultProps.onSubmit).toHaveBeenCalledTimes(0);
+        }
+    })
 
-    it('calls updateAddress if modified field does not affect shipping but makes form valid', (done) => {
-        component = mount(
-            <CheckoutProvider checkoutService={checkoutService}>
-                <LocaleContext.Provider value={localeContext}>
-                    <ExtensionProvider checkoutService={checkoutService}>
-                        <SingleShippingForm
-                            {...defaultProps}
-                            getFields={() => [
-                                ...addressFormFields.map((field) => ({ ...field, required: true })),
-                            ]}
-                        />
-                    </ExtensionProvider>
-                </LocaleContext.Provider>
-            </CheckoutProvider>
-        );
+    it('submits a form by clicking a button', async () => {
+        hasSelectedShippingOptionsReturn = true;
 
-        component
-            .find('input[name="shippingAddress.address2"]')
-            .simulate('change', { target: { value: '', name: 'shippingAddress.address2' } });
+        renderContainer();
 
-        component
-            .find('input[name="shippingAddress.address2"]')
-            .simulate('change', { target: { value: 'foo 1', name: 'shippingAddress.address2' } });
+        const button = screen.getByRole('button', { name: /continue/i });
 
-        setTimeout(() => {
-            expect(defaultProps.updateAddress).toHaveBeenCalledTimes(1);
+        expect(button).toBeInTheDocument();
 
-            done();
-        }, SHIPPING_AUTOSAVE_DELAY * 1.1);
-    });
-
-    it('calls updateAddress including shipping options if modified field does not affect shipping but has never requested shipping options', (done) => {
-        component
-            .find('input[name="shippingAddress.address2"]')
-            .simulate('change', { target: { value: 'foo 1', name: 'shippingAddress.address2' } });
-
-        setTimeout(() => {
-            expect(defaultProps.updateAddress).toHaveBeenCalledWith(
-                {
-                    ...getShippingAddress(),
-                    address2: 'foo 1',
-                },
-                {
-                    params: {
-                        include: {
-                            'consignments.availableShippingOptions': true,
-                        },
-                    },
-                },
+        if (button) {
+           await userEvent.click(
+                button,
             );
 
-            done();
-        }, SHIPPING_AUTOSAVE_DELAY * 1.1);
-    });
+           expect(defaultProps.onSubmit).toHaveBeenCalledTimes(1);
+           expect(defaultProps.onSubmit).toHaveBeenCalledWith({
+               billingSameAsShipping: false,
+               orderComment: "",
+               shippingAddress: { ...defaultProps.shippingAddress },
+           });
+        }
+    })
 
-    it('calls updateAddress without shipping options if modified field does not affect shipping and shipping options have already been requested', (done) => {
-        component
-            .find('input[name="shippingAddress.address2"]')
-            .simulate('change', { target: { value: 'foo 1', name: 'shippingAddress.address2' } });
+    it('calls updateAddress correctly', async () => {
+        const address = {
+            line1: '12345 Testing',
+            line2: 'Main str',
+            city: 'City',
+            state: 'State',
+            country: 'United States',
+            postal_code: '95545',
+        }
 
-        setTimeout(() => {
-            component.find('input[name="shippingAddress.address2"]').simulate('change', {
-                target: { value: 'foo 2', name: 'shippingAddress.address2' },
-            });
+        const shippingChangeEvent: StripeShippingEvent = {
+            elementType: '',
+            empty: false,
+            complete: true,
+            phoneFieldRequired: false,
+            value: {
+                phone: '555-444-5555',
+                firstName: 'John',
+                lastName: 'Doe',
+                address,
+            }
+        }
 
-            setTimeout(() => {
-                expect(defaultProps.updateAddress).toHaveBeenLastCalledWith(
-                    {
-                        ...getShippingAddress(),
-                        address2: 'foo 2',
-                    },
-                    {
-                        params: {
-                            include: {
-                                'consignments.availableShippingOptions': false,
-                            },
-                        },
-                    },
-                );
+        renderContainer({ isLoading: false });
 
-                done();
-            }, SHIPPING_AUTOSAVE_DELAY * 1.1);
-        }, SHIPPING_AUTOSAVE_DELAY * 1.1);
-    });
+        await act(async () => {
+            const { stripeupe } = defaultProps.initialize.mock.calls[0][0];
 
-    it('does not call updateAddress if modified field produces invalid address', (done) => {
-        component
-            .find('input[name="shippingAddress.address1"]')
-            .simulate('change', { target: { value: '', name: 'shippingAddress.address1' } });
-
-        setTimeout(() => {
-            expect(defaultProps.updateAddress).not.toHaveBeenCalled();
-
-            done();
-        }, SHIPPING_AUTOSAVE_DELAY * 1.1);
-    });
-
-    it('does not call updateAddress if not valid address', (done) => {
-        component
-            .find('input[name="shippingAddress.address1"]')
-            .simulate('change', { target: { value: '', name: 'shippingAddress.address1' } });
-
-        setTimeout(() => {
-            expect(defaultProps.updateAddress).not.toHaveBeenCalled();
-
-            done();
-        }, SHIPPING_AUTOSAVE_DELAY * 1.1);
-    });
-
-    it('does not call updateAddress if same address', (done) => {
-        component
-            .find('input[name="shippingAddress.address1"]')
-            .simulate('change', { target: { value: '', name: getShippingAddress().address1 } });
-
-        setTimeout(() => {
-            expect(defaultProps.updateAddress).not.toHaveBeenCalled();
-
-            done();
-        }, SHIPPING_AUTOSAVE_DELAY * 1.1);
-    });
-
-    it('calls update address for amazon pay if required custom fields are filled out', (done) => {
-        component = mount(
-            <CheckoutProvider checkoutService={checkoutService}>
-                <LocaleContext.Provider value={localeContext}>
-                    <ExtensionProvider checkoutService={checkoutService}>
-                        <SingleShippingForm
-                            {...defaultProps}
-                            getFields={() => [
-                                ...addressFormFields,
-                                {
-                                    custom: true,
-                                    default: '',
-                                    fieldType: 'text',
-                                    id: 'field_25',
-                                    label: 'Custom message',
-                                    name: 'field_25',
-                                    required: true,
-                                    type: 'string',
-                                },
-                            ]}
-                        />
-                    </ExtensionProvider>
-                </LocaleContext.Provider>
-            </CheckoutProvider>
-        );
-
-        component.find('input[name="shippingAddress.customFields.field_25"]').simulate('change', {
-            target: { value: 'foo', name: 'shippingAddress.customFields.field_25' },
+            await stripeupe.onChangeShipping(shippingChangeEvent);
         });
 
-        setTimeout(() => {
-            expect(defaultProps.updateAddress).toHaveBeenCalledWith(
-                {
-                    ...getShippingAddress(),
-                    customFields: [
-                        {
-                            fieldId: 'field_25',
-                            fieldValue: 'foo',
-                        },
-                    ],
-                },
-                {
-                    params: {
-                        include: {
-                            'consignments.availableShippingOptions': true,
-                        },
-                    },
-                },
-            );
-
-            done();
-        }, SHIPPING_AUTOSAVE_DELAY * 1.1);
+        expect(defaultProps.updateAddress).toHaveBeenCalledWith({
+            "address1": "12345 Testing",
+            "address2": "Main str",
+            "city": "City",
+            "company": "",
+            "country": "United States",
+            "countryCode": "United States",
+            "customFields": [],
+            "firstName": "John",
+            "lastName": "Doe",
+            "phone": "555-444-5555",
+            "postalCode": "95545",
+            "shouldSaveAddress": true,
+            "stateOrProvince": "State",
+            "stateOrProvinceCode": "State",
+        });
     });
 
-    it('does not update address for amazon pay if required custom fields is left empty', (done) => {
-        component = mount(
-            <CheckoutProvider checkoutService={checkoutService}>
-                <LocaleContext.Provider value={localeContext}>
-                    <ExtensionProvider checkoutService={checkoutService}>
-                        <SingleShippingForm
-                            {...defaultProps}
-                            getFields={() => [
-                                ...addressFormFields,
-                                {
-                                    custom: true,
-                                    default: '',
-                                    fieldType: 'text',
-                                    id: 'field_25',
-                                    label: 'Custom message',
-                                    name: 'field_25',
-                                    required: true,
-                                    type: 'string',
-                                },
-                            ]}
-                        />
-                    </ExtensionProvider>
-                </LocaleContext.Provider>
-            </CheckoutProvider>
-        );
+    it('catches an error if something is wrong', async () => {
+        defaultProps.updateAddress.mockRejectedValue(new Error('update failed'));
 
-        component.find('input[name="shippingAddress.customFields.field_25"]').simulate('change', {
-            target: { value: '', name: 'shippingAddress.customFields.field_25' },
+        const address = {
+            line1: '12345 Testing',
+            line2: 'Main str',
+            city: 'City',
+            state: 'State',
+            country: 'United States',
+            postal_code: '95545',
+        }
+
+        const shippingChangeEvent: StripeShippingEvent = {
+            elementType: '',
+            empty: false,
+            complete: true,
+            phoneFieldRequired: false,
+            value: {
+                phone: '555-444-5555',
+                firstName: 'John',
+                lastName: 'Doe',
+                address,
+            }
+        }
+
+        renderContainer({ isLoading: false });
+
+        await act(async () => {
+            const { stripeupe } = defaultProps.initialize.mock.calls[0][0];
+
+            await stripeupe.onChangeShipping(shippingChangeEvent);
         });
 
-        setTimeout(() => {
-            expect(defaultProps.updateAddress).not.toHaveBeenCalled();
-
-            done();
-        }, SHIPPING_AUTOSAVE_DELAY * 1.1);
-    });
-
-    it('does not render billing same as shipping checkbox for amazon pay', () => {
-        component = mount(
-            <CheckoutProvider checkoutService={checkoutService}>
-                <LocaleContext.Provider value={localeContext}>
-                    <ExtensionProvider checkoutService={checkoutService}>
-                        <SingleShippingForm {...defaultProps} methodId="amazonpay" />
-                    </ExtensionProvider>
-                </LocaleContext.Provider>,
-            </CheckoutProvider>
-        );
-
-        expect(component.contains(<BillingSameAsShippingField />)).toBe(false);
-    });
+        expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(expect.any(Error));
+    })
 });
