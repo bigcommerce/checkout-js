@@ -1,4 +1,3 @@
-import { mount, ReactWrapper } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
@@ -9,7 +8,7 @@ import {
     LocaleContextType,
 } from '@bigcommerce/checkout/locale';
 import { getPaymentMethod, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
-import { LoadingOverlay } from '@bigcommerce/checkout/ui';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import {
     HostedFieldPaymentMethodComponent,
@@ -41,72 +40,71 @@ describe('HostedFieldPaymentMethod', () => {
         );
     });
 
-    it('initializes payment method when component mounts', () => {
-        mount(<HostedFieldPaymentMethodTest {...defaultProps} />);
+    it('renders fields and initializes payment method when component mounts', () => {
+        render(<HostedFieldPaymentMethodTest {...defaultProps} />);
 
         expect(defaultProps.initializePayment).toHaveBeenCalled();
+        expect(screen.getByText('Credit Card Number')).toBeInTheDocument();
     });
 
-    it('deinitializes payment method when component unmounts', () => {
-        const component = mount(<HostedFieldPaymentMethodTest {...defaultProps} />);
+    it('deinitializes payment method and does not render fields when user leaves payment process', () => {
+        const { unmount } = render(<HostedFieldPaymentMethodTest {...defaultProps} />);
 
         expect(defaultProps.deinitializePayment).not.toHaveBeenCalled();
+        expect(screen.getByText('Credit Card Number')).toBeInTheDocument();
 
-        component.unmount();
-
+        unmount();
         expect(defaultProps.deinitializePayment).toHaveBeenCalled();
+        expect(screen.queryByText('Credit Card Number')).not.toBeInTheDocument();
     });
 
     it('renders loading overlay while waiting for method to initialize', () => {
-        let component: ReactWrapper;
+        const { unmount } = render(
+            <HostedFieldPaymentMethodTest {...defaultProps} isInitializing />,
+        );
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        component = mount(<HostedFieldPaymentMethodTest {...defaultProps} isInitializing />);
+        expect(screen.getByRole('status')).toBeInTheDocument();
+        expect(screen.queryByTestId('loading-overlay')).not.toBeInTheDocument();
+        unmount();
+        render(<HostedFieldPaymentMethodTest {...defaultProps} isInitializing={false} />);
 
-        expect(component.find(LoadingOverlay).prop('isLoading')).toBe(true);
-
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        component = mount(<HostedFieldPaymentMethodTest {...defaultProps} />);
-
-        expect(component.find(LoadingOverlay).prop('isLoading')).toBe(false);
+        expect(screen.queryByRole('status')).not.toBeInTheDocument();
     });
 
     it('renders card number placeholder', () => {
-        const component = mount(<HostedFieldPaymentMethodTest {...defaultProps} />);
-
-        expect(component.exists(`#${defaultProps.cardNumberId}`)).toBe(true);
+        render(<HostedFieldPaymentMethodTest {...defaultProps} />);
+        expect(screen.getByText(`Credit Card Number`)).toBeInTheDocument();
     });
 
     it('renders card expiry placeholder', () => {
-        const component = mount(<HostedFieldPaymentMethodTest {...defaultProps} />);
+        render(<HostedFieldPaymentMethodTest {...defaultProps} />);
 
-        expect(component.exists(`#${defaultProps.cardExpiryId}`)).toBe(true);
+        expect(screen.getByText(`Expiration`)).toBeInTheDocument();
     });
 
     it('renders card cvv placeholder if configured', () => {
-        const component = mount(
-            <HostedFieldPaymentMethodTest {...defaultProps} cardCodeId="card-code" />,
-        );
-
-        expect(component.exists('#card-code')).toBe(true);
+        render(<HostedFieldPaymentMethodTest {...defaultProps} cardCodeId="card-code" />);
+        expect(screen.getByText(`CVV`)).toBeInTheDocument();
     });
 
     it('renders postal code placeholder if configured', () => {
-        const component = mount(
-            <HostedFieldPaymentMethodTest {...defaultProps} postalCodeId="postal-code" />,
-        );
+        render(<HostedFieldPaymentMethodTest {...defaultProps} postalCodeId="postal-code" />);
 
-        expect(component.exists('#postal-code')).toBe(true);
+        expect(screen.getByText('Postal Code')).toBeInTheDocument();
     });
 
     it('renders wallet button placeholder if required', () => {
-        const component = mount(
+        render(
             <HostedFieldPaymentMethodTest
                 {...defaultProps}
-                walletButtons={<div id="wallet-button" />}
+                walletButtons={
+                    <label htmlFor="wallet-button" id="wallet-button">
+                        Wallet Button
+                    </label>
+                }
             />,
         );
 
-        expect(component.exists('#wallet-button')).toBe(true);
+        expect(screen.getByText('Wallet Button')).toBeInTheDocument();
     });
 });
