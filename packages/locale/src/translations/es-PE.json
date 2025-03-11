@@ -94,6 +94,7 @@
             "error_heading": "Se produjo un error",
             "leave_warning": "¿Estás seguro de que deseas salir? Es posible que no se guarden los datos que ingresaste.",
             "loading_text": "Cargando",
+            "missing_shipping_method_heading": "Missing shipping method",
             "ok_action": "De acuerdo",
             "error_code": "Código de error:",
             "request_id": "ID de solicitud:",
