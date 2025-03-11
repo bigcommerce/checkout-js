@@ -4,24 +4,24 @@ import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import CreditCardIcon from './CreditCardIcon';
 
-const cardTests = [
-    { cardType: "american-express", expectedText: "Amex" },
-    { cardType: "diners-club", expectedText: "Diners Club" },
-    { cardType: "discover", expectedText: "Discover" },
-    { cardType: "jcb", expectedText: "JCB" },
-    { cardType: "maestro", expectedText: "Maestro" },
-    { cardType: "mastercard", expectedText: "Master" },
-    { cardType: "unionpay", expectedText: "UnionPay" },
-    { cardType: "visa", expectedText: "Visa" },
-    { cardType: "cb", expectedText: "CB" },
-    { cardType: "mada", expectedText: "Mada" },
-    { cardType: "carnet", expectedText: "Carnet" },
-    { cardType: "elo", expectedText: "Elo" },
-    { cardType: "hiper", expectedText: "Hiper" },
-    { cardType: "troy", expectedText: "Troy" },
-];
-
 describe('CreditCardIcon', () => {
+    const cardTests = [
+        { cardType: "american-express", expectedText: "Amex" },
+        { cardType: "diners-club", expectedText: "Diners Club" },
+        { cardType: "discover", expectedText: "Discover" },
+        { cardType: "jcb", expectedText: "JCB" },
+        { cardType: "maestro", expectedText: "Maestro" },
+        { cardType: "mastercard", expectedText: "Master" },
+        { cardType: "unionpay", expectedText: "UnionPay" },
+        { cardType: "visa", expectedText: "Visa" },
+        { cardType: "cb", expectedText: "CB" },
+        { cardType: "mada", expectedText: "Mada" },
+        { cardType: "carnet", expectedText: "Carnet" },
+        { cardType: "elo", expectedText: "Elo" },
+        { cardType: "hiper", expectedText: "Hiper" },
+        { cardType: "troy", expectedText: "Troy" },
+    ];
+
     it.each(cardTests)('returns $cardType card icon', ({ cardType, expectedText }) => {
         render(<CreditCardIcon cardType={cardType} />);
 

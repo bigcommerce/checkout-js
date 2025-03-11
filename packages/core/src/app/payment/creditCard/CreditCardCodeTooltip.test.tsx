@@ -11,9 +11,11 @@ describe('CreditCardCodeTooltip', () => {
     it('renders the tooltip with CVV help text and card icons', () => {
         const localeContext = createLocaleContext(getStoreConfig());
 
-        render(<LocaleContext.Provider value={localeContext}>
-            <CreditCardCodeTooltip />
-        </LocaleContext.Provider>);
+        render(
+            <LocaleContext.Provider value={localeContext}>
+                <CreditCardCodeTooltip />
+            </LocaleContext.Provider>
+        );
 
         expect(screen.getByText('CVV visa, mc, disc')).toBeInTheDocument();
         expect(screen.getAllByRole('figure')).toHaveLength(2);

@@ -2,8 +2,7 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
-import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
-import { CreditCardFieldsetValues } from '@bigcommerce/checkout/payment-integration-api';
+import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils'
 
 import { getStoreConfig } from '../../config/config.mock';
@@ -11,22 +10,16 @@ import { getStoreConfig } from '../../config/config.mock';
 import CreditCardFieldset from './CreditCardFieldset';
 
 describe('CreditCardFieldset', () => {
-    let initialValues: CreditCardFieldsetValues;
-    let localeContext: LocaleContextType;
-
-    beforeEach(() => {
-        initialValues = {
+    it('shows card code field when configured', () => {
+        const initialValues = {
             ccCustomerCode: '',
             ccCvv: '',
             ccExpiry: '',
             ccName: '',
             ccNumber: '',
         };
+        const localeContext = createLocaleContext(getStoreConfig());
 
-        localeContext = createLocaleContext(getStoreConfig());
-    });
-
-    it('shows card code field when configured', () => {
         render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={initialValues} onSubmit={noop}>
