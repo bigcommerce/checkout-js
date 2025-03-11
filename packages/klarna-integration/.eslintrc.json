@@ -5,7 +5,10 @@
       "files": ["*.test.tsx"],
         "rules": {
           "@typescript-eslint/no-unsafe-assignment": "off",
-          "@eslint-disable-next-line": "off"
+          "@eslint-disable-next-line": "off",
+          "@eslint-disable-testing-library/no-container": "off",
+          "testing-library/no-container": "off",
+          "testing-library/no-node-access": "off"
         }
     }
 ]
