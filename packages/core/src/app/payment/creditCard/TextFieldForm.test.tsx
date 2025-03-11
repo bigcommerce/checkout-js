@@ -1,18 +1,19 @@
 import { createCheckoutService } from '@bigcommerce/checkout-sdk';
-import { mount } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
 import { LocaleProvider } from '@bigcommerce/checkout/locale';
-import { DocumentOnlyCustomFormFieldsetValues } from '@bigcommerce/checkout/payment-integration-api';
+import {render, screen} from '@bigcommerce/checkout/test-utils';
 
 import TextFieldForm, { TextFieldFormProps } from './TextFieldForm';
 
 describe('TextFieldForm', () => {
     let defaultProps: TextFieldFormProps;
     let TextFieldFormTest: FunctionComponent<TextFieldFormProps>;
-    let initialValues: DocumentOnlyCustomFormFieldsetValues;
+    let initialValues: {
+        ccDocument?: string;
+    };
 
     beforeEach(() => {
         defaultProps = {
@@ -36,8 +37,8 @@ describe('TextFieldForm', () => {
     });
 
     it('renders text field with provided name', () => {
-        const container = mount(<TextFieldFormTest {...defaultProps} />);
+        render(<TextFieldFormTest {...defaultProps} />);
 
-        expect(container.find('input[id="custom-name"]').exists()).toBe(true);
+        expect(screen.getByLabelText('optimized_checkout.custom-label-id')).toBeInTheDocument();
     });
 });
