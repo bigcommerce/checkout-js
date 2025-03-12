@@ -1,8 +1,8 @@
 import { LanguageService } from '@bigcommerce/checkout-sdk';
-import { mount, shallow } from 'enzyme';
 import React from 'react';
 
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import {render, screen} from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../../config/config.mock';
 
@@ -18,20 +18,19 @@ describe('StoreCreditOverlay', () => {
     });
 
     it('displays "payment is not required" text', () => {
-        const component = mount(
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <StoreCreditOverlay />
             </LocaleContext.Provider>,
         );
 
-        expect(component.text()).toEqual(
-            languageService.translate('payment.payment_not_required_text'),
-        );
+        expect(screen.getByText(languageService.translate('payment.payment_not_required_text'))).toBeInTheDocument();
     });
 
     it('renders component with expected class', () => {
-        const component = shallow(<StoreCreditOverlay />);
+        const { container } = render(<StoreCreditOverlay />);
 
-        expect(component.hasClass('storeCreditOverlay')).toBe(true);
+        // eslint-disable-next-line testing-library/no-container
+        expect(container.querySelector('.storeCreditOverlay')).toBeInTheDocument();
     });
 });
