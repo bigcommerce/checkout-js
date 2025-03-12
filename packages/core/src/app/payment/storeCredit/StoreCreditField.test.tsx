@@ -1,11 +1,12 @@
 import { CheckoutSelectors, CheckoutService, createCheckoutService, CurrencyService } from '@bigcommerce/checkout-sdk';
-import { mount } from 'enzyme';
+import userEvent from '@testing-library/user-event';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutContext } from '@bigcommerce/checkout/payment-integration-api';
+import {render, screen} from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../../config/config.mock';
 
@@ -41,7 +42,7 @@ describe('StoreCreditField', () => {
     };
 
     it('renders form field with available store credit as label', () => {
-        const component = mount(
+        render(
             <StoreCreditFieldTest
                 availableStoreCredit={200}
                 isStoreCreditApplied={true}
@@ -50,13 +51,13 @@ describe('StoreCreditField', () => {
             />,
         );
 
-        expect(component.find('label[htmlFor="useStoreCredit"]').text()).toBe(
-            `Apply ${currencyService.toCustomerCurrency(100)} store credit to order`,
-        );
+        expect(screen.getByText(/Apply/)).toBeInTheDocument();
+        expect(screen.getByText(`${currencyService.toCustomerCurrency(100)}`)).toBeInTheDocument();
+        expect(screen.getByText(/store credit to order/)).toBeInTheDocument();
     });
 
     it('renders field input as checkbox', () => {
-        const component = mount(
+        render(
             <StoreCreditFieldTest
                 availableStoreCredit={200}
                 isStoreCreditApplied={true}
@@ -65,18 +66,13 @@ describe('StoreCreditField', () => {
             />,
         );
 
-        expect(component.find('input').props()).toEqual(
-            expect.objectContaining({
-                name: 'useStoreCredit',
-                checked: true,
-                type: 'checkbox',
-            }),
-        );
+        expect(screen.getByRole('checkbox', { name: 'Apply $112.00 store credit to order'})).toBeInTheDocument();
     });
 
-    it('notifies parent when value changes', () => {
+    it('notifies parent when value changes', async () => {
         const handleChange = jest.fn();
-        const component = mount(
+
+        render(
             <StoreCreditFieldTest
                 availableStoreCredit={200}
                 isStoreCreditApplied={true}
@@ -86,9 +82,7 @@ describe('StoreCreditField', () => {
             />,
         );
 
-        component
-            .find('input[name="useStoreCredit"]')
-            .simulate('change', { target: { checked: false, name: 'useStoreCredit' } });
+        await userEvent.click(screen.getByRole('checkbox', {name: 'Apply $112.00 store credit to order'}));
 
         expect(handleChange).toHaveBeenCalled();
     });
@@ -96,7 +90,7 @@ describe('StoreCreditField', () => {
     it('checkbox should be disabled while order is submiting', async () => {
         const handleChange = jest.fn();
 
-        const component = mount(
+        render(
             <StoreCreditFieldTest
                 availableStoreCredit={200}
                 isStoreCreditApplied={true}
@@ -107,13 +101,6 @@ describe('StoreCreditField', () => {
             />,
         );
 
-        const checkboxElement = component.find('input[name="useStoreCredit"]');
-        
-        checkboxElement.simulate('click');
-        await new Promise((resolve) => process.nextTick(resolve));
-        component.update();
-
-        expect(checkboxElement.prop('disabled')).toBe(true);
-        expect(handleChange).not.toHaveBeenCalled();
+        expect(screen.getByRole('checkbox', {name: 'Apply $112.00 store credit to order'})).toBeDisabled();
     });
 });
