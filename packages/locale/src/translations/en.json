@@ -218,6 +218,9 @@
                 "only_numbers": "Routing Number must contain only numbers",
                 "length": "Routing Number must be 9 digits long"
             },
+            "bluesnap_direct_company_name": {
+               "length_max": "Company Name is too long"
+            },
             "bluesnap_direct_account_type": {
                 "label": "Account Type",
                 "is_required": "Account Type is required"

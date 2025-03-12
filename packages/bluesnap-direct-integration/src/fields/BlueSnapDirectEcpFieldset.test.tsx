@@ -3,7 +3,9 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
-import { render } from '@bigcommerce/checkout/test-utils';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
+
+import { BluesnapECPAccountType } from '../constants';
 
 import BlueSnapDirectEcpFieldset, {
     BlueSnapDirectEcpFieldsetProps,
@@ -17,19 +19,42 @@ describe('BlueSnapDirectEcpFieldset', () => {
         initialValues = {
             accountNumber: '',
             routingNumber: '',
+            companyName: '',
+            accountType: BluesnapECPAccountType.ConsumerChecking,
         };
         options = {
             language: createLanguageService(),
+            shouldRenderCompanyName: true,
         };
     });
 
-    it('matches snapshot', () => {
+    it('renders BlueSnapDirectEcpFieldset', () => {
         expect(
             render(
                 <Formik initialValues={initialValues} onSubmit={noop}>
                     <BlueSnapDirectEcpFieldset {...options} />
                 </Formik>,
             ),
-        ).toMatchSnapshot();
+        );
+        expect(screen.getByTestId('companyName-text')).toBeInTheDocument();
+        expect(screen.getByTestId('accountNumber-text')).toBeInTheDocument();
+        expect(screen.getByTestId('routingNumber-text')).toBeInTheDocument();
+        expect(screen.getByTestId('accountType-select')).toBeInTheDocument();
+    });
+
+    it("doesn't show company name field", () => {
+        options = {
+            ...options,
+            shouldRenderCompanyName: false,
+        };
+        render(
+            <Formik initialValues={initialValues} onSubmit={noop}>
+                <BlueSnapDirectEcpFieldset {...options} />
+            </Formik>,
+        );
+        expect(screen.getByTestId('accountNumber-text')).toBeInTheDocument();
+        expect(screen.getByTestId('routingNumber-text')).toBeInTheDocument();
+        expect(screen.getByTestId('accountType-select')).toBeInTheDocument();
+        expect(screen.queryByTestId('companyName-text')).not.toBeInTheDocument();
     });
 });
