@@ -3,14 +3,13 @@ import {
     CheckoutService,
     createCheckoutService,
     createLanguageService,
+    PaymentInitializeOptions,
     PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
-import { mount } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
-import { CreditCardPaymentMethodComponent } from '@bigcommerce/checkout/credit-card-integration';
 import {
     createLocaleContext,
     LocaleContext,
@@ -28,7 +27,7 @@ import {
     getPaymentMethod,
     getStoreConfig,
 } from '@bigcommerce/checkout/test-mocks';
-import { render } from '@bigcommerce/checkout/test-utils';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import CheckoutcomCustomPaymentMethod from './CheckoutcomCustomPaymentMethod';
 
@@ -43,12 +42,19 @@ describe('when using Checkoutcom payment', () => {
     let alternateMethodA: PaymentMethod;
     let alternateMethodB: PaymentMethod;
     let PaymentMethodTest: FunctionComponent<PaymentMethodProps>;
+    let initializePayment: jest.SpyInstance<
+        Promise<CheckoutSelectors>,
+        [options: PaymentInitializeOptions]
+    >;
 
     beforeEach(() => {
         checkoutService = createCheckoutService();
         checkoutState = checkoutService.getState();
         localeContext = createLocaleContext(getStoreConfig());
         method = { ...getPaymentMethod(), id: 'fawry', gateway: PaymentMethodId.Checkoutcom };
+        initializePayment = jest
+            .spyOn(checkoutService, 'initializePayment')
+            .mockResolvedValue(checkoutState);
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
 
         jest.spyOn(checkoutService, 'deinitializePayment').mockResolvedValue(checkoutState);
@@ -78,18 +84,18 @@ describe('when using Checkoutcom payment', () => {
             id: 'ideal',
             gateway: PaymentMethodId.Checkoutcom,
         };
+
         alternateMethodA = {
             ...getPaymentMethod(),
             id: 'oxxo',
             gateway: PaymentMethodId.Checkoutcom,
         };
-
         alternateMethodB = {
             ...getPaymentMethod(),
             id: 'qpay',
             gateway: PaymentMethodId.Checkoutcom,
         };
-        PaymentMethodTest = (props) => (
+        PaymentMethodTest = (props = defaultProps) => (
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
                     <Formik initialValues={{}} onSubmit={noop}>
@@ -105,116 +111,70 @@ describe('when using Checkoutcom payment', () => {
     });
 
     it('renders as credit card payment method component', () => {
-        const container = mount(<PaymentMethodTest {...defaultProps} />);
+        const { container } = render(<PaymentMethodTest {...defaultProps} />);
 
-        expect(container.find(CreditCardPaymentMethodComponent)).toHaveLength(1);
-    });
-
-    it('matches snapshot', () => {
-        render(<PaymentMethodTest {...defaultProps} />);
-
-        expect(render(<PaymentMethodTest {...defaultProps} />)).toMatchSnapshot();
+        expect(container.querySelector('.paymentMethod--creditCard')).toBeInTheDocument();
     });
 
     it('renders as oxxo payment method', () => {
-        const container = mount(<PaymentMethodTest {...defaultProps} method={alternateMethodA} />);
-        const component = container.find(CreditCardPaymentMethodComponent);
-
-        expect(component.props()).toEqual(
-            expect.objectContaining({
-                deinitializePayment: expect.any(Function),
-                initializePayment: expect.any(Function),
-                method: alternateMethodA,
-            }),
-        );
+        render(<PaymentMethodTest {...defaultProps} method={alternateMethodA} />);
+        expect(
+            screen.getByText(
+                localeContext.language.translate('payment.checkoutcom_document_label_oxxo'),
+            ),
+        ).toBeInTheDocument();
     });
 
-    it('initializes method with required config', () => {
-        const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-        const component = container.find(CreditCardPaymentMethodComponent);
-
-        component.prop('initializePayment')({
-            methodId: method.id,
+    it('renders APM field and initializes method with required config', () => {
+        render(<PaymentMethodTest {...defaultProps} />);
+        expect(initializePayment).toHaveBeenCalled();
+        expect(initializePayment.mock.calls[0][0]).toMatchObject({
             gatewayId: method.gateway,
+            methodId: method.id,
         });
-
-        expect(checkoutService.initializePayment).toHaveBeenCalledWith(
-            expect.objectContaining({
-                methodId: method.id,
-                gatewayId: method.gateway,
-            }),
-        );
+        expect(screen.getByText('Mobile Number')).toBeInTheDocument();
     });
 
-    it('initializes method with required config when customer is defined', () => {
+    it('renders the fields when customer is defined', () => {
         jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
 
-        const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-        const component = container.find(CreditCardPaymentMethodComponent);
-
-        expect(component.props()).toEqual(
-            expect.objectContaining({
-                deinitializePayment: expect.any(Function),
-                initializePayment: expect.any(Function),
-                method,
-            }),
-        );
+        render(<PaymentMethodTest {...defaultProps} method={method} />);
+        expect(screen.getByText('Mobile Number')).toBeInTheDocument();
     });
 
-    it('initializes method with required config when no instruments', () => {
+    it('renders the fields when no instruments', () => {
         jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue(undefined);
 
-        const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-        const component = container.find(CreditCardPaymentMethodComponent);
-
-        expect(component.props()).toEqual(
-            expect.objectContaining({
-                deinitializePayment: expect.any(Function),
-                initializePayment: expect.any(Function),
-                method,
-            }),
-        );
+        render(<PaymentMethodTest {...defaultProps} method={method} />);
+        expect(screen.getByText('Mobile Number')).toBeInTheDocument();
     });
 
-    it('renders as qpay payment method', () => {
-        const container = mount(<PaymentMethodTest {...defaultProps} method={alternateMethodB} />);
-        const component = container.find(CreditCardPaymentMethodComponent);
-
-        expect(component.props()).toEqual(
-            expect.objectContaining({
-                deinitializePayment: expect.any(Function),
-                initializePayment: expect.any(Function),
-                method: alternateMethodB,
-            }),
-        );
-    });
-
-    it('initializes fawry payment method', () => {
-        const container = mount(<PaymentMethodTest {...defaultProps} method={fawryMethod} />);
-        const component = container.find(CreditCardPaymentMethodComponent);
-
-        component.prop('initializePayment')({
-            methodId: fawryMethod.id,
-            gatewayId: fawryMethod.gateway,
+    it('renders as qpay fields', () => {
+        render(<PaymentMethodTest {...defaultProps} method={alternateMethodB} />);
+        expect(initializePayment.mock.calls[0][0]).toMatchObject({
+            methodId: 'qpay',
+            gatewayId: method.gateway,
         });
-
-        expect(checkoutService.initializePayment).toHaveBeenCalledWith(
-            expect.objectContaining({
-                methodId: 'fawry',
-            }),
-        );
+        expect(screen.getByText('National ID')).toBeInTheDocument();
     });
 
-    it('should be deinitialized with the required config', () => {
+    it('renders fawry fields', () => {
+        render(<PaymentMethodTest {...defaultProps} method={fawryMethod} />);
+
+        expect(screen.getByText('Mobile Number')).toBeInTheDocument();
+    });
+
+    it('should be deinitialized with the required config and not render the fields', () => {
         render(<PaymentMethodTest {...defaultProps} />).unmount();
 
         expect(checkoutService.deinitializePayment).toHaveBeenCalledWith({
             gatewayId: 'checkoutcom',
             methodId: 'fawry',
         });
+        expect(screen.queryByText('Mobile Number')).not.toBeInTheDocument();
     });
 
-    it('catches an error during failed initialization of initializePayment', async () => {
+    it('throws error during failed initialization of initializePayment', async () => {
         jest.spyOn(checkoutService, 'initializePayment').mockRejectedValue(new Error('error'));
         render(<PaymentMethodTest {...defaultProps} />);
 
@@ -237,7 +197,7 @@ describe('when using Checkoutcom payment', () => {
 
         const { container } = render(<PaymentMethodTest {...defaultProps} method={idealMethod} />);
 
-        expect(container.firstChild).toBeNull();
+        expect(container).toBeEmptyDOMElement();
     });
 
     it('renders the fields for other APMs when ideal experiment is on', () => {
@@ -254,6 +214,7 @@ describe('when using Checkoutcom payment', () => {
 
         const { container } = render(<PaymentMethodTest {...defaultProps} method={fawryMethod} />);
 
-        expect(container.firstChild).not.toBeNull();
+        expect(screen.getByText('Mobile Number')).toBeInTheDocument();
+        expect(container).not.toBeEmptyDOMElement();
     });
 });

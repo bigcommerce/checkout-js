@@ -3,7 +3,7 @@ import {
     CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
-import { mount, ReactWrapper } from 'enzyme';
+import userEvent from '@testing-library/user-event';
 import { EventEmitter } from 'events';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
@@ -33,13 +33,9 @@ import {
     getPaymentMethod,
     getStoreConfig,
 } from '@bigcommerce/checkout/test-mocks';
-import { DropdownTrigger } from '@bigcommerce/checkout/ui';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import checkoutcomCustomFormFields, {
-    ccDocumentField,
-    HiddenInput,
-    OptionButton,
-} from './CheckoutcomCustomFormFields';
+import checkoutcomCustomFormFields, { ccDocumentField } from './CheckoutcomCustomFormFields';
 
 const getAPMProps = {
     ideal: () => ({
@@ -231,11 +227,11 @@ describe('CheckoutCustomFormFields', () => {
 
     describe('Sepa form fieldset', () => {
         const SepaFormFieldset = checkoutcomCustomFormFields.sepa;
-        let component: ReactWrapper;
         const sepaProps = getAPMProps.sepa();
+        const user = userEvent.setup();
 
-        beforeEach(() => {
-            component = mount(
+        it('should render the sepa fieldset', () => {
+            render(
                 <CheckoutcomAPMsTest
                     {...sepaProps}
                     cardFieldset={
@@ -243,24 +239,64 @@ describe('CheckoutCustomFormFields', () => {
                     }
                 />,
             );
+            expect(
+                screen.getByText(localeContext.language.translate('payment.sepa_account_number')),
+            ).toBeInTheDocument();
+
+            expect(
+                screen.getByText(
+                    localeContext.language.translate(
+                        'payment.checkoutcom_sepa_mandate_disclaimer',
+                        { creditorName: 'sepaCreditorCompanyName' },
+                    ),
+                ),
+            ).toBeInTheDocument();
         });
 
-        it('should render the sepa fieldset', () => {
-            expect(component.find('input[name="iban"]')).toHaveLength(1);
-            expect(component.find('input[name="sepaMandate"]')).toHaveLength(1);
+        it('renders form with initial values', () => {
+            render(
+                <CheckoutcomAPMsTest
+                    {...sepaProps}
+                    cardFieldset={
+                        <SepaFormFieldset debtor={billingAddress} method={sepaProps.method} />
+                    }
+                />,
+            );
+
+            expect(paymentForm.disableSubmit).toHaveBeenLastCalledWith(sepaProps.method, true);
         });
 
-        it('should call toggleSubmitButton on checkbox checked', () => {
-            const checkbox = component.find('input[name="sepaMandate"]');
+        it('submit button is toggled when user checks permission checkbox', async () => {
+            render(
+                <CheckoutcomAPMsTest
+                    {...sepaProps}
+                    cardFieldset={
+                        <SepaFormFieldset debtor={billingAddress} method={sepaProps.method} />
+                    }
+                />,
+            );
 
-            checkbox.simulate('change', { target: { name: 'sepaMandate', value: true } });
+            const permissionChangeCheckbox = screen.getByText(
+                localeContext.language.translate('payment.checkoutcom_sepa_mandate_disclaimer', {
+                    creditorName: 'sepaCreditorCompanyName',
+                }),
+            );
 
+            await user.click(permissionChangeCheckbox);
             expect(paymentForm.disableSubmit).toHaveBeenLastCalledWith(sepaProps.method, false);
+            await user.click(permissionChangeCheckbox);
+            expect(paymentForm.disableSubmit).toHaveBeenLastCalledWith(sepaProps.method, true);
         });
 
-        it('should call disableSubmit on useEffect cleanup function', () => {
-            component.unmount();
-
+        it('submit button should be disabled on useEffect cleanup function', () => {
+            render(
+                <CheckoutcomAPMsTest
+                    {...sepaProps}
+                    cardFieldset={
+                        <SepaFormFieldset debtor={billingAddress} method={sepaProps.method} />
+                    }
+                />,
+            ).unmount();
             expect(paymentForm.disableSubmit).toHaveBeenLastCalledWith(sepaProps.method, false);
         });
 
@@ -271,48 +307,78 @@ describe('CheckoutCustomFormFields', () => {
 
     describe('iDeal', () => {
         const IdealFormFieldset = checkoutcomCustomFormFields.ideal;
-        let component: ReactWrapper;
+        const idealProps = getAPMProps.ideal();
+        const user = userEvent.setup();
 
-        beforeEach(() => {
-            const idealProps = getAPMProps.ideal();
-
-            component = mount(
+        it('Shopper is able to see iDeal Payment Method', () => {
+            render(
                 <CheckoutcomAPMsTest
                     {...idealProps}
                     cardFieldset={<IdealFormFieldset method={idealProps.method} />}
                 />,
             );
+            expect(
+                screen.getByRole('button', {
+                    name: 'Your bank',
+                }),
+            ).toBeInTheDocument();
         });
 
-        it('Shopper is able to see iDeal Payment Method', () => {
-            expect(component.find('input[type="hidden"]')).toHaveLength(1);
-        });
+        it('Shopper selects an Issuer from dropdown', async () => {
+            render(
+                <CheckoutcomAPMsTest
+                    {...idealProps}
+                    cardFieldset={<IdealFormFieldset method={idealProps.method} />}
+                />,
+            );
 
-        it('Shopper selects an Issuer from dropdown', () => {
-            component.find(DropdownTrigger).simulate('click');
-            component.find(OptionButton).at(0).simulate('click');
-
-            expect(component.find(HiddenInput).props()).toEqual(
-                expect.objectContaining({
-                    selectedIssuer: 'INGBNL2A',
+            await user.click(
+                screen.getByRole('button', {
+                    name: 'Your bank',
                 }),
             );
+            expect(
+                screen.getByRole('button', {
+                    name: 'Your bank',
+                }),
+            ).toBeInTheDocument();
+            expect(
+                screen.getAllByRole('button', {
+                    name: 'INGBNL2A / Issuer Simulation V3 - ING',
+                }),
+            ).toHaveLength(1);
+            await user.click(screen.getByText('INGBNL2A / Issuer Simulation V3 - ING'));
+
+            expect(
+                screen.getAllByRole('button', {
+                    name: 'INGBNL2A / Issuer Simulation V3 - ING',
+                }),
+            ).toHaveLength(2);
         });
     });
 
     describe('ccDocument form fieldset', () => {
         const CcDocumentFormFieldset = ccDocumentField;
 
-        it('should render the ideal fieldset', () => {
+        it('should render the oxxo fieldset', () => {
             const oxxoProps = getAPMProps.oxxo();
-            const compoonent = mount(
+
+            expect(
+                screen.queryByText(
+                    localeContext.language.translate('payment.checkoutcom_document_label_oxxo'),
+                ),
+            ).not.toBeInTheDocument();
+            render(
                 <CheckoutcomAPMsTest
                     {...oxxoProps}
                     cardFieldset={<CcDocumentFormFieldset method={oxxoProps.method} />}
                 />,
             );
-
-            expect(compoonent.find('input[name="ccDocument"]')).toHaveLength(1);
+            expect(
+                screen.getByText(
+                    localeContext.language.translate('payment.checkoutcom_document_label_oxxo'),
+                ),
+            ).toBeInTheDocument();
         });
     });
 
@@ -321,15 +387,28 @@ describe('CheckoutCustomFormFields', () => {
 
         it('Shopper is able to see Fawry Payment Method', () => {
             const fawryProps = getAPMProps.fawry();
-            const component = mount(
+
+            render(
                 <CheckoutcomAPMsTest
                     {...fawryProps}
                     cardFieldset={<FawryFormFieldset method={fawryProps.method} />}
                 />,
             );
+            expect(
+                screen.getByText(
+                    localeContext.language.translate(
+                        'payment.checkoutcom_fawry_customer_mobile_label',
+                    ),
+                ),
+            ).toBeInTheDocument();
 
-            expect(component.find('input[name="customerMobile"]')).toHaveLength(1);
-            expect(component.find('input[name="customerEmail"]')).toHaveLength(1);
+            expect(
+                screen.getByText(
+                    localeContext.language.translate(
+                        'payment.checkoutcom_fawry_customer_email_label',
+                    ),
+                ),
+            ).toBeInTheDocument();
         });
     });
 });

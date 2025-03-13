@@ -4,7 +4,7 @@
   ],
   "overrides": [
     {
-      "files": [ "*test.tsx", "*spec.tsx"],
+      "files": [ "*test.tsx"],
       "rules": {
         "@typescript-eslint/no-unsafe-return": "off",
         "@typescript-eslint/consistent-type-assertions": "off",
@@ -13,6 +13,8 @@
         "@typescript-eslint/no-unnecessary-condition": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/no-unsafe-member-access": "off",
+        "testing-library/no-container": "off",
+        "testing-library/no-node-access": "off",
         "no-nested-ternary": "off",
         "@bigcommerce/jsx-short-circuit-conditionals": "off",
         "@typescript-eslint/default-param-last": "off",
