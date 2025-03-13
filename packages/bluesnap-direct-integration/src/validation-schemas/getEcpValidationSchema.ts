@@ -5,6 +5,7 @@ import { object, ObjectSchema, string } from 'yup';
 export default memoize(function getEcpValidationSchema(
     language: LanguageService,
     shouldRenderFields: boolean,
+    shouldRenderCompanyName: boolean,
 ): ObjectSchema {
     const schema = {
         ...(!shouldRenderFields ? { instrumentId: string().required() } : {}),
@@ -35,6 +36,18 @@ export default memoize(function getEcpValidationSchema(
                           9,
                           language.translate('payment.bluesnap_direct_routing_number.length'),
                       ),
+                  ...(shouldRenderCompanyName
+                      ? {
+                            companyName: string()
+                                .required(language.translate('address.company_name_required_error'))
+                                .max(
+                                    50,
+                                    language.translate(
+                                        'payment.bluesnap_direct_company_name.length_max',
+                                    ),
+                                ),
+                        }
+                      : {}),
                   accountType: string().required(
                       language.translate('payment.bluesnap_direct_account_type.is_required'),
                   ),
