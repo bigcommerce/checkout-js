@@ -1,16 +1,15 @@
-import { mount } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CardInstrumentFieldsetValues } from '@bigcommerce/checkout/payment-integration-api';
+import {render, screen} from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../../config/config.mock';
 
 import CardInstrumentFieldset, { CardInstrumentFieldsetProps } from './CardInstrumentFieldset';
 import { getInstruments } from './instruments.mock';
-import InstrumentSelect from './InstrumentSelect';
 import isCardInstrument from './isCardInstrument';
 
 describe('CardInstrumentFieldset', () => {
@@ -34,7 +33,7 @@ describe('CardInstrumentFieldset', () => {
     });
 
     it('shows instrument dropdown', () => {
-        const component = mount(
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={initialValues} onSubmit={noop}>
                     <CardInstrumentFieldset {...defaultProps} />
@@ -42,13 +41,15 @@ describe('CardInstrumentFieldset', () => {
             </LocaleContext.Provider>,
         );
 
-        expect(component.find(InstrumentSelect)).toHaveLength(1);
+        expect(screen.getByText('Visa ending in 4321')).toBeInTheDocument();
+        expect(screen.getByText('Expires 02/2026')).toBeInTheDocument();
+        expect(screen.getByTestId('instrument-select')).toBeInTheDocument();
     });
 
     it('shows the validation form when an instrument is selected', () => {
         const ValidateInstrument = () => <span>test</span>;
 
-        const component = mount(
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={initialValues} onSubmit={noop}>
                     <CardInstrumentFieldset
@@ -59,13 +60,13 @@ describe('CardInstrumentFieldset', () => {
             </LocaleContext.Provider>,
         );
 
-        expect(component.find(ValidateInstrument)).toHaveLength(1);
+        expect(screen.getByText('test')).toBeInTheDocument();
     });
 
-    it('shows the validation form when an instrument is selected', () => {
-        const ValidateInstrument = () => <span>test</span>;
+    it('shows the validation form when an instrument is not selected', () => {
+        const ValidateInstrument = () => <span>test2</span>;
 
-        const component = mount(
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={initialValues} onSubmit={noop}>
                     <CardInstrumentFieldset
@@ -77,6 +78,6 @@ describe('CardInstrumentFieldset', () => {
             </LocaleContext.Provider>,
         );
 
-        expect(component.find(ValidateInstrument)).toHaveLength(1);
+        expect(screen.getByText('test2')).toBeInTheDocument();
     });
 });

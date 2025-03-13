@@ -1,23 +1,21 @@
 import { createLanguageService, LanguageService } from '@bigcommerce/checkout-sdk';
 
-import { CardInstrumentFieldsetValues } from '@bigcommerce/checkout/payment-integration-api';
-
 import getInstrumentValidationSchema from './getInstrumentValidationSchema';
 
 describe('getInstrumentValidationSchema()', () => {
     let language: LanguageService;
-    let validData: CardInstrumentFieldsetValues;
+    const validData = {
+        ccCvv: '123',
+        ccNumber: '4111 1111 1111 1111',
+        instrumentId: 'abc123',
+    };
 
     beforeEach(() => {
         language = createLanguageService();
 
         jest.spyOn(language, 'translate').mockImplementation((key) => key);
 
-        validData = {
-            ccCvv: '123',
-            ccNumber: '4111 1111 1111 1111',
-            instrumentId: 'abc123',
-        };
+
     });
 
     it('does not throw error if data is valid', () => {

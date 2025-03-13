@@ -1,12 +1,11 @@
-import { mount } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import {render, screen} from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../../config/config.mock';
-import { CreditCardCodeField, CreditCardNumberField } from '../creditCard';
 
 import CreditCardValidation from './CreditCardValidation';
 
@@ -18,7 +17,7 @@ describe('CreditCardValidation', () => {
     });
 
     it('shows card number field if configured', () => {
-        const component = mount(
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={{}} onSubmit={noop}>
                     <CreditCardValidation
@@ -29,11 +28,13 @@ describe('CreditCardValidation', () => {
             </LocaleContext.Provider>,
         );
 
-        expect(component.find(CreditCardNumberField)).toHaveLength(1);
+        expect(screen.getByText('Please re-enter your card number to authorize this transaction.')).toBeInTheDocument();
+        expect(screen.getByLabelText('CVV')).toBeInTheDocument();
+        expect(screen.getByLabelText('Credit Card Number')).toBeInTheDocument();
     });
 
     it('hides card number field if configured', () => {
-        const component = mount(
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={{}} onSubmit={noop}>
                     <CreditCardValidation
@@ -44,11 +45,11 @@ describe('CreditCardValidation', () => {
             </LocaleContext.Provider>,
         );
 
-        expect(component.find(CreditCardNumberField)).toHaveLength(0);
+        expect(screen.queryByLabelText('Credit Card Number')).not.toBeInTheDocument();
     });
 
     it('shows card code field if configured', () => {
-        const component = mount(
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={{}} onSubmit={noop}>
                     <CreditCardValidation
@@ -59,11 +60,12 @@ describe('CreditCardValidation', () => {
             </LocaleContext.Provider>,
         );
 
-        expect(component.find(CreditCardCodeField)).toHaveLength(1);
+        expect(screen.getByLabelText('CVV')).toBeInTheDocument();
+        expect(screen.getByLabelText('Credit Card Number')).toBeInTheDocument();
     });
 
     it('hides card code field if configured', () => {
-        const component = mount(
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={{}} onSubmit={noop}>
                     <CreditCardValidation
@@ -74,6 +76,7 @@ describe('CreditCardValidation', () => {
             </LocaleContext.Provider>,
         );
 
-        expect(component.find(CreditCardCodeField)).toHaveLength(0);
+        expect(screen.queryByLabelText('CVV')).not.toBeInTheDocument();
+        expect(screen.getByLabelText('Credit Card Number')).toBeInTheDocument();
     });
 });

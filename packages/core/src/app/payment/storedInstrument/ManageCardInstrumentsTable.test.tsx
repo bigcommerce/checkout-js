@@ -1,11 +1,11 @@
-import { mount, render } from 'enzyme';
+import userEvent from '@testing-library/user-event';
 import React from 'react';
 
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import { getYear } from '@bigcommerce/checkout/test-mocks';
+import {render, screen} from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../../config/config.mock';
-import { LoadingOverlay } from '../../ui/loading';
 
 import { getInstruments } from './instruments.mock';
 import ManageCardInstrumentsTable, {
@@ -29,31 +29,26 @@ describe('ManageCardInstrumentsTable', () => {
     });
 
     it('renders instrument as row in table', () => {
-        const component = mount(
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <ManageCardInstrumentsTable {...defaultProps} />
             </LocaleContext.Provider>,
         );
 
-        expect(component.find('[data-test="manage-instrument-cardType"]').at(0).text()).toBe(
-            'VisaVisa',
-        );
-
-        expect(component.find('[data-test="manage-instrument-last4"]').at(0).text()).toBe('4321');
-
-        expect(component.find('[data-test="manage-instrument-expiry"]').at(0).text()).toBe(
-            `02/${getYear(1)}`,
-        );
+        expect(screen.getAllByText('Delete')).toHaveLength(2);
+        expect(screen.getByText('American Express')).toBeInTheDocument();
+        expect(screen.getAllByText('Visa')).toHaveLength(2);
+        expect(screen.getByText(`02/${getYear(1)}`)).toBeInTheDocument();
     });
 
-    it('triggers callback when delete button is clicked', () => {
-        const component = mount(
+    it('triggers callback when delete button is clicked', async () => {
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <ManageCardInstrumentsTable {...defaultProps} />
             </LocaleContext.Provider>,
         );
 
-        component.find('[data-test="manage-instrument-delete-button"]').at(1).simulate('click');
+        await userEvent.click(screen.getAllByText('Delete')[1]);
 
         expect(defaultProps.onDeleteInstrument).toHaveBeenCalledWith(
             defaultProps.instruments[1].bigpayToken,
@@ -61,24 +56,23 @@ describe('ManageCardInstrumentsTable', () => {
     });
 
     it('renders message if there are no available instruments', () => {
-        const component = mount(
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <ManageCardInstrumentsTable {...defaultProps} instruments={[]} />
             </LocaleContext.Provider>,
         );
 
-        expect(component.text()).toEqual(
-            localeContext.language.translate('payment.instrument_manage_modal_empty_text'),
-        );
+        expect(screen.getByText(localeContext.language.translate('payment.instrument_manage_modal_empty_text'))).toBeInTheDocument();
     });
 
     it('shows loading overlay when deleting', () => {
-        const component = mount(
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <ManageCardInstrumentsTable {...defaultProps} isDeletingInstrument={true} />
             </LocaleContext.Provider>,
         );
 
-        expect(component.find(LoadingOverlay).prop('isLoading')).toBe(true);
+        // eslint-disable-next-line testing-library/no-node-access
+        expect(document.querySelector('.loadingOverlay')).toBeInTheDocument();
     });
 });

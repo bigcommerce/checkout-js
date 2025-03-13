@@ -1,9 +1,9 @@
-import { mount } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import {render, screen} from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../../config/config.mock';
 
@@ -11,7 +11,6 @@ import AccountInstrumentFieldset, {
     AccountInstrumentFieldsetProps,
     AccountInstrumentFieldsetValues,
 } from './AccountInstrumentFieldset';
-import AccountInstrumentSelect from './AccountInstrumentSelect';
 import { getInstruments } from './instruments.mock';
 import isAccountInstrument from './isAccountInstrument';
 
@@ -38,7 +37,7 @@ describe('AccountInstrumentFieldset', () => {
     });
 
     it('shows instrument dropdown', () => {
-        const component = mount(
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={initialValues} onSubmit={noop}>
                     <AccountInstrumentFieldset {...defaultProps} />
@@ -46,11 +45,13 @@ describe('AccountInstrumentFieldset', () => {
             </LocaleContext.Provider>,
         );
 
-        expect(component.find(AccountInstrumentSelect)).toHaveLength(1);
+        expect(screen.getByText('Stored accounts')).toBeInTheDocument();
+        expect(screen.getByText('Manage')).toBeInTheDocument();
+        expect(screen.getByText('test@external-id.com')).toBeInTheDocument();
     });
 
     it('shows the new address message when the list of instruments is empty', () => {
-        const component = mount(
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={initialValues} onSubmit={noop}>
                     <AccountInstrumentFieldset {...defaultProps} instruments={[]} />
@@ -58,18 +59,7 @@ describe('AccountInstrumentFieldset', () => {
             </LocaleContext.Provider>,
         );
 
-        expect(component.find('.instrumentSelect-note')).toHaveLength(1);
-    });
-
-    it('shows the dropdown when the list of instruments is empty', () => {
-        const component = mount(
-            <LocaleContext.Provider value={localeContext}>
-                <Formik initialValues={initialValues} onSubmit={noop}>
-                    <AccountInstrumentFieldset {...defaultProps} instruments={[]} />
-                </Formik>
-            </LocaleContext.Provider>,
-        );
-
-        expect(component.find(AccountInstrumentSelect)).toHaveLength(1);
+        expect(screen.getByText('Use a different account')).toBeInTheDocument();
+        expect(screen.getByText('We noticed this is a new shipping address.')).toBeInTheDocument();
     });
 });
