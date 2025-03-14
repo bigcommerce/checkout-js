@@ -65,9 +65,6 @@ describe('ManageInstrumentsModal', () => {
         await userEvent.click(screen.getByText('Yes, delete'));
 
         expect(checkoutService.deleteInstrument).toHaveBeenCalledWith(instruments[0].bigpayToken);
-
-        await new Promise((resolve) => process.nextTick(resolve));
-
         expect(defaultProps.onRequestClose).toHaveBeenCalled();
     });
 
@@ -126,7 +123,7 @@ describe('ManageInstrumentsModal', () => {
 
         await userEvent.click(screen.getAllByText('Delete')[0]);
 
-        expect(screen.getByText(localeContext.language.translate('payment.instrument_manage_modal_confirmation_label'))).toBeInTheDocument();
+        expect(await screen.findByText(localeContext.language.translate('payment.instrument_manage_modal_confirmation_label'))).toBeInTheDocument();
     });
 
     it('shows list of instruments if user decides to cancel their action', async () => {
