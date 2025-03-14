@@ -3,7 +3,7 @@ import React from 'react';
 
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import { getYear } from '@bigcommerce/checkout/test-mocks';
-import {render, screen} from '@bigcommerce/checkout/test-utils';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../../config/config.mock';
 

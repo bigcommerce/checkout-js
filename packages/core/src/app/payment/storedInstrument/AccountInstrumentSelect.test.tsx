@@ -1,4 +1,4 @@
-import {fireEvent} from '@testing-library/react';
+import { fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Field, FieldProps, Formik } from 'formik';
 import { noop } from 'lodash';
@@ -6,7 +6,7 @@ import React from 'react';
 import { Omit } from 'utility-types';
 
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
-import {render, screen} from '@bigcommerce/checkout/test-utils';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../../config/config.mock';
 

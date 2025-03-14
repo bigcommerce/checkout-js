@@ -2,7 +2,7 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
-import {render, screen} from '@bigcommerce/checkout/test-utils';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../../config/config.mock';
 
