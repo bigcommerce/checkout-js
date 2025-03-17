@@ -94,6 +94,7 @@
             "error_heading": "Noget gik galt",
             "leave_warning": "Er du sikker på, at du vil afslutte? Data, du har indtastet, bliver muligvis ikke gemt.",
             "loading_text": "Indlæser",
+            "missing_shipping_method_heading": "Shipping method unavailable",
             "ok_action": "OK",
             "error_code": "Fejlkode:",
             "request_id": "Anmodnings-ID:",

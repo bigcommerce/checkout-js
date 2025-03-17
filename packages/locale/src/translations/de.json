@@ -94,6 +94,7 @@
             "error_heading": "Es ist etwas schiefgegangen",
             "leave_warning": "Wollen Sie wirklich gehen? Von Ihnen eingegebene Daten werden möglicherweise nicht gespeichert.",
             "loading_text": "Wird geladen",
+            "missing_shipping_method_heading": "Shipping method unavailable",
             "ok_action": "Ok",
             "error_code": "Fehlercode:",
             "request_id": "Anfrage-ID:",
