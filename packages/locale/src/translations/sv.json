@@ -94,6 +94,7 @@
             "error_heading": "Något gick fel",
             "leave_warning": "Är du säker på att du vill lämna? Data som du har angett kanske inte sparas.",
             "loading_text": "Laddar",
+            "missing_shipping_method_heading": "Shipping method unavailable",
             "ok_action": "Ok",
             "error_code": "Felkod:",
             "request_id": "Förfrågans-ID:",

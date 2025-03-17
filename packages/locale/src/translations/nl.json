@@ -94,6 +94,7 @@
             "error_heading": "Er is iets misgegaan",
             "leave_warning": "Weet u zeker dat u wilt afsluiten? Gegevens die u hebt ingevoerd, worden mogelijk niet opgeslagen.",
             "loading_text": "Bezig met laden",
+            "missing_shipping_method_heading": "Shipping method unavailable",
             "ok_action": "OK",
             "error_code": "Foutcode:",
             "request_id": "Aanvraag-ID:",

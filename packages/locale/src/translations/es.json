@@ -94,6 +94,7 @@
             "error_heading": "Algo ha salido mal",
             "leave_warning": "¿Está seguro de que desea salir? Es posible que no se guarden los datos introducidos.",
             "loading_text": "Cargando",
+            "missing_shipping_method_heading": "Shipping method unavailable",
             "ok_action": "Ok",
             "error_code": "Código de error:",
             "request_id": "ID de solicitud:",
