@@ -1,9 +1,9 @@
-import { mount } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../../config/config.mock';
 import { FormField } from '../../ui/form';
@@ -37,10 +37,16 @@ describe('HostedCreditCardNumberField', () => {
     });
 
     it('renders field with expected class name', () => {
-        const component = mount(<HostedCreditCardNumberFieldTest {...defaultProps} />);
+        const { container } = render(<HostedCreditCardNumberFieldTest {...defaultProps} />);
 
-        expect(component.find(FormField).prop('additionalClassName')).toContain(
-            'form-field--ccNumber',
-        );
+        expect(container.querySelector('.form-field--ccNumber')).toBeInTheDocument();
+    });
+
+    it('renders field with expected label', () => {
+        render(<HostedCreditCardNumberFieldTest {...defaultProps} />);
+
+        expect(
+            screen.getByText(localeContext.language.translate('payment.credit_card_number_label')),
+        ).toBeInTheDocument();
     });
 });
