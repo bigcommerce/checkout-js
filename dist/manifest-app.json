@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "appVersion": "1.565.0",
+  "appVersion": "1.566.0",
   "dynamicChunks": {
     "js": [
       "123-af70c9f1.js",
@@ -26,7 +26,7 @@
   "js": [
     "runtime-83c6474b.js",
     "polyfill-ce2969f5.js",
-    "sentry-d353dd52.js",
+    "sentry-364a15b5.js",
     "transients-6bc8e4b3.js",
     "vendors-1f0b5a93.js",
     "checkout-701894bc.js"
@@ -53,7 +53,7 @@
     "payment-a2d18de2.js": "sha256-HWk5lbldzIg0Kw+4ApSDPvQWms9kyLC3OIIv7JMBWBE= sha384-jk/YzUYyDa5aIz4kmRL5R7jFc0aaOn/gflw+xTqSFseRvq3CHqdDSk3ugTnmbqgM sha512-JGafv88zHULjbE85dZgpcIGTFFtablZYHICw6lDnNOnANyu0BERjbTQFjmSqdgEZ2wpQT+M/kW3gUEG5S9zDcA==",
     "polyfill-ce2969f5.js": "sha256-JX8SK++d0c50hgn+bfytKXKyZMSXUVWPY4pN4ES3oxk= sha384-KQUFq5jk8qLdsnmRaPBI2oS1L7Tl83OfsuzXKG5YHZwTDX5M5qicytLgbAVYK9mk sha512-dn/CwkfbBfiss6lYlqeJkh574mjWWTtUj0XPAJwGRzhaPTQmEmYACk1WT6b/B2Mpcg/60Mzq9CM94W2Vwh2dzQ==",
     "runtime-83c6474b.js": "sha256-+OYtKz1MWh9RX8o88OMY4frirIqO0LUjLnSUMfO+Ma0= sha384-lhX7kiBy9zyN10sqGFQflhBQNPWKPorNFWoGdqarVqrCZA0U8W2ePY+RXjVMuq6V sha512-RkC34PZqthKFz0xTbXpZQDjK4TiFziATKnoQorNLv7+CzSwI55h4+BzHk1zpUs+HKnxT+9zENK8Fo6OQb4toYg==",
-    "sentry-d353dd52.js": "sha256-TgQOUsOuhMkW8zq0np0/DfkfsFX93NBSRzfEAkhyDck= sha384-yRse4vsXBubCuYyplC5WGqEL+oLFzfb+g+lCorE5WsbpEHEiEHhUBJmOGWPhK3O/ sha512-IrLYHoWcqL0qwMvZ8Bq8xd9JoKj3IN/zSz+Va54CyD2jC3bZzKcoOLpaSWDkLQFyXYjb7VEvXceShMnFkDjfug==",
+    "sentry-364a15b5.js": "sha256-sPH4K/Fjy9Ii0thE6UEIetrRHdvtLEh9CKxT8nvreiE= sha384-fvW6RHaHBXNj2knY+E9X+DS1WISSnhgLZS6kWbrOpoHT1JE2PNRXnexAlUfvlExx sha512-4bbKRZaTkG8KlSbUjpw0lnapUzRjKmleln0s1BW3cHpJNP7ibAGg82kF3rWTd0rk8o/k17/Rc7l7dqOU8JvjBA==",
     "shipping-a94aaaba.css": "sha256-54AsWowI0HwL04JzQb7F4T7z3mFgfsbNUMTgctArn9A= sha384-k/37ZKX05GCe9RL+oz6eNUR75Ofb/EPOZtS2Z8la5z84gNBTEdNCLGJggMxyAhTe sha512-mvw2CIs3LVKLSdb4FaeFccVxjmmDwLtjUT97AHmUhtDazHBC+NtZGR0opkJWyqESQMeClkTqA2sa74hBsGYEYw==",
     "shipping-b6454ba3.js": "sha256-8c6XAbYKhW1HMBJau0H6e4yF4zpMCAo0uM0tzs2T90Y= sha384-LDdDbozOLsYmMLVVxRD9sysQLO6ilb+LKoGyP4CU8hpqbyoXKGUVABpCnS5rsb/+ sha512-eLOdywjdPtqh4cICtp82IBACbicm/z3WjSX5Wk2h6ru5+M3kG5PW01WWE5xvSkOH1uxveRpCf/jMiZzbt1VvDQ==",
     "transients-6bc8e4b3.js": "sha256-2DR4kXtiMz0MfzHFyo75YzDrmX2QQwLJDbZBnjDUES0= sha384-WQ3ozciEomC6wtVsTTJAC6+LpeU8E+YDOPMCAVjOHhWe3D28TCKI5hvUDGJG/bbr sha512-HjkiL9JmKxnczP1GgiGqEmFGlgkRTxxwwEWEWSD4oCuvtiMc693dnRa1HLVObGb33wCqQJ11UVGNlDPLocxQLw==",
