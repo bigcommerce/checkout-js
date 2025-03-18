@@ -155,7 +155,7 @@ describe('AccountInstrumentSelect', () => {
         expect(defaultProps.onUseNewInstrument).toHaveBeenCalled();
     });
 
-    it('cleans the instrumentId when the component unmounts', async () => {
+    it('submits the instrumentId', async () => {
         const submit = jest.fn();
 
         initialValues.instrumentId = '1234';

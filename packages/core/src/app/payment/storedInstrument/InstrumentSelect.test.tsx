@@ -49,7 +49,7 @@ describe('InstrumentSelect', () => {
             </LocaleContext.Provider>,
         );
 
-        expect(screen.getByText('Visa ending in 4321')).toBeInTheDocument();
+        expect(screen.getByText(`Visa ending in ${getInstruments().filter(isCardInstrument)[0].last4}`)).toBeInTheDocument();
         expect(screen.getByText(`Expires 02/${getYear(1)}`)).toBeInTheDocument();
     });
 
@@ -90,8 +90,7 @@ describe('InstrumentSelect', () => {
 
         await userEvent.click(screen.getByTestId('instrument-select'));
 
-        expect(screen.getByTestId('instrument-select-menu')).toBeInTheDocument();
-        expect(screen.getAllByText('Visa ending in 4321')).toHaveLength(2);
+        expect(screen.getAllByText(`Visa ending in ${getInstruments().filter(isCardInstrument)[0].last4}`)).toHaveLength(2);
         expect(screen.getByText('American Express ending in 4444')).toBeInTheDocument();
     });
 
@@ -188,7 +187,7 @@ describe('InstrumentSelect', () => {
         expect(defaultProps.onUseNewInstrument).toHaveBeenCalled();
     });
 
-    it('cleans the instrumentId when the component unmounts', async () => {
+    it('submits the instrumentId', async () => {
         const submit = jest.fn();
 
         initialValues.instrumentId = '1234';

@@ -4,6 +4,7 @@ import React from 'react';
 
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CardInstrumentFieldsetValues } from '@bigcommerce/checkout/payment-integration-api';
+import { getYear } from '@bigcommerce/checkout/test-mocks';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../../config/config.mock';
@@ -40,9 +41,8 @@ describe('CardInstrumentFieldset', () => {
                 </Formik>
             </LocaleContext.Provider>,
         );
-
-        expect(screen.getByText('Visa ending in 4321')).toBeInTheDocument();
-        expect(screen.getByText('Expires 02/2026')).toBeInTheDocument();
+        expect(screen.getByText(`Visa ending in ${getInstruments().filter(isCardInstrument)[0].last4}`)).toBeInTheDocument();
+        expect(screen.getByText(`Expires 02/${getYear(1)}`)).toBeInTheDocument();
         expect(screen.getByTestId('instrument-select')).toBeInTheDocument();
     });
 
