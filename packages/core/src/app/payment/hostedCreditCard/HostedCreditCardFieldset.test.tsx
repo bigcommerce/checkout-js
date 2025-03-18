@@ -4,6 +4,7 @@ import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
 import { createLocaleContext, LocaleContextType, LocaleProvider } from '@bigcommerce/checkout/locale';
+import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import HostedCreditCardCodeField from './HostedCreditCardCodeField';
@@ -13,7 +14,6 @@ import HostedCreditCardFieldset, {
 } from './HostedCreditCardFieldset';
 import HostedCreditCardNameField from './HostedCreditCardNameField';
 import HostedCreditCardNumberField from './HostedCreditCardNumberField';
-import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
 describe('HostedCreditCardFieldset', () => {
     let defaultProps: HostedCreditCardFieldsetProps;
@@ -27,6 +27,7 @@ describe('HostedCreditCardFieldset', () => {
         };
 
         const checkoutService = createCheckoutService();
+
         localeContext = createLocaleContext(getStoreConfig());
 
         HostedCreditCardFieldsetTest = (props) => (
@@ -88,7 +89,7 @@ describe('HostedCreditCardFieldset', () => {
             <HostedCreditCardFieldsetTest {...defaultProps} focusedFieldType="cardNumber" />,
         );
 
+        // eslint-disable-next-line testing-library/no-container
         expect(container.querySelector('.form-input--focus')).toBeInTheDocument();
     });
 });
-/* eslint-enable react/jsx-no-bind */

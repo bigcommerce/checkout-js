@@ -1,3 +1,4 @@
+import userEvent from '@testing-library/user-event';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
@@ -9,7 +10,6 @@ import {render, screen} from '@bigcommerce/checkout/test-utils';
 import { getStoreConfig } from '../../config/config.mock';
 
 import CreditCardNumberField from './CreditCardNumberField';
-import userEvent from '@testing-library/user-event';
 
 describe('CreditCardNumberField', () => {
     let initialValues: Pick<CreditCardFieldsetValues, 'ccNumber'>;

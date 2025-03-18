@@ -1,3 +1,4 @@
+import userEvent from '@testing-library/user-event';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
@@ -12,7 +13,6 @@ import { TooltipTrigger } from '../../ui/tooltip';
 import HostedCreditCardCodeField, {
     HostedCreditCardCodeFieldProps,
 } from './HostedCreditCardCodeField';
-import userEvent from '@testing-library/user-event';
 
 describe('HostedCreditCardCodeField', () => {
     let HostedCreditCardCodeFieldTest: FunctionComponent<HostedCreditCardCodeFieldProps>;
@@ -44,12 +44,15 @@ describe('HostedCreditCardCodeField', () => {
         expect(
             screen.getByText(localeContext.language.translate('payment.credit_card_cvv_label')),
         ).toBeInTheDocument();
+        // eslint-disable-next-line testing-library/no-container,testing-library/no-node-access
         expect(container.querySelector('.has-tip')).toBeInTheDocument();
+        // eslint-disable-next-line testing-library/no-container,testing-library/no-node-access
         expect(container.querySelector('.has-icon')).toBeInTheDocument();
     });
 
     it('renders tooltip message after hovering on it', async () => {
         const { container } = render(<HostedCreditCardCodeFieldTest {...defaultProps} />);
+        // eslint-disable-next-line testing-library/no-container,testing-library/no-node-access
         const toolTip = container.querySelector('.has-tip');
 
         expect(toolTip).toBeInTheDocument();

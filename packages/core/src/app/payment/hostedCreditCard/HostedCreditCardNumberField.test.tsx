@@ -6,7 +6,6 @@ import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcomme
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../../config/config.mock';
-import { FormField } from '../../ui/form';
 
 import HostedCreditCardNumberField, {
     HostedCreditCardNumberFieldProps,
@@ -39,6 +38,7 @@ describe('HostedCreditCardNumberField', () => {
     it('renders field with expected class name', () => {
         const { container } = render(<HostedCreditCardNumberFieldTest {...defaultProps} />);
 
+        // eslint-disable-next-line testing-library/no-container
         expect(container.querySelector('.form-field--ccNumber')).toBeInTheDocument();
     });
 
