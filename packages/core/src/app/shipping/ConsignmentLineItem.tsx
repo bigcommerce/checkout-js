@@ -14,7 +14,7 @@ import { AssignItemFailedError, UnassignItemError } from "./errors";
 import { useDeallocateItem } from "./hooks/useDeallocateItem";
 import { useMultiShippingConsignmentItems } from "./hooks/useMultishippingConsignmentItems";
 import { ItemSplitTooltip } from "./ItemSplitTooltip";
-import { MultiShippingConsignmentData, MultiShippingTableItemWithType } from "./MultishippingV2Type";
+import { MultiShippingConsignmentData, MultiShippingTableItemWithType } from "./MultishippingType";
 
 interface ConsignmentLineItemProps {
     consignmentNumber: number;

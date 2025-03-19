@@ -32,7 +32,7 @@ import { PaymentMethodId } from '../payment/paymentMethod';
 import getShippableItemsCount from './getShippableItemsCount';
 import getShippingMethodId from './getShippingMethodId';
 import hasPromotionalItems from './hasPromotionalItems';
-import { MultiShippingFormV2Values } from './MultiShippingFormV2';
+import { MultiShippingFormValues } from './MultiShippingForm';
 import ShippingForm from './ShippingForm';
 import ShippingHeader from './ShippingHeader';
 import { SingleShippingFormValues } from './SingleShippingForm';
@@ -300,7 +300,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         return PAYMENT_METHOD_VALID.some((method) => method === methodId);
     };
 
-    private handleMultiShippingSubmit: (values: MultiShippingFormV2Values) => void = async ({
+    private handleMultiShippingSubmit: (values: MultiShippingFormValues) => void = async ({
         orderComment,
     }) => {
         const { customerMessage, updateCheckout, navigateNextStep, onUnhandledError } = this.props;

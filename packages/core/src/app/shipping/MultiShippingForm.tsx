@@ -11,32 +11,32 @@ import { Button, ButtonVariant } from '../ui/button';
 import ConsignmentListItem from './ConsignmentListItem';
 import hasSelectedShippingOptions from './hasSelectedShippingOptions';
 import { useMultiShippingConsignmentItems } from './hooks/useMultishippingConsignmentItems';
-import MultiShippingFormV2Footer from './MultiShippingFormV2Footer';
-import { MultiShippingConsignmentData } from './MultishippingV2Type';
-import './MultiShippingFormV2.scss';
+import MultiShippingFormFooter from './MultiShippingFormFooter';
+import { MultiShippingConsignmentData } from './MultishippingType';
+import './MultiShippingForm.scss';
 import NewConsignment from './NewConsignment';
 
-export interface MultiShippingFormV2Values {
+export interface MultiShippingFormValues {
     orderComment: string;
 }
 
-export interface MultiShippingFormV2Props {
+export interface MultiShippingFormProps {
     cartHasChanged: boolean;
     customerMessage: string;
     defaultCountryCode?: string;
     countriesWithAutocomplete: string[];
     isLoading: boolean;
     onUnhandledError(error: Error): void;
-    onSubmit(values: MultiShippingFormV2Values): void;
+    onSubmit(values: MultiShippingFormValues): void;
 }
 
-const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
+const MultiShippingForm: FunctionComponent<MultiShippingFormProps> = ({
     countriesWithAutocomplete,
     defaultCountryCode,
     isLoading,
     onUnhandledError,
     cartHasChanged,
-}: MultiShippingFormV2Props) => {
+}: MultiShippingFormProps) => {
     const [errorConsignmentNumber, setErrorConsignmentNumber] = useState<number | undefined>();
 
     const {
@@ -77,10 +77,10 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
 
             if (errorConsignmentIndex === -1) {
                 setIsAddShippingDestination(true);
-                
+
                 return;
             }
-            
+
             setErrorConsignmentNumber(errorConsignmentIndex + 1);
         } else if (isAddShippingDestination) {
             setErrorConsignmentNumber(consignments.length + 1);
@@ -92,7 +92,7 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
 
     const hasUnassignedItems = shippableItemsCount > 0;
 
-    const renderAllocatedBanner = (shippableItemsCount: number): React.JSX.Element  => {
+    const renderAllocatedBanner = (shippableItemsCount: number): React.JSX.Element => {
         if (shippableItemsCount > 0) {
             return <Alert type={AlertType.Info}>
                 <TranslatedString data={{ count: shippableItemsCount }} id="shipping.multishipping_item_to_allocate_message" />
@@ -149,7 +149,7 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
                     </span>
                 </div>
             )}
-            <MultiShippingFormV2Footer
+            <MultiShippingFormFooter
                 cartHasChanged={cartHasChanged}
                 isLoading={isLoading}
                 shouldDisableSubmit={shouldDisableSubmit}
@@ -160,7 +160,7 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
 }
 
 export default withLanguage(
-    withFormikExtended<MultiShippingFormV2Props & WithLanguageProps, MultiShippingFormV2Values>({
+    withFormikExtended<MultiShippingFormProps & WithLanguageProps, MultiShippingFormValues>({
         handleSubmit: (values, { props: { onSubmit } }) => {
             onSubmit(values);
         },
@@ -168,5 +168,5 @@ export default withLanguage(
             orderComment: customerMessage,
         }),
         enableReinitialize: true,
-    })(MultiShippingFormV2),
+    })(MultiShippingForm),
 );

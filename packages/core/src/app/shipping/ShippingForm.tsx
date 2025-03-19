@@ -16,7 +16,7 @@ import React from 'react';
 import { useExtensions } from '@bigcommerce/checkout/checkout-extension';
 import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 
-import MultiShippingFormV2, { MultiShippingFormV2Values } from './MultiShippingFormV2';
+import MultiShippingForm, { MultiShippingFormValues } from './MultiShippingForm';
 import MultiShippingGuestForm from './MultiShippingGuestForm';
 import SingleShippingForm, { SingleShippingFormValues } from './SingleShippingForm';
 
@@ -44,7 +44,7 @@ export interface ShippingFormProps {
     getFields(countryCode?: string): FormField[];
     initialize(options: ShippingInitializeOptions): Promise<CheckoutSelectors>;
     onCreateAccount(): void;
-    onMultiShippingSubmit(values: MultiShippingFormV2Values): void;
+    onMultiShippingSubmit(values: MultiShippingFormValues): void;
     onSignIn(): void;
     onSingleShippingSubmit(values: SingleShippingFormValues): void;
     onUnhandledError(error: Error): void;
@@ -98,7 +98,7 @@ const ShippingForm = ({
             );
         }
 
-        return <MultiShippingFormV2
+        return <MultiShippingForm
             cartHasChanged={cartHasChanged}
             countriesWithAutocomplete={countriesWithAutocomplete}
             customerMessage={customerMessage}

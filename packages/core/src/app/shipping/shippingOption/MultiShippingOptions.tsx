@@ -5,7 +5,7 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 import { Alert, AlertType } from '@bigcommerce/checkout/ui';
 
-import MultiShippingOptionsListV2 from './MultiShippingOptionsListV2';
+import MultiShippingOptionsListV2 from './MultiShippingOptionsList';
 import { isLoadingSelector } from './ShippingOptions';
 
 interface MultiShippingOptionsV2Props {
@@ -15,7 +15,7 @@ interface MultiShippingOptionsV2Props {
     resetErrorConsignmentNumber(): void;
 }
 
-export const MultiShippingOptionsV2 = ({
+export const MultiShippingOptions = ({
     consignment,
     isLoading,
     resetErrorConsignmentNumber,
@@ -36,8 +36,8 @@ export const MultiShippingOptionsV2 = ({
             </h3>
             {(!consignment.availableShippingOptions ||
                 !consignment.availableShippingOptions.length) && (
-                <Alert type={AlertType.Error}>{shippingQuoteFailedMessage}</Alert>
-            )}
+                    <Alert type={AlertType.Error}>{shippingQuoteFailedMessage}</Alert>
+                )}
             {Boolean(consignment.availableShippingOptions) &&
                 consignment.availableShippingOptions && (
                     <MultiShippingOptionsListV2

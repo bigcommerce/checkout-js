@@ -5,7 +5,7 @@ import { TranslatedString } from "@bigcommerce/checkout/locale";
 import { FormField, TextInput } from "../ui/form";
 import { isMobileView as isMobileViewUI } from "../ui/responsive";
 
-import { MultiShippingTableItemWithType } from "./MultishippingV2Type";
+import { MultiShippingTableItemWithType } from "./MultishippingType";
 
 interface LeftToAllocateItemProps {
     item: MultiShippingTableItemWithType;

@@ -14,7 +14,7 @@ export interface ShippingFormFooterProps {
     cartHasChanged: boolean;
 }
 
-const MultiShippingFormV2Footer: FunctionComponent<ShippingFormFooterProps> = ({
+const MultiShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
     shouldShowOrderComments,
     shouldDisableSubmit,
     isLoading,
@@ -46,4 +46,4 @@ const MultiShippingFormV2Footer: FunctionComponent<ShippingFormFooterProps> = ({
     );
 };
 
-export default MultiShippingFormV2Footer;
+export default MultiShippingFormFooter;
