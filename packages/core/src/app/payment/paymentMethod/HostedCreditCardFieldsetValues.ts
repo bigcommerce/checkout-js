@@ -1,6 +1,4 @@
-import { CardInstrumentFieldsetValues } from '../storedInstrument';
-
-export default interface HostedCreditCardFieldsetValues {
+interface HostedCreditCardFieldsetValues {
     hostedForm: {
         cardType?: string;
         errors?: {
@@ -8,15 +6,6 @@ export default interface HostedCreditCardFieldsetValues {
             cardExpiry?: string;
             cardName?: string;
             cardNumber?: string;
-        };
-    };
-}
-
-export interface HostedCreditCardValidationValues extends CardInstrumentFieldsetValues {
-    hostedForm: {
-        errors?: {
-            cardCodeVerification?: string;
-            cardNumberVerification?: string;
         };
     };
 }
