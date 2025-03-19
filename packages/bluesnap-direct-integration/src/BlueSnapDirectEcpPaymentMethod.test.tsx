@@ -18,6 +18,7 @@ import {
     PaymentMethodProps,
 } from '@bigcommerce/checkout/payment-integration-api';
 import {
+    getAddress,
     getCustomer,
     getGuestCustomer,
     getInstruments,
@@ -26,6 +27,7 @@ import {
 import { act, fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
 
 import BlueSnapDirectEcpPaymentMethod from './BlueSnapDirectEcpPaymentMethod';
+import { BluesnapECPAccountType } from './constants';
 import { getBlueSnapDirect } from './mocks/bluesnapdirect-method.mock';
 
 describe('BlueSnapDirectEcp payment method', () => {
@@ -53,6 +55,11 @@ describe('BlueSnapDirectEcp payment method', () => {
     };
 
     beforeEach(() => {
+        initialValues = {
+            accountNumber: '',
+            routingNumber: '',
+            accountType: BluesnapECPAccountType.CorporateChecking,
+        };
         checkoutService = createCheckoutService();
         paymentForm = getPaymentFormServiceMock();
         initializePayment = jest
@@ -63,6 +70,23 @@ describe('BlueSnapDirectEcp payment method', () => {
             .mockResolvedValue(checkoutState);
         checkoutState = checkoutService.getState();
         jest.spyOn(checkoutService, 'loadInstruments').mockResolvedValue(checkoutState);
+        jest.spyOn(checkoutState.data, 'getBillingAddress').mockReturnValue({
+            ...getAddress(),
+            id: '1',
+        });
+
+        const formValues = {
+            paymentProviderRadio: '', // legacy prop -> added due to the PaymentFormValues interface
+            accountNumber: '',
+            routingNumber: '',
+            accountType: BluesnapECPAccountType.CorporateChecking,
+            shouldSaveInstrument: false,
+            shouldSetAsDefaultInstrument: false,
+            instrumentId: '',
+            orderConsent: false,
+        };
+
+        jest.spyOn(paymentForm, 'getFormValues').mockReturnValue(formValues);
         jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(true);
         props = {
             method: methodWithVaulting,
@@ -72,11 +96,7 @@ describe('BlueSnapDirectEcp payment method', () => {
             language: createLanguageService(),
             onUnhandledError: jest.fn(),
         };
-        initialValues = {
-            accountNumber: '',
-            routingNumber: '',
-            accountType: '',
-        };
+
         jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
         BlueSnapDirectEcpTest = () => (
             <Formik initialValues={initialValues} onSubmit={noop}>
@@ -138,6 +158,32 @@ describe('BlueSnapDirectEcp payment method', () => {
             gatewayId: 'bluesnapdirect',
             methodId: 'ecp',
         });
+    });
+
+    it('populates company name value from the billing address', () => {
+        jest.spyOn(paymentForm, 'setFieldValue');
+        render(<BlueSnapDirectEcpTest />);
+
+        expect(paymentForm.setFieldValue).toHaveBeenCalledWith('companyName', 'Bigcommerce');
+    });
+
+    it("clears company name value when company name field doesn't render", () => {
+        const formValues = {
+            paymentProviderRadio: '', // legacy prop -> added due to the PaymentFormValues interface
+            accountNumber: '',
+            routingNumber: '',
+            accountType: BluesnapECPAccountType.ConsumerSavings,
+            shouldSaveInstrument: false,
+            shouldSetAsDefaultInstrument: false,
+            instrumentId: '',
+            orderConsent: false,
+        };
+
+        jest.spyOn(paymentForm, 'getFormValues').mockReturnValue(formValues);
+        jest.spyOn(paymentForm, 'setFieldValue');
+        render(<BlueSnapDirectEcpTest />);
+
+        expect(paymentForm.setFieldValue).toHaveBeenCalledWith('companyName', undefined);
     });
 
     it('shows save instrument checkbox for registered customers', () => {

@@ -11,6 +11,7 @@ import {
 } from '@bigcommerce/checkout/payment-integration-api';
 import { CheckboxFormField, Fieldset, Legend, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
+import { BluesnapECPAccountType } from './constants';
 import BlueSnapDirectEcpFieldset from './fields/BlueSnapDirectEcpFieldset';
 import useEcpInstruments from './hooks/useEcpInstruments';
 import getEcpValidationSchema from './validation-schemas/getEcpValidationSchema';
@@ -19,10 +20,10 @@ const BlueSnapDirectEcpPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     method,
     checkoutService: { initializePayment, deinitializePayment, loadInstruments },
     checkoutState: {
-        data: { isPaymentDataRequired, getCustomer },
+        data: { isPaymentDataRequired, getCustomer, getBillingAddress },
         statuses: { isLoadingInstruments },
     },
-    paymentForm: { disableSubmit, setValidationSchema },
+    paymentForm: { disableSubmit, setValidationSchema, setFieldValue, getFormValues },
     language,
     onUnhandledError,
 }) => {
@@ -93,10 +94,25 @@ const BlueSnapDirectEcpPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     const isLoading = isLoadingInstruments();
 
     const shouldShowForm = !shouldShowInstrumentFieldset || shouldCreateNewInstrument;
+    const accountType = getFormValues().accountType;
+    const shouldRenderCompanyName =
+        accountType === BluesnapECPAccountType.CorporateChecking ||
+        accountType === BluesnapECPAccountType.CorporateSavings;
 
     useEffect(() => {
-        setValidationSchema(method, getEcpValidationSchema(language, shouldShowForm));
-    }, [language, shouldShowForm, setValidationSchema, method]);
+        if (shouldRenderCompanyName) {
+            setFieldValue('companyName', getBillingAddress()?.company);
+        } else {
+            setFieldValue('companyName', undefined);
+        }
+    }, [shouldRenderCompanyName, setFieldValue, getBillingAddress]);
+
+    useEffect(() => {
+        setValidationSchema(
+            method,
+            getEcpValidationSchema(language, shouldShowForm, shouldRenderCompanyName),
+        );
+    }, [language, shouldShowForm, shouldRenderCompanyName, setValidationSchema, method]);
 
     return (
         <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
@@ -118,7 +134,12 @@ const BlueSnapDirectEcpPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                         />
                     </div>
                 )}
-                {shouldShowForm && <BlueSnapDirectEcpFieldset language={language} />}
+                {shouldShowForm && (
+                    <BlueSnapDirectEcpFieldset
+                        language={language}
+                        shouldRenderCompanyName={shouldRenderCompanyName}
+                    />
+                )}
                 <CheckboxFormField
                     labelContent={language.translate('payment.bluesnap_direct_permission')}
                     name="shopperPermission"
