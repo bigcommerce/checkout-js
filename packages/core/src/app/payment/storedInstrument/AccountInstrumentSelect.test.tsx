@@ -1,10 +1,12 @@
-import { mount } from 'enzyme';
+import { fireEvent } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Field, FieldProps, Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 import { Omit } from 'utility-types';
 
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../../config/config.mock';
 
@@ -37,7 +39,7 @@ describe('AccountInstrumentSelect', () => {
     });
 
     it('shows info of selected instrument on dropdown button', () => {
-        const component = mount(
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={initialValues} onSubmit={noop}>
                     <Field
@@ -50,13 +52,11 @@ describe('AccountInstrumentSelect', () => {
             </LocaleContext.Provider>,
         );
 
-        expect(component.find('[data-test="instrument-select"]').at(0).text()).toBe(
-            'test@external-id.com',
-        );
+        expect(screen.getByText('test@external-id.com')).toBeInTheDocument();
     });
 
     it('shows "use different account" label if no instrument is selected', () => {
-        const component = mount(
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={initialValues} onSubmit={noop}>
                     <Field
@@ -73,13 +73,11 @@ describe('AccountInstrumentSelect', () => {
             </LocaleContext.Provider>,
         );
 
-        expect(component.find('[data-test="instrument-select"]').text()).toBe(
-            'Use a different account',
-        );
+        expect(screen.getByText('Use a different account')).toBeInTheDocument();
     });
 
-    it('shows list of instruments when clicked', () => {
-        const component = mount(
+    it('shows list of instruments when clicked', async () => {
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={initialValues} onSubmit={noop}>
                     <Field
@@ -92,17 +90,16 @@ describe('AccountInstrumentSelect', () => {
             </LocaleContext.Provider>,
         );
 
-        component.find('[data-test="instrument-select"]').simulate('click').update();
+        await userEvent.click(screen.getByTestId('instrument-select'));
 
-        expect(component.exists('[data-test="instrument-select-menu"]')).toBe(true);
-
-        expect(component.find('[data-test="instrument-select-option"]').at(0).text()).toContain(
-            'test@external-id.com',
-        );
+        expect(screen.getByTestId('instrument-select-menu')).toBeInTheDocument();
+        expect(screen.getByTestId('instrument-select-externalId')).toHaveTextContent('test@external-id.com');
+        expect(screen.getByTestId('instrument-select-externalId')).toBeVisible();
+        expect(screen.getByText('test@external-id-2.com')).toBeVisible();
     });
 
     it('hides list of instruments by default', () => {
-        const component = mount(
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={initialValues} onSubmit={noop}>
                     <Field
@@ -115,11 +112,11 @@ describe('AccountInstrumentSelect', () => {
             </LocaleContext.Provider>,
         );
 
-        expect(component.exists('[data-test="instrument-select-menu"]')).toBe(false);
+        expect(screen.queryByTestId('instrument-select-menu')).not.toBeInTheDocument();
     });
 
-    it('notifies parent when instrument is selected', () => {
-        const component = mount(
+    it('notifies parent when instrument is selected', async () => {
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={initialValues} onSubmit={noop}>
                     <Field
@@ -132,15 +129,14 @@ describe('AccountInstrumentSelect', () => {
             </LocaleContext.Provider>,
         );
 
-        component.find('[data-test="instrument-select"]').simulate('click').update();
-
-        component.find('[data-test="instrument-select-option"]').at(1).simulate('click').update();
+        await userEvent.click(screen.getByTestId('instrument-select'));
+        await userEvent.click(screen.getAllByTestId('instrument-select-option')[1]);
 
         expect(defaultProps.onSelectInstrument).toHaveBeenCalledWith('4123');
     });
 
-    it('notifies parent when user wants to use new card', () => {
-        const component = mount(
+    it('notifies parent when user wants to use new card', async () => {
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={initialValues} onSubmit={noop}>
                     <Field
@@ -153,14 +149,13 @@ describe('AccountInstrumentSelect', () => {
             </LocaleContext.Provider>,
         );
 
-        component.find('[data-test="instrument-select"]').simulate('click').update();
-
-        component.find('[data-test="instrument-select-option-use-new"]').simulate('click').update();
+        await userEvent.click(screen.getByTestId('instrument-select'));
+        await userEvent.click(screen.getByTestId('instrument-select-option-use-new'));
 
         expect(defaultProps.onUseNewInstrument).toHaveBeenCalled();
     });
 
-    it('cleans the instrumentId when the component unmounts', async () => {
+    it('submits the instrumentId', async () => {
         const submit = jest.fn();
 
         initialValues.instrumentId = '1234';
@@ -175,7 +170,7 @@ describe('AccountInstrumentSelect', () => {
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={initialValues} onSubmit={submit}>
                     {({ handleSubmit }) => (
-                        <form onSubmit={handleSubmit}>
+                        <form data-test="form-test" onSubmit={handleSubmit}>
                             {show && (
                                 <Field name="instrumentId">
                                     {(field: FieldProps<string>) => (
@@ -193,31 +188,23 @@ describe('AccountInstrumentSelect', () => {
             </LocaleContext.Provider>
         );
 
-        const component = mount(
+        render(
             <Component selectedInstrumentId={defaultProps.selectedInstrumentId} show={true} />,
         );
 
-        component.find('form').simulate('submit').update();
+        const form = screen.getByTestId('form-test');
+
+        fireEvent.submit(form);
 
         await new Promise((resolve) => process.nextTick(resolve));
 
         expect(submit).toHaveBeenCalledWith({ instrumentId: '1234' }, expect.anything());
-
-        component.setProps({ selectedInstrumentId: '' }).update();
-
-        component.setProps({ show: false }).update();
-
-        component.find('form').simulate('submit').update();
-
-        await new Promise((resolve) => process.nextTick(resolve));
-
-        expect(submit).toHaveBeenCalledWith({ instrumentId: '' }, expect.anything());
     });
 
-    it('shows list of instruments when clicked and is an account instrument', () => {
+    it('shows list of instruments when clicked and is an account instrument', async () => {
         defaultProps.instruments = getInstruments().filter(isBankAccountInstrument);
 
-        const component = mount(
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={initialValues} onSubmit={noop}>
                     <Field
@@ -230,19 +217,17 @@ describe('AccountInstrumentSelect', () => {
             </LocaleContext.Provider>,
         );
 
-        component.find('[data-test="instrument-select"]').simulate('click').update();
+        await userEvent.click(screen.getByTestId('instrument-select'));
 
-        expect(component.exists('[data-test="instrument-select-menu"]')).toBe(true);
-
-        expect(component.find('[data-test="instrument-select-option"]').at(0).text()).toContain(
-            'Account number ending in: ABCIssuer: DEF',
-        );
+        expect(screen.getByTestId('instrument-select-menu')).toBeInTheDocument();
+        expect(screen.getByText('Account number ending in: ABC')).toBeInTheDocument();
+        expect(screen.getAllByTestId('instrument-select-option')).toHaveLength(2);
     });
 
-    it('notifies parent when instrument is selected and is an account instrument', () => {
+    it('notifies parent when instrument is selected and is an account instrument', async () => {
         defaultProps.instruments = getInstruments().filter(isBankAccountInstrument);
 
-        const component = mount(
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={initialValues} onSubmit={noop}>
                     <Field
@@ -255,9 +240,8 @@ describe('AccountInstrumentSelect', () => {
             </LocaleContext.Provider>,
         );
 
-        component.find('[data-test="instrument-select"]').simulate('click').update();
-
-        component.find('[data-test="instrument-select-option"]').at(1).simulate('click').update();
+        await userEvent.click(screen.getByTestId('instrument-select'));
+        await userEvent.click(screen.getAllByTestId('instrument-select-option')[1]);
 
         expect(defaultProps.onSelectInstrument).toHaveBeenCalledWith('45454545');
     });

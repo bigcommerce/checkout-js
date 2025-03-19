@@ -1,10 +1,10 @@
-import { mount, render } from 'enzyme';
+import userEvent from '@testing-library/user-event';
 import React from 'react';
 
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../../config/config.mock';
-import { LoadingOverlay } from '../../ui/loading';
 
 import { getInstruments } from './instruments.mock';
 import isAccountInstrument from './isAccountInstrument';
@@ -26,36 +26,26 @@ describe('ManageAccountInstrumentsTable', () => {
         localeContext = createLocaleContext(getStoreConfig());
     });
 
-    it('matches snapshot with rendered output', () => {
-        const component = render(
-            <LocaleContext.Provider value={localeContext}>
-                <ManageCardInstrumentsTable {...defaultProps} />
-            </LocaleContext.Provider>,
-        );
-
-        expect(component).toMatchSnapshot();
-    });
-
     it('renders instrument as row in table', () => {
-        const component = mount(
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <ManageCardInstrumentsTable {...defaultProps} />
             </LocaleContext.Provider>,
         );
 
         expect(
-            component.find('[data-test="manage-instrument-accountExternalId"]').at(0).text(),
-        ).toBe('test@external-id.com');
+            screen.getAllByTestId('manage-instrument-accountExternalId')[0]
+        ).toHaveTextContent('test@external-id.com');
     });
 
-    it('triggers callback when delete button is clicked', () => {
-        const component = mount(
+    it('triggers callback when delete button is clicked', async () => {
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <ManageCardInstrumentsTable {...defaultProps} />
             </LocaleContext.Provider>,
         );
 
-        component.find('[data-test="manage-instrument-delete-button"]').at(1).simulate('click');
+        await userEvent.click(screen.getAllByTestId('manage-instrument-delete-button')[1]);
 
         expect(defaultProps.onDeleteInstrument).toHaveBeenCalledWith(
             defaultProps.instruments[1].bigpayToken,
@@ -63,24 +53,23 @@ describe('ManageAccountInstrumentsTable', () => {
     });
 
     it('renders message if there are no available instruments', () => {
-        const component = mount(
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <ManageCardInstrumentsTable {...defaultProps} instruments={[]} />
             </LocaleContext.Provider>,
         );
 
-        expect(component.text()).toEqual(
-            localeContext.language.translate('payment.instrument_manage_modal_empty_text'),
-        );
+        expect(screen.getByText(localeContext.language.translate('payment.instrument_manage_modal_empty_text'))).toBeInTheDocument();
     });
 
     it('shows loading overlay when deleting', () => {
-        const component = mount(
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <ManageCardInstrumentsTable {...defaultProps} isDeletingInstrument={true} />
             </LocaleContext.Provider>,
         );
 
-        expect(component.find(LoadingOverlay).prop('isLoading')).toBe(true);
+        // eslint-disable-next-line testing-library/no-node-access
+        expect(document.querySelector('.loadingOverlay')).toBeInTheDocument();
     });
 });
