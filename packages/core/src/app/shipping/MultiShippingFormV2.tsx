@@ -16,7 +16,7 @@ import { MultiShippingConsignmentData } from './MultishippingV2Type';
 import './MultiShippingFormV2.scss';
 import NewConsignment from './NewConsignment';
 
-interface MultiShippingFormV2Values {
+export interface MultiShippingFormV2Values {
     orderComment: string;
 }
 

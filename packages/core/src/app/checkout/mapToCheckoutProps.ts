@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 
-import { EMPTY_ARRAY, isExperimentEnabled } from '../common/utility';
+import { EMPTY_ARRAY } from '../common/utility';
 
 import { WithCheckoutProps } from './Checkout';
 import getCheckoutStepStatuses from './getCheckoutStepStatuses';
@@ -38,12 +38,7 @@ export default function mapToCheckoutProps({
         },
     );
 
-    const walletButtonsOnTopFlag = Boolean(checkoutUserExperienceSettings.walletButtonsOnTop);
-    const isNewMultiShippingUIEnabled =
-    isExperimentEnabled(
-        data.getConfig()?.checkoutSettings,
-        'PROJECT-4159.improve_multi_address_shipping_ui',
-    ) 
+    const walletButtonsOnTopFlag = Boolean(checkoutUserExperienceSettings.walletButtonsOnTop); 
 
     return {
         billingAddress: data.getBillingAddress(),
@@ -53,7 +48,6 @@ export default function mapToCheckoutProps({
         hasCartChanged: submitOrderError && submitOrderError.type === 'cart_changed', // TODO: Need to clear the error once it's displayed
         isGuestEnabled,
         isLoadingCheckout: statuses.isLoadingCheckout(),
-        isNewMultiShippingUIEnabled,
         isPending: statuses.isPending(),
         isPriceHiddenFromGuests,
         isShowingWalletButtonsOnTop: walletButtonsOnTopFlag,

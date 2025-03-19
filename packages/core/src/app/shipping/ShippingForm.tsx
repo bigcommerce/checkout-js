@@ -1,11 +1,8 @@
 import {
     Address,
-    AddressRequestBody,
-    Cart,
     CheckoutParams,
     CheckoutSelectors,
     Consignment,
-    ConsignmentAssignmentRequestBody,
     Country,
     CustomerAddress,
     CustomerRequestOptions,
@@ -19,14 +16,12 @@ import React from 'react';
 import { useExtensions } from '@bigcommerce/checkout/checkout-extension';
 import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 
-import MultiShippingForm, { MultiShippingFormValues } from './MultiShippingForm';
-import MultiShippingFormV2 from './MultiShippingFormV2';
+import MultiShippingFormV2, { MultiShippingFormV2Values } from './MultiShippingFormV2';
 import MultiShippingGuestForm from './MultiShippingGuestForm';
 import SingleShippingForm, { SingleShippingFormValues } from './SingleShippingForm';
 
 export interface ShippingFormProps {
     addresses: CustomerAddress[];
-    cart: Cart;
     cartHasChanged: boolean;
     consignments: Consignment[];
     countries: Country[];
@@ -44,19 +39,15 @@ export interface ShippingFormProps {
     shouldShowOrderComments: boolean;
     isFloatingLabelEnabled?: boolean;
     isInitialValueLoaded: boolean;
-    isNewMultiShippingUIEnabled: boolean;
-    assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     deleteConsignments(): Promise<Address | undefined>;
     getFields(countryCode?: string): FormField[];
     initialize(options: ShippingInitializeOptions): Promise<CheckoutSelectors>;
     onCreateAccount(): void;
-    createCustomerAddress(address: AddressRequestBody): Promise<CheckoutSelectors>;
-    onMultiShippingSubmit(values: MultiShippingFormValues): void;
+    onMultiShippingSubmit(values: MultiShippingFormV2Values): void;
     onSignIn(): void;
     onSingleShippingSubmit(values: SingleShippingFormValues): void;
     onUnhandledError(error: Error): void;
-    onUseNewAddress(address: Address, itemId: string): void;
     signOut(options?: CustomerRequestOptions): void;
     updateAddress(
         address: Partial<Address>,
@@ -65,11 +56,8 @@ export interface ShippingFormProps {
 }
 
 const ShippingForm = ({
-      addresses,
-      assignItem,
-      cart,
-      cartHasChanged,
-      createCustomerAddress,
+    addresses,
+    cartHasChanged,
       consignments,
       countries,
       countriesWithAutocomplete,
@@ -88,8 +76,7 @@ const ShippingForm = ({
       onMultiShippingSubmit,
       onSignIn,
       onSingleShippingSubmit,
-      onUnhandledError,
-      onUseNewAddress,
+    onUnhandledError,
       shippingAddress,
       shouldShowOrderComments,
       shouldShowSaveAddress,
@@ -97,8 +84,7 @@ const ShippingForm = ({
       updateAddress,
       isShippingStepPending,
       isFloatingLabelEnabled,
-      isInitialValueLoaded,
-      isNewMultiShippingUIEnabled,
+    isInitialValueLoaded,
   }: ShippingFormProps & WithLanguageProps) => {
 
     const {
@@ -112,38 +98,14 @@ const ShippingForm = ({
             );
         }
 
-        if (isNewMultiShippingUIEnabled) {
-            return <MultiShippingFormV2
-                cartHasChanged={cartHasChanged}
-                countriesWithAutocomplete={countriesWithAutocomplete}
-                customerMessage={customerMessage}
-                defaultCountryCode={shippingAddress?.countryCode}
-                isLoading={isLoading}
-                onSubmit={onMultiShippingSubmit}
-                onUnhandledError={onUnhandledError}
-            />;
-        }
-
-        return <MultiShippingForm
-            addresses={addresses}
-            assignItem={assignItem}
-            cart={cart}
+        return <MultiShippingFormV2
             cartHasChanged={cartHasChanged}
-            consignments={consignments}
-            countries={countries}
             countriesWithAutocomplete={countriesWithAutocomplete}
-            createCustomerAddress={createCustomerAddress}
             customerMessage={customerMessage}
             defaultCountryCode={shippingAddress?.countryCode}
-            getFields={getFields}
-            googleMapsApiKey={googleMapsApiKey}
-            isFloatingLabelEnabled={isFloatingLabelEnabled}
-            isInitialValueLoaded={isInitialValueLoaded}
             isLoading={isLoading}
             onSubmit={onMultiShippingSubmit}
             onUnhandledError={onUnhandledError}
-            onUseNewAddress={onUseNewAddress}
-            shouldShowOrderComments={shouldShowOrderComments}
         />;
     };
 
