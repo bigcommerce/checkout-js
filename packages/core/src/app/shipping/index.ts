@@ -7,3 +7,4 @@ export { default as hasSelectedShippingOptions } from './hasSelectedShippingOpti
 export { default as hasUnassignedLineItems } from './hasUnassignedLineItems';
 export { default as isUsingMultiShipping } from './isUsingMultiShipping';
 export { default as itemsRequireShipping } from './itemsRequireShipping';
+export { default as isSelectedShippingOptionValid } from './isSelectedShippingOptionValid';
