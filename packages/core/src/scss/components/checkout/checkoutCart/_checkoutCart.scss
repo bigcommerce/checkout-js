@@ -101,6 +101,12 @@
     text-align: right;
 }
 
+.cart-priceItem-before-value {
+    text-decoration: line-through;
+    color: color("greys");
+    margin-right: spacing("quarter");
+}
+
 .cart-priceItem-postFix {
     color: color("greys");
     display: table-row;

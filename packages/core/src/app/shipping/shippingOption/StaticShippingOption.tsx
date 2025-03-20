@@ -9,12 +9,33 @@ import './StaticShippingOption.scss';
 interface StaticShippingOptionProps {
     displayAdditionalInformation?: boolean;
     method: ShippingOption;
+    shippingCostAfterDiscount?: number;
 }
 
 const StaticShippingOption: React.FunctionComponent<StaticShippingOptionProps> = ({
     displayAdditionalInformation = true,
     method,
+    shippingCostAfterDiscount,
 }) => {
+    const renderShippingPrice = () => {
+        if (shippingCostAfterDiscount && shippingCostAfterDiscount !== method.cost) {
+            return (
+                <>
+                    <span className="shippingOption-price-before-discount" data-test="shipping-option-price-before-discount">
+                        <ShopperCurrency amount={method.cost} />
+                    </span>
+                    <ShopperCurrency amount={shippingCostAfterDiscount} />
+
+                </>
+            );
+        }
+
+        return (
+            <ShopperCurrency amount={method.cost} />
+        )
+    
+    }
+
     return (
         <div className="shippingOption shippingOption--alt">
             {method.imageUrl && (
@@ -38,7 +59,7 @@ const StaticShippingOption: React.FunctionComponent<StaticShippingOptionProps> =
                 )}
             </span>
             <span className="shippingOption-price">
-                <ShopperCurrency amount={method.cost} />
+                {renderShippingPrice()}
             </span>
         </div>
     );

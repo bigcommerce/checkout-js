@@ -13,5 +13,6 @@ export function getConsignment(): Consignment {
         shippingAddress: getAddress(),
         address: getAddress(),
         availableShippingOptions: [getShippingOption()],
+        discounts: [],
     };
 }
