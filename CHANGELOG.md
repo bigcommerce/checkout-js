@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.568.0](https://github.com/bigcommerce/checkout-js/compare/v1.567.2...v1.568.0) (2025-03-20)
+
+
+### Features
+
+* **checkout:** PI-3531 Deprecate Openpay code in Checkout ([#2220](https://github.com/bigcommerce/checkout-js/issues/2220)) ([9168f8b](https://github.com/bigcommerce/checkout-js/commit/9168f8b438dd2a07e070f437f34333ac73d381ae))
+
 ### [1.567.2](https://github.com/bigcommerce/checkout-js/compare/v1.567.1...v1.567.2) (2025-03-20)
 
 
