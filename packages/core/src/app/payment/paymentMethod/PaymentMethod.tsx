@@ -17,7 +17,6 @@ import CCAvenueMarsPaymentMethod from './CCAvenueMarsPaymentMethod';
 import HostedCreditCardPaymentMethod from './HostedCreditCardPaymentMethod';
 import HostedPaymentMethod from './HostedPaymentMethod';
 import MasterpassPaymentMethod from './MasterpassPaymentMethod';
-import OpyPaymentMethod from './OpyPaymentMethod';
 import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodProviderType from './PaymentMethodProviderType';
 import PaymentMethodType from './PaymentMethodType';
@@ -112,10 +111,6 @@ const PaymentMethodComponent: FunctionComponent<
         method.type === PaymentMethodProviderType.Hosted
     ) {
         return <HostedPaymentMethod {...props} />;
-    }
-
-    if (method.id === PaymentMethodId.Opy) {
-        return <OpyPaymentMethod {...props} />;
     }
 
 

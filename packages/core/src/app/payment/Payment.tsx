@@ -339,7 +339,6 @@ class Payment extends Component<
             selectedMethod.id === PaymentMethodId.Converge ||
             selectedMethod.id === PaymentMethodId.Humm ||
             selectedMethod.id === PaymentMethodId.Laybuy ||
-            selectedMethod.id === PaymentMethodId.Opy ||
             selectedMethod.id === PaymentMethodId.Quadpay ||
             selectedMethod.id === PaymentMethodId.SagePay ||
             selectedMethod.id === PaymentMethodId.Sezzle ||

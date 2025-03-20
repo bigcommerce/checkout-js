@@ -103,10 +103,6 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
             );
         }
 
-        if (methodId === PaymentMethodId.Opy) {
-            return <TranslatedString data={{ methodName }} id="payment.opy_continue_action" />;
-        }
-
         if (methodId === PaymentMethodId.Quadpay) {
             return <TranslatedString id="payment.quadpay_continue_action" />;
         }

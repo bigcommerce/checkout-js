@@ -41,7 +41,6 @@ enum PaymentMethodId {
     Masterpass = 'masterpass',
     Mollie = 'mollie',
     Moneris = 'moneris',
-    Opy = 'opy',
     OrbitalGooglePay = 'googlepayorbital',
     Oxxo = 'oxxo',
     PaypalExpress = 'paypalexpress',
