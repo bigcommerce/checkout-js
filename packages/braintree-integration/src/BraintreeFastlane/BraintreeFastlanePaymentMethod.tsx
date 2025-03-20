@@ -1,7 +1,15 @@
 import { CardInstrument } from '@bigcommerce/checkout-sdk';
-import React, {createRef, FunctionComponent, RefObject, useCallback, useEffect, useRef, useState} from 'react';
+import React, {
+    createRef,
+    FunctionComponent,
+    RefObject,
+    useCallback,
+    useEffect,
+    useRef,
+    useState
+} from 'react';
 
-import {LocaleProvider, TranslatedString} from '@bigcommerce/checkout/locale';
+import { LocaleProvider, TranslatedString } from '@bigcommerce/checkout/locale';
 import {
     CheckoutContext,
     PaymentFormContext,
@@ -26,12 +34,12 @@ interface BraintreeFastlanePaymentMethodRef {
 }
 
 const BraintreeFastlanePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
-                                                                                   method,
-                                                                                   checkoutService,
-                                                                                   checkoutState,
-                                                                                   onUnhandledError,
-                                                                                   paymentForm,
-                                                                               }) => {
+    method,
+    checkoutService,
+    checkoutState,
+    onUnhandledError,
+    paymentForm,
+}) => {
     const paypalFastlaneComponentRef = useRef<BraintreeFastlaneComponentRef>({});
     const [threeDSecureContent, setThreeDSecureContent] = useState<HTMLElement>();
     const ref = useRef<BraintreeFastlanePaymentMethodRef>({

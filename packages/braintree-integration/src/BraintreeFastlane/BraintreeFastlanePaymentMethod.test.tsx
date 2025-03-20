@@ -37,6 +37,27 @@ describe('BraintreeFastlanePaymentMethod', () => {
         initializePayment: jest.fn(),
     };
 
+    it('renders 3DS modal when content is set', async () => {
+        const initializePayment = jest
+            .spyOn(checkoutService, 'initializePayment')
+            .mockResolvedValue(checkoutState);
+
+        render(<BraintreeFastlanePaymentMethod {...props} />);
+
+        await act(async () => {
+            initializePayment;
+        });
+
+        const addFrame =
+            initializePayment.mock.calls[0][0].braintreefastlane?.threeDSecure.addFrame;
+
+        act(() => {
+            addFrame(null, document.createElement('div'), jest.fn());
+        });
+
+        expect(screen.getByRole('dialog')).toBeInTheDocument();
+    });
+
     it('initializes BraintreeFastlanePaymentMethod with required props', () => {
         const initializePayment = jest
             .spyOn(checkoutService, 'initializePayment')
@@ -69,26 +90,5 @@ describe('BraintreeFastlanePaymentMethod', () => {
         expect(deinitializePayment).toHaveBeenCalledWith({
             methodId: props.method.id,
         });
-    });
-
-    it('renders 3DS modal when content is set', async () => {
-        const initializePayment = jest
-            .spyOn(checkoutService, 'initializePayment')
-            .mockResolvedValue(checkoutState);
-
-        render(<BraintreeFastlanePaymentMethod {...props} />);
-
-        await act(async () => {
-            await initializePayment;
-        });
-
-        // @ts-ignore
-        const addFrame = initializePayment.mock.calls[0][0].braintreefastlane.threeDSecure.addFrame;
-
-        act(() => {
-            addFrame(null, document.createElement('div'), jest.fn());
-        });
-
-        expect(screen.getByRole('dialog')).toBeInTheDocument();
     });
 });
