@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.567.2](https://github.com/bigcommerce/checkout-js/compare/v1.567.1...v1.567.2) (2025-03-20)
+
+
+### Code Refactoring
+
+* **payment:** PAYPAL-5251 removed PayPalExpress from core package ([cfc0ede](https://github.com/bigcommerce/checkout-js/commit/cfc0ede1c0d482c17c5595421d2f8806f7cc7390))
+
 ### [1.567.1](https://github.com/bigcommerce/checkout-js/compare/v1.567.0...v1.567.1) (2025-03-20)
 
 ## [1.567.0](https://github.com/bigcommerce/checkout-js/compare/v1.566.1...v1.567.0) (2025-03-19)
