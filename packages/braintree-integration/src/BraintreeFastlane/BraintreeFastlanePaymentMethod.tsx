@@ -1,7 +1,7 @@
 import { CardInstrument } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, useEffect, useRef } from 'react';
+import React, {createRef, FunctionComponent, RefObject, useCallback, useEffect, useRef, useState} from 'react';
 
-import { LocaleProvider } from '@bigcommerce/checkout/locale';
+import {LocaleProvider, TranslatedString} from '@bigcommerce/checkout/locale';
 import {
     CheckoutContext,
     PaymentFormContext,
@@ -9,7 +9,7 @@ import {
     PaymentMethodResolveId,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
-import { FormContext, LoadingOverlay } from '@bigcommerce/checkout/ui';
+import { FormContext, LoadingOverlay, Modal } from '@bigcommerce/checkout/ui';
 
 import BraintreeFastlaneForm from './components/BraintreeFastlaneForm';
 
@@ -20,14 +20,23 @@ export interface BraintreeFastlaneComponentRef {
     showPayPalCardSelector?: () => Promise<CardInstrument | undefined>;
 }
 
+interface BraintreeFastlanePaymentMethodRef {
+    threeDSecureContentRef: RefObject<HTMLDivElement>;
+    cancelThreeDSecureVerification?(): void;
+}
+
 const BraintreeFastlanePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
-    method,
-    checkoutService,
-    checkoutState,
-    onUnhandledError,
-    paymentForm,
-}) => {
+                                                                                   method,
+                                                                                   checkoutService,
+                                                                                   checkoutState,
+                                                                                   onUnhandledError,
+                                                                                   paymentForm,
+                                                                               }) => {
     const paypalFastlaneComponentRef = useRef<BraintreeFastlaneComponentRef>({});
+    const [threeDSecureContent, setThreeDSecureContent] = useState<HTMLElement>();
+    const ref = useRef<BraintreeFastlanePaymentMethodRef>({
+        threeDSecureContentRef: createRef(),
+    });
 
     const { isLoadingPaymentMethod, isInitializingPayment } = checkoutState.statuses;
 
@@ -44,6 +53,20 @@ const BraintreeFastlanePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                         paypalFastlaneComponentRef.current.showPayPalCardSelector =
                             showPayPalCardSelector;
                     },
+                    threeDSecure: {
+                        addFrame(error, content, cancel) {
+                            if (error) {
+                                return onUnhandledError(error);
+                            }
+
+                            setThreeDSecureContent(content);
+                            ref.current.cancelThreeDSecureVerification = cancel;
+                        },
+                        removeFrame() {
+                            setThreeDSecureContent(undefined);
+                            ref.current.cancelThreeDSecureVerification = undefined;
+                        },
+                    },
                 },
             });
         } catch (error) {
@@ -52,6 +75,21 @@ const BraintreeFastlanePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             }
         }
     };
+
+    const appendThreeDSecureContent = useCallback(() => {
+        if (ref.current.threeDSecureContentRef.current && threeDSecureContent) {
+            ref.current.threeDSecureContentRef.current.appendChild(threeDSecureContent);
+        }
+    }, [threeDSecureContent]);
+
+    const cancelThreeDSecureModalFlow = useCallback(() => {
+        setThreeDSecureContent(undefined);
+
+        if (ref.current.cancelThreeDSecureVerification) {
+            ref.current.cancelThreeDSecureVerification();
+            ref.current.cancelThreeDSecureVerification = undefined;
+        }
+    }, []);
 
     const deinitializePaymentOrThrow = async () => {
         try {
@@ -94,6 +132,15 @@ const BraintreeFastlanePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                                     paypalFastlaneComponentRef.current?.showPayPalCardSelector
                                 }
                             />
+                            <Modal
+                                additionalBodyClassName="modal-body--center"
+                                closeButtonLabel={<TranslatedString id="common.close_action" />}
+                                isOpen={!!threeDSecureContent}
+                                onAfterOpen={appendThreeDSecureContent}
+                                onRequestClose={cancelThreeDSecureModalFlow}
+                            >
+                                <div ref={ref.current.threeDSecureContentRef} />
+                            </Modal>
                         </LoadingOverlay>
                     </PaymentFormContext.Provider>
                 </LocaleProvider>
