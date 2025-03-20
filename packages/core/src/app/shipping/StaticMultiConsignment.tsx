@@ -8,9 +8,9 @@ import { isPayPalFastlaneAddress, PoweredByPayPalFastlaneLabel, usePayPalFastlan
 import ConsignmentLineItemDetail from './ConsignmentLineItemDetail';
 import findLineItems from './findLineItems';
 import getLineItemsCount from './getLineItemsCount';
+import getShippingAmountAfterAutomaticDiscount from './getShippingAmountAfterAutomaticDiscount';
 import { StaticShippingOption } from './shippingOption';
 import './StaticMultiConsignment.scss';
-import getShippingAmountAfterAutomaticDiscount from './getShippingAmountAfterAutomaticDiscount';
 
 interface StaticMultiConsignmentProps {
     consignment: Consignment;
