@@ -1,7 +1,7 @@
 import { Checkout } from '@bigcommerce/checkout-sdk';
 
 import { OrderSummarySubtotalsProps } from '../order';
-import { hasSelectedShippingOptions } from '../shipping';
+import { getShippingAmountAfterAutomaticDiscount, hasSelectedShippingOptions } from '../shipping';
 
 export default function mapToOrderSummarySubtotalsProps({
     subtotal,
@@ -15,14 +15,19 @@ export default function mapToOrderSummarySubtotalsProps({
     taxes,
     fees,
 }: Checkout): OrderSummarySubtotalsProps {
+    const allConsignmentsHaveSelectedShippingOption = hasSelectedShippingOptions(consignments);
+
     return {
         subtotalAmount: subtotal,
         discountAmount,
         giftCertificates,
         giftWrappingAmount: giftWrappingCostTotal,
-        shippingAmount: hasSelectedShippingOptions(consignments)
-            ? shippingCostBeforeDiscount
+        shippingAmount: allConsignmentsHaveSelectedShippingOption
+            ? getShippingAmountAfterAutomaticDiscount(shippingCostBeforeDiscount, consignments)
             : undefined,
+        shippingAmountBeforeDiscount: allConsignmentsHaveSelectedShippingOption
+        ? shippingCostBeforeDiscount
+        : undefined,
         handlingAmount: handlingCostTotal,
         coupons,
         taxes,

@@ -30,6 +30,12 @@
     padding-left: spacing("half");
 }
 
+.shippingOption-price-before-discount {
+    font-weight: fontWeight("normal");
+    text-decoration: line-through;
+    margin-right: spacing("quarter");
+}
+
 .shippingOption-transitTime {
     display: block;
     font-size: fontSize("base");

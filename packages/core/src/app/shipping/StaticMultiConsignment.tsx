@@ -10,6 +10,7 @@ import findLineItems from './findLineItems';
 import getLineItemsCount from './getLineItemsCount';
 import { StaticShippingOption } from './shippingOption';
 import './StaticMultiConsignment.scss';
+import getShippingAmountAfterAutomaticDiscount from './getShippingAmountAfterAutomaticDiscount';
 
 interface StaticMultiConsignmentProps {
     consignment: Consignment;
@@ -88,6 +89,7 @@ const StaticMultiConsignment: FunctionComponent<StaticMultiConsignmentProps> = (
                         <StaticShippingOption
                             displayAdditionalInformation={false}
                             method={selectedShippingOption}
+                            shippingCostAfterDiscount={getShippingAmountAfterAutomaticDiscount(selectedShippingOption.cost, [consignment])}
                         />
                     </div>
                 </div>

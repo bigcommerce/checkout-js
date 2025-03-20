@@ -16,6 +16,7 @@ export interface OrderSummarySubtotalsProps {
     fees?: Fee[] | OrderFee[];
     giftWrappingAmount?: number;
     shippingAmount?: number;
+    shippingAmountBeforeDiscount?: number;
     handlingAmount?: number;
     storeCreditAmount?: number;
     subtotalAmount: number;
@@ -31,6 +32,7 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
     fees,
     giftWrappingAmount,
     shippingAmount,
+    shippingAmountBeforeDiscount,
     subtotalAmount,
     handlingAmount,
     storeCreditAmount,
@@ -88,6 +90,7 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
 
             <OrderSummaryPrice
                 amount={shippingAmount}
+                amountBeforeDiscount={shippingAmountBeforeDiscount}
                 label={<TranslatedString id="cart.shipping_text" />}
                 testId="cart-shipping"
                 zeroLabel={<TranslatedString id="cart.free_text" />}
