@@ -1,10 +1,11 @@
 import { createCheckoutService } from '@bigcommerce/checkout-sdk';
-import { mount } from 'enzyme';
 import { Field, Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
-import { LocaleProvider } from '@bigcommerce/checkout/locale';
+import { createLocaleContext, LocaleContextType, LocaleProvider } from '@bigcommerce/checkout/locale';
+import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import HostedCreditCardCodeField from './HostedCreditCardCodeField';
 import HostedCreditCardExpiryField from './HostedCreditCardExpiryField';
@@ -17,6 +18,7 @@ import HostedCreditCardNumberField from './HostedCreditCardNumberField';
 describe('HostedCreditCardFieldset', () => {
     let defaultProps: HostedCreditCardFieldsetProps;
     let HostedCreditCardFieldsetTest: FunctionComponent<HostedCreditCardFieldsetProps>;
+    let localeContext: LocaleContextType;
 
     beforeEach(() => {
         defaultProps = {
@@ -26,8 +28,10 @@ describe('HostedCreditCardFieldset', () => {
 
         const checkoutService = createCheckoutService();
 
+        localeContext = createLocaleContext(getStoreConfig());
+
         HostedCreditCardFieldsetTest = (props) => (
-            <LocaleProvider checkoutService={checkoutService}>
+            <LocaleProvider checkoutService={checkoutService} value={createLocaleContext(getStoreConfig())}>
                 <Formik
                     initialValues={{ hostedForm: {} }}
                     onSubmit={noop}
@@ -38,46 +42,54 @@ describe('HostedCreditCardFieldset', () => {
     });
 
     it('renders required field containers', () => {
-        const component = mount(<HostedCreditCardFieldsetTest {...defaultProps} />);
+        render(<HostedCreditCardFieldsetTest {...defaultProps} />);
 
-        expect(component.find(HostedCreditCardNumberField)).toHaveLength(1);
-
-        expect(component.find(HostedCreditCardExpiryField)).toHaveLength(1);
+        expect(
+            screen.getByText(localeContext.language.translate('payment.credit_card_text')),
+        ).toBeInTheDocument();
+        expect(
+            screen.getByText(localeContext.language.translate('payment.credit_card_number_label')),
+        ).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                localeContext.language.translate('payment.credit_card_expiration_label'),
+            ),
+        ).toBeInTheDocument();
     });
 
     it('renders optional field containers', () => {
-        const component = mount(
+        render(
             <HostedCreditCardFieldsetTest
                 {...defaultProps}
                 cardCodeId="cardCode"
                 cardNameId="cardName"
             />,
         );
-
-        expect(component.find(HostedCreditCardCodeField)).toHaveLength(1);
-
-        expect(component.find(HostedCreditCardNameField)).toHaveLength(1);
+        expect(
+            screen.getByText(localeContext.language.translate('payment.credit_card_number_label')),
+        ).toBeInTheDocument();
+        expect(
+            screen.getByText(localeContext.language.translate('payment.credit_card_cvv_label')),
+        ).toBeInTheDocument();
     });
 
     it('renders additional fields if provided', () => {
-        const component = mount(
+        render(
             <HostedCreditCardFieldsetTest
                 {...defaultProps}
-                additionalFields={<Field name="foobar" />}
+                additionalFields={<Field title="foobar" />}
             />,
         );
 
-        expect(component.find('input[name="foobar"]')).toHaveLength(1);
+        expect(screen.getByRole('textbox', { name: 'foobar' })).toBeInTheDocument();
     });
 
     it('renders field container with focus styles', () => {
-        const component = mount(
+        const { container } = render(
             <HostedCreditCardFieldsetTest {...defaultProps} focusedFieldType="cardNumber" />,
         );
 
-        expect(
-            component.find('TextInputIframeContainer[id="cardNumber"]').prop('appearFocused'),
-        ).toBeTruthy();
+        // eslint-disable-next-line testing-library/no-container
+        expect(container.querySelector('.form-input--focus')).toBeInTheDocument();
     });
 });
-/* eslint-enable react/jsx-no-bind */

@@ -1,9 +1,10 @@
-import { mount } from 'enzyme';
+import userEvent from '@testing-library/user-event';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../../config/config.mock';
 import { IconHelp } from '../../ui/icon';
@@ -38,9 +39,28 @@ describe('HostedCreditCardCodeField', () => {
     });
 
     it('renders field with tooltip icon', () => {
-        const component = mount(<HostedCreditCardCodeFieldTest {...defaultProps} />);
+        const { container } = render(<HostedCreditCardCodeFieldTest {...defaultProps} />);
 
-        expect(component.find(IconHelp)).toHaveLength(1);
-        expect(component.find(TooltipTrigger)).toHaveLength(1);
+        expect(
+            screen.getByText(localeContext.language.translate('payment.credit_card_cvv_label')),
+        ).toBeInTheDocument();
+        // eslint-disable-next-line testing-library/no-container,testing-library/no-node-access
+        expect(container.querySelector('.has-tip')).toBeInTheDocument();
+        // eslint-disable-next-line testing-library/no-container,testing-library/no-node-access
+        expect(container.querySelector('.has-icon')).toBeInTheDocument();
+    });
+
+    it('renders tooltip message after hovering on it', async () => {
+        const { container } = render(<HostedCreditCardCodeFieldTest {...defaultProps} />);
+        // eslint-disable-next-line testing-library/no-container,testing-library/no-node-access
+        const toolTip = container.querySelector('.has-tip');
+
+        expect(toolTip).toBeInTheDocument();
+
+        await userEvent.hover(toolTip);
+
+        expect(
+            screen.getByText(localeContext.language.translate('payment.credit_card_cvv_help_text')),
+        ).toBeInTheDocument();
     });
 });
