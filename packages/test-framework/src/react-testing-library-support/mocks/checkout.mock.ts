@@ -87,6 +87,7 @@ const consignment: Consignment = {
     shippingCost: 0,
     handlingCost: 0,
     lineItemIds: ['x'],
+    discounts: [],
     selectedShippingOption: {
         id: 'option-id-pick-up',
         type: 'shipping_pickupinstore',
