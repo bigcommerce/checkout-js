@@ -100,11 +100,8 @@ describe('withHostedCreditCardFieldset', () => {
         };
 
         jest.spyOn(checkoutState.data, 'getCart').mockReturnValue(getCart());
-
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
-
         jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
-
         jest.spyOn(checkoutState.data, 'getPaymentMethod').mockReturnValue(defaultProps.method);
 
         InnerPaymentMethod = jest.fn(

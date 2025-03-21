@@ -30,6 +30,7 @@ describe('HostedCreditCardValidation', () => {
 
     it('shows card number field if configured', () => {
         render(<HostedCreditCardValidationTest cardNumberId="cardNumber" />);
+
         expect(
             screen.getByText(localeContext.language.translate('payment.credit_card_number_label')),
         ).toBeInTheDocument();
@@ -37,6 +38,7 @@ describe('HostedCreditCardValidation', () => {
 
     it('hides card number field if configured', () => {
         render(<HostedCreditCardValidationTest cardCodeId="cardCode" />);
+
         expect(
             screen.queryByText(
                 localeContext.language.translate('payment.credit_card_number_label'),
@@ -46,6 +48,7 @@ describe('HostedCreditCardValidation', () => {
 
     it('shows card code field if configured', () => {
         render(<HostedCreditCardValidationTest cardCodeId="cardCode" />);
+
         expect(
             screen.getByText(localeContext.language.translate('payment.credit_card_cvv_label')),
         ).toBeInTheDocument();
@@ -53,6 +56,7 @@ describe('HostedCreditCardValidation', () => {
 
     it('hides card code field if configured', () => {
         render(<HostedCreditCardValidationTest cardNumberId="cardNumber" />);
+
         expect(
             screen.queryByText(localeContext.language.translate('payment.credit_card_cvv_label')),
         ).not.toBeInTheDocument();
