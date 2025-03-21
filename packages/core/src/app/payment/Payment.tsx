@@ -352,7 +352,8 @@ class Payment extends Component<
             selectedMethod.gateway === PaymentMethodId.Clearpay ||
             selectedMethod.gateway === PaymentMethodId.Checkoutcom ||
             selectedMethod.gateway === PaymentMethodId.Mollie ||
-            selectedMethod.gateway === PaymentMethodId.StripeV3
+            selectedMethod.gateway === PaymentMethodId.StripeV3 ||
+            selectedMethod.gateway === PaymentMethodId.StripeUPE
         ) {
             return;
         }
