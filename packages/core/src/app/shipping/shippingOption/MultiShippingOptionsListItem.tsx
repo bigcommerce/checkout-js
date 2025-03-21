@@ -5,15 +5,15 @@ import { RadioInput } from '@bigcommerce/checkout/ui';
 
 import { ShopperCurrency } from '../../currency';
 
-interface MultiShippingOptionsListItemV2Props {
+interface MultiShippingOptionsListItemProps {
     consignmentId: string;
     selectedShippingOptionId?: string;
     shippingOption: ShippingOption;
     handleSelect: (consignmentId: string, shippingOptionId: string) => void;
 }
 
-export const MultiShippingOptionsListItemV2: FunctionComponent<
-    MultiShippingOptionsListItemV2Props
+export const MultiShippingOptionsListItem: FunctionComponent<
+    MultiShippingOptionsListItemProps
 > = ({ consignmentId, selectedShippingOptionId, shippingOption, handleSelect }) => {
     const label = (
         <>

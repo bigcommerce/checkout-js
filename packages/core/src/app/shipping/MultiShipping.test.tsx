@@ -38,7 +38,7 @@ import {
     createEmbeddedCheckoutSupport,
 } from '../embeddedCheckout';
 
-describe('Multi-shipping V2', () => {
+describe('Multi-shipping', () => {
     let checkout: CheckoutPageNodeObject;
     let CheckoutTest: FunctionComponent<CheckoutProps>;
     let checkoutService: CheckoutService;

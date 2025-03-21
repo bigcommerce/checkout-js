@@ -9,8 +9,8 @@ import { IconClose, IconSize } from "../ui/icon";
 
 import ConsignmentAddressSelector from './ConsignmentAddressSelector';
 import ConsignmentLineItem from './ConsignmentLineItem';
-import { MultiShippingConsignmentData } from './MultishippingV2Type';
-import { MultiShippingOptionsV2 } from './shippingOption/MultiShippingOptionsV2';
+import { MultiShippingConsignmentData } from './MultishippingType';
+import { MultiShippingOptions } from './shippingOption/MultiShippingOptions';
 
 export interface ConsignmentListItemProps {
     consignment: MultiShippingConsignmentData;
@@ -70,7 +70,7 @@ const ConsignmentListItem: FunctionComponent<ConsignmentListItemProps> = ({
                 isLoading={isLoading}
                 onUnhandledError={onUnhandledError}
             />
-            <MultiShippingOptionsV2
+            <MultiShippingOptions
                 consignment={consignment}
                 isLoading={isLoading}
                 resetErrorConsignmentNumber={resetErrorConsignmentNumber}

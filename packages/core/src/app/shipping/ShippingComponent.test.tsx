@@ -133,10 +133,6 @@ describe('Shipping component', () => {
                 checkoutSettings: {
                     ...getStoreConfig().checkoutSettings,
                     hasMultiShippingEnabled: true,
-                    features: {
-                        ...getStoreConfig().checkoutSettings.features,
-                        "PROJECT-4159.improve_multi_address_shipping_ui": true,
-                    },
                 },
             });
         });

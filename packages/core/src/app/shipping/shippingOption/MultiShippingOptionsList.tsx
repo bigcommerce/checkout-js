@@ -3,7 +3,7 @@ import React, { FunctionComponent, memo } from 'react';
 
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
-import { MultiShippingOptionsListItemV2 } from './MultiShippingOptionsListItemV2';
+import { MultiShippingOptionsListItem } from './MultiShippingOptionsListItem';
 
 interface MultiShippingOptionsListV2Props {
     consignmentId: string;
@@ -23,7 +23,7 @@ const MultiShippingOptionsListV2: FunctionComponent<MultiShippingOptionsListV2Pr
     return (
         <LoadingOverlay isLoading={isLoading}>
             {shippingOptions.map((shippingOption) => (
-                <MultiShippingOptionsListItemV2
+                <MultiShippingOptionsListItem
                     consignmentId={consignmentId}
                     handleSelect={onSelectedOption}
                     key={shippingOption.id}

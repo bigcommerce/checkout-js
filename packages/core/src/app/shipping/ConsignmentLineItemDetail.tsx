@@ -1,7 +1,7 @@
 import { PhysicalItem } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo } from 'react';
 
-import { MultiShippingTableItemWithType } from './MultishippingV2Type';
+import { MultiShippingTableItemWithType } from './MultishippingType';
 
 export interface ConsignmentLineItemDetailProps {
     lineItems: MultiShippingTableItemWithType[] | PhysicalItem[]

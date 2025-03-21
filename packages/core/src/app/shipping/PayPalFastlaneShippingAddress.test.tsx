@@ -1,15 +1,21 @@
 
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { getAddress, getCustomer } from '@bigcommerce/checkout/test-mocks';
 import { CheckoutSelectors, CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
-import { PayPalFastlaneShippingAddress, PayPalFastlaneShippingAddressProps } from './PayPalFastlaneShippingAddress';
+import { render, screen } from '@testing-library/react';
+import { Formik } from 'formik';
+import { noop } from 'lodash';
+import React from 'react';
+
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutContext } from '@bigcommerce/checkout/payment-integration-api';
-import { getStoreConfig } from '../config/config.mock';
 import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
-import { noop } from 'lodash';
-import { Formik } from 'formik';
+import { getAddress, getCustomer } from '@bigcommerce/checkout/test-mocks';
+
+
+import { getStoreConfig } from '../config/config.mock';
+
+import { PayPalFastlaneShippingAddress, PayPalFastlaneShippingAddressProps } from './PayPalFastlaneShippingAddress';
+
+
 
 jest.mock('@bigcommerce/checkout/paypal-fastlane-integration', () => ({
     ...jest.requireActual('@bigcommerce/checkout/paypal-fastlane-integration'),
@@ -128,6 +134,7 @@ describe('PayPalFastlaneShippingAddress', () => {
             ...getAddress(),
             address1: 'PP Fastlane address'
         }];
+
         (usePayPalFastlaneAddress as jest.Mock).mockReturnValue({
             isPayPalFastlaneEnabled: true,
             paypalFastlaneAddresses,

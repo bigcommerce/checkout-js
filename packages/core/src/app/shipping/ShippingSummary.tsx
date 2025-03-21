@@ -7,19 +7,17 @@ import StaticMultiConsignment from './StaticMultiConsignment';
 
 
 interface ShippingSummaryProps {
-    isNewMultiShippingUIEnabled: boolean;
     isMultiShippingMode: boolean;
     consignments: Consignment[];
     cart: Cart;
 }
 
 const ShippingSummary: FunctionComponent<ShippingSummaryProps> = ({
-    isNewMultiShippingUIEnabled,
     isMultiShippingMode,
     consignments,
     cart
 }) => {
-    if (isNewMultiShippingUIEnabled && isMultiShippingMode) {
+    if (isMultiShippingMode) {
         return (
             <>
                 {consignments.map((consignment, index) => (

@@ -16,7 +16,7 @@ import { Modal, ModalHeader } from "../ui/modal";
 import AllocatedItemsList from "./AllocatedItemsList";
 import { ItemSplitTooltip } from "./ItemSplitTooltip";
 import LeftToAllocateItemsTable from "./LeftToAllocateItemsTable";
-import { LineItemType, MultiShippingTableData, MultiShippingTableItemWithType } from "./MultishippingV2Type";
+import { LineItemType, MultiShippingTableData, MultiShippingTableItemWithType } from "./MultishippingType";
 
 export interface AllocateItemsModalFormValues {
     [key: string]: number;

@@ -2,7 +2,7 @@ import { Consignment, LineItemMap } from "@bigcommerce/checkout-sdk";
 
 import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
 
-import { LineItemType, MultiShippingConsignmentData, MultiShippingTableData, MultiShippingTableItemWithType } from "../MultishippingV2Type";
+import { LineItemType, MultiShippingConsignmentData, MultiShippingTableData, MultiShippingTableItemWithType } from "../MultishippingType";
 import { generateItemHash } from "../utils";
 
 interface MultiShippingConsignmentItemsHook {

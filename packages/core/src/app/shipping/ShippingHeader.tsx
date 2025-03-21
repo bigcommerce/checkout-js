@@ -15,7 +15,6 @@ interface ShippingHeaderProps {
     isGuest: boolean;
     shouldShowMultiShipping: boolean;
     onMultiShippingChange(): void;
-    isNewMultiShippingUIEnabled: boolean;
     cartHasPromotionalItems?: boolean;
 }
 
@@ -24,7 +23,6 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
     isGuest,
     onMultiShippingChange,
     shouldShowMultiShipping,
-    isNewMultiShippingUIEnabled,
     cartHasPromotionalItems,
 }) => {
     const [isSingleShippingConfirmationModalOpen, setIsSingleShippingConfirmationModalOpen] = useState(false);
@@ -35,13 +33,13 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
         onMultiShippingChange();
     }
 
-    const showConfirmationModal = shouldShowMultiShipping && isNewMultiShippingUIEnabled && isMultiShippingMode;
-    const showMultiShippingUnavailableModal = shouldShowMultiShipping && isNewMultiShippingUIEnabled && !isMultiShippingMode && cartHasPromotionalItems;
+    const showConfirmationModal = shouldShowMultiShipping && isMultiShippingMode;
+    const showMultiShippingUnavailableModal = shouldShowMultiShipping && !isMultiShippingMode && cartHasPromotionalItems;
 
     return (
         <>
             <Extension region={ExtensionRegion.ShippingShippingAddressFormBefore} />
-            <div className={classNames('form-legend-container', { 'shipping-header': isNewMultiShippingUIEnabled })}>
+            <div className={classNames(['form-legend-container', 'shipping-header'])}>
                 <Legend testId="shipping-address-heading">
                     <TranslatedString
                         id={
