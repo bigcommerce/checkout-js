@@ -16,6 +16,7 @@ export type WithCheckoutCartSummaryProps = {
     storeCurrency: StoreCurrency;
     shopperCurrency: ShopperCurrency;
     storeCreditAmount?: number;
+    isShippingDiscountDisplayEnabled: boolean;
 } & RedeemableProps;
 
 const CartSummary: FunctionComponent<

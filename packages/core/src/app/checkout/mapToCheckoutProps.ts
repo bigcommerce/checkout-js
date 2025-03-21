@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 
-import { EMPTY_ARRAY } from '../common/utility';
+import { EMPTY_ARRAY, isExperimentEnabled } from '../common/utility';
 
 import { WithCheckoutProps } from './Checkout';
 import getCheckoutStepStatuses from './getCheckoutStepStatuses';
@@ -39,6 +39,10 @@ export default function mapToCheckoutProps({
     );
 
     const walletButtonsOnTopFlag = Boolean(checkoutUserExperienceSettings.walletButtonsOnTop); 
+    const isShippingDiscountDisplayEnabled = isExperimentEnabled(
+        data.getConfig()?.checkoutSettings,
+        'CHECKOUT-8517.displays_shipping_discounts_in_checkout_js',
+    );
 
     return {
         billingAddress: data.getBillingAddress(),
@@ -48,6 +52,7 @@ export default function mapToCheckoutProps({
         hasCartChanged: submitOrderError && submitOrderError.type === 'cart_changed', // TODO: Need to clear the error once it's displayed
         isGuestEnabled,
         isLoadingCheckout: statuses.isLoadingCheckout(),
+        isShippingDiscountDisplayEnabled,
         isPending: statuses.isPending(),
         isPriceHiddenFromGuests,
         isShowingWalletButtonsOnTop: walletButtonsOnTopFlag,

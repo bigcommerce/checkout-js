@@ -24,7 +24,13 @@ export default function mapToCartSummaryProps(
     const { isStoreCreditApplied, grandTotal } = checkout;
     const { storeCredit } = customer;
 
+    const isShippingDiscountDisplayEnabled = isExperimentEnabled(
+        config.checkoutSettings,
+        'CHECKOUT-8517.displays_shipping_discounts_in_checkout_js',
+    );
+
     return {
+        isShippingDiscountDisplayEnabled,
         checkout,
         shopperCurrency: config.shopperCurrency,
         cartUrl: config.links.cartLink,

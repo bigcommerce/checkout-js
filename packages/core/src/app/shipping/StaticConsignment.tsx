@@ -14,12 +14,14 @@ interface StaticConsignmentProps {
     consignment: Consignment;
     cart: Cart;
     compactView?: boolean;
+    isShippingDiscountDisplayEnabled: boolean;
 }
 
 const StaticConsignment: FunctionComponent<StaticConsignmentProps> = ({
     consignment,
     cart,
     compactView,
+    isShippingDiscountDisplayEnabled,
 }) => {
     const { paypalFastlaneAddresses } = usePayPalFastlaneAddress();
     const { shippingAddress: address, selectedShippingOption } = consignment;
@@ -39,7 +41,7 @@ const StaticConsignment: FunctionComponent<StaticConsignmentProps> = ({
                         <StaticShippingOption
                             displayAdditionalInformation={false}
                             method={selectedShippingOption}
-                            shippingCostAfterDiscount={getShippingAmountAfterAutomaticDiscount(selectedShippingOption.cost, [consignment])}
+                            shippingCostAfterDiscount={isShippingDiscountDisplayEnabled ? getShippingAmountAfterAutomaticDiscount(selectedShippingOption.cost, [consignment]) : undefined}
                         />
                     </div>
                 </div>

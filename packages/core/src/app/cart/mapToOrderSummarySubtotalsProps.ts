@@ -14,8 +14,27 @@ export default function mapToOrderSummarySubtotalsProps({
     coupons,
     taxes,
     fees,
-}: Checkout): OrderSummarySubtotalsProps {
+}: Checkout,
+isShippingDiscountDisplayEnabled: boolean,
+): OrderSummarySubtotalsProps {
     const allConsignmentsHaveSelectedShippingOption = hasSelectedShippingOptions(consignments);
+
+    if (!isShippingDiscountDisplayEnabled) {
+        return {
+            subtotalAmount: subtotal,
+            discountAmount,
+            giftCertificates,
+            giftWrappingAmount: giftWrappingCostTotal,
+            shippingAmount: hasSelectedShippingOptions(consignments)
+                ? shippingCostBeforeDiscount
+                : undefined,
+            handlingAmount: handlingCostTotal,
+            coupons,
+            taxes,
+            fees,
+            isTaxIncluded,
+        };
+    }
 
     return {
         subtotalAmount: subtotal,
