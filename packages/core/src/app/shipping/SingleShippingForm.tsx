@@ -37,6 +37,7 @@ import hasSelectedShippingOptions from './hasSelectedShippingOptions';
 import ShippingAddress from './ShippingAddress';
 import { SHIPPING_ADDRESS_FIELDS } from './ShippingAddressFields';
 import ShippingFormFooter from './ShippingFormFooter';
+import isSelectedShippingOptionValid from './isSelectedShippingOptionValid';
 
 export interface SingleShippingFormProps {
     addresses: CustomerAddress[];
@@ -244,7 +245,7 @@ class SingleShippingForm extends PureComponent<
             return false;
         }
 
-        return isLoading || isUpdatingShippingData || !hasSelectedShippingOptions(consignments);
+        return isLoading || isUpdatingShippingData || !hasSelectedShippingOptions(consignments) || !isSelectedShippingOptionValid(consignments);
     };
 
     private handleFieldChange: (name: string) => void = async (name) => {

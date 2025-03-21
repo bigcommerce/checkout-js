@@ -15,6 +15,7 @@ import MultiShippingFormV2Footer from './MultiShippingFormV2Footer';
 import { MultiShippingConsignmentData } from './MultishippingV2Type';
 import './MultiShippingFormV2.scss';
 import NewConsignment from './NewConsignment';
+import isSelectedShippingOptionValid from './isSelectedShippingOptionValid';
 
 interface MultiShippingFormV2Values {
     orderComment: string;
@@ -55,7 +56,7 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
 
     const isEveryConsignmentHasShippingOption = hasSelectedShippingOptions(consignments);
     const shouldDisableSubmit = useMemo(() => {
-        return isLoading || !!unassignedLineItems.length || !isEveryConsignmentHasShippingOption;
+        return isLoading || !!unassignedLineItems.length || !isEveryConsignmentHasShippingOption || !isSelectedShippingOptionValid(consignments);
     }, [isLoading, consignments]);
 
     if (!config) {
