@@ -43,7 +43,11 @@ export default function mapToCheckoutProps({
     isExperimentEnabled(
         data.getConfig()?.checkoutSettings,
         'PROJECT-4159.improve_multi_address_shipping_ui',
-    ) 
+    );
+    const isShippingDiscountDisplayEnabled = isExperimentEnabled(
+        data.getConfig()?.checkoutSettings,
+        'CHECKOUT-8517.displays_shipping_discounts_in_checkout_js',
+    );
 
     return {
         billingAddress: data.getBillingAddress(),
@@ -54,6 +58,7 @@ export default function mapToCheckoutProps({
         isGuestEnabled,
         isLoadingCheckout: statuses.isLoadingCheckout(),
         isNewMultiShippingUIEnabled,
+        isShippingDiscountDisplayEnabled,
         isPending: statuses.isPending(),
         isPriceHiddenFromGuests,
         isShowingWalletButtonsOnTop: walletButtonsOnTopFlag,

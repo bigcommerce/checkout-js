@@ -16,12 +16,14 @@ interface StaticMultiConsignmentProps {
     consignment: Consignment;
     cart: Cart;
     consignmentNumber: number;
+    isShippingDiscountDisplayEnabled: boolean;
 }
 
 const StaticMultiConsignment: FunctionComponent<StaticMultiConsignmentProps> = ({
     consignment,
     cart,
     consignmentNumber,
+    isShippingDiscountDisplayEnabled,
 }) => {
     const {
         checkoutState: {
@@ -89,7 +91,7 @@ const StaticMultiConsignment: FunctionComponent<StaticMultiConsignmentProps> = (
                         <StaticShippingOption
                             displayAdditionalInformation={false}
                             method={selectedShippingOption}
-                            shippingCostAfterDiscount={getShippingAmountAfterAutomaticDiscount(selectedShippingOption.cost, [consignment])}
+                            shippingCostAfterDiscount={isShippingDiscountDisplayEnabled ? getShippingAmountAfterAutomaticDiscount(selectedShippingOption.cost, [consignment]) : undefined}
                         />
                     </div>
                 </div>

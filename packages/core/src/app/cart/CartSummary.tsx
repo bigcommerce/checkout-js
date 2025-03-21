@@ -17,6 +17,7 @@ export type WithCheckoutCartSummaryProps = {
     shopperCurrency: ShopperCurrency;
     storeCreditAmount?: number;
     isNewMultiShippingUIEnabled: boolean;
+    isShippingDiscountDisplayEnabled: boolean;
 } & RedeemableProps;
 
 const CartSummary: FunctionComponent<
