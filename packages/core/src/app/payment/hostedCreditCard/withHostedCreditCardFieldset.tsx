@@ -1,6 +1,3 @@
-/* istanbul ignore file */
-
-// TODO: CHECKOUT-9010 Cover this HOC and its usage with tests
 import {
     CardInstrument,
     Instrument,
