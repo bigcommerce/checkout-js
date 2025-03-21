@@ -30,8 +30,14 @@ export default function mapToCartSummaryProps(
         'PROJECT-4159.improve_multi_address_shipping_ui',
     );
 
+    const isShippingDiscountDisplayEnabled = isExperimentEnabled(
+        config.checkoutSettings,
+        'CHECKOUT-8517.displays_shipping_discounts_in_checkout_js',
+    );
+
     return {
         isNewMultiShippingUIEnabled,
+        isShippingDiscountDisplayEnabled,
         checkout,
         shopperCurrency: config.shopperCurrency,
         cartUrl: config.links.cartLink,
