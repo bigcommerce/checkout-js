@@ -8,7 +8,7 @@ import { AddressType, StaticAddress } from '../address';
 import { StaticShippingOption } from './shippingOption';
 import './StaticConsignment.scss';
 import StaticConsignmentItemList from './StaticConsignmentItemList';
-import getShippingAmountAfterAutomaticDiscount from './getShippingAmountAfterAutomaticDiscount';
+import getShippingCostAfterAutomaticDiscount from './getShippingCostAfterAutomaticDiscount';
 
 interface StaticConsignmentProps {
     consignment: Consignment;
@@ -41,7 +41,7 @@ const StaticConsignment: FunctionComponent<StaticConsignmentProps> = ({
                         <StaticShippingOption
                             displayAdditionalInformation={false}
                             method={selectedShippingOption}
-                            shippingCostAfterDiscount={isShippingDiscountDisplayEnabled ? getShippingAmountAfterAutomaticDiscount(selectedShippingOption.cost, [consignment]) : undefined}
+                            shippingCostAfterDiscount={isShippingDiscountDisplayEnabled ? getShippingCostAfterAutomaticDiscount(selectedShippingOption.cost, [consignment]) : undefined}
                         />
                     </div>
                 </div>
