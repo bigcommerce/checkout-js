@@ -24,7 +24,6 @@ describe('Stripe Shipping Component', () => {
     let component: RenderResult;
 
     const defaultProps: StripeShippingProps = {
-        isNewMultiShippingUIEnabled: false,
         step: {
             isActive: true,
             isBusy: false,

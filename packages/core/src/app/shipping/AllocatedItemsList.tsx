@@ -6,7 +6,7 @@ import { IconClose } from "../ui/icon";
 
 import { renderItemContent } from "./ConsignmentLineItemDetail";
 import { ItemSplitTooltip } from "./ItemSplitTooltip";
-import { MultiShippingTableData, MultiShippingTableItemWithType } from "./MultishippingV2Type";
+import { MultiShippingTableData, MultiShippingTableItemWithType } from "./MultishippingType";
 
 interface AllocatedItemsListProps {
     assignedItems: MultiShippingTableData;

@@ -12,18 +12,17 @@ const CartSummaryDrawer: FunctionComponent<
     WithCheckoutCartSummaryProps & {
         isMultiShippingMode: boolean;
     }
-> = ({ cartUrl, isMultiShippingMode, isNewMultiShippingUIEnabled, ...props }) =>
+    > = ({ cartUrl, isMultiShippingMode, ...props }) =>
     withRedeemable(OrderSummaryDrawer)({
         ...props,
         cartUrl,
         headerLink: (
             <EditLink
                 className="modal-header-link cart-modal-link"
-                isMultiShippingMode={isNewMultiShippingUIEnabled && isMultiShippingMode}
+                isMultiShippingMode={isMultiShippingMode}
                 url={cartUrl}
             />
         ),
-        isNewMultiShippingUIEnabled,
     });
 
 export default withCheckout(mapToCartSummaryProps)(memo(CartSummaryDrawer));

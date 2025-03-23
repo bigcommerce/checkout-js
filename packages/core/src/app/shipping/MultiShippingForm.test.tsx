@@ -28,13 +28,13 @@ import { getCustomer } from '../customer/customers.mock';
 
 import { getConsignment } from './consignment.mock';
 import { AssignItemFailedError, AssignItemInvalidAddressError } from './errors';
-import MultiShippingFormV2, { MultiShippingFormV2Props } from './MultiShippingFormV2';
+import MultiShippingForm, { MultiShippingFormProps } from './MultiShippingForm';
 import { getShippingAddress } from './shipping-addresses.mock';
 
-describe('MultiShippingFormV2 Component', () => {
+describe('MultiShippingForm Component', () => {
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
-    let defaultProps: MultiShippingFormV2Props;
+    let defaultProps: MultiShippingFormProps;
     let localeContext: LocaleContextType;
     let errorLogger: ErrorLogger;
 
@@ -51,7 +51,7 @@ describe('MultiShippingFormV2 Component', () => {
             onSubmit: jest.fn(),
         };
 
-        errorLogger=createErrorLogger();
+        errorLogger = createErrorLogger();
 
         jest.spyOn(checkoutState.data, 'getBillingAddressFields').mockReturnValue(
             getAddressFormFields(),
@@ -91,7 +91,7 @@ describe('MultiShippingFormV2 Component', () => {
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
                     <ExtensionProvider checkoutService={checkoutService} errorLogger={errorLogger} >
-                        <MultiShippingFormV2 {...defaultProps} />
+                        <MultiShippingForm {...defaultProps} />
                     </ExtensionProvider>
                 </LocaleContext.Provider>
             </CheckoutProvider>,
@@ -123,7 +123,7 @@ describe('MultiShippingFormV2 Component', () => {
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
                     <ExtensionProvider checkoutService={checkoutService} errorLogger={errorLogger} >
-                        <MultiShippingFormV2 {...defaultProps} />
+                        <MultiShippingForm {...defaultProps} />
                     </ExtensionProvider>
                 </LocaleContext.Provider>
             </CheckoutProvider>,
@@ -171,7 +171,7 @@ describe('MultiShippingFormV2 Component', () => {
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
                     <ExtensionProvider checkoutService={checkoutService} errorLogger={errorLogger} >
-                        <MultiShippingFormV2 {...defaultProps} />
+                        <MultiShippingForm {...defaultProps} />
                     </ExtensionProvider>
                 </LocaleContext.Provider>
             </CheckoutProvider>,
@@ -188,7 +188,7 @@ describe('MultiShippingFormV2 Component', () => {
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
                     <ExtensionProvider checkoutService={checkoutService} errorLogger={errorLogger} >
-                        <MultiShippingFormV2 {...defaultProps} />
+                        <MultiShippingForm {...defaultProps} />
                     </ExtensionProvider>
                 </LocaleContext.Provider>
             </CheckoutProvider>,
@@ -247,7 +247,7 @@ describe('MultiShippingFormV2 Component', () => {
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
                     <ExtensionProvider checkoutService={checkoutService} errorLogger={errorLogger} >
-                        <MultiShippingFormV2 {...defaultProps} />
+                        <MultiShippingForm {...defaultProps} />
                     </ExtensionProvider>
                 </LocaleContext.Provider>
             </CheckoutProvider>,
@@ -373,7 +373,7 @@ describe('MultiShippingFormV2 Component', () => {
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
                     <ExtensionProvider checkoutService={checkoutService} errorLogger={errorLogger} >
-                        <MultiShippingFormV2 {...defaultProps} />
+                        <MultiShippingForm {...defaultProps} />
                     </ExtensionProvider>
                 </LocaleContext.Provider>
             </CheckoutProvider>,
@@ -459,7 +459,7 @@ describe('MultiShippingFormV2 Component', () => {
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
                     <ExtensionProvider checkoutService={checkoutService} errorLogger={errorLogger} >
-                        <MultiShippingFormV2 {...defaultProps} />
+                        <MultiShippingForm {...defaultProps} />
                     </ExtensionProvider>
                 </LocaleContext.Provider>
             </CheckoutProvider>,
@@ -504,7 +504,7 @@ describe('MultiShippingFormV2 Component', () => {
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
                     <ExtensionProvider checkoutService={checkoutService} errorLogger={errorLogger} >
-                        <MultiShippingFormV2 {...defaultProps} />
+                        <MultiShippingForm {...defaultProps} />
                     </ExtensionProvider>
                 </LocaleContext.Provider>
             </CheckoutProvider>,
@@ -555,7 +555,7 @@ describe('MultiShippingFormV2 Component', () => {
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
                     <ExtensionProvider checkoutService={checkoutService} errorLogger={errorLogger} >
-                        <MultiShippingFormV2 {...defaultProps} />
+                        <MultiShippingForm {...defaultProps} />
                     </ExtensionProvider>
                 </LocaleContext.Provider>
             </CheckoutProvider>,
@@ -622,7 +622,7 @@ describe('MultiShippingFormV2 Component', () => {
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
                     <ExtensionProvider checkoutService={checkoutService} errorLogger={errorLogger} >
-                        <MultiShippingFormV2 {...defaultProps} />
+                        <MultiShippingForm {...defaultProps} />
                     </ExtensionProvider>
                 </LocaleContext.Provider>
             </CheckoutProvider>,
@@ -685,7 +685,7 @@ describe('MultiShippingFormV2 Component', () => {
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
                     <ExtensionProvider checkoutService={checkoutService} errorLogger={errorLogger} >
-                        <MultiShippingFormV2 {...defaultProps} />
+                        <MultiShippingForm {...defaultProps} />
                     </ExtensionProvider>
                 </LocaleContext.Provider>
             </CheckoutProvider>,
@@ -742,7 +742,7 @@ describe('MultiShippingFormV2 Component', () => {
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
                     <ExtensionProvider checkoutService={checkoutService} errorLogger={errorLogger} >
-                        <MultiShippingFormV2 {...defaultProps} />
+                        <MultiShippingForm {...defaultProps} />
                     </ExtensionProvider>
                 </LocaleContext.Provider>
             </CheckoutProvider>,

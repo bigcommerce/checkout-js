@@ -7,7 +7,7 @@ import { isMobileView as isMobileViewUI } from "../ui/responsive";
 
 import { AllocateItemsModalFormValues } from "./AllocateItemsModal";
 import LeftToAllocateItem from "./LeftToAllocateItem";
-import { MultiShippingTableItemWithType } from "./MultishippingV2Type";
+import { MultiShippingTableItemWithType } from "./MultishippingType";
 
 interface LeftToAllocateItemsTableProps {
     items: MultiShippingTableItemWithType[];
