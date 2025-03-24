@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.568.2](https://github.com/bigcommerce/checkout-js/compare/v1.568.1...v1.568.2) (2025-03-24)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-9086 add available shipping option check ([#2213](https://github.com/bigcommerce/checkout-js/issues/2213)) ([eb31fc3](https://github.com/bigcommerce/checkout-js/commit/eb31fc3beb1f3b96df8f8dce109505d7d85cbf22))
+
 ### [1.568.1](https://github.com/bigcommerce/checkout-js/compare/v1.568.0...v1.568.1) (2025-03-21)
 
 ## [1.568.0](https://github.com/bigcommerce/checkout-js/compare/v1.567.2...v1.568.0) (2025-03-20)
