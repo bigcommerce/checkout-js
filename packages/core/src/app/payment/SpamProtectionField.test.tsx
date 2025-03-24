@@ -1,9 +1,10 @@
-import { CheckoutService, createCheckoutService, StandardError } from '@bigcommerce/checkout-sdk';
-import { mount, render } from 'enzyme';
+import { CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
+import userEvent from '@testing-library/user-event';
 import React, { FunctionComponent } from 'react';
 
 import { LocaleProvider } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import SpamProtectionField, { SpamProtectionProps } from './SpamProtectionField';
 
@@ -27,20 +28,15 @@ describe('SpamProtectionField', () => {
         );
     });
 
-    it('renders spam protection field', () => {
-        expect(render(<SpamProtectionTest />)).toMatchSnapshot();
-    });
-
     it('notifies parent component if unable to verify', async () => {
         const handleError = jest.fn();
         const error = { type: 'test error' };
 
         jest.spyOn(checkoutService, 'executeSpamCheck').mockRejectedValue(error);
 
-        const component = mount(<SpamProtectionTest onUnhandledError={handleError} />);
+        render(<SpamProtectionTest onUnhandledError={handleError} />);
 
         await new Promise((resolve) => process.nextTick(resolve));
-        component.update();
 
         expect(handleError).toHaveBeenCalledWith(error);
     });
@@ -51,25 +47,24 @@ describe('SpamProtectionField', () => {
 
         jest.spyOn(checkoutService, 'executeSpamCheck').mockRejectedValue(error);
 
-        const component = mount(<SpamProtectionTest onUnhandledError={handleError} />);
+        render(<SpamProtectionTest onUnhandledError={handleError} />);
 
         await new Promise((resolve) => process.nextTick(resolve));
-        component.update();
 
         expect(handleError).not.toHaveBeenCalledWith(error);
     });
 
     describe('if have not exceeded limit', () => {
         it('executes spam check on mount', () => {
-            mount(<SpamProtectionTest />);
+            render(<SpamProtectionTest />);
 
             expect(checkoutService.executeSpamCheck).toHaveBeenCalled();
         });
 
         it('does not render verify message', () => {
-            const component = mount(<SpamProtectionTest />);
+            render(<SpamProtectionTest />);
 
-            expect(component.exists('[data-test="spam-protection-verify-button"]')).toBeFalsy();
+            expect(screen.queryByTestId('spam-protection-verify-button')).not.toBeInTheDocument();
         });
 
         it('renders verify message if there is error', async () => {
@@ -77,34 +72,33 @@ describe('SpamProtectionField', () => {
                 new Error('Unknown error'),
             );
 
-            const component = mount(<SpamProtectionTest />);
+            render(<SpamProtectionTest />);
 
             await new Promise((resolve) => process.nextTick(resolve));
-            component.update();
 
-            expect(component.exists('[data-test="spam-protection-verify-button"]')).toBeTruthy();
+            expect(screen.getByTestId('spam-protection-verify-button')).toBeInTheDocument();
         });
     });
 
     describe('if exceeded limit at least once', () => {
         it('does not execute spam check on mount', () => {
-            mount(<SpamProtectionTest didExceedSpamLimit />);
+            render(<SpamProtectionTest didExceedSpamLimit />);
 
             expect(checkoutService.executeSpamCheck).not.toHaveBeenCalled();
         });
 
-        it('executes spam check on click', () => {
-            const component = mount(<SpamProtectionTest didExceedSpamLimit />);
+        it('executes spam check on click', async () => {
+            render(<SpamProtectionTest didExceedSpamLimit />);
 
-            component.find('[data-test="spam-protection-verify-button"]').simulate('click');
+            await userEvent.click(screen.getByTestId('spam-protection-verify-button'));
 
             expect(checkoutService.executeSpamCheck).toHaveBeenCalled();
         });
 
         it('renders verify message', () => {
-            const component = mount(<SpamProtectionTest didExceedSpamLimit />);
+            render(<SpamProtectionTest didExceedSpamLimit />);
 
-            expect(component.exists('[data-test="spam-protection-verify-button"]')).toBeTruthy();
+            expect(screen.getByTestId('spam-protection-verify-button')).toBeInTheDocument();
         });
     });
 });

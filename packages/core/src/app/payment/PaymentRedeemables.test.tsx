@@ -1,10 +1,9 @@
 import { CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
-import { mount } from 'enzyme';
 import React from 'react';
 
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import { Redeemable } from '../cart';
 import { getCheckout } from '../checkout/checkouts.mock';
 import { getStoreConfig } from '../config/config.mock';
 
@@ -17,27 +16,24 @@ describe('PaymentRedeemables', () => {
         checkoutService = createCheckoutService();
 
         jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(getStoreConfig());
-
         jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue(getCheckout());
     });
 
-    it('renders redeemable component with container fieldset', () => {
-        const container = mount(
+    it('renders redeemable component', () => {
+        render(
             <CheckoutProvider checkoutService={checkoutService}>
                 <PaymentRedeemables />
             </CheckoutProvider>,
         );
 
-        expect(container.exists('fieldset.redeemable-payments')).toBe(true);
-    });
+        const link = screen.getByRole('link', { name: 'Coupon/Gift Certificate' });
 
-    it('renders redeemable component with applied redeemables', () => {
-        const container = mount(
-            <CheckoutProvider checkoutService={checkoutService}>
-                <PaymentRedeemables />
-            </CheckoutProvider>,
-        );
-
-        expect(container.find(Redeemable).prop('showAppliedRedeemables')).toBe(true);
+        expect(screen.getByRole('group')).toBeInTheDocument();
+        expect(screen.getByRole('group')).toHaveClass("form-fieldset redeemable-payments");
+        expect(link).toHaveAttribute("aria-controls", "redeemable-collapsable");
+        expect(link).toHaveAttribute("aria-expanded", "false");
+        expect(link).toHaveAttribute("href", "#");
+        expect(link).toHaveAttribute("data-test", "redeemable-label");
+        expect(link).toHaveClass("redeemable-label");
     });
 });
