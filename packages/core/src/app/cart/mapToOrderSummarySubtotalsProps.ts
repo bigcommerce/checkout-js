@@ -18,13 +18,12 @@ export default function mapToOrderSummarySubtotalsProps({
 isShippingDiscountDisplayEnabled: boolean,
 ): OrderSummarySubtotalsProps {
     const allConsignmentsHaveSelectedShippingOption = hasSelectedShippingOptions(consignments);
-    const shippingAmount = isShippingDiscountDisplayEnabled
-        ? allConsignmentsHaveSelectedShippingOption
+
+    const shippingAmount = allConsignmentsHaveSelectedShippingOption
+        ? isShippingDiscountDisplayEnabled
             ? getShippingCostAfterAutomaticDiscount(shippingCostBeforeDiscount, consignments)
-            : undefined
-        : allConsignmentsHaveSelectedShippingOption
-            ? shippingCostBeforeDiscount
-            : undefined;
+            : shippingCostBeforeDiscount
+        : undefined;
 
     return {
         subtotalAmount: subtotal,
@@ -33,8 +32,8 @@ isShippingDiscountDisplayEnabled: boolean,
         giftWrappingAmount: giftWrappingCostTotal,
         shippingAmount,
         shippingAmountBeforeDiscount: isShippingDiscountDisplayEnabled && allConsignmentsHaveSelectedShippingOption
-        ? shippingCostBeforeDiscount
-        : undefined,
+            ? shippingCostBeforeDiscount
+            : undefined,
         handlingAmount: handlingCostTotal,
         coupons,
         taxes,
