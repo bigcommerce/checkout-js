@@ -3,13 +3,13 @@ import {
     CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
-import { mount } from 'enzyme';
 import { Formik } from 'formik';
 import { merge, noop } from 'lodash';
 import React from 'react';
 
 import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../../config/config.mock';
 import { getPaymentMethod } from '../payment-methods.mock';
@@ -21,10 +21,14 @@ describe('StoreInstrumentFieldset', () => {
     let StoreInstrumentFieldsetTest: typeof StoreInstrumentFieldset;
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
+    let translate: (key: string) => string;
 
     beforeEach(() => {
+        const localContext = createLocaleContext(getStoreConfig());
+
         checkoutService = createCheckoutService();
         checkoutState = checkoutService.getState();
+        translate = localContext.language.translate;
 
         jest.spyOn(checkoutState.data, 'getPaymentMethod').mockReturnValue(
             merge({}, getPaymentMethod(), {
@@ -52,41 +56,37 @@ describe('StoreInstrumentFieldset', () => {
 
         describe('when using a new card', () => {
             it('shows the "save card" input', () => {
-                const container = mount(<StoreInstrumentFieldsetTest />);
+                render(<StoreInstrumentFieldsetTest />);
 
-                expect(container.text()).toMatch(/save/i);
-                expect(container.text()).toMatch(/card/i);
-                expect(container.text()).not.toMatch(/account/i);
-
-                expect(container.find('input[name="shouldSaveInstrument"]').exists()).toBe(true);
+                expect(screen.getByRole('checkbox',{
+                    name: translate('payment.instrument_save_payment_method_label')},
+                )).toBeInTheDocument();
             });
 
             it('does not show the "make default" input', () => {
-                const container = mount(<StoreInstrumentFieldsetTest />);
+                render(<StoreInstrumentFieldsetTest />);
 
-                expect(container.find('input[name="shouldSetAsDefaultInstrument"]').exists()).toBe(
-                    false,
-                );
+                expect(screen.queryByRole('checkbox',{
+                    name: translate('payment.instrument_save_as_default_payment_method_label')},
+                )).not.toBeInTheDocument();
             });
         });
 
         describe('when using a new account instrument', () => {
             it('shows the "save account instrument" input', () => {
-                const container = mount(<StoreInstrumentFieldsetTest isAccountInstrument={true} />);
+                render(<StoreInstrumentFieldsetTest isAccountInstrument={true} />);
 
-                expect(container.text()).toMatch(/save/i);
-                expect(container.text()).toMatch(/account/i);
-                expect(container.text()).not.toMatch(/card/i);
-
-                expect(container.find('input[name="shouldSaveInstrument"]').exists()).toBe(true);
+                expect(screen.getByText(
+                    translate('payment.account_instrument_save_payment_method_label'),
+                )).toBeInTheDocument();
             });
 
             it('does not show the "make default" input', () => {
-                const container = mount(<StoreInstrumentFieldsetTest isAccountInstrument={true} />);
+                render(<StoreInstrumentFieldsetTest isAccountInstrument={true} />);
 
-                expect(container.find('input[name="shouldSetAsDefaultInstrument"]').exists()).toBe(
-                    false,
-                );
+                expect(screen.queryByRole('checkbox', {
+                    name: /default/i,
+                })).not.toBeInTheDocument();
             });
         });
     });
@@ -98,43 +98,37 @@ describe('StoreInstrumentFieldset', () => {
 
         describe('when using a new card', () => {
             it('shows the both the "save card" and "make default" inputs', () => {
-                const container = mount(<StoreInstrumentFieldsetTest />);
+                render(<StoreInstrumentFieldsetTest />);
 
-                expect(container.text()).toMatch(/save/i);
-                expect(container.text()).toMatch(/default/i);
-                expect(container.text()).toMatch(/card/i);
-                expect(container.text()).not.toMatch(/account/i);
-
-                expect(container.find('input[name="shouldSaveInstrument"]').exists()).toBe(true);
-                expect(container.find('input[name="shouldSetAsDefaultInstrument"]').exists()).toBe(
-                    true,
-                );
+                expect(screen.getByRole('checkbox',{
+                    name: translate('payment.instrument_save_payment_method_label'),
+                })).toBeInTheDocument();
+                expect(screen.getByRole('checkbox',{
+                    name: translate('payment.instrument_save_as_default_payment_method_label'),
+                })).toBeInTheDocument();
             });
         });
 
         describe('when using a new account instrument', () => {
             it('shows the both the "save account instrument" and "make default" inputs', () => {
-                const container = mount(<StoreInstrumentFieldsetTest isAccountInstrument={true} />);
+                render(<StoreInstrumentFieldsetTest isAccountInstrument={true} />);
 
-                expect(container.text()).toMatch(/save/i);
-                expect(container.text()).toMatch(/default/i);
-                expect(container.text()).toMatch(/account/i);
-                expect(container.text()).not.toMatch(/card/i);
-
-                expect(container.find('input[name="shouldSaveInstrument"]').exists()).toBe(true);
+                expect(screen.getByRole('checkbox', {
+                    name: translate('payment.account_instrument_save_payment_method_label'),
+                })).toBeInTheDocument();
+                expect(screen.getByRole('checkbox',{
+                    name: translate('payment.account_instrument_save_as_default_payment_method_label'),
+                })).toBeInTheDocument();
             });
         });
 
         describe('when using a previously stored, default card', () => {
             it('does not show either the "save card" or "make default" inputs', () => {
-                const container = mount(
+                render(
                     <StoreInstrumentFieldsetTest instrumentId={getInstruments()[0].bigpayToken} />,
                 );
 
-                expect(container.find('input[name="shouldSaveInstrument"]').exists()).toBe(false);
-                expect(container.find('input[name="shouldSetAsDefaultInstrument"]').exists()).toBe(
-                    false,
-                );
+                expect(screen.queryByRole('checkbox')).not.toBeInTheDocument();
             });
         });
 
@@ -152,38 +146,33 @@ describe('StoreInstrumentFieldset', () => {
                     },
                 ]);
 
-                const container = mount(
+                render(
                     <StoreInstrumentFieldsetTest instrumentId="4123" isAccountInstrument={true} />,
                 );
 
-                expect(container.find('input[name="shouldSaveInstrument"]').exists()).toBe(false);
-                expect(container.find('input[name="shouldSetAsDefaultInstrument"]').exists()).toBe(
-                    false,
-                );
+                expect(screen.queryByRole('checkbox')).not.toBeInTheDocument();
             });
         });
 
         describe('when using a previously stored, but not default card', () => {
             it('does not show the "save card" input', () => {
-                const container = mount(
+                render(
                     <StoreInstrumentFieldsetTest instrumentId={getInstruments()[1].bigpayToken} />,
                 );
 
-                expect(container.find('input[name="shouldSaveInstrument"]').exists()).toBe(false);
+                expect(screen.queryByText(
+                    translate('payment.instrument_save_payment_method_label'),
+                )).not.toBeInTheDocument();
             });
 
             it('shows the "make default" input', () => {
-                const container = mount(
+                render(
                     <StoreInstrumentFieldsetTest instrumentId={getInstruments()[1].bigpayToken} />,
                 );
 
-                expect(container.text()).toMatch(/default/i);
-                expect(container.text()).toMatch(/card/i);
-                expect(container.text()).not.toMatch(/account/i);
-
-                expect(container.find('input[name="shouldSetAsDefaultInstrument"]').exists()).toBe(
-                    true,
-                );
+                expect(screen.getByRole('checkbox',{
+                    name: translate('payment.instrument_save_as_default_payment_method_label'),
+                })).toBeInTheDocument();
             });
         });
 
@@ -203,25 +192,23 @@ describe('StoreInstrumentFieldset', () => {
             });
 
             it('does not show the "save account instrument" input', () => {
-                const container = mount(
+                render(
                     <StoreInstrumentFieldsetTest instrumentId="4123" isAccountInstrument={true} />,
                 );
 
-                expect(container.find('input[name="shouldSaveInstrument"]').exists()).toBe(false);
+                expect(screen.queryByText(
+                    translate('payment.instrument_save_as_default_payment_method_label'),
+                )).not.toBeInTheDocument();
             });
 
             it('shows the "make default" input', () => {
-                const container = mount(
+                render(
                     <StoreInstrumentFieldsetTest instrumentId="4123" isAccountInstrument={true} />,
                 );
 
-                expect(container.text()).toMatch(/default/i);
-                expect(container.text()).toMatch(/account/i);
-                expect(container.text()).not.toMatch(/card/i);
-
-                expect(container.find('input[name="shouldSetAsDefaultInstrument"]').exists()).toBe(
-                    true,
-                );
+                expect(screen.getByRole('checkbox',{
+                    name: translate('payment.account_instrument_save_as_default_payment_method_label'),
+                })).toBeInTheDocument();
             });
         });
     });

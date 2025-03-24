@@ -1,4 +1,3 @@
-import { mount } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
