@@ -94,7 +94,7 @@
             "error_heading": "Si è verificato un errore",
             "leave_warning": "Uscire dalla pagina? I dati inseriti potrebbero non essere salvati.",
             "loading_text": "Caricamento in corso",
-            "missing_shipping_method_heading": "Shipping method unavailable",
+            "missing_shipping_method_heading": "Metodo di spedizione non disponibile",
             "ok_action": "Ok",
             "error_code": "Codice di errore:",
             "request_id": "ID richiesta:",
@@ -217,6 +217,9 @@
                 "is_required": "È obbligatorio specificare il codice di instradamento",
                 "only_numbers": "Il numero di avviamento deve contenere solo numeri",
                 "length": "Il numero di avviamento deve contenere 9 cifre"
+            },
+            "bluesnap_direct_company_name": {
+                "length_max": "Il nome dell'azienda è troppo lungo"
             },
             "bluesnap_direct_account_type": {
                 "label": "Tipo di account",

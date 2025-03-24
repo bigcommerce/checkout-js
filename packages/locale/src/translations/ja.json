@@ -218,6 +218,9 @@
                 "only_numbers": "ルーティング番号には、番号だけである必要があります",
                 "length": "ルーティング番号は9文字でなければなりません"
             },
+            "bluesnap_direct_company_name": {
+                "length_max": "Company Name is too long"
+            },
             "bluesnap_direct_account_type": {
                 "label": "口座種別",
                 "is_required": "口座種別が必要です"

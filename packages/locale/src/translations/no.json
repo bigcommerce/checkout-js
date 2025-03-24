@@ -94,7 +94,7 @@
             "error_heading": "Noe gikk galt",
             "leave_warning": "Er du sikker på at du vil dra? Det kan hende at data du har lagt inn ikke lagres.",
             "loading_text": "Laster inn",
-            "missing_shipping_method_heading": "Shipping method unavailable",
+            "missing_shipping_method_heading": "Forsendelsesmetode er ikke tilgjengelig",
             "ok_action": "Ok",
             "error_code": "Feilkode:",
             "request_id": "Forespørsels-ID:",
@@ -217,6 +217,9 @@
                 "is_required": "Rutenummer er påkrevd",
                 "only_numbers": "Routing-nummeret må inneholde kun tall",
                 "length": "Routing-nummeret må være 9 sifre langt"
+            },
+            "bluesnap_direct_company_name": {
+                "length_max": "Firmanavnet er for langt"
             },
             "bluesnap_direct_account_type": {
                 "label": "Kontotype",

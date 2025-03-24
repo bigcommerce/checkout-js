@@ -94,7 +94,7 @@
             "error_heading": "Coś poszło nie tak",
             "leave_warning": "Czy na pewno chcesz wyjść? Wprowadzone przez ciebie dane mogą nie zostać zapisane.",
             "loading_text": "Ładowanie",
-            "missing_shipping_method_heading": "Shipping method unavailable",
+            "missing_shipping_method_heading": "Metoda wysyłki niedostępna",
             "ok_action": "Ok",
             "error_code": "Kod błędu:",
             "request_id": "ID wniosku:",
@@ -217,6 +217,9 @@
                 "is_required": "Numer rozliczeniowy jest wymagany",
                 "only_numbers": "Numer rozliczeniowy musi zawierać wyłącznie cyfry",
                 "length": "Numer rozliczeniowy musi składać się z 9 cyfr"
+            },
+            "bluesnap_direct_company_name": {
+                "length_max": "Nazwa firmy jest zbyt długa"
             },
             "bluesnap_direct_account_type": {
                 "label": "Typ konta",

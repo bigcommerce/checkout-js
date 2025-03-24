@@ -94,7 +94,7 @@
             "error_heading": "Er is iets misgegaan",
             "leave_warning": "Weet u zeker dat u wilt afsluiten? Gegevens die u hebt ingevoerd, worden mogelijk niet opgeslagen.",
             "loading_text": "Bezig met laden",
-            "missing_shipping_method_heading": "Shipping method unavailable",
+            "missing_shipping_method_heading": "Verzendmethode niet beschikbaar",
             "ok_action": "OK",
             "error_code": "Foutcode:",
             "request_id": "Aanvraag-ID:",
@@ -217,6 +217,9 @@
                 "is_required": "Routeringsnummer is vereist",
                 "only_numbers": "Routeringsnummer mag alleen cijfers bevatten",
                 "length": "Routeringsnummer moet 9 cijfers lang zijn"
+            },
+            "bluesnap_direct_company_name": {
+                "length_max": "Bedrijfsnaam is te lang"
             },
             "bluesnap_direct_account_type": {
                 "label": "Accounttype",

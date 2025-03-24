@@ -94,7 +94,7 @@
             "error_heading": "Une erreur s'est produite",
             "leave_warning": "Voulez-vous vraiment quitter ? Les données saisies ne seront peut-être pas enregistrées.",
             "loading_text": "Chargement",
-            "missing_shipping_method_heading": "Shipping method unavailable",
+            "missing_shipping_method_heading": "Mode de livraison indisponible",
             "ok_action": "Ok",
             "error_code": "Code d'erreur :",
             "request_id": "ID de la demande :",
@@ -217,6 +217,9 @@
                 "is_required": "Le numéro d'acheminement est obligatoire",
                 "only_numbers": "Le numéro d'acheminement ne doit contenir que des chiffres",
                 "length": "Le numéro d'acheminement doit être composé de 9 chiffres"
+            },
+            "bluesnap_direct_company_name": {
+                "length_max": "Le nom de la société est trop long"
             },
             "bluesnap_direct_account_type": {
                 "label": "Type de compte",

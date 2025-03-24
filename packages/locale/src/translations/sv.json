@@ -94,7 +94,7 @@
             "error_heading": "Något gick fel",
             "leave_warning": "Är du säker på att du vill lämna? Data som du har angett kanske inte sparas.",
             "loading_text": "Laddar",
-            "missing_shipping_method_heading": "Shipping method unavailable",
+            "missing_shipping_method_heading": "Fraktmetod ej tillgänglig",
             "ok_action": "Ok",
             "error_code": "Felkod:",
             "request_id": "Förfrågans-ID:",
@@ -217,6 +217,9 @@
                 "is_required": "Routing-nummer krävs",
                 "only_numbers": "Clearingnumret får endast innehålla siffror",
                 "length": "Clearingnumret måste vara 9 siffror långt"
+            },
+            "bluesnap_direct_company_name": {
+                "length_max": "Företagsnamnet är för långt"
             },
             "bluesnap_direct_account_type": {
                 "label": "Kontotyp",

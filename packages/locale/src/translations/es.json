@@ -94,7 +94,7 @@
             "error_heading": "Algo ha salido mal",
             "leave_warning": "¿Está seguro de que desea salir? Es posible que no se guarden los datos introducidos.",
             "loading_text": "Cargando",
-            "missing_shipping_method_heading": "Shipping method unavailable",
+            "missing_shipping_method_heading": "Método de envío no disponible",
             "ok_action": "Ok",
             "error_code": "Código de error:",
             "request_id": "ID de solicitud:",
@@ -217,6 +217,9 @@
                 "is_required": "El número de ruta es obligatorio",
                 "only_numbers": "El número de ruta debe contener solo números",
                 "length": "El número de ruta debe tener 9 dígitos"
+            },
+            "bluesnap_direct_company_name": {
+                "length_max": "Company Name is too long"
             },
             "bluesnap_direct_account_type": {
                 "label": "Tipo de cuenta",
