@@ -6,7 +6,7 @@ import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
-import { getCheckout } from '../checkout/checkouts.mock';
+import { getCheckout, getCheckoutWithShippingDiscounts } from '../checkout/checkouts.mock';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
 import OrderSummary from '../order/OrderSummary';
@@ -65,5 +65,22 @@ describe('CartSummary Component', () => {
         );
 
         expect(component.find(OrderSummary).prop('headerLink')).not.toBeTruthy();
+    });
+
+    it('renders OrderSummary with shipping discounts', () => {
+        jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue(getCheckoutWithShippingDiscounts());
+
+        component = mount(
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <ExtensionProvider checkoutService={checkoutService}>
+                        <CartSummary isMultiShippingMode={false} />
+                    </ExtensionProvider>
+                </LocaleContext.Provider>
+            </CheckoutProvider>,
+        );
+
+        expect(component.find(OrderSummary).prop('shippingAmount')).toBe(10);
+        expect(component.find(OrderSummary).prop('shippingAmountBeforeDiscount')).toBe(20);
     });
 });

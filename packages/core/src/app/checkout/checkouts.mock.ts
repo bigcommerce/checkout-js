@@ -4,6 +4,7 @@ import { getCart } from '../cart/carts.mock';
 import { getCoupon } from '../coupon/coupons.mock';
 import { getGuestCustomer } from '../customer/customers.mock';
 import { getPromotion } from '../promotion/promotions.mock';
+import { getConsignmentWithShippingDiscount } from '../shipping/consignment.mock';
 
 export function getCheckout(): Checkout {
     return {
@@ -65,4 +66,11 @@ export function getCheckoutPayment(providerId?: string): CheckoutPayment {
             step: 'ACKNOWLEDGE',
         },
     };
+}
+
+export function getCheckoutWithShippingDiscounts(): Checkout {
+    return {
+        ...getCheckout(),
+        consignments: [getConsignmentWithShippingDiscount()],
+    }
 }

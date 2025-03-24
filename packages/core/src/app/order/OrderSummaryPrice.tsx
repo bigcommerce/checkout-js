@@ -133,7 +133,7 @@ const OrderSummaryPrice: FC<OrderSummaryPriceProps> = ({
 
                     <span className="cart-priceItem-value">
                         {isNumberValue(amountBeforeDiscount) && amountBeforeDiscount !== amount && (
-                            <span className="cart-priceItem-before-value" data-test="cart-priceItem-before-value--beforeDiscount">
+                            <span className="cart-priceItem-before-value">
                                 <ShopperCurrency amount={amountBeforeDiscount} />
                             </span>
                         )}

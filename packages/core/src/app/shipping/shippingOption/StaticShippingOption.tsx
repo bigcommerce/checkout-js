@@ -21,7 +21,7 @@ const StaticShippingOption: React.FunctionComponent<StaticShippingOptionProps> =
         if (shippingCostAfterDiscount && shippingCostAfterDiscount !== method.cost) {
             return (
                 <>
-                    <span className="shippingOption-price-before-discount" data-test="shipping-option-price-before-discount">
+                    <span className="shippingOption-price-before-discount">
                         <ShopperCurrency amount={method.cost} />
                     </span>
                     <ShopperCurrency amount={shippingCostAfterDiscount} />
@@ -37,7 +37,7 @@ const StaticShippingOption: React.FunctionComponent<StaticShippingOptionProps> =
     }
 
     return (
-        <div className="shippingOption shippingOption--alt">
+        <div className="shippingOption shippingOption--alt" data-test="static-shipping-option">
             {method.imageUrl && (
                 <span className="shippingOption-figure">
                     <img

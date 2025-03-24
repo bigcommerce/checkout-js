@@ -8,6 +8,6 @@ export default function getShippingCostAfterAutomaticDiscount(shippingCostBefore
 
 function getTotalAutomaticDiscount(consignment: Consignment) {
     return consignment.discounts.reduce((discountTotal, discount) => {
-        return discount.type === 'AUTOMATIC' ? discountTotal + Number(discount.amount) : discountTotal;
+        return discount.type === 'AUTOMATIC' ? discountTotal + discount.amount : discountTotal;
     }, 0);
 }

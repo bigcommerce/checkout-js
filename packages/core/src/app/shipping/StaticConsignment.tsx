@@ -5,10 +5,10 @@ import { isPayPalFastlaneAddress, PoweredByPayPalFastlaneLabel, usePayPalFastlan
 
 import { AddressType, StaticAddress } from '../address';
 
+import getShippingCostAfterAutomaticDiscount from './getShippingCostAfterAutomaticDiscount';
 import { StaticShippingOption } from './shippingOption';
 import './StaticConsignment.scss';
 import StaticConsignmentItemList from './StaticConsignmentItemList';
-import getShippingCostAfterAutomaticDiscount from './getShippingCostAfterAutomaticDiscount';
 
 interface StaticConsignmentProps {
     consignment: Consignment;

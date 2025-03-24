@@ -1,5 +1,7 @@
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 
+import { isExperimentEnabled } from '../common/utility';
+
 import { WithCheckoutCartSummaryProps } from './CartSummary';
 import mapToRedeemableProps from './mapToRedeemableProps';
 

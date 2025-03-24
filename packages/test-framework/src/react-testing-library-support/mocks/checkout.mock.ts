@@ -287,6 +287,23 @@ const checkoutWithShipping: Checkout = {
     consignments: [consignment],
 };
 
+const checkoutWithShippingAutomaticDiscount: Checkout = {
+    ...checkoutWithBillingEmail,
+    shippingCostBeforeDiscount: 3,
+    consignments: [
+        {
+            ...consignment,
+            discounts: [
+                {
+                    id: 1,
+                    amount: 2,
+                    type: 'AUTOMATIC',
+                },
+            ],
+        },
+    ],
+};
+
 const checkoutWithShippingAndBilling: Checkout = {
     ...checkoutWithShipping,
     billingAddress: {
@@ -382,6 +399,7 @@ enum CheckoutPreset {
     CheckoutWithMultiShipping = 'CheckoutWithMultiShipping',
     CheckoutWithPromotions = 'CheckoutWithPromotions',
     CheckoutWithShipping = 'CheckoutWithShipping',
+    CheckoutWithShippingAutomaticDiscount = 'CheckoutWithShippingAutomaticDiscount',
     CheckoutWithShippingAndBilling = 'CheckoutWithShippingAndBilling',
     CustomErrorFlashMessage = 'CustomErrorFlashMessage',
     ErrorFlashMessage = 'ErrorFlashMessage',
@@ -400,6 +418,7 @@ export {
     checkoutWithMultiShippingCart,
     checkoutWithPromotions,
     checkoutWithShipping,
+    checkoutWithShippingAutomaticDiscount,
     checkoutWithShippingAndBilling,
     consignment,
     customer,

@@ -20,7 +20,7 @@ import {
     CHECKOUT_ROOT_NODE_ID,
     CheckoutProvider,
 } from '@bigcommerce/checkout/payment-integration-api';
-import { CheckoutPageNodeObject, CheckoutPreset } from '@bigcommerce/checkout/test-framework';
+import { CheckoutPageNodeObject, CheckoutPreset, checkoutWithShippingAutomaticDiscount } from '@bigcommerce/checkout/test-framework';
 
 import { createErrorLogger } from '../common/error';
 import {
@@ -332,6 +332,66 @@ describe('Checkout', () => {
             expect(screen.getByText(/111 Testing Rd/i)).toBeInTheDocument();
             expect(screen.getByText(/Cityville/i)).toBeInTheDocument();
             expect(screen.getByText(/pickup in store/i)).toBeInTheDocument();
+        });
+
+        it('renders shipping summary with shipping discount', async () => {
+            checkout.use(CheckoutPreset.CheckoutWithShipping);
+            checkout.updateCheckout('get',
+                '/checkout/*',
+                checkoutWithShippingAutomaticDiscount,
+            );
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForBillingStep();
+
+            const shippingOptionsInShippingSummary = screen.getByTestId('static-shipping-option');
+
+            expect(shippingOptionsInShippingSummary).toHaveTextContent('Pickup In Store');
+            expect(shippingOptionsInShippingSummary).toHaveTextContent('$3.00');
+            expect(shippingOptionsInShippingSummary).toHaveTextContent('$1.00');
+
+            const shippingCostInOrderSummary = screen.getByTestId('cart-shipping');
+
+            expect(shippingCostInOrderSummary).toHaveTextContent('Shipping');
+            expect(shippingCostInOrderSummary).toHaveTextContent('$3.00');
+            expect(shippingCostInOrderSummary).toHaveTextContent('$1.00');
+        });
+
+        it('renders multi-shipping summary with shipping discount', async () => {
+            checkout.use(CheckoutPreset.CheckoutWithMultiShipping);
+            checkout.updateCheckout('get',
+                '/checkout/*',
+                {
+                    ...checkoutWithShippingAutomaticDiscount,
+                    shippingCostBeforeDiscount: 6,
+                    consignments: [
+                        checkoutWithShippingAutomaticDiscount.consignments[0],
+                        {...checkoutWithShippingAutomaticDiscount.consignments[0], id: 'consignment-2'}
+                    ]
+                }
+            );
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForBillingStep();
+
+            const shippingOptionsInShippingSummary = screen.getAllByTestId('static-shipping-option');
+
+            expect(shippingOptionsInShippingSummary).toHaveLength(2);
+            expect(shippingOptionsInShippingSummary[0]).toHaveTextContent('Pickup In Store');
+            expect(shippingOptionsInShippingSummary[0]).toHaveTextContent('$3.00');
+            expect(shippingOptionsInShippingSummary[0]).toHaveTextContent('$1.00');
+
+            expect(shippingOptionsInShippingSummary[1]).toHaveTextContent('Pickup In Store');
+            expect(shippingOptionsInShippingSummary[1]).toHaveTextContent('$3.00');
+            expect(shippingOptionsInShippingSummary[1]).toHaveTextContent('$1.00');
+
+            const shippingCostInOrderSummary = screen.getByTestId('cart-shipping');
+
+            expect(shippingCostInOrderSummary).toHaveTextContent('Shipping');
+            expect(shippingCostInOrderSummary).toHaveTextContent('$6.00');
+            expect(shippingCostInOrderSummary).toHaveTextContent('$2.00');
         });
 
         it('logs unhandled error', async () => {
