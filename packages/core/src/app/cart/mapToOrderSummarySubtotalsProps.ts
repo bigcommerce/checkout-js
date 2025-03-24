@@ -18,33 +18,21 @@ export default function mapToOrderSummarySubtotalsProps({
 isShippingDiscountDisplayEnabled: boolean,
 ): OrderSummarySubtotalsProps {
     const allConsignmentsHaveSelectedShippingOption = hasSelectedShippingOptions(consignments);
-
-    if (!isShippingDiscountDisplayEnabled) {
-        return {
-            subtotalAmount: subtotal,
-            discountAmount,
-            giftCertificates,
-            giftWrappingAmount: giftWrappingCostTotal,
-            shippingAmount: hasSelectedShippingOptions(consignments)
-                ? shippingCostBeforeDiscount
-                : undefined,
-            handlingAmount: handlingCostTotal,
-            coupons,
-            taxes,
-            fees,
-            isTaxIncluded,
-        };
-    }
+    const shippingAmount = isShippingDiscountDisplayEnabled
+        ? allConsignmentsHaveSelectedShippingOption
+            ? getShippingCostAfterAutomaticDiscount(shippingCostBeforeDiscount, consignments)
+            : undefined
+        : allConsignmentsHaveSelectedShippingOption
+            ? shippingCostBeforeDiscount
+            : undefined;
 
     return {
         subtotalAmount: subtotal,
         discountAmount,
         giftCertificates,
         giftWrappingAmount: giftWrappingCostTotal,
-        shippingAmount: allConsignmentsHaveSelectedShippingOption
-            ? getShippingCostAfterAutomaticDiscount(shippingCostBeforeDiscount, consignments)
-            : undefined,
-        shippingAmountBeforeDiscount: allConsignmentsHaveSelectedShippingOption
+        shippingAmount,
+        shippingAmountBeforeDiscount: isShippingDiscountDisplayEnabled && allConsignmentsHaveSelectedShippingOption
         ? shippingCostBeforeDiscount
         : undefined,
         handlingAmount: handlingCostTotal,

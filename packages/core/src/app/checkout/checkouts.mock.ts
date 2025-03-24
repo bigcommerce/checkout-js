@@ -67,10 +67,3 @@ export function getCheckoutPayment(providerId?: string): CheckoutPayment {
         },
     };
 }
-
-export function getCheckoutWithShippingDiscounts(): Checkout {
-    return {
-        ...getCheckout(),
-        consignments: [getConsignmentWithShippingDiscount()],
-    }
-}
