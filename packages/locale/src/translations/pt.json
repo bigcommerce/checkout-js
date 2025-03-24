@@ -94,7 +94,7 @@
             "error_heading": "Ocorreu um erro",
             "leave_warning": "Deseja mesmo sair? Os dados inseridos podem não ser salvos.",
             "loading_text": "Carregando",
-            "missing_shipping_method_heading": "Shipping method unavailable",
+            "missing_shipping_method_heading": "Método de envio não disponível",
             "ok_action": "Ok",
             "error_code": "Código de erro:",
             "request_id": "ID da solicitação:",
@@ -217,6 +217,9 @@
                 "is_required": "O número de roteamento é obrigatório",
                 "only_numbers": "O número de roteamento deve conter apenas números",
                 "length": "O número de roteamento deve ter 9 dígitos"
+            },
+            "bluesnap_direct_company_name": {
+                "length_max": "O nome da empresa é muito longo"
             },
             "bluesnap_direct_account_type": {
                 "label": "Tipo de conta",

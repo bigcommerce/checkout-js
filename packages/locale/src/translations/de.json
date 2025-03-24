@@ -94,7 +94,7 @@
             "error_heading": "Es ist etwas schiefgegangen",
             "leave_warning": "Wollen Sie wirklich gehen? Von Ihnen eingegebene Daten werden möglicherweise nicht gespeichert.",
             "loading_text": "Wird geladen",
-            "missing_shipping_method_heading": "Shipping method unavailable",
+            "missing_shipping_method_heading": "Versandmethode nicht verfügbar",
             "ok_action": "Ok",
             "error_code": "Fehlercode:",
             "request_id": "Anfrage-ID:",
@@ -217,6 +217,9 @@
                 "is_required": "Routing-Nummer ist erforderlich",
                 "only_numbers": "Die Routing-Nummer darf nur Zahlen enthalten.",
                 "length": "Die Routing-Nummer muss aus 9 Ziffern bestehen."
+            },
+            "bluesnap_direct_company_name": {
+                "length_max": "Company Name is too long"
             },
             "bluesnap_direct_account_type": {
                 "label": "Konto-Typ",
