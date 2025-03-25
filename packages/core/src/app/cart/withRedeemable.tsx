@@ -18,12 +18,13 @@ export default function withRedeemable(
             onRemovedCoupon,
             onRemovedGiftCertificate,
             storeCreditAmount,
+            isShippingDiscountDisplayEnabled,
             ...redeemableProps
         } = props;
 
         return (
             <OriginalComponent
-                {...mapToOrderSummarySubtotalsProps(checkout)}
+                {...mapToOrderSummarySubtotalsProps(checkout, isShippingDiscountDisplayEnabled)}
                 additionalLineItems={
                     <Redeemable
                         {...{

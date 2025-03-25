@@ -7,12 +7,14 @@ import StaticMultiConsignment from './StaticMultiConsignment';
 
 
 interface ShippingSummaryProps {
+    isShippingDiscountDisplayEnabled: boolean;
     isMultiShippingMode: boolean;
     consignments: Consignment[];
     cart: Cart;
 }
 
 const ShippingSummary: FunctionComponent<ShippingSummaryProps> = ({
+    isShippingDiscountDisplayEnabled,
     isMultiShippingMode,
     consignments,
     cart
@@ -26,6 +28,7 @@ const ShippingSummary: FunctionComponent<ShippingSummaryProps> = ({
                             cart={cart}
                             consignment={consignment}
                             consignmentNumber={index + 1}
+                            isShippingDiscountDisplayEnabled={isShippingDiscountDisplayEnabled}
                         />
                     </div>
                 ))}
@@ -41,6 +44,7 @@ const ShippingSummary: FunctionComponent<ShippingSummaryProps> = ({
                         cart={cart}
                         compactView={consignments.length < 2}
                         consignment={consignment}
+                        isShippingDiscountDisplayEnabled={isShippingDiscountDisplayEnabled}
                     />
                 </div>
             ))}

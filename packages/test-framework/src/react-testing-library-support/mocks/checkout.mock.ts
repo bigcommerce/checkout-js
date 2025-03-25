@@ -1,4 +1,12 @@
-import { Checkout, Consignment, Customer, PhysicalItem } from '@bigcommerce/checkout-sdk';
+import {
+    Checkout,
+    Consignment,
+    ConsignmentAutomaticDiscount,
+    ConsignmentCouponDiscount,
+    Coupon,
+    Customer,
+    PhysicalItem,
+} from '@bigcommerce/checkout-sdk';
 
 const timeString = new Date().toISOString();
 
@@ -87,6 +95,7 @@ const consignment: Consignment = {
     shippingCost: 0,
     handlingCost: 0,
     lineItemIds: ['x'],
+    discounts: [],
     selectedShippingOption: {
         id: 'option-id-pick-up',
         type: 'shipping_pickupinstore',
@@ -286,6 +295,40 @@ const checkoutWithShipping: Checkout = {
     consignments: [consignment],
 };
 
+const consignmentAutomaticDiscount: ConsignmentAutomaticDiscount = {
+    id: 1,
+    amount: 2,
+    type: 'AUTOMATIC',
+};
+
+const consignmentCouponDiscount: ConsignmentCouponDiscount = {
+    id: 2,
+    amount: 3,
+    type: 'COUPON',
+    couponId: 1,
+    couponCode: 'TEST-SHIPPING-DISCOUNT-CODE',
+};
+
+const consignmentCoupon: Coupon = {
+    id: '1',
+    displayName: 'Shipping Discount',
+    code: 'TEST-SHIPPING-DISCOUNT-CODE',
+    couponType: 'shipping_discount',
+    discountedAmount: 3,
+};
+
+const checkoutWithShippingDiscount: Checkout = {
+    ...checkoutWithBillingEmail,
+    shippingCostBeforeDiscount: 3,
+    consignments: [
+        {
+            ...consignment,
+            discounts: [consignmentAutomaticDiscount, consignmentCouponDiscount],
+        },
+    ],
+    coupons: [consignmentCoupon],
+};
+
 const checkoutWithShippingAndBilling: Checkout = {
     ...checkoutWithShipping,
     billingAddress: {
@@ -399,8 +442,11 @@ export {
     checkoutWithMultiShippingCart,
     checkoutWithPromotions,
     checkoutWithShipping,
+    checkoutWithShippingDiscount,
     checkoutWithShippingAndBilling,
     consignment,
+    consignmentAutomaticDiscount,
+    consignmentCouponDiscount,
     customer,
     customerWithoutSavedAddresses,
     checkoutWithLoggedInCustomer,

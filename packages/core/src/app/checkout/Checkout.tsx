@@ -138,6 +138,7 @@ export interface WithCheckoutProps {
     isPending: boolean;
     isPriceHiddenFromGuests: boolean;
     isShowingWalletButtonsOnTop: boolean;
+    isShippingDiscountDisplayEnabled: boolean;
     loginUrl: string;
     cartUrl: string;
     createAccountUrl: string;
@@ -425,8 +426,7 @@ class Checkout extends Component<
     }
 
     private renderShippingStep(step: CheckoutStepStatus): ReactNode {
-        const { hasCartChanged, cart, consignments = [] } = this.props;
-
+        const { hasCartChanged, cart, consignments = [], isShippingDiscountDisplayEnabled } = this.props;
         const { isBillingSameAsShipping, isMultiShippingMode } = this.state;
 
         if (!cart) {
@@ -440,7 +440,7 @@ class Checkout extends Component<
                 key={step.type}
                 onEdit={this.handleEditStep}
                 onExpanded={this.handleExpanded}
-                summary={<ShippingSummary cart={cart} consignments={consignments} isMultiShippingMode={isMultiShippingMode} />}
+                summary={<ShippingSummary cart={cart} consignments={consignments} isMultiShippingMode={isMultiShippingMode} isShippingDiscountDisplayEnabled={isShippingDiscountDisplayEnabled}/>}
             >
                 <LazyContainer loadingSkeleton={<AddressFormSkeleton />}>
                     <Shipping

@@ -10,6 +10,7 @@ import { ShopperCurrency } from '../currency';
 export interface OrderSummaryPriceProps {
     label: ReactNode;
     amount?: number | null;
+    amountBeforeDiscount?: number;
     zeroLabel?: ReactNode;
     className?: string;
     testId?: string;
@@ -44,6 +45,7 @@ function isNumberValue(displayValue: number | ReactNode): displayValue is number
 
 const OrderSummaryPrice: FC<OrderSummaryPriceProps> = ({
     amount,
+    amountBeforeDiscount,
     actionLabel,
     onActionTriggered,
     children,
@@ -130,6 +132,13 @@ const OrderSummaryPrice: FC<OrderSummaryPriceProps> = ({
                     </span>
 
                     <span className="cart-priceItem-value">
+                        {isNumberValue(amountBeforeDiscount) && amountBeforeDiscount !== amount && (
+                            <span className="cart-priceItem-before-value">
+                                <ShopperCurrency amount={amountBeforeDiscount} />
+                            </span>
+                        )}
+
+
                         <span data-test="cart-price-value">
                             {isNumberValue(displayValue) ? (
                                 <ShopperCurrency amount={displayValue} />
