@@ -18,7 +18,7 @@ const StaticShippingOption: React.FunctionComponent<StaticShippingOptionProps> =
     shippingCostAfterDiscount,
 }) => {
     const renderShippingPrice = () => {
-        if (shippingCostAfterDiscount && shippingCostAfterDiscount !== method.cost) {
+        if (shippingCostAfterDiscount !== undefined && shippingCostAfterDiscount !== method.cost) {
             return (
                 <>
                     <span className="shippingOption-price-before-discount">
