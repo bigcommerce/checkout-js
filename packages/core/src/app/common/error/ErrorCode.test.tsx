@@ -4,7 +4,7 @@ import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import ErrorCode from './ErrorCode';
 
-describe('ErrorModal', () => {
+describe('ErrorCode', () => {
     it('displays label if passed', () => {
         const label = (
             <div>label</div>
