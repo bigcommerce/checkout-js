@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.569.0](https://github.com/bigcommerce/checkout-js/compare/v1.568.2...v1.569.0) (2025-03-25)
+
+
+### Features
+
+* **checkout:** CHECKOUT-8517 Display shipping discount on checkout page ([#2218](https://github.com/bigcommerce/checkout-js/issues/2218)) ([9b2f084](https://github.com/bigcommerce/checkout-js/commit/9b2f084798e2306a30c0817928810844aca00d28))
+* **other:** LOCAL-1444 delivery translation ([#2223](https://github.com/bigcommerce/checkout-js/issues/2223)) ([2e3996a](https://github.com/bigcommerce/checkout-js/commit/2e3996a4f77603aa28ce583571bbed10dc453914))
+
 ### [1.568.2](https://github.com/bigcommerce/checkout-js/compare/v1.568.1...v1.568.2) (2025-03-24)
 
 
