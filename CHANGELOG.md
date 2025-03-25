@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.569.1](https://github.com/bigcommerce/checkout-js/compare/v1.569.0...v1.569.1) (2025-03-25)
+
+
+### Bug Fixes
+
+* **payment:** STRIPE-696 Remove browser alert before Stripe UPE iDEAL redirect ([c7f3f70](https://github.com/bigcommerce/checkout-js/commit/c7f3f700b1334249d55e6a169fec3107fdb083be))
+
 ## [1.569.0](https://github.com/bigcommerce/checkout-js/compare/v1.568.2...v1.569.0) (2025-03-25)
 
 
