@@ -1,5 +1,5 @@
 import { createCheckoutService } from '@bigcommerce/checkout-sdk';
-import { mount } from 'enzyme';
+import { render } from '@testing-library/react';
 import React from 'react';
 
 import CheckoutProvider from './CheckoutProvider';
@@ -10,11 +10,9 @@ describe('CheckoutProvider', () => {
 
         jest.spyOn(service, 'subscribe');
 
-        const component = mount(<CheckoutProvider checkoutService={service} />);
+        render(<CheckoutProvider checkoutService={service} />);
 
         expect(service.subscribe).toHaveBeenCalled();
-
-        expect(component.state('checkoutState')).toEqual(service.getState());
     });
 
     it('unsubscribes to state changes when component unmounts', () => {
@@ -23,9 +21,9 @@ describe('CheckoutProvider', () => {
 
         jest.spyOn(service, 'subscribe').mockReturnValue(unsubscribe);
 
-        const component = mount(<CheckoutProvider checkoutService={service} />);
+        const { unmount } = render(<CheckoutProvider checkoutService={service} />);
 
-        component.unmount();
+        unmount();
 
         expect(unsubscribe).toHaveBeenCalled();
     });
