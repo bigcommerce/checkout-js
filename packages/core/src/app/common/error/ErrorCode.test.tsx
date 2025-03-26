@@ -11,12 +11,14 @@ describe('ErrorCode', () => {
         );
 
         render(<ErrorCode code="foo" label={label} />);
+
         expect(screen.getByText('label')).toBeInTheDocument();
         expect(screen.getByText('foo')).toBeInTheDocument();
     });
 
     it('displays error code and no label, if label is not supplied', () => {
         render(<ErrorCode code="foo" />);
+
         expect(screen.getByText('foo')).toBeInTheDocument();
     });
 });
