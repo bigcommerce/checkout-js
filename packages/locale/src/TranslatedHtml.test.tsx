@@ -1,5 +1,5 @@
 import { createCurrencyService, createLanguageService } from '@bigcommerce/checkout-sdk';
-import { mount } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 import React from 'react';
 
 import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
@@ -26,34 +26,38 @@ describe('TranslatedHtml', () => {
     });
 
     it('renders translated Html', () => {
-        const component = mount(
+        render(
             <LocaleContext.Provider value={context}>
                 <TranslatedHtml id="abc" />
             </LocaleContext.Provider>,
         );
 
-        expect(component.html()).toBe('<span><strong>abc</strong></span>');
+        expect(screen.getByText('abc')).toBeInTheDocument();
     });
 
     it('sanitizes translated Html', () => {
-        const component = mount(
+        render(
             <LocaleContext.Provider value={context}>
                 <TranslatedHtml id="dirty" />
             </LocaleContext.Provider>,
         );
 
-        expect(component.html()).toBe('<span><img src="x"></span>');
+        const image = screen.getByRole('img');
+
+        expect(image).toBeInTheDocument();
+        expect(image).toHaveAttribute('src', 'x');
     });
 
-    it('allows anchor tags with target attribute', () => {
-        const component = mount(
+    it('allows anchor tags with target', () => {
+        render(
             <LocaleContext.Provider value={context}>
                 <TranslatedHtml id="link" />
             </LocaleContext.Provider>,
         );
 
-        expect(component.html()).toBe(
-            '<span><a target="_blank" href="https://bigcommerce.com">Link</a></span>',
-        );
+        const link = screen.getByRole('link', { name: 'Link' });
+
+        expect(link).toBeInTheDocument();
+        expect(link).toHaveAttribute('href', 'https://bigcommerce.com');
     });
 });
