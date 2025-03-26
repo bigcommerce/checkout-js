@@ -126,7 +126,7 @@ describe('Multi-shipping', () => {
 
         jest.spyOn(checkoutService, 'selectConsignmentShippingOption');
 
-        checkout.use(CheckoutPreset.CheckoutWithMultiShipping);
+        checkout.use(CheckoutPreset.CheckoutWithMultiShippingCart);
 
         render(<CheckoutTest {...defaultProps} />);
 
@@ -287,7 +287,7 @@ describe('Multi-shipping', () => {
 
         jest.spyOn(checkoutService, 'selectConsignmentShippingOption');
 
-        checkout.use(CheckoutPreset.CheckoutWithMultiShipping);
+        checkout.use(CheckoutPreset.CheckoutWithMultiShippingCart);
 
         render(<CheckoutTest {...defaultProps} />);
 

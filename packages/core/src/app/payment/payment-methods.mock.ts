@@ -40,6 +40,8 @@ export function getPaypalCreditPaymentMethod(): PaymentMethod {
     };
 }
 
+// TODO: CHECKOUT-9010 Clean up this mock if it's not used
+/*istanbul ignore next */
 export function getMobilePaymentMethod(): PaymentMethod {
     return {
         id: 'authorizenetMobile',
