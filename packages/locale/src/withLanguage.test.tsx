@@ -14,7 +14,7 @@ describe('withDate()', () => {
         contextValue = createLocaleContext(getStoreConfig());
     });
 
-    it('injects currency service to inner component', () => {
+    it('injects language prop to inner component', () => {
         const Inner: FunctionComponent<WithLanguageProps> = ({ language }) => (
             <>{language && language.translate('billing.billing_heading')}</>
         );

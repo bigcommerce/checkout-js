@@ -14,15 +14,11 @@ describe('withDate()', () => {
         contextValue = createLocaleContext(getStoreConfig());
     });
 
-    it('injects currency service to inner component', () => {
+    it('injects date prop to inner component', () => {
         const Inner: FunctionComponent<WithDateProps> = ({ date }) => (
             <>{date && date.inputFormat}</>
         );
         const Outer = withDate(Inner);
-
-        if (contextValue.currency) {
-            contextValue.currency.toStoreCurrency = jest.fn(() => '$1.00');
-        }
 
         render(
             <LocaleContext.Provider value={contextValue}>
