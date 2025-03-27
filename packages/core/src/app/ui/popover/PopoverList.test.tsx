@@ -44,18 +44,4 @@ describe('Popover Component', () => {
 
         expect(screen.getByTestId('testId')).toBeInTheDocument();
     });
-
-    // it('renders list with highlighted text', () => {
-    //     const highlightedContent = [
-    //         <strong key="1">Ips</strong>,
-    //         <React.Fragment key="2">um</React.Fragment>,
-    //     ];
-
-    //     render(
-    //         <PopoverList items={[items[0], { content: highlightedContent, id: 'y' }, items[1]]} />,
-    //     );
-
-    //     screen.debug();
-    //     //     expect(tree.find('.popoverList-item').at(1)).toMatchSnapshot();
-    //     // });
 });
