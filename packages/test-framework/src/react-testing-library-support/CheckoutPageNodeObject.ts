@@ -18,6 +18,7 @@ import {
     checkoutWithCustomShippingAndBilling,
     checkoutWithDigitalCart,
     checkoutWithLoggedInCustomer,
+    checkoutWithMultiShippingAndBilling,
     checkoutWithMultiShippingCart,
     checkoutWithPromotions,
     checkoutWithShipping,
@@ -57,6 +58,10 @@ export class CheckoutPageNodeObject {
         ];
 
         this.server = setupServer(...defaultHandlers);
+    }
+
+    setRequestHandler(handler: RequestHandler) {
+        this.server.use(handler);
     }
 
     goto(): void {
@@ -164,10 +169,18 @@ export class CheckoutPageNodeObject {
                 );
                 break;
 
-            case CheckoutPreset.CheckoutWithMultiShipping:
+            case CheckoutPreset.CheckoutWithMultiShippingCart:
                 this.server.use(
                     rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
                         res(ctx.json(checkoutWithMultiShippingCart)),
+                    ),
+                );
+                break;
+
+            case CheckoutPreset.CheckoutWithMultiShippingAndBilling:
+                this.server.use(
+                    rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
+                        res(ctx.json(checkoutWithMultiShippingAndBilling)),
                     ),
                 );
                 break;

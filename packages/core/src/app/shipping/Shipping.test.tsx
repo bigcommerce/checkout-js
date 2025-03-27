@@ -288,7 +288,7 @@ describe('Shipping step', () => {
         });
 
         it('selects the valid customer address and completes the shipping step', async () => {
-            checkout.use(CheckoutPreset.CheckoutWithMultiShipping);
+            checkout.use(CheckoutPreset.CheckoutWithMultiShippingCart);
 
             const { container } = render(<CheckoutTest {...defaultProps} />);
 
@@ -352,7 +352,7 @@ describe('Shipping step', () => {
         });
 
         it('enters new address for the customer with saved address and completes the shipping step', async () => {
-            checkout.use(CheckoutPreset.CheckoutWithMultiShipping);
+            checkout.use(CheckoutPreset.CheckoutWithMultiShippingCart);
 
             const { container } = render(<CheckoutTest {...defaultProps} />);
 
@@ -680,7 +680,7 @@ describe('Shipping step', () => {
     });
 
     it('renders multi-shipping static consignments', async () => {
-        checkout.use(CheckoutPreset.CheckoutWithMultiShipping);
+        checkout.use(CheckoutPreset.CheckoutWithMultiShippingCart);
         checkout.updateCheckout('get',
             '/checkout/*',
             {

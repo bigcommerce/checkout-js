@@ -7,6 +7,7 @@ import {
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { noop } from 'lodash';
+import { rest } from 'msw';
 import React, { FunctionComponent } from 'react';
 
 import {
@@ -20,7 +21,14 @@ import {
     CHECKOUT_ROOT_NODE_ID,
     CheckoutProvider,
 } from '@bigcommerce/checkout/payment-integration-api';
-import { CheckoutPageNodeObject, CheckoutPreset, checkoutWithShippingDiscount, consignmentAutomaticDiscount, consignmentCouponDiscount } from '@bigcommerce/checkout/test-framework';
+import {
+    CheckoutPageNodeObject,
+    CheckoutPreset,
+    checkoutWithShippingDiscount,
+    consignmentAutomaticDiscount,
+    consignmentCouponDiscount,
+    payments,
+} from '@bigcommerce/checkout/test-framework';
 
 import { createErrorLogger } from '../common/error';
 import {
@@ -245,7 +253,6 @@ describe('Checkout', () => {
         });
 
         it('renders checkout button container with ApplePay', async () => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-member-access
             (window as any).ApplePaySession = {};
 
             checkout.use(CheckoutPreset.RemoteProviders);
@@ -397,7 +404,7 @@ describe('Checkout', () => {
         });
 
         it('renders multi-shipping summary with shipping discount', async () => {
-            checkout.use(CheckoutPreset.CheckoutWithMultiShipping);
+            checkout.use(CheckoutPreset.CheckoutWithMultiShippingCart);
             checkout.updateCheckout('get',
                 '/checkout/*',
                 {
@@ -480,6 +487,10 @@ describe('Checkout', () => {
 
         it('logs unhandled error', async () => {
             checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
+
+            const handler = rest.get('/api/storefront/payments', (_, res, ctx) => res(ctx.json([payments[2]])));
+
+            checkout.setRequestHandler(handler);
 
             render(<CheckoutTest {...defaultProps} />);
 
