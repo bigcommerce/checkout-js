@@ -1,28 +1,31 @@
-import { mount } from 'enzyme';
-import React from 'react';
+import { render, screen } from '@testing-library/react';
+import React, { FunctionComponent } from 'react';
 
 import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
 import createLocaleContext from './createLocaleContext';
 import LocaleContext, { LocaleContextType } from './LocaleContext';
-import withDate from './withDate';
+import withDate, { WithDateProps } from './withDate';
 
 describe('withDate()', () => {
-    let contextValue: Required<LocaleContextType>;
+    let contextValue: LocaleContextType;
 
     beforeEach(() => {
         contextValue = createLocaleContext(getStoreConfig());
     });
 
     it('injects date prop to inner component', () => {
-        const Inner = () => <div />;
+        const Inner: FunctionComponent<WithDateProps> = ({ date }) => (
+            <>{date && date.inputFormat}</>
+        );
         const Outer = withDate(Inner);
-        const container = mount(
+
+        render(
             <LocaleContext.Provider value={contextValue}>
                 <Outer />
             </LocaleContext.Provider>,
         );
 
-        expect(container.find(Inner).prop('date')).toEqual(contextValue.date);
+        expect(screen.getByText('dd/MM/yyyy')).toBeInTheDocument();
     });
 });
