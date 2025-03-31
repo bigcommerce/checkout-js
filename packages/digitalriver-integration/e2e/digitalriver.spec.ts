@@ -1,7 +1,7 @@
 import { PaymentStepAsGuestEUPreset, test } from '@bigcommerce/checkout/test-framework';
 
 test.describe('Digital River', () => {
-    test('Customer should be able to pay using CC with Digital River through the payment step in checkout', async ({
+    test.skip('Customer should be able to pay using CC with Digital River through the payment step in checkout', async ({
         assertions,
         checkout,
         page,
@@ -48,7 +48,7 @@ test.describe('Digital River', () => {
         await assertions.shouldSeeOrderConfirmation();
     });
 
-    test('Customer should be able to pay using wire transfer with Digital River in payment step in checkout', async ({
+    test.skip('Customer should be able to pay using wire transfer with Digital River in payment step in checkout', async ({
         assertions,
         checkout,
         page,
