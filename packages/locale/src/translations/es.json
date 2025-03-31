@@ -219,7 +219,7 @@
                 "length": "El número de ruta debe tener 9 dígitos"
             },
             "bluesnap_direct_company_name": {
-                "length_max": "Company Name is too long"
+                "length_max": "El nombre de empresa es demasiado largo"
             },
             "bluesnap_direct_account_type": {
                 "label": "Tipo de cuenta",

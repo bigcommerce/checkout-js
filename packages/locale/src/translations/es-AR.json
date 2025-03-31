@@ -219,7 +219,7 @@
                 "length": "El número de ruteo debe tener 9 dígitos de longitud"
             },
             "bluesnap_direct_company_name": {
-                "length_max": "Company Name is too long"
+                "length_max": "El nombre de la empresa es demasiado largo"
             },
             "bluesnap_direct_account_type": {
                 "label": "Tipo de cuenta",

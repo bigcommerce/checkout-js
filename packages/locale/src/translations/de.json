@@ -219,7 +219,7 @@
                 "length": "Die Routing-Nummer muss aus 9 Ziffern bestehen."
             },
             "bluesnap_direct_company_name": {
-                "length_max": "Company Name is too long"
+                "length_max": "Der Firmenname ist zu lang"
             },
             "bluesnap_direct_account_type": {
                 "label": "Konto-Typ",

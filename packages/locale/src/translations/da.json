@@ -219,7 +219,7 @@
                 "length": "Routingnummeret skal være 9 cifre langt"
             },
             "bluesnap_direct_company_name": {
-                "length_max": "Company Name is too long"
+                "length_max": "Firmanavnet er for langt"
             },
             "bluesnap_direct_account_type": {
                 "label": "Kontotype",
