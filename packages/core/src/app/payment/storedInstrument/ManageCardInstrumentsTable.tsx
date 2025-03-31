@@ -5,8 +5,8 @@ import creditCardType from 'credit-card-type';
 import React, { FunctionComponent, memo, useCallback } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
-import { LoadingOverlay } from '../../ui/loading';
 import { CreditCardIcon } from '../creditCard';
 
 import mapFromInstrumentCardType from './mapFromInstrumentCardType';

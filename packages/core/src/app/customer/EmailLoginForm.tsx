@@ -10,11 +10,11 @@ import {
     withLanguage,
     WithLanguageProps,
 } from '@bigcommerce/checkout/locale';
+import { LoadingSpinner } from '@bigcommerce/checkout/ui';
 
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
 import { Form } from '../ui/form';
-import { LoadingSpinner } from '../ui/loading';
 import { Modal, ModalHeader } from '../ui/modal';
 
 import EmailField from './EmailField';

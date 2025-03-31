@@ -73,7 +73,7 @@ export {
     IconUsdCoin,
     IconAch,
 } from './icon';
-export { LoadingOverlay, LoadingSpinner } from './loading';
+export { LazyContainer, LoadingNotification, LoadingOverlay, LoadingSpinner } from './loading';
 export {
     ConfirmationModal,
     Modal,

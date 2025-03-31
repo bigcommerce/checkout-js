@@ -1,8 +1,8 @@
 import React, { PureComponent, ReactNode } from 'react';
 
 import { TranslatedHtml } from '@bigcommerce/checkout/locale';
+import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
-import { LoadingOverlay } from '../ui/loading';
 
 export interface EmptyCartMessageProps {
     waitInterval?: number;

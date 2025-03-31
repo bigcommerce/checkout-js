@@ -4,10 +4,10 @@ import React, { Component, MouseEvent, ReactNode } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../checkout';
 import { isErrorWithType } from '../common/error';
-import { LoadingOverlay } from '../ui/loading';
 
 export interface SpamProtectionProps {
     didExceedSpamLimit?: boolean;
