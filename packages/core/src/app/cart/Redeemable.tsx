@@ -103,7 +103,7 @@ const RedeemableForm: FunctionComponent<
 
             // note: to prevent submitting main form, we manually intercept
             // the enter key event and submit the "subform".
-            if (event.keyCode === 13) {
+            if (event.keyCode === 13 || event.key === 'Enter') {
                 handleSubmitForm(setSubmitted);
                 event.preventDefault();
             }
