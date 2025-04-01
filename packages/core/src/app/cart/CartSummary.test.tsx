@@ -2,13 +2,13 @@ import { CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sd
 import React from 'react';
 
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
-import {ErrorLogger} from '@bigcommerce/checkout/error-handling-utils';
+import { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getCheckout } from '../checkout/checkouts.mock';
-import {createErrorLogger} from '../common/error';
+import { createErrorLogger } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
 

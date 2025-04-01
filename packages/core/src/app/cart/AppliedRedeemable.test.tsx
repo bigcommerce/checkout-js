@@ -20,10 +20,10 @@ describe('AppliedGiftCertificate', () => {
     );
 
     it('renders children and button', async () => {
-        render(<AppliedRedeembleContainer isRemoving={false} />);
+        const { container } = render(<AppliedRedeembleContainer isRemoving={false} />);
 
-        // eslint-disable-next-line testing-library/no-node-access
-        expect(document.querySelector('.is-loading')).not.toBeInTheDocument();
+        // eslint-disable-next-line testing-library/no-container,testing-library/no-node-access
+        expect(container.querySelector('.is-loading')).not.toBeInTheDocument();
         expect(screen.getByText('foo')).toBeInTheDocument();
         expect(screen.getByTestId('redeemable-remove')).toBeEnabled();
 
@@ -33,10 +33,10 @@ describe('AppliedGiftCertificate', () => {
     });
 
     it('disables button when isRemoving is true', () => {
-        render(<AppliedRedeembleContainer isRemoving={true} />);
+        const { container } = render(<AppliedRedeembleContainer isRemoving={true} />);
 
-        // eslint-disable-next-line testing-library/no-node-access
-        expect(document.querySelector('.is-loading')).toBeInTheDocument();
+        // eslint-disable-next-line testing-library/no-container,testing-library/no-node-access
+        expect(container.querySelector('.is-loading')).toBeInTheDocument();
         expect(screen.getByTestId('redeemable-remove')).toBeDisabled();
     });
 });
