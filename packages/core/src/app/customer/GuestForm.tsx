@@ -34,6 +34,7 @@ export interface GuestFormProps {
     isExpressPrivacyPolicy: boolean;
     isFloatingLabelEnabled?: boolean;
     shouldShowEmailWatermark: boolean;
+    loginLink: string;
     onChangeEmail(email: string): void;
     onContinueAsGuest(data: GuestFormValues): void;
     onShowLogin(): void;
@@ -52,12 +53,12 @@ const GuestForm: FunctionComponent<
     continueAsGuestButtonLabelId,
     isLoading,
     onChangeEmail,
-    onShowLogin,
     privacyPolicyUrl,
     requiresMarketingConsent,
     isExpressPrivacyPolicy,
     isFloatingLabelEnabled,
     shouldShowEmailWatermark,
+    loginLink,
 }) => {
     const renderField = useCallback(
         (fieldProps: FieldProps<boolean>) => (
@@ -118,7 +119,9 @@ const GuestForm: FunctionComponent<
                         <a
                             data-test="customer-continue-button"
                             id="checkout-customer-login"
-                            onClick={onShowLogin}
+                            onClick={() => {
+                                window.location.assign(`${loginLink}?redirectTo=checkout`);
+                            }}
                             role="button"
                             tabIndex={0}
                         >
