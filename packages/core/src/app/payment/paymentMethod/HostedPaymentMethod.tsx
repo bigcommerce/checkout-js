@@ -13,10 +13,10 @@ import React, { Component, ReactNode } from 'react';
 import { MapToPropsFactory } from '@bigcommerce/checkout/legacy-hoc';
 import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { CheckoutContextProps, PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
-import { LoadingOverlay } from '../../ui/loading';
 import {
     AccountInstrumentFieldset,
     isAccountInstrument,

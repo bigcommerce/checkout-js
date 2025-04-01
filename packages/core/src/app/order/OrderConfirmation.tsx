@@ -14,6 +14,7 @@ import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
 import { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { LazyContainer, LoadingSpinner } from '@bigcommerce/checkout/ui';
 
 import { withAnalytics } from '../analytics';
 import { withCheckout } from '../checkout';
@@ -33,7 +34,6 @@ import {
     AccountCreationRequirementsError,
 } from '../guestSignup/errors';
 import { Button, ButtonVariant } from '../ui/button';
-import { LazyContainer, LoadingSpinner } from '../ui/loading';
 import { MobileView } from '../ui/responsive';
 
 import getPaymentInstructions from './getPaymentInstructions';

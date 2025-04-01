@@ -13,12 +13,12 @@ import { AnalyticsContextProps, AnalyticsEvents, AnalyticsProviderMock } from '@
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import { LocaleProvider } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { LoadingSpinner } from '@bigcommerce/checkout/ui';
 
 import { createErrorLogger } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
 import { createEmbeddedCheckoutStylesheet } from '../embeddedCheckout';
 import { CreatedCustomer, GuestSignUpForm } from '../guestSignup';
-import { LoadingSpinner } from '../ui/loading';
 
 import OrderConfirmation, { OrderConfirmationProps } from './OrderConfirmation';
 import { getOrder } from './orders.mock';

@@ -14,11 +14,10 @@ import {
     PayPalFastlaneShippingAddressForm,
     usePayPalFastlaneAddress,
 } from '@bigcommerce/checkout/paypal-fastlane-integration';
+import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import { ShippingAddressProps } from './ShippingAddress';
-
 import ShippingAddressForm from './ShippingAddressForm';
-import { LoadingOverlay } from '../ui/loading';
 
 export interface PayPalFastlaneShippingAddressProps extends ShippingAddressProps {
     methodId?: string,
@@ -84,6 +83,7 @@ export const PayPalFastlaneShippingAddress: FC<PayPalFastlaneShippingAddressProp
                 onUnhandledError(error);
             }
         }
+
         setIsLoadingStrategyStrategy(false);
     };
 

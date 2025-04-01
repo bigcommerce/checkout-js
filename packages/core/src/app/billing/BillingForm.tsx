@@ -11,7 +11,7 @@ import { lazy } from 'yup';
 
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
-import { AddressFormSkeleton } from '@bigcommerce/checkout/ui';
+import { AddressFormSkeleton, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import {
     AddressForm,
@@ -27,7 +27,6 @@ import { getCustomFormFieldsValidationSchema } from '../formFields';
 import { OrderComments } from '../orderComments';
 import { Button, ButtonVariant } from '../ui/button';
 import { Fieldset, Form } from '../ui/form';
-import { LoadingOverlay } from '../ui/loading';
 
 import StaticBillingAddress from './StaticBillingAddress';
 

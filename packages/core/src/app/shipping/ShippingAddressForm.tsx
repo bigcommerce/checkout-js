@@ -7,10 +7,11 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import React, { Component, ReactNode } from 'react';
 
+import { LoadingOverlay } from '@bigcommerce/checkout/ui';
+
 import { AddressForm, AddressSelect, AddressType, isValidCustomerAddress } from '../address';
 import { connectFormik, ConnectFormikProps } from '../common/form';
 import { Fieldset } from '../ui/form';
-import { LoadingOverlay } from '../ui/loading';
 
 import { SingleShippingFormValues } from './SingleShippingForm';
 

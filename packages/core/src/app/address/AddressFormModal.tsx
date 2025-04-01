@@ -4,10 +4,10 @@ import React, { FunctionComponent } from 'react';
 import { lazy } from 'yup';
 
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import { Button, ButtonVariant } from '../ui/button';
 import { Form } from '../ui/form';
-import { LoadingOverlay } from '../ui/loading';
 import { Modal, ModalHeader } from '../ui/modal';
 
 import AddressForm from './AddressForm';
