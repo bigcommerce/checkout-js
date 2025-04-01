@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.570.0](https://github.com/bigcommerce/checkout-js/compare/v1.569.3...v1.570.0) (2025-04-01)
+
+
+### Features
+
+* **payment:** PI-2875 Google Pay promo codes handling ([de37bf9](https://github.com/bigcommerce/checkout-js/commit/de37bf9ac7d9ad6d2ef7f72a5440d2563d9ac93f))
+
 ### [1.569.3](https://github.com/bigcommerce/checkout-js/compare/v1.569.2...v1.569.3) (2025-03-28)
 
 ### [1.569.2](https://github.com/bigcommerce/checkout-js/compare/v1.569.1...v1.569.2) (2025-03-26)
