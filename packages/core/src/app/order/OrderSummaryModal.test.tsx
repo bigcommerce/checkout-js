@@ -1,20 +1,17 @@
-import { createCheckoutService, LineItemMap, Order } from '@bigcommerce/checkout-sdk';
-import { mount, shallow, ShallowWrapper } from 'enzyme';
+import { createCheckoutService, Order } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
 import { LocaleProvider } from '@bigcommerce/checkout/locale';
-import { getPhysicalItem } from '@bigcommerce/checkout/test-mocks';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../config/config.mock';
 import { SMALL_SCREEN_MAX_WIDTH } from '../ui/responsive';
 
 import mapToOrderSummarySubtotalsProps from './mapToOrderSummarySubtotalsProps';
 import { getOrder } from './orders.mock';
-import OrderSummaryItems from './OrderSummaryItems';
 import OrderSummaryModal from './OrderSummaryModal';
 
 let order: Order;
-let orderSummary: ShallowWrapper;
 
 jest.mock('./OrderSummaryPrice', () => (props: any) => (
     <span {...props} />
@@ -25,8 +22,10 @@ describe('OrderSummaryModal', () => {
 
     beforeEach(() => {
         order = getOrder();
+    });
 
-        orderSummary = shallow(
+    it('renders order summary', () => {
+        render(
             <OrderSummaryModal
                 isOpen={true}
                 {...mapToOrderSummarySubtotalsProps(order)}
@@ -37,10 +36,13 @@ describe('OrderSummaryModal', () => {
                 total={order.orderAmount}
             />,
         );
-    });
 
-    it('renders order summary', () => {
-        expect(orderSummary).toMatchSnapshot();
+        expect(screen.getByText('Order Summary')).toBeInTheDocument();
+        expect(screen.getByText(order.coupons[0].code)).toBeInTheDocument();
+        expect(screen.getByText(order.coupons[1].code)).toBeInTheDocument();
+        expect(screen.getByText(`1 x ${order.lineItems.giftCertificates[0].name}`)).toBeInTheDocument();
+        expect(screen.getByText('foo')).toBeInTheDocument();
+        expect(screen.getByText('Close')).toBeInTheDocument();
     });
 
     describe('when taxes are inclusive', () => {
@@ -50,7 +52,7 @@ describe('OrderSummaryModal', () => {
                 isTaxIncluded: true,
             };
 
-            orderSummary = shallow(
+            render(
                 <OrderSummaryModal
                     {...mapToOrderSummarySubtotalsProps(taxIncludedOrder)}
                     isOpen={true}
@@ -61,9 +63,11 @@ describe('OrderSummaryModal', () => {
                 />,
             );
 
-            expect(orderSummary).toMatchSnapshot();
-
-            expect(orderSummary.find('.cart-taxItem')).toHaveLength(1);
+            expect(screen.getByText('Order Summary')).toBeInTheDocument();
+            expect(screen.getByText(taxIncludedOrder.coupons[0].code)).toBeInTheDocument();
+            expect(screen.getByText(taxIncludedOrder.coupons[1].code)).toBeInTheDocument();
+            expect(screen.getByText(`1 x ${taxIncludedOrder.lineItems.giftCertificates[0].name}`)).toBeInTheDocument();
+            expect(screen.getByText('Tax Included in Total:')).toBeInTheDocument();
         });
     });
 
@@ -90,7 +94,7 @@ describe('OrderSummaryModal', () => {
                 value: 500,
             });
 
-            const mountedOrderSummary = mount(
+            render(
                 <LocaleProvider checkoutService={checkoutService}>
                     <OrderSummaryModal
                         {...mapToOrderSummarySubtotalsProps(getOrder())}
@@ -103,7 +107,7 @@ describe('OrderSummaryModal', () => {
                 </LocaleProvider>,
             );
 
-            expect(mountedOrderSummary.find('button')).toHaveLength(1);
+            expect(screen.getByRole('button', { name: 'RETURN TO CHECKOUT' })).toBeInTheDocument();
         });
     });
 });
