@@ -75,5 +75,9 @@ export function mapSubmitOrderErrorTitle(
         return translate('common.missing_shipping_method_heading');
     }
 
+    if (error.type === 'invalid_shipping_address') {
+        return translate('common.invalid_shipping_address');
+    }
+
     return translate('common.error_heading');
 }
