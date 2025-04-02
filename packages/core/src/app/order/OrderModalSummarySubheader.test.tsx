@@ -1,7 +1,8 @@
-import { mount } from "enzyme";
+import { CurrencyService } from "@bigcommerce/checkout-sdk";
 import React from "react";
 
-import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedString } from "@bigcommerce/checkout/locale";
+import { createLocaleContext, LocaleContext, LocaleContextType } from "@bigcommerce/checkout/locale";
+import { render, screen } from "@bigcommerce/checkout/test-utils";
 
 import { getDigitalItem, getPhysicalItem } from "../cart/lineItem.mock";
 import { getStoreConfig } from "../config/config.mock";
@@ -11,7 +12,8 @@ import OrderModalSummarySubheader from "./OrderModalSummarySubheader";
 
 describe('OrderModalSummarySubheader', () => {
     let localeContext: LocaleContextType;
-    let orderModalSummarySubHeader: any;
+    let currencyService: CurrencyService;
+
     const items = {
         customItems: [],
         physicalItems: [getPhysicalItem()],
@@ -21,10 +23,11 @@ describe('OrderModalSummarySubheader', () => {
 
     beforeEach(() => {
         localeContext = createLocaleContext(getStoreConfig());
+        currencyService = localeContext.currency;
     });
 
     it('when shopper has same currency as the store and 1 item, text id passed is cart.item', () => {
-        orderModalSummarySubHeader = mount(
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <OrderModalSummarySubheader
                     amountWithCurrency={<ShopperCurrency amount={100} />}
@@ -35,13 +38,7 @@ describe('OrderModalSummarySubheader', () => {
             </LocaleContext.Provider>
         );
 
-        const currencyAmount = orderModalSummarySubHeader.find(ShopperCurrency);
-
-        expect(orderModalSummarySubHeader.find(TranslatedString).props()).toMatchObject({
-            id: 'cart.item',
-        });
-
-        expect(currencyAmount.text()).toBe('$112.00');
+        expect(screen.getByText(`1 ${localeContext.language.translate('cart.item')} | ${currencyService.toCustomerCurrency(100)}`)).toBeInTheDocument();
     });
 
     it('when shopper has same currency as the store and multiple items, text id passed is cart.items', () => {
@@ -50,7 +47,7 @@ describe('OrderModalSummarySubheader', () => {
             digitalItems: [getDigitalItem()]
         };
 
-        orderModalSummarySubHeader = mount(
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <OrderModalSummarySubheader
                     amountWithCurrency={<ShopperCurrency amount={100} />}
@@ -61,19 +58,13 @@ describe('OrderModalSummarySubheader', () => {
             </LocaleContext.Provider>
         );
 
-        const currencyAmount = orderModalSummarySubHeader.find(ShopperCurrency);
-
-        expect(orderModalSummarySubHeader.find(TranslatedString).props()).toMatchObject({
-            id: 'cart.items',
-        });
-
-        expect(currencyAmount.text()).toBe('$112.00');
+        expect(screen.getByText(`2 ${localeContext.language.translate('cart.items')} | ${currencyService.toCustomerCurrency(100)}`)).toBeInTheDocument();
     });
 
     it('displays shopper currency in summary if different than store currency', () => {
         const shopperCurrencyCode = 'AUD';
 
-        orderModalSummarySubHeader = mount(
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <OrderModalSummarySubheader
                     amountWithCurrency={<ShopperCurrency amount={100} />}
@@ -84,6 +75,7 @@ describe('OrderModalSummarySubheader', () => {
             </LocaleContext.Provider>
         );
 
-        expect(orderModalSummarySubHeader.find('span').text()).toBe(`(${shopperCurrencyCode})`);
+        expect(screen.getByText(`1 ${localeContext.language.translate('cart.item')} | ${currencyService.toCustomerCurrency(100)}`)).toBeInTheDocument();
+        expect(screen.getByText(`(${shopperCurrencyCode})`)).toBeInTheDocument();
     });
 });

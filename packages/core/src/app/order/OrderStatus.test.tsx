@@ -1,13 +1,20 @@
 import { CheckoutService, createCheckoutService, Order, StoreConfig } from '@bigcommerce/checkout-sdk';
-import { mount } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
-import { LocaleProvider, TranslatedHtml } from '@bigcommerce/checkout/locale';
+import { createLocaleContext, LocaleContextType, LocaleProvider } from '@bigcommerce/checkout/locale';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../config/config.mock';
 
 import { getOrder, getOrderWithMandateId, getOrderWithMandateURL } from './orders.mock';
 import OrderStatus, { OrderStatusProps } from './OrderStatus';
+
+const getTextContent = (markup: string) => {
+    return new DOMParser()
+        .parseFromString(markup, "text/html")
+        .body
+        .textContent;
+}
 
 describe('OrderStatus', () => {
     let checkoutService: CheckoutService;
@@ -15,6 +22,7 @@ describe('OrderStatus', () => {
     let order: Order;
     let OrderStatusTest: FunctionComponent<OrderStatusProps>;
     let config: StoreConfig;
+    let localeContext: LocaleContextType;
 
     beforeEach(() => {
         checkoutService = createCheckoutService();
@@ -27,8 +35,10 @@ describe('OrderStatus', () => {
             supportEmail: 'test@example.com',
         };
 
+        localeContext = createLocaleContext(getStoreConfig());
+
         OrderStatusTest = (props) => (
-            <LocaleProvider checkoutService={checkoutService}>
+            <LocaleProvider checkoutService={checkoutService} value={localeContext}>
                 <OrderStatus {...props} />
             </LocaleProvider>
         );
@@ -36,38 +46,31 @@ describe('OrderStatus', () => {
 
     describe('when order is complete', () => {
         it('renders confirmation message with contact email and phone number if both are provided', () => {
-            const orderStatus = mount(
-                <OrderStatusTest {...defaultProps} supportPhoneNumber="990" />,
-            );
-            const translationProps = orderStatus
-                .find('[data-test="order-confirmation-order-status-text"]')
-                .find(TranslatedHtml)
-                .props();
+            const supportPhoneNumber = "990";
 
-            expect(translationProps).toEqual({
-                data: {
+            render(
+                <OrderStatusTest {...defaultProps} supportPhoneNumber={supportPhoneNumber} />,
+            );
+
+            expect(screen.getByTestId('order-confirmation-order-number-text')).toHaveTextContent(`Your order number is ${order.orderId}`);
+            expect(screen.getByTestId('order-confirmation-order-status-text'))
+                .toHaveTextContent(getTextContent(localeContext.language.translate('order_confirmation.order_with_support_number_text', {
                     orderNumber: defaultProps.order.orderId,
                     supportEmail: defaultProps.supportEmail,
-                    supportPhoneNumber: '990',
-                },
-                id: 'order_confirmation.order_with_support_number_text',
-            });
+                    supportPhoneNumber,
+                })));
         });
 
         it('renders confirmation message without contact phone number if it is not provided', () => {
-            const orderStatus = mount(<OrderStatusTest {...defaultProps} />);
-            const translationProps = orderStatus
-                .find('[data-test="order-confirmation-order-status-text"]')
-                .find(TranslatedHtml)
-                .props();
+            render(<OrderStatusTest {...defaultProps} />);
 
-            expect(translationProps).toEqual({
-                data: {
+
+            expect(screen.getByTestId('order-confirmation-order-number-text')).toHaveTextContent(`Your order number is ${order.orderId}`);
+            expect(screen.getByTestId('order-confirmation-order-status-text'))
+                .toHaveTextContent(getTextContent(localeContext.language.translate('order_confirmation.order_without_support_number_text', {
                     orderNumber: defaultProps.order.orderId,
                     supportEmail: defaultProps.supportEmail,
-                },
-                id: 'order_confirmation.order_without_support_number_text',
-            });
+                })));
         });
     });
 
@@ -80,15 +83,9 @@ describe('OrderStatus', () => {
         });
 
         it('renders message indicating order is pending review', () => {
-            const orderStatus = mount(<OrderStatusTest {...defaultProps} order={order} />);
-            const translationProps = orderStatus
-                .find('[data-test="order-confirmation-order-status-text"]')
-                .find(TranslatedHtml)
-                .props();
+            render(<OrderStatusTest {...defaultProps} order={order} />);
 
-            expect(translationProps).toEqual({
-                id: 'order_confirmation.order_pending_review_text',
-            });
+            expect(screen.getByText(localeContext.language.translate('order_confirmation.order_pending_review_text'))).toBeInTheDocument();
         });
     });
 
@@ -101,15 +98,9 @@ describe('OrderStatus', () => {
         });
 
         it('renders message indicating order is awaiting payment', () => {
-            const orderStatus = mount(<OrderStatusTest {...defaultProps} order={order} />);
-            const translationProps = orderStatus
-                .find('[data-test="order-confirmation-order-status-text"]')
-                .find(TranslatedHtml)
-                .props();
+            render(<OrderStatusTest {...defaultProps} order={order} />);
 
-            expect(translationProps).toEqual({
-                id: 'order_confirmation.order_pending_review_text',
-            });
+            expect(screen.getByText(localeContext.language.translate('order_confirmation.order_pending_review_text'))).toBeInTheDocument();
         });
     });
 
@@ -122,19 +113,13 @@ describe('OrderStatus', () => {
         });
 
         it('renders message indicating order is pending', () => {
-            const orderStatus = mount(<OrderStatusTest {...defaultProps} order={order} />);
-            const translationProps = orderStatus
-                .find('[data-test="order-confirmation-order-status-text"]')
-                .find(TranslatedHtml)
-                .props();
+            render(<OrderStatusTest {...defaultProps} order={order} />);
 
-            expect(translationProps).toEqual({
-                data: {
+            expect(screen.getByTestId('order-confirmation-order-status-text'))
+                .toHaveTextContent(getTextContent(localeContext.language.translate('order_confirmation.order_pending_status_text', {
                     orderNumber: defaultProps.order.orderId,
                     supportEmail: defaultProps.supportEmail,
-                },
-                id: 'order_confirmation.order_pending_status_text',
-            });
+                })));
         });
     });
 
@@ -147,37 +132,25 @@ describe('OrderStatus', () => {
         });
 
         it('renders message indicating order is incomplete when experiment is off', () => {
-            const orderStatus = mount(<OrderStatusTest {...defaultProps} order={order} />);
-            const translationProps = orderStatus
-                .find('[data-test="order-confirmation-order-status-text"]')
-                .find(TranslatedHtml)
-                .props();
+            render(<OrderStatusTest {...defaultProps} order={order} />);
 
-            expect(translationProps).toEqual({
-                data: {
+            expect(screen.getByTestId('order-confirmation-order-status-text'))
+                .toHaveTextContent(getTextContent(localeContext.language.translate('order_confirmation.order_incomplete_status_text', {
                     orderNumber: defaultProps.order.orderId,
                     supportEmail: defaultProps.supportEmail,
-                },
-                id: 'order_confirmation.order_incomplete_status_text',
-            });
+                })));
         });
 
         it('renders message indicating order is incomplete when experiment is on', () => {
             config.checkoutSettings.features['CHECKOUT-6891.update_incomplete_order_wording_on_order_confirmation_page'] = true;
 
-            const orderStatus = mount(<OrderStatusTest {...defaultProps} config={config} order={order} />);
-            const translationProps = orderStatus
-                .find('[data-test="order-confirmation-order-status-text"]')
-                .find(TranslatedHtml)
-                .props();
+            render(<OrderStatusTest {...defaultProps} config={config} order={order} />);
 
-            expect(translationProps).toEqual({
-                data: {
+            expect(screen.getByTestId('order-confirmation-order-status-text'))
+                .toHaveTextContent(getTextContent(localeContext.language.translate('order_confirmation.order_pending_status_text', {
                     orderNumber: defaultProps.order.orderId,
                     supportEmail: defaultProps.supportEmail,
-                },
-                id: 'order_confirmation.order_pending_status_text',
-            });
+                })));
         });
     });
 
@@ -190,31 +163,22 @@ describe('OrderStatus', () => {
         });
 
         it('renders status with downloadable items text if order is downloadable', () => {
-            const orderStatus = mount(
+            render(
                 <OrderStatusTest {...defaultProps} order={{ ...order, isDownloadable: true }} />,
             );
-            const translationProps = orderStatus
-                .find('[data-test="order-confirmation-digital-items-text"]')
-                .find(TranslatedHtml)
-                .props();
 
-            expect(translationProps).toEqual({
-                id: 'order_confirmation.order_with_downloadable_digital_items_text',
-            });
+            expect(screen.getByTestId('order-confirmation-digital-items-text'))
+                .toHaveTextContent(localeContext.language.translate('order_confirmation.order_with_downloadable_digital_items_text'));
         });
 
         it('renders status without downloadable items text if order it not yet downloadable', () => {
-            const orderStatus = mount(
+            render(
                 <OrderStatusTest {...defaultProps} order={{ ...order, isDownloadable: false }} />,
             );
-            const translationProps = orderStatus
-                .find('[data-test="order-confirmation-digital-items-text"]')
-                .find(TranslatedHtml)
-                .props();
 
-            expect(translationProps).toEqual({
-                id: 'order_confirmation.order_without_downloadable_digital_items_text',
-            });
+            expect(screen.getByTestId("order-confirmation-digital-items-text")).toHaveTextContent(
+                localeContext.language.translate('order_confirmation.order_without_downloadable_digital_items_text')
+            );
         });
     });
 
@@ -224,31 +188,23 @@ describe('OrderStatus', () => {
         });
 
         it('renders mandate link if it is provided', () => {
-            const orderStatus = mount(<OrderStatusTest {...defaultProps} order={order} />);
+            render(<OrderStatusTest {...defaultProps} order={order} />);
 
-            expect(
-                orderStatus.find('[data-test="order-confirmation-mandate-link-text"]').prop('href'),
-            ).toBe('https://www.test.com/mandate');
-            expect(
-                orderStatus.find('[data-test="order-confirmation-mandate-id-text"]'),
-            ).toHaveLength(0);
+            expect(screen.getByTestId('order-confirmation-mandate-link-text')).toHaveAttribute('href', 'https://www.test.com/mandate');
+            expect(screen.queryByTestId('order-confirmation-mandate-id-text')).not.toBeInTheDocument();
         });
 
         it('renders mandate id if it is provided', () => {
             order = getOrderWithMandateId();
 
-            const orderStatus = mount(<OrderStatusTest {...defaultProps} order={order} />);
+            render(<OrderStatusTest {...defaultProps} order={order} />);
 
-            expect(
-                orderStatus.find('[data-test="order-confirmation-mandate-link-text"]'),
-            ).toHaveLength(0);
-            expect(
-                orderStatus.find('[data-test="order-confirmation-mandate-id-text"]'),
-            ).toHaveLength(1);
+            expect(screen.queryByTestId('order-confirmation-mandate-link-text')).not.toBeInTheDocument();
+            expect(screen.getByTestId('order-confirmation-mandate-id-text')).toBeInTheDocument();
         });
 
         it('renders "SEPA Direct Debit Mandate" text on mandate link when provider description is Stripe (SEPA)', () => {
-            const orderStatus = mount(
+            render(
                 <OrderStatusTest
                     {...defaultProps}
                     order={{
@@ -273,13 +229,11 @@ describe('OrderStatus', () => {
                 />,
             );
 
-            expect(
-                orderStatus.find('[data-test="order-confirmation-mandate-link-text"]').text(),
-            ).toBe('SEPA Direct Debit Mandate');
+            expect(screen.getByTestId("order-confirmation-mandate-link-text")).toHaveTextContent('SEPA Direct Debit Mandate');
         });
 
         it('renders "SEPA Direct Debit Mandate" text when provider description is Checkout.com', () => {
-            const orderStatus = mount(
+            render(
                 <OrderStatusTest
                     {...defaultProps}
                     order={{
@@ -304,13 +258,11 @@ describe('OrderStatus', () => {
                 />,
             );
 
-            expect(
-                orderStatus.find('[data-test="order-confirmation-mandate-id-text"]').text(),
-            ).toBe('SEPA Direct Debit (via Checkout.com) Mandate Reference: ABC123');
+            expect(screen.getByTestId("order-confirmation-mandate-id-text")).toHaveTextContent('SEPA Direct Debit (via Checkout.com) Mandate Reference: ABC123');
         });
 
         it('does not render mandate id or url if it is not provided', () => {
-            const orderStatus = mount(
+            render(
                 <OrderStatusTest
                     {...defaultProps}
                     order={{
@@ -335,16 +287,12 @@ describe('OrderStatus', () => {
                 />,
             );
 
-            expect(
-                orderStatus.find('[data-test="order-confirmation-mandate-link-text"]'),
-            ).toHaveLength(0);
-            expect(
-                orderStatus.find('[data-test="order-confirmation-mandate-id-text"]'),
-            ).toHaveLength(0);
+            expect(screen.queryByTestId("order-confirmation-mandate-link-text")).not.toBeInTheDocument();
+            expect(screen.queryByTestId("order-confirmation-mandate-id-text")).not.toBeInTheDocument();
         });
     });
 
-    it('render mandateText list',  () => {
+    it('render mandateText list', () => {
         const order = getOrder();
 
         order.payments = [{
@@ -365,10 +313,8 @@ describe('OrderStatus', () => {
             }
         }];
 
-        const orderStatus = mount(<OrderStatusTest {...defaultProps} order={order} />);
+        render(<OrderStatusTest {...defaultProps} order={order} />);
 
-        expect(
-            orderStatus.find('[data-test="order-confirmation-mandate-text-list"]'),
-        ).toHaveLength(1);
+        expect(screen.getByTestId('order-confirmation-mandate-text-list')).toBeInTheDocument();
     });
 });

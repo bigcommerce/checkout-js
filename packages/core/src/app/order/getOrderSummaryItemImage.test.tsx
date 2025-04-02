@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { getPhysicalItem } from '../cart/lineItem.mock';
 
 import getOrderSummaryItemImage from './getOrderSummaryItemImage';
@@ -18,7 +20,9 @@ describe('getOrderSummaryItemImage()', () => {
         const lineLineItem = getPhysicalItem();
 
         it('returns image', () => {
-            expect(getOrderSummaryItemImage(lineLineItem)).toMatchSnapshot();
+            expect(getOrderSummaryItemImage(lineLineItem)).toEqual(
+                <img alt={lineLineItem.name} data-test="cart-item-image" src={lineLineItem.imageUrl} />
+            );
         });
     });
 });
