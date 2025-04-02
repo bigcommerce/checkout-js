@@ -17,7 +17,6 @@ import OrderSummaryItems, { OrderSummaryItemsProps } from './OrderSummaryItems';
 
 describe('OrderSummaryItems', () => {
     describe('when it has 4 line items or less', () => {
-
         it('renders total count', () => {
             render(
                 <OrderSummaryItems
