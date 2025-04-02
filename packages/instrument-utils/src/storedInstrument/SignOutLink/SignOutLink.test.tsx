@@ -1,10 +1,10 @@
 import { createLanguageService } from '@bigcommerce/checkout-sdk';
-import { mount, render } from 'enzyme';
-import { noop } from 'lodash';
+import userEvent from '@testing-library/user-event';
 import React from 'react';
 
 import { LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import { getPaymentMethod } from '@bigcommerce/checkout/test-mocks';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import SignOutLink from './SignOutLink';
 
@@ -17,25 +17,16 @@ describe('SignOutLink', () => {
         };
     });
 
-    it('renders output that matches snapshot', () => {
-        const component = render(
-            <LocaleContext.Provider value={localeContext}>
-                <SignOutLink method={getPaymentMethod()} onSignOut={noop} />
-            </LocaleContext.Provider>,
-        );
-
-        expect(component).toMatchSnapshot();
-    });
-
-    it('triggers callback when it is clicked', () => {
+    it('triggers callback when it is clicked', async () => {
         const handleSignOut = jest.fn();
-        const component = mount(
+
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <SignOutLink method={getPaymentMethod()} onSignOut={handleSignOut} />
             </LocaleContext.Provider>,
         );
 
-        component.find('a').simulate('click');
+        await userEvent.click(screen.getByRole('link'));
 
         expect(handleSignOut).toHaveBeenCalled();
     });

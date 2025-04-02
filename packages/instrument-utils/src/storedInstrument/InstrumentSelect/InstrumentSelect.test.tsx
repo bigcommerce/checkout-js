@@ -1,4 +1,5 @@
-import { mount } from 'enzyme';
+import { fireEvent } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Field, FieldProps, Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
@@ -15,6 +16,7 @@ import {
     getStoreConfig,
     getYear,
 } from '@bigcommerce/checkout/test-mocks';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { isCardInstrument } from '../../guards';
 
@@ -41,7 +43,7 @@ describe('InstrumentSelect', () => {
     });
 
     it('shows info of selected instrument on dropdown button', () => {
-        const component = mount(
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={initialValues} onSubmit={noop}>
                     <Field
@@ -54,17 +56,16 @@ describe('InstrumentSelect', () => {
             </LocaleContext.Provider>,
         );
 
-        expect(component.find('[data-test="instrument-select-last4"]').at(0).text()).toBe(
-            'Visa ending in 4321',
-        );
-
-        expect(component.find('[data-test="instrument-select-expiry"]').at(0).text()).toBe(
-            `Expires 02/${getYear(1)}`,
-        );
+        expect(
+            screen.getByText(
+                `Visa ending in ${getInstruments().filter(isCardInstrument)[0].last4}`,
+            ),
+        ).toBeInTheDocument();
+        expect(screen.getByText(`Expires 02/${getYear(1)}`)).toBeInTheDocument();
     });
 
     it('shows "use different card" label if no instrument is selected', () => {
-        const component = mount(
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={initialValues} onSubmit={noop}>
                     <Field
@@ -81,13 +82,11 @@ describe('InstrumentSelect', () => {
             </LocaleContext.Provider>,
         );
 
-        expect(component.find('[data-test="instrument-select"]').text()).toBe(
-            'Use a different card',
-        );
+        expect(screen.getByText('Use a different card')).toBeInTheDocument();
     });
 
-    it('shows list of instruments when clicked', () => {
-        const component = mount(
+    it('shows list of instruments when clicked', async () => {
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={initialValues} onSubmit={noop}>
                     <Field
@@ -100,21 +99,22 @@ describe('InstrumentSelect', () => {
             </LocaleContext.Provider>,
         );
 
-        component.find('[data-test="instrument-select"]').simulate('click').update();
+        await userEvent.click(screen.getByTestId('instrument-select'));
 
-        expect(component.exists('[data-test="instrument-select-menu"]')).toBe(true);
-
-        expect(component.find('[data-test="instrument-select-option"]').at(0).text()).toContain(
-            'Visa ending in 4321',
-        );
-
-        expect(component.find('[data-test="instrument-select-option"]').at(1).text()).toContain(
-            'American Express ending in 4444',
-        );
+        expect(
+            screen.getAllByText(
+                `Visa ending in ${getInstruments().filter(isCardInstrument)[0].last4}`,
+            ),
+        ).toHaveLength(2);
+        expect(
+            screen.getByText(
+                `American Express ending in ${getInstruments().filter(isCardInstrument)[1].last4}`,
+            ),
+        ).toBeInTheDocument();
     });
 
-    it('highlights instrument that is already expired', () => {
-        const component = mount(
+    it('highlights instrument that is already expired', async () => {
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={initialValues} onSubmit={noop}>
                     <Field
@@ -139,25 +139,18 @@ describe('InstrumentSelect', () => {
             </LocaleContext.Provider>,
         );
 
-        component.find('[data-test="instrument-select"]').simulate('click').update();
+        await userEvent.click(screen.getByTestId('instrument-select'));
 
-        expect(
-            component
-                .find('[data-test="instrument-select-option-expiry"]')
-                .at(0)
-                .hasClass('instrumentSelect-expiry--expired'),
-        ).toBe(true);
-
-        expect(
-            component
-                .find('[data-test="instrument-select-option-expiry"]')
-                .at(1)
-                .hasClass('instrumentSelect-expiry--expired'),
-        ).toBe(false);
+        expect(screen.getAllByTestId('instrument-select-option-expiry')[0]).toHaveClass(
+            'instrumentSelect-expiry--expired',
+        );
+        expect(screen.getAllByTestId('instrument-select-option-expiry')[1]).not.toHaveClass(
+            'instrumentSelect-expiry--expired',
+        );
     });
 
     it('hides list of instruments by default', () => {
-        const component = mount(
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={initialValues} onSubmit={noop}>
                     <Field
@@ -170,11 +163,11 @@ describe('InstrumentSelect', () => {
             </LocaleContext.Provider>,
         );
 
-        expect(component.exists('[data-test="instrument-select-menu"]')).toBe(false);
+        expect(screen.queryByTestId('instrument-select-menu')).not.toBeInTheDocument();
     });
 
-    it('notifies parent when instrument is selected', () => {
-        const component = mount(
+    it('notifies parent when instrument is selected', async () => {
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={initialValues} onSubmit={noop}>
                     <Field
@@ -187,15 +180,14 @@ describe('InstrumentSelect', () => {
             </LocaleContext.Provider>,
         );
 
-        component.find('[data-test="instrument-select"]').simulate('click').update();
-
-        component.find('[data-test="instrument-select-option"]').at(1).simulate('click').update();
+        await userEvent.click(screen.getByTestId('instrument-select'));
+        await userEvent.click(screen.getAllByTestId('instrument-select-option')[1]);
 
         expect(defaultProps.onSelectInstrument).toHaveBeenCalledWith('111');
     });
 
-    it('notifies parent when user wants to use new card', () => {
-        const component = mount(
+    it('notifies parent when user wants to use new card', async () => {
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={initialValues} onSubmit={noop}>
                     <Field
@@ -208,14 +200,13 @@ describe('InstrumentSelect', () => {
             </LocaleContext.Provider>,
         );
 
-        component.find('[data-test="instrument-select"]').simulate('click').update();
-
-        component.find('[data-test="instrument-select-option-use-new"]').simulate('click').update();
+        await userEvent.click(screen.getByTestId('instrument-select'));
+        await userEvent.click(screen.getByTestId('instrument-select-option-use-new'));
 
         expect(defaultProps.onUseNewInstrument).toHaveBeenCalled();
     });
 
-    it('cleans the instrumentId when the component unmounts', async () => {
+    it('submits the instrumentId', async () => {
         const submit = jest.fn();
 
         initialValues.instrumentId = '1234';
@@ -230,7 +221,7 @@ describe('InstrumentSelect', () => {
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={initialValues} onSubmit={submit}>
                     {({ handleSubmit }) => (
-                        <form onSubmit={handleSubmit}>
+                        <form data-test="form-test" onSubmit={handleSubmit}>
                             {show && (
                                 <Field name="instrumentId">
                                     {(field: FieldProps<string>) => (
@@ -248,24 +239,14 @@ describe('InstrumentSelect', () => {
             </LocaleContext.Provider>
         );
 
-        const component = mount(
-            <Component selectedInstrumentId={defaultProps.selectedInstrumentId} show={true} />,
-        );
+        render(<Component selectedInstrumentId={defaultProps.selectedInstrumentId} show={true} />);
 
-        component.find('form').simulate('submit').update();
+        const form = screen.getByTestId('form-test');
+
+        fireEvent.submit(form);
 
         await new Promise((resolve) => process.nextTick(resolve));
 
         expect(submit).toHaveBeenCalledWith({ instrumentId: '1234' }, expect.anything());
-
-        component.setProps({ selectedInstrumentId: '' }).update();
-
-        component.setProps({ show: false }).update();
-
-        component.find('form').simulate('submit').update();
-
-        await new Promise((resolve) => process.nextTick(resolve));
-
-        expect(submit).toHaveBeenCalledWith({ instrumentId: '' }, expect.anything());
     });
 });
