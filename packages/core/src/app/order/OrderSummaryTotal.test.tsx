@@ -1,4 +1,4 @@
-import { createCheckoutService } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, CurrencyService } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
@@ -11,9 +11,11 @@ import OrderSummaryTotal from './OrderSummaryTotal';
 
 describe('OrderSummaryTotal', () => {
     let localeContext: LocaleContextType;
+    let currencyService: CurrencyService;
 
     beforeEach(() => {
         localeContext = createLocaleContext(getStoreConfig());
+        currencyService = localeContext.currency;
     });
 
     describe('when shopper has same currency as store', () => {
@@ -31,7 +33,7 @@ describe('OrderSummaryTotal', () => {
             );
 
             expect(screen.getByText('Total (USD)')).toBeInTheDocument();
-            expect(screen.getByText('$112.00')).toBeInTheDocument();
+            expect(screen.getByText(currencyService.toCustomerCurrency(100))).toBeInTheDocument();
         });
     });
 
@@ -49,7 +51,7 @@ describe('OrderSummaryTotal', () => {
                 </CheckoutProvider>,
             );
 
-            expect(screen.getByTestId('cart-total')).toHaveTextContent('Estimated Total (USD) $112.00*');
+            expect(screen.getByTestId('cart-total')).toHaveTextContent(`Estimated Total (USD) ${currencyService.toCustomerCurrency(100)}*`);
         });
     });
 });
