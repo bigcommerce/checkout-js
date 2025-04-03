@@ -303,7 +303,7 @@ describe('mapSubmitOrderErrorTitle()', () => {
         expect(title).toEqual(translate('common.missing_shipping_method_heading'));
     });
 
-    it('returns correct title when error type is not "invalid_shipping_address"', () => {
+    it('returns correct title when error type is "invalid_shipping_address"', () => {
         const title = mapSubmitOrderErrorTitle(
             {
                 type: 'invalid_shipping_address',
