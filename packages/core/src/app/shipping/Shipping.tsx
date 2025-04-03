@@ -361,6 +361,7 @@ export function mapToShippingProps({
             isUpdatingBillingAddress,
             isUpdatingCheckout,
             isDeletingConsignment,
+            isLoadingCheckout,
         },
     } = checkoutState;
 
@@ -392,7 +393,8 @@ export function mapToShippingProps({
         isUpdatingBillingAddress() ||
         isUpdatingCheckout() ||
         isCreatingCustomerAddress() ||
-        isDeletingConsignment();
+        isDeletingConsignment() ||
+        isLoadingCheckout();
 
     const shippableItemsCount = getShippableItemsCount(cart);
     const shouldShowMultiShipping =
