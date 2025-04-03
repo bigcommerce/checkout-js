@@ -95,6 +95,7 @@
             "leave_warning": "Are you sure you want to leave? Data you have entered may not be saved.",
             "loading_text": "Loading",
             "missing_shipping_method_heading": "Shipping method unavailable",
+            "invalid_shipping_address": "Invalid shipping address",
             "ok_action": "Ok",
             "error_code": "Error code:",
             "request_id": "Request ID:",
