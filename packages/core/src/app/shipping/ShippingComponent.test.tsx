@@ -251,4 +251,12 @@ describe('Shipping component', () => {
             expect(screen.queryByTestId("shipping-mode-toggle")).not.toBeInTheDocument();
         });
     });
+
+    it('disables continue button when checkout is loading', () => {
+        jest.spyOn(checkoutState.statuses, 'isLoadingCheckout').mockReturnValue(true);
+
+        render(<ComponentTest {...defaultProps} />);
+
+        expect(screen.getByRole('button', { name: 'Continue' })).toBeDisabled();
+    });
 });
