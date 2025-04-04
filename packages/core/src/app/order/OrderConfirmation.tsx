@@ -19,7 +19,7 @@ import { LazyContainer, LoadingSpinner } from '@bigcommerce/checkout/ui';
 import { withAnalytics } from '../analytics';
 import { withCheckout } from '../checkout';
 import { ErrorModal } from '../common/error';
-import { retry } from '../common/utility';
+import { isExperimentEnabled, retry } from '../common/utility';
 import { getPasswordRequirementsFromConfig } from '../customer';
 import { EmbeddedCheckoutStylesheet, isEmbedded } from '../embeddedCheckout';
 import {
@@ -219,7 +219,12 @@ class OrderConfirmation extends Component<
             return null;
         }
 
-        const { currency, shopperCurrency } = config;
+        const { currency, shopperCurrency, checkoutSettings } = config;
+
+        const isShippingDiscountDisplayEnabled = isExperimentEnabled(
+            checkoutSettings,
+            'CHECKOUT-8517.displays_shipping_discounts_in_checkout_js',
+        );
 
         return (
             <MobileView>
@@ -228,7 +233,7 @@ class OrderConfirmation extends Component<
                         return (
                             <LazyContainer>
                                 <OrderSummaryDrawer
-                                    {...mapToOrderSummarySubtotalsProps(order)}
+                                    {...mapToOrderSummarySubtotalsProps(order, isShippingDiscountDisplayEnabled)}
                                     headerLink={
                                         <PrintLink className="modal-header-link cart-modal-link" />
                                     }
@@ -246,7 +251,7 @@ class OrderConfirmation extends Component<
                             <LazyContainer>
                                 <OrderSummary
                                     headerLink={<PrintLink />}
-                                    {...mapToOrderSummarySubtotalsProps(order)}
+                                    {...mapToOrderSummarySubtotalsProps(order, isShippingDiscountDisplayEnabled)}
                                     lineItems={order.lineItems}
                                     shopperCurrency={shopperCurrency}
                                     storeCurrency={currency}
