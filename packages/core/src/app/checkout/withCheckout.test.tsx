@@ -1,8 +1,9 @@
 import { Checkout, createCheckoutService } from '@bigcommerce/checkout-sdk';
-import { mount } from 'enzyme';
+import userEvent from '@testing-library/user-event';
 import React from 'react';
 
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getCheckout as getCheckoutMock } from './checkouts.mock';
 import withCheckout from './withCheckout';
@@ -30,23 +31,23 @@ describe('withCheckout()', () => {
             id: '123',
         });
 
-        const component = mount(
+        render(
             <CheckoutProvider checkoutService={service}>
                 <Child />
             </CheckoutProvider>,
         );
 
-        expect(component.text()).toBe('123');
+        expect(screen.getByText('123')).toBeInTheDocument();
     });
 
-    it('provides checkout service to child component', () => {
-        const withMockCheckout = withCheckout(({ checkoutService }) => ({
+    it('provides checkout service to child component', async () => {
+        const withMockCheckout = withCheckout(({checkoutService}) => ({
             loadCheckout: () => {
                 checkoutService.loadCheckout();
             },
         }));
 
-        const Child = withMockCheckout(({ loadCheckout }: { loadCheckout(): void }) => (
+        const Child = withMockCheckout(({loadCheckout}: { loadCheckout(): void }) => (
             <button onClick={loadCheckout}>Load</button>
         ));
 
@@ -54,13 +55,13 @@ describe('withCheckout()', () => {
 
         jest.spyOn(service, 'loadCheckout').mockReturnValue(Promise.resolve(service.getState()));
 
-        const component = mount(
+        render(
             <CheckoutProvider checkoutService={service}>
                 <Child />
             </CheckoutProvider>,
         );
 
-        component.find('button').simulate('click');
+        await userEvent.click(screen.getByRole('button'));
 
         expect(service.loadCheckout).toHaveBeenCalled();
     });
@@ -91,7 +92,7 @@ describe('withCheckout()', () => {
 
         jest.spyOn(service.getState().data, 'getCheckout').mockReturnValue(getCheckoutMock());
 
-        const component = mount(
+        const { rerender } = render(
             <CheckoutProvider checkoutService={service}>
                 <Child />
             </CheckoutProvider>,
@@ -99,7 +100,11 @@ describe('withCheckout()', () => {
 
         expect(OriginalChild).toHaveBeenCalledTimes(1);
 
-        component.update();
+        rerender(
+            <CheckoutProvider checkoutService={service}>
+                <Child />
+            </CheckoutProvider>,
+        )
 
         expect(OriginalChild).toHaveBeenCalledTimes(1);
     });

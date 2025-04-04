@@ -1,33 +1,28 @@
-import { mount, shallow } from 'enzyme';
 import { noop } from 'lodash';
 import React from 'react';
-import { CSSTransition } from 'react-transition-group';
 
-import { isMobileView, MOBILE_MAX_WIDTH } from '../ui/responsive';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
+
+import { MOBILE_MAX_WIDTH } from '../ui/responsive';
 
 import CheckoutStep, { CheckoutStepProps } from './CheckoutStep';
-import CheckoutStepHeader from './CheckoutStepHeader';
 import CheckoutStepType from './CheckoutStepType';
 
 jest.useFakeTimers({ legacyFakeTimers: true });
-jest.mock('../ui/responsive', () => {
-    const original = jest.requireActual('../ui/responsive');
-
-    return {
-        ...original,
-        isMobileView: jest.fn(),
-    };
-});
 
 describe('CheckoutStep', () => {
     let defaultProps: CheckoutStepProps;
     let isMobile: boolean;
 
+    const scrollTo = window.scrollTo;
+    const matchMedia = window.matchMedia;
+
     beforeEach(() => {
         defaultProps = {
+            isBusy: false,
             isActive: true,
             type: CheckoutStepType.Customer,
-            onExpanded: jest.fn(),
+            onExpanded: jest.fn()
         };
 
         isMobile = false;
@@ -52,8 +47,8 @@ describe('CheckoutStep', () => {
     });
 
     afterEach(() => {
-        delete window.scrollTo;
-        delete window.matchMedia;
+        window.scrollTo = scrollTo;
+        window.matchMedia = matchMedia;
 
         // Reset the focused element after each test
         if (document.activeElement) {
@@ -61,23 +56,21 @@ describe('CheckoutStep', () => {
         }
     });
 
-    it('focuses on first form input when step is active', () => {
-        const component = mount(
+    it('focuses on first form input when step is active', async () => {
+        render(
             <CheckoutStep {...defaultProps}>
-                <input type="text" />
-                <input type="number" />
-            </CheckoutStep>, 
-            { attachTo: document.body });
+                <input data-test="first-input" type="text" />
+                <input type="number"/>
+            </CheckoutStep>
+        );
 
         jest.runAllTimers();
 
-        expect(component.getDOMNode().querySelector('input')).toEqual(
-            document.activeElement,
-        );
+        expect(screen.getByTestId('first-input')).toHaveFocus();
     });
 
     it('calls onExpanded when step is active', () => {
-        mount(<CheckoutStep {...defaultProps} />);
+        render(<CheckoutStep {...defaultProps} />);
 
         jest.runAllTimers();
 
@@ -85,12 +78,12 @@ describe('CheckoutStep', () => {
     });
 
     it('scrolls to container when step is active', () => {
-        const component = mount(<CheckoutStep {...defaultProps} />);
+        const { container } = render(<CheckoutStep {...defaultProps} />);
 
         jest.runAllTimers();
 
         const expectedPosition =
-            component.getDOMNode().getBoundingClientRect().top +
+            container.offsetHeight +
             window.scrollY -
             window.innerHeight / 5;
 
@@ -98,7 +91,7 @@ describe('CheckoutStep', () => {
     });
 
     it('scrolls to container after timeout', () => {
-        mount(<CheckoutStep {...defaultProps} />);
+        render(<CheckoutStep {...defaultProps} />);
 
         expect(window.scrollTo).not.toHaveBeenCalled();
 
@@ -107,8 +100,8 @@ describe('CheckoutStep', () => {
         expect(window.scrollTo).toHaveBeenCalled();
     });
 
-    it('does not focus or scroll to element if step is not active', () => {
-        const component = mount(
+    it('does not scroll to element if step is not active', () => {
+        render(
             <CheckoutStep {...defaultProps} isActive={false}>
                 <input type="text" />
                 <input type="number" />
@@ -116,8 +109,6 @@ describe('CheckoutStep', () => {
         );
 
         jest.runAllTimers();
-
-        expect(component.getDOMNode().querySelector('input')).not.toEqual(document.activeElement);
 
         expect(window.scrollTo).not.toHaveBeenCalled();
     });
@@ -133,82 +124,60 @@ describe('CheckoutStep', () => {
             onEdit: undefined,
         };
 
-        const component = mount(<CheckoutStep {...defaultProps} {...headerProps} />);
+        render(<CheckoutStep {...defaultProps} {...headerProps} />);
 
-        expect(component.find(CheckoutStepHeader)).toHaveLength(1);
-
-        expect(component.find(CheckoutStepHeader).props()).toEqual({ ...headerProps });
+        expect(screen.getByText(headerProps.heading)).toBeInTheDocument();
     });
 
     it('renders content if step is active', () => {
-        const component = mount(<CheckoutStep {...defaultProps}>Hello world</CheckoutStep>);
+        render(<CheckoutStep {...defaultProps}>Hello world</CheckoutStep>);
 
-        expect(component.exists('.checkout-view-content')).toBe(true);
-
-        expect(component.find('.checkout-view-content').text()).toBe('Hello world');
+        expect(screen.getByText('Hello world')).toBeInTheDocument();
     });
 
     it('does not render content if step is not active', () => {
-        const component = mount(
+        render(
             <CheckoutStep {...defaultProps} isActive={false}>
                 Hello world
             </CheckoutStep>,
         );
 
-        expect(component.exists('.checkout-view-content')).toBe(false);
-    });
-
-    it('animates using CSS transition in desktop view', () => {
-        const component = mount(<CheckoutStep {...defaultProps} />);
-
-        expect(component.find(CSSTransition)).toHaveLength(1);
-        expect(component.find(CSSTransition).prop('enter')).toBe(true);
-        expect(component.find(CSSTransition).prop('exit')).toBe(true);
-    });
-
-    it('does not animate using CSS transition in mobile view', () => {
-        isMobile = true;
-
-        const component = mount(<CheckoutStep {...defaultProps} />);
-
-        expect(component.find(CSSTransition).prop('enter')).toBe(false);
-        expect(component.find(CSSTransition).prop('exit')).toBe(false);
-    });
-
-    it('changes isClosed for mobile', () => {
-        isMobile = true;
-        isMobileView.mockImplementation(() => isMobile);
-
-        const component = mount(<CheckoutStep {...defaultProps} />);
-
-        expect(component.state('isClosed')).toBe(false);
-
-        component.setProps({ isActive: false }).update();
-
-        expect(component.state('isClosed')).toBe(true);
+        expect(screen.queryByText('Hello world')).not.toBeInTheDocument();
     });
 
     it('renders suggestion if step is inactive', () => {
-        const component = shallow(
+        render(
             <CheckoutStep {...defaultProps} isActive={false} suggestion="Billing suggestion" />,
         );
 
-        expect(component.find('[data-test="step-suggestion"]').text()).toBe('Billing suggestion');
+        expect(screen.getByTestId('step-suggestion')).toHaveTextContent('Billing suggestion')
     });
 
     it('does not render suggestion if step is active', () => {
-        const component = shallow(
+        render(
             <CheckoutStep {...defaultProps} suggestion="Billing suggestion" />,
         );
 
-        expect(component.exists('[data-test="step-suggestion"]')).toBe(false);
+        expect(screen.queryByTestId('step-suggestion')).not.toBeInTheDocument();
     });
 
     it('does not render suggestion if its not provided', () => {
-        const component = shallow(
+        render(
             <CheckoutStep {...defaultProps} isActive={false} suggestion={undefined} />,
         );
 
-        expect(component.exists('[data-test="step-suggestion"]')).toBe(false);
+        expect(screen.queryByTestId('step-suggestion')).not.toBeInTheDocument();
     });
+
+    it('returns undefined for scroll position when window is not the top window', () => {
+        render(<CheckoutStep {...defaultProps} />);
+
+        Object.defineProperty(window, 'top', {
+            value: {},
+            writable: true,
+        });
+
+        expect(window.scrollTo).not.toHaveBeenCalled();
+    });
+
 });

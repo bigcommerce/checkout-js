@@ -1,35 +1,36 @@
-import { mount } from 'enzyme';
 import React from 'react';
+
+import { render } from '@bigcommerce/checkout/test-utils';
 
 import TextInputIframeContainer from './TextInputIframeContainer';
 
 describe('TextInputIframeContainer', () => {
     it('renders container with default input CSS classes', () => {
-        const component = mount(<TextInputIframeContainer />);
+        const { container } = render(<TextInputIframeContainer />);
 
-        expect(component.childAt(0).hasClass('form-input')).toBe(true);
-        expect(component.childAt(0).hasClass('optimizedCheckout-form-input')).toBe(true);
+        expect(container.querySelector('.form-input')).toBeInTheDocument();
+        expect(container.querySelector('.optimizedCheckout-form-input')).toBeInTheDocument();
     });
 
     it('renders container with additional CSS classes', () => {
-        const component = mount(<TextInputIframeContainer additionalClassName="has-icon" />);
+        const { container } = render(<TextInputIframeContainer additionalClassName="has-icon" />);
 
-        expect(component.childAt(0).hasClass('form-input')).toBe(true);
-        expect(component.childAt(0).hasClass('optimizedCheckout-form-input')).toBe(true);
-        expect(component.childAt(0).hasClass('has-icon')).toBe(true);
+        expect(container.querySelector('.form-input')).toBeInTheDocument();
+        expect(container.querySelector('.optimizedCheckout-form-input')).toBeInTheDocument();
+        expect(container.querySelector('.has-icon')).toBeInTheDocument();
     });
 
     it('renders container with focus styles', () => {
-        const component = mount(<TextInputIframeContainer appearFocused />);
+        const { container } = render(<TextInputIframeContainer appearFocused />);
 
-        expect(component.childAt(0).hasClass('form-input--focus')).toBe(true);
-        expect(component.childAt(0).hasClass('optimizedCheckout-form-input--focus')).toBe(true);
+        expect(container.querySelector('.form-input--focus')).toBeInTheDocument();
+        expect(container.querySelector('.optimizedCheckout-form-input--focus')).toBeInTheDocument();
     });
 
     it('does not render container with focus styles unless specified', () => {
-        const component = mount(<TextInputIframeContainer appearFocused={false} />);
+        const { container } = render(<TextInputIframeContainer appearFocused={false} />);
 
-        expect(component.childAt(0).hasClass('form-input--focus')).toBe(false);
-        expect(component.childAt(0).hasClass('optimizedCheckout-form-input--focus')).toBe(false);
+        expect(container.querySelector('.form-input--focus')).not.toBeInTheDocument();
+        expect(container.querySelector('.optimizedCheckout-form-input--focus')).not.toBeInTheDocument();
     });
 });

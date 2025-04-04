@@ -3,7 +3,6 @@ import { Checkout, CheckoutPayment } from '@bigcommerce/checkout-sdk';
 import { getCart } from './cart.mock';
 import { getCoupon } from './coupon.mock';
 import { getGuestCustomer } from './customers.mock';
-import { getPromotion } from './promotion.mock';
 
 export function getCheckout(): Checkout {
     return {
@@ -46,13 +45,6 @@ export function getCheckoutWithPayments(): Checkout {
     return {
         ...getCheckout(),
         payments: [getCheckoutPayment()],
-    };
-}
-
-export function getCheckoutWithPromotions(): Checkout {
-    return {
-        ...getCheckout(),
-        promotions: [getPromotion()],
     };
 }
 
