@@ -41,6 +41,7 @@ const OrderSummaryDrawer: FunctionComponent<
     onRemovedCoupon,
     onRemovedGiftCertificate,
     shippingAmount,
+    shippingAmountBeforeDiscount,
     shopperCurrency,
     storeCreditAmount,
     giftWrappingAmount,
@@ -69,6 +70,7 @@ const OrderSummaryDrawer: FunctionComponent<
                 onRemovedCoupon={onRemovedCoupon}
                 onRemovedGiftCertificate={onRemovedGiftCertificate}
                 shippingAmount={shippingAmount}
+                shippingAmountBeforeDiscount={shippingAmountBeforeDiscount}
                 shopperCurrency={shopperCurrency}
                 storeCreditAmount={storeCreditAmount}
                 storeCurrency={storeCurrency}
@@ -90,6 +92,7 @@ const OrderSummaryDrawer: FunctionComponent<
             onRemovedGiftCertificate,
             giftWrappingAmount,
             shippingAmount,
+            shippingAmountBeforeDiscount,
             shopperCurrency,
             storeCreditAmount,
             storeCurrency,
