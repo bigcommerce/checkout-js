@@ -1,9 +1,8 @@
-import { shallow } from 'enzyme';
 import React from 'react';
 
-import { CHECKOUT_ROOT_NODE_ID, CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { CHECKOUT_ROOT_NODE_ID } from '@bigcommerce/checkout/payment-integration-api';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import Checkout from './Checkout';
 import CheckoutApp, { CheckoutAppProps } from './CheckoutApp';
 import { getCheckout } from './checkouts.mock';
 
@@ -27,14 +26,8 @@ describe('CheckoutApp', () => {
     });
 
     it('renders checkout component', () => {
-        const component = shallow(<CheckoutApp {...defaultProps} />);
+        render(<CheckoutApp {...defaultProps} />);
 
-        expect(component.find(Checkout)).toHaveLength(1);
-    });
-
-    it('provides checkout context', () => {
-        const component = shallow(<CheckoutApp {...defaultProps} />);
-
-        expect(component.find(CheckoutProvider)).toHaveLength(1);
+        expect(screen.getByText('Loading')).toBeInTheDocument();
     });
 });
