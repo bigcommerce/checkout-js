@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.571.0](https://github.com/bigcommerce/checkout-js/compare/v1.570.2...v1.571.0) (2025-04-04)
+
+
+### Features
+
+* **payment:** PI-3089 Added Afterpay new logo for US stores ([596f6b5](https://github.com/bigcommerce/checkout-js/commit/596f6b5c8e4ec8f380643aa9b51aff4a700da0bb))
+
 ### [1.570.2](https://github.com/bigcommerce/checkout-js/compare/v1.570.1...v1.570.2) (2025-04-03)
 
 ### [1.570.1](https://github.com/bigcommerce/checkout-js/compare/v1.570.0...v1.570.1) (2025-04-03)
