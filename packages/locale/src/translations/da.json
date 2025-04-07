@@ -95,6 +95,7 @@
             "leave_warning": "Er du sikker på, at du vil afslutte? Data, du har indtastet, bliver muligvis ikke gemt.",
             "loading_text": "Indlæser",
             "missing_shipping_method_heading": "Forsendelsesmetoden er ikke tilgængelig",
+            "invalid_shipping_address": "Invalid shipping address",
             "ok_action": "OK",
             "error_code": "Fejlkode:",
             "request_id": "Anmodnings-ID:",
@@ -219,7 +220,7 @@
                 "length": "Routingnummeret skal være 9 cifre langt"
             },
             "bluesnap_direct_company_name": {
-                "length_max": "Company Name is too long"
+                "length_max": "Firmanavnet er for langt"
             },
             "bluesnap_direct_account_type": {
                 "label": "Kontotype",

@@ -95,6 +95,7 @@
             "leave_warning": "Weet u zeker dat u wilt afsluiten? Gegevens die u hebt ingevoerd, worden mogelijk niet opgeslagen.",
             "loading_text": "Bezig met laden",
             "missing_shipping_method_heading": "Verzendmethode niet beschikbaar",
+            "invalid_shipping_address": "Invalid shipping address",
             "ok_action": "OK",
             "error_code": "Foutcode:",
             "request_id": "Aanvraag-ID:",
