@@ -44,6 +44,7 @@ export function getStoreConfig(): StoreConfig {
             requiresMarketingConsent: false,
             features: {},
             remoteCheckoutProviders: [],
+            shouldRedirectToStorefrontLoginPage: false,
         },
         currency: {
             code: 'USD',
