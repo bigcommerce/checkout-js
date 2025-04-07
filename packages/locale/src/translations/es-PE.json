@@ -95,6 +95,7 @@
             "leave_warning": "¿Estás seguro de que deseas salir? Es posible que no se guarden los datos que ingresaste.",
             "loading_text": "Cargando",
             "missing_shipping_method_heading": "Método de envío no disponible",
+            "invalid_shipping_address": "Invalid shipping address",
             "ok_action": "De acuerdo",
             "error_code": "Código de error:",
             "request_id": "ID de solicitud:",
@@ -219,7 +220,7 @@
                 "length": "El número de ruteo debe tener 9 dígitos de longitud"
             },
             "bluesnap_direct_company_name": {
-                "length_max": "Company Name is too long"
+                "length_max": "El nombre de la empresa es demasiado largo"
             },
             "bluesnap_direct_account_type": {
                 "label": "Tipo de cuenta",

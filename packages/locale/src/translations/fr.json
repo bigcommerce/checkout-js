@@ -95,6 +95,7 @@
             "leave_warning": "Voulez-vous vraiment quitter ? Les données saisies ne seront peut-être pas enregistrées.",
             "loading_text": "Chargement",
             "missing_shipping_method_heading": "Mode de livraison indisponible",
+            "invalid_shipping_address": "Invalid shipping address",
             "ok_action": "Ok",
             "error_code": "Code d'erreur :",
             "request_id": "ID de la demande :",

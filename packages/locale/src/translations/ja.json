@@ -95,6 +95,7 @@
             "leave_warning": "この画面から移動してよろしいでしょうか？入力されたデータが保存されない場合があります。",
             "loading_text": "ローディング中",
             "missing_shipping_method_heading": "Shipping method unavailable",
+            "invalid_shipping_address": "Invalid shipping address",
             "ok_action": "OK",
             "error_code": "エラーコード:",
             "request_id": "リクエストID:",
