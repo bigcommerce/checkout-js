@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.572.0](https://github.com/bigcommerce/checkout-js/compare/v1.571.0...v1.572.0) (2025-04-07)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9107 disable continue button when checkout is reloading ([#2240](https://github.com/bigcommerce/checkout-js/issues/2240)) ([0bd40dd](https://github.com/bigcommerce/checkout-js/commit/0bd40dd9224a4ed0171631efb2efb91652823831))
+
 ## [1.571.0](https://github.com/bigcommerce/checkout-js/compare/v1.570.2...v1.571.0) (2025-04-04)
 
 
