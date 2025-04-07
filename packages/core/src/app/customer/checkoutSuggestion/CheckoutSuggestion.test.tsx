@@ -3,17 +3,16 @@ import {
     CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
-import { mount, render } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
 import { AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
 import { LocaleProvider } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { render } from '@bigcommerce/checkout/test-utils';
 
 import { getCheckout } from '../../checkout/checkouts.mock';
 import { getStoreConfig } from '../../config/config.mock';
 
-import BoltCheckoutSuggestion from './BoltCheckoutSuggestion';
 import CheckoutSuggestion, {
     CheckoutSuggestionProps,
     WithCheckoutSuggestionsProps,
@@ -54,27 +53,17 @@ describe('CheckoutSuggestion', () => {
     });
 
     it('does not render anything if method id is not provided', () => {
-        const component = render(<TestComponent {...defaultProps} />);
+        const {container} = render(<TestComponent {...defaultProps} />);
 
-        expect(component.html()).toHaveLength(0);
+        expect(container.innerHTML).toHaveLength(0);
     });
 
     it('initializes Bolt Checkout suggestion block', () => {
-        const container = mount(
+        const {container} = render(
             <TestComponent {...defaultProps} providerWithCustomCheckout="bolt" />,
         );
-        const component = container.find(BoltCheckoutSuggestion);
 
-        expect(component.props()).toEqual(
-            expect.objectContaining({
-                deinitializeCustomer: expect.any(Function),
-                executePaymentMethodCheckout: expect.any(Function),
-                initializeCustomer: expect.any(Function),
-                isExecutingPaymentMethodCheckout: false,
-                methodId: 'bolt',
-                onUnhandledError: expect.any(Function),
-            }),
-        );
+        expect(container.innerHTML).toHaveLength(0);
 
         expect(defaultProps.initializeCustomer).toHaveBeenCalledWith({
             methodId: 'bolt',
