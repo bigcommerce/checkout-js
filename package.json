@@ -143,7 +143,7 @@
     "eslint-plugin-jest-dom": "^4.0.3",
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-testing-library": "^5.11.0",
+    "eslint-plugin-testing-library": "^7.1.1",
     "fast-json-stable-stringify": "^2.1.0",
     "file-loader": "^6.2.0",
     "glob": "^8.0.1",
