@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.574.0](https://github.com/bigcommerce/checkout-js/compare/v1.573.0...v1.574.0) (2025-04-07)
+
+
+### Features
+
+* **payment:** PI-3639 migrate checkout-js unit tests from enzyme to RTL ([#2247](https://github.com/bigcommerce/checkout-js/issues/2247)) ([def8928](https://github.com/bigcommerce/checkout-js/commit/def89281384706a573fa0be9b3ec81ce36f90cf2))
+
 ## [1.573.0](https://github.com/bigcommerce/checkout-js/compare/v1.572.0...v1.573.0) (2025-04-07)
 
 
