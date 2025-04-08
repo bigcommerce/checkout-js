@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.575.0](https://github.com/bigcommerce/checkout-js/compare/v1.574.1...v1.575.0) (2025-04-08)
+
+
+### Features
+
+* **customer:** CHECKOUT-9138 Redirect to storefront login page based on settings ([#2244](https://github.com/bigcommerce/checkout-js/issues/2244)) ([81fa501](https://github.com/bigcommerce/checkout-js/commit/81fa5014b1fea25e3a48e11a256379234bd4ad65))
+
 ### [1.574.1](https://github.com/bigcommerce/checkout-js/compare/v1.574.0...v1.574.1) (2025-04-08)
 
 ## [1.574.0](https://github.com/bigcommerce/checkout-js/compare/v1.573.0...v1.574.0) (2025-04-07)
