@@ -49,6 +49,7 @@ const checkoutSettings = {
                 walletButtonsOnTop: true,
                 floatingLabelEnabled: true,
             },
+            shouldRedirectToStorefrontForAuth: false,
         },
         currency: {
             code: 'USD',

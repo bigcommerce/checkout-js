@@ -4,8 +4,10 @@ import React, { FunctionComponent, memo, ReactNode, useCallback } from 'react';
 import { object, string } from 'yup';
 
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 import { PayPalFastlaneWatermark } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
+import { isExperimentEnabled } from '../common/utility';
 import { getPrivacyPolicyValidationSchema, PrivacyPolicyField } from '../privacyPolicy';
 import { Button, ButtonVariant } from '../ui/button';
 import { BasicFormField, Fieldset, Form, Legend } from '../ui/form';
@@ -59,12 +61,46 @@ const GuestForm: FunctionComponent<
     isFloatingLabelEnabled,
     shouldShowEmailWatermark,
 }) => {
+    const {
+        checkoutState: { 
+            data: { getConfig } 
+        }    
+    } = useCheckout();
+
+    const config = getConfig();
+
     const renderField = useCallback(
         (fieldProps: FieldProps<boolean>) => (
             <SubscribeField {...fieldProps} requiresMarketingConsent={requiresMarketingConsent} />
         ),
         [requiresMarketingConsent],
     );
+
+    if (!config) {
+        return null;
+    }
+
+    const {
+        checkoutSettings: {
+            shouldRedirectToStorefrontForAuth,
+        },
+        links: {
+            checkoutLink,
+            loginLink,
+        }
+    } = config;
+
+    const isRedirectExperimentEnabled = isExperimentEnabled(config.checkoutSettings, 'CHECKOUT-9138.redirect_to_storefront_for_auth');
+
+    const handleLogin: () => void = () => {
+        if (shouldRedirectToStorefrontForAuth && isRedirectExperimentEnabled) {
+            window.location.assign(`${loginLink}?redirectTo=${checkoutLink}`);
+
+            return;
+        }
+
+        return onShowLogin();
+    }
 
     return (
         <Form
@@ -118,7 +154,7 @@ const GuestForm: FunctionComponent<
                         <a
                             data-test="customer-continue-button"
                             id="checkout-customer-login"
-                            onClick={onShowLogin}
+                            onClick={handleLogin}
                             role="button"
                             tabIndex={0}
                         >

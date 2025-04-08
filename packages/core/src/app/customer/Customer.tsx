@@ -201,13 +201,13 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
           ? null
           : <CheckoutButtonList
             checkEmbeddedSupport={checkEmbeddedSupport}
+            checkoutSettings={checkoutSettings}
             deinitialize={deinitializeCustomer}
             initialize={initializeCustomer}
             isInitializing={isInitializing}
             methodIds={checkoutButtonIds}
             onClick={onWalletButtonClick}
             onError={onUnhandledError}
-            checkoutSettings={checkoutSettings}
           />;
 
         const isLoadingGuestForm = isContinuingAsGuest || isExecutingPaymentMethodCheckout;
@@ -245,8 +245,8 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                 onContinueAsGuest={this.handleContinueAsGuest}
                 onShowLogin={this.handleShowLogin}
                 privacyPolicyUrl={privacyPolicyUrl}
-                shouldShowEmailWatermark={isPayPalFastlaneMethod(providerWithCustomCheckout)}
                 requiresMarketingConsent={requiresMarketingConsent}
+                shouldShowEmailWatermark={isPayPalFastlaneMethod(providerWithCustomCheckout)}
             />
         );
     }
