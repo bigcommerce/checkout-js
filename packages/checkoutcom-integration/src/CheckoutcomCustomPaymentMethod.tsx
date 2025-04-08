@@ -75,5 +75,6 @@ export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>
         { gateway: 'checkoutcom', id: 'boleto' },
         { gateway: 'checkoutcom', id: 'sepa' },
         { gateway: 'checkoutcom', id: 'qpay' },
+        { gateway: 'checkoutcom', id: 'p24' },
     ],
 );

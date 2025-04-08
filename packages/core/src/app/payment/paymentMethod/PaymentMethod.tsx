@@ -65,15 +65,6 @@ const PaymentMethodComponent: FunctionComponent<
         return <CCAvenueMarsPaymentMethod {...props} />;
     }
 
-    if (method.gateway === PaymentMethodId.Checkoutcom) {
-        if (method.id === 'credit_card' || method.id === 'card') {
-            return <HostedCreditCardPaymentMethod {...props} />;
-        }
-
-
-        return <HostedPaymentMethod {...props} />;
-    }
-
     if (method.id === PaymentMethodId.Masterpass) {
         return <MasterpassPaymentMethod {...props} />;
     }
