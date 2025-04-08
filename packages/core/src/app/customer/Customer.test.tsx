@@ -293,7 +293,7 @@ describe('Customer Component', () => {
             expect(window.location.assign).toHaveBeenCalled();
         });
 
-        it('redirects to the login page if experiment is off and shouldRedirectToStorefrontForAuth is true', async () => {
+        it('displays login form if experiment is off and shouldRedirectToStorefrontForAuth is true', async () => {
             const config = {
                 ...checkoutSettings,
                 storeConfig: {
