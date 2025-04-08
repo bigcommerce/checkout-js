@@ -7,7 +7,7 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import faker from '@faker-js/faker';
 import userEvent from '@testing-library/user-event';
-import { noop } from 'lodash';
+import { rest } from 'msw';
 import React, { FunctionComponent } from 'react';
 
 import {
@@ -24,6 +24,7 @@ import {
 import {
     CheckoutPageNodeObject,
     CheckoutPreset,
+    checkoutSettings,
     checkoutWithBillingEmail,
     checkoutWithMultiShippingCart,
 } from '@bigcommerce/checkout/test-framework';
@@ -42,7 +43,7 @@ describe('Customer Component', () => {
     let checkoutService: CheckoutService;
     let defaultProps: CheckoutProps & AnalyticsContextProps;
     let embeddedMessengerMock: EmbeddedCheckoutMessenger;
-    let analyticsTracker: AnalyticsEvents;
+    let analyticsTracker: AnalyticsEvents;    
 
     beforeAll(() => {
         checkout = new CheckoutPageNodeObject();
@@ -90,8 +91,6 @@ describe('Customer Component', () => {
             errorLogger: createErrorLogger(),
             analyticsTracker,
         };
-
-        jest.spyOn(defaultProps.errorLogger, 'log').mockImplementation(noop);
 
         CheckoutTest = (props) => (
             <CheckoutProvider checkoutService={checkoutService}>
@@ -253,5 +252,75 @@ describe('Customer Component', () => {
 
         expect(await screen.findByText(email)).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Sign Out' })).toBeInTheDocument();
+    });
+
+    describe('sign in link shouldRedirectToStorefrontForAuth', () => {
+        it('redirects to the login page if experiment is on and shouldRedirectToStorefrontForAuth is true', async () => {
+            Object.defineProperty(window, 'location', {
+                writable: true,
+                value: {
+                    ...window.location,
+                    assign: jest.fn(),
+                },
+            });
+
+            const config = {
+                ...checkoutSettings,
+                storeConfig: {
+                    ...checkoutSettings.storeConfig,
+                    checkoutSettings: {
+                        ...checkoutSettings.storeConfig.checkoutSettings,
+                        shouldRedirectToStorefrontForAuth: true,
+                        features: {
+                            'CHECKOUT-9138.redirect_to_storefront_for_auth': true,
+                        },
+                    },
+                },
+            };
+
+            checkout.setRequestHandler(
+                rest.get(
+                    '/api/storefront/checkout-settings',
+                    (_, res, ctx) => res(ctx.json(config),
+                )
+            ));
+
+            checkout.use(CheckoutPreset.CheckoutWithDigitalCart);
+            render(<CheckoutTest {...defaultProps} />);
+            await checkout.waitForCustomerStep();
+        
+            await userEvent.click(await screen.findByText('Sign in now'));
+            expect(window.location.assign).toHaveBeenCalled();
+        });
+
+        it('redirects to the login page if experiment is off and shouldRedirectToStorefrontForAuth is true', async () => {
+            const config = {
+                ...checkoutSettings,
+                storeConfig: {
+                    ...checkoutSettings.storeConfig,
+                    checkoutSettings: {
+                        ...checkoutSettings.storeConfig.checkoutSettings,
+                        shouldRedirectToStorefrontForAuth: true,
+                        features: {
+                            'CHECKOUT-9138.redirect_to_storefront_for_auth': false,
+                        },
+                    },
+                },
+            };
+
+            checkout.setRequestHandler(
+                rest.get(
+                    '/api/storefront/checkout-settings',
+                    (_, res, ctx) => res(ctx.json(config),
+                )
+            ));
+
+            checkout.use(CheckoutPreset.CheckoutWithDigitalCart);
+            render(<CheckoutTest {...defaultProps} />);
+            await checkout.waitForCustomerStep();
+        
+            await userEvent.click(await screen.findByText('Sign in now'));
+            await userEvent.click(screen.getByText('Create an account'));
+        });
     });
 });
