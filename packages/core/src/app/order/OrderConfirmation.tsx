@@ -135,6 +135,11 @@ class OrderConfirmation extends Component<
                     });
                 });
 
+                const couponDiscount = order?.coupons?.reduce((partialSum, coupon) => partialSum + coupon.discountedAmount, 0);
+                const discountTotal = (order?.discountAmount || 0) + (couponDiscount || 0);
+
+                const subtotalAfterDiscount = (order?.baseAmount || 0) - discountTotal;
+
                 const purchaseData: OrderData = {
                     purchase: {
                         transaction_id: orderId,
@@ -144,14 +149,10 @@ class OrderConfirmation extends Component<
                         shipping: order?.shippingCostTotal,
                         currency: order?.currency.code,
                         coupons,
+                        discount_cart: parseFloat(discountTotal.toFixed(2)), // The total monetary discount value associated with the cart.
                         items: [],
                     },
                 };
-
-                const couponDiscount = order?.coupons?.reduce((partialSum, coupon) => partialSum + coupon.discountedAmount, 0);
-                const discountTotal = (order?.discountAmount || 0) + (couponDiscount || 0);
-
-                const subtotalAfterDiscount = (order?.baseAmount || 0) - discountTotal;
                 
                 const expertVoiceData: ExpertVoiceData = {
                     orderId: orderId.toString(),
@@ -206,6 +207,7 @@ class OrderConfirmation extends Component<
                             quantity: itemQuantity,
                             coupons: itemCoupons,
                             promotions: itemPromotions,
+                            discount: parseFloat((itemFullPrice - itemDiscountedPrice).toFixed(2)), // The unit monetary discount value associated with the item.
                         });
 
                         expertVoiceData.products.push({
