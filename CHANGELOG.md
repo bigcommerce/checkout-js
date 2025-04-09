@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.577.0](https://github.com/bigcommerce/checkout-js/compare/v1.576.0...v1.577.0) (2025-04-09)
+
+
+### Features
+
+* **payment:** PAYPAL-5197 added error handler to BT FL ([5e0037c](https://github.com/bigcommerce/checkout-js/commit/5e0037cde1ac51221712d86f4ae5699166ee7cf3))
+
 ## [1.576.0](https://github.com/bigcommerce/checkout-js/compare/v1.575.0...v1.576.0) (2025-04-09)
 
 
