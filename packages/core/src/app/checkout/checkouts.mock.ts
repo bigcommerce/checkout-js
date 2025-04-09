@@ -49,13 +49,6 @@ export function getCheckoutWithPayments(providerId?: string): Checkout {
     };
 }
 
-export function getCheckoutWithPromotions(): Checkout {
-    return {
-        ...getCheckout(),
-        promotions: [getPromotion()],
-    };
-}
-
 export function getCheckoutPayment(providerId?: string): CheckoutPayment {
     return {
         providerId: providerId || 'amazonpay',
