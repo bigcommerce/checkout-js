@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.576.0](https://github.com/bigcommerce/checkout-js/compare/v1.575.0...v1.576.0) (2025-04-09)
+
+
+### Features
+
+* **payment:** PI-3533 Remove the leftover code of Checkout.com credit card in paymentMethod ([#2249](https://github.com/bigcommerce/checkout-js/issues/2249)) ([dd19fab](https://github.com/bigcommerce/checkout-js/commit/dd19fabe81548461f321a99867d40f931027ead0))
+
 ## [1.575.0](https://github.com/bigcommerce/checkout-js/compare/v1.574.1...v1.575.0) (2025-04-08)
 
 
