@@ -2,7 +2,7 @@ import { createCheckoutService, createLanguageService } from '@bigcommerce/check
 import React from 'react';
 
 import { CheckoutButtonProps } from '@bigcommerce/checkout/payment-integration-api';
-import { render, screen } from '@bigcommerce/checkout/test-utils';
+import { render } from '@bigcommerce/checkout/test-utils';
 
 import CheckoutButton from './CheckoutButton';
 
