@@ -44,6 +44,9 @@ const BraintreeFastlanePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                         paypalFastlaneComponentRef.current.showPayPalCardSelector =
                             showPayPalCardSelector;
                     },
+                    onError: (error: Error) => {
+                        onUnhandledError(error);
+                    },
                 },
             });
         } catch (error) {
