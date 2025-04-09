@@ -223,7 +223,7 @@ class OrderConfirmation extends Component<
 
         const isShippingDiscountDisplayEnabled = isExperimentEnabled(
             checkoutSettings,
-            'CHECKOUT-8517.displays_shipping_discounts_in_checkout_js',
+            'PROJECT-6643.enable_shipping_discounts_in_orders',
         );
 
         return (
