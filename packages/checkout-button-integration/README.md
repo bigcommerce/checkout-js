@@ -1,6 +1,6 @@
 # checkout-button-integration
 
-This library was generated with [Nx](https://nx.dev).
+This is a package for the generic checkout button component implementation, which can be used by other wallet providers in checkout page.
 
 
 ## Running unit tests
