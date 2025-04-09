@@ -7,7 +7,7 @@ export default function getOrderShippingCostAfterAutomaticDiscount(shippingCostB
 }
 
 function getTotalAutomaticDiscount(consignment: OrderShippingConsignment) {
-    return consignment.discounts.reduce((discountTotal, discount) => {
-        return !discount.code ? discountTotal + discount.amount : discountTotal;
-    }, 0);
+    return consignment.discounts
+    .filter(discount => !discount.code)
+    .reduce((total, discount) => total + discount.amount, 0);
 }

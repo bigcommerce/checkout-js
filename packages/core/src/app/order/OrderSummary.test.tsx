@@ -127,7 +127,7 @@ describe('OrderSummary', () => {
 
             expect(shippingCostInOrderSummary).toHaveTextContent('Shipping');
             expect(shippingCostInOrderSummary).toHaveTextContent('20');
-            expect(shippingCostInOrderSummary).toHaveTextContent('15');
+            expect(shippingCostInOrderSummary).toHaveTextContent('12');
 
             const couponDetailInOrderSummary = screen.getByTestId('cart-coupon');
 

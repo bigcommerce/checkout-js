@@ -116,8 +116,8 @@ export function getOrderWithShippingDiscount(): Order {
         ...getOrder(),
         consignments: {
             shipping: [
-                {...mockOrderShippingConsignment, discounts: [{ id: 1, amount: 2, code: 'coupon-shipping-discount', }, { id: 1, amount: 2, code: null, }]},
-                {...mockOrderShippingConsignment, discounts: [{ id: 1, amount: 3, code: 'coupon-shipping-discount', }, { id: 1, amount: 3, code: null, }]},
+                {...mockOrderShippingConsignment, discounts: [{ id: 1, amount: 2, code: 'coupon-shipping-discount', }, { id: 2, amount: 2, code: null, }]},
+                {...mockOrderShippingConsignment, discounts: [{ id: 1, amount: 3, code: 'coupon-shipping-discount', }, { id: 2, amount: 3, code: null, }, { id: 3, amount: 3, code: null, }]},
             ]
         },
         coupons: [getShippingCoupon()],
