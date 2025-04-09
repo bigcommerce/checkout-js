@@ -1,6 +1,6 @@
 # payment-methods
 
-This library was generated with [Nx](https://nx.dev).
+Package containing apple pay implementation in payment step.
 
 
 ## Running unit tests
