@@ -1,6 +1,6 @@
 # credit-card-integration
 
-This library was generated with [Nx](https://nx.dev).
+This package provides a seamless integration for handling credit card payments within the checkout process. It includes utilities and components to securely process transactions and ensure compliance with payment standards.
 
 ## Running unit tests
 

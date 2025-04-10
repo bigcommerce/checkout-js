@@ -1,6 +1,6 @@
 # offline-payment-integration
 
-This library was generated with [Nx](https://nx.dev).
+This package contains offline payment method component.
 
 ## Running unit tests
 
