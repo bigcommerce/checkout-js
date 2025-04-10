@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render, waitFor } from '@bigcommerce/checkout/test-utils';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import OrderConfirmationApp, { OrderConfirmationAppProps } from './OrderConfirmationApp';
 
@@ -25,5 +25,6 @@ describe('OrderConfirmationApp', () => {
 
         // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
         expect(container.querySelector('.orderConfirmationApp')).toBeInTheDocument();
+        expect(screen.getByText('Order Confirmation')).toBeInTheDocument();
     });
 });
