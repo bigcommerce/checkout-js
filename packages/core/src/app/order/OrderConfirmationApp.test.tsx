@@ -1,11 +1,15 @@
-import { shallow, ShallowWrapper } from 'enzyme';
 import React from 'react';
+
+import { render, waitFor } from '@bigcommerce/checkout/test-utils';
 
 import OrderConfirmationApp, { OrderConfirmationAppProps } from './OrderConfirmationApp';
 
+jest.mock('./OrderConfirmation', () => (props: any) => (
+    <div className="orderConfirmationApp">Order Confirmation</div>
+));
+
 describe('OrderConfirmationApp', () => {
     let defaultProps: OrderConfirmationAppProps;
-    let orderConfirmationApp: ShallowWrapper;
     let container: HTMLElement;
 
     beforeEach(() => {
@@ -23,9 +27,10 @@ describe('OrderConfirmationApp', () => {
         document.body.removeChild(container);
     });
 
-    it('renders app without crashing', () => {
-        orderConfirmationApp = shallow(<OrderConfirmationApp {...defaultProps} />);
+    it('renders app without crashing', async () => {
+        const { container } = render(<OrderConfirmationApp {...defaultProps} />);
 
-        expect(orderConfirmationApp).toBeTruthy();
+        // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
+        expect(container.querySelector('.orderConfirmationApp')).toBeInTheDocument();
     });
 });
