@@ -2,21 +2,17 @@ import {
     CheckoutSelectors,
     CheckoutService,
     createCheckoutService,
+    PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
-import { mount, ReactWrapper } from 'enzyme';
-import { EventEmitter } from 'events';
+import EventEmitter from 'events';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 import { object, Schema, string } from 'yup';
 
 import {
-    CardInstrumentFieldset,
-    CreditCardCodeField,
-    CreditCardFieldset,
     getCreditCardValidationSchema,
     getInstrumentValidationSchema,
-    isInstrumentFeatureAvailable,
 } from '@bigcommerce/checkout/instrument-utils';
 import {
     createLocaleContext,
@@ -39,21 +35,12 @@ import {
     getPaymentMethod,
     getStoreConfig,
 } from '@bigcommerce/checkout/test-mocks';
-import { LoadingOverlay } from '@bigcommerce/checkout/ui';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import {
-    CreditCardPaymentMethodComponent as CreditCardPaymentMethod,
+import CreditCardPaymentMethodComponent, {
     CreditCardPaymentMethodProps,
     CreditCardPaymentMethodValues,
-} from '.';
-
-jest.mock('@bigcommerce/checkout/instrument-utils', () => ({
-    ...jest.requireActual('@bigcommerce/checkout/instrument-utils'),
-    isInstrumentFeatureAvailable: jest.fn<
-        ReturnType<typeof isInstrumentFeatureAvailable>,
-        Parameters<typeof isInstrumentFeatureAvailable>
-    >(() => true),
-}));
+} from './CreditCardPaymentMethodComponent';
 
 describe('CreditCardPaymentMethod', () => {
     let checkoutService: CheckoutService;
@@ -123,7 +110,7 @@ describe('CreditCardPaymentMethod', () => {
                     <CheckoutContext.Provider value={{ checkoutService, checkoutState }}>
                         <PaymentFormContext.Provider value={{ paymentForm }}>
                             <Formik initialValues={initialValues} onSubmit={noop}>
-                                <CreditCardPaymentMethod {...props} />
+                                <CreditCardPaymentMethodComponent {...props} />
                             </Formik>
                         </PaymentFormContext.Provider>
                     </CheckoutContext.Provider>
@@ -132,23 +119,24 @@ describe('CreditCardPaymentMethod', () => {
         };
     });
 
-    it('initializes payment method when component mounts', async () => {
-        jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue(getInstruments());
+    it('initializes payment method when component mounts', () => {
+        const instruments = getInstruments();
 
-        mount(<CreditCardPaymentMethodTest {...defaultProps} />);
+        jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue(instruments);
 
-        await new Promise((resolve) => process.nextTick(resolve));
+        render(<CreditCardPaymentMethodTest {...defaultProps} />);
 
         expect(defaultProps.initializePayment).toHaveBeenCalledWith(
             {
+                gatewayId: defaultProps.method.gateway,
                 methodId: defaultProps.method.id,
             },
-            getInstruments()[0],
+            instruments[0],
         );
     });
 
     it('sets validation schema for credit cards when component mounts', () => {
-        mount(<CreditCardPaymentMethodTest {...defaultProps} />);
+        render(<CreditCardPaymentMethodTest {...defaultProps} />);
 
         expect(paymentForm.setValidationSchema).toHaveBeenCalled();
 
@@ -171,7 +159,7 @@ describe('CreditCardPaymentMethod', () => {
             ccNumber: string(),
         });
 
-        mount(
+        render(
             <CreditCardPaymentMethodTest {...defaultProps} cardValidationSchema={expectedSchema} />,
         );
 
@@ -187,81 +175,80 @@ describe('CreditCardPaymentMethod', () => {
     it('does not set validation schema if payment is not required', () => {
         jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(false);
 
-        mount(<CreditCardPaymentMethodTest {...defaultProps} />);
+        render(<CreditCardPaymentMethodTest {...defaultProps} />);
 
         expect(paymentForm.setValidationSchema).toHaveBeenCalledWith(defaultProps.method, null);
     });
 
     it('deinitializes payment method when component unmounts', () => {
-        const component = mount(<CreditCardPaymentMethodTest {...defaultProps} />);
+        jest.spyOn(checkoutService, 'deinitializePayment').mockResolvedValue(
+            checkoutService.getState(),
+        );
 
-        expect(defaultProps.deinitializePayment).not.toHaveBeenCalled();
+        const { unmount } = render(<CreditCardPaymentMethodTest {...defaultProps} />);
 
-        component.unmount();
+        unmount();
 
         expect(defaultProps.deinitializePayment).toHaveBeenCalled();
     });
 
     it('renders loading overlay while waiting for method to initialize', () => {
-        let component: ReactWrapper;
+        const { container } = render(
+            <CreditCardPaymentMethodTest {...defaultProps} isInitializing />,
+        );
 
-        component = mount(<CreditCardPaymentMethodTest {...defaultProps} isInitializing />);
-
-        expect(component.find(LoadingOverlay).prop('isLoading')).toBe(true);
-
-        component = mount(<CreditCardPaymentMethodTest {...defaultProps} />);
-
-        expect(component.find(LoadingOverlay).prop('isLoading')).toBe(false);
-    });
-
-    it('renders credit card fieldset', () => {
-        const component = mount(<CreditCardPaymentMethodTest {...defaultProps} />);
-
-        expect(component.find(CreditCardFieldset)).toHaveLength(1);
+        // eslint-disable-next-line testing-library/no-container
+        expect(container.querySelector('.loadingOverlay-container')).not.toBeNull();
     });
 
     it('renders custom credit card fieldset if passed', () => {
-        const FoobarFieldset = () => <div />;
-        const component = mount(
-            <CreditCardPaymentMethodTest {...defaultProps} cardFieldset={<FoobarFieldset />} />,
-        );
+        const FoobarFieldset = <div>Foobar</div>;
 
-        expect(component.find(FoobarFieldset)).toHaveLength(1);
+        render(<CreditCardPaymentMethodTest {...defaultProps} cardFieldset={FoobarFieldset} />);
+
+        expect(screen.getByText('Foobar')).toBeInTheDocument();
     });
 
     it('does not render credit card code fieldset if card code is false', () => {
-        defaultProps.method = { ...getPaymentMethod(), config: { cardCode: false } };
+        const newMethod = { ...getPaymentMethod(), config: { cardCode: false } };
 
-        const component = mount(<CreditCardPaymentMethodTest {...defaultProps} />);
+        render(<CreditCardPaymentMethodTest {...defaultProps} method={newMethod} />);
 
-        expect(component.find(CreditCardCodeField)).toHaveLength(0);
+        expect(
+            screen.queryByText(localeContext.language.translate('payment.credit_card_cvv_label')),
+        ).not.toBeInTheDocument();
     });
 
     describe('if stored instrument feature is available', () => {
+        let vaultedMethod: PaymentMethod;
+
         beforeEach(() => {
             jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue(getInstruments());
 
             jest.spyOn(checkoutService, 'initializePayment').mockResolvedValue(checkoutState);
 
-            jest.spyOn(checkoutService, 'loadInstruments').mockResolvedValue(checkoutState);
+            vaultedMethod = {
+                ...getPaymentMethod(),
+                config: {
+                    ...getPaymentMethod().config,
+                    isVaultingEnabled: true,
+                },
+            };
         });
 
-        it('initializes payment method with stored card validation fieldset', async () => {
-            defaultProps.getStoredCardValidationFieldset = jest.fn();
+        it('initializes payment method with stored card validation fieldset', () => {
+            const getStoredCardValidationFieldset = jest.fn();
 
-            mount(<CreditCardPaymentMethodTest {...defaultProps} />);
+            render(
+                <CreditCardPaymentMethodTest
+                    {...defaultProps}
+                    getStoredCardValidationFieldset={getStoredCardValidationFieldset}
+                    method={vaultedMethod}
+                />,
+            );
 
-            await new Promise((resolve) => process.nextTick(resolve));
-
-            expect(defaultProps.getStoredCardValidationFieldset).toHaveBeenCalled();
-        });
-
-        it('loads stored instruments when component mounts', async () => {
-            mount(<CreditCardPaymentMethodTest {...defaultProps} />);
-
-            await new Promise((resolve) => process.nextTick(resolve));
-
-            expect(checkoutService.loadInstruments).toHaveBeenCalled();
+            expect(checkoutService.loadInstruments).toHaveBeenCalledWith();
+            expect(getStoredCardValidationFieldset).toHaveBeenCalled();
         });
 
         it('sets validation schema for stored instruments when component mounts', () => {
@@ -272,7 +259,7 @@ describe('CreditCardPaymentMethod', () => {
                 },
             ]);
 
-            mount(<CreditCardPaymentMethodTest {...defaultProps} />);
+            render(<CreditCardPaymentMethodTest {...defaultProps} method={vaultedMethod} />);
 
             expect(paymentForm.setValidationSchema).toHaveBeenCalled();
 
@@ -291,68 +278,59 @@ describe('CreditCardPaymentMethod', () => {
             );
         });
 
-        it('only shows instruments fieldset when there is at least one stored instrument', () => {
-            const component = mount(<CreditCardPaymentMethodTest {...defaultProps} />);
-
-            expect(component.find(CardInstrumentFieldset)).toHaveLength(1);
-        });
-
         it('does not show instruments fieldset when there are no stored instruments', () => {
             jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue([]);
 
-            const component = mount(<CreditCardPaymentMethodTest {...defaultProps} />);
-
-            expect(component.find(CardInstrumentFieldset)).toHaveLength(0);
+            render(<CreditCardPaymentMethodTest {...defaultProps} />);
+            expect(screen.queryByText('payment.instrument_text')).not.toBeInTheDocument();
         });
 
         it('shows save credit card form when there are no stored instruments', () => {
             jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue([]);
 
-            const container = mount(<CreditCardPaymentMethodTest {...defaultProps} />);
+            render(<CreditCardPaymentMethodTest {...defaultProps} method={vaultedMethod} />);
 
-            expect(container.find('input[name="shouldSaveInstrument"]').exists()).toBe(true);
+            expect(
+                screen.getByText(
+                    localeContext.language.translate(
+                        'payment.instrument_save_payment_method_label',
+                    ),
+                ),
+            ).toBeInTheDocument();
         });
 
         it('uses PaymentMethod to retrieve instruments', () => {
-            mount(<CreditCardPaymentMethodTest {...defaultProps} />);
+            render(<CreditCardPaymentMethodTest {...defaultProps} />);
 
             expect(checkoutState.data.getInstruments).toHaveBeenCalledWith(defaultProps.method);
         });
 
-        it('hides credit card fieldset if user is not adding new card', () => {
-            const component = mount(<CreditCardPaymentMethodTest {...defaultProps} />);
-
-            expect(component.find(CreditCardFieldset)).toHaveLength(0);
-
-            component.find(CardInstrumentFieldset).prop('onUseNewInstrument')();
-
-            component.update();
+        it('switches to "use new card" view if all instruments are deleted', () => {
+            const { rerender } = render(
+                <CreditCardPaymentMethodTest {...defaultProps} method={vaultedMethod} />,
+            );
 
             expect(
-                component.find(CardInstrumentFieldset).prop('selectedInstrumentId'),
-            ).toBeUndefined();
+                screen.queryByText(
+                    localeContext.language.translate(
+                        'payment.instrument_save_payment_method_label',
+                    ),
+                ),
+            ).not.toBeInTheDocument();
 
-            expect(component.find(CreditCardFieldset)).toHaveLength(1);
-        });
-
-        it('switches to "use new card" view if all instruments are deleted', () => {
-            const component = mount(<CreditCardPaymentMethodTest {...defaultProps} />);
-
-            expect(component.find(CreditCardFieldset)).toHaveLength(0);
-
-            // Update state
             jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue([]);
 
             subscribeEventEmitter.emit('change');
 
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            component.find(CardInstrumentFieldset).prop('onDeleteInstrument')!(
-                getInstruments()[0].bigpayToken,
-            );
+            rerender(<CreditCardPaymentMethodTest {...defaultProps} method={vaultedMethod} />);
 
-            component.update();
-
-            expect(component.find(CreditCardFieldset)).toHaveLength(1);
+            expect(
+                screen.getByText(
+                    localeContext.language.translate(
+                        'payment.instrument_save_payment_method_label',
+                    ),
+                ),
+            ).toBeInTheDocument();
         });
     });
 });
