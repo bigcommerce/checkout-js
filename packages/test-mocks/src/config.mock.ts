@@ -60,6 +60,7 @@ export function getStoreConfig(): StoreConfig {
             createAccountLink: 'https://store-k1drp8k8.bcapp.dev/login.php?action=create_account',
             forgotPasswordLink: 'https://store-k1drp8k8.bcapp.dev/login.php?action=reset_password',
             loginLink: 'https://store-k1drp8k8.bcapp.dev/login.php',
+            logoutLink: 'https://store-k1drp8k8.bcapp.dev/login.php?action=logout',
             siteLink: 'https://store-k1drp8k8.bcapp.dev',
             orderConfirmationLink: 'https://store-k1drp8k8.bcapp.dev/checkout/order-confirmation',
         },

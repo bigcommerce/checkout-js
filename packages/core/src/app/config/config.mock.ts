@@ -41,6 +41,7 @@ export function getStoreConfig(): StoreConfig {
             shippingQuoteFailedMessage:
                 "Unfortunately one or more items in your cart can't be shipped to your \
             location.Please choose a different delivery address.",
+            shouldRedirectToStorefrontForAuth: false,
             realtimeShippingProviders: ['Fedex', 'UPS', 'USPS'],
             requiresMarketingConsent: false,
             features: {},
@@ -60,6 +61,7 @@ export function getStoreConfig(): StoreConfig {
             createAccountLink: 'https://store-k1drp8k8.bcapp.dev/login.php?action=create_account',
             forgotPasswordLink: 'https://store-k1drp8k8.bcapp.dev/login.php?action=reset_password',
             loginLink: 'https://store-k1drp8k8.bcapp.dev/login.php',
+            logoutLink: 'https://store-k1drp8k8.bcapp.dev/login.php?action=logout',
             siteLink: 'https://store-k1drp8k8.bcapp.dev',
             orderConfirmationLink: 'https://store-k1drp8k8.bcapp.dev/checkout/order-confirmation',
         },

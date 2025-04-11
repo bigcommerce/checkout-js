@@ -130,5 +130,63 @@ describe('CustomerInfo', () => {
 
             expect(handleError).toHaveBeenCalledWith({ type: 'unknown_error' });
         });
+
+        it('redirects to storefront when experiment on and shouldRedirectToStorefrontForAuth is true', async () => {
+            Object.defineProperty(window, 'location', {
+                writable: true,
+                value: {
+                    ...window.location,
+                    assign: jest.fn(),
+                },
+            });
+
+            jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
+                ...getStoreConfig(),
+                checkoutSettings: {
+                    ...getStoreConfig().checkoutSettings,
+                    shouldRedirectToStorefrontForAuth: true,
+                }
+            });
+
+            const expectedLogoutLink = getStoreConfig().links.logoutLink;
+        
+            render(<CustomerInfoTest />);
+        
+            await userEvent.click(screen.getByTestId('sign-out-link'));
+
+            expect(window.location.assign).toHaveBeenCalledWith(expectedLogoutLink);
+        });
+
+        it('signs out customer on checkout page when experiment off and shouldRedirectToStorefrontForAuth is true', async () => {
+            Object.defineProperty(window, 'location', {
+                writable: true,
+                value: {
+                    ...window.location,
+                    assign: jest.fn(),
+                },
+            });
+
+            jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
+                ...getStoreConfig(),
+                checkoutSettings: {
+                    ...getStoreConfig().checkoutSettings,
+                    shouldRedirectToStorefrontForAuth: true,
+                    features: {
+                        'CHECKOUT-9138.redirect_to_storefront_for_auth': false,
+                    }
+                }
+            });
+
+            jest.spyOn(checkoutService, 'signOutCustomer').mockReturnValue(
+                Promise.resolve(checkoutService.getState()),
+            );
+
+            render(<CustomerInfoTest />);
+
+            await userEvent.click(screen.getByTestId('sign-out-link'));
+
+            expect(checkoutService.signOutCustomer).toHaveBeenCalled();
+            expect(window.location.assign).not.toHaveBeenCalled();
+        });
     });
 });
