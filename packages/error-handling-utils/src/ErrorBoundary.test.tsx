@@ -1,5 +1,6 @@
-import { mount } from 'enzyme';
 import React, { FunctionComponent } from 'react';
+
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import ErrorBoundary from './ErrorBoundary';
 import ErrorLogger from './ErrorLogger';
@@ -19,12 +20,11 @@ describe('ErrorBoundary', () => {
         const logger: ErrorLogger = {
             log: jest.fn(),
         };
-
         const Child: FunctionComponent = () => {
             throw error;
         };
 
-        mount(
+        render(
             <ErrorBoundary logger={logger}>
                 <Child />
             </ErrorBoundary>,
@@ -38,23 +38,19 @@ describe('ErrorBoundary', () => {
         const logger: ErrorLogger = {
             log: jest.fn(),
         };
-
         const Child: FunctionComponent = () => {
             throw error;
         };
         const filterError = ({ name }: Error) => name === 'TypeError';
 
-        try {
-            mount(
+        expect(() =>
+            render(
                 <ErrorBoundary filter={filterError} logger={logger}>
                     <Child />
                 </ErrorBoundary>,
-            );
-            // eslint-disable-next-line @typescript-eslint/no-shadow
-        } catch (error) {
-            // eslint-disable-next-line jest/no-conditional-expect
-            expect(logger.log).not.toHaveBeenCalledWith(error);
-        }
+            ),
+        ).toThrow(error);
+        expect(logger.log).not.toHaveBeenCalledWith(error);
     });
 
     it('renders fallback component if provided', () => {
@@ -62,13 +58,13 @@ describe('ErrorBoundary', () => {
             throw new Error();
         };
 
-        const component = mount(
+        render(
             <ErrorBoundary fallback={<strong>Something went wrong</strong>}>
                 <Child />
             </ErrorBoundary>,
         );
 
-        expect(component.html()).toBe('<strong>Something went wrong</strong>');
+        expect(screen.getByText('Something went wrong')).toBeInTheDocument();
     });
 
     it('does not render fallback component if filter returns false', () => {
@@ -78,18 +74,15 @@ describe('ErrorBoundary', () => {
         };
         const filterError = ({ name }: Error) => name === 'TypeError';
 
-        try {
-            mount(
+        expect(() =>
+            render(
                 <ErrorBoundary
                     fallback={<strong>Something went wrong</strong>}
                     filter={filterError}
                 >
                     <Child />
                 </ErrorBoundary>,
-            );
-        } catch (thrown) {
-            // eslint-disable-next-line jest/no-conditional-expect
-            expect(thrown).toEqual(error);
-        }
+            ),
+        ).toThrow(error);
     });
 });

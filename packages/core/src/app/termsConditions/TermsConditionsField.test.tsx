@@ -1,25 +1,23 @@
-import { mount, render } from 'enzyme';
+import userEvent from '@testing-library/user-event';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
-import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedHtml } from '@bigcommerce/checkout/locale';
+import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../config/config.mock';
 
 import TermsConditionsField, { TermsConditionsType } from './TermsConditionsField';
 
 describe('TermsConditionsField', () => {
-    let localeContext: LocaleContextType;
-    let initialValues: { terms: boolean };
+    const localeContext = createLocaleContext(getStoreConfig());
+    const translate = localeContext.language.translate;
+    const initialValues = { terms: false };
+    const terms = 'Hello world';
 
-    beforeEach(() => {
-        initialValues = { terms: false };
-        localeContext = createLocaleContext(getStoreConfig());
-    });
-
-    it('renders terms and conditions checkbox with link if type is "modal"', () => {
-        const component = mount(
+    it('renders terms and conditions checkbox with link if type is "modal"', async () => {
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={initialValues} onSubmit={noop}>
                     <TermsConditionsField
@@ -31,53 +29,49 @@ describe('TermsConditionsField', () => {
             </LocaleContext.Provider>,
         );
 
-        expect(component.find('label[htmlFor="terms"]').text()).toBe(
-            'Yes, I agree with the terms and conditions.',
-        );
+        expect(screen.getByText(translate('terms_and_conditions.terms_and_conditions_heading'))).toBeInTheDocument();
+        expect(screen.getByText(/I agree/)).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('terms and conditions'));
+
+        expect(screen.getByText(terms)).toBeInTheDocument();
     });
 
     it('renders terms and conditions checkbox with link if type is "text"', () => {
-        const component = mount(
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={initialValues} onSubmit={noop}>
                     <TermsConditionsField
                         name="terms"
-                        terms="Hello world"
+                        terms={terms}
                         type={TermsConditionsType.TextArea}
                     />
                 </Formik>
             </LocaleContext.Provider>,
         );
 
-        expect(component.find('label[htmlFor="terms"]').text()).toBe(
-            'Yes, I agree with the above terms and conditions.',
-        );
-
-        expect(component.find('textarea').length).toBeGreaterThan(0);
+        expect(screen.getByText(translate('terms_and_conditions.terms_and_conditions_heading'))).toBeInTheDocument();
+        expect(screen.getByText(/I agree/)).toBeInTheDocument();
+        expect(screen.getByRole('textbox')).toHaveTextContent(terms);
     });
 
     it('renders terms and conditions checkbox with link if type is "url"', () => {
-        const component = mount(
+        const termURL = 'https://www.example.com/terms-and-conditions';
+
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={initialValues} onSubmit={noop}>
                     <TermsConditionsField
                         name="terms"
                         type={TermsConditionsType.Link}
-                        url="/terms-and-conditions"
+                        url={termURL}
                     />
                 </Formik>
             </LocaleContext.Provider>,
         );
 
-        expect(component.find('label[htmlFor="terms"]').html()).toContain(
-            render(
-                <LocaleContext.Provider value={localeContext}>
-                    <TranslatedHtml
-                        data={{ url: '/terms-and-conditions' }}
-                        id="terms_and_conditions.agreement_with_link_text"
-                    />
-                </LocaleContext.Provider>,
-            ).html(),
-        );
+        const link = screen.getByRole('link', { name: /terms and conditions/i });
+
+        expect(link).toHaveAttribute('href', termURL);
     });
 });
