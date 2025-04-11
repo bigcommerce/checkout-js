@@ -7,7 +7,7 @@ import {
     Customer as CustomerData,
     StoreConfig,
 } from '@bigcommerce/checkout-sdk';
-import { mount } from 'enzyme';
+import { render } from '@bigcommerce/checkout/test-utils';
 import React, { FunctionComponent } from 'react';
 
 import { AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
@@ -29,8 +29,6 @@ import { PaymentMethodId } from '../payment/paymentMethod';
 import Customer, { CustomerProps, WithCheckoutCustomerProps } from './Customer';
 import { getGuestCustomer } from './customers.mock';
 import CustomerViewType from './CustomerViewType';
-import GuestForm from './GuestForm';
-import StripeGuestForm from './StripeGuestForm';
 
 describe('Customer', () => {
     let CustomerTest: FunctionComponent<CustomerProps & Partial<WithCheckoutCustomerProps>>;
@@ -115,14 +113,14 @@ describe('Customer', () => {
                 configStripeUpe,
             );
 
-            const component = mount(
+            const { container, findByTestId } = render(
                 <CustomerTest {...defaultProps} step={steps} viewType={CustomerViewType.Guest} />,
             );
 
             await new Promise((resolve) => process.nextTick(resolve));
-            component.update();
 
-            expect(component.find(StripeGuestForm).exists()).toBe(true);
+            expect(container.querySelector('#stripeupeLink')).toBeInTheDocument();
+            expect(await findByTestId('stripe-customer-continue-as-guest-button')).toBeInTheDocument();
         });
 
         it("doesn't render Stripe guest form if it enabled but cart amount is smaller then Stripe requires", async () => {
@@ -143,15 +141,15 @@ describe('Customer', () => {
                 type: CheckoutStepType.Customer,
             };
 
-            const component = mount(
+            const { container, findByTestId } = render(
                 <CustomerTest {...defaultProps} step={steps} viewType={CustomerViewType.Guest} />,
             );
 
             await new Promise((resolve) => process.nextTick(resolve));
-            component.update();
 
-            expect(component.find(StripeGuestForm).exists()).toBe(false);
-            expect(component.find(GuestForm).exists()).toBe(true);
+            expect(container.querySelector('#stripeupeLink')).not.toBeInTheDocument();
+            expect(await findByTestId('checkout-customer-guest')).toBeInTheDocument();
+            expect(await findByTestId('customer-continue-as-guest-button')).toBeInTheDocument();
         });
     });
 });
