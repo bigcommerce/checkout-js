@@ -21,20 +21,6 @@ const LIBRARY_NAME = 'checkout';
 const AUTO_LOADER_ENTRY_NAME = 'auto-loader';
 const LOADER_ENTRY_NAME = 'loader';
 const LOADER_LIBRARY_NAME = 'checkoutLoader';
-const BABEL_PRESET_ENV_CONFIG = {
-    corejs: '3',
-    targets: {
-        browsers: [
-            'last 2 versions',
-            'not ie < 11',
-            'not Baidu > 0',
-            'not QQAndroid > 0',
-            'not Android < 62',
-        ],
-    },
-    useBuiltIns: 'usage',
-    modules: false,
-};
 const PRELOAD_ASSETS = ['billing', 'shipping', 'payment'];
 
 const eventEmitter = new EventEmitter();
@@ -181,28 +167,13 @@ function appConfig(options, argv) {
                                 },
                             },
                             {
-                                loader: 'babel-loader',
+                                loader: 'esbuild-loader',
                                 options: {
-                                    cacheDirectory: true,
-                                    presets: [
-                                        [
-                                            '@babel/preset-env',
-                                            {
-                                                ...BABEL_PRESET_ENV_CONFIG,
-                                                useBuiltIns: 'entry',
-                                            },
-                                        ],
-                                    ],
+                                    target: 'es2015', // Matches the Babel preset-env targets.
+                                    loader: 'ts', // Handles TypeScript files.
+                                    legalComments: 'none', // Removes comments for cleaner output.
                                 },
                             },
-                            // {
-                            //     loader: 'esbuild-loader',
-                            //     options: {
-                            //         target: 'es2015', // Equivalent to Babel preset-env targets.
-                            //         loader: 'ts', // Specify TypeScript loader.
-                            //         legalComments: 'none', // Removes comments for cleaner output.
-                            //     },
-                            // },
                         ],
                     },
                     {
@@ -358,16 +329,11 @@ function loaderConfig(options, argv) {
                                 },
                             },
                             {
-                                loader: 'babel-loader',
+                                loader: 'esbuild-loader',
                                 options: {
-                                    cacheDirectory: true,
-                                    presets: [['@babel/preset-env', BABEL_PRESET_ENV_CONFIG]],
-                                },
-                            },
-                            {
-                                loader: 'ts-loader',
-                                options: {
-                                    onlyCompileBundledFiles: true,
+                                    loader: 'tsx', // Supports TypeScript and JSX
+                                    target: 'es2015', // Matches the targets from BABEL_PRESET_ENV_CONFIG
+                                    legalComments: 'none', // Removes comments from the output
                                 },
                             },
                         ],
