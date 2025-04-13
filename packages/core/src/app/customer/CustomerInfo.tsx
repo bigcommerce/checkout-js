@@ -113,7 +113,7 @@ function mapToWithCheckoutCustomerInfoProps({
         return null;
     }
 
-    const {checkoutSettings, links: { logoutLink }} = config;
+    const { checkoutSettings, links: { logoutLink } } = config;
 
     const isRedirectExperimentEnabled = isExperimentEnabled(checkoutSettings, 'CHECKOUT-9138.redirect_to_storefront_for_auth');
 
