@@ -139,7 +139,8 @@ export const order = `{
           "handlingCostTaxClassId": 2,
           "shippingZoneId": 1,
           "shippingZoneName": "United States",
-          "customFields": []
+          "customFields": [],
+          "discounts": []
         }
       ],
       "pickup": []

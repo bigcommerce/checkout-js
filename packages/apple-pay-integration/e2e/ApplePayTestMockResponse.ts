@@ -239,7 +239,8 @@ export const order = `{
                 "handlingCostTaxClassId": 2,
                 "shippingZoneId": 2,
                 "shippingZoneName": "Rest of the World",
-                "customFields": []
+                "customFields": [],
+                "discounts": []
             }
         ]
     },
