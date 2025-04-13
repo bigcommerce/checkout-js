@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.578.0](https://github.com/bigcommerce/checkout-js/compare/v1.577.0...v1.578.0) (2025-04-13)
+
+
+### Features
+
+* **checkout:** CHECKOUT-8521 Displays shipping discount on order confirmation page ([#2235](https://github.com/bigcommerce/checkout-js/issues/2235)) ([ec55700](https://github.com/bigcommerce/checkout-js/commit/ec55700cc61e5d7a7681a2e2eaf9dc9530cc6619))
+* **payment:** STRIPE-761 migrate StripeGuestForm enzyme tests to RTL ([5922c57](https://github.com/bigcommerce/checkout-js/commit/5922c57e0a1995ef3f67e6b1c1324c0bb6c2b206))
+
 ## [1.577.0](https://github.com/bigcommerce/checkout-js/compare/v1.576.0...v1.577.0) (2025-04-09)
 
 
