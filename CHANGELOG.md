@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.580.0](https://github.com/bigcommerce/checkout-js/compare/v1.579.1...v1.580.0) (2025-04-14)
+
+
+### Features
+
+* **payment:** STRIPE-667 remove experiment for Stripe Link Spain state mapping ([1e3a363](https://github.com/bigcommerce/checkout-js/commit/1e3a363062d8b0e3383dd4f6781235a7b451df88))
+
 ### [1.579.1](https://github.com/bigcommerce/checkout-js/compare/v1.579.0...v1.579.1) (2025-04-14)
 
 ## [1.579.0](https://github.com/bigcommerce/checkout-js/compare/v1.578.0...v1.579.0) (2025-04-14)
