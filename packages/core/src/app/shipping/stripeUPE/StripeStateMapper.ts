@@ -9,7 +9,6 @@ interface StripeStateMapping {
 export default function StripeStateMapper(
     country: string,
     state: string,
-    isStripeStateMappingDisabledForES?: boolean,
 ): string {
 
     const countries: StripeCountryMapping = {
@@ -230,63 +229,6 @@ export default function StripeStateMapper(
             'Yamanashi': '19'
         },
     };
-
-    if (!isStripeStateMappingDisabledForES) {
-        countries.ES = {
-            'C': 'ACOR',
-            'VI': 'ALAV',
-            'AB': 'ALBA',
-            'A': 'ALIC',
-            'AL': 'ALME',
-            'O': 'ASTU',
-            'AV': 'AVIL',
-            'BA': 'BADA',
-            'PM': 'BALE',
-            'B': 'BARC',
-            'BU': 'BURG',
-            'CC': 'CACE',
-            'CA': 'CADI',
-            'S': 'CANT',
-            'CS': 'CAST',
-            'CE': 'CEUT',
-            'CR': 'CIUD',
-            'CO': 'CORD',
-            'CU': 'CUEN',
-            'GI': 'GIRO',
-            'GR': 'GRAN',
-            'GU': 'GUAD',
-            'SS': 'GUIP',
-            'H': 'HUEL',
-            'HU': 'HUES',
-            'J': 'JAEN',
-            'LO': 'LAR',
-            'GC': 'LAS',
-            'LE': 'LEON',
-            'L': 'LLEI',
-            'LU': 'LUGO',
-            'M': 'MADR',
-            'MA': 'MALA',
-            'ML': 'MELI',
-            'MU': 'MURC',
-            'NA': 'NAVA',
-            'OR': 'OURE',
-            'P': 'PALE',
-            'PO': 'PONT',
-            'SA': 'SALA',
-            'TF': 'SANT',
-            'SG': 'SEGO',
-            'SE': 'SEVI',
-            'SO': 'SORI',
-            'T': 'TARR',
-            'TE': 'TERU',
-            'TP': 'TOLE',
-            'V': 'VALE',
-            'VA': 'VALL',
-            'BI': 'VIZC',
-            'ZA': 'ZAMO',
-            'Z': 'ZARA',
-        };
-    }
 
     if (countries[country]) {
         return countries[country][state] ?? getStripeState(countries[country], state);
