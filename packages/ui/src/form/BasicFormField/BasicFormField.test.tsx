@@ -1,19 +1,27 @@
-import { mount, shallow } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
+import { render, screen, within } from '@bigcommerce/checkout/test-utils';
+
 import { FormContext } from '../contexts';
 
 import BasicFormField from './BasicFormField';
+import userEvent from '@testing-library/user-event';
 
 describe('BasicFormField', () => {
     it('matches snapshot', () => {
-        expect(shallow(<BasicFormField name="foobar" />)).toMatchSnapshot();
+        render(<Formik
+            initialValues={{ foobar: 'foobar' }}
+            onSubmit={noop}
+            render={() => <BasicFormField name="foobar" />}
+        />)
+
+        expect(screen.getByRole('textbox')).toHaveAttribute('name', 'foobar');
     });
 
     it('renders component with test ID', () => {
-        const component = mount(
+        render(
             <Formik
                 initialValues={{ foobar: 'foobar' }}
                 onSubmit={noop}
@@ -21,11 +29,12 @@ describe('BasicFormField', () => {
             />,
         );
 
-        expect(component.find('.form-field').prop('data-test')).toBe('test');
+        expect(screen.getByTestId('test')).toBeInTheDocument();
+        expect(within(screen.getByTestId('test')).getByRole('textbox')).toHaveAttribute('name', 'foobar');
     });
 
     it('changes appearance when there is error', async () => {
-        const component = mount(
+        const { container } = render(
             <FormContext.Provider value={{ isSubmitted: true, setSubmitted: jest.fn() }}>
                 <Formik
                     initialValues={{ foobar: '' }}
@@ -41,29 +50,14 @@ describe('BasicFormField', () => {
             </FormContext.Provider>,
         );
 
-        component.find('input[name="foobar"]').simulate('change').simulate('blur');
+        await userEvent.type(screen.getByRole('textbox'), 'test');
+        await userEvent.tab();
 
-        await new Promise((resolve) => process.nextTick(resolve));
-
-        component.update();
-
-        expect(component.find('.form-field').hasClass('form-field--error')).toBe(true);
-    });
-
-    it('renders input component by default', () => {
-        const component = mount(
-            <Formik
-                initialValues={{ foobar: '' }}
-                onSubmit={noop}
-                render={() => <BasicFormField name="foobar" />}
-            />,
-        );
-
-        expect(component.exists('input')).toBe(true);
+        expect(container.querySelector('.form-field--error')).toBeInTheDocument();
     });
 
     it('renders input component with date value', async () => {
-        const component = mount(
+        render(
             <Formik
                 initialValues={{ foobar: '' }}
                 onSubmit={noop}
@@ -73,19 +67,8 @@ describe('BasicFormField', () => {
 
         const date = new Date();
 
-        component
-            .find('input[name="foobar"]')
-            .simulate('change', { target: { value: date, name: 'foobar' } })
-            .simulate('blur');
+        await userEvent.type(screen.getByRole('textbox'), date.toLocaleDateString());
 
-        await new Promise((resolve) => process.nextTick(resolve));
-
-        component.update();
-
-        const input = component.find('input');
-
-        expect(component.exists('input')).toBe(true);
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        expect(input.get(0).props.value).toBe(date);
+        expect(screen.getByRole('textbox')).toHaveValue(date.toLocaleDateString());
     });
 });

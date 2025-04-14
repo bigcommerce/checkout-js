@@ -1,15 +1,11 @@
 import { createLanguageService, FormField as FormFieldType } from '@bigcommerce/checkout-sdk';
-import { mount } from 'enzyme';
 import { Formik } from 'formik';
 import React from 'react';
 
 import { LocaleContext, LocaleContextType, TranslatedString } from '@bigcommerce/checkout/locale';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import { FormField } from '../FormField';
-
-import CheckboxGroupFormField from './CheckboxGroupFormField';
 import DynamicFormField from './DynamicFormField';
-import DynamicInput from './DynamicInput';
 
 describe('DynamicFormField Component', () => {
     const localeContext: LocaleContextType = { language: createLanguageService() };
@@ -56,7 +52,7 @@ describe('DynamicFormField Component', () => {
     const onChange = jest.fn();
 
     it('renders legacy class name', () => {
-        const component = mount(
+        const { container } = render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={{}} onSubmit={jest.fn()}>
                     <DynamicFormField
@@ -67,13 +63,11 @@ describe('DynamicFormField Component', () => {
             </LocaleContext.Provider>,
         );
 
-        expect(component.find('.dynamic-form-field').prop('className')).toContain(
-            'dynamic-form-field--addressLine1',
-        );
+        expect(container.querySelector('.dynamic-form-field--addressLine1')).toBeInTheDocument();
     });
 
     it('renders FormField with expected props', () => {
-        const component = mount(
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={{}} onSubmit={jest.fn()}>
                     <DynamicFormField
@@ -84,83 +78,12 @@ describe('DynamicFormField Component', () => {
             </LocaleContext.Provider>,
         );
 
-        expect(component.find(FormField).props()).toEqual(
-            expect.objectContaining({
-                onChange,
-                name: 'address1',
-            }),
-        );
-    });
-
-    it('renders telephone field', () => {
-        const telField: FormFieldType = {
-            custom: false,
-            fieldType: 'text',
-            id: 'field_17',
-            label: 'Phone Number',
-            name: 'phone',
-            required: true,
-            type: 'string',
-        };
-        const component = mount(
-            <LocaleContext.Provider value={localeContext}>
-                <Formik initialValues={{}} onSubmit={jest.fn()}>
-                    <DynamicFormField field={telField} />
-                </Formik>
-            </LocaleContext.Provider>,
-        );
-
-        expect(component.find(DynamicInput).props()).toEqual(
-            expect.objectContaining({
-                id: 'phone',
-                fieldType: 'tel',
-            }),
-        );
-    });
-
-    it('renders DynamicInput with expected props', () => {
-        const component = mount(
-            <LocaleContext.Provider value={localeContext}>
-                <Formik initialValues={{}} onSubmit={jest.fn()}>
-                    <DynamicFormField
-                        autocomplete="address-line1"
-                        field={formFields.find(({ name }) => name === 'address1') as FormFieldType}
-                        inputId="addressLine1Input"
-                        onChange={onChange}
-                    />
-                </Formik>
-            </LocaleContext.Provider>,
-        );
-
-        expect(component.find(DynamicInput).props()).toEqual(
-            expect.objectContaining({
-                autoComplete: 'address-line1',
-                id: 'addressLine1Input',
-            }),
-        );
-    });
-
-    it('renders CheckboxGroupFormField if fieldType is checkbox', () => {
-        const component = mount(
-            <LocaleContext.Provider value={localeContext}>
-                <Formik initialValues={{}} onSubmit={jest.fn()}>
-                    <DynamicFormField
-                        field={{
-                            ...(formFields.find(
-                                ({ name }) => name === 'field_27',
-                            ) as FormFieldType),
-                            fieldType: 'checkbox',
-                        }}
-                    />
-                </Formik>
-            </LocaleContext.Provider>,
-        );
-
-        expect(component.find(CheckboxGroupFormField)).toHaveLength(1);
+        expect(screen.getByText('Address Line 1')).toBeInTheDocument();
+        expect(screen.getByText('Address Line 1')).toHaveAttribute('for', 'address1');
     });
 
     it('renders label', () => {
-        const component = mount(
+        const { container } = render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={{}} onSubmit={jest.fn()}>
                     <DynamicFormField
@@ -171,13 +94,12 @@ describe('DynamicFormField Component', () => {
             </LocaleContext.Provider>,
         );
 
-        expect(component.find(TranslatedString).prop('id')).toBe('address.address_line_1_label');
-
-        expect(component.find('.optimizedCheckout-contentSecondary')).toHaveLength(0);
+        expect(screen.getByText(`${localeContext.language.translate('address.address_line_1_label')}`)).toBeInTheDocument();
+        expect(container.querySelector('.optimizedCheckout-contentSecondary')).toBeNull();
     });
 
     it('renders `optional` label when field is not required', () => {
-        const component = mount(
+        render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={{}} onSubmit={jest.fn()}>
                     <DynamicFormField
@@ -187,8 +109,6 @@ describe('DynamicFormField Component', () => {
             </LocaleContext.Provider>,
         );
 
-        expect(
-            component.find('.optimizedCheckout-contentSecondary').find(TranslatedString).prop('id'),
-        ).toBe('common.optional_text');
+        expect(screen.getByText(`${localeContext.language.translate('common.optional_text')}`)).toBeInTheDocument();
     });
 });

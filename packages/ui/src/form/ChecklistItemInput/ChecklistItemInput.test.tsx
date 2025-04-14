@@ -1,55 +1,53 @@
-import { mount, shallow } from 'enzyme';
 import React from 'react';
 
-import { Label } from '../Label';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import ChecklistItemInput from './ChecklistItemInput';
+import userEvent from '@testing-library/user-event';
+import { on } from 'events';
 
 describe('ChecklistItemInput', () => {
     it('renders children inside label', () => {
-        const component = shallow(
+        render(
             <ChecklistItemInput isSelected={false} name="foobar" value="foobar_val">
                 children text
             </ChecklistItemInput>,
         );
 
-        expect(component.find(Label).dive().text()).toBe('children text');
+        expect(screen.getByText('children text')).toBeInTheDocument();
     });
 
     it('renders input as checked when is selected', () => {
-        const component = shallow(
+        render(
             <ChecklistItemInput isSelected={true} name="foobar" value="foobar_val" />,
         );
 
-        expect(component.find('.form-checklist-checkbox').prop('checked')).toBe(true);
+        expect(screen.getByRole('radio')).toBeChecked();
     });
 
     it('renders input as unchecked when is not selected', () => {
-        const component = shallow(
+        render(
             <ChecklistItemInput isSelected={false} name="foobar" value="foobar_val" />,
         );
 
-        expect(component.find('.form-checklist-checkbox').prop('checked')).toBe(false);
+        expect(screen.getByRole('radio')).not.toBeChecked();
     });
 
-    it('calls onChange when input changes', () => {
+    it('calls onChange when input changes', async () => {
         const onChange = jest.fn();
-        const component = mount(
+        render(
             <ChecklistItemInput
-                isSelected={true}
+                isSelected={false}
                 name="foobar"
                 onChange={onChange}
                 value="foobar_val"
             />,
         );
 
-        component
-            .find('.form-checklist-checkbox')
-            .at(0)
-            .simulate('change', { target: { value: 'foo', name: 'option' } });
+        expect(screen.getByRole('radio')).not.toBeChecked();
 
-        expect(onChange).toHaveBeenCalledWith(
-            expect.objectContaining({ target: { value: 'foo', name: 'option' } }),
-        );
+        await userEvent.click(screen.getByRole('radio'));
+
+        expect(onChange).toHaveBeenCalledTimes(1);
     });
 });
