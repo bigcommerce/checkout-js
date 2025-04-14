@@ -95,7 +95,7 @@
             "leave_warning": "Är du säker på att du vill lämna? Data som du har angett kanske inte sparas.",
             "loading_text": "Laddar",
             "missing_shipping_method_heading": "Fraktmetod ej tillgänglig",
-            "invalid_shipping_address": "Invalid shipping address",
+            "invalid_shipping_address": "Ogiltig leveransadress",
             "ok_action": "Ok",
             "error_code": "Felkod:",
             "request_id": "Förfrågans-ID:",

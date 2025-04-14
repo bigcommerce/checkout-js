@@ -95,7 +95,7 @@
             "leave_warning": "Czy na pewno chcesz wyjść? Wprowadzone przez ciebie dane mogą nie zostać zapisane.",
             "loading_text": "Ładowanie",
             "missing_shipping_method_heading": "Metoda wysyłki niedostępna",
-            "invalid_shipping_address": "Invalid shipping address",
+            "invalid_shipping_address": "Nieprawidłowy adres wysyłki",
             "ok_action": "Ok",
             "error_code": "Kod błędu:",
             "request_id": "ID wniosku:",
