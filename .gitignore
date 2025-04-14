@@ -1,6 +1,7 @@
 .idea
 .vscode
 .DS_Store
+tsconfig.base.tsbuildinfo
 junit.xml
 __temp__
 node_modules
