@@ -95,7 +95,7 @@
             "leave_warning": "Er du sikker på at du vil dra? Det kan hende at data du har lagt inn ikke lagres.",
             "loading_text": "Laster inn",
             "missing_shipping_method_heading": "Forsendelsesmetode er ikke tilgjengelig",
-            "invalid_shipping_address": "Invalid shipping address",
+            "invalid_shipping_address": "Ugyldig leveringsadresse",
             "ok_action": "Ok",
             "error_code": "Feilkode:",
             "request_id": "Forespørsels-ID:",

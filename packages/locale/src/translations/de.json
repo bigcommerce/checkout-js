@@ -95,7 +95,7 @@
             "leave_warning": "Wollen Sie wirklich gehen? Von Ihnen eingegebene Daten werden möglicherweise nicht gespeichert.",
             "loading_text": "Wird geladen",
             "missing_shipping_method_heading": "Versandmethode nicht verfügbar",
-            "invalid_shipping_address": "Invalid shipping address",
+            "invalid_shipping_address": "Ungültige Versandadresse",
             "ok_action": "Ok",
             "error_code": "Fehlercode:",
             "request_id": "Anfrage-ID:",

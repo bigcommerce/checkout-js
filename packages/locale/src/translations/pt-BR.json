@@ -95,7 +95,7 @@
             "leave_warning": "Deseja mesmo sair? Os dados inseridos podem não ser salvos.",
             "loading_text": "Carregando",
             "missing_shipping_method_heading": "Método de envio não disponível",
-            "invalid_shipping_address": "Invalid shipping address",
+            "invalid_shipping_address": "Endereço de envio inválido",
             "ok_action": "Ok",
             "error_code": "Código de erro:",
             "request_id": "ID da solicitação:",
