@@ -55,9 +55,9 @@ describe('BraintreeLocalMethod', () => {
         const deinitializePayment = jest
             .spyOn(checkoutService, 'deinitializePayment')
             .mockResolvedValue(checkoutState);
-        const component = render(<BraintreeLocalPaymentMethod {...props} />);
+        const { unmount } = render(<BraintreeLocalPaymentMethod {...props} />);
 
-        component.unmount();
+        unmount();
 
         expect(deinitializePayment).toHaveBeenCalledWith({
             gatewayId: props.method.gateway,
@@ -79,11 +79,11 @@ describe('BraintreeLocalMethod', () => {
             new Error('test error'),
         );
 
-        const component = render(<BraintreeLocalPaymentMethod {...props} />);
+        const { unmount } = render(<BraintreeLocalPaymentMethod {...props} />);
 
         await new Promise((resolve) => process.nextTick(resolve));
 
-        component.unmount();
+        unmount();
 
         await new Promise((resolve) => process.nextTick(resolve));
 

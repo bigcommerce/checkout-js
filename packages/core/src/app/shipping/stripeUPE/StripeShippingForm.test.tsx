@@ -4,7 +4,7 @@ import React from 'react';
 import { act } from 'react-dom/test-utils';
 
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
@@ -30,7 +30,7 @@ describe('StripeShippingForm', () => {
     const checkoutService = createCheckoutService();
     const errorLogger = new ConsoleErrorLogger();
     const { customFields, ...rest } = getShippingAddress();
-    const localeContext: LocaleContextType = createLocaleContext(getStoreConfig());
+    const localeContext = createLocaleContext(getStoreConfig());
 
     const defaultProps = {
         isShippingMethodLoading: false,
@@ -85,6 +85,7 @@ describe('StripeShippingForm', () => {
         expect(defaultProps.initialize).toHaveBeenCalled();
         expect(defaultProps.getFields).toHaveBeenCalledTimes(3);
         expect(defaultProps.getFields).toHaveBeenCalledWith("US");
+        // eslint-disable-next-line testing-library/no-node-access,testing-library/no-container
         expect(container.querySelector('#StripeUpeShipping')).toBeInTheDocument();
     });
 

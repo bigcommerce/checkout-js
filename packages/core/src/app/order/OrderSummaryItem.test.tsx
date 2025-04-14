@@ -9,7 +9,7 @@ import { getStoreConfig } from '../config/config.mock';
 import OrderSummaryItem from './OrderSummaryItem';
 
 describe('OrderSummaryItems', () => {
-    const localeContext: LocaleContextType = createLocaleContext(getStoreConfig());
+    const localeContext = createLocaleContext(getStoreConfig());
     const currencyService: CurrencyService = localeContext.currency;
 
     describe('when amount and amountAfterDiscount are different', () => {

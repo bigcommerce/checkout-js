@@ -1,7 +1,7 @@
 import { CurrencyService } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
-import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../config/config.mock';
@@ -9,7 +9,7 @@ import { getStoreConfig } from '../config/config.mock';
 import OrderSummaryDiscount from './OrderSummaryDiscount';
 
 describe('OrderSummaryDiscount', () => {
-    const localeContext: LocaleContextType = createLocaleContext(getStoreConfig());
+    const localeContext = createLocaleContext(getStoreConfig());
     const currencyService: CurrencyService = localeContext.currency;
 
     describe('when it is a simple discount', () => {
