@@ -1,13 +1,8 @@
 import '@testing-library/jest-dom';
 import '@testing-library/jest-dom/extend-expect';
 import { configure as configureRTL } from '@testing-library/react';
-import * as Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import { configure } from 'enzyme';
 import { noop } from 'lodash';
 
-const adapter = Adapter as any;
-
-configure({ adapter: new adapter.default() });
 configureRTL({ testIdAttribute: 'data-test' });
 
 // https://github.com/facebook/jest/issues/10784

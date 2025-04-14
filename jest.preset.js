@@ -22,6 +22,5 @@ module.exports = {
         '\\.scss$': '../../scripts/jest/style-transformer',
     },
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
-    snapshotSerializers: ['enzyme-to-json/serializer'],
     testTimeout: 10000,
 };
