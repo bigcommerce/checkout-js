@@ -7,6 +7,7 @@ import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-
 
 import { withCheckout } from '../checkout';
 import { isErrorWithType } from '../common/error';
+import { isExperimentEnabled } from '../common/utility';
 import { Button, ButtonSize, ButtonVariant } from '../ui/button';
 
 import canSignOut, { isSupportedSignoutMethod } from './canSignOut';
@@ -23,8 +24,11 @@ export interface CustomerSignOutEvent {
 interface WithCheckoutCustomerInfoProps {
     email: string;
     methodId: string;
+    isRedirectExperimentEnabled: boolean;
     isSignedIn: boolean;
     isSigningOut: boolean;
+    logoutLink: string;
+    shouldRedirectToStorefrontForAuth: boolean;
     signOut(options?: CustomerRequestOptions): Promise<CheckoutSelectors>;
 }
 
@@ -33,12 +37,21 @@ const CustomerInfo: FunctionComponent<CustomerInfoProps & WithCheckoutCustomerIn
     methodId,
     isSignedIn,
     isSigningOut,
+    isRedirectExperimentEnabled,
+    logoutLink,
+    shouldRedirectToStorefrontForAuth,
     onSignOut = noop,
     onSignOutError = noop,
     signOut,
 }) => {
     const handleSignOut: () => Promise<void> = async () => {
         try {
+            if (isRedirectExperimentEnabled && shouldRedirectToStorefrontForAuth) {
+                window.location.assign(logoutLink);
+
+                return;
+            }
+
             if (isSupportedSignoutMethod(methodId)) {
                 await signOut({ methodId });
                 onSignOut({ isCartEmpty: false });
@@ -87,17 +100,22 @@ function mapToWithCheckoutCustomerInfoProps({
     checkoutState,
 }: CheckoutContextProps): WithCheckoutCustomerInfoProps | null {
     const {
-        data: { getBillingAddress, getCheckout, getCustomer },
+        data: { getBillingAddress, getCheckout, getCustomer, getConfig },
         statuses: { isSigningOut },
     } = checkoutState;
 
     const billingAddress = getBillingAddress();
     const checkout = getCheckout();
     const customer = getCustomer();
+    const config = getConfig();
 
-    if (!billingAddress || !checkout || !customer) {
+    if (!billingAddress || !checkout || !customer || !config) {
         return null;
     }
+
+    const { checkoutSettings, links: { logoutLink } } = config;
+
+    const isRedirectExperimentEnabled = isExperimentEnabled(checkoutSettings, 'CHECKOUT-9138.redirect_to_storefront_for_auth');
 
     const methodId =
         checkout.payments && checkout.payments.length === 1 ? checkout.payments[0].providerId : '';
@@ -105,8 +123,11 @@ function mapToWithCheckoutCustomerInfoProps({
     return {
         email: billingAddress.email || customer.email,
         methodId,
+        isRedirectExperimentEnabled,
         isSignedIn: canSignOut(customer, checkout, methodId),
         isSigningOut: isSigningOut(),
+        logoutLink,
+        shouldRedirectToStorefrontForAuth: checkoutSettings.shouldRedirectToStorefrontForAuth,
         signOut: checkoutService.signOutCustomer,
     };
 }
