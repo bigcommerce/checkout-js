@@ -6,20 +6,16 @@ import CheckboxInput from './CheckboxInput';
 
 describe('CheckboxInput', () => {
     it('renders `input` element with passed props', () => {
-        render(
-            <CheckboxInput id="id" checked={false} label="label" name="foobar" value="x" />,
-        );
+        render(<CheckboxInput checked={false} id="id" label="label" name="foobar" value="x" />);
 
         expect(screen.getByRole('checkbox')).toBeInTheDocument();
         expect(screen.getByRole('checkbox')).toHaveAttribute('name', 'foobar');
-        expect(screen.getByRole('checkbox')).toHaveAttribute('value', 'x');
+        expect(screen.getByRole('checkbox')).toHaveValue('x');
         expect(screen.getByRole('checkbox')).toHaveAttribute('id', 'id');
     });
 
     it('renders with class names', () => {
-        render(
-            <CheckboxInput checked={false} label="label" name="foobar" value="x" />,
-        );
+        render(<CheckboxInput checked={false} label="label" name="foobar" value="x" />);
 
         expect(screen.getByRole('checkbox')).toHaveClass('form-checkbox');
         expect(screen.getByRole('checkbox')).toHaveClass('optimizedCheckout-form-checkbox');

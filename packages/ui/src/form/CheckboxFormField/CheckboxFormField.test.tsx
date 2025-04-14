@@ -1,7 +1,7 @@
+import userEvent from '@testing-library/user-event';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
-import userEvent from '@testing-library/user-event';
 
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 

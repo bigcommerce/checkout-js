@@ -1,19 +1,11 @@
 import { createLanguageService } from '@bigcommerce/checkout-sdk';
-import { mount } from 'enzyme';
 import React, { FunctionComponent } from 'react';
-import ReactDatePicker from 'react-datepicker';
 
 import { LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
-
-import { CheckboxInput } from '../CheckboxInput';
-import { RadioInput } from '../RadioInput';
-import { TextArea } from '../TextArea';
-import { TextInput } from '../TextInput';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import DynamicFormFieldType from './DynamicFormFieldType';
 import DynamicInput, { DynamicInputProps } from './DynamicInput';
-import { render, screen } from '@bigcommerce/checkout/test-utils';
-import userEvent from '@testing-library/user-event';
 
 describe('DynamicInput', () => {
     let localeContext: LocaleContextType;
@@ -43,11 +35,7 @@ describe('DynamicInput', () => {
 
     it('renders textarea for multiline type', () => {
         render(
-            <DynamicInputTest
-                fieldType={DynamicFormFieldType.MULTILINE}
-                id="field_33"
-                rows={4}
-            />,
+            <DynamicInputTest fieldType={DynamicFormFieldType.MULTILINE} id="field_33" rows={4} />,
         );
 
         expect(screen.getByRole('textbox')).toHaveAttribute('type', 'multiline');
@@ -55,7 +43,7 @@ describe('DynamicInput', () => {
         expect(screen.getByRole('textbox')).toHaveAttribute('rows', '4');
     });
 
-    it('renders date picker for date type', async () => {
+    it('renders date picker for date type', () => {
         const { container } = render(
             <DynamicInputTest
                 fieldType={DynamicFormFieldType.DATE}
@@ -65,6 +53,7 @@ describe('DynamicInput', () => {
             />,
         );
 
+        // eslint-disable-next-line testing-library/no-container
         expect(container.querySelector('.react-datepicker-wrapper')).toBeInTheDocument();
         expect(screen.getByRole('textbox')).toHaveAttribute('type', 'text');
         expect(screen.getByRole('textbox')).toHaveAttribute('placeholder', 'DD/MM/YYYY');
@@ -81,6 +70,7 @@ describe('DynamicInput', () => {
             />,
         );
 
+        // eslint-disable-next-line testing-library/no-container
         expect(container.querySelector('.react-datepicker-wrapper')).toBeInTheDocument();
         expect(screen.getByRole('textbox')).toHaveAttribute('type', 'text');
         expect(screen.getByRole('textbox')).toHaveAttribute('placeholder', 'DD.MM.YYYY');
@@ -124,7 +114,7 @@ describe('DynamicInput', () => {
     });
 
     it('renders number type input for number type', () => {
-        render(<DynamicInputTest fieldType={DynamicFormFieldType.NUMBER} id="field_33" />)
+        render(<DynamicInputTest fieldType={DynamicFormFieldType.NUMBER} id="field_33" />);
 
         expect(screen.getByRole('spinbutton')).toHaveAttribute('type', 'number');
     });
@@ -137,8 +127,6 @@ describe('DynamicInput', () => {
 
     it('renders tel type input for phone type', () => {
         render(<DynamicInputTest fieldType={DynamicFormFieldType.TELEPHONE} id="field_33" />);
-
-        screen.debug();
 
         expect(screen.getByRole('textbox')).toHaveAttribute('type', 'tel');
     });

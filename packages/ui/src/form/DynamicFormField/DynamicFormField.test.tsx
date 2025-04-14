@@ -63,6 +63,7 @@ describe('DynamicFormField Component', () => {
             </LocaleContext.Provider>,
         );
 
+        // eslint-disable-next-line testing-library/no-container
         expect(container.querySelector('.dynamic-form-field--addressLine1')).toBeInTheDocument();
     });
 
@@ -94,7 +95,10 @@ describe('DynamicFormField Component', () => {
             </LocaleContext.Provider>,
         );
 
-        expect(screen.getByText(`${localeContext.language.translate('address.address_line_1_label')}`)).toBeInTheDocument();
+        expect(
+            screen.getByText(`${localeContext.language.translate('address.address_line_1_label')}`),
+        ).toBeInTheDocument();
+        // eslint-disable-next-line testing-library/no-container
         expect(container.querySelector('.optimizedCheckout-contentSecondary')).toBeNull();
     });
 
@@ -109,6 +113,8 @@ describe('DynamicFormField Component', () => {
             </LocaleContext.Provider>,
         );
 
-        expect(screen.getByText(`${localeContext.language.translate('common.optional_text')}`)).toBeInTheDocument();
+        expect(
+            screen.getByText(`${localeContext.language.translate('common.optional_text')}`),
+        ).toBeInTheDocument();
     });
 });

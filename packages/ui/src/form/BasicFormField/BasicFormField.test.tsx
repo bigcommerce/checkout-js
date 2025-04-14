@@ -1,3 +1,4 @@
+import userEvent from '@testing-library/user-event';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
@@ -7,15 +8,16 @@ import { render, screen, within } from '@bigcommerce/checkout/test-utils';
 import { FormContext } from '../contexts';
 
 import BasicFormField from './BasicFormField';
-import userEvent from '@testing-library/user-event';
 
 describe('BasicFormField', () => {
     it('matches snapshot', () => {
-        render(<Formik
-            initialValues={{ foobar: 'foobar' }}
-            onSubmit={noop}
-            render={() => <BasicFormField name="foobar" />}
-        />)
+        render(
+            <Formik
+                initialValues={{ foobar: 'foobar' }}
+                onSubmit={noop}
+                render={() => <BasicFormField name="foobar" />}
+            />,
+        );
 
         expect(screen.getByRole('textbox')).toHaveAttribute('name', 'foobar');
     });
@@ -30,7 +32,10 @@ describe('BasicFormField', () => {
         );
 
         expect(screen.getByTestId('test')).toBeInTheDocument();
-        expect(within(screen.getByTestId('test')).getByRole('textbox')).toHaveAttribute('name', 'foobar');
+        expect(within(screen.getByTestId('test')).getByRole('textbox')).toHaveAttribute(
+            'name',
+            'foobar',
+        );
     });
 
     it('changes appearance when there is error', async () => {
@@ -53,6 +58,7 @@ describe('BasicFormField', () => {
         await userEvent.type(screen.getByRole('textbox'), 'test');
         await userEvent.tab();
 
+        // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
         expect(container.querySelector('.form-field--error')).toBeInTheDocument();
     });
 
