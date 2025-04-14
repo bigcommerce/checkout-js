@@ -112,7 +112,6 @@ describe('StripeShippingAddress Component', () => {
                 getStripeState: expect.any(Function),
                 gatewayId: 'stripeupe',
                 methodId: 'card',
-                setStripeExperiments: expect.any(Function),
             },
         });
         expect(defaultProps.onAddressSelect).toHaveBeenCalled();
@@ -359,50 +358,5 @@ describe('StripeShippingAddress Component', () => {
         renderTestComponent();
 
         expect(getAppliedStylesMock).not.toHaveBeenCalled();
-    });
-
-    describe('State code mapping for Spain', () => {
-        const stripeAddressES: StripeShippingEvent = {
-            ...stripeEvent,
-            value: {
-                ...stripeEvent.value,
-                address: {
-                    ...stripeEvent.value.address,
-                    country: 'ES',
-                    state: 'GI',
-                },
-            },
-        };
-
-        it('renders StripeShippingAddress with ES state code mapping', async () => {
-            defaultProps.initialize = getInitializeMock(stripeAddressES);
-    
-            renderTestComponent();
-    
-            expect(defaultProps.onAddressSelect).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    stateOrProvince: 'GIRO',
-                    stateOrProvinceCode: 'GIRO',
-                }),
-            );
-        });
-
-        it('renders StripeShippingAddress without ES state code mapping', async () => {
-            defaultProps.initialize = getInitializeMock(
-                stripeAddressES,
-                {
-                    isStripeStateMappingDisabledForES: true,
-                }
-            );
-    
-            renderTestComponent();
-    
-            expect(defaultProps.onAddressSelect).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    stateOrProvince: 'GI',
-                    stateOrProvinceCode: 'GI',
-                }),
-            );
-        });
     });
 });
