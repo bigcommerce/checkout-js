@@ -10,7 +10,7 @@ describe('CheckboxInput', () => {
 
         expect(screen.getByRole('checkbox')).toBeInTheDocument();
         expect(screen.getByRole('checkbox')).toHaveAttribute('name', 'foobar');
-        expect(screen.getByRole('checkbox')).toHaveValue('x');
+        expect(screen.getByRole('checkbox')).not.toBeChecked();
         expect(screen.getByRole('checkbox')).toHaveAttribute('id', 'id');
     });
 
