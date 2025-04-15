@@ -1,38 +1,5 @@
 {
   "version": 2,
-<<<<<<< HEAD
-  "appVersion": "1.581.1",
-  "dynamicChunks": {
-    "js": [
-      "123-dc84a55c.js",
-      "168-e9fe5424.js",
-      "406-f268438c.js",
-      "755-009eb340.js",
-      "billing-aae7eeb0.js",
-      "cart-summary-drawer-a51270fb.js",
-      "cart-summary-ccfffdf9.js",
-      "order-summary-drawer-d020cdc0.js",
-      "order-summary-5372e210.js",
-      "payment-fcf838a7.js",
-      "shipping-3d5ca378.js",
-      "auto-loader-1.581.1.js",
-      "translations-da-1.581.1.js",
-      "translations-de-1.581.1.js",
-      "translations-es-419-1.581.1.js",
-      "translations-es-ar-1.581.1.js",
-      "translations-es-cl-1.581.1.js",
-      "translations-es-co-1.581.1.js",
-      "translations-es-mx-1.581.1.js",
-      "translations-es-pe-1.581.1.js",
-      "translations-es-1.581.1.js",
-      "translations-fr-1.581.1.js",
-      "translations-it-1.581.1.js",
-      "translations-nl-1.581.1.js",
-      "translations-no-1.581.1.js",
-      "translations-pt-br-1.581.1.js",
-      "translations-pt-1.581.1.js",
-      "translations-sv-1.581.1.js"
-=======
   "appVersion": "1.564.0",
   "dynamicChunks": {
     "js": [
@@ -64,7 +31,6 @@
       "translations-pt-br-1.564.0.js",
       "translations-pt-1.564.0.js",
       "translations-sv-1.564.0.js"
->>>>>>> ff4732bc (updated dist)
     ],
     "css": [
       "billing-5cb3e9e6.css",

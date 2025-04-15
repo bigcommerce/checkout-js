@@ -1,10 +1,6 @@
 {
   "version": 2,
-<<<<<<< HEAD
-  "appVersion": "1.581.1",
-=======
   "appVersion": "1.564.0",
->>>>>>> ff4732bc (updated dist)
   "dynamicChunks": {
     "js": [
       "123-dc84a55c.js",
