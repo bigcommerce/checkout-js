@@ -1,9 +1,13 @@
 import {
+    BillingAddress,
+    Cart,
     Checkout as CheckoutObject,
     CheckoutService,
     createCheckoutService,
     createEmbeddedCheckoutMessenger,
+    Customer as CustomerData,
     EmbeddedCheckoutMessenger,
+    StoreConfig,
 } from '@bigcommerce/checkout-sdk';
 import faker from '@faker-js/faker';
 import userEvent from '@testing-library/user-event';
@@ -16,7 +20,13 @@ import {
     AnalyticsProviderMock,
 } from '@bigcommerce/checkout/analytics';
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
-import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
+import {
+    createLocaleContext,
+    getLanguageService,
+    LocaleContext,
+    LocaleContextType,
+    LocaleProvider,
+} from '@bigcommerce/checkout/locale';
 import {
     CHECKOUT_ROOT_NODE_ID,
     CheckoutProvider,
@@ -30,12 +40,23 @@ import {
 } from '@bigcommerce/checkout/test-framework';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
+import { getBillingAddress } from '../billing/billingAddresses.mock';
+import { getCart } from '../cart/carts.mock';
 import Checkout, { CheckoutProps } from '../checkout/Checkout';
+import { getCheckout } from '../checkout/checkouts.mock';
+import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
+import CheckoutStepType from '../checkout/CheckoutStepType';
 import { createErrorLogger } from '../common/error';
+import { getStoreConfig } from '../config/config.mock';
 import {
     createEmbeddedCheckoutStylesheet,
     createEmbeddedCheckoutSupport,
 } from '../embeddedCheckout';
+import { PaymentMethodId } from '../payment/paymentMethod';
+
+import Customer, { CustomerProps, WithCheckoutCustomerProps } from './Customer';
+import { getGuestCustomer } from './customers.mock';
+import CustomerViewType from './CustomerViewType';
 
 describe('Customer Component', () => {
     let checkout: CheckoutPageNodeObject;
@@ -43,7 +64,7 @@ describe('Customer Component', () => {
     let checkoutService: CheckoutService;
     let defaultProps: CheckoutProps & AnalyticsContextProps;
     let embeddedMessengerMock: EmbeddedCheckoutMessenger;
-    let analyticsTracker: AnalyticsEvents;    
+    let analyticsTracker: AnalyticsEvents;
 
     beforeAll(() => {
         checkout = new CheckoutPageNodeObject();
@@ -288,7 +309,7 @@ describe('Customer Component', () => {
             checkout.use(CheckoutPreset.CheckoutWithDigitalCart);
             render(<CheckoutTest {...defaultProps} />);
             await checkout.waitForCustomerStep();
-        
+
             await userEvent.click(await screen.findByText('Sign in now'));
             expect(window.location.assign).toHaveBeenCalled();
         });
@@ -318,9 +339,135 @@ describe('Customer Component', () => {
             checkout.use(CheckoutPreset.CheckoutWithDigitalCart);
             render(<CheckoutTest {...defaultProps} />);
             await checkout.waitForCustomerStep();
-        
+
             await userEvent.click(await screen.findByText('Sign in now'));
             await userEvent.click(screen.getByText('Create an account'));
+        });
+    });
+});
+
+describe('Customer Component with Stripe', () => {
+    let CustomerTest: FunctionComponent<CustomerProps & Partial<WithCheckoutCustomerProps>>;
+    let billingAddress: BillingAddress;
+    let checkout: CheckoutObject;
+    let cart: Cart;
+    let checkoutService: CheckoutService;
+    let config: StoreConfig;
+    let configStripeUpe: StoreConfig;
+    let customer: CustomerData;
+    let localeContext: LocaleContextType;
+    const defaultProps = {
+        isSubscribed: false,
+        isWalletButtonsOnTop: false,
+        onSubscribeToNewsletter: jest.fn(),
+        step: {} as CheckoutStepStatus,
+    };
+
+    beforeEach(() => {
+        billingAddress = getBillingAddress();
+        checkout = getCheckout();
+        cart = getCart();
+        customer = getGuestCustomer();
+        config = getStoreConfig();
+        configStripeUpe = {
+            ...config,
+            checkoutSettings: {
+                ...config.checkoutSettings,
+                providerWithCustomCheckout: PaymentMethodId.StripeUPE,
+            },
+        };
+
+        checkoutService = createCheckoutService();
+
+        jest.spyOn(checkoutService.getState().data, 'getBillingAddress').mockReturnValue(
+            billingAddress,
+        );
+
+        jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue(checkout);
+
+        jest.spyOn(checkoutService.getState().data, 'getCart').mockReturnValue(cart);
+
+        jest.spyOn(checkoutService.getState().data, 'getCustomer').mockReturnValue(customer);
+
+        jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(config);
+
+        jest.spyOn(checkoutService, 'loadPaymentMethods').mockResolvedValue(
+            checkoutService.getState(),
+        );
+
+        jest.spyOn(checkoutService, 'initializeCustomer').mockResolvedValue(
+            checkoutService.getState(),
+        );
+
+        jest.spyOn(checkoutService.getState().data, 'getPaymentMethods').mockReturnValue([]);
+
+        localeContext = createLocaleContext(getStoreConfig());
+
+        CustomerTest = (props) => (
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <AnalyticsProviderMock>
+                        <Customer {...props} />
+                    </AnalyticsProviderMock>
+                </LocaleContext.Provider>
+            </CheckoutProvider>
+        );
+    });
+
+    describe('when view type is "guest"', () => {
+        it('renders stripe guest form if enabled', async () => {
+            const steps = {
+                isActive: true,
+                isComplete: true,
+                isEditable: true,
+                isRequired: true,
+                isBusy: false,
+                type: CheckoutStepType.Customer,
+            };
+
+            jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(
+                configStripeUpe,
+            );
+
+            render(
+                <CustomerTest {...defaultProps} step={steps} viewType={CustomerViewType.Guest} />,
+            );
+
+            await new Promise((resolve) => process.nextTick(resolve));
+
+            // eslint-disable-next-line testing-library/no-node-access
+            expect(document.querySelector('#stripeupeLink')).toBeInTheDocument();
+            expect(await screen.findByTestId('stripe-customer-continue-as-guest-button')).toBeInTheDocument();
+        });
+
+        it("doesn't render Stripe guest form if it enabled but cart amount is smaller then Stripe requires", async () => {
+            jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(
+                configStripeUpe,
+            );
+            jest.spyOn(checkoutService.getState().data, 'getCart').mockReturnValue({
+                ...cart,
+                cartAmount: 0.4,
+            });
+
+            const steps = {
+                isActive: true,
+                isComplete: true,
+                isEditable: true,
+                isRequired: true,
+                isBusy: false,
+                type: CheckoutStepType.Customer,
+            };
+
+            render(
+                <CustomerTest {...defaultProps} step={steps} viewType={CustomerViewType.Guest} />,
+            );
+
+            await new Promise((resolve) => process.nextTick(resolve));
+
+            // eslint-disable-next-line testing-library/no-node-access
+            expect(document.querySelector('#stripeupeLink')).not.toBeInTheDocument();
+            expect(await screen.findByTestId('checkout-customer-guest')).toBeInTheDocument();
+            expect(await screen.findByTestId('customer-continue-as-guest-button')).toBeInTheDocument();
         });
     });
 });

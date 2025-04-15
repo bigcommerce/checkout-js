@@ -1,5 +1,4 @@
 import { createCheckoutService } from '@bigcommerce/checkout-sdk';
-import { RenderResult } from '@testing-library/react';
 import React from 'react';
 
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
@@ -21,7 +20,6 @@ describe('Stripe Shipping Component', () => {
     const checkoutService = createCheckoutService();
     const addressFormFields = getAddressFormFields().filter(({ custom }) => !custom);
     const errorLogger = new ConsoleErrorLogger();
-    let component: RenderResult;
 
     const defaultProps: StripeShippingProps = {
         step: {
@@ -59,8 +57,8 @@ describe('Stripe Shipping Component', () => {
         updateAddress: jest.fn(),
     };
 
-    beforeEach(() => {
-       component = render(
+    it('loads shipping data  when component is mounted', () => {
+        const { container } = render(
             <CheckoutProvider checkoutService={checkoutService} >
                 <LocaleProvider checkoutService={checkoutService}>
                     <ExtensionProvider checkoutService={checkoutService} errorLogger={errorLogger}>
@@ -69,10 +67,6 @@ describe('Stripe Shipping Component', () => {
                 </LocaleProvider>
             </CheckoutProvider>
         );
-    });
-
-    it('loads shipping data  when component is mounted', () => {
-        const { container } = component;
 
         expect(container.firstChild).toHaveClass('checkout-form')
         expect(defaultProps.initialize).toHaveBeenCalled();

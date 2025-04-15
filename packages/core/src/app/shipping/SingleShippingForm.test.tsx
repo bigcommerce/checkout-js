@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
@@ -46,7 +46,7 @@ describe('SingleShippingForm', () => {
     const waitingDelay = shippingAutosaveDelay * 1.1;
 
     const createSingleShippingFormComponent = (props?: Partial<SingleShippingFormProps>) => {
-        const localeContext: LocaleContextType = createLocaleContext(getStoreConfig());
+        const localeContext = createLocaleContext(getStoreConfig());
 
         return (
             <CheckoutProvider checkoutService={checkoutService}>

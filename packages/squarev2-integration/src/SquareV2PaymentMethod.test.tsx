@@ -1,3 +1,4 @@
+/* eslint-disable testing-library/no-node-access,testing-library/no-container */
 import {
     CheckoutSelectors,
     CheckoutService,
@@ -94,6 +95,7 @@ describe('SquareV2 payment method', () => {
     });
 
     it('should render placeholder form fields', () => {
+        // eslint-disable-next-line testing-library/prefer-screen-queries
         const placeholderForm = render(<SquareV2PaymentMethodTest />).getByTestId(
             'squarev2_placeholder_form',
         );

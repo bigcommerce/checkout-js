@@ -2,7 +2,7 @@ import userEvent from '@testing-library/user-event';
 import { noop } from 'lodash';
 import React from 'react';
 
-import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../config/config.mock';
@@ -10,7 +10,7 @@ import { getStoreConfig } from '../config/config.mock';
 import GuestSignUpForm from './GuestSignUpForm';
 
 describe('GuestSignUpForm', () => {
-    const localeContext: LocaleContextType = createLocaleContext(getStoreConfig());
+    const localeContext = createLocaleContext(getStoreConfig());
     const translate = localeContext.language.translate;
     const handleSignUp = jest.fn();
     const passwordRequirements = {
