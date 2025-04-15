@@ -8,7 +8,12 @@ import ChecklistItemInput from './ChecklistItemInput';
 describe('ChecklistItemInput', () => {
     it('renders children inside label', () => {
         render(
-            <ChecklistItemInput isSelected={false} name="foobar" value="foobar_val">
+            <ChecklistItemInput
+                isSelected={false}
+                name="foobar"
+                onChange={jest.fn()}
+                value="foobar_val"
+            >
                 children text
             </ChecklistItemInput>,
         );
@@ -17,13 +22,27 @@ describe('ChecklistItemInput', () => {
     });
 
     it('renders input as checked when is selected', () => {
-        render(<ChecklistItemInput isSelected={true} name="foobar" value="foobar_val" />);
+        render(
+            <ChecklistItemInput
+                isSelected={true}
+                name="foobar"
+                onChange={jest.fn()}
+                value="foobar_val"
+            />,
+        );
 
         expect(screen.getByRole('radio')).toBeChecked();
     });
 
     it('renders input as unchecked when is not selected', () => {
-        render(<ChecklistItemInput isSelected={false} name="foobar" value="foobar_val" />);
+        render(
+            <ChecklistItemInput
+                isSelected={false}
+                name="foobar"
+                onChange={jest.fn()}
+                value="foobar_val"
+            />,
+        );
 
         expect(screen.getByRole('radio')).not.toBeChecked();
     });

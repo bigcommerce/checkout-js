@@ -1,3 +1,4 @@
+/* eslint-disable testing-library/no-container */
 import React from 'react';
 
 import { render, screen, within } from '@bigcommerce/checkout/test-utils';
@@ -13,11 +14,8 @@ describe('Fieldset', () => {
         );
 
         expect(screen.getByTestId('test')).toBeInTheDocument();
-        // eslint-disable-next-line testing-library/no-container
         expect(container.querySelector('fieldset')).toBeInTheDocument();
-        // eslint-disable-next-line testing-library/no-container
         expect(container.querySelector('legend')).toBeInTheDocument();
-        // eslint-disable-next-line testing-library/no-container
         expect(container.querySelector('legend')).toHaveTextContent('Hello world');
         expect(within(screen.getByTestId('test')).getByRole('textbox')).toBeInTheDocument();
     });
