@@ -16,6 +16,9 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "paths": {
+      "@bigcommerce/checkout-sdk/bigcommerce-payments-integration": [
+        "packages/bigcommerce-payments-integration/src/index.ts"
+      ],
       "@bigcommerce/checkout/adyen-integration": ["packages/adyen-integration/src/index.ts"],
       "@bigcommerce/checkout/affirm-integration": ["packages/affirm-integration/src/index.ts"],
       "@bigcommerce/checkout/amazon-pay-v2-integration": [
@@ -69,7 +72,6 @@
       ],
       "@bigcommerce/checkout/instrument-utils": ["packages/instrument-utils/src/index.ts"],
       "@bigcommerce/checkout/klarna-integration": ["packages/klarna-integration/src/index.ts"],
-      "@bigcommerce/checkout/stripe-integration": ["packages/stripe-integration/src/index.ts"],
       "@bigcommerce/checkout/legacy-hoc": ["packages/legacy-hoc/src/index.ts"],
       "@bigcommerce/checkout/locale": ["packages/locale/src/index.ts"],
       "@bigcommerce/checkout/mollie-integration": ["packages/mollie-integration/src/index.ts"],
@@ -90,6 +92,7 @@
         "packages/paypal-fastlane-integration/src/index.ts"
       ],
       "@bigcommerce/checkout/squarev2-integration": ["packages/squarev2-integration/src/index.ts"],
+      "@bigcommerce/checkout/stripe-integration": ["packages/stripe-integration/src/index.ts"],
       "@bigcommerce/checkout/td-bank-integration": ["packages/td-bank-integration/src/index.ts"],
       "@bigcommerce/checkout/test-framework": ["packages/test-framework/src/index.ts"],
       "@bigcommerce/checkout/test-mocks": ["packages/test-mocks/src/index.ts"],

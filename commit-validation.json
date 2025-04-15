@@ -9,6 +9,7 @@
         "order",
         "other",
         "payment",
-        "shipping"
+        "shipping",
+        "integration"
     ]
 }
