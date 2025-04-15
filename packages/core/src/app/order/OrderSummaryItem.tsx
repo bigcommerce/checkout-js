@@ -13,6 +13,7 @@ export interface OrderSummaryItemProps {
     image?: ReactNode;
     description?: ReactNode;
     productOptions?: OrderSummaryItemOption[];
+    categories?: string[]
 }
 
 export interface OrderSummaryItemOption {
@@ -28,6 +29,7 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
     productOptions,
     quantity,
     description,
+    categories
 }) => (
     <div className="product" data-test="cart-item">
         <figure className="product-column product-figure">{image}</figure>
@@ -71,6 +73,11 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
             >
                 <ShopperCurrency amount={amount} />
             </div>
+
+            {Array.isArray(categories) && categories.includes('Firearms') && (
+                <div className="product-ffl">FFL</div>
+            )}
+
 
             {isNumber(amountAfterDiscount) && amountAfterDiscount !== amount && (
                 <div className="product-price" data-test="cart-item-product-price--afterDiscount">

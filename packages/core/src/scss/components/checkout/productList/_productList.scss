@@ -89,3 +89,13 @@
 .product-price--beforeDiscount {
     text-decoration: line-through;
 }
+
+.product-ffl {
+    align-self: flex-end;
+    border: 1px solid rgb(91, 91, 91);
+    text-align: center;
+    width: 50%;
+    border-radius: 15px;
+    margin-left: auto;
+    font-weight: bold;
+}
