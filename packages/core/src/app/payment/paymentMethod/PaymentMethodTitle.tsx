@@ -5,20 +5,19 @@ import React, { FunctionComponent, memo, ReactNode } from 'react';
 
 import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { CheckoutContextProps , PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import { BraintreePaypalCreditBanner, PaypalCommerceCreditBanner } from '@bigcommerce/checkout/paypal-credit-banner-utils';
 
 import { withCheckout } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { isExperimentEnabled } from '../../common/utility';
 import { CreditCardIconList, mapFromPaymentMethodCardType } from '../creditCard';
 
-import BraintreePaypalCreditDescription from './BraintreePaypalCreditDescription';
 import { hasCreditCardNumber } from './CreditCardFieldsetValues';
 import getPaymentMethodDisplayName from './getPaymentMethodDisplayName';
 import getPaymentMethodName from './getPaymentMethodName';
 import { isHostedCreditCardFieldsetValues } from './HostedCreditCardFieldsetValues';
 import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodType from './PaymentMethodType';
-import PaypalCommerceCreditDescription from './PaypalCommerceCreditDescription';
 
 export interface PaymentMethodTitleProps {
     method: PaymentMethod;
@@ -65,7 +64,7 @@ function getPaymentMethodTitle(
             [PaymentMethodId.BraintreePaypalCredit]: {
                 logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo_letter.svg'),
                 titleText: methodDisplayName,
-                subtitle: (props: { onUnhandledError?(error: Error): void }) => <BraintreePaypalCreditDescription {...props} />
+                subtitle: (props: { onUnhandledError?(error: Error): void }) => <BraintreePaypalCreditBanner {...props} />
             },
             [PaymentMethodType.PaypalCredit]: {
                 logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo_letter.svg'),
@@ -86,7 +85,7 @@ function getPaymentMethodTitle(
             [PaymentMethodId.PaypalCommerceCredit]: {
                 logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo_letter.svg'),
                 titleText: methodDisplayName,
-                subtitle: (props: { onUnhandledError?(error: Error): void }) => <PaypalCommerceCreditDescription {...props} />
+                subtitle: (props: { onUnhandledError?(error: Error): void }) => <PaypalCommerceCreditBanner {...props} />
             },
             [PaymentMethodId.PaypalCommerceAlternativeMethod]: {
                 logoUrl: method.logoUrl || '',

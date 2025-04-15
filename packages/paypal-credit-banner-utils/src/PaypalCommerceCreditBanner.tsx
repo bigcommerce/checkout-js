@@ -2,9 +2,9 @@ import React, { FunctionComponent, useEffect } from 'react';
 
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
-import PaymentMethodId from './PaymentMethodId';
+import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
 
-const PaypalCommerceCreditDescription: FunctionComponent<{ onUnhandledError?(error: Error): void }> = ({ onUnhandledError }) => {
+const PaypalCommerceCreditBanner: FunctionComponent<{ onUnhandledError?(error: Error): void }> = ({ onUnhandledError }) => {
     const { checkoutService } = useCheckout();
 
     useEffect(() => {
@@ -31,4 +31,4 @@ const PaypalCommerceCreditDescription: FunctionComponent<{ onUnhandledError?(err
     )
 }
 
-export default PaypalCommerceCreditDescription;
+export default PaypalCommerceCreditBanner;

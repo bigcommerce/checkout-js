@@ -2,21 +2,21 @@ import React, { FunctionComponent, useEffect } from 'react';
 
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
-import PaymentMethodId from './PaymentMethodId';
+import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
 
-const BraintreePaypalCreditDescription: FunctionComponent<{ onUnhandledError?(error: Error): void }> = ({ onUnhandledError }) => {
+const BraintreePaypalCreditBanner: FunctionComponent<{ onUnhandledError?(error: Error): void }> = ({ onUnhandledError }) => {
     const { checkoutService } = useCheckout();
 
     useEffect(() => {
         try {
-            checkoutService.initializePayment({
+            void checkoutService.initializePayment({
                 methodId: PaymentMethodId.BraintreePaypalCredit,
                 braintree: {
                     bannerContainerId: 'braintree-banner-container',
                 },
             });
 
-            checkoutService.deinitializePayment({
+            void checkoutService.deinitializePayment({
                 methodId: PaymentMethodId.BraintreePaypalCredit,
             });
         } catch (error) {
@@ -27,7 +27,7 @@ const BraintreePaypalCreditDescription: FunctionComponent<{ onUnhandledError?(er
 
         return () => {
             try {
-                checkoutService.deinitializePayment({
+                void checkoutService.deinitializePayment({
                     methodId: PaymentMethodId.BraintreePaypalCredit,
                 });
             } catch (error) {
@@ -43,4 +43,4 @@ const BraintreePaypalCreditDescription: FunctionComponent<{ onUnhandledError?(er
     )
 }
 
-export default BraintreePaypalCreditDescription;
+export default BraintreePaypalCreditBanner;

@@ -1,0 +1,23 @@
+{
+  "root": "packages/paypal-credit-banner-utils",
+  "sourceRoot": "packages/paypal-credit-banner-utils/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/paypal-credit-banner-utils/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/paypal-credit-banner-utils"],
+      "options": {
+        "jestConfig": "packages/paypal-credit-banner-utils/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["scope:shared"]
+}
