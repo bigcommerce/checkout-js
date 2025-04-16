@@ -147,12 +147,6 @@ function appConfig(options, argv) {
             ].filter(Boolean),
             module: {
                 rules: [
-                    // {
-                    //     test: /\.[tj]sx?$/,
-                    //     enforce: 'pre',
-                    //     loader: require.resolve('source-map-loader'),
-                    //     exclude: /node_modules/,
-                    // },
                     {
                         test: /\.tsx?$/,
                         include: tsLoaderIncludes,
@@ -195,7 +189,35 @@ function appConfig(options, argv) {
                         use: [
                             isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
                             'css-loader',
-                            'sass-loader',
+                            {
+                                loader: 'sass-loader',
+                                options: {
+                                    // eslint-disable-next-line global-require
+                                    implementation: require('sass'),
+                                    sassOptions: {
+                                        logger: {
+                                            warn: (message, sassOptions) => {
+                                                // Ignore warnings from the Sass compiler from node modules
+                                                const sourcePath =
+                                                    sassOptions?.span?.url?.toString();
+
+                                                if (
+                                                    sourcePath &&
+                                                    sourcePath.includes('node_modules')
+                                                ) {
+                                                    return;
+                                                }
+
+                                                console.warn(`Sass Warning: ${message}`);
+
+                                                if (options?.deprecation) {
+                                                    console.warn(`Deprecation: ${sassOptions}`);
+                                                }
+                                            },
+                                        },
+                                    },
+                                },
+                            },
                         ],
                         sideEffects: true,
                     },
