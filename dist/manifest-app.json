@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "appVersion": "1.581.1",
+  "appVersion": "1.581.2",
   "dynamicChunks": {
     "js": [
       "123-dc84a55c.js",
@@ -24,7 +24,7 @@
     ]
   },
   "js": [
-    "runtime-52ed940a.js",
+    "runtime-60b959c7.js",
     "polyfill-5a750a9b.js",
     "sentry-2fc4d50c.js",
     "transients-7906f3ed.js",
@@ -52,7 +52,7 @@
     "payment-fb001f32.css": "sha256-1S23tsKEkuVjb1vBePF7/c92lASD0DmG/5VHFzMgHFM= sha384-RCL3TaUk72HXq/uWD+j0tFzHhSAy/O7grGY6N168R44ZZZPTx00Vzn5SWLO9f90a sha512-H4yVG0wGau9KaDJO/UVvPxHiPj54rq8Fnj2iiS5h1Hz/RItBcv1PskKHKE6aNOi2AcmuOU0uuE/3T5BkrmsxMw==",
     "payment-fcf838a7.js": "sha256-/v83QT7Md3hpmEgNaSxGzBGee4RyVGCdSBH3zhC15fg= sha384-lt0cUTgugY2sr7yQYhswsnq2cqoqR3qVu1oDyRCN4I/fn1G3YfYWvGH3Dcn4mcKg sha512-1ZULW6dI2V8y077EXMAO880p4GhQ7rdEfE0Pf10Ru42o4GYqtVi1VMDdtkC6pZ4VRESWjEQsNYF/Wf3MdgQ9SA==",
     "polyfill-5a750a9b.js": "sha256-x2D6ONCXOSenyKiAMbkFAB+59+IJ8qZDkIs0qZiyksE= sha384-Um4ElUsgvb5hHl18lJ4Sti+42oeVI4TNSgStVgMwEfVKZJ0PipBtBN5OyqXZwX2G sha512-lQ4bP93RgAee2jWtYNRGwtwB+6JPfNSD7Ts1QPIdqAUX2kC/EFs2MJOJv3iCxl4wfSIyNZGlxjOo/wC9ckGwKQ==",
-    "runtime-52ed940a.js": "sha256-ahUsbjbN7GiCT2ozgyiLNiKvhrTcpM0QESTYqppn2zw= sha384-5nUNh1Nl8MAe1WKn2N6DO4B+NqlVhLnYKnFmJOoV14UJETEoBOvWcXOOQdUymKZ9 sha512-iZGUwHh3re1Nl+OlS4Ts6Pd2l3iZV8ZoePf/2mPxQjbLT3BDYyJHi/gPE/v2o25PKx0AQ4P9DxiySIpu1T5x5g==",
+    "runtime-60b959c7.js": "sha256-qDrVTIXSpBl6xK+eC6mNEQCF3PwTxRqPzsZgcD17caE= sha384-MpKh9KsNvqzD7rjsQBgWYR5ntv7d0Ujt2E4Ena+xdSGfnhnrX5wvq4S+bGAJmOyn sha512-CIwj6nQYehheFxwwbvQEP9OrSQ5OZc7w+/6oKbyRWm9taSHNADJAjNUlJGEsi0X2iGnzBLYzxR4Ok4PuINUJ/A==",
     "sentry-2fc4d50c.js": "sha256-+Tqj+PidNuQe1OTLWLOs2fc7r8v2f2zO8cAZ2r45GMI= sha384-VL/qxVMdo1fMTNFEv02AVarh7YpdB8NDnM7Tk5G9+Ft3GqD/L42JK/iWrZoHPk8N sha512-heY9ICl/oMnHntP1ZzmdC06Z2LT2N+owRXzMuwSsqzo5c56/VjnO3HKjd4mAsaXYFJ6lj6HLopSTQeB+0t7xUg==",
     "shipping-99d3303d.css": "sha256-aJm+hDaWclRToFaqFJfrE+cgwm2m+ls3BuGb4BaOs0Y= sha384-9tJ2W4N+ezUtQ3316qCWr7hlQ+wNY/QGuVRipnEL2iAmKNZu+LGMLrAsw41GKNJF sha512-YMH7AIT6hqZngxxBkEhxpZ++oOUXHIluP5Onf98bEqVAH2g/X15TBYpMq48RlSPvCLerlAPt7l0gph6pcCD6Vg==",
     "shipping-3d5ca378.js": "sha256-lvbCZ4Js6p1Da8go37RS9OSmXqw/RSgyV1sIi95h/b8= sha384-4FuXExTLcvbAV/fp6xLwpG1Srep5VPel+cWtR/hYZTm65lKqNacTISxc0AUB5J+D sha512-blrjZZ8PTYSs/exKpTNBTefy1c8TsGsXlFRLsxsEjLbR582pFOB3EtcgWuJ0XGeyevmxFKN6tIsuWWRY45+k7g==",
