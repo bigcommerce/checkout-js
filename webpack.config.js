@@ -381,15 +381,17 @@ function loaderConfig(options, argv) {
     });
 }
 
-// module.exports = function (options, argv) {
-//     return Promise.all([appConfig(options, argv), loaderConfig(options, argv)]);
-// };
-
 module.exports = async function (options, argv) {
+    const isMeasureSpeed = process.env.MEASURE_SPEED === 'true';
+
     const app = appConfig(options, argv);
     const loader = loaderConfig(options, argv);
 
     const configArr = await Promise.all([app, loader]);
 
-    return smp.wrap(configArr);
+    if (isMeasureSpeed) {
+        return smp.wrap(configArr);
+    }
+
+    return configArr;
 };

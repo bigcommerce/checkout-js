@@ -193,10 +193,6 @@ class Checkout extends Component<
             subscribeToConsignments,
         } = this.props;
 
-        console.log(
-            'adcadca', 'cadcssssss'
-        );
-
         try {
             const [{ data }] = await Promise.all([loadCheckout(checkoutId, {
                 params: {
