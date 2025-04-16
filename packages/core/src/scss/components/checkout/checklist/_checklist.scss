@@ -33,6 +33,13 @@
     background-color: container("fill", "dark");
 }
 
+.custom-checklist-item {
+    .paymentMethod--hosted,
+    .widget {
+        padding: 0;
+    }
+}
+
 //
 // CHECKLIST HEADER
 // -----------------------------------------------------------------------------
