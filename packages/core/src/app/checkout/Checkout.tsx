@@ -375,6 +375,9 @@ class Checkout extends Component<
             case CheckoutStepType.Payment:
                 return this.renderPaymentStep(step);
 
+            case CheckoutStepType.QualifyingCredentials:
+                return this.renderQualifyingCredentialsStep(step);
+
             default:
                 return null;
         }
@@ -515,6 +518,19 @@ class Checkout extends Component<
         );
     }
 
+    private renderQualifyingCredentialsStep(step: CheckoutStepStatus): ReactNode{
+        return (
+            <CheckoutStep
+                {...step}
+                heading={"Qualifying Credentials"}
+                key={step.type}
+                onEdit={this.handleEditStep}
+                onExpanded={this.handleExpanded}
+            >
+                <div>My Step Here</div>
+            </CheckoutStep>)
+    }
+    
     private renderCartSummary(): ReactNode {
         const { isMultiShippingMode } = this.state;
 

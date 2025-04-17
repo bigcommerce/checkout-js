@@ -240,16 +240,31 @@ const getOrderSubmitStatus = createSelector(
     (status) => status,
 );
 
+const getQualifyingCredentialsStepStatus = createSelector(
+    ({ data }: CheckoutSelectors) => data.getCustomer(), // TODO: Turn this into useful data. Every createSelector here is called by getCgeckoutStepStatuses, and that method is always passed a checkoutState in mapToCheckoutProps.ts. We have access to that here.
+    (customer) => {
+        console.log(customer?.email);
+        return{
+            type: CheckoutStepType.QualifyingCredentials,
+            isActive: false,
+            isComplete: true, // TODO: Add checks to see if step is complete
+            isEditable: true, // TODO: Make this dynamic
+            isRequired: true,
+        };
+    },
+);
+
 const getCheckoutStepStatuses = createSelector(
     getCustomerStepStatus,
+    getQualifyingCredentialsStepStatus,
     getShippingStepStatus,
     getBillingStepStatus,
     getPaymentStepStatus,
     getOrderSubmitStatus,
-    (customerStep, shippingStep, billingStep, paymentStep, orderStatus) => {
+    (customerStep, qualifyingCredentialStep, shippingStep, billingStep, paymentStep, orderStatus) => {
         const isSubmittingOrder = orderStatus;
 
-        const steps = compact([customerStep, shippingStep, billingStep, paymentStep]);
+        const steps = compact([customerStep, qualifyingCredentialStep, shippingStep, billingStep, paymentStep]);
 
         const defaultActiveStep =
             steps.find((step) => !step.isComplete && step.isRequired) || steps[steps.length - 1];
