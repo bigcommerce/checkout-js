@@ -251,6 +251,9 @@ class Checkout extends Component<
             const consignments = data.getConsignments();
             const cart = data.getCart();
 
+            
+              
+
             const hasMultiShippingEnabled =
                 data.getConfig()?.checkoutSettings.hasMultiShippingEnabled;
             const checkoutBillingSameAsShippingEnabled =
@@ -377,6 +380,12 @@ class Checkout extends Component<
 
             case CheckoutStepType.QualifyingCredentials:
                 return this.renderQualifyingCredentialsStep(step);
+
+            case CheckoutStepType.ID:
+                return this.renderIDUploadStep(step);
+
+            case CheckoutStepType.FFL:
+                return this.renderFFLStep(step);
 
             default:
                 return null;
@@ -528,6 +537,36 @@ class Checkout extends Component<
                 onExpanded={this.handleExpanded}
             >
                 <div>My Step Here</div>
+            </CheckoutStep>)
+    }
+
+    private renderIDUploadStep(step: CheckoutStepStatus): ReactNode{
+       
+
+        return (
+            <CheckoutStep
+                {...step}
+                heading={"Age Verification"}
+                key={step.type}
+                onEdit={this.handleEditStep}
+                onExpanded={this.handleExpanded}
+            >
+                <div>Upload ID here</div>
+            </CheckoutStep>)
+    }
+
+    private renderFFLStep(step: CheckoutStepStatus): ReactNode{
+       
+
+        return (
+            <CheckoutStep
+                {...step}
+                heading={"FFL"}
+                key={step.type}
+                onEdit={this.handleEditStep}
+                onExpanded={this.handleExpanded}
+            >
+                <div>Select FFL here</div>
             </CheckoutStep>)
     }
     

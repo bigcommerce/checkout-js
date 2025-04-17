@@ -4,6 +4,9 @@ enum CheckoutStepType {
     Payment = 'payment',
     Shipping = 'shipping',
     QualifyingCredentials = 'qualifying-credentials',
+    ID = 'id',
+    FFL = 'ffl'
+
 }
 
 export default CheckoutStepType;

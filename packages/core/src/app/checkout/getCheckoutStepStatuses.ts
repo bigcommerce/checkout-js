@@ -254,17 +254,63 @@ const getQualifyingCredentialsStepStatus = createSelector(
     },
 );
 
+const getIDUploadStepStatus = createSelector(
+    ({ data }: CheckoutSelectors) => data.getCart(), // TODO: Turn this into useful data. Every createSelector here is called by getCgeckoutStepStatuses, and that method is always passed a checkoutState in mapToCheckoutProps.ts. We have access to that here.
+    (cart) => {
+
+        let hasAmmo = cart?.lineItems.physicalItems.some(
+            item => item.categoryNames?.includes("Ammunition")
+          ) ?? false;
+
+        if (!hasAmmo) {
+            return null
+        }
+        return{
+
+            type: CheckoutStepType.ID,
+            isActive: false,
+            isComplete: true, // TODO: Add checks to see if step is complete
+            isEditable: true, // TODO: Make this dynamic
+            isRequired: true,
+        };
+    },
+);
+
+const getFFLStepStatus = createSelector(
+    ({ data }: CheckoutSelectors) => data.getCart(), // TODO: Turn this into useful data. Every createSelector here is called by getCgeckoutStepStatuses, and that method is always passed a checkoutState in mapToCheckoutProps.ts. We have access to that here.
+    (cart) => {
+
+        let hasAmmo = cart?.lineItems.physicalItems.some(
+            item => item.categoryNames?.includes("Firearms")
+          ) ?? false;
+
+        if (!hasAmmo) {
+            return null
+        }
+        return{
+
+            type: CheckoutStepType.FFL,
+            isActive: false,
+            isComplete: true, // TODO: Add checks to see if step is complete
+            isEditable: true, // TODO: Make this dynamic
+            isRequired: true,
+        };
+    },
+);
+
 const getCheckoutStepStatuses = createSelector(
     getCustomerStepStatus,
     getQualifyingCredentialsStepStatus,
+    getFFLStepStatus,
+    getIDUploadStepStatus,
     getShippingStepStatus,
     getBillingStepStatus,
     getPaymentStepStatus,
     getOrderSubmitStatus,
-    (customerStep, qualifyingCredentialStep, shippingStep, billingStep, paymentStep, orderStatus) => {
+    (customerStep, qualifyingCredentialStep, IDUploadStep,shippingStep, FFLStep, billingStep, paymentStep, orderStatus) => {
         const isSubmittingOrder = orderStatus;
 
-        const steps = compact([customerStep, qualifyingCredentialStep, shippingStep, billingStep, paymentStep]);
+        const steps = compact([customerStep, qualifyingCredentialStep, IDUploadStep, shippingStep, FFLStep, billingStep, paymentStep]);
 
         const defaultActiveStep =
             steps.find((step) => !step.isComplete && step.isRequired) || steps[steps.length - 1];
