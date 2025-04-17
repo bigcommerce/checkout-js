@@ -60,6 +60,9 @@ const Form: FunctionComponent<FormProps> = ({ className, testId, ...rest }) => {
                 <div ref={ref.current.containerRef}>
                     <FormikForm
                         {...rest}
+                        placeholder={undefined}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
                         className={className}
                         data-test={testId}
                         noValidate

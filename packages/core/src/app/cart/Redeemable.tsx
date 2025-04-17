@@ -2,7 +2,7 @@ import { CheckoutSelectors, RequestError } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import { FieldProps, FormikProps, withFormik } from 'formik';
 import { noop } from 'lodash';
-import React, { FunctionComponent, KeyboardEvent, memo, useCallback } from 'react';
+import React, {FunctionComponent, KeyboardEvent, memo, ReactNode, useCallback} from 'react';
 import { object, string } from 'yup';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
@@ -47,7 +47,7 @@ const Redeemable: FunctionComponent<
     RedeemableProps & WithLanguageProps & FormikProps<RedeemableFormValues>
 > = ({ shouldCollapseCouponCode, showAppliedRedeemables, ...formProps }) => (
     <Toggle openByDefault={!shouldCollapseCouponCode}>
-        {({ toggle, isOpen }) => (
+        {({ toggle, isOpen }): ReactNode => (
             <>
                 {shouldCollapseCouponCode && (
                     <a

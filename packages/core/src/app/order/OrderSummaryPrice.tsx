@@ -8,6 +8,7 @@ import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 import { ShopperCurrency } from '../currency';
 
 export interface OrderSummaryPriceProps {
+    children?: ReactNode;
     label: ReactNode;
     amount?: number | null;
     amountBeforeDiscount?: number;
@@ -66,7 +67,7 @@ const OrderSummaryPrice: FC<OrderSummaryPriceProps> = ({
 
     const displayValue = getDisplayValue(amount, zeroLabel);
     const isActionDisabled = isSubmittingOrder();
-    
+
     useEffect(() => {
         setHighlight(amount !== previousAmount);
         setPreviousAmount(amount);

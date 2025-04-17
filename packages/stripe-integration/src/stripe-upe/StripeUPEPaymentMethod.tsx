@@ -138,7 +138,6 @@ const StripeUPEPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             <div
                 className="optimizedCheckout-form-input"
                 id={`${containerId}--input`}
-                placeholder="1111"
             >
                 <div className="form-field--error">
                     <div className="optimizedCheckout-form-label" id={`${containerId}--error`} />

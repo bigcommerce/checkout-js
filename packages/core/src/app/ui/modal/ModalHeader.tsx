@@ -1,8 +1,8 @@
 import classNames from 'classnames';
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, ReactNode } from 'react';
 
 interface ModalHeaderProps {
-    children: React.ReactNode;
+    children?: ReactNode;
     additionalClassName?: string;
 }
 

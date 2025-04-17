@@ -2,7 +2,7 @@ import { Component, ReactNode } from 'react';
 
 export interface ToggleProps {
     openByDefault?: boolean;
-    children(props: any): ReactNode;
+    children: (props: { toggle: any; isOpen: boolean }) => ReactNode;
 }
 
 export interface ToggleState {
