@@ -12,7 +12,7 @@ export type ModalProps = Omit<
     ReactModal.Props,
     'bodyOpenClassName' | 'className' | 'closeTimeoutMS' | 'overlayClassName'
 > & {
-    children: ReactNode;
+    children?: ReactNode;
     closeButtonLabel?: string | ReactNode;
     footer?: ReactNode;
     header?: ReactNode;

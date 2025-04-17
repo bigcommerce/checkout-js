@@ -1,11 +1,12 @@
- 
-import { Placement } from 'popper.js';
+
+import { Placement } from '@popperjs/core';
 import React, { Component, ReactEventHandler, ReactNode } from 'react';
 import { Manager, Popper, Reference } from 'react-popper';
 
 export interface TooltipTriggerProps {
     placement?: Placement;
     tooltip: ReactNode;
+    children: ReactNode;
 }
 
 export interface TooltipTriggerState {
@@ -42,11 +43,11 @@ export default class TooltipTrigger extends Component<TooltipTriggerProps, Toolt
                 </Reference>
 
                 <Popper
-                    modifiers={{
-                        hide: { enabled: false },
-                        flip: { enabled: false },
-                        preventOverflow: { enabled: false },
-                    }}
+                    modifiers={[
+                        { name: 'hide', enabled: false },
+                        { name: 'flip', enabled: false },
+                        { name: 'preventOverflow', enabled: false },
+                    ]}
                     placement={placement}
                 >
                     {({ ref, style }) =>

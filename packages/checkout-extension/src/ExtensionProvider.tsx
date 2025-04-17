@@ -24,7 +24,7 @@ export enum ExtensionActionType {
 
 export interface ExtensionProviderProps {
     checkoutService: CheckoutService;
-    children: ReactNode;
+    children?: ReactNode;
     errorLogger: ErrorLogger;
 }
 

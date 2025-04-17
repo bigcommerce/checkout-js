@@ -7,6 +7,7 @@ import LocaleContext from './LocaleContext';
 
 export interface LocaleProviderProps {
     checkoutService: CheckoutService;
+    children?: ReactNode;
 }
 
 export interface LocaleProviderState {

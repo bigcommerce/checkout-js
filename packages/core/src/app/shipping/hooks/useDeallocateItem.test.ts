@@ -1,5 +1,5 @@
 import {ConsignmentCreateRequestBody} from '@bigcommerce/checkout-sdk';
-import { act, renderHook } from '@testing-library/react-hooks';
+import { act, renderHook } from '@testing-library/react';
 
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 import { consignment } from '@bigcommerce/checkout/test-framework';

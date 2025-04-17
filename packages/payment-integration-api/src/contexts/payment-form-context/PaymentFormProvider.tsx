@@ -5,7 +5,7 @@ import PaymentFormService from '../../PaymentFormService';
 import { PaymentFormContext } from './PaymentFormContext';
 
 interface PaymentFormProviderProps {
-    children: ReactNode;
+    children?: ReactNode;
     paymentForm: PaymentFormService;
 }
 

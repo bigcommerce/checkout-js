@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react';
 
 export interface HeaderProps {
+    children: React.ReactNode;
     testId?: string;
 }
 

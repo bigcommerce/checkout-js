@@ -1,9 +1,9 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, ReactNode } from 'react';
 
 import './Popover.scss';
 
 export interface PopoverProps {
-    children: React.ReactNode;
+    children?: ReactNode;
 }
 
 const Popover: FunctionComponent<PopoverProps> = ({ children }) => {
