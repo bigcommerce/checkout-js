@@ -36,69 +36,83 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                 }
             };
 
+            const loadingContainerId = 'checkout-app';
             const mergedOptions = {
                 ...defaultOptions,
                 [PaymentMethodId.AdyenV2GooglePay]: {
+                    loadingContainerId,
                     walletButton: 'walletButton',
                     onError: onUnhandledError,
                     onPaymentSelect: () => reinitializePayment(mergedOptions),
                 },
                 [PaymentMethodId.AdyenV3GooglePay]: {
+                    loadingContainerId,
                     walletButton: 'walletButton',
                     onError: onUnhandledError,
                     onPaymentSelect: () => reinitializePayment(mergedOptions),
                 },
                 [PaymentMethodId.AuthorizeNetGooglePay]: {
+                    loadingContainerId,
                     walletButton: 'walletButton',
                     onError: onUnhandledError,
                     onPaymentSelect: () => reinitializePayment(mergedOptions),
                 },
                 [PaymentMethodId.BNZGooglePay]: {
+                    loadingContainerId,
                     walletButton: 'walletButton',
                     onError: onUnhandledError,
                     onPaymentSelect: () => reinitializePayment(mergedOptions),
                 },
                 [PaymentMethodId.BraintreeGooglePay]: {
+                    loadingContainerId,
                     walletButton: 'walletButton',
                     onError: onUnhandledError,
                     onPaymentSelect: () => reinitializePayment(mergedOptions),
                 },
                 [PaymentMethodId.PayPalCommerceGooglePay]: {
+                    loadingContainerId,
                     walletButton: 'walletButton',
                     onError: onUnhandledError,
                     onPaymentSelect: () => reinitializePayment(mergedOptions),
                 },
                 [PaymentMethodId.StripeGooglePay]: {
+                    loadingContainerId,
                     walletButton: 'walletButton',
                     onError: onUnhandledError,
                     onPaymentSelect: () => reinitializePayment(mergedOptions),
                 },
                 [PaymentMethodId.StripeUPEGooglePay]: {
+                    loadingContainerId,
                     walletButton: 'walletButton',
                     onError: onUnhandledError,
                     onPaymentSelect: () => reinitializePayment(mergedOptions),
                 },
                 [PaymentMethodId.CybersourceV2GooglePay]: {
+                    loadingContainerId,
                     walletButton: 'walletButton',
                     onError: onUnhandledError,
                     onPaymentSelect: () => reinitializePayment(mergedOptions),
                 },
                 [PaymentMethodId.OrbitalGooglePay]: {
+                    loadingContainerId,
                     walletButton: 'walletButton',
                     onError: onUnhandledError,
                     onPaymentSelect: () => reinitializePayment(mergedOptions),
                 },
                 [PaymentMethodId.CheckoutcomGooglePay]: {
+                    loadingContainerId,
                     walletButton: 'walletButton',
                     onError: onUnhandledError,
                     onPaymentSelect: () => reinitializePayment(mergedOptions),
                 },
                 [PaymentMethodId.WorldpayAccessGooglePay]: {
+                    loadingContainerId,
                     walletButton: 'walletButton',
                     onError: onUnhandledError,
                     onPaymentSelect: () => reinitializePayment(mergedOptions),
                 },
                 [PaymentMethodId.TdOnlineMartGooglePay]: {
+                    loadingContainerId,
                     walletButton: 'walletButton',
                     onError: onUnhandledError,
                     onPaymentSelect: () => reinitializePayment(mergedOptions),
