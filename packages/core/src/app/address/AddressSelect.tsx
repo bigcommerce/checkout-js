@@ -1,5 +1,5 @@
 import { Address, CustomerAddress } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, memo } from 'react';
+import React, { FunctionComponent, memo, ReactNode } from 'react';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -21,7 +21,7 @@ export interface AddressSelectProps {
     showSingleLineAddress?: boolean;
     onSelectAddress(address: Address): void;
     onUseNewAddress(currentAddress?: Address): void;
-    placeholderText?: React.JSX.Element;
+    placeholderText?: ReactNode;
 }
 
 const AddressSelectMenu: FunctionComponent<AddressSelectProps> = ({

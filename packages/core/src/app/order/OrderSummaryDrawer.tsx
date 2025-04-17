@@ -54,7 +54,7 @@ const OrderSummaryDrawer: FunctionComponent<
     const nonBundledLineItems = useMemo(() => removeBundledItems(lineItems), [lineItems]);
 
     const renderModal = useCallback(
-        (props) => (
+        (props: any) => (
             <OrderSummaryModal
                 {...props}
                 additionalLineItems={additionalLineItems}

@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useMemo, useState } from 'react';
+import React, {FunctionComponent, ReactNode, useMemo, useState} from 'react';
 
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
@@ -93,7 +93,7 @@ const MultiShippingForm: FunctionComponent<MultiShippingFormProps> = ({
 
     const hasUnassignedItems = shippableItemsCount > 0;
 
-    const renderAllocatedBanner = (shippableItemsCount: number): React.JSX.Element => {
+    const renderAllocatedBanner = (shippableItemsCount: number): ReactNode => {
         if (shippableItemsCount > 0) {
             return <Alert type={AlertType.Info}>
                 <TranslatedString data={{ count: shippableItemsCount }} id="shipping.multishipping_item_to_allocate_message" />

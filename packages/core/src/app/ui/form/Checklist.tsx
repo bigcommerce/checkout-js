@@ -13,7 +13,7 @@ import { Accordion } from '@bigcommerce/checkout/ui';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 
 export interface ChecklistProps {
-    children: ReactNode;
+    children?: ReactNode;
     defaultSelectedItemId?: string;
     isDisabled?: boolean;
     name: string;

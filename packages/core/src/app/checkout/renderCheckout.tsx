@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 import { configurePublicPath } from '../common/bundler';
 
@@ -9,10 +9,10 @@ export type RenderCheckoutOptions = CheckoutAppProps;
 export type RenderCheckout = typeof renderCheckout;
 
 export default function renderCheckout({
-    containerId,
-    publicPath,
-    ...props
-}: RenderCheckoutOptions): void {
+                                           containerId,
+                                           publicPath,
+                                           ...props
+                                       }: RenderCheckoutOptions): void {
     const configuredPublicPath = configurePublicPath(publicPath);
 
     // We want to use `require` here because we want to set up the public path
@@ -29,8 +29,13 @@ export default function renderCheckout({
         });
     }
 
-    ReactDOM.render(
-        <CheckoutApp containerId={containerId} publicPath={configuredPublicPath} {...props} />,
-        document.getElementById(containerId),
-    );
+    const container = document.getElementById(containerId);
+
+    if(container) {
+        const root = createRoot(container);
+
+        root.render(
+            <CheckoutApp containerId={containerId} publicPath={configuredPublicPath} {...props} />,
+        );
+    }
 }

@@ -104,7 +104,7 @@ exports[`StripeGuestForm matches snapshot 1`] = `
                 </div>
                 <p>
                   Already have an account?
-                   
+
                   <a
                     data-test="customer-continue-button"
                     id="checkout-customer-login"
@@ -120,7 +120,6 @@ exports[`StripeGuestForm matches snapshot 1`] = `
           <div
             class="optimizedCheckout-form-input"
             id="stripe-card-component-field--input"
-            placeholder="1111"
           >
             <div
               class="form-field--error"
@@ -239,7 +238,7 @@ exports[`StripeGuestForm matches snapshot 1`] = `
               </div>
               <p>
                 Already have an account?
-                 
+
                 <a
                   data-test="customer-continue-button"
                   id="checkout-customer-login"
@@ -255,7 +254,6 @@ exports[`StripeGuestForm matches snapshot 1`] = `
         <div
           class="optimizedCheckout-form-input"
           id="stripe-card-component-field--input"
-          placeholder="1111"
         >
           <div
             class="form-field--error"

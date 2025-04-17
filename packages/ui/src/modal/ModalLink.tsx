@@ -12,6 +12,7 @@ import ModalTrigger, { ModalTriggerModalProps } from './ModalTrigger';
 export interface ModalLinkProps {
     header: ReactNode;
     body: ReactNode;
+    children?: ReactNode;
 }
 
 const ModalLink: FunctionComponent<ModalLinkProps> = ({ children, body, header }) => {

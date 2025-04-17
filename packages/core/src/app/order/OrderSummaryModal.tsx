@@ -21,6 +21,7 @@ import OrderSummarySubtotals, { OrderSummarySubtotalsProps } from './OrderSummar
 import OrderSummaryTotal from './OrderSummaryTotal';
 
 export interface OrderSummaryDrawerProps {
+    children: ReactNode;
     additionalLineItems?: ReactNode;
     items: LineItemMap;
     total: number;

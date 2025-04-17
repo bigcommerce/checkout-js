@@ -148,7 +148,6 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
             <div
                 className="optimizedCheckout-form-input"
                 id={ `${containerId}--input` }
-                placeholder="1111"
             >
                 <div
                     className="form-field--error"

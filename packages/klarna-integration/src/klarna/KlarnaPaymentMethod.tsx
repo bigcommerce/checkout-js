@@ -20,7 +20,7 @@ const KlarnaPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     ...rest
 }) => {
     const initializeKlarnaPayment = useCallback(
-        (options) =>
+        (options: any) =>
             // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             checkoutService.initializePayment({
                 ...options,

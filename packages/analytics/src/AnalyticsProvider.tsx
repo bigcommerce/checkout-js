@@ -17,7 +17,7 @@ import createAnalyticsService from './createAnalyticsService';
 
 interface AnalyticsProviderProps {
     checkoutService: CheckoutService;
-    children: ReactNode;
+    children?: ReactNode;
 }
 
 const AnalyticsProvider = ({ checkoutService, children }: AnalyticsProviderProps) => {

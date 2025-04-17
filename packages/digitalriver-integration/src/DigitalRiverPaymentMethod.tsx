@@ -28,7 +28,7 @@ const DigitalRiverPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     const isVaultingEnabled = method.config.isVaultingEnabled;
 
     const initializeDigitalRiverPayment = useCallback(
-        (options) =>
+        (options: any) =>
             checkoutService.initializePayment({
                 ...options,
                 digitalriver: {
