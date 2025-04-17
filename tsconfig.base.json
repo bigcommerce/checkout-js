@@ -16,9 +16,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "paths": {
-      "@bigcommerce/checkout-sdk/bigcommerce-payments-integration": [
-        "packages/bigcommerce-payments-integration/src/index.ts"
-      ],
+      "@bigcommerce/checkout-sdk/bcpay-integration": ["packages/bcpay-integration/src/index.ts"],
       "@bigcommerce/checkout/adyen-integration": ["packages/adyen-integration/src/index.ts"],
       "@bigcommerce/checkout/affirm-integration": ["packages/affirm-integration/src/index.ts"],
       "@bigcommerce/checkout/amazon-pay-v2-integration": [
