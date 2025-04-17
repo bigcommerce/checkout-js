@@ -16,7 +16,6 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "paths": {
-      "@bigcommerce/checkout/bcpay-integration": ["packages/bcpay-integration/src/index.ts"],
       "@bigcommerce/checkout/adyen-integration": ["packages/adyen-integration/src/index.ts"],
       "@bigcommerce/checkout/affirm-integration": ["packages/affirm-integration/src/index.ts"],
       "@bigcommerce/checkout/amazon-pay-v2-integration": [
@@ -27,6 +26,7 @@
         "packages/apple-pay-integration/src/index.ts"
       ],
       "@bigcommerce/checkout/barclay-integration": ["packages/barclay-integration/src/index.ts"],
+      "@bigcommerce/checkout/bcpay-integration": ["packages/bcpay-integration/src/index.ts"],
       "@bigcommerce/checkout/bluesnap-direct-integration": [
         "packages/bluesnap-direct-integration/src/index.ts"
       ],
