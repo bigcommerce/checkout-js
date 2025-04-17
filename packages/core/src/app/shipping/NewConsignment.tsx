@@ -19,6 +19,7 @@ interface NewConsignmentProps {
     defaultCountryCode?: string;
     countriesWithAutocomplete: string[];
     isLoading: boolean;
+    isGuest: boolean;
     setIsAddShippingDestination: React.Dispatch<React.SetStateAction<boolean>>;
     onUnhandledError(error: Error): void;
     resetErrorConsignmentNumber(): void;
@@ -29,6 +30,7 @@ const NewConsignment = ({
     countriesWithAutocomplete,
     defaultCountryCode,
     isLoading,
+    isGuest,
     onUnhandledError,
     resetErrorConsignmentNumber,
     setIsAddShippingDestination,
@@ -109,6 +111,7 @@ const NewConsignment = ({
                 countriesWithAutocomplete={countriesWithAutocomplete}
                 defaultCountryCode={defaultCountryCode}
                 isLoading={isLoading}
+                isGuest={isGuest}
                 onUnhandledError={onUnhandledError}
                 selectedAddress={selectedAddress}
                 setConsignmentRequest={setConsignmentRequest}

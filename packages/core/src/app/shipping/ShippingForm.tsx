@@ -17,7 +17,6 @@ import { useExtensions } from '@bigcommerce/checkout/checkout-extension';
 import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 
 import MultiShippingForm, { MultiShippingFormValues } from './MultiShippingForm';
-import MultiShippingGuestForm from './MultiShippingGuestForm';
 import SingleShippingForm, { SingleShippingFormValues } from './SingleShippingForm';
 
 export interface ShippingFormProps {
@@ -61,7 +60,6 @@ const ShippingForm = ({
       consignments,
       countries,
       countriesWithAutocomplete,
-      onCreateAccount,
       customerMessage,
       deinitialize,
       deleteConsignments,
@@ -74,7 +72,6 @@ const ShippingForm = ({
       isMultiShippingMode,
       methodId,
       onMultiShippingSubmit,
-      onSignIn,
       onSingleShippingSubmit,
     onUnhandledError,
       shippingAddress,
@@ -92,11 +89,12 @@ const ShippingForm = ({
     } = useExtensions();
 
     const getMultiShippingForm = () => {
-        if (isGuest) {
-            return (
-                <MultiShippingGuestForm onCreateAccount={onCreateAccount} onSignIn={onSignIn} />
-            );
-        }
+        // if (isGuest) {
+        //     return (
+        //         <MultiShippingGuestForm onCreateAccount={onCreateAccount} onSignIn={onSignIn} />
+        //     );
+        // }
+
 
         return <MultiShippingForm
             cartHasChanged={cartHasChanged}
@@ -104,6 +102,7 @@ const ShippingForm = ({
             customerMessage={customerMessage}
             defaultCountryCode={shippingAddress?.countryCode}
             isLoading={isLoading}
+            isGuest={isGuest}
             onSubmit={onMultiShippingSubmit}
             onUnhandledError={onUnhandledError}
         />;

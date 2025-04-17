@@ -17,6 +17,7 @@ interface ConsignmentAddressSelectorProps {
     defaultCountryCode?: string;
     countriesWithAutocomplete: string[];
     isLoading: boolean;
+    isGuest: boolean;
     onUnhandledError(error: Error): void;
     setConsignmentRequest?(consignmentRequest: ConsignmentCreateRequestBody): void;
     selectedAddress?: Address;
@@ -27,6 +28,7 @@ const ConsignmentAddressSelector = ({
     countriesWithAutocomplete,
     defaultCountryCode,
     isLoading,
+    isGuest,
     onUnhandledError,
     selectedAddress,
     setConsignmentRequest,
@@ -122,11 +124,14 @@ const ConsignmentAddressSelector = ({
 
         await handleSelectAddress(address);
 
-        try {
-            await createCustomerAddress(address);
-        } catch (error) {
-            if (error instanceof Error) {
-                setCreateCustomerAddressError(error);
+        if(!isGuest)
+        {
+            try {
+                await createCustomerAddress(address);
+            } catch (error) {
+                if (error instanceof Error) {
+                    setCreateCustomerAddressError(error);
+                }
             }
         }
 
