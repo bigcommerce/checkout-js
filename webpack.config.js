@@ -3,9 +3,18 @@ const EventEmitter = require('events');
 const { copyFileSync } = require('fs');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { join } = require('path');
+const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const WebpackAssetsManifest = require('webpack-assets-manifest');
+
+const smp = new SpeedMeasurePlugin({
+    // Options go here
+    disable: false, // Set to true to disable the plugin (useful for CI or production)
+    outputFormat: 'human', // 'json', 'human', 'humanVerbose', or a function
+    outputTarget: console.log, // Where to output data (console.log, filepath string, or function)
+    // ... other less common options (see plugin docs for details)
+});
 
 const {
     AsyncHookPlugin,
@@ -39,6 +48,9 @@ function appConfig(options, argv) {
                 ],
             },
             mode,
+            cache: {
+                type: 'filesystem',
+            },
             devtool: isProduction ? 'source-map' : 'eval-source-map',
             resolve: {
                 alias,
@@ -136,11 +148,6 @@ function appConfig(options, argv) {
             module: {
                 rules: [
                     {
-                        test: /\.[tj]sx?$/,
-                        enforce: 'pre',
-                        loader: require.resolve('source-map-loader'),
-                    },
-                    {
                         test: /\.tsx?$/,
                         include: tsLoaderIncludes,
                         use: [
@@ -148,6 +155,7 @@ function appConfig(options, argv) {
                                 loader: 'ts-loader',
                                 options: {
                                     onlyCompileBundledFiles: true,
+                                    // transpileOnly: true,
                                 },
                             },
                         ],
@@ -181,7 +189,35 @@ function appConfig(options, argv) {
                         use: [
                             isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
                             'css-loader',
-                            'sass-loader',
+                            {
+                                loader: 'sass-loader',
+                                options: {
+                                    // eslint-disable-next-line global-require
+                                    implementation: require('sass'),
+                                    sassOptions: {
+                                        logger: {
+                                            warn: (message, sassOptions) => {
+                                                // Ignore warnings from the Sass compiler from node modules
+                                                const sourcePath =
+                                                    sassOptions?.span?.url?.toString();
+
+                                                if (
+                                                    sourcePath &&
+                                                    sourcePath.includes('node_modules')
+                                                ) {
+                                                    return;
+                                                }
+
+                                                console.warn(`Sass Warning: ${message}`);
+
+                                                if (options?.deprecation) {
+                                                    console.warn(`Deprecation: ${sassOptions}`);
+                                                }
+                                            },
+                                        },
+                                    },
+                                },
+                            },
                         ],
                         sideEffects: true,
                     },
@@ -311,6 +347,7 @@ function loaderConfig(options, argv) {
                         test: /\.[tj]sx?$/,
                         enforce: 'pre',
                         loader: require.resolve('source-map-loader'),
+                        exclude: /node_modules/,
                     },
                     {
                         test: /\.tsx?$/,
@@ -344,6 +381,17 @@ function loaderConfig(options, argv) {
     });
 }
 
-module.exports = function (options, argv) {
-    return Promise.all([appConfig(options, argv), loaderConfig(options, argv)]);
+module.exports = async function (options, argv) {
+    const isMeasureSpeed = process.env.MEASURE_SPEED === 'true';
+
+    const app = appConfig(options, argv);
+    const loader = loaderConfig(options, argv);
+
+    const configArr = await Promise.all([app, loader]);
+
+    if (isMeasureSpeed) {
+        return smp.wrap(configArr);
+    }
+
+    return configArr;
 };

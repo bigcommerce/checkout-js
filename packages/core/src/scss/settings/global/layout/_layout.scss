@@ -1,3 +1,4 @@
+@use "sass:math";
 // =============================================================================
 // DIMENSIONS (Layout / Grid)
 // =============================================================================
@@ -32,9 +33,10 @@ $spacingRhythm:                 $fontSize-base * $lineHeight-base;
 $spacing-base:                  1rem;
 $spacing-single:                $spacingRhythm;
 $spacing-double:                $spacingRhythm * 2;
-$spacing-half:                  $spacingRhythm / 2;
-$spacing-third:                 $spacingRhythm / 3;
-$spacing-quarter:               $spacingRhythm / 4;
-$spacing-fifth:                 $spacingRhythm / 5;
-$spacing-sixth:                 $spacingRhythm / 6;
-$spacing-eighth:                $spacingRhythm / 8;
+
+$spacing-half:                  math.div($spacingRhythm, 2);
+$spacing-third:                 math.div($spacingRhythm, 3);
+$spacing-quarter:               math.div($spacingRhythm, 4);
+$spacing-fifth:                 math.div($spacingRhythm, 5);
+$spacing-sixth:                 math.div($spacingRhythm, 6);
+$spacing-eighth:                math.div($spacingRhythm, 8);
