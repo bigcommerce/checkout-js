@@ -8,6 +8,7 @@ import {
 import PaymentFormService from './PaymentFormService';
 
 export default interface PaymentMethodProps {
+    children?: React.ReactNode;
     method: PaymentMethod;
     checkoutService: CheckoutService;
     checkoutState: CheckoutSelectors;

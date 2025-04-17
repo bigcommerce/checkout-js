@@ -50,7 +50,7 @@ const WorldpayCreditCardPaymentMethod: FunctionComponent<
     }, []);
 
     const initializeWorldpayPayment = useCallback(
-        async (options: PaymentInitializeOptions, selectedInstrument) => {
+        async (options: PaymentInitializeOptions, selectedInstrument: any) => {
 
             return initializePayment({
                 ...options,

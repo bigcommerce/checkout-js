@@ -6,6 +6,7 @@ import CheckoutContext from './CheckoutContext';
 
 export interface CheckoutProviderProps {
     checkoutService: CheckoutService;
+    children: ReactNode;
 }
 
 export interface CheckoutProviderState {

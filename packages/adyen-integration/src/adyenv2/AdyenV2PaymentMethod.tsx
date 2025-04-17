@@ -74,7 +74,7 @@ const AdyenV2PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         ref.current.cancelAdditionalAction = undefined;
     }, []);
 
-    const onLoad = useCallback((cancel?) => {
+    const onLoad = useCallback((cancel?: any) => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         ref.current.cancelAdditionalAction = cancel;
     }, []);

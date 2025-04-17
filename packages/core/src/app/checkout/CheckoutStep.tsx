@@ -9,6 +9,7 @@ import CheckoutStepHeader from './CheckoutStepHeader';
 import CheckoutStepType from './CheckoutStepType';
 
 export interface CheckoutStepProps {
+    children?: ReactNode;
     heading?: ReactNode;
     isActive?: boolean;
     isBusy: boolean;
