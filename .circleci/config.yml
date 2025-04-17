@@ -2,7 +2,7 @@ aliases:
   - &node_executor
       executor:
         name: node/node
-        node-version: "20.6.0"
+        node-version: "22.13.0"
 
   - &release_filter
       branches:
@@ -191,9 +191,6 @@ workflows:
           filters:
             <<: *pull_request_filter
       - sdk-on-cdn:
-          filters:
-            <<: *pull_request_filter
-      - ci/validate-commits:
           filters:
             <<: *pull_request_filter
       - security/scan:

@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.581.6](https://github.com/bigcommerce/checkout-js/compare/v1.581.5...v1.581.6) (2025-04-17)
+
+### [1.581.5](https://github.com/bigcommerce/checkout-js/compare/v1.581.4...v1.581.5) (2025-04-17)
+
+### [1.581.4](https://github.com/bigcommerce/checkout-js/compare/v1.581.3...v1.581.4) (2025-04-16)
+
+
+### Bug Fixes
+
+* **payment:** STRIPE-725 Fix styling for custom hosted payment element ([30655fd](https://github.com/bigcommerce/checkout-js/commit/30655fdc1d9366fba4d92a491de1328a029a419d))
+
+### [1.581.3](https://github.com/bigcommerce/checkout-js/compare/v1.581.2...v1.581.3) (2025-04-16)
+
+### [1.581.2](https://github.com/bigcommerce/checkout-js/compare/v1.581.1...v1.581.2) (2025-04-16)
+
 ### [1.581.1](https://github.com/bigcommerce/checkout-js/compare/v1.581.0...v1.581.1) (2025-04-14)
 
 ## [1.581.0](https://github.com/bigcommerce/checkout-js/compare/v1.580.0...v1.581.0) (2025-04-14)
