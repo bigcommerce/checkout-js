@@ -1,6 +1,6 @@
 # paypal-utils
 
-This library was generated with [Nx](https://nx.dev).
+This package consists of components that do not need to be placed to any integration packages for PPCP and Braintree providers. 
 
 ## Running unit tests
 
