@@ -17,7 +17,7 @@ const CreditCardExpiryField: FunctionComponent<CreditCardExpiryFieldProps> = ({ 
     const handleChange = useCallback(
         memoizeOne((field: FieldProps['field'], form: FieldProps['form']) => {
             return (event: ChangeEvent<any>) => {
-                form.setFieldValue(field.name, formatCreditCardExpiryDate(event.target.value));
+                void form.setFieldValue(field.name, formatCreditCardExpiryDate(event.target.value));
             };
         }),
         [],

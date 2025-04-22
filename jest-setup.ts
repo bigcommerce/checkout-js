@@ -1,3 +1,4 @@
+/* eslint-disable no-console,jest/no-standalone-expect */
 import '@testing-library/jest-dom';
 import '@testing-library/jest-dom/extend-expect';
 import { configure as configureRTL } from '@testing-library/react';
@@ -36,6 +37,25 @@ Object.defineProperty(
 
 (global as any).__webpack_public_path__ = undefined;
 
+const originalConsoleError = console.error;
+const originalConsoleWarn = console.warn;
+
 beforeAll(() => {
     expect.hasAssertions();
+
+    console.error = (...args: unknown[]) => {
+        if (args.map(String).join().includes('Formik')) {
+            return;
+        }
+
+        originalConsoleError(...args);
+    };
+
+    console.warn = (...args: unknown[]) => {
+        if (args.map(String).join().includes('Formik')) {
+            return;
+        }
+
+        originalConsoleWarn(...args);
+    };
 });

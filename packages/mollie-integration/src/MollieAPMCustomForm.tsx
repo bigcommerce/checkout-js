@@ -97,7 +97,7 @@ export const HiddenInput: FunctionComponent<HiddenInputProps> = ({
             return;
         }
 
-        form.setFieldValue(restField.name, selectedIssuer?.id);
+        void form.setFieldValue(restField.name, selectedIssuer?.id);
     }, [value, form, selectedIssuer, restField.name]);
 
     return <Input />;

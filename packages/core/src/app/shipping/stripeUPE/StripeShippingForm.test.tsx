@@ -83,7 +83,7 @@ describe('StripeShippingForm', () => {
         const { container } = renderContainer({ isLoading: false });
 
         expect(defaultProps.initialize).toHaveBeenCalled();
-        expect(defaultProps.getFields).toHaveBeenCalledTimes(3);
+        expect(defaultProps.getFields).toHaveBeenCalledTimes(2);
         expect(defaultProps.getFields).toHaveBeenCalledWith("US");
         // eslint-disable-next-line testing-library/no-node-access,testing-library/no-container
         expect(container.querySelector('#StripeUpeShipping')).toBeInTheDocument();

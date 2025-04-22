@@ -145,7 +145,21 @@ class SingleShippingForm extends PureComponent<
             shippingAddress,
             isBillingSameAsShipping,
             customerMessage,
+            values,
+            setFieldValue,
         } = this.props;
+
+        const stateOrProvinceCodeFormField = getFields(values && values.shippingAddress?.countryCode).find(
+            ({ name }) => name === 'stateOrProvinceCode',
+        );
+
+        if (
+            stateOrProvinceCodeFormField &&
+            shippingAddress?.stateOrProvinceCode &&
+            values.shippingAddress?.stateOrProvinceCode !== shippingAddress.stateOrProvinceCode
+        ) {
+            setFieldValue('shippingAddress.stateOrProvinceCode', shippingAddress.stateOrProvinceCode);
+        }
 
         if (newShippingFormRenderTimestamp !== shippingFormRenderTimestamp) {
             setValues({

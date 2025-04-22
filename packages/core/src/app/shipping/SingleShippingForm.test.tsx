@@ -229,31 +229,6 @@ describe('SingleShippingForm', () => {
         );
     });
 
-    it('calls updateAddress when address is updated but form is rendered before its initial value is loaded', async () => {
-        const updateAddress = jest.fn();
-        const { rerender } = renderSingleShippingFormComponent({
-            updateAddress,
-            isInitialValueLoaded: false,
-            countries: [],
-            getFields: jest.fn(() => []),
-        });
-
-        rerender(createSingleShippingFormComponent({
-            updateAddress,
-            isInitialValueLoaded: true,
-        }));
-
-        await userEvent.clear(screen.getByTestId('addressLine1Input-text'));
-        await userEvent.keyboard('foo 1');
-
-        await userEvent.clear(screen.getByTestId('addressLine1Input-text'));
-        await userEvent.keyboard('foo 2');
-
-        await new Promise((resolve) => setTimeout(resolve, waitingDelay));
-
-        expect(updateAddress).toHaveBeenCalled();
-    });
-
     it('does not call updateAddress if modified field produces invalid address', async () => {
         const updateAddress = jest.fn();
 

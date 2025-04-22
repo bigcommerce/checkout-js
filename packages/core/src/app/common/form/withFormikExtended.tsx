@@ -1,5 +1,14 @@
-import { FormikProps, FormikValues, withFormik, WithFormikConfig } from 'formik';
-import React, { ComponentType, useEffect, useRef } from 'react';
+import {
+    FormikProps,
+    FormikValues,
+    withFormik,
+    WithFormikConfig,
+} from 'formik';
+import React, {
+    ComponentType,
+    useEffect,
+    useRef,
+} from 'react';
 
 export interface WithFormikExtendedProps {
     isInitialValueLoaded?: boolean;
@@ -10,24 +19,32 @@ export interface WithFormikExtendedProps {
  * the `isInitialValueLoaded` prop is set to true. This is useful when a form needs to be rendered before its
  * initial value is fully loaded.
  */
-export default function withFormikExtended<TOuterProps, TValues extends FormikValues, TPayload = TValues>(
+export default function withFormikExtended<
+    TOuterProps extends object,
+    TValues extends FormikValues = FormikValues,
+    TPayload = TValues
+>(
     config: WithFormikConfig<TOuterProps, TValues, TPayload>
 ) {
-    return (OriginalComponent: ComponentType<TOuterProps & FormikProps<TValues>>) => {
-        const DecoratedComponent: ComponentType<TOuterProps & FormikProps<TValues> & WithFormikExtendedProps> = (props) => {
-            const { resetForm, isInitialValueLoaded } = props;
+    return (
+        OriginalComponent: ComponentType<TOuterProps & FormikProps<TValues>>
+    ) => {
+        const DecoratedComponent: ComponentType<
+            TOuterProps & FormikProps<TValues> & WithFormikExtendedProps
+        > = (props) => {
+            const { resetForm, isInitialValueLoaded, initialValues } = props;
             const previousIsInitialValueLoadedRef = useRef(isInitialValueLoaded);
 
             useEffect(() => {
                 if (
-                    previousIsInitialValueLoadedRef.current === false && 
+                    previousIsInitialValueLoadedRef.current === false &&
                     isInitialValueLoaded === true
                 ) {
-                    resetForm();
+                    resetForm({ values: initialValues ?? {} });
                 }
 
                 previousIsInitialValueLoadedRef.current = isInitialValueLoaded;
-            }, [isInitialValueLoaded]);
+            }, [isInitialValueLoaded, initialValues, resetForm]);
 
             return <OriginalComponent {...props} />;
         };
