@@ -51,6 +51,8 @@ import CheckoutSupport from './CheckoutSupport';
 import mapToCheckoutProps from './mapToCheckoutProps';
 import navigateToOrderConfirmation from './navigateToOrderConfirmation';
 
+import QualifyingCredentials from '../qualifyingCredentials/QualifyingCredentials';
+
 const Billing = lazy(() =>
     retry(
         () =>
@@ -535,8 +537,13 @@ class Checkout extends Component<
                 key={step.type}
                 onEdit={this.handleEditStep}
                 onExpanded={this.handleExpanded}
+                // TODO: Add a summary prop
             >
-                <div>My Step Here</div>
+                <QualifyingCredentials
+                    navigateToNextStep={this.navigateToNextIncompleteStep}
+                    onReady={this.handleReady}
+                    onUnhandledError={this.handleUnhandledError}
+                />
             </CheckoutStep>)
     }
 

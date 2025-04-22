@@ -280,11 +280,11 @@ const getFFLStepStatus = createSelector(
     ({ data }: CheckoutSelectors) => data.getCart(), // TODO: Turn this into useful data. Every createSelector here is called by getCgeckoutStepStatuses, and that method is always passed a checkoutState in mapToCheckoutProps.ts. We have access to that here.
     (cart) => {
 
-        let hasAmmo = cart?.lineItems.physicalItems.some(
+        let hasFirearm = cart?.lineItems.physicalItems.some(
             item => item.categoryNames?.includes("Firearms")
           ) ?? false;
 
-        if (!hasAmmo) {
+        if (!hasFirearm) {
             return null
         }
         return{
