@@ -1,13 +1,13 @@
 import React, { FunctionComponent } from "react";
 // import { withCheckout } from "../checkout";
 
-export type QualifyingCredentialsProps = {
+export interface QualifyingCredentialsProps {
     navigateToNextStep(): void;
     onReady?(): void;
     onUnhandledError(error: Error): void;
 };
 
-export type WithCheckoutQualifyingCredentialsProps = {};
+export interface WithCheckoutQualifyingCredentialsProps {};
 
 const QualifyingCredentials: FunctionComponent<
     QualifyingCredentialsProps &
