@@ -137,7 +137,7 @@ describe('when using Google Pay payment', () => {
                 [id]: {
                     walletButton: 'walletButton',
                     onError: defaultProps.onUnhandledError,
-
+                    loadingContainerId: 'checkout-app',
                     onPaymentSelect: expect.any(Function),
                 },
             }),
