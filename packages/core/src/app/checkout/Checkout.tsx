@@ -385,10 +385,7 @@ class Checkout extends Component<
 
             case CheckoutStepType.ID:
                 return this.renderIDUploadStep(step);
-
-            case CheckoutStepType.FFL:
-                return this.renderFFLStep(step);
-
+                
             default:
                 return null;
         }
@@ -562,21 +559,6 @@ class Checkout extends Component<
             </CheckoutStep>)
     }
 
-    private renderFFLStep(step: CheckoutStepStatus): ReactNode{
-       
-
-        return (
-            <CheckoutStep
-                {...step}
-                heading={"FFL"}
-                key={step.type}
-                onEdit={this.handleEditStep}
-                onExpanded={this.handleExpanded}
-            >
-                <div>Select FFL here</div>
-            </CheckoutStep>)
-    }
-    
     private renderCartSummary(): ReactNode {
         const { isMultiShippingMode } = this.state;
 

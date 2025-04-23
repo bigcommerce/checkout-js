@@ -276,41 +276,18 @@ const getIDUploadStepStatus = createSelector(
     },
 );
 
-const getFFLStepStatus = createSelector(
-    ({ data }: CheckoutSelectors) => data.getCart(), // TODO: Turn this into useful data. Every createSelector here is called by getCgeckoutStepStatuses, and that method is always passed a checkoutState in mapToCheckoutProps.ts. We have access to that here.
-    (cart) => {
-
-        let hasFirearm = cart?.lineItems.physicalItems.some(
-            item => item.categoryNames?.includes("Firearms")
-          ) ?? false;
-
-        if (!hasFirearm) {
-            return null
-        }
-        return{
-
-            type: CheckoutStepType.FFL,
-            isActive: false,
-            isComplete: true, // TODO: Add checks to see if step is complete
-            isEditable: true, // TODO: Make this dynamic
-            isRequired: true,
-        };
-    },
-);
-
 const getCheckoutStepStatuses = createSelector(
     getCustomerStepStatus,
     getQualifyingCredentialsStepStatus,
-    getFFLStepStatus,
     getIDUploadStepStatus,
     getShippingStepStatus,
     getBillingStepStatus,
     getPaymentStepStatus,
     getOrderSubmitStatus,
-    (customerStep, qualifyingCredentialStep, IDUploadStep,shippingStep, FFLStep, billingStep, paymentStep, orderStatus) => {
+    (customerStep, qualifyingCredentialStep, IDUploadStep,shippingStep, billingStep, paymentStep, orderStatus) => {
         const isSubmittingOrder = orderStatus;
 
-        const steps = compact([customerStep, qualifyingCredentialStep, IDUploadStep, shippingStep, FFLStep, billingStep, paymentStep]);
+        const steps = compact([customerStep, qualifyingCredentialStep, IDUploadStep, shippingStep, billingStep, paymentStep]);
 
         const defaultActiveStep =
             steps.find((step) => !step.isComplete && step.isRequired) || steps[steps.length - 1];
