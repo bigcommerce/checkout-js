@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.583.0](https://github.com/bigcommerce/checkout-js/compare/v1.582.1...v1.583.0) (2025-04-23)
+
+
+### Features
+
+* **payment:** PI-3225 pass loadingContainerId to the GooglePay payment step ([60dd263](https://github.com/bigcommerce/checkout-js/commit/60dd26318d82358f7e8d87ea5aea2f311b009f09))
+
 ### [1.582.1](https://github.com/bigcommerce/checkout-js/compare/v1.582.0...v1.582.1) (2025-04-22)
 
 
