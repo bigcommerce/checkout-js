@@ -254,7 +254,7 @@ const getQualifyingCredentialsStepStatus = createSelector(
     },
 );
 
-const getIDUploadStepStatus = createSelector(
+const getDriversLicenseStepStatus = createSelector(
     ({ data }: CheckoutSelectors) => data.getCart(), // TODO: Turn this into useful data. Every createSelector here is called by getCgeckoutStepStatuses, and that method is always passed a checkoutState in mapToCheckoutProps.ts. We have access to that here.
     (cart) => {
 
@@ -279,15 +279,15 @@ const getIDUploadStepStatus = createSelector(
 const getCheckoutStepStatuses = createSelector(
     getCustomerStepStatus,
     getQualifyingCredentialsStepStatus,
-    getIDUploadStepStatus,
+    getDriversLicenseStepStatus,
     getShippingStepStatus,
     getBillingStepStatus,
     getPaymentStepStatus,
     getOrderSubmitStatus,
-    (customerStep, qualifyingCredentialStep, IDUploadStep,shippingStep, billingStep, paymentStep, orderStatus) => {
+    (customerStep, qualifyingCredentialStep, DriversLicenseStep,shippingStep, billingStep, paymentStep, orderStatus) => {
         const isSubmittingOrder = orderStatus;
 
-        const steps = compact([customerStep, qualifyingCredentialStep, IDUploadStep, shippingStep, billingStep, paymentStep]);
+        const steps = compact([customerStep, qualifyingCredentialStep, DriversLicenseStep, shippingStep, billingStep, paymentStep]);
 
         const defaultActiveStep =
             steps.find((step) => !step.isComplete && step.isRequired) || steps[steps.length - 1];

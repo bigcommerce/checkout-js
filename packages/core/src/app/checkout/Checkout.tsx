@@ -52,6 +52,8 @@ import mapToCheckoutProps from './mapToCheckoutProps';
 import navigateToOrderConfirmation from './navigateToOrderConfirmation';
 
 import QualifyingCredentials from '../qualifyingCredentials/QualifyingCredentials';
+import DriversLicense from '../driversLicense/DriversLicense';
+ 
 
 const Billing = lazy(() =>
     retry(
@@ -384,8 +386,9 @@ class Checkout extends Component<
                 return this.renderQualifyingCredentialsStep(step);
 
             case CheckoutStepType.ID:
-                return this.renderIDUploadStep(step);
-                
+                return this.renderDriversLicenseStep(step);
+
+
             default:
                 return null;
         }
@@ -544,7 +547,7 @@ class Checkout extends Component<
             </CheckoutStep>)
     }
 
-    private renderIDUploadStep(step: CheckoutStepStatus): ReactNode{
+    private renderDriversLicenseStep(step: CheckoutStepStatus): ReactNode{
        
 
         return (
@@ -555,7 +558,11 @@ class Checkout extends Component<
                 onEdit={this.handleEditStep}
                 onExpanded={this.handleExpanded}
             >
-                <div>Upload ID here</div>
+                <DriversLicense
+                navigateToNextStep={this.navigateToNextIncompleteStep}
+                onReady={this.handleReady}
+                onUnhandledError={this.handleUnhandledError}
+                />
             </CheckoutStep>)
     }
 
