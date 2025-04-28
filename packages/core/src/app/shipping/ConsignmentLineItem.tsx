@@ -95,7 +95,9 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
             />
             <div className="consignment-line-item-header">
                 <div>
-                    <h3>{itemsCount > 1 ? `${itemsCount} items` : `${itemsCount} item`} allocated </h3>
+                    <h3>
+                        <TranslatedString data={{ count: itemsCount }} id="shipping.multishipping_item_allocated_message" />
+                    </h3>
 
                     {consignment.hasSplitItems && (
                         <ItemSplitTooltip />
