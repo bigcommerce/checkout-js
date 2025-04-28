@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.584.0](https://github.com/bigcommerce/checkout-js/compare/v1.583.0...v1.584.0) (2025-04-28)
+
+
+### Features
+
+* **payment:** create container for Stripe OCS payment method ([948dc1f](https://github.com/bigcommerce/checkout-js/commit/948dc1f1fe4e7964154143b986ef9c8480390c8f))
+
+
+### Bug Fixes
+
+* **checkout:** add missing translation for multi shipping consignment ([#2281](https://github.com/bigcommerce/checkout-js/issues/2281)) ([eac33d1](https://github.com/bigcommerce/checkout-js/commit/eac33d1425bc048b5c13c172cd64184165b10f1b))
+
 ## [1.583.0](https://github.com/bigcommerce/checkout-js/compare/v1.582.1...v1.583.0) (2025-04-23)
 
 
