@@ -2,21 +2,21 @@ import React, { FunctionComponent, useEffect } from 'react';
 
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
-import PaymentMethodId from './PaymentMethodId';
+import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
 
-const PaypalCommerceCreditDescription: FunctionComponent<{ onUnhandledError?(error: Error): void }> = ({ onUnhandledError }) => {
+const PaypalCommerceCreditBanner: FunctionComponent<{ onUnhandledError?(error: Error): void }> = ({ onUnhandledError }) => {
     const { checkoutService } = useCheckout();
 
     useEffect(() => {
         try {
-            checkoutService.initializePayment({
+            void checkoutService.initializePayment({
                 methodId: PaymentMethodId.PaypalCommerceCredit,
                 paypalcommercecredit: {
                     bannerContainerId: 'paypal-commerce-banner-container',
                 },
             });
 
-            checkoutService.deinitializePayment({
+            void checkoutService.deinitializePayment({
                 methodId: PaymentMethodId.PaypalCommerceCredit,
             });
         } catch (error) {
@@ -31,4 +31,4 @@ const PaypalCommerceCreditDescription: FunctionComponent<{ onUnhandledError?(err
     )
 }
 
-export default PaypalCommerceCreditDescription;
+export default PaypalCommerceCreditBanner;
