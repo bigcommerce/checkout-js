@@ -46,7 +46,7 @@ const StaticShippingOption: React.FunctionComponent<StaticShippingOptionProps> =
                     />
                 </span>
             )}
-            <span className="shippingOption-desc">
+            <span className="shippingOption-desc translatable-dynamic">
                 {method.description}
                 {method.transitTime && (
                     <span className="shippingOption-transitTime">{method.transitTime}</span>

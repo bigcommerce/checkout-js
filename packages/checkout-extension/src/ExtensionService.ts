@@ -13,6 +13,7 @@ import { ExtensionAction } from './ExtensionProvider';
 import { CommandHandler, QueryHandler } from './handler';
 import * as commandHandlerFactories from './handler/commandHandlers';
 import * as queryHandlerFactories from './handler/queryHandlers';
+import ExtensionWebWorker from './ExtensionWebWorker';
 
 export class ExtensionService {
     private handlers: { [extensionId: string]: Array<() => void> } = {};
@@ -64,9 +65,18 @@ export class ExtensionService {
         }
 
         try {
-            await this.checkoutService.renderExtension(container, region);
+            console.log('Extension render:', extension);
 
-            this.registerHandlers(extension);
+            if (extension.region === ExtensionRegion.ShippingShippingAddressFormAfter) {
+                const worker = new ExtensionWebWorker(extension.url);
+                console.log('Worker created:', worker);
+            }
+
+            else {
+                await this.checkoutService.renderExtension(container, region);
+                this.registerHandlers(extension);
+            }
+
         } catch (error: unknown) {
             if (error instanceof Error) {
                 this.errorLogger.log(
