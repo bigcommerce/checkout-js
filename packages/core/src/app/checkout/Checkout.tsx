@@ -51,10 +51,6 @@ import CheckoutSupport from './CheckoutSupport';
 import mapToCheckoutProps from './mapToCheckoutProps';
 import navigateToOrderConfirmation from './navigateToOrderConfirmation';
 
-import QualifyingCredentials from '../qualifyingCredentials/QualifyingCredentials';
-import DriversLicense from '../driversLicense/DriversLicense';
- 
-
 const Billing = lazy(() =>
     retry(
         () =>
@@ -382,13 +378,6 @@ class Checkout extends Component<
             case CheckoutStepType.Payment:
                 return this.renderPaymentStep(step);
 
-            case CheckoutStepType.QualifyingCredentials:
-                return this.renderQualifyingCredentialsStep(step);
-
-            case CheckoutStepType.ID:
-                return this.renderDriversLicenseStep(step);
-
-
             default:
                 return null;
         }
@@ -527,43 +516,6 @@ class Checkout extends Component<
                 </LazyContainer>
             </CheckoutStep>
         );
-    }
-
-    private renderQualifyingCredentialsStep(step: CheckoutStepStatus): ReactNode{
-        return (
-            <CheckoutStep
-                {...step}
-                heading={"Qualifying Credentials"}
-                key={step.type}
-                onEdit={this.handleEditStep}
-                onExpanded={this.handleExpanded}
-                // TODO: Add a summary prop
-            >
-                <QualifyingCredentials
-                    navigateToNextStep={this.navigateToNextIncompleteStep}
-                    onReady={this.handleReady}
-                    onUnhandledError={this.handleUnhandledError}
-                />
-            </CheckoutStep>)
-    }
-
-    private renderDriversLicenseStep(step: CheckoutStepStatus): ReactNode{
-       
-
-        return (
-            <CheckoutStep
-                {...step}
-                heading={"Age Verification"}
-                key={step.type}
-                onEdit={this.handleEditStep}
-                onExpanded={this.handleExpanded}
-            >
-                <DriversLicense
-                navigateToNextStep={this.navigateToNextIncompleteStep}
-                onReady={this.handleReady}
-                onUnhandledError={this.handleUnhandledError}
-                />
-            </CheckoutStep>)
     }
 
     private renderCartSummary(): ReactNode {
