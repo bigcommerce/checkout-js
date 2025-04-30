@@ -1,13 +1,6 @@
 import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import { noop, some } from 'lodash';
-import React, {
-    FunctionComponent,
-    useCallback,
-    useContext,
-    useEffect,
-    useMemo,
-    useRef,
-} from 'react';
+import React, { FunctionComponent, useCallback, useMemo } from 'react';
 
 import { getAppliedStyles } from '@bigcommerce/checkout/dom-utils';
 import { HostedWidgetPaymentComponent } from '@bigcommerce/checkout/hosted-widget-integration';
@@ -20,7 +13,6 @@ import {
     PaymentMethodResolveId,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
-import { AccordionContext } from '@bigcommerce/checkout/ui';
 
 const StripeUPEPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     paymentForm,
@@ -30,18 +22,8 @@ const StripeUPEPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     onUnhandledError = noop,
     ...rest
 }) => {
-    const collapseStripeElement = useRef<() => void>();
-    const { onToggle, selectedItemId } = useContext(AccordionContext);
     const containerId = `stripe-${method.id}-component-field`;
     const paymentContext = paymentForm;
-
-    useEffect(() => {
-        if (selectedItemId?.includes('stripeupe-')) {
-            return;
-        }
-
-        collapseStripeElement.current?.();
-    }, [selectedItemId]);
 
     const renderSubmitButton = useCallback(() => {
         paymentContext.hidePaymentSubmitButton(method, false);
@@ -115,10 +97,6 @@ const StripeUPEPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                     },
                     onError: onUnhandledError,
                     render: renderSubmitButton,
-                    paymentMethodSelect: onToggle,
-                    handleClosePaymentMethod: (collapseElement: () => void) => {
-                        collapseStripeElement.current = collapseElement;
-                    },
                 },
             });
         },
@@ -129,7 +107,6 @@ const StripeUPEPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             method,
             paymentContext,
             renderSubmitButton,
-            onToggle,
         ],
     );
 
