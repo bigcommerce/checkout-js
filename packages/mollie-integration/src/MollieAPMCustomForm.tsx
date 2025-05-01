@@ -1,5 +1,5 @@
 import { PaymentMethod } from '@bigcommerce/checkout-sdk';
-import { FieldProps } from 'formik';
+import { FieldProps, useField } from 'formik';
 import React, { FunctionComponent, SyntheticEvent, useCallback, useEffect, useState } from 'react';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
@@ -87,18 +87,18 @@ const MollieAPMCustomForm: FunctionComponent<MollieCustomCardFormProps & WithLan
 
 export const HiddenInput: FunctionComponent<HiddenInputProps> = ({
     field: { value, ...restField },
-    form,
     selectedIssuer,
 }) => {
-    const Input = useCallback(() => <input {...restField} type="hidden" />, [restField]);
+    const [field, , helpers] = useField(restField.name);
+    const Input = useCallback(() => <input {...field} type="hidden" />, [field]);
 
     useEffect(() => {
         if (value === selectedIssuer) {
             return;
         }
 
-        void form.setFieldValue(restField.name, selectedIssuer?.id);
-    }, [value, form, selectedIssuer, restField.name]);
+        void helpers.setValue(selectedIssuer?.id);
+    }, [value, selectedIssuer, helpers]);
 
     return <Input />;
 };
