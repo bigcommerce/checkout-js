@@ -49,51 +49,76 @@ const OrderSummaryModal: FunctionComponent<
     total,
     ...orderSummarySubtotalsProps
 }) => {
-    const displayInclusiveTax = isTaxIncluded && taxes && taxes.length > 0;
+        const displayInclusiveTax = isTaxIncluded && taxes && taxes.length > 0;
 
-    const subHeaderText = <OrderModalSummarySubheader
-        amountWithCurrency={<ShopperCurrency amount={total} />}
-        items={items}
-        shopperCurrencyCode={shopperCurrency.code}
-        storeCurrencyCode={storeCurrency.code}
-    />;
+        const subHeaderText = <OrderModalSummarySubheader
+            amountWithCurrency={<ShopperCurrency amount={total} />}
+            items={items}
+            shopperCurrencyCode={shopperCurrency.code}
+            storeCurrencyCode={storeCurrency.code}
+        />;
 
-    const continueButton = isSmallScreen() && <Button
-        className='cart-modal-continue'
-        data-test="manage-instrument-cancel-button"
-        onClick={preventDefault(onRequestClose)}>
+        const continueButton = isSmallScreen() && <Button
+            className='cart-modal-continue'
+            data-test="manage-instrument-cancel-button"
+            onClick={preventDefault(onRequestClose)}>
             <TranslatedString id="cart.return_to_checkout" />
-    </Button>;
+        </Button>;
 
-    return <Modal
-        additionalBodyClassName="cart-modal-body optimizedCheckout-orderSummary"
-        additionalHeaderClassName="cart-modal-header optimizedCheckout-orderSummary with-continue-button"
-        additionalModalClassName="optimizedCheckout-cart-modal"
-        footer={continueButton}
-        header={renderHeader({
-            headerLink,
-            subHeaderText,
-            onRequestClose,
-        })}
-        isOpen={isOpen}
-        onAfterOpen={onAfterOpen}
-        onRequestClose={onRequestClose}
-    >
-        <OrderSummarySection>
-            <OrderSummaryItems displayLineItemsCount={false} items={items} />
-        </OrderSummarySection>
-        <OrderSummarySection>
-            <OrderSummarySubtotals isTaxIncluded={isTaxIncluded} taxes={taxes} {...orderSummarySubtotalsProps} />
-            {additionalLineItems}
-        </OrderSummarySection>
-        <OrderSummarySection>
-            <OrderSummaryTotal
-                orderAmount={total}
-                shopperCurrencyCode={shopperCurrency.code}
-                storeCurrencyCode={storeCurrency.code}
-            />
-        </OrderSummarySection>
-        {displayInclusiveTax && <OrderSummarySection>
+        return <Modal
+            additionalBodyClassName="cart-modal-body optimizedCheckout-orderSummary"
+            additionalHeaderClassName="cart-modal-header optimizedCheckout-orderSummary with-continue-button"
+            additionalModalClassName="optimizedCheckout-cart-modal"
+            footer={continueButton}
+            header={renderHeader({
+                headerLink,
+                subHeaderText,
+                onRequestClose,
+            })}
+            isOpen={isOpen}
+            onAfterOpen={onAfterOpen}
+            onRequestClose={onRequestClose}
+        >
+            <OrderSummarySection>
+                <OrderSummaryItems displayLineItemsCount={false} items={items} />
+            </OrderSummarySection>
+            <OrderSummarySection>
+                <OrderSummarySubtotals isTaxIncluded={isTaxIncluded} taxes={taxes} {...orderSummarySubtotalsProps} />
+                {additionalLineItems}
+            </OrderSummarySection>
+            <OrderSummarySection>
+                <div
+                    style={{
+                        backgroundColor: '#fffbe6',
+                        border: '1px solid #ffe58f',
+                        borderRadius: '4px',
+                        padding: '16px 20px',
+                        margin: '20px auto',
+                        maxWidth: '600px',
+                        fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif',
+                        color: '#614700',
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+                        fontSize: '14px',
+                        lineHeight: '1.6',
+                    }}
+                >
+                    <strong style={{ display: 'block', fontSize: '16px', marginBottom: '8px' }}>
+                        Important Notice
+                    </strong>
+                    To complete your order, you will need to submit the required credentials via email. Detailed instructions will be provided to you after checkout. If you do not send your credentials, your order will not be processed.
+                    <div style={{ marginTop: '12px' }}>
+                        <strong>Note:</strong> If your order includes <strong>ammunition</strong>, you must also include a scan or photo of a valid government-issued photo ID.
+                    </div>
+                </div>
+
+
+                <OrderSummaryTotal
+                    orderAmount={total}
+                    shopperCurrencyCode={shopperCurrency.code}
+                    storeCurrencyCode={storeCurrency.code}
+                />
+            </OrderSummarySection>
+            {displayInclusiveTax && <OrderSummarySection>
                 <h5
                     className="cart-taxItem cart-taxItem--subtotal optimizedCheckout-contentPrimary"
                     data-test="tax-text"
@@ -111,8 +136,8 @@ const OrderSummaryModal: FunctionComponent<
                     />
                 ))}
             </OrderSummarySection>}
-    </Modal>
-};
+        </Modal>
+    };
 
 const renderHeader: FunctionComponent<{
     headerLink?: ReactNode & React.HTMLProps<HTMLDivElement>;

@@ -1,0 +1,23 @@
+.customShippingSummaryContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1.3rem;
+
+    h2 {
+        margin: 0 !important;
+        padding: 0;
+        font-size: 1.5em;
+        font-weight: 500;
+    }
+
+    p {
+        margin: 0 !important;
+        padding: 0;
+    }
+
+    div {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+}

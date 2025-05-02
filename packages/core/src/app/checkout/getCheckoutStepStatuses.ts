@@ -46,7 +46,7 @@ const getCustomerStepStatus = createSelector(
             checkout && checkout.payments
                 ? checkout.payments.some(
                     (payment: CheckoutPayment) => SUPPORTED_METHODS.indexOf(payment.providerId) >= 0,
-                  )
+                )
                 : false;
         const isGuest = !!(customer && customer.isGuest);
         const isComplete = hasEmail || isUsingWallet;
@@ -97,8 +97,8 @@ const getBillingStepStatus = createSelector(
         const isUsingWallet =
             checkout && checkout.payments
                 ? checkout.payments.some(
-                      (payment) => SUPPORTED_METHODS.indexOf(payment.providerId) >= 0,
-                  )
+                    (payment) => SUPPORTED_METHODS.indexOf(payment.providerId) >= 0,
+                )
                 : false;
         const isComplete = hasAddress || isUsingWallet;
         const isUsingAmazonPay =
@@ -220,6 +220,39 @@ const getShippingStepStatus = createSelector(
     },
 );
 
+
+const getCustomShippingStepStatus = createSelector(
+    ({ data }: CheckoutSelectors) => data.getShippingAddress(),
+    ({ data }: CheckoutSelectors) => data.getConsignments(),
+    ({ data }: CheckoutSelectors) => data.getCart(),
+
+    ({ data }: CheckoutSelectors) => data.getConfig(),
+    (shippingAddress, consignments, cart) => {
+        let hasUnselectedShippingOption = false;
+
+        if (consignments) {
+            for (let i = 0; i < consignments.length; i++) {
+                if (consignments[i].selectedShippingOption === null) {
+                    hasUnselectedShippingOption = true;
+                }
+            }
+        }
+
+        const hasUnassignedItems = cart && consignments ? hasUnassignedLineItems(consignments, cart.lineItems) : true;
+        const isComplete = !hasUnassignedItems && !hasUnselectedShippingOption;
+
+
+
+        return {
+            type: CheckoutStepType.Shipping,
+            isActive: false,
+            isComplete,
+            isEditable: isComplete,
+            isRequired: true,
+        };
+    },
+);
+
 const getPaymentStepStatus = createSelector(
     ({ data }: CheckoutSelectors) => data.getOrder(),
     (order) => {
@@ -242,7 +275,7 @@ const getOrderSubmitStatus = createSelector(
 
 const getCheckoutStepStatuses = createSelector(
     getCustomerStepStatus,
-    getShippingStepStatus,
+    getCustomShippingStepStatus,
     getBillingStepStatus,
     getPaymentStepStatus,
     getOrderSubmitStatus,
