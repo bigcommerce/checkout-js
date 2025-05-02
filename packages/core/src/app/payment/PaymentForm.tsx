@@ -204,6 +204,15 @@ const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProp
         (method: PaymentMethod) => {
             const updatedValues = {
                 ...values,
+                ccCustomerCode: '',
+                ccCvv: '',
+                ccDocument: '',
+                customerEmail: '',
+                customerMobile: '',
+                ccExpiry: '',
+                ccName: '',
+                ccNumber: '',
+                instrumentId: '',
                 paymentProviderRadio: getUniquePaymentMethodId(method.id, method.gateway),
                 shouldCreateAccount: true,
                 shouldSaveInstrument: false,
