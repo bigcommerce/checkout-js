@@ -89,7 +89,7 @@ export const HiddenInput: FunctionComponent<HiddenInputProps> = ({
     field: { value, ...restField },
     selectedIssuer,
 }) => {
-    const [field, , helpers] = useField(restField.name);
+    const [field, _, helpers] = useField(restField.name);
     const Input = useCallback(() => <input {...field} type="hidden" />, [field]);
 
     useEffect(() => {

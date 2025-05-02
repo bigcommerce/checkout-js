@@ -14,15 +14,12 @@ export default function createPaymentFormService(
     paymentContext: PaymentContextProps,
 ): PaymentFormService {
     const {
-        setFieldTouched: formikSetFieldTouched,
-        setFieldValue: formikSetFieldValue,
+        setFieldTouched,
+        setFieldValue,
         submitForm,
         validateForm,
         values,
     } = formikContext;
-
-    const setFieldTouched = formikSetFieldTouched as PaymentFormService['setFieldTouched'];
-    const setFieldValue = formikSetFieldValue as PaymentFormService['setFieldValue'];
 
     const { isSubmitted, setSubmitted } = formContext;
 
@@ -37,8 +34,8 @@ export default function createPaymentFormService(
         getFormValues: () => values,
         hidePaymentSubmitButton,
         isSubmitted: () => isSubmitted,
-        setFieldTouched,
-        setFieldValue,
+        setFieldTouched: setFieldTouched as PaymentFormService['setFieldTouched'],
+        setFieldValue: setFieldValue as PaymentFormService['setFieldValue'],
         setSubmit,
         setSubmitted,
         setValidationSchema,

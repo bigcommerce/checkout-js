@@ -153,6 +153,10 @@ class SingleShippingForm extends PureComponent<
             ({ name }) => name === 'stateOrProvinceCode',
         );
 
+        // Workaround for a bug found during manual testing:
+        // When the shipping step first loads, the `stateOrProvinceCode` field may not be there.
+        // It later appears with an empty value if the selected country has states/provinces.
+        // To address this, we manually set `stateOrProvinceCode` in Formik.
         if (
             stateOrProvinceCodeFormField &&
             shippingAddress?.stateOrProvinceCode &&
@@ -161,6 +165,7 @@ class SingleShippingForm extends PureComponent<
             setFieldValue('shippingAddress.stateOrProvinceCode', shippingAddress.stateOrProvinceCode);
         }
 
+        // This is for executing extension command, `ReRenderShippingForm`.
         if (newShippingFormRenderTimestamp !== shippingFormRenderTimestamp) {
             setValues({
                 billingSameAsShipping: isBillingSameAsShipping,
