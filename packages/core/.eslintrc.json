@@ -58,6 +58,7 @@
     "no-new": "off", // 8 errors
     "@typescript-eslint/no-empty-function": "off", // 1 error
     "no-multi-assign": "off", // 1 error
-    "import/no-unresolved": "off" // 1 error
+    "import/no-unresolved": "off", // 1 error,
+    "testing-library/no-unnecessary-act": "off"
   }
 }

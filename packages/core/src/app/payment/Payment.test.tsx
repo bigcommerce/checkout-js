@@ -8,6 +8,7 @@ import userEvent from '@testing-library/user-event';
 import { noop } from 'lodash';
 import { rest } from 'msw';
 import React, { FunctionComponent } from 'react';
+import { act } from 'react-dom/test-utils';
 
 import {
     AnalyticsContextProps,
@@ -139,8 +140,13 @@ describe('Payment step', () => {
 
         await checkout.waitForPaymentStep();
 
-        await userEvent.click(screen.getByRole('radio', { name: 'Cash on Delivery' }));
-        await userEvent.click(screen.getByText('Place Order'));
+        expect(screen.getByRole('radio', { name: 'Pay in Store', checked: true })).toBeInTheDocument();
+
+        await act(async () => userEvent.click(screen.getByRole('radio', { name: 'Cash on Delivery' })));
+
+        expect(await screen.findByRole('radio', { name: 'Cash on Delivery', checked: true })).toBeInTheDocument();
+
+        await act(async () => userEvent.click(screen.getByText('Place Order')));
 
         expect(window.location.replace).toHaveBeenCalledWith('/order-confirmation');
     });

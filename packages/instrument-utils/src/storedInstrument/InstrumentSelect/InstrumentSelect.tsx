@@ -295,7 +295,7 @@ class InstrumentSelect extends PureComponent<InstrumentSelectProps> {
     private updateFieldValue(instrumentId = ''): void {
         const { form, field } = this.props;
 
-        form.setFieldValue(field.name, instrumentId);
+        void form.setFieldValue(field.name, instrumentId);
     }
 }
 

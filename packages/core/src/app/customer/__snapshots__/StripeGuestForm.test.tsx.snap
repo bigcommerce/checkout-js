@@ -36,6 +36,7 @@ exports[`StripeGuestForm matches snapshot 1`] = `
       </div>
       <div>
         <form
+          action="#"
           class="checkout-form"
           data-test="checkout-customer-guest"
           id="checkout-customer-guest"
@@ -170,6 +171,7 @@ exports[`StripeGuestForm matches snapshot 1`] = `
     </div>
     <div>
       <form
+        action="#"
         class="checkout-form"
         data-test="checkout-customer-guest"
         id="checkout-customer-guest"

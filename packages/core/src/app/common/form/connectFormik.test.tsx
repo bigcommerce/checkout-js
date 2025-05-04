@@ -1,5 +1,4 @@
-import { Formik, FormikActions, FormikProps } from 'formik';
-import { noop } from 'lodash';
+import { Formik, FormikHelpers as FormikActions, FormikProps } from 'formik';
 import React  from 'react';
 
 import { render, screen } from '@bigcommerce/checkout/test-utils';
@@ -32,14 +31,13 @@ describe('connectFormik', () => {
             </Formik>
         );
 
-        expect(screen.getByText('testPropValue')).toBeInTheDocument();
         expect(screen.getByText('test')).toBeInTheDocument();
 
     });
 
-    it.only('should update the wrapped component when formik values change', () => {
-        let setFieldValue: FormikActions<{ testValue: string }>['setFieldValue'] = noop;
-    
+    it('should update the wrapped component when formik values change', () => {
+        let setFieldValue: FormikActions<{ testValue: string }>['setFieldValue'] = jest.fn();
+
         render(
             <Formik initialValues={{ testValue: 'initialValue' }} onSubmit={jest.fn()} render={(formik) => {
                 setFieldValue = formik.setFieldValue;

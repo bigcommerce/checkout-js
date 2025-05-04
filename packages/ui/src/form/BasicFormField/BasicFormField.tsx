@@ -16,7 +16,7 @@ export interface BasicFormFieldProps extends FieldConfig {
     additionalClassName?: string;
     className?: string;
     testId?: string;
-    onChange?(value: any): void;
+    onChange?(value: unknown): void;
 }
 
 type InnerFieldInputProps = FieldProps &
@@ -70,6 +70,7 @@ const InnerField: FunctionComponent<InnerFieldProps> = memo(
                     component={component}
                     field={field}
                     form={form}
+                    meta={form.getFieldMeta(field.name)}
                     onChange={onChange}
                     render={render}
                 />
@@ -121,7 +122,7 @@ const BasicFormField: FunctionComponent<BasicFormFieldProps> = ({
         [additionalClassName, className, component, render, testId, onChange],
     );
 
-    return <Field {...rest} render={renderInnerField} />;
+    return <Field {...rest}>{renderInnerField}</Field>;
 };
 
 export default memo(BasicFormField);

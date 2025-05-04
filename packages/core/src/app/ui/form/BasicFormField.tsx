@@ -43,19 +43,20 @@ const BasicFormField: FunctionComponent<BasicFormFieldProps> = ({
         [additionalClassName, className, component, render, testId, onChange],
     );
 
-    return <Field {...rest} render={renderInnerField} />;
+    return <Field {...rest}>{renderInnerField}</Field>;
 };
 
 type InnerFieldProps = Omit<BasicFormFieldProps, keyof FieldConfig> & InnerFieldInputProps;
 
 const InnerField: FunctionComponent<InnerFieldProps> = memo(
-    ({ additionalClassName, component, field, form, onChange, render, testId }) => {
+    ({ additionalClassName, component, field, form, onChange, render, testId, meta }) => {
         const input = useMemo(
             () => (
                 <InnerFieldInput
                     component={component}
                     field={field}
                     form={form}
+                    meta={meta}
                     onChange={onChange}
                     render={render}
                 />
