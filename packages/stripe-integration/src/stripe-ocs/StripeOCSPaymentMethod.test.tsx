@@ -34,6 +34,12 @@ import { AccordionContext, AccordionContextProps } from '@bigcommerce/checkout/u
 
 import StripeOCSPaymentMethod from './StripeOCSPaymentMethod';
 
+jest.mock('./getStripeOCSStyles', () => ({
+    getStylesForOCSElement: () => {
+        return { color: '#cccccc' };
+    },
+}));
+
 describe('when using StripeUPE OCS payment', () => {
     let method: PaymentMethod;
     let checkoutService: CheckoutService;
@@ -77,12 +83,6 @@ describe('when using StripeUPE OCS payment', () => {
 
         jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(true);
 
-        jest.mock('@bigcommerce/checkout/dom-utils', () => ({
-            getAppliedStyles: () => {
-                return { color: '#cccccc' };
-            },
-        }));
-
         defaultProps = {
             method,
             checkoutService,
@@ -119,6 +119,7 @@ describe('when using StripeUPE OCS payment', () => {
             methodId: 'pay_now',
             stripeupe: {
                 containerId: 'stripe-pay_now-component-field',
+                style: { color: '#cccccc' },
                 onError: expect.any(Function),
                 render: expect.any(Function),
                 paymentMethodSelect: expect.any(Function),
@@ -143,6 +144,7 @@ describe('when using StripeUPE OCS payment', () => {
             methodId: 'pay_now',
             stripeupe: {
                 containerId: 'stripe-pay_now-component-field',
+                style: { color: '#cccccc' },
                 onError: expect.any(Function),
                 render: expect.any(Function),
                 paymentMethodSelect: expect.any(Function),
@@ -152,13 +154,6 @@ describe('when using StripeUPE OCS payment', () => {
     });
 
     it('initializes method with required config', () => {
-        const element = document.createElement('div');
-
-        element.style.color = 'red';
-        element.style.boxShadow = 'boxShadow';
-        element.style.borderColor = 'blue';
-
-        jest.spyOn(document, 'getElementById').mockReturnValue(element);
         render(<PaymentMethodTest {...defaultProps} method={method} />);
 
         expect(checkoutService.initializePayment).toHaveBeenCalledWith(
@@ -168,6 +163,7 @@ describe('when using StripeUPE OCS payment', () => {
                 // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                 [`${method.gateway}`]: {
                     containerId: `stripe-${method.id}-component-field`,
+                    style: { color: '#cccccc' },
                     onError: expect.any(Function),
                     render: expect.any(Function),
                     paymentMethodSelect: expect.any(Function),
