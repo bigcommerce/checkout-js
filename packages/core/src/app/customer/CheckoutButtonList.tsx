@@ -4,8 +4,9 @@ import React, { FunctionComponent, memo } from 'react';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import CheckoutButton from './CheckoutButton';
-import { AmazonPayV2Button, ApplePayButton, PayPalCommerceButton } from './customWalletButton';
+import { AmazonPayV2Button, ApplePayButton } from './customWalletButton';
 import { getSupportedMethodIds } from './getSupportedMethods';
+import { PayPalCommerceButton } from '@bigcommerce/checkout/paypal-utils';
 
 export interface CheckoutButtonListProps {
     methodIds?: string[];
