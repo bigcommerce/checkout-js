@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.586.5](https://github.com/bigcommerce/checkout-js/compare/v1.586.4...v1.586.5) (2025-05-07)
+
+
+### Bug Fixes
+
+* **checkout:** Update formik logic ([#2290](https://github.com/bigcommerce/checkout-js/issues/2290)) ([16c1176](https://github.com/bigcommerce/checkout-js/commit/16c11769a8de07d4c149dbcf2dfe627077dc2c7a))
+
 ### [1.586.4](https://github.com/bigcommerce/checkout-js/compare/v1.586.3...v1.586.4) (2025-05-04)
 
 ### [1.586.3](https://github.com/bigcommerce/checkout-js/compare/v1.586.2...v1.586.3) (2025-04-30)
