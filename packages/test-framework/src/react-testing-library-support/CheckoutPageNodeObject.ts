@@ -293,11 +293,10 @@ export class CheckoutPageNodeObject {
                 screen.getByTestId('provinceCodeInput-select'),
                 address.stateOrProvinceCode,
             );
-        }
-
-        if (address.stateOrProvince) {
+        } else if (address.stateOrProvince) {
             await userEvent.clear(screen.getByLabelText('State/Province (Optional)'));
-            await userEvent.type(screen.getByLabelText('State/Province (Optional)'),
+            await userEvent.type(
+                screen.getByLabelText('State/Province (Optional)'),
                 address.stateOrProvince,
             );
         }
