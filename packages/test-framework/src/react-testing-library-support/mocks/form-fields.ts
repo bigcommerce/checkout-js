@@ -226,6 +226,34 @@ const formFields = {
             type: 'string',
             fieldType: 'text',
         },
+        {
+            id: 'field_60',
+            name: 'field_60',
+            custom: true,
+            label: 'Shipping Instructions',
+            required: false,
+            default: null,
+            maxLength: null,
+            type: 'array',
+            fieldType: 'dropdown',
+            options: {
+                helperLabel: 'instructions',
+                items: [
+                    {
+                        value: '0',
+                        label: 'Put it in the mailbox',
+                    },
+                    {
+                        value: '1',
+                        label: 'Put it on the porch',
+                    },
+                    {
+                        value: '2',
+                        label: 'Put it in front of the door',
+                    },
+                ],
+            },
+        },
     ],
     customerAccount: [
         {

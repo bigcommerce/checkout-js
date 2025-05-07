@@ -530,9 +530,16 @@ describe('Shipping step', () => {
             }));
 
             await checkout.fillAddressForm(randomAddress1);
+            await userEvent.selectOptions(
+                screen.getByTestId('field_60Input-select'),
+                '2',
+            );
 
             expect((checkoutService.updateShippingAddress as any).mock.calls.slice(-1)[0][0]).toEqual(
-                expect.objectContaining(randomAddress1)
+                expect.objectContaining({
+                    ...randomAddress1,
+                    customFields: [{fieldId: 'field_60', fieldValue: '2'}],
+                }),
             );
 
             const randomAddress2 = JSON.parse(JSON.stringify({
@@ -546,9 +553,16 @@ describe('Shipping step', () => {
             }));
 
             await checkout.fillAddressForm(randomAddress2);
+            await userEvent.selectOptions(
+                screen.getByTestId('field_60Input-select'),
+                '1',
+            );
 
             expect((checkoutService.updateShippingAddress as any).mock.calls.slice(-1)[0][0]).toEqual(
-                expect.objectContaining(randomAddress2)
+                expect.objectContaining({
+                        ...randomAddress2,
+                        customFields: [{fieldId: 'field_60', fieldValue: '1'}],
+                }),
             );
         });
     });
