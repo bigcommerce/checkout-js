@@ -160,7 +160,7 @@ class SingleShippingForm extends PureComponent<
         if (
             stateOrProvinceCodeFormField &&
             shippingAddress?.stateOrProvinceCode &&
-            values.shippingAddress?.stateOrProvinceCode !== shippingAddress.stateOrProvinceCode
+            !values.shippingAddress?.stateOrProvinceCode
         ) {
             setFieldValue('shippingAddress.stateOrProvinceCode', shippingAddress.stateOrProvinceCode);
         }

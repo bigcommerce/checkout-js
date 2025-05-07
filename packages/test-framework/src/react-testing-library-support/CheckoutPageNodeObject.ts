@@ -1,4 +1,4 @@
-import { Checkout } from '@bigcommerce/checkout-sdk';
+import { Address, Checkout } from '@bigcommerce/checkout-sdk';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { RequestHandler, rest } from 'msw';
@@ -262,18 +262,46 @@ export class CheckoutPageNodeObject {
         await waitFor(() => screen.getByText(/place order/i));
     }
 
-    async fillAddressForm(): Promise<void> {
-        await userEvent.type(await screen.findByLabelText('First Name'), customer.firstName);
-        await userEvent.type(screen.getByLabelText('Last Name'), customer.lastName);
-        await userEvent.type(
-            screen.getByRole('textbox', { name: /address/i }),
-            shippingAddress.address1,
-        );
-        await userEvent.type(screen.getByLabelText('City'), shippingAddress.city);
+    async fillAddressForm(testingAddress: Partial<Address> = {}): Promise<void> {
+        const defaultAddress = {
+            firstName: customer.firstName,
+            lastName: customer.lastName,
+            address1: shippingAddress.address1,
+            city: shippingAddress.city,
+            countryCode: shippingAddress.countryCode,
+            postalCode: shippingAddress.postalCode,
+        };
+        const address = { ...defaultAddress, ...testingAddress };
+
+        await userEvent.clear(await screen.findByLabelText('First Name'));
+        await userEvent.clear(await screen.findByLabelText('Last Name'));
+        await userEvent.clear(screen.getByRole('textbox', { name: /address/i }));
+        await userEvent.clear(screen.getByLabelText('City'));
+        await userEvent.clear(screen.getByLabelText('Postal Code'));
+
+        await userEvent.type(await screen.findByLabelText('First Name'), address.firstName);
+        await userEvent.type(screen.getByLabelText('Last Name'), address.lastName);
+        await userEvent.type(screen.getByRole('textbox', { name: /address/i }), address.address1);
+        await userEvent.type(screen.getByLabelText('City'), address.city);
         await userEvent.selectOptions(
             screen.getByTestId('countryCodeInput-select'),
-            shippingAddress.countryCode,
+            address.countryCode,
         );
-        await userEvent.type(screen.getByLabelText('Postal Code'), shippingAddress.postalCode);
+
+        if (address.stateOrProvinceCode) {
+            await userEvent.selectOptions(
+                screen.getByTestId('provinceCodeInput-select'),
+                address.stateOrProvinceCode,
+            );
+        }
+
+        if (address.stateOrProvince) {
+            await userEvent.clear(screen.getByLabelText('State/Province (Optional)'));
+            await userEvent.type(screen.getByLabelText('State/Province (Optional)'),
+                address.stateOrProvince,
+            );
+        }
+
+        await userEvent.type(screen.getByLabelText('Postal Code'), address.postalCode);
     }
 }
