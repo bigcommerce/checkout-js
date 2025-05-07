@@ -1,8 +1,11 @@
 import { CustomerInitializeOptions, CustomerRequestOptions } from "@bigcommerce/checkout-sdk";
+import { PayPalCommerceButton } from "@bigcommerce/checkout/paypal-commerce-integration";
 import React, { FunctionComponent } from "react";
 
 import CheckoutButton from "./CheckoutButton";
-import { ApplePayButton, PayPalCommerceButton } from "./customWalletButton";
+import { ApplePayButton } from "./customWalletButton";
+import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
+import { useLocale } from "@bigcommerce/checkout/locale";
 
 interface CheckoutButtonV1ResolverProps {
     methodId: string;
@@ -17,8 +20,11 @@ const CheckoutButtonV1Resolver: FunctionComponent<CheckoutButtonV1ResolverProps>
     isShowingWalletButtonsOnTop= false,
     onError,
     methodId,
+    onClick,
     ...rest
 }) => {
+    const { checkoutService, checkoutState } = useCheckout();
+    const { language } = useLocale();
     switch (methodId) {
         case 'applepay':
             return (
@@ -38,7 +44,11 @@ const CheckoutButtonV1Resolver: FunctionComponent<CheckoutButtonV1ResolverProps>
                     containerId={`${methodId}CheckoutButton`}
                     key={methodId}
                     methodId={methodId}
-                    onError={onError}
+                    onUnhandledError={() => onError}
+                    onWalletButtonClick={() => onClick}
+                    checkoutService={checkoutService}
+                    checkoutState={checkoutState}
+                    language={language}
                     {...rest}
                 />
             );

@@ -1,11 +1,13 @@
 import { CheckoutSettings, CustomerInitializeOptions, CustomerRequestOptions } from '@bigcommerce/checkout-sdk';
+import { PayPalCommerceButton } from "@bigcommerce/checkout/paypal-commerce-integration";
 import React, { FunctionComponent, memo } from 'react';
 
-import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { TranslatedString, useLocale } from '@bigcommerce/checkout/locale';
 
 import CheckoutButton from './CheckoutButton';
-import { AmazonPayV2Button, ApplePayButton, PayPalCommerceButton } from './customWalletButton';
+import { AmazonPayV2Button, ApplePayButton } from './customWalletButton';
 import { getSupportedMethodIds } from './getSupportedMethods';
+import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
 export interface CheckoutButtonListProps {
     methodIds?: string[];
@@ -28,9 +30,12 @@ const CheckoutButtonList: FunctionComponent<CheckoutButtonListProps> = ({
     checkoutSettings,
     methodIds = [],
     hideText = false,
+    onClick,
     ...rest
 }) => {
     const supportedMethodIds = getSupportedMethodIds(methodIds, checkoutSettings);
+    const { checkoutService, checkoutState } = useCheckout();
+    const { language } = useLocale();
 
     if (supportedMethodIds.length === 0) {
         return null;
@@ -90,7 +95,11 @@ const CheckoutButtonList: FunctionComponent<CheckoutButtonListProps> = ({
                                 containerId={`${methodId}CheckoutButton`}
                                 key={methodId}
                                 methodId={methodId}
-                                onError={onError}
+                                onUnhandledError={() => onError}
+                                onWalletButtonClick={() => onClick}
+                                checkoutService={checkoutService}
+                                checkoutState={checkoutState}
+                                language={language}
                                 {...rest}
                             />
                         );
