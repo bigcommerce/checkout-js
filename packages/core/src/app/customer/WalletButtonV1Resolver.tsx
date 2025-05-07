@@ -2,7 +2,8 @@ import { CustomerInitializeOptions, CustomerRequestOptions } from "@bigcommerce/
 import React, { FunctionComponent } from "react";
 
 import CheckoutButton from "./CheckoutButton";
-import { ApplePayButton, PayPalCommerceButton } from "./customWalletButton";
+import { ApplePayButton } from "./customWalletButton";
+import { PayPalCommerceButton } from "@bigcommerce/checkout/paypal-utils";
 
 interface CheckoutButtonV1ResolverProps {
     methodId: string;
