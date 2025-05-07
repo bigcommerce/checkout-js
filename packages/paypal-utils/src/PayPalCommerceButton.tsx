@@ -21,7 +21,7 @@ const PayPalCommerceButton: FunctionComponent<CheckoutButtonProps> = ({
 }) => {
     const { checkoutService } = useCheckout();
     useEffect(() => {
-        const initializePayment = async () => {
+        const initializeCustomer = async () => {
             try {
                 await checkoutService.initializeCustomer({
                     methodId,
@@ -41,12 +41,12 @@ const PayPalCommerceButton: FunctionComponent<CheckoutButtonProps> = ({
             }
         };
 
-        void initializePayment();
+        void initializeCustomer();
 
         return () => {
-            const deinitializePayment = async () => {
+            const deinitializeCustomer = async () => {
                 try {
-                    await checkoutService.deinitializePayment({
+                    await checkoutService.deinitializeCustomer({
                         methodId,
                     });
                 } catch (error) {
@@ -58,7 +58,7 @@ const PayPalCommerceButton: FunctionComponent<CheckoutButtonProps> = ({
                 }
             };
 
-            void deinitializePayment();
+            void deinitializeCustomer();
         };
     }, [checkoutService, onError]);
 
