@@ -4,6 +4,7 @@ import {
     createEmbeddedCheckoutMessenger,
     EmbeddedCheckoutMessenger,
 } from '@bigcommerce/checkout-sdk';
+import faker from '@faker-js/faker';
 import userEvent from '@testing-library/user-event';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
@@ -499,6 +500,70 @@ describe('Shipping step', () => {
 
             expect(checkoutService.updateBillingAddress).toHaveBeenCalled();
             expect(screen.getByText(payments[0].config.displayName)).toBeInTheDocument();
+        });
+
+        it('goes back to the shipping step as a guest and updates the shipping address form correctly', async () => {
+            checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
+
+            checkout.updateCheckout(
+                'put',
+                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments/consignment-1',
+                {
+                    ...checkoutWithShippingAndBilling,
+                },
+            );
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            await userEvent.click(screen.getAllByRole('button', {name: 'Edit'})[1]);
+
+            const randomAddress1 = JSON.parse(JSON.stringify({
+                firstName: faker.name.firstName(),
+                lastName: faker.name.lastName(),
+                address1: faker.address.streetAddress(),
+                city: faker.address.city(),
+                countryCode: 'CC',
+                stateOrProvince: 'dummy state',
+                postalCode: faker.address.zipCode(),
+            }));
+
+            await checkout.fillAddressForm(randomAddress1);
+            await userEvent.selectOptions(
+                screen.getByTestId('field_60Input-select'),
+                '2',
+            );
+
+            expect((checkoutService.updateShippingAddress as any).mock.calls.slice(-1)[0][0]).toEqual(
+                expect.objectContaining({
+                    ...randomAddress1,
+                    customFields: [{fieldId: 'field_60', fieldValue: '2'}],
+                }),
+            );
+
+            const randomAddress2 = JSON.parse(JSON.stringify({
+                firstName: faker.name.firstName(),
+                lastName: faker.name.lastName(),
+                address1: faker.address.streetAddress(),
+                city: faker.address.city(),
+                countryCode: 'AU',
+                stateOrProvinceCode: faker.helpers.arrayElement(['NSW', 'VIC', 'QLD', 'TAS']),
+                postalCode: faker.address.zipCode(),
+            }));
+
+            await checkout.fillAddressForm(randomAddress2);
+            await userEvent.selectOptions(
+                screen.getByTestId('field_60Input-select'),
+                '1',
+            );
+
+            expect((checkoutService.updateShippingAddress as any).mock.calls.slice(-1)[0][0]).toEqual(
+                expect.objectContaining({
+                        ...randomAddress2,
+                        customFields: [{fieldId: 'field_60', fieldValue: '1'}],
+                }),
+            );
         });
     });
 
