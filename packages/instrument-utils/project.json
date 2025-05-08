@@ -1,21 +1,18 @@
 {
-  "root": "packages/instrument-utils",
+  "name": "instrument-utils",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/instrument-utils/src",
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["packages/instrument-utils/**/*.{ts,tsx}"]
-      }
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/instrument-utils"],
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/packages/instrument-utils"],
       "options": {
-        "jestConfig": "packages/instrument-utils/jest.config.js",
-        "passWithNoTests": true
+        "jestConfig": "packages/instrument-utils/jest.config.js"
       }
     }
   },

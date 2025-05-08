@@ -1,25 +1,20 @@
 {
-  "root": "packages/barclay-integration",
+  "name": "barclay-integration",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/barclay-integration/src",
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["packages/barclay-integration/**/*.{ts,tsx}"]
-      }
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/barclay-integration"],
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/packages/barclay-integration"],
       "options": {
-        "jestConfig": "packages/barclay-integration/jest.config.js",
-        "passWithNoTests": true
+        "jestConfig": "packages/barclay-integration/jest.config.js"
       }
     }
   },
-  "tags": [
-    "scope:integration"
-    ]
+  "tags": ["scope:integration"]
 }

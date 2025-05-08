@@ -1,21 +1,18 @@
 {
-  "root": "packages/checkout-extension",
+  "name": "checkout-extension",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/checkout-extension/src",
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["packages/checkout-extension/**/*.{ts,tsx}"]
-      }
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/checkout-extension"],
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/packages/checkout-extension"],
       "options": {
-        "jestConfig": "packages/checkout-extension/jest.config.js",
-        "passWithNoTests": true
+        "jestConfig": "packages/checkout-extension/jest.config.js"
       }
     }
   },
