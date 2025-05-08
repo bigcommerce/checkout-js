@@ -149,7 +149,7 @@ const GuestForm: FunctionComponent<
                 )}
 
                 {!isLoading && (
-                    <p>
+                    <p className="customer-login-link">
                         <TranslatedString id="customer.login_text" />{' '}
                         <a
                             data-test="customer-continue-button"

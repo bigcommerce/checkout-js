@@ -40,6 +40,7 @@
 
     .form-field {
         position: relative;
+        margin: 0 0 spacing("half");
 
         &:last-child {
             margin-bottom: 0;

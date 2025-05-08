@@ -20,7 +20,7 @@
 .checkout-step {
     border-bottom: container("border");
     counter-increment: $checkoutStep-counter;
-    padding: spacing("single") 0;
+    padding: #{spacing("fifth") + spacing("fifth")} 0;
 
     &:last-child {
         border: 0;
@@ -28,8 +28,6 @@
 }
 
 .checkout-view-header {
-    margin-bottom: remCalc(10px);
-
     &:last-child {
         margin-bottom: 0;
     }
@@ -111,7 +109,7 @@
     align-items: top;
     display: flex;
     flex-wrap: wrap;
-    padding: spacing("single") 0;
+    padding: #{spacing("half") + spacing("third")} 0;
 
     @include breakpoint("small") {
         flex-wrap: nowrap;
