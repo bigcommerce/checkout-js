@@ -8,5 +8,5 @@
       "path": "./tsconfig.spec.json"
     }
   ],
-  "files": ["../core/types/card-validator.d.ts"],
+  "files": ["../core/types/card-validator.d.ts"]
 }

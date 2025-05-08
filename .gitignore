@@ -12,3 +12,5 @@ coverage
 /packages/test-framework/report
 /packages/test-framework/screenshots
 /packages/test-framework/videos
+
+.nx/cache
