@@ -1,21 +1,18 @@
 {
-  "root": "packages/paypal-fastlane-integration",
+  "name": "paypal-fastlane-integration",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/paypal-fastlane-integration/src",
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["packages/paypal-fastlane-integration/**/*.ts"]
-      }
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/paypal-fastlane-integration"],
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/packages/paypal-fastlane-integration"],
       "options": {
-        "jestConfig": "packages/paypal-fastlane-integration/jest.config.js",
-        "passWithNoTests": true
+        "jestConfig": "packages/paypal-fastlane-integration/jest.config.js"
       }
     }
   },

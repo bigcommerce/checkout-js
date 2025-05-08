@@ -1,21 +1,18 @@
 {
-  "root": "packages/test-utils",
+  "name": "test-utils",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/test-utils/src",
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["packages/test-utils/**/*.{ts,tsx}"]
-      }
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/test-utils"],
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/packages/test-utils"],
       "options": {
-        "jestConfig": "packages/test-utils/jest.config.js",
-        "passWithNoTests": true
+        "jestConfig": "packages/test-utils/jest.config.js"
       }
     }
   },

@@ -16,5 +16,5 @@
     "**/*.spec.jsx",
     "**/*.d.ts"
   ],
-  "composite": true,
+  "composite": true
 }

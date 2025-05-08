@@ -1,21 +1,18 @@
 {
-  "root": "packages/offline-payment-integration",
+  "name": "offline-payment-integration",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/offline-payment-integration/src",
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["packages/offline-payment-integration/**/*.{ts,tsx}"]
-      }
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/offline-payment-integration"],
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/packages/offline-payment-integration"],
       "options": {
-        "jestConfig": "packages/offline-payment-integration/jest.config.js",
-        "passWithNoTests": true
+        "jestConfig": "packages/offline-payment-integration/jest.config.js"
       }
     }
   },

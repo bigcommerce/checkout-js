@@ -1,7 +1,7 @@
 {
-    "name": "@bigcommerce/checkout/workspace-tools",
-    "version": "0.0.1",
-    "main": "src/index.js",
-    "generators": "./generators.json",
-    "executors": "./executors.json"
+  "name": "@bigcommerce/checkout/workspace-tools",
+  "version": "0.0.1",
+  "main": "src/index.js",
+  "generators": "./generators.json",
+  "executors": "./executors.json"
 }

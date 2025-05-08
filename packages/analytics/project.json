@@ -1,30 +1,21 @@
 {
-  "root": "packages/analytics",
+  "name": "analytics",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/analytics/src",
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
-      "options": {
-        "lintFilePatterns": [
-          "packages/analytics/**/*.{ts,tsx}"
-        ]
-      }
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": [
-        "coverage/packages/analytics"
-      ],
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/packages/analytics"],
       "options": {
-        "jestConfig": "packages/analytics/jest.config.js"
+        "jestConfig": "packages/analytics/jest.config.js",
+        "passWithNoTests": false
       }
     }
   },
-  "tags": [
-    "scope:shared"
-  ]
+  "tags": ["scope:shared"]
 }

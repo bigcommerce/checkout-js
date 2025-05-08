@@ -26,6 +26,7 @@ export default class EmptyCartMessage extends PureComponent<
     componentDidMount(): void {
         const { waitInterval } = this.props;
 
+        // @ts-ignore
         this.waitToken = setTimeout(() => {
             this.setState({ isWaiting: false });
         }, waitInterval);
