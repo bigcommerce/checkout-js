@@ -1,0 +1,25 @@
+{
+  "extends": ["../../.eslintrc.json"],
+  "overrides": [
+    {
+      "files": ["*.tsx"],
+      "rules": {
+        "@typescript-eslint/no-unsafe-argument": "off",
+        "@typescript-eslint/no-unsafe-assignment": "off",
+        "@typescript-eslint/no-unsafe-member-access": "off",
+        "@typescript-eslint/no-unnecessary-condition": "off",
+        "no-nested-ternary": "off",
+        "@typescript-eslint/default-param-last": "off"
+      }
+    },
+  {
+      "files": ["*.test.tsx"],
+        "rules": {
+          "@eslint-disable-next-line": "off",
+          "testing-library/no-container": "off",
+          "@typescript-eslint/no-unsafe-call": "off",
+          "@typescript-eslint/consistent-type-assertions": "off"
+        }
+    }
+]
+}
