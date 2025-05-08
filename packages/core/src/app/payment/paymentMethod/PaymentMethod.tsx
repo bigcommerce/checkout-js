@@ -89,7 +89,6 @@ const PaymentMethodComponent: FunctionComponent<
     }
 
     if (
-        method.gateway === PaymentMethodId.Afterpay ||
         method.id === PaymentMethodId.BraintreeVenmo ||
         method.id === PaymentMethodId.Humm ||
         method.id === PaymentMethodId.Laybuy ||
