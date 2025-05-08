@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.587.1](https://github.com/bigcommerce/checkout-js/compare/v1.587.0...v1.587.1) (2025-05-08)
+
+
+### Bug Fixes
+
+* **common:** fixed npm run release:alpha command run ([#2294](https://github.com/bigcommerce/checkout-js/issues/2294)) ([359baba](https://github.com/bigcommerce/checkout-js/commit/359babaa71a5f662c7517cfd469240c0b3e5fd47))
+
 ## [1.587.0](https://github.com/bigcommerce/checkout-js/compare/v1.586.5...v1.587.0) (2025-05-07)
 
 
