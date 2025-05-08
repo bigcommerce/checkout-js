@@ -64,7 +64,7 @@
 //
 // -----------------------------------------------------------------------------
 .customerHeader,
-.checkout-step--customer { 
+.checkout-step--customer {
     .stepHeader-body {
         overflow: visible;
     }
@@ -124,6 +124,10 @@ $buttonWidthMap: (
 
 .checkout-button-container {
     margin: spacing('double') 0 0;
+
+    p {
+        margin-bottom: #{spacing("half") + spacing("third")}
+    }
 
     .checkoutRemote {
         display: grid;
@@ -236,7 +240,7 @@ $buttonWidthMap: (
     display: flex;
     height: spacing("half");
     justify-content: space-between;
-    margin-top: spacing('double');
+    margin-top: #{spacing('base') + spacing('base')};
     text-align: center;
     width: 100%;
 
