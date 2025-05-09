@@ -136,7 +136,7 @@ describe('SentryErrorLogger', () => {
             (integration) => integration.name === 'RewriteFrames',
         ) as RewriteFrames;
 
-        const output = rewriteFrames.process({
+        const output = rewriteFrames.processEvent({
             exception: {
                 values: [
                     {
@@ -185,7 +185,7 @@ describe('SentryErrorLogger', () => {
             (integration) => integration.name === 'RewriteFrames',
         ) as RewriteFrames;
 
-        const output = rewriteFrames.process({
+        const output = rewriteFrames.processEvent({
             exception: {
                 values: [
                     {
