@@ -22,7 +22,9 @@ const InstrumentStoreAsDefaultField: FunctionComponent<InstrumentStoreAsDefaultF
         if (disabled) {
             paymentForm.setFieldValue('shouldSetAsDefaultInstrument', false);
         }
-    }, [disabled, paymentForm]);
+        // Ignoring paymentForm dependency as it causes sequential re-renders when included in array
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [disabled]);
 
     const labelContent = useMemo(() => <TranslatedString id={translationId} />, [translationId]);
 
