@@ -8,6 +8,7 @@
     "apple-pay-integration": "packages/apple-pay-integration",
     "barclay-integration": "packages/barclay-integration",
     "bigcommerce-payments-integration": "packages/bigcommerce-payments-integration",
+    "bigcommerce-payments-utils": "packages/bigcommerce-payments-utils",
     "bluesnap-direct-integration": "packages/bluesnap-direct-integration",
     "bolt-integration": "packages/bolt-integration",
     "braintree-integration": "packages/braintree-integration",
