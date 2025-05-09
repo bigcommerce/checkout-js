@@ -1,43 +1,42 @@
 {
-  "root": "packages/core",
+  "name": "core",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/core/src",
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/workspace:run-commands",
+      "executor": "nx:run-commands",
       "options": {
         "command": "webpack --mode production"
       },
       "dependsOn": [
         {
-          "target": "generate",
-          "projects": "self"
+          "target": "generate"
         },
         {
           "target": "build",
-          "projects": "dependencies"
+          "dependencies": true
         }
       ]
     },
     "dev": {
-      "executor": "@nrwl/workspace:run-commands",
+      "executor": "nx:run-commands",
       "options": {
         "command": "MEASURE_SPEED=false webpack --mode development --watch"
       },
       "dependsOn": [
         {
-          "target": "generate",
-          "projects": "self"
+          "target": "generate"
         },
         {
           "target": "build",
-          "projects": "dependencies"
+          "dependencies": true
         }
       ]
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/core"],
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/packages/core"],
       "options": {
         "jestConfig": "packages/core/jest.config.js",
         "passWithNoTests": false,
@@ -45,27 +44,22 @@
       },
       "dependsOn": [
         {
-          "target": "generate",
-          "projects": "self"
+          "target": "generate"
         }
       ]
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "fix": true,
-      "options": {
-        "lintFilePatterns": ["packages/core/**/*.{ts,tsx}"]
-      },
       "dependsOn": [
         {
-          "target": "generate",
-          "projects": "self"
+          "target": "generate"
         }
       ]
     },
     "generate": {
-      "executor": "@nrwl/workspace:run-commands",
+      "executor": "nx:run-commands",
       "options": {
         "commands": [
           "npx nx generate @bigcommerce/checkout/workspace-tools:auto-export --projectName=core"

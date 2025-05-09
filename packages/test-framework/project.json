@@ -1,21 +1,17 @@
 {
-  "root": "packages/test-framework",
+  "name": "test-framework",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/test-framework/src",
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["packages/test-framework/**/*.{ts,tsx,js}"]
-      }
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
     },
     "regenerate-har": {
-      "executor": "@nrwl/workspace:run-commands",
+      "executor": "@nx/workspace:run-commands",
       "options": {
-        "commands": [
-          "node packages/test-framework/scripts/polly/regenerateHar.js"
-        ]
+        "commands": ["node packages/test-framework/scripts/polly/regenerateHar.js"]
       }
     }
   },

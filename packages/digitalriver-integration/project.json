@@ -1,24 +1,20 @@
 {
-  "root": "packages/digitalriver-integration",
+  "name": "digitalriver-integration",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/digitalriver-integration/src",
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["packages/digitalriver-integration/**/*.{ts,tsx}"]
-      }
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/digitalriver-integration"],
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/packages/digitalriver-integration"],
       "options": {
-        "jestConfig": "packages/digitalriver-integration/jest.config.js",
-        "passWithNoTests": true
+        "jestConfig": "packages/digitalriver-integration/jest.config.js"
       }
     }
   },
-  "tags": [
-    "scope:integration" ]
+  "tags": ["scope:integration"]
 }

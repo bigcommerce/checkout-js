@@ -1,21 +1,18 @@
 {
-  "root": "packages/wallet-button-integration",
+  "name": "wallet-button-integration",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/wallet-button-integration/src",
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["packages/wallet-button-integration/**/*.ts"]
-      }
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/wallet-button-integration"],
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/packages/wallet-button-integration"],
       "options": {
-        "jestConfig": "packages/wallet-button-integration/jest.config.js",
-        "passWithNoTests": true
+        "jestConfig": "packages/wallet-button-integration/jest.config.js"
       }
     }
   },
