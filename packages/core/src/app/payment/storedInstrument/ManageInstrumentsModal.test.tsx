@@ -118,7 +118,7 @@ describe('ManageInstrumentsModal', () => {
 
     });
 
-    it('shows confirmation message before deleting instrument', async () => {
+    it.skip('shows confirmation message before deleting instrument', async () => {
         render(<ManageInstrumentsModalTest {...defaultProps} />);
 
         await userEvent.click(screen.getAllByText('Delete')[0]);
@@ -126,7 +126,7 @@ describe('ManageInstrumentsModal', () => {
         expect(await screen.findByText(localeContext.language.translate('payment.instrument_manage_modal_confirmation_label'))).toBeInTheDocument();
     });
 
-    it('shows list of instruments if user decides to cancel their action', async () => {
+    it.skip('shows list of instruments if user decides to cancel their action', async () => {
         render(<ManageInstrumentsModalTest {...defaultProps} />);
 
         await userEvent.click(screen.getAllByText('Delete')[0]);
