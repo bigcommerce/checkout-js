@@ -343,10 +343,10 @@ describe('CheckoutCustomFormFields', () => {
                 }),
             ).toBeInTheDocument();
             expect(
-                screen.getAllByRole('button', {
+                screen.getByRole('button', {
                     name: 'INGBNL2A / Issuer Simulation V3 - ING',
                 }),
-            ).toHaveLength(1);
+            ).toBeInTheDocument();
             await user.click(screen.getByText('INGBNL2A / Issuer Simulation V3 - ING'));
 
             expect(

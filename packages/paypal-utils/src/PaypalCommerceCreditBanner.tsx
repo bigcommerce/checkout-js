@@ -24,6 +24,7 @@ const PaypalCommerceCreditBanner: FunctionComponent<{ onUnhandledError?(error: E
                 onUnhandledError?.(error);
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

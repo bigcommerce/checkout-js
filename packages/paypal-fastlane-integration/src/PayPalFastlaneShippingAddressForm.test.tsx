@@ -13,6 +13,7 @@ jest.mock('@bigcommerce/checkout/locale', () => ({
     localizeAddress: jest.fn().mockReturnValue({ firstName: 'test-name' }),
     language: jest.fn().mockReturnValue({ translate:  jest.fn().mockReturnValue('string') }),
     TranslatedString: () => {
+        // eslint-disable-next-line react/jsx-no-useless-fragment
         return <></>;
     },
 }));
@@ -20,6 +21,7 @@ jest.mock('@bigcommerce/checkout/locale', () => ({
 jest.mock('../../ui/src/form/DynamicFormField', () => ({
     __esModule: true,
     DynamicFormField: () => {
+        // eslint-disable-next-line react/jsx-no-useless-fragment
         return <></>;
     },
 }));

@@ -87,7 +87,7 @@ describe('PaypalCommerceRatePayPaymentMethod', () => {
                 <FormContext.Provider value={{ isSubmitted: true, setSubmitted: jest.fn() }}>
                     <Formik validate={
                         (values) => {
-                            let errors = {
+                            const errors = {
                                 ratepayPhoneNumber: '',
                                 ratepayPhoneCountryCode: '',
                             };
@@ -140,6 +140,7 @@ describe('PaypalCommerceRatePayPaymentMethod', () => {
         render(<PaypalCommerceRatePayPaymentMethodTest {...props} />);
 
         const submitForm = jest.fn();
+        // eslint-disable-next-line testing-library/no-node-access
         const form = document.querySelectorAll('form')[0];
 
         form.onsubmit = submitForm;
@@ -155,9 +156,9 @@ describe('PaypalCommerceRatePayPaymentMethod', () => {
         const deinitializePayment = jest
             .spyOn(checkoutService, 'deinitializePayment')
             .mockResolvedValue(checkoutState);
-        const component = render(<PaypalCommerceRatePayPaymentMethodTest {...props} />);
+        const { unmount } = render(<PaypalCommerceRatePayPaymentMethodTest {...props} />);
 
-        component.unmount();
+        unmount();
 
         expect(deinitializePayment).toHaveBeenCalledWith({
             gatewayId: props.method.gateway,
@@ -203,11 +204,11 @@ describe('PaypalCommerceRatePayPaymentMethod', () => {
             new Error('test error'),
         );
 
-        const component = render(<PaypalCommerceRatePayPaymentMethodTest {...props} />);
+        const { unmount } = render(<PaypalCommerceRatePayPaymentMethodTest {...props} />);
 
         await new Promise((resolve) => process.nextTick(resolve));
 
-        component.unmount();
+        unmount();
 
         await new Promise((resolve) => process.nextTick(resolve));
 
@@ -257,8 +258,8 @@ describe('PaypalCommerceRatePayPaymentMethod', () => {
             paymentForm: {
                 disableSubmit: disableSubmitMock,
                 setSubmitted: setSubmittedMock,
-                setValidationSchema: setValidationSchema,
-                setFieldValue: setFieldValue,
+                setValidationSchema,
+                setFieldValue,
             } as unknown as PaymentFormService,
             onUnhandledError: onUnhandledErrorMock,
         };

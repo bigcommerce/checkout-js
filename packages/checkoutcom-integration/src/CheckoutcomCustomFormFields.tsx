@@ -110,6 +110,7 @@ const Sepa: FunctionComponent<CheckoutcomAPMFormProps> = ({ method, debtor }) =>
                     />
                 }
                 name="sepaMandate"
+                // eslint-disable-next-line react/jsx-no-bind
                 onChange={toggleSubmitButton}
             />
         </>
@@ -196,6 +197,7 @@ const Ideal: FunctionComponent<CheckoutcomAPMFormProps> = ({ method }) => {
     const issuers: Issuer[] = method.initializationData.idealIssuers;
 
     const handleClick = ({ currentTarget }: SyntheticEvent<HTMLButtonElement>) => {
+        // eslint-disable-next-line no-underscore-dangle
         const _selectedIssuer = issuers.find(({ bic }) => bic === currentTarget.dataset.bic);
 
         if (!_selectedIssuer) {
