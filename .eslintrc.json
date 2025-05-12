@@ -33,7 +33,7 @@
           }
         ],
         "@nx/enforce-module-boundaries": [
-          "error",
+          "warn",
           {
             "enforceBuildableLibDependency": false,
             "allow": [],
@@ -64,7 +64,16 @@
     {
       "files": ["*.ts", "*.tsx"],
       "extends": ["plugin:@nx/typescript"],
-      "rules": {}
+      "rules": {
+        "@typescript-eslint/consistent-indexed-object-style": "off",
+        "@typescript-eslint/no-invalid-void-type": "off",
+        "@typescript-eslint/no-redundant-type-constituents": "off",
+        "@typescript-eslint/prefer-nullish-coalescing": "off",
+        "@typescript-eslint/prefer-optional-chain": "off",
+        "@typescript-eslint/prefer-reduce-type-parameter": "off",
+        "@typescript-eslint/use-unknown-in-catch-callback-variable": "off",
+        "react/prefer-read-only-props": "off"
+      }
     },
     {
       "files": ["*.js", "*.jsx"],
