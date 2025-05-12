@@ -29,6 +29,8 @@ export default class GoogleAutocompleteScriptLoader {
                     resolve(window.google.maps);
                 }
 
+                // TODO:CHECKOUT-9228 Fix lint error after nx upgrade to 19.8.9
+                // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
                 reject();
             };
 

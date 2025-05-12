@@ -129,9 +129,9 @@ describe('PayPalCommercePaymentMethodComponent', () => {
         const deinitializePayment = jest
             .spyOn(checkoutService, 'deinitializePayment')
             .mockResolvedValue(checkoutState);
-        const component = render(<PayPalCommercePaymentMethodComponent {...props} />);
+        const { unmount } = render(<PayPalCommercePaymentMethodComponent {...props} />);
 
-        component.unmount();
+        unmount();
 
         expect(deinitializePayment).toHaveBeenCalledWith({
             gatewayId: props.method.gateway,
@@ -153,11 +153,11 @@ describe('PayPalCommercePaymentMethodComponent', () => {
             new Error('test error'),
         );
 
-        const component = render(<PayPalCommercePaymentMethodComponent {...props} />);
+        const { unmount } = render(<PayPalCommercePaymentMethodComponent {...props} />);
 
         await new Promise((resolve) => process.nextTick(resolve));
 
-        component.unmount();
+        unmount();
 
         await new Promise((resolve) => process.nextTick(resolve));
 
@@ -177,6 +177,7 @@ describe('PayPalCommercePaymentMethodComponent', () => {
 
         await new Promise((resolve) => process.nextTick(resolve));
 
+        // eslint-disable-next-line testing-library/prefer-screen-queries
         expect(getByTestId(testId)).toBeInTheDocument();
     });
 

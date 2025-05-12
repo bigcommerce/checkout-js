@@ -1,3 +1,5 @@
+// TODO:CHECKOUT-9228 Fix lint errors after nx upgrade to 19.8.9
+/* eslint-disable @typescript-eslint/prefer-literal-enum-member */
 import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
 
 enum GooglePayPaymentMethodId {

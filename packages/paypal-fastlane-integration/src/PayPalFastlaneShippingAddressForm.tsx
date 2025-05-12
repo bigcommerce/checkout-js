@@ -23,6 +23,7 @@ import PoweredByPayPalFastlaneLabel from './PoweredByPayPalFastlaneLabel';
 
 export interface PayPalFastlaneStaticAddressProps {
     address: Address;
+    countries?: Country[];
     formFields: FormField[];
     isLoading: boolean;
     methodId: string;
@@ -32,7 +33,6 @@ export interface PayPalFastlaneStaticAddressProps {
     onAddressSelect(address: Address): void;
     onFieldChange(fieldName: string, value: string): void;
     onUnhandledError?(error: Error): void;
-    countries?: Country[];
 }
 
 export interface PayPalFastlaneAddressComponentRef {

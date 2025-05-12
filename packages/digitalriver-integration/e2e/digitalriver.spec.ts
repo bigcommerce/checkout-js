@@ -37,10 +37,12 @@ test.describe('Digital River', () => {
             .getByPlaceholder('1234')
             .fill('1234');
         await page
+            // eslint-disable-next-line testing-library/prefer-screen-queries
             .getByRole('checkbox', {
                 name: 'By submitting my order, I agree to the Terms of Sale and the Privacy Policy of Digital River Ireland Ltd.',
             })
             .check();
+        // eslint-disable-next-line testing-library/prefer-screen-queries
         await page.getByRole('button', { name: 'Submit Order' }).click();
         await page.waitForLoadState('networkidle');
 
@@ -71,12 +73,15 @@ test.describe('Digital River', () => {
         // 2. Playwright actions
         await checkout.goto();
         await checkout.selectPaymentMethod('digitalriver');
+        // eslint-disable-next-line testing-library/prefer-screen-queries
         await page.getByRole('button', { name: 'Wire Transfer' }).click();
         await page
+            // eslint-disable-next-line testing-library/prefer-screen-queries
             .getByRole('checkbox', {
                 name: 'By submitting my order, I agree to the Terms of Sale and the Privacy Policy of Digital River Ireland Ltd.',
             })
             .check();
+        // eslint-disable-next-line testing-library/prefer-screen-queries
         await page.getByRole('button', { name: 'Submit Order' }).click();
         await page.waitForLoadState('networkidle');
 

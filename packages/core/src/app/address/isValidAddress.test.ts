@@ -57,6 +57,8 @@ describe('isValidAddress()', () => {
             const output = isValidAddress(
                 getAddress(),
                 getFormFields().map((field) =>
+                    // TODO:CHECKOUT-9228 Fix lint error after nx upgrade to 19.8.9
+                    // eslint-disable-next-line valid-typeof
                     typeof field.type !== undefined && field.type === 'integer'
                         ? { ...field, required: true }
                         : field,

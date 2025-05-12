@@ -113,6 +113,7 @@ describe('when using Checkoutcom payment', () => {
     it('renders as credit card payment method component', () => {
         const { container } = render(<PaymentMethodTest {...defaultProps} />);
 
+        // eslint-disable-next-line testing-library/no-container
         expect(container.querySelector('.paymentMethod--creditCard')).toBeInTheDocument();
     });
 

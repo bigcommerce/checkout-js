@@ -10,6 +10,8 @@ import { sensitiveHeaders } from './senstiveDataConfig';
  * PollyJS (PollyObject) utilises this to process HAR data before writing it to a file.
  */
 export class CustomFSPersister extends FSPersister {
+    // TODO:CHECKOUT-9228 Fix lint error after nx upgrade to 19.8.9
+    // eslint-disable-next-line @typescript-eslint/class-literal-property-style
     static get id(): string {
         return 'CustomFSPersister';
     }

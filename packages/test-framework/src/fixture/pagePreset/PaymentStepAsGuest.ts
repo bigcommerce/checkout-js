@@ -6,7 +6,7 @@ import { Locales } from './types';
 
 export class PaymentStepAsGuest implements CheckoutPagePreset {
     constructor(
-        private currency: string = 'USD',
+        private currency = 'USD',
         private countryCode?: string,
         private locale: string = Locales.US,
     ) {}

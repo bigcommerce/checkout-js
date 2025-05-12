@@ -9,7 +9,7 @@ export type MatchedProps<TInjectedProps, TProps> = {
         : TProps[P];
 };
 
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type InjectHoc<TInjectedProps, TOwnProps = {}> = <
     TProps extends MatchedProps<TInjectedProps, TProps> & TOwnProps,
 >(

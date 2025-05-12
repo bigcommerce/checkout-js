@@ -286,6 +286,8 @@ describe('WalletButtonPaymentMethod', () => {
             const method = {
                 ...defaultProps.method,
                 initializationData: {
+                    // TODO:CHECKOUT-9228 Fix lint error after nx upgrade to 19.8.9
+                    // eslint-disable-next-line @typescript-eslint/naming-convention
                     card_information: {
                         number: '1111',
                         type: 'Visa',
