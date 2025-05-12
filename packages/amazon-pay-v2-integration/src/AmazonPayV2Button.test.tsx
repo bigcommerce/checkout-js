@@ -5,9 +5,9 @@ import React from 'react';
 import '@testing-library/jest-dom';
 import { CheckoutButtonProps } from '@bigcommerce/checkout/payment-integration-api';
 
-// import AmazonPayV2Button from './AmazonPayV2Button';
+import AmazonPayV2Button from './AmazonPayV2Button';
 
-describe.skip('AmazonPayV2Button', () => {
+describe('AmazonPayV2Button', () => {
     let defaultProps: CheckoutButtonProps;
 
     beforeEach(() => {
@@ -26,11 +26,7 @@ describe.skip('AmazonPayV2Button', () => {
     });
 
     it('renders as CheckoutButton', () => {
-        // const { container } = render(<AmazonPayV2Button {...defaultProps} />);
-        console.log('AmazonPayV2Button', defaultProps);
-        render(<div />);
-
-        expect(true).toBe(true);
-        // expect(container.getElementsByClassName('checkoutButtonContainerClass')).toHaveLength(1);
+        const { container } = render(<AmazonPayV2Button {...defaultProps} />);
+        expect(container.getElementsByClassName('checkoutButtonContainerClass')).toHaveLength(1);
     });
 });
