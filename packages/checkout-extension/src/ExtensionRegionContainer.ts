@@ -8,7 +8,7 @@ export enum ExtensionRegionContainer {
     SummaryLastItemAfter = 'extension-region-summary-lastitem-after',
 }
 
-export const extensionRegionToContainerMap: Record<ExtensionRegion, ExtensionRegionContainer | ''> = {
+export const extensionRegionToContainerMap: Record<ExtensionRegion, ExtensionRegionContainer> = {
     [ExtensionRegion.ShippingShippingAddressFormBefore]:
         ExtensionRegionContainer.ShippingShippingAddressFormBefore,
     [ExtensionRegion.ShippingShippingAddressFormAfter]:
@@ -17,5 +17,4 @@ export const extensionRegionToContainerMap: Record<ExtensionRegion, ExtensionReg
         ExtensionRegionContainer.ShippingSelectedShippingMethod,
     [ExtensionRegion.SummaryAfter]: ExtensionRegionContainer.SummaryAfter,
     [ExtensionRegion.SummaryLastItemAfter]: ExtensionRegionContainer.SummaryLastItemAfter,
-    [ExtensionRegion.GlobalWebWorker]: '',
 };

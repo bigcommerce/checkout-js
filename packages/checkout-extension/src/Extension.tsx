@@ -34,7 +34,7 @@ export const Extension = ({ region }: ExtensionProps): React.JSX.Element | null 
         }
     }, [containerId, extensionService, isRegionEnabled, region]);
 
-    if (isRegionEnabled && containerId !== '') {
+    if (isRegionEnabled) {
         return <div id={containerId} />;
     }
 
