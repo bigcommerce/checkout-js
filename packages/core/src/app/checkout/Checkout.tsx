@@ -524,6 +524,7 @@ class Checkout extends Component<
                     if (matched) {
                         return (
                             <LazyContainer>
+                                <Extension region={ExtensionRegion.GlobalWebWorker} />
                                 <Extension region={ExtensionRegion.SummaryAfter} />
                                 <CartSummaryDrawer isMultiShippingMode={isMultiShippingMode} />
                             </LazyContainer>
