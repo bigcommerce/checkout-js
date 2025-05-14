@@ -9,6 +9,7 @@
     "barclay-integration": "packages/barclay-integration",
     "bigcommerce-payments-integration": "packages/bigcommerce-payments-integration",
     "bluesnap-direct-integration": "packages/bluesnap-direct-integration",
+    "bigcommerce-payments-utils": "packages/bigcommerce-payments-utils",
     "bolt-integration": "packages/bolt-integration",
     "braintree-integration": "packages/braintree-integration",
     "checkout-button-integration": "packages/checkout-button-integration",
