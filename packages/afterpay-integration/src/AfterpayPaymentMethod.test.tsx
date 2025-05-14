@@ -25,7 +25,7 @@ import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import AfterpayPaymentMethod from './AfterpayPaymentMethod';
 
-describe('When using Affirm Payment Method', () => {
+describe('When using Afterpay Payment Method', () => {
     let checkoutService: CheckoutService;
     let defaultProps: PaymentMethodProps;
     let checkoutState: CheckoutSelectors;
