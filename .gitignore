@@ -1,6 +1,8 @@
 .idea
 .vscode
 .DS_Store
+.nx/cache
+.nx/workspace-data
 tsconfig.base.tsbuildinfo
 junit.xml
 __temp__
@@ -12,6 +14,3 @@ coverage
 /packages/test-framework/report
 /packages/test-framework/screenshots
 /packages/test-framework/videos
-
-.nx/cache
-.nx/workspace-data

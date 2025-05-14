@@ -16,9 +16,9 @@ import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcomme
 import { CheckoutProvider, PaymentFormContext, PaymentFormService, PaymentMethodId, PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
 import { getCheckout, getCustomer, getInstruments, getPaymentFormServiceMock, getPaymentMethod, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
-// import MonerisPaymentMethod from './MonerisPaymentMethod';
+import MonerisPaymentMethod from './MonerisPaymentMethod';
 
-describe.skip('when using Moneris payment', () => {
+describe('when using Moneris payment', () => {
     let method: PaymentMethod;
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
@@ -61,9 +61,7 @@ describe.skip('when using Moneris payment', () => {
                 <PaymentFormContext.Provider value={{ paymentForm }}>
                     <LocaleContext.Provider value={localeContext}>
                         <Formik initialValues={{}} onSubmit={noop}>
-                            <div {...props} />
-                            {/* Uncomment the line below to render the MonerisPaymentMethod component */}
-                            {/* <MonerisPaymentMethod {...props} /> */}
+                            <MonerisPaymentMethod {...props} />
                         </Formik>
                     </LocaleContext.Provider>
                 </PaymentFormContext.Provider>
