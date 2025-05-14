@@ -34,8 +34,7 @@
           }
         ],
         "@nx/enforce-module-boundaries": [
-          // TODO:CHECKOUT-9228 Fix this after nx upgrade to 19.8.9 (make it error)
-          "warn",
+          "error",
           {
             "enforceBuildableLibDependency": false,
             "allow": [],
