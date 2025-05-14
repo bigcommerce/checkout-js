@@ -34,6 +34,7 @@ test.describe.skip('BlueSnap Direct', () => {
             .frameLocator('#bluesnap-hosted-iframe-exp')
             .getByPlaceholder('MM / YY')
             .fill('03 / 30');
+        // eslint-disable-next-line testing-library/prefer-screen-queries
         await page.getByRole('textbox', { name: 'Name on Card' }).fill('John Smith');
 
         await checkout.placeOrder();

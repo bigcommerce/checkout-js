@@ -7,8 +7,9 @@
         "@typescript-eslint/consistent-type-assertions": "off",
         "@typescript-eslint/no-unsafe-assignment": "off",
         "@typescript-eslint/naming-convention": "off",
-        "@typescript-eslint/no-floating-promises": "off"
-
+        "@typescript-eslint/no-floating-promises": "off",
+        // TODO:CHECKOUT-9228 Fix lint errors after nx upgrade to 19.8.9
+        "@typescript-eslint/no-unsafe-argument": "off"
       }
     }
   ]

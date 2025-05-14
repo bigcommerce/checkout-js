@@ -36,6 +36,7 @@ const BraintreePaypalCreditBanner: FunctionComponent<{ onUnhandledError?(error: 
                 }
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

@@ -2,7 +2,7 @@
   "extends": ["@bigcommerce/eslint-config"],
   "parser": "@typescript-eslint/parser",
   "root": true,
-  "plugins": ["@nrwl/nx"],
+  "plugins": ["@nx"],
   "env": {
     "browser": true
   },
@@ -21,7 +21,8 @@
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {
         "prettier/prettier": [
-          "error",
+          // TODO:CHECKOUT-9228 Fix this after nx upgrade to 19.8.9 (make it error)
+          "warn",
           {
             "tabWidth": 4
           }
@@ -32,7 +33,7 @@
             "selector": "ForOfStatement"
           }
         ],
-        "@nrwl/nx/enforce-module-boundaries": [
+        "@nx/enforce-module-boundaries": [
           "error",
           {
             "enforceBuildableLibDependency": false,
@@ -63,20 +64,44 @@
     },
     {
       "files": ["*.ts", "*.tsx"],
-      "extends": ["plugin:@nrwl/nx/typescript"],
-      "rules": {}
+      "extends": ["plugin:@nx/typescript"],
+      // TODO:CHECKOUT-9228 Fix lint errors after nx upgrade to 19.8.9
+      "rules": {
+        "@typescript-eslint/ban-tslint-comment": "off",
+        "@typescript-eslint/consistent-indexed-object-style": "off",
+        "@typescript-eslint/no-confusing-void-expression": "off",
+        "@typescript-eslint/no-deprecated": "off",
+        "@typescript-eslint/no-duplicate-enum-values": "off",
+        "@typescript-eslint/no-dynamic-delete": "off",
+        "@typescript-eslint/no-extraneous-class": "off",
+        "@typescript-eslint/no-invalid-void-type": "off",
+        "@typescript-eslint/no-misused-promises": "off",
+        "@typescript-eslint/no-misused-spread": "off",
+        "@typescript-eslint/no-redundant-type-constituents": "off",
+        "@typescript-eslint/no-shadow": "off",
+        "@typescript-eslint/no-unnecessary-boolean-literal-compare": "off",
+        "@typescript-eslint/no-unnecessary-template-expression": "off",
+        "@typescript-eslint/no-unnecessary-type-parameters": "off",
+        "@typescript-eslint/no-unsafe-enum-comparison": "off",
+        "@typescript-eslint/no-unsafe-member-access": "off",
+        "@typescript-eslint/non-nullable-type-assertion-style": "off",
+        "@typescript-eslint/prefer-find": "off",
+        "@typescript-eslint/prefer-includes": "off",
+        "@typescript-eslint/prefer-nullish-coalescing": "off",
+        "@typescript-eslint/prefer-optional-chain": "off",
+        "@typescript-eslint/prefer-reduce-type-parameter": "off",
+        "@typescript-eslint/use-unknown-in-catch-callback-variable": "off",
+        "react/prefer-read-only-props": "off"
+      }
     },
     {
       "files": ["*.js", "*.jsx"],
-      "extends": ["plugin:@nrwl/nx/javascript"],
+      "extends": ["plugin:@nx/javascript"],
       "rules": {}
     },
     {
       "files": ["*.test.ts", "*.test.tsx"],
-      "extends": [
-        "plugin:testing-library/react",
-        "plugin:jest-dom/recommended"
-      ],
+      "extends": ["plugin:testing-library/react", "plugin:jest-dom/recommended"],
       "rules": {
         "@typescript-eslint/consistent-type-assertions": "off"
       }

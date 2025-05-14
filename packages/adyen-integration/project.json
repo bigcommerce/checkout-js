@@ -1,26 +1,20 @@
 {
-  "root": "packages/adyen-integration",
+  "name": "adyen-integration",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/adyen-integration/src",
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["packages/adyen-integration/**/*.{ts,tsx}"]
-      }
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/adyen-integration"],
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/packages/adyen-integration"],
       "options": {
-        "jestConfig": "packages/adyen-integration/jest.config.js",
-        "passWithNoTests": true
+        "jestConfig": "packages/adyen-integration/jest.config.js"
       }
     }
   },
-  "tags": [
-    "scope:integration",
-    "scope:shared"
-  ]
+  "tags": ["scope:integration"]
 }

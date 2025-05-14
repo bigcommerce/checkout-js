@@ -12,7 +12,7 @@ export const setRecommendedOrMissingShippingOption = async (
     selectConsignmentShippingOption: (
         consignmentId: string,
         shippingOptionId: string,
-        options?: ShippingRequestOptions<object> | undefined,
+        options?: ShippingRequestOptions<object>,
     ) => Promise<CheckoutSelectors>,
 ): Promise<void> => {
     const previousShippingOptions = createShippingOptionsMap(previousConsignment);

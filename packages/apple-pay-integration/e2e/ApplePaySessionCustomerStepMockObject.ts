@@ -23,7 +23,7 @@ const addApplePaySessionToChrome = () => {
         addEventListener(
             type: string,
             callback: EventListenerOrEventListenerObject | null,
-            options?: boolean | AddEventListenerOptions | undefined,
+            options?: boolean | AddEventListenerOptions,
         ): void {
             console.log('addEventListener', type, callback, options);
         }
@@ -37,7 +37,7 @@ const addApplePaySessionToChrome = () => {
         removeEventListener(
             type: string,
             callback: EventListenerOrEventListenerObject | null,
-            options?: boolean | EventListenerOptions | undefined,
+            options?: boolean | EventListenerOptions,
         ): void {
             console.log('removeEventListener', type, callback, options);
         }

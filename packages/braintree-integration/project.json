@@ -1,26 +1,20 @@
 {
-  "root": "packages/braintree-integration",
+  "name": "braintree-integration",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/braintree-integration/src",
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["packages/braintree-integration/**/*.{ts,tsx}"]
-      }
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/braintree-integration"],
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/packages/braintree-integration"],
       "options": {
-        "jestConfig": "packages/braintree-integration/jest.config.js",
-        "passWithNoTests": true
+        "jestConfig": "packages/braintree-integration/jest.config.js"
       }
     }
   },
-  "tags": [
-    "scope:integration",
-    "scope:shared"
-  ]
+  "tags": ["scope:integration"]
 }

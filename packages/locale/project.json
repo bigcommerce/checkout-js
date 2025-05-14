@@ -1,21 +1,18 @@
 {
-  "root": "packages/locale",
+  "name": "locale",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/locale/src",
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["packages/locale/**/*.{ts,tsx}"]
-      }
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/locale"],
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/packages/locale"],
       "options": {
-        "jestConfig": "packages/locale/jest.config.js",
-        "passWithNoTests": true
+        "jestConfig": "packages/locale/jest.config.js"
       }
     }
   },

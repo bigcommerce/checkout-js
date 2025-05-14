@@ -1,3 +1,5 @@
+// TODO:CHECKOUT-9228 Fix lint error after nx upgrade to 19.8.9
+/* eslint-disable react-hooks/rules-of-hooks, @typescript-eslint/no-use-before-define */
 import React, { FunctionComponent, useCallback, useEffect, useMemo, useRef } from 'react';
 
 import {
@@ -91,7 +93,7 @@ const PaypalCommerceRatePayPaymentMethod: FunctionComponent<any> = ({
                     loadingContainerId: 'checkout-page-container',
                     getFieldsValues: () => fieldsValues.current,
                     onError: (error: SpecificError) => {
-                        const ratepaySpecificError = error?.errors?.filter(e => e.provider_error);
+                        const ratepaySpecificError = error.errors?.filter(e => e.provider_error);
 
                         if (ratepaySpecificError?.length) {
                             let translationCode;

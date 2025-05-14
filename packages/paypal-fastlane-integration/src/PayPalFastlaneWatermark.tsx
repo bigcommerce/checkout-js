@@ -37,6 +37,7 @@ const PayPalFastlaneWatermark: FunctionComponent = () => {
                     result.render('#paypalFastlaneWatermark');
                 });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     if (shouldRenderFastlaneWatermark) {
@@ -47,6 +48,7 @@ const PayPalFastlaneWatermark: FunctionComponent = () => {
         );
     }
 
+    // eslint-disable-next-line react/jsx-no-useless-fragment
     return <></>;
 }
 

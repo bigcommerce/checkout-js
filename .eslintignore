@@ -1,0 +1,6 @@
+node_modules
+/packages/**/generated
+/packages/**/jest.config.js
+/packages/**/e2e/support
+/packages/**/e2e/*.js
+/packages/test-framework/**/*.js

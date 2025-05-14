@@ -84,6 +84,7 @@ describe('PayPalFastlaneWatermark Component',() => {
                     new Promise(resolve => {
                         resolve({
                             render: (containerId) => {
+                                // eslint-disable-next-line testing-library/no-node-access
                                 const container = document.querySelector(containerId);
 
                                 if (container) {
@@ -97,7 +98,7 @@ describe('PayPalFastlaneWatermark Component',() => {
 
             render(<PayPalFastlaneWatermarkComponent />);
 
-            expect(await screen.findByText(text)).toBeDefined();
+            expect(await screen.findByText(text)).toBeInTheDocument();
         });
 
         it('renders braintree fastlane privacy settings', async () => {
@@ -147,6 +148,7 @@ describe('PayPalFastlaneWatermark Component',() => {
                     new Promise(resolve => {
                         resolve({
                             render: (containerId) => {
+                                // eslint-disable-next-line testing-library/no-node-access
                                 const container = document.querySelector(containerId);
 
                                 if (container) {
@@ -160,7 +162,7 @@ describe('PayPalFastlaneWatermark Component',() => {
 
             render(<PayPalFastlaneWatermarkComponent />);
 
-            expect(await screen.findByText(text)).toBeDefined();
+            expect(await screen.findByText(text)).toBeInTheDocument();
         });
 
         it('renders paypal fastlane privacy settings', async () => {
