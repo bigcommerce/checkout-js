@@ -17,7 +17,7 @@ import { act } from '@bigcommerce/checkout/test-utils';
 import { getBigCommercePaymentsPaypalMethod } from '../mocks/paymentMethods.mock';
 import BigCommercePaymentsPaypalPaymentMethod from './BigCommercePaymentsPaypalPaymentMethod';
 
-describe('BigCommercePaymentsPaymentMethod', () => {
+describe('BigCommercePaymentsPaypalPaymentMethod', () => {
     const checkoutService = createCheckoutService();
     const checkoutState = checkoutService.getState();
     const paymentForm = getPaymentFormServiceMock();
