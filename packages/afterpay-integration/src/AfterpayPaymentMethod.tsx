@@ -1,7 +1,6 @@
-import React, { FunctionComponent, useMemo } from 'react';
+import React, { FunctionComponent } from 'react';
 
 import { HostedPaymentComponent } from '@bigcommerce/checkout/hosted-payment-integration';
-import { TranslatedString } from '@bigcommerce/checkout/locale';
 import {
     PaymentMethodProps,
     PaymentMethodResolveId,
@@ -15,15 +14,12 @@ const AfterpayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     paymentForm,
     ...rest
 }) => {
-    const description = useMemo(() => <TranslatedString id="payment.affirm_body_text" />, []);
-
     return (
         <HostedPaymentComponent
             {...rest}
             checkoutService={checkoutService}
             checkoutState={checkoutState}
             deinitializePayment={checkoutService.deinitializePayment}
-            description={description}
             initializePayment={checkoutService.initializePayment}
             method={method}
             paymentForm={paymentForm}

@@ -4,13 +4,8 @@ import {
     createCheckoutService,
     createLanguageService,
 } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 
-import {
-    createLocaleContext,
-    LocaleContext,
-    LocaleContextType,
-} from '@bigcommerce/checkout/locale';
 import {
     PaymentFormService,
     PaymentMethodProps,
@@ -21,18 +16,15 @@ import {
     getPaymentFormServiceMock,
     getStoreConfig,
 } from '@bigcommerce/checkout/test-mocks';
-import { render, screen } from '@bigcommerce/checkout/test-utils';
+import { render } from '@bigcommerce/checkout/test-utils';
 
 import AfterpayPaymentMethod from './AfterpayPaymentMethod';
 
-describe('When using Afterpay Payment Method', () => {
+describe('When using Afterpay payment method', () => {
     let checkoutService: CheckoutService;
-    let defaultProps: PaymentMethodProps;
     let checkoutState: CheckoutSelectors;
+    let defaultProps: PaymentMethodProps;
     let paymentForm: PaymentFormService;
-
-    let PaymentMethodTest: FunctionComponent<PaymentMethodProps>;
-    let localeContext: LocaleContextType;
 
     beforeEach(() => {
         checkoutService = createCheckoutService();
@@ -43,8 +35,6 @@ describe('When using Afterpay Payment Method', () => {
         jest.spyOn(checkoutState.data, 'getCart').mockReturnValue(getCart());
         jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
         jest.spyOn(checkoutService, 'deinitializePayment').mockResolvedValue(checkoutState);
-
-        localeContext = createLocaleContext(getStoreConfig());
 
         defaultProps = {
             method: {
@@ -61,23 +51,15 @@ describe('When using Afterpay Payment Method', () => {
             language: createLanguageService(),
             onUnhandledError: jest.fn(),
         };
-
-        PaymentMethodTest = (props) => (
-            <LocaleContext.Provider value={localeContext}>
-                <AfterpayPaymentMethod {...props} />
-            </LocaleContext.Provider>
-        );
     });
 
     afterEach(() => {
         jest.clearAllMocks();
     });
 
-    test('Shopper is able to see Afterpay Payment Method', () => {
-        render(<PaymentMethodTest {...defaultProps} />);
+    test('user does not see a description or instrument fields', () => {
+        const { container } = render(<AfterpayPaymentMethod {...defaultProps} />);
 
-        expect(screen.getByText(
-            localeContext.language.translate('payment.affirm_body_text')
-        )).toBeInTheDocument();
+        expect(container).toBeEmptyDOMElement();
     });
 });
