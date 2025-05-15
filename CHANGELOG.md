@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.588.1](https://github.com/bigcommerce/checkout-js/compare/v1.588.0...v1.588.1) (2025-05-15)
+
+
+### Bug Fixes
+
+* **payment:** Fix Stripe Link Formik Issue ([#2302](https://github.com/bigcommerce/checkout-js/issues/2302)) ([3c2045b](https://github.com/bigcommerce/checkout-js/commit/3c2045b8589cf4085d5da1c0744e8b786a8939af))
+
 ## [1.588.0](https://github.com/bigcommerce/checkout-js/compare/v1.587.3...v1.588.0) (2025-05-14)
 
 
