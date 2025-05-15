@@ -65,6 +65,7 @@ enum PaymentMethodId {
     WorldpayAccessGooglePay = 'googlepayworldpayaccess',
     Zip = 'zip',
     TdOnlineMartGooglePay = 'googlepaytdonlinemart',
+    BigcommercePaymentsPaylater = 'bigcommerce_payments_paylater',
 }
 
 export default PaymentMethodId;
