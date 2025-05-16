@@ -104,10 +104,12 @@ describe('ManageInstrumentsModal', () => {
         expect(screen.queryByTestId('manage-card-instruments-table')).not.toBeInTheDocument();
     });
 
-    it('shows confirmation message before deleting instrument', () => {
+    it('shows confirmation message before deleting instrument', async () => {
         render(<ManageInstrumentsModalTest {...defaultProps} />);
 
-        screen.getAllByTestId('manage-instrument-delete-button')[0].click();
+        const deleteButtons = await screen.findAllByTestId('manage-instrument-delete-button');
+
+        await userEvent.click(deleteButtons[0]);
 
         expect(
             screen.getByText(
