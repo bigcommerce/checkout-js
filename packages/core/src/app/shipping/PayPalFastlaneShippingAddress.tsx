@@ -9,10 +9,10 @@ import {
 import React, { FC, useEffect, useRef, useState } from 'react';
 
 import {
-    isPayPalCommerceFastlaneMethod,
     isBigCommercePaymentsFastlaneMethod,
-    isPayPalFastlaneMethod,
     isBraintreeFastlaneMethod,
+    isPayPalCommerceFastlaneMethod,
+    isPayPalFastlaneMethod,
     PayPalFastlaneShippingAddressForm,
     usePayPalFastlaneAddress,
 } from '@bigcommerce/checkout/paypal-fastlane-integration';
