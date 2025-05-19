@@ -6,11 +6,13 @@ import {
     FormField,
     ShippingInitializeOptions
 } from '@bigcommerce/checkout-sdk';
-import React, {FC, useEffect, useRef, useState} from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 
 import {
     isPayPalCommerceFastlaneMethod,
+    isBigCommercePaymentsFastlaneMethod,
     isPayPalFastlaneMethod,
+    isBraintreeFastlaneMethod,
     PayPalFastlaneShippingAddressForm,
     usePayPalFastlaneAddress,
 } from '@bigcommerce/checkout/paypal-fastlane-integration';
@@ -76,6 +78,9 @@ export const PayPalFastlaneShippingAddress: FC<PayPalFastlaneShippingAddressProp
         try {
             await initialize({
                 methodId,
+                ...(isBigCommercePaymentsFastlaneMethod(methodId) ? fastlaneOptions('bigcommercepaymentsfastlane') : {}),
+                ...(isBraintreeFastlaneMethod(methodId) ? fastlaneOptions('braintreefastlane') : {}),
+                ...(isPayPalCommerceFastlaneMethod(methodId) ? fastlaneOptions('paypalcommercefastlane') : {}),
                 ...initializationOptions,
             });
         } catch (error) {
