@@ -26,16 +26,16 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 }) => {
     const collapseStripeElement = useRef<() => void>();
     const { onToggle, selectedItemId } = useContext(AccordionContext);
-    const containerId = `stripe-${method.id}-component-field`;
+    const containerId = `${method.gateway}-${method.id}-component-field`;
     const paymentContext = paymentForm;
 
     useEffect(() => {
-        if (selectedItemId?.includes('stripeupe-')) {
+        if (selectedItemId?.includes(`${method.gateway}-`)) {
             return;
         }
 
         collapseStripeElement.current?.();
-    }, [selectedItemId]);
+    }, [selectedItemId, method.gateway]);
 
     const renderSubmitButton = useCallback(() => {
         paymentContext.hidePaymentSubmitButton(method, false);
@@ -77,25 +77,38 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
     const renderCheckoutThemeStylesForStripeOCS = () => {
         return (
-            <div style={{ display: 'none' }}>
-                <div id={`${containerId}--accordion-header`}>
-                    <div className="form-checklist-checkbox" />
-                    <div className="form-label optimizedCheckout-form-label" />
-                </div>
-                <div
-                    className="optimizedCheckout-form-input"
-                    id={`${containerId}--input`}
-                    placeholder="1111"
-                >
-                    <div className="form-field--error">
-                        <div
-                            className="optimizedCheckout-form-label"
-                            id={`${containerId}--error`}
-                        />
+            <>
+                <style>
+                    {`
+                        .custom-checklist-item#radio-${method.gateway}-${method.id} {
+                            border-bottom: none;
+                        }
+                        .custom-checklist-item#radio-${method.gateway}-${method.id}:last-of-type {
+                            margin-bottom: -1px;
+                        }
+                    `}
+                </style>
+
+                <div style={{ display: 'none' }}>
+                    <div id={`${containerId}--accordion-header`}>
+                        <div className="form-checklist-checkbox" />
+                        <div className="form-label optimizedCheckout-form-label" />
                     </div>
-                    <div className="optimizedCheckout-form-label" id={`${containerId}--label`} />
+                    <div
+                        className="optimizedCheckout-form-input"
+                        id={`${containerId}--input`}
+                        placeholder="1111"
+                    >
+                        <div className="form-field--error">
+                            <div
+                                className="optimizedCheckout-form-label"
+                                id={`${containerId}--error`}
+                            />
+                        </div>
+                        <div className="optimizedCheckout-form-label" id={`${containerId}--label`} />
+                    </div>
                 </div>
-            </div>
+            </>
         );
     };
 
