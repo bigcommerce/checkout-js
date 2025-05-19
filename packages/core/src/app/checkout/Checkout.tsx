@@ -330,6 +330,7 @@ class Checkout extends Component<
                 <div className="layout-main">
                     <LoadingNotification isLoading={(!isShowingWalletButtonsOnTop && isPending) || extensionState.isShowingLoadingIndicator} />
 
+                    <Extension region={ExtensionRegion.GlobalWebWorker} />
                     <PromotionBannerList promotions={promotions} />
 
                     {isShowingWalletButtonsOnTop && this.state.buttonConfigs?.length > 0 && (
@@ -524,7 +525,6 @@ class Checkout extends Component<
                     if (matched) {
                         return (
                             <LazyContainer>
-                                <Extension region={ExtensionRegion.GlobalWebWorker} />
                                 <Extension region={ExtensionRegion.SummaryAfter} />
                                 <CartSummaryDrawer isMultiShippingMode={isMultiShippingMode} />
                             </LazyContainer>
