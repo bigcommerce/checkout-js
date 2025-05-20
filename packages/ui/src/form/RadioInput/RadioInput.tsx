@@ -30,7 +30,7 @@ const RadioInput = forwardRef(
                 type="radio"
                 value={value}
             />
-            <Label htmlFor={id}>{label}</Label>
+            <Label htmlFor={id} data-translatable>{label}</Label>
         </>
     ),
 );

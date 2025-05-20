@@ -25,6 +25,7 @@ const ShippingOptionAdditionalDescription: React.FunctionComponent<
                                     ? 'shippingOption-additionalDescription--expanded'
                                     : 'shippingOption-additionalDescription--collapsed'
                             }`}
+                            data-translatable
                         >
                             {description}
                         </span>

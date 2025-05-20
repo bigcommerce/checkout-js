@@ -95,7 +95,7 @@ const TermsConditionsTextField: FunctionComponent<TermsConditionsTextFieldProps>
     terms,
 }) => {
     const renderInput = useCallback(
-        ({ field }: FieldProps) => <TextArea defaultValue={terms} name={field.name} readOnly />,
+        ({ field }: FieldProps) => <TextArea defaultValue={terms} name={field.name} readOnly data-translatable />,
         [terms],
     );
 

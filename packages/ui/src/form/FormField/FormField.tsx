@@ -33,7 +33,7 @@ const FormField: FunctionComponent<FormFieldProps> = ({
                 {Boolean(label) && (typeof label === 'function' ? label(name) : label)}
 
                 {Boolean(labelContent && !label) && (
-                    <Label htmlFor={name} id={`${id ?? name}-label`}>
+                    <Label htmlFor={name} id={`${id ?? name}-label`} data-translatable>
                         {labelContent}
                     </Label>
                 )}
