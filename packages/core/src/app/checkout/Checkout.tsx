@@ -48,6 +48,7 @@ import CheckoutStep from './CheckoutStep';
 import CheckoutStepStatus from './CheckoutStepStatus';
 import CheckoutStepType from './CheckoutStepType';
 import CheckoutSupport from './CheckoutSupport';
+import getCheckoutStepStatuses from './getCheckoutStepStatuses';
 import mapToCheckoutProps from './mapToCheckoutProps';
 import navigateToOrderConfirmation from './navigateToOrderConfirmation';
 
@@ -126,6 +127,7 @@ export interface CheckoutState {
 }
 
 export interface WithCheckoutProps {
+    checkoutState: CheckoutSelectors;
     billingAddress?: Address;
     cart?: Cart;
     consignments?: Consignment[];
@@ -178,14 +180,6 @@ class Checkout extends Component<
 
         window.removeEventListener('beforeunload', this.handleBeforeExit);
         this.handleBeforeExit();
-    }
-
-    componentDidUpdate(prevProps: WithCheckoutProps, prevState: CheckoutState): void {
-        if(prevProps.steps.length === 0 && this.props.steps && this.props.steps.length > 0) {
-            this.handleReady();
-        } else if (prevState.activeStepType !== this.state.activeStepType) {
-            this.navigateToNextIncompleteStep();
-        }
     }
 
     async componentDidMount(): Promise<void> {
@@ -278,7 +272,9 @@ class Checkout extends Component<
             });
 
             if (isMultiShippingMode) {
-                this.setState({ isMultiShippingMode });
+                this.setState({ isMultiShippingMode }, this.handleReady);
+            } else {
+                this.handleReady();
             }
 
             window.addEventListener('beforeunload', this.handleBeforeExit);
@@ -319,7 +315,8 @@ class Checkout extends Component<
     }
 
     private renderContent(): ReactNode {
-        const { isPending, loginUrl, promotions = [], steps, isShowingWalletButtonsOnTop, extensionState } = this.props;
+        const { checkoutState, isPending, loginUrl, promotions = [], isShowingWalletButtonsOnTop, extensionState } = this.props;
+        const steps = getCheckoutStepStatuses(checkoutState);
 
         const { activeStepType, defaultStepType, isCartEmpty, isRedirecting } = this.state;
 
@@ -551,8 +548,9 @@ class Checkout extends Component<
     }
 
     private navigateToStep(type: CheckoutStepType, options?: { isDefault?: boolean }): void {
-        const { clearError, error, steps } = this.props;
+        const { clearError, error, checkoutState } = this.props;
         const { activeStepType } = this.state;
+        const steps = getCheckoutStepStatuses(checkoutState);
         const step = find(steps, { type });
 
         if (!step) {
@@ -583,7 +581,8 @@ class Checkout extends Component<
     private navigateToNextIncompleteStep: (options?: { isDefault?: boolean }) => void = (
         options,
     ) => {
-        const { steps, analyticsTracker } = this.props;
+        const { analyticsTracker, checkoutState } = this.props;
+        const steps = getCheckoutStepStatuses(checkoutState);
         const activeStepIndex = findIndex(steps, { isActive: true });
         const activeStep = activeStepIndex >= 0 && steps[activeStepIndex];
 
@@ -612,7 +611,7 @@ class Checkout extends Component<
         SubscribeSessionStorage.removeSubscribeStatus();
 
         this.setState({ isRedirecting: true }, () => {
-            navigateToOrderConfirmation(orderId);
+            void navigateToOrderConfirmation(orderId);
         });
     };
 
