@@ -180,6 +180,14 @@ class Checkout extends Component<
         this.handleBeforeExit();
     }
 
+    componentDidUpdate(prevProps: WithCheckoutProps, prevState: CheckoutState): void {
+        if(prevProps.steps.length === 0 && this.props.steps && this.props.steps.length > 0) {
+            this.handleReady();
+        } else if (prevState.activeStepType !== this.state.activeStepType) {
+            this.navigateToNextIncompleteStep();
+        }
+    }
+
     async componentDidMount(): Promise<void> {
         const {
             analyticsTracker,
@@ -270,9 +278,7 @@ class Checkout extends Component<
             });
 
             if (isMultiShippingMode) {
-                this.setState({ isMultiShippingMode }, this.handleReady);
-            } else {
-                this.handleReady();
+                this.setState({ isMultiShippingMode });
             }
 
             window.addEventListener('beforeunload', this.handleBeforeExit);
