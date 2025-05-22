@@ -1,5 +1,5 @@
 import React from 'react';
-import { createRoot } from 'react-dom/client';
+import ReactDOM from 'react-dom';
 
 import { configurePublicPath } from '../common/bundler';
 
@@ -29,13 +29,9 @@ export default function renderCheckout({
         });
     }
 
-    const container = document.getElementById(containerId);
-
-    if(container) {
-        const root = createRoot(container);
-
-        root.render(
-            <CheckoutApp containerId={containerId} publicPath={configuredPublicPath} {...props} />,
-        );
-    }
+    // eslint-disable-next-line react/no-deprecated
+    ReactDOM.render(
+        <CheckoutApp containerId={containerId} publicPath={configuredPublicPath} {...props} />,
+        document.getElementById(containerId),
+    );
 }
