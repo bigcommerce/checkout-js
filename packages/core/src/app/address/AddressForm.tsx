@@ -1,9 +1,9 @@
+import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { Address, Country, FormField } from '@bigcommerce/checkout-sdk';
 import { memoize } from '@bigcommerce/memoize';
 import { forIn, noop } from 'lodash';
 import React, { Component, createRef, ReactNode, RefObject } from 'react';
 
-import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 
 import { AutocompleteItem } from '../ui/autocomplete';
 import { CheckboxFormField, DynamicFormField, DynamicFormFieldType, Fieldset } from '../ui/form';
@@ -202,6 +202,10 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
         const address = mapToAddress(place, countries);
 
         forIn(address, (value, fieldName) => {
+            if (fieldName === AUTOCOMPLETE_FIELD_NAME && value === undefined) {
+                return;
+            }
+
             setFieldValue(fieldName, value as string);
             onChange(fieldName, value as string);
         });

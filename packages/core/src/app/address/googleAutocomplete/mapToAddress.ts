@@ -15,7 +15,9 @@ export default function mapToAddress(
     const countryCode = accessor.getCountry();
     const country = countries && countries.find((c) => countryCode === c.code);
     const street2 = accessor.getStreet2();
-    const steet1 = accessor.getStreet();
+
+    // TODO: Apply this fix for US, UK and CA addresses too.
+    const steet1 = countryCode === 'AU' ? accessor.getStreet() : undefined;
 
     return {
         address1: steet1,
