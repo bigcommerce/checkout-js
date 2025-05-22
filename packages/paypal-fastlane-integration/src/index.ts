@@ -5,6 +5,7 @@ export { default as isPayPalFastlaneCustomer } from './is-paypal-fastlane-custom
 export { default as isPayPalFastlaneMethod } from './is-paypal-fastlane-method';
 export { default as isBraintreeFastlaneMethod } from './is-braintree-fastlane-method';
 export { default as isPayPalCommerceFastlaneMethod } from './is-paypal-commerce-fastlane-method';
+export { default as isBigCommercePaymentsFastlaneMethod } from './is-bigcommerce-payments-fastlane-method';
 export { default as PoweredByPayPalFastlaneLabel } from './PoweredByPayPalFastlaneLabel';
 export { default as PayPalFastlaneShippingAddressForm } from './PayPalFastlaneShippingAddressForm';
 export { default as PayPalFastlaneWatermark } from './PayPalFastlaneWatermark';
