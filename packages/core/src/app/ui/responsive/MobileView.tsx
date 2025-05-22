@@ -2,7 +2,7 @@ import React, { FunctionComponent, memo } from 'react';
 
 import ViewPicker from './ViewPicker';
 
-type QueryResults = {
+interface QueryResults {
     [key: string]: boolean;
 };
 
