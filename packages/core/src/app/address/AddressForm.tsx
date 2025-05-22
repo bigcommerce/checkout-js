@@ -206,8 +206,10 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
             onChange(fieldName, value as string);
         });
 
-        if (autocompleteValue) {
-            this.syncNonFormikValue(AUTOCOMPLETE_FIELD_NAME, autocompleteValue);
+        const address1 = address.address1 ? address.address1 : autocompleteValue;
+
+        if (address1) {
+            this.syncNonFormikValue(AUTOCOMPLETE_FIELD_NAME, address1);
         }
     };
 

@@ -15,8 +15,10 @@ export default function mapToAddress(
     const countryCode = accessor.getCountry();
     const country = countries && countries.find((c) => countryCode === c.code);
     const street2 = accessor.getStreet2();
+    const steet1 = accessor.getStreet();
 
     return {
+        address1: steet1,
         address2: street2,
         city: accessor.getCity(),
         countryCode,

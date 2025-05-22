@@ -49,7 +49,7 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
                 stateReducer={this.stateReducer}
             >
                 {({ isOpen, getInputProps, getMenuProps, getItemProps, highlightedIndex }) => {
-                    const validInputProps = { ...getInputProps(), ...inputProps };
+                    const validInputProps = { ...getInputProps({ value: initialValue }), ...inputProps };
 
                     delete validInputProps.labelText;
 
