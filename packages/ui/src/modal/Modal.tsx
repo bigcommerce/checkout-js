@@ -74,7 +74,9 @@ const Modal: FunctionComponent<ModalProps> = ({
                         href="#"
                         onClick={preventDefault(handleClose)}
                     >
-                        {closeButtonLabel && <span className="is-srOnly">{closeButtonLabel}</span>}
+                        {Boolean(closeButtonLabel) && (
+                            <span className="is-srOnly">{closeButtonLabel}</span>
+                        )}
 
                         <IconClose />
                     </a>

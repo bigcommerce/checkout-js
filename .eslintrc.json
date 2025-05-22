@@ -91,7 +91,8 @@
         "@typescript-eslint/prefer-optional-chain": "off",
         "@typescript-eslint/prefer-reduce-type-parameter": "off",
         "@typescript-eslint/use-unknown-in-catch-callback-variable": "off",
-        "react/prefer-read-only-props": "off"
+        "react/prefer-read-only-props": "off",
+        "react/no-deprecated": "off"
       }
     },
     {
