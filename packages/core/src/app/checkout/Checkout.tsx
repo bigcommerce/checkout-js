@@ -48,7 +48,6 @@ import CheckoutStep from './CheckoutStep';
 import CheckoutStepStatus from './CheckoutStepStatus';
 import CheckoutStepType from './CheckoutStepType';
 import CheckoutSupport from './CheckoutSupport';
-import getCheckoutStepStatuses from './getCheckoutStepStatuses';
 import mapToCheckoutProps from './mapToCheckoutProps';
 import navigateToOrderConfirmation from './navigateToOrderConfirmation';
 
@@ -127,7 +126,6 @@ export interface CheckoutState {
 }
 
 export interface WithCheckoutProps {
-    checkoutState: CheckoutSelectors;
     billingAddress?: Address;
     cart?: Cart;
     consignments?: Consignment[];
@@ -315,8 +313,7 @@ class Checkout extends Component<
     }
 
     private renderContent(): ReactNode {
-        const { checkoutState, isPending, loginUrl, promotions = [], isShowingWalletButtonsOnTop, extensionState } = this.props;
-        const steps = getCheckoutStepStatuses(checkoutState);
+        const { isPending, loginUrl, promotions = [], steps, isShowingWalletButtonsOnTop, extensionState } = this.props;
 
         const { activeStepType, defaultStepType, isCartEmpty, isRedirecting } = this.state;
 
@@ -548,9 +545,8 @@ class Checkout extends Component<
     }
 
     private navigateToStep(type: CheckoutStepType, options?: { isDefault?: boolean }): void {
-        const { clearError, error, checkoutState } = this.props;
+        const { clearError, error, steps } = this.props;
         const { activeStepType } = this.state;
-        const steps = getCheckoutStepStatuses(checkoutState);
         const step = find(steps, { type });
 
         if (!step) {
@@ -581,8 +577,7 @@ class Checkout extends Component<
     private navigateToNextIncompleteStep: (options?: { isDefault?: boolean }) => void = (
         options,
     ) => {
-        const { analyticsTracker, checkoutState } = this.props;
-        const steps = getCheckoutStepStatuses(checkoutState);
+        const { steps, analyticsTracker } = this.props;
         const activeStepIndex = findIndex(steps, { isActive: true });
         const activeStep = activeStepIndex >= 0 && steps[activeStepIndex];
 
@@ -611,7 +606,7 @@ class Checkout extends Component<
         SubscribeSessionStorage.removeSubscribeStatus();
 
         this.setState({ isRedirecting: true }, () => {
-            void navigateToOrderConfirmation(orderId);
+            navigateToOrderConfirmation(orderId);
         });
     };
 
