@@ -3,6 +3,7 @@ import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { RequestHandler, rest } from 'msw';
 import { SetupServer, setupServer } from 'msw/node';
+import { act } from 'react';
 
 import {
     applepayMethod,
@@ -263,44 +264,52 @@ export class CheckoutPageNodeObject {
     }
 
     async fillAddressForm(testingAddress: Partial<Address> = {}): Promise<void> {
-        const defaultAddress = {
-            firstName: customer.firstName,
-            lastName: customer.lastName,
-            address1: shippingAddress.address1,
-            city: shippingAddress.city,
-            countryCode: shippingAddress.countryCode,
-            postalCode: shippingAddress.postalCode,
-        };
-        const address = { ...defaultAddress, ...testingAddress };
+        await act(async () => {
+            const defaultAddress = {
+                firstName: customer.firstName,
+                lastName: customer.lastName,
+                address1: shippingAddress.address1,
+                city: shippingAddress.city,
+                countryCode: shippingAddress.countryCode,
+                postalCode: shippingAddress.postalCode,
+            };
+            const address = { ...defaultAddress, ...testingAddress };
 
-        await userEvent.clear(await screen.findByLabelText('First Name'));
-        await userEvent.clear(await screen.findByLabelText('Last Name'));
-        await userEvent.clear(screen.getByRole('textbox', { name: /address/i }));
-        await userEvent.clear(screen.getByLabelText('City'));
-        await userEvent.clear(screen.getByLabelText('Postal Code'));
+            await userEvent.clear(await screen.findByLabelText(/Apartment/));
+            await userEvent.clear(await screen.findByLabelText(/Company Name/));
 
-        await userEvent.type(await screen.findByLabelText('First Name'), address.firstName);
-        await userEvent.type(screen.getByLabelText('Last Name'), address.lastName);
-        await userEvent.type(screen.getByRole('textbox', { name: /address/i }), address.address1);
-        await userEvent.type(screen.getByLabelText('City'), address.city);
-        await userEvent.selectOptions(
-            screen.getByTestId('countryCodeInput-select'),
-            address.countryCode,
-        );
+            await userEvent.clear(await screen.findByLabelText('Postal Code'));
+            await userEvent.clear(await screen.findByLabelText('City'));
+            await userEvent.clear(await screen.findByRole('textbox', { name: /address/i }));
+            await userEvent.clear(await screen.findByLabelText('First Name'));
+            await userEvent.clear(await screen.findByLabelText('Last Name'));
 
-        if (address.stateOrProvinceCode) {
-            await userEvent.selectOptions(
-                screen.getByTestId('provinceCodeInput-select'),
-                address.stateOrProvinceCode,
-            );
-        } else if (address.stateOrProvince) {
-            await userEvent.clear(screen.getByLabelText('State/Province (Optional)'));
+            await userEvent.type(await screen.findByLabelText('First Name'), address.firstName);
+            await userEvent.type(await screen.findByLabelText('Last Name'), address.lastName);
             await userEvent.type(
-                screen.getByLabelText('State/Province (Optional)'),
-                address.stateOrProvince,
+                screen.getByRole('textbox', { name: /address/i }),
+                address.address1,
             );
-        }
+            await userEvent.type(await screen.findByLabelText('City'), address.city);
+            await userEvent.selectOptions(
+                screen.getByTestId('countryCodeInput-select'),
+                address.countryCode,
+            );
 
-        await userEvent.type(screen.getByLabelText('Postal Code'), address.postalCode);
+            if (address.stateOrProvinceCode) {
+                await userEvent.selectOptions(
+                    screen.getByTestId('provinceCodeInput-select'),
+                    address.stateOrProvinceCode,
+                );
+            } else if (address.stateOrProvince) {
+                await userEvent.clear(await screen.findByLabelText('State/Province (Optional)'));
+                await userEvent.type(
+                    screen.getByLabelText('State/Province (Optional)'),
+                    address.stateOrProvince,
+                );
+            }
+
+            await userEvent.type(screen.getByLabelText('Postal Code'), address.postalCode);
+        });
     }
 }
