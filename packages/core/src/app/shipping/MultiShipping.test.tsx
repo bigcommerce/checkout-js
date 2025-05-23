@@ -4,7 +4,6 @@ import {
     createEmbeddedCheckoutMessenger,
     EmbeddedCheckoutMessenger,
 } from '@bigcommerce/checkout-sdk';
-import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { noop } from 'lodash';
 import React, { act, FunctionComponent } from 'react';
@@ -29,6 +28,7 @@ import {
     shippingAddress3,
     shippingQuoteFailedMessage,
 } from '@bigcommerce/checkout/test-framework';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import Checkout, { CheckoutProps } from '../checkout/Checkout';
 import { createErrorLogger } from '../common/error';
@@ -168,7 +168,6 @@ describe('Multi-shipping', () => {
             },
         );
 
-        // eslint-disable-next-line testing-library/no-unnecessary-act
         await act(async () => {
             await userEvent.click(screen.getByText('Choose a shipping address'));
             await userEvent.click(screen.getByText(/111 Testing Rd/i));
@@ -258,7 +257,6 @@ describe('Multi-shipping', () => {
             },
         );
 
-        // eslint-disable-next-line testing-library/no-unnecessary-act
         await act(async () => {
             await userEvent.click(screen.getByRole('button', { name: 'Add new destination' }));
             await userEvent.click(screen.getByText('Choose a shipping address'));
@@ -313,7 +311,6 @@ describe('Multi-shipping', () => {
             },
         );
 
-        // eslint-disable-next-line testing-library/no-unnecessary-act
         await act(async () => {
             await userEvent.click(screen.getByText('Choose a shipping address'));
             await userEvent.click(
@@ -344,7 +341,6 @@ describe('Multi-shipping', () => {
             },
         );
 
-        // eslint-disable-next-line testing-library/no-unnecessary-act
         await act(async () => {
             await userEvent.click(screen.getByText(/333 testing Rd/i));
             await userEvent.click(screen.getByText(/111 testing Rd/i));

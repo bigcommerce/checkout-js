@@ -4,11 +4,10 @@ import {
     createEmbeddedCheckoutMessenger,
     EmbeddedCheckoutMessenger,
 } from '@bigcommerce/checkout-sdk';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { noop } from 'lodash';
-import { rest } from 'msw';
-import React, { FunctionComponent } from 'react';
+import React, { act, FunctionComponent } from 'react';
 
 import {
     AnalyticsContextProps,
@@ -27,7 +26,6 @@ import {
     checkoutWithShippingDiscount,
     consignmentAutomaticDiscount,
     consignmentCouponDiscount,
-    payments,
 } from '@bigcommerce/checkout/test-framework';
 
 import { createErrorLogger } from '../common/error';
@@ -44,7 +42,7 @@ describe('Checkout', () => {
     let checkoutService: CheckoutService;
     let defaultProps: CheckoutProps & AnalyticsContextProps;
     let embeddedMessengerMock: EmbeddedCheckoutMessenger;
-    let analyticsTracker: Partial<AnalyticsEvents>;
+    let analyticsTracker: AnalyticsEvents;
 
     beforeAll(() => {
         checkout = new CheckoutPageNodeObject();
@@ -68,9 +66,20 @@ describe('Checkout', () => {
         });
         analyticsTracker = {
             checkoutBegin: jest.fn(),
-            trackStepViewed: jest.fn(),
             trackStepCompleted: jest.fn(),
+            trackStepViewed: jest.fn(),
+            orderPurchased: jest.fn(),
+            customerEmailEntry: jest.fn(),
+            customerSuggestionInit: jest.fn(),
+            customerSuggestionExecute: jest.fn(),
+            customerPaymentMethodExecuted: jest.fn(),
+            showShippingMethods: jest.fn(),
+            selectedPaymentMethod: jest.fn(),
+            clickPayButton: jest.fn(),
+            paymentRejected: jest.fn(),
+            paymentComplete: jest.fn(),
             exitCheckout: jest.fn(),
+            walletButtonClick: jest.fn(),
         };
         defaultProps = {
             checkoutId: 'x',
@@ -88,7 +97,7 @@ describe('Checkout', () => {
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleProvider checkoutService={checkoutService}>
                     <AnalyticsProviderMock>
-                        <ExtensionProvider checkoutService={checkoutService}>
+                        <ExtensionProvider checkoutService={checkoutService} errorLogger={defaultProps.errorLogger}>
                             <Checkout {...props} />
                         </ExtensionProvider>
                     </AnalyticsProviderMock>
@@ -218,21 +227,23 @@ describe('Checkout', () => {
 
             await checkout.waitForCustomerStep();
 
-            await userEvent.type(screen.getByLabelText('Email'), 'test@example.com');
-            await userEvent.click(screen.getByText('Continue'));
-
-            await screen.findByText('test@example.com');
+            await act(async () => {
+                await userEvent.type(screen.getByLabelText('Email'), 'test@example.com');
+                await userEvent.click(screen.getByText('Continue'));
+            });
 
             expect(analyticsTracker.trackStepCompleted).toHaveBeenCalledWith('customer');
         });
 
         it('navigates to next step when shopper continues as guest', async () => {
-            render(<CheckoutTest {...defaultProps} />);
+            render(<CheckoutTest {...defaultProps} />, {legacyRoot: true});
 
             await checkout.waitForCustomerStep();
 
-            await userEvent.type(await screen.findByLabelText('Email'), 'test@example.com');
-            await userEvent.click(await screen.findByText('Continue'));
+            await act(async () => {
+                await userEvent.type(await screen.findByLabelText('Email'), 'test@example.com');
+                await userEvent.click(await screen.findByText('Continue'));
+            });
 
             await screen.findByText('test@example.com');
 
@@ -487,17 +498,19 @@ describe('Checkout', () => {
         });
 
         it('logs unhandled error', async () => {
+            const error = new Error();
+
             checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
 
-            const handler = rest.get('/api/storefront/payments', (_, res, ctx) => res(ctx.json([payments[2]])));
+            jest.spyOn(checkoutService, 'loadPaymentMethods').mockImplementation(() => {
+                throw error;
+            });
 
-            checkout.setRequestHandler(handler);
+            render(<CheckoutTest {...defaultProps} />, {legacyRoot: true});
 
-            render(<CheckoutTest {...defaultProps} />);
-
-            await checkout.waitForPaymentStep();
-
-            expect(defaultProps.errorLogger.log).toHaveBeenCalled();
+            await waitFor(() => {
+                expect(defaultProps.errorLogger.log).toHaveBeenCalledWith(error);
+            });
         });
     });
 });
