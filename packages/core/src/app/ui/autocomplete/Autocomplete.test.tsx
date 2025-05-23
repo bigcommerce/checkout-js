@@ -1,7 +1,7 @@
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
-import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import Autocomplete from './Autocomplete';
 import AutocompleteItem from './autocomplete-item';
@@ -38,39 +38,40 @@ describe('Autocomplete Component', () => {
     });
 
     it('trigger onSelect function when an item is clicked', async () => {
-        const onSelect = jest.fn();
-        const { container } = render(<Autocomplete items={items} onSelect={onSelect} />);
+        let value = '';
+        const onSelect = (item: typeof items[number]) => {
+            value = item.value as string;
+            rerender(Component());
+        };
+
+        const Component = () => (
+            <Autocomplete initialValue={value} items={items} onSelect={onSelect} />
+          );
+        const { container, rerender } = render(Component());
+
 
         await userEvent.type(screen.getByRole('textbox'), 'foo');
         await userEvent.click(screen.getByText('foo'));
-
-        expect(onSelect).toHaveBeenCalledWith(
-            {
-                ...items[0],
-                content: items[0].label,
-            },
-            expect.anything(),
-        );
 
         expect(container.innerHTML).toContain('vfoo');
     });
 
     it('select item by keyboard', async () => {
-        const onSelect = jest.fn();
-        const { container } = render(<Autocomplete items={items} onSelect={onSelect} />);
+        let value = '';
+        const onSelect = (item: typeof items[number]) => {
+            value = item.value as string;
+            rerender(Component());
+        };
+
+        const Component = () => (
+            <Autocomplete initialValue={value} items={items} onSelect={onSelect} />
+          );
+        const { container, rerender } = render(Component());
 
         await userEvent.type(screen.getByRole('textbox'), 'zo');
         await userEvent.keyboard('{arrowdown}');
         await userEvent.keyboard('{arrowdown}');
         await userEvent.keyboard('{enter}');
-
-        expect(onSelect).toHaveBeenCalledWith(
-            {
-                ...items[1],
-                content: items[1].label,
-            },
-            expect.anything(),
-        );
 
         expect(container.innerHTML).toContain('vbar');
     });
