@@ -1,8 +1,9 @@
 import { Checkout, ShopperCurrency, StoreCurrency } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent } from 'react';
 
+import { isBuyNowCart } from '@bigcommerce/checkout/utility';
+
 import { withCheckout } from '../checkout';
-import { isBuyNowCart } from '../common/utility';
 import OrderSummary from '../order/OrderSummary';
 
 import EditLink from './EditLink';

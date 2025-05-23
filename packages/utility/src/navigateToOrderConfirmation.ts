@@ -1,10 +1,8 @@
 import { noop } from 'lodash';
 
-import { isBuyNowCart } from '../common/utility';
+import isBuyNowCart from './isBuyNowCart';
 
-export default function navigateToOrderConfirmation(
-    orderId?: number,
-): Promise<never> {
+export default function navigateToOrderConfirmation(orderId?: number): Promise<never> {
     let url: string;
 
     if (orderId && isBuyNowCart()) {
