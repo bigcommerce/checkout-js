@@ -1,7 +1,6 @@
 import { createCheckoutService } from '@bigcommerce/checkout-sdk';
 import userEvent from '@testing-library/user-event';
-import React, { FunctionComponent } from 'react';
-import { act } from 'react-dom/test-utils';
+import React, { act, FunctionComponent } from 'react';
 
 import { AnalyticsEvents, AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
 import { LocaleProvider } from '@bigcommerce/checkout/locale';

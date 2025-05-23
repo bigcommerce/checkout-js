@@ -2,12 +2,10 @@ import {
     CheckoutSelectors,
     CheckoutService,
     createCheckoutService,
-    HostedFieldType,
 } from '@bigcommerce/checkout-sdk';
 import { Formik, FormikProps } from 'formik';
-import { last, merge, noop } from 'lodash';
+import { merge, noop } from 'lodash';
 import React, { ComponentType, FunctionComponent, ReactNode } from 'react';
-import { act } from 'react-dom/test-utils';
 
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import {

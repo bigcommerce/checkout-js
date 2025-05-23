@@ -7,8 +7,7 @@ import {
 import userEvent from '@testing-library/user-event';
 import { noop } from 'lodash';
 import { rest } from 'msw';
-import React, { FunctionComponent } from 'react';
-import { act } from 'react-dom/test-utils';
+import React, { act, FunctionComponent } from 'react';
 
 import {
     AnalyticsContextProps,
