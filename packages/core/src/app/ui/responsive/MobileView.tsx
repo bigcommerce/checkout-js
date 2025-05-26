@@ -4,7 +4,7 @@ import ViewPicker from './ViewPicker';
 
 interface QueryResults {
     [key: string]: boolean;
-};
+}
 
 const MobileView: FunctionComponent<{ children(matched: boolean): React.ReactNode }> = ({
     children,

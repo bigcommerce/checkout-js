@@ -9,10 +9,10 @@ export type RenderCheckoutOptions = CheckoutAppProps;
 export type RenderCheckout = typeof renderCheckout;
 
 export default function renderCheckout({
-                                           containerId,
-                                           publicPath,
-                                           ...props
-                                       }: RenderCheckoutOptions): void {
+    containerId,
+    publicPath,
+    ...props
+}: RenderCheckoutOptions): void {
     const configuredPublicPath = configurePublicPath(publicPath);
 
     // We want to use `require` here because we want to set up the public path
@@ -29,7 +29,6 @@ export default function renderCheckout({
         });
     }
 
-    // eslint-disable-next-line react/no-deprecated
     ReactDOM.render(
         <CheckoutApp containerId={containerId} publicPath={configuredPublicPath} {...props} />,
         document.getElementById(containerId),
