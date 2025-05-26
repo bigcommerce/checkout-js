@@ -8,7 +8,7 @@ describe('AddressSelectorAU', () => {
         expect(selector.getStreet()).toBe('1-3 (l) Smail Street');
     });
 
-    it('should return correct street2 address', () => {
+    it('should return correct street2 address value', () => {
         const selector = new AddressSelectorAU(getGoogleAutocompletePlaceMock());
 
         expect(selector.getStreet2()).toBe('unit 6');
