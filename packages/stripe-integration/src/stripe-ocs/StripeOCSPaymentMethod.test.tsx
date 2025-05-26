@@ -41,6 +41,10 @@ jest.mock('./getStripeOCSStyles', () => ({
 }));
 
 describe('when using StripeUPE OCS payment', () => {
+    const methodId = 'stripe_ocs';
+    const gatewayId = PaymentMethodId.StripeUPE;
+    const methodSelectorPrefix = `${gatewayId}-${methodId}`;
+    const expectedContainerId = `${methodSelectorPrefix}-component-field`;
     let method: PaymentMethod;
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
@@ -61,14 +65,14 @@ describe('when using StripeUPE OCS payment', () => {
         checkoutService = createCheckoutService();
         checkoutState = checkoutService.getState();
         localeContext = createLocaleContext(getStoreConfig());
-        method = { ...getPaymentMethod(), id: 'pay_now', gateway: PaymentMethodId.StripeUPE };
+        method = { ...getPaymentMethod(), id: methodId, gateway: gatewayId };
         initializePayment = jest
             .spyOn(checkoutService, 'initializePayment')
             .mockResolvedValue(checkoutState);
         onToggleMock = jest.fn();
         accordionContextValues = {
             onToggle: onToggleMock,
-            selectedItemId: 'stripeupe-stripe_ocs',
+            selectedItemId: methodSelectorPrefix,
         };
 
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
@@ -115,10 +119,10 @@ describe('when using StripeUPE OCS payment', () => {
         render(<PaymentMethodTest {...defaultProps} method={method} />);
 
         expect(initializePayment).toHaveBeenCalledWith({
-            gatewayId: 'stripeupe',
-            methodId: 'pay_now',
-            stripeupe: {
-                containerId: 'stripe-pay_now-component-field',
+            gatewayId,
+            methodId,
+            [gatewayId]: {
+                containerId: expectedContainerId,
                 style: { color: '#cccccc' },
                 onError: expect.any(Function),
                 render: expect.any(Function),
@@ -140,10 +144,10 @@ describe('when using StripeUPE OCS payment', () => {
         render(<PaymentMethodTest {...defaultProps} method={method} />);
 
         expect(initializePayment).toHaveBeenCalledWith({
-            gatewayId: 'stripeupe',
-            methodId: 'pay_now',
-            stripeupe: {
-                containerId: 'stripe-pay_now-component-field',
+            gatewayId,
+            methodId,
+            [gatewayId]: {
+                containerId: expectedContainerId,
                 style: { color: '#cccccc' },
                 onError: expect.any(Function),
                 render: expect.any(Function),
@@ -160,9 +164,32 @@ describe('when using StripeUPE OCS payment', () => {
             expect.objectContaining({
                 methodId: method.id,
                 gatewayId: method.gateway,
-                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                [`${method.gateway}`]: {
-                    containerId: `stripe-${method.id}-component-field`,
+                [gatewayId]: {
+                    containerId: expectedContainerId,
+                    style: { color: '#cccccc' },
+                    onError: expect.any(Function),
+                    render: expect.any(Function),
+                    paymentMethodSelect: expect.any(Function),
+                    handleClosePaymentMethod: expect.any(Function),
+                },
+            }),
+        );
+    });
+
+    it('initialize without error handler', () => {
+        const props = {
+            ...defaultProps,
+            onUnhandledError: undefined,
+        } as unknown as PaymentMethodProps;
+
+        render(<PaymentMethodTest {...props} method={method} />);
+
+        expect(checkoutService.initializePayment).toHaveBeenCalledWith(
+            expect.objectContaining({
+                methodId: method.id,
+                gatewayId: method.gateway,
+                [gatewayId]: {
+                    containerId: expectedContainerId,
                     style: { color: '#cccccc' },
                     onError: expect.any(Function),
                     render: expect.any(Function),
