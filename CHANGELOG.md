@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.589.0](https://github.com/bigcommerce/checkout-js/compare/v1.588.3...v1.589.0) (2025-05-26)
+
+
+### Features
+
+* **payment:** Stripe OCS accordion fix accordion borders ([2164c1a](https://github.com/bigcommerce/checkout-js/commit/2164c1a3f74c4ae45e2f000f7d9645d80cc56fd3))
+
 ### [1.588.3](https://github.com/bigcommerce/checkout-js/compare/v1.588.2...v1.588.3) (2025-05-26)
 
 
