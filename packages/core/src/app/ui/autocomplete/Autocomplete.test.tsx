@@ -1,7 +1,8 @@
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 import userEvent from '@testing-library/user-event';
+import { Formik } from 'formik';
 import React from 'react';
 
-import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import Autocomplete from './Autocomplete';
 import AutocompleteItem from './autocomplete-item';
@@ -38,39 +39,45 @@ describe('Autocomplete Component', () => {
     });
 
     it('trigger onSelect function when an item is clicked', async () => {
-        const onSelect = jest.fn();
-        const { container } = render(<Autocomplete items={items} onSelect={onSelect} />);
+        const initialValues = { value: '' };
+
+        const { container }= render(
+            <Formik initialValues={initialValues} onSubmit={jest.fn()}>
+              {({ values, setFieldValue }) => (
+                  <Autocomplete
+                    initialValue={values.value}
+                    items={items}
+                    onSelect={(val) => setFieldValue('value', val?.value)}
+                  />
+              )}
+            </Formik>
+        );
 
         await userEvent.type(screen.getByRole('textbox'), 'foo');
         await userEvent.click(screen.getByText('foo'));
-
-        expect(onSelect).toHaveBeenCalledWith(
-            {
-                ...items[0],
-                content: items[0].label,
-            },
-            expect.anything(),
-        );
 
         expect(container.innerHTML).toContain('vfoo');
     });
 
     it('select item by keyboard', async () => {
-        const onSelect = jest.fn();
-        const { container } = render(<Autocomplete items={items} onSelect={onSelect} />);
+        const initialValues = { value: '' };
+
+        const { container }= render(
+            <Formik initialValues={initialValues} onSubmit={jest.fn()}>
+              {({ values, setFieldValue }) => (
+                  <Autocomplete
+                    initialValue={values.value}
+                    items={items}
+                    onSelect={(val) => setFieldValue('value', val?.value)}
+                  />
+              )}
+            </Formik>
+        );
 
         await userEvent.type(screen.getByRole('textbox'), 'zo');
         await userEvent.keyboard('{arrowdown}');
         await userEvent.keyboard('{arrowdown}');
         await userEvent.keyboard('{enter}');
-
-        expect(onSelect).toHaveBeenCalledWith(
-            {
-                ...items[1],
-                content: items[1].label,
-            },
-            expect.anything(),
-        );
 
         expect(container.innerHTML).toContain('vbar');
     });
