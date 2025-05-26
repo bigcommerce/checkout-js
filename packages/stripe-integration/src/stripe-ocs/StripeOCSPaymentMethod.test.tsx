@@ -45,6 +45,13 @@ describe('when using StripeUPE OCS payment', () => {
     const gatewayId = PaymentMethodId.StripeUPE;
     const methodSelectorPrefix = `${gatewayId}-${methodId}`;
     const expectedContainerId = `${methodSelectorPrefix}-component-field`;
+    const defaultAccordionLayout = {
+        defaultCollapsed: false,
+        radios: true,
+        spacedAccordionItems: false,
+        type: 'accordion',
+        visibleAccordionItemsCount: 0,
+    };
     let method: PaymentMethod;
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
@@ -123,6 +130,7 @@ describe('when using StripeUPE OCS payment', () => {
             methodId,
             [gatewayId]: {
                 containerId: expectedContainerId,
+                layout: defaultAccordionLayout,
                 style: { color: '#cccccc' },
                 onError: expect.any(Function),
                 render: expect.any(Function),
@@ -148,6 +156,7 @@ describe('when using StripeUPE OCS payment', () => {
             methodId,
             [gatewayId]: {
                 containerId: expectedContainerId,
+                layout: defaultAccordionLayout,
                 style: { color: '#cccccc' },
                 onError: expect.any(Function),
                 render: expect.any(Function),
@@ -166,6 +175,7 @@ describe('when using StripeUPE OCS payment', () => {
                 gatewayId: method.gateway,
                 [gatewayId]: {
                     containerId: expectedContainerId,
+                    layout: defaultAccordionLayout,
                     style: { color: '#cccccc' },
                     onError: expect.any(Function),
                     render: expect.any(Function),
@@ -190,6 +200,7 @@ describe('when using StripeUPE OCS payment', () => {
                 gatewayId: method.gateway,
                 [gatewayId]: {
                     containerId: expectedContainerId,
+                    layout: defaultAccordionLayout,
                     style: { color: '#cccccc' },
                     onError: expect.any(Function),
                     render: expect.any(Function),
@@ -198,6 +209,82 @@ describe('when using StripeUPE OCS payment', () => {
                 },
             }),
         );
+    });
+
+    // TODO: remove after fix issue with module on BE side
+    it('initializes method without gateway id', () => {
+        const methodWithoutGatewayId = {
+            ...method,
+            gateway: undefined,
+        };
+
+        render(<PaymentMethodTest {...defaultProps} method={methodWithoutGatewayId} />);
+
+        expect(checkoutService.initializePayment).toHaveBeenCalledWith(
+            expect.objectContaining({
+                methodId: method.id,
+                gatewayId: undefined,
+                [methodId]: {
+                    containerId: `undefined-${methodId}-component-field`,
+                    layout: {
+                        ...defaultAccordionLayout,
+                        defaultCollapsed: true,
+                    },
+                    style: { color: '#cccccc' },
+                    onError: expect.any(Function),
+                    render: expect.any(Function),
+                    paymentMethodSelect: expect.any(Function),
+                    handleClosePaymentMethod: expect.any(Function),
+                },
+            }),
+        );
+    });
+
+    describe('# Stripe OCS accordion layout', () => {
+        it('accordion collapsed when selected different payment method', () => {
+            accordionContextValues.selectedItemId = 'nonStripeItem';
+
+            render(<PaymentMethodTest {...defaultProps} method={method} />);
+
+            expect(checkoutService.initializePayment).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    methodId: method.id,
+                    gatewayId: method.gateway,
+                    [gatewayId]: {
+                        containerId: expectedContainerId,
+                        layout: {
+                            ...defaultAccordionLayout,
+                            defaultCollapsed: true,
+                        },
+                        style: { color: '#cccccc' },
+                        onError: expect.any(Function),
+                        render: expect.any(Function),
+                        paymentMethodSelect: expect.any(Function),
+                        handleClosePaymentMethod: expect.any(Function),
+                    },
+                }),
+            );
+        });
+
+        it('accordion open when selected OCS payment method', () => {
+            render(<PaymentMethodTest {...defaultProps} method={method} />);
+
+            expect(checkoutService.initializePayment).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    methodId: method.id,
+                    gatewayId: method.gateway,
+                    [gatewayId]: {
+                        containerId: expectedContainerId,
+                        layout: defaultAccordionLayout,
+                        style: { color: '#cccccc' },
+                        onError: expect.any(Function),
+                        render: expect.any(Function),
+                        paymentMethodSelect: expect.any(Function),
+                        handleClosePaymentMethod: expect.any(Function),
+                    },
+                }),
+            );
+        });
     });
 
     describe('# Stripe OCS accordion actions', () => {

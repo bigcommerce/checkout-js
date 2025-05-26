@@ -26,7 +26,8 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 }) => {
     const collapseStripeElement = useRef<() => void>();
     const { onToggle, selectedItemId } = useContext(AccordionContext);
-    const containerId = `${method.gateway}-${method.id}-component-field`;
+    const methodSelector = `${method.gateway}-${method.id}`;
+    const containerId = `${methodSelector}-component-field`;
     const paymentContext = paymentForm;
 
     useEffect(() => {
@@ -60,8 +61,15 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         async (options: PaymentInitializeOptions) => {
             return checkoutService.initializePayment({
                 ...options,
-                stripeupe: {
+                [method.gateway || method.id]: {
                     containerId,
+                    layout: {
+                        type: 'accordion',
+                        defaultCollapsed: selectedItemId !== methodSelector,
+                        radios: true,
+                        spacedAccordionItems: false,
+                        visibleAccordionItemsCount: 0,
+                    },
                     style: getStylesForOCSElement(containerId),
                     onError: onUnhandledError,
                     render: renderSubmitButton,
@@ -72,7 +80,16 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                 },
             });
         },
-        [containerId, checkoutService, onUnhandledError, renderSubmitButton, onToggle],
+        [
+            containerId,
+            selectedItemId,
+            method,
+            methodSelector,
+            checkoutService,
+            onUnhandledError,
+            renderSubmitButton,
+            onToggle,
+        ],
     );
 
     const renderCheckoutThemeStylesForStripeOCS = () => {
@@ -80,10 +97,10 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             <>
                 <style>
                     {`
-                        .custom-checklist-item#radio-${method.gateway}-${method.id} {
+                        .custom-checklist-item#radio-${methodSelector} {
                             border-bottom: none;
                         }
-                        .custom-checklist-item#radio-${method.gateway}-${method.id}:last-of-type {
+                        .custom-checklist-item#radio-${methodSelector}:last-of-type {
                             margin-bottom: -1px;
                         }
                     `}
@@ -105,7 +122,10 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                                 id={`${containerId}--error`}
                             />
                         </div>
-                        <div className="optimizedCheckout-form-label" id={`${containerId}--label`} />
+                        <div
+                            className="optimizedCheckout-form-label"
+                            id={`${containerId}--label`}
+                        />
                     </div>
                 </div>
             </>
