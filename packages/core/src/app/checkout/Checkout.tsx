@@ -330,7 +330,7 @@ class Checkout extends Component<
                 <div className="layout-main">
                     <LoadingNotification isLoading={(!isShowingWalletButtonsOnTop && isPending) || extensionState.isShowingLoadingIndicator} />
 
-                    <Extension region={ExtensionRegion.GlobalWebWorker} />
+                    {/* <Extension region={ExtensionRegion.GlobalWebWorker} /> */}
                     <PromotionBannerList promotions={promotions} />
 
                     {isShowingWalletButtonsOnTop && this.state.buttonConfigs?.length > 0 && (
