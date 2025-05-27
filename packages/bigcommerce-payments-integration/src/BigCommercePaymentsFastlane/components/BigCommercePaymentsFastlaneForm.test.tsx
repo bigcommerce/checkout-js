@@ -18,6 +18,12 @@ import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import BigCommercePaymentsFastlaneForm from './BigCommercePaymentsFastlaneForm';
 
+import { configure } from '@testing-library/react';
+
+configure({
+  testIdAttribute: 'data-test',
+});
+
 describe('BigCommercePaymentsFastlaneForm', () => {
     let BigCommercePaymentsFastlaneFormMock: FunctionComponent;
     let checkoutService: CheckoutService;

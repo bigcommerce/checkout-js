@@ -8,6 +8,12 @@ import BigCommercePaymentsFastlaneInstrumentsForm from './BigCommercePaymentsFas
 import { CardInstrument } from '@bigcommerce/checkout-sdk';
 import { fireEvent } from '@testing-library/react';
 
+import { configure } from '@testing-library/react';
+
+configure({
+  testIdAttribute: 'data-test',
+});
+
 describe('BigCommercePaymentsFastlaneInstrumentsForm', () => {
     const selectedInstrumentMock = getCardInstrument();
 
