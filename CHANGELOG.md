@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.591.0](https://github.com/bigcommerce/checkout-js/compare/v1.590.0...v1.591.0) (2025-05-27)
+
+
+### Features
+
+* **checkout:** Add Checkout Extension Using Web Worker ([#2307](https://github.com/bigcommerce/checkout-js/issues/2307)) ([ef527fe](https://github.com/bigcommerce/checkout-js/commit/ef527feb52d29db628f324d970ca32028bd409cb))
+
+## [1.590.0](https://github.com/bigcommerce/checkout-js/compare/v1.589.1...v1.590.0) (2025-05-26)
+
+
+### Features
+
+* **payment:** Stripe OCS accordion state on initialization ([6816e7d](https://github.com/bigcommerce/checkout-js/commit/6816e7dd2c069fa8009e299c913b76b78da618ba))
+
 ### [1.589.1](https://github.com/bigcommerce/checkout-js/compare/v1.589.0...v1.589.1) (2025-05-26)
 
 ## [1.589.0](https://github.com/bigcommerce/checkout-js/compare/v1.588.3...v1.589.0) (2025-05-26)
