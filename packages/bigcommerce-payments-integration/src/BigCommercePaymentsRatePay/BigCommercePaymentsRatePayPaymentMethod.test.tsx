@@ -25,6 +25,12 @@ import BigCommercePaymentsRatePayPaymentMethod from './BigCommercePaymentsRatePa
 import { EventEmitter } from 'events';
 import { act } from '@bigcommerce/checkout/test-utils';
 
+import { configure } from '@testing-library/react';
+
+configure({
+  testIdAttribute: 'data-test',
+});
+
 describe('BigCommercePaymentsRatePayPaymentMethod', () => {
     let eventEmitter: EventEmitter;
     let BigCommercePaymentsRatePayPaymentMethodTest: FunctionComponent<PaymentMethodProps>;
