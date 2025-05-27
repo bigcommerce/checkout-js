@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.591.0](https://github.com/bigcommerce/checkout-js/compare/v1.590.0...v1.591.0) (2025-05-27)
+
+
+### Features
+
+* **checkout:** Add Checkout Extension Using Web Worker ([#2307](https://github.com/bigcommerce/checkout-js/issues/2307)) ([ef527fe](https://github.com/bigcommerce/checkout-js/commit/ef527feb52d29db628f324d970ca32028bd409cb))
+
 ## [1.590.0](https://github.com/bigcommerce/checkout-js/compare/v1.589.1...v1.590.0) (2025-05-26)
 
 
