@@ -21,6 +21,7 @@ import { Extension, ExtensionContextProps, withExtension } from '@bigcommerce/ch
 import { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { AddressFormSkeleton, ChecklistSkeleton , LazyContainer, LoadingNotification, LoadingOverlay } from '@bigcommerce/checkout/ui';
+import { navigateToOrderConfirmation } from '@bigcommerce/checkout/utility';
 
 import { withAnalytics } from '../analytics';
 import { StaticBillingAddress } from '../billing';
@@ -49,7 +50,6 @@ import CheckoutStepStatus from './CheckoutStepStatus';
 import CheckoutStepType from './CheckoutStepType';
 import CheckoutSupport from './CheckoutSupport';
 import mapToCheckoutProps from './mapToCheckoutProps';
-import navigateToOrderConfirmation from './navigateToOrderConfirmation';
 
 const Billing = lazy(() =>
     retry(
