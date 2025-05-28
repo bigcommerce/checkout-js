@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "appVersion": "1.592.0",
+  "appVersion": "1.593.0",
   "dynamicChunks": {
     "js": [
       "185-6cb38985.js",
@@ -27,7 +27,7 @@
     "runtime-67f0e879.js",
     "polyfill-f34068b2.js",
     "sentry-ac340b99.js",
-    "transients-2212ade7.js",
+    "transients-79ad082f.js",
     "vendors-2ca0da9d.js",
     "checkout-7a5a7d14.js"
   ],
@@ -56,7 +56,7 @@
     "sentry-ac340b99.js": "sha256-NDMJeAwOthxMe2WGV3BMVyaxrHYZ7Ch/B9wTxSddAlI= sha384-e9KDLk66JqDP/YrTSHi+JsaXm68yJOyLu4UMtFo1N0dGxLygwGpGLQwWnkxQdiQD sha512-l1lMPA2krzo8V+Dv3os1wnpzcQe8zq4+YL40Io8cr/aMhn6l3gbNGB2FlSCPQtkcTbrrbyRmAyQMok2VXanfRg==",
     "shipping-99d3303d.css": "sha256-aJm+hDaWclRToFaqFJfrE+cgwm2m+ls3BuGb4BaOs0Y= sha384-9tJ2W4N+ezUtQ3316qCWr7hlQ+wNY/QGuVRipnEL2iAmKNZu+LGMLrAsw41GKNJF sha512-YMH7AIT6hqZngxxBkEhxpZ++oOUXHIluP5Onf98bEqVAH2g/X15TBYpMq48RlSPvCLerlAPt7l0gph6pcCD6Vg==",
     "shipping-f8d87085.js": "sha256-pJM4MPp8fTAJ03UrgRT/wnQTcrmPpf1ZJNzuXaAKbYQ= sha384-Q6nURCg9sTNEFLqxKcllqLcFiuzLRVqaZ3fS1Oah+Pcq/MLgLNfAH4XhKY2Mp+22 sha512-/kbmDr9ySvnYk6tomVIzgrubNRmWjTGybMUnBILg4hf3Z1+RznH2CmsR1a04zf9ff2BRaZUYx1KLe4pSl7YTjg==",
-    "transients-2212ade7.js": "sha256-x5B1aWiIUXihWeQFHpQRKDJZ0PJyPK6XNLTqUUvk88o= sha384-lum3zk9Uoa0pLAn40PysR2c17eSVzAoWlFl5N6GCHzyGwiSxgqcz+sVoMRoFS0I7 sha512-45aPNl8hujoVEqUri6FXZZ/2ccY2Cr84v2xj0nzJ1XhyBaEkHklluz8Vq+S3DuGJpokQ2rgpB/gihdLNrmgZOA==",
+    "transients-79ad082f.js": "sha256-1phv2AsWVd9pejF6yWrosTfJvYTft5mlpkrxpJWQPqg= sha384-cEiWk1CTn6PzflcyqKlX5riCc2Rgy+bXD+1m7ZkNOp5UHcvpzWL77Dw23QRvDcEK sha512-qeOxPRTgnh/LeINywM/4Kbr1a/tsgvqL8Hew1C3NCnSFdZOezVEuFjNgoDZY51HVqkLOCJgGfADapIGlMHCQSg==",
     "vendors-2ca0da9d.js": "sha256-tlYZTJdH2Ewa1I5ZES3QJKlUy22V0DvBBS7ooja0oAs= sha384-h2iuE5MY7EXrsdtGLJvLKzlqX9UeiebYhTMN+LElLmg5BqnTsTnOfRD5DT56tkO+ sha512-hsbiGj/KO19eYxhRvrRABqtFW9CE5zsUdptT8Mhde4S+WhM5S64tOjUrWvv4hBZdT0k0KIPcZCvQcQYpab+etQ=="
   }
 }
