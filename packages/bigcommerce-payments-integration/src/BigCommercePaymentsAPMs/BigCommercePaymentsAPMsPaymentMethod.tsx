@@ -7,7 +7,7 @@ import {
   toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 
-import BigCommercePaymentsPaymentMethodComponent from '../BigCommercePaymentsFastlane/components/BigCommercePaymentsPaymentMethodComponent';
+import BigCommercePaymentsPaymentMethodComponent from '../components/BigCommercePaymentsPaymentMethodComponent';
 
 const BigCommercePaymentsAPMsPaymentMethod: FunctionComponent<PaymentMethodProps> = (props) => {
   const { method, checkoutState } = props;
