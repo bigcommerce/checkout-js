@@ -4,14 +4,10 @@ import {
     Country,
     CustomerAddress,
     FormField,
-    ShippingInitializeOptions
 } from '@bigcommerce/checkout-sdk';
 import React, { FC, useEffect, useRef, useState } from 'react';
 
 import {
-    isBigCommercePaymentsFastlaneMethod,
-    isBraintreeFastlaneMethod,
-    isPayPalCommerceFastlaneMethod,
     isPayPalFastlaneMethod,
     PayPalFastlaneShippingAddressForm,
     usePayPalFastlaneAddress,
@@ -55,34 +51,10 @@ export const PayPalFastlaneShippingAddress: FC<PayPalFastlaneShippingAddressProp
     const [isLoadingStrategy, setIsLoadingStrategyStrategy] = useState<boolean>(true);
 
     const paypalFastlaneShippingComponent = useRef<PayPalFastlaneAddressComponentRef>({});
-    const fastlaneOptions = (provider: string) => {
-        return {
-            [provider]: {
-                onPayPalFastlaneAddressChange: (
-                    showPayPalFastlaneAddressSelector: PayPalFastlaneAddressComponentRef['showAddressSelector'],
-                ) => {
-                    paypalFastlaneShippingComponent.current.showAddressSelector =
-                        showPayPalFastlaneAddressSelector;
-                },
-            },
-        };
-    }
-
-    const initializationOptions: ShippingInitializeOptions = isPayPalCommerceFastlaneMethod(
-        methodId,
-    )
-        ? fastlaneOptions('paypalcommercefastlane')
-        : fastlaneOptions('braintreefastlane');
 
     const initializeShippingStrategyOrThrow = async () => {
         try {
-            await initialize({
-                methodId,
-                ...(isBigCommercePaymentsFastlaneMethod(methodId) ? fastlaneOptions('bigcommercepaymentsfastlane') : {}),
-                ...(isBraintreeFastlaneMethod(methodId) ? fastlaneOptions('braintreefastlane') : {}),
-                ...(isPayPalCommerceFastlaneMethod(methodId) ? fastlaneOptions('paypalcommercefastlane') : {}),
-                ...initializationOptions,
-            });
+            await initialize({methodId});
         } catch (error) {
             if (typeof onUnhandledError === 'function' && error instanceof Error) {
                 onUnhandledError(error);

@@ -3,16 +3,16 @@ import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
 import isBigCommercePaymentsFastlaneMethod from './is-bigcommerce-payments-fastlane-method';
 
 describe('isBigCommercePaymentsFastlaneMethod', () => {
-    it('returns true if provided methodId is related to PayPal Fastlane', () => {
-        expect(isBigCommercePaymentsFastlaneMethod(PaymentMethodId.PaypalCommerceCreditCards)).toBe(
-            true,
-        );
+    it('returns true if provided methodId is related to BigCommercePayments Fastlane', () => {
         expect(
-            isBigCommercePaymentsFastlaneMethod(PaymentMethodId.PayPalCommerceAcceleratedCheckout),
+            isBigCommercePaymentsFastlaneMethod(PaymentMethodId.BigCommercePaymentsPayLater),
+        ).toBe(true);
+        expect(
+            isBigCommercePaymentsFastlaneMethod(PaymentMethodId.BigCommercePaymentsFastLane),
         ).toBe(true);
     });
 
-    it('returns false if provided methodId is not related to PayPal Fastlane', () => {
+    it('returns false if provided methodId is not related to BigCommercePayments Fastlane', () => {
         expect(isBigCommercePaymentsFastlaneMethod(PaymentMethodId.Braintree)).toBe(false);
     });
 });
