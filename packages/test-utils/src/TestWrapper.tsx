@@ -17,7 +17,7 @@ const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
 };
 
 const customRender = (ui: ReactElement, options?: Omit<RenderOptions, 'wrapper'>) =>
-    render(ui, { wrapper: AllTheProviders, ...options });
+    render(ui, { wrapper: AllTheProviders, legacyRoot: true, ...options });
 
 // eslint-disable-next-line import/export
 export * from '@testing-library/react';

@@ -1,7 +1,6 @@
 import userEvent from '@testing-library/user-event';
 import { ErrorMessage } from 'formik';
-import React, { ComponentType } from 'react';
-import { act } from 'react-dom/test-utils';
+import React, { act, ComponentType } from 'react';
 import { object, string } from 'yup';
 
 import { render, screen } from '@bigcommerce/checkout/test-utils';

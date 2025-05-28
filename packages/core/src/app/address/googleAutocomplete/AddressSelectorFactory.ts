@@ -1,4 +1,5 @@
 import AddressSelector from './AddressSelector';
+import AddressSelectorAU from './AddressSelectorAU';
 import AddressSelectorCA from './AddressSelectorCA';
 import AddressSelectorUK from './AddressSelectorUk';
 
@@ -14,6 +15,9 @@ export default class AddressSelectorFactory {
 
             case 'CA':
                 return new AddressSelectorCA(autocompleteData);
+            
+            case 'AU':
+                return new AddressSelectorAU(autocompleteData);
 
             default:
                 return new AddressSelector(autocompleteData);

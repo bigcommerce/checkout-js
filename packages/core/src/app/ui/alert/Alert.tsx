@@ -8,6 +8,7 @@ export interface AlertProps {
     icon?: ReactNode;
     testId?: string;
     type?: AlertType;
+    children?: ReactNode;
 }
 
 export enum AlertType {

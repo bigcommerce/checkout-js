@@ -1,7 +1,6 @@
 import { createCheckoutService, StripeShippingEvent } from '@bigcommerce/checkout-sdk';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
-import { act } from 'react-dom/test-utils';
+import React, { act } from 'react';
 
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';

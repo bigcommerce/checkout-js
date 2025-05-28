@@ -99,6 +99,7 @@
       "@bigcommerce/checkout/test-mocks": ["packages/test-mocks/src/index.ts"],
       "@bigcommerce/checkout/test-utils": ["packages/test-utils/src/index.ts"],
       "@bigcommerce/checkout/ui": ["packages/ui/src/index.ts"],
+      "@bigcommerce/checkout/utility": ["packages/utility/src/index.ts"],
       "@bigcommerce/checkout/wallet-button-integration": [
         "packages/wallet-button-integration/src/index.ts"
       ],

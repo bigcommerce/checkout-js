@@ -4,7 +4,7 @@ import {
     createLanguageService,
     PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 
 import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
 import { getPaymentFormServiceMock, getPaymentMethod } from '@bigcommerce/checkout/test-mocks';

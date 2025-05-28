@@ -29,7 +29,7 @@ const BoltEmbeddedPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     } = paymentForm;
 
     const initializeBoltPayment = useCallback(
-        (options) =>
+        (options: any) =>
             checkoutService.initializePayment({
                 ...options,
                 bolt: {

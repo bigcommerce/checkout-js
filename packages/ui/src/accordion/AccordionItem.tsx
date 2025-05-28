@@ -33,12 +33,12 @@ const AccordionItem: FunctionComponent<AccordionItemProps> = ({
     const { onToggle, selectedItemId } = useContext(AccordionContext);
     const isSelected = selectedItemId === itemId;
 
-    const transitionEndListener = useCallback((node: Node, done) => {
-        node.addEventListener('transitionend', ({ target }: Event) => {
-            if (target === node) {
-                done();
-            }
-        });
+    const transitionEndListener = useCallback((node: Node, done: () => void) => {
+      node.addEventListener('transitionend', ({ target }: Event) => {
+        if (target === node) {
+          done();
+        }
+      });
     }, []);
 
     return (

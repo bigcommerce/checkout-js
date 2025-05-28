@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { FunctionComponent } from 'react';
+import React, {FunctionComponent, ReactNode} from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
@@ -8,6 +8,7 @@ import { IconRemove } from '../ui/icon';
 import './AppliedRedeemable.scss';
 
 export interface AppliedRedeemableProps {
+    children: ReactNode;
     isRemoving: boolean;
     onRemove(): void;
 }

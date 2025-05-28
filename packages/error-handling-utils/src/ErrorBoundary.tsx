@@ -3,7 +3,7 @@ import { Component, ReactNode } from 'react';
 import ErrorLogger from './ErrorLogger';
 
 export interface ErrorBoundaryProps {
-    children: ReactNode;
+    children?: ReactNode;
     fallback?: ReactNode;
     logger?: ErrorLogger;
     filter?(error: Error): boolean;

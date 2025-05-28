@@ -8,7 +8,7 @@ import './LazyContainer.scss';
 import LoadingSpinner from './LoadingSpinner';
 
 export interface LazyContainerProps {
-    children: ReactNode;
+    children?: ReactNode;
     loadingSkeleton?: ReactNode;
 }
 

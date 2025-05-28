@@ -5,7 +5,7 @@ import { FormContext } from '@bigcommerce/checkout/ui';
 
 export interface FormFieldContainerProps {
     additionalClassName?: string;
-    children: ReactNode;
+    children?: ReactNode;
     className?: string;
     hasError?: boolean;
     testId?: string;

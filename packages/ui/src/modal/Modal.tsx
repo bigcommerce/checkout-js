@@ -12,7 +12,7 @@ export type ModalProps = Omit<
     ReactModal.Props,
     'bodyOpenClassName' | 'className' | 'closeTimeoutMS' | 'overlayClassName'
 > & {
-    children: ReactNode;
+    children?: ReactNode;
     closeButtonLabel?: string | ReactNode;
     footer?: ReactNode;
     header?: ReactNode;
@@ -74,7 +74,9 @@ const Modal: FunctionComponent<ModalProps> = ({
                         href="#"
                         onClick={preventDefault(handleClose)}
                     >
-                        {closeButtonLabel && <span className="is-srOnly">{closeButtonLabel}</span>}
+                        {Boolean(closeButtonLabel) && (
+                            <span className="is-srOnly">{closeButtonLabel}</span>
+                        )}
 
                         <IconClose />
                     </a>

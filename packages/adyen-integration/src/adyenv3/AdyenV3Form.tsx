@@ -1,5 +1,5 @@
 import { CardInstrument } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, ReactNode } from 'react';
 import { Omit } from 'utility-types';
 
 import {
@@ -41,7 +41,7 @@ export type AdyenV3FormProps = Omit<
     validateInstrument: (
         shouldShowNumberField: boolean,
         selectedInstrument: CardInstrument,
-    ) => React.JSX.Element;
+    ) => ReactNode;
     shouldRenderAdditionalActionContentModal: boolean;
     isModalVisible: boolean;
     cancelAdditionalActionModalFlow: () => void;
