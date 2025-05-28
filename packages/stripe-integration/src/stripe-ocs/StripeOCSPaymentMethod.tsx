@@ -111,11 +111,7 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                         <div className="form-checklist-checkbox" />
                         <div className="form-label optimizedCheckout-form-label" />
                     </div>
-                    <div
-                        className="optimizedCheckout-form-input"
-                        id={`${containerId}--input`}
-                        placeholder="1111"
-                    >
+                    <div className="optimizedCheckout-form-input" id={`${containerId}--input`}>
                         <div className="form-field--error">
                             <div
                                 className="optimizedCheckout-form-label"

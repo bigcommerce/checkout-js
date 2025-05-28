@@ -5,7 +5,7 @@ import React, { ReactNode, useState } from 'react';
 import AccordionContext from './AccordionContext';
 
 export interface AccordionProps {
-    children: ReactNode;
+    children?: ReactNode;
     className?: string;
     defaultSelectedItemId?: string;
     isDisabled?: boolean;

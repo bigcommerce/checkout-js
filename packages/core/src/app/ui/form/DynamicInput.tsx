@@ -40,7 +40,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
 }) => {
     const { inputFormat } = date;
     const handleDateChange = useCallback(
-        (dateValue, event) =>
+        (dateValue: any, event: any) =>
             onChange({
                 ...event,
                 target: {
