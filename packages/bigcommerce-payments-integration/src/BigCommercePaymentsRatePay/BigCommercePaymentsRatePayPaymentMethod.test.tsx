@@ -93,14 +93,16 @@ describe('BigCommercePaymentsRatePayPaymentMethod', () => {
         <FormContext.Provider value={{ isSubmitted: true, setSubmitted: jest.fn() }}>
           <Formik validate={
             (values) => {
-              let errors = {
+              const errors = {
                 ratepayPhoneNumber: '',
                 ratepayPhoneCountryCode: '',
               };
+              // eslint-disable-next-line @typescript-eslint/prefer-regexp-exec
               if (!values.ratepayPhoneNumber.match(/^\d{7,11}$/)) {
                 errors.ratepayPhoneNumber = 'Phone number is invalid';
               }
 
+              // eslint-disable-next-line @typescript-eslint/prefer-regexp-exec
               if (!values.ratepayPhoneCountryCode.match(/^[0-9+][0-9+]{+,}$/)) {
                 errors.ratepayPhoneCountryCode = 'Phone code is invalid';
               }
@@ -132,20 +134,25 @@ describe('BigCommercePaymentsRatePayPaymentMethod', () => {
     expect(initializePayment).toHaveBeenCalledWith({
       gatewayId: props.method.gateway,
       methodId: props.method.id,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       bigcommerce_payments_ratepay: {
         container: '#checkout-payment-continue',
         legalTextContainer: 'legal-text-container',
         loadingContainerId: 'checkout-page-container',
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         getFieldsValues: expect.any(Function),
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         onError: expect.any(Function),
       },
     });
   });
 
   it('submits form', async () => {
+    // eslint-disable-next-line testing-library/no-node-access
     render(<BigCommercePaymentsRatePayPaymentMethodTest {...props} />);
 
     const submitForm = jest.fn();
+    // eslint-disable-next-line testing-library/no-node-access
     const form = document.querySelectorAll('form')[0];
 
     form.onsubmit = submitForm;
@@ -161,6 +168,7 @@ describe('BigCommercePaymentsRatePayPaymentMethod', () => {
     const deinitializePayment = jest
       .spyOn(checkoutService, 'deinitializePayment')
       .mockResolvedValue(checkoutState);
+    // eslint-disable-next-line testing-library/render-result-naming-convention
     const component = render(<BigCommercePaymentsRatePayPaymentMethodTest {...props} />);
 
     component.unmount();
@@ -208,7 +216,7 @@ describe('BigCommercePaymentsRatePayPaymentMethod', () => {
     jest.spyOn(checkoutService, 'deinitializePayment').mockRejectedValue(
       new Error('test error'),
     );
-
+    // eslint-disable-next-line testing-library/render-result-naming-convention
     const component = render(<BigCommercePaymentsRatePayPaymentMethodTest {...props} />);
 
     await new Promise((resolve) => process.nextTick(resolve));
@@ -228,6 +236,7 @@ describe('BigCommercePaymentsRatePayPaymentMethod', () => {
     const setFieldValue = jest.fn();
     const digitalErrorMock = {
       status: 'error',
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       three_ds_result: {
         acs_url: null,
         payer_auth_request: null,
@@ -264,7 +273,7 @@ describe('BigCommercePaymentsRatePayPaymentMethod', () => {
         disableSubmit: disableSubmitMock,
         setSubmitted: setSubmittedMock,
         setValidationSchema: setValidationSchema,
-        setFieldValue: setFieldValue,
+        setFieldValue,
       } as unknown as PaymentFormService,
       onUnhandledError: onUnhandledErrorMock,
     };

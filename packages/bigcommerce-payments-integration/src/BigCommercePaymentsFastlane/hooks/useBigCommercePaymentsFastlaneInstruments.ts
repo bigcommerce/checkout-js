@@ -8,6 +8,7 @@ export const useBigCommercePaymentsFastlaneInstruments = () => {
   const [selectedInstrument, setSelectedInstrument] = useState<CardInstrument>();
 
   const { getPaymentProviderCustomer } = useCheckout().checkoutState.data;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const paymentProviderCustomer: PaymentProviderCustomer = getPaymentProviderCustomer();
   const paypalFastlaneCustomer = isPayPalFastlaneCustomer(paymentProviderCustomer)
     ? paymentProviderCustomer

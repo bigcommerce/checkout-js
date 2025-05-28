@@ -8,7 +8,11 @@
     },
     {
       "files": ["*.ts", "*.tsx"],
-      "rules": {}
+      "rules": {
+        "@typescript-eslint/naming-convention": "off",
+        "@typescript-eslint/no-unsafe-assignment": "off",
+        "testing-library/render-result-naming-convention": "off"
+      }
     },
     {
       "files": ["*.js", "*.jsx"],

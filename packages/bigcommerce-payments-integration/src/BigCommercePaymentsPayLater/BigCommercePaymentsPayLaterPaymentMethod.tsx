@@ -9,7 +9,8 @@ import {
 import BigCommercePaymentsPaymentMethodComponent from '../components/BigCommercePaymentsPaymentMethodComponent';
 
 const BigCommercePaymentsPayLaterPaymentMethod: FunctionComponent<PaymentMethodProps> = props => {
-  const isPaymentDataRequired = props.checkoutState.data.isPaymentDataRequired();
+  const { checkoutState } = props;
+  const isPaymentDataRequired = checkoutState.data.isPaymentDataRequired();
 
   if (!isPaymentDataRequired) {
     return null;

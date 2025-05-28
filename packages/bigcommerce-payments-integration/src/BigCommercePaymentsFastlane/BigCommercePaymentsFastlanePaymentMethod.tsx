@@ -1,4 +1,8 @@
-import React, { FunctionComponent, useEffect, useRef } from 'react';
+import React, {
+  FunctionComponent,
+  useEffect,
+  useRef,
+} from 'react';
 import { CardInstrument } from '@bigcommerce/checkout-sdk';
 
 import { LocaleProvider } from '@bigcommerce/checkout/locale';
@@ -9,7 +13,10 @@ import {
   PaymentMethodResolveId,
   toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
-import { FormContext, LoadingOverlay } from '@bigcommerce/checkout/ui';
+import {
+  FormContext,
+  LoadingOverlay,
+} from '@bigcommerce/checkout/ui';
 
 import BigCommercePaymentsFastlaneForm from './components/BigCommercePaymentsFastlaneForm';
 
@@ -21,12 +28,12 @@ export interface BigCommercePaymentsFastlaneCardComponentRef {
 }
 
 const BigCommercePaymentsFastlanePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
-                                                                                           method,
-                                                                                           checkoutService,
-                                                                                           checkoutState,
-                                                                                           onUnhandledError,
-                                                                                           paymentForm,
-                                                                                         }) => {
+   method,
+   checkoutService,
+   checkoutState,
+   onUnhandledError,
+   paymentForm,
+ }) => {
   const paypalCardComponentRef = useRef<BigCommercePaymentsFastlaneCardComponentRef>({});
 
   const { isLoadingPaymentMethod, isInitializingPayment } = checkoutState.statuses;
@@ -38,12 +45,10 @@ const BigCommercePaymentsFastlanePaymentMethod: FunctionComponent<PaymentMethodP
         // eslint-disable-next-line @typescript-eslint/naming-convention
         bigcommerce_payments_fastlane: {
           onInit: (renderPayPalCardComponent) => {
-            paypalCardComponentRef.current.renderPayPalCardComponent =
-              renderPayPalCardComponent;
+            paypalCardComponentRef.current.renderPayPalCardComponent = renderPayPalCardComponent;
           },
           onChange: (showPayPalCardSelector) => {
-            paypalCardComponentRef.current.showPayPalCardSelector =
-              showPayPalCardSelector;
+            paypalCardComponentRef.current.showPayPalCardSelector = showPayPalCardSelector;
           },
         },
       });
@@ -72,7 +77,8 @@ const BigCommercePaymentsFastlanePaymentMethod: FunctionComponent<PaymentMethodP
     return () => {
       void deinitializePaymentOrThrow();
     };
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const isLoading = isInitializingPayment() || isLoadingPaymentMethod(method.id);
 
@@ -82,28 +88,28 @@ const BigCommercePaymentsFastlanePaymentMethod: FunctionComponent<PaymentMethodP
   };
 
   return (
-    <FormContext.Provider value={formContextProps}>
-      <CheckoutContext.Provider value={{ checkoutState, checkoutService }}>
-        <LocaleProvider checkoutService={checkoutService}>
-          <PaymentFormContext.Provider value={{ paymentForm }}>
-            <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
-              <BigCommercePaymentsFastlaneForm
-                renderPayPalCardComponent={
-                  paypalCardComponentRef.current.renderPayPalCardComponent
-                }
-                showPayPalCardSelector={
-                  paypalCardComponentRef.current.showPayPalCardSelector
-                }
-              />
-            </LoadingOverlay>
-          </PaymentFormContext.Provider>
-        </LocaleProvider>
-      </CheckoutContext.Provider>
-    </FormContext.Provider>
+      <FormContext.Provider value={formContextProps}>
+          <CheckoutContext.Provider value={{ checkoutState, checkoutService }}>
+              <LocaleProvider checkoutService={checkoutService}>
+                  <PaymentFormContext.Provider value={{ paymentForm }}>
+                      <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
+                          <BigCommercePaymentsFastlaneForm
+                            renderPayPalCardComponent={
+                              paypalCardComponentRef.current.renderPayPalCardComponent
+                            }
+                            showPayPalCardSelector={
+                              paypalCardComponentRef.current.showPayPalCardSelector
+                            }
+                          />
+                      </LoadingOverlay>
+                  </PaymentFormContext.Provider>
+              </LocaleProvider>
+          </CheckoutContext.Provider>
+      </FormContext.Provider>
   );
 };
 
-export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>(
-  BigCommercePaymentsFastlanePaymentMethod,
+  export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>(
+    BigCommercePaymentsFastlanePaymentMethod,
   [{ id: 'bigcommerce_payments_fastlane' }],
 );

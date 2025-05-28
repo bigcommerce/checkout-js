@@ -23,7 +23,7 @@ const BigCommercePaymentsPaypalPaymentMethod: FunctionComponent<PaymentMethodPro
     },
     method: {
       config: { isVaultingEnabled },
-      initializationData: { isComplete },
+      initializationData: { ...isComplete },
     },
     method,
     checkoutService,
@@ -58,7 +58,7 @@ const BigCommercePaymentsPaypalPaymentMethod: FunctionComponent<PaymentMethodPro
     if (shouldLoadInstruments) {
       void loadInstrumentsOrThrow();
     }
-  }, []);
+  });
 
   if (!isPaymentDataRequired()) {
     return null;
