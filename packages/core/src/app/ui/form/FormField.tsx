@@ -30,7 +30,7 @@ const FormField: FunctionComponent<FormFieldProps> = ({
     isFloatingLabelEnabled,
 }) => {
     const renderField = useCallback(
-        (props) => (
+        (props: FieldProps<string>) => (
             <>
                 {isFloatingLabelEnabled && input(props)}
 

@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Placement } from 'popper.js';
+import { Placement } from '@popperjs/core';
 import React, { Component, MouseEventHandler, ReactNode } from 'react';
 import { Manager, Popper, Reference } from 'react-popper';
 
@@ -11,6 +11,7 @@ import {
 export interface DropdownTriggerProps {
     placement?: Placement;
     dropdown: ReactNode;
+    children?: ReactNode;
 }
 
 export interface DropdownTriggerState {
@@ -46,11 +47,11 @@ export default class DropdownTrigger extends Component<DropdownTriggerProps, Dro
                 </Reference>
 
                 <Popper
-                    modifiers={{
-                        hide: { enabled: false },
-                        flip: { enabled: false },
-                        preventOverflow: { enabled: false },
-                    }}
+                    modifiers={[
+                        { name: 'hide', enabled: false },
+                        { name: 'flip', enabled: false },
+                        { name: 'preventOverflow', enabled: false },
+                    ]}
                     placement={placement}
                 >
                     {({ ref, style }) =>

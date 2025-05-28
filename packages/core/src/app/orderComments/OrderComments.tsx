@@ -7,7 +7,7 @@ import { Fieldset, FormField, Label, Legend, TextInput } from '../ui/form';
 
 const OrderComments: FunctionComponent = () => {
     const renderLabel = useCallback(
-        (name) => (
+        (name: string) => (
             <Label hidden htmlFor={name}>
                 <TranslatedString id="shipping.order_comment_label" />
             </Label>

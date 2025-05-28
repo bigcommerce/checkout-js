@@ -5,7 +5,7 @@ import { FormContext } from '../contexts';
 
 export interface FormFieldContainerProps {
     additionalClassName?: string;
-    children: ReactNode;
+    children?: ReactNode;
     className?: string;
     hasError?: boolean;
     testId?: string;

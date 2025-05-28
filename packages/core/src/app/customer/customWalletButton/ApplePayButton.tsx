@@ -3,8 +3,8 @@ import { noop } from 'lodash';
 import React, { FunctionComponent, useCallback, useContext } from 'react';
 
 import { LocaleContext } from '@bigcommerce/checkout/locale';
+import { navigateToOrderConfirmation } from '@bigcommerce/checkout/utility';
 
-import { navigateToOrderConfirmation } from '../../checkout';
 import CheckoutButton, { CheckoutButtonProps } from '../CheckoutButton';
 
 const ApplePayButton: FunctionComponent<CheckoutButtonProps> = ({

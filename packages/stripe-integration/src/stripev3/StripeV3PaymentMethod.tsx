@@ -168,7 +168,7 @@ const StripeV3PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     });
 
     const initializeStripePayment = useCallback(
-        async (options: PaymentInitializeOptions, selectedInstrument) => {
+        async (options: PaymentInitializeOptions, selectedInstrument: any) => {
             return checkoutService.initializePayment({
                 ...options,
                 stripev3: {

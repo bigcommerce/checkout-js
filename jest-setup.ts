@@ -44,7 +44,9 @@ beforeAll(() => {
     expect.hasAssertions();
 
     console.error = (...args: unknown[]) => {
-        if (args.map(String).join().includes('Formik')) {
+        const message = args.map(String).join();
+
+        if (/Formik|createRoot/.test(message)) {
             return;
         }
 

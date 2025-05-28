@@ -4,6 +4,7 @@ export interface LoadingSkeletonProps {
     isLoading?: boolean;
     renderWhileLoading?: boolean;
     skeleton?: ReactNode;
+    children?: ReactNode;
 }
 
 export const LoadingSkeleton: FunctionComponent<LoadingSkeletonProps> = ({

@@ -1,5 +1,5 @@
 import { ExtensionRegion } from '@bigcommerce/checkout-sdk';
-import React, { useEffect } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
@@ -10,7 +10,7 @@ interface ExtensionProps {
     region: ExtensionRegion;
 }
 
-export const Extension = ({ region }: ExtensionProps): React.JSX.Element | null => {
+export const Extension = ({ region }: ExtensionProps): ReactNode | null => {
     const {
         checkoutState: {
             data: { getExtensions, getConfig, getCheckout },
@@ -34,7 +34,7 @@ export const Extension = ({ region }: ExtensionProps): React.JSX.Element | null 
         }
     }, [containerId, extensionService, isRegionEnabled, region]);
 
-    if (isRegionEnabled) {
+    if (isRegionEnabled && containerId !== '') {
         return <div id={containerId} />;
     }
 

@@ -2,6 +2,66 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.593.0](https://github.com/bigcommerce/checkout-js/compare/v1.592.0...v1.593.0) (2025-05-28)
+
+
+### Features
+
+* **payment:** bump checkout-sdk version ([5b8ed58](https://github.com/bigcommerce/checkout-js/commit/5b8ed587579da5df86efc3c36129f04496a84b76))
+
+## [1.592.0](https://github.com/bigcommerce/checkout-js/compare/v1.591.1...v1.592.0) (2025-05-28)
+
+
+### Features
+
+* **payment:** created utility package to contain utility methods that can be used across whole application ([d2a8ca5](https://github.com/bigcommerce/checkout-js/commit/d2a8ca5b4c004bc8f14b239768b8f216f13fd045))
+
+### [1.591.1](https://github.com/bigcommerce/checkout-js/compare/v1.591.0...v1.591.1) (2025-05-28)
+
+## [1.591.0](https://github.com/bigcommerce/checkout-js/compare/v1.590.0...v1.591.0) (2025-05-27)
+
+
+### Features
+
+* **checkout:** Add Checkout Extension Using Web Worker ([#2307](https://github.com/bigcommerce/checkout-js/issues/2307)) ([ef527fe](https://github.com/bigcommerce/checkout-js/commit/ef527feb52d29db628f324d970ca32028bd409cb))
+
+## [1.590.0](https://github.com/bigcommerce/checkout-js/compare/v1.589.1...v1.590.0) (2025-05-26)
+
+
+### Features
+
+* **payment:** Stripe OCS accordion state on initialization ([6816e7d](https://github.com/bigcommerce/checkout-js/commit/6816e7dd2c069fa8009e299c913b76b78da618ba))
+
+### [1.589.1](https://github.com/bigcommerce/checkout-js/compare/v1.589.0...v1.589.1) (2025-05-26)
+
+## [1.589.0](https://github.com/bigcommerce/checkout-js/compare/v1.588.3...v1.589.0) (2025-05-26)
+
+
+### Features
+
+* **payment:** Stripe OCS accordion fix accordion borders ([2164c1a](https://github.com/bigcommerce/checkout-js/commit/2164c1a3f74c4ae45e2f000f7d9645d80cc56fd3))
+
+### [1.588.3](https://github.com/bigcommerce/checkout-js/compare/v1.588.2...v1.588.3) (2025-05-26)
+
+
+### Bug Fixes
+
+* **shipping:** Update autocomplete value for Australian google maps addresses ([#2313](https://github.com/bigcommerce/checkout-js/issues/2313)) ([b049bfe](https://github.com/bigcommerce/checkout-js/commit/b049bfe9287301e57223159ba19bbaaf7de12c75))
+
+### [1.588.2](https://github.com/bigcommerce/checkout-js/compare/v1.588.1...v1.588.2) (2025-05-19)
+
+
+### Bug Fixes
+
+* **shipping:** Update valid option check for custom method ([#2305](https://github.com/bigcommerce/checkout-js/issues/2305)) ([0d2f4a9](https://github.com/bigcommerce/checkout-js/commit/0d2f4a91460f8f66948a02e15f149478e364cc1f))
+
+### [1.588.1](https://github.com/bigcommerce/checkout-js/compare/v1.588.0...v1.588.1) (2025-05-15)
+
+
+### Bug Fixes
+
+* **payment:** Fix Stripe Link Formik Issue ([#2302](https://github.com/bigcommerce/checkout-js/issues/2302)) ([3c2045b](https://github.com/bigcommerce/checkout-js/commit/3c2045b8589cf4085d5da1c0744e8b786a8939af))
+
 ## [1.588.0](https://github.com/bigcommerce/checkout-js/compare/v1.587.3...v1.588.0) (2025-05-14)
 
 

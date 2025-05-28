@@ -30,7 +30,7 @@ const StoreCreditField: FunctionComponent<StoreCreditFieldProps & WithCurrencyPr
         }
     } = useCheckout();
 
-    const handleChange = useCallback((event) => onChange(event.target.checked), [onChange]);
+    const handleChange = useCallback((event: any) => onChange(event.target.checked), [onChange]);
     const labelContent = useMemo(
         () => (
             <>
