@@ -2,7 +2,7 @@ import { CardInstrument } from '@bigcommerce/checkout-sdk';
 
 import React, { FunctionComponent } from 'react';
 
-import { CreditCardIcon, Button, ButtonSize, ButtonVariant } from '@bigcommerce/checkout/ui';
+import { Button, ButtonSize, ButtonVariant, CreditCardIcon } from '@bigcommerce/checkout/ui';
 import { PoweredByPayPalFastlaneLabel } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
@@ -28,9 +28,9 @@ function mapFromInstrumentCardType(type: string): string {
 }
 
 interface BigCommercePaymentsFastlaneInstrumentsFormProps {
+    selectedInstrument: CardInstrument;
     onChange: BigCommercePaymentsFastlaneCardComponentRef['showPayPalCardSelector'];
     handleSelectInstrument(instrument: CardInstrument): void;
-    selectedInstrument: CardInstrument;
 }
 
 const BigCommercePaymentsFastlaneInstrumentsForm: FunctionComponent<

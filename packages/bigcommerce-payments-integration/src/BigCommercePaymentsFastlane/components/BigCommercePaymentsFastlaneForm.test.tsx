@@ -21,7 +21,7 @@ import BigCommercePaymentsFastlaneForm from './BigCommercePaymentsFastlaneForm';
 import { configure } from '@testing-library/react';
 
 configure({
-  testIdAttribute: 'data-test',
+    testIdAttribute: 'data-test',
 });
 
 describe('BigCommercePaymentsFastlaneForm', () => {

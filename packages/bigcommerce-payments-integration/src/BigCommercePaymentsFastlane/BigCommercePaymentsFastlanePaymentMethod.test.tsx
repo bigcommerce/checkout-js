@@ -44,8 +44,11 @@ describe('BigCommercePaymentsFastlanePaymentMethod', () => {
 
         expect(initializePayment).toHaveBeenCalledWith({
             methodId: props.method.id,
+          // eslint-disable-next-line @typescript-eslint/naming-convention
             bigcommerce_payments_fastlane: {
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 onInit: expect.any(Function),
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 onChange: expect.any(Function),
             },
         });

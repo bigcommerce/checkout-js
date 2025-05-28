@@ -28,7 +28,7 @@ const BigCommercePaymentsFastlaneForm: FunctionComponent<
         if (!selectedInstrument && instruments.length > 0) {
             handleSelectInstrument(instruments[0]);
         }
-    }, [instruments, selectedInstrument]);
+    }, [instruments, selectedInstrument, handleSelectInstrument]);
 
     return (
         <div className="paymentMethod paymentMethod--creditCard">

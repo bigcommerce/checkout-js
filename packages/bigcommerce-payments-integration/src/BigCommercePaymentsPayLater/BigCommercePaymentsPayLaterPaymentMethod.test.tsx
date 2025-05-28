@@ -1,13 +1,12 @@
 import { createCheckoutService, LanguageService } from '@bigcommerce/checkout-sdk';
 import { render } from '@testing-library/react';
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom';
 import React from 'react';
 
 import { PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
 
 import { getBigCommercePaymentsFastlaneMethod } from '../mocks/paymentMethods.mock';
 import BigCommercePaymentsPayLaterPaymentMethod from './BigCommercePaymentsPayLaterPaymentMethod';
-
 
 describe('BigCommercePaymentsPayLaterPaymentMethod', () => {
     const checkoutService = createCheckoutService();
@@ -32,10 +31,10 @@ describe('BigCommercePaymentsPayLaterPaymentMethod', () => {
                 data: {
                     ...checkoutState.data,
                     isPaymentDataRequired: jest.fn().mockReturnValue(false),
-                }
+                },
             },
             children: mockChild,
-        }
+        };
         const { container } = render(<BigCommercePaymentsPayLaterPaymentMethod {...localProps} />);
 
         expect(container).toBeEmptyDOMElement();

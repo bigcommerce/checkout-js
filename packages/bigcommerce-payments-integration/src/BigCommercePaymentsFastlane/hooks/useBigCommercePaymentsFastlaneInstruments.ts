@@ -1,4 +1,4 @@
-import { CardInstrument } from '@bigcommerce/checkout-sdk';
+import { CardInstrument, PaymentProviderCustomer } from '@bigcommerce/checkout-sdk';
 import { useState } from 'react';
 
 import { useCheckout, usePaymentFormContext } from '@bigcommerce/checkout/payment-integration-api';
@@ -8,7 +8,7 @@ export const useBigCommercePaymentsFastlaneInstruments = () => {
     const [selectedInstrument, setSelectedInstrument] = useState<CardInstrument>();
 
     const { getPaymentProviderCustomer } = useCheckout().checkoutState.data;
-    const paymentProviderCustomer = getPaymentProviderCustomer();
+    const paymentProviderCustomer: PaymentProviderCustomer = getPaymentProviderCustomer();
     const paypalFastlaneCustomer = isPayPalFastlaneCustomer(paymentProviderCustomer)
         ? paymentProviderCustomer
         : {};

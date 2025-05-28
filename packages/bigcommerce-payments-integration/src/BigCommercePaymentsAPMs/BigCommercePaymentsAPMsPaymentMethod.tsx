@@ -4,19 +4,18 @@ import {
     getUniquePaymentMethodId,
     PaymentMethodProps,
     PaymentMethodResolveId,
-    toResolvableComponent
+    toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 
 import BigCommercePaymentsPaymentMethodComponent from '../components/BigCommercePaymentsPaymentMethodComponent';
 
-const BigCommercePaymentsAPMsPaymentMethod: FunctionComponent<PaymentMethodProps> = props => {
-    const { method } = props;
-    const isPaymentDataRequired = props.checkoutState.data.isPaymentDataRequired();
+const BigCommercePaymentsAPMsPaymentMethod: FunctionComponent<PaymentMethodProps> = (props) => {
+    const { method, checkoutState } = props;
+    const isPaymentDataRequired = checkoutState.data.isPaymentDataRequired();
 
     if (!isPaymentDataRequired) {
         return null;
     }
-
 
     const widgetContainerId = getUniquePaymentMethodId(method.id, method.gateway);
     const extraOptions = {
@@ -56,9 +55,9 @@ const BigCommercePaymentsAPMsPaymentMethod: FunctionComponent<PaymentMethodProps
         >
 
             <div
-                className={`widget widget--${props.method.id} payment-widget`}
+                className={`widget widget--${method.id} payment-widget`}
                 id={widgetContainerId}
-            ></div>
+            />
         </BigCommercePaymentsPaymentMethodComponent>
     );
 };

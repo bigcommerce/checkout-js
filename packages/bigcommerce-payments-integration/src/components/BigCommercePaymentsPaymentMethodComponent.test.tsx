@@ -30,7 +30,7 @@ describe('BigCommercePaymentsPaymentMethodComponent', () => {
         onUnhandledError: jest.fn(),
         paymentForm,
         onInitButton: jest.fn(),
-        providerOptionsKey: 'bigcommerce-payments-paypal',
+        providerOptionsKey: 'bigcommerce_payments_paypal',
     };
 
     const untrustedAccountInstrument: AccountInstrument = {

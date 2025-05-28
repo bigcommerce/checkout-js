@@ -35,6 +35,7 @@ const BigCommercePaymentsFastlanePaymentMethod: FunctionComponent<PaymentMethodP
         try {
             await checkoutService.initializePayment({
                 methodId: method.id,
+              // eslint-disable-next-line @typescript-eslint/naming-convention
                 bigcommerce_payments_fastlane: {
                     onInit: (renderPayPalCardComponent) => {
                         paypalCardComponentRef.current.renderPayPalCardComponent =
@@ -71,7 +72,7 @@ const BigCommercePaymentsFastlanePaymentMethod: FunctionComponent<PaymentMethodP
         return () => {
             void deinitializePaymentOrThrow();
         };
-    }, []);
+    });
 
     const isLoading = isInitializingPayment() || isLoadingPaymentMethod(method.id);
 
