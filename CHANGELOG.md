@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.592.0](https://github.com/bigcommerce/checkout-js/compare/v1.591.1...v1.592.0) (2025-05-28)
+
+
+### Features
+
+* **payment:** created utility package to contain utility methods that can be used across whole application ([d2a8ca5](https://github.com/bigcommerce/checkout-js/commit/d2a8ca5b4c004bc8f14b239768b8f216f13fd045))
+
 ### [1.591.1](https://github.com/bigcommerce/checkout-js/compare/v1.591.0...v1.591.1) (2025-05-28)
 
 ## [1.591.0](https://github.com/bigcommerce/checkout-js/compare/v1.590.0...v1.591.0) (2025-05-27)
