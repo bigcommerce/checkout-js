@@ -8,6 +8,9 @@ const StyleLintPlugin = require('stylelint-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const WebpackAssetsManifest = require('webpack-assets-manifest');
 
+const { SubresourceIntegrityPlugin } = require('webpack-subresource-integrity');
+
+
 const smp = new SpeedMeasurePlugin({
     // Options go here
     disable: false, // Set to true to disable the plugin (useful for CI or production)
@@ -113,8 +116,13 @@ function appConfig(options, argv) {
                 chunkFilename: `${outputFilename}.js`,
                 chunkLoadingGlobal: 'webpackJsonpCheckout',
                 library: LIBRARY_NAME,
+                crossOriginLoading: 'anonymous',
             },
             plugins: [
+                new SubresourceIntegrityPlugin({
+                    hashFuncNames: ['sha256'],
+                    enabled: isProduction,
+                }),
                 new StyleLintPlugin({
                     fix: !isProduction,
                     cache: true,
@@ -273,8 +281,13 @@ function loaderConfig(options, argv) {
                 path: isProduction ? join(__dirname, 'dist') : join(__dirname, 'build'),
                 filename: `[name]-${appVersion}.js`,
                 library: LOADER_LIBRARY_NAME,
+                crossOriginLoading: 'anonymous',
             },
             plugins: [
+                new SubresourceIntegrityPlugin({
+                    hashFuncNames: ['sha256'],
+                    enabled: isProduction,
+                }),
                 new AsyncHookPlugin({
                     onRun({ compiler, done }) {
                         let wasTriggeredBefore = false;
