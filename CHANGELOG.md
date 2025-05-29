@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.594.0](https://github.com/bigcommerce/checkout-js/compare/v1.593.1...v1.594.0) (2025-05-29)
+
+
+### Features
+
+* **payment:** updated CheckoutButtonList component to use Wallet Buttons components directly from generated files ([8e91517](https://github.com/bigcommerce/checkout-js/commit/8e91517a46742c4dbaca2207d5f19b41f2399932))
+
 ### [1.593.1](https://github.com/bigcommerce/checkout-js/compare/v1.593.0...v1.593.1) (2025-05-28)
 
 ## [1.593.0](https://github.com/bigcommerce/checkout-js/compare/v1.592.0...v1.593.0) (2025-05-28)
