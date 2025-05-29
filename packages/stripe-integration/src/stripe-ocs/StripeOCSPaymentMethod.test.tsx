@@ -5,7 +5,7 @@ import {
     createLanguageService,
     PaymentInitializeOptions,
     PaymentMethod,
-    WithStripeUPEPaymentInitializeOptions,
+    WithStripeOCSPaymentInitializeOptions,
 } from '@bigcommerce/checkout-sdk';
 import { render } from '@testing-library/react';
 import { Formik } from 'formik';
@@ -19,7 +19,6 @@ import {
 } from '@bigcommerce/checkout/locale';
 import {
     CheckoutProvider,
-    PaymentMethodId,
     PaymentMethodProps,
 } from '@bigcommerce/checkout/payment-integration-api';
 import {
@@ -40,9 +39,9 @@ jest.mock('./getStripeOCSStyles', () => ({
     },
 }));
 
-describe('when using StripeUPE OCS payment', () => {
-    const methodId = 'stripe_ocs';
-    const gatewayId = PaymentMethodId.StripeUPE;
+describe('when using Stripe OCS payment', () => {
+    const methodId = 'optimized_checkout';
+    const gatewayId = 'stripeocs';
     const methodSelectorPrefix = `${gatewayId}-${methodId}`;
     const expectedContainerId = `${methodSelectorPrefix}-component-field`;
     const defaultAccordionLayout = {
@@ -290,8 +289,8 @@ describe('when using StripeUPE OCS payment', () => {
     describe('# Stripe OCS accordion actions', () => {
         it('should call collapse BC accordion when stripe accordion item is selected', () => {
             jest.spyOn(checkoutService, 'initializePayment').mockImplementation(
-                (options: WithStripeUPEPaymentInitializeOptions) => {
-                    options.stripeupe?.paymentMethodSelect?.('methodId');
+                (options: WithStripeOCSPaymentInitializeOptions) => {
+                    options.stripeocs?.paymentMethodSelect?.('methodId');
 
                     return Promise.resolve(checkoutState);
                 },
@@ -303,8 +302,8 @@ describe('when using StripeUPE OCS payment', () => {
 
         it('should collapse stripe accordion when BC accordion item selected', () => {
             jest.spyOn(checkoutService, 'initializePayment').mockImplementation(
-                (options: WithStripeUPEPaymentInitializeOptions) => {
-                    options.stripeupe?.handleClosePaymentMethod?.(collapseElementMock);
+                (options: WithStripeOCSPaymentInitializeOptions) => {
+                    options.stripeocs?.handleClosePaymentMethod?.(collapseElementMock);
 
                     return Promise.resolve(checkoutState);
                 },
@@ -321,8 +320,8 @@ describe('when using StripeUPE OCS payment', () => {
 
         it('should not collapse stripe accordion when Stripe accordion item selected', () => {
             jest.spyOn(checkoutService, 'initializePayment').mockImplementation(
-                (options: WithStripeUPEPaymentInitializeOptions) => {
-                    options.stripeupe?.handleClosePaymentMethod?.(collapseElementMock);
+                (options: WithStripeOCSPaymentInitializeOptions) => {
+                    options.stripeocs?.handleClosePaymentMethod?.(collapseElementMock);
 
                     return Promise.resolve(checkoutState);
                 },
@@ -330,7 +329,7 @@ describe('when using StripeUPE OCS payment', () => {
 
             const { rerender } = render(<PaymentMethodTest {...defaultProps} method={method} />);
 
-            accordionContextValues.selectedItemId = 'stripeupe-card';
+            accordionContextValues.selectedItemId = 'stripeocs-optimized_checkout';
 
             rerender(<PaymentMethodTest {...defaultProps} method={method} />);
 
