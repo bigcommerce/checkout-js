@@ -6,7 +6,7 @@ import {
     toResolvableComponent
 } from '@bigcommerce/checkout/payment-integration-api';
 
-import PayPalCommercePaymentMethodComponent from './components/PayPalCommercePaymentMethodComponent';
+import PayPalCommercePaymentMethodComponent from '../components/PayPalCommercePaymentMethodComponent';
 
 const PayPalCommerceCreditPaymentMethod: FunctionComponent<PaymentMethodProps> = props => {
     const isPaymentDataRequired = props.checkoutState.data.isPaymentDataRequired();

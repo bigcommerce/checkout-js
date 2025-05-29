@@ -1,30 +1,36 @@
 import { createCheckoutService, LanguageService } from '@bigcommerce/checkout-sdk';
+
+import { getPaymentFormServiceMock } from '@bigcommerce/checkout/test-mocks';
+
 import { render } from '@testing-library/react';
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom';
 import React from 'react';
 
 import { PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
 
-import { getPayPalCommerceCreditMethod } from './mocks/paymentMethods.mock';
-import PayPalCommerceCreditPaymentMethod from './PayPalCommerceCreditPaymentMethod';
+import { getPayPalCommerceAPMsMethod } from '../mocks/paymentMethods.mock';
+import PayPalCommerceAPMsPaymentMethod from './PayPalCommerceAPMsPaymentMethod';
 
-
-describe('PayPalCommerceCreditPaymentMethod', () => {
+describe('PayPalCommerceAPMsPaymentMethod', () => {
     const checkoutService = createCheckoutService();
     const checkoutState = checkoutService.getState();
+    const paymentForm: PaymentFormService = getPaymentFormServiceMock();
+
     const props = {
-        method: getPayPalCommerceCreditMethod(),
+        method: getPayPalCommerceAPMsMethod(),
         checkoutService,
         checkoutState,
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-        paymentForm: jest.fn() as unknown as PaymentFormService,
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+        paymentForm,
         language: { translate: jest.fn() } as unknown as LanguageService,
         onUnhandledError: jest.fn(),
     };
 
+    beforeEach(() => {
+        jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(true);
+    });
+
     it('renders component with provided props', () => {
-        const { container } = render(<PayPalCommerceCreditPaymentMethod {...props} />);
+        const { container } = render(<PayPalCommerceAPMsPaymentMethod {...props} />);
 
         expect(container).toMatchSnapshot();
     });
@@ -37,12 +43,12 @@ describe('PayPalCommerceCreditPaymentMethod', () => {
                 ...checkoutState,
                 data: {
                     ...checkoutState.data,
-                    isPaymentDataRequired: jest.fn().mockReturnValue(false)
-                }
+                    isPaymentDataRequired: jest.fn().mockReturnValue(false),
+                },
             },
-            children: mockChild
-        }
-        const { container } = render(<PayPalCommerceCreditPaymentMethod {...localProps} />);
+            children: mockChild,
+        };
+        const { container } = render(<PayPalCommerceAPMsPaymentMethod {...localProps} />);
 
         expect(container).toBeEmptyDOMElement();
     });
