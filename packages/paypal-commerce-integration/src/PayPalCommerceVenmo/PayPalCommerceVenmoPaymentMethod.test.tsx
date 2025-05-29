@@ -5,7 +5,7 @@ import React from 'react';
 
 import { PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
 
-import { getPayPalCommerceVenmoMethod } from './mocks/paymentMethods.mock';
+import { getPayPalCommerceVenmoMethod } from '../mocks/paymentMethods.mock';
 import PayPalCommerceVenmoPaymentMethod from './PayPalCommerceVenmoPaymentMethod';
 
 describe('PayPalCommerceVenmoPaymentMethod', () => {

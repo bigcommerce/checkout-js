@@ -7,7 +7,7 @@ import {
     toResolvableComponent
 } from '@bigcommerce/checkout/payment-integration-api';
 
-import PayPalCommercePaymentMethodComponent from './components/PayPalCommercePaymentMethodComponent';
+import PayPalCommercePaymentMethodComponent from '../components/PayPalCommercePaymentMethodComponent';
 
 const PayPalCommerceAPMsPaymentMethod: FunctionComponent<PaymentMethodProps> = props => {
     const { method } = props;
