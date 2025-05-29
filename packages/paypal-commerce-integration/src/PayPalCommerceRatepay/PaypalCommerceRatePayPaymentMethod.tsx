@@ -9,7 +9,7 @@ import {
 } from '@bigcommerce/checkout/payment-integration-api';
 import { DynamicFormField, DynamicFormFieldType, FormContext } from '@bigcommerce/checkout/ui';
 import { FormField } from '@bigcommerce/checkout-sdk';
-import getPaypalCommerceRatePayValidationSchema from './validation-schemas/getPaypalCommerceRatePayValidationSchema';
+import getPaypalCommerceRatePayValidationSchema from './validation-schema/getPaypalCommerceRatePayValidationSchema';
 import { CustomError } from '@bigcommerce/checkout/payment-integration-api';
 import { SpecificError } from '@bigcommerce/checkout/payment-integration-api';
 import { CountryData, getCountryData } from '@bigcommerce/checkout/payment-integration-api';
