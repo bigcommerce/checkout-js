@@ -1,0 +1,10 @@
+{
+  "ci": {
+    "collect": {
+      "puppeteerScript": "./scripts/lighthouse/setup.js",
+      "settings": {
+        "onlyCategories": ["performance", "accessibility", "best-practices"]
+      }
+    }
+  }
+}
