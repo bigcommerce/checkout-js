@@ -6,6 +6,7 @@ import React from 'react';
 import { PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
 
 import { getBigCommercePaymentsFastlaneMethod } from '../mocks/paymentMethods.mock';
+
 import BigCommercePaymentsPayLaterPaymentMethod from './BigCommercePaymentsPayLaterPaymentMethod';
 
 describe('BigCommercePaymentsPayLaterPaymentMethod', () => {
@@ -15,9 +16,9 @@ describe('BigCommercePaymentsPayLaterPaymentMethod', () => {
         method: getBigCommercePaymentsFastlaneMethod(),
         checkoutService,
         checkoutState,
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+
         paymentForm: jest.fn() as unknown as PaymentFormService,
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+
         language: { translate: jest.fn() } as unknown as LanguageService,
         onUnhandledError: jest.fn(),
     };

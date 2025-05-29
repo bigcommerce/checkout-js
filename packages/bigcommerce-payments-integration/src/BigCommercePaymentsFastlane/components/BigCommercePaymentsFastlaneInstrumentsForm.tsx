@@ -1,10 +1,9 @@
 import { CardInstrument } from '@bigcommerce/checkout-sdk';
-
 import React, { FunctionComponent } from 'react';
 
-import { Button, ButtonSize, ButtonVariant, CreditCardIcon } from '@bigcommerce/checkout/ui';
-import { PoweredByPayPalFastlaneLabel } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { PoweredByPayPalFastlaneLabel } from '@bigcommerce/checkout/paypal-fastlane-integration';
+import { Button, ButtonSize, ButtonVariant, CreditCardIcon } from '@bigcommerce/checkout/ui';
 
 import { BigCommercePaymentsFastlaneCardComponentRef } from '../BigCommercePaymentsFastlanePaymentMethod';
 
@@ -35,11 +34,7 @@ interface BigCommercePaymentsFastlaneInstrumentsFormProps {
 
 const BigCommercePaymentsFastlaneInstrumentsForm: FunctionComponent<
     BigCommercePaymentsFastlaneInstrumentsFormProps
-> = ({
-         onChange,
-         handleSelectInstrument,
-         selectedInstrument,
-     }) => {
+> = ({ onChange, handleSelectInstrument, selectedInstrument }) => {
     const cardType = mapFromInstrumentCardType(selectedInstrument.brand).toLowerCase();
 
     const handleChange = async () => {
@@ -50,7 +45,7 @@ const BigCommercePaymentsFastlaneInstrumentsForm: FunctionComponent<
                 handleSelectInstrument(result);
             }
         }
-    }
+    };
 
     return (
         <div
@@ -61,7 +56,10 @@ const BigCommercePaymentsFastlaneInstrumentsForm: FunctionComponent<
                 <div className="big-commerce-payments-fastlane-instrument-details">
                     <CreditCardIcon cardType={cardType} />
 
-                    <div className="instrumentSelect-card" data-test="big-commerce-fastlane-instrument-last4">
+                    <div
+                        className="instrumentSelect-card"
+                        data-test="big-commerce-fastlane-instrument-last4"
+                    >
                         {/* &#9679; is a ● */}
                         <span>&#9679;&#9679;&#9679;&#9679; {selectedInstrument.last4}</span>
                     </div>
@@ -73,10 +71,10 @@ const BigCommercePaymentsFastlaneInstrumentsForm: FunctionComponent<
 
             <div className="big-commerce-payments-fastlane-instrument-change-action">
                 <Button
+                    onClick={handleChange}
                     size={ButtonSize.Tiny}
                     testId="big-commerce-payments-fastlane-instrument-change"
                     variant={ButtonVariant.Secondary}
-                    onClick={handleChange}
                 >
                     <TranslatedString id="common.change_action" />
                 </Button>

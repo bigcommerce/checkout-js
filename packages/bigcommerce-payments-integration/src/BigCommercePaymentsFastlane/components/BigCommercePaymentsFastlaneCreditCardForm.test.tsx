@@ -6,26 +6,26 @@ import { render, screen } from '@bigcommerce/checkout/test-utils';
 import BigCommercePaymentsFastlaneCreditCardForm from './BigCommercePaymentsFastlaneCreditCardForm';
 
 describe('BigCommercePaymentsFastlaneCreditCardForm', () => {
-  const renderPayPalCardComponentMock = (container: string) => {
-    const element = document.createElement('div');
+    const renderPayPalCardComponentMock = (container: string) => {
+        const element = document.createElement('div');
 
-    element.textContent = 'Here should be rendered PayPal Fastlane Credit Card form';
+        element.textContent = 'Here should be rendered PayPal Fastlane Credit Card form';
 
-    // eslint-disable-next-line testing-library/no-node-access
-    document.querySelector(container)?.append(element);
-  };
+        // eslint-disable-next-line testing-library/no-node-access
+        document.querySelector(container)?.append(element);
+    };
 
-  it('shows the result of the renderPayPalCardComponent method call', async () => {
-    render(
-      <BigCommercePaymentsFastlaneCreditCardForm
-        renderPayPalCardComponent={renderPayPalCardComponentMock}
-      />,
-    );
+    it('shows the result of the renderPayPalCardComponent method call', async () => {
+        render(
+            <BigCommercePaymentsFastlaneCreditCardForm
+                renderPayPalCardComponent={renderPayPalCardComponentMock}
+            />,
+        );
 
-    await new Promise((resolve) => process.nextTick(resolve));
+        await new Promise((resolve) => process.nextTick(resolve));
 
-    expect(
-      screen.getByText('Here should be rendered PayPal Fastlane Credit Card form'),
-    ).toBeInTheDocument();
-  });
+        expect(
+            screen.getByText('Here should be rendered PayPal Fastlane Credit Card form'),
+        ).toBeInTheDocument();
+    });
 });

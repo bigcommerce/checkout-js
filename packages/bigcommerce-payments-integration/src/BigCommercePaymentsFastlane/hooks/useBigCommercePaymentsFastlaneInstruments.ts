@@ -5,25 +5,25 @@ import { useCheckout, usePaymentFormContext } from '@bigcommerce/checkout/paymen
 import { isPayPalFastlaneCustomer } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 export const useBigCommercePaymentsFastlaneInstruments = () => {
-  const [selectedInstrument, setSelectedInstrument] = useState<CardInstrument>();
+    const [selectedInstrument, setSelectedInstrument] = useState<CardInstrument>();
 
-  const { getPaymentProviderCustomer } = useCheckout().checkoutState.data;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const paymentProviderCustomer: PaymentProviderCustomer = getPaymentProviderCustomer();
-  const paypalFastlaneCustomer = isPayPalFastlaneCustomer(paymentProviderCustomer)
-    ? paymentProviderCustomer
-    : {};
+    const { getPaymentProviderCustomer } = useCheckout().checkoutState.data;
 
-  const { paymentForm } = usePaymentFormContext();
+    const paymentProviderCustomer: PaymentProviderCustomer = getPaymentProviderCustomer();
+    const paypalFastlaneCustomer = isPayPalFastlaneCustomer(paymentProviderCustomer)
+        ? paymentProviderCustomer
+        : {};
 
-  const handleSelectInstrument = (instrument: CardInstrument): void => {
-    setSelectedInstrument(instrument);
-    paymentForm.setFieldValue('instrumentId', instrument.bigpayToken);
-  };
+    const { paymentForm } = usePaymentFormContext();
 
-  return {
-    instruments: paypalFastlaneCustomer.instruments || [],
-    handleSelectInstrument,
-    selectedInstrument,
-  };
+    const handleSelectInstrument = (instrument: CardInstrument): void => {
+        setSelectedInstrument(instrument);
+        paymentForm.setFieldValue('instrumentId', instrument.bigpayToken);
+    };
+
+    return {
+        instruments: paypalFastlaneCustomer.instruments || [],
+        handleSelectInstrument,
+        selectedInstrument,
+    };
 };

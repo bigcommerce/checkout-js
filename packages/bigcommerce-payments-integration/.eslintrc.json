@@ -1,22 +1,25 @@
 {
-  "extends": ["../../.eslintrc.json"],
-  "ignorePatterns": ["!**/*"],
+  "extends": [
+    "../../.eslintrc.json"
+  ],
   "overrides": [
-    {
-      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
-      "rules": {}
-    },
     {
       "files": ["*.ts", "*.tsx"],
       "rules": {
+        "@typescript-eslint/member-ordering": "off",
         "@typescript-eslint/naming-convention": "off",
+        "@typescript-eslint/no-empty-function": "off",
         "@typescript-eslint/no-unsafe-assignment": "off",
-        "testing-library/render-result-naming-convention": "off"
+        "@typescript-eslint/no-unsafe-argument": "off",
+        "@typescript-eslint/no-unsafe-call": "off",
+        "@typescript-eslint/no-unsafe-return": "off",
+        "@typescript-eslint/prefer-regexp-exec": "off",
+        "react-hooks/exhaustive-deps": "off",
+        "react/jsx-no-useless-fragment": "off",
+        "react/destructuring-assignment": "off",
+        "react/self-closing-comp": "off",
+        "sort-imports": "off"
       }
-    },
-    {
-      "files": ["*.js", "*.jsx"],
-      "rules": {}
     }
   ]
 }

@@ -4,6 +4,7 @@ import {
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
 import '@testing-library/jest-dom';
+import { configure } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
@@ -17,8 +18,6 @@ import { getCardInstrument, getPaymentFormServiceMock } from '@bigcommerce/check
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import BigCommercePaymentsFastlaneForm from './BigCommercePaymentsFastlaneForm';
-
-import { configure } from '@testing-library/react';
 
 configure({
     testIdAttribute: 'data-test',
@@ -59,12 +58,16 @@ describe('BigCommercePaymentsFastlaneForm', () => {
 
         render(<BigCommercePaymentsFastlaneFormMock />);
 
-        expect(screen.getByTestId('big-commerce-payments-fastlane-instrument-form')).toBeInTheDocument();
+        expect(
+            screen.getByTestId('big-commerce-payments-fastlane-instrument-form'),
+        ).toBeInTheDocument();
     });
 
     it('shows bigcommerce payments fastlane credit card form if customer does not have any instrument', () => {
         render(<BigCommercePaymentsFastlaneFormMock />);
 
-        expect(screen.getByTestId('big-commerce-payments-fastlane-cc-form-container')).toBeInTheDocument();
+        expect(
+            screen.getByTestId('big-commerce-payments-fastlane-cc-form-container'),
+        ).toBeInTheDocument();
     });
 });
