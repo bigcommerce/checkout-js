@@ -6,6 +6,6 @@
     }
   ],
   "files": [
-    "../core/types/card-validator.d.ts"
+    "./types/card-validator.d.ts"
   ]
 }
