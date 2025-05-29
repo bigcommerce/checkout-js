@@ -1,0 +1,79 @@
+name: Lighthouse audit
+
+on:
+  issue_comment:
+    types: [created]
+
+env:
+  STORE_URL: ${{ vars.STORE_URL }}
+
+jobs:
+  lighthouse-audit:
+    runs-on: ubuntu-latest
+    if: github.event.comment.user.login == 'bc-launchbay' && contains(github.event.comment.body, 'deployed to Staging')
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Get PR details
+        uses: jwalton/gh-find-current-pr@v1
+        id: pr_details
+
+      - name: Run Lighthouse audit on desktop
+        id: lighthouse_audit_desktop
+        uses: treosh/lighthouse-ci-action@v11
+        with:
+          urls: ${{ env.STORE_URL }}/checkout
+          configPath: ./scripts/lighthouse/lighthouserc-desktop.json
+          artifactName: 'lighthouse-results-desktop'
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+          runs: 3
+
+      - name: Run Lighthouse audit on mobile
+        id: lighthouse_audit_mobile
+        uses: treosh/lighthouse-ci-action@v11
+        with:
+          urls: ${{ env.STORE_URL }}/checkout
+          configPath: ./scripts/lighthouse/lighthouserc-mobile.json
+          artifactName: 'lighthouse-results-mobile'
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+          runs: 3
+
+      - name: Format Lighthouse results
+        id: format_lighthouse_results
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const formatResults = require('./scripts/lighthouse/format-results.js');
+            const comment = formatResults({
+              desktop: {
+                manifest: ${{ steps.lighthouse_audit_desktop.outputs.manifest }},
+                links: ${{ steps.lighthouse_audit_desktop.outputs.links }},
+              },
+              mobile: {
+                manifest: ${{ steps.lighthouse_audit_mobile.outputs.manifest }},
+                links: ${{ steps.lighthouse_audit_mobile.outputs.links }},
+              },
+            });
+
+            core.setOutput("comment", comment);
+
+      - name: Post Lighthouse results to PR
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: Lighthouse audit results
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          recreate: true
+          number: ${{ steps.pr_details.outputs.number }}
+          message: ${{ steps.format_lighthouse_results.outputs.comment }}
+
