@@ -1,3 +1,4 @@
+import { createLanguageService } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
 import { getPhysicalItem } from '../cart/lineItem.mock';
@@ -20,8 +21,12 @@ describe('getOrderSummaryItemImage()', () => {
         const lineLineItem = getPhysicalItem();
 
         it('returns image', () => {
+            // Create the same translated alt text that the component would create
+            const language = createLanguageService();
+            const expectedAltText = language.translate('cart.product_image_alt', { name: lineLineItem.name });
+
             expect(getOrderSummaryItemImage(lineLineItem)).toEqual(
-                <img alt={lineLineItem.name} data-test="cart-item-image" src={lineLineItem.imageUrl} />
+                <img alt={expectedAltText} data-test="cart-item-image" src={lineLineItem.imageUrl} />
             );
         });
     });
