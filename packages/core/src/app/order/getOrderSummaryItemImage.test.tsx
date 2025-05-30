@@ -21,7 +21,7 @@ describe('getOrderSummaryItemImage()', () => {
 
         it('returns image', () => {
             expect(getOrderSummaryItemImage(lineLineItem)).toEqual(
-                <img alt={lineLineItem.name} data-test="cart-item-image" src={lineLineItem.imageUrl} />
+                <img alt="" data-test="cart-item-image" src={lineLineItem.imageUrl} />
             );
         });
     });
