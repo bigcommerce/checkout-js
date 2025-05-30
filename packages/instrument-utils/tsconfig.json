@@ -4,5 +4,8 @@
     {
       "path": "./tsconfig.spec.json"
     }
+  ],
+  "files": [
+    "./types/card-validator.d.ts"
   ]
 }
