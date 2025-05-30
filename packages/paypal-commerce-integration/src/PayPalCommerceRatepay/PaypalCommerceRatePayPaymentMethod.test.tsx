@@ -20,7 +20,7 @@ import {
 } from '@bigcommerce/checkout/test-mocks';
 import { FormContext } from '@bigcommerce/checkout/ui';
 
-import { getPaypalCommerceRatePayMethodMock } from './mocks/paypalCommerceRatePayMocks';
+import { getPaypalCommerceRatePayMethodMock } from '../mocks/paymentMethods.mock';
 import PaypalCommerceRatePayPaymentMethod from './PaypalCommerceRatePayPaymentMethod';
 import { EventEmitter } from 'events';
 import { act } from '@bigcommerce/checkout/test-utils';
