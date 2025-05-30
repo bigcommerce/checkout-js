@@ -3,11 +3,14 @@ import {
     Consignment,
     Country,
     CustomerAddress,
-    FormField,
+    FormField
 } from '@bigcommerce/checkout-sdk';
 import React, { FC, useEffect, useRef, useState } from 'react';
 
 import {
+    isBigCommercePaymentsFastlaneMethod,
+    isBraintreeFastlaneMethod,
+    isPayPalCommerceFastlaneMethod,
     isPayPalFastlaneMethod,
     PayPalFastlaneShippingAddressForm,
     usePayPalFastlaneAddress,
@@ -51,10 +54,27 @@ export const PayPalFastlaneShippingAddress: FC<PayPalFastlaneShippingAddressProp
     const [isLoadingStrategy, setIsLoadingStrategyStrategy] = useState<boolean>(true);
 
     const paypalFastlaneShippingComponent = useRef<PayPalFastlaneAddressComponentRef>({});
+    const fastlaneOptions = (provider: string) => {
+        return {
+            [provider]: {
+                onPayPalFastlaneAddressChange: (
+                    showPayPalFastlaneAddressSelector: PayPalFastlaneAddressComponentRef['showAddressSelector'],
+                ) => {
+                    paypalFastlaneShippingComponent.current.showAddressSelector =
+                        showPayPalFastlaneAddressSelector;
+                },
+            },
+        };
+    }
 
     const initializeShippingStrategyOrThrow = async () => {
         try {
-            await initialize({methodId});
+            await initialize({
+                methodId,
+                ...(isBigCommercePaymentsFastlaneMethod(methodId) ? fastlaneOptions('bigcommerce_payments_fastlane') : {}),
+                ...(isBraintreeFastlaneMethod(methodId) ? fastlaneOptions('braintreefastlane') : {}),
+                ...(isPayPalCommerceFastlaneMethod(methodId) ? fastlaneOptions('paypalcommercefastlane') : {})
+            });
         } catch (error) {
             if (typeof onUnhandledError === 'function' && error instanceof Error) {
                 onUnhandledError(error);
