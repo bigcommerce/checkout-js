@@ -5,10 +5,10 @@ import isBigCommercePaymentsFastlaneMethod from './is-bigcommerce-payments-fastl
 describe('isBigCommercePaymentsFastlaneMethod', () => {
     it('returns true if provided methodId is related to BigCommercePayments Fastlane', () => {
         expect(
-            isBigCommercePaymentsFastlaneMethod(PaymentMethodId.PaypalCommerceCreditCards), // TODO: use BigCommercePaymentsPayLater methodId after PaymentMethodId updated
+            isBigCommercePaymentsFastlaneMethod(PaymentMethodId.BigCommercePaymentsPayLater),
         ).toBe(true);
         expect(
-            isBigCommercePaymentsFastlaneMethod(PaymentMethodId.PayPalCommerceAcceleratedCheckout), // TODO: use BigCommercePaymentsFastLane methodId after PaymentMethodId updated
+            isBigCommercePaymentsFastlaneMethod(PaymentMethodId.BigCommercePaymentsFastLane),
         ).toBe(true);
     });
 
