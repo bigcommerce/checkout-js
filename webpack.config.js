@@ -7,9 +7,7 @@ const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const WebpackAssetsManifest = require('webpack-assets-manifest');
-
 const { SubresourceIntegrityPlugin } = require('webpack-subresource-integrity');
-
 
 const smp = new SpeedMeasurePlugin({
     // Options go here
