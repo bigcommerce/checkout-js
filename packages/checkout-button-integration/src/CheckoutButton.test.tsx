@@ -28,6 +28,7 @@ describe('CheckoutButton', () => {
         jest.spyOn(checkoutService, 'initializeCustomer').mockResolvedValue(
             checkoutService.getState(),
         );
+
         render(<CheckoutButton {...defaultProps} />);
 
         expect(checkoutService.initializeCustomer).toHaveBeenCalledWith({
@@ -41,6 +42,49 @@ describe('CheckoutButton', () => {
         });
     });
 
+    it('initializeCustomer is called with specific initialization options when component is mounted', () => {
+        const additionalInitializationOptions = {
+            onComplete: jest.fn(),
+            onReady: jest.fn(),
+            onEligibilityFailure: jest.fn(),
+            buttonStyling: {
+                color: 'black',
+                shape: 'rectangular',
+            },
+        };
+
+        jest.spyOn(checkoutService, 'initializeCustomer').mockResolvedValue(
+            checkoutService.getState(),
+        );
+
+        render(
+            <CheckoutButton
+                additionalInitializationOptions={additionalInitializationOptions}
+                {...defaultProps}
+            />,
+        );
+
+        expect(checkoutService.initializeCustomer).toHaveBeenCalledWith({
+            methodId: 'foobar',
+            foobar: {
+                container: 'button-container',
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                onClick: expect.any(Function),
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                onComplete: expect.any(Function),
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                onReady: expect.any(Function),
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                onEligibilityFailure: expect.any(Function),
+                onUnhandledError: defaultProps.onUnhandledError,
+                buttonStyling: {
+                    color: 'black',
+                    shape: 'rectangular',
+                },
+            },
+        });
+    });
+
     it('deinitializeCustomer is called when component is unmounted', () => {
         jest.spyOn(checkoutService, 'deinitializeCustomer').mockResolvedValue(
             checkoutService.getState(),
@@ -49,6 +93,7 @@ describe('CheckoutButton', () => {
         const { unmount } = render(<CheckoutButton {...defaultProps} />);
 
         unmount();
+
         expect(checkoutService.deinitializeCustomer).toHaveBeenCalledWith({
             methodId: 'foobar',
         });
