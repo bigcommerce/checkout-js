@@ -36,6 +36,8 @@ const CheckoutButton: FunctionComponent<CheckoutButtonProps> = ({
         onWalletButtonClick,
     ]);
 
+    console.log('test');
+
     return <div className={checkoutButtonContainerClass} id={containerId} />;
 };
 
