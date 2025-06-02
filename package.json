@@ -1,6 +1,6 @@
 {
   "name": "@bigcommerce/checkout",
-  "version": "1.595.1",
+  "version": "1.595.6",
   "private": true,
   "description": "Browser-based application providing a seamless UI for BigCommerce shoppers to complete their checkout.",
   "license": "MIT",
@@ -184,6 +184,7 @@
     "webpack-assets-manifest": "^5.1.0",
     "webpack-cli": "^4.9.2",
     "webpack-inject-plugin": "^1.5.3",
+    "webpack-subresource-integrity": "^5.1.0",
     "yargs": "^14.0.0"
   },
   "sideEffects": false,

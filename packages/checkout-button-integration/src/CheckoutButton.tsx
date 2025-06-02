@@ -13,28 +13,44 @@ const CheckoutButton: FunctionComponent<CheckoutButtonProps> = ({
     methodId,
     onUnhandledError,
     onWalletButtonClick,
+    additionalInitializationOptions,
 }) => {
+    const initializeCustomerStrategyOrThrow = async () => {
+        try {
+            await initializeCustomer({
+                methodId,
+                [methodId]: {
+                    container: containerId,
+                    onUnhandledError,
+                    onClick: () => onWalletButtonClick(methodId),
+                    ...additionalInitializationOptions,
+                },
+            });
+        } catch (error) {
+            if (typeof onUnhandledError === 'function' && error instanceof Error) {
+                onUnhandledError(error);
+            }
+        }
+    };
+
+    const deinitializeCustomerStrategyOrThrow = async () => {
+        try {
+            await deinitializeCustomer({ methodId });
+        } catch (error) {
+            if (typeof onUnhandledError === 'function' && error instanceof Error) {
+                onUnhandledError(error);
+            }
+        }
+    };
+
     useEffect(() => {
-        initializeCustomer({
-            methodId,
-            [methodId]: {
-                container: containerId,
-                onUnhandledError,
-                onClick: () => onWalletButtonClick(methodId),
-            },
-        }).catch(onUnhandledError);
+        void initializeCustomerStrategyOrThrow();
 
         return () => {
-            deinitializeCustomer({ methodId }).catch(onUnhandledError);
+            void deinitializeCustomerStrategyOrThrow();
         };
-    }, [
-        containerId,
-        deinitializeCustomer,
-        initializeCustomer,
-        methodId,
-        onUnhandledError,
-        onWalletButtonClick,
-    ]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return <div className={checkoutButtonContainerClass} id={containerId} />;
 };
