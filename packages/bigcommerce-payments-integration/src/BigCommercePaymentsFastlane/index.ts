@@ -1,0 +1,3 @@
+import BigCommercePaymentsFastlanePaymentMethod from './BigCommercePaymentsFastlanePaymentMethod';
+
+export default BigCommercePaymentsFastlanePaymentMethod;

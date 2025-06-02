@@ -2,6 +2,74 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.595.8](https://github.com/bigcommerce/checkout-js/compare/v1.595.7...v1.595.8) (2025-06-02)
+
+
+### Code Refactoring
+
+* **payment:** created PayPalCommerceButton and PayPalCommerceCredit components in paypal-commerce-integration package ([c8ca747](https://github.com/bigcommerce/checkout-js/commit/c8ca7474b454699b2cc0bca3811616a1b11187bf))
+
+### [1.595.7](https://github.com/bigcommerce/checkout-js/compare/v1.595.6...v1.595.7) (2025-06-02)
+
+### [1.595.6](https://github.com/bigcommerce/checkout-js/compare/v1.595.5...v1.595.6) (2025-06-02)
+
+
+### Code Refactoring
+
+* **payment:** Created bigcommerce-payments-utils package ([6161984](https://github.com/bigcommerce/checkout-js/commit/61619848f9078698bb78b6568d499d7902d98bcc))
+
+### [1.595.5](https://github.com/bigcommerce/checkout-js/compare/v1.595.4...v1.595.5) (2025-06-02)
+
+
+### Code Refactoring
+
+* **payment:** created bigcommerce payments package ([d16ed50](https://github.com/bigcommerce/checkout-js/commit/d16ed5075db8cb2616824b5dca93b838e7694916))
+* **payment:** created bigcommerce payments package ([b684849](https://github.com/bigcommerce/checkout-js/commit/b6848491dc4198d75bc774998cd372736aa46842))
+* **payment:** created bigcommerce payments package ([a4d7c44](https://github.com/bigcommerce/checkout-js/commit/a4d7c44a58c0114dc076f277a331c30d5746c389))
+* **payment:** created bigcommerce payments package ([117de66](https://github.com/bigcommerce/checkout-js/commit/117de664e8a5ceb9c43e4329d8cfdb533b7927f2))
+* **payment:** created bigcommerce payments package ([94885b5](https://github.com/bigcommerce/checkout-js/commit/94885b54615d610fac4c4f9ec31c62455b554481))
+
+### [1.595.4](https://github.com/bigcommerce/checkout-js/compare/v1.595.3...v1.595.4) (2025-06-02)
+
+### [1.595.3](https://github.com/bigcommerce/checkout-js/compare/v1.595.2...v1.595.3) (2025-06-02)
+
+
+### Bug Fixes
+
+* **shipping:** reset value in formik on checkbox unmount ([#2317](https://github.com/bigcommerce/checkout-js/issues/2317)) ([d08d37c](https://github.com/bigcommerce/checkout-js/commit/d08d37c6c746b86096b4a54b6eba7e2445f72fed))
+
+### [1.595.2](https://github.com/bigcommerce/checkout-js/compare/v1.595.1...v1.595.2) (2025-05-30)
+
+### [1.595.1](https://github.com/bigcommerce/checkout-js/compare/v1.595.0...v1.595.1) (2025-05-30)
+
+## [1.595.0](https://github.com/bigcommerce/checkout-js/compare/v1.594.1...v1.595.0) (2025-05-29)
+
+
+### Features
+
+* **payment:** move Stripe OCS and UPE to separate modules ([ef5ea86](https://github.com/bigcommerce/checkout-js/commit/ef5ea8687f72284d5522c93cedb43b6ed616009d))
+
+
+### Code Refactoring
+
+* **payment:** updated paypal-commerce-integration package files structure ([6fae117](https://github.com/bigcommerce/checkout-js/commit/6fae11782879f8b24c861dee2eb81becea747d89))
+
+### [1.594.1](https://github.com/bigcommerce/checkout-js/compare/v1.594.0...v1.594.1) (2025-05-29)
+
+
+### Bug Fixes
+
+* **common:** fixed checkout prerelease version generation ([c4c2dee](https://github.com/bigcommerce/checkout-js/commit/c4c2dee81a8c88c560a8108c531c1c1427412002))
+
+## [1.594.0](https://github.com/bigcommerce/checkout-js/compare/v1.593.1...v1.594.0) (2025-05-29)
+
+
+### Features
+
+* **payment:** updated CheckoutButtonList component to use Wallet Buttons components directly from generated files ([8e91517](https://github.com/bigcommerce/checkout-js/commit/8e91517a46742c4dbaca2207d5f19b41f2399932))
+
+### [1.593.1](https://github.com/bigcommerce/checkout-js/compare/v1.593.0...v1.593.1) (2025-05-28)
+
 ## [1.593.0](https://github.com/bigcommerce/checkout-js/compare/v1.592.0...v1.593.0) (2025-05-28)
 
 

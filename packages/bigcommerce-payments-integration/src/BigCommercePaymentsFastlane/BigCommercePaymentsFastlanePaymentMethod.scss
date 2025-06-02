@@ -1,0 +1,27 @@
+@media screen and (max-width: 430px) {
+  .form-checklist-item--selected:has(#big-commerce-payments-fastlane-cc-form-container) {
+    .creditCardTypes-list {
+      margin-left: 1.2rem;
+    }
+
+    .paymentProviderHeader-name {
+      margin-bottom: 0.3rem;
+    }
+
+    .paymentProviderHeader-nameContainer {
+      margin-top: 0.2rem;
+    }
+
+    .paymentMethod--creditCard {
+      padding: 0 0 .6666666667rem 0;
+    }
+
+    .form-label {
+      padding: 1rem 1.25rem 1rem 3.75rem;
+    }
+
+    .form-checklist-body {
+      margin: 0 0.75rem;
+    }
+  }
+}

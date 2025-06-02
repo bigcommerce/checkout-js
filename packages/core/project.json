@@ -19,6 +19,21 @@
         }
       ]
     },
+    "prerelease-build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "PRERELEASE=prerelease webpack --mode production"
+      },
+      "dependsOn": [
+        {
+          "target": "generate"
+        },
+        {
+          "target": "build",
+          "dependencies": true
+        }
+      ]
+    },
     "dev": {
       "executor": "nx:run-commands",
       "options": {
