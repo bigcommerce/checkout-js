@@ -29,6 +29,8 @@ const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
     summary,
     type,
 }) => {
+    const newFontStyle = true; // Assuming this is a placeholder for the actual condition
+
     return (
         <div
             className={classNames('stepHeader', {
@@ -46,7 +48,11 @@ const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
                     )}
                 />
 
-                <h2 className="stepHeader-title optimizedCheckout-headingPrimary">{heading}</h2>
+                <h2
+                    className={classNames('stepHeader-title optimizedCheckout-headingPrimary',
+                        { 'header-active': newFontStyle && isActive && isComplete },
+                        { 'header-inactive': newFontStyle && !isActive && !isComplete })}
+                >{heading}</h2>
             </div>
 
             <div

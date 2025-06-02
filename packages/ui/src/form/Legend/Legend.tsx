@@ -6,6 +6,8 @@ export interface LegendProps extends HTMLAttributes<HTMLLegendElement> {
     testId?: string;
 }
 
+const newFontStyle = true; // Assuming this is a placeholder for the actual condition
+
 const Legend: FunctionComponent<LegendProps> = ({
     children,
     className,
@@ -19,6 +21,7 @@ const Legend: FunctionComponent<LegendProps> = ({
             className || 'form-legend',
             { 'is-srOnly': hidden },
             { 'optimizedCheckout-headingSecondary': !hidden },
+            { 'header-secondary': newFontStyle && !hidden },
         )}
         data-test={testId}
     >

@@ -6,11 +6,14 @@ interface ModalHeaderProps {
     additionalClassName?: string;
 }
 
+const newFontStyle = true; // Assuming this is a placeholder for the actual condition
+
 const ModalHeader: FunctionComponent<ModalHeaderProps> = ({ children, additionalClassName }) => (
     <h2
         className={classNames(
             'modal-header-title optimizedCheckout-headingSecondary',
             additionalClassName,
+            { 'header-secondary': newFontStyle },
         )}
         data-test="modal-heading"
     >
