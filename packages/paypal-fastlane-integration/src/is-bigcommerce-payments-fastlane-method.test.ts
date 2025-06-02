@@ -5,7 +5,7 @@ import isBigCommercePaymentsFastlaneMethod from './is-bigcommerce-payments-fastl
 describe('isBigCommercePaymentsFastlaneMethod', () => {
     it('returns true if provided methodId is related to BigCommercePayments Fastlane', () => {
         expect(
-            isBigCommercePaymentsFastlaneMethod(PaymentMethodId.BigCommercePaymentsPayLater),
+            isBigCommercePaymentsFastlaneMethod(PaymentMethodId.BigCommercePaymentsCreditCards),
         ).toBe(true);
         expect(
             isBigCommercePaymentsFastlaneMethod(PaymentMethodId.BigCommercePaymentsFastLane),
