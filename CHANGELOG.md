@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.595.8](https://github.com/bigcommerce/checkout-js/compare/v1.595.7...v1.595.8) (2025-06-02)
+
+
+### Code Refactoring
+
+* **payment:** created PayPalCommerceButton and PayPalCommerceCredit components in paypal-commerce-integration package ([c8ca747](https://github.com/bigcommerce/checkout-js/commit/c8ca7474b454699b2cc0bca3811616a1b11187bf))
+
 ### [1.595.7](https://github.com/bigcommerce/checkout-js/compare/v1.595.6...v1.595.7) (2025-06-02)
 
 ### [1.595.6](https://github.com/bigcommerce/checkout-js/compare/v1.595.5...v1.595.6) (2025-06-02)
