@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.595.3](https://github.com/bigcommerce/checkout-js/compare/v1.595.2...v1.595.3) (2025-06-02)
+
+
+### Bug Fixes
+
+* **shipping:** reset value in formik on checkbox unmount ([#2317](https://github.com/bigcommerce/checkout-js/issues/2317)) ([d08d37c](https://github.com/bigcommerce/checkout-js/commit/d08d37c6c746b86096b4a54b6eba7e2445f72fed))
+
 ### [1.595.2](https://github.com/bigcommerce/checkout-js/compare/v1.595.1...v1.595.2) (2025-05-30)
 
 ### [1.595.1](https://github.com/bigcommerce/checkout-js/compare/v1.595.0...v1.595.1) (2025-05-30)
