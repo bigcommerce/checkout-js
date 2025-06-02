@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.596.0](https://github.com/bigcommerce/checkout-js/compare/v1.595.8...v1.596.0) (2025-06-02)
+
+
+### Features
+
+* **payment:** created BigcommercePaymentsPayPalButton and BigcommercePaymentsPaylaterButton components ([395b1ef](https://github.com/bigcommerce/checkout-js/commit/395b1efa9eb4048529549c701987f8f182495b2d))
+
+
+### Bug Fixes
+
+* **payment:** fixed BT ACH Payment form ([3056fea](https://github.com/bigcommerce/checkout-js/commit/3056feae7d6d6c37ef436525838c9cc3ea19c95f))
+
 ### [1.595.8](https://github.com/bigcommerce/checkout-js/compare/v1.595.7...v1.595.8) (2025-06-02)
 
 
