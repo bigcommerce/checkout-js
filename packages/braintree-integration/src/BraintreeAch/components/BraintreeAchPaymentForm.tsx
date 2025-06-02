@@ -76,7 +76,7 @@ const BraintreeAchPaymentForm: FunctionComponent<BraintreeAchPaymentFormProps> =
                 const braintreeAchFormValues = getFormValues();
                 const isValid = await validateBraintreeAchForm(braintreeAchFormValues);
 
-                if (!isValid) {
+                if (!isValid && getFieldValue('orderConsent')) {
                     setFieldValue('orderConsent', false);
                 }
 
