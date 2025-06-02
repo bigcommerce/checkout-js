@@ -63,6 +63,7 @@ package-lock.json @bigcommerce/team-checkout @bigcommerce/team-integrations @big
 /packages/paypal-commerce-integration @bigcommerce/team-paypal
 /packages/paypal-fastlane-integration @bigcommerce/team-paypal
 /packages/paypal-express-integration @bigcommerce/team-paypal
+/packages/bigcommerce-payments-utils @bigcommerce/team-paypal
 
 ## Shared
 /packages/core/customer/checkoutSuggestion @bigcommerce/team-checkout @bigcommerce/team-integrations @bigcommerce/team-paypal
