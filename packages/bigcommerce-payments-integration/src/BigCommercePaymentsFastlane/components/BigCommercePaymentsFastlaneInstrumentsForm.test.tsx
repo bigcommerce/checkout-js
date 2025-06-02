@@ -1,3 +1,5 @@
+import { CardInstrument } from '@bigcommerce/checkout-sdk';
+import { fireEvent, configure } from '@testing-library/react';
 import React from 'react';
 import '@testing-library/jest-dom';
 
@@ -5,9 +7,6 @@ import { getCardInstrument } from '@bigcommerce/checkout/test-mocks';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import BigCommercePaymentsFastlaneInstrumentsForm from './BigCommercePaymentsFastlaneInstrumentsForm';
-
-import { CardInstrument } from '@bigcommerce/checkout-sdk';
-import { fireEvent, configure } from '@testing-library/react';
 
 configure({
     testIdAttribute: 'data-test',
