@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.595.5](https://github.com/bigcommerce/checkout-js/compare/v1.595.4...v1.595.5) (2025-06-02)
+
+
+### Code Refactoring
+
+* **payment:** created bigcommerce payments package ([d16ed50](https://github.com/bigcommerce/checkout-js/commit/d16ed5075db8cb2616824b5dca93b838e7694916))
+* **payment:** created bigcommerce payments package ([b684849](https://github.com/bigcommerce/checkout-js/commit/b6848491dc4198d75bc774998cd372736aa46842))
+* **payment:** created bigcommerce payments package ([a4d7c44](https://github.com/bigcommerce/checkout-js/commit/a4d7c44a58c0114dc076f277a331c30d5746c389))
+* **payment:** created bigcommerce payments package ([117de66](https://github.com/bigcommerce/checkout-js/commit/117de664e8a5ceb9c43e4329d8cfdb533b7927f2))
+* **payment:** created bigcommerce payments package ([94885b5](https://github.com/bigcommerce/checkout-js/commit/94885b54615d610fac4c4f9ec31c62455b554481))
+
 ### [1.595.4](https://github.com/bigcommerce/checkout-js/compare/v1.595.3...v1.595.4) (2025-06-02)
 
 ### [1.595.3](https://github.com/bigcommerce/checkout-js/compare/v1.595.2...v1.595.3) (2025-06-02)
