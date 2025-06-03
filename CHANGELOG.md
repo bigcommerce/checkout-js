@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.597.1](https://github.com/bigcommerce/checkout-js/compare/v1.597.0...v1.597.1) (2025-06-03)
+
+
+### Code Refactoring
+
+* **payment:** Added BigcommerceCreditBanner ([dffc905](https://github.com/bigcommerce/checkout-js/commit/dffc90585ccfb22de6497c7449846f1cd5675d8f))
+* **payment:** Added BigcommerceCreditBanner ([4978483](https://github.com/bigcommerce/checkout-js/commit/497848398f2f6d90bb3af0c63e5da40efb801f95))
+
 ## [1.597.0](https://github.com/bigcommerce/checkout-js/compare/v1.596.0...v1.597.0) (2025-06-03)
 
 
