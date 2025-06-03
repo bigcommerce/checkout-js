@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.598.0](https://github.com/bigcommerce/checkout-js/compare/v1.597.1...v1.598.0) (2025-06-03)
+
+
+### Features
+
+* **payment:** move Clearpay to a separate package ([#2304](https://github.com/bigcommerce/checkout-js/issues/2304)) ([2361100](https://github.com/bigcommerce/checkout-js/commit/23611008d6546f55583a69df68a5841233cfd42d))
+
 ### [1.597.1](https://github.com/bigcommerce/checkout-js/compare/v1.597.0...v1.597.1) (2025-06-03)
 
 
