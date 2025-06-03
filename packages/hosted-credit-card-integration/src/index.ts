@@ -3,3 +3,5 @@ export { HostedCreditCardFieldsetValues, HostedCreditCardValidationValues } from
 export { HostedCreditCardValidation } from './components/HostedCreditCardValidation';
 export { getHostedInstrumentValidationSchema } from './components/getHostedInstrumentValidationSchema';
 export { useHostedCreditCard } from './hooks';
+export { getHostedCreditCardValidationSchema } from './components/getHostedCreditCardValidationSchema';
+export { HostedCreditCardFieldset } from './components/HostedCreditCardFieldset';
