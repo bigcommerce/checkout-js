@@ -8,7 +8,7 @@ interface CustomShippingSummaryProps {
 
 }
 
-const CustomShippingSummary: React.FC<CustomShippingSummaryProps> = ({ cart, consignments }) => {
+const CustomShippingSummary: React.FC<CustomShippingSummaryProps> = ({  consignments }) => {
 
 
 

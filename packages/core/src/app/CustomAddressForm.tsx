@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Address } from "@bigcommerce/checkout-sdk";
 import "./CustomAddressForm.scss"
 
@@ -8,9 +8,8 @@ interface CustomAddressFormProps {
     handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void
 }
 
-const CustomAddressForm: React.FC<CustomAddressFormProps> = ({ savedAddress, handleInputChange, formState }) => {
+const CustomAddressForm: React.FC<CustomAddressFormProps> = ({  handleInputChange, formState }) => {
 
-    const [homeAddress, setHomeAddress] = useState<Address>({ ...savedAddress });
 
 
 

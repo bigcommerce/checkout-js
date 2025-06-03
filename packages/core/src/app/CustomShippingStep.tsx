@@ -40,13 +40,9 @@ interface CustomShippingProps {
   onContinue: () => void;
 }
 
-interface fflQuery {
-  zipcode: string;
-  radius: string;
-}
+
 
 const shootStraightIds: number[] = data.shootStraightIds;
-const fflDataResponse: FFL[] = data.fflLocations;
 
 const CustomShipping: React.FC<WithCheckoutCustomShippingProps & CustomShippingProps> = ({
   cart,
@@ -54,7 +50,7 @@ const CustomShipping: React.FC<WithCheckoutCustomShippingProps & CustomShippingP
   createConsignments,
   onContinue,
   selectConsignmentShippingOption,
-  updateCheckout
+  
 }) => {
   const lineItemAllocations = useRef<{
     fflitems: { itemId: number | string; quantity: number }[];
@@ -66,7 +62,6 @@ const CustomShipping: React.FC<WithCheckoutCustomShippingProps & CustomShippingP
   const [pickupAtSS, setPickupAtSS] = useState<boolean>(false);
   const [fflLocations, setFFLLocations] = useState<FFL[] | null>(null);
 
-  const [fflQuery, setFFLQuery] = useState<fflQuery>({ zipcode: '', radius: '' });
   const [customFFL, setCustomFFL] = useState<boolean>(false);
   const [customFFLData, setCustomFFLData] = useState<any>({
     company: '',
@@ -124,20 +119,7 @@ const CustomShipping: React.FC<WithCheckoutCustomShippingProps & CustomShippingP
 
 
   useEffect(() => {
-    const getFFLLocations = async () => {
-      try {
-        const response = await fetch('https://jsonplaceholder.typicode.com/todos/1');
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        setFFLLocations(data);
-      } catch (error) {
-        console.error('Failed to fetch FFL locations:', error);
-      }
-    };
-
-    //getFFLLocations();
+    
     setFFLLocations(data.fflLocations);
   }, []);
 

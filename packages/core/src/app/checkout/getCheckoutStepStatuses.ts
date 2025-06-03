@@ -9,9 +9,7 @@ import { EMPTY_ARRAY, isExperimentEnabled } from '../common/utility';
 import { SUPPORTED_METHODS } from '../customer';
 import { PaymentMethodId } from '../payment/paymentMethod';
 import {
-    hasSelectedShippingOptions,
     hasUnassignedLineItems,
-    itemsRequireShipping,
 } from '../shipping';
 
 import CheckoutStepType from './CheckoutStepType';
@@ -179,46 +177,6 @@ const getBillingStepStatus = createSelector(
     },
 );
 
-const getShippingStepStatus = createSelector(
-    ({ data }: CheckoutSelectors) => data.getShippingAddress(),
-    ({ data }: CheckoutSelectors) => data.getConsignments(),
-    ({ data }: CheckoutSelectors) => data.getCart(),
-    ({ data }: CheckoutSelectors) => {
-        const shippingAddress = data.getShippingAddress();
-
-        return shippingAddress
-            ? data.getShippingAddressFields(shippingAddress.countryCode)
-            : EMPTY_ARRAY;
-    },
-    ({ data }: CheckoutSelectors) => data.getConfig(),
-    (shippingAddress, consignments, cart, shippingAddressFields, config) => {
-        const hasAddress = shippingAddress
-            ? isValidAddress(shippingAddress, shippingAddressFields)
-            : false;
-        const hasOptions = consignments ? hasSelectedShippingOptions(consignments) : false;
-        const hasUnassignedItems =
-            cart && consignments ? hasUnassignedLineItems(consignments, cart.lineItems) : true;
-        const isComplete = hasAddress && hasOptions && !hasUnassignedItems;
-        const isRequired = itemsRequireShipping(cart, config);
-        const isCustomShippingSelected =
-            isExperimentEnabled(
-                config?.checkoutSettings,
-                'PROJECT-5015.manual_order.display_custom_shipping',
-            ) &&
-            hasOptions &&
-            consignments?.some(
-                ({ selectedShippingOption }) => selectedShippingOption?.type === 'custom',
-            );
-
-        return {
-            type: CheckoutStepType.Shipping,
-            isActive: false,
-            isComplete,
-            isEditable: isComplete && isRequired && !isCustomShippingSelected,
-            isRequired,
-        };
-    },
-);
 
 
 const getCustomShippingStepStatus = createSelector(
@@ -227,7 +185,7 @@ const getCustomShippingStepStatus = createSelector(
     ({ data }: CheckoutSelectors) => data.getCart(),
 
     ({ data }: CheckoutSelectors) => data.getConfig(),
-    (shippingAddress, consignments, cart) => {
+    (_shippingAddress, consignments, cart) => {
         let hasUnselectedShippingOption = false;
 
         if (consignments) {
