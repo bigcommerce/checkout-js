@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.600.0](https://github.com/bigcommerce/checkout-js/compare/v1.599.0...v1.600.0) (2025-06-03)
+
+
+### Features
+
+* **payment:** move Afterpay payment method to a separate package ([#2303](https://github.com/bigcommerce/checkout-js/issues/2303)) ([2d4a317](https://github.com/bigcommerce/checkout-js/commit/2d4a317dd8b1c62776da2b77527268c62b0d2145))
+
 ## [1.599.0](https://github.com/bigcommerce/checkout-js/compare/v1.598.0...v1.599.0) (2025-06-03)
 
 
