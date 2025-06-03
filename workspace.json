@@ -48,6 +48,7 @@
     "ui": "packages/ui",
     "utility": "packages/utility",
     "wallet-button-integration": "packages/wallet-button-integration",
-    "workspace-tools": "packages/workspace-tools"
+    "workspace-tools": "packages/workspace-tools",
+    "worldpay-access-integration": "packages/worldpay-access-integration"
   }
 }

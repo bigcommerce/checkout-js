@@ -23,7 +23,6 @@ import PaymentMethodType from './PaymentMethodType';
 import PaypalCommerceCreditCardPaymentMethod from './PaypalCommerceCreditCardPaymentMethod';
 import PaypalPaymentsProPaymentMethod from './PaypalPaymentsProPaymentMethod';
 import PPSDKPaymentMethod from './PPSDKPaymentMethod';
-import WorldpayCreditCardPaymentMethod from './WorldpayCreditCardPaymentMethod';
 
 export interface PaymentMethodProps {
     method: PaymentMethod;
@@ -83,10 +82,7 @@ const PaymentMethodComponent: FunctionComponent<
     ) {
         return <PaypalPaymentsProPaymentMethod {...props} />;
     }
-
-    if (method.id === PaymentMethodId.WorldpayAccess) {
-        return <WorldpayCreditCardPaymentMethod {...props} />;
-    }
+    
 
     if (
         method.gateway === PaymentMethodId.Afterpay ||

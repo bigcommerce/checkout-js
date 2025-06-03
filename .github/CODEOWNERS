@@ -30,6 +30,7 @@ package-lock.json @bigcommerce/team-checkout @bigcommerce/team-integrations @big
 /packages/klarna-integration @bigcommerce/team-integrations
 /packages/amazon-pay-v2-integration @bigcommerce/team-integrations
 /packages/moneris-integration @bigcommerce/team-integrations
+/packages/worldpay-access-integration @bigcommerce/team-integrations
 
 # Core
 /packages/core/payment/paymentMethod/AffirmPaymentMethod.tsx @bigcommerce/team-integrations
@@ -51,7 +52,6 @@ package-lock.json @bigcommerce/team-checkout @bigcommerce/team-integrations @big
 /packages/core/payment/paymentMethod/StripePaymentMethod.tsx @bigcommerce/team-integrations
 /packages/core/payment/paymentMethod/StripeUPEPaymentMethod.tsx @bigcommerce/team-integrations
 /packages/core/payment/paymentMethod/StripeV3CustomCardForm.tsx @bigcommerce/team-integrations
-/packages/core/payment/paymentMethod/WorldpayCreditCardPaymentMethod.tsx @bigcommerce/team-integrations
 
 ## PayPal team
 /packages/core/payment/paymentMethod/BraintreeCreditCardPaymentMethod.tsx @bigcommerce/team-paypal
