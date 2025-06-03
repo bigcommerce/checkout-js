@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.599.0](https://github.com/bigcommerce/checkout-js/compare/v1.598.0...v1.599.0) (2025-06-03)
+
+
+### Features
+
+* **payment:** Refactor the existing WorldPay Access payment method components ([#2288](https://github.com/bigcommerce/checkout-js/issues/2288)) ([aed758b](https://github.com/bigcommerce/checkout-js/commit/aed758bd61527f1753ba64857d8e68e76aea2914))
+
 ## [1.598.0](https://github.com/bigcommerce/checkout-js/compare/v1.597.1...v1.598.0) (2025-06-03)
 
 
