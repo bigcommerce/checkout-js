@@ -125,14 +125,10 @@ describe('ManageInstrumentsModal', () => {
 
         render(<ManageInstrumentsModalTest {...defaultProps} />);
 
-        await userEvent.click(screen.getAllByTestId('manage-instrument-delete-button')[0]);
-
-        await userEvent.click(screen.getAllByTestId('manage-instrument-confirm-button')[0]);
+        await userEvent.click(screen.getAllByText('Delete')[0]);
+        await userEvent.click(screen.getByText('Yes, delete'));
 
         expect(checkoutService.deleteInstrument).toHaveBeenCalledWith(instruments[0].bigpayToken);
-
-        await new Promise((resolve) => process.nextTick(resolve));
-
         expect(defaultProps.onRequestClose).toHaveBeenCalled();
     });
 

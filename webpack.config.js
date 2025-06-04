@@ -141,6 +141,12 @@ function appConfig(options, argv) {
                     transform: (assets) => transformManifest(assets, appVersion),
                     output: 'manifest-app.json',
                     integrity: isProduction,
+                    done: (manifest, { compilation }) => {
+                        if (compilation.errors.length) {
+                            // eslint-disable-next-line no-console
+                            console.error('Manifest compilation errors:', compilation.errors);
+                        }
+                    }
                 }),
                 new BuildHookPlugin({
                     onSuccess() {

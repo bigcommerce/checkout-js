@@ -32,7 +32,7 @@ export const Extension = ({ region }: ExtensionProps): ReactNode | null => {
                 extensionService.removeListeners(region);
             };
         }
-    }, [containerId, extensionService, isRegionEnabled, region]);
+    }, [containerId, isRegionEnabled, region]); // eslint-disable-line react-hooks/exhaustive-deps
 
     if (isRegionEnabled && containerId !== '') {
         return <div id={containerId} />;
