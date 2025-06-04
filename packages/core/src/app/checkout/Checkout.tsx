@@ -51,8 +51,8 @@ import CheckoutStepType from './CheckoutStepType';
 import CheckoutSupport from './CheckoutSupport';
 import mapToCheckoutProps from './mapToCheckoutProps';
 import navigateToOrderConfirmation from './navigateToOrderConfirmation';
-import CustomShippingStep from '../CustomShippingStep';
-import CustomShippingSummary from '../customShippingSummary';
+import CustomShippingStep from '../fflShipping/CustomShippingStep';
+import CustomShippingSummary from '../fflShipping/customShippingSummary';
 
 const Billing = lazy(() =>
     retry(

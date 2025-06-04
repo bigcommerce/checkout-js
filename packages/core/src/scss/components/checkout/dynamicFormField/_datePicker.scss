@@ -90,7 +90,7 @@
 
 .datepicker-day::before,
 .datepicker-day.is-selected::before {
-    border-radius: 50%;
+    border-radius: 0;
     bottom: remCalc(2px);
     content: "";
     left: remCalc(2px);

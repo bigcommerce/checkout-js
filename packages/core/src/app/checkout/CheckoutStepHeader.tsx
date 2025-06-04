@@ -46,7 +46,12 @@ const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
                     )}
                 />
 
-                <h2 className="stepHeader-title optimizedCheckout-headingPrimary">{heading}</h2>
+                <h2
+                    className="stepHeader-title optimizedCheckout-headingPrimary"
+                    style={{ fontFamily: 'industry, sans-serif' }}
+                >
+                    {heading}
+                </h2>
             </div>
 
             <div
