@@ -14,6 +14,10 @@ const addApplePaySessionToChrome = () => {
             return true;
         }
 
+        static canMakePayments() {
+            return true;
+        }
+
         // eslint-disable-next-line @typescript-eslint/member-ordering
         constructor(version: number, paymentRequest: ApplePayJS.ApplePayPaymentRequest) {
             this.version = version;
