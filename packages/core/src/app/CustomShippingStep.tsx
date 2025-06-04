@@ -50,7 +50,7 @@ const CustomShipping: React.FC<WithCheckoutCustomShippingProps & CustomShippingP
   createConsignments,
   onContinue,
   selectConsignmentShippingOption,
-  
+
 }) => {
   const lineItemAllocations = useRef<{
     fflitems: { itemId: number | string; quantity: number }[];
@@ -119,7 +119,7 @@ const CustomShipping: React.FC<WithCheckoutCustomShippingProps & CustomShippingP
 
 
   useEffect(() => {
-    
+
     setFFLLocations(data.fflLocations);
   }, []);
 
@@ -207,6 +207,7 @@ const CustomShipping: React.FC<WithCheckoutCustomShippingProps & CustomShippingP
 
 
   const handleCheckCustomFFL = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e);
     const isChecked = e.target.checked;
     if (isChecked) {
       console.log("Set custom FFL consignment")
@@ -232,6 +233,8 @@ const CustomShipping: React.FC<WithCheckoutCustomShippingProps & CustomShippingP
       console.log("Check custom ffl")
       setCustomFFL(isChecked);
     } else {
+      setCustomFFL(isChecked);
+
       setSelectedFFL(null);
     }
 
@@ -275,7 +278,7 @@ const CustomShipping: React.FC<WithCheckoutCustomShippingProps & CustomShippingP
     if (customFFL) requiredFields.push(...customFFLFields);
 
     const emptyFields = requiredFields.filter(field => !field.value.trim());
-    
+
     if (emptyFields.length > 0) {
       console.warn('Missing required fields:', emptyFields.map(f => f.label));
       setValidationError(true);
@@ -339,7 +342,12 @@ const CustomShipping: React.FC<WithCheckoutCustomShippingProps & CustomShippingP
     <div>
       <label>
         <h2 className="customShippingSectionHeader">
-          {pickupAtSS ? 'Shoot Straight Location' : 'FFL Location'}
+          {!hasFirearms && !pickupAtSS
+            ? ''
+            : pickupAtSS
+              ? 'Shoot Straight Location'
+              : 'FFL Location'}
+
         </h2>
 
         <div className="pickupLocationContainer">
@@ -374,7 +382,11 @@ const CustomShipping: React.FC<WithCheckoutCustomShippingProps & CustomShippingP
       </label>
       {!pickupAtSS && hasFirearms && (
         <>
+          <div>
+            <input onChange={handleCheckCustomFFL} checked={customFFL} name="customFFL" type="checkbox"></input>
 
+            <label>Enter a different FFL</label>
+          </div>
 
           {customFFL && (
             <div>
@@ -414,20 +426,26 @@ const CustomShipping: React.FC<WithCheckoutCustomShippingProps & CustomShippingP
 
           )}
 
-          <div>
-            <input onChange={handleCheckCustomFFL} checked={customFFL} name="customFFL" type="checkbox"></input>
-
-            <label>Enter a different FFL</label>
-          </div>
 
         </>
 
       )}
-      {!customFFL && (
+      {(
+        (customFFL && pickupAtSS) ||
+        (hasFirearms && pickupAtSS && !customFFL) ||
+        (hasFirearms && !customFFL && !pickupAtSS) ||
+        (pickupAtSS && !hasFirearms && !customFFL)
+      ) && (
+          <FFLSelector
+            ffls={fflLocations}
+            handleSelectFFL={handleFFLSelected}
+            selectedFFL={selectedFFL}
+            pickupAtSS={pickupAtSS}
+          />
+        )}
 
-        <FFLSelector ffls={fflLocations} handleSelectFFL={handleFFLSelected} selectedFFL={selectedFFL} pickupAtSS={pickupAtSS} />
 
-      )}
+
 
       {showManualAddressInputs && (
         <CustomAddressForm savedAddress={homeAddress} handleInputChange={handleInputChange} formState={homeAddress} />
