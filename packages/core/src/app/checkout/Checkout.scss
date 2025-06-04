@@ -1,23 +1,67 @@
+@import '../ui/Base';
+
+$color-secondary: #757575;
+$color-link: #476BEF;
+$fontFamily-montserrat: 'Montserrat';
+
 // optimizedCheckout-headingPrimary
-.header-active {
-    color: #000;
-    font-family: Montserrat;
-    font-size: 25px;
-    font-weight: 700;
+.header-active, .header-inactive {
+    color: $color-black;
+    font-family: $fontFamily-montserrat;
+    font-size: $fontSize-large;
+    font-weight: $fontWeight-bold;
 }
 
 .header-inactive {
-    color: #757575;
-    font-family: Montserrat;
-    font-size: 25px;
-    font-weight: 700;
+    color: $color-secondary;
 }
 
 // optimizedCheckout-headingSecondary
 .header-secondary {
-    color: #000;
-    font-family: Montserrat;
-    font-size: 15px;
-    font-weight: 700;
+    color: $color-black;
+    font-family: $fontFamily-montserrat;
+    font-size: $fontSize-smaller;
+    font-weight: $fontWeight-bold;
+}
+
+// optimizedCheckout-contentPrimary
+.body-regular, .body-cta {
+    color: $color-black;
+    font-family: $fontFamily-montserrat;
+    font-size: $fontSize-smallest;
+    font-weight: $fontWeight-normal;
+}
+
+.body-cta {
+    color: $color-link;
+}
+
+.body-medium, .body-medium-inactive {
+    color: $color-black;
+    font-family: $fontFamily-montserrat;
+    font-size: $fontSize-smallest;
+    font-weight: $fontWeight-medium;
+}
+
+.body-medium-inactive {
+    color: $color-secondary;
+}
+
+.body-bold {
+    color: $color-black;
+    font-family: $fontFamily-montserrat;
+    font-size: $fontSize-smallest;
+    font-weight: $fontWeight-bold;
+
+    &.button--primary{
+        color: $color-white;
+    }
+}
+
+.sub-text {
+    color: $color-secondary;
+    font-family: $fontFamily-montserrat;
+    font-size: $fontSize-tiny;
+    font-weight: $fontWeight-medium;
 }
 

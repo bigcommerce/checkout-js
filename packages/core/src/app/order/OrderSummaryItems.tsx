@@ -1,4 +1,5 @@
 import { LineItemMap } from '@bigcommerce/checkout-sdk';
+import classNames from 'classnames';
 import React, { ReactNode } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -13,12 +14,13 @@ import mapFromGiftCertificate from './mapFromGiftCertificate';
 import mapFromPhysical from './mapFromPhysical';
 import OrderSummaryItem from './OrderSummaryItem';
 
-const COLLAPSED_ITEMS_LIMIT = 4;
-const COLLAPSED_ITEMS_LIMIT_SMALL_SCREEN = 3;
+const COLLAPSED_ITEMS_LIMIT = 1;
+const COLLAPSED_ITEMS_LIMIT_SMALL_SCREEN = 1;
 
 export interface OrderSummaryItemsProps {
     displayLineItemsCount: boolean;
     items: LineItemMap;
+    newFontStyle?: boolean;
 }
 
 interface OrderSummaryItemsState {
@@ -37,13 +39,14 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
     }
 
     render(): ReactNode {
-        const { displayLineItemsCount = true, items } = this.props;
+        const { displayLineItemsCount = true, items, newFontStyle = false } = this.props;
         const { collapsedLimit, isExpanded } = this.state;
 
         return (
             <>
                 {displayLineItemsCount && <h3
-                    className="cart-section-heading optimizedCheckout-contentPrimary"
+                    className={classNames('cart-section-heading optimizedCheckout-contentPrimary',
+                        { 'body-medium': newFontStyle })}
                     data-test="cart-count-total"
                 >
                     <TranslatedString

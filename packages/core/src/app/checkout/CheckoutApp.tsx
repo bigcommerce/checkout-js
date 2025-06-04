@@ -19,6 +19,7 @@ import {
 
 import Checkout from './Checkout';
 import "./Checkout.scss";
+import { StyleProvider } from './StyleProvider';
 
 export interface CheckoutAppProps {
     checkoutId: string;
@@ -66,13 +67,15 @@ export default class CheckoutApp extends Component<CheckoutAppProps> {
                                 checkoutService={this.checkoutService}
                                 errorLogger={createErrorLogger()}
                             >
-                                <Checkout
-                                    {...this.props}
-                                    createEmbeddedMessenger={createEmbeddedCheckoutMessenger}
-                                    embeddedStylesheet={this.embeddedStylesheet}
-                                    embeddedSupport={this.embeddedSupport}
-                                    errorLogger={this.errorLogger}
-                                />
+                                <StyleProvider>
+                                    <Checkout
+                                        {...this.props}
+                                        createEmbeddedMessenger={createEmbeddedCheckoutMessenger}
+                                        embeddedStylesheet={this.embeddedStylesheet}
+                                        embeddedSupport={this.embeddedSupport}
+                                        errorLogger={this.errorLogger}
+                                    />
+                                </StyleProvider>
                             </ExtensionProvider>
                         </AnalyticsProvider>
                     </CheckoutProvider>

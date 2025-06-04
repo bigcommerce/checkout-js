@@ -41,28 +41,28 @@ const StaticAddress: FunctionComponent<
     return !isValid ? null : (
         <div className="vcard checkout-address--static" data-test="static-address">
             {(address.firstName || address.lastName) && (
-                <p className="fn address-entry">
+                <span className="fn address-entry">
                     <span className="first-name">{`${address.firstName} `}</span>
                     <span className="family-name">{address.lastName}</span>
-                </p>
+                </span>
             )}
 
             {(address.phone || address.company) && (
-                <p className="address-entry">
+                <span className="address-entry">
                     <span className="company-name">{`${address.company} `}</span>
                     <span className="tel">{address.phone}</span>
-                </p>
+                </span>
             )}
 
             <div className="adr">
-                <p className="street-address address-entry">
+                <span className="street-address address-entry">
                     <span className="address-line-1">{`${address.address1} `}</span>
                     {address.address2 && (
                         <span className="address-line-2">{` / ${address.address2}`}</span>
                     )}
-                </p>
+                </span>
 
-                <p className="address-entry">
+                <span className="address-entry">
                     {address.city && <span className="locality">{`${address.city}, `}</span>}
                     {address.localizedProvince && (
                         <span className="region">{`${address.localizedProvince}, `}</span>
@@ -73,7 +73,7 @@ const StaticAddress: FunctionComponent<
                     {address.localizedCountry && (
                         <span className="country-name">{`${address.localizedCountry} `}</span>
                     )}
-                </p>
+                </span>
             </div>
         </div>
     );

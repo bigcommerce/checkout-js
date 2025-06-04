@@ -9,6 +9,7 @@ import { Button, ButtonSize, ButtonVariant } from '../ui/button';
 import { IconCheck } from '../ui/icon';
 
 import CheckoutStepType from './CheckoutStepType';
+import { useStyleContext } from './useStyleContext';
 
 export interface CheckoutStepHeaderProps {
     heading: ReactNode;
@@ -29,7 +30,7 @@ const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
     summary,
     type,
 }) => {
-    const newFontStyle = true; // Assuming this is a placeholder for the actual condition
+    const { newFontStyle } = useStyleContext();
 
     return (
         <div
@@ -56,7 +57,8 @@ const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
             </div>
 
             <div
-                className="stepHeader-body stepHeader-column optimizedCheckout-contentPrimary"
+                className={classNames('stepHeader-body stepHeader-column optimizedCheckout-contentPrimary',
+                    { 'body-regular': newFontStyle })}
                 data-test="step-info"
             >
                 {!isActive && isComplete && summary}
@@ -66,6 +68,7 @@ const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
                 <div className="stepHeader-actions stepHeader-column">
                     <Button
                         aria-expanded={isActive}
+                        className={classNames({ 'body-regular': newFontStyle })}
                         size={ButtonSize.Tiny}
                         testId="step-edit-button"
                         variant={ButtonVariant.Secondary}
