@@ -3,12 +3,13 @@ import {
     Consignment,
     Country,
     CustomerAddress,
-    FormField,
-    ShippingInitializeOptions
+    FormField
 } from '@bigcommerce/checkout-sdk';
-import React, {FC, useEffect, useRef, useState} from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 
 import {
+    isBigCommercePaymentsFastlaneMethod,
+    isBraintreeFastlaneMethod,
     isPayPalCommerceFastlaneMethod,
     isPayPalFastlaneMethod,
     PayPalFastlaneShippingAddressForm,
@@ -66,17 +67,13 @@ export const PayPalFastlaneShippingAddress: FC<PayPalFastlaneShippingAddressProp
         };
     }
 
-    const initializationOptions: ShippingInitializeOptions = isPayPalCommerceFastlaneMethod(
-        methodId,
-    )
-        ? fastlaneOptions('paypalcommercefastlane')
-        : fastlaneOptions('braintreefastlane');
-
     const initializeShippingStrategyOrThrow = async () => {
         try {
             await initialize({
                 methodId,
-                ...initializationOptions,
+                ...(isBigCommercePaymentsFastlaneMethod(methodId) ? fastlaneOptions('bigcommerce_payments_fastlane') : {}),
+                ...(isBraintreeFastlaneMethod(methodId) ? fastlaneOptions('braintreefastlane') : {}),
+                ...(isPayPalCommerceFastlaneMethod(methodId) ? fastlaneOptions('paypalcommercefastlane') : {})
             });
         } catch (error) {
             if (typeof onUnhandledError === 'function' && error instanceof Error) {

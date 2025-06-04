@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { getAddress, getCustomer } from '@bigcommerce/checkout/test-mocks';
@@ -43,7 +42,7 @@ describe('PayPalFastlaneShippingAddress', () => {
         });
 
         defaultProps = {
-            consignments:[],
+            consignments: [],
             countriesWithAutocomplete: [],
             handleFieldChange: jest.fn(),
             isShippingStepPending: false,
