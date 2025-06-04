@@ -68,7 +68,7 @@ exports[`ManageAchInstrumentsTable matches snapshot with rendered output 1`] = `
         <td>
           <button
             className="button button--tiny table-actionButton optimizedCheckout-buttonSecondary"
-            data-test="manage-instrument-delete-button-34567456"
+            data-test="manage-instrument-delete-button"
             onClick={[Function]}
             type="button"
           >
@@ -117,7 +117,7 @@ exports[`ManageAchInstrumentsTable matches snapshot with rendered output 1`] = `
         <td>
           <button
             className="button button--tiny table-actionButton optimizedCheckout-buttonSecondary"
-            data-test="manage-instrument-delete-button-12341414"
+            data-test="manage-instrument-delete-button"
             onClick={[Function]}
             type="button"
           >

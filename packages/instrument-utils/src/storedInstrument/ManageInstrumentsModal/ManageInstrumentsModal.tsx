@@ -145,7 +145,6 @@ class ManageInstrumentsModal extends Component<
                 statuses: { isDeletingInstrument, isLoadingInstruments },
             },
         } = this.context;
-        const { selectedInstrumentId } = this.state;
 
         const { onRequestClose } = this.props;
         const { isConfirmingDelete } = this.state;
@@ -165,7 +164,7 @@ class ManageInstrumentsModal extends Component<
                         disabled={isDeletingInstrument() || isLoadingInstruments()}
                         onClick={this.handleConfirmDelete}
                         size={ButtonSize.Small}
-                        testId={`manage-instrument-confirm-button-${selectedInstrumentId}`}
+                        testId="manage-instrument-confirm-button"
                         variant={ButtonVariant.Primary}
                     >
                         <TranslatedString id="payment.instrument_manage_modal_confirmation_action" />
