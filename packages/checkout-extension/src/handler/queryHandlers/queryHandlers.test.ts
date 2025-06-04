@@ -25,6 +25,8 @@ describe('queryHandlers', () => {
             dispatch,
             extension: getExtensions()[0],
         };
+
+        jest.spyOn(checkoutService, 'postMessageToExtension').mockImplementation(jest.fn());
     });
 
     describe('createGetConsignmentHandler', () => {
@@ -36,7 +38,6 @@ describe('queryHandlers', () => {
             jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue({
                 consignments,
             } as Checkout);
-            jest.spyOn(checkoutService, 'postMessageToExtension');
 
             void handler.handler({
                 type: ExtensionQueryType.GetConsignments,

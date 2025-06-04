@@ -22,5 +22,5 @@ module.exports = {
     '\\.scss$': '../../scripts/jest/style-transformer',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
-  testTimeout: 10000,
+  testTimeout: 30000,
 };

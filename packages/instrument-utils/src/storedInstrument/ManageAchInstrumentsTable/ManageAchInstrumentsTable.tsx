@@ -27,7 +27,7 @@ const ManageInstrumentsRow: FunctionComponent<ManageInstrumentsRowProps> = ({
             <td>
                 <button
                     className="button button--tiny table-actionButton optimizedCheckout-buttonSecondary"
-                    data-test="manage-instrument-delete-button"
+                    data-test={`manage-instrument-delete-button-${instrument.bigpayToken}`}
                     onClick={handleDelete}
                     type="button"
                 >

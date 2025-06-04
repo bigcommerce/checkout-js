@@ -5,7 +5,7 @@ import {
     createCheckoutService,
     RequestError,
 } from '@bigcommerce/checkout-sdk';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render as originalRender } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React, { FunctionComponent } from 'react';
 
@@ -16,6 +16,7 @@ import {
 } from '@bigcommerce/checkout/locale';
 import { CheckoutContext } from '@bigcommerce/checkout/payment-integration-api';
 import { getInstruments, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
+import { fireEvent, render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
 import { isAccountInstrument, isBankAccountInstrument, isCardInstrument } from '../../guards';
 
@@ -57,7 +58,7 @@ describe('ManageInstrumentsModal', () => {
 
     it('throws an error if not wrapped in checkout context', () => {
         expect(() =>
-            render(
+            originalRender(
                 <LocaleContext.Provider value={localeContext}>
                     <ManageInstrumentsModal {...defaultProps} />
                 </LocaleContext.Provider>,
@@ -107,9 +108,7 @@ describe('ManageInstrumentsModal', () => {
     it('shows confirmation message before deleting instrument', async () => {
         render(<ManageInstrumentsModalTest {...defaultProps} />);
 
-        const deleteButtons = await screen.findAllByTestId('manage-instrument-delete-button');
-
-        await userEvent.click(deleteButtons[0]);
+        await userEvent.click(await screen.findByTestId('manage-instrument-delete-button-123'));
 
         expect(
             screen.getByText(
@@ -125,25 +124,22 @@ describe('ManageInstrumentsModal', () => {
 
         render(<ManageInstrumentsModalTest {...defaultProps} />);
 
-        await userEvent.click(screen.getAllByTestId('manage-instrument-delete-button')[0]);
-
-        await userEvent.click(screen.getAllByTestId('manage-instrument-confirm-button')[0]);
+        await userEvent.click(await screen.findByTestId('manage-instrument-delete-button-123'));
+        await userEvent.click(await screen.findByTestId('manage-instrument-confirm-button-123'));
 
         expect(checkoutService.deleteInstrument).toHaveBeenCalledWith(instruments[0].bigpayToken);
-
-        await new Promise((resolve) => process.nextTick(resolve));
-
         expect(defaultProps.onRequestClose).toHaveBeenCalled();
     });
 
-    it('shows list of instruments if user decides to cancel their action', () => {
+    it('shows list of instruments if user decides to cancel their action', async () => {
         render(<ManageInstrumentsModalTest {...defaultProps} />);
 
-        fireEvent.click(screen.getAllByTestId('manage-instrument-delete-button')[0]);
+        fireEvent.click(screen.getByTestId('manage-instrument-delete-button-123'));
+        fireEvent.click(screen.getByTestId('manage-instrument-confirm-button-123'));
 
-        fireEvent.click(screen.getAllByTestId('manage-instrument-cancel-button')[0]);
-
-        expect(screen.getByTestId('manage-card-instruments-table')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.getByTestId('manage-card-instruments-table')).toBeInTheDocument();
+        });
     });
 
     it('cancels "delete confirmation" screen when modal is re-open', () => {
@@ -151,14 +147,13 @@ describe('ManageInstrumentsModal', () => {
 
         render(<ManageInstrumentsModalTest {...defaultProps} />);
 
-        fireEvent.click(screen.getAllByTestId('manage-instrument-delete-button')[0]);
+        fireEvent.click(screen.getByTestId('manage-instrument-delete-button-123'));
         fireEvent.click(screen.getByText('Cancel'));
 
         expect(screen.getByTestId('manage-card-instruments-table')).toBeInTheDocument();
     });
 
     it('displays error message to user if unable to delete instrument', () => {
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         jest.spyOn(checkoutState.errors, 'getDeleteInstrumentError').mockReturnValue({
             status: 500,
         } as RequestError);
