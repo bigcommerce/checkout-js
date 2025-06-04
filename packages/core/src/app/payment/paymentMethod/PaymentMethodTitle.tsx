@@ -18,6 +18,8 @@ import getPaymentMethodName from './getPaymentMethodName';
 import { isHostedCreditCardFieldsetValues } from './HostedCreditCardFieldsetValues';
 import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodType from './PaymentMethodType';
+import classNames from 'classnames';
+import { useStyleContext } from '../../checkout/useStyleContext';
 
 export interface PaymentMethodTitleProps {
     method: PaymentMethod;
@@ -283,6 +285,7 @@ const PaymentMethodTitle: FunctionComponent<
 > = ({ cdnBasePath, checkoutSettings, storeCountryCode, onUnhandledError, formik: { values }, instruments, isSelected, language, method }) => {
     const methodName = getPaymentMethodName(language)(method);
     const { logoUrl, titleText, subtitle } = getPaymentMethodTitle(language, cdnBasePath, checkoutSettings, storeCountryCode)(method);
+    const { newFontStyle } = useStyleContext();
 
     const getSelectedCardType = () => {
         if (!isSelected) {
@@ -334,7 +337,9 @@ const PaymentMethodTitle: FunctionComponent<
                 )}
 
                 {titleText && (
-                    <div aria-level={6} className="paymentProviderHeader-name" data-test="payment-method-name" role="heading">
+                    <div aria-level={6} className={classNames('paymentProviderHeader-name',
+                        { 'header-secondary': newFontStyle })}
+                        data-test="payment-method-name" role="heading">
                         {titleText}
                     </div>
                 )}

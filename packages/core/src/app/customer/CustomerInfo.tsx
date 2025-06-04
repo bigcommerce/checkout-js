@@ -74,7 +74,7 @@ const CustomerInfo: FunctionComponent<CustomerInfoProps & WithCheckoutCustomerIn
     return (
         <div className="customerView" data-test="checkout-customer-info">
             <div
-                className="customerView-body optimizedCheckout-contentPrimary"
+                className="customerView-body"
                 data-test="customer-info"
             >
                 {email}

@@ -15,6 +15,7 @@ import { BasicFormField, Fieldset, Form, Legend } from '../ui/form';
 import EmailField from './EmailField';
 import SubscribeField from './SubscribeField';
 import { SubscribeSessionStorage } from './SubscribeSessionStorage';
+import { useStyleContext } from '../checkout/useStyleContext';
 
 function getShouldSubscribeValue(requiresMarketingConsent: boolean, defaultShouldSubscribe: boolean) {
     if (SubscribeSessionStorage.getSubscribeStatus()) {
@@ -101,6 +102,8 @@ const GuestForm: FunctionComponent<
 
     const isRedirectExperimentEnabled = isExperimentEnabled(config.checkoutSettings, 'CHECKOUT-9138.redirect_to_storefront_for_auth');
 
+    const { newFontStyle } = useStyleContext();
+
     const handleLogin: () => void = () => {
         if (shouldRedirectToStorefrontForAuth && isRedirectExperimentEnabled) {
             window.location.assign(`${loginLink}?redirectTo=${checkoutLink}`);
@@ -141,7 +144,9 @@ const GuestForm: FunctionComponent<
                         })}
                     >
                         <Button
-                            className="customerEmail-button"
+                            className={classNames('customerEmail-button', {
+                                'body-bold': newFontStyle,
+                            })}
                             id="checkout-customer-continue"
                             isLoading={isLoading}
                             testId="customer-continue-as-guest-button"

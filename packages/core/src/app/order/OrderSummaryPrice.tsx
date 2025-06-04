@@ -5,6 +5,7 @@ import { CSSTransition } from 'react-transition-group';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
+import { useStyleContext } from '../checkout/useStyleContext';
 import { ShopperCurrency } from '../currency';
 
 export interface OrderSummaryPriceProps {
@@ -19,6 +20,7 @@ export interface OrderSummaryPriceProps {
     superscript?: string;
     actionLabel?: ReactNode;
     onActionTriggered?(): void;
+    isOrderTotal?: boolean;
 }
 
 export interface OrderSummaryPriceState {
@@ -56,6 +58,7 @@ const OrderSummaryPrice: FC<OrderSummaryPriceProps> = ({
     superscript,
     testId,
     zeroLabel,
+    isOrderTotal = false,
 }) => {
     const [ highlight, setHighlight ] = useState<boolean>(false);
     const [ previousAmount, setPreviousAmount ] = useState<OrderSummaryPriceProps['amount']>(amount);
@@ -65,6 +68,7 @@ const OrderSummaryPrice: FC<OrderSummaryPriceProps> = ({
         }
     } = useCheckout();
 
+    const { newFontStyle } = useStyleContext();
     const displayValue = getDisplayValue(amount, zeroLabel);
     const isActionDisabled = isSubmittingOrder();
 
@@ -106,7 +110,12 @@ const OrderSummaryPrice: FC<OrderSummaryPriceProps> = ({
                         className,
                     )}
                 >
-                    <span className="cart-priceItem-label">
+                    <span className={classNames('cart-priceItem-label',
+                        {
+                            'body-regular': newFontStyle && !isOrderTotal,
+                            'header-secondary': newFontStyle && isOrderTotal
+                        })}
+                    >
                         <span data-test="cart-price-label">
                             {label}
                             {'  '}
@@ -132,7 +141,12 @@ const OrderSummaryPrice: FC<OrderSummaryPriceProps> = ({
                         )}
                     </span>
 
-                    <span className="cart-priceItem-value">
+                    <span className={classNames('cart-priceItem-value',
+                        {
+                            'body-medium': newFontStyle && !isOrderTotal,
+                            'header-active': newFontStyle && isOrderTotal
+                        })}
+                    >
                         {isNumberValue(amountBeforeDiscount) && amountBeforeDiscount !== amount && (
                             <span className="cart-priceItem-before-value">
                                 <ShopperCurrency amount={amountBeforeDiscount} />

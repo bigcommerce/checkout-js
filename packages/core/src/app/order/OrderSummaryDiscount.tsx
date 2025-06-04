@@ -1,7 +1,9 @@
+import classNames from 'classnames';
 import React, { FunctionComponent, memo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
+import { useStyleContext } from '../checkout/useStyleContext';
 import { ShopperCurrency } from '../currency';
 
 import OrderSummaryPrice, { OrderSummaryPriceProps } from './OrderSummaryPrice';
@@ -18,35 +20,40 @@ const OrderSummaryDiscount: FunctionComponent<OrderSummaryDiscountProps> = ({
     amount,
     onRemoved,
     ...rest
-}) => (
-    <OrderSummaryPrice
-        {...rest}
-        {...(onRemoved && {
-            onActionTriggered: () => code && onRemoved(code),
-            actionLabel: <TranslatedString id="cart.remove_action" />,
-        })}
-        amount={-1 * (amount || 0)}
-    >
-        {!!remaining && remaining > 0 && (
-            <span
-                className="cart-priceItem-postFix optimizedCheckout-contentSecondary"
-                data-test="cart-price-remaining"
-            >
-                <TranslatedString id="cart.remaining_text" />
-                {': '}
-                <ShopperCurrency amount={remaining} />
-            </span>
-        )}
+}) => {
+    const { newFontStyle } = useStyleContext();
 
-        {code && (
-            <span
-                className="cart-priceItem-postFix optimizedCheckout-contentSecondary"
-                data-test="cart-price-code"
-            >
-                {code}
-            </span>
-        )}
-    </OrderSummaryPrice>
-);
+    return (
+        <OrderSummaryPrice
+            {...rest}
+            {...(onRemoved && {
+                onActionTriggered: () => code && onRemoved(code),
+                actionLabel: <TranslatedString id="redeemable.remove_action" />,
+            })}
+            amount={-1 * (amount || 0)}
+        >
+            {!!remaining && remaining > 0 && (
+                <span
+                    className="cart-priceItem-postFix optimizedCheckout-contentSecondary"
+                    data-test="cart-price-remaining"
+                >
+                    <TranslatedString id="cart.remaining_text" />
+                    {': '}
+                    <ShopperCurrency amount={remaining} />
+                </span>
+            )}
+
+            {code && (
+                <span
+                    className={classNames('cart-priceItem-postFix optimizedCheckout-contentSecondary',
+                        { 'sub-text': newFontStyle })}
+                    data-test="cart-price-code"
+                >
+                    {code}
+                </span>
+            )}
+        </OrderSummaryPrice>
+    );
+}
 
 export default memo(OrderSummaryDiscount);

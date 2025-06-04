@@ -1,5 +1,6 @@
 import { CheckoutSelectors, RequestError } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
+import classNames from 'classnames';
 import { FieldProps, FormikProps, withFormik } from 'formik';
 import { noop } from 'lodash';
 import React, {FunctionComponent, KeyboardEvent, memo, ReactNode, useCallback} from 'react';
@@ -10,6 +11,7 @@ import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 import { FormContextType, FormProvider } from '@bigcommerce/checkout/ui';
 
+import { useStyleContext } from '../checkout/useStyleContext';
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
 import { FormField, Label, TextInput } from '../ui/form';
@@ -85,6 +87,7 @@ const RedeemableForm: FunctionComponent<
             statuses: { isSubmittingOrder }
         }
     } = useCheckout();
+    const { newFontStyle } = useStyleContext();
 
     const handleSubmitForm = (setSubmitted: FormContextType['setSubmitted']) => {
         if (isSubmittingOrder()) {
@@ -163,7 +166,9 @@ const RedeemableForm: FunctionComponent<
                             />
 
                             <Button
-                                className="form-prefixPostfix-button--postfix"
+                            className={classNames('form-prefixPostfix-button--postfix', {
+                                'body-bold': newFontStyle,
+                            })}
                                 disabled={isSubmittingOrder()}
                                 id="applyRedeemableButton"
                                 isLoading={isApplyingRedeemable}
