@@ -4,6 +4,7 @@ import React, { FunctionComponent } from 'react';
 import { RadioInput } from '@bigcommerce/checkout/ui';
 
 import { ShopperCurrency } from '../../currency';
+import { useStyleContext } from '../../checkout/useStyleContext';
 
 interface MultiShippingOptionsListItemProps {
     consignmentId: string;
@@ -15,11 +16,13 @@ interface MultiShippingOptionsListItemProps {
 export const MultiShippingOptionsListItem: FunctionComponent<
     MultiShippingOptionsListItemProps
 > = ({ consignmentId, selectedShippingOptionId, shippingOption, handleSelect }) => {
+    const { newFontStyle } = useStyleContext();
+
     const label = (
-        <>
+        <span className={newFontStyle ? 'body-regular' : ''}>
             {`${shippingOption.description} - `}
             <ShopperCurrency amount={shippingOption.cost} />
-        </>
+        </span>
     );
 
     const selectThisOption = () => {

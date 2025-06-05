@@ -15,7 +15,7 @@ import { AddressFormSkeleton } from '@bigcommerce/checkout/ui';
 
 import { isEqualAddress, mapAddressFromFormValues } from '../address';
 import { withCheckout } from '../checkout';
-import { EMPTY_ARRAY, isFloatingLabelEnabled } from '../common/utility';
+import { EMPTY_ARRAY, isExperimentEnabled, isFloatingLabelEnabled } from '../common/utility';
 import { getShippableItemsCount } from '../shipping';
 import { Legend } from '../ui/form';
 
@@ -40,6 +40,7 @@ export interface WithCheckoutBillingProps {
     billingAddress?: Address;
     methodId?: string;
     isFloatingLabelEnabled?: boolean;
+    newFontStyle?: boolean;
     getFields(countryCode?: string): FormField[];
     initialize(): Promise<CheckoutSelectors>;
     updateAddress(address: Partial<Address>): Promise<CheckoutSelectors>;
@@ -61,13 +62,13 @@ class Billing extends Component<BillingProps & WithCheckoutBillingProps> {
     }
 
     render(): ReactNode {
-        const { updateAddress, isInitializing, ...props } = this.props;
+        const { updateAddress, isInitializing, newFontStyle, ...props } = this.props;
 
         return (
             <AddressFormSkeleton isLoading={isInitializing}>
                 <div className="checkout-form">
                     <div className="form-legend-container">
-                        <Legend testId="billing-address-heading">
+                        <Legend testId="billing-address-heading" newFontStyle={newFontStyle}>
                             <TranslatedString id="billing.billing_address_heading" />
                         </Legend>
                     </div>
@@ -163,6 +164,7 @@ function mapToBillingProps({
         updateAddress: checkoutService.updateBillingAddress,
         updateCheckout: checkoutService.updateCheckout,
         isFloatingLabelEnabled: isFloatingLabelEnabled(config.checkoutSettings),
+        newFontStyle: isExperimentEnabled(config.checkoutSettings, 'CHECKOUT-7962_update_font_style_on_checkout_page')
     };
 }
 

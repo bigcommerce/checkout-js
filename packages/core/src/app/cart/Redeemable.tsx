@@ -47,37 +47,41 @@ export type RedeemableProps = {
 
 const Redeemable: FunctionComponent<
     RedeemableProps & WithLanguageProps & FormikProps<RedeemableFormValues>
-> = ({ shouldCollapseCouponCode, showAppliedRedeemables, ...formProps }) => (
-    <Toggle openByDefault={!shouldCollapseCouponCode}>
-        {({ toggle, isOpen }): ReactNode => (
-            <>
-                {shouldCollapseCouponCode && (
-                    <a
-                        aria-controls="redeemable-collapsable"
-                        aria-expanded={isOpen}
-                        className="redeemable-label"
-                        data-test="redeemable-label"
-                        href="#"
-                        onClick={preventDefault(toggle)}
-                    >
-                        <TranslatedString id="redeemable.toggle_action" />
-                    </a>
+    > = ({ shouldCollapseCouponCode, showAppliedRedeemables, ...formProps }) => {
+        const { newFontStyle } = useStyleContext();
+
+        return (
+            <Toggle openByDefault={!shouldCollapseCouponCode}>
+                {({ toggle, isOpen }): ReactNode => (
+                    <>
+                        {shouldCollapseCouponCode && (
+                            <a
+                                aria-controls="redeemable-collapsable"
+                                aria-expanded={isOpen}
+                                className={classNames('redeemable-label', { 'body-cta': newFontStyle })}
+                                data-test="redeemable-label"
+                                href="#"
+                                onClick={preventDefault(toggle)}
+                            >
+                                <TranslatedString id="redeemable.toggle_action" />
+                            </a>
+                        )}
+                        {!shouldCollapseCouponCode && (
+                            <div className={classNames('redeemable-label', { 'body-cta': newFontStyle })}>
+                                <TranslatedString id="redeemable.toggle_action" />
+                            </div>
+                        )}
+                        {(isOpen || !shouldCollapseCouponCode) && (
+                            <div data-test="redeemable-collapsable" id="redeemable-collapsable">
+                                <RedeemableForm {...formProps} />
+                                {showAppliedRedeemables && <AppliedRedeemables {...formProps} />}
+                            </div>
+                        )}
+                    </>
                 )}
-                {!shouldCollapseCouponCode && (
-                    <div className="redeemable-label">
-                        <TranslatedString id="redeemable.toggle_action" />
-                    </div>
-                )}
-                {(isOpen || !shouldCollapseCouponCode) && (
-                    <div data-test="redeemable-collapsable" id="redeemable-collapsable">
-                        <RedeemableForm {...formProps} />
-                        {showAppliedRedeemables && <AppliedRedeemables {...formProps} />}
-                    </div>
-                )}
-            </>
-        )}
-    </Toggle>
-);
+            </Toggle>
+        );
+    }
 
 const RedeemableForm: FunctionComponent<
     Partial<RedeemableProps> & FormikProps<RedeemableFormValues> & WithLanguageProps
@@ -163,6 +167,7 @@ const RedeemableForm: FunctionComponent<
                                 className="form-input optimizedCheckout-form-input"
                                 onKeyDown={handleKeyDown(setSubmitted)}
                                 testId="redeemableEntry-input"
+                            newFontStyle={newFontStyle}
                             />
 
                             <Button

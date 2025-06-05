@@ -16,6 +16,8 @@ import { MultiShippingConsignmentData } from './MultishippingType';
 import './MultiShippingForm.scss';
 import NewConsignment from './NewConsignment';
 import isSelectedShippingOptionValid from './isSelectedShippingOptionValid';
+import { useStyleContext } from '../checkout/useStyleContext';
+import classNames from 'classnames';
 
 export interface MultiShippingFormValues {
     orderComment: string;
@@ -40,6 +42,7 @@ const MultiShippingForm: FunctionComponent<MultiShippingFormProps> = ({
 }: MultiShippingFormProps) => {
     const [errorConsignmentNumber, setErrorConsignmentNumber] = useState<number | undefined>();
 
+    const { newFontStyle } = useStyleContext();
     const {
         checkoutState: {
             data: { getConsignments, getConfig },
@@ -95,12 +98,12 @@ const MultiShippingForm: FunctionComponent<MultiShippingFormProps> = ({
 
     const renderAllocatedBanner = (shippableItemsCount: number): ReactNode => {
         if (shippableItemsCount > 0) {
-            return <Alert type={AlertType.Info}>
+            return <Alert type={AlertType.Info} additionalClassName={newFontStyle ? 'body-regular' : ''}>
                 <TranslatedString data={{ count: shippableItemsCount }} id="shipping.multishipping_item_to_allocate_message" />
             </Alert>;
         }
 
-        return <Alert type={AlertType.Success}>
+        return <Alert type={AlertType.Success} additionalClassName={newFontStyle ? 'body-regular' : ''}>
             <TranslatedString id="shipping.multishipping_all_items_allocated_message" />
         </Alert>;
     }
@@ -136,7 +139,11 @@ const MultiShippingForm: FunctionComponent<MultiShippingFormProps> = ({
                 />)
             }
             {hasUnassignedItems &&
-                <Button className='add-consignment-button' onClick={handleAddShippingDestination} variant={ButtonVariant.Secondary}>
+                <Button
+                    className={classNames({ 'body-regular': newFontStyle }, 'add-consignment-button')}
+                    onClick={handleAddShippingDestination}
+                    variant={ButtonVariant.Secondary}
+                >
                     <TranslatedString id="shipping.multishipping_add_new_destination" />
                 </Button>
             }

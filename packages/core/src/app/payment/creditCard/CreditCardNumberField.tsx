@@ -19,12 +19,15 @@ import { FormField, TextInput } from '../../ui/form';
 import { IconLock } from '../../ui/icon';
 
 import formatCreditCardNumber from './formatCreditCardNumber';
+import { useStyleContext } from '../../checkout/useStyleContext';
 
 export interface CreditCardNumberFieldProps {
     name: string;
 }
 
 const CreditCardNumberField: FunctionComponent<CreditCardNumberFieldProps> = ({ name }) => {
+    const { newFontStyle } = useStyleContext();
+
     const renderInput = useCallback(
         ({ field, form, meta }: FieldProps<string>) => (
             <CreditCardNumberInput field={field} form={form} meta={meta} />
@@ -43,6 +46,7 @@ const CreditCardNumberField: FunctionComponent<CreditCardNumberFieldProps> = ({ 
             input={renderInput}
             labelContent={labelContent}
             name={name}
+            newFontStyle={newFontStyle}
         />
     );
 };

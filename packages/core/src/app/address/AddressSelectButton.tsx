@@ -7,6 +7,7 @@ import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/
 import { AddressSelectProps } from './AddressSelect';
 import SingleLineStaticAddress from './SingleLineStaticAddress';
 import StaticAddress from './StaticAddress';
+import { useStyleContext } from '../checkout/useStyleContext';
 
 type AddressSelectButtonProps = Pick<AddressSelectProps, 'selectedAddress' | 'addresses' | 'type' | 'showSingleLineAddress' | 'placeholderText'>;
 
@@ -17,11 +18,14 @@ const AddressSelectButton: FunctionComponent<AddressSelectButtonProps & WithLang
     showSingleLineAddress,
     placeholderText,
 }) => {
+    const { newFontStyle } = useStyleContext();
     const [ariaExpanded, setAriaExpanded] = useState(false);
 
     const SelectedAddress = () => {
         if (!selectedAddress) {
-            return placeholderText ?? <TranslatedString id="address.enter_address_action" />;
+            return (<span className={newFontStyle ? 'body-regular' : ''} data-test="address-select-placeholder">
+                {placeholderText ?? <TranslatedString id="address.enter_address_action" />}
+            </span>);
         }
 
         return showSingleLineAddress

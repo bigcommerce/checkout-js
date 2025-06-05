@@ -53,7 +53,7 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
             className: classNames(
                 'form-input optimizedCheckout-form-input',
                 { 'floating-input': isFloatingLabelEnabled },
-                { 'body-regular': newFontStyle },
+                { 'new-font-style-input': newFontStyle },
             ),
             id: getAddressFormFieldInputId(name),
             'aria-labelledby': labelId,
@@ -93,7 +93,8 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
     );
 
     const renderLabel = isFloatingLabelEnabled ? null : (
-        <Label htmlFor={inputProps.id} id={labelId} isFloatingLabelEnabled={isFloatingLabelEnabled}>
+        <Label htmlFor={inputProps.id} id={labelId} isFloatingLabelEnabled={isFloatingLabelEnabled}
+            additionalClassName={newFontStyle ? 'body-regular' : ''}>
             {labelContent}
         </Label>
     );
@@ -111,6 +112,7 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
                 isFloatingLabelEnabled={isFloatingLabelEnabled}
                 label={renderLabel}
                 name={fieldName}
+                newFontStyle={newFontStyle}
             />
         </div>
     );

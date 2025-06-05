@@ -14,8 +14,8 @@ import mapFromGiftCertificate from './mapFromGiftCertificate';
 import mapFromPhysical from './mapFromPhysical';
 import OrderSummaryItem from './OrderSummaryItem';
 
-const COLLAPSED_ITEMS_LIMIT = 1;
-const COLLAPSED_ITEMS_LIMIT_SMALL_SCREEN = 1;
+const COLLAPSED_ITEMS_LIMIT = 4;
+const COLLAPSED_ITEMS_LIMIT_SMALL_SCREEN = 3;
 
 export interface OrderSummaryItemsProps {
     displayLineItemsCount: boolean;

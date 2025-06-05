@@ -15,6 +15,7 @@ export interface CheckboxGroupFormFieldProps {
     name: string;
     options: FormFieldItem[];
     onChange?(values: string[]): void;
+    newFontStyle?: boolean;
 }
 
 type MultiCheckboxFormFieldProps = CheckboxGroupFormFieldProps &
@@ -29,6 +30,7 @@ const MultiCheckboxFormField: FunctionComponent<MultiCheckboxFormFieldProps> = (
     options,
     push,
     remove,
+    newFontStyle,
 }) => {
     const handleSelectAll = useCallback(() => {
         const checkedValues: string[] = getIn(values, name) || [];
@@ -71,6 +73,7 @@ const MultiCheckboxFormField: FunctionComponent<MultiCheckboxFormFieldProps> = (
 
             {options.length > 1 && (
                 <MultiCheckboxControl
+                    newFontStyle={newFontStyle}
                     onSelectedAll={handleSelectAll}
                     onSelectedNone={handleSelectNone}
                     testId={id}
@@ -81,6 +84,7 @@ const MultiCheckboxFormField: FunctionComponent<MultiCheckboxFormFieldProps> = (
                 fieldType={DynamicFormFieldType.checkbox}
                 id={id}
                 name={name}
+                newFontStyle={newFontStyle}
                 onChange={handleInputChange}
                 options={options}
                 value={getIn(values, name) || []}
@@ -101,6 +105,7 @@ const CheckboxGroupFormField: FunctionComponent<CheckboxGroupFormFieldProps> = (
     name,
     onChange,
     options,
+    newFontStyle,
 }) => {
     const renderField = useCallback(
         (renderProps: FieldArrayRenderProps) => (
@@ -108,6 +113,7 @@ const CheckboxGroupFormField: FunctionComponent<CheckboxGroupFormFieldProps> = (
                 id={id}
                 label={label}
                 name={name}
+                newFontStyle={newFontStyle}
                 onChange={onChange}
                 options={options}
                 {...pick(renderProps, ['form', 'pop', 'push', 'remove'])}

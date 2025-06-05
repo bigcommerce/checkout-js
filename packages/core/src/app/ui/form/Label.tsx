@@ -5,6 +5,7 @@ export interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
     testId?: string;
     hidden?: boolean;
     isFloatingLabelEnabled?: boolean;
+    additionalClassName?: string;
 }
 
 const Label: FunctionComponent<LabelProps> = ({
@@ -13,6 +14,7 @@ const Label: FunctionComponent<LabelProps> = ({
     hidden,
     testId,
     isFloatingLabelEnabled,
+    additionalClassName,
     ...rest
 }) => (
     <label
@@ -21,7 +23,8 @@ const Label: FunctionComponent<LabelProps> = ({
             { 'floating-label': isFloatingLabelEnabled },
             className || 'form-label',
             { 'is-srOnly': hidden },
-            'optimizedCheckout-form-label'
+            'optimizedCheckout-form-label',
+            additionalClassName,
         ) }
         data-test={ testId }
     >

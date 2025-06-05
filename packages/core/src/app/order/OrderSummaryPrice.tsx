@@ -130,6 +130,7 @@ const OrderSummaryPrice: FC<OrderSummaryPriceProps> = ({
                                 <a
                                     className={classNames({
                                         'link--disabled': isActionDisabled,
+                                        'body-cta': newFontStyle && !isOrderTotal
                                     })}
                                     data-test="cart-price-callback"
                                     href="#"

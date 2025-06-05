@@ -8,6 +8,7 @@ import { isMobileView as isMobileViewUI } from "../ui/responsive";
 import { AllocateItemsModalFormValues } from "./AllocateItemsModal";
 import LeftToAllocateItem from "./LeftToAllocateItem";
 import { MultiShippingTableItemWithType } from "./MultishippingType";
+import { useStyleContext } from "../checkout/useStyleContext";
 
 interface LeftToAllocateItemsTableProps {
     items: MultiShippingTableItemWithType[];
@@ -16,14 +17,15 @@ interface LeftToAllocateItemsTableProps {
 
 const LeftToAllocateItemsTable: FunctionComponent<LeftToAllocateItemsTableProps> = ({ items, formErrors }: LeftToAllocateItemsTableProps) => {
     const isMobileView = isMobileViewUI();
+    const { newFontStyle } = useStyleContext();
 
     return (
         <table className="table left-to-allocate-items-table">
             <thead>
                 <tr>
-                    <th><TranslatedString id="shipping.multishipping_left_to_allocate_items_table_item" /></th>
-                    {!isMobileView && <th><TranslatedString id="shipping.multishipping_left_to_allocate_items_table_left_to_allocate" /></th>}
-                    <th><TranslatedString id="shipping.multishipping_left_to_allocate_items_table_quantity" /></th>
+                    <th className={newFontStyle ? 'body-medium' : ''}><TranslatedString id="shipping.multishipping_left_to_allocate_items_table_item" /></th>
+                    {!isMobileView && <th className={newFontStyle ? 'body-medium' : ''}><TranslatedString id="shipping.multishipping_left_to_allocate_items_table_left_to_allocate" /></th>}
+                    <th className={newFontStyle ? 'body-medium' : ''}><TranslatedString id="shipping.multishipping_left_to_allocate_items_table_quantity" /></th>
                 </tr>
             </thead>
             <tbody>

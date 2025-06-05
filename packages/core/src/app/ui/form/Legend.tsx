@@ -4,15 +4,15 @@ import React, { FunctionComponent } from 'react';
 export interface LegendProps extends React.HTMLAttributes<HTMLLegendElement> {
     hidden?: boolean;
     testId?: string;
+    newFontStyle?: boolean;
 }
-
-const newFontStyle = true; // Assuming this is a placeholder for the actual condition
 
 const Legend: FunctionComponent<LegendProps> = ({
     children,
     className,
     hidden,
     testId,
+    newFontStyle = false,
     ...rest
 }) => (
     <legend

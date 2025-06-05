@@ -163,7 +163,9 @@ const GuestForm: FunctionComponent<
                 )}
 
                 {!isLoading && (
-                    <p className="customer-login-link">
+                    <p className={classNames('customer-login-link',
+                        { 'body-regular': newFontStyle })}
+                    >
                         <TranslatedString id="customer.login_text" />{' '}
                         <a
                             data-test="customer-continue-button"

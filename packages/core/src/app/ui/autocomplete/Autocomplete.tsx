@@ -6,6 +6,7 @@ import { Label } from '../form';
 import { Popover, PopoverList, PopoverListItem } from '../popover';
 
 import AutocompleteItem from './autocomplete-item';
+import { StyleContext } from '../../checkout/StyleProvider';
 
 export interface AutocompleteProps {
     initialValue?: string;
@@ -21,6 +22,9 @@ export interface AutocompleteProps {
 }
 
 class Autocomplete extends PureComponent<AutocompleteProps> {
+    static contextType = StyleContext;
+    declare context: React.ContextType<typeof StyleContext>;
+
     render(): ReactNode {
         const {
             inputProps,
@@ -32,6 +36,12 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
             onSelect,
             listTestId,
         } = this.props;
+
+        if (!this.context) {
+            throw Error('Need to wrap in style context');
+        }
+
+        const { newFontStyle } = this.context;
 
         return (
             <Downshift
@@ -61,6 +71,7 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
                                     htmlFor={inputProps.id}
                                     id={inputProps['aria-labelledby']}
                                     isFloatingLabelEnabled={true}
+                                    additionalClassName={newFontStyle ? 'new-font-style-label' : ''}
                                 >
                                     {inputProps.labelText}
                                 </Label>

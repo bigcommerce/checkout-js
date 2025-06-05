@@ -16,6 +16,7 @@ import { createEmbeddedCheckoutStylesheet } from '../embeddedCheckout';
 import { AccountService, CreatedCustomer, SignUpFormValues } from '../guestSignup';
 
 import OrderConfirmation from './OrderConfirmation';
+import { StyleProvider } from '../checkout/StyleProvider';
 
 export interface OrderConfirmationAppProps {
     containerId: string;
@@ -60,13 +61,15 @@ class OrderConfirmationApp extends Component<OrderConfirmationAppProps> {
                     <CheckoutProvider checkoutService={this.checkoutService}>
                         <AnalyticsProvider checkoutService={this.checkoutService}>
                             <ExtensionProvider checkoutService={this.checkoutService} errorLogger={createErrorLogger()}>
-                                <OrderConfirmation
-                                    {...this.props}
-                                    createAccount={this.createAccount}
-                                    createEmbeddedMessenger={createEmbeddedCheckoutMessenger}
-                                    embeddedStylesheet={this.embeddedStylesheet}
-                                    errorLogger={this.errorLogger}
-                                />
+                                <StyleProvider>
+                                    <OrderConfirmation
+                                        {...this.props}
+                                        createAccount={this.createAccount}
+                                        createEmbeddedMessenger={createEmbeddedCheckoutMessenger}
+                                        embeddedStylesheet={this.embeddedStylesheet}
+                                        errorLogger={this.errorLogger}
+                                    />
+                                </StyleProvider>
                             </ExtensionProvider>
                         </AnalyticsProvider>
                     </CheckoutProvider>

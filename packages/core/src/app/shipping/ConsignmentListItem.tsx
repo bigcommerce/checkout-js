@@ -11,6 +11,8 @@ import ConsignmentAddressSelector from './ConsignmentAddressSelector';
 import ConsignmentLineItem from './ConsignmentLineItem';
 import { MultiShippingConsignmentData } from './MultishippingType';
 import { MultiShippingOptions } from './shippingOption/MultiShippingOptions';
+import { useStyleContext } from '../checkout/useStyleContext';
+import classNames from 'classnames';
 
 export interface ConsignmentListItemProps {
     consignment: MultiShippingConsignmentData;
@@ -35,6 +37,7 @@ const ConsignmentListItem: FunctionComponent<ConsignmentListItemProps> = ({
 }: ConsignmentListItemProps) => {
 
     const { checkoutService: { deleteConsignment } } = useCheckout();
+    const { newFontStyle } = useStyleContext();
 
     const handleClose = async () => {
         await deleteConsignment(consignment.id);
@@ -43,7 +46,7 @@ const ConsignmentListItem: FunctionComponent<ConsignmentListItemProps> = ({
 
     return (
         <div className='consignment-container'>
-            <div className='consignment-header'>
+            <div className={classNames('consignment-header', { 'header-secondary': newFontStyle })}>
                 <h3>
                     <TranslatedString data={{ consignmentNumber }} id="shipping.multishipping_consignment_index_heading" />
                 </h3>

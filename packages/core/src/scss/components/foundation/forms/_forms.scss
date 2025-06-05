@@ -55,6 +55,13 @@
             padding-left: $input-horizontalPadding;
             padding-right: $input-horizontalPadding;
             padding-top: $input-verticalPadding * 1.5;
+
+            &.new-font-style-input {
+                color: $color-black;
+                font-family: $fontFamily-montserrat;
+                font-size: $fontSize-smallest;
+                font-weight: $fontWeight-normal;
+            }
         }
 
         .floating-input:not(:focus),
@@ -91,6 +98,18 @@
                 font-size: $floating-label-font-size--default;
                 vertical-align: baseline;
             }
+
+            &.new-font-style-label {
+                color: #757575;
+                font-family: $fontFamily-montserrat;
+                font-size: $fontSize-smallest;
+                font-weight: $fontWeight-medium;
+                margin-top: spacing("eighth");
+
+                small {
+                    font-size: $fontSize-smallest;
+                }
+            }
         }
 
         .react-datepicker__tab-loop + .floating-label,
@@ -108,6 +127,18 @@
 
             small {
                 font-size: fontSize("tiny");
+            }
+
+            &.new-font-style-label{
+                color: #757575;
+                font-family: $fontFamily-montserrat;
+                font-size: $fontSize-tiny;
+                font-weight: $fontWeight-medium;
+                margin-top: 0;
+
+                small {
+                    font-size: $fontSize-tiny;
+                }
             }
         }
     }

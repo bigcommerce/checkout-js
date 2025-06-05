@@ -15,6 +15,8 @@ import { withCheckout } from '../checkout';
 import AddressType from './AddressType';
 
 import './StaticAddress.scss';
+import { useStyleContext } from '../checkout/useStyleContext';
+import classNames from 'classnames';
 
 export interface StaticAddressProps {
     address: Address;
@@ -35,11 +37,16 @@ const StaticAddress: FunctionComponent<
         countries,
         address: addressWithoutLocalization,
     }) => {
+
+        const { newFontStyle } = useStyleContext();    
+
     const address = localizeAddress(addressWithoutLocalization, countries);
     const isValid = !isEmpty(address);
 
     return !isValid ? null : (
-        <div className="vcard checkout-address--static" data-test="static-address">
+        <div className={classNames('vcard checkout-address--static',
+            { 'body-regular': newFontStyle })}
+            data-test="static-address">
             {(address.firstName || address.lastName) && (
                 <span className="fn address-entry">
                     <span className="first-name">{`${address.firstName} `}</span>
