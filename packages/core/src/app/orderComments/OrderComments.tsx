@@ -16,7 +16,7 @@ const OrderComments: FunctionComponent = () => {
     );
 
     const renderInput = useCallback(
-        ({ field }: FieldProps) => <TextInput {...field} autoComplete="off" maxLength={2000} />,
+        ({ field }: FieldProps) => <TextInput {...field} autoComplete="off" id="orderComment" maxLength={2000} />,
         [],
     );
 
