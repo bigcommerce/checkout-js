@@ -6,5 +6,3 @@
 
 ## Testing / Proof
 ...
-
-@bigcommerce/team-checkout

@@ -74,8 +74,6 @@ Everytime a PR is merged to the master branch, CircleCI will trigger a build aut
 
 ## Contribution
 
-We currently do not accept Pull Requests from external parties. However, if you are an external party and want to report a bug or provide your feedback, you are more than welcome to raise a GitHub Issue. We will attend to these issues as quickly as we can.
-
 More information can be found in the [contribution guide](CONTRIBUTING.md) and [code of conduct](CODE_OF_CONDUCT.md) for this project.
 
 
