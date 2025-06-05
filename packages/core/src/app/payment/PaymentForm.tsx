@@ -4,12 +4,12 @@ import { isNil, noop, omitBy } from 'lodash';
 import React, { FunctionComponent, memo, useCallback, useContext, useMemo } from 'react';
 import { ObjectSchema } from 'yup';
 
-import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { FormContext } from '@bigcommerce/checkout/ui';
 
 import { TermsConditions } from '../termsConditions';
-import { Fieldset, Form } from '../ui/form';
+import { Fieldset, Form, Legend } from '../ui/form';
 
 import getPaymentValidationSchema from './getPaymentValidationSchema';
 import {
@@ -226,7 +226,13 @@ const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProp
     );
 
     return (
-        <Fieldset>
+        <Fieldset
+            legend={
+                <Legend hidden>
+                    <TranslatedString id="payment.payment_methods_text" />
+                </Legend>
+            }
+        >
             {!isPaymentDataRequired() && <StoreCreditOverlay />}
 
             <PaymentMethodList
