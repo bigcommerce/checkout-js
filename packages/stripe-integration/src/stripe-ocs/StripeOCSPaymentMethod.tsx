@@ -14,7 +14,7 @@ import {
 } from '@bigcommerce/checkout/payment-integration-api';
 import { AccordionContext } from '@bigcommerce/checkout/ui';
 
-import { getStylesForOCSElement } from './getStripeOCSStyles';
+import { getAppearanceForOCSElement, getFonts } from './getStripeOCSStyles';
 
 const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     paymentForm,
@@ -70,7 +70,8 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                         spacedAccordionItems: false,
                         visibleAccordionItemsCount: 0,
                     },
-                    style: getStylesForOCSElement(containerId),
+                    appearance: getAppearanceForOCSElement(containerId),
+                    fonts: getFonts(),
                     onError: onUnhandledError,
                     render: renderSubmitButton,
                     paymentMethodSelect: onToggle,
