@@ -21,7 +21,7 @@
     }
 
     .form-fieldset {
-        margin-bottom: spacing("single");
+        margin-bottom: #{spacing("half") + spacing("third")};
 
         &:last-child {
             margin-bottom: 0;
@@ -138,7 +138,7 @@
     }
 
     .form-actions {
-        margin: #{spacing("single") + spacing("half")} 0;
+        margin: #{spacing("single") + spacing("quarter")} 0;
         padding: 0;
 
         .button:first-child {
@@ -186,7 +186,7 @@
         background-color: $legend-bg;
         color: $header-font-color;
         font-weight: $legend-font-weight;
-        padding: spacing("half") 0;
+        padding: 0 0 spacing("half") 0;
         width: auto;
     }
 

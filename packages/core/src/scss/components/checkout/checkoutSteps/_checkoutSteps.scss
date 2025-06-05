@@ -20,7 +20,7 @@
 .checkout-step {
     border-bottom: container("border");
     counter-increment: $checkoutStep-counter;
-    padding: #{spacing("fifth") + spacing("fifth")} 0;
+    padding: #{spacing("fifth") + spacing("fifth")} 0 0;
 
     &:last-child {
         border: 0;
