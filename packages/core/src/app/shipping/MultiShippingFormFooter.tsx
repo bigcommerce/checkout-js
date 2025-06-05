@@ -6,6 +6,7 @@ import { OrderComments } from '../orderComments';
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
 import { Form } from '../ui/form';
+import { useStyleContext } from '../checkout/useStyleContext';
 
 export interface ShippingFormFooterProps {
     shouldShowOrderComments: boolean;
@@ -20,6 +21,8 @@ const MultiShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
     isLoading,
     cartHasChanged,
 }) => {
+    const { newFontStyle } = useStyleContext();
+
     return (
         <Form>
             {cartHasChanged && (
@@ -33,6 +36,7 @@ const MultiShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
 
             <div className="form-actions">
                 <Button
+                    className={newFontStyle ? 'body-bold' : ''}
                     disabled={shouldDisableSubmit}
                     id="checkout-shipping-continue"
                     isLoading={isLoading}

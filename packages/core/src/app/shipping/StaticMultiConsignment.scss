@@ -29,6 +29,10 @@
             
             .line-item-options {
                 color: color("greys");
+
+                &.body-regular {
+                    color: #757575;
+                }
             }
         }
     }

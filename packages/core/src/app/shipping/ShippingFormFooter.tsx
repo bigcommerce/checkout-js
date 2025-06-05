@@ -10,6 +10,7 @@ import { Button, ButtonVariant } from '../ui/button';
 import { Fieldset, Legend } from '../ui/form';
 
 import { ShippingOptions } from './shippingOption';
+import { useStyleContext } from '../checkout/useStyleContext';
 
 export interface ShippingFormFooterProps {
     cartHasChanged: boolean;
@@ -32,6 +33,8 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
     isLoading,
     shippingFormRenderTimestamp,
 }) => {
+    const { newFontStyle } = useStyleContext();
+
     return (
         <>
             <Extension region={ExtensionRegion.ShippingShippingAddressFormAfter} />
@@ -39,7 +42,7 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
                 id="checkout-shipping-options"
                 legend={
                     <>
-                        <Legend>
+                        <Legend newFontStyle={newFontStyle}>
                             <TranslatedString id="shipping.shipping_method_label" />
                         </Legend>
 
@@ -66,6 +69,7 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
 
             <div className="form-actions">
                 <Button
+                    className={newFontStyle ? 'body-bold' : ''}
                     disabled={shouldDisableSubmit}
                     id="checkout-shipping-continue"
                     isLoading={isLoading}

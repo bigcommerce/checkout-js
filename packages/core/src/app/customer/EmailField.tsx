@@ -4,6 +4,7 @@ import React, { FunctionComponent, memo, useCallback, useMemo } from 'react';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import { FormField, TextInput } from '../ui/form';
+import { useStyleContext } from '../checkout/useStyleContext';
 
 export interface EmailFieldProps {
     isFloatingLabelEnabled?: boolean;
@@ -11,6 +12,8 @@ export interface EmailFieldProps {
 }
 
 const EmailField: FunctionComponent<EmailFieldProps> = ({ onChange, isFloatingLabelEnabled }) => {
+    const { newFontStyle } = useStyleContext();
+
     const renderInput = useCallback(
         (props: FieldProps) => (
             <TextInput
@@ -18,6 +21,7 @@ const EmailField: FunctionComponent<EmailFieldProps> = ({ onChange, isFloatingLa
                 autoComplete={props.field.name}
                 id={props.field.name}
                 isFloatingLabelEnabled={isFloatingLabelEnabled}
+                newFontStyle={newFontStyle}
                 type="email"
             />
         ),
@@ -32,6 +36,7 @@ const EmailField: FunctionComponent<EmailFieldProps> = ({ onChange, isFloatingLa
             isFloatingLabelEnabled={isFloatingLabelEnabled}
             labelContent={labelContent}
             name="email"
+            newFontStyle={newFontStyle}
             onChange={onChange}
         />
     );

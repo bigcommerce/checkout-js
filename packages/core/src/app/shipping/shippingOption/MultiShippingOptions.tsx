@@ -7,6 +7,8 @@ import { Alert, AlertType } from '@bigcommerce/checkout/ui';
 
 import MultiShippingOptionsListV2 from './MultiShippingOptionsList';
 import { isLoadingSelector } from './ShippingOptions';
+import { useStyleContext } from '../../checkout/useStyleContext';
+import classNames from 'classnames';
 
 interface MultiShippingOptionsV2Props {
     consignment: Consignment;
@@ -22,6 +24,7 @@ export const MultiShippingOptions = ({
     shippingQuoteFailedMessage,
 }: MultiShippingOptionsV2Props) => {
     const { checkoutService, checkoutState } = useCheckout();
+    const { newFontStyle } = useStyleContext();
 
     const selectShippingOption = async (consignmentId: string, shippingOptionId: string) => {
         await checkoutService.selectConsignmentShippingOption(consignmentId, shippingOptionId);
@@ -31,7 +34,9 @@ export const MultiShippingOptions = ({
 
     return (
         <div>
-            <h3 className="shipping-option-header">
+            <h3 className={classNames('shipping-option-header',
+                { 'body-bold': newFontStyle })}
+            >
                 <TranslatedString id="shipping.shipping_method_label" />
             </h3>
             {(!consignment.availableShippingOptions ||

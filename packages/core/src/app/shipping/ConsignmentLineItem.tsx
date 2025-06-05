@@ -15,6 +15,8 @@ import { useDeallocateItem } from "./hooks/useDeallocateItem";
 import { useMultiShippingConsignmentItems } from "./hooks/useMultishippingConsignmentItems";
 import { ItemSplitTooltip } from "./ItemSplitTooltip";
 import { MultiShippingConsignmentData, MultiShippingTableItemWithType } from "./MultishippingType";
+import { useStyleContext } from "../checkout/useStyleContext";
+import classNames from "classnames";
 
 interface ConsignmentLineItemProps {
     consignmentNumber: number;
@@ -30,6 +32,7 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
     const { unassignedItems } = useMultiShippingConsignmentItems();
     const { checkoutService: { assignItemsToAddress: assignItem } } = useCheckout();
     const deleteItem = useDeallocateItem();
+    const { newFontStyle } = useStyleContext();
 
     const toggleAllocateItemsModal = () => {
         setIsOpenAllocateItemsModal(!isOpenAllocateItemsModal);
@@ -95,7 +98,7 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
             />
             <div className="consignment-line-item-header">
                 <div>
-                    <h3>
+                    <h3 className={newFontStyle ? 'body-bold' : ''}>
                         <TranslatedString data={{ count: itemsCount }} id="shipping.multishipping_item_allocated_message" />
                     </h3>
 
@@ -104,7 +107,9 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
                     )}
                     
                     <a
-                        className="expand-items-button"
+                        className={classNames('expand-items-button',
+                            { 'body-cta': newFontStyle }
+                        )}
                         data-test="expand-items-button"
                         href="#"
                         onClick={preventDefault(toggleShowItems)}
@@ -123,6 +128,7 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
                     </a>
                 </div>
                 <a
+                    className={newFontStyle ? 'body-cta' : ''}
                     data-test="reallocate-items-button"
                     href="#"
                     onClick={preventDefault(toggleAllocateItemsModal)}

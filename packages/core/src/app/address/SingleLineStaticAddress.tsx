@@ -3,6 +3,8 @@ import { isEmpty } from 'lodash';
 import React from "react";
 
 import AddressType from "./AddressType";
+import { useStyleContext } from '../checkout/useStyleContext';
+import classNames from 'classnames';
 
 export interface SingleLineStaticAddressProps {
     address: Address;
@@ -31,13 +33,18 @@ export const getAddressContent: (value: Address) => string = ({
 };
 
 const SingleLineStaticAddress = ({ address }: SingleLineStaticAddressProps) => {
+    const { newFontStyle } = useStyleContext();
+
     const isValid = !isEmpty(address);
 
     return !isValid ? null : (
-        <div className="vcard checkout-address--static" data-test="static-address">
-            <p className="address-entry">
+        <div
+            className={classNames('vcard checkout-address--static', { 'body-regular': newFontStyle })}
+            data-test="static-address"
+        >
+            <span className="address-entry">
                 {getAddressContent(address)}
-            </p>
+            </span>
         </div>
     );
 }

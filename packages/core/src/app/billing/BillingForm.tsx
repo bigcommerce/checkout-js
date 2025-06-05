@@ -29,6 +29,7 @@ import { Button, ButtonVariant } from '../ui/button';
 import { Fieldset, Form } from '../ui/form';
 
 import StaticBillingAddress from './StaticBillingAddress';
+import { useStyleContext } from '../checkout/useStyleContext';
 
 export type BillingFormValues = AddressFormValues & { orderComment: string };
 
@@ -69,6 +70,7 @@ const BillingForm = ({
     const addressFormRef: RefObject<HTMLFieldSetElement> = useRef(null);
     const { isPayPalFastlaneEnabled, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
 
+    const { newFontStyle } = useStyleContext();
     const shouldRenderStaticAddress = methodId === 'amazonpay';
     const allFormFields = getFields(values.countryCode);
     const customFormFields = allFormFields.filter(({ custom }) => custom);
@@ -148,6 +150,7 @@ const BillingForm = ({
 
             <div className="form-actions">
                 <Button
+                    className={newFontStyle ? 'body-bold' : ''}
                     disabled={isUpdating || isResettingAddress}
                     id="checkout-billing-continue"
                     isLoading={isUpdating || isResettingAddress}

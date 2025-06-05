@@ -7,12 +7,15 @@ import { FormField, TextInput } from '../ui/form';
 import Label from '../ui/form/Label';
 import { IconEye, IconEyeSlash } from '../ui/icon';
 import { Toggle } from '../ui/toggle';
+import { useStyleContext } from '../checkout/useStyleContext';
 
 interface WithFloatingLabel {
     isFloatingLabelEnabled?: boolean;
 }
 
 const PasswordField: FunctionComponent<WithFloatingLabel> = ({ isFloatingLabelEnabled = false }) => {
+    const { newFontStyle } = useStyleContext();
+
     const renderInput = useCallback(
         (props: FieldProps) => (
             <Toggle openByDefault={false}>
@@ -23,6 +26,7 @@ const PasswordField: FunctionComponent<WithFloatingLabel> = ({ isFloatingLabelEn
                             additionalClassName="form-input--withIcon"
                             id={props.field.name}
                             isFloatingLabelEnabled={isFloatingLabelEnabled}
+                            newFontStyle={newFontStyle}
                             type={isOpen ? 'text' : 'password'}
                         />
                         {isFloatingLabelEnabled && (
@@ -30,6 +34,7 @@ const PasswordField: FunctionComponent<WithFloatingLabel> = ({ isFloatingLabelEn
                                 htmlFor={props.field.name}
                                 id={`${props.field.name}-label`}
                                 isFloatingLabelEnabled={true}
+                                additionalClassName={newFontStyle ? 'new-font-style-label' : ''}
                             >
                                 <TranslatedString id="customer.password_label" />
                             </Label>

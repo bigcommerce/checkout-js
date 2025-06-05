@@ -16,6 +16,7 @@ export interface FormFieldProps {
     isFloatingLabelEnabled?: boolean;
     input(field: FieldProps<string>): ReactNode;
     onChange?(value: string): void;
+    newFontStyle?: boolean;
 }
 
 const FormField: FunctionComponent<FormFieldProps> = ({
@@ -28,6 +29,7 @@ const FormField: FunctionComponent<FormFieldProps> = ({
     name,
     id,
     isFloatingLabelEnabled,
+    newFontStyle = false,
 }) => {
     const renderField = useCallback(
         (props: FieldProps<string>) => (
@@ -40,6 +42,7 @@ const FormField: FunctionComponent<FormFieldProps> = ({
                         htmlFor={name}
                         id={`${id ?? name}-label`}
                         isFloatingLabelEnabled={isFloatingLabelEnabled}
+                        additionalClassName={newFontStyle ? 'new-font-style-label' : ''}
                     >
                         {labelContent}
                     </Label>

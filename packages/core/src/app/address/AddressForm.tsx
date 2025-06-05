@@ -15,6 +15,7 @@ import {
 } from './getAddressFormFieldInputId';
 import { GoogleAutocompleteFormField, mapToAddress } from './googleAutocomplete';
 import './AddressForm.scss';
+import { StyleContext } from '../checkout/StyleProvider';
 
 export interface AddressFormProps {
     fieldName?: string;
@@ -70,6 +71,8 @@ const AUTOCOMPLETE_FIELD_NAME = 'address1';
 class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
     private containerRef: RefObject<HTMLElement> = createRef();
     private nextElement?: HTMLElement | null;
+    static contextType = StyleContext;
+    declare context: React.ContextType<typeof StyleContext>;
 
     private handleDynamicFormFieldChange: (name: string) => (value: string | string[]) => void =
         memoize((name) => (value) => {
@@ -95,6 +98,12 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
             shouldShowSaveAddress,
             isFloatingLabelEnabled,
         } = this.props;
+
+        if (!this.context) {
+            throw Error('Need to wrap in style context');
+        }
+
+        const { newFontStyle } = this.context;
 
         return (
             <>
@@ -147,6 +156,7 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
                                             <TranslatedString id={LABEL[field.name]} />
                                         )
                                     }
+                                    newFontStyle={newFontStyle}
                                     onChange={this.handleDynamicFormFieldChange(addressFieldName)}
                                     parentFieldName={
                                         field.custom
@@ -168,6 +178,7 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
                     <CheckboxFormField
                         labelContent={<TranslatedString id="address.save_in_addressbook" />}
                         name={fieldName ? `${fieldName}.shouldSaveAddress` : 'shouldSaveAddress'}
+                        newFontStyle={newFontStyle}
                     />
                 )}
             </>

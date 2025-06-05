@@ -19,6 +19,8 @@ import getCreateCustomerValidationSchema, {
 } from './getCreateCustomerValidationSchema';
 import getPasswordRequirements from './getPasswordRequirements';
 import './CreateAccountForm.scss';
+import { useStyleContext } from '../checkout/useStyleContext';
+import classNames from 'classnames';
 
 export interface CreateAccountFormProps {
     formFields: FormField[];
@@ -69,6 +71,7 @@ function transformFormFieldsData(formFields: FormField[], defaultShouldSubscribe
 const CreateAccountForm: FunctionComponent<
     CreateAccountFormProps & WithLanguageProps & FormikProps<CreateAccountFormValues>
 > = ({ fixNewsletterCheckboxExperimentEnabled, formFields, createAccountError, isCreatingAccount, isExecutingPaymentMethodCheckout, onCancel, isFloatingLabelEnabled, defaultShouldSubscribe }) => {
+    const { newFontStyle } = useStyleContext();
     const createAccountErrorMessage = useMemo(() => {
         if (!createAccountError) {
             return;
@@ -113,6 +116,7 @@ const CreateAccountForm: FunctionComponent<
                             field={field}
                             isFloatingLabelEnabled={isFloatingLabelEnabled}
                             key={field.id}
+                            newFontStyle={newFontStyle}
                             parentFieldName={field.custom ? 'customFields' : undefined}
                         />
                     ))}
@@ -127,12 +131,14 @@ const CreateAccountForm: FunctionComponent<
                     testId="customer-continue-create"
                     type="submit"
                     variant={ButtonVariant.Primary}
+                    className={newFontStyle ? 'body-bold' : ''}
                 >
                     <TranslatedString id="customer.create_account_action" />
                 </Button>
 
                 <a
-                    className="button optimizedCheckout-buttonSecondary"
+                    className={classNames('button optimizedCheckout-buttonSecondary',
+                        { 'body-bold': newFontStyle })}
                     data-test="customer-cancel-button"
                     href="#"
                     id="checkout-customer-cancel"
