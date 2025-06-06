@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.601.0](https://github.com/bigcommerce/checkout-js/compare/v1.600.3...v1.601.0) (2025-06-06)
+
+
+### Features
+
+* **checkout:** Enable Guest Multi-shipping ([#2353](https://github.com/bigcommerce/checkout-js/issues/2353)) ([155429c](https://github.com/bigcommerce/checkout-js/commit/155429c5fae83ef3f305efe937abf1beb4dfdc1d))
+
+
+### Bug Fixes
+
+* **core:** CHECKOUT-000 Add id attribute to order comments input for accessibility ([#2336](https://github.com/bigcommerce/checkout-js/issues/2336)) ([b164a24](https://github.com/bigcommerce/checkout-js/commit/b164a24f0d8da57070df4f97ba6cd9a42dd92255))
+* **core:** CHECKOUT-000 Improve error message contrast for accessibility ([#2340](https://github.com/bigcommerce/checkout-js/issues/2340)) ([1b17e22](https://github.com/bigcommerce/checkout-js/commit/1b17e2244eddd38bd9e6fb9ad23d8788dc23c469))
+* **core:** CHECKOUT-000 Remove redundent alt attribute on checkout sidebar product image ([#2334](https://github.com/bigcommerce/checkout-js/issues/2334)) ([ab050b4](https://github.com/bigcommerce/checkout-js/commit/ab050b46ff06eee47d964ea9f608eb234e3ce9ed))
+
 ### [1.600.3](https://github.com/bigcommerce/checkout-js/compare/v1.600.2...v1.600.3) (2025-06-05)
 
 ### [1.600.2](https://github.com/bigcommerce/checkout-js/compare/v1.600.1...v1.600.2) (2025-06-04)
