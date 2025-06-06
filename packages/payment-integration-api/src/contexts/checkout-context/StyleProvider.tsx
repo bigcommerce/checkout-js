@@ -20,7 +20,7 @@ export const StyleProvider = ({ children }: StyleProviderProps) => {
 
     if (config) {
         newFontStyle = Boolean(
-            config.checkoutSettings.features['CHECKOUT-7962_update_font_style_on_checkout_page'] ??
+            config.checkoutSettings.features['CHECKOUT-7962.update_font_style_on_checkout_page'] ??
                 true,
         );
     }
