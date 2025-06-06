@@ -386,6 +386,22 @@ const checkoutWithMultiShippingCart: Checkout = {
     consignments: [],
 };
 
+const checkoutWithGuestMultiShippingCart: Checkout = {
+    ...checkoutWithBillingEmail,
+    cart: {
+        ...checkout.cart,
+        lineItems: {
+            ...checkout.cart.lineItems,
+            physicalItems: [
+                physicalItem,
+                { ...physicalItem, id: 'y', quantity: 2, sku: 'CLC2', name: 'Item Y' },
+                { ...physicalItem, id: 'z', quantity: 2, sku: 'CLC3', name: 'Item Z' },
+            ],
+        },
+    },
+    consignments: [],
+};
+
 const checkoutWithMultiShippingAndBilling = {
     ...checkoutWithShippingAndBilling,
     cart: checkoutWithMultiShippingCart.cart,
@@ -435,6 +451,7 @@ enum CheckoutPreset {
     CheckoutWithCustomShippingAndBilling = 'CheckoutWithCustomShippingAndBilling',
     CheckoutWithDigitalCart = 'CheckoutWithDigitalCart',
     CheckoutWithMultiShippingCart = 'CheckoutWithMultiShippingCart',
+    CheckoutWithGuestMultiShippingCart = 'CheckoutWithGuestMultiShippingCart',
     CheckoutWithMultiShippingAndBilling = 'CheckoutWithMultiShippingAndBilling',
     CheckoutWithPromotions = 'CheckoutWithPromotions',
     CheckoutWithShipping = 'CheckoutWithShipping',
@@ -454,6 +471,7 @@ export {
     checkoutWithCustomShippingAndBilling,
     checkoutWithDigitalCart,
     checkoutWithMultiShippingCart,
+    checkoutWithGuestMultiShippingCart,
     checkoutWithMultiShippingAndBilling,
     checkoutWithPromotions,
     checkoutWithShipping,

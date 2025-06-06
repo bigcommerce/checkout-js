@@ -122,6 +122,7 @@ const ConsignmentAddressSelector = ({
 
         await handleSelectAddress(address);
 
+        // TODO: CHECKOUT-9289 Build Guest Multi-shipping Address Entry UI
         try {
             await createCustomerAddress(address);
         } catch (error) {

@@ -43,7 +43,9 @@ const checkoutSettings = {
             isStorefrontSpamProtectionEnabled: false,
             googleMapsApiKey: 'x',
             googleRecaptchaSitekey: 'x',
-            features: {},
+            features: {
+                'CHECKOUT-9161.enable_storefront_guest_multi_shipping': true,
+            },
             requiresMarketingConsent: false,
             checkoutUserExperienceSettings: {
                 walletButtonsOnTop: true,

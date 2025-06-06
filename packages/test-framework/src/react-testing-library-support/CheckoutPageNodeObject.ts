@@ -18,6 +18,7 @@ import {
     checkoutWithCustomerHavingInvalidAddress,
     checkoutWithCustomShippingAndBilling,
     checkoutWithDigitalCart,
+    checkoutWithGuestMultiShippingCart,
     checkoutWithLoggedInCustomer,
     checkoutWithMultiShippingAndBilling,
     checkoutWithMultiShippingCart,
@@ -174,6 +175,14 @@ export class CheckoutPageNodeObject {
                 this.server.use(
                     rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
                         res(ctx.json(checkoutWithMultiShippingCart)),
+                    ),
+                );
+                break;
+
+            case CheckoutPreset.CheckoutWithGuestMultiShippingCart:
+                this.server.use(
+                    rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
+                        res(ctx.json(checkoutWithGuestMultiShippingCart)),
                     ),
                 );
                 break;

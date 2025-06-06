@@ -352,4 +352,18 @@ describe('Multi-shipping', () => {
         expect(selectedShippingOptions[0].getAttribute('value')).toBe('option-id-pick-up');
         expect(screen.queryByText(shippingQuoteFailedMessage)).not.toBeInTheDocument();
     });
+
+    it('completes multi-shipping as a guest', async () => {
+        checkout.use(CheckoutPreset.CheckoutWithGuestMultiShippingCart);
+
+        render(<CheckoutTest {...defaultProps} />);
+
+        await checkout.waitForShippingStep();
+
+        await userEvent.click(screen.getByText(/Ship to multiple addresses/i));
+
+        expect(await screen.findByText(/items left to allocate/)).toBeInTheDocument();
+
+        // TODO: CHECKOUT-9289 Build Guest Multi-shipping Address Entry UI
+    });
 });

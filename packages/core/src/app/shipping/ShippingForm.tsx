@@ -33,6 +33,7 @@ export interface ShippingFormProps {
     isLoading: boolean;
     isShippingStepPending: boolean;
     isMultiShippingMode: boolean;
+    isGuestMultiShippingEnabled: boolean;
     methodId?: string;
     shippingAddress?: Address;
     shouldShowSaveAddress?: boolean;
@@ -72,6 +73,7 @@ const ShippingForm = ({
       isGuest,
       isLoading,
       isMultiShippingMode,
+      isGuestMultiShippingEnabled,
       methodId,
       onMultiShippingSubmit,
       onSignIn,
@@ -92,7 +94,7 @@ const ShippingForm = ({
     } = useExtensions();
 
     const getMultiShippingForm = () => {
-        if (isGuest) {
+        if (isGuest && !isGuestMultiShippingEnabled) {
             return (
                 <MultiShippingGuestForm onCreateAccount={onCreateAccount} onSignIn={onSignIn} />
             );
