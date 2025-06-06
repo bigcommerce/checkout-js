@@ -1,14 +1,14 @@
 import { Consignment } from '@bigcommerce/checkout-sdk';
+import classNames from 'classnames';
 import React from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckout , useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 import { Alert, AlertType } from '@bigcommerce/checkout/ui';
+
 
 import MultiShippingOptionsListV2 from './MultiShippingOptionsList';
 import { isLoadingSelector } from './ShippingOptions';
-import { useStyleContext } from '../../checkout/useStyleContext';
-import classNames from 'classnames';
 
 interface MultiShippingOptionsV2Props {
     consignment: Consignment;

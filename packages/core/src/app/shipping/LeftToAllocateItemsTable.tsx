@@ -2,13 +2,13 @@ import { FormikErrors } from "formik";
 import React, { FunctionComponent } from "react";
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
 import { isMobileView as isMobileViewUI } from "../ui/responsive";
 
 import { AllocateItemsModalFormValues } from "./AllocateItemsModal";
 import LeftToAllocateItem from "./LeftToAllocateItem";
 import { MultiShippingTableItemWithType } from "./MultishippingType";
-import { useStyleContext } from "../checkout/useStyleContext";
 
 interface LeftToAllocateItemsTableProps {
     items: MultiShippingTableItemWithType[];

@@ -63,6 +63,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
     const labelComponent = useMemo(
         () => {
             let labelClassName = '';
+
             if (newFontStyle) {
                 if (isFloatingLabelSupportedFieldType) {
                     labelClassName = 'new-font-style-label';
@@ -73,10 +74,10 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
 
             return (
                 <Label
+                    additionalClassName={labelClassName}
                     htmlFor={fieldInputId}
                     id={`${fieldInputId}-label`}
                     isFloatingLabelEnabled={isFloatingLabelSupportedFieldType}
-                    additionalClassName={labelClassName}
                 >
                     {label || fieldLabel}
                     {!required && (

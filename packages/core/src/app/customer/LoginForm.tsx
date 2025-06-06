@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { FormikProps, withFormik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent, memo, useCallback } from 'react';
@@ -11,6 +12,7 @@ import {
     withLanguage,
     WithLanguageProps,
 } from '@bigcommerce/checkout/locale';
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
@@ -21,8 +23,6 @@ import EmailField from './EmailField';
 import getEmailValidationSchema from './getEmailValidationSchema';
 import mapErrorMessage from './mapErrorMessage';
 import PasswordField from './PasswordField';
-import { useStyleContext } from '../checkout/useStyleContext';
-import classNames from 'classnames';
 
 export interface LoginFormProps {
     canCancel?: boolean;

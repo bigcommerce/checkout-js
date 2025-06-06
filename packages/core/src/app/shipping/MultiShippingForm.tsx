@@ -1,8 +1,9 @@
 import React, {FunctionComponent, ReactNode, useMemo, useState} from 'react';
 
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckout , useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 import { Alert, AlertType } from '@bigcommerce/checkout/ui';
+
 
 import { withFormikExtended } from '../common/form';
 import { EMPTY_ARRAY } from '../common/utility';
@@ -16,7 +17,7 @@ import { MultiShippingConsignmentData } from './MultishippingType';
 import './MultiShippingForm.scss';
 import NewConsignment from './NewConsignment';
 import isSelectedShippingOptionValid from './isSelectedShippingOptionValid';
-import { useStyleContext } from '../checkout/useStyleContext';
+
 import classNames from 'classnames';
 
 export interface MultiShippingFormValues {
@@ -98,12 +99,12 @@ const MultiShippingForm: FunctionComponent<MultiShippingFormProps> = ({
 
     const renderAllocatedBanner = (shippableItemsCount: number): ReactNode => {
         if (shippableItemsCount > 0) {
-            return <Alert type={AlertType.Info} additionalClassName={newFontStyle ? 'body-regular' : ''}>
+            return <Alert additionalClassName={newFontStyle ? 'body-regular' : ''} type={AlertType.Info}>
                 <TranslatedString data={{ count: shippableItemsCount }} id="shipping.multishipping_item_to_allocate_message" />
             </Alert>;
         }
 
-        return <Alert type={AlertType.Success} additionalClassName={newFontStyle ? 'body-regular' : ''}>
+        return <Alert additionalClassName={newFontStyle ? 'body-regular' : ''} type={AlertType.Success}>
             <TranslatedString id="shipping.multishipping_all_items_allocated_message" />
         </Alert>;
     }

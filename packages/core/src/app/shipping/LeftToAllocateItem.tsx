@@ -1,13 +1,13 @@
+import classNames from "classnames";
 import React, { FunctionComponent } from "react";
 
 import { TranslatedString } from "@bigcommerce/checkout/locale";
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
 import { FormField, TextInput } from "../ui/form";
 import { isMobileView as isMobileViewUI } from "../ui/responsive";
 
 import { MultiShippingTableItemWithType } from "./MultishippingType";
-import { useStyleContext } from "../checkout/useStyleContext";
-import classNames from "classnames";
 
 interface LeftToAllocateItemProps {
     item: MultiShippingTableItemWithType;

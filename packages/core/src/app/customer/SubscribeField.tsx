@@ -2,9 +2,9 @@ import { FieldProps } from 'formik';
 import React, { FunctionComponent, memo } from 'react';
 
 import { TranslatedHtml } from '@bigcommerce/checkout/locale';
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
 import { Input, Label } from '../ui/form';
-import { useStyleContext } from '../checkout/useStyleContext';
 
 export type SubscribeFieldProps = FieldProps<boolean> & {
     requiresMarketingConsent: boolean;
@@ -15,6 +15,7 @@ const SubscribeField: FunctionComponent<SubscribeFieldProps> = ({
     requiresMarketingConsent,
 }) => {
     const { newFontStyle } = useStyleContext();
+
     return (
         <>
             <Input
@@ -28,8 +29,8 @@ const SubscribeField: FunctionComponent<SubscribeFieldProps> = ({
             />
 
             <Label
-                htmlFor={field.name}
                 additionalClassName={newFontStyle ? 'body-regular' : ''}
+                htmlFor={field.name}
             >
                 <TranslatedHtml
                     id={

@@ -3,6 +3,7 @@ import React, { FunctionComponent } from 'react';
 
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
 import { OrderComments } from '../orderComments';
 import { Alert, AlertType } from '../ui/alert';
@@ -10,7 +11,6 @@ import { Button, ButtonVariant } from '../ui/button';
 import { Fieldset, Legend } from '../ui/form';
 
 import { ShippingOptions } from './shippingOption';
-import { useStyleContext } from '../checkout/useStyleContext';
 
 export interface ShippingFormFooterProps {
     cartHasChanged: boolean;

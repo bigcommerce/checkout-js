@@ -3,9 +3,10 @@ import React, { FunctionComponent, memo, useState } from 'react';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 import { ConfirmationModal } from '@bigcommerce/checkout/ui';
 
-import { useStyleContext } from '../checkout/useStyleContext';
+
 
 export interface EditLinkProps {
     className?: string;

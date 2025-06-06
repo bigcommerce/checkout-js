@@ -2,8 +2,8 @@ import classNames from 'classnames';
 import React, { FunctionComponent, memo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
-import { useStyleContext } from '../checkout/useStyleContext';
 import { ShopperCurrency } from '../currency';
 
 import OrderSummaryPrice, { OrderSummaryPriceProps } from './OrderSummaryPrice';

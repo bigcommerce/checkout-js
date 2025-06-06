@@ -4,12 +4,13 @@ import React, { FunctionComponent, memo, ReactNode } from 'react';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
 import { Button, ButtonSize, ButtonVariant } from '../ui/button';
 import { IconCheck } from '../ui/icon';
 
 import CheckoutStepType from './CheckoutStepType';
-import { useStyleContext } from './useStyleContext';
+
 
 export interface CheckoutStepHeaderProps {
     heading: ReactNode;

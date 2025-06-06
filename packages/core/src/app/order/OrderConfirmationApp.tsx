@@ -7,7 +7,7 @@ import { AnalyticsProvider } from '@bigcommerce/checkout/analytics';
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import { ErrorBoundary, ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
-import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { CheckoutProvider, StyleProvider } from '@bigcommerce/checkout/payment-integration-api';
 
 import '../../scss/App.scss';
 
@@ -16,7 +16,6 @@ import { createEmbeddedCheckoutStylesheet } from '../embeddedCheckout';
 import { AccountService, CreatedCustomer, SignUpFormValues } from '../guestSignup';
 
 import OrderConfirmation from './OrderConfirmation';
-import { StyleProvider } from '../checkout/StyleProvider';
 
 export interface OrderConfirmationAppProps {
     containerId: string;

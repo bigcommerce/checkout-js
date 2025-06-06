@@ -1,22 +1,22 @@
 import React, { FunctionComponent, memo } from 'react';
 
 import { TranslatedHtml } from '@bigcommerce/checkout/locale';
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
 import { CheckboxFormField, Fieldset } from '../ui/form';
-import { useStyleContext } from '../checkout/useStyleContext';
 
 const PrivacyPolicyCheckboxFieldLink: FunctionComponent<{ url: string, newFontStyle?: boolean }> = ({ url, newFontStyle }) => (
     <CheckboxFormField
         labelContent={<TranslatedHtml data={{ url }} id="privacy_policy.label" />}
         name="privacyPolicy"
-        testId="privacy-policy-checkbox"
         newFontStyle={newFontStyle}
+        testId="privacy-policy-checkbox"
     />
 );
 
 const PrivacyPolicyFieldset: FunctionComponent<{ url: string, newFontStyle?: boolean }> = ({ url, newFontStyle }) => (
     <Fieldset additionalClassName="checkout-privacy-policy">
-        <PrivacyPolicyCheckboxFieldLink url={url} newFontStyle={newFontStyle} />
+        <PrivacyPolicyCheckboxFieldLink newFontStyle={newFontStyle} url={url} />
     </Fieldset>
 );
 
@@ -33,10 +33,10 @@ const PrivacyPolicyField: FunctionComponent<{ url: string; isExpressPrivacyPolic
     const { newFontStyle } = useStyleContext();
 
     if (isExpressPrivacyPolicy) {
-        return <PrivacyPolicyAutoConsent url={url} newFontStyle={newFontStyle} />;
+        return <PrivacyPolicyAutoConsent newFontStyle={newFontStyle} url={url} />;
     }
 
-    return <PrivacyPolicyFieldset url={url} newFontStyle={newFontStyle} />;
+    return <PrivacyPolicyFieldset newFontStyle={newFontStyle} url={url} />;
 };
 
 export default memo(PrivacyPolicyField);

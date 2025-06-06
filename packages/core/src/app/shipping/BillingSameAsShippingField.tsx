@@ -1,9 +1,9 @@
 import React, { FunctionComponent, memo, useMemo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
 import { CheckboxFormField } from '../ui/form';
-import { useStyleContext } from '../checkout/useStyleContext';
 
 export interface BillingSameAsShippingFieldProps {
     onChange?(isChecked: boolean): void;
@@ -24,8 +24,8 @@ const BillingSameAsShippingField: FunctionComponent<BillingSameAsShippingFieldPr
             id="sameAsBilling"
             labelContent={labelContent}
             name="billingSameAsShipping"
-            onChange={onChange}
             newFontStyle={newFontStyle}
+            onChange={onChange}
             testId="billingSameAsShipping"
         />
     );

@@ -1,9 +1,10 @@
-import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { Address, Country, FormField } from '@bigcommerce/checkout-sdk';
 import { memoize } from '@bigcommerce/memoize';
 import { forIn, noop } from 'lodash';
 import React, { Component, createRef, ReactNode, RefObject } from 'react';
 
+import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { StyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
 import { AutocompleteItem } from '../ui/autocomplete';
 import { CheckboxFormField, DynamicFormField, DynamicFormFieldType, Fieldset } from '../ui/form';
@@ -15,7 +16,6 @@ import {
 } from './getAddressFormFieldInputId';
 import { GoogleAutocompleteFormField, mapToAddress } from './googleAutocomplete';
 import './AddressForm.scss';
-import { StyleContext } from '../checkout/StyleProvider';
 
 export interface AddressFormProps {
     fieldName?: string;

@@ -68,7 +68,7 @@ class Billing extends Component<BillingProps & WithCheckoutBillingProps> {
             <AddressFormSkeleton isLoading={isInitializing}>
                 <div className="checkout-form">
                     <div className="form-legend-container">
-                        <Legend testId="billing-address-heading" newFontStyle={newFontStyle}>
+                        <Legend newFontStyle={newFontStyle} testId="billing-address-heading">
                             <TranslatedString id="billing.billing_address_heading" />
                         </Legend>
                     </div>

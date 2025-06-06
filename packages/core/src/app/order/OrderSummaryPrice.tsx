@@ -3,9 +3,9 @@ import React, { FC, ReactNode, useCallback, useEffect, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckout , useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
-import { useStyleContext } from '../checkout/useStyleContext';
+
 import { ShopperCurrency } from '../currency';
 
 export interface OrderSummaryPriceProps {

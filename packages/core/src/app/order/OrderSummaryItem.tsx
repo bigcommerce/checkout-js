@@ -2,7 +2,8 @@ import classNames from 'classnames';
 import { isNumber } from 'lodash';
 import React, { FunctionComponent, memo, ReactNode } from 'react';
 
-import { useStyleContext } from '../checkout/useStyleContext';
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
+
 import { ShopperCurrency } from '../currency';
 
 export interface OrderSummaryItemProps {

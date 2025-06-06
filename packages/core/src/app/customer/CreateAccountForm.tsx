@@ -8,6 +8,7 @@ import React, { FunctionComponent, useMemo } from 'react';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
 import { isRequestError } from '../common/error';
 import { Alert, AlertType } from '../ui/alert';
@@ -18,8 +19,8 @@ import getCreateCustomerValidationSchema, {
     CreateAccountFormValues,
 } from './getCreateCustomerValidationSchema';
 import getPasswordRequirements from './getPasswordRequirements';
+
 import './CreateAccountForm.scss';
-import { useStyleContext } from '../checkout/useStyleContext';
 import classNames from 'classnames';
 
 export interface CreateAccountFormProps {
@@ -125,13 +126,13 @@ const CreateAccountForm: FunctionComponent<
 
             <div className="form-actions">
                 <Button
+                    className={newFontStyle ? 'body-bold' : ''}
                     disabled={isCreatingAccount || isExecutingPaymentMethodCheckout}
                     id="checkout-customer-create"
                     isLoading={isCreatingAccount || isExecutingPaymentMethodCheckout}
                     testId="customer-continue-create"
                     type="submit"
                     variant={ButtonVariant.Primary}
-                    className={newFontStyle ? 'body-bold' : ''}
                 >
                     <TranslatedString id="customer.create_account_action" />
                 </Button>

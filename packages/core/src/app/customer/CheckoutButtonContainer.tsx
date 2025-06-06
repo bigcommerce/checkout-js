@@ -3,12 +3,12 @@ import classNames from 'classnames';
 import React, { FunctionComponent, memo } from 'react';
 
 import { TranslatedString, useLocale } from '@bigcommerce/checkout/locale';
-import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { CheckoutContextProps , useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 import { WalletButtonsContainerSkeleton } from '@bigcommerce/checkout/ui';
 
 
 import { withCheckout } from '../checkout';
-import { useStyleContext } from '../checkout/useStyleContext';
+
 
 import { getSupportedMethodIds } from './getSupportedMethods';
 import resolveCheckoutButton from './resolveCheckoutButton';
