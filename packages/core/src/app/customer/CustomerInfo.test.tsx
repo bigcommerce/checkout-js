@@ -149,12 +149,13 @@ describe('CustomerInfo', () => {
             });
 
             const expectedLogoutLink = getStoreConfig().links.logoutLink;
+            const expectedCheckoutLink = getStoreConfig().links.checkoutLink;
         
             render(<CustomerInfoTest />);
         
             await userEvent.click(screen.getByTestId('sign-out-link'));
 
-            expect(window.location.assign).toHaveBeenCalledWith(expectedLogoutLink);
+            expect(window.location.assign).toHaveBeenCalledWith(`${expectedLogoutLink}?redirectTo=${expectedCheckoutLink}`);
         });
 
         it('signs out customer on checkout page when experiment off and shouldRedirectToStorefrontForAuth is true', async () => {
