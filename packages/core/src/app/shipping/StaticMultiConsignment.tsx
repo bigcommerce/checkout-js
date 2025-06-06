@@ -1,11 +1,10 @@
 import { Cart, Consignment } from '@bigcommerce/checkout-sdk';
+import classNames from 'classnames';
 import React, { FunctionComponent, memo } from 'react';
 
 import { localizeAddress, TranslatedString } from '@bigcommerce/checkout/locale';
 import { useCheckout , useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 import { isPayPalFastlaneAddress, PoweredByPayPalFastlaneLabel, usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
-
-
 
 import ConsignmentLineItemDetail from './ConsignmentLineItemDetail';
 import findLineItems from './findLineItems';
@@ -14,7 +13,6 @@ import getShippingCostAfterAutomaticDiscount from './getShippingCostAfterAutomat
 import { StaticShippingOption } from './shippingOption';
 
 import './StaticMultiConsignment.scss';
-import classNames from 'classnames';
 
 interface StaticMultiConsignmentProps {
     consignment: Consignment;

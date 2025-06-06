@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, {FunctionComponent, ReactNode, useMemo, useState} from 'react';
 
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
@@ -12,13 +13,12 @@ import { Button, ButtonVariant } from '../ui/button';
 import ConsignmentListItem from './ConsignmentListItem';
 import hasSelectedShippingOptions from './hasSelectedShippingOptions';
 import { useMultiShippingConsignmentItems } from './hooks/useMultishippingConsignmentItems';
+import isSelectedShippingOptionValid from './isSelectedShippingOptionValid';
 import MultiShippingFormFooter from './MultiShippingFormFooter';
 import { MultiShippingConsignmentData } from './MultishippingType';
 import './MultiShippingForm.scss';
 import NewConsignment from './NewConsignment';
-import isSelectedShippingOptionValid from './isSelectedShippingOptionValid';
 
-import classNames from 'classnames';
 
 export interface MultiShippingFormValues {
     orderComment: string;
