@@ -19,6 +19,7 @@ import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale
 import {
     CHECKOUT_ROOT_NODE_ID,
     CheckoutProvider,
+    StyleProvider,
 } from '@bigcommerce/checkout/payment-integration-api';
 import {
     CheckoutPageNodeObject,
@@ -98,7 +99,9 @@ describe('Checkout', () => {
                 <LocaleProvider checkoutService={checkoutService}>
                     <AnalyticsProviderMock>
                         <ExtensionProvider checkoutService={checkoutService} errorLogger={defaultProps.errorLogger}>
-                            <Checkout {...props} />
+                            <StyleProvider>
+                                <Checkout {...props} />
+                            </StyleProvider>
                         </ExtensionProvider>
                     </AnalyticsProviderMock>
                 </LocaleProvider>

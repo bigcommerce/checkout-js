@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
 import { OrderComments } from '../orderComments';
 import { Alert, AlertType } from '../ui/alert';
@@ -20,6 +21,8 @@ const MultiShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
     isLoading,
     cartHasChanged,
 }) => {
+    const { newFontStyle } = useStyleContext();
+
     return (
         <Form>
             {cartHasChanged && (
@@ -33,6 +36,7 @@ const MultiShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
 
             <div className="form-actions">
                 <Button
+                    className={newFontStyle ? 'body-bold' : ''}
                     disabled={shouldDisableSubmit}
                     id="checkout-shipping-continue"
                     isLoading={isLoading}

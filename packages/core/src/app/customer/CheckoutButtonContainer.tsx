@@ -1,12 +1,14 @@
 import { CheckoutSelectors, CheckoutService } from '@bigcommerce/checkout-sdk';
+import classNames from 'classnames';
 import React, { FunctionComponent, memo } from 'react';
 
 import { TranslatedString, useLocale } from '@bigcommerce/checkout/locale';
-import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { CheckoutContextProps , useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 import { WalletButtonsContainerSkeleton } from '@bigcommerce/checkout/ui';
 
 
 import { withCheckout } from '../checkout';
+
 
 import { getSupportedMethodIds } from './getSupportedMethods';
 import resolveCheckoutButton from './resolveCheckoutButton';
@@ -46,6 +48,7 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
         onWalletButtonClick,
     }) => {
     const { language } = useLocale();
+    const { newFontStyle } = useStyleContext();
 
     try {
         checkEmbeddedSupport(availableMethodIds);
@@ -88,7 +91,9 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
         <div className='checkout-button-container'
              style={ isPaymentStepActive ? { position: 'absolute', left: '0', top: '-100%' } : undefined }
         >
-            <p>
+            <p className={classNames({
+                'sub-header': newFontStyle,
+            })}>
                 <TranslatedString id="remote.start_with_text" />
             </p>
             <div className='checkout-buttons-auto-layout'>
@@ -98,7 +103,9 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
                     </div>
                 </WalletButtonsContainerSkeleton>
             </div>
-            <div className='checkout-separator'><span><TranslatedString id='remote.or_text' /></span></div>
+            <div className='checkout-separator'><span className={classNames({
+                'sub-header': newFontStyle,
+            })}><TranslatedString id='remote.or_text' /></span></div>
         </div>
     );
 };

@@ -5,6 +5,7 @@ import { number, object } from "yup";
 
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { TranslatedString, withLanguage, WithLanguageProps } from "@bigcommerce/checkout/locale";
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 import { Alert, AlertType, ButtonVariant } from "@bigcommerce/checkout/ui";
 
 import { getAddressContent } from "../address/SingleLineStaticAddress";
@@ -49,6 +50,8 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
     onUnassignItem,
     isLoading,
 }: AllocateItemsModalProps & FormikProps<AllocateItemsModalFormValues>) => {
+
+    const { newFontStyle } = useStyleContext();
 
     const allocatedOrSelectedItemsMessage = useMemo(() => {
         const leftItemsTotal = unassignedItems.shippableItemsCount;
@@ -106,6 +109,7 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
     const modalFooter = (
         <>
             <Button
+                className={newFontStyle ? 'body-medium' : ''}
                 disabled={isLoading}
                 onClick={onRequestClose}
                 variant={ButtonVariant.Secondary}
@@ -113,6 +117,7 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
                 <TranslatedString id="shipping.multishipping_items_allocate_cancel" />
             </Button>
             <Button
+                className={newFontStyle ? 'body-medium' : ''}
                 disabled={!hasItemsAssigned && !dirty}
                 isLoading={isLoading}
                 onClick={submitForm}
@@ -133,10 +138,10 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
             footer={modalFooter}
             header={
                 <>
-                    <ModalHeader>
+                    <ModalHeader additionalClassName={newFontStyle ? 'header' : ''}>
                         <TranslatedString data={{ consignmentNumber }} id="shipping.multishipping_consignment_index_heading" />
                     </ModalHeader>
-                    <h4>{getAddressContent(address)}</h4>
+                    <h4 className={newFontStyle ? 'body-medium' : ''}>{getAddressContent(address)}</h4>
                 </>
             }
             isOpen={isOpen}
@@ -151,9 +156,9 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
                     </div>
                 )}
                 {unassignedItems.hasDigitalItems && (
-                            <Alert type={AlertType.Info}>
-                                <TranslatedString id="shipping.multishipping_digital_item_no_shipping_banner" />
-                                </Alert>
+                    <Alert type={AlertType.Info}>
+                        <TranslatedString id="shipping.multishipping_digital_item_no_shipping_banner" />
+                    </Alert>
                 )}
                 {hasItemsAssigned && (
                     <AllocatedItemsList assignedItems={assignedItems} onUnassignItem={onUnassignItem} />
@@ -161,7 +166,7 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
                 {hasUnassignedItems
                     ? <>
                         <div className="left-to-allocate-items-table-actions">
-                            <p>
+                            <p className={newFontStyle ? 'body-regular' : ''}>
                                 {allocatedOrSelectedItemsMessage}
                                 {unassignedItems.hasSplitItems && (
                                     <ItemSplitTooltip />
@@ -170,6 +175,7 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
 
                             <div className="button-group">
                                 <a
+                                    className={newFontStyle ? 'body-cta' : ''}
                                     data-test="clear-all-items-button"
                                     href="#"
                                     onClick={preventDefault(handleClearAll)}
@@ -177,6 +183,7 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
                                     <TranslatedString id="shipping.multishipping_items_allocate_clear_all" />
                                 </a>
                                 <a
+                                    className={newFontStyle ? 'body-cta' : ''}
                                     data-test="allocate-all-items-button"
                                     href="#"
                                     onClick={preventDefault(handleSelectAll)}

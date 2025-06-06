@@ -1,10 +1,11 @@
 import { CardInstrument, CheckoutSettings, LanguageService, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { number } from 'card-validator';
+import classNames from 'classnames';
 import { compact } from 'lodash';
 import React, { FunctionComponent, memo, ReactNode } from 'react';
 
 import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { CheckoutContextProps , PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import { CheckoutContextProps , PaymentFormValues , useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 import { BraintreePaypalCreditBanner, PaypalCommerceCreditBanner } from '@bigcommerce/checkout/paypal-utils';
 
 import { withCheckout } from '../../checkout';
@@ -283,6 +284,7 @@ const PaymentMethodTitle: FunctionComponent<
 > = ({ cdnBasePath, checkoutSettings, storeCountryCode, onUnhandledError, formik: { values }, instruments, isSelected, language, method }) => {
     const methodName = getPaymentMethodName(language)(method);
     const { logoUrl, titleText, subtitle } = getPaymentMethodTitle(language, cdnBasePath, checkoutSettings, storeCountryCode)(method);
+    const { newFontStyle } = useStyleContext();
 
     const getSelectedCardType = () => {
         if (!isSelected) {
@@ -334,7 +336,9 @@ const PaymentMethodTitle: FunctionComponent<
                 )}
 
                 {titleText && (
-                    <div aria-level={6} className="paymentProviderHeader-name" data-test="payment-method-name" role="heading">
+                    <div aria-level={6} className={classNames('paymentProviderHeader-name',
+                        { 'sub-header': newFontStyle })}
+                        data-test="payment-method-name" role="heading">
                         {titleText}
                     </div>
                 )}

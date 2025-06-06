@@ -1,4 +1,3 @@
-import { Accordion } from '@bigcommerce/checkout/ui';
 import { noop } from 'lodash';
 import React, {
     createContext,
@@ -9,6 +8,8 @@ import React, {
     useEffect,
     useMemo,
 } from 'react';
+
+import { Accordion } from '@bigcommerce/checkout/ui';
 
 
 import { connectFormik, ConnectFormikProps } from '../../common/form';

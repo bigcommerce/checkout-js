@@ -2,12 +2,14 @@
 
 // TODO: CHECKOUT-9010 Cover 'Customer registration failure due to using an existing email' in functional tests repo
 import { FormField } from '@bigcommerce/checkout-sdk';
+import classNames from 'classnames';
 import { FormikProps, withFormik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent, useMemo } from 'react';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
 import { isRequestError } from '../common/error';
 import { Alert, AlertType } from '../ui/alert';
@@ -18,6 +20,7 @@ import getCreateCustomerValidationSchema, {
     CreateAccountFormValues,
 } from './getCreateCustomerValidationSchema';
 import getPasswordRequirements from './getPasswordRequirements';
+
 import './CreateAccountForm.scss';
 
 export interface CreateAccountFormProps {
@@ -69,6 +72,7 @@ function transformFormFieldsData(formFields: FormField[], defaultShouldSubscribe
 const CreateAccountForm: FunctionComponent<
     CreateAccountFormProps & WithLanguageProps & FormikProps<CreateAccountFormValues>
 > = ({ fixNewsletterCheckboxExperimentEnabled, formFields, createAccountError, isCreatingAccount, isExecutingPaymentMethodCheckout, onCancel, isFloatingLabelEnabled, defaultShouldSubscribe }) => {
+    const { newFontStyle } = useStyleContext();
     const createAccountErrorMessage = useMemo(() => {
         if (!createAccountError) {
             return;
@@ -113,6 +117,7 @@ const CreateAccountForm: FunctionComponent<
                             field={field}
                             isFloatingLabelEnabled={isFloatingLabelEnabled}
                             key={field.id}
+                            newFontStyle={newFontStyle}
                             parentFieldName={field.custom ? 'customFields' : undefined}
                         />
                     ))}
@@ -121,6 +126,7 @@ const CreateAccountForm: FunctionComponent<
 
             <div className="form-actions">
                 <Button
+                    className={newFontStyle ? 'body-bold' : ''}
                     disabled={isCreatingAccount || isExecutingPaymentMethodCheckout}
                     id="checkout-customer-create"
                     isLoading={isCreatingAccount || isExecutingPaymentMethodCheckout}
@@ -132,7 +138,8 @@ const CreateAccountForm: FunctionComponent<
                 </Button>
 
                 <a
-                    className="button optimizedCheckout-buttonSecondary"
+                    className={classNames('button optimizedCheckout-buttonSecondary',
+                        { 'body-bold': newFontStyle })}
                     data-test="customer-cancel-button"
                     href="#"
                     id="checkout-customer-cancel"

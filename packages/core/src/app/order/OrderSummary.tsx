@@ -4,10 +4,13 @@ import {
     ShopperCurrency,
     StoreCurrency,
 } from '@bigcommerce/checkout-sdk';
+import classNames from 'classnames';
 import React, { FunctionComponent, ReactNode, useMemo } from 'react';
 
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
+
 
 import OrderSummaryHeader from './OrderSummaryHeader';
 import OrderSummaryItems from './OrderSummaryItems';
@@ -40,12 +43,14 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
     const nonBundledLineItems = useMemo(() => removeBundledItems(lineItems), [lineItems]);
     const displayInclusiveTax = isTaxIncluded && taxes && taxes.length > 0;
 
+    const { newFontStyle } = useStyleContext();
+
     return (
         <article className="cart optimizedCheckout-orderSummary" data-test="cart">
             <OrderSummaryHeader>{headerLink}</OrderSummaryHeader>
 
             <OrderSummarySection>
-                <OrderSummaryItems displayLineItemsCount items={nonBundledLineItems} />
+                <OrderSummaryItems displayLineItemsCount items={nonBundledLineItems} newFontStyle={newFontStyle} />
             </OrderSummarySection>
 
             <Extension region={ExtensionRegion.SummaryLastItemAfter} />
@@ -65,7 +70,8 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
 
             {displayInclusiveTax && <OrderSummarySection>
                 <h5
-                    className="cart-taxItem cart-taxItem--subtotal optimizedCheckout-contentPrimary"
+                    className={classNames('cart-taxItem cart-taxItem--subtotal optimizedCheckout-contentPrimary',
+                        { 'body-regular': newFontStyle })}
                     data-test="tax-text"
                 >
                     <TranslatedString

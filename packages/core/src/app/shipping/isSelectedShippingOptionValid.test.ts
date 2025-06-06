@@ -1,6 +1,8 @@
-import { getConsignment, getShippingOption } from '@bigcommerce/checkout/test-mocks';
-import isSelectedShippingOptionValid from './isSelectedShippingOptionValid';
 import { Consignment } from '@bigcommerce/checkout-sdk';
+
+import { getConsignment, getShippingOption } from '@bigcommerce/checkout/test-mocks';
+
+import isSelectedShippingOptionValid from './isSelectedShippingOptionValid';
 
 
 describe('isSelectedShippingOptionValid', () => {

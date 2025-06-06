@@ -4,8 +4,9 @@ import React, { FunctionComponent, memo, ReactNode, useCallback } from 'react';
 import { object, string } from 'yup';
 
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckout, useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 import { PayPalFastlaneWatermark } from '@bigcommerce/checkout/paypal-fastlane-integration';
+
 
 import { isExperimentEnabled } from '../common/utility';
 import { getPrivacyPolicyValidationSchema, PrivacyPolicyField } from '../privacyPolicy';
@@ -66,6 +67,7 @@ const GuestForm: FunctionComponent<
             data: { getConfig } 
         }    
     } = useCheckout();
+    const { newFontStyle } = useStyleContext();
 
     const config = getConfig();
 
@@ -132,7 +134,9 @@ const GuestForm: FunctionComponent<
                         })}
                     >
                         <Button
-                            className="customerEmail-button"
+                            className={classNames('customerEmail-button', {
+                                'body-bold': newFontStyle,
+                            })}
                             id="checkout-customer-continue"
                             isLoading={isLoading}
                             testId="customer-continue-as-guest-button"
@@ -149,7 +153,9 @@ const GuestForm: FunctionComponent<
                 )}
 
                 {!isLoading && (
-                    <p className="customer-login-link">
+                    <p className={classNames('customer-login-link',
+                        { 'body-regular': newFontStyle })}
+                    >
                         <TranslatedString id="customer.login_text" />{' '}
                         <a
                             data-test="customer-continue-button"

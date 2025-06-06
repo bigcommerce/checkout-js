@@ -7,7 +7,7 @@ import { AnalyticsProvider } from '@bigcommerce/checkout/analytics';
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import { ErrorBoundary, ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
-import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { CheckoutProvider, StyleProvider } from '@bigcommerce/checkout/payment-integration-api';
 
 import '../../scss/App.scss';
 
@@ -60,13 +60,15 @@ class OrderConfirmationApp extends Component<OrderConfirmationAppProps> {
                     <CheckoutProvider checkoutService={this.checkoutService}>
                         <AnalyticsProvider checkoutService={this.checkoutService}>
                             <ExtensionProvider checkoutService={this.checkoutService} errorLogger={createErrorLogger()}>
-                                <OrderConfirmation
-                                    {...this.props}
-                                    createAccount={this.createAccount}
-                                    createEmbeddedMessenger={createEmbeddedCheckoutMessenger}
-                                    embeddedStylesheet={this.embeddedStylesheet}
-                                    errorLogger={this.errorLogger}
-                                />
+                                <StyleProvider>
+                                    <OrderConfirmation
+                                        {...this.props}
+                                        createAccount={this.createAccount}
+                                        createEmbeddedMessenger={createEmbeddedCheckoutMessenger}
+                                        embeddedStylesheet={this.embeddedStylesheet}
+                                        errorLogger={this.errorLogger}
+                                    />
+                                </StyleProvider>
                             </ExtensionProvider>
                         </AnalyticsProvider>
                     </CheckoutProvider>

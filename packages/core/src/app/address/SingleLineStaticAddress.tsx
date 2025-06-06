@@ -1,6 +1,10 @@
 import { Address } from '@bigcommerce/checkout-sdk';
+import classNames from 'classnames';
 import { isEmpty } from 'lodash';
 import React from "react";
+
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
+
 
 import AddressType from "./AddressType";
 
@@ -31,13 +35,18 @@ export const getAddressContent: (value: Address) => string = ({
 };
 
 const SingleLineStaticAddress = ({ address }: SingleLineStaticAddressProps) => {
+    const { newFontStyle } = useStyleContext();
+
     const isValid = !isEmpty(address);
 
     return !isValid ? null : (
-        <div className="vcard checkout-address--static" data-test="static-address">
-            <p className="address-entry">
+        <div
+            className={classNames('vcard checkout-address--static', { 'body-regular': newFontStyle })}
+            data-test="static-address"
+        >
+            <span className="address-entry">
                 {getAddressContent(address)}
-            </p>
+            </span>
         </div>
     );
 }

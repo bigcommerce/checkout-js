@@ -1,10 +1,12 @@
 import { Consignment, ConsignmentCreateRequestBody, ConsignmentLineItem } from "@bigcommerce/checkout-sdk";
+import classNames from "classnames";
 import { find } from "lodash";
 import React, { useMemo, useState } from "react";
 
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { TranslatedString } from "@bigcommerce/checkout/locale";
-import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
+import { useCheckout , useStyleContext } from "@bigcommerce/checkout/payment-integration-api";
+
 
 import { EMPTY_ARRAY } from "../common/utility";
 
@@ -36,7 +38,7 @@ const NewConsignment = ({
     const [consignmentRequest, setConsignmentRequest] = useState<ConsignmentCreateRequestBody | undefined>();
     const [isOpenAllocateItemsModal, setIsOpenAllocateItemsModal] = useState(false);
     const { unassignedItems } = useMultiShippingConsignmentItems();
-
+    const { newFontStyle } = useStyleContext();
     const {
         checkoutState: {
             data: { getShippingCountries, getConsignments: getPreviousConsignments },
@@ -100,7 +102,7 @@ const NewConsignment = ({
 
     return (
         <div className='consignment-container'>
-            <div className='consignment-header'>
+            <div className={classNames('consignment-header', { 'sub-header': newFontStyle })}>
                 <h3>
                     <TranslatedString data={{ consignmentNumber }} id="shipping.multishipping_consignment_index_heading" />
                 </h3>
@@ -124,8 +126,11 @@ const NewConsignment = ({
                     unassignedItems={unassignedItems}
                 />
                 <div className="new-consignment-line-item-header">
-                    <h3><TranslatedString id="shipping.multishipping_no_item_allocated_message" /></h3>
+                    <h3 className={newFontStyle ? 'body-bold' : ''}>
+                        <TranslatedString id="shipping.multishipping_no_item_allocated_message" />
+                    </h3>
                     <a
+                        className={newFontStyle ? 'body-cta' : ''}
                         data-test="allocate-items-button"
                         href="#"
                         onClick={preventDefault(toggleAllocateItemsModal)}

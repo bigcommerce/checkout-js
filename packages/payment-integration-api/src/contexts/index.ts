@@ -3,6 +3,9 @@ export {
     CheckoutProvider,
     CheckoutContextProps,
     useCheckout,
+    StyleContext,
+    useStyleContext,
+    StyleProvider,
 } from './checkout-context';
 export {
     PaymentFormContextProps,
