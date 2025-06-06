@@ -6,8 +6,6 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 import { ConfirmationModal } from '@bigcommerce/checkout/ui';
 
-
-
 export interface EditLinkProps {
     className?: string;
     isMultiShippingMode: boolean;

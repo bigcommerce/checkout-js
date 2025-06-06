@@ -11,7 +11,7 @@ const OrderSummaryHeader: FunctionComponent<{ children?: React.ReactNode }> = ({
     return (
         <header className="cart-header">
             <h3 className={classNames('cart-title', 'optimizedCheckout-headingSecondary',
-                { 'header-secondary': newFontStyle })}>
+                { 'sub-header': newFontStyle })}>
                 <TranslatedString id="cart.cart_heading" />
             </h3>
             {children}

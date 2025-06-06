@@ -5,19 +5,19 @@ $color-link: #476BEF;
 $fontFamily-montserrat: 'Montserrat';
 
 // optimizedCheckout-headingPrimary
-.header-active, .header-inactive {
+.header, .header-secondary {
     color: $color-black;
     font-family: $fontFamily-montserrat;
     font-size: fontSize("large");
     font-weight: fontWeight("bold");
 }
 
-.header-inactive {
+.header-secondary {
     color: $color-secondary;
 }
 
 // optimizedCheckout-headingSecondary
-.header-secondary {
+.sub-header {
     color: $color-black;
     font-family: $fontFamily-montserrat;
     font-size: fontSize("smaller");

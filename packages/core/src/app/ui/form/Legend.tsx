@@ -21,7 +21,7 @@ const Legend: FunctionComponent<LegendProps> = ({
             className || 'form-legend',
             { 'is-srOnly': hidden },
             { 'optimizedCheckout-headingSecondary': !hidden },
-            { 'header-secondary': newFontStyle && !hidden },
+            { 'sub-header': newFontStyle && !hidden },
         )}
         data-test={testId}
     >

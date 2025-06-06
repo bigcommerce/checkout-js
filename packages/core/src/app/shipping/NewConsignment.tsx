@@ -102,7 +102,7 @@ const NewConsignment = ({
 
     return (
         <div className='consignment-container'>
-            <div className={classNames('consignment-header', { 'header-secondary': newFontStyle })}>
+            <div className={classNames('consignment-header', { 'sub-header': newFontStyle })}>
                 <h3>
                     <TranslatedString data={{ consignmentNumber }} id="shipping.multishipping_consignment_index_heading" />
                 </h3>
