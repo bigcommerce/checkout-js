@@ -113,7 +113,7 @@ const OrderSummaryPrice: FC<OrderSummaryPriceProps> = ({
                     <span className={classNames('cart-priceItem-label',
                         {
                             'body-regular': newFontStyle && !isOrderTotal,
-                            'header-secondary': newFontStyle && isOrderTotal
+                            'sub-header': newFontStyle && isOrderTotal
                         })}
                     >
                         <span data-test="cart-price-label">
@@ -145,7 +145,7 @@ const OrderSummaryPrice: FC<OrderSummaryPriceProps> = ({
                     <span className={classNames('cart-priceItem-value',
                         {
                             'body-medium': newFontStyle && !isOrderTotal,
-                            'header-active': newFontStyle && isOrderTotal
+                            'header': newFontStyle && isOrderTotal
                         })}
                     >
                         {isNumberValue(amountBeforeDiscount) && amountBeforeDiscount !== amount && (

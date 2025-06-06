@@ -52,8 +52,8 @@ const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
 
                 <h2
                     className={classNames('stepHeader-title optimizedCheckout-headingPrimary',
-                        { 'header-active': newFontStyle && (isActive || isComplete) },
-                        { 'header-inactive': newFontStyle && !isActive && !isComplete })}
+                        { 'header': newFontStyle && (isActive || isComplete) },
+                        { 'header-secondary': newFontStyle && !isActive && !isComplete })}
                 >{heading}</h2>
             </div>
 

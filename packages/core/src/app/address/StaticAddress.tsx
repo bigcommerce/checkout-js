@@ -4,6 +4,7 @@ import {
     Country,
     ShippingInitializeOptions,
 } from '@bigcommerce/checkout-sdk';
+import classNames from 'classnames';
 import { isEmpty } from 'lodash';
 import React, { FunctionComponent, memo } from 'react';
 
@@ -15,9 +16,6 @@ import { withCheckout } from '../checkout';
 import AddressType from './AddressType';
 
 import './StaticAddress.scss';
-
-
-import classNames from 'classnames';
 
 export interface StaticAddressProps {
     address: Address;

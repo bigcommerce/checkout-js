@@ -337,7 +337,7 @@ const PaymentMethodTitle: FunctionComponent<
 
                 {titleText && (
                     <div aria-level={6} className={classNames('paymentProviderHeader-name',
-                        { 'header-secondary': newFontStyle })}
+                        { 'sub-header': newFontStyle })}
                         data-test="payment-method-name" role="heading">
                         {titleText}
                     </div>

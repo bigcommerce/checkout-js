@@ -3,7 +3,7 @@ import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { CheckoutContextProps, useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
 import { withCheckout } from '../checkout';
 import { isErrorWithType } from '../common/error';
@@ -46,6 +46,8 @@ const CustomerInfo: FunctionComponent<CustomerInfoProps & WithCheckoutCustomerIn
     onSignOutError = noop,
     signOut,
 }) => {
+    const { newFontStyle } = useStyleContext();
+
     const handleSignOut: () => Promise<void> = async () => {
         try {
             if (isRedirectExperimentEnabled && shouldRedirectToStorefrontForAuth) {
@@ -83,6 +85,7 @@ const CustomerInfo: FunctionComponent<CustomerInfoProps & WithCheckoutCustomerIn
             <div className="customerView-actions">
                 {isSignedIn && (
                     <Button
+                        className={newFontStyle ? 'body-regular' : ''}
                         isLoading={isSigningOut}
                         onClick={handleSignOut}
                         size={ButtonSize.Tiny}

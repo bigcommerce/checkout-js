@@ -138,7 +138,7 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
             footer={modalFooter}
             header={
                 <>
-                    <ModalHeader additionalClassName={newFontStyle ? 'header-active' : ''}>
+                    <ModalHeader additionalClassName={newFontStyle ? 'header' : ''}>
                         <TranslatedString data={{ consignmentNumber }} id="shipping.multishipping_consignment_index_heading" />
                     </ModalHeader>
                     <h4 className={newFontStyle ? 'body-medium' : ''}>{getAddressContent(address)}</h4>
