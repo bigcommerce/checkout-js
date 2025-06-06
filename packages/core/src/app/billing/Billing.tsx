@@ -164,7 +164,7 @@ function mapToBillingProps({
         updateAddress: checkoutService.updateBillingAddress,
         updateCheckout: checkoutService.updateCheckout,
         isFloatingLabelEnabled: isFloatingLabelEnabled(config.checkoutSettings),
-        newFontStyle: isExperimentEnabled(config.checkoutSettings, 'CHECKOUT-7962_update_font_style_on_checkout_page')
+        newFontStyle: isExperimentEnabled(config.checkoutSettings, 'CHECKOUT-7962.update_font_style_on_checkout_page')
     };
 }
 
