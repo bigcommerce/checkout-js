@@ -265,7 +265,9 @@ describe('Checkout', () => {
         });
 
         it('renders checkout button container with ApplePay', async () => {
-            (window as any).ApplePaySession = {};
+            (window as any).ApplePaySession = {
+                canMakePayments: () => true,
+            };
 
             checkout.use(CheckoutPreset.RemoteProviders);
             checkout.use(CheckoutPreset.CheckoutWithBillingEmail);
