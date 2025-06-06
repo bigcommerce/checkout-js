@@ -2,12 +2,12 @@ import { FieldProps } from 'formik';
 import React, { FunctionComponent, memo, useCallback, useMemo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
 import { FormField, TextInput } from '../ui/form';
 import Label from '../ui/form/Label';
 import { IconEye, IconEyeSlash } from '../ui/icon';
 import { Toggle } from '../ui/toggle';
-import { useStyleContext } from '../checkout/useStyleContext';
 
 interface WithFloatingLabel {
     isFloatingLabelEnabled?: boolean;
@@ -31,10 +31,10 @@ const PasswordField: FunctionComponent<WithFloatingLabel> = ({ isFloatingLabelEn
                         />
                         {isFloatingLabelEnabled && (
                             <Label
+                                additionalClassName={newFontStyle ? 'new-font-style-label' : ''}
                                 htmlFor={props.field.name}
                                 id={`${props.field.name}-label`}
                                 isFloatingLabelEnabled={true}
-                                additionalClassName={newFontStyle ? 'new-font-style-label' : ''}
                             >
                                 <TranslatedString id="customer.password_label" />
                             </Label>

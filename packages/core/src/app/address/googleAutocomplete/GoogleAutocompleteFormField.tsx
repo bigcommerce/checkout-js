@@ -4,9 +4,8 @@ import { FieldProps } from 'formik';
 import React, { FunctionComponent, memo, useCallback, useMemo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
-
-import { useStyleContext } from '../../checkout/useStyleContext';
 import { AutocompleteItem } from '../../ui/autocomplete';
 import { FormField, Label } from '../../ui/form';
 import {
@@ -93,8 +92,8 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
     );
 
     const renderLabel = isFloatingLabelEnabled ? null : (
-        <Label htmlFor={inputProps.id} id={labelId} isFloatingLabelEnabled={isFloatingLabelEnabled}
-            additionalClassName={newFontStyle ? 'body-regular' : ''}>
+        <Label additionalClassName={newFontStyle ? 'body-regular' : ''} htmlFor={inputProps.id} id={labelId}
+            isFloatingLabelEnabled={isFloatingLabelEnabled}>
             {labelContent}
         </Label>
     );

@@ -2,9 +2,9 @@ import { FieldProps } from 'formik';
 import React, { FunctionComponent, memo, useCallback, useMemo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
 import { FormField, TextInput } from '../ui/form';
-import { useStyleContext } from '../checkout/useStyleContext';
 
 export interface EmailFieldProps {
     isFloatingLabelEnabled?: boolean;

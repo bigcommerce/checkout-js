@@ -8,8 +8,10 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { ConfirmationModal } from '@bigcommerce/checkout/ui';
 
 import { Legend } from '../ui/form';
+
 import './ShippingHeader.scss';
-import { useStyleContext } from '../checkout/useStyleContext';
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
+
 
 interface ShippingHeaderProps {
     isMultiShippingMode: boolean;
@@ -43,7 +45,7 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
         <>
             <Extension region={ExtensionRegion.ShippingShippingAddressFormBefore} />
             <div className={classNames(['form-legend-container', 'shipping-header'])}>
-                <Legend testId="shipping-address-heading" newFontStyle={newFontStyle}>
+                <Legend newFontStyle={newFontStyle} testId="shipping-address-heading">
                     <TranslatedString
                         id={
                             isMultiShippingMode

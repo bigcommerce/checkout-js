@@ -1,8 +1,10 @@
+import classNames from 'classnames';
 import React, { FunctionComponent } from 'react';
 
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { TranslatedString } from "@bigcommerce/checkout/locale";
-import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
+import { useCheckout , useStyleContext } from "@bigcommerce/checkout/payment-integration-api";
+
 
 import { IconClose, IconSize } from "../ui/icon";
 
@@ -11,8 +13,6 @@ import ConsignmentAddressSelector from './ConsignmentAddressSelector';
 import ConsignmentLineItem from './ConsignmentLineItem';
 import { MultiShippingConsignmentData } from './MultishippingType';
 import { MultiShippingOptions } from './shippingOption/MultiShippingOptions';
-import { useStyleContext } from '../checkout/useStyleContext';
-import classNames from 'classnames';
 
 export interface ConsignmentListItemProps {
     consignment: MultiShippingConsignmentData;

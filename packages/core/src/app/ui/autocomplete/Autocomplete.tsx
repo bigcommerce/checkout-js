@@ -2,11 +2,12 @@ import Downshift, { DownshiftState, StateChangeOptions } from 'downshift';
 import { includes, isNumber, noop } from 'lodash';
 import React, { Fragment, PureComponent, ReactChild, ReactNode } from 'react';
 
+import { StyleContext } from '@bigcommerce/checkout/payment-integration-api';
+
 import { Label } from '../form';
 import { Popover, PopoverList, PopoverListItem } from '../popover';
 
 import AutocompleteItem from './autocomplete-item';
-import { StyleContext } from '../../checkout/StyleProvider';
 
 export interface AutocompleteProps {
     initialValue?: string;
@@ -68,10 +69,10 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
                             <input {...validInputProps} />
                             {inputProps && includes(inputProps.className, 'floating') && (
                                 <Label
+                                    additionalClassName={newFontStyle ? 'new-font-style-label' : ''}
                                     htmlFor={inputProps.id}
                                     id={inputProps['aria-labelledby']}
                                     isFloatingLabelEnabled={true}
-                                    additionalClassName={newFontStyle ? 'new-font-style-label' : ''}
                                 >
                                     {inputProps.labelText}
                                 </Label>

@@ -2,9 +2,9 @@ import { FieldProps } from 'formik';
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
 import { Fieldset, FormField, Label, Legend, TextInput } from '../ui/form';
-import { useStyleContext } from '../checkout/useStyleContext';
 
 const OrderComments: FunctionComponent = () => {
     const { newFontStyle } = useStyleContext();

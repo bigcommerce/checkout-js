@@ -1,10 +1,10 @@
 import { ShippingOption } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent } from 'react';
 
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 import { RadioInput } from '@bigcommerce/checkout/ui';
 
 import { ShopperCurrency } from '../../currency';
-import { useStyleContext } from '../../checkout/useStyleContext';
 
 interface MultiShippingOptionsListItemProps {
     consignmentId: string;

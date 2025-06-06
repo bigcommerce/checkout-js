@@ -10,6 +10,7 @@ import React, { RefObject, useRef, useState } from 'react';
 import { lazy } from 'yup';
 
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { AddressFormSkeleton, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
@@ -29,7 +30,6 @@ import { Button, ButtonVariant } from '../ui/button';
 import { Fieldset, Form } from '../ui/form';
 
 import StaticBillingAddress from './StaticBillingAddress';
-import { useStyleContext } from '../checkout/useStyleContext';
 
 export type BillingFormValues = AddressFormValues & { orderComment: string };
 

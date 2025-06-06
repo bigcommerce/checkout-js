@@ -1,10 +1,12 @@
 import { Consignment, ConsignmentCreateRequestBody, ConsignmentLineItem } from "@bigcommerce/checkout-sdk";
+import classNames from "classnames";
 import { find } from "lodash";
 import React, { useMemo, useState } from "react";
 
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { TranslatedString } from "@bigcommerce/checkout/locale";
-import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
+import { useCheckout , useStyleContext } from "@bigcommerce/checkout/payment-integration-api";
+
 
 import { EMPTY_ARRAY } from "../common/utility";
 
@@ -13,8 +15,6 @@ import ConsignmentAddressSelector from './ConsignmentAddressSelector';
 import { AssignItemFailedError } from "./errors";
 import { useMultiShippingConsignmentItems } from "./hooks/useMultishippingConsignmentItems";
 import { setRecommendedOrMissingShippingOption } from './utils';
-import classNames from "classnames";
-import { useStyleContext } from "../checkout/useStyleContext";
 
 interface NewConsignmentProps {
     consignmentNumber: number;

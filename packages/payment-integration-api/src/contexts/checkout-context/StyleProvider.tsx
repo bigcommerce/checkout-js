@@ -1,14 +1,7 @@
-import React, { createContext, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
-
-import { isExperimentEnabled } from '../common/utility';
-
-export interface StyleContextProps {
-    newFontStyle: boolean;
-}
-
-export const StyleContext = createContext<StyleContextProps | undefined>(undefined);
+import { useCheckout } from './CheckoutContext';
+import StyleContext from './StyleContext';
 
 export interface StyleProviderProps {
     children?: ReactNode;
@@ -28,7 +21,7 @@ export const StyleProvider = ({
     let newFontStyle = false;
 
     if (config) {
-        newFontStyle = isExperimentEnabled(config.checkoutSettings, "CHECKOUT-7962_update_font_style_on_checkout_page");
+        newFontStyle = Boolean(config.checkoutSettings?.features["CHECKOUT-7962_update_font_style_on_checkout_page"] ?? true)
     }
 
     return (
@@ -37,5 +30,3 @@ export const StyleProvider = ({
         </StyleContext.Provider>
     )
 };
-
-

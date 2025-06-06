@@ -5,6 +5,7 @@ import { number, object } from "yup";
 
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { TranslatedString, withLanguage, WithLanguageProps } from "@bigcommerce/checkout/locale";
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 import { Alert, AlertType, ButtonVariant } from "@bigcommerce/checkout/ui";
 
 import { getAddressContent } from "../address/SingleLineStaticAddress";
@@ -17,7 +18,6 @@ import AllocatedItemsList from "./AllocatedItemsList";
 import { ItemSplitTooltip } from "./ItemSplitTooltip";
 import LeftToAllocateItemsTable from "./LeftToAllocateItemsTable";
 import { LineItemType, MultiShippingTableData, MultiShippingTableItemWithType } from "./MultishippingType";
-import { useStyleContext } from "../checkout/useStyleContext";
 
 export interface AllocateItemsModalFormValues {
     [key: string]: number;

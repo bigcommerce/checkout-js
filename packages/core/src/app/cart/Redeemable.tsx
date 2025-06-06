@@ -8,10 +8,10 @@ import { object, string } from 'yup';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckout , useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 import { FormContextType, FormProvider } from '@bigcommerce/checkout/ui';
 
-import { useStyleContext } from '../checkout/useStyleContext';
+
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
 import { FormField, Label, TextInput } from '../ui/form';
@@ -165,9 +165,9 @@ const RedeemableForm: FunctionComponent<
                                 {...field}
                                 aria-label={language.translate('redeemable.code_label')}
                                 className="form-input optimizedCheckout-form-input"
-                                onKeyDown={handleKeyDown(setSubmitted)}
-                                testId="redeemableEntry-input"
                             newFontStyle={newFontStyle}
+                                onKeyDown={handleKeyDown(setSubmitted)}
+                            testId="redeemableEntry-input"
                             />
 
                             <Button

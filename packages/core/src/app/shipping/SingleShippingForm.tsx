@@ -34,10 +34,10 @@ import { Fieldset, Form } from '../ui/form';
 
 import BillingSameAsShippingField from './BillingSameAsShippingField';
 import hasSelectedShippingOptions from './hasSelectedShippingOptions';
+import isSelectedShippingOptionValid from './isSelectedShippingOptionValid';
 import ShippingAddress from './ShippingAddress';
 import { SHIPPING_ADDRESS_FIELDS } from './ShippingAddressFields';
 import ShippingFormFooter from './ShippingFormFooter';
-import isSelectedShippingOptionValid from './isSelectedShippingOptionValid';
 
 export interface SingleShippingFormProps {
     addresses: CustomerAddress[];

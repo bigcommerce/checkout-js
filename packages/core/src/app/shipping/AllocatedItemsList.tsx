@@ -1,13 +1,13 @@
 import React from "react";
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
 import { IconClose } from "../ui/icon";
 
 import { renderItemContent } from "./ConsignmentLineItemDetail";
 import { ItemSplitTooltip } from "./ItemSplitTooltip";
 import { MultiShippingTableData, MultiShippingTableItemWithType } from "./MultishippingType";
-import { useStyleContext } from "../checkout/useStyleContext";
 
 interface AllocatedItemsListProps {
     assignedItems: MultiShippingTableData;

@@ -1,10 +1,11 @@
 import { CardInstrument, CheckoutSettings, LanguageService, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { number } from 'card-validator';
+import classNames from 'classnames';
 import { compact } from 'lodash';
 import React, { FunctionComponent, memo, ReactNode } from 'react';
 
 import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { CheckoutContextProps , PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import { CheckoutContextProps , PaymentFormValues , useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 import { BraintreePaypalCreditBanner, PaypalCommerceCreditBanner } from '@bigcommerce/checkout/paypal-utils';
 
 import { withCheckout } from '../../checkout';
@@ -18,8 +19,6 @@ import getPaymentMethodName from './getPaymentMethodName';
 import { isHostedCreditCardFieldsetValues } from './HostedCreditCardFieldsetValues';
 import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodType from './PaymentMethodType';
-import classNames from 'classnames';
-import { useStyleContext } from '../../checkout/useStyleContext';
 
 export interface PaymentMethodTitleProps {
     method: PaymentMethod;

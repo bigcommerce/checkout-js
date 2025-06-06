@@ -1,8 +1,9 @@
-import classNames from 'classnames';
 import { ShippingOption } from '@bigcommerce/checkout-sdk';
+import classNames from 'classnames';
 import React from 'react';
 
-import { useStyleContext } from '../../checkout/useStyleContext';
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
+
 import { ShopperCurrency } from '../../currency';
 
 import ShippingOptionAdditionalDescription from './ShippingOptionAdditionalDescription';

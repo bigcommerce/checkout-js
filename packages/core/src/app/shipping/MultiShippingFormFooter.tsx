@@ -1,12 +1,12 @@
 import React, { FunctionComponent } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
 import { OrderComments } from '../orderComments';
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
 import { Form } from '../ui/form';
-import { useStyleContext } from '../checkout/useStyleContext';
 
 export interface ShippingFormFooterProps {
     shouldShowOrderComments: boolean;

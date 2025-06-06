@@ -2,8 +2,8 @@ import classNames from 'classnames';
 import React, { FunctionComponent } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
-import { useStyleContext } from '../checkout/useStyleContext';
 
 const OrderSummaryHeader: FunctionComponent<{ children?: React.ReactNode }> = ({ children }) => {
     const { newFontStyle } = useStyleContext();

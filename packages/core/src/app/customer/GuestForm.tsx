@@ -4,8 +4,9 @@ import React, { FunctionComponent, memo, ReactNode, useCallback, useEffect } fro
 import { object, string } from 'yup';
 
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckout, useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 import { PayPalFastlaneWatermark } from '@bigcommerce/checkout/paypal-fastlane-integration';
+
 
 import { isExperimentEnabled } from '../common/utility';
 import { getPrivacyPolicyValidationSchema, PrivacyPolicyField } from '../privacyPolicy';
@@ -15,7 +16,6 @@ import { BasicFormField, Fieldset, Form, Legend } from '../ui/form';
 import EmailField from './EmailField';
 import SubscribeField from './SubscribeField';
 import { SubscribeSessionStorage } from './SubscribeSessionStorage';
-import { useStyleContext } from '../checkout/useStyleContext';
 
 function getShouldSubscribeValue(requiresMarketingConsent: boolean, defaultShouldSubscribe: boolean) {
     if (SubscribeSessionStorage.getSubscribeStatus()) {
@@ -69,6 +69,7 @@ const GuestForm: FunctionComponent<
             data: { getConfig }
         }
     } = useCheckout();
+    const { newFontStyle } = useStyleContext();
 
     const config = getConfig();
 
@@ -101,8 +102,6 @@ const GuestForm: FunctionComponent<
     } = config;
 
     const isRedirectExperimentEnabled = isExperimentEnabled(config.checkoutSettings, 'CHECKOUT-9138.redirect_to_storefront_for_auth');
-
-    const { newFontStyle } = useStyleContext();
 
     const handleLogin: () => void = () => {
         if (shouldRedirectToStorefrontForAuth && isRedirectExperimentEnabled) {

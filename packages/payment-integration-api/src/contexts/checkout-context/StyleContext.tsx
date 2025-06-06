@@ -1,6 +1,10 @@
-import { useContext } from 'react';
+import { createContext, useContext } from "react";
 
-import { StyleContext } from './StyleProvider';
+export interface StyleContextProps {
+    newFontStyle: boolean;
+}
+
+const StyleContext = createContext<StyleContextProps | undefined>(undefined);
 
 export const useStyleContext = () => {
     const styleContext = useContext(StyleContext);
@@ -11,3 +15,5 @@ export const useStyleContext = () => {
 
     return styleContext;
 };
+
+export default StyleContext;
