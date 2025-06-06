@@ -43,10 +43,12 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
                         { 'body-medium': newFontStyle })}
                     data-test="cart-item-product-title"
                 >
-                    <span className={classNames(
-                        { 'body-bold': newFontStyle })}>
-                        {`${quantity} x `}
-                    </span>
+                    {newFontStyle
+                        ? (<span className="body-bold">
+                            {`${quantity} x `}
+                        </span>)
+                        : (`${quantity} x `)
+                    }
                     {name}
                 </h4>
                 {productOptions && productOptions.length > 0 && (

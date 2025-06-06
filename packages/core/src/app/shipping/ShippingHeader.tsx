@@ -5,12 +5,12 @@ import React, { FunctionComponent, memo, useState } from 'react';
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 import { ConfirmationModal } from '@bigcommerce/checkout/ui';
 
 import { Legend } from '../ui/form';
 
 import './ShippingHeader.scss';
-import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
 
 interface ShippingHeaderProps {

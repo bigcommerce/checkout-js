@@ -1,9 +1,9 @@
+import classNames from 'classnames';
 import React, { FunctionComponent, memo, MouseEvent, useCallback } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import './MultiCheckboxControl.scss';
-import classNames from 'classnames';
 
 export interface MultiCheckboxControlProps {
     testId?: string;

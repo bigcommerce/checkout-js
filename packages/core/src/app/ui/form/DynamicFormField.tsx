@@ -83,7 +83,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
                     {!required && (
                         <>
                             {' '}
-                            <small className={`optimizedCheckout-contentSecondary`}>
+                            <small className="optimizedCheckout-contentSecondary">
                                 <TranslatedString id="common.optional_text" />
                             </small>
                         </>

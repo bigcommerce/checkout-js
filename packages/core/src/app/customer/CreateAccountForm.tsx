@@ -2,6 +2,7 @@
 
 // TODO: CHECKOUT-9010 Cover 'Customer registration failure due to using an existing email' in functional tests repo
 import { FormField } from '@bigcommerce/checkout-sdk';
+import classNames from 'classnames';
 import { FormikProps, withFormik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent, useMemo } from 'react';
@@ -21,7 +22,6 @@ import getCreateCustomerValidationSchema, {
 import getPasswordRequirements from './getPasswordRequirements';
 
 import './CreateAccountForm.scss';
-import classNames from 'classnames';
 
 export interface CreateAccountFormProps {
     formFields: FormField[];

@@ -7,13 +7,11 @@ export interface StyleProviderProps {
     children?: ReactNode;
 }
 
-export const StyleProvider = ({
-    children,
-}: StyleProviderProps) => {
+export const StyleProvider = ({ children }: StyleProviderProps) => {
     const {
         checkoutState: {
-            data: { getConfig }
-        }
+            data: { getConfig },
+        },
     } = useCheckout();
 
     const config = getConfig();
@@ -21,12 +19,11 @@ export const StyleProvider = ({
     let newFontStyle = false;
 
     if (config) {
-        newFontStyle = Boolean(config.checkoutSettings?.features["CHECKOUT-7962_update_font_style_on_checkout_page"] ?? true)
+        newFontStyle = Boolean(
+            config.checkoutSettings.features['CHECKOUT-7962_update_font_style_on_checkout_page'] ??
+                true,
+        );
     }
 
-    return (
-        <StyleContext.Provider value={{ newFontStyle }}>
-            {children}
-        </StyleContext.Provider>
-    )
+    return <StyleContext.Provider value={{ newFontStyle }}>{children}</StyleContext.Provider>;
 };
