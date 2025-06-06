@@ -22,6 +22,7 @@ export interface CustomerSignOutEvent {
 }
 
 interface WithCheckoutCustomerInfoProps {
+    checkoutLink: string;
     email: string;
     methodId: string;
     isRedirectExperimentEnabled: boolean;
@@ -33,6 +34,7 @@ interface WithCheckoutCustomerInfoProps {
 }
 
 const CustomerInfo: FunctionComponent<CustomerInfoProps & WithCheckoutCustomerInfoProps> = ({
+    checkoutLink,
     email,
     methodId,
     isSignedIn,
@@ -47,7 +49,7 @@ const CustomerInfo: FunctionComponent<CustomerInfoProps & WithCheckoutCustomerIn
     const handleSignOut: () => Promise<void> = async () => {
         try {
             if (isRedirectExperimentEnabled && shouldRedirectToStorefrontForAuth) {
-                window.location.assign(logoutLink);
+                window.location.assign(`${logoutLink}?redirectTo=${checkoutLink}`);
 
                 return;
             }
@@ -113,7 +115,7 @@ function mapToWithCheckoutCustomerInfoProps({
         return null;
     }
 
-    const { checkoutSettings, links: { logoutLink } } = config;
+    const { checkoutSettings, links: { checkoutLink, logoutLink } } = config;
 
     const isRedirectExperimentEnabled = isExperimentEnabled(checkoutSettings, 'CHECKOUT-9138.redirect_to_storefront_for_auth');
 
@@ -127,6 +129,7 @@ function mapToWithCheckoutCustomerInfoProps({
         isSignedIn: canSignOut(customer, checkout, methodId),
         isSigningOut: isSigningOut(),
         logoutLink,
+        checkoutLink,
         shouldRedirectToStorefrontForAuth: checkoutSettings.shouldRedirectToStorefrontForAuth,
         signOut: checkoutService.signOutCustomer,
     };
