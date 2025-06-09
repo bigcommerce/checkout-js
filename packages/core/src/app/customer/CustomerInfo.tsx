@@ -1,4 +1,5 @@
 import { CheckoutSelectors, CustomerRequestOptions, CustomError } from '@bigcommerce/checkout-sdk';
+import classNames from 'classnames';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
@@ -76,7 +77,9 @@ const CustomerInfo: FunctionComponent<CustomerInfoProps & WithCheckoutCustomerIn
     return (
         <div className="customerView" data-test="checkout-customer-info">
             <div
-                className="customerView-body"
+                className={classNames('customerView-body',
+                    { 'body-regular': newFontStyle },
+                )}
                 data-test="customer-info"
             >
                 {email}

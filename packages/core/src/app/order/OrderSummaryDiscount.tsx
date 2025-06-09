@@ -46,7 +46,7 @@ const OrderSummaryDiscount: FunctionComponent<OrderSummaryDiscountProps> = ({
             {code && (
                 <span
                     className={classNames('cart-priceItem-postFix optimizedCheckout-contentSecondary',
-                        { 'sub-text': newFontStyle })}
+                        { 'sub-text-medium': newFontStyle })}
                     data-test="cart-price-code"
                 >
                     {code}

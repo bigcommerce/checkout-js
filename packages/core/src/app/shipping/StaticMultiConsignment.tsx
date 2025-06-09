@@ -43,12 +43,13 @@ const StaticMultiConsignment: FunctionComponent<StaticMultiConsignmentProps> = (
 
     return (
         <div className="staticMultiConsignment">
-            <h3 className="staticMultiConsignment-header">
+            <h3 className={classNames('staticMultiConsignment-header',
+                { 'body-bold': newFontStyle })}>
                 <TranslatedString data={{ consignmentNumber }} id="shipping.multishipping_consignment_index_heading" />
             </h3>
 
             <div className={classNames('checkout-address--static',
-                { 'body-regular': newFontStyle })}>
+                { 'sub-text': newFontStyle })}>
                 <span className="address-entry">
                     <span className="first-name">{`${address.firstName} `}</span>
                     <span className="family-name">{address.lastName}</span>
@@ -86,7 +87,7 @@ const StaticMultiConsignment: FunctionComponent<StaticMultiConsignmentProps> = (
                 />
                 </span>
             
-            <ConsignmentLineItemDetail lineItems={lineItems} />
+                <ConsignmentLineItemDetail lineItems={lineItems} isMultiShippingSummary />
         </div>
 
             {selectedShippingOption && (

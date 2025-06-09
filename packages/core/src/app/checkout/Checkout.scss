@@ -5,7 +5,7 @@ $color-link: #476BEF;
 $fontFamily-montserrat: 'Montserrat';
 
 // optimizedCheckout-headingPrimary
-.header, .header-secondary {
+.header, .header-secondary, .sub-header {
     color: $color-black;
     font-family: $fontFamily-montserrat;
     font-size: fontSize("large");
@@ -18,14 +18,11 @@ $fontFamily-montserrat: 'Montserrat';
 
 // optimizedCheckout-headingSecondary
 .sub-header {
-    color: $color-black;
-    font-family: $fontFamily-montserrat;
     font-size: fontSize("smaller");
-    font-weight: fontWeight("bold");
 }
 
 // optimizedCheckout-contentPrimary
-.body-regular, .body-cta {
+.body-regular, .body-cta, .body-medium, .body-bold {
     color: $color-black;
     font-family: $fontFamily-montserrat;
     font-size: fontSize("base");
@@ -36,33 +33,32 @@ $fontFamily-montserrat: 'Montserrat';
     color: $color-link;
 }
 
-.body-medium, .body-medium-inactive {
-    color: $color-black;
-    font-family: $fontFamily-montserrat;
-    font-size: fontSize("base");
+.body-medium, .body-bold {
     font-weight: fontWeight("medium");
 }
 
-.body-medium-inactive {
-    color: $color-secondary;
-}
-
 .body-bold {
-    color: $color-black;
-    font-family: $fontFamily-montserrat;
     font-size: fontSize("base");
     font-weight: fontWeight("bold");
 }
 
-.sub-text {
-    color: $color-secondary;
+.sub-text, .sub-text-medium, .sub-text-bold {
+    color: $color-black;
     font-family: $fontFamily-montserrat;
-    font-size: fontSize("tiny");
+    font-size: fontSize("smallest");
+    font-weight: fontWeight("normal");
+}
+
+.sub-text-medium {
+    color: $color-secondary;
     font-weight: fontWeight("medium");
 }
 
-// overrides 
+.sub-text-bold {
+    font-weight: fontWeight("bold");
+}
 
+// overrides 
 .body-bold, .body-medium {
     &.button--primary:not(:disabled){
         color: $color-white;

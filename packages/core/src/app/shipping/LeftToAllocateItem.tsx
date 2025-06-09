@@ -31,7 +31,7 @@ const LeftToAllocateItem: FunctionComponent<LeftToAllocateItemProps> = ({ item, 
                     </p>
                     {item.options?.map(option => (
                         <p className={classNames('left-to-allocate-item-option',
-                            { 'sub-text': newFontStyle })}
+                            { 'sub-text-medium': newFontStyle })}
                             key={option.nameId}>
                             {option.name}: {option.value}
                         </p>

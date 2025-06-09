@@ -95,7 +95,8 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
         return (
             <div className="cart-actions">
                 <button
-                    className="button button--tertiary button--tiny optimizedCheckout-buttonSecondary"
+                    className={classNames('button button--tertiary button--tiny optimizedCheckout-buttonSecondary',
+                        { 'sub-text-medium': this.props.newFontStyle })}
                     onClick={this.handleToggle}
                     type="button"
                 >

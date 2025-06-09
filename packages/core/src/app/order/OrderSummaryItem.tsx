@@ -54,7 +54,7 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
                 {productOptions && productOptions.length > 0 && (
                     <ul
                         className={classNames('product-options optimizedCheckout-contentSecondary', {
-                            'sub-text': newFontStyle,
+                            'sub-text-medium': newFontStyle,
                         })}
                         data-test="cart-item-product-options"
                     >
