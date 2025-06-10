@@ -56,7 +56,7 @@
             padding-right: $input-horizontalPadding;
             padding-top: $input-verticalPadding * 1.5;
 
-            &.new-font-style-input {
+            &.floating-form-field-input {
                 color: $color-black;
                 font-family: $fontFamily-montserrat;
                 font-size: $fontSize-smallest;
@@ -99,7 +99,7 @@
                 vertical-align: baseline;
             }
 
-            &.new-font-style-label {
+            &.floating-form-field-label {
                 color: #757575;
                 font-family: $fontFamily-montserrat;
                 font-size: $fontSize-smallest;
@@ -129,7 +129,7 @@
                 font-size: fontSize("tiny");
             }
 
-            &.new-font-style-label{
+            &.floating-form-field-label{
                 color: #757575;
                 font-family: $fontFamily-montserrat;
                 font-size: $fontSize-tiny;

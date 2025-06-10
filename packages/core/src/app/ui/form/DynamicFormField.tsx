@@ -66,7 +66,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
 
             if (newFontStyle) {
                 if (isFloatingLabelSupportedFieldType) {
-                    labelClassName = 'new-font-style-label';
+                    labelClassName = 'floating-form-field-label';
                 } else {
                     labelClassName = 'body-medium';
                 }

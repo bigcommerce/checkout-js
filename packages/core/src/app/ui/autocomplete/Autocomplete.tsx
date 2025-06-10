@@ -69,7 +69,7 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
                             <input {...validInputProps} />
                             {inputProps && includes(inputProps.className, 'floating') && (
                                 <Label
-                                    additionalClassName={newFontStyle ? 'new-font-style-label' : ''}
+                                    additionalClassName={newFontStyle ? 'floating-form-field-label' : ''}
                                     htmlFor={inputProps.id}
                                     id={inputProps['aria-labelledby']}
                                     isFloatingLabelEnabled={true}

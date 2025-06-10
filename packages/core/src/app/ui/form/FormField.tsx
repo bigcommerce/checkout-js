@@ -39,7 +39,7 @@ const FormField: FunctionComponent<FormFieldProps> = ({
                 {label && (typeof label === 'function' ? label(name) : label)}
                 {labelContent && !label && (
                     <Label
-                        additionalClassName={newFontStyle ? 'new-font-style-label' : ''}
+                        additionalClassName={newFontStyle ? 'floating-form-field-label' : ''}
                         htmlFor={name}
                         id={`${id ?? name}-label`}
                         isFloatingLabelEnabled={isFloatingLabelEnabled}

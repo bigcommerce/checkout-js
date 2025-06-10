@@ -69,7 +69,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                         className={classNames(
                             { 'floating-select': isFloatingLabelEnabled },
                             'form-select optimizedCheckout-form-select',
-                            { 'new-font-style-input': newFontStyle },
+                            { 'floating-form-field-input': newFontStyle },
                         )}
                         data-test={`${id}-select`}
                         id={id}
@@ -147,7 +147,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                     calendarClassName="optimizedCheckout-contentPrimary"
                     className={classNames('form-input optimizedCheckout-form-input', {
                         'floating-input': isFloatingLabelEnabled,
-                        'new-font-style-input': newFontStyle,
+                        'floating-form-field-input': newFontStyle,
                     })}
                     dateFormat={inputFormat}
                     maxDate={rest.max ? new Date(`${rest.max}T00:00:00Z`) : undefined}

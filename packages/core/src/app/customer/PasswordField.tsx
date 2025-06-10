@@ -31,7 +31,7 @@ const PasswordField: FunctionComponent<WithFloatingLabel> = ({ isFloatingLabelEn
                         />
                         {isFloatingLabelEnabled && (
                             <Label
-                                additionalClassName={newFontStyle ? 'new-font-style-label' : ''}
+                                additionalClassName={newFontStyle ? 'floating-form-field-label' : ''}
                                 htmlFor={props.field.name}
                                 id={`${props.field.name}-label`}
                                 isFloatingLabelEnabled={true}

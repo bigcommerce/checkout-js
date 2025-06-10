@@ -31,7 +31,7 @@ const TextInput = forwardRef(
                 { 'form-input--focus': appearFocused },
                 { 'optimizedCheckout-form-input--focus': appearFocused },
                 additionalClassName,
-                { 'new-font-style-input': newFontStyle && isFloatingLabelEnabled },
+                { 'floating-form-field-input': newFontStyle && isFloatingLabelEnabled },
                 { 'body-regular': newFontStyle && !isFloatingLabelEnabled },
             )}
             isFloatingLabelEnabled={isFloatingLabelEnabled}

@@ -52,7 +52,7 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
             className: classNames(
                 'form-input optimizedCheckout-form-input',
                 { 'floating-input': isFloatingLabelEnabled },
-                { 'new-font-style-input': newFontStyle },
+                { 'floating-form-field-input': newFontStyle },
             ),
             id: getAddressFormFieldInputId(name),
             'aria-labelledby': labelId,
