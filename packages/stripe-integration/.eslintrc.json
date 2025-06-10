@@ -10,10 +10,11 @@
       }
     },
   {
-      "files": ["*.spec.tsx"],
+      "files": ["*.test.tsx", "*.test.ts"],
         "rules": {
           "@eslint-disable-next-line": "off",
-          "@typescript-eslint/consistent-type-assertions": "off"
+          "@typescript-eslint/consistent-type-assertions": "off",
+          "@typescript-eslint/no-unsafe-assignment": "off"
         }
     }
 ]

@@ -34,9 +34,14 @@ import { AccordionContext, AccordionContextProps } from '@bigcommerce/checkout/u
 import StripeOCSPaymentMethod from './StripeOCSPaymentMethod';
 
 jest.mock('./getStripeOCSStyles', () => ({
-    getStylesForOCSElement: () => {
-        return { color: '#cccccc' };
+    getAppearanceForOCSElement: () => {
+        return {
+            variables: {
+                color: '#cccccc',
+            },
+        };
     },
+    getFonts: () => [{ cssSrc: 'fontSrc' }],
 }));
 
 describe('when using Stripe OCS payment', () => {
@@ -130,7 +135,10 @@ describe('when using Stripe OCS payment', () => {
             [gatewayId]: {
                 containerId: expectedContainerId,
                 layout: defaultAccordionLayout,
-                style: { color: '#cccccc' },
+                appearance: {
+                    variables: { color: '#cccccc' },
+                },
+                fonts: [{ cssSrc: 'fontSrc' }],
                 onError: expect.any(Function),
                 render: expect.any(Function),
                 paymentMethodSelect: expect.any(Function),
@@ -156,7 +164,10 @@ describe('when using Stripe OCS payment', () => {
             [gatewayId]: {
                 containerId: expectedContainerId,
                 layout: defaultAccordionLayout,
-                style: { color: '#cccccc' },
+                appearance: {
+                    variables: { color: '#cccccc' },
+                },
+                fonts: [{ cssSrc: 'fontSrc' }],
                 onError: expect.any(Function),
                 render: expect.any(Function),
                 paymentMethodSelect: expect.any(Function),
@@ -175,7 +186,10 @@ describe('when using Stripe OCS payment', () => {
                 [gatewayId]: {
                     containerId: expectedContainerId,
                     layout: defaultAccordionLayout,
-                    style: { color: '#cccccc' },
+                    appearance: {
+                        variables: { color: '#cccccc' },
+                    },
+                    fonts: [{ cssSrc: 'fontSrc' }],
                     onError: expect.any(Function),
                     render: expect.any(Function),
                     paymentMethodSelect: expect.any(Function),
@@ -200,7 +214,10 @@ describe('when using Stripe OCS payment', () => {
                 [gatewayId]: {
                     containerId: expectedContainerId,
                     layout: defaultAccordionLayout,
-                    style: { color: '#cccccc' },
+                    appearance: {
+                        variables: { color: '#cccccc' },
+                    },
+                    fonts: [{ cssSrc: 'fontSrc' }],
                     onError: expect.any(Function),
                     render: expect.any(Function),
                     paymentMethodSelect: expect.any(Function),
@@ -229,7 +246,10 @@ describe('when using Stripe OCS payment', () => {
                         ...defaultAccordionLayout,
                         defaultCollapsed: true,
                     },
-                    style: { color: '#cccccc' },
+                    appearance: {
+                        variables: { color: '#cccccc' },
+                    },
+                    fonts: [{ cssSrc: 'fontSrc' }],
                     onError: expect.any(Function),
                     render: expect.any(Function),
                     paymentMethodSelect: expect.any(Function),
@@ -255,7 +275,10 @@ describe('when using Stripe OCS payment', () => {
                             ...defaultAccordionLayout,
                             defaultCollapsed: true,
                         },
-                        style: { color: '#cccccc' },
+                        appearance: {
+                            variables: { color: '#cccccc' },
+                        },
+                        fonts: [{ cssSrc: 'fontSrc' }],
                         onError: expect.any(Function),
                         render: expect.any(Function),
                         paymentMethodSelect: expect.any(Function),
@@ -275,7 +298,10 @@ describe('when using Stripe OCS payment', () => {
                     [gatewayId]: {
                         containerId: expectedContainerId,
                         layout: defaultAccordionLayout,
-                        style: { color: '#cccccc' },
+                        appearance: {
+                            variables: { color: '#cccccc' },
+                        },
+                        fonts: [{ cssSrc: 'fontSrc' }],
                         onError: expect.any(Function),
                         render: expect.any(Function),
                         paymentMethodSelect: expect.any(Function),
