@@ -1,3 +1,4 @@
+import { StripeAppearanceOptions, StripeCustomFont } from '@bigcommerce/checkout-sdk';
 import { isEmpty } from 'lodash';
 
 import { getAppliedStyles } from '@bigcommerce/checkout/dom-utils';
@@ -8,24 +9,58 @@ const getStylesFromElement = (selector: string, properties: string[]) => {
     return element ? getAppliedStyles(element, properties) : {};
 };
 
-const getFontsSrc = (selector: string) => {
+const parseRadioIconSize = (size: string | number = 0): number =>
+    typeof size !== 'number' ? parseInt(size, 10) : size;
+
+const getRadioIconSizes = (sizes?: Record<string, string | number | undefined>) => {
+    const {
+        radioIconOuterWidth = 26,
+        radioIconOuterStrokeWidth = 1,
+        radioIconInnerWidth = 17,
+    } = sizes || {};
+    const stripeSVGSizeCoefficient = 0.88; // Provided by Stripe team for scaling SVGs.
+
+    const percentageCoefficient = stripeSVGSizeCoefficient * 100;
+    const outerWidth = parseRadioIconSize(radioIconOuterWidth);
+    const outerStrokeWidth = parseRadioIconSize(radioIconOuterStrokeWidth);
+    const innerWidth = parseRadioIconSize(radioIconInnerWidth);
+
+    const stripeEqualOuterWidth = (outerWidth / stripeSVGSizeCoefficient).toFixed(2);
+    const stripeEqualOuterStrokeWidth = (
+        (outerStrokeWidth / outerWidth) *
+        percentageCoefficient
+    ).toFixed(2);
+    const stripeEqualInnerRadius = (
+        ((innerWidth / outerWidth) * percentageCoefficient) /
+        2
+    ).toFixed(2);
+
+    return {
+        outerWidth: `${stripeEqualOuterWidth}px`,
+        outerStrokeWidth: `${stripeEqualOuterStrokeWidth}px`,
+        innerRadius: `${stripeEqualInnerRadius}px`,
+    };
+};
+
+export const getFonts = (selector = 'link[href*="font"]'): StripeCustomFont[] => {
     const elementsList: NodeListOf<Element> = document.querySelectorAll(selector);
-    const fontsList: string[] = [];
+    const fonts: StripeCustomFont[] = [];
 
     elementsList.forEach((element: Element | null) => {
         const fontSrc = element?.getAttribute('href');
 
         if (fontSrc) {
-            fontsList.push(fontSrc);
+            fonts.push({ cssSrc: fontSrc });
         }
     });
 
-    return fontsList;
+    return fonts;
 };
 
-export const getStylesForOCSElement = (
-    containerId: string,
-): Record<string, string | string[] | undefined> => {
+export const getAppearanceForOCSElement = (containerId: string): StripeAppearanceOptions => {
+    const defaultAccordionPaddingHorizontal = '18px';
+    const defaultAccordionPaddingVertical = '13px';
+
     const formInputStyles = getStylesFromElement(`#${containerId}--input`, [
         'color',
         'background-color',
@@ -50,10 +85,6 @@ export const getStylesForOCSElement = (
     const formChecklistStyles = getStylesFromElement(`.checkout-step--payment .form-checklist`, [
         'border-bottom',
     ]);
-    const fontsSrc = getFontsSrc('link[href*="font"]');
-
-    const defaultAccordionPaddingHorizontal = '18px';
-    const defaultAccordionPaddingVertical = '13px';
     const {
         color: accordionHeaderColor,
         'font-size': accordionItemTitleFontSize,
@@ -67,20 +98,58 @@ export const getStylesForOCSElement = (
         ? `${accordionPaddingTop} ${accordionPaddingRight} ${accordionPaddingBottom} ${defaultAccordionPaddingHorizontal}`
         : undefined;
 
+    const radioIconSize = getRadioIconSizes();
+    const radioIconColor = '#ddd'; // TODO: get style from theme
+    const radioIconFocusColor = '#4496f6'; // TODO: get style from theme
+
     return {
-        labelText: formLabelStyles.color,
-        fieldText: formInputStyles.color,
-        fieldPlaceholderText: formInputStyles.color,
-        fieldErrorText: formErrorStyles.color,
-        fieldBackground: formInputStyles['background-color'],
-        fieldInnerShadow: formInputStyles['box-shadow'],
-        fieldBorder: formInputStyles['border-color'],
-        accordionHeaderPadding,
-        fontFamily: accordionHeaderFontFamily || formInputStyles['font-family'],
-        accordionItemTitleFontSize,
-        accordionItemTitleFontWeight,
-        accordionHeaderColor,
-        accordionBorderBottom: formChecklistStyles['border-bottom'],
-        fontsSrc,
+        variables: {
+            colorPrimary: formInputStyles['box-shadow'],
+            colorBackground: formInputStyles['background-color'],
+            colorText: formLabelStyles.color,
+            colorDanger: formErrorStyles.color,
+            colorTextSecondary: formLabelStyles.color,
+            colorTextPlaceholder: formInputStyles.color,
+            colorIcon: formInputStyles.color,
+            fontFamily: accordionHeaderFontFamily || formInputStyles['font-family'],
+        },
+        rules: {
+            '.Input': {
+                borderColor: formInputStyles['border-color'],
+                color: formInputStyles.color,
+                boxShadow: formInputStyles['box-shadow'],
+            },
+            '.AccordionItem': {
+                borderRadius: 0,
+                borderWidth: 0,
+                borderBottom: formChecklistStyles['border-bottom'],
+                boxShadow: 'none',
+                fontSize: accordionItemTitleFontSize,
+                fontWeight: accordionItemTitleFontWeight,
+                color: accordionHeaderColor,
+                padding: accordionHeaderPadding,
+            },
+            '.AccordionItem--selected': {
+                fontWeight: 'bold',
+                color: accordionHeaderColor,
+            },
+            '.TabLabel': {
+                color: accordionHeaderColor,
+            },
+            '.RadioIcon': {
+                width: radioIconSize.outerWidth,
+            },
+            '.RadioIconInner': {
+                r: radioIconSize.innerRadius,
+                fill: radioIconFocusColor,
+            },
+            '.RadioIconOuter': {
+                strokeWidth: radioIconSize.outerStrokeWidth,
+                stroke: radioIconColor,
+            },
+            '.RadioIconOuter--checked': {
+                stroke: radioIconFocusColor,
+            },
+        },
     };
 };
