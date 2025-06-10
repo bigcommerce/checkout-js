@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.602.0](https://github.com/bigcommerce/checkout-js/compare/v1.601.1...v1.602.0) (2025-06-10)
+
+
+### Features
+
+* **payment:** Move all Stripe OCS styling configs to checkout-js side ([4da6b80](https://github.com/bigcommerce/checkout-js/commit/4da6b80000c847c7dc41c5a40caded4811cd8216))
+
 ### [1.601.1](https://github.com/bigcommerce/checkout-js/compare/v1.601.0...v1.601.1) (2025-06-10)
 
 
