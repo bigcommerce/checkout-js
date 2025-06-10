@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.601.1](https://github.com/bigcommerce/checkout-js/compare/v1.601.0...v1.601.1) (2025-06-10)
+
+
+### Bug Fixes
+
+* **checkout:** Fix Newsletter Subscription Checkbox ([#2356](https://github.com/bigcommerce/checkout-js/issues/2356)) ([63cca41](https://github.com/bigcommerce/checkout-js/commit/63cca41b69cf41649f77a7d8b03858ae3a106f46))
+* **core:** CHECKOUT-000 Add missing legends to payment fieldsets for accessibility ([#2342](https://github.com/bigcommerce/checkout-js/issues/2342)) ([0f5d4f2](https://github.com/bigcommerce/checkout-js/commit/0f5d4f258910b35a42f0095e084dcaa6b6256f96))
+
 ## [1.601.0](https://github.com/bigcommerce/checkout-js/compare/v1.600.3...v1.601.0) (2025-06-06)
 
 
