@@ -48,21 +48,23 @@ const StaticMultiConsignment: FunctionComponent<StaticMultiConsignmentProps> = (
                 <TranslatedString data={{ consignmentNumber }} id="shipping.multishipping_consignment_index_heading" />
             </h3>
 
-            <div className={classNames('checkout-address--static',
-                { 'sub-text': newFontStyle })}>
-                <span className="address-entry">
+            <div className="checkout-address--static">
+                <p className={classNames('address-entry',
+                    { 'sub-text': newFontStyle })}>
                     <span className="first-name">{`${address.firstName} `}</span>
                     <span className="family-name">{address.lastName}</span>
-                </span>
+                </p>
                 <div className="address-details">
-                    <span className="street-address address-entry">
+                    <p className={classNames('street-address address-entry',
+                        { 'sub-text': newFontStyle })}>
                         <span className="address-line-1">{`${address.address1}`}</span>
                         {address.address2 && (
                             <span className="address-line-2">{`, ${address.address2}`}</span>
                         )}
-                    </span>
+                    </p>
 
-                    <span className="address-entry">
+                    <p className={classNames('address-entry',
+                        { 'sub-text': newFontStyle })}>
                         {address.city && <span className="locality">{`${address.city}`}</span>}
                         {address.localizedProvince && (
                             <span className="region">{`, ${address.localizedProvince}`}</span>
@@ -73,7 +75,7 @@ const StaticMultiConsignment: FunctionComponent<StaticMultiConsignmentProps> = (
                         {address.postalCode && (
                             <span className="postal-code">{` ${address.postalCode}`}</span>
                         )}
-                    </span>
+                    </p>
                 </div>
             </div>
 

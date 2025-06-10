@@ -43,32 +43,34 @@ const StaticAddress: FunctionComponent<
     const isValid = !isEmpty(address);
 
     return !isValid ? null : (
-        <div className={classNames('vcard checkout-address--static',
-            { 'body-regular': newFontStyle })}
-            data-test="static-address">
+        <div className="vcard checkout-address--static" data-test="static-address">
             {(address.firstName || address.lastName) && (
-                <span className="fn address-entry">
+                <p className={classNames('fn address-entry',
+                    { 'body-regular': newFontStyle })}>
                     <span className="first-name">{`${address.firstName} `}</span>
                     <span className="family-name">{address.lastName}</span>
-                </span>
+                </p>
             )}
 
             {(address.phone || address.company) && (
-                <span className="address-entry">
+                <p className={classNames('address-entry',
+                    { 'body-regular': newFontStyle })}>
                     <span className="company-name">{`${address.company} `}</span>
                     <span className="tel">{address.phone}</span>
-                </span>
+                </p>
             )}
 
             <div className="adr">
-                <span className="street-address address-entry">
+                <p className={classNames('street-address address-entry',
+                    { 'body-regular': newFontStyle })}>
                     <span className="address-line-1">{`${address.address1} `}</span>
                     {address.address2 && (
                         <span className="address-line-2">{` / ${address.address2}`}</span>
                     )}
-                </span>
+                </p>
 
-                <span className="address-entry">
+                <p className={classNames('address-entry',
+                    { 'body-regular': newFontStyle })}>
                     {address.city && <span className="locality">{`${address.city}, `}</span>}
                     {address.localizedProvince && (
                         <span className="region">{`${address.localizedProvince}, `}</span>
@@ -79,7 +81,7 @@ const StaticAddress: FunctionComponent<
                     {address.localizedCountry && (
                         <span className="country-name">{`${address.localizedCountry} `}</span>
                     )}
-                </span>
+                </p>
             </div>
         </div>
     );

@@ -5,7 +5,6 @@ import React from "react";
 
 import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
-
 import AddressType from "./AddressType";
 
 export interface SingleLineStaticAddressProps {
@@ -40,13 +39,10 @@ const SingleLineStaticAddress = ({ address }: SingleLineStaticAddressProps) => {
     const isValid = !isEmpty(address);
 
     return !isValid ? null : (
-        <div
-            className={classNames('vcard checkout-address--static', { 'body-regular': newFontStyle })}
-            data-test="static-address"
-        >
-            <span className="address-entry">
+        <div className="vcard checkout-address--static" data-test="static-address">
+            <p className={classNames('address-entry', { 'body-regular': newFontStyle })}>
                 {getAddressContent(address)}
-            </span>
+            </p>
         </div>
     );
 }

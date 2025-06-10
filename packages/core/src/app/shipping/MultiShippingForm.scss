@@ -1,4 +1,5 @@
 @import '../ui/Base';
+@import '../../scss/settings/global/global';
 
 $quantity-input-container-width: 60%;
 $quantity-input-container-width-small-screen: 90%;
@@ -45,7 +46,7 @@ $allocate-items-table-image-width-small-screen: 40%;
 
         .body-regular {
             .line-item-options {
-                color: #757575;
+                color: $color-secondaryDarkest;
             }
         }
     }
@@ -284,7 +285,7 @@ $allocate-items-table-image-width-small-screen: 40%;
 
                     .body-regular {
                         .line-item-options {
-                            color: #757575;
+                            color: $color-secondaryDarkest;
                         }
                     }
                 }
