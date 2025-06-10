@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { FunctionComponent, ReactNode } from 'react';
+import React, { FunctionComponent, ReactNode, useId } from 'react';
 
 import { IconError, IconInfo, IconSuccess } from '../icon';
 
@@ -39,24 +39,34 @@ const Alert: FunctionComponent<AlertProps> = ({
     icon,
     testId,
     type,
-}) => (
-    <div
-        className={classNames(
-            'alertBox',
-            additionalClassName,
-            { 'alertBox--info': type === AlertType.Info || !type },
-            { 'alertBox--error': type === AlertType.Error },
-            { 'alertBox--success': type === AlertType.Success },
-            { 'alertBox--warning': type === AlertType.Warning },
-        )}
-        data-test={testId}
-    >
-        <div className="alertBox-column alertBox-icon">{icon || renderDefaultIcon(type)}</div>
+}) => {
+    const describedBy = useId();
 
-        <div aria-live="assertive" className="alertBox-column alertBox-message" role="alert">
-            {children}
+    return (
+        <div
+            aria-describedby={describedBy}
+            className={classNames(
+                'alertBox',
+                additionalClassName,
+                { 'alertBox--info': type === AlertType.Info || !type },
+                { 'alertBox--error': type === AlertType.Error },
+                { 'alertBox--success': type === AlertType.Success },
+                { 'alertBox--warning': type === AlertType.Warning },
+            )}
+            data-test={testId}
+        >
+            <div className="alertBox-column alertBox-icon">{icon || renderDefaultIcon(type)}</div>
+
+            <div
+                id={describedBy}
+                aria-live="assertive"
+                className="alertBox-column alertBox-message"
+                role="alert"
+            >
+                {children}
+            </div>
         </div>
-    </div>
-);
+    );
+};
 
 export default Alert;
