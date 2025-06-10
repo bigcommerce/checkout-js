@@ -206,6 +206,14 @@ describe('Customer Guest', () => {
         });
     });
 
+    it('selects `Subscribe to our newsletter` checkbox by default', async () => {
+        const props = {...defaultProps, isSubscribed:true};
+
+        render(<CustomerTest viewType={CustomerViewType.Guest} {...props} />);
+
+        expect(screen.getByTestId('should-subscribe-checkbox')).toBeChecked();
+    });
+
     it('displays error message if privacy policy is required and not checked', async () => {
         const email = faker.internet.email();
 

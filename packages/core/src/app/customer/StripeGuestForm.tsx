@@ -44,6 +44,7 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
     onContinueAsGuest,
     canSubscribe,
     checkoutButtons,
+    defaultShouldSubscribe,
     requiresMarketingConsent,
     privacyPolicyUrl,
     step,
@@ -114,6 +115,13 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
 
         return () => stripeDeinitialize();
     }, []);
+
+    useEffect(() => {
+        void setFieldValue(
+            'shouldSubscribe',
+            requiresMarketingConsent ? false : defaultShouldSubscribe,
+        );
+    }, [requiresMarketingConsent, defaultShouldSubscribe]);
 
     const getStylesFromElement = (
         id: string,

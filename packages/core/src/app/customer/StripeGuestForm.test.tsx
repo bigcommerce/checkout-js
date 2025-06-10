@@ -69,6 +69,19 @@ describe('StripeGuestForm', () => {
         expect(button).toBeDisabled();
     });
 
+    it('selects `Subscribe to our newsletter` checkbox by default', async () => {
+        render(
+            <TestComponent
+                defaultShouldSubscribe={true}
+                isLoading={true}
+                onContinueAsGuest={jest.fn()}
+                requiresMarketingConsent={false}
+            />
+        );
+
+        expect(screen.getByTestId('should-subscribe-checkbox')).toBeChecked();
+    });
+
     it('executes a function when the button is clicked', async () => {
         const handleContinueAsGuest = jest.fn();
 

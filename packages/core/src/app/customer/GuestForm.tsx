@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { FieldProps, FormikProps, withFormik } from 'formik';
-import React, { FunctionComponent, memo, ReactNode, useCallback } from 'react';
+import React, { FunctionComponent, memo, ReactNode, useCallback, useEffect } from 'react';
 import { object, string } from 'yup';
 
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
@@ -52,6 +52,7 @@ const GuestForm: FunctionComponent<
     canSubscribe,
     checkoutButtons,
     continueAsGuestButtonLabelId,
+    defaultShouldSubscribe,
     isLoading,
     onChangeEmail,
     onShowLogin,
@@ -60,11 +61,12 @@ const GuestForm: FunctionComponent<
     isExpressPrivacyPolicy,
     isFloatingLabelEnabled,
     shouldShowEmailWatermark,
+    setFieldValue,
 }) => {
     const {
-        checkoutState: { 
-            data: { getConfig } 
-        }    
+        checkoutState: {
+            data: { getConfig }
+        }
     } = useCheckout();
 
     const config = getConfig();
@@ -75,6 +77,13 @@ const GuestForm: FunctionComponent<
         ),
         [requiresMarketingConsent],
     );
+
+    useEffect(() => {
+        void setFieldValue(
+            'shouldSubscribe',
+            getShouldSubscribeValue(requiresMarketingConsent, defaultShouldSubscribe),
+            );
+    }, [requiresMarketingConsent, defaultShouldSubscribe]);
 
     if (!config) {
         return null;
