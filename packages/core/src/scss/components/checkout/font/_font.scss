@@ -27,12 +27,11 @@
     color: $color-highlightDarkest;
 }
 
-.body-medium, .body-bold {
+.body-medium {
     font-weight: $fontWeight-medium;
 }
 
 .body-bold {
-    font-size: $fontSize-base;
     font-weight: $fontWeight-bold;
 }
 
