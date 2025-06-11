@@ -8,7 +8,7 @@ describe('PasswordSavedSuccessAlert', () => {
     it('renders the success alert with the correct message', () => {
         render(<PasswordSavedSuccessAlert />);
 
-        expect(screen.getByRole('alert')).toBeInTheDocument();
+        expect(screen.getByRole('status')).toBeInTheDocument();
         expect(screen.getByText('Your password has been saved.')).toBeInTheDocument();
     });
 });

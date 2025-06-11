@@ -151,7 +151,7 @@ describe('Checkout', () => {
 
             await checkout.waitForCustomerStep();
 
-            expect(screen.queryAllByRole('alert')).toHaveLength(2);
+            expect(screen.queryAllByRole('status')).toHaveLength(2);
             expect(screen.getByText('You are eligible for a discount')).toBeInTheDocument();
             expect(screen.getByText('Get a discount if you order more')).toBeInTheDocument();
         });
