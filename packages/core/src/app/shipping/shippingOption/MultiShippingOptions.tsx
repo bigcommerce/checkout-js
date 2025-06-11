@@ -6,7 +6,6 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { useCheckout , useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 import { Alert, AlertType } from '@bigcommerce/checkout/ui';
 
-
 import MultiShippingOptionsListV2 from './MultiShippingOptionsList';
 import { isLoadingSelector } from './ShippingOptions';
 

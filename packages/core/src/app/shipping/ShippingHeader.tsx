@@ -12,7 +12,6 @@ import { Legend } from '../ui/form';
 
 import './ShippingHeader.scss';
 
-
 interface ShippingHeaderProps {
     isMultiShippingMode: boolean;
     isGuest: boolean;

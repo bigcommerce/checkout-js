@@ -5,7 +5,6 @@ import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/
 import { useCheckout , useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 import { Alert, AlertType } from '@bigcommerce/checkout/ui';
 
-
 import { withFormikExtended } from '../common/form';
 import { EMPTY_ARRAY } from '../common/utility';
 import { Button, ButtonVariant } from '../ui/button';
@@ -18,7 +17,6 @@ import MultiShippingFormFooter from './MultiShippingFormFooter';
 import { MultiShippingConsignmentData } from './MultishippingType';
 import './MultiShippingForm.scss';
 import NewConsignment from './NewConsignment';
-
 
 export interface MultiShippingFormValues {
     orderComment: string;

@@ -6,9 +6,7 @@ import { TranslatedString, useLocale } from '@bigcommerce/checkout/locale';
 import { CheckoutContextProps , useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 import { WalletButtonsContainerSkeleton } from '@bigcommerce/checkout/ui';
 
-
 import { withCheckout } from '../checkout';
-
 
 import { getSupportedMethodIds } from './getSupportedMethods';
 import resolveCheckoutButton from './resolveCheckoutButton';
@@ -103,9 +101,11 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
                     </div>
                 </WalletButtonsContainerSkeleton>
             </div>
-            <div className='checkout-separator'><span className={classNames({
-                'sub-header': newFontStyle,
-            })}><TranslatedString id='remote.or_text' /></span></div>
+            <div className='checkout-separator'>
+                <span className={classNames({'sub-header': newFontStyle})}>
+                    <TranslatedString id='remote.or_text' />
+                </span>
+            </div>
         </div>
     );
 };

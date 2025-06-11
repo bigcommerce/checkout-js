@@ -37,7 +37,7 @@ const StaticAddress: FunctionComponent<
         address: addressWithoutLocalization,
     }) => {
 
-        const { newFontStyle } = useStyleContext();    
+    const { newFontStyle } = useStyleContext();    
 
     const address = localizeAddress(addressWithoutLocalization, countries);
     const isValid = !isEmpty(address);

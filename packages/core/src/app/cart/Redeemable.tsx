@@ -165,15 +165,15 @@ const RedeemableForm: FunctionComponent<
                                 {...field}
                                 aria-label={language.translate('redeemable.code_label')}
                                 className="form-input optimizedCheckout-form-input"
-                            newFontStyle={newFontStyle}
+                                newFontStyle={newFontStyle}
                                 onKeyDown={handleKeyDown(setSubmitted)}
-                            testId="redeemableEntry-input"
+                                testId="redeemableEntry-input"
                             />
 
                             <Button
-                            className={classNames('form-prefixPostfix-button--postfix', {
-                                'body-bold': newFontStyle,
-                            })}
+                                className={classNames('form-prefixPostfix-button--postfix', {
+                                    'body-bold': newFontStyle,
+                                })}
                                 disabled={isSubmittingOrder()}
                                 id="applyRedeemableButton"
                                 isLoading={isApplyingRedeemable}
