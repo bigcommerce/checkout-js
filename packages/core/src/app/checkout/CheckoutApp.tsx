@@ -18,7 +18,6 @@ import {
 } from '../embeddedCheckout';
 
 import Checkout from './Checkout';
-import "./Checkout.scss";
 
 export interface CheckoutAppProps {
     checkoutId: string;
