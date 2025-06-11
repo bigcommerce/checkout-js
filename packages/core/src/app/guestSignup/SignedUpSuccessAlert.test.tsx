@@ -8,7 +8,7 @@ describe('SignedUpSuccessAlert', () => {
     it('renders the success alert with the correct message', () => {
         render(<SignedUpSuccessAlert />);
 
-        expect(screen.getByRole('alert')).toBeInTheDocument();
+        expect(screen.getByRole('status')).toBeInTheDocument();
         expect(screen.getByText('Your account has been created.')).toBeInTheDocument();
     });
 });

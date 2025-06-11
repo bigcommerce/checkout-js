@@ -59,9 +59,9 @@ const Alert: FunctionComponent<AlertProps> = ({
 
             <div
                 id={describedBy}
-                aria-live={type === AlertType.Info ? 'polite' : 'assertive'}
+                aria-live={type === AlertType.Error ? 'assertive' : 'polite'}
                 className="alertBox-column alertBox-message"
-                role={type === AlertType.Info ? 'status' : 'alert'}
+                role={type === AlertType.Error ? 'alert' : 'status'}
             >
                 {children}
             </div>
