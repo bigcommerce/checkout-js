@@ -2,6 +2,8 @@ import Downshift, { DownshiftState, StateChangeOptions } from 'downshift';
 import { includes, isNumber, noop } from 'lodash';
 import React, { Fragment, PureComponent, ReactChild, ReactNode } from 'react';
 
+import { StyleContext } from '@bigcommerce/checkout/payment-integration-api';
+
 import { Label } from '../form';
 import { Popover, PopoverList, PopoverListItem } from '../popover';
 
@@ -21,6 +23,9 @@ export interface AutocompleteProps {
 }
 
 class Autocomplete extends PureComponent<AutocompleteProps> {
+    static contextType = StyleContext;
+    declare context: React.ContextType<typeof StyleContext>;
+
     render(): ReactNode {
         const {
             inputProps,
@@ -32,6 +37,12 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
             onSelect,
             listTestId,
         } = this.props;
+
+        if (!this.context) {
+            throw Error('Need to wrap in style context');
+        }
+
+        const { newFontStyle } = this.context;
 
         return (
             <Downshift
@@ -58,6 +69,7 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
                             <input {...validInputProps} />
                             {inputProps && includes(inputProps.className, 'floating') && (
                                 <Label
+                                    additionalClassName={newFontStyle ? 'floating-form-field-label' : ''}
                                     htmlFor={inputProps.id}
                                     id={inputProps['aria-labelledby']}
                                     isFloatingLabelEnabled={true}

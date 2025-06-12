@@ -1,9 +1,11 @@
 import { ConsignmentLineItem } from "@bigcommerce/checkout-sdk";
+import classNames from "classnames";
 import React, { FunctionComponent, useState } from "react";
 
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
+import { useCheckout , useStyleContext } from "@bigcommerce/checkout/payment-integration-api";
+
 
 import { IconChevronDown, IconChevronUp } from "../ui/icon";
 import { isMobileView as isMobileViewUI } from "../ui/responsive";
@@ -30,6 +32,7 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
     const { unassignedItems } = useMultiShippingConsignmentItems();
     const { checkoutService: { assignItemsToAddress: assignItem } } = useCheckout();
     const deleteItem = useDeallocateItem();
+    const { newFontStyle } = useStyleContext();
 
     const toggleAllocateItemsModal = () => {
         setIsOpenAllocateItemsModal(!isOpenAllocateItemsModal);
@@ -95,7 +98,7 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
             />
             <div className="consignment-line-item-header">
                 <div>
-                    <h3>
+                    <h3 className={newFontStyle ? 'body-bold' : ''}>
                         <TranslatedString data={{ count: itemsCount }} id="shipping.multishipping_item_allocated_message" />
                     </h3>
 
@@ -104,7 +107,9 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
                     )}
                     
                     <a
-                        className="expand-items-button"
+                        className={classNames('expand-items-button',
+                            { 'body-cta': newFontStyle }
+                        )}
                         data-test="expand-items-button"
                         href="#"
                         onClick={preventDefault(toggleShowItems)}
@@ -123,6 +128,7 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
                     </a>
                 </div>
                 <a
+                    className={newFontStyle ? 'body-cta' : ''}
                     data-test="reallocate-items-button"
                     href="#"
                     onClick={preventDefault(toggleAllocateItemsModal)}

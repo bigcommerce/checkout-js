@@ -44,7 +44,9 @@ export function getStoreConfig(): StoreConfig {
             shouldRedirectToStorefrontForAuth: false,
             realtimeShippingProviders: ['Fedex', 'UPS', 'USPS'],
             requiresMarketingConsent: false,
-            features: {},
+            features: {
+                "CHECKOUT-7962.update_font_style_on_checkout_page": false,
+            },
             remoteCheckoutProviders: [],
         },
         currency: {

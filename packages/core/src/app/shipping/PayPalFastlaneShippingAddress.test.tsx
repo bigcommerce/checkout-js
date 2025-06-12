@@ -4,7 +4,7 @@ import { getAddress, getCustomer } from '@bigcommerce/checkout/test-mocks';
 import { CheckoutSelectors, CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { PayPalFastlaneShippingAddress, PayPalFastlaneShippingAddressProps } from './PayPalFastlaneShippingAddress';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
-import { CheckoutContext } from '@bigcommerce/checkout/payment-integration-api';
+import { CheckoutContext, StyleProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { getStoreConfig } from '../config/config.mock';
 import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { noop } from 'lodash';
@@ -95,7 +95,9 @@ describe('PayPalFastlaneShippingAddress', () => {
             <Formik initialValues={{}} onSubmit={noop}>
                 <LocaleContext.Provider value={localeContext}>
                     <CheckoutContext.Provider value={{ checkoutState, checkoutService }}>
-                        <PayPalFastlaneShippingAddress {...defaultProps} />);
+                        <StyleProvider>
+                            <PayPalFastlaneShippingAddress {...defaultProps} />
+                        </StyleProvider>
                     </CheckoutContext.Provider>
                 </LocaleContext.Provider>
             </Formik>
@@ -113,7 +115,9 @@ describe('PayPalFastlaneShippingAddress', () => {
             <Formik initialValues={{}} onSubmit={noop}>
                 <LocaleContext.Provider value={localeContext}>
                     <CheckoutContext.Provider value={{ checkoutState, checkoutService }}>
-                        <PayPalFastlaneShippingAddress {...defaultProps} initialize={initializeMock} />);
+                        <StyleProvider>
+                            <PayPalFastlaneShippingAddress {...defaultProps} initialize={initializeMock} />
+                        </StyleProvider>
                     </CheckoutContext.Provider>
                 </LocaleContext.Provider>
             </Formik>
@@ -137,7 +141,9 @@ describe('PayPalFastlaneShippingAddress', () => {
             <Formik initialValues={{}} onSubmit={noop}>
                 <LocaleContext.Provider value={localeContext}>
                     <CheckoutContext.Provider value={{ checkoutState, checkoutService }}>
-                        <PayPalFastlaneShippingAddress {...defaultProps} />);
+                        <StyleProvider>
+                            <PayPalFastlaneShippingAddress {...defaultProps} />
+                        </StyleProvider>
                     </CheckoutContext.Provider>
                 </LocaleContext.Provider>
             </Formik>

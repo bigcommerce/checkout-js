@@ -27,6 +27,7 @@ export interface DynamicFormFieldProps {
     label?: ReactNode;
     isFloatingLabelEnabled?: boolean;
     onChange?(value: string | string[]): void;
+    newFontStyle?: boolean;
 }
 
 const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
@@ -50,6 +51,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
     label,
     extraClass,
     isFloatingLabelEnabled,
+    newFontStyle = false,
 }) => {
     const fieldInputId = inputId || name;
     const fieldName = parentFieldName ? `${parentFieldName}.${name}` : name;
@@ -59,23 +61,36 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
                 !fieldType),
     );
     const labelComponent = useMemo(
-        () => (
-            <Label
-                htmlFor={fieldInputId}
-                id={`${fieldInputId}-label`}
-                isFloatingLabelEnabled={isFloatingLabelSupportedFieldType}
-            >
-                {label || fieldLabel}
-                {!required && (
-                    <>
-                        {' '}
-                        <small className="optimizedCheckout-contentSecondary">
-                            <TranslatedString id="common.optional_text" />
-                        </small>
-                    </>
-                )}
-            </Label>
-        ),
+        () => {
+            let labelClassName = '';
+
+            if (newFontStyle) {
+                if (isFloatingLabelSupportedFieldType) {
+                    labelClassName = 'floating-form-field-label';
+                } else {
+                    labelClassName = 'body-medium';
+                }
+            }
+
+            return (
+                <Label
+                    additionalClassName={labelClassName}
+                    htmlFor={fieldInputId}
+                    id={`${fieldInputId}-label`}
+                    isFloatingLabelEnabled={isFloatingLabelSupportedFieldType}
+                >
+                    {label || fieldLabel}
+                    {!required && (
+                        <>
+                            {' '}
+                            <small className="optimizedCheckout-contentSecondary">
+                                <TranslatedString id="common.optional_text" />
+                            </small>
+                        </>
+                    )}
+                </Label>
+            )
+        },
         [fieldInputId, fieldLabel, required, isFloatingLabelSupportedFieldType, label],
     );
 
@@ -107,6 +122,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
                 max={max}
                 maxLength={maxLength || undefined}
                 min={min}
+                newFontStyle={newFontStyle}
                 options={options && options.items}
                 placeholder={placeholder || (options && options.helperLabel)}
                 rows={options && (options as any).rows}
@@ -137,6 +153,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
                     id={fieldInputId}
                     label={labelComponent}
                     name={fieldName}
+                    newFontStyle={newFontStyle}
                     onChange={onChange}
                     options={(options && options.items) || []}
                 />

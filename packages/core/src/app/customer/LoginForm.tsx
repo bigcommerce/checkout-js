@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { FormikProps, withFormik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent, memo, useCallback } from 'react';
@@ -11,6 +12,7 @@ import {
     withLanguage,
     WithLanguageProps,
 } from '@bigcommerce/checkout/locale';
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
@@ -71,6 +73,8 @@ const LoginForm: FunctionComponent<
     isFloatingLabelEnabled,
     viewType = CustomerViewType.Login,
 }) => {
+    const { newFontStyle } = useStyleContext();
+
     const changeEmailLink = useCallback(() => {
         if (!email) {
             return null;
@@ -135,7 +139,7 @@ const LoginForm: FunctionComponent<
 
                 <PasswordField isFloatingLabelEnabled={isFloatingLabelEnabled} />
 
-                <p className="form-legend-container">
+                <p className={classNames('form-legend-container', { 'body-cta': newFontStyle })}>
                     <span>
                         { isSignInEmailEnabled &&
                             <TranslatedLink
@@ -167,6 +171,7 @@ const LoginForm: FunctionComponent<
 
                 <div className="form-actions">
                     <Button
+                        className={newFontStyle ? 'body-bold' : ''}
                         disabled={isSigningIn || isExecutingPaymentMethodCheckout}
                         id="checkout-customer-continue"
                         isLoading={isSigningIn || isExecutingPaymentMethodCheckout}
@@ -179,7 +184,8 @@ const LoginForm: FunctionComponent<
 
                     {viewType === CustomerViewType.SuggestedLogin && (
                         <a
-                            className="button optimizedCheckout-buttonSecondary"
+                            className={classNames('button optimizedCheckout-buttonSecondary',
+                                { 'body-bold': newFontStyle })}
                             data-test="customer-guest-continue"
                             href="#"
                             id="checkout-guest-continue"
@@ -193,7 +199,8 @@ const LoginForm: FunctionComponent<
                         viewType !== CustomerViewType.EnforcedLogin &&
                         viewType !== CustomerViewType.SuggestedLogin && (
                             <a
-                                className="button optimizedCheckout-buttonSecondary"
+                            className={classNames('button optimizedCheckout-buttonSecondary',
+                                { 'body-bold': newFontStyle })}
                                 data-test="customer-cancel-button"
                                 href="#"
                                 id="checkout-customer-cancel"

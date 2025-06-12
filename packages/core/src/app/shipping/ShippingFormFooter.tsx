@@ -3,6 +3,7 @@ import React, { FunctionComponent } from 'react';
 
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
 import { OrderComments } from '../orderComments';
 import { Alert, AlertType } from '../ui/alert';
@@ -32,6 +33,8 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
     isLoading,
     shippingFormRenderTimestamp,
 }) => {
+    const { newFontStyle } = useStyleContext();
+
     return (
         <>
             <Extension region={ExtensionRegion.ShippingShippingAddressFormAfter} />
@@ -39,7 +42,7 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
                 id="checkout-shipping-options"
                 legend={
                     <>
-                        <Legend>
+                        <Legend newFontStyle={newFontStyle}>
                             <TranslatedString id="shipping.shipping_method_label" />
                         </Legend>
 
@@ -66,6 +69,7 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
 
             <div className="form-actions">
                 <Button
+                    className={newFontStyle ? 'body-bold' : ''}
                     disabled={shouldDisableSubmit}
                     id="checkout-shipping-continue"
                     isLoading={isLoading}

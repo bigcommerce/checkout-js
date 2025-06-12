@@ -1,9 +1,10 @@
-import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { FormField as FormFieldType } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { FieldProps } from 'formik';
 import React, { FunctionComponent, memo, useCallback, useMemo } from 'react';
 
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
 import { AutocompleteItem } from '../../ui/autocomplete';
 import { FormField, Label } from '../../ui/form';
@@ -41,6 +42,7 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
 }) => {
     const fieldName = parentFieldName ? `${parentFieldName}.${name}` : name;
 
+    const { newFontStyle } = useStyleContext();
     const labelContent = useMemo(() => <TranslatedString id="address.address_line_1_label" />, []);
 
     const labelId = getAddressFormFieldLabelId(name);
@@ -50,6 +52,7 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
             className: classNames(
                 'form-input optimizedCheckout-form-input',
                 { 'floating-input': isFloatingLabelEnabled },
+                { 'floating-form-field-input': newFontStyle },
             ),
             id: getAddressFormFieldInputId(name),
             'aria-labelledby': labelId,
@@ -89,7 +92,8 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
     );
 
     const renderLabel = isFloatingLabelEnabled ? null : (
-        <Label htmlFor={inputProps.id} id={labelId} isFloatingLabelEnabled={isFloatingLabelEnabled}>
+        <Label additionalClassName={newFontStyle ? 'body-regular' : ''} htmlFor={inputProps.id} id={labelId}
+            isFloatingLabelEnabled={isFloatingLabelEnabled}>
             {labelContent}
         </Label>
     );
@@ -107,6 +111,7 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
                 isFloatingLabelEnabled={isFloatingLabelEnabled}
                 label={renderLabel}
                 name={fieldName}
+                newFontStyle={newFontStyle}
             />
         </div>
     );

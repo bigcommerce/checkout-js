@@ -1,8 +1,9 @@
-import { render, screen } from '@bigcommerce/checkout/test-utils';
 import { FormField } from '@bigcommerce/checkout-sdk';
 import userEvent from '@testing-library/user-event';
 import { Formik } from 'formik';
 import React from 'react';
+
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getFormFields } from '../formField.mock';
 

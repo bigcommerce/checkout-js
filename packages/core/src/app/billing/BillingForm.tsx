@@ -10,6 +10,7 @@ import React, { RefObject, useRef, useState } from 'react';
 import { lazy } from 'yup';
 
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { AddressFormSkeleton, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
@@ -69,6 +70,7 @@ const BillingForm = ({
     const addressFormRef: RefObject<HTMLFieldSetElement> = useRef(null);
     const { isPayPalFastlaneEnabled, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
 
+    const { newFontStyle } = useStyleContext();
     const shouldRenderStaticAddress = methodId === 'amazonpay';
     const allFormFields = getFields(values.countryCode);
     const customFormFields = allFormFields.filter(({ custom }) => custom);
@@ -148,6 +150,7 @@ const BillingForm = ({
 
             <div className="form-actions">
                 <Button
+                    className={newFontStyle ? 'body-bold' : ''}
                     disabled={isUpdating || isResettingAddress}
                     id="checkout-billing-continue"
                     isLoading={isUpdating || isResettingAddress}

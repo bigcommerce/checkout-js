@@ -30,10 +30,12 @@ $color-primaryDarker:               #000;
 $color-secondary:                   #fff;
 $color-secondaryDark:               $color-greyLightest;
 $color-secondaryDarker:             $color-greyLighter;
+$color-secondaryDarkest:            #757575;
 
 $color-highlight:                   #4496f6;
 $color-highlightDark:               darken($color-highlight, 15%);
 $color-highlightDarker:             darken($color-highlight, 25%);
+$color-highlightDarkest:            #476BEF;
 
 // States
 // -----------------------------------------------------------------------------

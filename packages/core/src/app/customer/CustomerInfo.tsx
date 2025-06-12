@@ -1,9 +1,10 @@
 import { CheckoutSelectors, CustomerRequestOptions, CustomError } from '@bigcommerce/checkout-sdk';
+import classNames from 'classnames';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { CheckoutContextProps, useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
 import { withCheckout } from '../checkout';
 import { isErrorWithType } from '../common/error';
@@ -46,6 +47,8 @@ const CustomerInfo: FunctionComponent<CustomerInfoProps & WithCheckoutCustomerIn
     onSignOutError = noop,
     signOut,
 }) => {
+    const { newFontStyle } = useStyleContext();
+
     const handleSignOut: () => Promise<void> = async () => {
         try {
             if (isRedirectExperimentEnabled && shouldRedirectToStorefrontForAuth) {
@@ -74,7 +77,9 @@ const CustomerInfo: FunctionComponent<CustomerInfoProps & WithCheckoutCustomerIn
     return (
         <div className="customerView" data-test="checkout-customer-info">
             <div
-                className="customerView-body optimizedCheckout-contentPrimary"
+                className={classNames('customerView-body',
+                    { 'body-regular': newFontStyle },
+                )}
                 data-test="customer-info"
             >
                 {email}
@@ -83,6 +88,7 @@ const CustomerInfo: FunctionComponent<CustomerInfoProps & WithCheckoutCustomerIn
             <div className="customerView-actions">
                 {isSignedIn && (
                     <Button
+                        className={newFontStyle ? 'body-regular' : ''}
                         isLoading={isSigningOut}
                         onClick={handleSignOut}
                         size={ButtonSize.Tiny}

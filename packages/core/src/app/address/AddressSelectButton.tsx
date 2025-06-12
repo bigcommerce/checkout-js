@@ -2,6 +2,7 @@ import React, { FunctionComponent, useState } from 'react';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
 
 import { AddressSelectProps } from './AddressSelect';
@@ -17,11 +18,14 @@ const AddressSelectButton: FunctionComponent<AddressSelectButtonProps & WithLang
     showSingleLineAddress,
     placeholderText,
 }) => {
+    const { newFontStyle } = useStyleContext();
     const [ariaExpanded, setAriaExpanded] = useState(false);
 
     const SelectedAddress = () => {
         if (!selectedAddress) {
-            return placeholderText ?? <TranslatedString id="address.enter_address_action" />;
+            return (<span className={newFontStyle ? 'body-regular' : ''} data-test="address-select-placeholder">
+                {placeholderText ?? <TranslatedString id="address.enter_address_action" />}
+            </span>);
         }
 
         return showSingleLineAddress

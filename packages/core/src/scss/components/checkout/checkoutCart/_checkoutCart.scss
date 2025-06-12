@@ -124,6 +124,10 @@
         font-size: fontSize("larger");
         font-weight: fontWeight("bold");
         line-height: 1.2;
+
+        &.header {
+            font-size: fontSize("large");
+        }
     }
 }
 

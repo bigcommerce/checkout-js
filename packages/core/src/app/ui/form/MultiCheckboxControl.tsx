@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, { FunctionComponent, memo, MouseEvent, useCallback } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -8,12 +9,14 @@ export interface MultiCheckboxControlProps {
     testId?: string;
     onSelectedAll(): void;
     onSelectedNone(): void;
+    newFontStyle?: boolean;
 }
 
 const MultiCheckboxControl: FunctionComponent<MultiCheckboxControlProps> = ({
     testId,
     onSelectedAll,
     onSelectedNone,
+    newFontStyle = false,
 }) => {
     const handleSelectAllClick = useCallback(
         (event: MouseEvent) => {
@@ -32,7 +35,8 @@ const MultiCheckboxControl: FunctionComponent<MultiCheckboxControlProps> = ({
     );
 
     return (
-        <ul className="multiCheckbox--controls">
+        <ul className={classNames('multiCheckbox--controls',
+            { 'body-regular': newFontStyle })}>
             <li className="multiCheckbox--control">
                 <TranslatedString id="address.select" />
             </li>

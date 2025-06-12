@@ -1,6 +1,8 @@
+import classNames from "classnames";
 import React, { FunctionComponent } from "react";
 
 import { TranslatedString } from "@bigcommerce/checkout/locale";
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
 import { FormField, TextInput } from "../ui/form";
 import { isMobileView as isMobileViewUI } from "../ui/responsive";
@@ -14,6 +16,7 @@ interface LeftToAllocateItemProps {
 
 const LeftToAllocateItem: FunctionComponent<LeftToAllocateItemProps> = ({ item, error }: LeftToAllocateItemProps) => {
     const isMobileView = isMobileViewUI();
+    const { newFontStyle } = useStyleContext();
 
     return (
         <tr>
@@ -22,14 +25,21 @@ const LeftToAllocateItem: FunctionComponent<LeftToAllocateItemProps> = ({ item, 
                     {item.imageUrl && <img alt={item.name} src={item.imageUrl} />}
                 </figure>
                 <div>
-                    <p className="left-to-allocate-item-name">{item.name}</p>
+                    <p className={classNames('left-to-allocate-item-name',
+                        { 'body-regular': newFontStyle })}>
+                        {item.name}
+                    </p>
                     {item.options?.map(option => (
-                        <p className="left-to-allocate-item-option" key={option.nameId}>{option.name}: {option.value}</p>
+                        <p className={classNames('left-to-allocate-item-option',
+                            { 'sub-text-medium': newFontStyle })}
+                            key={option.nameId}>
+                            {option.name}: {option.value}
+                        </p>
                     ))}
                 </div>
             </td>
-            {!isMobileView && <td>{item.quantity}</td>}
-            <td>
+            {!isMobileView && <td className={newFontStyle ? 'body-regular' : ''}>{item.quantity}</td>}
+            <td className={newFontStyle ? 'body-regular' : ''}>
                 {isMobileView && <TranslatedString data={{ count: item.quantity }} id="shipping.multishipping_left_to_allocate_message" />}
                 <FormField
                     additionalClassName={error ? "form-field--error" : ""}
@@ -39,6 +49,7 @@ const LeftToAllocateItem: FunctionComponent<LeftToAllocateItemProps> = ({ item, 
                         disabled={item.quantity === 0}
                         id={field.name}
                         min={0}
+                        newFontStyle={newFontStyle}
                         type="number"
                     />}
                     name={item.id.toString()}

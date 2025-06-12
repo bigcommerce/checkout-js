@@ -1,7 +1,9 @@
+import classNames from 'classnames';
 import React, { FunctionComponent, memo, useState } from 'react';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 import { ConfirmationModal } from '@bigcommerce/checkout/ui';
 
 export interface EditLinkProps {
@@ -12,6 +14,8 @@ export interface EditLinkProps {
 
 const EditLink: FunctionComponent<EditLinkProps> = ({ className, url, isMultiShippingMode }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const { newFontStyle } = useStyleContext();
 
     const gotoCartPage = () => {
         window.location.assign(url);
@@ -28,7 +32,8 @@ const EditLink: FunctionComponent<EditLinkProps> = ({ className, url, isMultiShi
                     onRequestClose={() => setIsModalOpen(false)}
                 />
                 <a
-                    className={className || 'cart-header-link'}
+                    className={classNames((className || 'cart-header-link'),
+                        { 'body-cta': newFontStyle })}
                     data-test="cart-edit-link"
                     href="#"
                     id="cart-edit-link"
@@ -42,7 +47,8 @@ const EditLink: FunctionComponent<EditLinkProps> = ({ className, url, isMultiShi
 
     return (
         <a
-            className={className || 'cart-header-link'}
+            className={classNames((className || 'cart-header-link'),
+                { 'body-cta': newFontStyle })}
             data-test="cart-edit-link"
             href={url}
             id="cart-edit-link"

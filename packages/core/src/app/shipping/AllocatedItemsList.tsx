@@ -1,6 +1,7 @@
 import React from "react";
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
 import { IconClose } from "../ui/icon";
 
@@ -14,9 +15,11 @@ interface AllocatedItemsListProps {
 }
 
 const AllocatedItemsList = ({ assignedItems, onUnassignItem }: AllocatedItemsListProps) => {
+    const { newFontStyle } = useStyleContext();
+
     return (
         <div className="allocated-line-items">
-            <h3>
+            <h3 className={newFontStyle ? 'body-bold' : ''}>
                 <TranslatedString data={{ count: assignedItems.shippableItemsCount }} id="shipping.multishipping_item_allocated_message" />
                 {assignedItems.hasSplitItems && (
                     <ItemSplitTooltip />
@@ -25,7 +28,7 @@ const AllocatedItemsList = ({ assignedItems, onUnassignItem }: AllocatedItemsLis
             <ul className="allocated-line-items-list">
                 {assignedItems.lineItems.map(item => (
                     <li key={item.id}>
-                        {renderItemContent(item)}
+                        {renderItemContent(item, newFontStyle)}
                         <span data-test={`remove-${item.id.toString()}-button`} onClick={() => onUnassignItem(item)}>
                             <IconClose />
                         </span>
