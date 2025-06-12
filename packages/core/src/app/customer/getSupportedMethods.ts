@@ -29,6 +29,7 @@ export const SUPPORTED_METHODS: string[] = [
     'googlepayworldpayaccess',
     'googlepaypaypalcommerce',
     'googlepaytdonlinemart',
+    'stripeocs',
 ];
 
 export const getSupportedMethodIds = (methodIds: string[], checkoutSettings?: CheckoutSettings): string[] => {
