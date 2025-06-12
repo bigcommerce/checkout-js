@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.604.0](https://github.com/bigcommerce/checkout-js/compare/v1.603.0...v1.604.0) (2025-06-12)
+
+
+### Features
+
+* **checkout:** Update font style on checkout page ([#2352](https://github.com/bigcommerce/checkout-js/issues/2352)) ([09fc174](https://github.com/bigcommerce/checkout-js/commit/09fc174965e9e07c5dc0a091a085b2d7025b1e4c))
+
+
+### Bug Fixes
+
+* **checkout:** add aria-describedBy to alert component ([#2359](https://github.com/bigcommerce/checkout-js/issues/2359)) ([b16352c](https://github.com/bigcommerce/checkout-js/commit/b16352c20be3b010b04a98c15aa065ee1b62dba4))
+
 ## [1.603.0](https://github.com/bigcommerce/checkout-js/compare/v1.602.0...v1.603.0) (2025-06-10)
 
 
