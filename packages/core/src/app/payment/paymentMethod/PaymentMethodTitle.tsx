@@ -128,10 +128,6 @@ function getPaymentMethodTitle(
                 logoUrl: cdnPath('/img/payment-providers/google-pay.png'),
                 titleText: '',
             },
-            [PaymentMethodId.DigitalRiver]: {
-                logoUrl: '',
-                titleText: language.translate('payment.digitalriver_display_name_text'),
-            },
             [PaymentMethodId.Humm]: {
                 logoUrl: cdnPath('/img/payment-providers/humm-checkout-header.png'),
                 titleText: '',

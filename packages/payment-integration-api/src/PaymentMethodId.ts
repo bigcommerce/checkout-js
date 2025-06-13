@@ -32,7 +32,6 @@ enum PaymentMethodId {
     Clearpay = 'clearpay',
     Converge = 'converge',
     CybersourceV2GooglePay = 'googlepaycybersourcev2',
-    DigitalRiver = 'digitalriver',
     Fawry = 'fawry',
     Humm = 'humm',
     Ideal = 'ideal',
