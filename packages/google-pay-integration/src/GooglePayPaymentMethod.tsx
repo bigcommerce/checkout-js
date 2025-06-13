@@ -117,6 +117,12 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                     onError: onUnhandledError,
                     onPaymentSelect: () => reinitializePayment(mergedOptions),
                 },
+                [PaymentMethodId.StripeOCSGooglePay]: {
+                  loadingContainerId,
+                  walletButton: 'walletButton',
+                  onError: onUnhandledError,
+                  onPaymentSelect: () => reinitializePayment(mergedOptions),
+                },
             };
 
             return checkoutService.initializePayment(mergedOptions);
@@ -153,5 +159,6 @@ export default toResolvableComponent<PaymentMethodProps, CheckoutButtonResolveId
         { id: PaymentMethodId.StripeUPEGooglePay },
         { id: PaymentMethodId.WorldpayAccessGooglePay },
         { id: PaymentMethodId.TdOnlineMartGooglePay },
+        { id: PaymentMethodId.StripeOCSGooglePay },
     ],
 );
