@@ -139,7 +139,7 @@ function appConfig(options, argv) {
                 new WebpackAssetsManifest({
                     entrypoints: true,
                     transform: (assets) => transformManifest(assets, appVersion),
-                    output: 'manifest-app.json',
+                    output: `manifest-app-${appVersion}.json`,
                     integrity: isProduction,
                     done: (manifest, { compilation }) => {
                         if (compilation.errors.length) {
@@ -305,7 +305,7 @@ function loaderConfig(options, argv) {
                                         require(join(
                                             __dirname,
                                             isProduction ? 'dist' : 'build',
-                                            'manifest-app.json',
+                                            `manifest-app-${appVersion}.json`,
                                         )),
                                     ),
                                 });
@@ -326,6 +326,10 @@ function loaderConfig(options, argv) {
                 }),
                 new BuildHookPlugin({
                     onSuccess() {
+                        if (process.env.PRERELEASE) {
+                            return;
+                        }
+
                         const folder = isProduction ? 'dist' : 'build';
 
                         copyFileSync(
@@ -341,7 +345,7 @@ function loaderConfig(options, argv) {
                 new WebpackAssetsManifest({
                     entrypoints: true,
                     transform: (assets) => transformManifest(assets, appVersion),
-                    output: 'manifest-loader.json',
+                    output: `manifest-loader-${appVersion}.json`,
                     integrity: isProduction,
                     done(_, { compilation: { errors = [] } }) {
                         if (errors.length) {
@@ -351,9 +355,14 @@ function loaderConfig(options, argv) {
                         const folder = isProduction ? 'dist' : 'build';
 
                         mergeManifests(
-                            join(__dirname, folder, 'manifest.json'),
-                            join(__dirname, folder, 'manifest-app.json'),
-                            join(__dirname, folder, 'manifest-loader.json'),
+                            join(__dirname, folder, `manifest-${appVersion}.json`),
+                            join(__dirname, folder, `manifest-app-${appVersion}.json`),
+                            join(__dirname, folder, `manifest-loader-${appVersion}.json`),
+                        );
+
+                        copyFileSync(
+                            join(__dirname, folder, `manifest-${appVersion}.json`),
+                            join(__dirname, folder, `manifest.json`),
                         );
                     },
                 }),
