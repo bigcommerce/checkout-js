@@ -166,7 +166,7 @@ const ConsignmentAddressSelector = ({
                 isOpen={isOpenNewAddressModal}
                 onRequestClose={handleCloseAddAddressForm}
                 onSaveAddress={handleSaveAddress}
-                selectedAddress={!!isGuest ? selectedAddress : undefined}
+                selectedAddress={isGuest ? selectedAddress : undefined}
             />
             {isGuest
                 ? <GuestCustomerAddressSelector

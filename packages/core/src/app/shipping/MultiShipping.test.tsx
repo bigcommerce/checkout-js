@@ -4,6 +4,7 @@ import {
     createEmbeddedCheckoutMessenger,
     EmbeddedCheckoutMessenger,
 } from '@bigcommerce/checkout-sdk';
+import faker from '@faker-js/faker';
 import userEvent from '@testing-library/user-event';
 import { noop } from 'lodash';
 import React, { act, FunctionComponent } from 'react';
@@ -22,6 +23,7 @@ import {
 import {
     CheckoutPageNodeObject,
     CheckoutPreset,
+    checkoutWithGuestMultiShippingCart,
     checkoutWithMultiShippingCart,
     consignment,
     shippingAddress2,
@@ -30,6 +32,7 @@ import {
 } from '@bigcommerce/checkout/test-framework';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
+import { getAddressContent } from '../address/SingleLineStaticAddress';
 import Checkout, { CheckoutProps } from '../checkout/Checkout';
 import { createErrorLogger } from '../common/error';
 import {
@@ -354,6 +357,8 @@ describe('Multi-shipping', () => {
     });
 
     it('completes multi-shipping as a guest', async () => {
+        jest.spyOn(checkoutService, 'selectConsignmentShippingOption');
+
         checkout.use(CheckoutPreset.CheckoutWithGuestMultiShippingCart);
 
         render(<CheckoutTest {...defaultProps} />);
@@ -363,7 +368,115 @@ describe('Multi-shipping', () => {
         await userEvent.click(screen.getByText(/Ship to multiple addresses/i));
 
         expect(await screen.findByText(/items left to allocate/)).toBeInTheDocument();
+        expect(await screen.findByText(/No shipping address entered/i)).toBeInTheDocument();
 
-        // TODO: CHECKOUT-9289 Build Guest Multi-shipping Address Entry UI
+        const address = JSON.parse(JSON.stringify({
+            firstName: faker.name.firstName(),
+            lastName: faker.name.lastName(),
+            address1: faker.address.streetAddress(),
+            city: faker.address.city(),
+            countryCode: 'AU',
+            stateOrProvinceCode: faker.helpers.arrayElement(['NSW', 'VIC', 'QLD', 'TAS']),
+            postalCode: faker.address.zipCode(),
+        }));
+
+        const updatedAddress = {
+            ...address,
+            firstName: `${address.firstName} Updated`,
+        }
+
+        checkout.updateCheckout(
+            'post',
+            '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments',
+            {
+                ...checkoutWithGuestMultiShippingCart,
+                consignments: [
+                    {
+                        ...consignment,
+                        shippingAddress: address,
+                        lineItemIds: ['x', 'y', 'z'],
+                        selectedShippingOption: undefined,
+                    },
+                ],
+            },
+        );
+
+        checkout.updateCheckout(
+            'put',
+            '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments/consignment-1',
+            {
+                ...checkoutWithGuestMultiShippingCart,
+                consignments: [{
+                    ...consignment,
+                    shippingAddress: address,
+                    lineItemIds: ['x', 'y', 'z'],
+                }],
+            },
+        );
+
+        await act(async () => {
+            await userEvent.click(screen.getByText('Enter shipping address'));
+            await userEvent.type(await screen.findByLabelText('First Name'), address.firstName);
+            await userEvent.type(await screen.findByLabelText('Last Name'), address.lastName);
+            await userEvent.type(
+                screen.getByRole('textbox', { name: /address/i }),
+                address.address1,
+            );
+            await userEvent.type(await screen.findByLabelText('City'), address.city);
+            await userEvent.selectOptions(
+                screen.getByTestId('countryCodeInput-select'),
+                address.countryCode,
+            );
+
+            await userEvent.selectOptions(
+                screen.getByTestId('provinceCodeInput-select'),
+                address.stateOrProvinceCode,
+            );
+
+            await userEvent.type(screen.getByLabelText('Postal Code'), address.postalCode);
+
+            await userEvent.click(screen.getByText('Save Address'));
+
+            expect(screen.getByText(getAddressContent(address))).toBeInTheDocument();
+
+            await userEvent.click(screen.getByText('Allocate items'));
+            await userEvent.click(screen.getByText(/Select all items left/i));
+            await userEvent.click(screen.getByRole('button', { name: 'Allocate' }));
+        });
+
+        const selectedShippingOptions = await screen.findAllByRole('radio', { checked: true });
+
+        // eslint-disable-next-line jest-dom/prefer-to-have-attribute
+        expect(selectedShippingOptions[0].getAttribute('value')).toBe('option-id-pick-up');
+        expect(checkoutService.selectConsignmentShippingOption).toHaveBeenCalledTimes(1);
+
+        expect(screen.getByText("All items are allocated.")).toBeInTheDocument();
+
+        expect(screen.getByText('Destination #1')).toBeInTheDocument();
+        expect(screen.getByText(getAddressContent(address))).toBeInTheDocument();
+        expect(screen.getByText("5 items allocated")).toBeInTheDocument();
+
+        checkout.updateCheckout(
+            'put',
+            '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments/consignment-1',
+            {
+                ...checkoutWithGuestMultiShippingCart,
+                consignments: [{
+                    ...consignment,
+                    shippingAddress: updatedAddress,
+                    lineItemIds: ['x', 'y', 'z'],
+                }],
+            },
+        );
+
+        await userEvent.click(screen.getByTestId("edit-shipping-address"));
+
+        expect(screen.getByLabelText('First Name')).toHaveDisplayValue(address.firstName);
+        expect(screen.getByLabelText('Last Name')).toHaveDisplayValue(address.lastName);
+
+        await userEvent.type(screen.getByLabelText('First Name'), ' Updated');
+        await userEvent.click(screen.getByText('Save Address'));
+
+        expect(screen.getByText(getAddressContent(updatedAddress))).toBeInTheDocument();
     });
 });
