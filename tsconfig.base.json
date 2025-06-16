@@ -52,9 +52,6 @@
       "@bigcommerce/checkout/credit-card-integration": [
         "packages/credit-card-integration/src/index.ts"
       ],
-      "@bigcommerce/checkout/digitalriver-integration": [
-        "packages/digitalriver-integration/src/index.ts"
-      ],
       "@bigcommerce/checkout/dom-utils": ["packages/dom-utils/src/index.ts"],
       "@bigcommerce/checkout/error-handling-utils": ["packages/error-handling-utils/src/index.ts"],
       "@bigcommerce/checkout/google-pay-integration": [
