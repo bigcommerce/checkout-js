@@ -9,3 +9,4 @@ export { default as isApplePayWindow } from './is-apple-pay-window';
 export { default as shouldFilterApplePay } from './should-filter-apple-pay';
 export { default as isFloatingLabelEnabled } from './isFloatingLabelEnabled';
 export { default as isExperimentEnabled } from './isExperimentEnabled';
+export { default as getNestedValue } from './getNestedValue';
