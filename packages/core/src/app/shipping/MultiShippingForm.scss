@@ -52,7 +52,7 @@ $allocate-items-table-image-width-small-screen: 40%;
     }
 }
 
-.new-consignment-line-item-header, .consignment-line-item-header {
+.new-consignment-line-item-header, .consignment-line-item-header, .guest-consignment-line-item-header {
     display: flex;
     h3 {
         margin-bottom: spacing("base");
@@ -83,6 +83,10 @@ $allocate-items-table-image-width-small-screen: 40%;
             margin-left: spacing("base");
         }
     }
+}
+
+.guest-consignment-line-item-header {
+    margin-bottom: spacing("base");
 }
 
 .modal.modal--afterOpen {

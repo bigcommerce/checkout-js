@@ -11,6 +11,7 @@ import { EMPTY_ARRAY, isFloatingLabelEnabled } from "../common/utility";
 import { AssignItemFailedError, AssignItemInvalidAddressError } from "./errors";
 import { MultiShippingConsignmentData } from "./MultishippingType";
 import { setRecommendedOrMissingShippingOption } from './utils';
+import GuestCustomerAddressSelector from "./GuestCustomerAddressSelector";
 
 interface ConsignmentAddressSelectorProps {
     consignment?: MultiShippingConsignmentData;
@@ -68,6 +69,8 @@ const ConsignmentAddressSelector = ({
         },
     } = config;
 
+    const isGuest = customer.isGuest;
+
     const handleSelectAddress = async (address: Address) => {
         if (!isValidAddress(address, getFields(address.countryCode))) {
             return onUnhandledError(new AssignItemInvalidAddressError());
@@ -122,12 +125,13 @@ const ConsignmentAddressSelector = ({
 
         await handleSelectAddress(address);
 
-        // TODO: CHECKOUT-9289 Build Guest Multi-shipping Address Entry UI
-        try {
-            await createCustomerAddress(address);
-        } catch (error) {
-            if (error instanceof Error) {
-                setCreateCustomerAddressError(error);
+        if (!isGuest) {
+            try {
+                await createCustomerAddress(address);
+            } catch (error) {
+                if (error instanceof Error) {
+                    setCreateCustomerAddressError(error);
+                }
             }
         }
 
@@ -162,16 +166,23 @@ const ConsignmentAddressSelector = ({
                 isOpen={isOpenNewAddressModal}
                 onRequestClose={handleCloseAddAddressForm}
                 onSaveAddress={handleSaveAddress}
+                selectedAddress={!!isGuest ? selectedAddress : undefined}
             />
-            <AddressSelect
-                addresses={addresses}
-                onSelectAddress={handleSelectAddress}
-                onUseNewAddress={handleUseNewAddress}
-                placeholderText={<TranslatedString id="shipping.choose_shipping_address" />}
-                selectedAddress={selectedAddress}
-                showSingleLineAddress
-                type={AddressType.Shipping}
-            />
+            {isGuest
+                ? <GuestCustomerAddressSelector
+                    onUseNewAddress={handleUseNewAddress}
+                    selectedAddress={selectedAddress}
+                />
+                : <AddressSelect
+                    addresses={addresses}
+                    onSelectAddress={handleSelectAddress}
+                    onUseNewAddress={handleUseNewAddress}
+                    placeholderText={<TranslatedString id="shipping.choose_shipping_address" />}
+                    selectedAddress={selectedAddress}
+                    showSingleLineAddress
+                    type={AddressType.Shipping}
+                />
+            }
         </>
     )
 }

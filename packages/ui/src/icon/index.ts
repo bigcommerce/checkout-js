@@ -29,6 +29,7 @@ export { default as IconClose } from './IconClose';
 export { default as IconCloseWithBorder } from './IconCloseWithBorder';
 export { default as IconDogeCoin } from './IconDogeCoin';
 export { default as IconError } from './IconError';
+export { default as IconEdit } from './IconEdit';
 export { default as IconEthereum } from './IconEthereum';
 export { default as IconGiftCertificate } from './IconGiftCertificate';
 export { default as IconHelp } from './IconHelp';
