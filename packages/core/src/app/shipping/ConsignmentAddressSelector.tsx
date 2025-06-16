@@ -9,9 +9,9 @@ import { ErrorModal } from "../common/error";
 import { EMPTY_ARRAY, isFloatingLabelEnabled } from "../common/utility";
 
 import { AssignItemFailedError, AssignItemInvalidAddressError } from "./errors";
+import GuestCustomerAddressSelector from "./GuestCustomerAddressSelector";
 import { MultiShippingConsignmentData } from "./MultishippingType";
 import { setRecommendedOrMissingShippingOption } from './utils';
-import GuestCustomerAddressSelector from "./GuestCustomerAddressSelector";
 
 interface ConsignmentAddressSelectorProps {
     consignment?: MultiShippingConsignmentData;
