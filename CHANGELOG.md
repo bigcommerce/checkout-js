@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.606.0](https://github.com/bigcommerce/checkout-js/compare/v1.605.5...v1.606.0) (2025-06-17)
+
+
+### Features
+
+* **payment:** StripeOCS Google Pay added ([fdef57a](https://github.com/bigcommerce/checkout-js/commit/fdef57a659453ca879a1917ab139b75d6a134449))
+
 ### [1.605.5](https://github.com/bigcommerce/checkout-js/compare/v1.605.4...v1.605.5) (2025-06-17)
 
 ### [1.605.4](https://github.com/bigcommerce/checkout-js/compare/v1.605.3...v1.605.4) (2025-06-17)
