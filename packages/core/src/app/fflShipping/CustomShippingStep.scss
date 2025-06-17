@@ -1,0 +1,74 @@
+/* CustomSelect.scss */
+
+.customShippingSectionHeader {
+    margin: 0 !important;
+}
+
+.CustomSelect {
+    padding: 0.5rem 1rem;
+    margin: 10px 0px 10px 0px;
+    font-size: 1rem;
+    line-height: 1.5;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    color: #333;
+    appearance: none;
+    /* Removes default arrow in some browsers */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    // Optional: Add a custom background arrow (works best with extra styling)
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.41 0L6 4.58 10.59 0 12 1.41 6 7.41 0 1.41z' fill='%23333'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 12px 8px;
+    padding-right: 2.5rem; // extra room for arrow
+
+    &:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+    }
+}
+
+.FFLQueryContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 4px;
+}
+
+
+.pickupLocationContainer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin: 2em 0;
+    
+}
+
+.pickupOption {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    text-align: center;
+    color: rgb(244, 244, 244);
+    background-color: #b7b7b7;
+    font-size: 1.5em; // Slightly larger than the original
+    width: 50%;
+    transition: background-color 300ms ease, color 300ms ease;
+
+    &:hover {
+        background-color: rgb(118, 118, 118);
+    }
+
+    &.selectedPickupOption {
+        background-color: #333;
+        color: white;
+        font-weight: bold;
+    }
+
+
+
+}

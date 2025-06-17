@@ -68,7 +68,7 @@
     @include square($checkoutStep-counter-size);
 
     background-color: color("primary");
-    border-radius: 50%;
+    border-radius: 0;
     text-align: center;
     transition: transform 250ms ease;
 

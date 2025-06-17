@@ -15,7 +15,7 @@
 .spinner {
     animation: lds-dual-ring 1.2s linear infinite;
     border-color: $loadingNotification-label-spinnerColor;
-    border-radius: 50%;
+    border-radius: 0;
     border-style: solid;
     border-width: 1px;
     display: inline-block;

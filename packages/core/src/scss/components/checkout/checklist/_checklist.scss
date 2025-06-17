@@ -66,7 +66,7 @@
         @include square(26px);
 
         background-color: $input-bg-color;
-        border-radius: 100%;
+        border-radius: 0;
         content: "";
         left: $checklist-pip-spacing--small;
         margin: auto;
@@ -179,7 +179,7 @@
         @include square(26px);
 
         background-color: $loading-skeleton-button-bg-color;
-        border-radius: 100%;
+        border-radius: 0;
         left: $checklist-pip-spacing--small;
         position: absolute;
         top: $checklist-pip-spacing-top;

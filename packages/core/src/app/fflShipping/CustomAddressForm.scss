@@ -1,0 +1,40 @@
+.CustomFormContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px 0px 8px 0px;
+}
+
+.formRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    gap: 1rem;
+    /* optional: adds spacing between form groups */
+}
+
+.customFormGroup {
+    flex: 1;
+}
+
+.customFormGroup input {
+    width: 100%;
+}
+
+.customFormInput {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    border: 1px solid #ebebeb;
+    font-size: 1.1rem;
+    font-family: inherit;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background-color: #fcfcfc;
+    color: #333;
+    outline: none;
+}
+
+.customFormInput:focus {
+    border-color: #4f46e5; /* Indigo-600 */
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+}

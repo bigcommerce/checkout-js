@@ -20,7 +20,7 @@ const CartSummaryDrawer: FunctionComponent<
             <EditLink
                 className="modal-header-link cart-modal-link"
                 isMultiShippingMode={isMultiShippingMode}
-                url={cartUrl}
+                url={"http://ssdinternationalinc.com/cart"}
             />
         ),
     });

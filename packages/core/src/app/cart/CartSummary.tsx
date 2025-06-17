@@ -27,7 +27,7 @@ const CartSummary: FunctionComponent<
     const headerLink = isBuyNowCart() ? null : (
         <EditLink
             isMultiShippingMode={isMultiShippingMode}
-            url={cartUrl}
+            url={"http://ssdinternationalinc.com/cart"}
         />
     );
 

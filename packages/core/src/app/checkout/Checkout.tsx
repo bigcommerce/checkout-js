@@ -11,7 +11,8 @@ import {
     FlashMessage,
     PaymentMethod,
     Promotion,
- RequestOptions } from '@bigcommerce/checkout-sdk';
+    RequestOptions
+} from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { find, findIndex } from 'lodash';
 import React, { Component, lazy, ReactNode } from 'react';
@@ -20,7 +21,7 @@ import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
 import { Extension, ExtensionContextProps, withExtension } from '@bigcommerce/checkout/checkout-extension';
 import { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { AddressFormSkeleton, ChecklistSkeleton , LazyContainer, LoadingNotification, LoadingOverlay } from '@bigcommerce/checkout/ui';
+import { AddressFormSkeleton, ChecklistSkeleton, LazyContainer, LoadingNotification, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import { withAnalytics } from '../analytics';
 import { StaticBillingAddress } from '../billing';
@@ -40,7 +41,7 @@ import { getSupportedMethodIds } from '../customer/getSupportedMethods';
 import { SubscribeSessionStorage } from '../customer/SubscribeSessionStorage';
 import { EmbeddedCheckoutStylesheet, isEmbedded } from '../embeddedCheckout';
 import { PromotionBannerList } from '../promotion';
-import { hasSelectedShippingOptions, isUsingMultiShipping, ShippingSummary } from '../shipping';
+import { hasSelectedShippingOptions, isUsingMultiShipping } from '../shipping';
 import { ShippingOptionExpiredError } from '../shipping/shippingOption';
 import { MobileView } from '../ui/responsive';
 
@@ -50,6 +51,8 @@ import CheckoutStepType from './CheckoutStepType';
 import CheckoutSupport from './CheckoutSupport';
 import mapToCheckoutProps from './mapToCheckoutProps';
 import navigateToOrderConfirmation from './navigateToOrderConfirmation';
+import CustomShippingStep from '../fflShipping/CustomShippingStep';
+import CustomShippingSummary from '../fflShipping/customShippingSummary';
 
 const Billing = lazy(() =>
     retry(
@@ -91,15 +94,7 @@ const Payment = lazy(() =>
     ),
 );
 
-const Shipping = lazy(() =>
-    retry(
-        () =>
-            import(
-                /* webpackChunkName: "shipping" */
-                '../shipping/Shipping'
-            ),
-    ),
-);
+
 
 export interface CheckoutProps {
     checkoutId: string;
@@ -151,10 +146,10 @@ export interface WithCheckoutProps {
 
 class Checkout extends Component<
     CheckoutProps &
-        WithCheckoutProps &
-        WithLanguageProps &
-        AnalyticsContextProps &
-        ExtensionContextProps,
+    WithCheckoutProps &
+    WithLanguageProps &
+    AnalyticsContextProps &
+    ExtensionContextProps,
     CheckoutState
 > {
     state: CheckoutState = {
@@ -251,8 +246,8 @@ class Checkout extends Component<
             const consignments = data.getConsignments();
             const cart = data.getCart();
 
-            
-              
+
+
 
             const hasMultiShippingEnabled =
                 data.getConfig()?.checkoutSettings.hasMultiShippingEnabled;
@@ -409,7 +404,7 @@ class Checkout extends Component<
                     checkEmbeddedSupport={this.checkEmbeddedSupport}
                     isEmbedded={isEmbedded()}
                     isSubscribed={isSubscribed}
-                    isWalletButtonsOnTop = {isShowingWalletButtonsOnTop }
+                    isWalletButtonsOnTop={isShowingWalletButtonsOnTop}
                     onAccountCreated={this.navigateToNextIncompleteStep}
                     onChangeViewType={this.setCustomerViewType}
                     onContinueAsGuest={this.navigateToNextIncompleteStep}
@@ -428,8 +423,7 @@ class Checkout extends Component<
     }
 
     private renderShippingStep(step: CheckoutStepStatus): ReactNode {
-        const { hasCartChanged, cart, consignments = [], isShippingDiscountDisplayEnabled } = this.props;
-        const { isBillingSameAsShipping, isMultiShippingMode } = this.state;
+        const { cart, consignments = [] } = this.props;
 
         if (!cart) {
             return;
@@ -442,20 +436,12 @@ class Checkout extends Component<
                 key={step.type}
                 onEdit={this.handleEditStep}
                 onExpanded={this.handleExpanded}
-                summary={<ShippingSummary cart={cart} consignments={consignments} isMultiShippingMode={isMultiShippingMode} isShippingDiscountDisplayEnabled={isShippingDiscountDisplayEnabled}/>}
+                summary={<CustomShippingSummary cart={cart} consignments={consignments} />}
+
             >
                 <LazyContainer loadingSkeleton={<AddressFormSkeleton />}>
-                    <Shipping
-                        cartHasChanged={hasCartChanged}
-                        isBillingSameAsShipping={isBillingSameAsShipping}
-                        isMultiShippingMode={isMultiShippingMode}
-                        navigateNextStep={this.handleShippingNextStep}
-                        onCreateAccount={this.handleShippingCreateAccount}
-                        onReady={this.handleReady}
-                        onSignIn={this.handleShippingSignIn}
-                        onToggleMultiShipping={this.handleToggleMultiShipping}
-                        onUnhandledError={this.handleUnhandledError}
-                        step={step}
+                    <CustomShippingStep
+                        onContinue={this.navigateToNextIncompleteStep}
                     />
                 </LazyContainer>
             </CheckoutStep>
@@ -529,6 +515,7 @@ class Checkout extends Component<
                             <LazyContainer>
                                 <Extension region={ExtensionRegion.SummaryAfter} />
                                 <CartSummaryDrawer isMultiShippingMode={isMultiShippingMode} />
+
                             </LazyContainer>
                         );
                     }
@@ -538,8 +525,36 @@ class Checkout extends Component<
                             <LazyContainer>
                                 <CartSummary isMultiShippingMode={isMultiShippingMode} />
                                 <Extension region={ExtensionRegion.SummaryAfter} />
+                                <div
+                                    style={{
+                                        backgroundColor: '#fffbe6',
+                                        border: '1px solid #ffe58f',
+                                        borderRadius: '4px',
+                                        padding: '16px 20px',
+                                        margin: '20px auto',
+                                        maxWidth: '600px',
+                                        fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif',
+                                        color: '#614700',
+                                        boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+                                        fontSize: '14px',
+                                        lineHeight: '1.6',
+                                    }}
+                                >
+                                    <strong style={{ display: 'block', fontSize: '16px', marginBottom: '8px' }}>
+                                        Important Notice
+                                    </strong>
+                                    To complete your order, you will need to submit the required credentials via email. Detailed instructions will be provided to you after checkout. If you do not send your credentials, your order will not be processed.
+                                    <div style={{ marginTop: '12px' }}>
+                                        <strong>Note:</strong> If your order includes <strong>ammunition</strong>, you must also include a scan or photo of a valid government-issued photo ID.
+                                    </div>
+                                </div>
+
+
                             </LazyContainer>
+
+
                         </aside>
+
                     );
                 }}
             </MobileView>
@@ -569,12 +584,6 @@ class Checkout extends Component<
             clearError(error);
         }
     }
-
-    private handleToggleMultiShipping: () => void = () => {
-        const { isMultiShippingMode } = this.state;
-
-        this.setState({ isMultiShippingMode: !isMultiShippingMode });
-    };
 
     private navigateToNextIncompleteStep: (options?: { isDefault?: boolean }) => void = (
         options,
@@ -639,7 +648,7 @@ class Checkout extends Component<
 
         const isShippingStepFinished =
             findIndex(steps, { type: CheckoutStepType.Shipping }) <
-                findIndex(steps, { type: activeStepType }) || isDefaultStepPaymentOrBilling;
+            findIndex(steps, { type: activeStepType }) || isDefaultStepPaymentOrBilling;
 
         if (
             prevHasSelectedShippingOptions &&
@@ -723,25 +732,7 @@ class Checkout extends Component<
         this.navigateToStep(CheckoutStepType.Customer);
     };
 
-    private handleShippingNextStep: (isBillingSameAsShipping: boolean) => void = (
-        isBillingSameAsShipping,
-    ) => {
-        this.setState({ isBillingSameAsShipping });
-
-        if (isBillingSameAsShipping) {
-            this.navigateToNextIncompleteStep();
-        } else {
-            this.navigateToStep(CheckoutStepType.Billing);
-        }
-    };
-
-    private handleShippingSignIn: () => void = () => {
-        this.setCustomerViewType(CustomerViewType.Login);
-    };
-
-    private handleShippingCreateAccount: () => void = () => {
-        this.setCustomerViewType(CustomerViewType.CreateAccount);
-    };
+    
 
     private setCustomerViewType: (viewType: CustomerViewType) => void = (customerViewType) => {
         const { createAccountUrl } = this.props;

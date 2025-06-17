@@ -9,9 +9,7 @@ import { EMPTY_ARRAY, isExperimentEnabled } from '../common/utility';
 import { SUPPORTED_METHODS } from '../customer';
 import { PaymentMethodId } from '../payment/paymentMethod';
 import {
-    hasSelectedShippingOptions,
     hasUnassignedLineItems,
-    itemsRequireShipping,
 } from '../shipping';
 
 import CheckoutStepType from './CheckoutStepType';
@@ -46,7 +44,7 @@ const getCustomerStepStatus = createSelector(
             checkout && checkout.payments
                 ? checkout.payments.some(
                     (payment: CheckoutPayment) => SUPPORTED_METHODS.indexOf(payment.providerId) >= 0,
-                  )
+                )
                 : false;
         const isGuest = !!(customer && customer.isGuest);
         const isComplete = hasEmail || isUsingWallet;
@@ -97,8 +95,8 @@ const getBillingStepStatus = createSelector(
         const isUsingWallet =
             checkout && checkout.payments
                 ? checkout.payments.some(
-                      (payment) => SUPPORTED_METHODS.indexOf(payment.providerId) >= 0,
-                  )
+                    (payment) => SUPPORTED_METHODS.indexOf(payment.providerId) >= 0,
+                )
                 : false;
         const isComplete = hasAddress || isUsingWallet;
         const isUsingAmazonPay =
@@ -179,43 +177,36 @@ const getBillingStepStatus = createSelector(
     },
 );
 
-const getShippingStepStatus = createSelector(
+
+
+const getCustomShippingStepStatus = createSelector(
     ({ data }: CheckoutSelectors) => data.getShippingAddress(),
     ({ data }: CheckoutSelectors) => data.getConsignments(),
     ({ data }: CheckoutSelectors) => data.getCart(),
-    ({ data }: CheckoutSelectors) => {
-        const shippingAddress = data.getShippingAddress();
 
-        return shippingAddress
-            ? data.getShippingAddressFields(shippingAddress.countryCode)
-            : EMPTY_ARRAY;
-    },
     ({ data }: CheckoutSelectors) => data.getConfig(),
-    (shippingAddress, consignments, cart, shippingAddressFields, config) => {
-        const hasAddress = shippingAddress
-            ? isValidAddress(shippingAddress, shippingAddressFields)
-            : false;
-        const hasOptions = consignments ? hasSelectedShippingOptions(consignments) : false;
-        const hasUnassignedItems =
-            cart && consignments ? hasUnassignedLineItems(consignments, cart.lineItems) : true;
-        const isComplete = hasAddress && hasOptions && !hasUnassignedItems;
-        const isRequired = itemsRequireShipping(cart, config);
-        const isCustomShippingSelected =
-            isExperimentEnabled(
-                config?.checkoutSettings,
-                'PROJECT-5015.manual_order.display_custom_shipping',
-            ) &&
-            hasOptions &&
-            consignments?.some(
-                ({ selectedShippingOption }) => selectedShippingOption?.type === 'custom',
-            );
+    (_shippingAddress, consignments, cart) => {
+        let hasUnselectedShippingOption = false;
+
+        if (consignments) {
+            for (let i = 0; i < consignments.length; i++) {
+                if (consignments[i].selectedShippingOption === null) {
+                    hasUnselectedShippingOption = true;
+                }
+            }
+        }
+
+        const hasUnassignedItems = cart && consignments ? hasUnassignedLineItems(consignments, cart.lineItems) : true;
+        const isComplete = !hasUnassignedItems && !hasUnselectedShippingOption;
+
+
 
         return {
             type: CheckoutStepType.Shipping,
             isActive: false,
             isComplete,
-            isEditable: isComplete && isRequired && !isCustomShippingSelected,
-            isRequired,
+            isEditable: isComplete,
+            isRequired: true,
         };
     },
 );
@@ -242,7 +233,7 @@ const getOrderSubmitStatus = createSelector(
 
 const getCheckoutStepStatuses = createSelector(
     getCustomerStepStatus,
-    getShippingStepStatus,
+    getCustomShippingStepStatus,
     getBillingStepStatus,
     getPaymentStepStatus,
     getOrderSubmitStatus,
