@@ -51,6 +51,7 @@ export {
     IconCardDankort,
     IconCardDinersClub,
     IconCardDiscover,
+    IconEdit,
     IconCardElectron,
     IconCardElo,
     IconCardHipercard,
