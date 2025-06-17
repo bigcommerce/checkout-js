@@ -4,9 +4,9 @@ import React from "react";
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { useStyleContext } from "@bigcommerce/checkout/payment-integration-api";
+import { IconEdit } from '@bigcommerce/checkout/ui';
 
 import SingleLineStaticAddress from '../address/SingleLineStaticAddress';
-import { IconEdit } from '../ui/icon';
 
 interface GuestCustomerAddressSelectorProps {
     onUseNewAddress(): void;

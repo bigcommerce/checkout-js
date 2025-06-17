@@ -89,9 +89,7 @@ describe('AddressFormModal Component', () => {
         await userEvent.clear(screen.getByTestId('addressLine1Input-text'));
         await userEvent.click(screen.getByText('Save Address'));
 
-        await new Promise((resolve) => process.nextTick(resolve));
-
-        expect(screen.getByText('Address is required')).toBeInTheDocument();
+        expect(await screen.findByText('Address is required')).toBeInTheDocument();
     });
 
     it('successfully submits address form with required fields', async () => {
