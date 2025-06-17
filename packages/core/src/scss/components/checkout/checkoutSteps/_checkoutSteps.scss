@@ -185,6 +185,13 @@
 
     .button {
         margin-bottom: 0;
+        border: none;
+    }
+
+    .button:hover, .button:focus {
+        background: none;
+        box-shadow: none;
+        outline: none;
     }
 }
 
