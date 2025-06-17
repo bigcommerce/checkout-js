@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.605.3](https://github.com/bigcommerce/checkout-js/compare/v1.605.2...v1.605.3) (2025-06-17)
+
+
+### Bug Fixes
+
+* **core:** CHECKOUT-000 Fix broken ARIA references in shipping inputs ([#2338](https://github.com/bigcommerce/checkout-js/issues/2338)) ([b9a0ee8](https://github.com/bigcommerce/checkout-js/commit/b9a0ee8aad305172451e219b1be082d536a77401))
+
 ### [1.605.2](https://github.com/bigcommerce/checkout-js/compare/v1.605.1...v1.605.2) (2025-06-16)
 
 
