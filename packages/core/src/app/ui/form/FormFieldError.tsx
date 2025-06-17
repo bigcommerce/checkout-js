@@ -1,7 +1,9 @@
-import { ErrorMessage } from 'formik';
+import { ErrorMessage, useFormikContext } from 'formik';
 import React, { FunctionComponent, memo, useCallback } from 'react';
 
 import { FormContext } from '@bigcommerce/checkout/ui';
+
+import { getNestedValue } from '../../common/utility';
 
 export interface FormFieldErrorProps {
     name: string;
@@ -10,30 +12,40 @@ export interface FormFieldErrorProps {
 }
 
 const FormFieldError: FunctionComponent<FormFieldErrorProps> = ({ name, testId, errorId }) => {
+    const formikContext = useFormikContext<{ [key: string]: any }>();
+
+    const hasError = getNestedValue(formikContext?.errors, name) && getNestedValue(formikContext?.touched, name);
+
     const renderMessage = useCallback(
         (message: string) => (
-            <ul className="form-field-errors" data-test={testId}>
-                <li className="form-field-error">
-                    <label
-                        aria-live="polite"
-                        className="form-inlineMessage"
-                        htmlFor={name}
-                        id={errorId}
-                        role="alert"
-                    >
-                        {message}
-                    </label>
-                </li>
-            </ul>
+            <label
+                aria-live="polite"
+                className="form-inlineMessage"
+                htmlFor={name}
+                id={errorId}
+                role="alert"
+            >
+                {message}
+            </label>
         ),
-        [errorId, name, testId],
+        [errorId, name],
     );
 
     return (
         <FormContext.Consumer>
-            {({ isSubmitted }) =>
-                isSubmitted && <ErrorMessage name={name} render={renderMessage} />
-            }
+            {({isSubmitted}) => (
+                <ul className="form-field-errors" data-test={testId}>
+                    <li className="form-field-error">
+                        {(hasError && isSubmitted) ? <ErrorMessage name={name} render={renderMessage} /> :
+                            <span
+                                aria-hidden="true"
+                                className="is-srOnly"
+                                id={errorId}
+                            />
+                        }
+                    </li>
+                </ul>
+            )}
         </FormContext.Consumer>
     );
 };
