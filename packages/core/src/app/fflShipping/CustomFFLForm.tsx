@@ -9,7 +9,7 @@ const CustomFFLForm: React.FC<CustomFFLFormProps> = ({ customFFLData, handleCust
   <div className='CustomFormContainer'>
     <div className="formRow">
       <div className="customFormGroup">
-        <label htmlFor="company">FFL name</label>
+        <label htmlFor="company">FFL Name</label>
         <input
           className='customFormInput'
           type="text"
@@ -21,10 +21,10 @@ const CustomFFLForm: React.FC<CustomFFLFormProps> = ({ customFFLData, handleCust
         />
       </div>
       <div className="customFormGroup">
-        <label htmlFor="phone">FFL business phone number</label>
+        <label htmlFor="phone">FFL Business Phone Number</label>
         <input
           className='customFormInput'
-          type="number"
+          type="text"
           name="phone"
           id="phone"
           placeholder="Phone Number"

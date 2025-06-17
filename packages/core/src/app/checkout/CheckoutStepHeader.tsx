@@ -48,7 +48,7 @@ const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
 
                 <h2
                     className="stepHeader-title optimizedCheckout-headingPrimary"
-                    style={{ fontFamily: 'industry, sans-serif' }}
+                    style={{ fontFamily: 'industry, sans-serif', textTransform: 'uppercase' }}
                 >
                     {heading}
                 </h2>

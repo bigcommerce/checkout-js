@@ -529,7 +529,7 @@ class Checkout extends Component<
                                     style={{
                                         backgroundColor: '#fffbe6',
                                         border: '1px solid #ffe58f',
-                                        borderRadius: '4px',
+                                        borderRadius: '0',
                                         padding: '16px 20px',
                                         margin: '20px auto',
                                         maxWidth: '600px',

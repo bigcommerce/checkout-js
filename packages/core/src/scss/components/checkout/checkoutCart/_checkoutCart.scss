@@ -4,7 +4,7 @@
 
 .cart {
     border: container("border");
-    border-radius: $checkoutCart-borderRadius;
+    border-radius: 0;
     box-shadow: container("dropShadow");
     display: none;
     margin: spacing("double") 0 spacing("single");

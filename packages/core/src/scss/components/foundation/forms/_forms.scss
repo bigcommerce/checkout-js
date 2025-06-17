@@ -209,7 +209,7 @@
     .form-select {
         -webkit-appearance: none; // 2
         background-image: none;
-        border-radius: $input-border-radius;
+        border-radius: 0;
         padding: $input-verticalPadding $select-paddingRight $input-verticalPadding $input-horizontalPadding;
     }
     // scss-lint:enable ImportantRule

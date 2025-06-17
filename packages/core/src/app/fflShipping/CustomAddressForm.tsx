@@ -3,20 +3,17 @@ import { Address } from "@bigcommerce/checkout-sdk";
 import "./CustomAddressForm.scss"
 
 interface CustomAddressFormProps {
+    hasFirearms: boolean;
     savedAddress: Address;
     formState: Address;
     handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void
 }
 
-const CustomAddressForm: React.FC<CustomAddressFormProps> = ({  handleInputChange, formState }) => {
-
-
-
-
+const CustomAddressForm: React.FC<CustomAddressFormProps> = ({ hasFirearms, handleInputChange, formState }) => {
     return (
         <>
             <div className='CustomFormContainer'>
-                <h2 className='customShippingSectionHeader'>Shipping Address</h2>
+                <h2 className='customShippingSectionHeader'> {hasFirearms ? 'Additional ' : ''} Shipping Address</h2>
                 <p className=''>This address will be used for any non-firearm products.</p>
 
 

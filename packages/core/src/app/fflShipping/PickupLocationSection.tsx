@@ -15,27 +15,13 @@ const PickupLocationSection: React.FC<{
     setSelectedFFL(null);
   };
   return (
-    <label>
+    <>
       <PickupLocationSelector
         hasFirearms={hasFirearms}
         pickupAtSS={pickupAtSS}
         handleSetPickupAtSS={handleSetPickupAtSS}
       />
-      <h2 className="customShippingSectionHeader">
-        {!hasFirearms && !pickupAtSS
-          ? ''
-          : pickupAtSS
-            ? 'Shoot Straight Location'
-            : 'FFL Location'}
-      </h2>
-      <p className=''>{!hasFirearms && !pickupAtSS
-        ? ''
-        : pickupAtSS
-          ? 'All products will be sent to your selected Shoot Straight location.'
-          : 'Only firearms will be sent to your selected FFL.'}</p>
-
-
-    </label>
+    </>
   );
 };
 

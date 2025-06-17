@@ -43,32 +43,40 @@
     display: flex;
     flex-direction: row;
     width: 100%;
-    margin: 2em 0;
+    margin: 0 0 2em;
     
 }
 
 .pickupOption {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 8px;
     text-align: center;
-    color: rgb(244, 244, 244);
-    background-color: #b7b7b7;
+    color: black;
+    background-color: lightgray;
     font-size: 1.5em; // Slightly larger than the original
+    font-family: 'industry', 'sans-serif';
+    font-weight: bold;
+    text-transform: uppercase;
     width: 50%;
     transition: background-color 300ms ease, color 300ms ease;
 
     &:hover {
         background-color: rgb(118, 118, 118);
+        cursor: pointer;
     }
 
     &.selectedPickupOption {
         background-color: #333;
         color: white;
-        font-weight: bold;
     }
+}
 
-
-
+#pickupOptionActiveUnderline{
+    background-color: white;
+    height: 2px;
+    width: 90%;
+    margin: 0.10em 0;
 }

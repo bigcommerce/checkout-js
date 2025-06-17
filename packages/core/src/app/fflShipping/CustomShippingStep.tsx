@@ -78,7 +78,7 @@ const CustomShipping: React.FC<WithCheckoutCustomShippingProps & CustomShippingP
   // State only
   const [selectedFFL, setSelectedFFL] = useState<FFL | null>(null);
   const [validationError, setValidationError] = useState(false);
-  const [pickupAtSS, setPickupAtSS] = useState<boolean>(false);
+  const [pickupAtSS, setPickupAtSS] = useState<boolean>(true);
   const [fflLocations, setFFLLocations] = useState<FFL[] | null>(null);
   const [customFFL, setCustomFFL] = useState<boolean>(false);
   const [customFFLData, setCustomFFLData] = useState<any>({ company: '', phone: '' });
@@ -287,6 +287,13 @@ const CustomShipping: React.FC<WithCheckoutCustomShippingProps & CustomShippingP
         setSelectedFFL={setSelectedFFL}
       />
 
+      <p className=''>{!hasFirearms && !pickupAtSS
+        ? ''
+        : pickupAtSS
+          ? 'All products will be sent to your selected Shoot Straight location.'
+          : 'Only firearms will be sent to your selected FFL.'}
+      </p>
+
       <FFLSelectorSection
         show={showFFLSelector}
         fflLocations={fflLocations}
@@ -296,6 +303,8 @@ const CustomShipping: React.FC<WithCheckoutCustomShippingProps & CustomShippingP
         shootStraightIds={shootStraightIds}
         pickupAtSS={pickupAtSS}
       />
+
+
       {!pickupAtSS && hasFirearms && (
         <CustomFFLSection
           customFFL={customFFL}
@@ -306,6 +315,7 @@ const CustomShipping: React.FC<WithCheckoutCustomShippingProps & CustomShippingP
         />
       )}
       <ManualAddressSection
+        hasFirearms={hasFirearms}
         show={showManualAddressInputs}
         homeAddress={homeAddress}
         setHomeAddress={setHomeAddress}

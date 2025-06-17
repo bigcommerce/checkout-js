@@ -1,4 +1,5 @@
 import React from 'react';
+import PickupLocationOption from './PickupLocationOption';
 
 interface PickupLocationSelectorProps {
   hasFirearms: boolean;
@@ -12,30 +13,30 @@ const PickupLocationSelector: React.FC<PickupLocationSelectorProps> = ({
   handleSetPickupAtSS,
 }) => (
   <div className="pickupLocationContainer">
-    <div
-      id="ssPickup"
+    <PickupLocationOption 
+      pickupAtSS={pickupAtSS}
+      handleSetPickupAtSS={handleSetPickupAtSS}
+      id='ssPickup'
       className={`pickupOption ${pickupAtSS ? 'selectedPickupOption' : ''}`}
-      onClick={handleSetPickupAtSS}
-    >
-      Pickup at Shoot Straight
-    </div>
+      name='Pickup at Shoot Straight'
+    />
     {hasFirearms && (
-      <div
-        id="otherFFLPickup"
+      <PickupLocationOption 
+        pickupAtSS={!pickupAtSS}
+        handleSetPickupAtSS={handleSetPickupAtSS}
+        id='otherFFLPickup'
         className={`pickupOption ${!pickupAtSS ? 'selectedPickupOption' : ''}`}
-        onClick={handleSetPickupAtSS}
-      >
-        Pickup at other FFL
-      </div>
+        name='Pickup at other FFL'
+      />
     )}
-    {!hasFirearms && (
-      <div
-        id="shipToHome"
+    {! hasFirearms && (
+      <PickupLocationOption 
+        pickupAtSS={!pickupAtSS}
+        handleSetPickupAtSS={handleSetPickupAtSS}
+        id='shipToHome'
         className={`pickupOption ${!pickupAtSS ? 'selectedPickupOption' : ''}`}
-        onClick={handleSetPickupAtSS}
-      >
-        Ship to home
-      </div>
+        name='Ship to Home'
+      />
     )}
   </div>
 );
