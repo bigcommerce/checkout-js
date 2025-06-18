@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.607.0](https://github.com/bigcommerce/checkout-js/compare/v1.606.0...v1.607.0) (2025-06-18)
+
+
+### Features
+
+* **checkout:** CHECKOUT-7960 Update step button style ([#2368](https://github.com/bigcommerce/checkout-js/issues/2368)) ([f932a00](https://github.com/bigcommerce/checkout-js/commit/f932a000634863eb5b92b4b6a88a17c3c69cc3ce))
+
 ## [1.606.0](https://github.com/bigcommerce/checkout-js/compare/v1.605.5...v1.606.0) (2025-06-17)
 
 
