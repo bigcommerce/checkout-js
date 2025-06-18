@@ -112,7 +112,7 @@ describe('ManageInstrumentsModal', () => {
         await userEvent.click(deleteButtons[0]);
 
         expect(
-            screen.getByText(
+            await screen.findByText(
                 localeContext.language.translate(
                     'payment.instrument_manage_modal_confirmation_label',
                 ),

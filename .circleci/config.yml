@@ -1,3 +1,5 @@
+FLAKY_TESTS: "packages/core/src/app/order/OrderConfirmation.test.tsx|packages/core/src/app/payment/storedInstrument/ManageInstrumentsModal.test.tsx"
+
 aliases:
   - &node_executor
       executor:
@@ -40,7 +42,9 @@ jobs:
       - node/npm-install
       - run:
           name: "Run unit tests for checkout extension"
-          command: npm run test:extension
+          command: |
+            npx nx run core:generate
+            npm run test:extension; npm run test:core -- --testPathPatterns="$FLAKY_TESTS"
 
   test-core:
     <<: *node_executor
@@ -52,9 +56,9 @@ jobs:
       - run:
           name: "Run unit tests for core package"
           command: |
-            TEST=$(circleci tests glob "packages/core/**/*.spec.ts" "packages/core/**/*.spec.tsx" "packages/core/**/*.test.ts" "packages/core/**/*.test.tsx" | circleci tests split --split-by=timings)
+            TEST=$(circleci tests glob "packages/core/**/*.test.ts" "packages/core/**/*.test.tsx" | circleci tests split --split-by=timings)
             npx nx run core:generate
-            npm run test:core $TEST -- --runInBand
+            npm run test:core $TEST -- --runInBand --testIgnorePathPatterns="$FLAKY_TESTS"
       - run:
           command: cp junit.xml ~/junit/
           when: always

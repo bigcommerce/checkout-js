@@ -5,7 +5,6 @@ import {
     createEmbeddedCheckoutMessenger,
     EmbeddedCheckoutMessenger,
 } from '@bigcommerce/checkout-sdk';
-import faker from '@faker-js/faker';
 import userEvent from '@testing-library/user-event';
 import React, { FunctionComponent } from 'react';
 
@@ -29,7 +28,7 @@ describe('OrderConfirmation', () => {
     let defaultProps: OrderConfirmationProps & AnalyticsContextProps;
     let ComponentTest: FunctionComponent<OrderConfirmationProps & AnalyticsContextProps>;
     let embeddedMessengerMock: EmbeddedCheckoutMessenger;
-    let analyticsTracker: Partial<AnalyticsEvents>;
+    let analyticsTracker: AnalyticsEvents;
     let localeContext: LocaleContextType;
 
     beforeEach(() => {
@@ -37,7 +36,7 @@ describe('OrderConfirmation', () => {
         checkoutState = checkoutService.getState();
         analyticsTracker = {
             orderPurchased: jest.fn()
-        };
+        } as unknown as AnalyticsEvents;
         embeddedMessengerMock = createEmbeddedCheckoutMessenger({
             parentOrigin: getStoreConfig().links.siteLink,
         });
@@ -58,14 +57,14 @@ describe('OrderConfirmation', () => {
             embeddedStylesheet: createEmbeddedCheckoutStylesheet(),
             errorLogger: createErrorLogger(),
             orderId: 105,
-            analyticsTracker
+            analyticsTracker,
         };
 
         ComponentTest = (props) => (
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleProvider checkoutService={checkoutService} value={localeContext}>
                     <AnalyticsProviderMock>
-                        <ExtensionProvider checkoutService={checkoutService}>
+                        <ExtensionProvider checkoutService={checkoutService} errorLogger={createErrorLogger()}>
                             <OrderConfirmation {...props} />
                         </ExtensionProvider>
                     </AnalyticsProviderMock>
@@ -131,7 +130,7 @@ describe('OrderConfirmation', () => {
     });
 
     it('renders create account form, fills in the form and submit data', async () => {
-        const password = faker.internet.password();
+        const password = 'password123';
 
         render(<ComponentTest {...defaultProps} />);
 
@@ -151,7 +150,7 @@ describe('OrderConfirmation', () => {
     });
 
     it('renders set password form, fills in the form and submit data', async () => {
-        const password = faker.internet.password();
+        const password = 'password123';
 
         jest.spyOn(checkoutState.data, 'getOrder').mockReturnValue({
             ...getOrder(),
