@@ -22,7 +22,11 @@
     "prerelease-build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "PRERELEASE=prerelease webpack --mode production"
+        "commands": [
+          "rm -rf dist/",
+          "PRERELEASE=prerelease webpack --mode production"
+        ],
+        "parallel": false
       },
       "dependsOn": [
         {
