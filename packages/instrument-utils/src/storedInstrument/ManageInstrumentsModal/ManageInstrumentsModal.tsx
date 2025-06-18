@@ -186,10 +186,11 @@ class ManageInstrumentsModal extends Component<
 
     private handleAfterOpen: () => void = () => {
         const { onAfterOpen } = this.props;
+        const { isConfirmingDelete } = this.state;
 
         this.setState(
             {
-                isConfirmingDelete: this.state.isConfirmingDelete,
+                isConfirmingDelete,
             },
             onAfterOpen,
         );
