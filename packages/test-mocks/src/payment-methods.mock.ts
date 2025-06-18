@@ -22,6 +22,7 @@ export function getPaymentMethod(): PaymentMethod {
             testMode: false,
         },
         type: 'PAYMENT_TYPE_API',
+        skipRedirectConfirmationAlert: false,
     };
 }
 
@@ -37,6 +38,7 @@ export function getPaypalCreditPaymentMethod(): PaymentMethod {
             payPalCreditProductBrandName: { credit: 'Pay in 3' },
         },
         type: 'PAYMENT_TYPE_API',
+        skipRedirectConfirmationAlert: false,
     };
 }
 
@@ -51,6 +53,7 @@ export function getBraintreeAchPaymentMethod(): PaymentMethod {
             isVaultingEnabled: false,
         },
         type: 'PAYMENT_TYPE_API',
+        skipRedirectConfirmationAlert: false,
     };
 }
 
@@ -76,6 +79,7 @@ export function getMobilePaymentMethod(): PaymentMethod {
             testMode: false,
         },
         type: 'PAYMENT_TYPE_API',
+        skipRedirectConfirmationAlert: false,
     };
 }
 
@@ -91,5 +95,6 @@ export function getBraintreePaypalPaymentMethod(): PaymentMethod {
         initializationData: {},
         clientToken: 'token',
         returnUrl: undefined,
+        skipRedirectConfirmationAlert: false,
     };
 }
