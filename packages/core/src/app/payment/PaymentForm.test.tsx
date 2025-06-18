@@ -7,11 +7,13 @@ import {Formik} from 'formik';
 import {noop} from 'lodash';
 import React, { FunctionComponent } from 'react';
 
+import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getCart } from '../cart/carts.mock';
+import { createErrorLogger } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
 
@@ -58,7 +60,9 @@ describe('PaymentForm', () => {
                 <PaymentContext.Provider value={paymentContext}>
                     <LocaleContext.Provider value={localeContext}>
                         <Formik initialValues={null} onSubmit={noop}>
-                            <PaymentForm {...props} />
+                            <ExtensionProvider checkoutService={checkoutService} errorLogger={createErrorLogger()}>
+                                <PaymentForm {...props} />
+                            </ExtensionProvider>
                         </Formik>
                     </LocaleContext.Provider>
                 </PaymentContext.Provider>
