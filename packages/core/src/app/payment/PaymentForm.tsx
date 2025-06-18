@@ -1,4 +1,4 @@
-import { PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { ExtensionRegion, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { FormikProps, FormikState, withFormik, WithFormikConfig } from 'formik';
 import { isNil, noop, omitBy } from 'lodash';
 import React, { FunctionComponent, memo, useCallback, useContext, useMemo } from 'react';
@@ -22,6 +22,7 @@ import PaymentRedeemables from './PaymentRedeemables';
 import PaymentSubmitButton from './PaymentSubmitButton';
 import SpamProtectionField from './SpamProtectionField';
 import { StoreCreditField, StoreCreditOverlay } from './storeCredit';
+import {Extension} from '@bigcommerce/checkout/checkout-extension';
 
 export interface PaymentFormProps {
     availableStoreCredit?: number;
@@ -234,6 +235,8 @@ const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProp
             }
         >
             {!isPaymentDataRequired() && <StoreCreditOverlay />}
+
+            <Extension region={ExtensionRegion.PaymentPaymentMethodListBefore}/>
 
             <PaymentMethodList
                 isEmbedded={isEmbedded}
