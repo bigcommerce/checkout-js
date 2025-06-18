@@ -75,6 +75,8 @@ class ManageInstrumentsModal extends Component<
 
         const { isConfirmingDelete } = this.state;
 
+        console.log("isConfirmingDelete content", isConfirmingDelete)
+
         if (isConfirmingDelete) {
             return (
                 <p>
@@ -112,6 +114,7 @@ class ManageInstrumentsModal extends Component<
         const { isDeletingInstrument, isLoadingInstruments, onRequestClose } = this.props;
         const { isConfirmingDelete } = this.state;
 
+        console.log("isConfirmingDelete", isConfirmingDelete)
         if (isConfirmingDelete) {
             return (
                 <>
@@ -150,9 +153,10 @@ class ManageInstrumentsModal extends Component<
     private handleAfterOpen: () => void = () => {
         const { onAfterOpen } = this.props;
 
+        console.log("does it open again??")
         this.setState(
             {
-                isConfirmingDelete: false,
+                isConfirmingDelete: this.state.isConfirmingDelete || false,
             },
             onAfterOpen,
         );
@@ -165,6 +169,7 @@ class ManageInstrumentsModal extends Component<
             clearError(deleteInstrumentError);
         }
 
+        console.log("or is it set from handleCancel??");
         this.setState({
             isConfirmingDelete: false,
         });
@@ -178,6 +183,7 @@ class ManageInstrumentsModal extends Component<
             onRequestClose = noop,
         } = this.props;
         const { selectedInstrumentId } = this.state;
+        console.log("selectedInsturment id", selectedInstrumentId);
 
         if (!selectedInstrumentId) {
             return;
@@ -193,6 +199,7 @@ class ManageInstrumentsModal extends Component<
     };
 
     private handleDeleteInstrument: (id: string) => void = (id) => {
+        console.log("comes here on delete click??", id);
         this.setState({
             isConfirmingDelete: true,
             selectedInstrumentId: id,
