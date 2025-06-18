@@ -1,8 +1,11 @@
 {
     "shootStraightIds": [
         2,
-        13,
-        14
+        3,
+        4,
+        5,
+        6,
+        7
     ],
     "fflLocations": [
         {
@@ -47,6 +50,106 @@
         },
         {
             "id": 3,
+            "name": "Shoot Straight Clearwater",
+            "address": {
+                "firstName": "1-59-103-07-6M-15309",
+                "lastName": "Shoot Straight Clearwater",
+                "company": "Shoot Straight Clearwater",
+                "address1": "4594 ULMERTON RD",
+                "city": "Clearwater",
+                "stateOrProvince": "Florida",
+                "postalCode": "33762",
+                "country": "US",
+                "address2": "NA",
+                "stateOrProvinceCode": "FL",
+                "countryCode": "US",
+                "phone": "NA",
+                "customFields": [],
+                "shouldSaveAddress": false
+            }
+        },
+        {
+            "id": 4,
+            "name": "Shoot Straight Tampa",
+            "address": {
+                "firstName": "1-59-057-01-7M-05961",
+                "lastName": "Shoot Straight Tampa",
+                "company": "Shoot Straight Tampa",
+                "address1": "3909 N HWY 301",
+                "city": "Tampa",
+                "stateOrProvince": "Florida",
+                "postalCode": "33619",
+                "country": "US",
+                "address2": "NA",
+                "stateOrProvinceCode": "FL",
+                "countryCode": "US",
+                "phone": "NA",
+                "customFields": [],
+                "shouldSaveAddress": false
+            }
+        },
+        {
+            "id": 5,
+            "name": "Shoot Straight Lakeland",
+            "address": {
+                "firstName": "1-59-105-01-8D-51942",
+                "lastName": "Shoot Straight Lakeland",
+                "company": "Shoot Straight Lakeland",
+                "address1": "230 N Lake Parker Ave",
+                "city": "Lakeland",
+                "stateOrProvince": "Florida",
+                "postalCode": "33801",
+                "country": "US",
+                "address2": "NA",
+                "stateOrProvinceCode": "FL",
+                "countryCode": "US",
+                "phone": "NA",
+                "customFields": [],
+                "shouldSaveAddress": false
+            }
+        },
+        {
+            "id": 6,
+            "name": "Shoot Straight Fort Lauderdale",
+            "address": {
+                "firstName": "1-59-011-01-8A-20620",
+                "lastName": "Shoot Straight Fort Lauderdale",
+                "company": "Shoot Straight Fort Lauderdale",
+                "address1": "2200 South State Road 7",
+                "city": "Fort Lauderdale",
+                "stateOrProvince": "Florida",
+                "postalCode": "33317",
+                "country": "US",
+                "address2": "NA",
+                "stateOrProvinceCode": "FL",
+                "countryCode": "US",
+                "phone": "NA",
+                "customFields": [],
+                "shouldSaveAddress": false
+            }
+        },
+        {
+            "id": 7,
+            "name": "Shoot Straight Fort Myers",
+            "address": {
+                "firstName": "1-59-011-01-8A-20620",
+                "lastName": "Shoot Straight Fort Myers",
+                "company": "Shoot Straight Fort Myers",
+                "address1": "2418 Colonial Blvd",
+                "city": " Fort Myers",
+                "stateOrProvince": "Florida",
+                "postalCode": "33907",
+                "country": "US",
+                "address2": "NA",
+                "stateOrProvinceCode": "FL",
+                "countryCode": "US",
+                "phone": "NA",
+                "customFields": [],
+                "shouldSaveAddress": false
+            }
+        },
+        {
+            "id": 8,
             "name": "Range USA Dallas",
             "address": {
                 "firstName": "3-59-095-01-5E-23490",
@@ -66,7 +169,7 @@
             }
         },
         {
-            "id": 4,
+            "id": 9,
             "name": "Liberty Firearms",
             "address": {
                 "firstName": "4-59-095-01-5E-23491",
@@ -86,7 +189,7 @@
             }
         },
         {
-            "id": 5,
+            "id": 10,
             "name": "Guns Galore",
             "address": {
                 "firstName": "5-59-095-01-5E-23492",
@@ -106,7 +209,7 @@
             }
         },
         {
-            "id": 6,
+            "id": 11,
             "name": "Patriot Arms",
             "address": {
                 "firstName": "6-59-095-01-5E-23493",
@@ -126,7 +229,7 @@
             }
         },
         {
-            "id": 7,
+            "id": 12,
             "name": "Lone Star Guns",
             "address": {
                 "firstName": "7-59-095-01-5E-23494",
@@ -146,7 +249,7 @@
             }
         },
         {
-            "id": 8,
+            "id": 13,
             "name": "Second Amendment Supply",
             "address": {
                 "firstName": "8-59-095-01-5E-23495",
@@ -166,7 +269,7 @@
             }
         },
         {
-            "id": 9,
+            "id": 14,
             "name": "Frontline Tactical",
             "address": {
                 "firstName": "9-59-095-01-5E-23496",
@@ -186,7 +289,7 @@
             }
         },
         {
-            "id": 10,
+            "id": 15,
             "name": "Precision Arms",
             "address": {
                 "firstName": "10-59-095-01-5E-23497",
@@ -206,7 +309,7 @@
             }
         },
         {
-            "id": 11,
+            "id": 16,
             "name": "American Gunsmith",
             "address": {
                 "firstName": "11-59-095-01-5E-23498",
@@ -226,7 +329,7 @@
             }
         },
         {
-            "id": 12,
+            "id": 17,
             "name": "Elite Gunworks",
             "address": {
                 "firstName": "12-59-095-01-5E-23499",
@@ -246,7 +349,7 @@
             }
         },
         {
-            "id": 13,
+            "id": 18,
             "name": "Shoot Straight Casselberry",
             "address": {
                 "firstName": "13-59-095-01-5E-23500",
@@ -266,7 +369,7 @@
             }
         },
         {
-            "id": 14,
+            "id": 19,
             "name": "Shoot Straight Sarasota",
             "address": {
                 "firstName": "14-59-095-01-5E-23501",

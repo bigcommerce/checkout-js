@@ -41,11 +41,8 @@ interface CustomShippingProps {
   onContinue: () => void;
 }
 
-
-
 const shootStraightIds: number[] = data.shootStraightIds;
 
-// Utility: Separate items into FFL and home items
 const getFFLItemIDs = (cart: Cart) => {
   const fflItems = [];
   const homeItems = [];
@@ -222,12 +219,31 @@ const CustomShipping: React.FC<WithCheckoutCustomShippingProps & CustomShippingP
       const isFFL = consignment.lineItemIds.some(id =>
         lineItemAllocations.current?.fflitems?.some((item: any) => item.itemId === id)
       );
+
+      const shipAmmoOptionId = consignment.availableShippingOptions?.find(
+        (option) => option.description === "Ship Ammo"
+      )?.id;
+
+      const pickupAtSSOptionId = consignment.availableShippingOptions?.find(
+        (option) => option.description === "In-Store Pickup"
+      )?.id;
+
+      const shipToFFLOptionId = consignment.availableShippingOptions?.find(
+        (option) => option.description === "Ship to FFL"
+      )?.id;
+
       const optionId = pickupAtSS
-        ? 'ff286e83078d1fff1601e5b06cabc8e2'
+        ? String(pickupAtSSOptionId)
         : isFFL
-          ? 'ba4bfeb633b03cac4e06976b8e8e77c4'
-          : '71fadd3406386d6644ce70b46a5bb4f2';
-      await selectConsignmentShippingOption(consignment.id, optionId);
+          ? String(shipToFFLOptionId)
+          : String(shipAmmoOptionId);
+
+
+      if (typeof optionId === 'string') {
+        await selectConsignmentShippingOption(consignment.id, optionId);
+      } else {
+        throw new Error('No valid shipping option ID found for consignment.');
+      }
     }
   };
 
