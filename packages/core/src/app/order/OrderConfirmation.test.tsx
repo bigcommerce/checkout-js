@@ -23,6 +23,19 @@ import { CreatedCustomer } from '../guestSignup';
 import OrderConfirmation, { OrderConfirmationProps } from './OrderConfirmation';
 import { getGatewayOrderPayment, getOrder } from './orders.mock';
 
+const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).*$/;
+
+// Function to make sure faker generates valid password as per regex
+const generateValidPassword = () => {
+    let password = '';
+
+    do {
+        password = faker.internet.password();
+    } while (!passwordRegex.test(password));
+
+    return password;
+}
+
 describe('OrderConfirmation', () => {
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
@@ -131,7 +144,7 @@ describe('OrderConfirmation', () => {
     });
 
     it('renders create account form, fills in the form and submit data', async () => {
-        const password = faker.internet.password();
+        const password = generateValidPassword();
 
         render(<ComponentTest {...defaultProps} />);
 
@@ -151,7 +164,7 @@ describe('OrderConfirmation', () => {
     });
 
     it('renders set password form, fills in the form and submit data', async () => {
-        const password = faker.internet.password();
+        const password = generateValidPassword();
 
         jest.spyOn(checkoutState.data, 'getOrder').mockReturnValue({
             ...getOrder(),
