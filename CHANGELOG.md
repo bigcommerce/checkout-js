@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.608.0](https://github.com/bigcommerce/checkout-js/compare/v1.607.1...v1.608.0) (2025-06-19)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9322 Add New Extension Region to Payment Step ([#2376](https://github.com/bigcommerce/checkout-js/issues/2376)) ([67819af](https://github.com/bigcommerce/checkout-js/commit/67819afc2bc1a9792f1a5cebddc20e197790fa7b))
+
 ### [1.607.1](https://github.com/bigcommerce/checkout-js/compare/v1.607.0...v1.607.1) (2025-06-18)
 
 ## [1.607.0](https://github.com/bigcommerce/checkout-js/compare/v1.606.0...v1.607.0) (2025-06-18)
