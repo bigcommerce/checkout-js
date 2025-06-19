@@ -120,8 +120,7 @@ describe('ManageInstrumentsModal', () => {
         ).toBeInTheDocument();
     });
 
-    // Skip the test as it is flaky
-    it.skip('deletes selected instrument and closes modal if user confirms their action', async () => {
+    it('deletes selected instrument and closes modal if user confirms their action', async () => {
         jest.spyOn(checkoutService, 'deleteInstrument').mockResolvedValue(checkoutState);
 
         render(<ManageInstrumentsModalTest {...defaultProps} />);
