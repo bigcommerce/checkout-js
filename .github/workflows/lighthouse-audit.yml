@@ -23,10 +23,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Get PR details
-        uses: jwalton/gh-find-current-pr@v1
-        id: pr_details
-
       - name: Run Lighthouse audit on desktop
         id: lighthouse_audit_desktop
         uses: treosh/lighthouse-ci-action@v11
@@ -74,6 +70,6 @@ jobs:
           header: Lighthouse audit results
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           recreate: true
-          number: ${{ steps.pr_details.outputs.number }}
+          number: ${{ github.event.issue.number }}
           message: ${{ steps.format_lighthouse_results.outputs.comment }}
 
