@@ -43,6 +43,10 @@ const config: PlaywrightTestConfig = {
             'html',
             { outputFolder: './packages/test-framework/report', open: 'never' },
         ],
+        [
+            'junit',
+            { outputFile: './packages/test-framework/junit.xml' },
+        ],
     ],
     use: {
         baseURL: `http://localhost:${process.env.PORT}`,
