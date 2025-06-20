@@ -437,6 +437,10 @@ class Checkout extends Component<
             return;
         }
 
+        const setIsMultishippingMode = (value: boolean) => {
+            this.setState({ isMultiShippingMode: value });
+        }
+
         return (
             <CheckoutStep
                 {...step}
@@ -457,6 +461,7 @@ class Checkout extends Component<
                         onSignIn={this.handleShippingSignIn}
                         onToggleMultiShipping={this.handleToggleMultiShipping}
                         onUnhandledError={this.handleUnhandledError}
+                        setIsMultishippingMode={setIsMultishippingMode}
                         step={step}
                     />
                 </LazyContainer>
