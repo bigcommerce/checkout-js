@@ -2,17 +2,19 @@ import React, { FunctionComponent } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
-import { HostedCreditCardCodeField, HostedCreditCardNumberField } from '../';
+import { HostedCreditCardCodeField, HostedCreditCardNumberField, HostedCreditCardExpiryField } from '../';
 
 export interface HostedCreditCardValidationProps {
     cardCodeId?: string;
     cardNumberId?: string;
+    cardExpiryId?: string;
     focusedFieldType?: string;
 }
 
 const HostedCreditCardValidation: FunctionComponent<HostedCreditCardValidationProps> = ({
     cardCodeId,
     cardNumberId,
+    cardExpiryId,
     focusedFieldType,
 }) => (
     <>
@@ -42,6 +44,14 @@ const HostedCreditCardValidation: FunctionComponent<HostedCreditCardValidationPr
                     appearFocused={focusedFieldType === 'cardCode'}
                     id={cardCodeId}
                     name="hostedForm.errors.cardCodeVerification"
+                />
+            )}
+
+            {cardExpiryId && (
+                <HostedCreditCardExpiryField
+                    appearFocused={focusedFieldType === 'cardExpiry'}
+                    id={cardExpiryId}
+                    name="hostedForm.errors.cardExpiryVerification"
                 />
             )}
         </div>
