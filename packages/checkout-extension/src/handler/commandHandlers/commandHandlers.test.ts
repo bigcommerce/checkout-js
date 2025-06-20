@@ -29,16 +29,18 @@ describe('commandHandlers', () => {
     });
 
     describe('createReloadCheckoutHandler', () => {
-        it('reloads checkout', () => {
+        it('reloads checkout', async () => {
             const { handler } = createReloadCheckoutHandler(handlerProps);
 
-            const loadCheckout = jest.spyOn(checkoutService, 'loadCheckout');
+            jest.spyOn(checkoutService, 'loadCheckout').mockResolvedValue(
+                checkoutService.getState(),
+            );
 
-            void handler({
+            await handler({
                 type: ExtensionCommandType.ReloadCheckout,
             });
 
-            expect(loadCheckout).toHaveBeenCalled();
+            expect(checkoutService.loadCheckout).toHaveBeenCalled();
         });
     });
 
