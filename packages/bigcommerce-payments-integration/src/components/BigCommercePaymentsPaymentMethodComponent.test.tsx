@@ -11,7 +11,7 @@ import React from 'react';
 import { PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
 import { getPaymentFormServiceMock } from '@bigcommerce/checkout/test-mocks';
 
-import { getBigCommercePaymentsPaypalMethod } from '../mocks/paymentMethods.mock';
+import { getBigCommercePaymentsMethod } from '../mocks/paymentMethods.mock';
 
 import BigCommercePaymentsPaymentMethodComponent from './BigCommercePaymentsPaymentMethodComponent';
 
@@ -26,16 +26,16 @@ describe('BigCommercePaymentsPaymentMethodComponent', () => {
         checkoutState,
 
         language: { translate: jest.fn() } as unknown as LanguageService,
-        method: getBigCommercePaymentsPaypalMethod(),
+        method: getBigCommercePaymentsMethod(),
         onUnhandledError: jest.fn(),
         paymentForm,
         onInitButton: jest.fn(),
-        providerOptionsKey: 'bigcommerce_payments_paypal',
+        providerOptionsKey: 'bigcommerce_payments',
     };
 
     const untrustedAccountInstrument: AccountInstrument = {
         bigpayToken: '31415',
-        provider: 'bigcommerce_payments_paypal',
+        provider: 'bigcommerce_payments',
         externalId: 'untrusted@external-id.com',
         trustedShippingAddress: false,
         defaultInstrument: false,
@@ -45,7 +45,7 @@ describe('BigCommercePaymentsPaymentMethodComponent', () => {
 
     const trustedAccountInstrument: AccountInstrument = {
         bigpayToken: '31415',
-        provider: 'bigcommerce_payments_paypal',
+        provider: 'bigcommerce_payments',
         externalId: 'trusted@external-id.com',
         trustedShippingAddress: true,
         defaultInstrument: true,
@@ -70,7 +70,7 @@ describe('BigCommercePaymentsPaymentMethodComponent', () => {
         expect(initializePayment).toHaveBeenCalledWith({
             gatewayId: props.method.gateway,
             methodId: props.method.id,
-            bigcommerce_payments_paypal: {
+            bigcommerce_payments: {
                 container: '#checkout-payment-continue',
                 onInit: expect.any(Function),
                 submitForm: expect.any(Function),
@@ -187,8 +187,8 @@ describe('BigCommercePaymentsPaymentMethodComponent', () => {
     it('hides payment submit button by calling onRenderButton callback', async () => {
         jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
             eventEmitter.on('onRenderButton', () => {
-                if (options.bigcommerce_payments_paypal?.onRenderButton) {
-                    options.bigcommerce_payments_paypal.onRenderButton();
+                if (options.bigcommerce_payments?.onRenderButton) {
+                    options.bigcommerce_payments.onRenderButton();
                 }
             });
 
@@ -236,9 +236,8 @@ describe('BigCommercePaymentsPaymentMethodComponent', () => {
         let shouldSaveInstrument: boolean | undefined;
 
         jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
-            if (options.bigcommerce_payments_paypal?.getFieldsValues) {
-                const formFields: HostedInstrument =
-                    options.bigcommerce_payments_paypal.getFieldsValues();
+            if (options.bigcommerce_payments?.getFieldsValues) {
+                const formFields: HostedInstrument = options.bigcommerce_payments.getFieldsValues();
 
                 shouldSaveInstrument = formFields.shouldSaveInstrument;
             }
@@ -262,8 +261,8 @@ describe('BigCommercePaymentsPaymentMethodComponent', () => {
     it('submits payment form by calling submitForm callback', async () => {
         jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
             eventEmitter.on('submitForm', () => {
-                if (options.bigcommerce_payments_paypal?.submitForm) {
-                    options.bigcommerce_payments_paypal.submitForm();
+                if (options.bigcommerce_payments?.submitForm) {
+                    options.bigcommerce_payments.submitForm();
                 }
             });
 
@@ -285,8 +284,8 @@ describe('BigCommercePaymentsPaymentMethodComponent', () => {
 
         jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
             eventEmitter.on('onError', () => {
-                if (options.bigcommerce_payments_paypal?.onError) {
-                    options.bigcommerce_payments_paypal.onError(errorMock);
+                if (options.bigcommerce_payments?.onError) {
+                    options.bigcommerce_payments.onError(errorMock);
                 }
             });
 
@@ -313,8 +312,8 @@ describe('BigCommercePaymentsPaymentMethodComponent', () => {
 
         jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
             eventEmitter.on('onError', () => {
-                if (options.bigcommerce_payments_paypal?.onError) {
-                    options.bigcommerce_payments_paypal.onError(providerError);
+                if (options.bigcommerce_payments?.onError) {
+                    options.bigcommerce_payments.onError(providerError);
                 }
             });
 
@@ -334,8 +333,8 @@ describe('BigCommercePaymentsPaymentMethodComponent', () => {
     it('passed form validation by calling onValidate callback', async () => {
         jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
             eventEmitter.on('onValidate', async (resolve, reject) => {
-                if (options.bigcommerce_payments_paypal?.onError) {
-                    await options.bigcommerce_payments_paypal.onValidate(resolve, reject);
+                if (options.bigcommerce_payments?.onError) {
+                    await options.bigcommerce_payments.onValidate(resolve, reject);
                 }
             });
 
@@ -362,8 +361,8 @@ describe('BigCommercePaymentsPaymentMethodComponent', () => {
 
         jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
             eventEmitter.on('onValidate', async (resolve, reject) => {
-                if (options.bigcommerce_payments_paypal?.onError) {
-                    await options.bigcommerce_payments_paypal.onValidate(resolve, reject);
+                if (options.bigcommerce_payments?.onError) {
+                    await options.bigcommerce_payments.onValidate(resolve, reject);
                 }
             });
 

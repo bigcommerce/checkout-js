@@ -1,4 +1,4 @@
-export function getBigCommercePaymentsPaypalMethod() {
+export function getBigCommercePaymentsMethod() {
     return {
         clientToken: undefined,
         config: {
@@ -18,7 +18,7 @@ export function getBigCommercePaymentsPaypalMethod() {
             testMode: true,
         },
         gateway: undefined,
-        id: 'bigcommerce_payments_paypal',
+        id: 'bigcommerce_payments',
         initializationData: {
             attributionId: 'BC_id',
             availableAlternativePaymentMethods: [],
@@ -64,7 +64,7 @@ export function getBigCommercePaymentsPaypalMethod() {
 }
 
 export function getBigCommercePaymentsFastlaneMethod() {
-    const bigCommercePayments = getBigCommercePaymentsPaypalMethod();
+    const bigCommercePayments = getBigCommercePaymentsMethod();
 
     return {
         ...bigCommercePayments,
@@ -81,7 +81,7 @@ export function getBigCommercePaymentsFastlaneMethod() {
 }
 
 export function getBigCommercePaymentsVenmoMethod() {
-    const bigCommercePayments = getBigCommercePaymentsPaypalMethod();
+    const bigCommercePayments = getBigCommercePaymentsMethod();
 
     return {
         ...bigCommercePayments,
@@ -91,7 +91,7 @@ export function getBigCommercePaymentsVenmoMethod() {
 }
 
 export function getBigCommercePaymentsAPMsMethod() {
-    const bigcommercePayments = getBigCommercePaymentsPaypalMethod();
+    const bigcommercePayments = getBigCommercePaymentsMethod();
 
     const apms = ['bancontact', 'eps', 'giropay', 'ideal', 'mybank', 'p24', 'sepa', 'sofort'];
 

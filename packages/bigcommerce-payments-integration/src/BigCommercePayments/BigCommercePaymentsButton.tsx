@@ -8,7 +8,7 @@ import {
 } from '@bigcommerce/checkout/payment-integration-api';
 import { navigateToOrderConfirmation } from '@bigcommerce/checkout/utility';
 
-const BigcommercePaymentsPaypalButton: FunctionComponent<CheckoutButtonProps> = (props) => {
+const BigCommercePaymentsButton: FunctionComponent<CheckoutButtonProps> = (props) => {
     const additionalInitializationOptions = {
         onComplete: navigateToOrderConfirmation,
         onError: props.onUnhandledError,
@@ -23,6 +23,6 @@ const BigcommercePaymentsPaypalButton: FunctionComponent<CheckoutButtonProps> = 
 };
 
 export default toResolvableComponent<CheckoutButtonProps, CheckoutButtonResolveId>(
-    BigcommercePaymentsPaypalButton,
-    [{ id: 'bigcommerce_payments_paypal' }],
+    BigCommercePaymentsButton,
+    [{ id: 'bigcommerce_payments' }],
 );
