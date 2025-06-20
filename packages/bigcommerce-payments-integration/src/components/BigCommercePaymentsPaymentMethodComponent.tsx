@@ -1,9 +1,9 @@
 import {
     AccountInstrument,
     HostedInstrument,
+    BigCommercePaymentsPaymentInitializeOptions,
     BigCommercePaymentsAlternativeMethodsPaymentInitializeOptions,
     BigCommercePaymentsCreditCardsPaymentInitializeOptions,
-    BigCommercePaymentsPayPalPaymentInitializeOptions,
     BigCommercePaymentsVenmoPaymentInitializeOptions,
 } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, useCallback, useEffect, useRef } from 'react';
@@ -13,7 +13,7 @@ import { PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-ap
 type BigCommercePaymentsProvidersPaymentInitializeOptions =
     BigCommercePaymentsAlternativeMethodsPaymentInitializeOptions &
         BigCommercePaymentsCreditCardsPaymentInitializeOptions &
-        BigCommercePaymentsPayPalPaymentInitializeOptions &
+        BigCommercePaymentsPaymentInitializeOptions &
         BigCommercePaymentsVenmoPaymentInitializeOptions;
 
 interface BigCommercePaymentsPaymentMethodComponentProps {

@@ -14,18 +14,18 @@ import {
 import { getPaymentFormServiceMock, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 import { act } from '@bigcommerce/checkout/test-utils';
 
-import { getBigCommercePaymentsPaypalMethod } from '../mocks/paymentMethods.mock';
+import { getBigCommercePaymentsMethod } from '../mocks/paymentMethods.mock';
 
-import BigCommercePaymentsPaypalPaymentMethod from './BigCommercePaymentsPaypalPaymentMethod';
+import BigCommercePaymentsPaymentMethod from './BigCommercePaymentsPaymentMethod';
 
-describe('BigCommercePaymentsPaypalPaymentMethod', () => {
+describe('BigCommercePaymentsPaymentMethod', () => {
     const checkoutService = createCheckoutService();
     const checkoutState = checkoutService.getState();
     const paymentForm = getPaymentFormServiceMock();
     const localeContext = createLocaleContext(getStoreConfig());
 
     const props = {
-        method: getBigCommercePaymentsPaypalMethod(),
+        method: getBigCommercePaymentsMethod(),
         checkoutService,
         checkoutState,
 
@@ -36,7 +36,7 @@ describe('BigCommercePaymentsPaypalPaymentMethod', () => {
 
     const accountInstrument: AccountInstrument = {
         bigpayToken: '31415',
-        provider: 'bigcommerce_payments_paypal',
+        provider: 'bigcommerce_payments',
         externalId: 'test@external-id.com',
         trustedShippingAddress: false,
         defaultInstrument: false,
@@ -44,7 +44,7 @@ describe('BigCommercePaymentsPaypalPaymentMethod', () => {
         type: 'account',
     };
 
-    const BigCommercePaymentsPaypalPaymentMethodMock: FunctionComponent<PaymentMethodProps> = (
+    const BigCommercePaymentsPaymentMethodMock: FunctionComponent<PaymentMethodProps> = (
         paymentProps: PaymentMethodProps,
     ) => {
         return (
@@ -52,7 +52,7 @@ describe('BigCommercePaymentsPaypalPaymentMethod', () => {
                 <CheckoutContext.Provider value={{ checkoutState, checkoutService }}>
                     <LocaleContext.Provider value={localeContext}>
                         <PaymentFormContext.Provider value={{ paymentForm }}>
-                            <BigCommercePaymentsPaypalPaymentMethod {...paymentProps} />
+                            <BigCommercePaymentsPaymentMethod {...paymentProps} />
                         </PaymentFormContext.Provider>
                     </LocaleContext.Provider>
                 </CheckoutContext.Provider>
@@ -73,9 +73,7 @@ describe('BigCommercePaymentsPaypalPaymentMethod', () => {
             },
             children: mockChild,
         };
-        const { container } = render(
-            <BigCommercePaymentsPaypalPaymentMethodMock {...localProps} />,
-        );
+        const { container } = render(<BigCommercePaymentsPaymentMethodMock {...localProps} />);
 
         expect(container).toBeEmptyDOMElement();
     });
@@ -107,7 +105,7 @@ describe('BigCommercePaymentsPaypalPaymentMethod', () => {
                 },
             ]);
 
-            render(<BigCommercePaymentsPaypalPaymentMethodMock {...props} />);
+            render(<BigCommercePaymentsPaymentMethodMock {...props} />);
 
             await act(async () => {
                 await new Promise((resolve) => setTimeout(resolve, 0));
@@ -119,7 +117,7 @@ describe('BigCommercePaymentsPaypalPaymentMethod', () => {
         it('shows save instrument checkbox for registered customers', () => {
             jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue([]);
 
-            render(<BigCommercePaymentsPaypalPaymentMethodMock {...props} />);
+            render(<BigCommercePaymentsPaymentMethodMock {...props} />);
 
             expect(
                 screen.getByText('Save this account for future transactions'),
@@ -127,7 +125,7 @@ describe('BigCommercePaymentsPaypalPaymentMethod', () => {
         });
 
         it('should confirm instrument if untrusted shipping address is selected', () => {
-            render(<BigCommercePaymentsPaypalPaymentMethodMock {...props} />);
+            render(<BigCommercePaymentsPaymentMethodMock {...props} />);
 
             expect(
                 screen.getByText(/We noticed this is a new shipping address/i),
@@ -137,7 +135,7 @@ describe('BigCommercePaymentsPaypalPaymentMethod', () => {
         it('should hide instrument if isComplete is true', () => {
             props.method.initializationData.isComplete = true;
 
-            render(<BigCommercePaymentsPaypalPaymentMethodMock {...props} />);
+            render(<BigCommercePaymentsPaymentMethodMock {...props} />);
 
             expect(screen.queryByText('test@external-id.com')).not.toBeInTheDocument();
         });
@@ -145,7 +143,7 @@ describe('BigCommercePaymentsPaypalPaymentMethod', () => {
         it('should not load instruments if isComplete is true', () => {
             props.method.initializationData.isComplete = true;
 
-            render(<BigCommercePaymentsPaypalPaymentMethodMock {...props} />);
+            render(<BigCommercePaymentsPaymentMethodMock {...props} />);
 
             expect(checkoutService.loadInstruments).not.toHaveBeenCalled();
         });

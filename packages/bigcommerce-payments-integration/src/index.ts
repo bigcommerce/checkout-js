@@ -1,28 +1,28 @@
 /**
  *
- * Bigcommerce Payments APMs
+ * BigCommerce Payments
+ *
+ * */
+export { default as BigCommercePaymentsButton } from './BigCommercePayments/BigCommercePaymentsButton';
+export { default as BigCommercePaymentsPaymentMethod } from './BigCommercePayments/BigCommercePaymentsPaymentMethod';
+
+/**
+ *
+ * BigCommerce Payments APMs
  *
  * */
 export { default as BigCommercePaymentsAPMsPaymentMethod } from './BigCommercePaymentsAPMs/BigCommercePaymentsAPMsPaymentMethod';
 
 /**
  *
- * Bigcommerce Payments Fastlane
+ * BigCommerce Payments Fastlane
  *
  * */
 export { default as BigCommercePaymentsFastlanePaymentMethod } from './BigCommercePaymentsFastlane';
 
 /**
  *
- * Bigcommerce Payments PayPal
- *
- * */
-export { default as BigcommercePaymentsPaypalButton } from './BigCommercePaymentsPaypal/BigcommercePaymentsPaypalButton';
-export { default as BigCommercePaymentsPaypalPaymentMethod } from './BigCommercePaymentsPaypal/BigCommercePaymentsPaypalPaymentMethod';
-
-/**
- *
- * Bigcommerce Payments PayLater
+ * BigCommerce Payments PayLater
  *
  * */
 export { default as BigcommercePaymentsPayLaterButton } from './BigCommercePaymentsPayLater/BigcommercePaymentsPayLaterButton';

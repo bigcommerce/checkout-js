@@ -9,9 +9,9 @@ import React from 'react';
 import { CheckoutButtonProps } from '@bigcommerce/checkout/payment-integration-api';
 import { render } from '@bigcommerce/checkout/test-utils';
 
-import BigcommercePaymentsPaypalButton from './BigcommercePaymentsPaypalButton';
+import BigCommercePaymentsButton from './BigCommercePaymentsButton';
 
-describe('BigcommercePaymentsPaypalButton', () => {
+describe('BigCommercePaymentsButton', () => {
     let defaultProps: CheckoutButtonProps;
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
@@ -26,21 +26,21 @@ describe('BigcommercePaymentsPaypalButton', () => {
         defaultProps = {
             checkoutService,
             checkoutState,
-            containerId: 'bigcommerce-payments-paypal-button-container',
+            containerId: 'bigcommerce-payments-button-container',
             language: createLanguageService(),
-            methodId: 'bigcommerce_payments_paypal',
+            methodId: 'bigcommerce_payments',
             onUnhandledError: jest.fn(),
             onWalletButtonClick: jest.fn(),
         };
     });
 
-    it('renders BigcommercePaymentsPaypalButton with provided props', () => {
-        render(<BigcommercePaymentsPaypalButton {...defaultProps} />);
+    it('renders BigCommercePaymentsButton with provided props', () => {
+        render(<BigCommercePaymentsButton {...defaultProps} />);
 
         expect(checkoutService.initializeCustomer).toHaveBeenCalledWith({
             methodId: defaultProps.methodId,
-            bigcommerce_payments_paypal: {
-                container: 'bigcommerce-payments-paypal-button-container',
+            bigcommerce_payments: {
+                container: 'bigcommerce-payments-button-container',
                 onClick: expect.any(Function),
                 onComplete: expect.any(Function),
                 onError: expect.any(Function),

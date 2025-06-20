@@ -15,7 +15,7 @@ import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 import BigCommercePaymentsPaymentMethodComponent from '../components/BigCommercePaymentsPaymentMethodComponent';
 import useBigCommercePaymentsInstrument from '../hooks/useBigCommercePaymentsInstruments';
 
-const BigCommercePaymentsPaypalPaymentMethod: FunctionComponent<PaymentMethodProps> = (props) => {
+const BigCommercePaymentsPaymentMethod: FunctionComponent<PaymentMethodProps> = (props) => {
     const {
         checkoutState: {
             data: { isPaymentDataRequired, getCustomer, getInstruments },
@@ -71,7 +71,7 @@ const BigCommercePaymentsPaypalPaymentMethod: FunctionComponent<PaymentMethodPro
         <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
             <BigCommercePaymentsPaymentMethodComponent
                 currentInstrument={currentInstrument}
-                providerOptionsKey="bigcommerce_payments_paypal"
+                providerOptionsKey="bigcommerce_payments"
                 shouldConfirmInstrument={shouldConfirmInstrument}
                 {...props}
             >
@@ -103,6 +103,6 @@ const BigCommercePaymentsPaypalPaymentMethod: FunctionComponent<PaymentMethodPro
 };
 
 export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>(
-    BigCommercePaymentsPaypalPaymentMethod,
-    [{ id: 'bigcommerce_payments_paypal' }],
+    BigCommercePaymentsPaymentMethod,
+    [{ id: 'bigcommerce_payments' }],
 );
