@@ -24,9 +24,9 @@
     "release": "echo 'Please do not release locally, use CircleCi'",
     "release:alpha": "npm run lint && npm run test -- --coverage && npm run nx:prerelease-build && npm run release:version",
     "release:version": "git add dist && standard-version -a",
-    "test:core": "jest --config packages/core/jest.config.js",
-    "test:others": "npx nx run-many --all --target=test --exclude='core,checkout-extension,instrument-utils' --parallel=5 -- --runInBand",
-    "test:extension": "npx nx run-many --target=test --projects=instrument-utils,checkout-extension",
+    "test:core": "node scripts/nx/run-tests.js --projects=core",
+    "test:others": "node scripts/nx/run-tests.js --exclude='core,checkout-extension,instrument-utils'",
+    "test:extension": "node scripts/nx/run-tests.js --projects=instrument-utils,checkout-extension",
     "generate": "npx nx run core:generate",
     "regenerate-har": "npx nx run test-framework:regenerate-har",
     "lint": "npx nx run-many --target=lint --all",
@@ -34,7 +34,8 @@
     "test:watch": "npx nx run-many --target=test --all --watch"
   },
   "jest-junit": {
-    "addFileAttribute": "true"
+    "addFileAttribute": "true",
+    "outputDirectory": "<rootDir>/test-results"
   },
   "repository": {
     "type": "git",
