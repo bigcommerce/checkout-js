@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.609.1](https://github.com/bigcommerce/checkout-js/compare/v1.609.0...v1.609.1) (2025-06-20)
+
+
+### Code Refactoring
+
+* **payment:** updated BigCommercePaymentsPayPal naming with BigCommercePayments ([4f3b839](https://github.com/bigcommerce/checkout-js/commit/4f3b83950d756451c16b18ed01758cbe4e5fe791))
+
 ## [1.609.0](https://github.com/bigcommerce/checkout-js/compare/v1.608.2...v1.609.0) (2025-06-20)
 
 
