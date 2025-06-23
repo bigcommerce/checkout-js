@@ -281,11 +281,10 @@
             "credit_card_number_required_error": "Kreditkortsnummer är obligatoriskt",
             "credit_card_number_mismatch_error": "Det angivna kortnumret matchar inte det kort som är lagrat på ditt konto",
             "credit_debit_card_text": "Kredit-/betalkort",
+            "payment_methods_text": "Betalningsmetoder",
+            "redeemable_payments_text": "Inlösbara betalningar",
+            "instrument_storage_options_text": "Betalningslagringsalternativ",
             "stripev3_auth_3ds_fail": "Användaren autentiserades inte",
-            "digitalriver_dropin_error": "Det uppstod ett fel när betalningen bearbetades. Försök igen eller kontakta oss.",
-            "digitalriver_checkout_error": "Ett fel uppstod i kassan. Vänligen kontrollera dina uppgifter och försök igen, eller kontakta kundtjänst.",
-            "digitalriver_checkout_error_title": "Fel vid bearbetning av begäran.",
-            "digitalriver_display_name_text": "Vänligen välj din betalningsmetod",
             "google_pay_name_text": "Google Pay",
             "humm_not_processable_error": "Humm kan inte behandla din betalning för denna beställning. Vänligen välj en annan betalningsmetod.",
             "klarna_continue_action": "Fortsätt med Klarna",
@@ -562,7 +561,9 @@
             "choose_shipping_address": "Välj en leveransadress",
             "multishipping_unavailable_action": "Leverans till flera adresser är inte tillgängligt",
             "multishipping_unavailable_message": "Leverans till flera adresser är inte möjlig när en kampanj lägger till en gratisartikel i kundvagnen.",
-            "checkout_switched_to_single_shipping": "Din kassa har automatiskt uppdaterats till att använda enbart en leveransadress. Leverans till flera adresser är inte möjlig när en gratis kampanjartikel finns i din kundvagn."
+            "checkout_switched_to_single_shipping": "Din kassa har automatiskt uppdaterats till att använda enbart en leveransadress. Leverans till flera adresser är inte möjlig när en gratis kampanjartikel finns i din kundvagn.",
+            "guest_multishipping_no_shipping_address_message": "Ingen leveransadress har angivits",
+            "guest_multishipping_enter_shipping_address_action": "Ange leveransadress"
         },
         "social": {
             "share_action": "Dela med sig",

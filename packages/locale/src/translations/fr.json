@@ -281,11 +281,10 @@
             "credit_card_number_required_error": "Numéro de carte bancaire requis",
             "credit_card_number_mismatch_error": "Le numéro de carte saisi ne correspond pas à celui de la carte enregistrée dans votre compte",
             "credit_debit_card_text": "Carte de crédit/débit",
+            "payment_methods_text": "Modes de paiement",
+            "redeemable_payments_text": "Paiements remboursables",
+            "instrument_storage_options_text": "Options de stockage des paiements",
             "stripev3_auth_3ds_fail": "L'utilisateur ne s'est pas authentifié",
-            "digitalriver_dropin_error": "Une erreur s'est produite lors du traitement de votre paiement. Veuillez réessayer, ou contactez-nous.",
-            "digitalriver_checkout_error": "Un problème est survenu lors de votre paiement, veuillez vérifier vos informations et réessayer, ou contacter le service client",
-            "digitalriver_checkout_error_title": "Erreur lors du traitement de la demande.",
-            "digitalriver_display_name_text": "Veuillez sélectionner votre mode de paiement",
             "google_pay_name_text": "Google Pay",
             "humm_not_processable_error": "Humm ne peut pas traiter votre paiement pour cette commande, veuillez sélectionner un autre mode de paiement.",
             "klarna_continue_action": "Poursuivre avec Klarna",
@@ -562,7 +561,9 @@
             "choose_shipping_address": "Choisissez une adresse de livraison",
             "multishipping_unavailable_action": "Livraison multi-adresses indisponible",
             "multishipping_unavailable_message": "La livraison à des adresses multiples n'est pas disponible lorsqu'une promotion permet d'ajouter un article gratuit à votre panier.",
-            "checkout_switched_to_single_shipping": "Votre paiement a été automatiquement mis à jour pour utiliser une seule adresse de livraison. La livraison à des adresses multiples n'est pas disponible lorsqu'un article promotionnel gratuit se trouve dans votre panier."
+            "checkout_switched_to_single_shipping": "Votre paiement a été automatiquement mis à jour pour utiliser une seule adresse de livraison. La livraison à des adresses multiples n'est pas disponible lorsqu'un article promotionnel gratuit se trouve dans votre panier.",
+            "guest_multishipping_no_shipping_address_message": "Aucune adresse de livraison n'a été saisie",
+            "guest_multishipping_enter_shipping_address_action": "Saisir l'adresse de livraison"
         },
         "social": {
             "share_action": "Partager",
