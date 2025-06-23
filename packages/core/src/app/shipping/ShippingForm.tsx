@@ -104,7 +104,6 @@ const ShippingForm = ({
     const config = getConfig();
 
     useEffect(() => {
-
         if (shippingFormRenderTimestamp) {
             const hasMultiShippingEnabled = config?.checkoutSettings?.hasMultiShippingEnabled ?? false;
             const isMultiShippingMode =
