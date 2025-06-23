@@ -3,10 +3,14 @@ import { isEmpty } from 'lodash';
 
 import { getAppliedStyles } from '@bigcommerce/checkout/dom-utils';
 
-const getStylesFromElement = (selector: string, properties: string[]) => {
+const getStylesFromElement = (
+    selector: string,
+    properties: string[],
+    pseudoElementSelector?: string,
+) => {
     const element = document.querySelector<HTMLElement>(selector);
 
-    return element ? getAppliedStyles(element, properties) : {};
+    return element ? getAppliedStyles(element, properties, pseudoElementSelector) : {};
 };
 
 const parseRadioIconSize = (size: string | number = 0): number =>
@@ -38,7 +42,7 @@ const getRadioIconSizes = (sizes?: Record<string, string | number | undefined>) 
     return {
         outerWidth: `${stripeEqualOuterWidth}px`,
         outerStrokeWidth: `${stripeEqualOuterStrokeWidth}px`,
-        innerRadius: `${stripeEqualInnerRadius}px`,
+        innerRadius: `${stripeEqualInnerRadius}`,
     };
 };
 
@@ -60,6 +64,7 @@ export const getFonts = (selector = 'link[href*="font"]'): StripeCustomFont[] =>
 export const getAppearanceForOCSElement = (containerId: string): StripeAppearanceOptions => {
     const defaultAccordionPaddingHorizontal = '18px';
     const defaultAccordionPaddingVertical = '13px';
+    const defaultRadioIconInnerScale = 0.66;
 
     const formInputStyles = getStylesFromElement(`#${containerId}--input`, [
         'color',
@@ -82,6 +87,10 @@ export const getAppearanceForOCSElement = (containerId: string): StripeAppearanc
             'padding-bottom',
         ],
     );
+    const accordionSelectedHeaderStyles = getStylesFromElement(
+        `#${containerId}--accordion-header-selected`,
+        ['background-color'],
+    );
     const formChecklistStyles = getStylesFromElement(`.checkout-step--payment .form-checklist`, [
         'border-bottom',
     ]);
@@ -97,10 +106,24 @@ export const getAppearanceForOCSElement = (containerId: string): StripeAppearanc
     const accordionHeaderPadding = !isEmpty(accordionHeaderStyles)
         ? `${accordionPaddingTop} ${accordionPaddingRight} ${accordionPaddingBottom} ${defaultAccordionPaddingHorizontal}`
         : undefined;
-
-    const radioIconSize = getRadioIconSizes();
-    const radioIconColor = '#ddd'; // TODO: get style from theme
-    const radioIconFocusColor = '#4496f6'; // TODO: get style from theme
+    const radioOuter = getStylesFromElement(
+        `#${containerId}--accordion-header .form-label`,
+        ['border-color', 'border-width', 'width'],
+        '::before',
+    );
+    const radioOuterChecked = getStylesFromElement(
+        `#${containerId}--accordion-header-selected .form-label`,
+        ['border-color'],
+        '::before',
+    );
+    const radioIconSize = getRadioIconSizes({
+        radioIconOuterWidth: radioOuter.width,
+        radioIconOuterStrokeWidth: radioOuter['border-width'],
+        radioIconInnerWidth:
+            radioOuter.width && parseRadioIconSize(radioOuter.width) * defaultRadioIconInnerScale,
+    });
+    const radioIconColor = radioOuter['border-color'];
+    const radioIconFocusColor = radioOuterChecked['border-color'];
 
     return {
         variables: {
@@ -129,9 +152,14 @@ export const getAppearanceForOCSElement = (containerId: string): StripeAppearanc
                 color: accordionHeaderColor,
                 padding: accordionHeaderPadding,
             },
+            '.AccordionItem:hover': {
+                backgroundColor: accordionSelectedHeaderStyles['background-color'],
+                color: accordionHeaderColor,
+            },
             '.AccordionItem--selected': {
                 fontWeight: 'bold',
                 color: accordionHeaderColor,
+                backgroundColor: accordionSelectedHeaderStyles['background-color'],
             },
             '.TabLabel': {
                 color: accordionHeaderColor,
