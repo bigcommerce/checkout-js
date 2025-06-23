@@ -281,11 +281,10 @@
             "credit_card_number_required_error": "Kreditkortnummeret er påkrævet",
             "credit_card_number_mismatch_error": "Det indtastede kortnummer stemmer ikke overens med det kort, der er gemt på din konto",
             "credit_debit_card_text": "Betalingskort",
+            "payment_methods_text": "Betalingsmetoder",
+            "redeemable_payments_text": "Indløselige betalinger",
+            "instrument_storage_options_text": "Muligheder for gemning af betalinger",
             "stripev3_auth_3ds_fail": "Brugeren godkendte ikke",
-            "digitalriver_dropin_error": "Der opstod en fejl under behandlingen af din betaling. Prøv igen, eller kontakt os.",
-            "digitalriver_checkout_error": "Der var et problem med din betaling. Tjek dine oplysninger, og prøv igen, eller kontakt kundeservice",
-            "digitalriver_checkout_error_title": "Fejl under behandling af anmodningen.",
-            "digitalriver_display_name_text": "Vælg din betalingsmetode",
             "google_pay_name_text": "Google Pay",
             "humm_not_processable_error": "Humm kan ikke behandle din betaling for denne ordre. Vælg en anden betalingsmetode.",
             "klarna_continue_action": "Fortsæt med Klarna",
@@ -562,7 +561,9 @@
             "choose_shipping_address": "Vælg en leveringsadresse",
             "multishipping_unavailable_action": "Forsendelse til flere adresser er ikke tilgængelig",
             "multishipping_unavailable_message": "Forsendelse til flere adresser er ikke tilgængelig, når en kampagne føjer en gratis vare til din indkøbskurv.",
-            "checkout_switched_to_single_shipping": "Din betaling er automatisk opdateret til at bruge én enkelt leveringsadresse. Forsendelse til flere adresser er ikke muligt, når der er en gratis kampagnevare i din indkøbskurv."
+            "checkout_switched_to_single_shipping": "Din betaling er automatisk opdateret til at bruge én enkelt leveringsadresse. Forsendelse til flere adresser er ikke muligt, når der er en gratis kampagnevare i din indkøbskurv.",
+            "guest_multishipping_no_shipping_address_message": "Ingen leveringsadresse indtastet",
+            "guest_multishipping_enter_shipping_address_action": "Indtast leveringsadresse"
         },
         "social": {
             "share_action": "Del",

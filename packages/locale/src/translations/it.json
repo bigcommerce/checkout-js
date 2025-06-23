@@ -281,11 +281,10 @@
             "credit_card_number_required_error": "Il numero della carta di credito è obbligatorio",
             "credit_card_number_mismatch_error": "Il numero di carta inserito non corrisponde a quello memorizzato nel tuo account",
             "credit_debit_card_text": "Carta di credito/debito",
+            "payment_methods_text": "Metodi di pagamento",
+            "redeemable_payments_text": "Pagamenti riscattabili",
+            "instrument_storage_options_text": "Opzioni di archiviazione dei pagamenti",
             "stripev3_auth_3ds_fail": "L'utente non ha effettuato l'autenticazione",
-            "digitalriver_dropin_error": "Si è verificato un problema durante l'elaborazione del pagamento. Riprova o contattaci.",
-            "digitalriver_checkout_error": "Si è verificato un problema in fase di check-out: controlla i tuoi dati e riprova, oppure contatta il servizio clienti",
-            "digitalriver_checkout_error_title": "Errore durante l'elaborazione della richiesta.",
-            "digitalriver_display_name_text": "Seleziona il tuo metodo di pagamento",
             "google_pay_name_text": "Google Pay",
             "humm_not_processable_error": "Humm non è in grado di elaborare il pagamento per questo ordine: seleziona un altro metodo di pagamento.",
             "klarna_continue_action": "Prosegui con Klarna",
@@ -562,7 +561,9 @@
             "choose_shipping_address": "Scegli un indirizzo di spedizione",
             "multishipping_unavailable_action": "La spedizione a più indirizzi non disponibile",
             "multishipping_unavailable_message": "La spedizione a più indirizzi non è disponibile quando una promozione aggiunge un articolo gratuito al tuo carrello.",
-            "checkout_switched_to_single_shipping": "Il checkout è stato aggiornato automaticamente in modo che venga utilizzato un solo indirizzo di spedizione. La spedizione a più indirizzi non è disponibile quando nel carrello è presente un articolo promozionale gratuito."
+            "checkout_switched_to_single_shipping": "Il checkout è stato aggiornato automaticamente in modo che venga utilizzato un solo indirizzo di spedizione. La spedizione a più indirizzi non è disponibile quando nel carrello è presente un articolo promozionale gratuito.",
+            "guest_multishipping_no_shipping_address_message": "Nessun indirizzo di spedizione inserito",
+            "guest_multishipping_enter_shipping_address_action": "Inserisci l'indirizzo di spedizione"
         },
         "social": {
             "share_action": "Condividi",
