@@ -12,15 +12,15 @@ import {
     ShippingInitializeOptions,
     ShippingRequestOptions,
 } from '@bigcommerce/checkout-sdk';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 
 import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
+import isUsingMultiShipping from './isUsingMultiShipping';
 import MultiShippingForm, { MultiShippingFormValues } from './MultiShippingForm';
 import MultiShippingGuestForm from './MultiShippingGuestForm';
 import SingleShippingForm, { SingleShippingFormValues } from './SingleShippingForm';
-import isUsingMultiShipping from './isUsingMultiShipping';
 
 export interface ShippingFormProps {
     addresses: CustomerAddress[];
@@ -96,8 +96,6 @@ const ShippingForm = ({
     shippingFormRenderTimestamp,
     setIsMultishippingMode,
 }: ShippingFormProps & WithLanguageProps) => {
-    const prevPropRef = useRef<number | undefined>();
-
     const {
         checkoutState: {
             data: { getConfig },
@@ -106,14 +104,9 @@ const ShippingForm = ({
     const config = getConfig();
 
     useEffect(() => {
-        prevPropRef.current = shippingFormRenderTimestamp;
-    });
 
-    useEffect(() => {
-        const previousShippingFormRenderTimestamp = prevPropRef.current;
-        const hasMultiShippingEnabled = config?.checkoutSettings?.hasMultiShippingEnabled ?? false;
-
-        if (previousShippingFormRenderTimestamp !== shippingFormRenderTimestamp) {
+        if (shippingFormRenderTimestamp) {
+            const hasMultiShippingEnabled = config?.checkoutSettings?.hasMultiShippingEnabled ?? false;
             const isMultiShippingMode =
                 !!cart &&
                 !!consignments &&
