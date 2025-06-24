@@ -15,6 +15,7 @@ export interface HostedCreditCardValidationValues extends CardInstrumentFieldset
         errors?: {
             cardCodeVerification?: string;
             cardNumberVerification?: string;
+            cardExpiryVerification?: string;
         };
     };
 }
