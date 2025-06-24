@@ -1,5 +1,6 @@
 import { createCheckoutService, LanguageService } from '@bigcommerce/checkout-sdk';
 import { fireEvent, render, screen } from '@testing-library/react';
+import { EventEmitter } from 'events';
 import { Formik } from 'formik';
 import React, { FunctionComponent } from 'react';
 
@@ -16,34 +17,35 @@ import {
 import {
     getCheckout as getCheckoutMock,
     getPaymentFormServiceMock,
-    getStoreConfig
+    getStoreConfig,
 } from '@bigcommerce/checkout/test-mocks';
+import { act } from '@bigcommerce/checkout/test-utils';
 import { FormContext } from '@bigcommerce/checkout/ui';
 
 import { getPaypalCommerceRatePayMethodMock } from '../mocks/paymentMethods.mock';
+
 import PaypalCommerceRatePayPaymentMethod from './PaypalCommerceRatePayPaymentMethod';
-import { EventEmitter } from 'events';
-import { act } from '@bigcommerce/checkout/test-utils';
 
 describe('PaypalCommerceRatePayPaymentMethod', () => {
     let eventEmitter: EventEmitter;
     let PaypalCommerceRatePayPaymentMethodTest: FunctionComponent<PaymentMethodProps>;
     let paymentForm: PaymentFormService;
     let localeContext: LocaleContextType;
-    let ratepayErrors: {[key: string]: string};
+    let ratepayErrors: { [key: string]: string };
     const checkoutService = createCheckoutService();
     const checkoutState = checkoutService.getState();
     const props = {
         method: getPaypalCommerceRatePayMethodMock(),
         checkoutService,
         checkoutState,
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+
         paymentForm: {
+            isSubmitted: jest.fn(),
             setSubmitted: jest.fn(),
             setValidationSchema: jest.fn(),
             setFieldValue: jest.fn(),
         } as unknown as PaymentFormService,
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+
         language: { translate: jest.fn() } as unknown as LanguageService,
         onUnhandledError: jest.fn(),
     };
@@ -77,20 +79,23 @@ describe('PaypalCommerceRatePayPaymentMethod', () => {
 
         const submit = jest.fn();
         const initialValues = {
-          ratepayBirthDate: new Date(),
-          ratepayPhoneCountryCode: 'ss',
-          ratepayPhoneNumber: '123',
+            ratepayBirthDate: new Date(),
+            ratepayPhoneCountryCode: 'ss',
+            ratepayPhoneNumber: '123',
         };
 
         PaypalCommerceRatePayPaymentMethodTest = (props: PaymentMethodProps) => (
             <LocaleContext.Provider value={localeContext}>
                 <FormContext.Provider value={{ isSubmitted: true, setSubmitted: jest.fn() }}>
-                    <Formik validate={
-                        (values) => {
+                    <Formik
+                        initialValues={initialValues}
+                        onSubmit={submit}
+                        validate={(values) => {
                             const errors = {
                                 ratepayPhoneNumber: '',
                                 ratepayPhoneCountryCode: '',
                             };
+
                             if (!values.ratepayPhoneNumber.match(/^\d{7,11}$/)) {
                                 errors.ratepayPhoneNumber = 'Phone number is invalid';
                             }
@@ -98,11 +103,12 @@ describe('PaypalCommerceRatePayPaymentMethod', () => {
                             if (!values.ratepayPhoneCountryCode.match(/^[0-9+][0-9+]{+,}$/)) {
                                 errors.ratepayPhoneCountryCode = 'Phone code is invalid';
                             }
+
                             ratepayErrors = errors;
 
                             return ratepayErrors;
-                    }}
-                            initialValues={initialValues} onSubmit={submit}>
+                        }}
+                    >
                         {({ handleSubmit }) => (
                             <PaymentFormContext.Provider value={{ paymentForm }}>
                                 <form aria-label="form" onSubmit={handleSubmit}>
@@ -168,7 +174,9 @@ describe('PaypalCommerceRatePayPaymentMethod', () => {
 
     it('shows error when phone number validation failed', async () => {
         render(<PaypalCommerceRatePayPaymentMethodTest {...props} />);
+
         const phoneNumberInput = screen.getByTestId('ratepayPhoneNumber-text');
+
         fireEvent.blur(phoneNumberInput);
 
         await act(async () => {
@@ -180,7 +188,9 @@ describe('PaypalCommerceRatePayPaymentMethod', () => {
 
     it('shows error when phone code validation failed', async () => {
         render(<PaypalCommerceRatePayPaymentMethodTest {...props} />);
+
         const phoneCountryCodeInput = screen.getByTestId('ratepayPhoneCountryCode-text');
+
         fireEvent.blur(phoneCountryCodeInput);
 
         await act(async () => {
@@ -216,6 +226,7 @@ describe('PaypalCommerceRatePayPaymentMethod', () => {
     });
 
     it('calls ratepay digital error', async () => {
+        const isSubmitted = jest.fn();
         const onUnhandledErrorMock = jest.fn();
         const disableSubmitMock = jest.fn();
         const setSubmittedMock = jest.fn();
@@ -232,14 +243,14 @@ describe('PaypalCommerceRatePayPaymentMethod', () => {
             errors: [
                 {
                     code: 'invalid_request_error',
-                    message: 'We are experiencing difficulty processing your transaction'
+                    message: 'We are experiencing difficulty processing your transaction',
                 },
                 {
                     code: 'transaction_declined',
                     message: 'Your transaction was declined. Please try again',
                     provider_error: {
-                        code: 'ITEM_CATEGORY_NOT_SUPPORTED_BY_PAYMENT_SOURCE'
-                    }
+                        code: 'ITEM_CATEGORY_NOT_SUPPORTED_BY_PAYMENT_SOURCE',
+                    },
                 },
             ],
         };
@@ -253,6 +264,7 @@ describe('PaypalCommerceRatePayPaymentMethod', () => {
 
             return Promise.resolve(checkoutState);
         });
+
         const newProps = {
             ...props,
             paymentForm: {
@@ -260,6 +272,7 @@ describe('PaypalCommerceRatePayPaymentMethod', () => {
                 setSubmitted: setSubmittedMock,
                 setValidationSchema,
                 setFieldValue,
+                isSubmitted,
             } as unknown as PaymentFormService,
             onUnhandledError: onUnhandledErrorMock,
         };
@@ -269,6 +282,12 @@ describe('PaypalCommerceRatePayPaymentMethod', () => {
 
         eventEmitter.emit('onError');
 
-        expect(onUnhandledErrorMock).toHaveBeenCalledWith(new Error(props.language.translate('payment.ratepay.errors.itemCategoryNotSupportedByPaymentSource')));
+        expect(onUnhandledErrorMock).toHaveBeenCalledWith(
+            new Error(
+                props.language.translate(
+                    'payment.ratepay.errors.itemCategoryNotSupportedByPaymentSource',
+                ),
+            ),
+        );
     });
 });

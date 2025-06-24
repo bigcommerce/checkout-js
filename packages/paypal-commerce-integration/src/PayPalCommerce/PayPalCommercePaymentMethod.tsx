@@ -13,6 +13,7 @@ import {
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import PayPalCommercePaymentMethodComponent from '../components/PayPalCommercePaymentMethodComponent';
+
 import usePaypalCommerceInstrument from './hooks/usePaypalCommerceInstruments';
 
 const PayPalCommercePaymentMethod: FunctionComponent<PaymentMethodProps> = (props) => {

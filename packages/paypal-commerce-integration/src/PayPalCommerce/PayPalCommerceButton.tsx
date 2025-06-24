@@ -14,12 +14,15 @@ const PayPalCommerceButton: FunctionComponent<CheckoutButtonProps> = (props) => 
         onError: props.onUnhandledError,
     };
 
-    return <CheckoutButton additionalInitializationOptions={additionalInitializationOptions} {...props} />;
+    return (
+        <CheckoutButton
+            additionalInitializationOptions={additionalInitializationOptions}
+            {...props}
+        />
+    );
 };
 
 export default toResolvableComponent<CheckoutButtonProps, CheckoutButtonResolveId>(
     PayPalCommerceButton,
-    [
-        { id: 'paypalcommerce' },
-    ],
+    [{ id: 'paypalcommerce' }],
 );

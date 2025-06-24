@@ -1,12 +1,12 @@
+import { CardInstrument } from '@bigcommerce/checkout-sdk';
+import { fireEvent } from '@testing-library/react';
 import React from 'react';
 import '@testing-library/jest-dom';
 
-import { render, screen } from '@bigcommerce/checkout/test-utils';
 import { getCardInstrument } from '@bigcommerce/checkout/test-mocks';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import PayPalCommerceFastlaneInstrumentsForm from './PayPalCommerceFastlaneInstrumentsForm';
-import { CardInstrument } from '@bigcommerce/checkout-sdk';
-import { fireEvent } from '@testing-library/react';
 
 describe('PayPalCommerceAcceleratedCheckoutInstrumentsForm', () => {
     const selectedInstrumentMock = getCardInstrument();
@@ -17,7 +17,7 @@ describe('PayPalCommerceAcceleratedCheckoutInstrumentsForm', () => {
                 handleSelectInstrument={jest.fn()}
                 onChange={jest.fn()}
                 selectedInstrument={selectedInstrumentMock}
-            />
+            />,
         );
 
         expect(container).toMatchSnapshot();
@@ -38,7 +38,7 @@ describe('PayPalCommerceAcceleratedCheckoutInstrumentsForm', () => {
                 handleSelectInstrument={handleSelectInstrument}
                 onChange={onChange}
                 selectedInstrument={selectedInstrumentMock}
-            />
+            />,
         );
 
         const actionButton = screen.getByTestId('paypal-commerce-fastlane-instrument-change');

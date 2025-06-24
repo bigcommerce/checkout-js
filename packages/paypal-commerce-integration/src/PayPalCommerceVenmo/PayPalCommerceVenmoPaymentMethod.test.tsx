@@ -1,11 +1,12 @@
 import { createCheckoutService, LanguageService } from '@bigcommerce/checkout-sdk';
 import { render } from '@testing-library/react';
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom';
 import React from 'react';
 
 import { PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
 
 import { getPayPalCommerceVenmoMethod } from '../mocks/paymentMethods.mock';
+
 import PayPalCommerceVenmoPaymentMethod from './PayPalCommerceVenmoPaymentMethod';
 
 describe('PayPalCommerceVenmoPaymentMethod', () => {
@@ -15,9 +16,9 @@ describe('PayPalCommerceVenmoPaymentMethod', () => {
         method: getPayPalCommerceVenmoMethod(),
         checkoutService,
         checkoutState,
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+
         paymentForm: jest.fn() as unknown as PaymentFormService,
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+
         language: { translate: jest.fn() } as unknown as LanguageService,
         onUnhandledError: jest.fn(),
     };
@@ -36,11 +37,11 @@ describe('PayPalCommerceVenmoPaymentMethod', () => {
                 ...checkoutState,
                 data: {
                     ...checkoutState.data,
-                    isPaymentDataRequired: jest.fn().mockReturnValue(false)
-                }
+                    isPaymentDataRequired: jest.fn().mockReturnValue(false),
+                },
             },
-            children: mockChild
-        }
+            children: mockChild,
+        };
         const { container } = render(<PayPalCommerceVenmoPaymentMethod {...localProps} />);
 
         expect(container).toBeEmptyDOMElement();

@@ -4,19 +4,18 @@ import {
     getUniquePaymentMethodId,
     PaymentMethodProps,
     PaymentMethodResolveId,
-    toResolvableComponent
+    toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 
 import PayPalCommercePaymentMethodComponent from '../components/PayPalCommercePaymentMethodComponent';
 
-const PayPalCommerceAPMsPaymentMethod: FunctionComponent<PaymentMethodProps> = props => {
+const PayPalCommerceAPMsPaymentMethod: FunctionComponent<PaymentMethodProps> = (props) => {
     const { method } = props;
     const isPaymentDataRequired = props.checkoutState.data.isPaymentDataRequired();
 
     if (!isPaymentDataRequired) {
         return null;
     }
-
 
     const widgetContainerId = getUniquePaymentMethodId(method.id, method.gateway);
     const extraOptions = {
@@ -50,11 +49,10 @@ const PayPalCommerceAPMsPaymentMethod: FunctionComponent<PaymentMethodProps> = p
 
     return (
         <PayPalCommercePaymentMethodComponent
-            providerOptionsKey="paypalcommercealternativemethods"
             providerOptionsData={extraOptions}
+            providerOptionsKey="paypalcommercealternativemethods"
             {...props}
         >
-
             <div
                 className={`widget widget--${props.method.id} payment-widget`}
                 id={widgetContainerId}
