@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.610.0](https://github.com/bigcommerce/checkout-js/compare/v1.609.3...v1.610.0) (2025-06-24)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9314 Improve Color Contrast to Meet WCAG 2.1 Standards ([#2384](https://github.com/bigcommerce/checkout-js/issues/2384)) ([3eb3f15](https://github.com/bigcommerce/checkout-js/commit/3eb3f15b2b87deea97d9b6a163b45d9282e161bb))
+
 ### [1.609.3](https://github.com/bigcommerce/checkout-js/compare/v1.609.2...v1.609.3) (2025-06-24)
 
 ### [1.609.2](https://github.com/bigcommerce/checkout-js/compare/v1.609.1...v1.609.2) (2025-06-23)
