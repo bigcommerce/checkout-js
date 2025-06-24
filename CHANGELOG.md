@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.610.1](https://github.com/bigcommerce/checkout-js/compare/v1.610.0...v1.610.1) (2025-06-24)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-9311 Fix Billing Address Aria Label ([#2385](https://github.com/bigcommerce/checkout-js/issues/2385)) ([d243384](https://github.com/bigcommerce/checkout-js/commit/d24338497c78ae563c3afae38070c2d66f42bab7))
+
 ## [1.610.0](https://github.com/bigcommerce/checkout-js/compare/v1.609.3...v1.610.0) (2025-06-24)
 
 
