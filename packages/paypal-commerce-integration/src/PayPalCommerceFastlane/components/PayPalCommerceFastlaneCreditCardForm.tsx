@@ -19,9 +19,9 @@ const PayPalCommerceFastlaneCreditCardForm: FunctionComponent<
 
     return (
         <div
+            className="paypal-commerce-fastlane-cc-form-container"
             data-test="paypal-commerce-fastlane-cc-form-container"
             id="paypal-commerce-fastlane-cc-form-container"
-            className="paypal-commerce-fastlane-cc-form-container"
         />
     );
 };

@@ -30,7 +30,6 @@ const usePaypalCommerceInstrument = (method: PaymentMethod) => {
     const isInstrumentFeatureAvailable =
         !customer?.isGuest &&
         Boolean(method.config.isVaultingEnabled) &&
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         !method.initializationData.isComplete;
     const shouldShowInstrumentFieldset = isInstrumentFeatureAvailable && hasAccountInstruments;
 

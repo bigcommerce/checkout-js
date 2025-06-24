@@ -59,6 +59,8 @@ describe('PayPalCommerceFastlaneForm', () => {
     it('shows paypal fastlane credit card form if customer does not have any instrument', () => {
         render(<PayPalCommerceFastlaneFormMock />);
 
-        expect(screen.getByTestId('paypal-commerce-fastlane-cc-form-container')).toBeInTheDocument();
+        expect(
+            screen.getByTestId('paypal-commerce-fastlane-cc-form-container'),
+        ).toBeInTheDocument();
     });
 });

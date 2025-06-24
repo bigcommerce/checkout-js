@@ -1,14 +1,13 @@
 import { createCheckoutService, LanguageService } from '@bigcommerce/checkout-sdk';
-
-import { getPaymentFormServiceMock } from '@bigcommerce/checkout/test-mocks';
-
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import React from 'react';
 
 import { PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
+import { getPaymentFormServiceMock } from '@bigcommerce/checkout/test-mocks';
 
 import { getPayPalCommerceAPMsMethod } from '../mocks/paymentMethods.mock';
+
 import PayPalCommerceAPMsPaymentMethod from './PayPalCommerceAPMsPaymentMethod';
 
 describe('PayPalCommerceAPMsPaymentMethod', () => {

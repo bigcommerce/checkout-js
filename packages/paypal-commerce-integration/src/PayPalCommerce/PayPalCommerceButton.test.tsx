@@ -40,7 +40,7 @@ describe('PayPalCommerceButton', () => {
         expect(checkoutService.initializeCustomer).toHaveBeenCalledWith({
             methodId: defaultProps.methodId,
             paypalcommerce: {
-                container: "paypalcommerce-button-container",
+                container: 'paypalcommerce-button-container',
                 onClick: expect.any(Function),
                 onComplete: expect.any(Function),
                 onError: expect.any(Function),

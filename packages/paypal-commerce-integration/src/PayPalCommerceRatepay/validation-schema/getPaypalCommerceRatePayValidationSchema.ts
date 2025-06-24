@@ -16,39 +16,46 @@ export default memoize(function getPaypalCommerceRatePayValidationSchema({
     };
 
     return object(
-        formFieldData.reduce((schema, { id, required }) => {
-            if (required) {
-                if (requiredFieldErrorTranslationIds[id]) {
-                    schema[id] = string()
-                        .nullable()
-                        .required(
-                            language.translate(`payment.ratepay.errors.isRequired`, {
-                                fieldName: language.translate(requiredFieldErrorTranslationIds[id]),
-                            }),
-                        );
+        formFieldData.reduce(
+            (schema, { id, required }) => {
+                if (required) {
+                    if (requiredFieldErrorTranslationIds[id]) {
+                        schema[id] = string()
+                            .nullable()
+                            .required(
+                                language.translate(`payment.ratepay.errors.isRequired`, {
+                                    fieldName: language.translate(
+                                        requiredFieldErrorTranslationIds[id],
+                                    ),
+                                }),
+                            );
 
-                    if (id === 'ratepayPhoneCountryCode') {
-                        schema[id] = schema[id].matches(
-                            /^\+\d{2,}$/,
-                            language.translate('payment.ratepay.errors.isInvalid', {
-                                fieldName: language.translate('payment.ratepay.phone_country_code'),
-                            }),
-                        );
-                    }
+                        if (id === 'ratepayPhoneCountryCode') {
+                            schema[id] = schema[id].matches(
+                                /^\+\d{2,}$/,
+                                language.translate('payment.ratepay.errors.isInvalid', {
+                                    fieldName: language.translate(
+                                        'payment.ratepay.phone_country_code',
+                                    ),
+                                }),
+                            );
+                        }
 
-                    if (id === 'ratepayPhoneNumber') {
-                        schema[id] = schema[id].matches(
-                            /^\d{7,11}$/,
-                            language.translate('payment.ratepay.errors.isInvalid', {
-                                fieldName: language.translate('payment.ratepay.phone_number'),
-                            }),
-                        );
+                        if (id === 'ratepayPhoneNumber') {
+                            schema[id] = schema[id].matches(
+                                /^\d{7,11}$/,
+                                language.translate('payment.ratepay.errors.isInvalid', {
+                                    fieldName: language.translate('payment.ratepay.phone_number'),
+                                }),
+                            );
+                        }
                     }
                 }
-            }
 
-            return schema;
+                return schema;
+            },
             // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-        }, {} as { [key: string]: StringSchema<string | null> }),
+            {} as { [key: string]: StringSchema<string | null> },
+        ),
     );
 });

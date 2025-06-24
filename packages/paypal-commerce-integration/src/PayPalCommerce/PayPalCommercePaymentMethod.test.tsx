@@ -15,6 +15,7 @@ import { getPaymentFormServiceMock, getStoreConfig } from '@bigcommerce/checkout
 import { act } from '@bigcommerce/checkout/test-utils';
 
 import { getPayPalCommerceMethod } from '../mocks/paymentMethods.mock';
+
 import PayPalCommercePaymentMethod from './PayPalCommercePaymentMethod';
 
 describe('PayPalCommercePaymentMethod', () => {

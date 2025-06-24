@@ -24,7 +24,7 @@ describe('PayPalCommercePaymentMethodComponent', () => {
     const props = {
         checkoutService,
         checkoutState,
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+
         language: { translate: jest.fn() } as unknown as LanguageService,
         method: getPayPalCommerceMethod(),
         onUnhandledError: jest.fn(),
