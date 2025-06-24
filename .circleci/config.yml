@@ -234,8 +234,7 @@ workflows:
       - security/scan:
           name: "Gitleaks secrets scan"
           filters:
-            branches:
-              ignore: /pull\/[0-9]+/
+            <<: *pull_request_filter
           context: org-global
           GITLEAKS_BLOCK: "false"
       - microapp/upload-artifact:
