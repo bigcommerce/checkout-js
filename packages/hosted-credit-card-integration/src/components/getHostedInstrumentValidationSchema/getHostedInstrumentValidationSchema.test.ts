@@ -70,4 +70,30 @@ describe('getHostedInstrumentValidationSchema', () => {
             'payment.credit_card_number_mismatch_error',
         );
     });
+
+    it('throws error if card expiry field is invalid', () => {
+        schema = getHostedInstrumentValidationSchema({
+            language: language as LanguageService,
+            isCardExpiryRequired: true,
+        });
+
+        values.hostedForm.errors = { cardExpiryVerification: 'required' };
+
+        expect(() => schema.validateSync(values)).toThrow(
+            'payment.credit_card_expiration_required_error',
+        );
+    });
+
+    it('throws error if card expiry field does not match with stored instrument', () => {
+        schema = getHostedInstrumentValidationSchema({
+            language: language as LanguageService,
+            isCardExpiryRequired: true,
+        });
+
+        values.hostedForm.errors = { cardExpiryVerification: 'invalid_card_expiry' };
+
+        expect(() => schema.validateSync(values)).toThrow(
+            'payment.credit_card_expiration_invalid_error',
+        );
+    });
 });
