@@ -26,42 +26,58 @@ jobs:
   test-packages:
     <<: *node_executor
     resource_class: medium+
+    parallelism: 4
     steps:
       - ci/pre-setup
       - node/npm-install
       - run:
           name: "Run unit tests for packages"
-          command: npm run test:others
+          command: |
+            npx nx run-many --target=test --exclude=core,checkout-extension,instrument-utils -- --listTests | grep packages/ | sed "s|$(pwd)/||" | \
+            circleci tests run \
+              --command="xargs npm run test:others -- --ci --files" \
+              --verbose \
+              --split-by=timings
+      - run: node scripts/nx/collect-test-results.js
+      - store_test_results:
+          path: test-results
 
   test-extension:
-    <<: *node_executor
-    steps:
-      - ci/pre-setup
-      - node/npm-install
-      - run:
-          name: "Run unit tests for checkout extension"
-          command: npm run test:extension
-
-  test-core:
     <<: *node_executor
     parallelism: 2
     steps:
       - ci/pre-setup
       - node/npm-install
-      - run: mkdir ~/junit
+      - run:
+          name: "Run unit tests for checkout extension"
+          command: |
+            npx nx run-many --target=test --projects=instrument-utils,checkout-extension -- --listTests | grep packages/ | sed "s|$(pwd)/||" | \
+            circleci tests run \
+              --command="xargs npm run test:extension -- --ci --files" \
+              --verbose \
+              --split-by=timings
+      - run: node scripts/nx/collect-test-results.js
+      - store_test_results:
+          path: test-results
+
+  test-core:
+    <<: *node_executor
+    parallelism: 4
+    steps:
+      - ci/pre-setup
+      - node/npm-install
       - run:
           name: "Run unit tests for core package"
           command: |
-            TEST=$(circleci tests glob "packages/core/**/*.spec.ts" "packages/core/**/*.spec.tsx" "packages/core/**/*.test.ts" "packages/core/**/*.test.tsx" | circleci tests split --split-by=timings)
             npx nx run core:generate
-            npm run test:core $TEST -- --runInBand
-      - run:
-          command: cp junit.xml ~/junit/
-          when: always
+            npx nx test core -- --listTests | grep packages/ | sed "s|$(pwd)/||" | \
+            circleci tests run \
+              --command="xargs npm run test:core -- --ci --files" \
+              --verbose \
+              --split-by=timings
+      - run: node scripts/nx/collect-test-results.js
       - store_test_results:
-          path: ~/junit
-      - store_artifacts:
-          path: ~/junit
+          path: test-results
 
   lint:
     <<: *node_executor
@@ -98,6 +114,7 @@ jobs:
 
   e2e:
     <<: *node_executor
+    parallelism: 2
     resource_class: medium+
     steps:
       - ci/pre-setup
@@ -110,7 +127,15 @@ jobs:
           command: npx playwright install --with-deps
       - run:
           name: "Run e2e tests"
-          command: npx playwright test
+          command: |
+            TESTFILES=$(circleci tests glob "*/e2e/**/*.spec.ts")
+            echo "$TESTFILES" | \
+            circleci tests run \
+              --command="xargs npx playwright test --config=playwright.config.ts" \
+              --verbose \
+              --split-by=timings
+      - store_test_results:
+          path: packages/test-framework/test-results/junit.xml
       - store_artifacts:
           path: packages/test-framework/report
           destination: artifact-file
