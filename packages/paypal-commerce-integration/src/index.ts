@@ -15,6 +15,13 @@ export { default as PayPalCommerceCreditPaymentMethod } from './PayPalCommerceCr
 
 /**
  *
+ * PayPal Commerce Credit Cards
+ *
+ * */
+export { default as PayPalCommerceCreditCardsPaymentMethod } from './PayPalCommerceCreditCards/PayPalCommerceCreditCardsPaymentMethod';
+
+/**
+ *
  * PayPal Commerce Fastlane
  *
  * */
