@@ -15,6 +15,13 @@ export { default as BigCommercePaymentsAPMsPaymentMethod } from './BigCommercePa
 
 /**
  *
+ * BigCommerce Payments Credit Cards
+ *
+ * */
+export { default as BigCommercePaymentsCreditCardsPaymentMethod } from './BigCommercePaymentCreditCards/BigCommercePaymentsCreditCardsPaymentMethod';
+
+/**
+ *
  * BigCommerce Payments Fastlane
  *
  * */
