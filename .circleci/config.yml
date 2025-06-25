@@ -14,6 +14,12 @@ aliases:
         ignore:
           - master
 
+  - &canonical_pull_request_filter
+      branches:
+        ignore:
+          - master
+          - /pull\/[0-9]+/
+
 version: 2.1
 
 orbs:
@@ -240,12 +246,12 @@ workflows:
       - security/scan:
           name: "Gitleaks secrets scan"
           filters:
-            <<: *pull_request_filter
+            <<: *canonical_pull_request_filter
           context: org-global
           GITLEAKS_BLOCK: "false"
       - microapp/upload-artifact:
           filters:
-            <<: *pull_request_filter
+            <<: *canonical_pull_request_filter
           context: GCR + Artifact Bucket Access
           requires:
             - test-core
@@ -254,9 +260,10 @@ workflows:
             - lint
             - build-prerelease
             - e2e
+            - "Gitleaks secrets scan"
       - ci/notify-success:
           filters:
-            <<: *pull_request_filter
+            <<: *canonical_pull_request_filter
           context: GCR + Artifact Bucket Access
           requires:
             - microapp/upload-artifact
@@ -281,6 +288,12 @@ workflows:
       - e2e:
           filters:
             <<: *release_filter
+      - security/scan:
+          name: "Gitleaks secrets scan"
+          filters:
+            <<: *release_filter
+          context: org-global
+          GITLEAKS_BLOCK: "false"
       - release:
           filters:
             <<: *release_filter
@@ -291,6 +304,7 @@ workflows:
             - lint
             - build
             - e2e
+            - "Gitleaks secrets scan"
       - upload_to_sentry:
           filters:
             <<: *release_filter
