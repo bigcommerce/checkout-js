@@ -32,8 +32,20 @@ describe('getStripeOCSStyles', () => {
                 'padding-right': '10px',
                 'padding-bottom': '10px',
             },
-            '.checkout-step--payment .form-checklist': {
+            [`#${containerId}--accordion-header.optimizedCheckout-form-checklist-item`]: {
                 'border-bottom': '1px solid black',
+                'border-color': 'yellow',
+            },
+            [`#${containerId}--accordion-header .form-label::before`]: {
+                'border-color': 'black',
+                'border-width': '1px',
+                width: '30px',
+            },
+            [`#${containerId}--accordion-header-selected .form-label::before`]: {
+                'border-color': '#4496f6',
+            },
+            [`#${containerId}--accordion-header-selected`]: {
+                'background-color': '#fcfcfc',
             },
         };
 
@@ -41,11 +53,19 @@ describe('getStripeOCSStyles', () => {
             properties: Record<string, Record<string, string | undefined>>,
         ) => {
             jest.spyOn(domUtils, 'getAppliedStyles').mockImplementation(
-                jest.fn().mockImplementation((element: HTMLElement) => {
-                    const elementSelector = element.getAttribute('data-test-selector');
+                jest
+                    .fn()
+                    .mockImplementation(
+                        (element: HTMLElement, _proprties: string[], pseudoElement?: string) => {
+                            let elementSelector = element.getAttribute('data-test-selector');
 
-                    return properties[elementSelector as keyof typeof defaultStyles];
-                }),
+                            if (elementSelector && pseudoElement) {
+                                elementSelector += pseudoElement;
+                            }
+
+                            return properties[elementSelector as keyof typeof defaultStyles];
+                        },
+                    ),
             );
         };
 
@@ -83,29 +103,35 @@ describe('getStripeOCSStyles', () => {
                         borderRadius: 0,
                         borderWidth: 0,
                         borderBottom: '1px solid black',
+                        borderColor: 'yellow',
                         boxShadow: 'none',
                         fontSize: '16px',
                         fontWeight: 'bold',
                         color: 'green',
                         padding: '10px 10px 10px 18px',
                     },
+                    '.AccordionItem:hover': {
+                        color: 'green',
+                        backgroundColor: '#fcfcfc',
+                    },
                     '.AccordionItem--selected': {
                         fontWeight: 'bold',
                         color: 'green',
+                        backgroundColor: '#fcfcfc',
                     },
                     '.TabLabel': {
                         color: 'green',
                     },
                     '.RadioIcon': {
-                        width: '29.55px',
+                        width: '34.09px',
                     },
                     '.RadioIconInner': {
-                        r: '28.77px',
+                        r: '29.04',
                         fill: '#4496f6',
                     },
                     '.RadioIconOuter': {
-                        strokeWidth: '3.38px',
-                        stroke: '#ddd',
+                        strokeWidth: '2.93px',
+                        stroke: 'black',
                     },
                     '.RadioIconOuter--checked': {
                         stroke: '#4496f6',
@@ -150,6 +176,7 @@ describe('getStripeOCSStyles', () => {
                             borderRadius: 0,
                             borderWidth: 0,
                             borderBottom: '1px solid black',
+                            borderColor: 'yellow',
                             boxShadow: 'none',
                             fontSize: '16px',
                             fontWeight: 'bold',
@@ -191,9 +218,14 @@ describe('getStripeOCSStyles', () => {
                         color: undefined,
                         padding: undefined,
                     },
+                    '.AccordionItem:hover': {
+                        color: undefined,
+                        backgroundColor: undefined,
+                    },
                     '.AccordionItem--selected': {
                         fontWeight: 'bold',
                         color: undefined,
+                        backgroundColor: undefined,
                     },
                     '.TabLabel': {
                         color: undefined,
@@ -202,44 +234,17 @@ describe('getStripeOCSStyles', () => {
                         width: '29.55px',
                     },
                     '.RadioIconInner': {
-                        r: '28.77px',
-                        fill: '#4496f6',
+                        r: '28.77',
+                        fill: undefined,
                     },
                     '.RadioIconOuter': {
                         strokeWidth: '3.38px',
-                        stroke: '#ddd',
+                        stroke: undefined,
                     },
                     '.RadioIconOuter--checked': {
-                        stroke: '#4496f6',
+                        stroke: undefined,
                     },
                 },
-            });
-        });
-
-        describe('Radio icon style', () => {
-            describe('RadioButton styling', () => {
-                it('should initialize with default style', () => {
-                    expect(getAppearanceForOCSElement(containerId)).toEqual(
-                        expect.objectContaining({
-                            rules: expect.objectContaining({
-                                '.RadioIcon': {
-                                    width: '29.55px',
-                                },
-                                '.RadioIconOuter': {
-                                    strokeWidth: '3.38px',
-                                    stroke: '#ddd',
-                                },
-                                '.RadioIconOuter--checked': {
-                                    stroke: '#4496f6',
-                                },
-                                '.RadioIconInner': {
-                                    r: '28.77px',
-                                    fill: '#4496f6',
-                                },
-                            }),
-                        }),
-                    );
-                });
             });
         });
     });
