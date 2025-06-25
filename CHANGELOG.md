@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.612.0](https://github.com/bigcommerce/checkout-js/compare/v1.611.2...v1.612.0) (2025-06-25)
+
+
+### Features
+
+* **payment:** Refactor code in order to use newly added skipRedirect… ([#2374](https://github.com/bigcommerce/checkout-js/issues/2374)) ([cbd91d5](https://github.com/bigcommerce/checkout-js/commit/cbd91d59f804b06bb8f6cc269cd6063411cc98a2))
+* **payment:** updated hosted credit card integration with card expiry field logic ([4fc610c](https://github.com/bigcommerce/checkout-js/commit/4fc610c98e166877cf4d07e55cee9cf1953ef64c))
+
 ### [1.611.2](https://github.com/bigcommerce/checkout-js/compare/v1.611.1...v1.611.2) (2025-06-25)
 
 ### [1.611.1](https://github.com/bigcommerce/checkout-js/compare/v1.611.0...v1.611.1) (2025-06-25)
