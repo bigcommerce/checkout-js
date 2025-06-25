@@ -38,7 +38,9 @@ jobs:
               --command="xargs npm run test:others -- --ci --files" \
               --verbose \
               --split-by=timings
-      - run: node scripts/nx/collect-test-results.js
+      - run:
+          command: node scripts/nx/collect-test-results.js
+          when: always
       - store_test_results:
           path: test-results
 
@@ -56,7 +58,9 @@ jobs:
               --command="xargs npm run test:extension -- --ci --files" \
               --verbose \
               --split-by=timings
-      - run: node scripts/nx/collect-test-results.js
+      - run:
+          command: node scripts/nx/collect-test-results.js
+          when: always
       - store_test_results:
           path: test-results
 
@@ -75,7 +79,9 @@ jobs:
               --command="xargs npm run test:core -- --ci --files" \
               --verbose \
               --split-by=timings
-      - run: node scripts/nx/collect-test-results.js
+      - run:
+          command: node scripts/nx/collect-test-results.js
+          when: always
       - store_test_results:
           path: test-results
 
