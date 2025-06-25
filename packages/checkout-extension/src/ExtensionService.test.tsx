@@ -139,6 +139,12 @@ describe('ExtensionService', () => {
             ExtensionCommandType.ReRenderShippingForm,
             expect.any(Function),
         );
+        expect(checkoutService.handleExtensionCommand).toHaveBeenNthCalledWith(
+            5,
+            '123',
+            ExtensionCommandType.ReRenderShippingStep,
+            expect.any(Function),
+        );
         expect(checkoutService.handleExtensionQuery).toHaveBeenNthCalledWith(
             1,
             '123',
@@ -148,7 +154,7 @@ describe('ExtensionService', () => {
 
         extensionService.removeListeners(ExtensionRegion.ShippingShippingAddressFormBefore);
 
-        expect(commandHandlerRemover).toBeCalledTimes(4);
+        expect(commandHandlerRemover).toBeCalledTimes(5);
         expect(queryHandlerRemover).toBeCalledTimes(1);
         expect(checkoutService.clearExtensionCache).toHaveBeenCalled();
     });

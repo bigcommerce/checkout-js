@@ -10,6 +10,7 @@ import { ExtensionActionType, getExtensions } from '../../index';
 import { CommandHandlerProps } from './CommandHandler';
 import { createReloadCheckoutHandler } from './createReloadCheckoutHandler';
 import { createReRenderShippingFormHandler } from './createReRenderShippingFormHandler';
+import { createReRenderShippingStepHandler } from './createReRenderShippingStepHandler';
 import { createSetIframeStyleHandler } from './createSetIframeStyleHandler';
 import { createShowLoadingIndicatorHandler } from './createShowLoadingIndicatorHandler';
 
@@ -95,6 +96,28 @@ describe('commandHandlers', () => {
 
             await handler({
                 type: ExtensionCommandType.ReRenderShippingForm,
+            });
+
+            expect(checkoutService.loadCheckout).toHaveBeenCalled();
+            expect(handlerProps.dispatch).toHaveBeenCalledWith({
+                type: ExtensionActionType.RE_RENDER_SHIPPING_FORM,
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                payload: expect.any(Number),
+            });
+        });
+    });
+
+    describe('createReRenderShippingStepHandler', () => {
+        it('reloads checkout and dispatches an action', async () => {
+            jest.spyOn(checkoutService, 'loadCheckout').mockResolvedValue(
+                // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                {} as Promise<CheckoutSelectors>,
+            );
+
+            const { handler } = createReRenderShippingStepHandler(handlerProps);
+
+            await handler({
+                type: ExtensionCommandType.ReRenderShippingStep,
             });
 
             expect(checkoutService.loadCheckout).toHaveBeenCalled();

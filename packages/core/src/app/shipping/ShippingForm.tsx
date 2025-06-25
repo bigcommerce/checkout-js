@@ -1,5 +1,6 @@
 import {
     Address,
+    Cart,
     CheckoutParams,
     CheckoutSelectors,
     Consignment,
@@ -11,17 +12,19 @@ import {
     ShippingInitializeOptions,
     ShippingRequestOptions,
 } from '@bigcommerce/checkout-sdk';
-import React from 'react';
+import React, { useEffect } from 'react';
 
-import { useExtensions } from '@bigcommerce/checkout/checkout-extension';
 import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
+import isUsingMultiShipping from './isUsingMultiShipping';
 import MultiShippingForm, { MultiShippingFormValues } from './MultiShippingForm';
 import MultiShippingGuestForm from './MultiShippingGuestForm';
 import SingleShippingForm, { SingleShippingFormValues } from './SingleShippingForm';
 
 export interface ShippingFormProps {
     addresses: CustomerAddress[];
+    cart: Cart;
     cartHasChanged: boolean;
     consignments: Consignment[];
     countries: Country[];
@@ -54,10 +57,13 @@ export interface ShippingFormProps {
         address: Partial<Address>,
         options: RequestOptions<CheckoutParams>,
     ): Promise<CheckoutSelectors>;
+    shippingFormRenderTimestamp?: number;
+    setIsMultishippingMode(isMultiShippingMode: boolean): void;
 }
 
 const ShippingForm = ({
     addresses,
+    cart,
     cartHasChanged,
       consignments,
       countries,
@@ -87,11 +93,28 @@ const ShippingForm = ({
       isShippingStepPending,
       isFloatingLabelEnabled,
     isInitialValueLoaded,
-  }: ShippingFormProps & WithLanguageProps) => {
-
+    shippingFormRenderTimestamp,
+    setIsMultishippingMode,
+}: ShippingFormProps & WithLanguageProps) => {
     const {
-        extensionState: { shippingFormRenderTimestamp },
-    } = useExtensions();
+        checkoutState: {
+            data: { getConfig },
+        },
+    } = useCheckout();
+    const config = getConfig();
+
+    useEffect(() => {
+        if (shippingFormRenderTimestamp) {
+            const hasMultiShippingEnabled = config?.checkoutSettings?.hasMultiShippingEnabled ?? false;
+            const isMultiShippingMode =
+                !!cart &&
+                !!consignments &&
+                hasMultiShippingEnabled &&
+                isUsingMultiShipping(consignments, cart.lineItems);
+
+            setIsMultishippingMode(isMultiShippingMode);
+        }
+    }, [shippingFormRenderTimestamp]);
 
     const getMultiShippingForm = () => {
         if (isGuest && !isGuestMultiShippingEnabled) {

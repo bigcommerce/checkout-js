@@ -17,6 +17,7 @@ import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 import { createSelector } from 'reselect';
 
+import { ExtensionContextProps, withExtension } from '@bigcommerce/checkout/checkout-extension';
 import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
@@ -49,6 +50,7 @@ export interface ShippingProps {
     onUnhandledError(error: Error): void;
     onSignIn(): void;
     navigateNextStep(isBillingSameAsShipping: boolean): void;
+    setIsMultishippingMode(isMultiShippingMode: boolean): void;
 }
 
 export interface WithCheckoutShippingProps {
@@ -95,8 +97,8 @@ interface ShippingState {
     isMultiShippingUnavailableModalOpen: boolean;
 }
 
-class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, ShippingState> {
-    constructor(props: ShippingProps & WithCheckoutShippingProps) {
+class Shipping extends Component<ShippingProps & WithCheckoutShippingProps & ExtensionContextProps, ShippingState> {
+    constructor(props: ShippingProps & WithCheckoutShippingProps & ExtensionContextProps) {
         super(props);
 
         this.state = {
@@ -147,6 +149,8 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             shouldRenderStripeForm,
             shouldRenderWhileLoading,
             cartHasPromotionalItems,
+            extensionState: { shippingFormRenderTimestamp } = {},
+            setIsMultishippingMode,
             ...shippingFormProps
         } = this.props;
 
@@ -213,6 +217,8 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         onSingleShippingSubmit={this.handleSingleShippingSubmit}
                         shouldShowSaveAddress={!isGuest}
                         updateAddress={updateShippingAddress}
+                        shippingFormRenderTimestamp={shippingFormRenderTimestamp}
+                        setIsMultishippingMode={setIsMultishippingMode}
                     />
                 </div>
             </AddressFormSkeleton>
@@ -454,4 +460,4 @@ export function mapToShippingProps({
     };
 }
 
-export default withCheckout(mapToShippingProps)(Shipping);
+export default withExtension(withCheckout(mapToShippingProps)(Shipping));
