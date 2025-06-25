@@ -23,7 +23,7 @@ describe('OrderConfirmationApp', () => {
             <OrderConfirmationApp {...defaultProps} />
         </div>);
 
-        // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
+        // eslint-disable-next-line testing-library/no-container
         expect(container.querySelector('.orderConfirmationApp')).toBeInTheDocument();
         expect(screen.getByText('Order Confirmation')).toBeInTheDocument();
     });

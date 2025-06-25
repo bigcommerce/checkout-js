@@ -1,9 +1,9 @@
 import React from 'react';
 
-import {createLocaleContext, LocaleContext} from '@bigcommerce/checkout/locale';
-import {render, screen} from '@bigcommerce/checkout/test-utils';
+import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import {getStoreConfig} from '../../config/config.mock';
+import { getStoreConfig } from '../../config/config.mock';
 
 import CreditCardCodeTooltip from './CreditCardCodeTooltip';
 

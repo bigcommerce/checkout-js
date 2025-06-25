@@ -6,7 +6,6 @@ import { LocaleProvider } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { render } from '@bigcommerce/checkout/test-utils';
 
-
 import { getAddressFormFields } from '../../address/formField.mock';
 import CheckoutStepType from '../../checkout/CheckoutStepType';
 import ConsoleErrorLogger from '../../common/error/ConsoleErrorLogger';
@@ -14,7 +13,6 @@ import { getCustomer } from '../../customer/customers.mock';
 import { getShippingAddress } from '../shipping-addresses.mock';
 
 import StripeShipping, { StripeShippingProps } from './StripeShipping';
-
 
 describe('Stripe Shipping Component', () => {
     const checkoutService = createCheckoutService();

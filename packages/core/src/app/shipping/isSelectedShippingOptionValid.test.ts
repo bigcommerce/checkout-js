@@ -4,7 +4,6 @@ import { getConsignment, getShippingOption } from '@bigcommerce/checkout/test-mo
 
 import isSelectedShippingOptionValid from './isSelectedShippingOptionValid';
 
-
 describe('isSelectedShippingOptionValid', () => {
     let consignments: Consignment[];
 

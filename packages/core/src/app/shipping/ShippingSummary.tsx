@@ -5,7 +5,6 @@ import React, { FunctionComponent, memo } from 'react';
 import StaticConsignment from './StaticConsignment';
 import StaticMultiConsignment from './StaticMultiConsignment';
 
-
 interface ShippingSummaryProps {
     isShippingDiscountDisplayEnabled: boolean;
     isMultiShippingMode: boolean;

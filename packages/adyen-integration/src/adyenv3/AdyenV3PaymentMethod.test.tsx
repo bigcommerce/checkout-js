@@ -193,7 +193,7 @@ describe('when using AdyenV3 payment', () => {
 
             render(<PaymentMethodTest {...defaultAdyenProps} method={method} />);
 
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/consistent-type-assertions
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             const initializeOptions: PaymentInitializeOptions = (initializePayment as jest.Mock)
                 .mock.calls[0][0];
 

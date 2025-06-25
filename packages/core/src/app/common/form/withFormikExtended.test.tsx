@@ -46,7 +46,6 @@ describe('withFormikExtended', () => {
         const submit = jest.fn();
         const { rerender } = render(<DecoratedTestComponent submit={submit} />);
 
-        // eslint-disable-next-line testing-library/no-unnecessary-act
         await act(async () => {
             await userEvent.click(screen.getByText('Submit'));
         });
@@ -54,7 +53,6 @@ describe('withFormikExtended', () => {
         expect(screen.getByText('title is a required field')).toBeInTheDocument();
         expect(submit).not.toHaveBeenCalled();
 
-        // eslint-disable-next-line testing-library/no-unnecessary-act
         await act(async () => {
             rerender(<DecoratedTestComponent defaultTitle="Hello" submit={submit} />);
 

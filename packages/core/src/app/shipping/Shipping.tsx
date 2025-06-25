@@ -215,10 +215,10 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps & Ext
                         isMultiShippingMode={isMultiShippingMode}
                         onMultiShippingSubmit={this.handleMultiShippingSubmit}
                         onSingleShippingSubmit={this.handleSingleShippingSubmit}
+                        setIsMultishippingMode={setIsMultishippingMode}
+                        shippingFormRenderTimestamp={shippingFormRenderTimestamp}
                         shouldShowSaveAddress={!isGuest}
                         updateAddress={updateShippingAddress}
-                        shippingFormRenderTimestamp={shippingFormRenderTimestamp}
-                        setIsMultishippingMode={setIsMultishippingMode}
                     />
                 </div>
             </AddressFormSkeleton>

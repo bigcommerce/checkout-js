@@ -88,7 +88,6 @@ describe('commandHandlers', () => {
     describe('createReRenderShippingFormHandler', () => {
         it('reloads checkout and dispatches an action', async () => {
             jest.spyOn(checkoutService, 'loadCheckout').mockResolvedValue(
-                // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
                 {} as Promise<CheckoutSelectors>,
             );
 
@@ -110,7 +109,6 @@ describe('commandHandlers', () => {
     describe('createReRenderShippingStepHandler', () => {
         it('reloads checkout and dispatches an action', async () => {
             jest.spyOn(checkoutService, 'loadCheckout').mockResolvedValue(
-                // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
                 {} as Promise<CheckoutSelectors>,
             );
 

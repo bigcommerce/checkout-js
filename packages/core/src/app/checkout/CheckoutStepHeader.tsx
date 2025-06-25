@@ -11,7 +11,6 @@ import { IconCheck } from '../ui/icon';
 
 import CheckoutStepType from './CheckoutStepType';
 
-
 export interface CheckoutStepHeaderProps {
     heading: ReactNode;
     isActive?: boolean;

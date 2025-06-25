@@ -45,15 +45,15 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
     const inputFormat = inputDateFormat || date?.inputFormat || '';
 
     const handleDateChange = useCallback(
-      (dateValue: string, event: any) =>
-        onChange({
-          ...event,
-          target: {
-            name,
-            value: dateValue,
-          },
-        }),
-      [onChange, name],
+        (dateValue: string, event: any) =>
+            onChange({
+                ...event,
+                target: {
+                    name,
+                    value: dateValue,
+                },
+            }),
+        [onChange, name],
     );
 
     switch (fieldType) {

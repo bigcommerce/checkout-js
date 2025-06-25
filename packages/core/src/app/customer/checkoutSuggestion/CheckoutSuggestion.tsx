@@ -12,7 +12,6 @@ import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-
 import { withCheckout } from '../../checkout';
 import { PaymentMethodId } from '../../payment/paymentMethod';
 
-
 import BoltCheckoutSuggestion from './BoltCheckoutSuggestion';
 
 export interface CheckoutSuggestionProps {

@@ -112,10 +112,7 @@ const StripeUPEPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
     const renderCheckoutThemeStylesForStripeUPE = () => {
         return (
-            <div
-                className="optimizedCheckout-form-input"
-                id={`${containerId}--input`}
-            >
+            <div className="optimizedCheckout-form-input" id={`${containerId}--input`}>
                 <div className="form-field--error">
                     <div className="optimizedCheckout-form-label" id={`${containerId}--error`} />
                 </div>

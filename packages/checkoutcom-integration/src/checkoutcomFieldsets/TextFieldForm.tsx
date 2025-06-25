@@ -1,9 +1,8 @@
-import React, { FunctionComponent, memo, useCallback, useMemo } from 'react';
 import { FieldProps } from 'formik';
+import React, { FunctionComponent, memo, useCallback, useMemo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { Fieldset, FormField, TextInput } from '@bigcommerce/checkout/ui';
-
 
 export interface TextFieldProps {
     additionalClassName: string;
@@ -23,7 +22,9 @@ const TextField: FunctionComponent<TextFieldProps> = (props) => {
     const { additionalClassName, autoComplete, labelId, name } = props;
 
     const renderInput = useCallback(
-        ({ field }: FieldProps) => <TextInput {...field} autoComplete={autoComplete} id={field.name} />,
+        ({ field }: FieldProps) => (
+            <TextInput {...field} autoComplete={autoComplete} id={field.name} />
+        ),
         [autoComplete],
     );
 

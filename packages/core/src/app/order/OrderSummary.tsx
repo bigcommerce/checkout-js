@@ -11,7 +11,6 @@ import { Extension } from '@bigcommerce/checkout/checkout-extension';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
-
 import OrderSummaryHeader from './OrderSummaryHeader';
 import OrderSummaryItems from './OrderSummaryItems';
 import OrderSummaryPrice from './OrderSummaryPrice';

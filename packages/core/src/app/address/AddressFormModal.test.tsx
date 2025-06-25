@@ -14,7 +14,6 @@ import { getStoreConfig } from '../config/config.mock';
 import AddressFormModal, { AddressFormModalProps } from './AddressFormModal';
 import { getFormFields } from './formField.mock';
 
-
 describe('AddressFormModal Component', () => {
     let checkoutService: CheckoutService;
     let localeContext: LocaleContextType;

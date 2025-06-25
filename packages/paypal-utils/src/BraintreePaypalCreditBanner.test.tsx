@@ -41,7 +41,7 @@ describe('BraintreePaypalCreditBanner', () => {
     afterEach(() => {
         jest.clearAllMocks();
         jest.resetAllMocks();
-    })
+    });
 
     it('initializes BraintreePaypalCreditBanner', () => {
         render(<BraintreePaypalCreditBannerTest />);
@@ -54,7 +54,7 @@ describe('BraintreePaypalCreditBanner', () => {
         });
 
         expect(checkoutService.deinitializePayment).toHaveBeenCalledWith({
-            methodId: PaymentMethodId.BraintreePaypalCredit
+            methodId: PaymentMethodId.BraintreePaypalCredit,
         });
     });
 

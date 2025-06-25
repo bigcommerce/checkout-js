@@ -118,10 +118,10 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                     onPaymentSelect: () => reinitializePayment(mergedOptions),
                 },
                 [PaymentMethodId.StripeOCSGooglePay]: {
-                  loadingContainerId,
-                  walletButton: 'walletButton',
-                  onError: onUnhandledError,
-                  onPaymentSelect: () => reinitializePayment(mergedOptions),
+                    loadingContainerId,
+                    walletButton: 'walletButton',
+                    onError: onUnhandledError,
+                    onPaymentSelect: () => reinitializePayment(mergedOptions),
                 },
             };
 

@@ -46,9 +46,7 @@ export interface CreditCardPaymentMethodProps {
         selectedInstrument?: CardInstrument,
     ): Promise<CheckoutSelectors>;
     deinitializePayment(options: PaymentRequestOptions): Promise<CheckoutSelectors>;
-    getHostedFormOptions?(
-        selectedInstrument?: CardInstrument,
-    ): Promise<LegacyHostedFormOptions>;
+    getHostedFormOptions?(selectedInstrument?: CardInstrument): Promise<LegacyHostedFormOptions>;
     getStoredCardValidationFieldset?(selectedInstrument?: CardInstrument): ReactNode;
 }
 

@@ -116,7 +116,6 @@ describe('AddressSelect component', () => {
 
         renderAddressSelect({ onSelectAddress, selectedAddress });
 
-
         const addressSelectButton = screen.getByTestId('address-select-button');
 
         // TODO: update with userEvent and investigate range.cloneRange() issue

@@ -1,17 +1,19 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { getCustomer } from '@bigcommerce/checkout/test-mocks';
 import { createCheckoutService } from '@bigcommerce/checkout-sdk';
+import { render, screen } from '@testing-library/react';
+import React from 'react';
+
+import { getCustomer } from '@bigcommerce/checkout/test-mocks';
+
 import PayPalFastlaneShippingAddressForm, {
     PayPalFastlaneAddressComponentRef,
-    PayPalFastlaneStaticAddressProps
+    PayPalFastlaneStaticAddressProps,
 } from './PayPalFastlaneShippingAddressForm';
 
 jest.mock('@bigcommerce/checkout/locale', () => ({
     __esModule: true,
     withDate: jest.fn().mockReturnValue({ locale: 'en' }),
     localizeAddress: jest.fn().mockReturnValue({ firstName: 'test-name' }),
-    language: jest.fn().mockReturnValue({ translate:  jest.fn().mockReturnValue('string') }),
+    language: jest.fn().mockReturnValue({ translate: jest.fn().mockReturnValue('string') }),
     TranslatedString: () => {
         // eslint-disable-next-line react/jsx-no-useless-fragment
         return <></>;
@@ -34,7 +36,8 @@ describe('PayPalFastlaneShippingAddressForm', () => {
     beforeEach(() => {
         defaultProps = {
             address: getCustomer().addresses[0],
-            paypalFastlaneShippingComponentRef: React.createRef<PayPalFastlaneAddressComponentRef>(),
+            paypalFastlaneShippingComponentRef:
+                React.createRef<PayPalFastlaneAddressComponentRef>(),
             formFields: [
                 {
                     custom: false,
@@ -70,10 +73,10 @@ describe('PayPalFastlaneShippingAddressForm', () => {
                         { code: 'CA', name: 'California' },
                         { code: 'TX', name: 'Texas' },
                     ],
-                }
+                },
             ],
         };
-    })
+    });
 
     it('renders PayPalFastlaneShippingAddressForm', () => {
         component = render(<PayPalFastlaneShippingAddressForm {...defaultProps} />);

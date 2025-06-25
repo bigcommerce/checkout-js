@@ -5,9 +5,7 @@ import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { TranslatedString } from "@bigcommerce/checkout/locale";
 import { useCheckout , useStyleContext } from "@bigcommerce/checkout/payment-integration-api";
 
-
 import { IconClose, IconSize } from "../ui/icon";
-
 
 import ConsignmentAddressSelector from './ConsignmentAddressSelector';
 import ConsignmentLineItem from './ConsignmentLineItem';

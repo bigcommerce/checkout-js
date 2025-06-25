@@ -122,7 +122,6 @@ class Payment extends Component<
             checkoutServiceSubscribe,
         } = this.props;
 
-
         if (usableStoreCredit) {
             this.handleStoreCreditChange(true);
         }

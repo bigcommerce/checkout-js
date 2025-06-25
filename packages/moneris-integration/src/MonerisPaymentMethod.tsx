@@ -60,26 +60,26 @@ const MonerisPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     const isInstrumentFeatureAvailable =
         !isGuestCustomer && Boolean(method.config.isVaultingEnabled);
 
-        const initializeMonerisPayment: HostedWidgetComponentProps['initializePayment'] = useCallback(
-            async (options: PaymentInitializeOptions, selectedInstrument) => {
-                const paymentConfig = {
-                    ...options,
-                    moneris: {
-                        containerId,
-                        ...(selectedInstrument && {
-                            form: await getHostedFormOptions(selectedInstrument),
-                        }),
-                    },
-                };
+    const initializeMonerisPayment: HostedWidgetComponentProps['initializePayment'] = useCallback(
+        async (options: PaymentInitializeOptions, selectedInstrument) => {
+            const paymentConfig = {
+                ...options,
+                moneris: {
+                    containerId,
+                    ...(selectedInstrument && {
+                        form: await getHostedFormOptions(selectedInstrument),
+                    }),
+                },
+            };
 
-                return checkoutService.initializePayment(paymentConfig);
-            },
-            [containerId, getHostedFormOptions, checkoutService],
-        );
+            return checkoutService.initializePayment(paymentConfig);
+        },
+        [containerId, getHostedFormOptions, checkoutService],
+    );
 
     const validateInstrument = (_shouldShowNumber: boolean, selectedInstrument: CardInstrument) => {
         return getHostedStoredCardValidationFieldset(selectedInstrument);
-    }
+    };
 
     return (
         <HostedWidgetPaymentComponent

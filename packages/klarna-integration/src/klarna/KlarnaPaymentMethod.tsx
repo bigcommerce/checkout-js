@@ -25,7 +25,6 @@ const KlarnaPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             checkoutService.initializePayment({
                 ...options,
                 klarna: {
-                    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-unsafe-member-access
                     container: `#${options.methodId}Widget`,
                 },
             }),

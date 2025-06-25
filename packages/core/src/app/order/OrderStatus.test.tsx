@@ -64,7 +64,6 @@ describe('OrderStatus', () => {
         it('renders confirmation message without contact phone number if it is not provided', () => {
             render(<OrderStatusTest {...defaultProps} />);
 
-
             expect(screen.getByTestId('order-confirmation-order-number-text')).toHaveTextContent(`Your order number is ${order.orderId}`);
             expect(screen.getByTestId('order-confirmation-order-status-text'))
                 .toHaveTextContent(getTextContent(localeContext.language.translate('order_confirmation.order_without_support_number_text', {

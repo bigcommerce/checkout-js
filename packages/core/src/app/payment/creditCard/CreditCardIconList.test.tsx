@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {render, screen} from '@bigcommerce/checkout/test-utils';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import CreditCardIconList from './CreditCardIconList';
 

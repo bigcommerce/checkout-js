@@ -3,8 +3,8 @@ import {
     CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
-import {Formik} from 'formik';
-import {noop} from 'lodash';
+import { Formik } from 'formik';
+import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';

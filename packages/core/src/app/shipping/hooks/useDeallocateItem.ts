@@ -2,7 +2,6 @@ import { Consignment, ConsignmentCreateRequestBody } from "@bigcommerce/checkout
 
 import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
 
-
 export const useDeallocateItem = () => {
     const {
         checkoutService: { createConsignments, deleteConsignment },

@@ -1,8 +1,4 @@
 
-import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
-import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
-import { getYear } from '@bigcommerce/checkout/test-mocks';
-import { render, screen } from '@bigcommerce/checkout/test-utils';
 import {
     CardInstrument,
     CheckoutSelectors,
@@ -13,6 +9,11 @@ import {
 import userEvent from '@testing-library/user-event';
 import React, { FunctionComponent } from 'react';
 
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { getYear } from '@bigcommerce/checkout/test-mocks';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
+
 import { getStoreConfig } from '../../config/config.mock';
 
 import { getInstruments } from './instruments.mock';
@@ -20,7 +21,6 @@ import isAccountInstrument from './isAccountInstrument';
 import isBankAccountInstrument from './isBankAccountInstrument';
 import isCardInstrument from './isCardInstrument';
 import ManageInstrumentsModal, { ManageInstrumentsModalProps } from './ManageInstrumentsModal';
-
 
 describe('ManageInstrumentsModal', () => {
     let ManageInstrumentsModalTest: FunctionComponent<ManageInstrumentsModalProps>;

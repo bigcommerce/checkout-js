@@ -50,7 +50,6 @@ const BlueSnapV2PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
     const initializeBlueSnapV2Payment = useCallback(
         (options: PaymentInitializeOptions) => {
-
             return checkoutService.initializePayment({
                 ...options,
                 bluesnapv2: {

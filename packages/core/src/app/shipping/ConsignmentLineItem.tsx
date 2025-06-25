@@ -6,7 +6,6 @@ import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { useCheckout , useStyleContext } from "@bigcommerce/checkout/payment-integration-api";
 
-
 import { IconChevronDown, IconChevronUp } from "../ui/icon";
 import { isMobileView as isMobileViewUI } from "../ui/responsive";
 

@@ -244,12 +244,6 @@ const WorldpayCreditCardPaymentMethod: FunctionComponent<PaymentMethodProps> = (
         <>
             <CreditCardPaymentMethodComponent
                 {...rest}
-                checkoutService={checkoutService}
-                checkoutState={checkoutState}
-                deinitializePayment={checkoutService.deinitializePayment}
-                language={language}
-                method={method}
-                paymentForm={paymentForm}
                 cardFieldset={
                     <HostedCreditCardFieldset
                         additionalFields={
@@ -265,8 +259,14 @@ const WorldpayCreditCardPaymentMethod: FunctionComponent<PaymentMethodProps> = (
                     />
                 }
                 cardValidationSchema={hostedValidationSchema}
+                checkoutService={checkoutService}
+                checkoutState={checkoutState}
+                deinitializePayment={checkoutService.deinitializePayment}
                 getStoredCardValidationFieldset={getHostedStoredCardValidationFieldset}
                 initializePayment={initializeWorldpayPayment}
+                language={language}
+                method={method}
+                paymentForm={paymentForm}
                 storedCardValidationSchema={hostedStoredCardValidationSchema}
             />
             <Modal

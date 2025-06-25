@@ -65,7 +65,6 @@ const SaveAddress: FunctionComponent<
                     <TranslatedString id="common.cancel_action" />
                 </Button>
 
-
                 <Button
                     disabled={isLoading}
                     id="checkout-save-address"

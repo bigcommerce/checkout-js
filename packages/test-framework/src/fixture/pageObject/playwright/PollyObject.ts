@@ -199,7 +199,6 @@ export class PollyObject {
             const entries = api.getRecording(this.polly.recordingId).body?.log?.entries;
 
             if (entries) {
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-return
                 return entries;
             }
 
