@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.613.0](https://github.com/bigcommerce/checkout-js/compare/v1.612.2...v1.613.0) (2025-06-25)
+
+
+### Features
+
+* **payment:** added BigCommercePaymentsCreditCardsPaymentMethod component ([15dea57](https://github.com/bigcommerce/checkout-js/commit/15dea575bb9e603de1ab32dc767ed82ecf763bc5))
+
 ### [1.612.2](https://github.com/bigcommerce/checkout-js/compare/v1.612.1...v1.612.2) (2025-06-25)
 
 ### [1.612.1](https://github.com/bigcommerce/checkout-js/compare/v1.612.0...v1.612.1) (2025-06-25)
