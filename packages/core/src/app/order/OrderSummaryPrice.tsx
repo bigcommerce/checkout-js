@@ -5,7 +5,6 @@ import { CSSTransition } from 'react-transition-group';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { useCheckout , useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
-
 import { ShopperCurrency } from '../currency';
 
 export interface OrderSummaryPriceProps {
@@ -153,7 +152,6 @@ const OrderSummaryPrice: FC<OrderSummaryPriceProps> = ({
                                 <ShopperCurrency amount={amountBeforeDiscount} />
                             </span>
                         )}
-
 
                         <span data-test="cart-price-value">
                             {isNumberValue(displayValue) ? (

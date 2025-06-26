@@ -16,21 +16,20 @@ interface PayPalFastlaneAddressComponentProps {
 const PayPalFastlaneAddressComponentMock = ({
     selectedAddress,
 }: PayPalFastlaneAddressComponentProps) => {
-    const {
-        isPayPalFastlaneEnabled,
-        paypalFastlaneAddresses,
-        shouldShowPayPalFastlaneLabel,
-    } = usePayPalFastlaneAddress();
+    const { isPayPalFastlaneEnabled, paypalFastlaneAddresses, shouldShowPayPalFastlaneLabel } =
+        usePayPalFastlaneAddress();
 
     return (
         <>
-            <div data-test='isPayPalFastlaneEnabled'>
+            <div data-test="isPayPalFastlaneEnabled">
                 {isPayPalFastlaneEnabled ? 'true' : 'false'}
             </div>
-            <div data-test='isPayPalFastlaneAddress'>
-                {isPayPalFastlaneAddress(selectedAddress, paypalFastlaneAddresses) ? 'true' : 'false'}
+            <div data-test="isPayPalFastlaneAddress">
+                {isPayPalFastlaneAddress(selectedAddress, paypalFastlaneAddresses)
+                    ? 'true'
+                    : 'false'}
             </div>
-            <div data-test='shouldShowPayPalFastlaneLabel'>
+            <div data-test="shouldShowPayPalFastlaneLabel">
                 {shouldShowPayPalFastlaneLabel ? 'true' : 'false'}
             </div>
             <ul>
@@ -44,12 +43,13 @@ const PayPalFastlaneAddressComponentMock = ({
 
 describe('usePayPalFastlaneAddress', () => {
     const defaultStoreConfig = getStoreConfig();
-    const defaultCustomer = getCustomer()
+    const defaultCustomer = getCustomer();
 
     const useCheckoutMock = (
         paymentProviderCustomer: PaymentProviderCustomer,
         customerAddress?: CustomerAddress[],
-        providerWithCustomCheckout = PaymentIntegrationApi.PaymentMethodId.BraintreeAcceleratedCheckout,
+        providerWithCustomCheckout = PaymentIntegrationApi.PaymentMethodId
+            .BraintreeAcceleratedCheckout,
     ) => {
         jest.spyOn(PaymentIntegrationApi, 'useCheckout').mockImplementation(
             jest.fn().mockImplementation(() => ({
@@ -67,9 +67,9 @@ describe('usePayPalFastlaneAddress', () => {
                             ...defaultCustomer,
                             addresses: customerAddress,
                         }),
-                    }
-                }
-            }))
+                    },
+                },
+            })),
         );
     };
 
@@ -98,11 +98,7 @@ describe('usePayPalFastlaneAddress', () => {
             PaymentIntegrationApi.PaymentMethodId.BraintreeAcceleratedCheckout,
         );
 
-        render(
-            <PayPalFastlaneAddressComponentMock
-                selectedAddress={paypalAddress1}
-            />
-        );
+        render(<PayPalFastlaneAddressComponentMock selectedAddress={paypalAddress1} />);
 
         const addressItems = screen.getAllByRole('listitem');
 

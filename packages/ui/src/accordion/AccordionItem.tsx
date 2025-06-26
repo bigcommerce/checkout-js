@@ -34,11 +34,11 @@ const AccordionItem: FunctionComponent<AccordionItemProps> = ({
     const isSelected = selectedItemId === itemId;
 
     const transitionEndListener = useCallback((node: Node, done: () => void) => {
-      node.addEventListener('transitionend', ({ target }: Event) => {
-        if (target === node) {
-          done();
-        }
-      });
+        node.addEventListener('transitionend', ({ target }: Event) => {
+            if (target === node) {
+                done();
+            }
+        });
     }, []);
 
     return (

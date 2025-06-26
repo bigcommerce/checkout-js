@@ -25,7 +25,6 @@ export const setRecommendedOrMissingShippingOption = async (
                 // eslint-disable-next-line no-await-in-loop
                 await selectConsignmentShippingOption(consignment.id, previousShippingOptionId);
 
-                // eslint-disable-next-line no-continue
                 continue;
             }
 

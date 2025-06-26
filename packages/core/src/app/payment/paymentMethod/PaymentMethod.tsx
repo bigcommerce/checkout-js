@@ -59,7 +59,6 @@ const PaymentMethodComponent: FunctionComponent<
         return <PPSDKPaymentMethod {...props} />;
     }
 
-
     if (method.id === PaymentMethodId.CCAvenueMars) {
         return <CCAvenueMarsPaymentMethod {...props} />;
     }
@@ -97,7 +96,6 @@ const PaymentMethodComponent: FunctionComponent<
     ) {
         return <HostedPaymentMethod {...props} />;
     }
-
 
     // NOTE: Some payment methods have `method` as `credit-card` but they are
     // actually not. Therefore, as a workaround, we are doing the following

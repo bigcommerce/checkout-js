@@ -219,7 +219,6 @@ function getPaymentMethodTitle(
             },
         };
 
-
         if (method.gateway === PaymentMethodId.BlueSnapDirect) {
             if (method.id === 'credit_card') {
                 return { logoUrl: '', titleText: language.translate('payment.credit_card_text') };

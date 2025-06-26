@@ -15,8 +15,6 @@ import { getShippingAddress } from '../shipping-addresses.mock';
 
 import StripeShippingForm from './StripeShippingForm';
 
-
-
 let hasSelectedShippingOptionsReturn = false;
 
 jest.mock(

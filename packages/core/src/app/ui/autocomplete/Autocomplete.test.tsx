@@ -1,8 +1,8 @@
-import { render, screen } from '@bigcommerce/checkout/test-utils';
 import userEvent from '@testing-library/user-event';
 import { Formik } from 'formik';
 import React from 'react';
 
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import Autocomplete from './Autocomplete';
 import AutocompleteItem from './autocomplete-item';

@@ -7,7 +7,6 @@ import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { TranslatedString } from "@bigcommerce/checkout/locale";
 import { useCheckout , useStyleContext } from "@bigcommerce/checkout/payment-integration-api";
 
-
 import { EMPTY_ARRAY } from "../common/utility";
 
 import AllocateItemsModal from "./AllocateItemsModal";
@@ -59,7 +58,6 @@ const NewConsignment = ({
             country: country ? country.name : consignmentRequest.address.countryCode,
         };
     }, [consignmentRequest]);
-
 
     const toggleAllocateItemsModal = () => {
         setIsOpenAllocateItemsModal(!isOpenAllocateItemsModal);

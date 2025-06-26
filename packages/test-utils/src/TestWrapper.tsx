@@ -10,9 +10,7 @@ const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
     return (
         <CheckoutProvider checkoutService={createCheckoutService()}>
             <LocaleContext.Provider value={createLocaleContext(getStoreConfig())}>
-                <StyleProvider>
-                    {children}
-                </StyleProvider>
+                <StyleProvider>{children}</StyleProvider>
             </LocaleContext.Provider>
         </CheckoutProvider>
     );

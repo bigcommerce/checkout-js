@@ -4,6 +4,7 @@ import { Field, FieldProps, Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 import { Omit } from 'utility-types';
+import { config } from 'yargs';
 
 import {
     createLocaleContext,
@@ -20,7 +21,6 @@ import {
 } from '../../guards';
 
 import AccountInstrumentSelect, { AccountInstrumentSelectProps } from './AccountInstrumentSelect';
-import { config } from 'yargs';
 
 describe('AccountInstrumentSelect', () => {
     let defaultProps: Omit<AccountInstrumentSelectProps, keyof FieldProps<string>>;

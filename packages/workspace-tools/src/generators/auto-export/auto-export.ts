@@ -69,9 +69,9 @@ async function createExportDeclaration(
         .map((element) =>
             'escapedText' in element.name
                 ? element.name.escapedText.toString()
-                // TODO:CHECKOUT-9228 Fix lint error after nx upgrade to 19.8.9
-                // eslint-disable-next-line @typescript-eslint/no-base-to-string
-                : element.name.toString(),
+                : // TODO:CHECKOUT-9228 Fix lint error after nx upgrade to 19.8.9
+                  // eslint-disable-next-line @typescript-eslint/no-base-to-string
+                  element.name.toString(),
         )
         // TODO:CHECKOUT-9228 Fix lint error after nx upgrade to 19.8.9
         // eslint-disable-next-line @typescript-eslint/prefer-regexp-exec
@@ -107,7 +107,7 @@ async function getSource(filePath: string): Promise<ts.SourceFile> {
 function getImportPath(packagePath: string, tsConfigPath: string): string {
     const tsConfig = ts.readConfigFile(tsConfigPath, ts.sys.readFile);
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     for (const [packageName, paths] of Object.entries(tsConfig.config?.compilerOptions.paths)) {
         // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         if ((paths as string[]).includes(packagePath)) {

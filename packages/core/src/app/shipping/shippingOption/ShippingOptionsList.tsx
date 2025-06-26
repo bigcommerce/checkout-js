@@ -36,7 +36,6 @@ const ShippingOptionListItem: FunctionComponent<ShippingOptionListItemProps> = (
         [isSelected, isMultiShippingMode, shippingOption],
     );
 
-
     return (
         <ChecklistItem
             htmlId={`shippingOptionRadio-${consignmentId}-${shippingOption.id}`}

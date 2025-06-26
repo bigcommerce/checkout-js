@@ -1,5 +1,5 @@
-import React, { FunctionComponent, memo, useCallback, useMemo } from 'react';
 import { FieldProps } from 'formik';
+import React, { FunctionComponent, memo, useCallback, useMemo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 

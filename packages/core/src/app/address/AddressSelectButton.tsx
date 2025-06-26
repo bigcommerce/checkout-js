@@ -4,7 +4,6 @@ import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 
-
 import { AddressSelectProps } from './AddressSelect';
 import SingleLineStaticAddress from './SingleLineStaticAddress';
 import StaticAddress from './StaticAddress';

@@ -25,14 +25,15 @@ const PayPalFastlaneWatermark: FunctionComponent = () => {
         paymentMethod?.initializationData?.isFastlanePrivacySettingEnabled;
 
     useEffect(() => {
-        if(shouldRenderFastlaneWatermark && isFastlaneHostWindow(window)) {
+        if (shouldRenderFastlaneWatermark && isFastlaneHostWindow(window)) {
             const fastlane = isBraintreeFastlaneMethod(providerWithCustomCheckout)
                 ? window.braintreeFastlane
                 : window.paypalFastlane;
 
-            fastlane.FastlaneWatermarkComponent({
-                includeAdditionalInfo: true,
-            })
+            fastlane
+                .FastlaneWatermarkComponent({
+                    includeAdditionalInfo: true,
+                })
                 .then((result: FastlanePrivacySettings) => {
                     result.render('#paypalFastlaneWatermark');
                 });
@@ -42,14 +43,14 @@ const PayPalFastlaneWatermark: FunctionComponent = () => {
 
     if (shouldRenderFastlaneWatermark) {
         return (
-            <div className='paypalFastlaneWatermark-container'>
-                <div id='paypalFastlaneWatermark' data-test='paypalFastlaneWatermark' />
+            <div className="paypalFastlaneWatermark-container">
+                <div data-test="paypalFastlaneWatermark" id="paypalFastlaneWatermark" />
             </div>
         );
     }
 
     // eslint-disable-next-line react/jsx-no-useless-fragment
     return <></>;
-}
+};
 
 export default PayPalFastlaneWatermark;

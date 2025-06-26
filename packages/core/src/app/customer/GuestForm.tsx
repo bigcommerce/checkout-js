@@ -7,7 +7,6 @@ import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/
 import { useCheckout, useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 import { PayPalFastlaneWatermark } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
-
 import { isExperimentEnabled } from '../common/utility';
 import { getPrivacyPolicyValidationSchema, PrivacyPolicyField } from '../privacyPolicy';
 import { Button, ButtonVariant } from '../ui/button';

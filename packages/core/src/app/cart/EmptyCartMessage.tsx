@@ -3,7 +3,6 @@ import React, { PureComponent, ReactNode } from 'react';
 import { TranslatedHtml } from '@bigcommerce/checkout/locale';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
-
 export interface EmptyCartMessageProps {
     waitInterval?: number;
     loginUrl: string;

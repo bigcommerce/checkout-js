@@ -46,7 +46,7 @@ const PayPalFastlaneShippingAddressForm = (props: PayPalFastlaneStaticAddressPro
         isLoading,
         onFieldChange,
         countries,
-        paypalFastlaneShippingComponentRef
+        paypalFastlaneShippingComponentRef,
     } = props;
     const address = localizeAddress(addressWithoutLocalization, countries);
 

@@ -16,9 +16,7 @@ const usePayPalFastlaneAddress = () => {
         ? paymentProviderCustomer
         : {};
 
-    const customerAuthenticationState =
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        paymentProviderCustomer?.authenticationState;
+    const customerAuthenticationState = paymentProviderCustomer?.authenticationState;
 
     const paypalFastlaneAddresses = paypalFastlaneCustomer.addresses || [];
 

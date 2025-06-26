@@ -9,7 +9,6 @@ import { render, screen } from '@bigcommerce/checkout/test-utils';
 import { getStoreConfig } from '../config/config.mock';
 
 import Redeemable, { RedeemableProps } from './Redeemable';
-import {fireEvent} from '@testing-library/react';
 
 describe('CartSummary Component', () => {
     let localeContext: LocaleContextType;
@@ -136,7 +135,6 @@ describe('CartSummary Component', () => {
             shouldCollapseCouponCode={true}
         />;
 
-
         it('renders redeemable toggle link', () => {
             render(<TestComponent />);
 
@@ -176,7 +174,6 @@ describe('CartSummary Component', () => {
             });
         });
     });
-
 
     it('renders error message when coupon code is collapsed and there is applied error without error message', async () => {
         render(

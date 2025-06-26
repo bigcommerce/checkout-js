@@ -11,7 +11,6 @@ import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/
 import { useCheckout , useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 import { FormContextType, FormProvider } from '@bigcommerce/checkout/ui';
 
-
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
 import { FormField, Label, TextInput } from '../ui/form';

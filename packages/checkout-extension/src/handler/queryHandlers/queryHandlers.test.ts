@@ -34,7 +34,6 @@ describe('queryHandlers', () => {
             const handler = createGetConsignmentHandler(handlerProps);
             const consignments: Consignment[] = [];
 
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
             jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue({
                 consignments,
             } as Checkout);

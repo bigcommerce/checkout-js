@@ -1,14 +1,17 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { getAddress, getCustomer } from '@bigcommerce/checkout/test-mocks';
 import { CheckoutSelectors, CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
-import { PayPalFastlaneShippingAddress, PayPalFastlaneShippingAddressProps } from './PayPalFastlaneShippingAddress';
+import { render, screen } from '@testing-library/react';
+import { Formik } from 'formik';
+import { noop } from 'lodash';
+import React from 'react';
+
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutContext, StyleProvider } from '@bigcommerce/checkout/payment-integration-api';
-import { getStoreConfig } from '../config/config.mock';
 import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
-import { noop } from 'lodash';
-import { Formik } from 'formik';
+import { getAddress, getCustomer } from '@bigcommerce/checkout/test-mocks';
+
+import { getStoreConfig } from '../config/config.mock';
+
+import { PayPalFastlaneShippingAddress, PayPalFastlaneShippingAddressProps } from './PayPalFastlaneShippingAddress';
 
 jest.mock('@bigcommerce/checkout/paypal-fastlane-integration', () => ({
     ...jest.requireActual('@bigcommerce/checkout/paypal-fastlane-integration'),
@@ -19,7 +22,6 @@ jest.mock('@bigcommerce/checkout/paypal-fastlane-integration', () => ({
 }));
 
 describe('PayPalFastlaneShippingAddress', () => {
-    let component;
     let defaultProps: PayPalFastlaneShippingAddressProps;
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
@@ -91,7 +93,7 @@ describe('PayPalFastlaneShippingAddress', () => {
     })
 
     it('renders PayPalFastlaneShippingAddress edit button', async () => {
-        component = render(
+        render(
             <Formik initialValues={{}} onSubmit={noop}>
                 <LocaleContext.Provider value={localeContext}>
                     <CheckoutContext.Provider value={{ checkoutState, checkoutService }}>
@@ -111,7 +113,7 @@ describe('PayPalFastlaneShippingAddress', () => {
     it('initializes fastlane shipping strategy', async () => {
         const initializeMock = jest.fn();
 
-        component = render(
+        render(
             <Formik initialValues={{}} onSubmit={noop}>
                 <LocaleContext.Provider value={localeContext}>
                     <CheckoutContext.Provider value={{ checkoutState, checkoutService }}>
@@ -131,13 +133,14 @@ describe('PayPalFastlaneShippingAddress', () => {
             ...getAddress(),
             address1: 'PP Fastlane address'
         }];
+
         (usePayPalFastlaneAddress as jest.Mock).mockReturnValue({
             isPayPalFastlaneEnabled: true,
             paypalFastlaneAddresses,
             shouldShowPayPalFastlaneShippingForm: false,
         });
 
-        component = render(
+        render(
             <Formik initialValues={{}} onSubmit={noop}>
                 <LocaleContext.Provider value={localeContext}>
                     <CheckoutContext.Provider value={{ checkoutState, checkoutService }}>

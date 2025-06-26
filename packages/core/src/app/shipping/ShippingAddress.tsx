@@ -17,7 +17,6 @@ import { AmazonPayShippingAddress } from './AmazonPayShippingAddress';
 import { PayPalFastlaneShippingAddress } from './PayPalFastlaneShippingAddress';
 import ShippingAddressForm from './ShippingAddressForm';
 
-
 export interface ShippingAddressProps {
     addresses: CustomerAddress[];
     consignments: Consignment[];

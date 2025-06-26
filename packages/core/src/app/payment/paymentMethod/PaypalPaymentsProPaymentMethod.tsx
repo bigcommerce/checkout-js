@@ -5,7 +5,6 @@ import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-
 import { withCheckout } from '../../checkout';
 import { EMPTY_ARRAY } from '../../common/utility';
 
-
 import HostedCreditCardPaymentMethod, {
     HostedCreditCardPaymentMethodProps,
 } from './HostedCreditCardPaymentMethod';

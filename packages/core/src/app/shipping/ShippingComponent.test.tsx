@@ -125,7 +125,6 @@ describe('Shipping component', () => {
         );
     });
 
-
     describe('when new multishipping ui is enabled', () => {
         beforeEach(async () => {
             jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({

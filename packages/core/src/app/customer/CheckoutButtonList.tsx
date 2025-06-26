@@ -12,13 +12,13 @@ import { TranslatedString, useLocale } from '@bigcommerce/checkout/locale';
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 
 import { withCheckout } from '../checkout';
+import { isExperimentEnabled } from '../common/utility';
 
+import CheckoutButton from './CheckoutButton';
 import { AmazonPayV2Button, ApplePayButton, PayPalCommerceButton } from './customWalletButton';
 import { getSupportedMethodIds } from './getSupportedMethods';
 import resolveCheckoutButton from './resolveCheckoutButton';
-import CheckoutButton from './CheckoutButton';
 import CheckoutButtonV1Resolver from './WalletButtonV1Resolver';
-import { isExperimentEnabled } from '../common/utility';
 
 export interface CheckoutButtonListProps {
     checkoutSettings: CheckoutSettings;
@@ -111,11 +111,11 @@ const CheckoutButtonList: FunctionComponent<WithCheckoutCheckoutButtonListProps 
                 return (
                     <ApplePayButton
                         containerId={`${methodId}CheckoutButton`}
-                        key={methodId}
-                        methodId={methodId}
-                        isShowingWalletButtonsOnTop={isShowingWalletButtonsOnTop}
                         deinitialize={deinitialize}
                         initialize={initialize}
+                        isShowingWalletButtonsOnTop={isShowingWalletButtonsOnTop}
+                        key={methodId}
+                        methodId={methodId}
                         onClick={onClick}
                         onError={onError}
                     />
@@ -126,11 +126,11 @@ const CheckoutButtonList: FunctionComponent<WithCheckoutCheckoutButtonListProps 
                 return (
                     <AmazonPayV2Button
                         containerId={`${methodId}CheckoutButton`}
-                        key={methodId}
-                        methodId={methodId}
-                        isShowingWalletButtonsOnTop={isShowingWalletButtonsOnTop}
                         deinitialize={deinitialize}
                         initialize={initialize}
+                        isShowingWalletButtonsOnTop={isShowingWalletButtonsOnTop}
+                        key={methodId}
+                        methodId={methodId}
                         onClick={onClick}
                         onError={onError}
                     />
@@ -141,11 +141,11 @@ const CheckoutButtonList: FunctionComponent<WithCheckoutCheckoutButtonListProps 
                 return (
                     <PayPalCommerceButton
                         containerId={`${methodId}CheckoutButton`}
-                        key={methodId}
-                        methodId={methodId}
-                        isShowingWalletButtonsOnTop={isShowingWalletButtonsOnTop}
                         deinitialize={deinitialize}
                         initialize={initialize}
+                        isShowingWalletButtonsOnTop={isShowingWalletButtonsOnTop}
+                        key={methodId}
+                        methodId={methodId}
                         onClick={onClick}
                         onError={onError}
                     />
@@ -155,11 +155,11 @@ const CheckoutButtonList: FunctionComponent<WithCheckoutCheckoutButtonListProps 
             return (
                 <CheckoutButton
                     containerId={`${methodId}CheckoutButton`}
-                    key={methodId}
-                    methodId={methodId}
-                    isShowingWalletButtonsOnTop={isShowingWalletButtonsOnTop}
                     deinitialize={deinitialize}
                     initialize={initialize}
+                    isShowingWalletButtonsOnTop={isShowingWalletButtonsOnTop}
+                    key={methodId}
+                    methodId={methodId}
                     onClick={onClick}
                     onError={onError}
                 />

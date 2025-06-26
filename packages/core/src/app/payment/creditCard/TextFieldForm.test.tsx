@@ -4,7 +4,7 @@ import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
 import { LocaleProvider } from '@bigcommerce/checkout/locale';
-import {render, screen} from '@bigcommerce/checkout/test-utils';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import TextFieldForm, { TextFieldFormProps } from './TextFieldForm';
 

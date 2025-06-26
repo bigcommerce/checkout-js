@@ -176,7 +176,7 @@ describe('when using StripeUPE payment', () => {
             expect.objectContaining({
                 methodId: method.id,
                 gatewayId: method.gateway,
-                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+
                 [`${method.gateway}`]: {
                     containerId: `stripe-${method.id}-component-field`,
                     style: {

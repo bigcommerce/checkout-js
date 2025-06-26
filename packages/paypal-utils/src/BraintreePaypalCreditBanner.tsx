@@ -1,10 +1,10 @@
 import React, { FunctionComponent, useEffect } from 'react';
 
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { PaymentMethodId, useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
-import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
-
-const BraintreePaypalCreditBanner: FunctionComponent<{ onUnhandledError?(error: Error): void }> = ({ onUnhandledError }) => {
+const BraintreePaypalCreditBanner: FunctionComponent<{ onUnhandledError?(error: Error): void }> = ({
+    onUnhandledError,
+}) => {
     const { checkoutService } = useCheckout();
 
     useEffect(() => {
@@ -35,13 +35,11 @@ const BraintreePaypalCreditBanner: FunctionComponent<{ onUnhandledError?(error: 
                     onUnhandledError?.(error);
                 }
             }
-        }
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return (
-        <div data-test='braintree-banner-container' id='braintree-banner-container' />
-    )
-}
+    return <div data-test="braintree-banner-container" id="braintree-banner-container" />;
+};
 
 export default BraintreePaypalCreditBanner;

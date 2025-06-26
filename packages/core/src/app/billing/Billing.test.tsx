@@ -1,4 +1,3 @@
-/* eslint-disable testing-library/no-unnecessary-act */
 import {
     BillingAddress,
     CheckoutService,

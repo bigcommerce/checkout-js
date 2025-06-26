@@ -101,9 +101,7 @@ class HostedDropInPaymentMethodComponent extends Component<HostedDropInPaymentMe
     }
 
     async componentDidUpdate(
-        prevProps: Readonly<
-            HostedDropInPaymentMethodProps & HostedDropInPaymentMethodDerivedProps
-        >,
+        prevProps: Readonly<HostedDropInPaymentMethodProps & HostedDropInPaymentMethodDerivedProps>,
         prevState: Readonly<HostedDropInPaymentMethodState>,
     ): Promise<void> {
         const {
@@ -113,7 +111,8 @@ class HostedDropInPaymentMethodComponent extends Component<HostedDropInPaymentMe
             onUnhandledError = noop,
         } = this.props;
 
-        const { instruments, isPaymentDataRequired } = this.getHostedDropInPaymentMethodDerivedProps();
+        const { instruments, isPaymentDataRequired } =
+            this.getHostedDropInPaymentMethodDerivedProps();
 
         const {
             checkoutState: {
@@ -286,7 +285,8 @@ class HostedDropInPaymentMethodComponent extends Component<HostedDropInPaymentMe
             signInCustomer = noop,
         } = this.props;
 
-        const { isPaymentDataRequired, isSignedIn } = this.getHostedDropInPaymentMethodDerivedProps();
+        const { isPaymentDataRequired, isSignedIn } =
+            this.getHostedDropInPaymentMethodDerivedProps();
 
         const { selectedInstrumentId = this.getDefaultInstrumentId() } = this.state;
 

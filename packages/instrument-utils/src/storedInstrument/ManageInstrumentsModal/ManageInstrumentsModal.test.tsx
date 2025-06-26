@@ -155,7 +155,6 @@ describe('ManageInstrumentsModal', () => {
     });
 
     it('displays error message to user if unable to delete instrument', () => {
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         jest.spyOn(checkoutState.errors, 'getDeleteInstrumentError').mockReturnValue({
             status: 500,
         } as RequestError);

@@ -1,4 +1,3 @@
-/* eslint-disable import/export */
 export default function joinPaths(first: string, second: string, ...paths: string[]): string;
 
 export default function joinPaths(...paths: string[]): string {

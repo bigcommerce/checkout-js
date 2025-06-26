@@ -89,7 +89,7 @@ const StaticMultiConsignment: FunctionComponent<StaticMultiConsignmentProps> = (
                 />
                 </span>
             
-                <ConsignmentLineItemDetail lineItems={lineItems} isMultiShippingSummary />
+                <ConsignmentLineItemDetail isMultiShippingSummary lineItems={lineItems} />
         </div>
 
             {selectedShippingOption && (

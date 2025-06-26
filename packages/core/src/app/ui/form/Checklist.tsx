@@ -11,7 +11,6 @@ import React, {
 
 import { Accordion } from '@bigcommerce/checkout/ui';
 
-
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 
 export interface ChecklistProps {

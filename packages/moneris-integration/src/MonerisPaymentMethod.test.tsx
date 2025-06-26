@@ -5,16 +5,32 @@ import {
     createLanguageService,
     PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
+import { render } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
-import { render } from '@testing-library/react';
+
+import {
+    createLocaleContext,
+    LocaleContext,
+    LocaleContextType,
+} from '@bigcommerce/checkout/locale';
+import {
+    CheckoutProvider,
+    PaymentFormContext,
+    PaymentFormService,
+    PaymentMethodId,
+    PaymentMethodProps,
+} from '@bigcommerce/checkout/payment-integration-api';
+import {
+    getCheckout,
+    getCustomer,
+    getInstruments,
+    getPaymentFormServiceMock,
+    getPaymentMethod,
+    getStoreConfig,
+} from '@bigcommerce/checkout/test-mocks';
 import { act } from '@bigcommerce/checkout/test-utils';
-
-
-import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
-import { CheckoutProvider, PaymentFormContext, PaymentFormService, PaymentMethodId, PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
-import { getCheckout, getCustomer, getInstruments, getPaymentFormServiceMock, getPaymentMethod, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
 import MonerisPaymentMethod from './MonerisPaymentMethod';
 
@@ -65,7 +81,6 @@ describe('when using Moneris payment', () => {
                         </Formik>
                     </LocaleContext.Provider>
                 </PaymentFormContext.Provider>
-
             </CheckoutProvider>
         );
     });
@@ -73,7 +88,7 @@ describe('when using Moneris payment', () => {
     afterEach(() => {
         jest.clearAllMocks();
         jest.resetAllMocks();
-    })
+    });
 
     it('renders as hosted widget method', () => {
         render(<PaymentMethodTest {...defaultProps} />);
@@ -106,7 +121,7 @@ describe('when using Moneris payment', () => {
         jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue(getInstruments());
 
         method = { ...getPaymentMethod(), id: PaymentMethodId.Moneris };
-        
+
         defaultProps = {
             method,
             checkoutService,
@@ -141,6 +156,7 @@ describe('when using Moneris payment', () => {
                     onValidate: expect.any(Function),
                     styles: {},
                 },
-            }});
+            },
         });
+    });
 });

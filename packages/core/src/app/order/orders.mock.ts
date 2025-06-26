@@ -110,7 +110,6 @@ const mockOrderShippingConsignment: OrderShippingConsignment = {
     discounts: [],
 };
 
-
 export function getOrderWithShippingDiscount(): Order {
     return {
         ...getOrder(),

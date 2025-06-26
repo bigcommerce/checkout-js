@@ -5,7 +5,6 @@ import React, { Component, ReactNode } from 'react';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 
-
 import { withCheckout } from '../../checkout';
 import { Button, ButtonSize, ButtonVariant } from '../../ui/button';
 import { Modal, ModalHeader } from '../../ui/modal';

@@ -25,7 +25,5 @@ export const StyleProvider = ({ children }: StyleProviderProps) => {
         );
     }
 
-    return (<StyleContext.Provider value={{ newFontStyle }}>
-        {children}
-    </StyleContext.Provider>);
+    return <StyleContext.Provider value={{ newFontStyle }}>{children}</StyleContext.Provider>;
 };
