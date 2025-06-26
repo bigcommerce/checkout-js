@@ -85,6 +85,7 @@ const AdyenV3Form: FunctionComponent<AdyenV3FormProps & PaymentMethodProps> = ({
 
     return (
         <>
+            <div>boing boing</div>
             <HostedWidgetPaymentComponent
                 {...rest}
                 containerId={containerId}

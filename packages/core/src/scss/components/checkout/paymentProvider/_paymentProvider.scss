@@ -5,6 +5,7 @@
     align-items: start;
     display: flex;
     justify-content: space-between;
+    border: 5px solid red;
 }
 
 .paymentProviderHeader-subtitleContainer {
@@ -22,6 +23,7 @@
     display: flex;
     height: fontSize("large");
     object-fit: contain;
+    border: 5px solid red;
 
     + .paymentProviderHeader-name {
         margin-left: spacing("half");
