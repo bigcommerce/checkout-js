@@ -24,9 +24,6 @@ export default function getPaymentMethodName(
 
         if (!name) {
             name = capitalize(
-                // FIXME: I'm not entirely sure why we have to do this. But for some
-                // reason this is required for Masterpass provided by Square.
-
                 get(method, 'initializationData.paymentData.cardData.digital_wallet_type') ||
                     method.method ||
                     method.id,
