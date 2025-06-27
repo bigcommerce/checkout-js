@@ -275,7 +275,8 @@
             "credit_card_name_label": "Name on Card",
             "credit_card_name_required_error": "Full name is required",
             "credit_card_name_invalid_error": "Credit Card Name must be valid",
-            "credit_card_number_invalid_error": "Credit Card Number must be valid",
+            // Info: to add card number validation error please update next line. (if your store supports other languages -> update translations for them as well)
+            "credit_card_number_invalid_error": "Credit card number is not valid. Please double check it and try again",
             "credit_card_number_label": "Credit Card Number",
             "credit_card_number_last_four": "Enter card number for {cardType} ending in {lastFour}",
             "credit_card_number_required_error": "Credit Card Number is required",
