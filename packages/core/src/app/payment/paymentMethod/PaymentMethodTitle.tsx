@@ -341,6 +341,7 @@ const PaymentMethodTitle: FunctionComponent<
                 {getSubtitle()}
             </div>
             <div className="paymentProviderHeader-cc">
+                {/* If it is necessary to remove AMEX card icon from supported card brands in credit card title, then filter it from method.supportedCards before doing map */}
                 <CreditCardIconList
                     cardTypes={compact(method.supportedCards.map(mapFromPaymentMethodCardType))}
                     selectedCardType={getSelectedCardType()}
