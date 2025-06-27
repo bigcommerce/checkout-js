@@ -7,8 +7,10 @@ import { isMobile } from '../../common/utility';
 import { Checklist, ChecklistItem, CustomChecklistItem } from '../../ui/form';
 
 import getUniquePaymentMethodId, { parseUniquePaymentMethodId } from './getUniquePaymentMethodId';
-import PaymentMethodTitle from './PaymentMethodTitle';
+import PaymentMethodTitle, { getPaymentMethodTitle } from './PaymentMethodTitle';
 import PaymentMethodV2 from './PaymentMethodV2';
+import { useLocale } from '@bigcommerce/checkout/locale';
+import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
 export interface PaymentMethodListProps {
     isEmbedded?: boolean;
@@ -41,45 +43,76 @@ const PaymentMethodList: FunctionComponent<
     onSelect = noop,
     onUnhandledError,
 }) => {
+    const { language } = useLocale();
+    const {
+        checkoutState: {
+            data: { getConfig }
+        }
+    } = useCheckout();
+
+    const config = getConfig();
+
+    if (!config) {
+        return null;
+    }
+
     const handleSelect = useCallback(
         (value: string) => {
-            onSelect(getPaymentMethodFromListValue(methods, value));
+            const paymentMethod = getPaymentMethodFromListValue(methods, value);
+
+            const announcement = document.getElementById('announcement');
+            if (announcement) {
+                const checkoutSettings = config?.checkoutSettings || {};
+                const cdnBasePath = config?.cdnPath || '';
+                const storeCountryCode = config.storeProfile.storeCountryCode;
+                const { titleText } = getPaymentMethodTitle(language, cdnBasePath, checkoutSettings, storeCountryCode)(paymentMethod);
+
+                // Clear content to force re-announcement even if same name is selected again
+                announcement.textContent = '';
+                setTimeout(() => {
+                    announcement.textContent = `Selected: ${titleText}`;
+                }, 10);
+            }
+            onSelect(paymentMethod);
         },
         [methods, onSelect],
     );
 
     return (
-        <Checklist
-            defaultSelectedItemId={values.paymentProviderRadio}
-            isDisabled={isInitializingPayment}
-            name="paymentProviderRadio"
-            onSelect={handleSelect}
-        >
-            {methods.map((method) => {
-                const value = getUniquePaymentMethodId(method.id, method.gateway);
-                const showOnlyOnMobileDevices = get(
-                    method,
-                    'initializationData.showOnlyOnMobileDevices',
-                    false,
-                );
+        <>
+            <div id="announcement" className='is-srOnly' aria-live="assertive" role="status" />
+            <Checklist
+                defaultSelectedItemId={values.paymentProviderRadio}
+                isDisabled={isInitializingPayment}
+                name="paymentProviderRadio"
+                onSelect={handleSelect}
+            >
+                {methods.map((method) => {
+                    const value = getUniquePaymentMethodId(method.id, method.gateway);
+                    const showOnlyOnMobileDevices = get(
+                        method,
+                        'initializationData.showOnlyOnMobileDevices',
+                        false,
+                    );
 
-                if (showOnlyOnMobileDevices && !isMobile()) {
-                    return;
-                }
+                    if (showOnlyOnMobileDevices && !isMobile()) {
+                        return;
+                    }
 
-                return (
-                    <PaymentMethodListItem
-                        isDisabled={isInitializingPayment}
-                        isEmbedded={isEmbedded}
-                        isUsingMultiShipping={isUsingMultiShipping}
-                        key={value}
-                        method={method}
-                        onUnhandledError={onUnhandledError}
-                        value={value}
-                    />
-                );
-            })}
-        </Checklist>
+                    return (
+                        <PaymentMethodListItem
+                            isDisabled={isInitializingPayment}
+                            isEmbedded={isEmbedded}
+                            isUsingMultiShipping={isUsingMultiShipping}
+                            key={value}
+                            method={method}
+                            onUnhandledError={onUnhandledError}
+                            value={value}
+                        />
+                    );
+                })}
+            </Checklist>
+        </>
     );
 };
 

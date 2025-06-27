@@ -33,7 +33,7 @@ interface WithPaymentTitleProps {
     cdnBasePath: string;
 }
 
-function getPaymentMethodTitle(
+export function getPaymentMethodTitle(
     language: LanguageService,
     basePath: string,
     checkoutSettings: CheckoutSettings,
