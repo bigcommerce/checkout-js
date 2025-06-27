@@ -2,16 +2,17 @@ import { PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { find, get, noop } from 'lodash';
 import React, { FunctionComponent, memo, useCallback, useMemo } from 'react';
 
+import { useLocale } from '@bigcommerce/checkout/locale';
+import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { isMobile } from '../../common/utility';
 import { Checklist, ChecklistItem, CustomChecklistItem } from '../../ui/form';
 
+import getPaymentMethodName from './getPaymentMethodName';
 import getUniquePaymentMethodId, { parseUniquePaymentMethodId } from './getUniquePaymentMethodId';
 import PaymentMethodTitle, { getPaymentMethodTitle } from './PaymentMethodTitle';
 import PaymentMethodV2 from './PaymentMethodV2';
-import { useLocale } from '@bigcommerce/checkout/locale';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
-import getPaymentMethodName from './getPaymentMethodName';
 
 export interface PaymentMethodListProps {
     isEmbedded?: boolean;
@@ -53,23 +54,20 @@ const PaymentMethodList: FunctionComponent<
 
     const config = getConfig();
 
-    if (!config) {
-        return null;
-    }
-
     const titleText = useMemo(() => {
-        const checkoutSettings = config?.checkoutSettings || {};
-        const cdnBasePath = config?.cdnPath || '';
-        const storeCountryCode = config.storeProfile.storeCountryCode;
-        if (values.paymentProviderRadio) {
+        if (config && values.paymentProviderRadio) {
+            const checkoutSettings = config?.checkoutSettings || {};
+            const cdnBasePath = config?.cdnPath || '';
+            const storeCountryCode = config.storeProfile.storeCountryCode;
             const paymentMethod = getPaymentMethodFromListValue(methods, values.paymentProviderRadio);
             const methodName = getPaymentMethodName(language)(paymentMethod);
             const { titleText } = getPaymentMethodTitle(language, cdnBasePath, checkoutSettings, storeCountryCode)(paymentMethod);
+
             return titleText || methodName;
         }
-        return '';
-    }, [values.paymentProviderRadio])
 
+        return '';
+    }, [config, values.paymentProviderRadio])
 
     const handleSelect = useCallback(
         (value: string) => {
