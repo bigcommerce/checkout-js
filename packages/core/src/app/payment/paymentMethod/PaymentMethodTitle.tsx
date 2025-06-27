@@ -332,7 +332,7 @@ const PaymentMethodTitle: FunctionComponent<
                         className={classNames(
                             'paymentProviderHeader-img',
                             {'paymentProviderHeader-img-applePay': method.id === 'applepay'},
-                            {'paymentProviderHeader-img-googlePay' : method.id.includes('googlepay')},
+                            {'paymentProviderHeader-img-googlePay': method.id.includes('googlepay')},
                         )}
                         data-test="payment-method-logo"
                         src={logoUrl}
