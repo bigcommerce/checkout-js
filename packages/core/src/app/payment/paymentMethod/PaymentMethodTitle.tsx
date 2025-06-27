@@ -316,7 +316,12 @@ const PaymentMethodTitle: FunctionComponent<
     }
 
     return (
-        <div className="paymentProviderHeader-container">
+        <div className={
+            classNames(
+                'paymentProviderHeader-container',
+                {'paymentProviderHeader-container-googlePay': method.id.includes('googlepay')},
+            )
+        }>
             <div
                 className="paymentProviderHeader-nameContainer"
                 data-test={`payment-method-${method.id}`}
@@ -324,7 +329,11 @@ const PaymentMethodTitle: FunctionComponent<
                 {logoUrl && (
                     <img
                         alt={methodName}
-                        className="paymentProviderHeader-img"
+                        className={classNames(
+                            'paymentProviderHeader-img',
+                            {'paymentProviderHeader-img-applePay': method.id === 'applepay'},
+                            {'paymentProviderHeader-img-googlePay': method.id.includes('googlepay')},
+                        )}
                         data-test="payment-method-logo"
                         src={logoUrl}
                     />

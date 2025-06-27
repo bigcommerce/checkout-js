@@ -7,6 +7,10 @@
     justify-content: space-between;
 }
 
+.paymentProviderHeader-container-googlePay {
+    align-items: center;
+}
+
 .paymentProviderHeader-subtitleContainer {
     flex-basis: 100%;
 }
@@ -27,6 +31,16 @@
         margin-left: spacing("half");
         white-space: nowrap;
     }
+}
+
+.paymentProviderHeader-img-applePay {
+    height: fontSize("larger");
+    margin-top: spacing("eighth");
+    margin-left: spacing("quarter");
+}
+
+.paymentProviderHeader-img-googlePay {
+    height: fontSize("larger");
 }
 
 .googlePay-logo {
