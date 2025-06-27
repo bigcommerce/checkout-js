@@ -331,8 +331,8 @@ const PaymentMethodTitle: FunctionComponent<
                         alt={methodName}
                         className={classNames(
                             'paymentProviderHeader-img',
-                            method.id.includes('applepay') ? 'paymentProviderHeader-img-applePay' : null,
-                            method.id.includes('googlepay') ? 'paymentProviderHeader-img-googlePay' : null,
+                            {'paymentProviderHeader-img-applePay': method.id === 'applepay'},
+                            {'paymentProviderHeader-img-googlePay' : method.id.includes('googlepay')},
                         )}
                         data-test="payment-method-logo"
                         src={logoUrl}
