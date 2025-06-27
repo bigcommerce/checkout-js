@@ -11,6 +11,7 @@ import PaymentMethodTitle, { getPaymentMethodTitle } from './PaymentMethodTitle'
 import PaymentMethodV2 from './PaymentMethodV2';
 import { useLocale } from '@bigcommerce/checkout/locale';
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import getPaymentMethodName from './getPaymentMethodName';
 
 export interface PaymentMethodListProps {
     isEmbedded?: boolean;
@@ -56,31 +57,30 @@ const PaymentMethodList: FunctionComponent<
         return null;
     }
 
+    const titleText = useMemo(() => {
+        const checkoutSettings = config?.checkoutSettings || {};
+        const cdnBasePath = config?.cdnPath || '';
+        const storeCountryCode = config.storeProfile.storeCountryCode;
+        if (values.paymentProviderRadio) {
+            const paymentMethod = getPaymentMethodFromListValue(methods, values.paymentProviderRadio);
+            const methodName = getPaymentMethodName(language)(paymentMethod);
+            const { titleText } = getPaymentMethodTitle(language, cdnBasePath, checkoutSettings, storeCountryCode)(paymentMethod);
+            return titleText || methodName;
+        }
+        return '';
+    }, [values.paymentProviderRadio])
+
+
     const handleSelect = useCallback(
         (value: string) => {
-            const paymentMethod = getPaymentMethodFromListValue(methods, value);
-
-            const announcement = document.getElementById('announcement');
-            if (announcement) {
-                const checkoutSettings = config?.checkoutSettings || {};
-                const cdnBasePath = config?.cdnPath || '';
-                const storeCountryCode = config.storeProfile.storeCountryCode;
-                const { titleText } = getPaymentMethodTitle(language, cdnBasePath, checkoutSettings, storeCountryCode)(paymentMethod);
-
-                // Clear content to force re-announcement even if same name is selected again
-                announcement.textContent = '';
-                setTimeout(() => {
-                    announcement.textContent = `Selected: ${titleText}`;
-                }, 10);
-            }
-            onSelect(paymentMethod);
+            onSelect(getPaymentMethodFromListValue(methods, value));
         },
         [methods, onSelect],
     );
 
     return (
         <>
-            <div id="announcement" className='is-srOnly' aria-live="assertive" role="status" />
+            <div id="announcement" className='is-srOnly' aria-live="assertive" role="status">{titleText}</div>
             <Checklist
                 defaultSelectedItemId={values.paymentProviderRadio}
                 isDisabled={isInitializingPayment}
