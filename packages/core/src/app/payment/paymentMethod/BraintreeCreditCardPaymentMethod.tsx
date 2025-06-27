@@ -47,6 +47,7 @@ const BraintreeCreditCardPaymentMethod: FunctionComponent<
             async (options, selectedInstrument) => {
                 return initializePayment({
                     ...options,
+                    // Info: add unsupportedCardBrands to "braintree" object
                     braintree: {
                         threeDSecure: {
                             addFrame(error, content, cancel) {
@@ -62,9 +63,22 @@ const BraintreeCreditCardPaymentMethod: FunctionComponent<
                                 ref.current.cancelThreeDSecureVerification = undefined;
                             },
                         },
-                        form:
-                            getHostedFormOptions &&
-                            (await getHostedFormOptions(selectedInstrument)),
+                        form: getHostedFormOptions && await getHostedFormOptions(selectedInstrument),
+                        // Info: this is how to pass data of unsupported card brands, so that form validation will not be passed
+                        // List of credit card brands that are supported by Braintree:
+                        //  'visa',
+                        //  'mastercard',
+                        //  'american-express',
+                        //  'diners-club',
+                        //  'discover',
+                        //  'jcb',
+                        //  'union-pay',
+                        //  'maestro',
+                        //  'elo',
+                        //  'mir',
+                        //  'hiper',
+                        //  'hipercard'
+                        unsupportedCardBrands: ['american-express', 'visa'], // Please use card brands names from the list above
                     },
                 });
             },
