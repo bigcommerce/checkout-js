@@ -319,7 +319,7 @@ const PaymentMethodTitle: FunctionComponent<
         <div className={
             classNames(
                 'paymentProviderHeader-container',
-                {'paymentProviderHeader-container-googlePay' : method.id.includes('googlepay')},
+                {'paymentProviderHeader-container-googlePay': method.id.includes('googlepay')},
             )
         }>
             <div
