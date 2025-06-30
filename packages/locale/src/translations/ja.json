@@ -281,11 +281,10 @@
             "credit_card_number_required_error": "クレジットカード番号は必須です",
             "credit_card_number_mismatch_error": "入力されたカード番号がアカウントに登録されているカードと一致しません",
             "credit_debit_card_text": "クレジットカード/デビットカード",
+            "payment_methods_text": "支払手段",
+            "redeemable_payments_text": "引き換え可能な支払い",
+            "instrument_storage_options_text": "決済情報保存オプション",
             "stripev3_auth_3ds_fail": "ユーザーが認証されませんでした",
-            "digitalriver_dropin_error": "支払処理中にエラーが発生しました。 再度実行するか、当社にお問い合わせください。",
-            "digitalriver_checkout_error": "お支払いに問題がありました。詳細を確認して再試行するか、カスタマーサービスに連絡してください",
-            "digitalriver_checkout_error_title": "リクエストの処理中にエラーが発生しました。",
-            "digitalriver_display_name_text": "支払方法を選択してください",
             "google_pay_name_text": "Google Pay",
             "humm_not_processable_error": "この注文を処理できません。別の支払方法を選択してください。",
             "klarna_continue_action": "Klarnaで続ける",
@@ -562,7 +561,9 @@
             "choose_shipping_address": "配送先住所を選択",
             "multishipping_unavailable_action": "複数住所への配送は利用できません",
             "multishipping_unavailable_message": "プロモーションにより無料商品がカートに追加された場合、複数住所への配送はご利用いただけません。",
-            "checkout_switched_to_single_shipping": "お客様のチェックアウトは、単一の配送先住所を使用するように自動的に更新されました。プロモーションの無料商品がカートに入っている場合、複数の住所への配送はご利用いただけません。"
+            "checkout_switched_to_single_shipping": "お客様のチェックアウトは、単一の配送先住所を使用するように自動的に更新されました。プロモーションの無料商品がカートに入っている場合、複数の住所への配送はご利用いただけません。",
+            "guest_multishipping_no_shipping_address_message": "配送先住所が入力されていません",
+            "guest_multishipping_enter_shipping_address_action": "配送先住所を入力"
         },
         "social": {
             "share_action": "共有",

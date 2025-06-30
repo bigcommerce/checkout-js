@@ -281,11 +281,10 @@
             "credit_card_number_required_error": "O número de cartão de crédito é obrigatório",
             "credit_card_number_mismatch_error": "O número do cartão inserido não corresponde ao cartão armazenado na sua conta",
             "credit_debit_card_text": "Cartão de crédito/débito",
+            "payment_methods_text": "Formas de pagamento",
+            "redeemable_payments_text": "Redeemable Payments",
+            "instrument_storage_options_text": "Payment Storage Options",
             "stripev3_auth_3ds_fail": "Usuário não autenticado",
-            "digitalriver_dropin_error": "Ocorreu um erro no processamento do seu pagamento. Tente novamente ou entre em contato conosco.",
-            "digitalriver_checkout_error": "Ocorreu um problema na finalização da compra; confira os dados e tente novamente; ou procure o atendimento ao cliente",
-            "digitalriver_checkout_error_title": "Erro ao processar a solicitação.",
-            "digitalriver_display_name_text": "Adicione um método de pagamento",
             "google_pay_name_text": "Google Pay",
             "humm_not_processable_error": "O Humm não pode processar o pagamento do pedido; selecione outro método de pagamento.",
             "klarna_continue_action": "Continuar com o Klarna",
@@ -562,7 +561,9 @@
             "choose_shipping_address": "Escolha um endereço de entrega",
             "multishipping_unavailable_action": "Envio para vários endereços indisponível",
             "multishipping_unavailable_message": "O envio para vários endereços não está disponível quando uma promoção adiciona um item gratuito ao seu carrinho.",
-            "checkout_switched_to_single_shipping": "A finalização da compra foi atualizada automaticamente para utilizar um único endereço de entrega. O envio para vários endereços não está disponível quando um item promocional gratuito está no carrinho."
+            "checkout_switched_to_single_shipping": "A finalização da compra foi atualizada automaticamente para utilizar um único endereço de entrega. O envio para vários endereços não está disponível quando um item promocional gratuito está no carrinho.",
+            "guest_multishipping_no_shipping_address_message": "No shipping address entered",
+            "guest_multishipping_enter_shipping_address_action": "Enter shipping address"
         },
         "social": {
             "share_action": "Compartilhar",

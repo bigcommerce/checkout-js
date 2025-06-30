@@ -281,11 +281,10 @@
             "credit_card_number_required_error": "El número de tarjeta de crédito es obligatorio",
             "credit_card_number_mismatch_error": "El número de tarjeta que se ingresó no coincide con la tarjeta guardada en tu cuenta",
             "credit_debit_card_text": "Tarjeta de débito/crédito",
+            "payment_methods_text": "Métodos de pago",
+            "redeemable_payments_text": "Pagos canjeables",
+            "instrument_storage_options_text": "Opciones de almacenamiento de pagos",
             "stripev3_auth_3ds_fail": "No se autenticó el usuario",
-            "digitalriver_dropin_error": "Hubo un error al procesar su pago. Inténtelo de nuevo o póngase en contacto con nosotros.",
-            "digitalriver_checkout_error": "Hubo un problema con tu proceso de pago; revisa tus datos e inténtalo de nuevo o ponte en contacto con el servicio de atención al cliente",
-            "digitalriver_checkout_error_title": "Error al procesar la solicitud.",
-            "digitalriver_display_name_text": "Selecciona tu método de pago",
             "google_pay_name_text": "Google Pay",
             "humm_not_processable_error": "Humm no puede procesar el pago de este pedido; selecciona otro método de pago.",
             "klarna_continue_action": "Continuar con Klarna",
@@ -562,7 +561,9 @@
             "choose_shipping_address": "Elige una dirección de envío",
             "multishipping_unavailable_action": "Envío a varias direcciones no disponible",
             "multishipping_unavailable_message": "El envío a varias direcciones no está disponible cuando una promoción agrega un artículo gratis a tu carrito.",
-            "checkout_switched_to_single_shipping": "Tu proceso de pago se ha actualizado automáticamente para que se use una única dirección de envío. El envío a varias direcciones no está disponible cuando tienes un artículo promocional gratuito en tu carrito."
+            "checkout_switched_to_single_shipping": "Tu proceso de pago se ha actualizado automáticamente para que se use una única dirección de envío. El envío a varias direcciones no está disponible cuando tienes un artículo promocional gratuito en tu carrito.",
+            "guest_multishipping_no_shipping_address_message": "No se introdujo ninguna dirección de envío",
+            "guest_multishipping_enter_shipping_address_action": "Introduzca la dirección de envío"
         },
         "social": {
             "share_action": "Compartir",
