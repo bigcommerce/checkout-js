@@ -1,4 +1,6 @@
-export function getPayPalCommerceMethod() {
+import { PaymentMethod } from '@bigcommerce/checkout-sdk';
+
+export function getPayPalCommerceMethod(): PaymentMethod {
     return {
         clientToken: undefined,
         config: {
@@ -49,6 +51,7 @@ export function getPayPalCommerceMethod() {
         method: 'paypal',
         nonce: undefined,
         returnUrl: undefined,
+        skipRedirectConfirmationAlert: false,
         supportedCards: [
             'PAYPAL',
             'PAYPALCREDIT',

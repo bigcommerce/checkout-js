@@ -55,7 +55,7 @@ describe('usePayPalFastlaneAddress', () => {
             jest.fn().mockImplementation(() => ({
                 checkoutState: {
                     data: {
-                        getPaymentProviderCustomer: () => paymentProviderCustomer,
+                        getPaymentProviderCustomer: () => typeof paymentProviderCustomer,
                         getConfig: () => ({
                             ...defaultStoreConfig,
                             checkoutSettings: {

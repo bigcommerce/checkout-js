@@ -45,6 +45,7 @@ const PayPalFastlaneShippingAddressForm = (props: PayPalFastlaneStaticAddressPro
         formFields,
         isLoading,
         onFieldChange,
+        onAddressSelect,
         countries,
         paypalFastlaneShippingComponentRef,
     } = props;
@@ -62,7 +63,7 @@ const PayPalFastlaneShippingAddressForm = (props: PayPalFastlaneStaticAddressPro
                 await paypalFastlaneShippingComponentRef.current.showAddressSelector();
 
             if (selectedAddress) {
-                props.onAddressSelect({
+                onAddressSelect({
                     ...selectedAddress,
                     ...(shouldShowCustomFormFields ? address.customFields : {}),
                 });
@@ -75,14 +76,14 @@ const PayPalFastlaneShippingAddressForm = (props: PayPalFastlaneStaticAddressPro
             <div className="stepHeader" style={{ padding: 0 }}>
                 <div className="stepHeader-body subheader">
                     <div className="vcard checkout-address--static">
-                        {(address.firstName || address.lastName) && (
+                        {Boolean(address.firstName || address.lastName) && (
                             <p className="fn address-entry">
                                 <span className="first-name">{`${address.firstName} `}</span>
                                 <span className="family-name">{address.lastName}</span>
                             </p>
                         )}
 
-                        {(address.phone || address.company) && (
+                        {Boolean(address.phone || address.company) && (
                             <p className="address-entry">
                                 <span className="company-name">{`${address.company} `}</span>
                                 <span className="tel">{address.phone}</span>
@@ -92,22 +93,22 @@ const PayPalFastlaneShippingAddressForm = (props: PayPalFastlaneStaticAddressPro
                         <div className="adr">
                             <p className="street-address address-entry">
                                 <span className="address-line-1">{`${address.address1} `}</span>
-                                {address.address2 && (
+                                {Boolean(address.address2) && (
                                     <span className="address-line-2">{` / ${address.address2}`}</span>
                                 )}
                             </p>
 
                             <p className="address-entry">
-                                {address.city && (
+                                {Boolean(address.city) && (
                                     <span className="locality">{`${address.city}, `}</span>
                                 )}
-                                {address.localizedProvince && (
+                                {Boolean(address.localizedProvince) && (
                                     <span className="region">{`${address.localizedProvince}, `}</span>
                                 )}
-                                {address.postalCode && (
+                                {Boolean(address.postalCode) && (
                                     <span className="postal-code">{`${address.postalCode} / `}</span>
                                 )}
-                                {address.localizedCountry && (
+                                {Boolean(address.localizedCountry) && (
                                     <span className="country-name">{`${address.localizedCountry} `}</span>
                                 )}
                             </p>

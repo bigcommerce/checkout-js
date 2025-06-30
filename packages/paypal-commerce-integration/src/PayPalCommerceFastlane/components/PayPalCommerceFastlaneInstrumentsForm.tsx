@@ -3,7 +3,7 @@ import React, { FunctionComponent } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { PoweredByPayPalFastlaneLabel } from '@bigcommerce/checkout/paypal-fastlane-integration';
-import { CreditCardIcon, Button, ButtonSize, ButtonVariant } from '@bigcommerce/checkout/ui';
+import { Button, ButtonSize, ButtonVariant, CreditCardIcon } from '@bigcommerce/checkout/ui';
 
 import { PayPalFastlaneCardComponentRef } from '../PayPalCommerceFastlanePaymentMethod';
 
@@ -27,9 +27,9 @@ function mapFromInstrumentCardType(type: string): string {
 }
 
 interface PayPalCommerceFastlaneInstrumentsFormProps {
+    selectedInstrument: CardInstrument;
     onChange: PayPalFastlaneCardComponentRef['showPayPalCardSelector'];
     handleSelectInstrument(instrument: CardInstrument): void;
-    selectedInstrument: CardInstrument;
 }
 
 const PayPalCommerceFastlaneInstrumentsForm: FunctionComponent<

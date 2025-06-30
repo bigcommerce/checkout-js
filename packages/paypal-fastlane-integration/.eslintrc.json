@@ -2,17 +2,7 @@
   "extends": ["../../.eslintrc.json"],
   "overrides": [
     {
-      "files": ["*.ts", "*.tsx"],
-      // TODO:CHECKOUT-9228 Fix lint errors after nx upgrade to 19.8.9
-      "rules": {
-        "@bigcommerce/jsx-short-circuit-conditionals": "off",
-        "@typescript-eslint/naming-convention": "off",
-        "@typescript-eslint/no-floating-promises": "off",
-        "@typescript-eslint/no-unsafe-assignment": "off",
-        "@typescript-eslint/no-unsafe-return": "off",
-        "@typescript-eslint/no-unnecessary-condition": "off",
-        "react/destructuring-assignment": "off"
-      }
+      "files": ["*.ts", "*.tsx"]
     }
   ]
 }

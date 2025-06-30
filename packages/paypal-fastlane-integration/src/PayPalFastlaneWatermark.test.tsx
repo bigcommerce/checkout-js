@@ -28,17 +28,20 @@ describe('PayPalFastlaneWatermark Component', () => {
         },
         type: 'PAYMENT_TYPE_API',
         clientToken: 'clientToken',
+        skipRedirectConfirmationAlert: false,
     };
 
     Object.defineProperties(window, {
         braintreeFastlane: {
             value: {
+                // eslint-disable-next-line @typescript-eslint/naming-convention
                 FastlaneWatermarkComponent: jest.fn(),
             },
             configurable: true,
         },
         paypalFastlane: {
             value: {
+                // eslint-disable-next-line @typescript-eslint/naming-convention
                 FastlaneWatermarkComponent: jest.fn(),
             },
             configurable: true,

@@ -9,9 +9,10 @@ import {
 import { navigateToOrderConfirmation } from '@bigcommerce/checkout/utility';
 
 const PayPalCommerceCreditButton: FunctionComponent<CheckoutButtonProps> = (props) => {
+    const { onUnhandledError } = props;
     const additionalInitializationOptions = {
         onComplete: navigateToOrderConfirmation,
-        onError: props.onUnhandledError,
+        onError: onUnhandledError,
     };
 
     return (

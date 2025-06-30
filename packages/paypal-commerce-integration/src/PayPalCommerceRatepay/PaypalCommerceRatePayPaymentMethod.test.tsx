@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { createCheckoutService, LanguageService } from '@bigcommerce/checkout-sdk';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { EventEmitter } from 'events';
@@ -48,7 +49,7 @@ describe('PaypalCommerceRatePayPaymentMethod', () => {
 
         language: { translate: jest.fn() } as unknown as LanguageService,
         onUnhandledError: jest.fn(),
-    };
+    } as unknown as PaymentMethodProps;
 
     const billingAddress = {
         id: '55c96cda6f04c',
@@ -96,11 +97,11 @@ describe('PaypalCommerceRatePayPaymentMethod', () => {
                                 ratepayPhoneCountryCode: '',
                             };
 
-                            if (!values.ratepayPhoneNumber.match(/^\d{7,11}$/)) {
+                            if (!/^\d{7,11}$/.exec(values.ratepayPhoneNumber)) {
                                 errors.ratepayPhoneNumber = 'Phone number is invalid';
                             }
 
-                            if (!values.ratepayPhoneCountryCode.match(/^[0-9+][0-9+]{+,}$/)) {
+                            if (!/^[0-9+][0-9+]{+,}$/.exec(values.ratepayPhoneCountryCode)) {
                                 errors.ratepayPhoneCountryCode = 'Phone code is invalid';
                             }
 

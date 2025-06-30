@@ -9,9 +9,10 @@ import {
 import PayPalCommercePaymentMethodComponent from '../components/PayPalCommercePaymentMethodComponent';
 
 const PayPalCommerceVenmoPaymentMethod: FunctionComponent<PaymentMethodProps> = (props) => {
-    const isPaymentDataRequired = props.checkoutState.data.isPaymentDataRequired();
+    const { checkoutState } = props;
+    const { isPaymentDataRequired } = checkoutState.data;
 
-    if (!isPaymentDataRequired) {
+    if (!isPaymentDataRequired()) {
         return null;
     }
 

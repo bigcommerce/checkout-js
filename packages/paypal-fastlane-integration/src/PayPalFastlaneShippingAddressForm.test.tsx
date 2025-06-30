@@ -1,6 +1,5 @@
-import { createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { render, screen } from '@testing-library/react';
-import React from 'react';
+import React, { createRef } from 'react';
 
 import { getCustomer } from '@bigcommerce/checkout/test-mocks';
 
@@ -10,6 +9,7 @@ import PayPalFastlaneShippingAddressForm, {
 } from './PayPalFastlaneShippingAddressForm';
 
 jest.mock('@bigcommerce/checkout/locale', () => ({
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     __esModule: true,
     withDate: jest.fn().mockReturnValue({ locale: 'en' }),
     localizeAddress: jest.fn().mockReturnValue({ firstName: 'test-name' }),
@@ -21,6 +21,7 @@ jest.mock('@bigcommerce/checkout/locale', () => ({
 }));
 
 jest.mock('../../ui/src/form/DynamicFormField', () => ({
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     __esModule: true,
     DynamicFormField: () => {
         // eslint-disable-next-line react/jsx-no-useless-fragment
@@ -29,15 +30,12 @@ jest.mock('../../ui/src/form/DynamicFormField', () => ({
 }));
 
 describe('PayPalFastlaneShippingAddressForm', () => {
-    let component;
     let defaultProps: PayPalFastlaneStaticAddressProps;
-    const checkoutService = createCheckoutService();
 
     beforeEach(() => {
         defaultProps = {
             address: getCustomer().addresses[0],
-            paypalFastlaneShippingComponentRef:
-                React.createRef<PayPalFastlaneAddressComponentRef>(),
+            paypalFastlaneShippingComponentRef: createRef<PayPalFastlaneAddressComponentRef>(),
             formFields: [
                 {
                     custom: false,
@@ -79,7 +77,7 @@ describe('PayPalFastlaneShippingAddressForm', () => {
     });
 
     it('renders PayPalFastlaneShippingAddressForm', () => {
-        component = render(<PayPalFastlaneShippingAddressForm {...defaultProps} />);
+        render(<PayPalFastlaneShippingAddressForm {...defaultProps} />);
 
         expect(screen.getByText('test-name')).toBeInTheDocument();
     });
