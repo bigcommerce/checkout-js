@@ -307,7 +307,7 @@ describe('Checkout', () => {
             expect(screen.getByText('Manual Order Custom Shipping Method')).toBeInTheDocument();
             expect(screen.getAllByRole('button', { name: 'Edit' })).toHaveLength(2);
             expect(screen.getByText(/test payment provider/i)).toBeInTheDocument();
-            expect(screen.getByText(/pay in store/i)).toBeInTheDocument();
+            expect(screen.getByRole('radio', { name: /pay in store/i })).toBeInTheDocument();
             expect(screen.getByText(/place order/i)).toBeInTheDocument();
         });
 
@@ -496,7 +496,7 @@ describe('Checkout', () => {
             await checkout.waitForPaymentStep();
 
             expect(screen.getByText(/test payment provider/i)).toBeInTheDocument();
-            expect(screen.getByText(/pay in store/i)).toBeInTheDocument();
+            expect(screen.getByRole('radio', { name: /pay in store/i })).toBeInTheDocument();
             expect(screen.getByText(/place order/i)).toBeInTheDocument();
         });
 

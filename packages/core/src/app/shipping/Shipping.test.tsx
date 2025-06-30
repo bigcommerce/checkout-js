@@ -178,7 +178,7 @@ describe('Shipping step', () => {
             await checkout.waitForPaymentStep();
 
             expect(checkoutService.updateBillingAddress).toHaveBeenCalled();
-            expect(screen.getByText(payments[0].config.displayName)).toBeInTheDocument();
+            expect(screen.getByRole('radio', { name: payments[0].config.displayName })).toBeInTheDocument();
         });
 
         it('completes the shipping step as a guest and goes to the billing step', async () => {
@@ -285,7 +285,7 @@ describe('Shipping step', () => {
             await checkout.waitForPaymentStep();
 
             expect(checkoutService.updateBillingAddress).toHaveBeenCalled();
-            expect(screen.getByText(payments[0].config.displayName)).toBeInTheDocument();
+            expect(screen.getByRole('radio', { name: payments[0].config.displayName })).toBeInTheDocument();
         });
 
         it('selects the valid customer address and completes the shipping step', async () => {
@@ -349,7 +349,7 @@ describe('Shipping step', () => {
             await checkout.waitForPaymentStep();
 
             expect(checkoutService.updateBillingAddress).toHaveBeenCalled();
-            expect(screen.getByText(payments[0].config.displayName)).toBeInTheDocument();
+            expect(screen.getByRole('radio', { name: payments[0].config.displayName })).toBeInTheDocument();
         });
 
         it('enters new address for the customer with saved address and completes the shipping step', async () => {
@@ -414,7 +414,7 @@ describe('Shipping step', () => {
             await checkout.waitForPaymentStep();
 
             expect(checkoutService.updateBillingAddress).toHaveBeenCalled();
-            expect(screen.getByText(payments[0].config.displayName)).toBeInTheDocument();
+            expect(screen.getByRole('radio', { name: payments[0].config.displayName })).toBeInTheDocument();
         });
 
         it('selects the invalid customer address, fills the address form and finally completes the shipping step', async () => {
@@ -499,7 +499,7 @@ describe('Shipping step', () => {
             await checkout.waitForPaymentStep();
 
             expect(checkoutService.updateBillingAddress).toHaveBeenCalled();
-            expect(screen.getByText(payments[0].config.displayName)).toBeInTheDocument();
+            expect(screen.getByRole('radio', { name: payments[0].config.displayName })).toBeInTheDocument();
         });
 
         it('goes back to the shipping step as a guest and updates the shipping address form correctly', async () => {

@@ -56,8 +56,8 @@ const PaymentMethodList: FunctionComponent<
 
     const titleText = useMemo(() => {
         if (config && values.paymentProviderRadio) {
-            const checkoutSettings = config?.checkoutSettings || {};
-            const cdnBasePath = config?.cdnPath || '';
+            const checkoutSettings = config.checkoutSettings;
+            const cdnBasePath = config.cdnPath;
             const storeCountryCode = config.storeProfile.storeCountryCode;
             const paymentMethod = getPaymentMethodFromListValue(methods, values.paymentProviderRadio);
             const methodName = getPaymentMethodName(language)(paymentMethod);
@@ -78,7 +78,7 @@ const PaymentMethodList: FunctionComponent<
 
     return (
         <>
-            <div id="announcement" className='is-srOnly' aria-live="assertive" role="status">{titleText}</div>
+            <div className='is-srOnly' aria-live="assertive" role="status">{titleText}</div>
             <Checklist
                 defaultSelectedItemId={values.paymentProviderRadio}
                 isDisabled={isInitializingPayment}
