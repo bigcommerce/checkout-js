@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.614.4](https://github.com/bigcommerce/checkout-js/compare/v1.614.3...v1.614.4) (2025-07-01)
+
+
+### Bug Fixes
+
+* **checkout:** Fix a11y issue on payment section ([#2404](https://github.com/bigcommerce/checkout-js/issues/2404)) ([882b6ce](https://github.com/bigcommerce/checkout-js/commit/882b6ce8e9eb6e15bd128f425940ac5e12a97d8e))
+
 ### [1.614.3](https://github.com/bigcommerce/checkout-js/compare/v1.614.2...v1.614.3) (2025-06-30)
 
 ### [1.614.2](https://github.com/bigcommerce/checkout-js/compare/v1.614.1...v1.614.2) (2025-06-30)
