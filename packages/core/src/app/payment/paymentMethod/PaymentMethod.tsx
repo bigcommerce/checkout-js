@@ -20,7 +20,6 @@ import MasterpassPaymentMethod from './MasterpassPaymentMethod';
 import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodProviderType from './PaymentMethodProviderType';
 import PaymentMethodType from './PaymentMethodType';
-import PaypalCommerceCreditCardPaymentMethod from './PaypalCommerceCreditCardPaymentMethod';
 import PaypalPaymentsProPaymentMethod from './PaypalPaymentsProPaymentMethod';
 import PPSDKPaymentMethod from './PPSDKPaymentMethod';
 
@@ -71,17 +70,13 @@ const PaymentMethodComponent: FunctionComponent<
         return <BraintreeCreditCardPaymentMethod {...props} />;
     }
 
-    if (method.id === PaymentMethodId.PaypalCommerceCreditCards) {
-        return <PaypalCommerceCreditCardPaymentMethod {...props} />;
-    }
-
     if (
         method.type !== PaymentMethodProviderType.Hosted &&
         method.id === PaymentMethodId.PaypalPaymentsPro
     ) {
         return <PaypalPaymentsProPaymentMethod {...props} />;
     }
-    
+
 
     if (
         method.id === PaymentMethodId.BraintreeVenmo ||
