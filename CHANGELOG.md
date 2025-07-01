@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.615.0](https://github.com/bigcommerce/checkout-js/compare/v1.614.4...v1.615.0) (2025-07-01)
+
+
+### Features
+
+* **checkout:** adjust styling for Apple Pay and Google Pay icons ([#2403](https://github.com/bigcommerce/checkout-js/issues/2403)) ([1f614b8](https://github.com/bigcommerce/checkout-js/commit/1f614b80a7c34de6ec0ea81a2b84af8a6ba8f560))
+
 ### [1.614.4](https://github.com/bigcommerce/checkout-js/compare/v1.614.3...v1.614.4) (2025-07-01)
 
 
