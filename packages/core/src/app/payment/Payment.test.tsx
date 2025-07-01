@@ -107,8 +107,8 @@ describe('Payment step', () => {
 
         await checkout.waitForPaymentStep();
 
-        expect(screen.getByText('Pay in Store')).toBeInTheDocument();
-        expect(screen.getByText('Cash on Delivery')).toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: 'Pay in Store' })).toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: 'Cash on Delivery' })).toBeInTheDocument();
     });
 
     it('selects another payment method and places the order successfully', async () => {

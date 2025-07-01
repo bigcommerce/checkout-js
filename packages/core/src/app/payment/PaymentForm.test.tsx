@@ -77,8 +77,7 @@ describe('PaymentForm', () => {
         expect(screen.getAllByRole('listitem')).toHaveLength(8);
         expect(screen.getAllByRole('group')).toHaveLength(2);
         expect(screen.getAllByRole('radio')).toHaveLength(2);
-        expect(screen.getAllByRole('heading')).toHaveLength(2);
-        expect(screen.getAllByText('Authorizenet')).toHaveLength(2);
+        expect(screen.getAllByText('Authorizenet')).toHaveLength(3);  // 2 radio buttons + 1 title for a11y (hidden) 
         expect(screen.getByText(localeContext.language.translate('payment.place_order_action'))).toBeInTheDocument();
     });
 

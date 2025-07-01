@@ -146,7 +146,7 @@ describe('Billing step', () => {
         await checkout.waitForPaymentStep();
 
         expect(checkoutService.updateBillingAddress).toHaveBeenCalled();
-        expect(screen.getByText(payments[0].config.displayName)).toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: payments[0].config.displayName })).toBeInTheDocument();
     });
 
     it('edit the billing address and goes back to the payment step', async () => {
@@ -156,7 +156,7 @@ describe('Billing step', () => {
 
         await checkout.waitForPaymentStep();
 
-        expect(screen.getByText(payments[0].config.displayName)).toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: payments[0].config.displayName })).toBeInTheDocument();
 
         await userEvent.click(screen.getAllByRole('button', { name: 'Edit' })[2]);
 
@@ -179,7 +179,7 @@ describe('Billing step', () => {
         await checkout.waitForPaymentStep();
 
         expect(checkoutService.updateBillingAddress).toHaveBeenCalled();
-        expect(screen.getByText(payments[0].config.displayName)).toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: payments[0].config.displayName })).toBeInTheDocument();
     });
 
     it('should show order comments', async () => {
@@ -333,7 +333,7 @@ describe('Billing step', () => {
 
             await checkout.waitForPaymentStep();
 
-            expect(screen.getByText(payments[0].config.displayName)).toBeInTheDocument();
+            expect(screen.getByRole('radio', { name: payments[0].config.displayName })).toBeInTheDocument();
         });
 
         it('completes the billing step after selecting an invalid address', async () => {
@@ -398,7 +398,7 @@ describe('Billing step', () => {
 
             await checkout.waitForPaymentStep();
 
-            expect(screen.getByText(payments[0].config.displayName)).toBeInTheDocument();
+            expect(screen.getByRole('radio', { name: payments[0].config.displayName })).toBeInTheDocument();
         });
 
         it('completes the billing step after creating a new address even with existing addresses', async () => {
@@ -433,7 +433,7 @@ describe('Billing step', () => {
             await checkout.waitForPaymentStep();
 
             expect(checkoutService.updateBillingAddress).toHaveBeenCalled();
-            expect(screen.getByText(payments[0].config.displayName)).toBeInTheDocument();
+            expect(screen.getByRole('radio', { name: payments[0].config.displayName })).toBeInTheDocument();
         });
     });
 });

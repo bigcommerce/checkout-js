@@ -33,7 +33,7 @@ interface WithPaymentTitleProps {
     cdnBasePath: string;
 }
 
-function getPaymentMethodTitle(
+export function getPaymentMethodTitle(
     language: LanguageService,
     basePath: string,
     checkoutSettings: CheckoutSettings,
@@ -331,13 +331,12 @@ const PaymentMethodTitle: FunctionComponent<
                 )}
 
                 {titleText && (
-                    <div aria-level={6} className={classNames('paymentProviderHeader-name',
+                    <div className={classNames('paymentProviderHeader-name',
                         { 'sub-header': newFontStyle })}
-                        data-test="payment-method-name" role="heading">
+                        data-test="payment-method-name">
                         {titleText}
                     </div>
                 )}
-
                 {getSubtitle()}
             </div>
             <div className="paymentProviderHeader-cc">
