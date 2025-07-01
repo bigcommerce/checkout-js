@@ -2,7 +2,7 @@ import { CustomerInitializeOptions, CustomerRequestOptions } from "@bigcommerce/
 import React, { FunctionComponent } from "react";
 
 import CheckoutButton from "./CheckoutButton";
-import { ApplePayButton, PayPalCommerceButton } from "./customWalletButton";
+import { ApplePayButton } from "./customWalletButton";
 
 interface CheckoutButtonV1ResolverProps {
     methodId: string;
@@ -23,18 +23,6 @@ const CheckoutButtonV1Resolver: FunctionComponent<CheckoutButtonV1ResolverProps>
         case 'applepay':
             return (
                 <ApplePayButton
-                    containerId={`${methodId}CheckoutButton`}
-                    key={methodId}
-                    methodId={methodId}
-                    onError={onError}
-                    {...rest}
-                />
-            );
-
-        case 'paypalcommerce':
-        case 'paypalcommercecredit':
-            return (
-                <PayPalCommerceButton
                     containerId={`${methodId}CheckoutButton`}
                     key={methodId}
                     methodId={methodId}

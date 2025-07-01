@@ -15,7 +15,7 @@ import { withCheckout } from '../checkout';
 import { isExperimentEnabled } from '../common/utility';
 
 import CheckoutButton from './CheckoutButton';
-import { AmazonPayV2Button, ApplePayButton, PayPalCommerceButton } from './customWalletButton';
+import { AmazonPayV2Button, ApplePayButton } from './customWalletButton';
 import { getSupportedMethodIds } from './getSupportedMethods';
 import resolveCheckoutButton from './resolveCheckoutButton';
 import CheckoutButtonV1Resolver from './WalletButtonV1Resolver';
@@ -125,21 +125,6 @@ const CheckoutButtonList: FunctionComponent<WithCheckoutCheckoutButtonListProps 
             if (methodId === 'amazonpay') {
                 return (
                     <AmazonPayV2Button
-                        containerId={`${methodId}CheckoutButton`}
-                        deinitialize={deinitialize}
-                        initialize={initialize}
-                        isShowingWalletButtonsOnTop={isShowingWalletButtonsOnTop}
-                        key={methodId}
-                        methodId={methodId}
-                        onClick={onClick}
-                        onError={onError}
-                    />
-                );
-            }
-
-            if (methodId === 'paypalcommerce' || methodId === 'paypalcommercecredit') {
-                return (
-                    <PayPalCommerceButton
                         containerId={`${methodId}CheckoutButton`}
                         deinitialize={deinitialize}
                         initialize={initialize}
