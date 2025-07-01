@@ -12,7 +12,7 @@ import './PayPalFastlaneWatermark.scss';
 const PayPalFastlaneWatermark: FunctionComponent = () => {
     const { checkoutState } = useCheckout();
     const { getPaymentMethod, getConfig } = checkoutState.data;
-    const providerWithCustomCheckout = getConfig()?.checkoutSettings.providerWithCustomCheckout;
+    const providerWithCustomCheckout = getConfig()?.checkoutSettings?.providerWithCustomCheckout;
 
     const paymentMethod =
         providerWithCustomCheckout &&
@@ -22,9 +22,7 @@ const PayPalFastlaneWatermark: FunctionComponent = () => {
     const shouldRenderFastlaneWatermark =
         !!paymentMethod &&
         isFastlaneHostWindow(window) &&
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-        (paymentMethod.initializationData as { isFastlanePrivacySettingEnabled?: boolean })
-            .isFastlanePrivacySettingEnabled;
+        paymentMethod?.initializationData?.isFastlanePrivacySettingEnabled;
 
     useEffect(() => {
         if (shouldRenderFastlaneWatermark && isFastlaneHostWindow(window)) {
@@ -32,7 +30,7 @@ const PayPalFastlaneWatermark: FunctionComponent = () => {
                 ? window.braintreeFastlane
                 : window.paypalFastlane;
 
-            void fastlane
+            fastlane
                 .FastlaneWatermarkComponent({
                     includeAdditionalInfo: true,
                 })
