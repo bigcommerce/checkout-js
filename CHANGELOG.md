@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.616.3](https://github.com/bigcommerce/checkout-js/compare/v1.616.2...v1.616.3) (2025-07-02)
+
+
+### Code Refactoring
+
+* **payment:** PAYPAL-2605 removed PayPalCommerceButton component from core package ([83886f5](https://github.com/bigcommerce/checkout-js/commit/83886f529cbcdb42ed749c929e6c40259e75ec20))
+
 ### [1.616.2](https://github.com/bigcommerce/checkout-js/compare/v1.616.1...v1.616.2) (2025-07-02)
 
 
