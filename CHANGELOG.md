@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.616.2](https://github.com/bigcommerce/checkout-js/compare/v1.616.1...v1.616.2) (2025-07-02)
+
+
+### Code Refactoring
+
+* **payment:** PAYPAL-2596 removed PayPalCommerceCreditCardsPaymentMethod and related code from core package ([dfae09f](https://github.com/bigcommerce/checkout-js/commit/dfae09f7a6cecb6194eddd0b734e82af164af281))
+
 ### [1.616.1](https://github.com/bigcommerce/checkout-js/compare/v1.616.0...v1.616.1) (2025-07-02)
 
 
