@@ -85,7 +85,7 @@ describe('PaypalCommerceRatePayPaymentMethod', () => {
             ratepayPhoneNumber: '123',
         };
 
-        PaypalCommerceRatePayPaymentMethodTest = (props: PaymentMethodProps) => (
+        PaypalCommerceRatePayPaymentMethodTest = (methodProps: PaymentMethodProps) => (
             <LocaleContext.Provider value={localeContext}>
                 <FormContext.Provider value={{ isSubmitted: true, setSubmitted: jest.fn() }}>
                     <Formik
@@ -113,7 +113,7 @@ describe('PaypalCommerceRatePayPaymentMethod', () => {
                         {({ handleSubmit }) => (
                             <PaymentFormContext.Provider value={{ paymentForm }}>
                                 <form aria-label="form" onSubmit={handleSubmit}>
-                                    <PaypalCommerceRatePayPaymentMethod {...props} />
+                                    <PaypalCommerceRatePayPaymentMethod {...methodProps} />
                                 </form>
                             </PaymentFormContext.Provider>
                         )}

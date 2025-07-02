@@ -342,7 +342,6 @@ const deleteConsignmentsSelector = createSelector(
     },
 );
 
-// tslint:disable-next-line:cyclomatic-complexity
 export function mapToShippingProps({
     checkoutService,
     checkoutState,

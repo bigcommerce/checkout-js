@@ -127,6 +127,7 @@ describe('Payment step', () => {
 
         Object.defineProperty(window, 'location', {
             value: {
+                // eslint-disable-next-line @typescript-eslint/no-misused-spread
                 ...location,
                 replace: jest.fn(),
             },

@@ -6,6 +6,7 @@ import PaymentFormValues from './PaymentFormValues';
 
 export default interface PaymentFormService {
     disableSubmit(method: PaymentMethod, disabled?: boolean): void;
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
     getFieldValue<T>(field: string): T | unknown;
     getFormValues(): PaymentFormValues;
     hidePaymentSubmitButton(method: PaymentMethod, hidden?: boolean): void;
