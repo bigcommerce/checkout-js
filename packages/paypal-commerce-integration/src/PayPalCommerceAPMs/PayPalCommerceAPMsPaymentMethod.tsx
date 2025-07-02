@@ -10,14 +10,15 @@ import {
 import PayPalCommercePaymentMethodComponent from '../components/PayPalCommercePaymentMethodComponent';
 
 const PayPalCommerceAPMsPaymentMethod: FunctionComponent<PaymentMethodProps> = (props) => {
-    const { method } = props;
-    const isPaymentDataRequired = props.checkoutState.data.isPaymentDataRequired();
+    const { method, checkoutState } = props;
+    const { isPaymentDataRequired } = checkoutState.data;
+    const { id } = method;
 
-    if (!isPaymentDataRequired) {
+    if (!isPaymentDataRequired()) {
         return null;
     }
 
-    const widgetContainerId = getUniquePaymentMethodId(method.id, method.gateway);
+    const widgetContainerId = getUniquePaymentMethodId(id, method.gateway);
     const extraOptions = {
         apmFieldsContainer: `#${widgetContainerId}`,
         apmFieldsStyles: {
@@ -53,10 +54,7 @@ const PayPalCommerceAPMsPaymentMethod: FunctionComponent<PaymentMethodProps> = (
             providerOptionsKey="paypalcommercealternativemethods"
             {...props}
         >
-            <div
-                className={`widget widget--${props.method.id} payment-widget`}
-                id={widgetContainerId}
-            ></div>
+            <div className={`widget widget--${id} payment-widget`} id={widgetContainerId} />
         </PayPalCommercePaymentMethodComponent>
     );
 };

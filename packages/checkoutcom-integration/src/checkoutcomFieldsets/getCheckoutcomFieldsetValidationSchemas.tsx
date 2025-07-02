@@ -66,5 +66,6 @@ export default memoize(function getCheckoutcomValidationSchemas({
     | IdealCustomFormFieldsetValues
     | SepaCustomFormFieldsetValues
 > {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     return object(checkoutComShemas[paymentMethod](language));
 });

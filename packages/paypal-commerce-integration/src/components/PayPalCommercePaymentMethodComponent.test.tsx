@@ -329,7 +329,7 @@ describe('PayPalCommercePaymentMethodComponent', () => {
 
     it('passed form validation by calling onValidate callback', async () => {
         jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
-            eventEmitter.on('onValidate', async (resolve, reject) => {
+            eventEmitter.on('onValidate', async (resolve: () => void, reject: () => void) => {
                 if (options.paypalcommerce?.onError) {
                     await options.paypalcommerce.onValidate(resolve, reject);
                 }
@@ -342,6 +342,7 @@ describe('PayPalCommercePaymentMethodComponent', () => {
 
         render(<PayPalCommercePaymentMethodComponent {...props} />);
 
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         eventEmitter.emit('onValidate', validationSuccess, () => {});
 
         await new Promise((resolve) => process.nextTick(resolve));
@@ -357,7 +358,7 @@ describe('PayPalCommercePaymentMethodComponent', () => {
         });
 
         jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
-            eventEmitter.on('onValidate', async (resolve, reject) => {
+            eventEmitter.on('onValidate', async (resolve: () => void, reject: () => void) => {
                 if (options.paypalcommerce?.onError) {
                     await options.paypalcommerce.onValidate(resolve, reject);
                 }
@@ -370,6 +371,7 @@ describe('PayPalCommercePaymentMethodComponent', () => {
 
         render(<PayPalCommercePaymentMethodComponent {...props} />);
 
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         eventEmitter.emit('onValidate', () => {}, validationReject);
 
         await new Promise((resolve) => process.nextTick(resolve));
@@ -384,6 +386,7 @@ describe('PayPalCommercePaymentMethodComponent', () => {
         jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
             eventEmitter.on('onInitButton', async (actions) => {
                 if (options.paypalcommerce?.onError) {
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                     await options.paypalcommerce.onInitButton(actions);
                 }
             });
@@ -410,6 +413,7 @@ describe('PayPalCommercePaymentMethodComponent', () => {
         jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
             eventEmitter.on('onInitButton', async (actions) => {
                 if (options.paypalcommerce?.onError) {
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                     await options.paypalcommerce.onInitButton(actions);
                 }
             });
