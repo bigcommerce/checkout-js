@@ -98,7 +98,7 @@ export class ExtensionService {
             remover();
         }
 
-      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete this.handlers[extension.id];
     }
 

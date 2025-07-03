@@ -25,8 +25,7 @@ export default function createPaymentFormService(
 
     const { disableSubmit, setSubmit, setValidationSchema, hidePaymentSubmitButton } =
         paymentContext;
-
-  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+    
     const getFieldValue = <T>(key: string): T | unknown => values[key];
 
     return {
