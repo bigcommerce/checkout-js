@@ -629,7 +629,7 @@ export function mapToPaymentProps({
         ];
 
         filteredMethods = methods.filter((method: PaymentMethod) => {
-            return multiShippingIncompatibleMethodIds.indexOf(method.id) === -1;
+            return !multiShippingIncompatibleMethodIds.includes(method.id);
         });
     }
 

@@ -40,6 +40,6 @@ export const getSupportedMethodIds = (methodIds: string[], checkoutSettings?: Ch
             return false;
         }
 
-        return SUPPORTED_METHODS.indexOf(methodId) !== -1;
+        return SUPPORTED_METHODS.includes(methodId);
     });
 }

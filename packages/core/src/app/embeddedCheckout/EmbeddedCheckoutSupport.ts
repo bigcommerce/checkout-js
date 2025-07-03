@@ -8,7 +8,7 @@ export default class EmbeddedCheckoutSupport implements CheckoutSupport {
     constructor(private unsupportedMethods: string[], private langService: LanguageService) {}
 
     isSupported(...ids: string[]): boolean {
-        const unsupportedMethods = ids.filter((id) => this.unsupportedMethods.indexOf(id) >= 0);
+        const unsupportedMethods = ids.filter((id) => this.unsupportedMethods.includes(id));
 
         if (unsupportedMethods.length === 0) {
             return true;

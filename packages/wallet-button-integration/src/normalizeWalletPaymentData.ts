@@ -10,7 +10,7 @@ interface WalletPaymentData {
 }
 
 const formatAccountMask = (accountMask = '', padding = '****'): string =>
-    accountMask.indexOf('*') > -1 ? accountMask : `${padding} ${accountMask}`;
+    accountMask.includes('*') ? accountMask : `${padding} ${accountMask}`;
 
 const isWalletButtonInitializationData = (
     object: unknown,
