@@ -136,6 +136,7 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
             }
 
             return node;
+            // eslint-disable-next-line @typescript-eslint/prefer-reduce-type-parameter
         }, [] as ReactChild[]);
     }
 

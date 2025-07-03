@@ -97,6 +97,7 @@ export default memoize(function getCustomFormFieldsValidationSchema({
                     }
 
                     return schema;
+                    // eslint-disable-next-line @typescript-eslint/prefer-reduce-type-parameter
                 }, {} as { [key: string]: Schema<any> }),
         ).nullable(true),
     }) as ObjectSchema<CustomFormFieldValues>;
