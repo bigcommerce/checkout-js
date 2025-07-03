@@ -96,7 +96,7 @@ describe('DynamicFormField Component', () => {
         );
 
         expect(
-            screen.getByText(`${localeContext.language.translate('address.address_line_1_label')}`),
+            screen.getByText(localeContext.language.translate('address.address_line_1_label')),
         ).toBeInTheDocument();
         // eslint-disable-next-line testing-library/no-container
         expect(container.querySelector('.optimizedCheckout-contentSecondary')).toBeNull();
@@ -114,7 +114,7 @@ describe('DynamicFormField Component', () => {
         );
 
         expect(
-            screen.getByText(`${localeContext.language.translate('common.optional_text')}`),
+            screen.getByText(localeContext.language.translate('common.optional_text')),
         ).toBeInTheDocument();
     });
 });

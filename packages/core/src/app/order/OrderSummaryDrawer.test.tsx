@@ -36,7 +36,7 @@ describe('OrderSummaryDrawer', () => {
                 <CheckoutProvider checkoutService={createCheckoutService()}>
                     <LocaleContext.Provider value={localeContext}>
                         <OrderSummaryDrawer
-                            {...mapToOrderSummarySubtotalsProps(order)}
+                            {...mapToOrderSummarySubtotalsProps(order, false)}
                             additionalLineItems="foo"
                             headerLink={<PrintLink />}
                             lineItems={order.lineItems}
@@ -54,7 +54,7 @@ describe('OrderSummaryDrawer', () => {
                 <CheckoutProvider checkoutService={createCheckoutService()}>
                     <LocaleContext.Provider value={localeContext}>
                         <OrderSummaryDrawer
-                            {...mapToOrderSummarySubtotalsProps(order)}
+                            {...mapToOrderSummarySubtotalsProps(order, false)}
                             additionalLineItems="foo"
                             headerLink={<PrintLink />}
                             lineItems={{
@@ -78,7 +78,7 @@ describe('OrderSummaryDrawer', () => {
         it('renders order amount', () => {
             render(<OrderSummaryDrawerTest />);
 
-            expect(screen.getByText(`${currencyService.toCustomerCurrency(order.orderAmount)}`)).toBeInTheDocument();
+            expect(screen.getByText(currencyService.toCustomerCurrency(order.orderAmount))).toBeInTheDocument();
         });
 
         it('renders line items count', () => {

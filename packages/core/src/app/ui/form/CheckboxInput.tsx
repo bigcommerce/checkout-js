@@ -30,7 +30,7 @@ const CheckboxInput = forwardRef(
                 testId={testId}
                 type="checkbox"
             />
-            <Label additionalClassName={`${newFontStyle ? 'body-regular' : ''}`} htmlFor={id}>{label}</Label>
+            <Label additionalClassName={newFontStyle ? 'body-regular' : ''} htmlFor={id}>{label}</Label>
         </>
     ),
 );

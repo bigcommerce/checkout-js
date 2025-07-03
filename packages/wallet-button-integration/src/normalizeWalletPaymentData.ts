@@ -71,8 +71,8 @@ const normalizeWalletPaymentData = (data: unknown): WalletPaymentData | undefine
 
             return {
                 accountMask: formatAccountMask(data.accountMask),
-                expiryMonth: data.expDate && `${data.expDate}`.substr(0, 2),
-                expiryYear: data.expDate && `${data.expDate}`.substr(2, 2),
+                expiryMonth: data.expDate && data.expDate.substr(0, 2),
+                expiryYear: data.expDate && data.expDate.substr(2, 2),
                 cardType: card ? card.niceType : '',
             };
         }
