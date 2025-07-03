@@ -21,8 +21,7 @@
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {
         "prettier/prettier": [
-          // TODO:CHECKOUT-9228 Fix this after nx upgrade to 19.8.9 (make it error)
-          "warn",
+          "error",
           {
             "tabWidth": 4
           }
