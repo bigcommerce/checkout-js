@@ -87,7 +87,7 @@ describe('BigCommercePaymentsRatePayPaymentMethod', () => {
             ratepayPhoneNumber: '123',
         };
 
-        BigCommercePaymentsRatePayPaymentMethodTest = (methodProps: PaymentMethodProps) => (
+        BigCommercePaymentsRatePayPaymentMethodTest = (testProps: PaymentMethodProps) => (
             <LocaleContext.Provider value={localeContext}>
                 <FormContext.Provider value={{ isSubmitted: true, setSubmitted: jest.fn() }}>
                     <Formik
@@ -115,7 +115,7 @@ describe('BigCommercePaymentsRatePayPaymentMethod', () => {
                         {({ handleSubmit }) => (
                             <PaymentFormContext.Provider value={{ paymentForm }}>
                                 <form aria-label="form" onSubmit={handleSubmit}>
-                                    <BigCommercePaymentsRatePayPaymentMethod {...methodProps} />
+                                    <BigCommercePaymentsRatePayPaymentMethod {...testProps} />
                                 </form>
                             </PaymentFormContext.Provider>
                         )}

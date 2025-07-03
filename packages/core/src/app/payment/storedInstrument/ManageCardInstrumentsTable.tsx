@@ -75,8 +75,8 @@ const ManageInstrumentsRow: FunctionComponent<ManageInstrumentsRowProps> = ({
     const cardInfo = creditCardType.getTypeInfo(cardType);
     const isExpired =
         !expirationDate({
-          month: instrument.expiryMonth,
-          year: instrument.expiryYear,
+            month: instrument.expiryMonth, 
+            year: instrument.expiryYear,
         }).isValid;
 
     const handleDelete = useCallback(() => {
