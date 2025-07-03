@@ -58,7 +58,7 @@ describe('InstrumentSelect', () => {
 
         expect(
             screen.getByText(
-                `Visa ending in ${getInstruments().filter(isCardInstrument)[0].last4}`,
+                `Visa ending in ${getInstruments().find(isCardInstrument)?.last4}`,
             ),
         ).toBeInTheDocument();
         expect(screen.getByText(`Expires 02/${getYear(1)}`)).toBeInTheDocument();
@@ -103,7 +103,7 @@ describe('InstrumentSelect', () => {
 
         expect(
             screen.getAllByText(
-                `Visa ending in ${getInstruments().filter(isCardInstrument)[0].last4}`,
+                `Visa ending in ${getInstruments().find(isCardInstrument)?.last4}`,
             ),
         ).toHaveLength(2);
         expect(

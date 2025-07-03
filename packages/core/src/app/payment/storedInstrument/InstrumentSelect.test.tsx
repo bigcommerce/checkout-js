@@ -49,7 +49,7 @@ describe('InstrumentSelect', () => {
             </LocaleContext.Provider>,
         );
 
-        expect(screen.getByText(`Visa ending in ${getInstruments().filter(isCardInstrument)[0].last4}`)).toBeInTheDocument();
+        expect(screen.getByText(`Visa ending in ${getInstruments().find(isCardInstrument)?.last4}`)).toBeInTheDocument();
         expect(screen.getByText(`Expires 02/${getYear(1)}`)).toBeInTheDocument();
     });
 
@@ -90,7 +90,7 @@ describe('InstrumentSelect', () => {
 
         await userEvent.click(screen.getByTestId('instrument-select'));
 
-        expect(screen.getAllByText(`Visa ending in ${getInstruments().filter(isCardInstrument)[0].last4}`)).toHaveLength(2);
+        expect(screen.getAllByText(`Visa ending in ${getInstruments().find(isCardInstrument)?.last4}`)).toHaveLength(2);
         expect(screen.getByText(`American Express ending in ${getInstruments().filter(isCardInstrument)[1].last4}`)).toBeInTheDocument();
     });
 
