@@ -281,11 +281,10 @@
             "credit_card_number_required_error": "Wymagany jest numer karty kredytowej",
             "credit_card_number_mismatch_error": "Wprowadzony numer karty nie jest zgodny z kartą zapisaną na Twoim koncie",
             "credit_debit_card_text": "Karta kredytowa/debetowa",
+            "payment_methods_text": "Metody płatności",
+            "redeemable_payments_text": "Redeemable Payments",
+            "instrument_storage_options_text": "Payment Storage Options",
             "stripev3_auth_3ds_fail": "Użytkownik nie uwierzytelnił się",
-            "digitalriver_dropin_error": "Podczas przetwarzania Twojej płatności wystąpił błąd. Spróbuj ponownie lub skontaktuj się z nami.",
-            "digitalriver_checkout_error": "Wystąpił problem przy realizacji zamówienia, sprawdź swoje dane i spróbuj ponownie lub skontaktuj się z działem obsługi klienta.",
-            "digitalriver_checkout_error_title": "Błąd podczas przetwarzania żądania.",
-            "digitalriver_display_name_text": "Wybierz metodę płatności",
             "google_pay_name_text": "Google Pay",
             "humm_not_processable_error": "Firma Humm nie może zrealizować płatności za to zamówienie, proszę wybrać inną metodę płatności.",
             "klarna_continue_action": "Kontynuuj pracę z Klarną",
@@ -562,7 +561,9 @@
             "choose_shipping_address": "Wybierz adres wysyłki",
             "multishipping_unavailable_action": "Wysyłka na wiele adresów jest niedostępna",
             "multishipping_unavailable_message": "Wysyłka na wiele adresów jest niedostępna, gdy do Twojego koszyka został dodany promocyjnie darmowy przedmiot.",
-            "checkout_switched_to_single_shipping": "Koszyk został automatycznie zaktualizowany. Będzie używany jeden adres wysyłkowy. Wysyłka na wiele adresów jest niedostępna, gdy w koszyku znajduje się promocyjny darmowy przedmiot."
+            "checkout_switched_to_single_shipping": "Koszyk został automatycznie zaktualizowany. Będzie używany jeden adres wysyłkowy. Wysyłka na wiele adresów jest niedostępna, gdy w koszyku znajduje się promocyjny darmowy przedmiot.",
+            "guest_multishipping_no_shipping_address_message": "No shipping address entered",
+            "guest_multishipping_enter_shipping_address_action": "Enter shipping address"
         },
         "social": {
             "share_action": "Udostępnij",
