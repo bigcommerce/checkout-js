@@ -62,9 +62,11 @@ const PayPalFastlaneShippingAddressForm = (props: PayPalFastlaneStaticAddressPro
                 await paypalFastlaneShippingComponentRef.current.showAddressSelector();
 
             if (selectedAddress) {
+                const customFields = shouldShowCustomFormFields ? address.customFields : {};
+
                 props.onAddressSelect({
                     ...selectedAddress,
-                    ...(shouldShowCustomFormFields ? address.customFields : {}),
+                    ...customFields,
                 });
             }
         }

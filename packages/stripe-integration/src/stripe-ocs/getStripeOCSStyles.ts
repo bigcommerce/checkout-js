@@ -42,7 +42,7 @@ const getRadioIconSizes = (sizes?: Record<string, string | number | undefined>) 
     return {
         outerWidth: `${stripeEqualOuterWidth}px`,
         outerStrokeWidth: `${stripeEqualOuterStrokeWidth}px`,
-        innerRadius: `${stripeEqualInnerRadius}`,
+        innerRadius: stripeEqualInnerRadius,
     };
 };
 

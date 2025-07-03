@@ -9,7 +9,7 @@ export const ADDRESS_FIELD_IDS: AddressKeyMap = {
 };
 
 export function getAddressFormFieldLegacyName(name: string): string {
-    return `${ADDRESS_FIELD_IDS[name] || name}`;
+    return ADDRESS_FIELD_IDS[name] || name;
 }
 
 export function getAddressFormFieldInputId(name: string): string {

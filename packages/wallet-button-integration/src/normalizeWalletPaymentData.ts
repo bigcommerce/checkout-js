@@ -10,7 +10,7 @@ interface WalletPaymentData {
 }
 
 const formatAccountMask = (accountMask = '', padding = '****'): string =>
-    accountMask.indexOf('*') > -1 ? accountMask : `${padding} ${accountMask}`;
+    accountMask.includes('*') ? accountMask : `${padding} ${accountMask}`;
 
 const isWalletButtonInitializationData = (
     object: unknown,
@@ -71,8 +71,8 @@ const normalizeWalletPaymentData = (data: unknown): WalletPaymentData | undefine
 
             return {
                 accountMask: formatAccountMask(data.accountMask),
-                expiryMonth: data.expDate && `${data.expDate}`.substr(0, 2),
-                expiryYear: data.expDate && `${data.expDate}`.substr(2, 2),
+                expiryMonth: data.expDate && data.expDate.substr(0, 2),
+                expiryYear: data.expDate && data.expDate.substr(2, 2),
                 cardType: card ? card.niceType : '',
             };
         }

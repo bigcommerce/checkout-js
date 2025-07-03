@@ -57,7 +57,7 @@ const StaticMultiConsignment: FunctionComponent<StaticMultiConsignmentProps> = (
                 <div className="address-details">
                     <p className={classNames('street-address address-entry',
                         { 'sub-text': newFontStyle })}>
-                        <span className="address-line-1">{`${address.address1}`}</span>
+                        <span className="address-line-1">{address.address1}</span>
                         {address.address2 && (
                             <span className="address-line-2">{`, ${address.address2}`}</span>
                         )}
@@ -65,7 +65,7 @@ const StaticMultiConsignment: FunctionComponent<StaticMultiConsignmentProps> = (
 
                     <p className={classNames('address-entry',
                         { 'sub-text': newFontStyle })}>
-                        {address.city && <span className="locality">{`${address.city}`}</span>}
+                        {address.city && <span className="locality">{address.city}</span>}
                         {address.localizedProvince && (
                             <span className="region">{`, ${address.localizedProvince}`}</span>
                         )}

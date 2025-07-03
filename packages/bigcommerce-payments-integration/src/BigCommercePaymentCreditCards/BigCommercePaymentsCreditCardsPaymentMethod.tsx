@@ -25,7 +25,9 @@ import {
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 
-const BigCommercePaymentsCreditCardPaymentMethod: FunctionComponent<PaymentMethodProps> = (props) => {
+const BigCommercePaymentsCreditCardPaymentMethod: FunctionComponent<PaymentMethodProps> = (
+    props,
+) => {
     const { checkoutService, checkoutState, paymentForm, language, method } = props;
 
     const { cardCode, showCardHolderName, isHostedFormEnabled, requireCustomerCode } =

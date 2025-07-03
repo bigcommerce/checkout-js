@@ -56,7 +56,9 @@ const AccordionItem: FunctionComponent<AccordionItemProps> = ({
                     timeout={{}}
                     unmountOnExit
                 >
-                    <div className={bodyClassName} aria-live="polite">{children}</div>
+                    <div aria-live="polite" className={bodyClassName}>
+                        {children}
+                    </div>
                 </CSSTransition>
             ) : null}
         </li>

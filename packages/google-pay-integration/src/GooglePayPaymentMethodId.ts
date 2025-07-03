@@ -14,6 +14,6 @@ const GooglePayPaymentMethodId = {
     stripeUPEGooglePay: PaymentMethodId.StripeUPEGooglePay,
     worldpayAccessGooglePay: PaymentMethodId.WorldpayAccessGooglePay,
     tdOnlineMartGooglePay: PaymentMethodId.TdOnlineMartGooglePay,
-} as const;
+};
 
 export default GooglePayPaymentMethodId;

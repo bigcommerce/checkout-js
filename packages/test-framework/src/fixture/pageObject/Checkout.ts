@@ -127,7 +127,7 @@ export class Checkout {
         address: Address;
         addressAppendText: string;
     }): Promise<void> {
-        await this.page.locator(`${formId}`).waitFor({ state: 'visible' });
+        await this.page.locator(formId).waitFor({ state: 'visible' });
         await this.page
             .locator(`${formId} [data-test="firstNameInput-text"]`)
             .fill(`${address.firstName} ${addressAppendText}`);

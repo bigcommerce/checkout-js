@@ -280,6 +280,7 @@ describe('Customer Component', () => {
             Object.defineProperty(window, 'location', {
                 writable: true,
                 value: {
+                    // eslint-disable-next-line @typescript-eslint/no-misused-spread
                     ...window.location,
                     assign: jest.fn(),
                 },

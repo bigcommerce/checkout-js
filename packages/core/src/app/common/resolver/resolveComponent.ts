@@ -43,7 +43,7 @@ export default function resolveComponent<TResolveId extends Record<string, unkno
 
     const matched = results
         .sort((a, b) => b.matches - a.matches)
-        .filter((result) => result.matches > 0)[0];
+        .find((result) => result.matches > 0);
 
     return matched?.component ?? results.find((result) => result.default)?.component;
 }

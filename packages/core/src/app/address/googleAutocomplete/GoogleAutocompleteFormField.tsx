@@ -71,7 +71,7 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
                 initialValue={field.value}
                 inputProps={inputProps}
                 isAutocompleteEnabled={
-                    countryCode ? supportedCountries.indexOf(countryCode) > -1 : false
+                    countryCode ? supportedCountries.includes(countryCode) : false
                 }
                 nextElement={nextElement}
                 onChange={onChange}

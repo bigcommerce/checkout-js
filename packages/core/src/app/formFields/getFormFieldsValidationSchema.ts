@@ -38,6 +38,7 @@ export default memoize(function getFormFieldsValidationSchema({
                 );
 
                 return schema;
+                // eslint-disable-next-line @typescript-eslint/prefer-reduce-type-parameter
             }, {} as { [key: string]: StringSchema }),
     }).concat(
         getCustomFormFieldsValidationSchema({ formFields, translate }),

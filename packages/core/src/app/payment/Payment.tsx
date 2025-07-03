@@ -315,7 +315,6 @@ class Payment extends Component<
         });
     };
 
-    // tslint:disable:cyclomatic-complexity
     private handleBeforeUnload: (event: BeforeUnloadEvent) => string | undefined = (event) => {
         const { defaultMethod, isSubmittingOrder, language } = this.props;
         const { selectedMethod = defaultMethod } = this.state;
@@ -630,7 +629,7 @@ export function mapToPaymentProps({
         ];
 
         filteredMethods = methods.filter((method: PaymentMethod) => {
-            return multiShippingIncompatibleMethodIds.indexOf(method.id) === -1;
+            return !multiShippingIncompatibleMethodIds.includes(method.id);
         });
     }
 

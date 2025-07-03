@@ -135,6 +135,7 @@ describe('CustomerInfo', () => {
             Object.defineProperty(window, 'location', {
                 writable: true,
                 value: {
+                    // eslint-disable-next-line @typescript-eslint/no-misused-spread
                     ...window.location,
                     assign: jest.fn(),
                 },
@@ -162,6 +163,7 @@ describe('CustomerInfo', () => {
             Object.defineProperty(window, 'location', {
                 writable: true,
                 value: {
+                    // eslint-disable-next-line @typescript-eslint/no-misused-spread
                     ...window.location,
                     assign: jest.fn(),
                 },

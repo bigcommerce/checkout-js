@@ -22,9 +22,7 @@ import { CreditCardInputStylesType, getCreditCardInputStyles } from '../creditCa
 import { getPaymentMethod } from '../payment-methods.mock';
 import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 import HostedCreditCardFieldsetValues from '../paymentMethod/HostedCreditCardFieldsetValues';
-import { getCardInstrument } from '../storedInstrument/instruments.mock';
 
-import HostedCreditCardFieldset from './HostedCreditCardFieldset';
 import withHostedCreditCardFieldset, {
     WithHostedCreditCardFieldsetProps,
     WithInjectedHostedCreditCardFieldsetProps,
