@@ -20,6 +20,8 @@ describe('PaypalCommerceCreditBanner', () => {
     const checkoutState = checkoutService.getState();
     const defaultProps = {
         onUnhandledError: jest.fn(),
+        containerId: 'paypal-commerce-credit-banner-container',
+        methodId: 'paypalcommercecredit'
     };
 
     beforeEach(() => {
@@ -49,7 +51,7 @@ describe('PaypalCommerceCreditBanner', () => {
         expect(checkoutService.initializePayment).toHaveBeenCalledWith({
             methodId: PaymentMethodId.PaypalCommerceCredit,
             paypalcommercecredit: {
-                bannerContainerId: 'paypal-commerce-banner-container',
+                bannerContainerId: 'paypal-commerce-credit-banner-container',
             },
         });
 
@@ -68,7 +70,7 @@ describe('PaypalCommerceCreditBanner', () => {
         expect(checkoutService.initializePayment).toHaveBeenCalledWith({
             methodId: PaymentMethodId.PaypalCommerceCredit,
             paypalcommercecredit: {
-                bannerContainerId: 'paypal-commerce-banner-container',
+                bannerContainerId: 'paypal-commerce-credit-banner-container',
             },
         });
 

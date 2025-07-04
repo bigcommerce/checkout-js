@@ -1,8 +1,14 @@
 import React, { FunctionComponent, useEffect } from 'react';
 
-import { PaymentMethodId, useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
-const PaypalCommerceCreditBanner: FunctionComponent<{ onUnhandledError?(error: Error): void }> = ({
+const PaypalCommerceCreditBanner: FunctionComponent<{
+    methodId: string;
+    containerId: string
+    onUnhandledError?(error: Error): void;
+}> = ({
+    methodId,
+    containerId,
     onUnhandledError,
 }) => {
     const { checkoutService } = useCheckout();
@@ -10,14 +16,14 @@ const PaypalCommerceCreditBanner: FunctionComponent<{ onUnhandledError?(error: E
     useEffect(() => {
         try {
             void checkoutService.initializePayment({
-                methodId: PaymentMethodId.PaypalCommerceCredit,
-                paypalcommercecredit: {
-                    bannerContainerId: 'paypal-commerce-banner-container',
+                methodId,
+                [methodId]: {
+                    bannerContainerId: containerId,
                 },
             });
 
             void checkoutService.deinitializePayment({
-                methodId: PaymentMethodId.PaypalCommerceCredit,
+                methodId,
             });
         } catch (error) {
             if (error instanceof Error) {
@@ -28,7 +34,7 @@ const PaypalCommerceCreditBanner: FunctionComponent<{ onUnhandledError?(error: E
     }, []);
 
     return (
-        <div data-test="paypal-commerce-banner-container" id="paypal-commerce-banner-container" />
+        <div data-test={containerId} id={containerId} />
     );
 };
 
