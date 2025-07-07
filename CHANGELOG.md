@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.617.2](https://github.com/bigcommerce/checkout-js/compare/v1.617.1...v1.617.2) (2025-07-07)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9228 Eslint issues refactoring part 2 ([#2414](https://github.com/bigcommerce/checkout-js/issues/2414)) ([3a5d586](https://github.com/bigcommerce/checkout-js/commit/3a5d5865be2ab24e3e0263abddd6b4af8840973f))
+
 ### [1.617.1](https://github.com/bigcommerce/checkout-js/compare/v1.617.0...v1.617.1) (2025-07-04)
 
 ## [1.617.0](https://github.com/bigcommerce/checkout-js/compare/v1.616.3...v1.617.0) (2025-07-03)
