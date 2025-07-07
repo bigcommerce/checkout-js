@@ -78,7 +78,7 @@ const PaymentMethodList: FunctionComponent<
 
     return (
         <>
-            <div className='is-srOnly' aria-live="assertive" role="status">{titleText}</div>
+            <div aria-live="assertive" className='is-srOnly' role="status">{titleText}</div>
             <Checklist
                 defaultSelectedItemId={values.paymentProviderRadio}
                 isDisabled={isInitializingPayment}

@@ -6,7 +6,7 @@ import AddressSelectorUK from './AddressSelectorUk';
 export default class AddressSelectorFactory {
     static create(autocompleteData: google.maps.places.PlaceResult): AddressSelector {
         const countryComponent = autocompleteData.address_components?.find(
-            component => component.types.indexOf('country') >= 0);
+            component => component.types.includes('country'));
         const countryShortName = countryComponent?.short_name || '';
 
         switch (countryShortName) {

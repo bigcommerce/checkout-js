@@ -256,7 +256,7 @@ function normalizeWalletPaymentData(data: any): WalletPaymentData | undefined {
 }
 
 function formatAccountMask(accountMask = '', padding = '****'): string {
-    return accountMask.indexOf('*') > -1 ? accountMask : `${padding} ${accountMask}`;
+    return accountMask.includes('*') ? accountMask : `${padding} ${accountMask}`;
 }
 
 function mapFromCheckoutProps(

@@ -52,7 +52,7 @@ describe('StoreCreditField', () => {
         );
 
         expect(screen.getByText(/Apply/)).toBeInTheDocument();
-        expect(screen.getByText(`${currencyService.toCustomerCurrency(100)}`)).toBeInTheDocument();
+        expect(screen.getByText(currencyService.toCustomerCurrency(100))).toBeInTheDocument();
         expect(screen.getByText(/store credit to order/)).toBeInTheDocument();
     });
 

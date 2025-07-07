@@ -88,6 +88,7 @@ const useBraintreeAchValidation = (method: PaymentMethod) => {
 
                     return schema;
                 },
+                // eslint-disable-next-line @typescript-eslint/prefer-reduce-type-parameter
                 {} as { [key: string]: StringSchema },
             ),
         );

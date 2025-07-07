@@ -74,10 +74,10 @@ const ManageInstrumentsRow: FunctionComponent<ManageInstrumentsRowProps> = ({
     const cardType = mapFromInstrumentCardType(instrument.brand);
     const cardInfo = creditCardType.getTypeInfo(cardType);
     const isExpired =
-        expirationDate({
+        !expirationDate({
             month: instrument.expiryMonth,
             year: instrument.expiryYear,
-        }).isValid === false;
+        }).isValid;
 
     const handleDelete = useCallback(() => {
         onDeleteInstrument(instrument.bigpayToken);

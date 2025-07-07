@@ -45,7 +45,7 @@ const getCustomerStepStatus = createSelector(
         const isUsingWallet =
             checkout && checkout.payments
                 ? checkout.payments.some(
-                    (payment: CheckoutPayment) => SUPPORTED_METHODS.indexOf(payment.providerId) >= 0,
+                    (payment: CheckoutPayment) => SUPPORTED_METHODS.includes(payment.providerId),
                   )
                 : false;
         const isGuest = !!(customer && customer.isGuest);
@@ -97,7 +97,7 @@ const getBillingStepStatus = createSelector(
         const isUsingWallet =
             checkout && checkout.payments
                 ? checkout.payments.some(
-                      (payment) => SUPPORTED_METHODS.indexOf(payment.providerId) >= 0,
+                      (payment) => SUPPORTED_METHODS.includes(payment.providerId),
                   )
                 : false;
         const isComplete = hasAddress || isUsingWallet;

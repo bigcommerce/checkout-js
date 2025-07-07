@@ -54,7 +54,7 @@ export default memoize(function getPaypalCommerceRatePayValidationSchema({
 
                 return schema;
             },
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions, @typescript-eslint/prefer-reduce-type-parameter
             {} as { [key: string]: StringSchema<string | null> },
         ),
     );

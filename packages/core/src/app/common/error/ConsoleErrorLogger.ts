@@ -10,7 +10,6 @@ export interface ConsoleErrorLoggerOptions {
     errorTypes?: string[];
 }
 
-// tslint:disable:no-console
 export default class ConsoleErrorLogger implements ErrorLogger {
     private console: Console;
 

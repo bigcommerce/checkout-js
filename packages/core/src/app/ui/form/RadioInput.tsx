@@ -31,7 +31,7 @@ const RadioInput = forwardRef(
                 type="radio"
                 value={value}
             />
-            <Label additionalClassName={`${newFontStyle ? 'body-regular' : ''}`} htmlFor={id}>{label}</Label>
+            <Label additionalClassName={newFontStyle ? 'body-regular' : ''} htmlFor={id}>{label}</Label>
         </>
     ),
 );

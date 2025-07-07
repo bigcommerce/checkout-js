@@ -155,5 +155,5 @@ function getSupportedInstrumentTypes() {
 export function filterInstrumentTypes(instrumentTypes: string[]) {
     const supportedInstrumentTypes = getSupportedInstrumentTypes();
 
-    return instrumentTypes.filter((type) => supportedInstrumentTypes.indexOf(type) !== -1);
+    return instrumentTypes.filter((type) => supportedInstrumentTypes.includes(type));
 }

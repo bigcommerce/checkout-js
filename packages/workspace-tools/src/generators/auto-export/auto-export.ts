@@ -69,13 +69,9 @@ async function createExportDeclaration(
         .map((element) =>
             'escapedText' in element.name
                 ? element.name.escapedText.toString()
-                : // TODO:CHECKOUT-9228 Fix lint error after nx upgrade to 19.8.9
-                  // eslint-disable-next-line @typescript-eslint/no-base-to-string
-                  element.name.toString(),
+                : JSON.stringify(element.name),
         )
-        // TODO:CHECKOUT-9228 Fix lint error after nx upgrade to 19.8.9
-        // eslint-disable-next-line @typescript-eslint/prefer-regexp-exec
-        .filter((memberName: string) => memberName.match(new RegExp(memberPattern)));
+        .filter((memberName: string) => new RegExp(memberPattern).exec(memberName));
 
     if (memberNames.length === 0) {
         return;

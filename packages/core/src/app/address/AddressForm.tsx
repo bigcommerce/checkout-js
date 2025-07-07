@@ -240,7 +240,7 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
             .filter((field) => field.custom && field.fieldType === DynamicFormFieldType.date)
             .map((field) => field.name);
 
-        if (fieldName === AUTOCOMPLETE_FIELD_NAME || dateFormFieldNames.indexOf(fieldName) > -1) {
+        if (fieldName === AUTOCOMPLETE_FIELD_NAME || dateFormFieldNames.includes(fieldName)) {
             setFieldValue(fieldName, value);
         }
 

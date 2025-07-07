@@ -116,7 +116,7 @@ describe('BlueSnapDirectSepa payment method', () => {
     it('should enable submit button if user grants permission', () => {
         const {
             paymentForm: { disableSubmit },
-            method,
+            method: paymentMethod,
         } = props;
 
         render(<BlueSnapDirectSepaTest />);
@@ -130,8 +130,8 @@ describe('BlueSnapDirectSepa payment method', () => {
         fireEvent.click(permissionChangeCheckbox);
 
         expect(disableSubmit).toHaveBeenCalledTimes(2);
-        expect(disableSubmit).toHaveBeenNthCalledWith(1, method, true);
-        expect(disableSubmit).toHaveBeenNthCalledWith(2, method, false);
+        expect(disableSubmit).toHaveBeenNthCalledWith(1, paymentMethod, true);
+        expect(disableSubmit).toHaveBeenNthCalledWith(2, paymentMethod, false);
     });
 
     it('should be deinitialized with the required config', () => {

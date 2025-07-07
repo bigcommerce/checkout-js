@@ -48,7 +48,6 @@ export interface WithCheckoutPaymentMethodProps {
  * the purpose of configuring a general-purpose component in order to fulfill
  * its specific product or technical requirements.
  */
-// tslint:disable:cyclomatic-complexity
 const PaymentMethodComponent: FunctionComponent<
     PaymentMethodProps & WithCheckoutPaymentMethodProps
 > = (props) => {
