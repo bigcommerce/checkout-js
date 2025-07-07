@@ -21,7 +21,7 @@ describe('PaypalCommerceCreditBanner', () => {
     const defaultProps = {
         onUnhandledError: jest.fn(),
         containerId: 'paypal-commerce-credit-banner-container',
-        methodId: 'paypalcommercecredit'
+        methodId: 'paypalcommercecredit',
     };
 
     beforeEach(() => {

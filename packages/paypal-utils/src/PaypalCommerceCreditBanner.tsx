@@ -4,13 +4,9 @@ import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
 const PaypalCommerceCreditBanner: FunctionComponent<{
     methodId: string;
-    containerId: string
+    containerId: string;
     onUnhandledError?(error: Error): void;
-}> = ({
-    methodId,
-    containerId,
-    onUnhandledError,
-}) => {
+}> = ({ methodId, containerId, onUnhandledError }) => {
     const { checkoutService } = useCheckout();
 
     useEffect(() => {
@@ -33,9 +29,7 @@ const PaypalCommerceCreditBanner: FunctionComponent<{
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return (
-        <div data-test={containerId} id={containerId} />
-    );
+    return <div data-test={containerId} id={containerId} />;
 };
 
 export default PaypalCommerceCreditBanner;
