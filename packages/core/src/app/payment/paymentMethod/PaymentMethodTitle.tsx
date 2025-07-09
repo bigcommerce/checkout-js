@@ -336,7 +336,7 @@ const PaymentMethodTitle: FunctionComponent<
             >
                 {logoUrl && (
                     <img
-                        alt={methodName}
+                        alt={`${methodName} icon`}
                         className={classNames(
                             'paymentProviderHeader-img',
                             {'paymentProviderHeader-img-applePay': method.id === 'applepay'},
