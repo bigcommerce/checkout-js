@@ -33,6 +33,13 @@ interface WithPaymentTitleProps {
     cdnBasePath: string;
 }
 
+interface PaymentMethodSubtitleProps {
+    onUnhandledError?(error: Error): void;
+    methodId: string;
+}
+
+type SubtitleType = ReactNode | ((subtitleProps?: PaymentMethodSubtitleProps) => ReactNode);
+
 export function getPaymentMethodTitle(
     language: LanguageService,
     basePath: string,
@@ -41,7 +48,7 @@ export function getPaymentMethodTitle(
 ): (method: PaymentMethod) => {
     logoUrl: string;
     titleText: string,
-    subtitle?: ReactNode | ((subtitleProps?: { onUnhandledError?(error: Error): void }) => ReactNode)
+    subtitle?: SubtitleType
 } {
     const cdnPath = (path: string) => `${basePath}${path}`;
 
@@ -82,11 +89,12 @@ export function getPaymentMethodTitle(
             [PaymentMethodId.PaypalCommerce]: {
                 logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo.svg'),
                 titleText: '',
+                subtitle: (props: PaymentMethodSubtitleProps) => <PaypalCommerceCreditBanner containerId='paypal-commerce-banner-container' {...props} />
             },
             [PaymentMethodId.PaypalCommerceCredit]: {
                 logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo_letter.svg'),
                 titleText: methodDisplayName,
-                subtitle: (props: { onUnhandledError?(error: Error): void }) => <PaypalCommerceCreditBanner {...props} />
+                subtitle: (props: PaymentMethodSubtitleProps) => <PaypalCommerceCreditBanner containerId='paypal-commerce-credit-banner-container' {...props} />
             },
             [PaymentMethodId.PaypalCommerceAlternativeMethod]: {
                 logoUrl: method.logoUrl || '',
@@ -308,7 +316,7 @@ const PaymentMethodTitle: FunctionComponent<
     };
 
     const getSubtitle = () => {
-        const node = subtitle instanceof Function ? subtitle({ onUnhandledError }) : subtitle;
+        const node = subtitle instanceof Function ? subtitle({ onUnhandledError, methodId: method.id }) : subtitle;
 
         return node ? <div className="paymentProviderHeader-subtitleContainer">
             {node}
