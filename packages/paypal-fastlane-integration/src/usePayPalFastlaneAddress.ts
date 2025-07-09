@@ -6,18 +6,18 @@ import isPayPalFastlaneMethod from './is-paypal-fastlane-method';
 const usePayPalFastlaneAddress = () => {
     const { checkoutState } = useCheckout();
     const { getConfig, getPaymentProviderCustomer } = checkoutState.data;
-    const paymentWithCustomCheckout =
+    const paymentWithCustomCheckout: string =
         getConfig()?.checkoutSettings.providerWithCustomCheckout || '';
 
     const isPayPalFastlaneEnabled = isPayPalFastlaneMethod(paymentWithCustomCheckout);
 
-    const paymentProviderCustomer = getPaymentProviderCustomer();
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const paymentProviderCustomer = getPaymentProviderCustomer() || undefined;
     const paypalFastlaneCustomer = isPayPalFastlaneCustomer(paymentProviderCustomer)
         ? paymentProviderCustomer
         : {};
 
-    const customerAuthenticationState = paymentProviderCustomer?.authenticationState;
-
+    const customerAuthenticationState = paypalFastlaneCustomer.authenticationState;
     const paypalFastlaneAddresses = paypalFastlaneCustomer.addresses || [];
 
     const shouldShowPayPalFastlaneLabel =
