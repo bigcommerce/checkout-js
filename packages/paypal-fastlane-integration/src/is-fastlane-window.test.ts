@@ -14,6 +14,7 @@ describe('isFastlaneHostWindow', () => {
     it('returns true if window have paypalFastlane property', () => {
         const windowMock = Object.defineProperty(window, 'paypalFastlane', {
             value: {
+                // eslint-disable-next-line @typescript-eslint/naming-convention
                 FastlaneWatermarkComponent: jest.fn(),
             },
         });
@@ -24,6 +25,7 @@ describe('isFastlaneHostWindow', () => {
     it('returns true if window have braintreeFastlane property', () => {
         const windowMock = Object.defineProperty(window, 'braintreeFastlane', {
             value: {
+                // eslint-disable-next-line @typescript-eslint/naming-convention
                 FastlaneWatermarkComponent: jest.fn(),
             },
         });
