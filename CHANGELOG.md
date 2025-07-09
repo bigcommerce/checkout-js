@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.619.1](https://github.com/bigcommerce/checkout-js/compare/v1.619.0...v1.619.1) (2025-07-09)
+
+
+### Bug Fixes
+
+* **payment:** fixed eslint errors and warnings in paypal-fastlane-integration package ([8f4b73e](https://github.com/bigcommerce/checkout-js/commit/8f4b73e9d70701a70244d3cdfbc5ce6177ce41b6))
+
 ## [1.619.0](https://github.com/bigcommerce/checkout-js/compare/v1.618.1...v1.619.0) (2025-07-09)
 
 
