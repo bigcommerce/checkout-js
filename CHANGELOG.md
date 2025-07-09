@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.619.0](https://github.com/bigcommerce/checkout-js/compare/v1.618.1...v1.619.0) (2025-07-09)
+
+
+### Features
+
+* **payment:** Stripe Link V2 button container ([3d1ebf4](https://github.com/bigcommerce/checkout-js/commit/3d1ebf4e2c559a0d4f9c66f8d51bea04532ff338))
+
 ### [1.618.1](https://github.com/bigcommerce/checkout-js/compare/v1.618.0...v1.618.1) (2025-07-09)
 
 
