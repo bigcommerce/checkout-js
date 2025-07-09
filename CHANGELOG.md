@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.618.1](https://github.com/bigcommerce/checkout-js/compare/v1.618.0...v1.618.1) (2025-07-09)
+
+
+### Bug Fixes
+
+* **payment:** Make payment method title icon more readable for the screen readers ([57f7ce7](https://github.com/bigcommerce/checkout-js/commit/57f7ce7bed808b87ed8dd907fb0ea1116eb00f68))
+
 ## [1.618.0](https://github.com/bigcommerce/checkout-js/compare/v1.617.3...v1.618.0) (2025-07-09)
 
 
