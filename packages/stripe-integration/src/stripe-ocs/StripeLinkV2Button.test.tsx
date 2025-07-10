@@ -40,6 +40,7 @@ describe('StripeLinkV2Button', () => {
         expect(checkoutService.initializeCustomer).toHaveBeenCalledWith({
             methodId: defaultProps.methodId,
             stripeocs: {
+                loadingContainerId: 'checkout-app',
                 container: 'stripe-link',
                 onClick: expect.any(Function),
                 onComplete: expect.any(Function),

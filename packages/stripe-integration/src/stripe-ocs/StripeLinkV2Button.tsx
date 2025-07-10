@@ -11,6 +11,7 @@ import { navigateToOrderConfirmation } from '@bigcommerce/checkout/utility';
 const StripeLinkV2Button: FunctionComponent<CheckoutButtonProps> = (props) => {
     const additionalInitializationOptions = {
         onComplete: navigateToOrderConfirmation,
+        loadingContainerId: 'checkout-app',
     };
 
     return (
