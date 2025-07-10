@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.620.0](https://github.com/bigcommerce/checkout-js/compare/v1.619.2...v1.620.0) (2025-07-10)
+
+
+### Features
+
+* **payment:** Stripe Link V2 loading indicator added ([430e21a](https://github.com/bigcommerce/checkout-js/commit/430e21aa874123cda4654ae07f03f12798caa11e))
+
 ### [1.619.2](https://github.com/bigcommerce/checkout-js/compare/v1.619.1...v1.619.2) (2025-07-10)
 
 ### [1.619.1](https://github.com/bigcommerce/checkout-js/compare/v1.619.0...v1.619.1) (2025-07-09)
