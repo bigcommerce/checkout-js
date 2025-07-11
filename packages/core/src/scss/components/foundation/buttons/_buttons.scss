@@ -10,6 +10,14 @@
 // -----------------------------------------------------------------------------
 
 @if $exportCSS--buttons { // 1
+    @keyframes shimmer {
+        0% {
+            background-position: 200% 0;
+        }
+        100% {
+            background-position: -200% 0;
+        }
+    }
 
     .button {
         text-transform: uppercase;
@@ -17,12 +25,22 @@
 
         &:focus {
             border-color: color("highlight");
-            box-shadow: 0 0 3px 1px rgba(color("highlight"), 0.6);
         }
 
         // scss-lint:disable NestingDepth
         &.is-loading {
             color: color("whites");
+            inset: 0;
+            background: linear-gradient(
+                    to right,
+                    transparent 0%,
+                    transparent 20%,
+                    rgba(255, 255, 255, 0.5) 50%,
+                    transparent 80%,
+                    transparent 100%
+            );
+            animation: shimmer 2s ease-in-out infinite;
+            background-size: 200% 100%;
 
             &.button--primary {
                 color: color("greys", "darker");
@@ -30,14 +48,6 @@
 
             &[disabled] {
                 color: color("greys", "light");
-            }
-
-            &::before {
-                @include loadingOverlay-spinner();
-                @include square(30px);
-
-                animation: spin $loadingOverlay-spinner-duration infinite $loadingOverlay-spinner-easing;
-                border-color: color("whites") color("whites") color("greys") color("greys");
             }
         }
         // scss-lint:enable NestingDepth

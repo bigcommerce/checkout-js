@@ -83,11 +83,11 @@ describe('OrderConfirmation', () => {
     it('loads passed order ID', () => {
         jest.spyOn(checkoutState.statuses, 'isLoadingOrder').mockReturnValue(true);
 
-        const { container } = render(<ComponentTest {...defaultProps} />);
+        render(<ComponentTest {...defaultProps} />);
 
         // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
-        expect(container.querySelector('.loadingSpinner')).toBeInTheDocument();
         expect(checkoutService.loadOrder).toHaveBeenCalledWith(105);
+        expect(screen.getByTestId('order-confirmation-page-skeleton')).toBeInTheDocument();
     });
 
     it('posts message to parent of embedded checkout when order is loaded', async () => {

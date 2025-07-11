@@ -14,7 +14,7 @@ import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
 import { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
-import { LazyContainer, LoadingSpinner } from '@bigcommerce/checkout/ui';
+import {LazyContainer, LoadingSpinner, OrderConfirmationPageSkeleton} from '@bigcommerce/checkout/ui';
 
 import { withAnalytics } from '../analytics';
 import { withCheckout } from '../checkout';
@@ -34,7 +34,7 @@ import {
     AccountCreationRequirementsError,
 } from '../guestSignup/errors';
 import { Button, ButtonVariant } from '../ui/button';
-import { MobileView } from '../ui/responsive';
+import { isMobileView, MobileView } from '../ui/responsive';
 
 import getPaymentInstructions from './getPaymentInstructions';
 import mapToOrderSummarySubtotalsProps from './mapToOrderSummarySubtotalsProps';
@@ -122,7 +122,16 @@ class OrderConfirmation extends Component<
         const { order, config, isLoadingOrder } = this.props;
 
         if (!order || !config || isLoadingOrder()) {
-            return <LoadingSpinner isLoading={true} />;
+            return isMobileView() ? <LoadingSpinner isLoading={true} /> : (
+                <div
+                    className={classNames('layout optimizedCheckout-contentPrimary', {
+                        'is-embedded': isEmbedded(),
+                    })}
+                >
+                    <OrderConfirmationPageSkeleton />
+                    )
+                </div>
+            );
         }
 
         const paymentInstructions = getPaymentInstructions(order);

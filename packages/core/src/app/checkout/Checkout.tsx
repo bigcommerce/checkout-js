@@ -20,7 +20,15 @@ import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
 import { Extension, ExtensionContextProps, withExtension } from '@bigcommerce/checkout/checkout-extension';
 import { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { AddressFormSkeleton, ChecklistSkeleton , LazyContainer, LoadingNotification, LoadingOverlay } from '@bigcommerce/checkout/ui';
+import {
+    AddressFormSkeleton,
+    ChecklistSkeleton,
+    CheckoutPageSkeleton,
+    LazyContainer,
+    LoadingNotification,
+    LoadingOverlay,
+    OrderConfirmationPageSkeleton
+} from '@bigcommerce/checkout/ui';
 import { navigateToOrderConfirmation } from '@bigcommerce/checkout/utility';
 
 import { withAnalytics } from '../analytics';
@@ -43,7 +51,7 @@ import { EmbeddedCheckoutStylesheet, isEmbedded } from '../embeddedCheckout';
 import { PromotionBannerList } from '../promotion';
 import { hasSelectedShippingOptions, isUsingMultiShipping, ShippingSummary } from '../shipping';
 import { ShippingOptionExpiredError } from '../shipping/shippingOption';
-import { MobileView } from '../ui/responsive';
+import { isMobileView, MobileView } from '../ui/responsive';
 
 import CheckoutStep from './CheckoutStep';
 import CheckoutStepStatus from './CheckoutStepStatus';
@@ -317,7 +325,7 @@ class Checkout extends Component<
     }
 
     private renderContent(): ReactNode {
-        const { isPending, loginUrl, promotions = [], steps, isShowingWalletButtonsOnTop, extensionState } = this.props;
+        const { isPending, isLoadingCheckout, loginUrl, promotions = [], steps, isShowingWalletButtonsOnTop, extensionState } = this.props;
 
         const { activeStepType, defaultStepType, isCartEmpty, isRedirecting } = this.state;
 
@@ -328,11 +336,14 @@ class Checkout extends Component<
         const isPaymentStepActive = activeStepType
             ? activeStepType === CheckoutStepType.Payment
             : defaultStepType === CheckoutStepType.Payment;
+        
+        const pageLoadingSkeleton = isRedirecting ? <OrderConfirmationPageSkeleton /> : <CheckoutPageSkeleton />;
+        const loadingSkeleton = isMobileView() ? null : pageLoadingSkeleton;
 
         return (
-            <LoadingOverlay hideContentWhenLoading isLoading={isRedirecting}>
+            <LoadingOverlay hideContentWhenLoading isLoading={isLoadingCheckout || isRedirecting} loadingSkeleton={loadingSkeleton}>
                 <div className="layout-main">
-                    <LoadingNotification isLoading={(!isShowingWalletButtonsOnTop && isPending) || extensionState.isShowingLoadingIndicator} />
+                    <LoadingNotification isLoading={extensionState.isShowingLoadingIndicator} />
 
                     {/* <Extension region={ExtensionRegion.GlobalWebWorker} /> */}
                     <PromotionBannerList promotions={promotions} />

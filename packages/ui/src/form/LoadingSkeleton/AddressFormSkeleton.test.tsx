@@ -11,7 +11,7 @@ describe('AddressFormSkeleton', () => {
         );
 
         // eslint-disable-next-line testing-library/no-container
-        expect(container.querySelector('.checkout-form')).not.toBeInTheDocument();
+        expect(container.querySelector('.address-form-skeleton')).not.toBeInTheDocument();
     });
 
     it('does not render addressformskeleton if not loading but renders children if renderWhileLoading is true', () => {
@@ -22,7 +22,7 @@ describe('AddressFormSkeleton', () => {
         );
 
         // eslint-disable-next-line testing-library/no-container
-        expect(container.querySelector('.checkout-form')).not.toBeInTheDocument();
+        expect(container.querySelector('.address-form-skeleton')).not.toBeInTheDocument();
         expect(screen.getByText('child')).toBeInTheDocument();
     });
 
@@ -34,7 +34,7 @@ describe('AddressFormSkeleton', () => {
         );
 
         // eslint-disable-next-line testing-library/no-container
-        expect(container.querySelector('.checkout-form')).toBeInTheDocument();
+        expect(container.querySelector('.address-form-skeleton')).toBeInTheDocument();
         expect(screen.queryByText('child')).not.toBeInTheDocument();
     });
 
@@ -46,7 +46,7 @@ describe('AddressFormSkeleton', () => {
         );
 
         // eslint-disable-next-line testing-library/no-container
-        expect(container.querySelector('.checkout-form')).toBeInTheDocument();
+        expect(container.querySelector('.address-form-skeleton')).toBeInTheDocument();
         expect(screen.getByText('child')).toBeInTheDocument();
     });
 });

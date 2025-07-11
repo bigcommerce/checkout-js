@@ -5,35 +5,6 @@ exports[`StripeGuestForm matches snapshot 1`] = `
   "asFragment": [Function],
   "baseElement": <body>
     <div>
-      <div
-        class="checkout-form customer-skeleton"
-      >
-        <div
-          class="customerEmail-container"
-        >
-          <div
-            class="customerEmail-body"
-          >
-            <div
-              class="skeleton-container"
-            >
-              <div
-                class="input-skeleton"
-              />
-            </div>
-            <div
-              class="button-skeleton skeleton-container subscription-skeleton"
-            />
-          </div>
-          <div
-            class="customerEmail-action customerEmail-floating--enabled"
-          >
-            <div
-              class="button-skeleton skeleton-container"
-            />
-          </div>
-        </div>
-      </div>
       <div>
         <form
           action="#"
@@ -139,35 +110,6 @@ exports[`StripeGuestForm matches snapshot 1`] = `
     </div>
   </body>,
   "container": <div>
-    <div
-      class="checkout-form customer-skeleton"
-    >
-      <div
-        class="customerEmail-container"
-      >
-        <div
-          class="customerEmail-body"
-        >
-          <div
-            class="skeleton-container"
-          >
-            <div
-              class="input-skeleton"
-            />
-          </div>
-          <div
-            class="button-skeleton skeleton-container subscription-skeleton"
-          />
-        </div>
-        <div
-          class="customerEmail-action customerEmail-floating--enabled"
-        >
-          <div
-            class="button-skeleton skeleton-container"
-          />
-        </div>
-      </div>
-    </div>
     <div>
       <form
         action="#"
