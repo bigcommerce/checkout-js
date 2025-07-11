@@ -17,7 +17,6 @@
 
         &:focus {
             border-color: color("highlight");
-            box-shadow: 0 0 3px 1px rgba(color("highlight"), 0.6);
         }
 
         // scss-lint:disable NestingDepth
@@ -30,14 +29,19 @@
 
             &[disabled] {
                 color: color("greys", "light");
+                //background-color: $color-primary;
             }
 
             &::before {
-                @include loadingOverlay-spinner();
-                @include square(30px);
-
-                animation: spin $loadingOverlay-spinner-duration infinite $loadingOverlay-spinner-easing;
-                border-color: color("whites") color("whites") color("greys") color("greys");
+                position: absolute;
+                left: 0;
+                top: 0;
+                display: block;
+                content: "";
+                width: 100%;
+                height: 100%;
+                animation: loading-skeleton-bar-keyframes 1.5s infinite;
+                animation-timing-function: $loading-skeleton-timing;
             }
         }
         // scss-lint:enable NestingDepth

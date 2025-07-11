@@ -20,7 +20,15 @@ import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
 import { Extension, ExtensionContextProps, withExtension } from '@bigcommerce/checkout/checkout-extension';
 import { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { AddressFormSkeleton, ChecklistSkeleton , LazyContainer, LoadingNotification, LoadingOverlay } from '@bigcommerce/checkout/ui';
+import {
+    AddressFormSkeleton,
+    ChecklistSkeleton,
+    CheckoutPageSkeleton,
+    LazyContainer,
+    LoadingNotification,
+    LoadingOverlay,
+    OrderConfirmationPageSkeleton
+} from '@bigcommerce/checkout/ui';
 import { navigateToOrderConfirmation } from '@bigcommerce/checkout/utility';
 
 import { withAnalytics } from '../analytics';
@@ -43,7 +51,7 @@ import { EmbeddedCheckoutStylesheet, isEmbedded } from '../embeddedCheckout';
 import { PromotionBannerList } from '../promotion';
 import { hasSelectedShippingOptions, isUsingMultiShipping, ShippingSummary } from '../shipping';
 import { ShippingOptionExpiredError } from '../shipping/shippingOption';
-import { MobileView } from '../ui/responsive';
+import {isMobileView, MobileView} from '../ui/responsive';
 
 import CheckoutStep from './CheckoutStep';
 import CheckoutStepStatus from './CheckoutStepStatus';
@@ -123,6 +131,7 @@ export interface CheckoutState {
     hasSelectedShippingOptions: boolean;
     isSubscribed: boolean;
     buttonConfigs: PaymentMethod[];
+    showUI: number;
 }
 
 export interface WithCheckoutProps {
@@ -165,6 +174,7 @@ class Checkout extends Component<
         hasSelectedShippingOptions: false,
         isSubscribed: false,
         buttonConfigs: [],
+        showUI: 0,
     };
 
     private embeddedMessenger?: EmbeddedCheckoutMessenger;
@@ -317,9 +327,9 @@ class Checkout extends Component<
     }
 
     private renderContent(): ReactNode {
-        const { isPending, loginUrl, promotions = [], steps, isShowingWalletButtonsOnTop, extensionState } = this.props;
+        const { isPending, isLoadingCheckout, loginUrl, promotions = [], steps, isShowingWalletButtonsOnTop, extensionState } = this.props;
 
-        const { activeStepType, defaultStepType, isCartEmpty, isRedirecting } = this.state;
+        const { activeStepType, defaultStepType, isCartEmpty, isRedirecting, showUI } = this.state;
 
         if (isCartEmpty) {
             return <EmptyCartMessage loginUrl={loginUrl} waitInterval={3000} />;
@@ -328,41 +338,56 @@ class Checkout extends Component<
         const isPaymentStepActive = activeStepType
             ? activeStepType === CheckoutStepType.Payment
             : defaultStepType === CheckoutStepType.Payment;
+        
+        const loadingSkeleton = isMobileView() ? null : isRedirecting ? <OrderConfirmationPageSkeleton />:<CheckoutPageSkeleton />;
+        
+        const onClick = ()=>{
+            setInterval(() => {
+                const { isRedirecting, showUI } = this.state;
+            
+                const newUI = showUI === 0 ? 1 : showUI - 1;
+
+                this.setState({ isRedirecting: !isRedirecting, showUI: newUI });
+            },1000);
+        }
 
         return (
-            <LoadingOverlay hideContentWhenLoading isLoading={isRedirecting}>
-                <div className="layout-main">
-                    <LoadingNotification isLoading={(!isShowingWalletButtonsOnTop && isPending) || extensionState.isShowingLoadingIndicator} />
-
-                    {/* <Extension region={ExtensionRegion.GlobalWebWorker} /> */}
-                    <PromotionBannerList promotions={promotions} />
-
-                    {isShowingWalletButtonsOnTop && this.state.buttonConfigs?.length > 0 && (
-                        <CheckoutButtonContainer
-                            checkEmbeddedSupport={this.checkEmbeddedSupport}
-                            isPaymentStepActive={isPaymentStepActive}
-                            onUnhandledError={this.handleUnhandledError}
-                            onWalletButtonClick={this.handleWalletButtonClick}
-                        />
-                    )}
-
-                    <ol className="checkout-steps">
-                        {steps
-                            .filter((step) => step.isRequired)
-                            .map((step) =>
-                                this.renderStep({
-                                    ...step,
-                                    isActive: activeStepType
-                                        ? activeStepType === step.type
-                                        : defaultStepType === step.type,
-                                    isBusy: isPending,
-                                }),
-                            )}
-                    </ol>
-                </div>
-
-                {this.renderCartSummary()}
-            </LoadingOverlay>
+            <>
+                <div className='test-control' onClick={onClick}>{showUI === 0 ? `` : '🛵'.repeat(showUI)}</div>
+                <LoadingOverlay hideContentWhenLoading isLoading={showUI > 0 ? true : isLoadingCheckout || isRedirecting} loadingSkeleton={loadingSkeleton}>
+                    <div className="layout-main">
+                        <LoadingNotification isLoading={extensionState.isShowingLoadingIndicator} />
+    
+                        {/* <Extension region={ExtensionRegion.GlobalWebWorker} /> */}
+                        <PromotionBannerList promotions={promotions} />
+    
+                        {isShowingWalletButtonsOnTop && this.state.buttonConfigs?.length > 0 && (
+                            <CheckoutButtonContainer
+                                checkEmbeddedSupport={this.checkEmbeddedSupport}
+                                isPaymentStepActive={isPaymentStepActive}
+                                onUnhandledError={this.handleUnhandledError}
+                                onWalletButtonClick={this.handleWalletButtonClick}
+                            />
+                        )}
+    
+                        <ol className="checkout-steps">
+                            {steps
+                                .filter((step) => step.isRequired)
+                                .map((step) =>
+                                    this.renderStep({
+                                        ...step,
+                                        isActive: activeStepType
+                                            ? activeStepType === step.type
+                                            : defaultStepType === step.type,
+                                        isBusy: isPending,
+                                    }),
+                                )}
+                        </ol>
+                    </div>
+    
+                    {this.renderCartSummary()}
+                </LoadingOverlay>
+            </>
         );
     }
 

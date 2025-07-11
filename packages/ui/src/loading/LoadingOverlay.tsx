@@ -7,18 +7,22 @@ export interface LoadingOverlayProps {
     hideContentWhenLoading?: boolean;
     unmountContentWhenLoading?: boolean;
     children?: ReactNode;
+    loadingSkeleton?: ReactNode;
 }
 
 const LoadingOverlay: FunctionComponent<LoadingOverlayProps> = ({
     children,
     hideContentWhenLoading,
+    loadingSkeleton,
     unmountContentWhenLoading,
     isLoading,
 }) => {
+    const loadingUI = loadingSkeleton || <LoadingSpinner isLoading={true} />;
+
     if (hideContentWhenLoading || unmountContentWhenLoading) {
         return (
             <>
-                <LoadingSpinner isLoading={isLoading} />
+                {isLoading ? loadingUI : null}
                 {unmountContentWhenLoading && isLoading ? null : (
                     <div
                         style={{

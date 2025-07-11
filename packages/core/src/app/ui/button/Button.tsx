@@ -26,6 +26,24 @@ function getClassName(
 ) {
     const { className, isFullWidth, isLoading, size, variant } = props;
 
+    console.log(classNames(
+        'button',
+        className,
+        { 'button--primary': variant === ButtonVariant.Primary },
+        { 'button--tertiary': variant === ButtonVariant.Secondary },
+        { 'button--action': variant === ButtonVariant.Action },
+        { 'button--small': size === ButtonSize.Small },
+        { 'button--tiny': size === ButtonSize.Tiny },
+        { 'button--large': size === ButtonSize.Large },
+        { 'button--slab': isFullWidth },
+        {
+            'optimizedCheckout-buttonPrimary':
+                variant === ButtonVariant.Primary || variant === ButtonVariant.Action,
+        },
+        { 'optimizedCheckout-buttonSecondary': variant === ButtonVariant.Secondary },
+        { 'is-loading': isLoading },
+    ));
+
     return classNames(
         'button',
         className,

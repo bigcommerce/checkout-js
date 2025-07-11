@@ -14,7 +14,7 @@ import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
 import { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
-import { LazyContainer, LoadingSpinner } from '@bigcommerce/checkout/ui';
+import {LazyContainer, OrderConfirmationPageSkeleton} from '@bigcommerce/checkout/ui';
 
 import { withAnalytics } from '../analytics';
 import { withCheckout } from '../checkout';
@@ -122,7 +122,7 @@ class OrderConfirmation extends Component<
         const { order, config, isLoadingOrder } = this.props;
 
         if (!order || !config || isLoadingOrder()) {
-            return <LoadingSpinner isLoading={true} />;
+            return <OrderConfirmationPageSkeleton />;
         }
 
         const paymentInstructions = getPaymentInstructions(order);

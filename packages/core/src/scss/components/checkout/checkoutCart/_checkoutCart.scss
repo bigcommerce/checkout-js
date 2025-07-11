@@ -2,10 +2,14 @@
 // CHECKOUT CART (Component)
 // =============================================================================
 
+.optimizedCheckout-orderSummary.cart {
+    box-shadow: none;
+    -webkit-box-shadow: none;
+}
+
 .cart {
     border: container("border");
     border-radius: $checkoutCart-borderRadius;
-    box-shadow: container("dropShadow");
     display: none;
     margin: spacing("double") 0 spacing("single");
     min-height: $checkoutCart-minHeight;
