@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.621.0](https://github.com/bigcommerce/checkout-js/compare/v1.620.0...v1.621.0) (2025-07-11)
+
+
+### Features
+
+* **payment:** made bigcommerce payments google pay available in payment step of checkout page ([23aaa76](https://github.com/bigcommerce/checkout-js/commit/23aaa769b7dde9ae070344724446f6e7b55c2aee))
+
 ## [1.620.0](https://github.com/bigcommerce/checkout-js/compare/v1.619.2...v1.620.0) (2025-07-10)
 
 
