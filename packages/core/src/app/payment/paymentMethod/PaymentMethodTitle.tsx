@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { compact } from 'lodash';
 import React, { FunctionComponent, memo, ReactNode } from 'react';
 
+import { BigCommercePaymentsPayLaterBanner } from '@bigcommerce/checkout/bigcommerce-payments-utils'
 import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { CheckoutContextProps , PaymentFormValues , useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
 import { BraintreePaypalCreditBanner, PaypalCommerceCreditBanner } from '@bigcommerce/checkout/paypal-utils';
@@ -85,6 +86,20 @@ export function getPaymentMethodTitle(
             [PaymentMethodId.BraintreeLocalPaymentMethod]: {
                 logoUrl: method.logoUrl || '',
                 titleText: methodDisplayName,
+            },
+            [PaymentMethodId.BigCommercePaymentsPayPal]: {
+                logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo.svg'),
+                titleText: '',
+                subtitle: (props: PaymentMethodSubtitleProps) => <BigCommercePaymentsPayLaterBanner {...props} />
+            },
+            [PaymentMethodId.BigCommercePaymentsPayLater]: {
+                logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo_letter.svg'),
+                titleText: methodDisplayName,
+                subtitle: (props: PaymentMethodSubtitleProps) => <BigCommercePaymentsPayLaterBanner {...props} />
+            },
+            [PaymentMethodId.BigCommercePaymentsAlternativeMethod]: {
+                logoUrl: method.logoUrl || '',
+                titleText: method.logoUrl ? '' : methodDisplayName,
             },
             [PaymentMethodId.PaypalCommerce]: {
                 logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo.svg'),
@@ -243,6 +258,10 @@ export function getPaymentMethodTitle(
 
         if (method.id === PaymentMethodId.PaypalCommerceVenmo) {
             return customTitles[PaymentMethodId.PaypalCommerceAlternativeMethod];
+        }
+
+        if (method.id === PaymentMethodId.BigCommercePaymentsVenmo) {
+            return customTitles[PaymentMethodId.BigCommercePaymentsAlternativeMethod];
         }
 
         // KLUDGE: 'paypal' is actually a credit card method. It is the only
