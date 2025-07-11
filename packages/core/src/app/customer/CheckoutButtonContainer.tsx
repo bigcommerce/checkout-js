@@ -85,6 +85,8 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
                 />;
     });
 
+    console.log('hahaha?')
+
     return (
         <div className='checkout-button-container'
              style={ isPaymentStepActive ? { position: 'absolute', left: '0', top: '-100%' } : undefined }

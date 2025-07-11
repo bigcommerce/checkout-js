@@ -11,13 +11,11 @@ const WalletButtonContainerSkeleton: FunctionComponent<
 > = ({ buttonsCount, children, isLoading }) => {
     const renderWhileLoading = true;
     const skeleton = (
-        <div className="checkoutRemote customer-skeleton">
+        <div className="checkoutRemote walletbuttons-skeleton">
             {Array(buttonsCount)
                 .fill(0)
                 .map((_v, i) => (
-                    <div className="skeleton-container" key={`skeleton-container-${i}`}>
-                        <div className="input-skeleton" />
-                    </div>
+                    <div key={`skeleton-container-${i}`} />
                 ))}
         </div>
     );

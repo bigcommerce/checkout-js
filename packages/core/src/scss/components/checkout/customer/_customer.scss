@@ -149,14 +149,6 @@ $buttonWidthMap: (
         width: 100%;
     }
 
-    .skeleton-container {
-        background-color: color("greys", "lightest");
-        border: none;
-        height: $wallet-button-height;
-        margin-bottom: 0;
-        padding: 0;
-    }
-
     .gpay-button.short {
         background-size: auto;
         border: none;

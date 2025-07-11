@@ -22,7 +22,8 @@
 .checkout-page-skeleton div,
 .address-form-skeleton div,
 .checklist-skeleton div,
-.order-confirmation-page-skeleton div {
+.order-confirmation-page-skeleton div,
+.walletbuttons-skeleton div{
     background: $loading-skeleton-button-bg-color;
     border-radius: $global-radius;
     content: ' ';
@@ -30,6 +31,11 @@
     height: $floating-label-input-height;
     margin-bottom: spacing("single");
     animation: lightColorTransition 4000ms infinite $loading-skeleton-timing;
+}
+
+.walletbuttons-skeleton div {
+    height: $wallet-button-height;
+    margin-bottom: 0;
 }
 
 .order-confirmation-page-skeleton {
