@@ -63,6 +63,12 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                     onError: onUnhandledError,
                     onPaymentSelect: () => reinitializePayment(mergedOptions),
                 },
+                [PaymentMethodId.BigCommercePaymentsGooglePay]: {
+                    loadingContainerId,
+                    walletButton: 'walletButton',
+                    onError: onUnhandledError,
+                    onPaymentSelect: () => reinitializePayment(mergedOptions),
+                },
                 [PaymentMethodId.BraintreeGooglePay]: {
                     loadingContainerId,
                     walletButton: 'walletButton',
@@ -152,6 +158,7 @@ export default toResolvableComponent<PaymentMethodProps, CheckoutButtonResolveId
         { id: PaymentMethodId.BNZGooglePay },
         { id: PaymentMethodId.BraintreeGooglePay },
         { id: PaymentMethodId.PayPalCommerceGooglePay },
+        { id: PaymentMethodId.BigCommercePaymentsGooglePay },
         { id: PaymentMethodId.CheckoutcomGooglePay },
         { id: PaymentMethodId.CybersourceV2GooglePay },
         { id: PaymentMethodId.OrbitalGooglePay },

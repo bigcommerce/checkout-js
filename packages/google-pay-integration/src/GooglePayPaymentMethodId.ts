@@ -7,6 +7,7 @@ const GooglePayPaymentMethodId = {
     bnzGooglePay: PaymentMethodId.BNZGooglePay,
     braintreeGooglePay: PaymentMethodId.BraintreeGooglePay,
     payPalCommerceGooglePay: PaymentMethodId.PayPalCommerceGooglePay,
+    bigcommercePaymentsGooglePay: PaymentMethodId.BigCommercePaymentsGooglePay,
     checkoutcomGooglePay: PaymentMethodId.CheckoutcomGooglePay,
     cybersourceV2GooglePay: PaymentMethodId.CybersourceV2GooglePay,
     orbitalGooglePay: PaymentMethodId.OrbitalGooglePay,
