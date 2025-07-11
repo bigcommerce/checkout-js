@@ -10,14 +10,14 @@ const BigCommercePaymentsPayLaterBanner: FunctionComponent<{
    useEffect(() => {
         try {
             void checkoutService.initializePayment({
-              methodId: PaymentMethodId.BigcommercePaymentsPaylater,
+              methodId: PaymentMethodId.BigCommercePaymentsPayLater,
               bigcommerce_payments_paylater: {
                 bannerContainerId: 'bigcommerce-payments-banner-container',
               },
             });
 
             void checkoutService.deinitializePayment({
-              methodId: PaymentMethodId.BigcommercePaymentsPaylater,
+              methodId: PaymentMethodId.BigCommercePaymentsPayLater,
             });
     } catch (error) {
             if (error instanceof Error) {

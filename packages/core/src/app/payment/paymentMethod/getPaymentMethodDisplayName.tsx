@@ -12,6 +12,7 @@ export default function getPaymentMethodDisplayName(
 
         if (
             method.id === PaymentMethodId.PaypalCommerceCredit ||
+            method.id === PaymentMethodId.BigCommercePaymentsPayLater ||
             method.id === PaymentMethodId.BraintreePaypalCredit
         ) {
             const { payPalCreditProductBrandName } = method.initializationData;

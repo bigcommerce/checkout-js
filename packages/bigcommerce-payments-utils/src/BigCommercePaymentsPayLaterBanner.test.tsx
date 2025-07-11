@@ -47,14 +47,14 @@ describe('BigCommercePaymentsPayLaterBanner', () => {
     render(<BigCommercePaymentsCreditBannerTest />);
 
     expect(checkoutService.initializePayment).toHaveBeenCalledWith({
-      methodId: PaymentMethodId.BigcommercePaymentsPaylater,
+      methodId: PaymentMethodId.BigCommercePaymentsPayLater,
       bigcommerce_payments_paylater: {
         bannerContainerId: 'bigcommerce-payments-banner-container',
       },
     });
 
     expect(checkoutService.deinitializePayment).toHaveBeenCalledWith({
-      methodId: PaymentMethodId.BigcommercePaymentsPaylater,
+      methodId: PaymentMethodId.BigCommercePaymentsPayLater,
     });
   });
 
@@ -66,7 +66,7 @@ describe('BigCommercePaymentsPayLaterBanner', () => {
     render(<BigCommercePaymentsCreditBannerTest />);
 
     expect(checkoutService.initializePayment).toHaveBeenCalledWith({
-      methodId: PaymentMethodId.BigcommercePaymentsPaylater,
+      methodId: PaymentMethodId.BigCommercePaymentsPayLater,
       bigcommerce_payments_paylater: {
         bannerContainerId: 'bigcommerce-payments-banner-container',
       },
