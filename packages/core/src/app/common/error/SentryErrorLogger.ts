@@ -1,14 +1,10 @@
-import {
+import type {
     BrowserOptions,
-    captureException,
     Event,
-    init,
-    Integrations,
     SeverityLevel,
-    StackFrame,
-    withScope,
+    // StackFrame,
 } from '@sentry/browser';
-import { RewriteFrames } from '@sentry/integrations';
+// import { RewriteFrames } from '@sentry/integrations';
 import { EventHint, Exception } from '@sentry/types';
 
 import {
@@ -40,19 +36,19 @@ export enum SeverityLevelEnum {
 
 export default class SentryErrorLogger implements ErrorLogger {
     private consoleLogger: ErrorLogger;
-    private publicPath: string;
+    // private publicPath: string;
 
     constructor(config: BrowserOptions, options?: SentryErrorLoggerOptions) {
         const {
             consoleLogger = new NoopErrorLogger(),
-            publicPath = '',
+            // publicPath = '',
             sampleRate = 0.1,
         } = options || {};
 
         this.consoleLogger = consoleLogger;
-        this.publicPath = publicPath;
+        // this.publicPath = publicPath;
 
-        init({
+        Sentry.init({
             sampleRate,
             beforeSend: this.handleBeforeSend,
             denyUrls: [
@@ -61,13 +57,15 @@ export default class SentryErrorLogger implements ErrorLogger {
                 'sentry~checkout',
             ],
             integrations: [
-                new Integrations.GlobalHandlers({
+                /*
+                new Sentry.Integrations.GlobalHandlers({
                     onerror: false,
                     onunhandledrejection: true,
                 }),
                 new RewriteFrames({
                     iteratee: this.handleRewriteFrame,
                 }),
+                */
             ],
             ...config,
         });
@@ -81,7 +79,7 @@ export default class SentryErrorLogger implements ErrorLogger {
     ): void {
         this.consoleLogger.log(error, tags, level);
 
-        withScope((scope) => {
+        Sentry.withScope((scope) => {
             const { errorCode = computeErrorCode(error) } = tags || {};
 
             if (errorCode) {
@@ -96,7 +94,7 @@ export default class SentryErrorLogger implements ErrorLogger {
 
             scope.setFingerprint(['{{ default }}']);
 
-            captureException(error);
+            Sentry.captureException(error);
         });
     }
 
@@ -162,6 +160,7 @@ export default class SentryErrorLogger implements ErrorLogger {
         return event;
     };
 
+    /*
     private handleRewriteFrame: (frame: StackFrame) => StackFrame = (frame) => {
         if (this.publicPath && frame.filename) {
             // We want to remove the base path of the filename, otherwise we
@@ -178,4 +177,5 @@ export default class SentryErrorLogger implements ErrorLogger {
 
         return frame;
     };
+    */
 }

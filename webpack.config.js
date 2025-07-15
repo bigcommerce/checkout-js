@@ -54,13 +54,13 @@ function appConfig(options, argv) {
             },
             devtool: isProduction ? 'source-map' : 'eval-source-map',
             resolve: {
-                alias,
+                alias: {
+                    ...alias,
+                    lodash: require.resolve('lodash'),
+                    tslib: require.resolve('tslib'),
+                },
                 extensions: ['.ts', '.tsx', '.js'],
-                // It seems some packages, i.e.: Formik, have incorrect
-                // source maps for their ESM bundle. Therefore, until that
-                // issue is fixed, we prefer to resolve packages using the
-                // `main` field rather `module` field.
-                mainFields: ['browser', 'main', 'module'],
+                mainFields: ['module', 'browser', 'main'],
             },
             optimization: {
                 runtimeChunk: 'single',
@@ -80,30 +80,21 @@ function appConfig(options, argv) {
                 splitChunks: {
                     chunks: 'all',
                     cacheGroups: {
-                        vendors: {
-                            test: /\/node_modules\//,
+                        react: {
+                            test: /\/node_modules\/(react|react-dom)\//,
                             reuseExistingChunk: true,
-                            enforce: true,
                             priority: -10,
-                            name: 'vendors',
+                            name: 'react',
                         },
                         polyfill: {
                             test: /\/node_modules\/core-js/,
                             reuseExistingChunk: true,
-                            enforce: true,
                             name: 'polyfill',
                         },
                         transients: {
                             test: /\/node_modules\/@bigcommerce/,
                             reuseExistingChunk: true,
-                            enforce: true,
                             name: 'transients',
-                        },
-                        sentry: {
-                            test: /\/node_modules\/@sentry/,
-                            reuseExistingChunk: true,
-                            enforce: true,
-                            name: 'sentry',
                         },
                     },
                 },
@@ -135,6 +126,13 @@ function appConfig(options, argv) {
                 new CircularDependencyPlugin({
                     exclude: /.*\.spec\.tsx?/,
                     include: /packages\/core\/src\/app/,
+                }),
+                new DefinePlugin({
+                    __SENTRY_DEBUG__: false,
+                    __SENTRY_TRACING__: false,
+                    __RRWEB_EXCLUDE_IFRAME__: true,
+                    __RRWEB_EXCLUDE_SHADOW_DOM__: true,
+                    __SENTRY_EXCLUDE_REPLAY_WORKER__: true,
                 }),
                 new WebpackAssetsManifest({
                     entrypoints: true,
