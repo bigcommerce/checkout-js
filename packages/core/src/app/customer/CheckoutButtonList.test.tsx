@@ -10,7 +10,7 @@ import CheckoutButtonList from './CheckoutButtonList';
 describe('CheckoutButtonList', () => {
     const checkoutSettings = getStoreConfig().checkoutSettings;
 
-    it('filters out unsupported methods', () => {
+    it('filters out unsupported methods', async () => {
         render(
             <CheckoutButtonList
                 checkoutSettings={checkoutSettings}
@@ -20,7 +20,9 @@ describe('CheckoutButtonList', () => {
             />,
         );
 
-        expect(screen.getAllByRole('generic')).toHaveLength(6);
+        expect(await screen.findByTestId('applepayCheckoutButton')).toBeInTheDocument();
+        expect(await screen.findByTestId('braintreevisacheckoutCheckoutButton')).toBeInTheDocument();
+        expect(await screen.findByTestId('amazonpayCheckoutButton')).toBeInTheDocument();
     });
 
     it('does not crash when no methods are passed', () => {

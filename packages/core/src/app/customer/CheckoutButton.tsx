@@ -49,6 +49,6 @@ export default class CheckoutButton extends PureComponent<CheckoutButtonProps> {
     render() {
         const { containerId } = this.props;
 
-        return <div id={containerId} />;
+        return <div data-test={containerId} id={containerId} />;
     }
 }

@@ -9,7 +9,7 @@ import {
     EmbeddedCheckoutMessenger,
     StoreConfig,
 } from '@bigcommerce/checkout-sdk';
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import userEvent from '@testing-library/user-event';
 import { rest } from 'msw';
 import React, { FunctionComponent } from 'react';

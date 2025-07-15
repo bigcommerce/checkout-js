@@ -12,6 +12,6 @@ export default function resolveCheckoutButton(
 ): ComponentType<CheckoutButtonProps> | undefined {
     return resolveComponent<CheckoutButtonResolveId, CheckoutButtonProps>(
         resolveId,
-        require('../generated/checkoutButtons'),
+        {} // require('../generated/checkoutButtons'),
     );
 }
