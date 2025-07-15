@@ -6,10 +6,10 @@ import {
 } from '@bigcommerce/checkout/payment-integration-api';
 
 import { resolveComponent } from '../common/resolver';
-import * as paymentMethods from '../generated/paymentIntegrations';
+// import * as paymentMethods from '../generated/paymentIntegrations';
 
 export default function resolvePaymentMethod(
     query: PaymentMethodResolveId,
 ): ComponentType<PaymentMethodProps> | undefined {
-    return resolveComponent<PaymentMethodResolveId, PaymentMethodProps>(query, paymentMethods);
+    return resolveComponent<PaymentMethodResolveId, PaymentMethodProps>(query, {});
 }

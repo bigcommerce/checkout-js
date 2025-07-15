@@ -102,7 +102,7 @@
     "@babel/preset-env": "^7.9.0",
     "@bigcommerce/eslint-config": "^2.6.1",
     "@bigcommerce/eslint-plugin": "^1.4.0",
-    "@faker-js/faker": "^6.3.1",
+    "@faker-js/faker": "^7.6.0",
     "@nx/devkit": "19.8.9",
     "@nx/eslint": "19.8.9",
     "@nx/eslint-plugin": "19.8.9",

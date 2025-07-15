@@ -16,6 +16,7 @@ import { withCheckout } from '../checkout';
 import { getSupportedMethodIds } from './getSupportedMethods';
 import resolveCheckoutButton from './resolveCheckoutButton';
 import CheckoutButtonV1Resolver from './WalletButtonV1Resolver';
+import { LazyContainer } from '@bigcommerce/checkout/ui';
 
 export interface CheckoutButtonListProps {
     checkoutSettings: CheckoutSettings;
@@ -73,15 +74,16 @@ const CheckoutButtonList: FunctionComponent<WithCheckoutCheckoutButtonListProps 
             const ResolvedCheckoutButton = resolveCheckoutButton({ id: methodId });
 
             if (!ResolvedCheckoutButton) {
-                return <CheckoutButtonV1Resolver
-                    deinitialize={deinitialize}
-                    initialize={initialize}
-                    isShowingWalletButtonsOnTop={false}
-                    key={methodId}
-                    methodId={methodId}
-                    onClick={onClick}
-                    onError={onClick}
-                />
+                return <LazyContainer key={methodId}>
+                    <CheckoutButtonV1Resolver
+                        deinitialize={deinitialize}
+                        initialize={initialize}
+                        isShowingWalletButtonsOnTop={false}
+                        methodId={methodId}
+                        onClick={onClick}
+                        onError={onClick}
+                    />
+                </LazyContainer>
             }
 
             return <ResolvedCheckoutButton
