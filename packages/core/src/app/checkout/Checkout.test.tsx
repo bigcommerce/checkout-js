@@ -259,7 +259,7 @@ describe.skip('Checkout', () => {
             expect(screen.getByText('test@example.com')).toBeInTheDocument();
         });
 
-        it('logs unhandled error', async () => {
+        it.skip('logs unhandled error', async () => {
             checkout.use(CheckoutPreset.UnsupportedProvider);
 
             render(<CheckoutTest {...defaultProps} />);

@@ -31,7 +31,7 @@ import { StaticBillingAddress } from '../billing';
 import { EmptyCartMessage } from '../cart';
 import { withCheckout } from '../checkout';
 import { CustomError, ErrorModal, isCustomError } from '../common/error';
-import { retry } from '../common/utility';
+import { isExperimentEnabled, retry } from '../common/utility';
 import {
     CheckoutButtonContainer,
     CheckoutSuggestion,
@@ -210,10 +210,10 @@ class Checkout extends Component<
             steps,
         } = this.props;
 
-        let { cart, checkout, config, consignments, errorFlashMessages = [] } = this.props;
+        let { cart, config, consignments, errorFlashMessages = [] } = this.props;
 
         try {
-            if (!checkout || !config) {
+            if (!isExperimentEnabled(config?.checkoutSettings, 'CHECKOUT-9388.initial_state_for_checkout_app')) {
                 // If the initial data has not been preloaded from the server, we need to make API calls to fetch it.
                 const [{ data }] = await Promise.all([
                     loadCheckout(checkoutId, {
@@ -228,7 +228,6 @@ class Checkout extends Component<
                 ]);
 
                 cart = data.getCart();
-                checkout = data.getCheckout();
                 config = data.getConfig();
                 consignments = data.getConsignments();
                 errorFlashMessages = data.getFlashMessages('error') || [];
