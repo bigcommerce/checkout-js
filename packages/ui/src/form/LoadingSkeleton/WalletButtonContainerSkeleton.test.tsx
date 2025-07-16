@@ -11,7 +11,7 @@ describe('WalletButtonContainerSkeleton', () => {
         );
 
         // eslint-disable-next-line testing-library/no-container
-        expect(container.querySelector('.checklist-skeleton')).not.toBeInTheDocument();
+        expect(container.querySelector('.walletbuttons-skeleton')).not.toBeInTheDocument();
     });
 
     it('renders walletButtonContainerSkeleton if loading is true', () => {
@@ -20,6 +20,6 @@ describe('WalletButtonContainerSkeleton', () => {
         );
 
         // eslint-disable-next-line testing-library/no-container
-        expect(container.querySelector('.customer-skeleton')).toBeInTheDocument();
+        expect(container.querySelector('.walletbuttons-skeleton')).toBeInTheDocument();
     });
 });

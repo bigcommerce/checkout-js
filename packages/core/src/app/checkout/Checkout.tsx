@@ -20,7 +20,15 @@ import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
 import { Extension, ExtensionContextProps, withExtension } from '@bigcommerce/checkout/checkout-extension';
 import { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { AddressFormSkeleton, ChecklistSkeleton , LazyContainer, LoadingNotification, LoadingOverlay } from '@bigcommerce/checkout/ui';
+import {
+    AddressFormSkeleton,
+    ChecklistSkeleton,
+    CheckoutPageSkeleton,
+    LazyContainer,
+    LoadingNotification,
+    LoadingOverlay,
+    OrderConfirmationPageSkeleton
+} from '@bigcommerce/checkout/ui';
 import { navigateToOrderConfirmation } from '@bigcommerce/checkout/utility';
 
 import { withAnalytics } from '../analytics';
@@ -43,7 +51,7 @@ import { EmbeddedCheckoutStylesheet, isEmbedded } from '../embeddedCheckout';
 import { PromotionBannerList } from '../promotion';
 import { hasSelectedShippingOptions, isUsingMultiShipping, ShippingSummary } from '../shipping';
 import { ShippingOptionExpiredError } from '../shipping/shippingOption';
-import { MobileView } from '../ui/responsive';
+import { isMobileView, MobileView } from '../ui/responsive';
 
 import CheckoutStep from './CheckoutStep';
 import CheckoutStepStatus from './CheckoutStepStatus';
@@ -120,6 +128,7 @@ export interface CheckoutState {
     isMultiShippingMode: boolean;
     isCartEmpty: boolean;
     isRedirecting: boolean;
+    isInitialLoad: boolean;
     hasSelectedShippingOptions: boolean;
     isSubscribed: boolean;
     buttonConfigs: PaymentMethod[];
@@ -138,6 +147,7 @@ export interface WithCheckoutProps {
     isPriceHiddenFromGuests: boolean;
     isShowingWalletButtonsOnTop: boolean;
     isShippingDiscountDisplayEnabled: boolean;
+    isInitialLoadFinished: boolean;
     loginUrl: string;
     cartUrl: string;
     createAccountUrl: string;
@@ -158,6 +168,7 @@ class Checkout extends Component<
     CheckoutState
 > {
     state: CheckoutState = {
+        isInitialLoad: true,
         isBillingSameAsShipping: true,
         isCartEmpty: false,
         isRedirecting: false,
@@ -181,7 +192,13 @@ class Checkout extends Component<
     }
 
     componentDidUpdate(prevProps: WithCheckoutProps): void {
-        if(prevProps.steps.length === 0 && this.props.steps && this.props.steps.length > 0) {
+        const { isInitialLoad } = this.state;
+
+        if (this.props.isInitialLoadFinished && isInitialLoad) {
+            this.setState({ isInitialLoad: false });
+        }
+        
+        if (prevProps.steps.length === 0 && this.props.steps && this.props.steps.length > 0) {
             this.handleReady();
         }
     }
@@ -319,7 +336,7 @@ class Checkout extends Component<
     private renderContent(): ReactNode {
         const { isPending, loginUrl, promotions = [], steps, isShowingWalletButtonsOnTop, extensionState } = this.props;
 
-        const { activeStepType, defaultStepType, isCartEmpty, isRedirecting } = this.state;
+        const { activeStepType, defaultStepType, isCartEmpty, isRedirecting, isInitialLoad } = this.state;
 
         if (isCartEmpty) {
             return <EmptyCartMessage loginUrl={loginUrl} waitInterval={3000} />;
@@ -328,11 +345,14 @@ class Checkout extends Component<
         const isPaymentStepActive = activeStepType
             ? activeStepType === CheckoutStepType.Payment
             : defaultStepType === CheckoutStepType.Payment;
+        
+        const pageLoadingSkeleton = isRedirecting ? <OrderConfirmationPageSkeleton /> : <CheckoutPageSkeleton />;
+        const loadingSkeleton = isMobileView() ? null : pageLoadingSkeleton;
 
         return (
-            <LoadingOverlay hideContentWhenLoading isLoading={isRedirecting}>
+            <LoadingOverlay hideContentWhenLoading isLoading={isInitialLoad || isRedirecting} loadingSkeleton={loadingSkeleton}>
                 <div className="layout-main">
-                    <LoadingNotification isLoading={(!isShowingWalletButtonsOnTop && isPending) || extensionState.isShowingLoadingIndicator} />
+                    <LoadingNotification isLoading={extensionState.isShowingLoadingIndicator} />
 
                     {/* <Extension region={ExtensionRegion.GlobalWebWorker} /> */}
                     <PromotionBannerList promotions={promotions} />

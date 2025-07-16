@@ -5,7 +5,6 @@ import { object } from 'yup';
 
 import { getAppliedStyles } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { CustomerSkeleton } from '@bigcommerce/checkout/ui';
 
 import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import { getPrivacyPolicyValidationSchema, PrivacyPolicyField } from '../privacyPolicy';
@@ -189,7 +188,6 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
 
     return (
         <>
-            <CustomerSkeleton isLoading={isStripeLoading}/>
             <Form
                 className="checkout-form"
                 id="checkout-customer-guest"

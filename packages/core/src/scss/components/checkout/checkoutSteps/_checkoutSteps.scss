@@ -43,8 +43,7 @@
     margin-bottom: spacing("single");
 }
 
-.checkout-form,
-.checklist-skeleton {
+.checkout-form {
     margin: 0;
 
     @include breakpoint("small") {
@@ -144,7 +143,6 @@
 
         .checkout-form,
         div.stepHeader-body,
-        div.checklist-skeleton,
         h2.stepHeader-title {
             margin-left: 0;
         }

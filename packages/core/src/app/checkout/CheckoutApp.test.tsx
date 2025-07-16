@@ -28,7 +28,7 @@ describe('CheckoutApp', () => {
     it('renders checkout component', () => {
         render(<CheckoutApp {...defaultProps} />);
 
-        expect(screen.getByText('Loading')).toBeInTheDocument();
+        expect(screen.getByTestId('checkout-page-skeleton')).toBeInTheDocument();
     });
 
     it('renders checkout component with sentrySampleRate 1', () => {
@@ -36,6 +36,6 @@ describe('CheckoutApp', () => {
 
         render(<CheckoutApp {...defaultProps} />);
 
-        expect(screen.getByText('Loading')).toBeInTheDocument();
+        expect(screen.getByTestId('checkout-page-skeleton')).toBeInTheDocument();
     });
 });

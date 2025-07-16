@@ -1,0 +1,215 @@
+@keyframes lightColorTransition {
+    0%, 100% {
+        background-color: $loading-skeleton-grey-box-color;
+    }
+    50% {
+        background-color: $loading-skeleton-grey-box-color-2;
+    }
+}
+
+.checkout-page-skeleton div,
+.address-form-skeleton div,
+.checklist-skeleton div,
+.order-confirmation-page-skeleton div,
+.walletbuttons-skeleton div{
+    background: $loading-skeleton-grey-box-color;
+    border-radius: $global-radius;
+    content: ' ';
+    display: block;
+    height: $floating-label-input-height;
+    margin-bottom: spacing("single");
+    animation: $loading-skeleton-grey-box-animation;
+}
+
+.walletbuttons-skeleton div {
+    height: $wallet-button-height;
+    margin-bottom: 0;
+}
+
+.order-confirmation-page-skeleton {
+    .thankyou {
+        margin-top: spacing("double");
+        width: 38.2%;
+    }
+  
+    .line-1,.line-2 {
+        width: 100%;
+        height: $floating-label-font-size--default * 0.8;
+        margin-bottom: spacing("half");
+    }
+  
+    .line-2 {
+        width: 22%;
+        margin-bottom: spacing("double");
+    }
+  
+    .continue {
+        width: 120px;
+    }
+}
+
+.checkout-page-skeleton {
+    .title--first {
+        margin-top: spacing("double");
+        width: 120px;
+    }
+
+    .title {
+        width: 100px;
+        height: $floating-label-input-height * 0.66;
+        margin: spacing("double") 0 spacing("double") + spacing("half");
+    }
+
+    .textbox {
+        width: 100%;
+    }
+
+    .subscription,
+    .terms--1,
+    .terms--2 {
+        height: $floating-label-font-size--default * 0.8;
+        margin-bottom: spacing("half");
+    }
+
+    .subscription {
+        width: 33%;
+        display: flex;
+        background: none;
+        animation: none;
+        gap: $floating-label-input-height * 0.2;
+
+        div {
+            background: $loading-skeleton-grey-box-color;
+            height: 100%;
+        }
+
+        .checkbox {
+            width: $floating-label-input-height * 0.2;
+        }
+
+        .description {
+            flex-grow: 3;
+        }
+    }
+
+    .terms--1 {
+        width: 55%;
+    }
+
+    .terms--2 {
+        width: 44%;
+        margin-bottom: spacing("double") + spacing("half") + spacing("quarter");
+    }
+}
+
+.checkout-page-skeleton--cart {
+    min-height: $loading-skeleton-cart-min-height;
+    padding: spacing('single');
+
+    .item,
+    .item--first,
+    .item--product,
+    .item--last,
+    .item--coupon,
+    .item--total,
+    .item--tax {
+        display: flex;
+        justify-content: space-between;
+        background: none;
+        animation: none;
+        height: auto;
+        margin-bottom: spacing("single");
+
+        div {
+            width: 18%;
+            height: $floating-label-font-size--default * 0.9;
+            margin-bottom: 0;
+        }
+    }
+
+    .item--first {
+        margin-bottom: spacing("double");
+
+        div {
+            width: 32%;
+            height: $floating-label-font-size--default * 1.2;
+        }
+    }
+
+    .item--product {
+        .figure {
+            width: 22%;
+            height: $floating-label-input-height * 1.5;
+            margin-bottom: spacing('single');
+        }
+
+        .name {
+            width: 40%;
+        }
+    }
+
+    .item--coupon {
+        padding-bottom: spacing('half');
+
+        div {
+            width: 48%;
+        }
+    }
+
+    .item--total {
+        padding: spacing('single') 0;
+
+        div {
+            width: 26%;
+        }
+    }
+
+    .item--tax {
+        padding-top: spacing('half');
+
+        div {
+            width: 40%;
+        }
+    }
+
+    .item--last {
+        margin-bottom: 0;
+    }
+}
+
+.address-form-skeleton {
+    display: flex;
+    justify-content: space-between;
+    gap: spacing('half');
+
+    div {
+        margin-bottom: spacing('half');
+        height: $floating-label-input-height * 0.66;
+    }
+
+    .label {
+        width: 140px;
+        height: $floating-label-font-size--default * 0.9;
+    }
+
+    .name {
+        flex-grow: 1;
+    }
+
+    .address {
+        width: 100%;
+        margin-bottom: spacing('double');
+    }
+}
+
+.checklist-skeleton {
+    div {
+        width: 100%;
+        margin-bottom: spacing('half');
+        height: $floating-label-input-height * 0.66;
+    }
+}
+
+.shippingOptions-skeleton {
+    margin-left: 0;
+}

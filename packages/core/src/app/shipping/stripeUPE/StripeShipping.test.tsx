@@ -66,7 +66,8 @@ describe('Stripe Shipping Component', () => {
             </CheckoutProvider>
         );
 
-        expect(container.firstChild).toHaveClass('checkout-form')
+        // eslint-disable-next-line testing-library/no-container
+        expect(container.querySelector('.address-form-skeleton')).toBeInTheDocument();
         expect(defaultProps.initialize).toHaveBeenCalled();
     });
 });
