@@ -128,6 +128,7 @@ export interface CheckoutState {
     isMultiShippingMode: boolean;
     isCartEmpty: boolean;
     isRedirecting: boolean;
+    isInitialLoad: boolean;
     hasSelectedShippingOptions: boolean;
     isSubscribed: boolean;
     buttonConfigs: PaymentMethod[];
@@ -146,6 +147,7 @@ export interface WithCheckoutProps {
     isPriceHiddenFromGuests: boolean;
     isShowingWalletButtonsOnTop: boolean;
     isShippingDiscountDisplayEnabled: boolean;
+    isInitialLoadFinished: boolean;
     loginUrl: string;
     cartUrl: string;
     createAccountUrl: string;
@@ -166,6 +168,7 @@ class Checkout extends Component<
     CheckoutState
 > {
     state: CheckoutState = {
+        isInitialLoad: true,
         isBillingSameAsShipping: true,
         isCartEmpty: false,
         isRedirecting: false,
@@ -189,7 +192,13 @@ class Checkout extends Component<
     }
 
     componentDidUpdate(prevProps: WithCheckoutProps): void {
-        if(prevProps.steps.length === 0 && this.props.steps && this.props.steps.length > 0) {
+        const { isInitialLoad } = this.state;
+
+        if (this.props.isInitialLoadFinished && isInitialLoad) {
+            this.setState({ isInitialLoad: false });
+        }
+        
+        if (prevProps.steps.length === 0 && this.props.steps && this.props.steps.length > 0) {
             this.handleReady();
         }
     }
@@ -325,9 +334,9 @@ class Checkout extends Component<
     }
 
     private renderContent(): ReactNode {
-        const { isPending, isLoadingCheckout, loginUrl, promotions = [], steps, isShowingWalletButtonsOnTop, extensionState } = this.props;
+        const { isPending, loginUrl, promotions = [], steps, isShowingWalletButtonsOnTop, extensionState } = this.props;
 
-        const { activeStepType, defaultStepType, isCartEmpty, isRedirecting } = this.state;
+        const { activeStepType, defaultStepType, isCartEmpty, isRedirecting, isInitialLoad } = this.state;
 
         if (isCartEmpty) {
             return <EmptyCartMessage loginUrl={loginUrl} waitInterval={3000} />;
@@ -341,7 +350,7 @@ class Checkout extends Component<
         const loadingSkeleton = isMobileView() ? null : pageLoadingSkeleton;
 
         return (
-            <LoadingOverlay hideContentWhenLoading isLoading={isLoadingCheckout || isRedirecting} loadingSkeleton={loadingSkeleton}>
+            <LoadingOverlay hideContentWhenLoading isLoading={isInitialLoad || isRedirecting} loadingSkeleton={loadingSkeleton}>
                 <div className="layout-main">
                     <LoadingNotification isLoading={extensionState.isShowingLoadingIndicator} />
 

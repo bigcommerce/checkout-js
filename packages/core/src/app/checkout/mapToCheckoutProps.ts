@@ -43,8 +43,10 @@ export default function mapToCheckoutProps({
         data.getConfig()?.checkoutSettings,
         'PROJECT-6643.enable_shipping_discounts_in_orders',
     );
+    const isInitialLoadFinished = Boolean(data.getCart() && data.getConfig());
 
     return {
+        isInitialLoadFinished,
         billingAddress: data.getBillingAddress(),
         cart: data.getCart(),
         clearError: checkoutService.clearError,
