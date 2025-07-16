@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.622.0](https://github.com/bigcommerce/checkout-js/compare/v1.621.2...v1.622.0) (2025-07-16)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9302 Update Loading UI ([#2430](https://github.com/bigcommerce/checkout-js/issues/2430)) ([68c7f92](https://github.com/bigcommerce/checkout-js/commit/68c7f924093458f856e6b056d3f4243a93f9a38c))
+
 ### [1.621.2](https://github.com/bigcommerce/checkout-js/compare/v1.621.1...v1.621.2) (2025-07-14)
 
 ### [1.621.1](https://github.com/bigcommerce/checkout-js/compare/v1.621.0...v1.621.1) (2025-07-14)
