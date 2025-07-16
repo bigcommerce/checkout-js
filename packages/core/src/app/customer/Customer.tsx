@@ -321,7 +321,6 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             isSigningIn,
             isExecutingPaymentMethodCheckout,
             isAccountCreationEnabled,
-            providerWithCustomCheckout,
             signInError,
             isFloatingLabelEnabled,
             viewType,
@@ -330,11 +329,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
         return (
             <LoginForm
                 canCancel={isGuestEnabled}
-                continueAsGuestButtonLabelId={
-                    providerWithCustomCheckout
-                        ? 'customer.continue'
-                        : 'customer.continue_as_guest_action'
-                }
+                continueAsGuestButtonLabelId="customer.continue_as_guest_action"
                 email={this.draftEmail || email}
                 forgotPasswordUrl={forgotPasswordUrl}
                 isExecutingPaymentMethodCheckout={isExecutingPaymentMethodCheckout}
