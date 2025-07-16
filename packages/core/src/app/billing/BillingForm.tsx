@@ -77,7 +77,7 @@ const BillingForm = ({
     const hasCustomFormFields = customFormFields.length > 0;
     const editableFormFields =
         shouldRenderStaticAddress && hasCustomFormFields ? customFormFields : allFormFields;
-    const billingAddresses = isPayPalFastlaneEnabled ? paypalFastlaneAddresses : addresses;
+    const billingAddresses = isGuest && isPayPalFastlaneEnabled ? paypalFastlaneAddresses : addresses;
     const hasAddresses = billingAddresses?.length > 0;
     const hasValidCustomerAddress =
         billingAddress &&
