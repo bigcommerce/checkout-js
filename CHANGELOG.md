@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.623.2](https://github.com/bigcommerce/checkout-js/compare/v1.623.1...v1.623.2) (2025-07-16)
+
+
+### Code Refactoring
+
+* **payment:** reverted back changes related to continue button text in suggest login form ([8b86a65](https://github.com/bigcommerce/checkout-js/commit/8b86a65790cc7450ed9dc1574590d191910d884b))
+
 ### [1.623.1](https://github.com/bigcommerce/checkout-js/compare/v1.623.0...v1.623.1) (2025-07-16)
 
 ## [1.623.0](https://github.com/bigcommerce/checkout-js/compare/v1.622.0...v1.623.0) (2025-07-16)
