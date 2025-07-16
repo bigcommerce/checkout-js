@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.624.0](https://github.com/bigcommerce/checkout-js/compare/v1.623.2...v1.624.0) (2025-07-16)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9376 Update Autocomplete for AU Address ([#2431](https://github.com/bigcommerce/checkout-js/issues/2431)) ([228acaf](https://github.com/bigcommerce/checkout-js/commit/228acafbedfad766da1610bc419c25debad3ae57))
+
 ### [1.623.2](https://github.com/bigcommerce/checkout-js/compare/v1.623.1...v1.623.2) (2025-07-16)
 
 
