@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.623.0](https://github.com/bigcommerce/checkout-js/compare/v1.622.0...v1.623.0) (2025-07-16)
+
+
+### Features
+
+* **payment:** update BCP payment method titles ([#2427](https://github.com/bigcommerce/checkout-js/issues/2427)) ([fcbfc6c](https://github.com/bigcommerce/checkout-js/commit/fcbfc6c2902c6edd845d1513a67f376b6afbd5bd))
+
 ## [1.622.0](https://github.com/bigcommerce/checkout-js/compare/v1.621.2...v1.622.0) (2025-07-16)
 
 
