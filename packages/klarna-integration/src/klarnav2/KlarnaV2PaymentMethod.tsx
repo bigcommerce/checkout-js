@@ -19,6 +19,8 @@ const KlarnaV2PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     paymentForm,
     ...rest
 }) => {
+    console.log('Klarna Checkout-js 2');
+
     const initializeKlarnaV2Payment = useCallback(
         (options: any) =>
             // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
