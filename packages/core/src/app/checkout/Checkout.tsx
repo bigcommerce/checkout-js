@@ -147,7 +147,6 @@ export interface WithCheckoutProps {
     isPriceHiddenFromGuests: boolean;
     isShowingWalletButtonsOnTop: boolean;
     isShippingDiscountDisplayEnabled: boolean;
-    isInitialLoadFinished: boolean;
     loginUrl: string;
     cartUrl: string;
     createAccountUrl: string;
@@ -192,12 +191,6 @@ class Checkout extends Component<
     }
 
     componentDidUpdate(prevProps: WithCheckoutProps): void {
-        const { isInitialLoad } = this.state;
-
-        if (this.props.isInitialLoadFinished && isInitialLoad) {
-            this.setState({ isInitialLoad: false });
-        }
-        
         if (prevProps.steps.length === 0 && this.props.steps && this.props.steps.length > 0) {
             this.handleReady();
         }
@@ -296,6 +289,10 @@ class Checkout extends Component<
                 this.setState({ isMultiShippingMode });
             }
 
+            if (this.state.isInitialLoad) {
+                this.setState({ isInitialLoad: false });
+            }
+
             window.addEventListener('beforeunload', this.handleBeforeExit);
 
         } catch (error) {
@@ -350,7 +347,7 @@ class Checkout extends Component<
         const loadingSkeleton = isMobileView() ? null : pageLoadingSkeleton;
 
         return (
-            <LoadingOverlay hideContentWhenLoading isLoading={isInitialLoad || isRedirecting} loadingSkeleton={loadingSkeleton}>
+            <LoadingOverlay isLoading={isInitialLoad || isRedirecting} loadingSkeleton={loadingSkeleton} unmountContentWhenLoading>
                 <div className="layout-main">
                     <LoadingNotification isLoading={extensionState.isShowingLoadingIndicator} />
 

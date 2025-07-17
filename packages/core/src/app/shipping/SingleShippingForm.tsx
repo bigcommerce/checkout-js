@@ -411,6 +411,6 @@ export default withLanguage(
                           }),
                       ),
                   }),
-        enableReinitialize: false,
+        enableReinitialize: false, // This is false due to the concern that a shopper may lose typed details if somehow checkout state changes in the middle.
     })(SingleShippingForm),
 );
