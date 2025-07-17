@@ -12,6 +12,8 @@ const StripeLinkV2Button: FunctionComponent<CheckoutButtonProps> = (props) => {
     const additionalInitializationOptions = {
         onComplete: navigateToOrderConfirmation,
         loadingContainerId: 'checkout-app',
+        methodId: 'optimized_checkout',
+        gatewayId: 'stripeocs',
     };
 
     return (
