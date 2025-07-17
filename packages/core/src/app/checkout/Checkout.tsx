@@ -285,12 +285,12 @@ class Checkout extends Component<
                 isSubscribed: defaultNewsletterSignupOption,
             });
 
-            if (this.state.isInitialLoad) {
-                this.setState({ isInitialLoad: false });
-            }
-
             if (isMultiShippingMode) {
                 this.setState({ isMultiShippingMode });
+            }
+
+            if (this.state.isInitialLoad) {
+                this.setState({ isInitialLoad: false });
             }
 
             window.addEventListener('beforeunload', this.handleBeforeExit);
@@ -347,7 +347,7 @@ class Checkout extends Component<
         const loadingSkeleton = isMobileView() ? null : pageLoadingSkeleton;
 
         return (
-            <LoadingOverlay unmountContentWhenLoading isLoading={isInitialLoad || isRedirecting} loadingSkeleton={loadingSkeleton}>
+            <LoadingOverlay isLoading={isInitialLoad || isRedirecting} loadingSkeleton={loadingSkeleton} unmountContentWhenLoading>
                 <div className="layout-main">
                     <LoadingNotification isLoading={extensionState.isShowingLoadingIndicator} />
 
