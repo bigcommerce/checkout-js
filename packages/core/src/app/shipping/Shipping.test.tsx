@@ -427,7 +427,7 @@ describe('Shipping step', () => {
             );
             // eslint-disable-next-line jest-dom/prefer-to-have-attribute
             expect(
-                screen.getByLabelText('My billing address is the same as my shipping address.').hasAttribute('checked'),
+                screen.queryByLabelText('My billing address is the same as my shipping address.').hasAttribute('checked'),
             ).toBeFalsy();
 
             await userEvent.click(screen.getByLabelText('My billing address is the same as my shipping address.'));
