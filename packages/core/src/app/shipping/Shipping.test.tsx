@@ -7,6 +7,7 @@ import {
 import faker from '@faker-js/faker';
 import userEvent from '@testing-library/user-event';
 import { noop } from 'lodash';
+import { rest } from 'msw';
 import React, { FunctionComponent } from 'react';
 
 import {
@@ -23,6 +24,7 @@ import {
 import {
     CheckoutPageNodeObject,
     CheckoutPreset,
+    checkoutSettings,
     checkoutWithBillingEmail,
     checkoutWithCustomerHavingInvalidAddress,
     checkoutWithMultiShippingCart,
@@ -353,6 +355,25 @@ describe('Shipping step', () => {
         });
 
         it('enters new address for the customer with saved address and completes the shipping step', async () => {
+
+            const config = {
+                ...checkoutSettings,
+                storeConfig: {
+                    ...checkoutSettings.storeConfig,
+                    checkoutSettings: {
+                        ...checkoutSettings.storeConfig.checkoutSettings,
+                        checkoutBillingSameAsShippingEnabled: false,
+                    },
+                },
+            };
+
+            checkout.setRequestHandler(
+                rest.get(
+                    '/api/storefront/checkout-settings',
+                    (_, res, ctx) => res(ctx.json(config),
+                    )
+                ));
+
             checkout.use(CheckoutPreset.CheckoutWithMultiShippingCart);
 
             const { container } = render(<CheckoutTest {...defaultProps} />);
@@ -407,8 +428,9 @@ describe('Shipping step', () => {
             // eslint-disable-next-line jest-dom/prefer-to-have-attribute
             expect(
                 screen.getByLabelText('My billing address is the same as my shipping address.').hasAttribute('checked'),
-            ).toBeTruthy();
+            ).toBeFalsy();
 
+            await userEvent.click(screen.getByLabelText('My billing address is the same as my shipping address.'));
             await userEvent.click(screen.getByRole('button', { name: 'Continue' }));
 
             await checkout.waitForPaymentStep();
