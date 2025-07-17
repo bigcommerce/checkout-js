@@ -52,7 +52,7 @@ describe('CartSummary Component', () => {
     it('renders OrderSummary without the Edit Cart link for Buy Now carts', () => {
         Object.defineProperty(window, 'location', {
             value: {
-                pathname: '/checkout/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX',
+                search: '?action=buy&products=111:2',
             },
         });
 

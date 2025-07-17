@@ -1,4 +1,5 @@
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { isBuyNowCart } from '@bigcommerce/checkout/utility';
 
 import { isExperimentEnabled } from '../common/utility';
 
@@ -32,6 +33,7 @@ export default function mapToCartSummaryProps(
     );
 
     return {
+        isBuyNowCart: isBuyNowCart(checkout.cart),
         isShippingDiscountDisplayEnabled,
         checkout,
         shopperCurrency: config.shopperCurrency,
