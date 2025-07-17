@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.624.1](https://github.com/bigcommerce/checkout-js/compare/v1.624.0...v1.624.1) (2025-07-17)
+
+
+### Bug Fixes
+
+* **payment:** updated billing form to show fastlane addresses only for guest users ([aca6f91](https://github.com/bigcommerce/checkout-js/commit/aca6f9167022ce633851d8190ad92466392936eb))
+
 ## [1.624.0](https://github.com/bigcommerce/checkout-js/compare/v1.623.2...v1.624.0) (2025-07-16)
 
 
