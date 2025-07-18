@@ -6,6 +6,7 @@ describe('navigateToOrderConfirmation', () => {
             value: {
                 href: 'https://store.com/checkout',
                 pathname: '/checkout',
+                search: '',
                 replace: jest.fn(),
             },
             writable: true,
@@ -19,7 +20,7 @@ describe('navigateToOrderConfirmation', () => {
     });
 
     it('navigates to order confirmation page with orderId in the URL when it is a buy now cart checkout', () => {
-        window.location.pathname = '/checkout/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX';
+        window.location.search = '?action=buy&products=123:1';
 
         void navigateToOrderConfirmation(100);
 
