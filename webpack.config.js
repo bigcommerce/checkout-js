@@ -99,12 +99,6 @@ function appConfig(options, argv) {
                             enforce: true,
                             name: 'transients',
                         },
-                        sentry: {
-                            test: /\/node_modules\/@sentry/,
-                            reuseExistingChunk: true,
-                            enforce: true,
-                            name: 'sentry',
-                        },
                     },
                 },
             },
