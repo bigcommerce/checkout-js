@@ -3,14 +3,33 @@ import { getCheckout } from '@bigcommerce/checkout/test-mocks';
 import isBuyNowCart from './isBuyNowCart';
 
 describe('isBuyNowCart', () => {
-    const redefineWindowLocation = (search: string) => {
+    const redefineWindowLocation = (pathname: string, search = '') => {
         Object.defineProperty(window, 'location', {
             value: {
+                pathname,
                 search,
             },
             writable: true,
         });
     };
+
+    it('returns true when the last path name is not "checkout" or "embedded-checkout"', () => {
+        redefineWindowLocation('store-url/checkout/xxxxx-xxxxx-xxxxx');
+
+        expect(isBuyNowCart()).toEqual(true);
+    });
+
+    it('returns false when the last path name is "checkout"', () => {
+        redefineWindowLocation('store-url/checkout');
+
+        expect(isBuyNowCart()).toEqual(false);
+    });
+
+    it('returns false when the last path name is "embedded-checkout"', () => {
+        redefineWindowLocation('store-url/embedded-checkout');
+
+        expect(isBuyNowCart()).toEqual(false);
+    });
 
     it('returns true when cart source is "BUY_NOW"', () => {
         const checkout = {
@@ -29,14 +48,8 @@ describe('isBuyNowCart', () => {
     });
 
     it('returns true when URL has "action=buy"', () => {
-        redefineWindowLocation('?action=buy&products=100:1');
+        redefineWindowLocation('store-url/checkout', '?action=buy&products=100:1');
 
         expect(isBuyNowCart()).toEqual(true);
-    });
-
-    it('returns false when URL does not have "action=buy"', () => {
-        redefineWindowLocation('');
-
-        expect(isBuyNowCart()).toEqual(false);
     });
 });
