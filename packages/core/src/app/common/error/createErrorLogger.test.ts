@@ -2,13 +2,7 @@ import createErrorLogger from './createErrorLogger';
 import NoopErrorLogger from './NoopErrorLogger';
 import SentryErrorLogger from './SentryErrorLogger';
 
-describe('Error logger', () => {
-    it('is dummy test', () => {
-        expect(true).toBe(true);
-    });
-});
-
-describe.skip('createErrorLogger()', () => {
+describe('createErrorLogger()', () => {
     it('returns instance of noop logger', () => {
         expect(createErrorLogger()).toBeInstanceOf(NoopErrorLogger);
     });
