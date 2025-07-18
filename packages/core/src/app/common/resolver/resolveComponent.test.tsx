@@ -12,6 +12,7 @@ describe('resolveComponent', () => {
 
     let props: TestingProps;
     let components: Record<string, ComponentType<TestingProps>>;
+    let registry: Record<string, Array<{ id?: string; gateway?: string; type?: string; default?: boolean }>>;
 
     beforeEach(() => {
         props = {
@@ -20,12 +21,12 @@ describe('resolveComponent', () => {
 
         const Foo = toResolvableComponent(
             ({ message }: TestingProps) => <div>Foo: {message}</div>,
-            [{ id: 'foo', gateway: null, type: 'api' }],
+            [{ id: 'foo', gateway: undefined, type: 'api' }],
         );
 
         const Bar = toResolvableComponent(
             ({ message }: TestingProps) => <div>Bar: {message}</div>,
-            [{ id: 'bar', gateway: null, type: 'hosted' }],
+            [{ id: 'bar', gateway: undefined, type: 'hosted' }],
         );
 
         const Foobar = toResolvableComponent(
@@ -34,10 +35,15 @@ describe('resolveComponent', () => {
         );
 
         components = { Foo, Bar, Foobar };
+        registry = {
+            Foo: [{ id: 'foo', gateway: undefined, type: 'api' }],
+            Bar: [{ id: 'bar', gateway: undefined, type: 'hosted' }],
+            Foobar: [{ id: 'foo', gateway: 'bar', type: 'hosted' }],
+        };
     });
 
     it('returns component if able to resolve to one by id', () => {
-        const Foo = resolveComponent({ id: 'foo' }, components);
+        const Foo = resolveComponent({ id: 'foo' }, components, registry);
 
         if (Foo) {
             render(<Foo {...props} />);
@@ -49,7 +55,7 @@ describe('resolveComponent', () => {
     });
 
     it('returns component if able to resolve to one by type', () => {
-        const Bar = resolveComponent({ type: 'hosted' }, components);
+        const Bar = resolveComponent({ type: 'hosted' }, components, registry);
 
         if (Bar) {
             render(<Bar {...props} />);
@@ -61,7 +67,7 @@ describe('resolveComponent', () => {
     });
 
     it('returns component if able to resolve to one by id and gateway', () => {
-        const Foobar = resolveComponent({ id: 'foo', gateway: 'bar' }, components);
+        const Foobar = resolveComponent({ id: 'foo', gateway: 'bar' }, components, registry);
 
         if (Foobar) {
             render(<Foobar {...props} />);
@@ -73,7 +79,7 @@ describe('resolveComponent', () => {
     });
 
     it('returns undefined if unable to resolve to one', () => {
-        expect(resolveComponent({ type: 'hello' }, components)).toBeUndefined();
+        expect(resolveComponent({ type: 'hello' }, components, registry)).toBeUndefined();
     });
 
     it('returns default component if configured and unable to resolve by id', () => {
@@ -81,8 +87,11 @@ describe('resolveComponent', () => {
             ({ message }: TestingProps) => <div>Default: {message}</div>,
             [{ default: true }],
         );
+        const registryWithDefault: Record<string, Array<{ id?: string; default?: boolean }>> = {
+            Default: [{ default: true }],
+        };
 
-        expect(resolveComponent({ id: 'hello_world' }, { ...components, Default })).toEqual(
+        expect(resolveComponent({ id: 'hello_world' }, { ...components, Default }, registryWithDefault)).toEqual(
             Default,
         );
     });
@@ -92,20 +101,26 @@ describe('resolveComponent', () => {
             ({ message }: TestingProps) => <div>Foo: {message}</div>,
             [{ id: 'credit_card', gateway: 'bluesnap' }]
         );
+        const registryWithComponent: Record<string, Array<{ id?: string; gateway?: string }>> = {
+            Component: [{ id: 'credit_card', gateway: 'bluesnap' }],
+        };
 
         const CreditCard = resolveComponent(
             { id: 'credit_card' },
-            { Component }
+            { Component },
+            registryWithComponent
         );
 
         const Bluesnap = resolveComponent(
             { id: 'credit_card' },
-            { Component }
+            { Component },
+            registryWithComponent
         );
 
         const CheckoutCom = resolveComponent(
             { id: 'credit_card', gateway: 'checkoutcom' },
-            { Component }
+            { Component },
+            registryWithComponent
         );
 
         expect(CreditCard).toBeDefined();
@@ -118,20 +133,26 @@ describe('resolveComponent', () => {
             ({ message }: TestingProps) => <div>Foo: {message}</div>,
             [{ gateway: 'somegateway' }]
         );
+        const registryWithComponent: Record<string, Array<{ id?: string; gateway?: string }>> = {
+            GatewayComponent: [{ gateway: 'somegateway' }],
+        };
 
         const AGateway = resolveComponent(
             { id: 'test', gateway: 'somegateway' },
-            { GatewayComponent }
+            { GatewayComponent },
+            registryWithComponent
         );
 
         const BGateway = resolveComponent(
             { id: 'bar', gateway: 'somegateway' },
-            { GatewayComponent }
+            { GatewayComponent },
+            registryWithComponent
         );
 
         const CGateway = resolveComponent(
             { id: 'foo', gateway: 'somegateway' },
-            { GatewayComponent }
+            { GatewayComponent },
+            registryWithComponent
         );
 
         expect(AGateway).toBeDefined();
