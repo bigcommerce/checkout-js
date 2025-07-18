@@ -1,4 +1,4 @@
-import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import { PaymentInitializeOptions, resolveStrategy } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, useCallback } from 'react';
 
 import {
@@ -37,8 +37,15 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             };
 
             const loadingContainerId = 'checkout-app';
-            const mergedOptions = {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+            const strategy = resolveStrategy(
+                PaymentMethodId.AuthorizeNetGooglePay,
+                undefined,
+                undefined,
+            );
+            const mergedOptions: PaymentInitializeOptions = {
                 ...defaultOptions,
+                integrations: strategy ? [strategy] : [],
                 [PaymentMethodId.AdyenV2GooglePay]: {
                     loadingContainerId,
                     walletButton: 'walletButton',

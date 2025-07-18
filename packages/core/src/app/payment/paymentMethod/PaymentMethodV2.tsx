@@ -17,6 +17,7 @@ import resolvePaymentMethod from '../resolvePaymentMethod';
 import withPayment, { WithPaymentProps } from '../withPayment';
 
 import { default as PaymentMethodV1 } from './PaymentMethod';
+import { LazyContainer } from '@bigcommerce/checkout/ui';
 
 export interface PaymentMethodProps {
     method: PaymentMethod;
@@ -85,14 +86,16 @@ const PaymentMethodContainer: ComponentType<
 
     return (
         <PaymentFormProvider paymentForm={paymentForm}>
-            <ResolvedPaymentMethod
-                checkoutService={checkoutService}
-                checkoutState={checkoutState}
-                language={language}
-                method={method}
-                onUnhandledError={onUnhandledError}
-                paymentForm={paymentForm}
-            />
+            <LazyContainer>
+                <ResolvedPaymentMethod
+                    checkoutService={checkoutService}
+                    checkoutState={checkoutState}
+                    language={language}
+                    method={method}
+                    onUnhandledError={onUnhandledError}
+                    paymentForm={paymentForm}
+                />
+            </LazyContainer>
         </PaymentFormProvider>
     );
 };

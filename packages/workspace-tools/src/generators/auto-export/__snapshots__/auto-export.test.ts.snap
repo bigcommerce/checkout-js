@@ -1,5 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`autoExport() creates a component registry from toResolvableComponent calls 1`] = `
+"// Auto-generated component registry
+// This file contains a mapping of component names to their resolve IDs
+// Generated from toResolvableComponent calls in payment integration packages
+
+export const ComponentRegistry = {
+  'ComponentB': [
+      {
+        "id": "test-id-b",
+        "gateway": "test-gateway-b"
+      }
+    ],
+  'ComponentA': [
+      {
+        "gateway": "test-gateway-a"
+      }
+    ]
+} as const;
+
+export type ComponentRegistryType = typeof ComponentRegistry;
+"
+`;
+
 exports[`autoExport() export matching members from files to another file 1`] = `
 "export { StrategyA } from '@bigcommerce/strategy-a';
 export { StrategyB } from '@bigcommerce/strategy-b';
