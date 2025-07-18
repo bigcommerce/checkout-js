@@ -1,11 +1,11 @@
 import type {
     BrowserOptions,
-    Event,
+    ErrorEvent,
+    EventHint,
+    Exception,
     SeverityLevel,
-    // StackFrame,
+    StackFrame,
 } from '@sentry/browser';
-// import { RewriteFrames } from '@sentry/integrations';
-import { EventHint, Exception } from '@sentry/types';
 
 import {
     ErrorLevelType,
@@ -17,6 +17,13 @@ import {
 import computeErrorCode from './computeErrorCode';
 import ConsoleErrorLogger from './ConsoleErrorLogger';
 import NoopErrorLogger from './NoopErrorLogger';
+import { getScriptLoader } from '@bigcommerce/script-loader';
+
+declare global {
+    interface Window {
+        sentryOnLoad?: () => void;
+    }
+}
 
 const FILENAME_PREFIX = 'app://';
 
@@ -36,39 +43,42 @@ export enum SeverityLevelEnum {
 
 export default class SentryErrorLogger implements ErrorLogger {
     private consoleLogger: ErrorLogger;
-    // private publicPath: string;
+    private publicPath: string;
+    private dsn: string;
+    private loaderPromise?: Promise<void>;
 
     constructor(config: BrowserOptions, options?: SentryErrorLoggerOptions) {
         const {
             consoleLogger = new NoopErrorLogger(),
-            // publicPath = '',
+            publicPath = '',
             sampleRate = 0.1,
         } = options || {};
 
         this.consoleLogger = consoleLogger;
-        // this.publicPath = publicPath;
+        this.publicPath = publicPath;
+        this.dsn = config.dsn || '';
 
-        Sentry.init({
-            sampleRate,
-            beforeSend: this.handleBeforeSend,
-            denyUrls: [
-                ...(config.denyUrls || []),
-                'polyfill~checkout',
-                'sentry~checkout',
-            ],
-            integrations: [
-                /*
-                new Sentry.Integrations.GlobalHandlers({
-                    onerror: false,
-                    onunhandledrejection: true,
-                }),
-                new RewriteFrames({
-                    iteratee: this.handleRewriteFrame,
-                }),
-                */
-            ],
-            ...config,
-        });
+        window.sentryOnLoad = () => {
+            Sentry.init({
+                sampleRate,
+                beforeSend: this.handleBeforeSend,
+                denyUrls: [
+                    ...(config.denyUrls || []),
+                    'polyfill~checkout',
+                    'sentry~checkout',
+                ],
+                integrations: [
+                    Sentry.globalHandlersIntegration({
+                        onerror: false,
+                        onunhandledrejection: true,
+                    }),
+                    Sentry.rewriteFramesIntegration({
+                        iteratee: this.handleRewriteFrame,
+                    }),
+                ],
+                ...config,
+            });
+        };
     }
 
     log(
@@ -79,23 +89,33 @@ export default class SentryErrorLogger implements ErrorLogger {
     ): void {
         this.consoleLogger.log(error, tags, level);
 
-        Sentry.withScope((scope) => {
+        this.loadSentry().then(() => {
             const { errorCode = computeErrorCode(error) } = tags || {};
 
-            if (errorCode) {
-                scope.setTags({ errorCode });
-            }
-
-            scope.setLevel(this.mapToSentryLevel(level));
-
-            if (payload) {
-                scope.setExtras(payload);
-            }
-
-            scope.setFingerprint(['{{ default }}']);
-
-            Sentry.captureException(error);
+            Sentry.captureException(error, {
+                tags: { errorCode },
+                level: this.mapToSentryLevel(level),
+                extra: payload,
+                fingerprint: ['{{ default }}'],
+            });
         });
+    }
+
+    private loadSentry(): Promise<void> {
+        if (this.loaderPromise) {
+            return this.loaderPromise;
+        }
+
+        const key = this.dsn.match(/https:\/\/(.+)@.+\//)?.[1] ?? '';
+
+        this.loaderPromise = getScriptLoader().loadScript(`https://js.sentry-cdn.com/${key}.min.js`, {
+            attributes: {
+                crossorigin: 'anonymous',
+            },
+            async: false,
+        });
+
+        return this.loaderPromise;
     }
 
     private mapToSentryLevel(level: ErrorLevelType): SeverityLevel {
@@ -143,7 +163,7 @@ export default class SentryErrorLogger implements ErrorLogger {
         });
     }
 
-    private handleBeforeSend: (event: Event, hint?: EventHint) => Event | null = (event, hint) => {
+    private handleBeforeSend: (event: ErrorEvent, hint: EventHint) => ErrorEvent | null = (event, hint) => {
         if (event.exception) {
             if (
                 !this.shouldReportExceptions(
@@ -160,7 +180,6 @@ export default class SentryErrorLogger implements ErrorLogger {
         return event;
     };
 
-    /*
     private handleRewriteFrame: (frame: StackFrame) => StackFrame = (frame) => {
         if (this.publicPath && frame.filename) {
             // We want to remove the base path of the filename, otherwise we
@@ -177,5 +196,4 @@ export default class SentryErrorLogger implements ErrorLogger {
 
         return frame;
     };
-    */
 }
