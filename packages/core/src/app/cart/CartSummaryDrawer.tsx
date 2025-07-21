@@ -12,11 +12,12 @@ const CartSummaryDrawer: FunctionComponent<
     WithCheckoutCartSummaryProps & {
         isMultiShippingMode: boolean;
     }
-    > = ({ cartUrl, isMultiShippingMode, ...props }) =>
+    > = ({ cartUrl, isMultiShippingMode, isBuyNowCart, ...props }) =>
     withRedeemable(OrderSummaryDrawer)({
         ...props,
+        isBuyNowCart,
         cartUrl,
-        headerLink: (
+        headerLink: isBuyNowCart ? <div /> : (
             <EditLink
                 className="modal-header-link cart-modal-link"
                 isMultiShippingMode={isMultiShippingMode}
