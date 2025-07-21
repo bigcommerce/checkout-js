@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.625.0](https://github.com/bigcommerce/checkout-js/compare/v1.624.4...v1.625.0) (2025-07-21)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9358 Hide "Edit Cart" for Buy Now Cart ([#2436](https://github.com/bigcommerce/checkout-js/issues/2436)) ([7a0e3df](https://github.com/bigcommerce/checkout-js/commit/7a0e3df97612078abded94a169498d5f4f47d003))
+
 ### [1.624.4](https://github.com/bigcommerce/checkout-js/compare/v1.624.3...v1.624.4) (2025-07-21)
 
 ### [1.624.3](https://github.com/bigcommerce/checkout-js/compare/v1.624.2...v1.624.3) (2025-07-17)
