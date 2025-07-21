@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.626.0](https://github.com/bigcommerce/checkout-js/compare/v1.625.0...v1.626.0) (2025-07-21)
+
+
+### Features
+
+* **payment:** Stripe OCS radio button for Link ([5c46beb](https://github.com/bigcommerce/checkout-js/commit/5c46beb4702e9d78ca6dc5453a4ccd0f4ec618e0))
+
 ## [1.625.0](https://github.com/bigcommerce/checkout-js/compare/v1.624.4...v1.625.0) (2025-07-21)
 
 
