@@ -55,6 +55,7 @@ describe('when using Stripe OCS payment', () => {
         spacedAccordionItems: false,
         type: 'accordion',
         visibleAccordionItemsCount: 0,
+        linkInAccordion: true,
     };
     let method: PaymentMethod;
     let checkoutService: CheckoutService;

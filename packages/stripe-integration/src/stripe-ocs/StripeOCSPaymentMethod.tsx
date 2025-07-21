@@ -67,6 +67,7 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                         type: 'accordion',
                         defaultCollapsed: selectedItemId !== methodSelector,
                         radios: true,
+                        linkInAccordion: true,
                         spacedAccordionItems: false,
                         visibleAccordionItemsCount: 0,
                     },
