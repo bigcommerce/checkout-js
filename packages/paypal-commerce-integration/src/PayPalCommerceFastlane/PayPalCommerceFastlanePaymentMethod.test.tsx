@@ -47,6 +47,7 @@ describe('PayPalCommerceFastlanePaymentMethod', () => {
             paypalcommercefastlane: {
                 onInit: expect.any(Function),
                 onChange: expect.any(Function),
+                onError: expect.any(Function),
             },
         });
     });
