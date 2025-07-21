@@ -42,6 +42,8 @@ describe('StripeLinkV2Button', () => {
             stripeocs: {
                 loadingContainerId: 'checkout-app',
                 container: 'stripe-link',
+                methodId: 'optimized_checkout',
+                gatewayId: 'stripeocs',
                 onClick: expect.any(Function),
                 onComplete: expect.any(Function),
                 onUnhandledError: expect.any(Function),
