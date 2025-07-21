@@ -1,8 +1,6 @@
 import { Checkout, ShopperCurrency, StoreCurrency } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent } from 'react';
 
-import { isBuyNowCart } from '@bigcommerce/checkout/utility';
-
 import { withCheckout } from '../checkout';
 import OrderSummary from '../order/OrderSummary';
 
@@ -17,6 +15,7 @@ export type WithCheckoutCartSummaryProps = {
     storeCurrency: StoreCurrency;
     shopperCurrency: ShopperCurrency;
     storeCreditAmount?: number;
+    isBuyNowCart: boolean;
     isShippingDiscountDisplayEnabled: boolean;
 } & RedeemableProps;
 
@@ -24,8 +23,8 @@ const CartSummary: FunctionComponent<
     WithCheckoutCartSummaryProps & {
         isMultiShippingMode: boolean;
     }
-    > = ({ cartUrl, isMultiShippingMode, ...props }) => {
-    const headerLink = isBuyNowCart() ? null : (
+    > = ({ cartUrl, isMultiShippingMode, isBuyNowCart, ...props }) => {
+    const headerLink = isBuyNowCart ? null : (
         <EditLink
             isMultiShippingMode={isMultiShippingMode}
             url={cartUrl}
@@ -35,6 +34,7 @@ const CartSummary: FunctionComponent<
     return withRedeemable(OrderSummary)({
         ...props,
         cartUrl,
+        isBuyNowCart,
         headerLink,
     });
 };
