@@ -33,3 +33,22 @@
 .formField--helpText {
     color: color("greys");
 }
+
+.form-field--error .form-select.floating-select,
+.form-field--error .form-select.floating-select:hover,
+.form-field--error .form-select.floating-select:focus,
+.form-field--error .form-input.floating-input,
+.form-field--error .form-input.floating-input:hover,
+.form-field--error .form-input.floating-input:focus,
+.form-select.floating-select,
+.form-select.floating-select:focus,
+.form-select.floating-select:hover,
+.form-input.floating-input,
+.form-input.floating-input:focus,
+.form-input.floating-input:hover,
+.form-input.optimizedCheckout-form-input,
+.form-input.optimizedCheckout-form-input:focus,
+.form-input.optimizedCheckout-form-input:hover {
+    box-shadow: none;
+    -webkit-box-shadow: none;
+}

@@ -66,11 +66,6 @@ $opposite-direction:          right;
 // We use these to make sure border radius matches unless we want it different.
 $global-radius:               4px;
 
-// We use these to control inset shadow shiny edges and depressions.
-$shiny-edge-size:             0 1px 0;
-$shiny-edge-color:            rgba(color("whites", "bright"), 0.5);
-$shiny-edge-active-color:     rgba(color("blacks"), 0.2);
-
 // We use this to control whether or not CSS classes come through in the gem files.
 $include-html-classes:        false;
 $include-print-styles:        false;
