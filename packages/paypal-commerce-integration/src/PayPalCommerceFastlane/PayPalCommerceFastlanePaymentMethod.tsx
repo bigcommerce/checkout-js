@@ -14,6 +14,7 @@ import { FormContext, LoadingOverlay } from '@bigcommerce/checkout/ui';
 import PayPalCommerceFastlaneForm from './components/PayPalCommerceFastlaneForm';
 
 import './PayPalCommerceFastlanePaymentMethod.scss';
+import isErrorWithTranslationKey from './is-error-with-translation-key';
 
 export interface PayPalFastlaneCardComponentRef {
     renderPayPalCardComponent?: (container: string) => void;
@@ -26,6 +27,7 @@ const PayPalCommerceFastlanePaymentMethod: FunctionComponent<PaymentMethodProps>
     checkoutState,
     onUnhandledError,
     paymentForm,
+    language,
 }) => {
     const paypalCardComponentRef = useRef<PayPalFastlaneCardComponentRef>({});
 
@@ -43,6 +45,21 @@ const PayPalCommerceFastlanePaymentMethod: FunctionComponent<PaymentMethodProps>
                     onChange: (showPayPalCardSelector) => {
                         paypalCardComponentRef.current.showPayPalCardSelector =
                             showPayPalCardSelector;
+                    },
+                    onError: (error: unknown) => {
+                        let finalError: Error;
+
+                        if (isErrorWithTranslationKey(error)) {
+                            finalError = new Error(language.translate(error.translationKey));
+                        } else if (error instanceof Error) {
+                            finalError = error;
+                        } else {
+                            finalError = new Error(
+                                language.translate('payment.errors.general_error'),
+                            );
+                        }
+
+                        return onUnhandledError(finalError);
                     },
                 },
             });
