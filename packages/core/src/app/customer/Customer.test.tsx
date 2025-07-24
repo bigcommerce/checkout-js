@@ -254,6 +254,15 @@ describe('Customer Component', () => {
         expect(screen.getByLabelText('Email')).toHaveDisplayValue(email);
         await userEvent.type(await screen.findByLabelText('Password'), password);
 
+        checkout.setRequestHandler(
+            rest.post(
+                '/internalapi/v1/checkout/customer',
+                (_, res, ctx) => res(
+                    ctx.json({ data: { persistentCartRetrievalInformation: false } })
+                )
+            )
+        );
+
         checkout.updateCheckout(
             'get',
             '/checkout/*',
