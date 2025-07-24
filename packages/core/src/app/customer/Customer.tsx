@@ -116,6 +116,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
     private draftEmail?: string;
 
     async componentDidMount(): Promise<void> {
+        // test message
         const {
             initializeCustomer,
             email,
@@ -159,7 +160,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
         const shouldRenderGuestForm = viewType === CustomerViewType.Guest;
         const shouldRenderCreateAccountForm = viewType === CustomerViewType.CreateAccount;
         const shouldRenderLoginForm = !shouldRenderGuestForm && !shouldRenderCreateAccountForm;
-        
+
         if (!isReady) {
             return null;
         }
