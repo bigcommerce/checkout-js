@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.630.0](https://github.com/bigcommerce/checkout-js/compare/v1.629.3...v1.630.0) (2025-07-24)
+
+
+### Features
+
+* **payment:** Added onError handler for PPCP FL ([81b9ec4](https://github.com/bigcommerce/checkout-js/commit/81b9ec4047fa4c5e26985cc998084669c804b3c7))
+* **payment:** Added onError handler for PPCP FL ([2ef3060](https://github.com/bigcommerce/checkout-js/commit/2ef30604864de9937633af5ba7f663c32e44612e))
+* **payment:** Added onError handler for PPCP FL ([fc40c28](https://github.com/bigcommerce/checkout-js/commit/fc40c287d5b395d9d45ae7e0e36656caee8d8af8))
+* **payment:** Added onError handler for PPCP FL ([dff47e7](https://github.com/bigcommerce/checkout-js/commit/dff47e7d40a7508f906b586bae15e9fbf2550612))
+
 ### [1.629.3](https://github.com/bigcommerce/checkout-js/compare/v1.629.2...v1.629.3) (2025-07-24)
 
 ### [1.629.2](https://github.com/bigcommerce/checkout-js/compare/v1.629.1...v1.629.2) (2025-07-24)
