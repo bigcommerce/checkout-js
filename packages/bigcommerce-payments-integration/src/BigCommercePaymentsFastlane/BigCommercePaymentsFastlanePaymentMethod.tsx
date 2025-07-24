@@ -47,21 +47,21 @@ const BigCommercePaymentsFastlanePaymentMethod: FunctionComponent<PaymentMethodP
                         paypalCardComponentRef.current.showPayPalCardSelector =
                             showPayPalCardSelector;
                     },
-                  onError: (error: unknown) => {
-                    let finalError: Error;
+                    onError: (error: unknown) => {
+                        let finalError: Error;
 
-                    if (isErrorWithTranslationKey(error)) {
-                      finalError = new Error(language.translate(error.translationKey));
-                    } else if (error instanceof Error) {
-                      finalError = error;
-                    } else {
-                      finalError = new Error(
-                        language.translate('payment.errors.general_error'),
-                      );
-                    }
+                        if (isErrorWithTranslationKey(error)) {
+                            finalError = new Error(language.translate(error.translationKey));
+                        } else if (error instanceof Error) {
+                            finalError = error;
+                        } else {
+                            finalError = new Error(
+                                language.translate('payment.errors.general_error'),
+                            );
+                        }
 
-                    return onUnhandledError(finalError);
-                  },
+                        return onUnhandledError(finalError);
+                    },
                 },
             });
         } catch (error) {
