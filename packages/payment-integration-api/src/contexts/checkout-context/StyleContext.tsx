@@ -2,6 +2,7 @@ import { createContext, useContext } from 'react';
 
 export interface StyleContextProps {
     newFontStyle: boolean;
+    ui2026: boolean;
 }
 
 const StyleContext = createContext<StyleContextProps | undefined>(undefined);

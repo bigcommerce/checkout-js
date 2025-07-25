@@ -246,3 +246,60 @@
     }
     // scss-lint:enable ImportantRule
 }
+
+.ui2026{
+    .form-field--error .form-select.floating-select,
+    .form-field--error .form-input.floating-input,
+    .form-select.floating-select,
+    .form-input.floating-input,
+    .form-input.optimizedCheckout-form-input,
+    .form-checklist {
+        background: rgba(255, 255, 255, 0.2); /* semi-transparent white */
+        box-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.37);
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        backdrop-filter: blur(10px); /* key for the glass effect */
+        -webkit-backdrop-filter: blur(10px); /* for Safari */
+        color: #333;
+    }
+
+    .form-field--error .form-select.floating-select:hover,
+    .form-field--error .form-input.floating-input:hover,
+    .form-select.floating-select:hover,
+    .form-input.floating-input:hover,
+    .form-input.optimizedCheckout-form-input:hover,
+    .form-checklist:hover {
+        background: rgba(255, 255, 255, 0.28);
+        box-shadow: 0 8px 40px 0 rgba(31, 38, 135, 0.45);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        cursor: pointer;
+    }
+
+    .form-field--error .form-select.floating-select:focus,
+    .form-field--error .form-input.floating-input:focus,
+    .form-select.floating-select:focus,
+    .form-input.floating-input:focus,
+    .form-input.optimizedCheckout-form-input:focus {
+        outline: 2.5px solid #90cdf4; /* Soft blue outline */
+        outline-offset: 3px;
+        background: rgba(255, 255, 255, 0.23); /* Slightly different from hover */
+        box-shadow: 0 6px 36px 0 rgba(31, 38, 135, 0.42);
+        border: 1px solid #90cdf4;
+    }
+
+    .cart {
+        border: none;
+        margin-top: 1.25rem;
+    }
+
+    .checkout-step, .cart-section {
+        border: none;
+    }
+
+    a , .button--tertiary{
+        color: #3c4043;
+        font-weight: bold;
+    }
+}

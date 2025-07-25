@@ -25,5 +25,9 @@ export const StyleProvider = ({ children }: StyleProviderProps) => {
         );
     }
 
-    return <StyleContext.Provider value={{ newFontStyle }}>{children}</StyleContext.Provider>;
+    const ui2026 = window.location.search.includes('ui2026') || newFontStyle;
+
+    return (
+        <StyleContext.Provider value={{ newFontStyle, ui2026 }}>{children}</StyleContext.Provider>
+    );
 };

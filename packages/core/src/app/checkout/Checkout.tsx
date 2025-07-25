@@ -4,6 +4,7 @@ import {
     CartChangedError,
     CheckoutParams,
     CheckoutSelectors,
+    CheckoutStoreSelector,
     Consignment,
     EmbeddedCheckoutMessenger,
     EmbeddedCheckoutMessengerOptions,
@@ -11,7 +12,8 @@ import {
     FlashMessage,
     PaymentMethod,
     Promotion,
- RequestOptions } from '@bigcommerce/checkout-sdk';
+    RequestOptions
+} from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { find, findIndex } from 'lodash';
 import React, { Component, lazy, ReactNode } from 'react';
@@ -23,10 +25,8 @@ import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/
 import {
     AddressFormSkeleton,
     ChecklistSkeleton,
-    CheckoutPageSkeleton,
     LazyContainer,
     LoadingNotification,
-    LoadingOverlay,
     OrderConfirmationPageSkeleton
 } from '@bigcommerce/checkout/ui';
 import { navigateToOrderConfirmation } from '@bigcommerce/checkout/utility';
@@ -51,7 +51,7 @@ import { EmbeddedCheckoutStylesheet, isEmbedded } from '../embeddedCheckout';
 import { PromotionBannerList } from '../promotion';
 import { hasSelectedShippingOptions, isUsingMultiShipping, ShippingSummary } from '../shipping';
 import { ShippingOptionExpiredError } from '../shipping/shippingOption';
-import { isMobileView, MobileView } from '../ui/responsive';
+import { MobileView } from '../ui/responsive';
 
 import CheckoutStep from './CheckoutStep';
 import CheckoutStepStatus from './CheckoutStepStatus';
@@ -115,6 +115,8 @@ export interface CheckoutProps {
     embeddedStylesheet: EmbeddedCheckoutStylesheet;
     embeddedSupport: CheckoutSupport;
     errorLogger: ErrorLogger;
+    data: CheckoutStoreSelector;
+    ui2026:boolean;
     createEmbeddedMessenger(options: EmbeddedCheckoutMessengerOptions): EmbeddedCheckoutMessenger;
 }
 
@@ -128,7 +130,6 @@ export interface CheckoutState {
     isMultiShippingMode: boolean;
     isCartEmpty: boolean;
     isRedirecting: boolean;
-    isInitialLoad: boolean;
     hasSelectedShippingOptions: boolean;
     isSubscribed: boolean;
     buttonConfigs: PaymentMethod[];
@@ -138,6 +139,7 @@ export interface WithCheckoutProps {
     billingAddress?: Address;
     cart?: Cart;
     consignments?: Consignment[];
+    data: CheckoutStoreSelector;
     error?: Error;
     hasCartChanged: boolean;
     flashMessages?: FlashMessage[];
@@ -167,7 +169,6 @@ class Checkout extends Component<
     CheckoutState
 > {
     state: CheckoutState = {
-        isInitialLoad: true,
         isBillingSameAsShipping: true,
         isCartEmpty: false,
         isRedirecting: false,
@@ -190,35 +191,19 @@ class Checkout extends Component<
         this.handleBeforeExit();
     }
 
-    componentDidUpdate(prevProps: WithCheckoutProps): void {
-        if (prevProps.steps.length === 0 && this.props.steps && this.props.steps.length > 0) {
-            this.handleReady();
-        }
-    }
-
     async componentDidMount(): Promise<void> {
         const {
             analyticsTracker,
-            checkoutId,
             containerId,
             createEmbeddedMessenger,
+            data,
             embeddedStylesheet,
             extensionService,
-            loadCheckout,
             loadPaymentMethodByIds,
             subscribeToConsignments,
         } = this.props;
 
         try {
-            const [{ data }] = await Promise.all([loadCheckout(checkoutId, {
-                params: {
-                    include: [
-                        'cart.lineItems.physicalItems.categoryNames',
-                        'cart.lineItems.digitalItems.categoryNames',
-                    ] as any, // FIXME: Currently the enum is not exported so it can't be used here.
-                },
-            }), extensionService.loadExtensions()]);
-
             const providers = data.getConfig()?.checkoutSettings?.remoteCheckoutProviders || [];
             const checkoutSettings = data.getConfig()?.checkoutSettings;
 
@@ -289,12 +274,9 @@ class Checkout extends Component<
                 this.setState({ isMultiShippingMode });
             }
 
-            if (this.state.isInitialLoad) {
-                this.setState({ isInitialLoad: false });
-            }
-
             window.addEventListener('beforeunload', this.handleBeforeExit);
 
+            this.handleReady();
         } catch (error) {
             if (error instanceof Error) {
                 this.handleUnhandledError(error);
@@ -303,7 +285,13 @@ class Checkout extends Component<
     }
 
     render(): ReactNode {
-        const { error } = this.state;
+        const { error, isRedirecting } = this.state;
+        const { ui2026 } = this.props;
+
+        if(isRedirecting){
+            return <OrderConfirmationPageSkeleton />;
+        }
+
         let errorModal = null;
 
         if (error) {
@@ -320,8 +308,9 @@ class Checkout extends Component<
             }
         }
 
+
         return (
-            <div className={classNames('remove-checkout-step-numbers', { 'is-embedded': isEmbedded() })} data-test="checkout-page-container" id="checkout-page-container">
+            <div className={classNames('remove-checkout-step-numbers', { 'is-embedded': isEmbedded() }, { 'ui2026': ui2026 })} data-test="checkout-page-container" id="checkout-page-container">
                 <div className="layout optimizedCheckout-contentPrimary">
                     {this.renderContent()}
                 </div>
@@ -333,7 +322,7 @@ class Checkout extends Component<
     private renderContent(): ReactNode {
         const { isPending, loginUrl, promotions = [], steps, isShowingWalletButtonsOnTop, extensionState } = this.props;
 
-        const { activeStepType, defaultStepType, isCartEmpty, isRedirecting, isInitialLoad } = this.state;
+        const { activeStepType, defaultStepType, isCartEmpty } = this.state;
 
         if (isCartEmpty) {
             return <EmptyCartMessage loginUrl={loginUrl} waitInterval={3000} />;
@@ -342,12 +331,9 @@ class Checkout extends Component<
         const isPaymentStepActive = activeStepType
             ? activeStepType === CheckoutStepType.Payment
             : defaultStepType === CheckoutStepType.Payment;
-        
-        const pageLoadingSkeleton = isRedirecting ? <OrderConfirmationPageSkeleton /> : <CheckoutPageSkeleton />;
-        const loadingSkeleton = isMobileView() ? null : pageLoadingSkeleton;
 
         return (
-            <LoadingOverlay isLoading={isInitialLoad || isRedirecting} loadingSkeleton={loadingSkeleton} unmountContentWhenLoading>
+            <>
                 <div className="layout-main">
                     <LoadingNotification isLoading={extensionState.isShowingLoadingIndicator} />
 
@@ -377,9 +363,8 @@ class Checkout extends Component<
                             )}
                     </ol>
                 </div>
-
                 {this.renderCartSummary()}
-            </LoadingOverlay>
+            </>
         );
     }
 

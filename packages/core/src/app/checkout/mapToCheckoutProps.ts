@@ -38,7 +38,7 @@ export default function mapToCheckoutProps({
         },
     );
 
-    const walletButtonsOnTopFlag = Boolean(checkoutUserExperienceSettings.walletButtonsOnTop); 
+    const walletButtonsOnTopFlag = Boolean(checkoutUserExperienceSettings.walletButtonsOnTop);
     const isShippingDiscountDisplayEnabled = isExperimentEnabled(
         data.getConfig()?.checkoutSettings,
         'PROJECT-6643.enable_shipping_discounts_in_orders',
@@ -48,6 +48,7 @@ export default function mapToCheckoutProps({
         billingAddress: data.getBillingAddress(),
         cart: data.getCart(),
         clearError: checkoutService.clearError,
+        data,
         consignments: data.getConsignments(),
         hasCartChanged: submitOrderError && submitOrderError.type === 'cart_changed', // TODO: Need to clear the error once it's displayed
         isGuestEnabled,
@@ -66,6 +67,6 @@ export default function mapToCheckoutProps({
             checkoutService,
             checkoutState,
         }),
-        steps: data.getCheckout() ? getCheckoutStepStatuses(checkoutState) : EMPTY_ARRAY,
+        steps: getCheckoutStepStatuses(checkoutState),
     };
 }

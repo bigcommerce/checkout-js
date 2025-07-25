@@ -17,7 +17,7 @@ import {
     createEmbeddedCheckoutSupport,
 } from '../embeddedCheckout';
 
-import Checkout from './Checkout';
+import CheckoutController from './CheckoutController';
 
 export interface CheckoutAppProps {
     checkoutId: string;
@@ -66,8 +66,9 @@ export default class CheckoutApp extends Component<CheckoutAppProps> {
                                 errorLogger={createErrorLogger()}
                             >
                                 <StyleProvider>
-                                    <Checkout
+                                    <CheckoutController
                                         {...this.props}
+                                        checkoutService={this.checkoutService}
                                         createEmbeddedMessenger={createEmbeddedCheckoutMessenger}
                                         embeddedStylesheet={this.embeddedStylesheet}
                                         embeddedSupport={this.embeddedSupport}
