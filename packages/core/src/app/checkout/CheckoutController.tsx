@@ -1,5 +1,4 @@
 import {
-	CheckoutService,
 	EmbeddedCheckoutMessenger,
 	EmbeddedCheckoutMessengerOptions
 } from '@bigcommerce/checkout-sdk';
@@ -7,16 +6,15 @@ import React, { useEffect, useState } from 'react';
 
 import { useExtensions } from '@bigcommerce/checkout/checkout-extension';
 import { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
-import {useStyleContext} from '@bigcommerce/checkout/payment-integration-api';
+import {useCheckout, useStyleContext} from '@bigcommerce/checkout/payment-integration-api';
 import { CheckoutPageSkeleton } from '@bigcommerce/checkout/ui';
 
 import { EmbeddedCheckoutStylesheet } from '../embeddedCheckout';
 
-import Checkout from './Checkout';
+import { CheckoutPage } from './Checkout';
 import CheckoutSupport from './CheckoutSupport';
 
 interface CheckoutDataProps {
-	checkoutService: CheckoutService;
 	checkoutId: string;
 	containerId: string;
 	embeddedStylesheet: EmbeddedCheckoutStylesheet;
@@ -27,13 +25,13 @@ interface CheckoutDataProps {
 
 const CheckoutController:React.FC<CheckoutDataProps>= (props) => {
 	const [ isLoading, setIsLoading ] = useState(true);
+	const { checkoutService } = useCheckout();
 	const { extensionService } = useExtensions();
 	const { ui2026 } = useStyleContext();
 
 	useEffect(() => {
-		const { checkoutId, checkoutService: {
-			loadCheckout,
-		}} = props;
+		const { loadCheckout } = checkoutService;
+		const { checkoutId } = props;
 
 		const fetchData = async () => {
 			await Promise.all([loadCheckout(checkoutId, {
@@ -53,7 +51,7 @@ const CheckoutController:React.FC<CheckoutDataProps>= (props) => {
 		return <CheckoutPageSkeleton />;
 	}
 
-	return <Checkout
+	return <CheckoutPage
 			{...props}
 			createEmbeddedMessenger={props.createEmbeddedMessenger}
 			embeddedStylesheet={props.embeddedStylesheet}

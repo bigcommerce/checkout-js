@@ -53,6 +53,7 @@ import { hasSelectedShippingOptions, isUsingMultiShipping, ShippingSummary } fro
 import { ShippingOptionExpiredError } from '../shipping/shippingOption';
 import { MobileView } from '../ui/responsive';
 
+import CheckoutController from './CheckoutController';
 import CheckoutStep from './CheckoutStep';
 import CheckoutStepStatus from './CheckoutStepStatus';
 import CheckoutStepType from './CheckoutStepType';
@@ -780,6 +781,8 @@ class Checkout extends Component<
     }
 }
 
-export default withExtension(
+export const CheckoutPage = withExtension(
     withAnalytics(withLanguage(withCheckout(mapToCheckoutProps)(Checkout))),
 );
+
+export default CheckoutController;
