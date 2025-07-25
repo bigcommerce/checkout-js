@@ -46,7 +46,7 @@ beforeAll(() => {
     console.error = (...args: unknown[]) => {
         const message = args.map(String).join();
 
-        if (/Formik|createRoot/.test(message)) {
+        if (/Formik|createRoot|React.act|findDOMNode/.test(message)) {
             return;
         }
 

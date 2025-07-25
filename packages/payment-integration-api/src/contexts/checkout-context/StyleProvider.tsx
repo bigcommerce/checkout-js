@@ -25,5 +25,10 @@ export const StyleProvider = ({ children }: StyleProviderProps) => {
         );
     }
 
-    return <StyleContext.Provider value={{ newFontStyle }}>{children}</StyleContext.Provider>;
+    const themeV2 =
+        (window.location.search && window.location.search.includes('v2')) || newFontStyle;
+
+    return (
+        <StyleContext.Provider value={{ newFontStyle, themeV2 }}>{children}</StyleContext.Provider>
+    );
 };
