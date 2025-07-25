@@ -7,6 +7,7 @@ import {
     PaymentInitializeOptions,
     PaymentRequestOptions,
 } from '@bigcommerce/checkout-sdk';
+import { createBlueSnapDirectAPMPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
@@ -96,6 +97,7 @@ describe('BlueSnapDirectSepa payment method', () => {
         expect(initializePayment).toHaveBeenCalledWith({
             gatewayId: 'bluesnapdirect',
             methodId: 'sepa_direct_debit',
+            integrations: [createBlueSnapDirectAPMPaymentStrategy],
         });
     });
 

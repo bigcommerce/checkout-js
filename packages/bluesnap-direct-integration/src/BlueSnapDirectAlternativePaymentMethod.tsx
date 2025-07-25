@@ -1,4 +1,6 @@
-import React, { FunctionComponent } from 'react';
+import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import { createBlueSnapDirectAPMPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import React, { FunctionComponent, useCallback } from 'react';
 
 import { HostedPaymentComponent } from '@bigcommerce/checkout/hosted-payment-integration';
 import {
@@ -11,12 +13,22 @@ const BlueSnapDirectAlternativePaymentMethod: FunctionComponent<PaymentMethodPro
     checkoutService,
     ...rest
 }) => {
+    const initializeBlueSnapDirectPayment = useCallback(
+        (options: PaymentInitializeOptions) => {
+            return checkoutService.initializePayment({
+                ...options,
+                integrations: [createBlueSnapDirectAPMPaymentStrategy],
+            });
+        },
+        [checkoutService],
+    );
+
     return (
         <HostedPaymentComponent
             {...rest}
             checkoutService={checkoutService}
             deinitializePayment={checkoutService.deinitializePayment}
-            initializePayment={checkoutService.initializePayment}
+            initializePayment={initializeBlueSnapDirectPayment}
         />
     );
 };

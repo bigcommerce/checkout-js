@@ -7,6 +7,7 @@ import {
     PaymentInitializeOptions,
     PaymentRequestOptions,
 } from '@bigcommerce/checkout-sdk';
+import { createBlueSnapDirectAPMPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
@@ -115,6 +116,7 @@ describe('BlueSnapDirectEcp payment method', () => {
         expect(initializePayment).toHaveBeenCalledWith({
             gatewayId: 'bluesnapdirect',
             methodId: 'ecp',
+            integrations: [createBlueSnapDirectAPMPaymentStrategy],
         });
     });
 

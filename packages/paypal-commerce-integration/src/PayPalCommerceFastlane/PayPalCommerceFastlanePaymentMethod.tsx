@@ -1,4 +1,5 @@
 import { CardInstrument } from '@bigcommerce/checkout-sdk';
+import { createPayPalCommerceFastlanePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
 import React, { FunctionComponent, useEffect, useRef } from 'react';
 
 import { LocaleProvider } from '@bigcommerce/checkout/locale';
@@ -37,6 +38,7 @@ const PayPalCommerceFastlanePaymentMethod: FunctionComponent<PaymentMethodProps>
         try {
             await checkoutService.initializePayment({
                 methodId: method.id,
+                integrations: [createPayPalCommerceFastlanePaymentStrategy],
                 paypalcommercefastlane: {
                     onInit: (renderPayPalCardComponent) => {
                         paypalCardComponentRef.current.renderPayPalCardComponent =

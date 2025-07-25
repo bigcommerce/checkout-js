@@ -1,4 +1,12 @@
-import React, { FunctionComponent } from 'react';
+import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import {
+    createCheckoutComAPMPaymentStrategy,
+    createCheckoutComCreditCardPaymentStrategy,
+    createCheckoutComFawryPaymentStrategy,
+    createCheckoutComIdealPaymentStrategy,
+    createCheckoutComSepaPaymentStrategy,
+} from '@bigcommerce/checkout-sdk/integrations';
+import React, { FunctionComponent, useCallback } from 'react';
 
 import {
     CreditCardPaymentMethodComponent,
@@ -41,6 +49,22 @@ const CheckoutcomCustomPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
     const billingAddress = checkoutState.data.getBillingAddress();
 
+    const initializeCheckoutcomCustomPayment = useCallback(
+        (options: PaymentInitializeOptions) => {
+            return checkoutService.initializePayment({
+                ...options,
+                integrations: [
+                    createCheckoutComAPMPaymentStrategy,
+                    createCheckoutComCreditCardPaymentStrategy,
+                    createCheckoutComFawryPaymentStrategy,
+                    createCheckoutComIdealPaymentStrategy,
+                    createCheckoutComSepaPaymentStrategy,
+                ],
+            });
+        },
+        [checkoutService],
+    );
+
     if (
         !isCheckoutcomPaymentMethod(checkoutCustomMethod) ||
         (checkoutCustomMethod === 'ideal' && isIdealHostedPageExperimentOn)
@@ -53,10 +77,11 @@ const CheckoutcomCustomPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             checkoutService={checkoutService}
             checkoutState={checkoutState}
             deinitializePayment={checkoutService.deinitializePayment}
-            initializePayment={checkoutService.initializePayment}
+            initializePayment={initializeCheckoutcomCustomPayment}
             language={language}
             method={method}
             {...rest}
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             cardFieldset={<CheckoutcomCustomFieldset debtor={billingAddress!} method={method} />}
             cardValidationSchema={getCheckoutcomValidationSchemas({
                 paymentMethod: checkoutCustomMethod,

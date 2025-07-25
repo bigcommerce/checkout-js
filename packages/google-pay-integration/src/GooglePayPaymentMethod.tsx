@@ -1,4 +1,18 @@
-import { PaymentInitializeOptions, resolveStrategy } from '@bigcommerce/checkout-sdk';
+import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import {
+    createGooglePayAdyenV2PaymentStrategy,
+    createGooglePayAdyenV3PaymentStrategy,
+    createGooglePayAuthorizeNetPaymentStrategy,
+    createGooglePayBigCommercePaymentsPaymentStrategy,
+    createGooglePayBraintreePaymentStrategy,
+    createGooglePayCheckoutComPaymentStrategy,
+    createGooglePayCybersourcePaymentStrategy,
+    createGooglePayOrbitalPaymentStrategy,
+    createGooglePayPPCPPaymentStrategy,
+    createGooglePayStripePaymentStrategy,
+    createGooglePayTdOnlineMartPaymentStrategy,
+    createGooglePayWorldpayAccessPaymentStrategy,
+} from '@bigcommerce/checkout-sdk/integrations';
 import React, { FunctionComponent, useCallback } from 'react';
 
 import {
@@ -37,15 +51,22 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             };
 
             const loadingContainerId = 'checkout-app';
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
-            const strategy = resolveStrategy(
-                PaymentMethodId.AuthorizeNetGooglePay,
-                undefined,
-                undefined,
-            );
             const mergedOptions: PaymentInitializeOptions = {
                 ...defaultOptions,
-                integrations: strategy ? [strategy] : [],
+                integrations: [
+                    createGooglePayAdyenV2PaymentStrategy,
+                    createGooglePayAdyenV3PaymentStrategy,
+                    createGooglePayAuthorizeNetPaymentStrategy,
+                    createGooglePayCheckoutComPaymentStrategy,
+                    createGooglePayCybersourcePaymentStrategy,
+                    createGooglePayOrbitalPaymentStrategy,
+                    createGooglePayStripePaymentStrategy,
+                    createGooglePayWorldpayAccessPaymentStrategy,
+                    createGooglePayBraintreePaymentStrategy,
+                    createGooglePayPPCPPaymentStrategy,
+                    createGooglePayBigCommercePaymentsPaymentStrategy,
+                    createGooglePayTdOnlineMartPaymentStrategy,
+                ],
                 [PaymentMethodId.AdyenV2GooglePay]: {
                     loadingContainerId,
                     walletButton: 'walletButton',

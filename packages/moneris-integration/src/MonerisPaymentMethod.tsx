@@ -1,4 +1,5 @@
 import { CardInstrument, PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import { createMonerisPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
 import { some } from 'lodash';
 import React, { FunctionComponent, useCallback } from 'react';
 
@@ -64,6 +65,7 @@ const MonerisPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         async (options: PaymentInitializeOptions, selectedInstrument) => {
             const paymentConfig = {
                 ...options,
+                integrations: [createMonerisPaymentStrategy],
                 moneris: {
                     containerId,
                     ...(selectedInstrument && {

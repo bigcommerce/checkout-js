@@ -1,3 +1,4 @@
+import { createBigCommercePaymentsPayLaterPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
 import React, { FunctionComponent, useEffect } from 'react';
 
 import { PaymentMethodId, useCheckout } from '@bigcommerce/checkout/payment-integration-api';
@@ -11,6 +12,7 @@ const BigCommercePaymentsPayLaterBanner: FunctionComponent<{
         try {
             void checkoutService.initializePayment({
               methodId: PaymentMethodId.BigCommercePaymentsPayLater,
+              integrations: [createBigCommercePaymentsPayLaterPaymentStrategy],
               bigcommerce_payments_paylater: {
                 bannerContainerId: 'bigcommerce-payments-banner-container',
               },

@@ -5,6 +5,7 @@ import {
     CardInstrument,
     PaymentInitializeOptions,
 } from '@bigcommerce/checkout-sdk';
+import { createAdyenV2PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
 import React, { FunctionComponent, useCallback, useRef, useState } from 'react';
 
 import { HostedWidgetComponentProps } from '@bigcommerce/checkout/hosted-widget-integration';
@@ -107,6 +108,7 @@ const AdyenV2PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
             return checkoutService.initializePayment({
                 ...options,
+                integrations: [createAdyenV2PaymentStrategy],
                 adyenv2: {
                     cardVerificationContainerId:
                         selectedInstrumentId && cardVerificationContainerId,
