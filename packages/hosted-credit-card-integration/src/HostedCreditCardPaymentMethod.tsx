@@ -1,4 +1,5 @@
 import { CardInstrument, LegacyHostedFormOptions } from '@bigcommerce/checkout-sdk';
+import { createCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
 import { compact, forIn } from 'lodash';
 import React, { FunctionComponent, ReactNode, useCallback, useState } from 'react';
 
@@ -249,6 +250,7 @@ const HostedCreditCardPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             async (options, selectedInstrument) => {
                 return initializePayment({
                     ...options,
+                    integrations: [createCreditCardPaymentStrategy],
                     creditCard: {
                         form: await getHostedFormOptions(selectedInstrument),
                         bigpayToken: selectedInstrument?.bigpayToken,

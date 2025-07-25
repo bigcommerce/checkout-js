@@ -5,6 +5,7 @@ import {
     createLanguageService,
     PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
+import { createMonerisPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
 import { render } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
@@ -95,6 +96,7 @@ describe('when using Moneris payment', () => {
 
         expect(checkoutService.initializePayment).toHaveBeenCalledWith({
             methodId: 'moneris',
+            integrations: [createMonerisPaymentStrategy],
             moneris: {
                 containerId: 'moneris-iframe-container',
                 options: undefined,
@@ -109,6 +111,7 @@ describe('when using Moneris payment', () => {
 
         expect(checkoutService.initializePayment).toHaveBeenCalledWith({
             methodId: 'moneris',
+            integrations: [createMonerisPaymentStrategy],
             moneris: {
                 containerId: 'moneris-iframe-container',
                 options: undefined,
@@ -142,6 +145,7 @@ describe('when using Moneris payment', () => {
         expect(checkoutService.initializePayment).toHaveBeenCalledWith({
             gatewayId: undefined,
             methodId: 'moneris',
+            integrations: [createMonerisPaymentStrategy],
             moneris: {
                 containerId: 'moneris-iframe-container',
                 form: {

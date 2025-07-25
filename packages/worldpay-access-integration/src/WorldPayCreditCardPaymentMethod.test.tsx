@@ -6,6 +6,7 @@ import {
     createLanguageService,
     PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
+import { createWorldpayAccessPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
@@ -129,6 +130,7 @@ describe('WorldpayCreditCardPaymentMethod', () => {
             expect.objectContaining({
                 gatewayId: undefined,
                 methodId: 'worldpayaccess',
+                integrations: [createWorldpayAccessPaymentStrategy],
                 worldpay: {
                     onLoad: expect.any(Function),
                 },

@@ -1,5 +1,5 @@
 import { PaymentMethod } from '@bigcommerce/checkout-sdk';
-import React, { ComponentType } from 'react';
+import React, { ComponentType, lazy } from 'react';
 
 import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import {
@@ -8,6 +8,7 @@ import {
     PaymentMethodResolveId,
     PaymentMethodProps as ResolvedPaymentMethodProps,
 } from '@bigcommerce/checkout/payment-integration-api';
+import { LazyContainer } from '@bigcommerce/checkout/ui';
 
 import { withCheckout, WithCheckoutProps } from '../../checkout';
 import { connectFormik, WithFormikProps } from '../../common/form';
@@ -16,8 +17,7 @@ import createPaymentFormService from '../createPaymentFormService';
 import resolvePaymentMethod from '../resolvePaymentMethod';
 import withPayment, { WithPaymentProps } from '../withPayment';
 
-import { default as PaymentMethodV1 } from './PaymentMethod';
-import { LazyContainer } from '@bigcommerce/checkout/ui';
+const PaymentMethodV1 = lazy(() => import(/* webpackChunkName: "payment-method-v1" */'./PaymentMethod'));
 
 export interface PaymentMethodProps {
     method: PaymentMethod;
@@ -73,12 +73,14 @@ const PaymentMethodContainer: ComponentType<
 
     if (!ResolvedPaymentMethod) {
         return (
-            <PaymentMethodV1
-                isEmbedded={isEmbedded}
-                isUsingMultiShipping={isUsingMultiShipping}
-                method={method}
-                onUnhandledError={onUnhandledError}
-            />
+            <LazyContainer>
+                <PaymentMethodV1
+                    isEmbedded={isEmbedded}
+                    isUsingMultiShipping={isUsingMultiShipping}
+                    method={method}
+                    onUnhandledError={onUnhandledError}
+                />
+            </LazyContainer>
         );
     }
 

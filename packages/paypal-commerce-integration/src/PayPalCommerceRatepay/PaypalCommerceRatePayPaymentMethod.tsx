@@ -1,4 +1,5 @@
 import { FormField } from '@bigcommerce/checkout-sdk';
+import { createPayPalCommerceRatePayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
 import React, { FunctionComponent, useCallback, useEffect, useMemo, useRef } from 'react';
 
 import {
@@ -82,6 +83,7 @@ const PaypalCommerceRatePayPaymentMethod: FunctionComponent<PaymentMethodProps> 
             await checkoutService.initializePayment({
                 gatewayId: method.gateway,
                 methodId: method.id,
+                integrations: [createPayPalCommerceRatePayPaymentStrategy],
                 paypalcommerceratepay: {
                     container: '#checkout-payment-continue',
                     legalTextContainer: 'legal-text-container',

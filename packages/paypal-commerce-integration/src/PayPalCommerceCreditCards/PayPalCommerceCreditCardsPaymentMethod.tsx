@@ -1,4 +1,5 @@
 import { CardInstrument, LegacyHostedFormOptions } from '@bigcommerce/checkout-sdk';
+import { createPayPalCommerceCreditCardsPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
 import { compact, forIn } from 'lodash';
 import React, { FunctionComponent, ReactNode, useCallback, useState } from 'react';
 
@@ -248,6 +249,7 @@ const PayPalCommerceCreditCardPaymentMethod: FunctionComponent<PaymentMethodProp
             async (options, selectedInstrument) => {
                 return initializePayment({
                     ...options,
+                    integrations: [createPayPalCommerceCreditCardsPaymentStrategy],
                     paypalcommercecreditcards: {
                         form: isHostedFormEnabled
                             ? await getHostedFormOptions(selectedInstrument)

@@ -40,6 +40,7 @@ import StoreInstrumentFieldset from '../StoreInstrumentFieldset';
 import withPayment, { WithPaymentProps } from '../withPayment';
 
 import CreditCardFieldsetValues from './CreditCardFieldsetValues';
+import { createCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
 
 export interface CreditCardPaymentMethodProps {
     isInitializing?: boolean;
@@ -115,6 +116,7 @@ class CreditCardPaymentMethod extends Component<
                 {
                     gatewayId: method.gateway,
                     methodId: method.id,
+                    integrations: [createCreditCardPaymentStrategy],
                 },
                 this.getSelectedInstrument(),
             ).then(() => this.setState({ isPreloaderOn: false }));
@@ -173,6 +175,7 @@ class CreditCardPaymentMethod extends Component<
                     {
                         gatewayId: method.gateway,
                         methodId: method.id,
+                        integrations: [createCreditCardPaymentStrategy],
                     },
                     this.getSelectedInstrument(),
                 );
