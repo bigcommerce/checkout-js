@@ -6,6 +6,7 @@ import {
     type PaymentMethod,
     type PaymentRequestOptions,
 } from '@bigcommerce/checkout-sdk';
+import { createBlueSnapDirectCreditCardPaymentStrategy, createCyberSourcePaymentStrategy, createCyberSourceV2PaymentStrategy, createExternalPaymentStrategy, createHummPaymentStrategy, createLegacyPaymentStrategy, createNoPaymentStrategy, createOffsitePaymentStrategy, createPayPalProPaymentStrategy, createSagePayPaymentStrategy, createSezzlePaymentStrategy, createTDOnlineMartPaymentStrategy, createZipPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
 import React, { type FunctionComponent, lazy, memo, Suspense } from 'react';
 
 import { type CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
@@ -105,7 +106,26 @@ function mapToWithCheckoutPaymentMethodProps(
         deinitializeCustomer: checkoutService.deinitializeCustomer,
         deinitializePayment: checkoutService.deinitializePayment,
         initializeCustomer: checkoutService.initializeCustomer,
-        initializePayment: checkoutService.initializePayment,
+        initializePayment: (options) => {
+            return checkoutService.initializePayment({
+                ...options,
+                integrations: [
+                    createBlueSnapDirectCreditCardPaymentStrategy,
+                    createCyberSourcePaymentStrategy,
+                    createCyberSourceV2PaymentStrategy,
+                    createExternalPaymentStrategy,
+                    createHummPaymentStrategy,
+                    createLegacyPaymentStrategy,
+                    createNoPaymentStrategy,
+                    createOffsitePaymentStrategy,
+                    createPayPalProPaymentStrategy,
+                    createSagePayPaymentStrategy,
+                    createSezzlePaymentStrategy,
+                    createTDOnlineMartPaymentStrategy,
+                    createZipPaymentStrategy,
+                ],
+            });
+        },
         isInitializing: isInitializingPayment(method.id),
     };
 }

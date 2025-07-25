@@ -1,4 +1,6 @@
-import React, { type FunctionComponent } from 'react';
+import { type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import { createAfterpayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import React, { type FunctionComponent, useCallback } from 'react';
 
 import { HostedPaymentComponent } from '@bigcommerce/checkout/hosted-payment-integration';
 import {
@@ -14,13 +16,23 @@ const AfterpayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     paymentForm,
     ...rest
 }) => {
+    const initializeAfterpayPayment = useCallback(
+        (options: PaymentInitializeOptions) => {
+            return checkoutService.initializePayment({
+                ...options,
+                integrations: [createAfterpayPaymentStrategy],
+            });
+        },
+        [checkoutService],
+    );
+
     return (
         <HostedPaymentComponent
             {...rest}
             checkoutService={checkoutService}
             checkoutState={checkoutState}
             deinitializePayment={checkoutService.deinitializePayment}
-            initializePayment={checkoutService.initializePayment}
+            initializePayment={initializeAfterpayPayment}
             method={method}
             paymentForm={paymentForm}
         />
