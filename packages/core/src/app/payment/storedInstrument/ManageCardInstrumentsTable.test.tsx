@@ -28,7 +28,7 @@ describe('ManageCardInstrumentsTable', () => {
         localeContext = createLocaleContext(getStoreConfig());
     });
 
-    it('renders instrument as row in table', () => {
+    it('renders instrument as row in table', async () => {
         render(
             <LocaleContext.Provider value={localeContext}>
                 <ManageCardInstrumentsTable {...defaultProps} />
@@ -36,8 +36,8 @@ describe('ManageCardInstrumentsTable', () => {
         );
 
         expect(screen.getAllByText('Delete')).toHaveLength(2);
-        expect(screen.getByText('American Express')).toBeInTheDocument();
-        expect(screen.getAllByText('Visa')).toHaveLength(2);
+        expect(await screen.findByText('American Express')).toBeInTheDocument();
+        expect(await screen.findByText('Visa')).toBeInTheDocument();
         expect(screen.getByText(`02/${getYear(1)}`)).toBeInTheDocument();
     });
 

@@ -5,11 +5,11 @@ import { render, screen } from '@bigcommerce/checkout/test-utils';
 import CreditCardIconList from './CreditCardIconList';
 
 describe('CreditCardIconList', () => {
-    it('filters out card types without icon', () => {
+    it('filters out card types without icon', async () => {
         render(<CreditCardIconList cardTypes={['visa', 'mastercard', 'foo']} />);
 
-        expect(screen.getByText('Visa')).toBeInTheDocument();
-        expect(screen.getByText('Master')).toBeInTheDocument();
+        expect(await screen.findByText('Visa')).toBeInTheDocument();
+        expect(await screen.findByText('Master')).toBeInTheDocument();
         expect(screen.getAllByRole('listitem')).toHaveLength(2);
     });
 
