@@ -22,10 +22,10 @@ describe('CreditCardIcon', () => {
         { cardType: "troy", expectedText: "Troy" },
     ];
 
-    it.each(cardTests)('returns $cardType card icon', ({ cardType, expectedText }) => {
+    it.each(cardTests)('returns $cardType card icon', async ({ cardType, expectedText }) => {
         render(<CreditCardIcon cardType={cardType} />);
 
-        expect(screen.getByTestId(`credit-card-icon-${cardType}`)).toBeInTheDocument();
+        expect(await screen.findByTestId(`credit-card-icon-${cardType}`)).toBeInTheDocument();
         expect(screen.getByText(expectedText)).toBeInTheDocument();
     });
 

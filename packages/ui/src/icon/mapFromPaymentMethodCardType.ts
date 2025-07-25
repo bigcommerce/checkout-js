@@ -1,32 +1,6 @@
-import { ComponentType } from 'react';
+import { ComponentType, lazy } from 'react';
 
-import {
-    IconBitCoin,
-    IconBitCoinCash,
-    IconCardAmex,
-    IconCardBancontact,
-    IconCardCarnet,
-    IconCardCB,
-    IconCardDankort,
-    IconCardDinersClub,
-    IconCardDiscover,
-    IconCardElectron,
-    IconCardElo,
-    IconCardHipercard,
-    IconCardJCB,
-    IconCardMada,
-    IconCardMaestro,
-    IconCardMastercard,
-    IconCardTroy,
-    IconCardUnionPay,
-    IconCardVisa,
-    IconDogeCoin,
-    IconEthereum,
-    IconLiteCoin,
-    IconProps,
-    IconShibaInu,
-    IconUsdCoin,
-} from './';
+import { IconProps } from './';
 
 interface InstrumentComponent {
     instrument: string;
@@ -36,99 +10,121 @@ interface InstrumentComponent {
 const instrumentTypeMap: Record<string, InstrumentComponent> = {
     AMEX: {
         instrument: 'american-express',
-        component: IconCardAmex,
+        component: lazy(() => import(/* webpackChunkName: "icon-card-amex" */ './IconCardAmex')),
     },
     BITCOIN: {
         instrument: 'bitcoin',
-        component: IconBitCoin,
+        component: lazy(() => import(/* webpackChunkName: "icon-bitcoin" */ './IconBitCoin')),
     },
     BITCOIN_CASH: {
         instrument: 'bitcoin-cash',
-        component: IconBitCoinCash,
+        component: lazy(
+            () => import(/* webpackChunkName: "icon-bitcoin-cash" */ './IconBitCoinCash'),
+        ),
     },
     BANCONTACT: {
         instrument: 'bancontact',
-        component: IconCardBancontact,
+        component: lazy(
+            () => import(/* webpackChunkName: "icon-card-bancontact" */ './IconCardBancontact'),
+        ),
     },
     CARNET: {
         instrument: 'carnet',
-        component: IconCardCarnet,
+        component: lazy(
+            () => import(/* webpackChunkName: "icon-card-carnet" */ './IconCardCarnet'),
+        ),
     },
     CB: {
         instrument: 'cb',
-        component: IconCardCB,
+        component: lazy(() => import(/* webpackChunkName: "icon-card-cb" */ './IconCardCB')),
     },
     DINERS: {
         instrument: 'diners-club',
-        component: IconCardDinersClub,
+        component: lazy(
+            () => import(/* webpackChunkName: "icon-card-diners-club" */ './IconCardDinersClub'),
+        ),
     },
     DANKORT: {
         instrument: 'dankort',
-        component: IconCardDankort,
+        component: lazy(
+            () => import(/* webpackChunkName: "icon-card-dankort" */ './IconCardDankort'),
+        ),
     },
     DISCOVER: {
         instrument: 'discover',
-        component: IconCardDiscover,
+        component: lazy(
+            () => import(/* webpackChunkName: "icon-card-discover" */ './IconCardDiscover'),
+        ),
     },
     DOGECOIN: {
         instrument: 'dogecoin',
-        component: IconDogeCoin,
+        component: lazy(() => import(/* webpackChunkName: "icon-dogecoin" */ './IconDogeCoin')),
     },
     ELECTRON: {
         instrument: 'electron',
-        component: IconCardElectron,
+        component: lazy(
+            () => import(/* webpackChunkName: "icon-card-electron" */ './IconCardElectron'),
+        ),
     },
     ELO: {
         instrument: 'elo',
-        component: IconCardElo,
+        component: lazy(() => import(/* webpackChunkName: "icon-card-elo" */ './IconCardElo')),
     },
     ETHEREUM: {
         instrument: 'ethereum',
-        component: IconEthereum,
+        component: lazy(() => import(/* webpackChunkName: "icon-ethereum" */ './IconEthereum')),
     },
     HIPER: {
         instrument: 'hiper',
-        component: IconCardHipercard,
+        component: lazy(
+            () => import(/* webpackChunkName: "icon-card-hipercard" */ './IconCardHipercard'),
+        ),
     },
     JCB: {
         instrument: 'jcb',
-        component: IconCardJCB,
+        component: lazy(() => import(/* webpackChunkName: "icon-card-jcb" */ './IconCardJCB')),
     },
     LITECOIN: {
         instrument: 'litecoin',
-        component: IconLiteCoin,
+        component: lazy(() => import(/* webpackChunkName: "icon-litecoin" */ './IconLiteCoin')),
     },
     MADA: {
         instrument: 'mada',
-        component: IconCardMada,
+        component: lazy(() => import(/* webpackChunkName: "icon-card-mada" */ './IconCardMada')),
     },
     MAESTRO: {
         instrument: 'maestro',
-        component: IconCardMaestro,
+        component: lazy(
+            () => import(/* webpackChunkName: "icon-card-maestro" */ './IconCardMaestro'),
+        ),
     },
     MC: {
         instrument: 'mastercard',
-        component: IconCardMastercard,
+        component: lazy(
+            () => import(/* webpackChunkName: "icon-card-mastercard" */ './IconCardMastercard'),
+        ),
     },
     SHIBA_INU: {
         instrument: 'shiba-inu',
-        component: IconShibaInu,
+        component: lazy(() => import(/* webpackChunkName: "icon-shiba-inu" */ './IconShibaInu')),
     },
     TROY: {
         instrument: 'troy',
-        component: IconCardTroy,
+        component: lazy(() => import(/* webpackChunkName: "icon-card-troy" */ './IconCardTroy')),
     },
     CUP: {
         instrument: 'unionpay',
-        component: IconCardUnionPay,
+        component: lazy(
+            () => import(/* webpackChunkName: "icon-card-unionpay" */ './IconCardUnionPay'),
+        ),
     },
     USD_COIN: {
         instrument: 'usd-coin',
-        component: IconUsdCoin,
+        component: lazy(() => import(/* webpackChunkName: "icon-usd-coin" */ './IconUsdCoin')),
     },
     VISA: {
         instrument: 'visa',
-        component: IconCardVisa,
+        component: lazy(() => import(/* webpackChunkName: "icon-card-visa" */ './IconCardVisa')),
     },
 };
 
@@ -137,7 +133,7 @@ export default function mapFromPaymentMethodCardType(type: string): string | und
     return instrumentTypeMap[type]?.instrument || undefined;
 }
 
-export function getPaymentMethodIconComponent(type?: string): ComponentType<any> | undefined {
+export function getPaymentMethodIconComponent(type?: string): ComponentType<IconProps> | undefined {
     if (!type) {
         return undefined;
     }
