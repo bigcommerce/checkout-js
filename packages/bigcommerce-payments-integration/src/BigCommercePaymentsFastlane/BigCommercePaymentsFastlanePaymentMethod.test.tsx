@@ -47,8 +47,8 @@ describe('BigCommercePaymentsFastlanePaymentMethod', () => {
 
             bigcommerce_payments_fastlane: {
                 onInit: expect.any(Function),
-
                 onChange: expect.any(Function),
+                onError: expect.any(Function),
             },
         });
     });
