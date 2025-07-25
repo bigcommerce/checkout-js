@@ -1,32 +1,6 @@
-import { ComponentType } from 'react';
+import { ComponentType, lazy } from 'react';
 
-import {
-    IconBitCoin,
-    IconBitCoinCash,
-    IconCardAmex,
-    IconCardBancontact,
-    IconCardCarnet,
-    IconCardCB,
-    IconCardDankort,
-    IconCardDinersClub,
-    IconCardDiscover,
-    IconCardElectron,
-    IconCardElo,
-    IconCardHipercard,
-    IconCardJCB,
-    IconCardMada,
-    IconCardMaestro,
-    IconCardMastercard,
-    IconCardTroy,
-    IconCardUnionPay,
-    IconCardVisa,
-    IconDogeCoin,
-    IconEthereum,
-    IconLiteCoin,
-    IconProps,
-    IconShibaInu,
-    IconUsdCoin,
-} from '../../ui/icon';
+import type { IconProps } from '@bigcommerce/checkout/ui';
 
 interface InstrumentComponent {
     instrument: string;
@@ -36,99 +10,219 @@ interface InstrumentComponent {
 const instrumentTypeMap: Record<string, InstrumentComponent> = {
     AMEX: {
         instrument: 'american-express',
-        component: IconCardAmex,
+        component: lazy(
+            () =>
+                import(
+                    /* webpackChunkName: "icon-card-amex" */ '@bigcommerce/checkout/ui/icon/IconCardAmex'
+                ),
+        ),
     },
     BITCOIN: {
         instrument: 'bitcoin',
-        component: IconBitCoin,
+        component: lazy(
+            () =>
+                import(
+                    /* webpackChunkName: "icon-bitcoin" */ '@bigcommerce/checkout/ui/icon/IconBitCoin'
+                ),
+        ),
     },
     BITCOIN_CASH: {
         instrument: 'bitcoin-cash',
-        component: IconBitCoinCash,
+        component: lazy(
+            () =>
+                import(
+                    /* webpackChunkName: "icon-bitcoin-cash" */ '@bigcommerce/checkout/ui/icon/IconBitCoinCash'
+                ),
+        ),
     },
     BANCONTACT: {
         instrument: 'bancontact',
-        component: IconCardBancontact,
+        component: lazy(
+            () =>
+                import(
+                    /* webpackChunkName: "icon-card-bancontact" */ '@bigcommerce/checkout/ui/icon/IconCardBancontact'
+                ),
+        ),
     },
     CARNET: {
         instrument: 'carnet',
-        component: IconCardCarnet,
+        component: lazy(
+            () =>
+                import(
+                    /* webpackChunkName: "icon-card-carnet" */ '@bigcommerce/checkout/ui/icon/IconCardCarnet'
+                ),
+        ),
     },
     CB: {
         instrument: 'cb',
-        component: IconCardCB,
+        component: lazy(
+            () =>
+                import(
+                    /* webpackChunkName: "icon-card-cb" */ '@bigcommerce/checkout/ui/icon/IconCardCB'
+                ),
+        ),
     },
     DINERS: {
         instrument: 'diners-club',
-        component: IconCardDinersClub,
+        component: lazy(
+            () =>
+                import(
+                    /* webpackChunkName: "icon-card-diners-club" */ '@bigcommerce/checkout/ui/icon/IconCardDinersClub'
+                ),
+        ),
     },
     DANKORT: {
         instrument: 'dankort',
-        component: IconCardDankort,
+        component: lazy(
+            () =>
+                import(
+                    /* webpackChunkName: "icon-card-dankort" */ '@bigcommerce/checkout/ui/icon/IconCardDankort'
+                ),
+        ),
     },
     DISCOVER: {
         instrument: 'discover',
-        component: IconCardDiscover,
+        component: lazy(
+            () =>
+                import(
+                    /* webpackChunkName: "icon-card-discover" */ '@bigcommerce/checkout/ui/icon/IconCardDiscover'
+                ),
+        ),
     },
     DOGECOIN: {
         instrument: 'dogecoin',
-        component: IconDogeCoin,
+        component: lazy(
+            () =>
+                import(
+                    /* webpackChunkName: "icon-dogecoin" */ '@bigcommerce/checkout/ui/icon/IconDogeCoin'
+                ),
+        ),
     },
     ELECTRON: {
         instrument: 'electron',
-        component: IconCardElectron,
+        component: lazy(
+            () =>
+                import(
+                    /* webpackChunkName: "icon-card-electron" */ '@bigcommerce/checkout/ui/icon/IconCardElectron'
+                ),
+        ),
     },
     ELO: {
         instrument: 'elo',
-        component: IconCardElo,
+        component: lazy(
+            () =>
+                import(
+                    /* webpackChunkName: "icon-card-elo" */ '@bigcommerce/checkout/ui/icon/IconCardElo'
+                ),
+        ),
     },
     ETHEREUM: {
         instrument: 'ethereum',
-        component: IconEthereum,
+        component: lazy(
+            () =>
+                import(
+                    /* webpackChunkName: "icon-ethereum" */ '@bigcommerce/checkout/ui/icon/IconEthereum'
+                ),
+        ),
     },
     HIPER: {
         instrument: 'hiper',
-        component: IconCardHipercard,
+        component: lazy(
+            () =>
+                import(
+                    /* webpackChunkName: "icon-card-hipercard" */ '@bigcommerce/checkout/ui/icon/IconCardHipercard'
+                ),
+        ),
     },
     JCB: {
         instrument: 'jcb',
-        component: IconCardJCB,
+        component: lazy(
+            () =>
+                import(
+                    /* webpackChunkName: "icon-card-jcb" */ '@bigcommerce/checkout/ui/icon/IconCardJCB'
+                ),
+        ),
     },
     LITECOIN: {
         instrument: 'litecoin',
-        component: IconLiteCoin,
+        component: lazy(
+            () =>
+                import(
+                    /* webpackChunkName: "icon-litecoin" */ '@bigcommerce/checkout/ui/icon/IconLiteCoin'
+                ),
+        ),
     },
     MADA: {
         instrument: 'mada',
-        component: IconCardMada,
+        component: lazy(
+            () =>
+                import(
+                    /* webpackChunkName: "icon-card-mada" */ '@bigcommerce/checkout/ui/icon/IconCardMada'
+                ),
+        ),
     },
     MAESTRO: {
         instrument: 'maestro',
-        component: IconCardMaestro,
+        component: lazy(
+            () =>
+                import(
+                    /* webpackChunkName: "icon-card-maestro" */ '@bigcommerce/checkout/ui/icon/IconCardMaestro'
+                ),
+        ),
     },
     MC: {
         instrument: 'mastercard',
-        component: IconCardMastercard,
+        component: lazy(
+            () =>
+                import(
+                    /* webpackChunkName: "icon-card-mastercard" */ '@bigcommerce/checkout/ui/icon/IconCardMastercard'
+                ),
+        ),
     },
     SHIBA_INU: {
         instrument: 'shiba-inu',
-        component: IconShibaInu,
+        component: lazy(
+            () =>
+                import(
+                    /* webpackChunkName: "icon-shiba-inu" */ '@bigcommerce/checkout/ui/icon/IconShibaInu'
+                ),
+        ),
     },
     TROY: {
         instrument: 'troy',
-        component: IconCardTroy,
+        component: lazy(
+            () =>
+                import(
+                    /* webpackChunkName: "icon-card-troy" */ '@bigcommerce/checkout/ui/icon/IconCardTroy'
+                ),
+        ),
     },
     CUP: {
         instrument: 'unionpay',
-        component: IconCardUnionPay,
+        component: lazy(
+            () =>
+                import(
+                    /* webpackChunkName: "icon-card-unionpay" */ '@bigcommerce/checkout/ui/icon/IconCardUnionPay'
+                ),
+        ),
     },
     USD_COIN: {
         instrument: 'usd-coin',
-        component: IconUsdCoin,
+        component: lazy(
+            () =>
+                import(
+                    /* webpackChunkName: "icon-usd-coin" */ '@bigcommerce/checkout/ui/icon/IconUsdCoin'
+                ),
+        ),
     },
     VISA: {
         instrument: 'visa',
-        component: IconCardVisa,
+        component: lazy(
+            () =>
+                import(
+                    /* webpackChunkName: "icon-card-visa" */ '@bigcommerce/checkout/ui/icon/IconCardVisa'
+                ),
+        ),
     },
 };
 
