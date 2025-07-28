@@ -64,12 +64,6 @@
             }
         }
 
-        .floating-input:not(:focus),
-        .floating-select:not(:focus),
-        .floating-textarea {
-            border-color: $floating-label-border-color;
-        }
-
         .floating-textarea {
             background-color: $floating-label-bg-color;
             padding-top: $input-verticalPadding * 2.5;
@@ -140,6 +134,14 @@
                     font-size: $fontSize-tiny;
                 }
             }
+        }
+    }
+
+    .form-field:not(.form-field--error) {
+        .floating-input:not(:focus),
+        .floating-select:not(:focus),
+        .floating-textarea {
+            border-color: $floating-label-border-color;
         }
     }
 
