@@ -3,6 +3,7 @@ import {
     CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
+import { createBoltCustomerStrategy } from '@bigcommerce/checkout-sdk/integrations';
 import React, { FunctionComponent } from 'react';
 
 import { AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
@@ -67,6 +68,7 @@ describe('CheckoutSuggestion', () => {
 
         expect(defaultProps.initializeCustomer).toHaveBeenCalledWith({
             methodId: 'bolt',
+            integrations: [createBoltCustomerStrategy],
             bolt: {
                 onInit: expect.any(Function),
             },

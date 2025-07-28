@@ -4,6 +4,7 @@ import {
     createCheckoutService,
     createLanguageService,
 } from '@bigcommerce/checkout-sdk';
+import { createStripeLinkV2CustomerStrategy } from '@bigcommerce/checkout-sdk/integrations';
 import React from 'react';
 
 import { CheckoutButtonProps } from '@bigcommerce/checkout/payment-integration-api';
@@ -39,6 +40,7 @@ describe('StripeLinkV2Button', () => {
 
         expect(checkoutService.initializeCustomer).toHaveBeenCalledWith({
             methodId: defaultProps.methodId,
+            integrations: [createStripeLinkV2CustomerStrategy],
             stripeocs: {
                 loadingContainerId: 'checkout-app',
                 container: 'stripe-link',

@@ -4,6 +4,7 @@ import {
     createCheckoutService,
     createLanguageService,
 } from '@bigcommerce/checkout-sdk';
+import { createPayPalCommerceCustomerStrategy } from '@bigcommerce/checkout-sdk/integrations';
 import React from 'react';
 
 import { CheckoutButtonProps } from '@bigcommerce/checkout/payment-integration-api';
@@ -39,6 +40,7 @@ describe('PayPalCommerceButton', () => {
 
         expect(checkoutService.initializeCustomer).toHaveBeenCalledWith({
             methodId: defaultProps.methodId,
+            integrations: [createPayPalCommerceCustomerStrategy],
             paypalcommerce: {
                 container: 'paypalcommerce-button-container',
                 onClick: expect.any(Function),

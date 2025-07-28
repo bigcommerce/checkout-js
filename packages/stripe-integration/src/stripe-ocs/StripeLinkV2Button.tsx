@@ -1,3 +1,4 @@
+import { createStripeLinkV2CustomerStrategy } from '@bigcommerce/checkout-sdk/integrations';
 import React, { FunctionComponent } from 'react';
 
 import { CheckoutButton } from '@bigcommerce/checkout/checkout-button-integration';
@@ -20,6 +21,7 @@ const StripeLinkV2Button: FunctionComponent<CheckoutButtonProps> = (props) => {
         <CheckoutButton
             additionalInitializationOptions={additionalInitializationOptions}
             {...props}
+            integrations={[createStripeLinkV2CustomerStrategy]}
         />
     );
 };

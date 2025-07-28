@@ -1,6 +1,6 @@
 import { CheckoutSelectors, CheckoutService } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
-import React, { FunctionComponent, memo } from 'react';
+import React, { FunctionComponent, lazy, memo } from 'react';
 
 import { TranslatedString, useLocale } from '@bigcommerce/checkout/locale';
 import { CheckoutContextProps , useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
@@ -10,7 +10,8 @@ import { withCheckout } from '../checkout';
 
 import { getSupportedMethodIds } from './getSupportedMethods';
 import resolveCheckoutButton from './resolveCheckoutButton';
-import CheckoutButtonV1Resolver from './WalletButtonV1Resolver';
+
+const CheckoutButtonV1Resolver = lazy(() => import(/* webpackChunkName: "wallet-button-v1-resolver" */'./WalletButtonV1Resolver'));
 
 interface CheckoutButtonContainerProps {
     isPaymentStepActive: boolean;
