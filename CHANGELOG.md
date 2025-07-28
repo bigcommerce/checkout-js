@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.632.0](https://github.com/bigcommerce/checkout-js/compare/v1.631.0...v1.632.0) (2025-07-28)
+
+
+### Features
+
+* **payment:** Address is not populated to Klarna modal ([#2459](https://github.com/bigcommerce/checkout-js/issues/2459)) ([fdeff52](https://github.com/bigcommerce/checkout-js/commit/fdeff5246b9aaf9027cafd9df04bdf95d5be8b71))
+* **payment:** checkout-sdk version bump ([0078eda](https://github.com/bigcommerce/checkout-js/commit/0078eda774b41b59641bd68bcc86b329eea43645))
+
 ## [1.631.0](https://github.com/bigcommerce/checkout-js/compare/v1.630.0...v1.631.0) (2025-07-25)
 
 
