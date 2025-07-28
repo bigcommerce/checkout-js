@@ -11,6 +11,7 @@ import {
     SignInEmail,
     StoreConfig,
 } from '@bigcommerce/checkout-sdk';
+import { createBigCommercePaymentsFastlaneCustomerStrategy, createBoltCustomerStrategy, createBraintreeFastlaneCustomerStrategy, createPayPalCommerceFastlaneCustomerStrategy, createStripeLinkV2CustomerStrategy, createStripeUPECustomerStrategy } from '@bigcommerce/checkout-sdk/integrations';
 import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 
@@ -128,7 +129,18 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
 
         try {
             if (providerWithCustomCheckout && providerWithCustomCheckout !== PaymentMethodId.StripeUPE) {
-                await initializeCustomer({methodId: providerWithCustomCheckout});
+                // TODO: Split out into separate chunks so they can be lazy loaded
+                await initializeCustomer({
+                    methodId: providerWithCustomCheckout,
+                    integrations: [
+                        createBigCommercePaymentsFastlaneCustomerStrategy,
+                        createBraintreeFastlaneCustomerStrategy,
+                        createPayPalCommerceFastlaneCustomerStrategy,
+                        createBoltCustomerStrategy,
+                        createStripeUPECustomerStrategy,
+                        createStripeLinkV2CustomerStrategy,
+                    ],
+                });
             }
         } catch (error) {
             onUnhandledError(error);

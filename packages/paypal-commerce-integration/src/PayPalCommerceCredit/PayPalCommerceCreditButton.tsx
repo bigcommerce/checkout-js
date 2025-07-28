@@ -1,3 +1,4 @@
+import { createPayPalCommerceCreditCustomerStrategy } from '@bigcommerce/checkout-sdk/integrations';
 import React, { FunctionComponent } from 'react';
 
 import { CheckoutButton } from '@bigcommerce/checkout/checkout-button-integration';
@@ -19,6 +20,7 @@ const PayPalCommerceCreditButton: FunctionComponent<CheckoutButtonProps> = (prop
         <CheckoutButton
             additionalInitializationOptions={additionalInitializationOptions}
             {...props}
+            integrations={[createPayPalCommerceCreditCustomerStrategy]}
         />
     );
 };

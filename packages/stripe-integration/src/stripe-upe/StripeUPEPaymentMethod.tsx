@@ -1,4 +1,8 @@
-import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import { CustomerInitializeOptions, PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import {
+    createStripeUPECustomerStrategy,
+    createStripeUPEPaymentStrategy,
+} from '@bigcommerce/checkout-sdk/integrations';
 import { noop, some } from 'lodash';
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 
@@ -84,6 +88,7 @@ const StripeUPEPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
             return checkoutService.initializePayment({
                 ...options,
+                integrations: [createStripeUPEPaymentStrategy],
                 stripeupe: {
                     containerId,
                     style: {
@@ -110,6 +115,16 @@ const StripeUPEPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         ],
     );
 
+    const initializeStripeCustomer = useCallback(
+        (options: CustomerInitializeOptions) => {
+            return checkoutService.initializeCustomer({
+                ...options,
+                integrations: [createStripeUPECustomerStrategy],
+            });
+        },
+        [checkoutService],
+    );
+
     const renderCheckoutThemeStylesForStripeUPE = () => {
         return (
             <div className="optimizedCheckout-form-input" id={`${containerId}--input`}>
@@ -130,6 +145,7 @@ const StripeUPEPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                 disableSubmit={disableSubmit}
                 hideContentWhenSignedOut
                 hidePaymentSubmitButton={hidePaymentSubmitButton}
+                initializeCustomer={initializeStripeCustomer}
                 initializePayment={initializeStripePayment}
                 instruments={instruments}
                 isInstrumentCardCodeRequired={isInstrumentCardCodeRequiredSelector(checkoutState)}

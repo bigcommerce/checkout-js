@@ -1,4 +1,5 @@
 import { createCheckoutService } from '@bigcommerce/checkout-sdk';
+import { createBoltCustomerStrategy } from '@bigcommerce/checkout-sdk/integrations';
 import userEvent from '@testing-library/user-event';
 import React, { act, FunctionComponent } from 'react';
 
@@ -49,6 +50,7 @@ describe('BoltCheckoutSuggestion', () => {
         const deinitializeOptions = { methodId: 'bolt' };
         const initializeOptions = {
             methodId: 'bolt',
+            integrations: [createBoltCustomerStrategy],
             bolt: {
                 onInit: expect.any(Function),
             },

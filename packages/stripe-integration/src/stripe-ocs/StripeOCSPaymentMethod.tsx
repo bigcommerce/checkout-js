@@ -1,4 +1,8 @@
-import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import { CustomerInitializeOptions, PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import {
+    createStripeLinkV2CustomerStrategy,
+    createStripeOCSPaymentStrategy,
+} from '@bigcommerce/checkout-sdk/integrations';
 import { noop, some } from 'lodash';
 import React, { FunctionComponent, useCallback, useContext, useEffect, useRef } from 'react';
 
@@ -61,6 +65,7 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         async (options: PaymentInitializeOptions) => {
             return checkoutService.initializePayment({
                 ...options,
+                integrations: [createStripeOCSPaymentStrategy],
                 [method.gateway || method.id]: {
                     containerId,
                     layout: {
@@ -92,6 +97,16 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             renderSubmitButton,
             onToggle,
         ],
+    );
+
+    const initializeStripeCustomer = useCallback(
+        (options: CustomerInitializeOptions) => {
+            return checkoutService.initializeCustomer({
+                ...options,
+                integrations: [createStripeLinkV2CustomerStrategy],
+            });
+        },
+        [checkoutService],
     );
 
     const renderCheckoutThemeStylesForStripeOCS = () => {
@@ -158,6 +173,7 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                 disableSubmit={disableSubmit}
                 hideContentWhenSignedOut
                 hidePaymentSubmitButton={hidePaymentSubmitButton}
+                initializeCustomer={initializeStripeCustomer}
                 initializePayment={initializeStripePayment}
                 instruments={instruments}
                 isInstrumentCardCodeRequired={isInstrumentCardCodeRequiredSelector(checkoutState)}
