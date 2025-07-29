@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.633.0](https://github.com/bigcommerce/checkout-js/compare/v1.632.1...v1.633.0) (2025-07-29)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9301 Update Form Field Background Color ([#2442](https://github.com/bigcommerce/checkout-js/issues/2442)) ([f070612](https://github.com/bigcommerce/checkout-js/commit/f07061242648fc9d299aede1e435c782add85d11))
+
 ### [1.632.1](https://github.com/bigcommerce/checkout-js/compare/v1.632.0...v1.632.1) (2025-07-28)
 
 ## [1.632.0](https://github.com/bigcommerce/checkout-js/compare/v1.631.0...v1.632.0) (2025-07-28)
