@@ -17,10 +17,13 @@ const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
 };
 
 const customRender = (ui: ReactElement, options?: Omit<RenderOptions, 'wrapper'>) =>
-    render(ui, { wrapper: AllTheProviders, legacyRoot: true, ...options });
+    render(ui, { ...options, wrapper: AllTheProviders, legacyRoot: true });
+const customRenderWithoutWrapper = (ui: ReactElement, options?: RenderOptions) =>
+    render(ui, { ...options, legacyRoot: true });
 
 // eslint-disable-next-line import/export
 export * from '@testing-library/react';
 
 // eslint-disable-next-line import/export
 export { customRender as render };
+export { customRenderWithoutWrapper as renderWithoutWrapper };

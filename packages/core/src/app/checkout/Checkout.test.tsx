@@ -4,7 +4,6 @@ import {
     createEmbeddedCheckoutMessenger,
     EmbeddedCheckoutMessenger,
 } from '@bigcommerce/checkout-sdk';
-import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { noop } from 'lodash';
 import React, { act, FunctionComponent } from 'react';
@@ -28,6 +27,7 @@ import {
     consignmentAutomaticDiscount,
     consignmentCouponDiscount,
 } from '@bigcommerce/checkout/test-framework';
+import { renderWithoutWrapper as render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
 import { createErrorLogger } from '../common/error';
 import {
