@@ -3,7 +3,8 @@ import React, { FunctionComponent } from 'react';
 
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { TranslatedString } from "@bigcommerce/checkout/locale";
-import { useCheckout , useStyleContext } from "@bigcommerce/checkout/payment-integration-api";
+import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
+import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { IconClose, IconSize } from "../ui/icon";
 
@@ -35,7 +36,7 @@ const ConsignmentListItem: FunctionComponent<ConsignmentListItemProps> = ({
 }: ConsignmentListItemProps) => {
 
     const { checkoutService: { deleteConsignment } } = useCheckout();
-    const { newFontStyle } = useStyleContext();
+    const { newFontStyle } = useThemeContext();
 
     const handleClose = async () => {
         await deleteConsignment(consignment.id);

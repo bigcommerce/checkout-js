@@ -3,14 +3,16 @@ import { render, RenderOptions } from '@testing-library/react';
 import React, { ReactElement } from 'react';
 
 import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
-import { CheckoutProvider, StyleProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { ThemeProvider } from '@bigcommerce/checkout/ui';
 
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
     return (
         <CheckoutProvider checkoutService={createCheckoutService()}>
             <LocaleContext.Provider value={createLocaleContext(getStoreConfig())}>
-                <StyleProvider>{children}</StyleProvider>
+                <ThemeProvider>{children}</ThemeProvider>
             </LocaleContext.Provider>
         </CheckoutProvider>
     );

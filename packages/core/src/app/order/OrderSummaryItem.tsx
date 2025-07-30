@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { isNumber } from 'lodash';
 import React, { FunctionComponent, memo, ReactNode } from 'react';
 
-import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
+import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { ShopperCurrency } from '../currency';
 
@@ -31,7 +31,7 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
     quantity,
     description,
 }) => {
-    const { newFontStyle } = useStyleContext();
+    const { newFontStyle } = useThemeContext();
 
     return (
         <div className="product" data-test="cart-item">

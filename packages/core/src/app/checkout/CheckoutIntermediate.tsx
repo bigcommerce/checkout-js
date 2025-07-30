@@ -5,8 +5,7 @@ import {
 import React from 'react';
 
 import { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
-import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
-import { CheckoutPageSkeleton } from '@bigcommerce/checkout/ui';
+import { CheckoutPageSkeleton, useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { EmbeddedCheckoutStylesheet } from '../embeddedCheckout';
 
@@ -26,7 +25,7 @@ interface CheckoutIntermediateProps {
 const CheckoutIntermediate:React.FC<CheckoutIntermediateProps>= (props) => {
 	const { checkoutId } = props;
 	const { isLoadingCheckout } = useLoadCheckout(checkoutId);
-	const { themeV2 } = useStyleContext();
+	const { themeV2 } = useThemeContext();
 
 	if (isLoadingCheckout) {
 		return <CheckoutPageSkeleton />;

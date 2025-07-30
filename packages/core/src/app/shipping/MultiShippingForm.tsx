@@ -2,8 +2,8 @@ import classNames from 'classnames';
 import React, {FunctionComponent, ReactNode, useMemo, useState} from 'react';
 
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { useCheckout , useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
-import { Alert, AlertType } from '@bigcommerce/checkout/ui';
+import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { Alert, AlertType, useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { withFormikExtended } from '../common/form';
 import { EMPTY_ARRAY } from '../common/utility';
@@ -41,7 +41,7 @@ const MultiShippingForm: FunctionComponent<MultiShippingFormProps> = ({
 }: MultiShippingFormProps) => {
     const [errorConsignmentNumber, setErrorConsignmentNumber] = useState<number | undefined>();
 
-    const { newFontStyle } = useStyleContext();
+    const { newFontStyle } = useThemeContext();
     const {
         checkoutState: {
             data: { getConsignments, getConfig },

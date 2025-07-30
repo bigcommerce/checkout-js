@@ -9,7 +9,8 @@ import { isEmpty } from 'lodash';
 import React, { FunctionComponent, memo } from 'react';
 
 import { localizeAddress } from '@bigcommerce/checkout/locale';
-import { CheckoutContextProps , useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
+import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../checkout';
 
@@ -37,7 +38,7 @@ const StaticAddress: FunctionComponent<
         address: addressWithoutLocalization,
     }) => {
 
-    const { newFontStyle } = useStyleContext();    
+    const { newFontStyle } = useThemeContext();
 
     const address = localizeAddress(addressWithoutLocalization, countries);
     const isValid = !isEmpty(address);

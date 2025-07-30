@@ -3,8 +3,8 @@ import classNames from 'classnames';
 import React from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { useCheckout , useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
-import { Alert, AlertType } from '@bigcommerce/checkout/ui';
+import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { Alert, AlertType, useThemeContext } from '@bigcommerce/checkout/ui';
 
 import MultiShippingOptionsListV2 from './MultiShippingOptionsList';
 import { isLoadingSelector } from './ShippingOptions';
@@ -23,7 +23,7 @@ export const MultiShippingOptions = ({
     shippingQuoteFailedMessage,
 }: MultiShippingOptionsV2Props) => {
     const { checkoutService, checkoutState } = useCheckout();
-    const { newFontStyle } = useStyleContext();
+    const { newFontStyle } = useThemeContext();
 
     const selectShippingOption = async (consignmentId: string, shippingOptionId: string) => {
         await checkoutService.selectConsignmentShippingOption(consignmentId, shippingOptionId);

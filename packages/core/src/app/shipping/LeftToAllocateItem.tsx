@@ -2,7 +2,7 @@ import classNames from "classnames";
 import React, { FunctionComponent } from "react";
 
 import { TranslatedString } from "@bigcommerce/checkout/locale";
-import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
+import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { FormField, TextInput } from "../ui/form";
 import { isMobileView as isMobileViewUI } from "../ui/responsive";
@@ -16,7 +16,7 @@ interface LeftToAllocateItemProps {
 
 const LeftToAllocateItem: FunctionComponent<LeftToAllocateItemProps> = ({ item, error }: LeftToAllocateItemProps) => {
     const isMobileView = isMobileViewUI();
-    const { newFontStyle } = useStyleContext();
+    const { newFontStyle } = useThemeContext();
 
     return (
         <tr>

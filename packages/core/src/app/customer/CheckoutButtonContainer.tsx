@@ -3,8 +3,8 @@ import classNames from 'classnames';
 import React, { FunctionComponent, memo } from 'react';
 
 import { TranslatedString, useLocale } from '@bigcommerce/checkout/locale';
-import { CheckoutContextProps , useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
-import { WalletButtonsContainerSkeleton } from '@bigcommerce/checkout/ui';
+import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { useThemeContext, WalletButtonsContainerSkeleton } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../checkout';
 
@@ -46,7 +46,7 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
         onWalletButtonClick,
     }) => {
     const { language } = useLocale();
-    const { newFontStyle } = useStyleContext();
+    const { newFontStyle } = useThemeContext();
 
     try {
         checkEmbeddedSupport(availableMethodIds);

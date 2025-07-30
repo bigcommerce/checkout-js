@@ -3,7 +3,8 @@ import React, { FC, ReactNode, useCallback, useEffect, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
-import { useCheckout , useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { ShopperCurrency } from '../currency';
 
@@ -67,7 +68,7 @@ const OrderSummaryPrice: FC<OrderSummaryPriceProps> = ({
         }
     } = useCheckout();
 
-    const { newFontStyle } = useStyleContext();
+    const { newFontStyle } = useThemeContext();
     const displayValue = getDisplayValue(amount, zeroLabel);
     const isActionDisabled = isSubmittingOrder();
 

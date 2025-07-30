@@ -30,7 +30,6 @@ import {
 import {
     CHECKOUT_ROOT_NODE_ID,
     CheckoutProvider,
-    StyleProvider,
 } from '@bigcommerce/checkout/payment-integration-api';
 import {
     CheckoutPageNodeObject,
@@ -40,6 +39,7 @@ import {
     checkoutWithMultiShippingCart,
 } from '@bigcommerce/checkout/test-framework';
 import { renderWithoutWrapper as render, screen } from '@bigcommerce/checkout/test-utils';
+import { ThemeProvider } from '@bigcommerce/checkout/ui';
 
 import { getBillingAddress } from '../billing/billingAddresses.mock';
 import { getCart } from '../cart/carts.mock';
@@ -124,9 +124,9 @@ describe('Customer Component', () => {
                                 log: jest.fn(),
                             }}
                         >
-                            <StyleProvider>
+                            <ThemeProvider>
                                 <Checkout {...props} />
-                            </StyleProvider>
+                            </ThemeProvider>
                         </ExtensionProvider>
                     </AnalyticsProviderMock>
                 </LocaleProvider>
@@ -420,9 +420,9 @@ describe('Customer Component with Stripe', () => {
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
                     <AnalyticsProviderMock>
-                        <StyleProvider>
+                        <ThemeProvider>
                             <Customer {...props} />
-                        </StyleProvider>
+                        </ThemeProvider>
                     </AnalyticsProviderMock>
                 </LocaleContext.Provider>
             </CheckoutProvider>

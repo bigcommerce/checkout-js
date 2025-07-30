@@ -2,7 +2,7 @@ import React, { FunctionComponent, useState } from 'react';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
+import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { AddressSelectProps } from './AddressSelect';
 import SingleLineStaticAddress from './SingleLineStaticAddress';
@@ -17,7 +17,7 @@ const AddressSelectButton: FunctionComponent<AddressSelectButtonProps & WithLang
     showSingleLineAddress,
     placeholderText,
 }) => {
-    const { newFontStyle } = useStyleContext();
+    const { newFontStyle } = useThemeContext();
     const [ariaExpanded, setAriaExpanded] = useState(false);
 
     const SelectedAddress = () => {

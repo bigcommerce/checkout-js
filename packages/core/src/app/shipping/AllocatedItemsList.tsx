@@ -1,7 +1,7 @@
 import React from "react";
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
+import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { IconClose } from "../ui/icon";
 
@@ -15,7 +15,7 @@ interface AllocatedItemsListProps {
 }
 
 const AllocatedItemsList = ({ assignedItems, onUnassignItem }: AllocatedItemsListProps) => {
-    const { newFontStyle } = useStyleContext();
+    const { newFontStyle } = useThemeContext();
 
     return (
         <div className="allocated-line-items">

@@ -2,7 +2,7 @@ import { ShippingOption } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import React from 'react';
 
-import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
+import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { ShopperCurrency } from '../../currency';
 
@@ -20,7 +20,7 @@ const StaticShippingOption: React.FunctionComponent<StaticShippingOptionProps> =
     method,
     shippingCostAfterDiscount,
 }) => {
-    const { newFontStyle } = useStyleContext();
+    const { newFontStyle } = useThemeContext();
 
     const renderShippingPrice = () => {
         if (shippingCostAfterDiscount !== undefined && shippingCostAfterDiscount !== method.cost) {
@@ -37,7 +37,7 @@ const StaticShippingOption: React.FunctionComponent<StaticShippingOptionProps> =
         return (
             <ShopperCurrency amount={method.cost} />
         )
-    
+
     }
 
     return (
