@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.634.0](https://github.com/bigcommerce/checkout-js/compare/v1.633.0...v1.634.0) (2025-07-30)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9395 Add Theme Switch Capability ([#2462](https://github.com/bigcommerce/checkout-js/issues/2462)) ([bf2805c](https://github.com/bigcommerce/checkout-js/commit/bf2805cf7abbce1fd13a72a278c753fc179d9893))
+
 ## [1.633.0](https://github.com/bigcommerce/checkout-js/compare/v1.632.1...v1.633.0) (2025-07-29)
 
 
