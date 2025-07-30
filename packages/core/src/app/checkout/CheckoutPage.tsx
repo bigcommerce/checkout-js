@@ -12,7 +12,7 @@ import {
 	FlashMessage,
 	PaymentMethod,
 	Promotion,
-	RequestOptions
+	RequestOptions,
 } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { find, findIndex } from 'lodash';
