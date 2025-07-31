@@ -2,7 +2,7 @@ import { PhysicalItem } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import React, { FunctionComponent, memo } from 'react';
 
-import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
+import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { MultiShippingTableItemWithType } from './MultishippingType';
 
@@ -40,7 +40,7 @@ const ConsignmentLineItemDetail: FunctionComponent<ConsignmentLineItemDetailProp
     lineItems,
     isMultiShippingSummary = false,
 }) => {
-    const { newFontStyle } = useStyleContext();
+    const { newFontStyle } = useThemeContext();
 
     return (
         <ul className="consignment-line-item-list">

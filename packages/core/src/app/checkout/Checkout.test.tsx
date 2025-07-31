@@ -18,7 +18,6 @@ import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale
 import {
     CHECKOUT_ROOT_NODE_ID,
     CheckoutProvider,
-    StyleProvider,
 } from '@bigcommerce/checkout/payment-integration-api';
 import {
     CheckoutPageNodeObject,
@@ -28,6 +27,7 @@ import {
     consignmentCouponDiscount,
 } from '@bigcommerce/checkout/test-framework';
 import { renderWithoutWrapper as render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
+import { ThemeProvider } from '@bigcommerce/checkout/ui';
 
 import { createErrorLogger } from '../common/error';
 import {
@@ -99,9 +99,9 @@ describe('Checkout', () => {
                 <LocaleProvider checkoutService={checkoutService}>
                     <AnalyticsProviderMock>
                         <ExtensionProvider checkoutService={checkoutService} errorLogger={defaultProps.errorLogger}>
-                            <StyleProvider>
+                            <ThemeProvider>
                                 <Checkout {...props} />
-                            </StyleProvider>
+                            </ThemeProvider>
                         </ExtensionProvider>
                     </AnalyticsProviderMock>
                 </LocaleProvider>

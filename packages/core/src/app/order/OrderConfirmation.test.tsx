@@ -12,8 +12,9 @@ import React, { FunctionComponent } from 'react';
 import { AnalyticsContextProps, AnalyticsEvents, AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import { createLocaleContext, LocaleContextType, LocaleProvider } from '@bigcommerce/checkout/locale';
-import { CheckoutProvider, StyleProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { renderWithoutWrapper as render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
+import { ThemeProvider } from '@bigcommerce/checkout/ui';
 
 import { createErrorLogger } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
@@ -66,9 +67,9 @@ describe('OrderConfirmation', () => {
                 <LocaleProvider checkoutService={checkoutService} value={localeContext}>
                     <AnalyticsProviderMock>
                         <ExtensionProvider checkoutService={checkoutService}>
-                            <StyleProvider>
+                            <ThemeProvider>
                                 <OrderConfirmation {...props} />
-                            </StyleProvider>
+                            </ThemeProvider>
                         </ExtensionProvider>
                     </AnalyticsProviderMock>
                 </LocaleProvider>

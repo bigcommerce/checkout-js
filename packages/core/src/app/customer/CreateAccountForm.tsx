@@ -9,7 +9,7 @@ import React, { FunctionComponent, useMemo } from 'react';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
+import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { isRequestError } from '../common/error';
 import { Alert, AlertType } from '../ui/alert';
@@ -72,7 +72,7 @@ function transformFormFieldsData(formFields: FormField[], defaultShouldSubscribe
 const CreateAccountForm: FunctionComponent<
     CreateAccountFormProps & WithLanguageProps & FormikProps<CreateAccountFormValues>
 > = ({ fixNewsletterCheckboxExperimentEnabled, formFields, createAccountError, isCreatingAccount, isExecutingPaymentMethodCheckout, onCancel, isFloatingLabelEnabled, defaultShouldSubscribe }) => {
-    const { newFontStyle } = useStyleContext();
+    const { newFontStyle } = useThemeContext();
     const createAccountErrorMessage = useMemo(() => {
         if (!createAccountError) {
             return;

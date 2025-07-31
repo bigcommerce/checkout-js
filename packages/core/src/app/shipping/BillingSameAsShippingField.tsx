@@ -1,7 +1,7 @@
 import React, { FunctionComponent, memo, useMemo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
+import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { CheckboxFormField } from '../ui/form';
 
@@ -12,7 +12,7 @@ export interface BillingSameAsShippingFieldProps {
 const BillingSameAsShippingField: FunctionComponent<BillingSameAsShippingFieldProps> = ({
     onChange,
 }) => {
-    const { newFontStyle } = useStyleContext();
+    const { newFontStyle } = useThemeContext();
 
     const labelContent = useMemo(
         () => <TranslatedString id="billing.use_shipping_address_label" />,

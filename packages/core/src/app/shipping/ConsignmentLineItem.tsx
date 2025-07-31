@@ -4,7 +4,8 @@ import React, { FunctionComponent, useState } from "react";
 
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { useCheckout , useStyleContext } from "@bigcommerce/checkout/payment-integration-api";
+import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
+import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { IconChevronDown, IconChevronUp } from "../ui/icon";
 import { isMobileView as isMobileViewUI } from "../ui/responsive";
@@ -31,7 +32,7 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
     const { unassignedItems } = useMultiShippingConsignmentItems();
     const { checkoutService: { assignItemsToAddress: assignItem } } = useCheckout();
     const deleteItem = useDeallocateItem();
-    const { newFontStyle } = useStyleContext();
+    const { newFontStyle } = useThemeContext();
 
     const toggleAllocateItemsModal = () => {
         setIsOpenAllocateItemsModal(!isOpenAllocateItemsModal);
@@ -104,7 +105,7 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
                     {consignment.hasSplitItems && (
                         <ItemSplitTooltip />
                     )}
-                    
+
                     <a
                         className={classNames('expand-items-button',
                             { 'body-cta': newFontStyle }
@@ -138,7 +139,7 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
             {showItems
                 ? <ConsignmentLineItemDetail lineItems={consignment.lineItems} />
                 : null
-            }       
+            }
         </div>
     )
 }

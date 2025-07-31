@@ -4,7 +4,8 @@ import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { CheckoutContextProps, useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
+import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../checkout';
 import { isErrorWithType } from '../common/error';
@@ -47,7 +48,7 @@ const CustomerInfo: FunctionComponent<CustomerInfoProps & WithCheckoutCustomerIn
     onSignOutError = noop,
     signOut,
 }) => {
-    const { newFontStyle } = useStyleContext();
+    const { newFontStyle } = useThemeContext();
 
     const handleSignOut: () => Promise<void> = async () => {
         try {

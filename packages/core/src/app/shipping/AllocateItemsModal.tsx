@@ -5,8 +5,7 @@ import { number, object } from "yup";
 
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { TranslatedString, withLanguage, WithLanguageProps } from "@bigcommerce/checkout/locale";
-import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
-import { Alert, AlertType, ButtonVariant } from "@bigcommerce/checkout/ui";
+import { Alert, AlertType, ButtonVariant, useThemeContext } from "@bigcommerce/checkout/ui";
 
 import { getAddressContent } from "../address/SingleLineStaticAddress";
 import { withFormikExtended } from "../common/form";
@@ -51,7 +50,7 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
     isLoading,
 }: AllocateItemsModalProps & FormikProps<AllocateItemsModalFormValues>) => {
 
-    const { newFontStyle } = useStyleContext();
+    const { newFontStyle } = useThemeContext();
 
     const allocatedOrSelectedItemsMessage = useMemo(() => {
         const leftItemsTotal = unassignedItems.shippableItemsCount;
@@ -124,8 +123,8 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
                 type="submit"
                 variant={ButtonVariant.Primary}
             >
-                {hasItemsAssigned 
-                    ? <TranslatedString id="shipping.multishipping_items_allocate_save" /> 
+                {hasItemsAssigned
+                    ? <TranslatedString id="shipping.multishipping_items_allocate_save" />
                     : <TranslatedString id="shipping.multishipping_items_allocate_allocate" />
                 }
             </Button>
@@ -146,7 +145,7 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
             }
             isOpen={isOpen}
             onRequestClose={onRequestClose}
-        > 
+        >
             <Form>
                 {formErrors.length > 0 && (
                     <div className="form-errors">

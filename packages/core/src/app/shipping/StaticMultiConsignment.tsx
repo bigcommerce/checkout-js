@@ -3,8 +3,9 @@ import classNames from 'classnames';
 import React, { FunctionComponent, memo } from 'react';
 
 import { localizeAddress, TranslatedString } from '@bigcommerce/checkout/locale';
-import { useCheckout , useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 import { isPayPalFastlaneAddress, PoweredByPayPalFastlaneLabel, usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
+import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 import ConsignmentLineItemDetail from './ConsignmentLineItemDetail';
 import findLineItems from './findLineItems';
@@ -32,7 +33,7 @@ const StaticMultiConsignment: FunctionComponent<StaticMultiConsignmentProps> = (
             data: { getShippingCountries },
         },
     } = useCheckout();
-    const { newFontStyle } = useStyleContext();
+    const { newFontStyle } = useThemeContext();
 
     const { shippingAddress: addressWithoutLocalization, selectedShippingOption } = consignment;
     const address = localizeAddress(addressWithoutLocalization, getShippingCountries());
@@ -88,7 +89,7 @@ const StaticMultiConsignment: FunctionComponent<StaticMultiConsignmentProps> = (
                     id="cart.item_count_text"
                 />
                 </span>
-            
+
                 <ConsignmentLineItemDetail isMultiShippingSummary lineItems={lineItems} />
         </div>
 

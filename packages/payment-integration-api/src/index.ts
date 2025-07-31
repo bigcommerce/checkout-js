@@ -25,9 +25,6 @@ export {
     PaymentFormContext,
     PaymentFormProvider,
     usePaymentFormContext,
-    useStyleContext,
-    StyleContext,
-    StyleProvider,
 } from './contexts';
 export {
     CHECKOUT_ROOT_NODE_ID,

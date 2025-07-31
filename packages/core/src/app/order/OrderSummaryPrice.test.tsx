@@ -1,3 +1,4 @@
+import { noop } from 'lodash';
 import React, { ReactNode } from 'react';
 
 import * as paymentIntegrationApi from '@bigcommerce/checkout/payment-integration-api';
@@ -18,6 +19,7 @@ describe('OrderSummaryPrice', () => {
         jest.spyOn(paymentIntegrationApi, 'useCheckout').mockImplementation(
             jest.fn().mockImplementation(() => ({
                 checkoutState: {
+                    data: { getConfig:noop },
                     statuses: {
                         isSubmittingOrder: () => isSubmittingOrder,
                     }

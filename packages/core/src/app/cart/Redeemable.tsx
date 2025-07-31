@@ -8,8 +8,8 @@ import { object, string } from 'yup';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { useCheckout , useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
-import { FormContextType, FormProvider } from '@bigcommerce/checkout/ui';
+import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { FormContextType, FormProvider, useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
@@ -47,7 +47,7 @@ export type RedeemableProps = {
 const Redeemable: FunctionComponent<
     RedeemableProps & WithLanguageProps & FormikProps<RedeemableFormValues>
     > = ({ shouldCollapseCouponCode, showAppliedRedeemables, ...formProps }) => {
-        const { newFontStyle } = useStyleContext();
+        const { newFontStyle } = useThemeContext();
 
         return (
             <Toggle openByDefault={!shouldCollapseCouponCode}>
@@ -90,7 +90,7 @@ const RedeemableForm: FunctionComponent<
             statuses: { isSubmittingOrder }
         }
     } = useCheckout();
-    const { newFontStyle } = useStyleContext();
+    const { newFontStyle } = useThemeContext();
 
     const handleSubmitForm = (setSubmitted: FormContextType['setSubmitted']) => {
         if (isSubmittingOrder()) {

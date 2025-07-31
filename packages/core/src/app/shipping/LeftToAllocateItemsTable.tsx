@@ -2,7 +2,7 @@ import { FormikErrors } from "formik";
 import React, { FunctionComponent } from "react";
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
+import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { isMobileView as isMobileViewUI } from "../ui/responsive";
 
@@ -17,7 +17,7 @@ interface LeftToAllocateItemsTableProps {
 
 const LeftToAllocateItemsTable: FunctionComponent<LeftToAllocateItemsTableProps> = ({ items, formErrors }: LeftToAllocateItemsTableProps) => {
     const isMobileView = isMobileViewUI();
-    const { newFontStyle } = useStyleContext();
+    const { newFontStyle } = useThemeContext();
 
     return (
         <table className="table left-to-allocate-items-table">
@@ -34,7 +34,7 @@ const LeftToAllocateItemsTable: FunctionComponent<LeftToAllocateItemsTableProps>
                         error={formErrors[item.id.toString()]}
                         item={item}
                         key={item.id}
-                    />      
+                    />
                 ))}
             </tbody>
         </table>

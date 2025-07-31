@@ -1,8 +1,7 @@
 import { ShippingOption } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent } from 'react';
 
-import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
-import { RadioInput } from '@bigcommerce/checkout/ui';
+import { RadioInput, useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { ShopperCurrency } from '../../currency';
 
@@ -16,7 +15,7 @@ interface MultiShippingOptionsListItemProps {
 export const MultiShippingOptionsListItem: FunctionComponent<
     MultiShippingOptionsListItemProps
 > = ({ consignmentId, selectedShippingOptionId, shippingOption, handleSelect }) => {
-    const { newFontStyle } = useStyleContext();
+    const { newFontStyle } = useThemeContext();
 
     const label = (
         <span className={newFontStyle ? 'body-regular' : ''}>

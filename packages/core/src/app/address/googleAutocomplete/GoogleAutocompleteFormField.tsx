@@ -4,7 +4,7 @@ import { FieldProps } from 'formik';
 import React, { FunctionComponent, memo, useCallback, useMemo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
+import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { AutocompleteItem } from '../../ui/autocomplete';
 import { FormField, Label } from '../../ui/form';
@@ -42,7 +42,7 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
 }) => {
     const fieldName = parentFieldName ? `${parentFieldName}.${name}` : name;
 
-    const { newFontStyle } = useStyleContext();
+    const { newFontStyle } = useThemeContext();
     const labelContent = useMemo(() => <TranslatedString id="address.address_line_1_label" />, []);
 
     const labelId = getAddressFormFieldLabelId(name);

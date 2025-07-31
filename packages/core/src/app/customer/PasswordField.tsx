@@ -2,7 +2,7 @@ import { FieldProps } from 'formik';
 import React, { FunctionComponent, memo, useCallback, useMemo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
+import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { FormField, TextInput } from '../ui/form';
 import Label from '../ui/form/Label';
@@ -14,7 +14,7 @@ interface WithFloatingLabel {
 }
 
 const PasswordField: FunctionComponent<WithFloatingLabel> = ({ isFloatingLabelEnabled = false }) => {
-    const { newFontStyle } = useStyleContext();
+    const { newFontStyle } = useThemeContext();
 
     const renderInput = useCallback(
         (props: FieldProps) => (

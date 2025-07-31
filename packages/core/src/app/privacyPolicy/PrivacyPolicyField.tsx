@@ -1,7 +1,7 @@
 import React, { FunctionComponent, memo } from 'react';
 
 import { TranslatedHtml } from '@bigcommerce/checkout/locale';
-import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
+import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { CheckboxFormField, Fieldset } from '../ui/form';
 
@@ -30,7 +30,7 @@ const PrivacyPolicyField: FunctionComponent<{ url: string; isExpressPrivacyPolic
     url,
     isExpressPrivacyPolicy,
 }) => {
-    const { newFontStyle } = useStyleContext();
+    const { newFontStyle } = useThemeContext();
 
     if (isExpressPrivacyPolicy) {
         return <PrivacyPolicyAutoConsent newFontStyle={newFontStyle} url={url} />;

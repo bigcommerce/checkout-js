@@ -19,7 +19,6 @@ import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale
 import {
     CHECKOUT_ROOT_NODE_ID,
     CheckoutProvider,
-    StyleProvider,
 } from '@bigcommerce/checkout/payment-integration-api';
 import {
     CheckoutPageNodeObject,
@@ -32,6 +31,7 @@ import {
     shippingQuoteFailedMessage,
 } from '@bigcommerce/checkout/test-framework';
 import { renderWithoutWrapper as render, screen } from '@bigcommerce/checkout/test-utils';
+import { ThemeProvider } from '@bigcommerce/checkout/ui';
 
 import { getAddressContent } from '../address/SingleLineStaticAddress';
 import Checkout, { CheckoutProps } from '../checkout/Checkout';
@@ -110,9 +110,9 @@ describe('Multi-shipping', () => {
                                 log: jest.fn(),
                             }}
                         >
-                            <StyleProvider>
+                            <ThemeProvider>
                                 <Checkout {...props} />
-                            </StyleProvider>
+                            </ThemeProvider>
                         </ExtensionProvider>
                     </AnalyticsProviderMock>
                 </LocaleProvider>

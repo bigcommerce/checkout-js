@@ -4,7 +4,7 @@ import { forIn, noop } from 'lodash';
 import React, { Component, createRef, ReactNode, RefObject } from 'react';
 
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { StyleContext } from '@bigcommerce/checkout/payment-integration-api';
+import { ThemeContext } from '@bigcommerce/checkout/ui';
 
 import { AutocompleteItem } from '../ui/autocomplete';
 import { CheckboxFormField, DynamicFormField, DynamicFormFieldType, Fieldset } from '../ui/form';
@@ -71,8 +71,8 @@ const AUTOCOMPLETE_FIELD_NAME = 'address1';
 class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
     private containerRef: RefObject<HTMLElement> = createRef();
     private nextElement?: HTMLElement | null;
-    static contextType = StyleContext;
-    declare context: React.ContextType<typeof StyleContext>;
+    static contextType = ThemeContext;
+    declare context: React.ContextType<typeof ThemeContext>;
 
     private handleDynamicFormFieldChange: (name: string) => (value: string | string[]) => void =
         memoize((name) => (value) => {

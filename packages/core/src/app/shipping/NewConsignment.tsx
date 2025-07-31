@@ -5,7 +5,8 @@ import React, { useMemo, useState } from "react";
 
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { TranslatedString } from "@bigcommerce/checkout/locale";
-import { useCheckout , useStyleContext } from "@bigcommerce/checkout/payment-integration-api";
+import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
+import { useThemeContext } from "@bigcommerce/checkout/ui";
 
 import { EMPTY_ARRAY } from "../common/utility";
 
@@ -37,7 +38,7 @@ const NewConsignment = ({
     const [consignmentRequest, setConsignmentRequest] = useState<ConsignmentCreateRequestBody | undefined>();
     const [isOpenAllocateItemsModal, setIsOpenAllocateItemsModal] = useState(false);
     const { unassignedItems } = useMultiShippingConsignmentItems();
-    const { newFontStyle } = useStyleContext();
+    const { newFontStyle } = useThemeContext();
     const {
         checkoutState: {
             data: { getShippingCountries, getConsignments: getPreviousConsignments },

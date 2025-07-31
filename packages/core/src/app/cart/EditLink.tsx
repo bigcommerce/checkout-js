@@ -3,8 +3,7 @@ import React, { FunctionComponent, memo, useState } from 'react';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
-import { ConfirmationModal } from '@bigcommerce/checkout/ui';
+import { ConfirmationModal, useThemeContext } from '@bigcommerce/checkout/ui';
 
 export interface EditLinkProps {
     className?: string;
@@ -15,7 +14,7 @@ export interface EditLinkProps {
 const EditLink: FunctionComponent<EditLinkProps> = ({ className, url, isMultiShippingMode }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const { newFontStyle } = useStyleContext();
+    const { newFontStyle } = useThemeContext();
 
     const gotoCartPage = () => {
         window.location.assign(url);

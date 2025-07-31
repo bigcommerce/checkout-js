@@ -1,13 +1,14 @@
 import React, { ReactNode } from 'react';
 
-import { useCheckout } from './CheckoutContext';
-import StyleContext from './StyleContext';
+import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
-export interface StyleProviderProps {
+import ThemeContext from './ThemeContext';
+
+export interface ThemeProviderProps {
     children?: ReactNode;
 }
 
-export const StyleProvider = ({ children }: StyleProviderProps) => {
+export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     const {
         checkoutState: {
             data: { getConfig },
@@ -29,6 +30,6 @@ export const StyleProvider = ({ children }: StyleProviderProps) => {
         (window.location.search && window.location.search.includes('v2')) || newFontStyle;
 
     return (
-        <StyleContext.Provider value={{ newFontStyle, themeV2 }}>{children}</StyleContext.Provider>
+        <ThemeContext.Provider value={{ newFontStyle, themeV2 }}>{children}</ThemeContext.Provider>
     );
 };

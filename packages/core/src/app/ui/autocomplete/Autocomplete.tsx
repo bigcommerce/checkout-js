@@ -2,7 +2,7 @@ import Downshift, { DownshiftState, StateChangeOptions } from 'downshift';
 import { includes, isNumber, noop } from 'lodash';
 import React, { Fragment, PureComponent, ReactChild, ReactNode } from 'react';
 
-import { StyleContext } from '@bigcommerce/checkout/payment-integration-api';
+import { ThemeContext } from '@bigcommerce/checkout/ui';
 
 import { Label } from '../form';
 import { Popover, PopoverList, PopoverListItem } from '../popover';
@@ -23,8 +23,8 @@ export interface AutocompleteProps {
 }
 
 class Autocomplete extends PureComponent<AutocompleteProps> {
-    static contextType = StyleContext;
-    declare context: React.ContextType<typeof StyleContext>;
+    static contextType = ThemeContext;
+    declare context: React.ContextType<typeof ThemeContext>;
 
     render(): ReactNode {
         const {

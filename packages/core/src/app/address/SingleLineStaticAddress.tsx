@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { isEmpty } from 'lodash';
 import React from "react";
 
-import { useStyleContext } from '@bigcommerce/checkout/payment-integration-api';
+import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 import AddressType from "./AddressType";
 
@@ -34,7 +34,7 @@ export const getAddressContent: (value: Address) => string = ({
 };
 
 const SingleLineStaticAddress = ({ address }: SingleLineStaticAddressProps) => {
-    const { newFontStyle } = useStyleContext();
+    const { newFontStyle } = useThemeContext();
 
     const isValid = !isEmpty(address);
 
