@@ -38,7 +38,7 @@ const StaticAddress: FunctionComponent<
         address: addressWithoutLocalization,
     }) => {
 
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
 
     const address = localizeAddress(addressWithoutLocalization, countries);
     const isValid = !isEmpty(address);
@@ -47,7 +47,7 @@ const StaticAddress: FunctionComponent<
         <div className="vcard checkout-address--static" data-test="static-address">
             {(address.firstName || address.lastName) && (
                 <p className={classNames('fn address-entry',
-                    { 'body-regular': newFontStyle })}>
+                    { 'body-regular': themeV2 })}>
                     <span className="first-name">{`${address.firstName} `}</span>
                     <span className="family-name">{address.lastName}</span>
                 </p>
@@ -55,7 +55,7 @@ const StaticAddress: FunctionComponent<
 
             {(address.phone || address.company) && (
                 <p className={classNames('address-entry',
-                    { 'body-regular': newFontStyle })}>
+                    { 'body-regular': themeV2 })}>
                     <span className="company-name">{`${address.company} `}</span>
                     <span className="tel">{address.phone}</span>
                 </p>
@@ -63,7 +63,7 @@ const StaticAddress: FunctionComponent<
 
             <div className="adr">
                 <p className={classNames('street-address address-entry',
-                    { 'body-regular': newFontStyle })}>
+                    { 'body-regular': themeV2 })}>
                     <span className="address-line-1">{`${address.address1} `}</span>
                     {address.address2 && (
                         <span className="address-line-2">{` / ${address.address2}`}</span>
@@ -71,7 +71,7 @@ const StaticAddress: FunctionComponent<
                 </p>
 
                 <p className={classNames('address-entry',
-                    { 'body-regular': newFontStyle })}>
+                    { 'body-regular': themeV2 })}>
                     {address.city && <span className="locality">{`${address.city}, `}</span>}
                     {address.localizedProvince && (
                         <span className="region">{`${address.localizedProvince}, `}</span>

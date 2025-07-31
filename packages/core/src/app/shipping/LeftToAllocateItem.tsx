@@ -16,7 +16,7 @@ interface LeftToAllocateItemProps {
 
 const LeftToAllocateItem: FunctionComponent<LeftToAllocateItemProps> = ({ item, error }: LeftToAllocateItemProps) => {
     const isMobileView = isMobileViewUI();
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
 
     return (
         <tr>
@@ -26,20 +26,20 @@ const LeftToAllocateItem: FunctionComponent<LeftToAllocateItemProps> = ({ item, 
                 </figure>
                 <div>
                     <p className={classNames('left-to-allocate-item-name',
-                        { 'body-regular': newFontStyle })}>
+                        { 'body-regular': themeV2 })}>
                         {item.name}
                     </p>
                     {item.options?.map(option => (
                         <p className={classNames('left-to-allocate-item-option',
-                            { 'sub-text-medium': newFontStyle })}
+                            { 'sub-text-medium': themeV2 })}
                             key={option.nameId}>
                             {option.name}: {option.value}
                         </p>
                     ))}
                 </div>
             </td>
-            {!isMobileView && <td className={newFontStyle ? 'body-regular' : ''}>{item.quantity}</td>}
-            <td className={newFontStyle ? 'body-regular' : ''}>
+            {!isMobileView && <td className={themeV2 ? 'body-regular' : ''}>{item.quantity}</td>}
+            <td className={themeV2 ? 'body-regular' : ''}>
                 {isMobileView && <TranslatedString data={{ count: item.quantity }} id="shipping.multishipping_left_to_allocate_message" />}
                 <FormField
                     additionalClassName={error ? "form-field--error" : ""}
@@ -49,7 +49,7 @@ const LeftToAllocateItem: FunctionComponent<LeftToAllocateItemProps> = ({ item, 
                         disabled={item.quantity === 0}
                         id={field.name}
                         min={0}
-                        newFontStyle={newFontStyle}
+                        themeV2={themeV2}
                         type="number"
                     />}
                     name={item.id.toString()}

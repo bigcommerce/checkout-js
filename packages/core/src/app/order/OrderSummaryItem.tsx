@@ -31,7 +31,7 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
     quantity,
     description,
 }) => {
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
 
     return (
         <div className="product" data-test="cart-item">
@@ -40,10 +40,10 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
             <div className="product-column product-body">
                 <h4
                     className={classNames('product-title optimizedCheckout-contentPrimary',
-                        { 'body-medium': newFontStyle })}
+                        { 'body-medium': themeV2 })}
                     data-test="cart-item-product-title"
                 >
-                    {newFontStyle
+                    {themeV2
                         ? (<span className="body-bold">
                             {`${quantity} x `}
                         </span>)
@@ -54,7 +54,7 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
                 {productOptions && productOptions.length > 0 && (
                     <ul
                         className={classNames('product-options optimizedCheckout-contentSecondary', {
-                            'sub-text-medium': newFontStyle,
+                            'sub-text-medium': themeV2,
                         })}
                         data-test="cart-item-product-options"
                     >
@@ -78,7 +78,7 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
             <div className="product-column product-actions">
                 {isNumber(amountAfterDiscount) && amountAfterDiscount !== amount && (
                     <div className={classNames('product-price', {
-                        'body-medium': newFontStyle,
+                        'body-medium': themeV2,
                     })} data-test="cart-item-product-price--afterDiscount">
                         <ShopperCurrency amount={amountAfterDiscount} />
                     </div>
@@ -88,8 +88,8 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
                     className={classNames('product-price', 'optimizedCheckout-contentPrimary', {
                         'product-price--beforeDiscount':
                             isNumber(amountAfterDiscount) && amountAfterDiscount !== amount,
-                        'body-medium': newFontStyle && isNumber(amountAfterDiscount) && amountAfterDiscount === amount,
-                        'body-regular': newFontStyle && isNumber(amountAfterDiscount) && amountAfterDiscount !== amount,
+                        'body-medium': themeV2 && isNumber(amountAfterDiscount) && amountAfterDiscount === amount,
+                        'body-regular': themeV2 && isNumber(amountAfterDiscount) && amountAfterDiscount !== amount,
                     })}
                     data-test="cart-item-product-price"
                 >

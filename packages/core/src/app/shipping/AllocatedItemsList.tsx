@@ -15,11 +15,11 @@ interface AllocatedItemsListProps {
 }
 
 const AllocatedItemsList = ({ assignedItems, onUnassignItem }: AllocatedItemsListProps) => {
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
 
     return (
         <div className="allocated-line-items">
-            <h3 className={newFontStyle ? 'body-bold' : ''}>
+            <h3 className={themeV2 ? 'body-bold' : ''}>
                 <TranslatedString data={{ count: assignedItems.shippableItemsCount }} id="shipping.multishipping_item_allocated_message" />
                 {assignedItems.hasSplitItems && (
                     <ItemSplitTooltip />
@@ -28,7 +28,7 @@ const AllocatedItemsList = ({ assignedItems, onUnassignItem }: AllocatedItemsLis
             <ul className="allocated-line-items-list">
                 {assignedItems.lineItems.map(item => (
                     <li key={item.id}>
-                        {renderItemContent(item, newFontStyle)}
+                        {renderItemContent(item, themeV2)}
                         <span data-test={`remove-${item.id.toString()}-button`} onClick={() => onUnassignItem(item)}>
                             <IconClose />
                         </span>

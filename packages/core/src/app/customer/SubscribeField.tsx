@@ -14,7 +14,7 @@ const SubscribeField: FunctionComponent<SubscribeFieldProps> = ({
     field,
     requiresMarketingConsent,
 }) => {
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
 
     return (
         <>
@@ -29,7 +29,7 @@ const SubscribeField: FunctionComponent<SubscribeFieldProps> = ({
             />
 
             <Label
-                additionalClassName={newFontStyle ? 'body-regular' : ''}
+                additionalClassName={themeV2 ? 'body-regular' : ''}
                 htmlFor={field.name}
             >
                 <TranslatedHtml

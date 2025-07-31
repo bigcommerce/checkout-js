@@ -103,7 +103,7 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
             throw Error('Need to wrap in style context');
         }
 
-        const { newFontStyle } = this.context;
+        const { themeV2 } = this.context;
 
         return (
             <>
@@ -156,7 +156,6 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
                                             <TranslatedString id={LABEL[field.name]} />
                                         )
                                     }
-                                    newFontStyle={newFontStyle}
                                     onChange={this.handleDynamicFormFieldChange(addressFieldName)}
                                     parentFieldName={
                                         field.custom
@@ -169,6 +168,7 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
                                         field,
                                         translatedPlaceholderId,
                                     )}
+                                    themeV2={themeV2}
                                 />
                             );
                         })}
@@ -178,7 +178,7 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
                     <CheckboxFormField
                         labelContent={<TranslatedString id="address.save_in_addressbook" />}
                         name={fieldName ? `${fieldName}.shouldSaveAddress` : 'shouldSaveAddress'}
-                        newFontStyle={newFontStyle}
+                        themeV2={themeV2}
                     />
                 )}
             </>

@@ -40,7 +40,7 @@ export interface WithCheckoutBillingProps {
     billingAddress?: Address;
     methodId?: string;
     isFloatingLabelEnabled?: boolean;
-    newFontStyle?: boolean;
+    themeV2?: boolean;
     getFields(countryCode?: string): FormField[];
     initialize(): Promise<CheckoutSelectors>;
     updateAddress(address: Partial<Address>): Promise<CheckoutSelectors>;
@@ -62,13 +62,13 @@ class Billing extends Component<BillingProps & WithCheckoutBillingProps> {
     }
 
     render(): ReactNode {
-        const { updateAddress, isInitializing, newFontStyle, ...props } = this.props;
+        const { updateAddress, isInitializing, themeV2, ...props } = this.props;
 
         return (
             <AddressFormSkeleton isLoading={isInitializing}>
                 <div className="checkout-form">
                     <div className="form-legend-container">
-                        <Legend newFontStyle={newFontStyle} testId="billing-address-heading">
+                        <Legend testId="billing-address-heading" themeV2={themeV2}>
                             <TranslatedString id="billing.billing_address_heading" />
                         </Legend>
                     </div>
@@ -164,7 +164,7 @@ function mapToBillingProps({
         updateAddress: checkoutService.updateBillingAddress,
         updateCheckout: checkoutService.updateCheckout,
         isFloatingLabelEnabled: isFloatingLabelEnabled(config.checkoutSettings),
-        newFontStyle: isExperimentEnabled(config.checkoutSettings, 'CHECKOUT-7962.update_font_style_on_checkout_page')
+        themeV2: isExperimentEnabled(config.checkoutSettings, 'CHECKOUT-7962.update_font_style_on_checkout_page')
     };
 }
 

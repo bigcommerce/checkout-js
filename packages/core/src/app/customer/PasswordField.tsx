@@ -14,7 +14,7 @@ interface WithFloatingLabel {
 }
 
 const PasswordField: FunctionComponent<WithFloatingLabel> = ({ isFloatingLabelEnabled = false }) => {
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
 
     const renderInput = useCallback(
         (props: FieldProps) => (
@@ -26,12 +26,12 @@ const PasswordField: FunctionComponent<WithFloatingLabel> = ({ isFloatingLabelEn
                             additionalClassName="form-input--withIcon"
                             id={props.field.name}
                             isFloatingLabelEnabled={isFloatingLabelEnabled}
-                            newFontStyle={newFontStyle}
+                            themeV2={themeV2}
                             type={isOpen ? 'text' : 'password'}
                         />
                         {isFloatingLabelEnabled && (
                             <Label
-                                additionalClassName={newFontStyle ? 'floating-form-field-label' : ''}
+                                additionalClassName={themeV2 ? 'floating-form-field-label' : ''}
                                 htmlFor={props.field.name}
                                 id={`${props.field.name}-label`}
                                 isFloatingLabelEnabled={true}

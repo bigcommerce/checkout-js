@@ -12,7 +12,7 @@ export interface EmailFieldProps {
 }
 
 const EmailField: FunctionComponent<EmailFieldProps> = ({ onChange, isFloatingLabelEnabled }) => {
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
 
     const renderInput = useCallback(
         (props: FieldProps) => (
@@ -21,7 +21,7 @@ const EmailField: FunctionComponent<EmailFieldProps> = ({ onChange, isFloatingLa
                 autoComplete={props.field.name}
                 id={props.field.name}
                 isFloatingLabelEnabled={isFloatingLabelEnabled}
-                newFontStyle={newFontStyle}
+                themeV2={themeV2}
                 type="email"
             />
         ),
@@ -36,8 +36,8 @@ const EmailField: FunctionComponent<EmailFieldProps> = ({ onChange, isFloatingLa
             isFloatingLabelEnabled={isFloatingLabelEnabled}
             labelContent={labelContent}
             name="email"
-            newFontStyle={newFontStyle}
             onChange={onChange}
+            themeV2={themeV2}
         />
     );
 };

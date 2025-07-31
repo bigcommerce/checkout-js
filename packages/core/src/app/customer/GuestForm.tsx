@@ -69,7 +69,7 @@ const GuestForm: FunctionComponent<
             data: { getConfig }
         }
     } = useCheckout();
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
 
     const config = getConfig();
 
@@ -144,7 +144,7 @@ const GuestForm: FunctionComponent<
                     >
                         <Button
                             className={classNames('customerEmail-button', {
-                                'body-bold': newFontStyle,
+                                'body-bold': themeV2,
                             })}
                             id="checkout-customer-continue"
                             isLoading={isLoading}
@@ -163,7 +163,7 @@ const GuestForm: FunctionComponent<
 
                 {!isLoading && (
                     <p className={classNames('customer-login-link',
-                        { 'body-regular': newFontStyle })}
+                        { 'body-regular': themeV2 })}
                     >
                         <TranslatedString id="customer.login_text" />{' '}
                         <a

@@ -5,8 +5,7 @@ import React, { FunctionComponent, memo, useState } from 'react';
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { useThemeContext } from '@bigcommerce/checkout/ui';
-import { ConfirmationModal } from '@bigcommerce/checkout/ui';
+import { ConfirmationModal , useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { Legend } from '../ui/form';
 
@@ -30,7 +29,7 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
     const [isSingleShippingConfirmationModalOpen, setIsSingleShippingConfirmationModalOpen] = useState(false);
     const [isMultiShippingUnavailableModalOpen, setIsMultiShippingUnavailableModalOpen] = useState(false);
 
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
 
     const handleShipToSingleConfirmation = () => {
         setIsSingleShippingConfirmationModalOpen(false);
@@ -44,7 +43,7 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
         <>
             <Extension region={ExtensionRegion.ShippingShippingAddressFormBefore} />
             <div className={classNames(['form-legend-container', 'shipping-header'])}>
-                <Legend newFontStyle={newFontStyle} testId="shipping-address-heading">
+                <Legend testId="shipping-address-heading" themeV2={themeV2}>
                     <TranslatedString
                         id={
                             isMultiShippingMode
@@ -67,7 +66,7 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
                             onRequestClose={() => setIsSingleShippingConfirmationModalOpen(false)}
                         />
                         <a
-                            className={newFontStyle ? 'body-cta' : ''}
+                            className={themeV2 ? 'body-cta' : ''}
                             data-test="shipping-mode-toggle"
                             href="#"
                             onClick={preventDefault(() => setIsSingleShippingConfirmationModalOpen(true))}
@@ -87,7 +86,7 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
                             onRequestClose={() => setIsMultiShippingUnavailableModalOpen(false)}
                         />
                         <a
-                            className={newFontStyle ? 'body-cta' : ''}
+                            className={themeV2 ? 'body-cta' : ''}
                             data-test="shipping-mode-toggle"
                             href="#"
                             onClick={preventDefault(() => setIsMultiShippingUnavailableModalOpen(true))}
@@ -98,7 +97,7 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
                 )}
                 {!showConfirmationModal && !showMultiShippingUnavailableModal && shouldShowMultiShipping && (
                     <a
-                        className={newFontStyle ? 'body-cta' : ''}
+                        className={themeV2 ? 'body-cta' : ''}
                         data-test="shipping-mode-toggle"
                         href="#"
                         onClick={preventDefault(onMultiShippingChange)}

@@ -307,7 +307,7 @@ const PaymentMethodTitle: FunctionComponent<
 > = ({ cdnBasePath, checkoutSettings, storeCountryCode, onUnhandledError, formik: { values }, instruments, isSelected, language, method }) => {
     const methodName = getPaymentMethodName(language)(method);
     const { logoUrl, titleText, subtitle } = getPaymentMethodTitle(language, cdnBasePath, checkoutSettings, storeCountryCode)(method);
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
 
     const getSelectedCardType = () => {
         if (!isSelected) {
@@ -369,7 +369,7 @@ const PaymentMethodTitle: FunctionComponent<
 
                 {titleText && (
                     <div className={classNames('paymentProviderHeader-name',
-                        { 'sub-header': newFontStyle })}
+                        { 'sub-header': themeV2 })}
                         data-test="payment-method-name">
                         {titleText}
                     </div>

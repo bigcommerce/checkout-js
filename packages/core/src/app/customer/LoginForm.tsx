@@ -73,7 +73,7 @@ const LoginForm: FunctionComponent<
     isFloatingLabelEnabled,
     viewType = CustomerViewType.Login,
 }) => {
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
 
     const changeEmailLink = useCallback(() => {
         if (!email) {
@@ -139,7 +139,7 @@ const LoginForm: FunctionComponent<
 
                 <PasswordField isFloatingLabelEnabled={isFloatingLabelEnabled} />
 
-                <p className={classNames('form-legend-container', { 'body-cta': newFontStyle })}>
+                <p className={classNames('form-legend-container', { 'body-cta': themeV2 })}>
                     <span>
                         { isSignInEmailEnabled &&
                             <TranslatedLink
@@ -171,7 +171,7 @@ const LoginForm: FunctionComponent<
 
                 <div className="form-actions">
                     <Button
-                        className={newFontStyle ? 'body-bold' : ''}
+                        className={themeV2 ? 'body-bold' : ''}
                         disabled={isSigningIn || isExecutingPaymentMethodCheckout}
                         id="checkout-customer-continue"
                         isLoading={isSigningIn || isExecutingPaymentMethodCheckout}
@@ -185,7 +185,7 @@ const LoginForm: FunctionComponent<
                     {viewType === CustomerViewType.SuggestedLogin && (
                         <a
                             className={classNames('button optimizedCheckout-buttonSecondary',
-                                { 'body-bold': newFontStyle })}
+                                { 'body-bold': themeV2 })}
                             data-test="customer-guest-continue"
                             href="#"
                             id="checkout-guest-continue"
@@ -200,7 +200,7 @@ const LoginForm: FunctionComponent<
                         viewType !== CustomerViewType.SuggestedLogin && (
                             <a
                             className={classNames('button optimizedCheckout-buttonSecondary',
-                                { 'body-bold': newFontStyle })}
+                                { 'body-bold': themeV2 })}
                                 data-test="customer-cancel-button"
                                 href="#"
                                 id="checkout-customer-cancel"
