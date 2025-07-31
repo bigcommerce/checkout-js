@@ -157,7 +157,9 @@ export function getPaymentMethodTitle(
                 titleText: '',
             },
             [PaymentMethodId.Klarna]: {
-                logoUrl: cdnPath('/img/payment-providers/klarna-header.png'),
+                logoUrl: method.initializationData?.enableBillie
+                        ? cdnPath('/img/payment-providers/klarna-billie-header.png')
+                        : cdnPath('/img/payment-providers/klarna-header.png'),
                 titleText: methodDisplayName,
             },
             [PaymentMethodId.Laybuy]: {
