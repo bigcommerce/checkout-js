@@ -122,10 +122,10 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
                 max={max}
                 maxLength={maxLength || undefined}
                 min={min}
-                themeV2={themeV2}
                 options={options && options.items}
                 placeholder={placeholder || (options && options.helperLabel)}
                 rows={options && (options as any).rows}
+                themeV2={themeV2}
             />
         ),
         [
@@ -153,9 +153,9 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
                     id={fieldInputId}
                     label={labelComponent}
                     name={fieldName}
-                    themeV2={themeV2}
                     onChange={onChange}
                     options={(options && options.items) || []}
+                    themeV2={themeV2}
                 />
             ) : (
                 <FormField

@@ -117,8 +117,8 @@ const CreateAccountForm: FunctionComponent<
                             field={field}
                             isFloatingLabelEnabled={isFloatingLabelEnabled}
                             key={field.id}
-                            themeV2={themeV2}
                             parentFieldName={field.custom ? 'customFields' : undefined}
+                            themeV2={themeV2}
                         />
                     ))}
                 </div>

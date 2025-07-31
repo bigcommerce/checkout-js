@@ -88,7 +88,7 @@ describe('OrderConfirmation', () => {
 
         render(<ComponentTest {...defaultProps} />);
 
-        // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
+         
         expect(checkoutService.loadOrder).toHaveBeenCalledWith(105);
         expect(screen.getByTestId('order-confirmation-page-skeleton')).toBeInTheDocument();
     });

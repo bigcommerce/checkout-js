@@ -164,9 +164,9 @@ const RedeemableForm: FunctionComponent<
                                 {...field}
                                 aria-label={language.translate('redeemable.code_label')}
                                 className="form-input optimizedCheckout-form-input"
-                                themeV2={themeV2}
                                 onKeyDown={handleKeyDown(setSubmitted)}
                                 testId="redeemableEntry-input"
+                                themeV2={themeV2}
                             />
 
                             <Button

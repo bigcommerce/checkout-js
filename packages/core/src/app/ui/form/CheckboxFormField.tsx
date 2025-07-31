@@ -36,8 +36,8 @@ const CheckboxFormField: FunctionComponent<CheckboxFormFieldProps> = ({
                     disabled={disabled}
                     id={id || field.name}
                     label={labelContent}
-                    themeV2={themeV2}
                     testId={testId}
+                    themeV2={themeV2}
                 />
 
                 <FormFieldError

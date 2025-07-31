@@ -103,9 +103,9 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                             key={optionValue}
                             label={label}
                             name={name}
-                            themeV2={themeV2}
                             onChange={onChange}
                             testId={`${id}-${optionValue}-radio`}
+                            themeV2={themeV2}
                             value={optionValue}
                         />
                     ))}
@@ -127,9 +127,9 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                             key={optionValue}
                             label={label}
                             name={name}
-                            themeV2={themeV2}
                             onChange={onChange}
                             testId={`${id}-${optionValue}-checkbox`}
+                            themeV2={themeV2}
                             value={optionValue}
                         />
                     ))}
@@ -167,9 +167,9 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                     id={id}
                     isFloatingLabelEnabled={isFloatingLabelEnabled}
                     name={name}
-                    themeV2={themeV2}
                     onChange={onChange}
                     testId={`${id}-text`}
+                    themeV2={themeV2}
                     type={fieldType}
                     value={value}
                 />
@@ -182,12 +182,12 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                     id={id}
                     isFloatingLabelEnabled={isFloatingLabelEnabled}
                     name={name}
-                    themeV2={themeV2}
                     onChange={onChange}
                     placeholder={placeholder}
                     testId={`${id}-${
                         fieldType === DynamicFormFieldType.password ? 'password' : 'text'
                     }`}
+                    themeV2={themeV2}
                     type={fieldType}
                     value={value}
                 />

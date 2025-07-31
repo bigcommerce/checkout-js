@@ -73,10 +73,10 @@ const MultiCheckboxFormField: FunctionComponent<MultiCheckboxFormFieldProps> = (
 
             {options.length > 1 && (
                 <MultiCheckboxControl
-                    themeV2={themeV2}
                     onSelectedAll={handleSelectAll}
                     onSelectedNone={handleSelectNone}
                     testId={id}
+                    themeV2={themeV2}
                 />
             )}
 
@@ -84,9 +84,9 @@ const MultiCheckboxFormField: FunctionComponent<MultiCheckboxFormFieldProps> = (
                 fieldType={DynamicFormFieldType.checkbox}
                 id={id}
                 name={name}
-                themeV2={themeV2}
                 onChange={handleInputChange}
                 options={options}
+                themeV2={themeV2}
                 value={getIn(values, name) || []}
             />
 
@@ -113,9 +113,9 @@ const CheckboxGroupFormField: FunctionComponent<CheckboxGroupFormFieldProps> = (
                 id={id}
                 label={label}
                 name={name}
-                themeV2={themeV2}
                 onChange={onChange}
                 options={options}
+                themeV2={themeV2}
                 {...pick(renderProps, ['form', 'pop', 'push', 'remove'])}
             />
         ),

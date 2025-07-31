@@ -5,8 +5,7 @@ import React, { FunctionComponent, memo, useState } from 'react';
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { useThemeContext } from '@bigcommerce/checkout/ui';
-import { ConfirmationModal } from '@bigcommerce/checkout/ui';
+import { ConfirmationModal , useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { Legend } from '../ui/form';
 
@@ -44,7 +43,7 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
         <>
             <Extension region={ExtensionRegion.ShippingShippingAddressFormBefore} />
             <div className={classNames(['form-legend-container', 'shipping-header'])}>
-                <Legend themeV2={themeV2} testId="shipping-address-heading">
+                <Legend testId="shipping-address-heading" themeV2={themeV2}>
                     <TranslatedString
                         id={
                             isMultiShippingMode

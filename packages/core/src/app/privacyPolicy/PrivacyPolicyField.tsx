@@ -9,8 +9,8 @@ const PrivacyPolicyCheckboxFieldLink: FunctionComponent<{ url: string, themeV2?:
     <CheckboxFormField
         labelContent={<TranslatedHtml data={{ url }} id="privacy_policy.label" />}
         name="privacyPolicy"
-        themeV2={themeV2}
         testId="privacy-policy-checkbox"
+        themeV2={themeV2}
     />
 );
 

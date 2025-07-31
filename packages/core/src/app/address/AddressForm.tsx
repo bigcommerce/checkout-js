@@ -156,7 +156,6 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
                                             <TranslatedString id={LABEL[field.name]} />
                                         )
                                     }
-                                    themeV2={themeV2}
                                     onChange={this.handleDynamicFormFieldChange(addressFieldName)}
                                     parentFieldName={
                                         field.custom
@@ -169,6 +168,7 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
                                         field,
                                         translatedPlaceholderId,
                                     )}
+                                    themeV2={themeV2}
                                 />
                             );
                         })}
