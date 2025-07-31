@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.635.0](https://github.com/bigcommerce/checkout-js/compare/v1.634.1...v1.635.0) (2025-07-31)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9395 Rename StyleContext to ThemeContext ([#2463](https://github.com/bigcommerce/checkout-js/issues/2463)) ([947ad59](https://github.com/bigcommerce/checkout-js/commit/947ad59fc399015b898d49904779d6533d0f1ea4))
+
 ### [1.634.1](https://github.com/bigcommerce/checkout-js/compare/v1.634.0...v1.634.1) (2025-07-30)
 
 ## [1.634.0](https://github.com/bigcommerce/checkout-js/compare/v1.633.0...v1.634.0) (2025-07-30)
