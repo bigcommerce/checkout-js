@@ -247,7 +247,15 @@ class Checkout extends Component<
 			messenger.postFrameLoaded({ contentId: containerId });
 			messenger.postLoaded();
 
-			analyticsTracker.checkoutBegin();
+			if (document.prerendering) {
+				document.addEventListener('prerenderingchange', () => {
+					analyticsTracker.checkoutBegin(); 
+				}, { once: true });
+			}
+			else {
+				analyticsTracker.checkoutBegin();
+			}
+
 
 			const consignments = data.getConsignments();
 			const cart = data.getCart();
