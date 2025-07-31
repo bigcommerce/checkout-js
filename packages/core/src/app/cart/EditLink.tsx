@@ -14,7 +14,7 @@ export interface EditLinkProps {
 const EditLink: FunctionComponent<EditLinkProps> = ({ className, url, isMultiShippingMode }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
 
     const gotoCartPage = () => {
         window.location.assign(url);
@@ -32,7 +32,7 @@ const EditLink: FunctionComponent<EditLinkProps> = ({ className, url, isMultiShi
                 />
                 <a
                     className={classNames((className || 'cart-header-link'),
-                        { 'body-cta': newFontStyle })}
+                        { 'body-cta': themeV2 })}
                     data-test="cart-edit-link"
                     href="#"
                     id="cart-edit-link"
@@ -47,7 +47,7 @@ const EditLink: FunctionComponent<EditLinkProps> = ({ className, url, isMultiShi
     return (
         <a
             className={classNames((className || 'cart-header-link'),
-                { 'body-cta': newFontStyle })}
+                { 'body-cta': themeV2 })}
             data-test="cart-edit-link"
             href={url}
             id="cart-edit-link"

@@ -17,19 +17,17 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
 
     const config = getConfig();
 
-    let newFontStyle = false;
+    let useNewTheme = false;
 
     if (config) {
-        newFontStyle = Boolean(
+        useNewTheme = Boolean(
             config.checkoutSettings.features['CHECKOUT-7962.update_font_style_on_checkout_page'] ??
                 true,
         );
     }
 
     const themeV2 =
-        (window.location.search && window.location.search.includes('v2')) || newFontStyle;
+        (window.location.search && window.location.search.includes('v2')) || useNewTheme;
 
-    return (
-        <ThemeContext.Provider value={{ newFontStyle, themeV2 }}>{children}</ThemeContext.Provider>
-    );
+    return <ThemeContext.Provider value={{ themeV2 }}>{children}</ThemeContext.Provider>;
 };

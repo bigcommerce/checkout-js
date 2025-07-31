@@ -72,7 +72,7 @@ function transformFormFieldsData(formFields: FormField[], defaultShouldSubscribe
 const CreateAccountForm: FunctionComponent<
     CreateAccountFormProps & WithLanguageProps & FormikProps<CreateAccountFormValues>
 > = ({ fixNewsletterCheckboxExperimentEnabled, formFields, createAccountError, isCreatingAccount, isExecutingPaymentMethodCheckout, onCancel, isFloatingLabelEnabled, defaultShouldSubscribe }) => {
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
     const createAccountErrorMessage = useMemo(() => {
         if (!createAccountError) {
             return;
@@ -117,7 +117,7 @@ const CreateAccountForm: FunctionComponent<
                             field={field}
                             isFloatingLabelEnabled={isFloatingLabelEnabled}
                             key={field.id}
-                            newFontStyle={newFontStyle}
+                            themeV2={themeV2}
                             parentFieldName={field.custom ? 'customFields' : undefined}
                         />
                     ))}
@@ -126,7 +126,7 @@ const CreateAccountForm: FunctionComponent<
 
             <div className="form-actions">
                 <Button
-                    className={newFontStyle ? 'body-bold' : ''}
+                    className={themeV2 ? 'body-bold' : ''}
                     disabled={isCreatingAccount || isExecutingPaymentMethodCheckout}
                     id="checkout-customer-create"
                     isLoading={isCreatingAccount || isExecutingPaymentMethodCheckout}
@@ -139,7 +139,7 @@ const CreateAccountForm: FunctionComponent<
 
                 <a
                     className={classNames('button optimizedCheckout-buttonSecondary',
-                        { 'body-bold': newFontStyle })}
+                        { 'body-bold': themeV2 })}
                     data-test="customer-cancel-button"
                     href="#"
                     id="checkout-customer-cancel"

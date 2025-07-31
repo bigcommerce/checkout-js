@@ -20,7 +20,7 @@ const COLLAPSED_ITEMS_LIMIT_SMALL_SCREEN = 3;
 export interface OrderSummaryItemsProps {
     displayLineItemsCount: boolean;
     items: LineItemMap;
-    newFontStyle?: boolean;
+    themeV2?: boolean;
 }
 
 interface OrderSummaryItemsState {
@@ -39,14 +39,14 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
     }
 
     render(): ReactNode {
-        const { displayLineItemsCount = true, items, newFontStyle = false } = this.props;
+        const { displayLineItemsCount = true, items, themeV2 = false } = this.props;
         const { collapsedLimit, isExpanded } = this.state;
 
         return (
             <>
                 {displayLineItemsCount && <h3
                     className={classNames('cart-section-heading optimizedCheckout-contentPrimary',
-                        { 'body-medium': newFontStyle })}
+                        { 'body-medium': themeV2 })}
                     data-test="cart-count-total"
                 >
                     <TranslatedString
@@ -96,7 +96,7 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
             <div className="cart-actions">
                 <button
                     className={classNames('button button--tertiary button--tiny optimizedCheckout-buttonSecondary',
-                        { 'sub-text-medium': this.props.newFontStyle })}
+                        { 'sub-text-medium': this.props.themeV2 })}
                     onClick={this.handleToggle}
                     type="button"
                 >

@@ -36,7 +36,7 @@ const ConsignmentListItem: FunctionComponent<ConsignmentListItemProps> = ({
 }: ConsignmentListItemProps) => {
 
     const { checkoutService: { deleteConsignment } } = useCheckout();
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
 
     const handleClose = async () => {
         await deleteConsignment(consignment.id);
@@ -45,7 +45,7 @@ const ConsignmentListItem: FunctionComponent<ConsignmentListItemProps> = ({
 
     return (
         <div className='consignment-container'>
-            <div className={classNames('consignment-header', { 'sub-header': newFontStyle })}>
+            <div className={classNames('consignment-header', { 'sub-header': themeV2 })}>
                 <h3>
                     <TranslatedString data={{ consignmentNumber }} id="shipping.multishipping_consignment_index_heading" />
                 </h3>

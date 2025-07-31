@@ -30,7 +30,7 @@ const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
     summary,
     type,
 }) => {
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
 
     return (
         <div
@@ -51,14 +51,14 @@ const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
 
                 <h2
                     className={classNames('stepHeader-title optimizedCheckout-headingPrimary',
-                        { 'header': newFontStyle && (isActive || isComplete) },
-                        { 'header-secondary': newFontStyle && !isActive && !isComplete })}
+                        { 'header': themeV2 && (isActive || isComplete) },
+                        { 'header-secondary': themeV2 && !isActive && !isComplete })}
                 >{heading}</h2>
             </div>
 
             <div
                 className={classNames('stepHeader-body stepHeader-column optimizedCheckout-contentPrimary',
-                    { 'body-regular': newFontStyle })}
+                    { 'body-regular': themeV2 })}
                 data-test="step-info"
             >
                 {!isActive && isComplete && summary}
@@ -68,7 +68,7 @@ const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
                 <div className="stepHeader-actions stepHeader-column">
                     <Button
                         aria-expanded={isActive}
-                        className={classNames({ 'body-regular': newFontStyle })}
+                        className={classNames({ 'body-regular': themeV2 })}
                         size={ButtonSize.Tiny}
                         testId="step-edit-button"
                         variant={ButtonVariant.Secondary}

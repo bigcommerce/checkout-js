@@ -17,12 +17,12 @@ const AddressSelectButton: FunctionComponent<AddressSelectButtonProps & WithLang
     showSingleLineAddress,
     placeholderText,
 }) => {
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
     const [ariaExpanded, setAriaExpanded] = useState(false);
 
     const SelectedAddress = () => {
         if (!selectedAddress) {
-            return (<span className={newFontStyle ? 'body-regular' : ''} data-test="address-select-placeholder">
+            return (<span className={themeV2 ? 'body-regular' : ''} data-test="address-select-placeholder">
                 {placeholderText ?? <TranslatedString id="address.enter_address_action" />}
             </span>);
         }

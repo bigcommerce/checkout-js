@@ -14,7 +14,7 @@ export interface CheckboxFormFieldProps {
     labelContent: ReactNode;
     onChange?(isChecked: boolean): void;
     testId?: string;
-    newFontStyle?: boolean;
+    themeV2?: boolean;
 }
 
 const CheckboxFormField: FunctionComponent<CheckboxFormFieldProps> = ({
@@ -25,7 +25,7 @@ const CheckboxFormField: FunctionComponent<CheckboxFormFieldProps> = ({
     name,
     id,
     testId,
-    newFontStyle = false,
+    themeV2 = false,
 }) => {
     const renderField = useCallback(
         ({ field }: FieldProps) => (
@@ -36,7 +36,7 @@ const CheckboxFormField: FunctionComponent<CheckboxFormFieldProps> = ({
                     disabled={disabled}
                     id={id || field.name}
                     label={labelContent}
-                    newFontStyle={newFontStyle}
+                    themeV2={themeV2}
                     testId={testId}
                 />
 

@@ -5,12 +5,12 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 const OrderSummaryHeader: FunctionComponent<{ children?: React.ReactNode }> = ({ children }) => {
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
 
     return (
         <header className="cart-header">
             <h3 className={classNames('cart-title', 'optimizedCheckout-headingSecondary',
-                { 'sub-header': newFontStyle })}>
+                { 'sub-header': themeV2 })}>
                 <TranslatedString id="cart.cart_heading" />
             </h3>
             {children}

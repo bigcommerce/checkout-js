@@ -19,15 +19,15 @@ const renderProductOptionDetails = (item: MultiShippingTableItemWithType | Physi
     return (<span className="line-item-options">{` - ${item.options.map(option => option.value).join(' / ')}`}</span>);
 }
 
-export const renderItemContent = (item: MultiShippingTableItemWithType | PhysicalItem, newFontStyle = false, isMultiShippingSummary = false) => {
+export const renderItemContent = (item: MultiShippingTableItemWithType | PhysicalItem, themeV2 = false, isMultiShippingSummary = false) => {
     return <span
         className={classNames(
-            { 'body-regular': newFontStyle && !isMultiShippingSummary },
-            { 'sub-text': newFontStyle && isMultiShippingSummary },)
+            { 'body-regular': themeV2 && !isMultiShippingSummary },
+            { 'sub-text': themeV2 && isMultiShippingSummary },)
         }>
         <span className={classNames(
-            { 'body-bold': newFontStyle && !isMultiShippingSummary },
-            { 'sub-text-bold': newFontStyle && isMultiShippingSummary },)
+            { 'body-bold': themeV2 && !isMultiShippingSummary },
+            { 'sub-text-bold': themeV2 && isMultiShippingSummary },)
         }>
             {`${item.quantity} x `}
         </span>
@@ -40,13 +40,13 @@ const ConsignmentLineItemDetail: FunctionComponent<ConsignmentLineItemDetailProp
     lineItems,
     isMultiShippingSummary = false,
 }) => {
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
 
     return (
         <ul className="consignment-line-item-list">
         {lineItems.map((item) => (
             <li key={item.id}>
-                {renderItemContent(item, newFontStyle, isMultiShippingSummary)}
+                {renderItemContent(item, themeV2, isMultiShippingSummary)}
             </li>
         ))}
     </ul>

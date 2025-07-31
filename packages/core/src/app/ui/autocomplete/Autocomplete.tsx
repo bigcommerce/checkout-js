@@ -42,7 +42,7 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
             throw Error('Need to wrap in style context');
         }
 
-        const { newFontStyle } = this.context;
+        const { themeV2 } = this.context;
 
         return (
             <Downshift
@@ -69,7 +69,7 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
                             <input {...validInputProps} />
                             {inputProps && includes(inputProps.className, 'floating') && (
                                 <Label
-                                    additionalClassName={newFontStyle ? 'floating-form-field-label' : ''}
+                                    additionalClassName={themeV2 ? 'floating-form-field-label' : ''}
                                     htmlFor={inputProps.id}
                                     id={inputProps['aria-labelledby']}
                                     isFloatingLabelEnabled={true}

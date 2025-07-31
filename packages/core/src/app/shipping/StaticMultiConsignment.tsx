@@ -33,7 +33,7 @@ const StaticMultiConsignment: FunctionComponent<StaticMultiConsignmentProps> = (
             data: { getShippingCountries },
         },
     } = useCheckout();
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
 
     const { shippingAddress: addressWithoutLocalization, selectedShippingOption } = consignment;
     const address = localizeAddress(addressWithoutLocalization, getShippingCountries());
@@ -45,19 +45,19 @@ const StaticMultiConsignment: FunctionComponent<StaticMultiConsignmentProps> = (
     return (
         <div className="staticMultiConsignment">
             <h3 className={classNames('staticMultiConsignment-header',
-                { 'body-bold': newFontStyle })}>
+                { 'body-bold': themeV2 })}>
                 <TranslatedString data={{ consignmentNumber }} id="shipping.multishipping_consignment_index_heading" />
             </h3>
 
             <div className="checkout-address--static">
                 <p className={classNames('address-entry',
-                    { 'sub-text': newFontStyle })}>
+                    { 'sub-text': themeV2 })}>
                     <span className="first-name">{`${address.firstName} `}</span>
                     <span className="family-name">{address.lastName}</span>
                 </p>
                 <div className="address-details">
                     <p className={classNames('street-address address-entry',
-                        { 'sub-text': newFontStyle })}>
+                        { 'sub-text': themeV2 })}>
                         <span className="address-line-1">{address.address1}</span>
                         {address.address2 && (
                             <span className="address-line-2">{`, ${address.address2}`}</span>
@@ -65,7 +65,7 @@ const StaticMultiConsignment: FunctionComponent<StaticMultiConsignmentProps> = (
                     </p>
 
                     <p className={classNames('address-entry',
-                        { 'sub-text': newFontStyle })}>
+                        { 'sub-text': themeV2 })}>
                         {address.city && <span className="locality">{address.city}</span>}
                         {address.localizedProvince && (
                             <span className="region">{`, ${address.localizedProvince}`}</span>
@@ -83,7 +83,7 @@ const StaticMultiConsignment: FunctionComponent<StaticMultiConsignmentProps> = (
             {showPayPalFastlaneAddressLabel && <PoweredByPayPalFastlaneLabel />}
 
             <div className="staticConsignment-items">
-                <span className={newFontStyle ? 'body-bold' : ''}>
+                <span className={themeV2 ? 'body-bold' : ''}>
                 <TranslatedString
                     data={{ count: getLineItemsCount(lineItems) }}
                     id="cart.item_count_text"

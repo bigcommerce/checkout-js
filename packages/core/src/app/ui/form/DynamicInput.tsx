@@ -23,7 +23,7 @@ export interface DynamicInputProps extends InputProps {
     fieldType?: DynamicFormFieldType;
     options?: FormFieldItem[];
     isFloatingLabelEnabled?: boolean;
-    newFontStyle?: boolean;
+    themeV2?: boolean;
 }
 
 const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
@@ -36,7 +36,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
     options,
     placeholder,
     isFloatingLabelEnabled,
-    newFontStyle = false,
+    themeV2 = false,
     value,
     ...rest
 }) => {
@@ -69,7 +69,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                         className={classNames(
                             { 'floating-select': isFloatingLabelEnabled },
                             'form-select optimizedCheckout-form-select',
-                            { 'floating-form-field-input': newFontStyle },
+                            { 'floating-form-field-input': themeV2 },
                         )}
                         data-test={`${id}-select`}
                         id={id}
@@ -103,7 +103,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                             key={optionValue}
                             label={label}
                             name={name}
-                            newFontStyle={newFontStyle}
+                            themeV2={themeV2}
                             onChange={onChange}
                             testId={`${id}-${optionValue}-radio`}
                             value={optionValue}
@@ -127,7 +127,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                             key={optionValue}
                             label={label}
                             name={name}
-                            newFontStyle={newFontStyle}
+                            themeV2={themeV2}
                             onChange={onChange}
                             testId={`${id}-${optionValue}-checkbox`}
                             value={optionValue}
@@ -147,7 +147,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                     calendarClassName="optimizedCheckout-contentPrimary"
                     className={classNames('form-input optimizedCheckout-form-input', {
                         'floating-input': isFloatingLabelEnabled,
-                        'floating-form-field-input': newFontStyle,
+                        'floating-form-field-input': themeV2,
                     })}
                     dateFormat={inputFormat}
                     maxDate={rest.max ? new Date(`${rest.max}T00:00:00Z`) : undefined}
@@ -167,7 +167,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                     id={id}
                     isFloatingLabelEnabled={isFloatingLabelEnabled}
                     name={name}
-                    newFontStyle={newFontStyle}
+                    themeV2={themeV2}
                     onChange={onChange}
                     testId={`${id}-text`}
                     type={fieldType}
@@ -182,7 +182,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                     id={id}
                     isFloatingLabelEnabled={isFloatingLabelEnabled}
                     name={name}
-                    newFontStyle={newFontStyle}
+                    themeV2={themeV2}
                     onChange={onChange}
                     placeholder={placeholder}
                     testId={`${id}-${

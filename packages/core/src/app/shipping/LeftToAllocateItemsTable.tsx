@@ -17,15 +17,15 @@ interface LeftToAllocateItemsTableProps {
 
 const LeftToAllocateItemsTable: FunctionComponent<LeftToAllocateItemsTableProps> = ({ items, formErrors }: LeftToAllocateItemsTableProps) => {
     const isMobileView = isMobileViewUI();
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
 
     return (
         <table className="table left-to-allocate-items-table">
             <thead>
                 <tr>
-                    <th className={newFontStyle ? 'body-medium' : ''}><TranslatedString id="shipping.multishipping_left_to_allocate_items_table_item" /></th>
-                    {!isMobileView && <th className={newFontStyle ? 'body-medium' : ''}><TranslatedString id="shipping.multishipping_left_to_allocate_items_table_left_to_allocate" /></th>}
-                    <th className={newFontStyle ? 'body-medium' : ''}><TranslatedString id="shipping.multishipping_left_to_allocate_items_table_quantity" /></th>
+                    <th className={themeV2 ? 'body-medium' : ''}><TranslatedString id="shipping.multishipping_left_to_allocate_items_table_item" /></th>
+                    {!isMobileView && <th className={themeV2 ? 'body-medium' : ''}><TranslatedString id="shipping.multishipping_left_to_allocate_items_table_left_to_allocate" /></th>}
+                    <th className={themeV2 ? 'body-medium' : ''}><TranslatedString id="shipping.multishipping_left_to_allocate_items_table_quantity" /></th>
                 </tr>
             </thead>
             <tbody>

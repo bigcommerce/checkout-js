@@ -5,23 +5,23 @@ import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { CheckboxFormField, Fieldset } from '../ui/form';
 
-const PrivacyPolicyCheckboxFieldLink: FunctionComponent<{ url: string, newFontStyle?: boolean }> = ({ url, newFontStyle }) => (
+const PrivacyPolicyCheckboxFieldLink: FunctionComponent<{ url: string, themeV2?: boolean }> = ({ url, themeV2 }) => (
     <CheckboxFormField
         labelContent={<TranslatedHtml data={{ url }} id="privacy_policy.label" />}
         name="privacyPolicy"
-        newFontStyle={newFontStyle}
+        themeV2={themeV2}
         testId="privacy-policy-checkbox"
     />
 );
 
-const PrivacyPolicyFieldset: FunctionComponent<{ url: string, newFontStyle?: boolean }> = ({ url, newFontStyle }) => (
+const PrivacyPolicyFieldset: FunctionComponent<{ url: string, themeV2?: boolean }> = ({ url, themeV2 }) => (
     <Fieldset additionalClassName="checkout-privacy-policy">
-        <PrivacyPolicyCheckboxFieldLink newFontStyle={newFontStyle} url={url} />
+        <PrivacyPolicyCheckboxFieldLink themeV2={themeV2} url={url} />
     </Fieldset>
 );
 
-const PrivacyPolicyAutoConsent: FunctionComponent<{ url: string, newFontStyle?: boolean }> = ({ url, newFontStyle }) => (
-    <p className={newFontStyle ? 'body-regular' : ''}>
+const PrivacyPolicyAutoConsent: FunctionComponent<{ url: string, themeV2?: boolean }> = ({ url, themeV2 }) => (
+    <p className={themeV2 ? 'body-regular' : ''}>
         <TranslatedHtml data={{ url }} id="privacy_policy_auto_consent.label" />
     </p>
 );
@@ -30,13 +30,13 @@ const PrivacyPolicyField: FunctionComponent<{ url: string; isExpressPrivacyPolic
     url,
     isExpressPrivacyPolicy,
 }) => {
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
 
     if (isExpressPrivacyPolicy) {
-        return <PrivacyPolicyAutoConsent newFontStyle={newFontStyle} url={url} />;
+        return <PrivacyPolicyAutoConsent themeV2={themeV2} url={url} />;
     }
 
-    return <PrivacyPolicyFieldset newFontStyle={newFontStyle} url={url} />;
+    return <PrivacyPolicyFieldset themeV2={themeV2} url={url} />;
 };
 
 export default memo(PrivacyPolicyField);

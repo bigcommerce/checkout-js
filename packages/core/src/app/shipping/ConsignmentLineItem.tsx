@@ -32,7 +32,7 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
     const { unassignedItems } = useMultiShippingConsignmentItems();
     const { checkoutService: { assignItemsToAddress: assignItem } } = useCheckout();
     const deleteItem = useDeallocateItem();
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
 
     const toggleAllocateItemsModal = () => {
         setIsOpenAllocateItemsModal(!isOpenAllocateItemsModal);
@@ -98,7 +98,7 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
             />
             <div className="consignment-line-item-header">
                 <div>
-                    <h3 className={newFontStyle ? 'body-bold' : ''}>
+                    <h3 className={themeV2 ? 'body-bold' : ''}>
                         <TranslatedString data={{ count: itemsCount }} id="shipping.multishipping_item_allocated_message" />
                     </h3>
 
@@ -108,7 +108,7 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
 
                     <a
                         className={classNames('expand-items-button',
-                            { 'body-cta': newFontStyle }
+                            { 'body-cta': themeV2 }
                         )}
                         data-test="expand-items-button"
                         href="#"
@@ -128,7 +128,7 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
                     </a>
                 </div>
                 <a
-                    className={newFontStyle ? 'body-cta' : ''}
+                    className={themeV2 ? 'body-cta' : ''}
                     data-test="reallocate-items-button"
                     href="#"
                     onClick={preventDefault(toggleAllocateItemsModal)}

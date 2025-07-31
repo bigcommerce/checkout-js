@@ -33,7 +33,7 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
     isLoading,
     shippingFormRenderTimestamp,
 }) => {
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
 
     return (
         <>
@@ -42,7 +42,7 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
                 id="checkout-shipping-options"
                 legend={
                     <>
-                        <Legend newFontStyle={newFontStyle}>
+                        <Legend themeV2={themeV2}>
                             <TranslatedString id="shipping.shipping_method_label" />
                         </Legend>
 
@@ -69,7 +69,7 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
 
             <div className="form-actions">
                 <Button
-                    className={newFontStyle ? 'body-bold' : ''}
+                    className={themeV2 ? 'body-bold' : ''}
                     disabled={shouldDisableSubmit}
                     id="checkout-shipping-continue"
                     isLoading={isLoading}

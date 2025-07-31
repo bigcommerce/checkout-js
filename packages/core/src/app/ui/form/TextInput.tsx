@@ -8,7 +8,7 @@ export interface TextInputProps extends InputProps {
     appearFocused?: boolean;
     type?: 'text' | 'password' | 'tel' | 'email' | 'number';
     isFloatingLabelEnabled?: boolean;
-    newFontStyle?: boolean;
+    themeV2?: boolean;
 }
 
 const TextInput = forwardRef(
@@ -18,7 +18,7 @@ const TextInput = forwardRef(
             isFloatingLabelEnabled,
             appearFocused,
             type = 'text',
-            newFontStyle = false,
+            themeV2 = false,
             ...rest
         }: TextInputProps,
         ref: Ref<HTMLInputElement>,
@@ -31,8 +31,8 @@ const TextInput = forwardRef(
                 { 'form-input--focus': appearFocused },
                 { 'optimizedCheckout-form-input--focus': appearFocused },
                 additionalClassName,
-                { 'floating-form-field-input': newFontStyle && isFloatingLabelEnabled },
-                { 'body-regular': newFontStyle && !isFloatingLabelEnabled },
+                { 'floating-form-field-input': themeV2 && isFloatingLabelEnabled },
+                { 'body-regular': themeV2 && !isFloatingLabelEnabled },
             )}
             isFloatingLabelEnabled={isFloatingLabelEnabled}
             ref={ref}

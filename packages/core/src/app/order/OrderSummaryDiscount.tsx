@@ -21,7 +21,7 @@ const OrderSummaryDiscount: FunctionComponent<OrderSummaryDiscountProps> = ({
     onRemoved,
     ...rest
 }) => {
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
 
     return (
         <OrderSummaryPrice
@@ -46,7 +46,7 @@ const OrderSummaryDiscount: FunctionComponent<OrderSummaryDiscountProps> = ({
             {code && (
                 <span
                     className={classNames('cart-priceItem-postFix optimizedCheckout-contentSecondary',
-                        { 'sub-text-medium': newFontStyle })}
+                        { 'sub-text-medium': themeV2 })}
                     data-test="cart-price-code"
                 >
                     {code}

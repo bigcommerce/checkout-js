@@ -20,7 +20,7 @@ const StaticShippingOption: React.FunctionComponent<StaticShippingOptionProps> =
     method,
     shippingCostAfterDiscount,
 }) => {
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
 
     const renderShippingPrice = () => {
         if (shippingCostAfterDiscount !== undefined && shippingCostAfterDiscount !== method.cost) {
@@ -51,7 +51,7 @@ const StaticShippingOption: React.FunctionComponent<StaticShippingOptionProps> =
                     />
                 </span>
             )}
-            <span className={classNames('shippingOption-desc', { 'body-medium': newFontStyle })}>
+            <span className={classNames('shippingOption-desc', { 'body-medium': themeV2 })}>
                 {method.description}
                 {method.transitTime && (
                     <span className="shippingOption-transitTime">{method.transitTime}</span>
@@ -62,7 +62,7 @@ const StaticShippingOption: React.FunctionComponent<StaticShippingOptionProps> =
                     />
                 )}
             </span>
-            <span className={classNames('shippingOption-price', { 'body-medium': newFontStyle })}>
+            <span className={classNames('shippingOption-price', { 'body-medium': themeV2 })}>
                 {renderShippingPrice()}
             </span>
         </div>

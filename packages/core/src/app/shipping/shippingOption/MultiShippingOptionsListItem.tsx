@@ -15,10 +15,10 @@ interface MultiShippingOptionsListItemProps {
 export const MultiShippingOptionsListItem: FunctionComponent<
     MultiShippingOptionsListItemProps
 > = ({ consignmentId, selectedShippingOptionId, shippingOption, handleSelect }) => {
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
 
     const label = (
-        <span className={newFontStyle ? 'body-regular' : ''}>
+        <span className={themeV2 ? 'body-regular' : ''}>
             {`${shippingOption.description} - `}
             <ShopperCurrency amount={shippingOption.cost} />
         </span>

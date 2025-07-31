@@ -12,7 +12,7 @@ export interface BillingSameAsShippingFieldProps {
 const BillingSameAsShippingField: FunctionComponent<BillingSameAsShippingFieldProps> = ({
     onChange,
 }) => {
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
 
     const labelContent = useMemo(
         () => <TranslatedString id="billing.use_shipping_address_label" />,
@@ -24,7 +24,7 @@ const BillingSameAsShippingField: FunctionComponent<BillingSameAsShippingFieldPr
             id="sameAsBilling"
             labelContent={labelContent}
             name="billingSameAsShipping"
-            newFontStyle={newFontStyle}
+            themeV2={themeV2}
             onChange={onChange}
             testId="billingSameAsShipping"
         />

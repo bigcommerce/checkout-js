@@ -27,7 +27,7 @@ export interface DynamicFormFieldProps {
     label?: ReactNode;
     isFloatingLabelEnabled?: boolean;
     onChange?(value: string | string[]): void;
-    newFontStyle?: boolean;
+    themeV2?: boolean;
 }
 
 const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
@@ -51,7 +51,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
     label,
     extraClass,
     isFloatingLabelEnabled,
-    newFontStyle = false,
+    themeV2 = false,
 }) => {
     const fieldInputId = inputId || name;
     const fieldName = parentFieldName ? `${parentFieldName}.${name}` : name;
@@ -64,7 +64,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
         () => {
             let labelClassName = '';
 
-            if (newFontStyle) {
+            if (themeV2) {
                 if (isFloatingLabelSupportedFieldType) {
                     labelClassName = 'floating-form-field-label';
                 } else {
@@ -122,7 +122,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
                 max={max}
                 maxLength={maxLength || undefined}
                 min={min}
-                newFontStyle={newFontStyle}
+                themeV2={themeV2}
                 options={options && options.items}
                 placeholder={placeholder || (options && options.helperLabel)}
                 rows={options && (options as any).rows}
@@ -153,7 +153,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
                     id={fieldInputId}
                     label={labelComponent}
                     name={fieldName}
-                    newFontStyle={newFontStyle}
+                    themeV2={themeV2}
                     onChange={onChange}
                     options={(options && options.items) || []}
                 />

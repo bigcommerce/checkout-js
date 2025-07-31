@@ -1,7 +1,6 @@
 import { createContext, useContext } from 'react';
 
 export interface ThemeContextProps {
-    newFontStyle: boolean;
     themeV2: boolean;
 }
 

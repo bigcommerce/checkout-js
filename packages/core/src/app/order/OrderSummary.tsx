@@ -42,14 +42,14 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
     const nonBundledLineItems = useMemo(() => removeBundledItems(lineItems), [lineItems]);
     const displayInclusiveTax = isTaxIncluded && taxes && taxes.length > 0;
 
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
 
     return (
         <article className="cart optimizedCheckout-orderSummary" data-test="cart">
             <OrderSummaryHeader>{headerLink}</OrderSummaryHeader>
 
             <OrderSummarySection>
-                <OrderSummaryItems displayLineItemsCount items={nonBundledLineItems} newFontStyle={newFontStyle} />
+                <OrderSummaryItems displayLineItemsCount items={nonBundledLineItems} themeV2={themeV2} />
             </OrderSummarySection>
 
             <Extension region={ExtensionRegion.SummaryLastItemAfter} />
@@ -70,7 +70,7 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
             {displayInclusiveTax && <OrderSummarySection>
                 <h5
                     className={classNames('cart-taxItem cart-taxItem--subtotal optimizedCheckout-contentPrimary',
-                        { 'body-regular': newFontStyle })}
+                        { 'body-regular': themeV2 })}
                     data-test="tax-text"
                 >
                     <TranslatedString

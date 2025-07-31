@@ -48,7 +48,7 @@ const CustomerInfo: FunctionComponent<CustomerInfoProps & WithCheckoutCustomerIn
     onSignOutError = noop,
     signOut,
 }) => {
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
 
     const handleSignOut: () => Promise<void> = async () => {
         try {
@@ -79,7 +79,7 @@ const CustomerInfo: FunctionComponent<CustomerInfoProps & WithCheckoutCustomerIn
         <div className="customerView" data-test="checkout-customer-info">
             <div
                 className={classNames('customerView-body',
-                    { 'body-regular': newFontStyle },
+                    { 'body-regular': themeV2 },
                 )}
                 data-test="customer-info"
             >
@@ -89,7 +89,7 @@ const CustomerInfo: FunctionComponent<CustomerInfoProps & WithCheckoutCustomerIn
             <div className="customerView-actions">
                 {isSignedIn && (
                     <Button
-                        className={newFontStyle ? 'body-regular' : ''}
+                        className={themeV2 ? 'body-regular' : ''}
                         isLoading={isSigningOut}
                         onClick={handleSignOut}
                         size={ButtonSize.Tiny}

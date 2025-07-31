@@ -38,7 +38,7 @@ const NewConsignment = ({
     const [consignmentRequest, setConsignmentRequest] = useState<ConsignmentCreateRequestBody | undefined>();
     const [isOpenAllocateItemsModal, setIsOpenAllocateItemsModal] = useState(false);
     const { unassignedItems } = useMultiShippingConsignmentItems();
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
     const {
         checkoutState: {
             data: { getShippingCountries, getConsignments: getPreviousConsignments },
@@ -101,7 +101,7 @@ const NewConsignment = ({
 
     return (
         <div className='consignment-container'>
-            <div className={classNames('consignment-header', { 'sub-header': newFontStyle })}>
+            <div className={classNames('consignment-header', { 'sub-header': themeV2 })}>
                 <h3>
                     <TranslatedString data={{ consignmentNumber }} id="shipping.multishipping_consignment_index_heading" />
                 </h3>
@@ -125,11 +125,11 @@ const NewConsignment = ({
                     unassignedItems={unassignedItems}
                 />
                 <div className="new-consignment-line-item-header">
-                    <h3 className={newFontStyle ? 'body-bold' : ''}>
+                    <h3 className={themeV2 ? 'body-bold' : ''}>
                         <TranslatedString id="shipping.multishipping_no_item_allocated_message" />
                     </h3>
                     <a
-                        className={newFontStyle ? 'body-cta' : ''}
+                        className={themeV2 ? 'body-cta' : ''}
                         data-test="allocate-items-button"
                         href="#"
                         onClick={preventDefault(toggleAllocateItemsModal)}

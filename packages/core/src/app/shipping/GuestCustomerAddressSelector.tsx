@@ -13,17 +13,17 @@ interface GuestCustomerAddressSelectorProps {
 }
 
 const GuestCustomerAddressSelector = ({ onUseNewAddress, selectedAddress }: GuestCustomerAddressSelectorProps) => {
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
 
     return <div className='guest-consignment-line-item-header'>
         {
             !selectedAddress
                 ? <>
-                    <h3 className={newFontStyle ? 'body-bold' : ''}>
+                    <h3 className={themeV2 ? 'body-bold' : ''}>
                         <TranslatedString id="shipping.guest_multishipping_no_shipping_address_message" />
                     </h3>
                     <a
-                        className={newFontStyle ? 'body-cta' : ''}
+                        className={themeV2 ? 'body-cta' : ''}
                         data-test="enter-shipping-address"
                         href="#"
                         onClick={preventDefault(onUseNewAddress)}
@@ -34,7 +34,7 @@ const GuestCustomerAddressSelector = ({ onUseNewAddress, selectedAddress }: Gues
                 : <>
                     <SingleLineStaticAddress address={selectedAddress} />
                     <a
-                        className={newFontStyle ? 'body-cta' : ''}
+                        className={themeV2 ? 'body-cta' : ''}
                         data-test="edit-shipping-address"
                         href="#"
                         onClick={preventDefault(onUseNewAddress)}

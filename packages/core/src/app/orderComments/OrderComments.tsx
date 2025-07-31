@@ -7,7 +7,7 @@ import { useThemeContext } from '@bigcommerce/checkout/ui';
 import { Fieldset, FormField, Label, Legend, TextInput } from '../ui/form';
 
 const OrderComments: FunctionComponent = () => {
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
 
     const renderLabel = useCallback(
         (name: string) => (
@@ -19,13 +19,13 @@ const OrderComments: FunctionComponent = () => {
     );
 
     const renderInput = useCallback(
-        ({ field }: FieldProps) => <TextInput {...field} autoComplete="off" id="orderComment" maxLength={2000} newFontStyle={newFontStyle} />,
+        ({ field }: FieldProps) => <TextInput {...field} autoComplete="off" id="orderComment" maxLength={2000} themeV2={themeV2} />,
         [],
     );
 
     const legend = useMemo(
         () => (
-            <Legend newFontStyle={newFontStyle}>
+            <Legend themeV2={themeV2}>
                 <TranslatedString id="shipping.order_comment_label" />
             </Legend>
         ),

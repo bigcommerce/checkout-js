@@ -23,7 +23,7 @@ export const MultiShippingOptions = ({
     shippingQuoteFailedMessage,
 }: MultiShippingOptionsV2Props) => {
     const { checkoutService, checkoutState } = useCheckout();
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
 
     const selectShippingOption = async (consignmentId: string, shippingOptionId: string) => {
         await checkoutService.selectConsignmentShippingOption(consignmentId, shippingOptionId);
@@ -34,7 +34,7 @@ export const MultiShippingOptions = ({
     return (
         <div>
             <h3 className={classNames('shipping-option-header',
-                { 'body-bold': newFontStyle })}
+                { 'body-bold': themeV2 })}
             >
                 <TranslatedString id="shipping.shipping_method_label" />
             </h3>

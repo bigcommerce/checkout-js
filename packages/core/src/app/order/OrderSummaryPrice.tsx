@@ -68,7 +68,7 @@ const OrderSummaryPrice: FC<OrderSummaryPriceProps> = ({
         }
     } = useCheckout();
 
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
     const displayValue = getDisplayValue(amount, zeroLabel);
     const isActionDisabled = isSubmittingOrder();
 
@@ -112,8 +112,8 @@ const OrderSummaryPrice: FC<OrderSummaryPriceProps> = ({
                 >
                     <span className={classNames('cart-priceItem-label',
                         {
-                            'body-regular': newFontStyle && !isOrderTotal,
-                            'sub-header': newFontStyle && isOrderTotal
+                            'body-regular': themeV2 && !isOrderTotal,
+                            'sub-header': themeV2 && isOrderTotal
                         })}
                     >
                         <span data-test="cart-price-label">
@@ -130,7 +130,7 @@ const OrderSummaryPrice: FC<OrderSummaryPriceProps> = ({
                                 <a
                                     className={classNames({
                                         'link--disabled': isActionDisabled,
-                                        'body-cta': newFontStyle && !isOrderTotal
+                                        'body-cta': themeV2 && !isOrderTotal
                                     })}
                                     data-test="cart-price-callback"
                                     href="#"
@@ -144,8 +144,8 @@ const OrderSummaryPrice: FC<OrderSummaryPriceProps> = ({
 
                     <span className={classNames('cart-priceItem-value',
                         {
-                            'body-medium': newFontStyle && !isOrderTotal,
-                            'header': newFontStyle && isOrderTotal
+                            'body-medium': themeV2 && !isOrderTotal,
+                            'header': themeV2 && isOrderTotal
                         })}
                     >
                         {isNumberValue(amountBeforeDiscount) && amountBeforeDiscount !== amount && (

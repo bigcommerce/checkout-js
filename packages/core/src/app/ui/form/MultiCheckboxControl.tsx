@@ -9,14 +9,14 @@ export interface MultiCheckboxControlProps {
     testId?: string;
     onSelectedAll(): void;
     onSelectedNone(): void;
-    newFontStyle?: boolean;
+    themeV2?: boolean;
 }
 
 const MultiCheckboxControl: FunctionComponent<MultiCheckboxControlProps> = ({
     testId,
     onSelectedAll,
     onSelectedNone,
-    newFontStyle = false,
+    themeV2 = false,
 }) => {
     const handleSelectAllClick = useCallback(
         (event: MouseEvent) => {
@@ -36,7 +36,7 @@ const MultiCheckboxControl: FunctionComponent<MultiCheckboxControlProps> = ({
 
     return (
         <ul className={classNames('multiCheckbox--controls',
-            { 'body-regular': newFontStyle })}>
+            { 'body-regular': themeV2 })}>
             <li className="multiCheckbox--control">
                 <TranslatedString id="address.select" />
             </li>

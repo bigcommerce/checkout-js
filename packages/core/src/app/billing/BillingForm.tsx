@@ -69,7 +69,7 @@ const BillingForm = ({
     const addressFormRef: RefObject<HTMLFieldSetElement> = useRef(null);
     const { isPayPalFastlaneEnabled, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
 
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
     const shouldRenderStaticAddress = methodId === 'amazonpay';
     const allFormFields = getFields(values.countryCode);
     const customFormFields = allFormFields.filter(({ custom }) => custom);
@@ -149,7 +149,7 @@ const BillingForm = ({
 
             <div className="form-actions">
                 <Button
-                    className={newFontStyle ? 'body-bold' : ''}
+                    className={themeV2 ? 'body-bold' : ''}
                     disabled={isUpdating || isResettingAddress}
                     id="checkout-billing-continue"
                     isLoading={isUpdating || isResettingAddress}

@@ -47,7 +47,7 @@ export type RedeemableProps = {
 const Redeemable: FunctionComponent<
     RedeemableProps & WithLanguageProps & FormikProps<RedeemableFormValues>
     > = ({ shouldCollapseCouponCode, showAppliedRedeemables, ...formProps }) => {
-        const { newFontStyle } = useThemeContext();
+        const { themeV2 } = useThemeContext();
 
         return (
             <Toggle openByDefault={!shouldCollapseCouponCode}>
@@ -57,7 +57,7 @@ const Redeemable: FunctionComponent<
                             <a
                                 aria-controls="redeemable-collapsable"
                                 aria-expanded={isOpen}
-                                className={classNames('redeemable-label', { 'body-cta': newFontStyle })}
+                                className={classNames('redeemable-label', { 'body-cta': themeV2 })}
                                 data-test="redeemable-label"
                                 href="#"
                                 onClick={preventDefault(toggle)}
@@ -66,7 +66,7 @@ const Redeemable: FunctionComponent<
                             </a>
                         )}
                         {!shouldCollapseCouponCode && (
-                            <div className={classNames('redeemable-label', { 'body-cta': newFontStyle })}>
+                            <div className={classNames('redeemable-label', { 'body-cta': themeV2 })}>
                                 <TranslatedString id="redeemable.toggle_action" />
                             </div>
                         )}
@@ -90,7 +90,7 @@ const RedeemableForm: FunctionComponent<
             statuses: { isSubmittingOrder }
         }
     } = useCheckout();
-    const { newFontStyle } = useThemeContext();
+    const { themeV2 } = useThemeContext();
 
     const handleSubmitForm = (setSubmitted: FormContextType['setSubmitted']) => {
         if (isSubmittingOrder()) {
@@ -164,14 +164,14 @@ const RedeemableForm: FunctionComponent<
                                 {...field}
                                 aria-label={language.translate('redeemable.code_label')}
                                 className="form-input optimizedCheckout-form-input"
-                                newFontStyle={newFontStyle}
+                                themeV2={themeV2}
                                 onKeyDown={handleKeyDown(setSubmitted)}
                                 testId="redeemableEntry-input"
                             />
 
                             <Button
                                 className={classNames('form-prefixPostfix-button--postfix', {
-                                    'body-bold': newFontStyle,
+                                    'body-bold': themeV2,
                                 })}
                                 disabled={isSubmittingOrder()}
                                 id="applyRedeemableButton"
