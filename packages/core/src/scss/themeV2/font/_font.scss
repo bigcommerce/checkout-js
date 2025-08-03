@@ -51,7 +51,7 @@
     font-weight: $fontWeight-bold;
 }
 
-// overrides 
+// overrides
 .body-bold, .body-medium {
     &.button--primary:not(:disabled){
         color: $color-white;
