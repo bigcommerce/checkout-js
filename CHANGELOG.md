@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.637.1](https://github.com/bigcommerce/checkout-js/compare/v1.637.0...v1.637.1) (2025-08-04)
+
+
+### Bug Fixes
+
+* **payment:** fix of infinite BCP Pay Later Banner initialisation ([#2469](https://github.com/bigcommerce/checkout-js/issues/2469)) ([4ffd31c](https://github.com/bigcommerce/checkout-js/commit/4ffd31cc1aec8c269ca311a656d73986e94c3071))
+
 ## [1.637.0](https://github.com/bigcommerce/checkout-js/compare/v1.636.1...v1.637.0) (2025-08-04)
 
 
