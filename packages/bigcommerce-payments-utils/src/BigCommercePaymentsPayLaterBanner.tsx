@@ -3,35 +3,35 @@ import React, { FunctionComponent, useEffect } from 'react';
 import { PaymentMethodId, useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
 const BigCommercePaymentsPayLaterBanner: FunctionComponent<{
-   onUnhandledError?(error: Error): void
+    onUnhandledError?(error: Error): void
 }> = ({ onUnhandledError }) => {
-   const { checkoutService } = useCheckout();
+    const { checkoutService } = useCheckout();
 
-   useEffect(() => {
+    useEffect(() => {
         try {
             void checkoutService.initializePayment({
-              methodId: PaymentMethodId.BigCommercePaymentsPayLater,
-              bigcommerce_payments_paylater: {
-                bannerContainerId: 'bigcommerce-payments-banner-container',
-              },
+                methodId: PaymentMethodId.BigCommercePaymentsPayLater,
+                bigcommerce_payments_paylater: {
+                    bannerContainerId: 'bigcommerce-payments-banner-container',
+                },
             });
 
             void checkoutService.deinitializePayment({
-              methodId: PaymentMethodId.BigCommercePaymentsPayLater,
+                methodId: PaymentMethodId.BigCommercePaymentsPayLater,
             });
-    } catch (error) {
+        } catch (error) {
             if (error instanceof Error) {
-              onUnhandledError?.(error);
+                onUnhandledError?.(error);
             }
         }
-  });
+    }, []);
 
-  return (
+    return (
         <div
-          data-test='bigcommerce-payments-banner-container'
-          id='bigcommerce-payments-banner-container'
+            data-test='bigcommerce-payments-banner-container'
+            id='bigcommerce-payments-banner-container'
         />
-  );
+    );
 };
 
 export default BigCommercePaymentsPayLaterBanner;
