@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.637.0](https://github.com/bigcommerce/checkout-js/compare/v1.636.1...v1.637.0) (2025-08-04)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9395 Add Retry to LoadCheckout ([#2470](https://github.com/bigcommerce/checkout-js/issues/2470)) ([6cf02ad](https://github.com/bigcommerce/checkout-js/commit/6cf02ade35889d72e8328aae22829a5cc7a26ec0))
+
 ### [1.636.1](https://github.com/bigcommerce/checkout-js/compare/v1.636.0...v1.636.1) (2025-08-04)
 
 ## [1.636.0](https://github.com/bigcommerce/checkout-js/compare/v1.635.0...v1.636.0) (2025-07-31)
