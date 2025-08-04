@@ -22,12 +22,32 @@ export const useLoadCheckout = (checkoutId: string): {isLoadingCheckout: boolean
 		]);
 	};
 
+	const fetchDataWithRetry = async (maxRetries = 3): Promise<void> => {
+		const attemptFetch = async (attemptSequence = 1): Promise<void> => {
+			try {
+				await fetchData();
+			} catch {
+				if (attemptSequence >= maxRetries) {
+					throw new Error('Failed to load checkout after 3 attempts, please try again.');
+				}
+
+				const delay = attemptSequence ** 2 * 1000;
+
+				await new Promise(resolve => setTimeout(resolve, delay));
+
+				await attemptFetch(attemptSequence + 1);
+			}
+		};
+
+		await attemptFetch();
+	};
+
 	useEffect(() => {
-		fetchData()
+		fetchDataWithRetry()
 			.then(() => setIsLoadingCheckout(false))
-			.catch(() => {
-				throw new Error('Failed to load checkout, please try again.');
-		});
+			.catch((error) => {
+				throw error;
+			});
 	}, []);
 
 	return  { isLoadingCheckout };
