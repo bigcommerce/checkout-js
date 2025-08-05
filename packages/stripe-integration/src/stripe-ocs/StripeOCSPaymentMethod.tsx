@@ -1,6 +1,13 @@
 import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import { noop, some } from 'lodash';
-import React, { FunctionComponent, useCallback, useContext, useEffect, useRef } from 'react';
+import React, {
+    FunctionComponent,
+    useCallback,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
 
 import { HostedWidgetPaymentComponent } from '@bigcommerce/checkout/hosted-widget-integration';
 import {
@@ -12,7 +19,7 @@ import {
     PaymentMethodResolveId,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
-import { AccordionContext } from '@bigcommerce/checkout/ui';
+import { AccordionContext, ChecklistSkeleton } from '@bigcommerce/checkout/ui';
 
 import { getAppearanceForOCSElement, getFonts } from './getStripeOCSStyles';
 
@@ -26,6 +33,7 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 }) => {
     const collapseStripeElement = useRef<() => void>();
     const { onToggle, selectedItemId } = useContext(AccordionContext);
+    const [isOCSLoading, setIsOCSLoading] = useState(false);
     const methodSelector = `${method.gateway}-${method.id}`;
     const containerId = `${methodSelector}-component-field`;
     const paymentContext = paymentForm;
@@ -59,9 +67,11 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
     const initializeStripePayment = useCallback(
         async (options: PaymentInitializeOptions) => {
+            setIsOCSLoading(true);
+
             return checkoutService.initializePayment({
                 ...options,
-                [method.gateway || method.id]: {
+                stripeocs: {
                     containerId,
                     layout: {
                         type: 'accordion',
@@ -79,78 +89,79 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                     handleClosePaymentMethod: (collapseElement: () => void) => {
                         collapseStripeElement.current = collapseElement;
                     },
+                    togglePreloader: setIsOCSLoading,
                 },
             });
         },
         [
             containerId,
             selectedItemId,
-            method,
             methodSelector,
             checkoutService,
             onUnhandledError,
             renderSubmitButton,
             onToggle,
+            setIsOCSLoading,
         ],
     );
 
-    const renderCheckoutThemeStylesForStripeOCS = () => {
-        return (
-            <>
-                <style>
-                    {`
-                        .custom-checklist-item#radio-${methodSelector} {
-                            border-bottom: none;
-                        }
-                        .custom-checklist-item#radio-${methodSelector}:last-of-type {
-                            margin-bottom: -1px;
-                        }
-                    `}
-                </style>
+    const renderCustomOCSSectionStyles = () => (
+        <style>
+            {`
+                .custom-checklist-item#radio-${methodSelector} {
+                    border-bottom: none;
+                }
+                .custom-checklist-item#radio-${methodSelector}:last-of-type {
+                    margin-bottom: -1px;
+                }
+            `}
+        </style>
+    );
 
-                <div style={{ display: 'none' }}>
-                    <div
-                        className="form-checklist-item optimizedCheckout-form-checklist-item"
-                        id={`${containerId}--accordion-header`}
-                    >
-                        <input
-                            className="form-checklist-checkbox optimizedCheckout-form-checklist-checkbox"
-                            id={`${containerId}-radio-input`}
-                            type="radio"
-                        />
-                        <div className="form-label optimizedCheckout-form-label" />
-                    </div>
-                    <div
-                        className="form-checklist-header--selected"
-                        id={`${containerId}--accordion-header-selected`}
-                    >
-                        <input
-                            className="form-checklist-checkbox optimizedCheckout-form-checklist-checkbox"
-                            defaultChecked
-                            id={`${containerId}-radio-input-selected`}
-                            type="radio"
-                        />
-                        <div className="form-label optimizedCheckout-form-label" />
-                    </div>
-                    <div className="optimizedCheckout-form-input" id={`${containerId}--input`}>
-                        <div className="form-field--error">
-                            <div
-                                className="optimizedCheckout-form-label"
-                                id={`${containerId}--error`}
-                            />
-                        </div>
-                        <div
-                            className="optimizedCheckout-form-label"
-                            id={`${containerId}--label`}
-                        />
-                    </div>
+    const renderCheckoutElementsForStripeOCSStyling = () => (
+        <div style={{ display: 'none' }}>
+            <div
+                className="form-checklist-item optimizedCheckout-form-checklist-item"
+                id={`${containerId}--accordion-header`}
+            >
+                <input
+                    className="form-checklist-checkbox optimizedCheckout-form-checklist-checkbox"
+                    id={`${containerId}-radio-input`}
+                    type="radio"
+                />
+                <div className="form-label optimizedCheckout-form-label" />
+            </div>
+            <div
+                className="form-checklist-header--selected"
+                id={`${containerId}--accordion-header-selected`}
+            >
+                <input
+                    className="form-checklist-checkbox optimizedCheckout-form-checklist-checkbox"
+                    defaultChecked
+                    id={`${containerId}-radio-input-selected`}
+                    type="radio"
+                />
+                <div className="form-label optimizedCheckout-form-label" />
+            </div>
+            <div className="optimizedCheckout-form-input" id={`${containerId}--input`}>
+                <div className="form-field--error">
+                    <div className="optimizedCheckout-form-label" id={`${containerId}--error`} />
                 </div>
-            </>
-        );
-    };
+                <div className="optimizedCheckout-form-label" id={`${containerId}--label`} />
+            </div>
+        </div>
+    );
+
+    const renderPreloader = () => (
+        <div style={{ padding: '10px 18px' }}>
+            <ChecklistSkeleton />
+        </div>
+    );
 
     return (
         <>
+            {isOCSLoading ? renderPreloader() : renderCustomOCSSectionStyles()}
+
             <HostedWidgetPaymentComponent
                 {...rest}
                 containerId={containerId}
@@ -175,7 +186,7 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                 setValidationSchema={setValidationSchema}
                 signOut={checkoutService.signOutCustomer}
             />
-            {renderCheckoutThemeStylesForStripeOCS()}
+            {renderCheckoutElementsForStripeOCSStyling()}
         </>
     );
 };
