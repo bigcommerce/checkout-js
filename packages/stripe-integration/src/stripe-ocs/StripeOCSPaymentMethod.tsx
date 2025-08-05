@@ -153,7 +153,7 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     );
 
     const renderPreloader = () => (
-        <div style={{ padding: '10px 18px' }}>
+        <div data-test="stripe-accordion-skeleton" style={{ padding: '10px 18px' }}>
             <ChecklistSkeleton />
         </div>
     );
@@ -193,8 +193,5 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
 export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>(
     StripeOCSPaymentMethod,
-    [
-        { gateway: 'stripeupe', id: 'stripe_ocs' },
-        { gateway: 'stripeocs', id: 'optimized_checkout' },
-    ],
+    [{ gateway: 'stripeocs', id: 'optimized_checkout' }],
 );

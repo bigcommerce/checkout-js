@@ -29,6 +29,7 @@ import {
     getPaymentMethod,
     getStoreConfig,
 } from '@bigcommerce/checkout/test-mocks';
+import { screen } from '@bigcommerce/checkout/test-utils';
 import { AccordionContext, AccordionContextProps } from '@bigcommerce/checkout/ui';
 
 import StripeOCSPaymentMethod from './StripeOCSPaymentMethod';
@@ -144,6 +145,7 @@ describe('when using Stripe OCS payment', () => {
                 render: expect.any(Function),
                 paymentMethodSelect: expect.any(Function),
                 handleClosePaymentMethod: expect.any(Function),
+                togglePreloader: expect.any(Function),
             },
         });
     });
@@ -173,6 +175,7 @@ describe('when using Stripe OCS payment', () => {
                 render: expect.any(Function),
                 paymentMethodSelect: expect.any(Function),
                 handleClosePaymentMethod: expect.any(Function),
+                togglePreloader: expect.any(Function),
             },
         });
     });
@@ -195,6 +198,7 @@ describe('when using Stripe OCS payment', () => {
                     render: expect.any(Function),
                     paymentMethodSelect: expect.any(Function),
                     handleClosePaymentMethod: expect.any(Function),
+                    togglePreloader: expect.any(Function),
                 },
             }),
         );
@@ -223,38 +227,7 @@ describe('when using Stripe OCS payment', () => {
                     render: expect.any(Function),
                     paymentMethodSelect: expect.any(Function),
                     handleClosePaymentMethod: expect.any(Function),
-                },
-            }),
-        );
-    });
-
-    // TODO: remove after fix issue with module on BE side
-    it('initializes method without gateway id', () => {
-        const methodWithoutGatewayId = {
-            ...method,
-            gateway: undefined,
-        };
-
-        render(<PaymentMethodTest {...defaultProps} method={methodWithoutGatewayId} />);
-
-        expect(checkoutService.initializePayment).toHaveBeenCalledWith(
-            expect.objectContaining({
-                methodId: method.id,
-                gatewayId: undefined,
-                [methodId]: {
-                    containerId: `undefined-${methodId}-component-field`,
-                    layout: {
-                        ...defaultAccordionLayout,
-                        defaultCollapsed: true,
-                    },
-                    appearance: {
-                        variables: { color: '#cccccc' },
-                    },
-                    fonts: [{ cssSrc: 'fontSrc' }],
-                    onError: expect.any(Function),
-                    render: expect.any(Function),
-                    paymentMethodSelect: expect.any(Function),
-                    handleClosePaymentMethod: expect.any(Function),
+                    togglePreloader: expect.any(Function),
                 },
             }),
         );
@@ -284,6 +257,7 @@ describe('when using Stripe OCS payment', () => {
                         render: expect.any(Function),
                         paymentMethodSelect: expect.any(Function),
                         handleClosePaymentMethod: expect.any(Function),
+                        togglePreloader: expect.any(Function),
                     },
                 }),
             );
@@ -307,6 +281,7 @@ describe('when using Stripe OCS payment', () => {
                         render: expect.any(Function),
                         paymentMethodSelect: expect.any(Function),
                         handleClosePaymentMethod: expect.any(Function),
+                        togglePreloader: expect.any(Function),
                     },
                 }),
             );
@@ -314,6 +289,30 @@ describe('when using Stripe OCS payment', () => {
     });
 
     describe('# Stripe OCS accordion actions', () => {
+        it('toggle accordion preloader', () => {
+            let toggleAction: ((show: boolean) => void) | undefined;
+
+            jest.spyOn(checkoutService, 'initializePayment').mockImplementation(
+                (options: WithStripeOCSPaymentInitializeOptions) => {
+                    toggleAction = options.stripeocs?.togglePreloader;
+
+                    return Promise.resolve(checkoutState);
+                },
+            );
+
+            const { rerender } = render(<PaymentMethodTest {...defaultProps} method={method} />);
+
+            expect(screen.getByTestId('stripe-accordion-skeleton')).toBeInTheDocument();
+
+            if (typeof toggleAction === 'function') {
+                toggleAction(false);
+            }
+
+            rerender(<PaymentMethodTest {...defaultProps} method={method} />);
+
+            expect(screen.queryByTestId('stripe-accordion-skeleton')).not.toBeInTheDocument();
+        });
+
         it('should call collapse BC accordion when stripe accordion item is selected', () => {
             jest.spyOn(checkoutService, 'initializePayment').mockImplementation(
                 (options: WithStripeOCSPaymentInitializeOptions) => {
