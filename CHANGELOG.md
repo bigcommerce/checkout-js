@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.638.4](https://github.com/bigcommerce/checkout-js/compare/v1.638.3...v1.638.4) (2025-08-05)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9375 Convert EmptyCartMessage ([#2477](https://github.com/bigcommerce/checkout-js/issues/2477)) ([1f25fd9](https://github.com/bigcommerce/checkout-js/commit/1f25fd9849e689a28a0afba967776256c60f4c52))
+
 ### [1.638.3](https://github.com/bigcommerce/checkout-js/compare/v1.638.2...v1.638.3) (2025-08-05)
 
 
