@@ -1,5 +1,5 @@
 import { CheckoutSelectors, CheckoutService } from '@bigcommerce/checkout-sdk';
-import React, { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
+import React, { ReactElement, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 
 import CheckoutContext from './CheckoutContext';
 
@@ -8,7 +8,7 @@ export interface CheckoutProviderProps {
     children: ReactNode;
 }
 
-export default function CheckoutProvider({ checkoutService, children }: CheckoutProviderProps) {
+const CheckoutProvider = ({ checkoutService, children }: CheckoutProviderProps): ReactElement => {
     const [checkoutState, setCheckoutState] = useState<CheckoutSelectors>(() =>
         checkoutService.getState(),
     );
@@ -36,4 +36,6 @@ export default function CheckoutProvider({ checkoutService, children }: Checkout
     }, [checkoutService]);
 
     return <CheckoutContext.Provider value={contextValue}>{children}</CheckoutContext.Provider>;
-}
+};
+
+export default CheckoutProvider;
