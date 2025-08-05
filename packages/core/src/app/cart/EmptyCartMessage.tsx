@@ -1,4 +1,4 @@
-import React, { PureComponent, ReactNode } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 
 import { TranslatedHtml } from '@bigcommerce/checkout/locale';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
@@ -8,41 +8,24 @@ export interface EmptyCartMessageProps {
     loginUrl: string;
 }
 
-interface EmptyCartMessageState {
-    isWaiting: boolean;
-}
+const EmptyCartMessage = ({ waitInterval, loginUrl }: EmptyCartMessageProps): ReactElement => {
+    const [isWaiting, setIsWaiting] = useState(true);
 
-export default class EmptyCartMessage extends PureComponent<
-    EmptyCartMessageProps,
-    EmptyCartMessageState
-> {
-    state: EmptyCartMessageState = {
-        isWaiting: true,
-    };
-
-    private waitToken?: number;
-
-    componentDidMount(): void {
-        const { waitInterval } = this.props;
-
-        // @ts-ignore
-        this.waitToken = setTimeout(() => {
-            this.setState({ isWaiting: false });
+    useEffect(() => {
+        const waitToken = setTimeout(() => {
+            setIsWaiting(false);
         }, waitInterval);
-    }
 
-    componentWillUnmount(): void {
-        clearInterval(this.waitToken);
-    }
+        return () => {
+            clearTimeout(waitToken);
+        };
+    }, [waitInterval]);
 
-    render(): ReactNode {
-        const { loginUrl } = this.props;
-        const { isWaiting } = this.state;
+    return (
+        <LoadingOverlay hideContentWhenLoading isLoading={isWaiting}>
+            <TranslatedHtml data={{ url: loginUrl }} id="cart.empty_cart_message" />
+        </LoadingOverlay>
+    );
+};
 
-        return (
-            <LoadingOverlay hideContentWhenLoading isLoading={isWaiting}>
-                <TranslatedHtml data={{ url: loginUrl }} id="cart.empty_cart_message" />
-            </LoadingOverlay>
-        );
-    }
-}
+export default EmptyCartMessage;
