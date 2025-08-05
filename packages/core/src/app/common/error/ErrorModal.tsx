@@ -1,6 +1,6 @@
 import { RequestError } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { PureComponent, ReactNode, SyntheticEvent } from 'react';
+import React, { ReactElement, ReactNode, SyntheticEvent } from 'react';
 
 import { TranslatedHtml, TranslatedString } from '@bigcommerce/checkout/locale';
 
@@ -28,74 +28,57 @@ export interface ErrorModalOnCloseProps {
     error: Error;
 }
 
-export default class ErrorModal extends PureComponent<ErrorModalProps> {
-    private aria = {
+const ErrorModal = ({
+    error,
+    message = error && error.message,
+    onClose = noop,
+    shouldShowErrorCode = true,
+    title = error && isCustomError(error) && error.title,
+}: ErrorModalProps): ReactElement => {
+    const aria = {
         labelledby: 'errorModalMessage',
     };
 
-    render(): ReactNode {
-        const { error } = this.props;
+    const handleOnRequestClose: (event: SyntheticEvent) => void = (event) => {
+        if (error) {
+            onClose(event.nativeEvent, { error });
+        }
+    };
 
-        return (
-            <Modal
-                additionalModalClassName="modal--error"
-                aria={this.aria}
-                footer={this.renderFooter()}
-                header={this.renderHeader()}
-                isOpen={!!error}
-                onRequestClose={this.handleOnRequestClose}
-            >
-                {this.renderBody()}
-            </Modal>
-        );
-    }
+    const renderHeader = (): ReactNode => (
+        <ModalHeader>
+            <IconError
+                additionalClassName="icon--error modal-header-icon"
+                size={IconSize.Small}
+            />
+            <span aria-live="assertive" role="alert">
+                {title || <TranslatedString id="common.error_heading" />}
+            </span>
+        </ModalHeader>
+    );
 
-    private renderHeader(): ReactNode {
-        const { error, title = error && isCustomError(error) && error.title } = this.props;
+    const renderBody = (): ReactNode => (
+        <>
+            {error && isHtmlError(error) &&
+                <TranslatedHtml id={error.data.translationKey} />
+            }
+            {message && (
+                <p aria-live="assertive" id="errorModalMessage" role="alert">
+                    {message}
+                </p>
+            )}
 
-        return (
-            <ModalHeader>
-                <IconError
-                    additionalClassName="icon--error modal-header-icon"
-                    size={IconSize.Small}
-                />
-                <span aria-live="assertive" role="alert">
-                    {title || <TranslatedString id="common.error_heading" />}
-                </span>
-            </ModalHeader>
-        );
-    }
+            <div className="optimizedCheckout-contentSecondary">{renderErrorCode()}</div>
+        </>
+    );
 
-    private renderBody(): ReactNode {
-        const { error, message = error && error.message } = this.props;
+    const renderFooter = (): ReactNode => (
+        <Button onClick={handleOnRequestClose} size={ButtonSize.Small}>
+            <TranslatedString id="common.ok_action" />
+        </Button>
+    );
 
-        return (
-            <>
-                {error && isHtmlError(error) &&
-                    <TranslatedHtml id={error.data.translationKey} />
-                }
-                {message && (
-                    <p aria-live="assertive" id="errorModalMessage" role="alert">
-                        {message}
-                    </p>
-                )}
-
-                <div className="optimizedCheckout-contentSecondary">{this.renderErrorCode()}</div>
-            </>
-        );
-    }
-
-    private renderFooter(): ReactNode {
-        return (
-            <Button onClick={this.handleOnRequestClose} size={ButtonSize.Small}>
-                <TranslatedString id="common.ok_action" />
-            </Button>
-        );
-    }
-
-    private renderErrorCode(): ReactNode {
-        const { error, shouldShowErrorCode = true } = this.props;
-
+    const renderErrorCode = (): ReactNode => {
         if (!error || !shouldShowErrorCode) {
             return;
         }
@@ -116,13 +99,20 @@ export default class ErrorModal extends PureComponent<ErrorModalProps> {
         }
 
         return <ErrorCode code={errorCode} />;
-    }
-
-    private handleOnRequestClose: (event: SyntheticEvent) => void = (event) => {
-        const { error, onClose = noop } = this.props;
-
-        if (error) {
-            onClose(event.nativeEvent, { error });
-        }
     };
-}
+
+    return (
+        <Modal
+            additionalModalClassName="modal--error"
+            aria={aria}
+            footer={renderFooter()}
+            header={renderHeader()}
+            isOpen={!!error}
+            onRequestClose={handleOnRequestClose}
+        >
+            {renderBody()}
+        </Modal>
+    );
+};
+
+export default ErrorModal;
