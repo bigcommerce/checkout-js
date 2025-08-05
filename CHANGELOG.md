@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.638.1](https://github.com/bigcommerce/checkout-js/compare/v1.638.0...v1.638.1) (2025-08-05)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9375 Convert CheckoutProvider into Function Component ([#2473](https://github.com/bigcommerce/checkout-js/issues/2473)) ([2c07112](https://github.com/bigcommerce/checkout-js/commit/2c0711239ad827aa2cb5aad7f7c6cfdd5f1fd3dc))
+
 ## [1.638.0](https://github.com/bigcommerce/checkout-js/compare/v1.637.1...v1.638.0) (2025-08-04)
 
 
