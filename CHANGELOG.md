@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.638.3](https://github.com/bigcommerce/checkout-js/compare/v1.638.2...v1.638.3) (2025-08-05)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9375 Convert ModalTrigger ([#2476](https://github.com/bigcommerce/checkout-js/issues/2476)) ([fd5c9c7](https://github.com/bigcommerce/checkout-js/commit/fd5c9c779205430fe33e30fda8f654306d339662))
+
 ### [1.638.2](https://github.com/bigcommerce/checkout-js/compare/v1.638.1...v1.638.2) (2025-08-05)
 
 
