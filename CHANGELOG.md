@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.639.0](https://github.com/bigcommerce/checkout-js/compare/v1.638.6...v1.639.0) (2025-08-06)
+
+
+### Features
+
+* **payment:** Billie logo is not displayed at payment step ([#2465](https://github.com/bigcommerce/checkout-js/issues/2465)) ([e15dcd1](https://github.com/bigcommerce/checkout-js/commit/e15dcd17e0e45838693e2fcfeb1f02f6e5f25a09))
+
 ### [1.638.6](https://github.com/bigcommerce/checkout-js/compare/v1.638.5...v1.638.6) (2025-08-06)
 
 
