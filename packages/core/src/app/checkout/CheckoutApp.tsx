@@ -1,11 +1,11 @@
 import { createCheckoutService, createEmbeddedCheckoutMessenger } from '@bigcommerce/checkout-sdk';
 import { BrowserOptions } from '@sentry/browser';
-import React, { Component } from 'react';
+import React, { ReactElement, useEffect, useMemo } from 'react';
 import ReactModal from 'react-modal';
 
 import { AnalyticsProvider } from '@bigcommerce/checkout/analytics';
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
-import { ErrorBoundary, ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
+import { ErrorBoundary } from '@bigcommerce/checkout/error-handling-utils';
 import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { ThemeProvider } from '@bigcommerce/checkout/ui';
@@ -28,58 +28,52 @@ export interface CheckoutAppProps {
     sentrySampleRate?: number;
 }
 
-export default class CheckoutApp extends Component<CheckoutAppProps> {
-    private checkoutService = createCheckoutService({
+const CheckoutApp = (props: CheckoutAppProps): ReactElement => {
+    const { containerId, sentryConfig, publicPath, sentrySampleRate } = props;
+
+    const checkoutService = useMemo(() => createCheckoutService({
         locale: getLanguageService().getLocale(),
         shouldWarnMutation: process.env.NODE_ENV === 'development',
-    });
-    private embeddedStylesheet = createEmbeddedCheckoutStylesheet();
-    private embeddedSupport = createEmbeddedCheckoutSupport(getLanguageService());
-    private errorLogger: ErrorLogger;
+    }), []);
+    const embeddedStylesheet = useMemo(() => createEmbeddedCheckoutStylesheet(), []);
+    const embeddedSupport = useMemo(() => createEmbeddedCheckoutSupport(getLanguageService()), []);
+    const errorLogger = useMemo(() => createErrorLogger(
+        { sentry: sentryConfig },
+        {
+            errorTypes: ['UnrecoverableError'],
+            publicPath,
+            sampleRate: sentrySampleRate || 0.1,
+        },
+    ), []);
 
-    constructor(props: Readonly<CheckoutAppProps>) {
-        super(props);
-
-        this.errorLogger = createErrorLogger(
-            { sentry: props.sentryConfig },
-            {
-                errorTypes: ['UnrecoverableError'],
-                publicPath: props.publicPath,
-                sampleRate: props.sentrySampleRate ? props.sentrySampleRate : 0.1,
-            },
-        );
-    }
-
-    componentDidMount(): void {
-        const { containerId } = this.props;
-
+    useEffect(() => {
         ReactModal.setAppElement(`#${containerId}`);
-    }
+    }, []);
 
-    render() {
-        return (
-            <ErrorBoundary logger={this.errorLogger}>
-                <LocaleProvider checkoutService={this.checkoutService}>
-                    <CheckoutProvider checkoutService={this.checkoutService}>
-                        <AnalyticsProvider checkoutService={this.checkoutService}>
-                            <ExtensionProvider
-                                checkoutService={this.checkoutService}
-                                errorLogger={createErrorLogger()}
-                            >
-                                <ThemeProvider>
-                                    <Checkout
-                                        {...this.props}
-                                        createEmbeddedMessenger={createEmbeddedCheckoutMessenger}
-                                        embeddedStylesheet={this.embeddedStylesheet}
-                                        embeddedSupport={this.embeddedSupport}
-                                        errorLogger={this.errorLogger}
-                                    />
-                                </ThemeProvider>
-                            </ExtensionProvider>
-                        </AnalyticsProvider>
-                    </CheckoutProvider>
-                </LocaleProvider>
-            </ErrorBoundary>
-        );
-    }
-}
+    return (
+        <ErrorBoundary logger={errorLogger}>
+            <LocaleProvider checkoutService={checkoutService}>
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <AnalyticsProvider checkoutService={checkoutService}>
+                        <ExtensionProvider
+                            checkoutService={checkoutService}
+                            errorLogger={createErrorLogger()}
+                        >
+                            <ThemeProvider>
+                                <Checkout
+                                    {...props}
+                                    createEmbeddedMessenger={createEmbeddedCheckoutMessenger}
+                                    embeddedStylesheet={embeddedStylesheet}
+                                    embeddedSupport={embeddedSupport}
+                                    errorLogger={errorLogger}
+                                />
+                            </ThemeProvider>
+                        </ExtensionProvider>
+                    </AnalyticsProvider>
+                </CheckoutProvider>
+            </LocaleProvider>
+        </ErrorBoundary>
+    );
+};
+
+export default CheckoutApp;
