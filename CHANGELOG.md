@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.638.5](https://github.com/bigcommerce/checkout-js/compare/v1.638.4...v1.638.5) (2025-08-06)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9375 Enforce no-tabs rule ([#2483](https://github.com/bigcommerce/checkout-js/issues/2483)) ([a82719b](https://github.com/bigcommerce/checkout-js/commit/a82719b392ec05ea2610121e2e91571fcaaa662c))
+
 ### [1.638.4](https://github.com/bigcommerce/checkout-js/compare/v1.638.3...v1.638.4) (2025-08-05)
 
 
