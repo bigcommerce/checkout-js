@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.640.1](https://github.com/bigcommerce/checkout-js/compare/v1.640.0...v1.640.1) (2025-08-07)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9375 Convert DropdownTrigger ([#2478](https://github.com/bigcommerce/checkout-js/issues/2478)) ([03e220d](https://github.com/bigcommerce/checkout-js/commit/03e220ded19ebb78444493a0fa0fa3a726b43801))
+
 ## [1.640.0](https://github.com/bigcommerce/checkout-js/compare/v1.639.0...v1.640.0) (2025-08-06)
 
 
