@@ -1,8 +1,7 @@
 import { FormFieldItem } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { isDate, noop } from 'lodash';
-import React, { FunctionComponent, memo, useCallback } from 'react';
-import ReactDatePicker from 'react-datepicker';
+import React, { FunctionComponent, lazy, memo, Suspense, useCallback } from 'react';
 
 import { withDate, WithDateProps } from '@bigcommerce/checkout/locale';
 
@@ -14,6 +13,14 @@ import { InputProps } from './Input';
 import RadioInput from './RadioInput';
 import TextArea from './TextArea';
 import TextInput from './TextInput';
+
+const ReactDatePicker = lazy(
+    () =>
+        import(
+            /* webpackChunkName: "react-datepicker" */
+            'react-datepicker'
+        ),
+);
 
 export interface DynamicInputProps extends InputProps {
     id: string;
@@ -137,7 +144,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
             );
 
         case DynamicFormFieldType.date:
-            return (
+            return <Suspense>
                 <ReactDatePicker
                     {...(rest as any)}
                     autoComplete="off"
@@ -158,7 +165,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                     popperClassName="optimizedCheckout-contentPrimary"
                     selected={isDate(value) ? value : undefined}
                 />
-            );
+            </Suspense>;
 
         case DynamicFormFieldType.multiline:
             return (
