@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.641.0](https://github.com/bigcommerce/checkout-js/compare/v1.640.2...v1.641.0) (2025-08-07)
+
+
+### Features
+
+* **payment:** removing applepay filtering related code ([#2472](https://github.com/bigcommerce/checkout-js/issues/2472)) ([a46e8ff](https://github.com/bigcommerce/checkout-js/commit/a46e8ff381697e01d4d67bf1e5d5e724c8f80704))
+
 ### [1.640.2](https://github.com/bigcommerce/checkout-js/compare/v1.640.1...v1.640.2) (2025-08-07)
 
 
