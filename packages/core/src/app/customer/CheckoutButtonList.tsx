@@ -1,7 +1,6 @@
 import {
     CheckoutSelectors,
     CheckoutService,
-    CheckoutSettings,
     CustomerInitializeOptions,
     CustomerRequestOptions,
 } from '@bigcommerce/checkout-sdk';
@@ -18,7 +17,6 @@ import resolveCheckoutButton from './resolveCheckoutButton';
 import CheckoutButtonV1Resolver from './WalletButtonV1Resolver';
 
 export interface CheckoutButtonListProps {
-    checkoutSettings: CheckoutSettings;
     hideText?: boolean;
     isInitializing?: boolean;
     methodIds?: string[];
@@ -36,7 +34,6 @@ interface WithCheckoutCheckoutButtonListProps {
 
 const CheckoutButtonList: FunctionComponent<WithCheckoutCheckoutButtonListProps & CheckoutButtonListProps> = ({
     checkoutService,
-    checkoutSettings,
     checkoutState,
     hideText = false,
     isInitializing = false,
@@ -48,7 +45,7 @@ const CheckoutButtonList: FunctionComponent<WithCheckoutCheckoutButtonListProps 
     onError,
 }) => {
     const { language } = useLocale();
-    const supportedMethodIds = getSupportedMethodIds(methodIds, checkoutSettings);
+    const supportedMethodIds = getSupportedMethodIds(methodIds);
 
     if (supportedMethodIds.length === 0) {
         return null;

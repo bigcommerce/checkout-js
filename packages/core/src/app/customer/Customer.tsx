@@ -1,6 +1,6 @@
 import {
     CheckoutPaymentMethodExecutedOptions,
-    CheckoutSelectors, CheckoutSettings,
+    CheckoutSelectors,
     CustomerAccountRequestBody,
     CustomerCredentials,
     CustomerInitializeOptions,
@@ -65,7 +65,6 @@ export interface WithCheckoutCustomerProps {
     email?: string;
     firstName?: string;
     fixNewsletterCheckboxExperimentEnabled: boolean;
-    checkoutSettings: CheckoutSettings;
     forgotPasswordUrl: string;
     isContinuingAsGuest: boolean;
     isCreatingAccount: boolean;
@@ -159,7 +158,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
         const shouldRenderGuestForm = viewType === CustomerViewType.Guest;
         const shouldRenderCreateAccountForm = viewType === CustomerViewType.CreateAccount;
         const shouldRenderLoginForm = !shouldRenderGuestForm && !shouldRenderCreateAccountForm;
-        
+
         if (!isReady) {
             return null;
         }
@@ -197,14 +196,12 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             isPaymentDataRequired,
             shouldRenderStripeForm,
             providerWithCustomCheckout,
-            checkoutSettings,
         } = this.props;
 
         const checkoutButtons = isWalletButtonsOnTop || !isPaymentDataRequired
           ? null
           : <CheckoutButtonList
             checkEmbeddedSupport={checkEmbeddedSupport}
-            checkoutSettings={checkoutSettings}
             deinitialize={deinitializeCustomer}
             initialize={initializeCustomer}
             isInitializing={isInitializing}
@@ -635,7 +632,6 @@ export function mapToWithCheckoutCustomerProps({
         isExpressPrivacyPolicy,
         isPaymentDataRequired: isPaymentDataRequired(),
         shouldRenderStripeForm: providerWithCustomCheckout === PaymentMethodId.StripeUPE && shouldUseStripeLinkByMinimumAmount(cart),
-        checkoutSettings: config.checkoutSettings,
     };
 }
 

@@ -1,7 +1,3 @@
-import { CheckoutSettings } from '@bigcommerce/checkout-sdk';
-
-import { isExperimentEnabled, shouldFilterApplePay } from '../common/utility';
-
 const APPLE_PAY = 'applepay';
 
 // TODO: The API should tell UI which payment method offers its own checkout button
@@ -33,13 +29,6 @@ export const SUPPORTED_METHODS: string[] = [
     'googlepaystripeocs',
 ];
 
-export const getSupportedMethodIds = (methodIds: string[], checkoutSettings?: CheckoutSettings): string[] => {
-    return methodIds.filter((methodId) => {
-        // TODO: this check have to be deleted after implementation of Apple Pay for third party browsers will be tested and released
-        if (shouldFilterApplePay(methodId, isExperimentEnabled(checkoutSettings, 'PAYPAL-4324.applepay_web_browser_support'))) {
-            return false;
-        }
-
-        return SUPPORTED_METHODS.includes(methodId);
-    });
+export const getSupportedMethodIds = (methodIds: string[]): string[] => {
+    return methodIds.filter((methodId) => SUPPORTED_METHODS.includes(methodId));
 }
