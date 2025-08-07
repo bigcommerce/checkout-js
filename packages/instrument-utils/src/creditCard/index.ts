@@ -15,11 +15,5 @@ export {
 } from './getCreditCardValidationSchema';
 export { unformatCreditCardNumber } from './unformatCreditCardNumber';
 export { CreditCardFieldset } from './CreditCardFieldset';
-export {
-    mapFromPaymentMethodCardType,
-    getPaymentMethodIconComponent,
-    filterInstrumentTypes,
-} from './mapFromPaymentMethodCardType';
 export { getCreditCardInputStyles, CreditCardInputStylesType } from './getCreditCardInputStyles';
 export { formatCreditCardExpiryDate } from './formatCreditCardExpiryDate';
-export { CreditCardIcon, CreditCardIconProps } from './CreditCardIcon';

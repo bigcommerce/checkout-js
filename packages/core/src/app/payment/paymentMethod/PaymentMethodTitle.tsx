@@ -8,12 +8,12 @@ import { BigCommercePaymentsPayLaterBanner } from '@bigcommerce/checkout/bigcomm
 import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { CheckoutContextProps , PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { BraintreePaypalCreditBanner, PaypalCommerceCreditBanner } from '@bigcommerce/checkout/paypal-utils';
-import { useThemeContext } from '@bigcommerce/checkout/ui';
+import { mapFromPaymentMethodCardType, useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { isExperimentEnabled } from '../../common/utility';
-import { CreditCardIconList, mapFromPaymentMethodCardType } from '../creditCard';
+import { CreditCardIconList } from '../creditCard';
 
 import { hasCreditCardNumber } from './CreditCardFieldsetValues';
 import getPaymentMethodDisplayName from './getPaymentMethodDisplayName';

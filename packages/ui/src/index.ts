@@ -37,6 +37,9 @@ export {
 } from './form';
 export {
     CreditCardIcon,
+    mapFromPaymentMethodCardType,
+    getPaymentMethodIconComponent,
+    filterInstrumentTypes,
     IconNewAccount,
     IconPaypal,
     IconPayPalFastlane,
