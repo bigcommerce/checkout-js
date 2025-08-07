@@ -82,7 +82,8 @@
         "@typescript-eslint/use-unknown-in-catch-callback-variable": "off",
         "react/prefer-read-only-props": "off",
         "react/no-deprecated": "off",
-        "react/jsx-sort-props": "error"
+        "react/jsx-sort-props": "error",
+        "no-tabs": "error"
       }
     },
     {

@@ -1,6 +1,6 @@
 import {
-	EmbeddedCheckoutMessenger,
-	EmbeddedCheckoutMessengerOptions
+    EmbeddedCheckoutMessenger,
+    EmbeddedCheckoutMessengerOptions
 } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
@@ -14,31 +14,31 @@ import CheckoutSupport from './CheckoutSupport';
 import { useLoadCheckout } from './hooks';
 
 interface CheckoutIntermediateProps {
-	checkoutId: string;
-	containerId: string;
-	embeddedStylesheet: EmbeddedCheckoutStylesheet;
-	embeddedSupport: CheckoutSupport;
-	errorLogger: ErrorLogger;
-	createEmbeddedMessenger(options: EmbeddedCheckoutMessengerOptions): EmbeddedCheckoutMessenger;
+    checkoutId: string;
+    containerId: string;
+    embeddedStylesheet: EmbeddedCheckoutStylesheet;
+    embeddedSupport: CheckoutSupport;
+    errorLogger: ErrorLogger;
+    createEmbeddedMessenger(options: EmbeddedCheckoutMessengerOptions): EmbeddedCheckoutMessenger;
 }
 
 const CheckoutIntermediate:React.FC<CheckoutIntermediateProps>= (props) => {
-	const { checkoutId } = props;
-	const { isLoadingCheckout } = useLoadCheckout(checkoutId);
-	const { themeV2 } = useThemeContext();
+    const { checkoutId } = props;
+    const { isLoadingCheckout } = useLoadCheckout(checkoutId);
+    const { themeV2 } = useThemeContext();
 
-	if (isLoadingCheckout) {
-		return <CheckoutPageSkeleton />;
-	}
+    if (isLoadingCheckout) {
+        return <CheckoutPageSkeleton />;
+    }
 
-	return <CheckoutPage
-			{...props}
-			createEmbeddedMessenger={props.createEmbeddedMessenger}
-			embeddedStylesheet={props.embeddedStylesheet}
-			embeddedSupport={props.embeddedSupport}
-			errorLogger={props.errorLogger}
-			themeV2={themeV2}
-		/>;
+    return <CheckoutPage
+            {...props}
+            createEmbeddedMessenger={props.createEmbeddedMessenger}
+            embeddedStylesheet={props.embeddedStylesheet}
+            embeddedSupport={props.embeddedSupport}
+            errorLogger={props.errorLogger}
+            themeV2={themeV2}
+        />;
 };
 
 export default CheckoutIntermediate;

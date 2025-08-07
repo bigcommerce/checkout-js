@@ -2,6 +2,78 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.640.2](https://github.com/bigcommerce/checkout-js/compare/v1.640.1...v1.640.2) (2025-08-07)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9375 Convert CheckoutStep ([#2484](https://github.com/bigcommerce/checkout-js/issues/2484)) ([08f4552](https://github.com/bigcommerce/checkout-js/commit/08f455209e32b46aa2773555c13092af4b51b18f))
+
+### [1.640.1](https://github.com/bigcommerce/checkout-js/compare/v1.640.0...v1.640.1) (2025-08-07)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9375 Convert DropdownTrigger ([#2478](https://github.com/bigcommerce/checkout-js/issues/2478)) ([03e220d](https://github.com/bigcommerce/checkout-js/commit/03e220ded19ebb78444493a0fa0fa3a726b43801))
+
+## [1.640.0](https://github.com/bigcommerce/checkout-js/compare/v1.639.0...v1.640.0) (2025-08-06)
+
+
+### Features
+
+* **payment:** PAYPAL-5690 bump checkout-sdk ([#2485](https://github.com/bigcommerce/checkout-js/issues/2485)) ([44f6ea0](https://github.com/bigcommerce/checkout-js/commit/44f6ea065fe11d55b4c2f70fc2d5b8b281141aaf))
+
+## [1.639.0](https://github.com/bigcommerce/checkout-js/compare/v1.638.6...v1.639.0) (2025-08-06)
+
+
+### Features
+
+* **payment:** Billie logo is not displayed at payment step ([#2465](https://github.com/bigcommerce/checkout-js/issues/2465)) ([e15dcd1](https://github.com/bigcommerce/checkout-js/commit/e15dcd17e0e45838693e2fcfeb1f02f6e5f25a09))
+
+### [1.638.6](https://github.com/bigcommerce/checkout-js/compare/v1.638.5...v1.638.6) (2025-08-06)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9375 Convert CheckoutApp ([#2482](https://github.com/bigcommerce/checkout-js/issues/2482)) ([3b2eaa3](https://github.com/bigcommerce/checkout-js/commit/3b2eaa38d0a913ec7d55d65d015cf5d211b32d7e))
+* **checkout:** CHECKOUT-9375 Convert CheckoutButton ([#2481](https://github.com/bigcommerce/checkout-js/issues/2481)) ([3701a61](https://github.com/bigcommerce/checkout-js/commit/3701a61051277ef4e587173ee05c5cc495ea9f4f))
+
+### [1.638.5](https://github.com/bigcommerce/checkout-js/compare/v1.638.4...v1.638.5) (2025-08-06)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9375 Enforce no-tabs rule ([#2483](https://github.com/bigcommerce/checkout-js/issues/2483)) ([a82719b](https://github.com/bigcommerce/checkout-js/commit/a82719b392ec05ea2610121e2e91571fcaaa662c))
+
+### [1.638.4](https://github.com/bigcommerce/checkout-js/compare/v1.638.3...v1.638.4) (2025-08-05)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9375 Convert EmptyCartMessage ([#2477](https://github.com/bigcommerce/checkout-js/issues/2477)) ([1f25fd9](https://github.com/bigcommerce/checkout-js/commit/1f25fd9849e689a28a0afba967776256c60f4c52))
+
+### [1.638.3](https://github.com/bigcommerce/checkout-js/compare/v1.638.2...v1.638.3) (2025-08-05)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9375 Convert ModalTrigger ([#2476](https://github.com/bigcommerce/checkout-js/issues/2476)) ([fd5c9c7](https://github.com/bigcommerce/checkout-js/commit/fd5c9c779205430fe33e30fda8f654306d339662))
+
+### [1.638.2](https://github.com/bigcommerce/checkout-js/compare/v1.638.1...v1.638.2) (2025-08-05)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9375 Convert CreditCardNumberInput into Function Component ([#2474](https://github.com/bigcommerce/checkout-js/issues/2474)) ([36f2de6](https://github.com/bigcommerce/checkout-js/commit/36f2de6869f8fa3906eb41da675946c2f6c9c322))
+* **checkout:** CHECKOUT-9375 Convert ErrorModal ([#2475](https://github.com/bigcommerce/checkout-js/issues/2475)) ([20eae34](https://github.com/bigcommerce/checkout-js/commit/20eae3404126721bcfc957726073325d9f3eeb31))
+
+### [1.638.1](https://github.com/bigcommerce/checkout-js/compare/v1.638.0...v1.638.1) (2025-08-05)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9375 Convert CheckoutProvider into Function Component ([#2473](https://github.com/bigcommerce/checkout-js/issues/2473)) ([2c07112](https://github.com/bigcommerce/checkout-js/commit/2c0711239ad827aa2cb5aad7f7c6cfdd5f1fd3dc))
+
 ## [1.638.0](https://github.com/bigcommerce/checkout-js/compare/v1.637.1...v1.638.0) (2025-08-04)
 
 
