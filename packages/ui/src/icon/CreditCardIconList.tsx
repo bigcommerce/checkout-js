@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { FunctionComponent, memo } from 'react';
 
-import { CreditCardIcon, filterInstrumentTypes } from '@bigcommerce/checkout/ui';
+import { CreditCardIcon, filterInstrumentTypes } from './';
 
 export interface CreditCardIconListProps {
     selectedCardType?: string;

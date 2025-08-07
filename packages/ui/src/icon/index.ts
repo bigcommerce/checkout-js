@@ -1,4 +1,5 @@
 export { default as CreditCardIcon } from './CreditCardIcon';
+export { default as CreditCardIconList } from './CreditCardIconList';
 export {
     default as mapFromPaymentMethodCardType,
     getPaymentMethodIconComponent,
