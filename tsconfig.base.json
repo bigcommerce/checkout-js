@@ -114,6 +114,6 @@
     "strict": true,
     "strictNullChecks": true,
     "stripInternal": true,
-    "target": "es5"
+    "target": "es2015"
   }
 }
