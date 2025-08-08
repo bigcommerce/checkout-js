@@ -1,6 +1,14 @@
 import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import { noop, some } from 'lodash';
-import React, { FunctionComponent, useCallback, useContext, useEffect, useRef } from 'react';
+import React, {
+    createRef,
+    FunctionComponent,
+    useCallback,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
 
 import { HostedWidgetPaymentComponent } from '@bigcommerce/checkout/hosted-widget-integration';
 import {
@@ -12,9 +20,14 @@ import {
     PaymentMethodResolveId,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
-import { AccordionContext } from '@bigcommerce/checkout/ui';
+import { AccordionContext, LoadingOverlay, Modal } from '@bigcommerce/checkout/ui';
 
 import { getAppearanceForOCSElement, getFonts } from './getStripeOCSStyles';
+
+interface StripeConfirmationModalRef {
+    contentRef: React.RefObject<HTMLDivElement>;
+    cancelPaymentConfirmation?: () => void;
+}
 
 const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     paymentForm,
@@ -25,6 +38,13 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     ...rest
 }) => {
     const collapseStripeElement = useRef<() => void>();
+    const confirmationModalRef = useRef<StripeConfirmationModalRef>({
+        contentRef: createRef(),
+        cancelPaymentConfirmation: noop,
+    });
+    const [isLoadingIframe, setIsLoadingIframe] = useState<boolean>(false);
+    const [paymentConfirmationPageContent, setPaymentConfirmationPageContent] =
+        useState<HTMLElement>();
     const { onToggle, selectedItemId } = useContext(AccordionContext);
     const methodSelector = `${method.gateway}-${method.id}`;
     const containerId = `${methodSelector}-component-field`;
@@ -57,6 +77,26 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     } = checkoutState;
     const checkout = getCheckout();
 
+    const cancelConfirmationModalFlow = useCallback(() => {
+        setPaymentConfirmationPageContent(undefined);
+
+        if (confirmationModalRef.current.cancelPaymentConfirmation) {
+            confirmationModalRef.current.cancelPaymentConfirmation();
+            confirmationModalRef.current.cancelPaymentConfirmation = undefined;
+        }
+    }, []);
+
+    const appendPaymentPageContent = useCallback(() => {
+        if (confirmationModalRef.current.contentRef.current && paymentConfirmationPageContent) {
+            paymentConfirmationPageContent.addEventListener('load', () => {
+                setIsLoadingIframe(false);
+            });
+            confirmationModalRef.current.contentRef.current.appendChild(
+                paymentConfirmationPageContent,
+            );
+        }
+    }, [paymentConfirmationPageContent]);
+
     const initializeStripePayment = useCallback(
         async (options: PaymentInitializeOptions) => {
             return checkoutService.initializePayment({
@@ -78,6 +118,11 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                     paymentMethodSelect: onToggle,
                     handleClosePaymentMethod: (collapseElement: () => void) => {
                         collapseStripeElement.current = collapseElement;
+                    },
+                    loadConfirmationIframe(content: HTMLIFrameElement, cancel: () => void) {
+                        setPaymentConfirmationPageContent(content);
+                        setIsLoadingIframe(true);
+                        confirmationModalRef.current.cancelPaymentConfirmation = cancel;
                     },
                 },
             });
@@ -175,7 +220,20 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                 setValidationSchema={setValidationSchema}
                 signOut={checkoutService.signOutCustomer}
             />
+
             {renderCheckoutThemeStylesForStripeOCS()}
+
+            <Modal
+                additionalModalClassName={`modal--${methodSelector}`}
+                isOpen={!!paymentConfirmationPageContent}
+                onAfterOpen={appendPaymentPageContent}
+                onRequestClose={cancelConfirmationModalFlow}
+                shouldShowCloseButton={true}
+            >
+                <LoadingOverlay isLoading={isLoadingIframe}>
+                    <div ref={confirmationModalRef.current.contentRef} />
+                </LoadingOverlay>
+            </Modal>
         </>
     );
 };
