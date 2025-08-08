@@ -50,6 +50,9 @@
                 "sourceTag": "scope:integration",
                 "onlyDependOnLibsWithTags": ["scope:shared"]
               }
+            ],
+            "checkDynamicDependenciesExceptions": [
+              "@bigcommerce/checkout/ui"
             ]
           }
         ],
