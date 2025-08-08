@@ -244,7 +244,6 @@
             "braintreeach_vaulting_mandate_text": "Cliccando su \"Effettua ordine\", autorizzo Braintree, un servizio di PayPal, a verificare i dati del mio conto bancario per conto di {storeName} utilizzando i dati bancari e i report sui consumatori e autorizzo {storeName} a effettuare un addebito elettronico/ACH sul mio conto {accountType}, con nome del titolare {depositoryName}, numero di routing {routingNumber} e numero di conto {accountNumber}, che sarà archiviato e addebitato alla data di scadenza o successivamente. Riconosco che le transazioni ACH da me autorizzate sono conformi a tutte le leggi vigenti.",
             "complete_with_brand": "Completa ordine",
             "continue_with_brand": "Continua con {brandName}",
-            "ccavenuemars_description_text": "Checkout con CCAvenue",
             "checkoutcom_document_label_boleto": "CPF o CNPJ",
             "checkoutcom_document_label_oxxo": "CURP",
             "checkoutcom_document_label_qpay": "ID nazionale",

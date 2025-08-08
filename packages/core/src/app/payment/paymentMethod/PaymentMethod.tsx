@@ -13,7 +13,6 @@ import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-
 import { withCheckout } from '../../checkout';
 
 import BraintreeCreditCardPaymentMethod from './BraintreeCreditCardPaymentMethod';
-import CCAvenueMarsPaymentMethod from './CCAvenueMarsPaymentMethod';
 import HostedCreditCardPaymentMethod from './HostedCreditCardPaymentMethod';
 import HostedPaymentMethod from './HostedPaymentMethod';
 import MasterpassPaymentMethod from './MasterpassPaymentMethod';
@@ -55,10 +54,6 @@ const PaymentMethodComponent: FunctionComponent<
 
     if (method.type === PaymentMethodProviderType.PPSDK) {
         return <PPSDKPaymentMethod {...props} />;
-    }
-
-    if (method.id === PaymentMethodId.CCAvenueMars) {
-        return <CCAvenueMarsPaymentMethod {...props} />;
     }
 
     if (method.id === PaymentMethodId.Masterpass) {

@@ -244,7 +244,6 @@
             "braintreeach_vaulting_mandate_text": "Door op Bestelling plaatsen te klikken, machtig ik Braintree, een service van PayPal, namens {storeName} om mijn bankrekeninggegevens te verifiëren met behulp van bankgegevens en consumentenrapporten en machtig ik {storeName} om een ACH/elektronische afschrijving te initiëren vanaf mijn {accountType}-rekening, Depositonaam: {depositoryName}, Routeringsnummer: {routingNumber} en Rekeningnummer: {accountNumber}, die in ons bestand wordt opgeslagen en afgeschreven op of na de vervaldatum. Ik ga ermee akkoord dat de ACH-transacties die ik goedkeur, voldoen aan alle toepasselijke wetten.",
             "complete_with_brand": "Bestelling voltooien",
             "continue_with_brand": "Doorgaan met {brandName}",
-            "ccavenuemars_description_text": "Afrekenen met CCAvenue",
             "checkoutcom_document_label_boleto": "CPF of CNPJ",
             "checkoutcom_document_label_oxxo": "CURP",
             "checkoutcom_document_label_qpay": "Nationale ID",
