@@ -10,11 +10,11 @@ import React, { PureComponent, ReactNode } from 'react';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { LoadingOverlay } from '@bigcommerce/checkout/ui';
+import { DynamicFormField, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import { StaticAddress } from '../address/';
 import { Button, ButtonSize, ButtonVariant } from '../ui/button';
-import { DynamicFormField, Fieldset } from '../ui/form';
+import { Fieldset } from '../ui/form';
 
 import './StaticAddressEditable.scss';
 

@@ -1,6 +1,6 @@
 import { Address, AddressKey, FormField } from '@bigcommerce/checkout-sdk';
 
-import { DynamicFormFieldType } from '../ui/form';
+import { DynamicFormFieldType } from '@bigcommerce/checkout/ui';
 
 export type AddressFormValues = Pick<Address, Exclude<AddressKey, 'customFields'>> & {
     customFields: { [id: string]: any };
@@ -74,7 +74,7 @@ function getValue(
         return getDefaultValue(fieldType, defaultValue);
     }
 
-    if (fieldType === DynamicFormFieldType.date && typeof fieldValue === 'string') {
+    if (fieldType === DynamicFormFieldType.DATE && typeof fieldValue === 'string') {
         if (fieldValue) {
             const [year, month, day] = fieldValue.split('-');
 
@@ -88,11 +88,11 @@ function getValue(
 }
 
 function getDefaultValue(fieldType?: string, defaultValue?: string): string | string[] | Date {
-    if (defaultValue && fieldType === DynamicFormFieldType.date) {
+    if (defaultValue && fieldType === DynamicFormFieldType.DATE) {
         return new Date(defaultValue);
     }
 
-    if (fieldType === DynamicFormFieldType.checkbox) {
+    if (fieldType === DynamicFormFieldType.CHECKBOX) {
         return [];
     }
 

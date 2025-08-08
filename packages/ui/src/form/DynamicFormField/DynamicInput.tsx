@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { isDate, noop } from 'lodash';
 import React, { FunctionComponent, lazy, memo, Suspense, useCallback } from 'react';
 
-import { withDate } from '@bigcommerce/checkout/locale';
+import { withDate, WithDateProps } from '@bigcommerce/checkout/locale';
 
 import { IconChevronDown } from '../../icon';
 import { CheckboxInput } from '../CheckboxInput';
@@ -30,13 +30,11 @@ export interface DynamicInputProps extends InputProps {
     fieldType?: DynamicFormFieldType;
     options?: FormFieldItem[];
     isFloatingLabelEnabled?: boolean;
+    themeV2?: boolean;
     inputDateFormat?: string;
-    date?: {
-        inputFormat: string;
-    };
 }
 
-const DynamicInput: FunctionComponent<DynamicInputProps> = ({
+const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
     fieldType,
     id,
     name,
@@ -45,11 +43,12 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
     placeholder,
     value,
     isFloatingLabelEnabled,
+    themeV2 = false,
     date,
     inputDateFormat,
     ...rest
 }) => {
-    const inputFormat = inputDateFormat || date?.inputFormat || '';
+    const inputFormat = inputDateFormat || date.inputFormat || '';
 
     const handleDateChange = useCallback(
         (dateValue: string, event: any) =>
@@ -80,6 +79,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
                         className={classNames(
                             { 'floating-select': isFloatingLabelEnabled },
                             'form-select optimizedCheckout-form-select',
+                            { 'floating-form-field-input': themeV2 },
                         )}
                         data-test={`${id}-select`}
                         id={id}
@@ -115,6 +115,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
                             name={name}
                             onChange={onChange}
                             testId={`${id}-${optionValue}-radio`}
+                            themeV2={themeV2}
                             value={optionValue}
                         />
                     ))}
@@ -138,6 +139,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
                             name={name}
                             onChange={onChange}
                             testId={`${id}-${optionValue}-checkbox`}
+                            themeV2={themeV2}
                             value={optionValue}
                         />
                     ))}
@@ -155,7 +157,10 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
                         // https://github.com/Hacker0x01/react-datepicker/issues/1357
                         // onChangeRaw={ rest.onChange }
                         calendarClassName="optimizedCheckout-contentPrimary"
-                        className="form-input optimizedCheckout-form-input"
+                        className={classNames('form-input optimizedCheckout-form-input', {
+                            'floating-input': isFloatingLabelEnabled,
+                            'floating-form-field-input': themeV2,
+                        })}
                         dateFormat={inputFormat}
                         maxDate={rest.max ? new Date(`${rest.max}T00:00:00Z`) : undefined}
                         minDate={rest.min ? new Date(`${rest.min}T00:00:00Z`) : undefined}
@@ -174,9 +179,11 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     {...(rest as any)}
                     id={id}
+                    isFloatingLabelEnabled={isFloatingLabelEnabled}
                     name={name}
                     onChange={onChange}
                     testId={`${id}-text`}
+                    themeV2={themeV2}
                     type={fieldType}
                     value={value}
                 />
@@ -187,12 +194,14 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
                 <TextInput
                     {...rest}
                     id={id}
+                    isFloatingLabelEnabled={isFloatingLabelEnabled}
                     name={name}
                     onChange={onChange}
                     placeholder={placeholder}
                     testId={`${id}-${
                         fieldType === DynamicFormFieldType.PASSWORD ? 'password' : 'text'
                     }`}
+                    themeV2={themeV2}
                     type={fieldType}
                     value={value}
                 />

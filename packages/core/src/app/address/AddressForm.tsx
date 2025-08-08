@@ -4,10 +4,10 @@ import { forIn, noop } from 'lodash';
 import React, { Component, createRef, ReactNode, RefObject } from 'react';
 
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { ThemeContext } from '@bigcommerce/checkout/ui';
+import { DynamicFormField, DynamicFormFieldType, ThemeContext } from '@bigcommerce/checkout/ui';
 
 import { AutocompleteItem } from '../ui/autocomplete';
-import { CheckboxFormField, DynamicFormField, DynamicFormFieldType, Fieldset } from '../ui/form';
+import { CheckboxFormField, Fieldset } from '../ui/form';
 
 import { AddressKeyMap } from './address';
 import {
@@ -237,7 +237,7 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
         const { formFields, setFieldValue = noop, onChange = noop } = this.props;
 
         const dateFormFieldNames = formFields
-            .filter((field) => field.custom && field.fieldType === DynamicFormFieldType.date)
+            .filter((field) => field.custom && field.fieldType === DynamicFormFieldType.DATE)
             .map((field) => field.name);
 
         if (fieldName === AUTOCOMPLETE_FIELD_NAME || dateFormFieldNames.includes(fieldName)) {
