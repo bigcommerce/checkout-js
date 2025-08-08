@@ -41,7 +41,6 @@ package-lock.json @bigcommerce/team-checkout @bigcommerce/team-integrations @big
 /packages/core/payment/paymentMethod/BoltCustomFormValues.ts @bigcommerce/team-integrations
 /packages/core/payment/paymentMethod/BoltEmbeddedPaymentMethod.tsx @bigcommerce/team-integrations
 /packages/core/payment/paymentMethod/BoltPaymentMethod.tsx @bigcommerce/team-integrations
-/packages/core/payment/paymentMethod/CCAvenueMarsPaymentMethod.tsx @bigcommerce/team-integrations
 /packages/core/payment/paymentMethod/ChasePayPaymentMethod.tsx @bigcommerce/team-integrations
 /packages/core/payment/paymentMethod/CheckoutcomCustomPaymentMethod.tsx @bigcommerce/team-integrations
 /packages/core/payment/paymentMethod/DigitalRiverPaymentMethod.tsx @bigcommerce/team-integrations

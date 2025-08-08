@@ -244,7 +244,6 @@
             "braintreeach_vaulting_mandate_text": "Ved å klikke på Legg inn bestilling autoriserer jeg Braintree, en tjeneste fra PayPal, på vegne av {storeName} til å verifisere bankkontoinformasjonen min ved hjelp av bankinformasjon og forbrukerrapporter, og jeg autoriserer {storeName} til å starte en ACH/elektronisk debitering til min {accountType}-konto, Depositars navn: {depositoryName}, Routingnummer: {routingNumber} og Kontonummer: {accountNumber}, som vil lagres i våre arkiver og debitert på eller etter forfalldatoen. Jeg sier meg enig i at ACH-transaksjonene jeg godkjenner, overholder alle gjeldende lover.",
             "complete_with_brand": "Fullfør bestilling",
             "continue_with_brand": "Fortsett med {brandName}",
-            "ccavenuemars_description_text": "Betaling med CCAvenue",
             "checkoutcom_document_label_boleto": "CPF eller CNPJ",
             "checkoutcom_document_label_oxxo": "CURP",
             "checkoutcom_document_label_qpay": "Nasjonal ID",

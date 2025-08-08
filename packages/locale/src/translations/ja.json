@@ -244,7 +244,6 @@
             "braintreeach_vaulting_mandate_text": "[Place Order] をクリックすることで、私は{{storeName}に代わってPayPalのサービスであるBraintreeが銀行情報と消費者レポートを使用して銀行口座情報を確認することを許可し、{storeName}が私の{accountType}口座（預金口座名:{depositoryName}、ルーティング番号:{routingNumber}、口座番号:{accountNumber}）に対するACH/電子デビットを開始することを許可します。これはファイルに保存され、支払期日以降に引き落とされます。私は、私が承認したACH取引が適用されるすべての法律を遵守することに同意します。",
             "complete_with_brand": "注文を完了する",
             "continue_with_brand": "{brandName}で続ける",
-            "ccavenuemars_description_text": "CCAvenueで支払う",
             "checkoutcom_document_label_boleto": "個人用納税者番号（CPF）または法人用税務登記番号（CNPJ）",
             "checkoutcom_document_label_oxxo": "住民登録固有コード(CURP)",
             "checkoutcom_document_label_qpay": "国民識別番号",
