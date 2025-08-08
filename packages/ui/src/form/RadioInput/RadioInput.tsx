@@ -9,11 +9,12 @@ export interface RadioInputProps extends InputProps {
     label: ReactNode;
     value: string;
     checked: boolean;
+    themeV2?: boolean;
 }
 
 const RadioInput = forwardRef(
     (
-        { additionalClassName, label, value, checked, id, ...rest }: RadioInputProps,
+        { additionalClassName, label, value, checked, id, themeV2, ...rest }: RadioInputProps,
         ref: Ref<HTMLInputElement>,
     ) => (
         <>
@@ -23,6 +24,7 @@ const RadioInput = forwardRef(
                 className={classNames(
                     'form-radio',
                     'optimizedCheckout-form-radio',
+                    { 'floating-form-field-input': themeV2 },
                     additionalClassName,
                 )}
                 id={id}

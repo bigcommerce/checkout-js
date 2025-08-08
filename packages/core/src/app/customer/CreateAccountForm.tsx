@@ -14,7 +14,8 @@ import { useThemeContext } from '@bigcommerce/checkout/ui';
 import { isRequestError } from '../common/error';
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
-import { DynamicFormField, Fieldset, Form } from '../ui/form';
+import { DynamicFormField } from '@bigcommerce/checkout/ui';
+import { Fieldset, Form } from '../ui/form';
 
 import getCreateCustomerValidationSchema, {
     CreateAccountFormValues,
