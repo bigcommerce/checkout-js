@@ -9,11 +9,12 @@ export interface CheckboxInputProps extends InputProps {
     label: ReactNode;
     value: string;
     checked: boolean;
+    themeV2?: boolean;
 }
 
 const CheckboxInput = forwardRef(
     (
-        { additionalClassName, label, id, ...rest }: CheckboxInputProps,
+        { additionalClassName, label, id, themeV2, ...rest }: CheckboxInputProps,
         ref: Ref<HTMLInputElement>,
     ) => (
         <>
@@ -22,6 +23,7 @@ const CheckboxInput = forwardRef(
                 className={classNames(
                     'form-checkbox',
                     'optimizedCheckout-form-checkbox',
+                    { 'floating-form-field-input': themeV2 },
                     additionalClassName,
                 )}
                 id={id}
