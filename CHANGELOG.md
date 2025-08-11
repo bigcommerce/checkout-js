@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.643.0](https://github.com/bigcommerce/checkout-js/compare/v1.642.0...v1.643.0) (2025-08-11)
+
+
+### Features
+
+* **payment:** Stripe OCS preloader ([64257dc](https://github.com/bigcommerce/checkout-js/commit/64257dc78edf79f896d286678cf5728e42f744ed))
+* **payment:** Stripe OCS preloader ([269b302](https://github.com/bigcommerce/checkout-js/commit/269b3024601f011afe64c62359d9ca1f17b2630e))
+* **payment:** Stripe OCS preloader ([2c777c6](https://github.com/bigcommerce/checkout-js/commit/2c777c6aafc2d81c7e65a36d0f714e7695783631))
+
 ## [1.642.0](https://github.com/bigcommerce/checkout-js/compare/v1.641.1...v1.642.0) (2025-08-11)
 
 
