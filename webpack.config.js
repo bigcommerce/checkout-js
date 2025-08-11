@@ -56,11 +56,7 @@ function appConfig(options, argv) {
             resolve: {
                 alias,
                 extensions: ['.ts', '.tsx', '.js'],
-                // It seems some packages, i.e.: Formik, have incorrect
-                // source maps for their ESM bundle. Therefore, until that
-                // issue is fixed, we prefer to resolve packages using the
-                // `main` field rather `module` field.
-                mainFields: ['browser', 'main', 'module'],
+                mainFields: ['browser', 'module', 'main'],
             },
             optimization: {
                 runtimeChunk: 'single',
