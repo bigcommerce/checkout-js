@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.642.0](https://github.com/bigcommerce/checkout-js/compare/v1.641.1...v1.642.0) (2025-08-11)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9412 Lazy load credit card icons ([737b061](https://github.com/bigcommerce/checkout-js/commit/737b061a5769ea8a03f3ecad0a569bc8f4ebe4fc))
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9412 Consolidate implementations and remove duplicates ([b9a16d5](https://github.com/bigcommerce/checkout-js/commit/b9a16d5d65a6fef2aeb7747f92cc93b9b6766077))
+* **checkout:** CHECKOUT-9412 Move CreditCardIconList to ui package ([077a07a](https://github.com/bigcommerce/checkout-js/commit/077a07ae10f0656ca9105cf68dd8395ebceaf154))
+
 ### [1.641.1](https://github.com/bigcommerce/checkout-js/compare/v1.641.0...v1.641.1) (2025-08-11)
 
 ## [1.641.0](https://github.com/bigcommerce/checkout-js/compare/v1.640.2...v1.641.0) (2025-08-07)
