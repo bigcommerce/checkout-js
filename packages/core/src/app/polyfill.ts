@@ -1,1 +1,1 @@
-import 'core-js/stable';
+import './generated/polyfill';
