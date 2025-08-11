@@ -19,12 +19,6 @@ import computeErrorCode from './computeErrorCode';
 import ConsoleErrorLogger from './ConsoleErrorLogger';
 import NoopErrorLogger from './NoopErrorLogger';
 
-declare global {
-    interface Window {
-        sentryOnLoad?: () => void;
-    }
-}
-
 const FILENAME_PREFIX = 'app://';
 
 export interface SentryErrorLoggerOptions {
