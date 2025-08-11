@@ -16,6 +16,7 @@ export const RedirectToStorefrontLogin: React.FC<RedirectToStorefrontLoginProps>
     const { checkoutState: { data: { getConfig } } } = useCheckout();
 
     const config = getConfig();
+
     if (!config) {
         return null;
     }
