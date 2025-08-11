@@ -215,6 +215,75 @@ describe('Checkout', () => {
         });
     });
 
+    describe('prerendering analytics', () => {
+        let originalPrerendering: boolean | undefined;
+        let mockAddEventListener: jest.SpyInstance;
+
+        beforeEach(() => {
+            originalPrerendering = (document as any).prerendering;
+            mockAddEventListener = jest.spyOn(document, 'addEventListener');
+        });
+
+        afterEach(() => {
+            (document as any).prerendering = originalPrerendering;
+            mockAddEventListener.mockRestore();
+        });
+
+        it('calls checkoutBegin immediately when not prerendering', async () => {
+            (document as any).prerendering = false;
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForCustomerStep();
+
+            expect(analyticsTracker.checkoutBegin).toHaveBeenCalled();
+            expect(mockAddEventListener).not.toHaveBeenCalledWith(
+                'prerenderingchange',
+                expect.any(Function),
+                { once: true }
+            );
+        });
+
+        it('adds prerenderingchange event listener when prerendering', async () => {
+            (document as any).prerendering = true;
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForCustomerStep();
+
+            expect(analyticsTracker.checkoutBegin).not.toHaveBeenCalled();
+            expect(mockAddEventListener).toHaveBeenCalledWith(
+                'prerenderingchange',
+                expect.any(Function),
+                { once: true }
+            );
+        });
+
+        it('calls checkoutBegin when prerenderingchange event fires', async () => {
+            (document as any).prerendering = true;
+            let eventHandler: () => void;
+
+            mockAddEventListener.mockImplementation((event, handler) => {
+                if (event === 'prerenderingchange') {
+                    eventHandler = handler;
+                }
+            });
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForCustomerStep();
+
+            expect(analyticsTracker.checkoutBegin).not.toHaveBeenCalled();
+
+            // Simulate the prerenderingchange event
+            act(() => {
+                eventHandler();
+            });
+
+            expect(analyticsTracker.checkoutBegin).toHaveBeenCalled();
+        });
+    });
+
     describe('customer step', () => {
         it('renders guest form when customer step is active', async () => {
             render(<CheckoutTest {...defaultProps} />);
