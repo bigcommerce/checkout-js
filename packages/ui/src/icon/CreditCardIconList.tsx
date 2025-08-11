@@ -1,8 +1,7 @@
 import classNames from 'classnames';
 import React, { FunctionComponent, memo } from 'react';
 
-import CreditCardIcon from './CreditCardIcon';
-import { filterInstrumentTypes } from './mapFromPaymentMethodCardType';
+import { CreditCardIcon, filterInstrumentTypes } from './';
 
 export interface CreditCardIconListProps {
     selectedCardType?: string;

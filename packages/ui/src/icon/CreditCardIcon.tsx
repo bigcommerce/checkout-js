@@ -1,4 +1,4 @@
-import React, { FunctionComponent, memo } from 'react';
+import React, { FunctionComponent, memo, Suspense } from 'react';
 
 import { getPaymentMethodIconComponent } from './mapFromPaymentMethodCardType';
 import { IconSize } from './withIconContainer';
@@ -17,7 +17,9 @@ const CreditCardIcon: FunctionComponent<CreditCardIconProps> = ({ cardType }) =>
     const IconComponent = getPaymentMethodIconComponent(cardType);
 
     return IconComponent ? (
-        <IconComponent {...iconProps} />
+        <Suspense>
+            <IconComponent {...iconProps} />
+        </Suspense>
     ) : (
         <div className="cardIcon-icon cardIcon-icon--default icon icon--medium" />
     );
