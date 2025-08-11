@@ -261,6 +261,7 @@ describe('Checkout', () => {
 
         it('calls checkoutBegin when prerenderingchange event fires', async () => {
             (document as any).prerendering = true;
+
             let eventHandler: () => void;
 
             mockAddEventListener.mockImplementation((event, handler) => {
