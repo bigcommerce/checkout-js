@@ -1,4 +1,4 @@
-import { BrowserOptions } from '@sentry/browser';
+import type { BrowserOptions } from '@sentry/browser';
 
 export default interface ErrorLogger {
     /**
