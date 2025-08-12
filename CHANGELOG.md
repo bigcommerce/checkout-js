@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.644.0](https://github.com/bigcommerce/checkout-js/compare/v1.643.0...v1.644.0) (2025-08-12)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9406 Replace Sentry npm installation with loader script to reduce bundle size ([5ceaf6b](https://github.com/bigcommerce/checkout-js/commit/5ceaf6bcb5b3c6e292039e9e723c9d5332517bdb))
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9406 Move sentryOnLoad definition into .d.ts file ([9dd0577](https://github.com/bigcommerce/checkout-js/commit/9dd05773bddf2e233c8ba01aaf2607ffd1e51ffa))
+
 ## [1.643.0](https://github.com/bigcommerce/checkout-js/compare/v1.642.0...v1.643.0) (2025-08-11)
 
 
