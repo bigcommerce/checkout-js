@@ -86,6 +86,7 @@ export interface WithCheckoutCustomerProps {
     signInError?: Error;
     isFloatingLabelEnabled?: boolean;
     isExpressPrivacyPolicy: boolean;
+    shouldRedirectToStorefrontForAuth: boolean;
     clearError(error: Error): Promise<CheckoutSelectors>;
     continueAsGuest(credentials: GuestCredentials): Promise<CheckoutSelectors>;
     deinitializeCustomer(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
@@ -321,6 +322,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             signInError,
             isFloatingLabelEnabled,
             viewType,
+            shouldRedirectToStorefrontForAuth,
         } = this.props;
 
         return (
@@ -340,6 +342,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                 onCreateAccount={this.showCreateAccount}
                 onSendLoginEmail={this.handleEmailLoginClicked}
                 onSignIn={this.handleSignIn}
+                shouldRedirectToStorefrontForAuth={shouldRedirectToStorefrontForAuth}
                 shouldShowCreateAccountLink={isAccountCreationEnabled}
                 signInError={signInError}
                 viewType={viewType}
@@ -585,6 +588,7 @@ export function mapToWithCheckoutCustomerProps({
             isAccountCreationEnabled,
             isExpressPrivacyPolicy,
             features,
+            shouldRedirectToStorefrontForAuth
         },
     } = config as StoreConfig & { checkoutSettings: { isAccountCreationEnabled: boolean } };
 
@@ -632,6 +636,7 @@ export function mapToWithCheckoutCustomerProps({
         isExpressPrivacyPolicy,
         isPaymentDataRequired: isPaymentDataRequired(),
         shouldRenderStripeForm: providerWithCustomCheckout === PaymentMethodId.StripeUPE && shouldUseStripeLinkByMinimumAmount(cart),
+        shouldRedirectToStorefrontForAuth,
     };
 }
 

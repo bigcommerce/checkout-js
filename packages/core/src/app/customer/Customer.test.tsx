@@ -12,7 +12,7 @@ import {
 import faker from '@faker-js/faker';
 import userEvent from '@testing-library/user-event';
 import { rest } from 'msw';
-import React, { FunctionComponent } from 'react';
+import React, { act, FunctionComponent } from 'react';
 
 import {
     AnalyticsContextProps,
@@ -38,7 +38,7 @@ import {
     checkoutWithBillingEmail,
     checkoutWithMultiShippingCart,
 } from '@bigcommerce/checkout/test-framework';
-import { renderWithoutWrapper as render, screen } from '@bigcommerce/checkout/test-utils';
+import { renderWithoutWrapper as render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 import { ThemeProvider } from '@bigcommerce/checkout/ui';
 
 import { getBillingAddress } from '../billing/billingAddresses.mock';
@@ -356,6 +356,66 @@ describe('Customer Component', () => {
             await userEvent.click(await screen.findByText('Sign in now'));
             await userEvent.click(screen.getByText('Create an account'));
         });
+    });
+
+    it('redirects to storefront for login if shouldRedirectToStorefrontForAuth is true and login is enforced', async () => {
+        Object.defineProperty(window, 'location', {
+            writable: true,
+            value: {
+                // eslint-disable-next-line @typescript-eslint/no-misused-spread
+                ...window.location,
+                assign: jest.fn(),
+            },
+        });
+
+        const config = {
+            ...checkoutSettings,
+            storeConfig: {
+                ...checkoutSettings.storeConfig,
+                checkoutSettings: {
+                    ...checkoutSettings.storeConfig.checkoutSettings,
+                    shouldRedirectToStorefrontForAuth: true,
+                    features: {
+                        'CHECKOUT-9138.redirect_to_storefront_for_auth': true,
+                    },
+                },
+            },
+        };
+        checkout.setRequestHandler(
+            rest.get(
+                '/api/storefront/checkout-settings',
+                (_, res, ctx) => res(ctx.json(config),
+            )
+        ));
+
+        const customerEmail = faker.internet.email();
+
+        render(<CheckoutTest {...defaultProps} />);
+
+        await checkout.waitForCustomerStep();
+
+        checkout.setRequestHandler(
+            rest.post(
+                '/api/storefront/checkouts/*/billing-address',
+                (_, res, ctx) => res(
+                    ctx.status(403),
+                    ctx.json({
+                        type: 'about:blank',
+                        title: 'Sign in to Your Account',
+                        detail: 'This email is already associated to an account. Please login to continue.'
+                    })
+                )
+            )
+        );
+
+        await act(async () => {
+            await userEvent.type(await screen.findByLabelText('Email'), customerEmail);
+            await userEvent.click(await screen.findByText('Continue'));
+        });
+
+        await userEvent.click(await screen.findByText('Sign In'));
+
+        expect(window.location.assign).toHaveBeenCalled();
     });
 });
 

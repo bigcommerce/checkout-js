@@ -23,6 +23,7 @@ import EmailField from './EmailField';
 import getEmailValidationSchema from './getEmailValidationSchema';
 import mapErrorMessage from './mapErrorMessage';
 import PasswordField from './PasswordField';
+import { RedirectToStorefrontLogin } from './RedirectToStorefrontLogin';
 
 export interface LoginFormProps {
     canCancel?: boolean;
@@ -39,6 +40,7 @@ export interface LoginFormProps {
     passwordlessLogin?: boolean;
     shouldShowCreateAccountLink?: boolean;
     isFloatingLabelEnabled?: boolean;
+    shouldRedirectToStorefrontForAuth: boolean;
     onCancel?(): void;
     onCreateAccount?(): void;
     onChangeEmail?(email: string): void;
@@ -71,6 +73,7 @@ const LoginForm: FunctionComponent<
     signInError,
     shouldShowCreateAccountLink,
     isFloatingLabelEnabled,
+    shouldRedirectToStorefrontForAuth,
     viewType = CustomerViewType.Login,
 }) => {
     const { themeV2 } = useThemeContext();
@@ -137,7 +140,7 @@ const LoginForm: FunctionComponent<
                     <EmailField isFloatingLabelEnabled={isFloatingLabelEnabled} onChange={onChangeEmail} />
                 )}
 
-                <PasswordField isFloatingLabelEnabled={isFloatingLabelEnabled} />
+                {!shouldRedirectToStorefrontForAuth && <PasswordField isFloatingLabelEnabled={isFloatingLabelEnabled} />}
 
                 <p className={classNames('form-legend-container', { 'body-cta': themeV2 })}>
                     <span>
@@ -148,7 +151,7 @@ const LoginForm: FunctionComponent<
                                 testId="customer-signin-link"
                             />
                         }
-                        { !isSignInEmailEnabled &&
+                        { !isSignInEmailEnabled && !shouldRedirectToStorefrontForAuth &&
                             <a
                                 data-test="forgot-password-link"
                                 href={ forgotPasswordUrl }
@@ -170,17 +173,23 @@ const LoginForm: FunctionComponent<
                 </p>
 
                 <div className="form-actions">
-                    <Button
-                        className={themeV2 ? 'body-bold' : ''}
-                        disabled={isSigningIn || isExecutingPaymentMethodCheckout}
-                        id="checkout-customer-continue"
-                        isLoading={isSigningIn || isExecutingPaymentMethodCheckout}
-                        testId="customer-continue-button"
-                        type="submit"
-                        variant={ButtonVariant.Primary}
+                    {shouldRedirectToStorefrontForAuth ?
+                        <RedirectToStorefrontLogin
+                            isDisabled={Boolean(isSigningIn || isExecutingPaymentMethodCheckout)}
+                            isLoading={Boolean(isSigningIn || isExecutingPaymentMethodCheckout)}
+                        />
+                        :
+                        <Button
+                            className={themeV2 ? 'body-bold' : ''}
+                            disabled={isSigningIn || isExecutingPaymentMethodCheckout}
+                            id="checkout-customer-continue"
+                            isLoading={isSigningIn || isExecutingPaymentMethodCheckout}
+                            testId="customer-continue-button"
+                            type="submit"
+                            variant={ButtonVariant.Primary}
                     >
                         <TranslatedString id="customer.sign_in_action" />
-                    </Button>
+                    </Button>}
 
                     {viewType === CustomerViewType.SuggestedLogin && (
                         <a
