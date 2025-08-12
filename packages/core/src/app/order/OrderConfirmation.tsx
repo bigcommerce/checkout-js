@@ -231,7 +231,7 @@ class OrderConfirmation extends Component<
                 {(matched) => {
                     if (matched) {
                         return (
-                            <LazyContainer>
+                            <LazyContainer loadingSkeleton={<></>}>
                                 <OrderSummaryDrawer
                                     {...mapToOrderSummarySubtotalsProps(order, isShippingDiscountDisplayEnabled)}
                                     headerLink={
