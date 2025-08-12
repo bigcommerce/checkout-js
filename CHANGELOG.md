@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.646.0](https://github.com/bigcommerce/checkout-js/compare/v1.645.0...v1.646.0) (2025-08-12)
+
+
+### Features
+
+* **payment:** Deprecate CCAvenueMars ([#2492](https://github.com/bigcommerce/checkout-js/issues/2492)) ([6dabaad](https://github.com/bigcommerce/checkout-js/commit/6dabaad72a950d76ad1ac1a41100085f7f551320))
+
 ## [1.645.0](https://github.com/bigcommerce/checkout-js/compare/v1.644.0...v1.645.0) (2025-08-12)
 
 
