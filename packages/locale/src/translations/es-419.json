@@ -244,7 +244,6 @@
             "braintreeach_vaulting_mandate_text": "Al hacer clic en Hacer pedido, autorizo a Braintree, un servicio de PayPal, a que verifique en nombre de {storeName} la información de mi cuenta bancaria utilizando información bancaria e informes de consumo, y autorizo a {storeName} para que inicie un débito ACH/electrónico en mi cuenta {accountType}, nombre del depositario: {depositoryName}, número de ruteo: {routingNumber} y número de cuenta: {accountNumber}, que se guardarán, y que se debitará en la fecha de vencimiento o después de esta. Afirmo que las transacciones ACH que autorizo cumplen todas las leyes aplicables.",
             "complete_with_brand": "Completar pedido",
             "continue_with_brand": "Continuar con {brandName}",
-            "ccavenuemars_description_text": "Pagar con CCAvenue",
             "checkoutcom_document_label_boleto": "CPF o CNPJ",
             "checkoutcom_document_label_oxxo": "CURP",
             "checkoutcom_document_label_qpay": "ID nacional",
