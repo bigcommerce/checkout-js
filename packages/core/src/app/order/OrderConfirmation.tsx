@@ -14,7 +14,7 @@ import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
 import { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
-import {LazyContainer, OrderConfirmationPageSkeleton} from '@bigcommerce/checkout/ui';
+import { CartSummarySkeleton, LazyContainer, OrderConfirmationPageSkeleton } from '@bigcommerce/checkout/ui';
 
 import { withAnalytics } from '../analytics';
 import { withCheckout } from '../checkout';
@@ -231,7 +231,7 @@ class OrderConfirmation extends Component<
                 {(matched) => {
                     if (matched) {
                         return (
-                            <LazyContainer>
+                            <LazyContainer loadingSkeleton={<></>}>
                                 <OrderSummaryDrawer
                                     {...mapToOrderSummarySubtotalsProps(order, isShippingDiscountDisplayEnabled)}
                                     headerLink={
@@ -247,8 +247,8 @@ class OrderConfirmation extends Component<
                     }
 
                     return (
-                        <aside className="layout-cart">
-                            <LazyContainer>
+                        <LazyContainer loadingSkeleton={<CartSummarySkeleton />}>
+                            <aside className="layout-cart">
                                 <OrderSummary
                                     headerLink={<PrintLink />}
                                     {...mapToOrderSummarySubtotalsProps(order, isShippingDiscountDisplayEnabled)}
@@ -257,8 +257,8 @@ class OrderConfirmation extends Component<
                                     storeCurrency={currency}
                                     total={order.orderAmount}
                                 />
-                            </LazyContainer>
-                        </aside>
+                            </aside>
+                        </LazyContainer>
                     );
                 }}
             </MobileView>

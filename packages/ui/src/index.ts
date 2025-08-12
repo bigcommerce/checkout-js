@@ -14,6 +14,7 @@ export { DropdownTrigger } from './dropdown';
 export {
     AddressFormSkeleton,
     BasicFormField,
+    CartSummarySkeleton,
     CheckoutPageSkeleton,
     DynamicFormField,
     DynamicFormFieldType,
