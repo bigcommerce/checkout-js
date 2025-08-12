@@ -1,3 +1,14 @@
+// The variables below are used across desktop and mobile views
+$textHeight: $floating-label-font-size--default * 1.2;
+$smallTextHeight: $floating-label-font-size--default * 0.8;
+$labelHeight: $floating-label-font-size--default * 0.9;
+$secondaryTitleHeight: $floating-label-input-height * 0.66;
+
+%no-skeleton {
+    background: none;
+    animation: none;
+}
+
 @keyframes lightColorTransition {
     0%, 100% {
         background-color: $loading-skeleton-grey-box-color;
@@ -7,6 +18,7 @@
     }
 }
 
+.animated-grey-box,
 .checkout-page-skeleton div,
 .address-form-skeleton div,
 .checklist-skeleton div,
@@ -31,32 +43,67 @@
         margin-top: spacing("double");
         width: 38.2%;
     }
-  
+
     .line-1,.line-2 {
         width: 100%;
-        height: $floating-label-font-size--default * 0.8;
+        height: $smallTextHeight;
         margin-bottom: spacing("half");
     }
-  
+
     .line-2 {
         width: 22%;
         margin-bottom: spacing("double");
     }
-  
+
     .continue {
         width: 120px;
+    }
+
+    .text {
+        @extend %no-skeleton;
+
+        height: auto;
+
+        div {
+            height: $floating-label-input-height * 0.33;
+            margin-bottom: spacing("quarter");
+        }
+
+        .t1 { width: 20%; }
+        .t2 { width: 8%; }
+        .t3 { width: 15%; }
+        .t4 { width: 25%; }
+
+        .first-line {
+            margin-bottom: spacing("half");
+        }
+
+        .line {
+            @extend %no-skeleton;
+
+            display: flex;
+            gap: spacing("quarter");
+        }
+
+        .line:first-child {
+            margin-bottom: spacing("single");
+        }
+
+        .line:last-child {
+            margin-bottom: spacing("double") + spacing("single");
+        }
     }
 }
 
 .checkout-page-skeleton {
-    .title--first {
+    .title--first, .mobile-title--first {
         margin-top: spacing("double");
         width: 120px;
     }
 
     .title {
         width: 100px;
-        height: $floating-label-input-height * 0.66;
+        height: $secondaryTitleHeight;
         margin: spacing("double") 0 spacing("double") + spacing("half");
     }
 
@@ -67,15 +114,15 @@
     .subscription,
     .terms--1,
     .terms--2 {
-        height: $floating-label-font-size--default * 0.8;
+        height: $smallTextHeight;
         margin-bottom: spacing("half");
     }
 
     .subscription {
+        @extend %no-skeleton;
+
         width: 33%;
         display: flex;
-        background: none;
-        animation: none;
         gap: $floating-label-input-height * 0.2;
 
         div {
@@ -100,6 +147,54 @@
         width: 44%;
         margin-bottom: spacing("double") + spacing("half") + spacing("quarter");
     }
+
+    .walletbutton--tagline {
+        margin: spacing("double") 0 spacing("half");
+        height: $smallTextHeight;
+        width: 45%;
+    }
+
+    .walletbutton {
+        height: $floating-label-input-height * 0.9;
+    }
+
+    .walletbutton--divider {
+        height: $floating-label-input-height * 0.4;
+        width: 5%;
+        margin: auto;
+    }
+
+    .mobile-title--first,
+    .mobile-title--2,
+    .mobile-title--3,
+    .mobile-title--4{
+        margin-top: spacing("single") + spacing("half");
+        margin-bottom: spacing("half");
+        height: $secondaryTitleHeight;
+    }
+
+    .mobile-title--2 {
+        width: 100px;
+    }
+
+    .mobile-title--3 {
+        width: 80px;
+    }
+
+    .mobile-title--4 {
+        width: 105px;
+    }
+
+    .divider {
+        border-bottom: $input-border-width $input-border-style $loading-skeleton-grey-box-color;
+        background: none;
+        border-radius: 0;
+        height: 0;
+    }
+
+    .divider:last-child {
+        margin-top: spacing("double");
+    }
 }
 
 .checkout-page-skeleton--cart {
@@ -113,16 +208,16 @@
     .item--coupon,
     .item--total,
     .item--tax {
+        @extend %no-skeleton;
+
         display: flex;
         justify-content: space-between;
-        background: none;
-        animation: none;
         height: auto;
         margin-bottom: spacing("single");
 
         div {
             width: 18%;
-            height: $floating-label-font-size--default * 0.9;
+            height: $labelHeight;
             margin-bottom: 0;
         }
     }
@@ -132,7 +227,7 @@
 
         div {
             width: 32%;
-            height: $floating-label-font-size--default * 1.2;
+            height: $textHeight;
         }
     }
 
@@ -177,6 +272,53 @@
     }
 }
 
+.checkout-page-skeleton--cartdrawer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: $cartDrawer-figure-size;
+    width: 100%;
+
+    .animated-grey-box {
+        margin-bottom: 0;
+    }
+
+    .product {
+        display: flex;
+        align-items: center;
+        gap: spacing("half");
+        width: 50%;
+
+        .figure {
+            width: $cartDrawer-figure-size;
+            height: $cartDrawer-figure-size;
+        }
+
+        .details {
+            display: flex;
+            flex-direction: column;
+            width: 50%;
+
+            .name {
+                width: 50%;
+                height: $floating-label-input-height * 0.3;
+                margin-bottom: spacing("quarter");
+            }
+
+            .description{
+                width: 100%;
+                height: $floating-label-input-height * 0.2;
+            }
+        }
+    }
+
+    .more {
+        width: $floating-label-input-height * 1.2;
+        height: $floating-label-input-height * 0.45;
+    }
+
+}
+
 .address-form-skeleton {
     display: flex;
     justify-content: space-between;
@@ -184,12 +326,12 @@
 
     div {
         margin-bottom: spacing('half');
-        height: $floating-label-input-height * 0.66;
+        height: $secondaryTitleHeight;
     }
 
     .label {
         width: 140px;
-        height: $floating-label-font-size--default * 0.9;
+        height: $labelHeight;
     }
 
     .name {
@@ -206,7 +348,7 @@
     div {
         width: 100%;
         margin-bottom: spacing('half');
-        height: $floating-label-input-height * 0.66;
+        height: $secondaryTitleHeight;
     }
 }
 

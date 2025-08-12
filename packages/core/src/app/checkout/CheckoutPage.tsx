@@ -24,6 +24,7 @@ import { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import {
     AddressFormSkeleton,
+    CartSummarySkeleton,
     ChecklistSkeleton,
     LazyContainer,
     LoadingNotification,
@@ -543,12 +544,12 @@ class Checkout extends Component<
                     }
 
                     return (
-                        <aside className="layout-cart">
-                            <LazyContainer>
-                                <CartSummary isMultiShippingMode={isMultiShippingMode} />
-                                <Extension region={ExtensionRegion.SummaryAfter} />
-                            </LazyContainer>
-                        </aside>
+                        <LazyContainer loadingSkeleton={<CartSummarySkeleton />}>
+                            <aside className="layout-cart">
+                                    <CartSummary isMultiShippingMode={isMultiShippingMode} />
+                                    <Extension region={ExtensionRegion.SummaryAfter} />
+                            </aside>
+                        </LazyContainer>
                     );
                 }}
             </MobileView>
@@ -571,6 +572,8 @@ class Checkout extends Component<
         if (options && options.isDefault) {
             this.setState({ defaultStepType: step.type });
         } else {
+            // TODO: setting activeStepType here is causing significant delay in rendering guest shopper form
+            // When converting functional component, we should set activeStepType before rendering <CheckoutPage />
             this.setState({ activeStepType: step.type });
         }
 
