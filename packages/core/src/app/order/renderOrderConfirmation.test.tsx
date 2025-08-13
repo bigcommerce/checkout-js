@@ -1,16 +1,17 @@
 import React, { FunctionComponent } from 'react';
 
+import { configurePublicPath } from '../common/bundler';
+
 import { OrderConfirmationAppProps } from './OrderConfirmationApp';
 import renderOrderConfirmation, { RenderOrderConfirmationOptions } from './renderOrderConfirmation';
 
 let OrderConfirmationApp: FunctionComponent<OrderConfirmationAppProps>;
-let configurePublicPath: (path: string) => void;
 let publicPath: string;
 
 jest.mock('@welldone-software/why-did-you-render', () => jest.fn());
 
 jest.mock('../common/bundler', () => {
-    configurePublicPath = jest.fn((path) => {
+    const configurePublicPath = jest.fn((path) => {
         publicPath = path;
 
         return publicPath;
