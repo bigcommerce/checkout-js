@@ -26,6 +26,7 @@ import PasswordField from './PasswordField';
 import { RedirectToStorefrontLogin } from './RedirectToStorefrontLogin';
 
 export interface LoginFormProps {
+    isBuyNowCart: boolean;
     canCancel?: boolean;
     continueAsGuestButtonLabelId: string;
     email?: string;
@@ -57,6 +58,7 @@ export interface LoginFormValues {
 const LoginForm: FunctionComponent<
     LoginFormProps & WithLanguageProps & FormikProps<LoginFormValues>
 > = ({
+    isBuyNowCart,
     canCancel,
     continueAsGuestButtonLabelId,
     forgotPasswordUrl,
@@ -144,7 +146,7 @@ const LoginForm: FunctionComponent<
 
                 <p className={classNames('form-legend-container', { 'body-cta': themeV2 })}>
                     <span>
-                        { isSignInEmailEnabled &&
+                        { isSignInEmailEnabled && !isBuyNowCart &&
                             <TranslatedLink
                                 id="login_email.link"
                                 onClick={ onSendLoginEmail }

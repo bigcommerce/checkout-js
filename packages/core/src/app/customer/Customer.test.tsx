@@ -38,7 +38,7 @@ import {
     checkoutWithBillingEmail,
     checkoutWithMultiShippingCart,
 } from '@bigcommerce/checkout/test-framework';
-import { renderWithoutWrapper as render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
+import { renderWithoutWrapper as render, screen } from '@bigcommerce/checkout/test-utils';
 import { ThemeProvider } from '@bigcommerce/checkout/ui';
 
 import { getBillingAddress } from '../billing/billingAddresses.mock';
