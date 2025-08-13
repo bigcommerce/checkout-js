@@ -81,7 +81,8 @@
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "npx nx generate @bigcommerce/checkout/workspace-tools:auto-export --projectName=core"
+          "npx nx generate @bigcommerce/checkout/workspace-tools:auto-export --projectName=core",
+          "npx nx generate @bigcommerce/checkout/workspace-tools:polyfill-generator --projectName=core"
         ],
         "parallel": false
       }

@@ -7,6 +7,11 @@
       "factory": "./src/generators/auto-export/generator",
       "schema": "./src/generators/auto-export/schema.json",
       "description": "auto-export generator"
+    },
+    "polyfill-generator": {
+      "factory": "./src/generators/polyfill-generator/generator",
+      "schema": "./src/generators/polyfill-generator/schema.json",
+      "description": "polyfill generator"
     }
   }
 }
