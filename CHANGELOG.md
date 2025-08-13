@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.648.0](https://github.com/bigcommerce/checkout-js/compare/v1.647.0...v1.648.0) (2025-08-13)
+
+
+### Features
+
+* **common:** CHECKOUT-9416 Add polyfill generator to include only necessary polyfill for targetted browsers ([5f63f26](https://github.com/bigcommerce/checkout-js/commit/5f63f26c61f14d738c4b9418d5c7a67458d72c45))
+
+
+### Code Refactoring
+
+* **common:** CHECKOUT-9416 Remove ES5 polyfills ([389e1d6](https://github.com/bigcommerce/checkout-js/commit/389e1d661516918075703d6d20b2e8ad0dc492cc))
+* **common:** CHECKOUT-9416 Update tsconfig target to align esbuild target ([95cec4c](https://github.com/bigcommerce/checkout-js/commit/95cec4c5b9fe09a077ec027649403ed528323218))
+* **common:** CHECKOUT-9423 Prefer ESM entry points over CJS for external packages ([24643cb](https://github.com/bigcommerce/checkout-js/commit/24643cbd306a4116d0559332bb0b0e2f81086673))
+
 ## [1.647.0](https://github.com/bigcommerce/checkout-js/compare/v1.646.0...v1.647.0) (2025-08-13)
 
 
