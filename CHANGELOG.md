@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.647.0](https://github.com/bigcommerce/checkout-js/compare/v1.646.0...v1.647.0) (2025-08-13)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9389 Add Mobile Loading Skeletons ([#2496](https://github.com/bigcommerce/checkout-js/issues/2496)) ([203b97a](https://github.com/bigcommerce/checkout-js/commit/203b97a06cbc5b8ab42754c5c5d3f7955b07625e))
+
 ## [1.646.0](https://github.com/bigcommerce/checkout-js/compare/v1.645.0...v1.646.0) (2025-08-12)
 
 
