@@ -1,6 +1,6 @@
 import { LineItemMap } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
-import React, { ReactNode } from 'react';
+import React, { ReactElement, useCallback, useState } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
@@ -23,72 +23,29 @@ export interface OrderSummaryItemsProps {
     themeV2?: boolean;
 }
 
-interface OrderSummaryItemsState {
-    isExpanded: boolean;
-    collapsedLimit: number;
-}
+const OrderSummaryItems = ({
+    displayLineItemsCount = true,
+    items,
+    themeV2 = false,
+}: OrderSummaryItemsProps): ReactElement => {
+    const [isExpanded, setIsExpanded] = useState(false);
 
-class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSummaryItemsState> {
-    constructor(props: OrderSummaryItemsProps) {
-        super(props);
+    const collapsedLimit = isSmallScreen() ? COLLAPSED_ITEMS_LIMIT_SMALL_SCREEN : COLLAPSED_ITEMS_LIMIT;
+    const getLineItemCount = useCallback(
+        () =>
+            ((items.customItems || []).length +
+                items.physicalItems.length +
+                items.digitalItems.length +
+                items.giftCertificates.length),
+        [items]
+    );
 
-        this.state = {
-            isExpanded: false,
-            collapsedLimit: this.getCollapsedLimit(),
-        };
-    }
+    const handleToggle = useCallback(() => {
+        setIsExpanded(prev => !prev);
+    }, []);
 
-    render(): ReactNode {
-        const { displayLineItemsCount = true, items, themeV2 = false } = this.props;
-        const { collapsedLimit, isExpanded } = this.state;
-
-        return (
-            <>
-                {displayLineItemsCount && <h3
-                    className={classNames('cart-section-heading optimizedCheckout-contentPrimary',
-                        { 'body-medium': themeV2 })}
-                    data-test="cart-count-total"
-                >
-                    <TranslatedString
-                        data={{ count: getItemsCount(items) }}
-                        id="cart.item_count_text"
-                    />
-                </h3>}
-
-                <ul aria-live="polite" className="productList">
-                    {[
-                        ...items.physicalItems
-                            .slice()
-                            .sort((item) => item.variantId)
-                            .map(mapFromPhysical),
-                        ...items.giftCertificates.slice().map(mapFromGiftCertificate),
-                        ...items.digitalItems
-                            .slice()
-                            .sort((item) => item.variantId)
-                            .map(mapFromDigital),
-                        ...(items.customItems || []).map(mapFromCustom),
-                    ]
-                        .slice(0, isExpanded ? undefined : collapsedLimit)
-                        .map((summaryItemProps) => (
-                            <li className="productList-item is-visible" key={summaryItemProps.id}>
-                                <OrderSummaryItem {...summaryItemProps} />
-                            </li>
-                        ))}
-                </ul>
-
-                {this.renderActions()}
-            </>
-        );
-    }
-
-    private getCollapsedLimit(): number {
-        return isSmallScreen() ? COLLAPSED_ITEMS_LIMIT_SMALL_SCREEN : COLLAPSED_ITEMS_LIMIT;
-    }
-
-    private renderActions(): ReactNode {
-        const { isExpanded } = this.state;
-
-        if (this.getLineItemCount() <= this.getCollapsedLimit()) {
+    const renderActions = useCallback(() => {
+        if (getLineItemCount() <= collapsedLimit) {
             return;
         }
 
@@ -96,8 +53,8 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
             <div className="cart-actions">
                 <button
                     className={classNames('button button--tertiary button--tiny optimizedCheckout-buttonSecondary',
-                        { 'sub-text-medium': this.props.themeV2 })}
-                    onClick={this.handleToggle}
+                        { 'sub-text-medium': themeV2 })}
+                    onClick={handleToggle}
                     type="button"
                 >
                     {isExpanded ? (
@@ -114,24 +71,46 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
                 </button>
             </div>
         );
-    }
+    }, [collapsedLimit, getLineItemCount, isExpanded]);
 
-    private getLineItemCount(): number {
-        const { items } = this.props;
+    return (
+        <>
+            {displayLineItemsCount && (
+                <h3
+                    className={classNames('cart-section-heading optimizedCheckout-contentPrimary', { 'body-medium': themeV2 })}
+                    data-test="cart-count-total"
+                >
+                    <TranslatedString
+                        data={{ count: getItemsCount(items) }}
+                        id="cart.item_count_text"
+                    />
+                </h3>
+            )}
 
-        return (
-            (items.customItems || []).length +
-            items.physicalItems.length +
-            items.digitalItems.length +
-            items.giftCertificates.length
-        );
-    }
+            <ul aria-live="polite" className="productList">
+                {[
+                    ...items.physicalItems
+                        .slice()
+                        .sort((item) => item.variantId)
+                        .map(mapFromPhysical),
+                    ...items.giftCertificates.slice().map(mapFromGiftCertificate),
+                    ...items.digitalItems
+                        .slice()
+                        .sort((item) => item.variantId)
+                        .map(mapFromDigital),
+                    ...(items.customItems || []).map(mapFromCustom),
+                ]
+                    .slice(0, isExpanded ? undefined : collapsedLimit)
+                    .map((summaryItemProps) => (
+                        <li className="productList-item is-visible" key={summaryItemProps.id}>
+                            <OrderSummaryItem {...summaryItemProps} />
+                        </li>
+                    ))}
+            </ul>
 
-    private handleToggle: () => void = () => {
-        const { isExpanded } = this.state;
-
-        this.setState({ isExpanded: !isExpanded });
-    };
-}
+            {renderActions()}
+        </>
+    );
+};
 
 export default OrderSummaryItems;
