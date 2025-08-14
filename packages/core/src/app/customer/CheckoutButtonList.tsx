@@ -9,6 +9,7 @@ import React, { FunctionComponent, memo } from 'react';
 
 import { TranslatedString, useLocale } from '@bigcommerce/checkout/locale';
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { LazyContainer } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../checkout';
 
@@ -81,16 +82,17 @@ const CheckoutButtonList: FunctionComponent<WithCheckoutCheckoutButtonListProps 
                 />
             }
 
-            return <ResolvedCheckoutButton
-                checkoutService={checkoutService}
-                checkoutState={checkoutState}
-                containerId={`${methodId}CheckoutButton`}
-                key={methodId}
-                language={language}
-                methodId={methodId}
-                onUnhandledError={onClick}
-                onWalletButtonClick={onClick}
-            />;
+            return <LazyContainer key={methodId}>
+                <ResolvedCheckoutButton
+                    checkoutService={checkoutService}
+                    checkoutState={checkoutState}
+                    containerId={`${methodId}CheckoutButton`}
+                    language={language}
+                    methodId={methodId}
+                    onUnhandledError={onClick}
+                    onWalletButtonClick={onClick}
+                />
+            </LazyContainer>;
         });
     };
 

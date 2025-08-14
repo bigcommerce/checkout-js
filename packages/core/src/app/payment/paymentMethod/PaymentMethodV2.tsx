@@ -1,5 +1,5 @@
 import { PaymentMethod } from '@bigcommerce/checkout-sdk';
-import React, { ComponentType } from 'react';
+import React, { ComponentType, Suspense } from 'react';
 
 import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import {
@@ -85,14 +85,16 @@ const PaymentMethodContainer: ComponentType<
 
     return (
         <PaymentFormProvider paymentForm={paymentForm}>
-            <ResolvedPaymentMethod
-                checkoutService={checkoutService}
-                checkoutState={checkoutState}
-                language={language}
-                method={method}
-                onUnhandledError={onUnhandledError}
-                paymentForm={paymentForm}
-            />
+            <Suspense>
+                <ResolvedPaymentMethod
+                    checkoutService={checkoutService}
+                    checkoutState={checkoutState}
+                    language={language}
+                    method={method}
+                    onUnhandledError={onUnhandledError}
+                    paymentForm={paymentForm}
+                />
+            </Suspense>
         </PaymentFormProvider>
     );
 };

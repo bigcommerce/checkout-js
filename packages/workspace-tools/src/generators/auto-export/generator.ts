@@ -22,11 +22,14 @@ export default async function autoExportGenerator(tree: Tree, options: AutoExpor
 
     await Promise.all(
         config.entries.map(async (entry) => {
+            const result = await autoExport({
+                ...entry,
+                tsConfigPath: config.tsConfigPath,
+            });
+
+            // Generate the main export file
             generateFiles(tree, join(__dirname, './templates'), parse(entry.outputPath).dir, {
-                content: await autoExport({
-                    ...entry,
-                    tsConfigPath: config.tsConfigPath,
-                }),
+                content: result,
                 outputName: basename(entry.outputPath),
             });
         }),
