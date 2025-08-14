@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.650.0](https://github.com/bigcommerce/checkout-js/compare/v1.649.0...v1.650.0) (2025-08-14)
+
+
+### Features
+
+* **common:** CHECKOUT-9419 Split third party dependencies into initial and async bundles ([666a38b](https://github.com/bigcommerce/checkout-js/commit/666a38bb6edb1cb34f9aada3cce9a6787bd03285))
+* **ui:** CHECKOUT-9419 Lazy load date picker ([76d883f](https://github.com/bigcommerce/checkout-js/commit/76d883f89e1aed237933f8abce1fdb3e302d2f13))
+
+
+### Code Refactoring
+
+* **ui:** CHECKOUT-9419 Remove duplicate dynamic form field implementation ([e8880e4](https://github.com/bigcommerce/checkout-js/commit/e8880e40e4d3e425c7791d46b4641a54e8ab4d87))
+
 ## [1.649.0](https://github.com/bigcommerce/checkout-js/compare/v1.648.0...v1.649.0) (2025-08-13)
 
 
