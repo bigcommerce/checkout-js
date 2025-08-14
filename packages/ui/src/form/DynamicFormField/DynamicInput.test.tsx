@@ -2,7 +2,7 @@ import { createLanguageService } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent } from 'react';
 
 import { LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
-import { render, screen } from '@bigcommerce/checkout/test-utils';
+import { render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
 import DynamicFormFieldType from './DynamicFormFieldType';
 import DynamicInput, { DynamicInputProps } from './DynamicInput';
@@ -43,7 +43,7 @@ describe('DynamicInput', () => {
         expect(screen.getByRole('textbox')).toHaveAttribute('rows', '4');
     });
 
-    it('renders date picker for date type', () => {
+    it('renders date picker for date type', async () => {
         const { container } = render(
             <DynamicInputTest
                 fieldType={DynamicFormFieldType.DATE}
@@ -53,13 +53,16 @@ describe('DynamicInput', () => {
             />,
         );
 
-        // eslint-disable-next-line testing-library/no-container
-        expect(container.querySelector('.react-datepicker-wrapper')).toBeInTheDocument();
+        await waitFor(() => {
+            // eslint-disable-next-line testing-library/no-container
+            expect(container.querySelector('.react-datepicker-wrapper')).toBeInTheDocument();
+        });
+
         expect(screen.getByRole('textbox')).toHaveAttribute('type', 'text');
         expect(screen.getByRole('textbox')).toHaveAttribute('placeholder', 'DD/MM/YYYY');
     });
 
-    it('renders date picker for date type with inputDateFormat prop', () => {
+    it('renders date picker for date type with inputDateFormat prop', async () => {
         const { container } = render(
             <DynamicInputTest
                 fieldType={DynamicFormFieldType.DATE}
@@ -70,8 +73,11 @@ describe('DynamicInput', () => {
             />,
         );
 
-        // eslint-disable-next-line testing-library/no-container
-        expect(container.querySelector('.react-datepicker-wrapper')).toBeInTheDocument();
+        await waitFor(() => {
+            // eslint-disable-next-line testing-library/no-container
+            expect(container.querySelector('.react-datepicker-wrapper')).toBeInTheDocument();
+        });
+
         expect(screen.getByRole('textbox')).toHaveAttribute('type', 'text');
         expect(screen.getByRole('textbox')).toHaveAttribute('placeholder', 'DD.MM.YYYY');
     });

@@ -12,7 +12,7 @@ import {
     string,
 } from 'yup';
 
-import { DynamicFormFieldType } from '../ui/form';
+import { DynamicFormFieldType } from '@bigcommerce/checkout/ui';
 
 export type TranslateValidationErrorFunction = (
     validationType: 'max' | 'min' | 'required' | 'invalid',
@@ -65,7 +65,7 @@ export default memoize(function getCustomFormFieldsValidationSchema({
 
                         maxValue = typeof max === 'number' ? max : undefined;
                         minValue = typeof min === 'number' ? min : undefined;
-                    } else if (fieldType === DynamicFormFieldType.checkbox) {
+                    } else if (fieldType === DynamicFormFieldType.CHECKBOX) {
                         schema[name] = array();
                     } else {
                         schema[name] = string();
@@ -89,7 +89,7 @@ export default memoize(function getCustomFormFieldsValidationSchema({
                         const requiredErrorMessage = translate('required', { name, label });
 
                         schema[name] =
-                            fieldType === DynamicFormFieldType.checkbox
+                            fieldType === DynamicFormFieldType.CHECKBOX
                                 ? (schema[name] as ArraySchema<string>).min(1, requiredErrorMessage)
                                 : (schema[name] as ArraySchema<string>).required(
                                       requiredErrorMessage,

@@ -76,12 +76,22 @@ function appConfig(options, argv) {
                 splitChunks: {
                     chunks: 'all',
                     cacheGroups: {
-                        vendors: {
+                        vendorInitial: {
                             test: /\/node_modules\//,
                             reuseExistingChunk: true,
                             enforce: true,
                             priority: -10,
-                            name: 'vendors',
+                            chunks: 'initial',
+                            name: 'vendor-initial',
+                        },
+                        vendorAsync: {
+                            test: /\/node_modules\//,
+                            reuseExistingChunk: true,
+                            enforce: true,
+                            priority: -10,
+                            minChunks: 2,
+                            chunks: 'async',
+                            name: 'vendor-async',
                         },
                         polyfill: {
                             test: /\/node_modules\/core-js/,
