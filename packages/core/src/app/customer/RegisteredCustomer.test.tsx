@@ -429,13 +429,6 @@ describe('Registered Customer', () => {
             }
         };
 
-        // checkoutPageObject.setRequestHandler(
-        //     rest.get(
-        //         '/api/storefront/checkouts/*',
-        //         (_, res, ctx) => res(ctx.json(buyNowCheckout))
-        //     )
-        // );
-
         jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue(buyNowCheckout);
 
         render(<CustomerTest viewType={CustomerViewType.Login} {...defaultProps} />);    

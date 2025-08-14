@@ -55,6 +55,10 @@ describe('getDefaultTranslations', () => {
         expect(await getDefaultTranslations('es-PE')).toEqual(require('./translations/es-PE.json'));
     });
 
+    it('returns Japanese translations when ja locale is specified', async () => {
+        expect(await getDefaultTranslations('ja')).toEqual(require('./translations/ja.json'));
+    });
+
     it('returns Norwegian translations when no locale is specified', async () => {
         expect(await getDefaultTranslations('no')).toEqual(require('./translations/no.json'));
     });

@@ -88,6 +88,11 @@ const AVAILABLE_TRANSLATIONS: Record<string, () => Promise<{ default: unknown }>
             /* webpackChunkName: "translations-sv" */
             './translations/pl.json'
         ),
+    ja: () =>
+        import(
+            /* webpackChunkName: "translations-ja" */
+            './translations/ja.json'
+        ),
     en: () => Promise.resolve({ default: FALLBACK_TRANSLATIONS }),
 };
 
