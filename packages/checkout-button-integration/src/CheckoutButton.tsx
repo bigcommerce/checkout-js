@@ -52,7 +52,9 @@ const CheckoutButton: FunctionComponent<CheckoutButtonProps> = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return <div className={checkoutButtonContainerClass} id={containerId} />;
+    return (
+        <div className={checkoutButtonContainerClass} data-test={containerId} id={containerId} />
+    );
 };
 
 export default toResolvableComponent<CheckoutButtonProps, CheckoutButtonResolveId>(
