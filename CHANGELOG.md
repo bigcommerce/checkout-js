@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.651.0](https://github.com/bigcommerce/checkout-js/compare/v1.650.0...v1.651.0) (2025-08-14)
+
+
+### Features
+
+* **customer:** CHECKOUT-9403 Hide passwordless login option for buy now cart ([#2499](https://github.com/bigcommerce/checkout-js/issues/2499)) ([f4ad302](https://github.com/bigcommerce/checkout-js/commit/f4ad302b361fdc48e05c73527033bac6b8c74719))
+
 ## [1.650.0](https://github.com/bigcommerce/checkout-js/compare/v1.649.0...v1.650.0) (2025-08-14)
 
 
