@@ -27,7 +27,7 @@ export interface StaticAddressEditableProps {
     deinitialize(options?: ShippingRequestOptions): Promise<CheckoutSelectors>;
     initialize(options?: ShippingInitializeOptions): Promise<CheckoutSelectors>;
     onFieldChange(fieldName: string, value: string): void;
-    onUnhandledError?(error: Error): void;
+    onUnhandledError?(error: unknown): void;
 }
 
 const StaticAddressEditable = ({
@@ -47,22 +47,28 @@ const StaticAddressEditable = ({
     const customFormFields = formFields.filter(({ custom }) => custom);
     const shouldShowCustomFormFields = customFormFields.length > 0;
 
-    useEffect(() => {
-        let isMounted = true;
+    const initialization = async () => {
+        try {
+            await initialize({ methodId });
+        } catch (error) {
+            onUnhandledError(error);
+        }
+    };
+    const deinitialization = async () => {
+        try {
+            await deinitialize({ methodId });
+        } catch (error) {
+            onUnhandledError(error);
+        }
+    };
 
-        initialize({ methodId }).catch((error) => {
-            if (isMounted) {
-                onUnhandledError(error as Error);
-            }
-        });
+    useEffect(() => {
+        void initialization();
 
         return () => {
-            isMounted = false;
-            deinitialize({ methodId }).catch((error) => {
-                onUnhandledError(error as Error);
-            });
+            void deinitialization();
         };
-    }, [initialize, deinitialize, methodId, onUnhandledError]);
+    }, []);
 
     return (
         <LoadingOverlay isLoading={isLoading}>
