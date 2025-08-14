@@ -39,39 +39,11 @@ const OrderSummaryItems = ({
                 items.giftCertificates.length),
         [items]
     );
+    const shouldShowActions = getLineItemCount() > collapsedLimit;
 
     const handleToggle = useCallback(() => {
         setIsExpanded(prev => !prev);
     }, []);
-
-    const renderActions = useCallback(() => {
-        if (getLineItemCount() <= collapsedLimit) {
-            return;
-        }
-
-        return (
-            <div className="cart-actions">
-                <button
-                    className={classNames('button button--tertiary button--tiny optimizedCheckout-buttonSecondary',
-                        { 'sub-text-medium': themeV2 })}
-                    onClick={handleToggle}
-                    type="button"
-                >
-                    {isExpanded ? (
-                        <>
-                            <TranslatedString id="cart.see_less_action" />
-                            <IconChevronUp />
-                        </>
-                    ) : (
-                        <>
-                            <TranslatedString id="cart.see_all_action" />
-                            <IconChevronDown />
-                        </>
-                    )}
-                </button>
-            </div>
-        );
-    }, [collapsedLimit, getLineItemCount, isExpanded]);
 
     return (
         <>
@@ -108,7 +80,28 @@ const OrderSummaryItems = ({
                     ))}
             </ul>
 
-            {renderActions()}
+            {shouldShowActions && (
+                <div className="cart-actions">
+                    <button
+                        className={classNames('button button--tertiary button--tiny optimizedCheckout-buttonSecondary',
+                            { 'sub-text-medium': themeV2 })}
+                        onClick={handleToggle}
+                        type="button"
+                    >
+                        {isExpanded ? (
+                            <>
+                                <TranslatedString id="cart.see_less_action" />
+                                <IconChevronUp />
+                            </>
+                        ) : (
+                            <>
+                                <TranslatedString id="cart.see_all_action" />
+                                <IconChevronDown />
+                            </>
+                        )}
+                    </button>
+                </div>
+            )}
         </>
     );
 };
