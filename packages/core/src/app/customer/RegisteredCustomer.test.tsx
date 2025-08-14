@@ -419,4 +419,20 @@ describe('Registered Customer', () => {
 
         expect(screen.queryByTestId('customer-signin-link')).not.toBeInTheDocument();
     });
+
+    it('changes from guest to login view and no passwordless login is displayed for buy now cart', async () => {
+        const buyNowCheckout = {
+            ...getCheckout(),
+            cart: {
+                ...getCheckout().cart,
+                source: 'BUY_NOW',
+            }
+        };
+
+        jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue(buyNowCheckout);
+
+        render(<CustomerTest viewType={CustomerViewType.Login} {...defaultProps} />);    
+
+        expect(screen.queryByText(localeContext.language.translate('login_email.link'))).not.toBeInTheDocument();
+    });
 });

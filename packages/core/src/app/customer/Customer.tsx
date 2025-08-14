@@ -80,6 +80,7 @@ export interface WithCheckoutCustomerProps {
     requiresMarketingConsent: boolean;
     signInEmail?: SignInEmail;
     signInEmailError?: Error;
+    isBuyNowCart: boolean;
     isAccountCreationEnabled: boolean;
     isPaymentDataRequired: boolean;
     createAccountError?: Error;
@@ -310,6 +311,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
 
     private renderLoginForm(): ReactNode {
         const {
+            isBuyNowCart,
             isEmbedded,
             email,
             forgotPasswordUrl,
@@ -331,6 +333,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                 continueAsGuestButtonLabelId="customer.continue_as_guest_action"
                 email={this.draftEmail || email}
                 forgotPasswordUrl={forgotPasswordUrl}
+                isBuyNowCart={isBuyNowCart}
                 isExecutingPaymentMethodCheckout={isExecutingPaymentMethodCheckout}
                 isFloatingLabelEnabled={isFloatingLabelEnabled}
                 isSendingSignInEmail={isSendingSignInEmail}
@@ -617,6 +620,7 @@ export function mapToWithCheckoutCustomerProps({
         isCreatingAccount: isCreatingCustomerAccount(),
         createAccountError: getCreateCustomerAccountError(),
         hasBillingId: !!billingAddress?.id,
+        isBuyNowCart: cart.source === 'BUY_NOW',
         isContinuingAsGuest: isContinuingAsGuest(),
         isExecutingPaymentMethodCheckout: isExecutingPaymentMethodCheckout(),
         isInitializing: isInitializingCustomer(),
