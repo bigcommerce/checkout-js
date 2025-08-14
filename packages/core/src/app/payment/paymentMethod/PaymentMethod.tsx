@@ -6,21 +6,22 @@ import {
     PaymentMethod,
     PaymentRequestOptions,
 } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, memo } from 'react';
+import React, { FunctionComponent, lazy, memo, Suspense } from 'react';
 
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 
 import { withCheckout } from '../../checkout';
 
-import BraintreeCreditCardPaymentMethod from './BraintreeCreditCardPaymentMethod';
-import HostedCreditCardPaymentMethod from './HostedCreditCardPaymentMethod';
-import HostedPaymentMethod from './HostedPaymentMethod';
-import MasterpassPaymentMethod from './MasterpassPaymentMethod';
+const BraintreeCreditCardPaymentMethod = lazy(() => import(/* webpackChunkName: "braintree-credit-card-payment-method" */'./BraintreeCreditCardPaymentMethod'));
+const HostedCreditCardPaymentMethod = lazy(() => import(/* webpackChunkName: "hosted-credit-card-payment-method" */'./HostedCreditCardPaymentMethod'));
+const HostedPaymentMethod = lazy(() => import(/* webpackChunkName: "hosted-payment-method" */'./HostedPaymentMethod'));
+const MasterpassPaymentMethod = lazy(() => import(/* webpackChunkName: "masterpass-payment-method" */'./MasterpassPaymentMethod'));
+const PaypalPaymentsProPaymentMethod = lazy(() => import(/* webpackChunkName: "paypal-payments-pro-payment-method" */'./PaypalPaymentsProPaymentMethod'));
+const PPSDKPaymentMethod = lazy(() => import(/* webpackChunkName: "ppsdk-payment-method" */'./PPSDKPaymentMethod'));
+
 import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodProviderType from './PaymentMethodProviderType';
 import PaymentMethodType from './PaymentMethodType';
-import PaypalPaymentsProPaymentMethod from './PaypalPaymentsProPaymentMethod';
-import PPSDKPaymentMethod from './PPSDKPaymentMethod';
 
 export interface PaymentMethodProps {
     method: PaymentMethod;
@@ -53,22 +54,22 @@ const PaymentMethodComponent: FunctionComponent<
     const { method } = props;
 
     if (method.type === PaymentMethodProviderType.PPSDK) {
-        return <PPSDKPaymentMethod {...props} />;
+        return <Suspense><PPSDKPaymentMethod {...props} /></Suspense>;
     }
 
     if (method.id === PaymentMethodId.Masterpass) {
-        return <MasterpassPaymentMethod {...props} />;
+        return <Suspense><MasterpassPaymentMethod {...props} /></Suspense>;
     }
 
     if (method.id === PaymentMethodId.Braintree) {
-        return <BraintreeCreditCardPaymentMethod {...props} />;
+        return <Suspense><BraintreeCreditCardPaymentMethod {...props} /></Suspense>;
     }
 
     if (
         method.type !== PaymentMethodProviderType.Hosted &&
         method.id === PaymentMethodId.PaypalPaymentsPro
     ) {
-        return <PaypalPaymentsProPaymentMethod {...props} />;
+        return <Suspense><PaypalPaymentsProPaymentMethod {...props} /></Suspense>;
     }
 
 
@@ -83,7 +84,7 @@ const PaymentMethodComponent: FunctionComponent<
         method.method === PaymentMethodType.PaypalCredit ||
         method.type === PaymentMethodProviderType.Hosted
     ) {
-        return <HostedPaymentMethod {...props} />;
+        return <Suspense><HostedPaymentMethod {...props} /></Suspense>;
     }
 
     // NOTE: Some payment methods have `method` as `credit-card` but they are
@@ -93,7 +94,7 @@ const PaymentMethodComponent: FunctionComponent<
         method.method === PaymentMethodType.CreditCard ||
         method.type === PaymentMethodProviderType.Api
     ) {
-        return <HostedCreditCardPaymentMethod {...props} />;
+        return <Suspense><HostedCreditCardPaymentMethod {...props} /></Suspense>;
     }
 
     return null;

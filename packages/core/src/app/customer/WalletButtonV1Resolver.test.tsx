@@ -5,7 +5,7 @@ import { render, screen } from '@bigcommerce/checkout/test-utils';
 import CheckoutButtonV1Resolver from './WalletButtonV1Resolver';
 
 describe('CheckoutButtonV1Resolver', () => {
-    it('renders ApplePay button', () => {
+    it('renders ApplePay button', async () => {
         render(
             <CheckoutButtonV1Resolver
                 deinitialize={jest.fn()}
@@ -16,25 +16,7 @@ describe('CheckoutButtonV1Resolver', () => {
             />,
         );
 
-        const allDivs = screen.getAllByRole('generic');
-
-        expect(allDivs[1]).toHaveAttribute('id', 'applepayCheckoutButton');
-    });
-
-    it('renders ApplePay button', () => {
-        render(
-            <CheckoutButtonV1Resolver
-                deinitialize={jest.fn()}
-                initialize={jest.fn()}
-                methodId="applepay"
-                onClick={jest.fn()}
-                onError={jest.fn()}
-            />,
-        );
-
-        const allDivs = screen.getAllByRole('generic');
-
-        expect(allDivs[1]).toHaveAttribute('id', 'applepayCheckoutButton');
+        expect(await screen.findByTestId('applepayCheckoutButton')).toBeInTheDocument();
     });
 
     it('renders PaypalCommerceCredit button', () => {
