@@ -4,8 +4,6 @@ import {
     type CheckoutParams,
     type CheckoutSelectors,
     type Consignment,
-    type Country,
-    type CustomerAddress,
     type CustomerRequestOptions,
     type FormField,
     type RequestOptions,
@@ -23,11 +21,9 @@ import MultiShippingGuestForm from './MultiShippingGuestForm';
 import SingleShippingForm, { type SingleShippingFormValues } from './SingleShippingForm';
 
 export interface ShippingFormProps {
-    addresses: CustomerAddress[];
     cart: Cart;
     cartHasChanged: boolean;
     consignments: Consignment[];
-    countries: Country[];
     countriesWithAutocomplete: string[];
     customerMessage: string;
     googleMapsApiKey?: string;
@@ -39,7 +35,6 @@ export interface ShippingFormProps {
     isGuestMultiShippingEnabled: boolean;
     methodId?: string;
     shippingAddress?: Address;
-    shouldShowSaveAddress?: boolean;
     shouldShowOrderComments: boolean;
     isFloatingLabelEnabled?: boolean;
     isInitialValueLoaded: boolean;
@@ -62,11 +57,9 @@ export interface ShippingFormProps {
 }
 
 const ShippingForm = ({
-    addresses,
     cart,
     cartHasChanged,
       consignments,
-      countries,
       countriesWithAutocomplete,
       onCreateAccount,
       customerMessage,
@@ -87,7 +80,6 @@ const ShippingForm = ({
     onUnhandledError,
       shippingAddress,
       shouldShowOrderComments,
-      shouldShowSaveAddress,
       signOut,
       updateAddress,
       isShippingStepPending,
@@ -138,10 +130,8 @@ const ShippingForm = ({
         getMultiShippingForm()
     ) : (
         <SingleShippingForm
-            addresses={addresses}
             cartHasChanged={cartHasChanged}
             consignments={consignments}
-            countries={countries}
             countriesWithAutocomplete={countriesWithAutocomplete}
             customerMessage={customerMessage}
             deinitialize={deinitialize}
@@ -161,7 +151,6 @@ const ShippingForm = ({
             shippingAddress={shippingAddress}
             shippingFormRenderTimestamp={shippingFormRenderTimestamp}
             shouldShowOrderComments={shouldShowOrderComments}
-            shouldShowSaveAddress={shouldShowSaveAddress}
             signOut={signOut}
             updateAddress={updateAddress}
         />

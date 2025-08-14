@@ -2,8 +2,6 @@ import {
     type Address,
     type CheckoutSelectors,
     type Consignment,
-    type Country,
-    type CustomerAddress,
     type FormField,
     type ShippingInitializeOptions,
     type ShippingRequestOptions,
@@ -18,9 +16,7 @@ import { PayPalFastlaneShippingAddress } from './PayPalFastlaneShippingAddress';
 import ShippingAddressForm from './ShippingAddressForm';
 
 export interface ShippingAddressProps {
-    addresses: CustomerAddress[];
     consignments: Consignment[];
-    countries?: Country[];
     countriesWithAutocomplete: string[];
     formFields: FormField[];
     googleMapsApiKey?: string;
@@ -28,7 +24,6 @@ export interface ShippingAddressProps {
     isShippingStepPending: boolean;
     methodId?: string;
     shippingAddress?: Address;
-    shouldShowSaveAddress?: boolean;
     hasRequestedShippingOptions: boolean;
     isFloatingLabelEnabled?: boolean;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
@@ -43,7 +38,6 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = (props) => {
     const {
         methodId,
         formFields,
-        countries,
         countriesWithAutocomplete,
         consignments,
         googleMapsApiKey,
@@ -53,8 +47,6 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = (props) => {
         isLoading,
         shippingAddress,
         hasRequestedShippingOptions,
-        addresses,
-        shouldShowSaveAddress,
         isFloatingLabelEnabled,
     } = props;
 
@@ -91,9 +83,7 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = (props) => {
     return (
         <ShippingAddressForm
             address={shippingAddress}
-            addresses={addresses}
             consignments={consignments}
-            countries={countries}
             countriesWithAutocomplete={countriesWithAutocomplete}
             formFields={formFields}
             googleMapsApiKey={googleMapsApiKey}
@@ -102,7 +92,6 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = (props) => {
             onAddressSelect={onAddressSelect}
             onFieldChange={handleFieldChange}
             onUseNewAddress={onUseNewAddress}
-            shouldShowSaveAddress={shouldShowSaveAddress}
         />
     );
 };

@@ -3,8 +3,6 @@ import {
     type CheckoutParams,
     type CheckoutSelectors,
     type Consignment,
-    type Country,
-    type CustomerAddress,
     type CustomerRequestOptions,
     type FormField,
     type RequestOptions,
@@ -40,11 +38,9 @@ import { SHIPPING_ADDRESS_FIELDS } from './ShippingAddressFields';
 import ShippingFormFooter from './ShippingFormFooter';
 
 export interface SingleShippingFormProps {
-    addresses: CustomerAddress[];
     isBillingSameAsShipping: boolean;
     cartHasChanged: boolean;
     consignments: Consignment[];
-    countries: Country[];
     countriesWithAutocomplete: string[];
     customerMessage: string;
     googleMapsApiKey?: string;
@@ -54,7 +50,6 @@ export interface SingleShippingFormProps {
     methodId?: string;
     shippingAddress?: Address;
     shippingAutosaveDelay?: number;
-    shouldShowSaveAddress?: boolean;
     shouldShowOrderComments: boolean;
     isFloatingLabelEnabled?: boolean;
     isInitialValueLoaded: boolean;
@@ -180,14 +175,11 @@ class SingleShippingForm extends PureComponent<
 
     render(): ReactNode {
         const {
-            addresses,
             cartHasChanged,
             isInitialValueLoaded,
             isLoading,
             onUnhandledError,
             methodId,
-            shouldShowSaveAddress,
-            countries,
             countriesWithAutocomplete,
             googleMapsApiKey,
             shippingAddress,
@@ -214,9 +206,7 @@ class SingleShippingForm extends PureComponent<
             <Form autoComplete="on">
                 <Fieldset>
                     <ShippingAddress
-                        addresses={addresses}
                         consignments={consignments}
-                        countries={countries}
                         countriesWithAutocomplete={countriesWithAutocomplete}
                         deinitialize={deinitialize}
                         formFields={this.getFields(addressForm && addressForm.countryCode)}
@@ -232,7 +222,6 @@ class SingleShippingForm extends PureComponent<
                         onUnhandledError={onUnhandledError}
                         onUseNewAddress={this.onUseNewAddress}
                         shippingAddress={shippingAddress}
-                        shouldShowSaveAddress={shouldShowSaveAddress}
                     />
                     {shouldShowBillingSameAsShipping && (
                         <div className="form-body">
