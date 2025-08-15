@@ -28,8 +28,11 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
             throw error;
         }
 
+        // Adding errorCode with value `ErrorBoundary` to collect usage statistics of ErrorBoundary
         if (logger) {
-            logger.log(error);
+            logger.log(error, {
+                errorCode: 'ErrorBoundary',
+            });
         }
     }
 
