@@ -5,7 +5,7 @@ import {
     PaymentRequestOptions,
 } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { Component, ReactNode } from 'react';
+import React, { ReactElement, ReactNode, useEffect } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { FormFieldContainer, Label, LoadingOverlay } from '@bigcommerce/checkout/ui';
@@ -20,14 +20,22 @@ export interface HostedFieldPaymentMethodComponentProps {
     walletButtons?: ReactNode;
     deinitializePayment(options: PaymentRequestOptions): Promise<CheckoutSelectors>;
     initializePayment(options: PaymentInitializeOptions): Promise<CheckoutSelectors>;
-    onUnhandledError?(error: Error): void;
+    onUnhandledError?(error: unknown): void;
 }
 
-// TODO: Use HostedCreditCardFieldset
-export class HostedFieldPaymentMethodComponent extends Component<HostedFieldPaymentMethodComponentProps> {
-    async componentDidMount(): Promise<void> {
-        const { initializePayment, method, onUnhandledError = noop } = this.props;
-
+export const HostedFieldPaymentMethodComponent = ({
+    cardCodeId,
+    cardExpiryId,
+    cardNumberId,
+    isInitializing = false,
+    postalCodeId,
+    walletButtons,
+    initializePayment,
+    deinitializePayment,
+    method,
+    onUnhandledError = noop,
+}: HostedFieldPaymentMethodComponentProps): ReactElement => {
+    const initializePaymentMethod = async () => {
         try {
             await initializePayment({
                 gatewayId: method.gateway,
@@ -36,11 +44,8 @@ export class HostedFieldPaymentMethodComponent extends Component<HostedFieldPaym
         } catch (error) {
             onUnhandledError(error);
         }
-    }
-
-    async componentWillUnmount(): Promise<void> {
-        const { deinitializePayment, method, onUnhandledError = noop } = this.props;
-
+    };
+    const deinitializePaymentMethod = async () => {
         try {
             await deinitializePayment({
                 gatewayId: method.gateway,
@@ -49,60 +54,58 @@ export class HostedFieldPaymentMethodComponent extends Component<HostedFieldPaym
         } catch (error) {
             onUnhandledError(error);
         }
-    }
+    };
 
-    render(): ReactNode {
-        const {
-            cardCodeId,
-            cardExpiryId,
-            cardNumberId,
-            isInitializing = false,
-            postalCodeId,
-            walletButtons,
-        } = this.props;
+    useEffect(() => {
+        void initializePaymentMethod();
 
-        return (
-            <LoadingOverlay hideContentWhenLoading isLoading={isInitializing}>
-                <div className="form-ccFields">
-                    {!!walletButtons && <FormFieldContainer>{walletButtons}</FormFieldContainer>}
+        return () => {
+            void deinitializePaymentMethod();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-                    <FormFieldContainer additionalClassName="form-field--ccNumber">
+    return (
+        <LoadingOverlay hideContentWhenLoading isLoading={isInitializing}>
+            <div className="form-ccFields">
+                {!!walletButtons && <FormFieldContainer>{walletButtons}</FormFieldContainer>}
+
+                <FormFieldContainer additionalClassName="form-field--ccNumber">
+                    <Label>
+                        <TranslatedString id="payment.credit_card_number_label" />
+                    </Label>
+
+                    <div id={cardNumberId} />
+                </FormFieldContainer>
+
+                <FormFieldContainer additionalClassName="form-field--ccExpiry">
+                    <Label>
+                        <TranslatedString id="payment.credit_card_expiration_label" />
+                    </Label>
+
+                    <div id={cardExpiryId} />
+                </FormFieldContainer>
+
+                {!!cardCodeId && (
+                    <FormFieldContainer additionalClassName="form-field--ccCvv">
                         <Label>
-                            <TranslatedString id="payment.credit_card_number_label" />
+                            <TranslatedString id="payment.credit_card_cvv_label" />
                         </Label>
 
-                        <div id={cardNumberId} />
+                        <div id={cardCodeId} />
                     </FormFieldContainer>
+                )}
 
-                    <FormFieldContainer additionalClassName="form-field--ccExpiry">
+                {!!postalCodeId && (
+                    <FormFieldContainer additionalClassName="form-field--postCode">
                         <Label>
-                            <TranslatedString id="payment.credit_card_expiration_label" />
+                            <TranslatedString id="payment.postal_code_label" />
                         </Label>
 
-                        <div id={cardExpiryId} />
+                        <div id={postalCodeId} />
                     </FormFieldContainer>
-
-                    {!!cardCodeId && (
-                        <FormFieldContainer additionalClassName="form-field--ccCvv">
-                            <Label>
-                                <TranslatedString id="payment.credit_card_cvv_label" />
-                            </Label>
-
-                            <div id={cardCodeId} />
-                        </FormFieldContainer>
-                    )}
-
-                    {!!postalCodeId && (
-                        <FormFieldContainer additionalClassName="form-field--postCode">
-                            <Label>
-                                <TranslatedString id="payment.postal_code_label" />
-                            </Label>
-
-                            <div id={postalCodeId} />
-                        </FormFieldContainer>
-                    )}
-                </div>
-            </LoadingOverlay>
-        );
-    }
-}
+                )}
+            </div>
+        </LoadingOverlay>
+    );
+};
