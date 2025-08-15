@@ -6,7 +6,7 @@ import {
     ShippingRequestOptions,
 } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { PureComponent, ReactNode } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -27,78 +27,83 @@ export interface StaticAddressEditableProps {
     deinitialize(options?: ShippingRequestOptions): Promise<CheckoutSelectors>;
     initialize(options?: ShippingInitializeOptions): Promise<CheckoutSelectors>;
     onFieldChange(fieldName: string, value: string): void;
-    onUnhandledError?(error: Error): void;
+    onUnhandledError?(error: unknown): void;
 }
 
-class StaticAddressEditable extends PureComponent<StaticAddressEditableProps> {
-    async componentDidMount(): Promise<void> {
-        const { initialize, methodId, onUnhandledError = noop } = this.props;
+const StaticAddressEditable = ({
+    address,
+    buttonId,
+    formFields,
+    isLoading,
+    methodId,
+    deinitialize,
+    initialize,
+    onFieldChange,
+    onUnhandledError = noop,
+}: StaticAddressEditableProps): ReactElement => {
+    const handleFieldValueChange = (name: string) => (value: string) => {
+        onFieldChange(name, value);
+    };
+    const customFormFields = formFields.filter(({ custom }) => custom);
+    const shouldShowCustomFormFields = customFormFields.length > 0;
 
+    const initialization = async () => {
         try {
             await initialize({ methodId });
         } catch (error) {
             onUnhandledError(error);
         }
-    }
-
-    async componentWillUnmount(): Promise<void> {
-        const { deinitialize, methodId, onUnhandledError = noop } = this.props;
-
+    };
+    const deinitialization = async () => {
         try {
             await deinitialize({ methodId });
         } catch (error) {
             onUnhandledError(error);
         }
-    }
+    };
 
-    render(): ReactNode {
-        const { address, buttonId, formFields, isLoading } = this.props;
+    useEffect(() => {
+        void initialization();
 
-        const customFormFields = formFields.filter(({ custom }) => custom);
-        const shouldShowCustomFormFields = customFormFields.length > 0;
+        return () => {
+            void deinitialization();
+        };
+    }, []);
 
-        return (
-            <LoadingOverlay isLoading={isLoading}>
-                <div className="stepHeader" style={{ padding: 0 }}>
-                    <div className="stepHeader-body subheader">
-                        <StaticAddress address={address} />
-                    </div>
-
-                    <div className="stepHeader-actions subheader">
-                        <Button
-                            id={buttonId}
-                            onClick={preventDefault()}
-                            size={ButtonSize.Tiny}
-                            testId="step-edit-button"
-                            variant={ButtonVariant.Secondary}
-                        >
-                            <TranslatedString id="common.edit_action" />
-                        </Button>
-                    </div>
+    return (
+        <LoadingOverlay isLoading={isLoading}>
+            <div className="stepHeader" style={{ padding: 0 }}>
+                <div className="stepHeader-body subheader">
+                    <StaticAddress address={address} />
                 </div>
 
-                {shouldShowCustomFormFields && (
-                    <Fieldset id="customFieldset">
-                        {customFormFields.map((field) => (
-                            <DynamicFormField
-                                field={field}
-                                key={`${field.id}-${field.name}`}
-                                onChange={this.handleFieldValueChange(field.name)}
-                                parentFieldName="shippingAddress.customFields"
-                            />
-                        ))}
-                    </Fieldset>
-                )}
-            </LoadingOverlay>
-        );
-    }
+                <div className="stepHeader-actions subheader">
+                    <Button
+                        id={buttonId}
+                        onClick={preventDefault()}
+                        size={ButtonSize.Tiny}
+                        testId="step-edit-button"
+                        variant={ButtonVariant.Secondary}
+                    >
+                        <TranslatedString id="common.edit_action" />
+                    </Button>
+                </div>
+            </div>
 
-    private handleFieldValueChange: (name: string) => (value: string) => void =
-        (name) => (value) => {
-            const { onFieldChange } = this.props;
-
-            onFieldChange(name, value);
-        };
-}
+            {shouldShowCustomFormFields && (
+                <Fieldset id="customFieldset">
+                    {customFormFields.map((field) => (
+                        <DynamicFormField
+                            field={field}
+                            key={`${field.id}-${field.name}`}
+                            onChange={handleFieldValueChange(field.name)}
+                            parentFieldName="shippingAddress.customFields"
+                        />
+                    ))}
+                </Fieldset>
+            )}
+        </LoadingOverlay>
+    );
+};
 
 export default StaticAddressEditable;
