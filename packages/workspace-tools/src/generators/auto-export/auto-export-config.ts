@@ -7,4 +7,5 @@ export interface AutoExportConfigEntry {
     inputPath: string;
     outputPath: string;
     memberPattern: string;
+    ignorePackages?: string[];
 }

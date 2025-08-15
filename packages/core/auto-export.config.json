@@ -2,7 +2,7 @@
     "entries": [
         {
             "inputPath": "packages/**/src/index.ts",
-            "ignorePackages": ["test-mocks"],
+            "ignorePackages": ["test-mocks", "workspace-tools"],
             "outputPath": "packages/core/src/app/generated/paymentIntegrations/index.ts",
             "memberPattern": ".+PaymentMethod$"
         },

@@ -1,6 +1,6 @@
 import { CheckoutSelectors, CheckoutService } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
-import React, { FunctionComponent, memo } from 'react';
+import React, { FunctionComponent, memo, Suspense } from 'react';
 
 import { TranslatedString, useLocale } from '@bigcommerce/checkout/locale';
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
@@ -73,16 +73,17 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
             />
         }
 
-        return <ResolvedCheckoutButton
-                    checkoutService={checkoutService}
-                    checkoutState={checkoutState}
-                    containerId={`${methodId}CheckoutButton`}
-                    key={methodId}
-                    language={language}
-                    methodId={methodId}
-                    onUnhandledError={onUnhandledError}
-                    onWalletButtonClick={onWalletButtonClick}
-                />;
+        return <Suspense key={methodId}> 
+            <ResolvedCheckoutButton
+                checkoutService={checkoutService}
+                checkoutState={checkoutState}
+                containerId={`${methodId}CheckoutButton`}
+                language={language}
+                methodId={methodId}
+                onUnhandledError={onUnhandledError}
+                onWalletButtonClick={onWalletButtonClick}
+            />
+        </Suspense>;
     });
 
     return (

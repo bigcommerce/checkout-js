@@ -11,5 +11,11 @@ import * as paymentMethods from '../generated/paymentIntegrations';
 export default function resolvePaymentMethod(
     query: PaymentMethodResolveId,
 ): ComponentType<PaymentMethodProps> | undefined {
-    return resolveComponent<PaymentMethodResolveId, PaymentMethodProps>(query, paymentMethods);
+    const { ComponentRegistry, ...components } = paymentMethods;
+
+    return resolveComponent<PaymentMethodResolveId, PaymentMethodProps>(
+        query, 
+        components, 
+        ComponentRegistry,
+    );
 }

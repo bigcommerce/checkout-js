@@ -43,7 +43,7 @@ const CheckoutButton = ({
         };
     }, []);
 
-    return <div id={containerId} />;
+    return <div data-test={containerId} id={containerId} />;
 };
 
 export default CheckoutButton;

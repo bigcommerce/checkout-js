@@ -1,9 +1,7 @@
 import { ComponentType } from 'react';
 
-import { isResolvableComponent } from '@bigcommerce/checkout/payment-integration-api';
-
-interface ResolveResult<TProps> {
-    component: ComponentType<TProps>;
+interface ResolveResult {
+    name: string;
     matches: number;
     default: boolean;
 }
@@ -11,16 +9,13 @@ interface ResolveResult<TProps> {
 export default function resolveComponent<TResolveId extends Record<string, unknown>, TProps>(
     query: TResolveId,
     components: Record<string, ComponentType<TProps>>,
+    registry: Record<string, readonly TResolveId[]>,
 ): ComponentType<TProps> | undefined {
-    const results: Array<ResolveResult<TProps>> = [];
+    const results: ResolveResult[] = [];
 
-    for (const [_, Component] of Object.entries(components)) {
-        if (!isResolvableComponent<TProps, TResolveId>(Component)) {
-            continue;
-        }
-
-        for (const resolverId of Component.resolveIds) {
-            const result = { component: Component, matches: 0, default: false };
+    for (const [name, resolveIds] of Object.entries(registry)) {
+        for (const resolverId of resolveIds) {
+            const result = { name, matches: 0, default: false };
 
             for (const [key, value] of Object.entries(resolverId)) {
                 if (key in query && query[key] !== value) {
@@ -45,5 +40,9 @@ export default function resolveComponent<TResolveId extends Record<string, unkno
         .sort((a, b) => b.matches - a.matches)
         .find((result) => result.matches > 0);
 
-    return matched?.component ?? results.find((result) => result.default)?.component;
+    const matchedName = matched?.name ?? results.find((result) => result.default)?.name;
+
+    if (matchedName) {
+        return components[matchedName];
+    }
 }
