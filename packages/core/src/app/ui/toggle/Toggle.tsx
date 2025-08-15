@@ -1,36 +1,19 @@
-import { Component, ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 
 export interface ToggleProps {
     openByDefault?: boolean;
     children: (props: { toggle: any; isOpen: boolean }) => ReactNode;
 }
 
-export interface ToggleState {
-    isOpen: boolean;
-}
+const Toggle = ({ openByDefault, children }: ToggleProps): ReactNode => {
+    const [isOpen, setIsOpen] = useState(Boolean(openByDefault));
 
-export default class Toggle extends Component<ToggleProps, ToggleState> {
-    constructor(props: ToggleProps) {
-        super(props);
-
-        this.state = { isOpen: !!props.openByDefault };
-    }
-
-    render(): ReactNode {
-        const { children } = this.props;
-        const { isOpen } = this.state;
-
-        return children({
-            isOpen,
-            toggle: this.toggle,
-        });
-    }
-
-    private toggle: (event: Event) => void = (event) => {
-        const { isOpen } = this.state;
-
+    const toggle = (event: Event) => {
         event.preventDefault();
-
-        this.setState({ isOpen: !isOpen });
+        setIsOpen(!isOpen);
     };
-}
+
+    return children({ isOpen, toggle });
+};
+
+export default Toggle;
