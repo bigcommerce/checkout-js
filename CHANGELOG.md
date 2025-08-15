@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.651.1](https://github.com/bigcommerce/checkout-js/compare/v1.651.0...v1.651.1) (2025-08-15)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9384 Convert ErrorBoundary ([#2503](https://github.com/bigcommerce/checkout-js/issues/2503)) ([d5e4ac9](https://github.com/bigcommerce/checkout-js/commit/d5e4ac91d33728764585e9c613b0bf74d5fac659))
+
 ## [1.651.0](https://github.com/bigcommerce/checkout-js/compare/v1.650.0...v1.651.0) (2025-08-14)
 
 
