@@ -31,7 +31,7 @@ describe('ErrorBoundary', () => {
             </ErrorBoundary>,
         );
 
-        expect(logger.log).toHaveBeenCalledWith(error);
+        expect(logger.log).toHaveBeenCalledWith(error, { errorCode: 'ErrorBoundary' });
     });
 
     it('does not log error if filter returns false', () => {
