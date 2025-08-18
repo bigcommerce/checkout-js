@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.651.2](https://github.com/bigcommerce/checkout-js/compare/v1.651.1...v1.651.2) (2025-08-18)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9384 Convert TooltipTrigger ([#2504](https://github.com/bigcommerce/checkout-js/issues/2504)) ([57ee2eb](https://github.com/bigcommerce/checkout-js/commit/57ee2eb1606eba56dd41cc24a43c4e2fd3ed627b))
+
 ### [1.651.1](https://github.com/bigcommerce/checkout-js/compare/v1.651.0...v1.651.1) (2025-08-15)
 
 
