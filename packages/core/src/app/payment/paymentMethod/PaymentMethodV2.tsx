@@ -58,11 +58,14 @@ const PaymentMethodContainer: ComponentType<
 
     const { getConfig } = checkoutState.data;
 
-    const ResolvedPaymentMethod = resolvePaymentMethod({
-        id: method.id,
-        gateway: method.gateway,
-        type: method.type,
-    }, isExperimentEnabled(getConfig()?.checkoutSettings, 'CHECKOUT-9432.lazy_load_payment_components'));
+    const ResolvedPaymentMethod = resolvePaymentMethod(
+        {
+            id: method.id,
+            gateway: method.gateway,
+            type: method.type,
+        },
+        isExperimentEnabled(getConfig()?.checkoutSettings, 'CHECKOUT-9432.lazy_load_payment_components', false)
+    );
 
     if (!ResolvedPaymentMethod) {
         return (

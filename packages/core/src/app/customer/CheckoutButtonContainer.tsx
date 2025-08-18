@@ -62,7 +62,10 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
             return null;
         }
 
-        const ResolvedCheckoutButton = resolveCheckoutButton({ id: methodId }, isExperimentEnabled(getConfig()?.checkoutSettings, 'CHECKOUT-9432.lazy_load_payment_components'));
+        const ResolvedCheckoutButton = resolveCheckoutButton(
+            { id: methodId },
+            isExperimentEnabled(getConfig()?.checkoutSettings, 'CHECKOUT-9432.lazy_load_payment_components', false)
+        );
 
         if (!ResolvedCheckoutButton) {
             return <CheckoutButtonV1Resolver
