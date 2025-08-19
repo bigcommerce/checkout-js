@@ -30,4 +30,32 @@
     //    color: #3c4043;
     //    font-weight: bold;
     //}
+    .floating-select,
+    .floating-input {
+        background-color: $color-secondaryDark;
+    }
+
+    .form-field:not(.form-field--error) .floating-input:not(:focus),
+    .form-field:not(.form-field--error) .floating-select:not(:focus),
+    .form-field:not(.form-field--error) .floating-textarea {
+        border-color: $color-greyMedium;
+    }
+
+    .form-checklist-checkbox~.form-label {
+
+        &::before,
+        &::after {
+            background-color: $color-white;
+        }
+
+        &::after {
+            transform: scale(0.36);
+        }
+    }
+
+    .form-checklist-checkbox:checked~.form-label {
+        &::before {
+            background-color: $color-highlight;
+        }
+    }
 }
