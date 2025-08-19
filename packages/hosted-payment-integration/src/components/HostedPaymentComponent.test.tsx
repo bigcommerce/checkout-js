@@ -29,13 +29,13 @@ import {
 } from '@bigcommerce/checkout/test-mocks';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentComponent';
+import HostedPaymentMethod, { HostedPaymentComponentProps } from './HostedPaymentComponent';
 
 describe('HostedPaymentMethod', () => {
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
-    let defaultProps: HostedPaymentMethodProps;
-    let HostedPaymentMethodTest: FunctionComponent<HostedPaymentMethodProps>;
+    let defaultProps: HostedPaymentComponentProps;
+    let HostedPaymentMethodTest: FunctionComponent<HostedPaymentComponentProps>;
     let localeContext: LocaleContextType;
     let paymentForm: PaymentFormService;
 
