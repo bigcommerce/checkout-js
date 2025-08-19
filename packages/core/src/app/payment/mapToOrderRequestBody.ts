@@ -1,7 +1,7 @@
-import { OrderPaymentRequestBody, OrderRequestBody } from '@bigcommerce/checkout-sdk';
+import { type OrderPaymentRequestBody, type OrderRequestBody } from '@bigcommerce/checkout-sdk';
 import { isEmpty, isNil, omitBy } from 'lodash';
 
-import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 
 import { unformatCreditCardExpiryDate, unformatCreditCardNumber } from './creditCard';
 import {

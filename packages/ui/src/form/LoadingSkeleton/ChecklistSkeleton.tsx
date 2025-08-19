@@ -1,7 +1,7 @@
 import classNames from 'classnames';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
-import { LoadingSkeleton, LoadingSkeletonProps } from './LoadingSkeleton';
+import { LoadingSkeleton, type LoadingSkeletonProps } from './LoadingSkeleton';
 
 interface ChecklistSkeletonProps {
     additionalClassName?: string;

@@ -1,13 +1,13 @@
 import {
-    Address,
-    CheckoutSelectors,
-    Country,
-    CustomerAddress,
-    FormField,
-    ShippingInitializeOptions,
-    ShippingRequestOptions,
+    type Address,
+    type CheckoutSelectors,
+    type Country,
+    type CustomerAddress,
+    type FormField,
+    type ShippingInitializeOptions,
+    type ShippingRequestOptions,
 } from '@bigcommerce/checkout-sdk';
-import React, { memo, MutableRefObject } from 'react';
+import React, { memo, type MutableRefObject } from 'react';
 
 import { localizeAddress, TranslatedString } from '@bigcommerce/checkout/locale';
 import {

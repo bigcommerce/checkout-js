@@ -1,8 +1,8 @@
-import { createCheckoutService, CurrencyService, Order } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, type CurrencyService, type Order } from '@bigcommerce/checkout-sdk';
 import userEvent from '@testing-library/user-event';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
-import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { createLocaleContext, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
@@ -12,8 +12,8 @@ import { IconGiftCertificate } from '../ui/icon';
 
 import mapToOrderSummarySubtotalsProps from './mapToOrderSummarySubtotalsProps';
 import { getOrder } from './orders.mock';
-import OrderSummaryDrawer, { OrderSummaryDrawerProps } from './OrderSummaryDrawer';
-import { OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
+import OrderSummaryDrawer, { type OrderSummaryDrawerProps } from './OrderSummaryDrawer';
+import { type OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
 import PrintLink from './PrintLink';
 
 describe('OrderSummaryDrawer', () => {

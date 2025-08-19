@@ -1,11 +1,11 @@
 import creditCardType from 'credit-card-type';
-import { FieldProps } from 'formik';
+import { type FieldProps } from 'formik';
 import { max } from 'lodash';
 import React, {
-    ChangeEventHandler,
-    FunctionComponent,
+    type ChangeEventHandler,
+    type FunctionComponent,
     memo,
-    ReactElement,
+    type ReactElement,
     useCallback,
     useEffect,
     useMemo,

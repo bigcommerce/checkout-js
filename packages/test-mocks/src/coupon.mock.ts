@@ -1,4 +1,4 @@
-import { Coupon } from '@bigcommerce/checkout-sdk';
+import { type Coupon } from '@bigcommerce/checkout-sdk';
 
 export function getCoupon(): Coupon {
     return {

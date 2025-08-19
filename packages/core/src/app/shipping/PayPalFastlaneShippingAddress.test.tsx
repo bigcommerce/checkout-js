@@ -1,10 +1,10 @@
-import { CheckoutSelectors, CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
+import { type CheckoutSelectors, type CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { render, screen } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
-import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { createLocaleContext, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutContext } from '@bigcommerce/checkout/payment-integration-api';
 import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { getAddress, getCustomer } from '@bigcommerce/checkout/test-mocks';
@@ -12,7 +12,7 @@ import { ThemeProvider } from '@bigcommerce/checkout/ui';
 
 import { getStoreConfig } from '../config/config.mock';
 
-import { PayPalFastlaneShippingAddress, PayPalFastlaneShippingAddressProps } from './PayPalFastlaneShippingAddress';
+import { PayPalFastlaneShippingAddress, type PayPalFastlaneShippingAddressProps } from './PayPalFastlaneShippingAddress';
 
 jest.mock('@bigcommerce/checkout/paypal-fastlane-integration', () => ({
     ...jest.requireActual('@bigcommerce/checkout/paypal-fastlane-integration'),

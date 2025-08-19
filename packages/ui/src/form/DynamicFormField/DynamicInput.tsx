@@ -1,13 +1,13 @@
-import { FormFieldItem } from '@bigcommerce/checkout-sdk';
+import { type FormFieldItem } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { isDate, noop } from 'lodash';
-import React, { FunctionComponent, lazy, memo, Suspense, useCallback } from 'react';
+import React, { type FunctionComponent, lazy, memo, Suspense, useCallback } from 'react';
 
-import { withDate, WithDateProps } from '@bigcommerce/checkout/locale';
+import { withDate, type WithDateProps } from '@bigcommerce/checkout/locale';
 
 import { IconChevronDown } from '../../icon';
 import { CheckboxInput } from '../CheckboxInput';
-import { InputProps } from '../Input';
+import { type InputProps } from '../Input';
 import { RadioInput } from '../RadioInput';
 import { TextArea } from '../TextArea';
 import { TextInput } from '../TextInput';

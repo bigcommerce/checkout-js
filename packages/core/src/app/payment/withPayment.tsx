@@ -1,6 +1,6 @@
 import { createInjectHoc } from '@bigcommerce/checkout/legacy-hoc';
 
-import PaymentContext, { PaymentContextProps } from './PaymentContext';
+import PaymentContext, { type PaymentContextProps } from './PaymentContext';
 
 export type WithPaymentProps = PaymentContextProps;
 

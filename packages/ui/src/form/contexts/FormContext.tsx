@@ -1,5 +1,12 @@
 import { isFunction, noop } from 'lodash';
-import React, { createContext, FunctionComponent, memo, ReactNode, useMemo, useState } from 'react';
+import React, {
+    createContext,
+    type FunctionComponent,
+    memo,
+    type ReactNode,
+    useMemo,
+    useState,
+} from 'react';
 
 export interface FormContextType {
     isSubmitted: boolean;

@@ -1,4 +1,4 @@
-import { CheckoutSelectors, Instrument } from '@bigcommerce/checkout-sdk';
+import { type CheckoutSelectors, type Instrument } from '@bigcommerce/checkout-sdk';
 import { createSelector } from 'reselect';
 
 import isInstrumentCardNumberRequired from './isInstrumentCardNumberRequired';

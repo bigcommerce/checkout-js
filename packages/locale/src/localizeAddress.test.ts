@@ -1,4 +1,4 @@
-import { Address } from '@bigcommerce/checkout-sdk';
+import { type Address } from '@bigcommerce/checkout-sdk';
 
 import { getAddress } from './address.mock';
 import { getCountries } from './countries.mock';

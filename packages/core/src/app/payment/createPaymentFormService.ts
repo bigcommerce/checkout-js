@@ -1,12 +1,12 @@
-import { FormikContextType } from 'formik';
+import { type FormikContextType } from 'formik';
 
 import {
-    PaymentFormService,
-    PaymentFormValues,
+    type PaymentFormService,
+    type PaymentFormValues,
 } from '@bigcommerce/checkout/payment-integration-api';
-import { FormContextType } from '@bigcommerce/checkout/ui';
+import { type FormContextType } from '@bigcommerce/checkout/ui';
 
-import { PaymentContextProps } from './PaymentContext';
+import { type PaymentContextProps } from './PaymentContext';
 
 export default function createPaymentFormService(
     formikContext: FormikContextType<PaymentFormValues>,

@@ -1,7 +1,7 @@
-import { Address } from '@bigcommerce/checkout-sdk';
-import { Page } from '@playwright/test';
+import { type Address } from '@bigcommerce/checkout-sdk';
+import { type Page } from '@playwright/test';
 
-import { CheckoutPagePreset } from '../../';
+import { type CheckoutPagePreset } from '../../';
 
 import { PlaywrightHelper } from '.';
 

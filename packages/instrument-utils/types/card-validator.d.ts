@@ -1,7 +1,7 @@
 import 'card-validator';
 import {
-    CreditCardType as OriginalCreditCardType,
-    CreditCardTypeInfo as OriginalCreditCardTypeInfo,
+    type CreditCardType as OriginalCreditCardType,
+    type CreditCardTypeInfo as OriginalCreditCardTypeInfo,
 } from 'credit-card-type';
 
 // Merge @types/card-validator with missing methods

@@ -1,5 +1,5 @@
-import { PaymentMethod } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent } from 'react';
+import { type PaymentMethod } from '@bigcommerce/checkout-sdk';
+import React, { type FunctionComponent } from 'react';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString, useLocale } from '@bigcommerce/checkout/locale';

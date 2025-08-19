@@ -1,4 +1,4 @@
-import { Response } from '@bigcommerce/request-sender';
+import { type Response } from '@bigcommerce/request-sender';
 
 export function getResponse<T>(
     body: T,

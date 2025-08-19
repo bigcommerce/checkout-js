@@ -1,9 +1,9 @@
 import {
-    CheckoutSelectors,
-    CheckoutService,
+    type CheckoutSelectors,
+    type CheckoutService,
     createCheckoutService,
-    Instrument,
-    PaymentMethod,
+    type Instrument,
+    type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
 
 import { getCardInstrument, getCart, getPaymentMethod } from '@bigcommerce/checkout/test-mocks';

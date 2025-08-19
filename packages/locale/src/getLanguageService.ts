@@ -1,4 +1,8 @@
-import { createLanguageService, LanguageConfig, LanguageService } from '@bigcommerce/checkout-sdk';
+import {
+    createLanguageService,
+    type LanguageConfig,
+    type LanguageService,
+} from '@bigcommerce/checkout-sdk';
 
 import { FALLBACK_LOCALE, FALLBACK_TRANSLATIONS } from './translations';
 

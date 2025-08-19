@@ -1,10 +1,10 @@
 import {
-    CheckoutSelectors,
-    CheckoutService,
+    type CheckoutSelectors,
+    type CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
 import userEvent from '@testing-library/user-event';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import { LocaleProvider } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
@@ -14,7 +14,7 @@ import { getBillingAddress } from '../billing/billingAddresses.mock';
 import { getCheckout } from '../checkout/checkouts.mock';
 import { getStoreConfig } from '../config/config.mock';
 
-import CustomerInfo, { CustomerInfoProps } from './CustomerInfo';
+import CustomerInfo, { type CustomerInfoProps } from './CustomerInfo';
 import { getCustomer, getGuestCustomer } from './customers.mock';
 
 describe('CustomerInfo', () => {

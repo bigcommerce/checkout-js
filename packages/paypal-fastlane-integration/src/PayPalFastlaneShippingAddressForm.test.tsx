@@ -4,8 +4,8 @@ import React, { createRef } from 'react';
 import { getCustomer } from '@bigcommerce/checkout/test-mocks';
 
 import PayPalFastlaneShippingAddressForm, {
-    PayPalFastlaneAddressComponentRef,
-    PayPalFastlaneStaticAddressProps,
+    type PayPalFastlaneAddressComponentRef,
+    type PayPalFastlaneStaticAddressProps,
 } from './PayPalFastlaneShippingAddressForm';
 
 jest.mock('@bigcommerce/checkout/locale', () => ({

@@ -1,6 +1,6 @@
-import { createRequestSender, RequestSender } from '@bigcommerce/request-sender';
+import { createRequestSender, type RequestSender } from '@bigcommerce/request-sender';
 
-import { CreatedCustomer, CreatedCustomerResponse } from './CreatedCustomer';
+import { type CreatedCustomer, type CreatedCustomerResponse } from './CreatedCustomer';
 
 export interface CustomerCreateRequestBody {
     confirmPassword: string;

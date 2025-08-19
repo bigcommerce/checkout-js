@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 export const CartSummarySkeleton: FunctionComponent = () => (
     <aside className="layout-cart">

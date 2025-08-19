@@ -1,5 +1,5 @@
-import { LanguageService } from '@bigcommerce/checkout-sdk';
-import { object, ObjectSchema, string } from 'yup';
+import { type LanguageService } from '@bigcommerce/checkout-sdk';
+import { object, type ObjectSchema, string } from 'yup';
 
 import { EMAIL_REGEXP } from './validationPatterns';
 

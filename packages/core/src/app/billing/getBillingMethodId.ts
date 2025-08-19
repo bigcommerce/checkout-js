@@ -1,4 +1,4 @@
-import { Checkout } from '@bigcommerce/checkout-sdk';
+import { type Checkout } from '@bigcommerce/checkout-sdk';
 
 import { getPreselectedPayment } from '../payment';
 

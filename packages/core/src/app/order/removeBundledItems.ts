@@ -1,4 +1,4 @@
-import { LineItemMap } from '@bigcommerce/checkout-sdk';
+import { type LineItemMap } from '@bigcommerce/checkout-sdk';
 
 export default function removeBundledItems(lineItems: LineItemMap): LineItemMap {
     return {

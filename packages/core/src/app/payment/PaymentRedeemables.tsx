@@ -1,8 +1,8 @@
-import React, { FunctionComponent, memo } from 'react';
+import React, { type FunctionComponent, memo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
-import { mapToRedeemableProps, Redeemable, RedeemableProps } from '../cart';
+import { mapToRedeemableProps, Redeemable, type RedeemableProps } from '../cart';
 import { withCheckout } from '../checkout';
 import { Fieldset, Legend } from '../ui/form';
 

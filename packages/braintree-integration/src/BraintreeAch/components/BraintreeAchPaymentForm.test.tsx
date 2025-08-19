@@ -1,17 +1,17 @@
 import {
-    CheckoutSelectors,
-    CheckoutService,
+    type CheckoutSelectors,
+    type CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
 import { Formik } from 'formik';
-import { FormikValues } from 'formik/dist/types';
+import { type FormikValues } from 'formik/dist/types';
 import { noop } from 'lodash';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import {
     CheckoutContext,
     PaymentFormContext,
-    PaymentFormService,
+    type PaymentFormService,
 } from '@bigcommerce/checkout/payment-integration-api';
 import {
     getBraintreeAchPaymentMethod,
@@ -26,7 +26,9 @@ import { act, render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { AccountTypes, OwnershipTypes } from '../constants';
 
-import BraintreeAchPaymentForm, { BraintreeAchPaymentFormProps } from './BraintreeAchPaymentForm';
+import BraintreeAchPaymentForm, {
+    type BraintreeAchPaymentFormProps,
+} from './BraintreeAchPaymentForm';
 
 describe('BraintreeAchPaymentForm', () => {
     let checkoutService: CheckoutService;

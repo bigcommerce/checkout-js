@@ -1,11 +1,11 @@
-import { CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
+import { type CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { render, screen } from '@testing-library/react';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 import '@testing-library/jest-dom';
 
 import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
-import LocaleContext, { LocaleContextType } from './LocaleContext';
+import LocaleContext, { type LocaleContextType } from './LocaleContext';
 import LocaleProvider from './LocaleProvider';
 
 describe('LocaleProvider', () => {

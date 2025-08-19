@@ -3,8 +3,8 @@ import { noop } from 'lodash';
 
 import { CHECKOUT_ROOT_NODE_ID } from '@bigcommerce/checkout/payment-integration-api';
 
-import AppExport from './AppExport';
-import { AssetManifest, loadFiles, LoadFilesOptions } from './loader';
+import type AppExport from './AppExport';
+import { type AssetManifest, loadFiles, type LoadFilesOptions } from './loader';
 
 jest.mock('@bigcommerce/script-loader', () => {
     return {

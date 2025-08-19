@@ -1,4 +1,4 @@
-import React, { FunctionComponent, memo, ReactNode } from 'react';
+import React, { type FunctionComponent, memo, type ReactNode } from 'react';
 
 export interface CustomChecklistItemProps {
     content?: ReactNode;

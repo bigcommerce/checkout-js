@@ -1,5 +1,5 @@
-import { Placement } from '@popperjs/core';
-import React, { MouseEventHandler, ReactElement, ReactNode, useCallback, useEffect, useState } from 'react';
+import { type Placement } from '@popperjs/core';
+import React, { type MouseEventHandler, type ReactElement, type ReactNode, useCallback, useEffect, useState } from 'react';
 import { Manager, Popper, Reference } from 'react-popper';
 
 import {

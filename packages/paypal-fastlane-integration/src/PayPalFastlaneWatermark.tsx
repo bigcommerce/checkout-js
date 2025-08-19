@@ -1,11 +1,11 @@
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { type FunctionComponent, useEffect } from 'react';
 
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
 import isBraintreeFastlaneMethod from './is-braintree-fastlane-method';
 import isFastlaneHostWindow from './is-fastlane-window';
 import isPayPalFastlaneMethod from './is-paypal-fastlane-method';
-import { FastlanePrivacySettings } from './types';
+import { type FastlanePrivacySettings } from './types';
 
 import './PayPalFastlaneWatermark.scss';
 

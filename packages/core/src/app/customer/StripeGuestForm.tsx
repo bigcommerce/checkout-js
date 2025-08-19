@@ -1,17 +1,17 @@
-import { CustomerInitializeOptions, CustomerRequestOptions } from '@bigcommerce/checkout-sdk';
-import { FieldProps, FormikProps, withFormik } from 'formik';
-import React, { FunctionComponent, memo, ReactNode, useCallback, useEffect, useState } from 'react';
+import { type CustomerInitializeOptions, type CustomerRequestOptions } from '@bigcommerce/checkout-sdk';
+import { type FieldProps, type FormikProps, withFormik } from 'formik';
+import React, { type FunctionComponent, memo, type ReactNode, useCallback, useEffect, useState } from 'react';
 import { object } from 'yup';
 
 import { getAppliedStyles } from '@bigcommerce/checkout/dom-utils';
-import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 
-import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
+import type CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import { getPrivacyPolicyValidationSchema, PrivacyPolicyField } from '../privacyPolicy';
 import { Button, ButtonVariant } from '../ui/button';
 import { BasicFormField, Fieldset, Form, Legend } from '../ui/form';
 
-import { GuestFormValues } from './GuestForm';
+import { type GuestFormValues } from './GuestForm';
 import SubscribeField from './SubscribeField';
 
 export interface StripeGuestFormProps {

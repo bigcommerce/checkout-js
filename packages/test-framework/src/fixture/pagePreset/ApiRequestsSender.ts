@@ -1,6 +1,6 @@
-import { Cart, Checkout } from '@bigcommerce/checkout-sdk';
+import { type Cart, type Checkout } from '@bigcommerce/checkout-sdk';
 import { faker } from '@faker-js/faker';
-import { Page } from '@playwright/test';
+import { type Page } from '@playwright/test';
 
 import { getStoreUrl } from '../';
 

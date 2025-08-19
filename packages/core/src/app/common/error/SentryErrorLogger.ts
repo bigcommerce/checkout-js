@@ -10,13 +10,13 @@ import type {
 
 import {
     ErrorLevelType,
-    ErrorLogger,
-    ErrorMeta,
-    ErrorTags,
+    type ErrorLogger,
+    type ErrorMeta,
+    type ErrorTags,
 } from '@bigcommerce/checkout/error-handling-utils';
 
 import computeErrorCode from './computeErrorCode';
-import ConsoleErrorLogger from './ConsoleErrorLogger';
+import type ConsoleErrorLogger from './ConsoleErrorLogger';
 import NoopErrorLogger from './NoopErrorLogger';
 
 const FILENAME_PREFIX = 'app://';

@@ -1,11 +1,11 @@
-import { CustomerInitializeOptions } from '@bigcommerce/checkout-sdk';
+import { type CustomerInitializeOptions } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { FunctionComponent, useCallback, useContext } from 'react';
+import React, { type FunctionComponent, useCallback, useContext } from 'react';
 
 import { LocaleContext } from '@bigcommerce/checkout/locale';
 import { navigateToOrderConfirmation } from '@bigcommerce/checkout/utility';
 
-import CheckoutButton, { CheckoutButtonProps } from '../CheckoutButton';
+import CheckoutButton, { type CheckoutButtonProps } from '../CheckoutButton';
 
 const ApplePayButton: FunctionComponent<CheckoutButtonProps> = ({
     initialize,

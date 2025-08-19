@@ -1,18 +1,18 @@
 import {
-    CheckoutSelectors,
-    CheckoutService,
+    type CheckoutSelectors,
+    type CheckoutService,
     createCheckoutService,
     createLanguageService,
-    PaymentInitializeOptions,
-    PaymentRequestOptions,
+    type PaymentInitializeOptions,
+    type PaymentRequestOptions,
 } from '@bigcommerce/checkout-sdk';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import {
-    PaymentFormService,
-    PaymentMethodProps,
+    type PaymentFormService,
+    type PaymentMethodProps,
 } from '@bigcommerce/checkout/payment-integration-api';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 

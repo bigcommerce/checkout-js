@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { isNumber } from 'lodash';
-import React, { FunctionComponent, memo, ReactNode } from 'react';
+import React, { type FunctionComponent, memo, type ReactNode } from 'react';
 
 import { useThemeContext } from '@bigcommerce/checkout/ui';
 

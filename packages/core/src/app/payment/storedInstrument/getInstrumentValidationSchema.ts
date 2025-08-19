@@ -1,10 +1,10 @@
-import { LanguageService } from '@bigcommerce/checkout-sdk';
+import { type LanguageService } from '@bigcommerce/checkout-sdk';
 import { memoize } from '@bigcommerce/memoize';
 import { cvv, number } from 'card-validator';
 import creditCardType from 'credit-card-type';
-import { object, ObjectSchema, string, StringSchema } from 'yup';
+import { object, type ObjectSchema, string, type StringSchema } from 'yup';
 
-import CardInstrumentFieldsetValues from './CardInstrumentFieldsetValues';
+import type CardInstrumentFieldsetValues from './CardInstrumentFieldsetValues';
 import mapFromInstrumentCardType from './mapFromInstrumentCardType';
 
 export interface InstrumentValidationSchemaOptions {

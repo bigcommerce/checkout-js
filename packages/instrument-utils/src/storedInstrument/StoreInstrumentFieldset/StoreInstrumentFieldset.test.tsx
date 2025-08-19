@@ -1,6 +1,6 @@
 import {
-    CheckoutSelectors,
-    CheckoutService,
+    type CheckoutSelectors,
+    type CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
 import { Formik } from 'formik';
@@ -12,7 +12,7 @@ import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale
 import {
     CheckoutContext,
     PaymentFormContext,
-    PaymentFormService,
+    type PaymentFormService,
 } from '@bigcommerce/checkout/payment-integration-api';
 import {
     getInstruments,

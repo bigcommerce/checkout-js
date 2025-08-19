@@ -1,7 +1,7 @@
-import { LanguageService } from '@bigcommerce/checkout-sdk';
-import { object, ObjectSchema, string, StringSchema } from 'yup';
+import { type LanguageService } from '@bigcommerce/checkout-sdk';
+import { object, type ObjectSchema, string, type StringSchema } from 'yup';
 
-import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 
 import { getTermsConditionsValidationSchema } from '../termsConditions';
 

@@ -1,25 +1,25 @@
 import {
-    CardInstrument,
-    CheckoutSelectors,
-    CheckoutService,
+    type CardInstrument,
+    type CheckoutSelectors,
+    type CheckoutService,
     createCheckoutService,
-    RequestError,
+    type RequestError,
 } from '@bigcommerce/checkout-sdk';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import {
     createLocaleContext,
     LocaleContext,
-    LocaleContextType,
+    type LocaleContextType,
 } from '@bigcommerce/checkout/locale';
 import { CheckoutContext } from '@bigcommerce/checkout/payment-integration-api';
 import { getInstruments, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
 import { isAccountInstrument, isBankAccountInstrument, isCardInstrument } from '../../guards';
 
-import ManageInstrumentsModal, { ManageInstrumentsModalProps } from './ManageInstrumentsModal';
+import ManageInstrumentsModal, { type ManageInstrumentsModalProps } from './ManageInstrumentsModal';
 
 describe('ManageInstrumentsModal', () => {
     let ManageInstrumentsModalTest: FunctionComponent<ManageInstrumentsModalProps>;

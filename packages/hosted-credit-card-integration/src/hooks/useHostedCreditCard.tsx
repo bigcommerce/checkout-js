@@ -1,12 +1,12 @@
 import {
-    CardInstrument,
-    CheckoutSelectors,
-    LanguageService,
-    LegacyHostedFormOptions,
-    PaymentMethod,
+    type CardInstrument,
+    type CheckoutSelectors,
+    type LanguageService,
+    type LegacyHostedFormOptions,
+    type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
 import { compact, forIn } from 'lodash';
-import React, { ReactNode, useCallback, useState } from 'react';
+import React, { type ReactNode, useCallback, useState } from 'react';
 
 import {
     CreditCardInputStylesType,
@@ -14,7 +14,7 @@ import {
     isInstrumentCardCodeRequiredSelector,
     isInstrumentCardNumberRequiredSelector,
 } from '@bigcommerce/checkout/instrument-utils';
-import { PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
+import { type PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
 
 import { HostedCreditCardValidation } from '../components';
 

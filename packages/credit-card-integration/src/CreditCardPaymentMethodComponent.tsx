@@ -1,24 +1,24 @@
 import {
-    CardInstrument,
-    CheckoutSelectors,
-    HostedFieldType,
-    Instrument,
-    LegacyHostedFormOptions,
-    PaymentInitializeOptions,
-    PaymentInstrument,
-    PaymentMethod,
-    PaymentRequestOptions,
+    type CardInstrument,
+    type CheckoutSelectors,
+    type HostedFieldType,
+    type Instrument,
+    type LegacyHostedFormOptions,
+    type PaymentInitializeOptions,
+    type PaymentInstrument,
+    type PaymentMethod,
+    type PaymentRequestOptions,
 } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import { find } from 'lodash';
-import React, { Component, ReactNode } from 'react';
-import { ObjectSchema } from 'yup';
+import React, { Component, type ReactNode } from 'react';
+import { type ObjectSchema } from 'yup';
 
 import {
     CardInstrumentFieldset,
     configureCardValidator,
     CreditCardFieldset,
-    CreditCardFieldsetValues,
+    type CreditCardFieldsetValues,
     CreditCardValidation,
     getCreditCardValidationSchema,
     getInstrumentValidationSchema,
@@ -30,8 +30,8 @@ import {
 } from '@bigcommerce/checkout/instrument-utils';
 import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
 import {
-    CardInstrumentFieldsetValues,
-    PaymentMethodProps,
+    type CardInstrumentFieldsetValues,
+    type PaymentMethodProps,
 } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 

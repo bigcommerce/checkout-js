@@ -1,4 +1,4 @@
-import AutoExportConfig from './auto-export-config';
+import type AutoExportConfig from './auto-export-config';
 
 export default function isAutoExportConfig(config: unknown): config is AutoExportConfig {
     if (!(config instanceof Object)) {

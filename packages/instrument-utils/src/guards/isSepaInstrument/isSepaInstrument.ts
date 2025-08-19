@@ -1,4 +1,4 @@
-import { BankInstrument, PaymentInstrument } from '@bigcommerce/checkout-sdk';
+import { type BankInstrument, type PaymentInstrument } from '@bigcommerce/checkout-sdk';
 
 export function isSepaInstrument(instrument?: PaymentInstrument): instrument is BankInstrument {
     return (

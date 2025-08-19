@@ -1,4 +1,4 @@
-import { AccountInstrument, PaymentInstrument } from '@bigcommerce/checkout-sdk';
+import { type AccountInstrument, type PaymentInstrument } from '@bigcommerce/checkout-sdk';
 
 export default function isAccountInstrument(
     instrument: PaymentInstrument,

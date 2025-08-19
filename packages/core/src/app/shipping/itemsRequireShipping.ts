@@ -1,4 +1,4 @@
-import { Cart, StoreConfig } from '@bigcommerce/checkout-sdk';
+import { type Cart, type StoreConfig } from '@bigcommerce/checkout-sdk';
 
 const itemsRequireShipping = (cart?: Cart, config?: StoreConfig) => {
     if (!cart) {

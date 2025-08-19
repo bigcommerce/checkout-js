@@ -1,18 +1,18 @@
 import {
-    AdyenCreditCardComponentOptions,
-    AdyenValidationState,
-    CardInstrument,
-    PaymentInitializeOptions,
+    type AdyenCreditCardComponentOptions,
+    type AdyenValidationState,
+    type CardInstrument,
+    type PaymentInitializeOptions,
 } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, useCallback, useRef, useState } from 'react';
+import React, { type FunctionComponent, useCallback, useRef, useState } from 'react';
 
-import { HostedWidgetComponentProps } from '@bigcommerce/checkout/hosted-widget-integration';
+import { type HostedWidgetComponentProps } from '@bigcommerce/checkout/hosted-widget-integration';
 import { LocaleProvider } from '@bigcommerce/checkout/locale';
 import {
     CheckoutContext,
     PaymentFormContext,
-    PaymentMethodProps,
-    PaymentMethodResolveId,
+    type PaymentMethodProps,
+    type PaymentMethodResolveId,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 import { FormContext, LoadingOverlay } from '@bigcommerce/checkout/ui';

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { render } from '@bigcommerce/checkout/test-utils';
 
-import StripeShippingAddressDisplay, { StripeupeShippingAddressProps } from './StripeShippingAddressDisplay';
+import StripeShippingAddressDisplay, { type StripeupeShippingAddressProps } from './StripeShippingAddressDisplay';
 
 describe('StripeUpe Shipping Component', () => {
     const defaultProps: StripeupeShippingAddressProps = {

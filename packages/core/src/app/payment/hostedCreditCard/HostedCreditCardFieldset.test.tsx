@@ -1,16 +1,16 @@
 import { createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { Field, Formik } from 'formik';
 import { noop } from 'lodash';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
-import { createLocaleContext, LocaleContextType, LocaleProvider } from '@bigcommerce/checkout/locale';
+import { createLocaleContext, type LocaleContextType, LocaleProvider } from '@bigcommerce/checkout/locale';
 import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import HostedCreditCardCodeField from './HostedCreditCardCodeField';
 import HostedCreditCardExpiryField from './HostedCreditCardExpiryField';
 import HostedCreditCardFieldset, {
-    HostedCreditCardFieldsetProps,
+    type HostedCreditCardFieldsetProps,
 } from './HostedCreditCardFieldset';
 import HostedCreditCardNameField from './HostedCreditCardNameField';
 import HostedCreditCardNumberField from './HostedCreditCardNumberField';

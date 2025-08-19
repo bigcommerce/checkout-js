@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { FunctionComponent, HTMLAttributes } from 'react';
+import React, { type FunctionComponent, type HTMLAttributes } from 'react';
 
 export interface TextInputIframeContainerProps extends HTMLAttributes<HTMLDivElement> {
     additionalClassName?: string;

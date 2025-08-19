@@ -1,7 +1,7 @@
 import classNames from 'classnames';
-import React, {FunctionComponent, ReactNode, useMemo, useState} from 'react';
+import React, {type FunctionComponent, type ReactNode, useMemo, useState} from 'react';
 
-import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 import { Alert, AlertType, useThemeContext } from '@bigcommerce/checkout/ui';
 
@@ -14,7 +14,7 @@ import hasSelectedShippingOptions from './hasSelectedShippingOptions';
 import { useMultiShippingConsignmentItems } from './hooks/useMultishippingConsignmentItems';
 import isSelectedShippingOptionValid from './isSelectedShippingOptionValid';
 import MultiShippingFormFooter from './MultiShippingFormFooter';
-import { MultiShippingConsignmentData } from './MultishippingType';
+import { type MultiShippingConsignmentData } from './MultishippingType';
 import './MultiShippingForm.scss';
 import NewConsignment from './NewConsignment';
 

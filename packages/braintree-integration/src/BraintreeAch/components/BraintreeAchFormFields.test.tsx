@@ -4,7 +4,7 @@ import React from 'react';
 
 import {
     PaymentFormContext,
-    PaymentFormService,
+    type PaymentFormService,
 } from '@bigcommerce/checkout/payment-integration-api';
 import { getPaymentFormServiceMock } from '@bigcommerce/checkout/test-mocks';
 import { render } from '@bigcommerce/checkout/test-utils';

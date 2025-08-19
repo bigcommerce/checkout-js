@@ -1,7 +1,10 @@
 import { createCheckoutService, createLanguageService } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
-import { CheckoutButtonProps, isEmbedded } from '@bigcommerce/checkout/payment-integration-api';
+import {
+    type CheckoutButtonProps,
+    isEmbedded,
+} from '@bigcommerce/checkout/payment-integration-api';
 import { render } from '@bigcommerce/checkout/test-utils';
 
 import GooglePayButton from './GooglePayButton';

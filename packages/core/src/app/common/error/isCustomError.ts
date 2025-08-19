@@ -1,4 +1,4 @@
-import CustomError from './CustomError';
+import type CustomError from './CustomError';
 
 export default function isCustomError(error: Error): error is CustomError {
     const customError = error as CustomError;

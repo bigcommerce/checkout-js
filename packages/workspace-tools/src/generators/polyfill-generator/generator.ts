@@ -1,5 +1,5 @@
 /* eslint-disable no-console, import/no-extraneous-dependencies */
-import { readProjectConfiguration, Tree } from '@nx/devkit';
+import { readProjectConfiguration, type Tree } from '@nx/devkit';
 import browserslist from 'browserslist';
 import { compat } from 'core-js-compat';
 import { join } from 'path';

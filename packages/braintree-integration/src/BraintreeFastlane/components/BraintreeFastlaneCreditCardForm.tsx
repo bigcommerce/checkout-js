@@ -1,6 +1,6 @@
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { type FunctionComponent, useEffect } from 'react';
 
-import { BraintreeFastlaneComponentRef } from '../BraintreeFastlanePaymentMethod';
+import { type BraintreeFastlaneComponentRef } from '../BraintreeFastlanePaymentMethod';
 
 import './BraintreeFastlaneCreditCardForm.scss';
 

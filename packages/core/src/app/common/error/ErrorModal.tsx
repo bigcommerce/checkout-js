@@ -1,6 +1,6 @@
-import { RequestError } from '@bigcommerce/checkout-sdk';
+import { type RequestError } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { ReactElement, ReactNode, SyntheticEvent } from 'react';
+import React, { type ReactElement, type ReactNode, type SyntheticEvent } from 'react';
 
 import { TranslatedHtml, TranslatedString } from '@bigcommerce/checkout/locale';
 
@@ -14,7 +14,7 @@ import isCustomError from './isCustomError';
 import isHtmlError from './isHtmlError';
 import isRequestError from './isRequestError';
 
-import { CustomError } from './index';
+import { type CustomError } from './index';
 
 export interface ErrorModalProps {
     error?: Error | RequestError | CustomError;

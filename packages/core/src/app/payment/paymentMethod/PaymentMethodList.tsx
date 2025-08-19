@@ -1,11 +1,11 @@
-import { PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { type PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { find, get, noop } from 'lodash';
-import React, { FunctionComponent, memo, useCallback, useMemo } from 'react';
+import React, { type FunctionComponent, memo, useCallback, useMemo } from 'react';
 
 import { useLocale } from '@bigcommerce/checkout/locale';
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
-import { connectFormik, ConnectFormikProps } from '../../common/form';
+import { connectFormik, type ConnectFormikProps } from '../../common/form';
 import { isMobile } from '../../common/utility';
 import { Checklist, ChecklistItem, CustomChecklistItem } from '../../ui/form';
 

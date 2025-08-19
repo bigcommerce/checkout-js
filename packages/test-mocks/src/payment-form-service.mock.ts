@@ -1,4 +1,4 @@
-import { PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
+import { type PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
 
 export function getPaymentFormServiceMock(): PaymentFormService {
     return {

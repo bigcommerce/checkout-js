@@ -1,7 +1,7 @@
-import { Page } from '@playwright/test';
+import { type Page } from '@playwright/test';
 
 import { ApiRequestsSender } from './ApiRequestsSender';
-import { CheckoutPagePreset } from './CheckoutPagePreset';
+import { type CheckoutPagePreset } from './CheckoutPagePreset';
 
 export class CustomerStepAsGuest implements CheckoutPagePreset {
     private readonly quantity: number;

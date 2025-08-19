@@ -1,4 +1,4 @@
-import { PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { type PaymentMethod } from '@bigcommerce/checkout-sdk';
 
 const DISPLAY_NAME_MAP = {
     credit_card: 'Credit Card',

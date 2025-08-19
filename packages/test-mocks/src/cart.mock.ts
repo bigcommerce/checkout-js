@@ -1,4 +1,4 @@
-import { Cart } from '@bigcommerce/checkout-sdk';
+import { type Cart } from '@bigcommerce/checkout-sdk';
 
 import { getDigitalItem, getPhysicalItem } from './line-item.mock';
 

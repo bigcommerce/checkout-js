@@ -1,4 +1,4 @@
-import { CurrencyService } from '@bigcommerce/checkout-sdk';
+import { type CurrencyService } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
 import { createLocaleContext } from '@bigcommerce/checkout/locale';

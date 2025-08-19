@@ -1,7 +1,13 @@
 import { isEmpty, pickBy } from 'lodash';
-import React, { ComponentType, Context, FunctionComponent, memo, useContext } from 'react';
+import React, {
+    type ComponentType,
+    type Context,
+    type FunctionComponent,
+    memo,
+    useContext,
+} from 'react';
 
-import InjectHoc from './InjectHoc';
+import type InjectHoc from './InjectHoc';
 
 export interface InjectHocOptions<TInjectedProps> {
     displayNamePrefix?: string;

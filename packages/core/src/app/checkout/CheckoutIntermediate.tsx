@@ -1,16 +1,16 @@
 import {
-    EmbeddedCheckoutMessenger,
-    EmbeddedCheckoutMessengerOptions
+    type EmbeddedCheckoutMessenger,
+    type EmbeddedCheckoutMessengerOptions
 } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
-import { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
+import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { CheckoutPageSkeleton, useThemeContext } from '@bigcommerce/checkout/ui';
 
-import { EmbeddedCheckoutStylesheet } from '../embeddedCheckout';
+import { type EmbeddedCheckoutStylesheet } from '../embeddedCheckout';
 
 import CheckoutPage from './CheckoutPage';
-import CheckoutSupport from './CheckoutSupport';
+import type CheckoutSupport from './CheckoutSupport';
 import { useLoadCheckout } from './hooks';
 
 interface CheckoutIntermediateProps {

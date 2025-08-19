@@ -1,9 +1,9 @@
 import '@testing-library/jest-dom';
-import { CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
+import { type CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React from 'react';
 
-import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { createLocaleContext, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
 
@@ -12,7 +12,7 @@ import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
 
 import { getAddress } from './address.mock';
-import AddressSelect, { AddressSelectProps } from './AddressSelect';
+import AddressSelect, { type AddressSelectProps } from './AddressSelect';
 import AddressType from './AddressType';
 import { getAddressContent } from './SingleLineStaticAddress';
 

@@ -1,8 +1,8 @@
 import {
-    CustomItem,
-    DigitalItem,
-    GiftCertificateItem,
-    PhysicalItem,
+    type CustomItem,
+    type DigitalItem,
+    type GiftCertificateItem,
+    type PhysicalItem,
 } from '@bigcommerce/checkout-sdk';
 
 export function getCustomItem(): CustomItem {

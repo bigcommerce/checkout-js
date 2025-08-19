@@ -1,8 +1,8 @@
-import { RequestError } from '@bigcommerce/checkout-sdk';
+import { type RequestError } from '@bigcommerce/checkout-sdk';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
-import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { createLocaleContext, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CustomError } from '@bigcommerce/checkout/payment-integration-api';
 import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 import { render, screen } from '@bigcommerce/checkout/test-utils';

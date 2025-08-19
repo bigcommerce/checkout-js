@@ -2,14 +2,14 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
-import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { createLocaleContext, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../../config/config.mock';
 
 import AccountInstrumentFieldset, {
-    AccountInstrumentFieldsetProps,
-    AccountInstrumentFieldsetValues,
+    type AccountInstrumentFieldsetProps,
+    type AccountInstrumentFieldsetValues,
 } from './AccountInstrumentFieldset';
 import { getInstruments } from './instruments.mock';
 import isAccountInstrument from './isAccountInstrument';

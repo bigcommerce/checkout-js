@@ -1,4 +1,4 @@
-import { CheckoutService, createCheckoutService, StripeShippingEvent } from '@bigcommerce/checkout-sdk';
+import { type CheckoutService, createCheckoutService, type StripeShippingEvent } from '@bigcommerce/checkout-sdk';
 import noop from 'lodash/noop';
 import React from 'react';
 
@@ -9,7 +9,7 @@ import { getCountries } from '../../geography/countries.mock';
 import { getConsignment } from '../consignment.mock';
 import { getShippingAddress } from '../shipping-addresses.mock';
 
-import StripeShippingAddress, { StripeShippingAddressProps } from './StripeShippingAddress';
+import StripeShippingAddress, { type StripeShippingAddressProps } from './StripeShippingAddress';
 
 describe('StripeShippingAddress Component', () => {
     let checkoutService: CheckoutService;

@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback } from 'react';
+import React, { type FunctionComponent, useCallback } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { FormField, TextInputIframeContainer } from '@bigcommerce/checkout/ui';

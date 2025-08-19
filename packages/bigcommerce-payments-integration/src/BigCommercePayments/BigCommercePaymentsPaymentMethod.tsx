@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { type FunctionComponent, useEffect } from 'react';
 
 import {
     AccountInstrumentFieldset,
@@ -6,8 +6,8 @@ import {
 } from '@bigcommerce/checkout/instrument-utils';
 import { TranslatedHtml } from '@bigcommerce/checkout/locale';
 import {
-    PaymentMethodProps,
-    PaymentMethodResolveId,
+    type PaymentMethodProps,
+    type PaymentMethodResolveId,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';

@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { useThemeContext } from '@bigcommerce/checkout/ui';

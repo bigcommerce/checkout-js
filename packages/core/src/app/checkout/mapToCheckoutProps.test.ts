@@ -1,11 +1,11 @@
 import {
-    CheckoutSelectors,
-    CheckoutService,
+    type CheckoutSelectors,
+    type CheckoutService,
     createCheckoutService,
-    CustomError,
+    type CustomError,
 } from '@bigcommerce/checkout-sdk';
 
-import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { type CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 
 import mapToCheckoutProps from './mapToCheckoutProps';
 

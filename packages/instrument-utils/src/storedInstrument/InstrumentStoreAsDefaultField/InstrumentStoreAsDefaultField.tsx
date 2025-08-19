@@ -1,4 +1,4 @@
-import React, { FunctionComponent, memo, useEffect, useMemo } from 'react';
+import React, { type FunctionComponent, memo, useEffect, useMemo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { usePaymentFormContext } from '@bigcommerce/checkout/payment-integration-api';

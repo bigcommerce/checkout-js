@@ -1,19 +1,19 @@
 import {
-    CheckoutSelectors,
-    EmbeddedCheckoutMessenger,
-    EmbeddedCheckoutMessengerOptions,
-    Order,
-    ShopperConfig,
-    StoreConfig,
+    type CheckoutSelectors,
+    type EmbeddedCheckoutMessenger,
+    type EmbeddedCheckoutMessengerOptions,
+    type Order,
+    type ShopperConfig,
+    type StoreConfig,
 } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import DOMPurify from 'dompurify';
-import React, { Component, lazy, ReactNode } from 'react';
+import React, { Component, lazy, type ReactNode } from 'react';
 
-import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
-import { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
+import { type AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
+import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { type CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 import { CartSummarySkeleton, LazyContainer, OrderConfirmationPageSkeleton } from '@bigcommerce/checkout/ui';
 
 import { withAnalytics } from '../analytics';
@@ -21,13 +21,13 @@ import { withCheckout } from '../checkout';
 import { ErrorModal } from '../common/error';
 import { isExperimentEnabled, retry } from '../common/utility';
 import { getPasswordRequirementsFromConfig } from '../customer';
-import { EmbeddedCheckoutStylesheet, isEmbedded } from '../embeddedCheckout';
+import { type EmbeddedCheckoutStylesheet, isEmbedded } from '../embeddedCheckout';
 import {
-    CreatedCustomer,
+    type CreatedCustomer,
     GuestSignUpForm,
     PasswordSavedSuccessAlert,
     SignedUpSuccessAlert,
-    SignUpFormValues,
+    type SignUpFormValues,
 } from '../guestSignup';
 import {
     AccountCreationFailedError,

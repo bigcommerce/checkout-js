@@ -1,6 +1,6 @@
 import {
-    CheckoutSelectors,
-    CheckoutService,
+    type CheckoutSelectors,
+    type CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
 import { Formik } from 'formik';
@@ -14,8 +14,8 @@ import { render, screen } from '@bigcommerce/checkout/test-utils';
 import { isAccountInstrument } from '../../guards';
 
 import AccountInstrumentFieldset, {
-    AccountInstrumentFieldsetProps,
-    AccountInstrumentFieldsetValues,
+    type AccountInstrumentFieldsetProps,
+    type AccountInstrumentFieldsetValues,
 } from './AccountInstrumentFieldset';
 
 describe('AccountInstrumentFieldset', () => {

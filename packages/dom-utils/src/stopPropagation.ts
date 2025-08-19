@@ -1,4 +1,4 @@
-import { SyntheticEvent } from 'react';
+import { type SyntheticEvent } from 'react';
 
 export default function stopPropagation<
     TFunc extends (event: TEvent, ...args: any[]) => any,

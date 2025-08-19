@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 export interface LegendProps extends React.HTMLAttributes<HTMLLegendElement> {
     hidden?: boolean;

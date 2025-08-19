@@ -1,11 +1,11 @@
 import '@testing-library/jest-dom';
-import { CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
+import { type CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { render, screen } from '@testing-library/react';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import { LocaleProvider } from '@bigcommerce/checkout/locale';
 
-import { PaymentsWithMandates, PaymentsWithMandatesProps } from './PaymentsWithMandates';
+import { PaymentsWithMandates, type PaymentsWithMandatesProps } from './PaymentsWithMandates';
 
 describe('PaymentsWithMandates', () => {
     let PaymentsWithMandatesTest: FunctionComponent<PaymentsWithMandatesProps>;

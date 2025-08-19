@@ -1,4 +1,4 @@
-import { AddressKeyMap } from './address';
+import { type AddressKeyMap } from './address';
 
 export const ADDRESS_FIELD_IDS: AddressKeyMap = {
     address1: 'addressLine1',

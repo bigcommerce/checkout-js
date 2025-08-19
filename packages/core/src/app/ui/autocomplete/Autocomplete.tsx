@@ -1,13 +1,13 @@
-import Downshift, { DownshiftState, StateChangeOptions } from 'downshift';
+import Downshift, { type DownshiftState, type StateChangeOptions } from 'downshift';
 import { includes, isNumber, noop } from 'lodash';
-import React, { Fragment, PureComponent, ReactChild, ReactNode } from 'react';
+import React, { Fragment, PureComponent, type ReactChild, type ReactNode } from 'react';
 
 import { ThemeContext } from '@bigcommerce/checkout/ui';
 
 import { Label } from '../form';
-import { Popover, PopoverList, PopoverListItem } from '../popover';
+import { Popover, PopoverList, type PopoverListItem } from '../popover';
 
-import AutocompleteItem from './autocomplete-item';
+import type AutocompleteItem from './autocomplete-item';
 
 export interface AutocompleteProps {
     initialValue?: string;

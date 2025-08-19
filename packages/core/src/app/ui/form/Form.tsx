@@ -1,9 +1,9 @@
 import { memoizeOne } from '@bigcommerce/memoize';
-import { Form as FormikForm, FormikFormProps } from 'formik';
+import { Form as FormikForm, type FormikFormProps } from 'formik';
 import { values } from 'lodash';
-import React, { createRef, FunctionComponent, memo, useCallback, useRef } from 'react';
+import React, { createRef, type FunctionComponent, memo, useCallback, useRef } from 'react';
 
-import { FormContextType, FormProvider } from '@bigcommerce/checkout/ui';
+import { type FormContextType, FormProvider } from '@bigcommerce/checkout/ui';
 
 export interface FormProps extends FormikFormProps {
     testId?: string;

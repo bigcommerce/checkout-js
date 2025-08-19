@@ -5,7 +5,7 @@ import React from 'react';
 import { fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
 
 import BlueSnapDirectSelectField, {
-    BlueSnapDirectSelectFieldProps,
+    type BlueSnapDirectSelectFieldProps,
 } from './BlueSnapDirectSelectField';
 
 describe('BlueSnapDirectSelectField', () => {

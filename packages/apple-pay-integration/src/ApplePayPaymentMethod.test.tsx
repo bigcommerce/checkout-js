@@ -1,7 +1,7 @@
 import { createCheckoutService, createLanguageService } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
-import { PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
+import { type PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
 import { render } from '@bigcommerce/checkout/test-utils';
 
 import ApplePayPaymentMethod from './ApplePayPaymentMethod';

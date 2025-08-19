@@ -4,7 +4,7 @@ import React from 'react';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 import { FormContext } from '@bigcommerce/checkout/ui';
 
-import FormFieldError, { FormFieldErrorProps } from './FormFieldError';
+import FormFieldError, { type FormFieldErrorProps } from './FormFieldError';
 
 jest.mock('formik', () => ({
     ...jest.requireActual('formik'),

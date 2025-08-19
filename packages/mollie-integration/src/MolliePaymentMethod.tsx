@@ -1,17 +1,23 @@
 import {
-    CardInstrument,
-    LegacyHostedFormOptions,
-    PaymentInitializeOptions,
+    type CardInstrument,
+    type LegacyHostedFormOptions,
+    type PaymentInitializeOptions,
 } from '@bigcommerce/checkout-sdk';
 import { compact, forIn, some } from 'lodash';
-import React, { FunctionComponent, ReactNode, useCallback, useContext, useState } from 'react';
+import React, {
+    type FunctionComponent,
+    type ReactNode,
+    useCallback,
+    useContext,
+    useState,
+} from 'react';
 
 import {
     getHostedInstrumentValidationSchema,
     HostedCreditCardValidation,
 } from '@bigcommerce/checkout/hosted-credit-card-integration';
 import {
-    HostedWidgetComponentProps,
+    type HostedWidgetComponentProps,
     HostedWidgetPaymentComponent,
 } from '@bigcommerce/checkout/hosted-widget-integration';
 import {
@@ -23,8 +29,8 @@ import {
 import { LocaleContext } from '@bigcommerce/checkout/locale';
 import {
     PaymentFormContext,
-    PaymentMethodProps,
-    PaymentMethodResolveId,
+    type PaymentMethodProps,
+    type PaymentMethodResolveId,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 

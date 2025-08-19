@@ -1,8 +1,8 @@
 import React, {
-    KeyboardEvent,
-    KeyboardEventHandler,
-    MouseEventHandler,
-    ReactNode,
+    type KeyboardEvent,
+    type KeyboardEventHandler,
+    type MouseEventHandler,
+    type ReactNode,
     useCallback,
     useEffect,
     useRef,

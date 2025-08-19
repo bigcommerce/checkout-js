@@ -1,4 +1,4 @@
-import { CardInstrumentFieldsetValues } from '@bigcommerce/checkout/payment-integration-api';
+import { type CardInstrumentFieldsetValues } from '@bigcommerce/checkout/payment-integration-api';
 
 export default interface CreditCardFieldsetValues {
     ccCustomerCode?: string;

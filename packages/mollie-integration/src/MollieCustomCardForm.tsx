@@ -1,4 +1,4 @@
-import { PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { type PaymentMethod } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import React from 'react';
 

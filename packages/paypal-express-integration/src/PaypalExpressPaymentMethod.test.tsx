@@ -1,15 +1,15 @@
 import {
-    CheckoutSelectors,
-    CheckoutService,
+    type CheckoutSelectors,
+    type CheckoutService,
     createCheckoutService,
-    LanguageService,
+    type LanguageService,
 } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import {
-    PaymentFormService,
+    type PaymentFormService,
     PaymentMethodId,
-    PaymentMethodProps,
+    type PaymentMethodProps,
 } from '@bigcommerce/checkout/payment-integration-api';
 import {
     getCart,
@@ -21,7 +21,7 @@ import {
 import { render } from '@bigcommerce/checkout/test-utils';
 
 import PaypalExpressPaymentMethod, {
-    PaypalExpressPaymentMethodProps,
+    type PaypalExpressPaymentMethodProps,
 } from './PaypalExpressPaymentMethod';
 
 describe('when using Paypal Express payment', () => {

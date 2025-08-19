@@ -1,26 +1,26 @@
 import {
-    Address,
-    Cart,
-    CheckoutParams,
-    CheckoutSelectors,
-    Consignment,
-    Country,
-    CustomerAddress,
-    CustomerRequestOptions,
-    FormField,
-    RequestOptions,
-    ShippingInitializeOptions,
-    ShippingRequestOptions,
+    type Address,
+    type Cart,
+    type CheckoutParams,
+    type CheckoutSelectors,
+    type Consignment,
+    type Country,
+    type CustomerAddress,
+    type CustomerRequestOptions,
+    type FormField,
+    type RequestOptions,
+    type ShippingInitializeOptions,
+    type ShippingRequestOptions,
 } from '@bigcommerce/checkout-sdk';
 import React, { useEffect } from 'react';
 
-import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
 import isUsingMultiShipping from './isUsingMultiShipping';
-import MultiShippingForm, { MultiShippingFormValues } from './MultiShippingForm';
+import MultiShippingForm, { type MultiShippingFormValues } from './MultiShippingForm';
 import MultiShippingGuestForm from './MultiShippingGuestForm';
-import SingleShippingForm, { SingleShippingFormValues } from './SingleShippingForm';
+import SingleShippingForm, { type SingleShippingFormValues } from './SingleShippingForm';
 
 export interface ShippingFormProps {
     addresses: CustomerAddress[];

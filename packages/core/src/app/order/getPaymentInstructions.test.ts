@@ -1,4 +1,4 @@
-import { Order } from '@bigcommerce/checkout-sdk';
+import { type Order } from '@bigcommerce/checkout-sdk';
 
 import getPaymentInstructions from './getPaymentInstructions';
 import { getGiftCertificateOrderPayment, getOrder } from './orders.mock';

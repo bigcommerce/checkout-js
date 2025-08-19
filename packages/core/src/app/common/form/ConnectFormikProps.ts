@@ -1,4 +1,4 @@
-import { FormikContextType } from 'formik';
+import { type FormikContextType } from 'formik';
 
 export default interface ConnectFormikProps<TValues> {
     formik: FormikContextType<TValues>;

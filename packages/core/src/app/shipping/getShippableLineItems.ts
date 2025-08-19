@@ -1,8 +1,8 @@
-import { Cart, Consignment, PhysicalItem } from '@bigcommerce/checkout-sdk';
+import { type Cart, type Consignment, type PhysicalItem } from '@bigcommerce/checkout-sdk';
 import { isNil, reduce } from 'lodash';
 
 import findConsignment from './findConsignment';
-import ShippableItem from './ShippableItem';
+import type ShippableItem from './ShippableItem';
 
 export default function getShippableLineItems(
     cart: Cart,

@@ -1,13 +1,13 @@
 import {
-    AccountInstrument,
-    AchInstrument,
-    BankInstrument,
-    PayPalInstrument,
+    type AccountInstrument,
+    type AchInstrument,
+    type BankInstrument,
+    type PayPalInstrument,
 } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
-import { FieldProps } from 'formik';
+import { type FieldProps } from 'formik';
 import { find, noop } from 'lodash';
-import React, { FunctionComponent, useCallback, useEffect, useRef } from 'react';
+import React, { type FunctionComponent, useCallback, useEffect, useRef } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import {

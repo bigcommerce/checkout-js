@@ -1,7 +1,7 @@
-import { PhysicalItem } from '@bigcommerce/checkout-sdk';
+import { type PhysicalItem } from '@bigcommerce/checkout-sdk';
 
 import getOrderSummaryItemImage from './getOrderSummaryItemImage';
-import { OrderSummaryItemProps } from './OrderSummaryItem';
+import { type OrderSummaryItemProps } from './OrderSummaryItem';
 
 function mapFromPhysical(item: PhysicalItem): OrderSummaryItemProps {
     return {

@@ -1,4 +1,8 @@
-import { ExtensionAction, ExtensionActionType, ExtensionState } from './ExtensionProvider';
+import {
+    type ExtensionAction,
+    ExtensionActionType,
+    type ExtensionState,
+} from './ExtensionProvider';
 
 export const extensionReducer = (
     state: ExtensionState,

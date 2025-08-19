@@ -1,9 +1,9 @@
-import { Address, Country, FormField } from '@bigcommerce/checkout-sdk';
-import { FormikProps, withFormik } from 'formik';
-import React, { FunctionComponent } from 'react';
+import { type Address, type Country, type FormField } from '@bigcommerce/checkout-sdk';
+import { type FormikProps, withFormik } from 'formik';
+import React, { type FunctionComponent } from 'react';
 import { lazy } from 'yup';
 
-import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import { Button, ButtonVariant } from '../ui/button';
@@ -12,7 +12,7 @@ import { Modal, ModalHeader } from '../ui/modal';
 
 import AddressForm from './AddressForm';
 import getAddressFormFieldsValidationSchema from './getAddressFormFieldsValidationSchema';
-import mapAddressToFormValues, { AddressFormValues } from './mapAddressToFormValues';
+import mapAddressToFormValues, { type AddressFormValues } from './mapAddressToFormValues';
 
 export interface AddressFormModalProps extends AddressFormProps {
     isOpen: boolean;

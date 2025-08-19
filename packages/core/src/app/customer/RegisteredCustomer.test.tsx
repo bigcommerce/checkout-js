@@ -1,25 +1,25 @@
 import '@testing-library/jest-dom';
 import {
-    Cart,
-    Checkout,
-    CheckoutSelectors,
-    CheckoutService,
+    type Cart,
+    type Checkout,
+    type CheckoutSelectors,
+    type CheckoutService,
     createCheckoutService,
-    StoreConfig,
+    type StoreConfig,
 } from '@bigcommerce/checkout-sdk';
 import faker from '@faker-js/faker';
 import userEvent from '@testing-library/user-event';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import { AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { createLocaleContext, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { getCart, getCheckout, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 import { render, screen, within } from '@bigcommerce/checkout/test-utils';
 
 import CheckoutStepType from '../checkout/CheckoutStepType';
 
-import Customer, { CustomerProps, WithCheckoutCustomerProps } from './Customer';
+import Customer, { type CustomerProps, type WithCheckoutCustomerProps } from './Customer';
 import CustomerViewType from './CustomerViewType';
 
 describe('Registered Customer', () => {

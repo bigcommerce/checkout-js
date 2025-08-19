@@ -1,22 +1,22 @@
 import {
-    BillingAddress,
-    Cart,
-    Checkout as CheckoutObject,
-    CheckoutService,
+    type BillingAddress,
+    type Cart,
+    type Checkout as CheckoutObject,
+    type CheckoutService,
     createCheckoutService,
     createEmbeddedCheckoutMessenger,
-    Customer as CustomerData,
-    EmbeddedCheckoutMessenger,
-    StoreConfig,
+    type Customer as CustomerData,
+    type EmbeddedCheckoutMessenger,
+    type StoreConfig,
 } from '@bigcommerce/checkout-sdk';
 import faker from '@faker-js/faker';
 import userEvent from '@testing-library/user-event';
 import { rest } from 'msw';
-import React, { act, FunctionComponent } from 'react';
+import React, { act, type FunctionComponent } from 'react';
 
 import {
-    AnalyticsContextProps,
-    AnalyticsEvents,
+    type AnalyticsContextProps,
+    type AnalyticsEvents,
     AnalyticsProviderMock,
 } from '@bigcommerce/checkout/analytics';
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
@@ -24,7 +24,7 @@ import {
     createLocaleContext,
     getLanguageService,
     LocaleContext,
-    LocaleContextType,
+    type LocaleContextType,
     LocaleProvider,
 } from '@bigcommerce/checkout/locale';
 import {
@@ -43,9 +43,9 @@ import { ThemeProvider } from '@bigcommerce/checkout/ui';
 
 import { getBillingAddress } from '../billing/billingAddresses.mock';
 import { getCart } from '../cart/carts.mock';
-import Checkout, { CheckoutProps } from '../checkout/Checkout';
+import Checkout, { type CheckoutProps } from '../checkout/Checkout';
 import { getCheckout } from '../checkout/checkouts.mock';
-import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
+import type CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import CheckoutStepType from '../checkout/CheckoutStepType';
 import { createErrorLogger } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
@@ -55,7 +55,7 @@ import {
 } from '../embeddedCheckout';
 import { PaymentMethodId } from '../payment/paymentMethod';
 
-import Customer, { CustomerProps, WithCheckoutCustomerProps } from './Customer';
+import Customer, { type CustomerProps, type WithCheckoutCustomerProps } from './Customer';
 import { getGuestCustomer } from './customers.mock';
 import CustomerViewType from './CustomerViewType';
 
@@ -381,6 +381,7 @@ describe('Customer Component', () => {
                 },
             },
         };
+
         checkout.setRequestHandler(
             rest.get(
                 '/api/storefront/checkout-settings',

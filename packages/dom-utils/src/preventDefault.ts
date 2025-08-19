@@ -1,4 +1,4 @@
-import { SyntheticEvent } from 'react';
+import { type SyntheticEvent } from 'react';
 
 export default function preventDefault<
     TFunc extends (event: TEvent, ...args: any[]) => any,

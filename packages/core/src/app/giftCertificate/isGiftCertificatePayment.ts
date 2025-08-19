@@ -1,7 +1,7 @@
 import {
-    CheckoutPayment,
-    GiftCertificateOrderPayment,
-    OrderPayment,
+    type CheckoutPayment,
+    type GiftCertificateOrderPayment,
+    type OrderPayment,
 } from '@bigcommerce/checkout-sdk';
 
 export default function isGiftCertificatePayment(

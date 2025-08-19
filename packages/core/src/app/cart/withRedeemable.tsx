@@ -1,8 +1,8 @@
-import React, { ComponentType, FunctionComponent } from 'react';
+import React, { type ComponentType, type FunctionComponent } from 'react';
 
-import { OrderSummaryProps, OrderSummarySubtotalsProps } from '../order';
+import { type OrderSummaryProps, type OrderSummarySubtotalsProps } from '../order';
 
-import { WithCheckoutCartSummaryProps } from './CartSummary';
+import { type WithCheckoutCartSummaryProps } from './CartSummary';
 import mapToOrderSummarySubtotalsProps from './mapToOrderSummarySubtotalsProps';
 import Redeemable from './Redeemable';
 

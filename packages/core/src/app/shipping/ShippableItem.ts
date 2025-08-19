@@ -1,4 +1,4 @@
-import { Consignment, PhysicalItem } from '@bigcommerce/checkout-sdk';
+import { type Consignment, type PhysicalItem } from '@bigcommerce/checkout-sdk';
 
 export default interface ShippableItem extends PhysicalItem {
     consignment?: Consignment;

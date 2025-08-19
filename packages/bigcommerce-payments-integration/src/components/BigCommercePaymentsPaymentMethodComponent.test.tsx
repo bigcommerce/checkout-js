@@ -1,14 +1,14 @@
 import {
-    AccountInstrument,
+    type AccountInstrument,
     createCheckoutService,
-    HostedInstrument,
-    LanguageService,
+    type HostedInstrument,
+    type LanguageService,
 } from '@bigcommerce/checkout-sdk';
 import { render } from '@testing-library/react';
 import { EventEmitter } from 'events';
 import React from 'react';
 
-import { PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
+import { type PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
 import { getPaymentFormServiceMock } from '@bigcommerce/checkout/test-mocks';
 
 import { getBigCommercePaymentsMethod } from '../mocks/paymentMethods.mock';

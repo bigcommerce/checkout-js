@@ -1,11 +1,11 @@
-import { ObjectSchema, ValidationError } from 'yup';
+import { type ObjectSchema, type ValidationError } from 'yup';
 
 import { getFormFields } from '../address/formField.mock';
 import { getShippingAddress } from '../shipping/shipping-addresses.mock';
 
-import { TranslateValidationErrorFunction } from './getCustomFormFieldsValidationSchema';
+import { type TranslateValidationErrorFunction } from './getCustomFormFieldsValidationSchema';
 import {
-    FormFieldValues,
+    type FormFieldValues,
     default as getFormFieldsValidationSchema,
 } from './getFormFieldsValidationSchema';
 

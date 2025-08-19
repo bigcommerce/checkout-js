@@ -1,4 +1,4 @@
-import { createCheckoutService, StripeShippingEvent } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, type StripeShippingEvent } from '@bigcommerce/checkout-sdk';
 import userEvent from '@testing-library/user-event';
 import React, { act } from 'react';
 

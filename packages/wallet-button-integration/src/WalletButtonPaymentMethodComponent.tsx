@@ -1,20 +1,20 @@
 import {
-    CheckoutSelectors,
-    CustomerRequestOptions,
-    LanguageService,
-    PaymentInitializeOptions,
-    PaymentMethod,
-    PaymentRequestOptions,
+    type CheckoutSelectors,
+    type CustomerRequestOptions,
+    type LanguageService,
+    type PaymentInitializeOptions,
+    type PaymentMethod,
+    type PaymentRequestOptions,
 } from '@bigcommerce/checkout-sdk';
 import { noop, some } from 'lodash';
-import React, { Component, ReactNode } from 'react';
+import React, { Component, type ReactNode } from 'react';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { SignOutLink } from '@bigcommerce/checkout/instrument-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import {
     getPaymentMethodName,
-    PaymentFormService,
+    type PaymentFormService,
 } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 

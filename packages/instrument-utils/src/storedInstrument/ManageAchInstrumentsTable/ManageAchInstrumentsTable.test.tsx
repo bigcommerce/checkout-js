@@ -6,14 +6,14 @@ import { create } from 'react-test-renderer';
 import {
     createLocaleContext,
     LocaleContext,
-    LocaleContextType,
+    type LocaleContextType,
 } from '@bigcommerce/checkout/locale';
 import { getInstruments, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
 import { isAchInstrument } from '../../guards';
 
 import ManageAchInstrumentsTable, {
-    ManageAchInstrumentsTableProps,
+    type ManageAchInstrumentsTableProps,
 } from './ManageAchInstrumentsTable';
 
 describe('ManageAchInstrumentsTable', () => {

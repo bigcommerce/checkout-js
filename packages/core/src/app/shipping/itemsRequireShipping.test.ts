@@ -1,4 +1,4 @@
-import { Cart, StoreConfig } from '@bigcommerce/checkout-sdk';
+import { type Cart, type StoreConfig } from '@bigcommerce/checkout-sdk';
 
 import { getCart } from '../cart/carts.mock';
 import { getCustomItem } from '../cart/lineItem.mock';

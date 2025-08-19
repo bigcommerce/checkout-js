@@ -1,6 +1,6 @@
-import { createLanguageService, LanguageService } from '@bigcommerce/checkout-sdk';
+import { createLanguageService, type LanguageService } from '@bigcommerce/checkout-sdk';
 
-import { CardInstrumentFieldsetValues } from '@bigcommerce/checkout/payment-integration-api';
+import { type CardInstrumentFieldsetValues } from '@bigcommerce/checkout/payment-integration-api';
 
 import getInstrumentValidationSchema from './getInstrumentValidationSchema';
 

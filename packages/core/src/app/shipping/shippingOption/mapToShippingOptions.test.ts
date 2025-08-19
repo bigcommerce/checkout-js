@@ -1,8 +1,8 @@
-import { Cart, CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
+import { type Cart, type CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
 
 import { getCart } from '../../cart/carts.mock';
 import { getPhysicalItem } from '../../cart/lineItem.mock';
-import { CheckoutContextProps } from '../../checkout';
+import { type CheckoutContextProps } from '../../checkout';
 import { getCheckout } from '../../checkout/checkouts.mock';
 import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';

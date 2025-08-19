@@ -1,4 +1,4 @@
-import { LanguageService } from '@bigcommerce/checkout-sdk';
+import { type LanguageService } from '@bigcommerce/checkout-sdk';
 
 import getTermsConditionsValidationSchema from './getTermsConditionsValidationSchema';
 

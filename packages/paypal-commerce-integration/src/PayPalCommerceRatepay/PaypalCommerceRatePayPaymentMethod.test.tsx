@@ -1,19 +1,19 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { createCheckoutService, LanguageService } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, type LanguageService } from '@bigcommerce/checkout-sdk';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { EventEmitter } from 'events';
 import { Formik } from 'formik';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import {
     createLocaleContext,
     LocaleContext,
-    LocaleContextType,
+    type LocaleContextType,
 } from '@bigcommerce/checkout/locale';
 import {
     PaymentFormContext,
-    PaymentFormService,
-    PaymentMethodProps,
+    type PaymentFormService,
+    type PaymentMethodProps,
 } from '@bigcommerce/checkout/payment-integration-api';
 import {
     getCheckout as getCheckoutMock,

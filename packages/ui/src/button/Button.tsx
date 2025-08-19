@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { ButtonHTMLAttributes, FunctionComponent } from 'react';
+import React, { type ButtonHTMLAttributes, type FunctionComponent } from 'react';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     isFullWidth?: boolean;

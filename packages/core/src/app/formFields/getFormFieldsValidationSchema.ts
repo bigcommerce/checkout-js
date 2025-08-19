@@ -1,8 +1,8 @@
 import { memoize } from '@bigcommerce/memoize';
-import { object, ObjectSchema, string, StringSchema } from 'yup';
+import { object, type ObjectSchema, string, type StringSchema } from 'yup';
 
 import getCustomFormFieldsValidationSchema, {
-    FormFieldsValidationSchemaOptions,
+    type FormFieldsValidationSchemaOptions,
 } from './getCustomFormFieldsValidationSchema';
 
 export const WHITELIST_REGEXP = /^[^<>]*$/;

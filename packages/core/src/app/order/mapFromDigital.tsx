@@ -1,10 +1,10 @@
-import { DigitalItem } from '@bigcommerce/checkout-sdk';
+import { type DigitalItem } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import getOrderSummaryItemImage from './getOrderSummaryItemImage';
-import { OrderSummaryItemOption, OrderSummaryItemProps } from './OrderSummaryItem';
+import { type OrderSummaryItemOption, type OrderSummaryItemProps } from './OrderSummaryItem';
 
 function mapFromDigital(item: DigitalItem): OrderSummaryItemProps {
     return {

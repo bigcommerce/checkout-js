@@ -1,4 +1,4 @@
-import { LineItem, LineItemOption } from "@bigcommerce/checkout-sdk";
+import { type LineItem, type LineItemOption } from "@bigcommerce/checkout-sdk";
 
 const generateHash = (values: string[]): string => {
   return btoa(encodeURIComponent(values.join('-')));

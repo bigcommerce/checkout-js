@@ -4,7 +4,7 @@ import { CHECKOUT_ROOT_NODE_ID } from '@bigcommerce/checkout/payment-integration
 import { CheckoutPageNodeObject } from '@bigcommerce/checkout/test-framework';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import CheckoutApp, { CheckoutAppProps } from './CheckoutApp';
+import CheckoutApp, { type CheckoutAppProps } from './CheckoutApp';
 import { getCheckout } from './checkouts.mock';
 
 describe('CheckoutApp', () => {

@@ -1,12 +1,12 @@
 import { createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import { LocaleProvider } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import TextFieldForm, { TextFieldFormProps } from './TextFieldForm';
+import TextFieldForm, { type TextFieldFormProps } from './TextFieldForm';
 
 describe('TextFieldForm', () => {
     let defaultProps: TextFieldFormProps;

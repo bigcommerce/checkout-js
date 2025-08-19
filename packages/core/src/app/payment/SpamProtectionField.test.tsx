@@ -1,12 +1,12 @@
-import { CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
+import { type CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
 import userEvent from '@testing-library/user-event';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import { LocaleProvider } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import SpamProtectionField, { SpamProtectionProps } from './SpamProtectionField';
+import SpamProtectionField, { type SpamProtectionProps } from './SpamProtectionField';
 
 describe('SpamProtectionField', () => {
     let checkoutService: CheckoutService;

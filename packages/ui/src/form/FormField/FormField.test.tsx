@@ -3,7 +3,7 @@ import React from 'react';
 
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import FormField, { FormFieldProps } from './FormField';
+import FormField, { type FormFieldProps } from './FormField';
 
 describe('FormField', () => {
     let defaultProps: FormFieldProps;

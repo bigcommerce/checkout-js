@@ -7,7 +7,7 @@ import {
     getStoreConfig,
 } from '@bigcommerce/checkout/test-mocks';
 
-import { isInstrumentFeatureAvailable, IsInstrumentFeatureAvailableState } from '.';
+import { isInstrumentFeatureAvailable, type IsInstrumentFeatureAvailableState } from '.';
 
 describe('isInstrumentFeatureAvailable()', () => {
     let state: IsInstrumentFeatureAvailableState;

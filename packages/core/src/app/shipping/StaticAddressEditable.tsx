@@ -1,12 +1,12 @@
 import {
-    Address,
-    CheckoutSelectors,
-    FormField,
-    ShippingInitializeOptions,
-    ShippingRequestOptions,
+    type Address,
+    type CheckoutSelectors,
+    type FormField,
+    type ShippingInitializeOptions,
+    type ShippingRequestOptions,
 } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { ReactElement, useEffect } from 'react';
+import React, { type ReactElement, useEffect } from 'react';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';

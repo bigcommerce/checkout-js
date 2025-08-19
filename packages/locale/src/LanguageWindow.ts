@@ -1,4 +1,4 @@
-import { LanguageConfig } from '@bigcommerce/checkout-sdk';
+import { type LanguageConfig } from '@bigcommerce/checkout-sdk';
 
 export default interface LanguageWindow {
     language: Pick<LanguageConfig, 'locale' | 'locales' | 'translations'>;

@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
 import createLocaleContext from './createLocaleContext';
-import LocaleContext, { LocaleContextType } from './LocaleContext';
-import withLanguage, { WithLanguageProps } from './withLanguage';
+import LocaleContext, { type LocaleContextType } from './LocaleContext';
+import withLanguage, { type WithLanguageProps } from './withLanguage';
 
 describe('withDate()', () => {
     let contextValue: LocaleContextType;

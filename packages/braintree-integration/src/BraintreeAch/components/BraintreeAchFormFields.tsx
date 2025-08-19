@@ -1,5 +1,5 @@
-import { LanguageService } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, useCallback } from 'react';
+import { type LanguageService } from '@bigcommerce/checkout-sdk';
+import React, { type FunctionComponent, useCallback } from 'react';
 
 import { useLocale } from '@bigcommerce/checkout/locale';
 import { usePaymentFormContext } from '@bigcommerce/checkout/payment-integration-api';

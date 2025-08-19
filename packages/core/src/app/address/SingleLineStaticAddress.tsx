@@ -1,11 +1,11 @@
-import { Address } from '@bigcommerce/checkout-sdk';
+import { type Address } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { isEmpty } from 'lodash';
 import React from "react";
 
 import { useThemeContext } from '@bigcommerce/checkout/ui';
 
-import AddressType from "./AddressType";
+import type AddressType from "./AddressType";
 
 export interface SingleLineStaticAddressProps {
     address: Address;

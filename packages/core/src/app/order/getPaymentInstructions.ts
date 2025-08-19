@@ -1,4 +1,4 @@
-import { GatewayOrderPayment, Order, OrderPayment } from '@bigcommerce/checkout-sdk';
+import { type GatewayOrderPayment, type Order, type OrderPayment } from '@bigcommerce/checkout-sdk';
 
 import { isGiftCertificatePayment } from '../giftCertificate';
 import { isStoreCreditPayment } from '../payment/storeCredit';

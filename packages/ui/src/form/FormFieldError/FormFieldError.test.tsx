@@ -7,7 +7,7 @@ import { render, screen } from '@bigcommerce/checkout/test-utils';
 import { BasicFormField } from '../BasicFormField';
 import { FormContext } from '../contexts';
 
-import FormFieldError, { FormFieldErrorProps } from './FormFieldError';
+import FormFieldError, { type FormFieldErrorProps } from './FormFieldError';
 
 describe('FormFieldError', () => {
     let defaultProps: FormFieldErrorProps;

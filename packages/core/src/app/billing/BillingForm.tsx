@@ -1,21 +1,21 @@
 import {
-    Address,
-    CheckoutSelectors,
-    Country,
-    Customer,
-    FormField,
+    type Address,
+    type CheckoutSelectors,
+    type Country,
+    type Customer,
+    type FormField,
 } from '@bigcommerce/checkout-sdk';
-import { FormikProps, withFormik } from 'formik';
-import React, { RefObject, useRef, useState } from 'react';
+import { type FormikProps, withFormik } from 'formik';
+import React, { type RefObject, useRef, useState } from 'react';
 import { lazy } from 'yup';
 
-import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { AddressFormSkeleton, LoadingOverlay, useThemeContext } from '@bigcommerce/checkout/ui';
 
 import {
     AddressForm,
-    AddressFormValues,
+    type AddressFormValues,
     AddressSelect,
     AddressType,
     getAddressFormFieldsValidationSchema,

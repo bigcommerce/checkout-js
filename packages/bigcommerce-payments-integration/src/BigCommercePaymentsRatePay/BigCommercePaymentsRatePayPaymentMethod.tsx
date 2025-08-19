@@ -1,13 +1,13 @@
-import { FormField } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, useCallback, useEffect, useMemo, useRef } from 'react';
+import { type FormField } from '@bigcommerce/checkout-sdk';
+import React, { type FunctionComponent, useCallback, useEffect, useMemo, useRef } from 'react';
 
 import {
-    PaymentMethodProps,
-    PaymentMethodResolveId,
+    type PaymentMethodProps,
+    type PaymentMethodResolveId,
     toResolvableComponent,
     CustomError,
-    SpecificError,
-    CountryData,
+    type SpecificError,
+    type CountryData,
     getCountryData,
 } from '@bigcommerce/checkout/payment-integration-api';
 import { DynamicFormField, DynamicFormFieldType, FormContext } from '@bigcommerce/checkout/ui';

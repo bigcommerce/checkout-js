@@ -1,14 +1,14 @@
-import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, useCallback, useMemo } from 'react';
-import { Omit } from 'utility-types';
+import { type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import React, { type FunctionComponent, useCallback, useMemo } from 'react';
+import { type Omit } from 'utility-types';
 
-import { masterpassFormatLocale, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { masterpassFormatLocale, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { type CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 
 import { withCheckout } from '../../checkout';
 
 import WalletButtonPaymentMethod, {
-    WalletButtonPaymentMethodProps,
+    type WalletButtonPaymentMethodProps,
 } from './WalletButtonPaymentMethod';
 
 export type MasterpassPaymentMethodProps = Omit<WalletButtonPaymentMethodProps, 'buttonId'>;

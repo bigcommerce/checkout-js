@@ -1,9 +1,9 @@
-import { CardInstrument } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, ReactNode } from 'react';
-import { Omit } from 'utility-types';
+import { type CardInstrument } from '@bigcommerce/checkout-sdk';
+import React, { type FunctionComponent, type ReactNode } from 'react';
+import { type Omit } from 'utility-types';
 
 import {
-    HostedWidgetComponentProps,
+    type HostedWidgetComponentProps,
     HostedWidgetPaymentComponent,
 } from '@bigcommerce/checkout/hosted-widget-integration';
 import {
@@ -11,7 +11,7 @@ import {
     isInstrumentCardNumberRequiredSelector,
 } from '@bigcommerce/checkout/instrument-utils';
 import {
-    PaymentMethodProps,
+    type PaymentMethodProps,
     usePaymentFormContext,
 } from '@bigcommerce/checkout/payment-integration-api';
 import { Modal } from '@bigcommerce/checkout/ui';

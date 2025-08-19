@@ -1,9 +1,9 @@
 import {
-    LineItemMap,
-    ShopperCurrency as ShopperCurrencyType,
-    StoreCurrency,
+    type LineItemMap,
+    type ShopperCurrency as ShopperCurrencyType,
+    type StoreCurrency,
 } from '@bigcommerce/checkout-sdk';
-import React, { cloneElement, FunctionComponent, isValidElement, ReactNode } from 'react';
+import React, { cloneElement, type FunctionComponent, isValidElement, type ReactNode } from 'react';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -17,7 +17,7 @@ import OrderModalSummarySubheader from './OrderModalSummarySubheader';
 import OrderSummaryItems from './OrderSummaryItems';
 import OrderSummaryPrice from './OrderSummaryPrice';
 import OrderSummarySection from './OrderSummarySection';
-import OrderSummarySubtotals, { OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
+import OrderSummarySubtotals, { type OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
 import OrderSummaryTotal from './OrderSummaryTotal';
 
 export interface OrderSummaryDrawerProps {

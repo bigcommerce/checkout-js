@@ -1,17 +1,17 @@
 import {
-    BillingAddress,
-    CheckoutSelectors,
-    CheckoutService,
+    type BillingAddress,
+    type CheckoutSelectors,
+    type CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import {
-    PaymentFormService,
-    PaymentMethodProps,
+    type PaymentFormService,
+    type PaymentMethodProps,
 } from '@bigcommerce/checkout/payment-integration-api';
 import {
     getBraintreeAchPaymentMethod,

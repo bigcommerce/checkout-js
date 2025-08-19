@@ -1,15 +1,15 @@
-import { FormField, LanguageService } from '@bigcommerce/checkout-sdk';
+import { type FormField, type LanguageService } from '@bigcommerce/checkout-sdk';
 import { memoize } from '@bigcommerce/memoize';
-import { object, ObjectSchema, string } from 'yup';
+import { object, type ObjectSchema, string } from 'yup';
 
 import {
-    CustomFormFieldValues,
+    type CustomFormFieldValues,
     getCustomFormFieldsValidationSchema,
-    TranslateValidationErrorFunction,
+    type TranslateValidationErrorFunction,
 } from '../formFields';
 
 import getEmailValidationSchema from './getEmailValidationSchema';
-import { PasswordRequirements } from './getPasswordRequirements';
+import { type PasswordRequirements } from './getPasswordRequirements';
 
 export type CreateAccountFormValues = {
     firstName: string;

@@ -1,4 +1,4 @@
-import { Checkout, Customer } from '@bigcommerce/checkout-sdk';
+import { type Checkout, type Customer } from '@bigcommerce/checkout-sdk';
 import { every } from 'lodash';
 
 import { SUPPORTED_METHODS } from './getSupportedMethods';

@@ -1,8 +1,8 @@
-import { FormField as FormFieldType } from '@bigcommerce/checkout-sdk';
+import { type FormField as FormFieldType } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
-import { FieldProps } from 'formik';
+import { type FieldProps } from 'formik';
 import { includes } from 'lodash';
-import React, { FunctionComponent, memo, ReactNode, useCallback, useMemo } from 'react';
+import React, { type FunctionComponent, memo, type ReactNode, useCallback, useMemo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 

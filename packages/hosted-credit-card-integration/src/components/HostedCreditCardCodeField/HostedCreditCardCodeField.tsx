@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback, useMemo } from 'react';
+import React, { type FunctionComponent, useCallback, useMemo } from 'react';
 
 import { CreditCardCodeTooltip } from '@bigcommerce/checkout/instrument-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';

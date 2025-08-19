@@ -1,8 +1,8 @@
-import { Address, Checkout } from '@bigcommerce/checkout-sdk';
+import { type Address, type Checkout } from '@bigcommerce/checkout-sdk';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { RequestHandler, rest } from 'msw';
-import { SetupServer, setupServer } from 'msw/node';
+import { type RequestHandler, rest } from 'msw';
+import { type SetupServer, setupServer } from 'msw/node';
 import { act } from 'react';
 
 import {

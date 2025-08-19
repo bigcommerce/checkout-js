@@ -1,10 +1,10 @@
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import ErrorBoundary from './ErrorBoundary';
-import ErrorLogger from './ErrorLogger';
+import type ErrorLogger from './ErrorLogger';
 
 describe('ErrorBoundary', () => {
     beforeEach(() => {

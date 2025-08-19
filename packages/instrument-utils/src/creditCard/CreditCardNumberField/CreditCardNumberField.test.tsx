@@ -6,9 +6,9 @@ import React from 'react';
 import {
     createLocaleContext,
     LocaleContext,
-    LocaleContextType,
+    type LocaleContextType,
 } from '@bigcommerce/checkout/locale';
-import { CreditCardFieldsetValues } from '@bigcommerce/checkout/payment-integration-api';
+import { type CreditCardFieldsetValues } from '@bigcommerce/checkout/payment-integration-api';
 import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 

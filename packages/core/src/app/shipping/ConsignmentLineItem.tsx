@@ -1,6 +1,6 @@
 import { ConsignmentLineItem } from "@bigcommerce/checkout-sdk";
 import classNames from "classnames";
-import React, { FunctionComponent, useState } from "react";
+import React, { type FunctionComponent, useState } from "react";
 
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -16,7 +16,7 @@ import { AssignItemFailedError, UnassignItemError } from "./errors";
 import { useDeallocateItem } from "./hooks/useDeallocateItem";
 import { useMultiShippingConsignmentItems } from "./hooks/useMultishippingConsignmentItems";
 import { ItemSplitTooltip } from "./ItemSplitTooltip";
-import { MultiShippingConsignmentData, MultiShippingTableItemWithType } from "./MultishippingType";
+import { type MultiShippingConsignmentData, type MultiShippingTableItemWithType } from "./MultishippingType";
 
 interface ConsignmentLineItemProps {
     consignmentNumber: number;

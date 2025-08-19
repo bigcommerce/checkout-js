@@ -11,7 +11,7 @@ import { getAddressFormFields } from '../address/formField.mock';
 import { getStoreConfig } from '../config/config.mock';
 
 import { getShippingAddress } from './shipping-addresses.mock';
-import SingleShippingForm, { SingleShippingFormProps } from './SingleShippingForm';
+import SingleShippingForm, { type SingleShippingFormProps } from './SingleShippingForm';
 
 describe('SingleShippingForm', () => {
     const checkoutService = createCheckoutService();

@@ -1,5 +1,5 @@
 import { ExtensionRegion } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
 import { TranslatedString } from '@bigcommerce/checkout/locale';

@@ -1,9 +1,9 @@
 import classNames from 'classnames';
-import { FieldProps, FormikProps, withFormik } from 'formik';
-import React, { FunctionComponent, memo, ReactNode, useCallback, useEffect } from 'react';
+import { type FieldProps, type FormikProps, withFormik } from 'formik';
+import React, { type FunctionComponent, memo, type ReactNode, useCallback, useEffect } from 'react';
 import { object, string } from 'yup';
 
-import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 import { PayPalFastlaneWatermark } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { useThemeContext } from '@bigcommerce/checkout/ui';

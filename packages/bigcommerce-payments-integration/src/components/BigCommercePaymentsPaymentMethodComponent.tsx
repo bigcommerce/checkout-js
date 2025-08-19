@@ -1,14 +1,14 @@
 import {
-    AccountInstrument,
-    HostedInstrument,
-    BigCommercePaymentsPaymentInitializeOptions,
-    BigCommercePaymentsAlternativeMethodsPaymentInitializeOptions,
-    BigCommercePaymentsCreditCardsPaymentInitializeOptions,
-    BigCommercePaymentsVenmoPaymentInitializeOptions,
+    type AccountInstrument,
+    type HostedInstrument,
+    type BigCommercePaymentsPaymentInitializeOptions,
+    type BigCommercePaymentsAlternativeMethodsPaymentInitializeOptions,
+    type BigCommercePaymentsCreditCardsPaymentInitializeOptions,
+    type BigCommercePaymentsVenmoPaymentInitializeOptions,
 } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, useCallback, useEffect, useRef } from 'react';
+import React, { type FunctionComponent, useCallback, useEffect, useRef } from 'react';
 
-import { PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
+import { type PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
 
 type BigCommercePaymentsProvidersPaymentInitializeOptions =
     BigCommercePaymentsAlternativeMethodsPaymentInitializeOptions &

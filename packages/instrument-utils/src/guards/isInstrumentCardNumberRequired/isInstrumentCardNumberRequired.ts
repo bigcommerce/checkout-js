@@ -1,4 +1,4 @@
-import { Instrument, LineItemMap, PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { type Instrument, type LineItemMap, type PaymentMethod } from '@bigcommerce/checkout-sdk';
 
 export interface IsInstrumentCardNumberRequiredState {
     lineItems: LineItemMap;

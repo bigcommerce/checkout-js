@@ -1,11 +1,11 @@
-import React, { FunctionComponent, useEffect, useRef } from 'react';
+import React, { type FunctionComponent, useEffect, useRef } from 'react';
 
 import { LocaleProvider } from '@bigcommerce/checkout/locale';
 import {
     CheckoutContext,
     PaymentFormContext,
-    PaymentMethodProps,
-    PaymentMethodResolveId,
+    type PaymentMethodProps,
+    type PaymentMethodResolveId,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 import { FormContext, LoadingOverlay } from '@bigcommerce/checkout/ui';

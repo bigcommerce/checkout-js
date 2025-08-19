@@ -1,4 +1,4 @@
-import { Consignment } from '@bigcommerce/checkout-sdk';
+import { type Consignment } from '@bigcommerce/checkout-sdk';
 import { find, includes } from 'lodash';
 
 export default function findConsignment(

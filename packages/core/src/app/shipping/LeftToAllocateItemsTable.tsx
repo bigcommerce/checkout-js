@@ -1,14 +1,14 @@
-import { FormikErrors } from "formik";
-import React, { FunctionComponent } from "react";
+import { type FormikErrors } from "formik";
+import React, { type FunctionComponent } from "react";
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { isMobileView as isMobileViewUI } from "../ui/responsive";
 
-import { AllocateItemsModalFormValues } from "./AllocateItemsModal";
+import { type AllocateItemsModalFormValues } from "./AllocateItemsModal";
 import LeftToAllocateItem from "./LeftToAllocateItem";
-import { MultiShippingTableItemWithType } from "./MultishippingType";
+import { type MultiShippingTableItemWithType } from "./MultishippingType";
 
 interface LeftToAllocateItemsTableProps {
     items: MultiShippingTableItemWithType[];

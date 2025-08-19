@@ -1,6 +1,6 @@
-import { Component, ReactNode } from 'react';
+import { Component, type ReactNode } from 'react';
 
-import ErrorLogger from './ErrorLogger';
+import type ErrorLogger from './ErrorLogger';
 
 export interface ErrorBoundaryProps {
     children?: ReactNode;

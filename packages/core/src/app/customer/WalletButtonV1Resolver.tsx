@@ -1,5 +1,5 @@
-import { CustomerInitializeOptions, CustomerRequestOptions } from "@bigcommerce/checkout-sdk";
-import React, { FunctionComponent, lazy, Suspense } from "react";
+import { type CustomerInitializeOptions, type CustomerRequestOptions } from "@bigcommerce/checkout-sdk";
+import React, { type FunctionComponent, lazy, Suspense } from "react";
 
 import CheckoutButton from "./CheckoutButton";
 

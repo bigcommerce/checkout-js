@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactNode } from 'react';
+import React, { type FunctionComponent, type ReactNode } from 'react';
 
 export interface LoadingSkeletonProps {
     isLoading?: boolean;

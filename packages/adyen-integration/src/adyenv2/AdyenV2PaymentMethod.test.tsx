@@ -1,25 +1,25 @@
 import {
-    CheckoutSelectors,
-    CheckoutService,
+    type CheckoutSelectors,
+    type CheckoutService,
     createCheckoutService,
     createLanguageService,
-    PaymentInitializeOptions,
-    PaymentMethod,
+    type PaymentInitializeOptions,
+    type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import {
     createLocaleContext,
     LocaleContext,
-    LocaleContextType,
+    type LocaleContextType,
 } from '@bigcommerce/checkout/locale';
 import {
     CheckoutProvider,
-    PaymentFormService,
-    PaymentMethodProps,
+    type PaymentFormService,
+    type PaymentMethodProps,
 } from '@bigcommerce/checkout/payment-integration-api';
 import {
     getPaymentFormServiceMock,

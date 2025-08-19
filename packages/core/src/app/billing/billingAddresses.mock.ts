@@ -1,4 +1,4 @@
-import { BillingAddress } from '@bigcommerce/checkout-sdk';
+import { type BillingAddress } from '@bigcommerce/checkout-sdk';
 
 export function getBillingAddress(): BillingAddress {
     return {

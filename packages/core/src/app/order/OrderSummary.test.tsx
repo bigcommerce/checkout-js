@@ -1,5 +1,5 @@
-import { createCheckoutService, Order } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent } from 'react';
+import { createCheckoutService, type Order } from '@bigcommerce/checkout-sdk';
+import React, { type FunctionComponent } from 'react';
 
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import { LocaleProvider } from '@bigcommerce/checkout/locale';
@@ -10,8 +10,8 @@ import { getStoreConfig } from '../config/config.mock';
 
 import mapToOrderSummarySubtotalsProps from './mapToOrderSummarySubtotalsProps';
 import { getOrder, getOrderWithShippingDiscount } from './orders.mock';
-import OrderSummary, { OrderSummaryProps } from './OrderSummary';
-import { OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
+import OrderSummary, { type OrderSummaryProps } from './OrderSummary';
+import { type OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
 import PrintLink from './PrintLink';
 
 let order: Order;

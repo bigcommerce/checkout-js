@@ -1,31 +1,31 @@
 import {
-    Address,
-    AddressRequestBody,
-    Cart,
-    CheckoutRequestBody,
-    CheckoutSelectors,
-    Consignment,
-    ConsignmentAssignmentRequestBody,
-    Country,
-    Customer,
-    CustomerRequestOptions,
-    FormField,
-    ShippingInitializeOptions,
-    ShippingRequestOptions,
+    type Address,
+    type AddressRequestBody,
+    type Cart,
+    type CheckoutRequestBody,
+    type CheckoutSelectors,
+    type Consignment,
+    type ConsignmentAssignmentRequestBody,
+    type Country,
+    type Customer,
+    type CustomerRequestOptions,
+    type FormField,
+    type ShippingInitializeOptions,
+    type ShippingRequestOptions,
 } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { Component, ReactNode } from 'react';
+import React, { Component, type ReactNode } from 'react';
 import { createSelector } from 'reselect';
 
-import { ExtensionContextProps, withExtension } from '@bigcommerce/checkout/checkout-extension';
+import { type ExtensionContextProps, withExtension } from '@bigcommerce/checkout/checkout-extension';
 import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { type CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 import { AddressFormSkeleton, ConfirmationModal } from '@bigcommerce/checkout/ui';
 
 import { isEqualAddress, mapAddressFromFormValues } from '../address';
 import { withCheckout } from '../checkout';
-import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
+import type CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import { EMPTY_ARRAY, isExperimentEnabled, isFloatingLabelEnabled } from '../common/utility';
 import getProviderWithCustomCheckout from '../payment/getProviderWithCustomCheckout';
 import { PaymentMethodId } from '../payment/paymentMethod';
@@ -33,10 +33,10 @@ import { PaymentMethodId } from '../payment/paymentMethod';
 import getShippableItemsCount from './getShippableItemsCount';
 import getShippingMethodId from './getShippingMethodId';
 import hasPromotionalItems from './hasPromotionalItems';
-import { MultiShippingFormValues } from './MultiShippingForm';
+import { type MultiShippingFormValues } from './MultiShippingForm';
 import ShippingForm from './ShippingForm';
 import ShippingHeader from './ShippingHeader';
-import { SingleShippingFormValues } from './SingleShippingForm';
+import { type SingleShippingFormValues } from './SingleShippingForm';
 import StripeShipping from './stripeUPE/StripeShipping';
 
 export interface ShippingProps {

@@ -1,6 +1,6 @@
-import { CustomItem } from '@bigcommerce/checkout-sdk';
+import { type CustomItem } from '@bigcommerce/checkout-sdk';
 
-import { OrderSummaryItemProps } from './OrderSummaryItem';
+import { type OrderSummaryItemProps } from './OrderSummaryItem';
 
 function mapFromCustom(item: CustomItem): OrderSummaryItemProps {
     return {

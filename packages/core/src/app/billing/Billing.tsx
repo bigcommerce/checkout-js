@@ -1,16 +1,16 @@
 import {
-    Address,
-    CheckoutRequestBody,
-    CheckoutSelectors,
-    Country,
-    Customer,
-    FormField,
+    type Address,
+    type CheckoutRequestBody,
+    type CheckoutSelectors,
+    type Country,
+    type Customer,
+    type FormField,
 } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { Component, ReactNode } from 'react';
+import React, { Component, type ReactNode } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { type CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 import { AddressFormSkeleton } from '@bigcommerce/checkout/ui';
 
 import { isEqualAddress, mapAddressFromFormValues } from '../address';
@@ -19,7 +19,7 @@ import { EMPTY_ARRAY, isExperimentEnabled, isFloatingLabelEnabled } from '../com
 import { getShippableItemsCount } from '../shipping';
 import { Legend } from '../ui/form';
 
-import BillingForm, { BillingFormValues } from './BillingForm';
+import BillingForm, { type BillingFormValues } from './BillingForm';
 import getBillingMethodId from './getBillingMethodId';
 
 export interface BillingProps {

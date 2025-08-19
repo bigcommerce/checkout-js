@@ -1,9 +1,9 @@
 import { noop } from 'lodash';
 import React, {
     createContext,
-    FunctionComponent,
+    type FunctionComponent,
     memo,
-    ReactNode,
+    type ReactNode,
     useCallback,
     useEffect,
     useMemo,
@@ -11,7 +11,7 @@ import React, {
 
 import { Accordion } from '@bigcommerce/checkout/ui';
 
-import { connectFormik, ConnectFormikProps } from '../../common/form';
+import { connectFormik, type ConnectFormikProps } from '../../common/form';
 
 export interface ChecklistProps {
     children?: ReactNode;

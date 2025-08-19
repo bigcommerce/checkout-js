@@ -1,6 +1,6 @@
-import React, { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 
-import AnalyticsContext, { AnalyticsEvents } from './AnalyticsContext';
+import AnalyticsContext, { type AnalyticsEvents } from './AnalyticsContext';
 
 interface AnalyticsProviderMockProps {
     children: ReactElement;

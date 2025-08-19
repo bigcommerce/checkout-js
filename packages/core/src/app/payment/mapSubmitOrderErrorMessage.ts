@@ -1,4 +1,4 @@
-import { TranslationData } from '@bigcommerce/checkout-sdk';
+import { type TranslationData } from '@bigcommerce/checkout-sdk';
 import { includes } from 'lodash';
 
 export default function mapSubmitOrderErrorMessage(

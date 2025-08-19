@@ -1,14 +1,14 @@
-import { FormField } from '@bigcommerce/checkout-sdk';
+import { type FormField } from '@bigcommerce/checkout-sdk';
 import { memoize } from '@bigcommerce/memoize';
 import {
     array,
-    ArraySchema,
+    type ArraySchema,
     date,
     number,
-    NumberSchema,
+    type NumberSchema,
     object,
-    ObjectSchema,
-    Schema,
+    type ObjectSchema,
+    type Schema,
     string,
 } from 'yup';
 

@@ -1,6 +1,6 @@
 import { ExtensionMessageType, ExtensionQueryType } from '@bigcommerce/checkout-sdk';
 
-import { QueryHandler, QueryHandlerProps } from './QueryHandler';
+import { type QueryHandler, type QueryHandlerProps } from './QueryHandler';
 
 export function createGetConsignmentHandler({
     checkoutService,

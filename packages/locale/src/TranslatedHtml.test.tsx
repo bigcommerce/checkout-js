@@ -4,7 +4,7 @@ import React from 'react';
 
 import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
-import LocaleContext, { LocaleContextType } from './LocaleContext';
+import LocaleContext, { type LocaleContextType } from './LocaleContext';
 import TranslatedHtml from './TranslatedHtml';
 
 describe('TranslatedHtml', () => {

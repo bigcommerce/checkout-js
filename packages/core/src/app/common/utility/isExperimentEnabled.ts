@@ -1,4 +1,4 @@
-import { CheckoutSettings } from '@bigcommerce/checkout-sdk';
+import { type CheckoutSettings } from '@bigcommerce/checkout-sdk';
 
 export default function isExperimentEnabled(
     checkoutSettings: CheckoutSettings | undefined,

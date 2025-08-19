@@ -1,18 +1,21 @@
 /* eslint-disable testing-library/no-container */
-import { PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { type PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import {
     createLocaleContext,
     LocaleContext,
-    LocaleContextType,
+    type LocaleContextType,
 } from '@bigcommerce/checkout/locale';
 import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 import { fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
 
-import MollieAPMCustomForm, { Issuer, MollieCustomCardFormProps } from './MollieAPMCustomForm';
+import MollieAPMCustomForm, {
+    type Issuer,
+    type MollieCustomCardFormProps,
+} from './MollieAPMCustomForm';
 
 describe('MollieAPMCustomForm', () => {
     let localeContext: LocaleContextType;

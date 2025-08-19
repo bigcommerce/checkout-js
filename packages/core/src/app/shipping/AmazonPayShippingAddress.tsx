@@ -1,8 +1,8 @@
-import { Address, ShippingInitializeOptions } from '@bigcommerce/checkout-sdk';
+import { type Address, type ShippingInitializeOptions } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
-import React, { FC, useCallback } from 'react';
+import React, { type FC, useCallback } from 'react';
 
-import { ShippingAddressProps } from './ShippingAddress';
+import { type ShippingAddressProps } from './ShippingAddress';
 import StaticAddressEditable from './StaticAddressEditable';
 
 interface AmazonPayShippingAddressProps extends ShippingAddressProps {

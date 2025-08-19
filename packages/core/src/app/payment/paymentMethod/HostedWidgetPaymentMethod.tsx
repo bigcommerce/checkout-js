@@ -1,31 +1,31 @@
 import {
-    AccountInstrument,
-    CardInstrument,
-    CheckoutSelectors,
-    Customer,
-    CustomerInitializeOptions,
-    CustomerRequestOptions,
-    Instrument,
-    PaymentInitializeOptions,
-    PaymentInstrument,
-    PaymentMethod,
-    PaymentRequestOptions,
-    StoreConfig,
+    type AccountInstrument,
+    type CardInstrument,
+    type CheckoutSelectors,
+    type Customer,
+    type CustomerInitializeOptions,
+    type CustomerRequestOptions,
+    type Instrument,
+    type PaymentInitializeOptions,
+    type PaymentInstrument,
+    type PaymentMethod,
+    type PaymentRequestOptions,
+    type StoreConfig,
 } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import classNames from 'classnames';
 import { find, noop, some } from 'lodash';
-import React, { Component, ReactNode } from 'react';
-import { ObjectSchema } from 'yup';
+import React, { Component, type ReactNode } from 'react';
+import { type ObjectSchema } from 'yup';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
-import { MapToPropsFactory } from '@bigcommerce/checkout/legacy-hoc';
+import { type MapToPropsFactory } from '@bigcommerce/checkout/legacy-hoc';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { CheckoutContextProps, PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import { type CheckoutContextProps, type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../../checkout';
-import { connectFormik, ConnectFormikProps } from '../../common/form';
+import { connectFormik, type ConnectFormikProps } from '../../common/form';
 import {
     AccountInstrumentFieldset,
     CardInstrumentFieldset,
@@ -36,7 +36,7 @@ import {
     isInstrumentFeatureAvailable,
 } from '../storedInstrument';
 import StoreInstrumentFieldset from '../StoreInstrumentFieldset';
-import withPayment, { WithPaymentProps } from '../withPayment';
+import withPayment, { type WithPaymentProps } from '../withPayment';
 
 import SignOutLink from './SignOutLink';
 

@@ -1,15 +1,15 @@
-import { AccountInstrument, createCheckoutService } from '@bigcommerce/checkout-sdk';
+import { type AccountInstrument, createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
 import {
     CheckoutContext,
     PaymentFormContext,
-    PaymentMethodProps,
+    type PaymentMethodProps,
 } from '@bigcommerce/checkout/payment-integration-api';
 import { getPaymentFormServiceMock, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 import { act } from '@bigcommerce/checkout/test-utils';

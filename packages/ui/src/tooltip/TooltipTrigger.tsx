@@ -1,6 +1,5 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { Placement } from '@popperjs/core';
-import React, { ReactElement, ReactEventHandler, ReactNode, useState } from 'react';
+import { type Placement } from '@popperjs/core';
+import React, { type ReactElement, type ReactEventHandler, type ReactNode, useState } from 'react';
 import { Manager, Popper, Reference } from 'react-popper';
 
 export interface TooltipTriggerProps {

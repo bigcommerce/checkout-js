@@ -1,4 +1,4 @@
-import CheckoutStepType from './CheckoutStepType';
+import type CheckoutStepType from './CheckoutStepType';
 
 export default interface CheckoutStepStatus {
     isActive: boolean;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Props } from './PPSDKPaymentMethod';
+import { type Props } from './PPSDKPaymentMethod';
 import { usePropsToOnMount } from './usePropsToOnMount';
 import { Wrapper } from './Wrapper';
 

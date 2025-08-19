@@ -1,8 +1,8 @@
-import { CheckoutService, PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, useCallback } from 'react';
+import { type CheckoutService, type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import React, { type FunctionComponent, useCallback } from 'react';
 
 import { HostedPaymentComponent } from '@bigcommerce/checkout/hosted-payment-integration';
-import { PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
+import { type PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
 
 const BoltClientPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     checkoutService,

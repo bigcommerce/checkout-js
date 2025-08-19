@@ -1,4 +1,4 @@
-import { EmbeddedCheckoutStyles } from '@bigcommerce/checkout-sdk';
+import { type EmbeddedCheckoutStyles } from '@bigcommerce/checkout-sdk';
 
 export const styles: EmbeddedCheckoutStyles = {
     body: {

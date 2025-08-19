@@ -1,7 +1,7 @@
 import {
-  ErrorLogger,
-  ErrorLoggerOptions,
-  ErrorLoggerServiceConfig,
+  type ErrorLogger,
+  type ErrorLoggerOptions,
+  type ErrorLoggerServiceConfig,
 } from '@bigcommerce/checkout/error-handling-utils';
 
 import ConsoleErrorLogger from './ConsoleErrorLogger';

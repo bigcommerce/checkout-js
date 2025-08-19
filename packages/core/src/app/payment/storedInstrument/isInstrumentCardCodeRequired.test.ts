@@ -1,4 +1,4 @@
-import { CardInstrument } from '@bigcommerce/checkout-sdk';
+import { type CardInstrument } from '@bigcommerce/checkout-sdk';
 import { merge } from 'lodash';
 
 import { getCart } from '../../cart/carts.mock';
@@ -7,7 +7,7 @@ import { getPaymentMethod } from '../payment-methods.mock';
 
 import { getCardInstrument } from './instruments.mock';
 import isInstrumentCardCodeRequired, {
-    IsInstrumentCardCodeRequiredState,
+    type IsInstrumentCardCodeRequiredState,
     PROVIDERS_WITHOUT_CARD_CODE,
 } from './isInstrumentCardCodeRequired';
 

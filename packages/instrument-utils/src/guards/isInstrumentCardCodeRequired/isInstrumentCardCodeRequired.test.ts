@@ -1,4 +1,4 @@
-import { CardInstrument } from '@bigcommerce/checkout-sdk';
+import { type CardInstrument } from '@bigcommerce/checkout-sdk';
 import { merge } from 'lodash';
 
 import {
@@ -11,7 +11,7 @@ import {
 
 import {
     isInstrumentCardCodeRequired,
-    IsInstrumentCardCodeRequiredState,
+    type IsInstrumentCardCodeRequiredState,
     PROVIDERS_WITHOUT_CARD_CODE,
 } from '.';
 

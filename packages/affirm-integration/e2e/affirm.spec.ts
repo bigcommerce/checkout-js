@@ -23,17 +23,14 @@ test.describe('Affirm', () => {
         );
 
         await page.route('**/api/storefront/payments/affirm?cartId=*', (route) => {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             void route.fulfill({ ...responseProps, body: affirmCart });
         });
 
         await page.route(/.*\/api\/storefront\/orders\/344.*/, (route) => {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             void route.fulfill({ ...responseProps, body: order });
         });
 
         await page.route('**/api/public/v1/orders/payments', (route) => {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             void route.fulfill({ ...responseProps, body: orderPayment });
         });
 

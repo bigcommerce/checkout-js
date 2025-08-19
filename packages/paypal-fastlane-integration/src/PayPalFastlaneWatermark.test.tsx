@@ -1,10 +1,10 @@
 import {
-    CheckoutSelectors,
-    CheckoutService,
+    type CheckoutSelectors,
+    type CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
 import { render, screen } from '@testing-library/react';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import { CheckoutContext, CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';

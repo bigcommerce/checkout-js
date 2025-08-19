@@ -1,20 +1,20 @@
 import {
-    CardInstrument,
-    Instrument,
-    LegacyHostedFormOptions,
-    PaymentMethod,
+    type CardInstrument,
+    type Instrument,
+    type LegacyHostedFormOptions,
+    type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
 import { compact, forIn } from 'lodash';
-import React, { ComponentType, FunctionComponent, ReactNode, useCallback, useState } from 'react';
-import { ObjectSchema } from 'yup';
+import React, { type ComponentType, type FunctionComponent, type ReactNode, useCallback, useState } from 'react';
+import { type ObjectSchema } from 'yup';
 
-import { MapToPropsFactory } from '@bigcommerce/checkout/legacy-hoc';
-import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { CheckoutContextProps, PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import { type MapToPropsFactory } from '@bigcommerce/checkout/legacy-hoc';
+import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { type CheckoutContextProps, type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 
 import { withCheckout } from '../../checkout';
-import { connectFormik, ConnectFormikProps } from '../../common/form';
-import { withForm, WithFormProps } from '../../ui/form';
+import { connectFormik, type ConnectFormikProps } from '../../common/form';
+import { withForm, type WithFormProps } from '../../ui/form';
 import {
     CreditCardCustomerCodeField,
     CreditCardInputStylesType,
@@ -27,10 +27,10 @@ import {
 } from '../storedInstrument';
 
 import getHostedCreditCardValidationSchema, {
-    HostedCreditCardValidationSchemaShape,
+    type HostedCreditCardValidationSchemaShape,
 } from './getHostedCreditCardValidationSchema';
 import getHostedInstrumentValidationSchema, {
-    HostedInstrumentValidationSchemaShape,
+    type HostedInstrumentValidationSchemaShape,
 } from './getHostedInstrumentValidationSchema';
 import HostedCreditCardFieldset from './HostedCreditCardFieldset';
 import HostedCreditCardValidation from './HostedCreditCardValidation';

@@ -1,9 +1,9 @@
-import { CheckoutSelectors } from '@bigcommerce/checkout-sdk';
+import { type CheckoutSelectors } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { Component, MouseEvent, ReactNode } from 'react';
+import React, { Component, type MouseEvent, type ReactNode } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { type CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../checkout';

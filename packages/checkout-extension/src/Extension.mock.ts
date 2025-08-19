@@ -1,4 +1,4 @@
-import { Extension, ExtensionRegion, ExtensionType } from '@bigcommerce/checkout-sdk';
+import { type Extension, ExtensionRegion, ExtensionType } from '@bigcommerce/checkout-sdk';
 
 export function getExtensions(): Extension[] {
     return [

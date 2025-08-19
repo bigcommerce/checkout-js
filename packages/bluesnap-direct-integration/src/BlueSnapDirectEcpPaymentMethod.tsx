@@ -1,12 +1,12 @@
-import React, { FunctionComponent, useCallback, useEffect, useState } from 'react';
+import React, { type FunctionComponent, useCallback, useEffect, useState } from 'react';
 
 import {
     AccountInstrumentFieldset,
     StoreInstrumentFieldset,
 } from '@bigcommerce/checkout/instrument-utils';
 import {
-    PaymentMethodProps,
-    PaymentMethodResolveId,
+    type PaymentMethodProps,
+    type PaymentMethodResolveId,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 import { CheckboxFormField, Fieldset, Legend, LoadingOverlay } from '@bigcommerce/checkout/ui';

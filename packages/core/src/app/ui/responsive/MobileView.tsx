@@ -1,4 +1,4 @@
-import React, { FunctionComponent, memo } from 'react';
+import React, { type FunctionComponent, memo } from 'react';
 
 import ViewPicker from './ViewPicker';
 

@@ -1,4 +1,4 @@
-import React, { Fragment, FunctionComponent } from 'react';
+import React, { Fragment, type FunctionComponent } from 'react';
 
 const MultiLineText: FunctionComponent<{ children: string }> = ({ children }) => (
     <>

@@ -1,12 +1,12 @@
 import {
-    CheckoutSelectors,
-    CheckoutService,
+    type CheckoutSelectors,
+    type CheckoutService,
     createCheckoutService,
     createLanguageService,
 } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
-import { CheckoutButtonProps } from '@bigcommerce/checkout/payment-integration-api';
+import { type CheckoutButtonProps } from '@bigcommerce/checkout/payment-integration-api';
 import { render } from '@bigcommerce/checkout/test-utils';
 
 import BigcommercePaymentsPayLaterButton from './BigcommercePaymentsPayLaterButton';

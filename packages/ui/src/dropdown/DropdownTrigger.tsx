@@ -1,6 +1,11 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { Placement } from '@popperjs/core';
-import React, { MouseEventHandler, ReactNode, useCallback, useEffect, useState } from 'react';
+import { type Placement } from '@popperjs/core';
+import React, {
+    type MouseEventHandler,
+    type ReactNode,
+    useCallback,
+    useEffect,
+    useState,
+} from 'react';
 import { Manager, Popper, Reference } from 'react-popper';
 
 import {

@@ -1,16 +1,16 @@
 import { Formik } from 'formik';
 import { noop } from 'lodash';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import {
     createLocaleContext,
     LocaleContext,
-    LocaleContextType,
+    type LocaleContextType,
 } from '@bigcommerce/checkout/locale';
 import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import { HostedCreditCardValidation, HostedCreditCardValidationProps } from '.';
+import { HostedCreditCardValidation, type HostedCreditCardValidationProps } from '.';
 
 describe('HostedCreditCardValidation', () => {
     let HostedCreditCardValidationTest: FunctionComponent<HostedCreditCardValidationProps>;

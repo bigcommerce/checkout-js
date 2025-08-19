@@ -1,4 +1,4 @@
-import { Fee } from "@bigcommerce/checkout-sdk";
+import { type Fee } from "@bigcommerce/checkout-sdk";
 
 import isOrderFee from "./isOrderFee";
 import { getOrderFee } from "./orders.mock";

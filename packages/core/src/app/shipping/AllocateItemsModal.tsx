@@ -1,10 +1,10 @@
-import { Address, ConsignmentLineItem } from "@bigcommerce/checkout-sdk";
-import { FormikProps } from "formik";
-import React, { FunctionComponent, useMemo } from "react";
+import { type Address, type ConsignmentLineItem } from "@bigcommerce/checkout-sdk";
+import { type FormikProps } from "formik";
+import React, { type FunctionComponent, useMemo } from "react";
 import { number, object } from "yup";
 
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
-import { TranslatedString, withLanguage, WithLanguageProps } from "@bigcommerce/checkout/locale";
+import { TranslatedString, withLanguage, type WithLanguageProps } from "@bigcommerce/checkout/locale";
 import { Alert, AlertType, ButtonVariant, useThemeContext } from "@bigcommerce/checkout/ui";
 
 import { getAddressContent } from "../address/SingleLineStaticAddress";
@@ -16,7 +16,7 @@ import { Modal, ModalHeader } from "../ui/modal";
 import AllocatedItemsList from "./AllocatedItemsList";
 import { ItemSplitTooltip } from "./ItemSplitTooltip";
 import LeftToAllocateItemsTable from "./LeftToAllocateItemsTable";
-import { LineItemType, MultiShippingTableData, MultiShippingTableItemWithType } from "./MultishippingType";
+import { LineItemType, type MultiShippingTableData, type MultiShippingTableItemWithType } from "./MultishippingType";
 
 export interface AllocateItemsModalFormValues {
     [key: string]: number;

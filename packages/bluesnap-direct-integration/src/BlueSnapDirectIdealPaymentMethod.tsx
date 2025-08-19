@@ -1,8 +1,8 @@
-import React, { FunctionComponent, useCallback, useEffect } from 'react';
+import React, { type FunctionComponent, useCallback, useEffect } from 'react';
 
 import {
-    PaymentMethodProps,
-    PaymentMethodResolveId,
+    type PaymentMethodProps,
+    type PaymentMethodResolveId,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 import { Fieldset, Legend } from '@bigcommerce/checkout/ui';

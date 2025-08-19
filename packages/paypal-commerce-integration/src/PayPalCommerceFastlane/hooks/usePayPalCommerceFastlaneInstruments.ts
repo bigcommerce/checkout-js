@@ -1,4 +1,4 @@
-import { CardInstrument } from '@bigcommerce/checkout-sdk';
+import { type CardInstrument } from '@bigcommerce/checkout-sdk';
 import { useState } from 'react';
 
 import { useCheckout, usePaymentFormContext } from '@bigcommerce/checkout/payment-integration-api';

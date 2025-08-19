@@ -1,10 +1,10 @@
-import React, { FunctionComponent, useMemo } from 'react';
+import React, { type FunctionComponent, useMemo } from 'react';
 
 import { HostedPaymentComponent } from '@bigcommerce/checkout/hosted-payment-integration';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import {
-    PaymentMethodProps,
-    PaymentMethodResolveId,
+    type PaymentMethodProps,
+    type PaymentMethodResolveId,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 

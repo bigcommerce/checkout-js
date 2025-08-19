@@ -1,7 +1,7 @@
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { type FunctionComponent, useEffect } from 'react';
 
 import { usePayPalCommerceFastlaneInstruments } from '../hooks/usePayPalCommerceFastlaneInstruments';
-import { PayPalFastlaneCardComponentRef } from '../PayPalCommerceFastlanePaymentMethod';
+import { type PayPalFastlaneCardComponentRef } from '../PayPalCommerceFastlanePaymentMethod';
 
 import PayPalCommerceFastlaneCreditCardForm from './PayPalCommerceFastlaneCreditCardForm';
 import PayPalCommerceFastlaneInstrumentsForm from './PayPalCommerceFastlaneInstrumentsForm';

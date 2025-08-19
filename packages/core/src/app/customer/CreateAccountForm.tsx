@@ -1,24 +1,23 @@
 /* istanbul ignore file */
 
 // TODO: CHECKOUT-9010 Cover 'Customer registration failure due to using an existing email' in functional tests repo
-import { FormField } from '@bigcommerce/checkout-sdk';
+import { type FormField } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
-import { FormikProps, withFormik } from 'formik';
+import { type FormikProps, withFormik } from 'formik';
 import { noop } from 'lodash';
-import React, { FunctionComponent, useMemo } from 'react';
+import React, { type FunctionComponent, useMemo } from 'react';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
-import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { useThemeContext } from '@bigcommerce/checkout/ui';
+import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { DynamicFormField , useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { isRequestError } from '../common/error';
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
-import { DynamicFormField } from '@bigcommerce/checkout/ui';
 import { Fieldset, Form } from '../ui/form';
 
 import getCreateCustomerValidationSchema, {
-    CreateAccountFormValues,
+    type CreateAccountFormValues,
 } from './getCreateCustomerValidationSchema';
 import getPasswordRequirements from './getPasswordRequirements';
 

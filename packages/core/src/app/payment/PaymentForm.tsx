@@ -1,12 +1,12 @@
-import { ExtensionRegion, PaymentMethod } from '@bigcommerce/checkout-sdk';
-import { FormikProps, FormikState, withFormik, WithFormikConfig } from 'formik';
+import { ExtensionRegion, type PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { type FormikProps, type FormikState, withFormik, type WithFormikConfig } from 'formik';
 import { isNil, noop, omitBy } from 'lodash';
-import React, { FunctionComponent, memo, useCallback, useContext, useMemo } from 'react';
-import { ObjectSchema } from 'yup';
+import React, { type FunctionComponent, memo, useCallback, useContext, useMemo } from 'react';
+import { type ObjectSchema } from 'yup';
 
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
-import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { FormContext } from '@bigcommerce/checkout/ui';
 
 import { TermsConditions } from '../termsConditions';

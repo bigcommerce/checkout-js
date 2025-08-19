@@ -1,8 +1,8 @@
 import {
-    CheckoutSelectors,
+    type CheckoutSelectors,
     createCheckoutService,
     createLanguageService,
-    PaymentMethod,
+    type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
 import { renderHook } from '@testing-library/react';
 

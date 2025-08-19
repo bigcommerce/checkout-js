@@ -5,7 +5,7 @@ import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { MOBILE_MAX_WIDTH } from '../ui/responsive';
 
-import CheckoutStep, { CheckoutStepProps } from './CheckoutStep';
+import CheckoutStep, { type CheckoutStepProps } from './CheckoutStep';
 import CheckoutStepType from './CheckoutStepType';
 
 jest.useFakeTimers({ legacyFakeTimers: true });

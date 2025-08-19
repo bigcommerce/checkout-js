@@ -1,10 +1,10 @@
-import { Order } from '@bigcommerce/checkout-sdk';
+import { type Order } from '@bigcommerce/checkout-sdk';
 
 import { mapFromPayments } from '../giftCertificate';
 
 import getOrderShippingCostAfterAutomaticDiscount from './getOrderShippingCostAfterAutomaticDiscount';
 import getStoreCreditAmount from './getStoreCreditAmount';
-import { OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
+import { type OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
 
 export default function mapToOrderSummarySubtotalsProps({
     baseAmount,

@@ -1,4 +1,4 @@
-import { StripeAppearanceOptions, StripeCustomFont } from '@bigcommerce/checkout-sdk';
+import { type StripeAppearanceOptions, type StripeCustomFont } from '@bigcommerce/checkout-sdk';
 import { isEmpty } from 'lodash';
 
 import { getAppliedStyles } from '@bigcommerce/checkout/dom-utils';

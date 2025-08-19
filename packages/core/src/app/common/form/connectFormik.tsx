@@ -1,8 +1,8 @@
 import { connect } from 'formik';
-import React, { ComponentType, FunctionComponent, memo } from 'react';
+import React, { type ComponentType, type FunctionComponent, memo } from 'react';
 import shallowEqual from 'shallowequal';
 
-import ConnectFormikProps from './ConnectFormikProps';
+import type ConnectFormikProps from './ConnectFormikProps';
 
 export default function connectFormik<TProps extends ConnectFormikProps<TValues>, TValues = any>(
     OriginalComponent: ComponentType<TProps>,

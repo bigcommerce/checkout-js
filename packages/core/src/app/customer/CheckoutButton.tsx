@@ -1,6 +1,6 @@
-import { CustomerInitializeOptions, CustomerRequestOptions } from '@bigcommerce/checkout-sdk';
+import { type CustomerInitializeOptions, type CustomerRequestOptions } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { ReactElement, useEffect } from 'react';
+import React, { type ReactElement, useEffect } from 'react';
 
 const WALLET_BUTTON_HEIGHT = 36;
 

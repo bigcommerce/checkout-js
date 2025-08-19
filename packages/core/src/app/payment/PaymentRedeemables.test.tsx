@@ -1,4 +1,4 @@
-import { CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
+import { type CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';

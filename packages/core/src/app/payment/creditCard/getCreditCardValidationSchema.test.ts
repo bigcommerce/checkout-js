@@ -1,6 +1,6 @@
-import { createLanguageService, LanguageService } from '@bigcommerce/checkout-sdk';
+import { createLanguageService, type LanguageService } from '@bigcommerce/checkout-sdk';
 
-import { CreditCardFieldsetValues } from '@bigcommerce/checkout/payment-integration-api';
+import { type CreditCardFieldsetValues } from '@bigcommerce/checkout/payment-integration-api';
 
 import getCreditCardValidationSchema from './getCreditCardValidationSchema';
 

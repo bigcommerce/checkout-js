@@ -5,7 +5,7 @@ import {
     ExtensionRegion,
 } from '@bigcommerce/checkout-sdk';
 
-import { ErrorLevelType, ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
+import { ErrorLevelType, type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { getCart, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
 import { getExtensions } from './Extension.mock';

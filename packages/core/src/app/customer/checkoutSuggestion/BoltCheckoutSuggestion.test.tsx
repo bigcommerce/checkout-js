@@ -1,12 +1,12 @@
 import { createCheckoutService } from '@bigcommerce/checkout-sdk';
 import userEvent from '@testing-library/user-event';
-import React, { act, FunctionComponent } from 'react';
+import React, { act, type FunctionComponent } from 'react';
 
-import { AnalyticsEvents, AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
+import { type AnalyticsEvents, AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
 import { LocaleProvider } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import BoltCheckoutSuggestion, { BoltCheckoutSuggestionProps } from './BoltCheckoutSuggestion';
+import BoltCheckoutSuggestion, { type BoltCheckoutSuggestionProps } from './BoltCheckoutSuggestion';
 
 describe('BoltCheckoutSuggestion', () => {
     let defaultProps: BoltCheckoutSuggestionProps;

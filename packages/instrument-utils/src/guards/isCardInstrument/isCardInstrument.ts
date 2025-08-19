@@ -1,4 +1,4 @@
-import { CardInstrument, PaymentInstrument } from '@bigcommerce/checkout-sdk';
+import { type CardInstrument, type PaymentInstrument } from '@bigcommerce/checkout-sdk';
 
 export function isCardInstrument(instrument?: PaymentInstrument): instrument is CardInstrument {
     return instrument !== undefined && instrument.type === 'card';

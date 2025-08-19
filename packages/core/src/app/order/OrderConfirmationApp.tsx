@@ -1,11 +1,11 @@
 import { createCheckoutService, createEmbeddedCheckoutMessenger } from '@bigcommerce/checkout-sdk';
 import type { BrowserOptions } from '@sentry/browser';
-import React, { Component, ReactNode } from 'react';
+import React, { Component, type ReactNode } from 'react';
 import ReactModal from 'react-modal';
 
 import { AnalyticsProvider } from '@bigcommerce/checkout/analytics';
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
-import { ErrorBoundary, ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
+import { ErrorBoundary, type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { ThemeProvider } from '@bigcommerce/checkout/ui';
@@ -14,7 +14,7 @@ import '../../scss/App.scss';
 
 import { createErrorLogger } from '../common/error';
 import { createEmbeddedCheckoutStylesheet } from '../embeddedCheckout';
-import { AccountService, CreatedCustomer, SignUpFormValues } from '../guestSignup';
+import { AccountService, type CreatedCustomer, type SignUpFormValues } from '../guestSignup';
 
 import OrderConfirmation from './OrderConfirmation';
 

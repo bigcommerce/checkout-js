@@ -1,4 +1,4 @@
-import { LineItem } from '@bigcommerce/checkout-sdk';
+import { type LineItem } from '@bigcommerce/checkout-sdk';
 import { reduce } from 'lodash';
 
 export default function getLineItemsCount(lineItems: LineItem[]): number {

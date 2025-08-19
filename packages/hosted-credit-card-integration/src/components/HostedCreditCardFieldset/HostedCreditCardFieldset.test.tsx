@@ -1,16 +1,16 @@
 import { Field, Formik } from 'formik';
 import { noop } from 'lodash';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import {
     createLocaleContext,
     LocaleContext,
-    LocaleContextType,
+    type LocaleContextType,
 } from '@bigcommerce/checkout/locale';
 import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import { HostedCreditCardFieldset, HostedCreditCardFieldsetProps } from '.';
+import { HostedCreditCardFieldset, type HostedCreditCardFieldsetProps } from '.';
 
 describe('HostedCreditCardFieldset', () => {
     let defaultProps: HostedCreditCardFieldsetProps;

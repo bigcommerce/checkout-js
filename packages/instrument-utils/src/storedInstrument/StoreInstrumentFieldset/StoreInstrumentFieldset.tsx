@@ -1,8 +1,8 @@
-import { PaymentInstrument } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent } from 'react';
+import { type PaymentInstrument } from '@bigcommerce/checkout-sdk';
+import React, { type FunctionComponent } from 'react';
 
 import {
-    PaymentFormService,
+    type PaymentFormService,
     usePaymentFormContext,
 } from '@bigcommerce/checkout/payment-integration-api';
 import { Fieldset } from '@bigcommerce/checkout/ui';

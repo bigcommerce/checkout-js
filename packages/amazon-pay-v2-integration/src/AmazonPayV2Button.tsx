@@ -1,10 +1,10 @@
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { type FunctionComponent, useEffect } from 'react';
 
 import { CheckoutButton } from '@bigcommerce/checkout/checkout-button-integration';
 import { isHTMLElement } from '@bigcommerce/checkout/instrument-utils';
 import {
-    CheckoutButtonProps,
-    CheckoutButtonResolveId,
+    type CheckoutButtonProps,
+    type CheckoutButtonResolveId,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 

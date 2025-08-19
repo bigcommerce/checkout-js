@@ -1,18 +1,18 @@
 import { fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Field, FieldProps, Formik } from 'formik';
+import { Field, type FieldProps, Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
-import { Omit } from 'utility-types';
+import { type Omit } from 'utility-types';
 
-import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { createLocaleContext, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/locale';
 import { getYear } from '@bigcommerce/checkout/test-mocks';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../../config/config.mock';
 
 import { getCardInstrument, getInstruments } from './instruments.mock';
-import InstrumentSelect, { InstrumentSelectProps } from './InstrumentSelect';
+import InstrumentSelect, { type InstrumentSelectProps } from './InstrumentSelect';
 import isCardInstrument from './isCardInstrument';
 
 describe('InstrumentSelect', () => {

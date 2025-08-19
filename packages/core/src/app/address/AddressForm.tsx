@@ -1,15 +1,15 @@
-import { Address, Country, FormField } from '@bigcommerce/checkout-sdk';
+import { type Address, type Country, type FormField } from '@bigcommerce/checkout-sdk';
 import { memoize } from '@bigcommerce/memoize';
 import { forIn, noop } from 'lodash';
-import React, { Component, createRef, ReactNode, RefObject } from 'react';
+import React, { Component, createRef, type ReactNode, type RefObject } from 'react';
 
-import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { DynamicFormField, DynamicFormFieldType, ThemeContext } from '@bigcommerce/checkout/ui';
 
-import { AutocompleteItem } from '../ui/autocomplete';
+import { type AutocompleteItem } from '../ui/autocomplete';
 import { CheckboxFormField, Fieldset } from '../ui/form';
 
-import { AddressKeyMap } from './address';
+import { type AddressKeyMap } from './address';
 import {
     getAddressFormFieldInputId,
     getAddressFormFieldLegacyName,

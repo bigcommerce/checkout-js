@@ -1,4 +1,4 @@
-import { CardInstrument } from '@bigcommerce/checkout-sdk';
+import { type CardInstrument } from '@bigcommerce/checkout-sdk';
 
 import { assertIsCardInstrument, isCardInstrument } from '.';
 

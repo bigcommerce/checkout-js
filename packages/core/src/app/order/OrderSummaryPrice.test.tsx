@@ -1,5 +1,5 @@
 import { noop } from 'lodash';
-import React, { ReactNode } from 'react';
+import React, { type ReactNode } from 'react';
 
 import * as paymentIntegrationApi from '@bigcommerce/checkout/payment-integration-api';
 import { fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
@@ -12,7 +12,7 @@ jest.mock('../currency', () => ({
     ShopperCurrency: ({ amount }: {amount: number}) => <div data-test="ShopperCurrency">{amount}</div>
 }));
 
-import OrderSummaryPrice, { OrderSummaryPriceProps } from './OrderSummaryPrice';
+import OrderSummaryPrice, { type OrderSummaryPriceProps } from './OrderSummaryPrice';
 
 describe('OrderSummaryPrice', () => {
     const useCheckoutMock = (isSubmittingOrder: boolean) => {

@@ -1,4 +1,4 @@
-import { EmbeddedCheckoutStyles } from '@bigcommerce/checkout-sdk';
+import { type EmbeddedCheckoutStyles } from '@bigcommerce/checkout-sdk';
 
 import { toCSSRule } from '../common/dom';
 

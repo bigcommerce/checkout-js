@@ -1,8 +1,8 @@
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { type FunctionComponent, useEffect } from 'react';
 
 import {
-    CheckoutButtonProps,
-    CheckoutButtonResolveId,
+    type CheckoutButtonProps,
+    type CheckoutButtonResolveId,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 

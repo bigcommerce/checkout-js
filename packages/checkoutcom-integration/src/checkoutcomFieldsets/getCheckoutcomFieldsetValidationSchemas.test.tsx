@@ -1,6 +1,6 @@
-import { ObjectSchema, ValidationError } from 'yup';
+import { type ObjectSchema, type ValidationError } from 'yup';
 
-import { TranslateValidationErrorFunction } from '@bigcommerce/checkout/payment-integration-api';
+import { type TranslateValidationErrorFunction } from '@bigcommerce/checkout/payment-integration-api';
 
 import getCheckoutcomFieldsetValidationSchemas from './getCheckoutcomFieldsetValidationSchemas';
 

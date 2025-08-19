@@ -1,6 +1,6 @@
 import { createCheckoutService, createEmbeddedCheckoutMessenger } from '@bigcommerce/checkout-sdk';
 import type { BrowserOptions } from '@sentry/browser';
-import React, { ReactElement, useEffect, useMemo } from 'react';
+import React, { type ReactElement, useEffect, useMemo } from 'react';
 import ReactModal from 'react-modal';
 
 import { AnalyticsProvider } from '@bigcommerce/checkout/analytics';

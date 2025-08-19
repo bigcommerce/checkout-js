@@ -1,9 +1,9 @@
 import userEvent from '@testing-library/user-event';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import ModalTrigger, { ModalTriggerModalProps } from './ModalTrigger';
+import ModalTrigger, { type ModalTriggerModalProps } from './ModalTrigger';
 
 describe('ModalTrigger', () => {
     const Modal: FunctionComponent<ModalTriggerModalProps> = ({ isOpen, onRequestClose }) =>

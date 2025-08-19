@@ -1,5 +1,5 @@
-import { ComponentType } from 'react';
-import { Omit } from 'utility-types';
+import { type ComponentType } from 'react';
+import { type Omit } from 'utility-types';
 
 export type MatchedProps<TInjectedProps, TProps> = {
     [P in keyof TProps]: P extends keyof TInjectedProps

@@ -1,4 +1,4 @@
-import { Consignment, LineItemOption, PhysicalItem } from "@bigcommerce/checkout-sdk";
+import { type Consignment, type LineItemOption, type PhysicalItem } from "@bigcommerce/checkout-sdk";
 
 export enum LineItemType {
     Physical,

@@ -1,4 +1,4 @@
-import { BankInstrument, PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { type BankInstrument, type PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { find } from 'lodash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 

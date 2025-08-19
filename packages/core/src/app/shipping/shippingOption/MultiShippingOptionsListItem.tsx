@@ -1,5 +1,5 @@
-import { ShippingOption } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent } from 'react';
+import { type ShippingOption } from '@bigcommerce/checkout-sdk';
+import React, { type FunctionComponent } from 'react';
 
 import { RadioInput, useThemeContext } from '@bigcommerce/checkout/ui';
 

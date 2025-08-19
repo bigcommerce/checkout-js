@@ -1,9 +1,9 @@
-import { GiftCertificateItem } from '@bigcommerce/checkout-sdk';
+import { type GiftCertificateItem } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
 import { IconGiftCertificate } from '../ui/icon';
 
-import { OrderSummaryItemProps } from './OrderSummaryItem';
+import { type OrderSummaryItemProps } from './OrderSummaryItem';
 
 function mapFromGiftCertificate(item: GiftCertificateItem): OrderSummaryItemProps {
     return {
