@@ -1,30 +1,27 @@
 import {
     Address,
     Consignment,
-    Country,
-    CustomerAddress,
     FormField,
 } from '@bigcommerce/checkout-sdk';
 import React, { ReactElement } from 'react';
 
+import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import { AddressForm, AddressSelect, AddressType, isValidCustomerAddress } from '../address';
 import { connectFormik, ConnectFormikProps } from '../common/form';
+import { EMPTY_ARRAY } from '../common/utility';
 import { Fieldset } from '../ui/form';
 
 import { SingleShippingFormValues } from './SingleShippingForm';
 
 export interface ShippingAddressFormProps {
-    addresses: CustomerAddress[];
     address?: Address;
     consignments: Consignment[];
-    countries?: Country[];
     countriesWithAutocomplete: string[];
     googleMapsApiKey?: string;
     isLoading: boolean;
     formFields: FormField[];
-    shouldShowSaveAddress?: boolean;
     isFloatingLabelEnabled?: boolean;
     onUseNewAddress(): void;
     onFieldChange(fieldName: string, value: string): void;
@@ -35,12 +32,9 @@ const addressFieldName = 'shippingAddress';
 
 const ShippingAddressForm = (
     {
-        addresses,
         address: shippingAddress,
         onAddressSelect,
         onUseNewAddress,
-        shouldShowSaveAddress,
-        countries,
         countriesWithAutocomplete,
         formFields,
         isLoading,
@@ -53,6 +47,20 @@ const ShippingAddressForm = (
         onFieldChange,
     }: ShippingAddressFormProps & ConnectFormikProps<SingleShippingFormValues>,
 ): ReactElement => {
+    const {
+        checkoutState:{
+            data:{
+                getCustomer,
+                getShippingCountries,
+            },
+        },
+    } = useCheckout();
+
+    const customer = getCustomer();
+    const addresses = customer?.addresses || [];
+    const countries = getShippingCountries() || EMPTY_ARRAY;
+    const shouldShowSaveAddress = customer?.isGuest;
+
     const setFieldValue = (fieldName: string, fieldValue: string) => {
         const customFormFieldNames = formFields
             .filter((field) => field.custom)
