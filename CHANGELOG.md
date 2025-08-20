@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.654.3](https://github.com/bigcommerce/checkout-js/compare/v1.654.2...v1.654.3) (2025-08-20)
+
+
+### Code Refactoring
+
+* **payment:** PI-4277 create generic hosted payment method functional component ([#2515](https://github.com/bigcommerce/checkout-js/issues/2515)) ([9ad709f](https://github.com/bigcommerce/checkout-js/commit/9ad709f08df9bd2a1ae162bf5f2161a70e43d2b8))
+
 ### [1.654.2](https://github.com/bigcommerce/checkout-js/compare/v1.654.1...v1.654.2) (2025-08-20)
 
 ### [1.654.1](https://github.com/bigcommerce/checkout-js/compare/v1.654.0...v1.654.1) (2025-08-20)
