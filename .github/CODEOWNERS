@@ -10,6 +10,15 @@
 /packages/payment-integration-api @bigcommerce/team-checkout
 /packages/test-framework @bigcommerce/team-checkout
 /packages/workspace-tools @bigcommerce/team-checkout
+/packages/checkout-extension @bigcommerce/team-checkout
+/packages/hosted-dropin-integration @bigcommerce/team-checkout
+/packages/locale @bigcommerce/team-checkout
+/packages/offline-payment-integration @bigcommerce/team-checkout
+/packages/payment-integration-test-framework @bigcommerce/team-checkout
+/packages/test-mocks @bigcommerce/team-checkout
+/packages/test-utils @bigcommerce/team-checkout
+/packages/ui @bigcommerce/team-checkout
+/packages/utility @bigcommerce/team-checkout
 
 ## Shared
 package.json @bigcommerce/team-checkout @bigcommerce/team-integrations @bigcommerce/team-paypal
@@ -32,6 +41,9 @@ package-lock.json @bigcommerce/team-checkout @bigcommerce/team-integrations @big
 /packages/amazon-pay-v2-integration @bigcommerce/team-integrations
 /packages/moneris-integration @bigcommerce/team-integrations
 /packages/worldpay-access-integration @bigcommerce/team-integrations
+/packages/analytics @bigcommerce/team-integrations
+/packages/checkoutcom-integration @bigcommerce/team-integrations
+/packages/instrument-utils @bigcommerce/team-integrations
 
 # Core
 /packages/core/payment/paymentMethod/AffirmPaymentMethod.tsx @bigcommerce/team-integrations
@@ -52,12 +64,18 @@ package-lock.json @bigcommerce/team-checkout @bigcommerce/team-integrations @big
 /packages/core/payment/paymentMethod/StripePaymentMethod.tsx @bigcommerce/team-integrations
 /packages/core/payment/paymentMethod/StripeUPEPaymentMethod.tsx @bigcommerce/team-integrations
 /packages/core/payment/paymentMethod/StripeV3CustomCardForm.tsx @bigcommerce/team-integrations
+/packages/core/src/app/shipping/stripeUPE @bigcommerce/team-integrations
+/packages/core/src/app/customer/StripeGuestForm.tsx @bigcommerce/team-integrations
+/packages/core/src/app/customer/StripeGuestForm.test.tsx @bigcommerce/team-integrations
+/packages/core/src/app/shipping/AmazonPayShippingAddress.tsx
 
 ## PayPal team
 /packages/core/payment/paymentMethod/BraintreeCreditCardPaymentMethod.tsx @bigcommerce/team-paypal
 /packages/core/payment/paymentMethod/PaypalCommerceCreditCardPaymentMethod.tsx @bigcommerce/team-paypal
 /packages/core/payment/paymentMethod/PaypalExpressPaymentMethod.tsx @bigcommerce/team-paypal
 /packages/core/payment/paymentMethod/PaypalPaymentsProPaymentMethod.tsx @bigcommerce/team-paypal
+/packages/core/src/app/shipping/PayPalFastlaneShippingAddress.test.tsx
+/packages/core/src/app/shipping/PayPalFastlaneShippingAddress.tsx
 
 /packages/braintree-integration @bigcommerce/team-paypal
 /packages/bigcommerce-payments-integration @bigcommerce/team-paypal
@@ -65,13 +83,14 @@ package-lock.json @bigcommerce/team-checkout @bigcommerce/team-integrations @big
 /packages/paypal-fastlane-integration @bigcommerce/team-paypal
 /packages/paypal-express-integration @bigcommerce/team-paypal
 /packages/bigcommerce-payments-utils @bigcommerce/team-paypal
+/packages/paypal-utils @bigcommerce/team-paypal
 
 ## Shared
 /packages/core/customer/checkoutSuggestion @bigcommerce/team-checkout @bigcommerce/team-integrations @bigcommerce/team-paypal
-
 /packages/apple-pay-integration @bigcommerce/team-checkout @bigcommerce/team-integrations @bigcommerce/team-paypal
 /packages/google-pay-integration @bigcommerce/team-checkout @bigcommerce/team-integrations @bigcommerce/team-paypal
 packages/wallet-button-integration @bigcommerce/team-checkout @bigcommerce/team-integrations @bigcommerce/team-paypal
+/packages/credit-card-integration @bigcommerce/team-checkout @bigcommerce/team-integrations
+/packages/hosted-field-integration @bigcommerce/team-checkout @bigcommerce/team-integrations
+/packages/hosted-widget-integration @bigcommerce/team-checkout @bigcommerce/team-integrations
 
-## Localization team
-/packages/locale/src/translations @bigcommerce/team-checkout
