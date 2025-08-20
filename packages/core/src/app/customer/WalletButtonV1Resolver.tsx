@@ -1,8 +1,9 @@
 import { CustomerInitializeOptions, CustomerRequestOptions } from "@bigcommerce/checkout-sdk";
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, lazy, Suspense } from "react";
 
 import CheckoutButton from "./CheckoutButton";
-import { ApplePayButton } from "./customWalletButton";
+
+const ApplePayButton = lazy(() => import(/* webpackChunkName: "apple-pay-button" */'./customWalletButton/ApplePayButton'));
 
 interface CheckoutButtonV1ResolverProps {
     methodId: string;
@@ -21,7 +22,7 @@ const CheckoutButtonV1Resolver: FunctionComponent<CheckoutButtonV1ResolverProps>
 }) => {
     switch (methodId) {
         case 'applepay':
-            return (
+            return <Suspense>
                 <ApplePayButton
                     containerId={`${methodId}CheckoutButton`}
                     key={methodId}
@@ -29,7 +30,7 @@ const CheckoutButtonV1Resolver: FunctionComponent<CheckoutButtonV1ResolverProps>
                     onError={onError}
                     {...rest}
                 />
-            );
+            </Suspense>;
     }
 
     return <CheckoutButton

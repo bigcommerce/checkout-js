@@ -2,7 +2,7 @@
     "entries": [
         {
             "inputPath": "packages/**/src/index.ts",
-            "ignorePackages": ["test-mocks"],
+            "ignorePackages": ["test-mocks", "workspace-tools"],
             "outputPath": "packages/core/src/app/generated/paymentIntegrations/index.ts",
             "memberPattern": ".+PaymentMethod$"
         },
@@ -11,6 +11,20 @@
             "ignorePackages": ["analytics", "core", "instrument-utils", "locale", "payment-integration-api", "payment-integration-test-framework", "ui", "workspace-tools", "test-utils"],
             "outputPath": "packages/core/src/app/generated/checkoutButtons/index.ts",
             "memberPattern": ".+Button$"
+        },
+        {
+            "inputPath": "packages/**/src/index.ts",
+            "ignorePackages": ["test-mocks", "workspace-tools"],
+            "outputPath": "packages/core/src/app/generated/paymentIntegrations/lazy.ts",
+            "memberPattern": ".+PaymentMethod$",
+            "useLazyLoad": true
+        },
+        {
+            "inputPath": "packages/**/src/index.ts",
+            "ignorePackages": ["analytics", "core", "instrument-utils", "locale", "payment-integration-api", "payment-integration-test-framework", "ui", "workspace-tools", "test-utils"],
+            "outputPath": "packages/core/src/app/generated/checkoutButtons/lazy.ts",
+            "memberPattern": ".+Button$",
+            "useLazyLoad": true
         }
     ],
     "tsConfigPath": "tsconfig.base.json"
