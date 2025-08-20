@@ -1,6 +1,5 @@
-
 import { Placement } from '@popperjs/core';
-import React, { Component, ReactEventHandler, ReactNode } from 'react';
+import React, { ReactEventHandler, ReactNode, useState } from 'react';
 import { Manager, Popper, Reference } from 'react-popper';
 
 export interface TooltipTriggerProps {
@@ -9,64 +8,55 @@ export interface TooltipTriggerProps {
     children: ReactNode;
 }
 
-export interface TooltipTriggerState {
-    shouldShow: boolean;
-}
+const TooltipTrigger: React.FC<TooltipTriggerProps> = ({
+    placement = 'bottom',
+    tooltip,
+    children,
+}) => {
+    const [shouldShow, setShouldShow] = useState(false);
 
-export default class TooltipTrigger extends Component<TooltipTriggerProps, TooltipTriggerState> {
-    static defaultProps = {
-        placement: 'bottom',
+    const handleShow: ReactEventHandler<HTMLElement> = () => {
+        setShouldShow(true);
     };
 
-    state: Readonly<TooltipTriggerState> = {
-        shouldShow: false,
+    const handleHide: ReactEventHandler<HTMLElement> = () => {
+        setShouldShow(false);
     };
 
-    render() {
-        const { children, placement, tooltip } = this.props;
-        const { shouldShow } = this.state;
+    return (
+        <Manager>
+            <Reference>
+                {({ ref }) => (
+                    <span
+                        onBlur={handleHide}
+                        onFocus={handleShow}
+                        onMouseEnter={handleShow}
+                        onMouseLeave={handleHide}
+                        ref={ref}
+                    >
+                        {children}
+                    </span>
+                )}
+            </Reference>
 
-        return (
-            <Manager>
-                <Reference>
-                    {({ ref }) => (
-                        <span
-                            onBlur={this.handleHide}
-                            onFocus={this.handleShow}
-                            onMouseEnter={this.handleShow}
-                            onMouseLeave={this.handleHide}
-                            ref={ref}
-                        >
-                            {children}
-                        </span>
-                    )}
-                </Reference>
+            <Popper
+                modifiers={[
+                    { name: 'hide', enabled: false },
+                    { name: 'flip', enabled: false },
+                    { name: 'preventOverflow', enabled: false },
+                ]}
+                placement={placement}
+            >
+                {({ ref, style }) =>
+                    shouldShow && (
+                        <div ref={ref} style={style}>
+                            {tooltip}
+                        </div>
+                    )
+                }
+            </Popper>
+        </Manager>
+    );
+};
 
-                <Popper
-                    modifiers={[
-                        { name: 'hide', enabled: false },
-                        { name: 'flip', enabled: false },
-                        { name: 'preventOverflow', enabled: false },
-                    ]}
-                    placement={placement}
-                >
-                    {({ ref, style }) =>
-                        shouldShow && (
-                            <div ref={ref} style={style}>
-                                {tooltip}
-                            </div>
-                        )
-                    }
-                </Popper>
-            </Manager>
-        );
-    }
-
-    private handleShow: ReactEventHandler<HTMLElement> = () => {
-        this.setState({ shouldShow: true });
-    };
-
-    private handleHide: ReactEventHandler<HTMLElement> = () => {
-        this.setState({ shouldShow: false });
-    };
-}
+export default TooltipTrigger;
