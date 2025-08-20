@@ -59,7 +59,7 @@ const ShippingAddressForm = (
     const customer = getCustomer();
     const addresses = customer?.addresses || [];
     const countries = getShippingCountries() || EMPTY_ARRAY;
-    const shouldShowSaveAddress = customer?.isGuest;
+    const shouldShowSaveAddress = !(customer?.isGuest);
 
     const setFieldValue = (fieldName: string, fieldValue: string) => {
         const customFormFieldNames = formFields

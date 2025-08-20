@@ -51,7 +51,6 @@ describe('PayPalFastlaneShippingAddress', () => {
             isShippingStepPending: false,
             hasRequestedShippingOptions: false,
             onUseNewAddress: jest.fn(),
-            addresses: getCustomer().addresses,
             shippingAddress: getCustomer().addresses[0],
             formFields: [
                 {
@@ -91,6 +90,8 @@ describe('PayPalFastlaneShippingAddress', () => {
                 }
             ],
         };
+
+        jest.spyOn(checkoutState.data,'getCustomer').mockReturnValue(getCustomer());
     })
 
     it('renders PayPalFastlaneShippingAddress edit button', async () => {
