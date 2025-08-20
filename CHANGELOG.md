@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.653.0](https://github.com/bigcommerce/checkout-js/compare/v1.652.0...v1.653.0) (2025-08-20)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9381 Fix the analytics events for checkout when prerendering ([#2494](https://github.com/bigcommerce/checkout-js/issues/2494)) ([93bcaa2](https://github.com/bigcommerce/checkout-js/commit/93bcaa2959a51a05263361156f8aab37e731daec))
+
 ## [1.652.0](https://github.com/bigcommerce/checkout-js/compare/v1.651.3...v1.652.0) (2025-08-20)
 
 
