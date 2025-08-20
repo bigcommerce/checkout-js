@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.652.0](https://github.com/bigcommerce/checkout-js/compare/v1.651.3...v1.652.0) (2025-08-20)
+
+
+### Features
+
+* **checkout:** CHECKOUT-7730 Apply styles to checkout page layout ([#2514](https://github.com/bigcommerce/checkout-js/issues/2514)) ([b979c66](https://github.com/bigcommerce/checkout-js/commit/b979c665497df94a85617bc2d8f4945edf51b1a0))
+
 ### [1.651.3](https://github.com/bigcommerce/checkout-js/compare/v1.651.2...v1.651.3) (2025-08-20)
 
 
