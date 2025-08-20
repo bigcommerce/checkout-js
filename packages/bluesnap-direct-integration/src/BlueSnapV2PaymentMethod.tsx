@@ -10,7 +10,7 @@ import React, {
 
 import {
     HostedPaymentComponent,
-    HostedPaymentMethodProps,
+    type HostedPaymentComponentProps,
 } from '@bigcommerce/checkout/hosted-payment-integration';
 import {
     PaymentMethodProps,
@@ -19,7 +19,7 @@ import {
 } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay, Modal } from '@bigcommerce/checkout/ui';
 
-export type BlueSnapV2PaymentMethodProps = HostedPaymentMethodProps;
+export type BlueSnapV2PaymentMethodProps = HostedPaymentComponentProps;
 
 interface BlueSnapV2PaymentMethodRef {
     paymentPageContentRef: RefObject<HTMLDivElement>;

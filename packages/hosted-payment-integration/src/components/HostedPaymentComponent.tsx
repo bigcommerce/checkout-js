@@ -21,7 +21,7 @@ import {
 import { PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
-export interface HostedPaymentMethodProps {
+export interface HostedPaymentComponentProps {
     checkoutService: CheckoutService;
     checkoutState: CheckoutSelectors;
     description?: ReactNode;
@@ -35,12 +35,12 @@ export interface HostedPaymentMethodProps {
     onUnhandledError?(error: Error): void;
 }
 
-interface HostedPaymentMethodState {
+interface HostedPaymentComponentState {
     isAddingNewInstrument: boolean;
     selectedInstrument?: AccountInstrument;
 }
 
-interface HostedPaymentMethodDerivedProps {
+interface HostedPaymentComponentDerivedProps {
     instruments: AccountInstrument[];
     isInstrumentFeatureAvailable: boolean;
     isLoadingInstruments: boolean;
@@ -50,8 +50,8 @@ interface HostedPaymentMethodDerivedProps {
 }
 
 function getHostedPaymentMethodDerivedProps(
-    props: HostedPaymentMethodProps,
-): HostedPaymentMethodDerivedProps {
+    props: HostedPaymentComponentProps,
+): HostedPaymentComponentDerivedProps {
     const filterAccountInstruments = memoizeOne((instruments: PaymentInstrument[] = []) =>
         instruments.filter(isAccountInstrument),
     );
@@ -101,10 +101,10 @@ function getHostedPaymentMethodDerivedProps(
 }
 
 class HostedPaymentMethodComponent extends Component<
-    HostedPaymentMethodProps,
-    HostedPaymentMethodState
+    HostedPaymentComponentProps,
+    HostedPaymentComponentState
 > {
-    state: HostedPaymentMethodState = {
+    state: HostedPaymentComponentState = {
         isAddingNewInstrument: false,
     };
 
