@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.654.4](https://github.com/bigcommerce/checkout-js/compare/v1.654.3...v1.654.4) (2025-08-20)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9384 Convert HostedFieldPaymentMethodComponent ([#2509](https://github.com/bigcommerce/checkout-js/issues/2509)) ([9c7dc45](https://github.com/bigcommerce/checkout-js/commit/9c7dc4508a3743389bebea1237789fb2d96e70d6))
+
 ### [1.654.3](https://github.com/bigcommerce/checkout-js/compare/v1.654.2...v1.654.3) (2025-08-20)
 
 
