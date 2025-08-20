@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.654.0](https://github.com/bigcommerce/checkout-js/compare/v1.653.0...v1.654.0) (2025-08-20)
+
+
+### Features
+
+* **core:** CHECKOUT-9432 Lazy load legacy payment method components ([f403867](https://github.com/bigcommerce/checkout-js/commit/f403867918a65526e4dc0b21496a7d3c7c92420d))
+* **core:** CHECKOUT-9432 Lazy load payment method components ([93a7d44](https://github.com/bigcommerce/checkout-js/commit/93a7d4445061da0f0c96ba33d4af3d7905829c15))
+
+
+### Code Refactoring
+
+* **core:** CHECKOUT-9432 Set experiment fallback value as false ([e591e49](https://github.com/bigcommerce/checkout-js/commit/e591e4949046b0b9722d500228fa75f964c264fc))
+
 ## [1.653.0](https://github.com/bigcommerce/checkout-js/compare/v1.652.0...v1.653.0) (2025-08-20)
 
 
