@@ -41,7 +41,7 @@ package-lock.json @bigcommerce/team-checkout @bigcommerce/team-integrations @big
 /packages/amazon-pay-v2-integration @bigcommerce/team-integrations
 /packages/moneris-integration @bigcommerce/team-integrations
 /packages/worldpay-access-integration @bigcommerce/team-integrations
-/packages/analytics @bigcommerce/team-integrations
+/packages/analytics @bigcommerce/team-integrations @bigcommerce/team-paypal
 /packages/checkoutcom-integration @bigcommerce/team-integrations
 /packages/instrument-utils @bigcommerce/team-integrations
 
