@@ -90,7 +90,7 @@ package-lock.json @bigcommerce/team-checkout @bigcommerce/team-integrations @big
 /packages/apple-pay-integration @bigcommerce/team-checkout @bigcommerce/team-integrations @bigcommerce/team-paypal
 /packages/google-pay-integration @bigcommerce/team-checkout @bigcommerce/team-integrations @bigcommerce/team-paypal
 packages/wallet-button-integration @bigcommerce/team-checkout @bigcommerce/team-integrations @bigcommerce/team-paypal
-/packages/credit-card-integration @bigcommerce/team-checkout @bigcommerce/team-integrations
-/packages/hosted-field-integration @bigcommerce/team-checkout @bigcommerce/team-integrations
-/packages/hosted-widget-integration @bigcommerce/team-checkout @bigcommerce/team-integrations
+/packages/credit-card-integration @bigcommerce/team-checkout @bigcommerce/team-integrations @bigcommerce/team-paypal
+/packages/hosted-field-integration @bigcommerce/team-checkout @bigcommerce/team-integrations @bigcommerce/team-paypal
+/packages/hosted-widget-integration @bigcommerce/team-checkout @bigcommerce/team-integrations @bigcommerce/team-paypal
 
