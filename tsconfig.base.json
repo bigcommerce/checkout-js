@@ -64,9 +64,6 @@
       "@bigcommerce/checkout/hosted-dropin-integration": [
         "packages/hosted-dropin-integration/src/index.ts"
       ],
-      "@bigcommerce/checkout/hosted-field-integration": [
-        "packages/hosted-field-integration/src/index.ts"
-      ],
       "@bigcommerce/checkout/hosted-payment-integration": [
         "packages/hosted-payment-integration/src/index.ts"
       ],
