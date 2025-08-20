@@ -1,0 +1,62 @@
+.themeV2 {
+    background-color: $color-secondaryDarker;
+
+    .layout {
+        padding: 0;
+
+        @include breakpoint("small") {
+            padding: 0 spacing("single") 5 * spacing("single");
+        }
+    }
+
+    .layout-main {
+        padding: 0;
+
+        @include breakpoint("small") {
+            @include grid-column(12);
+        }
+
+        @include breakpoint("large") {
+            width: grid-calc(7, $total-columns);
+        }
+
+        @include breakpoint("xlarge") {
+            width: grid-calc(8, $total-columns);
+        }
+
+        @include breakpoint("xlarge") {
+            padding-right: spacing("double") * 2;
+        }
+    }
+
+    .cart {
+        border: none;
+    }
+    
+    .checkout-steps {
+        margin-top: spacing("double");
+    }
+
+    .checkout-step {
+        background-color: $color-white;
+        border-bottom: none;
+        padding: #{spacing("base") + spacing("base")};
+        margin: spacing("single") 0;
+    }
+    
+    .stepHeader {
+        flex-wrap: wrap;
+
+        .stepHeader-body {
+            order: 3;
+            width: 100%;
+            margin-left: 0;
+            margin-top: remCalc(10px);
+        }
+
+        .stepHeader-actions {
+            margin-left: auto;
+            align-self: flex-start;
+        }
+    }
+}

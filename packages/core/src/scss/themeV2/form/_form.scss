@@ -1,33 +1,34 @@
 // =============================================================================
 // V2 Form Styles
-// Code for demo purposes only, uncomment to see a different form field style
 // =============================================================================
 
 .themeV2{
-    //.form-select,
-    //.form-input,
-    //.form-input.optimizedCheckout-form-input,
-    //.form-checklist {
-    //    background: rgba(255, 255, 255, 0.2); /* semi-transparent white */
-    //    box-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.37);
-    //    border-radius: 16px;
-    //    border: 1px solid rgba(255, 255, 255, 0.18);
-    //    backdrop-filter: blur(10px); /* key for the glass effect */
-    //    -webkit-backdrop-filter: blur(10px); /* for Safari */
-    //    color: #333;
-    //}
-    //
-    //.cart {
-    //    border: none;
-    //    margin-top: 1.25rem;
-    //}
-    //
-    //.checkout-step, .cart-section {
-    //    border: none;
-    //}
-    //
-    //a , .button--tertiary{
-    //    color: #3c4043;
-    //    font-weight: bold;
-    //}
+    .floating-select,
+    .floating-input {
+        background-color: $color-secondaryDark;
+    }
+
+    .form-field:not(.form-field--error) .floating-input:not(:focus),
+    .form-field:not(.form-field--error) .floating-select:not(:focus),
+    .form-field:not(.form-field--error) .floating-textarea {
+        border-color: $color-greyMedium;
+    }
+
+    .form-checklist-checkbox~.form-label {
+
+        &::before,
+        &::after {
+            background-color: $color-white;
+        }
+
+        &::after {
+            transform: scale(0.36);
+        }
+    }
+
+    .form-checklist-checkbox:checked~.form-label {
+        &::before {
+            background-color: $color-highlight;
+        }
+    }
 }
