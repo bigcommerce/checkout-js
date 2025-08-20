@@ -1,10 +1,11 @@
 import React from 'react';
 
-import { type Props } from './PPSDKPaymentMethod';
+import { PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
+
 import { usePropsToOnMount } from './usePropsToOnMount';
 import { Wrapper } from './Wrapper';
 
-export const NoUI = (props: Props) => {
+export const NoUI = (props: PaymentMethodProps) => {
     const onMount = usePropsToOnMount(props);
 
     return <Wrapper onMount={onMount} />;

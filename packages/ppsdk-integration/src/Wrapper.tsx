@@ -1,8 +1,8 @@
 import React, { type FunctionComponent, useEffect } from 'react';
 
 interface Props {
-    onMount(): () => void;
     children?: React.ReactNode;
+    onMount(): () => void;
 }
 
 export const Wrapper: FunctionComponent<Props> = (props) => {
@@ -10,5 +10,6 @@ export const Wrapper: FunctionComponent<Props> = (props) => {
 
     useEffect(onMount, [onMount]);
 
+    // eslint-disable-next-line react/jsx-no-useless-fragment
     return <>{children}</>;
 };

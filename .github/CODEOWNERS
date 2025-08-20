@@ -12,8 +12,11 @@
 /packages/workspace-tools @bigcommerce/team-checkout
 
 ## Shared
-package.json @bigcommerce/team-checkout @bigcommerce/team-integrations @bigcommerce/team-paypal
-package-lock.json @bigcommerce/team-checkout @bigcommerce/team-integrations @bigcommerce/team-paypal
+package.json @bigcommerce/team-checkout @bigcommerce/team-payments @bigcommerce/team-integrations @bigcommerce/team-paypal
+package-lock.json @bigcommerce/team-checkout @bigcommerce/team-payments @bigcommerce/team-integrations @bigcommerce/team-paypal
+
+## Payments team
+/packages/ppsdk-integration @bigcommerce/team-payments
 
 ## Payment integrations team
 

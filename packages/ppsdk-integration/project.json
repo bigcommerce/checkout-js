@@ -1,0 +1,20 @@
+{
+  "name": "ppsdk-integration",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/ppsdk-integration/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/packages/ppsdk-integration"],
+      "options": {
+        "jestConfig": "packages/ppsdk-integration/jest.config.js"
+      }
+    }
+  },
+  "tags": ["scope:integration"]
+}
