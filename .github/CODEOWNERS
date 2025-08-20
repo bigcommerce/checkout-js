@@ -43,7 +43,7 @@ package-lock.json @bigcommerce/team-checkout @bigcommerce/team-integrations @big
 /packages/worldpay-access-integration @bigcommerce/team-integrations
 /packages/analytics @bigcommerce/team-integrations @bigcommerce/team-paypal
 /packages/checkoutcom-integration @bigcommerce/team-integrations
-/packages/instrument-utils @bigcommerce/team-integrations
+/packages/instrument-utils @bigcommerce/team-integrations @bigcommerce/team-paypal
 
 # Core
 /packages/core/payment/paymentMethod/AffirmPaymentMethod.tsx @bigcommerce/team-integrations
