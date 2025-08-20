@@ -74,8 +74,8 @@ package-lock.json @bigcommerce/team-checkout @bigcommerce/team-integrations @big
 /packages/core/payment/paymentMethod/PaypalCommerceCreditCardPaymentMethod.tsx @bigcommerce/team-paypal
 /packages/core/payment/paymentMethod/PaypalExpressPaymentMethod.tsx @bigcommerce/team-paypal
 /packages/core/payment/paymentMethod/PaypalPaymentsProPaymentMethod.tsx @bigcommerce/team-paypal
-/packages/core/src/app/shipping/PayPalFastlaneShippingAddress.test.tsx
-/packages/core/src/app/shipping/PayPalFastlaneShippingAddress.tsx
+/packages/core/src/app/shipping/PayPalFastlaneShippingAddress.test.tsx @bigcommerce/team-paypal
+/packages/core/src/app/shipping/PayPalFastlaneShippingAddress.tsx @bigcommerce/team-paypal
 
 /packages/braintree-integration @bigcommerce/team-paypal
 /packages/bigcommerce-payments-integration @bigcommerce/team-paypal
