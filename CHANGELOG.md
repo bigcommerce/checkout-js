@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.651.3](https://github.com/bigcommerce/checkout-js/compare/v1.651.2...v1.651.3) (2025-08-20)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9384 Convert StaticAddressEditable ([#2505](https://github.com/bigcommerce/checkout-js/issues/2505)) ([e67d1f9](https://github.com/bigcommerce/checkout-js/commit/e67d1f938a58a1b2c630fae625f99afb93c6af6d))
+* **checkout:** CHECKOUT-9384 Convert Toggle ([#2507](https://github.com/bigcommerce/checkout-js/issues/2507)) ([49bc5d4](https://github.com/bigcommerce/checkout-js/commit/49bc5d4c224155a3cd9b9ccda1a827c451748e7d))
+
 ### [1.651.2](https://github.com/bigcommerce/checkout-js/compare/v1.651.1...v1.651.2) (2025-08-18)
 
 
