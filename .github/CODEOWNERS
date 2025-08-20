@@ -67,7 +67,7 @@ package-lock.json @bigcommerce/team-checkout @bigcommerce/team-integrations @big
 /packages/core/src/app/shipping/stripeUPE @bigcommerce/team-integrations
 /packages/core/src/app/customer/StripeGuestForm.tsx @bigcommerce/team-integrations
 /packages/core/src/app/customer/StripeGuestForm.test.tsx @bigcommerce/team-integrations
-/packages/core/src/app/shipping/AmazonPayShippingAddress.tsx
+/packages/core/src/app/shipping/AmazonPayShippingAddress.tsx @bigcommerce/team-integrations
 
 ## PayPal team
 /packages/core/payment/paymentMethod/BraintreeCreditCardPaymentMethod.tsx @bigcommerce/team-paypal
