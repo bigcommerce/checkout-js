@@ -1,6 +1,6 @@
 import { CheckoutService, createCurrencyService, StoreConfig } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
-import React, { Component, ReactNode } from 'react';
+import React, { ReactNode, useEffect, useMemo, useState } from 'react';
 
 import getLanguageService from './getLanguageService';
 import LocaleContext from './LocaleContext';
@@ -10,56 +10,38 @@ export interface LocaleProviderProps {
     children?: ReactNode;
 }
 
-export interface LocaleProviderState {
-    config?: StoreConfig;
-}
+const LocaleProvider: React.FC<LocaleProviderProps> = ({ checkoutService, children }) => {
+    const [config, setConfig] = useState<StoreConfig | undefined>();
+    const languageService = useMemo(() => getLanguageService(), []);
 
-class LocaleProvider extends Component<LocaleProviderProps> {
-    state: Readonly<LocaleProviderState> = {};
-
-    private languageService = getLanguageService();
-    private unsubscribe?: () => void;
-
-    private getContextValue = memoizeOne((config?: StoreConfig) => {
+    const getContextValue = memoizeOne((storeConfig?: StoreConfig) => {
         return {
-            currency: config ? createCurrencyService(config) : undefined,
-            date: config
+            currency: storeConfig ? createCurrencyService(storeConfig) : undefined,
+            date: storeConfig
                 ? {
-                      inputFormat: config.inputDateFormat,
+                      inputFormat: storeConfig.inputDateFormat,
                   }
                 : undefined,
-            language: this.languageService,
+            language: languageService,
         };
     });
 
-    componentDidMount(): void {
-        const { checkoutService } = this.props;
-
-        this.unsubscribe = checkoutService.subscribe(
+    useEffect(() => {
+        const unsubscribe = checkoutService.subscribe(
             ({ data }) => {
-                this.setState({ config: data.getConfig() });
+                setConfig(data.getConfig());
             },
             ({ data }) => data.getConfig(),
         );
-    }
 
-    componentWillUnmount(): void {
-        if (this.unsubscribe) {
-            this.unsubscribe();
-            this.unsubscribe = undefined;
-        }
-    }
+        return () => {
+            unsubscribe();
+        };
+    }, [checkoutService]);
 
-    render(): ReactNode {
-        const { children } = this.props;
-        const { config } = this.state;
+    const contextValue = useMemo(() => getContextValue(config), [config, getContextValue]);
 
-        return (
-            <LocaleContext.Provider value={this.getContextValue(config)}>
-                {children}
-            </LocaleContext.Provider>
-        );
-    }
-}
+    return <LocaleContext.Provider value={contextValue}>{children}</LocaleContext.Provider>;
+};
 
 export default LocaleProvider;
