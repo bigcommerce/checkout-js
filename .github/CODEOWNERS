@@ -59,12 +59,13 @@ package-lock.json @bigcommerce/team-checkout @bigcommerce/team-integrations @big
 /packages/core/payment/paymentMethod/PaypalExpressPaymentMethod.tsx @bigcommerce/team-paypal
 /packages/core/payment/paymentMethod/PaypalPaymentsProPaymentMethod.tsx @bigcommerce/team-paypal
 
-/packages/braintree-integration @bigcommerce/team-paypal
 /packages/bigcommerce-payments-integration @bigcommerce/team-paypal
-/packages/paypal-commerce-integration @bigcommerce/team-paypal
-/packages/paypal-fastlane-integration @bigcommerce/team-paypal
-/packages/paypal-express-integration @bigcommerce/team-paypal
 /packages/bigcommerce-payments-utils @bigcommerce/team-paypal
+/packages/braintree-integration @bigcommerce/team-paypal
+/packages/paypal-commerce-integration @bigcommerce/team-paypal
+/packages/paypal-express-integration @bigcommerce/team-paypal
+/packages/paypal-fastlane-integration @bigcommerce/team-paypal
+/packages/paypal-payments-pro-integration @bigcommerce/team-paypal
 
 ## Shared
 /packages/core/customer/checkoutSuggestion @bigcommerce/team-checkout @bigcommerce/team-integrations @bigcommerce/team-paypal
