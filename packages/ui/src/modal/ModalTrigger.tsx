@@ -1,9 +1,12 @@
 import React, {
-    Component,
     KeyboardEvent,
     KeyboardEventHandler,
     MouseEventHandler,
     ReactNode,
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
 } from 'react';
 
 export interface ModalTriggerProps {
@@ -16,69 +19,56 @@ export interface ModalTriggerModalProps {
     onRequestClose(): void;
 }
 
-export interface ModalTriggerState {
-    isOpen: boolean;
-}
+const ModalTrigger: React.FC<ModalTriggerProps> = ({ children, modal }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const canHandleEventRef = useRef(false);
 
-export default class ModalTrigger extends Component<ModalTriggerProps, ModalTriggerState> {
-    state = {
-        isOpen: false,
-    };
+    useEffect(() => {
+        canHandleEventRef.current = true;
 
-    private canHandleEvent = false;
+        return () => {
+            canHandleEventRef.current = false;
+        };
+    }, []);
 
-    componentDidMount(): void {
-        this.canHandleEvent = true;
-    }
-
-    componentWillUnmount(): void {
-        this.canHandleEvent = false;
-    }
-
-    render() {
-        const { children, modal } = this.props;
-        const { isOpen } = this.state;
-
-        return (
-            <>
-                {children({
-                    onClick: this.handleOpen,
-                    onKeyPress: this.handleKeyOpen,
-                })}
-
-                {modal({
-                    isOpen,
-                    onRequestClose: this.handleClose,
-                })}
-            </>
-        );
-    }
-
-    private handleOpen: () => void = () => {
-        if (!this.canHandleEvent) {
+    const handleOpen = useCallback(() => {
+        if (!canHandleEventRef.current) {
             return;
         }
 
-        this.setState({
-            isOpen: true,
-        });
-    };
+        setIsOpen(true);
+    }, []);
 
-    private handleClose: () => void = () => {
-        if (!this.canHandleEvent) {
+    const handleClose = useCallback(() => {
+        if (!canHandleEventRef.current) {
             return;
         }
 
-        this.setState({
-            isOpen: false,
-        });
-    };
+        setIsOpen(false);
+    }, []);
 
-    private handleKeyOpen: (keyboardEvent: KeyboardEvent<HTMLElement>) => void = (
-        keyboardEvent,
-    ) => {
-        if (keyboardEvent.key === 'Enter') {
-            this.handleOpen();
-        }
-    };
-}
+    const handleKeyOpen = useCallback(
+        (keyboardEvent: KeyboardEvent<HTMLElement>) => {
+            if (keyboardEvent.key === 'Enter') {
+                handleOpen();
+            }
+        },
+        [handleOpen],
+    );
+
+    return (
+        <>
+            {children({
+                onClick: handleOpen,
+                onKeyPress: handleKeyOpen,
+            })}
+
+            {modal({
+                isOpen,
+                onRequestClose: handleClose,
+            })}
+        </>
+    );
+};
+
+export default ModalTrigger;
