@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.655.0](https://github.com/bigcommerce/checkout-js/compare/v1.654.4...v1.655.0) (2025-08-21)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9385 Convert LocaleProvider ([#2517](https://github.com/bigcommerce/checkout-js/issues/2517)) ([0cd8ec2](https://github.com/bigcommerce/checkout-js/commit/0cd8ec212fd7d6055d89269ead36de8a2b8c9e0c))
+* **checkout:** CHECKOUT-9385 Convert ui components ([#2520](https://github.com/bigcommerce/checkout-js/issues/2520)) ([a7ebd8a](https://github.com/bigcommerce/checkout-js/commit/a7ebd8a83a5d40cbe98f7f643a5628d506354a91))
+
 ### [1.654.4](https://github.com/bigcommerce/checkout-js/compare/v1.654.3...v1.654.4) (2025-08-20)
 
 
