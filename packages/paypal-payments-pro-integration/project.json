@@ -1,0 +1,20 @@
+{
+  "name": "paypal-payments-pro-integration",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/paypal-payments-pro-integration/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/packages/paypal-payments-pro-integration"],
+      "options": {
+        "jestConfig": "packages/paypal-payments-pro-integration/jest.config.js"
+      }
+    }
+  },
+  "tags": ["scope:integration"]
+}

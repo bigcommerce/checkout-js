@@ -37,6 +37,7 @@
     "paypal-commerce-integration": "packages/paypal-commerce-integration",
     "paypal-express-integration": "packages/paypal-express-integration",
     "paypal-fastlane-integration": "packages/paypal-fastlane-integration",
+    "paypal-payments-pro-integration": "packages/paypal-payments-pro-integration",
     "paypal-utils": "packages/paypal-utils",
     "squarev2-integration": "packages/squarev2-integration",
     "stripe-integration": "packages/stripe-integration",

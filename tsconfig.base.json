@@ -91,6 +91,9 @@
       "@bigcommerce/checkout/paypal-fastlane-integration": [
         "packages/paypal-fastlane-integration/src/index.ts"
       ],
+      "@bigcommerce/checkout/paypal-payments-pro-integration": [
+        "packages/paypal-payments-pro-integration/src/index.ts"
+      ],
       "@bigcommerce/checkout/paypal-utils": ["packages/paypal-utils/src/index.ts"],
       "@bigcommerce/checkout/squarev2-integration": ["packages/squarev2-integration/src/index.ts"],
       "@bigcommerce/checkout/stripe-integration": ["packages/stripe-integration/src/index.ts"],
