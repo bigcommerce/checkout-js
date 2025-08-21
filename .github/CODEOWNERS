@@ -1,3 +1,6 @@
+# Repository administration
+.github/CODEOWNERS @bigcommerce/team-checkout
+
 ## Checkout team
 
 * @bigcommerce/team-checkout
@@ -10,10 +13,6 @@
 /packages/payment-integration-api @bigcommerce/team-checkout
 /packages/test-framework @bigcommerce/team-checkout
 /packages/workspace-tools @bigcommerce/team-checkout
-
-## Shared
-package.json @bigcommerce/team-checkout @bigcommerce/team-integrations @bigcommerce/team-paypal
-package-lock.json @bigcommerce/team-checkout @bigcommerce/team-integrations @bigcommerce/team-paypal
 
 ## Payment integrations team
 
