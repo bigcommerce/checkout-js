@@ -251,6 +251,12 @@ const InstrumentSelect: FunctionComponent<InstrumentSelectProps> = ({
         //        This ensures that update Field value is called after formik has mounted.
         // See GitHub issue: https://github.com/jaredpalmer/formik/issues/930
         setTimeout(() => updateFieldValue(selectedInstrumentId));
+
+        return () => {
+            if (field.value === '' && selectedInstrumentId !== undefined) {
+                updateFieldValue();
+            }
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -261,14 +267,6 @@ const InstrumentSelect: FunctionComponent<InstrumentSelectProps> = ({
 
         prevSelectedInstrumentIdRef.current = selectedInstrumentId;
     }, [selectedInstrumentId, updateFieldValue]);
-
-    useEffect(() => {
-        return () => {
-            if (field.value === '' && selectedInstrumentId !== undefined) {
-                updateFieldValue();
-            }
-        };
-    }, [field.value, selectedInstrumentId, updateFieldValue]);
 
     const selectedInstrument = find(instruments, { bigpayToken: selectedInstrumentId });
 
