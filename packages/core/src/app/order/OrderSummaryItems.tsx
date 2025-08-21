@@ -1,6 +1,6 @@
 import { LineItemMap } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
-import React, { ReactNode } from 'react';
+import React, { ReactElement, useCallback, useState } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
@@ -23,115 +23,84 @@ export interface OrderSummaryItemsProps {
     themeV2?: boolean;
 }
 
-interface OrderSummaryItemsState {
-    isExpanded: boolean;
-    collapsedLimit: number;
-}
+const ItemCount = ({ items, themeV2 }: { items: LineItemMap; themeV2: boolean }): ReactElement => (
+    <h3
+        className={classNames('cart-section-heading optimizedCheckout-contentPrimary', { 'body-medium': themeV2 })}
+        data-test="cart-count-total"
+    >
+        <TranslatedString data={{ count: getItemsCount(items) }} id="cart.item_count_text" />
+    </h3>
+);
 
-class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSummaryItemsState> {
-    constructor(props: OrderSummaryItemsProps) {
-        super(props);
+const ProductList = ({ items, isExpanded, collapsedLimit }: { items: LineItemMap; isExpanded: boolean; collapsedLimit: number }): ReactElement => {
+    const summaryItems = [
+        ...items.physicalItems.slice().sort((item) => item.variantId).map(mapFromPhysical),
+        ...items.giftCertificates.slice().map(mapFromGiftCertificate),
+        ...items.digitalItems.slice().sort((item) => item.variantId).map(mapFromDigital),
+        ...(items.customItems || []).map(mapFromCustom),
+    ].slice(0, isExpanded ? undefined : collapsedLimit);
 
-        this.state = {
-            isExpanded: false,
-            collapsedLimit: this.getCollapsedLimit(),
-        };
-    }
+    return (
+        <ul aria-live="polite" className="productList">
+            {summaryItems.map(summaryItemProps => (
+                <li className="productList-item is-visible" key={summaryItemProps.id}>
+                    <OrderSummaryItem {...summaryItemProps} />
+                </li>
+            ))}
+        </ul>
+    );
+};
 
-    render(): ReactNode {
-        const { displayLineItemsCount = true, items, themeV2 = false } = this.props;
-        const { collapsedLimit, isExpanded } = this.state;
+const CartActions = ({ isExpanded, onToggle, themeV2 }: { isExpanded: boolean; onToggle(): void; themeV2: boolean }): ReactElement => (
+    <div className="cart-actions">
+        <button
+            className={classNames('button button--tertiary button--tiny optimizedCheckout-buttonSecondary', { 'sub-text-medium': themeV2 })}
+            onClick={onToggle}
+            type="button"
+        >
+            {isExpanded ? (
+                <>
+                    <TranslatedString id="cart.see_less_action" />
+                    <IconChevronUp />
+                </>
+            ) : (
+                <>
+                    <TranslatedString id="cart.see_all_action" />
+                    <IconChevronDown />
+                </>
+            )}
+        </button>
+    </div>
+);
 
-        return (
-            <>
-                {displayLineItemsCount && <h3
-                    className={classNames('cart-section-heading optimizedCheckout-contentPrimary',
-                        { 'body-medium': themeV2 })}
-                    data-test="cart-count-total"
-                >
-                    <TranslatedString
-                        data={{ count: getItemsCount(items) }}
-                        id="cart.item_count_text"
-                    />
-                </h3>}
+const OrderSummaryItems = ({
+    displayLineItemsCount = true,
+    items,
+    themeV2 = false,
+}: OrderSummaryItemsProps): ReactElement => {
+    const [isExpanded, setIsExpanded] = useState(false);
 
-                <ul aria-live="polite" className="productList">
-                    {[
-                        ...items.physicalItems
-                            .slice()
-                            .sort((item) => item.variantId)
-                            .map(mapFromPhysical),
-                        ...items.giftCertificates.slice().map(mapFromGiftCertificate),
-                        ...items.digitalItems
-                            .slice()
-                            .sort((item) => item.variantId)
-                            .map(mapFromDigital),
-                        ...(items.customItems || []).map(mapFromCustom),
-                    ]
-                        .slice(0, isExpanded ? undefined : collapsedLimit)
-                        .map((summaryItemProps) => (
-                            <li className="productList-item is-visible" key={summaryItemProps.id}>
-                                <OrderSummaryItem {...summaryItemProps} />
-                            </li>
-                        ))}
-                </ul>
+    const collapsedLimit = isSmallScreen() ? COLLAPSED_ITEMS_LIMIT_SMALL_SCREEN : COLLAPSED_ITEMS_LIMIT;
+    const getLineItemCount = useCallback(
+        () =>
+            ((items.customItems || []).length +
+                items.physicalItems.length +
+                items.digitalItems.length +
+                items.giftCertificates.length),
+        [items]
+    );
+    const shouldShowActions = getLineItemCount() > collapsedLimit;
+    const handleToggle = () => setIsExpanded(!isExpanded);
 
-                {this.renderActions()}
-            </>
-        );
-    }
+    return (
+        <>
+            {displayLineItemsCount && <ItemCount items={items} themeV2={themeV2} />}
 
-    private getCollapsedLimit(): number {
-        return isSmallScreen() ? COLLAPSED_ITEMS_LIMIT_SMALL_SCREEN : COLLAPSED_ITEMS_LIMIT;
-    }
+            <ProductList collapsedLimit={collapsedLimit} isExpanded={isExpanded} items={items} />
 
-    private renderActions(): ReactNode {
-        const { isExpanded } = this.state;
-
-        if (this.getLineItemCount() <= this.getCollapsedLimit()) {
-            return;
-        }
-
-        return (
-            <div className="cart-actions">
-                <button
-                    className={classNames('button button--tertiary button--tiny optimizedCheckout-buttonSecondary',
-                        { 'sub-text-medium': this.props.themeV2 })}
-                    onClick={this.handleToggle}
-                    type="button"
-                >
-                    {isExpanded ? (
-                        <>
-                            <TranslatedString id="cart.see_less_action" />
-                            <IconChevronUp />
-                        </>
-                    ) : (
-                        <>
-                            <TranslatedString id="cart.see_all_action" />
-                            <IconChevronDown />
-                        </>
-                    )}
-                </button>
-            </div>
-        );
-    }
-
-    private getLineItemCount(): number {
-        const { items } = this.props;
-
-        return (
-            (items.customItems || []).length +
-            items.physicalItems.length +
-            items.digitalItems.length +
-            items.giftCertificates.length
-        );
-    }
-
-    private handleToggle: () => void = () => {
-        const { isExpanded } = this.state;
-
-        this.setState({ isExpanded: !isExpanded });
-    };
-}
+            {shouldShowActions && <CartActions isExpanded={isExpanded} onToggle={handleToggle} themeV2={themeV2} />}
+        </>
+    );
+};
 
 export default OrderSummaryItems;
