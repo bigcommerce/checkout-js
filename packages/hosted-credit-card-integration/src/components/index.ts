@@ -1,5 +1,6 @@
 export { getHostedCreditCardValidationSchema } from './getHostedCreditCardValidationSchema';
 export { getHostedInstrumentValidationSchema } from './getHostedInstrumentValidationSchema';
+export { default as HostedCreditCardComponent } from './HostedCreditCardComponent';
 export {
     HostedCreditCardCodeField,
     HostedCreditCardCodeFieldProps,
