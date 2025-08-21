@@ -7,7 +7,7 @@ import {
 import classNames from 'classnames';
 import { FieldProps } from 'formik';
 import { find, noop } from 'lodash';
-import React, { FunctionComponent, PureComponent, ReactNode, useCallback } from 'react';
+import React, { FunctionComponent, useCallback, useEffect, useRef } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import {
@@ -326,72 +326,74 @@ export interface AccountInstrumentSelectProps extends FieldProps<string> {
     onUseNewInstrument(): void;
 }
 
-class AccountInstrumentSelect extends PureComponent<AccountInstrumentSelectProps> {
-    componentDidMount() {
-        const { selectedInstrumentId } = this.props;
+const AccountInstrumentSelect: FunctionComponent<AccountInstrumentSelectProps> = ({
+    field,
+    form,
+    instruments,
+    onSelectInstrument,
+    onUseNewInstrument,
+    selectedInstrumentId,
+}) => {
+    const prevSelectedInstrumentIdRef = useRef(selectedInstrumentId);
 
+    const updateFieldValue = useCallback(
+        (instrumentId = '') => {
+            void form.setFieldValue(field.name, instrumentId);
+        },
+        [form, field.name],
+    );
+
+    useEffect(() => {
         // FIXME: Used setTimeout here because setFieldValue call doesnot set value if called before formik is properly mounted.
         //        This ensures that update Field value is called after formik has mounted.
         // See GitHub issue: https://github.com/jaredpalmer/formik/issues/930
-        setTimeout(() => this.updateFieldValue(selectedInstrumentId));
-    }
+        setTimeout(() => updateFieldValue(selectedInstrumentId));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-    componentDidUpdate(prevProps: Readonly<AccountInstrumentSelectProps>) {
-        const { selectedInstrumentId: prevSelectedInstrumentId } = prevProps;
-        const { selectedInstrumentId } = this.props;
-
-        if (prevSelectedInstrumentId !== selectedInstrumentId) {
+    useEffect(() => {
+        if (prevSelectedInstrumentIdRef.current !== selectedInstrumentId) {
             // FIXME: Used setTimeout here because setFieldValue call doesnot set value if called before formik is properly mounted.
             //        This ensures that update Field value is called after formik has mounted.
             // See GitHub issue: https://github.com/jaredpalmer/formik/issues/930
-            setTimeout(() => this.updateFieldValue(selectedInstrumentId));
+            setTimeout(() => updateFieldValue(selectedInstrumentId));
         }
-    }
 
-    componentWillUnmount() {
-        const { selectedInstrumentId, field } = this.props;
+        prevSelectedInstrumentIdRef.current = selectedInstrumentId;
+    }, [selectedInstrumentId, updateFieldValue]);
 
-        if (field.value === '' && selectedInstrumentId !== undefined) {
-            this.updateFieldValue();
-        }
-    }
+    useEffect(() => {
+        return () => {
+            if (field.value === '' && selectedInstrumentId !== undefined) {
+                updateFieldValue();
+            }
+        };
+    }, [field.value, selectedInstrumentId, updateFieldValue]);
 
-    render(): ReactNode {
-        const { field, instruments, onSelectInstrument, onUseNewInstrument, selectedInstrumentId } =
-            this.props;
+    const selectedInstrument = find(instruments, { bigpayToken: selectedInstrumentId });
+    const { value, ...otherFieldProps } = field;
 
-        const selectedInstrument = find(instruments, { bigpayToken: selectedInstrumentId });
-
-        const { value, ...otherFieldProps } = field;
-
-        return (
-            <div className="instrumentSelect" data-test="account-instrument-select">
-                <DropdownTrigger
-                    dropdown={
-                        <AccountInstrumentMenu
-                            instruments={instruments}
-                            onSelectInstrument={onSelectInstrument}
-                            onUseNewInstrument={onUseNewInstrument}
-                            selectedInstrumentId={selectedInstrumentId}
-                        />
-                    }
-                >
-                    <AccountInstrumentSelectButton
-                        instrument={selectedInstrument}
-                        testId="instrument-select"
+    return (
+        <div className="instrumentSelect" data-test="account-instrument-select">
+            <DropdownTrigger
+                dropdown={
+                    <AccountInstrumentMenu
+                        instruments={instruments}
+                        onSelectInstrument={onSelectInstrument}
+                        onUseNewInstrument={onUseNewInstrument}
+                        selectedInstrumentId={selectedInstrumentId}
                     />
+                }
+            >
+                <AccountInstrumentSelectButton
+                    instrument={selectedInstrument}
+                    testId="instrument-select"
+                />
 
-                    <input type="hidden" value={value || ''} {...otherFieldProps} />
-                </DropdownTrigger>
-            </div>
-        );
-    }
-
-    private updateFieldValue(instrumentId = ''): void {
-        const { form, field } = this.props;
-
-        void form.setFieldValue(field.name, instrumentId);
-    }
-}
+                <input type="hidden" value={value || ''} {...otherFieldProps} />
+            </DropdownTrigger>
+        </div>
+    );
+};
 
 export default AccountInstrumentSelect;
