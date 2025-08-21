@@ -7,7 +7,7 @@ import {
     type PaymentRequestOptions,
 } from '@bigcommerce/checkout-sdk';
 import { noop, some } from 'lodash';
-import React, { Component, type ReactNode } from 'react';
+import React, { type ReactNode, useCallback, useEffect } from 'react';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { SignOutLink } from '@bigcommerce/checkout/instrument-utils';
@@ -50,73 +50,117 @@ interface WalletButtonPaymentMethodDerivedProps {
     isPaymentSelected: boolean;
 }
 
-class WalletButtonPaymentMethodComponent extends Component<WalletButtonPaymentMethodProps> {
-    async componentDidMount(): Promise<void> {
-        const { initializePayment, method, onUnhandledError = noop } = this.props;
+const WalletButtonPaymentMethodComponent: React.FC<WalletButtonPaymentMethodProps> = (props) => {
+    const {
+        checkoutState,
+        language,
+        paymentForm,
+        buttonId,
+        editButtonClassName,
+        editButtonLabel,
+        isInitializing = false,
+        method,
+        shouldShowEditButton,
+        signInButtonClassName,
+        signInButtonLabel,
+        signOutCustomer,
+        deinitializePayment,
+        initializePayment,
+        onSignOut = noop,
+        onSignOutError = noop,
+        onUnhandledError = noop,
+    } = props;
 
-        this.toggleSubmit();
+    const getWalletButtonPaymentMethodDerivedProps =
+        useCallback((): WalletButtonPaymentMethodDerivedProps => {
+            const {
+                data: { getBillingAddress, getCheckout, isPaymentDataRequired },
+            } = checkoutState;
+            const billingAddress = getBillingAddress();
+            const checkout = getCheckout();
 
+            if (!billingAddress || !checkout) {
+                throw new Error('Unable to get checkout');
+            }
+
+            const walletPaymentData = normalizeWalletPaymentData(method.initializationData);
+
+            return {
+                ...walletPaymentData,
+                // FIXME: I'm not sure how this would work for non-English names.
+                cardName:
+                    walletPaymentData &&
+                    [billingAddress.firstName, billingAddress.lastName].join(' '),
+                isPaymentDataRequired: isPaymentDataRequired(),
+                isPaymentSelected: some(checkout.payments, { providerId: method.id }),
+            };
+        }, [checkoutState, method.initializationData, method.id]);
+
+    const derivedProps = getWalletButtonPaymentMethodDerivedProps();
+
+    const toggleSubmit = useCallback(() => {
+        const { disableSubmit } = paymentForm;
+        const { isPaymentDataRequired } = derivedProps;
+
+        if (normalizeWalletPaymentData(method.initializationData) || !isPaymentDataRequired) {
+            disableSubmit(method, false);
+        } else {
+            disableSubmit(method, true);
+        }
+    }, [paymentForm, method, derivedProps]);
+
+    const handleSignOut = useCallback(async () => {
         try {
-            await initializePayment({
-                gatewayId: method.gateway,
-                methodId: method.id,
-            });
+            await signOutCustomer({ methodId: method.id });
+            onSignOut();
+            window.location.reload();
         } catch (error) {
-            onUnhandledError(error);
+            onSignOutError(error);
         }
-    }
+    }, [signOutCustomer, method.id, onSignOut, onSignOutError]);
 
-    async componentWillUnmount(): Promise<void> {
-        const {
-            deinitializePayment,
-            paymentForm: { disableSubmit },
-            method,
-            onUnhandledError = noop,
-        } = this.props;
+    useEffect(() => {
+        const initializePaymentAsync = async () => {
+            toggleSubmit();
 
-        disableSubmit(method, false);
+            try {
+                await initializePayment({
+                    gatewayId: method.gateway,
+                    methodId: method.id,
+                });
+            } catch (error) {
+                onUnhandledError(error);
+            }
+        };
 
-        try {
-            await deinitializePayment({
-                gatewayId: method.gateway,
-                methodId: method.id,
-            });
-        } catch (error) {
-            onUnhandledError(error);
-        }
-    }
+        void initializePaymentAsync();
 
-    componentDidUpdate(
-        prevProps: Readonly<WalletButtonPaymentMethodProps & WalletButtonPaymentMethodDerivedProps>,
-    ): void {
-        const { method } = this.props;
-        const { isPaymentDataRequired } = this.getWalletButtonPaymentMethodDerivedProps();
-        const { method: prevMethod, isPaymentDataRequired: prevIsPaymentDataRequired } = prevProps;
+        return () => {
+            const deinitializePaymentAsync = async () => {
+                const { disableSubmit } = paymentForm;
 
-        if (
-            method.initializationData !== prevMethod.initializationData ||
-            isPaymentDataRequired !== prevIsPaymentDataRequired
-        ) {
-            this.toggleSubmit();
-        }
-    }
+                disableSubmit(method, false);
 
-    render(): ReactNode {
-        const { isInitializing = false } = this.props;
-        const { isPaymentSelected } = this.getWalletButtonPaymentMethodDerivedProps();
+                try {
+                    await deinitializePayment({
+                        gatewayId: method.gateway,
+                        methodId: method.id,
+                    });
+                } catch (error) {
+                    onUnhandledError(error);
+                }
+            };
 
-        return (
-            <LoadingOverlay hideContentWhenLoading isLoading={isInitializing}>
-                <div className="paymentMethod paymentMethod--walletButton">
-                    {isPaymentSelected ? this.renderPaymentView() : this.renderSignInView()}
-                </div>
-            </LoadingOverlay>
-        );
-    }
+            void deinitializePaymentAsync();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-    private renderSignInView(): ReactNode {
-        const { buttonId, signInButtonClassName, signInButtonLabel, method, language } = this.props;
+    useEffect(() => {
+        toggleSubmit();
+    }, [toggleSubmit]);
 
+    const renderSignInView = (): ReactNode => {
         return (
             // eslint-disable-next-line jsx-a11y/anchor-is-valid
             <a className={signInButtonClassName} href="#" id={buttonId} onClick={preventDefault()}>
@@ -128,13 +172,10 @@ class WalletButtonPaymentMethodComponent extends Component<WalletButtonPaymentMe
                 )}
             </a>
         );
-    }
+    };
 
-    private renderPaymentView(): ReactNode {
-        const { buttonId, editButtonClassName, editButtonLabel, shouldShowEditButton, method } =
-            this.props;
-        const { accountMask, cardName, cardType, expiryMonth, expiryYear } =
-            this.getWalletButtonPaymentMethodDerivedProps();
+    const renderPaymentView = (): ReactNode => {
+        const { accountMask, cardName, cardType, expiryMonth, expiryYear } = derivedProps;
 
         return (
             <>
@@ -180,60 +221,20 @@ class WalletButtonPaymentMethodComponent extends Component<WalletButtonPaymentMe
                     </p>
                 )}
 
-                <SignOutLink method={method} onSignOut={this.handleSignOut} />
+                <SignOutLink method={method} onSignOut={handleSignOut} />
             </>
         );
-    }
-
-    private toggleSubmit(): void {
-        const {
-            paymentForm: { disableSubmit },
-            method,
-        } = this.props;
-        const { isPaymentDataRequired } = this.getWalletButtonPaymentMethodDerivedProps();
-
-        if (normalizeWalletPaymentData(method.initializationData) || !isPaymentDataRequired) {
-            disableSubmit(method, false);
-        } else {
-            disableSubmit(method, true);
-        }
-    }
-
-    private handleSignOut: () => void = async () => {
-        const { signOutCustomer, method, onSignOut = noop, onSignOutError = noop } = this.props;
-
-        try {
-            await signOutCustomer({ methodId: method.id });
-            onSignOut();
-            window.location.reload();
-        } catch (error) {
-            onSignOutError(error);
-        }
     };
 
-    private getWalletButtonPaymentMethodDerivedProps(): WalletButtonPaymentMethodDerivedProps {
-        const { checkoutState, method } = this.props;
-        const {
-            data: { getBillingAddress, getCheckout, isPaymentDataRequired },
-        } = checkoutState;
-        const billingAddress = getBillingAddress();
-        const checkout = getCheckout();
+    const { isPaymentSelected } = derivedProps;
 
-        if (!billingAddress || !checkout) {
-            throw new Error('Unable to get checkout');
-        }
-
-        const walletPaymentData = normalizeWalletPaymentData(method.initializationData);
-
-        return {
-            ...walletPaymentData,
-            // FIXME: I'm not sure how this would work for non-English names.
-            cardName:
-                walletPaymentData && [billingAddress.firstName, billingAddress.lastName].join(' '),
-            isPaymentDataRequired: isPaymentDataRequired(),
-            isPaymentSelected: some(checkout.payments, { providerId: method.id }),
-        };
-    }
-}
+    return (
+        <LoadingOverlay hideContentWhenLoading isLoading={isInitializing}>
+            <div className="paymentMethod paymentMethod--walletButton">
+                {isPaymentSelected ? renderPaymentView() : renderSignInView()}
+            </div>
+        </LoadingOverlay>
+    );
+};
 
 export default WalletButtonPaymentMethodComponent;
