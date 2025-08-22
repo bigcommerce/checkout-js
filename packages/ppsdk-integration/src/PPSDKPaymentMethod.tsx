@@ -2,7 +2,7 @@ import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';
 
 import {
-    PaymentMethodProps,
+    type PaymentMethodProps,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 

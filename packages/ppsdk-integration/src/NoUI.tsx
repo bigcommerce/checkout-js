@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-import { PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
+import { type PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
 
 import { usePropsToOnMount } from './usePropsToOnMount';
-import { Wrapper } from './Wrapper';
 
 export const NoUI = (props: PaymentMethodProps) => {
     const onMount = usePropsToOnMount(props);
 
-    return <Wrapper onMount={onMount} />;
+    useEffect(onMount, [onMount]);
+
+    // eslint-disable-next-line react/jsx-no-useless-fragment
+    return <></>;
 };

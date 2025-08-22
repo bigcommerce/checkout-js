@@ -1,7 +1,7 @@
 import { createCheckoutService, createLanguageService } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
-import { PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
+import { type PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import PPSDKPaymentMethod from './PPSDKPaymentMethod';
@@ -23,9 +23,6 @@ describe('PPSDKPaymentMethod', () => {
         defaultProps = {
             method: {
                 id: 'ppsdkProvider',
-                // initializationStrategy: {
-                //     type: 'card_ui',
-                // },
                 logoUrl: '',
                 method: 'ppsdk',
                 supportedCards: [],
@@ -35,9 +32,7 @@ describe('PPSDKPaymentMethod', () => {
             },
             checkoutService,
             checkoutState: checkoutService.getState(),
-
             paymentForm: jest.fn() as unknown as PaymentMethodProps['paymentForm'],
-
             language: createLanguageService(),
             onUnhandledError: jest.fn(),
         };

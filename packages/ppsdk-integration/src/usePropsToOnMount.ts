@@ -1,7 +1,7 @@
 import { noop } from 'lodash';
 import { useCallback, useMemo } from 'react';
 
-import { PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
+import { type PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
 
 export const usePropsToOnMount = (props: PaymentMethodProps): (() => () => void) => {
     const { checkoutService, method, onUnhandledError = noop } = props;
