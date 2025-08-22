@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.657.0](https://github.com/bigcommerce/checkout-js/compare/v1.656.0...v1.657.0) (2025-08-22)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9385 Convert instrument utils package class components  ([#2521](https://github.com/bigcommerce/checkout-js/issues/2521)) ([31123b5](https://github.com/bigcommerce/checkout-js/commit/31123b57fb01e6976ebf0fe8d6b552ec44a688ad))
+
 ## [1.656.0](https://github.com/bigcommerce/checkout-js/compare/v1.655.2...v1.656.0) (2025-08-22)
 
 
