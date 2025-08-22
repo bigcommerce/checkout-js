@@ -1,4 +1,5 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { renderWithoutWrapper } from '@bigcommerce/checkout/test-utils';
 import React from 'react';
 
 import HostedCreditCardComponent from './HostedCreditCardComponent';
@@ -100,7 +101,8 @@ const getDefaultProps = (overrides = {}) => ({
 
 describe('HostedCreditCardComponent', () => {
     it('renders HostedCreditCardFieldset with correct ids', () => {
-        render(<HostedCreditCardComponent {...getDefaultProps()} />);
+        renderWithoutWrapper(<HostedCreditCardComponent {...getDefaultProps()} />);
+
         expect(screen.getByTestId('fieldset')).toBeInTheDocument();
         expect(screen.getByTestId('cc-cvv')).toHaveTextContent('bluesnapdirect-credit_card-ccCvv');
         expect(screen.getByTestId('cc-expiry')).toHaveTextContent(
@@ -115,7 +117,7 @@ describe('HostedCreditCardComponent', () => {
     });
 
     it('renders customer code field if requireCustomerCode is true', () => {
-        render(
+        renderWithoutWrapper(
             <HostedCreditCardComponent
                 {...getDefaultProps({
                     method: {
@@ -130,31 +132,36 @@ describe('HostedCreditCardComponent', () => {
                 })}
             />,
         );
+
         expect(screen.getByTestId('customer-code-field')).toBeInTheDocument();
     });
 
     it('calls initializePayment with correct options', async () => {
         const initializePayment = jest.fn().mockResolvedValue(undefined);
 
-        render(
+        renderWithoutWrapper(
             <HostedCreditCardComponent
                 {...getDefaultProps({
                     checkoutService: { initializePayment, deinitializePayment: jest.fn() },
                 })}
             />,
         );
+
         fireEvent.click(screen.getByTestId('init-btn'));
+
         await waitFor(() => expect(initializePayment).toHaveBeenCalled());
+
         expect(initializePayment.mock.calls[0][0]).toHaveProperty('creditCard');
     });
 
     it('passes correct validation schemas to CreditCardPaymentMethodComponent', () => {
-        render(<HostedCreditCardComponent {...getDefaultProps()} />);
+        renderWithoutWrapper(<HostedCreditCardComponent {...getDefaultProps()} />);
+
         expect(screen.getByTestId('cc-payment-method')).toBeInTheDocument();
     });
 
     it('renders HostedCreditCardFieldset with correct fields when cardCode/showCardHolderName are false', () => {
-        render(
+        renderWithoutWrapper(
             <HostedCreditCardComponent
                 {...getDefaultProps({
                     method: {
@@ -169,6 +176,7 @@ describe('HostedCreditCardComponent', () => {
                 })}
             />,
         );
+
         expect(screen.queryByTestId('cc-cvv')).not.toBeInTheDocument();
         expect(screen.queryByTestId('cc-name')).not.toBeInTheDocument();
         expect(screen.getByTestId('cc-expiry')).toBeInTheDocument();
@@ -178,7 +186,7 @@ describe('HostedCreditCardComponent', () => {
     it('handles onCardTypeChange by calling setFieldValue', async () => {
         const setFieldValue = jest.fn();
 
-        render(
+        renderWithoutWrapper(
             <HostedCreditCardComponent
                 {...getDefaultProps({
                     paymentForm: { ...getDefaultProps().paymentForm, setFieldValue },
@@ -202,7 +210,7 @@ describe('HostedCreditCardComponent', () => {
         const setSubmitted = jest.fn();
         const submitForm = jest.fn();
 
-        render(
+        renderWithoutWrapper(
             <HostedCreditCardComponent
                 {...getDefaultProps({
                     paymentForm: { ...getDefaultProps().paymentForm, setSubmitted, submitForm },
@@ -225,7 +233,7 @@ describe('HostedCreditCardComponent', () => {
     });
 
     it('handles onFocus by setting focusedFieldType', async () => {
-        render(<HostedCreditCardComponent {...getDefaultProps()} />);
+        renderWithoutWrapper(<HostedCreditCardComponent {...getDefaultProps()} />);
 
         const getHostedFormOptions = (
             jest.requireMock('@bigcommerce/checkout/credit-card-integration')
@@ -241,7 +249,7 @@ describe('HostedCreditCardComponent', () => {
         const setFieldValue = jest.fn();
         const setFieldTouched = jest.fn();
 
-        render(
+        renderWithoutWrapper(
             <HostedCreditCardComponent
                 {...getDefaultProps({
                     paymentForm: {
@@ -266,6 +274,7 @@ describe('HostedCreditCardComponent', () => {
                     ccCvv: [{ type: 'invalid' }],
                 },
             });
+
             expect(setFieldValue).toHaveBeenCalledWith('hostedForm.errors.ccNumber', 'required');
         });
 
@@ -275,7 +284,7 @@ describe('HostedCreditCardComponent', () => {
     });
 
     it('renders HostedCreditCardValidation with cardCodeId when isInstrumentCardCodeRequired is true', () => {
-        render(<HostedCreditCardComponent {...getDefaultProps()} />);
+        renderWithoutWrapper(<HostedCreditCardComponent {...getDefaultProps()} />);
 
         const getStoredCardValidationFieldset = (
             jest.requireMock('@bigcommerce/checkout/credit-card-integration')
@@ -286,7 +295,7 @@ describe('HostedCreditCardComponent', () => {
         const validationFieldset = getStoredCardValidationFieldset(instrument);
 
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        render(validationFieldset);
+        renderWithoutWrapper(validationFieldset);
 
         expect(screen.getByTestId('val-cc-cvv')).toHaveTextContent(
             'bluesnapdirect-credit_card-ccCvv',
@@ -294,7 +303,7 @@ describe('HostedCreditCardComponent', () => {
     });
 
     it('renders HostedCreditCardValidation with cardNumberId when isInstrumentCardNumberRequired is true', () => {
-        render(<HostedCreditCardComponent {...getDefaultProps()} />);
+        renderWithoutWrapper(<HostedCreditCardComponent {...getDefaultProps()} />);
 
         const getStoredCardValidationFieldset = (
             jest.requireMock('@bigcommerce/checkout/credit-card-integration')
@@ -305,7 +314,7 @@ describe('HostedCreditCardComponent', () => {
         const validationFieldset = getStoredCardValidationFieldset(instrument);
 
         // eslint-disable-next-line  @typescript-eslint/no-unsafe-argument
-        render(validationFieldset);
+        renderWithoutWrapper(validationFieldset);
 
         expect(screen.getByTestId('val-cc-number')).toHaveTextContent(
             'bluesnapdirect-credit_card-ccNumber',
@@ -313,7 +322,7 @@ describe('HostedCreditCardComponent', () => {
     });
 
     it('returns correct fields when selectedInstrument is provided to getHostedFormOptions', async () => {
-        render(<HostedCreditCardComponent {...getDefaultProps()} />);
+        renderWithoutWrapper(<HostedCreditCardComponent {...getDefaultProps()} />);
 
         const getHostedFormOptions = (
             jest.requireMock('@bigcommerce/checkout/credit-card-integration')
@@ -336,7 +345,7 @@ describe('HostedCreditCardComponent', () => {
     });
 
     it('returns cardNumberVerification field when selectedInstrument is present and isInstrumentCardNumberRequired is true', async () => {
-        render(<HostedCreditCardComponent {...getDefaultProps()} />);
+        renderWithoutWrapper(<HostedCreditCardComponent {...getDefaultProps()} />);
 
         const getHostedFormOptions = (
             jest.requireMock('@bigcommerce/checkout/credit-card-integration')
