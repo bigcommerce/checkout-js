@@ -1,8 +1,16 @@
 import React, { type FunctionComponent, useEffect } from 'react';
 
-import { PaymentMethodId, useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
-const BraintreePaypalCreditBanner: FunctionComponent<{ onUnhandledError?(error: Error): void }> = ({
+interface BraintreePaypalCreditBannerProps {
+    methodId: string;
+    containerId: string;
+    onUnhandledError?(error: Error): void;
+}
+
+const BraintreePaypalCreditBanner: FunctionComponent<BraintreePaypalCreditBannerProps> = ({
+    methodId,
+    containerId,
     onUnhandledError,
 }) => {
     const { checkoutService } = useCheckout();
@@ -10,14 +18,14 @@ const BraintreePaypalCreditBanner: FunctionComponent<{ onUnhandledError?(error: 
     useEffect(() => {
         try {
             void checkoutService.initializePayment({
-                methodId: PaymentMethodId.BraintreePaypalCredit,
+                methodId,
                 braintree: {
-                    bannerContainerId: 'braintree-banner-container',
+                    bannerContainerId: containerId,
                 },
             });
 
             void checkoutService.deinitializePayment({
-                methodId: PaymentMethodId.BraintreePaypalCredit,
+                methodId,
             });
         } catch (error) {
             if (error instanceof Error) {
@@ -28,7 +36,7 @@ const BraintreePaypalCreditBanner: FunctionComponent<{ onUnhandledError?(error: 
         return () => {
             try {
                 void checkoutService.deinitializePayment({
-                    methodId: PaymentMethodId.BraintreePaypalCredit,
+                    methodId,
                 });
             } catch (error) {
                 if (error instanceof Error) {
@@ -39,7 +47,7 @@ const BraintreePaypalCreditBanner: FunctionComponent<{ onUnhandledError?(error: 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return <div data-test="braintree-banner-container" id="braintree-banner-container" />;
+    return <div data-test={containerId} id={containerId} />;
 };
 
 export default BraintreePaypalCreditBanner;

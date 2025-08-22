@@ -73,7 +73,9 @@ export function getPaymentMethodTitle(
             [PaymentMethodId.BraintreePaypalCredit]: {
                 logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo_letter.svg'),
                 titleText: methodDisplayName,
-                subtitle: (props: { onUnhandledError?(error: Error): void }): ReactNode => <BraintreePaypalCreditBanner {...props} />
+                subtitle: (props: PaymentMethodSubtitleProps): ReactNode => (
+                    <BraintreePaypalCreditBanner containerId='braintree-credit-banner-container' {...props} />
+                ),
             },
             [PaymentMethodType.PaypalCredit]: {
                 logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo_letter.svg'),
@@ -176,6 +178,9 @@ export function getPaymentMethodTitle(
                         ? method.logoUrl
                         : cdnPath('/img/payment-providers/paypalpaymentsprouk.png'),
                 titleText: '',
+                subtitle: (props: PaymentMethodSubtitleProps): ReactNode => (
+                    <BraintreePaypalCreditBanner containerId='braintree-banner-container' {...props} />
+                ),
             },
             [PaymentMethodId.Quadpay]: {
                 logoUrl: cdnPath('/img/payment-providers/quadpay.png'),
