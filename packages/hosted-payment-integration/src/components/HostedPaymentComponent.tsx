@@ -10,7 +10,7 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import { find, noop } from 'lodash';
-import React, { Component, ReactNode } from 'react';
+import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 
 import {
     AccountInstrumentFieldset,
@@ -33,11 +33,6 @@ export interface HostedPaymentComponentProps {
     deinitializePayment(options: PaymentRequestOptions): Promise<CheckoutSelectors>;
     initializePayment(options: PaymentInitializeOptions): Promise<CheckoutSelectors>;
     onUnhandledError?(error: Error): void;
-}
-
-interface HostedPaymentComponentState {
-    isAddingNewInstrument: boolean;
-    selectedInstrument?: AccountInstrument;
 }
 
 interface HostedPaymentComponentDerivedProps {
@@ -100,120 +95,126 @@ function getHostedPaymentMethodDerivedProps(
     };
 }
 
-class HostedPaymentMethodComponent extends Component<
-    HostedPaymentComponentProps,
-    HostedPaymentComponentState
-> {
-    state: HostedPaymentComponentState = {
-        isAddingNewInstrument: false,
-    };
+const HostedPaymentMethodComponent: React.FC<HostedPaymentComponentProps> = (props) => {
+    const {
+        description,
+        isInitializing = false,
+        initializePayment,
+        method,
+        onUnhandledError = noop,
+        deinitializePayment,
+    } = props;
 
-    async componentDidMount(): Promise<void> {
-        const { initializePayment, method, onUnhandledError = noop } = this.props;
+    const [isAddingNewInstrument, setIsAddingNewInstrument] = useState(false);
+    const [selectedInstrument, setSelectedInstrument] = useState<AccountInstrument | undefined>();
 
-        const { isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp, loadInstruments } =
-            getHostedPaymentMethodDerivedProps(this.props);
+    const derivedProps = getHostedPaymentMethodDerivedProps(props);
+    const {
+        isLoadingInstruments,
+        instruments,
+        isNewAddress,
+        isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
+    } = derivedProps;
 
-        try {
-            await initializePayment({
-                gatewayId: method.gateway,
-                methodId: method.id,
-            });
-
-            if (isInstrumentFeatureAvailableProp) {
-                await loadInstruments();
-            }
-        } catch (error) {
-            onUnhandledError(error);
-        }
-    }
-
-    async componentWillUnmount(): Promise<void> {
-        const { deinitializePayment, method, onUnhandledError = noop } = this.props;
-
-        try {
-            await deinitializePayment({
-                gatewayId: method.gateway,
-                methodId: method.id,
-            });
-        } catch (error) {
-            onUnhandledError(error);
-        }
-    }
-
-    render(): ReactNode {
-        const { description, isInitializing = false } = this.props;
-
-        const {
-            isLoadingInstruments,
-            instruments,
-            isNewAddress,
-            isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
-        } = getHostedPaymentMethodDerivedProps(this.props);
-
-        const { selectedInstrument = this.getDefaultInstrument() } = this.state;
-
-        const isLoading = isInitializing || isLoadingInstruments;
-        const shouldShowInstrumentFieldset =
-            isInstrumentFeatureAvailableProp && (instruments.length > 0 || isNewAddress);
-
-        if (!description && !isInstrumentFeatureAvailableProp) {
-            return null;
-        }
-
-        return (
-            <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
-                <div className="paymentMethod paymentMethod--hosted">
-                    {description}
-
-                    {shouldShowInstrumentFieldset && (
-                        <AccountInstrumentFieldset
-                            instruments={instruments}
-                            onSelectInstrument={this.handleSelectInstrument}
-                            onUseNewInstrument={this.handleUseNewInstrument}
-                            selectedInstrument={selectedInstrument}
-                        />
-                    )}
-
-                    {isInstrumentFeatureAvailableProp && (
-                        <StoreInstrumentFieldset
-                            instrumentId={selectedInstrument && selectedInstrument.bigpayToken}
-                            instruments={instruments}
-                            isAccountInstrument={true}
-                        />
-                    )}
-                </div>
-            </LoadingOverlay>
-        );
-    }
-
-    private getDefaultInstrument(): AccountInstrument | undefined {
-        const { isAddingNewInstrument } = this.state;
-
-        const { instruments } = getHostedPaymentMethodDerivedProps(this.props);
-
+    const getDefaultInstrument = useCallback((): AccountInstrument | undefined => {
         if (isAddingNewInstrument || !instruments.length) {
             return;
         }
 
         return find(instruments, { defaultInstrument: true }) || instruments[0];
+    }, [isAddingNewInstrument, instruments]);
+
+    const handleUseNewInstrument = useCallback(() => {
+        setIsAddingNewInstrument(true);
+        setSelectedInstrument(undefined);
+    }, []);
+
+    const handleSelectInstrument = useCallback(
+        (id: string) => {
+            setIsAddingNewInstrument(false);
+            setSelectedInstrument(find(instruments, { bigpayToken: id }));
+        },
+        [instruments],
+    );
+
+    useEffect(() => {
+        const initializePaymentAsync = async () => {
+            try {
+                await initializePayment({
+                    gatewayId: method.gateway,
+                    methodId: method.id,
+                });
+
+                if (isInstrumentFeatureAvailableProp) {
+                    await derivedProps.loadInstruments();
+                }
+            } catch (error) {
+                onUnhandledError(error);
+            }
+        };
+
+        void initializePaymentAsync();
+    }, [
+        initializePayment,
+        method.gateway,
+        method.id,
+        isInstrumentFeatureAvailableProp,
+        derivedProps,
+        onUnhandledError,
+    ]);
+
+    useEffect(() => {
+        return () => {
+            const deinitializePaymentAsync = async () => {
+                try {
+                    await deinitializePayment({
+                        gatewayId: method.gateway,
+                        methodId: method.id,
+                    });
+                } catch (error) {
+                    onUnhandledError(error);
+                }
+            };
+
+            void deinitializePaymentAsync();
+        };
+    }, [deinitializePayment, method.gateway, method.id, onUnhandledError]);
+
+    const currentSelectedInstrument = selectedInstrument || getDefaultInstrument();
+    const isLoading = isInitializing || isLoadingInstruments;
+    const shouldShowInstrumentFieldset =
+        isInstrumentFeatureAvailableProp && (instruments.length > 0 || isNewAddress);
+
+    if (!description && !isInstrumentFeatureAvailableProp) {
+        return null;
     }
 
-    private handleUseNewInstrument: () => void = () => {
-        this.setState({
-            isAddingNewInstrument: true,
-            selectedInstrument: undefined,
-        });
-    };
+    return (
+        <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
+            <div className="paymentMethod paymentMethod--hosted">
+                {description}
 
-    private handleSelectInstrument: (id: string) => void = (id) => {
-        const { instruments } = getHostedPaymentMethodDerivedProps(this.props);
+                {shouldShowInstrumentFieldset && (
+                    <AccountInstrumentFieldset
+                        instruments={instruments}
+                        onSelectInstrument={handleSelectInstrument}
+                        onUseNewInstrument={handleUseNewInstrument}
+                        selectedInstrument={currentSelectedInstrument}
+                    />
+                )}
 
-        this.setState({
-            isAddingNewInstrument: false,
-            selectedInstrument: find(instruments, { bigpayToken: id }),
-        });
-    };
-}
+                {isInstrumentFeatureAvailableProp && (
+                    <StoreInstrumentFieldset
+                        instrumentId={
+                            currentSelectedInstrument && currentSelectedInstrument.bigpayToken
+                        }
+                        instruments={instruments}
+                        isAccountInstrument={true}
+                    />
+                )}
+            </div>
+        </LoadingOverlay>
+    );
+};
 
 export default HostedPaymentMethodComponent;

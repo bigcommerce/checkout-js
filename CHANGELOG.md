@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.657.0](https://github.com/bigcommerce/checkout-js/compare/v1.656.0...v1.657.0) (2025-08-22)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9385 Convert instrument utils package class components  ([#2521](https://github.com/bigcommerce/checkout-js/issues/2521)) ([31123b5](https://github.com/bigcommerce/checkout-js/commit/31123b57fb01e6976ebf0fe8d6b552ec44a688ad))
+
+## [1.656.0](https://github.com/bigcommerce/checkout-js/compare/v1.655.2...v1.656.0) (2025-08-22)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9385 Convert HostedPaymentMethodComponent ([#2522](https://github.com/bigcommerce/checkout-js/issues/2522)) ([4919bd5](https://github.com/bigcommerce/checkout-js/commit/4919bd5c4942fe6eb75cde8b7cdad62505fdc9a1))
+
+### [1.655.2](https://github.com/bigcommerce/checkout-js/compare/v1.655.1...v1.655.2) (2025-08-22)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9384 Convert OrderSummaryItems ([#2508](https://github.com/bigcommerce/checkout-js/issues/2508)) ([038123b](https://github.com/bigcommerce/checkout-js/commit/038123bd26f512253ec354a7a5367c5c4ebc1fc2))
+
 ### [1.655.1](https://github.com/bigcommerce/checkout-js/compare/v1.655.0...v1.655.1) (2025-08-21)
 
 ## [1.655.0](https://github.com/bigcommerce/checkout-js/compare/v1.654.4...v1.655.0) (2025-08-21)

@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import creditCardType from 'credit-card-type';
 import { FieldProps } from 'formik';
 import { find, noop } from 'lodash';
-import React, { FunctionComponent, PureComponent, ReactNode, useCallback } from 'react';
+import React, { FunctionComponent, useCallback, useEffect, useRef } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { CreditCardIcon, DropdownTrigger } from '@bigcommerce/checkout/ui';
@@ -228,75 +228,71 @@ const InstrumentSelectButton: FunctionComponent<InstrumentSelectButtonProps> = (
     );
 };
 
-class InstrumentSelect extends PureComponent<InstrumentSelectProps> {
-    componentDidMount() {
-        const { selectedInstrumentId } = this.props;
+const InstrumentSelect: FunctionComponent<InstrumentSelectProps> = ({
+    field,
+    form,
+    instruments,
+    onSelectInstrument,
+    onUseNewInstrument,
+    selectedInstrumentId,
+    shouldHideExpiryDate = false,
+}) => {
+    const prevSelectedInstrumentIdRef = useRef(selectedInstrumentId);
 
+    const updateFieldValue = useCallback(
+        (instrumentId = '') => {
+            void form.setFieldValue(field.name, instrumentId);
+        },
+        [form, field.name],
+    );
+
+    useEffect(() => {
         // FIXME: Used setTimeout here because setFieldValue call doesnot set value if called before formik is properly mounted.
         //        This ensures that update Field value is called after formik has mounted.
         // See GitHub issue: https://github.com/jaredpalmer/formik/issues/930
-        setTimeout(() => this.updateFieldValue(selectedInstrumentId));
-    }
+        setTimeout(() => updateFieldValue(selectedInstrumentId));
 
-    componentDidUpdate(prevProps: Readonly<InstrumentSelectProps>) {
-        const { selectedInstrumentId: prevSelectedInstrumentId } = prevProps;
-        const { selectedInstrumentId } = this.props;
+        return () => {
+            if (field.value === '' && selectedInstrumentId !== undefined) {
+                updateFieldValue();
+            }
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-        if (prevSelectedInstrumentId !== selectedInstrumentId) {
-            this.updateFieldValue(selectedInstrumentId);
+    useEffect(() => {
+        if (prevSelectedInstrumentIdRef.current !== selectedInstrumentId) {
+            updateFieldValue(selectedInstrumentId);
         }
-    }
 
-    componentWillUnmount() {
-        const { selectedInstrumentId, field } = this.props;
+        prevSelectedInstrumentIdRef.current = selectedInstrumentId;
+    }, [selectedInstrumentId, updateFieldValue]);
 
-        if (field.value === '' && selectedInstrumentId !== undefined) {
-            this.updateFieldValue();
-        }
-    }
+    const selectedInstrument = find(instruments, { bigpayToken: selectedInstrumentId });
 
-    render(): ReactNode {
-        const {
-            field,
-            instruments,
-            onSelectInstrument,
-            onUseNewInstrument,
-            selectedInstrumentId,
-            shouldHideExpiryDate = false,
-        } = this.props;
-
-        const selectedInstrument = find(instruments, { bigpayToken: selectedInstrumentId });
-
-        return (
-            <div className="instrumentSelect">
-                <DropdownTrigger
-                    dropdown={
-                        <InstrumentMenu
-                            instruments={instruments}
-                            onSelectInstrument={onSelectInstrument}
-                            onUseNewInstrument={onUseNewInstrument}
-                            selectedInstrumentId={selectedInstrumentId}
-                            shouldHideExpiryDate={shouldHideExpiryDate}
-                        />
-                    }
-                >
-                    <InstrumentSelectButton
-                        instrument={selectedInstrument}
+    return (
+        <div className="instrumentSelect">
+            <DropdownTrigger
+                dropdown={
+                    <InstrumentMenu
+                        instruments={instruments}
+                        onSelectInstrument={onSelectInstrument}
+                        onUseNewInstrument={onUseNewInstrument}
+                        selectedInstrumentId={selectedInstrumentId}
                         shouldHideExpiryDate={shouldHideExpiryDate}
-                        testId="instrument-select"
                     />
+                }
+            >
+                <InstrumentSelectButton
+                    instrument={selectedInstrument}
+                    shouldHideExpiryDate={shouldHideExpiryDate}
+                    testId="instrument-select"
+                />
 
-                    <input type="hidden" {...field} />
-                </DropdownTrigger>
-            </div>
-        );
-    }
-
-    private updateFieldValue(instrumentId = ''): void {
-        const { form, field } = this.props;
-
-        void form.setFieldValue(field.name, instrumentId);
-    }
-}
+                <input type="hidden" {...field} />
+            </DropdownTrigger>
+        </div>
+    );
+};
 
 export default InstrumentSelect;
