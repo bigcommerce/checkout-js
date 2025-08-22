@@ -2,7 +2,7 @@
 // V2 Form Styles
 // =============================================================================
 
-.themeV2{
+@include themeV2 {
     .floating-select,
     .floating-input {
         background-color: $color-secondaryDark;

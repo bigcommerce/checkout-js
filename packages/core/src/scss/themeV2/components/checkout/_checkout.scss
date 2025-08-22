@@ -1,4 +1,4 @@
-.themeV2 {
+@include themeV2 {
     background-color: $color-secondaryDarker;
 
     .layout {
@@ -25,7 +25,7 @@
         }
 
         @include breakpoint("xlarge") {
-            padding-right: spacing("double") * 2;
+            padding-right: spacing("single");
         }
     }
 
@@ -46,6 +46,7 @@
     
     .stepHeader {
         flex-wrap: wrap;
+        padding: 0;
 
         .stepHeader-body {
             order: 3;
@@ -57,6 +58,10 @@
         .stepHeader-actions {
             margin-left: auto;
             align-self: flex-start;
+        }
+
+        .stepHeader-figure {
+            align-items: flex-end;
         }
     }
 }

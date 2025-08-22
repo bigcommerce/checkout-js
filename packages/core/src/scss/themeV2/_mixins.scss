@@ -1,0 +1,35 @@
+// =============================================================================
+// THEME V2 MIXINS
+// =============================================================================
+
+@mixin themeV2 {
+  @at-root .themeV2 #{&} {
+    @content;
+  }
+}
+
+@mixin themeV2-mobile {
+    .themeV2 & {
+        @media (max-width: 767px) {
+            @content;
+        }
+    }
+}
+
+@mixin themeV2-tablet {
+    .themeV2 & {
+        @media (min-width: 768px) and (max-width: 1023px) {
+            @content;
+        }
+    }
+}
+
+
+@mixin themeV2-desktop {
+    .themeV2 & {
+        @media (min-width: 1024px) {
+            @content;
+        }
+    }
+}
+

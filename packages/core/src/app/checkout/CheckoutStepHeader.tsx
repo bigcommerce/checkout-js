@@ -56,13 +56,23 @@ const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
                 >{heading}</h2>
             </div>
 
-            <div
-                className={classNames('stepHeader-body stepHeader-column optimizedCheckout-contentPrimary',
-                    { 'body-regular': themeV2 })}
-                data-test="step-info"
-            >
-                {!isActive && isComplete && summary}
-            </div>
+            {themeV2 && !isActive && isComplete &&
+                <div
+                    className="stepHeader-body stepHeader-column optimizedCheckout-contentPrimary"
+                    data-test="step-info"
+                    >
+                        {summary}
+                </div>
+            }
+
+            {!themeV2 &&
+                <div
+                    className="stepHeader-body stepHeader-column optimizedCheckout-contentPrimary"
+                    data-test="step-info"
+                >
+                    {!isActive && isComplete && summary}
+                </div>
+            }
 
             {isEditable && !isActive && (
                 <div className="stepHeader-actions stepHeader-column">
