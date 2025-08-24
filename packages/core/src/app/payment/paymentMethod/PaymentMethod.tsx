@@ -52,6 +52,7 @@ const PaymentMethodComponent: FunctionComponent<
     PaymentMethodProps & WithCheckoutPaymentMethodProps
 > = (props) => {
     const { method } = props;
+    console.log('sezzle');
 
     if (method.type === PaymentMethodProviderType.PPSDK) {
         return <Suspense><PPSDKPaymentMethod {...props} /></Suspense>;
@@ -77,7 +78,6 @@ const PaymentMethodComponent: FunctionComponent<
         method.id === PaymentMethodId.BraintreeVenmo ||
         method.id === PaymentMethodId.Humm ||
         method.id === PaymentMethodId.Laybuy ||
-        method.id === PaymentMethodId.Sezzle ||
         method.id === PaymentMethodId.Zip ||
         method.method === PaymentMethodType.Paypal ||
         method.method === PaymentMethodType.PaypalCredit ||
