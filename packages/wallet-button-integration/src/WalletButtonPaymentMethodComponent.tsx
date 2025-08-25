@@ -1,7 +1,6 @@
 import {
     type CheckoutSelectors,
     type CustomerRequestOptions,
-    type LanguageService,
     type PaymentInitializeOptions,
     type PaymentMethod,
     type PaymentRequestOptions,
@@ -9,20 +8,17 @@ import {
 import { noop, some } from 'lodash';
 import React, { type ReactNode, useCallback, useEffect } from 'react';
 
-import { preventDefault } from '@bigcommerce/checkout/dom-utils';
-import { SignOutLink } from '@bigcommerce/checkout/instrument-utils';
-import { TranslatedString } from '@bigcommerce/checkout/locale';
 import {
-    getPaymentMethodName,
     type PaymentFormService,
+    useCheckout,
 } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import normalizeWalletPaymentData from './normalizeWalletPaymentData';
+import PaymentView from './PaymentView';
+import SignInView from './SignInView';
 
 export interface WalletButtonPaymentMethodProps {
-    checkoutState: CheckoutSelectors;
-    language: LanguageService;
     paymentForm: PaymentFormService;
     buttonId: string;
     editButtonClassName?: string;
@@ -52,8 +48,6 @@ interface WalletButtonPaymentMethodDerivedProps {
 
 const WalletButtonPaymentMethodComponent: React.FC<WalletButtonPaymentMethodProps> = (props) => {
     const {
-        checkoutState,
-        language,
         paymentForm,
         buttonId,
         editButtonClassName,
@@ -71,43 +65,42 @@ const WalletButtonPaymentMethodComponent: React.FC<WalletButtonPaymentMethodProp
         onUnhandledError = noop,
     } = props;
 
-    const getWalletButtonPaymentMethodDerivedProps =
-        useCallback((): WalletButtonPaymentMethodDerivedProps => {
-            const {
-                data: { getBillingAddress, getCheckout, isPaymentDataRequired },
-            } = checkoutState;
-            const billingAddress = getBillingAddress();
-            const checkout = getCheckout();
+    const {
+        checkoutState: {
+            data: { getBillingAddress, getCheckout, isPaymentDataRequired },
+        },
+    } = useCheckout();
 
-            if (!billingAddress || !checkout) {
-                throw new Error('Unable to get checkout');
-            }
+    const billingAddress = getBillingAddress();
+    const checkout = getCheckout();
 
-            const walletPaymentData = normalizeWalletPaymentData(method.initializationData);
+    if (!billingAddress || !checkout) {
+        throw new Error('Unable to get checkout');
+    }
 
-            return {
-                ...walletPaymentData,
-                // FIXME: I'm not sure how this would work for non-English names.
-                cardName:
-                    walletPaymentData &&
-                    [billingAddress.firstName, billingAddress.lastName].join(' '),
-                isPaymentDataRequired: isPaymentDataRequired(),
-                isPaymentSelected: some(checkout.payments, { providerId: method.id }),
-            };
-        }, [checkoutState, method.initializationData, method.id]);
+    const walletPaymentData = normalizeWalletPaymentData(method.initializationData);
+    const derivedProps: WalletButtonPaymentMethodDerivedProps = {
+        ...walletPaymentData,
+        // FIXME: I'm not sure how this would work for non-English names.
+        cardName:
+            walletPaymentData && [billingAddress.firstName, billingAddress.lastName].join(' '),
+        isPaymentDataRequired: isPaymentDataRequired(),
+        isPaymentSelected: some(checkout.payments, { providerId: method.id }),
+    };
 
-    const derivedProps = getWalletButtonPaymentMethodDerivedProps();
-
-    const toggleSubmit = useCallback(() => {
+    const toggleSubmit = () => {
         const { disableSubmit } = paymentForm;
-        const { isPaymentDataRequired } = derivedProps;
+        const currentIsPaymentDataRequired = isPaymentDataRequired();
 
-        if (normalizeWalletPaymentData(method.initializationData) || !isPaymentDataRequired) {
+        if (
+            normalizeWalletPaymentData(method.initializationData) ||
+            !currentIsPaymentDataRequired
+        ) {
             disableSubmit(method, false);
         } else {
             disableSubmit(method, true);
         }
-    }, [paymentForm, method, derivedProps]);
+    };
 
     const handleSignOut = useCallback(async () => {
         try {
@@ -158,80 +151,31 @@ const WalletButtonPaymentMethodComponent: React.FC<WalletButtonPaymentMethodProp
 
     useEffect(() => {
         toggleSubmit();
-    }, [toggleSubmit]);
-
-    const renderSignInView = (): ReactNode => {
-        return (
-            // eslint-disable-next-line jsx-a11y/anchor-is-valid
-            <a className={signInButtonClassName} href="#" id={buttonId} onClick={preventDefault()}>
-                {signInButtonLabel || (
-                    <TranslatedString
-                        data={{ providerName: getPaymentMethodName(language)(method) }}
-                        id="remote.sign_in_action"
-                    />
-                )}
-            </a>
-        );
-    };
-
-    const renderPaymentView = (): ReactNode => {
-        const { accountMask, cardName, cardType, expiryMonth, expiryYear } = derivedProps;
-
-        return (
-            <>
-                {!!cardName && (
-                    <p data-test="payment-method-wallet-card-name">
-                        <strong>
-                            <TranslatedString id="payment.credit_card_name_label" />:
-                        </strong>{' '}
-                        {cardName}
-                    </p>
-                )}
-
-                {!!accountMask && !!cardType && (
-                    <p data-test="payment-method-wallet-card-type">
-                        <strong>{`${cardType}:`}</strong> {accountMask}
-                    </p>
-                )}
-
-                {!!expiryMonth && !!expiryYear && (
-                    <p data-test="payment-method-wallet-card-expiry">
-                        <strong>
-                            <TranslatedString id="payment.credit_card_expiration_date_label" />:
-                        </strong>{' '}
-                        {`${expiryMonth}/${expiryYear}`}
-                    </p>
-                )}
-
-                {!!shouldShowEditButton && (
-                    <p>
-                        {
-                            // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                            <a
-                                className={editButtonClassName}
-                                href="#"
-                                id={buttonId}
-                                onClick={preventDefault()}
-                            >
-                                {editButtonLabel || (
-                                    <TranslatedString id="remote.select_different_card_action" />
-                                )}
-                            </a>
-                        }
-                    </p>
-                )}
-
-                <SignOutLink method={method} onSignOut={handleSignOut} />
-            </>
-        );
-    };
+    });
 
     const { isPaymentSelected } = derivedProps;
 
     return (
         <LoadingOverlay hideContentWhenLoading isLoading={isInitializing}>
             <div className="paymentMethod paymentMethod--walletButton">
-                {isPaymentSelected ? renderPaymentView() : renderSignInView()}
+                {isPaymentSelected ? (
+                    <PaymentView
+                        {...derivedProps}
+                        buttonId={buttonId}
+                        editButtonClassName={editButtonClassName}
+                        editButtonLabel={editButtonLabel}
+                        method={method}
+                        onSignOut={handleSignOut}
+                        shouldShowEditButton={shouldShowEditButton}
+                    />
+                ) : (
+                    <SignInView
+                        buttonId={buttonId}
+                        method={method}
+                        signInButtonClassName={signInButtonClassName}
+                        signInButtonLabel={signInButtonLabel}
+                    />
+                )}
             </div>
         </LoadingOverlay>
     );
