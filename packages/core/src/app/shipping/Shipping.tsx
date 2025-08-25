@@ -204,7 +204,6 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps & Ext
                     />
                     <ShippingForm
                         {...shippingFormProps}
-                        addresses={customer.addresses}
                         deinitialize={deinitializeShippingMethod}
                         initialize={initializeShippingMethod}
                         isBillingSameAsShipping={isBillingSameAsShipping}
@@ -217,7 +216,6 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps & Ext
                         onSingleShippingSubmit={this.handleSingleShippingSubmit}
                         setIsMultishippingMode={setIsMultishippingMode}
                         shippingFormRenderTimestamp={shippingFormRenderTimestamp}
-                        shouldShowSaveAddress={!isGuest}
                         updateAddress={updateShippingAddress}
                     />
                 </div>
