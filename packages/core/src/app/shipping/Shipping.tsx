@@ -71,7 +71,6 @@ export interface WithCheckoutShippingProps {
     shippingAddress?: Address;
     shouldShowMultiShipping: boolean;
     shouldShowOrderComments: boolean;
-    shouldRenderWhileLoading: boolean;
     isGuestMultiShippingEnabled: boolean;
     providerWithCustomCheckout?: string;
     isFloatingLabelEnabled?: boolean;
@@ -147,7 +146,6 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps & Ext
             step,
             isFloatingLabelEnabled,
             shouldRenderStripeForm,
-            shouldRenderWhileLoading,
             cartHasPromotionalItems,
             extensionState: { shippingFormRenderTimestamp } = {},
             setIsMultishippingMode,
@@ -172,7 +170,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps & Ext
                 initialize={initializeShippingMethod}
                 isBillingSameAsShipping={isBillingSameAsShipping}
                 isGuest={ isGuest }
-                isInitialValueLoaded={shouldRenderWhileLoading ? !isInitializing : true}
+                isInitialValueLoaded={!isInitializing}
                 isLoading={ isInitializing }
                 isMultiShippingMode={isMultiShippingMode}
                 isShippingMethodLoading={ this.props.isLoading }
@@ -185,7 +183,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps & Ext
         }
 
         return (
-            <AddressFormSkeleton isLoading={isInitializing} renderWhileLoading={shouldRenderWhileLoading}>
+            <AddressFormSkeleton isLoading={isInitializing}>
                 <div className="checkout-form">
                     <ConfirmationModal
                         action={handleSwitchToSingleShipping}
@@ -211,7 +209,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps & Ext
                         isFloatingLabelEnabled={isFloatingLabelEnabled}
                         isGuest={isGuest}
                         isGuestMultiShippingEnabled={isGuestMultiShippingEnabled}
-                        isInitialValueLoaded={shouldRenderWhileLoading ? !isInitializing : true}
+                        isInitialValueLoaded={!isInitializing}
                         isMultiShippingMode={isMultiShippingMode}
                         onMultiShippingSubmit={this.handleMultiShippingSubmit}
                         onSingleShippingSubmit={this.handleSingleShippingSubmit}
@@ -386,7 +384,6 @@ export function mapToShippingProps({
     const {
         checkoutSettings: {
             enableOrderComments,
-            features,
             hasMultiShippingEnabled,
             googleMapsApiKey,
         },
@@ -445,7 +442,6 @@ export function mapToShippingProps({
         methodId,
         providerWithCustomCheckout,
         shippingAddress,
-        shouldRenderWhileLoading: features['CHECKOUT-8300.improve_extension_performance'] ?? true,
         shouldShowMultiShipping,
         shouldShowOrderComments: enableOrderComments,
         signOut: checkoutService.signOutCustomer,
