@@ -33,7 +33,7 @@ import {
 } from '@bigcommerce/checkout/test-mocks';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import PayPalCommerceCreditCardPaymentMethod from './PayPalCommerceCreditCardsPaymentMethod';
+import PayPalCommerceCreditCardsPaymentMethod from './PayPalCommerceCreditCardsPaymentMethod';
 
 describe('PayPalCommerceCreditCardPaymentMethod', () => {
     let initialValues: CreditCardPaymentMethodValues;
@@ -86,7 +86,7 @@ describe('PayPalCommerceCreditCardPaymentMethod', () => {
                 <PaymentFormContext.Provider value={{ paymentForm }}>
                     <LocaleContext.Provider value={localeContext}>
                         <Formik initialValues={initialValues} onSubmit={noop}>
-                            <PayPalCommerceCreditCardPaymentMethod {...props} />
+                            <PayPalCommerceCreditCardsPaymentMethod {...props} />
                         </Formik>
                     </LocaleContext.Provider>
                 </PaymentFormContext.Provider>

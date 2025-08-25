@@ -25,7 +25,7 @@ import {
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 
-const BigCommercePaymentsCreditCardPaymentMethod: FunctionComponent<PaymentMethodProps> = (
+const BigCommercePaymentsCreditCardsPaymentMethod: FunctionComponent<PaymentMethodProps> = (
     props,
 ) => {
     const { checkoutService, checkoutState, paymentForm, language, method } = props;
@@ -297,6 +297,6 @@ const BigCommercePaymentsCreditCardPaymentMethod: FunctionComponent<PaymentMetho
 };
 
 export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>(
-    BigCommercePaymentsCreditCardPaymentMethod,
+    BigCommercePaymentsCreditCardsPaymentMethod,
     [{ id: 'bigcommerce_payments_creditcards' }],
 );
