@@ -1,7 +1,8 @@
+import React from 'react';
+
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 import { Button, ButtonVariant, useThemeContext } from '@bigcommerce/checkout/ui';
-import React from 'react';
 
 interface RedirectToStorefrontLoginProps {
     isDisabled: boolean;

@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import { TranslatedHtml, TranslatedString } from '@bigcommerce/checkout/locale';
 import { CheckboxFormField } from '@bigcommerce/checkout/ui';

@@ -1,5 +1,5 @@
-import { ShippingOption } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, memo } from 'react';
+import { type ShippingOption } from '@bigcommerce/checkout-sdk';
+import React, { type FunctionComponent, memo } from 'react';
 
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 

@@ -1,4 +1,4 @@
-import { OrderPayment } from '@bigcommerce/checkout-sdk';
+import { type OrderPayment } from '@bigcommerce/checkout-sdk';
 
 import { isStoreCreditPayment } from '../payment/storeCredit';
 

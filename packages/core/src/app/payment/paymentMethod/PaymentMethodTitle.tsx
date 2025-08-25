@@ -1,17 +1,17 @@
-import { CardInstrument, CheckoutSettings, LanguageService, PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { type CardInstrument, type CheckoutSettings, type LanguageService, type PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { number } from 'card-validator';
 import classNames from 'classnames';
 import { compact } from 'lodash';
-import React, { FunctionComponent, memo, ReactNode } from 'react';
+import React, { type FunctionComponent, memo, type ReactNode } from 'react';
 
 import { BigCommercePaymentsPayLaterBanner } from '@bigcommerce/checkout/bigcommerce-payments-utils'
-import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { CheckoutContextProps , PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { type CheckoutContextProps , type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { BraintreePaypalCreditBanner, PaypalCommerceCreditBanner } from '@bigcommerce/checkout/paypal-utils';
 import { CreditCardIconList, mapFromPaymentMethodCardType, useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../../checkout';
-import { connectFormik, ConnectFormikProps } from '../../common/form';
+import { connectFormik, type ConnectFormikProps } from '../../common/form';
 import { isExperimentEnabled } from '../../common/utility';
 
 import { hasCreditCardNumber } from './CreditCardFieldsetValues';

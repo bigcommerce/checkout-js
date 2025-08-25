@@ -1,4 +1,4 @@
-import { createLanguageService, LanguageService } from '@bigcommerce/checkout-sdk';
+import { createLanguageService, type LanguageService } from '@bigcommerce/checkout-sdk';
 
 import getInstrumentValidationSchema from './getInstrumentValidationSchema';
 

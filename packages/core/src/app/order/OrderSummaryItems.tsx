@@ -1,6 +1,6 @@
-import { LineItemMap } from '@bigcommerce/checkout-sdk';
+import { type LineItemMap } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
-import React, { ReactElement, useCallback, useState } from 'react';
+import React, { type ReactElement, useCallback, useState } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 

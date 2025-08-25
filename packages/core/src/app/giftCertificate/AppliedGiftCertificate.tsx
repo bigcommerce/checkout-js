@@ -1,5 +1,5 @@
-import { GiftCertificate } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, memo } from 'react';
+import { type GiftCertificate } from '@bigcommerce/checkout-sdk';
+import React, { type FunctionComponent, memo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 

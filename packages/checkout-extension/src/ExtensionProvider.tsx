@@ -1,7 +1,7 @@
-import { CheckoutService } from '@bigcommerce/checkout-sdk';
-import React, { ReactNode, useReducer } from 'react';
+import { type CheckoutService } from '@bigcommerce/checkout-sdk';
+import React, { type ReactNode, useReducer } from 'react';
 
-import { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
+import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 
 import { ExtensionContext } from './ExtensionContext';
 import { extensionReducer } from './ExtensionReducer';

@@ -5,7 +5,7 @@ import React from 'react';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import Autocomplete from './Autocomplete';
-import AutocompleteItem from './autocomplete-item';
+import type AutocompleteItem from './autocomplete-item';
 
 describe('Autocomplete Component', () => {
     const items: AutocompleteItem[] = [

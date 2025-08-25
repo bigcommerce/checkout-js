@@ -1,6 +1,10 @@
-import { CheckoutService, createCurrencyService, StoreConfig } from '@bigcommerce/checkout-sdk';
+import {
+    type CheckoutService,
+    createCurrencyService,
+    type StoreConfig,
+} from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
-import React, { ReactNode, useEffect, useMemo, useState } from 'react';
+import React, { type ReactNode, useEffect, useMemo, useState } from 'react';
 
 import getLanguageService from './getLanguageService';
 import LocaleContext from './LocaleContext';

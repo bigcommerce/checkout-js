@@ -1,9 +1,9 @@
 import {
-    AccountInstrument,
-    AchInstrument,
-    BankInstrument,
-    CardInstrument,
-    PaymentInstrument,
+    type AccountInstrument,
+    type AchInstrument,
+    type BankInstrument,
+    type CardInstrument,
+    type PaymentInstrument,
 } from '@bigcommerce/checkout-sdk';
 
 import { getYear } from './getYear';

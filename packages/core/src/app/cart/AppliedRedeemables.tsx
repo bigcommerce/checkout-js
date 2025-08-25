@@ -1,5 +1,5 @@
-import { Coupon, GiftCertificate } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, memo, useCallback } from 'react';
+import { type Coupon, type GiftCertificate } from '@bigcommerce/checkout-sdk';
+import React, { type FunctionComponent, memo, useCallback } from 'react';
 
 import { AppliedCoupon } from '../coupon';
 import { AppliedGiftCertificate } from '../giftCertificate';

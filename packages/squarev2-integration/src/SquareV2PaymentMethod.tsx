@@ -1,10 +1,10 @@
 import { difference } from 'lodash';
-import React, { FunctionComponent, useCallback, useEffect } from 'react';
+import React, { type FunctionComponent, useCallback, useEffect } from 'react';
 
 import { getAppliedStyles } from '@bigcommerce/checkout/dom-utils';
 import {
-    PaymentMethodProps,
-    PaymentMethodResolveId,
+    type PaymentMethodProps,
+    type PaymentMethodResolveId,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 

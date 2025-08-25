@@ -1,4 +1,4 @@
-import { Currency } from '@bigcommerce/checkout-sdk';
+import { type Currency } from '@bigcommerce/checkout-sdk';
 
 export function getCurrency(): Currency {
     return {

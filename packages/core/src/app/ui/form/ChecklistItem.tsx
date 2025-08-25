@@ -1,9 +1,9 @@
 import { memoizeOne } from '@bigcommerce/memoize';
-import { FieldProps } from 'formik';
+import { type FieldProps } from 'formik';
 import { kebabCase } from 'lodash';
-import React, { FunctionComponent, memo, ReactNode, useCallback, useContext } from 'react';
+import React, { type FunctionComponent, memo, type ReactNode, useCallback, useContext } from 'react';
 
-import { AccordionItem, AccordionItemHeaderProps } from '@bigcommerce/checkout/ui';
+import { AccordionItem, type AccordionItemHeaderProps } from '@bigcommerce/checkout/ui';
 
 import BasicFormField from './BasicFormField';
 import { ChecklistContext } from './Checklist';

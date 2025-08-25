@@ -1,4 +1,4 @@
-import { RequestError } from '@bigcommerce/checkout-sdk';
+import { type RequestError } from '@bigcommerce/checkout-sdk';
 
 interface ErrorWithType extends RequestError {
     type: string;

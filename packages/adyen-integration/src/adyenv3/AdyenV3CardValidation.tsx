@@ -1,6 +1,10 @@
-import { AdyenValidationState, CardInstrument, PaymentMethod } from '@bigcommerce/checkout-sdk';
+import {
+    type AdyenValidationState,
+    type CardInstrument,
+    type PaymentMethod,
+} from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { type FunctionComponent, useEffect, useState } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 

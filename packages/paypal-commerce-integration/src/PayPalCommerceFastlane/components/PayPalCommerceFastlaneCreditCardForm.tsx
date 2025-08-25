@@ -1,6 +1,6 @@
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { type FunctionComponent, useEffect } from 'react';
 
-import { PayPalFastlaneCardComponentRef } from '../PayPalCommerceFastlanePaymentMethod';
+import { type PayPalFastlaneCardComponentRef } from '../PayPalCommerceFastlanePaymentMethod';
 
 import './PayPalCommerceFastlaneCreditCardForm.scss';
 

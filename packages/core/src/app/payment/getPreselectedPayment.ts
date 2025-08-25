@@ -1,4 +1,4 @@
-import { Checkout, CheckoutPayment } from '@bigcommerce/checkout-sdk';
+import { type Checkout, type CheckoutPayment } from '@bigcommerce/checkout-sdk';
 
 import { isGiftCertificatePayment } from '../giftCertificate';
 

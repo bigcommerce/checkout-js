@@ -1,4 +1,4 @@
-import React, { FunctionComponent, memo, useMemo } from 'react';
+import React, { type FunctionComponent, memo, useMemo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { CheckboxFormField } from '@bigcommerce/checkout/ui';

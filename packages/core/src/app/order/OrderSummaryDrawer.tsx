@@ -1,10 +1,10 @@
 import {
-    LineItemMap,
-    ShopperCurrency as ShopperCurrencyType,
-    StoreCurrency,
+    type LineItemMap,
+    type ShopperCurrency as ShopperCurrencyType,
+    type StoreCurrency,
 } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
-import React, { FunctionComponent, memo, ReactNode, useCallback, useMemo } from 'react';
+import React, { type FunctionComponent, memo, type ReactNode, useCallback, useMemo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
@@ -15,7 +15,7 @@ import { ModalTrigger } from '../ui/modal';
 import getItemsCount from './getItemsCount';
 import getLineItemsCount from './getLineItemsCount';
 import OrderSummaryModal from './OrderSummaryModal';
-import { OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
+import { type OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
 import removeBundledItems from './removeBundledItems';
 
 export interface OrderSummaryDrawerProps {

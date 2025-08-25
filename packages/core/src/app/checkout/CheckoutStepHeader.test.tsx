@@ -4,7 +4,7 @@ import React from 'react';
 
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import CheckoutStepHeader, { CheckoutStepHeaderProps } from './CheckoutStepHeader';
+import CheckoutStepHeader, { type CheckoutStepHeaderProps } from './CheckoutStepHeader';
 import CheckoutStepType from './CheckoutStepType';
 
 describe('CheckoutStepHeader', () => {

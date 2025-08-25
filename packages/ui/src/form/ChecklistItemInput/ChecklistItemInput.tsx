@@ -1,4 +1,4 @@
-import React, { FunctionComponent, InputHTMLAttributes } from 'react';
+import React, { type FunctionComponent, type InputHTMLAttributes } from 'react';
 
 import { Input } from '../Input';
 import { Label } from '../Label';

@@ -1,5 +1,5 @@
-import { GatewayOrderPayment, GiftCertificateOrderPayment, Order, StoreConfig } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, memo } from 'react';
+import { type GatewayOrderPayment, type GiftCertificateOrderPayment, type Order, type StoreConfig } from '@bigcommerce/checkout-sdk';
+import React, { type FunctionComponent, memo } from 'react';
 
 import { TranslatedHtml } from '@bigcommerce/checkout/locale';
 

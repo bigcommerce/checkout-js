@@ -1,4 +1,4 @@
-import { LanguageConfig } from '@bigcommerce/checkout-sdk';
+import { type LanguageConfig } from '@bigcommerce/checkout-sdk';
 
 import getLanguageService, { initializeLanguageService } from './getLanguageService';
 

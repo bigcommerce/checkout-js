@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
 import createLocaleContext from './createLocaleContext';
-import LocaleContext, { LocaleContextType } from './LocaleContext';
-import withCurrency, { WithCurrencyProps } from './withCurrency';
+import LocaleContext, { type LocaleContextType } from './LocaleContext';
+import withCurrency, { type WithCurrencyProps } from './withCurrency';
 
 describe('withCurrency()', () => {
     let contextValue: LocaleContextType;

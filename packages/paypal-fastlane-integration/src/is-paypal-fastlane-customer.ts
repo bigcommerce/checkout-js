@@ -1,7 +1,7 @@
 import {
-    CardInstrument,
-    CustomerAddress,
-    PaymentProviderCustomer,
+    type CardInstrument,
+    type CustomerAddress,
+    type PaymentProviderCustomer,
 } from '@bigcommerce/checkout-sdk';
 
 interface PayPalFastlaneCustomer {

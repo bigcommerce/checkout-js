@@ -1,11 +1,11 @@
-import React, { FunctionComponent, useCallback } from 'react';
+import React, { type FunctionComponent, useCallback } from 'react';
 
 import {
     withHostedCreditCardFieldset,
-    WithInjectedHostedCreditCardFieldsetProps,
+    type WithInjectedHostedCreditCardFieldsetProps,
 } from '../hostedCreditCard';
 
-import CreditCardPaymentMethod, { CreditCardPaymentMethodProps } from './CreditCardPaymentMethod';
+import CreditCardPaymentMethod, { type CreditCardPaymentMethodProps } from './CreditCardPaymentMethod';
 
 export type HostedCreditCardPaymentMethodProps = Omit<
     CreditCardPaymentMethodProps,

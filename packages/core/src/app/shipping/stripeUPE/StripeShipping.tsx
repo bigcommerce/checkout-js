@@ -1,12 +1,12 @@
-import { Address, CheckoutSelectors, Consignment, Country, Customer, FormField, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
-import React, { Component, ReactNode } from 'react';
+import { type Address, type CheckoutSelectors, type Consignment, type Country, type Customer, type FormField, type ShippingInitializeOptions, type ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
+import React, { Component, type ReactNode } from 'react';
 
 import { AddressFormSkeleton } from '@bigcommerce/checkout/ui';
 
-import CheckoutStepStatus from '../../checkout/CheckoutStepStatus';
+import type CheckoutStepStatus from '../../checkout/CheckoutStepStatus';
 import ShippingHeader from '../ShippingHeader';
 
-import StripeShippingForm, { SingleShippingFormValues } from './StripeShippingForm';
+import StripeShippingForm, { type SingleShippingFormValues } from './StripeShippingForm';
 
 export interface StripeShippingProps {
     isBillingSameAsShipping: boolean;

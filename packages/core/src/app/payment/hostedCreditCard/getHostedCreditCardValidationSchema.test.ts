@@ -1,7 +1,7 @@
-import { LanguageService } from '@bigcommerce/checkout-sdk';
-import { ObjectSchema } from 'yup';
+import { type LanguageService } from '@bigcommerce/checkout-sdk';
+import { type ObjectSchema } from 'yup';
 
-import { HostedCreditCardFieldsetValues } from '@bigcommerce/checkout/payment-integration-api';
+import { type HostedCreditCardFieldsetValues } from '@bigcommerce/checkout/payment-integration-api';
 
 import getHostedCreditCardValidationSchema from './getHostedCreditCardValidationSchema';
 

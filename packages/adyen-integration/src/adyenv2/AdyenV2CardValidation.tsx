@@ -1,11 +1,11 @@
 import {
-    AdyenValidationState,
-    CardInstrument,
-    LanguageService,
-    PaymentMethod,
+    type AdyenValidationState,
+    type CardInstrument,
+    type LanguageService,
+    type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { type FunctionComponent, useEffect, useState } from 'react';
 
 export type FieldsValidation = { [key in AdyenCardFields]?: AdyenValidationState };
 

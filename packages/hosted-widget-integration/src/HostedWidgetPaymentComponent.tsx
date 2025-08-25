@@ -1,19 +1,19 @@
 import {
-    AccountInstrument,
-    CardInstrument,
-    CheckoutSelectors,
-    CustomerInitializeOptions,
-    CustomerRequestOptions,
-    Instrument,
-    PaymentInitializeOptions,
-    PaymentInstrument,
-    PaymentMethod,
-    PaymentRequestOptions,
+    type AccountInstrument,
+    type CardInstrument,
+    type CheckoutSelectors,
+    type CustomerInitializeOptions,
+    type CustomerRequestOptions,
+    type Instrument,
+    type PaymentInitializeOptions,
+    type PaymentInstrument,
+    type PaymentMethod,
+    type PaymentRequestOptions,
 } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { find, noop } from 'lodash';
-import React, { Component, ReactNode } from 'react';
-import { ObjectSchema } from 'yup';
+import React, { Component, type ReactNode } from 'react';
+import { type ObjectSchema } from 'yup';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import {
@@ -24,7 +24,7 @@ import {
     StoreInstrumentFieldset,
 } from '@bigcommerce/checkout/instrument-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 export interface HostedWidgetComponentState {

@@ -1,4 +1,4 @@
-import { CustomError } from "@bigcommerce/checkout/payment-integration-api";
+import { type CustomError } from "@bigcommerce/checkout/payment-integration-api";
 
 export default function isHtmlError(error: Error): error is CustomError {
 

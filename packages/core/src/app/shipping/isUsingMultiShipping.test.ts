@@ -1,4 +1,4 @@
-import { Consignment, LineItemMap } from '@bigcommerce/checkout-sdk';
+import { type Consignment, type LineItemMap } from '@bigcommerce/checkout-sdk';
 
 import { getPhysicalItem } from '../cart/lineItem.mock';
 

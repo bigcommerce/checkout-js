@@ -1,4 +1,4 @@
-import { GiftCertificate } from '@bigcommerce/checkout-sdk';
+import { type GiftCertificate } from '@bigcommerce/checkout-sdk';
 
 export function getGiftCertificate(): GiftCertificate {
     return {

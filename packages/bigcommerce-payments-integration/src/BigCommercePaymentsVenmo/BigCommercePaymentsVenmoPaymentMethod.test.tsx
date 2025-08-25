@@ -1,9 +1,9 @@
-import { createCheckoutService, LanguageService } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, type LanguageService } from '@bigcommerce/checkout-sdk';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import React from 'react';
 
-import { PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
+import { type PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
 
 import { getBigCommercePaymentsVenmoMethod } from '../mocks/paymentMethods.mock';
 

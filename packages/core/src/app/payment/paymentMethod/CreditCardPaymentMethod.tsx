@@ -1,26 +1,26 @@
 import {
-    CardInstrument,
-    CheckoutSelectors,
-    HostedFieldType,
-    Instrument,
-    PaymentInitializeOptions,
-    PaymentInstrument,
-    PaymentMethod,
-    PaymentRequestOptions,
+    type CardInstrument,
+    type CheckoutSelectors,
+    type HostedFieldType,
+    type Instrument,
+    type PaymentInitializeOptions,
+    type PaymentInstrument,
+    type PaymentMethod,
+    type PaymentRequestOptions,
 } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import { find, noop } from 'lodash';
-import React, { Component, ReactNode } from 'react';
-import { ObjectSchema } from 'yup';
+import React, { Component, type ReactNode } from 'react';
+import { type ObjectSchema } from 'yup';
 
-import { MapToPropsFactory } from '@bigcommerce/checkout/legacy-hoc';
-import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { CheckoutContextProps, PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import { type MapToPropsFactory } from '@bigcommerce/checkout/legacy-hoc';
+import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { type CheckoutContextProps, type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../../checkout';
-import { connectFormik, ConnectFormikProps } from '../../common/form';
-import { withForm, WithFormProps } from '../../ui/form';
+import { connectFormik, type ConnectFormikProps } from '../../common/form';
+import { withForm, type WithFormProps } from '../../ui/form';
 import {
     configureCardValidator,
     CreditCardFieldset,
@@ -28,7 +28,7 @@ import {
 } from '../creditCard';
 import {
     CardInstrumentFieldset,
-    CardInstrumentFieldsetValues,
+    type CardInstrumentFieldsetValues,
     CreditCardValidation,
     getInstrumentValidationSchema,
     isCardInstrument,
@@ -37,9 +37,9 @@ import {
     isInstrumentFeatureAvailable,
 } from '../storedInstrument';
 import StoreInstrumentFieldset from '../StoreInstrumentFieldset';
-import withPayment, { WithPaymentProps } from '../withPayment';
+import withPayment, { type WithPaymentProps } from '../withPayment';
 
-import CreditCardFieldsetValues from './CreditCardFieldsetValues';
+import type CreditCardFieldsetValues from './CreditCardFieldsetValues';
 
 export interface CreditCardPaymentMethodProps {
     isInitializing?: boolean;

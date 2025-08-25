@@ -1,5 +1,5 @@
-import { AchInstrument } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, useCallback } from 'react';
+import { type AchInstrument } from '@bigcommerce/checkout-sdk';
+import React, { type FunctionComponent, useCallback } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { IconAch, IconSize, LoadingOverlay } from '@bigcommerce/checkout/ui';

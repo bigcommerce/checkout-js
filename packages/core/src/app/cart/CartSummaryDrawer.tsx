@@ -1,9 +1,9 @@
-import React, { FunctionComponent, memo } from 'react';
+import React, { type FunctionComponent, memo } from 'react';
 
 import { withCheckout } from '../checkout';
 import OrderSummaryDrawer from '../order/OrderSummaryDrawer';
 
-import { WithCheckoutCartSummaryProps } from './CartSummary';
+import { type WithCheckoutCartSummaryProps } from './CartSummary';
 import EditLink from './EditLink';
 import mapToCartSummaryProps from './mapToCartSummaryProps';
 import withRedeemable from './withRedeemable';

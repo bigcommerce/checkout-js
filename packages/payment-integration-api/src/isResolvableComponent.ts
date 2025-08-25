@@ -1,6 +1,6 @@
-import { ComponentType } from 'react';
+import { type ComponentType } from 'react';
 
-import { ResolvableComponent } from '.';
+import { type ResolvableComponent } from '.';
 
 export default function isResolvableComponent<TProps, TIdentifier>(
     // eslint-disable-next-line @typescript-eslint/naming-convention

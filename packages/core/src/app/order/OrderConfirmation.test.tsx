@@ -1,17 +1,17 @@
 import {
-    CheckoutSelectors,
-    CheckoutService,
+    type CheckoutSelectors,
+    type CheckoutService,
     createCheckoutService,
     createEmbeddedCheckoutMessenger,
-    EmbeddedCheckoutMessenger,
+    type EmbeddedCheckoutMessenger,
 } from '@bigcommerce/checkout-sdk';
 import faker from '@faker-js/faker';
 import userEvent from '@testing-library/user-event';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
-import { AnalyticsContextProps, AnalyticsEvents, AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
+import { type AnalyticsContextProps, type AnalyticsEvents, AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
-import { createLocaleContext, LocaleContextType, LocaleProvider } from '@bigcommerce/checkout/locale';
+import { createLocaleContext, type LocaleContextType, LocaleProvider } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { renderWithoutWrapper as render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 import { ThemeProvider } from '@bigcommerce/checkout/ui';
@@ -19,9 +19,9 @@ import { ThemeProvider } from '@bigcommerce/checkout/ui';
 import { createErrorLogger } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
 import { createEmbeddedCheckoutStylesheet } from '../embeddedCheckout';
-import { CreatedCustomer } from '../guestSignup';
+import { type CreatedCustomer } from '../guestSignup';
 
-import OrderConfirmation, { OrderConfirmationProps } from './OrderConfirmation';
+import OrderConfirmation, { type OrderConfirmationProps } from './OrderConfirmation';
 import { getGatewayOrderPayment, getOrder } from './orders.mock';
 
 describe('OrderConfirmation', () => {

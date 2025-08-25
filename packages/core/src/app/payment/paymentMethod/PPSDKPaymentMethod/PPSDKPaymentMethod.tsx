@@ -1,6 +1,6 @@
-import { CheckoutService, PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { type CheckoutService, type PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import { initializationComponentMap } from './initializationComponentMap';
 

@@ -1,9 +1,9 @@
 import { noop } from 'lodash';
-import React, { PureComponent, ReactNode } from 'react';
+import React, { PureComponent, type ReactNode } from 'react';
 
-import { Autocomplete, AutocompleteItem } from '../../ui/autocomplete';
+import { Autocomplete, type AutocompleteItem } from '../../ui/autocomplete';
 
-import { GoogleAutocompleteOptionTypes } from './googleAutocompleteTypes';
+import { type GoogleAutocompleteOptionTypes } from './googleAutocompleteTypes';
 import './GoogleAutocomplete.scss';
 import GoogleAutocompleteService from './GoogleAutocompleteService';
 

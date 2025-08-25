@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 
 import classNames from 'classnames';
-import React, { FunctionComponent, memo, MouseEvent, useCallback } from 'react';
+import React, { type FunctionComponent, memo, type MouseEvent, useCallback } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 

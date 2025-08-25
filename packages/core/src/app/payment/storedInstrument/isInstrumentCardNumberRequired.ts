@@ -1,4 +1,4 @@
-import { Instrument, LineItemMap } from '@bigcommerce/checkout-sdk';
+import { type Instrument, type LineItemMap } from '@bigcommerce/checkout-sdk';
 
 import { UntrustedShippingCardVerificationType } from './CardInstrumentFieldset';
 

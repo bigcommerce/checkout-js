@@ -1,6 +1,6 @@
-import { Checkout } from '@bigcommerce/checkout-sdk';
+import { type Checkout } from '@bigcommerce/checkout-sdk';
 
-import { OrderSummarySubtotalsProps } from '../order';
+import { type OrderSummarySubtotalsProps } from '../order';
 import { getShippingCostAfterAutomaticDiscount, hasSelectedShippingOptions } from '../shipping';
 
 export default function mapToOrderSummarySubtotalsProps({

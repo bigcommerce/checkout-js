@@ -1,9 +1,9 @@
-import { LanguageService } from '@bigcommerce/checkout-sdk';
+import { type LanguageService } from '@bigcommerce/checkout-sdk';
 import { memoize } from '@bigcommerce/memoize';
 import { cvv, expirationDate, number } from 'card-validator';
-import { object, ObjectSchema, string } from 'yup';
+import { object, type ObjectSchema, string } from 'yup';
 
-import { CreditCardFieldsetValues } from '../paymentMethod';
+import { type CreditCardFieldsetValues } from '../paymentMethod';
 
 export interface CreditCardValidationSchemaOptions {
     isCardCodeRequired: boolean;

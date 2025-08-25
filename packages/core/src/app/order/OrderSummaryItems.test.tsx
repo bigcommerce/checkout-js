@@ -1,8 +1,8 @@
 import { expect } from '@playwright/test';
 import userEvent from '@testing-library/user-event';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
-import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { createLocaleContext, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import {
@@ -13,7 +13,7 @@ import {
 } from '../cart/lineItem.mock';
 import { getStoreConfig } from '../config/config.mock';
 
-import OrderSummaryItems, { OrderSummaryItemsProps } from './OrderSummaryItems';
+import OrderSummaryItems, { type OrderSummaryItemsProps } from './OrderSummaryItems';
 
 describe('OrderSummaryItems', () => {
     describe('when it has 4 line items or less', () => {

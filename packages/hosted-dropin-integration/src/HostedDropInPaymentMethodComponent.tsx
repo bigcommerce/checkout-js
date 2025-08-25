@@ -1,20 +1,20 @@
 import {
-    CardInstrument,
-    CheckoutSelectors,
-    CheckoutService,
-    CustomerInitializeOptions,
-    CustomerRequestOptions,
-    Instrument,
-    LanguageService,
-    PaymentInitializeOptions,
-    PaymentInstrument,
-    PaymentMethod,
-    PaymentRequestOptions,
+    type CardInstrument,
+    type CheckoutSelectors,
+    type CheckoutService,
+    type CustomerInitializeOptions,
+    type CustomerRequestOptions,
+    type Instrument,
+    type LanguageService,
+    type PaymentInitializeOptions,
+    type PaymentInstrument,
+    type PaymentMethod,
+    type PaymentRequestOptions,
 } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import classNames from 'classnames';
 import { find, noop, some } from 'lodash';
-import React, { Component, ReactNode } from 'react';
+import React, { Component, type ReactNode } from 'react';
 
 import {
     CardInstrumentFieldset,
@@ -25,7 +25,7 @@ import {
     isInstrumentCardNumberRequiredSelector,
     isInstrumentFeatureAvailable,
 } from '@bigcommerce/checkout/instrument-utils';
-import { PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
+import { type PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 export interface HostedDropInPaymentMethodProps {

@@ -1,27 +1,27 @@
 import '@testing-library/jest-dom';
 import {
-    CheckoutSelectors,
-    CheckoutService,
+    type CheckoutSelectors,
+    type CheckoutService,
     createCheckoutService,
-    PaymentInitializeOptions,
-    PaymentMethod,
+    type PaymentInitializeOptions,
+    type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import {
     createLocaleContext,
     LocaleContext,
-    LocaleContextType,
+    type LocaleContextType,
 } from '@bigcommerce/checkout/locale';
 import {
     CheckoutProvider,
     getPaymentMethodName,
     PaymentFormContext,
-    PaymentFormService,
+    type PaymentFormService,
     PaymentMethodId,
-    PaymentMethodProps,
+    type PaymentMethodProps,
     PaymentMethodType,
 } from '@bigcommerce/checkout/payment-integration-api';
 import {

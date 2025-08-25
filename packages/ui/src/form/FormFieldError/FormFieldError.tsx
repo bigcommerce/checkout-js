@@ -1,5 +1,5 @@
 import { ErrorMessage } from 'formik';
-import React, { FunctionComponent, memo, useCallback } from 'react';
+import React, { type FunctionComponent, memo, useCallback } from 'react';
 
 import { FormContext } from '../contexts';
 

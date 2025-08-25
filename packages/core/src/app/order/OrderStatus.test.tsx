@@ -1,13 +1,13 @@
-import { CheckoutService, createCheckoutService, Order, StoreConfig } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent } from 'react';
+import { type CheckoutService, createCheckoutService, type Order, type StoreConfig } from '@bigcommerce/checkout-sdk';
+import React, { type FunctionComponent } from 'react';
 
-import { createLocaleContext, LocaleContextType, LocaleProvider } from '@bigcommerce/checkout/locale';
+import { createLocaleContext, type LocaleContextType, LocaleProvider } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../config/config.mock';
 
 import { getOrder, getOrderWithMandateId, getOrderWithMandateURL } from './orders.mock';
-import OrderStatus, { OrderStatusProps } from './OrderStatus';
+import OrderStatus, { type OrderStatusProps } from './OrderStatus';
 
 const getTextContent = (markup: string) => {
     return new DOMParser()

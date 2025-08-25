@@ -1,5 +1,5 @@
-import { LineItemMap } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, memo, ReactNode } from 'react';
+import { type LineItemMap } from '@bigcommerce/checkout-sdk';
+import React, { type FunctionComponent, memo, type ReactNode } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 

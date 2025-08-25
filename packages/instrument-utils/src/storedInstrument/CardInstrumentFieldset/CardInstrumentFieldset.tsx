@@ -1,6 +1,6 @@
-import { CardInstrument } from '@bigcommerce/checkout-sdk';
-import { FieldProps } from 'formik';
-import React, { FunctionComponent, memo, useCallback } from 'react';
+import { type CardInstrument } from '@bigcommerce/checkout-sdk';
+import { type FieldProps } from 'formik';
+import React, { type FunctionComponent, memo, useCallback } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import {
@@ -8,7 +8,7 @@ import {
     Fieldset,
     Legend,
     ModalTrigger,
-    ModalTriggerModalProps,
+    type ModalTriggerModalProps,
 } from '@bigcommerce/checkout/ui';
 
 import { InstrumentSelect } from '../InstrumentSelect';

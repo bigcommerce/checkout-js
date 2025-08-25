@@ -1,4 +1,4 @@
-import { CheckoutService, PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { type CheckoutService, type PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import { useCallback, useMemo } from 'react';
 

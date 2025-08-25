@@ -1,4 +1,4 @@
-import { EmbeddedCheckoutStyles } from '@bigcommerce/checkout-sdk';
+import { type EmbeddedCheckoutStyles } from '@bigcommerce/checkout-sdk';
 
 import EmbeddedCheckoutStyleParser from './EmbeddedCheckoutStyleParser';
 import EmbeddedCheckoutStylesheet from './EmbeddedCheckoutStylesheet';

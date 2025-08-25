@@ -1,5 +1,5 @@
-import { FieldProps } from 'formik';
-import React, { FunctionComponent, memo, useCallback } from 'react';
+import { type FieldProps } from 'formik';
+import React, { type FunctionComponent, memo, useCallback } from 'react';
 
 import { DynamicFormFieldType, DynamicInput, FormField } from '@bigcommerce/checkout/ui';
 

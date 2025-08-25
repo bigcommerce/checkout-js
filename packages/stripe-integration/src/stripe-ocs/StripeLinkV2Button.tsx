@@ -1,9 +1,9 @@
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import { CheckoutButton } from '@bigcommerce/checkout/checkout-button-integration';
 import {
-    CheckoutButtonProps,
-    CheckoutButtonResolveId,
+    type CheckoutButtonProps,
+    type CheckoutButtonResolveId,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 import { navigateToOrderConfirmation } from '@bigcommerce/checkout/utility';

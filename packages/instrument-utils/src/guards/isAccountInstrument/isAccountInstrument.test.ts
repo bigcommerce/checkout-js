@@ -1,4 +1,4 @@
-import { AccountInstrument } from '@bigcommerce/checkout-sdk';
+import { type AccountInstrument } from '@bigcommerce/checkout-sdk';
 
 import { isAccountInstrument } from '.';
 

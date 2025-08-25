@@ -1,5 +1,5 @@
 import { noop } from 'lodash';
-import React, { ReactNode } from 'react';
+import React, { type ReactNode } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 

@@ -1,5 +1,5 @@
-import { LanguageService } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, memo } from 'react';
+import { type LanguageService } from '@bigcommerce/checkout-sdk';
+import React, { type FunctionComponent, memo } from 'react';
 
 import { BluesnapECPAccountType } from '../constants';
 

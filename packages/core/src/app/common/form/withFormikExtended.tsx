@@ -1,11 +1,11 @@
 import {
-    FormikProps,
-    FormikValues,
+    type FormikProps,
+    type FormikValues,
     withFormik,
-    WithFormikConfig,
+    type WithFormikConfig,
 } from 'formik';
 import React, {
-    ComponentType,
+    type ComponentType,
     useEffect,
     useRef,
 } from 'react';

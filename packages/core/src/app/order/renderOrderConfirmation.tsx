@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import { configurePublicPath } from '../common/bundler';
 
-import { OrderConfirmationAppProps } from './OrderConfirmationApp';
+import { type OrderConfirmationAppProps } from './OrderConfirmationApp';
 
 export type RenderOrderConfirmationOptions = OrderConfirmationAppProps;
 export type RenderOrderConfirmation = typeof renderOrderConfirmation;

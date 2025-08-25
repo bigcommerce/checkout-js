@@ -1,27 +1,27 @@
 import {
-    CartChangedError,
-    CheckoutSelectors,
-    CheckoutService,
-    CheckoutSettings,
-    OrderRequestBody,
-    PaymentMethod,
+    type CartChangedError,
+    type CheckoutSelectors,
+    type CheckoutService,
+    type CheckoutSettings,
+    type OrderRequestBody,
+    type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import { compact, find, isEmpty, noop } from 'lodash';
-import React, { Component, ReactNode } from 'react';
-import { ObjectSchema } from 'yup';
+import React, { Component, type ReactNode } from 'react';
+import { type ObjectSchema } from 'yup';
 
-import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
-import { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
-import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { CheckoutContextProps, PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import { type AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
+import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
+import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { type CheckoutContextProps, type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { ChecklistSkeleton } from '@bigcommerce/checkout/ui';
 
 import { withAnalytics } from '../analytics';
 import { withCheckout } from '../checkout';
 import {
     ErrorModal,
-    ErrorModalOnCloseProps,
+    type ErrorModalOnCloseProps,
     isCartChangedError,
     isErrorWithType,
 } from '../common/error';

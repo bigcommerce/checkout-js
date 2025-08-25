@@ -1,17 +1,20 @@
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import {
     CreditCardPaymentMethodComponent,
-    CreditCardPaymentMethodProps,
+    type CreditCardPaymentMethodProps,
 } from '@bigcommerce/checkout/credit-card-integration';
 import {
-    PaymentMethodProps,
-    PaymentMethodResolveId,
+    type PaymentMethodProps,
+    type PaymentMethodResolveId,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 
 import checkoutcomCustomFormFields, { ccDocumentField } from './CheckoutcomCustomFormFields';
-import { checkoutcomPaymentMethods, getCheckoutcomValidationSchemas } from './checkoutcomFieldsets';
+import {
+    type checkoutcomPaymentMethods,
+    getCheckoutcomValidationSchemas,
+} from './checkoutcomFieldsets';
 import { checkoutcomPaymentMethodsArray } from './checkoutcomFieldsets/getCheckoutcomFieldsetValidationSchemas';
 
 export interface CheckoutcomCustomPaymentMethodProps

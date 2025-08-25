@@ -3,7 +3,7 @@ import React from 'react';
 
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import Toggle, { ToggleProps } from './Toggle';
+import Toggle, { type ToggleProps } from './Toggle';
 
 describe('Toggle', () => {
     let ToggleTest: FunctionComponent<ToggleProps>;

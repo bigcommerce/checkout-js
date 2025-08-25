@@ -1,8 +1,8 @@
 import {
-    Address,
-    AddressRequestBody,
-    BillingAddress,
-    CustomerAddress,
+    type Address,
+    type AddressRequestBody,
+    type BillingAddress,
+    type CustomerAddress,
 } from '@bigcommerce/checkout-sdk';
 import { isEqual, omit } from 'lodash';
 

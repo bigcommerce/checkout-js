@@ -1,4 +1,4 @@
-import { Address } from '@bigcommerce/checkout-sdk';
+import { type Address } from '@bigcommerce/checkout-sdk';
 import React from "react";
 
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";

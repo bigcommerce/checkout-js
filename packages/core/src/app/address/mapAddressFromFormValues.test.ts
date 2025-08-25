@@ -3,7 +3,7 @@ import { omit } from 'lodash';
 import { getShippingAddress } from '../shipping/shipping-addresses.mock';
 
 import mapAddressFromFormValues from './mapAddressFromFormValues';
-import { AddressFormValues } from './mapAddressToFormValues';
+import { type AddressFormValues } from './mapAddressToFormValues';
 
 describe('mapAddressFromFormValues', () => {
     it('converts address form values to address object', () => {

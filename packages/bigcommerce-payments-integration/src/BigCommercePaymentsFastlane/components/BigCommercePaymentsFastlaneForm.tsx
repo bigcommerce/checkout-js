@@ -1,6 +1,6 @@
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { type FunctionComponent, useEffect } from 'react';
 
-import { BigCommercePaymentsFastlaneCardComponentRef } from '../BigCommercePaymentsFastlanePaymentMethod';
+import { type BigCommercePaymentsFastlaneCardComponentRef } from '../BigCommercePaymentsFastlanePaymentMethod';
 import { useBigCommercePaymentsFastlaneInstruments } from '../hooks/useBigCommercePaymentsFastlaneInstruments';
 
 import BigCommercePaymentsFastlaneCreditCardForm from './BigCommercePaymentsFastlaneCreditCardForm';

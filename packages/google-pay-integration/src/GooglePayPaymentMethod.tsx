@@ -1,10 +1,10 @@
-import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, useCallback } from 'react';
+import { type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import React, { type FunctionComponent, useCallback } from 'react';
 
 import {
-    CheckoutButtonResolveId,
+    type CheckoutButtonResolveId,
     PaymentMethodId,
-    PaymentMethodProps,
+    type PaymentMethodProps,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 import { WalletButtonPaymentMethodComponent } from '@bigcommerce/checkout/wallet-button-integration';

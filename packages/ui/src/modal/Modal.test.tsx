@@ -3,7 +3,7 @@ import React from 'react';
 
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import Modal, { ModalProps } from './Modal';
+import Modal, { type ModalProps } from './Modal';
 import ModalHeader from './ModalHeader';
 
 describe('Modal', () => {

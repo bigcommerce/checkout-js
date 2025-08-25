@@ -1,8 +1,8 @@
 import { noop } from 'lodash';
 import React, {
     createRef,
-    FunctionComponent,
-    RefObject,
+    type FunctionComponent,
+    type RefObject,
     useCallback,
     useRef,
     useState,
@@ -13,10 +13,10 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { Modal } from '../../ui/modal';
 import {
     withHostedCreditCardFieldset,
-    WithInjectedHostedCreditCardFieldsetProps,
+    type WithInjectedHostedCreditCardFieldsetProps,
 } from '../hostedCreditCard';
 
-import CreditCardPaymentMethod, { CreditCardPaymentMethodProps } from './CreditCardPaymentMethod';
+import CreditCardPaymentMethod, { type CreditCardPaymentMethodProps } from './CreditCardPaymentMethod';
 
 export type BraintreeCreditCardPaymentMethodProps = CreditCardPaymentMethodProps;
 

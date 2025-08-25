@@ -1,6 +1,6 @@
-import { getScriptLoader, ScriptLoader } from '@bigcommerce/script-loader';
+import { getScriptLoader, type ScriptLoader } from '@bigcommerce/script-loader';
 
-import { GoogleAutocompleteWindow, GoogleMapsSdk } from './googleAutocompleteTypes';
+import { type GoogleAutocompleteWindow, type GoogleMapsSdk } from './googleAutocompleteTypes';
 
 export default class GoogleAutocompleteScriptLoader {
     private _scriptLoader: ScriptLoader;

@@ -1,29 +1,29 @@
 import {
-    AccountInstrument,
-    CheckoutSelectors,
-    PaymentInitializeOptions,
-    PaymentInstrument,
-    PaymentMethod,
-    PaymentRequestOptions,
+    type AccountInstrument,
+    type CheckoutSelectors,
+    type PaymentInitializeOptions,
+    type PaymentInstrument,
+    type PaymentMethod,
+    type PaymentRequestOptions,
 } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import { find, noop } from 'lodash';
-import React, { Component, ReactNode } from 'react';
+import React, { Component, type ReactNode } from 'react';
 
-import { MapToPropsFactory } from '@bigcommerce/checkout/legacy-hoc';
-import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { CheckoutContextProps, PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import { type MapToPropsFactory } from '@bigcommerce/checkout/legacy-hoc';
+import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { type CheckoutContextProps, type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../../checkout';
-import { connectFormik, ConnectFormikProps } from '../../common/form';
+import { connectFormik, type ConnectFormikProps } from '../../common/form';
 import {
     AccountInstrumentFieldset,
     isAccountInstrument,
     isInstrumentFeatureAvailable,
 } from '../storedInstrument';
 import StoreInstrumentFieldset from '../StoreInstrumentFieldset';
-import withPayment, { WithPaymentProps } from '../withPayment';
+import withPayment, { type WithPaymentProps } from '../withPayment';
 
 export interface HostedPaymentMethodProps {
     description?: ReactNode;

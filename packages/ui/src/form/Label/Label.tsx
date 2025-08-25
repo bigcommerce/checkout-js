@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { FunctionComponent, LabelHTMLAttributes } from 'react';
+import React, { type FunctionComponent, type LabelHTMLAttributes } from 'react';
 
 export interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
     testId?: string;

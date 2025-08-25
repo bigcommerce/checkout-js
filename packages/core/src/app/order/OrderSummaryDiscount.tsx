@@ -1,12 +1,12 @@
 import classNames from 'classnames';
-import React, { FunctionComponent, memo } from 'react';
+import React, { type FunctionComponent, memo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { ShopperCurrency } from '../currency';
 
-import OrderSummaryPrice, { OrderSummaryPriceProps } from './OrderSummaryPrice';
+import OrderSummaryPrice, { type OrderSummaryPriceProps } from './OrderSummaryPrice';
 
 export interface OrderSummaryDiscountProps extends OrderSummaryPriceProps {
     remaining?: number;

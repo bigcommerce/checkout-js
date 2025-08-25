@@ -1,5 +1,5 @@
-import { DigitalItem, PhysicalItem } from '@bigcommerce/checkout-sdk';
-import React, { ReactNode } from 'react';
+import { type DigitalItem, type PhysicalItem } from '@bigcommerce/checkout-sdk';
+import React, { type ReactNode } from 'react';
 
 export default function getOrderSummaryItemImage(item: DigitalItem | PhysicalItem): ReactNode {
     if (!item.imageUrl) {

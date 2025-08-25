@@ -1,17 +1,17 @@
 import '@testing-library/jest-dom';
 import {
-    CheckoutSelectors,
-    CheckoutService,
+    type CheckoutSelectors,
+    type CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getAddress } from './address.mock';
 import AddressType from './AddressType';
-import SingleLineStaticAddress, { getAddressContent, SingleLineStaticAddressProps } from './SingleLineStaticAddress';
+import SingleLineStaticAddress, { getAddressContent, type SingleLineStaticAddressProps } from './SingleLineStaticAddress';
 
 describe('SingleLineStaticAddress Component', () => {
     let SingleLineStaticAddressTest: FunctionComponent<SingleLineStaticAddressProps>;

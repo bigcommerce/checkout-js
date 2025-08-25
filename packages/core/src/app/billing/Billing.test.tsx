@@ -1,17 +1,17 @@
 import {
-    BillingAddress,
-    CheckoutService,
+    type BillingAddress,
+    type CheckoutService,
     createCheckoutService,
     createEmbeddedCheckoutMessenger,
-    EmbeddedCheckoutMessenger,
+    type EmbeddedCheckoutMessenger,
 } from '@bigcommerce/checkout-sdk';
 import userEvent from '@testing-library/user-event';
 import { noop } from 'lodash';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import {
-    AnalyticsContextProps,
-    AnalyticsEvents,
+    type AnalyticsContextProps,
+    type AnalyticsEvents,
     AnalyticsProviderMock,
 } from '@bigcommerce/checkout/analytics';
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
@@ -37,7 +37,7 @@ import {
 import { act, renderWithoutWrapper as render, screen } from '@bigcommerce/checkout/test-utils';
 import { ThemeProvider } from '@bigcommerce/checkout/ui';
 
-import Checkout, { CheckoutProps } from '../checkout/Checkout';
+import Checkout, { type CheckoutProps } from '../checkout/Checkout';
 import { getCheckoutPayment } from '../checkout/checkouts.mock';
 import { createErrorLogger } from '../common/error';
 import {

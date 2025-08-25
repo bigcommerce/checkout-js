@@ -1,31 +1,31 @@
 import {
-    CheckoutSelectors,
-    CheckoutService,
+    type CheckoutSelectors,
+    type CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
-import { Formik, FormikProps } from 'formik';
+import { Formik, type FormikProps } from 'formik';
 import { merge, noop } from 'lodash';
-import React, { ComponentType, FunctionComponent, ReactNode } from 'react';
+import React, { type ComponentType, type FunctionComponent, type ReactNode } from 'react';
 
-import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { createLocaleContext, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/locale';
 import {
-    CardInstrumentFieldsetValues,
+    type CardInstrumentFieldsetValues,
     CheckoutProvider,
 } from '@bigcommerce/checkout/payment-integration-api';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
-import { FormContext, FormContextType } from '@bigcommerce/checkout/ui';
+import { FormContext, type FormContextType } from '@bigcommerce/checkout/ui';
 
 import { getCart } from '../../cart/carts.mock';
 import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
-import { CreditCardInputStylesType, getCreditCardInputStyles } from '../creditCard';
+import { CreditCardInputStylesType, type getCreditCardInputStyles } from '../creditCard';
 import { getPaymentMethod } from '../payment-methods.mock';
-import PaymentContext, { PaymentContextProps } from '../PaymentContext';
-import HostedCreditCardFieldsetValues from '../paymentMethod/HostedCreditCardFieldsetValues';
+import PaymentContext, { type PaymentContextProps } from '../PaymentContext';
+import type HostedCreditCardFieldsetValues from '../paymentMethod/HostedCreditCardFieldsetValues';
 
 import withHostedCreditCardFieldset, {
-    WithHostedCreditCardFieldsetProps,
-    WithInjectedHostedCreditCardFieldsetProps,
+    type WithHostedCreditCardFieldsetProps,
+    type WithInjectedHostedCreditCardFieldsetProps,
 } from './withHostedCreditCardFieldset';
 
 jest.mock('../creditCard', () => ({

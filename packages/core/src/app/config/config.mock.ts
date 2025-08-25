@@ -1,4 +1,4 @@
-import { StoreConfig } from '@bigcommerce/checkout-sdk';
+import { type StoreConfig } from '@bigcommerce/checkout-sdk';
 
 export function getStoreConfig(): StoreConfig {
     return {

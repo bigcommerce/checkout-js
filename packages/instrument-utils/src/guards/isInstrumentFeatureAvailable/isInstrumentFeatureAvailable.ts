@@ -1,4 +1,4 @@
-import { Customer, PaymentMethod, StoreConfig } from '@bigcommerce/checkout-sdk';
+import { type Customer, type PaymentMethod, type StoreConfig } from '@bigcommerce/checkout-sdk';
 
 export interface IsInstrumentFeatureAvailableState {
     config: StoreConfig;

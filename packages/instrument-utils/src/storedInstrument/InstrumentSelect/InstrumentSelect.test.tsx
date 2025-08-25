@@ -1,14 +1,14 @@
 import { fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Field, FieldProps, Formik } from 'formik';
+import { Field, type FieldProps, Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
-import { Omit } from 'utility-types';
+import { type Omit } from 'utility-types';
 
 import {
     createLocaleContext,
     LocaleContext,
-    LocaleContextType,
+    type LocaleContextType,
 } from '@bigcommerce/checkout/locale';
 import {
     getCardInstrument,
@@ -20,7 +20,7 @@ import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { isCardInstrument } from '../../guards';
 
-import InstrumentSelect, { InstrumentSelectProps } from './InstrumentSelect';
+import InstrumentSelect, { type InstrumentSelectProps } from './InstrumentSelect';
 
 describe('InstrumentSelect', () => {
     let defaultProps: Omit<InstrumentSelectProps, keyof FieldProps<string>>;

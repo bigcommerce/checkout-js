@@ -1,6 +1,6 @@
-import { LanguageService } from '@bigcommerce/checkout-sdk';
+import { type LanguageService } from '@bigcommerce/checkout-sdk';
 
-import { CheckoutSupport, NoopCheckoutSupport } from '../checkout';
+import { type CheckoutSupport, NoopCheckoutSupport } from '../checkout';
 
 import EmbeddedCheckoutSupport from './EmbeddedCheckoutSupport';
 import isEmbedded from './isEmbedded';

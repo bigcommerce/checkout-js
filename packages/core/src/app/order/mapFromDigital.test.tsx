@@ -1,4 +1,4 @@
-import { LineItemOption } from '@bigcommerce/checkout-sdk';
+import { type LineItemOption } from '@bigcommerce/checkout-sdk';
 
 import { getDigitalItem } from '../cart/lineItem.mock';
 

@@ -1,5 +1,11 @@
 import classNames from 'classnames';
-import React, { FunctionComponent, memo, ReactNode, useCallback, useContext } from 'react';
+import React, {
+    type FunctionComponent,
+    memo,
+    type ReactNode,
+    useCallback,
+    useContext,
+} from 'react';
 import { CSSTransition } from 'react-transition-group';
 
 import AccordionContext from './AccordionContext';

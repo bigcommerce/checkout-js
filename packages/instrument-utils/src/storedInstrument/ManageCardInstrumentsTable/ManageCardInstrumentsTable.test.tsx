@@ -4,7 +4,7 @@ import React from 'react';
 import {
     createLocaleContext,
     LocaleContext,
-    LocaleContextType,
+    type LocaleContextType,
 } from '@bigcommerce/checkout/locale';
 import { getInstruments, getStoreConfig, getYear } from '@bigcommerce/checkout/test-mocks';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
@@ -12,7 +12,7 @@ import { render, screen } from '@bigcommerce/checkout/test-utils';
 import { isCardInstrument } from '../../guards';
 
 import ManageCardInstrumentsTable, {
-    ManageCardInstrumentsTableProps,
+    type ManageCardInstrumentsTableProps,
 } from './ManageCardInstrumentsTable';
 
 describe('ManageCardInstrumentsTable', () => {

@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { type FunctionComponent, useEffect } from 'react';
 
 import { useLocale } from '@bigcommerce/checkout/locale';
 import { useCheckout, usePaymentFormContext } from '@bigcommerce/checkout/payment-integration-api';

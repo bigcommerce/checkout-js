@@ -12,7 +12,7 @@ import ConsoleErrorLogger from '../../common/error/ConsoleErrorLogger';
 import { getCustomer } from '../../customer/customers.mock';
 import { getShippingAddress } from '../shipping-addresses.mock';
 
-import StripeShipping, { StripeShippingProps } from './StripeShipping';
+import StripeShipping, { type StripeShippingProps } from './StripeShipping';
 
 describe('Stripe Shipping Component', () => {
     const checkoutService = createCheckoutService();

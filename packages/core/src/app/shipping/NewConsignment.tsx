@@ -1,4 +1,4 @@
-import { Consignment, ConsignmentCreateRequestBody, ConsignmentLineItem } from "@bigcommerce/checkout-sdk";
+import { type Consignment, type ConsignmentCreateRequestBody, type ConsignmentLineItem } from "@bigcommerce/checkout-sdk";
 import classNames from "classnames";
 import { find } from "lodash";
 import React, { useMemo, useState } from "react";

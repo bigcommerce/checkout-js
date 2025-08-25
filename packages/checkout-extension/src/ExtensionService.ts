@@ -1,16 +1,16 @@
 import {
-    CheckoutService,
-    Extension,
-    ExtensionCommandMap,
-    ExtensionQueryMap,
-    ExtensionRegion,
+    type CheckoutService,
+    type Extension,
+    type ExtensionCommandMap,
+    type ExtensionQueryMap,
+    type ExtensionRegion,
 } from '@bigcommerce/checkout-sdk';
-import React from 'react';
+import type React from 'react';
 
-import { ErrorLevelType, ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
+import { ErrorLevelType, type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 
-import { ExtensionAction } from './ExtensionProvider';
-import { CommandHandler, QueryHandler } from './handler';
+import { type ExtensionAction } from './ExtensionProvider';
+import { type CommandHandler, type QueryHandler } from './handler';
 import * as commandHandlerFactories from './handler/commandHandlers';
 import * as queryHandlerFactories from './handler/queryHandlers';
 

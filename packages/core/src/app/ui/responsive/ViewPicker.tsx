@@ -1,5 +1,5 @@
-import React, { FunctionComponent, memo } from 'react';
-import Media, { MediaQueryObject, MultiQueryProps } from 'react-media';
+import React, { type FunctionComponent, memo } from 'react';
+import Media, { type MediaQueryObject, type MultiQueryProps } from 'react-media';
 
 import { MOBILE_MAX_WIDTH } from './breakpoints';
 

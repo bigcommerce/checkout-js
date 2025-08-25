@@ -1,15 +1,15 @@
 import {
-    Address,
-    CheckoutSelectors,
-    Country,
-    ShippingInitializeOptions,
+    type Address,
+    type CheckoutSelectors,
+    type Country,
+    type ShippingInitializeOptions,
 } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { isEmpty } from 'lodash';
-import React, { FunctionComponent, memo } from 'react';
+import React, { type FunctionComponent, memo } from 'react';
 
 import { localizeAddress } from '@bigcommerce/checkout/locale';
-import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { type CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../checkout';

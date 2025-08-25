@@ -1,10 +1,10 @@
-import { PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { type PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { useCallback } from 'react';
-import { object, string, StringSchema } from 'yup';
+import { object, string, type StringSchema } from 'yup';
 
 import { useLocale } from '@bigcommerce/checkout/locale';
 import {
-    PaymentFormValues,
+    type PaymentFormValues,
     usePaymentFormContext,
 } from '@bigcommerce/checkout/payment-integration-api';
 

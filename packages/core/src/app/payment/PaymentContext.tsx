@@ -1,8 +1,8 @@
-import { PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { type PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { createContext } from 'react';
-import { ObjectSchema } from 'yup';
+import { type ObjectSchema } from 'yup';
 
-import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 
 export interface PaymentContextProps {
     disableSubmit(method: PaymentMethod, disabled?: boolean): void;

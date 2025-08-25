@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { type FunctionComponent } from "react";
 
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { TranslatedLink, TranslatedString } from "@bigcommerce/checkout/locale";

@@ -1,4 +1,4 @@
-import { ComponentType } from 'react';
+import { type ComponentType } from 'react';
 
 import { isResolvableComponent } from '@bigcommerce/checkout/payment-integration-api';
 

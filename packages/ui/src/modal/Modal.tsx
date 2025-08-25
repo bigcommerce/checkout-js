@@ -1,8 +1,14 @@
 import classNames from 'classnames';
 import { noop } from 'lodash';
-import React, { FunctionComponent, KeyboardEvent, MouseEvent, ReactNode, useCallback } from 'react';
+import React, {
+    type FunctionComponent,
+    type KeyboardEvent,
+    type MouseEvent,
+    type ReactNode,
+    useCallback,
+} from 'react';
 import ReactModal from 'react-modal';
-import { Omit } from 'utility-types';
+import { type Omit } from 'utility-types';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 

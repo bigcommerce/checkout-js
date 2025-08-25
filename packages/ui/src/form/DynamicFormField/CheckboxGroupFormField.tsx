@@ -1,7 +1,13 @@
-import { FormFieldItem } from '@bigcommerce/checkout-sdk';
-import { FieldArray, FieldArrayRenderProps, getIn } from 'formik';
+import { type FormFieldItem } from '@bigcommerce/checkout-sdk';
+import { FieldArray, type FieldArrayRenderProps, getIn } from 'formik';
 import { difference, kebabCase, noop, pick } from 'lodash';
-import React, { ChangeEvent, FunctionComponent, memo, ReactNode, useCallback } from 'react';
+import React, {
+    type ChangeEvent,
+    type FunctionComponent,
+    memo,
+    type ReactNode,
+    useCallback,
+} from 'react';
 
 import { FormFieldContainer } from '../FormFieldContainer';
 import { FormFieldError } from '../FormFieldError';

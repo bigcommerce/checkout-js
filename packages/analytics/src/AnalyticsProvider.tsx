@@ -1,18 +1,18 @@
 import {
-    BodlEventsPayload,
-    BodlService,
-    BraintreeAnalyticTrackerService,
-    CheckoutService,
+    type BodlEventsPayload,
+    type BodlService,
+    type BraintreeAnalyticTrackerService,
+    type CheckoutService,
     createBodlService,
     createBraintreeAnalyticTracker,
     createPayPalCommerceAnalyticTracker,
     createStepTracker,
-    PayPalCommerceAnalyticTrackerService,
-    StepTracker,
+    type PayPalCommerceAnalyticTrackerService,
+    type StepTracker,
 } from '@bigcommerce/checkout-sdk';
-import React, { ReactNode, useMemo } from 'react';
+import React, { type ReactNode, useMemo } from 'react';
 
-import AnalyticsContext, { AnalyticsEvents } from './AnalyticsContext';
+import AnalyticsContext, { type AnalyticsEvents } from './AnalyticsContext';
 import createAnalyticsService from './createAnalyticsService';
 
 interface AnalyticsProviderProps {

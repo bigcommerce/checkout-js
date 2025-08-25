@@ -1,8 +1,12 @@
-import { createLanguageService, FormField as FormFieldType } from '@bigcommerce/checkout-sdk';
+import { createLanguageService, type FormField as FormFieldType } from '@bigcommerce/checkout-sdk';
 import { Formik } from 'formik';
 import React from 'react';
 
-import { LocaleContext, LocaleContextType, TranslatedString } from '@bigcommerce/checkout/locale';
+import {
+    LocaleContext,
+    type LocaleContextType,
+    TranslatedString,
+} from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import DynamicFormField from './DynamicFormField';

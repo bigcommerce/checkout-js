@@ -1,7 +1,7 @@
 import classNames from 'classnames';
-import React, { forwardRef, ReactNode, Ref } from 'react';
+import React, { forwardRef, type ReactNode, type Ref } from 'react';
 
-import Input, { InputProps } from '../Input/Input';
+import Input, { type InputProps } from '../Input/Input';
 import Label from '../Label/Label';
 
 export interface RadioInputProps extends InputProps {

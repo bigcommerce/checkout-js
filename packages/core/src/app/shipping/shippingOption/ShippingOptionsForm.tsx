@@ -1,9 +1,9 @@
-import { CheckoutSelectors, Consignment } from '@bigcommerce/checkout-sdk';
-import { FormikProps } from 'formik';
+import { type CheckoutSelectors, type Consignment } from '@bigcommerce/checkout-sdk';
+import { type FormikProps } from 'formik';
 import { noop } from 'lodash';
-import React, { PureComponent, ReactNode } from 'react';
+import React, { PureComponent, type ReactNode } from 'react';
 
-import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
+import { type AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { ChecklistSkeleton } from '@bigcommerce/checkout/ui';
 
@@ -13,7 +13,7 @@ import { withFormikExtended } from '../../common/form';
 import getRecommendedShippingOption from '../getRecommendedShippingOption';
 import StaticConsignmentItemList from '../StaticConsignmentItemList';
 
-import { ShippingOptionsProps, WithCheckoutShippingOptionsProps } from './ShippingOptions';
+import { type ShippingOptionsProps, type WithCheckoutShippingOptionsProps } from './ShippingOptions';
 import './ShippingOptionsForm.scss';
 import ShippingOptionsList from './ShippingOptionsList';
 

@@ -1,9 +1,9 @@
-import { CheckoutSelectors, PaymentInstrument } from '@bigcommerce/checkout-sdk';
+import { type CheckoutSelectors, type PaymentInstrument } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { Component, ReactNode } from 'react';
+import React, { Component, type ReactNode } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { type CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 
 import { withCheckout } from '../../checkout';
 import { Button, ButtonSize, ButtonVariant } from '../../ui/button';

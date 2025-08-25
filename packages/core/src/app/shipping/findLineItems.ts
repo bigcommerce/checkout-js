@@ -1,4 +1,4 @@
-import { Cart, Consignment, PhysicalItem } from '@bigcommerce/checkout-sdk';
+import { type Cart, type Consignment, type PhysicalItem } from '@bigcommerce/checkout-sdk';
 import { compact, find, isNil, map } from 'lodash';
 
 export default function findLineItems(cart: Cart, consignment: Consignment): PhysicalItem[] {

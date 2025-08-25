@@ -1,4 +1,4 @@
-import { CheckoutPaymentMethodExecutedOptions } from '@bigcommerce/checkout-sdk';
+import { type CheckoutPaymentMethodExecutedOptions } from '@bigcommerce/checkout-sdk';
 import { createContext } from 'react';
 
 export interface AnalyticsEvents {

@@ -1,4 +1,4 @@
-import { Cart } from '@bigcommerce/checkout-sdk';
+import { type Cart } from '@bigcommerce/checkout-sdk';
 
 export default function hasPromotionalItems(cart: Cart): boolean {
     const { digitalItems = [], physicalItems } = cart.lineItems;

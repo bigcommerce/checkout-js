@@ -1,8 +1,8 @@
-import { CustomerAccountRequestBody } from '@bigcommerce/checkout-sdk';
+import { type CustomerAccountRequestBody } from '@bigcommerce/checkout-sdk';
 
 import { mapCustomFormFieldsFromFormValues } from '../formFields';
 
-import { CreateAccountFormValues } from './getCreateCustomerValidationSchema';
+import { type CreateAccountFormValues } from './getCreateCustomerValidationSchema';
 
 export default function mapCreateAccountFromFormValues({
     acceptsMarketingEmails,

@@ -1,6 +1,6 @@
 import { getCardInstrument, getCart, getPaymentMethod } from '@bigcommerce/checkout/test-mocks';
 
-import { isInstrumentCardNumberRequired, IsInstrumentCardNumberRequiredState } from '.';
+import { isInstrumentCardNumberRequired, type IsInstrumentCardNumberRequiredState } from '.';
 
 describe('is instrument card number required', () => {
     let state: IsInstrumentCardNumberRequiredState;

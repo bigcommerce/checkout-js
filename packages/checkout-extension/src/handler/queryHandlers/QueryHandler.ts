@@ -1,7 +1,11 @@
-import { CheckoutService, Extension, ExtensionQueryMap } from '@bigcommerce/checkout-sdk';
-import React from 'react';
+import {
+    type CheckoutService,
+    type Extension,
+    type ExtensionQueryMap,
+} from '@bigcommerce/checkout-sdk';
+import type React from 'react';
 
-import { ExtensionAction } from '../../ExtensionProvider';
+import { type ExtensionAction } from '../../ExtensionProvider';
 
 export interface QueryHandlerProps {
     checkoutService: CheckoutService;

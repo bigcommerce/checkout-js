@@ -1,5 +1,5 @@
-import { ExtensionRegion } from '@bigcommerce/checkout-sdk';
-import React, { ReactNode, useEffect } from 'react';
+import { type ExtensionRegion } from '@bigcommerce/checkout-sdk';
+import React, { type ReactNode, useEffect } from 'react';
 
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 

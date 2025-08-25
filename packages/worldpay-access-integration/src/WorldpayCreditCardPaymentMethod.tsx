@@ -1,13 +1,13 @@
 import {
-    CardInstrument,
-    LegacyHostedFormOptions,
-    PaymentInitializeOptions,
+    type CardInstrument,
+    type LegacyHostedFormOptions,
+    type PaymentInitializeOptions,
 } from '@bigcommerce/checkout-sdk';
 import { compact, forIn } from 'lodash';
 import React, {
     createRef,
-    FunctionComponent,
-    RefObject,
+    type FunctionComponent,
+    type RefObject,
     useCallback,
     useRef,
     useState,
@@ -28,8 +28,8 @@ import {
     isInstrumentCardNumberRequiredSelector,
 } from '@bigcommerce/checkout/instrument-utils';
 import {
-    PaymentMethodProps,
-    PaymentMethodResolveId,
+    type PaymentMethodProps,
+    type PaymentMethodResolveId,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 import { Modal } from '@bigcommerce/checkout/ui';

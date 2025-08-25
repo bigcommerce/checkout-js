@@ -1,4 +1,4 @@
-import { RequestError } from '@bigcommerce/checkout-sdk';
+import { type RequestError } from '@bigcommerce/checkout-sdk';
 
 export default function isRequestError(error: unknown): error is RequestError {
     const requestError = error as RequestError;

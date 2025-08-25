@@ -1,5 +1,12 @@
-import { CheckoutSelectors, CheckoutService } from '@bigcommerce/checkout-sdk';
-import React, { ReactElement, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
+import { type CheckoutSelectors, type CheckoutService } from '@bigcommerce/checkout-sdk';
+import React, {
+    type ReactElement,
+    type ReactNode,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react';
 
 import CheckoutContext from './CheckoutContext';
 

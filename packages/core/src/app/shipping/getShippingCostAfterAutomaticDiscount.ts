@@ -1,4 +1,4 @@
-import { Consignment } from "@bigcommerce/checkout-sdk";
+import { type Consignment } from "@bigcommerce/checkout-sdk";
 
 export default function getShippingCostAfterAutomaticDiscount(shippingCostBeforeDiscount: number, consignments: Consignment[]) {
     return consignments.reduce((total, consignment) => {

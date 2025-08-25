@@ -1,14 +1,14 @@
 import {
-    CheckoutSelectors,
-    CheckoutService,
-    CustomerInitializeOptions,
-    CustomerRequestOptions,
+    type CheckoutSelectors,
+    type CheckoutService,
+    type CustomerInitializeOptions,
+    type CustomerRequestOptions,
 } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { FunctionComponent, memo } from 'react';
+import React, { type FunctionComponent, memo } from 'react';
 
 import { TranslatedString, useLocale } from '@bigcommerce/checkout/locale';
-import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { type CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 import { LazyContainer } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../checkout';

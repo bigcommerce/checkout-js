@@ -1,6 +1,6 @@
 import {
-    CheckoutSelectors,
-    CheckoutService,
+    type CheckoutSelectors,
+    type CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
 import { fireEvent, render, screen } from '@testing-library/react';
@@ -12,7 +12,7 @@ import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale
 import {
     CheckoutProvider,
     PaymentFormContext,
-    PaymentFormService,
+    type PaymentFormService,
 } from '@bigcommerce/checkout/payment-integration-api';
 import {
     getPaymentFormServiceMock,

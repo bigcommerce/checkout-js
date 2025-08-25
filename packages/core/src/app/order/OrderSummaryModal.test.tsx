@@ -1,4 +1,4 @@
-import { createCheckoutService, Order } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, type Order } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
 import { LocaleProvider } from '@bigcommerce/checkout/locale';

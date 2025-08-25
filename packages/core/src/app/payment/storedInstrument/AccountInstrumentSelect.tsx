@@ -1,8 +1,8 @@
-import { AccountInstrument, AchInstrument, BankInstrument, PayPalInstrument } from '@bigcommerce/checkout-sdk';
+import { type AccountInstrument, type AchInstrument, type BankInstrument, type PayPalInstrument } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
-import { FieldProps } from 'formik';
+import { type FieldProps } from 'formik';
 import { find, noop } from 'lodash';
-import React, { FunctionComponent, PureComponent, ReactNode, useCallback } from 'react';
+import React, { type FunctionComponent, PureComponent, type ReactNode, useCallback } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 

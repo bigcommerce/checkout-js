@@ -1,11 +1,11 @@
 import '@testing-library/jest-dom';
-import { CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
+import { type CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { render, screen } from '@testing-library/react';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import { LocaleProvider } from '@bigcommerce/checkout/locale';
 
-import { MandateTextComponent, MandateTextComponentProps } from './MandateTextComponent';
+import { MandateTextComponent, type MandateTextComponentProps } from './MandateTextComponent';
 
 describe('MandateTextComponent',  () => {
     let MandateTextComponentTest: FunctionComponent<MandateTextComponentProps>;

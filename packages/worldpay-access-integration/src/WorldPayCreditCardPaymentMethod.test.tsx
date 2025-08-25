@@ -1,28 +1,28 @@
 import {
-    AccountInstrument,
-    CheckoutSelectors,
-    CheckoutService,
+    type AccountInstrument,
+    type CheckoutSelectors,
+    type CheckoutService,
     createCheckoutService,
     createLanguageService,
-    PaymentMethod,
+    type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 import { act } from 'react-dom/test-utils';
 
-import { CreditCardPaymentMethodValues } from '@bigcommerce/checkout/credit-card-integration';
+import { type CreditCardPaymentMethodValues } from '@bigcommerce/checkout/credit-card-integration';
 import {
     createLocaleContext,
     LocaleContext,
-    LocaleContextType,
+    type LocaleContextType,
 } from '@bigcommerce/checkout/locale';
 import {
     CheckoutProvider,
     PaymentFormContext,
-    PaymentFormService,
+    type PaymentFormService,
     PaymentMethodId,
-    PaymentMethodProps,
+    type PaymentMethodProps,
 } from '@bigcommerce/checkout/payment-integration-api';
 import {
     getCart,

@@ -5,15 +5,15 @@ import React from 'react';
 import {
     createLocaleContext,
     LocaleContext,
-    LocaleContextType,
+    type LocaleContextType,
 } from '@bigcommerce/checkout/locale';
-import { CardInstrumentFieldsetValues } from '@bigcommerce/checkout/payment-integration-api';
+import { type CardInstrumentFieldsetValues } from '@bigcommerce/checkout/payment-integration-api';
 import { getInstruments, getStoreConfig, getYear } from '@bigcommerce/checkout/test-mocks';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { isCardInstrument } from '../../guards/';
 
-import CardInstrumentFieldset, { CardInstrumentFieldsetProps } from './CardInstrumentFieldset';
+import CardInstrumentFieldset, { type CardInstrumentFieldsetProps } from './CardInstrumentFieldset';
 
 describe('CardInstrumentFieldset', () => {
     let defaultProps: CardInstrumentFieldsetProps;

@@ -8,7 +8,7 @@ import { render, screen } from '@bigcommerce/checkout/test-utils';
 import { BluesnapECPAccountType } from '../constants';
 
 import BlueSnapDirectEcpFieldset, {
-    BlueSnapDirectEcpFieldsetProps,
+    type BlueSnapDirectEcpFieldsetProps,
 } from './BlueSnapDirectEcpFieldset';
 
 describe('BlueSnapDirectEcpFieldset', () => {

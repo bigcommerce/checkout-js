@@ -1,4 +1,4 @@
-import { Consignment, LineItemMap } from '@bigcommerce/checkout-sdk';
+import { type Consignment, type LineItemMap } from '@bigcommerce/checkout-sdk';
 import { reduce } from 'lodash';
 
 export default function hasUnassignedLineItems(

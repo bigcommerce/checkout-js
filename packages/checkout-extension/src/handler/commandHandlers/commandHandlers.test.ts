@@ -1,13 +1,13 @@
 import {
-    CheckoutSelectors,
-    CheckoutService,
+    type CheckoutSelectors,
+    type CheckoutService,
     createCheckoutService,
     ExtensionCommandType,
 } from '@bigcommerce/checkout-sdk';
 
 import { ExtensionActionType, getExtensions } from '../../index';
 
-import { CommandHandlerProps } from './CommandHandler';
+import { type CommandHandlerProps } from './CommandHandler';
 import { createReloadCheckoutHandler } from './createReloadCheckoutHandler';
 import { createReRenderShippingFormHandler } from './createReRenderShippingFormHandler';
 import { createReRenderShippingStepHandler } from './createReRenderShippingStepHandler';

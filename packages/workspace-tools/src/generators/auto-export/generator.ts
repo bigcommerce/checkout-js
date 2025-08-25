@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { generateFiles, readProjectConfiguration, Tree } from '@nx/devkit';
+import { generateFiles, readProjectConfiguration, type Tree } from '@nx/devkit';
 import { basename, join, parse } from 'path';
 
 import autoExport from './auto-export';

@@ -1,11 +1,11 @@
 import {
     ExtensionRegion,
-    LineItemMap,
-    ShopperCurrency,
-    StoreCurrency,
+    type LineItemMap,
+    type ShopperCurrency,
+    type StoreCurrency,
 } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
-import React, { FunctionComponent, ReactNode, useMemo } from 'react';
+import React, { type FunctionComponent, type ReactNode, useMemo } from 'react';
 
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -15,7 +15,7 @@ import OrderSummaryHeader from './OrderSummaryHeader';
 import OrderSummaryItems from './OrderSummaryItems';
 import OrderSummaryPrice from './OrderSummaryPrice';
 import OrderSummarySection from './OrderSummarySection';
-import OrderSummarySubtotals, { OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
+import OrderSummarySubtotals, { type OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
 import OrderSummaryTotal from './OrderSummaryTotal';
 import removeBundledItems from './removeBundledItems';
 

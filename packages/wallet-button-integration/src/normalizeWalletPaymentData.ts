@@ -1,6 +1,6 @@
 import { number } from 'card-validator';
 
-import { WalletButtonInitializationData } from './types';
+import { type WalletButtonInitializationData } from './types';
 
 interface WalletPaymentData {
     accountMask: string;

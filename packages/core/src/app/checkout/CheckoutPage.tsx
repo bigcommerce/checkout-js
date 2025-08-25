@@ -1,27 +1,27 @@
 import {
-    Address,
-    Cart,
-    CartChangedError,
-    CheckoutParams,
-    CheckoutSelectors,
-    CheckoutStoreSelector,
-    Consignment,
-    EmbeddedCheckoutMessenger,
-    EmbeddedCheckoutMessengerOptions,
+    type Address,
+    type Cart,
+    type CartChangedError,
+    type CheckoutParams,
+    type CheckoutSelectors,
+    type CheckoutStoreSelector,
+    type Consignment,
+    type EmbeddedCheckoutMessenger,
+    type EmbeddedCheckoutMessengerOptions,
     ExtensionRegion,
-    FlashMessage,
-    PaymentMethod,
-    Promotion,
-    RequestOptions,
+    type FlashMessage,
+    type PaymentMethod,
+    type Promotion,
+    type RequestOptions,
 } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { find, findIndex } from 'lodash';
-import React, { Component, lazy, ReactNode } from 'react';
+import React, { Component, lazy, type ReactNode } from 'react';
 
-import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
-import { Extension, ExtensionContextProps, withExtension } from '@bigcommerce/checkout/checkout-extension';
-import { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
-import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { type AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
+import { Extension, type ExtensionContextProps, withExtension } from '@bigcommerce/checkout/checkout-extension';
+import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
+import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import {
     AddressFormSkeleton,
     CartSummarySkeleton,
@@ -43,21 +43,21 @@ import {
     CheckoutSuggestion,
     Customer,
     CustomerInfo,
-    CustomerSignOutEvent,
+    type CustomerSignOutEvent,
     CustomerViewType,
 } from '../customer';
 import { getSupportedMethodIds } from '../customer/getSupportedMethods';
 import { SubscribeSessionStorage } from '../customer/SubscribeSessionStorage';
-import { EmbeddedCheckoutStylesheet, isEmbedded } from '../embeddedCheckout';
+import { type EmbeddedCheckoutStylesheet, isEmbedded } from '../embeddedCheckout';
 import { PromotionBannerList } from '../promotion';
 import { hasSelectedShippingOptions, isUsingMultiShipping, ShippingSummary } from '../shipping';
 import { ShippingOptionExpiredError } from '../shipping/shippingOption';
 import { MobileView } from '../ui/responsive';
 
 import CheckoutStep from './CheckoutStep';
-import CheckoutStepStatus from './CheckoutStepStatus';
+import type CheckoutStepStatus from './CheckoutStepStatus';
 import CheckoutStepType from './CheckoutStepType';
-import CheckoutSupport from './CheckoutSupport';
+import type CheckoutSupport from './CheckoutSupport';
 import mapToCheckoutProps from './mapToCheckoutProps';
 
 const Billing = lazy(() =>

@@ -1,4 +1,4 @@
-import { Cart } from '@bigcommerce/checkout-sdk';
+import { type Cart } from '@bigcommerce/checkout-sdk';
 
 export default function isBuyNowCart(cart?: Cart): boolean {
     const lastPathName = window.location.pathname.split('/').pop();

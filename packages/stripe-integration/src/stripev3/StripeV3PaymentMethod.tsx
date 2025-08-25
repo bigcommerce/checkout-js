@@ -1,11 +1,11 @@
 import {
-    CardInstrument,
-    CustomError,
-    PaymentInitializeOptions,
-    StripeElementOptions,
+    type CardInstrument,
+    type CustomError,
+    type PaymentInitializeOptions,
+    type StripeElementOptions,
 } from '@bigcommerce/checkout-sdk';
 import { noop, some } from 'lodash';
-import React, { FunctionComponent, useCallback, useMemo } from 'react';
+import React, { type FunctionComponent, useCallback, useMemo } from 'react';
 
 import { useHostedCreditCard } from '@bigcommerce/checkout/hosted-credit-card-integration';
 import { HostedWidgetPaymentComponent } from '@bigcommerce/checkout/hosted-widget-integration';
@@ -15,8 +15,8 @@ import {
 } from '@bigcommerce/checkout/instrument-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import {
-    PaymentMethodProps,
-    PaymentMethodResolveId,
+    type PaymentMethodProps,
+    type PaymentMethodResolveId,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 

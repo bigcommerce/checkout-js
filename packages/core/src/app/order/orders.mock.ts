@@ -1,10 +1,10 @@
 import {
-    GatewayOrderPayment,
-    GiftCertificateOrderPayment,
-    Order,
-    OrderFee,
-    OrderPayment,
-    OrderShippingConsignment,
+    type GatewayOrderPayment,
+    type GiftCertificateOrderPayment,
+    type Order,
+    type OrderFee,
+    type OrderPayment,
+    type OrderShippingConsignment,
 } from '@bigcommerce/checkout-sdk';
 
 import { getBillingAddress } from '../billing/billingAddresses.mock';

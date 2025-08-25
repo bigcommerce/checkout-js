@@ -1,4 +1,4 @@
-import { Checkout, CheckoutPayment } from '@bigcommerce/checkout-sdk';
+import { type Checkout, type CheckoutPayment } from '@bigcommerce/checkout-sdk';
 
 import { getCart } from '../cart/carts.mock';
 import { getCoupon } from '../coupon/coupons.mock';

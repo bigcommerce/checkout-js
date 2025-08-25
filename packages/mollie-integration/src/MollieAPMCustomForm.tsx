@@ -1,9 +1,15 @@
-import { PaymentMethod } from '@bigcommerce/checkout-sdk';
-import { FieldProps, useField } from 'formik';
-import React, { FunctionComponent, SyntheticEvent, useCallback, useEffect, useState } from 'react';
+import { type PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { type FieldProps, useField } from 'formik';
+import React, {
+    type FunctionComponent,
+    type SyntheticEvent,
+    useCallback,
+    useEffect,
+    useState,
+} from 'react';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
-import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { DropdownTrigger, FormField } from '@bigcommerce/checkout/ui';
 
 export interface MollieCustomCardFormProps {

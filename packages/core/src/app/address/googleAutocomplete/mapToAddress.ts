@@ -1,4 +1,4 @@
-import { Address, Country, Region } from '@bigcommerce/checkout-sdk';
+import { type Address, type Country, type Region } from '@bigcommerce/checkout-sdk';
 
 import AddressSelectorFactory from './AddressSelectorFactory';
 

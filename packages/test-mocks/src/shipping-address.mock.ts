@@ -1,4 +1,4 @@
-import { Address } from '@bigcommerce/checkout-sdk';
+import { type Address } from '@bigcommerce/checkout-sdk';
 
 export function getShippingAddress(): Address {
     return {

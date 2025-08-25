@@ -1,5 +1,5 @@
-import { GatewayOrderPayment } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent } from 'react';
+import { type GatewayOrderPayment } from '@bigcommerce/checkout-sdk';
+import React, { type FunctionComponent } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 

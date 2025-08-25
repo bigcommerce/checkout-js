@@ -1,4 +1,4 @@
-import { Address, AddressKey, FormField } from '@bigcommerce/checkout-sdk';
+import { type Address, type AddressKey, type FormField } from '@bigcommerce/checkout-sdk';
 
 import { DynamicFormFieldType } from '@bigcommerce/checkout/ui';
 

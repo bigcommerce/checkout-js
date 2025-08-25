@@ -1,8 +1,8 @@
 import {
-    AccountInstrument,
-    BankInstrument,
-    CardInstrument,
-    PaymentInstrument,
+    type AccountInstrument,
+    type BankInstrument,
+    type CardInstrument,
+    type PaymentInstrument,
 } from '@bigcommerce/checkout-sdk';
 
 import { getYear } from '@bigcommerce/checkout/test-mocks';

@@ -1,4 +1,4 @@
-import { FormField } from '@bigcommerce/checkout-sdk';
+import { type FormField } from '@bigcommerce/checkout-sdk';
 
 export function getAddressFormFieldsWithCustomRequired(): FormField[] {
     return [

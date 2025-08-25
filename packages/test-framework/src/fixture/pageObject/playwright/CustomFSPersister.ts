@@ -1,5 +1,4 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { Har } from '@pollyjs/persister';
+import { type Har } from '@pollyjs/persister';
 import FSPersister from '@pollyjs/persister-fs';
 import { includes } from 'lodash';
 

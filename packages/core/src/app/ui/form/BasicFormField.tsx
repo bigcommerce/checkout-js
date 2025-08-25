@@ -1,9 +1,9 @@
-import { Field, FieldConfig, FieldProps, getIn } from 'formik';
+import { Field, type FieldConfig, type FieldProps, getIn } from 'formik';
 import { isDate, noop } from 'lodash';
 import React, {
     Component,
     createElement,
-    FunctionComponent,
+    type FunctionComponent,
     memo,
     useCallback,
     useMemo,

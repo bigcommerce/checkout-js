@@ -1,11 +1,11 @@
 import { createLanguageService } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
-import { LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/locale';
 import { render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
 import DynamicFormFieldType from './DynamicFormFieldType';
-import DynamicInput, { DynamicInputProps } from './DynamicInput';
+import DynamicInput, { type DynamicInputProps } from './DynamicInput';
 
 describe('DynamicInput', () => {
     let localeContext: LocaleContextType;

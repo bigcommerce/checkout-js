@@ -1,5 +1,5 @@
-import { PaymentMethod } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import { type PaymentMethod } from '@bigcommerce/checkout-sdk';
+import React, { type FunctionComponent, useEffect, useState } from 'react';
 
 import {
     AccountInstrumentFieldset,

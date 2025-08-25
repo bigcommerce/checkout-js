@@ -1,9 +1,9 @@
-import { getScriptLoader, ScriptLoader } from '@bigcommerce/script-loader';
+import { getScriptLoader, type ScriptLoader } from '@bigcommerce/script-loader';
 
 import GoogleAutocompleteScriptLoader, {
-    GoogleCallbackWindow,
+    type GoogleCallbackWindow,
 } from './GoogleAutocompleteScriptLoader';
-import { GoogleAutocompleteWindow } from './googleAutocompleteTypes';
+import { type GoogleAutocompleteWindow } from './googleAutocompleteTypes';
 
 describe('GoogleAutocompleteScriptLoader', () => {
     const scriptLoader: ScriptLoader = getScriptLoader();

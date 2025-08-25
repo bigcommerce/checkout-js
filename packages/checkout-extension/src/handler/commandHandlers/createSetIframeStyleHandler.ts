@@ -1,6 +1,6 @@
 import { ExtensionCommandType } from '@bigcommerce/checkout-sdk';
 
-import { CommandHandler, CommandHandlerProps } from './CommandHandler';
+import { type CommandHandler, type CommandHandlerProps } from './CommandHandler';
 
 export function createSetIframeStyleHandler({
     extension,

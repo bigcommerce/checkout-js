@@ -1,6 +1,6 @@
-import { Cart, Consignment } from '@bigcommerce/checkout-sdk';
+import { type Cart, type Consignment } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
-import React, { FunctionComponent, memo } from 'react';
+import React, { type FunctionComponent, memo } from 'react';
 
 import { localizeAddress, TranslatedString } from '@bigcommerce/checkout/locale';
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';

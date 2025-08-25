@@ -1,14 +1,14 @@
 import {
-    CheckoutSelectors,
-    CheckoutService,
+    type CheckoutSelectors,
+    type CheckoutService,
     createCheckoutService,
-    PaymentMethod,
+    type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
 import EventEmitter from 'events';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
-import React, { FunctionComponent } from 'react';
-import { object, Schema, string } from 'yup';
+import React, { type FunctionComponent } from 'react';
+import { object, type Schema, string } from 'yup';
 
 import {
     getCreditCardValidationSchema,
@@ -17,13 +17,13 @@ import {
 import {
     createLocaleContext,
     LocaleContext,
-    LocaleContextType,
+    type LocaleContextType,
 } from '@bigcommerce/checkout/locale';
 import {
     CheckoutContext,
     PaymentFormContext,
-    PaymentFormService,
-    PaymentMethodProps,
+    type PaymentFormService,
+    type PaymentMethodProps,
 } from '@bigcommerce/checkout/payment-integration-api';
 import {
     getCardInstrument,
@@ -38,8 +38,8 @@ import {
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import CreditCardPaymentMethodComponent, {
-    CreditCardPaymentMethodProps,
-    CreditCardPaymentMethodValues,
+    type CreditCardPaymentMethodProps,
+    type CreditCardPaymentMethodValues,
 } from './CreditCardPaymentMethodComponent';
 
 describe('CreditCardPaymentMethod', () => {

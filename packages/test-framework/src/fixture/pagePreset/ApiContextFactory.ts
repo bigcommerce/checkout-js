@@ -1,4 +1,4 @@
-import { APIRequestContext, Page, request } from '@playwright/test';
+import { type APIRequestContext, type Page, request } from '@playwright/test';
 
 export class ApiContextFactory {
     private apiContext: APIRequestContext | undefined;

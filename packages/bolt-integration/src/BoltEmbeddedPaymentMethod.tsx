@@ -1,11 +1,11 @@
-import React, { FunctionComponent, useCallback, useState } from 'react';
+import React, { type FunctionComponent, useCallback, useState } from 'react';
 
 import { HostedWidgetPaymentComponent } from '@bigcommerce/checkout/hosted-widget-integration';
 import {
     isInstrumentCardCodeRequiredSelector,
     isInstrumentCardNumberRequiredSelector,
 } from '@bigcommerce/checkout/instrument-utils';
-import { PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
+import { type PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
 
 import BoltCustomForm from './BoltCustomForm';
 

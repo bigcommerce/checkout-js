@@ -1,16 +1,16 @@
-import { PaymentMethod } from '@bigcommerce/checkout-sdk';
-import React, { ComponentType, Suspense } from 'react';
+import { type PaymentMethod } from '@bigcommerce/checkout-sdk';
+import React, { type ComponentType, Suspense } from 'react';
 
-import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { PaymentFormProvider, PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { PaymentFormProvider, type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 
-import { withCheckout, WithCheckoutProps } from '../../checkout';
-import { connectFormik, WithFormikProps } from '../../common/form';
+import { withCheckout, type WithCheckoutProps } from '../../checkout';
+import { connectFormik, type WithFormikProps } from '../../common/form';
 import { isExperimentEnabled } from '../../common/utility';
-import { withForm, WithFormProps } from '../../ui/form';
+import { withForm, type WithFormProps } from '../../ui/form';
 import createPaymentFormService from '../createPaymentFormService';
 import resolvePaymentMethod from '../resolvePaymentMethod';
-import withPayment, { WithPaymentProps } from '../withPayment';
+import withPayment, { type WithPaymentProps } from '../withPayment';
 
 import { default as PaymentMethodV1 } from './PaymentMethod';
 

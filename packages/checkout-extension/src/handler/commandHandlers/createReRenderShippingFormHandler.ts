@@ -2,7 +2,7 @@ import { ExtensionCommandType } from '@bigcommerce/checkout-sdk';
 
 import { ExtensionActionType } from '../../ExtensionProvider';
 
-import { CommandHandler, CommandHandlerProps } from './CommandHandler';
+import { type CommandHandler, type CommandHandlerProps } from './CommandHandler';
 
 export function createReRenderShippingFormHandler({
     checkoutService,

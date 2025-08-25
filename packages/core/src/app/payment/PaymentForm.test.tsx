@@ -1,14 +1,14 @@
 import {
-    CheckoutSelectors,
-    CheckoutService,
+    type CheckoutSelectors,
+    type CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { createLocaleContext, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
@@ -18,8 +18,8 @@ import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
 
 import { getPaymentMethod } from './payment-methods.mock';
-import PaymentContext, { PaymentContextProps } from './PaymentContext';
-import PaymentForm, { PaymentFormProps } from './PaymentForm';
+import PaymentContext, { type PaymentContextProps } from './PaymentContext';
+import PaymentForm, { type PaymentFormProps } from './PaymentForm';
 
 jest.useFakeTimers({ legacyFakeTimers: true });
 

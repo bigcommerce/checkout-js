@@ -1,11 +1,11 @@
 import {
-    Checkout,
-    Consignment,
-    ConsignmentAutomaticDiscount,
-    ConsignmentCouponDiscount,
-    Coupon,
-    Customer,
-    PhysicalItem,
+    type Checkout,
+    type Consignment,
+    type ConsignmentAutomaticDiscount,
+    type ConsignmentCouponDiscount,
+    type Coupon,
+    type Customer,
+    type PhysicalItem,
 } from '@bigcommerce/checkout-sdk';
 
 const timeString = new Date().toISOString();

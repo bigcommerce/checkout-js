@@ -1,8 +1,8 @@
-import { BillingAddress, PaymentMethod } from '@bigcommerce/checkout-sdk';
-import { FieldProps } from 'formik';
+import { type BillingAddress, type PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { type FieldProps } from 'formik';
 import React, {
-    FunctionComponent,
-    SyntheticEvent,
+    type FunctionComponent,
+    type SyntheticEvent,
     useCallback,
     useContext,
     useEffect,

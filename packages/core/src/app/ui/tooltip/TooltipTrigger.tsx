@@ -1,5 +1,5 @@
-import { Placement } from '@popperjs/core';
-import React, { ReactEventHandler, ReactNode, useState } from 'react';
+import { type Placement } from '@popperjs/core';
+import React, { type ReactEventHandler, type ReactNode, useState } from 'react';
 import { Manager, Popper, Reference } from 'react-popper';
 
 export interface TooltipTriggerProps {

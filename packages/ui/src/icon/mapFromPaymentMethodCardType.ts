@@ -1,6 +1,6 @@
-import { ComponentType, lazy } from 'react';
+import { type ComponentType, lazy } from 'react';
 
-import { IconProps } from './';
+import { type IconProps } from './';
 
 interface InstrumentComponent {
     instrument: string;

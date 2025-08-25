@@ -1,16 +1,16 @@
 import {
-    CheckoutSelectors,
-    CheckoutService,
+    type CheckoutSelectors,
+    type CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import {
     CheckoutContext,
     PaymentFormContext,
-    PaymentFormService,
+    type PaymentFormService,
 } from '@bigcommerce/checkout/payment-integration-api';
 import {
     getCart,
@@ -22,7 +22,9 @@ import { render } from '@bigcommerce/checkout/test-utils';
 
 import { AccountTypes, OwnershipTypes } from '../constants';
 
-import BraintreeAchMandateText, { BraintreeAchMandateTextProps } from './BraintreeAchMandateText';
+import BraintreeAchMandateText, {
+    type BraintreeAchMandateTextProps,
+} from './BraintreeAchMandateText';
 
 describe('BraintreeAchMandateText', () => {
     let BraintreeAchMandateTextTest: FunctionComponent<BraintreeAchMandateTextProps>;

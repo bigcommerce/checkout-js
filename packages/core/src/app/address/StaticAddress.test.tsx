@@ -1,10 +1,10 @@
 import '@testing-library/jest-dom';
 import {
-    CheckoutSelectors,
-    CheckoutService,
+    type CheckoutSelectors,
+    type CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
@@ -13,7 +13,7 @@ import { getCountries } from '../geography/countries.mock';
 
 import { getAddress } from './address.mock';
 import AddressType from './AddressType';
-import StaticAddress, { StaticAddressProps } from './StaticAddress';
+import StaticAddress, { type StaticAddressProps } from './StaticAddress';
 
 describe('StaticAddress Component', () => {
     let StaticAddressTest: FunctionComponent<StaticAddressProps>;

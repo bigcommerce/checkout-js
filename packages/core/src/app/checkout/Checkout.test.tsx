@@ -1,16 +1,16 @@
 import {
-    CheckoutService,
+    type CheckoutService,
     createCheckoutService,
     createEmbeddedCheckoutMessenger,
-    EmbeddedCheckoutMessenger,
+    type EmbeddedCheckoutMessenger,
 } from '@bigcommerce/checkout-sdk';
 import userEvent from '@testing-library/user-event';
 import { noop } from 'lodash';
-import React, { act, FunctionComponent } from 'react';
+import React, { act, type FunctionComponent } from 'react';
 
 import {
-    AnalyticsContextProps,
-    AnalyticsEvents,
+    type AnalyticsContextProps,
+    type AnalyticsEvents,
     AnalyticsProviderMock,
 } from '@bigcommerce/checkout/analytics';
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
@@ -35,7 +35,7 @@ import {
     createEmbeddedCheckoutSupport,
 } from '../embeddedCheckout';
 
-import Checkout, { CheckoutProps } from './Checkout';
+import Checkout, { type CheckoutProps } from './Checkout';
 
 describe('Checkout', () => {
     let checkout: CheckoutPageNodeObject;

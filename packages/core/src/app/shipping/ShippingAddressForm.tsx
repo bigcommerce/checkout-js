@@ -1,19 +1,19 @@
 import {
-    Address,
-    Consignment,
-    Country,
-    CustomerAddress,
-    FormField,
+    type Address,
+    type Consignment,
+    type Country,
+    type CustomerAddress,
+    type FormField,
 } from '@bigcommerce/checkout-sdk';
-import React, { Component, ReactNode } from 'react';
+import React, { Component, type ReactNode } from 'react';
 
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import { AddressForm, AddressSelect, AddressType, isValidCustomerAddress } from '../address';
-import { connectFormik, ConnectFormikProps } from '../common/form';
+import { connectFormik, type ConnectFormikProps } from '../common/form';
 import { Fieldset } from '../ui/form';
 
-import { SingleShippingFormValues } from './SingleShippingForm';
+import { type SingleShippingFormValues } from './SingleShippingForm';
 
 export interface ShippingAddressFormProps {
     addresses: CustomerAddress[];

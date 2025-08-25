@@ -1,4 +1,4 @@
-import { Cart } from '@bigcommerce/checkout-sdk';
+import { type Cart } from '@bigcommerce/checkout-sdk';
 
 /**
  * Minimum charge amounts due to the Stripe documentation

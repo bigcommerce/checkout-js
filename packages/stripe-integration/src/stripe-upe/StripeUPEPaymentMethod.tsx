@@ -1,6 +1,6 @@
-import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import { type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import { noop, some } from 'lodash';
-import React, { FunctionComponent, useCallback, useMemo } from 'react';
+import React, { type FunctionComponent, useCallback, useMemo } from 'react';
 
 import { getAppliedStyles } from '@bigcommerce/checkout/dom-utils';
 import { HostedWidgetPaymentComponent } from '@bigcommerce/checkout/hosted-widget-integration';
@@ -9,8 +9,8 @@ import {
     isInstrumentCardNumberRequiredSelector,
 } from '@bigcommerce/checkout/instrument-utils';
 import {
-    PaymentMethodProps,
-    PaymentMethodResolveId,
+    type PaymentMethodProps,
+    type PaymentMethodResolveId,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 

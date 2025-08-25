@@ -1,16 +1,16 @@
 import { fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Field, FieldProps, Formik } from 'formik';
+import { Field, type FieldProps, Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
-import { Omit } from 'utility-types';
+import { type Omit } from 'utility-types';
 
-import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { createLocaleContext, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../../config/config.mock';
 
-import AccountInstrumentSelect, { AccountInstrumentSelectProps } from './AccountInstrumentSelect';
+import AccountInstrumentSelect, { type AccountInstrumentSelectProps } from './AccountInstrumentSelect';
 import { getInstruments } from './instruments.mock';
 import isAccountInstrument from './isAccountInstrument';
 

@@ -5,7 +5,7 @@ import { getCustomer, getGuestCustomer } from '../../customer/customers.mock';
 import { getPaymentMethod } from '../payment-methods.mock';
 
 import isInstrumentFeatureAvailable, {
-    IsInstrumentFeatureAvailableState,
+    type IsInstrumentFeatureAvailableState,
 } from './isInstrumentFeatureAvailable';
 
 describe('isInstrumentFeatureAvailable()', () => {

@@ -1,7 +1,7 @@
 import {
-    Checkout,
-    CheckoutService,
-    Consignment,
+    type Checkout,
+    type CheckoutService,
+    type Consignment,
     createCheckoutService,
     ExtensionMessageType,
     ExtensionQueryType,
@@ -10,7 +10,7 @@ import {
 import { getExtensions } from '../../index';
 
 import { createGetConsignmentHandler } from './createGetConsignmentHandler';
-import { QueryHandlerProps } from './QueryHandler';
+import { type QueryHandlerProps } from './QueryHandler';
 
 describe('queryHandlers', () => {
     let handlerProps: QueryHandlerProps;

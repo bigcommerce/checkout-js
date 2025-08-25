@@ -1,4 +1,4 @@
-import React, { FunctionComponent, memo, Suspense } from 'react';
+import React, { type FunctionComponent, memo, Suspense } from 'react';
 
 import { getPaymentMethodIconComponent } from './mapFromPaymentMethodCardType';
 import { IconSize } from './withIconContainer';

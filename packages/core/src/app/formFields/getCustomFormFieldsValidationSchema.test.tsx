@@ -1,13 +1,13 @@
-import { ObjectSchema, ValidationError } from 'yup';
+import { type ObjectSchema, type ValidationError } from 'yup';
 
 import { getFormFields } from '../address/formField.mock';
 import { getShippingAddress } from '../shipping/shipping-addresses.mock';
 
 import getCustomFormFieldsValidationSchema, {
-    CustomFormFieldValues,
-    TranslateValidationErrorFunction,
+    type CustomFormFieldValues,
+    type TranslateValidationErrorFunction,
 } from './getCustomFormFieldsValidationSchema';
-import getFormFieldsValidationSchema, { FormFieldValues } from './getFormFieldsValidationSchema';
+import getFormFieldsValidationSchema, { type FormFieldValues } from './getFormFieldsValidationSchema';
 
 describe('getCustomFormFieldsValidationSchema', () => {
     const formFields = getFormFields();

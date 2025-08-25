@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import { configurePublicPath } from '../common/bundler';
 
-import { CheckoutAppProps } from './CheckoutApp';
+import { type CheckoutAppProps } from './CheckoutApp';
 
 export type RenderCheckoutOptions = CheckoutAppProps;
 export type RenderCheckout = typeof renderCheckout;

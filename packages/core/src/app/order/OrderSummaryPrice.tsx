@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { FC, ReactNode, useCallback, useEffect, useState } from 'react';
+import React, { type FC, type ReactNode, useCallback, useEffect, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';

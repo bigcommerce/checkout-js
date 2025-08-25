@@ -1,21 +1,21 @@
 import {
-    Address,
-    CheckoutSelectors,
-    Consignment,
-    Country,
-    ShippingInitializeOptions,
-    ShippingRequestOptions,
-    StripeShippingEvent
+    type Address,
+    type CheckoutSelectors,
+    type Consignment,
+    type Country,
+    type ShippingInitializeOptions,
+    type ShippingRequestOptions,
+    type StripeShippingEvent
 } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
-import React, { FunctionComponent, memo, useCallback, useEffect, useState } from 'react';
+import React, { type FunctionComponent, memo, useCallback, useEffect, useState } from 'react';
 
 import { getAppliedStyles } from '@bigcommerce/checkout/dom-utils';
 
-import CheckoutStepStatus from '../../checkout/CheckoutStepStatus';
+import type CheckoutStepStatus from '../../checkout/CheckoutStepStatus';
 import getRecommendedShippingOption from '../getRecommendedShippingOption';
 import hasSelectedShippingOptions from '../hasSelectedShippingOptions';
-import { SingleShippingFormValues } from '../SingleShippingForm';
+import { type SingleShippingFormValues } from '../SingleShippingForm';
 
 import StripeShippingAddressDisplay from './StripeShippingAddressDisplay';
 import StripeStateMapper from './StripeStateMapper';

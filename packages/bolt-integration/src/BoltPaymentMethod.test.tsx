@@ -1,13 +1,16 @@
 import {
-    CheckoutSelectors,
-    CheckoutService,
+    type CheckoutSelectors,
+    type CheckoutService,
     createCheckoutService,
     createLanguageService,
 } from '@bigcommerce/checkout-sdk';
 import { render } from '@testing-library/react';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
-import { PaymentMethodId, PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
+import {
+    PaymentMethodId,
+    type PaymentMethodProps,
+} from '@bigcommerce/checkout/payment-integration-api';
 import {
     getCart,
     getCustomer,

@@ -1,4 +1,4 @@
-import { CheckoutSelectors, CheckoutService } from '@bigcommerce/checkout-sdk';
+import { type CheckoutSelectors, type CheckoutService } from '@bigcommerce/checkout-sdk';
 import { createContext, useContext } from 'react';
 
 export interface CheckoutContextProps {

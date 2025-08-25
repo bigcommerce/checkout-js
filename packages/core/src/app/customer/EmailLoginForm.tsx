@@ -1,14 +1,14 @@
-import { SignInEmail } from '@bigcommerce/checkout-sdk';
-import { FormikProps, withFormik } from 'formik';
+import { type SignInEmail } from '@bigcommerce/checkout-sdk';
+import { type FormikProps, withFormik } from 'formik';
 import { noop } from 'lodash';
-import React, { FunctionComponent, memo, useMemo } from 'react';
+import React, { type FunctionComponent, memo, useMemo } from 'react';
 
 import {
     TranslatedHtml,
     TranslatedLink,
     TranslatedString,
     withLanguage,
-    WithLanguageProps,
+    type WithLanguageProps,
 } from '@bigcommerce/checkout/locale';
 import { LoadingSpinner } from '@bigcommerce/checkout/ui';
 

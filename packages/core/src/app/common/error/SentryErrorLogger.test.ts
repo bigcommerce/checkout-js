@@ -1,11 +1,11 @@
-import { getScriptLoader, ScriptLoader } from '@bigcommerce/script-loader';
+import { getScriptLoader, type ScriptLoader } from '@bigcommerce/script-loader';
 import type { BrowserOptions } from '@sentry/browser';
 
 import { ErrorLevelType } from '@bigcommerce/checkout/error-handling-utils';
 
 import computeErrorCode from './computeErrorCode';
 import ConsoleErrorLogger from './ConsoleErrorLogger';
-import SentryErrorLogger, { SentryErrorLoggerOptions, SeverityLevelEnum } from './SentryErrorLogger';
+import SentryErrorLogger, { type SentryErrorLoggerOptions, SeverityLevelEnum } from './SentryErrorLogger';
 
 jest.mock('@bigcommerce/script-loader', () => ({
     getScriptLoader: jest.fn(() => ({

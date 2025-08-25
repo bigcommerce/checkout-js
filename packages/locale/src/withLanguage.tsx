@@ -1,6 +1,6 @@
-import { LanguageService } from '@bigcommerce/checkout-sdk';
+import { type LanguageService } from '@bigcommerce/checkout-sdk';
 
-import { createInjectHoc, InjectHoc } from '@bigcommerce/checkout/legacy-hoc';
+import { createInjectHoc, type InjectHoc } from '@bigcommerce/checkout/legacy-hoc';
 
 import LocaleContext from './LocaleContext';
 

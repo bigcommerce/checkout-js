@@ -1,4 +1,4 @@
-import { Promotion } from '@bigcommerce/checkout-sdk';
+import { type Promotion } from '@bigcommerce/checkout-sdk';
 
 export function getPromotion(): Promotion {
     return {

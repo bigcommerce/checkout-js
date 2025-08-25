@@ -1,4 +1,8 @@
-import { LineItemMap, PaymentInstrument, PaymentMethod } from '@bigcommerce/checkout-sdk';
+import {
+    type LineItemMap,
+    type PaymentInstrument,
+    type PaymentMethod,
+} from '@bigcommerce/checkout-sdk';
 
 export const PROVIDERS_WITHOUT_CARD_CODE = ['bluesnapdirect'];
 

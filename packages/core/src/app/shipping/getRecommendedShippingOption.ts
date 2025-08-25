@@ -1,4 +1,4 @@
-import { ShippingOption } from '@bigcommerce/checkout-sdk';
+import { type ShippingOption } from '@bigcommerce/checkout-sdk';
 
 export default function getRecommendedShippingOption(
     availableShippingOptions: ShippingOption[],

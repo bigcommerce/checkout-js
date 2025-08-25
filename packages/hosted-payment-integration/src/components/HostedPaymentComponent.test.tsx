@@ -1,22 +1,22 @@
 import {
-    CheckoutSelectors,
-    CheckoutService,
+    type CheckoutSelectors,
+    type CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
 import userEvent from '@testing-library/user-event';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import {
     createLocaleContext,
     LocaleContext,
-    LocaleContextType,
+    type LocaleContextType,
 } from '@bigcommerce/checkout/locale';
 import {
     CheckoutContext,
     PaymentFormContext,
-    PaymentFormService,
+    type PaymentFormService,
 } from '@bigcommerce/checkout/payment-integration-api';
 import {
     getCart,
@@ -29,7 +29,7 @@ import {
 } from '@bigcommerce/checkout/test-mocks';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import HostedPaymentMethod, { HostedPaymentComponentProps } from './HostedPaymentComponent';
+import HostedPaymentMethod, { type HostedPaymentComponentProps } from './HostedPaymentComponent';
 
 describe('HostedPaymentMethod', () => {
     let checkoutService: CheckoutService;

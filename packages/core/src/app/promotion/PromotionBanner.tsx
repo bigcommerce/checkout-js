@@ -1,5 +1,5 @@
 import DOMPurify from 'dompurify';
-import React, { FunctionComponent, memo } from 'react';
+import React, { type FunctionComponent, memo } from 'react';
 
 import { Alert, AlertType } from '../ui/alert';
 import { IconTag } from '../ui/icon';

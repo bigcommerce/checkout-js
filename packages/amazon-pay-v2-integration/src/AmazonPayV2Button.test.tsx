@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import React from 'react';
 
 import '@testing-library/jest-dom';
-import { CheckoutButtonProps } from '@bigcommerce/checkout/payment-integration-api';
+import { type CheckoutButtonProps } from '@bigcommerce/checkout/payment-integration-api';
 
 import AmazonPayV2Button from './AmazonPayV2Button';
 

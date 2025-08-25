@@ -1,7 +1,7 @@
-import { FunctionComponent, useEffect } from 'react';
+import { type FunctionComponent, useEffect } from 'react';
 
 import {
-    PaymentMethodProps,
+    type PaymentMethodProps,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 

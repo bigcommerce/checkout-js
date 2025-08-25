@@ -1,14 +1,14 @@
 import {
-    Address,
-    CheckoutSelectors,
-    Consignment,
-    Country,
-    CustomerAddress,
-    FormField,
-    ShippingInitializeOptions,
-    ShippingRequestOptions,
+    type Address,
+    type CheckoutSelectors,
+    type Consignment,
+    type Country,
+    type CustomerAddress,
+    type FormField,
+    type ShippingInitializeOptions,
+    type ShippingRequestOptions,
 } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, memo, useContext } from 'react';
+import React, { type FunctionComponent, memo, useContext } from 'react';
 
 import { isPayPalFastlaneMethod } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { FormContext } from '@bigcommerce/checkout/ui';

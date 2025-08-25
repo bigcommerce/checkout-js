@@ -2,7 +2,7 @@ import { createCurrencyService, createLanguageService } from '@bigcommerce/check
 
 import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
-import { LocaleContextType } from './LocaleContext';
+import { type LocaleContextType } from './LocaleContext';
 import { FALLBACK_TRANSLATIONS } from './translations';
 
 export function getLocaleContext(): Required<LocaleContextType> {

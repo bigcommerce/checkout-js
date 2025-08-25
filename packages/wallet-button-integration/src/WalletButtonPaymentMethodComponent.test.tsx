@@ -1,23 +1,23 @@
 import '@testing-library/jest-dom';
 import {
-    CheckoutSelectors,
-    CheckoutService,
+    type CheckoutSelectors,
+    type CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
 import { Formik } from 'formik';
 import { merge, noop } from 'lodash';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import {
     createLocaleContext,
     LocaleContext,
-    LocaleContextType,
+    type LocaleContextType,
 } from '@bigcommerce/checkout/locale';
 import {
     CheckoutProvider,
     getPaymentMethodName,
     PaymentFormContext,
-    PaymentFormService,
+    type PaymentFormService,
 } from '@bigcommerce/checkout/payment-integration-api';
 import {
     getAddress,
@@ -30,7 +30,7 @@ import {
 import { fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
 
 import WalletButtonPaymentMethodComponent, {
-    WalletButtonPaymentMethodProps,
+    type WalletButtonPaymentMethodProps,
 } from './WalletButtonPaymentMethodComponent';
 
 describe('WalletButtonPaymentMethod', () => {

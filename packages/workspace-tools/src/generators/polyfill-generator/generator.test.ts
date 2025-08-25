@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies, no-console */
-import { Tree } from '@nx/devkit';
+import { type Tree } from '@nx/devkit';
 import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
 
 import polyfillGenerator from './generator';

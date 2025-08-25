@@ -1,27 +1,27 @@
 import {
-    CheckoutPaymentMethodExecutedOptions,
-    CheckoutSelectors,
-    CustomerAccountRequestBody,
-    CustomerCredentials,
-    CustomerInitializeOptions,
-    CustomerRequestOptions,
-    ExecutePaymentMethodCheckoutOptions,
-    FormField,
-    GuestCredentials,
-    SignInEmail,
-    StoreConfig,
+    type CheckoutPaymentMethodExecutedOptions,
+    type CheckoutSelectors,
+    type CustomerAccountRequestBody,
+    type CustomerCredentials,
+    type CustomerInitializeOptions,
+    type CustomerRequestOptions,
+    type ExecutePaymentMethodCheckoutOptions,
+    type FormField,
+    type GuestCredentials,
+    type SignInEmail,
+    type StoreConfig,
 } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { Component, ReactNode } from 'react';
+import React, { Component, type ReactNode } from 'react';
 
-import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
+import { type AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
 import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
-import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { type CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 import { isPayPalFastlaneMethod } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 import { withAnalytics } from '../analytics';
 import { withCheckout } from '../checkout';
-import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
+import type CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import { isErrorWithType } from '../common/error';
 import { isFloatingLabelEnabled } from '../common/utility';
 import getProviderWithCustomCheckout from '../payment/getProviderWithCustomCheckout';
@@ -30,9 +30,9 @@ import { PaymentMethodId } from '../payment/paymentMethod';
 import CheckoutButtonList from './CheckoutButtonList';
 import CreateAccountForm from './CreateAccountForm';
 import CustomerViewType from './CustomerViewType';
-import EmailLoginForm, { EmailLoginFormValues } from './EmailLoginForm';
-import { CreateAccountFormValues } from './getCreateCustomerValidationSchema';
-import GuestForm, { GuestFormValues } from './GuestForm';
+import EmailLoginForm, { type EmailLoginFormValues } from './EmailLoginForm';
+import { type CreateAccountFormValues } from './getCreateCustomerValidationSchema';
+import GuestForm, { type GuestFormValues } from './GuestForm';
 import LoginForm from './LoginForm';
 import mapCreateAccountFromFormValues from './mapCreateAccountFromFormValues';
 import StripeGuestForm from './StripeGuestForm';

@@ -1,5 +1,5 @@
-import { LanguageService } from '@bigcommerce/checkout-sdk';
-import { boolean, BooleanSchema, object, ObjectSchema } from 'yup';
+import { type LanguageService } from '@bigcommerce/checkout-sdk';
+import { boolean, type BooleanSchema, object, type ObjectSchema } from 'yup';
 
 export interface PrivacyPolicyValidatonSchemaProps {
     isRequired: boolean;

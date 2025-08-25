@@ -1,4 +1,4 @@
-import { Formik, FormikHelpers as FormikActions, FormikProps } from 'formik';
+import { Formik, type FormikHelpers as FormikActions, type FormikProps } from 'formik';
 import React  from 'react';
 
 import { render, screen } from '@bigcommerce/checkout/test-utils';

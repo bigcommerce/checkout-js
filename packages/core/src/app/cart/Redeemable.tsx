@@ -1,22 +1,22 @@
-import { CheckoutSelectors, RequestError } from '@bigcommerce/checkout-sdk';
+import { type CheckoutSelectors, type RequestError } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import classNames from 'classnames';
-import { FieldProps, FormikProps, withFormik } from 'formik';
+import { type FieldProps, type FormikProps, withFormik } from 'formik';
 import { noop } from 'lodash';
-import React, {FunctionComponent, KeyboardEvent, memo, ReactNode, useCallback} from 'react';
+import React, {type FunctionComponent, type KeyboardEvent, memo, type ReactNode, useCallback} from 'react';
 import { object, string } from 'yup';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
-import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
-import { FormContextType, FormProvider, useThemeContext } from '@bigcommerce/checkout/ui';
+import { type FormContextType, FormProvider, useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
 import { FormField, Label, TextInput } from '../ui/form';
 import { Toggle } from '../ui/toggle';
 
-import AppliedRedeemables, { AppliedRedeemablesProps } from './AppliedRedeemables';
+import AppliedRedeemables, { type AppliedRedeemablesProps } from './AppliedRedeemables';
 
 export interface RedeemableFormValues {
     redeemableCode: string;

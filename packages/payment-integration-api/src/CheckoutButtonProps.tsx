@@ -1,4 +1,8 @@
-import { CheckoutSelectors, CheckoutService, LanguageService } from '@bigcommerce/checkout-sdk';
+import {
+    type CheckoutSelectors,
+    type CheckoutService,
+    type LanguageService,
+} from '@bigcommerce/checkout-sdk';
 
 export default interface CheckoutButtonProps {
     methodId: string;

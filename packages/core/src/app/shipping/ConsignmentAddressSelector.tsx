@@ -1,16 +1,16 @@
-import { Address, ConsignmentCreateRequestBody } from "@bigcommerce/checkout-sdk";
+import { type Address, type ConsignmentCreateRequestBody } from "@bigcommerce/checkout-sdk";
 import React, { useState } from "react";
 
 import { TranslatedString } from "@bigcommerce/checkout/locale";
 import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
 
-import { AddressFormModal, AddressFormValues, AddressSelect, AddressType, isValidAddress, mapAddressFromFormValues } from "../address";
+import { AddressFormModal, type AddressFormValues, AddressSelect, AddressType, isValidAddress, mapAddressFromFormValues } from "../address";
 import { ErrorModal } from "../common/error";
 import { EMPTY_ARRAY, isFloatingLabelEnabled } from "../common/utility";
 
 import { AssignItemFailedError, AssignItemInvalidAddressError } from "./errors";
 import GuestCustomerAddressSelector from "./GuestCustomerAddressSelector";
-import { MultiShippingConsignmentData } from "./MultishippingType";
+import { type MultiShippingConsignmentData } from "./MultishippingType";
 import { setRecommendedOrMissingShippingOption } from './utils';
 
 interface ConsignmentAddressSelectorProps {

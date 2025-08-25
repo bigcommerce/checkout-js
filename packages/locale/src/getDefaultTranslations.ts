@@ -1,4 +1,4 @@
-import { Translations } from '@bigcommerce/checkout-sdk';
+import { type Translations } from '@bigcommerce/checkout-sdk';
 
 import { FALLBACK_TRANSLATIONS } from './translations';
 

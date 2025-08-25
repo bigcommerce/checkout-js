@@ -1,12 +1,12 @@
-import { LanguageService } from '@bigcommerce/checkout-sdk';
+import { type LanguageService } from '@bigcommerce/checkout-sdk';
 import { memoize } from '@bigcommerce/memoize';
-import { boolean, object, ObjectSchema, string } from 'yup';
+import { boolean, object, type ObjectSchema, string } from 'yup';
 
 import {
-    DocumentOnlyCustomFormFieldsetValues,
-    FawryCustomFormFieldsetValues,
-    IdealCustomFormFieldsetValues,
-    SepaCustomFormFieldsetValues,
+    type DocumentOnlyCustomFormFieldsetValues,
+    type FawryCustomFormFieldsetValues,
+    type IdealCustomFormFieldsetValues,
+    type SepaCustomFormFieldsetValues,
 } from './CheckoutcomFormValues';
 
 export type checkoutcomCustomPaymentMethods = 'fawry' | 'sepa';

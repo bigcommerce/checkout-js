@@ -1,7 +1,7 @@
-import { createCheckoutService, CurrencyService } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, type CurrencyService } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
-import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { createLocaleContext, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 

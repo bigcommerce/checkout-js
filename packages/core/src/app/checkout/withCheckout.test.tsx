@@ -1,4 +1,4 @@
-import { Checkout, createCheckoutService } from '@bigcommerce/checkout-sdk';
+import { type Checkout, createCheckoutService } from '@bigcommerce/checkout-sdk';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 

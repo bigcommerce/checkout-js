@@ -1,4 +1,4 @@
-import { ShippingOption } from '@bigcommerce/checkout-sdk';
+import { type ShippingOption } from '@bigcommerce/checkout-sdk';
 
 import { getConsignment } from './consignment.mock';
 import getRecommendedShippingOption from './getRecommendedShippingOption';

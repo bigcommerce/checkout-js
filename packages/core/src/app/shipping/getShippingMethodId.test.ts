@@ -1,4 +1,4 @@
-import { Checkout, StoreConfig } from '@bigcommerce/checkout-sdk';
+import { type Checkout, type StoreConfig } from '@bigcommerce/checkout-sdk';
 
 import { getCheckout, getCheckoutPayment, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 

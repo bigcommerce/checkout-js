@@ -1,10 +1,10 @@
 import { createCheckoutService } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import { LocaleProvider } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import StripeV3CustomCardForm, { StripeV3CustomCardFormProps } from './StripeV3CustomCardForm';
+import StripeV3CustomCardForm, { type StripeV3CustomCardFormProps } from './StripeV3CustomCardForm';
 
 describe('StripeV3CustomCardForm', () => {
     let defaultProps: StripeV3CustomCardFormProps;

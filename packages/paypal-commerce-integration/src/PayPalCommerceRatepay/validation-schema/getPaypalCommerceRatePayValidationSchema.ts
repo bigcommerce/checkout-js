@@ -1,6 +1,6 @@
-import { FormField, LanguageService } from '@bigcommerce/checkout-sdk';
+import { type FormField, type LanguageService } from '@bigcommerce/checkout-sdk';
 import { memoize } from '@bigcommerce/memoize';
-import { object, string, StringSchema } from 'yup';
+import { object, string, type StringSchema } from 'yup';
 
 export default memoize(function getPaypalCommerceRatePayValidationSchema({
     formFieldData,

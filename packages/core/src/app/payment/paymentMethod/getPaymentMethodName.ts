@@ -1,4 +1,4 @@
-import { LanguageService, PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { type LanguageService, type PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { capitalize, get } from 'lodash';
 
 import PaymentMethodId from './PaymentMethodId';

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
-import { FormikProps, withFormik } from 'formik';
+import { type FormikProps, withFormik } from 'formik';
 import { noop } from 'lodash';
-import React, { FunctionComponent, memo, useCallback } from 'react';
+import React, { type FunctionComponent, memo, useCallback } from 'react';
 import { object, string } from 'yup';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
@@ -10,7 +10,7 @@ import {
     TranslatedLink,
     TranslatedString,
     withLanguage,
-    WithLanguageProps,
+    type WithLanguageProps,
 } from '@bigcommerce/checkout/locale';
 import { useThemeContext } from '@bigcommerce/checkout/ui';
 

@@ -1,4 +1,4 @@
-import { CardInstrument } from '@bigcommerce/checkout-sdk';
+import { type CardInstrument } from '@bigcommerce/checkout-sdk';
 import { fireEvent } from '@testing-library/react';
 import React from 'react';
 import '@testing-library/jest-dom';

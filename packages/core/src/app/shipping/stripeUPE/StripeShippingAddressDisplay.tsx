@@ -1,6 +1,6 @@
-import { CheckoutSelectors, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
+import { type CheckoutSelectors, type ShippingInitializeOptions, type ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { PureComponent, ReactNode } from 'react';
+import React, { PureComponent, type ReactNode } from 'react';
 
 export interface StripeupeShippingAddressProps {
     methodId?: string;

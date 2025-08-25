@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { includes } from 'lodash';
-import React, { forwardRef, InputHTMLAttributes, Ref } from 'react';
+import React, { forwardRef, type InputHTMLAttributes, type Ref } from 'react';
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     testId?: string;

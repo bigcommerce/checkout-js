@@ -1,11 +1,11 @@
-import { CardInstrument } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent } from 'react';
+import { type CardInstrument } from '@bigcommerce/checkout-sdk';
+import React, { type FunctionComponent } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { PoweredByPayPalFastlaneLabel } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { Button, ButtonSize, ButtonVariant, CreditCardIcon } from '@bigcommerce/checkout/ui';
 
-import { PayPalFastlaneCardComponentRef } from '../PayPalCommerceFastlanePaymentMethod';
+import { type PayPalFastlaneCardComponentRef } from '../PayPalCommerceFastlanePaymentMethod';
 
 import './PayPalCommerceFastlaneInstrumentsForm.scss';
 

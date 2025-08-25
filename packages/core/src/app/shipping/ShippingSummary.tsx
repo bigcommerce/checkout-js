@@ -1,6 +1,6 @@
 
-import { Cart, Consignment } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, memo } from 'react';
+import { type Cart, type Consignment } from '@bigcommerce/checkout-sdk';
+import React, { type FunctionComponent, memo } from 'react';
 
 import StaticConsignment from './StaticConsignment';
 import StaticMultiConsignment from './StaticMultiConsignment';

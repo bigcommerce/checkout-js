@@ -1,4 +1,4 @@
-import { CheckoutPayment, CheckoutSelectors } from '@bigcommerce/checkout-sdk';
+import { type CheckoutPayment, type CheckoutSelectors } from '@bigcommerce/checkout-sdk';
 import { compact } from 'lodash';
 import { createSelector } from 'reselect';
 

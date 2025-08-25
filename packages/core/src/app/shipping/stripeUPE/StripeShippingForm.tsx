@@ -1,29 +1,29 @@
 import {
-    Address,
-    CheckoutParams,
-    CheckoutSelectors,
-    Consignment,
-    Country,
-    FormField,
-    RequestOptions,
-    ShippingInitializeOptions,
-    ShippingRequestOptions,
+    type Address,
+    type CheckoutParams,
+    type CheckoutSelectors,
+    type Consignment,
+    type Country,
+    type FormField,
+    type RequestOptions,
+    type ShippingInitializeOptions,
+    type ShippingRequestOptions,
 } from '@bigcommerce/checkout-sdk';
-import { FormikProps } from 'formik';
+import { type FormikProps } from 'formik';
 import { noop } from 'lodash';
-import React, { PureComponent, ReactNode } from 'react';
+import React, { PureComponent, type ReactNode } from 'react';
 import { lazy, object } from 'yup';
 
-import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { FormContext } from '@bigcommerce/checkout/ui';
 
 import {
-    AddressFormValues,
+    type AddressFormValues,
     getAddressFormFieldsValidationSchema,
     getTranslateAddressError,
     mapAddressToFormValues,
 } from '../../address';
-import CheckoutStepStatus from '../../checkout/CheckoutStepStatus';
+import type CheckoutStepStatus from '../../checkout/CheckoutStepStatus';
 import { withFormikExtended } from '../../common/form';
 import { getCustomFormFieldsValidationSchema } from '../../formFields';
 import { Fieldset, Form } from '../../ui/form';

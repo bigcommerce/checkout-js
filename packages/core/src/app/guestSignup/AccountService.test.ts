@@ -1,7 +1,7 @@
-import { createRequestSender, RequestSender, Response } from '@bigcommerce/request-sender';
+import { createRequestSender, type RequestSender, type Response } from '@bigcommerce/request-sender';
 
-import AccountService, { CustomerCreateRequestBody } from './AccountService';
-import { CreatedCustomer } from './CreatedCustomer';
+import AccountService, { type CustomerCreateRequestBody } from './AccountService';
+import { type CreatedCustomer } from './CreatedCustomer';
 
 describe('AccountService', () => {
     let service: AccountService;

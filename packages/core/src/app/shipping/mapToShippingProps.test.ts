@@ -1,12 +1,12 @@
 import {
-    Cart,
-    Checkout,
-    CheckoutService,
+    type Cart,
+    type Checkout,
+    type CheckoutService,
     createCheckoutService,
-    StoreConfig,
+    type StoreConfig,
 } from '@bigcommerce/checkout-sdk';
 
-import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { type CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 
 import { getCart } from '../cart/carts.mock';
 import { getPhysicalItem } from '../cart/lineItem.mock';

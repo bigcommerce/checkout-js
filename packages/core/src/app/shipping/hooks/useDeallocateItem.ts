@@ -1,4 +1,4 @@
-import { Consignment, ConsignmentCreateRequestBody } from "@bigcommerce/checkout-sdk";
+import { type Consignment, type ConsignmentCreateRequestBody } from "@bigcommerce/checkout-sdk";
 
 import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
 

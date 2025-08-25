@@ -1,18 +1,18 @@
 import '@testing-library/jest-dom';
 import {
-    CheckoutSelectors,
-    CheckoutService,
+    type CheckoutSelectors,
+    type CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
-import { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
+import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import {
     createLocaleContext,
     LocaleContext,
-    LocaleContextType,
+    type LocaleContextType,
 } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { render, screen, waitFor, within } from '@bigcommerce/checkout/test-utils';
@@ -28,7 +28,7 @@ import { getCustomer } from '../customer/customers.mock';
 
 import { getConsignment } from './consignment.mock';
 import { AssignItemFailedError, AssignItemInvalidAddressError } from './errors';
-import MultiShippingForm, { MultiShippingFormProps } from './MultiShippingForm';
+import MultiShippingForm, { type MultiShippingFormProps } from './MultiShippingForm';
 import { getShippingAddress } from './shipping-addresses.mock';
 
 describe('MultiShippingForm Component', () => {

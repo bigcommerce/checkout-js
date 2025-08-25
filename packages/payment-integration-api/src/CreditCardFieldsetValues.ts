@@ -1,4 +1,4 @@
-import CardInstrumentFieldsetValues from './CardInstrumentFieldsetValues';
+import type CardInstrumentFieldsetValues from './CardInstrumentFieldsetValues';
 
 export default interface CreditCardFieldsetValues {
     ccCustomerCode?: string;

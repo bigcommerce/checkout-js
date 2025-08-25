@@ -1,4 +1,4 @@
-import { Address, Country } from '@bigcommerce/checkout-sdk';
+import { type Address, type Country } from '@bigcommerce/checkout-sdk';
 import { find, isEmpty } from 'lodash';
 
 interface LocalizedGeography {

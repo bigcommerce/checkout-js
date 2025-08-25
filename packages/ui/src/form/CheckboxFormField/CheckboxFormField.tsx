@@ -1,6 +1,6 @@
-import { FieldProps } from 'formik';
+import { type FieldProps } from 'formik';
 import { kebabCase } from 'lodash';
-import React, { FunctionComponent, memo, ReactNode, useCallback } from 'react';
+import React, { type FunctionComponent, memo, type ReactNode, useCallback } from 'react';
 
 import { BasicFormField } from '../BasicFormField';
 import { CheckboxInput } from '../CheckboxInput';

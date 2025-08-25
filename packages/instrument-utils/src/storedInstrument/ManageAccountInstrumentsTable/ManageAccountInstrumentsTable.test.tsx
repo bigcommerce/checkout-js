@@ -6,14 +6,14 @@ import React from 'react';
 import {
     createLocaleContext,
     LocaleContext,
-    LocaleContextType,
+    type LocaleContextType,
 } from '@bigcommerce/checkout/locale';
 import { getInstruments, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
 import { isAccountInstrument, isAchInstrument, isSepaInstrument } from '../../guards';
 
 import ManageCardInstrumentsTable, {
-    ManageAccountInstrumentsTableProps,
+    type ManageAccountInstrumentsTableProps,
 } from './ManageAccountInstrumentsTable';
 
 describe('ManageAccountInstrumentsTable', () => {

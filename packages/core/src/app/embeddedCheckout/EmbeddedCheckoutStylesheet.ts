@@ -1,8 +1,8 @@
-import { EmbeddedCheckoutStyles } from '@bigcommerce/checkout-sdk';
+import { type EmbeddedCheckoutStyles } from '@bigcommerce/checkout-sdk';
 
 import { appendStylesheet } from '../common/dom';
 
-import EmbeddedCheckoutStyleParser from './EmbeddedCheckoutStyleParser';
+import type EmbeddedCheckoutStyleParser from './EmbeddedCheckoutStyleParser';
 
 export default class EmbeddedCheckoutStylesheet {
     private _parser: EmbeddedCheckoutStyleParser;
