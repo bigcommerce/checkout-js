@@ -33,10 +33,15 @@ export default async function autoExport({
     }
 
     if (useLazyLoad) {
-        const componentRegistry = await createComponentRegistryExport(filePaths, memberPattern);
         const lazyExports = await createLazyLoadingExports(filePaths, tsConfigPath, memberPattern);
+        const componentRegistry = await createComponentRegistry(filePaths, memberPattern);
 
-        return [lazyExports, componentRegistry].filter(Boolean).join('\n\n');
+        validateComponentNames(lazyExports, componentRegistry);
+
+        return `${generateLazyLoadingCode(lazyExports)}
+
+${generateComponentRegistryCode(componentRegistry)}
+        `;
     }
 
     const exportDeclarations = await Promise.all(
@@ -50,6 +55,22 @@ export default async function autoExport({
             ts.factory.createNodeArray(exportDeclarations.filter(exists)),
             ts.createSourceFile(outputPath, '', ts.ScriptTarget.ESNext),
         );
+}
+
+function validateComponentNames(
+    lazyExports: Array<{ memberName: string; importPath: string }>,
+    componentRegistry: Record<string, unknown>,
+): void {
+    const lazyExportNames = lazyExports.map(({ memberName }) => memberName);
+    const componentRegistryNames = Object.keys(componentRegistry);
+
+    const onlyInRegistry = Array.from(componentRegistryNames).filter(
+        (name) => !lazyExportNames.includes(name),
+    );
+
+    if (onlyInRegistry.length > 0) {
+        throw new Error(`Component name mismatch detected: ${onlyInRegistry.join(', ')}\n`);
+    }
 }
 
 async function createExportDeclaration(
@@ -130,7 +151,7 @@ async function createLazyLoadingExports(
     filePaths: string[],
     tsConfigPath: string,
     memberPattern: string,
-): Promise<string> {
+): Promise<Array<{ memberName: string; importPath: string }>> {
     const memberMappings: Array<{ memberName: string; importPath: string }> = [];
 
     for (const filePath of filePaths) {
@@ -165,7 +186,7 @@ async function createLazyLoadingExports(
         }
     }
 
-    return generateLazyLoadingCode(memberMappings);
+    return memberMappings;
 }
 
 function generateLazyLoadingCode(
@@ -200,10 +221,10 @@ function toKebabCase(str: string): string {
         .toLowerCase();
 }
 
-async function createComponentRegistryExport(
+async function createComponentRegistry(
     filePaths: string[],
     memberPattern: string,
-): Promise<string> {
+): Promise<Record<string, unknown[]>> {
     const componentRegistry: Record<string, unknown[]> = {};
 
     const packageDirs = filePaths.map((filePath) => {
@@ -242,7 +263,7 @@ async function createComponentRegistryExport(
         }),
     );
 
-    return generateComponentRegistryCode(componentRegistry);
+    return componentRegistry;
 }
 
 function findToResolvableComponentCalls(
