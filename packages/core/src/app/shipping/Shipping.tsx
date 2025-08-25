@@ -26,7 +26,7 @@ import { AddressFormSkeleton, ConfirmationModal } from '@bigcommerce/checkout/ui
 import { isEqualAddress, mapAddressFromFormValues } from '../address';
 import { withCheckout } from '../checkout';
 import type CheckoutStepStatus from '../checkout/CheckoutStepStatus';
-import { EMPTY_ARRAY, isExperimentEnabled, isFloatingLabelEnabled } from '../common/utility';
+import { EMPTY_ARRAY, isFloatingLabelEnabled } from '../common/utility';
 import getProviderWithCustomCheckout from '../payment/getProviderWithCustomCheckout';
 import { PaymentMethodId } from '../payment/paymentMethod';
 
@@ -71,7 +71,6 @@ export interface WithCheckoutShippingProps {
     shippingAddress?: Address;
     shouldShowMultiShipping: boolean;
     shouldShowOrderComments: boolean;
-    isGuestMultiShippingEnabled: boolean;
     providerWithCustomCheckout?: string;
     isFloatingLabelEnabled?: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
@@ -142,7 +141,6 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps & Ext
             initializeShippingMethod,
             deinitializeShippingMethod,
             isMultiShippingMode,
-            isGuestMultiShippingEnabled,
             step,
             isFloatingLabelEnabled,
             shouldRenderStripeForm,
@@ -208,7 +206,6 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps & Ext
                         isBillingSameAsShipping={isBillingSameAsShipping}
                         isFloatingLabelEnabled={isFloatingLabelEnabled}
                         isGuest={isGuest}
-                        isGuestMultiShippingEnabled={isGuestMultiShippingEnabled}
                         isInitialValueLoaded={!isInitializing}
                         isMultiShippingMode={isMultiShippingMode}
                         onMultiShippingSubmit={this.handleMultiShippingSubmit}
@@ -414,8 +411,6 @@ export function mapToShippingProps({
         config.checkoutSettings.providerWithCustomCheckout,
     );
 
-    const isGuestMultiShippingEnabled = isExperimentEnabled(config?.checkoutSettings, 'CHECKOUT-9161.enable_storefront_guest_multi_shipping');
-
     return {
         assignItem: checkoutService.assignItemsToAddress,
         billingAddress: getBillingAddress(),
@@ -451,7 +446,6 @@ export function mapToShippingProps({
         updateShippingAddress: checkoutService.updateShippingAddress,
         isFloatingLabelEnabled: isFloatingLabelEnabled(config.checkoutSettings),
         shouldRenderStripeForm: providerWithCustomCheckout === PaymentMethodId.StripeUPE && shouldUseStripeLinkByMinimumAmount(cart),
-        isGuestMultiShippingEnabled,
     };
 }
 
