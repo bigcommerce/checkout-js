@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.657.1](https://github.com/bigcommerce/checkout-js/compare/v1.657.0...v1.657.1) (2025-08-25)
+
+
+### Code Refactoring
+
+* **common:** CHECKOUT-9447 Use type-only import statements and enforce rule ([31a6644](https://github.com/bigcommerce/checkout-js/commit/31a6644b1940b0cd22b495ac7178df9b7a515aaa))
+
 ## [1.657.0](https://github.com/bigcommerce/checkout-js/compare/v1.656.0...v1.657.0) (2025-08-22)
 
 
