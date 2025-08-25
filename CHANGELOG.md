@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.657.2](https://github.com/bigcommerce/checkout-js/compare/v1.657.1...v1.657.2) (2025-08-25)
+
+
+### Code Refactoring
+
+* **payment:** PAYMENTS-8202 PPSDK integration - Merge Wrapper and NoUI components ([67bdcbd](https://github.com/bigcommerce/checkout-js/commit/67bdcbd3744194d2553d64824c983c62ec0713a2))
+* **payment:** PAYMENTS-8202 Refactor ppsdk components to use payment integration API ([de3b90b](https://github.com/bigcommerce/checkout-js/commit/de3b90bba606602fd2a0eb55304c9e42eda4976d))
+
 ### [1.657.1](https://github.com/bigcommerce/checkout-js/compare/v1.657.0...v1.657.1) (2025-08-25)
 
 
