@@ -17,7 +17,6 @@ const HostedCreditCardPaymentMethod = lazy(() => import(/* webpackChunkName: "ho
 const HostedPaymentMethod = lazy(() => import(/* webpackChunkName: "hosted-payment-method" */'./HostedPaymentMethod'));
 const MasterpassPaymentMethod = lazy(() => import(/* webpackChunkName: "masterpass-payment-method" */'./MasterpassPaymentMethod'));
 const PaypalPaymentsProPaymentMethod = lazy(() => import(/* webpackChunkName: "paypal-payments-pro-payment-method" */'./PaypalPaymentsProPaymentMethod'));
-const PPSDKPaymentMethod = lazy(() => import(/* webpackChunkName: "ppsdk-payment-method" */'./PPSDKPaymentMethod'));
 
 import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodProviderType from './PaymentMethodProviderType';
@@ -53,10 +52,6 @@ const PaymentMethodComponent: FunctionComponent<
 > = (props) => {
     const { method } = props;
 
-    if (method.type === PaymentMethodProviderType.PPSDK) {
-        return <Suspense><PPSDKPaymentMethod {...props} /></Suspense>;
-    }
-
     if (method.id === PaymentMethodId.Masterpass) {
         return <Suspense><MasterpassPaymentMethod {...props} /></Suspense>;
     }
@@ -71,7 +66,6 @@ const PaymentMethodComponent: FunctionComponent<
     ) {
         return <Suspense><PaypalPaymentsProPaymentMethod {...props} /></Suspense>;
     }
-
 
     if (
         method.id === PaymentMethodId.BraintreeVenmo ||
