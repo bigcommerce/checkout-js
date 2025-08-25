@@ -34,7 +34,11 @@ import {
     getPaymentMethod,
     getStoreConfig,
 } from '@bigcommerce/checkout/test-mocks';
-import { fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
+import {
+    fireEvent,
+    renderWithoutWrapper as render,
+    screen,
+} from '@bigcommerce/checkout/test-utils';
 
 import WorldpayCreditCardPaymentMethod from './WorldpayCreditCardPaymentMethod';
 
