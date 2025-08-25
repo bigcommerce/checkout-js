@@ -8,7 +8,6 @@ import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 import { PayPalFastlaneWatermark } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { useThemeContext } from '@bigcommerce/checkout/ui';
 
-import { isExperimentEnabled } from '../common/utility';
 import { getPrivacyPolicyValidationSchema, PrivacyPolicyField } from '../privacyPolicy';
 import { Button, ButtonVariant } from '../ui/button';
 import { BasicFormField, Fieldset, Form, Legend } from '../ui/form';
@@ -101,10 +100,8 @@ const GuestForm: FunctionComponent<
         }
     } = config;
 
-    const isRedirectExperimentEnabled = isExperimentEnabled(config.checkoutSettings, 'CHECKOUT-9138.redirect_to_storefront_for_auth');
-
     const handleLogin: () => void = () => {
-        if (shouldRedirectToStorefrontForAuth && isRedirectExperimentEnabled) {
+        if (shouldRedirectToStorefrontForAuth) {
             window.location.assign(`${loginLink}?redirectTo=${checkoutLink}`);
 
             return;

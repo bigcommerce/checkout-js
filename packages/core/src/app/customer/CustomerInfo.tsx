@@ -9,7 +9,6 @@ import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../checkout';
 import { isErrorWithType } from '../common/error';
-import { isExperimentEnabled } from '../common/utility';
 import { Button, ButtonSize, ButtonVariant } from '../ui/button';
 
 import canSignOut, { isSupportedSignoutMethod } from './canSignOut';
@@ -27,7 +26,6 @@ interface WithCheckoutCustomerInfoProps {
     checkoutLink: string;
     email: string;
     methodId: string;
-    isRedirectExperimentEnabled: boolean;
     isSignedIn: boolean;
     isSigningOut: boolean;
     logoutLink: string;
@@ -41,7 +39,6 @@ const CustomerInfo: FunctionComponent<CustomerInfoProps & WithCheckoutCustomerIn
     methodId,
     isSignedIn,
     isSigningOut,
-    isRedirectExperimentEnabled,
     logoutLink,
     shouldRedirectToStorefrontForAuth,
     onSignOut = noop,
@@ -52,7 +49,7 @@ const CustomerInfo: FunctionComponent<CustomerInfoProps & WithCheckoutCustomerIn
 
     const handleSignOut: () => Promise<void> = async () => {
         try {
-            if (isRedirectExperimentEnabled && shouldRedirectToStorefrontForAuth) {
+            if (shouldRedirectToStorefrontForAuth) {
                 window.location.assign(`${logoutLink}?redirectTo=${checkoutLink}`);
 
                 return;
@@ -124,15 +121,12 @@ function mapToWithCheckoutCustomerInfoProps({
 
     const { checkoutSettings, links: { checkoutLink, logoutLink } } = config;
 
-    const isRedirectExperimentEnabled = isExperimentEnabled(checkoutSettings, 'CHECKOUT-9138.redirect_to_storefront_for_auth');
-
     const methodId =
         checkout.payments && checkout.payments.length === 1 ? checkout.payments[0].providerId : '';
 
     return {
         email: billingAddress.email || customer.email,
         methodId,
-        isRedirectExperimentEnabled,
         isSignedIn: canSignOut(customer, checkout, methodId),
         isSigningOut: isSigningOut(),
         logoutLink,

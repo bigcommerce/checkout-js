@@ -305,9 +305,6 @@ describe('Customer Component', () => {
                     checkoutSettings: {
                         ...checkoutSettings.storeConfig.checkoutSettings,
                         shouldRedirectToStorefrontForAuth: true,
-                        features: {
-                            'CHECKOUT-9138.redirect_to_storefront_for_auth': true,
-                        },
                     },
                 },
             };
@@ -325,36 +322,6 @@ describe('Customer Component', () => {
 
             await userEvent.click(await screen.findByText('Sign in now'));
             expect(window.location.assign).toHaveBeenCalled();
-        });
-
-        it('displays login form if experiment is off and shouldRedirectToStorefrontForAuth is true', async () => {
-            const config = {
-                ...checkoutSettings,
-                storeConfig: {
-                    ...checkoutSettings.storeConfig,
-                    checkoutSettings: {
-                        ...checkoutSettings.storeConfig.checkoutSettings,
-                        shouldRedirectToStorefrontForAuth: true,
-                        features: {
-                            'CHECKOUT-9138.redirect_to_storefront_for_auth': false,
-                        },
-                    },
-                },
-            };
-
-            checkout.setRequestHandler(
-                rest.get(
-                    '/api/storefront/checkout-settings',
-                    (_, res, ctx) => res(ctx.json(config),
-                )
-            ));
-
-            checkout.use(CheckoutPreset.CheckoutWithDigitalCart);
-            render(<CheckoutTest {...defaultProps} />);
-            await checkout.waitForCustomerStep();
-
-            await userEvent.click(await screen.findByText('Sign in now'));
-            await userEvent.click(screen.getByText('Create an account'));
         });
     });
 
@@ -375,9 +342,6 @@ describe('Customer Component', () => {
                 checkoutSettings: {
                     ...checkoutSettings.storeConfig.checkoutSettings,
                     shouldRedirectToStorefrontForAuth: true,
-                    features: {
-                        'CHECKOUT-9138.redirect_to_storefront_for_auth': true,
-                    },
                 },
             },
         };
