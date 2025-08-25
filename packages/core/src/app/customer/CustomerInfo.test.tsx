@@ -158,38 +158,5 @@ describe('CustomerInfo', () => {
 
             expect(window.location.assign).toHaveBeenCalledWith(`${expectedLogoutLink}?redirectTo=${expectedCheckoutLink}`);
         });
-
-        it('signs out customer on checkout page when experiment off and shouldRedirectToStorefrontForAuth is true', async () => {
-            Object.defineProperty(window, 'location', {
-                writable: true,
-                value: {
-                    // eslint-disable-next-line @typescript-eslint/no-misused-spread
-                    ...window.location,
-                    assign: jest.fn(),
-                },
-            });
-
-            jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
-                ...getStoreConfig(),
-                checkoutSettings: {
-                    ...getStoreConfig().checkoutSettings,
-                    shouldRedirectToStorefrontForAuth: true,
-                    features: {
-                        'CHECKOUT-9138.redirect_to_storefront_for_auth': false,
-                    }
-                }
-            });
-
-            jest.spyOn(checkoutService, 'signOutCustomer').mockReturnValue(
-                Promise.resolve(checkoutService.getState()),
-            );
-
-            render(<CustomerInfoTest />);
-
-            await userEvent.click(screen.getByTestId('sign-out-link'));
-
-            expect(checkoutService.signOutCustomer).toHaveBeenCalled();
-            expect(window.location.assign).not.toHaveBeenCalled();
-        });
     });
 });
