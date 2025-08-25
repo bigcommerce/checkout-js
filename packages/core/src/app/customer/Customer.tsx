@@ -64,7 +64,6 @@ export interface WithCheckoutCustomerProps {
     defaultShouldSubscribe: boolean;
     email?: string;
     firstName?: string;
-    fixNewsletterCheckboxExperimentEnabled: boolean;
     forgotPasswordUrl: string;
     isContinuingAsGuest: boolean;
     isCreatingAccount: boolean;
@@ -290,14 +289,12 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             requiresMarketingConsent,
             isFloatingLabelEnabled,
             defaultShouldSubscribe,
-            fixNewsletterCheckboxExperimentEnabled,
         } = this.props;
 
         return (
             <CreateAccountForm
                 createAccountError={createAccountError}
                 defaultShouldSubscribe={defaultShouldSubscribe}
-                fixNewsletterCheckboxExperimentEnabled={fixNewsletterCheckboxExperimentEnabled}
                 formFields={customerAccountFields}
                 isCreatingAccount={isCreatingAccount}
                 isExecutingPaymentMethodCheckout={isExecutingPaymentMethodCheckout}
@@ -590,7 +587,6 @@ export function mapToWithCheckoutCustomerProps({
             isSignInEmailEnabled,
             isAccountCreationEnabled,
             isExpressPrivacyPolicy,
-            features,
             shouldRedirectToStorefrontForAuth
         },
     } = config as StoreConfig & { checkoutSettings: { isAccountCreationEnabled: boolean } };
@@ -598,8 +594,6 @@ export function mapToWithCheckoutCustomerProps({
     const providerWithCustomCheckout = getProviderWithCustomCheckout(
         config.checkoutSettings.providerWithCustomCheckout,
     );
-
-    const fixNewsletterCheckboxExperimentEnabled = features['CHECKOUT-8033.fix_newletter_checkbox'];
 
     return {
         customerAccountFields: getCustomerAccountFields(),
@@ -614,7 +608,6 @@ export function mapToWithCheckoutCustomerProps({
         executePaymentMethodCheckout: checkoutService.executePaymentMethodCheckout,
         email: billingAddress?.email || customer?.email,
         firstName: customer?.firstName,
-        fixNewsletterCheckboxExperimentEnabled,
         forgotPasswordUrl: config.links.forgotPasswordLink,
         initializeCustomer: checkoutService.initializeCustomer,
         isCreatingAccount: isCreatingCustomerAccount(),

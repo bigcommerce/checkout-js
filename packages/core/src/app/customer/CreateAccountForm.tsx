@@ -26,7 +26,6 @@ import './CreateAccountForm.scss';
 export interface CreateAccountFormProps {
     formFields: FormField[];
     createAccountError?: Error;
-    fixNewsletterCheckboxExperimentEnabled: boolean;
     isCreatingAccount?: boolean;
     isExecutingPaymentMethodCheckout?: boolean;
     requiresMarketingConsent: boolean;
@@ -71,7 +70,7 @@ function transformFormFieldsData(formFields: FormField[], defaultShouldSubscribe
 
 const CreateAccountForm: FunctionComponent<
     CreateAccountFormProps & WithLanguageProps & FormikProps<CreateAccountFormValues>
-> = ({ fixNewsletterCheckboxExperimentEnabled, formFields, createAccountError, isCreatingAccount, isExecutingPaymentMethodCheckout, onCancel, isFloatingLabelEnabled, defaultShouldSubscribe }) => {
+> = ({ formFields, createAccountError, isCreatingAccount, isExecutingPaymentMethodCheckout, onCancel, isFloatingLabelEnabled, defaultShouldSubscribe }) => {
     const { themeV2 } = useThemeContext();
     const createAccountErrorMessage = useMemo(() => {
         if (!createAccountError) {
@@ -96,8 +95,7 @@ const CreateAccountForm: FunctionComponent<
         return createAccountError.message;
     }, [createAccountError]);
 
-    const fields = fixNewsletterCheckboxExperimentEnabled ?
-        transformFormFieldsData(formFields, defaultShouldSubscribe): formFields;
+    const fields = transformFormFieldsData(formFields, defaultShouldSubscribe);
 
     return (
         <Form
