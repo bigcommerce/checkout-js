@@ -25,7 +25,7 @@ import {
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 
-const PayPalCommerceCreditCardPaymentMethod: FunctionComponent<PaymentMethodProps> = (props) => {
+const PayPalCommerceCreditCardsPaymentMethod: FunctionComponent<PaymentMethodProps> = (props) => {
     const { checkoutService, checkoutState, paymentForm, language, method } = props;
 
     const { cardCode, showCardHolderName, isHostedFormEnabled, requireCustomerCode } =
@@ -295,6 +295,6 @@ const PayPalCommerceCreditCardPaymentMethod: FunctionComponent<PaymentMethodProp
 };
 
 export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>(
-    PayPalCommerceCreditCardPaymentMethod,
+    PayPalCommerceCreditCardsPaymentMethod,
     [{ id: 'paypalcommercecreditcards' }],
 );

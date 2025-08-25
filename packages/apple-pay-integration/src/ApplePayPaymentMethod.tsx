@@ -6,7 +6,7 @@ import {
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 
-const ApplePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
+const ApplePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     method,
     checkoutService,
     language,
@@ -55,6 +55,6 @@ const ApplePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 };
 
 export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>(
-    ApplePaymentMethod,
+    ApplePayPaymentMethod,
     [{ id: 'applepay' }],
 );
