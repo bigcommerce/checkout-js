@@ -10,7 +10,7 @@
 
 @mixin themeV2-mobile {
     .themeV2 & {
-        @media (max-width: 767px) {
+        @include breakpoint("small") {
             @content;
         }
     }
@@ -18,18 +18,16 @@
 
 @mixin themeV2-tablet {
     .themeV2 & {
-        @media (min-width: 768px) and (max-width: 1023px) {
+        @include breakpoint("medium") {
             @content;
         }
     }
 }
-
 
 @mixin themeV2-desktop {
     .themeV2 & {
-        @media (min-width: 1024px) {
+        @include breakpoint("large") {
             @content;
         }
     }
 }
-

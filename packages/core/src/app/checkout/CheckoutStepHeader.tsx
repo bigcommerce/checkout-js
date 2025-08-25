@@ -58,7 +58,7 @@ const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
 
             {themeV2 && !isActive && isComplete &&
                 <div
-                    className="stepHeader-body stepHeader-column optimizedCheckout-contentPrimary"
+                    className="stepHeader-body stepHeader-column optimizedCheckout-contentPrimary body-regular"
                     data-test="step-info"
                     >
                         {summary}
