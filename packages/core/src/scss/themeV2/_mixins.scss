@@ -1,0 +1,33 @@
+// =============================================================================
+// THEME V2 MIXINS
+// =============================================================================
+
+@mixin themeV2 {
+  @at-root .themeV2 #{&} {
+    @content;
+  }
+}
+
+@mixin themeV2-mobile {
+    .themeV2 & {
+        @include breakpoint("small") {
+            @content;
+        }
+    }
+}
+
+@mixin themeV2-tablet {
+    .themeV2 & {
+        @include breakpoint("medium") {
+            @content;
+        }
+    }
+}
+
+@mixin themeV2-desktop {
+    .themeV2 & {
+        @include breakpoint("large") {
+            @content;
+        }
+    }
+}

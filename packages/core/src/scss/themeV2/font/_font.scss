@@ -1,4 +1,4 @@
-.themeV2 {
+@include themeV2 {
     // optimizedCheckout-headingPrimary
     .header, .header-secondary, .sub-header {
         color: $color-black;

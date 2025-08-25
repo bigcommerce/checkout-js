@@ -1,0 +1,15 @@
+.layout-cart {
+    @include themeV2 {
+        .cart-priceItem:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    @include themeV2-desktop {
+        position: sticky;
+        right: auto;
+        left: auto;
+        top: 0;
+        bottom: 0;
+    }
+}

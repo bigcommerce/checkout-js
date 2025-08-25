@@ -1,4 +1,4 @@
-.themeV2 {
+@include themeV2 {
     background-color: $color-secondaryDarker;
 
     .layout {
@@ -25,16 +25,21 @@
         }
 
         @include breakpoint("xlarge") {
-            padding-right: spacing("double") * 2;
+            padding-right: spacing("single");
         }
     }
 
     .cart {
         border: none;
     }
+
+    .checkout-separator::before,
+    .checkout-separator::after {
+        background-color: $color-black;
+    }
     
     .checkout-steps {
-        margin-top: spacing("double");
+        margin-top: #{spacing('base') + spacing('base')};
     }
 
     .checkout-step {
@@ -46,6 +51,7 @@
     
     .stepHeader {
         flex-wrap: wrap;
+        padding: 0;
 
         .stepHeader-body {
             order: 3;
@@ -58,5 +64,15 @@
             margin-left: auto;
             align-self: flex-start;
         }
+
+        .stepHeader-figure {
+            align-items: flex-end;
+        }
+    }
+}
+
+.checkout-button-container {
+    @include themeV2-desktop {
+        padding-right: #{spacing('double') + spacing('double')};
     }
 }

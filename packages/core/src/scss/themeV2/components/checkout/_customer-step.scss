@@ -1,0 +1,17 @@
+.checkout-step--customer {
+    .customerEmail-container {
+        @include themeV2 {
+            display: flex;
+        }
+    }
+
+    @include themeV2-desktop {
+        .customerEmail-container {
+            flex-direction: row;
+        }
+
+        .customerEmail-body {
+            width: 80%;
+        }
+    }
+}
