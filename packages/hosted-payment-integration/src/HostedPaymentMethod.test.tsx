@@ -23,8 +23,9 @@ import HostedPaymentMethod from './HostedPaymentMethod';
 describe('When using Hosted payment method', () => {
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
-    let defaultProps: PaymentMethodProps;
+    let defaultProps: Omit<PaymentMethodProps, 'method'>;
     let paymentForm: PaymentFormService;
+    let paymentMethod: PaymentMethodProps['method'];
 
     beforeEach(() => {
         checkoutService = createCheckoutService();
@@ -37,14 +38,6 @@ describe('When using Hosted payment method', () => {
         jest.spyOn(checkoutService, 'deinitializePayment').mockResolvedValue(checkoutState);
 
         defaultProps = {
-            method: {
-                id: 'quadpay',
-                method: 'credit-card',
-                supportedCards: [],
-                config: {},
-                type: 'PAYMENT_TYPE_API',
-                skipRedirectConfirmationAlert: true,
-            },
             checkoutService,
             checkoutState,
             paymentForm,
@@ -57,8 +50,36 @@ describe('When using Hosted payment method', () => {
         jest.clearAllMocks();
     });
 
-    test('user does not see a description or instrument fields for Zip/Quadpay', () => {
-        const { container } = render(<HostedPaymentMethod {...defaultProps} />);
+    test('user does not see a description or instrument fields for Quadpay (Zip US)', () => {
+        paymentMethod = {
+            id: 'quadpay',
+            method: 'credit-card',
+            supportedCards: [],
+            config: {},
+            type: 'PAYMENT_TYPE_API',
+            skipRedirectConfirmationAlert: true,
+        };
+
+        const { container } = render(
+            <HostedPaymentMethod method={paymentMethod} {...defaultProps} />,
+        );
+
+        expect(container).toBeEmptyDOMElement();
+    });
+
+    test('user does not see a description or instrument fields for Zip', () => {
+        paymentMethod = {
+            id: 'zip',
+            method: 'credit-card',
+            supportedCards: [],
+            config: {},
+            type: 'PAYMENT_TYPE_API',
+            skipRedirectConfirmationAlert: true,
+        };
+
+        const { container } = render(
+            <HostedPaymentMethod method={paymentMethod} {...defaultProps} />,
+        );
 
         expect(container).toBeEmptyDOMElement();
     });

@@ -71,7 +71,6 @@ const PaymentMethodComponent: FunctionComponent<
         method.id === PaymentMethodId.BraintreeVenmo ||
         method.id === PaymentMethodId.Humm ||
         method.id === PaymentMethodId.Laybuy ||
-        method.id === PaymentMethodId.Zip ||
         method.method === PaymentMethodType.Paypal ||
         method.method === PaymentMethodType.PaypalCredit ||
         method.type === PaymentMethodProviderType.Hosted
