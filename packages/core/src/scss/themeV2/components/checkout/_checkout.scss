@@ -32,9 +32,14 @@
     .cart {
         border: none;
     }
+
+    .checkout-separator::before,
+    .checkout-separator::after {
+        background-color: $color-black;
+    }
     
     .checkout-steps {
-        margin-top: spacing("double");
+        margin-top: #{spacing('base') + spacing('base')};
     }
 
     .checkout-step {
@@ -63,5 +68,11 @@
         .stepHeader-figure {
             align-items: flex-end;
         }
+    }
+}
+
+.checkout-button-container {
+    @include themeV2-desktop {
+        padding-right: #{spacing('double') + spacing('double')};
     }
 }
