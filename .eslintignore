@@ -4,3 +4,4 @@ node_modules
 /packages/**/e2e/support
 /packages/**/e2e/*.js
 /packages/test-framework/**/*.js
+*.md
