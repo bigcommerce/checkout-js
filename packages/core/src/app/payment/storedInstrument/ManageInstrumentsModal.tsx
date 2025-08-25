@@ -151,7 +151,7 @@ class ManageInstrumentsModal extends Component<
 
         this.setState(
             {
-                isConfirmingDelete: false,
+                isConfirmingDelete: this.state.isConfirmingDelete,
             },
             onAfterOpen,
         );
