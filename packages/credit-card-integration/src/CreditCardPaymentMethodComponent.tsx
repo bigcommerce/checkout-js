@@ -162,6 +162,25 @@ export const CreditCardPaymentMethodComponent = ({
         };
 
         void init();
+
+        return () => {
+            const deInit = async () => {
+                try {
+                    setValidationSchema(method, null);
+
+                    await deinitializePayment({
+                        gatewayId: method.gateway,
+                        methodId: method.id,
+                    });
+                } catch (error) {
+                    if (error instanceof Error) {
+                        onUnhandledError(error);
+                    }
+                }
+            };
+
+            void deInit();
+        };
     }, []);
 
     const isInitialRenderRef = useRef(true);
@@ -198,27 +217,6 @@ export const CreditCardPaymentMethodComponent = ({
 
         void reInit();
     }, [method, selectedInstrumentId, isAddingNewCard]);
-
-    useEffect(() => {
-        return () => {
-            const deInit = async () => {
-                try {
-                    setValidationSchema(method, null);
-
-                    await deinitializePayment({
-                        gatewayId: method.gateway,
-                        methodId: method.id,
-                    });
-                } catch (error) {
-                    if (error instanceof Error) {
-                        onUnhandledError(error);
-                    }
-                }
-            };
-
-            void deInit();
-        };
-    }, [method]);
 
     return (
         <LocaleContext.Provider value={createLocaleContext(config)}>
