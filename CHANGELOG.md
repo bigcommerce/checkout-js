@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.657.5](https://github.com/bigcommerce/checkout-js/compare/v1.657.4...v1.657.5) (2025-08-26)
+
+
+### Bug Fixes
+
+* **core:** CHECKOUT-9432 Rename components so they can be lazily resolved ([a60c70b](https://github.com/bigcommerce/checkout-js/commit/a60c70b042fa0a93fecf2da7411d034dfefd8e45))
+* **core:** CHECKOUT-9432 Validate component registry to ensure registered names match their export names ([d459a10](https://github.com/bigcommerce/checkout-js/commit/d459a106d93ae74796dc8e7d4b32a05b482b53ba))
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9384 Remove HostedWidgetPaymentMethod ([#2536](https://github.com/bigcommerce/checkout-js/issues/2536)) ([b5f44fa](https://github.com/bigcommerce/checkout-js/commit/b5f44fa02f1a9554421f88da7c4e48c0a3946abe))
+
 ### [1.657.4](https://github.com/bigcommerce/checkout-js/compare/v1.657.3...v1.657.4) (2025-08-25)
 
 ### [1.657.3](https://github.com/bigcommerce/checkout-js/compare/v1.657.2...v1.657.3) (2025-08-25)
