@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.658.0](https://github.com/bigcommerce/checkout-js/compare/v1.657.7...v1.658.0) (2025-08-26)
+
+
+### Features
+
+* **checkout:** Switch Sezzle to generic component ([#2529](https://github.com/bigcommerce/checkout-js/issues/2529)) ([8254f43](https://github.com/bigcommerce/checkout-js/commit/8254f439bc1e9be2585fae7c8d609692b881dd3d))
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-5710 fixed lint errors ([c54a9ab](https://github.com/bigcommerce/checkout-js/commit/c54a9abc90aa985469f26df7ca666c41792285d8))
+* **payment:** PAYPAL-5710 fixed lint errors ([17ab319](https://github.com/bigcommerce/checkout-js/commit/17ab31948039fb366afa1f10710aac30bb3b297c))
+
+
+### Code Refactoring
+
+* **payment:** PAYPAL-5710 moved BT Venmo to packages ([3efef3c](https://github.com/bigcommerce/checkout-js/commit/3efef3cd61e8d894b50313e93bf2d1dc5166b7f9))
+* **payment:** PAYPAL-5710 moved BT Venmo to packages ([80fe9bb](https://github.com/bigcommerce/checkout-js/commit/80fe9bb4e6dfdea24aeb1182132bea536f718e50))
+* **payment:** PAYPAL-5710 moved BT Venmo to packages ([c49c4e3](https://github.com/bigcommerce/checkout-js/commit/c49c4e3fa002d17b1f66f58b7d3ba11f51143fd9))
+
 ### [1.657.7](https://github.com/bigcommerce/checkout-js/compare/v1.657.6...v1.657.7) (2025-08-26)
 
 ### [1.657.6](https://github.com/bigcommerce/checkout-js/compare/v1.657.5...v1.657.6) (2025-08-26)
