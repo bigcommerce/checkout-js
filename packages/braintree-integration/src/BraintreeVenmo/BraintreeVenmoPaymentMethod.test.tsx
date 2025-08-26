@@ -1,13 +1,9 @@
-import {
-    CheckoutSelectors,
-    CheckoutService,
-    createCheckoutService,
-    createLanguageService,
-} from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent } from 'react';
+import { createCheckoutService, createLanguageService } from '@bigcommerce/checkout-sdk';
+import type { CheckoutSelectors, CheckoutService } from '@bigcommerce/checkout-sdk';
+import React from 'react';
 import { render } from '@testing-library/react';
 
-import { PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
+import type { PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
 
 import BraintreeVenmoPaymentMethod from './BraintreeVenmoPaymentMethod';
 import { HostedPaymentComponent } from '@bigcommerce/checkout/hosted-payment-integration';
@@ -28,7 +24,7 @@ describe('BraintreeVenmoPaymentMethod', () => {
     let defaultProps: PaymentMethodProps;
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
-    let HostedPaymentComponentMock: FunctionComponent;
+    let HostedPaymentComponentMock: React.FC;
 
     beforeEach(() => {
         HostedPaymentComponentMock = HostedPaymentComponent as jest.Mock;

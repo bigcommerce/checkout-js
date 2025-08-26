@@ -1,13 +1,13 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 
-import {
+import { toResolvableComponent } from '@bigcommerce/checkout/payment-integration-api';
+import type {
     PaymentMethodProps,
     PaymentMethodResolveId,
-    toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 import { HostedPaymentComponent } from '@bigcommerce/checkout/hosted-payment-integration';
 
-const BraintreeVenmoPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
+const BraintreeVenmoPaymentMethod: React.FC<PaymentMethodProps> = ({
     checkoutService,
     checkoutState,
     language,
