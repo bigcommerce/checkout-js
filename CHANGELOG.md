@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.658.1](https://github.com/bigcommerce/checkout-js/compare/v1.658.0...v1.658.1) (2025-08-26)
+
+
+### Code Refactoring
+
+* **payment:** PI-4278 refactor Zip to use generic hosted payment component ([#2534](https://github.com/bigcommerce/checkout-js/issues/2534)) ([79f28e3](https://github.com/bigcommerce/checkout-js/commit/79f28e30217f28cffdb2db07f7b676da5c35f1aa))
+
 ## [1.658.0](https://github.com/bigcommerce/checkout-js/compare/v1.657.7...v1.658.0) (2025-08-26)
 
 
