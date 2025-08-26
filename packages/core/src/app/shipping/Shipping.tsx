@@ -181,7 +181,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps & Ext
         }
 
         return (
-            <AddressFormSkeleton isLoading={isInitializing}>
+            <AddressFormSkeleton isLoading={isInitializing} renderWhileLoading={true}>
                 <div className="checkout-form">
                     <ConfirmationModal
                         action={handleSwitchToSingleShipping}

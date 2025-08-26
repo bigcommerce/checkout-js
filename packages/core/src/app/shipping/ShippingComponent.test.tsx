@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom';
 import {
+    Cart,
     type CheckoutSelectors,
     type CheckoutService,
     createCheckoutService,
@@ -27,6 +28,8 @@ import { getConsignment } from '../shipping/consignment.mock';
 
 import Shipping, { type ShippingProps, type WithCheckoutShippingProps } from './Shipping';
 import { getShippingAddress } from './shipping-addresses.mock';
+import { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
+import { createErrorLogger } from '../common/error';
 
 describe('Shipping component', () => {
     let localeContext: LocaleContextType;
@@ -34,11 +37,12 @@ describe('Shipping component', () => {
     let checkoutState: CheckoutSelectors;
     let defaultProps: ShippingProps;
     let ComponentTest: FunctionComponent<ShippingProps> & Partial<WithCheckoutShippingProps>;
+    let errorLogger: ErrorLogger;
 
     beforeEach(() => {
         localeContext = createLocaleContext(getStoreConfig());
         checkoutService = createCheckoutService();
-
+        errorLogger = createErrorLogger();
         checkoutState = checkoutService.getState();
 
         defaultProps = {
@@ -117,7 +121,7 @@ describe('Shipping component', () => {
         ComponentTest = (props) => (
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
-                    <ExtensionProvider checkoutService={checkoutService}>
+                    <ExtensionProvider checkoutService={checkoutService} errorLogger={errorLogger} >
                         <Shipping {...props} />
                     </ExtensionProvider>
                 </LocaleContext.Provider>
