@@ -36,35 +36,23 @@ export interface WalletButtonPaymentMethodProps {
     onUnhandledError?(error: Error): void;
 }
 
-interface WalletButtonPaymentMethodDerivedProps {
-    accountMask?: string;
-    cardName?: string;
-    cardType?: string;
-    expiryMonth?: string;
-    expiryYear?: string;
-    isPaymentDataRequired: boolean;
-    isPaymentSelected: boolean;
-}
-
-const WalletButtonPaymentMethodComponent: React.FC<WalletButtonPaymentMethodProps> = (props) => {
-    const {
-        paymentForm,
-        buttonId,
-        editButtonClassName,
-        editButtonLabel,
-        isInitializing = false,
-        method,
-        shouldShowEditButton,
-        signInButtonClassName,
-        signInButtonLabel,
-        signOutCustomer,
-        deinitializePayment,
-        initializePayment,
-        onSignOut = noop,
-        onSignOutError = noop,
-        onUnhandledError = noop,
-    } = props;
-
+const WalletButtonPaymentMethodComponent: React.FC<WalletButtonPaymentMethodProps> = ({
+    paymentForm,
+    buttonId,
+    editButtonClassName,
+    editButtonLabel,
+    isInitializing = false,
+    method,
+    shouldShowEditButton,
+    signInButtonClassName,
+    signInButtonLabel,
+    signOutCustomer,
+    deinitializePayment,
+    initializePayment,
+    onSignOut = noop,
+    onSignOutError = noop,
+    onUnhandledError = noop,
+}) => {
     const {
         checkoutState: {
             data: { getBillingAddress, getCheckout, isPaymentDataRequired },
@@ -79,14 +67,10 @@ const WalletButtonPaymentMethodComponent: React.FC<WalletButtonPaymentMethodProp
     }
 
     const walletPaymentData = normalizeWalletPaymentData(method.initializationData);
-    const derivedProps: WalletButtonPaymentMethodDerivedProps = {
-        ...walletPaymentData,
-        // FIXME: I'm not sure how this would work for non-English names.
-        cardName:
-            walletPaymentData && [billingAddress.firstName, billingAddress.lastName].join(' '),
-        isPaymentDataRequired: isPaymentDataRequired(),
-        isPaymentSelected: some(checkout.payments, { providerId: method.id }),
-    };
+    const isPaymentSelected = some(checkout.payments, { providerId: method.id });
+    // FIXME: I'm not sure how this would work for non-English names.
+    const cardName =
+        walletPaymentData && [billingAddress.firstName, billingAddress.lastName].join(' ');
 
     const toggleSubmit = () => {
         const { disableSubmit } = paymentForm;
@@ -153,15 +137,14 @@ const WalletButtonPaymentMethodComponent: React.FC<WalletButtonPaymentMethodProp
         toggleSubmit();
     });
 
-    const { isPaymentSelected } = derivedProps;
-
     return (
         <LoadingOverlay hideContentWhenLoading isLoading={isInitializing}>
             <div className="paymentMethod paymentMethod--walletButton">
                 {isPaymentSelected ? (
                     <PaymentView
-                        {...derivedProps}
+                        {...walletPaymentData}
                         buttonId={buttonId}
+                        cardName={cardName}
                         editButtonClassName={editButtonClassName}
                         editButtonLabel={editButtonLabel}
                         method={method}
