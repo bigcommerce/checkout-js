@@ -1,30 +1,27 @@
 import {
     type Address,
     type Consignment,
-    type Country,
-    type CustomerAddress,
     type FormField,
 } from '@bigcommerce/checkout-sdk';
-import React, { Component, type ReactNode } from 'react';
+import React, { type ReactElement } from 'react';
 
+import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import { AddressForm, AddressSelect, AddressType, isValidCustomerAddress } from '../address';
 import { connectFormik, type ConnectFormikProps } from '../common/form';
+import { EMPTY_ARRAY } from '../common/utility';
 import { Fieldset } from '../ui/form';
 
 import { type SingleShippingFormValues } from './SingleShippingForm';
 
 export interface ShippingAddressFormProps {
-    addresses: CustomerAddress[];
     address?: Address;
     consignments: Consignment[];
-    countries?: Country[];
     countriesWithAutocomplete: string[];
     googleMapsApiKey?: string;
     isLoading: boolean;
     formFields: FormField[];
-    shouldShowSaveAddress?: boolean;
     isFloatingLabelEnabled?: boolean;
     onUseNewAddress(): void;
     onFieldChange(fieldName: string, value: string): void;
@@ -33,82 +30,38 @@ export interface ShippingAddressFormProps {
 
 const addressFieldName = 'shippingAddress';
 
-class ShippingAddressForm extends Component<
-    ShippingAddressFormProps & ConnectFormikProps<SingleShippingFormValues>
-> {
-    render(): ReactNode {
-        const {
-            addresses,
-            address: shippingAddress,
-            onAddressSelect,
-            onUseNewAddress,
-            shouldShowSaveAddress,
-            countries,
-            countriesWithAutocomplete,
-            formFields,
-            isLoading,
-            googleMapsApiKey,
-            isFloatingLabelEnabled,
-            formik: {
-                values: { shippingAddress: formAddress },
+const ShippingAddressForm = (
+    {
+        address: shippingAddress,
+        onAddressSelect,
+        onUseNewAddress,
+        countriesWithAutocomplete,
+        formFields,
+        isLoading,
+        googleMapsApiKey,
+        isFloatingLabelEnabled,
+        formik: {
+            values: { shippingAddress: formAddress },
+            setFieldValue: formikSetFieldValue,
+        },
+        onFieldChange,
+    }: ShippingAddressFormProps & ConnectFormikProps<SingleShippingFormValues>,
+): ReactElement => {
+    const {
+        checkoutState:{
+            data:{
+                getCustomer,
+                getShippingCountries,
             },
-        } = this.props;
+        },
+    } = useCheckout();
 
-        const hasAddresses = addresses && addresses.length > 0;
-        const hasValidCustomerAddress = isValidCustomerAddress(
-            shippingAddress,
-            addresses,
-            formFields,
-        );
+    const customer = getCustomer();
+    const addresses = customer?.addresses || [];
+    const countries = getShippingCountries() || EMPTY_ARRAY;
+    const shouldShowSaveAddress = !(customer?.isGuest);
 
-        return (
-            <Fieldset id="checkoutShippingAddress">
-                {hasAddresses && (
-                    <Fieldset id="shippingAddresses">
-                        <LoadingOverlay isLoading={isLoading}>
-                            <AddressSelect
-                                addresses={addresses}
-                                onSelectAddress={onAddressSelect}
-                                onUseNewAddress={onUseNewAddress}
-                                selectedAddress={
-                                    hasValidCustomerAddress ? shippingAddress : undefined
-                                }
-                                type={AddressType.Shipping}
-                            />
-                        </LoadingOverlay>
-                    </Fieldset>
-                )}
-
-                {!hasValidCustomerAddress && (
-                    <LoadingOverlay isLoading={isLoading} unmountContentWhenLoading>
-                        <AddressForm
-                            countries={countries}
-                            countriesWithAutocomplete={countriesWithAutocomplete}
-                            countryCode={formAddress && formAddress.countryCode}
-                            fieldName={addressFieldName}
-                            formFields={formFields}
-                            googleMapsApiKey={googleMapsApiKey}
-                            isFloatingLabelEnabled={isFloatingLabelEnabled}
-                            onAutocompleteToggle={this.handleAutocompleteToggle}
-                            onChange={this.handleChange}
-                            setFieldValue={this.setFieldValue}
-                            shouldShowSaveAddress={shouldShowSaveAddress}
-                        />
-                    </LoadingOverlay>
-                )}
-            </Fieldset>
-        );
-    }
-
-    private setFieldValue: (fieldName: string, fieldValue: string) => void = (
-        fieldName,
-        fieldValue,
-    ) => {
-        const {
-            formik: { setFieldValue },
-            formFields,
-        } = this.props;
-
+    const setFieldValue = (fieldName: string, fieldValue: string) => {
         const customFormFieldNames = formFields
             .filter((field) => field.custom)
             .map((field) => field.name);
@@ -117,25 +70,69 @@ class ShippingAddressForm extends Component<
             ? `customFields.${fieldName}`
             : fieldName;
 
-        setFieldValue(`${addressFieldName}.${formFieldName}`, fieldValue);
+        void formikSetFieldValue(`${addressFieldName}.${formFieldName}`, fieldValue);
     };
 
-    private handleChange: (fieldName: string, value: string) => void = (fieldName, value) => {
-        const { onFieldChange } = this.props;
-
+    const handleChange = (fieldName: string, value: string) => {
         onFieldChange(fieldName, value);
     };
 
-    private handleAutocompleteToggle: (state: { inputValue: string; isOpen: boolean }) => void = ({
+    const handleAutocompleteToggle = ({
         isOpen,
         inputValue,
+    }: {
+        inputValue: string;
+        isOpen: boolean;
     }) => {
-        const { onFieldChange } = this.props;
-
         if (!isOpen) {
             onFieldChange('address1', inputValue);
         }
     };
-}
+
+    const hasAddresses = addresses && addresses.length > 0;
+    const hasValidCustomerAddress = isValidCustomerAddress(
+        shippingAddress,
+        addresses,
+        formFields,
+    );
+
+    return (
+        <Fieldset id="checkoutShippingAddress">
+            {hasAddresses && (
+                <Fieldset id="shippingAddresses">
+                    <LoadingOverlay isLoading={isLoading}>
+                        <AddressSelect
+                            addresses={addresses}
+                            onSelectAddress={onAddressSelect}
+                            onUseNewAddress={onUseNewAddress}
+                            selectedAddress={
+                                hasValidCustomerAddress ? shippingAddress : undefined
+                            }
+                            type={AddressType.Shipping}
+                        />
+                    </LoadingOverlay>
+                </Fieldset>
+            )}
+
+            {!hasValidCustomerAddress && (
+                <LoadingOverlay isLoading={isLoading} unmountContentWhenLoading>
+                    <AddressForm
+                        countries={countries}
+                        countriesWithAutocomplete={countriesWithAutocomplete}
+                        countryCode={formAddress && formAddress.countryCode}
+                        fieldName={addressFieldName}
+                        formFields={formFields}
+                        googleMapsApiKey={googleMapsApiKey}
+                        isFloatingLabelEnabled={isFloatingLabelEnabled}
+                        onAutocompleteToggle={handleAutocompleteToggle}
+                        onChange={handleChange}
+                        setFieldValue={setFieldValue}
+                        shouldShowSaveAddress={shouldShowSaveAddress}
+                    />
+                </LoadingOverlay>
+            )}
+        </Fieldset>
+    );
+};
 
 export default connectFormik(ShippingAddressForm);

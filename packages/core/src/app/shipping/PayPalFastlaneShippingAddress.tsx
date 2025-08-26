@@ -47,7 +47,6 @@ export const PayPalFastlaneShippingAddress: FC<PayPalFastlaneShippingAddressProp
         initialize,
         deinitialize,
         shippingAddress,
-        addresses,
         handleFieldChange,
         isLoading
     } = props;
@@ -123,9 +122,7 @@ export const PayPalFastlaneShippingAddress: FC<PayPalFastlaneShippingAddressProp
             ) : (
                 <ShippingAddressForm
                     address={shippingAddress}
-                    addresses={addresses}
                     consignments={props.consignments}
-                    countries={countries}
                     countriesWithAutocomplete={props.countriesWithAutocomplete}
                     formFields={formFields}
                     googleMapsApiKey={props.googleMapsApiKey}
@@ -134,7 +131,6 @@ export const PayPalFastlaneShippingAddress: FC<PayPalFastlaneShippingAddressProp
                     onAddressSelect={onAddressSelect}
                     onFieldChange={handleFieldChange}
                     onUseNewAddress={props.onUseNewAddress}
-                    shouldShowSaveAddress={props.shouldShowSaveAddress}
                 />
             )}
         </LoadingOverlay>
