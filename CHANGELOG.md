@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.657.6](https://github.com/bigcommerce/checkout-js/compare/v1.657.5...v1.657.6) (2025-08-26)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9384 Convert ShippingAddressForm ([#2506](https://github.com/bigcommerce/checkout-js/issues/2506)) ([67900f8](https://github.com/bigcommerce/checkout-js/commit/67900f887fcd535e9b05b67b1940b96e995eaf82))
+
 ### [1.657.5](https://github.com/bigcommerce/checkout-js/compare/v1.657.4...v1.657.5) (2025-08-26)
 
 
