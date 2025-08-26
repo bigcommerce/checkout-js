@@ -1,13 +1,13 @@
 import {
-    CheckoutSelectors,
-    CheckoutService,
+    type CheckoutSelectors,
+    type CheckoutService,
     createCheckoutService,
     createLanguageService,
 } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent } from 'react';
+import React, { type FunctionComponent } from 'react';
 import { render } from '@testing-library/react';
 
-import { PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
+import { type PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
 
 import BraintreeVenmoPaymentMethod from './BraintreeVenmoPaymentMethod';
 import { HostedPaymentComponent } from '@bigcommerce/checkout/hosted-payment-integration';
