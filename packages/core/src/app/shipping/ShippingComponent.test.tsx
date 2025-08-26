@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import {
-    Cart,
+    type Cart,
     type CheckoutSelectors,
     type CheckoutService,
     createCheckoutService,
@@ -28,7 +28,7 @@ import { getConsignment } from '../shipping/consignment.mock';
 
 import Shipping, { type ShippingProps, type WithCheckoutShippingProps } from './Shipping';
 import { getShippingAddress } from './shipping-addresses.mock';
-import { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
+import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { createErrorLogger } from '../common/error';
 
 describe('Shipping component', () => {
