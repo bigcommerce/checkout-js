@@ -26,7 +26,7 @@ import { AddressFormSkeleton, ConfirmationModal } from '@bigcommerce/checkout/ui
 import { isEqualAddress, mapAddressFromFormValues } from '../address';
 import { withCheckout } from '../checkout';
 import type CheckoutStepStatus from '../checkout/CheckoutStepStatus';
-import { EMPTY_ARRAY, isExperimentEnabled, isFloatingLabelEnabled } from '../common/utility';
+import { EMPTY_ARRAY, isFloatingLabelEnabled } from '../common/utility';
 import getProviderWithCustomCheckout from '../payment/getProviderWithCustomCheckout';
 import { PaymentMethodId } from '../payment/paymentMethod';
 
@@ -71,8 +71,6 @@ export interface WithCheckoutShippingProps {
     shippingAddress?: Address;
     shouldShowMultiShipping: boolean;
     shouldShowOrderComments: boolean;
-    shouldRenderWhileLoading: boolean;
-    isGuestMultiShippingEnabled: boolean;
     providerWithCustomCheckout?: string;
     isFloatingLabelEnabled?: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
@@ -143,11 +141,9 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps & Ext
             initializeShippingMethod,
             deinitializeShippingMethod,
             isMultiShippingMode,
-            isGuestMultiShippingEnabled,
             step,
             isFloatingLabelEnabled,
             shouldRenderStripeForm,
-            shouldRenderWhileLoading,
             cartHasPromotionalItems,
             extensionState: { shippingFormRenderTimestamp } = {},
             setIsMultishippingMode,
@@ -172,7 +168,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps & Ext
                 initialize={initializeShippingMethod}
                 isBillingSameAsShipping={isBillingSameAsShipping}
                 isGuest={ isGuest }
-                isInitialValueLoaded={shouldRenderWhileLoading ? !isInitializing : true}
+                isInitialValueLoaded={!isInitializing}
                 isLoading={ isInitializing }
                 isMultiShippingMode={isMultiShippingMode}
                 isShippingMethodLoading={ this.props.isLoading }
@@ -185,7 +181,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps & Ext
         }
 
         return (
-            <AddressFormSkeleton isLoading={isInitializing} renderWhileLoading={shouldRenderWhileLoading}>
+            <AddressFormSkeleton isLoading={isInitializing} renderWhileLoading={true}>
                 <div className="checkout-form">
                     <ConfirmationModal
                         action={handleSwitchToSingleShipping}
@@ -209,8 +205,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps & Ext
                         isBillingSameAsShipping={isBillingSameAsShipping}
                         isFloatingLabelEnabled={isFloatingLabelEnabled}
                         isGuest={isGuest}
-                        isGuestMultiShippingEnabled={isGuestMultiShippingEnabled}
-                        isInitialValueLoaded={shouldRenderWhileLoading ? !isInitializing : true}
+                        isInitialValueLoaded={!isInitializing}
                         isMultiShippingMode={isMultiShippingMode}
                         onMultiShippingSubmit={this.handleMultiShippingSubmit}
                         onSingleShippingSubmit={this.handleSingleShippingSubmit}
@@ -384,7 +379,6 @@ export function mapToShippingProps({
     const {
         checkoutSettings: {
             enableOrderComments,
-            features,
             hasMultiShippingEnabled,
             googleMapsApiKey,
         },
@@ -415,8 +409,6 @@ export function mapToShippingProps({
         config.checkoutSettings.providerWithCustomCheckout,
     );
 
-    const isGuestMultiShippingEnabled = isExperimentEnabled(config?.checkoutSettings, 'CHECKOUT-9161.enable_storefront_guest_multi_shipping');
-
     return {
         assignItem: checkoutService.assignItemsToAddress,
         billingAddress: getBillingAddress(),
@@ -443,7 +435,6 @@ export function mapToShippingProps({
         methodId,
         providerWithCustomCheckout,
         shippingAddress,
-        shouldRenderWhileLoading: features['CHECKOUT-8300.improve_extension_performance'] ?? true,
         shouldShowMultiShipping,
         shouldShowOrderComments: enableOrderComments,
         signOut: checkoutService.signOutCustomer,
@@ -453,7 +444,6 @@ export function mapToShippingProps({
         updateShippingAddress: checkoutService.updateShippingAddress,
         isFloatingLabelEnabled: isFloatingLabelEnabled(config.checkoutSettings),
         shouldRenderStripeForm: providerWithCustomCheckout === PaymentMethodId.StripeUPE && shouldUseStripeLinkByMinimumAmount(cart),
-        isGuestMultiShippingEnabled,
     };
 }
 

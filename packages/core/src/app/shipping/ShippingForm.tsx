@@ -17,7 +17,6 @@ import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
 import isUsingMultiShipping from './isUsingMultiShipping';
 import MultiShippingForm, { type MultiShippingFormValues } from './MultiShippingForm';
-import MultiShippingGuestForm from './MultiShippingGuestForm';
 import SingleShippingForm, { type SingleShippingFormValues } from './SingleShippingForm';
 
 export interface ShippingFormProps {
@@ -32,7 +31,6 @@ export interface ShippingFormProps {
     isLoading: boolean;
     isShippingStepPending: boolean;
     isMultiShippingMode: boolean;
-    isGuestMultiShippingEnabled: boolean;
     methodId?: string;
     shippingAddress?: Address;
     shouldShowOrderComments: boolean;
@@ -61,7 +59,6 @@ const ShippingForm = ({
     cartHasChanged,
       consignments,
       countriesWithAutocomplete,
-      onCreateAccount,
       customerMessage,
       deinitialize,
       deleteConsignments,
@@ -69,13 +66,10 @@ const ShippingForm = ({
       googleMapsApiKey,
       initialize,
       isBillingSameAsShipping,
-      isGuest,
       isLoading,
       isMultiShippingMode,
-      isGuestMultiShippingEnabled,
       methodId,
       onMultiShippingSubmit,
-      onSignIn,
       onSingleShippingSubmit,
     onUnhandledError,
       shippingAddress,
@@ -109,12 +103,6 @@ const ShippingForm = ({
     }, [shippingFormRenderTimestamp]);
 
     const getMultiShippingForm = () => {
-        if (isGuest && !isGuestMultiShippingEnabled) {
-            return (
-                <MultiShippingGuestForm onCreateAccount={onCreateAccount} onSignIn={onSignIn} />
-            );
-        }
-
         return <MultiShippingForm
             cartHasChanged={cartHasChanged}
             countriesWithAutocomplete={countriesWithAutocomplete}
