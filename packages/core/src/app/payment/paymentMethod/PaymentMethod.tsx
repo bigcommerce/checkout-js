@@ -68,7 +68,6 @@ const PaymentMethodComponent: FunctionComponent<
     }
 
     if (
-        method.id === PaymentMethodId.BraintreeVenmo ||
         method.id === PaymentMethodId.Humm ||
         method.id === PaymentMethodId.Laybuy ||
         method.method === PaymentMethodType.Paypal ||
