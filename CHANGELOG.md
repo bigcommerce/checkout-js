@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.658.2](https://github.com/bigcommerce/checkout-js/compare/v1.658.1...v1.658.2) (2025-08-27)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9386 Convert CreditCardPaymentMethodComponent ([#2530](https://github.com/bigcommerce/checkout-js/issues/2530)) ([c768ce1](https://github.com/bigcommerce/checkout-js/commit/c768ce17be7d782bf7cc84f1d77be5b3ba25b106))
+
 ### [1.658.1](https://github.com/bigcommerce/checkout-js/compare/v1.658.0...v1.658.1) (2025-08-26)
 
 
