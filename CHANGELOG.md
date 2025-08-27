@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.659.1](https://github.com/bigcommerce/checkout-js/compare/v1.659.0...v1.659.1) (2025-08-27)
+
+
+### Code Refactoring
+
+* **payment:** PAYPAL-5710 Removed init braintree venmo from core ([a743c8c](https://github.com/bigcommerce/checkout-js/commit/a743c8c00410d8f177c6d22e6de3cef92d34f044))
+
 ## [1.659.0](https://github.com/bigcommerce/checkout-js/compare/v1.658.2...v1.659.0) (2025-08-27)
 
 
