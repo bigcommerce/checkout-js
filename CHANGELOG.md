@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.659.0](https://github.com/bigcommerce/checkout-js/compare/v1.658.2...v1.659.0) (2025-08-27)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9385 Convert WalletButtonPaymentMethodComponent ([#2523](https://github.com/bigcommerce/checkout-js/issues/2523)) ([a66466f](https://github.com/bigcommerce/checkout-js/commit/a66466fc68d2f729a7fc9ac4cf4f8ff59387c5e4))
+
 ### [1.658.2](https://github.com/bigcommerce/checkout-js/compare/v1.658.1...v1.658.2) (2025-08-27)
 
 
