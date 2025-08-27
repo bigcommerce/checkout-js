@@ -26,11 +26,11 @@ import React, {
 import {
     CardInstrumentFieldset,
     CreditCardValidation,
+    isInstrumentFeatureAvailable as getIsInstrumentFeatureAvailable,
     isBankAccountInstrument,
     isCardInstrument,
     isInstrumentCardCodeRequiredSelector,
     isInstrumentCardNumberRequiredSelector,
-    isInstrumentFeatureAvailable,
 } from '@bigcommerce/checkout/instrument-utils';
 import { type PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
@@ -107,10 +107,9 @@ const HostedDropInPaymentMethodComponent = ({
     const isLoadingInstruments = isLoadingInstrumentsSelector();
     const isPaymentDataRequired = isPaymentDataRequiredSelector();
     const isSignedIn = some(checkout.payments, { providerId: method.id });
-    const isInstrumentCardCodeRequiredProp = isInstrumentCardCodeRequiredSelector(checkoutState);
-    const isInstrumentCardNumberRequiredProp =
-        isInstrumentCardNumberRequiredSelector(checkoutState);
-    const isInstrumentFeatureAvailableProp = isInstrumentFeatureAvailable({
+    const isInstrumentCardCodeRequired = isInstrumentCardCodeRequiredSelector(checkoutState);
+    const isInstrumentCardNumberRequired = isInstrumentCardNumberRequiredSelector(checkoutState);
+    const isInstrumentFeatureAvailable = getIsInstrumentFeatureAvailable({
         config,
         customer,
         isUsingMultiShipping,
@@ -141,10 +140,10 @@ const HostedDropInPaymentMethodComponent = ({
         const selectedId = selectedInstrumentId ?? defaultInstrumentId;
         const selectedInstrument = find(instruments, { bigpayToken: selectedId });
         const shouldShowNumberField = selectedInstrument
-            ? isInstrumentCardNumberRequiredProp(selectedInstrument as CardInstrument)
+            ? isInstrumentCardNumberRequired(selectedInstrument as CardInstrument)
             : false;
         const shouldShowCardCodeField = selectedInstrument
-            ? isInstrumentCardCodeRequiredProp(selectedInstrument as CardInstrument, method)
+            ? isInstrumentCardCodeRequired(selectedInstrument as CardInstrument, method)
             : false;
 
         if (hideVerificationFields) {
@@ -243,7 +242,7 @@ const HostedDropInPaymentMethodComponent = ({
     };
 
     const selectedIdForRender = selectedInstrumentId ?? defaultInstrumentId;
-    const shouldShowInstrumentFieldset = isInstrumentFeatureAvailableProp && instruments.length > 0;
+    const shouldShowInstrumentFieldset = isInstrumentFeatureAvailable && instruments.length > 0;
     const shouldShowCreditCardFieldset = !shouldShowInstrumentFieldset || isAddingNewCard;
     const isLoading = (isInitializing || isLoadingInstruments) && !hideWidget;
 
@@ -252,7 +251,7 @@ const HostedDropInPaymentMethodComponent = ({
 
         const init = async () => {
             try {
-                if (isInstrumentFeatureAvailableProp) {
+                if (isInstrumentFeatureAvailable) {
                     await loadInstruments();
                 }
 
