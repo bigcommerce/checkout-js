@@ -6,17 +6,14 @@ import {
     type CustomerRequestOptions,
     type LanguageService,
     type PaymentInitializeOptions,
-    type PaymentInstrument,
     type PaymentMethod,
     type PaymentRequestOptions,
 } from '@bigcommerce/checkout-sdk';
-import { memoizeOne } from '@bigcommerce/memoize';
 import classNames from 'classnames';
 import { find, noop, some } from 'lodash';
 import React, {
     type ReactElement,
     type ReactNode,
-    useCallback,
     useEffect,
     useMemo,
     useRef,
@@ -116,14 +113,13 @@ const HostedDropInPaymentMethodComponent = ({
         paymentMethod: method,
     });
     const loadInstruments = checkoutService.loadInstruments;
-    const filterInstruments = useMemo(
+    const instruments = useMemo(
         () =>
-            memoizeOne((list: PaymentInstrument[] = []) =>
-                list.filter((inst) => isCardInstrument(inst) || isBankAccountInstrument(inst)),
-            ),
-        [],
+            getInstruments(method)?.filter(
+                (inst) => isCardInstrument(inst) || isBankAccountInstrument(inst),
+            ) ?? [],
+        [method, getInstruments],
     );
-    const instruments = filterInstruments(getInstruments(method));
     const defaultInstrumentId = useMemo(() => {
         if (isAddingNewCard) {
             return undefined;
@@ -162,7 +158,7 @@ const HostedDropInPaymentMethodComponent = ({
         );
     };
 
-    const initializeMethod = useCallback(async (): Promise<CheckoutSelectors | void> => {
+    const initializeMethod = async (): Promise<CheckoutSelectors | void> => {
         const { hidePaymentSubmitButton, setSubmit } = paymentForm;
 
         const selectedId = selectedInstrumentId ?? defaultInstrumentId;
@@ -193,18 +189,7 @@ const HostedDropInPaymentMethodComponent = ({
             },
             selectedId,
         );
-    }, [
-        defaultInstrumentId,
-        initializeCustomer,
-        initializePayment,
-        isPaymentDataRequired,
-        isSignedIn,
-        isSignInRequired,
-        method,
-        paymentForm,
-        selectedInstrumentId,
-        signInCustomer,
-    ]);
+    };
 
     const handleDeleteInstrument = (id: string) => {
         const { setFieldValue } = paymentForm;
@@ -313,7 +298,7 @@ const HostedDropInPaymentMethodComponent = ({
         };
 
         void reInit();
-    }, [instruments, isAddingNewCard, selectedInstrumentId, defaultInstrumentId]);
+    }, [instruments, isAddingNewCard, selectedInstrumentId]);
 
     return (
         <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
