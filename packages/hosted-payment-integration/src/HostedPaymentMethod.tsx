@@ -32,5 +32,5 @@ const HostedPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
 export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>(
     HostedPaymentMethod,
-    [{ id: 'quadpay' }, { id: 'sezzle' }, { id: 'zip' }],
+    [{ gateway: 'afterpay' }, { id: 'quadpay' }, { id: 'sezzle' }, { id: 'zip' }],
 );
