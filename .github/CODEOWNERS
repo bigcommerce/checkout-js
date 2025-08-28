@@ -21,7 +21,6 @@ package-lock.json @bigcommerce/team-checkout @bigcommerce/team-integrations @big
 ## Payment integrations team
 
 /packages/affirm-integration @bigcommerce/team-integrations
-/packages/afterpay-integration @bigcommerce/team-integrations
 /packages/adyen-integration @bigcommerce/team-integrations
 /packages/barclay-integration @bigcommerce/team-integrations
 /packages/bolt-integration @bigcommerce/team-integrations
