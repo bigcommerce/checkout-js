@@ -18,7 +18,10 @@ describe('BraintreePaypalCreditBanner', () => {
 
     const checkoutService = createCheckoutService();
     const checkoutState = checkoutService.getState();
+    const bannerContainerId = 'braintree-credit-banner-container';
     const defaultProps = {
+        containerId: bannerContainerId,
+        methodId: PaymentMethodId.BraintreePaypalCredit,
         onUnhandledError: jest.fn(),
     };
 
@@ -49,7 +52,7 @@ describe('BraintreePaypalCreditBanner', () => {
         expect(checkoutService.initializePayment).toHaveBeenCalledWith({
             methodId: PaymentMethodId.BraintreePaypalCredit,
             braintree: {
-                bannerContainerId: 'braintree-banner-container',
+                bannerContainerId,
             },
         });
 
@@ -68,7 +71,7 @@ describe('BraintreePaypalCreditBanner', () => {
         expect(checkoutService.initializePayment).toHaveBeenCalledWith({
             methodId: PaymentMethodId.BraintreePaypalCredit,
             braintree: {
-                bannerContainerId: 'braintree-banner-container',
+                bannerContainerId,
             },
         });
 
