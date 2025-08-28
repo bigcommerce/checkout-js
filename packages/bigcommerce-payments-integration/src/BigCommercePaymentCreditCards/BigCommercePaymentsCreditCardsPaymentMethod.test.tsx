@@ -30,7 +30,7 @@ import {
     getPaymentMethod,
     getStoreConfig,
 } from '@bigcommerce/checkout/test-mocks';
-import { renderWithoutWrapper as render, screen } from '@bigcommerce/checkout/test-utils';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import BigCommercePaymentsCreditCardsPaymentMethod from './BigCommercePaymentsCreditCardsPaymentMethod';
 
