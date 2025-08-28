@@ -3,6 +3,7 @@
   "rules": {
     "@typescript-eslint/await-thenable": "off",
     "@typescript-eslint/consistent-type-assertions": "off",
-    "@typescript-eslint/no-unsafe-call": "off"
+    "@typescript-eslint/no-unsafe-call": "off",
+    "react-hooks/exhaustive-deps": "off"
   }
 }

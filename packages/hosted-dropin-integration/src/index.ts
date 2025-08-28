@@ -1,4 +1,1 @@
-export {
-    default as HostedDropInPaymentMethodComponent,
-    HostedDropInPaymentMethodProps,
-} from './HostedDropInPaymentMethodComponent';
+export { default as HostedDropInPaymentMethodComponent } from './HostedDropInPaymentMethodComponent';
