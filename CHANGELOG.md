@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.660.0](https://github.com/bigcommerce/checkout-js/compare/v1.659.2...v1.660.0) (2025-08-28)
+
+
+### Features
+
+* **payment:** PAYPAL-5660 new logic for BT BNPL banner on checkout ([f9f01ac](https://github.com/bigcommerce/checkout-js/commit/f9f01acea6b029e0f31199914b7e50bd3dca4696))
+* **payment:** PAYPAL-5660 new logic for BT BNPL banner on checkout ([1d53f3e](https://github.com/bigcommerce/checkout-js/commit/1d53f3e12a159f485a93dd728b44914100ef9545))
+
 ### [1.659.2](https://github.com/bigcommerce/checkout-js/compare/v1.659.1...v1.659.2) (2025-08-28)
 
 ### [1.659.1](https://github.com/bigcommerce/checkout-js/compare/v1.659.0...v1.659.1) (2025-08-27)
