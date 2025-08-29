@@ -140,7 +140,7 @@ jobs:
       - run:
           name: "Run e2e tests"
           command: |
-            TESTFILES=$(circleci tests glob "*/e2e/**/*.spec.ts")
+            TESTFILES=$(circleci tests glob "packages/*/e2e/**/*.spec.ts")
             echo "$TESTFILES" | \
             circleci tests run \
               --command="xargs npx playwright test --config=playwright.config.ts" \
