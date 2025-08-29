@@ -50,6 +50,24 @@ describe('When using Hosted payment method', () => {
         jest.clearAllMocks();
     });
 
+    test('user does not see a description or instrument fields for Afterpay', () => {
+        paymentMethod = {
+            id: 'pay_by_installment',
+            method: 'pay_by_installment',
+            supportedCards: [],
+            config: {},
+            type: 'PAYMENT_TYPE_API',
+            gateway: 'afterpay',
+            skipRedirectConfirmationAlert: true,
+        };
+
+        const { container } = render(
+            <HostedPaymentMethod method={paymentMethod} {...defaultProps} />,
+        );
+
+        expect(container).toBeEmptyDOMElement();
+    });
+
     test('user does not see a description or instrument fields for Quadpay (Zip US)', () => {
         paymentMethod = {
             id: 'quadpay',
