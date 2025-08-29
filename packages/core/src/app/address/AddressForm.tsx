@@ -1,9 +1,9 @@
 import { type FormField } from '@bigcommerce/checkout-sdk';
 import { forIn, noop } from 'lodash';
-import React, { useCallback, useContext, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 
 import { TranslatedString, useLocale } from '@bigcommerce/checkout/locale';
-import { DynamicFormField, DynamicFormFieldType, ThemeContext } from '@bigcommerce/checkout/ui';
+import { DynamicFormField, DynamicFormFieldType, useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { type AutocompleteItem } from '../ui/autocomplete';
 import { CheckboxFormField, Fieldset } from '../ui/form';
@@ -30,7 +30,7 @@ const AddressForm: React.FC<AddressFormProps> = ({
         onChange = noop,
     }) => {
     const { language } = useLocale();
-    const context = useContext(ThemeContext);
+    const { themeV2 } = useThemeContext();
     const containerRef = useRef<HTMLDivElement>(null);
     const nextElementRef = useRef<HTMLElement | null>(null);
 
@@ -95,12 +95,6 @@ const AddressForm: React.FC<AddressFormProps> = ({
 
         return translatedPlaceholderId && language.translate(translatedPlaceholderId);
     }, [language]);
-
-    if (!context) {
-        throw Error('Need to wrap in style context');
-    }
-
-    const { themeV2 } = context;
 
     return (
         <>
