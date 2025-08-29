@@ -12,7 +12,6 @@ import { type CheckoutContextProps } from '@bigcommerce/checkout/payment-integra
 import { LazyContainer } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../checkout';
-import { isExperimentEnabled } from '../common/utility';
 
 import { getSupportedMethodIds } from './getSupportedMethods';
 import resolveCheckoutButton from './resolveCheckoutButton';
@@ -67,13 +66,10 @@ const CheckoutButtonList: FunctionComponent<WithCheckoutCheckoutButtonListProps 
         }
     }
 
-    const { getConfig } = checkoutState.data;
-
     const renderButtons = () => {
         return supportedMethodIds.map((methodId) => {
             const ResolvedCheckoutButton = resolveCheckoutButton(
                 { id: methodId },
-                isExperimentEnabled(getConfig()?.checkoutSettings, 'CHECKOUT-9432.lazy_load_payment_components', false)
             );
 
             if (!ResolvedCheckoutButton) {
