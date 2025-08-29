@@ -1,13 +1,10 @@
 import Downshift, { type DownshiftState, type StateChangeOptions } from 'downshift';
-import { includes, isNumber, noop } from 'lodash';
-import React, { Fragment, PureComponent, type ReactChild, type ReactNode } from 'react';
-
-import { ThemeContext } from '@bigcommerce/checkout/ui';
-
-import { Label } from '../form';
-import { Popover, PopoverList, type PopoverListItem } from '../popover';
+import { noop } from 'lodash';
+import React, { type ReactNode, useCallback } from 'react';
 
 import type AutocompleteItem from './autocomplete-item';
+import AutocompleteContent from './AutocompleteContent';
+import { itemToString } from './utils';
 
 export interface AutocompleteProps {
     initialValue?: string;
@@ -22,134 +19,22 @@ export interface AutocompleteProps {
     onChange?(value: string, isOpen: boolean): void;
 }
 
-class Autocomplete extends PureComponent<AutocompleteProps> {
-    static contextType = ThemeContext;
-    declare context: React.ContextType<typeof ThemeContext>;
-
-    render(): ReactNode {
-        const {
-            inputProps,
-            initialValue,
-            initialHighlightedIndex,
-            defaultHighlightedIndex,
-            items,
-            children,
-            onSelect,
-            listTestId,
-        } = this.props;
-
-        if (!this.context) {
-            throw Error('Need to wrap in style context');
-        }
-
-        const { themeV2 } = this.context;
-
-        return (
-            <Downshift
-                defaultHighlightedIndex={defaultHighlightedIndex}
-                initialHighlightedIndex={initialHighlightedIndex}
-                initialInputValue={initialValue}
-                itemToString={this.itemToString}
-                labelId={
-                    inputProps && inputProps['aria-labelledby']
-                        ? inputProps['aria-labelledby']
-                        : null
-                }
-                onChange={onSelect}
-                onStateChange={this.handleStateChange}
-                stateReducer={this.stateReducer}
-            >
-                {({ isOpen, getInputProps, getMenuProps, getItemProps, highlightedIndex }) => {
-                    const validInputProps = { ...getInputProps({ value: initialValue }), ...inputProps };
-
-                    delete validInputProps.labelText;
-
-                    return (
-                        <div>
-                            <input {...validInputProps} />
-                            {inputProps && includes(inputProps.className, 'floating') && (
-                                <Label
-                                    additionalClassName={themeV2 ? 'floating-form-field-label' : ''}
-                                    htmlFor={inputProps.id}
-                                    id={inputProps['aria-labelledby']}
-                                    isFloatingLabelEnabled={true}
-                                >
-                                    {inputProps.labelText}
-                                </Label>
-                            )}
-                            {isOpen && !!items.length && (
-                                <Popover>
-                                    <PopoverList
-                                        getItemProps={getItemProps}
-                                        highlightedIndex={
-                                            isNumber(highlightedIndex) ? highlightedIndex : -1
-                                        }
-                                        items={items.map((item) => this.toPopoverItem(item))}
-                                        menuProps={getMenuProps()}
-                                        testId={listTestId}
-                                    />
-                                    {children}
-                                </Popover>
-                            )}
-                        </div>
-                    );
-                }}
-            </Downshift>
-        );
-    }
-
-    private toPopoverItem(item: AutocompleteItem): PopoverListItem {
-        return {
-            ...item,
-            content: this.highlightItem(item),
-        };
-    }
-
-    private highlightItem(item: AutocompleteItem): ReactChild[] | ReactChild {
-        if (!item.highlightedSlices || !item.highlightedSlices.length) {
-            return item.label;
-        }
-
-        let lastIndex = 0;
-        let key = 0;
-
-        return item.highlightedSlices.reduce((node, slice, i) => {
-            const { label } = item;
-            const { offset, length } = slice;
-            const notHighlightedLength = offset - lastIndex;
-
-            if (notHighlightedLength) {
-                node.push(
-                    <Fragment key={key}>{label.substr(lastIndex, notHighlightedLength)}</Fragment>,
-                );
-                key += 1;
-            }
-
-            lastIndex = offset + length;
-
-            node.push(<strong key={key}>{label.substr(offset, length)}</strong>);
-            key += 1;
-
-            if (i === (item.highlightedSlices || []).length - 1) {
-                node.push(<Fragment key={key}>{label.substr(lastIndex)}</Fragment>);
-                key += 1;
-            }
-
-            return node;
-            // eslint-disable-next-line @typescript-eslint/prefer-reduce-type-parameter
-        }, [] as ReactChild[]);
-    }
-
-    private itemToString(item?: AutocompleteItem | null): string {
-        return (item && item.value) || '';
-    }
-
-    private stateReducer: (
+const Autocomplete: React.FC<AutocompleteProps> = ({
+    inputProps,
+    initialValue,
+    initialHighlightedIndex,
+    defaultHighlightedIndex,
+    items,
+    children,
+    onSelect,
+    listTestId,
+    onChange,
+    onToggleOpen = noop,
+}) => {
+    const stateReducer = useCallback((
         state: DownshiftState<AutocompleteItem>,
         changes: StateChangeOptions<AutocompleteItem>,
-    ) => Partial<StateChangeOptions<AutocompleteItem>> = (state, changes) => {
-        const { onChange } = this.props;
-
+    ): Partial<StateChangeOptions<AutocompleteItem>> => {
         switch (changes.type) {
             case Downshift.stateChangeTypes.blurInput:
             case Downshift.stateChangeTypes.blurButton:
@@ -173,15 +58,50 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
             default:
                 return changes;
         }
-    };
+    }, [onChange]);
 
-    private handleStateChange = ({ isOpen, inputValue }: StateChangeOptions<AutocompleteItem>) => {
-        const { onToggleOpen = noop } = this.props;
-
+    const handleStateChange = useCallback(({ isOpen, inputValue }: StateChangeOptions<AutocompleteItem>) => {
         if (isOpen !== undefined) {
             onToggleOpen({ isOpen, inputValue: inputValue || '' });
         }
-    };
-}
+    }, [onToggleOpen]);
+
+    return (
+        <Downshift
+            defaultHighlightedIndex={defaultHighlightedIndex}
+            initialHighlightedIndex={initialHighlightedIndex}
+            initialInputValue={initialValue}
+            itemToString={itemToString}
+            labelId={
+                inputProps && inputProps['aria-labelledby']
+                    ? inputProps['aria-labelledby']
+                    : null
+            }
+            onChange={onSelect}
+            onStateChange={handleStateChange}
+            stateReducer={stateReducer}
+        >
+            {({ isOpen, getInputProps, getMenuProps, getItemProps, highlightedIndex }) => {
+                return (
+                    <div>
+                        <AutocompleteContent
+                            getInputProps={getInputProps}
+                            getItemProps={getItemProps}
+                            getMenuProps={getMenuProps}
+                            highlightedIndex={highlightedIndex}
+                            initialValue={initialValue}
+                            inputProps={inputProps}
+                            isOpen={isOpen}
+                            items={items}
+                            listTestId={listTestId}
+                        >
+                            {children}
+                        </AutocompleteContent>
+                    </div>
+                );
+            }}
+        </Downshift>
+    );
+};
 
 export default Autocomplete;
