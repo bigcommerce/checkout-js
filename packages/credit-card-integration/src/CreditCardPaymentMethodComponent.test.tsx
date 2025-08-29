@@ -35,12 +35,13 @@ import {
     getPaymentMethod,
     getStoreConfig,
 } from '@bigcommerce/checkout/test-mocks';
-import { render, screen } from '@bigcommerce/checkout/test-utils';
+import { renderWithoutWrapper as render, screen } from '@bigcommerce/checkout/test-utils';
 
-import CreditCardPaymentMethodComponent, {
+import { CreditCardPaymentMethodComponent } from './CreditCardPaymentMethodComponent';
+import {
     type CreditCardPaymentMethodProps,
     type CreditCardPaymentMethodValues,
-} from './CreditCardPaymentMethodComponent';
+} from './CreditCardPaymentMethodType';
 
 describe('CreditCardPaymentMethod', () => {
     let checkoutService: CheckoutService;
