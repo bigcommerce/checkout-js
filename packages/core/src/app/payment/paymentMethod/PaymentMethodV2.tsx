@@ -6,7 +6,6 @@ import { PaymentFormProvider, type PaymentFormValues } from '@bigcommerce/checko
 
 import { withCheckout, type WithCheckoutProps } from '../../checkout';
 import { connectFormik, type WithFormikProps } from '../../common/form';
-import { isExperimentEnabled } from '../../common/utility';
 import { withForm, type WithFormProps } from '../../ui/form';
 import createPaymentFormService from '../createPaymentFormService';
 import resolvePaymentMethod from '../resolvePaymentMethod';
@@ -56,15 +55,12 @@ const PaymentMethodContainer: ComponentType<
         setValidationSchema,
     };
 
-    const { getConfig } = checkoutState.data;
-
     const ResolvedPaymentMethod = resolvePaymentMethod(
         {
             id: method.id,
             gateway: method.gateway,
             type: method.type,
         },
-        isExperimentEnabled(getConfig()?.checkoutSettings, 'CHECKOUT-9432.lazy_load_payment_components', false)
     );
 
     if (!ResolvedPaymentMethod) {

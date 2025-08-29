@@ -7,7 +7,6 @@ import { type CheckoutContextProps } from '@bigcommerce/checkout/payment-integra
 import { useThemeContext, WalletButtonsContainerSkeleton } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../checkout';
-import { isExperimentEnabled } from '../common/utility';
 
 import { getSupportedMethodIds } from './getSupportedMethods';
 import resolveCheckoutButton from './resolveCheckoutButton';
@@ -55,8 +54,6 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
         return null;
     }
 
-    const { getConfig } = checkoutState.data;
-
     const renderButtons = () => availableMethodIds.map((methodId) => {
         if (isPaymentStepActive && isPayPalCommerce(methodId)) {
             return null;
@@ -64,7 +61,6 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
 
         const ResolvedCheckoutButton = resolveCheckoutButton(
             { id: methodId },
-            isExperimentEnabled(getConfig()?.checkoutSettings, 'CHECKOUT-9432.lazy_load_payment_components', false)
         );
 
         if (!ResolvedCheckoutButton) {

@@ -5,23 +5,17 @@ import {
     type PaymentMethodResolveId,
 } from '@bigcommerce/checkout/payment-integration-api';
 
-import { resolveComponent , resolveLazyComponent } from '../common/resolver';
-import * as paymentMethods from '../generated/paymentIntegrations';
+import { resolveLazyComponent } from '../common/resolver';
 import * as lazyPaymentMethods from '../generated/paymentIntegrations/lazy';
 
 export default function resolvePaymentMethod(
-    query: PaymentMethodResolveId,
-    useLazyLoad: boolean,
+    query: PaymentMethodResolveId
 ): ComponentType<PaymentMethodProps> | undefined {
-    if (useLazyLoad) {
-        const { ComponentRegistry, ...components } = lazyPaymentMethods;
+    const { ComponentRegistry, ...components } = lazyPaymentMethods;
 
-        return resolveLazyComponent<PaymentMethodResolveId, PaymentMethodProps>(
-            query, 
-            components, 
-            ComponentRegistry,
-        );
-    }
-
-    return resolveComponent<PaymentMethodResolveId, PaymentMethodProps>(query, paymentMethods);
+    return resolveLazyComponent<PaymentMethodResolveId, PaymentMethodProps>(
+        query, 
+        components, 
+        ComponentRegistry,
+    );
 }
