@@ -15,7 +15,6 @@ import { withCheckout } from '../../checkout';
 const BraintreeCreditCardPaymentMethod = lazy(() => import(/* webpackChunkName: "braintree-credit-card-payment-method" */'./BraintreeCreditCardPaymentMethod'));
 const HostedCreditCardPaymentMethod = lazy(() => import(/* webpackChunkName: "hosted-credit-card-payment-method" */'./HostedCreditCardPaymentMethod'));
 const HostedPaymentMethod = lazy(() => import(/* webpackChunkName: "hosted-payment-method" */'./HostedPaymentMethod'));
-const MasterpassPaymentMethod = lazy(() => import(/* webpackChunkName: "masterpass-payment-method" */'./MasterpassPaymentMethod'));
 const PaypalPaymentsProPaymentMethod = lazy(() => import(/* webpackChunkName: "paypal-payments-pro-payment-method" */'./PaypalPaymentsProPaymentMethod'));
 
 import PaymentMethodId from './PaymentMethodId';
@@ -51,10 +50,6 @@ const PaymentMethodComponent: FunctionComponent<
     PaymentMethodProps & WithCheckoutPaymentMethodProps
 > = (props) => {
     const { method } = props;
-
-    if (method.id === PaymentMethodId.Masterpass) {
-        return <Suspense><MasterpassPaymentMethod {...props} /></Suspense>;
-    }
 
     if (method.id === PaymentMethodId.Braintree) {
         return <Suspense><BraintreeCreditCardPaymentMethod {...props} /></Suspense>;
