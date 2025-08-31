@@ -2,7 +2,6 @@ export { default as LocaleContext, useLocale } from './LocaleContext';
 export { default as createLocaleContext } from './createLocaleContext';
 export { default as getDefaultTranslations } from './getDefaultTranslations';
 export { default as getLanguageService, initializeLanguageService } from './getLanguageService';
-export { default as masterpassFormatLocale } from './masterpassFormatLocale';
 export { default as withCurrency } from './withCurrency';
 export { default as withLanguage } from './withLanguage';
 export { default as withDate } from './withDate';
