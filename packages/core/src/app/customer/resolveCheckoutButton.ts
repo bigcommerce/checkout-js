@@ -6,7 +6,7 @@ import {
 } from '@bigcommerce/checkout/payment-integration-api';
 
 import { resolveLazyComponent } from '../common/resolver';
-import * as lazyCheckoutButtons from '../generated/checkoutButtons/lazy';
+import * as lazyCheckoutButtons from '../generated/checkoutButtons';
 
 export default function resolveCheckoutButton(
     resolveId: CheckoutButtonResolveId

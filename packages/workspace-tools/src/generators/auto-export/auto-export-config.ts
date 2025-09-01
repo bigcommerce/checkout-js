@@ -8,5 +8,4 @@ export interface AutoExportConfigEntry {
     outputPath: string;
     memberPattern: string;
     ignorePackages?: string[];
-    useLazyLoad?: boolean;
 }

@@ -6,7 +6,7 @@ import {
 } from '@bigcommerce/checkout/payment-integration-api';
 
 import { resolveLazyComponent } from '../common/resolver';
-import * as lazyPaymentMethods from '../generated/paymentIntegrations/lazy';
+import * as lazyPaymentMethods from '../generated/paymentIntegrations';
 
 export default function resolvePaymentMethod(
     query: PaymentMethodResolveId
