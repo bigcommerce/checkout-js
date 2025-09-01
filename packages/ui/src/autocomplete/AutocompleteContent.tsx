@@ -1,3 +1,4 @@
+import type { GetInputPropsOptions, GetItemPropsOptions, GetMenuPropsOptions } from 'downshift';
 import { includes, isNumber } from 'lodash';
 import React, { type ReactNode } from 'react';
 
@@ -6,17 +7,20 @@ import { useThemeContext } from '@bigcommerce/checkout/ui';
 import { Label } from '../form';
 import { Popover, PopoverList } from '../popover';
 
+import { type InputPropsType } from './Autocomplete';
 import type AutocompleteItem from './autocomplete-item';
 import { toPopoverItem } from './utils';
 
 export interface AutocompleteContentProps {
     isOpen: boolean;
-    getInputProps: (options?: any) => any;
-    getMenuProps: () => any;
-    getItemProps: (options: any) => any;
+    getInputProps: (options?: GetInputPropsOptions) => React.InputHTMLAttributes<HTMLInputElement>;
+    getMenuProps: (options?: GetMenuPropsOptions) => React.HTMLAttributes<HTMLElement>;
+    getItemProps: (
+        options: GetItemPropsOptions<AutocompleteItem>,
+    ) => React.HTMLAttributes<HTMLElement>;
     highlightedIndex: number | null;
     initialValue?: string;
-    inputProps?: any;
+    inputProps?: InputPropsType;
     items: AutocompleteItem[];
     listTestId?: string;
     children?: ReactNode;
@@ -35,9 +39,11 @@ const AutocompleteContent: React.FC<AutocompleteContentProps> = ({
     children,
 }) => {
     const { themeV2 } = useThemeContext();
-    const validInputProps = { ...getInputProps({ value: initialValue }), ...inputProps };
+    const baseInputProps = getInputProps({ value: initialValue });
+    const combinedProps = { ...baseInputProps, ...inputProps };
 
-    delete validInputProps.labelText;
+    // Extract labelText to avoid passing it to input element
+    const { labelText: _labelText, ...validInputProps } = combinedProps;
 
     return (
         <>
@@ -56,9 +62,7 @@ const AutocompleteContent: React.FC<AutocompleteContentProps> = ({
                 <Popover>
                     <PopoverList
                         getItemProps={getItemProps}
-                        highlightedIndex={
-                            isNumber(highlightedIndex) ? highlightedIndex : -1
-                        }
+                        highlightedIndex={isNumber(highlightedIndex) ? highlightedIndex : -1}
                         items={items.map((item) => toPopoverItem(item))}
                         menuProps={getMenuProps()}
                         testId={listTestId}

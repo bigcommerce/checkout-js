@@ -6,13 +6,22 @@ import type AutocompleteItem from './autocomplete-item';
 import AutocompleteContent from './AutocompleteContent';
 import { itemToString } from './utils';
 
+export interface InputPropsType {
+    className: string;
+    id: string;
+    'aria-labelledby': string;
+    placeholder: string | undefined;
+    labelText: React.JSX.Element | null;
+    maxLength: number | undefined;
+}
+
 export interface AutocompleteProps {
     initialValue?: string;
     initialHighlightedIndex?: number;
     defaultHighlightedIndex?: number;
     children?: ReactNode;
     items: AutocompleteItem[];
-    inputProps?: any;
+    inputProps?: InputPropsType;
     listTestId?: string;
     onToggleOpen?(state: { inputValue: string; isOpen: boolean }): void;
     onSelect?(item: AutocompleteItem | null): void;
@@ -31,40 +40,46 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
     onChange,
     onToggleOpen = noop,
 }) => {
-    const stateReducer = useCallback((
-        state: DownshiftState<AutocompleteItem>,
-        changes: StateChangeOptions<AutocompleteItem>,
-    ): Partial<StateChangeOptions<AutocompleteItem>> => {
-        switch (changes.type) {
-            case Downshift.stateChangeTypes.blurInput:
-            case Downshift.stateChangeTypes.blurButton:
-            case Downshift.stateChangeTypes.mouseUp:
-            case Downshift.stateChangeTypes.touchEnd:
-                return {
-                    ...changes,
-                    inputValue: state.inputValue,
-                };
+    const stateReducer = useCallback(
+        (
+            state: DownshiftState<AutocompleteItem>,
+            changes: StateChangeOptions<AutocompleteItem>,
+        ): Partial<StateChangeOptions<AutocompleteItem>> => {
+            switch (changes.type) {
+                case Downshift.stateChangeTypes.blurInput:
+                case Downshift.stateChangeTypes.blurButton:
+                case Downshift.stateChangeTypes.mouseUp:
+                case Downshift.stateChangeTypes.touchEnd:
+                    return {
+                        ...changes,
+                        inputValue: state.inputValue,
+                    };
 
-            case Downshift.stateChangeTypes.changeInput:
-                if (changes.inputValue !== state.inputValue && onChange) {
-                    onChange(changes.inputValue || '', state.isOpen);
-                }
+                case Downshift.stateChangeTypes.changeInput:
+                    if (changes.inputValue !== state.inputValue && onChange) {
+                        onChange(changes.inputValue || '', state.isOpen);
+                    }
 
-                return changes;
+                    return changes;
 
-            case Downshift.stateChangeTypes.keyDownEnter:
-                return changes;
+                case Downshift.stateChangeTypes.keyDownEnter:
+                    return changes;
 
-            default:
-                return changes;
-        }
-    }, [onChange]);
+                default:
+                    return changes;
+            }
+        },
+        [onChange],
+    );
 
-    const handleStateChange = useCallback(({ isOpen, inputValue }: StateChangeOptions<AutocompleteItem>) => {
-        if (isOpen !== undefined) {
-            onToggleOpen({ isOpen, inputValue: inputValue || '' });
-        }
-    }, [onToggleOpen]);
+    const handleStateChange = useCallback(
+        ({ isOpen, inputValue }: StateChangeOptions<AutocompleteItem>) => {
+            if (isOpen !== undefined) {
+                onToggleOpen({ isOpen, inputValue: inputValue || '' });
+            }
+        },
+        [onToggleOpen],
+    );
 
     return (
         <Downshift
@@ -73,9 +88,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
             initialInputValue={initialValue}
             itemToString={itemToString}
             labelId={
-                inputProps && inputProps['aria-labelledby']
-                    ? inputProps['aria-labelledby']
-                    : null
+                inputProps && inputProps['aria-labelledby'] ? inputProps['aria-labelledby'] : null
             }
             onChange={onSelect}
             onStateChange={handleStateChange}

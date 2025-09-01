@@ -32,7 +32,7 @@ describe('Autocomplete Component', () => {
         expect(onChange).toHaveBeenCalledWith('zo', true);
 
         // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
-        const popoverListItems = container.getElementsByClassName('popoverList-item')
+        const popoverListItems = container.getElementsByClassName('popoverList-item');
 
         expect(popoverListItems).toHaveLength(3);
         expect(container.innerHTML).toContain('<strong>zo</strong>o');
@@ -41,16 +41,16 @@ describe('Autocomplete Component', () => {
     it('trigger onSelect function when an item is clicked', async () => {
         const initialValues = { value: '' };
 
-        const { container }= render(
+        const { container } = render(
             <Formik initialValues={initialValues} onSubmit={jest.fn()}>
-              {({ values, setFieldValue }) => (
-                  <Autocomplete
-                    initialValue={values.value}
-                    items={items}
-                    onSelect={(val) => setFieldValue('value', val?.value)}
-                  />
-              )}
-            </Formik>
+                {({ values, setFieldValue }) => (
+                    <Autocomplete
+                        initialValue={values.value}
+                        items={items}
+                        onSelect={(val) => setFieldValue('value', val?.value)}
+                    />
+                )}
+            </Formik>,
         );
 
         await userEvent.type(screen.getByRole('textbox'), 'foo');
@@ -62,16 +62,16 @@ describe('Autocomplete Component', () => {
     it('select item by keyboard', async () => {
         const initialValues = { value: '' };
 
-        const { container }= render(
+        const { container } = render(
             <Formik initialValues={initialValues} onSubmit={jest.fn()}>
-              {({ values, setFieldValue }) => (
-                  <Autocomplete
-                    initialValue={values.value}
-                    items={items}
-                    onSelect={(val) => setFieldValue('value', val?.value)}
-                  />
-              )}
-            </Formik>
+                {({ values, setFieldValue }) => (
+                    <Autocomplete
+                        initialValue={values.value}
+                        items={items}
+                        onSelect={(val) => setFieldValue('value', val?.value)}
+                    />
+                )}
+            </Formik>,
         );
 
         await userEvent.type(screen.getByRole('textbox'), 'zo');

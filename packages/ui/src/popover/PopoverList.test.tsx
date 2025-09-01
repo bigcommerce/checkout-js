@@ -30,7 +30,7 @@ describe('Popover Component', () => {
         const { container } = render(<PopoverList highlightedIndex={1} items={items} />);
 
         // eslint-disable-next-line testing-library/no-container
-        const popoverListItems = container.getElementsByClassName('popoverList-item')
+        const popoverListItems = container.getElementsByClassName('popoverList-item');
 
         expect(popoverListItems).toHaveLength(3);
 
@@ -40,7 +40,7 @@ describe('Popover Component', () => {
     });
 
     it('renders list with passed testId', () => {
-        render(<PopoverList items={items} testId='testId' />);
+        render(<PopoverList items={items} testId="testId" />);
 
         expect(screen.getByTestId('testId')).toBeInTheDocument();
     });
