@@ -9,6 +9,7 @@ export {
     AccordionContext,
     AccordionContextProps,
 } from './accordion';
+export { Autocomplete, AutocompleteItem } from './autocomplete';
 export { Button, ButtonSize, ButtonVariant } from './button';
 export { DropdownTrigger } from './dropdown';
 export {
