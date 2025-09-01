@@ -5,26 +5,17 @@ import {
     type CheckoutButtonResolveId,
 } from '@bigcommerce/checkout/payment-integration-api';
 
-import { resolveComponent, resolveLazyComponent } from '../common/resolver';
-import * as checkoutButtons from '../generated/checkoutButtons';
-import * as lazyCheckoutButtons from '../generated/checkoutButtons/lazy';
+import { resolveLazyComponent } from '../common/resolver';
+import * as lazyCheckoutButtons from '../generated/checkoutButtons';
 
 export default function resolveCheckoutButton(
-    resolveId: CheckoutButtonResolveId,
-    useLazyLoad: boolean,
+    resolveId: CheckoutButtonResolveId
 ): ComponentType<CheckoutButtonProps> | undefined {
-    if (useLazyLoad) {
-        const { ComponentRegistry, ...components } = lazyCheckoutButtons;
+    const { ComponentRegistry, ...components } = lazyCheckoutButtons;
 
-        return resolveLazyComponent<CheckoutButtonResolveId, CheckoutButtonProps>(
-            resolveId,
-            components,
-            ComponentRegistry,
-        );
-    }
-
-    return resolveComponent<CheckoutButtonResolveId, CheckoutButtonProps>(
+    return resolveLazyComponent<CheckoutButtonResolveId, CheckoutButtonProps>(
         resolveId,
-        checkoutButtons,
+        components,
+        ComponentRegistry,
     );
 }

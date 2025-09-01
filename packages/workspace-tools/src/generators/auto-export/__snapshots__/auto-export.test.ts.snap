@@ -1,17 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`autoExport() export matching members from files to another file 1`] = `
-"export { StrategyA } from '@bigcommerce/strategy-a';
-export { StrategyB } from '@bigcommerce/strategy-b';
-"
-`;
-
 exports[`autoExport() export matching members from files to another file as lazy components 1`] = `
-"export { StrategyA } from '@bigcommerce/strategy-a';
-export { StrategyB } from '@bigcommerce/strategy-b';
-"
+"import { lazy } from 'react';
+
+const StrategyA = lazy(() => import(/* webpackChunkName: "strategy-a" */'@bigcommerce/strategy-a').then(module => ({ default: module.StrategyA })));
+const StrategyB = lazy(() => import(/* webpackChunkName: "strategy-b" */'@bigcommerce/strategy-b').then(module => ({ default: module.StrategyB })));
+
+export {
+  StrategyA,
+  StrategyB,
+};
+
+
+    "
 `;
 
-exports[`autoExport() handles scenario where no matching member can be found and lazy loaded 1`] = `""`;
+exports[`autoExport() handles scenario where no matching member can be found and lazy loaded 1`] = `
+"
 
-exports[`autoExport() handles scenario where no matching member is found 1`] = `""`;
+
+    "
+`;

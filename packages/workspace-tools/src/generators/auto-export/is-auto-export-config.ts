@@ -34,10 +34,6 @@ export default function isAutoExportConfig(config: unknown): config is AutoExpor
             return false;
         }
 
-        if (hasKey(entry, 'useLazyLoad') && typeof entry.useLazyLoad !== 'boolean') {
-            return false;
-        }
-
         return true;
     });
 }

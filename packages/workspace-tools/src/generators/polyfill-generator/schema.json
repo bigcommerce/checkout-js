@@ -16,7 +16,7 @@
     "outputPath": {
       "type": "string",
       "description": "The path where the polyfill file should be generated.",
-      "default": "src/app/generated/polyfill.ts"
+      "default": "src/app/generated/polyfill/index.ts"
     }
   },
   "required": [
