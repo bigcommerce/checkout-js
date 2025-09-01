@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.661.0](https://github.com/bigcommerce/checkout-js/compare/v1.660.2...v1.661.0) (2025-09-01)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9454 convert InnerFieldInput ([#2547](https://github.com/bigcommerce/checkout-js/issues/2547)) ([6fe116d](https://github.com/bigcommerce/checkout-js/commit/6fe116d2fcb28e66968addab81fbc5de85515379))
+
+
+### Code Refactoring
+
+* **core:** CHECKOUT-9432 Clean up code after experiment removal ([d06ee65](https://github.com/bigcommerce/checkout-js/commit/d06ee65e6d008284a5fc1ff316873c9590033d12))
+* **core:** CHECKOUT-9432 Remove experiment and old code path to fully lazy load payment components ([587f7cf](https://github.com/bigcommerce/checkout-js/commit/587f7cf9ac3c706f98971d98cffc7fad76b722d6))
+
 ### [1.660.2](https://github.com/bigcommerce/checkout-js/compare/v1.660.1...v1.660.2) (2025-09-01)
 
 

@@ -1,1 +1,0 @@
-"use strict";(self.webpackJsonpCheckout=self.webpackJsonpCheckout||[]).push([[3380],{67701:(e,a,o)=>{o.r(a),o.d(a,{AmazonPayV2Button:()=>s.A,AmazonPayV2PaymentMethod:()=>t.A});var t=o(25224),s=o(34753)}}]);
