@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.661.1](https://github.com/bigcommerce/checkout-js/compare/v1.661.0...v1.661.1) (2025-09-01)
+
+
+### Code Refactoring
+
+* **payment:** PI-4307 refactor Afterpay payment method to use generic component ([#2542](https://github.com/bigcommerce/checkout-js/issues/2542)) ([ba0d5ce](https://github.com/bigcommerce/checkout-js/commit/ba0d5ce6bc98295c662f5efe51b6df3593a114c8))
+
 ## [1.661.0](https://github.com/bigcommerce/checkout-js/compare/v1.660.2...v1.661.0) (2025-09-01)
 
 
