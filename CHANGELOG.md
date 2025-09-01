@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.660.2](https://github.com/bigcommerce/checkout-js/compare/v1.660.1...v1.660.2) (2025-09-01)
+
+
+### Bug Fixes
+
+* **common:** CHECKOUT-9307 Fix e2e test glob pattern ([af16657](https://github.com/bigcommerce/checkout-js/commit/af1665770dec99b0afd04886b194d7543f820ece))
+* **common:** CHECKOUT-9307 Skip failing test due to outdated mock ([4ed24e9](https://github.com/bigcommerce/checkout-js/commit/4ed24e9234f86ca79ea2d6277c2e60a63bb630c6))
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9478 Remove WalletButtonPaymentMethod ([#2544](https://github.com/bigcommerce/checkout-js/issues/2544)) ([496e631](https://github.com/bigcommerce/checkout-js/commit/496e631be2c570b316e6e266d49e07b80ab738a6))
+
 ### [1.660.1](https://github.com/bigcommerce/checkout-js/compare/v1.660.0...v1.660.1) (2025-08-29)
 
 ## [1.660.0](https://github.com/bigcommerce/checkout-js/compare/v1.659.2...v1.660.0) (2025-08-28)
