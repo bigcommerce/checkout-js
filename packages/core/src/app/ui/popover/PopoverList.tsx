@@ -1,4 +1,3 @@
-import type { GetItemPropsOptions } from 'downshift';
 import React, { type FunctionComponent, memo } from 'react';
 
 import './PopoverList.scss';
@@ -6,7 +5,7 @@ import './PopoverList.scss';
 export interface PopoverListProps {
     menuProps?: React.HTMLAttributes<HTMLElement>;
     highlightedIndex?: number;
-    getItemProps?: <Item>(options: GetItemPropsOptions<Item>) => React.HTMLAttributes<HTMLElement>;
+    getItemProps?: (index: number, itemId: string) => React.HTMLAttributes<HTMLElement>;
     items: PopoverListItem[];
     testId?: string;
 }
@@ -19,7 +18,7 @@ export interface PopoverListItem {
 const PopoverList: FunctionComponent<PopoverListProps> = ({
     highlightedIndex = -1,
     testId,
-    getItemProps = (props) => props as React.HTMLAttributes<HTMLElement>,
+    getItemProps = () => ({} as React.HTMLAttributes<HTMLElement>),
     menuProps = {},
     items,
 }) => {
@@ -33,12 +32,7 @@ const PopoverList: FunctionComponent<PopoverListProps> = ({
                 <li
                     className={getItemClassName(highlightedIndex, index)}
                     data-test={testId && `${testId}-item`}
-                     
-                    {...getItemProps({
-                        key: item.id,
-                        index,
-                        item,
-                    })}
+                    {...getItemProps(index, item.id)}
                     key={index}
                 >
                     {item.content}

@@ -87,9 +87,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
             initialHighlightedIndex={initialHighlightedIndex}
             initialInputValue={initialValue}
             itemToString={itemToString}
-            labelId={
-                inputProps && inputProps['aria-labelledby'] ? inputProps['aria-labelledby'] : null
-            }
+            labelId={inputProps && inputProps['aria-labelledby']}
             onChange={onSelect}
             onStateChange={handleStateChange}
             stateReducer={stateReducer}

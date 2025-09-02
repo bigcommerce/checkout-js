@@ -45,6 +45,20 @@ const AutocompleteContent: React.FC<AutocompleteContentProps> = ({
     // Extract labelText to avoid passing it to input element
     const { labelText: _labelText, ...validInputProps } = combinedProps;
 
+    const getProps = (index: number, itemId: string) => {
+        const autocompleteItem = items.find((item) => item.id === itemId);
+
+        if (!autocompleteItem) {
+            return {};
+        }
+
+        return getItemProps({
+            key: itemId,
+            index,
+            item: autocompleteItem,
+        });
+    };
+
     return (
         <>
             <input {...validInputProps} />
@@ -61,7 +75,7 @@ const AutocompleteContent: React.FC<AutocompleteContentProps> = ({
             {isOpen && !!items.length && (
                 <Popover>
                     <PopoverList
-                        getItemProps={getItemProps}
+                        getItemProps={getProps}
                         highlightedIndex={isNumber(highlightedIndex) ? highlightedIndex : -1}
                         items={items.map((item) => toPopoverItem(item))}
                         menuProps={getMenuProps()}
