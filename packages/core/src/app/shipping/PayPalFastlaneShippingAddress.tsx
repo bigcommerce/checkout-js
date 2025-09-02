@@ -25,9 +25,7 @@ export interface PayPalFastlaneShippingAddressProps extends ShippingAddressProps
     shippingAddress?:  Address,
     consignments: Consignment[];
     countries?: Country[];
-    countriesWithAutocomplete: string[];
     formFields: FormField[],
-    googleMapsApiKey?: string;
     handleFieldChange(fieldName: string, value: string): void,
     onAddressSelect(address: Address): void;
 }
@@ -123,10 +121,7 @@ export const PayPalFastlaneShippingAddress: FC<PayPalFastlaneShippingAddressProp
                 <ShippingAddressForm
                     address={shippingAddress}
                     consignments={props.consignments}
-                    countriesWithAutocomplete={props.countriesWithAutocomplete}
                     formFields={formFields}
-                    googleMapsApiKey={props.googleMapsApiKey}
-                    isFloatingLabelEnabled={props.isFloatingLabelEnabled}
                     isLoading={isLoadingStrategy}
                     onAddressSelect={onAddressSelect}
                     onFieldChange={handleFieldChange}

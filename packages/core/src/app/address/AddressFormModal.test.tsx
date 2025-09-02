@@ -20,12 +20,10 @@ describe('AddressFormModal Component', () => {
 
     const renderAddressFormModal = (props?: Partial<AddressFormModalProps>): void => {
         const defaultProps = {
-            countriesWithAutocomplete: ['AU'],
             isLoading: false,
             isOpen: true,
             getFields: jest.fn(getFormFields),
             onSaveAddress: jest.fn(),
-            countries: [],
         };
 
         render(

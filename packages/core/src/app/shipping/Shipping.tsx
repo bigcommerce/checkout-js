@@ -26,7 +26,7 @@ import { AddressFormSkeleton, ConfirmationModal } from '@bigcommerce/checkout/ui
 import { isEqualAddress, mapAddressFromFormValues } from '../address';
 import { withCheckout } from '../checkout';
 import type CheckoutStepStatus from '../checkout/CheckoutStepStatus';
-import { EMPTY_ARRAY, isFloatingLabelEnabled } from '../common/utility';
+import { EMPTY_ARRAY } from '../common/utility';
 import getProviderWithCustomCheckout from '../payment/getProviderWithCustomCheckout';
 import { PaymentMethodId } from '../payment/paymentMethod';
 
@@ -59,10 +59,8 @@ export interface WithCheckoutShippingProps {
     cartHasPromotionalItems: boolean;
     consignments: Consignment[];
     countries: Country[];
-    countriesWithAutocomplete: string[];
     customer: Customer;
     customerMessage: string;
-    googleMapsApiKey: string;
     isGuest: boolean;
     isInitializing: boolean;
     isLoading: boolean;
@@ -142,7 +140,6 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps & Ext
             deinitializeShippingMethod,
             isMultiShippingMode,
             step,
-            isFloatingLabelEnabled,
             shouldRenderStripeForm,
             cartHasPromotionalItems,
             extensionState: { shippingFormRenderTimestamp } = {},
@@ -203,7 +200,6 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps & Ext
                         deinitialize={deinitializeShippingMethod}
                         initialize={initializeShippingMethod}
                         isBillingSameAsShipping={isBillingSameAsShipping}
-                        isFloatingLabelEnabled={isFloatingLabelEnabled}
                         isGuest={isGuest}
                         isInitialValueLoaded={!isInitializing}
                         isMultiShippingMode={isMultiShippingMode}
@@ -380,7 +376,6 @@ export function mapToShippingProps({
         checkoutSettings: {
             enableOrderComments,
             hasMultiShippingEnabled,
-            googleMapsApiKey,
         },
     } = config;
 
@@ -400,8 +395,6 @@ export function mapToShippingProps({
     const shouldShowMultiShipping =
         hasMultiShippingEnabled && !methodId && shippableItemsCount > 1;
 
-    const countriesWithAutocomplete = ['US', 'CA', 'AU', 'NZ', 'GB'];
-
     const shippingAddress =
         !shouldShowMultiShipping && consignments.length > 1 ? undefined : getShippingAddress();
 
@@ -416,14 +409,12 @@ export function mapToShippingProps({
         cartHasPromotionalItems: hasPromotionalItems(cart),
         consignments,
         countries: getShippingCountries() || EMPTY_ARRAY,
-        countriesWithAutocomplete,
         customer,
         customerMessage: checkout.customerMessage,
         createCustomerAddress: checkoutService.createCustomerAddress,
         deinitializeShippingMethod: checkoutService.deinitializeShipping,
         deleteConsignments: deleteConsignmentsSelector({ checkoutService, checkoutState }),
         getFields: getShippingAddressFields,
-        googleMapsApiKey,
         initializeShippingMethod: checkoutService.initializeShipping,
         isGuest: customer.isGuest,
         isInitializing: isLoadingShippingCountries() || isLoadingShippingOptions(),
@@ -442,7 +433,6 @@ export function mapToShippingProps({
         updateBillingAddress: checkoutService.updateBillingAddress,
         updateCheckout: checkoutService.updateCheckout,
         updateShippingAddress: checkoutService.updateShippingAddress,
-        isFloatingLabelEnabled: isFloatingLabelEnabled(config.checkoutSettings),
         shouldRenderStripeForm: providerWithCustomCheckout === PaymentMethodId.StripeUPE && shouldUseStripeLinkByMinimumAmount(cart),
     };
 }

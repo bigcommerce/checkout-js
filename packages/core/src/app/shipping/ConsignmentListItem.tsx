@@ -17,7 +17,6 @@ export interface ConsignmentListItemProps {
     consignment: MultiShippingConsignmentData;
     consignmentNumber: number;
     defaultCountryCode?: string;
-    countriesWithAutocomplete: string[];
     isLoading: boolean;
     shippingQuoteFailedMessage: string;
     onUnhandledError(error: Error): void;
@@ -27,7 +26,6 @@ export interface ConsignmentListItemProps {
 const ConsignmentListItem: FunctionComponent<ConsignmentListItemProps> = ({
     consignment,
     consignmentNumber,
-    countriesWithAutocomplete,
     defaultCountryCode,
     isLoading,
     shippingQuoteFailedMessage,
@@ -60,7 +58,6 @@ const ConsignmentListItem: FunctionComponent<ConsignmentListItemProps> = ({
             </div>
             <ConsignmentAddressSelector
                 consignment={consignment}
-                countriesWithAutocomplete={countriesWithAutocomplete}
                 defaultCountryCode={defaultCountryCode}
                 isLoading={isLoading}
                 onUnhandledError={onUnhandledError}

@@ -3,12 +3,15 @@ import { forIn, noop } from 'lodash';
 import React, { useCallback, useEffect, useRef } from 'react';
 
 import { TranslatedString, useLocale } from '@bigcommerce/checkout/locale';
+import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 import { DynamicFormField, DynamicFormFieldType, useThemeContext } from '@bigcommerce/checkout/ui';
 
+import { EMPTY_ARRAY, isFloatingLabelEnabled } from '../common/utility';
 import { type AutocompleteItem } from '../ui/autocomplete';
 import { CheckboxFormField, Fieldset } from '../ui/form';
 
 import { type AddressFormProps, AUTOCOMPLETE, AUTOCOMPLETE_FIELD_NAME, LABEL, PLACEHOLDER } from './AddressFormType';
+import AddressType from './AddressType';
 import {
     getAddressFormFieldInputId,
     getAddressFormFieldLegacyName,
@@ -19,18 +22,30 @@ import './AddressForm.scss';
 const AddressForm: React.FC<AddressFormProps> = ({
         formFields,
         fieldName,
-        countriesWithAutocomplete,
         countryCode,
-        googleMapsApiKey,
         onAutocompleteToggle,
         shouldShowSaveAddress,
-        isFloatingLabelEnabled,
-        countries,
         setFieldValue = noop,
         onChange = noop,
+        type,
     }) => {
     const { language } = useLocale();
     const { themeV2 } = useThemeContext();
+    const {
+        checkoutState: {
+            data: { getConfig, getBillingCountries, getShippingCountries }
+        }
+    } = useCheckout();
+    
+    const config = getConfig();
+    const countries = (type === AddressType.Billing 
+        ? getBillingCountries() 
+        : getShippingCountries()) 
+        || EMPTY_ARRAY;
+        const googleMapsApiKey = config?.checkoutSettings.googleMapsApiKey || '';
+    const isFloatingLabelEnabledValue = config ? isFloatingLabelEnabled(config.checkoutSettings) : false;
+    const countriesWithAutocomplete = ['US', 'CA', 'AU', 'NZ', 'GB'];
+
     const containerRef = useRef<HTMLDivElement>(null);
     const nextElementRef = useRef<HTMLElement | null>(null);
 
@@ -110,14 +125,15 @@ const AddressForm: React.FC<AddressFormProps> = ({
                         if (
                             addressFieldName === 'address1' &&
                             googleMapsApiKey &&
-                            countriesWithAutocomplete
+                            countryCode &&
+                            countriesWithAutocomplete.includes(countryCode)
                         ) {
                             return (
                                 <GoogleAutocompleteFormField
                                     apiKey={googleMapsApiKey}
                                     countryCode={countryCode}
                                     field={field}
-                                    isFloatingLabelEnabled={isFloatingLabelEnabled}
+                                    isFloatingLabelEnabled={isFloatingLabelEnabledValue}
                                     key={field.id}
                                     nextElement={nextElementRef.current || undefined}
                                     onChange={handleAutocompleteChange}
@@ -138,7 +154,7 @@ const AddressForm: React.FC<AddressFormProps> = ({
                                 field={field}
                                 inputId={getAddressFormFieldInputId(addressFieldName)}
                                 // stateOrProvince can sometimes be a dropdown or input, so relying on id is not sufficient
-                                isFloatingLabelEnabled={isFloatingLabelEnabled}
+                                isFloatingLabelEnabled={isFloatingLabelEnabledValue}
                                 key={`${field.id}-${field.name}`}
                                 label={
                                     field.custom ? (

@@ -1,20 +1,18 @@
-import { type Address, type Country, type FormField } from '@bigcommerce/checkout-sdk';
+import { type Address, type FormField } from '@bigcommerce/checkout-sdk';
 
 import { type AddressKeyMap } from './address';
+import type AddressType from './AddressType';
 
 export interface AddressFormProps {
     fieldName?: string;
     countryCode?: string;
-    countriesWithAutocomplete?: string[];
-    countries?: Country[];
     formFields: FormField[];
-    googleMapsApiKey?: string;
     shouldShowSaveAddress?: boolean;
-    isFloatingLabelEnabled?: boolean;
     onAutocompleteSelect?(address: Partial<Address>): void;
     onAutocompleteToggle?(state: { inputValue: string; isOpen: boolean }): void;
     onChange?(fieldName: string, value: string | string[]): void;
     setFieldValue?(fieldName: string, value: string | string[]): void;
+    type: AddressType;
 }
 
 export const LABEL: AddressKeyMap = {

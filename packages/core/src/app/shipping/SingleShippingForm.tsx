@@ -41,9 +41,7 @@ export interface SingleShippingFormProps {
     isBillingSameAsShipping: boolean;
     cartHasChanged: boolean;
     consignments: Consignment[];
-    countriesWithAutocomplete: string[];
     customerMessage: string;
-    googleMapsApiKey?: string;
     isLoading: boolean;
     isShippingStepPending: boolean;
     isMultiShippingMode: boolean;
@@ -51,7 +49,6 @@ export interface SingleShippingFormProps {
     shippingAddress?: Address;
     shippingAutosaveDelay?: number;
     shouldShowOrderComments: boolean;
-    isFloatingLabelEnabled?: boolean;
     isInitialValueLoaded: boolean;
     shippingFormRenderTimestamp?: number;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
@@ -180,8 +177,6 @@ class SingleShippingForm extends PureComponent<
             isLoading,
             onUnhandledError,
             methodId,
-            countriesWithAutocomplete,
-            googleMapsApiKey,
             shippingAddress,
             consignments,
             shouldShowOrderComments,
@@ -190,7 +185,6 @@ class SingleShippingForm extends PureComponent<
             deinitialize,
             values: { shippingAddress: addressForm },
             isShippingStepPending,
-            isFloatingLabelEnabled,
             shippingFormRenderTimestamp,
         } = this.props;
 
@@ -207,13 +201,10 @@ class SingleShippingForm extends PureComponent<
                 <Fieldset>
                     <ShippingAddress
                         consignments={consignments}
-                        countriesWithAutocomplete={countriesWithAutocomplete}
                         deinitialize={deinitialize}
                         formFields={this.getFields(addressForm && addressForm.countryCode)}
-                        googleMapsApiKey={googleMapsApiKey}
                         hasRequestedShippingOptions={hasRequestedShippingOptions}
                         initialize={initialize}
-                        isFloatingLabelEnabled={isFloatingLabelEnabled}
                         isLoading={isResettingAddress}
                         isShippingStepPending={isShippingStepPending}
                         methodId={methodId}
