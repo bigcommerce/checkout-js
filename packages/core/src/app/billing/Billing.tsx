@@ -5,10 +5,9 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 import {
     useCheckout,
 } from '@bigcommerce/checkout/payment-integration-api';
-import { AddressFormSkeleton } from '@bigcommerce/checkout/ui';
+import { AddressFormSkeleton, useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { isEqualAddress, mapAddressFromFormValues } from '../address';
-import { isExperimentEnabled } from '../common/utility';
 import { Legend } from '../ui/form';
 
 import BillingForm, { type BillingFormValues } from './BillingForm';
@@ -22,6 +21,7 @@ interface BillingProps {
 
 const Billing = ({navigateNextStep, onReady, onUnhandledError}:BillingProps): ReactElement => {
     const { checkoutService, checkoutState } = useCheckout();
+    const { themeV2 }  = useThemeContext();
 
     const {
         data: {
@@ -44,8 +44,6 @@ const Billing = ({navigateNextStep, onReady, onUnhandledError}:BillingProps): Re
     }
 
     const isInitializing  = isLoadingBillingCountries();
-    const themeV2  = isExperimentEnabled(config.checkoutSettings,
-        'CHECKOUT-7962.update_font_style_on_checkout_page');
 
     // Below constants are for <BillingForm />'s HOC props
     const customerMessage  = checkout.customerMessage;
