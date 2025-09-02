@@ -1,6 +1,7 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
-import { renderWithoutWrapper } from '@bigcommerce/checkout/test-utils';
 import React from 'react';
+
+import { renderWithoutWrapper } from '@bigcommerce/checkout/test-utils';
 
 import HostedCreditCardComponent from './HostedCreditCardComponent';
 

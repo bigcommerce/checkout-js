@@ -1,10 +1,10 @@
-import { CardInstrument, LegacyHostedFormOptions } from '@bigcommerce/checkout-sdk';
+import { type CardInstrument, type LegacyHostedFormOptions } from '@bigcommerce/checkout-sdk';
 import { compact, forIn } from 'lodash';
-import React, { FunctionComponent, ReactNode, useCallback, useState } from 'react';
+import React, { type FunctionComponent, type ReactNode, useCallback, useState } from 'react';
 
 import {
     CreditCardPaymentMethodComponent,
-    CreditCardPaymentMethodProps,
+    type CreditCardPaymentMethodProps,
 } from '@bigcommerce/checkout/credit-card-integration';
 import {
     CreditCardCustomerCodeField,
@@ -13,7 +13,7 @@ import {
     isInstrumentCardCodeRequiredSelector,
     isInstrumentCardNumberRequiredSelector,
 } from '@bigcommerce/checkout/instrument-utils';
-import { PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
+import { type PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
 
 import { getHostedCreditCardValidationSchema } from './getHostedCreditCardValidationSchema';
 import { getHostedInstrumentValidationSchema } from './getHostedInstrumentValidationSchema';
