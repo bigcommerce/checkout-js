@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.662.3](https://github.com/bigcommerce/checkout-js/compare/v1.662.2...v1.662.3) (2025-09-03)
+
+
+### Code Refactoring
+
+* **payment:** created HostedCreditCardComponent to be able to use HostedCreditCardPaymentMethod implementation in other packages ([#2525](https://github.com/bigcommerce/checkout-js/issues/2525)) ([235b91c](https://github.com/bigcommerce/checkout-js/commit/235b91c9dbd40ee4cde5dd33a102e4c1758fa571))
+
 ### [1.662.2](https://github.com/bigcommerce/checkout-js/compare/v1.662.1...v1.662.2) (2025-09-03)
 
 ### [1.662.1](https://github.com/bigcommerce/checkout-js/compare/v1.662.0...v1.662.1) (2025-09-03)
