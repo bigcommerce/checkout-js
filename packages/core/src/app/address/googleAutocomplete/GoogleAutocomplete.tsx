@@ -1,11 +1,11 @@
 import { noop } from 'lodash';
-import React, { PureComponent, type ReactNode } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Autocomplete, type AutocompleteItem } from '../../ui/autocomplete';
 
+import GoogleAutocompleteService from './GoogleAutocompleteService';
 import { type GoogleAutocompleteOptionTypes } from './googleAutocompleteTypes';
 import './GoogleAutocomplete.scss';
-import GoogleAutocompleteService from './GoogleAutocompleteService';
 
 export interface GoogleAutocompleteProps {
     initialValue?: string;
@@ -21,53 +21,46 @@ export interface GoogleAutocompleteProps {
     onChange?(value: string, isOpen: boolean): void;
 }
 
-interface GoogleAutocompleteState {
-    items: AutocompleteItem[];
-    autoComplete: string;
-}
+const toAutocompleteItems = (
+    results?: google.maps.places.AutocompletePrediction[],
+): AutocompleteItem[] => {
+    return (results || []).map((result) => ({
+        label: result.description,
+        value: result.structured_formatting.main_text,
+        highlightedSlices: result.matched_substrings,
+        id: result.place_id,
+    }));
+};
 
-class GoogleAutocomplete extends PureComponent<GoogleAutocompleteProps, GoogleAutocompleteState> {
-    googleAutocompleteService: GoogleAutocompleteService;
+const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
+    initialValue,
+    onToggleOpen = noop,
+    inputProps = {},
+    fields,
+    onSelect = noop,
+    nextElement,
+    isAutocompleteEnabled,
+    onChange = noop,
+    componentRestrictions,
+    types,
+    apiKey,
+}) => {
+    const [items, setItems] = useState<AutocompleteItem[]>([]);
+    const [autoComplete, setAutoComplete] = useState<string>('off');
+    const googleAutocompleteServiceRef = useRef<GoogleAutocompleteService>();
 
-    constructor(props: GoogleAutocompleteProps) {
-        super(props);
-        this.googleAutocompleteService = new GoogleAutocompleteService(props.apiKey);
-        this.state = {
-            items: [],
-            autoComplete: 'off',
-        };
-    }
+    // Initialize the service
+    useEffect(() => {
+        googleAutocompleteServiceRef.current = new GoogleAutocompleteService(apiKey);
+    }, [apiKey]);
 
-    render(): ReactNode {
-        const { initialValue, onToggleOpen = noop, inputProps = {} } = this.props;
+    const onSelectHandler = (item: AutocompleteItem) => {
+        const service = googleAutocompleteServiceRef.current;
+        
+        if (!service) return;
 
-        const { autoComplete, items } = this.state;
-
-        return (
-            <Autocomplete
-                defaultHighlightedIndex={-1}
-                initialHighlightedIndex={-1}
-                initialValue={initialValue}
-                inputProps={{
-                    ...inputProps,
-                    autoComplete,
-                }}
-                items={items}
-                listTestId="address-autocomplete-suggestions"
-                onChange={this.onChange}
-                onSelect={this.onSelect}
-                onToggleOpen={onToggleOpen}
-            >
-                <div className="co-googleAutocomplete-footer" />
-            </Autocomplete>
-        );
-    }
-
-    private onSelect: (item: AutocompleteItem) => void = (item) => {
-        const { fields, onSelect = noop, nextElement } = this.props;
-
-        this.googleAutocompleteService.getPlacesServices().then((service) => {
-            service.getDetails(
+        service.getPlacesServices().then((placesService) => {
+            placesService.getDetails(
                 {
                     placeId: item.id,
                     fields: fields || ['address_components', 'name'],
@@ -83,64 +76,71 @@ class GoogleAutocomplete extends PureComponent<GoogleAutocompleteProps, GoogleAu
         });
     };
 
-    private onChange: (input: string) => void = (input) => {
-        const { isAutocompleteEnabled, onChange = noop } = this.props;
-
-        onChange(input, false);
-
-        if (!isAutocompleteEnabled) {
-            return this.resetAutocomplete();
-        }
-
-        this.setAutocomplete(input);
-        this.setItems(input);
+    const resetAutocomplete = (): void => {
+        setItems([]);
+        setAutoComplete('off');
     };
 
-    private setItems(input: string): void {
+    const setAutocompleteValue = (input: string): void => {
+        setAutoComplete(input && input.length ? 'nope' : 'off');
+    };
+
+    const setItemsFromInput = (input: string): void => {
         if (!input) {
-            this.setState({ items: [] });
+            setItems([]);
 
             return;
         }
 
-        const { componentRestrictions, types } = this.props;
+        const service = googleAutocompleteServiceRef.current;
+        
+        if (!service) return;
 
-        this.googleAutocompleteService.getAutocompleteService().then((service) => {
-            service.getPlacePredictions(
+        service.getAutocompleteService().then((autocompleteService) => {
+            autocompleteService.getPlacePredictions(
                 {
                     input,
                     types: types || ['geocode'],
                     componentRestrictions,
                 },
-                (results) => this.setState({ items: this.toAutocompleteItems(results ?? undefined) }),
+                (results) => {
+                    const autocompleteItems = toAutocompleteItems(results ?? undefined);
+
+                    setItems(autocompleteItems);
+                }
             );
         });
-    }
+    };
 
-    private resetAutocomplete(): void {
-        this.setState({
-            items: [],
-            autoComplete: 'off',
-        });
-    }
+    const onChangeHandler = (input: string) => {
+        onChange(input, false);
 
-    private setAutocomplete(input: string): void {
-        this.setState({
-            ...this.state,
-            autoComplete: input && input.length ? 'nope' : 'off',
-        });
-    }
+        if (!isAutocompleteEnabled) {
+            return resetAutocomplete();
+        }
 
-    private toAutocompleteItems(
-        results?: google.maps.places.AutocompletePrediction[],
-    ): AutocompleteItem[] {
-        return (results || []).map((result) => ({
-            label: result.description,
-            value: result.structured_formatting.main_text,
-            highlightedSlices: result.matched_substrings,
-            id: result.place_id,
-        }));
-    }
-}
+        setAutocompleteValue(input);
+        setItemsFromInput(input);
+    };
+
+    return (
+        <Autocomplete
+            defaultHighlightedIndex={-1}
+            initialHighlightedIndex={-1}
+            initialValue={initialValue}
+            inputProps={{
+                ...inputProps,
+                autoComplete,
+            }}
+            items={items}
+            listTestId="address-autocomplete-suggestions"
+            onChange={onChangeHandler}
+            onSelect={onSelectHandler}
+            onToggleOpen={onToggleOpen}
+        >
+            <div className="co-googleAutocomplete-footer" />
+        </Autocomplete>
+    );
+};
 
 export default GoogleAutocomplete;
