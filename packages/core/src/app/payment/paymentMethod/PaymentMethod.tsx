@@ -12,7 +12,7 @@ import { type CheckoutContextProps } from '@bigcommerce/checkout/payment-integra
 
 import { withCheckout } from '../../checkout';
 
-const BraintreeCreditCardPaymentMethod = lazy(() => import(/* webpackChunkName: "braintree-credit-card-payment-method" */'./BraintreeCreditCardPaymentMethod'));
+// const BraintreeCreditCardPaymentMethod = lazy(() => import(/* webpackChunkName: "braintree-credit-card-payment-method" */'./BraintreeCreditCardPaymentMethod'));
 const HostedCreditCardPaymentMethod = lazy(() => import(/* webpackChunkName: "hosted-credit-card-payment-method" */'./HostedCreditCardPaymentMethod'));
 const HostedPaymentMethod = lazy(() => import(/* webpackChunkName: "hosted-payment-method" */'./HostedPaymentMethod'));
 const PaypalPaymentsProPaymentMethod = lazy(() => import(/* webpackChunkName: "paypal-payments-pro-payment-method" */'./PaypalPaymentsProPaymentMethod'));
@@ -51,9 +51,9 @@ const PaymentMethodComponent: FunctionComponent<
 > = (props) => {
     const { method } = props;
 
-    if (method.id === PaymentMethodId.Braintree) {
-        return <Suspense><BraintreeCreditCardPaymentMethod {...props} /></Suspense>;
-    }
+    // if (method.id === PaymentMethodId.Braintree) {
+    //     return <Suspense><BraintreeCreditCardPaymentMethod {...props} /></Suspense>;
+    // }
 
     if (
         method.type !== PaymentMethodProviderType.Hosted &&
