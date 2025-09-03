@@ -1,4 +1,4 @@
-import type {CheckoutSelectors} from '@bigcommerce/checkout-sdk';
+import type { CheckoutSelectors } from '@bigcommerce/checkout-sdk';
 import React, { type ReactElement, useEffect } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
