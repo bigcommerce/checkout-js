@@ -1,7 +1,7 @@
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
-import React, { type MouseEvent, type ReactNode, useEffect, useState } from 'react';
+import React, { type MouseEvent, useEffect, useState } from 'react';
 
 import { isErrorWithType } from '../common/error';
 
@@ -11,10 +11,10 @@ interface SpamProtectionFieldProps {
     onUnhandledError?(error: Error): void;
 }
 
-const SpamProtectionField: React.FC<SpamProtectionFieldProps> = ({
+const SpamProtectionField = ({
     didExceedSpamLimit,
     onUnhandledError
-}) => {
+}: SpamProtectionFieldProps): JSX.Element => {
     const [shouldShowRetryButton, setShouldShowRetryButton] = useState(false);
 
     const {
@@ -43,7 +43,7 @@ const SpamProtectionField: React.FC<SpamProtectionFieldProps> = ({
         }
 
         verify();
-    }, [didExceedSpamLimit, verify]);
+    }, []);
 
     const handleRetry = (event: MouseEvent) => {
         event.preventDefault();
@@ -51,30 +51,22 @@ const SpamProtectionField: React.FC<SpamProtectionFieldProps> = ({
         verify();
     };
 
-    const renderContent = (): ReactNode => {
-        if (!didExceedSpamLimit && !shouldShowRetryButton) {
-            return null;
-        }
-
-        return (
-            <div className="spamProtection-panel optimizedCheckout-overlay">
-                <a
-                    className="spamProtection-panel-message optimizedCheckout-primaryContent"
-                    data-test="spam-protection-verify-button"
-                    onClick={handleRetry}
-                >
-                    <TranslatedString id="spam_protection.verify_action" />
-                </a>
-            </div>
-        );
-    };
-
     return (
         <div className="spamProtection-container">
             <LoadingOverlay isLoading={isExecutingSpamCheck}>
-                {renderContent()}
-            </LoadingOverlay>
-        </div>
+                {(didExceedSpamLimit || shouldShowRetryButton) && (
+                    <div className="spamProtection-panel optimizedCheckout-overlay">
+                        <a
+                            className="spamProtection-panel-message optimizedCheckout-primaryContent"
+                            data-test="spam-protection-verify-button"
+                            onClick={handleRetry}
+                        >
+                            <TranslatedString id="spam_protection.verify_action" />
+                        </a>
+                    </div>
+                )}
+            </LoadingOverlay >
+        </div >
     );
 };
 
