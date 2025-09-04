@@ -163,11 +163,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps & Ext
         if (shouldRenderStripeForm && !customer.email && this.props.countries.length > 0) {
             return <StripeShipping
                 { ...shippingFormProps }
-                customer={ customer }
-                deinitialize={deinitializeShippingMethod}
-                initialize={initializeShippingMethod}
                 isBillingSameAsShipping={isBillingSameAsShipping}
-                isGuest={ isGuest }
                 isInitialValueLoaded={!isInitializing}
                 isLoading={ isInitializing }
                 isMultiShippingMode={isMultiShippingMode}

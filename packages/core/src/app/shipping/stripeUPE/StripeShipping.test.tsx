@@ -1,4 +1,7 @@
-import { createCheckoutService } from '@bigcommerce/checkout-sdk';
+import {
+  type CheckoutSelectors,
+  createCheckoutService,
+} from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
@@ -6,7 +9,7 @@ import { LocaleProvider } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { render } from '@bigcommerce/checkout/test-utils';
 
-import { getAddressFormFields } from '../../address/formField.mock';
+import { getCheckout } from '../../checkout/checkouts.mock';
 import CheckoutStepType from '../../checkout/CheckoutStepType';
 import ConsoleErrorLogger from '../../common/error/ConsoleErrorLogger';
 import { getCustomer } from '../../customer/customers.mock';
@@ -16,10 +19,13 @@ import StripeShipping, { type StripeShippingProps } from './StripeShipping';
 
 describe('Stripe Shipping Component', () => {
     const checkoutService = createCheckoutService();
-    const addressFormFields = getAddressFormFields().filter(({ custom }) => !custom);
     const errorLogger = new ConsoleErrorLogger();
+    const initialize = jest.fn();
+    let checkoutState: CheckoutSelectors;
 
-    const defaultProps: StripeShippingProps = {
+   checkoutService.initializeShipping = initialize;
+
+  const defaultProps: StripeShippingProps = {
         step: {
             isActive: true,
             isBusy: false,
@@ -28,16 +34,11 @@ describe('Stripe Shipping Component', () => {
             isRequired: true,
             type: CheckoutStepType.Shipping,
         },
-        customer: getCustomer(),
-        isGuest: true,
         isBillingSameAsShipping: false,
         isInitialValueLoaded: false,
         isMultiShippingMode: false,
-        countries: [],
         shippingAddress: getShippingAddress(),
-        customerMessage: '',
         shouldShowOrderComments: true,
-        consignments: [],
         cartHasChanged: false,
         isLoading: false,
         isShippingStepPending: false,
@@ -48,26 +49,29 @@ describe('Stripe Shipping Component', () => {
         loadShippingOptions: jest.fn(),
         onMultiShippingChange: jest.fn(),
         onSubmit: jest.fn(),
-        getFields: jest.fn(() => addressFormFields),
         onUnhandledError: jest.fn(),
-        deinitialize: jest.fn(),
-        initialize: jest.fn(),
         updateAddress: jest.fn(),
     };
 
-    it('loads shipping data  when component is mounted', () => {
-        const { container } = render(
-            <CheckoutProvider checkoutService={checkoutService} >
-                <LocaleProvider checkoutService={checkoutService}>
-                    <ExtensionProvider checkoutService={checkoutService} errorLogger={errorLogger}>
-                        <StripeShipping {...defaultProps} />
-                    </ExtensionProvider>
-                </LocaleProvider>
-            </CheckoutProvider>
-        );
+    beforeEach(() => {
+      checkoutState = checkoutService.getState();
+      jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
+      jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue(getCheckout());
+    });
 
-        // eslint-disable-next-line testing-library/no-container
-        expect(container.querySelector('.address-form-skeleton')).toBeInTheDocument();
-        expect(defaultProps.initialize).toHaveBeenCalled();
+    it('loads shipping data  when component is mounted', async () => {
+      const { container } = render(
+        <CheckoutProvider checkoutService={checkoutService}>
+          <LocaleProvider checkoutService={checkoutService}>
+            <ExtensionProvider checkoutService={checkoutService} errorLogger={errorLogger}>
+              <StripeShipping {...defaultProps} />
+            </ExtensionProvider>
+          </LocaleProvider>
+        </CheckoutProvider>,
+      );
+
+      // eslint-disable-next-line testing-library/no-container
+      expect(container.querySelector('.address-form-skeleton')).toBeInTheDocument();
+      expect(initialize).toHaveBeenCalled();
     });
 });
