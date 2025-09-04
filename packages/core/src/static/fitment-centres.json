@@ -100,6 +100,16 @@
     "longitude": 150.74836
   },
   {
+    "company": "Autobarn Tamworth",
+    "street": "143 Bridge Street",
+    "suburb": "West Tamworth",
+    "state": "NSW",
+    "postcode": "2340",
+    "phone": "02 6762 1996",
+    "latitude": -31.094862,
+    "longitude": 150.9127358 
+  },
+  {
     "company": "Riverina 4WD & Offroad",
     "street": "1A Dobney Ave",
     "suburb": "Wagga Wagga",
