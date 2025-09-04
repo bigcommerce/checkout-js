@@ -1,6 +1,6 @@
 import { type PaymentInstrument } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { type ReactElement, useCallback, useState } from 'react';
+import React, { type ReactElement, useState } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
@@ -78,10 +78,10 @@ const ManageInstrumentsModal = ({
         }
     };
 
-    const handleDeleteInstrument = useCallback((id: string): void => {
+    const handleDeleteInstrument = (id: string): void => {
         setIsConfirmingDelete(true);
         setSelectedInstrumentId(id);
-    }, []);
+    };
 
     const ModalContent = () => {
         if (isConfirmingDelete) {
