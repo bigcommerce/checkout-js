@@ -159,11 +159,11 @@ function appConfig(options, argv) {
             ].filter(Boolean),
             module: {
                 rules: [
-                    ...(isProduction ?  [{
+                    {
                         test: /\.[tj]sx?$/,
                         enforce: 'pre',
                         loader: require.resolve('source-map-loader'),
-                    }]: []),
+                    },
                     {
                         test: /\.tsx?$/,
                         include: tsLoaderIncludes,
