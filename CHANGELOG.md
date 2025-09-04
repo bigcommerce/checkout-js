@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.663.0](https://github.com/bigcommerce/checkout-js/compare/v1.662.3...v1.663.0) (2025-09-04)
+
+
+### Features
+
+* **payment:** StripeShipping migrated to functional component ([9e232ce](https://github.com/bigcommerce/checkout-js/commit/9e232ce3af1ba92df9452b26a3abb6aa2397c4f4))
+
 ### [1.662.3](https://github.com/bigcommerce/checkout-js/compare/v1.662.2...v1.662.3) (2025-09-03)
 
 
