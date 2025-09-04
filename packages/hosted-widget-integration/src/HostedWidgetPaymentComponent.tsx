@@ -356,6 +356,9 @@ const HostedWidgetPaymentComponent = ({
     }, []);
 
     const isInitialRenderRef = useRef(true);
+    const instrumentsLength = useRef(instruments.length);
+    const isPaymentDataRequiredRef = useRef(isPaymentDataRequired);
+    const selectedInstrumentIdRef = useRef(selectedInstrumentId);
 
     useEffect(() => {
         if (isInitialRenderRef.current) {
@@ -364,9 +367,9 @@ const HostedWidgetPaymentComponent = ({
             return;
         }
 
-        const reInit = async () => {
-            setValidationSchema(method, getValidationSchema());
+        setValidationSchema(method, getValidationSchema());
 
+        const reInit = async () => {
             try {
                 if (deinitializePayment) {
                     await deinitializePayment({
@@ -383,7 +386,17 @@ const HostedWidgetPaymentComponent = ({
             }
         };
 
-        void reInit();
+        if (
+            selectedInstrumentIdRef.current !== selectedInstrumentId ||
+            (Number(instrumentsLength.current) > 0 && instruments.length === 0) ||
+            isPaymentDataRequiredRef.current !== isPaymentDataRequired
+        ) {
+            selectedInstrumentIdRef.current = selectedInstrumentId;
+            instrumentsLength.current = instruments.length;
+            isPaymentDataRequiredRef.current = isPaymentDataRequired;
+
+            void reInit();
+        }
     }, [selectedInstrumentId, instruments, isPaymentDataRequired]);
 
     const PaymentDescriptor = (): ReactNode => {
