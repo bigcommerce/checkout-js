@@ -2,7 +2,10 @@ import {
     type CustomerInitializeOptions,
     type PaymentInitializeOptions,
 } from '@bigcommerce/checkout-sdk';
-import { createStripeLinkV2CustomerStrategy } from '@bigcommerce/checkout-sdk/integrations/stripe';
+import {
+    createStripeLinkV2CustomerStrategy,
+    createStripeOCSPaymentStrategy,
+} from '@bigcommerce/checkout-sdk/integrations/stripe';
 import { noop, some } from 'lodash';
 import React, {
     type FunctionComponent,
@@ -111,6 +114,7 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
             return checkoutService.initializePayment({
                 ...options,
+                integrations: [createStripeOCSPaymentStrategy],
                 stripeocs: {
                     containerId,
                     layout: {

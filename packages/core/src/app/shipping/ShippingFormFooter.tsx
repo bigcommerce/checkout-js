@@ -1,4 +1,4 @@
-import { ExtensionRegion } from '@bigcommerce/checkout-sdk';
+import { ExtensionRegion } from '@bigcommerce/checkout-sdk/essential';
 import React, { type FunctionComponent } from 'react';
 
 import { Extension } from '@bigcommerce/checkout/checkout-extension';

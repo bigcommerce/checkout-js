@@ -6,6 +6,7 @@ import {
     type PaymentInitializeOptions,
     type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
+import { createAmazonPayV2PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/amazon-pay';
 import { render } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
@@ -90,6 +91,7 @@ describe('when using AmazonPay payment', () => {
             expect.objectContaining({
                 gatewayId: method.gateway,
                 methodId: 'amazonpay',
+                integrations: [createAmazonPayV2PaymentStrategy],
                 amazonpay: {
                     editButtonId: 'editButtonId',
                 },
@@ -106,6 +108,7 @@ describe('when using AmazonPay payment', () => {
             expect.objectContaining({
                 methodId: method.id,
                 gatewayId: method.gateway,
+                integrations: [createAmazonPayV2PaymentStrategy],
                 [method.id]: {
                     editButtonId: 'editButtonId',
                 },

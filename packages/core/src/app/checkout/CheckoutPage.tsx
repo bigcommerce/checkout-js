@@ -13,7 +13,7 @@ import {
     type PaymentMethod,
     type Promotion,
     type RequestOptions,
-} from '@bigcommerce/checkout-sdk';
+} from '@bigcommerce/checkout-sdk/essential';
 import classNames from 'classnames';
 import { find, findIndex } from 'lodash';
 import React, { Component, lazy, type ReactNode } from 'react';

@@ -1,4 +1,5 @@
 import { createCheckoutService } from '@bigcommerce/checkout-sdk';
+import { createBigCommercePaymentsPayLaterPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bigcommerce-payments';
 import React, { FunctionComponent } from 'react';
 
 import {
@@ -48,6 +49,7 @@ describe('BigCommercePaymentsPayLaterBanner', () => {
 
     expect(checkoutService.initializePayment).toHaveBeenCalledWith({
       methodId: PaymentMethodId.BigCommercePaymentsPayLater,
+      integrations: [createBigCommercePaymentsPayLaterPaymentStrategy],
       bigcommerce_payments_paylater: {
         bannerContainerId: 'bigcommerce-payments-banner-container',
       },
@@ -67,6 +69,7 @@ describe('BigCommercePaymentsPayLaterBanner', () => {
 
     expect(checkoutService.initializePayment).toHaveBeenCalledWith({
       methodId: PaymentMethodId.BigCommercePaymentsPayLater,
+      integrations: [createBigCommercePaymentsPayLaterPaymentStrategy],
       bigcommerce_payments_paylater: {
         bannerContainerId: 'bigcommerce-payments-banner-container',
       },

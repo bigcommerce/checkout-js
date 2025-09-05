@@ -1,4 +1,4 @@
-import * as CheckoutSdk from '@bigcommerce/checkout-sdk';
+import * as CheckoutSdk from '@bigcommerce/checkout-sdk/essential';
 import { render } from '@testing-library/react';
 import React, { useEffect } from 'react';
 
@@ -8,12 +8,12 @@ import AnalyticsProvider from './AnalyticsProvider';
 import * as createAnalyticsService from './createAnalyticsService';
 import useAnalytics from './useAnalytics';
 
-jest.mock('@bigcommerce/checkout-sdk', () => {
+jest.mock('@bigcommerce/checkout-sdk/essential', () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return {
         // eslint-disable-next-line @typescript-eslint/naming-convention
         __esModule: true,
-        ...jest.requireActual('@bigcommerce/checkout-sdk'),
+        ...jest.requireActual('@bigcommerce/checkout-sdk/essential'),
     };
 });
 

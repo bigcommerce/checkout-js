@@ -1,3 +1,4 @@
+import { createBraintreeAchPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
 import React, { type FunctionComponent, useEffect, useRef } from 'react';
 
 import { LocaleProvider } from '@bigcommerce/checkout/locale';
@@ -30,6 +31,7 @@ const BraintreeAchPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                 await checkoutService.initializePayment({
                     gatewayId: method.gateway,
                     methodId: method.id,
+                    integrations: [createBraintreeAchPaymentStrategy],
                     braintreeach: {
                         getMandateText: () => currentMandateTextRef.current,
                     },

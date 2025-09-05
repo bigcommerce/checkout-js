@@ -1,3 +1,4 @@
+import { createSquareV2PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/squarev2';
 import { difference } from 'lodash';
 import React, { type FunctionComponent, useCallback, useEffect } from 'react';
 
@@ -126,6 +127,7 @@ const SquareV2PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         await checkoutService.initializePayment({
             gatewayId: method.gateway,
             methodId: method.id,
+            integrations: [createSquareV2PaymentStrategy],
             squarev2: {
                 containerId,
                 style,

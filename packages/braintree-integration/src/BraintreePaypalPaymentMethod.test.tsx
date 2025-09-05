@@ -1,4 +1,5 @@
 import { createCheckoutService, type LanguageService } from '@bigcommerce/checkout-sdk';
+import { createBraintreePaypalPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
 import { EventEmitter } from 'events';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
@@ -107,6 +108,7 @@ describe('BraintreePaypalPaymentMethod', () => {
         expect(initializePayment).toHaveBeenCalledWith({
             gatewayId: defaultProps.method.gateway,
             methodId: defaultProps.method.id,
+            integrations: [createBraintreePaypalPaymentStrategy],
             braintree: {
                 onError: expect.any(Function),
                 onRenderButton: expect.any(Function),

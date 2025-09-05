@@ -1,4 +1,4 @@
-import { ExtensionRegion } from '@bigcommerce/checkout-sdk';
+import { ExtensionRegion } from '@bigcommerce/checkout-sdk/essential';
 import classNames from 'classnames';
 import React, { type FunctionComponent, memo, useState } from 'react';
 

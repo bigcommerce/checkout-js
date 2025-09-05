@@ -18,6 +18,7 @@ import {
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay, Modal } from '@bigcommerce/checkout/ui';
+import { createBlueSnapV2PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bluesnap-direct';
 
 export type BlueSnapV2PaymentMethodProps = HostedPaymentComponentProps;
 
@@ -52,6 +53,7 @@ const BlueSnapV2PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         (options: PaymentInitializeOptions) => {
             return checkoutService.initializePayment({
                 ...options,
+                integrations: [createBlueSnapV2PaymentStrategy],
                 bluesnapv2: {
                     onLoad(content: HTMLIFrameElement, cancel: () => void) {
                         setPaymentPageContent(content);

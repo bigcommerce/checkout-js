@@ -1,4 +1,5 @@
 import { createCheckoutService, createLanguageService } from '@bigcommerce/checkout-sdk';
+import { createOfflinePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/offline';
 import React from 'react';
 
 import { type PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
@@ -36,6 +37,7 @@ describe('OfflinePaymentMethod', () => {
         expect(checkoutService.initializePayment).toHaveBeenCalledWith({
             gatewayId: defaultProps.method.gateway,
             methodId: defaultProps.method.id,
+            integrations: [createOfflinePaymentStrategy],
         });
     });
 

@@ -6,6 +6,11 @@ import {
     type PaymentMethod,
     type PaymentRequestOptions,
 } from '@bigcommerce/checkout-sdk';
+import { createNoPaymentStrategy, } from '@bigcommerce/checkout-sdk/integrations/no-payment';
+import { createPayPalProPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/paypal-pro';
+import { createSezzlePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/sezzle';
+import { createTDOnlineMartPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/td-bank';
+import { createZipPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/zip';
 import React, { type FunctionComponent, lazy, memo, Suspense } from 'react';
 
 import { type CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
@@ -89,7 +94,21 @@ function mapToWithCheckoutPaymentMethodProps(
         deinitializeCustomer: checkoutService.deinitializeCustomer,
         deinitializePayment: checkoutService.deinitializePayment,
         initializeCustomer: checkoutService.initializeCustomer,
-        initializePayment: checkoutService.initializePayment,
+        initializePayment: (options) => {
+            return checkoutService.initializePayment({
+                ...options,
+                integrations: [
+                    ...options.integrations ?? [],
+                    // The strategies below don’t appear to correspond to any existing component,
+                    // so they are initialized globally at the root level.
+                    createNoPaymentStrategy,
+                    createPayPalProPaymentStrategy,
+                    createSezzlePaymentStrategy,
+                    createTDOnlineMartPaymentStrategy,
+                    createZipPaymentStrategy,
+                ],
+            });
+        },
         isInitializing: isInitializingPayment(method.id),
     };
 }

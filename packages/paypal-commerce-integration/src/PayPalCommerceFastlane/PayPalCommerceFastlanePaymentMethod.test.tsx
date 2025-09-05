@@ -1,4 +1,5 @@
 import { createCheckoutService, createLanguageService } from '@bigcommerce/checkout-sdk';
+import { createPayPalCommerceFastlanePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/paypal-commerce';
 import React from 'react';
 
 import { getPaymentFormServiceMock } from '@bigcommerce/checkout/test-mocks';
@@ -44,6 +45,7 @@ describe('PayPalCommerceFastlanePaymentMethod', () => {
 
         expect(initializePayment).toHaveBeenCalledWith({
             methodId: props.method.id,
+            integrations: [createPayPalCommerceFastlanePaymentStrategy],
             paypalcommercefastlane: {
                 onInit: expect.any(Function),
                 onChange: expect.any(Function),

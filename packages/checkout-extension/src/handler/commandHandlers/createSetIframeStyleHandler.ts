@@ -1,4 +1,4 @@
-import { ExtensionCommandType } from '@bigcommerce/checkout-sdk';
+import { ExtensionCommandType } from '@bigcommerce/checkout-sdk/essential';
 
 import { type CommandHandler, type CommandHandlerProps } from './CommandHandler';
 

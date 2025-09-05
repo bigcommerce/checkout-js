@@ -1,4 +1,5 @@
 import { type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import { createBraintreePaypalPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
 import React, { type FunctionComponent, useCallback } from 'react';
 
 import { HostedPaymentComponent } from '@bigcommerce/checkout/hosted-payment-integration';
@@ -18,6 +19,7 @@ const BraintreePaypalPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
             return checkoutService.initializePayment({
                 ...defaultOptions,
+                integrations: [createBraintreePaypalPaymentStrategy],
                 braintree: {
                     containerId: '#checkout-payment-continue',
                     submitForm: () => {

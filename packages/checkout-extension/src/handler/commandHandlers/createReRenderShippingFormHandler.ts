@@ -1,4 +1,4 @@
-import { ExtensionCommandType } from '@bigcommerce/checkout-sdk';
+import { ExtensionCommandType } from '@bigcommerce/checkout-sdk/essential';
 
 import { ExtensionActionType } from '../../ExtensionProvider';
 

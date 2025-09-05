@@ -9,7 +9,7 @@ import {
     createStepTracker,
     type PayPalCommerceAnalyticTrackerService,
     type StepTracker,
-} from '@bigcommerce/checkout-sdk';
+} from '@bigcommerce/checkout-sdk/essential';
 import React, { type ReactNode, useMemo } from 'react';
 
 import AnalyticsContext, { type AnalyticsEvents } from './AnalyticsContext';

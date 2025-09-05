@@ -1,4 +1,4 @@
-import { createCheckoutService } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService } from '@bigcommerce/checkout-sdk/essential';
 import { render, type RenderOptions } from '@testing-library/react';
 import React, { type ReactElement } from 'react';
 

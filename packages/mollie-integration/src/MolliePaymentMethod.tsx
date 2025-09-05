@@ -3,6 +3,7 @@ import {
     type LegacyHostedFormOptions,
     type PaymentInitializeOptions,
 } from '@bigcommerce/checkout-sdk';
+import { createMolliePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/mollie';
 import { compact, forIn, some } from 'lodash';
 import React, {
     type FunctionComponent,
@@ -246,6 +247,7 @@ const MolliePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
             return checkoutService.initializePayment({
                 ...options,
+                integrations: [createMolliePaymentStrategy],
                 mollie: {
                     containerId,
                     cardNumberId: mollieElements.cardNumberElementOptions.containerId,
