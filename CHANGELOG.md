@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.663.1](https://github.com/bigcommerce/checkout-js/compare/v1.663.0...v1.663.1) (2025-09-05)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9386 Improve e2e CI Job Performance ([#2561](https://github.com/bigcommerce/checkout-js/issues/2561)) ([fb921b7](https://github.com/bigcommerce/checkout-js/commit/fb921b7ab1ef5c5779b5013421ffc4a9d49700c3))
+
 ## [1.663.0](https://github.com/bigcommerce/checkout-js/compare/v1.662.3...v1.663.0) (2025-09-04)
 
 
