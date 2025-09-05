@@ -1,3 +1,4 @@
+import { createCreditCardPaymentStrategy, createCyberSourcePaymentStrategy, createCyberSourceV2PaymentStrategy, createSagePayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
 import React, { type FunctionComponent, useCallback } from 'react';
 
 import {
@@ -31,6 +32,13 @@ const HostedCreditCardPaymentMethod: FunctionComponent<
             async (options, selectedInstrument) => {
                 return initializePayment({
                     ...options,
+                    integrations: [
+                        ...options.integrations ?? [],
+                        createCreditCardPaymentStrategy,
+                        createCyberSourcePaymentStrategy,
+                        createCyberSourceV2PaymentStrategy,
+                        createSagePayPaymentStrategy,
+                    ],
                     creditCard: getHostedFormOptions && {
                         form: await getHostedFormOptions(selectedInstrument),
                     },
