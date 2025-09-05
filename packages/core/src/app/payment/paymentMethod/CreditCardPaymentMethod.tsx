@@ -8,6 +8,7 @@ import {
     type PaymentMethod,
     type PaymentRequestOptions,
 } from '@bigcommerce/checkout-sdk';
+import { createLegacyPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/legacy';
 import { memoizeOne } from '@bigcommerce/memoize';
 import { find, noop } from 'lodash';
 import React, { Component, type ReactNode } from 'react';
@@ -115,6 +116,7 @@ class CreditCardPaymentMethod extends Component<
                 {
                     gatewayId: method.gateway,
                     methodId: method.id,
+                    integrations: [createLegacyPaymentStrategy],
                 },
                 this.getSelectedInstrument(),
             ).then(() => this.setState({ isPreloaderOn: false }));
@@ -173,6 +175,7 @@ class CreditCardPaymentMethod extends Component<
                     {
                         gatewayId: method.gateway,
                         methodId: method.id,
+                        integrations: [createLegacyPaymentStrategy],
                     },
                     this.getSelectedInstrument(),
                 );

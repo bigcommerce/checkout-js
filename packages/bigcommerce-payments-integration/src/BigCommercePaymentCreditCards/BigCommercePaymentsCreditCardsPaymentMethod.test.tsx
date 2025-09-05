@@ -5,6 +5,7 @@ import {
     createLanguageService,
     type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
+import { createBigCommercePaymentsCreditCardsPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bigcommerce-payments';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';
@@ -108,7 +109,11 @@ describe('BigCommercePaymentsCreditCardPaymentMethod', () => {
 
         await new Promise((resolve) => process.nextTick(resolve));
 
-        expect(checkoutService.initializePayment).toHaveBeenCalled();
+        expect(checkoutService.initializePayment).toHaveBeenCalledWith(
+            expect.objectContaining({
+                integrations: [createBigCommercePaymentsCreditCardsPaymentStrategy],
+            }),
+        );
     });
 
     it('calls initializePayment with correct arguments', async () => {

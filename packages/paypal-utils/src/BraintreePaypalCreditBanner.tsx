@@ -1,3 +1,4 @@
+import { createBraintreePaypalPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
 import React, { type FunctionComponent, useEffect } from 'react';
 
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
@@ -19,6 +20,7 @@ const BraintreePaypalCreditBanner: FunctionComponent<BraintreePaypalCreditBanner
         try {
             void checkoutService.initializePayment({
                 methodId,
+                integrations: [createBraintreePaypalPaymentStrategy],
                 braintree: {
                     bannerContainerId: containerId,
                 },

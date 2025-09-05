@@ -1,4 +1,4 @@
-import { ConsignmentLineItem } from "@bigcommerce/checkout-sdk";
+import { type ConsignmentLineItem } from "@bigcommerce/checkout-sdk";
 import classNames from "classnames";
 import React, { type FunctionComponent, useState } from "react";
 

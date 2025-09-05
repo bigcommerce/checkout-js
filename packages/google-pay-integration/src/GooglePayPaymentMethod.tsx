@@ -1,4 +1,18 @@
 import { type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import {
+    createGooglePayAdyenV2PaymentStrategy,
+    createGooglePayAdyenV3PaymentStrategy,
+    createGooglePayAuthorizeNetPaymentStrategy,
+    createGooglePayBigCommercePaymentsPaymentStrategy,
+    createGooglePayBraintreePaymentStrategy,
+    createGooglePayCheckoutComPaymentStrategy,
+    createGooglePayCybersourcePaymentStrategy,
+    createGooglePayOrbitalPaymentStrategy,
+    createGooglePayPPCPPaymentStrategy,
+    createGooglePayStripePaymentStrategy,
+    createGooglePayTdOnlineMartPaymentStrategy,
+    createGooglePayWorldpayAccessPaymentStrategy,
+} from '@bigcommerce/checkout-sdk/integrations/google-pay';
 import React, { type FunctionComponent, useCallback } from 'react';
 
 import {
@@ -37,8 +51,22 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             };
 
             const loadingContainerId = 'checkout-app';
-            const mergedOptions = {
+            const mergedOptions: PaymentInitializeOptions = {
                 ...defaultOptions,
+                integrations: [
+                    createGooglePayAdyenV2PaymentStrategy,
+                    createGooglePayAdyenV3PaymentStrategy,
+                    createGooglePayAuthorizeNetPaymentStrategy,
+                    createGooglePayCheckoutComPaymentStrategy,
+                    createGooglePayCybersourcePaymentStrategy,
+                    createGooglePayOrbitalPaymentStrategy,
+                    createGooglePayStripePaymentStrategy,
+                    createGooglePayWorldpayAccessPaymentStrategy,
+                    createGooglePayBraintreePaymentStrategy,
+                    createGooglePayPPCPPaymentStrategy,
+                    createGooglePayBigCommercePaymentsPaymentStrategy,
+                    createGooglePayTdOnlineMartPaymentStrategy,
+                ],
                 [PaymentMethodId.AdyenV2GooglePay]: {
                     loadingContainerId,
                     walletButton: 'walletButton',
