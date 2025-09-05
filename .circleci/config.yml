@@ -28,6 +28,11 @@ orbs:
   security: bigcommerce/internal-security@volatile
   microapp: bigcommerce/internal-microapp@volatile
 
+executors:
+  playwright_executor:
+    docker:
+      - image: mcr.microsoft.com/playwright:v1.52.0-noble
+
 jobs:
   test-packages:
     <<: *node_executor
@@ -125,18 +130,14 @@ jobs:
             - dist
 
   e2e:
-    <<: *node_executor
+    executor: playwright_executor
     parallelism: 2
     resource_class: medium+
     steps:
       - ci/pre-setup
       - node/npm-install
-      - run:
-          name: "Build checkout-js"
-          command: npm run build
-      - run:
-          name: "Install playwright"
-          command: npx playwright install --with-deps
+      - attach_workspace:
+          at: .
       - run:
           name: "Run e2e tests"
           command: |
@@ -240,6 +241,8 @@ workflows:
       - e2e:
           filters:
             <<: *pull_request_filter
+          requires:
+            - build-prerelease
       - sdk-on-cdn:
           filters:
             <<: *pull_request_filter
@@ -288,6 +291,8 @@ workflows:
       - e2e:
           filters:
             <<: *release_filter
+          requires:
+            - build
       - security/scan:
           name: "Gitleaks secrets scan"
           filters:
