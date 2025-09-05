@@ -21,7 +21,6 @@ import {
   isValidCustomerAddress,
   mapAddressToFormValues,
 } from '../address';
-import { EMPTY_ARRAY, isFloatingLabelEnabled as getIsFloatingLabelEnabled } from '../common/utility';
 import { getCustomFormFieldsValidationSchema } from '../formFields';
 import { OrderComments } from '../orderComments';
 import { getShippableItemsCount } from '../shipping';
@@ -58,7 +57,7 @@ const BillingForm = ({
     const { checkoutService, checkoutState } = useCheckout();
 
     const {
-        data: { getCustomer, getConfig, getBillingCountries, getCart },
+        data: { getCustomer, getConfig, getCart },
         statuses: { isUpdatingBillingAddress, isUpdatingCheckout },
     } = checkoutState;
     const customer = getCustomer();
@@ -108,12 +107,6 @@ const BillingForm = ({
         void handleSelectAddress({});
     };
 
-    // Below should be removed once <AddressForm /> is able to reduce prop drilling
-    const countries = getBillingCountries() || EMPTY_ARRAY;
-    const countriesWithAutocomplete = ['US', 'CA', 'AU', 'NZ', 'GB'];
-    const { googleMapsApiKey } = config.checkoutSettings;
-    const isFloatingLabelEnabled = getIsFloatingLabelEnabled(config.checkoutSettings)
-
     return (
         <Form autoComplete="on">
             {shouldRenderStaticAddress && billingAddress && (
@@ -142,14 +135,11 @@ const BillingForm = ({
                 {!hasValidCustomerAddress && (
                     <AddressFormSkeleton isLoading={isResettingAddress}>
                         <AddressForm
-                            countries={countries}
-                            countriesWithAutocomplete={countriesWithAutocomplete}
                             countryCode={values.countryCode}
                             formFields={editableFormFields}
-                            googleMapsApiKey={googleMapsApiKey}
-                            isFloatingLabelEnabled={isFloatingLabelEnabled}
                             setFieldValue={setFieldValue}
                             shouldShowSaveAddress={!isGuest}
+                            type={AddressType.Billing}
                         />
                     </AddressFormSkeleton>
                 )}

@@ -26,14 +26,12 @@ export interface MultiShippingFormProps {
     cartHasChanged: boolean;
     customerMessage: string;
     defaultCountryCode?: string;
-    countriesWithAutocomplete: string[];
     isLoading: boolean;
     onUnhandledError(error: Error): void;
     onSubmit(values: MultiShippingFormValues): void;
 }
 
 const MultiShippingForm: FunctionComponent<MultiShippingFormProps> = ({
-    countriesWithAutocomplete,
     defaultCountryCode,
     isLoading,
     onUnhandledError,
@@ -117,7 +115,6 @@ const MultiShippingForm: FunctionComponent<MultiShippingFormProps> = ({
                 <ConsignmentListItem
                     consignment={consignment}
                     consignmentNumber={consignment.consignmentNumber}
-                    countriesWithAutocomplete={countriesWithAutocomplete}
                     defaultCountryCode={defaultCountryCode}
                     isLoading={isLoading}
                     key={consignment.id}
@@ -129,7 +126,6 @@ const MultiShippingForm: FunctionComponent<MultiShippingFormProps> = ({
             {isAddShippingDestination && (
                 <NewConsignment
                     consignmentNumber={consignments.length === 0 ? 1 : (consignments.length + 1)}
-                    countriesWithAutocomplete={countriesWithAutocomplete}
                     defaultCountryCode={defaultCountryCode}
                     isLoading={isLoading}
                     onUnhandledError={onUnhandledError}

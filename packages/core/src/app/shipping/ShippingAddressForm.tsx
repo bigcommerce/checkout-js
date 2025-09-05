@@ -10,7 +10,6 @@ import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import { AddressForm, AddressSelect, AddressType, isValidCustomerAddress } from '../address';
 import { connectFormik, type ConnectFormikProps } from '../common/form';
-import { EMPTY_ARRAY } from '../common/utility';
 import { Fieldset } from '../ui/form';
 
 import { type SingleShippingFormValues } from './SingleShippingForm';
@@ -18,11 +17,8 @@ import { type SingleShippingFormValues } from './SingleShippingForm';
 export interface ShippingAddressFormProps {
     address?: Address;
     consignments: Consignment[];
-    countriesWithAutocomplete: string[];
-    googleMapsApiKey?: string;
     isLoading: boolean;
     formFields: FormField[];
-    isFloatingLabelEnabled?: boolean;
     onUseNewAddress(): void;
     onFieldChange(fieldName: string, value: string): void;
     onAddressSelect(address: Address): void;
@@ -35,11 +31,8 @@ const ShippingAddressForm = (
         address: shippingAddress,
         onAddressSelect,
         onUseNewAddress,
-        countriesWithAutocomplete,
         formFields,
         isLoading,
-        googleMapsApiKey,
-        isFloatingLabelEnabled,
         formik: {
             values: { shippingAddress: formAddress },
             setFieldValue: formikSetFieldValue,
@@ -51,14 +44,12 @@ const ShippingAddressForm = (
         checkoutState:{
             data:{
                 getCustomer,
-                getShippingCountries,
             },
         },
     } = useCheckout();
 
     const customer = getCustomer();
     const addresses = customer?.addresses || [];
-    const countries = getShippingCountries() || EMPTY_ARRAY;
     const shouldShowSaveAddress = !(customer?.isGuest);
 
     const setFieldValue = (fieldName: string, fieldValue: string) => {
@@ -117,17 +108,14 @@ const ShippingAddressForm = (
             {!hasValidCustomerAddress && (
                 <LoadingOverlay isLoading={isLoading} unmountContentWhenLoading>
                     <AddressForm
-                        countries={countries}
-                        countriesWithAutocomplete={countriesWithAutocomplete}
                         countryCode={formAddress && formAddress.countryCode}
                         fieldName={addressFieldName}
                         formFields={formFields}
-                        googleMapsApiKey={googleMapsApiKey}
-                        isFloatingLabelEnabled={isFloatingLabelEnabled}
                         onAutocompleteToggle={handleAutocompleteToggle}
                         onChange={handleChange}
                         setFieldValue={setFieldValue}
                         shouldShowSaveAddress={shouldShowSaveAddress}
+                        type={AddressType.Shipping}
                     />
                 </LoadingOverlay>
             )}
