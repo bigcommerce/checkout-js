@@ -1,4 +1,4 @@
-import { ExtensionMessageType, ExtensionQueryType } from '@bigcommerce/checkout-sdk';
+import { ExtensionMessageType, ExtensionQueryType } from '@bigcommerce/checkout-sdk/essential';
 
 import { type QueryHandler, type QueryHandlerProps } from './QueryHandler';
 
