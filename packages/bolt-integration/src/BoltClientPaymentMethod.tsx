@@ -1,4 +1,5 @@
 import { type CheckoutService, type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import { createBoltPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bolt';
 import React, { type FunctionComponent, useCallback } from 'react';
 
 import { HostedPaymentComponent } from '@bigcommerce/checkout/hosted-payment-integration';
@@ -14,6 +15,7 @@ const BoltClientPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         (options: PaymentInitializeOptions) =>
             checkoutService.initializePayment({
                 ...options,
+                integrations: [createBoltPaymentStrategy],
                 bolt: {
                     useBigCommerceCheckout: true,
                 },

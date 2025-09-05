@@ -6,6 +6,20 @@ import {
     type PaymentInitializeOptions,
     type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
+import {
+    createGooglePayAdyenV2PaymentStrategy,
+    createGooglePayAdyenV3PaymentStrategy,
+    createGooglePayAuthorizeNetPaymentStrategy,
+    createGooglePayBigCommercePaymentsPaymentStrategy,
+    createGooglePayBraintreePaymentStrategy,
+    createGooglePayCheckoutComPaymentStrategy,
+    createGooglePayCybersourcePaymentStrategy,
+    createGooglePayOrbitalPaymentStrategy,
+    createGooglePayPPCPPaymentStrategy,
+    createGooglePayStripePaymentStrategy,
+    createGooglePayTdOnlineMartPaymentStrategy,
+    createGooglePayWorldpayAccessPaymentStrategy,
+} from '@bigcommerce/checkout-sdk/integrations/google-pay';
 import { Formik } from 'formik';
 import each from 'jest-each';
 import { noop } from 'lodash';
@@ -96,7 +110,24 @@ describe('when using Google Pay payment', () => {
     it('initializes payment method when component mounts', () => {
         render(<GooglePayPaymentMethodTest {...defaultProps} />);
 
-        expect(checkoutService.initializePayment).toHaveBeenCalled();
+        expect(checkoutService.initializePayment).toHaveBeenCalledWith(
+            expect.objectContaining({
+                integrations: [
+                    createGooglePayAdyenV2PaymentStrategy,
+                    createGooglePayAdyenV3PaymentStrategy,
+                    createGooglePayAuthorizeNetPaymentStrategy,
+                    createGooglePayCheckoutComPaymentStrategy,
+                    createGooglePayCybersourcePaymentStrategy,
+                    createGooglePayOrbitalPaymentStrategy,
+                    createGooglePayStripePaymentStrategy,
+                    createGooglePayWorldpayAccessPaymentStrategy,
+                    createGooglePayBraintreePaymentStrategy,
+                    createGooglePayPPCPPaymentStrategy,
+                    createGooglePayBigCommercePaymentsPaymentStrategy,
+                    createGooglePayTdOnlineMartPaymentStrategy,
+                ],
+            }),
+        );
     });
 
     it('renders Visa Checkout as wallet button method', () => {

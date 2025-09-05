@@ -1,4 +1,5 @@
 import { createCheckoutService, createLanguageService } from '@bigcommerce/checkout-sdk';
+import { createApplePayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/apple-pay';
 import React from 'react';
 
 import { type PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
@@ -36,6 +37,7 @@ describe('ApplePayPaymentMethod', () => {
         expect(checkoutService.initializePayment).toHaveBeenCalledWith({
             gatewayId: defaultProps.method.gateway,
             methodId: defaultProps.method.id,
+            integrations: [createApplePayPaymentStrategy],
             applepay: {
                 shippingLabel: defaultProps.language.translate('cart.shipping_text'),
                 subtotalLabel: defaultProps.language.translate('cart.subtotal_text'),
