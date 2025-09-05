@@ -40,9 +40,9 @@ const AddressForm: React.FC<AddressFormProps> = ({
     const config = getConfig();
     const countries = (type === AddressType.Billing 
         ? getBillingCountries() 
-        : getShippingCountries()) 
-        || EMPTY_ARRAY;
-        const googleMapsApiKey = config?.checkoutSettings.googleMapsApiKey || '';
+        : getShippingCountries()
+    ) || EMPTY_ARRAY;
+    const googleMapsApiKey = config?.checkoutSettings.googleMapsApiKey || '';
     const isFloatingLabelEnabledValue = config ? isFloatingLabelEnabled(config.checkoutSettings) : false;
     const countriesWithAutocomplete = ['US', 'CA', 'AU', 'NZ', 'GB'];
 
