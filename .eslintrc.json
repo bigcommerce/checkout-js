@@ -1,113 +1,144 @@
 {
-  "extends": ["@bigcommerce/eslint-config"],
-  "parser": "@typescript-eslint/parser",
-  "root": true,
-  "plugins": ["@nx"],
-  "env": {
-    "browser": true
-  },
-  "settings": {
-    "import/resolver": {
-      "typescript": {
+    "extends": [
+        "@bigcommerce/eslint-config"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "root": true,
+    "plugins": [
+        "@nx"
+    ],
+    "env": {
+        "browser": true
+    },
+    "settings": {
+        "import/resolver": {
+            "typescript": {
+                "project": "./tsconfig.*?.json"
+            }
+        }
+    },
+    "parserOptions": {
         "project": "./tsconfig.*?.json"
-      }
-    }
-  },
-  "parserOptions": {
-    "project": "./tsconfig.*?.json"
-  },
-  "overrides": [
-    {
-      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
-      "rules": {
-        "prettier/prettier": [
-          "error",
-          {
-            "tabWidth": 4
-          }
-        ],
-        "no-restricted-syntax": [
-          "off",
-          {
-            "selector": "ForOfStatement"
-          }
-        ],
-        "@nx/enforce-module-boundaries": [
-          "error",
-          {
-            "enforceBuildableLibDependency": false,
-            "allow": [],
-            "depConstraints": [
-              {
-                "sourceTag": "scope:core",
-                "onlyDependOnLibsWithTags": ["scope:shared"]
-              },
-              {
-                "sourceTag": "scope:shared",
-                "onlyDependOnLibsWithTags": ["scope:shared"]
-              },
-              {
-                "sourceTag": "scope:integration",
-                "onlyDependOnLibsWithTags": ["scope:shared"]
-              }
+    },
+    "overrides": [
+        {
+            "files": [
+                "*.ts",
+                "*.tsx",
+                "*.js",
+                "*.jsx"
             ],
-            "checkDynamicDependenciesExceptions": [
-              "@bigcommerce/checkout/ui"
-            ]
-          }
-        ],
-        "@typescript-eslint/no-unused-vars": [
-          "warn",
-          {
-            "varsIgnorePattern": "^_"
-          }
-        ],
-        "@typescript-eslint/consistent-type-imports": [
-          "error",
-          {
-            "prefer": "type-imports",
-            "fixStyle": "inline-type-imports",
-            "disallowTypeAnnotations": false
-          }
-        ]
-      }
-    },
-    {
-      "files": ["*.ts", "*.tsx"],
-      "extends": ["plugin:@nx/typescript"],
-      "rules": {
-        "@typescript-eslint/consistent-indexed-object-style": "off",
-        "@typescript-eslint/no-confusing-void-expression": "off",
-        "@typescript-eslint/no-deprecated": "off",
-        "@typescript-eslint/no-duplicate-enum-values": "off",
-        "@typescript-eslint/no-extraneous-class": "off",
-        "@typescript-eslint/no-invalid-void-type": "off",
-        "@typescript-eslint/no-misused-promises": "off",
-        "@typescript-eslint/no-redundant-type-constituents": "off",
-        "@typescript-eslint/no-unnecessary-type-parameters": "off",
-        "@typescript-eslint/no-unsafe-enum-comparison": "off",
-        "@typescript-eslint/no-unsafe-member-access": "off",
-        "@typescript-eslint/non-nullable-type-assertion-style": "off",
-        "@typescript-eslint/prefer-nullish-coalescing": "off",
-        "@typescript-eslint/prefer-optional-chain": "off",
-        "@typescript-eslint/use-unknown-in-catch-callback-variable": "off",
-        "react/prefer-read-only-props": "off",
-        "react/no-deprecated": "off",
-        "react/jsx-sort-props": "error",
-        "no-tabs": "error"
-      }
-    },
-    {
-      "files": ["*.js", "*.jsx"],
-      "extends": ["plugin:@nx/javascript"],
-      "rules": {}
-    },
-    {
-      "files": ["*.test.ts", "*.test.tsx"],
-      "extends": ["plugin:testing-library/react", "plugin:jest-dom/recommended"],
-      "rules": {
-        "@typescript-eslint/consistent-type-assertions": "off"
-      }
-    }
-  ]
+            "rules": {
+                "prettier/prettier": [
+                    "error",
+                    {
+                        "tabWidth": 4
+                    }
+                ],
+                "no-restricted-syntax": [
+                    "off",
+                    {
+                        "selector": "ForOfStatement"
+                    }
+                ],
+                "@nx/enforce-module-boundaries": [
+                    "error",
+                    {
+                        "enforceBuildableLibDependency": false,
+                        "allow": [],
+                        "depConstraints": [
+                            {
+                                "sourceTag": "scope:core",
+                                "onlyDependOnLibsWithTags": [
+                                    "scope:shared"
+                                ]
+                            },
+                            {
+                                "sourceTag": "scope:shared",
+                                "onlyDependOnLibsWithTags": [
+                                    "scope:shared"
+                                ]
+                            },
+                            {
+                                "sourceTag": "scope:integration",
+                                "onlyDependOnLibsWithTags": [
+                                    "scope:shared"
+                                ]
+                            }
+                        ],
+                        "checkDynamicDependenciesExceptions": [
+                            "@bigcommerce/checkout/ui"
+                        ]
+                    }
+                ],
+                "@typescript-eslint/no-unused-vars": [
+                    "warn",
+                    {
+                        "varsIgnorePattern": "^_"
+                    }
+                ],
+                "@typescript-eslint/consistent-type-imports": [
+                    "error",
+                    {
+                        "prefer": "type-imports",
+                        "fixStyle": "inline-type-imports",
+                        "disallowTypeAnnotations": false
+                    }
+                ]
+            }
+        },
+        {
+            "files": [
+                "*.ts",
+                "*.tsx"
+            ],
+            "extends": [
+                "plugin:@nx/typescript"
+            ],
+            "rules": {
+                "@typescript-eslint/consistent-indexed-object-style": "off",
+                "@typescript-eslint/no-confusing-void-expression": "off",
+                "@typescript-eslint/no-deprecated": "off",
+                "@typescript-eslint/no-duplicate-enum-values": "off",
+                "@typescript-eslint/no-extraneous-class": "off",
+                "@typescript-eslint/no-invalid-void-type": "off",
+                "@typescript-eslint/no-misused-promises": "off",
+                "@typescript-eslint/no-redundant-type-constituents": "off",
+                "@typescript-eslint/no-unnecessary-type-parameters": "off",
+                "@typescript-eslint/no-unsafe-enum-comparison": "off",
+                "@typescript-eslint/no-unsafe-member-access": "off",
+                "@typescript-eslint/non-nullable-type-assertion-style": "off",
+                "@typescript-eslint/prefer-nullish-coalescing": "off",
+                "@typescript-eslint/prefer-optional-chain": "off",
+                "@typescript-eslint/use-unknown-in-catch-callback-variable": "off",
+                "react/prefer-read-only-props": "off",
+                "react/no-deprecated": "off",
+                "react/jsx-sort-props": "error",
+                "no-tabs": "error"
+            }
+        },
+        {
+            "files": [
+                "*.js",
+                "*.jsx"
+            ],
+            "extends": [
+                "plugin:@nx/javascript"
+            ],
+            "rules": {}
+        },
+        {
+            "files": [
+                "*.test.ts",
+                "*.test.tsx"
+            ],
+            "extends": [
+                "plugin:testing-library/react",
+                "plugin:jest-dom/recommended"
+            ],
+            "rules": {
+                "@typescript-eslint/consistent-type-assertions": "off"
+            }
+        }
+    ]
 }
