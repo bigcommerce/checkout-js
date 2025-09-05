@@ -1,0 +1,12 @@
+@import '../Base';
+
+.popover {
+    background: container("fill");
+    border: container("border");
+    border-radius: 4px;
+    box-shadow: container("dropShadow");
+    left: 0;
+    position: absolute;
+    right: 0;
+    z-index: zIndex("low");
+}

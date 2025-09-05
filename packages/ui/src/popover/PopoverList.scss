@@ -1,0 +1,29 @@
+@import '../Base';
+
+.popoverList {
+    list-style: none;
+    margin: spacing("third") 0;
+}
+
+.popoverList-item {
+    cursor: pointer;
+    padding: spacing("third") spacing("half");
+
+    &.is-active:hover,
+    &.is-active {
+        background-color: color("greys", "light");
+    }
+
+    &:hover {
+        background-color: color("greys", "lightest");
+    }
+
+    strong,
+    span {
+        display: inline-block;
+    }
+
+    .highlight {
+        font-weight: bold;
+    }
+}
