@@ -71,13 +71,5 @@ const CheckoutcomCustomPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
 export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>(
     CheckoutcomCustomPaymentMethod,
-    [
-        { gateway: 'checkoutcom', id: 'ideal' },
-        { gateway: 'checkoutcom', id: 'fawry' },
-        { gateway: 'checkoutcom', id: 'oxxo' },
-        { gateway: 'checkoutcom', id: 'boleto' },
-        { gateway: 'checkoutcom', id: 'sepa' },
-        { gateway: 'checkoutcom', id: 'qpay' },
-        { gateway: 'checkoutcom', id: 'p24' },
-    ],
+    [{ gateway: 'checkoutcom' }],
 );
