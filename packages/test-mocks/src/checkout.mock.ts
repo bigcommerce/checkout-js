@@ -38,6 +38,7 @@ export function getCheckout(): Checkout {
         promotions: [],
         channelId: 123456,
         fees: [],
+        version: 1,
     };
 }
 

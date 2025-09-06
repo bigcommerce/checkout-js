@@ -243,6 +243,7 @@ const checkout: Checkout = {
     balanceDue: 200,
     discounts: [],
     fees: [],
+    version: 1,
 };
 
 const checkoutWithDigitalCart: Checkout = {
