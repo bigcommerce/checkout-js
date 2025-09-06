@@ -29,10 +29,60 @@ After that, you can make changes to the source code and run the following comman
 npm run build
 ```
 
-If you are developing the application locally and want to build the source code in watch mode, you can run the following command:
+### Development Server
+
+For local development, you have several options:
+
+#### Full Development Server (Recommended)
+Run everything with a single command that combines webpack build watching and HTTP server:
 
 ```sh
+npm run dev:full
+```
+
+This will:
+- Start webpack in watch mode for automatic rebuilds
+- Start an HTTP server on http://localhost:8080 with CORS enabled
+- Display the auto-loader URL for Custom Checkout integration
+
+#### Development Server with HTTPS Tunnel
+For testing with live HTTPS websites, you can enable Cloudflare Tunnels:
+
+```sh
+npm run dev:tunnel
+```
+
+This provides:
+- All features of `dev:full`
+- An HTTPS tunnel URL (e.g., `https://abc123.trycloudflare.com`)
+- Automatic tunnel URL display for easy Custom Checkout integration
+
+#### Manual Development (Legacy)
+If you prefer the traditional two-step approach:
+
+```sh
+# Terminal 1: Start webpack in watch mode
 npm run dev
+
+# Terminal 2: Start the HTTP server
+npm run dev:server
+```
+
+#### Environment Variables
+You can customize the development server behavior using environment variables:
+
+```sh
+# Enable tunnel mode
+DEV_SERVER_TUNNEL=true npm run dev:full
+
+# Change port
+DEV_SERVER_PORT=3000 npm run dev:full
+
+# Enable verbose logging
+DEV_SERVER_VERBOSE=true npm run dev:full
+
+# Custom cloudflared path
+CLOUDFLARED_PATH=/usr/local/bin/cloudflared npm run dev:tunnel
 ```
 
 If you want to create a prerelease (i.e.: `alpha`) for testing in the integration environment, you can run the following command:
@@ -61,12 +111,28 @@ npm run regenerate-har
 
 Follow [this guide](https://developer.bigcommerce.com/stencil-docs/customizing-checkout/installing-custom-checkouts) for instructions on how to fork and install this app as a Custom Checkout in your store.
 
-If you want to test your checkout implementation, you can run:
+### For Development Testing
+
+#### Using the Enhanced Development Server (Recommended)
+```sh
+# Local development with HTTP
+npm run dev:full
+# Then use: http://localhost:8080/auto-loader-dev.js
+
+# For HTTPS testing with live stores
+npm run dev:tunnel
+# The tunnel URL will be displayed (e.g., https://abc123.trycloudflare.com/auto-loader-dev.js)
+```
+
+#### Using the Legacy Method
+If you want to test your checkout implementation manually, you can run:
 ```sh
 npm run dev:server
 ```
 
 And enter the local URL for `auto-loader-dev.js` in Checkout Settings, e.g `http://127.0.0.1:8080/auto-loader-dev.js`
+
+**Note:** The HTTPS tunnel option is particularly useful when testing with live BigCommerce stores that require HTTPS connections.
 
 ## Release
 
