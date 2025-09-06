@@ -297,7 +297,7 @@ function loaderConfig(options, argv) {
                     hashFuncNames: ['sha256'],
                     enabled: isProduction,
                 }),
-                new AsyncHookPlugin({
+                isProduction ? new AsyncHookPlugin({
                     onRun({ compiler, done }) {
                         let wasTriggeredBefore = false;
 
@@ -328,6 +328,16 @@ function loaderConfig(options, argv) {
                             done();
                         });
                     },
+                }) : new DefinePlugin({
+                    LIBRARY_NAME: JSON.stringify(LIBRARY_NAME),
+                    PRELOAD_ASSETS: JSON.stringify(PRELOAD_ASSETS),
+                    MANIFEST_JSON: JSON.stringify({
+                        appVersion: 'dev',
+                        css: [],
+                        dynamicChunks: { css: [], js: [] },
+                        js: ['runtime.js', 'transients.js', 'vendor-initial.js', 'checkout.js'],
+                        integrity: {}
+                    }),
                 }),
                 new BuildHookPlugin({
                     onSuccess() {
