@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 
 const { spawn } = require('child_process');
-const path = require('path');
+const { listen } = require('listhen');
+const { createApp, eventHandler } = require('h3');
 const fs = require('fs');
+const path = require('path');
 const { promisify } = require('util');
 
 const access = promisify(fs.access);
@@ -12,13 +14,13 @@ class DevServer {
         this.options = {
             port: options.port || 8080,
             enableTunnel: options.enableTunnel || false,
-            cloudflaredPath: options.cloudflaredPath || '/tmp/cloudflared',
             buildDir: options.buildDir || 'build',
             verbose: options.verbose || false,
             ...options
         };
         
         this.processes = [];
+        this.serverInstance = null;
         this.tunnelUrl = null;
         this.serverReady = false;
         this.webpackReady = false;
@@ -34,9 +36,9 @@ class DevServer {
         console.error(`[DevServer ERROR] ${message}`);
     }
 
-    async checkCloudflaredAvailable() {
+    async checkBuildDirectory() {
         try {
-            await access(this.options.cloudflaredPath, fs.constants.F_OK | fs.constants.X_OK);
+            await access(this.options.buildDir, fs.constants.F_OK);
             return true;
         } catch {
             return false;
@@ -97,138 +99,144 @@ class DevServer {
         });
     }
 
-    startHttpServer() {
-        return new Promise((resolve, reject) => {
-            this.log(`Starting HTTP server on port ${this.options.port}...`);
+    createStaticFileHandler() {
+        return eventHandler(async (event) => {
+            let filePath = event.node.req.url;
             
-            const serverProcess = spawn('npx', ['http-server', this.options.buildDir, '--cors', '-p', this.options.port.toString()], {
-                stdio: ['inherit', 'pipe', 'pipe'],
-                cwd: process.cwd()
-            });
-
-            this.processes.push(serverProcess);
-
-            serverProcess.stdout.on('data', (data) => {
-                const output = data.toString();
-                if (this.options.verbose) {
-                    process.stdout.write(`[HTTP Server] ${output}`);
-                }
-
-                // Look for server start indicators
-                if (output.includes('Available on:') || output.includes(`http://127.0.0.1:${this.options.port}`)) {
-                    this.log(`HTTP server ready on http://localhost:${this.options.port}`, true);
-                    this.serverReady = true;
-                    resolve();
-                }
-            });
-
-            serverProcess.stderr.on('data', (data) => {
-                const output = data.toString();
-                if (this.options.verbose || output.includes('ERROR') || output.includes('EADDRINUSE')) {
-                    process.stderr.write(`[HTTP Server] ${output}`);
+            // Remove query parameters
+            const urlParts = filePath.split('?');
+            filePath = urlParts[0];
+            
+            // Handle root path
+            if (filePath === '/') {
+                filePath = '/index.html';
+            }
+            
+            // Security: prevent directory traversal
+            if (filePath.includes('..')) {
+                event.node.res.statusCode = 400;
+                return 'Bad Request';
+            }
+            
+            const fullPath = path.join(this.options.buildDir, filePath);
+            
+            try {
+                // Check if file exists
+                await access(fullPath, fs.constants.F_OK);
+                
+                // Read file
+                const content = fs.readFileSync(fullPath);
+                
+                // Set appropriate content type
+                const ext = path.extname(fullPath).toLowerCase();
+                const contentTypes = {
+                    '.html': 'text/html',
+                    '.js': 'application/javascript',
+                    '.css': 'text/css',
+                    '.json': 'application/json',
+                    '.png': 'image/png',
+                    '.jpg': 'image/jpeg',
+                    '.jpeg': 'image/jpeg',
+                    '.gif': 'image/gif',
+                    '.svg': 'image/svg+xml',
+                    '.ico': 'image/x-icon',
+                    '.woff': 'font/woff',
+                    '.woff2': 'font/woff2',
+                    '.ttf': 'font/ttf',
+                    '.eot': 'application/vnd.ms-fontobject'
+                };
+                
+                const contentType = contentTypes[ext] || 'application/octet-stream';
+                event.node.res.setHeader('Content-Type', contentType);
+                
+                // Enable CORS
+                event.node.res.setHeader('Access-Control-Allow-Origin', '*');
+                event.node.res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+                event.node.res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+                
+                return content;
+                
+            } catch (error) {
+                // Try to find index.html for SPA routing
+                if (filePath !== '/index.html') {
+                    try {
+                        const indexPath = path.join(this.options.buildDir, 'index.html');
+                        await access(indexPath, fs.constants.F_OK);
+                        const indexContent = fs.readFileSync(indexPath);
+                        event.node.res.setHeader('Content-Type', 'text/html');
+                        return indexContent;
+                    } catch {
+                        // Fall through to 404
+                    }
                 }
                 
-                if (output.includes('EADDRINUSE')) {
-                    reject(new Error(`Port ${this.options.port} is already in use`));
-                }
-            });
-
-            serverProcess.on('close', (code) => {
-                if (code !== 0) {
-                    reject(new Error(`HTTP server process exited with code ${code}`));
-                }
-            });
-
-            // Fallback timeout
-            setTimeout(() => {
-                if (!this.serverReady) {
-                    this.log('HTTP server timeout reached, assuming ready', true);
-                    this.serverReady = true;
-                    resolve();
-                }
-            }, 10000); // 10 second timeout
+                event.node.res.statusCode = 404;
+                return 'File not found';
+            }
         });
     }
 
-    async startCloudflaredTunnel() {
-        if (!this.options.enableTunnel) {
-            return;
+    async startListhenServer() {
+        const buildDirExists = await this.checkBuildDirectory();
+        if (!buildDirExists) {
+            throw new Error(`Build directory '${this.options.buildDir}' does not exist. Run webpack first.`);
         }
 
-        const cloudflaredAvailable = await this.checkCloudflaredAvailable();
-        if (!cloudflaredAvailable) {
-            this.error(`Cloudflared not found at ${this.options.cloudflaredPath}. Download it from https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/install-and-setup/installation/`);
-            return;
+        this.log('Creating HTTP server with listhen...', true);
+        
+        const app = createApp();
+        app.use(this.createStaticFileHandler());
+
+        const listenOptions = {
+            port: this.options.port,
+            showURL: this.options.verbose,
+            clipboard: false,
+            open: false,
+            qr: false
+        };
+
+        // Enable tunnel if requested
+        if (this.options.enableTunnel) {
+            listenOptions.tunnel = true;
         }
 
-        return new Promise((resolve, reject) => {
-            this.log('Starting Cloudflare Tunnel...', true);
+        try {
+            this.serverInstance = await listen(app, listenOptions);
+            this.serverReady = true;
             
-            const tunnelProcess = spawn(this.options.cloudflaredPath, ['tunnel', '--url', `http://localhost:${this.options.port}`], {
-                stdio: ['inherit', 'pipe', 'pipe'],
-                cwd: process.cwd()
-            });
-
-            this.processes.push(tunnelProcess);
-            let tunnelStarted = false;
-
-            tunnelProcess.stdout.on('data', (data) => {
-                const output = data.toString();
-                if (this.options.verbose) {
-                    process.stdout.write(`[Cloudflared] ${output}`);
-                }
-
-                // Extract tunnel URL from cloudflared output
-                const urlMatch = output.match(/https:\/\/[a-z0-9-]+\.trycloudflare\.com/);
-                if (urlMatch && !this.tunnelUrl) {
-                    this.tunnelUrl = urlMatch[0];
-                    this.log(`🌩️  Cloudflare Tunnel ready: ${this.tunnelUrl}`, true);
-                    this.log(`🔗 Auto-loader URL: ${this.tunnelUrl}/auto-loader-dev.js`, true);
-                    tunnelStarted = true;
-                    resolve();
-                }
-
-                // Look for successful connection messages
-                if (output.includes('Connection') && output.includes('registered')) {
-                    tunnelStarted = true;
-                }
-            });
-
-            tunnelProcess.stderr.on('data', (data) => {
-                const output = data.toString();
-                if (this.options.verbose || output.includes('error') || output.includes('failed')) {
-                    process.stderr.write(`[Cloudflared] ${output}`);
-                }
-
-                // Handle common errors
-                if (output.includes('failed to lookup TXT record') || output.includes('no such host')) {
-                    this.log('⚠️  Cloudflare tunnel may need internet connectivity - continuing without tunnel', true);
-                    if (!tunnelStarted) {
-                        tunnelStarted = true;
-                        resolve();
-                    }
-                }
-            });
-
-            tunnelProcess.on('close', (code) => {
-                if (code !== 0 && !tunnelStarted) {
-                    this.log(`⚠️  Cloudflare tunnel failed (exit code ${code}) - continuing without tunnel`, true);
-                    this.log('💡 Tunnel requires internet connectivity. Local development server is still available.', true);
-                    resolve();
-                } else if (code !== 0) {
-                    this.log(`Cloudflare tunnel process exited with code ${code}`, true);
-                }
-            });
-
-            // Timeout for tunnel establishment
-            setTimeout(() => {
-                if (!tunnelStarted) {
-                    this.log('⚠️  Cloudflare tunnel timeout - continuing without tunnel', true);
-                    this.log('💡 This is normal in offline environments. Local server is ready at http://localhost:' + this.options.port, true);
-                    resolve();
-                }
-            }, 20000); // 20 second timeout
-        });
+            // Extract URLs
+            const localUrl = this.serverInstance.url;
+            this.tunnelUrl = this.serverInstance.tunnel?.url;
+            
+            this.log(`HTTP server ready on ${localUrl}`, true);
+            
+            if (this.tunnelUrl) {
+                this.log(`🌩️  Tunnel ready: ${this.tunnelUrl}`, true);
+                this.log(`🔗 Auto-loader URL: ${this.tunnelUrl}/auto-loader-dev.js`, true);
+            } else if (this.options.enableTunnel) {
+                this.log('⚠️  Tunnel was requested but could not be established', true);
+                this.log('💡 This is normal in offline environments or if tunnel service is unavailable', true);
+            }
+            
+            return this.serverInstance;
+            
+        } catch (error) {
+            if (this.options.enableTunnel && error.message.includes('tunnel')) {
+                // Fallback: retry without tunnel
+                this.log('⚠️  Tunnel failed, retrying without tunnel...', true);
+                const fallbackOptions = { ...listenOptions, tunnel: false };
+                
+                this.serverInstance = await listen(app, fallbackOptions);
+                this.serverReady = true;
+                
+                this.log(`HTTP server ready on ${this.serverInstance.url}`, true);
+                this.log('💡 Tunnel is unavailable - continuing with local server only', true);
+                
+                return this.serverInstance;
+            }
+            
+            throw error;
+        }
     }
 
     async start() {
@@ -238,17 +246,12 @@ class DevServer {
             // Start webpack and wait for initial build
             await this.startWebpack();
             
-            // Start HTTP server
-            await this.startHttpServer();
-            
-            // Start tunnel if enabled
-            if (this.options.enableTunnel) {
-                await this.startCloudflaredTunnel();
-            }
+            // Start listhen server
+            await this.startListhenServer();
 
             this.log('✅ Development server is ready!', true);
             this.log(`📁 Build directory: ${this.options.buildDir}`, true);
-            this.log(`🌐 Local server: http://localhost:${this.options.port}`, true);
+            this.log(`🌐 Local server: ${this.serverInstance.url}`, true);
             if (this.tunnelUrl) {
                 this.log(`🌩️  HTTPS tunnel: ${this.tunnelUrl}`, true);
                 this.log(`🔧 For Custom Checkout, use: ${this.tunnelUrl}/auto-loader-dev.js`, true);
@@ -263,6 +266,17 @@ class DevServer {
 
     cleanup() {
         this.log('Cleaning up processes...', true);
+        
+        // Close listhen server
+        if (this.serverInstance) {
+            try {
+                this.serverInstance.close();
+            } catch (error) {
+                this.log(`Error closing server: ${error.message}`);
+            }
+        }
+        
+        // Kill webpack process
         this.processes.forEach(proc => {
             if (proc && !proc.killed) {
                 proc.kill('SIGTERM');
@@ -303,18 +317,18 @@ if (require.main === module) {
             case '--verbose':
                 options.verbose = true;
                 break;
-            case '--cloudflared-path':
-                options.cloudflaredPath = args[++i];
+            case '--build-dir':
+                options.buildDir = args[++i];
                 break;
             case '--help':
                 console.log(`
 Usage: node scripts/dev-server.js [options]
 
 Options:
-  --tunnel              Enable Cloudflare Tunnel for HTTPS access
+  --tunnel              Enable tunnel for HTTPS access (via listhen)
   --port <number>       Port for HTTP server (default: 8080)
   --verbose             Enable verbose logging
-  --cloudflared-path    Path to cloudflared binary (default: /tmp/cloudflared)
+  --build-dir <path>    Build directory to serve (default: build)
   --help                Show this help message
 
 Examples:
@@ -337,8 +351,8 @@ Examples:
     if (process.env.DEV_SERVER_VERBOSE === 'true') {
         options.verbose = true;
     }
-    if (process.env.CLOUDFLARED_PATH) {
-        options.cloudflaredPath = process.env.CLOUDFLARED_PATH;
+    if (process.env.DEV_SERVER_BUILD_DIR) {
+        options.buildDir = process.env.DEV_SERVER_BUILD_DIR;
     }
 
     const devServer = new DevServer(options);

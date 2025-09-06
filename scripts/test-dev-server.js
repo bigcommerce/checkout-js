@@ -8,7 +8,7 @@ const { spawn } = require('child_process');
 const http = require('http');
 
 async function testDevServer() {
-    console.log('🧪 Testing dev server functionality...');
+    console.log('🧪 Testing listhen-based dev server functionality...');
     
     // Start the dev server
     const devServer = spawn('node', ['scripts/dev-server.js', '--port', '8081'], {
@@ -49,14 +49,14 @@ async function testDevServer() {
 
     try {
         await serverReadyPromise;
-        console.log('✅ Dev server started successfully');
+        console.log('✅ Listhen-based dev server started successfully');
 
         // Test HTTP endpoint
         console.log('🌐 Testing HTTP endpoint...');
         const testResponse = await new Promise((resolve, reject) => {
             const req = http.get('http://localhost:8081/auto-loader-dev.js', (res) => {
                 if (res.statusCode === 200) {
-                    console.log('✅ auto-loader-dev.js is accessible');
+                    console.log('✅ auto-loader-dev.js is accessible via listhen');
                     resolve(true);
                 } else {
                     reject(new Error(`HTTP ${res.statusCode}`));
@@ -71,7 +71,7 @@ async function testDevServer() {
             });
         });
 
-        console.log('🎉 All tests passed!');
+        console.log('🎉 All tests passed! Listhen integration working correctly.');
         
     } catch (error) {
         console.error('❌ Test failed:', error.message);
