@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.667.0](https://github.com/bigcommerce/checkout-js/compare/v1.666.0...v1.667.0) (2025-09-08)
+
+
+### Features
+
+* **checkout:** CHECKOUT-8973 Display "show password" toggle in the desktop view on the checkout page ([#2568](https://github.com/bigcommerce/checkout-js/issues/2568)) ([03af00c](https://github.com/bigcommerce/checkout-js/commit/03af00c763f92eec8f16631fcac7208ffe135956))
+
 ## [1.666.0](https://github.com/bigcommerce/checkout-js/compare/v1.665.0...v1.666.0) (2025-09-08)
 
 
