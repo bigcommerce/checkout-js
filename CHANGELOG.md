@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.665.0](https://github.com/bigcommerce/checkout-js/compare/v1.664.1...v1.665.0) (2025-09-08)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9467 Convert OrderConfirmationApp component ([#2560](https://github.com/bigcommerce/checkout-js/issues/2560)) ([b6fc7b1](https://github.com/bigcommerce/checkout-js/commit/b6fc7b1bc44d9c6cd9df5cc527d280aeee6ec63d))
+
 ### [1.664.1](https://github.com/bigcommerce/checkout-js/compare/v1.664.0...v1.664.1) (2025-09-08)
 
 ## [1.664.0](https://github.com/bigcommerce/checkout-js/compare/v1.663.2...v1.664.0) (2025-09-05)
