@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.666.0](https://github.com/bigcommerce/checkout-js/compare/v1.665.0...v1.666.0) (2025-09-08)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9454 Convert Autocomplete component ([#2543](https://github.com/bigcommerce/checkout-js/issues/2543)) ([5dbeb51](https://github.com/bigcommerce/checkout-js/commit/5dbeb5128fca0ab1a2aa73477f4f15da70062269))
+
 ## [1.665.0](https://github.com/bigcommerce/checkout-js/compare/v1.664.1...v1.665.0) (2025-09-08)
 
 
