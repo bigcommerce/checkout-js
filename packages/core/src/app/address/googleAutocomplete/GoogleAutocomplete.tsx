@@ -1,5 +1,5 @@
 import { noop } from 'lodash';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { Autocomplete, type AutocompleteItem } from '../../ui/autocomplete';
 
@@ -49,10 +49,9 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
     const [autoComplete, setAutoComplete] = useState<string>('off');
     const googleAutocompleteServiceRef = useRef<GoogleAutocompleteService>();
 
-    // Initialize the service
-    useEffect(() => {
+    if (!googleAutocompleteServiceRef.current) {
         googleAutocompleteServiceRef.current = new GoogleAutocompleteService(apiKey);
-    }, [apiKey]);
+    }
 
     const onSelectHandler = (item: AutocompleteItem) => {
         const service = googleAutocompleteServiceRef.current;
