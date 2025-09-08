@@ -229,12 +229,6 @@
         font-weight: $legend-font-weight;
     }
 
-    .form-toggle-password {
-        @include breakpoint("large") {
-            display: none;
-        }
-    }
-
     .form-field-password {
         position: relative;
     }
