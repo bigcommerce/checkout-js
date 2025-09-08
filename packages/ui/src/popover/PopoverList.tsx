@@ -18,7 +18,7 @@ export interface PopoverListItem {
 const PopoverList: FunctionComponent<PopoverListProps> = ({
     highlightedIndex = -1,
     testId,
-    getItemProps = () => ({} as React.HTMLAttributes<HTMLElement>),
+    getItemProps = () => ({}) as React.HTMLAttributes<HTMLElement>,
     menuProps = {},
     items,
 }) => {
