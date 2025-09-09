@@ -10,19 +10,18 @@ import {
     type PaymentMethod,
     type PaymentRequestOptions,
 } from '@bigcommerce/checkout-sdk';
-import classNames from 'classnames';
 import { find, noop } from 'lodash';
 import React, {
     type ReactElement,
     type ReactNode,
     useCallback,
     useEffect,
+    useMemo,
     useRef,
     useState,
 } from 'react';
 import { type ObjectSchema } from 'yup';
 
-import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import {
     AccountInstrumentFieldset,
     assertIsCardInstrument,
@@ -31,9 +30,12 @@ import {
     isCardInstrument,
     StoreInstrumentFieldset,
 } from '@bigcommerce/checkout/instrument-utils';
-import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
+
+import { EditButton } from './EditButton';
+import { PaymentDescriptor } from './PaymentDescriptor';
+import { PaymentWidget } from './PaymentWidget';
 
 export interface PaymentContextProps {
     disableSubmit(method: PaymentMethod, disabled?: boolean): void;
@@ -175,33 +177,39 @@ const HostedWidgetPaymentComponent = ({
         storedCardValidationSchema,
     ]);
 
-    const getSelectedBankAccountInstrument = (
-        addingNew: boolean,
-        currentSelectedInstrument: PaymentInstrument,
-    ): AccountInstrument | undefined => {
-        return !addingNew && isBankAccountInstrument(currentSelectedInstrument)
-            ? currentSelectedInstrument
-            : undefined;
-    };
+    const getSelectedBankAccountInstrument = useCallback(
+        (
+            addingNew: boolean,
+            currentSelectedInstrument: PaymentInstrument,
+        ): AccountInstrument | undefined => {
+            return !addingNew && isBankAccountInstrument(currentSelectedInstrument)
+                ? currentSelectedInstrument
+                : undefined;
+        },
+        [],
+    );
 
-    const handleDeleteInstrument = (id: string): void => {
-        if (instruments.length === 0) {
-            setIsAddingNewCard(true);
-            setSelectedInstrumentId(undefined);
-            setFieldValue('instrumentId', '');
+    const handleDeleteInstrument = useCallback(
+        (id: string): void => {
+            if (instruments.length === 0) {
+                setIsAddingNewCard(true);
+                setSelectedInstrumentId(undefined);
+                setFieldValue('instrumentId', '');
 
-            return;
-        }
+                return;
+            }
 
-        if (selectedInstrumentId === id) {
-            const nextId = getDefaultInstrumentId();
+            if (selectedInstrumentId === id) {
+                const nextId = getDefaultInstrumentId();
 
-            setSelectedInstrumentId(nextId);
-            setFieldValue('instrumentId', nextId);
-        }
-    };
+                setSelectedInstrumentId(nextId);
+                setFieldValue('instrumentId', nextId);
+            }
+        },
+        [instruments, selectedInstrumentId, getDefaultInstrumentId],
+    );
 
-    const handleUseNewCard = async () => {
+    const handleUseNewCard = useCallback(async () => {
         setIsAddingNewCard(true);
         setSelectedInstrumentId(undefined);
 
@@ -218,14 +226,14 @@ const HostedWidgetPaymentComponent = ({
                 methodId: method.id,
             });
         }
-    };
+    }, [method, deinitializePayment, initializePayment]);
 
-    const handleSelectInstrument = (id: string) => {
+    const handleSelectInstrument = useCallback((id: string) => {
         setIsAddingNewCard(false);
         setSelectedInstrumentId(id);
-    };
+    }, []);
 
-    const getValidateInstrument = (): ReactNode | undefined => {
+    const getValidateInstrument = useCallback((): ReactNode | undefined => {
         const currentSelectedId = selectedInstrumentId || getDefaultInstrumentId();
         const currentSelectedInstrument = find(instruments, { bigpayToken: currentSelectedId });
 
@@ -247,7 +255,14 @@ const HostedWidgetPaymentComponent = ({
         }
 
         return undefined;
-    };
+    }, [
+        selectedInstrumentId,
+        getDefaultInstrumentId,
+        instruments,
+        method,
+        hideVerificationFields,
+        validateInstrument,
+    ]);
 
     const initializeMethod = async (): Promise<CheckoutSelectors | void> => {
         if (!isPaymentDataRequired) {
@@ -291,23 +306,49 @@ const HostedWidgetPaymentComponent = ({
     };
 
     // Below values are for lower level components
-    const effectiveSelectedInstrumentId = selectedInstrumentId || getDefaultInstrumentId();
-    const selectedInstrument = effectiveSelectedInstrumentId
-        ? instruments.find((i) => i.bigpayToken === effectiveSelectedInstrumentId) || instruments[0]
-        : instruments[0];
-    const cardInstruments: CardInstrument[] = instruments.filter(
-        (i): i is CardInstrument => !isBankAccountInstrument(i),
+    const effectiveSelectedInstrumentId = useMemo(
+        () => selectedInstrumentId || getDefaultInstrumentId(),
+        [selectedInstrumentId, getDefaultInstrumentId],
     );
-    const accountInstruments: AccountInstrument[] = instruments.filter(
-        (i): i is AccountInstrument => isBankAccountInstrument(i),
+    const selectedInstrument = useMemo(
+        () =>
+            effectiveSelectedInstrumentId
+                ? instruments.find((i) => i.bigpayToken === effectiveSelectedInstrumentId) ||
+                  instruments[0]
+                : instruments[0],
+        [instruments, effectiveSelectedInstrumentId],
     );
-    const shouldShowInstrumentFieldset = isInstrumentFeatureAvailableProp && instruments.length > 0;
-    const shouldShowCreditCardFieldset = !shouldShowInstrumentFieldset || isAddingNewCard;
-    const isLoading = (isInitializing || isLoadingInstruments) && !hideWidget;
-    const selectedAccountInstrument = selectedInstrument
-        ? getSelectedBankAccountInstrument(isAddingNewCard, selectedInstrument)
-        : undefined;
-    const shouldShowAccountInstrument = instruments[0] && isBankAccountInstrument(instruments[0]);
+    const cardInstruments: CardInstrument[] = useMemo(
+        () => instruments.filter((i): i is CardInstrument => !isBankAccountInstrument(i)),
+        [instruments],
+    );
+    const accountInstruments: AccountInstrument[] = useMemo(
+        () => instruments.filter((i): i is AccountInstrument => isBankAccountInstrument(i)),
+        [instruments],
+    );
+    const shouldShowInstrumentFieldset = useMemo(
+        () => isInstrumentFeatureAvailableProp && instruments.length > 0,
+        [isInstrumentFeatureAvailableProp, instruments],
+    );
+    const shouldShowCreditCardFieldset = useMemo(
+        () => !shouldShowInstrumentFieldset || isAddingNewCard,
+        [shouldShowInstrumentFieldset, isAddingNewCard],
+    );
+    const isLoading = useMemo(
+        () => (isInitializing || isLoadingInstruments) && !hideWidget,
+        [isInitializing, isLoadingInstruments, hideWidget],
+    );
+    const selectedAccountInstrument = useMemo(
+        () =>
+            selectedInstrument
+                ? getSelectedBankAccountInstrument(isAddingNewCard, selectedInstrument)
+                : undefined,
+        [selectedInstrument, isAddingNewCard],
+    );
+    const shouldShowAccountInstrument = useMemo(
+        () => instruments[0] && isBankAccountInstrument(instruments[0]),
+        [instruments],
+    );
 
     useEffect(() => {
         const init = async () => {
@@ -399,58 +440,6 @@ const HostedWidgetPaymentComponent = ({
         }
     }, [selectedInstrumentId, instruments, isPaymentDataRequired]);
 
-    const PaymentDescriptor = (): ReactNode => {
-        if (shouldShowDescriptor && paymentDescriptor) {
-            return <div className="payment-descriptor">{paymentDescriptor}</div>;
-        }
-
-        return null;
-    };
-
-    const PaymentWidget = (): ReactElement => (
-        <div
-            className={classNames(
-                'widget',
-                `widget--${method.id}`,
-                'payment-widget',
-                shouldRenderCustomInstrument ? '' : additionalContainerClassName,
-            )}
-            id={containerId}
-            style={{
-                display:
-                    (hideContentWhenSignedOut && isSignInRequired && !isSignedIn) ||
-                    !shouldShowCreditCardFieldset ||
-                    hideWidget
-                        ? 'none'
-                        : undefined,
-            }}
-            tabIndex={-1}
-        >
-            {shouldRenderCustomInstrument && renderCustomPaymentForm && renderCustomPaymentForm()}
-        </div>
-    );
-
-    const EditButton = (): ReactNode => {
-        if (shouldShowEditButton) {
-            const translatedString = <TranslatedString id="remote.select_different_card_action" />;
-
-            return (
-                <p>
-                    <button
-                        className={classNames('stepHeader', 'widget-link-amazonpay')}
-                        id={buttonId}
-                        onClick={preventDefault()}
-                        type="button"
-                    >
-                        {translatedString}
-                    </button>
-                </p>
-            );
-        }
-
-        return null;
-    };
-
     if (!shouldShow) {
         return <div style={{ display: 'none' }} />;
     }
@@ -478,9 +467,23 @@ const HostedWidgetPaymentComponent = ({
                     />
                 )}
 
-                <PaymentDescriptor />
+                <PaymentDescriptor
+                    paymentDescriptor={paymentDescriptor}
+                    shouldShowDescriptor={shouldShowDescriptor}
+                />
 
-                <PaymentWidget />
+                <PaymentWidget
+                    additionalContainerClassName={additionalContainerClassName}
+                    containerId={containerId}
+                    hideContentWhenSignedOut={hideContentWhenSignedOut}
+                    hideWidget={hideWidget}
+                    isSignInRequired={isSignInRequired}
+                    isSignedIn={isSignedIn}
+                    method={method}
+                    renderCustomPaymentForm={renderCustomPaymentForm}
+                    shouldRenderCustomInstrument={shouldRenderCustomInstrument}
+                    shouldShowCreditCardFieldset={shouldShowCreditCardFieldset}
+                />
 
                 {isInstrumentFeatureAvailableProp && (
                     <StoreInstrumentFieldset
@@ -492,7 +495,7 @@ const HostedWidgetPaymentComponent = ({
                     />
                 )}
 
-                <EditButton />
+                <EditButton buttonId={buttonId} shouldShowEditButton={shouldShowEditButton} />
             </div>
         </LoadingOverlay>
     );
