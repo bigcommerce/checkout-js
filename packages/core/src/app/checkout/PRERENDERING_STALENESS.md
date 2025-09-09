@@ -16,14 +16,12 @@ When using prerendering with Speculation Rules, checkout pages may become stale 
 
 ### Detection Strategy
 
-The system compares these key identifiers to detect staleness:
+The system uses a simple and efficient version-based approach to detect staleness:
 
-- Cart ID
-- Cart updated time
-- Cart item count (physical + digital + gift certificates)
-- Cart base amount  
-- Checkout ID
-- Number of consignments
+- **Checkout ID**: Unique identifier for the checkout session
+- **Version Number**: Integer version field from the `/api/storefront/checkouts/[id]` API response that increments whenever cart contents, totals, or other checkout data changes
+
+This approach is much simpler and more reliable than comparing multiple individual fields, as the version number automatically captures any meaningful change to the checkout state.
 
 ### Usage
 
@@ -51,6 +49,7 @@ console.log('Refresh success:', result.success, 'Was stale:', result.wasStale);
 // Get current snapshot for debugging
 const snapshot = window.checkoutRefreshAPI?.getCurrentSnapshot();
 console.log('Current checkout state:', snapshot);
+// Example output: { checkoutId: "abc123", version: 2, timestamp: 1234567890 }
 ```
 
 #### External Integration Examples
@@ -76,16 +75,20 @@ setInterval(async () => {
 
 ## Files Modified
 
-- `packages/core/src/app/checkout/prerenderingStalenessDetector.ts` - Core implementation
+- `packages/core/src/app/checkout/prerenderingStalenessDetector.ts` - Core implementation with version-based detection
 - `packages/core/src/app/checkout/CheckoutPage.tsx` - Integration with checkout page
 - `packages/core/types/dom.extended.d.ts` - Type definitions for global API
+- `packages/**/src/**/*.mock.ts` - Updated checkout mocks to include version property
+- `webpack.config.js` - Fixed MANIFEST_JSON race condition for development mode
 
 ## Benefits
 
 1. **Seamless UX**: No jank when checkout data hasn't changed
-2. **Automatic Updates**: Stale data is refreshed transparently
-3. **External API**: Allows custom refresh triggers from external code
-4. **Debugging Support**: Comprehensive logging and inspection capabilities
+2. **Automatic Updates**: Stale data is refreshed transparently using version-based detection
+3. **Efficient Detection**: Simple integer comparison (version numbers) instead of complex field-by-field comparison
+4. **External API**: Allows custom refresh triggers from external code
+5. **Debugging Support**: Comprehensive logging and inspection capabilities
+6. **Type Safety**: Full TypeScript support with module augmentation for the version field
 
 ## Edge Cases Handled
 
@@ -105,5 +108,7 @@ Comprehensive test coverage includes:
 
 Run tests with:
 ```bash
-npx jest packages/core/src/app/checkout/prerenderingStalenessDetector.test.ts --config=packages/core/jest.config.js
+npx nx run core:test --testPathPattern=prerenderingStalenessDetector
 ```
+
+All tests focus on version-based detection logic and API functionality. The test suite includes 18 tests covering the detector class, event handling, and global API methods.
