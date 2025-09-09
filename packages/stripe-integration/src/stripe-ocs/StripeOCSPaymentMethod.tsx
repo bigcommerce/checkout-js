@@ -33,18 +33,31 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 }) => {
     const collapseStripeElement = useRef<() => void>();
     const { onToggle, selectedItemId } = useContext(AccordionContext);
+    const [selectedPaymentMethodId, setSelectedPaymentMethodId] = useState<string | undefined>(
+        selectedItemId,
+    );
     const [isOCSLoading, setIsOCSLoading] = useState(false);
     const methodSelector = `${method.gateway}-${method.id}`;
     const containerId = `${methodSelector}-component-field`;
     const paymentContext = paymentForm;
 
     useEffect(() => {
-        if (selectedItemId?.includes(`${method.gateway}-`)) {
+        if (selectedItemId === methodSelector) {
             return;
         }
 
+        setSelectedPaymentMethodId(selectedItemId);
         collapseStripeElement.current?.();
-    }, [selectedItemId, method.gateway]);
+    }, [selectedItemId, methodSelector]);
+
+    useEffect(() => {
+        if (selectedPaymentMethodId !== methodSelector) {
+            return;
+        }
+
+        onToggle(selectedPaymentMethodId);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedPaymentMethodId, methodSelector]);
 
     const renderSubmitButton = useCallback(() => {
         paymentContext.hidePaymentSubmitButton(method, false);
@@ -85,7 +98,7 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                     fonts: getFonts(),
                     onError: onUnhandledError,
                     render: renderSubmitButton,
-                    paymentMethodSelect: onToggle,
+                    paymentMethodSelect: setSelectedPaymentMethodId,
                     handleClosePaymentMethod: (collapseElement: () => void) => {
                         collapseStripeElement.current = collapseElement;
                     },
@@ -100,7 +113,7 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             checkoutService,
             onUnhandledError,
             renderSubmitButton,
-            onToggle,
+            setSelectedPaymentMethodId,
             setIsOCSLoading,
         ],
     );
