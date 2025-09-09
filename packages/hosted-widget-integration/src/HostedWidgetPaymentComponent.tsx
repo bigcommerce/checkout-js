@@ -16,7 +16,6 @@ import React, {
     type ReactNode,
     useCallback,
     useEffect,
-    useMemo,
     useRef,
     useState,
 } from 'react';
@@ -39,6 +38,13 @@ import { PaymentWidget } from './PaymentWidget';
 
 export interface PaymentContextProps {
     disableSubmit(method: PaymentMethod, disabled?: boolean): void;
+    // NOTE: This prop allows certain payment methods to override the default
+    // form submission behaviour. It is not recommended to use it because
+    // generally speaking we want to avoid method-specific snowflake behaviours.
+    // Nevertheless, because of some product / UX decisions made in the past
+    // (i.e.: Amazon), we have to have this backdoor so we can preserve these
+    // snowflake behaviours. In the future, if we decide to change the UX, we
+    // can remove this prop.
     setSubmit(method: PaymentMethod, fn: ((values: PaymentFormValues) => void) | null): void;
     setFieldValue<TField extends keyof PaymentFormValues>(
         field: TField,
@@ -306,49 +312,23 @@ const HostedWidgetPaymentComponent = ({
     };
 
     // Below values are for lower level components
-    const effectiveSelectedInstrumentId = useMemo(
-        () => selectedInstrumentId || getDefaultInstrumentId(),
-        [selectedInstrumentId, getDefaultInstrumentId],
+    const effectiveSelectedInstrumentId = selectedInstrumentId || getDefaultInstrumentId();
+    const selectedInstrument = effectiveSelectedInstrumentId
+        ? instruments.find((i) => i.bigpayToken === effectiveSelectedInstrumentId) || instruments[0]
+        : instruments[0];
+    const cardInstruments: CardInstrument[] = instruments.filter(
+        (i): i is CardInstrument => !isBankAccountInstrument(i),
     );
-    const selectedInstrument = useMemo(
-        () =>
-            effectiveSelectedInstrumentId
-                ? instruments.find((i) => i.bigpayToken === effectiveSelectedInstrumentId) ||
-                  instruments[0]
-                : instruments[0],
-        [instruments, effectiveSelectedInstrumentId],
+    const accountInstruments: AccountInstrument[] = instruments.filter(
+        (i): i is AccountInstrument => isBankAccountInstrument(i),
     );
-    const cardInstruments: CardInstrument[] = useMemo(
-        () => instruments.filter((i): i is CardInstrument => !isBankAccountInstrument(i)),
-        [instruments],
-    );
-    const accountInstruments: AccountInstrument[] = useMemo(
-        () => instruments.filter((i): i is AccountInstrument => isBankAccountInstrument(i)),
-        [instruments],
-    );
-    const shouldShowInstrumentFieldset = useMemo(
-        () => isInstrumentFeatureAvailableProp && instruments.length > 0,
-        [isInstrumentFeatureAvailableProp, instruments],
-    );
-    const shouldShowCreditCardFieldset = useMemo(
-        () => !shouldShowInstrumentFieldset || isAddingNewCard,
-        [shouldShowInstrumentFieldset, isAddingNewCard],
-    );
-    const isLoading = useMemo(
-        () => (isInitializing || isLoadingInstruments) && !hideWidget,
-        [isInitializing, isLoadingInstruments, hideWidget],
-    );
-    const selectedAccountInstrument = useMemo(
-        () =>
-            selectedInstrument
-                ? getSelectedBankAccountInstrument(isAddingNewCard, selectedInstrument)
-                : undefined,
-        [selectedInstrument, isAddingNewCard],
-    );
-    const shouldShowAccountInstrument = useMemo(
-        () => instruments[0] && isBankAccountInstrument(instruments[0]),
-        [instruments],
-    );
+    const shouldShowInstrumentFieldset = isInstrumentFeatureAvailableProp && instruments.length > 0;
+    const shouldShowCreditCardFieldset = !shouldShowInstrumentFieldset || isAddingNewCard;
+    const isLoading = (isInitializing || isLoadingInstruments) && !hideWidget;
+    const selectedAccountInstrument = selectedInstrument
+        ? getSelectedBankAccountInstrument(isAddingNewCard, selectedInstrument)
+        : undefined;
+    const shouldShowAccountInstrument = instruments[0] && isBankAccountInstrument(instruments[0]);
 
     useEffect(() => {
         const init = async () => {
