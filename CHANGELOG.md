@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.668.0](https://github.com/bigcommerce/checkout-js/compare/v1.667.0...v1.668.0) (2025-09-09)
+
+
+### Features
+
+* **payment:** Add Knet to new NAS Checkout.com ([#2550](https://github.com/bigcommerce/checkout-js/issues/2550)) ([4fefcd7](https://github.com/bigcommerce/checkout-js/commit/4fefcd7b4273e6904fbdf06f9f6a20047f034889))
+
 ## [1.667.0](https://github.com/bigcommerce/checkout-js/compare/v1.666.0...v1.667.0) (2025-09-08)
 
 
