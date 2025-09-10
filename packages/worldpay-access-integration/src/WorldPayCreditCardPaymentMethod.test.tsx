@@ -6,7 +6,7 @@ import {
     createLanguageService,
     type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
-import { createWorldpayAccessPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createWorldpayAccessPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/worldpayaccess';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';

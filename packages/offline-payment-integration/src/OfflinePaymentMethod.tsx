@@ -1,4 +1,4 @@
-import { createOfflinePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createOfflinePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/offline';
 import { type FunctionComponent, useEffect } from 'react';
 
 import {

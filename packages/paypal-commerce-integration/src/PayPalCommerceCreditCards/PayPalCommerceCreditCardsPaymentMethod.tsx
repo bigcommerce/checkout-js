@@ -1,5 +1,5 @@
 import { type CardInstrument, type LegacyHostedFormOptions } from '@bigcommerce/checkout-sdk';
-import { createPayPalCommerceCreditCardsPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createPayPalCommerceCreditCardsPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/paypal-commerce';
 import { compact, forIn } from 'lodash';
 import React, { type FunctionComponent, type ReactNode, useCallback, useState } from 'react';
 

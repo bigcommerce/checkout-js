@@ -1,5 +1,5 @@
 import { type FormField } from '@bigcommerce/checkout-sdk';
-import { createBigCommercePaymentsRatePayPayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createBigCommercePaymentsRatePayPayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bigcommerce-payments';
 import React, { type FunctionComponent, useCallback, useEffect, useMemo, useRef } from 'react';
 
 import {

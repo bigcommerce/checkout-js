@@ -6,7 +6,7 @@ import {
     type PaymentInitializeOptions,
     type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
-import { createStripeV3PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createStripeV3PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/stripe';
 import { render } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';

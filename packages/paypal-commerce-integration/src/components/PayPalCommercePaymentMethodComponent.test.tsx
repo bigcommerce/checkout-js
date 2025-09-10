@@ -9,7 +9,7 @@ import {
     createPayPalCommerceCreditPaymentStrategy,
     createPayPalCommercePaymentStrategy,
     createPayPalCommerceVenmoPaymentStrategy,
-} from '@bigcommerce/checkout-sdk/integrations';
+} from '@bigcommerce/checkout-sdk/integrations/paypal-commerce';
 import { render } from '@testing-library/react';
 import { EventEmitter } from 'events';
 import React from 'react';

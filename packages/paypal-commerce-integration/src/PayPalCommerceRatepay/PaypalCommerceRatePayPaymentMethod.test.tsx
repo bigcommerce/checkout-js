@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { createCheckoutService, type LanguageService } from '@bigcommerce/checkout-sdk';
-import { createPayPalCommerceRatePayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createPayPalCommerceRatePayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/paypal-commerce';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { EventEmitter } from 'events';
 import { Formik } from 'formik';

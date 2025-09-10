@@ -5,7 +5,7 @@ import {
     createLanguageService,
     type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
-import { createMonerisPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createMonerisPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/moneris';
 import { render } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';

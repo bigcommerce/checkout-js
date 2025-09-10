@@ -7,7 +7,7 @@ import {
     type PaymentInitializeOptions,
     type PaymentRequestOptions,
 } from '@bigcommerce/checkout-sdk';
-import { createSquareV2PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createSquareV2PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/squarev2';
 import { render } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';

@@ -3,7 +3,7 @@ import {
     type LegacyHostedFormOptions,
     type PaymentInitializeOptions,
 } from '@bigcommerce/checkout-sdk';
-import { createMolliePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createMolliePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/mollie';
 import { compact, forIn, some } from 'lodash';
 import React, {
     type FunctionComponent,

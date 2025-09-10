@@ -1,5 +1,5 @@
 import { createCheckoutService, type LanguageService } from '@bigcommerce/checkout-sdk';
-import { createBigCommercePaymentsRatePayPayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createBigCommercePaymentsRatePayPayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bigcommerce-payments';
 import { fireEvent, render, screen, configure } from '@testing-library/react';
 import { EventEmitter } from 'events';
 import { Formik } from 'formik';

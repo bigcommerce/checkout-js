@@ -1,5 +1,5 @@
 import { type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
-import { createCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/credit-card';
 import React, { type FunctionComponent, useCallback } from 'react';
 
 import { HostedPaymentComponent } from '@bigcommerce/checkout/hosted-payment-integration';

@@ -1,5 +1,5 @@
 import { createCheckoutService, createLanguageService } from '@bigcommerce/checkout-sdk';
-import { createBigCommercePaymentsFastlanePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createBigCommercePaymentsFastlanePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bigcommerce-payments';
 import React from 'react';
 
 import { getPaymentFormServiceMock } from '@bigcommerce/checkout/test-mocks';

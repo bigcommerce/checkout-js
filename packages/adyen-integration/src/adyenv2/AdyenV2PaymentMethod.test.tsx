@@ -6,7 +6,7 @@ import {
     type PaymentInitializeOptions,
     type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
-import { createAdyenV2PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createAdyenV2PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/adyen';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';

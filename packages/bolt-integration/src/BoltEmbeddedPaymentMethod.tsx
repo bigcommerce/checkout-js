@@ -1,4 +1,4 @@
-import { createBoltPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createBoltPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bolt';
 import React, { type FunctionComponent, useCallback, useState } from 'react';
 
 import { HostedWidgetPaymentComponent } from '@bigcommerce/checkout/hosted-widget-integration';

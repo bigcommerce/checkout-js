@@ -1,4 +1,6 @@
-import { createCreditCardPaymentStrategy, createCyberSourcePaymentStrategy, createCyberSourceV2PaymentStrategy, createSagePayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/credit-card';
+import { createCyberSourcePaymentStrategy, createCyberSourceV2PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/cybersource';
+import { createSagePayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/sagepay';
 import React, { type FunctionComponent, useCallback } from 'react';
 
 import {

@@ -1,4 +1,4 @@
-import { createBigCommercePaymentsPayLaterPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createBigCommercePaymentsPayLaterPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bigcommerce-payments';
 import React, { type FunctionComponent, useEffect } from 'react';
 
 import { PaymentMethodId, useCheckout } from '@bigcommerce/checkout/payment-integration-api';

@@ -5,7 +5,7 @@ import {
     createLanguageService,
     type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
-import { createBigCommercePaymentsCreditCardsPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createBigCommercePaymentsCreditCardsPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bigcommerce-payments';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';

@@ -5,7 +5,7 @@ import {
     type CardInstrument,
     type PaymentInitializeOptions,
 } from '@bigcommerce/checkout-sdk';
-import { createAdyenV2PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createAdyenV2PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/adyen';
 import React, { type FunctionComponent, useCallback, useRef, useState } from 'react';
 
 import { type HostedWidgetComponentProps } from '@bigcommerce/checkout/hosted-widget-integration';

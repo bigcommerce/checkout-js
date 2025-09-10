@@ -1,4 +1,4 @@
-import { createBraintreeLocalMethodsPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createBraintreeLocalMethodsPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
 import React, { type FunctionComponent, useEffect } from 'react';
 
 import {

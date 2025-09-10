@@ -6,7 +6,9 @@ import {
     type PaymentMethod,
     type PaymentRequestOptions,
 } from '@bigcommerce/checkout-sdk';
-import { createExternalPaymentStrategy, createHummPaymentStrategy, createOffsitePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createExternalPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/external';
+import { createHummPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/humm';
+import { createOffsitePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/offsite';
 import { memoizeOne } from '@bigcommerce/memoize';
 import { find, noop } from 'lodash';
 import React, { Component, type ReactNode } from 'react';

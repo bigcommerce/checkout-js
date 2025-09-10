@@ -1,5 +1,5 @@
 import { type CardInstrument } from '@bigcommerce/checkout-sdk';
-import { createBigCommercePaymentsFastlanePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createBigCommercePaymentsFastlanePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bigcommerce-payments';
 import React, { type FunctionComponent, useEffect, useRef } from 'react';
 
 import { LocaleProvider } from '@bigcommerce/checkout/locale';

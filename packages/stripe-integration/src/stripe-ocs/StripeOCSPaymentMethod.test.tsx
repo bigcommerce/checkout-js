@@ -7,7 +7,7 @@ import {
     type PaymentMethod,
     type WithStripeOCSPaymentInitializeOptions,
 } from '@bigcommerce/checkout-sdk';
-import { createStripeOCSPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createStripeOCSPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/stripe';
 import { render } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';

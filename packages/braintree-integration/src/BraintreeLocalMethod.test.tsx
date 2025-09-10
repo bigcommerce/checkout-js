@@ -1,5 +1,5 @@
 import { createCheckoutService, type LanguageService } from '@bigcommerce/checkout-sdk';
-import { createBraintreeLocalMethodsPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createBraintreeLocalMethodsPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
 import { EventEmitter } from 'events';
 import React from 'react';
 

@@ -1,4 +1,4 @@
-import { createKlarnaV2PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createKlarnaV2PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/klarna';
 import { some } from 'lodash';
 import React, { type FunctionComponent, useCallback } from 'react';
 

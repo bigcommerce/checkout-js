@@ -5,7 +5,7 @@ import {
     createCheckoutComFawryPaymentStrategy,
     createCheckoutComIdealPaymentStrategy,
     createCheckoutComSepaPaymentStrategy,
-} from '@bigcommerce/checkout-sdk/integrations';
+} from '@bigcommerce/checkout-sdk/integrations/checkoutcom-custom';
 import React, { type FunctionComponent, useCallback } from 'react';
 
 import {

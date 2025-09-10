@@ -1,5 +1,5 @@
 import { createCheckoutService, createLanguageService } from '@bigcommerce/checkout-sdk';
-import { createApplePayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createApplePayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/apple-pay';
 import React from 'react';
 
 import { type PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';

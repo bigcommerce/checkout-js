@@ -1,5 +1,5 @@
 import { createCheckoutService, createLanguageService } from '@bigcommerce/checkout-sdk';
-import { createBraintreeFastlanePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createBraintreeFastlanePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
 import React from 'react';
 
 import { getPaymentFormServiceMock } from '@bigcommerce/checkout/test-mocks';

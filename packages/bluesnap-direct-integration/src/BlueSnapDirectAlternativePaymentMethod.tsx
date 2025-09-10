@@ -1,5 +1,5 @@
 import { type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
-import { createBlueSnapDirectAPMPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createBlueSnapDirectAPMPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bluesnap-direct';
 import React, { type FunctionComponent, useCallback } from 'react';
 
 import { HostedPaymentComponent } from '@bigcommerce/checkout/hosted-payment-integration';

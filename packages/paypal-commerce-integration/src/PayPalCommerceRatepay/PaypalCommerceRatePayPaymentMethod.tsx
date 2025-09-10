@@ -1,5 +1,5 @@
 import { type FormField } from '@bigcommerce/checkout-sdk';
-import { createPayPalCommerceRatePayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createPayPalCommerceRatePayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/paypal-commerce';
 import React, { type FunctionComponent, useCallback, useEffect, useMemo, useRef } from 'react';
 
 import {

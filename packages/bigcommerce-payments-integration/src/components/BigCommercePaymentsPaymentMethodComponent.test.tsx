@@ -9,7 +9,7 @@ import {
     createBigCommercePaymentsAlternativeMethodsPaymentStrategy,
     createBigCommercePaymentsPayLaterPaymentStrategy,
     createBigCommercePaymentsVenmoPaymentStrategy,
-} from '@bigcommerce/checkout-sdk/integrations';
+} from '@bigcommerce/checkout-sdk/integrations/bigcommerce-payments';
 import { render } from '@testing-library/react';
 import { EventEmitter } from 'events';
 import React from 'react';

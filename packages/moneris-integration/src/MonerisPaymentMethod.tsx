@@ -1,5 +1,5 @@
 import { type CardInstrument, type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
-import { createMonerisPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createMonerisPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/moneris';
 import { some } from 'lodash';
 import React, { type FunctionComponent, useCallback } from 'react';
 

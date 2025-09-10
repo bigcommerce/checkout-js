@@ -1,8 +1,6 @@
 import { type CardInstrument, type LegacyHostedFormOptions } from '@bigcommerce/checkout-sdk';
-import {
-    createBlueSnapDirectCreditCardPaymentStrategy,
-    createCreditCardPaymentStrategy,
-} from '@bigcommerce/checkout-sdk/integrations';
+import { createBlueSnapDirectCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bluesnap-direct';
+import { createCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/credit-card';
 import { compact, forIn } from 'lodash';
 import React, { type FunctionComponent, type ReactNode, useCallback, useState } from 'react';
 

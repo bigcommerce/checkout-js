@@ -1,5 +1,5 @@
 import { createCheckoutService } from '@bigcommerce/checkout-sdk';
-import { createBigCommercePaymentsPayLaterPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createBigCommercePaymentsPayLaterPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bigcommerce-payments';
 import React, { FunctionComponent } from 'react';
 
 import {

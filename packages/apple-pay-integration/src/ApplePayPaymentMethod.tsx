@@ -1,4 +1,4 @@
-import { createApplePayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createApplePayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/apple-pay';
 import React, { type FunctionComponent, useEffect } from 'react';
 
 import {

@@ -19,7 +19,7 @@ import {
     createGooglePayStripePaymentStrategy,
     createGooglePayTdOnlineMartPaymentStrategy,
     createGooglePayWorldpayAccessPaymentStrategy,
-} from '@bigcommerce/checkout-sdk/integrations';
+} from '@bigcommerce/checkout-sdk/integrations/google-pay';
 import { Formik } from 'formik';
 import each from 'jest-each';
 import { noop } from 'lodash';

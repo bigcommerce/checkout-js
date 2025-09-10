@@ -1,4 +1,4 @@
-import { createBlueSnapDirectAPMPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createBlueSnapDirectAPMPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bluesnap-direct';
 import React, { type FunctionComponent, useCallback, useEffect } from 'react';
 
 import {

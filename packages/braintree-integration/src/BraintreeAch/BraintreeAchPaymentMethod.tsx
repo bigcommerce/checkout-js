@@ -1,4 +1,4 @@
-import { createBraintreeAchPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createBraintreeAchPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
 import React, { type FunctionComponent, useEffect, useRef } from 'react';
 
 import { LocaleProvider } from '@bigcommerce/checkout/locale';

@@ -11,7 +11,7 @@ import {
     createBigCommercePaymentsAlternativeMethodsPaymentStrategy,
     createBigCommercePaymentsPayLaterPaymentStrategy,
     createBigCommercePaymentsVenmoPaymentStrategy,
-} from '@bigcommerce/checkout-sdk/integrations';
+} from '@bigcommerce/checkout-sdk/integrations/bigcommerce-payments';
 import React, { type FunctionComponent, useCallback, useEffect, useRef } from 'react';
 
 import { type PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';

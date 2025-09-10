@@ -1,4 +1,4 @@
-import { createSquareV2PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createSquareV2PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/squarev2';
 import { difference } from 'lodash';
 import React, { type FunctionComponent, useCallback, useEffect } from 'react';
 

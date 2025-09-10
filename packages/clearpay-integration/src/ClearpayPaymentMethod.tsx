@@ -1,5 +1,5 @@
 import { type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
-import { createClearpayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createClearpayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/clearpay';
 import React, { type FunctionComponent, useCallback } from 'react';
 
 import { HostedPaymentComponent } from '@bigcommerce/checkout/hosted-payment-integration';

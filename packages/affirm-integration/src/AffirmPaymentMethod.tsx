@@ -1,5 +1,5 @@
 import { type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
-import { createAffirmPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createAffirmPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/affirm';
 import React, { type FunctionComponent, useCallback, useMemo } from 'react';
 
 import { HostedPaymentComponent } from '@bigcommerce/checkout/hosted-payment-integration';

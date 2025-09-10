@@ -3,7 +3,7 @@ import {
     type LegacyHostedFormOptions,
     type PaymentInitializeOptions,
 } from '@bigcommerce/checkout-sdk';
-import { createWorldpayAccessPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createWorldpayAccessPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/worldpayaccess';
 import { compact, forIn } from 'lodash';
 import React, {
     createRef,

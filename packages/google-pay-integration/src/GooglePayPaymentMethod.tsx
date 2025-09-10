@@ -12,7 +12,7 @@ import {
     createGooglePayStripePaymentStrategy,
     createGooglePayTdOnlineMartPaymentStrategy,
     createGooglePayWorldpayAccessPaymentStrategy,
-} from '@bigcommerce/checkout-sdk/integrations';
+} from '@bigcommerce/checkout-sdk/integrations/google-pay';
 import React, { type FunctionComponent, useCallback } from 'react';
 
 import {

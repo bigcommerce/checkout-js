@@ -6,7 +6,7 @@ import {
     type PaymentInitializeOptions,
     type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
-import { createAmazonPayV2PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createAmazonPayV2PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/amazon-pay';
 import { render } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';

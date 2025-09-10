@@ -1,5 +1,5 @@
 import { createCheckoutService, createLanguageService } from '@bigcommerce/checkout-sdk';
-import { createOfflinePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations';
+import { createOfflinePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/offline';
 import React from 'react';
 
 import { type PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
