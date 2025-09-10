@@ -23,7 +23,6 @@
     "error-handling-utils": "packages/error-handling-utils",
     "google-pay-integration": "packages/google-pay-integration",
     "hosted-credit-card-integration": "packages/hosted-credit-card-integration",
-    "hosted-dropin-integration": "packages/hosted-dropin-integration",
     "hosted-payment-integration": "packages/hosted-payment-integration",
     "hosted-widget-integration": "packages/hosted-widget-integration",
     "instrument-utils": "packages/instrument-utils",
