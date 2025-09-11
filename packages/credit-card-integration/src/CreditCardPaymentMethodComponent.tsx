@@ -17,8 +17,6 @@ import { type ObjectSchema } from 'yup';
 import {
     CardInstrumentFieldset,
     configureCardValidator,
-    CreditCardFieldset,
-    type CreditCardFieldsetValues,
     CreditCardValidation,
     getCreditCardValidationSchema,
     getInstrumentValidationSchema,
@@ -36,7 +34,7 @@ import {
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 export interface CreditCardPaymentMethodProps {
-    cardFieldset?: ReactNode;
+    cardFieldset: ReactNode;
     cardValidationSchema?: ObjectSchema;
     isInitializing?: boolean;
     isUsingMultiShipping?: boolean;
@@ -69,7 +67,7 @@ interface CreditCardPaymentMethodState {
     selectedInstrumentId?: string;
 }
 
-export type CreditCardPaymentMethodValues = CreditCardFieldsetValues | CardInstrumentFieldsetValues;
+export type CreditCardPaymentMethodValues = CardInstrumentFieldsetValues;
 
 class CreditCardPaymentMethodComponent extends Component<
     CreditCardPaymentMethodProps & PaymentMethodProps
@@ -239,15 +237,6 @@ class CreditCardPaymentMethodComponent extends Component<
                                         />
                                     )
                                 }
-                            />
-                        )}
-
-                        {shouldShowCreditCardFieldset && !cardFieldset && (
-                            <CreditCardFieldset
-                                shouldShowCardCodeField={
-                                    method.config.cardCode || method.config.cardCode === null
-                                }
-                                shouldShowCustomerCodeField={method.config.requireCustomerCode}
                             />
                         )}
 

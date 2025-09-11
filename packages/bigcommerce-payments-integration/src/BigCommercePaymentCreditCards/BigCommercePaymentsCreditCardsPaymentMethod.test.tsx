@@ -327,32 +327,6 @@ describe('BigCommercePaymentsCreditCardPaymentMethod', () => {
         }
     });
 
-    it('renders fallback form when isHostedFormEnabled is false', () => {
-        defaultProps.method.config.isHostedFormEnabled = false;
-
-        render(<PaymentMethodTest {...defaultProps} />);
-
-        expect(document.querySelector('.paymentMethod--creditCard')).toBeInTheDocument();
-    });
-
-    it('renders with required customer code and cardholder name fields', () => {
-        defaultProps.method.config.requireCustomerCode = true;
-        defaultProps.method.config.showCardHolderName = true;
-
-        render(<PaymentMethodTest {...defaultProps} />);
-
-        expect(screen.getByText('Customer Code')).toBeInTheDocument();
-        expect(screen.getByLabelText(/Name on Card/i)).toBeInTheDocument();
-    });
-
-    it('renders card code field if cardCode is true', () => {
-        defaultProps.method.config.cardCode = true;
-
-        render(<PaymentMethodTest {...defaultProps} />);
-
-        expect(screen.getByLabelText(/CVV|Security Code|Card Code/i)).toBeInTheDocument();
-    });
-
     it('calls onUnhandledError if error occurs during initializePayment', async () => {
         (checkoutService.initializePayment as jest.Mock).mockRejectedValueOnce(
             new Error('init error'),
