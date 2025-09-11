@@ -17,9 +17,6 @@ import { type ObjectSchema } from 'yup';
 import {
     CardInstrumentFieldset,
     configureCardValidator,
-    CreditCardFieldset,
-    type CreditCardFieldsetValues,
-    CreditCardValidation,
     getCreditCardValidationSchema,
     getInstrumentValidationSchema,
     isCardInstrument,
@@ -29,14 +26,11 @@ import {
     StoreInstrumentFieldset,
 } from '@bigcommerce/checkout/instrument-utils';
 import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
-import {
-    type CardInstrumentFieldsetValues,
-    type PaymentMethodProps,
-} from '@bigcommerce/checkout/payment-integration-api';
+import { type PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 export interface CreditCardPaymentMethodProps {
-    cardFieldset?: ReactNode;
+    cardFieldset: ReactNode;
     cardValidationSchema?: ObjectSchema;
     isInitializing?: boolean;
     isUsingMultiShipping?: boolean;
@@ -68,8 +62,6 @@ interface CreditCardPaymentMethodState {
     isAddingNewCard: boolean;
     selectedInstrumentId?: string;
 }
-
-export type CreditCardPaymentMethodValues = CreditCardFieldsetValues | CardInstrumentFieldsetValues;
 
 class CreditCardPaymentMethodComponent extends Component<
     CreditCardPaymentMethodProps & PaymentMethodProps
@@ -179,17 +171,10 @@ class CreditCardPaymentMethodComponent extends Component<
     }
 
     render(): ReactNode {
-        const {
-            checkoutState,
-            cardFieldset,
-            getStoredCardValidationFieldset,
-            isInitializing,
-            method,
-        } = this.props;
+        const { checkoutState, cardFieldset, getStoredCardValidationFieldset, isInitializing } =
+            this.props;
         const {
             instruments,
-            isInstrumentCardCodeRequired: isInstrumentCardCodeRequiredProp,
-            isInstrumentCardNumberRequired: isInstrumentCardNumberRequiredProp,
             isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
             isLoadingInstruments,
             shouldShowInstrumentFieldset,
@@ -203,12 +188,6 @@ class CreditCardPaymentMethodComponent extends Component<
         const selectedInstrument = this.getSelectedInstrument();
         const shouldShowCreditCardFieldset = !shouldShowInstrumentFieldset || isAddingNewCard;
         const isLoading = isInitializing || isLoadingInstruments;
-        const shouldShowNumberField = selectedInstrument
-            ? isInstrumentCardNumberRequiredProp(selectedInstrument, method)
-            : false;
-        const shouldShowCardCodeField = selectedInstrument
-            ? isInstrumentCardCodeRequiredProp(selectedInstrument, method)
-            : false;
 
         const storeConfig = getConfig();
 
@@ -230,24 +209,10 @@ class CreditCardPaymentMethodComponent extends Component<
                                     selectedInstrument && selectedInstrument.bigpayToken
                                 }
                                 validateInstrument={
-                                    getStoredCardValidationFieldset ? (
-                                        getStoredCardValidationFieldset(selectedInstrument)
-                                    ) : (
-                                        <CreditCardValidation
-                                            shouldShowCardCodeField={shouldShowCardCodeField}
-                                            shouldShowNumberField={shouldShowNumberField}
-                                        />
-                                    )
+                                    getStoredCardValidationFieldset
+                                        ? getStoredCardValidationFieldset(selectedInstrument)
+                                        : null
                                 }
-                            />
-                        )}
-
-                        {shouldShowCreditCardFieldset && !cardFieldset && (
-                            <CreditCardFieldset
-                                shouldShowCardCodeField={
-                                    method.config.cardCode || method.config.cardCode === null
-                                }
-                                shouldShowCustomerCodeField={method.config.requireCustomerCode}
                             />
                         )}
 

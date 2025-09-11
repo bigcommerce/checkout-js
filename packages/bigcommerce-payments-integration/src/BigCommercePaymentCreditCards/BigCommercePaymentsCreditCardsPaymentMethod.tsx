@@ -260,9 +260,7 @@ const BigCommercePaymentsCreditCardsPaymentMethod: FunctionComponent<PaymentMeth
             [getHostedFormOptions, initializePayment],
         );
 
-    // Info: isHostedFormEnabled is an option in store config which responsible for switching BigCommercePayments Credit Card form
-    // rendering between Hosted Form and default BC fields (non-hosted)
-    return isHostedFormEnabled ? (
+    return (
         <CreditCardPaymentMethodComponent
             {...props}
             cardFieldset={
@@ -286,12 +284,6 @@ const BigCommercePaymentsCreditCardsPaymentMethod: FunctionComponent<PaymentMeth
                 language,
                 isCardExpiryRequired: true,
             })}
-        />
-    ) : (
-        <CreditCardPaymentMethodComponent
-            {...props}
-            deinitializePayment={checkoutService.deinitializePayment}
-            initializePayment={initializeBigCommercePaymentsCreditCardPayment}
         />
     );
 };
