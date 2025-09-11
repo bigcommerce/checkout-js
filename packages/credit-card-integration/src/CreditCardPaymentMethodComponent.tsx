@@ -27,10 +27,7 @@ import {
     StoreInstrumentFieldset,
 } from '@bigcommerce/checkout/instrument-utils';
 import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
-import {
-    type CardInstrumentFieldsetValues,
-    type PaymentMethodProps,
-} from '@bigcommerce/checkout/payment-integration-api';
+import { type PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 export interface CreditCardPaymentMethodProps {
@@ -66,8 +63,6 @@ interface CreditCardPaymentMethodState {
     isAddingNewCard: boolean;
     selectedInstrumentId?: string;
 }
-
-export type CreditCardPaymentMethodValues = CardInstrumentFieldsetValues;
 
 class CreditCardPaymentMethodComponent extends Component<
     CreditCardPaymentMethodProps & PaymentMethodProps

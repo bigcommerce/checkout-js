@@ -10,13 +10,13 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';
 
-import { type CreditCardPaymentMethodValues } from '@bigcommerce/checkout/credit-card-integration';
 import {
     createLocaleContext,
     LocaleContext,
     type LocaleContextType,
 } from '@bigcommerce/checkout/locale';
 import {
+    type CardInstrumentFieldsetValues,
     CheckoutProvider,
     PaymentFormContext,
     type PaymentFormService,
@@ -36,7 +36,7 @@ import { render, screen } from '@bigcommerce/checkout/test-utils';
 import PayPalCommerceCreditCardsPaymentMethod from './PayPalCommerceCreditCardsPaymentMethod';
 
 describe('PayPalCommerceCreditCardPaymentMethod', () => {
-    let initialValues: CreditCardPaymentMethodValues;
+    let initialValues: CardInstrumentFieldsetValues;
     let method: PaymentMethod;
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
@@ -47,11 +47,6 @@ describe('PayPalCommerceCreditCardPaymentMethod', () => {
 
     beforeEach(() => {
         initialValues = {
-            ccCustomerCode: '',
-            ccCvv: '',
-            ccExpiry: '',
-            ccName: '',
-            ccNumber: '',
             instrumentId: '',
         };
         paymentForm = getPaymentFormServiceMock();
