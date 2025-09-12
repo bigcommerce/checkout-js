@@ -4,6 +4,7 @@ import {
     type CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
+import { createBraintreeAchPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';
@@ -108,6 +109,7 @@ describe('BraintreeAchPaymentForm', () => {
             },
             gatewayId: undefined,
             methodId: 'braintreeach',
+            integrations: [createBraintreeAchPaymentStrategy],
         });
     });
 

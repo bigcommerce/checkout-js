@@ -1,4 +1,6 @@
 import { type CardInstrument, type LegacyHostedFormOptions } from '@bigcommerce/checkout-sdk';
+import { createBlueSnapDirectCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bluesnap-direct';
+import { createCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/credit-card';
 import { compact, forIn } from 'lodash';
 import React, { type FunctionComponent, type ReactNode, useCallback, useState } from 'react';
 
@@ -241,6 +243,10 @@ const HostedCreditCardComponent: FunctionComponent<PaymentMethodProps> = ({
             async (options, selectedInstrument) => {
                 return initializePayment({
                     ...options,
+                    integrations: [
+                        createCreditCardPaymentStrategy,
+                        createBlueSnapDirectCreditCardPaymentStrategy,
+                    ],
                     creditCard: {
                         form: await getHostedFormOptions(selectedInstrument),
                         bigpayToken: selectedInstrument?.bigpayToken,

@@ -1,3 +1,4 @@
+import { createOfflinePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/offline';
 import { type FunctionComponent, useEffect } from 'react';
 
 import {
@@ -16,6 +17,7 @@ const OfflinePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                 await checkoutService.initializePayment({
                     gatewayId: method.gateway,
                     methodId: method.id,
+                    integrations: [createOfflinePaymentStrategy],
                 });
             } catch (error) {
                 if (error instanceof Error) {

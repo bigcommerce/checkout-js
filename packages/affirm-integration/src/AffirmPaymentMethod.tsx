@@ -1,4 +1,6 @@
-import React, { type FunctionComponent, useMemo } from 'react';
+import { type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import { createAffirmPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/affirm';
+import React, { type FunctionComponent, useCallback, useMemo } from 'react';
 
 import { HostedPaymentComponent } from '@bigcommerce/checkout/hosted-payment-integration';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -14,13 +16,23 @@ const AffirmPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 }) => {
     const description = useMemo(() => <TranslatedString id="payment.affirm_body_text" />, []);
 
+    const initializeAffirmPayment = useCallback(
+        (options: PaymentInitializeOptions) => {
+            return checkoutService.initializePayment({
+                ...options,
+                integrations: [createAffirmPaymentStrategy],
+            });
+        },
+        [checkoutService],
+    );
+
     return (
         <HostedPaymentComponent
             {...rest}
             checkoutService={checkoutService}
             deinitializePayment={checkoutService.deinitializePayment}
             description={description}
-            initializePayment={checkoutService.initializePayment}
+            initializePayment={initializeAffirmPayment}
         />
     );
 };

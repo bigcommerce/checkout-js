@@ -4,6 +4,12 @@ import {
     type HostedInstrument,
     type LanguageService,
 } from '@bigcommerce/checkout-sdk';
+import {
+    createPayPalCommerceAlternativeMethodsPaymentStrategy,
+    createPayPalCommerceCreditPaymentStrategy,
+    createPayPalCommercePaymentStrategy,
+    createPayPalCommerceVenmoPaymentStrategy,
+} from '@bigcommerce/checkout-sdk/integrations/paypal-commerce';
 import { render } from '@testing-library/react';
 import { EventEmitter } from 'events';
 import React from 'react';
@@ -70,6 +76,12 @@ describe('PayPalCommercePaymentMethodComponent', () => {
         expect(initializePayment).toHaveBeenCalledWith({
             gatewayId: props.method.gateway,
             methodId: props.method.id,
+            integrations: [
+                createPayPalCommerceAlternativeMethodsPaymentStrategy,
+                createPayPalCommerceCreditPaymentStrategy,
+                createPayPalCommercePaymentStrategy,
+                createPayPalCommerceVenmoPaymentStrategy,
+            ],
             paypalcommerce: {
                 container: '#checkout-payment-continue',
                 onInit: expect.any(Function),
@@ -106,6 +118,12 @@ describe('PayPalCommercePaymentMethodComponent', () => {
         expect(initializePayment).toHaveBeenCalledWith({
             gatewayId: props.method.gateway,
             methodId: props.method.id,
+            integrations: [
+                createPayPalCommerceAlternativeMethodsPaymentStrategy,
+                createPayPalCommerceCreditPaymentStrategy,
+                createPayPalCommercePaymentStrategy,
+                createPayPalCommerceVenmoPaymentStrategy,
+            ],
             paypalcommercealternativemethods: {
                 container: '#checkout-payment-continue',
                 onError: expect.any(Function),

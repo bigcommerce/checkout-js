@@ -3,6 +3,7 @@ import {
     type LegacyHostedFormOptions,
     type PaymentInitializeOptions,
 } from '@bigcommerce/checkout-sdk';
+import { createWorldpayAccessPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/worldpayaccess';
 import { compact, forIn } from 'lodash';
 import React, {
     createRef,
@@ -216,9 +217,10 @@ const WorldpayCreditCardPaymentMethod: FunctionComponent<PaymentMethodProps> = (
         }
     }, []);
     const initializeWorldpayPayment = useCallback(
-        async (options: PaymentInitializeOptions, selectedInstrument: any) => {
+        async (options: PaymentInitializeOptions, selectedInstrument: CardInstrument) => {
             return checkoutService.initializePayment({
                 ...options,
+                integrations: [createWorldpayAccessPaymentStrategy],
                 creditCard: {
                     form: getHostedFormOptions && (await getHostedFormOptions(selectedInstrument)),
                 },

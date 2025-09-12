@@ -1,3 +1,4 @@
+import { createBraintreeLocalMethodsPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
 import React, { type FunctionComponent, useEffect } from 'react';
 
 import {
@@ -6,7 +7,7 @@ import {
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 
-const BraintreeLocalPaymentMethod: FunctionComponent<any> = ({
+const BraintreeLocalPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     method,
     checkoutService,
     paymentForm,
@@ -20,6 +21,7 @@ const BraintreeLocalPaymentMethod: FunctionComponent<any> = ({
             await checkoutService.initializePayment({
                 gatewayId: method.gateway,
                 methodId: method.id,
+                integrations: [createBraintreeLocalMethodsPaymentStrategy],
                 braintreelocalmethods: {
                     container: '#checkout-payment-continue',
                     buttonText: language.translate('payment.continue_with_brand', {
