@@ -114,6 +114,7 @@ const HostedPaymentMethodComponent: React.FC<HostedPaymentComponentProps> = (pro
         instruments,
         isNewAddress,
         isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
+        loadInstruments,
     } = derivedProps;
 
     const getDefaultInstrument = useCallback((): AccountInstrument | undefined => {
@@ -146,7 +147,7 @@ const HostedPaymentMethodComponent: React.FC<HostedPaymentComponentProps> = (pro
                 });
 
                 if (isInstrumentFeatureAvailableProp) {
-                    await derivedProps.loadInstruments();
+                    await loadInstruments();
                 }
             } catch (error) {
                 onUnhandledError(error);
@@ -154,16 +155,7 @@ const HostedPaymentMethodComponent: React.FC<HostedPaymentComponentProps> = (pro
         };
 
         void initializePaymentAsync();
-    }, [
-        initializePayment,
-        method.gateway,
-        method.id,
-        isInstrumentFeatureAvailableProp,
-        derivedProps,
-        onUnhandledError,
-    ]);
 
-    useEffect(() => {
         return () => {
             const deinitializePaymentAsync = async () => {
                 try {
@@ -178,7 +170,8 @@ const HostedPaymentMethodComponent: React.FC<HostedPaymentComponentProps> = (pro
 
             void deinitializePaymentAsync();
         };
-    }, [deinitializePayment, method.gateway, method.id, onUnhandledError]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const currentSelectedInstrument = selectedInstrument || getDefaultInstrument();
     const isLoading = isInitializing || isLoadingInstruments;
