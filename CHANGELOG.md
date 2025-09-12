@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.670.2](https://github.com/bigcommerce/checkout-js/compare/v1.670.1...v1.670.2) (2025-09-12)
+
+
+### Bug Fixes
+
+* **payment:** fixed the issue with infinite loading of vaulted instruments during HostedPaymentMethodComponent rendering process ([#2575](https://github.com/bigcommerce/checkout-js/issues/2575)) ([a149f43](https://github.com/bigcommerce/checkout-js/commit/a149f43ee61bf59ba9d6bab0836576ff1a3570ef))
+
 ### [1.670.1](https://github.com/bigcommerce/checkout-js/compare/v1.670.0...v1.670.1) (2025-09-12)
 
 
