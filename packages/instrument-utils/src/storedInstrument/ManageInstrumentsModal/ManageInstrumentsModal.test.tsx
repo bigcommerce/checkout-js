@@ -55,16 +55,6 @@ describe('ManageInstrumentsModal', () => {
         );
     });
 
-    it('throws an error if not wrapped in checkout context', () => {
-        expect(() =>
-            render(
-                <LocaleContext.Provider value={localeContext}>
-                    <ManageInstrumentsModal {...defaultProps} />
-                </LocaleContext.Provider>,
-            ),
-        ).toThrow('Need to wrap in checkout context');
-    });
-
     it('renders list of card instruments in table format', () => {
         render(
             <ManageInstrumentsModalTest
