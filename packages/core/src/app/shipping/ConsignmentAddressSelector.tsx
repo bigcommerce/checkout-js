@@ -6,7 +6,7 @@ import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
 
 import { AddressFormModal, type AddressFormValues, AddressSelect, AddressType, isValidAddress, mapAddressFromFormValues } from "../address";
 import { ErrorModal } from "../common/error";
-import { EMPTY_ARRAY, isFloatingLabelEnabled } from "../common/utility";
+import { EMPTY_ARRAY } from "../common/utility";
 
 import { AssignItemFailedError, AssignItemInvalidAddressError } from "./errors";
 import GuestCustomerAddressSelector from "./GuestCustomerAddressSelector";
@@ -16,7 +16,6 @@ import { setRecommendedOrMissingShippingOption } from './utils';
 interface ConsignmentAddressSelectorProps {
     consignment?: MultiShippingConsignmentData;
     defaultCountryCode?: string;
-    countriesWithAutocomplete: string[];
     isLoading: boolean;
     onUnhandledError(error: Error): void;
     setConsignmentRequest?(consignmentRequest: ConsignmentCreateRequestBody): void;
@@ -25,7 +24,6 @@ interface ConsignmentAddressSelectorProps {
 
 const ConsignmentAddressSelector = ({
     consignment,
-    countriesWithAutocomplete,
     defaultCountryCode,
     isLoading,
     onUnhandledError,
@@ -38,7 +36,6 @@ const ConsignmentAddressSelector = ({
     const {
         checkoutState: {
             data: {
-                getShippingCountries,
                 getCustomer,
                 getConfig,
                 getConsignments: getPreviousConsignments,
@@ -52,7 +49,6 @@ const ConsignmentAddressSelector = ({
         },
     } = useCheckout();
 
-    const countries = getShippingCountries() || EMPTY_ARRAY;
     const customer = getCustomer();
     const config = getConfig();
 
@@ -60,14 +56,8 @@ const ConsignmentAddressSelector = ({
         return null;
     }
 
-    const isFloatingLabelEnabledFlag = isFloatingLabelEnabled(config.checkoutSettings);
     // TODO: add filter for addresses
     const addresses = customer.addresses || EMPTY_ARRAY;
-    const {
-        checkoutSettings: {
-            googleMapsApiKey,
-        },
-    } = config;
 
     const isGuest = customer.isGuest;
 
@@ -156,12 +146,8 @@ const ConsignmentAddressSelector = ({
                 shouldShowErrorCode={false}
             />
             <AddressFormModal
-                countries={countries}
-                countriesWithAutocomplete={countriesWithAutocomplete}
                 defaultCountryCode={defaultCountryCode}
                 getFields={getFields}
-                googleMapsApiKey={googleMapsApiKey}
-                isFloatingLabelEnabled={isFloatingLabelEnabledFlag}
                 isLoading={isLoading}
                 isOpen={isOpenNewAddressModal}
                 onRequestClose={handleCloseAddAddressForm}

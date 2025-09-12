@@ -23,9 +23,7 @@ export interface ShippingFormProps {
     cart: Cart;
     cartHasChanged: boolean;
     consignments: Consignment[];
-    countriesWithAutocomplete: string[];
     customerMessage: string;
-    googleMapsApiKey?: string;
     isBillingSameAsShipping: boolean;
     isGuest: boolean;
     isLoading: boolean;
@@ -34,7 +32,6 @@ export interface ShippingFormProps {
     methodId?: string;
     shippingAddress?: Address;
     shouldShowOrderComments: boolean;
-    isFloatingLabelEnabled?: boolean;
     isInitialValueLoaded: boolean;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     deleteConsignments(): Promise<Address | undefined>;
@@ -57,27 +54,24 @@ export interface ShippingFormProps {
 const ShippingForm = ({
     cart,
     cartHasChanged,
-      consignments,
-      countriesWithAutocomplete,
-      customerMessage,
-      deinitialize,
-      deleteConsignments,
-      getFields,
-      googleMapsApiKey,
-      initialize,
-      isBillingSameAsShipping,
-      isLoading,
-      isMultiShippingMode,
-      methodId,
-      onMultiShippingSubmit,
-      onSingleShippingSubmit,
+    consignments,
+    customerMessage,
+    deinitialize,
+    deleteConsignments,
+    getFields,
+    initialize,
+    isBillingSameAsShipping,
+    isLoading,
+    isMultiShippingMode,
+    methodId,
+    onMultiShippingSubmit,
+    onSingleShippingSubmit,
     onUnhandledError,
-      shippingAddress,
-      shouldShowOrderComments,
-      signOut,
-      updateAddress,
-      isShippingStepPending,
-      isFloatingLabelEnabled,
+    shippingAddress,
+    shouldShowOrderComments,
+    signOut,
+    updateAddress,
+    isShippingStepPending,
     isInitialValueLoaded,
     shippingFormRenderTimestamp,
     setIsMultishippingMode,
@@ -105,7 +99,6 @@ const ShippingForm = ({
     const getMultiShippingForm = () => {
         return <MultiShippingForm
             cartHasChanged={cartHasChanged}
-            countriesWithAutocomplete={countriesWithAutocomplete}
             customerMessage={customerMessage}
             defaultCountryCode={shippingAddress?.countryCode}
             isLoading={isLoading}
@@ -120,15 +113,12 @@ const ShippingForm = ({
         <SingleShippingForm
             cartHasChanged={cartHasChanged}
             consignments={consignments}
-            countriesWithAutocomplete={countriesWithAutocomplete}
             customerMessage={customerMessage}
             deinitialize={deinitialize}
             deleteConsignments={deleteConsignments}
             getFields={getFields}
-            googleMapsApiKey={googleMapsApiKey}
             initialize={initialize}
             isBillingSameAsShipping={isBillingSameAsShipping}
-            isFloatingLabelEnabled={isFloatingLabelEnabled}
             isInitialValueLoaded={isInitialValueLoaded}
             isLoading={isLoading}
             isMultiShippingMode={isMultiShippingMode}

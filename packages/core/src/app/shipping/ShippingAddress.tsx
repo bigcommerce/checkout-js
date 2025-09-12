@@ -17,15 +17,12 @@ import ShippingAddressForm from './ShippingAddressForm';
 
 export interface ShippingAddressProps {
     consignments: Consignment[];
-    countriesWithAutocomplete: string[];
     formFields: FormField[];
-    googleMapsApiKey?: string;
     isLoading: boolean;
     isShippingStepPending: boolean;
     methodId?: string;
     shippingAddress?: Address;
     hasRequestedShippingOptions: boolean;
-    isFloatingLabelEnabled?: boolean;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     initialize(options: ShippingInitializeOptions): Promise<CheckoutSelectors>;
     onAddressSelect(address: Address): void;
@@ -38,16 +35,13 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = (props) => {
     const {
         methodId,
         formFields,
-        countriesWithAutocomplete,
         consignments,
-        googleMapsApiKey,
         onAddressSelect,
         onFieldChange,
         onUseNewAddress,
         isLoading,
         shippingAddress,
         hasRequestedShippingOptions,
-        isFloatingLabelEnabled,
     } = props;
 
     const { setSubmitted } = useContext(FormContext);
@@ -84,10 +78,7 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = (props) => {
         <ShippingAddressForm
             address={shippingAddress}
             consignments={consignments}
-            countriesWithAutocomplete={countriesWithAutocomplete}
             formFields={formFields}
-            googleMapsApiKey={googleMapsApiKey}
-            isFloatingLabelEnabled={isFloatingLabelEnabled}
             isLoading={isLoading}
             onAddressSelect={onAddressSelect}
             onFieldChange={handleFieldChange}
