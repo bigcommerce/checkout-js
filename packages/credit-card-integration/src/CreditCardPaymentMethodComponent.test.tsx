@@ -20,6 +20,7 @@ import {
     type LocaleContextType,
 } from '@bigcommerce/checkout/locale';
 import {
+    type CardInstrumentFieldsetValues,
     CheckoutContext,
     PaymentFormContext,
     type PaymentFormService,
@@ -39,14 +40,13 @@ import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import CreditCardPaymentMethodComponent, {
     type CreditCardPaymentMethodProps,
-    type CreditCardPaymentMethodValues,
 } from './CreditCardPaymentMethodComponent';
 
 describe('CreditCardPaymentMethod', () => {
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
     let defaultProps: jest.Mocked<CreditCardPaymentMethodProps & PaymentMethodProps>;
-    let initialValues: CreditCardPaymentMethodValues;
+    let initialValues: CardInstrumentFieldsetValues;
     let localeContext: LocaleContextType;
     let paymentForm: PaymentFormService;
     let subscribeEventEmitter: EventEmitter;
@@ -56,11 +56,6 @@ describe('CreditCardPaymentMethod', () => {
 
     beforeEach(() => {
         initialValues = {
-            ccCustomerCode: '',
-            ccCvv: '',
-            ccExpiry: '',
-            ccName: '',
-            ccNumber: '',
             instrumentId: '',
         };
 
@@ -71,6 +66,7 @@ describe('CreditCardPaymentMethod', () => {
         paymentForm = getPaymentFormServiceMock();
 
         defaultProps = {
+            cardFieldset: null,
             checkoutService,
             checkoutState,
             language: localeContext.language,
