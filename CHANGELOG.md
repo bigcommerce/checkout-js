@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.669.0](https://github.com/bigcommerce/checkout-js/compare/v1.668.1...v1.669.0) (2025-09-12)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9454 Convert AddressForm ([#2540](https://github.com/bigcommerce/checkout-js/issues/2540)) ([9008331](https://github.com/bigcommerce/checkout-js/commit/9008331cc9ef35911c2a383bd51b6c2c83da23a7))
+
 ### [1.668.1](https://github.com/bigcommerce/checkout-js/compare/v1.668.0...v1.668.1) (2025-09-11)
 
 ## [1.668.0](https://github.com/bigcommerce/checkout-js/compare/v1.667.0...v1.668.0) (2025-09-09)
