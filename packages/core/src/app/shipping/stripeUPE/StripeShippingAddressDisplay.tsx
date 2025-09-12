@@ -1,54 +1,57 @@
-import { type CheckoutSelectors, type ShippingInitializeOptions, type ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
+import {
+  type CheckoutSelectors,
+  type ShippingInitializeOptions,
+  type ShippingRequestOptions,
+} from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { PureComponent, type ReactNode } from 'react';
+import React, { type FC, useEffect } from 'react';
 
 export interface StripeupeShippingAddressProps {
-    methodId?: string;
-    deinitialize(options?: ShippingRequestOptions): Promise<CheckoutSelectors>;
-    initialize(options?: ShippingInitializeOptions): Promise<CheckoutSelectors>;
-    onUnhandledError?(error: Error): void;
+  methodId?: string;
+  deinitialize(options?: ShippingRequestOptions): Promise<CheckoutSelectors>;
+  initialize(options?: ShippingInitializeOptions): Promise<CheckoutSelectors>;
+  onUnhandledError?(error: Error): void;
 }
 
-class StripeShippingAddressDisplay extends PureComponent<StripeupeShippingAddressProps> {
-    async componentDidMount(): Promise<void> {
-        const {
-            initialize,
-            methodId,
-            onUnhandledError = noop,
-        } = this.props;
+const StripeShippingAddressDisplay: FC<StripeupeShippingAddressProps> = ({
+   methodId,
+   initialize,
+   deinitialize,
+   onUnhandledError = noop,
+ }) => {
 
+  useEffect(() => {
+    const runInitialize = async () => {
+      try {
+        await initialize({ methodId });
+      } catch (error) {
+        onUnhandledError(error as Error);
+      }
+    };
+
+    void runInitialize();
+
+    return () => {
+      const runDeinitialize = async () => {
         try {
-            await initialize({ methodId });
+          await deinitialize({ methodId });
         } catch (error) {
-            onUnhandledError(error);
+          onUnhandledError(error as Error);
         }
-    }
+      };
 
-    async componentWillUnmount(): Promise<void> {
-        const {
-            deinitialize,
-            methodId,
-            onUnhandledError = noop,
-        } = this.props;
+      void runDeinitialize();
+    };
+  }, []);
 
-        try {
-            await deinitialize({ methodId });
-        } catch (error) {
-            onUnhandledError(error);
-        }
-    }
-
-    render(): ReactNode {
-
-        return (
-            <>
-                <div className="stepHeader" style={ { padding: 0 } }>
-                    <div id="StripeUpeShipping" style={ { width: '100%' } } />
-                </div>
-                <br />
-            </>
-        );
-    }
-}
+  return (
+    <>
+      <div className="stepHeader" style={{ padding: 0 }}>
+        <div id="StripeUpeShipping" style={{ width: '100%' }} />
+      </div>
+      <br />
+    </>
+  );
+};
 
 export default StripeShippingAddressDisplay;
