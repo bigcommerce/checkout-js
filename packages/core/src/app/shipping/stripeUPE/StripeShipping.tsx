@@ -8,7 +8,6 @@ import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 import { AddressFormSkeleton } from '@bigcommerce/checkout/ui';
 
 import type CheckoutStepStatus from '../../checkout/CheckoutStepStatus';
-import { EMPTY_ARRAY } from '../../common/utility';
 import ShippingHeader from '../ShippingHeader';
 
 import StripeShippingForm, { type SingleShippingFormValues } from './StripeShippingForm';
@@ -48,25 +47,17 @@ const StripeShipping = ({
   isShippingMethodLoading,
   ...shippingFormProps
 }: StripeShippingProps): ReactNode => {
-  const { checkoutService, checkoutState } = useCheckout();
+  const { checkoutState } = useCheckout();
 
   const {
     data: {
       getCheckout,
       getCustomer,
-      getConsignments,
       getShippingAddressFields,
-      getShippingCountries,
     },
   } = checkoutState;
   const checkout = getCheckout();
-  const consignments = getConsignments() || [];
   const customer = getCustomer();
-
-  const initialize = checkoutService.initializeShipping;
-  const deinitialize = checkoutService.deinitializeShipping;
-
-  const countries = getShippingCountries() || EMPTY_ARRAY;
   const getFields = getShippingAddressFields;
 
   const [isStripeLoading, setIsStripeLoading] = useState(true);
@@ -101,13 +92,9 @@ const StripeShipping = ({
           shouldShowMultiShipping={shouldShowMultiShipping}
         />
         <StripeShippingForm
-          consignments={consignments}
-          countries={countries}
           customerMessage={customerMessage}
           getFields={getFields}
           {...shippingFormProps}
-          deinitialize={deinitialize}
-          initialize={initialize}
           isBillingSameAsShipping={isBillingSameAsShipping}
           isLoading={isLoading}
           isMultiShippingMode={isMultiShippingMode}
