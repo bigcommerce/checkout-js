@@ -9,6 +9,7 @@ import userEvent from '@testing-library/user-event';
 import React, { type FunctionComponent } from 'react';
 
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
+import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import {
     createLocaleContext,
     LocaleContext,
@@ -22,14 +23,13 @@ import { getCart } from '../cart/carts.mock';
 import { getPhysicalItem } from '../cart/lineItem.mock';
 import { getCheckout } from '../checkout/checkouts.mock';
 import CheckoutStepType from '../checkout/CheckoutStepType';
+import { createErrorLogger } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
 import { getConsignment } from '../shipping/consignment.mock';
 
 import Shipping, { type ShippingProps, type WithCheckoutShippingProps } from './Shipping';
 import { getShippingAddress } from './shipping-addresses.mock';
-import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
-import { createErrorLogger } from '../common/error';
 
 describe('Shipping component', () => {
     let localeContext: LocaleContextType;

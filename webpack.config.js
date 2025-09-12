@@ -297,6 +297,18 @@ function loaderConfig(options, argv) {
                     hashFuncNames: ['sha256'],
                     enabled: isProduction,
                 }),
+                // Add fallback DefinePlugin for development mode to prevent race condition
+                ...(isProduction ? [] : [new DefinePlugin({
+                    LIBRARY_NAME: JSON.stringify(LIBRARY_NAME),
+                    PRELOAD_ASSETS: JSON.stringify(PRELOAD_ASSETS),
+                    MANIFEST_JSON: JSON.stringify({
+                        appVersion: 'dev',
+                        css: [],
+                        dynamicChunks: { css: [], js: [] },
+                        js: ['runtime.js', 'transients.js', 'vendor-initial.js', 'checkout.js'],
+                        integrity: {}
+                    }),
+                })]),
                 new AsyncHookPlugin({
                     onRun({ compiler, done }) {
                         let wasTriggeredBefore = false;
