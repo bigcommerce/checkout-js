@@ -7,6 +7,7 @@ import {
     type PaymentInitializeOptions,
     type PaymentRequestOptions,
 } from '@bigcommerce/checkout-sdk';
+import { createSquareV2PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/squarev2';
 import { render } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
@@ -109,6 +110,7 @@ describe('SquareV2 payment method', () => {
         expect(initializePayment).toHaveBeenCalledWith(
             expect.objectContaining({
                 methodId: 'squarev2',
+                integrations: [createSquareV2PaymentStrategy],
                 squarev2: {
                     containerId: 'squarev2_payment_element_container',
                     style: {

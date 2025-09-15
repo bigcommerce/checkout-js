@@ -4,6 +4,7 @@ import {
     type PaymentInitializeOptions,
     type StripeElementOptions,
 } from '@bigcommerce/checkout-sdk';
+import { createStripeV3PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/stripe';
 import { noop, some } from 'lodash';
 import React, { type FunctionComponent, useCallback, useMemo } from 'react';
 
@@ -171,6 +172,7 @@ const StripeV3PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         async (options: PaymentInitializeOptions, selectedInstrument: any) => {
             return checkoutService.initializePayment({
                 ...options,
+                integrations: [createStripeV3PaymentStrategy],
                 stripev3: {
                     containerId,
                     options: getStripeOptions(stripeOptions),

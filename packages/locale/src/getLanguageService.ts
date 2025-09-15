@@ -2,7 +2,7 @@ import {
     createLanguageService,
     type LanguageConfig,
     type LanguageService,
-} from '@bigcommerce/checkout-sdk';
+} from '@bigcommerce/checkout-sdk/essential';
 
 import { FALLBACK_LOCALE, FALLBACK_TRANSLATIONS } from './translations';
 

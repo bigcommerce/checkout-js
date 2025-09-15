@@ -6,6 +6,7 @@ import {
     type PaymentInitializeOptions,
     type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
+import { createAdyenV3PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/adyen';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
@@ -95,6 +96,7 @@ describe('when using AdyenV3 payment', () => {
 
         expect(initializePayment).toHaveBeenCalledWith(
             expect.objectContaining({
+                integrations: [createAdyenV3PaymentStrategy],
                 adyenv3: {
                     cardVerificationContainerId: undefined,
                     containerId: 'adyen-scheme-component-field',

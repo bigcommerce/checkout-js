@@ -6,6 +6,7 @@ import {
     type PaymentInitializeOptions,
     type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
+import { createStripeUPEPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/stripe';
 import { render } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
@@ -114,6 +115,7 @@ describe('when using StripeUPE payment', () => {
         expect(initializePayment).toHaveBeenCalledWith({
             gatewayId: 'stripeupe',
             methodId: 'pay_now',
+            integrations: [createStripeUPEPaymentStrategy],
             stripeupe: {
                 containerId: 'stripe-pay_now-component-field',
                 onError: expect.any(Function),
@@ -145,6 +147,7 @@ describe('when using StripeUPE payment', () => {
         expect(initializePayment).toHaveBeenCalledWith({
             gatewayId: 'stripeupe',
             methodId: 'pay_now',
+            integrations: [createStripeUPEPaymentStrategy],
             stripeupe: {
                 containerId: 'stripe-pay_now-component-field',
                 onError: expect.any(Function),
@@ -176,7 +179,7 @@ describe('when using StripeUPE payment', () => {
             expect.objectContaining({
                 methodId: method.id,
                 gatewayId: method.gateway,
-
+                integrations: [createStripeUPEPaymentStrategy],
                 [`${method.gateway}`]: {
                     containerId: `stripe-${method.id}-component-field`,
                     style: {
