@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.670.3](https://github.com/bigcommerce/checkout-js/compare/v1.670.2...v1.670.3) (2025-09-15)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9386 Remove HostedDropInPaymentMethodComponent ([#2539](https://github.com/bigcommerce/checkout-js/issues/2539)) ([5385a71](https://github.com/bigcommerce/checkout-js/commit/5385a71bf27a6411a9aaef5e2c674d72608ab610))
+
 ### [1.670.2](https://github.com/bigcommerce/checkout-js/compare/v1.670.1...v1.670.2) (2025-09-12)
 
 
