@@ -9,20 +9,21 @@ import faker from '@faker-js/faker';
 import userEvent from '@testing-library/user-event';
 import React, { type FunctionComponent } from 'react';
 
-import { type AnalyticsContextProps, type AnalyticsEvents, AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
+import { type AnalyticsEvents, AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import { createLocaleContext, type LocaleContextType, LocaleProvider } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { renderWithoutWrapper as render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 import { ThemeProvider } from '@bigcommerce/checkout/ui';
 
-import { createErrorLogger } from '../common/error';
-import { getStoreConfig } from '../config/config.mock';
-import { createEmbeddedCheckoutStylesheet } from '../embeddedCheckout';
-import { type CreatedCustomer } from '../guestSignup';
+import { createErrorLogger } from '../../common/error';
+import { getStoreConfig } from '../../config/config.mock';
+import { createEmbeddedCheckoutStylesheet } from '../../embeddedCheckout';
+import { type CreatedCustomer } from '../../guestSignup';
+import { getGatewayOrderPayment, getOrder } from '../orders.mock';
 
-import OrderConfirmation, { type OrderConfirmationProps } from './OrderConfirmation';
-import { getGatewayOrderPayment, getOrder } from './orders.mock';
+import { OrderConfirmation, type OrderConfirmationProps } from './OrderConfirmation';
+
 
 const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).*$/;
 
@@ -40,8 +41,8 @@ const generateValidPassword = () => {
 describe('OrderConfirmation', () => {
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
-    let defaultProps: OrderConfirmationProps & AnalyticsContextProps;
-    let ComponentTest: FunctionComponent<OrderConfirmationProps & AnalyticsContextProps>;
+    let defaultProps: OrderConfirmationProps;
+    let ComponentTest: FunctionComponent<OrderConfirmationProps>;
     let embeddedMessengerMock: EmbeddedCheckoutMessenger;
     let analyticsTracker: Partial<AnalyticsEvents>;
     let localeContext: LocaleContextType;
@@ -50,7 +51,7 @@ describe('OrderConfirmation', () => {
         checkoutService = createCheckoutService();
         checkoutState = checkoutService.getState();
         analyticsTracker = {
-            orderPurchased: jest.fn()
+            orderPurchased: jest.fn(),
         };
         embeddedMessengerMock = createEmbeddedCheckoutMessenger({
             parentOrigin: getStoreConfig().links.siteLink,
@@ -72,14 +73,15 @@ describe('OrderConfirmation', () => {
             embeddedStylesheet: createEmbeddedCheckoutStylesheet(),
             errorLogger: createErrorLogger(),
             orderId: 105,
-            analyticsTracker
         };
 
         ComponentTest = (props) => (
             <CheckoutProvider checkoutService={checkoutService}>
-                <LocaleProvider checkoutService={checkoutService} value={localeContext}>
-                    <AnalyticsProviderMock>
-                        <ExtensionProvider checkoutService={checkoutService}>
+                <LocaleProvider checkoutService={checkoutService}>
+                    <AnalyticsProviderMock analyticsTracker={analyticsTracker}>
+                        <ExtensionProvider checkoutService={checkoutService} errorLogger={{
+                            log: jest.fn(),
+                        }}>
                             <ThemeProvider>
                                 <OrderConfirmation {...props} />
                             </ThemeProvider>
@@ -93,7 +95,9 @@ describe('OrderConfirmation', () => {
     it('calls trackOrderComplete when config is ready', async () => {
         render(<ComponentTest {...defaultProps} />);
 
-        await waitFor(() => expect(analyticsTracker.orderPurchased).toHaveBeenCalled());
+        await waitFor(() => {
+            expect(analyticsTracker.orderPurchased).toHaveBeenCalled();
+        });
     });
 
     it('loads passed order ID', () => {
@@ -101,7 +105,6 @@ describe('OrderConfirmation', () => {
 
         render(<ComponentTest {...defaultProps} />);
 
-         
         expect(checkoutService.loadOrder).toHaveBeenCalledWith(105);
         expect(screen.getByTestId('order-confirmation-page-skeleton')).toBeInTheDocument();
     });
