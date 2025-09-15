@@ -84,6 +84,18 @@
                         "fixStyle": "inline-type-imports",
                         "disallowTypeAnnotations": false
                     }
+                ],
+                "@typescript-eslint/no-restricted-imports": [
+                    "error",
+                    {
+                        "paths": [
+                            {
+                                "name": "@bigcommerce/checkout-sdk",
+                                "message": "Direct imports from '@bigcommerce/checkout-sdk' are not allowed. Use type-only imports (import type { ... }) or import from subpaths like '@bigcommerce/checkout-sdk/essential' or '@bigcommerce/checkout-sdk/integrations'.",
+                                "allowTypeImports": true
+                            }
+                        ]
+                    }
                 ]
             }
         },
@@ -138,7 +150,17 @@
                 "plugin:jest-dom/recommended"
             ],
             "rules": {
-                "@typescript-eslint/consistent-type-assertions": "off"
+                "@typescript-eslint/consistent-type-assertions": "off",
+                "@typescript-eslint/no-restricted-imports": "off"
+            }
+        },
+        {
+            "files": [
+                "*.mock.ts",
+                "*.mock.tsx"
+            ],
+            "rules": {
+                "@typescript-eslint/no-restricted-imports": "off"
             }
         }
     ]
