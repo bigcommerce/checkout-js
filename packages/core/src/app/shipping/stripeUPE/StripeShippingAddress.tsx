@@ -78,7 +78,7 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
 
     useEffect(() => {
         if (consignments[0]) {
-            const {availableShippingOptions} = consignments[0];
+            const { availableShippingOptions } = consignments[0];
 
             if (availableShippingOptions && !getRecommendedShippingOption(availableShippingOptions)) {
                 handleLoading();
@@ -94,11 +94,11 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
         if (hasStripeAddressAndHasShippingOptions && afterReload && isLoadingBeforeAutoStep) {
             isStripeLoading();
             isStripeAutoStep();
-            onSubmit({billingSameAsShipping: true, shippingAddress: stripeShippingAddress, orderComment: ''});
+            onSubmit({ billingSameAsShipping: true, shippingAddress: stripeShippingAddress, orderComment: '' });
         }
     }, [isFirstShippingRender, onSubmit, stripeShippingAddress, shouldDisableSubmit, isShippingMethodLoading, isNewAddress ,consignments]);
 
-    const availableShippingList = countries?.map(country => ({code: country.code, name: country.name}));
+    const availableShippingList = countries?.map(country => ({ code: country.code, name: country.name }));
     const allowedCountries = availableShippingList ? availableShippingList.map(country => country.code).join(', ') : '';
     const shouldShowContent = (isNewAddress = true, phoneFieldRequired: boolean, phone: string) => {
         const stepCompleted = step.isComplete;
@@ -109,7 +109,7 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
     };
 
     const handleStripeShippingAddress = useCallback(async (shipping: StripeShippingEvent) => {
-        const {complete, phoneFieldRequired, value: { address = { country: '', state: '', line1: '', line2: '', city: '', postal_code: '' }
+        const { complete, phoneFieldRequired, value: { address = { country: '', state: '', line1: '', line2: '', city: '', postal_code: '' }
             , name = '', firstName = '', lastName = '', phone = '' } } = shipping;
 
         if (complete) {

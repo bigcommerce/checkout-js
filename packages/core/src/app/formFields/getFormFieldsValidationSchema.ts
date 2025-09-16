@@ -24,7 +24,7 @@ export default memoize(function getFormFieldsValidationSchema({
                 if (required) {
                     schema[name] = schema[name]
                         .trim()
-                        .required(translate('required', { label, name}));
+                        .required(translate('required', { label, name }));
                 }
 
                 if ((name === 'address1' || name === 'address2') && maxLength) {

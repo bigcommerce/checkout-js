@@ -29,13 +29,13 @@ describe('CartSummary Component', () => {
     } as RequestError;
     const errorMessage = 'Specific error message';
     const appliedError = {
-        errors: [{ code: '', message: errorMessage}],
+        errors: [{ code: '', message: errorMessage }],
     } as RequestError;
     const appliedErrorWithoutMessage = {
         errors: [{}],
     } as RequestError;
     const appliedErrorWitEmptyStringMessage = {
-        errors: [{code: '', message: ''}],
+        errors: [{ code: '', message: '' }],
     } as RequestError;
 
     const RedeemableTestComponent = (props: RedeemableProps) => (

@@ -65,7 +65,7 @@ describe('Edit Cart Component', () => {
         );
 
         screen.getByText('Edit Cart').click();
-        expect(screen.getByRole('link', { name: 'Close'})).toBeInTheDocument();
+        expect(screen.getByRole('link', { name: 'Close' })).toBeInTheDocument();
         expect(screen.getAllByRole('alert')).toHaveLength(2);
         screen.getByText('Confirm').click();
 
@@ -87,7 +87,7 @@ describe('Edit Cart Component', () => {
 
         screen.getByText('Show Details').click();
         screen.getByText('Edit Cart').click();
-        expect(screen.getAllByRole('link', { name: 'Close'})).toHaveLength(2);
+        expect(screen.getAllByRole('link', { name: 'Close' })).toHaveLength(2);
         expect(screen.getAllByRole('alert')).toHaveLength(2);
         screen.getByText('Confirm').click();
 

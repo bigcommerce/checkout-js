@@ -3,7 +3,7 @@ import { memoizeOne } from '@bigcommerce/memoize';
 import classNames from 'classnames';
 import { type FieldProps, type FormikProps, withFormik } from 'formik';
 import { noop } from 'lodash';
-import React, {type FunctionComponent, type KeyboardEvent, memo, type ReactNode, useCallback} from 'react';
+import React, { type FunctionComponent, type KeyboardEvent, memo, type ReactNode, useCallback } from 'react';
 import { object, string } from 'yup';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';

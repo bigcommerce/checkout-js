@@ -128,7 +128,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
 
         try {
             if (providerWithCustomCheckout && providerWithCustomCheckout !== PaymentMethodId.StripeUPE) {
-                await initializeCustomer({methodId: providerWithCustomCheckout});
+                await initializeCustomer({ methodId: providerWithCustomCheckout });
             }
         } catch (error) {
             onUnhandledError(error);

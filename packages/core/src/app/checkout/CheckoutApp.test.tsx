@@ -42,7 +42,7 @@ describe('CheckoutApp', () => {
     });
 
     it('renders checkout component with sentrySampleRate 1', () => {
-        defaultProps = {...defaultProps, sentrySampleRate: 1};
+        defaultProps = { ...defaultProps, sentrySampleRate: 1 };
 
         render(<CheckoutApp {...defaultProps} />);
 

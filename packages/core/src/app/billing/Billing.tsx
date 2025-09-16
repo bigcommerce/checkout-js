@@ -19,7 +19,7 @@ interface BillingProps {
     onUnhandledError(error: Error): void;
 }
 
-const Billing = ({navigateNextStep, onReady, onUnhandledError}:BillingProps): ReactElement => {
+const Billing = ({ navigateNextStep, onReady, onUnhandledError }:BillingProps): ReactElement => {
     const { checkoutService, checkoutState } = useCheckout();
     const { themeV2 }  = useThemeContext();
 

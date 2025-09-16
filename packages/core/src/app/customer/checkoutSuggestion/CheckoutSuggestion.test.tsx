@@ -53,13 +53,13 @@ describe('CheckoutSuggestion', () => {
     });
 
     it('does not render anything if method id is not provided', () => {
-        const {container} = render(<TestComponent {...defaultProps} />);
+        const { container } = render(<TestComponent {...defaultProps} />);
 
         expect(container.innerHTML).toHaveLength(0);
     });
 
     it('initializes Bolt Checkout suggestion block', () => {
-        const {container} = render(
+        const { container } = render(
             <TestComponent {...defaultProps} providerWithCustomCheckout="bolt" />,
         );
 

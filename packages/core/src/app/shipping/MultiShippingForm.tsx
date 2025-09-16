@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, {type FunctionComponent, type ReactNode, useMemo, useState} from 'react';
+import React, { type FunctionComponent, type ReactNode, useMemo, useState } from 'react';
 
 import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
