@@ -1,10 +1,10 @@
-import React, {type ReactElement} from 'react';
+import React, { type ReactElement } from 'react';
 
-import {TranslatedString} from '@bigcommerce/checkout/locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 
-import {Button, ButtonVariant} from '../../ui/button';
+import { Button, ButtonVariant } from '../../ui/button';
 
-export const ContinueButton = ({siteLink}:{siteLink: string}): ReactElement => (
+export const ContinueButton = ({ siteLink }:{siteLink: string}): ReactElement => (
     <div className="continueButtonContainer">
         <form action={siteLink} method="get" target="_top">
             <Button type="submit" variant={ButtonVariant.Secondary}>
