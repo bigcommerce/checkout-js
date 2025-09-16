@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.672.2](https://github.com/bigcommerce/checkout-js/compare/v1.672.1...v1.672.2) (2025-09-16)
+
+
+### Bug Fixes
+
+* **payment:** Stripe OCS fix accordion item toggle ([4757db5](https://github.com/bigcommerce/checkout-js/commit/4757db56093a57b0ac99f127988911f71e0757a3))
+
 ### [1.672.1](https://github.com/bigcommerce/checkout-js/compare/v1.672.0...v1.672.1) (2025-09-16)
 
 
