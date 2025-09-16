@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.672.1](https://github.com/bigcommerce/checkout-js/compare/v1.672.0...v1.672.1) (2025-09-16)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9475 Update eslint rule ([#2578](https://github.com/bigcommerce/checkout-js/issues/2578)) ([9618495](https://github.com/bigcommerce/checkout-js/commit/9618495711d96aa99888c883f856f1c592108829))
+
 ## [1.672.0](https://github.com/bigcommerce/checkout-js/compare/v1.671.0...v1.672.0) (2025-09-15)
 
 
