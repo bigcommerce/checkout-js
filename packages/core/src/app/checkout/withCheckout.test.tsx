@@ -41,13 +41,13 @@ describe('withCheckout()', () => {
     });
 
     it('provides checkout service to child component', async () => {
-        const withMockCheckout = withCheckout(({checkoutService}) => ({
+        const withMockCheckout = withCheckout(({ checkoutService }) => ({
             loadCheckout: () => {
                 checkoutService.loadCheckout();
             },
         }));
 
-        const Child = withMockCheckout(({loadCheckout}: { loadCheckout(): void }) => (
+        const Child = withMockCheckout(({ loadCheckout }: { loadCheckout(): void }) => (
             <button onClick={loadCheckout}>Load</button>
         ));
 
