@@ -22,7 +22,7 @@ describe('StoreCreditField', () => {
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
 
-    const StoreCreditFieldTest = ({isSubmittingOrder = false, ...props}: StoreCreditFieldTestProps) => {
+    const StoreCreditFieldTest = ({ isSubmittingOrder = false, ...props }: StoreCreditFieldTestProps) => {
         localeContext = createLocaleContext(getStoreConfig());
         currencyService = localeContext.currency;
         checkoutService = createCheckoutService();
@@ -66,7 +66,7 @@ describe('StoreCreditField', () => {
             />,
         );
 
-        expect(screen.getByRole('checkbox', { name: 'Apply $112.00 store credit to order'})).toBeInTheDocument();
+        expect(screen.getByRole('checkbox', { name: 'Apply $112.00 store credit to order' })).toBeInTheDocument();
     });
 
     it('notifies parent when value changes', async () => {
@@ -82,7 +82,7 @@ describe('StoreCreditField', () => {
             />,
         );
 
-        await userEvent.click(screen.getByRole('checkbox', {name: 'Apply $112.00 store credit to order'}));
+        await userEvent.click(screen.getByRole('checkbox', { name: 'Apply $112.00 store credit to order' }));
 
         expect(handleChange).toHaveBeenCalled();
     });
@@ -101,6 +101,6 @@ describe('StoreCreditField', () => {
             />,
         );
 
-        expect(screen.getByRole('checkbox', {name: 'Apply $112.00 store credit to order'})).toBeDisabled();
+        expect(screen.getByRole('checkbox', { name: 'Apply $112.00 store credit to order' })).toBeDisabled();
     });
 });

@@ -193,7 +193,7 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
                 id="checkout-customer-guest"
                 testId="checkout-customer-guest"
             >
-                <div className="checkout-form" style={ {display: isStripeLoading ? 'none' : undefined} }>
+                <div className="checkout-form" style={ { display: isStripeLoading ? 'none' : undefined } }>
                     <Fieldset
                         legend={ !authentication &&
                             <Legend hidden>

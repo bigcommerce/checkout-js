@@ -114,7 +114,8 @@
                 "react/prefer-read-only-props": "off",
                 "react/no-deprecated": "off",
                 "react/jsx-sort-props": "error",
-                "no-tabs": "error"
+                "no-tabs": "error",
+                "object-curly-spacing": ["error", "always"]
             }
         },
         {

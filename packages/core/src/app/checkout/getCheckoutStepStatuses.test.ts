@@ -99,7 +99,7 @@ describe('getCheckoutStepStatuses()', () => {
                 const steps = getCheckoutStepStatuses(state);
 
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                expect(find(steps, {type: CheckoutStepType.Customer})!.isComplete).toBe(true);
+                expect(find(steps, { type: CheckoutStepType.Customer })!.isComplete).toBe(true);
             });
 
             it('is marked as incomplete if email is provided and isStripeLinkAuthenticated is not provided', () => {
@@ -116,7 +116,7 @@ describe('getCheckoutStepStatuses()', () => {
                 const steps = getCheckoutStepStatuses(state);
 
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                expect(find(steps, {type: CheckoutStepType.Customer})!.isComplete).toBe(false);
+                expect(find(steps, { type: CheckoutStepType.Customer })!.isComplete).toBe(false);
             });
 
             it('is marked as complete when it is a wallet', () => {
@@ -132,7 +132,7 @@ describe('getCheckoutStepStatuses()', () => {
                 const steps = getCheckoutStepStatuses(state);
 
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                expect(find(steps, {type: CheckoutStepType.Customer})!.isComplete).toBe(true);
+                expect(find(steps, { type: CheckoutStepType.Customer })!.isComplete).toBe(true);
             });
         });
 

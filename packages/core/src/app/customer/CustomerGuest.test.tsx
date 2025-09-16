@@ -207,7 +207,7 @@ describe('Customer Guest', () => {
     });
 
     it('selects `Subscribe to our newsletter` checkbox by default', async () => {
-        const props = {...defaultProps, isSubscribed:true};
+        const props = { ...defaultProps, isSubscribed:true };
 
         render(<CustomerTest viewType={CustomerViewType.Guest} {...props} />);
 

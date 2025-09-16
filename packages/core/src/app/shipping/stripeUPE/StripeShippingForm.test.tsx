@@ -12,14 +12,14 @@ import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api'
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getAddressFormFields } from '../../address/formField.mock';
+import { getCheckout } from '../../checkout/checkouts.mock';
 import CheckoutStepType from '../../checkout/CheckoutStepType';
 import ConsoleErrorLogger from '../../common/error/ConsoleErrorLogger';
 import { getStoreConfig } from '../../config/config.mock';
+import { getCustomer } from '../../customer/customers.mock';
 import { getShippingAddress } from '../shipping-addresses.mock';
 
 import StripeShippingForm from './StripeShippingForm';
-import { getCustomer } from '../../customer/customers.mock';
-import { getCheckout } from '../../checkout/checkouts.mock';
 
 let hasSelectedShippingOptionsReturn = false;
 
@@ -37,6 +37,7 @@ describe('StripeShippingForm', () => {
     let checkoutState: CheckoutSelectors;
 
     const initialize = jest.fn();
+
     checkoutService.initializeShipping = initialize;
 
     const defaultProps = {

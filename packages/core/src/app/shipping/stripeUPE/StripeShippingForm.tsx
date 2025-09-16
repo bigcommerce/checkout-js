@@ -9,7 +9,9 @@ import { type FormikProps } from 'formik';
 import { noop } from 'lodash';
 import React, { useCallback, useState } from 'react';
 import { lazy, object } from 'yup';
+
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
 import {
   type AddressFormValues,
@@ -17,9 +19,9 @@ import {
   getTranslateAddressError,
   mapAddressToFormValues,
 } from '../../address';
-
 import type CheckoutStepStatus from '../../checkout/CheckoutStepStatus';
 import { withFormikExtended } from '../../common/form';
+import { EMPTY_ARRAY } from '../../common/utility';
 import { getCustomFormFieldsValidationSchema } from '../../formFields';
 import { Fieldset, Form } from '../../ui/form';
 import BillingSameAsShippingField from '../BillingSameAsShippingField';
@@ -27,8 +29,6 @@ import hasSelectedShippingOptions from '../hasSelectedShippingOptions';
 import ShippingFormFooter from '../ShippingFormFooter';
 
 import StripeShippingAddress from './StripeShippingAddress';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
-import { EMPTY_ARRAY } from '../../common/utility';
 
 export interface SingleShippingFormProps {
   isBillingSameAsShipping: boolean;
@@ -153,6 +153,7 @@ const StripeShippingForm: React.FC<SingleShippingFormProps & WithLanguageProps &
     </Form>
   );
 };
+
 export default withLanguage(
   withFormikExtended<SingleShippingFormProps & WithLanguageProps, SingleShippingFormValues>({
     handleSubmit: (values, { props: { onSubmit } }) => {

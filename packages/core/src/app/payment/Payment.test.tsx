@@ -162,11 +162,11 @@ describe('Payment step', () => {
         await checkout.waitForPaymentStep();
 
         await userEvent.click(screen.getByRole('radio', { name: 'Pay in Store' }));
-        await userEvent.click(screen.getAllByRole('button', {name: 'Edit'})[2]);
+        await userEvent.click(screen.getAllByRole('button', { name: 'Edit' })[2]);
 
         expect(screen.queryByRole('radio')).not.toBeInTheDocument();
         expect(screen.queryByText('Pay in Store')).not.toBeInTheDocument();
-        expect(screen.getByRole('button', {name: 'Continue'})).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Continue' })).toBeInTheDocument();
     });
 
     it('applies store credit automatically', async () => {

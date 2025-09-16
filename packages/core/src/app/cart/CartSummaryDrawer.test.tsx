@@ -49,11 +49,11 @@ describe('CartSummary Component', () => {
         const localeContext = createLocaleContext(getStoreConfig());
 
         jest.spyOn(checkoutService.getState().data, 'getCustomer').mockReturnValue(getCustomer());
-        jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue({...getCheckout(),
+        jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue({ ...getCheckout(),
         cart: {
             ...getCheckout().cart,
             source: "BUY_NOW",
-        }});
+        } });
         jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(getStoreConfig());
 
         render(

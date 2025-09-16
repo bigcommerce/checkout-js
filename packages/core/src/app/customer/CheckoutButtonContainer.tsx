@@ -105,7 +105,7 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
                 </WalletButtonsContainerSkeleton>
             </div>
             <div className='checkout-separator'>
-                <span className={classNames({'sub-header': themeV2})}>
+                <span className={classNames({ 'sub-header': themeV2 })}>
                     <TranslatedString id='remote.or_text' />
                 </span>
             </div>

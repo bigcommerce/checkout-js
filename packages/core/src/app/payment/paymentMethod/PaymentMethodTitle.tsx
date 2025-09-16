@@ -282,7 +282,7 @@ export function getPaymentMethodTitle(
         }
 
         if (method.id === PaymentMethodId.Ratepay) {
-            return { logoUrl: method.logoUrl || '', titleText: language.translate('payment.ratepay.payment_method_title')};
+            return { logoUrl: method.logoUrl || '', titleText: language.translate('payment.ratepay.payment_method_title') };
         }
 
         return (
@@ -353,7 +353,7 @@ const PaymentMethodTitle: FunctionComponent<
         <div className={
             classNames(
                 'paymentProviderHeader-container',
-                {'paymentProviderHeader-container-googlePay': method.id.includes('googlepay')},
+                { 'paymentProviderHeader-container-googlePay': method.id.includes('googlepay') },
             )
         }>
             <div
@@ -365,8 +365,8 @@ const PaymentMethodTitle: FunctionComponent<
                         alt={`${methodName} icon`}
                         className={classNames(
                             'paymentProviderHeader-img',
-                            {'paymentProviderHeader-img-applePay': method.id === 'applepay'},
-                            {'paymentProviderHeader-img-googlePay': method.id.includes('googlepay')},
+                            { 'paymentProviderHeader-img-applePay': method.id === 'applepay' },
+                            { 'paymentProviderHeader-img-googlePay': method.id.includes('googlepay') },
                         )}
                         data-test="payment-method-logo"
                         src={logoUrl}

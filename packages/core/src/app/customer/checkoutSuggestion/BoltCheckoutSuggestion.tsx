@@ -47,7 +47,7 @@ const BoltCheckoutSuggestion: FunctionComponent<BoltCheckoutSuggestionProps> = (
                         setShowSuggestion(hasBoltAccount);
 
                         if (email) {
-                            analyticsTracker.customerSuggestionInit({hasBoltAccount});
+                            analyticsTracker.customerSuggestionInit({ hasBoltAccount });
                         }
                     },
                 },

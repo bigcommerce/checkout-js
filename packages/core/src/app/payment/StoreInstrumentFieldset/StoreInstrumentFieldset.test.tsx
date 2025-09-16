@@ -59,7 +59,7 @@ describe('StoreInstrumentFieldset', () => {
                 render(<StoreInstrumentFieldsetTest />);
 
                 expect(screen.getByRole('checkbox',{
-                    name: translate('payment.instrument_save_payment_method_label')},
+                    name: translate('payment.instrument_save_payment_method_label') },
                 )).toBeInTheDocument();
             });
 
@@ -67,7 +67,7 @@ describe('StoreInstrumentFieldset', () => {
                 render(<StoreInstrumentFieldsetTest />);
 
                 expect(screen.queryByRole('checkbox',{
-                    name: translate('payment.instrument_save_as_default_payment_method_label')},
+                    name: translate('payment.instrument_save_as_default_payment_method_label') },
                 )).not.toBeInTheDocument();
             });
         });

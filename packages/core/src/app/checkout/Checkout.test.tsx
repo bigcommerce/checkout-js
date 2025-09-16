@@ -309,7 +309,7 @@ describe('Checkout', () => {
         });
 
         it('navigates to next step when shopper continues as guest', async () => {
-            render(<CheckoutTest {...defaultProps} />, {legacyRoot: true});
+            render(<CheckoutTest {...defaultProps} />, { legacyRoot: true });
 
             await checkout.waitForCustomerStep();
 
@@ -464,7 +464,7 @@ describe('Checkout', () => {
                     consignments: [{
                         ...checkoutWithShippingDiscount.consignments[0],
                         discounts: [
-                            {...consignmentAutomaticDiscount, amount: 3}
+                            { ...consignmentAutomaticDiscount, amount: 3 }
                         ]
                     }],
                     coupons: [],
@@ -501,8 +501,8 @@ describe('Checkout', () => {
                             ...checkoutWithShippingDiscount.consignments[0],
                             id: 'consignment-2',
                             discounts: [
-                                {...consignmentAutomaticDiscount, amount: 3},
-                                {...consignmentCouponDiscount, amount: 1},
+                                { ...consignmentAutomaticDiscount, amount: 3 },
+                                { ...consignmentCouponDiscount, amount: 1 },
                             ]
                         }
                     ],
@@ -579,7 +579,7 @@ describe('Checkout', () => {
                 throw error;
             });
 
-            render(<CheckoutTest {...defaultProps} />, {legacyRoot: true});
+            render(<CheckoutTest {...defaultProps} />, { legacyRoot: true });
 
             await waitFor(() => {
                 expect(defaultProps.errorLogger.log).toHaveBeenCalledWith(error);
