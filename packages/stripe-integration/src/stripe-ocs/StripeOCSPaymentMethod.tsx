@@ -32,6 +32,7 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     ...rest
 }) => {
     const collapseStripeElement = useRef<() => void>();
+    const toggleUpdateTimeout = useRef<ReturnType<typeof setTimeout>>();
     const { onToggle, selectedItemId } = useContext(AccordionContext);
     const [selectedPaymentMethodId, setSelectedPaymentMethodId] = useState<string | undefined>(
         selectedItemId,
@@ -40,6 +41,25 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     const methodSelector = `${method.gateway}-${method.id}`;
     const containerId = `${methodSelector}-component-field`;
     const paymentContext = paymentForm;
+
+    useEffect(() => {
+        /* INFO:
+         * switching and loading BC accordion item takes more time than preloaded Stripe accordion items, and BC accordion toggle is blocked during loading
+         * switching BC accordion items and loading payment methods triggers state update for BC accordion context
+         * thats why we need to double call onToggle for BC accordion with actual context state, for cases when the first toggle call has no effect because of loading state
+         */
+        if (toggleUpdateTimeout.current) {
+            clearTimeout(toggleUpdateTimeout.current);
+            toggleUpdateTimeout.current = undefined;
+        }
+
+        if (!!selectedPaymentMethodId && selectedItemId !== selectedPaymentMethodId) {
+            toggleUpdateTimeout.current = setTimeout(() => {
+                onToggle(selectedPaymentMethodId);
+            }, 100);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [onToggle]);
 
     useEffect(() => {
         if (selectedItemId === methodSelector) {
