@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.672.3](https://github.com/bigcommerce/checkout-js/compare/v1.672.2...v1.672.3) (2025-09-17)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9475 Convert OrderConfirmation ([#2577](https://github.com/bigcommerce/checkout-js/issues/2577)) ([237cf50](https://github.com/bigcommerce/checkout-js/commit/237cf50886e852e43c2d7317712861c31b385004))
+* **checkout:** CHECKOUT-9475 Fix lint issues ([#2579](https://github.com/bigcommerce/checkout-js/issues/2579)) ([6186ba6](https://github.com/bigcommerce/checkout-js/commit/6186ba6070c6c4c01957f8eb2d8caf3c411d6a39))
+
 ### [1.672.2](https://github.com/bigcommerce/checkout-js/compare/v1.672.1...v1.672.2) (2025-09-16)
 
 
