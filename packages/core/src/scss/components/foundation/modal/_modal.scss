@@ -174,7 +174,7 @@
 // Specific styles for displaying cart summary on mobile
 body.has-activeModal {
     .modal-body {
-        overflow: scroll;
+        overflow: auto;
         padding-bottom: 20%; // This is to fill the space occupied by Safari and Chrome's navigation bar on mobile
 
         @include breakpoint("small") {
