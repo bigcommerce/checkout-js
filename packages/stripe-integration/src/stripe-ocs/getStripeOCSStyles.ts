@@ -46,6 +46,19 @@ const getRadioIconSizes = (sizes?: Record<string, string | number | undefined>) 
     };
 };
 
+const getScaleFromTransformMatrix = (transformMatrixString = ''): number | undefined => {
+    const transformMatrixRegex = /matrix\(([^)]+)\)/;
+    const transformMatrix = transformMatrixRegex.exec(transformMatrixString);
+
+    if (!transformMatrix) {
+        return undefined;
+    }
+
+    const matrixValues = transformMatrix[1].split(',').map((value) => parseFloat(value.trim()));
+
+    return matrixValues[0];
+};
+
 export const getFonts = (selector = 'link[href*="font"]'): StripeCustomFont[] => {
     const elementsList: NodeListOf<Element> = document.querySelectorAll(selector);
     const fonts: StripeCustomFont[] = [];
@@ -109,22 +122,42 @@ export const getAppearanceForOCSElement = (containerId: string): StripeAppearanc
         : undefined;
     const radioOuter = getStylesFromElement(
         `#${containerId}--accordion-header .form-label`,
-        ['border-color', 'border-width', 'width'],
+        ['border-color', 'border-width', 'width', 'background-color'],
         '::before',
+    );
+    const radioInner = getStylesFromElement(
+        `#${containerId}--accordion-header .form-label`,
+        ['border-color', 'border-width', 'width', 'background-color'],
+        '::after',
     );
     const radioOuterChecked = getStylesFromElement(
         `#${containerId}--accordion-header-selected .form-label`,
-        ['border-color'],
+        ['border-color', 'background-color'],
         '::before',
     );
+    let radioInnerChecked = getStylesFromElement(
+        `.form-checklist-header--selected .form-label`,
+        ['border-color', 'background-color', 'width', 'transform'],
+        '::after',
+    );
+
+    if (isEmpty(radioInnerChecked)) {
+        radioInnerChecked = getStylesFromElement(
+            `#${containerId}--accordion-header-selected .form-label`,
+            ['border-color', 'background-color', 'width', 'transform'],
+            '::after',
+        );
+    }
+
+    const radioInnerParsedSize = radioInnerChecked.width || radioOuter.width;
+    const radioInnerWidthScale =
+        getScaleFromTransformMatrix(radioInnerChecked.transform) || defaultRadioIconInnerScale;
     const radioIconSize = getRadioIconSizes({
         radioIconOuterWidth: radioOuter.width,
         radioIconOuterStrokeWidth: radioOuter['border-width'],
         radioIconInnerWidth:
-            radioOuter.width && parseRadioIconSize(radioOuter.width) * defaultRadioIconInnerScale,
+            radioInnerParsedSize && parseRadioIconSize(radioInnerParsedSize) * radioInnerWidthScale,
     });
-    const radioIconColor = radioOuter['border-color'];
-    const radioIconFocusColor = radioOuterChecked['border-color'];
 
     return {
         variables: {
@@ -171,14 +204,20 @@ export const getAppearanceForOCSElement = (containerId: string): StripeAppearanc
             },
             '.RadioIconInner': {
                 r: radioIconSize.innerRadius,
-                fill: radioIconFocusColor,
+                fill: radioInner['background-color'],
             },
             '.RadioIconOuter': {
                 strokeWidth: radioIconSize.outerStrokeWidth,
-                stroke: radioIconColor,
+                stroke: radioOuter['border-color'],
+                fill: radioOuter['background-color'],
+            },
+            '.RadioIconInner--checked': {
+                r: radioIconSize.innerRadius,
+                fill: radioInnerChecked['background-color'],
             },
             '.RadioIconOuter--checked': {
-                stroke: radioIconFocusColor,
+                stroke: radioOuterChecked['border-color'],
+                fill: radioOuterChecked['background-color'],
             },
         },
     };

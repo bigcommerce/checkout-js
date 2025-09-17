@@ -39,10 +39,23 @@ describe('getStripeOCSStyles', () => {
             [`#${containerId}--accordion-header .form-label::before`]: {
                 'border-color': 'black',
                 'border-width': '1px',
+                'background-color': 'white',
+                width: '30px',
+            },
+            [`#${containerId}--accordion-header .form-label::after`]: {
+                'border-color': 'black',
+                'border-width': '1px',
+                'background-color': 'white',
                 width: '30px',
             },
             [`#${containerId}--accordion-header-selected .form-label::before`]: {
                 'border-color': '#4496f6',
+                'background-color': '#4496f6',
+            },
+            [`#${containerId}--accordion-header-selected .form-label::after`]: {
+                'border-color': '#4496f6',
+                'background-color': '#4496f6',
+                transform: 'matrix(0.66, 0, 0, 0.66, 0, 0)',
             },
             [`#${containerId}--accordion-header-selected`]: {
                 'background-color': '#fcfcfc',
@@ -127,13 +140,19 @@ describe('getStripeOCSStyles', () => {
                     },
                     '.RadioIconInner': {
                         r: '29.04',
+                        fill: 'white',
+                    },
+                    '.RadioIconInner--checked': {
+                        r: '29.04',
                         fill: '#4496f6',
                     },
                     '.RadioIconOuter': {
                         strokeWidth: '2.93px',
                         stroke: 'black',
+                        fill: 'white',
                     },
                     '.RadioIconOuter--checked': {
+                        fill: '#4496f6',
                         stroke: '#4496f6',
                     },
                 },
@@ -212,6 +231,7 @@ describe('getStripeOCSStyles', () => {
                         borderRadius: 0,
                         borderWidth: 0,
                         borderBottom: undefined,
+                        borderColor: undefined,
                         boxShadow: 'none',
                         fontSize: undefined,
                         fontWeight: undefined,
@@ -237,12 +257,18 @@ describe('getStripeOCSStyles', () => {
                         r: '28.77',
                         fill: undefined,
                     },
+                    '.RadioIconInner--checked': {
+                        r: '28.77',
+                        fill: undefined,
+                    },
                     '.RadioIconOuter': {
                         strokeWidth: '3.38px',
                         stroke: undefined,
+                        fill: undefined,
                     },
                     '.RadioIconOuter--checked': {
                         stroke: undefined,
+                        fill: undefined,
                     },
                 },
             });
