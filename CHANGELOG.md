@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.673.0](https://github.com/bigcommerce/checkout-js/compare/v1.672.3...v1.673.0) (2025-09-17)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9428 Remove Scroll Bars from Error Modal ([#2580](https://github.com/bigcommerce/checkout-js/issues/2580)) ([fac1c8b](https://github.com/bigcommerce/checkout-js/commit/fac1c8b2d2d5542afdc1aff384fb0e7e6e30dfab))
+
 ### [1.672.3](https://github.com/bigcommerce/checkout-js/compare/v1.672.2...v1.672.3) (2025-09-17)
 
 
