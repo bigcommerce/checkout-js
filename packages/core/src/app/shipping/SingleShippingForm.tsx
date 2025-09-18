@@ -109,7 +109,6 @@ const SingleShippingForm: React.FC<
     const [hasRequestedShippingOptions, setHasRequestedShippingOptions] = useState(false);
 
     const debouncedUpdateAddressRef = useRef<any>();
-    const previousShippingFormRenderTimestampRef = useRef<number>();
 
     useEffect(() => {
         debouncedUpdateAddressRef.current = debounce(
@@ -203,8 +202,7 @@ const SingleShippingForm: React.FC<
     ]);
 
     useEffect(() => {
-        if (shippingFormRenderTimestamp !== previousShippingFormRenderTimestampRef.current) {
-            previousShippingFormRenderTimestampRef.current = shippingFormRenderTimestamp;
+        if (shippingFormRenderTimestamp) {
             setValues({
                 billingSameAsShipping: isBillingSameAsShipping,
                 orderComment: customerMessage,
@@ -214,14 +212,7 @@ const SingleShippingForm: React.FC<
                 ),
             });
         }
-    }, [
-        customerMessage,
-        getFields,
-        isBillingSameAsShipping,
-        setValues,
-        shippingAddress,
-        shippingFormRenderTimestamp,
-    ]);
+    }, [shippingFormRenderTimestamp]);
 
     const handleAddressSelect = useCallback(
         async (address: Address) => {
