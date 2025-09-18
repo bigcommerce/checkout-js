@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.674.0](https://github.com/bigcommerce/checkout-js/compare/v1.673.0...v1.674.0) (2025-09-18)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9468 remove guest message from multi shipping header ([#2585](https://github.com/bigcommerce/checkout-js/issues/2585)) ([5ac3675](https://github.com/bigcommerce/checkout-js/commit/5ac36750f1549b727a47cc363971e16232bde6e1))
+
 ## [1.673.0](https://github.com/bigcommerce/checkout-js/compare/v1.672.3...v1.673.0) (2025-09-17)
 
 
