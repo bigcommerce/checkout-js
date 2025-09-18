@@ -186,7 +186,6 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps & Ext
                     />
                     <ShippingHeader
                         cartHasPromotionalItems={cartHasPromotionalItems}
-                        isGuest={isGuest}
                         isMultiShippingMode={isMultiShippingMode}
                         onMultiShippingChange={this.handleMultiShippingModeSwitch}
                         shouldShowMultiShipping={shouldShowMultiShipping}
