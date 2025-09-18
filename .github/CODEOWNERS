@@ -56,9 +56,6 @@ package-lock.json @bigcommerce/team-checkout @bigcommerce/team-integrations @big
 
 ## PayPal team
 /packages/core/payment/paymentMethod/BraintreeCreditCardPaymentMethod.tsx @bigcommerce/team-paypal
-/packages/core/payment/paymentMethod/PaypalCommerceCreditCardPaymentMethod.tsx @bigcommerce/team-paypal
-/packages/core/payment/paymentMethod/PaypalExpressPaymentMethod.tsx @bigcommerce/team-paypal
-/packages/core/payment/paymentMethod/PaypalPaymentsProPaymentMethod.tsx @bigcommerce/team-paypal
 
 /packages/bigcommerce-payments-integration @bigcommerce/team-paypal
 /packages/bigcommerce-payments-utils @bigcommerce/team-paypal
