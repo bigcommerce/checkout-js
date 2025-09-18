@@ -52,12 +52,10 @@ const StripeShipping = ({
   const {
     data: {
       getCheckout,
-      getCustomer,
       getShippingAddressFields,
     },
   } = checkoutState;
   const checkout = getCheckout();
-  const customer = getCustomer();
   const getFields = getShippingAddressFields;
 
   const [isStripeLoading, setIsStripeLoading] = useState(true);
@@ -71,12 +69,11 @@ const StripeShipping = ({
     setIsStripeAutoStep(true);
   };
 
-  if (!checkout || !customer) {
+  if (!checkout) {
     return null;
   }
 
   const customerMessage = checkout.customerMessage;
-  const isGuest = customer.isGuest;
 
   return (
     <>
@@ -86,7 +83,6 @@ const StripeShipping = ({
         style={{ display: isStripeAutoStep || isStripeLoading ? 'none' : undefined }}
       >
         <ShippingHeader
-          isGuest={isGuest}
           isMultiShippingMode={isMultiShippingMode}
           onMultiShippingChange={onMultiShippingChange}
           shouldShowMultiShipping={shouldShowMultiShipping}
