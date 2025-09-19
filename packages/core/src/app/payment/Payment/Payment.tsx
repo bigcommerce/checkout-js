@@ -77,16 +77,6 @@ interface WithCheckoutPaymentProps {
     checkoutServiceSubscribe: CheckoutService['subscribe'];
 }
 
-interface PaymentStateLike {
-    didExceedSpamLimit: boolean;
-    isReady: boolean;
-    selectedMethod?: PaymentMethod;
-    shouldDisableSubmit: { [key: string]: boolean };
-    shouldHidePaymentSubmitButton: { [key: string]: boolean };
-    submitFunctions: { [key: string]: ((values: PaymentFormValues) => void) | null };
-    validationSchemas: { [key: string]: ObjectSchema<Partial<PaymentFormValues>> | null };
-}
-
 const Payment = (
     props: PaymentProps & WithCheckoutPaymentProps & WithLanguageProps & AnalyticsContextProps,
 ): ReactElement => {
@@ -122,13 +112,13 @@ const Payment = (
         ...rest
     } = props;
 
-    const [didExceedSpamLimit, setDidExceedSpamLimit] = useState<PaymentStateLike['didExceedSpamLimit']>(false);
-    const [isReady, setIsReady] = useState<PaymentStateLike['isReady']>(false);
-    const [selectedMethod, setSelectedMethodState] = useState<PaymentStateLike['selectedMethod']>();
-    const [shouldDisableSubmit, setShouldDisableSubmit] = useState<PaymentStateLike['shouldDisableSubmit']>({});
-    const [shouldHidePaymentSubmitButton, setShouldHidePaymentSubmitButton] = useState<PaymentStateLike['shouldHidePaymentSubmitButton']>({});
-    const [submitFunctions, setSubmitFunctions] = useState<PaymentStateLike['submitFunctions']>({});
-    const [validationSchemas, setValidationSchemas] = useState<PaymentStateLike['validationSchemas']>({});
+    const [didExceedSpamLimit, setDidExceedSpamLimit] = useState(false);
+    const [isReady, setIsReady] = useState(false);
+    const [selectedMethod, setSelectedMethodState] = useState<PaymentMethod | undefined>();
+    const [shouldDisableSubmit, setShouldDisableSubmit] = useState<Record<string, boolean>>({});
+    const [shouldHidePaymentSubmitButton, setShouldHidePaymentSubmitButton] = useState<Record<string, boolean>>({});
+    const [submitFunctions, setSubmitFunctions] = useState<Record<string, ((values: PaymentFormValues) => void) | null>>({});
+    const [validationSchemas, setValidationSchemas] = useState<Record<string, ObjectSchema<Partial<PaymentFormValues>> | null>>({});
 
     const grandTotalChangeUnsubscribeRef = useRef<(() => void) | undefined>();
     const selectedMethodRef = useRef<PaymentMethod | undefined>(selectedMethod);
@@ -333,12 +323,15 @@ const Payment = (
         clearError(error);
     }, [cartUrl, clearError, loadCheckout]);
 
-    const contextValue = useMemo(() => ({
+    const paymentContextValue = useMemo(() => ({
         disableSubmit,
         setSubmit,
         setValidationSchema,
         hidePaymentSubmitButton,
     }), [disableSubmit, setSubmit, setValidationSchema, hidePaymentSubmitButton]);
+
+    const didMountRef = useRef(false);
+    const uniqueSelectedMethodId = selectedMethod && getUniquePaymentMethodId(selectedMethod.id, selectedMethod.gateway);
 
     useEffect(() => {
         (async () => {
@@ -377,9 +370,7 @@ const Payment = (
 
             window.removeEventListener('beforeunload', handleBeforeUnload);
         };
-    }, []); // run once
-
-    const didMountRef = useRef(false);
+    }, []);
 
     useEffect(() => {
         if (didMountRef.current) {
@@ -389,10 +380,8 @@ const Payment = (
         }
     }, [methods, checkEmbeddedSupport]);
 
-    const uniqueSelectedMethodId = selectedMethod && getUniquePaymentMethodId(selectedMethod.id, selectedMethod.gateway);
-
     return (
-        <PaymentContext.Provider value={contextValue}>
+        <PaymentContext.Provider value={paymentContextValue}>
             <ChecklistSkeleton isLoading={!isReady}>
                 {!isEmpty(methods) && defaultMethod && (
                     <PaymentForm
