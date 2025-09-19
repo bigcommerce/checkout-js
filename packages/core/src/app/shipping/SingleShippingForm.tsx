@@ -10,7 +10,7 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import { type FormikProps } from 'formik';
 import { debounce, isEqual, noop } from 'lodash';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { lazy, object } from 'yup';
 
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
@@ -132,33 +132,55 @@ const SingleShippingForm: React.FC<
             shippingAutosaveDelay,
         );
 
+        const stateOrProvinceCodeFormField = getFields(
+            values.shippingAddress?.countryCode,
+        ).find(({ name }) => name === 'stateOrProvinceCode');
+
+        if (
+            stateOrProvinceCodeFormField &&
+            shippingAddress?.stateOrProvinceCode &&
+            !values.shippingAddress?.stateOrProvinceCode
+        ) {
+            setFieldValue('shippingAddress.stateOrProvinceCode', shippingAddress.stateOrProvinceCode);
+        }
+
         return () => {
             debouncedUpdateAddressRef.current?.cancel();
         };
-    }, [updateAddress, shippingAutosaveDelay]);
+    }, []);
 
-    const updateAddressWithFormData = useCallback(
-        (includeShippingOptions: boolean) => {
-            const updatedShippingAddress =
-                values.shippingAddress && mapAddressFromFormValues(values.shippingAddress);
+    useEffect(() => {
+        if (shippingFormRenderTimestamp) {
+            setValues({
+                billingSameAsShipping: isBillingSameAsShipping,
+                orderComment: customerMessage,
+                shippingAddress: mapAddressToFormValues(
+                    getFields(shippingAddress?.countryCode),
+                    shippingAddress,
+                ),
+            });
+        }
+    }, [shippingFormRenderTimestamp]);
 
-            let newIncludeShippingOptions = includeShippingOptions;
+    const updateAddressWithFormData = (includeShippingOptions: boolean) => {
+        const updatedShippingAddress =
+            values.shippingAddress && mapAddressFromFormValues(values.shippingAddress);
 
-            if (Array.isArray(shippingAddress?.customFields)) {
-                newIncludeShippingOptions =
-                    !isEqual(shippingAddress?.customFields, updatedShippingAddress?.customFields) ||
-                    includeShippingOptions;
-            }
+        let newIncludeShippingOptions = includeShippingOptions;
 
-            if (!updatedShippingAddress || isEqualAddress(updatedShippingAddress, shippingAddress)) {
-                return;
-            }
+        if (Array.isArray(shippingAddress?.customFields)) {
+            newIncludeShippingOptions =
+                !isEqual(shippingAddress?.customFields, updatedShippingAddress?.customFields) ||
+                includeShippingOptions;
+        }
 
-            setIsUpdatingShippingData(true);
-            debouncedUpdateAddressRef.current?.(updatedShippingAddress, newIncludeShippingOptions);
-        },
-        [shippingAddress, values.shippingAddress],
-    );
+        if (!updatedShippingAddress || isEqualAddress(updatedShippingAddress, shippingAddress)) {
+            return;
+        }
+
+        setIsUpdatingShippingData(true);
+        debouncedUpdateAddressRef.current?.(updatedShippingAddress, newIncludeShippingOptions);
+    };
 
     const handleFieldChange = async (name: string) => {
         if (name === 'countryCode') {
@@ -181,60 +203,24 @@ const SingleShippingForm: React.FC<
         updateAddressWithFormData(isShippingField || !hasRequestedShippingOptions);
     };
 
-    useEffect(() => {
-        const stateOrProvinceCodeFormField = getFields(
-            values.shippingAddress?.countryCode,
-        ).find(({ name }) => name === 'stateOrProvinceCode');
+    const handleAddressSelect = async (address: Address) => {
+        setIsResettingAddress(true);
 
-        if (
-            stateOrProvinceCodeFormField &&
-            shippingAddress?.stateOrProvinceCode &&
-            !values.shippingAddress?.stateOrProvinceCode
-        ) {
-            setFieldValue('shippingAddress.stateOrProvinceCode', shippingAddress.stateOrProvinceCode);
-        }
-    }, [
-        getFields,
-        setFieldValue,
-        shippingAddress?.stateOrProvinceCode,
-        values.shippingAddress?.countryCode,
-        values.shippingAddress?.stateOrProvinceCode,
-    ]);
+        try {
+            await updateAddress(address);
 
-    useEffect(() => {
-        if (shippingFormRenderTimestamp) {
             setValues({
-                billingSameAsShipping: isBillingSameAsShipping,
-                orderComment: customerMessage,
-                shippingAddress: mapAddressToFormValues(
-                    getFields(shippingAddress?.countryCode),
-                    shippingAddress,
-                ),
+                ...values,
+                shippingAddress: mapAddressToFormValues(getFields(address.countryCode), address),
             });
+        } catch (error) {
+            onUnhandledError(error);
+        } finally {
+            setIsResettingAddress(false);
         }
-    }, [shippingFormRenderTimestamp]);
+    }
 
-    const handleAddressSelect = useCallback(
-        async (address: Address) => {
-            setIsResettingAddress(true);
-
-            try {
-                await updateAddress(address);
-
-                setValues({
-                    ...values,
-                    shippingAddress: mapAddressToFormValues(getFields(address.countryCode), address),
-                });
-            } catch (error) {
-                onUnhandledError(error);
-            } finally {
-                setIsResettingAddress(false);
-            }
-        },
-        [getFields, onUnhandledError, setValues, updateAddress, values],
-    );
-
-    const handleUseNewAddress = useCallback(async () => {
+    const handleUseNewAddress = async () => {
         setIsResettingAddress(true);
 
         try {
@@ -249,9 +235,9 @@ const SingleShippingForm: React.FC<
         } finally {
             setIsResettingAddress(false);
         }
-    }, [deleteConsignments, getFields, onUnhandledError, setValues, values]);
+    };
 
-    const shouldDisableSubmit = useCallback(() => {
+    const shouldDisableSubmit = () => {
         if (!isValid) {
             return false;
         }
@@ -262,7 +248,7 @@ const SingleShippingForm: React.FC<
             !hasSelectedShippingOptions(consignments) ||
             !isSelectedShippingOptionValid(consignments)
         );
-    }, [consignments, isLoading, isUpdatingShippingData, isValid]);
+    };
 
     const PAYMENT_METHOD_VALID = ['amazonpay'];
     const shouldShowBillingSameAsShipping = !PAYMENT_METHOD_VALID.some(
