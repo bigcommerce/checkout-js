@@ -8,6 +8,7 @@ import {
 import userEvent from '@testing-library/user-event';
 import React, { type FunctionComponent } from 'react';
 
+import { AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import {
@@ -121,9 +122,11 @@ describe('Shipping component', () => {
         ComponentTest = (props) => (
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
-                    <ExtensionProvider checkoutService={checkoutService} errorLogger={errorLogger} >
-                        <Shipping {...props} />
-                    </ExtensionProvider>
+                    <AnalyticsProviderMock>
+                        <ExtensionProvider checkoutService={checkoutService} errorLogger={errorLogger} >
+                            <Shipping {...props} />
+                        </ExtensionProvider>
+                    </AnalyticsProviderMock>
                 </LocaleContext.Provider>
             </CheckoutProvider>
         );
