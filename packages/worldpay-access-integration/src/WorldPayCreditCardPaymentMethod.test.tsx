@@ -11,13 +11,13 @@ import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';
 import { act } from 'react-dom/test-utils';
 
-import { type CreditCardPaymentMethodValues } from '@bigcommerce/checkout/credit-card-integration';
 import {
     createLocaleContext,
     LocaleContext,
     type LocaleContextType,
 } from '@bigcommerce/checkout/locale';
 import {
+    type CardInstrumentFieldsetValues,
     CheckoutProvider,
     PaymentFormContext,
     type PaymentFormService,
@@ -38,17 +38,8 @@ import { fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
 
 import WorldpayCreditCardPaymentMethod from './WorldpayCreditCardPaymentMethod';
 
-const hostedFormOptions = {
-    fields: {
-        cardCode: { containerId: 'cardCode', placeholder: 'Card code' },
-        cardName: { containerId: 'cardName', placeholder: 'Card name' },
-        cardNumber: { containerId: 'cardNumber', placeholder: 'Card number' },
-        cardExpiry: { containerId: 'cardExpiry', placeholder: 'Card expiry' },
-    },
-};
-
 describe('WorldpayCreditCardPaymentMethod', () => {
-    let initialValues: CreditCardPaymentMethodValues;
+    let initialValues: CardInstrumentFieldsetValues;
     let method: PaymentMethod;
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
@@ -59,11 +50,6 @@ describe('WorldpayCreditCardPaymentMethod', () => {
 
     beforeEach(() => {
         initialValues = {
-            ccCustomerCode: '',
-            ccCvv: '',
-            ccExpiry: '',
-            ccName: '',
-            ccNumber: '',
             instrumentId: '',
         };
         paymentForm = getPaymentFormServiceMock();
