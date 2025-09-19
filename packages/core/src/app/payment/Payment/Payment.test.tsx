@@ -10,7 +10,6 @@ import { rest } from 'msw';
 import React, { act, type FunctionComponent } from 'react';
 
 import {
-    type AnalyticsContextProps,
     type AnalyticsEvents,
     AnalyticsProviderMock,
 } from '@bigcommerce/checkout/analytics';
@@ -30,18 +29,18 @@ import {
 import { renderWithoutWrapper as render, screen } from '@bigcommerce/checkout/test-utils';
 import { ThemeProvider } from '@bigcommerce/checkout/ui';
 
-import Checkout, { type CheckoutProps } from '../checkout/Checkout';
-import { createErrorLogger } from '../common/error';
+import Checkout, { type CheckoutProps } from '../../checkout/Checkout';
+import { createErrorLogger } from '../../common/error';
 import {
     createEmbeddedCheckoutStylesheet,
     createEmbeddedCheckoutSupport,
-} from '../embeddedCheckout';
+} from '../../embeddedCheckout';
 
 describe('Payment step', () => {
     let checkout: CheckoutPageNodeObject;
     let CheckoutTest: FunctionComponent<CheckoutProps>;
     let checkoutService: CheckoutService;
-    let defaultProps: CheckoutProps & AnalyticsContextProps;
+    let defaultProps: CheckoutProps;
     let embeddedMessengerMock: EmbeddedCheckoutMessenger;
     let analyticsTracker: Partial<AnalyticsEvents>;
 
@@ -78,7 +77,6 @@ describe('Payment step', () => {
             embeddedStylesheet: createEmbeddedCheckoutStylesheet(),
             embeddedSupport: createEmbeddedCheckoutSupport(getLanguageService()),
             errorLogger: createErrorLogger(),
-            analyticsTracker,
         };
 
         jest.spyOn(defaultProps.errorLogger, 'log').mockImplementation(noop);
@@ -86,7 +84,7 @@ describe('Payment step', () => {
         CheckoutTest = (props) => (
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleProvider checkoutService={checkoutService}>
-                    <AnalyticsProviderMock>
+                    <AnalyticsProviderMock analyticsTracker={analyticsTracker}>
                         <ExtensionProvider
                             checkoutService={checkoutService}
                             errorLogger={{

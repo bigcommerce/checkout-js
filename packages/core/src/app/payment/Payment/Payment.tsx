@@ -16,26 +16,26 @@ import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/loca
 import { type CheckoutContextProps, type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { ChecklistSkeleton } from '@bigcommerce/checkout/ui';
 
-import { withAnalytics } from '../analytics';
-import { withCheckout } from '../checkout';
+import { withAnalytics } from '../../analytics';
+import { withCheckout } from '../../checkout';
 import {
-    ErrorModal,
     type ErrorModalOnCloseProps,
     isCartChangedError,
     isErrorWithType,
-} from '../common/error';
-import { EMPTY_ARRAY } from '../common/utility';
-import { TermsConditionsType } from '../termsConditions';
-
-import mapSubmitOrderErrorMessage, { mapSubmitOrderErrorTitle } from './mapSubmitOrderErrorMessage';
-import mapToOrderRequestBody from './mapToOrderRequestBody';
-import PaymentContext from './PaymentContext';
-import PaymentForm from './PaymentForm';
+} from '../../common/error';
+import { EMPTY_ARRAY } from '../../common/utility';
+import { TermsConditionsType } from '../../termsConditions';
+import mapToOrderRequestBody from '../mapToOrderRequestBody';
+import PaymentContext from '../PaymentContext';
+import PaymentForm from '../PaymentForm';
 import {
     getUniquePaymentMethodId,
     PaymentMethodId,
     PaymentMethodProviderType,
-} from './paymentMethod';
+} from '../paymentMethod';
+
+import { EmbeddedSupportErrorModal } from './EmbeddedSupportErrorModa';
+import { OrderErrorModal } from './OrderErrorModal';
 
 export interface PaymentProps {
     errorLogger: ErrorLogger;
@@ -333,44 +333,6 @@ const Payment = (
         clearError(error);
     }, [cartUrl, clearError, loadCheckout]);
 
-    const renderOrderErrorModal = () => {
-        const error: any = submitOrderError || finalizeOrderError;
-
-        if (!error ||
-            error.type === 'order_finalization_not_required' ||
-            error.type === 'payment_cancelled' ||
-            error.type === 'payment_invalid_form' ||
-            error.type === 'spam_protection_not_completed' ||
-            error.type === 'invalid_hosted_form_value') {
-            return null;
-        }
-
-        return (
-            <ErrorModal
-                error={error}
-                message={mapSubmitOrderErrorMessage(
-                    error,
-                    language.translate.bind(language),
-                    shouldLocaliseErrorMessages,
-                )}
-                onClose={handleCloseModal}
-                title={mapSubmitOrderErrorTitle(error, language.translate.bind(language))}
-            />
-        );
-    };
-
-    const renderEmbeddedSupportErrorModal = () => {
-        try {
-            checkEmbeddedSupport(methods.map(({ id }) => id));
-        } catch (error) {
-            if (error instanceof Error) {
-                return <ErrorModal error={error} onClose={handleCloseModal} />;
-            }
-        }
-
-        return null;
-    };
-
     const contextValue = useMemo(() => ({
         disableSubmit,
         setSubmit,
@@ -453,8 +415,20 @@ const Payment = (
                     />
                 )}
             </ChecklistSkeleton>
-            {renderOrderErrorModal()}
-            {renderEmbeddedSupportErrorModal()}
+
+            <OrderErrorModal
+                finalizeOrderError={finalizeOrderError}
+                language={language}
+                onClose={handleCloseModal}
+                shouldLocaliseErrorMessages={shouldLocaliseErrorMessages}
+                submitOrderError={submitOrderError}
+            />
+
+            <EmbeddedSupportErrorModal
+                checkEmbeddedSupport={checkEmbeddedSupport}
+                methods={methods}
+                onClose={handleCloseModal}
+            />
         </PaymentContext.Provider>
     );
 };
