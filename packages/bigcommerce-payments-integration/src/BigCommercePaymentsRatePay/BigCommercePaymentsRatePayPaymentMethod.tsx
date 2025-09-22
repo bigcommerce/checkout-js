@@ -1,4 +1,5 @@
 import { type FormField } from '@bigcommerce/checkout-sdk';
+import { createBigCommercePaymentsRatePayPayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bigcommerce-payments';
 import React, { type FunctionComponent, useCallback, useEffect, useMemo, useRef } from 'react';
 
 import {
@@ -83,6 +84,7 @@ const BigCommercePaymentsRatePayPaymentMethod: FunctionComponent<any> = ({
             await checkoutService.initializePayment({
                 gatewayId: method.gateway,
                 methodId: method.id,
+                integrations: [createBigCommercePaymentsRatePayPayPaymentStrategy],
                 bigcommerce_payments_ratepay: {
                     container: '#checkout-payment-continue',
                     legalTextContainer: 'legal-text-container',

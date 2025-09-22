@@ -14,11 +14,13 @@ const CheckoutButton: FunctionComponent<CheckoutButtonProps> = ({
     onUnhandledError,
     onWalletButtonClick,
     additionalInitializationOptions,
+    integrations,
 }) => {
     const initializeCustomerStrategyOrThrow = async () => {
         try {
             await initializeCustomer({
                 methodId,
+                integrations,
                 [methodId]: {
                     container: containerId,
                     onUnhandledError,

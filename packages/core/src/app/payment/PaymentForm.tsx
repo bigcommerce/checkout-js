@@ -1,4 +1,4 @@
-import { ExtensionRegion, type PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { ExtensionRegion, type PaymentMethod } from '@bigcommerce/checkout-sdk/essential';
 import { type FormikProps, type FormikState, withFormik, type WithFormikConfig } from 'formik';
 import { isNil, noop, omitBy } from 'lodash';
 import React, { type FunctionComponent, memo, useCallback, useContext, useMemo } from 'react';

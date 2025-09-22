@@ -6,6 +6,12 @@ import {
     type PayPalCommercePaymentInitializeOptions,
     type PayPalCommerceVenmoPaymentInitializeOptions,
 } from '@bigcommerce/checkout-sdk';
+import {
+    createPayPalCommerceAlternativeMethodsPaymentStrategy,
+    createPayPalCommerceCreditPaymentStrategy,
+    createPayPalCommercePaymentStrategy,
+    createPayPalCommerceVenmoPaymentStrategy,
+} from '@bigcommerce/checkout-sdk/integrations/paypal-commerce';
 import React, { type FunctionComponent, useCallback, useEffect, useRef } from 'react';
 
 import { type PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
@@ -102,6 +108,12 @@ const PayPalCommercePaymentMethodComponent: FunctionComponent<
             await checkoutService.initializePayment({
                 gatewayId: method.gateway,
                 methodId: method.id,
+                integrations: [
+                    createPayPalCommerceAlternativeMethodsPaymentStrategy,
+                    createPayPalCommerceCreditPaymentStrategy,
+                    createPayPalCommercePaymentStrategy,
+                    createPayPalCommerceVenmoPaymentStrategy,
+                ],
                 [providerOptionsKey]: {
                     container: '#checkout-payment-continue',
                     shouldRenderPayPalButtonOnInitialization: false,

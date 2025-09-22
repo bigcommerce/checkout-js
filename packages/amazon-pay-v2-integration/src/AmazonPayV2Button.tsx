@@ -1,3 +1,4 @@
+import { createAmazonPayV2CustomerStrategy } from '@bigcommerce/checkout-sdk/integrations/amazon-pay';
 import React, { type FunctionComponent, useEffect } from 'react';
 
 import { CheckoutButton } from '@bigcommerce/checkout/checkout-button-integration';
@@ -35,7 +36,7 @@ const AmazonPayV2Button: FunctionComponent<CheckoutButtonProps> = (props) => {
 
     return (
         <div className="AmazonPayContainer">
-            <CheckoutButton {...props} />
+            <CheckoutButton integrations={[createAmazonPayV2CustomerStrategy]} {...props} />
         </div>
     );
 };

@@ -1,4 +1,4 @@
-import { createCheckoutService, createEmbeddedCheckoutMessenger } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, createEmbeddedCheckoutMessenger } from '@bigcommerce/checkout-sdk/essential';
 import type { BrowserOptions } from '@sentry/browser';
 import React, { type ReactElement, useEffect, useMemo } from 'react';
 import ReactModal from 'react-modal';
@@ -31,12 +31,6 @@ export interface CheckoutAppProps {
 const CheckoutApp = (props: CheckoutAppProps): ReactElement => {
     const { containerId, sentryConfig, publicPath, sentrySampleRate } = props;
 
-    const checkoutService = useMemo(() => createCheckoutService({
-        locale: getLanguageService().getLocale(),
-        shouldWarnMutation: process.env.NODE_ENV === 'development',
-    }), []);
-    const embeddedStylesheet = useMemo(() => createEmbeddedCheckoutStylesheet(), []);
-    const embeddedSupport = useMemo(() => createEmbeddedCheckoutSupport(getLanguageService()), []);
     const errorLogger = useMemo(() => createErrorLogger(
         { sentry: sentryConfig },
         {
@@ -45,6 +39,13 @@ const CheckoutApp = (props: CheckoutAppProps): ReactElement => {
             sampleRate: sentrySampleRate || 0.1,
         },
     ), []);
+    const checkoutService = useMemo(() => createCheckoutService({
+        locale: getLanguageService().getLocale(),
+        shouldWarnMutation: process.env.NODE_ENV === 'development',
+        errorLogger,
+    }), []);
+    const embeddedStylesheet = useMemo(() => createEmbeddedCheckoutStylesheet(), []);
+    const embeddedSupport = useMemo(() => createEmbeddedCheckoutSupport(getLanguageService()), []);
 
     useEffect(() => {
         ReactModal.setAppElement(`#${containerId}`);
