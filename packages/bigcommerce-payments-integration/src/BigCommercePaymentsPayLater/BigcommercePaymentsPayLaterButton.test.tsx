@@ -4,6 +4,7 @@ import {
     createCheckoutService,
     createLanguageService,
 } from '@bigcommerce/checkout-sdk';
+import { createBigCommercePaymentsPayLaterCustomerStrategy } from '@bigcommerce/checkout-sdk/integrations/bigcommerce-payments';
 import React from 'react';
 
 import { type CheckoutButtonProps } from '@bigcommerce/checkout/payment-integration-api';
@@ -39,6 +40,7 @@ describe('BigcommercePaymentsPayLaterButton', () => {
 
         expect(checkoutService.initializeCustomer).toHaveBeenCalledWith({
             methodId: defaultProps.methodId,
+            integrations: [createBigCommercePaymentsPayLaterCustomerStrategy],
             bigcommerce_payments_paylater: {
                 container: 'bigcommerce-payments-paylater-button-container',
                 onClick: expect.any(Function),

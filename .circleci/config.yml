@@ -243,9 +243,6 @@ workflows:
             <<: *pull_request_filter
           requires:
             - build-prerelease
-      - sdk-on-cdn:
-          filters:
-            <<: *pull_request_filter
       - security/scan:
           name: "Gitleaks secrets scan"
           filters:
@@ -293,6 +290,9 @@ workflows:
             <<: *release_filter
           requires:
             - build
+      - sdk-on-cdn:
+          filters:
+            <<: *release_filter
       - security/scan:
           name: "Gitleaks secrets scan"
           filters:
@@ -309,6 +309,7 @@ workflows:
             - lint
             - build
             - e2e
+            - sdk-on-cdn
             - "Gitleaks secrets scan"
       - upload_to_sentry:
           filters:

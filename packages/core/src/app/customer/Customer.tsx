@@ -12,8 +12,12 @@ import {
     type FormField,
     type GuestCredentials,
     type SignInEmail,
-    type StoreConfig,
 } from '@bigcommerce/checkout-sdk';
+import { createBigCommercePaymentsFastlaneCustomerStrategy } from '@bigcommerce/checkout-sdk/integrations/bigcommerce-payments';
+import { createBoltCustomerStrategy } from '@bigcommerce/checkout-sdk/integrations/bolt';
+import { createBraintreeFastlaneCustomerStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
+import { createPayPalCommerceFastlaneCustomerStrategy } from '@bigcommerce/checkout-sdk/integrations/paypal-commerce';
+import { createStripeLinkV2CustomerStrategy, createStripeUPECustomerStrategy } from '@bigcommerce/checkout-sdk/integrations/stripe';
 import { noop } from 'lodash';
 import React, { Component, type ReactNode } from 'react';
 
@@ -126,7 +130,18 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
 
         try {
             if (providerWithCustomCheckout && providerWithCustomCheckout !== PaymentMethodId.StripeUPE) {
-                await initializeCustomer({ methodId: providerWithCustomCheckout });
+                // TODO: Split out into separate chunks so they can be lazy loaded
+                await initializeCustomer({
+                    methodId: providerWithCustomCheckout,
+                    integrations: [
+                        createBigCommercePaymentsFastlaneCustomerStrategy,
+                        createBraintreeFastlaneCustomerStrategy,
+                        createPayPalCommerceFastlaneCustomerStrategy,
+                        createBoltCustomerStrategy,
+                        createStripeUPECustomerStrategy,
+                        createStripeLinkV2CustomerStrategy,
+                    ],
+                });
             }
         } catch (error) {
             onUnhandledError(error);
@@ -538,7 +553,7 @@ export function mapToWithCheckoutCustomerProps({
             isExpressPrivacyPolicy,
             shouldRedirectToStorefrontForAuth
         },
-    } = config as StoreConfig & { checkoutSettings: { isAccountCreationEnabled: boolean } };
+    } = config;
 
     const providerWithCustomCheckout = getProviderWithCustomCheckout(
         config.checkoutSettings.providerWithCustomCheckout,

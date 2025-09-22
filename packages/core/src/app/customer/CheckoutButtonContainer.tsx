@@ -1,6 +1,6 @@
 import { type CheckoutSelectors, type CheckoutService } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
-import React, { type FunctionComponent, memo, Suspense } from 'react';
+import React, { type FunctionComponent, lazy, memo, Suspense } from 'react';
 
 import { TranslatedString, useLocale } from '@bigcommerce/checkout/locale';
 import { type CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
@@ -10,7 +10,8 @@ import { withCheckout } from '../checkout';
 
 import { getSupportedMethodIds } from './getSupportedMethods';
 import resolveCheckoutButton from './resolveCheckoutButton';
-import CheckoutButtonV1Resolver from './WalletButtonV1Resolver';
+
+const CheckoutButtonV1Resolver = lazy(() => import(/* webpackChunkName: "wallet-button-v1-resolver" */'./WalletButtonV1Resolver'));
 
 interface CheckoutButtonContainerProps {
     isPaymentStepActive: boolean;
@@ -64,15 +65,17 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
         );
 
         if (!ResolvedCheckoutButton) {
-            return <CheckoutButtonV1Resolver
-                deinitialize={checkoutService.deinitializeCustomer}
-                initialize={checkoutService.initializeCustomer}
-                isShowingWalletButtonsOnTop={true}
-                key={methodId}
-                methodId={methodId}
-                onClick={onWalletButtonClick}
-                onError={onUnhandledError}
-            />
+            return <Suspense key={methodId}>
+                <CheckoutButtonV1Resolver
+                    deinitialize={checkoutService.deinitializeCustomer}
+                    initialize={checkoutService.initializeCustomer}
+                    isShowingWalletButtonsOnTop={true}
+                    key={methodId}
+                    methodId={methodId}
+                    onClick={onWalletButtonClick}
+                    onError={onUnhandledError}
+                />
+            </Suspense>
         }
 
         return <Suspense key={methodId}> 

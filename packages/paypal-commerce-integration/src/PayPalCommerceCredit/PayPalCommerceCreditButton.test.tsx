@@ -4,6 +4,7 @@ import {
     createCheckoutService,
     createLanguageService,
 } from '@bigcommerce/checkout-sdk';
+import { createPayPalCommerceCreditCustomerStrategy } from '@bigcommerce/checkout-sdk/integrations/paypal-commerce';
 import React from 'react';
 
 import { type CheckoutButtonProps } from '@bigcommerce/checkout/payment-integration-api';
@@ -39,6 +40,7 @@ describe('PayPalCommerceCreditButton', () => {
 
         expect(checkoutService.initializeCustomer).toHaveBeenCalledWith({
             methodId: defaultProps.methodId,
+            integrations: [createPayPalCommerceCreditCustomerStrategy],
             paypalcommercecredit: {
                 container: 'paypalcommercecredit-button-container',
                 onClick: expect.any(Function),

@@ -4,6 +4,7 @@ import {
     createCheckoutService,
     createLanguageService,
 } from '@bigcommerce/checkout-sdk';
+import { createBigCommercePaymentsCustomerStrategy } from '@bigcommerce/checkout-sdk/integrations/bigcommerce-payments';
 import React from 'react';
 
 import { type CheckoutButtonProps } from '@bigcommerce/checkout/payment-integration-api';
@@ -39,6 +40,7 @@ describe('BigCommercePaymentsButton', () => {
 
         expect(checkoutService.initializeCustomer).toHaveBeenCalledWith({
             methodId: defaultProps.methodId,
+            integrations: [createBigCommercePaymentsCustomerStrategy],
             bigcommerce_payments: {
                 container: 'bigcommerce-payments-button-container',
                 onClick: expect.any(Function),
