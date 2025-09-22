@@ -13,6 +13,7 @@ import { BasicFormField, Fieldset, Form, Legend } from '../ui/form';
 
 import { type GuestFormValues } from './GuestForm';
 import SubscribeField from './SubscribeField';
+import { createStripeUPECustomerStrategy } from '@bigcommerce/checkout-sdk/integrations/stripe';
 
 export interface StripeGuestFormProps {
     canSubscribe: boolean;
@@ -99,6 +100,7 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
     const stripeInitialize = () => {
         initialize( {
             methodId: 'stripeupe',
+            integrations: [createStripeUPECustomerStrategy],
             stripeupe: {
                 container: 'stripeupeLink',
                 onEmailChange: setEmailCallback,
