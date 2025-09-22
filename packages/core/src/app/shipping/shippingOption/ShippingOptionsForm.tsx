@@ -1,7 +1,7 @@
 import { type CheckoutSelectors } from '@bigcommerce/checkout-sdk';
 import { type FormikProps } from 'formik';
 import { noop } from 'lodash';
-import React, { useEffect } from 'react';
+import React, { type ReactElement, useEffect } from 'react';
 
 import { useAnalytics } from '@bigcommerce/checkout/analytics';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -25,9 +25,7 @@ export interface ShippingOptionsFormValues {
     };
 }
 
-const ShippingOptionsForm: React.FC<
-    ShippingOptionsFormProps & FormikProps<ShippingOptionsFormValues>
-> = (props) => {
+const ShippingOptionsForm = (props: ShippingOptionsFormProps & FormikProps<ShippingOptionsFormValues>): ReactElement => {
     const {
         consignments,
         cart,

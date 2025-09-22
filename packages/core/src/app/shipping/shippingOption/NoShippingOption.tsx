@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { type ReactElement } from 'react';
 
 import { ChecklistSkeleton } from '@bigcommerce/checkout/ui';
 
-export const NoShippingOptions: React.FC<{ message: React.ReactNode, isLoading: boolean }> = ({ message, isLoading }) => (
+interface NoShippingOptionsProps {
+    message: React.ReactNode;
+    isLoading: boolean;
+}
+
+export const NoShippingOptions = ({ message, isLoading }: NoShippingOptionsProps): ReactElement => (
     <ChecklistSkeleton
         additionalClassName="shippingOptions-skeleton"
         isLoading={isLoading}
