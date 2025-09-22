@@ -1,4 +1,5 @@
 import { type CustomerInitializeOptions } from '@bigcommerce/checkout-sdk';
+import { createApplePayCustomerStrategy } from '@bigcommerce/checkout-sdk/integrations/apple-pay';
 import { noop } from 'lodash';
 import React, { type FunctionComponent, useCallback, useContext } from 'react';
 
@@ -18,6 +19,7 @@ const ApplePayButton: FunctionComponent<CheckoutButtonProps> = ({
         (options: CustomerInitializeOptions) =>
             initialize({
                 ...options,
+                integrations: [createApplePayCustomerStrategy],
                 applepay: {
                     container: rest.containerId,
                     shippingLabel: localeContext?.language.translate('cart.shipping_text'),
