@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.678.0](https://github.com/bigcommerce/checkout-js/compare/v1.677.0...v1.678.0) (2025-09-23)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9468 set state field correctly ([#2591](https://github.com/bigcommerce/checkout-js/issues/2591)) ([fcd14ba](https://github.com/bigcommerce/checkout-js/commit/fcd14ba0be58641a4623ad9463d8396abc4e1f9f))
+
 ## [1.677.0](https://github.com/bigcommerce/checkout-js/compare/v1.676.0...v1.677.0) (2025-09-23)
 
 
