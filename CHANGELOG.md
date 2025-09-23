@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.679.1](https://github.com/bigcommerce/checkout-js/compare/v1.679.0...v1.679.1) (2025-09-23)
+
+
+### Code Refactoring
+
+* **payment:** PAYPAL-1322 refactor BT CC ([f21a836](https://github.com/bigcommerce/checkout-js/commit/f21a83689a9703e3e827ab1bd95c40a11c746ec9))
+
 ## [1.679.0](https://github.com/bigcommerce/checkout-js/compare/v1.678.0...v1.679.0) (2025-09-23)
 
 
