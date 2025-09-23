@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.677.0](https://github.com/bigcommerce/checkout-js/compare/v1.676.0...v1.677.0) (2025-09-23)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9468 convert SingleShippingForm ([#2582](https://github.com/bigcommerce/checkout-js/issues/2582)) ([70bc152](https://github.com/bigcommerce/checkout-js/commit/70bc152c9a18c0fe5ad0887cf7956eaa11284329))
+
 ## [1.676.0](https://github.com/bigcommerce/checkout-js/compare/v1.675.0...v1.676.0) (2025-09-22)
 
 
