@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.679.2](https://github.com/bigcommerce/checkout-js/compare/v1.679.1...v1.679.2) (2025-09-23)
+
+
+### Code Refactoring
+
+* **payment:** PAYPAL-1322 remove BT CC from core ([a1ba140](https://github.com/bigcommerce/checkout-js/commit/a1ba14069d58665598d6389409dee78e5c54cd61))
+
 ### [1.679.1](https://github.com/bigcommerce/checkout-js/compare/v1.679.0...v1.679.1) (2025-09-23)
 
 
