@@ -10,7 +10,7 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import { type FormikProps } from 'formik';
 import { debounce, isEqual, noop } from 'lodash';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { lazy, object } from 'yup';
 
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
@@ -108,6 +108,12 @@ const SingleShippingForm: React.FC<
     const [isUpdatingShippingData, setIsUpdatingShippingData] = useState(false);
     const [hasRequestedShippingOptions, setHasRequestedShippingOptions] = useState(false);
 
+    const stateOrProvinceCodeFormField = useMemo(() => {
+        return getFields(
+            values.shippingAddress?.countryCode,
+        ).find(({ name }) => name === 'stateOrProvinceCode');
+    }, [getFields, values.shippingAddress?.countryCode]);
+
     const debouncedUpdateAddressRef = useRef<any>();
 
     useEffect(() => {
@@ -131,11 +137,17 @@ const SingleShippingForm: React.FC<
             },
             shippingAutosaveDelay,
         );
+        
+        return () => {
+            debouncedUpdateAddressRef.current?.cancel();
+        };
+    }, []);
 
-        const stateOrProvinceCodeFormField = getFields(
-            values.shippingAddress?.countryCode,
-        ).find(({ name }) => name === 'stateOrProvinceCode');
-
+    useEffect(() => {
+        // Workaround for a bug found during manual testing:
+        // When the shipping step first loads, the `stateOrProvinceCode` field may not be there.
+        // It later appears with an empty value if the selected country has states/provinces.
+        // To address this, we manually set `stateOrProvinceCode` in Formik.
         if (
             stateOrProvinceCodeFormField &&
             shippingAddress?.stateOrProvinceCode &&
@@ -143,11 +155,12 @@ const SingleShippingForm: React.FC<
         ) {
             setFieldValue('shippingAddress.stateOrProvinceCode', shippingAddress.stateOrProvinceCode);
         }
+    }, [
+        stateOrProvinceCodeFormField,
+        shippingAddress?.stateOrProvinceCode,
+        values.shippingAddress?.stateOrProvinceCode,
+    ]);
 
-        return () => {
-            debouncedUpdateAddressRef.current?.cancel();
-        };
-    }, []);
 
     useEffect(() => {
         if (shippingFormRenderTimestamp) {
