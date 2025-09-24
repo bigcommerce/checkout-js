@@ -45,11 +45,13 @@ export function getStoreConfig(): StoreConfig {
             features: {},
             remoteCheckoutProviders: [],
             shouldRedirectToStorefrontForAuth: false,
+            orderTermsAndConditionsLocation: '',
         },
         currency: {
             code: 'USD',
             decimalPlaces: '2',
             decimalSeparator: '.',
+            isTransactional: true,
             symbolLocation: 'left',
             symbol: '$',
             thousandsSeparator: ',',

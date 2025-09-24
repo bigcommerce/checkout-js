@@ -1,5 +1,6 @@
 import {
     type BillingAddress,
+    type CheckoutInitialState,
     type CheckoutService,
     createCheckoutService,
     createEmbeddedCheckoutMessenger,
@@ -23,12 +24,14 @@ import {
 import {
     CheckoutPageNodeObject,
     CheckoutPreset,
+    checkoutSettings,
     checkoutWithBillingEmail,
     checkoutWithDigitalCart,
     checkoutWithShipping,
     checkoutWithShippingAndBilling,
     consignment,
     customer,
+    formFields,
     payments,
     shippingAddress,
     shippingAddress2,
@@ -128,7 +131,9 @@ describe('Billing step', () => {
     });
 
     it('completes the billing step as a guest and goes to the payment step', async () => {
-        checkout.use(CheckoutPreset.CheckoutWithShipping);
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithShipping);
+
+        jest.spyOn(checkoutService, 'updateBillingAddress');
 
         render(<CheckoutTest {...defaultProps} />);
 
@@ -153,7 +158,9 @@ describe('Billing step', () => {
     });
 
     it('edit the billing address and goes back to the payment step', async () => {
-        checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
+
+        jest.spyOn(checkoutService, 'updateBillingAddress');
 
         render(<CheckoutTest {...defaultProps} />);
 
@@ -186,14 +193,16 @@ describe('Billing step', () => {
     });
 
     it('should show order comments', async () => {
-        checkout.updateCheckout(
-            'get',
-            '/checkout/*',
-            {
-                ...checkoutWithBillingEmail,
-                cart: checkoutWithDigitalCart.cart,
+        checkoutService = createCheckoutService({
+            initialState: {
+                config: checkoutSettings,
+                checkout: {
+                    ...checkoutWithBillingEmail,
+                    cart: checkoutWithDigitalCart.cart,
+                },
+                formFields,
             },
-        );
+        });
 
         render(<CheckoutTest {...defaultProps} />);
 
@@ -203,17 +212,19 @@ describe('Billing step', () => {
     });
 
     it('should show PoweredByPayPalFastlaneLabel', async () => {
-        checkout.updateCheckout(
-            'get',
-            '/checkout/*',
-            {
-                ...checkoutWithShipping,
-                billingAddress:checkoutWithBillingEmail.billingAddress,
-                payments:[
-                    getCheckoutPayment(),
-                ],
+        checkoutService = createCheckoutService({
+            initialState: {
+                config: checkoutSettings,
+                checkout: {
+                    ...checkoutWithShipping,
+                    billingAddress:checkoutWithBillingEmail.billingAddress,
+                    payments:[
+                        getCheckoutPayment(),
+                    ],
+                },
+                formFields,
             },
-        );
+        });
 
         render(<CheckoutTest {...defaultProps} />);
 
@@ -223,11 +234,9 @@ describe('Billing step', () => {
     });
 
     it('should show PoweredByPayPalFastlaneLabel and custom form fields', async () => {
-        checkout.use(CheckoutPreset.CheckoutWithBillingEmailAndCustomFormFields);
-        checkout.updateCheckout(
-            'get',
-            '/checkout/*',
-            {
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithBillingEmailAndCustomFormFields, {
+            config: checkoutSettings,
+            checkout: {
                 ...checkoutWithShipping,
                 billingAddress:checkoutWithBillingEmail.billingAddress,
                 consignments: [
@@ -273,7 +282,8 @@ describe('Billing step', () => {
                     getCheckoutPayment(),
                 ],
             },
-        );
+            formFields,
+        });
 
         render(<CheckoutTest {...defaultProps} />);
 
@@ -292,11 +302,15 @@ describe('Billing step', () => {
 
     describe('registered customer', () => {
         it('completes the billing step after selecting a valid address', async () => {
-            checkout.updateCheckout(
-                'get',
-                '/checkout/*',
-                checkoutWithCustomer
-            );
+            checkoutService = createCheckoutService({
+                initialState: {
+                    config: checkoutSettings,
+                    checkout: checkoutWithCustomer,
+                    formFields,
+                },
+            });
+
+            jest.spyOn(checkoutService, 'updateBillingAddress');
 
             render(<CheckoutTest {...defaultProps} />);
 
@@ -354,11 +368,15 @@ describe('Billing step', () => {
                 phone: shippingAddress3.phone,
             } as BillingAddress;
 
-            checkout.updateCheckout(
-                'get',
-                '/checkout/*',
-                checkoutWithCustomer
-            );
+            checkoutService = createCheckoutService({
+                initialState: {
+                    config: checkoutSettings,
+                    checkout: checkoutWithCustomer,
+                    formFields,
+                },
+            });
+
+            jest.spyOn(checkoutService, 'updateBillingAddress');
 
             render(<CheckoutTest {...defaultProps} />);
 
@@ -405,11 +423,15 @@ describe('Billing step', () => {
         });
 
         it('completes the billing step after creating a new address even with existing addresses', async () => {
-            checkout.updateCheckout(
-                'get',
-                '/checkout/*',
-                checkoutWithCustomer
-            );
+            checkoutService = createCheckoutService({
+                initialState: {
+                    config: checkoutSettings,
+                    checkout: checkoutWithCustomer,
+                    formFields,
+                },
+            });
+
+            jest.spyOn(checkoutService, 'updateBillingAddress');
 
             render(<CheckoutTest {...defaultProps} />);
 

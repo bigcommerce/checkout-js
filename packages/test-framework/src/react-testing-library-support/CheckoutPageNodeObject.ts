@@ -1,4 +1,11 @@
-import { type Address, type Checkout } from '@bigcommerce/checkout-sdk';
+/* eslint-disable no-case-declarations */
+import {
+    type Address,
+    type Checkout,
+    type CheckoutService,
+    createCheckoutService,
+    type FormFields,
+} from '@bigcommerce/checkout-sdk';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { type RequestHandler, rest } from 'msw';
@@ -9,6 +16,7 @@ import {
     applepayMethod,
     checkout,
     CheckoutPreset,
+    type CheckoutPresetOverrides,
     checkoutSettings,
     checkoutSettingsWithCustomErrorFlashMessage,
     checkoutSettingsWithErrorFlashMessage,
@@ -109,7 +117,14 @@ export class CheckoutPageNodeObject {
         this.server.use(handler);
     }
 
-    use(preset: CheckoutPreset): void {
+    use(preset: CheckoutPreset, overrides?: CheckoutPresetOverrides): CheckoutService {
+        const initialState = {
+            config: { ...checkoutSettings, ...overrides?.config },
+            checkout: { ...checkout, ...overrides?.checkout },
+            formFields: { ...formFields, ...overrides?.formFields },
+            extensions: overrides?.extensions ?? [],
+        };
+
         switch (preset) {
             case CheckoutPreset.CheckoutWithBillingEmail:
                 this.server.use(
@@ -117,27 +132,37 @@ export class CheckoutPageNodeObject {
                         res(ctx.json(checkoutWithBillingEmail)),
                     ),
                 );
-                break;
+
+                return createCheckoutService({
+                    initialState: {
+                        ...initialState,
+                        checkout: { ...checkoutWithBillingEmail, ...overrides?.checkout },
+                    },
+                });
 
             case CheckoutPreset.CheckoutWithBillingEmailAndCustomFormFields:
+                const formFieldsOverrides: FormFields = {
+                    ...formFields,
+                    shippingAddress: [...formFields.shippingAddress, ...customFormFields],
+                    billingAddress: [...formFields.billingAddress, ...customFormFields],
+                };
+
                 this.server.use(
                     rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
                         res(ctx.json(checkoutWithBillingEmail)),
                     ),
                     rest.get('/api/storefront/form-fields', (_, res, ctx) =>
-                        res(
-                            ctx.json({
-                                ...formFields,
-                                shippingAddress: [
-                                    ...formFields.shippingAddress,
-                                    ...customFormFields,
-                                ],
-                                billingAddress: [...formFields.billingAddress, ...customFormFields],
-                            }),
-                        ),
+                        res(ctx.json(formFieldsOverrides)),
                     ),
                 );
-                break;
+
+                return createCheckoutService({
+                    initialState: {
+                        ...initialState,
+                        checkout: { ...checkoutWithBillingEmail, ...overrides?.checkout },
+                        formFields: formFieldsOverrides,
+                    },
+                });
 
             case CheckoutPreset.CheckoutWithLoggedInCustomer:
                 this.server.use(
@@ -145,7 +170,16 @@ export class CheckoutPageNodeObject {
                         res(ctx.json(checkoutWithLoggedInCustomer)),
                     ),
                 );
-                break;
+
+                return createCheckoutService({
+                    initialState: {
+                        ...initialState,
+                        checkout: {
+                            ...checkoutWithLoggedInCustomer,
+                            ...overrides?.checkout,
+                        },
+                    },
+                });
 
             case CheckoutPreset.CheckoutWithCustomerHavingInvalidAddress:
                 this.server.use(
@@ -153,7 +187,16 @@ export class CheckoutPageNodeObject {
                         res(ctx.json(checkoutWithCustomerHavingInvalidAddress)),
                     ),
                 );
-                break;
+
+                return createCheckoutService({
+                    initialState: {
+                        ...initialState,
+                        checkout: {
+                            ...checkoutWithCustomerHavingInvalidAddress,
+                            ...overrides?.checkout,
+                        },
+                    },
+                });
 
             case CheckoutPreset.CheckoutWithCustomShippingAndBilling:
                 this.server.use(
@@ -161,7 +204,16 @@ export class CheckoutPageNodeObject {
                         res(ctx.json(checkoutWithCustomShippingAndBilling)),
                     ),
                 );
-                break;
+
+                return createCheckoutService({
+                    initialState: {
+                        ...initialState,
+                        checkout: {
+                            ...checkoutWithCustomShippingAndBilling,
+                            ...overrides?.checkout,
+                        },
+                    },
+                });
 
             case CheckoutPreset.CheckoutWithDigitalCart:
                 this.server.use(
@@ -169,7 +221,13 @@ export class CheckoutPageNodeObject {
                         res(ctx.json(checkoutWithDigitalCart)),
                     ),
                 );
-                break;
+
+                return createCheckoutService({
+                    initialState: {
+                        ...initialState,
+                        checkout: { ...checkoutWithDigitalCart, ...overrides?.checkout },
+                    },
+                });
 
             case CheckoutPreset.CheckoutWithMultiShippingCart:
                 this.server.use(
@@ -177,7 +235,13 @@ export class CheckoutPageNodeObject {
                         res(ctx.json(checkoutWithMultiShippingCart)),
                     ),
                 );
-                break;
+
+                return createCheckoutService({
+                    initialState: {
+                        ...initialState,
+                        checkout: { ...checkoutWithMultiShippingCart, ...overrides?.checkout },
+                    },
+                });
 
             case CheckoutPreset.CheckoutWithGuestMultiShippingCart:
                 this.server.use(
@@ -185,7 +249,13 @@ export class CheckoutPageNodeObject {
                         res(ctx.json(checkoutWithGuestMultiShippingCart)),
                     ),
                 );
-                break;
+
+                return createCheckoutService({
+                    initialState: {
+                        ...initialState,
+                        checkout: { ...checkoutWithGuestMultiShippingCart, ...overrides?.checkout },
+                    },
+                });
 
             case CheckoutPreset.CheckoutWithMultiShippingAndBilling:
                 this.server.use(
@@ -193,7 +263,16 @@ export class CheckoutPageNodeObject {
                         res(ctx.json(checkoutWithMultiShippingAndBilling)),
                     ),
                 );
-                break;
+
+                return createCheckoutService({
+                    initialState: {
+                        ...initialState,
+                        checkout: {
+                            ...checkoutWithMultiShippingAndBilling,
+                            ...overrides?.checkout,
+                        },
+                    },
+                });
 
             case CheckoutPreset.CheckoutWithPromotions:
                 this.server.use(
@@ -201,7 +280,13 @@ export class CheckoutPageNodeObject {
                         res(ctx.json(checkoutWithPromotions)),
                     ),
                 );
-                break;
+
+                return createCheckoutService({
+                    initialState: {
+                        ...initialState,
+                        checkout: { ...checkoutWithPromotions, ...overrides?.checkout },
+                    },
+                });
 
             case CheckoutPreset.CheckoutWithShipping:
                 this.server.use(
@@ -209,7 +294,13 @@ export class CheckoutPageNodeObject {
                         res(ctx.json(checkoutWithShipping)),
                     ),
                 );
-                break;
+
+                return createCheckoutService({
+                    initialState: {
+                        ...initialState,
+                        checkout: { ...checkoutWithShipping, ...overrides?.checkout },
+                    },
+                });
 
             case CheckoutPreset.CheckoutWithShippingAndBilling:
                 this.server.use(
@@ -217,7 +308,13 @@ export class CheckoutPageNodeObject {
                         res(ctx.json(checkoutWithShippingAndBilling)),
                     ),
                 );
-                break;
+
+                return createCheckoutService({
+                    initialState: {
+                        ...initialState,
+                        checkout: { ...checkoutWithShippingAndBilling, ...overrides?.checkout },
+                    },
+                });
 
             case CheckoutPreset.CustomErrorFlashMessage:
                 this.server.use(
@@ -225,7 +322,16 @@ export class CheckoutPageNodeObject {
                         res(ctx.json(checkoutSettingsWithCustomErrorFlashMessage)),
                     ),
                 );
-                break;
+
+                return createCheckoutService({
+                    initialState: {
+                        ...initialState,
+                        config: {
+                            ...checkoutSettingsWithCustomErrorFlashMessage,
+                            ...overrides?.config,
+                        },
+                    },
+                });
 
             case CheckoutPreset.ErrorFlashMessage:
                 this.server.use(
@@ -233,7 +339,13 @@ export class CheckoutPageNodeObject {
                         res(ctx.json(checkoutSettingsWithErrorFlashMessage)),
                     ),
                 );
-                break;
+
+                return createCheckoutService({
+                    initialState: {
+                        ...initialState,
+                        config: { ...checkoutSettingsWithErrorFlashMessage, ...overrides?.config },
+                    },
+                });
 
             case CheckoutPreset.UnsupportedProvider:
                 this.server.use(
@@ -241,7 +353,16 @@ export class CheckoutPageNodeObject {
                         res(ctx.json(checkoutSettingsWithUnsupportedProvider)),
                     ),
                 );
-                break;
+
+                return createCheckoutService({
+                    initialState: {
+                        ...initialState,
+                        config: {
+                            ...checkoutSettingsWithUnsupportedProvider,
+                            ...overrides?.config,
+                        },
+                    },
+                });
 
             case CheckoutPreset.RemoteProviders:
                 this.server.use(
@@ -249,7 +370,13 @@ export class CheckoutPageNodeObject {
                         res(ctx.json(checkoutSettingsWithRemoteProviders)),
                     ),
                 );
-                break;
+
+                return createCheckoutService({
+                    initialState: {
+                        ...initialState,
+                        config: { ...checkoutSettingsWithRemoteProviders, ...overrides?.config },
+                    },
+                });
 
             default:
                 throw new Error('Unknown preset name');
