@@ -25,6 +25,17 @@ describe('useLoadCheckout', () => {
 
         (useCheckout as jest.Mock).mockReturnValue({
             checkoutService: mockCheckoutService,
+            checkoutState: {
+                data: {
+                    getConfig: () => ({
+                        checkoutSettings: {
+                            features: {
+                                'CHECKOUT-9388.initial_state_for_checkout_app': false,
+                            },
+                        },
+                    }),
+                },
+            },
         });
 
         (useExtensions as jest.Mock).mockReturnValue({
@@ -70,5 +81,29 @@ describe('useLoadCheckout', () => {
         } catch {
             expect(mockCheckoutService.loadCheckout).toHaveBeenCalledTimes(3);
         }
+    });
+
+    it('does not load check if experiment is on', async () => {
+        (useCheckout as jest.Mock).mockReturnValue({
+            checkoutService: mockCheckoutService,
+            checkoutState: {
+                data: {
+                    getConfig: () => ({
+                        checkoutSettings: {
+                            features: {
+                                'CHECKOUT-9388.initial_state_for_checkout_app': true,
+                            },
+                        },
+                    }),
+                },
+            },
+        });
+
+        renderHook(() => useLoadCheckout(checkoutId));
+
+        await act(async () => {
+            expect(mockCheckoutService.loadCheckout).not.toHaveBeenCalled();
+            expect(mockExtensionService.loadExtensions).not.toHaveBeenCalled();
+        });
     });
 });

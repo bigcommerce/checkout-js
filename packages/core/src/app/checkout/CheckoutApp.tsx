@@ -1,4 +1,4 @@
-import { createCheckoutService, createEmbeddedCheckoutMessenger } from '@bigcommerce/checkout-sdk';
+import { type CheckoutInitialState, createCheckoutService, createEmbeddedCheckoutMessenger } from '@bigcommerce/checkout-sdk';
 import type { BrowserOptions } from '@sentry/browser';
 import React, { type ReactElement, useEffect, useMemo } from 'react';
 import ReactModal from 'react-modal';
@@ -23,6 +23,7 @@ import Checkout from './Checkout';
 export interface CheckoutAppProps {
     checkoutId: string;
     containerId: string;
+    initialState?: CheckoutInitialState;
     publicPath?: string;
     sentryConfig?: BrowserOptions;
     sentrySampleRate?: number;
@@ -34,6 +35,7 @@ const CheckoutApp = (props: CheckoutAppProps): ReactElement => {
     const checkoutService = useMemo(() => createCheckoutService({
         locale: getLanguageService().getLocale(),
         shouldWarnMutation: process.env.NODE_ENV === 'development',
+        initialState: props.initialState,
     }), []);
     const embeddedStylesheet = useMemo(() => createEmbeddedCheckoutStylesheet(), []);
     const embeddedSupport = useMemo(() => createEmbeddedCheckoutSupport(getLanguageService()), []);
