@@ -11,6 +11,9 @@ export default function mapErrorMessage(
         case 'reset_password_before_login':
             return translate('customer.reset_password_before_login_error');
 
+        case 'empty_cart':
+            return translate('cart.empty_cart_error_message');
+
         default:
             return translate('customer.sign_in_error');
     }
