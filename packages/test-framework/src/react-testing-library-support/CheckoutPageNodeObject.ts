@@ -261,7 +261,7 @@ export class CheckoutPageNodeObject {
     }
 
     async waitForShippingStep(): Promise<void> {
-        await waitFor(() => screen.getByText(/shipping method/i));
+        await waitFor(() => screen.getByText(/shipping method/i), { timeout: 20000 });
     }
 
     async waitForBillingStep(): Promise<void> {
@@ -269,7 +269,7 @@ export class CheckoutPageNodeObject {
     }
 
     async waitForPaymentStep(): Promise<void> {
-        await waitFor(() => screen.getByText(/place order/i));
+        await waitFor(() => screen.getByText(/place order/i), { timeout: 20000 });
     }
 
     async fillAddressForm(testingAddress: Partial<Address> = {}): Promise<void> {

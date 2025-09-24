@@ -4,10 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { configure as configureRTL } from '@testing-library/react';
 import { noop } from 'lodash';
 
-configureRTL({
-    testIdAttribute: 'data-test',
-    asyncUtilTimeout: 30000,
-});
+configureRTL({ testIdAttribute: 'data-test' });
 
 // https://github.com/facebook/jest/issues/10784
 process.on('unhandledRejection', (reason) => {
