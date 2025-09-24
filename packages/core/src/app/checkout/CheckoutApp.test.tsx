@@ -19,6 +19,7 @@ describe('CheckoutApp', () => {
         defaultProps = {
             checkoutId: getCheckout().id,
             containerId: CHECKOUT_ROOT_NODE_ID,
+            initialState: undefined,
         };
 
         container = document.createElement('div');

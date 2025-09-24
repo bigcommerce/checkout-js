@@ -129,15 +129,16 @@ describe('Multi-shipping', () => {
         // ✅sees the first consignment's previous selected shipping method restored
         // ✅sees the second consignment's default shipping method selected
 
-        jest.spyOn(checkoutService, 'selectConsignmentShippingOption');
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithMultiShippingCart);
 
-        checkout.use(CheckoutPreset.CheckoutWithMultiShippingCart);
+        jest.spyOn(checkoutService, 'selectConsignmentShippingOption');
 
         render(<CheckoutTest {...defaultProps} />);
 
         await checkout.waitForShippingStep();
 
         await userEvent.click(screen.getByText(/Ship to multiple addresses/i));
+
         await userEvent.click(
             await screen.findByRole('button', {
                 name: 'Add new destination',
@@ -288,9 +289,9 @@ describe('Multi-shipping', () => {
         // ✅updates the first consignment's shipping address
         // ✅sees the first consignment's default shipping method selected
 
-        jest.spyOn(checkoutService, 'selectConsignmentShippingOption');
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithMultiShippingCart);
 
-        checkout.use(CheckoutPreset.CheckoutWithMultiShippingCart);
+        jest.spyOn(checkoutService, 'selectConsignmentShippingOption');
 
         render(<CheckoutTest {...defaultProps} />);
 
@@ -360,9 +361,9 @@ describe('Multi-shipping', () => {
     });
 
     it('completes multi-shipping as a guest', async () => {
-        jest.spyOn(checkoutService, 'selectConsignmentShippingOption');
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithGuestMultiShippingCart);
 
-        checkout.use(CheckoutPreset.CheckoutWithGuestMultiShippingCart);
+        jest.spyOn(checkoutService, 'selectConsignmentShippingOption');
 
         render(<CheckoutTest {...defaultProps} />);
 

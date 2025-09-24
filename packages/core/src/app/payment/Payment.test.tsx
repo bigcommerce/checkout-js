@@ -104,7 +104,7 @@ describe('Payment step', () => {
     });
 
     it('renders payment step with 2 offline payment methods', async () => {
-        checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
 
         render(<CheckoutTest {...defaultProps} />);
 
@@ -137,7 +137,7 @@ describe('Payment step', () => {
             writable: true,
         });
 
-        checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
 
         render(<CheckoutTest {...defaultProps} />);
 
@@ -155,7 +155,7 @@ describe('Payment step', () => {
     });
 
     it('goes back to billing step after unmounting the component', async () => {
-        checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
 
         render(<CheckoutTest {...defaultProps} />);
 
@@ -170,17 +170,16 @@ describe('Payment step', () => {
     });
 
     it('applies store credit automatically', async () => {
-        checkout.setRequestHandler(rest.get(
-            '/api/storefront/checkout/*',
-            (_, res, ctx) => res(
-                ctx.json({
-                    ...checkoutWithShippingAndBilling,
-                    customer: {
-                        ...customer,
-                        storeCredit: 1000,
-                    },
-                })
-            )));
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+            checkout: {
+                ...checkoutWithShippingAndBilling,
+                customer: {
+                    ...customer,
+                    storeCredit: 1000,
+                },
+            },
+        });
+
         checkout.setRequestHandler(rest.post(
             'api/storefront/checkouts/*/store-credit',
             (_, res, ctx) => res(
@@ -217,7 +216,8 @@ describe('Payment step', () => {
             (_, res, ctx) => res(
                 ctx.json([payments[0], amazonPay])
             )));
-        checkout.use(CheckoutPreset.CheckoutWithMultiShippingAndBilling);
+
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithMultiShippingAndBilling);
 
         render(<CheckoutTest {...defaultProps} />);
 
@@ -243,7 +243,8 @@ describe('Payment step', () => {
             (_, res, ctx) => res(
                 ctx.json([payments[0], bolt])
             )));
-        checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
+
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
 
         render(<CheckoutTest {...defaultProps} />);
 
@@ -267,7 +268,8 @@ describe('Payment step', () => {
             (_, res, ctx) => res(
                 ctx.json([payments[0], braintree])
             )));
-        checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
+
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
 
         render(<CheckoutTest {...defaultProps} />);
 
@@ -283,7 +285,8 @@ describe('Payment step', () => {
             (_, res, ctx) => res(
                 ctx.json([])
             )));
-        checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
+
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
 
         render(<CheckoutTest {...defaultProps} />);
 
@@ -302,7 +305,7 @@ describe('Payment step', () => {
                 }),
             )));
 
-        checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
 
         render(<CheckoutTest {...defaultProps} />);
 
