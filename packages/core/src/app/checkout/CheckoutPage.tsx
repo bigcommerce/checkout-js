@@ -312,10 +312,11 @@ class Checkout extends Component<
                     />
                 );
             } else {
+                const { message, action } = mapCheckoutComponentErrorMessage(error, language.translate.bind(language));
                 errorModal = <ErrorModal
                         error={error}
-                        message={mapCheckoutComponentErrorMessage(error, language.translate.bind(language))}
-                        onClose={this.handleCloseErrorModal}
+                        message={message}
+                        onClose={action === 'reload' ? this.reloadWindow : this.handleCloseErrorModal}
                     />;
             }
         }
@@ -470,7 +471,6 @@ class Checkout extends Component<
                         isBillingSameAsShipping={isBillingSameAsShipping}
                         isMultiShippingMode={isMultiShippingMode}
                         navigateNextStep={this.handleShippingNextStep}
-                        onContinueError={this.handleError}
                         onCreateAccount={this.handleShippingCreateAccount}
                         onReady={this.handleReady}
                         onSignIn={this.handleShippingSignIn}
@@ -797,6 +797,11 @@ class Checkout extends Component<
         const { analyticsTracker } = this.props;
 
         analyticsTracker.walletButtonClick(methodName);
+    }
+
+    private reloadWindow: () => void = () => {
+        this.setState({ error: undefined });
+        window.location.reload();
     }
 }
 

@@ -51,7 +51,6 @@ export interface ShippingProps {
     onSignIn(): void;
     navigateNextStep(isBillingSameAsShipping: boolean): void;
     setIsMultishippingMode(isMultiShippingMode: boolean): void;
-    onContinueError?(error: Error): void;
 }
 
 export interface WithCheckoutShippingProps {
