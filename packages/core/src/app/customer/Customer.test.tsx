@@ -287,6 +287,42 @@ describe('Customer Component', () => {
         expect(screen.getByRole('button', { name: 'Sign Out' })).toBeInTheDocument();
     });
 
+    it('calls onContinueAsGuestError when empty cart error is thrown', async () => {
+        const customerEmail = faker.internet.email();
+
+        render(
+            <CheckoutTest {...defaultProps} />)
+        ;
+
+        await checkout.waitForCustomerStep();
+
+        checkout.setRequestHandler(
+            rest.post(
+                '/api/storefront/checkouts/*/billing-address',
+                (_, res, ctx) => res(
+                    ctx.status(400),
+                    ctx.json({
+                        type: 'empty_cart',
+                        title: 'Empty cart',
+                        detail: 'Cart is empty'
+                    })
+                )
+            )
+        );
+        
+        await act(async () => {
+            await userEvent.clear(await screen.findByLabelText('Email'));
+            await userEvent.type(await screen.findByLabelText('Email'), customerEmail);
+            await userEvent.click(await screen.findByText('Continue'));
+        });
+
+        // Wait for the ReactModal to appear using its data-test attribute
+        expect(await screen.findByTestId('modal-body')).toBeInTheDocument();
+        
+        // Check for the actual error message from the translation
+        expect(await screen.findByText("Your cart contains items that aren't available for purchase or have exceeded the purchase limit. To place your order, please create a new cart with the quantities to the allowed limit or with different items.")).toBeInTheDocument();
+    });
+
     describe('sign in link shouldRedirectToStorefrontForAuth', () => {
         it('redirects to the login page if experiment is on and shouldRedirectToStorefrontForAuth is true', async () => {
             Object.defineProperty(window, 'location', {
