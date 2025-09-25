@@ -4,6 +4,7 @@ import {
     type CheckoutParams,
     type CheckoutSelectors,
     type Consignment,
+    type CustomerRequestOptions,
     type FormField,
     type RequestOptions,
     type ShippingInitializeOptions,
@@ -41,6 +42,7 @@ export interface ShippingFormProps {
     onSignIn(): void;
     onSingleShippingSubmit(values: SingleShippingFormValues): void;
     onUnhandledError(error: Error): void;
+    signOut(options?: CustomerRequestOptions): void;
     updateAddress(
         address: Partial<Address>,
         options: RequestOptions<CheckoutParams>,
@@ -67,6 +69,7 @@ const ShippingForm = ({
     onUnhandledError,
     shippingAddress,
     shouldShowOrderComments,
+    signOut,
     updateAddress,
     isShippingStepPending,
     isInitialValueLoaded,
@@ -118,6 +121,7 @@ const ShippingForm = ({
             isBillingSameAsShipping={isBillingSameAsShipping}
             isInitialValueLoaded={isInitialValueLoaded}
             isLoading={isLoading}
+            isMultiShippingMode={isMultiShippingMode}
             isShippingStepPending={isShippingStepPending}
             methodId={methodId}
             onSubmit={onSingleShippingSubmit}
@@ -125,6 +129,7 @@ const ShippingForm = ({
             shippingAddress={shippingAddress}
             shippingFormRenderTimestamp={shippingFormRenderTimestamp}
             shouldShowOrderComments={shouldShowOrderComments}
+            signOut={signOut}
             updateAddress={updateAddress}
         />
     );
