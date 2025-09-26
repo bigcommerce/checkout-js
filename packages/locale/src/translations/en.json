@@ -79,7 +79,8 @@
             "taxes_text": "Taxes",
             "total_text": "Total",
             "empty_cart_message": "Your cart is empty, you are being redirected. Please <a href=\"{url}\" target=\"_top\">click here</a> if your browser does not redirect you.",
-            "consistency_error": "Your checkout could not be processed because some details have changed. Please review your order and try again."
+            "consistency_error": "Your checkout could not be processed because some details have changed. Please review your order and try again.",
+            "empty_cart_error_message": "Your cart contains items that aren't available for purchase or have exceeded the purchase limit. To place your order, please create a new cart with the quantities to the allowed limit or with different items."
         },
         "common": {
             "back_action": "Back",

@@ -436,6 +436,10 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                 onContinueAsGuest();
             }
 
+            if (isErrorWithType(error) && error.type === 'empty_cart') {
+                return onContinueAsGuestError(error);
+            }
+
             if (isErrorWithType(error) && error.status === 429) {
                 return onChangeViewType(CustomerViewType.EnforcedLogin);
             }
