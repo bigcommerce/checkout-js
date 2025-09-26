@@ -5,12 +5,12 @@ import {
     type Country,
     type ShippingInitializeOptions,
     type ShippingRequestOptions,
-    type StripeShippingEvent
 } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import React, { type FunctionComponent, memo, useCallback, useEffect, useState } from 'react';
 
 import { getAppliedStyles } from '@bigcommerce/checkout/dom-utils';
+import { StripeShippingEvent } from '@bigcommerce/checkout/stripe-integration';
 
 import type CheckoutStepStatus from '../../checkout/CheckoutStepStatus';
 import getRecommendedShippingOption from '../getRecommendedShippingOption';
