@@ -3,9 +3,12 @@ import { useEffect, useState } from 'react';
 import { useExtensions } from '@bigcommerce/checkout/checkout-extension';
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
+import { isExperimentEnabled } from '../../common/utility';
+
 export const useLoadCheckout = (checkoutId: string): {isLoadingCheckout: boolean} => {
-    const [ isLoadingCheckout, setIsLoadingCheckout ] = useState(true);
-    const { checkoutService } = useCheckout();
+    const { checkoutService, checkoutState: { data } } = useCheckout();
+    const initialStateLoaded = isExperimentEnabled(data.getConfig()?.checkoutSettings, 'CHECKOUT-9388.initial_state_for_checkout_app');
+    const [ isLoadingCheckout, setIsLoadingCheckout ] = useState(!initialStateLoaded);
     const { extensionService } = useExtensions();
 
     const fetchData = async () => {
@@ -43,12 +46,15 @@ export const useLoadCheckout = (checkoutId: string): {isLoadingCheckout: boolean
     };
 
     useEffect(() => {
-        fetchDataWithRetry()
-            .then(() => setIsLoadingCheckout(false))
-            .catch((error) => {
-                throw error;
-            });
+        if (!initialStateLoaded) {
+            // If the initial data has not been preloaded from the server, we need to make API calls to fetch it.
+            fetchDataWithRetry()
+                .then(() => setIsLoadingCheckout(false))
+                .catch((error) => {
+                    throw error;
+                });
+        }
     }, []);
 
-    return  { isLoadingCheckout };
+    return { isLoadingCheckout };
 };

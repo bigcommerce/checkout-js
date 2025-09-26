@@ -1,7 +1,8 @@
+import { merge } from 'lodash';
 import React from 'react';
 
 import { CHECKOUT_ROOT_NODE_ID } from '@bigcommerce/checkout/payment-integration-api';
-import { CheckoutPageNodeObject } from '@bigcommerce/checkout/test-framework';
+import { CheckoutPageNodeObject, initialState } from '@bigcommerce/checkout/test-framework';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import CheckoutApp, { type CheckoutAppProps } from './CheckoutApp';
@@ -19,6 +20,17 @@ describe('CheckoutApp', () => {
         defaultProps = {
             checkoutId: getCheckout().id,
             containerId: CHECKOUT_ROOT_NODE_ID,
+            initialState: merge({}, initialState, {
+                config: {
+                    storeConfig: {
+                        checkoutSettings: {
+                            features: {
+                                'CHECKOUT-9388.initial_state_for_checkout_app': false,
+                            },
+                        },
+                    },
+                },
+            }),
         };
 
         container = document.createElement('div');
