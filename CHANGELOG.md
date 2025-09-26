@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.679.6](https://github.com/bigcommerce/checkout-js/compare/v1.679.5...v1.679.6) (2025-09-26)
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-5910 moved BT CC to packages and fixed non hosted fields bug ([c06ed9c](https://github.com/bigcommerce/checkout-js/commit/c06ed9cde913d97b6d6ebbde514f0611d3520baf))
+* **payment:** PAYPAL-5910 moved BT CC to packages and fixed non hosted fields bug ([f132f54](https://github.com/bigcommerce/checkout-js/commit/f132f54e7c3f59b067de8128ece9a9ec980a727e))
+
 ### [1.679.5](https://github.com/bigcommerce/checkout-js/compare/v1.679.4...v1.679.5) (2025-09-25)
 
 ### [1.679.4](https://github.com/bigcommerce/checkout-js/compare/v1.679.3...v1.679.4) (2025-09-24)
