@@ -38,16 +38,16 @@ export const getDefaultPaymentMethodAndFilteredMethods = (
     const { isComplete = false } = getOrder() || {};
     let methods = paymentMethods;
 
+    if (!checkout || !config || !customer || isComplete) {
+        throw new Error('checkout data is not available or order is complete');
+    }
+
     if (paymentProviderCustomer?.stripeLinkAuthenticationState) {
         const stripeUpePaymentMethod = methods.filter(method =>
             method.id === 'card' && method.gateway === PaymentMethodId.StripeUPE
         );
 
         methods = stripeUpePaymentMethod.length ? stripeUpePaymentMethod : methods;
-    }
-
-    if (!checkout || !config || !customer || isComplete) {
-        throw new Error('checkout data is not available or order is complete');
     }
 
     const selectedPayment = find(checkout.payments, {
@@ -63,8 +63,6 @@ export const getDefaultPaymentMethodAndFilteredMethods = (
         }
 
         return method.id !== PaymentMethodId.BraintreeLocalPaymentMethod;
-
-
     });
 
     if (consignments && consignments.length > 1) {

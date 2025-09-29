@@ -18,7 +18,6 @@ import {
     isCartChangedError,
     isErrorWithType,
 } from '../../common/error';
-import { isExperimentEnabled } from '../../common/utility';
 import { TermsConditionsType } from '../../termsConditions';
 import mapToOrderRequestBody from '../mapToOrderRequestBody';
 import PaymentContext from '../PaymentContext';
@@ -113,10 +112,6 @@ const Payment = (
         orderTermsAndConditionsLink: termsCondtitionsUrl,
     } = config.checkoutSettings as CheckoutSettings & { orderTermsAndConditionsLocation: string };
     const isTermsConditionsRequired = enableTermsAndConditions;
-    const shouldLocaliseErrorMessages = isExperimentEnabled(
-        config.checkoutSettings,
-        'PAYMENTS-6799.localise_checkout_payment_error_messages',
-    );
     const submitOrderError = getSubmitOrderError();
     const termsConditionsText =
         isTermsConditionsRequired && termsConditionsType === TermsConditionsType.TextArea
@@ -416,7 +411,6 @@ const Payment = (
                 finalizeOrderError={finalizeOrderError}
                 language={language}
                 onClose={handleCloseModal}
-                shouldLocaliseErrorMessages={shouldLocaliseErrorMessages}
                 submitOrderError={submitOrderError}
             />
 

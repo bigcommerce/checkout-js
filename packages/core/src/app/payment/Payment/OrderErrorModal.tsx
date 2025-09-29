@@ -11,7 +11,6 @@ export interface OrderErrorModalProps {
     submitOrderError: Error | undefined;
     finalizeOrderError: Error | undefined;
     language: LanguageService;
-    shouldLocaliseErrorMessages: boolean;
     onClose(event: Event, props: ErrorModalOnCloseProps): void;
 }
 
@@ -19,7 +18,6 @@ export const OrderErrorModal = ({
     submitOrderError,
     finalizeOrderError,
     language,
-    shouldLocaliseErrorMessages,
     onClose,
 }: OrderErrorModalProps): ReactElement | null => {
     const error = submitOrderError || finalizeOrderError;
@@ -40,7 +38,6 @@ export const OrderErrorModal = ({
             message={mapSubmitOrderErrorMessage(
                 error,
                 language.translate.bind(language),
-                shouldLocaliseErrorMessages,
             )}
             onClose={onClose}
             title={mapSubmitOrderErrorTitle(error, language.translate.bind(language))}
