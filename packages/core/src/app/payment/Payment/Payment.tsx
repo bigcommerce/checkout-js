@@ -4,7 +4,7 @@ import {
     type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
 import { isEmpty, noop } from 'lodash';
-import React, { type ReactElement, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { type ObjectSchema } from 'yup';
 
 import { useAnalytics } from '@bigcommerce/checkout/analytics';
@@ -59,7 +59,7 @@ const Payment = (
         onUnhandledError = noop,
         checkEmbeddedSupport = noop,
     }: PaymentProps,
-): ReactElement => {
+): ReactNode => {
     const [didExceedSpamLimit, setDidExceedSpamLimit] = useState(false);
     const [isReady, setIsReady] = useState(false);
     const [selectedMethod, setSelectedMethodState] = useState<PaymentMethod | undefined>();
@@ -105,8 +105,8 @@ const Payment = (
     const paymentProviderCustomer = getPaymentProviderCustomer();
     const { isComplete = false } = getOrder() || {};
 
-    if(!checkout || !customer || !config || !consignments || isComplete) {
-        throw new Error('Checkout data is not available or order is complete');
+    if (!checkout || !customer || !config || !consignments) {
+        throw new Error('Checkout data is not available');
     }
 
     const paymentMethods = getPaymentMethods();
@@ -394,6 +394,10 @@ const Payment = (
 
         checkEmbeddedSupport(methods.map(({ id }) => id));
     }, [methods]);
+
+    if (isComplete) {
+        return null;
+    }
 
     return (
         <PaymentContext.Provider value={paymentContextValue}>
