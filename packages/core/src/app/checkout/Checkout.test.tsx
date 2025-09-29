@@ -22,6 +22,7 @@ import {
 import {
     CheckoutPageNodeObject,
     CheckoutPreset,
+    checkoutWithBillingEmail,
     checkoutWithShippingDiscount,
     consignmentAutomaticDiscount,
     consignmentCouponDiscount,
@@ -148,19 +149,19 @@ describe('Checkout', () => {
         });
 
         it('renders list of promotion banners', async () => {
-            checkout.use(CheckoutPreset.CheckoutWithPromotions);
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithPromotions);
 
             render(<CheckoutTest {...defaultProps} />);
 
             await checkout.waitForCustomerStep();
 
-            expect(screen.queryAllByRole('status')).toHaveLength(2);
+            expect(screen.getAllByTestId('promotion-banner-message')).toHaveLength(2);
             expect(screen.getByText('You are eligible for a discount')).toBeInTheDocument();
             expect(screen.getByText('Get a discount if you order more')).toBeInTheDocument();
         });
 
         it('renders modal error when theres an error flash message', async () => {
-            checkout.use(CheckoutPreset.ErrorFlashMessage);
+            checkoutService = checkout.use(CheckoutPreset.ErrorFlashMessage);
 
             render(<CheckoutTest {...defaultProps} />);
 
@@ -170,7 +171,7 @@ describe('Checkout', () => {
         });
 
         it('renders modal error when theres an custom error flash message', async () => {
-            checkout.use(CheckoutPreset.CustomErrorFlashMessage);
+            checkoutService = checkout.use(CheckoutPreset.CustomErrorFlashMessage);
 
             render(<CheckoutTest {...defaultProps} />);
 
@@ -181,7 +182,7 @@ describe('Checkout', () => {
         });
 
         it('does not render shipping checkout step if not required', async () => {
-            checkout.use(CheckoutPreset.CheckoutWithDigitalCart);
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithDigitalCart);
 
             render(<CheckoutTest {...defaultProps} />);
 
@@ -199,7 +200,7 @@ describe('Checkout', () => {
         });
 
         it('tracks a step viewed when a step is expanded', async () => {
-            checkout.use(CheckoutPreset.CheckoutWithShipping);
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShipping);
 
             render(<CheckoutTest {...defaultProps} />);
 
@@ -324,7 +325,7 @@ describe('Checkout', () => {
         });
 
         it('logs unhandled error', async () => {
-            checkout.use(CheckoutPreset.UnsupportedProvider);
+            checkoutService = checkout.use(CheckoutPreset.UnsupportedProvider);
 
             render(<CheckoutTest {...defaultProps} />);
 
@@ -340,8 +341,9 @@ describe('Checkout', () => {
         it('renders checkout button container with ApplePay', async () => {
             (window as any).ApplePaySession = {};
 
-            checkout.use(CheckoutPreset.RemoteProviders);
-            checkout.use(CheckoutPreset.CheckoutWithBillingEmail);
+            checkoutService = checkout.use(CheckoutPreset.RemoteProviders, {
+                checkout: checkoutWithBillingEmail,
+            });
 
             render(<CheckoutTest {...defaultProps} />);
 
@@ -353,7 +355,7 @@ describe('Checkout', () => {
 
     describe('shipping step', () => {
         it('renders shipping component when shipping step is active', async () => {
-            checkout.use(CheckoutPreset.CheckoutWithBillingEmail);
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithBillingEmail);
 
             render(<CheckoutTest {...defaultProps} />);
 
@@ -368,7 +370,7 @@ describe('Checkout', () => {
         });
 
         it('renders custom shipping method and locks shipping component', async () => {
-            checkout.use(CheckoutPreset.CheckoutWithCustomShippingAndBilling);
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithCustomShippingAndBilling);
 
             render(<CheckoutTest {...defaultProps} />);
 
@@ -384,11 +386,11 @@ describe('Checkout', () => {
         it('logs unhandled error', async () => {
             const error = new Error();
 
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithBillingEmail);
+
             jest.spyOn(checkoutService, 'loadShippingAddressFields').mockImplementation(() => {
                 throw error;
             });
-
-            checkout.use(CheckoutPreset.CheckoutWithBillingEmail);
 
             render(<CheckoutTest {...defaultProps} />);
 
@@ -400,7 +402,7 @@ describe('Checkout', () => {
 
     describe('billing step', () => {
         it('renders billing component when billing step is active', async () => {
-            checkout.use(CheckoutPreset.CheckoutWithShipping);
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShipping);
 
             render(<CheckoutTest {...defaultProps} />);
 
@@ -415,7 +417,7 @@ describe('Checkout', () => {
         });
 
         it('renders shipping component with summary data', async () => {
-            checkout.use(CheckoutPreset.CheckoutWithShipping);
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShipping);
 
             render(<CheckoutTest {...defaultProps} />);
 
@@ -427,11 +429,9 @@ describe('Checkout', () => {
         });
 
         it('renders shipping summary with shipping discount', async () => {
-            checkout.use(CheckoutPreset.CheckoutWithShipping);
-            checkout.updateCheckout('get',
-                '/checkout/*',
-                checkoutWithShippingDiscount,
-            );
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShipping, {
+                checkout: checkoutWithShippingDiscount,
+            });
 
             render(<CheckoutTest {...defaultProps} />);
 
@@ -456,10 +456,8 @@ describe('Checkout', () => {
         });
 
         it('renders shipping summary with 100% off shipping discount', async () => {
-            checkout.use(CheckoutPreset.CheckoutWithShipping);
-            checkout.updateCheckout('get',
-                '/checkout/*',
-                {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShipping, {
+                checkout: {
                     ...checkoutWithShippingDiscount,
                     consignments: [{
                         ...checkoutWithShippingDiscount.consignments[0],
@@ -469,7 +467,7 @@ describe('Checkout', () => {
                     }],
                     coupons: [],
                 },
-            );
+            });
 
             render(<CheckoutTest {...defaultProps} />);
 
@@ -489,10 +487,8 @@ describe('Checkout', () => {
         });
 
         it('renders multi-shipping summary with shipping discount', async () => {
-            checkout.use(CheckoutPreset.CheckoutWithMultiShippingCart);
-            checkout.updateCheckout('get',
-                '/checkout/*',
-                {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithMultiShippingCart, {
+                checkout: {
                     ...checkoutWithShippingDiscount,
                     shippingCostBeforeDiscount: 6,
                     consignments: [
@@ -510,8 +506,8 @@ describe('Checkout', () => {
                         ...checkoutWithShippingDiscount.coupons[0],
                         discountedAmount: 4,
                     }]
-                }
-            );
+                },
+            });
 
             render(<CheckoutTest {...defaultProps} />);
 
@@ -547,7 +543,7 @@ describe('Checkout', () => {
                 throw error;
             });
 
-            checkout.use(CheckoutPreset.CheckoutWithShipping);
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShipping);
 
             render(<CheckoutTest {...defaultProps} />);
 
@@ -559,7 +555,7 @@ describe('Checkout', () => {
 
     describe('payment step', () => {
         it('renders payment component when payment step is active', async () => {
-            checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
 
             render(<CheckoutTest {...defaultProps} />);
 
@@ -570,10 +566,10 @@ describe('Checkout', () => {
             expect(screen.getByText(/place order/i)).toBeInTheDocument();
         });
 
-        it('logs unhandled error', async () => {
+        it.only('logs unhandled error', async () => {
             const error = new Error();
 
-            checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
 
             jest.spyOn(checkoutService, 'loadPaymentMethods').mockImplementation(() => {
                 throw error;
