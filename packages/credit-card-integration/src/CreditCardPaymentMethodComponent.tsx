@@ -219,7 +219,10 @@ class CreditCardPaymentMethodComponent extends Component<
         return (
             <LocaleContext.Provider value={createLocaleContext(storeConfig)}>
                 <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
-                    <div className="paymentMethod paymentMethod--creditCard">
+                    <div
+                        className="paymentMethod paymentMethod--creditCard"
+                        data-test="credit-cart-payment-method"
+                    >
                         {shouldShowInstrumentFieldset && (
                             <CardInstrumentFieldset
                                 instruments={instruments}
