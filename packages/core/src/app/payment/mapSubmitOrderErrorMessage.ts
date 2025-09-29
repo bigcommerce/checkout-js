@@ -4,6 +4,7 @@ import { includes } from 'lodash';
 export default function mapSubmitOrderErrorMessage(
     error: any,
     translate: (key: string, data?: TranslationData) => string,
+    shouldLocalise: boolean,
 ): string {
     switch (error.type) {
         case 'not_initialized':
@@ -44,7 +45,7 @@ export default function mapSubmitOrderErrorMessage(
                 return translate('payment.payment_method_error', { message: error.message });
             }
 
-            if (error.body && error.body.errors && error.body.errors.length) {
+            if (shouldLocalise && error.body && error.body.errors && error.body.errors.length) {
                 const messages = error.body.errors.map((err: { code: any }) =>
                     translate(`payment.errors.${err.code}`),
                 );

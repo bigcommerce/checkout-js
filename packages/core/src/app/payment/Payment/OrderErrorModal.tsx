@@ -38,6 +38,7 @@ export const OrderErrorModal = ({
             message={mapSubmitOrderErrorMessage(
                 error,
                 language.translate.bind(language),
+                true,
             )}
             onClose={onClose}
             title={mapSubmitOrderErrorTitle(error, language.translate.bind(language))}

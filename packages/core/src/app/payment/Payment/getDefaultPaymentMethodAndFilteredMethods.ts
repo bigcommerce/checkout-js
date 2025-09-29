@@ -1,11 +1,19 @@
-import type { CheckoutSelectors, PaymentMethod } from '@bigcommerce/checkout-sdk';
+import type {
+  Checkout,
+  Consignment,
+  PaymentMethod,
+  PaymentProviderCustomer,
+} from '@bigcommerce/checkout-sdk';
 import { compact, find } from 'lodash';
 
 import { EMPTY_ARRAY } from '../../common/utility';
 import { PaymentMethodId, PaymentMethodProviderType } from '../paymentMethod';
 
 export const getDefaultPaymentMethodAndFilteredMethods = (
-    checkoutState: CheckoutSelectors,
+    checkout: Checkout,
+    consignments: Consignment[],
+    paymentProviderCustomer: PaymentProviderCustomer | undefined,
+    getPaymentMethod: (providerId: string, gatewayId?: string) => PaymentMethod | undefined,
     paymentMethods?: PaymentMethod[],
 ): {
     defaultMethod?: PaymentMethod;
@@ -17,30 +25,7 @@ export const getDefaultPaymentMethodAndFilteredMethods = (
         }
     }
 
-    const {
-        data: {
-            getCheckout,
-            getConfig,
-            getCustomer,
-            getConsignments,
-            getOrder,
-            getPaymentMethod,
-            getPaymentProviderCustomer,
-        },
-    } = checkoutState;
-
-    const checkout = getCheckout();
-    const config = getConfig();
-    const customer = getCustomer();
-    const consignments = getConsignments();
-    const paymentProviderCustomer = getPaymentProviderCustomer();
-
-    const { isComplete = false } = getOrder() || {};
     let methods = paymentMethods;
-
-    if (!checkout || !config || !customer || isComplete) {
-        throw new Error('checkout data is not available or order is complete');
-    }
 
     if (paymentProviderCustomer?.stripeLinkAuthenticationState) {
         const stripeUpePaymentMethod = methods.filter(method =>

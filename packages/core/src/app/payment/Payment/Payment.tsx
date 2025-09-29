@@ -76,7 +76,17 @@ const Payment = (
     const { language } = useLocale();
 
     const {
-        data: { getCheckout, getCustomer, getConfig, isPaymentDataRequired, getPaymentMethods },
+        data: {
+            getCheckout,
+            getCustomer,
+            getConfig,
+            isPaymentDataRequired,
+            getPaymentMethod,
+            getPaymentMethods,
+            getConsignments,
+            getPaymentProviderCustomer,
+            getOrder,
+        },
         errors: { getFinalizeOrderError,  getSubmitOrderError },
         statuses: { isInitializingPayment: getIsInitializingPayment, isSubmittingOrder: getIsSubmittingOrder },
     } = checkoutState;
@@ -91,9 +101,12 @@ const Payment = (
     const checkout = getCheckout();
     const customer = getCustomer();
     const config = getConfig();
+    const consignments = getConsignments();
+    const paymentProviderCustomer = getPaymentProviderCustomer();
+    const { isComplete = false } = getOrder() || {};
 
-    if(!checkout || !customer || !config) {
-        throw new Error('Checkout data is not available');
+    if(!checkout || !customer || !config || !consignments || isComplete) {
+        throw new Error('Checkout data is not available or order is complete');
     }
 
     const { isStoreCreditApplied, shouldExecuteSpamCheck } = checkout;
@@ -101,7 +114,13 @@ const Payment = (
     const availableStoreCredit = customer.storeCredit;
     const cartUrl = config.links.cartLink;
     const paymentMethods = getPaymentMethods();
-    const { defaultMethod, methods } = useMemo(()=>getDefaultPaymentMethodAndFilteredMethods(checkoutState, paymentMethods),[paymentMethods]);
+    const { defaultMethod, methods } = useMemo(()=>getDefaultPaymentMethodAndFilteredMethods(
+        checkout,
+        consignments,
+        paymentProviderCustomer,
+        getPaymentMethod,
+        paymentMethods,
+        ),[paymentMethods]);
     const finalizeOrderError = getFinalizeOrderError();
     const isInitializingPayment = getIsInitializingPayment();
     const isSubmittingOrder = getIsSubmittingOrder();
