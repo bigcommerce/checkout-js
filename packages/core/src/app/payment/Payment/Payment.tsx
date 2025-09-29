@@ -109,10 +109,6 @@ const Payment = (
         throw new Error('Checkout data is not available or order is complete');
     }
 
-    const { isStoreCreditApplied, shouldExecuteSpamCheck } = checkout;
-    const applyStoreCredit = checkoutService.applyStoreCredit;
-    const availableStoreCredit = customer.storeCredit;
-    const cartUrl = config.links.cartLink;
     const paymentMethods = getPaymentMethods();
     const { defaultMethod, methods } = useMemo(()=>getDefaultPaymentMethodAndFilteredMethods(
         checkout,
@@ -120,7 +116,12 @@ const Payment = (
         paymentProviderCustomer,
         getPaymentMethod,
         paymentMethods,
-        ),[paymentMethods]);
+    ),[paymentMethods, paymentProviderCustomer]);
+
+    const { isStoreCreditApplied, shouldExecuteSpamCheck } = checkout;
+    const applyStoreCredit = checkoutService.applyStoreCredit;
+    const availableStoreCredit = customer.storeCredit;
+    const cartUrl = config.links.cartLink;
     const finalizeOrderError = getFinalizeOrderError();
     const isInitializingPayment = getIsInitializingPayment();
     const isSubmittingOrder = getIsSubmittingOrder();
