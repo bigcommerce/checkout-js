@@ -1,13 +1,15 @@
-import React from 'react';
-import { PaymentMethodId, useCheckout } from '@bigcommerce/checkout/payment-integration-api';
-import CheckoutButtonList from './CheckoutButtonList';
-import GuestForm, { GuestFormValues } from './GuestForm';
-import { isPayPalFastlaneMethod } from '@bigcommerce/checkout/paypal-fastlane-integration';
-import getProviderWithCustomCheckout from '../payment/getProviderWithCustomCheckout';
-import { Cart } from '@bigcommerce/checkout-sdk';
 import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
+import { PaymentMethodId, useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { isPayPalFastlaneMethod } from '@bigcommerce/checkout/paypal-fastlane-integration';
+import { type Cart } from '@bigcommerce/checkout-sdk';
+import React from 'react';
+
+import type CheckoutStepStatus from '../checkout/CheckoutStepStatus';
+import getProviderWithCustomCheckout from '../payment/getProviderWithCustomCheckout';
+
+import CheckoutButtonList from './CheckoutButtonList';
+import GuestForm, { type GuestFormValues } from './GuestForm';
 import StripeGuestForm from './StripeGuestForm';
-import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 
 interface GuestFormContainerProps {
     email?: string;
@@ -63,9 +65,11 @@ export const GuestFormContainer: React.FC<GuestFormContainerProps> = ({
     const config = getConfig();
     const cart = getCart();
     const isLoadingGuestForm = isContinuingAsGuest() || isExecutingPaymentMethodCheckout();
+
     if (!config || !cart) {
         return null;
     }
+
     const {
         checkoutSettings: {
             privacyPolicyUrl,
@@ -102,8 +106,8 @@ export const GuestFormContainer: React.FC<GuestFormContainerProps> = ({
             deinitialize={deinitializeCustomer}
             email={email}
             initialize={initializeCustomer}
-            isLoading={isContinuingAsGuest() || isInitializingCustomer() || isExecutingPaymentMethodCheckout()}
             isExpressPrivacyPolicy={isExpressPrivacyPolicy}
+            isLoading={isContinuingAsGuest() || isInitializingCustomer() || isExecutingPaymentMethodCheckout()}
             onChangeEmail={handleChangeEmail}
             onContinueAsGuest={handleContinueAsGuest}
             onShowLogin={handleShowLogin}
@@ -114,7 +118,6 @@ export const GuestFormContainer: React.FC<GuestFormContainerProps> = ({
     }
     
     return <GuestForm
-        isLoading={isLoadingGuestForm}
         canSubscribe={canSubscribe}
         checkoutButtons={checkoutButtons}
         continueAsGuestButtonLabelId="customer.continue"
@@ -122,6 +125,7 @@ export const GuestFormContainer: React.FC<GuestFormContainerProps> = ({
         email={email}
         isExpressPrivacyPolicy={isExpressPrivacyPolicy}
         isFloatingLabelEnabled={isFloatingLabelEnabled}
+        isLoading={isLoadingGuestForm}
         onChangeEmail={handleChangeEmail}
         onContinueAsGuest={handleContinueAsGuest}
         onShowLogin={handleShowLogin}

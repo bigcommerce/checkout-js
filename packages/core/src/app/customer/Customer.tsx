@@ -1,3 +1,6 @@
+import { type AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
+import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
+import { type CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 import {
     type CheckoutPaymentMethodExecutedOptions,
     type CheckoutSelectors,
@@ -14,9 +17,6 @@ import {
 import { noop } from 'lodash';
 import React, { Component, type ReactNode } from 'react';
 
-import { type AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
-import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
-import { type CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 
 import { withAnalytics } from '../analytics';
 import { withCheckout } from '../checkout';
@@ -31,10 +31,10 @@ import CustomerViewType from './CustomerViewType';
 import EmailLoginForm, { type EmailLoginFormValues } from './EmailLoginForm';
 import { type CreateAccountFormValues } from './getCreateCustomerValidationSchema';
 import { type GuestFormValues } from './GuestForm';
+import { GuestFormContainer } from './GuestFormContainer';
 import LoginForm from './LoginForm';
 import mapCreateAccountFromFormValues from './mapCreateAccountFromFormValues';
 import { SubscribeSessionStorage } from './SubscribeSessionStorage';
-import { GuestFormContainer } from './GuestFormContainer';
 
 export interface CustomerProps {
     viewType: CustomerViewType;
@@ -184,16 +184,16 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
         } = this.props;
 
         return <GuestFormContainer
-            email={email}
-            isFloatingLabelEnabled={isFloatingLabelEnabled}
-            isWalletButtonsOnTop={isWalletButtonsOnTop}
-            isSubscribed={isSubscribed}
-            step={step}
+            email={this.draftEmail || email}
             handleChangeEmail={this.handleChangeEmail}
             handleContinueAsGuest={this.handleContinueAsGuest}
             handleShowLogin={this.handleShowLogin}
-            onWalletButtonClick={onWalletButtonClick}
+            isFloatingLabelEnabled={isFloatingLabelEnabled}
+            isSubscribed={isSubscribed}
+            isWalletButtonsOnTop={isWalletButtonsOnTop}
             onUnhandledError={onUnhandledError}
+            onWalletButtonClick={onWalletButtonClick}
+            step={step}
         />
     }
 
