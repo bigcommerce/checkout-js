@@ -36,7 +36,7 @@ import { withAnalytics } from '../analytics';
 import { StaticBillingAddress } from '../billing';
 import { EmptyCartMessage } from '../cart';
 import { withCheckout } from '../checkout';
-import { CustomError, ErrorModal, isCustomError } from '../common/error';
+import { CustomError, ErrorModal, isCustomError, isErrorWithType } from '../common/error';
 import { retry } from '../common/utility';
 import {
     CheckoutButtonContainer,
@@ -58,6 +58,7 @@ import CheckoutStep from './CheckoutStep';
 import type CheckoutStepStatus from './CheckoutStepStatus';
 import CheckoutStepType from './CheckoutStepType';
 import type CheckoutSupport from './CheckoutSupport';
+import { mapCheckoutComponentErrorMessage } from './mapErrorMessage';
 import mapToCheckoutProps from './mapToCheckoutProps';
 
 const Billing = lazy(() =>
@@ -293,7 +294,7 @@ class Checkout extends Component<
 
     render(): ReactNode {
         const { error, isRedirecting } = this.state;
-        const { themeV2 } = this.props;
+        const { themeV2, language } = this.props;
 
         if(isRedirecting){
             return <OrderConfirmationPageSkeleton />;
@@ -311,7 +312,12 @@ class Checkout extends Component<
                     />
                 );
             } else {
-                errorModal = <ErrorModal error={error} onClose={this.handleCloseErrorModal} />;
+                const { message, action } = mapCheckoutComponentErrorMessage(error, language.translate.bind(language));
+                errorModal = <ErrorModal
+                        error={error}
+                        message={message}
+                        onClose={action === 'reload' ? this.reloadWindow : this.handleCloseErrorModal}
+                    />;
             }
         }
 
@@ -692,6 +698,11 @@ class Checkout extends Component<
     private handleError: (error: Error) => void = (error) => {
         const { errorLogger } = this.props;
 
+        if (isErrorWithType(error) && error.type === 'empty_cart') {
+            this.setState({ error });
+            return;
+        }
+
         errorLogger.log(error);
 
         if (this.embeddedMessenger) {
@@ -786,6 +797,11 @@ class Checkout extends Component<
         const { analyticsTracker } = this.props;
 
         analyticsTracker.walletButtonClick(methodName);
+    }
+
+    private reloadWindow: () => void = () => {
+        this.setState({ error: undefined });
+        window.location.reload();
     }
 }
 

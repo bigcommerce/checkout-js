@@ -33,6 +33,12 @@ describe('mapSubmitOrderErrorMessage()', () => {
         expect(message).toEqual(translate('shipping.cart_change_error'));
     });
 
+    it('returns correct message when shopping cart is removed', () => {
+        const message = mapSubmitOrderErrorMessage({ type: 'empty_cart' }, translate, false);
+
+        expect(message).toEqual(translate('cart.empty_cart_error_message'));
+    });
+
     it('returns correct message when payment error order_could_not_be_finalized_error', () => {
         const message = mapSubmitOrderErrorMessage(
             {
