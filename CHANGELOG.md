@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.680.7](https://github.com/bigcommerce/checkout-js/compare/v1.680.6...v1.680.7) (2025-09-30)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-9506 Catch empty cart error message ([#2600](https://github.com/bigcommerce/checkout-js/issues/2600)) ([4305e37](https://github.com/bigcommerce/checkout-js/commit/4305e37f55a5f8cc0d8721699acef1a5ad6fdd42))
+
 ### [1.680.6](https://github.com/bigcommerce/checkout-js/compare/v1.680.5...v1.680.6) (2025-09-30)
 
 
