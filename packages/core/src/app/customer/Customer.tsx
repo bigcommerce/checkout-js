@@ -17,7 +17,6 @@ import React, { Component, type ReactNode } from 'react';
 import { type AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
 import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
 import { type CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
-import { isPayPalFastlaneMethod } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 import { withAnalytics } from '../analytics';
 import { withCheckout } from '../checkout';
@@ -27,16 +26,15 @@ import { isFloatingLabelEnabled } from '../common/utility';
 import getProviderWithCustomCheckout from '../payment/getProviderWithCustomCheckout';
 import { PaymentMethodId } from '../payment/paymentMethod';
 
-import CheckoutButtonList from './CheckoutButtonList';
 import CreateAccountForm from './CreateAccountForm';
 import CustomerViewType from './CustomerViewType';
 import EmailLoginForm, { type EmailLoginFormValues } from './EmailLoginForm';
 import { type CreateAccountFormValues } from './getCreateCustomerValidationSchema';
-import GuestForm, { type GuestFormValues } from './GuestForm';
+import { type GuestFormValues } from './GuestForm';
 import LoginForm from './LoginForm';
 import mapCreateAccountFromFormValues from './mapCreateAccountFromFormValues';
-import StripeGuestForm from './StripeGuestForm';
 import { SubscribeSessionStorage } from './SubscribeSessionStorage';
+import { GuestFormContainer } from './GuestFormContainer';
 
 export interface CustomerProps {
     viewType: CustomerViewType;
@@ -176,80 +174,27 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
 
     private renderGuestForm(): ReactNode {
         const {
-            canSubscribe,
-            checkEmbeddedSupport,
-            checkoutButtonIds,
-            deinitializeCustomer,
             email,
-            initializeCustomer,
-            isContinuingAsGuest = false,
-            isExecutingPaymentMethodCheckout = false,
-            isInitializing = false,
             isSubscribed,
             isWalletButtonsOnTop,
-            privacyPolicyUrl,
-            requiresMarketingConsent,
             onUnhandledError = noop,
             onWalletButtonClick = noop,
             step,
             isFloatingLabelEnabled,
-            isExpressPrivacyPolicy,
-            isPaymentDataRequired,
-            shouldRenderStripeForm,
-            providerWithCustomCheckout,
         } = this.props;
 
-        const checkoutButtons = isWalletButtonsOnTop || !isPaymentDataRequired
-          ? null
-          : <CheckoutButtonList
-            checkEmbeddedSupport={checkEmbeddedSupport}
-            deinitialize={deinitializeCustomer}
-            initialize={initializeCustomer}
-            isInitializing={isInitializing}
-            methodIds={checkoutButtonIds}
-            onClick={onWalletButtonClick}
-            onError={onUnhandledError}
-          />;
-
-        const isLoadingGuestForm = isContinuingAsGuest || isExecutingPaymentMethodCheckout;
-
-        return (
-            shouldRenderStripeForm ?
-                <StripeGuestForm
-                    canSubscribe={canSubscribe}
-                    checkoutButtons={checkoutButtons}
-                    continueAsGuestButtonLabelId="customer.continue"
-                    defaultShouldSubscribe={isSubscribed}
-                    deinitialize={deinitializeCustomer}
-                    email={this.draftEmail || email}
-                    initialize={initializeCustomer}
-                    isExpressPrivacyPolicy={isExpressPrivacyPolicy}
-                    isLoading={isContinuingAsGuest || isInitializing || isExecutingPaymentMethodCheckout}
-                    onChangeEmail={this.handleChangeEmail}
-                    onContinueAsGuest={this.handleContinueAsGuest}
-                    onShowLogin={this.handleShowLogin}
-                    privacyPolicyUrl={privacyPolicyUrl}
-                    requiresMarketingConsent={requiresMarketingConsent}
-                    step={step}
-                />
-                :
-            <GuestForm
-                canSubscribe={canSubscribe}
-                checkoutButtons={checkoutButtons}
-                continueAsGuestButtonLabelId="customer.continue"
-                defaultShouldSubscribe={isSubscribed}
-                email={this.draftEmail || email}
-                isExpressPrivacyPolicy={isExpressPrivacyPolicy}
-                isFloatingLabelEnabled={isFloatingLabelEnabled}
-                isLoading={isLoadingGuestForm}
-                onChangeEmail={this.handleChangeEmail}
-                onContinueAsGuest={this.handleContinueAsGuest}
-                onShowLogin={this.handleShowLogin}
-                privacyPolicyUrl={privacyPolicyUrl}
-                requiresMarketingConsent={requiresMarketingConsent}
-                shouldShowEmailWatermark={isPayPalFastlaneMethod(providerWithCustomCheckout)}
-            />
-        );
+        return <GuestFormContainer
+            email={email}
+            isFloatingLabelEnabled={isFloatingLabelEnabled}
+            isWalletButtonsOnTop={isWalletButtonsOnTop}
+            isSubscribed={isSubscribed}
+            step={step}
+            handleChangeEmail={this.handleChangeEmail}
+            handleContinueAsGuest={this.handleContinueAsGuest}
+            handleShowLogin={this.handleShowLogin}
+            onWalletButtonClick={onWalletButtonClick}
+            onUnhandledError={onUnhandledError}
+        />
     }
 
     private renderEmailLoginLinkForm(): ReactNode {
