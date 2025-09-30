@@ -107,9 +107,16 @@ export function loadFiles(options?: LoadFilesOptions): Promise<LoadFilesResult> 
 
             return {
                 appVersion,
-                renderCheckout: (renderOptions) => renderCheckout({ publicPath, ...renderOptions }),
-                renderOrderConfirmation: (renderOptions) =>
-                    renderOrderConfirmation({ publicPath, ...renderOptions }),
+                renderCheckout: (renderOptions) => {
+                    requestAnimationFrame(() => {
+                        renderCheckout({ publicPath, ...renderOptions });
+                    });
+                },
+                renderOrderConfirmation: (renderOptions) => {
+                    requestAnimationFrame(() => {
+                        renderOrderConfirmation({ publicPath, ...renderOptions });
+                    });
+                },
             };
         },
     );

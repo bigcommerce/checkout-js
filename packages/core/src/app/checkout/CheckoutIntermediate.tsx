@@ -1,4 +1,5 @@
 import {
+    type CheckoutInitialState,
     type EmbeddedCheckoutMessenger,
     type EmbeddedCheckoutMessengerOptions
 } from '@bigcommerce/checkout-sdk';
@@ -13,18 +14,19 @@ import CheckoutPage from './CheckoutPage';
 import type CheckoutSupport from './CheckoutSupport';
 import { useLoadCheckout } from './hooks';
 
-interface CheckoutIntermediateProps {
+export interface CheckoutIntermediateProps {
     checkoutId: string;
     containerId: string;
     embeddedStylesheet: EmbeddedCheckoutStylesheet;
     embeddedSupport: CheckoutSupport;
     errorLogger: ErrorLogger;
+    initialState?: CheckoutInitialState;
     createEmbeddedMessenger(options: EmbeddedCheckoutMessengerOptions): EmbeddedCheckoutMessenger;
 }
 
 const CheckoutIntermediate:React.FC<CheckoutIntermediateProps>= (props) => {
-    const { checkoutId } = props;
-    const { isLoadingCheckout } = useLoadCheckout(checkoutId);
+    const { checkoutId, initialState } = props;
+    const { isLoadingCheckout } = useLoadCheckout(checkoutId, initialState);
     const { themeV2 } = useThemeContext();
 
     if (isLoadingCheckout) {

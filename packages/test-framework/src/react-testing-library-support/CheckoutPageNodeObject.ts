@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable no-case-declarations */
 import {
     type Address,
     type Checkout,
+    type CheckoutInitialState,
     type CheckoutService,
     createCheckoutService,
     type FormFields,
@@ -118,12 +120,14 @@ export class CheckoutPageNodeObject {
     }
 
     use(preset: CheckoutPreset, overrides?: CheckoutPresetOverrides): CheckoutService {
-        const initialState = {
+        const initialState: CheckoutInitialState = {
             config: { ...checkoutSettings, ...overrides?.config },
             checkout: { ...checkout, ...overrides?.checkout },
             formFields: { ...formFields, ...overrides?.formFields },
             extensions: overrides?.extensions ?? [],
         };
+
+        const checkoutService = createCheckoutService();
 
         switch (preset) {
             case CheckoutPreset.CheckoutWithBillingEmail:
@@ -133,12 +137,11 @@ export class CheckoutPageNodeObject {
                     ),
                 );
 
-                return createCheckoutService({
-                    initialState: {
-                        ...initialState,
-                        checkout: { ...checkoutWithBillingEmail, ...overrides?.checkout },
-                    },
+                void checkoutService.hydrateInitialState({
+                    ...initialState,
+                    checkout: { ...checkoutWithBillingEmail, ...overrides?.checkout },
                 });
+                break;
 
             case CheckoutPreset.CheckoutWithBillingEmailAndCustomFormFields:
                 const formFieldsOverrides: FormFields = {
@@ -156,13 +159,12 @@ export class CheckoutPageNodeObject {
                     ),
                 );
 
-                return createCheckoutService({
-                    initialState: {
-                        ...initialState,
-                        checkout: { ...checkoutWithBillingEmail, ...overrides?.checkout },
-                        formFields: formFieldsOverrides,
-                    },
+                void checkoutService.hydrateInitialState({
+                    ...initialState,
+                    checkout: { ...checkoutWithBillingEmail, ...overrides?.checkout },
+                    formFields: formFieldsOverrides,
                 });
+                break;
 
             case CheckoutPreset.CheckoutWithLoggedInCustomer:
                 this.server.use(
@@ -171,15 +173,14 @@ export class CheckoutPageNodeObject {
                     ),
                 );
 
-                return createCheckoutService({
-                    initialState: {
-                        ...initialState,
-                        checkout: {
-                            ...checkoutWithLoggedInCustomer,
-                            ...overrides?.checkout,
-                        },
+                void checkoutService.hydrateInitialState({
+                    ...initialState,
+                    checkout: {
+                        ...checkoutWithLoggedInCustomer,
+                        ...overrides?.checkout,
                     },
                 });
+                break;
 
             case CheckoutPreset.CheckoutWithCustomerHavingInvalidAddress:
                 this.server.use(
@@ -188,15 +189,14 @@ export class CheckoutPageNodeObject {
                     ),
                 );
 
-                return createCheckoutService({
-                    initialState: {
-                        ...initialState,
-                        checkout: {
-                            ...checkoutWithCustomerHavingInvalidAddress,
-                            ...overrides?.checkout,
-                        },
+                void checkoutService.hydrateInitialState({
+                    ...initialState,
+                    checkout: {
+                        ...checkoutWithCustomerHavingInvalidAddress,
+                        ...overrides?.checkout,
                     },
                 });
+                break;
 
             case CheckoutPreset.CheckoutWithCustomShippingAndBilling:
                 this.server.use(
@@ -205,15 +205,14 @@ export class CheckoutPageNodeObject {
                     ),
                 );
 
-                return createCheckoutService({
-                    initialState: {
-                        ...initialState,
-                        checkout: {
-                            ...checkoutWithCustomShippingAndBilling,
-                            ...overrides?.checkout,
-                        },
+                void checkoutService.hydrateInitialState({
+                    ...initialState,
+                    checkout: {
+                        ...checkoutWithCustomShippingAndBilling,
+                        ...overrides?.checkout,
                     },
                 });
+                break;
 
             case CheckoutPreset.CheckoutWithDigitalCart:
                 this.server.use(
@@ -222,12 +221,11 @@ export class CheckoutPageNodeObject {
                     ),
                 );
 
-                return createCheckoutService({
-                    initialState: {
-                        ...initialState,
-                        checkout: { ...checkoutWithDigitalCart, ...overrides?.checkout },
-                    },
+                void checkoutService.hydrateInitialState({
+                    ...initialState,
+                    checkout: { ...checkoutWithDigitalCart, ...overrides?.checkout },
                 });
+                break;
 
             case CheckoutPreset.CheckoutWithMultiShippingCart:
                 this.server.use(
@@ -236,12 +234,11 @@ export class CheckoutPageNodeObject {
                     ),
                 );
 
-                return createCheckoutService({
-                    initialState: {
-                        ...initialState,
-                        checkout: { ...checkoutWithMultiShippingCart, ...overrides?.checkout },
-                    },
+                void checkoutService.hydrateInitialState({
+                    ...initialState,
+                    checkout: { ...checkoutWithMultiShippingCart, ...overrides?.checkout },
                 });
+                break;
 
             case CheckoutPreset.CheckoutWithGuestMultiShippingCart:
                 this.server.use(
@@ -250,12 +247,11 @@ export class CheckoutPageNodeObject {
                     ),
                 );
 
-                return createCheckoutService({
-                    initialState: {
-                        ...initialState,
-                        checkout: { ...checkoutWithGuestMultiShippingCart, ...overrides?.checkout },
-                    },
+                void checkoutService.hydrateInitialState({
+                    ...initialState,
+                    checkout: { ...checkoutWithGuestMultiShippingCart, ...overrides?.checkout },
                 });
+                break;
 
             case CheckoutPreset.CheckoutWithMultiShippingAndBilling:
                 this.server.use(
@@ -264,15 +260,14 @@ export class CheckoutPageNodeObject {
                     ),
                 );
 
-                return createCheckoutService({
-                    initialState: {
-                        ...initialState,
-                        checkout: {
-                            ...checkoutWithMultiShippingAndBilling,
-                            ...overrides?.checkout,
-                        },
+                void checkoutService.hydrateInitialState({
+                    ...initialState,
+                    checkout: {
+                        ...checkoutWithMultiShippingAndBilling,
+                        ...overrides?.checkout,
                     },
                 });
+                break;
 
             case CheckoutPreset.CheckoutWithPromotions:
                 this.server.use(
@@ -281,12 +276,11 @@ export class CheckoutPageNodeObject {
                     ),
                 );
 
-                return createCheckoutService({
-                    initialState: {
-                        ...initialState,
-                        checkout: { ...checkoutWithPromotions, ...overrides?.checkout },
-                    },
+                void checkoutService.hydrateInitialState({
+                    ...initialState,
+                    checkout: { ...checkoutWithPromotions, ...overrides?.checkout },
                 });
+                break;
 
             case CheckoutPreset.CheckoutWithShipping:
                 this.server.use(
@@ -295,12 +289,11 @@ export class CheckoutPageNodeObject {
                     ),
                 );
 
-                return createCheckoutService({
-                    initialState: {
-                        ...initialState,
-                        checkout: { ...checkoutWithShipping, ...overrides?.checkout },
-                    },
+                void checkoutService.hydrateInitialState({
+                    ...initialState,
+                    checkout: { ...checkoutWithShipping, ...overrides?.checkout },
                 });
+                break;
 
             case CheckoutPreset.CheckoutWithShippingAndBilling:
                 this.server.use(
@@ -309,12 +302,11 @@ export class CheckoutPageNodeObject {
                     ),
                 );
 
-                return createCheckoutService({
-                    initialState: {
-                        ...initialState,
-                        checkout: { ...checkoutWithShippingAndBilling, ...overrides?.checkout },
-                    },
+                void checkoutService.hydrateInitialState({
+                    ...initialState,
+                    checkout: { ...checkoutWithShippingAndBilling, ...overrides?.checkout },
                 });
+                break;
 
             case CheckoutPreset.CustomErrorFlashMessage:
                 this.server.use(
@@ -323,15 +315,14 @@ export class CheckoutPageNodeObject {
                     ),
                 );
 
-                return createCheckoutService({
-                    initialState: {
-                        ...initialState,
-                        config: {
-                            ...checkoutSettingsWithCustomErrorFlashMessage,
-                            ...overrides?.config,
-                        },
+                void checkoutService.hydrateInitialState({
+                    ...initialState,
+                    config: {
+                        ...checkoutSettingsWithCustomErrorFlashMessage,
+                        ...overrides?.config,
                     },
                 });
+                break;
 
             case CheckoutPreset.ErrorFlashMessage:
                 this.server.use(
@@ -340,12 +331,11 @@ export class CheckoutPageNodeObject {
                     ),
                 );
 
-                return createCheckoutService({
-                    initialState: {
-                        ...initialState,
-                        config: { ...checkoutSettingsWithErrorFlashMessage, ...overrides?.config },
-                    },
+                void checkoutService.hydrateInitialState({
+                    ...initialState,
+                    config: { ...checkoutSettingsWithErrorFlashMessage, ...overrides?.config },
                 });
+                break;
 
             case CheckoutPreset.UnsupportedProvider:
                 this.server.use(
@@ -354,15 +344,14 @@ export class CheckoutPageNodeObject {
                     ),
                 );
 
-                return createCheckoutService({
-                    initialState: {
-                        ...initialState,
-                        config: {
-                            ...checkoutSettingsWithUnsupportedProvider,
-                            ...overrides?.config,
-                        },
+                void checkoutService.hydrateInitialState({
+                    ...initialState,
+                    config: {
+                        ...checkoutSettingsWithUnsupportedProvider,
+                        ...overrides?.config,
                     },
                 });
+                break;
 
             case CheckoutPreset.RemoteProviders:
                 this.server.use(
@@ -371,16 +360,17 @@ export class CheckoutPageNodeObject {
                     ),
                 );
 
-                return createCheckoutService({
-                    initialState: {
-                        ...initialState,
-                        config: { ...checkoutSettingsWithRemoteProviders, ...overrides?.config },
-                    },
+                void checkoutService.hydrateInitialState({
+                    ...initialState,
+                    config: { ...checkoutSettingsWithRemoteProviders, ...overrides?.config },
                 });
+                break;
 
             default:
                 throw new Error('Unknown preset name');
         }
+
+        return checkoutService;
     }
 
     async waitForCustomerStep(): Promise<void> {

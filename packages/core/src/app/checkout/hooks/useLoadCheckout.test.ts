@@ -81,7 +81,7 @@ describe('useLoadCheckout', () => {
         const mockCheckoutState = {
             data: {
                 getCheckout,
-            }
+            },
         };
 
         (useCheckout as jest.Mock).mockReturnValue({

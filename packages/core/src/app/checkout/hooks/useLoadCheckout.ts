@@ -1,12 +1,12 @@
+import { type CheckoutInitialState } from '@bigcommerce/checkout-sdk';
 import { useEffect, useState } from 'react';
 
 import { useExtensions } from '@bigcommerce/checkout/checkout-extension';
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
-export const useLoadCheckout = (checkoutId: string): {isLoadingCheckout: boolean} => {
+export const useLoadCheckout = (checkoutId: string, initialState?: CheckoutInitialState): {isLoadingCheckout: boolean} => {
     const { checkoutService, checkoutState: { data } } = useCheckout();
-    const initialStateLoaded = !!data.getCheckout();
-    const [ isLoadingCheckout, setIsLoadingCheckout ] = useState(!initialStateLoaded);
+    const [ isLoadingCheckout, setIsLoadingCheckout ] = useState(!data.getCheckout());
     const { extensionService } = useExtensions();
 
     const fetchData = async () => {
@@ -44,13 +44,22 @@ export const useLoadCheckout = (checkoutId: string): {isLoadingCheckout: boolean
     };
 
     useEffect(() => {
-        if (!initialStateLoaded) {
+        if (!isLoadingCheckout) {
+            return;
+        }
+
+        if (!initialState) {
             // If the initial data has not been preloaded from the server, we need to make API calls to fetch it.
             fetchDataWithRetry()
                 .then(() => setIsLoadingCheckout(false))
                 .catch((error) => {
                     throw error;
                 });
+        } else {
+            requestAnimationFrame(async () => {
+                await checkoutService.hydrateInitialState(initialState);
+                setIsLoadingCheckout(false);
+            });
         }
     }, []);
 

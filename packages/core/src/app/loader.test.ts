@@ -62,12 +62,18 @@ describe('loadFiles', () => {
             'step-a.css',
             'step-b.css',
         ];
+
+        global.requestAnimationFrame = (cb) => setTimeout(cb, 0);
+
+        jest.useFakeTimers();
     });
 
     afterEach(() => {
         delete (global as any).MANIFEST_JSON;
         delete (global as any).LIBRARY_NAME;
         delete (global as any).checkout;
+
+        jest.useRealTimers();
     });
 
     it('loads required JS files listed in manifest', async () => {
@@ -169,6 +175,8 @@ describe('loadFiles', () => {
             containerId: CHECKOUT_ROOT_NODE_ID,
         });
 
+        jest.runAllTimers();
+
         expect((global as any).checkout.renderCheckout).toHaveBeenCalledWith({
             checkoutId: 'abc',
             containerId: CHECKOUT_ROOT_NODE_ID,
@@ -183,6 +191,8 @@ describe('loadFiles', () => {
             orderId: 123,
             containerId: CHECKOUT_ROOT_NODE_ID,
         });
+
+        jest.runAllTimers();
 
         expect((global as any).checkout.renderOrderConfirmation).toHaveBeenCalledWith({
             orderId: 123,

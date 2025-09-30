@@ -35,7 +35,6 @@ const CheckoutApp = (props: CheckoutAppProps): ReactElement => {
     const checkoutService = useMemo(() => createCheckoutService({
         locale: getLanguageService().getLocale(),
         shouldWarnMutation: process.env.NODE_ENV === 'development',
-        initialState: props.initialState,
     }), []);
     const embeddedStylesheet = useMemo(() => createEmbeddedCheckoutStylesheet(), []);
     const embeddedSupport = useMemo(() => createEmbeddedCheckoutSupport(getLanguageService()), []);
