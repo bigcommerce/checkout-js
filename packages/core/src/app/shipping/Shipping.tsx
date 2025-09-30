@@ -103,26 +103,24 @@ function Shipping(props: ShippingProps & WithCheckoutShippingProps & ExtensionCo
     } = props;
 
     useEffect(() => {
-        let isMounted = true;
-
-        (async () => {
+        const initializeShipping = async () => {
             try {
                 await Promise.all([loadShippingAddressFields(), loadShippingOptions(), loadBillingAddressFields()]);
 
-                if (isMounted && cartHasPromotionalItems && isMultiShippingMode) {
+                if (cartHasPromotionalItems && isMultiShippingMode) {
                     setIsMultiShippingUnavailableModalOpen(true);
                 }
 
-                if (isMounted) onReady();
+                onReady();
             } catch (error) {
-                if (isMounted) onUnhandledError(error);
+               onUnhandledError(error);
             } finally {
-                if (isMounted) setIsInitializing(false);
+                setIsInitializing(false);
             }
-        })();
+        };
 
-        return () => { isMounted = false; };
-    }, [loadShippingAddressFields, loadShippingOptions, loadBillingAddressFields, onReady, onUnhandledError, cartHasPromotionalItems, isMultiShippingMode]);
+        void initializeShipping();
+    }, []);
 
     const handleMultiShippingModeSwitch = useCallback(async () => {
         const {
@@ -154,7 +152,7 @@ function Shipping(props: ShippingProps & WithCheckoutShippingProps & ExtensionCo
     const handleSwitchToSingleShipping = useCallback(async () => {
         setIsMultiShippingUnavailableModalOpen(false);
         await handleMultiShippingModeSwitch();
-    }, [handleMultiShippingModeSwitch]);
+    }, []);
 
     const handleSingleShippingSubmit = useCallback(async (values: SingleShippingFormValues) => {
         const {
