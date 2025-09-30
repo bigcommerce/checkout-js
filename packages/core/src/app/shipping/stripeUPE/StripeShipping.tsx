@@ -1,13 +1,9 @@
-import {
-  type Address,
-  type CheckoutSelectors,
-} from '@bigcommerce/checkout-sdk';
 import React, { type ReactNode, useState } from 'react';
 
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 import { AddressFormSkeleton } from '@bigcommerce/checkout/ui';
 
 import type CheckoutStepStatus from '../../checkout/CheckoutStepStatus';
+import { useShipping } from '../hooks/useShipping';
 import ShippingHeader from '../ShippingHeader';
 
 import StripeShippingForm, { type SingleShippingFormValues } from './StripeShippingForm';
@@ -20,43 +16,33 @@ export interface StripeShippingProps {
   isInitializing: boolean;
   isInitialValueLoaded: boolean;
   isLoading: boolean;
-  isShippingMethodLoading: boolean;
-  isShippingStepPending: boolean;
-  methodId?: string;
-  shippingAddress?: Address;
-  shouldShowMultiShipping: boolean;
-  shouldShowOrderComments: boolean;
   onReady?(): void;
   onUnhandledError(error: Error): void;
   onSubmit(values: SingleShippingFormValues): void;
   onMultiShippingChange(): void;
-  loadShippingAddressFields(): Promise<CheckoutSelectors>;
-  loadShippingOptions(): Promise<CheckoutSelectors>;
-  updateAddress(address: Partial<Address>): Promise<CheckoutSelectors>;
 }
 
 const StripeShipping = ({
+  cartHasChanged,
   isBillingSameAsShipping,
-  shouldShowMultiShipping,
-  updateAddress,
+  isInitialValueLoaded,
   isMultiShippingMode,
   step,
   onSubmit,
   onMultiShippingChange,
+  onUnhandledError,
   isLoading,
-  isShippingMethodLoading,
-  ...shippingFormProps
 }: StripeShippingProps): ReactNode => {
-  const { checkoutState } = useCheckout();
-
-  const {
-    data: {
-      getCheckout,
-      getShippingAddressFields,
-    },
-  } = checkoutState;
-  const checkout = getCheckout();
-  const getFields = getShippingAddressFields;
+  const { 
+    customerMessage,
+    getFields,
+    isLoading: isShippingMethodLoading,
+    methodId,
+    updateShippingAddress: updateAddress,
+    shippingAddress,
+    shouldShowMultiShipping,
+    shouldShowOrderComments,
+  } = useShipping();
 
   const [isStripeLoading, setIsStripeLoading] = useState(true);
   const [isStripeAutoStep, setIsStripeAutoStep] = useState(false);
@@ -68,12 +54,6 @@ const StripeShipping = ({
   const handleIsAutoStep = () => {
     setIsStripeAutoStep(true);
   };
-
-  if (!checkout) {
-    return null;
-  }
-
-  const customerMessage = checkout.customerMessage;
 
   return (
     <>
@@ -88,16 +68,21 @@ const StripeShipping = ({
           shouldShowMultiShipping={shouldShowMultiShipping}
         />
         <StripeShippingForm
+          cartHasChanged={cartHasChanged}
           customerMessage={customerMessage}
           getFields={getFields}
-          {...shippingFormProps}
           isBillingSameAsShipping={isBillingSameAsShipping}
+          isInitialValueLoaded={isInitialValueLoaded}
           isLoading={isLoading}
           isMultiShippingMode={isMultiShippingMode}
           isShippingMethodLoading={isShippingMethodLoading}
           isStripeAutoStep={handleIsAutoStep}
           isStripeLoading={stripeLoadedCallback}
+          methodId={methodId}
           onSubmit={onSubmit}
+          onUnhandledError={onUnhandledError}
+          shippingAddress={shippingAddress}
+          shouldShowOrderComments={shouldShowOrderComments}
           step={step}
           updateAddress={updateAddress}
         />

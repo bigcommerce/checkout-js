@@ -1,86 +1,59 @@
-import {
-    type Address,
-    type Cart,
-    type CheckoutParams,
-    type CheckoutSelectors,
-    type Consignment,
-    type CustomerRequestOptions,
-    type FormField,
-    type RequestOptions,
-    type ShippingInitializeOptions,
-    type ShippingRequestOptions,
-} from '@bigcommerce/checkout-sdk';
 import React, { useEffect } from 'react';
 
-import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { useExtensions } from '@bigcommerce/checkout/checkout-extension';
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
+import { useShipping } from './hooks/useShipping';
 import isUsingMultiShipping from './isUsingMultiShipping';
 import MultiShippingForm, { type MultiShippingFormValues } from './MultiShippingForm';
 import SingleShippingForm, { type SingleShippingFormValues } from './SingleShippingForm';
 
 export interface ShippingFormProps {
-    cart: Cart;
     cartHasChanged: boolean;
-    consignments: Consignment[];
-    customerMessage: string;
     isBillingSameAsShipping: boolean;
-    isGuest: boolean;
-    isLoading: boolean;
-    isShippingStepPending: boolean;
     isMultiShippingMode: boolean;
-    methodId?: string;
-    shippingAddress?: Address;
-    shouldShowOrderComments: boolean;
     isInitialValueLoaded: boolean;
-    deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
-    deleteConsignments(): Promise<Address | undefined>;
-    getFields(countryCode?: string): FormField[];
-    initialize(options: ShippingInitializeOptions): Promise<CheckoutSelectors>;
     onCreateAccount(): void;
     onMultiShippingSubmit(values: MultiShippingFormValues): void;
     onSignIn(): void;
     onSingleShippingSubmit(values: SingleShippingFormValues): void;
     onUnhandledError(error: Error): void;
-    signOut(options?: CustomerRequestOptions): void;
-    updateAddress(
-        address: Partial<Address>,
-        options: RequestOptions<CheckoutParams>,
-    ): Promise<CheckoutSelectors>;
-    shippingFormRenderTimestamp?: number;
     setIsMultishippingMode(isMultiShippingMode: boolean): void;
 }
 
 const ShippingForm = ({
-    cart,
     cartHasChanged,
-    consignments,
-    customerMessage,
-    deinitialize,
-    deleteConsignments,
-    getFields,
-    initialize,
     isBillingSameAsShipping,
-    isLoading,
     isMultiShippingMode,
-    methodId,
     onMultiShippingSubmit,
     onSingleShippingSubmit,
     onUnhandledError,
-    shippingAddress,
-    shouldShowOrderComments,
-    signOut,
-    updateAddress,
-    isShippingStepPending,
     isInitialValueLoaded,
-    shippingFormRenderTimestamp,
     setIsMultishippingMode,
-}: ShippingFormProps & WithLanguageProps) => {
+}: ShippingFormProps) => {
     const {
         checkoutState: {
             data: { getConfig },
         },
     } = useCheckout();
+    const {
+        cart,
+        consignments,
+        customerMessage,
+        deleteConsignments,
+        deinitializeShippingMethod: deinitialize,
+        getFields,
+        isLoading,
+        initializeShippingMethod: initialize,
+        isShippingStepPending,
+        methodId,
+        shouldShowOrderComments,
+        shippingAddress,
+        signOut,
+        updateShippingAddress: updateAddress
+    } = useShipping();
+    const { extensionState: { shippingFormRenderTimestamp } } = useExtensions();
+
     const config = getConfig();
 
     useEffect(() => {
@@ -135,4 +108,4 @@ const ShippingForm = ({
     );
 };
 
-export default withLanguage(ShippingForm);
+export default ShippingForm;
