@@ -2,7 +2,6 @@
   "extends": ["../../.eslintrc.json"],
   "rules": {
     "@typescript-eslint/no-unsafe-call": "off",
-    "@typescript-eslint/no-unnecessary-condition": "off",
-    "react-hooks/exhaustive-deps": "off"
+    "@typescript-eslint/no-unnecessary-condition": "off"
   }
 }
