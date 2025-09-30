@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.680.4](https://github.com/bigcommerce/checkout-js/compare/v1.680.3...v1.680.4) (2025-09-30)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9386 Convert ManageInstrumentsModal ([#2554](https://github.com/bigcommerce/checkout-js/issues/2554)) ([1dba5c2](https://github.com/bigcommerce/checkout-js/commit/1dba5c28b223269148a3afcc32a5c5820a699fb0))
+
 ### [1.680.3](https://github.com/bigcommerce/checkout-js/compare/v1.680.2...v1.680.3) (2025-09-30)
 
 ### [1.680.2](https://github.com/bigcommerce/checkout-js/compare/v1.680.1...v1.680.2) (2025-09-30)
