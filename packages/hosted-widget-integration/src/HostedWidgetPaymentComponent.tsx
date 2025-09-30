@@ -10,31 +10,27 @@ import {
     type PaymentMethod,
     type PaymentRequestOptions,
 } from '@bigcommerce/checkout-sdk';
+import classNames from 'classnames';
 import { find, noop } from 'lodash';
-import React, {
-    type ReactElement,
-    type ReactNode,
-    useCallback,
-    useEffect,
-    useRef,
-    useState,
-} from 'react';
+import React, { Component, type ReactNode } from 'react';
 import { type ObjectSchema } from 'yup';
 
+import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import {
     AccountInstrumentFieldset,
     assertIsCardInstrument,
     CardInstrumentFieldset,
     isBankAccountInstrument,
-    isCardInstrument,
     StoreInstrumentFieldset,
 } from '@bigcommerce/checkout/instrument-utils';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
-import { EditButton } from './EditButton';
-import { PaymentDescriptor } from './PaymentDescriptor';
-import { PaymentWidget } from './PaymentWidget';
+export interface HostedWidgetComponentState {
+    isAddingNewCard: boolean;
+    selectedInstrumentId?: string;
+}
 
 export interface PaymentContextProps {
     disableSubmit(method: PaymentMethod, disabled?: boolean): void;
@@ -107,378 +103,429 @@ export interface HostedWidgetComponentProps extends WithCheckoutHostedWidgetPaym
     signInCustomer?(): void;
 }
 
-const HostedWidgetPaymentComponent = ({
-    instruments,
-    hideWidget = false,
-    isInitializing = false,
-    isAccountInstrument,
-    isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
-    isLoadingInstruments,
-    shouldHideInstrumentExpiryDate = false,
-    shouldShow = true,
-    hideVerificationFields,
-    method,
-    storedCardValidationSchema,
-    isPaymentDataRequired,
-    setValidationSchema,
-    loadInstruments,
-    onUnhandledError = noop,
-    deinitializeCustomer,
-    deinitializePayment,
-    setSubmit,
-    initializeCustomer,
-    initializePayment,
-    signInCustomer,
-    isSignedIn,
-    isSignInRequired,
-    isInstrumentCardNumberRequired,
-    validateInstrument,
-    containerId,
-    hideContentWhenSignedOut = false,
-    renderCustomPaymentForm,
-    additionalContainerClassName,
-    shouldRenderCustomInstrument = false,
-    paymentDescriptor,
-    shouldShowDescriptor,
-    shouldShowEditButton,
-    buttonId,
-    setFieldValue,
-}: HostedWidgetComponentProps & PaymentContextProps): ReactElement => {
-    const [isAddingNewCard, setIsAddingNewCard] = useState(false);
-    const [selectedInstrumentId, setSelectedInstrumentId] = useState<string | undefined>(undefined);
+interface HostedWidgetPaymentMethodState {
+    isAddingNewCard: boolean;
+    selectedInstrumentId?: string;
+}
 
-    const getDefaultInstrumentId = useCallback((): string | undefined => {
-        if (isAddingNewCard) {
-            return undefined;
-        }
+class HostedWidgetPaymentComponent extends Component<
+    HostedWidgetComponentProps & PaymentContextProps
+> {
+    state: HostedWidgetPaymentMethodState = {
+        isAddingNewCard: false,
+    };
 
-        const defaultInstrument =
-            instruments.find((instrument) => instrument.defaultInstrument) || instruments[0];
+    async componentDidMount(): Promise<void> {
+        const {
+            isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
+            loadInstruments,
+            method,
+            onUnhandledError = noop,
+            setValidationSchema,
+        } = this.props;
 
-        return defaultInstrument ? defaultInstrument.bigpayToken : undefined;
-    }, [isAddingNewCard, instruments]);
+        setValidationSchema(method, this.getValidationSchema());
 
-    const getSelectedInstrument = useCallback((): PaymentInstrument | undefined => {
-        const currentSelectedId = selectedInstrumentId || getDefaultInstrumentId();
-
-        return find(instruments, { bigpayToken: currentSelectedId });
-    }, [instruments, selectedInstrumentId, getDefaultInstrumentId]);
-
-    const getValidationSchema = useCallback((): ObjectSchema | null => {
-        if (!isPaymentDataRequired) {
-            return null;
-        }
-
-        const currentSelectedInstrument = getSelectedInstrument();
-
-        if (isInstrumentFeatureAvailableProp && currentSelectedInstrument) {
-            return storedCardValidationSchema || null;
-        }
-
-        return null;
-    }, [
-        getSelectedInstrument,
-        isInstrumentFeatureAvailableProp,
-        isPaymentDataRequired,
-        storedCardValidationSchema,
-    ]);
-
-    const getSelectedBankAccountInstrument = useCallback(
-        (
-            addingNew: boolean,
-            currentSelectedInstrument: PaymentInstrument,
-        ): AccountInstrument | undefined => {
-            return !addingNew && isBankAccountInstrument(currentSelectedInstrument)
-                ? currentSelectedInstrument
-                : undefined;
-        },
-        [],
-    );
-
-    const handleDeleteInstrument = useCallback(
-        (id: string): void => {
-            if (instruments.length === 0) {
-                setIsAddingNewCard(true);
-                setSelectedInstrumentId(undefined);
-                setFieldValue('instrumentId', '');
-
-                return;
+        try {
+            if (isInstrumentFeatureAvailableProp) {
+                await loadInstruments();
             }
 
-            if (selectedInstrumentId === id) {
-                const nextId = getDefaultInstrumentId();
+            await this.initializeMethod();
+        } catch (error) {
+            onUnhandledError(error);
+        }
+    }
 
-                setSelectedInstrumentId(nextId);
-                setFieldValue('instrumentId', nextId);
+    async componentDidUpdate(
+        prevProps: Readonly<
+            HostedWidgetComponentProps & WithCheckoutHostedWidgetPaymentMethodProps
+        >,
+        prevState: Readonly<HostedWidgetPaymentMethodState>,
+    ): Promise<void> {
+        const {
+            deinitializePayment,
+            instruments,
+            method,
+            onUnhandledError = noop,
+            setValidationSchema,
+            isPaymentDataRequired,
+        } = this.props;
+
+        const { selectedInstrumentId } = this.state;
+
+        setValidationSchema(method, this.getValidationSchema());
+
+        if (
+            selectedInstrumentId !== prevState.selectedInstrumentId ||
+            (prevProps.instruments.length > 0 && instruments.length === 0) ||
+            prevProps.isPaymentDataRequired !== isPaymentDataRequired
+        ) {
+            try {
+                await deinitializePayment({
+                    gatewayId: method.gateway,
+                    methodId: method.id,
+                });
+                await this.initializeMethod();
+            } catch (error) {
+                onUnhandledError(error);
             }
-        },
-        [instruments, selectedInstrumentId, getDefaultInstrumentId],
-    );
+        }
+    }
 
-    const handleUseNewCard = useCallback(async () => {
-        setIsAddingNewCard(true);
-        setSelectedInstrumentId(undefined);
+    async componentWillUnmount(): Promise<void> {
+        const {
+            deinitializeCustomer = noop,
+            deinitializePayment,
+            method,
+            onUnhandledError = noop,
+            setSubmit,
+            setValidationSchema,
+        } = this.props;
 
-        if (deinitializePayment) {
+        setValidationSchema(method, null);
+        setSubmit(method, null);
+
+        try {
             await deinitializePayment({
                 gatewayId: method.gateway,
                 methodId: method.id,
             });
-        }
 
-        if (initializePayment) {
-            await initializePayment({
-                gatewayId: method.gateway,
+            // eslint-disable-next-line @typescript-eslint/await-thenable
+            await deinitializeCustomer({
                 methodId: method.id,
             });
+        } catch (error) {
+            onUnhandledError(error);
         }
-    }, [method, deinitializePayment, initializePayment]);
+    }
 
-    const handleSelectInstrument = useCallback((id: string) => {
-        setIsAddingNewCard(false);
-        setSelectedInstrumentId(id);
-    }, []);
+    render(): ReactNode {
+        const {
+            instruments,
+            hideWidget = false,
+            isInitializing = false,
+            isAccountInstrument,
+            isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
+            isLoadingInstruments,
+            shouldHideInstrumentExpiryDate = false,
+            shouldShow = true,
+        } = this.props;
 
-    const getValidateInstrument = useCallback((): ReactNode | undefined => {
-        const currentSelectedId = selectedInstrumentId || getDefaultInstrumentId();
-        const currentSelectedInstrument = find(instruments, { bigpayToken: currentSelectedId });
+        const { isAddingNewCard, selectedInstrumentId = this.getDefaultInstrumentId() } =
+            this.state;
 
-        if (currentSelectedInstrument) {
-            assertIsCardInstrument(currentSelectedInstrument);
+        if (!shouldShow) {
+            return null;
+        }
 
-            const shouldShowNumberField = isInstrumentCardNumberRequired(
-                currentSelectedInstrument,
+        const selectedInstrument =
+            instruments.find((instrument) => instrument.bigpayToken === selectedInstrumentId) ||
+            instruments[0];
+
+        const shouldShowInstrumentFieldset =
+            isInstrumentFeatureAvailableProp && instruments.length > 0;
+        const shouldShowCreditCardFieldset = !shouldShowInstrumentFieldset || isAddingNewCard;
+        const isLoading = (isInitializing || isLoadingInstruments) && !hideWidget;
+
+        const selectedAccountInstrument = this.getSelectedBankAccountInstrument(
+            isAddingNewCard,
+            selectedInstrument,
+        );
+        const shouldShowAccountInstrument =
+            instruments[0] && isBankAccountInstrument(instruments[0]);
+
+        return (
+            <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
+                <div className="paymentMethod--hosted">
+                    {shouldShowAccountInstrument && shouldShowInstrumentFieldset && (
+                        <AccountInstrumentFieldset
+                            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                            instruments={instruments as AccountInstrument[]}
+                            onSelectInstrument={this.handleSelectInstrument}
+                            onUseNewInstrument={this.handleUseNewCard}
+                            selectedInstrument={selectedAccountInstrument}
+                        />
+                    )}
+
+                    {!shouldShowAccountInstrument && shouldShowInstrumentFieldset && (
+                        <CardInstrumentFieldset
+                            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                            instruments={instruments as CardInstrument[]}
+                            onDeleteInstrument={this.handleDeleteInstrument}
+                            onSelectInstrument={this.handleSelectInstrument}
+                            onUseNewInstrument={this.handleUseNewCard}
+                            selectedInstrumentId={selectedInstrumentId}
+                            shouldHideExpiryDate={shouldHideInstrumentExpiryDate}
+                            validateInstrument={this.getValidateInstrument()}
+                        />
+                    )}
+
+                    {this.renderPaymentDescriptorIfAvailable()}
+
+                    {this.renderContainer(shouldShowCreditCardFieldset)}
+
+                    {isInstrumentFeatureAvailableProp && (
+                        <StoreInstrumentFieldset
+                            instrumentId={selectedInstrumentId}
+                            instruments={instruments}
+                            isAccountInstrument={isAccountInstrument || shouldShowAccountInstrument}
+                        />
+                    )}
+
+                    {this.renderEditButtonIfAvailable()}
+                </div>
+            </LoadingOverlay>
+        );
+    }
+
+    getValidateInstrument(): ReactNode {
+        const {
+            hideVerificationFields,
+            instruments,
+            method,
+            isInstrumentCardNumberRequired: isInstrumentCardNumberRequiredProp,
+            validateInstrument,
+        } = this.props;
+
+        const { selectedInstrumentId = this.getDefaultInstrumentId() } = this.state;
+        const selectedInstrument = find(instruments, {
+            bigpayToken: selectedInstrumentId,
+        });
+
+        if (selectedInstrument) {
+            assertIsCardInstrument(selectedInstrument);
+
+            const shouldShowNumberField = isInstrumentCardNumberRequiredProp(
+                selectedInstrument,
                 method,
             );
 
             if (hideVerificationFields) {
-                return undefined;
+                return;
             }
 
             if (validateInstrument) {
-                return validateInstrument(shouldShowNumberField, currentSelectedInstrument);
+                return validateInstrument(shouldShowNumberField, selectedInstrument);
             }
         }
+    }
 
-        return undefined;
-    }, [
-        selectedInstrumentId,
-        getDefaultInstrumentId,
-        instruments,
-        method,
-        hideVerificationFields,
-        validateInstrument,
-    ]);
+    renderContainer(shouldShowCreditCardFieldset: any): ReactNode {
+        const {
+            containerId,
+            hideContentWhenSignedOut = false,
+            hideWidget,
+            isSignInRequired = false,
+            isSignedIn,
+            method,
+            additionalContainerClassName,
+            shouldRenderCustomInstrument = false,
+            renderCustomPaymentForm,
+        } = this.props;
 
-    const initializeMethod = async (): Promise<CheckoutSelectors | void> => {
+        return (
+            <div
+                className={classNames(
+                    'widget',
+                    `widget--${method.id}`,
+                    'payment-widget',
+                    shouldRenderCustomInstrument ? '' : additionalContainerClassName,
+                )}
+                id={containerId}
+                style={{
+                    display:
+                        (hideContentWhenSignedOut && isSignInRequired && !isSignedIn) ||
+                        !shouldShowCreditCardFieldset ||
+                        hideWidget
+                            ? 'none'
+                            : undefined,
+                }}
+                tabIndex={-1}
+            >
+                {shouldRenderCustomInstrument &&
+                    renderCustomPaymentForm &&
+                    renderCustomPaymentForm()}
+            </div>
+        );
+    }
+
+    private getValidationSchema(): ObjectSchema | null {
+        const {
+            isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
+            isPaymentDataRequired,
+            storedCardValidationSchema,
+        } = this.props;
+
+        if (!isPaymentDataRequired) {
+            return null;
+        }
+
+        const selectedInstrument = this.getSelectedInstrument();
+
+        if (isInstrumentFeatureAvailableProp && selectedInstrument) {
+            return storedCardValidationSchema || null;
+        }
+
+        return null;
+    }
+
+    private getSelectedInstrument(): PaymentInstrument | undefined {
+        const { instruments } = this.props;
+        const { selectedInstrumentId = this.getDefaultInstrumentId() } = this.state;
+
+        return find(instruments, { bigpayToken: selectedInstrumentId });
+    }
+
+    private handleDeleteInstrument: (id: string) => void = (id) => {
+        const { instruments, setFieldValue } = this.props;
+        const { selectedInstrumentId } = this.state;
+
+        if (instruments.length === 0) {
+            this.setState({
+                isAddingNewCard: true,
+                selectedInstrumentId: undefined,
+            });
+
+            setFieldValue('instrumentId', '');
+        } else if (selectedInstrumentId === id) {
+            this.setState({
+                selectedInstrumentId: this.getDefaultInstrumentId(),
+            });
+
+            setFieldValue('instrumentId', this.getDefaultInstrumentId());
+        }
+    };
+
+    private getSelectedBankAccountInstrument(
+        isAddingNewCard: boolean,
+        selectedInstrument: PaymentInstrument,
+    ): AccountInstrument | undefined {
+        return !isAddingNewCard && isBankAccountInstrument(selectedInstrument)
+            ? selectedInstrument
+            : undefined;
+    }
+
+    private renderEditButtonIfAvailable() {
+        const { shouldShowEditButton, buttonId } = this.props;
+        const translatedString = <TranslatedString id="remote.select_different_card_action" />;
+
+        if (shouldShowEditButton) {
+            return (
+                <p>
+                    {
+                        // eslint-disable-next-line jsx-a11y/anchor-is-valid, jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+                        <a
+                            className={classNames('stepHeader', 'widget-link-amazonpay')}
+                            id={buttonId}
+                            onClick={preventDefault()}
+                        >
+                            {translatedString}
+                        </a>
+                    }
+                </p>
+            );
+        }
+    }
+
+    private renderPaymentDescriptorIfAvailable() {
+        const { shouldShowDescriptor, paymentDescriptor } = this.props;
+
+        if (shouldShowDescriptor && paymentDescriptor) {
+            return <div className="payment-descriptor">{paymentDescriptor}</div>;
+        }
+    }
+
+    private async initializeMethod(): Promise<CheckoutSelectors | void> {
+        const {
+            isPaymentDataRequired,
+            isSignedIn,
+            isSignInRequired,
+            initializeCustomer = noop,
+            initializePayment = noop,
+            instruments,
+            method,
+            setSubmit,
+            signInCustomer = noop,
+        } = this.props;
+
+        const { selectedInstrumentId = this.getDefaultInstrumentId(), isAddingNewCard } =
+            this.state;
+
+        let selectedInstrument;
+
         if (!isPaymentDataRequired) {
             setSubmit(method, null);
 
-            return;
+            return Promise.resolve();
         }
 
         if (isSignInRequired && !isSignedIn) {
-            setSubmit(method, signInCustomer || null);
+            setSubmit(method, signInCustomer);
 
-            if (initializeCustomer) {
-                return initializeCustomer({ methodId: method.id });
-            }
-
-            return;
+            return initializeCustomer({
+                methodId: method.id,
+            });
         }
 
         setSubmit(method, null);
 
-        let selectedCardInstrument: CardInstrument | undefined;
-
         if (!isAddingNewCard) {
-            const currentSelectedInstrumentId = selectedInstrumentId || getDefaultInstrumentId();
-            const maybeInstrument =
-                instruments.find(
-                    (instrument) => instrument.bigpayToken === currentSelectedInstrumentId,
-                ) || instruments[0];
-
-            if (maybeInstrument && isCardInstrument(maybeInstrument)) {
-                selectedCardInstrument = maybeInstrument;
-            }
+            selectedInstrument =
+                instruments.find((instrument) => instrument.bigpayToken === selectedInstrumentId) ||
+                instruments[0];
         }
 
-        if (initializePayment) {
-            return initializePayment(
-                { gatewayId: method.gateway, methodId: method.id },
-                selectedCardInstrument,
-            );
-        }
-    };
+        return initializePayment(
+            {
+                gatewayId: method.gateway,
+                methodId: method.id,
+            },
+            selectedInstrument,
+        );
+    }
 
-    // Below values are for lower level components
-    const effectiveSelectedInstrumentId = selectedInstrumentId || getDefaultInstrumentId();
-    const selectedInstrument = effectiveSelectedInstrumentId
-        ? instruments.find((i) => i.bigpayToken === effectiveSelectedInstrumentId) || instruments[0]
-        : instruments[0];
-    const cardInstruments: CardInstrument[] = instruments.filter(
-        (i): i is CardInstrument => !isBankAccountInstrument(i),
-    );
-    const accountInstruments: AccountInstrument[] = instruments.filter(
-        (i): i is AccountInstrument => isBankAccountInstrument(i),
-    );
-    const shouldShowInstrumentFieldset = isInstrumentFeatureAvailableProp && instruments.length > 0;
-    const shouldShowCreditCardFieldset = !shouldShowInstrumentFieldset || isAddingNewCard;
-    const isLoading = (isInitializing || isLoadingInstruments) && !hideWidget;
-    const selectedAccountInstrument = selectedInstrument
-        ? getSelectedBankAccountInstrument(isAddingNewCard, selectedInstrument)
-        : undefined;
-    const shouldShowAccountInstrument = instruments[0] && isBankAccountInstrument(instruments[0]);
+    private getDefaultInstrumentId(): string | undefined {
+        const { isAddingNewCard } = this.state;
 
-    useEffect(() => {
-        const init = async () => {
-            setValidationSchema(method, getValidationSchema());
-
-            try {
-                if (isInstrumentFeatureAvailableProp) {
-                    await loadInstruments?.();
-                }
-
-                await initializeMethod();
-            } catch (error: unknown) {
-                if (error instanceof Error) {
-                    onUnhandledError(error);
-                }
-            }
-        };
-
-        void init();
-
-        return () => {
-            const deInit = async () => {
-                setValidationSchema(method, null);
-                setSubmit(method, null);
-
-                try {
-                    if (deinitializePayment) {
-                        await deinitializePayment({
-                            gatewayId: method.gateway,
-                            methodId: method.id,
-                        });
-                    }
-
-                    if (deinitializeCustomer) {
-                        await deinitializeCustomer({ methodId: method.id });
-                    }
-                } catch (error: unknown) {
-                    if (error instanceof Error) {
-                        onUnhandledError(error);
-                    }
-                }
-            };
-
-            void deInit();
-        };
-    }, []);
-
-    const isInitialRenderRef = useRef(true);
-    const instrumentsLength = useRef(instruments.length);
-    const isPaymentDataRequiredRef = useRef(isPaymentDataRequired);
-    const selectedInstrumentIdRef = useRef(selectedInstrumentId);
-
-    useEffect(() => {
-        if (isInitialRenderRef.current) {
-            isInitialRenderRef.current = false;
-
+        if (isAddingNewCard) {
             return;
         }
 
-        setValidationSchema(method, getValidationSchema());
+        const { instruments } = this.props;
+        const defaultInstrument =
+            instruments.find((instrument) => instrument.defaultInstrument) || instruments[0];
 
-        const reInit = async () => {
-            try {
-                if (deinitializePayment) {
-                    await deinitializePayment({
-                        gatewayId: method.gateway,
-                        methodId: method.id,
-                    });
-                }
-
-                await initializeMethod();
-            } catch (error: unknown) {
-                if (error instanceof Error) {
-                    onUnhandledError(error);
-                }
-            }
-        };
-
-        if (
-            selectedInstrumentIdRef.current !== selectedInstrumentId ||
-            (Number(instrumentsLength.current) > 0 && instruments.length === 0) ||
-            isPaymentDataRequiredRef.current !== isPaymentDataRequired
-        ) {
-            selectedInstrumentIdRef.current = selectedInstrumentId;
-            instrumentsLength.current = instruments.length;
-            isPaymentDataRequiredRef.current = isPaymentDataRequired;
-
-            void reInit();
-        }
-    }, [selectedInstrumentId, instruments, isPaymentDataRequired]);
-
-    if (!shouldShow) {
-        return <div style={{ display: 'none' }} />;
+        return defaultInstrument && defaultInstrument.bigpayToken;
     }
 
-    return (
-        <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
-            <div className="paymentMethod--hosted">
-                {shouldShowAccountInstrument && shouldShowInstrumentFieldset && (
-                    <AccountInstrumentFieldset
-                        instruments={accountInstruments}
-                        onSelectInstrument={handleSelectInstrument}
-                        onUseNewInstrument={handleUseNewCard}
-                        selectedInstrument={selectedAccountInstrument}
-                    />
-                )}
-                {!shouldShowAccountInstrument && shouldShowInstrumentFieldset && (
-                    <CardInstrumentFieldset
-                        instruments={cardInstruments}
-                        onDeleteInstrument={handleDeleteInstrument}
-                        onSelectInstrument={handleSelectInstrument}
-                        onUseNewInstrument={handleUseNewCard}
-                        selectedInstrumentId={effectiveSelectedInstrumentId}
-                        shouldHideExpiryDate={shouldHideInstrumentExpiryDate}
-                        validateInstrument={getValidateInstrument()}
-                    />
-                )}
+    private handleUseNewCard: () => void = async () => {
+        const { deinitializePayment, initializePayment = noop, method } = this.props;
 
-                <PaymentDescriptor
-                    paymentDescriptor={paymentDescriptor}
-                    shouldShowDescriptor={shouldShowDescriptor}
-                />
+        this.setState({
+            isAddingNewCard: true,
+            selectedInstrumentId: undefined,
+        });
 
-                <PaymentWidget
-                    additionalContainerClassName={additionalContainerClassName}
-                    containerId={containerId}
-                    hideContentWhenSignedOut={hideContentWhenSignedOut}
-                    hideWidget={hideWidget}
-                    isSignInRequired={isSignInRequired}
-                    isSignedIn={isSignedIn}
-                    method={method}
-                    renderCustomPaymentForm={renderCustomPaymentForm}
-                    shouldRenderCustomInstrument={shouldRenderCustomInstrument}
-                    shouldShowCreditCardFieldset={shouldShowCreditCardFieldset}
-                />
+        await deinitializePayment({
+            gatewayId: method.gateway,
+            methodId: method.id,
+        });
 
-                {isInstrumentFeatureAvailableProp && (
-                    <StoreInstrumentFieldset
-                        instrumentId={effectiveSelectedInstrumentId}
-                        instruments={instruments}
-                        isAccountInstrument={Boolean(
-                            isAccountInstrument || shouldShowAccountInstrument,
-                        )}
-                    />
-                )}
+        // eslint-disable-next-line @typescript-eslint/await-thenable
+        await initializePayment({
+            gatewayId: method.gateway,
+            methodId: method.id,
+        });
+    };
 
-                <EditButton buttonId={buttonId} shouldShowEditButton={shouldShowEditButton} />
-            </div>
-        </LoadingOverlay>
-    );
-};
+    private handleSelectInstrument: (id: string) => void = (id) => {
+        this.setState({
+            isAddingNewCard: false,
+            selectedInstrumentId: id,
+        });
+    };
+}
 
 export default HostedWidgetPaymentComponent;
