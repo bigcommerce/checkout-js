@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.681.0](https://github.com/bigcommerce/checkout-js/compare/v1.680.8...v1.681.0) (2025-10-01)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9477 Convert Shipping component (Part 1) ([#2602](https://github.com/bigcommerce/checkout-js/issues/2602)) ([a2b3ff1](https://github.com/bigcommerce/checkout-js/commit/a2b3ff18ce7dba6e878cc1f95bda3b2f3af32438))
+
 ### [1.680.8](https://github.com/bigcommerce/checkout-js/compare/v1.680.7...v1.680.8) (2025-10-01)
 
 
