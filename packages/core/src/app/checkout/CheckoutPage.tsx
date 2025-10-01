@@ -60,6 +60,7 @@ import CheckoutStepType from './CheckoutStepType';
 import type CheckoutSupport from './CheckoutSupport';
 import { mapCheckoutComponentErrorMessage } from './mapErrorMessage';
 import mapToCheckoutProps from './mapToCheckoutProps';
+import { type CheckoutRefreshAPI, createCheckoutRefreshAPI, createPrerenderingChangeHandler, PrerenderingStalenessDetector } from './prerenderingStalenessDetector';
 
 const Billing = lazy(() =>
     retry(
@@ -182,11 +183,21 @@ class Checkout extends Component<
 
     private embeddedMessenger?: EmbeddedCheckoutMessenger;
     private unsubscribeFromConsignments?: () => void;
+    private prerenderingStalenessDetector = new PrerenderingStalenessDetector();
+    private checkoutRefreshAPI?: CheckoutRefreshAPI;
 
     componentWillUnmount(): void {
         if (this.unsubscribeFromConsignments) {
             this.unsubscribeFromConsignments();
             this.unsubscribeFromConsignments = undefined;
+        }
+        
+        // Clean up prerendering staleness detector
+        this.prerenderingStalenessDetector.reset();
+
+        // Clean up global API
+        if (typeof window !== 'undefined' && (window as any).checkoutRefreshAPI === this.checkoutRefreshAPI) {
+            delete (window as any).checkoutRefreshAPI;
         }
 
         window.removeEventListener('beforeunload', this.handleBeforeExit);
@@ -196,11 +207,13 @@ class Checkout extends Component<
     async componentDidMount(): Promise<void> {
         const {
             analyticsTracker,
+            checkoutId,
             containerId,
             createEmbeddedMessenger,
             data,
             embeddedStylesheet,
             extensionService,
+            loadCheckout,
             loadPaymentMethodByIds,
             subscribeToConsignments,
         } = this.props;
@@ -249,12 +262,45 @@ class Checkout extends Component<
             messenger.postLoaded();
 
             if (document.prerendering) {
-                document.addEventListener('prerenderingchange', () => {
+                // Capture initial snapshot when page is prerendered
+                this.prerenderingStalenessDetector.captureInitialSnapshot(data);
+                
+                // Set up enhanced prerenderingchange handler
+                const prerenderingChangeHandler = createPrerenderingChangeHandler(
+                    this.prerenderingStalenessDetector,
+                    loadCheckout,
+                    () => data,
+                    checkoutId,
+                    (wasStale) => {
+                        // Log for debugging - this could be removed in production
+                        if (wasStale) {
+                            // eslint-disable-next-line no-console
+                            console.debug('Checkout data was refreshed due to staleness after prerendering');
+                        }
+                    }
+                );
+                
+                document.addEventListener('prerenderingchange', async () => {
                     analyticsTracker.checkoutBegin();
+                    // Refresh checkout data in background if needed
+                    await prerenderingChangeHandler();
                 }, { once: true });
             }
             else {
                 analyticsTracker.checkoutBegin();
+            }
+
+            // Set up global checkout refresh API
+            this.checkoutRefreshAPI = createCheckoutRefreshAPI(
+                this.prerenderingStalenessDetector,
+                loadCheckout,
+                () => data,
+                checkoutId
+            );
+
+            // Expose API globally for external use
+            if (typeof window !== 'undefined') {
+                (window as any).checkoutRefreshAPI = this.checkoutRefreshAPI;
             }
 
             const consignments = data.getConsignments();

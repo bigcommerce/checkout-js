@@ -1,5 +1,12 @@
 import { type Checkout, type CheckoutPayment } from '@bigcommerce/checkout-sdk';
 
+// Extend the Checkout interface to include version field from API response
+declare module '@bigcommerce/checkout-sdk' {
+    interface Checkout {
+        version: number;
+    }
+}
+
 import { getCart } from './cart.mock';
 import { getCoupon } from './coupon.mock';
 import { getGuestCustomer } from './customers.mock';
@@ -38,6 +45,7 @@ export function getCheckout(): Checkout {
         promotions: [],
         channelId: 123456,
         fees: [],
+        version: 1,
     };
 }
 
