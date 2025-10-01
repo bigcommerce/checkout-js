@@ -146,6 +146,11 @@ const HostedWidgetPaymentComponent = ({
 }: HostedWidgetComponentProps & PaymentContextProps): ReactElement => {
     const [isAddingNewCard, setIsAddingNewCard] = useState(false);
     const [selectedInstrumentId, setSelectedInstrumentId] = useState<string | undefined>(undefined);
+    const instrumentsRef = useRef<PaymentInstrument[]>(instruments);
+
+    useEffect(() => {
+        instrumentsRef.current = instruments;
+    }, [instruments]);
 
     const getDefaultInstrumentId = useCallback((): string | undefined => {
         if (isAddingNewCard) {
@@ -153,16 +158,17 @@ const HostedWidgetPaymentComponent = ({
         }
 
         const defaultInstrument =
-            instruments.find((instrument) => instrument.defaultInstrument) || instruments[0];
+            instrumentsRef.current.find((instrument) => instrument.defaultInstrument) ||
+            instrumentsRef.current[0];
 
         return defaultInstrument ? defaultInstrument.bigpayToken : undefined;
-    }, [isAddingNewCard, instruments]);
+    }, [isAddingNewCard]);
 
     const getSelectedInstrument = useCallback((): PaymentInstrument | undefined => {
         const currentSelectedId = selectedInstrumentId || getDefaultInstrumentId();
 
-        return find(instruments, { bigpayToken: currentSelectedId });
-    }, [instruments, selectedInstrumentId, getDefaultInstrumentId]);
+        return find(instrumentsRef.current, { bigpayToken: currentSelectedId });
+    }, [selectedInstrumentId, getDefaultInstrumentId]);
 
     const getValidationSchema = useCallback((): ObjectSchema | null => {
         if (!isPaymentDataRequired) {
@@ -271,6 +277,8 @@ const HostedWidgetPaymentComponent = ({
     ]);
 
     const initializeMethod = async (): Promise<CheckoutSelectors | void> => {
+        const currentInstruments = instrumentsRef.current;
+
         if (!isPaymentDataRequired) {
             setSubmit(method, null);
 
@@ -294,9 +302,9 @@ const HostedWidgetPaymentComponent = ({
         if (!isAddingNewCard) {
             const currentSelectedInstrumentId = selectedInstrumentId || getDefaultInstrumentId();
             const maybeInstrument =
-                instruments.find(
+                currentInstruments.find(
                     (instrument) => instrument.bigpayToken === currentSelectedInstrumentId,
-                ) || instruments[0];
+                ) || currentInstruments[0];
 
             if (maybeInstrument && isCardInstrument(maybeInstrument)) {
                 selectedCardInstrument = maybeInstrument;
