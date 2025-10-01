@@ -253,42 +253,25 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
 
     private renderLoginForm(): ReactNode {
         const {
-            isBuyNowCart,
             isEmbedded,
             email,
-            forgotPasswordUrl,
-            isSignInEmailEnabled,
-            isGuestEnabled,
-            isSendingSignInEmail,
-            isSigningIn,
-            isExecutingPaymentMethodCheckout,
-            isAccountCreationEnabled,
-            signInError,
             isFloatingLabelEnabled,
             viewType,
-            shouldRedirectToStorefrontForAuth,
+            signInError,
         } = this.props;
 
         return (
             <LoginForm
-                canCancel={isGuestEnabled}
                 continueAsGuestButtonLabelId="customer.continue_as_guest_action"
                 email={this.draftEmail || email}
-                forgotPasswordUrl={forgotPasswordUrl}
-                isBuyNowCart={isBuyNowCart}
-                isExecutingPaymentMethodCheckout={isExecutingPaymentMethodCheckout}
+                isEmbedded={isEmbedded}
                 isFloatingLabelEnabled={isFloatingLabelEnabled}
-                isSendingSignInEmail={isSendingSignInEmail}
-                isSignInEmailEnabled={isSignInEmailEnabled && !isEmbedded}
-                isSigningIn={isSigningIn}
                 onCancel={this.handleCancelSignIn}
                 onChangeEmail={this.handleChangeEmail}
                 onContinueAsGuest={this.executePaymentMethodCheckoutOrContinue}
                 onCreateAccount={this.showCreateAccount}
                 onSendLoginEmail={this.handleEmailLoginClicked}
                 onSignIn={this.handleSignIn}
-                shouldRedirectToStorefrontForAuth={shouldRedirectToStorefrontForAuth}
-                shouldShowCreateAccountLink={isAccountCreationEnabled}
                 signInError={signInError}
                 viewType={viewType}
             />
