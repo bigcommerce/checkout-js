@@ -14,7 +14,7 @@ import {
     type ShippingRequestOptions,
 } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { Component, type ReactNode } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { createSelector } from 'reselect';
 
 import { type ExtensionContextProps, withExtension } from '@bigcommerce/checkout/checkout-extension';
@@ -88,128 +88,41 @@ export interface WithCheckoutShippingProps {
     shouldRenderStripeForm: boolean;
 }
 
-interface ShippingState {
-    isInitializing: boolean;
-    isMultiShippingUnavailableModalOpen: boolean;
-}
+function Shipping(props: ShippingProps & WithCheckoutShippingProps & ExtensionContextProps) {
+    const [isInitializing, setIsInitializing] = useState(true);
+    const [isMultiShippingUnavailableModalOpen, setIsMultiShippingUnavailableModalOpen] = useState(false);
 
-class Shipping extends Component<ShippingProps & WithCheckoutShippingProps & ExtensionContextProps, ShippingState> {
-    constructor(props: ShippingProps & WithCheckoutShippingProps & ExtensionContextProps) {
-        super(props);
+    const {
+        loadShippingAddressFields,
+        loadBillingAddressFields,
+        loadShippingOptions,
+        onReady = noop,
+        onUnhandledError = noop,
+        cartHasPromotionalItems,
+        isMultiShippingMode,
+    } = props;
 
-        this.state = {
-            isInitializing: true,
-            isMultiShippingUnavailableModalOpen: false,
-        };
-    }
+    useEffect(() => {
+        const initializeShipping = async () => {
+            try {
+                await Promise.all([loadShippingAddressFields(), loadShippingOptions(), loadBillingAddressFields()]);
 
-    async componentDidMount(): Promise<void> {
-        const {
-            loadShippingAddressFields,
-            loadBillingAddressFields,
-            loadShippingOptions,
-            onReady = noop,
-            onUnhandledError = noop,
-            cartHasPromotionalItems,
-            isMultiShippingMode,
-        } = this.props;
+                if (cartHasPromotionalItems && isMultiShippingMode) {
+                    setIsMultiShippingUnavailableModalOpen(true);
+                }
 
-        try {
-            await Promise.all([loadShippingAddressFields(), loadShippingOptions(), loadBillingAddressFields()]);
-
-            if (cartHasPromotionalItems && isMultiShippingMode) {
-                this.setState({ isMultiShippingUnavailableModalOpen: true });
+                onReady();
+            } catch (error) {
+               onUnhandledError(error);
+            } finally {
+                setIsInitializing(false);
             }
+        };
 
-            onReady();
-        } catch (error) {
-            onUnhandledError(error);
-        } finally {
-            this.setState({ isInitializing: false });
-        }
-    }
+        void initializeShipping();
+    }, []);
 
-    render(): ReactNode {
-        const {
-            isBillingSameAsShipping,
-            isGuest,
-            shouldShowMultiShipping,
-            customer,
-            updateShippingAddress,
-            initializeShippingMethod,
-            deinitializeShippingMethod,
-            isMultiShippingMode,
-            step,
-            shouldRenderStripeForm,
-            cartHasPromotionalItems,
-            extensionState: { shippingFormRenderTimestamp } = {},
-            setIsMultishippingMode,
-            ...shippingFormProps
-        } = this.props;
-
-        const {
-            isInitializing,
-            isMultiShippingUnavailableModalOpen,
-        } = this.state;
-
-        const handleSwitchToSingleShipping = async () => {
-            this.setState({ isMultiShippingUnavailableModalOpen: false });
-            await this.handleMultiShippingModeSwitch();
-        }
-
-        if (shouldRenderStripeForm && !customer.email && this.props.countries.length > 0) {
-            return <StripeShipping
-                { ...shippingFormProps }
-                isBillingSameAsShipping={isBillingSameAsShipping}
-                isInitialValueLoaded={!isInitializing}
-                isLoading={ isInitializing }
-                isMultiShippingMode={isMultiShippingMode}
-                isShippingMethodLoading={ this.props.isLoading }
-                onMultiShippingChange={ this.handleMultiShippingModeSwitch }
-                onSubmit={this.handleSingleShippingSubmit}
-                shouldShowMultiShipping={ shouldShowMultiShipping }
-                step={step}
-                updateAddress={updateShippingAddress}
-            />;
-        }
-
-        return (
-            <AddressFormSkeleton isLoading={isInitializing} renderWhileLoading={true}>
-                <div className="checkout-form">
-                    <ConfirmationModal
-                        action={handleSwitchToSingleShipping}
-                        actionButtonLabel={<TranslatedString id="common.ok_action" />}
-                        headerId="shipping.multishipping_unavailable_action"
-                        isModalOpen={isMultiShippingUnavailableModalOpen}
-                        messageId="shipping.checkout_switched_to_single_shipping"
-                        shouldShowCloseButton={false}
-                    />
-                    <ShippingHeader
-                        cartHasPromotionalItems={cartHasPromotionalItems}
-                        isMultiShippingMode={isMultiShippingMode}
-                        onMultiShippingChange={this.handleMultiShippingModeSwitch}
-                        shouldShowMultiShipping={shouldShowMultiShipping}
-                    />
-                    <ShippingForm
-                        {...shippingFormProps}
-                        deinitialize={deinitializeShippingMethod}
-                        initialize={initializeShippingMethod}
-                        isBillingSameAsShipping={isBillingSameAsShipping}
-                        isGuest={isGuest}
-                        isInitialValueLoaded={!isInitializing}
-                        isMultiShippingMode={isMultiShippingMode}
-                        onMultiShippingSubmit={this.handleMultiShippingSubmit}
-                        onSingleShippingSubmit={this.handleSingleShippingSubmit}
-                        setIsMultishippingMode={setIsMultishippingMode}
-                        shippingFormRenderTimestamp={shippingFormRenderTimestamp}
-                        updateAddress={updateShippingAddress}
-                    />
-                </div>
-            </AddressFormSkeleton>
-        );
-    }
-
-    private handleMultiShippingModeSwitch: () => void = async () => {
+    const handleMultiShippingModeSwitch = useCallback(async () => {
         const {
             consignments,
             isMultiShippingMode,
@@ -217,32 +130,31 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps & Ext
             onUnhandledError = noop,
             updateShippingAddress,
             deleteConsignments,
-        } = this.props;
+        } = props;
 
         try {
-            this.setState({ isInitializing: true });
+            setIsInitializing(true);
 
             if (isMultiShippingMode && consignments.length) {
-                // Collapse all consignments into one
                 await updateShippingAddress(consignments[0].shippingAddress);
-            }
-            else {
+            } else {
                 await deleteConsignments();
             }
         } catch (error) {
             onUnhandledError(error);
         } finally {
-            this.setState({ isInitializing: false });
+            setIsInitializing(false);
         }
 
         onToggleMultiShipping();
-    };
+    }, [props]);
 
-    private handleSingleShippingSubmit: (values: SingleShippingFormValues) => void = async ({
-        billingSameAsShipping,
-        shippingAddress: addressValues,
-        orderComment,
-    }) => {
+    const handleSwitchToSingleShipping = useCallback(async () => {
+        setIsMultiShippingUnavailableModalOpen(false);
+        await handleMultiShippingModeSwitch();
+    }, []);
+
+    const handleSingleShippingSubmit = useCallback(async (values: SingleShippingFormValues) => {
         const {
             customerMessage,
             updateCheckout,
@@ -253,18 +165,17 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps & Ext
             shippingAddress,
             billingAddress,
             methodId,
-        } = this.props;
-
-        const updatedShippingAddress = addressValues && mapAddressFromFormValues(addressValues);
+        } = props;
+        const updatedShippingAddress = values.shippingAddress && mapAddressFromFormValues(values.shippingAddress);
         const promises: Array<Promise<CheckoutSelectors>> = [];
-        const hasRemoteBilling = this.hasRemoteBilling(methodId);
+        const hasRemoteBilling = hasRemoteBillingFn(methodId);
 
         if (!isEqualAddress(updatedShippingAddress, shippingAddress) || shippingAddress?.shouldSaveAddress !== updatedShippingAddress?.shouldSaveAddress) {
             promises.push(updateShippingAddress(updatedShippingAddress || {}));
         }
 
         if (
-            billingSameAsShipping &&
+            values.billingSameAsShipping &&
             updatedShippingAddress &&
             !isEqualAddress(updatedShippingAddress, billingAddress) &&
             !hasRemoteBilling
@@ -272,35 +183,26 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps & Ext
             promises.push(updateBillingAddress(updatedShippingAddress));
         }
 
-        if (customerMessage !== orderComment) {
-            promises.push(updateCheckout({ customerMessage: orderComment }));
+        if (customerMessage !== values.orderComment) {
+            promises.push(updateCheckout({ customerMessage: values.orderComment }));
         }
 
         try {
             await Promise.all(promises);
-
-            navigateNextStep(billingSameAsShipping);
+            navigateNextStep(values.billingSameAsShipping);
         } catch (error) {
             if (error instanceof Error) {
                 onUnhandledError(error);
             }
         }
-    };
+    }, [props]);
 
-    private hasRemoteBilling: (methodId?: string) => boolean = (methodId) => {
-        const PAYMENT_METHOD_VALID = ['amazonpay'];
-
-        return PAYMENT_METHOD_VALID.some((method) => method === methodId);
-    };
-
-    private handleMultiShippingSubmit: (values: MultiShippingFormValues) => void = async ({
-        orderComment,
-    }) => {
-        const { customerMessage, updateCheckout, navigateNextStep, onUnhandledError } = this.props;
+    const handleMultiShippingSubmit = useCallback(async (values: MultiShippingFormValues) => {
+        const { customerMessage, updateCheckout, navigateNextStep, onUnhandledError } = props;
 
         try {
-            if (customerMessage !== orderComment) {
-                await updateCheckout({ customerMessage: orderComment });
+            if (customerMessage !== values.orderComment) {
+                await updateCheckout({ customerMessage: values.orderComment });
             }
 
             navigateNextStep(false);
@@ -309,7 +211,79 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps & Ext
                 onUnhandledError(error);
             }
         }
-    };
+    }, [props]);
+
+    function hasRemoteBillingFn(methodId?: string) {
+        const PAYMENT_METHOD_VALID = ['amazonpay'];
+
+        return PAYMENT_METHOD_VALID.some((method) => method === methodId);
+    }
+
+    const {
+        isBillingSameAsShipping,
+        isGuest,
+        shouldShowMultiShipping,
+        customer,
+        updateShippingAddress,
+        initializeShippingMethod,
+        deinitializeShippingMethod,
+        step,
+        shouldRenderStripeForm,
+        extensionState: { shippingFormRenderTimestamp } = {},
+        setIsMultishippingMode,
+        ...shippingFormProps
+    } = props;
+
+    if (shouldRenderStripeForm && !customer.email && props.countries.length > 0) {
+        return <StripeShipping
+            { ...shippingFormProps }
+            isBillingSameAsShipping={isBillingSameAsShipping}
+            isInitialValueLoaded={!isInitializing}
+            isLoading={ isInitializing }
+            isMultiShippingMode={isMultiShippingMode}
+            isShippingMethodLoading={ props.isLoading }
+            onMultiShippingChange={ handleMultiShippingModeSwitch }
+            onSubmit={handleSingleShippingSubmit}
+            shouldShowMultiShipping={ shouldShowMultiShipping }
+            step={step}
+            updateAddress={updateShippingAddress}
+        />;
+    }
+
+    return (
+        <AddressFormSkeleton isLoading={isInitializing} renderWhileLoading={true}>
+            <div className="checkout-form">
+                <ConfirmationModal
+                    action={handleSwitchToSingleShipping}
+                    actionButtonLabel={<TranslatedString id="common.ok_action" />}
+                    headerId="shipping.multishipping_unavailable_action"
+                    isModalOpen={isMultiShippingUnavailableModalOpen}
+                    messageId="shipping.checkout_switched_to_single_shipping"
+                    shouldShowCloseButton={false}
+                />
+                <ShippingHeader
+                    cartHasPromotionalItems={cartHasPromotionalItems}
+                    isMultiShippingMode={isMultiShippingMode}
+                    onMultiShippingChange={handleMultiShippingModeSwitch}
+                    shouldShowMultiShipping={shouldShowMultiShipping}
+                />
+                <ShippingForm
+                    {...shippingFormProps}
+                    deinitialize={deinitializeShippingMethod}
+                    initialize={initializeShippingMethod}
+                    isBillingSameAsShipping={isBillingSameAsShipping}
+                    isGuest={isGuest}
+                    isInitialValueLoaded={!isInitializing}
+                    isMultiShippingMode={isMultiShippingMode}
+                    onMultiShippingSubmit={handleMultiShippingSubmit}
+                    onSingleShippingSubmit={handleSingleShippingSubmit}
+                    setIsMultishippingMode={setIsMultishippingMode}
+                    shippingFormRenderTimestamp={shippingFormRenderTimestamp}
+                    updateAddress={updateShippingAddress}
+                />
+            </div>
+        </AddressFormSkeleton>
+    );
 }
 
 const deleteConsignmentsSelector = createSelector(
