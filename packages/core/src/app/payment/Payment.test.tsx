@@ -10,6 +10,7 @@ import { rest } from 'msw';
 import React, { act, type FunctionComponent } from 'react';
 
 import {
+    type AnalyticsContextProps,
     type AnalyticsEvents,
     AnalyticsProviderMock,
 } from '@bigcommerce/checkout/analytics';
@@ -29,18 +30,18 @@ import {
 import { renderWithoutWrapper as render, screen } from '@bigcommerce/checkout/test-utils';
 import { ThemeProvider } from '@bigcommerce/checkout/ui';
 
-import Checkout, { type CheckoutProps } from '../../checkout/Checkout';
-import { createErrorLogger } from '../../common/error';
+import Checkout, { type CheckoutProps } from '../checkout/Checkout';
+import { createErrorLogger } from '../common/error';
 import {
     createEmbeddedCheckoutStylesheet,
     createEmbeddedCheckoutSupport,
-} from '../../embeddedCheckout';
+} from '../embeddedCheckout';
 
 describe('Payment step', () => {
     let checkout: CheckoutPageNodeObject;
     let CheckoutTest: FunctionComponent<CheckoutProps>;
     let checkoutService: CheckoutService;
-    let defaultProps: CheckoutProps;
+    let defaultProps: CheckoutProps & AnalyticsContextProps;
     let embeddedMessengerMock: EmbeddedCheckoutMessenger;
     let analyticsTracker: Partial<AnalyticsEvents>;
 
@@ -77,6 +78,7 @@ describe('Payment step', () => {
             embeddedStylesheet: createEmbeddedCheckoutStylesheet(),
             embeddedSupport: createEmbeddedCheckoutSupport(getLanguageService()),
             errorLogger: createErrorLogger(),
+            analyticsTracker,
         };
 
         jest.spyOn(defaultProps.errorLogger, 'log').mockImplementation(noop);
@@ -84,7 +86,7 @@ describe('Payment step', () => {
         CheckoutTest = (props) => (
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleProvider checkoutService={checkoutService}>
-                    <AnalyticsProviderMock analyticsTracker={analyticsTracker}>
+                    <AnalyticsProviderMock>
                         <ExtensionProvider
                             checkoutService={checkoutService}
                             errorLogger={{
@@ -159,8 +161,8 @@ describe('Payment step', () => {
 
         await checkout.waitForPaymentStep();
 
-        await act(async () => userEvent.click(screen.getByRole('radio', { name: 'Pay in Store' })));
-        await act(async () => userEvent.click(screen.getAllByRole('button', { name: 'Edit' })[2]));
+        await userEvent.click(screen.getByRole('radio', { name: 'Pay in Store' }));
+        await userEvent.click(screen.getAllByRole('button', { name: 'Edit' })[2]);
 
         expect(screen.queryByRole('radio')).not.toBeInTheDocument();
         expect(screen.queryByText('Pay in Store')).not.toBeInTheDocument();
@@ -305,11 +307,11 @@ describe('Payment step', () => {
         render(<CheckoutTest {...defaultProps} />);
 
         await checkout.waitForPaymentStep();
-        await act(async () => userEvent.click(screen.getByText('Place Order')));
+        await userEvent.click(screen.getByText('Place Order'));
 
         expect(screen.getByText('Something\'s gone wrong')).toBeInTheDocument();
 
-        await act(async () => userEvent.click(screen.getByText('Ok')));
+        await userEvent.click(screen.getByText('Ok'));
 
         expect(screen.queryByText('Something\'s gone wrong')).not.toBeInTheDocument();
     });
