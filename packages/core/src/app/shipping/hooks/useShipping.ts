@@ -1,13 +1,13 @@
-import { createSelector } from "reselect";
+import { createSelector } from 'reselect';
 
-import { shouldUseStripeLinkByMinimumAmount } from "@bigcommerce/checkout/instrument-utils";
-import { type CheckoutContextProps, PaymentMethodId, useCheckout } from "@bigcommerce/checkout/payment-integration-api";
+import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
+import { type CheckoutContextProps, PaymentMethodId, useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
-import { EMPTY_ARRAY } from "../../common/utility";
-import getProviderWithCustomCheckout from "../../payment/getProviderWithCustomCheckout";
-import getShippableItemsCount from "../getShippableItemsCount";
-import getShippingMethodId from "../getShippingMethodId";
-import hasPromotionalItems from "../hasPromotionalItems";
+import { EMPTY_ARRAY } from '../../common/utility';
+import getProviderWithCustomCheckout from '../../payment/getProviderWithCustomCheckout';
+import getShippableItemsCount from '../getShippableItemsCount';
+import getShippingMethodId from '../getShippingMethodId';
+import hasPromotionalItems from '../hasPromotionalItems';
 
 
 const deleteConsignmentsSelector = createSelector(

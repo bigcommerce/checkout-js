@@ -1,4 +1,4 @@
-import { renderHook, waitFor } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
 
 import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
 import * as CheckoutApi from '@bigcommerce/checkout/payment-integration-api';
