@@ -97,6 +97,9 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         statuses: { isLoadingInstruments },
     } = checkoutState;
     const checkout = getCheckout();
+    const {
+        initializationData: { isCustomChecklistItem },
+    } = method;
 
     const initializeStripePayment = useCallback(
         async (options: PaymentInitializeOptions) => {
@@ -107,7 +110,7 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                 stripeocs: {
                     containerId,
                     layout: {
-                        type: 'accordion',
+                        type: isCustomChecklistItem ? 'accordion' : 'auto',
                         defaultCollapsed: selectedItemId !== methodSelector,
                         radios: true,
                         linkInAccordion: true,
@@ -130,6 +133,7 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             containerId,
             selectedItemId,
             methodSelector,
+            isCustomChecklistItem,
             checkoutService,
             onUnhandledError,
             renderSubmitButton,
