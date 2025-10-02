@@ -8,7 +8,6 @@ import {
     getConsignment,
     getCustomer,
     getShippingAddress,
-    getShippingCountries,
     getStoreConfig,
 } from '@bigcommerce/checkout/test-mocks';
 
@@ -156,6 +155,14 @@ describe('useShipping', () => {
     });
 
     it('shouldRenderStripeForm is true if providerWithCustomCheckout is StripeUPE and shouldUseStripeLinkByMinimumAmount returns true', () => {
+        
+        jest.mock(
+            '@bigcommerce/checkout/instrument-utils',
+            () => ({
+                ...jest.requireActual('@bigcommerce/checkout/instrument-utils'),
+                shouldUseStripeLinkByMinimumAmount: jest.fn().mockResolvedValue(true),
+            }),
+        );
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
             checkoutSettings: {
                 enableOrderComments: true,
@@ -163,7 +170,6 @@ describe('useShipping', () => {
                 providerWithCustomCheckout: PaymentMethodId.StripeUPE,
             },
         });
-        jest.spyOn(require('@bigcommerce/checkout/instrument-utils'), 'shouldUseStripeLinkByMinimumAmount').mockReturnValue(true);
 
         const { result } = renderHook(() => useShipping());
 
