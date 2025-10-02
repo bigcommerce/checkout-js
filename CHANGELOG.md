@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.683.1](https://github.com/bigcommerce/checkout-js/compare/v1.683.0...v1.683.1) (2025-10-02)
+
+
+### Bug Fixes
+
+* **payment:** Stripe OCS layout type based on isCustomChecklistItem ([3cd9ccb](https://github.com/bigcommerce/checkout-js/commit/3cd9ccbaace878c11a1de875e78e41bdcea99331))
+
 ## [1.683.0](https://github.com/bigcommerce/checkout-js/compare/v1.682.0...v1.683.0) (2025-10-02)
 
 
