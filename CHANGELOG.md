@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.683.0](https://github.com/bigcommerce/checkout-js/compare/v1.682.0...v1.683.0) (2025-10-02)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9477 refactor Shipping component by adding useShipping hook ([#2609](https://github.com/bigcommerce/checkout-js/issues/2609)) ([1fae131](https://github.com/bigcommerce/checkout-js/commit/1fae131164c16d6024cfb4a817486b9c9ac64fba))
+
 ## [1.682.0](https://github.com/bigcommerce/checkout-js/compare/v1.681.3...v1.682.0) (2025-10-01)
 
 
