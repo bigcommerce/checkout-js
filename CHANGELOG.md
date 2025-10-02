@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.684.0](https://github.com/bigcommerce/checkout-js/compare/v1.683.1...v1.684.0) (2025-10-02)
+
+
+### Features
+
+* **payment:** PAYPAL-5908 add bcp klarna logo mapping ([37c888b](https://github.com/bigcommerce/checkout-js/commit/37c888b0788eb61b8a91a75ae7e811efb5323a88))
+
 ### [1.683.1](https://github.com/bigcommerce/checkout-js/compare/v1.683.0...v1.683.1) (2025-10-02)
 
 
