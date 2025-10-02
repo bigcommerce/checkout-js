@@ -258,9 +258,7 @@ const PayPalCommerceCreditCardsPaymentMethod: FunctionComponent<PaymentMethodPro
             [getHostedFormOptions, initializePayment],
         );
 
-    // Info: isHostedFormEnabled is an option in store config which responsible for switching PayPal Commerce Credit Card form
-    // rendering between Hosted Form and default BC fields (non-hosted)
-    return isHostedFormEnabled ? (
+    return (
         <CreditCardPaymentMethodComponent
             {...props}
             cardFieldset={
@@ -284,12 +282,6 @@ const PayPalCommerceCreditCardsPaymentMethod: FunctionComponent<PaymentMethodPro
                 language,
                 isCardExpiryRequired: true,
             })}
-        />
-    ) : (
-        <CreditCardPaymentMethodComponent
-            {...props}
-            deinitializePayment={checkoutService.deinitializePayment}
-            initializePayment={initializePayPalCommerceCreditCardPayment}
         />
     );
 };
