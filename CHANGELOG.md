@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.685.0](https://github.com/bigcommerce/checkout-js/compare/v1.684.1...v1.685.0) (2025-10-03)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9388 Lazy load customer strategies by importing them on demand ([30d95da](https://github.com/bigcommerce/checkout-js/commit/30d95daea034279a0dc6984655ff2bb94b7dd6d3))
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-9388 Pass instance of error logger ([8c23c66](https://github.com/bigcommerce/checkout-js/commit/8c23c66131fc2fbc161e5bc2e52d49afbed28195))
+
 ### [1.684.1](https://github.com/bigcommerce/checkout-js/compare/v1.684.0...v1.684.1) (2025-10-02)
 
 ## [1.684.0](https://github.com/bigcommerce/checkout-js/compare/v1.683.1...v1.684.0) (2025-10-02)
