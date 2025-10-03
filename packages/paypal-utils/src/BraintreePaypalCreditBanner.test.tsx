@@ -1,4 +1,5 @@
 import { createCheckoutService } from '@bigcommerce/checkout-sdk';
+import { createBraintreePaypalPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
 import React, { type FunctionComponent } from 'react';
 
 import {
@@ -51,6 +52,7 @@ describe('BraintreePaypalCreditBanner', () => {
 
         expect(checkoutService.initializePayment).toHaveBeenCalledWith({
             methodId: PaymentMethodId.BraintreePaypalCredit,
+            integrations: [createBraintreePaypalPaymentStrategy],
             braintree: {
                 bannerContainerId,
             },
@@ -70,6 +72,7 @@ describe('BraintreePaypalCreditBanner', () => {
 
         expect(checkoutService.initializePayment).toHaveBeenCalledWith({
             methodId: PaymentMethodId.BraintreePaypalCredit,
+            integrations: [createBraintreePaypalPaymentStrategy],
             braintree: {
                 bannerContainerId,
             },

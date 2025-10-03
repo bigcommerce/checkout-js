@@ -6,6 +6,7 @@ import {
     type PaymentInitializeOptions,
     type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
+import { createStripeV3PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/stripe';
 import { render } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
@@ -103,6 +104,7 @@ describe('when using StripeV3 payment', () => {
             expect(initializePayment).toHaveBeenCalledWith({
                 gatewayId: 'stripev3',
                 methodId: 'alipay',
+                integrations: [createStripeV3PaymentStrategy],
                 stripev3: {
                     containerId: 'stripe-alipay-component-field',
                     options: undefined,
@@ -130,6 +132,7 @@ describe('when using StripeV3 payment', () => {
             expect(initializePayment).toHaveBeenCalledWith({
                 gatewayId: 'stripev3',
                 methodId: 'card',
+                integrations: [createStripeV3PaymentStrategy],
                 stripev3: {
                     containerId: 'stripe-card-component-field',
                     options: {
@@ -149,6 +152,7 @@ describe('when using StripeV3 payment', () => {
             expect(checkoutService.initializePayment).toHaveBeenCalledWith({
                 gatewayId: method.gateway,
                 methodId: method.id,
+                integrations: [createStripeV3PaymentStrategy],
                 stripev3: {
                     containerId: 'stripe-card-component-field',
                     options: {
@@ -196,6 +200,7 @@ describe('when using StripeV3 payment', () => {
             expect(checkoutService.initializePayment).toHaveBeenCalledWith(
                 expect.objectContaining({
                     methodId: method.id,
+                    integrations: [createStripeV3PaymentStrategy],
                     stripev3: {
                         containerId: 'stripe-idealBank-component-field',
                         options: {
@@ -226,6 +231,7 @@ describe('when using StripeV3 payment', () => {
             expect(checkoutService.initializePayment).toHaveBeenCalledWith(
                 expect.objectContaining({
                     methodId: method.id,
+                    integrations: [createStripeV3PaymentStrategy],
                     stripev3: {
                         options: {
                             classes: {

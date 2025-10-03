@@ -1,4 +1,5 @@
 import { createCheckoutService, type LanguageService } from '@bigcommerce/checkout-sdk';
+import { createBraintreeLocalMethodsPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
 import { EventEmitter } from 'events';
 import React from 'react';
 
@@ -39,6 +40,7 @@ describe('BraintreeLocalMethod', () => {
         expect(initializePayment).toHaveBeenCalledWith({
             gatewayId: props.method.gateway,
             methodId: props.method.id,
+            integrations: [createBraintreeLocalMethodsPaymentStrategy],
             braintreelocalmethods: {
                 container: '#checkout-payment-continue',
                 buttonText: props.language.translate('payment.continue_with_brand', {

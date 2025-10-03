@@ -1,4 +1,4 @@
-import { ExtensionRegion, type ShippingOption } from '@bigcommerce/checkout-sdk';
+import { ExtensionRegion, type ShippingOption } from '@bigcommerce/checkout-sdk/essential';
 import React, { type FunctionComponent, memo, useCallback } from 'react';
 
 import { Extension } from '@bigcommerce/checkout/checkout-extension';

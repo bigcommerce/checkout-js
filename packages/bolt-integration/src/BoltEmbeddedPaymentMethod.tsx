@@ -1,5 +1,8 @@
 import { type CustomerInitializeOptions } from '@bigcommerce/checkout-sdk';
-import { createBoltCustomerStrategy } from '@bigcommerce/checkout-sdk/integrations/bolt';
+import {
+    createBoltCustomerStrategy,
+    createBoltPaymentStrategy,
+} from '@bigcommerce/checkout-sdk/integrations/bolt';
 import React, { type FunctionComponent, useCallback, useState } from 'react';
 
 import { HostedWidgetPaymentComponent } from '@bigcommerce/checkout/hosted-widget-integration';
@@ -34,6 +37,7 @@ const BoltEmbeddedPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         (options: any) =>
             checkoutService.initializePayment({
                 ...options,
+                integrations: [createBoltPaymentStrategy],
                 bolt: {
                     containerId: boltEmbeddedContainerId,
                     useBigCommerceCheckout: true,
