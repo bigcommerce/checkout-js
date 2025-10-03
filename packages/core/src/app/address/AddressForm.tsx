@@ -93,13 +93,16 @@ const AddressForm: React.FC<AddressFormProps> = ({
             }
 
             setFieldValue(fieldName, value as string);
-            onChange(fieldName, value as string);
+            // onChange(fieldName, value as string);
         });
 
         const address1 = address.address1 ? address.address1 : autocompleteValue;
-
-        if (address1) {
-            syncNonFormikValue(AUTOCOMPLETE_FIELD_NAME, address1);
+        
+        // if (address1) {
+        //     syncNonFormikValue(AUTOCOMPLETE_FIELD_NAME, address1);
+        // }
+        if (address1 && fieldName === AUTOCOMPLETE_FIELD_NAME) {
+            setFieldValue(fieldName, address1);
         }
     }, [countries, setFieldValue, onChange, syncNonFormikValue]);
 
