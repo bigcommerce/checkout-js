@@ -4,6 +4,7 @@ import {
     type CustomerRequestOptions,
     type ExecutePaymentMethodCheckoutOptions,
 } from '@bigcommerce/checkout-sdk';
+import { createBoltCustomerStrategy } from '@bigcommerce/checkout-sdk/integrations/bolt';
 import { noop } from 'lodash';
 import React, { type FunctionComponent, memo, useEffect, useState } from 'react';
 
@@ -42,6 +43,7 @@ const BoltCheckoutSuggestion: FunctionComponent<BoltCheckoutSuggestionProps> = (
         try {
             initializeCustomer({
                 methodId,
+                integrations: [createBoltCustomerStrategy],
                 bolt: {
                     onInit: (hasBoltAccount, email) => {
                         setShowSuggestion(hasBoltAccount);

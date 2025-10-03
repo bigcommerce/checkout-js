@@ -34,19 +34,20 @@ const OrderConfirmationApp: React.FC<OrderConfirmationAppProps> = ({
     sentrySampleRate,
 }) => {
     const accountService = useMemo(() => new AccountService(), []);
+    const errorLogger = useMemo(() => createErrorLogger(
+        { sentry: sentryConfig },
+        {
+            errorTypes: ['UnrecoverableError'],
+            publicPath,
+            sampleRate: sentrySampleRate || 0.1,
+        },
+    ), []);
     const checkoutService = useMemo(() => createCheckoutService({
-            locale: getLanguageService().getLocale(),
-            shouldWarnMutation: process.env.NODE_ENV === 'development',
+        locale: getLanguageService().getLocale(),
+        shouldWarnMutation: process.env.NODE_ENV === 'development',
+        errorLogger,
     }), []);
     const embeddedStylesheet = useMemo(() => createEmbeddedCheckoutStylesheet(), []);
-    const errorLogger = useMemo(() => createErrorLogger(
-            { sentry: sentryConfig },
-            {
-                errorTypes: ['UnrecoverableError'],
-                publicPath,
-                sampleRate: sentrySampleRate || 0.1,
-            },
-    ), []);
 
     useEffect(() => {
         ReactModal.setAppElement(`#${containerId}`);

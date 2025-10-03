@@ -5,7 +5,7 @@ import {
     type CustomerRequestOptions,
 } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { type FunctionComponent, memo } from 'react';
+import React, { type FunctionComponent, lazy, memo } from 'react';
 
 import { TranslatedString, useLocale } from '@bigcommerce/checkout/locale';
 import { type CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
@@ -15,7 +15,8 @@ import { withCheckout } from '../checkout';
 
 import { getSupportedMethodIds } from './getSupportedMethods';
 import resolveCheckoutButton from './resolveCheckoutButton';
-import CheckoutButtonV1Resolver from './WalletButtonV1Resolver';
+
+const CheckoutButtonV1Resolver = lazy(() => import(/* webpackChunkName: "wallet-button-v1-resolver" */'./WalletButtonV1Resolver'));
 
 export interface CheckoutButtonListProps {
     hideText?: boolean;
@@ -73,15 +74,17 @@ const CheckoutButtonList: FunctionComponent<WithCheckoutCheckoutButtonListProps 
             );
 
             if (!ResolvedCheckoutButton) {
-                return <CheckoutButtonV1Resolver
-                    deinitialize={deinitialize}
-                    initialize={initialize}
-                    isShowingWalletButtonsOnTop={false}
-                    key={methodId}
-                    methodId={methodId}
-                    onClick={onClick}
-                    onError={onClick}
-                />
+                return <LazyContainer key={methodId}>
+                    <CheckoutButtonV1Resolver
+                        deinitialize={deinitialize}
+                        initialize={initialize}
+                        isShowingWalletButtonsOnTop={false}
+                        key={methodId}
+                        methodId={methodId}
+                        onClick={onClick}
+                        onError={onClick}
+                    />
+                </LazyContainer>
             }
 
             return <LazyContainer key={methodId}>

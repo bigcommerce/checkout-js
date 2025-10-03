@@ -100,7 +100,18 @@ function appConfig(options, argv) {
                             name: 'polyfill',
                         },
                         transients: {
-                            test: /\/node_modules\/@bigcommerce/,
+                            test: (module) => {
+                                if (!module.resource) {
+                                    return false;
+                                }
+
+                                return (
+                                    /\/node_modules\/@bigcommerce/.test(module.resource) &&
+                                    !/\/node_modules\/@bigcommerce\/checkout-sdk\/dist\/esm\/integrations/.test(
+                                        module.resource,
+                                    )
+                                );
+                            },
                             reuseExistingChunk: true,
                             enforce: true,
                             name: 'transients',

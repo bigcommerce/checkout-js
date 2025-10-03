@@ -1,3 +1,5 @@
+import { type CustomerInitializeOptions } from '@bigcommerce/checkout-sdk';
+import { createBoltCustomerStrategy } from '@bigcommerce/checkout-sdk/integrations/bolt';
 import React, { type FunctionComponent, useCallback, useState } from 'react';
 
 import { HostedWidgetPaymentComponent } from '@bigcommerce/checkout/hosted-widget-integration';
@@ -47,6 +49,16 @@ const BoltEmbeddedPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         [checkoutService, boltEmbeddedContainerId, setFieldValue],
     );
 
+    const initializeBoltCustomer = useCallback(
+        (options: CustomerInitializeOptions) => {
+            return checkoutService.initializeCustomer({
+                ...options,
+                integrations: [createBoltCustomerStrategy],
+            });
+        },
+        [checkoutService],
+    );
+
     const renderCustomPaymentForm = useCallback(
         () => (
             <BoltCustomForm
@@ -71,6 +83,7 @@ const BoltEmbeddedPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             deinitializePayment={checkoutService.deinitializePayment}
             disableSubmit={disableSubmit}
             hidePaymentSubmitButton={hidePaymentSubmitButton}
+            initializeCustomer={initializeBoltCustomer}
             initializePayment={initializeBoltPayment}
             instruments={instruments}
             isInitializing={isInitializingPayment()}

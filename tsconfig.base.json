@@ -12,7 +12,7 @@
     "jsx": "react",
     "lib": ["dom", "dom.iterable", "esnext", "scripthost"],
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "paths": {

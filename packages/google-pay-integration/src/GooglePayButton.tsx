@@ -1,3 +1,19 @@
+import {
+    createGooglePayAdyenV2CustomerStrategy,
+    createGooglePayAdyenV3CustomerStrategy,
+    createGooglePayAuthorizeDotNetCustomerStrategy,
+    createGooglePayBigCommercePaymentsCustomerStrategy,
+    createGooglePayBnzCustomerStrategy,
+    createGooglePayBraintreeCustomerStrategy,
+    createGooglePayCheckoutComCustomerStrategy,
+    createGooglePayCybersourceCustomerStrategy,
+    createGooglePayOrbitalCustomerStrategy,
+    createGooglePayPayPalCommerceCustomerStrategy,
+    createGooglePayStripeCustomerStrategy,
+    createGooglePayStripeUpeCustomerStrategy,
+    createGooglePayTdOnlineMartCustomerStrategy,
+    createGooglePayWorldpayAccessCustomerStrategy,
+} from '@bigcommerce/checkout-sdk/integrations/google-pay';
 import React, { type FunctionComponent } from 'react';
 
 import { CheckoutButton } from '@bigcommerce/checkout/checkout-button-integration';
@@ -26,7 +42,30 @@ const GooglePayButton: FunctionComponent<CheckoutButtonProps> = (props) => {
         return null;
     }
 
-    return <CheckoutButton checkoutButtonContainerClass="google-pay-top-button" {...props} />;
+    const integrations = [
+        createGooglePayAdyenV2CustomerStrategy,
+        createGooglePayAdyenV3CustomerStrategy,
+        createGooglePayAuthorizeDotNetCustomerStrategy,
+        createGooglePayCheckoutComCustomerStrategy,
+        createGooglePayCybersourceCustomerStrategy,
+        createGooglePayBnzCustomerStrategy,
+        createGooglePayOrbitalCustomerStrategy,
+        createGooglePayStripeCustomerStrategy,
+        createGooglePayStripeUpeCustomerStrategy,
+        createGooglePayWorldpayAccessCustomerStrategy,
+        createGooglePayBraintreeCustomerStrategy,
+        createGooglePayPayPalCommerceCustomerStrategy,
+        createGooglePayBigCommercePaymentsCustomerStrategy,
+        createGooglePayTdOnlineMartCustomerStrategy,
+    ];
+
+    return (
+        <CheckoutButton
+            checkoutButtonContainerClass="google-pay-top-button"
+            integrations={integrations}
+            {...props}
+        />
+    );
 };
 
 export default toResolvableComponent<CheckoutButtonProps, CheckoutButtonResolveId>(

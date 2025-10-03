@@ -1,3 +1,4 @@
+import { createBigCommercePaymentsCustomerStrategy } from '@bigcommerce/checkout-sdk/integrations/bigcommerce-payments';
 import React, { type FunctionComponent } from 'react';
 
 import { CheckoutButton } from '@bigcommerce/checkout/checkout-button-integration';
@@ -17,6 +18,7 @@ const BigCommercePaymentsButton: FunctionComponent<CheckoutButtonProps> = (props
     return (
         <CheckoutButton
             additionalInitializationOptions={additionalInitializationOptions}
+            integrations={[createBigCommercePaymentsCustomerStrategy]}
             {...props}
         />
     );
