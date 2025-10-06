@@ -79,7 +79,8 @@
             "taxes_text": "Impostos",
             "total_text": "Total",
             "empty_cart_message": "Seu carrinho está vazio, você está sendo redirecionado. <a href=\"{url}\" target=\"_top\">Clique aqui</a> se o seu navegador não redirecionar você.",
-            "consistency_error": "Sua finalização de compra não pôde ser processada porque alguns detalhes mudaram. Revise o pedido e tente novamente."
+            "consistency_error": "Sua finalização de compra não pôde ser processada porque alguns detalhes mudaram. Revise o pedido e tente novamente.",
+            "empty_cart_error_message": "Your cart contains items that aren't available for purchase or have exceeded the purchase limit. To place your order, please create a new cart with the quantities to the allowed limit or with different items."
         },
         "common": {
             "back_action": "Retornar",
