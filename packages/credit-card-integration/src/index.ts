@@ -1,5 +1,5 @@
-export { CreditCardPaymentMethodComponent } from './CreditCardPaymentMethodComponent';
 export {
+    default as CreditCardPaymentMethodComponent,
     CreditCardPaymentMethodProps,
     CreditCardPaymentMethodValues,
-} from './CreditCardPaymentMethodType';
+} from './CreditCardPaymentMethodComponent';
