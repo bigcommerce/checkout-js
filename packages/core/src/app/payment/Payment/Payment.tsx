@@ -344,7 +344,10 @@ const Payment = (
         setValidationSchema,
         hidePaymentSubmitButton,
     }), [disableSubmit, setSubmit, setValidationSchema, hidePaymentSubmitButton]);
-    const uniqueSelectedMethodId = selectedMethod && getUniquePaymentMethodId(selectedMethod.id, selectedMethod.gateway);
+    const uniqueSelectedMethodId = defaultMethod && getUniquePaymentMethodId(
+        selectedMethod?.id ?? defaultMethod?.id,
+        selectedMethod?.gateway ?? defaultMethod?.gateway
+    );
 
     useEffect(() => {
         (async () => {
