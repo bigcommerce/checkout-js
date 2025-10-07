@@ -1,17 +1,6 @@
 import { type AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
-import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
-import { type CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 import {
-    type CheckoutPaymentMethodExecutedOptions,
-    type CheckoutSelectors,
-    type CustomerAccountRequestBody,
     type CustomerCredentials,
-    type CustomerInitializeOptions,
-    type CustomerRequestOptions,
-    type ExecutePaymentMethodCheckoutOptions,
-    type FormField,
-    type GuestCredentials,
-    type SignInEmail,
 } from '@bigcommerce/checkout-sdk';
 import { createBigCommercePaymentsFastlaneCustomerStrategy } from '@bigcommerce/checkout-sdk/integrations/bigcommerce-payments';
 import { createBoltCustomerStrategy } from '@bigcommerce/checkout-sdk/integrations/bolt';
@@ -19,15 +8,12 @@ import { createBraintreeFastlaneCustomerStrategy } from '@bigcommerce/checkout-s
 import { createPayPalCommerceFastlaneCustomerStrategy } from '@bigcommerce/checkout-sdk/integrations/paypal-commerce';
 import { createStripeLinkV2CustomerStrategy, createStripeUPECustomerStrategy } from '@bigcommerce/checkout-sdk/integrations/stripe';
 import { noop } from 'lodash';
-import React, { Component, type ReactNode } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 
 import { withAnalytics } from '../analytics';
-import { withCheckout } from '../checkout';
 import type CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import { isErrorWithType } from '../common/error';
-import { isFloatingLabelEnabled } from '../common/utility';
-import getProviderWithCustomCheckout from '../payment/getProviderWithCustomCheckout';
 import { PaymentMethodId } from '../payment/paymentMethod';
 
 import CreateAccountForm from './CreateAccountForm';
@@ -39,6 +25,7 @@ import { GuestFormContainer } from './GuestFormContainer';
 import LoginForm from './LoginForm';
 import mapCreateAccountFromFormValues from './mapCreateAccountFromFormValues';
 import { SubscribeSessionStorage } from './SubscribeSessionStorage';
+import { useCustomer } from './useCustomer';
 
 export interface CustomerProps {
     viewType: CustomerViewType;
@@ -59,293 +46,123 @@ export interface CustomerProps {
     onWalletButtonClick?(methodName: string): void;
 }
 
-export interface WithCheckoutCustomerProps {
-    canSubscribe: boolean;
-    customerAccountFields: FormField[];
-    checkoutButtonIds: string[];
-    defaultShouldSubscribe: boolean;
-    email?: string;
-    firstName?: string;
-    forgotPasswordUrl: string;
-    isContinuingAsGuest: boolean;
-    isCreatingAccount: boolean;
-    isExecutingPaymentMethodCheckout: boolean;
-    isGuestEnabled: boolean;
-    hasBillingId: boolean;
-    isInitializing: boolean;
-    isSendingSignInEmail: boolean;
-    isSignInEmailEnabled: boolean;
-    isSigningIn: boolean;
-    privacyPolicyUrl?: string;
-    providerWithCustomCheckout?: string;
-    requiresMarketingConsent: boolean;
-    signInEmail?: SignInEmail;
-    signInEmailError?: Error;
-    isBuyNowCart: boolean;
-    isAccountCreationEnabled: boolean;
-    isPaymentDataRequired: boolean;
-    createAccountError?: Error;
-    signInError?: Error;
-    isFloatingLabelEnabled?: boolean;
-    isExpressPrivacyPolicy: boolean;
-    shouldRedirectToStorefrontForAuth: boolean;
-    clearError(error: Error): Promise<CheckoutSelectors>;
-    continueAsGuest(credentials: GuestCredentials): Promise<CheckoutSelectors>;
-    deinitializeCustomer(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
-    executePaymentMethodCheckout(
-        options: ExecutePaymentMethodCheckoutOptions,
-    ): Promise<CheckoutSelectors>;
-    initializeCustomer(options: CustomerInitializeOptions): Promise<CheckoutSelectors>;
-    sendLoginEmail(params: { email: string }): Promise<CheckoutSelectors>;
-    signIn(credentials: CustomerCredentials): Promise<CheckoutSelectors>;
-    createAccount(values: CustomerAccountRequestBody): Promise<CheckoutSelectors>;
-    shouldRenderStripeForm: boolean;
-}
 
 export interface CustomerState {
     isEmailLoginFormOpen: boolean;
     isReady: boolean;
     hasRequestedLoginEmail: boolean;
+    draftEmail?: string;
 }
 
-class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & AnalyticsContextProps, CustomerState> {
-    state: CustomerState = {
+const Customer: React.FC<CustomerProps & AnalyticsContextProps> = ({
+    viewType,
+    step,
+    isEmbedded,
+    isSubscribed,
+    isWalletButtonsOnTop,
+    onChangeViewType = noop,
+    onAccountCreated = noop,
+    onContinueAsGuest = noop,
+    onContinueAsGuestError = noop,
+    onReady = noop,
+    onSubscribeToNewsletter,
+    onSignIn = noop,
+    onSignInError = noop,
+    onUnhandledError = noop,
+    onWalletButtonClick = noop,
+    analyticsTracker,
+}) => {
+    const [state, setState] = useState<CustomerState>({
         isEmailLoginFormOpen: false,
         isReady: false,
         hasRequestedLoginEmail: false,
-    };
+        draftEmail: undefined,
+    });
 
-    private draftEmail?: string;
+    const customerData = useCustomer();
 
-    async componentDidMount(): Promise<void> {
-        const {
-            initializeCustomer,
-            email,
-            onReady = noop,
-            onUnhandledError = noop,
-            providerWithCustomCheckout,
-        } = this.props;
+    // Initialize draftEmail on mount
+    useEffect(() => {
+        setState(prevState => ({
+            ...prevState,
+            draftEmail: customerData.data.email,
+        }));
+    }, [customerData.data.email]);
 
-        this.draftEmail = email;
-
-        try {
-            if (providerWithCustomCheckout && providerWithCustomCheckout !== PaymentMethodId.StripeUPE) {
-                // TODO: Split out into separate chunks so they can be lazy loaded
-                await initializeCustomer({
-                    methodId: providerWithCustomCheckout,
-                    integrations: [
-                        createBigCommercePaymentsFastlaneCustomerStrategy,
-                        createBraintreeFastlaneCustomerStrategy,
-                        createPayPalCommerceFastlaneCustomerStrategy,
-                        createBoltCustomerStrategy,
-                        createStripeUPECustomerStrategy,
-                        createStripeLinkV2CustomerStrategy,
-                    ],
-                });
+    // componentDidMount equivalent
+    useEffect(() => {
+        const initializeCustomer = async () => {
+            try {
+                if (customerData.data.providerWithCustomCheckout && 
+                    customerData.data.providerWithCustomCheckout !== PaymentMethodId.StripeUPE) {
+                    // TODO: Split out into separate chunks so they can be lazy loaded
+                    await customerData.actions.initializeCustomer({
+                        methodId: customerData.data.providerWithCustomCheckout,
+                        integrations: [
+                            createBigCommercePaymentsFastlaneCustomerStrategy,
+                            createBraintreeFastlaneCustomerStrategy,
+                            createPayPalCommerceFastlaneCustomerStrategy,
+                            createBoltCustomerStrategy,
+                            createStripeUPECustomerStrategy,
+                            createStripeLinkV2CustomerStrategy,
+                        ],
+                    });
+                }
+            } catch (error) {
+                onUnhandledError(error);
             }
-        } catch (error) {
-            onUnhandledError(error);
-        }
 
-        this.setState({ isReady: true });
+            setState(prevState => ({ ...prevState, isReady: true }));
+            onReady();
+        };
 
-        onReady();
-    }
+        initializeCustomer();
+    }, []);
 
-    async componentWillUnmount(): Promise<void> {
-        const {
-            deinitializeCustomer = noop,
-            providerWithCustomCheckout,
-            onUnhandledError = noop,
-        } = this.props;
+    // componentWillUnmount equivalent
+    useEffect(() => {
+        return () => {
+            const cleanup = async () => {
+                try {
+                    await customerData.actions.deinitializeCustomer({ 
+                        methodId: customerData.data.providerWithCustomCheckout 
+                    });
+                } catch (error) {
+                    onUnhandledError(error);
+                }
+            };
 
+            void cleanup();
+        };
+    }, [customerData.actions.deinitializeCustomer, customerData.data.providerWithCustomCheckout, onUnhandledError]);
+
+
+    // Event handlers converted to useCallback
+    const handleChangeEmail = useCallback((email: string) => {
+        setState(prevState => ({ ...prevState, draftEmail: email }));
+        analyticsTracker.customerEmailEntry(email);
+    }, [analyticsTracker]);
+
+    const handleSignIn = useCallback(async (credentials: CustomerCredentials) => {
         try {
-            await deinitializeCustomer({ methodId: providerWithCustomCheckout });
+            await customerData.actions.signIn(credentials);
+            onSignIn();
+            setState(prevState => ({ ...prevState, draftEmail: undefined }));
         } catch (error) {
-            onUnhandledError(error);
+            onSignInError(error);
         }
-    }
+    }, [customerData.actions.signIn, onSignIn, onSignInError]);
 
-    render(): ReactNode {
-        const { viewType } = this.props;
-        const { isEmailLoginFormOpen, isReady } = this.state;
-        const shouldRenderGuestForm = viewType === CustomerViewType.Guest;
-        const shouldRenderCreateAccountForm = viewType === CustomerViewType.CreateAccount;
-        const shouldRenderLoginForm = !shouldRenderGuestForm && !shouldRenderCreateAccountForm;
-
-        if (!isReady) {
-            return null;
-        }
-
-        return (
-            <>
-                {isEmailLoginFormOpen && this.renderEmailLoginLinkForm()}
-                {shouldRenderLoginForm && this.renderLoginForm()}
-                {shouldRenderGuestForm && this.renderGuestForm()}
-                {shouldRenderCreateAccountForm && this.renderCreateAccountForm()}
-            </>
-        );
-    }
-
-    private renderGuestForm(): ReactNode {
-        const {
-            email,
-            isSubscribed,
-            isWalletButtonsOnTop,
-            onUnhandledError = noop,
-            onWalletButtonClick = noop,
-            step,
-            isFloatingLabelEnabled,
-        } = this.props;
-
-        return <GuestFormContainer
-            email={this.draftEmail || email}
-            handleChangeEmail={this.handleChangeEmail}
-            handleContinueAsGuest={this.handleContinueAsGuest}
-            handleShowLogin={this.handleShowLogin}
-            isFloatingLabelEnabled={isFloatingLabelEnabled}
-            isSubscribed={isSubscribed}
-            isWalletButtonsOnTop={isWalletButtonsOnTop}
-            onUnhandledError={onUnhandledError}
-            onWalletButtonClick={onWalletButtonClick}
-            step={step}
-        />
-    }
-
-    private renderEmailLoginLinkForm(): ReactNode {
-        const { isEmailLoginFormOpen, hasRequestedLoginEmail } = this.state;
-
-        const { isSendingSignInEmail, signInEmailError, signInEmail, isFloatingLabelEnabled } =
-            this.props;
-
-        return (
-            <EmailLoginForm
-                email={this.draftEmail}
-                emailHasBeenRequested={hasRequestedLoginEmail}
-                isFloatingLabelEnabled={isFloatingLabelEnabled}
-                isOpen={isEmailLoginFormOpen}
-                isSendingEmail={isSendingSignInEmail}
-                onRequestClose={this.closeEmailLoginFormForm}
-                onSendLoginEmail={this.handleSendLoginEmail}
-                sentEmail={signInEmail}
-                sentEmailError={signInEmailError}
-            />
-        );
-    }
-
-    private closeEmailLoginFormForm: () => void = () => {
-        this.setState({
-            isEmailLoginFormOpen: false,
-            hasRequestedLoginEmail: false,
-        });
-    };
-
-    private renderCreateAccountForm(): ReactNode {
-        const {
-            customerAccountFields,
-            isExecutingPaymentMethodCheckout,
-            isCreatingAccount,
-            createAccountError,
-            requiresMarketingConsent,
-            isFloatingLabelEnabled,
-            defaultShouldSubscribe,
-        } = this.props;
-
-        return (
-            <CreateAccountForm
-                createAccountError={createAccountError}
-                defaultShouldSubscribe={defaultShouldSubscribe}
-                formFields={customerAccountFields}
-                isCreatingAccount={isCreatingAccount}
-                isExecutingPaymentMethodCheckout={isExecutingPaymentMethodCheckout}
-                isFloatingLabelEnabled={isFloatingLabelEnabled}
-                onCancel={this.handleCancelCreateAccount}
-                onSubmit={this.handleCreateAccount}
-                requiresMarketingConsent={requiresMarketingConsent}
-            />
-        );
-    }
-
-    private renderLoginForm(): ReactNode {
-        const {
-            isEmbedded,
-            email,
-            isFloatingLabelEnabled,
-            viewType,
-            signInError,
-        } = this.props;
-
-        return (
-            <LoginForm
-                continueAsGuestButtonLabelId="customer.continue_as_guest_action"
-                email={this.draftEmail || email}
-                isEmbedded={isEmbedded}
-                isFloatingLabelEnabled={isFloatingLabelEnabled}
-                onCancel={this.handleCancelSignIn}
-                onChangeEmail={this.handleChangeEmail}
-                onContinueAsGuest={this.executePaymentMethodCheckoutOrContinue}
-                onCreateAccount={this.showCreateAccount}
-                onSendLoginEmail={this.handleEmailLoginClicked}
-                onSignIn={this.handleSignIn}
-                signInError={signInError}
-                viewType={viewType}
-            />
-        );
-    }
-
-    private handleEmailLoginClicked: () => void = async () => {
-        const { viewType } = this.props;
-
-        try {
-            if (viewType !== CustomerViewType.Login && this.draftEmail) {
-                await this.handleSendLoginEmail({ email: this.draftEmail });
-            }
-        } finally {
-            this.setState({
-                isEmailLoginFormOpen: true,
-            });
-        }
-    };
-
-    private handleSendLoginEmail: (values: EmailLoginFormValues) => Promise<void> = async (
-        values,
-    ) => {
-        const { sendLoginEmail } = this.props;
-
-        try {
-            await sendLoginEmail(values);
-        } catch (error) {
-        // Need to write catch block since one test covers the case when `sendLoginEmail` fails
-        } finally {
-            this.setState({
-                hasRequestedLoginEmail: true,
-            });
-        }
-    };
-
-    private handleContinueAsGuest: (formValues: GuestFormValues) => Promise<void> = async (
-        formValues,
-    ) => {
-        const {
-            canSubscribe,
-            continueAsGuest,
-            hasBillingId,
-            defaultShouldSubscribe,
-            onChangeViewType = noop,
-            onContinueAsGuest = noop,
-            onContinueAsGuestError = noop,
-            onSubscribeToNewsletter,
-        } = this.props;
-
+    const handleContinueAsGuest = useCallback(async (formValues: GuestFormValues) => {
         const email = formValues.email.trim();
         const updateSubscriptionWhenUnchecked =
-            hasBillingId || defaultShouldSubscribe ? false : undefined;
+            customerData.data.hasBillingId || customerData.data.defaultShouldSubscribe ? false : undefined;
 
         try {
-            const { data } = await continueAsGuest({
+            const { data } = await customerData.actions.continueAsGuest({
                 email,
                 acceptsMarketingNewsletter:
-                    canSubscribe && formValues.shouldSubscribe
+                    customerData.data.canSubscribe && formValues.shouldSubscribe
                         ? true
                         : updateSubscriptionWhenUnchecked,
                 acceptsAbandonedCartEmails: formValues.shouldSubscribe
@@ -358,24 +175,22 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             SubscribeSessionStorage.setSubscribeStatus(formValues.shouldSubscribe);
 
             const customer = data.getCustomer();
-
             const paymentProviderCustomer = data.getPaymentProviderCustomer();
 
             if (customer && customer.shouldEncourageSignIn && customer.isGuest && !paymentProviderCustomer?.stripeLinkAuthenticationState) {
                 return onChangeViewType(CustomerViewType.SuggestedLogin);
             }
 
-            await this.executePaymentMethodCheckoutOrContinue();
+            await executePaymentMethodCheckoutOrContinue();
 
-            this.draftEmail = undefined;
+            setState(prevState => ({ ...prevState, draftEmail: undefined }));
         } catch (error) {
             if (
                 isErrorWithType(error) &&
                 (error.type === 'update_subscriptions' ||
                     error.type === 'payment_method_client_invalid')
             ) {
-                this.draftEmail = undefined;
-
+                setState(prevState => ({ ...prevState, draftEmail: undefined }));
                 onContinueAsGuest();
             }
 
@@ -393,195 +208,167 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
 
             onContinueAsGuestError(error);
         }
-    };
+    }, [customerData, onSubscribeToNewsletter, onChangeViewType, onContinueAsGuest, onContinueAsGuestError]);
 
-    private handleSignIn: (credentials: CustomerCredentials) => Promise<void> = async (
-        credentials,
-    ) => {
-        const {
-            signIn,
-            onSignIn = noop,
-            onSignInError = noop,
-        } = this.props;
-
-        try {
-            await signIn(credentials);
-
-            onSignIn();
-
-            this.draftEmail = undefined;
-        } catch (error) {
-            onSignInError(error);
-        }
-    };
-
-    private handleCreateAccount: (values: CreateAccountFormValues) => void = async (values) => {
-        const {
-            createAccount = noop,
-            onAccountCreated = noop,
-        } = this.props;
-
-        await createAccount(mapCreateAccountFromFormValues(values));
-
-        onAccountCreated();
-    };
-
-    private showCreateAccount: () => void = () => {
-        const { onChangeViewType = noop } = this.props;
-
-        onChangeViewType(CustomerViewType.CreateAccount);
-    };
-
-    private handleCancelCreateAccount: () => void = () => {
-        const { clearError, onChangeViewType = noop, createAccountError } = this.props;
-
-        if (createAccountError) {
-            clearError(createAccountError);
-        }
-
-        onChangeViewType(CustomerViewType.Login);
-    };
-
-    private handleCancelSignIn: () => void = () => {
-        const { clearError, onChangeViewType = noop, signInError } = this.props;
-
-        if (signInError) {
-            clearError(signInError);
-        }
-
-        onChangeViewType(CustomerViewType.Guest);
-    };
-
-    private handleChangeEmail: (email: string) => void = (email) => {
-        const { analyticsTracker } = this.props;
-
-        this.draftEmail = email;
-        analyticsTracker.customerEmailEntry(email);
-    };
-
-    private handleShowLogin: () => void = () => {
-        const { onChangeViewType = noop } = this.props;
-
-        onChangeViewType(CustomerViewType.Login);
-    };
-
-    private executePaymentMethodCheckoutOrContinue: () => void = async () => {
-        const {
-            executePaymentMethodCheckout,
-            onContinueAsGuest = noop,
-            providerWithCustomCheckout
-        } = this.props;
-
-        if (providerWithCustomCheckout && providerWithCustomCheckout !== PaymentMethodId.StripeUPE) {
-            await executePaymentMethodCheckout({
-                methodId: providerWithCustomCheckout,
+    const executePaymentMethodCheckoutOrContinue = useCallback(async () => {
+        if (customerData.data.providerWithCustomCheckout && 
+            customerData.data.providerWithCustomCheckout !== PaymentMethodId.StripeUPE) {
+            await customerData.actions.executePaymentMethodCheckout({
+                methodId: customerData.data.providerWithCustomCheckout,
                 continueWithCheckoutCallback: onContinueAsGuest,
-                checkoutPaymentMethodExecuted: (payload) => this.checkoutPaymentMethodExecuted(payload)
+                checkoutPaymentMethodExecuted: (payload) => {
+                    analyticsTracker.customerPaymentMethodExecuted(payload);
+                }
             });
         } else {
             onContinueAsGuest();
         }
-    };
+    }, [customerData.actions.executePaymentMethodCheckout, customerData.data.providerWithCustomCheckout, onContinueAsGuest, analyticsTracker]);
 
-    private checkoutPaymentMethodExecuted(payload?: CheckoutPaymentMethodExecutedOptions) {
-        const { analyticsTracker } = this.props;
+    // Additional event handlers
+    const handleShowLogin = useCallback(() => {
+        onChangeViewType(CustomerViewType.Login);
+    }, [onChangeViewType]);
 
-        analyticsTracker.customerPaymentMethodExecuted(payload);
-    }
-}
+    const handleCreateAccount = useCallback(async (values: CreateAccountFormValues) => {
+        await customerData.actions.createAccount(mapCreateAccountFromFormValues(values));
+        onAccountCreated();
+    }, [customerData.actions.createAccount, onAccountCreated]);
 
-export function mapToWithCheckoutCustomerProps({
-    checkoutService,
-    checkoutState,
-}: CheckoutContextProps): WithCheckoutCustomerProps | null {
-    const {
-        data: {
-            getBillingAddress,
-            getCustomerAccountFields,
-            getCheckout,
-            getCustomer,
-            getCart,
-            getSignInEmail,
-            getConfig,
-            isPaymentDataRequired,
-        },
-        errors: { getSignInError, getSignInEmailError, getCreateCustomerAccountError },
-        statuses: {
-            isContinuingAsGuest,
-            isExecutingPaymentMethodCheckout,
-            isInitializingCustomer,
-            isSigningIn,
-            isSendingSignInEmail,
-            isCreatingCustomerAccount,
-        },
-    } = checkoutState;
+    const handleCancelCreateAccount = useCallback(() => {
+        if (customerData.data.createAccountError) {
+            customerData.actions.clearError(customerData.data.createAccountError);
+        }
 
-    const billingAddress = getBillingAddress();
-    const checkout = getCheckout();
-    const customer = getCustomer();
-    const cart = getCart();
-    const signInEmail = getSignInEmail();
-    const config = getConfig();
+        onChangeViewType(CustomerViewType.Login);
+    }, [customerData.actions.clearError, customerData.data.createAccountError, onChangeViewType]);
 
-    if (!checkout || !config || !cart) {
+    const handleCancelSignIn = useCallback(() => {
+        if (customerData.data.signInError) {
+            customerData.actions.clearError(customerData.data.signInError);
+        }
+
+        onChangeViewType(CustomerViewType.Guest);
+    }, [customerData.actions.clearError, customerData.data.signInError, onChangeViewType]);
+
+    const showCreateAccount = useCallback(() => {
+        onChangeViewType(CustomerViewType.CreateAccount);
+    }, [onChangeViewType]);
+
+    const handleSendLoginEmail = useCallback(async (values: EmailLoginFormValues) => {
+        try {
+            await customerData.actions.sendLoginEmail(values);
+        } catch {
+            // Need to write catch block since one test covers the case when `sendLoginEmail` fails
+        } finally {
+            setState(prevState => ({ ...prevState, hasRequestedLoginEmail: true }));
+        }
+    }, [customerData.actions.sendLoginEmail]);
+
+    const handleEmailLoginClicked = useCallback(async () => {
+        try {
+            if (viewType !== CustomerViewType.Login && state.draftEmail) {
+                await handleSendLoginEmail({ email: state.draftEmail });
+            }
+        } finally {
+            setState(prevState => ({ ...prevState, isEmailLoginFormOpen: true }));
+        }
+    }, [viewType, state.draftEmail, handleSendLoginEmail]);
+
+    const closeEmailLoginFormForm = useCallback(() => {
+        setState(prevState => ({
+            ...prevState,
+            isEmailLoginFormOpen: false,
+            hasRequestedLoginEmail: false,
+        }));
+    }, []);
+
+    // Render methods converted to useCallback
+    const renderGuestForm = useCallback(() => {
+        return (
+            <GuestFormContainer
+                email={state.draftEmail || customerData.data.email}
+                handleChangeEmail={handleChangeEmail}
+                handleContinueAsGuest={handleContinueAsGuest}
+                handleShowLogin={handleShowLogin}
+                isFloatingLabelEnabled={customerData.data.isFloatingLabelEnabled}
+                isSubscribed={isSubscribed}
+                isWalletButtonsOnTop={isWalletButtonsOnTop}
+                onUnhandledError={onUnhandledError}
+                onWalletButtonClick={onWalletButtonClick}
+                step={step}
+            />
+        );
+    }, [state.draftEmail, customerData.data.email, customerData.data.isFloatingLabelEnabled, handleChangeEmail, handleContinueAsGuest, handleShowLogin, isSubscribed, isWalletButtonsOnTop, onUnhandledError, onWalletButtonClick, step]);
+
+    const renderEmailLoginLinkForm = useCallback(() => {
+        return (
+            <EmailLoginForm
+                email={state.draftEmail}
+                emailHasBeenRequested={state.hasRequestedLoginEmail}
+                isFloatingLabelEnabled={customerData.data.isFloatingLabelEnabled}
+                isOpen={state.isEmailLoginFormOpen}
+                isSendingEmail={customerData.data.isSendingSignInEmail}
+                onRequestClose={closeEmailLoginFormForm}
+                onSendLoginEmail={handleSendLoginEmail}
+                sentEmail={customerData.data.signInEmail}
+                sentEmailError={customerData.data.signInEmailError}
+            />
+        );
+    }, [state.draftEmail, state.hasRequestedLoginEmail, state.isEmailLoginFormOpen, customerData.data.isFloatingLabelEnabled, customerData.data.isSendingSignInEmail, customerData.data.signInEmail, customerData.data.signInEmailError, closeEmailLoginFormForm, handleSendLoginEmail]);
+
+    const renderCreateAccountForm = useCallback(() => {
+        return (
+            <CreateAccountForm
+                createAccountError={customerData.data.createAccountError}
+                defaultShouldSubscribe={customerData.data.defaultShouldSubscribe}
+                formFields={customerData.data.customerAccountFields}
+                isCreatingAccount={customerData.data.isCreatingAccount}
+                isExecutingPaymentMethodCheckout={customerData.data.isExecutingPaymentMethodCheckout}
+                isFloatingLabelEnabled={customerData.data.isFloatingLabelEnabled}
+                onCancel={handleCancelCreateAccount}
+                onSubmit={handleCreateAccount}
+                requiresMarketingConsent={customerData.data.requiresMarketingConsent}
+            />
+        );
+    }, [customerData.data, handleCancelCreateAccount, handleCreateAccount]);
+
+    const renderLoginForm = useCallback(() => {
+        return (
+            <LoginForm
+                continueAsGuestButtonLabelId="customer.continue_as_guest_action"
+                email={state.draftEmail || customerData.data.email}
+                isEmbedded={isEmbedded}
+                isFloatingLabelEnabled={customerData.data.isFloatingLabelEnabled}
+                onCancel={handleCancelSignIn}
+                onChangeEmail={handleChangeEmail}
+                onContinueAsGuest={executePaymentMethodCheckoutOrContinue}
+                onCreateAccount={showCreateAccount}
+                onSendLoginEmail={handleEmailLoginClicked}
+                onSignIn={handleSignIn}
+                signInError={customerData.data.signInError}
+                viewType={viewType}
+            />
+        );
+    }, [state.draftEmail, customerData.data.email, customerData.data.isFloatingLabelEnabled, customerData.data.signInError, isEmbedded, viewType, handleCancelSignIn, handleChangeEmail, executePaymentMethodCheckoutOrContinue, showCreateAccount, handleEmailLoginClicked, handleSignIn]);
+
+    // Main render logic
+    const shouldRenderGuestForm = viewType === CustomerViewType.Guest;
+    const shouldRenderCreateAccountForm = viewType === CustomerViewType.CreateAccount;
+    const shouldRenderLoginForm = !shouldRenderGuestForm && !shouldRenderCreateAccountForm;
+
+    if (!state.isReady) {
         return null;
     }
 
-    const {
-        checkoutSettings: {
-            privacyPolicyUrl,
-            requiresMarketingConsent,
-            isSignInEmailEnabled,
-            isAccountCreationEnabled,
-            isExpressPrivacyPolicy,
-            shouldRedirectToStorefrontForAuth
-        },
-    } = config;
-
-    const providerWithCustomCheckout = getProviderWithCustomCheckout(
-        config.checkoutSettings.providerWithCustomCheckout,
+    return (
+        <>
+            {state.isEmailLoginFormOpen && renderEmailLoginLinkForm()}
+            {shouldRenderLoginForm && renderLoginForm()}
+            {shouldRenderGuestForm && renderGuestForm()}
+            {shouldRenderCreateAccountForm && renderCreateAccountForm()}
+        </>
     );
+};
 
-    return {
-        customerAccountFields: getCustomerAccountFields(),
-        canSubscribe: config.shopperConfig.showNewsletterSignup,
-        checkoutButtonIds: config.checkoutSettings.remoteCheckoutProviders,
-        clearError: checkoutService.clearError,
-        createAccount: checkoutService.createCustomerAccount,
-        continueAsGuest: checkoutService.continueAsGuest,
-        sendLoginEmail: checkoutService.sendSignInEmail,
-        defaultShouldSubscribe: config.shopperConfig.defaultNewsletterSignup,
-        deinitializeCustomer: checkoutService.deinitializeCustomer,
-        executePaymentMethodCheckout: checkoutService.executePaymentMethodCheckout,
-        email: billingAddress?.email || customer?.email,
-        firstName: customer?.firstName,
-        forgotPasswordUrl: config.links.forgotPasswordLink,
-        initializeCustomer: checkoutService.initializeCustomer,
-        isCreatingAccount: isCreatingCustomerAccount(),
-        createAccountError: getCreateCustomerAccountError(),
-        hasBillingId: !!billingAddress?.id,
-        isBuyNowCart: cart.source === 'BUY_NOW',
-        isContinuingAsGuest: isContinuingAsGuest(),
-        isExecutingPaymentMethodCheckout: isExecutingPaymentMethodCheckout(),
-        isInitializing: isInitializingCustomer(),
-        isSignInEmailEnabled,
-        isAccountCreationEnabled,
-        isGuestEnabled: config.checkoutSettings.guestCheckoutEnabled,
-        isSigningIn: isSigningIn(),
-        isSendingSignInEmail: isSendingSignInEmail(),
-        signInEmail,
-        signInEmailError: getSignInEmailError(),
-        privacyPolicyUrl,
-        providerWithCustomCheckout,
-        requiresMarketingConsent,
-        signIn: checkoutService.signInCustomer,
-        signInError: getSignInError(),
-        isFloatingLabelEnabled: isFloatingLabelEnabled(config.checkoutSettings),
-        isExpressPrivacyPolicy,
-        isPaymentDataRequired: isPaymentDataRequired(),
-        shouldRenderStripeForm: providerWithCustomCheckout === PaymentMethodId.StripeUPE && shouldUseStripeLinkByMinimumAmount(cart),
-        shouldRedirectToStorefrontForAuth,
-    };
-}
-
-export default withAnalytics(withCheckout(mapToWithCheckoutCustomerProps)(Customer));
+export default withAnalytics(Customer);

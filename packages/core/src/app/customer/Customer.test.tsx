@@ -1,18 +1,3 @@
-import {
-    type BillingAddress,
-    type Cart,
-    type Checkout as CheckoutObject,
-    type CheckoutService,
-    createCheckoutService,
-    createEmbeddedCheckoutMessenger,
-    type Customer as CustomerData,
-    type EmbeddedCheckoutMessenger,
-    type StoreConfig,
-} from '@bigcommerce/checkout-sdk';
-import { faker } from '@faker-js/faker';
-import userEvent from '@testing-library/user-event';
-import { rest } from 'msw';
-import React, { act, type FunctionComponent } from 'react';
 
 import {
     type AnalyticsContextProps,
@@ -40,6 +25,21 @@ import {
 } from '@bigcommerce/checkout/test-framework';
 import { renderWithoutWrapper as render, screen } from '@bigcommerce/checkout/test-utils';
 import { ThemeProvider } from '@bigcommerce/checkout/ui';
+import {
+    type BillingAddress,
+    type Cart,
+    type Checkout as CheckoutObject,
+    type CheckoutService,
+    createCheckoutService,
+    createEmbeddedCheckoutMessenger,
+    type Customer as CustomerData,
+    type EmbeddedCheckoutMessenger,
+    type StoreConfig,
+} from '@bigcommerce/checkout-sdk';
+import { faker } from '@faker-js/faker';
+import userEvent from '@testing-library/user-event';
+import { rest } from 'msw';
+import React, { act, type FunctionComponent } from 'react';
 
 import { getBillingAddress } from '../billing/billingAddresses.mock';
 import { getCart } from '../cart/carts.mock';
@@ -55,7 +55,7 @@ import {
 } from '../embeddedCheckout';
 import { PaymentMethodId } from '../payment/paymentMethod';
 
-import Customer, { type CustomerProps, type WithCheckoutCustomerProps } from './Customer';
+import Customer, { type CustomerProps } from './Customer';
 import { getGuestCustomer } from './customers.mock';
 import CustomerViewType from './CustomerViewType';
 
@@ -421,7 +421,7 @@ describe('Customer Component', () => {
 });
 
 describe('Customer Component with Stripe', () => {
-    let CustomerTest: FunctionComponent<CustomerProps & Partial<WithCheckoutCustomerProps>>;
+    let CustomerTest: FunctionComponent<CustomerProps>;
     let billingAddress: BillingAddress;
     let checkout: CheckoutObject;
     let cart: Cart;

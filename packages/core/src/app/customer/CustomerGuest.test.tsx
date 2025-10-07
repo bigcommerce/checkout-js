@@ -22,11 +22,11 @@ import { getCheckout } from '../checkout/checkouts.mock';
 import CheckoutStepType from '../checkout/CheckoutStepType';
 import { getStoreConfig } from '../config/config.mock';
 
-import Customer, { type CustomerProps, type WithCheckoutCustomerProps } from './Customer';
+import Customer, { type CustomerProps } from './Customer';
 import CustomerViewType from './CustomerViewType';
 
 describe('Customer Guest', () => {
-    let CustomerTest: FunctionComponent<CustomerProps & Partial<WithCheckoutCustomerProps>>;
+    let CustomerTest: FunctionComponent<CustomerProps>;
     let checkoutService: CheckoutService;
     let localeContext: LocaleContextType;
     let checkout: Checkout;
@@ -267,11 +267,19 @@ describe('Customer Guest', () => {
     it('calls onUnhandledError if initialize was failed', async () => {
         const error = new Error();
 
+        jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue({
+            ...config,
+            checkoutSettings: {
+                ...config.checkoutSettings,
+                providerWithCustomCheckout: 'bolt',
+            },
+        });
+
         jest.spyOn(checkoutService, 'initializeCustomer').mockRejectedValue(error);
 
         const unhandledError = jest.fn();
 
-        render(<CustomerTest {...defaultProps} onUnhandledError={unhandledError} providerWithCustomCheckout='bolt' viewType={CustomerViewType.Guest} />);
+        render(<CustomerTest {...defaultProps} onUnhandledError={unhandledError} viewType={CustomerViewType.Guest} />);
         await new Promise(resolve => process.nextTick(resolve));
 
         expect(unhandledError).toHaveBeenCalledWith(error);
