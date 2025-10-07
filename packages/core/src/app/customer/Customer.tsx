@@ -1,4 +1,4 @@
-import { type AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
+import { useAnalytics } from '@bigcommerce/checkout/analytics';
 import {
     type CustomerCredentials,
 } from '@bigcommerce/checkout-sdk';
@@ -11,7 +11,6 @@ import { noop } from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
 
 
-import { withAnalytics } from '../analytics';
 import type CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import { isErrorWithType } from '../common/error';
 import { PaymentMethodId } from '../payment/paymentMethod';
@@ -54,7 +53,7 @@ export interface CustomerState {
     draftEmail?: string;
 }
 
-const Customer: React.FC<CustomerProps & AnalyticsContextProps> = ({
+const Customer: React.FC<CustomerProps> = ({
     viewType,
     step,
     isEmbedded,
@@ -70,7 +69,6 @@ const Customer: React.FC<CustomerProps & AnalyticsContextProps> = ({
     onSignInError = noop,
     onUnhandledError = noop,
     onWalletButtonClick = noop,
-    analyticsTracker,
 }) => {
     const [state, setState] = useState<CustomerState>({
         isEmailLoginFormOpen: false,
@@ -78,6 +76,8 @@ const Customer: React.FC<CustomerProps & AnalyticsContextProps> = ({
         hasRequestedLoginEmail: false,
         draftEmail: undefined,
     });
+
+    const { analyticsTracker } = useAnalytics();
 
     const customerData = useCustomer();
 
@@ -283,74 +283,6 @@ const Customer: React.FC<CustomerProps & AnalyticsContextProps> = ({
         }));
     }, []);
 
-    // Render methods converted to useCallback
-    const renderGuestForm = useCallback(() => {
-        return (
-            <GuestFormContainer
-                email={state.draftEmail || customerData.data.email}
-                handleChangeEmail={handleChangeEmail}
-                handleContinueAsGuest={handleContinueAsGuest}
-                handleShowLogin={handleShowLogin}
-                isFloatingLabelEnabled={customerData.data.isFloatingLabelEnabled}
-                isSubscribed={isSubscribed}
-                isWalletButtonsOnTop={isWalletButtonsOnTop}
-                onUnhandledError={onUnhandledError}
-                onWalletButtonClick={onWalletButtonClick}
-                step={step}
-            />
-        );
-    }, [state.draftEmail, customerData.data.email, customerData.data.isFloatingLabelEnabled, handleChangeEmail, handleContinueAsGuest, handleShowLogin, isSubscribed, isWalletButtonsOnTop, onUnhandledError, onWalletButtonClick, step]);
-
-    const renderEmailLoginLinkForm = useCallback(() => {
-        return (
-            <EmailLoginForm
-                email={state.draftEmail}
-                emailHasBeenRequested={state.hasRequestedLoginEmail}
-                isFloatingLabelEnabled={customerData.data.isFloatingLabelEnabled}
-                isOpen={state.isEmailLoginFormOpen}
-                isSendingEmail={customerData.data.isSendingSignInEmail}
-                onRequestClose={closeEmailLoginFormForm}
-                onSendLoginEmail={handleSendLoginEmail}
-                sentEmail={customerData.data.signInEmail}
-                sentEmailError={customerData.data.signInEmailError}
-            />
-        );
-    }, [state.draftEmail, state.hasRequestedLoginEmail, state.isEmailLoginFormOpen, customerData.data.isFloatingLabelEnabled, customerData.data.isSendingSignInEmail, customerData.data.signInEmail, customerData.data.signInEmailError, closeEmailLoginFormForm, handleSendLoginEmail]);
-
-    const renderCreateAccountForm = useCallback(() => {
-        return (
-            <CreateAccountForm
-                createAccountError={customerData.data.createAccountError}
-                defaultShouldSubscribe={customerData.data.defaultShouldSubscribe}
-                formFields={customerData.data.customerAccountFields}
-                isCreatingAccount={customerData.data.isCreatingAccount}
-                isExecutingPaymentMethodCheckout={customerData.data.isExecutingPaymentMethodCheckout}
-                isFloatingLabelEnabled={customerData.data.isFloatingLabelEnabled}
-                onCancel={handleCancelCreateAccount}
-                onSubmit={handleCreateAccount}
-                requiresMarketingConsent={customerData.data.requiresMarketingConsent}
-            />
-        );
-    }, [customerData.data, handleCancelCreateAccount, handleCreateAccount]);
-
-    const renderLoginForm = useCallback(() => {
-        return (
-            <LoginForm
-                continueAsGuestButtonLabelId="customer.continue_as_guest_action"
-                email={state.draftEmail || customerData.data.email}
-                isEmbedded={isEmbedded}
-                isFloatingLabelEnabled={customerData.data.isFloatingLabelEnabled}
-                onCancel={handleCancelSignIn}
-                onChangeEmail={handleChangeEmail}
-                onContinueAsGuest={executePaymentMethodCheckoutOrContinue}
-                onCreateAccount={showCreateAccount}
-                onSendLoginEmail={handleEmailLoginClicked}
-                onSignIn={handleSignIn}
-                signInError={customerData.data.signInError}
-                viewType={viewType}
-            />
-        );
-    }, [state.draftEmail, customerData.data.email, customerData.data.isFloatingLabelEnabled, customerData.data.signInError, isEmbedded, viewType, handleCancelSignIn, handleChangeEmail, executePaymentMethodCheckoutOrContinue, showCreateAccount, handleEmailLoginClicked, handleSignIn]);
 
     // Main render logic
     const shouldRenderGuestForm = viewType === CustomerViewType.Guest;
@@ -363,12 +295,67 @@ const Customer: React.FC<CustomerProps & AnalyticsContextProps> = ({
 
     return (
         <>
-            {state.isEmailLoginFormOpen && renderEmailLoginLinkForm()}
-            {shouldRenderLoginForm && renderLoginForm()}
-            {shouldRenderGuestForm && renderGuestForm()}
-            {shouldRenderCreateAccountForm && renderCreateAccountForm()}
+            {state.isEmailLoginFormOpen && (
+                <EmailLoginForm
+                    email={state.draftEmail}
+                    emailHasBeenRequested={state.hasRequestedLoginEmail}
+                    isFloatingLabelEnabled={customerData.data.isFloatingLabelEnabled}
+                    isOpen={state.isEmailLoginFormOpen}
+                    isSendingEmail={customerData.data.isSendingSignInEmail}
+                    onRequestClose={closeEmailLoginFormForm}
+                    onSendLoginEmail={handleSendLoginEmail}
+                    sentEmail={customerData.data.signInEmail}
+                    sentEmailError={customerData.data.signInEmailError}
+                />
+            )}
+            
+            {shouldRenderLoginForm && (
+                <LoginForm
+                    continueAsGuestButtonLabelId="customer.continue_as_guest_action"
+                    email={state.draftEmail || customerData.data.email}
+                    isEmbedded={isEmbedded}
+                    isFloatingLabelEnabled={customerData.data.isFloatingLabelEnabled}
+                    onCancel={handleCancelSignIn}
+                    onChangeEmail={handleChangeEmail}
+                    onContinueAsGuest={executePaymentMethodCheckoutOrContinue}
+                    onCreateAccount={showCreateAccount}
+                    onSendLoginEmail={handleEmailLoginClicked}
+                    onSignIn={handleSignIn}
+                    signInError={customerData.data.signInError}
+                    viewType={viewType}
+                />
+            )}
+            
+            {shouldRenderGuestForm && (
+                <GuestFormContainer
+                    email={state.draftEmail || customerData.data.email}
+                    handleChangeEmail={handleChangeEmail}
+                    handleContinueAsGuest={handleContinueAsGuest}
+                    handleShowLogin={handleShowLogin}
+                    isFloatingLabelEnabled={customerData.data.isFloatingLabelEnabled}
+                    isSubscribed={isSubscribed}
+                    isWalletButtonsOnTop={isWalletButtonsOnTop}
+                    onUnhandledError={onUnhandledError}
+                    onWalletButtonClick={onWalletButtonClick}
+                    step={step}
+                />
+            )}
+            
+            {shouldRenderCreateAccountForm && (
+                <CreateAccountForm
+                    createAccountError={customerData.data.createAccountError}
+                    defaultShouldSubscribe={customerData.data.defaultShouldSubscribe}
+                    formFields={customerData.data.customerAccountFields}
+                    isCreatingAccount={customerData.data.isCreatingAccount}
+                    isExecutingPaymentMethodCheckout={customerData.data.isExecutingPaymentMethodCheckout}
+                    isFloatingLabelEnabled={customerData.data.isFloatingLabelEnabled}
+                    onCancel={handleCancelCreateAccount}
+                    onSubmit={handleCreateAccount}
+                    requiresMarketingConsent={customerData.data.requiresMarketingConsent}
+                />
+            )}
         </>
     );
 };
 
-export default withAnalytics(Customer);
+export default Customer;
