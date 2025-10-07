@@ -11,6 +11,7 @@ export function getStoreConfig(): StoreConfig {
             customerAccount: [],
         },
         checkoutSettings: {
+            orderTermsAndConditionsLocation: 'termsAndConditionsLocation',
             checkoutBillingSameAsShippingEnabled: true,
             checkoutUserExperienceSettings: {
                 walletButtonsOnTop: false,
@@ -48,6 +49,7 @@ export function getStoreConfig(): StoreConfig {
         },
         currency: {
             code: 'USD',
+            isTransactional: false,
             decimalPlaces: '2',
             decimalSeparator: '.',
             symbolLocation: 'left',
