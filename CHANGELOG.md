@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.686.0](https://github.com/bigcommerce/checkout-js/compare/v1.685.7...v1.686.0) (2025-10-08)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9388 Lazy load payment strategies by importing them on demand ([5565182](https://github.com/bigcommerce/checkout-js/commit/55651821b84bb3206a4725afefaaf81f8bcadaae))
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9388 Add eslint rule to enforce imports from essential package only if importing concrete implementations ([829a258](https://github.com/bigcommerce/checkout-js/commit/829a258785c577ec6f05855dba7f77e8ceeec1ec))
+
 ### [1.685.7](https://github.com/bigcommerce/checkout-js/compare/v1.685.6...v1.685.7) (2025-10-07)
 
 ### [1.685.6](https://github.com/bigcommerce/checkout-js/compare/v1.685.5...v1.685.6) (2025-10-07)
