@@ -4,6 +4,12 @@ import {
     type HostedInstrument,
     type LanguageService,
 } from '@bigcommerce/checkout-sdk';
+import {
+    createBigCommercePaymentsPaymentStrategy,
+    createBigCommercePaymentsAlternativeMethodsPaymentStrategy,
+    createBigCommercePaymentsPayLaterPaymentStrategy,
+    createBigCommercePaymentsVenmoPaymentStrategy,
+} from '@bigcommerce/checkout-sdk/integrations/bigcommerce-payments';
 import { render } from '@testing-library/react';
 import { EventEmitter } from 'events';
 import React from 'react';
@@ -70,6 +76,12 @@ describe('BigCommercePaymentsPaymentMethodComponent', () => {
         expect(initializePayment).toHaveBeenCalledWith({
             gatewayId: props.method.gateway,
             methodId: props.method.id,
+            integrations: [
+                createBigCommercePaymentsPaymentStrategy,
+                createBigCommercePaymentsAlternativeMethodsPaymentStrategy,
+                createBigCommercePaymentsPayLaterPaymentStrategy,
+                createBigCommercePaymentsVenmoPaymentStrategy,
+            ],
             bigcommerce_payments: {
                 container: '#checkout-payment-continue',
                 onInit: expect.any(Function),
@@ -106,6 +118,12 @@ describe('BigCommercePaymentsPaymentMethodComponent', () => {
         expect(initializePayment).toHaveBeenCalledWith({
             gatewayId: props.method.gateway,
             methodId: props.method.id,
+            integrations: [
+                createBigCommercePaymentsPaymentStrategy,
+                createBigCommercePaymentsAlternativeMethodsPaymentStrategy,
+                createBigCommercePaymentsPayLaterPaymentStrategy,
+                createBigCommercePaymentsVenmoPaymentStrategy,
+            ],
             bigcommerce_payments_apms: {
                 container: '#checkout-payment-continue',
                 onError: expect.any(Function),

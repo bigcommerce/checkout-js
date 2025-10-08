@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { createCheckoutService, type LanguageService } from '@bigcommerce/checkout-sdk';
+import { createPayPalCommerceRatePayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/paypal-commerce';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { EventEmitter } from 'events';
 import { Formik } from 'formik';
@@ -133,6 +134,7 @@ describe('PaypalCommerceRatePayPaymentMethod', () => {
         expect(initializePayment).toHaveBeenCalledWith({
             gatewayId: props.method.gateway,
             methodId: props.method.id,
+            integrations: [createPayPalCommerceRatePayPaymentStrategy],
             paypalcommerceratepay: {
                 container: '#checkout-payment-continue',
                 legalTextContainer: 'legal-text-container',

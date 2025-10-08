@@ -1,4 +1,4 @@
-import { createCurrencyService, type StoreConfig } from '@bigcommerce/checkout-sdk';
+import { createCurrencyService, type StoreConfig } from '@bigcommerce/checkout-sdk/essential';
 
 import getLanguageService from './getLanguageService';
 import { type LocaleContextType } from './LocaleContext';

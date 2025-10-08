@@ -1,3 +1,7 @@
+import {
+    createPayPalCommerceCreditPaymentStrategy,
+    createPayPalCommercePaymentStrategy,
+} from '@bigcommerce/checkout-sdk/integrations/paypal-commerce';
 import React, { type FunctionComponent, useEffect } from 'react';
 
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
@@ -13,6 +17,10 @@ const PaypalCommerceCreditBanner: FunctionComponent<{
         try {
             void checkoutService.initializePayment({
                 methodId,
+                integrations: [
+                    createPayPalCommerceCreditPaymentStrategy,
+                    createPayPalCommercePaymentStrategy,
+                ],
                 [methodId]: {
                     bannerContainerId: containerId,
                 },

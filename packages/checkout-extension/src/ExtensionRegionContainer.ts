@@ -1,4 +1,4 @@
-import { ExtensionRegion } from '@bigcommerce/checkout-sdk';
+import { ExtensionRegion } from '@bigcommerce/checkout-sdk/essential';
 
 export enum ExtensionRegionContainer {
     ShippingShippingAddressFormBefore = 'extension-region-shipping-shippingaddressform-before',

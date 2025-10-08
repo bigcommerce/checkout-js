@@ -1,3 +1,4 @@
+import { createBlueSnapDirectAPMPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bluesnap-direct';
 import React, { type FunctionComponent, useCallback, useEffect } from 'react';
 
 import {
@@ -34,6 +35,7 @@ const BlueSnapDirectIdealPaymentMethod: FunctionComponent<PaymentMethodProps> = 
         await initializePayment({
             gatewayId: method.gateway,
             methodId: method.id,
+            integrations: [createBlueSnapDirectAPMPaymentStrategy],
         });
     }, [initializePayment, method, setValidationSchema, language]);
 

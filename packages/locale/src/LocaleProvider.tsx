@@ -2,7 +2,7 @@ import {
     type CheckoutService,
     createCurrencyService,
     type StoreConfig,
-} from '@bigcommerce/checkout-sdk';
+} from '@bigcommerce/checkout-sdk/essential';
 import { memoizeOne } from '@bigcommerce/memoize';
 import React, { type ReactNode, useEffect, useMemo, useState } from 'react';
 

@@ -1,3 +1,4 @@
+import { createKlarnaPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/klarna';
 import { some } from 'lodash';
 import React, { type FunctionComponent, useCallback } from 'react';
 
@@ -24,6 +25,7 @@ const KlarnaPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             checkoutService.initializePayment({
                 ...options,
+                integrations: [createKlarnaPaymentStrategy],
                 klarna: {
                     container: `#${options.methodId}Widget`,
                 },

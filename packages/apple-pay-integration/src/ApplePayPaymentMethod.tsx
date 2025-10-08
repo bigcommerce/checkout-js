@@ -1,3 +1,4 @@
+import { createApplePayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/apple-pay';
 import React, { type FunctionComponent, useEffect } from 'react';
 
 import {
@@ -18,6 +19,7 @@ const ApplePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                 await checkoutService.initializePayment({
                     gatewayId: method.gateway,
                     methodId: method.id,
+                    integrations: [createApplePayPaymentStrategy],
                     applepay: {
                         shippingLabel: language.translate('cart.shipping_text'),
                         subtotalLabel: language.translate('cart.subtotal_text'),

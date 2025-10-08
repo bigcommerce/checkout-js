@@ -1,4 +1,4 @@
-import { createCurrencyService, createLanguageService } from '@bigcommerce/checkout-sdk';
+import { createCurrencyService, createLanguageService } from '@bigcommerce/checkout-sdk/essential';
 
 import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 

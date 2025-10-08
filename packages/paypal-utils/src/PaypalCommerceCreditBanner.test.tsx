@@ -1,4 +1,8 @@
 import { createCheckoutService } from '@bigcommerce/checkout-sdk';
+import {
+    createPayPalCommerceCreditPaymentStrategy,
+    createPayPalCommercePaymentStrategy,
+} from '@bigcommerce/checkout-sdk/integrations/paypal-commerce';
 import React, { type FunctionComponent } from 'react';
 
 import {
@@ -52,6 +56,10 @@ describe('PaypalCommerceCreditBanner', () => {
 
         expect(checkoutService.initializePayment).toHaveBeenCalledWith({
             methodId: PaymentMethodId.PaypalCommerceCredit,
+            integrations: [
+                createPayPalCommerceCreditPaymentStrategy,
+                createPayPalCommercePaymentStrategy,
+            ],
             paypalcommercecredit: {
                 bannerContainerId,
             },
@@ -71,6 +79,10 @@ describe('PaypalCommerceCreditBanner', () => {
 
         expect(checkoutService.initializePayment).toHaveBeenCalledWith({
             methodId: PaymentMethodId.PaypalCommerceCredit,
+            integrations: [
+                createPayPalCommerceCreditPaymentStrategy,
+                createPayPalCommercePaymentStrategy,
+            ],
             paypalcommercecredit: {
                 bannerContainerId,
             },

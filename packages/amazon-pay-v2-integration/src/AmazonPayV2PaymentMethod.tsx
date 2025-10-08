@@ -1,4 +1,5 @@
 import { type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import { createAmazonPayV2PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/amazon-pay';
 import { some } from 'lodash';
 import React, { type FunctionComponent, useCallback } from 'react';
 
@@ -27,6 +28,7 @@ const AmazonPayV2PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         (options: PaymentInitializeOptions) =>
             checkoutService.initializePayment({
                 ...options,
+                integrations: [createAmazonPayV2PaymentStrategy],
                 amazonpay: {
                     editButtonId: 'editButtonId',
                 },

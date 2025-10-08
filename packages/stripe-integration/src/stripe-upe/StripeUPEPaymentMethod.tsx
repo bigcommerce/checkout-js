@@ -2,7 +2,10 @@ import {
     type CustomerInitializeOptions,
     type PaymentInitializeOptions,
 } from '@bigcommerce/checkout-sdk';
-import { createStripeUPECustomerStrategy } from '@bigcommerce/checkout-sdk/integrations/stripe';
+import {
+    createStripeUPECustomerStrategy,
+    createStripeUPEPaymentStrategy,
+} from '@bigcommerce/checkout-sdk/integrations/stripe';
 import { noop, some } from 'lodash';
 import React, { type FunctionComponent, useCallback, useMemo } from 'react';
 
@@ -88,6 +91,7 @@ const StripeUPEPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
             return checkoutService.initializePayment({
                 ...options,
+                integrations: [createStripeUPEPaymentStrategy],
                 stripeupe: {
                     containerId,
                     style: {
