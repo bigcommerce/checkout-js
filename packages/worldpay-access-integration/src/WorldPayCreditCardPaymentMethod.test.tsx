@@ -35,7 +35,7 @@ import {
     getPaymentMethod,
     getStoreConfig,
 } from '@bigcommerce/checkout/test-mocks';
-import { fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
+import { fireEvent, render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
 import WorldpayCreditCardPaymentMethod from './WorldpayCreditCardPaymentMethod';
 
@@ -287,17 +287,23 @@ describe('WorldpayCreditCardPaymentMethod', () => {
             expect(screen.queryByTestId('account-instrument-fieldset')).not.toBeInTheDocument();
         });
 
-        it('shows save credit card form when there are no stored instruments', () => {
+        it('shows save credit card form when there are no stored instruments', async () => {
             jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue([]);
 
             render(<PaymentMethodTest {...defaultProps} />);
-            expect(screen.getByText('Save this card for future transactions')).toBeInTheDocument();
+            await waitFor(() => {
+                expect(
+                    screen.getByText('Save this card for future transactions'),
+                ).toBeInTheDocument();
+            });
         });
 
-        it('uses PaymentMethod to retrieve instruments', () => {
+        it('uses PaymentMethod to retrieve instruments', async () => {
             render(<PaymentMethodTest {...defaultProps} />);
 
-            expect(checkoutState.data.getInstruments).toHaveBeenCalledWith(defaultProps.method);
+            await waitFor(() => {
+                expect(checkoutState.data.getInstruments).toHaveBeenCalledWith(defaultProps.method);
+            });
         });
     });
 });
