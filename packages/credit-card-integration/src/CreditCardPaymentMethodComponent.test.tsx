@@ -35,12 +35,13 @@ import {
     getPaymentMethod,
     getStoreConfig,
 } from '@bigcommerce/checkout/test-mocks';
-import { render, screen } from '@bigcommerce/checkout/test-utils';
+import { renderWithoutWrapper as render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
-import CreditCardPaymentMethodComponent, {
+import {
     type CreditCardPaymentMethodProps,
     type CreditCardPaymentMethodValues,
 } from './CreditCardPaymentMethodComponent';
+import CreditCardPaymentMethodComponent from './CreditCardPaymentMethodContainer';
 
 describe('CreditCardPaymentMethod', () => {
     let checkoutService: CheckoutService;
@@ -236,7 +237,7 @@ describe('CreditCardPaymentMethod', () => {
             };
         });
 
-        it('initializes payment method with stored card validation fieldset', () => {
+        it('initializes payment method with stored card validation fieldset', async () => {
             const getStoredCardValidationFieldset = jest.fn();
 
             render(
@@ -248,10 +249,13 @@ describe('CreditCardPaymentMethod', () => {
             );
 
             expect(checkoutService.loadInstruments).toHaveBeenCalledWith();
-            expect(getStoredCardValidationFieldset).toHaveBeenCalled();
+
+            await waitFor(() => {
+                expect(getStoredCardValidationFieldset).toHaveBeenCalled();
+            });
         });
 
-        it('sets validation schema for stored instruments when component mounts', () => {
+        it('sets validation schema for stored instruments when component mounts', async () => {
             jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue([
                 {
                     ...getCardInstrument(),
@@ -261,7 +265,9 @@ describe('CreditCardPaymentMethod', () => {
 
             render(<CreditCardPaymentMethodTest {...defaultProps} method={vaultedMethod} />);
 
-            expect(paymentForm.setValidationSchema).toHaveBeenCalled();
+            await waitFor(() => {
+                expect(paymentForm.setValidationSchema).toHaveBeenCalled();
+            });
 
             const schema: Schema<any> = (paymentForm.setValidationSchema as jest.Mock).mock
                 .calls[0][1];
@@ -285,13 +291,13 @@ describe('CreditCardPaymentMethod', () => {
             expect(screen.queryByText('payment.instrument_text')).not.toBeInTheDocument();
         });
 
-        it('shows save credit card form when there are no stored instruments', () => {
+        it('shows save credit card form when there are no stored instruments', async () => {
             jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue([]);
 
             render(<CreditCardPaymentMethodTest {...defaultProps} method={vaultedMethod} />);
 
             expect(
-                screen.getByText(
+                await screen.findByText(
                     localeContext.language.translate(
                         'payment.instrument_save_payment_method_label',
                     ),
@@ -305,7 +311,7 @@ describe('CreditCardPaymentMethod', () => {
             expect(checkoutState.data.getInstruments).toHaveBeenCalledWith(defaultProps.method);
         });
 
-        it('switches to "use new card" view if all instruments are deleted', () => {
+        it('switches to "use new card" view if all instruments are deleted', async () => {
             const { rerender } = render(
                 <CreditCardPaymentMethodTest {...defaultProps} method={vaultedMethod} />,
             );
@@ -325,7 +331,7 @@ describe('CreditCardPaymentMethod', () => {
             rerender(<CreditCardPaymentMethodTest {...defaultProps} method={vaultedMethod} />);
 
             expect(
-                screen.getByText(
+                await screen.findByText(
                     localeContext.language.translate(
                         'payment.instrument_save_payment_method_label',
                     ),

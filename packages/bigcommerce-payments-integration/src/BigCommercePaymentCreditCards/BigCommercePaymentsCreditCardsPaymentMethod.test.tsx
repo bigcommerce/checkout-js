@@ -31,7 +31,7 @@ import {
     getPaymentMethod,
     getStoreConfig,
 } from '@bigcommerce/checkout/test-mocks';
-import { render, screen } from '@bigcommerce/checkout/test-utils';
+import { render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
 import BigCommercePaymentsCreditCardsPaymentMethod from './BigCommercePaymentsCreditCardsPaymentMethod';
 
@@ -404,7 +404,7 @@ describe('BigCommercePaymentsCreditCardPaymentMethod', () => {
         expect(screen.getByText('Customer Code')).toBeInTheDocument();
     });
 
-    it('renders save card checkbox if vaulting is enabled', () => {
+    it('renders save card checkbox if vaulting is enabled', async () => {
         defaultProps.method.config.isVaultingEnabled = true;
 
         jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
@@ -412,7 +412,9 @@ describe('BigCommercePaymentsCreditCardPaymentMethod', () => {
 
         render(<PaymentMethodTest {...defaultProps} />);
 
-        expect(screen.getByText('Save this card for future transactions')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.getByText('Save this card for future transactions')).toBeInTheDocument();
+        });
     });
 
     it('uses PaymentMethod to retrieve instruments', () => {
@@ -421,14 +423,16 @@ describe('BigCommercePaymentsCreditCardPaymentMethod', () => {
         expect(checkoutState.data.getInstruments).toHaveBeenCalledWith(defaultProps.method);
     });
 
-    it('renders with save card checkbox if vaulting is enabled and no instruments', () => {
+    it('renders with save card checkbox if vaulting is enabled and no instruments', async () => {
         defaultProps.method.config.isVaultingEnabled = true;
         jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
         jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue([]);
 
         render(<PaymentMethodTest {...defaultProps} />);
 
-        expect(screen.getByText('Save this card for future transactions')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.getByText('Save this card for future transactions')).toBeInTheDocument();
+        });
     });
 
     it('does not render save card checkbox if vaulting is disabled', () => {
