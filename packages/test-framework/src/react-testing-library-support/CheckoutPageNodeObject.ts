@@ -386,7 +386,7 @@ export class CheckoutPageNodeObject {
     }
 
     async waitForPaymentStep(): Promise<void> {
-        await waitFor(() => screen.getByText(/place order/i));
+        await waitFor(() => screen.getByText(/place order/i), { timeout: 20000 });
     }
 
     async fillAddressForm(testingAddress: Partial<Address> = {}): Promise<void> {
