@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.687.0](https://github.com/bigcommerce/checkout-js/compare/v1.686.1...v1.687.0) (2025-10-09)
+
+
+### Features
+
+* **core:** CHECKOUT-9513 Pass in initial state to avoid request waterfall ([47cbb5a](https://github.com/bigcommerce/checkout-js/commit/47cbb5ae86fe4b13601841a0d75d718886eab1be))
+
 ### [1.686.1](https://github.com/bigcommerce/checkout-js/compare/v1.686.0...v1.686.1) (2025-10-08)
 
 
