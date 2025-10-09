@@ -5,7 +5,7 @@ import { getDefaultTranslations, isLanguageWindow } from '@bigcommerce/checkout/
 import { isAppExport } from './AppExport';
 import { type RenderCheckoutOptions } from './checkout';
 import { configurePublicPath } from './common/bundler';
-import { isRecordContainingKey, joinPaths } from './common/utility';
+import { isRecordContainingKey, joinPaths, yieldToMain } from './common/utility';
 import { type RenderOrderConfirmationOptions } from './order';
 
 declare const LIBRARY_NAME: string;
@@ -107,9 +107,14 @@ export function loadFiles(options?: LoadFilesOptions): Promise<LoadFilesResult> 
 
             return {
                 appVersion,
-                renderCheckout: (renderOptions) => renderCheckout({ publicPath, ...renderOptions }),
-                renderOrderConfirmation: (renderOptions) =>
-                    renderOrderConfirmation({ publicPath, ...renderOptions }),
+                renderCheckout: async (renderOptions) => {
+                    await yieldToMain();
+                    renderCheckout({ publicPath, ...renderOptions });
+                },
+                renderOrderConfirmation: async (renderOptions) => {
+                    await yieldToMain();
+                    renderOrderConfirmation({ publicPath, ...renderOptions });
+                },
             };
         },
     );

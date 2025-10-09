@@ -62,6 +62,12 @@ describe('loadFiles', () => {
             'step-a.css',
             'step-b.css',
         ];
+
+        (global as any).scheduler = {
+            yield() {
+                return new Promise((resolve) => process.nextTick(resolve));
+            }
+        };
     });
 
     afterEach(() => {
@@ -164,7 +170,7 @@ describe('loadFiles', () => {
     it('resolves with render checkout function', async () => {
         const result = await loadFiles(options);
 
-        result.renderCheckout({
+        await result.renderCheckout({
             checkoutId: 'abc',
             containerId: CHECKOUT_ROOT_NODE_ID,
         });
@@ -179,7 +185,7 @@ describe('loadFiles', () => {
     it('resolves with render order confirmation function', async () => {
         const result = await loadFiles(options);
 
-        result.renderOrderConfirmation({
+        await result.renderOrderConfirmation({
             orderId: 123,
             containerId: CHECKOUT_ROOT_NODE_ID,
         });

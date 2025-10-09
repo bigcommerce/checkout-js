@@ -1,11 +1,14 @@
+import { type CheckoutInitialState } from '@bigcommerce/checkout-sdk';
 import { useEffect, useState } from 'react';
 
 import { useExtensions } from '@bigcommerce/checkout/checkout-extension';
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
-export const useLoadCheckout = (checkoutId: string): {isLoadingCheckout: boolean} => {
-    const [ isLoadingCheckout, setIsLoadingCheckout ] = useState(true);
-    const { checkoutService } = useCheckout();
+import { yieldToMain } from '../../common/utility';
+
+export const useLoadCheckout = (checkoutId: string, initialState?: CheckoutInitialState): {isLoadingCheckout: boolean} => {
+    const { checkoutService, checkoutState: { data } } = useCheckout();
+    const [ isLoadingCheckout, setIsLoadingCheckout ] = useState(!data.getCheckout());
     const { extensionService } = useExtensions();
 
     const fetchData = async () => {
@@ -42,13 +45,28 @@ export const useLoadCheckout = (checkoutId: string): {isLoadingCheckout: boolean
         await attemptFetch();
     };
 
+    const hydrateInitialState = async (initialState: CheckoutInitialState) => {
+        await yieldToMain();
+        await checkoutService.hydrateInitialState(initialState);
+        setIsLoadingCheckout(false);
+    }
+
     useEffect(() => {
-        fetchDataWithRetry()
-            .then(() => setIsLoadingCheckout(false))
-            .catch((error) => {
-                throw error;
-            });
+        if (!isLoadingCheckout) {
+            return;
+        }
+
+        if (!initialState) {
+            // If the initial data has not been preloaded from the server, we need to make API calls to fetch it.
+            fetchDataWithRetry()
+                .then(() => setIsLoadingCheckout(false))
+                .catch((error) => {
+                    throw error;
+                });
+        } else {
+            hydrateInitialState(initialState);
+        }
     }, []);
 
-    return  { isLoadingCheckout };
+    return { isLoadingCheckout };
 };

@@ -135,7 +135,7 @@ describe('Customer Component', () => {
     });
 
     it('edit guest customer email', async () => {
-        checkout.use(CheckoutPreset.CheckoutWithBillingEmail);
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithBillingEmail);
 
         render(<CheckoutTest {...defaultProps} />);
 
@@ -182,7 +182,7 @@ describe('Customer Component', () => {
 
         const customerEmail = faker.internet.email();
 
-        checkout.use(CheckoutPreset.CheckoutWithDigitalCart);
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithDigitalCart);
 
         render(<CheckoutTest {...defaultProps} />);
 
@@ -245,7 +245,7 @@ describe('Customer Component', () => {
         const email = faker.internet.email();
         const password = faker.internet.password();
 
-        checkout.use(CheckoutPreset.CheckoutWithDigitalCart);
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithDigitalCart);
 
         render(<CheckoutTest {...defaultProps} />);
 
@@ -345,14 +345,7 @@ describe('Customer Component', () => {
                 },
             };
 
-            checkout.setRequestHandler(
-                rest.get(
-                    '/api/storefront/checkout-settings',
-                    (_, res, ctx) => res(ctx.json(config),
-                )
-            ));
-
-            checkout.use(CheckoutPreset.CheckoutWithDigitalCart);
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithDigitalCart, { config });
             render(<CheckoutTest {...defaultProps} />);
             await checkout.waitForCustomerStep();
 
@@ -382,12 +375,7 @@ describe('Customer Component', () => {
             },
         };
 
-        checkout.setRequestHandler(
-            rest.get(
-                '/api/storefront/checkout-settings',
-                (_, res, ctx) => res(ctx.json(config),
-            )
-        ));
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithDigitalCart, { config });
 
         const customerEmail = faker.internet.email();
 

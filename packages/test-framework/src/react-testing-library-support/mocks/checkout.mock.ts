@@ -1,10 +1,13 @@
 import {
     type Checkout,
+    type Config,
     type Consignment,
     type ConsignmentAutomaticDiscount,
     type ConsignmentCouponDiscount,
     type Coupon,
     type Customer,
+    type Extension,
+    type FormFields,
     type PhysicalItem,
 } from '@bigcommerce/checkout-sdk';
 
@@ -364,6 +367,7 @@ const checkoutWithCustomShippingAndBilling = {
                 cost: 256,
                 transitTime: '',
                 additionalDescription: '',
+                isRecommended: false,
             },
         },
     ],
@@ -462,6 +466,13 @@ enum CheckoutPreset {
     RemoteProviders = 'RemoteProviders',
     CheckoutWithLoggedInCustomer = 'CheckoutWithLoggedInCustomer',
     CheckoutWithCustomerHavingInvalidAddress = 'CheckoutWithCustomerHavingInvalidAddress',
+}
+
+export interface CheckoutPresetOverrides {
+    checkout?: Checkout;
+    config?: Config;
+    formFields?: FormFields;
+    extensions?: Extension[];
 }
 
 export {
