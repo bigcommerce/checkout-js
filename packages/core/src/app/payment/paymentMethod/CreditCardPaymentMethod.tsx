@@ -16,7 +16,7 @@ import { type ObjectSchema } from 'yup';
 
 import { type MapToPropsFactory } from '@bigcommerce/checkout/legacy-hoc';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { type CheckoutContextProps, type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import { CaptureMessageComponent, type CheckoutContextProps, type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../../checkout';
@@ -212,8 +212,11 @@ class CreditCardPaymentMethod extends Component<
             ? isInstrumentCardCodeRequiredProp(selectedInstrument, method)
             : false;
 
+        const SentryMessage = method ? `CoreCreditCardPaymentMethod method "${method.method}" (ID: ${method.id}, type: ${method.type}) ${method.gateway ? `via ${method.gateway}` : 'with no gateway'}, supports ${method.supportedCards?.length ? method.supportedCards.join(', ') : 'no specific cards'}, ${method.skipRedirectConfirmationAlert ? 'skips' : 'requires'} redirect confirmation${method.returnUrl ? `, return URL: ${method.returnUrl}` : ''}.` : '';
+
         return (
             <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
+                <CaptureMessageComponent message={SentryMessage} />
                 <div className="paymentMethod paymentMethod--creditCard" data-test='credit-cart-payment-method'>
                     {shouldShowInstrumentFieldset && (
                         <CardInstrumentFieldset

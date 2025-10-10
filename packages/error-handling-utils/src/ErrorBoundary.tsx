@@ -5,7 +5,7 @@ import type ErrorLogger from './ErrorLogger';
 export interface ErrorBoundaryProps {
     children?: ReactNode;
     fallback?: ReactNode;
-    logger?: ErrorLogger;
+    errorLogger?: ErrorLogger;
     filter?(error: Error): boolean;
 }
 
@@ -22,15 +22,15 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     state: ErrorBoundaryState = {};
 
     componentDidCatch(error: Error): void {
-        const { filter = () => true, logger } = this.props;
+        const { filter = () => true, errorLogger } = this.props;
 
         if (!filter(error)) {
             throw error;
         }
 
         // Adding errorCode with value `ErrorBoundary` to collect usage statistics of ErrorBoundary
-        if (logger) {
-            logger.log(error, {
+        if (errorLogger) {
+            errorLogger.log(error, {
                 errorCode: 'ErrorBoundary',
             });
         }

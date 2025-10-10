@@ -26,7 +26,7 @@ describe('ErrorBoundary', () => {
         };
 
         render(
-            <ErrorBoundary logger={logger}>
+            <ErrorBoundary errorLogger={logger}>
                 <Child />
             </ErrorBoundary>,
         );
@@ -46,7 +46,7 @@ describe('ErrorBoundary', () => {
 
         expect(() =>
             render(
-                <ErrorBoundary filter={filterError} logger={logger}>
+                <ErrorBoundary errorLogger={logger} filter={filterError}>
                     <Child />
                 </ErrorBoundary>,
             ),

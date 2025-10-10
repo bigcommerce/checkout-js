@@ -97,6 +97,14 @@ export default class SentryErrorLogger implements ErrorLogger {
         });
     }
 
+    logMessage(
+        message: string,
+    ): void {
+        this.loadSentry().then(() => {
+            Sentry.captureMessage(message);
+        });
+    }
+
     private loadSentry(): Promise<void> {
         if (this.loaderPromise) {
             return this.loaderPromise;

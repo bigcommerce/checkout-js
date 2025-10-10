@@ -30,6 +30,7 @@ import {
 } from '@bigcommerce/checkout/instrument-utils';
 import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
 import {
+    CaptureMessageComponent,
     type CardInstrumentFieldsetValues,
     type PaymentMethodProps,
 } from '@bigcommerce/checkout/payment-integration-api';
@@ -357,6 +358,10 @@ export const CreditCardPaymentMethodComponent = (
 
     const storeConfig = getStoreConfig();
 
+    const SentryMessage = methodProp
+        ? `CreditCardFieldset method "${methodProp.method}" (ID: ${methodProp.id}, type: ${methodProp.type}) ${methodProp.gateway ? `via ${methodProp.gateway}` : 'with no gateway'}, supports ${methodProp.supportedCards?.length ? methodProp.supportedCards.join(', ') : 'no specific cards'}, ${methodProp.skipRedirectConfirmationAlert ? 'skips' : 'requires'} redirect confirmation${methodProp.returnUrl ? `, return URL: ${methodProp.returnUrl}` : ''}.`
+        : '';
+
     if (!storeConfig) {
         throw Error('Unable to get config or customer');
     }
@@ -391,12 +396,16 @@ export const CreditCardPaymentMethodComponent = (
                     )}
 
                     {shouldShowCreditCardFieldset && !cardFieldset && (
-                        <CreditCardFieldset
-                            shouldShowCardCodeField={
-                                methodProp.config.cardCode || methodProp.config.cardCode === null
-                            }
-                            shouldShowCustomerCodeField={methodProp.config.requireCustomerCode}
-                        />
+                        <>
+                            <CaptureMessageComponent message={SentryMessage} />
+                            <CreditCardFieldset
+                                shouldShowCardCodeField={
+                                    methodProp.config.cardCode ||
+                                    methodProp.config.cardCode === null
+                                }
+                                shouldShowCustomerCodeField={methodProp.config.requireCustomerCode}
+                            />
+                        </>
                     )}
 
                     {shouldShowCreditCardFieldset && cardFieldset}

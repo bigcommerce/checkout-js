@@ -9,13 +9,19 @@ import React, {
 } from 'react';
 
 import CheckoutContext from './CheckoutContext';
+import type ErrorLogger from './ErrorLogger';
 
 export interface CheckoutProviderProps {
     checkoutService: CheckoutService;
     children: ReactNode;
+    errorLogger?: ErrorLogger;
 }
 
-const CheckoutProvider = ({ checkoutService, children }: CheckoutProviderProps): ReactElement => {
+const CheckoutProvider = ({
+    checkoutService,
+    errorLogger,
+    children,
+}: CheckoutProviderProps): ReactElement => {
     const [checkoutState, setCheckoutState] = useState<CheckoutSelectors>(() =>
         checkoutService.getState(),
     );
@@ -25,8 +31,9 @@ const CheckoutProvider = ({ checkoutService, children }: CheckoutProviderProps):
         () => ({
             checkoutService,
             checkoutState,
+            errorLogger,
         }),
-        [checkoutService, checkoutState],
+        [checkoutService, checkoutState, errorLogger],
     );
 
     useEffect(() => {

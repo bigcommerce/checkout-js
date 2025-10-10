@@ -66,11 +66,11 @@ const OrderConfirmationApp: React.FC<OrderConfirmationAppProps> = ({
     );
 
     return (
-        <ErrorBoundary logger={errorLogger}>
+        <ErrorBoundary errorLogger={errorLogger}>
             <LocaleProvider checkoutService={checkoutService}>
-                <CheckoutProvider checkoutService={checkoutService}>
+                <CheckoutProvider checkoutService={checkoutService} errorLogger={errorLogger}>
                     <AnalyticsProvider checkoutService={checkoutService}>
-                        <ExtensionProvider checkoutService={checkoutService} errorLogger={createErrorLogger()}>
+                        <ExtensionProvider checkoutService={checkoutService} errorLogger={errorLogger}>
                             <ThemeProvider>
                                 <OrderConfirmation
                                     containerId={containerId}
