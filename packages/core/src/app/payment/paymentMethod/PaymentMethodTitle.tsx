@@ -66,60 +66,31 @@ export function getPaymentMethodTitle(
                 logoUrl: '',
                 titleText: methodName,
             },
-            [PaymentMethodId.BraintreeVenmo]: {
-                logoUrl: method.logoUrl || '',
-                titleText: method.logoUrl ? '' : methodDisplayName,
+            [PaymentMethodType.GooglePay]: {
+                logoUrl: cdnPath('/img/payment-providers/google-pay.png'),
+                titleText: '',
             },
-            [PaymentMethodId.BraintreePaypalCredit]: {
-                logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo_letter.svg'),
-                titleText: methodDisplayName,
-                subtitle: (props: PaymentMethodSubtitleProps): ReactNode => (
-                    <BraintreePaypalCreditBanner containerId='braintree-credit-banner-container' {...props} />
+            [PaymentMethodType.PayWithGoogle]: {
+                logoUrl: cdnPath('/img/payment-providers/google-pay.png'),
+                titleText: '',
+            },
+            [PaymentMethodType.Barclaycard]: {
+                logoUrl: cdnPath(
+                    `/img/payment-providers/barclaycard_${method.id.toLowerCase()}.png`,
                 ),
-            },
-            [PaymentMethodType.PaypalCredit]: {
-                logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo_letter.svg'),
-                titleText: methodDisplayName,
-            },
-            [PaymentMethodId.BraintreeAch]: {
-                logoUrl: method.logoUrl || '',
-                titleText: methodDisplayName,
-            },
-            [PaymentMethodId.BraintreeLocalPaymentMethod]: {
-                logoUrl: method.logoUrl || '',
-                titleText: methodDisplayName,
-            },
-            [PaymentMethodId.BigCommercePaymentsPayPal]: {
-                logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo.svg'),
                 titleText: '',
-                subtitle: (props: PaymentMethodSubtitleProps) => <BigCommercePaymentsPayLaterBanner {...props} />
             },
-            [PaymentMethodId.BigCommercePaymentsPayLater]: {
-                logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo_letter.svg'),
+            [PaymentMethodId.AdyenV2]: {
+                logoUrl: `https://checkoutshopper-live.adyen.com/checkoutshopper/images/logos/${
+                    method.method === 'scheme' ? 'card' : method.method
+                }.svg`,
                 titleText: methodDisplayName,
-                subtitle: (props: PaymentMethodSubtitleProps) => <BigCommercePaymentsPayLaterBanner {...props} />
             },
-            [PaymentMethodId.BigCommercePaymentsAlternativeMethod]: {
-                logoUrl: method.logoUrl || '',
-                titleText: method.logoUrl ? '' : methodDisplayName,
-            },
-            [PaymentMethodId.PaypalCommerce]: {
-                logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo.svg'),
-                titleText: '',
-                subtitle: (props: PaymentMethodSubtitleProps) => <PaypalCommerceCreditBanner containerId='paypal-commerce-banner-container' {...props} />
-            },
-            [PaymentMethodId.PaypalCommerceCredit]: {
-                logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo_letter.svg'),
+            [PaymentMethodId.AdyenV3]: {
+                logoUrl: `https://checkoutshopper-live.adyen.com/checkoutshopper/images/logos/${
+                    method.method === 'scheme' ? 'card' : method.method
+                }.svg`,
                 titleText: methodDisplayName,
-                subtitle: (props: PaymentMethodSubtitleProps) => <PaypalCommerceCreditBanner containerId='paypal-commerce-credit-banner-container' {...props} />
-            },
-            [PaymentMethodId.PaypalCommerceAlternativeMethod]: {
-                logoUrl: method.logoUrl || '',
-                titleText: method.logoUrl ? '' : methodDisplayName,
-            },
-            [PaymentMethodType.VisaCheckout]: {
-                logoUrl: cdnPath('/img/payment-providers/visa-checkout.png'),
-                titleText: methodName,
             },
             [PaymentMethodId.Affirm]: {
                 logoUrl: cdnPath('/img/payment-providers/affirm-checkout-header.png'),
@@ -141,16 +112,65 @@ export function getPaymentMethodTitle(
                 logoUrl: '',
                 titleText: methodDisplayName,
             },
+            [PaymentMethodId.BraintreeAch]: {
+                logoUrl: method.logoUrl || '',
+                titleText: methodDisplayName,
+            },
+            [PaymentMethodId.BraintreeLocalPaymentMethod]: {
+                logoUrl: method.logoUrl || '',
+                titleText: methodDisplayName,
+            },
+            [PaymentMethodId.BraintreePayPal]: {
+                logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo_letter.svg'),
+                titleText: methodDisplayName,
+                subtitle: (props: PaymentMethodSubtitleProps): ReactNode => (
+                    <BraintreePaypalCreditBanner containerId='braintree-credit-banner-container' {...props} />
+                ),
+            },
+            [PaymentMethodId.BraintreePaypalCredit]: {
+                logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo_letter.svg'),
+                titleText: methodDisplayName,
+                subtitle: (props: PaymentMethodSubtitleProps): ReactNode => (
+                    <BraintreePaypalCreditBanner containerId='braintree-credit-banner-container' {...props} />
+                ),
+            },
+            [PaymentMethodId.BraintreeVenmo]: {
+                logoUrl: method.logoUrl || '',
+                titleText: method.logoUrl ? '' : methodDisplayName,
+            },
+            [PaymentMethodId.BraintreeVisaCheckout]: {
+                logoUrl: cdnPath('/img/payment-providers/visa-checkout.png'),
+                titleText: methodName,
+            },
+            [PaymentMethodId.BigCommercePaymentsAlternativeMethod]: {
+                logoUrl:
+                    method.id === PaymentMethodId.Klarna
+                        ? cdnPath('/img/payment-providers/klarna.png')
+                        : method.logoUrl || '',
+                titleText: method.logoUrl ? '' : methodDisplayName,
+            },
+            [PaymentMethodId.BigCommercePaymentsVenmo]: {
+                logoUrl: method.logoUrl || '',
+                titleText: method.logoUrl ? '' : methodDisplayName,
+            },
+            [PaymentMethodId.BigCommercePaymentsPayPal]: {
+                logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo.svg'),
+                titleText: '',
+                subtitle: (props: PaymentMethodSubtitleProps) => <BigCommercePaymentsPayLaterBanner {...props} />
+            },
+            [PaymentMethodId.BigCommercePaymentsPayLater]: {
+                logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo_letter.svg'),
+                titleText: methodDisplayName,
+                subtitle: (props: PaymentMethodSubtitleProps) => <BigCommercePaymentsPayLaterBanner {...props} />
+            },
+            [PaymentMethodId.Checkoutcom]: {
+                logoUrl: ['credit_card', 'card', 'checkoutcom'].includes(method.id)
+                    ? ''
+                    : cdnPath(`/img/payment-providers/checkoutcom_${method.id.toLowerCase()}.svg`),
+                titleText: methodName,
+            },
             [PaymentMethodId.Clearpay]: {
                 logoUrl: cdnPath('/img/payment-providers/clearpay-header.png'),
-                titleText: '',
-            },
-            [PaymentMethodType.GooglePay]: {
-                logoUrl: cdnPath('/img/payment-providers/google-pay.png'),
-                titleText: '',
-            },
-            [PaymentMethodType.PayWithGoogle]: {
-                logoUrl: cdnPath('/img/payment-providers/google-pay.png'),
                 titleText: '',
             },
             [PaymentMethodId.Humm]: {
@@ -159,8 +179,8 @@ export function getPaymentMethodTitle(
             },
             [PaymentMethodId.Klarna]: {
                 logoUrl: method.initializationData?.enableBillie
-                        ? cdnPath('/img/payment-providers/klarna-billie-header.png')
-                        : cdnPath('/img/payment-providers/klarna-header.png'),
+                    ? cdnPath('/img/payment-providers/klarna-billie-header.png')
+                    : cdnPath('/img/payment-providers/klarna-header.png'),
                 titleText: methodDisplayName,
             },
             [PaymentMethodId.Laybuy]: {
@@ -171,47 +191,6 @@ export function getPaymentMethodTitle(
                 logoUrl: 'https://masterpass.com/dyn/img/acc/global/mp_mark_hor_blk.svg',
                 titleText: '',
             },
-            [PaymentMethodType.Paypal]: {
-                // TODO: method.id === PaymentMethodId.BraintreeVenmo should be removed after the PAYPAL-1380.checkout_button_strategies_update experiment removal
-                logoUrl:
-                    method.id === PaymentMethodId.BraintreeVenmo && method.logoUrl
-                        ? method.logoUrl
-                        : cdnPath('/img/payment-providers/paypalpaymentsprouk.png'),
-                titleText: '',
-                subtitle: (props: PaymentMethodSubtitleProps): ReactNode => (
-                    <BraintreePaypalCreditBanner containerId='braintree-banner-container' {...props} />
-                ),
-            },
-            [PaymentMethodId.Quadpay]: {
-                logoUrl: cdnPath('/img/payment-providers/quadpay.png'),
-                titleText: language.translate('payment.quadpay_display_name_text'),
-            },
-            [PaymentMethodId.Sezzle]: {
-                logoUrl: cdnPath('/img/payment-providers/sezzle-checkout-header.png'),
-                titleText: language.translate('payment.sezzle_display_name_text'),
-            },
-            [PaymentMethodId.Zip]: {
-                logoUrl: cdnPath('/img/payment-providers/zip.png'),
-                titleText: language.translate('payment.zip_display_name_text'),
-            },
-            [PaymentMethodType.Barclaycard]: {
-                logoUrl: cdnPath(
-                    `/img/payment-providers/barclaycard_${method.id.toLowerCase()}.png`,
-                ),
-                titleText: '',
-            },
-            [PaymentMethodId.AdyenV2]: {
-                logoUrl: `https://checkoutshopper-live.adyen.com/checkoutshopper/images/logos/${
-                    method.method === 'scheme' ? 'card' : method.method
-                }.svg`,
-                titleText: methodDisplayName,
-            },
-            [PaymentMethodId.AdyenV3]: {
-                logoUrl: `https://checkoutshopper-live.adyen.com/checkoutshopper/images/logos/${
-                    method.method === 'scheme' ? 'card' : method.method
-                }.svg`,
-                titleText: methodDisplayName,
-            },
             [PaymentMethodId.Mollie]: {
                 logoUrl:
                     method.method === 'credit_card'
@@ -219,11 +198,43 @@ export function getPaymentMethodTitle(
                         : cdnPath(`/img/payment-providers/mollie_${method.method}.svg`),
                 titleText: methodDisplayName,
             },
-            [PaymentMethodId.Checkoutcom]: {
-                logoUrl: ['credit_card', 'card', 'checkoutcom'].includes(method.id)
-                    ? ''
-                    : cdnPath(`/img/payment-providers/checkoutcom_${method.id.toLowerCase()}.svg`),
-                titleText: methodName,
+            [PaymentMethodId.PaypalCommerceAlternativeMethod]: {
+                logoUrl: method.logoUrl || '',
+                titleText: method.logoUrl ? '' : methodDisplayName,
+            },
+            [PaymentMethodId.PaypalCommerceVenmo]: {
+                logoUrl: method.logoUrl || '',
+                titleText: method.logoUrl ? '' : methodDisplayName,
+            },
+            [PaymentMethodId.PaypalCommerce]: {
+                logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo.svg'),
+                titleText: '',
+                subtitle: (props: PaymentMethodSubtitleProps) => <PaypalCommerceCreditBanner containerId='paypal-commerce-banner-container' {...props} />
+            },
+            [PaymentMethodId.PaypalCommerceCredit]: {
+                logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo_letter.svg'),
+                titleText: methodDisplayName,
+                subtitle: (props: PaymentMethodSubtitleProps) => <PaypalCommerceCreditBanner containerId='paypal-commerce-credit-banner-container' {...props} />
+            },
+            [PaymentMethodId.PaypalExpress]: {
+                logoUrl: method.logoUrl ? method.logoUrl : cdnPath('/img/payment-providers/paypalpaymentsprouk.png'),
+                titleText: '',
+            },
+            [PaymentMethodId.PaypalExpressCredit]: {
+                logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo_letter.svg'),
+                titleText: methodDisplayName,
+            },
+            [PaymentMethodId.Quadpay]: {
+                logoUrl: cdnPath('/img/payment-providers/quadpay.png'),
+                titleText: language.translate('payment.quadpay_display_name_text'),
+            },
+            [PaymentMethodId.Ratepay]: {
+                logoUrl: method.logoUrl || '',
+                titleText: language.translate('payment.ratepay.payment_method_title'),
+            },
+            [PaymentMethodId.Sezzle]: {
+                logoUrl: cdnPath('/img/payment-providers/sezzle-checkout-header.png'),
+                titleText: language.translate('payment.sezzle_display_name_text'),
             },
             [PaymentMethodId.StripeV3]: {
                 logoUrl: paymentWithLogo.includes(method.id)
@@ -247,6 +258,10 @@ export function getPaymentMethodTitle(
                 logoUrl: '',
                 titleText: language.translate('payment.credit_debit_card_text'),
             },
+            [PaymentMethodId.Zip]: {
+                logoUrl: cdnPath('/img/payment-providers/zip.png'),
+                titleText: language.translate('payment.zip_display_name_text'),
+            },
         };
 
         if (method.gateway === PaymentMethodId.BlueSnapDirect) {
@@ -263,24 +278,6 @@ export function getPaymentMethodTitle(
             }
         }
 
-        if (method.id === PaymentMethodId.PaypalCommerceVenmo) {
-            return customTitles[PaymentMethodId.PaypalCommerceAlternativeMethod];
-        }
-
-        if (
-          method.gateway === PaymentMethodId.BigCommercePaymentsAlternativeMethod &&
-          method.id === PaymentMethodId.Klarna
-        ) {
-            return {
-                logoUrl: cdnPath('/img/payment-providers/klarna.png'),
-                titleText: methodDisplayName,
-            };
-        }
-
-        if (method.id === PaymentMethodId.BigCommercePaymentsVenmo) {
-            return customTitles[PaymentMethodId.BigCommercePaymentsAlternativeMethod];
-        }
-
         // KLUDGE: 'paypal' is actually a credit card method. It is the only
         // exception to the rule below. We should probably fix it on API level,
         // but apparently it would break LCO if we are not careful.
@@ -289,10 +286,6 @@ export function getPaymentMethodTitle(
             method.method === PaymentMethodType.CreditCard
         ) {
             return customTitles[PaymentMethodType.CreditCard];
-        }
-
-        if (method.id === PaymentMethodId.Ratepay) {
-            return { logoUrl: method.logoUrl || '', titleText: language.translate('payment.ratepay.payment_method_title') };
         }
 
         return (
