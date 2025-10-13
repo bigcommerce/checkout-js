@@ -1,3 +1,4 @@
+import { createBraintreeCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
 import { noop } from 'lodash';
 import React, {
     createRef,
@@ -9,6 +10,7 @@ import React, {
 } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 
 import { Modal } from '../../ui/modal';
 import {
@@ -47,6 +49,7 @@ const BraintreeCreditCardPaymentMethod: FunctionComponent<
             async (options, selectedInstrument) => {
                 return initializePayment({
                     ...options,
+                    integrations: [createBraintreeCreditCardPaymentStrategy],
                     braintree: {
                         threeDSecure: {
                             addFrame(error, content, cancel) {
