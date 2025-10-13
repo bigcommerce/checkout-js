@@ -79,7 +79,8 @@
             "taxes_text": "Steuern",
             "total_text": "Summe",
             "empty_cart_message": "Ihr Warenkorb ist leer, Sie werden weitergeleitet. Bitte klicken Sie <a href=\"{url}\" target=\"_top\">hier</a>, wenn Ihr Browser Sie nicht weiterleitet.",
-            "consistency_error": "Ihr Zahlungsvorgang konnte nicht bearbeitet werden, da sich einige Angaben geändert haben. Bitte überprüfen Sie Ihre Bestellung und versuchen Sie es erneut."
+            "consistency_error": "Ihr Zahlungsvorgang konnte nicht bearbeitet werden, da sich einige Angaben geändert haben. Bitte überprüfen Sie Ihre Bestellung und versuchen Sie es erneut.",
+            "empty_cart_error_message": "Ihr Warenkorb enthält Artikel, die nicht zum Kauf verfügbar sind oder das Kauflimit überschritten haben. Um Ihre Bestellung aufzugeben, erstellen Sie bitte einen neuen Warenkorb mit den erlaubten Mengen oder mit anderen Artikeln."
         },
         "common": {
             "back_action": "Zurück",

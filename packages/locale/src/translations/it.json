@@ -79,7 +79,8 @@
             "taxes_text": "Tasse",
             "total_text": "Totale",
             "empty_cart_message": "Il carrello è vuoto, verrai reindirizzato. Se il browser non procede automaticamente al reindirizzamento <a href=\"{url}\" target=\"_top\">fai clic qui</a>.",
-            "consistency_error": "Impossibile elaborare il checkout perché alcuni dettagli sono cambiati. Controlla l'ordine e riprova."
+            "consistency_error": "Impossibile elaborare il checkout perché alcuni dettagli sono cambiati. Controlla l'ordine e riprova.",
+            "empty_cart_error_message": "Il tuo carrello contiene articoli che non sono disponibili per l'acquisto o che hanno superato il limite di acquisto. Per effettuare il tuo ordine, crea un nuovo carrello con le quantità fino al limite consentito o con articoli diversi."
         },
         "common": {
             "back_action": "Indietro",

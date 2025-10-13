@@ -79,7 +79,8 @@
             "taxes_text": "Podatki",
             "total_text": "Razem",
             "empty_cart_message": "Twój koszyk jest pusty, nastąpiło przekierowanie. Proszę <a href=\"{url}\" target=\"_top\">kliknij tutaj</a> jeśli Twoja przeglądarka nie przekierowuje.",
-            "consistency_error": "Nie można zrealizować płatności, ponieważ niektóre szczegóły uległy zmianie. Sprawdź zamówienie i spróbuj ponownie."
+            "consistency_error": "Nie można zrealizować płatności, ponieważ niektóre szczegóły uległy zmianie. Sprawdź zamówienie i spróbuj ponownie.",
+            "empty_cart_error_message": "Your cart contains items that aren't available for purchase or have exceeded the purchase limit. To place your order, please create a new cart with the quantities to the allowed limit or with different items."
         },
         "common": {
             "back_action": "Powrót",

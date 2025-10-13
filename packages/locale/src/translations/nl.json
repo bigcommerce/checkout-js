@@ -79,7 +79,8 @@
             "taxes_text": "Belastingen",
             "total_text": "Totaal",
             "empty_cart_message": "Uw winkelmandje is leeg, u wordt omgeleid. <a href=\"{url}\" target=\"_top\">Klik hier</a> als uw browser u niet omleidt.",
-            "consistency_error": "Je betaling kon niet worden verwerkt omdat er gegevens zijn veranderd. Controleer je bestelling en probeer het opnieuw."
+            "consistency_error": "Je betaling kon niet worden verwerkt omdat er gegevens zijn veranderd. Controleer je bestelling en probeer het opnieuw.",
+            "empty_cart_error_message": "Je winkelwagen bevat artikelen die je niet kunt kopen of die boven de aankooplimiet liggen. Om je bestelling te plaatsen, maak je een nieuwe winkelwagen aan met hoeveelheden tot de toegestane limiet of met verschillende artikelen."
         },
         "common": {
             "back_action": "Terug",
