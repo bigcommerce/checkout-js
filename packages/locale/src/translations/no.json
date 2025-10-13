@@ -79,7 +79,8 @@
             "taxes_text": "Skatter",
             "total_text": "Totalbeløp",
             "empty_cart_message": "Handlekurven din er tom, du blir omdirigert. <a href=\"{url}\" target=\"_top\">Klikk her</a> hvis nettleseren din ikke omdirigerer deg.",
-            "consistency_error": "Kassen din kunne ikke behandles fordi noen detaljer er endret. Se igjennom bestillingen din og prøv igjen."
+            "consistency_error": "Kassen din kunne ikke behandles fordi noen detaljer er endret. Se igjennom bestillingen din og prøv igjen.",
+            "empty_cart_error_message": "Handlekurven din inneholder varer som ikke kan kjøpes eller som har overskredet kjøpsgrensen. For å legge inn bestillingen må du opprette en ny handlekurv med det tillatte antallet eller med andre varer."
         },
         "common": {
             "back_action": "Tilbake",

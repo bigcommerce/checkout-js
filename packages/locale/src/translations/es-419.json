@@ -79,7 +79,8 @@
             "taxes_text": "Impuestos",
             "total_text": "Total",
             "empty_cart_message": "Tu carrito está vacío; se te está redirigiendo. Haz <a href=\"{url}\" target=\"_top\">clic aquí</a> si tu navegador no te redirige.",
-            "consistency_error": "No se pudo procesar tu pago porque cambiaron algunos datos. Revisa tu pedido e inténtalo nuevamente."
+            "consistency_error": "No se pudo procesar tu pago porque cambiaron algunos datos. Revisa tu pedido e inténtalo nuevamente.",
+            "empty_cart_error_message": "Su carrito contiene artículos que no están disponibles para comprar o excedieron el límite de compra. Para realizar su pedido, por favor cree un nuevo carrito con las cantidades hasta el límite permitido o con artículos diferentes."
         },
         "common": {
             "back_action": "Regresar",

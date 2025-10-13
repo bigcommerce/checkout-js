@@ -79,7 +79,8 @@
             "taxes_text": "Taxes",
             "total_text": "Total",
             "empty_cart_message": "Votre panier est vide, vous allez être redirigé·e. Veuillez <a href=\"{url}\" target=\"_top\">cliquer ici</a> si rien ne se passe.",
-            "consistency_error": "Impossible de traiter votre paiement car certaines informations ont été modifiées. Veuillez vérifier votre commande et réessayer."
+            "consistency_error": "Impossible de traiter votre paiement car certaines informations ont été modifiées. Veuillez vérifier votre commande et réessayer.",
+            "empty_cart_error_message": "Votre panier contient des articles qui ne sont pas disponibles à l’achat ou qui ont dépassé la limite d’achat. Pour passer votre commande, veuillez créer un nouveau panier avec des quantités allant jusqu’à la limite autorisée ou avec des articles différents."
         },
         "common": {
             "back_action": "Retour",

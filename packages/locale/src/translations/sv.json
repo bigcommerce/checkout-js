@@ -79,7 +79,8 @@
             "taxes_text": "Moms",
             "total_text": "Total",
             "empty_cart_message": "Din kundvagn är tom, du omdirigeras. <a href=\"{url}\" target=\"_top\">Klicka här</a> om din webbläsare inte omdirigerar dig.",
-            "consistency_error": "Din utcheckning kunde inte behandlas eftersom vissa detaljer har ändrats. Granska din beställning och försök igen."
+            "consistency_error": "Din utcheckning kunde inte behandlas eftersom vissa detaljer har ändrats. Granska din beställning och försök igen.",
+            "empty_cart_error_message": "Din kundvagn innehåller varor som inte är tillgängliga för köp eller som har överskridit köpgränsen. För att göra din beställning, skapa en ny kundvagn med kvantiteterna till den tillåtna gränsen eller med olika artiklar."
         },
         "common": {
             "back_action": "Tillbaka",

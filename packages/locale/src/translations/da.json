@@ -79,7 +79,8 @@
             "taxes_text": "Moms",
             "total_text": "I alt",
             "empty_cart_message": "Din indkøbskurv er tom – du bliver omdirigeret. <a href=\"{url}\" target=\"_top\">Klik her</a>, hvis din browser ikke omdirigerer dig.",
-            "consistency_error": "Din betaling kunne ikke behandles, fordi nogle oplysninger er ændret. Gennemgå din ordre, og prøv igen."
+            "consistency_error": "Din betaling kunne ikke behandles, fordi nogle oplysninger er ændret. Gennemgå din ordre, og prøv igen.",
+            "empty_cart_error_message": "Din indkøbskurv indeholder varer, der ikke kan købes, eller som har overskredet købsgrænsen. For at afgive din ordre skal du oprette en ny indkøbskurv med mængderne til den tilladte grænse eller med forskellige varer."
         },
         "common": {
             "back_action": "Tilbage",
