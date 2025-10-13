@@ -8,7 +8,14 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import { compact, find, isEmpty, noop } from 'lodash';
-import React, { Component, type ReactNode } from 'react';
+import React, {
+  type ReactElement,
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { type ObjectSchema } from 'yup';
 
 import { type AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
@@ -88,316 +95,179 @@ interface PaymentState {
     validationSchemas: { [key: string]: ObjectSchema<Partial<PaymentFormValues>> | null };
 }
 
-class Payment extends Component<
-    PaymentProps & WithCheckoutPaymentProps & WithLanguageProps & AnalyticsContextProps,
-    PaymentState
-> {
-    state: PaymentState = {
+const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguageProps & AnalyticsContextProps): ReactElement  => {
+    const [state, setState] = useState<PaymentState>({
         didExceedSpamLimit: false,
         isReady: false,
         shouldDisableSubmit: {},
         shouldHidePaymentSubmitButton: {},
         validationSchemas: {},
         submitFunctions: {},
-    };
-
-    private grandTotalChangeUnsubscribe?: () => void;
-
-    private getContextValue = memoizeOne(() => {
-        return {
-            disableSubmit: this.disableSubmit,
-            setSubmit: this.setSubmit,
-            setValidationSchema: this.setValidationSchema,
-            hidePaymentSubmitButton: this.hidePaymentSubmitButton,
-        };
     });
 
-    async componentDidMount(): Promise<void> {
-        const {
-            finalizeOrderIfNeeded,
-            onFinalize = noop,
-            onFinalizeError = noop,
-            onReady = noop,
-            usableStoreCredit,
-            checkoutServiceSubscribe,
-        } = this.props;
+    const isReadyRef = useRef(state.isReady);
+    const grandTotalChangeUnsubscribe = useRef<() => void>();
 
-        if (usableStoreCredit) {
-            this.handleStoreCreditChange(true);
-        }
+    const renderOrderErrorModal = (): ReactNode => {
+            const { finalizeOrderError, language, shouldLocaliseErrorMessages, submitOrderError } =
+                props;
 
-        await this.loadPaymentMethodsOrThrow();
+            // FIXME: Export correct TS interface
+            const error: any = submitOrderError || finalizeOrderError;
 
-        try {
-            const state = await finalizeOrderIfNeeded();
-            const order = state.data.getOrder();
-
-            onFinalize(order?.orderId);
-        } catch (error) {
-            if (isErrorWithType(error) && error.type !== 'order_finalization_not_required') {
-                onFinalizeError(error);
+            if (
+                !error ||
+                error.type === 'order_finalization_not_required' ||
+                error.type === 'payment_cancelled' ||
+                error.type === 'payment_invalid_form' ||
+                error.type === 'spam_protection_not_completed' ||
+                error.type === 'invalid_hosted_form_value'
+            ) {
+                return null;
             }
-        }
 
-        this.grandTotalChangeUnsubscribe = checkoutServiceSubscribe(
-            () => this.handleCartTotalChange(),
-            ({ data }) => data.getCheckout()?.grandTotal,
-            ({ data }) => data.getCheckout()?.outstandingBalance,
-        );
-
-        window.addEventListener('beforeunload', this.handleBeforeUnload);
-        this.setState({ isReady: true });
-        onReady();
-    }
-
-    componentDidUpdate(): void {
-        const { checkEmbeddedSupport = noop, methods } = this.props;
-
-        checkEmbeddedSupport(methods.map(({ id }) => id));
-    }
-
-    componentWillUnmount(): void {
-        if (this.grandTotalChangeUnsubscribe) {
-            this.grandTotalChangeUnsubscribe();
-            this.grandTotalChangeUnsubscribe = undefined;
-        }
-
-        window.removeEventListener('beforeunload', this.handleBeforeUnload);
-    }
-
-    render(): ReactNode {
-        const {
-            defaultMethod,
-            finalizeOrderError,
-            isInitializingPayment,
-            isUsingMultiShipping,
-            methods,
-            applyStoreCredit,
-            ...rest
-        } = this.props;
-
-        const {
-            didExceedSpamLimit,
-            isReady,
-            selectedMethod = defaultMethod,
-            shouldDisableSubmit,
-            validationSchemas,
-            shouldHidePaymentSubmitButton,
-        } = this.state;
-
-        const uniqueSelectedMethodId =
-            selectedMethod && getUniquePaymentMethodId(selectedMethod.id, selectedMethod.gateway);
-
-        return (
-            <PaymentContext.Provider value={this.getContextValue()}>
-                <ChecklistSkeleton isLoading={!isReady}>
-                    {!isEmpty(methods) && defaultMethod && (
-                        <PaymentForm
-                            {...rest}
-                            defaultGatewayId={defaultMethod.gateway}
-                            defaultMethodId={defaultMethod.id}
-                            didExceedSpamLimit={didExceedSpamLimit}
-                            isInitializingPayment={isInitializingPayment}
-                            isUsingMultiShipping={isUsingMultiShipping}
-                            methods={methods}
-                            onMethodSelect={this.setSelectedMethod}
-                            onStoreCreditChange={this.handleStoreCreditChange}
-                            onSubmit={this.handleSubmit}
-                            onUnhandledError={this.handleError}
-                            selectedMethod={selectedMethod}
-                            shouldDisableSubmit={
-                                (uniqueSelectedMethodId &&
-                                    shouldDisableSubmit[uniqueSelectedMethodId]) ||
-                                undefined
-                            }
-                            shouldHidePaymentSubmitButton={
-                                (uniqueSelectedMethodId &&
-                                    rest.isPaymentDataRequired() &&
-                                    shouldHidePaymentSubmitButton[uniqueSelectedMethodId]) ||
-                                undefined
-                            }
-                            validationSchema={
-                                (uniqueSelectedMethodId &&
-                                    validationSchemas[uniqueSelectedMethodId]) ||
-                                undefined
-                            }
-                        />
+            return (
+                <ErrorModal
+                    error={error}
+                    message={mapSubmitOrderErrorMessage(
+                        error,
+                        language.translate.bind(language),
+                        shouldLocaliseErrorMessages,
                     )}
-                </ChecklistSkeleton>
+                    onClose={handleCloseModal}
+                    title={mapSubmitOrderErrorTitle(error, language.translate.bind(language))}
+                />
+            );
+        }
 
-                {this.renderOrderErrorModal()}
-                {this.renderEmbeddedSupportErrorModal()}
-            </PaymentContext.Provider>
-        );
-    }
+    const renderEmbeddedSupportErrorModal =(): ReactNode => {
+            const { checkEmbeddedSupport = noop, methods } = props;
 
-    private renderOrderErrorModal(): ReactNode {
-        const { finalizeOrderError, language, shouldLocaliseErrorMessages, submitOrderError } =
-            this.props;
+            try {
+                checkEmbeddedSupport(methods.map(({ id }) => id));
+            } catch (error) {
+                if (error instanceof Error) {
+                    return <ErrorModal error={error} onClose={handleCloseModal} />;
+                }
+            }
 
-        // FIXME: Export correct TS interface
-        const error: any = submitOrderError || finalizeOrderError;
-
-        if (
-            !error ||
-            error.type === 'order_finalization_not_required' ||
-            error.type === 'payment_cancelled' ||
-            error.type === 'payment_invalid_form' ||
-            error.type === 'spam_protection_not_completed' ||
-            error.type === 'invalid_hosted_form_value'
-        ) {
             return null;
         }
 
-        return (
-            <ErrorModal
-                error={error}
-                message={mapSubmitOrderErrorMessage(
-                    error,
-                    language.translate.bind(language),
-                    shouldLocaliseErrorMessages,
-                )}
-                onClose={this.handleCloseModal}
-                title={mapSubmitOrderErrorTitle(error, language.translate.bind(language))}
-            />
-        );
-    }
+    const disableSubmit = (method: PaymentMethod, disabled = true) : void => {
+            const uniqueId = getUniquePaymentMethodId(method.id, method.gateway);
+            const { shouldDisableSubmit } = state;
 
-    private renderEmbeddedSupportErrorModal(): ReactNode {
-        const { checkEmbeddedSupport = noop, methods } = this.props;
-
-        try {
-            checkEmbeddedSupport(methods.map(({ id }) => id));
-        } catch (error) {
-            if (error instanceof Error) {
-                return <ErrorModal error={error} onClose={this.handleCloseModal} />;
-            }
-        }
-
-        return null;
-    }
-
-    private disableSubmit: (method: PaymentMethod, disabled?: boolean) => void = (
-        method,
-        disabled = true,
-    ) => {
-        const uniqueId = getUniquePaymentMethodId(method.id, method.gateway);
-        const { shouldDisableSubmit } = this.state;
-
-        if (shouldDisableSubmit[uniqueId] === disabled) {
-            return;
-        }
-
-        this.setState({
-            shouldDisableSubmit: {
-                ...shouldDisableSubmit,
-                [uniqueId]: disabled,
-            },
-        });
-    };
-
-    private hidePaymentSubmitButton: (method: PaymentMethod, disabled?: boolean) => void = (
-        method,
-        disabled = true,
-    ) => {
-        const uniqueId = getUniquePaymentMethodId(method.id, method.gateway);
-        const { shouldHidePaymentSubmitButton } = this.state;
-
-        if (shouldHidePaymentSubmitButton[uniqueId] === disabled) {
-            return;
-        }
-
-        this.setState({
-            shouldHidePaymentSubmitButton: {
-                ...shouldHidePaymentSubmitButton,
-                [uniqueId]: disabled,
-            },
-        });
-    };
-
-    private handleBeforeUnload: (event: BeforeUnloadEvent) => string | undefined = (event) => {
-        const { defaultMethod, isSubmittingOrder, language } = this.props;
-        const { selectedMethod = defaultMethod } = this.state;
-
-        if (
-            !isSubmittingOrder ||
-            !selectedMethod ||
-            selectedMethod.type === PaymentMethodProviderType.Hosted ||
-            selectedMethod.type === PaymentMethodProviderType.PPSDK ||
-            selectedMethod.skipRedirectConfirmationAlert
-        ) {
-            return;
-        }
-
-        const message = language.translate('common.leave_warning');
-
-        event.returnValue = message;
-
-        return message;
-    };
-
-    private handleCloseModal: (event: Event, props: ErrorModalOnCloseProps) => Promise<void> =
-        async (_, { error }) => {
-            if (!error) {
+            if (shouldDisableSubmit[uniqueId] === disabled) {
                 return;
             }
 
-            const { cartUrl, clearError, loadCheckout } = this.props;
-            const { type: errorType } = error as any; // FIXME: Export correct TS interface
-
-            if (
-                errorType === 'provider_fatal_error' ||
-                errorType === 'order_could_not_be_finalized_error'
-            ) {
-                window.location.replace(cartUrl || '/');
-            }
-
-            if (errorType === 'tax_provider_unavailable') {
-                window.location.reload();
-            }
-
-            if (errorType === 'cart_consistency') {
-                await loadCheckout();
-            }
-
-            if (isErrorWithType(error) && error.body) {
-                const { body, headers, status } = error;
-
-                if (body.type === 'provider_error' && headers.location) {
-                    window.top?.location.assign(headers.location);
-                }
-
-                // Reload the checkout object to get the latest `shouldExecuteSpamCheck` value,
-                // which will in turn make `SpamProtectionField` visible again.
-                // NOTE: As a temporary fix, we're checking the status code instead of the error
-                // type because of an issue with Nginx config, which causes the server to return
-                // HTML page instead of JSON response when there is a 429 error.
-                if (
-                    status === 429 ||
-                    body.type === 'spam_protection_expired' ||
-                    body.type === 'spam_protection_failed'
-                ) {
-                    this.setState({ didExceedSpamLimit: true });
-
-                    await loadCheckout();
-                }
-            }
-
-            clearError(error);
+            setState(prevState => ({ ...prevState,
+                shouldDisableSubmit: {
+                    ...shouldDisableSubmit,
+                    [uniqueId]: disabled,
+                },
+            }));
         };
 
-    private handleStoreCreditChange: (useStoreCredit: boolean) => void = async (useStoreCredit) => {
-        const { applyStoreCredit, onUnhandledError = noop } = this.props;
+    const hidePaymentSubmitButton = (method: PaymentMethod, disabled = true): void => {
+            const uniqueId = getUniquePaymentMethodId(method.id, method.gateway);
+            const { shouldHidePaymentSubmitButton } = state;
+
+            if (shouldHidePaymentSubmitButton[uniqueId] === disabled) {
+                return;
+            }
+
+            setState(prevState => ({ ...prevState,
+                shouldHidePaymentSubmitButton: {
+                    ...shouldHidePaymentSubmitButton,
+                    [uniqueId]: disabled,
+                },
+            }));
+        };
+
+    const handleBeforeUnload = (event: BeforeUnloadEvent) : string | undefined => {
+            const { defaultMethod, isSubmittingOrder, language } = props;
+            const { selectedMethod = defaultMethod } = state;
+
+            if (
+                !isSubmittingOrder ||
+                !selectedMethod ||
+                selectedMethod.type === PaymentMethodProviderType.Hosted ||
+                selectedMethod.type === PaymentMethodProviderType.PPSDK ||
+                selectedMethod.skipRedirectConfirmationAlert
+            ) {
+                return;
+            }
+
+            const message = language.translate('common.leave_warning');
+
+            event.returnValue = message;
+
+            return message;
+        };
+
+    const handleCloseModal = async (_: Event, { error }: ErrorModalOnCloseProps) : Promise<void> => {
+                if (!error) {
+                    return;
+                }
+
+                const { cartUrl, clearError, loadCheckout } = props;
+                const { type: errorType } = error as any; // FIXME: Export correct TS interface
+
+                if (
+                    errorType === 'provider_fatal_error' ||
+                    errorType === 'order_could_not_be_finalized_error'
+                ) {
+                    window.location.replace(cartUrl || '/');
+                }
+
+                if (errorType === 'tax_provider_unavailable') {
+                    window.location.reload();
+                }
+
+                if (errorType === 'cart_consistency') {
+                    await loadCheckout();
+                }
+
+                if (isErrorWithType(error) && error.body) {
+                    const { body, headers, status } = error;
+
+                    if (body.type === 'provider_error' && headers.location) {
+                        window.top?.location.assign(headers.location);
+                    }
+
+                    // Reload the checkout object to get the latest `shouldExecuteSpamCheck` value,
+                    // which will in turn make `SpamProtectionField` visible again.
+                    // NOTE: As a temporary fix, we're checking the status code instead of the error
+                    // type because of an issue with Nginx config, which causes the server to return
+                    // HTML page instead of JSON response when there is a 429 error.
+                    if (
+                        status === 429 ||
+                        body.type === 'spam_protection_expired' ||
+                        body.type === 'spam_protection_failed'
+                    ) {
+                        setState(prevState => ({ ...prevState, didExceedSpamLimit: true }));
+
+                        await loadCheckout();
+                    }
+                }
+
+                clearError(error);
+            };
+
+    const handleStoreCreditChange = useCallback(async (useStoreCredit: boolean) : Promise<void> => {
+        const { applyStoreCredit, onUnhandledError = noop } = props;
 
         try {
             await applyStoreCredit(useStoreCredit);
         } catch (e) {
             onUnhandledError(e);
         }
-    };
+    }, []);
 
-    private handleError: (error: Error) => void = (error: Error) => {
-        const { onUnhandledError = noop, errorLogger } = this.props;
+    const handleError = useCallback((error: Error) : void => {
+        const { onUnhandledError = noop, errorLogger } = props;
 
         const { type } = error as any;
 
@@ -408,9 +278,9 @@ class Payment extends Component<
         }
 
         return onUnhandledError(error);
-    };
+    }, []);
 
-    private handleSubmit: (values: PaymentFormValues) => void = async (values) => {
+    const handleSubmit = useCallback(async (values: PaymentFormValues) => {
         const {
             defaultMethod,
             loadPaymentMethods,
@@ -420,9 +290,9 @@ class Payment extends Component<
             onSubmitError = noop,
             submitOrder,
             analyticsTracker
-        } = this.props;
+        } = props;
 
-        const { selectedMethod = defaultMethod, submitFunctions } = this.state;
+        const { selectedMethod = defaultMethod, submitFunctions } = state;
 
         analyticsTracker.clickPayButton({ shouldCreateAccount: values.shouldCreateAccount });
 
@@ -454,62 +324,10 @@ class Payment extends Component<
 
             onSubmitError(error);
         }
-    };
+    }, [props.defaultMethod, state.selectedMethod, props.isPaymentDataRequired()]);
 
-    private setSelectedMethod: (method?: PaymentMethod) => void = (method) => {
-        const { selectedMethod } = this.state;
-
-        if (selectedMethod === method) {
-            return;
-        }
-
-        if (method) {
-            this.trackSelectedPaymentMethod(method);
-        }
-
-        this.setState({ selectedMethod: method });
-    };
-
-    private setSubmit: (
-        method: PaymentMethod,
-        fn: (values: PaymentFormValues) => void | null,
-    ) => void = (method, fn) => {
-        const uniqueId = getUniquePaymentMethodId(method.id, method.gateway);
-        const { submitFunctions } = this.state;
-
-        if (submitFunctions[uniqueId] === fn) {
-            return;
-        }
-
-        this.setState({
-            submitFunctions: {
-                ...submitFunctions,
-                [uniqueId]: fn,
-            },
-        });
-    };
-
-    private setValidationSchema: (
-        method: PaymentMethod,
-        schema: ObjectSchema<Partial<PaymentFormValues>> | null,
-    ) => void = (method, schema) => {
-        const uniqueId = getUniquePaymentMethodId(method.id, method.gateway);
-        const { validationSchemas } = this.state;
-
-        if (validationSchemas[uniqueId] === schema) {
-            return;
-        }
-
-        this.setState({
-            validationSchemas: {
-                ...validationSchemas,
-                [uniqueId]: schema,
-            },
-        });
-    };
-
-    private trackSelectedPaymentMethod(method: PaymentMethod) {
-        const { analyticsTracker } = this.props;
+    const trackSelectedPaymentMethod = (method: PaymentMethod) => {
+        const { analyticsTracker } = props;
 
         const methodName = method.config.displayName || method.id;
         const methodId = method.id;
@@ -517,38 +335,206 @@ class Payment extends Component<
         analyticsTracker.selectedPaymentMethod(methodName, methodId);
     }
 
-    private async loadPaymentMethodsOrThrow(): Promise<void> {
+    const setSelectedMethod = useCallback((method?: PaymentMethod) : void => {
+        const { selectedMethod } = state;
+
+        if (selectedMethod === method) {
+            return;
+        }
+
+        if (method) {
+            trackSelectedPaymentMethod(method);
+        }
+
+        setState(prevState => ({ ...prevState, selectedMethod: method }));
+    }, []);
+
+    const setSubmit = (
+        method: PaymentMethod,
+        fn: (values: PaymentFormValues) => void | null,
+    ): void => {
+        const uniqueId = getUniquePaymentMethodId(method.id, method.gateway);
+        const { submitFunctions } = state;
+
+        if (submitFunctions[uniqueId] === fn) {
+            return;
+        }
+
+        setState(prevState => ({ ...prevState,
+            submitFunctions: {
+                ...submitFunctions,
+                [uniqueId]: fn,
+            },
+        }));
+    };
+
+    const setValidationSchema = (
+        method: PaymentMethod,
+        schema: ObjectSchema<Partial<PaymentFormValues>> | null,
+    ): void => {
+        const uniqueId = getUniquePaymentMethodId(method.id, method.gateway);
+        const { validationSchemas } = state;
+
+        if (validationSchemas[uniqueId] === schema) {
+            return;
+        }
+
+        setState(prevState => ({ ...prevState,
+            validationSchemas: {
+                ...validationSchemas,
+                [uniqueId]: schema,
+            },
+        }));
+    };
+
+    const loadPaymentMethodsOrThrow = async (): Promise<void> => {
         const {
             loadPaymentMethods,
             onUnhandledError = noop,
-        } = this.props;
+        } = props;
 
         try {
             await loadPaymentMethods();
 
-            const selectedMethod = this.state.selectedMethod || this.props.defaultMethod;
+            const selectedMethod = state.selectedMethod || props.defaultMethod;
 
             if (selectedMethod) {
-                this.trackSelectedPaymentMethod(selectedMethod);
+                trackSelectedPaymentMethod(selectedMethod);
             }
         } catch (error) {
             onUnhandledError(error);
         }
     }
 
-    private async handleCartTotalChange(): Promise<void> {
-        const { isReady } = this.state;
+    const handleCartTotalChange = async (): Promise<void> => {
+        const isReady = isReadyRef.current;
 
         if (!isReady) {
             return;
         }
 
-        this.setState({ isReady: false });
+        setState(prevState => ({ ...prevState, isReady: false }));
 
-        await this.loadPaymentMethodsOrThrow();
+        await loadPaymentMethodsOrThrow();
 
-        this.setState({ isReady: true });
+        setState(prevState => ({ ...prevState,  isReady: true }));
     }
+
+    const getContextValue = memoizeOne(() => {
+        return {
+            disableSubmit,
+            setSubmit,
+            setValidationSchema,
+            hidePaymentSubmitButton,
+        };
+    });
+
+    useEffect(() => {
+        isReadyRef.current = state.isReady;
+    }, [state.isReady]);
+
+    useEffect(() => {
+        const init = async () => {
+            const {
+                finalizeOrderIfNeeded,
+                onFinalize = noop,
+                onFinalizeError = noop,
+                onReady = noop,
+                usableStoreCredit,
+                checkoutServiceSubscribe,
+            } = props;
+
+            if (usableStoreCredit) {
+                await handleStoreCreditChange(true);
+            }
+
+            await loadPaymentMethodsOrThrow();
+
+            try {
+                const state = await finalizeOrderIfNeeded();
+                const order = state.data.getOrder();
+
+                onFinalize(order?.orderId);
+            } catch (error) {
+                if (isErrorWithType(error) && error.type !== 'order_finalization_not_required') {
+                    onFinalizeError(error);
+                }
+            }
+
+            grandTotalChangeUnsubscribe.current = checkoutServiceSubscribe(
+                () => handleCartTotalChange(),
+                ({ data }) => data.getCheckout()?.grandTotal,
+                ({ data }) => data.getCheckout()?.outstandingBalance,
+            );
+
+            window.addEventListener('beforeunload', handleBeforeUnload);
+            setState(prevState => ({ ...prevState, isReady: true }));
+            onReady();
+        }
+
+        void init();
+
+        return () => {
+            const deInit = () => {
+                if (grandTotalChangeUnsubscribe.current) {
+                    grandTotalChangeUnsubscribe.current();
+                    grandTotalChangeUnsubscribe.current = undefined;
+                }
+
+                window.removeEventListener('beforeunload', handleBeforeUnload);
+            }
+
+            deInit();
+        }
+    }, []);
+
+    useEffect(() => {
+        const { checkEmbeddedSupport = noop, methods } = props;
+
+        checkEmbeddedSupport(methods.map(({ id }) => id));
+    }, [props.methods]);
+
+    const uniqueSelectedMethodId = props.defaultMethod && getUniquePaymentMethodId(
+        state.selectedMethod?.id ?? props.defaultMethod?.id,
+        state.selectedMethod?.gateway ?? props.defaultMethod?.gateway
+    );
+
+    return (
+        <PaymentContext.Provider value={getContextValue()}>
+            <ChecklistSkeleton isLoading={!state.isReady}>
+                {!isEmpty(props.methods) && props.defaultMethod && (
+                    <PaymentForm
+                        availableStoreCredit={props.availableStoreCredit}
+                        defaultGatewayId={props.defaultMethod.gateway}
+                        defaultMethodId={props.defaultMethod.id}
+                        didExceedSpamLimit={state.didExceedSpamLimit}
+                        isEmbedded={props.isEmbedded}
+                        isInitializingPayment={props.isInitializingPayment}
+                        isPaymentDataRequired={props.isPaymentDataRequired}
+                        isStoreCreditApplied = {props.isStoreCreditApplied}
+                        isTermsConditionsRequired={props.isTermsConditionsRequired}
+                        isUsingMultiShipping={props.isUsingMultiShipping}
+                        methods={props.methods}
+                        onMethodSelect={setSelectedMethod}
+                        onStoreCreditChange={handleStoreCreditChange}
+                        onSubmit={handleSubmit}
+                        onUnhandledError={handleError}
+                        selectedMethod={state.selectedMethod}
+                        shouldDisableSubmit={(uniqueSelectedMethodId && state.shouldDisableSubmit[uniqueSelectedMethodId]) || undefined}
+                        shouldExecuteSpamCheck = {props.shouldExecuteSpamCheck}
+                        shouldHidePaymentSubmitButton={(uniqueSelectedMethodId && props.isPaymentDataRequired() && state.shouldHidePaymentSubmitButton[uniqueSelectedMethodId]) || undefined}
+                        termsConditionsText={props.termsConditionsText}
+                        termsConditionsUrl={props.termsConditionsUrl}
+                        usableStoreCredit={props.usableStoreCredit}
+                        validationSchema={(uniqueSelectedMethodId && state.validationSchemas[uniqueSelectedMethodId]) || undefined}
+                    />
+                )}
+            </ChecklistSkeleton>
+
+            {renderOrderErrorModal()}
+            {renderEmbeddedSupportErrorModal()}
+        </PaymentContext.Provider>
+    );
 }
 
 export function mapToPaymentProps({
@@ -613,14 +599,10 @@ export function mapToPaymentProps({
 
     filteredMethods = methods.filter((method: PaymentMethod) => {
         if (method.id === PaymentMethodId.Bolt && method.initializationData) {
-            return !!method.initializationData.showInCheckout;
+            return Boolean(method.initializationData.showInCheckout);
         }
 
-        if (method.id === PaymentMethodId.BraintreeLocalPaymentMethod) {
-            return false;
-        }
-
-        return true;
+        return method.id !== PaymentMethodId.BraintreeLocalPaymentMethod;
     });
 
     if (consignments && consignments.length > 1) {

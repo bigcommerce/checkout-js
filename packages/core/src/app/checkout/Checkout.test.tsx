@@ -539,17 +539,19 @@ describe('Checkout', () => {
         it('logs unhandled error', async () => {
             const error = new Error();
 
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShipping);
+
             jest.spyOn(checkoutService, 'loadBillingAddressFields').mockImplementation(() => {
                 throw error;
             });
-
-            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShipping);
 
             render(<CheckoutTest {...defaultProps} />);
 
             await checkout.waitForBillingStep();
 
-            expect(defaultProps.errorLogger.log).toHaveBeenCalledWith(error);
+            await waitFor(()=>{
+                expect(defaultProps.errorLogger.log).toHaveBeenCalledWith(error);
+            });
         });
     });
 
@@ -566,7 +568,7 @@ describe('Checkout', () => {
             expect(screen.getByText(/place order/i)).toBeInTheDocument();
         });
 
-        it.only('logs unhandled error', async () => {
+        it('logs unhandled error', async () => {
             const error = new Error();
 
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
