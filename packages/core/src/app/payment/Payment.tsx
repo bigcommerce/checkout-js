@@ -104,16 +104,9 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
         validationSchemas: {},
         submitFunctions: {},
     });
-    const grandTotalChangeUnsubscribe = useRef<() => void>();
 
-    const getContextValue = memoizeOne(() => {
-        return {
-            disableSubmit,
-            setSubmit,
-            setValidationSchema,
-            hidePaymentSubmitButton,
-        };
-    });
+    const isReadyRef = useRef(state.isReady);
+    const grandTotalChangeUnsubscribe = useRef<() => void>();
 
     const renderOrderErrorModal = (): ReactNode => {
             const { finalizeOrderError, language, shouldLocaliseErrorMessages, submitOrderError } =
@@ -331,7 +324,7 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
 
             onSubmitError(error);
         }
-    }, [props.defaultMethod, state.selectedMethod]);
+    }, [props.defaultMethod, state.selectedMethod, props.isPaymentDataRequired()]);
 
     const trackSelectedPaymentMethod = (method: PaymentMethod) => {
         const { analyticsTracker } = props;
@@ -414,7 +407,7 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
     }
 
     const handleCartTotalChange = async (): Promise<void> => {
-        const { isReady } = state;
+        const isReady = isReadyRef.current;
 
         if (!isReady) {
             return;
@@ -426,6 +419,19 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
 
         setState(prevState => ({ ...prevState,  isReady: true }));
     }
+
+    const getContextValue = memoizeOne(() => {
+        return {
+            disableSubmit,
+            setSubmit,
+            setValidationSchema,
+            hidePaymentSubmitButton,
+        };
+    });
+
+    useEffect(() => {
+        isReadyRef.current = state.isReady;
+    }, [state.isReady]);
 
     useEffect(() => {
         const init = async () => {
