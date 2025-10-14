@@ -358,9 +358,7 @@ export const CreditCardPaymentMethodComponent = (
 
     const storeConfig = getStoreConfig();
 
-    const SentryMessage = methodProp
-        ? `CreditCardFieldset method "${methodProp.method}" (ID: ${methodProp.id}, type: ${methodProp.type}) ${methodProp.gateway ? `via ${methodProp.gateway}` : 'with no gateway'}, supports ${methodProp.supportedCards?.length ? methodProp.supportedCards.join(', ') : 'no specific cards'}, ${methodProp.skipRedirectConfirmationAlert ? 'skips' : 'requires'} redirect confirmation${methodProp.returnUrl ? `, return URL: ${methodProp.returnUrl}` : ''}.`
-        : '';
+    const SentryMessage = methodProp ? `DataCreditCardFieldset ${JSON.stringify(methodProp)}` : '';
 
     if (!storeConfig) {
         throw Error('Unable to get config or customer');

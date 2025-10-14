@@ -13,7 +13,7 @@ import { createTDOnlineMartPaymentStrategy } from '@bigcommerce/checkout-sdk/int
 import { createZipPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/zip';
 import React, { type FunctionComponent, lazy, memo, Suspense } from 'react';
 
-import { type CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { CaptureMessageComponent, type CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 
 import { withCheckout } from '../../checkout';
 
@@ -76,7 +76,12 @@ const PaymentMethodComponent: FunctionComponent<
         method.method === PaymentMethodType.CreditCard ||
         method.type === PaymentMethodProviderType.Api
     ) {
-        return <Suspense><HostedCreditCardPaymentMethod {...props} /></Suspense>;
+        const sentryMessage = `DataHostedCreditCardPaymentMethod ${JSON.stringify(method)}`;
+
+        return <>
+                <CaptureMessageComponent message={sentryMessage} />
+                <Suspense><HostedCreditCardPaymentMethod {...props} /></Suspense>
+            </>;
     }
 
     return null;

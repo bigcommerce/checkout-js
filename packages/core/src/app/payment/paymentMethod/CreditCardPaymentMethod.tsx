@@ -212,7 +212,7 @@ class CreditCardPaymentMethod extends Component<
             ? isInstrumentCardCodeRequiredProp(selectedInstrument, method)
             : false;
 
-        const SentryMessage = method ? `CoreCreditCardPaymentMethod method "${method.method}" (ID: ${method.id}, type: ${method.type}) ${method.gateway ? `via ${method.gateway}` : 'with no gateway'}, supports ${method.supportedCards?.length ? method.supportedCards.join(', ') : 'no specific cards'}, ${method.skipRedirectConfirmationAlert ? 'skips' : 'requires'} redirect confirmation${method.returnUrl ? `, return URL: ${method.returnUrl}` : ''}.` : '';
+        const SentryMessage = method ? `DataCoreCreditCardPaymentMethod  ${JSON.stringify(method)}` : '';
 
         return (
             <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
