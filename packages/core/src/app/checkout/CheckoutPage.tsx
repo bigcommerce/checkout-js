@@ -41,7 +41,6 @@ import { retry } from '../common/utility';
 import {
     CheckoutButtonContainer,
     CheckoutSuggestion,
-    Customer,
     CustomerInfo,
     type CustomerSignOutEvent,
     CustomerViewType,
@@ -60,6 +59,16 @@ import CheckoutStepType from './CheckoutStepType';
 import type CheckoutSupport from './CheckoutSupport';
 import { mapCheckoutComponentErrorMessage } from './mapErrorMessage';
 import mapToCheckoutProps from './mapToCheckoutProps';
+
+const Customer = lazy(() =>
+    retry(
+        () =>
+            import(
+                /* webpackChunkName: "customer" */
+                '../customer/Customer'
+                ),
+    ),
+);
 
 const Billing = lazy(() =>
     retry(
@@ -422,24 +431,26 @@ class Checkout extends Component<
                     />
                 }
             >
-                <Customer
-                    checkEmbeddedSupport={this.checkEmbeddedSupport}
-                    isEmbedded={isEmbedded()}
-                    isSubscribed={isSubscribed}
-                    isWalletButtonsOnTop = {isShowingWalletButtonsOnTop }
-                    onAccountCreated={this.navigateToNextIncompleteStep}
-                    onChangeViewType={this.setCustomerViewType}
-                    onContinueAsGuest={this.navigateToNextIncompleteStep}
-                    onContinueAsGuestError={this.handleError}
-                    onReady={this.handleReady}
-                    onSignIn={this.navigateToNextIncompleteStep}
-                    onSignInError={this.handleError}
-                    onSubscribeToNewsletter={this.handleNewsletterSubscription}
-                    onUnhandledError={this.handleUnhandledError}
-                    onWalletButtonClick={this.handleWalletButtonClick}
-                    step={step}
-                    viewType={customerViewType}
-                />
+                <LazyContainer loadingSkeleton={<AddressFormSkeleton />}>
+                    <Customer
+                        checkEmbeddedSupport={this.checkEmbeddedSupport}
+                        isEmbedded={isEmbedded()}
+                        isSubscribed={isSubscribed}
+                        isWalletButtonsOnTop = {isShowingWalletButtonsOnTop }
+                        onAccountCreated={this.navigateToNextIncompleteStep}
+                        onChangeViewType={this.setCustomerViewType}
+                        onContinueAsGuest={this.navigateToNextIncompleteStep}
+                        onContinueAsGuestError={this.handleError}
+                        onReady={this.handleReady}
+                        onSignIn={this.navigateToNextIncompleteStep}
+                        onSignInError={this.handleError}
+                        onSubscribeToNewsletter={this.handleNewsletterSubscription}
+                        onUnhandledError={this.handleUnhandledError}
+                        onWalletButtonClick={this.handleWalletButtonClick}
+                        step={step}
+                        viewType={customerViewType}
+                    />
+                </LazyContainer>
             </CheckoutStep>
         );
     }
