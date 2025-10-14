@@ -494,10 +494,9 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
         checkEmbeddedSupport(methods.map(({ id }) => id));
     }, [props.methods]);
 
-    const uniqueSelectedMethodId = props.defaultMethod && getUniquePaymentMethodId(
-        state.selectedMethod?.id ?? props.defaultMethod?.id,
-        state.selectedMethod?.gateway ?? props.defaultMethod?.gateway
-    );
+    const { selectedMethod = props.defaultMethod } = state;
+    const uniqueSelectedMethodId =
+        selectedMethod && getUniquePaymentMethodId(selectedMethod.id, selectedMethod.gateway);
 
     return (
         <PaymentContext.Provider value={getContextValue()}>
