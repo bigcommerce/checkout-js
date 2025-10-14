@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.688.1](https://github.com/bigcommerce/checkout-js/compare/v1.688.0...v1.688.1) (2025-10-14)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9476 Fix uniqueSelectedMethodId ([#2636](https://github.com/bigcommerce/checkout-js/issues/2636)) ([f2b5bd5](https://github.com/bigcommerce/checkout-js/commit/f2b5bd54a65cbc678d0880e960405c40fd9c2033))
+
 ## [1.688.0](https://github.com/bigcommerce/checkout-js/compare/v1.687.3...v1.688.0) (2025-10-13)
 
 
