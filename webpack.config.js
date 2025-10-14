@@ -302,6 +302,7 @@ function loaderConfig(options, argv) {
                 filename: `[name]-${appVersion}.js`,
                 library: LOADER_LIBRARY_NAME,
                 crossOriginLoading: 'anonymous',
+                publicPath: '/',
             },
             plugins: [
                 new SubresourceIntegrityPlugin({
