@@ -17,5 +17,5 @@
       }
     }
   },
-  "tags": ["scope:integration",  "scope:shared"]
+  "tags": ["scope:integration"]
 }
