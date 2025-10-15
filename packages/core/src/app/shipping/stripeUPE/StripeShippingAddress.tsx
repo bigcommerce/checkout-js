@@ -5,7 +5,6 @@ import {
     type Country,
     type ShippingInitializeOptions,
     type ShippingRequestOptions,
-    type StripeShippingEvent
 } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import React, { type FunctionComponent, memo, useCallback, useEffect, useState } from 'react';
@@ -17,6 +16,7 @@ import getRecommendedShippingOption from '../getRecommendedShippingOption';
 import hasSelectedShippingOptions from '../hasSelectedShippingOptions';
 import { type SingleShippingFormValues } from '../SingleShippingForm';
 
+import { type StripeShippingEvent } from './stripe-types';
 import StripeShippingAddressDisplay from './StripeShippingAddressDisplay';
 import StripeStateMapper from './StripeStateMapper';
 
