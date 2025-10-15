@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.689.0](https://github.com/bigcommerce/checkout-js/compare/v1.688.1...v1.689.0) (2025-10-15)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9547 Add CaptureMessage to Sentry Logger ([#2637](https://github.com/bigcommerce/checkout-js/issues/2637)) ([4f47fc9](https://github.com/bigcommerce/checkout-js/commit/4f47fc925450209af2adcad16ac5b1e3ee0fb389))
+
 ### [1.688.1](https://github.com/bigcommerce/checkout-js/compare/v1.688.0...v1.688.1) (2025-10-14)
 
 
