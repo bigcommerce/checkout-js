@@ -32,3 +32,4 @@ export {
 } from './CheckoutRootWrapperIds';
 export { SpecificError } from './errors';
 export { CountryData, getCountryData } from './CountryData';
+export { CaptureMessageComponent } from './CaptureMessageComponent';

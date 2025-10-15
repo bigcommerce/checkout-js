@@ -19,6 +19,7 @@ jest.mock('@bigcommerce/script-loader', () => ({
 const mockSentry = {
     init: jest.fn(),
     captureException: jest.fn(),
+    captureMessage: jest.fn(),
     globalHandlersIntegration: jest.fn(() => ({ name: 'GlobalHandlers' })),
     rewriteFramesIntegration: jest.fn(() => ({ name: 'RewriteFrames' })),
     lazyLoadIntegration: jest.fn(() => Promise.resolve(jest.fn(() => ({ name: 'RewriteFrames' })))),
@@ -372,6 +373,17 @@ describe('SentryErrorLogger', () => {
             await logger.log(error, tags, level);
 
             expect(consoleLogger.log).toHaveBeenCalledWith(error, tags, level);
+        });
+    });
+
+    describe('#logMessage()', () => {
+        it('logs a message', async () => {
+            const logger = new SentryErrorLogger(config, options);
+            const message = 'test message';
+
+            await logger.logMessage(message);
+
+            expect(mockSentry.captureMessage).toHaveBeenCalledWith(message);
         });
     });
 });

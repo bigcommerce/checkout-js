@@ -53,13 +53,13 @@ const CheckoutApp = (props: CheckoutAppProps): ReactElement => {
     }, []);
 
     return (
-        <ErrorBoundary logger={errorLogger}>
+        <ErrorBoundary errorLogger={errorLogger}>
             <LocaleProvider checkoutService={checkoutService}>
-                <CheckoutProvider checkoutService={checkoutService}>
+                <CheckoutProvider checkoutService={checkoutService} errorLogger={errorLogger}>
                     <AnalyticsProvider checkoutService={checkoutService}>
                         <ExtensionProvider
                             checkoutService={checkoutService}
-                            errorLogger={createErrorLogger()}
+                            errorLogger={errorLogger}
                         >
                             <ThemeProvider>
                                 <Checkout
