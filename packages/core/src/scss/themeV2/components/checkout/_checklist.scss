@@ -6,8 +6,8 @@
 
         .form-checklist-item {
             border: 1px solid $color-greyMedium;
-            border-radius: 3px;
-            margin: 3px 0;
+            border-radius: spacing("sixth");
+            margin: spacing("sixth") 0;
 
             &:first-child {
                 margin-top: 0;
