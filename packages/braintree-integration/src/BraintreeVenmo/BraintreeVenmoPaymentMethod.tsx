@@ -1,4 +1,5 @@
 import React, { type FunctionComponent } from 'react';
+import { createBraintreeVenmoPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
 
 import {
     type PaymentMethodProps,
@@ -6,6 +7,7 @@ import {
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 import { HostedPaymentComponent } from '@bigcommerce/checkout/hosted-payment-integration';
+import { type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 
 const BraintreeVenmoPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     checkoutService,
@@ -14,12 +16,19 @@ const BraintreeVenmoPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     method,
     paymentForm,
 }) => {
+    const initializeBraintreeVenmoPayment = async (options: PaymentInitializeOptions) => {
+        return checkoutService.initializePayment({
+            ...options,
+            integrations: [createBraintreeVenmoPaymentStrategy],
+        });
+    };
+
     return (
         <HostedPaymentComponent
             checkoutService={checkoutService}
             checkoutState={checkoutState}
             deinitializePayment={checkoutService.deinitializePayment}
-            initializePayment={checkoutService.initializePayment}
+            initializePayment={initializeBraintreeVenmoPayment}
             language={language}
             method={method}
             paymentForm={paymentForm}

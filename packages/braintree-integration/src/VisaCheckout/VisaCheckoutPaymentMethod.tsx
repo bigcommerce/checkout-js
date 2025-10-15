@@ -1,5 +1,6 @@
 import { type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent, useCallback } from 'react';
+import { createBraintreeVisaCheckoutPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
 
 import {
     type CheckoutButtonResolveId,
@@ -38,6 +39,7 @@ const VisaCheckoutPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
             const mergedOptions = {
                 ...defaultOptions,
+                integrations: [createBraintreeVisaCheckoutPaymentStrategy],
                 braintreevisacheckout: {
                     onError: onUnhandledError,
                     onPaymentSelect: () => reinitializePayment(mergedOptions),
