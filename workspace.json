@@ -17,6 +17,7 @@
     "checkoutcom-integration": "packages/checkoutcom-integration",
     "clearpay-integration": "packages/clearpay-integration",
     "core": "packages/core",
+    "contexts": "packages/contexts",
     "credit-card-integration": "packages/credit-card-integration",
     "dom-utils": "packages/dom-utils",
     "error-handling-utils": "packages/error-handling-utils",

@@ -3,6 +3,7 @@
 * @bigcommerce/team-checkout
 /packages/checkout-button-integration @bigcommerce/team-checkout
 /packages/core @bigcommerce/team-checkout
+/packages/contexts @bigcommerce/team-checkout
 /packages/dom-utils @bigcommerce/team-checkout
 /packages/error-handling-utils @bigcommerce/team-checkout
 /packages/hosted-credit-card-integration @bigcommerce/team-checkout
