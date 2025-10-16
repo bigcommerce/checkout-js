@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.691.1](https://github.com/bigcommerce/checkout-js/compare/v1.691.0...v1.691.1) (2025-10-16)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9476 Improve Saving validationSchemas ([#2641](https://github.com/bigcommerce/checkout-js/issues/2641)) ([7216090](https://github.com/bigcommerce/checkout-js/commit/7216090837c8a723f709ef4d225be5eb76f152a7))
+
 ## [1.691.0](https://github.com/bigcommerce/checkout-js/compare/v1.690.0...v1.691.0) (2025-10-15)
 
 
