@@ -1,0 +1,70 @@
+.form-checklist {
+    @include themeV2 {
+        border: none;
+        display: flex;
+        flex-direction: column;
+
+        .form-checklist-item {
+            border: 1px solid $color-greyMedium;
+            border-radius: spacing("sixth");
+            margin: spacing("sixth") 0;
+
+            &:first-child {
+                margin-top: 0;
+            }
+
+            &:last-child {
+                margin-bottom: 0;
+            }         
+        }
+
+        .form-checklist-item--selected {
+            border: $input-border-width $input-border-style $color-black;
+        }
+
+        .form-checklist-header {
+            .form-label {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+
+                .shippingOptionLabel {
+                    width: 100%;
+                }
+            }
+
+            .shippingOption-desc {
+                font-weight: $fontWeight-bold;
+            }
+        }
+    }
+}
+
+.form-checklist-checkbox {
+    @include themeV2 {
+        &:focus ~ .form-label {
+            box-shadow: $checklist-focus-boxShadow;
+        }
+
+        & ~ .form-label::before {
+            border: 2px $input-border-style $input-border-color;
+        }
+    
+        &:checked ~ .form-label::before {
+            border-color: $color-black;
+            background-color: $color-black;
+        }
+    
+        &:checked ~ .form-label::after {
+            background-color: $color-white;
+        }
+    }
+}
+
+
+// Payment provider title
+.paymentProviderHeader-container {
+    @include themeV2 {
+        flex: 1;
+    }
+}
