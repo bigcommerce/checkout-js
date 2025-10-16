@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.691.4](https://github.com/bigcommerce/checkout-js/compare/v1.691.3...v1.691.4) (2025-10-16)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9429 Create Contexts Package ([#2643](https://github.com/bigcommerce/checkout-js/issues/2643)) ([5f6db67](https://github.com/bigcommerce/checkout-js/commit/5f6db675dc308efe305e1ddf125ac7f0ad6090e9))
+
 ### [1.691.3](https://github.com/bigcommerce/checkout-js/compare/v1.691.2...v1.691.3) (2025-10-16)
 
 ### [1.691.2](https://github.com/bigcommerce/checkout-js/compare/v1.691.1...v1.691.2) (2025-10-16)
