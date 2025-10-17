@@ -24,7 +24,6 @@ import { getGatewayOrderPayment, getOrder } from '../orders.mock';
 
 import { OrderConfirmation, type OrderConfirmationProps } from './OrderConfirmation';
 
-
 const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).*$/;
 
 // Function to make sure faker generates valid password as per regex

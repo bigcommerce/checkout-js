@@ -1,5 +1,21 @@
 
 import {
+    type BillingAddress,
+    type Cart,
+    type Checkout as CheckoutObject,
+    type CheckoutService,
+    createCheckoutService,
+    createEmbeddedCheckoutMessenger,
+    type Customer as CustomerData,
+    type EmbeddedCheckoutMessenger,
+    type StoreConfig,
+} from '@bigcommerce/checkout-sdk';
+import { faker } from '@faker-js/faker';
+import userEvent from '@testing-library/user-event';
+import { rest } from 'msw';
+import React, { act, type FunctionComponent } from 'react';
+
+import {
     type AnalyticsContextProps,
     type AnalyticsEvents,
     AnalyticsProviderMock,
@@ -25,21 +41,6 @@ import {
 } from '@bigcommerce/checkout/test-framework';
 import { renderWithoutWrapper as render, screen } from '@bigcommerce/checkout/test-utils';
 import { ThemeProvider } from '@bigcommerce/checkout/ui';
-import {
-    type BillingAddress,
-    type Cart,
-    type Checkout as CheckoutObject,
-    type CheckoutService,
-    createCheckoutService,
-    createEmbeddedCheckoutMessenger,
-    type Customer as CustomerData,
-    type EmbeddedCheckoutMessenger,
-    type StoreConfig,
-} from '@bigcommerce/checkout-sdk';
-import { faker } from '@faker-js/faker';
-import userEvent from '@testing-library/user-event';
-import { rest } from 'msw';
-import React, { act, type FunctionComponent } from 'react';
 
 import { getBillingAddress } from '../billing/billingAddresses.mock';
 import { getCart } from '../cart/carts.mock';

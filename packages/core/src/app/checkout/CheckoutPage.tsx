@@ -313,6 +313,7 @@ class Checkout extends Component<
                 );
             } else {
                 const { message, action } = mapCheckoutComponentErrorMessage(error, language.translate.bind(language));
+
                 errorModal = <ErrorModal
                         error={error}
                         message={message}
@@ -320,7 +321,6 @@ class Checkout extends Component<
                     />;
             }
         }
-
 
         return (
             <div className={classNames('remove-checkout-step-numbers', { 'is-embedded': isEmbedded() }, { 'themeV2': themeV2 })} data-test="checkout-page-container" id="checkout-page-container">
@@ -700,6 +700,7 @@ class Checkout extends Component<
 
         if (isErrorWithType(error) && error.type === 'empty_cart') {
             this.setState({ error });
+
             return;
         }
 

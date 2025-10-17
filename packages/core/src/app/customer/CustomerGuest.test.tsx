@@ -1,10 +1,5 @@
 import '@testing-library/jest-dom';
 
-import { AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
-import { createLocaleContext, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/locale';
-import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
-import { getGuestCustomer } from '@bigcommerce/checkout/test-mocks';
-import { render, screen } from '@bigcommerce/checkout/test-utils';
 import {
     type Cart,
     type Checkout,
@@ -16,6 +11,12 @@ import {
 import { faker } from '@faker-js/faker';
 import userEvent from '@testing-library/user-event';
 import React, { type FunctionComponent } from 'react';
+
+import { AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
+import { createLocaleContext, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/locale';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { getGuestCustomer } from '@bigcommerce/checkout/test-mocks';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getCart } from '../cart/carts.mock';
 import { getCheckout } from '../checkout/checkouts.mock';

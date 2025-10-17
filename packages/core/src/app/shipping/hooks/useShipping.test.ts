@@ -133,7 +133,6 @@ describe('useShipping', () => {
             expect(result.current.shouldShowMultiShipping).toBe(true);
         });
 
-
         it('is false when remote shipping is enabled', () => {
             jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
                 checkoutSettings: {
