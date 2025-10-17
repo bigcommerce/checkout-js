@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.693.1](https://github.com/bigcommerce/checkout-js/compare/v1.693.0...v1.693.1) (2025-10-17)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9429 Apply lint autofix ([#2647](https://github.com/bigcommerce/checkout-js/issues/2647)) ([f8c0171](https://github.com/bigcommerce/checkout-js/commit/f8c01710e5fc2172a1352273022ec48848494311))
+
 ## [1.693.0](https://github.com/bigcommerce/checkout-js/compare/v1.692.0...v1.693.0) (2025-10-17)
 
 
