@@ -2,9 +2,10 @@ import { type FormField } from '@bigcommerce/checkout-sdk';
 import { forIn, noop } from 'lodash';
 import React, { useCallback, useEffect, useRef } from 'react';
 
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString, useLocale } from '@bigcommerce/checkout/locale';
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
-import { DynamicFormField, DynamicFormFieldType, useThemeContext } from '@bigcommerce/checkout/ui';
+import { DynamicFormField, DynamicFormFieldType } from '@bigcommerce/checkout/ui';
 
 import { EMPTY_ARRAY, isFloatingLabelEnabled } from '../common/utility';
 import { type AutocompleteItem } from '../ui/autocomplete';
@@ -17,7 +18,7 @@ import {
     getAddressFormFieldLegacyName,
 } from './getAddressFormFieldInputId';
 import { GoogleAutocompleteFormField, mapToAddress } from './googleAutocomplete';
-import './AddressForm.scss'; 
+import './AddressForm.scss';
 
 const AddressForm: React.FC<AddressFormProps> = ({
         formFields,
@@ -36,10 +37,10 @@ const AddressForm: React.FC<AddressFormProps> = ({
             data: { getConfig, getBillingCountries, getShippingCountries }
         }
     } = useCheckout();
-    
+
     const config = getConfig();
-    const countries = (type === AddressType.Billing 
-        ? getBillingCountries() 
+    const countries = (type === AddressType.Billing
+        ? getBillingCountries()
         : getShippingCountries()
     ) || EMPTY_ARRAY;
     const googleMapsApiKey = config?.checkoutSettings.googleMapsApiKey || '';

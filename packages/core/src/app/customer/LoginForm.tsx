@@ -4,6 +4,7 @@ import { noop } from 'lodash';
 import React, { type FunctionComponent, memo, useCallback } from 'react';
 import { object, string } from 'yup';
 
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import {
     TranslatedHtml,
@@ -13,7 +14,6 @@ import {
     type WithLanguageProps,
 } from '@bigcommerce/checkout/locale';
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
-import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';

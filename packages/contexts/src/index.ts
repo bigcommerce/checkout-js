@@ -1,1 +1,1 @@
-// TODO
+export { useThemeContext, ThemeContext, ThemeProvider } from './theme';

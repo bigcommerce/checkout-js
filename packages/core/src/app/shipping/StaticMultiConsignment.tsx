@@ -2,10 +2,10 @@ import { type Cart, type Consignment } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import React, { type FunctionComponent, memo } from 'react';
 
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { localizeAddress, TranslatedString } from '@bigcommerce/checkout/locale';
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 import { isPayPalFastlaneAddress, PoweredByPayPalFastlaneLabel, usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
-import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 import ConsignmentLineItemDetail from './ConsignmentLineItemDetail';
 import findLineItems from './findLineItems';

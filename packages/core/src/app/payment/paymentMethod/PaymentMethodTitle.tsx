@@ -5,10 +5,11 @@ import { compact } from 'lodash';
 import React, { type FunctionComponent, memo, type ReactNode } from 'react';
 
 import { BigCommercePaymentsPayLaterBanner } from '@bigcommerce/checkout/bigcommerce-payments-utils'
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { type CheckoutContextProps , type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { BraintreePaypalCreditBanner, PaypalCommerceCreditBanner } from '@bigcommerce/checkout/paypal-utils';
-import { CreditCardIconList, mapFromPaymentMethodCardType, useThemeContext } from '@bigcommerce/checkout/ui';
+import { CreditCardIconList, mapFromPaymentMethodCardType } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../../checkout';
 import { connectFormik, type ConnectFormikProps } from '../../common/form';

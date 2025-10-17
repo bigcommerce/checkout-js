@@ -2,7 +2,7 @@ import { type ShippingOption } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import React from 'react';
 
-import { useThemeContext } from '@bigcommerce/checkout/ui';
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
 
 import { ShopperCurrency } from '../../currency';
 

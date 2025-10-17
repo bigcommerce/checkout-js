@@ -2,9 +2,10 @@ import { type Consignment } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import React from 'react';
 
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
-import { Alert, AlertType, useThemeContext } from '@bigcommerce/checkout/ui';
+import { Alert, AlertType } from '@bigcommerce/checkout/ui';
 
 import MultiShippingOptionsListV2 from './MultiShippingOptionsList';
 import { isLoadingSelector } from './ShippingOptions';

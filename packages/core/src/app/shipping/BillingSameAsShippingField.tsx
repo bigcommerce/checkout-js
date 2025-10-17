@@ -1,7 +1,7 @@
 import React, { type FunctionComponent, memo, useMemo } from 'react';
 
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { CheckboxFormField } from '../ui/form';
 

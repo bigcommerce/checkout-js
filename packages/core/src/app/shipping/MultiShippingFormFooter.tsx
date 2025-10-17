@@ -1,7 +1,7 @@
 import React, { type FunctionComponent } from 'react';
 
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { OrderComments } from '../orderComments';
 import { Alert, AlertType } from '../ui/alert';

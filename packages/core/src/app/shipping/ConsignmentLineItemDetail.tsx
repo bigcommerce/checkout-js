@@ -2,7 +2,7 @@ import { type PhysicalItem } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import React, { type FunctionComponent, memo } from 'react';
 
-import { useThemeContext } from '@bigcommerce/checkout/ui';
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
 
 import { type MultiShippingTableItemWithType } from './MultishippingType';
 

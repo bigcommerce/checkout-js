@@ -90,4 +90,3 @@ export {
     ModalTriggerModalProps,
 } from './modal';
 export { TooltipTrigger } from './tooltip';
-export { useThemeContext, ThemeContext, ThemeProvider } from './context';

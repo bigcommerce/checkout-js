@@ -3,10 +3,10 @@ import classNames from "classnames";
 import { find } from "lodash";
 import React, { useMemo, useState } from "react";
 
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { TranslatedString } from "@bigcommerce/checkout/locale";
 import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
-import { useThemeContext } from "@bigcommerce/checkout/ui";
 
 import { EMPTY_ARRAY } from "../common/utility";
 

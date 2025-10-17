@@ -7,9 +7,10 @@ import { type FormikProps, withFormik } from 'formik';
 import { noop } from 'lodash';
 import React, { type FunctionComponent, useMemo } from 'react';
 
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { DynamicFormField , useThemeContext } from '@bigcommerce/checkout/ui';
+import { DynamicFormField } from '@bigcommerce/checkout/ui';
 
 import { isRequestError } from '../common/error';
 import { Alert, AlertType } from '../ui/alert';
