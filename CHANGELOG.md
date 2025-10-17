@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.694.0](https://github.com/bigcommerce/checkout-js/compare/v1.693.2...v1.694.0) (2025-10-17)
+
+
+### Features
+
+* **payment:** PAYPAL-2615 update imports for visa checkout component ([#2640](https://github.com/bigcommerce/checkout-js/issues/2640)) ([89b0729](https://github.com/bigcommerce/checkout-js/commit/89b0729ef0dae23374d71a954079c9a86575988b))
+
 ### [1.693.2](https://github.com/bigcommerce/checkout-js/compare/v1.693.1...v1.693.2) (2025-10-17)
 
 
