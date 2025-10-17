@@ -1,5 +1,3 @@
-import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 import { 
     type CheckoutSelectors,
     type CustomerAccountRequestBody,
@@ -11,6 +9,9 @@ import {
     type GuestCredentials,
     type SignInEmail
 } from '@bigcommerce/checkout-sdk';
+
+import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
+import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
 import { isFloatingLabelEnabled } from '../common/utility';
 import getProviderWithCustomCheckout from '../payment/getProviderWithCustomCheckout';

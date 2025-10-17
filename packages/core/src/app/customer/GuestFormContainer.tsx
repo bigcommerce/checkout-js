@@ -1,8 +1,9 @@
+import { type Cart } from '@bigcommerce/checkout-sdk';
+import React from 'react';
+
 import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
 import { PaymentMethodId, useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 import { isPayPalFastlaneMethod } from '@bigcommerce/checkout/paypal-fastlane-integration';
-import { type Cart } from '@bigcommerce/checkout-sdk';
-import React from 'react';
 
 import type CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import getProviderWithCustomCheckout from '../payment/getProviderWithCustomCheckout';

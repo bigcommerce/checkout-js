@@ -9,7 +9,6 @@ import getShippableItemsCount from '../getShippableItemsCount';
 import getShippingMethodId from '../getShippingMethodId';
 import hasPromotionalItems from '../hasPromotionalItems';
 
-
 const deleteConsignmentsSelector = createSelector(
     ({ checkoutService: { deleteConsignment } }: CheckoutContextProps) => deleteConsignment,
     ({ checkoutState: { data } }: CheckoutContextProps) => data.getConsignments(),

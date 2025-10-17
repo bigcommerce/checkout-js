@@ -6,7 +6,6 @@ import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import { isErrorWithType } from '../common/error';
 
-
 interface SpamProtectionFieldProps {
     didExceedSpamLimit?: boolean;
     onUnhandledError?(error: Error): void;

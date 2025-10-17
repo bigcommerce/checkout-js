@@ -1,4 +1,3 @@
-import { useAnalytics } from '@bigcommerce/checkout/analytics';
 import {
     type CustomerCredentials,
 } from '@bigcommerce/checkout-sdk';
@@ -10,6 +9,7 @@ import { createStripeLinkV2CustomerStrategy, createStripeUPECustomerStrategy } f
 import { noop } from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
 
+import { useAnalytics } from '@bigcommerce/checkout/analytics';
 
 import type CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import { isErrorWithType } from '../common/error';
@@ -44,7 +44,6 @@ export interface CustomerProps {
     onUnhandledError?(error: Error): void;
     onWalletButtonClick?(methodName: string): void;
 }
-
 
 export interface CustomerState {
     isEmailLoginFormOpen: boolean;
@@ -135,7 +134,6 @@ const Customer: React.FC<CustomerProps> = ({
             void cleanup();
         };
     }, [customerData.actions.deinitializeCustomer, customerData.data.providerWithCustomCheckout, onUnhandledError]);
-
 
     // Event handlers converted to useCallback
     const handleChangeEmail = useCallback((email: string) => {
@@ -282,7 +280,6 @@ const Customer: React.FC<CustomerProps> = ({
             hasRequestedLoginEmail: false,
         }));
     }, []);
-
 
     // Main render logic
     const shouldRenderGuestForm = viewType === CustomerViewType.Guest;

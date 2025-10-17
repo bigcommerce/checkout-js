@@ -1,4 +1,5 @@
 import { type CustomerInitializeOptions, type CustomerRequestOptions } from '@bigcommerce/checkout-sdk';
+import { createStripeUPECustomerStrategy } from '@bigcommerce/checkout-sdk/integrations/stripe';
 import { type FieldProps, type FormikProps, withFormik } from 'formik';
 import React, { type FunctionComponent, memo, type ReactNode, useCallback, useEffect, useState } from 'react';
 import { object } from 'yup';
@@ -13,7 +14,6 @@ import { BasicFormField, Fieldset, Form, Legend } from '../ui/form';
 
 import { type GuestFormValues } from './GuestForm';
 import SubscribeField from './SubscribeField';
-import { createStripeUPECustomerStrategy } from '@bigcommerce/checkout-sdk/integrations/stripe';
 
 export interface StripeGuestFormProps {
     canSubscribe: boolean;
