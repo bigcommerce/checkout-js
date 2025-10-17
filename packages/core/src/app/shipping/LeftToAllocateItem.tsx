@@ -1,8 +1,8 @@
 import classNames from "classnames";
 import React, { type FunctionComponent } from "react";
 
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from "@bigcommerce/checkout/locale";
-import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { FormField, TextInput } from "../ui/form";
 import { isMobileView as isMobileViewUI } from "../ui/responsive";

@@ -2,10 +2,10 @@ import { type ConsignmentLineItem } from "@bigcommerce/checkout-sdk";
 import classNames from "classnames";
 import React, { type FunctionComponent, useState } from "react";
 
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
-import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { IconChevronDown, IconChevronUp } from "../ui/icon";
 import { isMobileView as isMobileViewUI } from "../ui/responsive";

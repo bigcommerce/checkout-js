@@ -5,8 +5,9 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
-import { CheckoutPageSkeleton, useThemeContext } from '@bigcommerce/checkout/ui';
+import { CheckoutPageSkeleton } from '@bigcommerce/checkout/ui';
 
 import { type EmbeddedCheckoutStylesheet } from '../embeddedCheckout';
 

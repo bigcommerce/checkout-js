@@ -1,8 +1,8 @@
 import React, { type FunctionComponent, useState } from 'react';
 
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { type AddressSelectProps } from './AddressSelect';
 import SingleLineStaticAddress from './SingleLineStaticAddress';

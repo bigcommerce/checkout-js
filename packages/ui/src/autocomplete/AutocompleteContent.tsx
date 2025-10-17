@@ -2,7 +2,7 @@ import type { GetInputPropsOptions, GetItemPropsOptions, GetMenuPropsOptions } f
 import { includes, isNumber } from 'lodash';
 import React, { type ReactNode } from 'react';
 
-import { useThemeContext } from '@bigcommerce/checkout/ui';
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
 
 import { Label } from '../form';
 import { Popover, PopoverList } from '../popover';

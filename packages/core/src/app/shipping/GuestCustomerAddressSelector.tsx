@@ -1,9 +1,10 @@
 import { type Address } from '@bigcommerce/checkout-sdk';
 import React from "react";
 
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { IconEdit, useThemeContext } from '@bigcommerce/checkout/ui';
+import { IconEdit } from '@bigcommerce/checkout/ui';
 
 import SingleLineStaticAddress from '../address/SingleLineStaticAddress';
 

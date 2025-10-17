@@ -2,9 +2,10 @@ import { type CheckoutSelectors, type CheckoutService } from '@bigcommerce/check
 import classNames from 'classnames';
 import React, { type FunctionComponent, lazy, memo, Suspense } from 'react';
 
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString, useLocale } from '@bigcommerce/checkout/locale';
 import { type CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
-import { useThemeContext, WalletButtonsContainerSkeleton } from '@bigcommerce/checkout/ui';
+import { WalletButtonsContainerSkeleton } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../checkout';
 
@@ -78,7 +79,7 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
             </Suspense>
         }
 
-        return <Suspense key={methodId}> 
+        return <Suspense key={methodId}>
             <ResolvedCheckoutButton
                 checkoutService={checkoutService}
                 checkoutState={checkoutState}

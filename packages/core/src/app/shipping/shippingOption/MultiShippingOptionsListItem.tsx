@@ -1,7 +1,8 @@
 import { type ShippingOption } from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent } from 'react';
 
-import { RadioInput, useThemeContext } from '@bigcommerce/checkout/ui';
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
+import { RadioInput } from '@bigcommerce/checkout/ui';
 
 import { ShopperCurrency } from '../../currency';
 

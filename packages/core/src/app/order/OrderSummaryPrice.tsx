@@ -2,9 +2,9 @@ import classNames from 'classnames';
 import React, { type FC, type ReactNode, useCallback, useEffect, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
-import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { ShopperCurrency } from '../currency';
 

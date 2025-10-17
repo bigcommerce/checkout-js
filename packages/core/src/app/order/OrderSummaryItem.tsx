@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { isNumber } from 'lodash';
 import React, { type FunctionComponent, memo, type ReactNode } from 'react';
 
-import { useThemeContext } from '@bigcommerce/checkout/ui';
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
 
 import { ShopperCurrency } from '../currency';
 

@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { isEmpty } from 'lodash';
 import React from "react";
 
-import { useThemeContext } from '@bigcommerce/checkout/ui';
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
 
 import type AddressType from "./AddressType";
 

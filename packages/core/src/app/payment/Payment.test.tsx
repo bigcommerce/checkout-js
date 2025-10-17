@@ -15,6 +15,7 @@ import {
     AnalyticsProviderMock,
 } from '@bigcommerce/checkout/analytics';
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
+import { ThemeProvider } from '@bigcommerce/checkout/contexts';
 import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
 import {
     CHECKOUT_ROOT_NODE_ID,
@@ -28,7 +29,6 @@ import {
     payments,
 } from '@bigcommerce/checkout/test-framework';
 import { renderWithoutWrapper as render, screen } from '@bigcommerce/checkout/test-utils';
-import { ThemeProvider } from '@bigcommerce/checkout/ui';
 
 import Checkout, { type CheckoutProps } from '../checkout/Checkout';
 import { createErrorLogger } from '../common/error';

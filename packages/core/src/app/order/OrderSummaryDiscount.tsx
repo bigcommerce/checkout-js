@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React, { type FunctionComponent, memo } from 'react';
 
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { useThemeContext } from '@bigcommerce/checkout/ui';
 
 import { ShopperCurrency } from '../currency';
 
