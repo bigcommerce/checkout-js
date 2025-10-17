@@ -22,7 +22,6 @@
       "@bigcommerce/checkout/amazon-pay-v2-integration": [
         "packages/amazon-pay-v2-integration/src/index.ts"
       ],
-      "@bigcommerce/checkout/analytics": ["packages/analytics/src/index.ts"],
       "@bigcommerce/checkout/apple-pay-integration": [
         "packages/apple-pay-integration/src/index.ts"
       ],

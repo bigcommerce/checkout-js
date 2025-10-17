@@ -4,13 +4,11 @@ import {
     createCheckoutService,
     createLanguageService,
 } from '@bigcommerce/checkout-sdk';
-import React, { type FunctionComponent } from 'react';
 import { render } from '@testing-library/react';
+import React, { type FunctionComponent } from 'react';
 
-import { type PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
-
-import BraintreeVenmoPaymentMethod from './BraintreeVenmoPaymentMethod';
 import { HostedPaymentComponent } from '@bigcommerce/checkout/hosted-payment-integration';
+import { type PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
 import {
     getCart,
     getCustomer,
@@ -18,6 +16,8 @@ import {
     getPaymentMethod,
     getStoreConfig,
 } from '@bigcommerce/checkout/test-mocks';
+
+import BraintreeVenmoPaymentMethod from './BraintreeVenmoPaymentMethod';
 
 jest.mock('@bigcommerce/checkout/hosted-payment-integration', () => ({
     // eslint-disable-next-line @typescript-eslint/naming-convention

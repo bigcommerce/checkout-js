@@ -1,6 +1,5 @@
 import React, { type FunctionComponent } from 'react';
 
-// eslint-disable-next-line @nx/enforce-module-boundaries
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import ErrorBoundary from './ErrorBoundary';

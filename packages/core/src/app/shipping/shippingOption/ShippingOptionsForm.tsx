@@ -3,7 +3,7 @@ import { type FormikProps } from 'formik';
 import { noop } from 'lodash';
 import React, { type ReactElement, useEffect } from 'react';
 
-import { useAnalytics } from '@bigcommerce/checkout/analytics';
+import { useAnalytics } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import { withFormikExtended } from '../../common/form';

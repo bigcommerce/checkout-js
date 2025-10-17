@@ -1,4 +1,5 @@
 import { type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import { createBlueSnapV2PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bluesnap-direct';
 import React, {
     createRef,
     type FunctionComponent,
@@ -18,7 +19,6 @@ import {
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay, Modal } from '@bigcommerce/checkout/ui';
-import { createBlueSnapV2PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bluesnap-direct';
 
 export type BlueSnapV2PaymentMethodProps = HostedPaymentComponentProps;
 

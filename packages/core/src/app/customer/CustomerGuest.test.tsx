@@ -12,7 +12,7 @@ import { faker } from '@faker-js/faker';
 import userEvent from '@testing-library/user-event';
 import React, { type FunctionComponent } from 'react';
 
-import { AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
+import { AnalyticsProviderMock } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { getGuestCustomer } from '@bigcommerce/checkout/test-mocks';

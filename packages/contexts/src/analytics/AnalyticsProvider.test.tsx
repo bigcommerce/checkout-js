@@ -2,8 +2,6 @@ import * as CheckoutSdk from '@bigcommerce/checkout-sdk/essential';
 import { render } from '@testing-library/react';
 import React, { useEffect } from 'react';
 
-import { isErrorWithMessage } from '@bigcommerce/checkout/error-handling-utils';
-
 import AnalyticsProvider from './AnalyticsProvider';
 import * as createAnalyticsService from './createAnalyticsService';
 import useAnalytics from './useAnalytics';
@@ -113,7 +111,7 @@ describe('AnalyticsProvider', () => {
         try {
             render(<AnalyticsProviderChildrenMock eventName="checkoutBegin" />);
         } catch (error: unknown) {
-            if (isErrorWithMessage(error)) {
+            if (error instanceof Error) {
                 errorMessage = error.message;
             }
         }

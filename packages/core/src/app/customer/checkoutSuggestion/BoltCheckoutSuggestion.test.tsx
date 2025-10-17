@@ -3,7 +3,7 @@ import { createBoltCustomerStrategy } from '@bigcommerce/checkout-sdk/integratio
 import userEvent from '@testing-library/user-event';
 import React, { act, type FunctionComponent } from 'react';
 
-import { type AnalyticsEvents, AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
+import { type AnalyticsEvents, AnalyticsProviderMock } from '@bigcommerce/checkout/contexts';
 import { LocaleProvider } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
