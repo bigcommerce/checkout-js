@@ -4,6 +4,7 @@ import {
     createCheckoutService,
     type LanguageService,
 } from '@bigcommerce/checkout-sdk';
+import { createPaypalExpressPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/paypal-express';
 import React, { type FunctionComponent } from 'react';
 
 import {
@@ -66,6 +67,7 @@ describe('when using Paypal Express payment', () => {
         expect(checkoutService.initializePayment).toHaveBeenCalledWith({
             gatewayId: paypalExpressProps.method.gateway,
             methodId: paypalExpressProps.method.id,
+            integrations: [createPaypalExpressPaymentStrategy],
             paypalexpress: {
                 useRedirectFlow: false,
             },
@@ -78,6 +80,7 @@ describe('when using Paypal Express payment', () => {
         expect(checkoutService.initializePayment).toHaveBeenCalledWith({
             gatewayId: paypalExpressProps.method.gateway,
             methodId: paypalExpressProps.method.id,
+            integrations: [createPaypalExpressPaymentStrategy],
             paypalexpress: {
                 useRedirectFlow: true,
             },
