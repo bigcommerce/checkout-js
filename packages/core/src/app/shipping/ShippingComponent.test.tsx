@@ -8,8 +8,8 @@ import {
 import userEvent from '@testing-library/user-event';
 import React, { type FunctionComponent } from 'react';
 
-import { AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
+import { AnalyticsProviderMock } from '@bigcommerce/checkout/contexts';
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import {
     createLocaleContext,

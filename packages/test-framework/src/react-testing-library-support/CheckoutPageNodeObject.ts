@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable no-case-declarations */
 import {
     type Address,

@@ -9,7 +9,7 @@ import { createStripeLinkV2CustomerStrategy, createStripeUPECustomerStrategy } f
 import { noop } from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { useAnalytics } from '@bigcommerce/checkout/analytics';
+import { useAnalytics } from '@bigcommerce/checkout/contexts';
 
 import type CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import { isErrorWithType } from '../common/error';

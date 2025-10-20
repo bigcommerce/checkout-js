@@ -4,7 +4,7 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import React, {  type ReactElement, useEffect, useRef, useState } from 'react';
 
-import { useAnalytics } from '@bigcommerce/checkout/analytics';
+import { useAnalytics } from '@bigcommerce/checkout/contexts';
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 import { OrderConfirmationPageSkeleton } from '@bigcommerce/checkout/ui';

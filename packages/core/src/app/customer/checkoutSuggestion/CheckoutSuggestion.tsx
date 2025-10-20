@@ -6,7 +6,7 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent, memo } from 'react';
 
-import { useAnalytics } from '@bigcommerce/checkout/analytics';
+import { useAnalytics } from '@bigcommerce/checkout/contexts';
 import { type CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 
 import { withCheckout } from '../../checkout';

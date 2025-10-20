@@ -10,13 +10,12 @@ import { noop } from 'lodash';
 import { rest } from 'msw';
 import React, { type FunctionComponent } from 'react';
 
+import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import {
     type AnalyticsContextProps,
     type AnalyticsEvents,
     AnalyticsProviderMock,
-} from '@bigcommerce/checkout/analytics';
-import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
-import { ThemeProvider } from '@bigcommerce/checkout/contexts';
+ ThemeProvider } from '@bigcommerce/checkout/contexts';
 import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
 import {
     CHECKOUT_ROOT_NODE_ID,

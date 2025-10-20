@@ -8,7 +8,7 @@ import { createBoltCustomerStrategy } from '@bigcommerce/checkout-sdk/integratio
 import { noop } from 'lodash';
 import React, { type FunctionComponent, memo, useEffect, useState } from 'react';
 
-import { useAnalytics } from '@bigcommerce/checkout/analytics';
+import { useAnalytics } from '@bigcommerce/checkout/contexts';
 import { stopPropagation } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 

@@ -9,9 +9,8 @@ import { faker } from '@faker-js/faker';
 import userEvent from '@testing-library/user-event';
 import React, { type FunctionComponent } from 'react';
 
-import { type AnalyticsEvents, AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
-import { ThemeProvider } from '@bigcommerce/checkout/contexts';
+import { type AnalyticsEvents, AnalyticsProviderMock , ThemeProvider } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext, type LocaleContextType, LocaleProvider } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { renderWithoutWrapper as render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
