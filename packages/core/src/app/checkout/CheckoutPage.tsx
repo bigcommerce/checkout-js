@@ -41,7 +41,6 @@ import { retry } from '../common/utility';
 import {
     CheckoutButtonContainer,
     CheckoutSuggestion,
-    Customer,
     CustomerInfo,
     type CustomerSignOutEvent,
     CustomerViewType,
@@ -107,6 +106,16 @@ const Shipping = lazy(() =>
             import(
                 /* webpackChunkName: "shipping" */
                 '../shipping/Shipping'
+                ),
+    ),
+);
+
+const Customer = lazy(() =>
+    retry(
+        () =>
+            import(
+                /* webpackChunkName: "customer" */
+                '../customer/Customer'
                 ),
     ),
 );
@@ -422,24 +431,26 @@ class Checkout extends Component<
                     />
                 }
             >
-                <Customer
-                    checkEmbeddedSupport={this.checkEmbeddedSupport}
-                    isEmbedded={isEmbedded()}
-                    isSubscribed={isSubscribed}
-                    isWalletButtonsOnTop = {isShowingWalletButtonsOnTop }
-                    onAccountCreated={this.navigateToNextIncompleteStep}
-                    onChangeViewType={this.setCustomerViewType}
-                    onContinueAsGuest={this.navigateToNextIncompleteStep}
-                    onContinueAsGuestError={this.handleError}
-                    onReady={this.handleReady}
-                    onSignIn={this.navigateToNextIncompleteStep}
-                    onSignInError={this.handleError}
-                    onSubscribeToNewsletter={this.handleNewsletterSubscription}
-                    onUnhandledError={this.handleUnhandledError}
-                    onWalletButtonClick={this.handleWalletButtonClick}
-                    step={step}
-                    viewType={customerViewType}
-                />
+                <LazyContainer>
+                    <Customer
+                        checkEmbeddedSupport={this.checkEmbeddedSupport}
+                        isEmbedded={isEmbedded()}
+                        isSubscribed={isSubscribed}
+                        isWalletButtonsOnTop = {isShowingWalletButtonsOnTop }
+                        onAccountCreated={this.navigateToNextIncompleteStep}
+                        onChangeViewType={this.setCustomerViewType}
+                        onContinueAsGuest={this.navigateToNextIncompleteStep}
+                        onContinueAsGuestError={this.handleError}
+                        onReady={this.handleReady}
+                        onSignIn={this.navigateToNextIncompleteStep}
+                        onSignInError={this.handleError}
+                        onSubscribeToNewsletter={this.handleNewsletterSubscription}
+                        onUnhandledError={this.handleUnhandledError}
+                        onWalletButtonClick={this.handleWalletButtonClick}
+                        step={step}
+                        viewType={customerViewType}
+                    />
+                </LazyContainer>
             </CheckoutStep>
         );
     }
