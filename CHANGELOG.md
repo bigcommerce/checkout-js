@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.696.0](https://github.com/bigcommerce/checkout-js/compare/v1.695.0...v1.696.0) (2025-10-21)
+
+
+### Features
+
+* **payment:** PAYPAL-2197 add paypal express integration import ([c0cde13](https://github.com/bigcommerce/checkout-js/commit/c0cde13a518dad08e38b8b305757919ab5edd699))
+
 ## [1.695.0](https://github.com/bigcommerce/checkout-js/compare/v1.694.3...v1.695.0) (2025-10-21)
 
 
