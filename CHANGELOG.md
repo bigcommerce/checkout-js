@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.697.0](https://github.com/bigcommerce/checkout-js/compare/v1.696.1...v1.697.0) (2025-10-22)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9547 Update Data Collection Points IV ([#2655](https://github.com/bigcommerce/checkout-js/issues/2655)) ([f593d59](https://github.com/bigcommerce/checkout-js/commit/f593d5933043100e64cb1f6cd7d288bf5d8cb0de))
+
 ### [1.696.1](https://github.com/bigcommerce/checkout-js/compare/v1.696.0...v1.696.1) (2025-10-21)
 
 ## [1.696.0](https://github.com/bigcommerce/checkout-js/compare/v1.695.0...v1.696.0) (2025-10-21)
