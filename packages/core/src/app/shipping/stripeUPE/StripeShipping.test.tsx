@@ -16,7 +16,6 @@ import CheckoutStepType from '../../checkout/CheckoutStepType';
 import ConsoleErrorLogger from '../../common/error/ConsoleErrorLogger';
 import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
-import { getShippingAddress } from '../shipping-addresses.mock';
 
 import StripeShipping, { type StripeShippingProps } from './StripeShipping';
 
@@ -30,6 +29,7 @@ describe('Stripe Shipping Component', () => {
    checkoutService.initializeShipping = initialize;
 
   const defaultProps: StripeShippingProps = {
+        isInitializing: false,
         step: {
             isActive: true,
             isBusy: false,

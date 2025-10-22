@@ -10,11 +10,7 @@ import { rest } from 'msw';
 import React, { act, type FunctionComponent } from 'react';
 
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
-import {
-    type AnalyticsContextProps,
-    type AnalyticsEvents,
-    AnalyticsProviderMock,
- ThemeProvider } from '@bigcommerce/checkout/contexts';
+import { AnalyticsProviderMock, ThemeProvider } from '@bigcommerce/checkout/contexts';
 import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
 import {
     CHECKOUT_ROOT_NODE_ID,
@@ -40,9 +36,8 @@ describe('Payment step', () => {
     let checkout: CheckoutPageNodeObject;
     let CheckoutTest: FunctionComponent<CheckoutProps>;
     let checkoutService: CheckoutService;
-    let defaultProps: CheckoutProps & AnalyticsContextProps;
+    let defaultProps: CheckoutProps;
     let embeddedMessengerMock: EmbeddedCheckoutMessenger;
-    let analyticsTracker: Partial<AnalyticsEvents>;
 
     beforeAll(() => {
         checkout = new CheckoutPageNodeObject();
@@ -64,12 +59,6 @@ describe('Payment step', () => {
         embeddedMessengerMock = createEmbeddedCheckoutMessenger({
             parentOrigin: 'https://store.url',
         });
-        analyticsTracker = {
-            checkoutBegin: jest.fn(),
-            trackStepViewed: jest.fn(),
-            trackStepCompleted: jest.fn(),
-            exitCheckout: jest.fn(),
-        };
         defaultProps = {
             checkoutId: checkoutWithBillingEmail.id,
             containerId: CHECKOUT_ROOT_NODE_ID,
@@ -77,7 +66,6 @@ describe('Payment step', () => {
             embeddedStylesheet: createEmbeddedCheckoutStylesheet(),
             embeddedSupport: createEmbeddedCheckoutSupport(getLanguageService()),
             errorLogger: createErrorLogger(),
-            analyticsTracker,
         };
 
         jest.spyOn(defaultProps.errorLogger, 'log').mockImplementation(noop);
