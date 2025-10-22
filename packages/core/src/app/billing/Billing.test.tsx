@@ -9,10 +9,13 @@ import userEvent from '@testing-library/user-event';
 import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';
 
-import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
+import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
 import {
     AnalyticsProviderMock,
- ThemeProvider } from '@bigcommerce/checkout/contexts';
+    ExtensionProvider,
+    type ExtensionServiceInterface,
+    ThemeProvider,
+} from '@bigcommerce/checkout/contexts';
 import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
 import {
     CHECKOUT_ROOT_NODE_ID,
@@ -49,6 +52,7 @@ describe('Billing step', () => {
     let checkout: CheckoutPageNodeObject;
     let CheckoutTest: FunctionComponent<CheckoutIntermediateProps>;
     let checkoutService: CheckoutService;
+    let extensionService: ExtensionServiceInterface;
     let defaultProps: CheckoutIntermediateProps;
     let embeddedMessengerMock: EmbeddedCheckoutMessenger;
 
@@ -72,6 +76,8 @@ describe('Billing step', () => {
     });
 
     beforeEach(() => {
+        const errorLogger = createErrorLogger();
+
         window.scrollTo = jest.fn();
 
         checkoutService = createCheckoutService();
@@ -84,8 +90,9 @@ describe('Billing step', () => {
             createEmbeddedMessenger: () => embeddedMessengerMock,
             embeddedStylesheet: createEmbeddedCheckoutStylesheet(),
             embeddedSupport: createEmbeddedCheckoutSupport(getLanguageService()),
-            errorLogger: createErrorLogger(),
+            errorLogger,
         };
+        extensionService = new ExtensionService(checkoutService, errorLogger);
 
         jest.spyOn(defaultProps.errorLogger, 'log').mockImplementation(noop);
         jest.spyOn(checkoutService, 'updateBillingAddress');
@@ -103,12 +110,7 @@ describe('Billing step', () => {
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleProvider checkoutService={checkoutService}>
                     <AnalyticsProviderMock>
-                        <ExtensionProvider
-                            checkoutService={checkoutService}
-                            errorLogger={{
-                                log: jest.fn(),
-                            }}
-                        >
+                        <ExtensionProvider extensionService={extensionService}>
                             <ThemeProvider>
                                 <Checkout {...props} />
                             </ThemeProvider>

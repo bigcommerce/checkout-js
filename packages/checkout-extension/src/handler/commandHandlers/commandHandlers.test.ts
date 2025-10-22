@@ -5,7 +5,9 @@ import {
     ExtensionCommandType,
 } from '@bigcommerce/checkout-sdk';
 
-import { ExtensionActionType, getExtensions } from '../../index';
+import { ExtensionActionType } from '@bigcommerce/checkout/contexts';
+
+import { getExtensions } from '../../getExtensions.mock';
 
 import { type CommandHandlerProps } from './CommandHandler';
 import { createReloadCheckoutHandler } from './createReloadCheckoutHandler';

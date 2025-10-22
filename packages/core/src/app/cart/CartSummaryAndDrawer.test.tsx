@@ -6,7 +6,8 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
-import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
+import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
+import { ExtensionProvider ,type ExtensionServiceInterface } from '@bigcommerce/checkout/contexts';
 import {
     createLocaleContext,
     LocaleContext,
@@ -16,6 +17,7 @@ import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api'
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getCheckout } from '../checkout/checkouts.mock';
+import { createErrorLogger } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
 import { getConsignment } from '../shipping/consignment.mock';
@@ -25,6 +27,7 @@ import CartSummaryDrawer from './CartSummaryDrawer';
 
 describe('Edit Cart Component', () => {
     let checkoutService: CheckoutService;
+    let extensionService: ExtensionServiceInterface;
     let checkoutState: CheckoutSelectors;
     let localeContext: LocaleContextType;
 
@@ -39,6 +42,7 @@ describe('Edit Cart Component', () => {
 
         localeContext = createLocaleContext(getStoreConfig());
         checkoutService = createCheckoutService();
+        extensionService = new ExtensionService(checkoutService, createErrorLogger());
         checkoutState = checkoutService.getState();
 
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
@@ -57,7 +61,7 @@ describe('Edit Cart Component', () => {
         render(
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
-                    <ExtensionProvider checkoutService={checkoutService}>
+                    <ExtensionProvider extensionService={extensionService}>
                         <CartSummary isMultiShippingMode={true} />
                     </ExtensionProvider>
                 </LocaleContext.Provider>
@@ -78,7 +82,7 @@ describe('Edit Cart Component', () => {
         render(
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
-                    <ExtensionProvider checkoutService={checkoutService}>
+                    <ExtensionProvider extensionService={extensionService}>
                         <CartSummaryDrawer isMultiShippingMode={true} />
                     </ExtensionProvider>
                 </LocaleContext.Provider>

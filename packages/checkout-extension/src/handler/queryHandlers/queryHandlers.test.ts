@@ -7,7 +7,7 @@ import {
     ExtensionQueryType,
 } from '@bigcommerce/checkout-sdk';
 
-import { getExtensions } from '../../index';
+import { getExtensions } from '../../getExtensions.mock';
 
 import { createGetConsignmentHandler } from './createGetConsignmentHandler';
 import { type QueryHandlerProps } from './QueryHandler';

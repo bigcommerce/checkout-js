@@ -7,3 +7,12 @@ export {
     AnalyticsProviderMock,
     useAnalytics,
 } from './analytics';
+export {
+    ExtensionProvider,
+    ExtensionContextProps,
+    withExtension,
+    useExtensions,
+    ExtensionAction,
+    ExtensionServiceInterface,
+    ExtensionActionType,
+} from './extension';

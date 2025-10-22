@@ -1,8 +1,8 @@
 import { type CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
-import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
-import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
+import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
+import { ExtensionProvider, type ExtensionServiceInterface } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
@@ -17,12 +17,12 @@ import CartSummary from './CartSummary';
 describe('CartSummary Component', () => {
     let checkoutService: CheckoutService;
     let localeContext: LocaleContextType;
-    let errorLogger: ErrorLogger;
+    let extensionService: ExtensionServiceInterface;
 
     beforeEach(() => {
         checkoutService = createCheckoutService();
         localeContext = createLocaleContext(getStoreConfig());
-        errorLogger = createErrorLogger();
+        extensionService = new ExtensionService(checkoutService, createErrorLogger());
 
         jest.spyOn(checkoutService.getState().data, 'getCustomer').mockReturnValue(getCustomer());
         jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue(getCheckout());
@@ -39,7 +39,7 @@ describe('CartSummary Component', () => {
         render(
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
-                    <ExtensionProvider checkoutService={checkoutService} errorLogger={errorLogger}>
+                    <ExtensionProvider extensionService={extensionService}>
                         <CartSummary isMultiShippingMode={false} />
                     </ExtensionProvider>
                 </LocaleContext.Provider>
@@ -60,7 +60,7 @@ describe('CartSummary Component', () => {
         render(
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
-                    <ExtensionProvider checkoutService={checkoutService} errorLogger={errorLogger} >
+                    <ExtensionProvider extensionService={extensionService}>
                         <CartSummary isMultiShippingMode={false}/>
                     </ExtensionProvider>
                 </LocaleContext.Provider>
