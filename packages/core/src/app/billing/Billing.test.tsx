@@ -11,8 +11,6 @@ import React, { type FunctionComponent } from 'react';
 
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import {
-    type AnalyticsContextProps,
-    type AnalyticsEvents,
     AnalyticsProviderMock,
  ThemeProvider } from '@bigcommerce/checkout/contexts';
 import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
@@ -51,9 +49,8 @@ describe('Billing step', () => {
     let checkout: CheckoutPageNodeObject;
     let CheckoutTest: FunctionComponent<CheckoutIntermediateProps>;
     let checkoutService: CheckoutService;
-    let defaultProps: CheckoutIntermediateProps & AnalyticsContextProps;
+    let defaultProps: CheckoutIntermediateProps;
     let embeddedMessengerMock: EmbeddedCheckoutMessenger;
-    let analyticsTracker: Partial<AnalyticsEvents>;
 
     const checkoutWithCustomer = {
         ...checkoutWithShipping,
@@ -81,12 +78,6 @@ describe('Billing step', () => {
         embeddedMessengerMock = createEmbeddedCheckoutMessenger({
             parentOrigin: 'https://store.url',
         });
-        analyticsTracker = {
-            checkoutBegin: jest.fn(),
-            trackStepViewed: jest.fn(),
-            trackStepCompleted: jest.fn(),
-            exitCheckout: jest.fn(),
-        };
         defaultProps = {
             checkoutId: 'x',
             containerId: CHECKOUT_ROOT_NODE_ID,
@@ -94,7 +85,6 @@ describe('Billing step', () => {
             embeddedStylesheet: createEmbeddedCheckoutStylesheet(),
             embeddedSupport: createEmbeddedCheckoutSupport(getLanguageService()),
             errorLogger: createErrorLogger(),
-            analyticsTracker,
         };
 
         jest.spyOn(defaultProps.errorLogger, 'log').mockImplementation(noop);
@@ -102,7 +92,7 @@ describe('Billing step', () => {
 
         jest.mock('lodash', () => ({
             ...jest.requireActual('lodash'),
-            debounce: (fn) => {
+            debounce: (fn: any) => {
                 fn.cancel = jest.fn();
 
                 return fn;
