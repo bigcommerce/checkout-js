@@ -10,7 +10,6 @@ import { type RenderOrderConfirmationOptions } from './order';
 
 declare const LIBRARY_NAME: string;
 declare const MANIFEST_JSON: AssetManifest;
-declare const PRELOAD_ASSETS: string[];
 
 export interface AssetManifest {
     appVersion: string;
@@ -66,14 +65,12 @@ export function loadFiles(options?: LoadFilesOptions): Promise<LoadFilesResult> 
 
     getScriptLoader().preloadScripts(
         jsDynamicChunks
-            .filter((path) => PRELOAD_ASSETS.some((preloadPath) => path.startsWith(preloadPath)))
             .map((path) => joinPaths(publicPath, path)),
         { prefetch: true },
     );
 
     getStylesheetLoader().preloadStylesheets(
         cssDynamicChunks
-            .filter((path) => PRELOAD_ASSETS.some((preloadPath) => path.startsWith(preloadPath)))
             .map((path) => joinPaths(publicPath, path)),
         { prefetch: true },
     );
