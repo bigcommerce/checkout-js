@@ -24,6 +24,7 @@ const {
     getNextVersion,
     mergeManifests,
     transformManifest,
+    transformLoaderManifest,
 } = require('./scripts/webpack');
 
 const ENTRY_NAME = 'checkout';
@@ -315,16 +316,18 @@ function loaderConfig(options, argv) {
 
                         eventEmitter.on('app:done', () => {
                             if (!wasTriggeredBefore) {
+                                const MANIFEST_JSON = transformLoaderManifest(
+                                    join(
+                                        __dirname,
+                                        isProduction ? 'dist' : 'build',
+                                        `manifest-app-${appVersion}.json`,
+                                    ),
+                                    PRELOAD_ASSETS,
+                                );
+
                                 const definePlugin = new DefinePlugin({
                                     LIBRARY_NAME: JSON.stringify(LIBRARY_NAME),
-                                    PRELOAD_ASSETS: JSON.stringify(PRELOAD_ASSETS),
-                                    MANIFEST_JSON: JSON.stringify(
-                                        require(join(
-                                            __dirname,
-                                            isProduction ? 'dist' : 'build',
-                                            `manifest-app-${appVersion}.json`,
-                                        )),
-                                    ),
+                                    MANIFEST_JSON: JSON.stringify(MANIFEST_JSON),
                                 });
 
                                 definePlugin.apply(compiler);
