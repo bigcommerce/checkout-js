@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.697.5](https://github.com/bigcommerce/checkout-js/compare/v1.697.4...v1.697.5) (2025-10-23)
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-5990 fixed loading CC fields ([389e53d](https://github.com/bigcommerce/checkout-js/commit/389e53d2855975f527176e5aabb310a3914304e9))
+* **payment:** PAYPAL-5990 fixed loading CC fields ([bdbc9fa](https://github.com/bigcommerce/checkout-js/commit/bdbc9fa77c8c2f70876b82db13bcfadd597c2620))
+* **payment:** PAYPAL-5990 fixed loading CC fields ([cb0b1ef](https://github.com/bigcommerce/checkout-js/commit/cb0b1efff1b7be6d36e3da959af7d38ff0a67175))
+* **payment:** PAYPAL-5990 fixed loading CC fields ([e488018](https://github.com/bigcommerce/checkout-js/commit/e488018c5fb25f44ca3289446637bb8d8ec53886))
+* **payment:** PAYPAL-5990 fixed loading CC fields ([afdc776](https://github.com/bigcommerce/checkout-js/commit/afdc7764fd20e5f6ed76d35421ae98d47b3e729d))
+
 ### [1.697.4](https://github.com/bigcommerce/checkout-js/compare/v1.697.3...v1.697.4) (2025-10-23)
 
 ### [1.697.3](https://github.com/bigcommerce/checkout-js/compare/v1.697.2...v1.697.3) (2025-10-23)
