@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.697.2](https://github.com/bigcommerce/checkout-js/compare/v1.697.1...v1.697.2) (2025-10-23)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9429 Relocate extension context ([#2659](https://github.com/bigcommerce/checkout-js/issues/2659)) ([5f6a7d3](https://github.com/bigcommerce/checkout-js/commit/5f6a7d3d05e0065f06dddf7645ed4aaeeea6c968))
+
 ### [1.697.1](https://github.com/bigcommerce/checkout-js/compare/v1.697.0...v1.697.1) (2025-10-22)
 
 
