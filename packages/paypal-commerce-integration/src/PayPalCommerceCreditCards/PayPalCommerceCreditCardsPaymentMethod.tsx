@@ -25,6 +25,7 @@ import {
     type PaymentMethodResolveId,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
+import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 const PayPalCommerceCreditCardsPaymentMethod: FunctionComponent<PaymentMethodProps> = (props) => {
     const { checkoutService, checkoutState, paymentForm, language, method } = props;
@@ -33,6 +34,7 @@ const PayPalCommerceCreditCardsPaymentMethod: FunctionComponent<PaymentMethodPro
         method.config;
 
     const [focusedFieldType, setFocusedFieldType] = useState<string>();
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const { setFieldTouched, setFieldValue, setSubmitted, submitForm } = paymentForm;
     const isInstrumentCardCodeRequiredProp = isInstrumentCardCodeRequiredSelector(checkoutState);
@@ -254,6 +256,7 @@ const PayPalCommerceCreditCardsPaymentMethod: FunctionComponent<PaymentMethodPro
                         form: isHostedFormEnabled
                             ? await getHostedFormOptions(selectedInstrument)
                             : undefined,
+                        onLoadComplete: () => setIsLoading(false),
                     },
                 });
             },
@@ -263,30 +266,36 @@ const PayPalCommerceCreditCardsPaymentMethod: FunctionComponent<PaymentMethodPro
     // Info: isHostedFormEnabled is an option in store config which responsible for switching PayPal Commerce Credit Card form
     // rendering between Hosted Form and default BC fields (non-hosted)
     return isHostedFormEnabled ? (
-        <CreditCardPaymentMethodComponent
-            {...props}
-            cardFieldset={
-                <HostedCreditCardFieldset
-                    additionalFields={
-                        requireCustomerCode && <CreditCardCustomerCodeField name="ccCustomerCode" />
-                    }
-                    cardCodeId={isCardCodeRequired ? getHostedFieldId('ccCvv') : undefined}
-                    cardExpiryId={getHostedFieldId('ccExpiry')}
-                    cardNameId={getHostedFieldId('ccName')}
-                    cardNumberId={getHostedFieldId('ccNumber')}
-                    focusedFieldType={focusedFieldType}
-                />
-            }
-            cardValidationSchema={getHostedCreditCardValidationSchema({ language })}
-            deinitializePayment={checkoutService.deinitializePayment}
-            getHostedFormOptions={getHostedFormOptions}
-            getStoredCardValidationFieldset={getHostedStoredCardValidationFieldset}
-            initializePayment={initializePayPalCommerceCreditCardPayment}
-            storedCardValidationSchema={getHostedInstrumentValidationSchema({
-                language,
-                isCardExpiryRequired: true,
-            })}
-        />
+        <LoadingOverlay isLoading={isLoading}>
+            (
+            <CreditCardPaymentMethodComponent
+                {...props}
+                cardFieldset={
+                    <HostedCreditCardFieldset
+                        additionalFields={
+                            requireCustomerCode && (
+                                <CreditCardCustomerCodeField name="ccCustomerCode" />
+                            )
+                        }
+                        cardCodeId={isCardCodeRequired ? getHostedFieldId('ccCvv') : undefined}
+                        cardExpiryId={getHostedFieldId('ccExpiry')}
+                        cardNameId={getHostedFieldId('ccName')}
+                        cardNumberId={getHostedFieldId('ccNumber')}
+                        focusedFieldType={focusedFieldType}
+                    />
+                }
+                cardValidationSchema={getHostedCreditCardValidationSchema({ language })}
+                deinitializePayment={checkoutService.deinitializePayment}
+                getHostedFormOptions={getHostedFormOptions}
+                getStoredCardValidationFieldset={getHostedStoredCardValidationFieldset}
+                initializePayment={initializePayPalCommerceCreditCardPayment}
+                storedCardValidationSchema={getHostedInstrumentValidationSchema({
+                    language,
+                    isCardExpiryRequired: true,
+                })}
+            />
+            )
+        </LoadingOverlay>
     ) : (
         <CreditCardPaymentMethodComponent
             {...props}
