@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { useExtensions } from '@bigcommerce/checkout/checkout-extension';
+import { useExtensions } from '@bigcommerce/checkout/contexts';
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
 import { useShipping } from './hooks/useShipping';

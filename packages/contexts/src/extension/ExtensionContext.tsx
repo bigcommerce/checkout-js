@@ -1,10 +1,9 @@
 import { createContext } from 'react';
 
-import { type ExtensionState } from './ExtensionProvider';
-import { type ExtensionService } from './ExtensionService';
+import { type ExtensionServiceInterface, type ExtensionState } from './ExtensionType';
 
 export interface ExtensionContextProps {
-    extensionService: ExtensionService;
+    extensionService: ExtensionServiceInterface;
     extensionState: ExtensionState;
 }
 

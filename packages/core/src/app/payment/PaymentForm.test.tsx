@@ -7,7 +7,8 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';
 
-import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
+import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
+import { ExtensionProvider ,type ExtensionServiceInterface } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
@@ -25,6 +26,7 @@ jest.useFakeTimers({ legacyFakeTimers: true });
 
 describe('PaymentForm', () => {
     let checkoutService: CheckoutService;
+    let extensionService: ExtensionServiceInterface;
     let checkoutState: CheckoutSelectors;
     let defaultProps: PaymentFormProps;
     let localeContext: LocaleContextType;
@@ -41,6 +43,7 @@ describe('PaymentForm', () => {
         };
 
         checkoutService = createCheckoutService();
+        extensionService = new ExtensionService(checkoutService, createErrorLogger());
         checkoutState = checkoutService.getState();
         localeContext = createLocaleContext(getStoreConfig());
         paymentContext = {
@@ -60,7 +63,7 @@ describe('PaymentForm', () => {
                 <PaymentContext.Provider value={paymentContext}>
                     <LocaleContext.Provider value={localeContext}>
                         <Formik initialValues={null} onSubmit={noop}>
-                            <ExtensionProvider checkoutService={checkoutService} errorLogger={createErrorLogger()}>
+                            <ExtensionProvider extensionService={extensionService}>
                                 <PaymentForm {...props} />
                             </ExtensionProvider>
                         </Formik>
@@ -77,7 +80,7 @@ describe('PaymentForm', () => {
         expect(screen.getAllByRole('listitem')).toHaveLength(8);
         expect(screen.getAllByRole('group')).toHaveLength(2);
         expect(screen.getAllByRole('radio')).toHaveLength(2);
-        expect(screen.getAllByText('Authorizenet')).toHaveLength(3);  // 2 radio buttons + 1 title for a11y (hidden) 
+        expect(screen.getAllByText('Authorizenet')).toHaveLength(3);  // 2 radio buttons + 1 title for a11y (hidden)
         expect(screen.getByText(localeContext.language.translate('payment.place_order_action'))).toBeInTheDocument();
     });
 
