@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.697.6](https://github.com/bigcommerce/checkout-js/compare/v1.697.5...v1.697.6) (2025-10-23)
+
+
+### Code Refactoring
+
+* **common:** CHECKOUT-9513 Optimise loader file size ([f32698c](https://github.com/bigcommerce/checkout-js/commit/f32698cb78b5ee4242479a6de3613d546ba567dc))
+* **common:** CHECKOUT-9513 Optimise manifest JSON for loader ([0e2d0f5](https://github.com/bigcommerce/checkout-js/commit/0e2d0f5eb0322892fecb450ca0e4dd49c605f766))
+
 ### [1.697.5](https://github.com/bigcommerce/checkout-js/compare/v1.697.4...v1.697.5) (2025-10-23)
 
 
