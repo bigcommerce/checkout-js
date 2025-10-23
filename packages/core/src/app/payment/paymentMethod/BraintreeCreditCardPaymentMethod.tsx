@@ -17,6 +17,7 @@ import {
 } from '../hostedCreditCard';
 
 import CreditCardPaymentMethod, { type CreditCardPaymentMethodProps } from './CreditCardPaymentMethod';
+import { createBraintreeCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
 
 export type BraintreeCreditCardPaymentMethodProps = CreditCardPaymentMethodProps;
 
@@ -47,6 +48,7 @@ const BraintreeCreditCardPaymentMethod: FunctionComponent<
             async (options, selectedInstrument) => {
                 return initializePayment({
                     ...options,
+                    integrations: [createBraintreeCreditCardPaymentStrategy],
                     braintree: {
                         threeDSecure: {
                             addFrame(error, content, cancel) {

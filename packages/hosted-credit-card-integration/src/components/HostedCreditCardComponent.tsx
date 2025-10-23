@@ -21,6 +21,7 @@ import { getHostedCreditCardValidationSchema } from './getHostedCreditCardValida
 import { getHostedInstrumentValidationSchema } from './getHostedInstrumentValidationSchema';
 import { HostedCreditCardFieldset } from './HostedCreditCardFieldset';
 import { HostedCreditCardValidation } from './HostedCreditCardValidation';
+import { createTDOnlineMartPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/td-bank';
 
 const HostedCreditCardComponent: FunctionComponent<PaymentMethodProps> = ({
     method,
@@ -246,6 +247,7 @@ const HostedCreditCardComponent: FunctionComponent<PaymentMethodProps> = ({
                     integrations: [
                         createCreditCardPaymentStrategy,
                         createBlueSnapDirectCreditCardPaymentStrategy,
+                        createTDOnlineMartPaymentStrategy,
                     ],
                     creditCard: {
                         form: await getHostedFormOptions(selectedInstrument),
