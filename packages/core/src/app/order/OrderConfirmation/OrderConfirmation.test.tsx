@@ -9,8 +9,13 @@ import { faker } from '@faker-js/faker';
 import userEvent from '@testing-library/user-event';
 import React, { type FunctionComponent } from 'react';
 
-import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
-import { type AnalyticsEvents, AnalyticsProviderMock , ThemeProvider } from '@bigcommerce/checkout/contexts';
+import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
+import { type AnalyticsEvents ,
+  AnalyticsProviderMock,
+  ExtensionProvider,
+  type ExtensionServiceInterface,
+  ThemeProvider,
+} from '@bigcommerce/checkout/contexts';
 import { createLocaleContext, type LocaleContextType, LocaleProvider } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { renderWithoutWrapper as render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
@@ -38,6 +43,7 @@ const generateValidPassword = () => {
 
 describe('OrderConfirmation', () => {
     let checkoutService: CheckoutService;
+    let extensionService: ExtensionServiceInterface;
     let checkoutState: CheckoutSelectors;
     let defaultProps: OrderConfirmationProps;
     let ComponentTest: FunctionComponent<OrderConfirmationProps>;
@@ -47,6 +53,7 @@ describe('OrderConfirmation', () => {
 
     beforeEach(() => {
         checkoutService = createCheckoutService();
+        extensionService = new ExtensionService(checkoutService, createErrorLogger());
         checkoutState = checkoutService.getState();
         analyticsTracker = {
             orderPurchased: jest.fn(),
@@ -77,9 +84,7 @@ describe('OrderConfirmation', () => {
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleProvider checkoutService={checkoutService}>
                     <AnalyticsProviderMock analyticsTracker={analyticsTracker}>
-                        <ExtensionProvider checkoutService={checkoutService} errorLogger={{
-                            log: jest.fn(),
-                        }}>
+                        <ExtensionProvider extensionService={extensionService}>
                             <ThemeProvider>
                                 <OrderConfirmation {...props} />
                             </ThemeProvider>

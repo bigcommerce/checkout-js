@@ -66,7 +66,22 @@ const PaymentMethodComponent: FunctionComponent<
         method.method === PaymentMethodType.PaypalCredit ||
         method.type === PaymentMethodProviderType.Hosted
     ) {
-        const sentryMessage = `DataHostedPaymentMethod ${JSON.stringify(method)}`;
+        const knownMethods = [
+            { id: "braintreepaypalcredit", gateway: null, method: "paypal-credit", type: PaymentMethodProviderType.Api },
+        ];
+
+        let sentryMessage: string;
+
+        if (knownMethods.some(knownMethod =>
+            knownMethod.id === method.id &&
+            knownMethod.gateway === method.gateway &&
+            knownMethod.method === method.method &&
+            knownMethod.type === method.type
+        )) {
+            sentryMessage = '';
+        }else {
+            sentryMessage = `DataHostedPaymentMethod ${JSON.stringify(method)}`;
+        }
 
         return <>
                 <CaptureMessageComponent message={sentryMessage} />

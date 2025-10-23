@@ -5,7 +5,7 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import type React from 'react';
 
-import { type ExtensionAction } from '../../ExtensionProvider';
+import { type ExtensionAction } from '@bigcommerce/checkout/contexts';
 
 export interface CommandHandlerProps {
     checkoutService: CheckoutService;

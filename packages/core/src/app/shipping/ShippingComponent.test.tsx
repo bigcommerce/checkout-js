@@ -8,15 +8,17 @@ import {
 import userEvent from '@testing-library/user-event';
 import React, { type FunctionComponent } from 'react';
 
-import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
-import { AnalyticsProviderMock } from '@bigcommerce/checkout/contexts';
-import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
+import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
+import { AnalyticsProviderMock,
+    ExtensionProvider,
+  type ExtensionServiceInterface,
+} from '@bigcommerce/checkout/contexts';
 import {
     createLocaleContext,
     LocaleContext,
     type LocaleContextType,
 } from '@bigcommerce/checkout/locale';
-import { CheckoutProvider, PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { render, screen, within } from '@bigcommerce/checkout/test-utils';
 
 import { getAddressFormFields } from '../address/formField.mock';
@@ -27,42 +29,44 @@ import CheckoutStepType from '../checkout/CheckoutStepType';
 import { createErrorLogger } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
-import { getConsignment } from '../shipping/consignment.mock';
 
-import Shipping, { type ShippingProps, type WithCheckoutShippingProps } from './Shipping';
+import { getConsignment } from './consignment.mock';
+import Shipping, { type ShippingProps } from './Shipping';
 import { getShippingAddress } from './shipping-addresses.mock';
 
 describe('Shipping component', () => {
     let localeContext: LocaleContextType;
     let checkoutService: CheckoutService;
+    let extensionService: ExtensionServiceInterface;
     let checkoutState: CheckoutSelectors;
     let defaultProps: ShippingProps;
-    let ComponentTest: FunctionComponent<ShippingProps> & Partial<WithCheckoutShippingProps>;
-    let errorLogger: ErrorLogger;
+    let ComponentTest: FunctionComponent<ShippingProps>;
 
     beforeEach(() => {
         localeContext = createLocaleContext(getStoreConfig());
         checkoutService = createCheckoutService();
-        errorLogger = createErrorLogger();
+        extensionService = new ExtensionService(checkoutService, createErrorLogger());
         checkoutState = checkoutService.getState();
 
         defaultProps = {
+            cartHasChanged: false,
             isBillingSameAsShipping: true,
             isMultiShippingMode: false,
-            onToggleMultiShipping: jest.fn(),
-            cartHasChanged: false,
+            navigateNextStep: jest.fn(),
+            onCreateAccount: jest.fn(),
+            onReady: jest.fn(),
             onSignIn: jest.fn(),
+            onToggleMultiShipping: jest.fn(),
+            onUnhandledError: jest.fn(),
+            setIsMultishippingMode: jest.fn(),
             step: {
                 isActive: true,
+                isBusy: false,
                 isComplete: true,
                 isEditable: true,
                 isRequired: true,
                 type: CheckoutStepType.Shipping
             },
-            providerWithCustomCheckout: PaymentMethodId.StripeUPE,
-            isShippingMethodLoading: true,
-            navigateNextStep: jest.fn(),
-            onUnhandledError: jest.fn(),
         };
 
         jest.spyOn(checkoutService, 'loadShippingAddressFields').mockResolvedValue(
@@ -123,7 +127,7 @@ describe('Shipping component', () => {
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
                     <AnalyticsProviderMock>
-                        <ExtensionProvider checkoutService={checkoutService} errorLogger={errorLogger} >
+                        <ExtensionProvider extensionService={extensionService}>
                             <Shipping {...props} />
                         </ExtensionProvider>
                     </AnalyticsProviderMock>
@@ -182,7 +186,7 @@ describe('Shipping component', () => {
                     ],
                 },
             } as Cart);
-            
+
             render(<ComponentTest {...defaultProps} isMultiShippingMode={false} />);
 
             const shippingModeToggle = await screen.findByTestId("shipping-mode-toggle");
@@ -221,7 +225,7 @@ describe('Shipping component', () => {
                     ],
                 },
             } as Cart);
-            
+
             render(<ComponentTest {...defaultProps} isMultiShippingMode={true} />);
 
             const confirmationModal = await screen.findByRole('dialog');

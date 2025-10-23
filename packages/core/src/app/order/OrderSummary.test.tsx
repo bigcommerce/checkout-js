@@ -1,11 +1,13 @@
 import { createCheckoutService, type Order } from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent } from 'react';
 
-import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
+import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
+import { ExtensionProvider } from '@bigcommerce/checkout/contexts';
 import { LocaleProvider } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
+import { createErrorLogger } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
 
 import mapToOrderSummarySubtotalsProps from './mapToOrderSummarySubtotalsProps';
@@ -23,6 +25,7 @@ jest.mock('../currency', () => ({
 
 describe('OrderSummary', () => {
     const checkoutService = createCheckoutService();
+    const extensionService = new ExtensionService(checkoutService, createErrorLogger());
 
     describe('when shopper has same currency as store', () => {
         beforeEach(() => {
@@ -30,7 +33,7 @@ describe('OrderSummary', () => {
 
             OrderSummaryTest = () => (
                 <CheckoutProvider checkoutService={checkoutService}>
-                    <ExtensionProvider checkoutService={checkoutService}>
+                    <ExtensionProvider extensionService={extensionService}>
                         <LocaleProvider checkoutService={checkoutService}>
                             <OrderSummary
                                 {...mapToOrderSummarySubtotalsProps(order, true)}
@@ -73,7 +76,7 @@ describe('OrderSummary', () => {
 
             const { container } = render(
                 <CheckoutProvider checkoutService={checkoutService}>
-                    <ExtensionProvider checkoutService={checkoutService}>
+                    <ExtensionProvider extensionService={extensionService}>
                         <LocaleProvider checkoutService={checkoutService}>
                             <OrderSummary
                                 {...mapToOrderSummarySubtotalsProps(taxIncludedOrder, true)}
@@ -106,7 +109,7 @@ describe('OrderSummary', () => {
             render(
                 <CheckoutProvider checkoutService={checkoutService}>
                     <LocaleProvider checkoutService={checkoutService}>
-                        <ExtensionProvider checkoutService={checkoutService}>
+                        <ExtensionProvider extensionService={extensionService}>
                             <OrderSummary
                                 {...mapToOrderSummarySubtotalsProps(order, true)}
                                 headerLink={<PrintLink />}
@@ -141,7 +144,7 @@ describe('OrderSummary', () => {
             render(
                 <CheckoutProvider checkoutService={checkoutService}>
                     <LocaleProvider checkoutService={checkoutService}>
-                        <ExtensionProvider checkoutService={checkoutService}>
+                        <ExtensionProvider extensionService={extensionService}>
                             <OrderSummary
                                 {...mapToOrderSummarySubtotalsProps(order, false)}
                                 headerLink={<PrintLink />}

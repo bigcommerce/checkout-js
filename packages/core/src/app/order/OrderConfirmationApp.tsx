@@ -3,8 +3,8 @@ import type { BrowserOptions } from '@sentry/browser';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import ReactModal from 'react-modal';
 
-import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
-import { AnalyticsProvider , ThemeProvider } from '@bigcommerce/checkout/contexts';
+import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
+import { AnalyticsProvider , ExtensionProvider, ThemeProvider } from '@bigcommerce/checkout/contexts';
 import { ErrorBoundary } from '@bigcommerce/checkout/error-handling-utils';
 import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
@@ -46,6 +46,7 @@ const OrderConfirmationApp: React.FC<OrderConfirmationAppProps> = ({
         shouldWarnMutation: process.env.NODE_ENV === 'development',
         errorLogger,
     }), []);
+    const extensionService = useMemo(() => new ExtensionService(checkoutService, errorLogger), []);
     const embeddedStylesheet = useMemo(() => createEmbeddedCheckoutStylesheet(), []);
 
     useEffect(() => {
@@ -69,7 +70,7 @@ const OrderConfirmationApp: React.FC<OrderConfirmationAppProps> = ({
             <LocaleProvider checkoutService={checkoutService}>
                 <CheckoutProvider checkoutService={checkoutService} errorLogger={errorLogger}>
                     <AnalyticsProvider checkoutService={checkoutService}>
-                        <ExtensionProvider checkoutService={checkoutService} errorLogger={errorLogger}>
+                        <ExtensionProvider extensionService={extensionService}>
                             <ThemeProvider>
                                 <OrderConfirmation
                                     containerId={containerId}

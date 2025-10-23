@@ -7,15 +7,14 @@ import {
 import { faker } from '@faker-js/faker';
 import userEvent from '@testing-library/user-event';
 import { noop } from 'lodash';
-import { rest } from 'msw';
 import React, { type FunctionComponent } from 'react';
 
-import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
-import {
-    type AnalyticsContextProps,
-    type AnalyticsEvents,
-    AnalyticsProviderMock,
- ThemeProvider } from '@bigcommerce/checkout/contexts';
+import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
+import { AnalyticsProviderMock,
+  ExtensionProvider,
+  type ExtensionServiceInterface,
+  ThemeProvider,
+} from '@bigcommerce/checkout/contexts';
 import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
 import {
     CHECKOUT_ROOT_NODE_ID,
@@ -48,9 +47,9 @@ describe('Shipping step', () => {
     let checkout: CheckoutPageNodeObject;
     let CheckoutTest: FunctionComponent<CheckoutProps>;
     let checkoutService: CheckoutService;
-    let defaultProps: CheckoutProps & AnalyticsContextProps;
+    let extensionService: ExtensionServiceInterface;
+    let defaultProps: CheckoutProps;
     let embeddedMessengerMock: EmbeddedCheckoutMessenger;
-    let analyticsTracker: Partial<AnalyticsEvents>;
 
     beforeAll(() => {
         checkout = new CheckoutPageNodeObject();
@@ -70,15 +69,10 @@ describe('Shipping step', () => {
         window.scrollTo = jest.fn();
 
         checkoutService = createCheckoutService();
+        extensionService = new ExtensionService(checkoutService, createErrorLogger());
         embeddedMessengerMock = createEmbeddedCheckoutMessenger({
             parentOrigin: 'https://store.url',
         });
-        analyticsTracker = {
-            checkoutBegin: jest.fn(),
-            trackStepViewed: jest.fn(),
-            trackStepCompleted: jest.fn(),
-            exitCheckout: jest.fn(),
-        };
         defaultProps = {
             checkoutId: 'x',
             containerId: CHECKOUT_ROOT_NODE_ID,
@@ -86,7 +80,6 @@ describe('Shipping step', () => {
             embeddedStylesheet: createEmbeddedCheckoutStylesheet(),
             embeddedSupport: createEmbeddedCheckoutSupport(getLanguageService()),
             errorLogger: createErrorLogger(),
-            analyticsTracker,
         };
 
         jest.spyOn(defaultProps.errorLogger, 'log').mockImplementation(noop);
@@ -95,7 +88,7 @@ describe('Shipping step', () => {
 
         jest.mock('lodash', () => ({
             ...jest.requireActual('lodash'),
-            debounce: (fn) => {
+            debounce: (fn:any) => {
                 fn.cancel = jest.fn();
 
                 return fn;
@@ -106,12 +99,7 @@ describe('Shipping step', () => {
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleProvider checkoutService={checkoutService}>
                     <AnalyticsProviderMock>
-                        <ExtensionProvider
-                            checkoutService={checkoutService}
-                            errorLogger={{
-                                log: jest.fn(),
-                            }}
-                        >
+                        <ExtensionProvider extensionService={extensionService}>
                             <ThemeProvider>
                                 <Checkout {...props} />
                             </ThemeProvider>
@@ -434,9 +422,9 @@ describe('Shipping step', () => {
             expect(container.getElementsByClassName('form-checklist-item--selected').length).toBe(
                 1,
             );
-            // eslint-disable-next-line jest-dom/prefer-to-have-attribute
+
             expect(
-                screen.queryByLabelText('My billing address is the same as my shipping address.').hasAttribute('checked'),
+                screen.queryByLabelText('My billing address is the same as my shipping address.')?.hasAttribute('checked'),
             ).toBeFalsy();
 
             await userEvent.click(screen.getByLabelText('My billing address is the same as my shipping address.'));
@@ -604,7 +592,7 @@ describe('Shipping step', () => {
         });
     });
 
-    it.only('renders and validates shipping form built-in and customfields', async () => {
+    it('renders and validates shipping form built-in and customfields', async () => {
         checkoutService = checkout.use(CheckoutPreset.CheckoutWithBillingEmailAndCustomFormFields);
 
         jest.spyOn(checkoutService, 'updateShippingAddress');
@@ -704,7 +692,7 @@ describe('Shipping step', () => {
         it('sees the quote failed message when no shipping option available', async () => {
             jest.mock('lodash', () => ({
                 ...jest.requireActual('lodash'),
-                debounce: (fn) => {
+                debounce: (fn:any) => {
                     fn.cancel = jest.fn();
 
                     return fn;

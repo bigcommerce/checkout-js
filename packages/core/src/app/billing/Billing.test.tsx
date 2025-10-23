@@ -9,12 +9,13 @@ import userEvent from '@testing-library/user-event';
 import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';
 
-import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
+import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
 import {
-    type AnalyticsContextProps,
-    type AnalyticsEvents,
     AnalyticsProviderMock,
- ThemeProvider } from '@bigcommerce/checkout/contexts';
+    ExtensionProvider,
+    type ExtensionServiceInterface,
+    ThemeProvider,
+} from '@bigcommerce/checkout/contexts';
 import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
 import {
     CHECKOUT_ROOT_NODE_ID,
@@ -51,9 +52,9 @@ describe('Billing step', () => {
     let checkout: CheckoutPageNodeObject;
     let CheckoutTest: FunctionComponent<CheckoutIntermediateProps>;
     let checkoutService: CheckoutService;
-    let defaultProps: CheckoutIntermediateProps & AnalyticsContextProps;
+    let extensionService: ExtensionServiceInterface;
+    let defaultProps: CheckoutIntermediateProps;
     let embeddedMessengerMock: EmbeddedCheckoutMessenger;
-    let analyticsTracker: Partial<AnalyticsEvents>;
 
     const checkoutWithCustomer = {
         ...checkoutWithShipping,
@@ -75,34 +76,30 @@ describe('Billing step', () => {
     });
 
     beforeEach(() => {
+        const errorLogger = createErrorLogger();
+
         window.scrollTo = jest.fn();
 
         checkoutService = createCheckoutService();
         embeddedMessengerMock = createEmbeddedCheckoutMessenger({
             parentOrigin: 'https://store.url',
         });
-        analyticsTracker = {
-            checkoutBegin: jest.fn(),
-            trackStepViewed: jest.fn(),
-            trackStepCompleted: jest.fn(),
-            exitCheckout: jest.fn(),
-        };
         defaultProps = {
             checkoutId: 'x',
             containerId: CHECKOUT_ROOT_NODE_ID,
             createEmbeddedMessenger: () => embeddedMessengerMock,
             embeddedStylesheet: createEmbeddedCheckoutStylesheet(),
             embeddedSupport: createEmbeddedCheckoutSupport(getLanguageService()),
-            errorLogger: createErrorLogger(),
-            analyticsTracker,
+            errorLogger,
         };
+        extensionService = new ExtensionService(checkoutService, errorLogger);
 
         jest.spyOn(defaultProps.errorLogger, 'log').mockImplementation(noop);
         jest.spyOn(checkoutService, 'updateBillingAddress');
 
         jest.mock('lodash', () => ({
             ...jest.requireActual('lodash'),
-            debounce: (fn) => {
+            debounce: (fn: any) => {
                 fn.cancel = jest.fn();
 
                 return fn;
@@ -113,12 +110,7 @@ describe('Billing step', () => {
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleProvider checkoutService={checkoutService}>
                     <AnalyticsProviderMock>
-                        <ExtensionProvider
-                            checkoutService={checkoutService}
-                            errorLogger={{
-                                log: jest.fn(),
-                            }}
-                        >
+                        <ExtensionProvider extensionService={extensionService}>
                             <ThemeProvider>
                                 <Checkout {...props} />
                             </ThemeProvider>

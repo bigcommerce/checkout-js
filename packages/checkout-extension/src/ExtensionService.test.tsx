@@ -5,23 +5,23 @@ import {
     ExtensionRegion,
 } from '@bigcommerce/checkout-sdk';
 
+import { type ExtensionServiceInterface } from '@bigcommerce/checkout/contexts';
 import { ErrorLevelType, type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { getCart, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
-import { getExtensions } from './Extension.mock';
 import { ExtensionRegionContainer } from './ExtensionRegionContainer';
 import { ExtensionService } from './ExtensionService';
+import { getExtensions } from './getExtensions.mock';
 
 describe('ExtensionService', () => {
     const commandHandlerRemover = jest.fn();
     const queryHandlerRemover = jest.fn();
-    const dispatch = jest.fn();
     const errorLogger: ErrorLogger = {
         log: jest.fn(),
     };
     const checkoutService = createCheckoutService();
 
-    let extensionService: ExtensionService;
+    let extensionService: ExtensionServiceInterface;
 
     beforeEach(() => {
         jest.spyOn(checkoutService, 'loadExtensions').mockReturnValue(
@@ -41,7 +41,9 @@ describe('ExtensionService', () => {
             getExtensions()[0],
         );
 
-        extensionService = new ExtensionService(checkoutService, dispatch, errorLogger);
+        extensionService = new ExtensionService(checkoutService, errorLogger);
+
+        extensionService.setDispatch(jest.fn());
     });
 
     it('loads extensions', async () => {
@@ -154,8 +156,8 @@ describe('ExtensionService', () => {
 
         extensionService.removeListeners(ExtensionRegion.ShippingShippingAddressFormBefore);
 
-        expect(commandHandlerRemover).toBeCalledTimes(5);
-        expect(queryHandlerRemover).toBeCalledTimes(1);
+        expect(commandHandlerRemover).toHaveBeenCalledTimes(5);
+        expect(queryHandlerRemover).toHaveBeenCalledTimes(1);
         expect(checkoutService.clearExtensionCache).toHaveBeenCalled();
     });
 

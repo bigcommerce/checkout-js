@@ -7,21 +7,28 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import type React from 'react';
 
+import {
+    type ExtensionAction,
+    type ExtensionServiceInterface,
+} from '@bigcommerce/checkout/contexts';
 import { ErrorLevelType, type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 
-import { type ExtensionAction } from './ExtensionProvider';
 import { type CommandHandler, type QueryHandler } from './handler';
 import * as commandHandlerFactories from './handler/commandHandlers';
 import * as queryHandlerFactories from './handler/queryHandlers';
 
-export class ExtensionService {
+export class ExtensionService implements ExtensionServiceInterface {
     private handlers: { [extensionId: string]: Array<() => void> } = {};
+    private dispatch: React.Dispatch<ExtensionAction> | undefined;
 
     constructor(
         private checkoutService: CheckoutService,
-        private dispatch: React.Dispatch<ExtensionAction>,
         private errorLogger: ErrorLogger,
     ) {}
+
+    setDispatch(dispatch: React.Dispatch<ExtensionAction>): void {
+        this.dispatch = dispatch;
+    }
 
     async loadExtensions(): Promise<void> {
         await this.checkoutService.loadExtensions();
@@ -109,6 +116,10 @@ export class ExtensionService {
     }
 
     private registerHandlers(extension: Extension): void {
+        if (!this.dispatch) {
+            throw new Error('ExtensionService dispatch is not set');
+        }
+
         const handlerProps = {
             checkoutService: this.checkoutService,
             dispatch: this.dispatch,

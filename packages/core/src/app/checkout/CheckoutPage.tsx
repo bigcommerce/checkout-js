@@ -18,8 +18,8 @@ import classNames from 'classnames';
 import { find, findIndex } from 'lodash';
 import React, { Component, lazy, type ReactNode } from 'react';
 
-import { Extension, type ExtensionContextProps, withExtension } from '@bigcommerce/checkout/checkout-extension';
-import { type AnalyticsContextProps } from '@bigcommerce/checkout/contexts';
+import { Extension } from '@bigcommerce/checkout/checkout-extension';
+import { type AnalyticsContextProps, type ExtensionContextProps, withExtension } from '@bigcommerce/checkout/contexts';
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import {
