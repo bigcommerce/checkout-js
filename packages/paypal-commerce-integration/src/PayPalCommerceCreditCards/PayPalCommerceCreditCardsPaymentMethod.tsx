@@ -256,7 +256,6 @@ const PayPalCommerceCreditCardsPaymentMethod: FunctionComponent<PaymentMethodPro
                         form: isHostedFormEnabled
                             ? await getHostedFormOptions(selectedInstrument)
                             : undefined,
-                      //@ts-ignore
                         onLoadComplete: () => setIsLoading(false),
                     },
                 });
