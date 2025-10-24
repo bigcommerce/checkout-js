@@ -7,7 +7,6 @@ import { createStripeLinkV2CustomerStrategy, createStripeUPECustomerStrategy } f
 import React, { type FunctionComponent, useCallback } from "react";
 
 import CheckoutButton from "./CheckoutButton";
-import { ApplePayButton } from "./customWalletButton";
 
 interface CheckoutButtonV1ResolverProps {
     methodId: string;
@@ -48,17 +47,6 @@ const CheckoutButtonV1Resolver: FunctionComponent<CheckoutButtonV1ResolverProps>
         [initialize],
     );
 
-    switch (methodId) {
-        case 'applepay':
-            return <ApplePayButton
-                containerId={`${methodId}CheckoutButton`}
-                initialize={initialize}
-                key={methodId}
-                methodId={methodId}
-                onError={onError}
-                {...rest}
-            />;
-    }
 
     return <CheckoutButton
             containerId={`${methodId}CheckoutButton`}
