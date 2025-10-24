@@ -267,7 +267,6 @@ const PayPalCommerceCreditCardsPaymentMethod: FunctionComponent<PaymentMethodPro
     // rendering between Hosted Form and default BC fields (non-hosted)
     return isHostedFormEnabled ? (
         <LoadingOverlay isLoading={isLoading}>
-            (
             <CreditCardPaymentMethodComponent
                 {...props}
                 cardFieldset={
@@ -294,7 +293,6 @@ const PayPalCommerceCreditCardsPaymentMethod: FunctionComponent<PaymentMethodPro
                     isCardExpiryRequired: true,
                 })}
             />
-            )
         </LoadingOverlay>
     ) : (
         <CreditCardPaymentMethodComponent
