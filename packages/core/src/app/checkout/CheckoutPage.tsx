@@ -209,7 +209,6 @@ class Checkout extends Component<
             createEmbeddedMessenger,
             data,
             embeddedStylesheet,
-            extensionService,
             loadPaymentMethodByIds,
             subscribeToConsignments,
         } = this.props;
@@ -226,8 +225,6 @@ class Checkout extends Component<
                     buttonConfigs: configs.data.getPaymentMethods() || [],
                 });
             }
-
-            extensionService.preloadExtensions();
 
             const { links: { siteLink = '' } = {} } = data.getConfig() || {};
             const errorFlashMessages = data.getFlashMessages('error') || [];

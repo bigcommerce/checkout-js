@@ -18,7 +18,6 @@ export enum ExtensionActionType {
 export interface ExtensionServiceInterface {
     setDispatch(dispatch: React.Dispatch<ExtensionAction>): void;
     loadExtensions(): Promise<void>;
-    preloadExtensions(): void;
     renderExtension(container: string, region: ExtensionRegion): Promise<void>;
     removeListeners(region: ExtensionRegion): void;
     isRegionEnabled(region: ExtensionRegion): boolean;
