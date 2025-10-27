@@ -10,13 +10,19 @@ import userEvent from '@testing-library/user-event';
 import React, { type FunctionComponent } from 'react';
 
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
-import { type AnalyticsEvents ,
-  AnalyticsProviderMock,
-  ExtensionProvider,
-  type ExtensionServiceInterface,
-  ThemeProvider,
+import {
+    type AnalyticsEvents,
+    AnalyticsProviderMock,
+    ExtensionProvider,
+    type ExtensionServiceInterface,
+    type LocaleContextType,
+    LocaleProvider,
+    ThemeProvider,
 } from '@bigcommerce/checkout/contexts';
-import { createLocaleContext, type LocaleContextType, LocaleProvider } from '@bigcommerce/checkout/locale';
+import {
+    createLocaleContext,
+    getLanguageService,
+} from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { renderWithoutWrapper as render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
@@ -82,7 +88,10 @@ describe('OrderConfirmation', () => {
 
         ComponentTest = (props) => (
             <CheckoutProvider checkoutService={checkoutService}>
-                <LocaleProvider checkoutService={checkoutService}>
+                <LocaleProvider
+                    checkoutService={checkoutService}
+                    languageService={getLanguageService()}
+                >
                     <AnalyticsProviderMock analyticsTracker={analyticsTracker}>
                         <ExtensionProvider extensionService={extensionService}>
                             <ThemeProvider>

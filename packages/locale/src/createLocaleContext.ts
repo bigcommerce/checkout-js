@@ -1,9 +1,10 @@
 import { createCurrencyService, type StoreConfig } from '@bigcommerce/checkout-sdk/essential';
 
-import getLanguageService from './getLanguageService';
-import { type LocaleContextType } from './LocaleContext';
+import { type LocaleContextType } from '@bigcommerce/checkout/contexts';
 
-export default function createLocaleContext(config: StoreConfig): Required<LocaleContextType> {
+import { getLanguageService } from './index';
+
+export default function createLocaleContext(config?: StoreConfig): Required<LocaleContextType> {
     if (!config) {
         throw new Error('Missing configuration data');
     }

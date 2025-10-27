@@ -1,20 +1,22 @@
+import { createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 
-import LocaleContext from './LocaleContext';
-import { getLocaleContext } from './localeContext.mock';
+import { LocaleProvider } from '@bigcommerce/checkout/contexts';
+
 import TranslatedString from './TranslatedString';
 
-describe('TranslatedString', () => {
-    const localeContext = getLocaleContext();
+import { getLanguageService } from './index';
 
-    jest.spyOn(localeContext.language, 'translate');
+describe('TranslatedString', () => {
+    const checkoutService = createCheckoutService();
+    const languageService = getLanguageService();
 
     it('renders the translated string correctly', () => {
         render(
-            <LocaleContext.Provider value={localeContext}>
+            <LocaleProvider checkoutService={checkoutService} languageService={languageService}>
                 <TranslatedString id="address.address_line_1_label" />
-            </LocaleContext.Provider>,
+            </LocaleProvider>,
         );
 
         expect(screen.getByText('Address')).toBeInTheDocument();

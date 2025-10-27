@@ -2,7 +2,7 @@ import { type PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { useCallback } from 'react';
 import { object, string, type StringSchema } from 'yup';
 
-import { useLocale } from '@bigcommerce/checkout/locale';
+import { useLocale } from '@bigcommerce/checkout/contexts';
 import {
     type PaymentFormValues,
     usePaymentFormContext,

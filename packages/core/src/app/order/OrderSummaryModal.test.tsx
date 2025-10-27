@@ -1,7 +1,8 @@
 import { createCheckoutService, type Order } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
-import { LocaleProvider } from '@bigcommerce/checkout/locale';
+import { LocaleProvider } from '@bigcommerce/checkout/contexts';
+import { getLanguageService } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../config/config.mock';
@@ -95,7 +96,10 @@ describe('OrderSummaryModal', () => {
             });
 
             render(
-                <LocaleProvider checkoutService={checkoutService}>
+                <LocaleProvider
+                    checkoutService={checkoutService}
+                    languageService={getLanguageService()}
+                >
                     <OrderSummaryModal
                         {...mapToOrderSummarySubtotalsProps(getOrder(), true)}
                         isOpen={true}
