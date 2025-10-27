@@ -56,5 +56,5 @@ const BraintreePaypalPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
 export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>(
     BraintreePaypalPaymentMethod,
-    [{ id: 'braintreepaypal' }],
+    [{ id: 'braintreepaypal' }, { id: 'braintreepaypalcredit' }],
 );
