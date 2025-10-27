@@ -9,7 +9,6 @@ describe('ExtensionProvider', () => {
         const extensionService: ExtensionServiceInterface = {
             setDispatch: jest.fn(),
             loadExtensions: jest.fn(),
-            preloadExtensions: jest.fn(),
             renderExtension: jest.fn(),
             removeListeners: jest.fn(),
             isRegionEnabled: jest.fn(),
