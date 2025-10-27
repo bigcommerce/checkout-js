@@ -51,7 +51,7 @@ const BraintreeCreditCardPaymentMethod: FunctionComponent<
                     integrations: [createBraintreeCreditCardPaymentStrategy],
                     braintree: {
                         threeDSecure: {
-                            addFrame(error, content, cancel) {
+                            addFrame(error: Error | undefined, content: HTMLIFrameElement, cancel: () => Promise<{ nonce: string }> | undefined) {
                                 if (error) {
                                     return onUnhandledError(error);
                                 }
