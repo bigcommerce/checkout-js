@@ -40,7 +40,7 @@ import {
 import { act, renderWithoutWrapper as render, screen } from '@bigcommerce/checkout/test-utils';
 
 import Checkout from '../checkout/Checkout';
-import { type CheckoutIntermediateProps } from '../checkout/CheckoutIntermediate';
+import { type CheckoutInitializerProps } from '../checkout/CheckoutInitializer';
 import { getCheckoutPayment } from '../checkout/checkouts.mock';
 import { createErrorLogger } from '../common/error';
 import {
@@ -50,10 +50,10 @@ import {
 
 describe('Billing step', () => {
     let checkout: CheckoutPageNodeObject;
-    let CheckoutTest: FunctionComponent<CheckoutIntermediateProps>;
+    let CheckoutTest: FunctionComponent<CheckoutInitializerProps>;
     let checkoutService: CheckoutService;
     let extensionService: ExtensionServiceInterface;
-    let defaultProps: CheckoutIntermediateProps;
+    let defaultProps: CheckoutInitializerProps;
     let embeddedMessengerMock: EmbeddedCheckoutMessenger;
 
     const checkoutWithCustomer = {

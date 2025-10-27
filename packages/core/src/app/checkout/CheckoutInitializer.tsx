@@ -15,7 +15,7 @@ import CheckoutPage from './CheckoutPage';
 import type CheckoutSupport from './CheckoutSupport';
 import { useLoadCheckout } from './hooks';
 
-export interface CheckoutIntermediateProps {
+export interface CheckoutInitializerProps {
     checkoutId: string;
     containerId: string;
     embeddedStylesheet: EmbeddedCheckoutStylesheet;
@@ -25,7 +25,7 @@ export interface CheckoutIntermediateProps {
     createEmbeddedMessenger(options: EmbeddedCheckoutMessengerOptions): EmbeddedCheckoutMessenger;
 }
 
-const CheckoutIntermediate:React.FC<CheckoutIntermediateProps>= (props) => {
+const CheckoutInitializer:React.FC<CheckoutInitializerProps>= (props) => {
     const { checkoutId, initialState } = props;
     const { isLoadingCheckout } = useLoadCheckout(checkoutId, initialState);
     const { themeV2 } = useThemeContext();
@@ -44,4 +44,4 @@ const CheckoutIntermediate:React.FC<CheckoutIntermediateProps>= (props) => {
         />;
 };
 
-export default CheckoutIntermediate;
+export default CheckoutInitializer;
