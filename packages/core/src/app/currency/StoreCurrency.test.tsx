@@ -1,7 +1,8 @@
 import React from 'react';
 import testRenderer from 'react-test-renderer';
 
-import { getLocaleContext, LocaleContext  } from '@bigcommerce/checkout/locale';
+import { LocaleContext } from '@bigcommerce/checkout/contexts';
+import { getLocaleContext  } from '@bigcommerce/checkout/test-mocks';
 
 import StoreCurrency from './StoreCurrency';
 

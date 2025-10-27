@@ -1,3 +1,5 @@
+import { type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import { createZipPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/zip';
 import React, { type FunctionComponent } from 'react';
 
 import {
@@ -5,8 +7,6 @@ import {
     type PaymentMethodResolveId,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
-import { createZipPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/zip';
-import { type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 
 import { HostedPaymentComponent } from './components';
 

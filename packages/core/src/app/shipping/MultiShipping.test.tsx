@@ -11,14 +11,15 @@ import React, { act, type FunctionComponent } from 'react';
 
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
 import {
-  type AnalyticsContextProps,
-  type AnalyticsEvents,
-  AnalyticsProviderMock,
-  ExtensionProvider,
-  type ExtensionServiceInterface,
-  ThemeProvider,
+    type AnalyticsContextProps,
+    type AnalyticsEvents,
+    AnalyticsProviderMock,
+    ExtensionProvider,
+    type ExtensionServiceInterface,
+    LocaleProvider,
+    ThemeProvider,
 } from '@bigcommerce/checkout/contexts';
-import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
+import { getLanguageService } from '@bigcommerce/checkout/locale';
 import {
     CHECKOUT_ROOT_NODE_ID,
     CheckoutProvider,
@@ -52,7 +53,7 @@ describe('Multi-shipping', () => {
     let embeddedMessengerMock: EmbeddedCheckoutMessenger;
     let analyticsTracker: AnalyticsEvents;
 
-    const language = getLanguageService();
+    const languageService = getLanguageService();
 
     beforeAll(() => {
         checkout = new CheckoutPageNodeObject();
@@ -97,7 +98,7 @@ describe('Multi-shipping', () => {
             containerId: CHECKOUT_ROOT_NODE_ID,
             createEmbeddedMessenger: () => embeddedMessengerMock,
             embeddedStylesheet: createEmbeddedCheckoutStylesheet(),
-            embeddedSupport: createEmbeddedCheckoutSupport(getLanguageService()),
+            embeddedSupport: createEmbeddedCheckoutSupport(languageService),
             errorLogger: createErrorLogger(),
             analyticsTracker,
         };
@@ -106,7 +107,10 @@ describe('Multi-shipping', () => {
 
         CheckoutTest = (props) => (
             <CheckoutProvider checkoutService={checkoutService}>
-                <LocaleProvider checkoutService={checkoutService}>
+                <LocaleProvider
+                    checkoutService={checkoutService}
+                    languageService={languageService}
+                >
                     <AnalyticsProviderMock>
                         <ExtensionProvider
                             extensionService={extensionService}
@@ -147,7 +151,7 @@ describe('Multi-shipping', () => {
         );
         expect(
             screen.getByText(
-                language.translate('shipping.multishipping_incomplete_consignment_error', {
+                languageService.translate('shipping.multishipping_incomplete_consignment_error', {
                     consignmentNumber: 1,
                 }),
             ),
@@ -191,7 +195,7 @@ describe('Multi-shipping', () => {
         expect(checkoutService.selectConsignmentShippingOption).toHaveBeenCalledTimes(1);
         expect(
             screen.queryByText(
-                language.translate('shipping.multishipping_incomplete_consignment_error', {
+                languageService.translate('shipping.multishipping_incomplete_consignment_error', {
                     consignmentNumber: 1,
                 }),
             ),
@@ -333,7 +337,7 @@ describe('Multi-shipping', () => {
         expect(screen.getByText(shippingQuoteFailedMessage)).toBeInTheDocument();
         expect(
             screen.queryByText(
-                language.translate('shipping.multishipping_incomplete_consignment_error', {
+                languageService.translate('shipping.multishipping_incomplete_consignment_error', {
                     consignmentNumber: 1,
                 }),
             ),

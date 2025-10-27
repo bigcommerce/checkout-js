@@ -14,9 +14,10 @@ import {
     AnalyticsProviderMock,
     ExtensionProvider,
     type ExtensionServiceInterface,
+    LocaleProvider,
     ThemeProvider,
 } from '@bigcommerce/checkout/contexts';
-import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
+import { getLanguageService } from '@bigcommerce/checkout/locale';
 import {
     CHECKOUT_ROOT_NODE_ID,
     CheckoutProvider,
@@ -108,7 +109,10 @@ describe('Billing step', () => {
 
         CheckoutTest = (props) => (
             <CheckoutProvider checkoutService={checkoutService}>
-                <LocaleProvider checkoutService={checkoutService}>
+                <LocaleProvider
+                    checkoutService={checkoutService}
+                    languageService={getLanguageService()}
+                >
                     <AnalyticsProviderMock>
                         <ExtensionProvider extensionService={extensionService}>
                             <ThemeProvider>

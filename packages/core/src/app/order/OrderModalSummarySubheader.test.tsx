@@ -1,7 +1,8 @@
 import { type CurrencyService } from "@bigcommerce/checkout-sdk";
 import React from "react";
 
-import { createLocaleContext, LocaleContext, type LocaleContextType } from "@bigcommerce/checkout/locale";
+import { LocaleContext, type LocaleContextType } from "@bigcommerce/checkout/contexts";
+import { createLocaleContext } from "@bigcommerce/checkout/locale";
 import { render, screen } from "@bigcommerce/checkout/test-utils";
 
 import { getDigitalItem, getPhysicalItem } from "../cart/lineItem.mock";

@@ -5,7 +5,8 @@ import { noop } from 'lodash';
 import React from 'react';
 import { type Omit } from 'utility-types';
 
-import { createLocaleContext, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/locale';
+import { LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
+import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../../config/config.mock';

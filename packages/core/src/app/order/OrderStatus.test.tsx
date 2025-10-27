@@ -1,7 +1,8 @@
 import { type CheckoutService, createCheckoutService, type Order, type StoreConfig } from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent } from 'react';
 
-import { createLocaleContext, type LocaleContextType, LocaleProvider } from '@bigcommerce/checkout/locale';
+import { LocaleProvider } from '@bigcommerce/checkout/contexts';
+import { getLanguageService } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../config/config.mock';
@@ -22,7 +23,8 @@ describe('OrderStatus', () => {
     let order: Order;
     let OrderStatusTest: FunctionComponent<OrderStatusProps>;
     let config: StoreConfig;
-    let localeContext: LocaleContextType;
+
+    const languageService = getLanguageService();
 
     beforeEach(() => {
         checkoutService = createCheckoutService();
@@ -35,10 +37,11 @@ describe('OrderStatus', () => {
             supportEmail: 'test@example.com',
         };
 
-        localeContext = createLocaleContext(getStoreConfig());
-
         OrderStatusTest = (props) => (
-            <LocaleProvider checkoutService={checkoutService} value={localeContext}>
+            <LocaleProvider
+                checkoutService={checkoutService}
+                languageService={getLanguageService()}
+            >
                 <OrderStatus {...props} />
             </LocaleProvider>
         );
@@ -54,7 +57,7 @@ describe('OrderStatus', () => {
 
             expect(screen.getByTestId('order-confirmation-order-number-text')).toHaveTextContent(`Your order number is ${order.orderId}`);
             expect(screen.getByTestId('order-confirmation-order-status-text'))
-                .toHaveTextContent(getTextContent(localeContext.language.translate('order_confirmation.order_with_support_number_text', {
+                .toHaveTextContent(getTextContent(languageService.translate('order_confirmation.order_with_support_number_text', {
                     orderNumber: defaultProps.order.orderId,
                     supportEmail: defaultProps.supportEmail,
                     supportPhoneNumber,
@@ -66,7 +69,7 @@ describe('OrderStatus', () => {
 
             expect(screen.getByTestId('order-confirmation-order-number-text')).toHaveTextContent(`Your order number is ${order.orderId}`);
             expect(screen.getByTestId('order-confirmation-order-status-text'))
-                .toHaveTextContent(getTextContent(localeContext.language.translate('order_confirmation.order_without_support_number_text', {
+                .toHaveTextContent(getTextContent(languageService.translate('order_confirmation.order_without_support_number_text', {
                     orderNumber: defaultProps.order.orderId,
                     supportEmail: defaultProps.supportEmail,
                 })));
@@ -84,7 +87,7 @@ describe('OrderStatus', () => {
         it('renders message indicating order is pending review', () => {
             render(<OrderStatusTest {...defaultProps} order={order} />);
 
-            expect(screen.getByText(localeContext.language.translate('order_confirmation.order_pending_review_text'))).toBeInTheDocument();
+            expect(screen.getByText(languageService.translate('order_confirmation.order_pending_review_text'))).toBeInTheDocument();
         });
     });
 
@@ -99,7 +102,7 @@ describe('OrderStatus', () => {
         it('renders message indicating order is awaiting payment', () => {
             render(<OrderStatusTest {...defaultProps} order={order} />);
 
-            expect(screen.getByText(localeContext.language.translate('order_confirmation.order_pending_review_text'))).toBeInTheDocument();
+            expect(screen.getByText(languageService.translate('order_confirmation.order_pending_review_text'))).toBeInTheDocument();
         });
     });
 
@@ -115,7 +118,7 @@ describe('OrderStatus', () => {
             render(<OrderStatusTest {...defaultProps} order={order} />);
 
             expect(screen.getByTestId('order-confirmation-order-status-text'))
-                .toHaveTextContent(getTextContent(localeContext.language.translate('order_confirmation.order_pending_status_text', {
+                .toHaveTextContent(getTextContent(languageService.translate('order_confirmation.order_pending_status_text', {
                     orderNumber: defaultProps.order.orderId,
                     supportEmail: defaultProps.supportEmail,
                 })));
@@ -134,7 +137,7 @@ describe('OrderStatus', () => {
             render(<OrderStatusTest {...defaultProps} order={order} />);
 
             expect(screen.getByTestId('order-confirmation-order-status-text'))
-                .toHaveTextContent(getTextContent(localeContext.language.translate('order_confirmation.order_incomplete_status_text', {
+                .toHaveTextContent(getTextContent(languageService.translate('order_confirmation.order_incomplete_status_text', {
                     orderNumber: defaultProps.order.orderId,
                     supportEmail: defaultProps.supportEmail,
                 })));
@@ -146,7 +149,7 @@ describe('OrderStatus', () => {
             render(<OrderStatusTest {...defaultProps} config={config} order={order} />);
 
             expect(screen.getByTestId('order-confirmation-order-status-text'))
-                .toHaveTextContent(getTextContent(localeContext.language.translate('order_confirmation.order_pending_status_text', {
+                .toHaveTextContent(getTextContent(languageService.translate('order_confirmation.order_pending_status_text', {
                     orderNumber: defaultProps.order.orderId,
                     supportEmail: defaultProps.supportEmail,
                 })));
@@ -167,7 +170,7 @@ describe('OrderStatus', () => {
             );
 
             expect(screen.getByTestId('order-confirmation-digital-items-text'))
-                .toHaveTextContent(localeContext.language.translate('order_confirmation.order_with_downloadable_digital_items_text'));
+                .toHaveTextContent(languageService.translate('order_confirmation.order_with_downloadable_digital_items_text'));
         });
 
         it('renders status without downloadable items text if order it not yet downloadable', () => {
@@ -176,7 +179,7 @@ describe('OrderStatus', () => {
             );
 
             expect(screen.getByTestId("order-confirmation-digital-items-text")).toHaveTextContent(
-                localeContext.language.translate('order_confirmation.order_without_downloadable_digital_items_text')
+                languageService.translate('order_confirmation.order_without_downloadable_digital_items_text')
             );
         });
     });

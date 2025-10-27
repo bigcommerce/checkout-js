@@ -1,6 +1,6 @@
 import React, { type FunctionComponent } from 'react';
 
-import { useLocale } from './LocaleContext';
+import { useLocale } from '@bigcommerce/checkout/contexts';
 
 export interface TranslatedStringProps {
     id: string;

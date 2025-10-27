@@ -7,7 +7,8 @@ import {
 import { noop } from 'lodash';
 import React, { type FunctionComponent, lazy, memo } from 'react';
 
-import { TranslatedString, useLocale } from '@bigcommerce/checkout/locale';
+import { useLocale } from '@bigcommerce/checkout/contexts';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { type CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 import { LazyContainer } from '@bigcommerce/checkout/ui';
 

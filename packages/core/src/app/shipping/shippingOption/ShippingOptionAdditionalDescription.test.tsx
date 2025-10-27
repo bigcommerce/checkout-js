@@ -2,16 +2,21 @@ import { createCheckoutService } from '@bigcommerce/checkout-sdk';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
-import { LocaleProvider } from '@bigcommerce/checkout/locale';
+import { LocaleProvider } from '@bigcommerce/checkout/contexts';
+import { getLanguageService } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import ShippingOptionAdditionalDescription from './ShippingOptionAdditionalDescription';
 
 describe('ShippingOptionAdditionalDescription Component', () => {
     const checkoutService = createCheckoutService();
+    const languageService = getLanguageService();
 
     it('renders additional description', () => {
-        render(<LocaleProvider checkoutService={checkoutService}><ShippingOptionAdditionalDescription description="Test this" /></LocaleProvider>);
+        render(<LocaleProvider
+                    checkoutService={checkoutService}
+                    languageService={languageService}
+                ><ShippingOptionAdditionalDescription description="Test this" /></LocaleProvider>);
 
         expect(screen.getByText('Test this')).toBeInTheDocument();
     });
@@ -20,7 +25,10 @@ describe('ShippingOptionAdditionalDescription Component', () => {
         const longDescription = 'This is a really long description, it just goes on and on and on';
 
         render(
-            <LocaleProvider checkoutService={checkoutService}><ShippingOptionAdditionalDescription
+            <LocaleProvider
+                    checkoutService={checkoutService}
+                    languageService={languageService}
+                ><ShippingOptionAdditionalDescription
                 description={longDescription}/></LocaleProvider>,
         );
 

@@ -12,8 +12,8 @@ import { faker } from '@faker-js/faker';
 import userEvent from '@testing-library/user-event';
 import React, { type FunctionComponent } from 'react';
 
-import { AnalyticsProviderMock } from '@bigcommerce/checkout/contexts';
-import { createLocaleContext, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/locale';
+import { AnalyticsProviderMock , LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
+import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { getCart, getCheckout, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 import { render, screen, within } from '@bigcommerce/checkout/test-utils';

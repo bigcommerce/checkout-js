@@ -7,7 +7,10 @@ module.exports = {
             diagnostics: false,
         }],
     },
-    collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*/index.ts', '!src/icon/*.tsx'],
+    collectCoverageFrom: [
+        'src/**/*.{ts,tsx}',
+        '!src/**/*/index.ts',
+    ],
     setupFilesAfterEnv: ['../../jest-setup.ts'],
     coverageDirectory: '../../coverage/packages/contexts',
 };

@@ -1,8 +1,9 @@
 import { type PaymentMethod } from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent } from 'react';
 
+import { useLocale } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
-import { TranslatedString, useLocale } from '@bigcommerce/checkout/locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { getPaymentMethodName } from '@bigcommerce/checkout/payment-integration-api';
 
 export interface SignOutLinkProps {

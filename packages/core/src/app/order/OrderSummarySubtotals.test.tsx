@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
+import { LocaleContext } from '@bigcommerce/checkout/contexts';
+import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 

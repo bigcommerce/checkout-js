@@ -1,17 +1,16 @@
 import { render, screen } from '@testing-library/react';
 import React, { type FunctionComponent } from 'react';
 
-import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
+import { LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
+import { getLocaleContext } from '@bigcommerce/checkout/test-mocks';
 
-import createLocaleContext from './createLocaleContext';
-import LocaleContext, { type LocaleContextType } from './LocaleContext';
 import withCurrency, { type WithCurrencyProps } from './withCurrency';
 
 describe('withCurrency()', () => {
     let contextValue: LocaleContextType;
 
     beforeEach(() => {
-        contextValue = createLocaleContext(getStoreConfig());
+        contextValue = getLocaleContext();
     });
 
     it('injects currency service to inner component', () => {

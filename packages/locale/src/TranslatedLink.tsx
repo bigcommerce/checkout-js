@@ -1,8 +1,8 @@
 import React, { type FunctionComponent, type MouseEventHandler } from 'react';
 
+import { useLocale } from '@bigcommerce/checkout/contexts';
 import { parseAnchor, preventDefault } from '@bigcommerce/checkout/dom-utils';
 
-import { useLocale } from './LocaleContext';
 import { type TranslatedStringProps } from './TranslatedString';
 
 export type TranslatedLinkProps = TranslatedStringProps & {

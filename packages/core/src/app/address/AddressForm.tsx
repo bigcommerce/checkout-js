@@ -2,8 +2,8 @@ import { type FormField } from '@bigcommerce/checkout-sdk';
 import { forIn, noop } from 'lodash';
 import React, { useCallback, useEffect, useRef } from 'react';
 
-import { useThemeContext } from '@bigcommerce/checkout/contexts';
-import { TranslatedString, useLocale } from '@bigcommerce/checkout/locale';
+import { useLocale,useThemeContext } from '@bigcommerce/checkout/contexts';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 import { DynamicFormField, DynamicFormFieldType } from '@bigcommerce/checkout/ui';
 

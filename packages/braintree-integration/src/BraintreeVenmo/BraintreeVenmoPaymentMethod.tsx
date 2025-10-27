@@ -1,3 +1,5 @@
+import { type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import { createBraintreeVenmoPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
 import React, { type FunctionComponent } from 'react';
 
 import { HostedPaymentComponent } from '@bigcommerce/checkout/hosted-payment-integration';
@@ -6,8 +8,6 @@ import {
     type PaymentMethodResolveId,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
-import { createBraintreeVenmoPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
-import { type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 
 const BraintreeVenmoPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     checkoutService,

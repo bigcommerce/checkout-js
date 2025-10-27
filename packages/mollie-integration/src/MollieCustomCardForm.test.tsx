@@ -3,7 +3,8 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';
 
-import { LocaleProvider } from '@bigcommerce/checkout/locale';
+import { LocaleProvider } from '@bigcommerce/checkout/contexts';
+import { getLanguageService } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import MollieCustomCardForm, { type MollieCustomCardFormProps } from './MollieCustomCardForm';
@@ -43,11 +44,14 @@ describe('MollieCustomForm', () => {
         },
     };
     let MollieCustomFormTest: FunctionComponent<MollieCustomCardFormProps>;
-    const checkouService = createCheckoutService();
+    const checkoutService = createCheckoutService();
 
     beforeEach(() => {
         MollieCustomFormTest = (props: MollieCustomCardFormProps) => (
-            <LocaleProvider checkoutService={checkouService}>
+            <LocaleProvider
+                checkoutService={checkoutService}
+                languageService={getLanguageService()}
+            >
                 <Formik initialValues={{}} onSubmit={noop}>
                     <MollieCustomCardForm {...props} />
                 </Formik>

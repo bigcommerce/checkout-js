@@ -3,8 +3,8 @@ import { createBoltCustomerStrategy } from '@bigcommerce/checkout-sdk/integratio
 import userEvent from '@testing-library/user-event';
 import React, { act, type FunctionComponent } from 'react';
 
-import { type AnalyticsEvents, AnalyticsProviderMock } from '@bigcommerce/checkout/contexts';
-import { LocaleProvider } from '@bigcommerce/checkout/locale';
+import { type AnalyticsEvents, AnalyticsProviderMock, LocaleProvider } from '@bigcommerce/checkout/contexts';
+import { getLanguageService } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import BoltCheckoutSuggestion, { type BoltCheckoutSuggestionProps } from './BoltCheckoutSuggestion';
@@ -31,7 +31,10 @@ describe('BoltCheckoutSuggestion', () => {
         const checkoutService = createCheckoutService();
 
         TestComponent = (props) =>
-            <LocaleProvider checkoutService={checkoutService}>
+            <LocaleProvider
+                checkoutService={checkoutService}
+                languageService={getLanguageService()}
+            >
                 <AnalyticsProviderMock analyticsTracker={analyticsTrackerMock}>
                     <BoltCheckoutSuggestion {...defaultProps} {...props} />
                 </AnalyticsProviderMock>

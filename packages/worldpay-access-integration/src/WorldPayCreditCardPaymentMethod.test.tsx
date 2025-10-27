@@ -12,12 +12,9 @@ import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';
 import { act } from 'react-dom/test-utils';
 
+import { LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
 import { type CreditCardPaymentMethodValues } from '@bigcommerce/checkout/credit-card-integration';
-import {
-    createLocaleContext,
-    LocaleContext,
-    type LocaleContextType,
-} from '@bigcommerce/checkout/locale';
+import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import {
     CheckoutProvider,
     PaymentFormContext,

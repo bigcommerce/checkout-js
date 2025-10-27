@@ -9,7 +9,6 @@ import useAnalytics from './useAnalytics';
 jest.mock('@bigcommerce/checkout-sdk/essential', () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
         __esModule: true,
         ...jest.requireActual('@bigcommerce/checkout-sdk/essential'),
     };

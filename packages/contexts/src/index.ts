@@ -16,3 +16,4 @@ export {
     ExtensionServiceInterface,
     ExtensionActionType,
 } from './extension';
+export { LocaleContextType, LocaleContext, LocaleProvider, useLocale } from './locale';
