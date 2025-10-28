@@ -2,6 +2,7 @@ import { createCheckoutService, createLanguageService } from '@bigcommerce/check
 import { createPayPalCommerceFastlanePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/paypal-commerce';
 import React from 'react';
 
+import { PaymentFormProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { getPaymentFormServiceMock } from '@bigcommerce/checkout/test-mocks';
 import { render } from '@bigcommerce/checkout/test-utils';
 
@@ -10,6 +11,7 @@ import PayPalCommerceFastlanePaymentMethod from './PayPalCommerceFastlanePayment
 describe('PayPalCommerceFastlanePaymentMethod', () => {
     const checkoutService = createCheckoutService();
     const checkoutState = checkoutService.getState();
+    const paymentForm = getPaymentFormServiceMock();
 
     const method = {
         clientToken: 'token',
@@ -31,7 +33,7 @@ describe('PayPalCommerceFastlanePaymentMethod', () => {
         method,
         checkoutService,
         checkoutState,
-        paymentForm: getPaymentFormServiceMock(),
+        paymentForm,
         language: createLanguageService(),
         onUnhandledError: jest.fn(),
     };
@@ -41,7 +43,11 @@ describe('PayPalCommerceFastlanePaymentMethod', () => {
             .spyOn(checkoutService, 'initializePayment')
             .mockResolvedValue(checkoutState);
 
-        render(<PayPalCommerceFastlanePaymentMethod {...props} />);
+        render(
+            <PaymentFormProvider paymentForm={paymentForm}>
+                <PayPalCommerceFastlanePaymentMethod {...props} />
+            </PaymentFormProvider>,
+        );
 
         expect(initializePayment).toHaveBeenCalledWith({
             methodId: props.method.id,
@@ -59,7 +65,11 @@ describe('PayPalCommerceFastlanePaymentMethod', () => {
             .spyOn(checkoutService, 'deinitializePayment')
             .mockResolvedValue(checkoutState);
 
-        const view = render(<PayPalCommerceFastlanePaymentMethod {...props} />);
+        const view = render(
+            <PaymentFormProvider paymentForm={paymentForm}>
+                <PayPalCommerceFastlanePaymentMethod {...props} />
+            </PaymentFormProvider>,
+        );
 
         view.unmount();
 

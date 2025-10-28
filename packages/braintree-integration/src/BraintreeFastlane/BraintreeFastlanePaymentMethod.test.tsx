@@ -2,6 +2,7 @@ import { createCheckoutService, createLanguageService } from '@bigcommerce/check
 import { createBraintreeFastlanePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
 import React from 'react';
 
+import { PaymentFormProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { getPaymentFormServiceMock } from '@bigcommerce/checkout/test-mocks';
 import { render } from '@bigcommerce/checkout/test-utils';
 
@@ -10,6 +11,7 @@ import BraintreeFastlanePaymentMethod from './BraintreeFastlanePaymentMethod';
 describe('BraintreeFastlanePaymentMethod', () => {
     const checkoutService = createCheckoutService();
     const checkoutState = checkoutService.getState();
+    const paymentForm = getPaymentFormServiceMock();
 
     const method = {
         clientToken: 'token',
@@ -41,7 +43,11 @@ describe('BraintreeFastlanePaymentMethod', () => {
             .spyOn(checkoutService, 'initializePayment')
             .mockResolvedValue(checkoutState);
 
-        render(<BraintreeFastlanePaymentMethod {...props} />);
+        render(
+            <PaymentFormProvider paymentForm={paymentForm}>
+                <BraintreeFastlanePaymentMethod {...props} />
+            </PaymentFormProvider>,
+        );
 
         expect(initializePayment).toHaveBeenCalledWith({
             methodId: props.method.id,
@@ -59,7 +65,11 @@ describe('BraintreeFastlanePaymentMethod', () => {
             .spyOn(checkoutService, 'deinitializePayment')
             .mockResolvedValue(checkoutState);
 
-        const view = render(<BraintreeFastlanePaymentMethod {...props} />);
+        const view = render(
+            <PaymentFormProvider paymentForm={paymentForm}>
+                <BraintreeFastlanePaymentMethod {...props} />
+            </PaymentFormProvider>,
+        );
 
         view.unmount();
 
