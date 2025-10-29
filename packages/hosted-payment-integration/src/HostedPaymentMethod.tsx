@@ -5,6 +5,8 @@ import {
     type PaymentMethodResolveId,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
+import { createZipPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/zip';
+import { type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 
 import { HostedPaymentComponent } from './components';
 
@@ -16,12 +18,19 @@ const HostedPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     language,
     paymentForm,
 }) => {
+    const initializeHostedPaymentMethod = async (options: PaymentInitializeOptions) => {
+        return checkoutService.initializePayment({
+            ...options,
+            integrations: [createZipPaymentStrategy],
+        });
+    };
+
     return (
         <HostedPaymentComponent
             checkoutService={checkoutService}
             checkoutState={checkoutState}
             deinitializePayment={checkoutService.deinitializePayment}
-            initializePayment={checkoutService.initializePayment}
+            initializePayment={initializeHostedPaymentMethod}
             language={language}
             method={method}
             onUnhandledError={onUnhandledError}
