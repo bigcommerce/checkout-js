@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.697.17](https://github.com/bigcommerce/checkout-js/compare/v1.697.16...v1.697.17) (2025-10-30)
+
+### [1.697.16](https://github.com/bigcommerce/checkout-js/compare/v1.697.15...v1.697.16) (2025-10-30)
+
+### [1.697.15](https://github.com/bigcommerce/checkout-js/compare/v1.697.14...v1.697.15) (2025-10-30)
+
+
+### Bug Fixes
+
+* **payment:** PI-4321 fixed Sezzle payment method title ([33e6df0](https://github.com/bigcommerce/checkout-js/commit/33e6df092d4c95d5b848e81ed4549a95977d4878))
+
 ### [1.697.14](https://github.com/bigcommerce/checkout-js/compare/v1.697.13...v1.697.14) (2025-10-30)
 
 
