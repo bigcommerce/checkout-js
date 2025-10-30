@@ -99,3 +99,21 @@
 .form-field--setAsDefaultInstrument {
     order: 7;
 }
+
+#paypalcommercecreditcards-ccNumber,
+#paypalcommercecreditcards-ccExpiry,
+#paypalcommercecreditcards-ccName,
+#paypalcommercecreditcards-ccCvv,
+#bigcommerce_payments_creditcards-ccNumber,
+#bigcommerce_payments_creditcards-ccExpiry,
+#bigcommerce_payments_creditcards-ccName,
+#bigcommerce_payments_creditcards-ccCvv {
+  height: 45px;
+  overflow: hidden;
+
+  & > div {
+    top: -5px;
+    left: -5px;
+    width: calc(100% + 10px);
+  }
+}
