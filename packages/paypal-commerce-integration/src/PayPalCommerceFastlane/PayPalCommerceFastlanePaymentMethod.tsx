@@ -2,10 +2,7 @@ import { type CardInstrument } from '@bigcommerce/checkout-sdk';
 import { createPayPalCommerceFastlanePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/paypal-commerce';
 import React, { type FunctionComponent, useEffect, useRef } from 'react';
 
-import { LocaleProvider } from '@bigcommerce/checkout/locale';
 import {
-    CheckoutContext,
-    PaymentFormContext,
     type PaymentMethodProps,
     type PaymentMethodResolveId,
     toResolvableComponent,
@@ -13,7 +10,6 @@ import {
 import { FormContext, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import PayPalCommerceFastlaneForm from './components/PayPalCommerceFastlaneForm';
-
 import './PayPalCommerceFastlanePaymentMethod.scss';
 import isErrorWithTranslationKey from './is-error-with-translation-key';
 
@@ -101,22 +97,14 @@ const PayPalCommerceFastlanePaymentMethod: FunctionComponent<PaymentMethodProps>
 
     return (
         <FormContext.Provider value={formContextProps}>
-            <CheckoutContext.Provider value={{ checkoutState, checkoutService }}>
-                <LocaleProvider checkoutService={checkoutService}>
-                    <PaymentFormContext.Provider value={{ paymentForm }}>
-                        <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
-                            <PayPalCommerceFastlaneForm
-                                renderPayPalCardComponent={
-                                    paypalCardComponentRef.current.renderPayPalCardComponent
-                                }
-                                showPayPalCardSelector={
-                                    paypalCardComponentRef.current.showPayPalCardSelector
-                                }
-                            />
-                        </LoadingOverlay>
-                    </PaymentFormContext.Provider>
-                </LocaleProvider>
-            </CheckoutContext.Provider>
+            <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
+                <PayPalCommerceFastlaneForm
+                    renderPayPalCardComponent={
+                        paypalCardComponentRef.current.renderPayPalCardComponent
+                    }
+                    showPayPalCardSelector={paypalCardComponentRef.current.showPayPalCardSelector}
+                />
+            </LoadingOverlay>
         </FormContext.Provider>
     );
 };

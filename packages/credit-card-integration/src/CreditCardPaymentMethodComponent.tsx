@@ -28,7 +28,6 @@ import {
     isInstrumentFeatureAvailable,
     StoreInstrumentFieldset,
 } from '@bigcommerce/checkout/instrument-utils';
-import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
 import {
     CaptureMessageComponent,
     type CardInstrumentFieldsetValues,
@@ -365,57 +364,52 @@ export const CreditCardPaymentMethodComponent = (
     }
 
     return (
-        <LocaleContext.Provider value={createLocaleContext(storeConfig)}>
-            <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
-                <div
-                    className="paymentMethod paymentMethod--creditCard"
-                    data-test="credit-cart-payment-method"
-                >
-                    {shouldShowInstrumentFieldset && (
-                        <CardInstrumentFieldset
-                            instruments={outerInstruments}
-                            onDeleteInstrument={handleDeleteInstrument}
-                            onSelectInstrument={handleSelectInstrument}
-                            onUseNewInstrument={handleUseNewCard}
-                            selectedInstrumentId={
-                                selectedInstrument && selectedInstrument.bigpayToken
+        <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
+            <div
+                className="paymentMethod paymentMethod--creditCard"
+                data-test="credit-cart-payment-method"
+            >
+                {shouldShowInstrumentFieldset && (
+                    <CardInstrumentFieldset
+                        instruments={outerInstruments}
+                        onDeleteInstrument={handleDeleteInstrument}
+                        onSelectInstrument={handleSelectInstrument}
+                        onUseNewInstrument={handleUseNewCard}
+                        selectedInstrumentId={selectedInstrument && selectedInstrument.bigpayToken}
+                        validateInstrument={
+                            getStoredCardValidationFieldset ? (
+                                getStoredCardValidationFieldset(selectedInstrument)
+                            ) : (
+                                <CreditCardValidation
+                                    shouldShowCardCodeField={shouldShowCardCodeField}
+                                    shouldShowNumberField={shouldShowNumberField}
+                                />
+                            )
+                        }
+                    />
+                )}
+
+                {shouldShowCreditCardFieldset && !cardFieldset && (
+                    <>
+                        <CaptureMessageComponent message={SentryMessage} />
+                        <CreditCardFieldset
+                            shouldShowCardCodeField={
+                                methodProp.config.cardCode || methodProp.config.cardCode === null
                             }
-                            validateInstrument={
-                                getStoredCardValidationFieldset ? (
-                                    getStoredCardValidationFieldset(selectedInstrument)
-                                ) : (
-                                    <CreditCardValidation
-                                        shouldShowCardCodeField={shouldShowCardCodeField}
-                                        shouldShowNumberField={shouldShowNumberField}
-                                    />
-                                )
-                            }
+                            shouldShowCustomerCodeField={methodProp.config.requireCustomerCode}
                         />
-                    )}
+                    </>
+                )}
 
-                    {shouldShowCreditCardFieldset && !cardFieldset && (
-                        <>
-                            <CaptureMessageComponent message={SentryMessage} />
-                            <CreditCardFieldset
-                                shouldShowCardCodeField={
-                                    methodProp.config.cardCode ||
-                                    methodProp.config.cardCode === null
-                                }
-                                shouldShowCustomerCodeField={methodProp.config.requireCustomerCode}
-                            />
-                        </>
-                    )}
+                {shouldShowCreditCardFieldset && cardFieldset}
 
-                    {shouldShowCreditCardFieldset && cardFieldset}
-
-                    {isInstrumentFeatureAvailableProp && (
-                        <StoreInstrumentFieldset
-                            instrumentId={selectedInstrument && selectedInstrument.bigpayToken}
-                            instruments={outerInstruments}
-                        />
-                    )}
-                </div>
-            </LoadingOverlay>
-        </LocaleContext.Provider>
+                {isInstrumentFeatureAvailableProp && (
+                    <StoreInstrumentFieldset
+                        instrumentId={selectedInstrument && selectedInstrument.bigpayToken}
+                        instruments={outerInstruments}
+                    />
+                )}
+            </div>
+        </LoadingOverlay>
     );
 };

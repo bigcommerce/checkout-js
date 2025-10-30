@@ -19,6 +19,7 @@ import {
 } from '@bigcommerce/checkout/locale';
 import {
     CheckoutProvider,
+    PaymentFormProvider,
     type PaymentFormService,
     type PaymentMethodProps,
 } from '@bigcommerce/checkout/payment-integration-api';
@@ -34,7 +35,6 @@ describe('when using AdyenV3 payment', () => {
     let method: PaymentMethod;
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
-    let defaultProps: PaymentMethodProps;
     let localeContext: LocaleContextType;
     let PaymentMethodTest: FunctionComponent<PaymentMethodProps>;
     let paymentForm: PaymentFormService;
@@ -53,15 +53,6 @@ describe('when using AdyenV3 payment', () => {
             .spyOn(checkoutService, 'initializePayment')
             .mockResolvedValue(checkoutState);
 
-        defaultProps = {
-            method: { ...getPaymentMethod(), id: 'scheme', gateway: 'adyenv3', method: 'scheme' },
-            checkoutService,
-            checkoutState,
-            paymentForm,
-            language: createLanguageService(),
-            onUnhandledError: jest.fn(),
-        };
-
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
 
         jest.spyOn(checkoutService, 'deinitializePayment').mockResolvedValue(checkoutState);
@@ -71,11 +62,13 @@ describe('when using AdyenV3 payment', () => {
 
         PaymentMethodTest = (props) => (
             <CheckoutProvider checkoutService={checkoutService}>
-                <LocaleContext.Provider value={localeContext}>
-                    <Formik initialValues={{}} onSubmit={noop}>
-                        <AdyenV3PaymentMethod {...props} />
-                    </Formik>
-                </LocaleContext.Provider>
+                <PaymentFormProvider paymentForm={paymentForm}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <Formik initialValues={{}} onSubmit={noop}>
+                            <AdyenV3PaymentMethod {...props} />
+                        </Formik>
+                    </LocaleContext.Provider>
+                </PaymentFormProvider>
             </CheckoutProvider>
         );
     });

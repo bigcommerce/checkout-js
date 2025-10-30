@@ -1,10 +1,7 @@
 import { createBraintreeAchPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
 import React, { type FunctionComponent, useEffect, useRef } from 'react';
 
-import { LocaleProvider } from '@bigcommerce/checkout/locale';
 import {
-    CheckoutContext,
-    PaymentFormContext,
     type PaymentMethodProps,
     type PaymentMethodResolveId,
     toResolvableComponent,
@@ -94,18 +91,9 @@ const BraintreeAchPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
     return (
         <FormContext.Provider value={formContextProps}>
-            <CheckoutContext.Provider value={{ checkoutState, checkoutService }}>
-                <LocaleProvider checkoutService={checkoutService}>
-                    <PaymentFormContext.Provider value={{ paymentForm }}>
-                        <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
-                            <BraintreeAchPaymentForm
-                                method={method}
-                                updateMandateText={updateMandateText}
-                            />
-                        </LoadingOverlay>
-                    </PaymentFormContext.Provider>
-                </LocaleProvider>
-            </CheckoutContext.Provider>
+            <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
+                <BraintreeAchPaymentForm method={method} updateMandateText={updateMandateText} />
+            </LoadingOverlay>
         </FormContext.Provider>
     );
 };

@@ -8,10 +8,7 @@ import { createAdyenV3PaymentStrategy } from '@bigcommerce/checkout-sdk/integrat
 import React, { type FunctionComponent, useCallback, useRef, useState } from 'react';
 
 import { type HostedWidgetComponentProps } from '@bigcommerce/checkout/hosted-widget-integration';
-import { LocaleProvider } from '@bigcommerce/checkout/locale';
 import {
-    CheckoutContext,
-    PaymentFormContext,
     type PaymentMethodProps,
     type PaymentMethodResolveId,
     toResolvableComponent,
@@ -182,35 +179,29 @@ const AdyenV3PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
     return (
         <FormContext.Provider value={formContextProps}>
-            <CheckoutContext.Provider value={{ checkoutState, checkoutService }}>
-                <LocaleProvider checkoutService={checkoutService}>
-                    <PaymentFormContext.Provider value={{ paymentForm }}>
-                        <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
-                            <AdyenV3Form
-                                {...rest}
-                                additionalActionContainerId={additionalActionContainerId}
-                                cancelAdditionalActionModalFlow={cancelAdditionalActionModalFlow}
-                                checkoutService={checkoutService}
-                                checkoutState={checkoutState}
-                                containerId={containerId}
-                                hideContentWhenSignedOut
-                                initializePayment={initializeAdyenPayment}
-                                isAccountInstrument={isAccountInstrument()}
-                                isModalVisible={isAdditionalActionContentModalVisible}
-                                language={language}
-                                method={method}
-                                onUnhandledError={onUnhandledError}
-                                paymentForm={paymentForm}
-                                shouldHideInstrumentExpiryDate={shouldHideInstrumentExpiryDate}
-                                shouldRenderAdditionalActionContentModal={
-                                    shouldRenderAdditionalActionContentModal
-                                }
-                                validateInstrument={validateInstrument}
-                            />
-                        </LoadingOverlay>
-                    </PaymentFormContext.Provider>
-                </LocaleProvider>
-            </CheckoutContext.Provider>
+            <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
+                <AdyenV3Form
+                    {...rest}
+                    additionalActionContainerId={additionalActionContainerId}
+                    cancelAdditionalActionModalFlow={cancelAdditionalActionModalFlow}
+                    checkoutService={checkoutService}
+                    checkoutState={checkoutState}
+                    containerId={containerId}
+                    hideContentWhenSignedOut
+                    initializePayment={initializeAdyenPayment}
+                    isAccountInstrument={isAccountInstrument()}
+                    isModalVisible={isAdditionalActionContentModalVisible}
+                    language={language}
+                    method={method}
+                    onUnhandledError={onUnhandledError}
+                    paymentForm={paymentForm}
+                    shouldHideInstrumentExpiryDate={shouldHideInstrumentExpiryDate}
+                    shouldRenderAdditionalActionContentModal={
+                        shouldRenderAdditionalActionContentModal
+                    }
+                    validateInstrument={validateInstrument}
+                />
+            </LoadingOverlay>
         </FormContext.Provider>
     );
 };
