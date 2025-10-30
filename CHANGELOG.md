@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.697.14](https://github.com/bigcommerce/checkout-js/compare/v1.697.13...v1.697.14) (2025-10-30)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9479 Remove duplicated providers ([#2669](https://github.com/bigcommerce/checkout-js/issues/2669)) ([dfb73f0](https://github.com/bigcommerce/checkout-js/commit/dfb73f0d88ffc220dfb7eab4060af9c4c4180106))
+
 ### [1.697.13](https://github.com/bigcommerce/checkout-js/compare/v1.697.12...v1.697.13) (2025-10-29)
 
 ### [1.697.12](https://github.com/bigcommerce/checkout-js/compare/v1.697.11...v1.697.12) (2025-10-29)
