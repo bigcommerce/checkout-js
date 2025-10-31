@@ -108,12 +108,12 @@
 #bigcommerce_payments_creditcards-ccExpiry,
 #bigcommerce_payments_creditcards-ccName,
 #bigcommerce_payments_creditcards-ccCvv {
-  height: 45px;
+  height: spacing("double") + spacing("third"); // should be 45px
   overflow: hidden;
 
   & > div {
-    top: -5px;
-    left: -5px;
-    width: calc(100% + 10px);
+    top: spacing("quarter") * -1; // should be around 5px
+    left: spacing("quarter") * -1; // should be around 5px
+    width: calc(100% + $spacing-half); // should be around 100% of parent + 5px * 2
   }
 }
