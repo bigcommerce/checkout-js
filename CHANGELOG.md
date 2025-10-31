@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.697.19](https://github.com/bigcommerce/checkout-js/compare/v1.697.18...v1.697.19) (2025-10-31)
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-5990 improved customer UX experience with update credit card fields loading UI for PPCP and BCP components ([#2674](https://github.com/bigcommerce/checkout-js/issues/2674)) ([5c136d0](https://github.com/bigcommerce/checkout-js/commit/5c136d0b3c42ba81eb8086c92647dbe485be2a59))
+
 ### [1.697.18](https://github.com/bigcommerce/checkout-js/compare/v1.697.17...v1.697.18) (2025-10-31)
 
 ### [1.697.17](https://github.com/bigcommerce/checkout-js/compare/v1.697.16...v1.697.17) (2025-10-30)
