@@ -179,9 +179,17 @@ export function getPaymentMethodTitle(
                         ? method.logoUrl
                         : cdnPath('/img/payment-providers/paypalpaymentsprouk.png'),
                 titleText: '',
-                subtitle: (props: PaymentMethodSubtitleProps): ReactNode => (
-                    <BraintreePaypalCreditBanner containerId='braintree-banner-container' {...props} />
-                ),
+                subtitle: (props: PaymentMethodSubtitleProps): ReactNode => {
+                    if (isExperimentEnabled(checkoutSettings, 'CHECKOUT-9450.lazy_load_payment_strategies', false)) {
+                        if (method.id === PaymentMethodId.BraintreePaypalCredit || method.id === PaymentMethodId.BraintreePaypal) {
+                            return <BraintreePaypalCreditBanner containerId='braintree-banner-container' {...props} />;
+                        }
+
+                        return null;
+                    }
+
+                    return <BraintreePaypalCreditBanner containerId='braintree-banner-container' {...props} />;
+                },
             },
             [PaymentMethodId.Quadpay]: {
                 logoUrl: cdnPath('/img/payment-providers/quadpay.png'),

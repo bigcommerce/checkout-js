@@ -1,3 +1,7 @@
+import { type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import { createAfterpayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/afterpay';
+import { createSezzlePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/sezzle';
+import { createZipPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/zip';
 import React, { type FunctionComponent } from 'react';
 
 import {
@@ -5,8 +9,6 @@ import {
     type PaymentMethodResolveId,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
-import { createZipPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/zip';
-import { type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 
 import { HostedPaymentComponent } from './components';
 
@@ -21,7 +23,11 @@ const HostedPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     const initializeHostedPaymentMethod = async (options: PaymentInitializeOptions) => {
         return checkoutService.initializePayment({
             ...options,
-            integrations: [createZipPaymentStrategy],
+            integrations: [
+                createZipPaymentStrategy,
+                createAfterpayPaymentStrategy,
+                createSezzlePaymentStrategy,
+            ],
         });
     };
 
