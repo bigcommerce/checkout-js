@@ -7,7 +7,6 @@ import {
     type PaymentRequestOptions,
 } from '@bigcommerce/checkout-sdk';
 import { createNoPaymentStrategy, } from '@bigcommerce/checkout-sdk/integrations/no-payment';
-import { createSezzlePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/sezzle';
 import { createTDOnlineMartPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/td-bank';
 import React, { type FunctionComponent, lazy, memo, Suspense } from 'react';
 
@@ -167,7 +166,6 @@ function mapToWithCheckoutPaymentMethodProps(
                     // The strategies below don’t appear to correspond to any existing component,
                     // so they are initialized globally at the root level.
                     createNoPaymentStrategy,
-                    createSezzlePaymentStrategy,
                     createTDOnlineMartPaymentStrategy
                 ],
             });
