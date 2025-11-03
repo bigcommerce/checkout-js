@@ -16,7 +16,7 @@ describe('getCreditCardValidationSchema()', () => {
         validData = {
             ccCustomerCode: '123',
             ccCvv: '123',
-            ccExpiry: '10 / 25',
+            ccExpiry: '10 / 30',
             ccName: 'BC',
             ccNumber: '4111 1111 1111 1111',
         };
