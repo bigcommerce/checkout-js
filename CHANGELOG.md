@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.698.0](https://github.com/bigcommerce/checkout-js/compare/v1.697.22...v1.698.0) (2025-11-03)
+
+
+### Features
+
+* **payment:** customer step buttons height 40px ([e1ea0f7](https://github.com/bigcommerce/checkout-js/commit/e1ea0f79bd20f1f3cb405b4247ceb6f8e642f230))
+
 ### [1.697.22](https://github.com/bigcommerce/checkout-js/compare/v1.697.21...v1.697.22) (2025-11-03)
 
 
