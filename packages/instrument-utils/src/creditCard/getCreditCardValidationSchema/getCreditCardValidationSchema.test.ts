@@ -1,6 +1,7 @@
 import { createLanguageService, type LanguageService } from '@bigcommerce/checkout-sdk';
 
 import { type CreditCardFieldsetValues } from '@bigcommerce/checkout/payment-integration-api';
+import { getYear } from '@bigcommerce/checkout/test-mocks';
 
 import { getCreditCardValidationSchema } from '.';
 
@@ -16,7 +17,7 @@ describe('getCreditCardValidationSchema()', () => {
         validData = {
             ccCustomerCode: '123',
             ccCvv: '123',
-            ccExpiry: '10 / 25',
+            ccExpiry: `10 / ${getYear(1)}`,
             ccName: 'BC',
             ccNumber: '4111 1111 1111 1111',
         };
