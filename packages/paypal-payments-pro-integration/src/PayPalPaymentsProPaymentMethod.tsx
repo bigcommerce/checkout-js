@@ -1,4 +1,6 @@
-import React, { type FunctionComponent } from 'react';
+import { type CheckoutService } from '@bigcommerce/checkout-sdk';
+import { createPayPalProPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/paypal-pro';
+import React, { type FunctionComponent, useCallback } from 'react';
 
 import { HostedCreditCardComponent } from '@bigcommerce/checkout/hosted-credit-card-integration';
 import { HostedPaymentComponent } from '@bigcommerce/checkout/hosted-payment-integration';
@@ -16,13 +18,26 @@ const PayPalPaymentsProPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     language,
     onUnhandledError,
 }) => {
+    const initializePayment: CheckoutService['initializePayment'] = useCallback(
+        (options) => {
+            return checkoutService.initializePayment({
+                ...options,
+                gatewayId: method.gateway,
+                methodId: method.id,
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                integrations: [...(options.integrations ?? []), createPayPalProPaymentStrategy],
+            });
+        },
+        [checkoutService, method],
+    );
+
     if (method.type === 'PAYMENT_TYPE_HOSTED') {
         return (
             <HostedPaymentComponent
                 checkoutService={checkoutService}
                 checkoutState={checkoutState}
                 deinitializePayment={checkoutService.deinitializePayment}
-                initializePayment={checkoutService.initializePayment}
+                initializePayment={initializePayment}
                 language={language}
                 method={method}
                 onUnhandledError={onUnhandledError}
@@ -35,6 +50,7 @@ const PayPalPaymentsProPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         <HostedCreditCardComponent
             checkoutService={checkoutService}
             checkoutState={checkoutState}
+            initializePayment={initializePayment}
             language={language}
             method={method}
             onUnhandledError={onUnhandledError}
