@@ -24,6 +24,7 @@ enum PaymentMethodId {
     PayPalCommerceGooglePay = 'googlepaypaypalcommerce',
     BraintreeVisaCheckout = 'braintreevisacheckout',
     BraintreeLocalPaymentMethod = 'braintreelocalmethods',
+    BraintreePaypal = 'braintreepaypal',
     BraintreePaypalCredit = 'braintreepaypalcredit',
     CBAMPGS = 'cba_mpgs',
     Checkoutcom = 'checkoutcom',
