@@ -2,7 +2,7 @@ import { type CustomerInitializeOptions, type CustomerRequestOptions } from '@bi
 import { noop } from 'lodash';
 import React, { type ReactElement, useEffect } from 'react';
 
-const WALLET_BUTTON_HEIGHT = 36;
+const WALLET_BUTTON_HEIGHT = 40;
 
 export interface CheckoutButtonProps {
     containerId: string;
