@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.698.1](https://github.com/bigcommerce/checkout-js/compare/v1.698.0...v1.698.1) (2025-11-03)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-9450 Fix afterpay and sezzle missing strategy ([1824eb8](https://github.com/bigcommerce/checkout-js/commit/1824eb84f4a29aaed1d0acacf84b6f510563ad7b))
+* **checkout:** CHECKOUT-9450 Fix paypal payments pro missing strategy ([f884523](https://github.com/bigcommerce/checkout-js/commit/f88452387bc938fdddfdf820ab69e3169ab867c7))
+* **checkout:** CHECKOUT-9450 Only initialize braintree paypal credit banner if method id is braintree ([b622f38](https://github.com/bigcommerce/checkout-js/commit/b622f38112891727f45cf32cfbf3fcb652aa3edc))
+* **checkout:** CHECKOUT-9450 Remove redundant strategy at root level ([5d99041](https://github.com/bigcommerce/checkout-js/commit/5d99041b8b5f09f2d5ef9d86ed7607c4a434ece7))
+
 ## [1.698.0](https://github.com/bigcommerce/checkout-js/compare/v1.697.22...v1.698.0) (2025-11-03)
 
 
