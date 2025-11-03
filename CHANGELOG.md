@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.697.21](https://github.com/bigcommerce/checkout-js/compare/v1.697.20...v1.697.21) (2025-11-03)
+
+
+### Code Refactoring
+
+* **payment:** PAYPAL-5990 updated prev added PPCP & BCP styling with spacing ([#2677](https://github.com/bigcommerce/checkout-js/issues/2677)) ([9139d2e](https://github.com/bigcommerce/checkout-js/commit/9139d2ee7fddeba227616a4c6164a3fa82c6b8d0))
+
 ### [1.697.20](https://github.com/bigcommerce/checkout-js/compare/v1.697.19...v1.697.20) (2025-11-03)
 
 
