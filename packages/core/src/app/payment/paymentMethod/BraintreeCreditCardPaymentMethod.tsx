@@ -1,3 +1,4 @@
+import { createBraintreeCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
 import { noop } from 'lodash';
 import React, {
     createRef,
@@ -17,7 +18,6 @@ import {
 } from '../hostedCreditCard';
 
 import CreditCardPaymentMethod, { type CreditCardPaymentMethodProps } from './CreditCardPaymentMethod';
-import { createBraintreeCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
 
 export type BraintreeCreditCardPaymentMethodProps = CreditCardPaymentMethodProps;
 

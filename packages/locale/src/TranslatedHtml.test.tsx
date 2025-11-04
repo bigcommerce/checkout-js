@@ -2,9 +2,9 @@ import { createCurrencyService, createLanguageService } from '@bigcommerce/check
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 
+import { LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
 import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
-import LocaleContext, { type LocaleContextType } from './LocaleContext';
 import TranslatedHtml from './TranslatedHtml';
 
 describe('TranslatedHtml', () => {

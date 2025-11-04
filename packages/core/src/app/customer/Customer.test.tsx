@@ -20,13 +20,14 @@ import { type AnalyticsContextProps, type AnalyticsEvents ,
     AnalyticsProviderMock,
     ExtensionProvider,
     type ExtensionServiceInterface,
- ThemeProvider } from '@bigcommerce/checkout/contexts';
-import {
-    createLocaleContext,
-    getLanguageService,
     LocaleContext,
     type LocaleContextType,
     LocaleProvider,
+    ThemeProvider,
+} from '@bigcommerce/checkout/contexts';
+import {
+    createLocaleContext,
+    getLanguageService,
 } from '@bigcommerce/checkout/locale';
 import {
     CHECKOUT_ROOT_NODE_ID,
@@ -118,7 +119,10 @@ describe('Customer Component', () => {
 
         CheckoutTest = (props) => (
             <CheckoutProvider checkoutService={checkoutService}>
-                <LocaleProvider checkoutService={checkoutService}>
+                <LocaleProvider
+                    checkoutService={checkoutService}
+                    languageService={getLanguageService()}
+                >
                     <AnalyticsProviderMock>
                         <ExtensionProvider extensionService={extensionService}>
                             <ThemeProvider>

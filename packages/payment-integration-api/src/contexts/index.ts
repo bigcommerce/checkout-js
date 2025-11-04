@@ -1,11 +1,5 @@
+export { CheckoutContext, CheckoutProvider, useCheckout } from './checkout-context';
 export {
-    CheckoutContext,
-    CheckoutProvider,
-    CheckoutContextProps,
-    useCheckout,
-} from './checkout-context';
-export {
-    PaymentFormContextProps,
     PaymentFormContext,
     PaymentFormProvider,
     usePaymentFormContext,

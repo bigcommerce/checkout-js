@@ -6,11 +6,8 @@ import React from 'react';
 import { type Omit } from 'utility-types';
 import { config } from 'yargs';
 
-import {
-    createLocaleContext,
-    LocaleContext,
-    type LocaleContextType,
-} from '@bigcommerce/checkout/locale';
+import { LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
+import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { getInstruments, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
 import {

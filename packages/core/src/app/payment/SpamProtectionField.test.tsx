@@ -2,15 +2,16 @@ import { type CheckoutService, createCheckoutService } from '@bigcommerce/checko
 import userEvent from '@testing-library/user-event';
 import React, { type FunctionComponent } from 'react';
 
-import { LocaleProvider } from '@bigcommerce/checkout/locale';
+import { LocaleProvider } from '@bigcommerce/checkout/contexts';
+import { getLanguageService } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import SpamProtectionField, { type SpamProtectionProps } from './SpamProtectionField';
+import SpamProtectionField, { type SpamProtectionFieldProps } from './SpamProtectionField';
 
 describe('SpamProtectionField', () => {
     let checkoutService: CheckoutService;
-    let SpamProtectionTest: FunctionComponent<SpamProtectionProps>;
+    let SpamProtectionTest: FunctionComponent<SpamProtectionFieldProps>;
 
     beforeEach(() => {
         checkoutService = createCheckoutService();
@@ -21,7 +22,10 @@ describe('SpamProtectionField', () => {
 
         SpamProtectionTest = (props) => (
             <CheckoutProvider checkoutService={checkoutService}>
-                <LocaleProvider checkoutService={checkoutService}>
+                <LocaleProvider
+                    checkoutService={checkoutService}
+                    languageService={getLanguageService()}
+                >
                     <SpamProtectionField {...props} />
                 </LocaleProvider>
             </CheckoutProvider>

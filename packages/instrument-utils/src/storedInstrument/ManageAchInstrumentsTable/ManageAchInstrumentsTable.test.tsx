@@ -3,11 +3,8 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { create } from 'react-test-renderer';
 
-import {
-    createLocaleContext,
-    LocaleContext,
-    type LocaleContextType,
-} from '@bigcommerce/checkout/locale';
+import { LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
+import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { getInstruments, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
 import { isAchInstrument } from '../../guards';

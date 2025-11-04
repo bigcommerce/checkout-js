@@ -1,7 +1,7 @@
+import { type LocaleContextType } from '@bigcommerce/checkout/contexts';
 import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
 import createLocaleContext from './createLocaleContext';
-import { type LocaleContextType } from './LocaleContext';
 
 describe('createLocaleContext', () => {
     let localeContext: LocaleContextType;

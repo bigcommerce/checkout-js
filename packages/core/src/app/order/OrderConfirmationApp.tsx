@@ -4,9 +4,9 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 import ReactModal from 'react-modal';
 
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
-import { AnalyticsProvider , ExtensionProvider, ThemeProvider } from '@bigcommerce/checkout/contexts';
+import { AnalyticsProvider , ExtensionProvider, LocaleProvider, ThemeProvider } from '@bigcommerce/checkout/contexts';
 import { ErrorBoundary } from '@bigcommerce/checkout/error-handling-utils';
-import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
+import { getLanguageService } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
 import '../../scss/App.scss';
@@ -41,8 +41,9 @@ const OrderConfirmationApp: React.FC<OrderConfirmationAppProps> = ({
             sampleRate: sentrySampleRate || 0.1,
         },
     ), []);
+    const languageService = useMemo(() => getLanguageService(), []);
     const checkoutService = useMemo(() => createCheckoutService({
-        locale: getLanguageService().getLocale(),
+        locale: languageService.getLocale(),
         shouldWarnMutation: process.env.NODE_ENV === 'development',
         errorLogger,
     }), []);
@@ -67,7 +68,7 @@ const OrderConfirmationApp: React.FC<OrderConfirmationAppProps> = ({
 
     return (
         <ErrorBoundary errorLogger={errorLogger}>
-            <LocaleProvider checkoutService={checkoutService}>
+            <LocaleProvider checkoutService={checkoutService} languageService={languageService}>
                 <CheckoutProvider checkoutService={checkoutService} errorLogger={errorLogger}>
                     <AnalyticsProvider checkoutService={checkoutService}>
                         <ExtensionProvider extensionService={extensionService}>

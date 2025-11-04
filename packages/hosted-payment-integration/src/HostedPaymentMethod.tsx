@@ -1,4 +1,5 @@
 import { type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+
 import { createAfterpayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/afterpay';
 import { createSezzlePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/sezzle';
 import { createZipPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/zip';

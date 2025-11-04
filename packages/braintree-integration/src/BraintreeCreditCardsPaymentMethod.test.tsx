@@ -1,9 +1,3 @@
-import { render, screen } from '@testing-library/react';
-import React, { type FunctionComponent } from 'react';
-
-import '@testing-library/jest-dom';
-import type { CreditCardPaymentMethodValues } from '@bigcommerce/checkout/credit-card-integration';
-
 import {
     type CheckoutSelectors,
     type CheckoutService,
@@ -12,12 +6,15 @@ import {
     type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
 import { createBraintreeCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
+import { render, screen } from '@testing-library/react';
+import { Formik } from 'formik';
+import { noop } from 'lodash';
+import React, { type FunctionComponent } from 'react';
 
-import {
-    createLocaleContext,
-    LocaleContext,
-    type LocaleContextType,
-} from '@bigcommerce/checkout/locale';
+import '@testing-library/jest-dom';
+import { LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
+import type { CreditCardPaymentMethodValues } from '@bigcommerce/checkout/credit-card-integration';
+import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import {
     CheckoutProvider,
     PaymentFormContext,
@@ -33,9 +30,6 @@ import {
     getPaymentMethod,
     getStoreConfig,
 } from '@bigcommerce/checkout/test-mocks';
-
-import { Formik } from 'formik';
-import { noop } from 'lodash';
 
 import { BraintreeCreditCardsPaymentMethod } from './index';
 

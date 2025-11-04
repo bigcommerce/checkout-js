@@ -1,18 +1,14 @@
 export { useThemeContext, ThemeContext, ThemeProvider } from './theme';
 export {
     AnalyticsContext,
-    AnalyticsContextProps,
-    AnalyticsEvents,
     AnalyticsProvider,
     AnalyticsProviderMock,
     useAnalytics,
 } from './analytics';
-export {
-    ExtensionProvider,
-    ExtensionContextProps,
-    withExtension,
-    useExtensions,
-    ExtensionAction,
-    ExtensionServiceInterface,
-    ExtensionActionType,
-} from './extension';
+export { ExtensionProvider, ExtensionActionType, withExtension, useExtensions } from './extension';
+export { LocaleContext, LocaleProvider, useLocale } from './locale';
+
+export type { AnalyticsContextProps, AnalyticsEvents } from './analytics/AnalyticsContext';
+export type { ExtensionAction, ExtensionServiceInterface } from './extension/ExtensionType';
+export type { ExtensionContextProps } from './extension/ExtensionContext';
+export type { LocaleContextType } from './locale/LocaleContext';
