@@ -11,6 +11,7 @@ import {
     createLanguageService,
     type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
+import { createBraintreeCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
 
 import {
     createLocaleContext,
@@ -125,6 +126,7 @@ describe('BraintreeCreditCardsPaymentMethod', () => {
             expect.objectContaining({
                 methodId: 'braintree',
                 braintree: expect.any(Object),
+                integrations: [createBraintreeCreditCardPaymentStrategy],
             }),
         );
     });
