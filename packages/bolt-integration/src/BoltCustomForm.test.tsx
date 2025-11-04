@@ -4,7 +4,8 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';
 
-import { LocaleProvider } from '@bigcommerce/checkout/locale';
+import { LocaleProvider } from '@bigcommerce/checkout/contexts';
+import { getLanguageService } from '@bigcommerce/checkout/locale';
 
 import BoltCustomForm, { type BoltCustomFormProps } from './BoltCustomForm';
 
@@ -21,7 +22,10 @@ describe('BoltCustomForm', () => {
         const checkoutService = createCheckoutService();
 
         BoltCustomFormTest = (props) => (
-            <LocaleProvider checkoutService={checkoutService}>
+            <LocaleProvider
+                checkoutService={checkoutService}
+                languageService={getLanguageService()}
+            >
                 <BoltCustomForm {...props} />
             </LocaleProvider>
         );

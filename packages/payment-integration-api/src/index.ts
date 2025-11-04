@@ -4,7 +4,6 @@ export { default as getUniquePaymentMethodId } from './getUniquePaymentMethodId'
 export { default as CardInstrumentFieldsetValues } from './CardInstrumentFieldsetValues';
 export { default as CheckoutButtonResolveId } from './CheckoutButtonResolveId';
 export { default as CheckoutButtonProps } from './CheckoutButtonProps';
-export { default as CreditCardFieldsetValues } from './CreditCardFieldsetValues';
 export { default as PaymentFormService } from './PaymentFormService';
 export { default as PaymentMethodId } from './PaymentMethodId';
 export { default as PaymentMethodType } from './PaymentMethodType';
@@ -19,9 +18,7 @@ export { TranslateValidationErrorFunction } from './TranslateValidationErrorFunc
 export {
     CheckoutContext,
     CheckoutProvider,
-    CheckoutContextProps,
     useCheckout,
-    PaymentFormContextProps,
     PaymentFormContext,
     PaymentFormProvider,
     usePaymentFormContext,
@@ -31,5 +28,11 @@ export {
     MICRO_APP_NG_CHECKOUT_ROOT_NODE_ID,
 } from './CheckoutRootWrapperIds';
 export { SpecificError } from './errors';
-export { CountryData, getCountryData } from './CountryData';
+export { getCountryData } from './CountryData';
 export { CaptureMessageComponent } from './CaptureMessageComponent';
+
+// export types separately
+export type { CountryData } from './CountryData';
+export type { default as CreditCardFieldsetValues } from './CreditCardFieldsetValues';
+export type { CheckoutContextProps } from './contexts/checkout-context/CheckoutContext';
+export type { PaymentFormContextProps } from './contexts/payment-form-context/PaymentFormContext';

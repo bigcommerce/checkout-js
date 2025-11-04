@@ -3,17 +3,20 @@ import { Field, Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';
 
-import { createLocaleContext, type LocaleContextType, LocaleProvider } from '@bigcommerce/checkout/locale';
+import {
+    type LocaleContextType,
+    LocaleProvider,
+} from '@bigcommerce/checkout/contexts';
+import {
+  createLocaleContext,
+  getLanguageService,
+} from '@bigcommerce/checkout/locale';
 import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import HostedCreditCardCodeField from './HostedCreditCardCodeField';
-import HostedCreditCardExpiryField from './HostedCreditCardExpiryField';
 import HostedCreditCardFieldset, {
     type HostedCreditCardFieldsetProps,
 } from './HostedCreditCardFieldset';
-import HostedCreditCardNameField from './HostedCreditCardNameField';
-import HostedCreditCardNumberField from './HostedCreditCardNumberField';
 
 describe('HostedCreditCardFieldset', () => {
     let defaultProps: HostedCreditCardFieldsetProps;
@@ -31,7 +34,10 @@ describe('HostedCreditCardFieldset', () => {
         localeContext = createLocaleContext(getStoreConfig());
 
         HostedCreditCardFieldsetTest = (props) => (
-            <LocaleProvider checkoutService={checkoutService} value={createLocaleContext(getStoreConfig())}>
+            <LocaleProvider
+                checkoutService={checkoutService}
+                languageService={getLanguageService()}
+            >
                 <Formik
                     initialValues={{ hostedForm: {} }}
                     onSubmit={noop}

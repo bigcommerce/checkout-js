@@ -3,9 +3,9 @@ import { render, screen } from '@testing-library/react';
 import React, { type FunctionComponent } from 'react';
 import '@testing-library/jest-dom';
 
-import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
+import { getLocaleContext, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
-import LocaleContext, { type LocaleContextType } from './LocaleContext';
+import { LocaleContext, type LocaleContextType } from './LocaleContext';
 import LocaleProvider from './LocaleProvider';
 
 describe('LocaleProvider', () => {
@@ -23,7 +23,13 @@ describe('LocaleProvider', () => {
         );
 
         render(
-            <LocaleProvider checkoutService={checkoutService}>
+            <LocaleProvider
+                checkoutService={checkoutService}
+                languageService={
+                    getLocaleContext({ 'optimized_checkout.billing.billing_heading': 'Billing' })
+                        .language
+                }
+            >
                 <LocaleContext.Consumer>
                     {(props) => props && <Child {...props} />}
                 </LocaleContext.Consumer>

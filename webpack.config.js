@@ -193,6 +193,8 @@ function appConfig(options, argv) {
                         test: /app\/polyfill\.ts$/,
                         include: [
                             join(__dirname, 'packages', 'core', 'src'),
+                            join(__dirname, 'packages', 'contexts', 'src'),
+                            join(__dirname, 'packages', 'payment-integration-api', 'src'),
                             join(__dirname, 'packages', 'locale', 'src'),
                             join(__dirname, 'packages', 'test-mocks', 'src'),
                         ],
@@ -399,6 +401,8 @@ function loaderConfig(options, argv) {
                         test: /\.tsx?$/,
                         include: [
                             join(__dirname, 'packages', 'core', 'src'),
+                            join(__dirname, 'packages', 'contexts', 'src'),
+                            join(__dirname, 'packages', 'payment-integration-api', 'src'), // remove when checkout context is relocated
                             join(__dirname, 'packages', 'dom-utils', 'src'),
                             join(__dirname, 'packages', 'legacy-hoc', 'src'),
                             join(__dirname, 'packages', 'locale', 'src'),

@@ -3,7 +3,8 @@ import { type CheckoutService, createCheckoutService } from '@bigcommerce/checko
 import { render, screen } from '@testing-library/react';
 import React, { type FunctionComponent } from 'react';
 
-import { LocaleProvider } from '@bigcommerce/checkout/locale';
+import { LocaleProvider } from '@bigcommerce/checkout/contexts';
+import { getLanguageService } from '@bigcommerce/checkout/locale';
 
 import { PaymentsWithMandates, type PaymentsWithMandatesProps } from './PaymentsWithMandates';
 
@@ -14,7 +15,10 @@ describe('PaymentsWithMandates', () => {
     beforeEach(() => {
         checkoutService = createCheckoutService();
         PaymentsWithMandatesTest = (props) => (
-            <LocaleProvider checkoutService={checkoutService}>
+            <LocaleProvider
+                checkoutService={checkoutService}
+                languageService={getLanguageService()}
+            >
                 <PaymentsWithMandates {...props}/>
             </LocaleProvider>
         )

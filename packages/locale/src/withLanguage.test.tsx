@@ -1,19 +1,13 @@
+import { createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { render, screen } from '@testing-library/react';
 import React, { type FunctionComponent } from 'react';
 
-import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
+import { LocaleProvider } from '@bigcommerce/checkout/contexts';
 
-import createLocaleContext from './createLocaleContext';
-import LocaleContext, { type LocaleContextType } from './LocaleContext';
+import getLanguageService from './getLanguageService';
 import withLanguage, { type WithLanguageProps } from './withLanguage';
 
 describe('withDate()', () => {
-    let contextValue: LocaleContextType;
-
-    beforeEach(() => {
-        contextValue = createLocaleContext(getStoreConfig());
-    });
-
     it('injects language prop to inner component', () => {
         const Inner: FunctionComponent<WithLanguageProps> = ({ language }) => (
             <>{language && language.translate('billing.billing_heading')}</>
@@ -21,9 +15,12 @@ describe('withDate()', () => {
         const Outer = withLanguage(Inner);
 
         render(
-            <LocaleContext.Provider value={contextValue}>
+            <LocaleProvider
+                checkoutService={createCheckoutService()}
+                languageService={getLanguageService()}
+            >
                 <Outer />
-            </LocaleContext.Provider>,
+            </LocaleProvider>,
         );
 
         expect(screen.getByText('Billing')).toBeInTheDocument();
