@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.698.2](https://github.com/bigcommerce/checkout-js/compare/v1.698.1...v1.698.2) (2025-11-04)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9429 Relocate locale context ([#2682](https://github.com/bigcommerce/checkout-js/issues/2682)) ([6495296](https://github.com/bigcommerce/checkout-js/commit/6495296f0c7365a300ce28bcd225bfd395e9a104))
+
 ### [1.698.1](https://github.com/bigcommerce/checkout-js/compare/v1.698.0...v1.698.1) (2025-11-03)
 
 
