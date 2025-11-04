@@ -15,12 +15,14 @@ export interface CheckoutProviderProps {
     checkoutService: CheckoutService;
     children: ReactNode;
     errorLogger?: ErrorLogger;
+    isUseCheckoutHookExperimentEnabled?: boolean;
 }
 
 const CheckoutProvider = ({
     checkoutService,
     errorLogger,
     children,
+    isUseCheckoutHookExperimentEnabled,
 }: CheckoutProviderProps): ReactElement => {
     const [checkoutState, setCheckoutState] = useState<CheckoutSelectors>(() =>
         checkoutService.getState(),
@@ -37,6 +39,10 @@ const CheckoutProvider = ({
     );
 
     useEffect(() => {
+        if (isUseCheckoutHookExperimentEnabled) {
+            return;
+        }
+
         unsubscribeRef.current = checkoutService.subscribe((newCheckoutState) =>
             setCheckoutState(newCheckoutState),
         );
@@ -47,7 +53,7 @@ const CheckoutProvider = ({
                 unsubscribeRef.current = undefined;
             }
         };
-    }, [checkoutService]);
+    }, [checkoutService, isUseCheckoutHookExperimentEnabled]);
 
     return <CheckoutContext.Provider value={contextValue}>{children}</CheckoutContext.Provider>;
 };

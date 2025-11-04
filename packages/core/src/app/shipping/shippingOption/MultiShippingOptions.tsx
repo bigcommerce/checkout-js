@@ -22,7 +22,7 @@ export const MultiShippingOptions = ({
     resetErrorConsignmentNumber,
     shippingQuoteFailedMessage,
 }: MultiShippingOptionsV2Props) => {
-    const { checkoutService, checkoutState } = useCheckout();
+    const { checkoutService, checkoutState } = useCheckout((state) => state);
     const { themeV2 } = useThemeContext();
 
     const selectShippingOption = async (consignmentId: string, shippingOptionId: string) => {

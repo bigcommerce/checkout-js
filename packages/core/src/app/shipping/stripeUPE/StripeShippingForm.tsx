@@ -60,7 +60,7 @@ export interface SingleShippingFormValues {
 }
 
 const StripeShippingForm: React.FC<SingleShippingFormProps & WithLanguageProps & FormikProps<SingleShippingFormValues>> = (props) => {
-  const { checkoutService, checkoutState } = useCheckout();
+  const { checkoutService, checkoutState } = useCheckout(({ data }) => ({ getConsignments: data.getConsignments, getShippingCountries: data.getShippingCountries }));
   const {
     data: {
       getConsignments,

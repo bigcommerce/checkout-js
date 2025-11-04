@@ -49,7 +49,7 @@ const PaymentMethodList: FunctionComponent<
         checkoutState: {
             data: { getConfig }
         }
-    } = useCheckout();
+    } = useCheckout(({ data }) => data.getConfig());
 
     const config = getConfig();
 

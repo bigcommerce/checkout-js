@@ -66,7 +66,7 @@ const GuestForm: FunctionComponent<
         checkoutState: {
             data: { getConfig }
         }
-    } = useCheckout();
+    } = useCheckout(({ data }) => data.getConfig());
     const { themeV2 } = useThemeContext();
 
     const config = getConfig();
@@ -179,6 +179,9 @@ const GuestForm: FunctionComponent<
         </Form>
     );
 };
+
+// eslint-disable-next-line
+(GuestForm as any).whyDidYouRender = true;
 
 export default withLanguage(
     withFormik<GuestFormProps & WithLanguageProps, GuestFormValues>({

@@ -14,7 +14,11 @@ const BraintreeAchMandateText: FunctionComponent<BraintreeAchMandateTextProps> =
     isInstrumentFeatureAvailable,
     updateMandateText,
 }) => {
-    const { checkoutState } = useCheckout();
+    const { checkoutState } = useCheckout(({ data }) => ({
+        getCheckout: data.getCheckout,
+        getConfig: data.getConfig,
+        getCart: data.getCart,
+    }));
     const { paymentForm } = usePaymentFormContext();
     const { language } = useLocale();
 

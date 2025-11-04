@@ -43,7 +43,11 @@ const ManageInstrumentsModal = ({
             statuses: { isDeletingInstrument, isLoadingInstruments },
         },
         checkoutService: { deleteInstrument, clearError },
-    } = useCheckout();
+    } = useCheckout(({ errors, statuses }) => ({
+        getDeleteInstrumentError: errors.getDeleteInstrumentError(),
+        isDeletingInstrument: statuses.isDeletingInstrument(),
+        isLoadingInstruments: statuses.isLoadingInstruments(),
+    }));
 
     const deleteInstrumentError = getDeleteInstrumentError();
 

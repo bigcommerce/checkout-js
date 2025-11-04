@@ -117,7 +117,7 @@ export const useMultiShippingConsignmentItems = (): MultiShippingConsignmentItem
     const { checkoutState: {
         data: { getCheckout },
     },
-    } = useCheckout();
+    } = useCheckout(({ data }) => data.getCheckout());
 
     const checkout = getCheckout();
 
