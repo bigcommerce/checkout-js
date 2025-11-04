@@ -3,14 +3,13 @@ import { type FieldProps } from 'formik';
 import { max } from 'lodash';
 import React, {
     type ChangeEventHandler,
-    createRef,
     type FunctionComponent,
     memo,
-    PureComponent,
-    type ReactNode,
-    type RefObject,
+    type ReactElement,
     useCallback,
+    useEffect,
     useMemo,
+    useRef,
 } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -22,69 +21,80 @@ export interface CreditCardNumberFieldProps {
     name: string;
 }
 
-class CreditCardNumberInput extends PureComponent<FieldProps<string>> {
-    private inputRef: RefObject<HTMLInputElement> = createRef();
-    private nextSelectionEnd = 0;
-
-    componentDidUpdate(): void {
-        if (this.inputRef.current && this.inputRef.current.selectionEnd !== this.nextSelectionEnd) {
-            this.inputRef.current.setSelectionRange(this.nextSelectionEnd, this.nextSelectionEnd);
-        }
-    }
-
-    render(): ReactNode {
-        const { field } = this.props;
-
-        return (
-            <>
-                <TextInput
-                    {...field}
-                    additionalClassName="has-icon"
-                    autoComplete="cc-number"
-                    id={field.name}
-                    onChange={this.handleChange}
-                    ref={this.inputRef}
-                    type="tel"
-                />
-
-                <IconLock />
-            </>
-        );
-    }
-
-    private handleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
-        const separator = ' ';
-        const { value = '' } = event.target;
-        const { field, form } = this.props;
-        const { name, value: previousValue = '' } = field;
-        const selectionEnd = this.inputRef.current && this.inputRef.current.selectionEnd;
-
-        // Only allow digits and spaces
-        if (new RegExp(`[^\\d${separator}]`).test(value)) {
-            return form.setFieldValue(name, previousValue);
-        }
-
-        const maxLength = max(creditCardType(value).map((info) => max(info.lengths)));
-
-        const formattedValue = formatCreditCardNumber(
-            value.replace(new RegExp(separator, 'g'), '').slice(0, maxLength),
-            separator,
-        );
-
-        if (selectionEnd === value.length && value.length < formattedValue.length) {
-            this.nextSelectionEnd = formattedValue.length;
-        } else {
-            this.nextSelectionEnd = selectionEnd || 0;
-        }
-
-        return form.setFieldValue(name, formattedValue);
-    };
+interface CreditCardNumberInputProps {
+    field: FieldProps<string>['field'];
+    form: FieldProps<string>['form'];
 }
+
+const CreditCardNumberInput: FunctionComponent<CreditCardNumberInputProps> = ({
+    field,
+    form,
+}): ReactElement => {
+    const inputRef = useRef<HTMLInputElement>(null);
+    const nextSelectionEndRef = useRef(0);
+
+    useEffect(() => {
+        if (inputRef.current && inputRef.current.selectionEnd !== nextSelectionEndRef.current) {
+            inputRef.current.setSelectionRange(
+                nextSelectionEndRef.current,
+                nextSelectionEndRef.current,
+            );
+        }
+    });
+
+    const handleChange: ChangeEventHandler<HTMLInputElement> = useCallback(
+        (event) => {
+            const separator = ' ';
+            const { value = '' } = event.target;
+            const { name, value: previousValue = '' } = field;
+            const selectionEnd = inputRef.current && inputRef.current.selectionEnd;
+
+            // Only allow digits and spaces
+            if (new RegExp(`[^\\d${separator}]`).test(value)) {
+                void form.setFieldValue(name, previousValue);
+
+                return;
+            }
+
+            const maxLength = max(creditCardType(value).map((info) => max(info.lengths)));
+
+            const formattedValue = formatCreditCardNumber(
+                value.replace(new RegExp(separator, 'g'), '').slice(0, maxLength),
+                separator,
+            );
+
+            if (selectionEnd === value.length && value.length < formattedValue.length) {
+                nextSelectionEndRef.current = formattedValue.length;
+            } else {
+                nextSelectionEndRef.current = selectionEnd || 0;
+            }
+
+            void form.setFieldValue(name, formattedValue);
+        },
+        [field, form],
+    );
+
+    return (
+        <>
+            <TextInput
+                {...field}
+                additionalClassName="has-icon"
+                autoComplete="cc-number"
+                id={field.name}
+                onChange={handleChange}
+                ref={inputRef}
+                type="tel"
+            />
+
+            <IconLock />
+        </>
+    );
+};
 
 const CreditCardNumberField: FunctionComponent<CreditCardNumberFieldProps> = ({ name }) => {
     const renderInput = useCallback(
-        ({ field, form, meta }: FieldProps<string>) => (
-            <CreditCardNumberInput field={field} form={form} meta={meta} />
+        ({ field, form }: FieldProps<string>) => (
+            <CreditCardNumberInput field={field} form={form} />
         ),
         [],
     );
