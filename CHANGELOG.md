@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.698.3](https://github.com/bigcommerce/checkout-js/compare/v1.698.2...v1.698.3) (2025-11-04)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-9450 Add missing braintree strategy as the file was moved ([#2681](https://github.com/bigcommerce/checkout-js/issues/2681)) ([e9b594e](https://github.com/bigcommerce/checkout-js/commit/e9b594e07231541e93955f0035565dd602ef6918))
+
 ### [1.698.2](https://github.com/bigcommerce/checkout-js/compare/v1.698.1...v1.698.2) (2025-11-04)
 
 
