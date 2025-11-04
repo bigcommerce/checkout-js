@@ -19,8 +19,10 @@ export { TranslateValidationErrorFunction } from './TranslateValidationErrorFunc
 export {
     CheckoutContext,
     CheckoutProvider,
+    CheckoutProviderV2,
     CheckoutContextProps,
     useCheckout,
+    useCheckoutV2,
     PaymentFormContextProps,
     PaymentFormContext,
     PaymentFormProvider,

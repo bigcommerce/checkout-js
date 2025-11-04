@@ -7,7 +7,7 @@ import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
 import { AnalyticsProvider, ExtensionProvider, ThemeProvider } from '@bigcommerce/checkout/contexts';
 import { ErrorBoundary } from '@bigcommerce/checkout/error-handling-utils';
 import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
-import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { CheckoutProvider, CheckoutProviderV2 } from '@bigcommerce/checkout/payment-integration-api';
 
 import '../../scss/App.scss';
 
@@ -26,10 +26,11 @@ export interface CheckoutAppProps {
     publicPath?: string;
     sentryConfig?: BrowserOptions;
     sentrySampleRate?: number;
+    isUseCheckoutHookExperimentEnabled?: boolean;
 }
 
 const CheckoutApp = (props: CheckoutAppProps): ReactElement => {
-    const { containerId, sentryConfig, publicPath, sentrySampleRate } = props;
+    const { containerId, sentryConfig, publicPath, sentrySampleRate, isUseCheckoutHookExperimentEnabled } = props;
 
     const errorLogger = useMemo(() => createErrorLogger(
         { sentry: sentryConfig },
@@ -55,21 +56,23 @@ const CheckoutApp = (props: CheckoutAppProps): ReactElement => {
     return (
         <ErrorBoundary errorLogger={errorLogger}>
             <LocaleProvider checkoutService={checkoutService}>
-                <CheckoutProvider checkoutService={checkoutService} errorLogger={errorLogger}>
-                    <AnalyticsProvider checkoutService={checkoutService}>
-                        <ExtensionProvider extensionService={extensionService}>
-                            <ThemeProvider>
-                                <Checkout
-                                    {...props}
-                                    createEmbeddedMessenger={createEmbeddedCheckoutMessenger}
-                                    embeddedStylesheet={embeddedStylesheet}
-                                    embeddedSupport={embeddedSupport}
-                                    errorLogger={errorLogger}
-                                />
-                            </ThemeProvider>
-                        </ExtensionProvider>
-                    </AnalyticsProvider>
-                </CheckoutProvider>
+                <CheckoutProviderV2 checkoutService={checkoutService} errorLogger={errorLogger} isUseCheckoutHookExperimentEnabled={isUseCheckoutHookExperimentEnabled}>
+                    <CheckoutProvider checkoutService={checkoutService} errorLogger={errorLogger}>
+                        <AnalyticsProvider checkoutService={checkoutService}>
+                            <ExtensionProvider extensionService={extensionService}>
+                                <ThemeProvider>
+                                    <Checkout
+                                        {...props}
+                                        createEmbeddedMessenger={createEmbeddedCheckoutMessenger}
+                                        embeddedStylesheet={embeddedStylesheet}
+                                        embeddedSupport={embeddedSupport}
+                                        errorLogger={errorLogger}
+                                    />
+                                </ThemeProvider>
+                            </ExtensionProvider>
+                        </AnalyticsProvider>
+                    </CheckoutProvider>
+                </CheckoutProviderV2>
             </LocaleProvider>
         </ErrorBoundary>
     );
