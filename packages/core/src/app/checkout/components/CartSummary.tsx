@@ -46,7 +46,7 @@ export const CartSummary: React.FC<CartSummaryProps> = ({ isMultiShippingMode })
 
                 return (
                     <LazyContainer loadingSkeleton={<CartSummarySkeleton />}>
-                        <aside className="layout-cart">
+                        <aside aria-label="Cart Summary" className="layout-cart">
                             <CartSummaryComponent isMultiShippingMode={isMultiShippingMode} />
                             <Extension region={ExtensionRegion.SummaryAfter} />
                         </aside>
