@@ -65,7 +65,7 @@ const OrderSummaryPrice: FC<OrderSummaryPriceProps> = ({
         checkoutState: {
             statuses: { isSubmittingOrder }
         }
-    } = useCheckout();
+    } = useCheckout(({ statuses }) => statuses.isSubmittingOrder());
 
     const { themeV2 } = useThemeContext();
     const displayValue = getDisplayValue(amount, zeroLabel);

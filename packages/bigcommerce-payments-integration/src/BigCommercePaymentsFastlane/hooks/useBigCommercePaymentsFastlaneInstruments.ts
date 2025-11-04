@@ -7,7 +7,9 @@ import { isPayPalFastlaneCustomer } from '@bigcommerce/checkout/paypal-fastlane-
 export const useBigCommercePaymentsFastlaneInstruments = () => {
     const [selectedInstrument, setSelectedInstrument] = useState<CardInstrument>();
 
-    const { getPaymentProviderCustomer } = useCheckout().checkoutState.data;
+    const { getPaymentProviderCustomer } = useCheckout(({ data }) => ({
+        getPaymentProviderCustomer: data.getPaymentProviderCustomer,
+    })).checkoutState.data;
 
     const paymentProviderCustomer: PaymentProviderCustomer = getPaymentProviderCustomer();
     const paypalFastlaneCustomer = isPayPalFastlaneCustomer(paymentProviderCustomer)

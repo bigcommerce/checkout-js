@@ -26,7 +26,10 @@ export const CheckoutHeader: React.FC<CheckoutHeaderProps> = ({
     onUnhandledError,
     onWalletButtonClick,
 }) => {
-    const { checkoutState } = useCheckout();
+    const { checkoutState } = useCheckout(({ data }) => ({
+        getCheckout: data.getCheckout,
+        getConfig: data.getConfig,
+    }));
     const { extensionState } = useExtensions();
 
     const { data } = checkoutState;

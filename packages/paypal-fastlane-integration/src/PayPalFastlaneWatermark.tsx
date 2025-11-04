@@ -10,7 +10,10 @@ import { type FastlanePrivacySettings } from './types';
 import './PayPalFastlaneWatermark.scss';
 
 const PayPalFastlaneWatermark: FunctionComponent = () => {
-    const { checkoutState } = useCheckout();
+    const { checkoutState } = useCheckout(({ data }) => ({
+        getPaymentMethod: data.getPaymentMethod,
+        getConfig: data.getConfig,
+    }));
     const { getPaymentMethod, getConfig } = checkoutState.data;
     const providerWithCustomCheckout =
         getConfig()?.checkoutSettings.providerWithCustomCheckout || '';

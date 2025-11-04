@@ -15,9 +15,27 @@ export interface CheckoutProviderProps {
     checkoutService: CheckoutService;
     children: ReactNode;
     errorLogger?: ErrorLogger;
+    isUseCheckoutHookExperimentEnabled?: boolean;
 }
 
-const CheckoutProvider = ({
+const CheckoutProviderV2 = ({
+    checkoutService,
+    errorLogger,
+    children,
+    isUseCheckoutHookExperimentEnabled,
+}: CheckoutProviderProps): ReactElement => {
+    const checkoutState = checkoutService.getState();
+    const contextValue = {
+        checkoutService,
+        checkoutState, // TODO: this can be removed once experiment is over
+        errorLogger,
+        isUseCheckoutHookExperimentEnabled,
+    };
+
+    return <CheckoutContext.Provider value={contextValue}>{children}</CheckoutContext.Provider>;
+};
+
+const CheckoutProviderV1 = ({
     checkoutService,
     errorLogger,
     children,
@@ -50,6 +68,22 @@ const CheckoutProvider = ({
     }, [checkoutService]);
 
     return <CheckoutContext.Provider value={contextValue}>{children}</CheckoutContext.Provider>;
+};
+
+const CheckoutProvider = ({
+    isUseCheckoutHookExperimentEnabled,
+    ...props
+}: CheckoutProviderProps): ReactElement => {
+    if (isUseCheckoutHookExperimentEnabled) {
+        return (
+            <CheckoutProviderV2
+                isUseCheckoutHookExperimentEnabled={isUseCheckoutHookExperimentEnabled}
+                {...props}
+            />
+        );
+    }
+
+    return <CheckoutProviderV1 {...props} />;
 };
 
 export default CheckoutProvider;

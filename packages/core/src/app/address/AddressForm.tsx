@@ -35,7 +35,11 @@ const AddressForm: React.FC<AddressFormProps> = ({
         checkoutState: {
             data: { getConfig, getBillingCountries, getShippingCountries }
         }
-    } = useCheckout();
+    } = useCheckout(({ data }) => ({
+        config: data.getConfig(),
+        billingCountries: data.getBillingCountries(),
+        shippingCountries: data.getShippingCountries(),
+    }));
 
     const config = getConfig();
     const countries = (type === AddressType.Billing

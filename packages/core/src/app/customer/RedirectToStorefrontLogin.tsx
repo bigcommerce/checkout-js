@@ -14,7 +14,7 @@ export const RedirectToStorefrontLogin: React.FC<RedirectToStorefrontLoginProps>
     isLoading,
 }) => {
     const { themeV2 } = useThemeContext();
-    const { checkoutState: { data: { getConfig } } } = useCheckout();
+    const { checkoutState: { data: { getConfig } } } = useCheckout(({ data }) => data.getConfig());
 
     const config = getConfig();
 

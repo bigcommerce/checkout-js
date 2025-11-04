@@ -54,7 +54,16 @@ const BillingForm = ({
     const { isPayPalFastlaneEnabled, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
 
     const { themeV2 } = useThemeContext();
-    const { checkoutService, checkoutState } = useCheckout();
+    const { checkoutService, checkoutState } = useCheckout(({
+        data: { getCustomer, getConfig, getCart },
+        statuses: { isUpdatingBillingAddress, isUpdatingCheckout },
+    }) => ({
+        customer: getCustomer(),
+        config: getConfig(),
+        cart: getCart(),
+        isUpdatingBillingAddress: isUpdatingBillingAddress(),
+        isUpdatingCheckout: isUpdatingCheckout(),
+    }));
 
     const {
         data: { getCustomer, getConfig, getCart },

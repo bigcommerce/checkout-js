@@ -28,7 +28,7 @@ const StoreCreditField: FunctionComponent<StoreCreditFieldProps & WithCurrencyPr
         checkoutState: {
             statuses: { isSubmittingOrder }
         }
-    } = useCheckout();
+    } = useCheckout(({ statuses }) => statuses.isSubmittingOrder());
 
     const handleChange = useCallback((event: any) => onChange(event.target.checked), [onChange]);
     const labelContent = useMemo(

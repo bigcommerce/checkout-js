@@ -25,7 +25,53 @@ const deleteConsignmentsSelector = createSelector(
 );
 
 export const useShipping = () => {
-    const { checkoutState, checkoutService } = useCheckout();
+    const { checkoutState, checkoutService } = useCheckout(({
+        data: {
+            getCart,
+            getCheckout,
+            getConfig,
+            getCustomer,
+            getConsignments,
+            getShippingAddress,
+            getBillingAddress,
+            getShippingAddressFields,
+            getShippingCountries,
+        },
+        statuses: {
+            isShippingStepPending,
+            isSelectingShippingOption,
+            isLoadingShippingOptions,
+            isUpdatingConsignment,
+            isCreatingConsignments,
+            isCreatingCustomerAddress,
+            isLoadingShippingCountries,
+            isUpdatingBillingAddress,
+            isUpdatingCheckout,
+            isDeletingConsignment,
+            isLoadingCheckout,
+        },
+    }) => ({
+        cart: getCart(),
+        checkout: getCheckout(),
+        config: getConfig(),
+        customer: getCustomer(),
+        consignments: getConsignments(),
+        shippingAddress: getShippingAddress(),
+        billingAddress: getBillingAddress(),
+        shippingCountries: getShippingCountries(),
+        isShippingStepPending: isShippingStepPending(),
+        isSelectingShippingOption: isSelectingShippingOption(),
+        isLoadingShippingOptions: isLoadingShippingOptions(),
+        isUpdatingConsignment: isUpdatingConsignment(),
+        isCreatingConsignments: isCreatingConsignments(),
+        isCreatingCustomerAddress: isCreatingCustomerAddress(),
+        isLoadingShippingCountries: isLoadingShippingCountries(),
+        isUpdatingBillingAddress: isUpdatingBillingAddress(),
+        isUpdatingCheckout: isUpdatingCheckout(),
+        isDeletingConsignment: isDeletingConsignment(),
+        isLoadingCheckout: isLoadingCheckout(),
+        getShippingAddressFields,
+    }));
 
     const {
         data: {

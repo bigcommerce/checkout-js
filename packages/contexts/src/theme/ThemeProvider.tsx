@@ -13,7 +13,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
         checkoutState: {
             data: { getConfig },
         },
-    } = useCheckout();
+    } = useCheckout(({ data }) => data.getConfig());
 
     const config = getConfig();
 
