@@ -1,4 +1,5 @@
 import { type CardInstrument, type LegacyHostedFormOptions } from '@bigcommerce/checkout-sdk';
+import { createBraintreeCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
 import { compact, forIn } from 'lodash';
 import React, {
     createRef,
@@ -252,6 +253,7 @@ const BraintreeCreditCardsPaymentMethod: FunctionComponent<PaymentMethodProps> =
             async (options, selectedInstrument) => {
                 return initializePayment({
                     ...options,
+                    integrations: [createBraintreeCreditCardPaymentStrategy],
                     braintree: {
                         threeDSecure: {
                             addFrame(

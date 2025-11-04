@@ -5,6 +5,7 @@ import {
     createLanguageService,
     type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
+import { createBraintreeCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
 import { render, screen } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
@@ -119,6 +120,7 @@ describe('BraintreeCreditCardsPaymentMethod', () => {
             expect.objectContaining({
                 methodId: 'braintree',
                 braintree: expect.any(Object),
+                integrations: [createBraintreeCreditCardPaymentStrategy],
             }),
         );
     });
