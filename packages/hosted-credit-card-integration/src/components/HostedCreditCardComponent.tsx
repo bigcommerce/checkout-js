@@ -26,6 +26,7 @@ import { getHostedCreditCardValidationSchema } from './getHostedCreditCardValida
 import { getHostedInstrumentValidationSchema } from './getHostedInstrumentValidationSchema';
 import { HostedCreditCardFieldset } from './HostedCreditCardFieldset';
 import { HostedCreditCardValidation } from './HostedCreditCardValidation';
+import { createCheckoutComCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/checkoutcom-custom';
 
 export interface HostedCreditCardComponentProps extends PaymentMethodProps {
     initializePayment?: CheckoutService['initializePayment'];
@@ -257,6 +258,7 @@ const HostedCreditCardComponent: FunctionComponent<HostedCreditCardComponentProp
                         createCreditCardPaymentStrategy,
                         createBlueSnapDirectCreditCardPaymentStrategy,
                         createTDOnlineMartPaymentStrategy,
+                        createCheckoutComCreditCardPaymentStrategy,
                     ],
                     creditCard: {
                         form: await getHostedFormOptions(selectedInstrument),
