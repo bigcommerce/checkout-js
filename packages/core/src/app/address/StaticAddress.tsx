@@ -8,9 +8,8 @@ import classNames from 'classnames';
 import { isEmpty } from 'lodash';
 import React, { type FunctionComponent, memo } from 'react';
 
-import { useThemeContext } from '@bigcommerce/checkout/contexts';
+import { type CheckoutContextProps, useThemeContext } from '@bigcommerce/checkout/contexts';
 import { localizeAddress } from '@bigcommerce/checkout/locale';
-import { type CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 
 import { withCheckout } from '../checkout';
 

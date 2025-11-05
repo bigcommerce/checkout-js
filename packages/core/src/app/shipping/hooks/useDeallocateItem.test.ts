@@ -1,12 +1,12 @@
 import { type ConsignmentCreateRequestBody } from '@bigcommerce/checkout-sdk';
 import { act, renderHook } from '@testing-library/react';
 
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { consignment } from '@bigcommerce/checkout/test-framework';
 
 import { useDeallocateItem } from './useDeallocateItem';
 
-jest.mock('@bigcommerce/checkout/payment-integration-api');
+jest.mock('@bigcommerce/checkout/contexts');
 
 describe('useDeallocateItem', () => {
     const createConsignments = jest.fn();

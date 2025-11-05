@@ -1,7 +1,8 @@
 import { createSelector } from 'reselect';
 
+import { type CheckoutContextProps, useCheckout } from '@bigcommerce/checkout/contexts';
 import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
-import { type CheckoutContextProps, PaymentMethodId, useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
 
 import { EMPTY_ARRAY } from '../../common/utility';
 import getProviderWithCustomCheckout from '../../payment/getProviderWithCustomCheckout';

@@ -1,7 +1,7 @@
 import { noop } from 'lodash';
 import React, { type ReactNode } from 'react';
 
-import * as paymentIntegrationApi from '@bigcommerce/checkout/payment-integration-api';
+import * as contexts from '@bigcommerce/checkout/contexts';
 import { fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
 
 jest.mock('react-transition-group', () => ({
@@ -16,7 +16,7 @@ import OrderSummaryPrice, { type OrderSummaryPriceProps } from './OrderSummaryPr
 
 describe('OrderSummaryPrice', () => {
     const useCheckoutMock = (isSubmittingOrder: boolean) => {
-        jest.spyOn(paymentIntegrationApi, 'useCheckout').mockImplementation(
+        jest.spyOn(contexts, 'useCheckout').mockImplementation(
             jest.fn().mockImplementation(() => ({
                 checkoutState: {
                     data: { getConfig:noop },

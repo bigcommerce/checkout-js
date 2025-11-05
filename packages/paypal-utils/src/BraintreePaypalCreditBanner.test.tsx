@@ -2,9 +2,13 @@ import { createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { createBraintreePaypalPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
 import React, { type FunctionComponent } from 'react';
 
-import { LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
+import {
+    CheckoutProvider,
+    LocaleContext,
+    type LocaleContextType,
+} from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
-import { CheckoutProvider, PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
+import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
 import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 import { render } from '@bigcommerce/checkout/test-utils';
 

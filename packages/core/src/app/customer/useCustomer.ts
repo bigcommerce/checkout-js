@@ -1,4 +1,4 @@
-import { 
+import {
     type CheckoutSelectors,
     type CustomerAccountRequestBody,
     type CustomerCredentials,
@@ -10,8 +10,8 @@ import {
     type SignInEmail
 } from '@bigcommerce/checkout-sdk';
 
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
 import { isFloatingLabelEnabled } from '../common/utility';
 import getProviderWithCustomCheckout from '../payment/getProviderWithCustomCheckout';
@@ -23,14 +23,14 @@ export interface CustomerData {
     firstName?: string;
     hasBillingId: boolean;
     isBuyNowCart: boolean;
-    
+
     // Form data
     customerAccountFields: FormField[];
     canSubscribe: boolean;
     defaultShouldSubscribe: boolean;
     requiresMarketingConsent: boolean;
     isFloatingLabelEnabled?: boolean;
-    
+
     // Configuration
     forgotPasswordUrl: string;
     privacyPolicyUrl?: string;
@@ -39,7 +39,7 @@ export interface CustomerData {
     isGuestEnabled: boolean;
     isExpressPrivacyPolicy: boolean;
     shouldRedirectToStorefrontForAuth: boolean;
-    
+
     // Status flags
     isContinuingAsGuest: boolean;
     isExecutingPaymentMethodCheckout: boolean;
@@ -47,12 +47,12 @@ export interface CustomerData {
     isSigningIn: boolean;
     isSendingSignInEmail: boolean;
     isCreatingAccount: boolean;
-    
+
     // Errors
     signInError?: Error;
     signInEmailError?: Error;
     createAccountError?: Error;
-    
+
     // Other data
     signInEmail?: SignInEmail;
     checkoutButtonIds: string[];
@@ -79,7 +79,7 @@ export interface UseCustomerReturn {
 
 export const useCustomer = (): UseCustomerReturn => {
     const { checkoutState, checkoutService } = useCheckout();
-    
+
     const {
         data: {
             getBillingAddress,
@@ -146,14 +146,14 @@ export const useCustomer = (): UseCustomerReturn => {
         firstName: customer?.firstName,
         hasBillingId: !!billingAddress?.id,
         isBuyNowCart: cart.source === 'BUY_NOW',
-        
+
         // Form data
         customerAccountFields: getCustomerAccountFields(),
         canSubscribe,
         defaultShouldSubscribe,
         requiresMarketingConsent,
         isFloatingLabelEnabled: isFloatingLabelEnabled(config.checkoutSettings),
-        
+
         // Configuration
         forgotPasswordUrl,
         privacyPolicyUrl,
@@ -162,7 +162,7 @@ export const useCustomer = (): UseCustomerReturn => {
         isGuestEnabled: config.checkoutSettings.guestCheckoutEnabled,
         isExpressPrivacyPolicy,
         shouldRedirectToStorefrontForAuth,
-        
+
         // Status flags
         isContinuingAsGuest: isContinuingAsGuest(),
         isExecutingPaymentMethodCheckout: isExecutingPaymentMethodCheckout(),
@@ -170,12 +170,12 @@ export const useCustomer = (): UseCustomerReturn => {
         isSigningIn: isSigningIn(),
         isSendingSignInEmail: isSendingSignInEmail(),
         isCreatingAccount: isCreatingCustomerAccount(),
-        
+
         // Errors
         signInError: getSignInError(),
         signInEmailError: getSignInEmailError(),
         createAccountError: getCreateCustomerAccountError(),
-        
+
         // Other data
         signInEmail,
         checkoutButtonIds,

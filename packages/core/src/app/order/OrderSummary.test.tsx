@@ -2,9 +2,8 @@ import { createCheckoutService, type Order } from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent } from 'react';
 
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
-import { ExtensionProvider, LocaleProvider } from '@bigcommerce/checkout/contexts';
+import { CheckoutProvider, ExtensionProvider , LocaleProvider } from '@bigcommerce/checkout/contexts';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
-import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { createErrorLogger } from '../common/error';

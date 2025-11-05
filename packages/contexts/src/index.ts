@@ -7,8 +7,10 @@ export {
 } from './analytics';
 export { ExtensionProvider, ExtensionActionType, withExtension, useExtensions } from './extension';
 export { LocaleContext, LocaleProvider, useLocale } from './locale';
+export { CheckoutContext, CheckoutProvider, useCheckout } from './checkout';
 
 export type { AnalyticsContextProps, AnalyticsEvents } from './analytics/AnalyticsContext';
 export type { ExtensionAction, ExtensionServiceInterface } from './extension/ExtensionType';
 export type { ExtensionContextProps } from './extension/ExtensionContext';
 export type { LocaleContextType } from './locale/LocaleContext';
+export type { CheckoutContextProps } from './checkout/CheckoutContext';

@@ -12,6 +12,7 @@ import React, { act, type FunctionComponent } from 'react';
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
 import {
     AnalyticsProviderMock,
+    CheckoutProvider,
     ExtensionProvider,
     type ExtensionServiceInterface,
     LocaleProvider,
@@ -20,7 +21,6 @@ import {
 import { getLanguageService } from '@bigcommerce/checkout/locale';
 import {
     CHECKOUT_ROOT_NODE_ID,
-    CheckoutProvider,
 } from '@bigcommerce/checkout/payment-integration-api';
 import {
     CheckoutPageNodeObject,

@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react';
 
+import * as contexts from '@bigcommerce/checkout/contexts';
 import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
-import * as CheckoutApi from '@bigcommerce/checkout/payment-integration-api';
 import {
     getCart,
     getCheckout,
@@ -61,7 +61,7 @@ describe('useShipping', () => {
     };
 
     beforeEach(() => {
-        jest.spyOn(CheckoutApi, 'useCheckout').mockReturnValue({ checkoutState, checkoutService });
+        jest.spyOn(contexts, 'useCheckout').mockReturnValue({ checkoutState, checkoutService });
         jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({ id: 'checkout', customerMessage: 'msg' });
     });
 
@@ -87,7 +87,7 @@ describe('useShipping', () => {
     describe('shouldShowMultiShipping', () => {
         beforeEach(() => {
             jest.spyOn(checkoutState.data, 'getCart').mockReturnValue(
-                { 
+                {
                     ...getCart(),
                     lineItems: {
                         physicalItems: [
@@ -154,7 +154,7 @@ describe('useShipping', () => {
     });
 
     it('shouldRenderStripeForm is true if providerWithCustomCheckout is StripeUPE and shouldUseStripeLinkByMinimumAmount returns true', () => {
-        
+
         jest.mock(
             '@bigcommerce/checkout/instrument-utils',
             () => ({

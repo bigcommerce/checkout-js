@@ -1,8 +1,8 @@
 import { type Address, type ConsignmentCreateRequestBody } from "@bigcommerce/checkout-sdk";
 import React, { useState } from "react";
 
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from "@bigcommerce/checkout/locale";
-import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
 
 import { AddressFormModal, type AddressFormValues, AddressSelect, AddressType, isValidAddress, mapAddressFromFormValues } from "../address";
 import { ErrorModal } from "../common/error";

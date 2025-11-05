@@ -9,7 +9,11 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';
 
-import { LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
+import {
+    CheckoutContext,
+    LocaleContext,
+    type LocaleContextType,
+} from '@bigcommerce/checkout/contexts';
 import {
     CreditCardPaymentMethodComponent,
     type CreditCardPaymentMethodProps,
@@ -17,7 +21,6 @@ import {
 } from '@bigcommerce/checkout/credit-card-integration';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import {
-    CheckoutContext,
     PaymentFormContext,
     type PaymentFormService,
     type PaymentMethodProps,

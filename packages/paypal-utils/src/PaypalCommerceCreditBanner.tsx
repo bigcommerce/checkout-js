@@ -4,7 +4,7 @@ import {
 } from '@bigcommerce/checkout-sdk/integrations/paypal-commerce';
 import React, { type FunctionComponent, useEffect } from 'react';
 
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 
 const PaypalCommerceCreditBanner: FunctionComponent<{
     methodId: string;

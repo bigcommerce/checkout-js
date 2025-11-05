@@ -10,14 +10,17 @@ import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';
 import { object, type Schema, string } from 'yup';
 
-import { LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
+import {
+    CheckoutContext,
+    LocaleContext,
+    type LocaleContextType,
+} from '@bigcommerce/checkout/contexts';
 import {
     getCreditCardValidationSchema,
     getInstrumentValidationSchema,
 } from '@bigcommerce/checkout/instrument-utils';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import {
-    CheckoutContext,
     PaymentFormContext,
     type PaymentFormService,
     type PaymentMethodProps,

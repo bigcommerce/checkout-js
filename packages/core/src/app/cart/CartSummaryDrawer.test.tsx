@@ -2,9 +2,8 @@ import { createCheckoutService } from '@bigcommerce/checkout-sdk';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
-import { LocaleContext } from '@bigcommerce/checkout/contexts';
+import { CheckoutProvider, LocaleContext } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
-import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getCheckout } from '../checkout/checkouts.mock';

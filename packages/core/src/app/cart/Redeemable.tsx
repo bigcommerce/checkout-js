@@ -6,10 +6,9 @@ import { noop } from 'lodash';
 import React, { type FunctionComponent, type KeyboardEvent, memo, type ReactNode, useCallback } from 'react';
 import { object, string } from 'yup';
 
-import { useThemeContext } from '@bigcommerce/checkout/contexts';
+import { useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 import { type FormContextType, FormProvider } from '@bigcommerce/checkout/ui';
 
 import { Alert, AlertType } from '../ui/alert';

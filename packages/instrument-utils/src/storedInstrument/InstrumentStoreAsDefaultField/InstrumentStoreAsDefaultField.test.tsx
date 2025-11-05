@@ -8,10 +8,9 @@ import { Formik } from 'formik';
 import { merge, noop } from 'lodash';
 import React from 'react';
 
-import { LocaleContext } from '@bigcommerce/checkout/contexts';
+import { CheckoutProvider, LocaleContext } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import {
-    CheckoutProvider,
     PaymentFormContext,
     type PaymentFormService,
 } from '@bigcommerce/checkout/payment-integration-api';

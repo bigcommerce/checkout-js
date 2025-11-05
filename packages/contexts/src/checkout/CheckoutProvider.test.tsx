@@ -10,7 +10,11 @@ describe('CheckoutProvider', () => {
 
         jest.spyOn(service, 'subscribe');
 
-        render(<CheckoutProvider checkoutService={service} />);
+        render(
+            <CheckoutProvider checkoutService={service}>
+                <div />
+            </CheckoutProvider>,
+        );
 
         expect(service.subscribe).toHaveBeenCalled();
     });
@@ -21,7 +25,11 @@ describe('CheckoutProvider', () => {
 
         jest.spyOn(service, 'subscribe').mockReturnValue(unsubscribe);
 
-        const { unmount } = render(<CheckoutProvider checkoutService={service} />);
+        const { unmount } = render(
+            <CheckoutProvider checkoutService={service}>
+                <div />
+            </CheckoutProvider>,
+        );
 
         unmount();
 

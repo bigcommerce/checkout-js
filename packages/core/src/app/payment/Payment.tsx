@@ -18,10 +18,10 @@ import React, {
 } from 'react';
 import { type ObjectSchema } from 'yup';
 
-import { type AnalyticsContextProps } from '@bigcommerce/checkout/contexts';
+import { type AnalyticsContextProps, type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { type CheckoutContextProps, type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { ChecklistSkeleton } from '@bigcommerce/checkout/ui';
 
 import { withAnalytics } from '../analytics';

@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import React from 'react';
 
+import * as contexts from '@bigcommerce/checkout/contexts';
 import * as PaymentIntegrationApi from '@bigcommerce/checkout/payment-integration-api';
 import { getAddress, getCustomer, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
@@ -60,7 +61,7 @@ describe('usePayPalFastlaneAddress', () => {
     };
 
     beforeEach(() => {
-        jest.spyOn(PaymentIntegrationApi, 'useCheckout').mockImplementation(
+        jest.spyOn(contexts, 'useCheckout').mockImplementation(
             jest.fn().mockImplementation(() => ({
                 checkoutState: {
                     data: {

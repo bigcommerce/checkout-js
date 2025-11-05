@@ -5,7 +5,7 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import React, { type ReactElement } from 'react';
 
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import { AddressForm, AddressSelect, AddressType, isValidCustomerAddress } from '../address';

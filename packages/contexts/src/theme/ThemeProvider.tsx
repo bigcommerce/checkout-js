@@ -1,6 +1,6 @@
 import React, { type ReactNode } from 'react';
 
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckout } from '../checkout';
 
 import ThemeContext from './ThemeContext';
 

@@ -14,9 +14,10 @@ import { find, noop } from 'lodash';
 import React, { Component, type ReactNode } from 'react';
 import { type ObjectSchema } from 'yup';
 
+import { type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
 import { type MapToPropsFactory } from '@bigcommerce/checkout/legacy-hoc';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { type CheckoutContextProps, type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../../checkout';

@@ -1,4 +1,3 @@
-export { CheckoutContext, CheckoutProvider, useCheckout } from './checkout-context';
 export {
     PaymentFormContext,
     PaymentFormProvider,

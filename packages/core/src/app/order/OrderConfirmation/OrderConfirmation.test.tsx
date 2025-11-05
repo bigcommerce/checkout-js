@@ -13,6 +13,7 @@ import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
 import {
     type AnalyticsEvents,
     AnalyticsProviderMock,
+    CheckoutProvider,
     ExtensionProvider,
     type ExtensionServiceInterface,
     type LocaleContextType,
@@ -23,7 +24,6 @@ import {
     createLocaleContext,
     getLanguageService,
 } from '@bigcommerce/checkout/locale';
-import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { renderWithoutWrapper as render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
 import { createErrorLogger } from '../../common/error';

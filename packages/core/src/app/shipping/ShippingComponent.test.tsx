@@ -9,12 +9,15 @@ import userEvent from '@testing-library/user-event';
 import React, { type FunctionComponent } from 'react';
 
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
-import { AnalyticsProviderMock,
+import {
+    AnalyticsProviderMock,
+    CheckoutProvider,
     ExtensionProvider,
-  type ExtensionServiceInterface,
- LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
+    type ExtensionServiceInterface,
+    LocaleContext,
+    type LocaleContextType
+} from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
-import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { render, screen, within } from '@bigcommerce/checkout/test-utils';
 
 import { getAddressFormFields } from '../address/formField.mock';

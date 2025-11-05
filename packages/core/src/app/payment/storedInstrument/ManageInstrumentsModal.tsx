@@ -2,8 +2,8 @@ import { type CheckoutSelectors, type PaymentInstrument } from '@bigcommerce/che
 import { noop } from 'lodash';
 import React, { Component, type ReactNode } from 'react';
 
+import { type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { type CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 
 import { withCheckout } from '../../checkout';
 import { Button, ButtonSize, ButtonVariant } from '../../ui/button';

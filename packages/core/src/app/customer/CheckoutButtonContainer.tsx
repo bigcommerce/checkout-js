@@ -2,9 +2,8 @@ import { type CheckoutSelectors, type CheckoutService } from '@bigcommerce/check
 import classNames from 'classnames';
 import React, { type FunctionComponent, lazy, memo, Suspense } from 'react';
 
-import { useLocale, useThemeContext } from '@bigcommerce/checkout/contexts';
+import { type CheckoutContextProps, useLocale, useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { type CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 import { WalletButtonsContainerSkeleton } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../checkout';

@@ -1,6 +1,4 @@
-import { type PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
-
-export function getPaymentFormServiceMock(): PaymentFormService {
+export function getPaymentFormServiceMock() {
     return {
         disableSubmit: jest.fn(),
         getFieldValue: jest.fn(),

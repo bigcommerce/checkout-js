@@ -2,8 +2,9 @@ import { type AccountInstrument, type PaymentMethod } from '@bigcommerce/checkou
 import { find } from 'lodash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { isAccountInstrument } from '@bigcommerce/checkout/instrument-utils';
-import { useCheckout, usePaymentFormContext } from '@bigcommerce/checkout/payment-integration-api';
+import { usePaymentFormContext } from '@bigcommerce/checkout/payment-integration-api';
 
 const useBigCommercePaymentsInstrument = (method: PaymentMethod) => {
     const [currentInstrument, setCurrentInstrument] = useState<AccountInstrument | undefined>();

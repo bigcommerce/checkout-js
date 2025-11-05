@@ -10,8 +10,8 @@ import { noop } from 'lodash';
 import React, { useCallback, useState } from 'react';
 import { lazy, object } from 'yup';
 
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
 import {
   type AddressFormValues,

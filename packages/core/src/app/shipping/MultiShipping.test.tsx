@@ -14,6 +14,7 @@ import {
     type AnalyticsContextProps,
     type AnalyticsEvents,
     AnalyticsProviderMock,
+    CheckoutProvider,
     ExtensionProvider,
     type ExtensionServiceInterface,
     LocaleProvider,
@@ -22,7 +23,6 @@ import {
 import { getLanguageService } from '@bigcommerce/checkout/locale';
 import {
     CHECKOUT_ROOT_NODE_ID,
-    CheckoutProvider,
 } from '@bigcommerce/checkout/payment-integration-api';
 import {
     CheckoutPageNodeObject,
