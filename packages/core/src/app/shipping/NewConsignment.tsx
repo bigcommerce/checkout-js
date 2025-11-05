@@ -6,7 +6,7 @@ import React, { useMemo, useState } from "react";
 import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { TranslatedString } from "@bigcommerce/checkout/locale";
-import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
+import { useCheckoutV2 } from "@bigcommerce/checkout/payment-integration-api";
 
 import { EMPTY_ARRAY } from "../common/utility";
 
@@ -42,7 +42,10 @@ const NewConsignment = ({
             data: { getShippingCountries, getConsignments: getPreviousConsignments },
         },
         checkoutService: { assignItemsToAddress: assignItem, selectConsignmentShippingOption },
-    } = useCheckout();
+    } = useCheckoutV2(({ data }) => ({
+        shippingCountries: data.getShippingCountries(),
+        consignments: data.getConsignments(),
+    }));
 
     const selectedAddress = useMemo(() => {
         if (!consignmentRequest?.address) {

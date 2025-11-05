@@ -1,6 +1,6 @@
 import { type Consignment, type LineItemMap } from "@bigcommerce/checkout-sdk";
 
-import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
+import { useCheckoutV2 } from "@bigcommerce/checkout/payment-integration-api";
 
 import { LineItemType, type MultiShippingConsignmentData, type MultiShippingTableData, type MultiShippingTableItemWithType } from "../MultishippingType";
 import { generateItemHash } from "../utils";
@@ -117,7 +117,7 @@ export const useMultiShippingConsignmentItems = (): MultiShippingConsignmentItem
     const { checkoutState: {
         data: { getCheckout },
     },
-    } = useCheckout();
+    } = useCheckoutV2(({ data }) => data.getCheckout());
 
     const checkout = getCheckout();
 

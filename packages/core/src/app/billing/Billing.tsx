@@ -3,9 +3,7 @@ import React, { type ReactElement, useEffect } from 'react';
 
 import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import {
-    useCheckout,
-} from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckoutV2 } from '@bigcommerce/checkout/payment-integration-api';
 import { AddressFormSkeleton } from '@bigcommerce/checkout/ui';
 
 import { isEqualAddress, mapAddressFromFormValues } from '../address';
@@ -21,7 +19,14 @@ interface BillingProps {
 }
 
 const Billing = ({ navigateNextStep, onReady, onUnhandledError }:BillingProps): ReactElement => {
-    const { checkoutService, checkoutState } = useCheckout();
+    const { checkoutService, checkoutState } = useCheckoutV2(({ data }) => ({
+        checkout: data.getCheckout(),
+        config: data.getConfig(),
+        cart: data.getCart(),
+        customer: data.getCustomer(),
+        billingAddress: data.getBillingAddress(),
+        getBillingAddressFields: data.getBillingAddressFields,
+    }));
     const { themeV2 }  = useThemeContext();
 
     const {

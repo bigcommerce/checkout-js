@@ -2,7 +2,7 @@ import { type ExtensionRegion } from '@bigcommerce/checkout-sdk';
 import React, { type ReactNode, useEffect } from 'react';
 
 import { useExtensions } from '@bigcommerce/checkout/contexts';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckoutV2 } from '@bigcommerce/checkout/payment-integration-api';
 
 import { extensionRegionToContainerMap } from './ExtensionRegionContainer';
 
@@ -15,7 +15,11 @@ export const Extension = ({ region }: ExtensionProps): ReactNode | null => {
         checkoutState: {
             data: { getExtensions, getConfig, getCheckout },
         },
-    } = useCheckout();
+    } = useCheckoutV2(({ data }) => ({
+        extensions: data.getExtensions(),
+        config: data.getConfig(),
+        checkout: data.getCheckout(),
+    }));
     const extensions = getExtensions();
     const config = getConfig();
     const checkout = getCheckout();

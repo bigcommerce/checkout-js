@@ -6,7 +6,7 @@ import React, {  type ReactElement, useEffect, useRef, useState } from 'react';
 
 import { useAnalytics } from '@bigcommerce/checkout/contexts';
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckoutV2 } from '@bigcommerce/checkout/payment-integration-api';
 import { OrderConfirmationPageSkeleton } from '@bigcommerce/checkout/ui';
 
 import { isExperimentEnabled } from '../../common/utility';
@@ -54,7 +54,11 @@ export const OrderConfirmation = ({
         checkoutService: {
             loadOrder,
         },
-    } = useCheckout();
+    } = useCheckoutV2(({ data, statuses }) => ({
+        order: data.getOrder(),
+        config: data.getConfig(),
+        isLoadingOrder: statuses.isLoadingOrder(),
+    }));
     const { analyticsTracker } = useAnalytics();
 
     const config = getConfig();

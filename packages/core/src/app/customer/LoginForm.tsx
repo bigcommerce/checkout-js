@@ -13,7 +13,7 @@ import {
     withLanguage,
     type WithLanguageProps,
 } from '@bigcommerce/checkout/locale';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckoutV2 } from '@bigcommerce/checkout/payment-integration-api';
 
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
@@ -63,7 +63,15 @@ const LoginForm: FunctionComponent<
     viewType = CustomerViewType.Login,
 }) => {
     const { themeV2 } = useThemeContext();
-    const { checkoutState } = useCheckout();
+    const { checkoutState } = useCheckoutV2(({
+        data: { getCart, getConfig },
+        statuses: { isExecutingPaymentMethodCheckout, isSigningIn },
+    }) => ({
+        cart: getCart(),
+        config: getConfig(),
+        isExecutingPaymentMethodCheckout: isExecutingPaymentMethodCheckout(),
+        isSigningIn: isSigningIn(),
+    }));
 
     const {
         data: { getCart, getConfig },

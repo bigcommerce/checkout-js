@@ -3,7 +3,7 @@ import React, { type FunctionComponent, useCallback, useMemo } from 'react';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString, withCurrency, type WithCurrencyProps } from '@bigcommerce/checkout/locale';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckoutV2 } from '@bigcommerce/checkout/payment-integration-api';
 
 import { CheckboxInput } from '../../ui/form';
 import { Tooltip, TooltipTrigger } from '../../ui/tooltip';
@@ -28,7 +28,7 @@ const StoreCreditField: FunctionComponent<StoreCreditFieldProps & WithCurrencyPr
         checkoutState: {
             statuses: { isSubmittingOrder }
         }
-    } = useCheckout();
+    } = useCheckoutV2(({ statuses }) => statuses.isSubmittingOrder());
 
     const handleChange = useCallback((event: any) => onChange(event.target.checked), [onChange]);
     const labelContent = useMemo(

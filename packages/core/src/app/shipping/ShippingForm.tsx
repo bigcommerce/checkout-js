@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { useExtensions } from '@bigcommerce/checkout/contexts';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckoutV2 } from '@bigcommerce/checkout/payment-integration-api';
 
 import { useShipping } from './hooks/useShipping';
 import isUsingMultiShipping from './isUsingMultiShipping';
@@ -35,7 +35,7 @@ const ShippingForm = ({
         checkoutState: {
             data: { getConfig },
         },
-    } = useCheckout();
+    } = useCheckoutV2(({ data }) => data.getConfig());
     const {
         cart,
         consignments,

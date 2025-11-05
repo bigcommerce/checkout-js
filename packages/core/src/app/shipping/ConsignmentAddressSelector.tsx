@@ -2,7 +2,7 @@ import { type Address, type ConsignmentCreateRequestBody } from "@bigcommerce/ch
 import React, { useState } from "react";
 
 import { TranslatedString } from "@bigcommerce/checkout/locale";
-import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
+import { useCheckoutV2 } from "@bigcommerce/checkout/payment-integration-api";
 
 import { AddressFormModal, type AddressFormValues, AddressSelect, AddressType, isValidAddress, mapAddressFromFormValues } from "../address";
 import { ErrorModal } from "../common/error";
@@ -47,7 +47,19 @@ const ConsignmentAddressSelector = ({
             createCustomerAddress,
             selectConsignmentShippingOption,
         },
-    } = useCheckout();
+    } = useCheckoutV2(({
+        data: {
+            getCustomer,
+            getConfig,
+            getConsignments,
+            getShippingAddressFields,
+        },
+    }) => ({
+        customer: getCustomer(),
+        config: getConfig(),
+        consignments: getConsignments(),
+        getFields: getShippingAddressFields,
+    }));
 
     const customer = getCustomer();
     const config = getConfig();

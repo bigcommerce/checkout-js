@@ -3,7 +3,7 @@ import React, { type FunctionComponent, type ReactNode, useMemo, useState } from
 
 import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckoutV2 } from '@bigcommerce/checkout/payment-integration-api';
 import { Alert, AlertType } from '@bigcommerce/checkout/ui';
 
 import { withFormikExtended } from '../common/form';
@@ -45,7 +45,10 @@ const MultiShippingForm: FunctionComponent<MultiShippingFormProps> = ({
         checkoutState: {
             data: { getConsignments, getConfig },
         },
-    } = useCheckout();
+    } = useCheckoutV2(({ data }) => ({
+        consignments: data.getConsignments(),
+        config: data.getConfig(),
+    }));
     const { unassignedItems: { lineItems: unassignedLineItems, shippableItemsCount }, consignmentList } = useMultiShippingConsignmentItems();
 
     const consignments = getConsignments() || EMPTY_ARRAY;

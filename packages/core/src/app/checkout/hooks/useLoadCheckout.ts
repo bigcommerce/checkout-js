@@ -2,12 +2,12 @@ import { type CheckoutInitialState } from '@bigcommerce/checkout-sdk';
 import { useEffect, useState } from 'react';
 
 import { useExtensions } from '@bigcommerce/checkout/contexts';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckoutV2 } from '@bigcommerce/checkout/payment-integration-api';
 
 import { yieldToMain } from '../../common/utility';
 
 export const useLoadCheckout = (checkoutId: string, initialState?: CheckoutInitialState): {isLoadingCheckout: boolean} => {
-    const { checkoutService, checkoutState: { data } } = useCheckout();
+    const { checkoutService, checkoutState: { data } } = useCheckoutV2(({ data }) => data.getCheckout());
     const [ isLoadingCheckout, setIsLoadingCheckout ] = useState(!data.getCheckout());
     const { extensionService } = useExtensions();
 

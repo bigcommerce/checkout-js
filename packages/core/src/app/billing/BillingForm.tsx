@@ -8,7 +8,7 @@ import { lazy } from 'yup';
 
 import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckoutV2 } from '@bigcommerce/checkout/payment-integration-api';
 import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { AddressFormSkeleton, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
@@ -55,7 +55,16 @@ const BillingForm = ({
     const { isPayPalFastlaneEnabled, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
 
     const { themeV2 } = useThemeContext();
-    const { checkoutService, checkoutState } = useCheckout();
+    const { checkoutService, checkoutState } = useCheckoutV2(({
+        data: { getCustomer, getConfig, getCart },
+        statuses: { isUpdatingBillingAddress, isUpdatingCheckout },
+    }) => ({
+        customer: getCustomer(),
+        config: getConfig(),
+        cart: getCart(),
+        isUpdatingBillingAddress: isUpdatingBillingAddress(),
+        isUpdatingCheckout: isUpdatingCheckout(),
+    }));
 
     const {
         data: { getCustomer, getConfig, getCart },

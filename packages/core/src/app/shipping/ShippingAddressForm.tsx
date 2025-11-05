@@ -5,7 +5,7 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import React, { type ReactElement } from 'react';
 
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckoutV2 } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import { AddressForm, AddressSelect, AddressType, isValidCustomerAddress } from '../address';
@@ -46,7 +46,7 @@ const ShippingAddressForm = (
                 getCustomer,
             },
         },
-    } = useCheckout();
+    } = useCheckoutV2(({ data }) => data.getCustomer());
 
     const customer = getCustomer();
     const addresses = customer?.addresses || [];
@@ -122,5 +122,8 @@ const ShippingAddressForm = (
         </Fieldset>
     );
 };
+
+// eslint-disable-next-line
+(ShippingAddressForm as any).whyDidYouRender = true;
 
 export default connectFormik(ShippingAddressForm);

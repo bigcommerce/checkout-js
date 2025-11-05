@@ -2,7 +2,7 @@ import { type Cart } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
 import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
-import { PaymentMethodId, useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { PaymentMethodId, useCheckoutV2 } from '@bigcommerce/checkout/payment-integration-api';
 import { isPayPalFastlaneMethod } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 import type CheckoutStepStatus from '../checkout/CheckoutStepStatus';
@@ -44,7 +44,25 @@ export const GuestFormContainer: React.FC<GuestFormContainerProps> = ({
     onWalletButtonClick,
     onUnhandledError,
 }) => {
-    const { checkoutState, checkoutService } = useCheckout();
+    const { checkoutState, checkoutService } = useCheckoutV2(({
+        data: {
+            isPaymentDataRequired,
+            getConfig,
+            getCart,
+        },
+        statuses: {
+            isInitializingCustomer,
+            isContinuingAsGuest,
+            isExecutingPaymentMethodCheckout
+        },
+    }) => ({
+        isPaymentDataRequired: isPaymentDataRequired(),
+        config: getConfig(),
+        cart: getCart(),
+        isInitializingCustomer: isInitializingCustomer(),
+        isContinuingAsGuest: isContinuingAsGuest(),
+        isExecutingPaymentMethodCheckout: isExecutingPaymentMethodCheckout(),
+    }));
     const {
         data: {
             isPaymentDataRequired,

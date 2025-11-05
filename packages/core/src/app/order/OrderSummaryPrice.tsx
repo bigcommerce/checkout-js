@@ -4,7 +4,7 @@ import { CSSTransition } from 'react-transition-group';
 
 import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckoutV2 } from '@bigcommerce/checkout/payment-integration-api';
 
 import { ShopperCurrency } from '../currency';
 
@@ -66,7 +66,7 @@ const OrderSummaryPrice: FC<OrderSummaryPriceProps> = ({
         checkoutState: {
             statuses: { isSubmittingOrder }
         }
-    } = useCheckout();
+    } = useCheckoutV2(({ statuses }) => statuses.isSubmittingOrder());
 
     const { themeV2 } = useThemeContext();
     const displayValue = getDisplayValue(amount, zeroLabel);

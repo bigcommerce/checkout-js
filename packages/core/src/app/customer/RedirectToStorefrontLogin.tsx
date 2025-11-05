@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckoutV2 } from '@bigcommerce/checkout/payment-integration-api';
 import { Button, ButtonVariant } from '@bigcommerce/checkout/ui';
 
 interface RedirectToStorefrontLoginProps {
@@ -15,7 +15,7 @@ export const RedirectToStorefrontLogin: React.FC<RedirectToStorefrontLoginProps>
     isLoading,
 }) => {
     const { themeV2 } = useThemeContext();
-    const { checkoutState: { data: { getConfig } } } = useCheckout();
+    const { checkoutState: { data: { getConfig } } } = useCheckoutV2(({ data }) => data.getConfig());
 
     const config = getConfig();
 

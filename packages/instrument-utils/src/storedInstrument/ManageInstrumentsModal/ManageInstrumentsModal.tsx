@@ -3,7 +3,7 @@ import { noop } from 'lodash';
 import React, { type ReactElement, useState } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckoutV2 } from '@bigcommerce/checkout/payment-integration-api';
 import { Button, ButtonSize, ButtonVariant, Modal, ModalHeader } from '@bigcommerce/checkout/ui';
 
 import {
@@ -43,7 +43,11 @@ const ManageInstrumentsModal = ({
             statuses: { isDeletingInstrument, isLoadingInstruments },
         },
         checkoutService: { deleteInstrument, clearError },
-    } = useCheckout();
+    } = useCheckoutV2(({ errors, statuses }) => ({
+        getDeleteInstrumentError: errors.getDeleteInstrumentError(),
+        isDeletingInstrument: statuses.isDeletingInstrument(),
+        isLoadingInstruments: statuses.isLoadingInstruments(),
+    }));
 
     const deleteInstrumentError = getDeleteInstrumentError();
 

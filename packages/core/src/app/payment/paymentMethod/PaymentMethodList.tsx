@@ -3,7 +3,7 @@ import { find, get, noop } from 'lodash';
 import React, { type FunctionComponent, memo, useCallback, useMemo } from 'react';
 
 import { useLocale } from '@bigcommerce/checkout/locale';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckoutV2 } from '@bigcommerce/checkout/payment-integration-api';
 
 import { connectFormik, type ConnectFormikProps } from '../../common/form';
 import { isMobile } from '../../common/utility';
@@ -50,7 +50,7 @@ const PaymentMethodList: FunctionComponent<
         checkoutState: {
             data: { getConfig }
         }
-    } = useCheckout();
+    } = useCheckoutV2(({ data }) => data.getConfig());
 
     const config = getConfig();
 

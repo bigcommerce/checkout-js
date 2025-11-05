@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 
 import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
-import { type CheckoutContextProps, PaymentMethodId, useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { type CheckoutContextProps, PaymentMethodId, useCheckoutV2 } from '@bigcommerce/checkout/payment-integration-api';
 
 import { EMPTY_ARRAY } from '../../common/utility';
 import getProviderWithCustomCheckout from '../../payment/getProviderWithCustomCheckout';
@@ -24,7 +24,53 @@ const deleteConsignmentsSelector = createSelector(
 );
 
 export const useShipping = () => {
-    const { checkoutState, checkoutService } = useCheckout();
+    const { checkoutState, checkoutService } = useCheckoutV2(({
+        data: {
+            getCart,
+            getCheckout,
+            getConfig,
+            getCustomer,
+            getConsignments,
+            getShippingAddress,
+            getBillingAddress,
+            getShippingAddressFields,
+            getShippingCountries,
+        },
+        statuses: {
+            isShippingStepPending,
+            isSelectingShippingOption,
+            isLoadingShippingOptions,
+            isUpdatingConsignment,
+            isCreatingConsignments,
+            isCreatingCustomerAddress,
+            isLoadingShippingCountries,
+            isUpdatingBillingAddress,
+            isUpdatingCheckout,
+            isDeletingConsignment,
+            isLoadingCheckout,
+        },
+    }) => ({
+        cart: getCart(),
+        checkout: getCheckout(),
+        config: getConfig(),
+        customer: getCustomer(),
+        consignments: getConsignments(),
+        shippingAddress: getShippingAddress(),
+        billingAddress: getBillingAddress(),
+        shippingCountries: getShippingCountries(),
+        isShippingStepPending: isShippingStepPending(),
+        isSelectingShippingOption: isSelectingShippingOption(),
+        isLoadingShippingOptions: isLoadingShippingOptions(),
+        isUpdatingConsignment: isUpdatingConsignment(),
+        isCreatingConsignments: isCreatingConsignments(),
+        isCreatingCustomerAddress: isCreatingCustomerAddress(),
+        isLoadingShippingCountries: isLoadingShippingCountries(),
+        isUpdatingBillingAddress: isUpdatingBillingAddress(),
+        isUpdatingCheckout: isUpdatingCheckout(),
+        isDeletingConsignment: isDeletingConsignment(),
+        isLoadingCheckout: isLoadingCheckout(),
+        getShippingAddressFields,
+    }));
 
     const {
         data: {

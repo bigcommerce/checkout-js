@@ -1,6 +1,6 @@
 import React, { type ReactNode } from 'react';
 
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckoutV2 } from '@bigcommerce/checkout/payment-integration-api';
 
 import ThemeContext from './ThemeContext';
 
@@ -13,7 +13,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
         checkoutState: {
             data: { getConfig },
         },
-    } = useCheckout();
+    } = useCheckoutV2(({ data }) => data.getConfig());
 
     const config = getConfig();
 

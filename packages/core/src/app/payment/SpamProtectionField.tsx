@@ -1,7 +1,7 @@
 import React, { type MouseEvent, useEffect, useState } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckoutV2 } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import { isErrorWithType } from '../common/error';
@@ -20,7 +20,7 @@ const SpamProtectionField = ({
     const {
         checkoutService: { executeSpamCheck },
         checkoutState: { statuses }
-    } = useCheckout();
+    } = useCheckoutV2(({ statuses }) => statuses.isExecutingSpamCheck());
 
     const isExecutingSpamCheck = statuses.isExecutingSpamCheck();
 

@@ -9,7 +9,7 @@ import { object, string } from 'yup';
 import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckoutV2 } from '@bigcommerce/checkout/payment-integration-api';
 import { type FormContextType, FormProvider } from '@bigcommerce/checkout/ui';
 
 import { Alert, AlertType } from '../ui/alert';
@@ -90,7 +90,7 @@ const RedeemableForm: FunctionComponent<
         checkoutState: {
             statuses: { isSubmittingOrder }
         }
-    } = useCheckout();
+    } = useCheckoutV2(({ statuses }) => statuses.isSubmittingOrder());
     const { themeV2 } = useThemeContext();
 
     const handleSubmitForm = (setSubmitted: FormContextType['setSubmitted']) => {

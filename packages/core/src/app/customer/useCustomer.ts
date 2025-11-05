@@ -11,7 +11,7 @@ import {
 } from '@bigcommerce/checkout-sdk';
 
 import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckoutV2 } from '@bigcommerce/checkout/payment-integration-api';
 
 import { isFloatingLabelEnabled } from '../common/utility';
 import getProviderWithCustomCheckout from '../payment/getProviderWithCustomCheckout';
@@ -78,7 +78,45 @@ export interface UseCustomerReturn {
 }
 
 export const useCustomer = (): UseCustomerReturn => {
-    const { checkoutState, checkoutService } = useCheckout();
+    const { checkoutState, checkoutService } = useCheckoutV2(({
+        data: {
+            getBillingAddress,
+            getCustomerAccountFields,
+            getCheckout,
+            getCustomer,
+            getCart,
+            getSignInEmail,
+            getConfig,
+            isPaymentDataRequired,
+        },
+        errors: { getSignInError, getSignInEmailError, getCreateCustomerAccountError },
+        statuses: {
+            isContinuingAsGuest,
+            isExecutingPaymentMethodCheckout,
+            isInitializingCustomer,
+            isSigningIn,
+            isSendingSignInEmail,
+            isCreatingCustomerAccount,
+        },
+    }) => ({
+        billingAddress: getBillingAddress(),
+        checkout: getCheckout(),
+        customer: getCustomer(),
+        cart: getCart(),
+        signInEmail: getSignInEmail(),
+        config: getConfig(),
+        isPaymentDataRequired: isPaymentDataRequired(),
+        signInError: getSignInError(),
+        signInEmailError: getSignInEmailError(),
+        createCustomerAccountError: getCreateCustomerAccountError(),
+        isContinuingAsGuest: isContinuingAsGuest(),
+        isExecutingPaymentMethodCheckout: isExecutingPaymentMethodCheckout(),
+        isInitializingCustomer: isInitializingCustomer(),
+        isSigningIn: isSigningIn(),
+        isSendingSignInEmail: isSendingSignInEmail(),
+        isCreatingCustomerAccount: isCreatingCustomerAccount(),
+        getCustomerAccountFields,
+    }));
     
     const {
         data: {

@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useRef } from 'react';
 
 import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString, useLocale } from '@bigcommerce/checkout/locale';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckoutV2 } from '@bigcommerce/checkout/payment-integration-api';
 import { DynamicFormField, DynamicFormFieldType } from '@bigcommerce/checkout/ui';
 
 import { EMPTY_ARRAY, isFloatingLabelEnabled } from '../common/utility';
@@ -36,7 +36,11 @@ const AddressForm: React.FC<AddressFormProps> = ({
         checkoutState: {
             data: { getConfig, getBillingCountries, getShippingCountries }
         }
-    } = useCheckout();
+    } = useCheckoutV2(({ data }) => ({
+        config: data.getConfig(),
+        billingCountries: data.getBillingCountries(),
+        shippingCountries: data.getShippingCountries(),
+    }));
 
     const config = getConfig();
     const countries = (type === AddressType.Billing
