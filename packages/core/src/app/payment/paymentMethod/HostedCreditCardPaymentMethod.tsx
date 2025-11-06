@@ -1,3 +1,4 @@
+import { createCBAMPGSPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/cba-mpgs';
 import { createCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/credit-card';
 import { createCyberSourcePaymentStrategy, createCyberSourceV2PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/cybersource';
 import { createSagePayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/sagepay';
@@ -40,6 +41,7 @@ const HostedCreditCardPaymentMethod: FunctionComponent<
                         createCyberSourcePaymentStrategy,
                         createCyberSourceV2PaymentStrategy,
                         createSagePayPaymentStrategy,
+                        createCBAMPGSPaymentStrategy,
                     ],
                     creditCard: getHostedFormOptions && {
                         form: await getHostedFormOptions(selectedInstrument),
