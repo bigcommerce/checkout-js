@@ -9,8 +9,11 @@ import { noop } from 'lodash';
 import React, { act, type FunctionComponent } from 'react';
 
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
-import { type AnalyticsContextProps, type AnalyticsEvents ,
+import {
+    type AnalyticsContextProps,
+    type AnalyticsEvents,
     AnalyticsProviderMock,
+    CheckoutProvider,
     ExtensionProvider,
     type ExtensionServiceInterface,
     LocaleProvider,
@@ -19,7 +22,6 @@ import { type AnalyticsContextProps, type AnalyticsEvents ,
 import { getLanguageService } from '@bigcommerce/checkout/locale';
 import {
     CHECKOUT_ROOT_NODE_ID,
-    CheckoutProvider,
 } from '@bigcommerce/checkout/payment-integration-api';
 import {
     CheckoutPageNodeObject,

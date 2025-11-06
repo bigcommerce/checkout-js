@@ -6,9 +6,8 @@ import {
 import { createBoltCustomerStrategy } from '@bigcommerce/checkout-sdk/integrations/bolt';
 import React, { type FunctionComponent } from 'react';
 
-import { AnalyticsProviderMock, LocaleProvider } from '@bigcommerce/checkout/contexts';
+import { AnalyticsProviderMock, CheckoutProvider, LocaleProvider } from '@bigcommerce/checkout/contexts';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
-import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { render } from '@bigcommerce/checkout/test-utils';
 
 import { getCheckout } from '../../checkout/checkouts.mock';

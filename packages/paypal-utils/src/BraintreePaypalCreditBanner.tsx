@@ -1,7 +1,7 @@
 import { createBraintreePaypalPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
 import React, { type FunctionComponent, useEffect } from 'react';
 
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 
 interface BraintreePaypalCreditBannerProps {
     methodId: string;

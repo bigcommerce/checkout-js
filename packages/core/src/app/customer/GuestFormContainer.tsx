@@ -1,8 +1,9 @@
 import { type Cart } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
-import { PaymentMethodId, useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
 import { isPayPalFastlaneMethod } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 import type CheckoutStepStatus from '../checkout/CheckoutStepStatus';
@@ -85,7 +86,7 @@ export const GuestFormContainer: React.FC<GuestFormContainerProps> = ({
     } = config;
 
     const customCheckoutProvider = getProviderWithCustomCheckout(providerWithCustomCheckout);
-    
+
     const checkoutButtons = isWalletButtonsOnTop || !isPaymentDataRequired()
         ? null
         : <CheckoutButtonList
@@ -117,7 +118,7 @@ export const GuestFormContainer: React.FC<GuestFormContainerProps> = ({
             step={step}
         />;
     }
-    
+
     return <GuestForm
         canSubscribe={canSubscribe}
         checkoutButtons={checkoutButtons}

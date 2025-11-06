@@ -8,10 +8,9 @@ import { merge, noop } from 'lodash';
 import React from 'react';
 import '@testing-library/jest-dom';
 
-import { LocaleContext } from '@bigcommerce/checkout/contexts';
+import { CheckoutContext, LocaleContext } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import {
-    CheckoutContext,
     PaymentFormContext,
     type PaymentFormService,
 } from '@bigcommerce/checkout/payment-integration-api';

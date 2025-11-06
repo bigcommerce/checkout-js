@@ -1,4 +1,4 @@
-import { type CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
 
 import { EMPTY_ARRAY } from '../common/utility';
 

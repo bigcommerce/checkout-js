@@ -1,11 +1,11 @@
 import { render } from '@testing-library/react';
 import React from 'react';
 
+import { useCheckout } from '@bigcommerce/checkout/contexts';
+
 import { CaptureMessageComponent } from './CaptureMessageComponent';
 
-import { useCheckout } from './';
-
-jest.mock('./', () => ({
+jest.mock('@bigcommerce/checkout/contexts', () => ({
     useCheckout: jest.fn(),
 }));
 

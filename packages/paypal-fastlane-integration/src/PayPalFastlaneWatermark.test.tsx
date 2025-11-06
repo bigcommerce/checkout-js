@@ -6,7 +6,7 @@ import {
 import { render, screen } from '@testing-library/react';
 import React, { type FunctionComponent } from 'react';
 
-import { CheckoutContext, CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { CheckoutContext, CheckoutProvider } from '@bigcommerce/checkout/contexts';
 import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
 import isFastlaneHostWindow from './is-fastlane-window';

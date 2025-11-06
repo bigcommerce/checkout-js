@@ -2,8 +2,7 @@ import { type PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { find, get, noop } from 'lodash';
 import React, { type FunctionComponent, memo, useCallback, useMemo } from 'react';
 
-import { useLocale } from '@bigcommerce/checkout/contexts';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckout , useLocale } from '@bigcommerce/checkout/contexts';
 
 import { connectFormik, type ConnectFormikProps } from '../../common/form';
 import { isMobile } from '../../common/utility';

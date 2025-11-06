@@ -1,6 +1,6 @@
 import { type ReactNode, useEffect } from 'react';
 
-import { useCheckout } from './';
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 
 interface CaptureMessageComponentProps {
     message: string;

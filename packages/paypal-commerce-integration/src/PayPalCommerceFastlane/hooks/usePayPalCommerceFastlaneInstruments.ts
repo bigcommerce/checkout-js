@@ -1,7 +1,8 @@
 import { type CardInstrument } from '@bigcommerce/checkout-sdk';
 import { useState } from 'react';
 
-import { useCheckout, usePaymentFormContext } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckout } from '@bigcommerce/checkout/contexts';
+import { usePaymentFormContext } from '@bigcommerce/checkout/payment-integration-api';
 import { isPayPalFastlaneCustomer } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 export const usePayPalCommerceFastlaneInstruments = () => {

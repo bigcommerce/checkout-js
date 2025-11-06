@@ -25,10 +25,13 @@ import each from 'jest-each';
 import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';
 
-import { LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
-import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import {
     CheckoutProvider,
+    LocaleContext,
+    type LocaleContextType,
+} from '@bigcommerce/checkout/contexts';
+import { createLocaleContext } from '@bigcommerce/checkout/locale';
+import {
     getPaymentMethodName,
     PaymentFormContext,
     type PaymentFormService,

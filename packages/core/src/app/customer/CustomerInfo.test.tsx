@@ -6,9 +6,8 @@ import {
 import userEvent from '@testing-library/user-event';
 import React, { type FunctionComponent } from 'react';
 
-import { LocaleProvider } from '@bigcommerce/checkout/contexts';
+import { CheckoutProvider , LocaleProvider } from '@bigcommerce/checkout/contexts';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
-import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getBillingAddress } from '../billing/billingAddresses.mock';

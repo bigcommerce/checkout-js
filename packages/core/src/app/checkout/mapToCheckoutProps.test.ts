@@ -5,7 +5,7 @@ import {
     type CustomError,
 } from '@bigcommerce/checkout-sdk';
 
-import { type CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
 
 import mapToCheckoutProps from './mapToCheckoutProps';
 

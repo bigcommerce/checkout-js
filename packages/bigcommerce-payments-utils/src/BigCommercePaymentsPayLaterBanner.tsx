@@ -1,7 +1,8 @@
 import { createBigCommercePaymentsPayLaterPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bigcommerce-payments';
 import React, { type FunctionComponent, useEffect } from 'react';
 
-import { PaymentMethodId, useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckout } from '@bigcommerce/checkout/contexts';
+import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
 
 const BigCommercePaymentsPayLaterBanner: FunctionComponent<{
     onUnhandledError?(error: Error): void

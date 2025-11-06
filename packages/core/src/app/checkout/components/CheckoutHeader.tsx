@@ -1,11 +1,11 @@
-import React from 'react';
 import { type PaymentMethod } from '@bigcommerce/checkout-sdk/essential';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
-import { useExtensions } from '@bigcommerce/checkout/contexts';
+import React from 'react';
+
+import { useCheckout, useExtensions } from '@bigcommerce/checkout/contexts';
 import { LoadingNotification } from '@bigcommerce/checkout/ui';
 
-import { CheckoutButtonContainer } from '../../customer';
 import { EMPTY_ARRAY } from '../../common/utility';
+import { CheckoutButtonContainer } from '../../customer';
 import { PromotionBannerList } from '../../promotion';
 import CheckoutStepType from '../CheckoutStepType';
 
@@ -28,7 +28,7 @@ export const CheckoutHeader: React.FC<CheckoutHeaderProps> = ({
 }) => {
     const { checkoutState } = useCheckout();
     const { extensionState } = useExtensions();
-    
+
     const { data } = checkoutState;
 
     const { promotions = EMPTY_ARRAY } = data.getCheckout() || {};
@@ -41,7 +41,7 @@ export const CheckoutHeader: React.FC<CheckoutHeaderProps> = ({
     const isPaymentStepActive = activeStepType
         ? activeStepType === CheckoutStepType.Payment
         : defaultStepType === CheckoutStepType.Payment;
-    
+
     return (
         <>
             <LoadingNotification isLoading={extensionState.isShowingLoadingIndicator} />

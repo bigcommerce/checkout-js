@@ -1,4 +1,3 @@
-// TODO: CHECKOUT-9429 Remove this file when refactoring contexts
 import type { BrowserOptions } from '@sentry/browser';
 
 export default interface ErrorLogger {

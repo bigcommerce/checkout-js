@@ -1,7 +1,7 @@
 import { type CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
-import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { CheckoutProvider } from '@bigcommerce/checkout/contexts';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getCheckout } from '../checkout/checkouts.mock';

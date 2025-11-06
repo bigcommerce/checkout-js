@@ -8,10 +8,8 @@ import {
 import { noop, some } from 'lodash';
 import React, { type ReactNode, useCallback, useEffect } from 'react';
 
-import {
-    type PaymentFormService,
-    useCheckout,
-} from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckout } from '@bigcommerce/checkout/contexts';
+import { type PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import normalizeWalletPaymentData from './normalizeWalletPaymentData';

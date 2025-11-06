@@ -3,9 +3,8 @@ import { type FieldProps, type FormikProps, withFormik } from 'formik';
 import React, { type FunctionComponent, memo, type ReactNode, useCallback, useEffect } from 'react';
 import { object, string } from 'yup';
 
-import { useThemeContext } from '@bigcommerce/checkout/contexts';
+import { useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 import { PayPalFastlaneWatermark } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 import { getPrivacyPolicyValidationSchema, PrivacyPolicyField } from '../privacyPolicy';

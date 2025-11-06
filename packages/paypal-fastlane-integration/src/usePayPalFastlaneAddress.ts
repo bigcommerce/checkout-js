@@ -1,4 +1,4 @@
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 
 import isPayPalFastlaneCustomer from './is-paypal-fastlane-customer';
 import isPayPalFastlaneMethod from './is-paypal-fastlane-method';

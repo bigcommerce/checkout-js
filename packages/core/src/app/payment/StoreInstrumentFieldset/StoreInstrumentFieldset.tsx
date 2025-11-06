@@ -1,7 +1,7 @@
 import React, { type FunctionComponent } from 'react';
 
+import { type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { type CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 
 import { withCheckout } from '../../checkout';
 import { connectFormik, type ConnectFormikProps } from '../../common/form';

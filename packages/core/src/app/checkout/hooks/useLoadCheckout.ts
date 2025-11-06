@@ -1,8 +1,7 @@
 import { type CheckoutInitialState } from '@bigcommerce/checkout-sdk';
 import { useEffect, useState } from 'react';
 
-import { useExtensions } from '@bigcommerce/checkout/contexts';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckout, useExtensions } from '@bigcommerce/checkout/contexts';
 
 import { yieldToMain } from '../../common/utility';
 

@@ -1,13 +1,11 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
 
-import { useExtensions } from '@bigcommerce/checkout/contexts';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckout , useExtensions } from '@bigcommerce/checkout/contexts';
 
 import { getCheckout } from '../checkouts.mock';
 
 import { useLoadCheckout } from './useLoadCheckout';
 
-jest.mock('@bigcommerce/checkout/payment-integration-api');
 jest.mock('@bigcommerce/checkout/contexts');
 
 describe('useLoadCheckout', () => {

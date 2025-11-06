@@ -9,7 +9,8 @@ import {
 import { createNoPaymentStrategy, } from '@bigcommerce/checkout-sdk/integrations/no-payment';
 import React, { type FunctionComponent, lazy, memo, Suspense } from 'react';
 
-import { CaptureMessageComponent, type CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
+import { CaptureMessageComponent } from '@bigcommerce/checkout/payment-integration-api';
 
 import { withCheckout } from '../../checkout';
 

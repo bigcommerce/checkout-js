@@ -1,9 +1,8 @@
 import classNames from 'classnames';
 import React, { type FunctionComponent, type ReactNode, useMemo, useState } from 'react';
 
-import { useThemeContext } from '@bigcommerce/checkout/contexts';
+import { useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 import { Alert, AlertType } from '@bigcommerce/checkout/ui';
 
 import { withFormikExtended } from '../common/form';

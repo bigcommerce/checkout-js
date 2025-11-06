@@ -12,11 +12,14 @@ import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';
 
 import '@testing-library/jest-dom';
-import { LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
+import {
+    CheckoutProvider,
+    LocaleContext,
+    type LocaleContextType,
+} from '@bigcommerce/checkout/contexts';
 import type { CreditCardPaymentMethodValues } from '@bigcommerce/checkout/credit-card-integration';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import {
-    CheckoutProvider,
     PaymentFormContext,
     type PaymentFormService,
     type PaymentMethodProps,
