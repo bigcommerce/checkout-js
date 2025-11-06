@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.699.1](https://github.com/bigcommerce/checkout-js/compare/v1.699.0...v1.699.1) (2025-11-06)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-9450 Fix checkoutcom missing strategy ([e115df1](https://github.com/bigcommerce/checkout-js/commit/e115df1795171488f72e4f9743b9ec5283a76d12))
+* **checkout:** CHECKOUT-9450 Fix checkoutcom missing strategy ([#2688](https://github.com/bigcommerce/checkout-js/issues/2688)) ([e4794e7](https://github.com/bigcommerce/checkout-js/commit/e4794e76fad5c99b970ba9cc5bd9161a6d650b51))
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9429 Relocate checkout context ([#2687](https://github.com/bigcommerce/checkout-js/issues/2687)) ([88cf522](https://github.com/bigcommerce/checkout-js/commit/88cf522f5c89ec283384c788f9046d8b65c13eb7))
+
 ## [1.699.0](https://github.com/bigcommerce/checkout-js/compare/v1.698.4...v1.699.0) (2025-11-05)
 
 
