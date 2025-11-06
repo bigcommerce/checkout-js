@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.699.2](https://github.com/bigcommerce/checkout-js/compare/v1.699.1...v1.699.2) (2025-11-06)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9429 Relocate paymentForm context ([#2689](https://github.com/bigcommerce/checkout-js/issues/2689)) ([6e7ec09](https://github.com/bigcommerce/checkout-js/commit/6e7ec0947da809a284839d9516a88ca814795c36))
+
 ### [1.699.1](https://github.com/bigcommerce/checkout-js/compare/v1.699.0...v1.699.1) (2025-11-06)
 
 
