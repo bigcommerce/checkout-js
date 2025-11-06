@@ -1,8 +1,7 @@
 import { type LanguageService } from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent, useCallback } from 'react';
 
-import { useLocale } from '@bigcommerce/checkout/contexts';
-import { usePaymentFormContext } from '@bigcommerce/checkout/payment-integration-api';
+import { useLocale, usePaymentFormContext } from '@bigcommerce/checkout/contexts';
 import { DynamicFormField } from '@bigcommerce/checkout/ui';
 
 import {

@@ -2,10 +2,7 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
-import {
-    PaymentFormContext,
-    type PaymentFormService,
-} from '@bigcommerce/checkout/payment-integration-api';
+import { PaymentFormContext, type PaymentFormService } from '@bigcommerce/checkout/contexts';
 import { getPaymentFormServiceMock } from '@bigcommerce/checkout/test-mocks';
 import { render } from '@bigcommerce/checkout/test-utils';
 

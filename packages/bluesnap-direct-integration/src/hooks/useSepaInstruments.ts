@@ -2,9 +2,8 @@ import { type BankInstrument, type PaymentMethod } from '@bigcommerce/checkout-s
 import { find } from 'lodash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { useCheckout } from '@bigcommerce/checkout/contexts';
+import { useCheckout, usePaymentFormContext } from '@bigcommerce/checkout/contexts';
 import { isSepaInstrument } from '@bigcommerce/checkout/instrument-utils';
-import { usePaymentFormContext } from '@bigcommerce/checkout/payment-integration-api';
 
 const useSepaInstruments = (method: PaymentMethod) => {
     const [currentInstrument, setCurrentInstrument] = useState<BankInstrument | undefined>();

@@ -2,6 +2,7 @@ import { type CardInstrument } from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent, type ReactNode } from 'react';
 import { type Omit } from 'utility-types';
 
+import { usePaymentFormContext } from '@bigcommerce/checkout/contexts';
 import {
     type HostedWidgetComponentProps,
     HostedWidgetPaymentComponent,
@@ -10,10 +11,7 @@ import {
     isInstrumentCardCodeRequiredSelector,
     isInstrumentCardNumberRequiredSelector,
 } from '@bigcommerce/checkout/instrument-utils';
-import {
-    type PaymentMethodProps,
-    usePaymentFormContext,
-} from '@bigcommerce/checkout/payment-integration-api';
+import { type PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
 import { Modal } from '@bigcommerce/checkout/ui';
 
 export enum UntrustedShippingCardVerificationType {

@@ -1,13 +1,12 @@
 import { type PaymentMethod } from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent, useEffect, useState } from 'react';
 
-import { useCheckout } from '@bigcommerce/checkout/contexts';
+import { useCheckout, usePaymentFormContext } from '@bigcommerce/checkout/contexts';
 import {
     AccountInstrumentFieldset,
     StoreInstrumentFieldset,
 } from '@bigcommerce/checkout/instrument-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { usePaymentFormContext } from '@bigcommerce/checkout/payment-integration-api';
 
 import { AccountTypes, OwnershipTypes } from '../constants';
 import useBraintreeAchInstruments from '../hooks/useBraintreeAchInstruments';

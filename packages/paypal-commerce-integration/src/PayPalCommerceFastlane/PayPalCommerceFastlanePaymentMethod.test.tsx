@@ -2,7 +2,7 @@ import { createCheckoutService, createLanguageService } from '@bigcommerce/check
 import { createPayPalCommerceFastlanePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/paypal-commerce';
 import React from 'react';
 
-import { PaymentFormProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { PaymentFormProvider } from '@bigcommerce/checkout/contexts';
 import { getPaymentFormServiceMock } from '@bigcommerce/checkout/test-mocks';
 import { render } from '@bigcommerce/checkout/test-utils';
 

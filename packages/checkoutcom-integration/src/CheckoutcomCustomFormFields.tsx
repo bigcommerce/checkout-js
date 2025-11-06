@@ -9,8 +9,8 @@ import React, {
     useState,
 } from 'react';
 
+import { PaymentFormContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { PaymentFormContext } from '@bigcommerce/checkout/payment-integration-api';
 import { CheckboxFormField, DropdownTrigger, FormField } from '@bigcommerce/checkout/ui';
 
 import TextFieldForm from './checkoutcomFieldsets/TextFieldForm';

@@ -1,8 +1,10 @@
 import { createContext, useContext } from 'react';
 
-import type PaymentMethodProps from '../../PaymentMethodProps';
+import { type PaymentFormService } from './PaymentFormServiceType';
 
-export type PaymentFormContextProps = Pick<PaymentMethodProps, 'paymentForm'>;
+export interface PaymentFormContextProps {
+    paymentForm: PaymentFormService;
+}
 
 export const PaymentFormContext = createContext<PaymentFormContextProps | undefined>(undefined);
 
