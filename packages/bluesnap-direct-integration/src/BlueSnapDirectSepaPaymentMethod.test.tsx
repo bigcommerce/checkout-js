@@ -12,12 +12,12 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';
 
-import { CheckoutContext } from '@bigcommerce/checkout/contexts';
 import {
+    CheckoutContext,
     PaymentFormContext,
     type PaymentFormService,
-    type PaymentMethodProps,
-} from '@bigcommerce/checkout/payment-integration-api';
+} from '@bigcommerce/checkout/contexts';
+import { type PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
 import {
     getCustomer,
     getGuestCustomer,

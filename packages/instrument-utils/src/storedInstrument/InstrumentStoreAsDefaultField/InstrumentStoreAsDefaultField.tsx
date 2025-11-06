@@ -1,7 +1,7 @@
 import React, { type FunctionComponent, memo, useEffect, useMemo } from 'react';
 
+import { usePaymentFormContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { usePaymentFormContext } from '@bigcommerce/checkout/payment-integration-api';
 import { CheckboxFormField } from '@bigcommerce/checkout/ui';
 
 interface InstrumentStoreAsDefaultFieldProps {

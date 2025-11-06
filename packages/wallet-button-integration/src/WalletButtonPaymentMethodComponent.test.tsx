@@ -12,13 +12,11 @@ import {
     CheckoutProvider,
     LocaleContext,
     type LocaleContextType,
-} from '@bigcommerce/checkout/contexts';
-import { createLocaleContext } from '@bigcommerce/checkout/locale';
-import {
-    getPaymentMethodName,
     PaymentFormContext,
     type PaymentFormService,
-} from '@bigcommerce/checkout/payment-integration-api';
+} from '@bigcommerce/checkout/contexts';
+import { createLocaleContext } from '@bigcommerce/checkout/locale';
+import { getPaymentMethodName } from '@bigcommerce/checkout/payment-integration-api';
 import {
     getAddress,
     getCheckout,

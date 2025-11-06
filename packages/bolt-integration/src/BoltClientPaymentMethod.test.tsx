@@ -14,11 +14,11 @@ import {
     CheckoutProvider,
     LocaleContext,
     type LocaleContextType,
+    PaymentFormContext,
+    type PaymentFormContextProps,
 } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import {
-    PaymentFormContext,
-    type PaymentFormContextProps,
     PaymentMethodId,
     type PaymentMethodProps,
 } from '@bigcommerce/checkout/payment-integration-api';

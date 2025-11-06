@@ -2,11 +2,8 @@ import { type PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { useCallback } from 'react';
 import { object, string, type StringSchema } from 'yup';
 
-import { useLocale } from '@bigcommerce/checkout/contexts';
-import {
-    type PaymentFormValues,
-    usePaymentFormContext,
-} from '@bigcommerce/checkout/payment-integration-api';
+import { useLocale, usePaymentFormContext } from '@bigcommerce/checkout/contexts';
+import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 
 import {
     BraintreeAchFieldType,

@@ -15,14 +15,12 @@ import {
     CheckoutProvider,
     LocaleContext,
     type LocaleContextType,
+    PaymentFormContext,
+    type PaymentFormService,
 } from '@bigcommerce/checkout/contexts';
 import { type CreditCardPaymentMethodValues } from '@bigcommerce/checkout/credit-card-integration';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
-import {
-    PaymentFormContext,
-    type PaymentFormService,
-    type PaymentMethodProps,
-} from '@bigcommerce/checkout/payment-integration-api';
+import { type PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
 import {
     getCart,
     getCheckout,

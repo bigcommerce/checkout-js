@@ -1,8 +1,7 @@
 import React, { type ReactNode } from 'react';
 
-import type PaymentFormService from '../../PaymentFormService';
-
 import { PaymentFormContext } from './PaymentFormContext';
+import { type PaymentFormService } from './PaymentFormServiceType';
 
 interface PaymentFormProviderProps {
     children?: ReactNode;

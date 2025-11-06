@@ -7,11 +7,11 @@ import {
 import classNames from 'classnames';
 import React, { type FunctionComponent, useCallback, useEffect, useMemo, useState } from 'react';
 
+import { usePaymentFormContext } from '@bigcommerce/checkout/contexts';
 import {
     CardInstrumentFieldset,
     StoreInstrumentFieldset,
 } from '@bigcommerce/checkout/instrument-utils';
-import { usePaymentFormContext } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 export interface SquareV2FormProps {

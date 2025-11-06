@@ -1,8 +1,8 @@
 import { type PaymentMethod } from '@bigcommerce/checkout-sdk';
 import React, { type ComponentType, lazy, Suspense } from 'react';
 
+import { PaymentFormProvider, type PaymentFormValues } from '@bigcommerce/checkout/contexts';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { PaymentFormProvider, type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { LazyContainer } from '@bigcommerce/checkout/ui';
 
 import { withCheckout, type WithCheckoutProps } from '../../checkout';

@@ -15,7 +15,6 @@ export { default as isResolvableComponent } from './isResolvableComponent';
 export { default as isEmbedded } from './isEmbedded';
 export { default as PaymentFormValues } from './PaymentFormValues';
 export { TranslateValidationErrorFunction } from './TranslateValidationErrorFunction';
-export { PaymentFormContext, PaymentFormProvider, usePaymentFormContext } from './contexts';
 export {
     CHECKOUT_ROOT_NODE_ID,
     MICRO_APP_NG_CHECKOUT_ROOT_NODE_ID,
@@ -27,4 +26,3 @@ export { CaptureMessageComponent } from './CaptureMessageComponent';
 // export types separately
 export type { CountryData } from './CountryData';
 export type { default as CreditCardFieldsetValues } from './CreditCardFieldsetValues';
-export type { PaymentFormContextProps } from './contexts/payment-form-context/PaymentFormContext';
