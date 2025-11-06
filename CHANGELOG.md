@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.700.1](https://github.com/bigcommerce/checkout-js/compare/v1.700.0...v1.700.1) (2025-11-06)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-9450 Fix cba-mpgs missing strategy ([9df762f](https://github.com/bigcommerce/checkout-js/commit/9df762fc82e5d9532375b1dd0c4098db2b46caf7))
+
 ## [1.700.0](https://github.com/bigcommerce/checkout-js/compare/v1.699.2...v1.700.0) (2025-11-06)
 
 
