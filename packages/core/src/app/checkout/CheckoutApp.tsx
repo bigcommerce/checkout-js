@@ -4,7 +4,7 @@ import React, { type ReactElement, useEffect, useMemo } from 'react';
 import ReactModal from 'react-modal';
 
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
-import { AnalyticsProvider , CheckoutProvider, ExtensionProvider, LocaleProvider, ThemeProvider } from '@bigcommerce/checkout/contexts';
+import { AnalyticsProvider, CheckoutProvider, ExtensionProvider, LocaleProvider, ThemeProvider } from '@bigcommerce/checkout/contexts';
 import { ErrorBoundary } from '@bigcommerce/checkout/error-handling-utils';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
 

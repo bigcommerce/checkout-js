@@ -4,6 +4,7 @@ import {
     type LegacyHostedFormOptions,
 } from '@bigcommerce/checkout-sdk';
 import { createBlueSnapDirectCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bluesnap-direct';
+import { createCheckoutComCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/checkoutcom-custom';
 import { createCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/credit-card';
 import { createTDOnlineMartPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/td-bank';
 import { compact, forIn } from 'lodash';
@@ -26,7 +27,6 @@ import { getHostedCreditCardValidationSchema } from './getHostedCreditCardValida
 import { getHostedInstrumentValidationSchema } from './getHostedInstrumentValidationSchema';
 import { HostedCreditCardFieldset } from './HostedCreditCardFieldset';
 import { HostedCreditCardValidation } from './HostedCreditCardValidation';
-import { createCheckoutComCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/checkoutcom-custom';
 
 export interface HostedCreditCardComponentProps extends PaymentMethodProps {
     initializePayment?: CheckoutService['initializePayment'];
