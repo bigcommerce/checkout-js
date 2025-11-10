@@ -4,7 +4,7 @@ import { noop } from 'lodash';
 import React, { type FunctionComponent, memo, useCallback } from 'react';
 import { object, string } from 'yup';
 
-import { useCheckout , useThemeContext } from '@bigcommerce/checkout/contexts';
+import { useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import {
     TranslatedHtml,

@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
-import { CheckoutProvider, ExtensionProvider , LocaleContext } from '@bigcommerce/checkout/contexts';
+import { CheckoutProvider, ExtensionProvider, LocaleContext } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 

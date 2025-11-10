@@ -8,7 +8,7 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
-import { CheckoutProvider, ExtensionProvider ,type ExtensionServiceInterface , LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
+import { CheckoutProvider, ExtensionProvider ,type ExtensionServiceInterface, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { render, screen, waitFor, within } from '@bigcommerce/checkout/test-utils';
 

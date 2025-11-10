@@ -6,7 +6,7 @@ import {
 import userEvent from '@testing-library/user-event';
 import React, { type FunctionComponent } from 'react';
 
-import { CheckoutProvider , LocaleProvider } from '@bigcommerce/checkout/contexts';
+import { CheckoutProvider, LocaleProvider } from '@bigcommerce/checkout/contexts';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 

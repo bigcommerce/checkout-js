@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';
 
-import { type CheckoutContextProps , useThemeContext } from '@bigcommerce/checkout/contexts';
+import { type CheckoutContextProps, useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import { withCheckout } from '../checkout';

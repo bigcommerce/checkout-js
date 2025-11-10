@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
-import { CheckoutProvider, LocaleContext , type LocaleContextType } from '@bigcommerce/checkout/contexts';
+import { CheckoutProvider, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 

@@ -110,7 +110,7 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
 
     const handleStripeShippingAddress = useCallback(async (shipping: StripeShippingEvent) => {
         const { complete, phoneFieldRequired, value: { address = { country: '', state: '', line1: '', line2: '', city: '', postal_code: '' }
-            , name = '', firstName = '', lastName = '', phone = '' } } = shipping;
+           , name = '', firstName = '', lastName = '', phone = '' } } = shipping;
 
         if (complete) {
             if (shouldShowContent(shipping?.isNewAddress, phoneFieldRequired, phone)) {

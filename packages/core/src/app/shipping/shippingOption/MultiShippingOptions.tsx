@@ -2,7 +2,7 @@ import { type Consignment } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import React from 'react';
 
-import { useCheckout , useThemeContext } from '@bigcommerce/checkout/contexts';
+import { useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { Alert, AlertType } from '@bigcommerce/checkout/ui';
 

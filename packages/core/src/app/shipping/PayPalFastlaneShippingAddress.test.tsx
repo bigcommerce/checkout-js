@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
-import { CheckoutContext, LocaleContext , type LocaleContextType, ThemeProvider } from '@bigcommerce/checkout/contexts';
+import { CheckoutContext, LocaleContext, type LocaleContextType, ThemeProvider } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { getAddress, getCustomer } from '@bigcommerce/checkout/test-mocks';
