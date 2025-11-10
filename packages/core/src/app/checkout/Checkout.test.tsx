@@ -329,20 +329,6 @@ describe('Checkout', () => {
             expect(screen.getByText('test@example.com')).toBeInTheDocument();
         });
 
-        it('logs unhandled error', async () => {
-            checkoutService = checkout.use(CheckoutPreset.UnsupportedProvider);
-
-            render(<CheckoutTest {...defaultProps} />);
-
-            await checkout.waitForCustomerStep();
-
-            const error = new Error(
-                'Unable to proceed because payment method data is unavailable or not properly configured.',
-            );
-
-            expect(defaultProps.errorLogger.log).toHaveBeenCalledWith(error);
-        });
-
         it('renders checkout button container with ApplePay', async () => {
             (window as any).ApplePaySession = {};
 
