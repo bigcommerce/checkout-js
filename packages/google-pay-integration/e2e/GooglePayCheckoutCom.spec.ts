@@ -1,12 +1,12 @@
 import { CustomerStepPreset, test } from '@bigcommerce/checkout/test-framework';
 
 import {
+    checkoutcomPaymentListing,
+    checkoutcomPaymentMethod,
     checkoutOrder,
-    googlePay,
     internalOrder,
     order222,
     orderPayment,
-    payment,
 } from './GooglePayMockingResponses';
 
 test.describe('Google Pay CheckoutCom', () => {
@@ -43,13 +43,13 @@ test.describe('Google Pay CheckoutCom', () => {
         );
 
         await page.route(/.*\/api\/storefront\/payments\?cartId=.*/, (route) => {
-            void route.fulfill({ ...responseProps, body: payment });
+            void route.fulfill({ ...responseProps, body: checkoutcomPaymentListing });
         });
 
         await page.route(
             /.*\/api\/storefront\/payments\/googlepaycheckoutcom\?cartId=.*/,
             (route) => {
-                void route.fulfill({ ...responseProps, body: googlePay });
+                void route.fulfill({ ...responseProps, body: checkoutcomPaymentMethod });
             },
         );
 
