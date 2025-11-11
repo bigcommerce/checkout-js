@@ -273,8 +273,8 @@ class Checkout extends Component<
     }
 
     render(): ReactNode {
-        const { error, isRedirecting } = this.state;
-        const { themeV2, language } = this.props;
+        const { activeStepType, defaultStepType, error, isCartEmpty, isMultiShippingMode, isRedirecting } = this.state;
+        const { isPending, language, loginUrl, steps, themeV2 } = this.props;
 
         if(isRedirecting){
             return <OrderConfirmationPageSkeleton />;
@@ -305,56 +305,48 @@ class Checkout extends Component<
         return (
             <div className={classNames('remove-checkout-step-numbers', { 'is-embedded': isEmbedded() }, { 'themeV2': themeV2 })} data-test="checkout-page-container" id="checkout-page-container">
                 <div className="layout optimizedCheckout-contentPrimary">
-                    {this.renderContent()}
+                    {isCartEmpty ?
+                        <EmptyCartMessage loginUrl={loginUrl} waitInterval={3000} />
+                        :<>
+                            <div className="layout-main">
+                                <CheckoutHeader
+                                    activeStepType={activeStepType}
+                                    buttonConfigs={this.state.buttonConfigs}
+                                    checkEmbeddedSupport={this.checkEmbeddedSupport}
+                                    defaultStepType={defaultStepType}
+                                    onUnhandledError={this.handleUnhandledError}
+                                    onWalletButtonClick={this.handleWalletButtonClick}
+                                />
+
+                                <ol className="checkout-steps">
+                                    {steps
+                                        .filter((step) => step.isRequired)
+                                        .map((step) =>
+                                            this.renderStep({
+                                                ...step,
+                                                isActive: activeStepType
+                                                    ? activeStepType === step.type
+                                                    : defaultStepType === step.type,
+                                                isBusy: isPending,
+                                            }),
+                                        )}
+                                </ol>
+                            </div>
+                        </>
+                    }
+                    <CartSummary isMultiShippingMode={isMultiShippingMode} />
                 </div>
                 {errorModal}
             </div>
         );
     }
 
-    private renderContent(): ReactNode {
-        const { isPending, loginUrl, steps } = this.props;
-
-        const { activeStepType, defaultStepType, isCartEmpty, isMultiShippingMode } = this.state;
-
-        if (isCartEmpty) {
-            return <EmptyCartMessage loginUrl={loginUrl} waitInterval={3000} />;
-        }
-
-        return (
-            <>
-                <div className="layout-main">
-                    <CheckoutHeader
-                        activeStepType={activeStepType}
-                        buttonConfigs={this.state.buttonConfigs}
-                        checkEmbeddedSupport={this.checkEmbeddedSupport}
-                        defaultStepType={defaultStepType}
-                        onUnhandledError={this.handleUnhandledError}
-                        onWalletButtonClick={this.handleWalletButtonClick}
-                    />
-
-                    <ol className="checkout-steps">
-                        {steps
-                            .filter((step) => step.isRequired)
-                            .map((step) =>
-                                this.renderStep({
-                                    ...step,
-                                    isActive: activeStepType
-                                        ? activeStepType === step.type
-                                        : defaultStepType === step.type,
-                                    isBusy: isPending,
-                                }),
-                            )}
-                    </ol>
-                </div>
-                <CartSummary isMultiShippingMode={isMultiShippingMode} />
-            </>
-        );
-    }
-
     private renderStep(step: CheckoutStepStatus): ReactNode {
         switch (step.type) {
             case CheckoutStepType.Customer:
+                // replace the method below with a component
+                // the component should have `steps.find((step.type === CheckoutStepType.Customer` as a prop.
+                // the goal is to remove L322 to L332
                 return this.renderCustomerStep(step);
 
             case CheckoutStepType.Shipping:
