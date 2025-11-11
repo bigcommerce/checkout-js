@@ -29,7 +29,6 @@ import {
 import { navigateToOrderConfirmation } from '@bigcommerce/checkout/utility';
 
 import { withAnalytics } from '../analytics';
-import { StaticBillingAddress } from '../billing';
 import { EmptyCartMessage } from '../cart';
 import { withCheckout } from '../checkout';
 import { CustomError, ErrorModal, isCustomError, isErrorWithType } from '../common/error';
@@ -50,19 +49,9 @@ import CheckoutStep from './CheckoutStep';
 import type CheckoutStepStatus from './CheckoutStepStatus';
 import CheckoutStepType from './CheckoutStepType';
 import type CheckoutSupport from './CheckoutSupport';
-import { CartSummary, CheckoutHeader } from './components';
+import { BillingStep, CartSummary, CheckoutHeader } from './components';
 import { mapCheckoutComponentErrorMessage } from './mapErrorMessage';
 import mapToCheckoutProps from './mapToCheckoutProps';
-
-const Billing = lazy(() =>
-    retry(
-        () =>
-            import(
-                /* webpackChunkName: "billing" */
-                '../billing/Billing'
-                ),
-    ),
-);
 
 const Payment = lazy(() =>
     retry(
@@ -342,10 +331,12 @@ class Checkout extends Component<
     }
 
     private renderStep(step: CheckoutStepStatus): ReactNode {
+        const { billingAddress } = this.props;
+
         switch (step.type) {
             case CheckoutStepType.Customer:
                 // replace the method below with a component
-                // the component should have `steps.find((step.type === CheckoutStepType.Customer` as a prop.
+                // the component should have `step` as a prop.
                 // the goal is to remove L322 to L332
                 return this.renderCustomerStep(step);
 
@@ -353,7 +344,15 @@ class Checkout extends Component<
                 return this.renderShippingStep(step);
 
             case CheckoutStepType.Billing:
-                return this.renderBillingStep(step);
+                return <BillingStep
+                    billingAddress={billingAddress}
+                    navigateNextStep={this.navigateToNextIncompleteStep}
+                    onEdit={this.handleEditStep}
+                    onExpanded={this.handleExpanded}
+                    onReady={this.handleReady}
+                    onUnhandledError={this.handleUnhandledError}
+                    step={step}
+                />;
 
             case CheckoutStepType.Payment:
                 return this.renderPaymentStep(step);
@@ -443,29 +442,6 @@ class Checkout extends Component<
                         onUnhandledError={this.handleUnhandledError}
                         setIsMultishippingMode={setIsMultishippingMode}
                         step={step}
-                    />
-                </LazyContainer>
-            </CheckoutStep>
-        );
-    }
-
-    private renderBillingStep(step: CheckoutStepStatus): ReactNode {
-        const { billingAddress } = this.props;
-
-        return (
-            <CheckoutStep
-                {...step}
-                heading={<TranslatedString id="billing.billing_heading" />}
-                key={step.type}
-                onEdit={this.handleEditStep}
-                onExpanded={this.handleExpanded}
-                summary={billingAddress && <StaticBillingAddress address={billingAddress} />}
-            >
-                <LazyContainer loadingSkeleton={<AddressFormSkeleton />}>
-                    <Billing
-                        navigateNextStep={this.navigateToNextIncompleteStep}
-                        onReady={this.handleReady}
-                        onUnhandledError={this.handleUnhandledError}
                     />
                 </LazyContainer>
             </CheckoutStep>
