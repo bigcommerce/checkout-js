@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.701.1](https://github.com/bigcommerce/checkout-js/compare/v1.701.0...v1.701.1) (2025-11-11)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9657 Remove renderContent method ([#2696](https://github.com/bigcommerce/checkout-js/issues/2696)) ([55d2cb5](https://github.com/bigcommerce/checkout-js/commit/55d2cb583d5015ad40c406e26b7eb4fe626a7059))
+
 ## [1.701.0](https://github.com/bigcommerce/checkout-js/compare/v1.700.1...v1.701.0) (2025-11-11)
 
 
