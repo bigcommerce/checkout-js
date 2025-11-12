@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.701.4](https://github.com/bigcommerce/checkout-js/compare/v1.701.3...v1.701.4) (2025-11-12)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9657 Create PaymentStep ([#2700](https://github.com/bigcommerce/checkout-js/issues/2700)) ([4da656d](https://github.com/bigcommerce/checkout-js/commit/4da656dde21c85a5395f893e293a8122eef8b6b1))
+
 ### [1.701.3](https://github.com/bigcommerce/checkout-js/compare/v1.701.2...v1.701.3) (2025-11-12)
 
 
