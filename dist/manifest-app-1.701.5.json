@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "appVersion": "1.701.4",
+  "appVersion": "1.701.5",
   "dynamicChunks": {
     "js": [
       "1084-21332daf.js",
@@ -115,7 +115,7 @@
     "runtime-66dfddd9.js",
     "transients-12dc353b.js",
     "vendor-initial-18e15601.js",
-    "checkout-d84448ee.js"
+    "checkout-8406bf5d.js"
   ],
   "css": [
     "checkout-451530f4.css"
@@ -162,7 +162,7 @@
     "cart-summary-00527814.js": "sha256-0BqiSdZEzOpxy0w74lYDVpKYyDSeTcgxbrv/gjUuB/U= sha384-4B5Z1aDlJLNoJtZPS3//5iGpSBC6wmog9YAmf48S0SdYO8QVCkGK833jpHa70k1p sha512-PEoveWZ6rm3L3nKeq2dBOEaRA17fikbARL86zIBEyfH44ByBYDwn9SYtlrhlf8oxZPQggJyd9JLdFoNp5OcjPA==",
     "checkout-button-4d7aa64b.js": "sha256-LIPBjuXhUI+Fqs+eBCpO1FBRncJ3hrh3XIICY55wSDc= sha384-SwirK1t6oUasbzyre0qooJJLrTQqq7p3jvTEhkQsAHKPU9k/+macvApmUveCLcj8 sha512-tKIBa89djAKWYAen/JLN6ZJFDNZNK7DRUyzliww0hvIRC9zUE7V0SK7MVD3KJAghNHXU5NZRxMXpMNmRAPhzRQ==",
     "checkout-451530f4.css": "sha256-bF6kosqW7+0Ym5zzv2QnxoYifTt3/0fOdtw5zoTFmb8= sha384-Ghy4avHagGHpx4kT3RBDmopKqyutiic4fDa28sTA4nRkT6ayW160AVqxE1ZVDmYa sha512-6++3xgflyCcgJpjvwziBitMr8O8XSNRB4U6GA1qBmjgt3gkYe8lEpo6S8TNMiBbOXjd0N+/QinPA3ZBLQMO0dQ==",
-    "checkout-d84448ee.js": "sha256-YEQSE+f2snqxzyNz5+iB5UEQy5ktbSD7qk/1YsQ61Vk= sha384-WYqBkLFWHDWpKr6g5Bp/5eF2wOjHvQT7OVH3PcmcQLZh1NX/P6ip90Kzzd7yeQnP sha512-2N1qMUeyZr6hGyZeBCiDYA8yQbj9PQyvjXMr+CRopiO77geMqeDj+e/8u5zLTcLbKZFKdjBM635RM1uz1gYzFQ==",
+    "checkout-8406bf5d.js": "sha256-4C5Mj5b/xGeXu2BUajaqeclkYKWVcmcQZkrVyV2N0X4= sha384-NXcmg+OpanCRE8Sz5AbfqBD5QDHcA3pSFKvIKbrwYFbXCnvYiTWEh5pzVTJuzi0g sha512-NN32S8XyL+uDH3COCPSUagirBhfK/44bThIjyO0Cj1DQ2GSwFTZok8cp4TwV1n19WVrSFVJv9ZDEXfNDFmJ6GQ==",
     "checkoutcom-custom-payment-method-21ba1791.css": "sha256-OwjgrptbccEF3PPYfeZ3fTl0akJter+SxoKnP0zIue4= sha384-nEYSyTqeAGP7gacTSjggQ4+V2YCPp6gHy1d9SznpAvNfQFjqRqapLs50n9qebV71 sha512-6OwJvcfBpuf4I/6ysyBeG6d2Ld171HNE04s5NranrKEUANW2sp0w3cd4nQeGw4iuYyGdln0PwBixQfrVEY22cg==",
     "checkoutcom-custom-payment-method-94a5527b.js": "sha256-nLYQ41lW+5n28AunvtwR1fJdnk4Ej5BnN1W6iDaIRmI= sha384-Xm0DNo7+YHz3SdA/a2YeaeHJfcao/fp96tJeeBMKcaVrV+eFn3Ta3cTpSIH14pzW sha512-zgongBVOJmodKFiVNYy584ehAGtel4HNJJyXF2Xwl4tnwabrTkmIQjjrOVuGyzkQdAcJGE1wqcUWAMlvdXgElA==",
     "clearpay-payment-method-37470981.js": "sha256-aYskGA4SL3li2Wudj2zwZOMZwb56v21s99ferK4C6Mk= sha384-y5ca+U5+ztJR6uvhsid9KsT9ua1Y/FTQi/G8D88A/QJ9Ip3eMsv7AZgw4Gjy2B6C sha512-SmS5wHMnAncGxkgcudb4BCRXU46oMmJQPLYnaaSL7/COToGlm8xjQ6wISNeu8CQvPFr5ozMLGwtTdQkeskuYHQ==",

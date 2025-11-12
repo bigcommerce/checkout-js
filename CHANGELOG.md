@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.701.5](https://github.com/bigcommerce/checkout-js/compare/v1.701.4...v1.701.5) (2025-11-12)
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-6050 add header Wallet buttons on top of checkout page ([#2699](https://github.com/bigcommerce/checkout-js/issues/2699)) ([89e2a25](https://github.com/bigcommerce/checkout-js/commit/89e2a25dd5420895a8b9fb7c5eac600cf13ed3b9))
+
 ### [1.701.4](https://github.com/bigcommerce/checkout-js/compare/v1.701.3...v1.701.4) (2025-11-12)
 
 
