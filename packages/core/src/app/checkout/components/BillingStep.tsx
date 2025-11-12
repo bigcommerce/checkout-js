@@ -4,7 +4,7 @@ import React, { lazy } from 'react';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { AddressFormSkeleton, LazyContainer } from '@bigcommerce/checkout/ui';
 
-import { StaticBillingAddress } from '../../billing';
+import { type BillingProps, StaticBillingAddress } from '../../billing';
 import { retry } from '../../common/utility';
 import CheckoutStep from '../CheckoutStep';
 import type CheckoutStepStatus from '../CheckoutStepStatus';
@@ -20,14 +20,11 @@ const Billing = lazy(() =>
     ),
 );
 
-export interface BillingStepProps {
+export interface BillingStepProps extends BillingProps{
     step: CheckoutStepStatus;
     billingAddress?: Address;
     onEdit(type: CheckoutStepType): void;
     onExpanded(type: CheckoutStepType): void;
-    navigateNextStep(options?: { isDefault?: boolean }): void;
-    onReady(): void;
-    onUnhandledError(error: Error): void;
 }
 
 const BillingStep: React.FC<BillingStepProps> = ({

@@ -11,7 +11,7 @@ import { Legend } from '../ui/form';
 import BillingForm, { type BillingFormValues } from './BillingForm';
 import getBillingMethodId from './getBillingMethodId';
 
-interface BillingProps {
+export interface BillingProps {
     navigateNextStep(): void;
     onReady(): void;
     onUnhandledError(error: Error): void;
