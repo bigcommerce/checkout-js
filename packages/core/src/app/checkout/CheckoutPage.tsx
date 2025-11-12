@@ -22,7 +22,6 @@ import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import {
     AddressFormSkeleton,
-    ChecklistSkeleton,
     LazyContainer,
     OrderConfirmationPageSkeleton
 } from '@bigcommerce/checkout/ui';
@@ -49,19 +48,9 @@ import CheckoutStep from './CheckoutStep';
 import type CheckoutStepStatus from './CheckoutStepStatus';
 import CheckoutStepType from './CheckoutStepType';
 import type CheckoutSupport from './CheckoutSupport';
-import { BillingStep, CartSummary, CheckoutHeader } from './components';
+import { BillingStep, CartSummary, CheckoutHeader, PaymentStep } from './components';
 import { mapCheckoutComponentErrorMessage } from './mapErrorMessage';
 import mapToCheckoutProps from './mapToCheckoutProps';
-
-const Payment = lazy(() =>
-    retry(
-        () =>
-            import(
-                /* webpackChunkName: "payment" */
-                '../payment/Payment'
-                ),
-    ),
-);
 
 const Shipping = lazy(() =>
     retry(
@@ -331,7 +320,7 @@ class Checkout extends Component<
     }
 
     private renderStep(step: CheckoutStepStatus): ReactNode {
-        const { billingAddress } = this.props;
+        const { billingAddress, consignments, cart, errorLogger } = this.props;
 
         switch (step.type) {
             case CheckoutStepType.Customer:
@@ -355,7 +344,27 @@ class Checkout extends Component<
                 />;
 
             case CheckoutStepType.Payment:
-                return this.renderPaymentStep(step);
+                return <PaymentStep
+                    cart={cart}
+                    checkEmbeddedSupport={this.checkEmbeddedSupport}
+                    consignments={consignments}
+                    errorLogger={errorLogger}
+                    isEmbedded={isEmbedded()}
+                    isUsingMultiShipping={
+                        cart && consignments
+                            ? isUsingMultiShipping(consignments, cart.lineItems)
+                            : false
+                    }
+                    onCartChangedError={this.handleCartChangedError}
+                    onEdit={this.handleEditStep}
+                    onExpanded={this.handleExpanded}
+                    onFinalize={this.navigateToOrderConfirmation}
+                    onReady={this.handleReady}
+                    onSubmit={this.navigateToOrderConfirmation}
+                    onSubmitError={this.handleError}
+                    onUnhandledError={this.handleUnhandledError}
+                    step={step}
+                />
 
             default:
                 return null;
@@ -442,39 +451,6 @@ class Checkout extends Component<
                         onUnhandledError={this.handleUnhandledError}
                         setIsMultishippingMode={setIsMultishippingMode}
                         step={step}
-                    />
-                </LazyContainer>
-            </CheckoutStep>
-        );
-    }
-
-    private renderPaymentStep(step: CheckoutStepStatus): ReactNode {
-        const { consignments, cart, errorLogger } = this.props;
-
-        return (
-            <CheckoutStep
-                {...step}
-                heading={<TranslatedString id="payment.payment_heading" />}
-                key={step.type}
-                onEdit={this.handleEditStep}
-                onExpanded={this.handleExpanded}
-            >
-                <LazyContainer loadingSkeleton={<ChecklistSkeleton />}>
-                    <Payment
-                        checkEmbeddedSupport={this.checkEmbeddedSupport}
-                        errorLogger={errorLogger}
-                        isEmbedded={isEmbedded()}
-                        isUsingMultiShipping={
-                            cart && consignments
-                                ? isUsingMultiShipping(consignments, cart.lineItems)
-                                : false
-                        }
-                        onCartChangedError={this.handleCartChangedError}
-                        onFinalize={this.navigateToOrderConfirmation}
-                        onReady={this.handleReady}
-                        onSubmit={this.navigateToOrderConfirmation}
-                        onSubmitError={this.handleError}
-                        onUnhandledError={this.handleUnhandledError}
                     />
                 </LazyContainer>
             </CheckoutStep>
