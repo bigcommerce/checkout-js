@@ -281,37 +281,10 @@ describe('getCheckoutStepStatuses()', () => {
             it('should be editable if experiment is on', () => {
                 jest.spyOn(state.data, 'getCheckout').mockReturnValue(getCheckoutWithPayments('googlepaystripe'));
                 jest.spyOn(state.data, 'getBillingAddress').mockReturnValue(getBillingAddress());
-                jest.spyOn(state.data, 'getConfig').mockReturnValue({
-                    ...getStoreConfig(),
-                    checkoutSettings: {
-                        ...getStoreConfig().checkoutSettings,
-                        features: {
-                            'STRIPE-546.allow_billing_address_editing_for_all_Google_Pay_providers': true,
-                        }
-                    }
-                });
 
                 const steps = getCheckoutStepStatuses(state);
 
                 expect(find(steps, { type: CheckoutStepType.Billing })!.isEditable).toBe(true);
-            });
-
-            it('should NOT be editable if experiment is off', () => {
-                jest.spyOn(state.data, 'getCheckout').mockReturnValue(getCheckoutWithPayments('googlepaystripe'));
-                jest.spyOn(state.data, 'getBillingAddress').mockReturnValue(getBillingAddress());
-                jest.spyOn(state.data, 'getConfig').mockReturnValue({
-                    ...getStoreConfig(),
-                    checkoutSettings: {
-                        ...getStoreConfig().checkoutSettings,
-                        features: {
-                            'STRIPE-546.allow_billing_address_editing_for_all_Google_Pay_providers': false,
-                        }
-                    }
-                });
-
-                const steps = getCheckoutStepStatuses(state);
-
-                expect(find(steps, { type: CheckoutStepType.Billing })!.isEditable).toBe(false);
             });
         })
     });
