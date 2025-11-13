@@ -1,5 +1,6 @@
 import { type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import { createAfterpayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/afterpay';
+import { createClearpayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/clearpay';
 import { createSezzlePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/sezzle';
 import { createZipPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/zip';
 import React, { type FunctionComponent } from 'react';
@@ -27,6 +28,7 @@ const HostedPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                 createZipPaymentStrategy,
                 createAfterpayPaymentStrategy,
                 createSezzlePaymentStrategy,
+                createClearpayPaymentStrategy,
             ],
         });
     };
@@ -47,5 +49,11 @@ const HostedPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
 export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>(
     HostedPaymentMethod,
-    [{ gateway: 'afterpay' }, { id: 'quadpay' }, { id: 'sezzle' }, { id: 'zip' }],
+    [
+        { gateway: 'afterpay' },
+        { gateway: 'clearpay' },
+        { id: 'quadpay' },
+        { id: 'sezzle' },
+        { id: 'zip' },
+    ],
 );
