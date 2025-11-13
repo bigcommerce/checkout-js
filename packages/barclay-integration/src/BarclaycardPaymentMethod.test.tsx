@@ -27,6 +27,7 @@ import {
 } from '@bigcommerce/checkout/test-mocks';
 
 import BarclaycardPaymentMethod from './BarclaycardPaymentMethod';
+import { createOffsitePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/offsite';
 
 describe('When using Barclaycard Payment Method', () => {
     let checkoutService: CheckoutService;
@@ -44,6 +45,7 @@ describe('When using Barclaycard Payment Method', () => {
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
         jest.spyOn(checkoutState.data, 'getCart').mockReturnValue(getCart());
         jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
+        jest.spyOn(checkoutService, 'initializePayment').mockResolvedValue(checkoutState);
         jest.spyOn(checkoutService, 'deinitializePayment').mockResolvedValue(checkoutState);
 
         localeContext = createLocaleContext(getStoreConfig());
@@ -83,5 +85,15 @@ describe('When using Barclaycard Payment Method', () => {
         const view = render(<PaymentMethodTest />);
 
         expect(view).toMatchSnapshot();
+    });
+
+    it('should initialize Barclaycard PaymentMethod', () => {
+        render(<PaymentMethodTest />);
+
+        expect(checkoutService.initializePayment).toHaveBeenCalledWith({
+            gatewayId: '',
+            methodId: 'barclaycard',
+            integrations: [createOffsitePaymentStrategy],
+        });
     });
 });
