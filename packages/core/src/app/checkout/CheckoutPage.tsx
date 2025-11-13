@@ -15,62 +15,34 @@ import {
 } from '@bigcommerce/checkout-sdk/essential';
 import classNames from 'classnames';
 import { find, findIndex } from 'lodash';
-import React, { Component, lazy, type ReactNode } from 'react';
+import React, { Component, type ReactNode } from 'react';
 
 import { type AnalyticsContextProps, type ExtensionContextProps, withExtension } from '@bigcommerce/checkout/contexts';
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
-import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
-import {
-    AddressFormSkeleton,
-    LazyContainer,
-    OrderConfirmationPageSkeleton
-} from '@bigcommerce/checkout/ui';
+import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { OrderConfirmationPageSkeleton } from '@bigcommerce/checkout/ui';
 import { navigateToOrderConfirmation } from '@bigcommerce/checkout/utility';
 
 import { withAnalytics } from '../analytics';
 import { EmptyCartMessage } from '../cart';
 import { withCheckout } from '../checkout';
 import { CustomError, ErrorModal, isCustomError, isErrorWithType } from '../common/error';
-import { retry } from '../common/utility';
 import {
-    CheckoutSuggestion,
-    CustomerInfo,
     type CustomerSignOutEvent,
     CustomerViewType,
 } from '../customer';
 import { getSupportedMethodIds } from '../customer/getSupportedMethods';
 import { SubscribeSessionStorage } from '../customer/SubscribeSessionStorage';
 import { type EmbeddedCheckoutStylesheet, isEmbedded } from '../embeddedCheckout';
-import { hasSelectedShippingOptions, isUsingMultiShipping, ShippingSummary } from '../shipping';
+import { hasSelectedShippingOptions, isUsingMultiShipping } from '../shipping';
 import { ShippingOptionExpiredError } from '../shipping/shippingOption';
 
-import CheckoutStep from './CheckoutStep';
 import type CheckoutStepStatus from './CheckoutStepStatus';
 import CheckoutStepType from './CheckoutStepType';
 import type CheckoutSupport from './CheckoutSupport';
-import { BillingStep, CartSummary, CheckoutHeader, PaymentStep } from './components';
+import { BillingStep, CartSummary, CheckoutHeader, CustomerStep, PaymentStep, ShippingStep } from './components';
 import { mapCheckoutComponentErrorMessage } from './mapErrorMessage';
 import mapToCheckoutProps from './mapToCheckoutProps';
-
-const Shipping = lazy(() =>
-    retry(
-        () =>
-            import(
-                /* webpackChunkName: "shipping" */
-                '../shipping/Shipping'
-                ),
-    ),
-);
-
-const Customer = lazy(() =>
-    retry(
-        () =>
-            import(
-                /* webpackChunkName: "customer" */
-                '../customer/Customer'
-                ),
-    ),
-);
 
 export interface CheckoutProps {
     checkoutId: string;
@@ -320,17 +292,59 @@ class Checkout extends Component<
     }
 
     private renderStep(step: CheckoutStepStatus): ReactNode {
-        const { billingAddress, consignments, cart, errorLogger } = this.props;
+        const { billingAddress, consignments, cart, errorLogger, isGuestEnabled, isShowingWalletButtonsOnTop, hasCartChanged, isShippingDiscountDisplayEnabled } = this.props;
+        const {
+            customerViewType = isGuestEnabled ? CustomerViewType.Guest : CustomerViewType.Login,
+            isSubscribed,
+            isBillingSameAsShipping,
+            isMultiShippingMode,
+        } = this.state;
 
         switch (step.type) {
             case CheckoutStepType.Customer:
-                // replace the method below with a component
-                // the component should have `step` as a prop.
-                // the goal is to remove L322 to L332
-                return this.renderCustomerStep(step);
+                return <CustomerStep
+                    checkEmbeddedSupport={this.checkEmbeddedSupport}
+                    isSubscribed={isSubscribed}
+                    isWalletButtonsOnTop={isShowingWalletButtonsOnTop}
+                    onAccountCreated={this.navigateToNextIncompleteStep}
+                    onChangeViewType={this.setCustomerViewType}
+                    onContinueAsGuest={this.navigateToNextIncompleteStep}
+                    onContinueAsGuestError={this.handleError}
+                    onEdit={this.handleEditStep}
+                    onExpanded={this.handleExpanded}
+                    onReady={this.handleReady}
+                    onSignIn={this.navigateToNextIncompleteStep}
+                    onSignInError={this.handleError}
+                    onSignOut={this.handleSignOut}
+                    onSignOutError={this.handleError}
+                    onSubscribeToNewsletter={this.handleNewsletterSubscription}
+                    onUnhandledError={this.handleUnhandledError}
+                    onWalletButtonClick={this.handleWalletButtonClick}
+                    step={step}
+                    viewType={customerViewType}
+                />;
 
             case CheckoutStepType.Shipping:
-                return this.renderShippingStep(step);
+                return <ShippingStep
+                    cart={cart}
+                    cartHasChanged={hasCartChanged}
+                    consignments={consignments || []}
+                    isBillingSameAsShipping={isBillingSameAsShipping}
+                    isMultiShippingMode={isMultiShippingMode}
+                    isShippingDiscountDisplayEnabled={isShippingDiscountDisplayEnabled}
+                    navigateNextStep={this.handleShippingNextStep}
+                    onCreateAccount={this.handleShippingCreateAccount}
+                    onEdit={this.handleEditStep}
+                    onExpanded={this.handleExpanded}
+                    onReady={this.handleReady}
+                    onSignIn={this.handleShippingSignIn}
+                    onToggleMultiShipping={this.handleToggleMultiShipping}
+                    onUnhandledError={this.handleUnhandledError}
+                    setIsMultishippingMode={(value: boolean) => {
+                        this.setState({ isMultiShippingMode: value });
+                    }}
+                    step={step}
+                />;
 
             case CheckoutStepType.Billing:
                 return <BillingStep
@@ -369,92 +383,6 @@ class Checkout extends Component<
             default:
                 return null;
         }
-    }
-
-    private renderCustomerStep(step: CheckoutStepStatus): ReactNode {
-        const { isGuestEnabled, isShowingWalletButtonsOnTop } = this.props;
-        const {
-            customerViewType = isGuestEnabled ? CustomerViewType.Guest : CustomerViewType.Login,
-            isSubscribed,
-        } = this.state;
-
-        return (
-            <CheckoutStep
-                {...step}
-                heading={<TranslatedString id="customer.customer_heading" />}
-                key={step.type}
-                onEdit={this.handleEditStep}
-                onExpanded={this.handleExpanded}
-                suggestion={<CheckoutSuggestion />}
-                summary={
-                    <CustomerInfo
-                        onSignOut={this.handleSignOut}
-                        onSignOutError={this.handleError}
-                    />
-                }
-            >
-                <LazyContainer>
-                    <Customer
-                        checkEmbeddedSupport={this.checkEmbeddedSupport}
-                        isEmbedded={isEmbedded()}
-                        isSubscribed={isSubscribed}
-                        isWalletButtonsOnTop = {isShowingWalletButtonsOnTop }
-                        onAccountCreated={this.navigateToNextIncompleteStep}
-                        onChangeViewType={this.setCustomerViewType}
-                        onContinueAsGuest={this.navigateToNextIncompleteStep}
-                        onContinueAsGuestError={this.handleError}
-                        onReady={this.handleReady}
-                        onSignIn={this.navigateToNextIncompleteStep}
-                        onSignInError={this.handleError}
-                        onSubscribeToNewsletter={this.handleNewsletterSubscription}
-                        onUnhandledError={this.handleUnhandledError}
-                        onWalletButtonClick={this.handleWalletButtonClick}
-                        step={step}
-                        viewType={customerViewType}
-                    />
-                </LazyContainer>
-            </CheckoutStep>
-        );
-    }
-
-    private renderShippingStep(step: CheckoutStepStatus): ReactNode {
-        const { hasCartChanged, cart, consignments = [], isShippingDiscountDisplayEnabled } = this.props;
-        const { isBillingSameAsShipping, isMultiShippingMode } = this.state;
-
-        if (!cart) {
-            return;
-        }
-
-        const setIsMultishippingMode = (value: boolean) => {
-            this.setState({ isMultiShippingMode: value });
-        }
-
-        return (
-            <CheckoutStep
-                {...step}
-                heading={<TranslatedString id="shipping.shipping_heading" />}
-                key={step.type}
-                onEdit={this.handleEditStep}
-                onExpanded={this.handleExpanded}
-                summary={<ShippingSummary cart={cart} consignments={consignments} isMultiShippingMode={isMultiShippingMode} isShippingDiscountDisplayEnabled={isShippingDiscountDisplayEnabled}/>}
-            >
-                <LazyContainer loadingSkeleton={<AddressFormSkeleton />}>
-                    <Shipping
-                        cartHasChanged={hasCartChanged}
-                        isBillingSameAsShipping={isBillingSameAsShipping}
-                        isMultiShippingMode={isMultiShippingMode}
-                        navigateNextStep={this.handleShippingNextStep}
-                        onCreateAccount={this.handleShippingCreateAccount}
-                        onReady={this.handleReady}
-                        onSignIn={this.handleShippingSignIn}
-                        onToggleMultiShipping={this.handleToggleMultiShipping}
-                        onUnhandledError={this.handleUnhandledError}
-                        setIsMultishippingMode={setIsMultishippingMode}
-                        step={step}
-                    />
-                </LazyContainer>
-            </CheckoutStep>
-        );
     }
 
     private navigateToStep(type: CheckoutStepType, options?: { isDefault?: boolean }): void {
