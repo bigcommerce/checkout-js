@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.702.0](https://github.com/bigcommerce/checkout-js/compare/v1.701.8...v1.702.0) (2025-11-13)
+
+
+### Features
+
+* **payment:** remove experiment google pay billing address editing ([dcee781](https://github.com/bigcommerce/checkout-js/commit/dcee78187f7b425555459164db9464a2ba7aeb03))
+
 ### [1.701.8](https://github.com/bigcommerce/checkout-js/compare/v1.701.7...v1.701.8) (2025-11-13)
 
 ### [1.701.7](https://github.com/bigcommerce/checkout-js/compare/v1.701.6...v1.701.7) (2025-11-13)
