@@ -4,6 +4,7 @@ import { includes } from 'lodash';
 import { getStoreUrl } from '../../';
 import { type CheckoutPagePreset } from '../../../';
 
+import { getAppVersion } from './getAppVersion';
 import { PollyObject } from './PollyObject';
 import { ServerSideRender } from './ServerSideRender';
 
@@ -145,11 +146,13 @@ export class PlaywrightHelper {
             const localhostUrl = `http://localhost:${process.env.PORT || ''}`;
             const storeUrl = this.isReplay ? localhostUrl : this.storeUrl;
             const checkoutUrl = this.isReplay ? `${localhostUrl}/checkout` : `${storeUrl}/checkout`;
+            const appVersion = getAppVersion();
             const htmlStr = await this.server.renderFile(filePath, {
                 ...data,
                 localhostUrl,
                 storeUrl,
                 checkoutUrl,
+                appVersion,
             });
 
             await this.page.route(url, (route) => {
