@@ -557,7 +557,7 @@ const Checkout = ({
             }
         };
 
-        if (componentDidMountRef.current) {
+        if (!componentDidMountRef.current) {
           void init();
         }
 
