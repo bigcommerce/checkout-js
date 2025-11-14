@@ -1,4 +1,4 @@
-import { type CheckoutSelectors, type CustomError } from '@bigcommerce/checkout-sdk';
+import { type CheckoutSelectors, type CustomError } from '@bigcommerce/checkout-sdk/essential';
 import { createSelector } from 'reselect';
 
 import { type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
