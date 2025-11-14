@@ -5,6 +5,7 @@ import type { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { ChecklistSkeleton, LazyContainer } from '@bigcommerce/checkout/ui';
 
+import { retry } from '../../common/utility';
 import { isEmbedded } from '../../embeddedCheckout';
 import { type PaymentProps } from '../../payment';
 import { isUsingMultiShipping } from '../../shipping';
@@ -13,9 +14,12 @@ import type CheckoutStepStatus from '../CheckoutStepStatus';
 import type CheckoutStepType from '../CheckoutStepType';
 
 const Payment = lazy(() =>
-    import(
-        /* webpackChunkName: "payment" */
-        '../../payment/Payment'
+    retry(
+        () =>
+            import(
+                /* webpackChunkName: "payment" */
+                '../../payment/Payment'
+            ),
     ),
 );
 

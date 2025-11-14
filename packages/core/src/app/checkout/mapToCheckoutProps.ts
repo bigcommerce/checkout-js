@@ -1,4 +1,4 @@
-import { type CheckoutSelectors, type CustomError } from '@bigcommerce/checkout-sdk';
+import { type CheckoutSelectors, createEmbeddedCheckoutMessenger, type CustomError } from '@bigcommerce/checkout-sdk/essential';
 import { createSelector } from 'reselect';
 
 import { type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
@@ -27,6 +27,7 @@ export default function mapToCheckoutProps({
             loginLink: loginUrl = '',
             createAccountLink: createAccountUrl = '',
             cartLink: cartUrl = '',
+            siteLink = '',
         } = {},
         displaySettings: { hidePriceFromGuests: isPriceHiddenFromGuests = false } = {},
     } = data.getConfig() || {};
@@ -43,6 +44,7 @@ export default function mapToCheckoutProps({
         data.getConfig()?.checkoutSettings,
         'PROJECT-6643.enable_shipping_discounts_in_orders',
     );
+    const messenger = createEmbeddedCheckoutMessenger({ parentOrigin: siteLink });
 
     return {
         billingAddress: data.getBillingAddress(),
@@ -68,5 +70,6 @@ export default function mapToCheckoutProps({
             checkoutState,
         }),
         steps: getCheckoutStepStatuses(checkoutState),
+        messenger,
     };
 }
