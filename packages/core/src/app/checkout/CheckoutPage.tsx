@@ -150,6 +150,8 @@ const Checkout = ({
         buttonConfigs: [],
     });
 
+    stepsRef.current = steps;
+
     const navigateToStep = useCallback((type: CheckoutStepType, options?: { isDefault?: boolean }):void => {
         const step = find(stepsRef.current, { type });
 
@@ -466,10 +468,6 @@ const Checkout = ({
     useEffect(() => {
         handleConsignmentsUpdatedRef.current = handleConsignmentsUpdated;
     }, [handleConsignmentsUpdated]);
-
-    useEffect(() => {
-        stepsRef.current = steps;
-    }, [steps]);
 
     useEffect(() => {
         const unsubscribeFromConsignments = subscribeToConsignments(
