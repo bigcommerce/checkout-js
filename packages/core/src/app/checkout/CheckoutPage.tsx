@@ -136,6 +136,7 @@ const Checkout = ({
                       themeV2
                   }: CheckoutPageProps):ReactElement => {
     const componentDidMountRef = useRef(false);
+    const stepsRef = useRef<CheckoutStepStatus[]>(steps);
     const handleConsignmentsUpdatedRef = useRef<(selectors:CheckoutSelectors) => void>();
     const embeddedMessenger = useRef<EmbeddedCheckoutMessenger>();
 
@@ -149,101 +150,8 @@ const Checkout = ({
         buttonConfigs: [],
     });
 
-    const renderStep = (step: CheckoutStepStatus): ReactNode =>{
-        const {
-            customerViewType = isGuestEnabled ? CustomerViewType.Guest : CustomerViewType.Login,
-            isSubscribed,
-            isBillingSameAsShipping,
-            isMultiShippingMode,
-        } = state;
-
-        switch (step.type) {
-            case CheckoutStepType.Customer:
-                return <CustomerStep
-                    checkEmbeddedSupport={checkEmbeddedSupport}
-                    isSubscribed={isSubscribed}
-                    isWalletButtonsOnTop={isShowingWalletButtonsOnTop}
-                    onAccountCreated={navigateToNextIncompleteStep}
-                    onChangeViewType={setCustomerViewType}
-                    onContinueAsGuest={navigateToNextIncompleteStep}
-                    onContinueAsGuestError={handleError}
-                    onEdit={handleEditStep}
-                    onExpanded={handleExpanded}
-                    onReady={handleReady}
-                    onSignIn={navigateToNextIncompleteStep}
-                    onSignInError={handleError}
-                    onSignOut={handleSignOut}
-                    onSignOutError={handleError}
-                    onSubscribeToNewsletter={handleNewsletterSubscription}
-                    onUnhandledError={handleUnhandledError}
-                    onWalletButtonClick={handleWalletButtonClick}
-                    step={step}
-                    viewType={customerViewType}
-                />;
-
-            case CheckoutStepType.Shipping:
-                return <ShippingStep
-                    cart={cart}
-                    cartHasChanged={hasCartChanged}
-                    consignments={consignments || []}
-                    isBillingSameAsShipping={isBillingSameAsShipping}
-                    isMultiShippingMode={isMultiShippingMode}
-                    isShippingDiscountDisplayEnabled={isShippingDiscountDisplayEnabled}
-                    navigateNextStep={handleShippingNextStep}
-                    onCreateAccount={handleShippingCreateAccount}
-                    onEdit={handleEditStep}
-                    onExpanded={handleExpanded}
-                    onReady={handleReady}
-                    onSignIn={handleShippingSignIn}
-                    onToggleMultiShipping={handleToggleMultiShipping}
-                    onUnhandledError={handleUnhandledError}
-                    setIsMultishippingMode={(value: boolean) => {
-                        setState(prevState => ({ ...prevState, isMultiShippingMode: value }));
-                    }}
-                    step={step}
-                />;
-
-            case CheckoutStepType.Billing:
-                return <BillingStep
-                    billingAddress={billingAddress}
-                    navigateNextStep={navigateToNextIncompleteStep}
-                    onEdit={handleEditStep}
-                    onExpanded={handleExpanded}
-                    onReady={handleReady}
-                    onUnhandledError={handleUnhandledError}
-                    step={step}
-                />;
-
-            case CheckoutStepType.Payment:
-                return <PaymentStep
-                    cart={cart}
-                    checkEmbeddedSupport={checkEmbeddedSupport}
-                    consignments={consignments}
-                    errorLogger={errorLogger}
-                    isEmbedded={isEmbedded()}
-                    isUsingMultiShipping={
-                        cart && consignments
-                            ? isUsingMultiShipping(consignments, cart.lineItems)
-                            : false
-                    }
-                    onCartChangedError={handleCartChangedError}
-                    onEdit={handleEditStep}
-                    onExpanded={handleExpanded}
-                    onFinalize={navigateToOrderConfirmation}
-                    onReady={handleReady}
-                    onSubmit={navigateToOrderConfirmation}
-                    onSubmitError={handleError}
-                    onUnhandledError={handleUnhandledError}
-                    step={step}
-                />
-
-            default:
-                return null;
-        }
-    }
-
     const navigateToStep = useCallback((type: CheckoutStepType, options?: { isDefault?: boolean }):void => {
-        const step = find(steps, { type });
+        const step = find(stepsRef.current, { type });
 
         if (!step) {
             return;
@@ -271,31 +179,31 @@ const Checkout = ({
         if (error) {
             clearError(error);
         }
-    }, [state.activeStepType, steps, error, clearError]);
-
-    const handleToggleMultiShipping = useCallback(():void => {
-        setState((prevState) => ({ ...prevState, isMultiShippingMode: !prevState.isMultiShippingMode }));
-    },[]);
+    }, [state.activeStepType, error, clearError]);
 
     const navigateToNextIncompleteStep = useCallback((options?: { isDefault?: boolean }):void => {
-        const activeStepIndex = findIndex(steps, { isActive: true });
-        const activeStep = activeStepIndex >= 0 && steps[activeStepIndex];
+        const activeStepIndex = findIndex(stepsRef.current, { isActive: true });
+        const activeStep = activeStepIndex >= 0 && stepsRef.current[activeStepIndex];
 
         if (!activeStep) {
             return;
         }
 
-        const previousStep = steps[Math.max(activeStepIndex - 1, 0)];
+        const previousStep = stepsRef.current[Math.max(activeStepIndex - 1, 0)];
 
         if (previousStep) {
             analyticsTracker.trackStepCompleted(previousStep.type);
         }
 
         navigateToStep(activeStep.type, options);
-    }, [steps, analyticsTracker, steps, navigateToStep]);
+    }, [analyticsTracker, navigateToStep]);
+
+    const handleToggleMultiShipping = useCallback(():void => {
+        setState((prevState) => ({ ...prevState, isMultiShippingMode: !prevState.isMultiShippingMode }));
+    },[]);
 
     const navigateToOrderConfirmation = useCallback((orderId?: number):void => {
-        analyticsTracker.trackStepCompleted(steps[steps.length - 1].type);
+        analyticsTracker.trackStepCompleted(stepsRef.current[stepsRef.current.length - 1].type);
 
         if (embeddedMessenger.current) {
             embeddedMessenger.current.postComplete();
@@ -306,7 +214,7 @@ const Checkout = ({
         setState(prevState => ({ ...prevState, isRedirecting: true }));
 
         void navigateToOrderConfirmationUtility(orderId);
-    }, [steps, analyticsTracker]);
+    }, [analyticsTracker]);
 
     const checkEmbeddedSupport = useCallback((methodIds: string[]): boolean => {
         return embeddedSupport.isSupported(...methodIds);
@@ -343,8 +251,8 @@ const Checkout = ({
                 defaultStepType === CheckoutStepType.Billing);
 
         const isShippingStepFinished =
-            findIndex(steps, { type: CheckoutStepType.Shipping }) <
-            findIndex(steps, { type: activeStepType }) || isDefaultStepPaymentOrBilling;
+            findIndex(stepsRef.current, { type: CheckoutStepType.Shipping }) <
+            findIndex(stepsRef.current, { type: activeStepType }) || isDefaultStepPaymentOrBilling;
 
         if (
             prevHasSelectedShippingOptions &&
@@ -356,7 +264,7 @@ const Checkout = ({
         }
 
         setState(prevState => ({ ...prevState, hasSelectedShippingOptions: newHasSelectedShippingOptions }));
-    }, [state, steps, navigateToStep]);
+    }, [state, navigateToStep]);
 
     const handleCloseErrorModal = useCallback((): void => {
         setState(prevState => ({ ...prevState, error: undefined }));
@@ -462,9 +370,106 @@ const Checkout = ({
         window.location.reload();
     }, []);
 
+    const renderStep = (step: CheckoutStepStatus): ReactNode =>{
+        const {
+            customerViewType = isGuestEnabled ? CustomerViewType.Guest : CustomerViewType.Login,
+            isSubscribed,
+            isBillingSameAsShipping,
+            isMultiShippingMode,
+        } = state;
+
+        switch (step.type) {
+            case CheckoutStepType.Customer:
+                return <CustomerStep
+                    checkEmbeddedSupport={checkEmbeddedSupport}
+                    isSubscribed={isSubscribed}
+                    isWalletButtonsOnTop={isShowingWalletButtonsOnTop}
+                    onAccountCreated={navigateToNextIncompleteStep}
+                    onChangeViewType={setCustomerViewType}
+                    onContinueAsGuest={navigateToNextIncompleteStep}
+                    onContinueAsGuestError={handleError}
+                    onEdit={handleEditStep}
+                    onExpanded={handleExpanded}
+                    onReady={handleReady}
+                    onSignIn={navigateToNextIncompleteStep}
+                    onSignInError={handleError}
+                    onSignOut={handleSignOut}
+                    onSignOutError={handleError}
+                    onSubscribeToNewsletter={handleNewsletterSubscription}
+                    onUnhandledError={handleUnhandledError}
+                    onWalletButtonClick={handleWalletButtonClick}
+                    step={step}
+                    viewType={customerViewType}
+                />;
+
+            case CheckoutStepType.Shipping:
+                return <ShippingStep
+                    cart={cart}
+                    cartHasChanged={hasCartChanged}
+                    consignments={consignments || []}
+                    isBillingSameAsShipping={isBillingSameAsShipping}
+                    isMultiShippingMode={isMultiShippingMode}
+                    isShippingDiscountDisplayEnabled={isShippingDiscountDisplayEnabled}
+                    navigateNextStep={handleShippingNextStep}
+                    onCreateAccount={handleShippingCreateAccount}
+                    onEdit={handleEditStep}
+                    onExpanded={handleExpanded}
+                    onReady={handleReady}
+                    onSignIn={handleShippingSignIn}
+                    onToggleMultiShipping={handleToggleMultiShipping}
+                    onUnhandledError={handleUnhandledError}
+                    setIsMultishippingMode={(value: boolean) => {
+                        setState(prevState => ({ ...prevState, isMultiShippingMode: value }));
+                    }}
+                    step={step}
+                />;
+
+            case CheckoutStepType.Billing:
+                return <BillingStep
+                    billingAddress={billingAddress}
+                    navigateNextStep={navigateToNextIncompleteStep}
+                    onEdit={handleEditStep}
+                    onExpanded={handleExpanded}
+                    onReady={handleReady}
+                    onUnhandledError={handleUnhandledError}
+                    step={step}
+                />;
+
+            case CheckoutStepType.Payment:
+                return <PaymentStep
+                    cart={cart}
+                    checkEmbeddedSupport={checkEmbeddedSupport}
+                    consignments={consignments}
+                    errorLogger={errorLogger}
+                    isEmbedded={isEmbedded()}
+                    isUsingMultiShipping={
+                        cart && consignments
+                            ? isUsingMultiShipping(consignments, cart.lineItems)
+                            : false
+                    }
+                    onCartChangedError={handleCartChangedError}
+                    onEdit={handleEditStep}
+                    onExpanded={handleExpanded}
+                    onFinalize={navigateToOrderConfirmation}
+                    onReady={handleReady}
+                    onSubmit={navigateToOrderConfirmation}
+                    onSubmitError={handleError}
+                    onUnhandledError={handleUnhandledError}
+                    step={step}
+                />
+
+            default:
+                return null;
+        }
+    }
+
     useEffect(() => {
         handleConsignmentsUpdatedRef.current = handleConsignmentsUpdated;
     }, [handleConsignmentsUpdated]);
+
+    useEffect(() => {
+        stepsRef.current = steps;
+    }, [steps]);
 
     useEffect(() => {
         const unsubscribeFromConsignments = subscribeToConsignments(
@@ -628,7 +633,7 @@ const Checkout = ({
                             />
 
                             <ol className="checkout-steps">
-                                {steps
+                                {stepsRef.current
                                     .filter((step) => step.isRequired)
                                     .map((step) =>
                                         renderStep({
