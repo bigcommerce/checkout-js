@@ -95,7 +95,6 @@ export interface WithCheckoutProps {
     createAccountUrl: string;
     promotions?: Promotion[];
     steps: CheckoutStepStatus[];
-    messenger: EmbeddedCheckoutMessenger;
     clearError(error?: Error): void;
     loadCheckout(id: string, options?: RequestOptions<CheckoutParams>): Promise<CheckoutSelectors>;
     loadPaymentMethodByIds(methodIds: string[]): Promise<CheckoutSelectors>;
@@ -110,6 +109,7 @@ type CheckoutPageProps = CheckoutProps &
 
 const Checkout = ({
                       createAccountUrl,
+                      createEmbeddedMessenger,
                       embeddedSupport,
                       billingAddress,
                       consignments,
@@ -130,12 +130,14 @@ const Checkout = ({
                       isPending,
                       isPriceHiddenFromGuests,
                       containerId,
-                      messenger,
                       embeddedStylesheet,
                       loadPaymentMethodByIds,
                       subscribeToConsignments,
                       themeV2
                   }: CheckoutPageProps):ReactElement => {
+    const componentDidMountRef = useRef(false);
+    const handleConsignmentsUpdatedRef = useRef<(selectors:CheckoutSelectors) => void>();
+    const embeddedMessenger = useRef<EmbeddedCheckoutMessenger>();
 
     const [state, setState] = useState<CheckoutState>({
         isBillingSameAsShipping: true,
@@ -295,8 +297,8 @@ const Checkout = ({
     const navigateToOrderConfirmation = useCallback((orderId?: number):void => {
         analyticsTracker.trackStepCompleted(steps[steps.length - 1].type);
 
-        if (messenger) {
-            messenger.postComplete();
+        if (embeddedMessenger.current) {
+            embeddedMessenger.current.postComplete();
         }
 
         SubscribeSessionStorage.removeSubscribeStatus();
@@ -304,7 +306,7 @@ const Checkout = ({
         setState(prevState => ({ ...prevState, isRedirecting: true }));
 
         void navigateToOrderConfirmationUtility(orderId);
-    }, [steps, analyticsTracker, messenger]);
+    }, [steps, analyticsTracker]);
 
     const checkEmbeddedSupport = useCallback((methodIds: string[]): boolean => {
         return embeddedSupport.isSupported(...methodIds);
@@ -373,10 +375,10 @@ const Checkout = ({
 
         errorLogger.log(error);
 
-        if (messenger) {
-            messenger.postError(error);
+        if (embeddedMessenger.current) {
+            embeddedMessenger.current.postError(error);
         }
-    }, [errorLogger, messenger]);
+    }, [errorLogger]);
 
     const handleUnhandledError = useCallback((error: Error): void => {
         handleError(error);
@@ -405,8 +407,8 @@ const Checkout = ({
             return;
         }
 
-        if (messenger) {
-            messenger.postSignedOut();
+        if (embeddedMessenger.current) {
+            embeddedMessenger.current.postSignedOut();
         }
 
         if (isGuestEnabled) {
@@ -425,7 +427,7 @@ const Checkout = ({
 
         navigateToStep(CheckoutStepType.Customer);
     }, [
-        loginUrl, cartUrl, isPriceHiddenFromGuests, isGuestEnabled, setCustomerViewType, navigateToStep, messenger
+        loginUrl, cartUrl, isPriceHiddenFromGuests, isGuestEnabled, setCustomerViewType, navigateToStep
     ]);
 
     const handleShippingNextStep = useCallback((isBillingSameAsShipping: boolean): void => {
@@ -459,9 +461,6 @@ const Checkout = ({
 
         window.location.reload();
     }, []);
-
-    const componentDidMountRef = useRef(false);
-    const handleConsignmentsUpdatedRef = useRef(handleConsignmentsUpdated);
 
     useEffect(() => {
         handleConsignmentsUpdatedRef.current = handleConsignmentsUpdated;
@@ -504,9 +503,14 @@ const Checkout = ({
                     );
                 }
 
+                const { links: { siteLink = '' } = {} } = data.getConfig() || {};
+                const messenger = createEmbeddedMessenger({ parentOrigin: siteLink });
+
                 messenger.receiveStyles((styles) => embeddedStylesheet.append(styles));
                 messenger.postFrameLoaded({ contentId: containerId });
                 messenger.postLoaded();
+
+                embeddedMessenger.current = messenger;
 
                 if (document.prerendering) {
                     document.addEventListener('prerenderingchange', () => {
