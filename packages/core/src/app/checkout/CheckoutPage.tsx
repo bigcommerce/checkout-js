@@ -461,6 +461,11 @@ const Checkout = ({
     }, []);
 
     const componentDidMountRef = useRef(false);
+    const handleConsignmentsUpdatedRef = useRef(handleConsignmentsUpdated);
+
+    useEffect(() => {
+        handleConsignmentsUpdatedRef.current = handleConsignmentsUpdated;
+    }, [handleConsignmentsUpdated]);
 
     useEffect(() => {
         const unsubscribeFromConsignments = subscribeToConsignments(
@@ -568,12 +573,13 @@ const Checkout = ({
                 }
 
                 window.removeEventListener('beforeunload', handleBeforeExit);
+
                 handleBeforeExit();
             }
 
             deInit();
         };
-    }, [handleConsignmentsUpdated, handleBeforeExit]);
+    }, []); // handleConsignmentsUpdated,handleBeforeExit
 
     if(state.isRedirecting){
         return <OrderConfirmationPageSkeleton />;
