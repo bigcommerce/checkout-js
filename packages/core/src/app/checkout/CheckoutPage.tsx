@@ -135,7 +135,6 @@ const Checkout = ({
                       subscribeToConsignments,
                       themeV2
                   }: CheckoutPageProps):ReactElement => {
-    const componentDidMountRef = useRef(false);
     const stepsRef = useRef<CheckoutStepStatus[]>(steps);
     const handleConsignmentsUpdatedRef = useRef<(selectors:CheckoutSelectors) => void>();
     const embeddedMessenger = useRef<EmbeddedCheckoutMessenger>();
@@ -558,8 +557,6 @@ const Checkout = ({
                 window.addEventListener('beforeunload', handleBeforeExit);
 
                 handleReady();
-
-                componentDidMountRef.current = true;
             } catch (error) {
                 if (error instanceof Error) {
                     handleUnhandledError(error);
@@ -567,9 +564,7 @@ const Checkout = ({
             }
         };
 
-        if (!componentDidMountRef.current) {
-          void init();
-        }
+      void init();
 
         return (): void => {
             const deInit = () => {
@@ -584,9 +579,9 @@ const Checkout = ({
 
             deInit();
         };
-    }, []); // handleConsignmentsUpdated,handleBeforeExit
+    }, []);
 
-    if(state.isRedirecting){
+    if (state.isRedirecting){
         return <OrderConfirmationPageSkeleton />;
     }
 
