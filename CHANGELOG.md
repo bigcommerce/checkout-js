@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.703.0](https://github.com/bigcommerce/checkout-js/compare/v1.702.0...v1.703.0) (2025-11-20)
+
+
+### Features
+
+* **payment:** PI-4306 Switch ClearPay to use generic hosted payment method component ([#2675](https://github.com/bigcommerce/checkout-js/issues/2675)) ([2be18cf](https://github.com/bigcommerce/checkout-js/commit/2be18cfe7546c088e835780f7c090928b15c0cd6))
+
 ## [1.702.0](https://github.com/bigcommerce/checkout-js/compare/v1.701.8...v1.702.0) (2025-11-13)
 
 
