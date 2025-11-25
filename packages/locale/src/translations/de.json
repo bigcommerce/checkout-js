@@ -289,7 +289,6 @@
             "humm_not_processable_error": "Humm kann Ihre Zahlung für diese Bestellung nicht verarbeiten, bitte wählen Sie eine andere Zahlungsmethode aus.",
             "klarna_continue_action": "Weiter mit Klarna",
             "klarna_name_text": "Klarna",
-            "masterpass_name_text": "Masterpass",
             "mollie_unsupported_method_error": "Diese Zahlungsmethode kann nicht für den Kauf digitaler Produkte verwendet werden. Bitte wenden Sie sich an den Kunden-Support oder versuchen Sie es erneut.",
             "opy_continue_action": "Weiter mit {methodName}",
             "opy_widget_slogan": "Jetzt kaufen. Später bezahlen.",

@@ -289,7 +289,6 @@
             "humm_not_processable_error": "この注文を処理できません。別の支払方法を選択してください。",
             "klarna_continue_action": "Klarnaで続ける",
             "klarna_name_text": "Klarna",
-            "masterpass_name_text": "Masterpass",
             "mollie_unsupported_method_error": "この支払方法はデジタル製品の購入には使用できません。カスタマーサポートに連絡するか、もう一度やり直してください。",
             "opy_continue_action": "{methodName}で続ける",
             "opy_widget_slogan": "Pay smarterで今すぐ購入",
