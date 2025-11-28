@@ -8,8 +8,11 @@ import classNames from 'classnames';
 import React, { type FunctionComponent, type ReactNode, useMemo } from 'react';
 
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
-import { useThemeContext } from '@bigcommerce/checkout/contexts';
-import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
+import { TranslatedHtml, TranslatedString } from '@bigcommerce/checkout/locale';
+
+import { isExperimentEnabled } from '../common/utility';
+import { MultiCoupon } from '../coupon';
 
 import OrderSummaryHeader from './OrderSummaryHeader';
 import OrderSummaryItems from './OrderSummaryItems';
@@ -39,6 +42,10 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
     total,
     ...orderSummarySubtotalsProps
 }) => {
+    const { checkoutState } = useCheckout();
+    const { checkoutSettings } = checkoutState.data.getConfig() ?? {};
+    const isMultiCouponEnabled = isExperimentEnabled(checkoutSettings, 'PROJECT-7321-5991.multi-coupon-cart-checkout', false);
+
     const nonBundledLineItems = useMemo(() => removeBundledItems(lineItems), [lineItems]);
     const displayInclusiveTax = isTaxIncluded && taxes && taxes.length > 0;
 
@@ -54,10 +61,13 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
 
             <Extension region={ExtensionRegion.SummaryLastItemAfter} />
 
-            <OrderSummarySection>
-                <OrderSummarySubtotals isTaxIncluded={isTaxIncluded} taxes={taxes} {...orderSummarySubtotalsProps} />
-                {additionalLineItems}
-            </OrderSummarySection>
+            {isMultiCouponEnabled
+                ? <MultiCoupon />
+                : <OrderSummarySection>
+                    <OrderSummarySubtotals isTaxIncluded={isTaxIncluded} taxes={taxes} {...orderSummarySubtotalsProps} />
+                    {additionalLineItems}
+                </OrderSummarySection>
+            }
 
             <OrderSummarySection>
                 <OrderSummaryTotal
@@ -65,6 +75,14 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
                     shopperCurrencyCode={shopperCurrency.code}
                     storeCurrencyCode={storeCurrency.code}
                 />
+                {isMultiCouponEnabled &&
+                    <div className="total-savings">
+                        <TranslatedHtml
+                            data={{ totalSaving: '$75.64' }}
+                            id="redeemable.total_savings_text"
+                        />
+                    </div>
+                }
             </OrderSummarySection>
 
             {displayInclusiveTax && <OrderSummarySection>

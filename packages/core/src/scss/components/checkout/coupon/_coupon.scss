@@ -1,0 +1,150 @@
+// Coupon form and applied coupons list styles
+.coupon-form {
+    display: flex;
+    align-items: stretch;
+    gap: spacing('half');
+    width: 100%;
+    margin: spacing('half') 0;
+
+    .coupon-input {
+        flex: 1;
+        min-width: 0;
+    }
+    .coupon-input::placeholder {
+        color: $color-secondaryDarkest;
+        opacity: 1;
+    }
+
+    .coupon-button {
+        border-color: $color-primaryDark;
+        color: $color-primaryDark;
+        flex-shrink: 0;
+        margin-bottom: 0;
+    }
+}
+
+.applied-coupons-list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    ul {
+        background: $color-greyLightest;
+        color: $color-primary;
+        display: inline-block;
+        padding: spacing('quarter');
+        margin: 0 0 spacing('half');
+        font-weight: fontWeight("thin");
+        word-break: break-all;
+
+        .coupon-icon {
+            vertical-align: middle;
+            margin-right: spacing('quarter');
+        }
+
+        .remove-coupon-icon {
+            cursor: pointer;
+            vertical-align: middle;
+            margin-left: spacing('half');
+        }
+    }
+
+    ul:last-child {
+        margin-bottom: 0;
+    }
+
+    ul.applied-coupon-error-message{
+        align-items: center;
+        background: $color-errorLight;
+        color: $color-error;
+        display: flex;
+        justify-content: space-between;
+        padding: spacing('quarter');
+        width: 100%;
+        margin-bottom: spacing('half');
+        gap: spacing('half');
+        word-break: auto-phrase;
+
+        svg.icon-error {
+            width: 15px;
+            height: 15px;
+
+            path{
+                fill: $color-error;
+            }
+        }
+
+        .remove-coupon-icon {
+            float: right;
+        }
+    }
+
+    .icon-path {
+        transition: fill 200ms ease-in-out;
+    }
+}
+
+.applied-coupons-list ul:hover {
+    .icon-path {
+        fill: $color-primaryDark;
+    }
+}
+
+// Discounts section styles
+.coupon-discount-toggle,.shipping-discount-toggle {
+    cursor: pointer;
+
+    .toggle-button {
+        display: inline-block;
+    }
+
+    .arrow {
+        float: right;
+        margin-left: spacing('half');
+    }
+}
+
+.shipping-discount-toggle{
+    margin-top: spacing('half');
+
+    .shipping-cost-before-discount {
+        color: $color-secondaryDarkest;
+        text-decoration: line-through;
+        margin-right: spacing('quarter');
+    }
+}
+
+.applied-discounts-list {
+    span {
+        color: $color-secondaryDarkest;
+        font-family: $fontFamily-montserrat;
+        font-weight: fontWeight("thin");
+    }
+
+    span:last-child {
+        padding-left: spacing('half');
+    }
+
+    div {
+        margin-bottom: spacing('quarter') / 2;
+    }
+
+    .cart-priceItem-label {
+        word-break: break-all;
+    }
+
+    .coupon-icon {
+        vertical-align: middle;
+        margin-right: spacing('quarter');
+    }
+}
+
+// Total savings styles
+.total-savings {
+    color: $color-secondaryDarkest;
+    text-align: right;
+
+    .total-savings-highlight {
+        color: $color-totalSavingsHighlight;
+    }
+}

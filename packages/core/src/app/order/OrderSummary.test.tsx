@@ -24,8 +24,11 @@ jest.mock('../currency', () => ({
 
 describe('OrderSummary', () => {
     const checkoutService = createCheckoutService();
+    const checkoutState = checkoutService.getState();
     const extensionService = new ExtensionService(checkoutService, createErrorLogger());
     const languageService = getLanguageService();
+
+    jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
 
     describe('when shopper has same currency as store', () => {
         beforeEach(() => {

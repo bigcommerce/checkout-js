@@ -55,3 +55,7 @@ export { default as IconPayPalFastlane } from './IconPayPalFastlane';
 export { default as IconNewAccount } from './IconNewAccount';
 export { default as IconUsdCoin } from './IconUsdCoin';
 export { default as IconAch } from './IconAch';
+export { default as IconRemoveCoupon } from './IconRemoveCoupon';
+export { default as IconCoupon } from './IconCoupon';
+export { default as IconDownArrow } from './IconDownArrow';
+export { default as IconUpArrow } from './IconUpArrow';

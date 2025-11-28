@@ -481,11 +481,14 @@
             "coupon_location_error": "Your shipping address doesn't meet the location requirements for the coupon code you entered.",
             "coupon_min_order_total": "Your order does not meet the minimum total for this coupon code to be applied.",
             "coupon_text": "Coupon",
+            "coupon_placeholder": "Enter your code here",
+            "discounts_text": "Discounts",
             "gift_certificate_remaining_text": "Remaining",
             "gift_certificate_text": "Gift Certificate",
             "remove_action": "Remove",
             "store_credit_available_text": "Your account currently has {storeCredit} total store credit available",
-            "toggle_action": "Coupon/Gift Certificate"
+            "toggle_action": "Coupon / gift certificate",
+            "total_savings_text": "You saved <span class=\"total-savings-highlight\">{totalSaving}</span> in total!"
         },
         "remote": {
             "browser_unsupported": "The selected payment method requires a different web browser. Please choose another payment method.",

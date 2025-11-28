@@ -80,6 +80,11 @@ export {
     IconSepa,
     IconUsdCoin,
     IconAch,
+    IconError,
+    IconCoupon,
+    IconRemoveCoupon,
+    IconDownArrow,
+    IconUpArrow,
 } from './icon';
 export { LazyContainer, LoadingNotification, LoadingOverlay, LoadingSpinner } from './loading';
 export {
