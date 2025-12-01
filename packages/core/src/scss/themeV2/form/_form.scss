@@ -28,7 +28,13 @@
 
     .form-checklist-checkbox:checked~.form-label {
         &::before {
-            background-color: $color-highlight;
+            background-color: $color-black;
+            border-color: $color-black;
         }
+    }
+
+    .form-checkbox:checked + .form-label::before {
+        background-color: $color-black;
+        border-color: $color-black;
     }
 }
