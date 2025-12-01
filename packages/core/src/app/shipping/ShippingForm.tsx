@@ -82,7 +82,7 @@ const ShippingForm = ({
                 title: getLanguageService().translate('shipping.no_countries_available_heading'),
             }));
         }
-    }, [countries.length, isNoCountriesErrorOnCheckoutEnabled, onUnhandledError]);
+    }, [countries.length]);
 
     const getMultiShippingForm = () => {
         return <MultiShippingForm

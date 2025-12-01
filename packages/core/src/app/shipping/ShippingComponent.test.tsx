@@ -28,6 +28,7 @@ import CheckoutStepType from '../checkout/CheckoutStepType';
 import { createErrorLogger } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
+import { getCountries } from '../geography/countries.mock';
 
 import { getConsignment } from './consignment.mock';
 import Shipping, { type ShippingProps } from './Shipping';
@@ -113,6 +114,8 @@ describe('Shipping component', () => {
         jest.spyOn(checkoutState.data, 'getConsignments').mockReturnValue([getConsignment()]);
 
         jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue(getCheckout());
+
+        jest.spyOn(checkoutState.data, 'getShippingCountries').mockReturnValue(getCountries());
 
         jest.spyOn(checkoutService, 'updateBillingAddress').mockResolvedValue(
             {} as CheckoutSelectors,
