@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react';
 
 import { useCheckout, useExtensions } from '@bigcommerce/checkout/contexts';
+import { getLanguageService } from '@bigcommerce/checkout/locale';
 
+import { CustomError } from '../common/error';
 import { useShipping } from './hooks/useShipping';
 import isUsingMultiShipping from './isUsingMultiShipping';
 import MultiShippingForm, { type MultiShippingFormValues } from './MultiShippingForm';
 import SingleShippingForm, { type SingleShippingFormValues } from './SingleShippingForm';
+import { isExperimentEnabled } from '../common/utility';
 
 export interface ShippingFormProps {
     cartHasChanged: boolean;
@@ -38,6 +41,7 @@ const ShippingForm = ({
     const {
         cart,
         consignments,
+        countries,
         customerMessage,
         deleteConsignments,
         deinitializeShippingMethod: deinitialize,
@@ -54,6 +58,7 @@ const ShippingForm = ({
     const { extensionState: { shippingFormRenderTimestamp } } = useExtensions();
 
     const config = getConfig();
+    const isNoCountriesErrorOnCheckoutEnabled = isExperimentEnabled(config?.checkoutSettings, 'CHECKOUT-9630.no_countries_error_on_checkout');
 
     useEffect(() => {
         if (shippingFormRenderTimestamp) {
@@ -68,6 +73,17 @@ const ShippingForm = ({
         }
     }, [shippingFormRenderTimestamp]);
 
+    // Handle error when no countries are available - use useEffect to avoid setState during render
+    useEffect(() => {
+        if (countries.length === 0 && isNoCountriesErrorOnCheckoutEnabled) {
+            onUnhandledError(new CustomError({
+                name: 'no_countries_available',
+                message: getLanguageService().translate('shipping.no_countries_available_message'),
+                title: getLanguageService().translate('shipping.no_countries_available_heading'),
+            }));
+        }
+    }, [countries.length, isNoCountriesErrorOnCheckoutEnabled, onUnhandledError]);
+
     const getMultiShippingForm = () => {
         return <MultiShippingForm
             cartHasChanged={cartHasChanged}
@@ -78,6 +94,10 @@ const ShippingForm = ({
             onUnhandledError={onUnhandledError}
         />;
     };
+
+    if (countries.length === 0 && isNoCountriesErrorOnCheckoutEnabled) {
+        return null;
+    }
 
     return isMultiShippingMode ? (
         getMultiShippingForm()

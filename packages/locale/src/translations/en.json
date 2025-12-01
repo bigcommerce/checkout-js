@@ -543,6 +543,8 @@
             "multishipping_left_to_allocate_items_table_item": "Item",
             "multishipping_left_to_allocate_items_table_left_to_allocate": "Left to allocate",
             "multishipping_left_to_allocate_items_table_quantity": "Quantity",
+            "no_countries_available_heading": "We're having trouble loading your shipping country",
+            "no_countries_available_message": "Please refresh the page or try again in a moment. If the issue continues, contact our support team and we'll help complete your order.",
             "multishipping_item_split_tooltip_message": "These item quantities are split into a separate row due to a quantity-based promotion or custom price.",
             "ship_to_multi": "Ship to multiple addresses",
             "ship_to_single": "Ship to a single address",
