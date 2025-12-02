@@ -38,6 +38,7 @@ import {
     createEmbeddedCheckoutStylesheet,
     createEmbeddedCheckoutSupport,
 } from '../embeddedCheckout';
+import { getCountries } from '../geography/countries.mock';
 
 import Checkout, { type CheckoutProps } from './Checkout';
 
@@ -378,6 +379,9 @@ describe('Checkout', () => {
             const error = new Error();
 
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithBillingEmail);
+
+            // Mock countries to ensure form renders
+            jest.spyOn(checkoutService.getState().data, 'getShippingCountries').mockReturnValue(getCountries());
 
             jest.spyOn(checkoutService, 'loadShippingAddressFields').mockImplementation(() => {
                 throw error;
