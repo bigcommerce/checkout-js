@@ -136,8 +136,14 @@ const Checkout = ({
                       themeV2
                   }: CheckoutPageProps):ReactElement => {
     const stepsRef = useRef<CheckoutStepStatus[]>(steps);
-    const handleConsignmentsUpdatedRef = useRef<(selectors:CheckoutSelectors) => void>();
     const embeddedMessenger = useRef<EmbeddedCheckoutMessenger>();
+    const stateRef = useRef<{
+        hasSelectedShippingOptions: boolean;
+        activeStepType?: CheckoutStepType;
+        defaultStepType?: CheckoutStepType;
+    }>({
+        hasSelectedShippingOptions: false,
+    });
 
     const [state, setState] = useState<CheckoutState>({
         isBillingSameAsShipping: true,
@@ -236,9 +242,9 @@ const Checkout = ({
         navigateToStep(CheckoutStepType.Shipping);
     }, [navigateToStep]);
 
-    const handleConsignmentsUpdated = useCallback(({ data }: CheckoutSelectors):void => {
+    const handleConsignmentsUpdated = ({ data }: CheckoutSelectors):void => {
         const { hasSelectedShippingOptions: prevHasSelectedShippingOptions, activeStepType, defaultStepType } =
-            state;
+            stateRef.current;
 
         const newHasSelectedShippingOptions = hasSelectedShippingOptions(
             data.getConsignments() || [],
@@ -263,7 +269,7 @@ const Checkout = ({
         }
 
         setState(prevState => ({ ...prevState, hasSelectedShippingOptions: newHasSelectedShippingOptions }));
-    }, [state, navigateToStep]);
+    };
 
     const handleCloseErrorModal = useCallback((): void => {
         setState(prevState => ({ ...prevState, error: undefined }));
@@ -369,6 +375,10 @@ const Checkout = ({
         window.location.reload();
     }, []);
 
+    const handleSetIsMultishippingMode = useCallback((value: boolean): void => {
+        setState(prevState => ({ ...prevState, isMultiShippingMode: value }));
+    }, []);
+
     const renderStep = (step: CheckoutStepStatus): ReactNode =>{
         const {
             customerViewType = isGuestEnabled ? CustomerViewType.Guest : CustomerViewType.Login,
@@ -417,9 +427,7 @@ const Checkout = ({
                     onSignIn={handleShippingSignIn}
                     onToggleMultiShipping={handleToggleMultiShipping}
                     onUnhandledError={handleUnhandledError}
-                    setIsMultishippingMode={(value: boolean) => {
-                        setState(prevState => ({ ...prevState, isMultiShippingMode: value }));
-                    }}
+                    setIsMultishippingMode={handleSetIsMultishippingMode}
                     step={step}
                 />;
 
@@ -462,13 +470,26 @@ const Checkout = ({
         }
     }
 
+    const handleConsignmentsUpdatedRef = useRef<(selectors:CheckoutSelectors) => void>(handleConsignmentsUpdated);
+    const handleBeforeExitRef = useRef<() => void>(handleBeforeExit);
+    const handleReadyRef = useRef<() => void>(handleReady);
+    const handleUnhandledErrorRef = useRef<(error: Error) => void>(handleUnhandledError);
+
     // Update refs effectively
     stepsRef.current = steps;
+    stateRef.current = {
+        hasSelectedShippingOptions: state.hasSelectedShippingOptions,
+        activeStepType: state.activeStepType,
+        defaultStepType: state.defaultStepType,
+    };
     handleConsignmentsUpdatedRef.current = handleConsignmentsUpdated;
+    handleBeforeExitRef.current = handleBeforeExit;
+    handleReadyRef.current = handleReady;
+    handleUnhandledErrorRef.current = handleUnhandledError;
 
     useEffect(() => {
         const unsubscribeFromConsignments = subscribeToConsignments(
-            handleConsignmentsUpdated,
+            handleConsignmentsUpdatedRef.current,
         );
 
         const init = async () => {
@@ -554,12 +575,12 @@ const Checkout = ({
                     );
                 }
 
-                window.addEventListener('beforeunload', handleBeforeExit);
+                window.addEventListener('beforeunload', handleBeforeExitRef.current);
 
-                handleReady();
+                handleReadyRef.current();
             } catch (error) {
                 if (error instanceof Error) {
-                    handleUnhandledError(error);
+                    handleUnhandledErrorRef.current(error);
                 }
             }
         };
@@ -572,9 +593,9 @@ const Checkout = ({
                     unsubscribeFromConsignments();
                 }
 
-                window.removeEventListener('beforeunload', handleBeforeExit);
+                window.removeEventListener('beforeunload', handleBeforeExitRef.current);
 
-                handleBeforeExit();
+                handleBeforeExitRef.current();
             }
 
             deInit();
