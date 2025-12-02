@@ -58,7 +58,7 @@ const ShippingForm = ({
     const { extensionState: { shippingFormRenderTimestamp } } = useExtensions();
 
     const config = getConfig();
-    const isNoCountriesErrorOnCheckoutEnabled = isExperimentEnabled(config?.checkoutSettings, 'CHECKOUT-9630.no_countries_error_on_checkout');
+    const isNoCountriesErrorOnCheckoutEnabled = isExperimentEnabled(config?.checkoutSettings, 'CHECKOUT-9630.no_countries_error_on_checkout', false);
 
     useEffect(() => {
         if (shippingFormRenderTimestamp) {
