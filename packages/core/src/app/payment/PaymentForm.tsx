@@ -5,10 +5,12 @@ import React, { type FunctionComponent, memo, useCallback, useContext, useMemo }
 import { type ObjectSchema } from 'yup';
 
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { FormContext } from '@bigcommerce/checkout/ui';
 
+import { isExperimentEnabled } from '../common/utility';
 import { TermsConditions } from '../termsConditions';
 import { Fieldset, Form, Legend } from '../ui/form';
 
@@ -106,6 +108,10 @@ const PaymentForm: FunctionComponent<
         );
     }, [selectedMethod]);
 
+    const { checkoutState } = useCheckout();
+    const { checkoutSettings } = checkoutState.data.getConfig() ?? {};
+    const isMultiCouponEnabled = isExperimentEnabled(checkoutSettings, 'PROJECT-7321-5991.multi-coupon-cart-checkout', false);
+
     if (shouldExecuteSpamCheck) {
         return (
             <SpamProtectionField
@@ -139,7 +145,7 @@ const PaymentForm: FunctionComponent<
                 values={values}
             />
 
-            <PaymentRedeemables />
+            {!isMultiCouponEnabled && <PaymentRedeemables />}
 
             {isTermsConditionsRequired && (
                 <TermsConditions

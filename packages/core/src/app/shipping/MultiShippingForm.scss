@@ -90,7 +90,7 @@ $allocate-items-table-image-width-small-screen: 40%;
 }
 
 .modal.modal--afterOpen {
-    .button--tertiary {
+    .button--tertiary:not(.coupon-button) {
         border: none;
         background-color: transparent;
     }

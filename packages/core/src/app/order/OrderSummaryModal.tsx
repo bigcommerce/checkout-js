@@ -5,10 +5,13 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import React, { cloneElement, type FunctionComponent, isValidElement, type ReactNode } from 'react';
 
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { Button, IconCloseWithBorder } from '@bigcommerce/checkout/ui';
 
+import { isExperimentEnabled } from '../common/utility';
+import { MultiCoupon } from '../coupon';
 import { ShopperCurrency } from '../currency';
 import { Modal, ModalHeader } from '../ui/modal';
 import { isSmallScreen } from '../ui/responsive';
@@ -37,7 +40,6 @@ const OrderSummaryModal: FunctionComponent<
     OrderSummaryDrawerProps & OrderSummarySubtotalsProps
 > = ({
     additionalLineItems,
-    children,
     isTaxIncluded,
     taxes,
     onRequestClose,
@@ -50,6 +52,10 @@ const OrderSummaryModal: FunctionComponent<
     total,
     ...orderSummarySubtotalsProps
 }) => {
+    const { checkoutState } = useCheckout();
+    const { checkoutSettings } = checkoutState.data.getConfig() ?? {};
+    const isMultiCouponEnabled = isExperimentEnabled(checkoutSettings, 'PROJECT-7321-5991.multi-coupon-cart-checkout', false);
+
     const displayInclusiveTax = isTaxIncluded && taxes && taxes.length > 0;
 
     const subHeaderText = <OrderModalSummarySubheader
@@ -83,10 +89,13 @@ const OrderSummaryModal: FunctionComponent<
         <OrderSummarySection>
             <OrderSummaryItems displayLineItemsCount={false} items={items} />
         </OrderSummarySection>
-        <OrderSummarySection>
-            <OrderSummarySubtotals isTaxIncluded={isTaxIncluded} taxes={taxes} {...orderSummarySubtotalsProps} />
-            {additionalLineItems}
-        </OrderSummarySection>
+        {isMultiCouponEnabled
+            ? <MultiCoupon />
+            : <OrderSummarySection>
+                    <OrderSummarySubtotals isTaxIncluded={isTaxIncluded} taxes={taxes} {...orderSummarySubtotalsProps} />
+                    {additionalLineItems}
+            </OrderSummarySection>
+        }
         <OrderSummarySection>
             <OrderSummaryTotal
                 orderAmount={total}
