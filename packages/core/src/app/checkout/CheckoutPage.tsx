@@ -135,10 +135,6 @@ const Checkout = ({
                       subscribeToConsignments,
                       themeV2
                   }: CheckoutPageProps):ReactElement => {
-    const stepsRef = useRef<CheckoutStepStatus[]>(steps);
-    const handleConsignmentsUpdatedRef = useRef<(selectors:CheckoutSelectors) => void>();
-    const embeddedMessenger = useRef<EmbeddedCheckoutMessenger>();
-
     const [state, setState] = useState<CheckoutState>({
         isBillingSameAsShipping: true,
         isCartEmpty: false,
@@ -147,6 +143,17 @@ const Checkout = ({
         hasSelectedShippingOptions: false,
         isSubscribed: false,
         buttonConfigs: [],
+    });
+
+    // Initialize refs 1/2
+    const stepsRef = useRef<CheckoutStepStatus[]>(steps);
+    const embeddedMessenger = useRef<EmbeddedCheckoutMessenger>();
+    const stateRef = useRef<{
+        hasSelectedShippingOptions: boolean;
+        activeStepType?: CheckoutStepType;
+        defaultStepType?: CheckoutStepType;
+    }>({
+        hasSelectedShippingOptions: state.hasSelectedShippingOptions,
     });
 
     const navigateToStep = useCallback((type: CheckoutStepType, options?: { isDefault?: boolean }):void => {
@@ -213,7 +220,7 @@ const Checkout = ({
         setState(prevState => ({ ...prevState, isRedirecting: true }));
 
         void navigateToOrderConfirmationUtility(orderId);
-    }, [analyticsTracker]);
+    }, []);
 
     const checkEmbeddedSupport = useCallback((methodIds: string[]): boolean => {
         return embeddedSupport.isSupported(...methodIds);
@@ -236,9 +243,9 @@ const Checkout = ({
         navigateToStep(CheckoutStepType.Shipping);
     }, [navigateToStep]);
 
-    const handleConsignmentsUpdated = useCallback(({ data }: CheckoutSelectors):void => {
+    const handleConsignmentsUpdated = ({ data }: CheckoutSelectors):void => {
         const { hasSelectedShippingOptions: prevHasSelectedShippingOptions, activeStepType, defaultStepType } =
-            state;
+            stateRef.current;
 
         const newHasSelectedShippingOptions = hasSelectedShippingOptions(
             data.getConsignments() || [],
@@ -263,7 +270,7 @@ const Checkout = ({
         }
 
         setState(prevState => ({ ...prevState, hasSelectedShippingOptions: newHasSelectedShippingOptions }));
-    }, [state, navigateToStep]);
+    };
 
     const handleCloseErrorModal = useCallback((): void => {
         setState(prevState => ({ ...prevState, error: undefined }));
@@ -285,7 +292,7 @@ const Checkout = ({
         if (embeddedMessenger.current) {
             embeddedMessenger.current.postError(error);
         }
-    }, [errorLogger]);
+    }, []);
 
     const handleUnhandledError = useCallback((error: Error): void => {
         handleError(error);
@@ -293,7 +300,7 @@ const Checkout = ({
         // For errors that are not caught and handled by child components, we
         // handle them here by displaying a generic error modal to the shopper.
         setState(prevState => ({ ...prevState, error }));
-    }, [handleError]);
+    }, []);
 
     const handleEditStep = useCallback((type: CheckoutStepType): void => {
         navigateToStep(type);
@@ -357,16 +364,20 @@ const Checkout = ({
 
     const handleBeforeExit = useCallback((): void => {
         analyticsTracker.exitCheckout();
-    }, [analyticsTracker]);
+    }, []);
 
     const handleWalletButtonClick = useCallback((methodName: string): void => {
         analyticsTracker.walletButtonClick(methodName);
-    }, [analyticsTracker]);
+    }, []);
 
     const reloadWindow = useCallback((): void => {
         setState(prevState => ({ ...prevState, error: undefined }));
 
         window.location.reload();
+    }, []);
+
+    const handleSetIsMultishippingMode = useCallback((value: boolean): void => {
+        setState(prevState => ({ ...prevState, isMultiShippingMode: value }));
     }, []);
 
     const renderStep = (step: CheckoutStepStatus): ReactNode =>{
@@ -417,9 +428,7 @@ const Checkout = ({
                     onSignIn={handleShippingSignIn}
                     onToggleMultiShipping={handleToggleMultiShipping}
                     onUnhandledError={handleUnhandledError}
-                    setIsMultishippingMode={(value: boolean) => {
-                        setState(prevState => ({ ...prevState, isMultiShippingMode: value }));
-                    }}
+                    setIsMultishippingMode={handleSetIsMultishippingMode}
                     step={step}
                 />;
 
@@ -462,13 +471,23 @@ const Checkout = ({
         }
     }
 
-    // Update refs effectively
+    // Initialize refs 2/2
+    const handleConsignmentsUpdatedRef = useRef<(selectors:CheckoutSelectors) => void>(handleConsignmentsUpdated);
+    const handleBeforeExitRef = useRef<() => void>(handleBeforeExit);
+
+    // Update refs
     stepsRef.current = steps;
+    stateRef.current = {
+        hasSelectedShippingOptions: state.hasSelectedShippingOptions,
+        activeStepType: state.activeStepType,
+        defaultStepType: state.defaultStepType,
+    };
     handleConsignmentsUpdatedRef.current = handleConsignmentsUpdated;
+    handleBeforeExitRef.current = handleBeforeExit;
 
     useEffect(() => {
         const unsubscribeFromConsignments = subscribeToConsignments(
-            handleConsignmentsUpdated,
+            handleConsignmentsUpdatedRef.current,
         );
 
         const init = async () => {
@@ -554,7 +573,7 @@ const Checkout = ({
                     );
                 }
 
-                window.addEventListener('beforeunload', handleBeforeExit);
+                window.addEventListener('beforeunload', handleBeforeExitRef.current);
 
                 handleReady();
             } catch (error) {
@@ -572,9 +591,9 @@ const Checkout = ({
                     unsubscribeFromConsignments();
                 }
 
-                window.removeEventListener('beforeunload', handleBeforeExit);
+                window.removeEventListener('beforeunload', handleBeforeExitRef.current);
 
-                handleBeforeExit();
+                handleBeforeExitRef.current();
             }
 
             deInit();
