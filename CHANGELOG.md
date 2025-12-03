@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.704.0](https://github.com/bigcommerce/checkout-js/compare/v1.703.1...v1.704.0) (2025-12-03)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9675 Add Multi Coupon UI ([#2714](https://github.com/bigcommerce/checkout-js/issues/2714)) ([8a253d7](https://github.com/bigcommerce/checkout-js/commit/8a253d7140caf09ef1bbe6daa66420fe0765f4b1))
+
 ### [1.703.1](https://github.com/bigcommerce/checkout-js/compare/v1.703.0...v1.703.1) (2025-12-03)
 
 
