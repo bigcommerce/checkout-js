@@ -37,7 +37,6 @@ enum PaymentMethodId {
     Ideal = 'ideal',
     Klarna = 'klarna',
     Laybuy = 'laybuy',
-    Masterpass = 'masterpass',
     Mollie = 'mollie',
     Moneris = 'moneris',
     OrbitalGooglePay = 'googlepayorbital',

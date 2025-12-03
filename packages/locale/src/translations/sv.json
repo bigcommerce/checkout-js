@@ -289,7 +289,6 @@
             "humm_not_processable_error": "Humm kan inte behandla din betalning för denna beställning. Vänligen välj en annan betalningsmetod.",
             "klarna_continue_action": "Fortsätt med Klarna",
             "klarna_name_text": "Klarna",
-            "masterpass_name_text": "Masterpass",
             "mollie_unsupported_method_error": "Denna betalningsmetod kan inte användas för köp av digitala produkter. Kontakta kundtjänsten eller försök igen.",
             "opy_continue_action": "Fortsätt med {methodName}",
             "opy_widget_slogan": "Köp nu. Betala smartare.",
