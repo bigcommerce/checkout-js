@@ -135,16 +135,6 @@ const Checkout = ({
                       subscribeToConsignments,
                       themeV2
                   }: CheckoutPageProps):ReactElement => {
-    const stepsRef = useRef<CheckoutStepStatus[]>(steps);
-    const embeddedMessenger = useRef<EmbeddedCheckoutMessenger>();
-    const stateRef = useRef<{
-        hasSelectedShippingOptions: boolean;
-        activeStepType?: CheckoutStepType;
-        defaultStepType?: CheckoutStepType;
-    }>({
-        hasSelectedShippingOptions: false,
-    });
-
     const [state, setState] = useState<CheckoutState>({
         isBillingSameAsShipping: true,
         isCartEmpty: false,
@@ -153,6 +143,17 @@ const Checkout = ({
         hasSelectedShippingOptions: false,
         isSubscribed: false,
         buttonConfigs: [],
+    });
+
+    // Initialize refs 1/2
+    const stepsRef = useRef<CheckoutStepStatus[]>(steps);
+    const embeddedMessenger = useRef<EmbeddedCheckoutMessenger>();
+    const stateRef = useRef<{
+        hasSelectedShippingOptions: boolean;
+        activeStepType?: CheckoutStepType;
+        defaultStepType?: CheckoutStepType;
+    }>({
+        hasSelectedShippingOptions: state.hasSelectedShippingOptions,
     });
 
     const navigateToStep = useCallback((type: CheckoutStepType, options?: { isDefault?: boolean }):void => {
@@ -219,7 +220,7 @@ const Checkout = ({
         setState(prevState => ({ ...prevState, isRedirecting: true }));
 
         void navigateToOrderConfirmationUtility(orderId);
-    }, [analyticsTracker]);
+    }, []);
 
     const checkEmbeddedSupport = useCallback((methodIds: string[]): boolean => {
         return embeddedSupport.isSupported(...methodIds);
@@ -291,7 +292,7 @@ const Checkout = ({
         if (embeddedMessenger.current) {
             embeddedMessenger.current.postError(error);
         }
-    }, [errorLogger]);
+    }, []);
 
     const handleUnhandledError = useCallback((error: Error): void => {
         handleError(error);
@@ -299,7 +300,7 @@ const Checkout = ({
         // For errors that are not caught and handled by child components, we
         // handle them here by displaying a generic error modal to the shopper.
         setState(prevState => ({ ...prevState, error }));
-    }, [handleError]);
+    }, []);
 
     const handleEditStep = useCallback((type: CheckoutStepType): void => {
         navigateToStep(type);
@@ -363,11 +364,11 @@ const Checkout = ({
 
     const handleBeforeExit = useCallback((): void => {
         analyticsTracker.exitCheckout();
-    }, [analyticsTracker]);
+    }, []);
 
     const handleWalletButtonClick = useCallback((methodName: string): void => {
         analyticsTracker.walletButtonClick(methodName);
-    }, [analyticsTracker]);
+    }, []);
 
     const reloadWindow = useCallback((): void => {
         setState(prevState => ({ ...prevState, error: undefined }));
@@ -470,12 +471,11 @@ const Checkout = ({
         }
     }
 
+    // Initialize refs 2/2
     const handleConsignmentsUpdatedRef = useRef<(selectors:CheckoutSelectors) => void>(handleConsignmentsUpdated);
     const handleBeforeExitRef = useRef<() => void>(handleBeforeExit);
-    const handleReadyRef = useRef<() => void>(handleReady);
-    const handleUnhandledErrorRef = useRef<(error: Error) => void>(handleUnhandledError);
 
-    // Update refs effectively
+    // Update refs
     stepsRef.current = steps;
     stateRef.current = {
         hasSelectedShippingOptions: state.hasSelectedShippingOptions,
@@ -484,8 +484,6 @@ const Checkout = ({
     };
     handleConsignmentsUpdatedRef.current = handleConsignmentsUpdated;
     handleBeforeExitRef.current = handleBeforeExit;
-    handleReadyRef.current = handleReady;
-    handleUnhandledErrorRef.current = handleUnhandledError;
 
     useEffect(() => {
         const unsubscribeFromConsignments = subscribeToConsignments(
@@ -577,10 +575,10 @@ const Checkout = ({
 
                 window.addEventListener('beforeunload', handleBeforeExitRef.current);
 
-                handleReadyRef.current();
+                handleReady();
             } catch (error) {
                 if (error instanceof Error) {
-                    handleUnhandledErrorRef.current(error);
+                    handleUnhandledError(error);
                 }
             }
         };
