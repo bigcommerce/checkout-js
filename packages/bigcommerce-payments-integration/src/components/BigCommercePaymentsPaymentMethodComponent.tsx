@@ -11,7 +11,7 @@ import {
     createBigCommercePaymentsAlternativeMethodsPaymentStrategy,
     createBigCommercePaymentsPayLaterPaymentStrategy,
     createBigCommercePaymentsVenmoPaymentStrategy,
-    createBigCommercePaymentsKlarnaPaymentStrategy,
+    createBigCommercePaymentsRedirectAlternativeMethodsPaymentStrategy,
 } from '@bigcommerce/checkout-sdk/integrations/bigcommerce-payments';
 import React, { type FunctionComponent, useCallback, useEffect, useRef } from 'react';
 
@@ -114,7 +114,7 @@ const BigCommercePaymentsPaymentMethodComponent: FunctionComponent<
                     createBigCommercePaymentsAlternativeMethodsPaymentStrategy,
                     createBigCommercePaymentsPayLaterPaymentStrategy,
                     createBigCommercePaymentsVenmoPaymentStrategy,
-                    createBigCommercePaymentsKlarnaPaymentStrategy,
+                    createBigCommercePaymentsRedirectAlternativeMethodsPaymentStrategy,
                 ],
                 [providerOptionsKey]: {
                     container: '#checkout-payment-continue',
