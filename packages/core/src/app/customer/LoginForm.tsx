@@ -2,14 +2,11 @@ import classNames from 'classnames';
 import { type FormikProps, withFormik } from 'formik';
 import { noop } from 'lodash';
 import React, { type FunctionComponent, memo,  MouseEvent } from 'react';
-// import React, { type FunctionComponent, memo, useCallback, MouseEvent } from 'react';
 import { object, string } from 'yup';
 
 import { useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import {
-    // TranslatedHtml,
-    // TranslatedLink,
     TranslatedString,
     withLanguage,
     type WithLanguageProps,
@@ -20,10 +17,8 @@ import { Button, ButtonVariant } from '../ui/button';
 import { Fieldset, Form, Legend } from '../ui/form';
 
 import CustomerViewType from './CustomerViewType';
-// import EmailField from './EmailField';
 import getEmailValidationSchema from './getEmailValidationSchema';
 import mapErrorMessage from './mapErrorMessage';
-// import PasswordField from './PasswordField';
 import { RedirectToStorefrontLogin } from './RedirectToStorefrontLogin';
 
 export interface LoginFormProps {
@@ -42,24 +37,16 @@ export interface LoginFormProps {
 }
 
 export interface LoginFormValues {
-    // email: string;
-    // password: string;
 }
 
 const LoginForm: FunctionComponent<
     LoginFormProps & FormikProps<LoginFormValues> & WithLanguageProps
 > = ({
     continueAsGuestButtonLabelId,
-    //email,
-    //isEmbedded,
     language,
     signInError,
     onCancel = noop,
-    //onChangeEmail,
     onContinueAsGuest,
-    //onCreateAccount = noop,
-    //onSendLoginEmail = noop,
-    // isFloatingLabelEnabled,
     viewType = CustomerViewType.Login,
 }) => {
     const { themeV2 } = useThemeContext();
@@ -79,37 +66,13 @@ const LoginForm: FunctionComponent<
     const {
         checkoutSettings: {
             isAccountCreationEnabled: shouldShowCreateAccountLink,
-            //isSignInEmailEnabled,
             guestCheckoutEnabled: canCancel,
             shouldRedirectToStorefrontForAuth,
         },
-        // links: {
-        //     forgotPasswordLink: forgotPasswordUrl
-        // }
     } = config;
-
-    //const isBuyNowCart = cart.source === 'BUY_NOW';
-
-    // const changeEmailLink = useCallback(() => {
-    //     if (!email) {
-    //         return null;
-    //     }
-
-    //     return (
-    //         <p className="optimizedCheckout-contentSecondary">
-    //             <TranslatedLink
-    //                 data={{ email }}
-    //                 id="customer.guest_could_login_change_email"
-    //                 onClick={onCancel}
-    //                 testId="change-email"
-    //             />
-    //         </p>
-    //     );
-    // }, [email, onCancel]);
 
     const handleRedirect = (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
-        // prod vs test myiapp redirects
         if (window.location.hostname === 'store.iapp.com') {
             window.location.href = 'https://myiapp.org/store?redirectPage=checkout';
         } else {
@@ -136,62 +99,14 @@ const LoginForm: FunctionComponent<
                     </Alert>
                 )}
 
-                {/* {viewType === CustomerViewType.SuggestedLogin && (
-                    <Alert type={AlertType.Info}>
-                        <TranslatedHtml data={{ email }} id="customer.guest_could_login" />
-                    </Alert>
-                )} */}
-
-                {/* {viewType === CustomerViewType.CancellableEnforcedLogin && (
-                    <Alert type={AlertType.Info}>
-                        <TranslatedHtml data={{ email }} id="customer.guest_must_login" />
-                    </Alert>
-                )} */}
-
                 {viewType === CustomerViewType.EnforcedLogin && (
-                    <Alert type={AlertType.Error}>
-                        {/* <TranslatedLink
-                            id="customer.guest_temporary_disabled"
-                            onClick={onCreateAccount}
-                        /> */}
-                    </Alert>
+                    <Alert type={AlertType.Error}></Alert>
                 )}
 
-                {/* {(viewType === CustomerViewType.Login ||
-                    viewType === CustomerViewType.EnforcedLogin) && (
-                    <EmailField isFloatingLabelEnabled={isFloatingLabelEnabled} onChange={onChangeEmail} />
-                )} */}
-
-                {/* {!shouldRedirectToStorefrontForAuth && <PasswordField isFloatingLabelEnabled={isFloatingLabelEnabled} />} */}
-
                 <p className={classNames('form-legend-container', { 'body-cta': themeV2 })}>
-                    <span>
-                        {/* { isSignInEmailEnabled && !isEmbedded && !isBuyNowCart &&
-                            <TranslatedLink
-                                id="login_email.link"
-                                onClick={ onSendLoginEmail }
-                                testId="customer-signin-link"
-                            /> 
-                        */}
-                        
-                        {/* { !isSignInEmailEnabled && !isEmbedded && !shouldRedirectToStorefrontForAuth &&
-                            <a
-                                data-test="forgot-password-link"
-                                href={ forgotPasswordUrl }
-                                rel="noopener noreferrer"
-                                target="_blank"
-                            >
-                                <TranslatedString id="customer.forgot_password_action" />
-                            </a>
-                        } */}
-                    </span>
+                    <span />
                     { viewType === CustomerViewType.Login && shouldShowCreateAccountLink &&
-                        <span>
-                            {/* <TranslatedLink
-                                id="customer.create_account_to_continue_text"
-                                onClick={onCreateAccount}
-                            /> */}
-                        </span>
+                        <span />
                     }
                 </p>
 
@@ -247,9 +162,6 @@ const LoginForm: FunctionComponent<
                             </a>
                         )}
                 </div>
-
-             { /*viewType === CustomerViewType.SuggestedLogin && changeEmailLink()
-             */}
             </Fieldset>
         </Form>
     );
