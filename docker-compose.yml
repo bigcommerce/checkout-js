@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  checkout:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      # NODE Web server exposed
+      - '8080:8080'
+    volumes:
+      # This syncs your current directory on your host to /usr/src/app in the container
+      - .:/usr/src/app
+      # This prevents your local node_modules from overwriting the container's node_modules
+      - /usr/src/app/node_modules
+    # Override the Dockerfile's CMD to run the actual watch-and-rebuild process
+    command: npm run dev

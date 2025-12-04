@@ -1,14 +1,15 @@
 import classNames from 'classnames';
 import { type FormikProps, withFormik } from 'formik';
 import { noop } from 'lodash';
-import React, { type FunctionComponent, memo, useCallback } from 'react';
+import React, { type FunctionComponent, memo,  MouseEvent } from 'react';
+// import React, { type FunctionComponent, memo, useCallback, MouseEvent } from 'react';
 import { object, string } from 'yup';
 
 import { useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import {
-    TranslatedHtml,
-    TranslatedLink,
+    // TranslatedHtml,
+    // TranslatedLink,
     TranslatedString,
     withLanguage,
     type WithLanguageProps,
@@ -19,10 +20,10 @@ import { Button, ButtonVariant } from '../ui/button';
 import { Fieldset, Form, Legend } from '../ui/form';
 
 import CustomerViewType from './CustomerViewType';
-import EmailField from './EmailField';
+// import EmailField from './EmailField';
 import getEmailValidationSchema from './getEmailValidationSchema';
 import mapErrorMessage from './mapErrorMessage';
-import PasswordField from './PasswordField';
+// import PasswordField from './PasswordField';
 import { RedirectToStorefrontLogin } from './RedirectToStorefrontLogin';
 
 export interface LoginFormProps {
@@ -41,24 +42,24 @@ export interface LoginFormProps {
 }
 
 export interface LoginFormValues {
-    email: string;
-    password: string;
+    // email: string;
+    // password: string;
 }
 
 const LoginForm: FunctionComponent<
     LoginFormProps & FormikProps<LoginFormValues> & WithLanguageProps
 > = ({
     continueAsGuestButtonLabelId,
-    email,
-    isEmbedded,
+    //email,
+    //isEmbedded,
     language,
     signInError,
     onCancel = noop,
-    onChangeEmail,
+    //onChangeEmail,
     onContinueAsGuest,
-    onCreateAccount = noop,
-    onSendLoginEmail = noop,
-    isFloatingLabelEnabled,
+    //onCreateAccount = noop,
+    //onSendLoginEmail = noop,
+    // isFloatingLabelEnabled,
     viewType = CustomerViewType.Login,
 }) => {
     const { themeV2 } = useThemeContext();
@@ -78,33 +79,43 @@ const LoginForm: FunctionComponent<
     const {
         checkoutSettings: {
             isAccountCreationEnabled: shouldShowCreateAccountLink,
-            isSignInEmailEnabled,
+            //isSignInEmailEnabled,
             guestCheckoutEnabled: canCancel,
             shouldRedirectToStorefrontForAuth,
         },
-        links: {
-            forgotPasswordLink: forgotPasswordUrl
-        }
+        // links: {
+        //     forgotPasswordLink: forgotPasswordUrl
+        // }
     } = config;
 
-    const isBuyNowCart = cart.source === 'BUY_NOW';
+    //const isBuyNowCart = cart.source === 'BUY_NOW';
 
-    const changeEmailLink = useCallback(() => {
-        if (!email) {
-            return null;
+    // const changeEmailLink = useCallback(() => {
+    //     if (!email) {
+    //         return null;
+    //     }
+
+    //     return (
+    //         <p className="optimizedCheckout-contentSecondary">
+    //             <TranslatedLink
+    //                 data={{ email }}
+    //                 id="customer.guest_could_login_change_email"
+    //                 onClick={onCancel}
+    //                 testId="change-email"
+    //             />
+    //         </p>
+    //     );
+    // }, [email, onCancel]);
+
+    const handleRedirect = (event: MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+        // prod vs test myiapp redirects
+        if (window.location.hostname === 'store.iapp.com') {
+            window.location.href = 'https://myiapp.org/store?redirectPage=checkout';
+        } else {
+            window.location.href = 'https://test.myiapp.org/store?redirectPage=checkout';
         }
-
-        return (
-            <p className="optimizedCheckout-contentSecondary">
-                <TranslatedLink
-                    data={{ email }}
-                    id="customer.guest_could_login_change_email"
-                    onClick={onCancel}
-                    testId="change-email"
-                />
-            </p>
-        );
-    }, [email, onCancel]);
+    };
 
     return (
         <Form
@@ -125,44 +136,45 @@ const LoginForm: FunctionComponent<
                     </Alert>
                 )}
 
-                {viewType === CustomerViewType.SuggestedLogin && (
+                {/* {viewType === CustomerViewType.SuggestedLogin && (
                     <Alert type={AlertType.Info}>
                         <TranslatedHtml data={{ email }} id="customer.guest_could_login" />
                     </Alert>
-                )}
+                )} */}
 
-                {viewType === CustomerViewType.CancellableEnforcedLogin && (
+                {/* {viewType === CustomerViewType.CancellableEnforcedLogin && (
                     <Alert type={AlertType.Info}>
                         <TranslatedHtml data={{ email }} id="customer.guest_must_login" />
                     </Alert>
-                )}
+                )} */}
 
                 {viewType === CustomerViewType.EnforcedLogin && (
                     <Alert type={AlertType.Error}>
-                        <TranslatedLink
+                        {/* <TranslatedLink
                             id="customer.guest_temporary_disabled"
                             onClick={onCreateAccount}
-                        />
+                        /> */}
                     </Alert>
                 )}
 
-                {(viewType === CustomerViewType.Login ||
+                {/* {(viewType === CustomerViewType.Login ||
                     viewType === CustomerViewType.EnforcedLogin) && (
                     <EmailField isFloatingLabelEnabled={isFloatingLabelEnabled} onChange={onChangeEmail} />
-                )}
+                )} */}
 
-                {!shouldRedirectToStorefrontForAuth && <PasswordField isFloatingLabelEnabled={isFloatingLabelEnabled} />}
+                {/* {!shouldRedirectToStorefrontForAuth && <PasswordField isFloatingLabelEnabled={isFloatingLabelEnabled} />} */}
 
                 <p className={classNames('form-legend-container', { 'body-cta': themeV2 })}>
                     <span>
-                        { isSignInEmailEnabled && !isEmbedded && !isBuyNowCart &&
+                        {/* { isSignInEmailEnabled && !isEmbedded && !isBuyNowCart &&
                             <TranslatedLink
                                 id="login_email.link"
                                 onClick={ onSendLoginEmail }
                                 testId="customer-signin-link"
-                            />
-                        }
-                        { !isSignInEmailEnabled && !isEmbedded && !shouldRedirectToStorefrontForAuth &&
+                            /> 
+                        */}
+                        
+                        {/* { !isSignInEmailEnabled && !isEmbedded && !shouldRedirectToStorefrontForAuth &&
                             <a
                                 data-test="forgot-password-link"
                                 href={ forgotPasswordUrl }
@@ -171,14 +183,14 @@ const LoginForm: FunctionComponent<
                             >
                                 <TranslatedString id="customer.forgot_password_action" />
                             </a>
-                        }
+                        } */}
                     </span>
                     { viewType === CustomerViewType.Login && shouldShowCreateAccountLink &&
                         <span>
-                            <TranslatedLink
+                            {/* <TranslatedLink
                                 id="customer.create_account_to_continue_text"
                                 onClick={onCreateAccount}
-                            />
+                            /> */}
                         </span>
                     }
                 </p>
@@ -192,15 +204,14 @@ const LoginForm: FunctionComponent<
                         :
                         <Button
                             className={themeV2 ? 'body-bold' : ''}
-                            disabled={isSigningIn() || isExecutingPaymentMethodCheckout()}
                             id="checkout-customer-continue"
-                            isLoading={isSigningIn() || isExecutingPaymentMethodCheckout()}
+                            onClick={handleRedirect}
                             testId="customer-continue-button"
-                            type="submit"
                             variant={ButtonVariant.Primary}
-                    >
-                        <TranslatedString id="customer.sign_in_action" />
-                    </Button>}
+                        >
+                            <TranslatedString id="customer.sign_in_action" />
+                        </Button>
+                    }
 
                     {viewType === CustomerViewType.SuggestedLogin && (
                         <a
@@ -237,7 +248,8 @@ const LoginForm: FunctionComponent<
                         )}
                 </div>
 
-                {viewType === CustomerViewType.SuggestedLogin && changeEmailLink()}
+             { /*viewType === CustomerViewType.SuggestedLogin && changeEmailLink()
+             */}
             </Fieldset>
         </Form>
     );
