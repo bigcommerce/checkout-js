@@ -263,6 +263,15 @@ describe('when using Stripe OCS payment', () => {
         expect(hidePaymentSubmitButtonMock).toHaveBeenCalledWith(method, false);
     });
 
+    it('should not initialize method if payment not required', () => {
+        jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(false);
+
+        render(<PaymentMethodTest {...defaultProps} method={method} />);
+
+        expect(screen.queryByTestId('stripe-accordion-skeleton')).not.toBeInTheDocument();
+        expect(checkoutService.initializePayment).not.toHaveBeenCalled();
+    });
+
     describe('# Stripe OCS accordion layout', () => {
         it('should initialize with auto layout when isCustomChecklistItem is false', () => {
             method = {
