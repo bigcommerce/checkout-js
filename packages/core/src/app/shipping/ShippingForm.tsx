@@ -73,16 +73,15 @@ const ShippingForm = ({
         }
     }, [shippingFormRenderTimestamp]);
 
-    // Handle error when no countries are available - use useEffect to avoid setState during render
     useEffect(() => {
-        if (countries.length === 0 && isNoCountriesErrorOnCheckoutEnabled) {
+        if (isInitialValueLoaded && countries.length === 0 && isNoCountriesErrorOnCheckoutEnabled) {
             onUnhandledError(new CustomError({
                 name: 'no_countries_available',
                 message: getLanguageService().translate('shipping.no_countries_available_message'),
                 title: getLanguageService().translate('shipping.no_countries_available_heading'),
             }));
         }
-    }, [countries.length]);
+    }, [isInitialValueLoaded, countries.length]);
 
     const getMultiShippingForm = () => {
         return <MultiShippingForm
@@ -95,7 +94,7 @@ const ShippingForm = ({
         />;
     };
 
-    if (countries.length === 0 && isNoCountriesErrorOnCheckoutEnabled) {
+    if (isInitialValueLoaded && countries.length === 0 && isNoCountriesErrorOnCheckoutEnabled) {
         return null;
     }
 

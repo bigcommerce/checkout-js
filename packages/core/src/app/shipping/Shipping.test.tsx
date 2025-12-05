@@ -36,7 +36,7 @@ import {
     shippingAddress,
     shippingQuoteFailedMessage,
 } from '@bigcommerce/checkout/test-framework';
-import { renderWithoutWrapper as render, screen, within } from '@bigcommerce/checkout/test-utils';
+import { renderWithoutWrapper as render, screen, waitFor, within } from '@bigcommerce/checkout/test-utils';
 
 import Checkout, { type CheckoutProps } from '../checkout/Checkout';
 import { createErrorLogger } from '../common/error';
@@ -846,23 +846,25 @@ describe('Shipping step', () => {
 
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithBillingEmail, { config });
 
-            // Mock getShippingCountries to return empty array
             jest.spyOn(checkoutService.getState().data, 'getShippingCountries').mockReturnValue([]);
 
-            // Spy on errorLogger to verify error handling
-            jest.spyOn(defaultProps.errorLogger, 'log');
+            jest.spyOn(checkoutService, 'loadShippingAddressFields').mockResolvedValue(checkoutService.getState());
+            jest.spyOn(checkoutService, 'loadShippingOptions').mockResolvedValue(checkoutService.getState());
+            jest.spyOn(checkoutService, 'loadBillingAddressFields').mockResolvedValue(checkoutService.getState());
 
+            jest.spyOn(defaultProps.errorLogger, 'log');
             render(<CheckoutTest {...defaultProps} />);
 
             await checkout.waitForShippingStep();
 
-            // Verify that error was logged
-            expect(defaultProps.errorLogger.log).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    name: 'no_countries_available',
-                    type: 'custom',
-                })
-            );
+            await waitFor(() => {
+                expect(defaultProps.errorLogger.log).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        name: 'no_countries_available',
+                        type: 'custom',
+                    })
+                );
+            });
         });
 
         it('does not call onUnhandledError when no countries are available but experiment is disabled', async () => {
