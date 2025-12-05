@@ -25,17 +25,17 @@
 
 .applied-coupons-list {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: spacing('half');
 
     ul {
         background: $color-greyLightest;
         color: $color-primary;
         display: inline-block;
         padding: spacing('quarter');
-        margin: 0 0 spacing('half');
         font-weight: fontWeight("thin");
         word-break: break-all;
+        margin: 0;
 
         .coupon-icon {
             vertical-align: middle;
@@ -47,10 +47,6 @@
             vertical-align: middle;
             margin-left: spacing('half');
         }
-    }
-
-    ul:last-child {
-        margin-bottom: 0;
     }
 
     ul.applied-coupon-error-message{
@@ -91,6 +87,12 @@
 }
 
 // Discounts section styles
+.subtotals-with-multi-coupon {
+    .cart-priceItem {
+        margin-top: spacing('half');
+    }
+}
+
 .coupon-discount-toggle,.shipping-discount-toggle {
     cursor: pointer;
 
@@ -105,8 +107,6 @@
 }
 
 .shipping-discount-toggle{
-    margin-top: spacing('half');
-
     .shipping-cost-before-discount {
         color: $color-secondaryDarkest;
         text-decoration: line-through;
@@ -119,6 +119,7 @@
         color: $color-secondaryDarkest;
         font-family: $fontFamily-montserrat;
         font-weight: fontWeight("thin");
+        vertical-align: baseline;
     }
 
     span:last-child {

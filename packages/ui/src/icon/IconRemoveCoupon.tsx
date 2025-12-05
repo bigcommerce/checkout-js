@@ -1,11 +1,16 @@
 import React, { type FunctionComponent } from 'react';
 
-const IconRemoveCoupon: FunctionComponent = () => {
+interface IconRemoveCouponProps {
+    onClick?: () => void;
+}
+
+const IconRemoveCoupon: FunctionComponent<IconRemoveCouponProps> = ({ onClick }) => {
     return (
         <svg
             className="remove-coupon-icon"
             fill="none"
             height="20"
+            onClick={onClick}
             viewBox="0 0 20 20"
             width="20"
             xmlns="http://www.w3.org/2000/svg"
