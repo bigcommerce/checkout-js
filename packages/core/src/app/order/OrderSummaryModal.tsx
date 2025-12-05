@@ -11,7 +11,7 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { Button, IconCloseWithBorder } from '@bigcommerce/checkout/ui';
 
 import { isExperimentEnabled } from '../common/utility';
-import { MultiCoupon } from '../coupon';
+import { NewOrderSummarySubtotals } from '../coupon';
 import { ShopperCurrency } from '../currency';
 import { Modal, ModalHeader } from '../ui/modal';
 import { isSmallScreen } from '../ui/responsive';
@@ -90,7 +90,7 @@ const OrderSummaryModal: FunctionComponent<
             <OrderSummaryItems displayLineItemsCount={false} items={items} />
         </OrderSummarySection>
         {isMultiCouponEnabled
-            ? <MultiCoupon />
+            ? <NewOrderSummarySubtotals />
             : <OrderSummarySection>
                     <OrderSummarySubtotals isTaxIncluded={isTaxIncluded} taxes={taxes} {...orderSummarySubtotalsProps} />
                     {additionalLineItems}

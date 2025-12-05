@@ -3,14 +3,36 @@ import React, { type FunctionComponent, useState } from 'react';
 
 import { useLocale, useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { IconCoupon, IconError, IconRemoveCoupon, TextInput } from '@bigcommerce/checkout/ui';
+import { IconError, IconRemoveCoupon, TextInput } from '@bigcommerce/checkout/ui';
 
 import { Button, ButtonVariant } from '../../ui/button';
+import { useMultiCoupon } from '../useMultiCoupon';
+
+import { AppliedCouponsOrGiftCertificates } from './AppliedCouponsOrGiftCertificates';
 
 export const CouponForm: FunctionComponent = () => {
     const [applyCouponError, setApplyCouponError] = useState<string | null>(null);
+    const [code, setCode] = useState<string>('');
+
     const { themeV2 } = useThemeContext();
     const { language } = useLocale();
+    const { applyCouponOrGiftCertificate } = useMultiCoupon();
+
+    const handleTextInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setCode(event.currentTarget.value.trim());
+    };
+
+    const submitForm = async () => {
+        try {
+            await applyCouponOrGiftCertificate(code);
+
+            setCode('');
+        } catch (error) {
+            // TODO: Handle different error types accordingly
+            // eslint-disable-next-line no-console
+            console.log(error);
+        }
+    };
 
     return (
         <>
@@ -18,15 +40,18 @@ export const CouponForm: FunctionComponent = () => {
                 <TextInput
                     additionalClassName="form-input optimizedCheckout-form-input coupon-input"
                     aria-label={language.translate('redeemable.code_label')}
+                    onChange={handleTextInputChange}
                     placeholder={language.translate('redeemable.coupon_placeholder')}
                     testId="redeemableEntry-input"
                     themeV2={themeV2}
+                    value={code}
                 />
                 <Button
                     className={classNames('coupon-button', {
                         'body-bold': themeV2,
                     })}
                     id="applyRedeemableButton"
+                    onClick={submitForm}
                     testId="redeemableEntry-submit"
                     variant={ButtonVariant.Secondary}
                 >
@@ -41,10 +66,7 @@ export const CouponForm: FunctionComponent = () => {
                         <span onClick={() => setApplyCouponError(null)}><IconRemoveCoupon /></span>
                     </ul>
                 }
-                <ul><IconCoupon />Chicken mugs half price! (ABC11111)<IconRemoveCoupon /></ul>
-                <ul><IconCoupon />ABC22222<IconRemoveCoupon /></ul>
-                <ul><IconCoupon />New customer 10% off Loooooooooooooonnnnnnnnng(EXTRA12345)<IconRemoveCoupon /></ul>
-                <ul><IconCoupon />Free sample (FREE34567)<IconRemoveCoupon /></ul>
+                <AppliedCouponsOrGiftCertificates />
             </div>
         </>
     );
