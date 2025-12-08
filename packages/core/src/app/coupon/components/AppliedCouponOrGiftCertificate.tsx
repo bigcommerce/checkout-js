@@ -2,12 +2,12 @@ import React, { type FunctionComponent } from 'react';
 
 import { IconCoupon, IconRemoveCoupon } from '@bigcommerce/checkout/ui';
 
-interface AppliedCouponProps {
+interface AppliedCouponOrGiftCertificateProps {
     code: string;
-    onClick?: () => void;
+    onClick: () => void;
 }
 
-export const AppliedCouponOrGiftCertificate: FunctionComponent<AppliedCouponProps> = ({
+export const AppliedCouponOrGiftCertificate: FunctionComponent<AppliedCouponOrGiftCertificateProps> = ({
     code,
     onClick,
 }) => (
