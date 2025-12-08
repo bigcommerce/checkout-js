@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.705.0](https://github.com/bigcommerce/checkout-js/compare/v1.704.1...v1.705.0) (2025-12-08)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9677 Enable Adding or Removing Coupons ([#2721](https://github.com/bigcommerce/checkout-js/issues/2721)) ([6c16854](https://github.com/bigcommerce/checkout-js/commit/6c168545a4afa9655a53618d0c89bcfc80931f43))
+
 ### [1.704.1](https://github.com/bigcommerce/checkout-js/compare/v1.704.0...v1.704.1) (2025-12-08)
 
 
