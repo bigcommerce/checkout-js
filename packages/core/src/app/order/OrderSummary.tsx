@@ -12,7 +12,7 @@ import { useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedHtml, TranslatedString } from '@bigcommerce/checkout/locale';
 
 import { isExperimentEnabled } from '../common/utility';
-import { MultiCoupon } from '../coupon';
+import { NewOrderSummarySubtotals } from '../coupon';
 
 import OrderSummaryHeader from './OrderSummaryHeader';
 import OrderSummaryItems from './OrderSummaryItems';
@@ -32,18 +32,24 @@ export interface OrderSummaryProps {
 }
 
 const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsProps> = ({
-    isTaxIncluded,
-    taxes,
-    storeCurrency,
-    shopperCurrency,
-    headerLink,
     additionalLineItems,
+    fees,
+    giftWrappingAmount,
+    handlingAmount,
+    headerLink,
+    isTaxIncluded,
     lineItems,
+    shopperCurrency,
+    storeCreditAmount,
+    storeCurrency,
+    taxes,
     total,
     ...orderSummarySubtotalsProps
 }) => {
     const { checkoutState } = useCheckout();
     const { checkoutSettings } = checkoutState.data.getConfig() ?? {};
+
+    // TODO: When removing the experiment, rename `NewOrderSummarySubtotals` to `OrderSummarySubtotals`.
     const isMultiCouponEnabled = isExperimentEnabled(checkoutSettings, 'PROJECT-7321-5991.multi-coupon-cart-checkout', false);
 
     const nonBundledLineItems = useMemo(() => removeBundledItems(lineItems), [lineItems]);
@@ -62,7 +68,14 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
             <Extension region={ExtensionRegion.SummaryLastItemAfter} />
 
             {isMultiCouponEnabled
-                ? <MultiCoupon />
+                ? <NewOrderSummarySubtotals
+                        fees={fees}
+                        giftWrappingAmount={giftWrappingAmount}
+                        handlingAmount={handlingAmount}
+                        isTaxIncluded={isTaxIncluded}
+                        storeCreditAmount={storeCreditAmount}
+                        taxes={taxes}
+                    />
                 : <OrderSummarySection>
                     <OrderSummarySubtotals isTaxIncluded={isTaxIncluded} taxes={taxes} {...orderSummarySubtotalsProps} />
                     {additionalLineItems}
