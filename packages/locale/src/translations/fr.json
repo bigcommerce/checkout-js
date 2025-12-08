@@ -481,11 +481,14 @@
             "coupon_location_error": "Votre adresse de livraison ne répond pas aux exigences géographiques du code promotionnel saisi.",
             "coupon_min_order_total": "Votre commande n'atteint pas le montant total minimum pour que ce code promotionnel puisse être appliqué.",
             "coupon_text": "Code promotionnel",
+            "coupon_placeholder": "Saisissez votre code ici",
+            "discounts_text": "Remises",
             "gift_certificate_remaining_text": "restant·s",
             "gift_certificate_text": "Chèque-cadeau",
             "remove_action": "Supprimer",
             "store_credit_available_text": "Un avoir de {storeCredit} est actuellement disponible sur votre compte",
-            "toggle_action": "Code promotionnel/chèque-cadeau"
+            "toggle_action": "Code promotionnel/chèque-cadeau",
+            "total_savings_text": "Vous avez économisé <span class=\"total-savings-highlight\">{totalSaving}</span> au total !"
         },
         "remote": {
             "browser_unsupported": "Vous devez utiliser un autre navigateur Web pour le mode de paiement sélectionné. Veuillez choisir un autre mode de paiement.",
@@ -543,6 +546,8 @@
             "multishipping_left_to_allocate_items_table_item": "Article",
             "multishipping_left_to_allocate_items_table_left_to_allocate": "Articles restants pour attribution",
             "multishipping_left_to_allocate_items_table_quantity": "Quantité",
+            "no_countries_available_heading": "Nous rencontrons des difficultés à charger votre pays de livraison",
+            "no_countries_available_message": "Veuillez actualiser la page ou réessayer dans un instant. Si le problème persiste, contactez notre équipe d’assistance et nous vous aiderons à finaliser votre commande.",
             "multishipping_item_split_tooltip_message": "Ces quantités d'articles sont réparties sur une ligne distincte en raison d'une promotion basée sur la quantité ou d'un prix personnalisé.",
             "ship_to_multi": "Livrer à plusieurs adresses",
             "ship_to_single": "Livrer à une seule adresse",

@@ -481,11 +481,14 @@
             "coupon_location_error": "Twój adres wysyłki nie spełnia wymogów lokalizacji dla wprowadzonego kodu kuponu.",
             "coupon_min_order_total": "Twoje zamówienie nie spełnia minimalnej kwoty, aby ten kod kuponu mógł zostać zastosowany.",
             "coupon_text": "Kupon",
+            "coupon_placeholder": "Enter your code here",
+            "discounts_text": "Rabaty",
             "gift_certificate_remaining_text": "Pozostałe",
             "gift_certificate_text": "Bon podarunkowy",
             "remove_action": "Usuń",
             "store_credit_available_text": "Na Twoim koncie jest obecnie dostępny kredyt sklepowy {storeCredit}",
-            "toggle_action": "Kupon/ bon podarunkowy"
+            "toggle_action": "Coupon / gift certificate",
+            "total_savings_text": "You saved <span class=\"total-savings-highlight\">{totalSaving}</span> in total!"
         },
         "remote": {
             "browser_unsupported": "Wybrana metoda płatności wymaga innej przeglądarki internetowej. Wybierz inną metodę płatności.",
@@ -543,6 +546,8 @@
             "multishipping_left_to_allocate_items_table_item": "Przedmiot",
             "multishipping_left_to_allocate_items_table_left_to_allocate": "Pozostało do przydzielenia",
             "multishipping_left_to_allocate_items_table_quantity": "Ilość",
+            "no_countries_available_heading": "We're having trouble loading your shipping country",
+            "no_countries_available_message": "Please refresh the page or try again in a moment. If the issue continues, contact our support team and we'll help complete your order.",
             "multishipping_item_split_tooltip_message": "Ze względu na promocję bazującą na liczbie lub cenę niestandardową liczby sztuk tych przedmiotów są dzielone na osobne wiersze.",
             "ship_to_multi": "Wysyłka na wiele adresów",
             "ship_to_single": "Wyślij na jeden adres",

@@ -481,11 +481,14 @@
             "coupon_location_error": "Uw verzendadres voldoet niet aan de locatievereisten voor de couponcode die u heeft ingevoerd.",
             "coupon_min_order_total": "Uw bestelling voldoet niet aan het minimale totaalbedrag voor deze couponcode.",
             "coupon_text": "Coupon",
+            "coupon_placeholder": "Voer hier je code in",
+            "discounts_text": "Kortingen",
             "gift_certificate_remaining_text": "resterend",
             "gift_certificate_text": "Cadeaubon",
             "remove_action": "Verwijderen",
             "store_credit_available_text": "Je account beschikt momenteel over een totaal winkeltegoed van {storeCredit}",
-            "toggle_action": "Coupon/cadeaubon"
+            "toggle_action": "Coupon/cadeaubon",
+            "total_savings_text": "Je hebt in totaal <span class=\"total-savings-highlight\">{totalSaving}</span> bespaard!"
         },
         "remote": {
             "browser_unsupported": "Voor de geselecteerde betaalmethode is een andere webbrowser vereist. Kies een andere betaalmethode.",
@@ -543,6 +546,8 @@
             "multishipping_left_to_allocate_items_table_item": "Artikel",
             "multishipping_left_to_allocate_items_table_left_to_allocate": "Nog toe te wijzen",
             "multishipping_left_to_allocate_items_table_quantity": "Aantal",
+            "no_countries_available_heading": "We hebben problemen met het laden van je verzendland",
+            "no_countries_available_message": "Vernieuw de pagina of probeer het over enkele ogenblikken opnieuw. Als het probleem zich blijft voordoen, neem dan contact op met onze klantenservice. Dan helpen we je om je bestelling te voltooien.",
             "multishipping_item_split_tooltip_message": "Deze artikelaantallen zijn opgesplitst in een aparte rij vanwege een promotie op basis van aantal of een aangepaste prijs.",
             "ship_to_multi": "Verzenden naar meerdere adressen",
             "ship_to_single": "Verzenden naar een enkel adres",
