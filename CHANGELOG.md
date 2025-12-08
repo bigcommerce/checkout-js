@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.705.1](https://github.com/bigcommerce/checkout-js/compare/v1.705.0...v1.705.1) (2025-12-08)
+
+
+### Bug Fixes
+
+* **shipping:** CHECKOUT-9630 Update empty countries error logic to account for logged in shopper ([#2719](https://github.com/bigcommerce/checkout-js/issues/2719)) ([c7e924f](https://github.com/bigcommerce/checkout-js/commit/c7e924fce16fa32c5f637e8c535015c55373147b))
+
 ## [1.705.0](https://github.com/bigcommerce/checkout-js/compare/v1.704.1...v1.705.0) (2025-12-08)
 
 
