@@ -19,6 +19,7 @@ export const CouponForm: FunctionComponent = () => {
         applyCouponOrGiftCertificate,
         couponError,
         setCouponError,
+        shouldDisableCouponForm,
     } = useMultiCoupon();
 
     const handleTextInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,6 +44,7 @@ export const CouponForm: FunctionComponent = () => {
                 <TextInput
                     additionalClassName="form-input optimizedCheckout-form-input coupon-input"
                     aria-label={language.translate('redeemable.code_label')}
+                    disabled={shouldDisableCouponForm}
                     onChange={handleTextInputChange}
                     placeholder={language.translate('redeemable.coupon_placeholder')}
                     testId="redeemableEntry-input"
@@ -53,6 +55,7 @@ export const CouponForm: FunctionComponent = () => {
                     className={classNames('coupon-button', {
                         'body-bold': themeV2,
                     })}
+                    disabled={shouldDisableCouponForm}
                     id="applyRedeemableButton"
                     onClick={submitForm}
                     testId="redeemableEntry-submit"

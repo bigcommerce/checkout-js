@@ -28,6 +28,10 @@ describe('useMultiCoupon', () => {
             getCoupons: jest.fn(),
             getGiftCertificates: jest.fn(),
         },
+        statuses: {
+            isSubmittingOrder: jest.fn(),
+            isPending: jest.fn(),
+        },
     };
 
     beforeEach(() => {
@@ -39,6 +43,8 @@ describe('useMultiCoupon', () => {
         checkoutState.data.getConfig.mockReturnValue(getStoreConfig());
         checkoutState.data.getCoupons.mockReturnValue([]);
         checkoutState.data.getGiftCertificates.mockReturnValue([]);
+        checkoutState.statuses.isSubmittingOrder.mockReturnValue(false);
+        checkoutState.statuses.isPending.mockReturnValue(false);
     });
 
     afterEach(() => {
@@ -55,6 +61,7 @@ describe('useMultiCoupon', () => {
         expect(result.current.removeCoupon).toBeInstanceOf(Function);
         expect(result.current.removeGiftCertificate).toBeInstanceOf(Function);
         expect(result.current.setCouponError).toBeInstanceOf(Function);
+        expect(result.current.shouldDisableCouponForm).toBe(false);
         expect(result.current.isCouponCodeCollapsed).toBe(true);
     });
 
@@ -364,6 +371,44 @@ describe('useMultiCoupon', () => {
             });
 
             expect(result.current.couponError).toBe(null);
+        });
+    });
+
+    describe('shouldDisableCouponForm', () => {
+        it('returns false when order is not being submitted and not pending', () => {
+            checkoutState.statuses.isSubmittingOrder.mockReturnValue(false);
+            checkoutState.statuses.isPending.mockReturnValue(false);
+
+            const { result } = renderHook(() => useMultiCoupon());
+
+            expect(result.current.shouldDisableCouponForm).toBe(false);
+        });
+
+        it('returns true when order is being submitted', () => {
+            checkoutState.statuses.isSubmittingOrder.mockReturnValue(true);
+            checkoutState.statuses.isPending.mockReturnValue(false);
+
+            const { result } = renderHook(() => useMultiCoupon());
+
+            expect(result.current.shouldDisableCouponForm).toBe(true);
+        });
+
+        it('returns true when order is pending', () => {
+            checkoutState.statuses.isSubmittingOrder.mockReturnValue(false);
+            checkoutState.statuses.isPending.mockReturnValue(true);
+
+            const { result } = renderHook(() => useMultiCoupon());
+
+            expect(result.current.shouldDisableCouponForm).toBe(true);
+        });
+
+        it('returns true when both submitting and pending', () => {
+            checkoutState.statuses.isSubmittingOrder.mockReturnValue(true);
+            checkoutState.statuses.isPending.mockReturnValue(true);
+
+            const { result } = renderHook(() => useMultiCoupon());
+
+            expect(result.current.shouldDisableCouponForm).toBe(true);
         });
     });
 });

@@ -9,10 +9,11 @@ interface UseMultiCouponValues {
     appliedGiftCertificates: Array<{ code: string }>;
     applyCouponOrGiftCertificate: (code: string) => Promise<void>;
     couponError: string | null;
+    isCouponCodeCollapsed: boolean;
     removeCoupon: (code: string) => Promise<void>;
     removeGiftCertificate: (giftCertificateCode: string) => Promise<void>;
-    isCouponCodeCollapsed: boolean;
     setCouponError: (error: string | null) => void;
+    shouldDisableCouponForm: boolean;
 }
 
 export const useMultiCoupon = (): UseMultiCouponValues => {
@@ -21,7 +22,12 @@ export const useMultiCoupon = (): UseMultiCouponValues => {
     const [couponError, setCouponError] = useState<string | null>(null);
 
     const { checkoutState, checkoutService } = useCheckout();
-    const config = checkoutState.data.getConfig();
+    const {
+        data: { getConfig },
+        statuses: { isSubmittingOrder, isPending }
+    } = checkoutState;
+    const config = getConfig();
+    const shouldDisableCouponForm = isSubmittingOrder() || isPending();
 
     if (!config) {
         throw new Error('Checkout configuration is not available');
@@ -82,5 +88,6 @@ export const useMultiCoupon = (): UseMultiCouponValues => {
         removeCoupon,
         removeGiftCertificate,
         setCouponError,
+        shouldDisableCouponForm,
     };
 };
