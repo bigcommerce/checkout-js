@@ -90,7 +90,14 @@ const OrderSummaryModal: FunctionComponent<
             <OrderSummaryItems displayLineItemsCount={false} items={items} />
         </OrderSummarySection>
         {isMultiCouponEnabled
-            ? <NewOrderSummarySubtotals />
+            ? <NewOrderSummarySubtotals
+                fees={orderSummarySubtotalsProps.fees}
+                giftWrappingAmount={orderSummarySubtotalsProps.giftWrappingAmount}
+                handlingAmount={orderSummarySubtotalsProps.handlingAmount}
+                isTaxIncluded={isTaxIncluded}
+                storeCreditAmount={orderSummarySubtotalsProps.storeCreditAmount}
+                taxes={taxes}
+            />
             : <OrderSummarySection>
                     <OrderSummarySubtotals isTaxIncluded={isTaxIncluded} taxes={taxes} {...orderSummarySubtotalsProps} />
                     {additionalLineItems}

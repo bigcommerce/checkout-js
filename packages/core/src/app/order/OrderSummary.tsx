@@ -33,14 +33,10 @@ export interface OrderSummaryProps {
 
 const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsProps> = ({
     additionalLineItems,
-    fees,
-    giftWrappingAmount,
-    handlingAmount,
     headerLink,
     isTaxIncluded,
     lineItems,
     shopperCurrency,
-    storeCreditAmount,
     storeCurrency,
     taxes,
     total,
@@ -69,11 +65,11 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
 
             {isMultiCouponEnabled
                 ? <NewOrderSummarySubtotals
-                        fees={fees}
-                        giftWrappingAmount={giftWrappingAmount}
-                        handlingAmount={handlingAmount}
+                        fees={orderSummarySubtotalsProps.fees}
+                        giftWrappingAmount={orderSummarySubtotalsProps.giftWrappingAmount}
+                        handlingAmount={orderSummarySubtotalsProps.handlingAmount}
                         isTaxIncluded={isTaxIncluded}
-                        storeCreditAmount={storeCreditAmount}
+                        storeCreditAmount={orderSummarySubtotalsProps.storeCreditAmount}
                         taxes={taxes}
                     />
                 : <OrderSummarySection>
