@@ -11,12 +11,15 @@ import { useMultiCoupon } from '../useMultiCoupon';
 import { AppliedCouponsOrGiftCertificates } from './AppliedCouponsOrGiftCertificates';
 
 export const CouponForm: FunctionComponent = () => {
-    const [applyCouponError, setApplyCouponError] = useState<string | null>(null);
     const [code, setCode] = useState<string>('');
 
     const { themeV2 } = useThemeContext();
     const { language } = useLocale();
-    const { applyCouponOrGiftCertificate } = useMultiCoupon();
+    const {
+        applyCouponOrGiftCertificate,
+        couponError,
+        setCouponError,
+    } = useMultiCoupon();
 
     const handleTextInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setCode(event.currentTarget.value.trim());
@@ -28,9 +31,9 @@ export const CouponForm: FunctionComponent = () => {
 
             setCode('');
         } catch (error) {
-            // TODO: Handle different error types accordingly
-            // eslint-disable-next-line no-console
-            console.log(error);
+            if (error instanceof Error) {
+                setCouponError(error.message);
+            }
         }
     };
 
@@ -59,11 +62,11 @@ export const CouponForm: FunctionComponent = () => {
                 </Button>
             </div>
             <div className="applied-coupons-list">
-                {Boolean(applyCouponError) &&
+                {Boolean(couponError) &&
                     <ul className="applied-coupon-error-message" role="alert">
                         <IconError />
-                        <span>{applyCouponError}</span>
-                        <span onClick={() => setApplyCouponError(null)}><IconRemoveCoupon /></span>
+                        <span>{couponError}</span>
+                        <span onClick={() => setCouponError(null)}><IconRemoveCoupon /></span>
                     </ul>
                 }
                 <AppliedCouponsOrGiftCertificates />

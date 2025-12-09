@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 import { useCheckout } from '@bigcommerce/checkout/contexts';
 
 import { EMPTY_ARRAY } from '../common/utility';
@@ -6,12 +8,18 @@ interface UseMultiCouponValues {
     appliedCoupons: Array<{ code: string }>;
     appliedGiftCertificates: Array<{ code: string }>;
     applyCouponOrGiftCertificate: (code: string) => Promise<void>;
+    couponError: string | null;
     removeCoupon: (code: string) => Promise<void>;
     removeGiftCertificate: (giftCertificateCode: string) => Promise<void>;
     isCouponCodeCollapsed: boolean;
+    setCouponError: (error: string | null) => void;
 }
 
 export const useMultiCoupon = (): UseMultiCouponValues => {
+    const errorMessageTimeout = 7000;
+
+    const [couponError, setCouponError] = useState<string | null>(null);
+
     const { checkoutState, checkoutService } = useCheckout();
     const config = checkoutState.data.getConfig();
 
@@ -53,12 +61,26 @@ export const useMultiCoupon = (): UseMultiCouponValues => {
         await checkoutService.removeGiftCertificate(code);
     };
 
+    useEffect(() => {
+        if (couponError !== null) {
+            const timeoutId = setTimeout(() => {
+                setCouponError(null);
+            }, errorMessageTimeout);
+
+            return () => {
+                clearTimeout(timeoutId);
+            };
+        }
+    }, [couponError]);
+
     return {
         appliedCoupons,
         appliedGiftCertificates,
         applyCouponOrGiftCertificate,
-        removeGiftCertificate,
-        removeCoupon,
+        couponError,
         isCouponCodeCollapsed: config.checkoutSettings.isCouponCodeCollapsed,
+        removeCoupon,
+        removeGiftCertificate,
+        setCouponError,
     };
 };
