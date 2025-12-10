@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { useCheckout } from '@bigcommerce/checkout/contexts';
 
 import { EMPTY_ARRAY } from '../common/utility';
@@ -6,14 +8,24 @@ interface UseMultiCouponValues {
     appliedCoupons: Array<{ code: string }>;
     appliedGiftCertificates: Array<{ code: string }>;
     applyCouponOrGiftCertificate: (code: string) => Promise<void>;
+    couponError: string | null;
+    isCouponCodeCollapsed: boolean;
     removeCoupon: (code: string) => Promise<void>;
     removeGiftCertificate: (giftCertificateCode: string) => Promise<void>;
-    isCouponCodeCollapsed: boolean;
+    setCouponError: (error: string | null) => void;
+    shouldDisableCouponForm: boolean;
 }
 
 export const useMultiCoupon = (): UseMultiCouponValues => {
+    const [couponError, setCouponError] = useState<string | null>(null);
+
     const { checkoutState, checkoutService } = useCheckout();
-    const config = checkoutState.data.getConfig();
+    const {
+        data: { getConfig },
+        statuses: { isSubmittingOrder, isPending }
+    } = checkoutState;
+    const config = getConfig();
+    const shouldDisableCouponForm = isSubmittingOrder() || isPending();
 
     if (!config) {
         throw new Error('Checkout configuration is not available');
@@ -57,8 +69,11 @@ export const useMultiCoupon = (): UseMultiCouponValues => {
         appliedCoupons,
         appliedGiftCertificates,
         applyCouponOrGiftCertificate,
-        removeGiftCertificate,
-        removeCoupon,
+        couponError,
         isCouponCodeCollapsed: config.checkoutSettings.isCouponCodeCollapsed,
+        removeCoupon,
+        removeGiftCertificate,
+        setCouponError,
+        shouldDisableCouponForm,
     };
 };
