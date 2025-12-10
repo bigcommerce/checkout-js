@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { useCheckout } from '@bigcommerce/checkout/contexts';
 
@@ -17,8 +17,6 @@ interface UseMultiCouponValues {
 }
 
 export const useMultiCoupon = (): UseMultiCouponValues => {
-    const errorMessageTimeout = 7000;
-
     const [couponError, setCouponError] = useState<string | null>(null);
 
     const { checkoutState, checkoutService } = useCheckout();
@@ -66,18 +64,6 @@ export const useMultiCoupon = (): UseMultiCouponValues => {
     const removeGiftCertificate = async (code: string) => {
         await checkoutService.removeGiftCertificate(code);
     };
-
-    useEffect(() => {
-        if (couponError !== null) {
-            const timeoutId = setTimeout(() => {
-                setCouponError(null);
-            }, errorMessageTimeout);
-
-            return () => {
-                clearTimeout(timeoutId);
-            };
-        }
-    }, [couponError]);
 
     return {
         appliedCoupons,

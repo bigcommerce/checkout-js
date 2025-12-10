@@ -254,15 +254,6 @@ describe('useMultiCoupon', () => {
     });
 
     describe('couponError', () => {
-        beforeEach(() => {
-            jest.useFakeTimers();
-        });
-
-        afterEach(() => {
-            jest.runOnlyPendingTimers();
-            jest.useRealTimers();
-        });
-
         it('initializes with null error', () => {
             const { result } = renderHook(() => useMultiCoupon());
 
@@ -290,84 +281,6 @@ describe('useMultiCoupon', () => {
 
             act(() => {
                 result.current.setCouponError(null);
-            });
-
-            expect(result.current.couponError).toBe(null);
-        });
-
-        it('automatically clears error after 7 seconds', () => {
-            const { result } = renderHook(() => useMultiCoupon());
-
-            act(() => {
-                result.current.setCouponError('Test error message');
-            });
-
-            expect(result.current.couponError).toBe('Test error message');
-
-            act(() => {
-                jest.advanceTimersByTime(7000);
-            });
-
-            expect(result.current.couponError).toBe(null);
-        });
-
-        it('does not clear error before 7 seconds', () => {
-            const { result } = renderHook(() => useMultiCoupon());
-
-            act(() => {
-                result.current.setCouponError('Test error message');
-            });
-
-            expect(result.current.couponError).toBe('Test error message');
-
-            act(() => {
-                jest.advanceTimersByTime(6999);
-            });
-
-            expect(result.current.couponError).toBe('Test error message');
-        });
-
-        it('clears previous timeout when error is set again', () => {
-            const { result } = renderHook(() => useMultiCoupon());
-
-            act(() => {
-                result.current.setCouponError('First error');
-            });
-
-            act(() => {
-                jest.advanceTimersByTime(5000);
-            });
-
-            act(() => {
-                result.current.setCouponError('Second error');
-            });
-
-            expect(result.current.couponError).toBe('Second error');
-
-            act(() => {
-                jest.advanceTimersByTime(2000);
-            });
-
-            expect(result.current.couponError).toBe('Second error');
-
-            act(() => {
-                jest.advanceTimersByTime(5000);
-            });
-
-            expect(result.current.couponError).toBe(null);
-        });
-
-        it('does not set timeout when error is null', () => {
-            const { result } = renderHook(() => useMultiCoupon());
-
-            act(() => {
-                result.current.setCouponError(null);
-            });
-
-            expect(result.current.couponError).toBe(null);
-
-            act(() => {
-                jest.advanceTimersByTime(7000);
             });
 
             expect(result.current.couponError).toBe(null);

@@ -26,6 +26,12 @@ export const CouponForm: FunctionComponent = () => {
         setCode(event.currentTarget.value.trim());
     };
 
+    const clearErrorOnClick = () => {
+        if (couponError) {
+            setCouponError(null);
+        }
+    };
+
     const submitForm = async () => {
         try {
             await applyCouponOrGiftCertificate(code);
@@ -46,6 +52,7 @@ export const CouponForm: FunctionComponent = () => {
                     aria-label={language.translate('redeemable.code_label')}
                     disabled={shouldDisableCouponForm}
                     onChange={handleTextInputChange}
+                    onClick={clearErrorOnClick}
                     placeholder={language.translate('redeemable.coupon_placeholder')}
                     testId="redeemableEntry-input"
                     themeV2={themeV2}
