@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.706.0](https://github.com/bigcommerce/checkout-js/compare/v1.705.2...v1.706.0) (2025-12-10)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9679 Handle Coupon Error ([#2726](https://github.com/bigcommerce/checkout-js/issues/2726)) ([345a965](https://github.com/bigcommerce/checkout-js/commit/345a965e6a50aa5300fd329d47e9070c6d74d72e))
+
 ### [1.705.2](https://github.com/bigcommerce/checkout-js/compare/v1.705.1...v1.705.2) (2025-12-09)
 
 
