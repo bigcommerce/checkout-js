@@ -33,6 +33,10 @@ export const CouponForm: FunctionComponent = () => {
     };
 
     const submitForm = async () => {
+        if (!code) {
+            return;
+        }
+
         try {
             await applyCouponOrGiftCertificate(code);
 
