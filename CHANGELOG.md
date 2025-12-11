@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.707.0](https://github.com/bigcommerce/checkout-js/compare/v1.706.0...v1.707.0) (2025-12-11)
+
+
+### Features
+
+* **payment:** PI-3536 deprecate Masterpass ([#2711](https://github.com/bigcommerce/checkout-js/issues/2711)) ([d9aad19](https://github.com/bigcommerce/checkout-js/commit/d9aad19b390f77f46ace87441ec05d0d0030c10e))
+
 ## [1.706.0](https://github.com/bigcommerce/checkout-js/compare/v1.705.2...v1.706.0) (2025-12-10)
 
 
