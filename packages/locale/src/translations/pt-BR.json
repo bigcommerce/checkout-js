@@ -289,7 +289,6 @@
             "humm_not_processable_error": "O Humm não pode processar o pagamento do pedido; selecione outro método de pagamento.",
             "klarna_continue_action": "Continuar com o Klarna",
             "klarna_name_text": "Klarna",
-            "masterpass_name_text": "Masterpass",
             "mollie_unsupported_method_error": "Esta forma de pagamento não pode ser usada para a compra de produtos digitais. Entre em contato com o atendimento ao cliente ou tente novamente.",
             "opy_continue_action": "Continuar com {methodName}",
             "opy_widget_slogan": "Compre agora. Pague com mais inteligência.",
