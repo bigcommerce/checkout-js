@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import React, { type FunctionComponent, type ReactNode, useMemo } from 'react';
 
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
-import { useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
+import { useCheckout, useLocale, useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedHtml, TranslatedString } from '@bigcommerce/checkout/locale';
 
 import { isExperimentEnabled } from '../common/utility';
@@ -42,16 +42,24 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
     total,
     ...orderSummarySubtotalsProps
 }) => {
-    const { checkoutState } = useCheckout();
-    const { checkoutSettings } = checkoutState.data.getConfig() ?? {};
-
-    // TODO: When removing the experiment, rename `NewOrderSummarySubtotals` to `OrderSummarySubtotals`.
-    const isMultiCouponEnabled = isExperimentEnabled(checkoutSettings, 'CHECKOUT-9674.multi_coupon_cart_checkout', false);
-
     const nonBundledLineItems = useMemo(() => removeBundledItems(lineItems), [lineItems]);
     const displayInclusiveTax = isTaxIncluded && taxes && taxes.length > 0;
 
     const { themeV2 } = useThemeContext();
+    const { currency } = useLocale();
+
+    // TODO: When removing the experiment, rename `NewOrderSummarySubtotals` to `OrderSummarySubtotals`.
+    const { checkoutState } = useCheckout();
+    const { checkoutSettings } = checkoutState.data.getConfig() ?? {};
+    const checkout = checkoutState.data.getCheckout();
+    const isMultiCouponEnabled = isExperimentEnabled(checkoutSettings, 'CHECKOUT-9674.multi_coupon_cart_checkout', false) && Boolean(checkout);
+    const totalDiscount = checkout ? checkout.totalDiscount : undefined;
+
+    if (!currency) {
+        return null;
+    }
+
+    const isTotalDiscountVisible = Boolean(isMultiCouponEnabled && totalDiscount && totalDiscount > 0);
 
     return (
         <article className="cart optimizedCheckout-orderSummary" data-test="cart">
@@ -73,7 +81,11 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
                         taxes={taxes}
                     />
                 : <OrderSummarySection>
-                    <OrderSummarySubtotals isTaxIncluded={isTaxIncluded} taxes={taxes} {...orderSummarySubtotalsProps} />
+                    <OrderSummarySubtotals
+                        isTaxIncluded={isTaxIncluded}
+                        taxes={taxes}
+                        {...orderSummarySubtotalsProps}
+                    />
                     {additionalLineItems}
                 </OrderSummarySection>
             }
@@ -84,10 +96,10 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
                     shopperCurrencyCode={shopperCurrency.code}
                     storeCurrencyCode={storeCurrency.code}
                 />
-                {isMultiCouponEnabled &&
+                {(isTotalDiscountVisible && totalDiscount) &&
                     <div className="total-savings">
                         <TranslatedHtml
-                            data={{ totalSaving: '$75.64' }}
+                            data={{ totalDiscount: currency.toCustomerCurrency(totalDiscount) }}
                             id="redeemable.total_savings_text"
                         />
                     </div>

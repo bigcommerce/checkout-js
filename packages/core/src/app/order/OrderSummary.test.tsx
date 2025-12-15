@@ -11,12 +11,11 @@ import { getStoreConfig } from '../config/config.mock';
 
 import mapToOrderSummarySubtotalsProps from './mapToOrderSummarySubtotalsProps';
 import { getOrder, getOrderWithShippingDiscount } from './orders.mock';
-import OrderSummary, { type OrderSummaryProps } from './OrderSummary';
-import { type OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
+import OrderSummary from './OrderSummary';
 import PrintLink from './PrintLink';
 
 let order: Order;
-let OrderSummaryTest: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsProps>;
+let OrderSummaryTest: FunctionComponent;
 
 jest.mock('../currency', () => ({
     ShopperCurrency: ({ amount }: {amount: number}) => <div data-test="ShopperCurrency">{amount}</div>

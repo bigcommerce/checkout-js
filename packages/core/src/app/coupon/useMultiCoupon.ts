@@ -1,44 +1,97 @@
 import { useState } from 'react';
 
-import { useCheckout } from '@bigcommerce/checkout/contexts';
+import { useCheckout, useLocale } from '@bigcommerce/checkout/contexts';
 
 import { EMPTY_ARRAY } from '../common/utility';
 
+import { type AppliedGiftCertificateInfo } from './components/AppliedGiftCertificates';
+
+export interface DiscountItem {
+    name: string;
+    amount: number;
+}
+
+interface UIDetails {
+    subtotal: number;
+    discounts: number;
+    discountItems: DiscountItem[];
+    shipping: number;
+    shippingBeforeDiscount: number;
+}
+
 interface UseMultiCouponValues {
     appliedCoupons: Array<{ code: string }>;
-    appliedGiftCertificates: Array<{ code: string }>;
-    applyCouponOrGiftCertificate: (code: string) => Promise<void>;
+    appliedGiftCertificates: AppliedGiftCertificateInfo[];
     couponError: string | null;
-    isCouponCodeCollapsed: boolean;
+    isApplyingCouponOrGiftCertificate: boolean;
+    isCouponFormCollapsed: boolean;
+    isCouponFormDisabled: boolean;
+    uiDetails: UIDetails;
+    applyCouponOrGiftCertificate: (code: string) => Promise<void>;
     removeCoupon: (code: string) => Promise<void>;
     removeGiftCertificate: (giftCertificateCode: string) => Promise<void>;
     setCouponError: (error: string | null) => void;
-    shouldDisableCouponForm: boolean;
-    isApplyingCouponOrGiftCertificate: boolean;
 }
 
 export const useMultiCoupon = (): UseMultiCouponValues => {
     const [couponError, setCouponError] = useState<string | null>(null);
 
     const { checkoutState, checkoutService } = useCheckout();
+    const { language } = useLocale();
+
     const {
-        data: { getConfig },
+        data: { getConfig, getCheckout },
         statuses: { isSubmittingOrder, isPending, isApplyingCoupon, isApplyingGiftCertificate }
     } = checkoutState;
-    const config = getConfig();
-    const shouldDisableCouponForm = isSubmittingOrder() || isPending();
+    const { checkoutSettings } = getConfig() ?? {};
+    const checkout = getCheckout();
 
-    if (!config) {
-        throw new Error('Checkout configuration is not available');
+    if (!checkoutSettings || !checkout) {
+      throw new Error('Checkout is not available');
     }
 
+    const shouldDisableCouponForm = isSubmittingOrder() || isPending();
+
     const appliedCoupons = checkoutState.data.getCoupons()?.map(({ code }) => ({
-        code,
+        code
     })) ?? EMPTY_ARRAY;
 
-    const appliedGiftCertificates = checkoutState.data.getGiftCertificates()?.map(({ code }) => ({
+    const appliedGiftCertificates = checkoutState.data.getGiftCertificates()?.map(({ code, used }) => ({
         code,
+        amount: used,
     })) ?? EMPTY_ARRAY;
+
+    const getDiscountItems = () => {
+        const coupons: DiscountItem[] = [];
+
+        const autoPromotionAmount = checkout.orderBasedAutoDiscountTotal;
+        const manualDiscountAmount = checkout.manualDiscountTotal;
+
+        if (autoPromotionAmount > 0) {
+            coupons.push({
+                name: language.translate('redeemable.auto_promotion'),
+                amount: autoPromotionAmount,
+            });
+        }
+
+        if (manualDiscountAmount > 0) {
+            coupons.push({
+                name: language.translate('redeemable.manual_discount'),
+                amount: manualDiscountAmount,
+            });
+        }
+
+        checkout.coupons.forEach((coupon) => {
+            const couponName = coupon.displayName ? `${coupon.displayName} (${coupon.code})` : coupon.code;
+
+            coupons.push({
+                name: couponName,
+                amount: coupon.discountedAmount,
+            });
+        });
+
+        return coupons;
+    };
 
     const applyCouponOrGiftCertificate = async (code: string) => {
         const {
@@ -66,16 +119,25 @@ export const useMultiCoupon = (): UseMultiCouponValues => {
         await checkoutService.removeGiftCertificate(code);
     };
 
+    const uiDetails = {
+        subtotal: checkout.subtotal,
+        discounts: checkout.displayDiscountTotal,
+        discountItems: getDiscountItems(),
+        shippingBeforeDiscount: checkout.shippingCostBeforeDiscount,
+        shipping: checkout.comparisonShippingCost,
+    }
+
     return {
         appliedCoupons,
         appliedGiftCertificates,
-        applyCouponOrGiftCertificate,
         couponError,
-        isCouponCodeCollapsed: config.checkoutSettings.isCouponCodeCollapsed,
+        isApplyingCouponOrGiftCertificate: isApplyingCoupon() || isApplyingGiftCertificate(),
+        isCouponFormCollapsed: checkoutSettings.isCouponCodeCollapsed,
+        isCouponFormDisabled: shouldDisableCouponForm,
+        uiDetails,
+        applyCouponOrGiftCertificate,
         removeCoupon,
         removeGiftCertificate,
         setCouponError,
-        shouldDisableCouponForm,
-        isApplyingCouponOrGiftCertificate: isApplyingCoupon() || isApplyingGiftCertificate(),
     };
 };
