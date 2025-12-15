@@ -480,11 +480,14 @@
             "coupon_location_error": "Tu dirección de envío no cumple con los requisitos de ubicación para el código de cupón que ingresaste.",
             "coupon_min_order_total": "Tu pedido no alcanza el total mínimo para que se aplique este código de cupón.",
             "coupon_text": "Cupón",
+            "coupon_placeholder": "Introduce tus notas aquí",
+            "discounts_text": "Descuentos",
             "gift_certificate_remaining_text": "Restante",
             "gift_certificate_text": "Certificado de regalo",
             "remove_action": "Quitar",
             "store_credit_available_text": "Actualmente, tu cuenta tiene {storeCredit} de crédito total de la tienda disponible",
-            "toggle_action": "Cupón/Certificado de regalo"
+            "toggle_action": "Cupón/Certificado de regalo",
+            "total_savings_text": "¡Has <span class=\"total-savings-highlight\">ahorrado{totalSaving}</span> en total!"
         },
         "remote": {
             "browser_unsupported": "El método de pago seleccionado requiere un navegador web diferente. Elige otro método de pago.",
@@ -542,6 +545,8 @@
             "multishipping_left_to_allocate_items_table_item": "Artículo",
             "multishipping_left_to_allocate_items_table_left_to_allocate": "Queda por asignar",
             "multishipping_left_to_allocate_items_table_quantity": "Cantidad",
+            "no_countries_available_heading": "Estamos teniendo problemas para cargar tu país de envío",
+            "no_countries_available_message": "Por favor, actualiza la página o inténtalo de nuevo en un momento. Si el problema continúa, contacta con nuestro equipo de soporte y te ayudaremos a completar tu pedido.",
             "multishipping_item_split_tooltip_message": "Estas cantidades de artículos están divididas en una fila separada debido a una promoción por cantidad o a un precio personalizado.",
             "ship_to_multi": "Enviar a varias direcciones",
             "ship_to_single": "Enviar a una sola dirección",

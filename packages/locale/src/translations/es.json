@@ -480,11 +480,14 @@
             "coupon_location_error": "Su dirección de envío no cumple con los requisitos de ubicación para el código de cupón que ha introducido.",
             "coupon_min_order_total": "Su pedido no alcanza el total mínimo para que se aplique este código de cupón.",
             "coupon_text": "Con cupón",
+            "coupon_placeholder": "Introduce tu código aquí",
+            "discounts_text": "Descuentos",
             "gift_certificate_remaining_text": "resta",
             "gift_certificate_text": "Cupón de regalo",
             "remove_action": "Eliminar",
             "store_credit_available_text": "Tu cuenta tiene actualmente disponible un total de {storeCredit} de crédito en tienda",
-            "toggle_action": "Cupón de regalo"
+            "toggle_action": "Cupón de regalo",
+            "total_savings_text": "¡Has ahorrado <span class=\"total-savings-highlight\">{totalSaving}</span> en total!"
         },
         "remote": {
             "browser_unsupported": "El método de pago seleccionado requiere un navegador web diferente. Elija otro método de pago.",
@@ -542,6 +545,8 @@
             "multishipping_left_to_allocate_items_table_item": "Artículo",
             "multishipping_left_to_allocate_items_table_left_to_allocate": "Por asignar",
             "multishipping_left_to_allocate_items_table_quantity": "Cantidad",
+            "no_countries_available_heading": "Tenemos problemas para cargar tu país de envío",
+            "no_countries_available_message": "Actualiza la página o vuelve a intentarlo en un momento. Si el problema continúa, contacta con nuestro equipo de soporte y te ayudaremos a completar tu pedido.",
             "multishipping_item_split_tooltip_message": "Las cantidades de estos artículos se dividen en una fila separada debido a una promoción por cantidad o a un precio personalizado.",
             "ship_to_multi": "Enviar a varias direcciones",
             "ship_to_single": "Enviar a una sola dirección",

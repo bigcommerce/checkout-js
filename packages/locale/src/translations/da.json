@@ -480,11 +480,14 @@
             "coupon_location_error": "Din leveringsadresse opfylder ikke placeringskravene for den kuponkode, du har indtastet.",
             "coupon_min_order_total": "Din ordre opfylder ikke minimumsbeløbet for, at denne kuponkode kan anvendes.",
             "coupon_text": "Kupon",
+            "coupon_placeholder": "Indtast din kode her",
+            "discounts_text": "Rabatter",
             "gift_certificate_remaining_text": "Resterende",
             "gift_certificate_text": "Gavekort",
             "remove_action": "Fjern",
             "store_credit_available_text": "Din konto har i øjeblikket {storeCredit} butikskredit i alt tilgængelig",
-            "toggle_action": "Kupon/gavekort"
+            "toggle_action": "Kupon/gavekort",
+            "total_savings_text": "Du har sparet <span class=\"total-savings-highlight\">{totalSaving}</span> i alt!"
         },
         "remote": {
             "browser_unsupported": "Den valgte betalingsmetode kræver en anden webbrowser. Vælg en anden betalingsmetode.",
@@ -542,6 +545,8 @@
             "multishipping_left_to_allocate_items_table_item": "Vare",
             "multishipping_left_to_allocate_items_table_left_to_allocate": "Tilbage at tildele",
             "multishipping_left_to_allocate_items_table_quantity": "Antal",
+            "no_countries_available_heading": "Vi har problemer med at indlæse dit leveringsland",
+            "no_countries_available_message": "Opdater siden, eller prøv igen om et øjeblik. Hvis problemet fortsætter, skal du kontakte vores supportteam. Så hjælper vi dig med at fuldføre din ordre.",
             "multishipping_item_split_tooltip_message": "Disse varemængder er opdelt i en separat række på grund af en mængdebaseret kampagne eller brugerdefineret pris.",
             "ship_to_multi": "Send til flere adresser",
             "ship_to_single": "Send til en enkelt adresse",

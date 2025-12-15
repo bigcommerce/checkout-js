@@ -480,11 +480,14 @@
             "coupon_location_error": "L'indirizzo di spedizione specificato non soddisfa i requisiti geografici per il codice promozionale inserito.",
             "coupon_min_order_total": "Il tuo ordine non soddisfa il totale minimo per applicare questo codice promozionale.",
             "coupon_text": "Coupon",
+            "coupon_placeholder": "Inserisci qui il codice",
+            "discounts_text": "Sconti",
             "gift_certificate_remaining_text": "rimanente",
             "gift_certificate_text": "Buono regalo",
             "remove_action": "Rimuovi",
             "store_credit_available_text": "Al momento il tuo account dispone di {storeCredit} crediti totali del negozio disponibili",
-            "toggle_action": "Coupon/buono regalo"
+            "toggle_action": "Coupon/buono regalo",
+            "total_savings_text": "Ha risparmiato <span class=\"total-savings-highlight\">{totalSaving}</span> in totale!"
         },
         "remote": {
             "browser_unsupported": "Il metodo di pagamento selezionato richiede un browser diverso. Scegline un altro.",
@@ -542,6 +545,8 @@
             "multishipping_left_to_allocate_items_table_item": "Articolo",
             "multishipping_left_to_allocate_items_table_left_to_allocate": "Rimanenti da assegnare",
             "multishipping_left_to_allocate_items_table_quantity": "Quantità",
+            "no_countries_available_heading": "Stiamo riscontrando problemi nel caricamento del paese di spedizione",
+            "no_countries_available_message": "Aggiorna la pagina o riprova tra un momento. Se il problema persiste, contatta il nostro team di supporto e ti aiuteremo a completare l'ordine.",
             "multishipping_item_split_tooltip_message": "Queste quantità di articoli sono suddivise in una riga distinta a causa di una promozione basata sulla quantità o di un prezzo personalizzato.",
             "ship_to_multi": "Spedisci a più indirizzi",
             "ship_to_single": "Spedisci a un solo indirizzo",

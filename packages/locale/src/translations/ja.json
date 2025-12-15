@@ -480,11 +480,14 @@
             "coupon_location_error": "配送先住所が、入力したクーポンコードの所在地要件を満たしていません。",
             "coupon_min_order_total": "顧客のご注文は、このクーポンコードを適用するための最小合計金額を満たしていません。",
             "coupon_text": "クーポン",
+            "coupon_placeholder": "ここにメモを入力してください",
+            "discounts_text": "割引",
             "gift_certificate_remaining_text": "残り",
             "gift_certificate_text": "ギフト券",
             "remove_action": "除去",
             "store_credit_available_text": "現在、アカウントには合計 {storeCredit} のストアクレジットが利用可能です",
-            "toggle_action": "クーポン/ギフトコード"
+            "toggle_action": "クーポン/ギフト券",
+            "total_savings_text": "合計で<span class=\"total-savings-highlight\">{totalSaving}</span>節約できました!"
         },
         "remote": {
             "browser_unsupported": "選択した支払方い法には、別のWebブラウザが必要です。他の支払方法を選んでください。",
@@ -542,6 +545,8 @@
             "multishipping_left_to_allocate_items_table_item": "項目",
             "multishipping_left_to_allocate_items_table_left_to_allocate": "割り当て残り分",
             "multishipping_left_to_allocate_items_table_quantity": "数量",
+            "no_countries_available_heading": "配送先の国を読み込めません",
+            "no_countries_available_message": "ページを更新するか、しばらくしてからもう一度お試しください。問題が解決しない場合は、サポート チームにご連絡ください。ご注文の完了をお手伝いいたします。",
             "multishipping_item_split_tooltip_message": "これらの商品の数量は、数量ベースの割引またはカスタム価格のため、別の行に分けて記載されています。",
             "ship_to_multi": "複数の住所に配送する",
             "ship_to_single": "一か所の住所に配送する",
