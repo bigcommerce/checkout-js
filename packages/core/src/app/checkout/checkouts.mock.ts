@@ -3,7 +3,6 @@ import { type Checkout, type CheckoutPayment } from '@bigcommerce/checkout-sdk';
 import { getCart } from '../cart/carts.mock';
 import { getCoupon } from '../coupon/coupons.mock';
 import { getGuestCustomer } from '../customer/customers.mock';
-import { getPromotion } from '../promotion/promotions.mock';
 
 export function getCheckout(): Checkout {
     return {
@@ -38,6 +37,10 @@ export function getCheckout(): Checkout {
         updatedTime: '2018-03-07T03:44:51+00:00',
         promotions: [],
         channelId: 123456,
+        displayDiscountTotal: 0,
+        manualDiscountTotal: 0,
+        orderBasedAutoDiscountTotal: 0,
+        comparisonShippingCost: 20,
         fees: [],
     };
 }
