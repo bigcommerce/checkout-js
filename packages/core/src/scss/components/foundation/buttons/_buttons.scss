@@ -32,12 +32,12 @@
             color: color("whites");
             inset: 0;
             background: linear-gradient(
-                    to right,
-                    transparent 0%,
-                    transparent 20%,
-                    rgba(255, 255, 255, 0.5) 50%,
-                    transparent 80%,
-                    transparent 100%
+                to right,
+                transparent 0%,
+                transparent 20%,
+                rgba(255, 255, 255, 0.5) 50%,
+                transparent 80%,
+                transparent 100%
             );
             animation: shimmer 2s ease-in-out infinite;
             background-size: 200% 100%;
