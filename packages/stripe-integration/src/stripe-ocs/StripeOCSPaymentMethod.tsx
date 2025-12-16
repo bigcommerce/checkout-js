@@ -190,16 +190,21 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                 <div className="form-label optimizedCheckout-form-label" />
             </div>
             <div
-                className="form-checklist-header--selected"
+                className="form-checklist-item optimizedCheckout-form-checklist-item form-checklist-item--selected optimizedCheckout-form-checklist-item--selected"
                 id={`${containerId}--accordion-header-selected`}
             >
-                <input
-                    className="form-checklist-checkbox optimizedCheckout-form-checklist-checkbox"
-                    defaultChecked
-                    id={`${containerId}-radio-input-selected`}
-                    type="radio"
-                />
-                <div className="form-label optimizedCheckout-form-label" />
+                <div
+                    className="form-checklist-header--selected"
+                    id={`${containerId}--accordion-header-selected`}
+                >
+                    <input
+                        className="form-checklist-checkbox optimizedCheckout-form-checklist-checkbox"
+                        defaultChecked
+                        id={`${containerId}-radio-input-selected`}
+                        type="radio"
+                    />
+                    <div className="form-label optimizedCheckout-form-label" />
+                </div>
             </div>
             <div className="optimizedCheckout-form-input" id={`${containerId}--input`}>
                 <div className="form-field--error">

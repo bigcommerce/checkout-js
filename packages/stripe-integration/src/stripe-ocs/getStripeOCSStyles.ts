@@ -89,7 +89,7 @@ export const getAppearanceForOCSElement = (containerId: string): StripeAppearanc
     ]);
     const formLabelStyles = getStylesFromElement(`#${containerId}--label`, ['color']);
     const formErrorStyles = getStylesFromElement(`#${containerId}--error`, ['color']);
-    const accordionHeaderStyles = getStylesFromElement(
+    const accordionHeaderLabelStyles = getStylesFromElement(
         `#${containerId}--accordion-header .form-label`,
         [
             'color',
@@ -101,6 +101,9 @@ export const getAppearanceForOCSElement = (containerId: string): StripeAppearanc
             'padding-bottom',
         ],
     );
+    const accordionHeaderStyles = getStylesFromElement(`#${containerId}--accordion-header`, [
+        'background-color',
+    ]);
     const accordionSelectedHeaderStyles = getStylesFromElement(
         `#${containerId}--accordion-header-selected`,
         ['background-color'],
@@ -117,8 +120,8 @@ export const getAppearanceForOCSElement = (containerId: string): StripeAppearanc
         'padding-top': accordionPaddingTop = defaultAccordionPaddingVertical,
         'padding-right': accordionPaddingRight = defaultAccordionPaddingHorizontal,
         'padding-bottom': accordionPaddingBottom = defaultAccordionPaddingVertical,
-    } = accordionHeaderStyles;
-    const accordionHeaderPadding = !isEmpty(accordionHeaderStyles)
+    } = accordionHeaderLabelStyles;
+    const accordionHeaderPadding = !isEmpty(accordionHeaderLabelStyles)
         ? `${accordionPaddingTop} ${accordionPaddingRight} ${accordionPaddingBottom} ${defaultAccordionPaddingHorizontal}`
         : undefined;
     const radioOuter = getStylesFromElement(
@@ -182,6 +185,7 @@ export const getAppearanceForOCSElement = (containerId: string): StripeAppearanc
                 borderWidth: 0,
                 borderBottom: formChecklistStyles['border-bottom'],
                 borderColor: formChecklistStyles['border-color'],
+                backgroundColor: accordionHeaderStyles['background-color'],
                 boxShadow: 'none',
                 fontSize: accordionItemTitleFontSize,
                 fontWeight: accordionItemTitleFontWeight,
