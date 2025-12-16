@@ -53,7 +53,7 @@ export const useMultiCoupon = (): UseMultiCouponValues => {
     const shouldDisableCouponForm = isSubmittingOrder() || isPending();
 
     const appliedCoupons = checkoutState.data.getCoupons()?.map(({ code }) => ({
-        code
+        code,
     })) ?? EMPTY_ARRAY;
 
     const appliedGiftCertificates = checkoutState.data.getGiftCertificates()?.map(({ code, used }) => ({

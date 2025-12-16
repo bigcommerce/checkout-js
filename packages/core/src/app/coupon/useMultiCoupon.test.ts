@@ -105,6 +105,7 @@ describe('useMultiCoupon', () => {
                 { code: 'COUPON1', id: '1' },
                 { code: 'COUPON2', id: '2' },
             ];
+
             checkoutState.data.getCoupons.mockReturnValue(coupons);
 
             const { result } = renderHook(() => useMultiCoupon());
@@ -138,6 +139,7 @@ describe('useMultiCoupon', () => {
                 { code: 'GIFT1', id: '1', used: 10 },
                 { code: 'GIFT2', id: '2', used: 20 },
             ];
+
             checkoutState.data.getGiftCertificates.mockReturnValue(giftCertificates);
 
             const { result } = renderHook(() => useMultiCoupon());
@@ -250,6 +252,7 @@ describe('useMultiCoupon', () => {
     describe('removeCoupon', () => {
         it('calls checkoutService.removeCoupon with coupon code', async () => {
             const code = 'COUPON123';
+
             removeCoupon.mockResolvedValue(undefined);
 
             const { result } = renderHook(() => useMultiCoupon());
@@ -266,6 +269,7 @@ describe('useMultiCoupon', () => {
     describe('removeGiftCertificate', () => {
         it('calls checkoutService.removeGiftCertificate with gift certificate code', async () => {
             const giftCertificateCode = 'GIFT123';
+
             removeGiftCertificate.mockResolvedValue(undefined);
 
             const { result } = renderHook(() => useMultiCoupon());
@@ -354,6 +358,7 @@ describe('useMultiCoupon', () => {
     describe('isCouponFormCollapsed', () => {
         it('returns value from checkoutSettings.isCouponCodeCollapsed', () => {
             const config = getStoreConfig();
+
             config.checkoutSettings.isCouponCodeCollapsed = false;
             checkoutState.data.getConfig.mockReturnValue(config);
 
@@ -366,6 +371,7 @@ describe('useMultiCoupon', () => {
     describe('uiDetails', () => {
         it('returns correct uiDetails structure', () => {
             const checkout = getCheckout();
+
             checkoutState.data.getCheckout.mockReturnValue(checkout);
 
             const { result } = renderHook(() => useMultiCoupon());
@@ -384,6 +390,7 @@ describe('useMultiCoupon', () => {
         describe('discountItems', () => {
             it('includes auto promotion when orderBasedAutoDiscountTotal is greater than 0', () => {
                 const checkout = getCheckout();
+
                 checkout.orderBasedAutoDiscountTotal = 10;
                 checkoutState.data.getCheckout.mockReturnValue(checkout);
 
@@ -392,6 +399,7 @@ describe('useMultiCoupon', () => {
                 const autoPromotion = result.current.uiDetails.discountItems.find(
                     item => item.amount === 10 && item.name.includes('auto_promotion')
                 );
+
                 expect(autoPromotion).toBeDefined();
                 expect(autoPromotion?.amount).toBe(10);
                 expect(autoPromotion?.name).toBeTruthy();
@@ -399,6 +407,7 @@ describe('useMultiCoupon', () => {
 
             it('includes manual discount when manualDiscountTotal is greater than 0', () => {
                 const checkout = getCheckout();
+
                 checkout.manualDiscountTotal = 15;
                 checkoutState.data.getCheckout.mockReturnValue(checkout);
 
@@ -407,6 +416,7 @@ describe('useMultiCoupon', () => {
                 const manualDiscount = result.current.uiDetails.discountItems.find(
                     item => item.amount === 15 && item.name.includes('manual_discount')
                 );
+
                 expect(manualDiscount).toBeDefined();
                 expect(manualDiscount?.amount).toBe(15);
                 expect(manualDiscount?.name).toBeTruthy();
@@ -414,11 +424,12 @@ describe('useMultiCoupon', () => {
 
             it('includes coupons with displayName and code', () => {
                 const checkout = getCheckout();
+
                 checkout.coupons = [
                     {
                         code: 'SAVE10',
                         displayName: 'Save 10%',
-                        couponType: 'percentage_discount',
+                        couponType: 'promotion',
                         discountedAmount: 20,
                         id: '1',
                     },
@@ -430,16 +441,18 @@ describe('useMultiCoupon', () => {
                 const couponItem = result.current.uiDetails.discountItems.find(
                     item => item.name === 'Save 10% (SAVE10)'
                 );
+
                 expect(couponItem).toBeDefined();
                 expect(couponItem?.amount).toBe(20);
             });
 
             it('includes coupons with code only when displayName is not available', () => {
                 const checkout = getCheckout();
+
                 checkout.coupons = [
                     {
                         code: 'SAVE10',
-                        couponType: 'percentage_discount',
+                        couponType: 'promotion',
                         discountedAmount: 20,
                         id: '1',
                     } as typeof checkout.coupons[0],
@@ -451,19 +464,21 @@ describe('useMultiCoupon', () => {
                 const couponItem = result.current.uiDetails.discountItems.find(
                     item => item.name === 'SAVE10'
                 );
+
                 expect(couponItem).toBeDefined();
                 expect(couponItem?.amount).toBe(20);
             });
 
             it('includes all discount types when present', () => {
                 const checkout = getCheckout();
+
                 checkout.orderBasedAutoDiscountTotal = 10;
                 checkout.manualDiscountTotal = 15;
                 checkout.coupons = [
                     {
                         code: 'SAVE10',
                         displayName: 'Save 10%',
-                        couponType: 'percentage_discount',
+                        couponType: 'promotion',
                         discountedAmount: 20,
                         id: '1',
                     },
@@ -486,6 +501,7 @@ describe('useMultiCoupon', () => {
 
             it('excludes auto promotion when orderBasedAutoDiscountTotal is 0', () => {
                 const checkout = getCheckout();
+
                 checkout.orderBasedAutoDiscountTotal = 0;
                 checkoutState.data.getCheckout.mockReturnValue(checkout);
 
@@ -494,11 +510,13 @@ describe('useMultiCoupon', () => {
                 const autoPromotion = result.current.uiDetails.discountItems.find(
                     item => item.name.includes('auto_promotion')
                 );
+
                 expect(autoPromotion).toBeUndefined();
             });
 
             it('excludes manual discount when manualDiscountTotal is 0', () => {
                 const checkout = getCheckout();
+
                 checkout.manualDiscountTotal = 0;
                 checkoutState.data.getCheckout.mockReturnValue(checkout);
 
@@ -507,6 +525,7 @@ describe('useMultiCoupon', () => {
                 const manualDiscount = result.current.uiDetails.discountItems.find(
                     item => item.name.includes('manual_discount')
                 );
+
                 expect(manualDiscount).toBeUndefined();
             });
         });

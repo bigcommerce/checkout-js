@@ -21,7 +21,7 @@ export const AppliedGiftCertificates: FunctionComponent<{giftCertificates: Appli
                 <span className="gift-certificate-code"> ({giftCertificate.code})</span>
             </span>
             <span className="cart-priceItem-value">
-                <ShopperCurrency amount={-1 * giftCertificate.amount} />
+                -<ShopperCurrency amount={giftCertificate.amount} />
             </span>
         </div>
     ));

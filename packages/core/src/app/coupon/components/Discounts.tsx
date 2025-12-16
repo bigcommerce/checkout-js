@@ -15,7 +15,7 @@ const DiscountItem: FunctionComponent<{ coupons: DiscountItem[] }> = ({ coupons 
         >
             <span className="cart-priceItem-label"><IconCoupon />{coupon.name}</span>
             <span className="cart-priceItem-value">
-                <ShopperCurrency amount={-1 * coupon.amount} />
+                -<ShopperCurrency amount={coupon.amount} />
             </span>
         </div>
     ));
@@ -58,7 +58,7 @@ export const Discounts: FunctionComponent = () => {
                             </div>
                         </span>
                         <span className="cart-priceItem-value">
-                            <ShopperCurrency amount={-1 * discounts} />
+                            -<ShopperCurrency amount={discounts} />
                         </span>
                     </div>
                     {isCouponDiscountsVisible && (
