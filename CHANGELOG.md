@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.709.3](https://github.com/bigcommerce/checkout-js/compare/v1.709.2...v1.709.3) (2025-12-16)
+
+
+### Bug Fixes
+
+* **payment:** Stripe OCS fix styling ([7decee9](https://github.com/bigcommerce/checkout-js/commit/7decee95e001b36aea1fd7241ca39f8bec170f19))
+
 ### [1.709.2](https://github.com/bigcommerce/checkout-js/compare/v1.709.1...v1.709.2) (2025-12-15)
 
 ### [1.709.1](https://github.com/bigcommerce/checkout-js/compare/v1.709.0...v1.709.1) (2025-12-15)
