@@ -20,6 +20,7 @@ export const CouponForm: FunctionComponent = () => {
         couponError,
         setCouponError,
         shouldDisableCouponForm,
+        isApplyingCouponOrGiftCertificate,
     } = useMultiCoupon();
 
     const handleTextInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,6 +69,7 @@ export const CouponForm: FunctionComponent = () => {
                     })}
                     disabled={shouldDisableCouponForm}
                     id="applyRedeemableButton"
+                    isLoading={isApplyingCouponOrGiftCertificate}
                     onClick={submitForm}
                     testId="redeemableEntry-submit"
                     variant={ButtonVariant.Secondary}

@@ -29,6 +29,8 @@ describe('useMultiCoupon', () => {
             getGiftCertificates: jest.fn(),
         },
         statuses: {
+            isApplyingCoupon: jest.fn(),
+            isApplyingGiftCertificate: jest.fn(),
             isSubmittingOrder: jest.fn(),
             isPending: jest.fn(),
         },
@@ -45,6 +47,8 @@ describe('useMultiCoupon', () => {
         checkoutState.data.getGiftCertificates.mockReturnValue([]);
         checkoutState.statuses.isSubmittingOrder.mockReturnValue(false);
         checkoutState.statuses.isPending.mockReturnValue(false);
+        checkoutState.statuses.isApplyingCoupon.mockReturnValue(false);
+        checkoutState.statuses.isApplyingGiftCertificate.mockReturnValue(false);
     });
 
     afterEach(() => {

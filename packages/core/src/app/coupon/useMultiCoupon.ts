@@ -14,6 +14,7 @@ interface UseMultiCouponValues {
     removeGiftCertificate: (giftCertificateCode: string) => Promise<void>;
     setCouponError: (error: string | null) => void;
     shouldDisableCouponForm: boolean;
+    isApplyingCouponOrGiftCertificate: boolean;
 }
 
 export const useMultiCoupon = (): UseMultiCouponValues => {
@@ -22,7 +23,7 @@ export const useMultiCoupon = (): UseMultiCouponValues => {
     const { checkoutState, checkoutService } = useCheckout();
     const {
         data: { getConfig },
-        statuses: { isSubmittingOrder, isPending }
+        statuses: { isSubmittingOrder, isPending, isApplyingCoupon, isApplyingGiftCertificate }
     } = checkoutState;
     const config = getConfig();
     const shouldDisableCouponForm = isSubmittingOrder() || isPending();
@@ -75,5 +76,6 @@ export const useMultiCoupon = (): UseMultiCouponValues => {
         removeGiftCertificate,
         setCouponError,
         shouldDisableCouponForm,
+        isApplyingCouponOrGiftCertificate: isApplyingCoupon() || isApplyingGiftCertificate(),
     };
 };
