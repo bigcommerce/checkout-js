@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.710.0](https://github.com/bigcommerce/checkout-js/compare/v1.709.3...v1.710.0) (2025-12-16)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9725 add loading state when coupon is applied ([#2734](https://github.com/bigcommerce/checkout-js/issues/2734)) ([d32f45f](https://github.com/bigcommerce/checkout-js/commit/d32f45f210c3831a45ef0ce9f238df33a42a92e4))
+
 ### [1.709.3](https://github.com/bigcommerce/checkout-js/compare/v1.709.2...v1.709.3) (2025-12-16)
 
 
