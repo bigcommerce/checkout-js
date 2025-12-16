@@ -37,7 +37,7 @@ const NewOrderSummarySubtotals: FunctionComponent<MultiCouponProps> = ({
         }
     } = useMultiCoupon();
 
-    const [isCouponFormVisible, setIsCouponFormVisible] = useState(isCouponFormCollapsed);
+    const [isCouponFormVisible, setIsCouponFormVisible] = useState(!isCouponFormCollapsed);
 
     const toggleCouponForm = () => {
         setIsCouponFormVisible((prevState) => !prevState);
