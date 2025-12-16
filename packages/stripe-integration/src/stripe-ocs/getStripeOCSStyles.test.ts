@@ -23,6 +23,9 @@ describe('getStripeOCSStyles', () => {
             [`#${containerId}--error`]: {
                 color: 'red',
             },
+            [`#${containerId}--accordion-header`]: {
+                'background-color': '#fcfcfc',
+            },
             [`#${containerId}--accordion-header .form-label`]: {
                 color: 'green',
                 'font-size': '16px',
@@ -113,6 +116,7 @@ describe('getStripeOCSStyles', () => {
                         boxShadow: '0 0 5px rgba(0, 0, 0, 0.5)',
                     },
                     '.AccordionItem': {
+                        backgroundColor: '#fcfcfc',
                         borderRadius: 0,
                         borderWidth: 0,
                         borderBottom: '1px solid black',
@@ -192,6 +196,7 @@ describe('getStripeOCSStyles', () => {
                 expect.objectContaining({
                     rules: expect.objectContaining({
                         '.AccordionItem': {
+                            backgroundColor: '#fcfcfc',
                             borderRadius: 0,
                             borderWidth: 0,
                             borderBottom: '1px solid black',
