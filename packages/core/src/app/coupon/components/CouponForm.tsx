@@ -8,7 +8,7 @@ import { IconError, IconRemoveCoupon, TextInput } from '@bigcommerce/checkout/ui
 import { Button, ButtonVariant } from '../../ui/button';
 import { useMultiCoupon } from '../useMultiCoupon';
 
-import { AppliedCouponsOrGiftCertificates } from './AppliedCouponsOrGiftCertificates';
+import { ManageCouponsAndGiftCertificates } from './ManageCouponsAndGiftCertificates';
 
 export const CouponForm: FunctionComponent = () => {
     const [code, setCode] = useState<string>('');
@@ -19,8 +19,8 @@ export const CouponForm: FunctionComponent = () => {
         applyCouponOrGiftCertificate,
         couponError,
         setCouponError,
-        shouldDisableCouponForm,
         isApplyingCouponOrGiftCertificate,
+        isCouponFormDisabled,
     } = useMultiCoupon();
 
     const handleTextInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,7 +55,7 @@ export const CouponForm: FunctionComponent = () => {
                 <TextInput
                     additionalClassName="form-input optimizedCheckout-form-input coupon-input"
                     aria-label={language.translate('redeemable.code_label')}
-                    disabled={shouldDisableCouponForm}
+                    disabled={isCouponFormDisabled}
                     onChange={handleTextInputChange}
                     onClick={clearErrorOnClick}
                     placeholder={language.translate('redeemable.coupon_placeholder')}
@@ -67,7 +67,7 @@ export const CouponForm: FunctionComponent = () => {
                     className={classNames('coupon-button', {
                         'body-bold': themeV2,
                     })}
-                    disabled={shouldDisableCouponForm}
+                    disabled={isCouponFormDisabled}
                     id="applyRedeemableButton"
                     isLoading={isApplyingCouponOrGiftCertificate}
                     onClick={submitForm}
@@ -85,7 +85,7 @@ export const CouponForm: FunctionComponent = () => {
                         <span onClick={() => setCouponError(null)}><IconRemoveCoupon /></span>
                     </ul>
                 }
-                <AppliedCouponsOrGiftCertificates />
+                <ManageCouponsAndGiftCertificates />
             </div>
         </>
     );

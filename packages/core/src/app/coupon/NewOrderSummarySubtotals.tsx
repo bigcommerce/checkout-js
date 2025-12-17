@@ -4,9 +4,10 @@ import React, { type FunctionComponent, useState } from 'react';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
+import { ShopperCurrency } from '../currency';
 import { isOrderFee, OrderSummaryDiscount, OrderSummaryPrice }  from '../order';
 
-import { CouponForm, Discounts } from './components';
+import { AppliedGiftCertificates, CouponForm, Discounts } from './components';
 import { useMultiCoupon } from './useMultiCoupon';
 
 interface MultiCouponProps {
@@ -26,9 +27,16 @@ const NewOrderSummarySubtotals: FunctionComponent<MultiCouponProps> = ({
     storeCreditAmount,
     taxes,
 }) => {
-    const { isCouponCodeCollapsed } = useMultiCoupon();
+    const {
+        appliedGiftCertificates,
+        isCouponFormCollapsed,
+        uiDetails:{
+            shipping,
+            shippingBeforeDiscount,
+        }
+    } = useMultiCoupon();
 
-    const [isCouponFormVisible, setIsCouponFormVisible] = useState(isCouponCodeCollapsed);
+    const [isCouponFormVisible, setIsCouponFormVisible] = useState(!isCouponFormCollapsed);
 
     const toggleCouponForm = () => {
         setIsCouponFormVisible((prevState) => !prevState);
@@ -54,6 +62,25 @@ const NewOrderSummarySubtotals: FunctionComponent<MultiCouponProps> = ({
             </section>
             <section className="subtotals-with-multi-coupon cart-section optimizedCheckout-orderSummary-cartSection">
                 <Discounts />
+
+                <div
+                    aria-live="polite"
+                    className="cart-priceItem optimizedCheckout-contentPrimary"
+                >
+                    <span className="cart-priceItem-label">
+                        <div className="toggle-button">
+                            <TranslatedString id="shipping.shipping_heading" />
+                        </div>
+                    </span>
+                    <span className="cart-priceItem-value">
+                        {(shippingBeforeDiscount > 0 && shippingBeforeDiscount !== shipping) && (
+                            <span className="cart-priceItem-before-discount">
+                                <ShopperCurrency amount={shippingBeforeDiscount} />
+                            </span>
+                        )}
+                        <ShopperCurrency amount={shipping} />
+                    </span>
+                </div>
 
                 {!!giftWrappingAmount && (
                     <OrderSummaryPrice
@@ -88,6 +115,8 @@ const NewOrderSummarySubtotals: FunctionComponent<MultiCouponProps> = ({
                         testId="cart-taxes"
                     />
                 ))}
+
+                <AppliedGiftCertificates giftCertificates={appliedGiftCertificates}/>
 
                 {!!storeCreditAmount && (
                     <OrderSummaryDiscount

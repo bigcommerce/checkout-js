@@ -38,6 +38,7 @@ export { default as IconError } from './IconError';
 export { default as IconEdit } from './IconEdit';
 export { default as IconEthereum } from './IconEthereum';
 export { default as IconGiftCertificate } from './IconGiftCertificate';
+export { default as IconGiftCertificateNew } from './IconGiftCertificateNew';
 export { default as IconHelp } from './IconHelp';
 export { default as IconEye } from './IconEye';
 export { default as IconEyeSlash } from './IconEyeSlash';

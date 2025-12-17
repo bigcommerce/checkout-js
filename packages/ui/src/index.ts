@@ -74,6 +74,7 @@ export {
     IconBitCoinCash,
     IconDogeCoin,
     IconEthereum,
+    IconGiftCertificateNew,
     IconLiteCoin,
     IconProps,
     IconShibaInu,

@@ -37,7 +37,7 @@
         word-break: break-all;
         margin: 0;
 
-        .coupon-icon {
+        .coupon-icon, .gift-certificate-icon {
             vertical-align: middle;
             margin-right: spacing('quarter');
         }
@@ -89,10 +89,20 @@
 .subtotals-with-multi-coupon {
     .cart-priceItem {
         margin-top: spacing('half');
+
+        .cart-priceItem-before-discount {
+            color: $color-secondaryDarkest;
+            text-decoration: line-through;
+            margin-right: spacing('quarter');
+        }
+    }
+
+    .gift-certificate-code {
+        color: $color-secondaryDarkest;
     }
 }
 
-.coupon-discount-toggle,.shipping-discount-toggle {
+.coupon-discount-toggle{
     cursor: pointer;
 
     .toggle-button {
@@ -102,14 +112,6 @@
     .arrow {
         float: right;
         margin-left: spacing('half');
-    }
-}
-
-.shipping-discount-toggle{
-    .shipping-cost-before-discount {
-        color: $color-secondaryDarkest;
-        text-decoration: line-through;
-        margin-right: spacing('quarter');
     }
 }
 
