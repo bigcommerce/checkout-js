@@ -150,19 +150,3 @@
         color: $color-totalSavingsHighlight;
     }
 }
-
-
-.coupon-item-enter {
-    opacity: 0.5;
-}
-.coupon-item-enter-active {
-    opacity: 1;
-    transition: opacity 500ms ease-in;
-}
-.coupon-item-exit {
-    opacity: 1;
-}
-.coupon-item-exit-active {
-    opacity: 0;
-    transition: opacity 500ms ease-in;
-}

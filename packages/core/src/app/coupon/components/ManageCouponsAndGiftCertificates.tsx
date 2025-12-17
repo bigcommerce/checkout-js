@@ -1,4 +1,4 @@
-import { Coupon } from '@bigcommerce/checkout-sdk';
+import { type Coupon } from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
@@ -10,15 +10,15 @@ const AppliedCouponsPills: FunctionComponent<{ coupons: Coupon[], removeCoupon: 
     return (
         <TransitionGroup component={null}>
             {coupons.map(({ code, displayName }) => {
-                const nodeRef = React.createRef<HTMLDivElement>();
+                const nodeRef = React.createRef<HTMLUListElement>();
                 return (
                     <CSSTransition
+                        classNames="changeHighlight"
                         key={code}
                         nodeRef={nodeRef}
-                        timeout={500}
-                        classNames="coupon-item"
+                        timeout={{}}
                     >
-                        <ul>
+                        <ul ref={nodeRef}>
                             <IconCoupon />
                             {displayName ? `${displayName} (${code})` : code}
                             <IconRemoveCoupon

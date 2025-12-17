@@ -14,15 +14,15 @@ const DiscountItems: FunctionComponent<{ coupons: DiscountItem[] }> = ({ coupons
                 const nodeRef = React.createRef<HTMLDivElement>();
                 return (
                     <CSSTransition
+                        classNames="changeHighlight"
                         key={coupon.name}
                         nodeRef={nodeRef}
-                        timeout={500}
-                        classNames="coupon-item"
+                        timeout={{}}
                     >
                         <div
-                            ref={nodeRef}
                             aria-live="polite"
                             className="cart-priceItem optimizedCheckout-contentPrimary"
+                            ref={nodeRef}
                         >
                             <span className="cart-priceItem-label"><IconCoupon />{coupon.name}</span>
                             <span className="cart-priceItem-value">
