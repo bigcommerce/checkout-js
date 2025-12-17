@@ -12,27 +12,27 @@ export const ManageCouponsAndGiftCertificates: FunctionComponent = () => {
         removeGiftCertificate,
     } = useMultiCoupon();
 
-    const isCouponUsed = appliedCoupons.length > 0;
-    const isGiftCertificateUsed = appliedGiftCertificates.length > 0;
+    const isCouponApplied = appliedCoupons.length > 0;
+    const isGiftCertificateApplied = appliedGiftCertificates.length > 0;
 
-    if (!isCouponUsed && !isGiftCertificateUsed) {
+    if (!isCouponApplied && !isGiftCertificateApplied) {
         return null;
     }
 
     return (
         <>
-            {isCouponUsed &&
-                appliedCoupons.map(({ code }) => (
+            {isCouponApplied &&
+                appliedCoupons.map(({ code, displayName }) => (
                     <ul key={code}>
                         <IconCoupon />
-                        {code}
+                        {displayName ? `${displayName} (${code})` : code}
                         <IconRemoveCoupon
                             onClick={() => removeCoupon(code)}
                         />
                     </ul>
                 ))
             }
-            {isGiftCertificateUsed &&
+            {isGiftCertificateApplied &&
                 appliedGiftCertificates.map(({ code }) => (
                     <ul key={code}>
                         <IconGiftCertificateNew />

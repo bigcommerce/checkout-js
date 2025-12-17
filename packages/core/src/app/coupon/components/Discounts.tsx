@@ -42,6 +42,7 @@ export const Discounts: FunctionComponent = () => {
                     <ShopperCurrency amount={subtotal} />
                 </span>
             </div>
+            {/* TODO: Create an accordian/collapsable component */}
             {discounts > 0 && (
                 <>
                     <div

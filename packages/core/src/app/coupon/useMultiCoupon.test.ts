@@ -111,8 +111,8 @@ describe('useMultiCoupon', () => {
             const { result } = renderHook(() => useMultiCoupon());
 
             expect(result.current.appliedCoupons).toEqual([
-                { code: 'COUPON1' },
-                { code: 'COUPON2' },
+                { code: 'COUPON1', id: '1' },
+                { code: 'COUPON2', id: '2' },
             ]);
         });
 

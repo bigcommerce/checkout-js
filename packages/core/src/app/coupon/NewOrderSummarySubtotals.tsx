@@ -7,8 +7,7 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { ShopperCurrency } from '../currency';
 import { isOrderFee, OrderSummaryDiscount, OrderSummaryPrice }  from '../order';
 
-import { CouponForm, Discounts } from './components';
-import { AppliedGiftCertificates } from './components/AppliedGiftCertificates';
+import { AppliedGiftCertificates, CouponForm, Discounts } from './components';
 import { useMultiCoupon } from './useMultiCoupon';
 
 interface MultiCouponProps {
