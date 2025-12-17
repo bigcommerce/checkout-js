@@ -1,8 +1,36 @@
+import { Coupon } from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent } from 'react';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import { IconCoupon, IconGiftCertificateNew, IconRemoveCoupon } from '@bigcommerce/checkout/ui';
 
 import { useMultiCoupon } from '../useMultiCoupon';
+
+const AppliedCouponsPills: FunctionComponent<{ coupons: Coupon[], removeCoupon: (code: string) => void }> = ({ coupons, removeCoupon }) => {
+    return (
+        <TransitionGroup component={null}>
+            {coupons.map(({ code, displayName }) => {
+                const nodeRef = React.createRef<HTMLDivElement>();
+                return (
+                    <CSSTransition
+                        key={code}
+                        nodeRef={nodeRef}
+                        timeout={500}
+                        classNames="coupon-item"
+                    >
+                        <ul>
+                            <IconCoupon />
+                            {displayName ? `${displayName} (${code})` : code}
+                            <IconRemoveCoupon
+                                onClick={() => removeCoupon(code)}
+                            />
+                        </ul>
+                    </CSSTransition>
+            );
+        })}
+        </TransitionGroup>
+    );
+};
 
 export const ManageCouponsAndGiftCertificates: FunctionComponent = () => {
     const {
@@ -22,15 +50,10 @@ export const ManageCouponsAndGiftCertificates: FunctionComponent = () => {
     return (
         <>
             {isCouponApplied &&
-                appliedCoupons.map(({ code, displayName }) => (
-                    <ul key={code}>
-                        <IconCoupon />
-                        {displayName ? `${displayName} (${code})` : code}
-                        <IconRemoveCoupon
-                            onClick={() => removeCoupon(code)}
-                        />
-                    </ul>
-                ))
+                <AppliedCouponsPills
+                    coupons={appliedCoupons}
+                    removeCoupon={removeCoupon}
+                />
             }
             {isGiftCertificateApplied &&
                 appliedGiftCertificates.map(({ code }) => (
