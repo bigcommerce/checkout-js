@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.711.0](https://github.com/bigcommerce/checkout-js/compare/v1.710.0...v1.711.0) (2025-12-17)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9680 Display Discounts Data ([#2736](https://github.com/bigcommerce/checkout-js/issues/2736)) ([7dd793f](https://github.com/bigcommerce/checkout-js/commit/7dd793fdbdb66783f814dd9e6b96f10c2e7b5238))
+
 ## [1.710.0](https://github.com/bigcommerce/checkout-js/compare/v1.709.3...v1.710.0) (2025-12-16)
 
 
