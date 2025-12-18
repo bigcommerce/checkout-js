@@ -480,11 +480,14 @@
             "coupon_location_error": "Din leveransadress uppfyller inte platskraven för den kupongkod du angav.",
             "coupon_min_order_total": "Din beställning uppfyller inte den minsta summan för att denna kupongkod ska tillämpas.",
             "coupon_text": "Kupong",
+            "coupon_placeholder": "Ange din kod här",
+            "discounts_text": "Rabatter",
             "gift_certificate_remaining_text": "återstående",
             "gift_certificate_text": "Presentkort",
             "remove_action": "Ta bort",
             "store_credit_available_text": "Ditt konto har för närvarande totalt {storeCredit} tillgängliga butikskrediter",
-            "toggle_action": "Kupong/presentkort"
+            "toggle_action": "Kupong/presentkort",
+            "total_savings_text": "Du sparade <span class=\"total-savings-highlight\">{totalSaving}</span> totalt!"
         },
         "remote": {
             "browser_unsupported": "Den valda betalningsmetoden kräver en annan webbläsare. Välj en annan betalningsmetod.",
@@ -542,6 +545,8 @@
             "multishipping_left_to_allocate_items_table_item": "Vara",
             "multishipping_left_to_allocate_items_table_left_to_allocate": "Kvar att tilldela",
             "multishipping_left_to_allocate_items_table_quantity": "Kvantitet",
+            "no_countries_available_heading": "Det gick inte att läsa in ditt leveransland",
+            "no_countries_available_message": "Uppdatera sidan eller försök igen om en stund. Om problemet kvarstår kan du kontakta vårt supportteam, så hjälper vi dig att slutföra beställningen.",
             "multishipping_item_split_tooltip_message": "Dessa artikelkvantiteter är uppdelade på en separat rad på grund av en kvantitetsbaserad kampanj eller ett anpassat pris.",
             "ship_to_multi": "Skicka till flera adresser",
             "ship_to_single": "Skicka till en enda adress",

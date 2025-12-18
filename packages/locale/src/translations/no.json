@@ -480,11 +480,14 @@
             "coupon_location_error": "Leveringsadressen din oppfyller ikke lokasjonskravene for kupongkoden du skrev inn.",
             "coupon_min_order_total": "Bestillingen din oppfyller ikke minimumsbeløpet for at denne kupongkoden kan brukes.",
             "coupon_text": "Kupong",
+            "coupon_placeholder": "Skriv inn koden din her",
+            "discounts_text": "Rabatter",
             "gift_certificate_remaining_text": "gjenstående",
             "gift_certificate_text": "Gavekort",
             "remove_action": "Fjern",
             "store_credit_available_text": "Kontoen din har for øyeblikket totalt {storeCredit} butikkkreditt tilgjengelig",
-            "toggle_action": "Kupong/gavekort"
+            "toggle_action": "Kupong/gavekort",
+            "total_savings_text": "Du sparte totalt <span class=\"total-savings-highlight\">{totalSaving}</span>!"
         },
         "remote": {
             "browser_unsupported": "Den valgte betalingsmåten krever en annen nettleser. Velg en annen betalingsmåte.",
@@ -542,6 +545,8 @@
             "multishipping_left_to_allocate_items_table_item": "Vare",
             "multishipping_left_to_allocate_items_table_left_to_allocate": "Igjen å tildele",
             "multishipping_left_to_allocate_items_table_quantity": "Mengde",
+            "no_countries_available_heading": "Vi har problemer med å laste inn leveringslandet ditt",
+            "no_countries_available_message": "Oppdater siden, eller prøv igjen om et øyeblikk. Hvis problemet fortsetter, må du kontakte brukerstøtteteamet vårt, så hjelper vi deg med å fullføre bestillingen din.",
             "multishipping_item_split_tooltip_message": "Disse varemengdene er delt inn i en egen rad på grunn av en mengdebasert kampanje eller tilpasset pris.",
             "ship_to_multi": "Send til flere adresser",
             "ship_to_single": "Send til én enkelt adresse",
