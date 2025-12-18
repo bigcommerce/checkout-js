@@ -33,7 +33,7 @@
         color: $color-primary;
         display: inline-block;
         padding: spacing('quarter');
-        font-weight: fontWeight("thin");
+        font-weight: fontWeight('thin');
         word-break: break-all;
         margin: 0;
 
@@ -94,11 +94,13 @@
             color: $color-secondaryDarkest;
             text-decoration: line-through;
             margin-right: spacing('quarter');
+            font-weight: fontWeight('medium');
         }
     }
 
     .gift-certificate-code {
         color: $color-secondaryDarkest;
+        font-weight: fontWeight('thin');
     }
 }
 
@@ -119,7 +121,7 @@
     span {
         color: $color-secondaryDarkest;
         font-family: $fontFamily-montserrat;
-        font-weight: fontWeight("thin");
+        font-weight: fontWeight('thin');
         vertical-align: baseline;
     }
 
@@ -143,8 +145,9 @@
 
 // Total savings styles
 .total-savings {
-    color: $color-secondaryDarkest;
+    color: $color-primary;
     text-align: right;
+    font-weight: fontWeight('medium');
 
     .total-savings-highlight {
         color: $color-totalSavingsHighlight;

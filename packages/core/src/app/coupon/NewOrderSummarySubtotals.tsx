@@ -68,9 +68,7 @@ const NewOrderSummarySubtotals: FunctionComponent<MultiCouponProps> = ({
                     className="cart-priceItem optimizedCheckout-contentPrimary"
                 >
                     <span className="cart-priceItem-label">
-                        <div className="toggle-button">
-                            <TranslatedString id="shipping.shipping_heading" />
-                        </div>
+                        <TranslatedString id="shipping.shipping_heading" />
                     </span>
                     <span className="cart-priceItem-value">
                         {(shippingBeforeDiscount > 0 && shippingBeforeDiscount !== shipping) && (

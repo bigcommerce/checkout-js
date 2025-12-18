@@ -87,5 +87,7 @@
 }
 
 .product-price--beforeDiscount {
+    color: $color-secondaryDarkest;
     text-decoration: line-through;
+    font-weight: fontWeight('medium');
 }
