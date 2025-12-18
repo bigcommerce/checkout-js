@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.713.0](https://github.com/bigcommerce/checkout-js/compare/v1.712.0...v1.713.0) (2025-12-18)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9725 Add animation to coupon items when added ([#2739](https://github.com/bigcommerce/checkout-js/issues/2739)) ([a8b8845](https://github.com/bigcommerce/checkout-js/commit/a8b8845b8aaa84e2e9b6bed83567f5cf95eefc7d))
+
 ## [1.712.0](https://github.com/bigcommerce/checkout-js/compare/v1.711.1...v1.712.0) (2025-12-17)
 
 
