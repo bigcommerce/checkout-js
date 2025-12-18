@@ -1,4 +1,5 @@
 import React, { type FunctionComponent, useState } from 'react';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { IconCoupon, IconDownArrow, IconUpArrow } from '@bigcommerce/checkout/ui';
@@ -6,20 +7,34 @@ import { IconCoupon, IconDownArrow, IconUpArrow } from '@bigcommerce/checkout/ui
 import { ShopperCurrency } from '../../currency';
 import { type DiscountItem, useMultiCoupon } from '../useMultiCoupon';
 
-const DiscountItem: FunctionComponent<{ coupons: DiscountItem[] }> = ({ coupons }) => {
-    return coupons.map((coupon) => (
-        <div
-            aria-live="polite"
-            className="cart-priceItem optimizedCheckout-contentPrimary"
-            key={coupon.name}
-        >
-            <span className="cart-priceItem-label"><IconCoupon />{coupon.name}</span>
-            <span className="cart-priceItem-value">
-                -<ShopperCurrency amount={coupon.amount} />
-            </span>
-        </div>
-    ));
-}
+const DiscountItems: FunctionComponent<{ coupons: DiscountItem[] }> = ({ coupons }) => {
+    return (
+        <TransitionGroup component={null}>
+            {coupons.map((coupon) => {
+                const nodeRef = React.createRef<HTMLDivElement>();
+                return (
+                    <CSSTransition
+                        classNames="changeHighlight"
+                        key={coupon.name}
+                        nodeRef={nodeRef}
+                        timeout={{}}
+                    >
+                        <div
+                            aria-live="polite"
+                            className="cart-priceItem optimizedCheckout-contentPrimary"
+                            ref={nodeRef}
+                        >
+                            <span className="cart-priceItem-label"><IconCoupon />{coupon.name}</span>
+                            <span className="cart-priceItem-value">
+                                -<ShopperCurrency amount={coupon.amount} />
+                            </span>
+                        </div>
+                    </CSSTransition>
+                );
+            })}
+        </TransitionGroup>
+    );
+};
 
 export const Discounts: FunctionComponent = () => {
     const [isCouponDiscountsVisible, setIsCouponDiscountsVisible] = useState(true);
@@ -64,7 +79,7 @@ export const Discounts: FunctionComponent = () => {
                     </div>
                     {isCouponDiscountsVisible && (
                         <div className="applied-discounts-list" id="applied-coupon-discounts-collapsable">
-                            <DiscountItem coupons={discountItems} />
+                            <DiscountItems coupons={discountItems} />
                         </div>
                     )}
                 </>
