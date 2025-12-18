@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.714.0](https://github.com/bigcommerce/checkout-js/compare/v1.713.0...v1.714.0) (2025-12-18)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9680 Update New Multi-Coupon UI Style ([#2741](https://github.com/bigcommerce/checkout-js/issues/2741)) ([97499d7](https://github.com/bigcommerce/checkout-js/commit/97499d7b54ea7b1986daeb355f10071fae88bae5))
+* **other:** LOCAL-1444 delivery translation ([#2733](https://github.com/bigcommerce/checkout-js/issues/2733)) ([b11f321](https://github.com/bigcommerce/checkout-js/commit/b11f32164fd3e044a6fe11ed868d57c9122c517e))
+
 ## [1.713.0](https://github.com/bigcommerce/checkout-js/compare/v1.712.0...v1.713.0) (2025-12-18)
 
 
