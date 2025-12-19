@@ -14,6 +14,7 @@ export const AppliedGiftCertificates: FunctionComponent<{giftCertificates: Appli
         <div
             aria-live="polite"
             className="cart-priceItem optimizedCheckout-contentPrimary"
+            data-test="cart-gift-certificate"
             key={giftCertificate.code}
         >
             <span className="cart-priceItem-label">

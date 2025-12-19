@@ -3,7 +3,7 @@ import React from 'react';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import AppliedCoupon from './AppliedCoupon';
-import { getCoupon } from './coupons.mock';
+import { getCoupon } from '../utils/coupons.mock';
 
 describe('AppliedCoupon', () => {
 

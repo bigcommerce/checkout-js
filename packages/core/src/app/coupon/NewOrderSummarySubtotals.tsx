@@ -66,6 +66,7 @@ const NewOrderSummarySubtotals: FunctionComponent<MultiCouponProps> = ({
                 <div
                     aria-live="polite"
                     className="cart-priceItem optimizedCheckout-contentPrimary"
+                    data-test="cart-shipping"
                 >
                     <span className="cart-priceItem-label">
                         <TranslatedString id="shipping.shipping_heading" />

@@ -51,7 +51,7 @@ export const CouponForm: FunctionComponent = () => {
 
     return (
         <>
-            <div className="coupon-form" id="coupon-form-collapsable">
+            <div className="coupon-form" data-test="redeemable-collapsable" id="coupon-form-collapsable">
                 <TextInput
                     additionalClassName="form-input optimizedCheckout-form-input coupon-input"
                     aria-label={language.translate('redeemable.code_label')}
