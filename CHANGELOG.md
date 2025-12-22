@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.715.2](https://github.com/bigcommerce/checkout-js/compare/v1.715.1...v1.715.2) (2025-12-22)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9680 Refactor New Coupon UI Code ([#2748](https://github.com/bigcommerce/checkout-js/issues/2748)) ([8dbd88a](https://github.com/bigcommerce/checkout-js/commit/8dbd88af47b33daf3c5197cdcb5f8db17246056a))
+
 ### [1.715.1](https://github.com/bigcommerce/checkout-js/compare/v1.715.0...v1.715.1) (2025-12-19)
 
 
