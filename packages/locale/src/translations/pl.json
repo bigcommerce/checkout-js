@@ -470,6 +470,7 @@
             }
         },
         "redeemable": {
+            "auto_promotion": "Automatic discount",
             "applied_text": "Stosowana",
             "apply_action": "Zgłoś się na",
             "apply_store_credit_after_action": "kredyt sklepowy na zamówienie",
@@ -484,10 +485,11 @@
             "discounts_text": "Rabaty",
             "gift_certificate_remaining_text": "Pozostałe",
             "gift_certificate_text": "Bon podarunkowy",
+            "manual_discount": "Rabat ustawiony ręcznie",
             "remove_action": "Usuń",
             "store_credit_available_text": "Na Twoim koncie jest obecnie dostępny kredyt sklepowy {storeCredit}",
             "toggle_action": "Coupon / gift certificate",
-            "total_savings_text": "You saved <span class=\"total-savings-highlight\">{totalSaving}</span> in total!"
+            "total_savings_text": "You saved <span class=\"total-savings-highlight\">{totalDiscount}</span> in total!"
         },
         "remote": {
             "browser_unsupported": "Wybrana metoda płatności wymaga innej przeglądarki internetowej. Wybierz inną metodę płatności.",
