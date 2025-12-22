@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.716.0](https://github.com/bigcommerce/checkout-js/compare/v1.715.2...v1.716.0) (2025-12-22)
+
+
+### Features
+
+* **payment:** authorizenet added to the new resolver ([c282a66](https://github.com/bigcommerce/checkout-js/commit/c282a6627e09ec73be91eeaac910ab46f0885f74))
+
 ### [1.715.2](https://github.com/bigcommerce/checkout-js/compare/v1.715.1...v1.715.2) (2025-12-22)
 
 
