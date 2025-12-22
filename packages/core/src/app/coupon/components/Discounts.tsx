@@ -20,16 +20,17 @@ const DiscountItems: FunctionComponent<{ coupons: DiscountItem[] }> = ({ coupons
                         nodeRef={nodeRef}
                         timeout={{}}
                     >
-                        <div
-                            aria-live="polite"
-                            className="cart-priceItem optimizedCheckout-contentPrimary"
-                            data-test="cart-coupon"
-                            ref={nodeRef}
-                        >
-                            <span className="cart-priceItem-label"><IconCoupon />{coupon.name}</span>
-                            <span className="cart-priceItem-value">
-                                -<ShopperCurrency amount={coupon.amount} />
-                            </span>
+                        <div data-test="cart-coupon">
+                            <div
+                                aria-live="polite"
+                                className="cart-priceItem optimizedCheckout-contentPrimary"
+                                ref={nodeRef}
+                            >
+                                <span className="cart-priceItem-label"><IconCoupon />{coupon.name}</span>
+                                <span className="cart-priceItem-value">
+                                    -<ShopperCurrency amount={coupon.amount} />
+                                </span>
+                            </div>
                         </div>
                     </CSSTransition>
                 );
@@ -42,13 +43,12 @@ const DiscountsCollapsible: FunctionComponent<{ discounts: number; discountItems
     const [isCouponDiscountsVisible, setIsCouponDiscountsVisible] = useState(true);
 
     return (
-        <>
+        <div data-test="cart-discount">
             <div
                 aria-controls="applied-coupon-discounts-collapsable"
                 aria-expanded={isCouponDiscountsVisible}
                 aria-live="polite"
                 className="coupon-discount-toggle cart-priceItem optimizedCheckout-contentPrimary"
-                data-test="cart-discount"
                 onClick={() => setIsCouponDiscountsVisible(!isCouponDiscountsVisible)}
             >
                 <span className="cart-priceItem-label">
@@ -66,7 +66,7 @@ const DiscountsCollapsible: FunctionComponent<{ discounts: number; discountItems
                     <DiscountItems coupons={discountItems} />
                 </div>
             )}
-        </>
+        </div>
     );
 };
 
@@ -80,8 +80,8 @@ export const Discounts: FunctionComponent = () => {
     } = useMultiCoupon();
 
     return (
-        <>
-            <div aria-live="polite" className="cart-priceItem optimizedCheckout-contentPrimary" data-test="cart-subtotal">
+        <div data-test="cart-subtotal">
+            <div aria-live="polite" className="cart-priceItem optimizedCheckout-contentPrimary">
                 <span className="cart-priceItem-label">
                     <TranslatedString id="cart.subtotal_text" />
                 </span>
@@ -92,6 +92,6 @@ export const Discounts: FunctionComponent = () => {
             {discounts > 0 && (
                 <DiscountsCollapsible discountItems={discountItems} discounts={discounts} />
             )}
-        </>
+        </div>
     );
 };
