@@ -1,7 +1,7 @@
 import { type Checkout, type CheckoutPayment } from '@bigcommerce/checkout-sdk';
 
 import { getCart } from '../cart/carts.mock';
-import { getCoupon } from '../coupon/coupons.mock';
+import { getCoupon } from '../coupon/utils/coupons.mock';
 import { getGuestCustomer } from '../customer/customers.mock';
 
 export function getCheckout(): Checkout {

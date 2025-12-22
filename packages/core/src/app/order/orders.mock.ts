@@ -9,7 +9,7 @@ import {
 
 import { getBillingAddress } from '../billing/billingAddresses.mock';
 import { getGiftCertificateItem, getPhysicalItem } from '../cart/lineItem.mock';
-import { getCoupon, getShippingCoupon } from '../coupon/coupons.mock';
+import { getCoupon, getShippingCoupon } from '../coupon/utils/coupons.mock';
 import { getCurrency } from '../currency/currencies.mock';
 
 export function getOrder(): Order {
