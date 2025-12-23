@@ -36,7 +36,7 @@ export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>
         },
         { id: 'credit_card', gateway: 'bluesnapdirect' },
         { id: 'credit_card', gateway: 'checkoutcom' },
-        { id: 'authorizenet' },
+
         { id: 'tdonlinemart' },
     ],
 );
