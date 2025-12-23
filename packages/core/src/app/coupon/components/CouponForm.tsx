@@ -3,7 +3,7 @@ import React, { type FunctionComponent, useState } from 'react';
 
 import { useLocale, useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { IconError, IconRemoveCoupon, TextInput } from '@bigcommerce/checkout/ui';
+import { Alert, AlertType, IconRemoveCoupon, TextInput } from '@bigcommerce/checkout/ui';
 
 import { Button, ButtonVariant } from '../../ui/button';
 import { useMultiCoupon } from '../useMultiCoupon';
@@ -49,6 +49,8 @@ export const CouponForm: FunctionComponent = () => {
         }
     };
 
+    console.log('couponError');
+
     return (
         <>
             <div
@@ -83,11 +85,12 @@ export const CouponForm: FunctionComponent = () => {
             </div>
             <div className="applied-coupons-list">
                 {Boolean(couponError) &&
-                    <ul className="applied-coupon-error-message" role="alert">
-                        <IconError />
-                        <span>{couponError}</span>
-                        <span onClick={() => setCouponError(null)}><IconRemoveCoupon /></span>
-                    </ul>
+                    <Alert additionalClassName="no-padding" type={AlertType.Error}>
+                        <ul className="applied-coupon-error-message">
+                            <span>{couponError}</span>
+                            <span onClick={() => setCouponError(null)}><IconRemoveCoupon /></span>
+                        </ul>
+                    </Alert>
                 }
                 <ManageCouponsAndGiftCertificates />
             </div>

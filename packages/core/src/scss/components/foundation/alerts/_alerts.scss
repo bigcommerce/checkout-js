@@ -17,6 +17,10 @@
 
     .alertBox--error {
         color: color("error");
+
+        &.no-padding {
+            padding: 0;
+        }
     }
 
     .alertBox--success {
