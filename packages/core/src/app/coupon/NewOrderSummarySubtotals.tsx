@@ -77,7 +77,9 @@ const NewOrderSummarySubtotals: FunctionComponent<MultiCouponProps> = ({
                                     <ShopperCurrency amount={shippingBeforeDiscount} />
                                 </span>
                             )}
-                            <ShopperCurrency amount={shipping} />
+                            <span  data-test="cart-price-value">
+                                <ShopperCurrency amount={shipping} />
+                            </span>
                         </span>
                     </div>
                 </div>
