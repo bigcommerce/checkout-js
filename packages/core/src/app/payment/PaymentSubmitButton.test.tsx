@@ -57,12 +57,6 @@ describe('PaymentSubmitButton', () => {
         expect(screen.getByText(languageService.translate('payment.place_order_action'))).toBeInTheDocument();
     });
 
-    it('renders button with special label for Barclaycard', () => {
-        render(<PaymentSubmitButtonTest methodGateway="barclaycard" />);
-
-        expect(screen.getByText(languageService.translate('payment.barclaycard_continue_action'))).toBeInTheDocument();
-    });
-
     it('renders button with special label for Visa Checkout provided by Braintree', () => {
         render(<PaymentSubmitButtonTest methodType="visa-checkout" />);
 

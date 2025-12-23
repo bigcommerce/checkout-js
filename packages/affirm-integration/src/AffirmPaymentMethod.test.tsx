@@ -46,7 +46,7 @@ describe('When using Affirm Payment Method', () => {
         defaultProps = {
             method: {
                 id: 'affirm',
-                method: 'barclaycard',
+                method: 'credit-card',
                 supportedCards: [],
                 config: {},
                 type: 'card',

@@ -193,7 +193,6 @@
             "amazon_continue_action": "Continua con Amazon",
             "amazonpay_continue_action": "Continua con Amazon Pay",
             "amazon_name_text": "Amazon Pay",
-            "barclaycard_continue_action": "Continua",
             "bluesnap_v2_continue_action": "Continua",
             "bluesnap_direct_account_type_select": {
                 "label": "Seleziona un tipo di conto",

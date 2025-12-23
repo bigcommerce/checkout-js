@@ -25,7 +25,6 @@
       "@bigcommerce/checkout/apple-pay-integration": [
         "packages/apple-pay-integration/src/index.ts"
       ],
-      "@bigcommerce/checkout/barclay-integration": ["packages/barclay-integration/src/index.ts"],
       "@bigcommerce/checkout/bigcommerce-payments-integration": [
         "packages/bigcommerce-payments-integration/src/index.ts"
       ],
