@@ -11,6 +11,7 @@ import { getDiscountItems } from './utils';
 export interface DiscountItem {
     name: string;
     amount: number;
+    testId: string;
 }
 
 interface UIDetails {
