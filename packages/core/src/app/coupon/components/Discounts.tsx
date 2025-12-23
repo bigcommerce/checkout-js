@@ -27,7 +27,7 @@ const DiscountItems: FunctionComponent<{ coupons: DiscountItem[] }> = ({ coupons
                                 ref={nodeRef}
                             >
                                 <span className="cart-priceItem-label"><IconCoupon />{coupon.name}</span>
-                                <span className="cart-priceItem-value">
+                                <span className="cart-priceItem-value" data-test="cart-price-value">
                                     -<ShopperCurrency amount={coupon.amount} />
                                 </span>
                             </div>
@@ -85,7 +85,7 @@ export const Discounts: FunctionComponent = () => {
                 <span className="cart-priceItem-label">
                     <TranslatedString id="cart.subtotal_text" />
                 </span>
-                <span className="cart-priceItem-value">
+                <span className="cart-priceItem-value" data-test="cart-price-value">
                     <ShopperCurrency amount={subtotal} />
                 </span>
             </div>
