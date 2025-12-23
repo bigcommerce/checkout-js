@@ -8,17 +8,18 @@ export interface AppliedCouponProps {
 }
 
 const AppliedCoupon: FunctionComponent<AppliedCouponProps> = ({ coupon }) => (
-    <div className="redeemable-column redeemable-info" data-test="redeemable-item--coupon">
-        <span className="redeemable-info-header">
-            <span className="redeemable-info-header--highlight" data-test="coupon-amount">
-                {coupon.displayName}
-            </span>{' '}
-            <TranslatedString id="redeemable.coupon_text" />
-        </span>
-
-        <span className="redeemable-info-subHeader" data-test="coupon-code">
-            {coupon.code}
-        </span>
+    <div data-test="cart-coupon">
+        <div className="redeemable-column redeemable-info" data-test="redeemable-item--coupon">
+            <span className="redeemable-info-header">
+                <span className="redeemable-info-header--highlight" data-test="cart-price-label">
+                    {coupon.displayName}
+                </span>{' '}
+                <TranslatedString id="redeemable.coupon_text" />
+            </span>
+            <span className="redeemable-info-subHeader" data-test="cart-price-code">
+                {coupon.code}
+            </span>
+        </div>
     </div>
 );
 
