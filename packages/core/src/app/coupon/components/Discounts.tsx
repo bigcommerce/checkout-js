@@ -20,7 +20,7 @@ const DiscountItems: FunctionComponent<{ coupons: DiscountItem[] }> = ({ coupons
                         nodeRef={nodeRef}
                         timeout={{}}
                     >
-                        <div data-test="cart-coupon">
+                        <div data-test={coupon.testId}>
                             <div
                                 aria-live="polite"
                                 className="cart-priceItem optimizedCheckout-contentPrimary"
@@ -43,7 +43,7 @@ const DiscountsCollapsible: FunctionComponent<{ discounts: number; discountItems
     const [isCouponDiscountsVisible, setIsCouponDiscountsVisible] = useState(true);
 
     return (
-        <div data-test="cart-discount">
+        <div>
             <div
                 aria-controls="applied-coupon-discounts-collapsable"
                 aria-expanded={isCouponDiscountsVisible}

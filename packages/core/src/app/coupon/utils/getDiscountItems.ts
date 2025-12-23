@@ -12,6 +12,7 @@ export const getDiscountItems = (checkout: Checkout, language: LanguageService):
         discounts.push({
             name: language.translate('redeemable.auto_promotion'),
             amount: autoPromotionAmount,
+            testId : 'cart-discount',
         });
     }
 
@@ -19,6 +20,7 @@ export const getDiscountItems = (checkout: Checkout, language: LanguageService):
         discounts.push({
             name: language.translate('redeemable.manual_discount'),
             amount: manualDiscountAmount,
+            testId : 'cart-manual-discount',
         });
     }
 
@@ -28,6 +30,7 @@ export const getDiscountItems = (checkout: Checkout, language: LanguageService):
         discounts.push({
             name: couponName,
             amount: coupon.discountedAmount,
+            testId : 'cart-coupon',
         });
     });
 
