@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.716.7](https://github.com/bigcommerce/checkout-js/compare/v1.716.6...v1.716.7) (2025-12-24)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-9733 fix the `return to checkout` button to be visible until the drawer is present. ([#2758](https://github.com/bigcommerce/checkout-js/issues/2758)) ([cdb9e47](https://github.com/bigcommerce/checkout-js/commit/cdb9e47303e1e58224c5136d26c235ce11caf82c))
+
 ### [1.716.6](https://github.com/bigcommerce/checkout-js/compare/v1.716.5...v1.716.6) (2025-12-24)
 
 
