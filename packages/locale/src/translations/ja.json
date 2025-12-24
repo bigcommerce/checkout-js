@@ -193,7 +193,6 @@
             "amazon_continue_action": "Amazonで続ける",
             "amazonpay_continue_action": "Amazon Payで続ける",
             "amazon_name_text": "Amazon Pay",
-            "barclaycard_continue_action": "続ける",
             "bluesnap_v2_continue_action": "続ける",
             "bluesnap_direct_account_type_select": {
                 "label": "口座タイプを選択",

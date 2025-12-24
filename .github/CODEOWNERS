@@ -23,7 +23,6 @@ package-lock.json @bigcommerce/team-checkout @bigcommerce/team-integrations @big
 
 /packages/affirm-integration @bigcommerce/team-integrations
 /packages/adyen-integration @bigcommerce/team-integrations
-/packages/barclay-integration @bigcommerce/team-integrations
 /packages/bolt-integration @bigcommerce/team-integrations
 /packages/bluesnap-direct-integration @bigcommerce/team-integrations
 /packages/mollie-integration @bigcommerce/team-integrations

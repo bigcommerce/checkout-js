@@ -5,7 +5,6 @@
     "affirm-integration": "packages/affirm-integration",
     "amazon-pay-v2-integration": "packages/amazon-pay-v2-integration",
     "apple-pay-integration": "packages/apple-pay-integration",
-    "barclay-integration": "packages/barclay-integration",
     "bigcommerce-payments-integration": "packages/bigcommerce-payments-integration",
     "bluesnap-direct-integration": "packages/bluesnap-direct-integration",
     "bigcommerce-payments-utils": "packages/bigcommerce-payments-utils",

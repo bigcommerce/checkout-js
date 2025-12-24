@@ -193,7 +193,6 @@
             "amazon_continue_action": "Fortsett med Amazon",
             "amazonpay_continue_action": "Fortsett med Amazon Pay",
             "amazon_name_text": "Amazon Pay",
-            "barclaycard_continue_action": "Fortsett",
             "bluesnap_v2_continue_action": "Fortsett",
             "bluesnap_direct_account_type_select": {
                 "label": "Velg en kontotype",
