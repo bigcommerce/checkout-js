@@ -28,6 +28,11 @@
     flex-wrap: wrap;
     gap: spacing('half');
 
+    .alertBox-icon {
+        padding-right: 0;
+        padding-left: spacing('quarter');
+    }
+
     ul {
         background: $color-greyLightest;
         color: $color-primary;
@@ -56,6 +61,7 @@
         display: flex;
         justify-content: space-between;
         padding: spacing('quarter');
+        padding-left: spacing('half');
         width: 100%;
         gap: spacing('half');
         word-break: auto-phrase;
