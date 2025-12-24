@@ -49,8 +49,6 @@ export const CouponForm: FunctionComponent = () => {
         }
     };
 
-    console.log('couponError');
-
     return (
         <>
             <div
