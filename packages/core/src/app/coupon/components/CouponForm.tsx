@@ -56,10 +56,15 @@ export const CouponForm: FunctionComponent = () => {
                 data-test="redeemable-collapsable"
                 id="coupon-form-collapsable"
             >
+                <label className="is-srOnly" htmlFor="redeemableCode">
+                    <TranslatedString id="redeemable.toggle_action" />
+                </label>
                 <TextInput
                     additionalClassName="form-input optimizedCheckout-form-input coupon-input"
                     aria-label={language.translate('redeemable.code_label')}
                     disabled={isCouponFormDisabled}
+                    id="redeemableCode"
+                    name="redeemableCode"
                     onChange={handleTextInputChange}
                     onClick={clearErrorOnClick}
                     placeholder={language.translate('redeemable.coupon_placeholder')}
@@ -78,7 +83,7 @@ export const CouponForm: FunctionComponent = () => {
                     testId="redeemableEntry-submit"
                     variant={ButtonVariant.Secondary}
                 >
-                    <TranslatedString id="redeemable.apply_action" />
+                    <TranslatedString id="redeemable.apply_action"/>
                 </Button>
             </div>
             <div className="applied-coupons-list">
