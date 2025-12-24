@@ -14,7 +14,7 @@ import { isExperimentEnabled } from '../common/utility';
 import { NewOrderSummarySubtotals } from '../coupon';
 import { ShopperCurrency } from '../currency';
 import { Modal, ModalHeader } from '../ui/modal';
-import { isSmallScreen } from '../ui/responsive';
+import { isMobileView } from '../ui/responsive';
 
 import OrderModalSummarySubheader from './OrderModalSummarySubheader';
 import OrderSummaryItems from './OrderSummaryItems';
@@ -65,7 +65,7 @@ const OrderSummaryModal: FunctionComponent<
         storeCurrencyCode={storeCurrency.code}
     />;
 
-    const continueButton = isSmallScreen() && <Button
+    const continueButton = isMobileView() && <Button
         className='cart-modal-continue'
         data-test="manage-instrument-cancel-button"
         onClick={preventDefault(onRequestClose)}>
