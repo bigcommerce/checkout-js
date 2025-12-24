@@ -23,7 +23,7 @@ export const AppliedGiftCertificates: FunctionComponent<{giftCertificates: Appli
                     <TranslatedString id="redeemable.gift_certificate_text" />
                     <span className="gift-certificate-code"> ({giftCertificate.code})</span>
                 </span>
-                <span className="cart-priceItem-value">
+                <span className="cart-priceItem-value" data-test="cart-price-value">
                     -<ShopperCurrency amount={giftCertificate.amount} />
                 </span>
             </div>
