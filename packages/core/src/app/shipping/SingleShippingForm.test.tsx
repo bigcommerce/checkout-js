@@ -384,4 +384,27 @@ describe('SingleShippingForm', () => {
 
         expect(screen.getByTestId('customInput-text')).toHaveValue('BigCommerce Sydney');
     });
+
+    it('calls onUnhandledError when empty cart error is thrown', async () => {
+        const onUnhandledError = jest.fn();
+        const emptyCartError = {
+            type: 'empty_cart',
+            message: 'Cart is empty',
+        } as any;
+
+        const updateAddress = jest.fn().mockRejectedValue(emptyCartError);
+
+        renderSingleShippingFormComponent({
+            updateAddress,
+            onUnhandledError,
+        });
+
+        await userEvent.clear(screen.getByTestId('addressLine1Input-text'));
+        await userEvent.keyboard('foo 1');
+
+        await new Promise((resolve) => setTimeout(resolve, waitingDelay));
+
+        expect(updateAddress).toHaveBeenCalled();
+        expect(onUnhandledError).toHaveBeenCalledWith(emptyCartError);
+    });
 });

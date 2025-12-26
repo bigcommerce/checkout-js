@@ -14,6 +14,7 @@ import ConsignmentAddressSelector from './ConsignmentAddressSelector';
 import { AssignItemFailedError } from "./errors";
 import { useMultiShippingConsignmentItems } from "./hooks/useMultishippingConsignmentItems";
 import { setRecommendedOrMissingShippingOption } from './utils';
+import { isErrorWithType } from "../common/error";
 
 interface NewConsignmentProps {
     consignmentNumber: number;
@@ -79,6 +80,10 @@ const NewConsignment = ({
             currentConsignments = getConsignments();
         } catch (error) {
             if (error instanceof AssignItemFailedError) {
+                onUnhandledError(error);
+            }
+
+            if (isErrorWithType(error) && error.type === 'empty_cart') {
                 onUnhandledError(error);
             }
         } finally {
