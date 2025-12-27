@@ -40,5 +40,5 @@ const PaypalExpressPaymentMethod: FunctionComponent<
 
 export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>(
     PaypalExpressPaymentMethod,
-    [{ id: 'paypalexpress' }],
+    [{ id: 'paypalexpress' }, { id: 'paypalexpresscredit' }],
 );

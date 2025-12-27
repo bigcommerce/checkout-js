@@ -51,7 +51,9 @@ export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>
     HostedPaymentMethod,
     [
         { gateway: 'afterpay' },
+        { id: 'afterpay' },
         { gateway: 'clearpay' },
+        { id: 'clearpay' },
         { id: 'quadpay' },
         { id: 'sezzle' },
         { id: 'zip' },
