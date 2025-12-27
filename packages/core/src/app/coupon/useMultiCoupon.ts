@@ -39,7 +39,16 @@ interface UseMultiCouponValues {
 export const useMultiCoupon = (): UseMultiCouponValues => {
     const [couponError, setCouponError] = useState<string | null>(null);
 
-    const { checkoutState, checkoutService } = useCheckout();
+    const { checkoutState, checkoutService } = useCheckout(({ data, statuses }) => ({
+        getConfig: data.getConfig,
+        getCheckout: data.getCheckout,
+        getCoupons: data.getCoupons,
+        getGiftCertificates: data.getGiftCertificates,
+        isSubmittingOrder: statuses.isSubmittingOrder,
+        isPending: statuses.isPending,
+        isApplyingCoupon: statuses.isApplyingCoupon,
+        isApplyingGiftCertificate: statuses.isApplyingGiftCertificate,
+    }));
     const { language } = useLocale();
 
     const {

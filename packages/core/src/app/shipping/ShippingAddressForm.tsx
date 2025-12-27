@@ -46,7 +46,7 @@ const ShippingAddressForm = (
                 getCustomer,
             },
         },
-    } = useCheckout();
+    } = useCheckout(({ data }) => data.getCustomer());
 
     const customer = getCustomer();
     const addresses = customer?.addresses || [];
@@ -122,5 +122,8 @@ const ShippingAddressForm = (
         </Fieldset>
     );
 };
+
+// eslint-disable-next-line
+(ShippingAddressForm as any).whyDidYouRender = true;
 
 export default connectFormik(ShippingAddressForm);

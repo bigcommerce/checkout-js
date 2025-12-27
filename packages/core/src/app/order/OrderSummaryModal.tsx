@@ -52,7 +52,7 @@ const OrderSummaryModal: FunctionComponent<
     total,
     ...orderSummarySubtotalsProps
 }) => {
-    const { checkoutState } = useCheckout();
+    const { checkoutState } = useCheckout(({ data }) => data.getConfig());
     const { checkoutSettings } = checkoutState.data.getConfig() ?? {};
     const isMultiCouponEnabled = isExperimentEnabled(checkoutSettings, 'CHECKOUT-9674.multi_coupon_cart_checkout', false) && Boolean(checkoutState.data.getCheckout());
 

@@ -7,7 +7,15 @@ export {
 } from './analytics';
 export { ExtensionProvider, ExtensionActionType, withExtension, useExtensions } from './extension';
 export { LocaleContext, LocaleProvider, useLocale } from './locale';
-export { CheckoutContext, CheckoutProvider, useCheckout } from './checkout';
+export {
+    CheckoutContext,
+    CheckoutContextV2,
+    CheckoutProvider,
+    CheckoutProviderV2,
+    useCheckout,
+    type CheckoutContextV2Props,
+    type CheckoutProviderProps,
+} from './checkout';
 export { PaymentFormContext, usePaymentFormContext, PaymentFormProvider } from './paymentForm';
 
 export type { AnalyticsContextProps, AnalyticsEvents } from './analytics/AnalyticsContext';

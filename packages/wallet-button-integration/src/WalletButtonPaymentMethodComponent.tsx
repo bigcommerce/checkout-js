@@ -55,7 +55,11 @@ const WalletButtonPaymentMethodComponent: React.FC<WalletButtonPaymentMethodProp
         checkoutState: {
             data: { getBillingAddress, getCheckout, isPaymentDataRequired },
         },
-    } = useCheckout();
+    } = useCheckout(({ data }) => ({
+        getBillingAddress: data.getBillingAddress,
+        getCheckout: data.getCheckout,
+        isPaymentDataRequired: data.isPaymentDataRequired,
+    }));
 
     const billingAddress = getBillingAddress();
     const checkout = getCheckout();

@@ -3,12 +3,11 @@ import { createContext } from 'react';
 
 import type ErrorLogger from './ErrorLogger';
 
-export interface CheckoutContextProps {
+export interface CheckoutContextV2Props {
     checkoutService: CheckoutService;
     checkoutState: CheckoutSelectors;
     errorLogger?: ErrorLogger;
+    isUseCheckoutHookExperimentEnabled?: boolean;
 }
 
-const CheckoutContext = createContext<CheckoutContextProps | undefined>(undefined);
-
-export default CheckoutContext;
+export const CheckoutContextV2 = createContext<CheckoutContextV2Props | undefined>(undefined);
