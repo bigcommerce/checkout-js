@@ -52,7 +52,6 @@ const ShippingForm = ({
         methodId,
         shouldShowOrderComments,
         shippingAddress,
-        signOut,
         updateShippingAddress: updateAddress
     } = useShipping();
     const { extensionState: { shippingFormRenderTimestamp } } = useExtensions();
@@ -112,7 +111,6 @@ const ShippingForm = ({
             isBillingSameAsShipping={isBillingSameAsShipping}
             isInitialValueLoaded={isInitialValueLoaded}
             isLoading={isLoading}
-            isMultiShippingMode={isMultiShippingMode}
             isShippingStepPending={isShippingStepPending}
             methodId={methodId}
             onSubmit={onSingleShippingSubmit}
@@ -120,7 +118,6 @@ const ShippingForm = ({
             shippingAddress={shippingAddress}
             shippingFormRenderTimestamp={shippingFormRenderTimestamp}
             shouldShowOrderComments={shouldShowOrderComments}
-            signOut={signOut}
             updateAddress={updateAddress}
         />
     );
