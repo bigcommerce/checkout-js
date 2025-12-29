@@ -470,6 +470,7 @@
             }
         },
         "redeemable": {
+            "auto_promotion": "Automatische korting",
             "applied_text": "Toegepast",
             "apply_action": "Toepassen",
             "apply_store_credit_after_action": "winkeltegoed om te bestellen",
@@ -484,10 +485,11 @@
             "discounts_text": "Kortingen",
             "gift_certificate_remaining_text": "resterend",
             "gift_certificate_text": "Cadeaubon",
+            "manual_discount": "Handmatige korting",
             "remove_action": "Verwijderen",
             "store_credit_available_text": "Je account beschikt momenteel over een totaal winkeltegoed van {storeCredit}",
             "toggle_action": "Coupon/cadeaubon",
-            "total_savings_text": "Je hebt in totaal <span class=\"total-savings-highlight\">{totalSaving}</span> bespaard!"
+            "total_savings_text": "Je hebt in totaal <span class=\"total-savings-highlight\">{totalDiscount}</span> bespaard!"
         },
         "remote": {
             "browser_unsupported": "Voor de geselecteerde betaalmethode is een andere webbrowser vereist. Kies een andere betaalmethode.",

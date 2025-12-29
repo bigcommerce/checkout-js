@@ -470,6 +470,7 @@
             }
         },
         "redeemable": {
+            "auto_promotion": "Réduction automatique",
             "applied_text": "Appliqué",
             "apply_action": "Appliquer",
             "apply_store_credit_after_action": "avoir à utiliser",
@@ -484,10 +485,11 @@
             "discounts_text": "Remises",
             "gift_certificate_remaining_text": "restant·s",
             "gift_certificate_text": "Chèque-cadeau",
+            "manual_discount": "Remise manuelle",
             "remove_action": "Supprimer",
             "store_credit_available_text": "Un avoir de {storeCredit} est actuellement disponible sur votre compte",
             "toggle_action": "Code promotionnel/chèque-cadeau",
-            "total_savings_text": "Vous avez économisé <span class=\"total-savings-highlight\">{totalSaving}</span> au total !"
+            "total_savings_text": "Vous avez économisé <span class=\"total-savings-highlight\">{totalDiscount}</span> au total !"
         },
         "remote": {
             "browser_unsupported": "Vous devez utiliser un autre navigateur Web pour le mode de paiement sélectionné. Veuillez choisir un autre mode de paiement.",

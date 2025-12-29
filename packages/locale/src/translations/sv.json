@@ -470,6 +470,7 @@
             }
         },
         "redeemable": {
+            "auto_promotion": "Automatisk rabatt",
             "applied_text": "Applicerad",
             "apply_action": "Tillämpa",
             "apply_store_credit_after_action": "lagra kredit för beställning",
@@ -484,10 +485,11 @@
             "discounts_text": "Rabatter",
             "gift_certificate_remaining_text": "återstående",
             "gift_certificate_text": "Presentkort",
+            "manual_discount": "Manuell rabatt",
             "remove_action": "Ta bort",
             "store_credit_available_text": "Ditt konto har för närvarande totalt {storeCredit} tillgängliga butikskrediter",
             "toggle_action": "Kupong/presentkort",
-            "total_savings_text": "Du sparade <span class=\"total-savings-highlight\">{totalSaving}</span> totalt!"
+            "total_savings_text": "Du sparade <span class=\"total-savings-highlight\">{totalDiscount}</span> totalt!"
         },
         "remote": {
             "browser_unsupported": "Den valda betalningsmetoden kräver en annan webbläsare. Välj en annan betalningsmetod.",

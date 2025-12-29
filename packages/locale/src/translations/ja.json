@@ -470,6 +470,7 @@
             }
         },
         "redeemable": {
+            "auto_promotion": "自動割引",
             "applied_text": "適用済み",
             "apply_action": "適用",
             "apply_store_credit_after_action": "ストアクレジットで注文する",
@@ -484,10 +485,11 @@
             "discounts_text": "割引",
             "gift_certificate_remaining_text": "残り",
             "gift_certificate_text": "ギフト券",
+            "manual_discount": "手動割引",
             "remove_action": "除去",
             "store_credit_available_text": "現在、アカウントには合計 {storeCredit} のストアクレジットが利用可能です",
             "toggle_action": "クーポン/ギフト券",
-            "total_savings_text": "合計で<span class=\"total-savings-highlight\">{totalSaving}</span>節約できました!"
+            "total_savings_text": "合計で<span class=\"total-savings-highlight\">{totalDiscount}</span>節約できました!"
         },
         "remote": {
             "browser_unsupported": "選択した支払方い法には、別のWebブラウザが必要です。他の支払方法を選んでください。",
