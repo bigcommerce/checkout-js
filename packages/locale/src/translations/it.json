@@ -470,6 +470,7 @@
             }
         },
         "redeemable": {
+            "auto_promotion": "Sconto automatico",
             "applied_text": "Applicato",
             "apply_action": "Applica",
             "apply_store_credit_after_action": "credito del negozio per l'ordine",
@@ -484,10 +485,11 @@
             "discounts_text": "Sconti",
             "gift_certificate_remaining_text": "rimanente",
             "gift_certificate_text": "Buono regalo",
+            "manual_discount": "Sconto manuale",
             "remove_action": "Rimuovi",
             "store_credit_available_text": "Al momento il tuo account dispone di {storeCredit} crediti totali del negozio disponibili",
             "toggle_action": "Coupon/buono regalo",
-            "total_savings_text": "Ha risparmiato <span class=\"total-savings-highlight\">{totalSaving}</span> in totale!"
+            "total_savings_text": "Ha risparmiato <span class=\"total-savings-highlight\">{totalDiscount}</span> in totale!"
         },
         "remote": {
             "browser_unsupported": "Il metodo di pagamento selezionato richiede un browser diverso. Scegline un altro.",

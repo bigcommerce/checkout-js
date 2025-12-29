@@ -470,6 +470,7 @@
             }
         },
         "redeemable": {
+            "auto_promotion": "Automatisk rabat",
             "applied_text": "Anvendt",
             "apply_action": "Anvend",
             "apply_store_credit_after_action": "butikskredit for at bestille",
@@ -484,10 +485,11 @@
             "discounts_text": "Rabatter",
             "gift_certificate_remaining_text": "Resterende",
             "gift_certificate_text": "Gavekort",
+            "manual_discount": "Manuel rabat",
             "remove_action": "Fjern",
             "store_credit_available_text": "Din konto har i øjeblikket {storeCredit} butikskredit i alt tilgængelig",
             "toggle_action": "Kupon/gavekort",
-            "total_savings_text": "Du har sparet <span class=\"total-savings-highlight\">{totalSaving}</span> i alt!"
+            "total_savings_text": "Du har sparet <span class=\"total-savings-highlight\">{totalDiscount}</span> i alt!"
         },
         "remote": {
             "browser_unsupported": "Den valgte betalingsmetode kræver en anden webbrowser. Vælg en anden betalingsmetode.",

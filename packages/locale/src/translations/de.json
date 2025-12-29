@@ -470,6 +470,7 @@
             }
         },
         "redeemable": {
+            "auto_promotion": "Automatischer Rabatt",
             "applied_text": "Angewendet",
             "apply_action": "Anwenden",
             "apply_store_credit_after_action": "Shop-Guthaben zum Bestellen verwenden",
@@ -484,10 +485,11 @@
             "discounts_text": "Rabatte",
             "gift_certificate_remaining_text": "verbleiben",
             "gift_certificate_text": "Geschenkgutschein",
+            "manual_discount": "Manueller Preisnachlass",
             "remove_action": "Entfernen",
             "store_credit_available_text": "Ihr Konto verfügt derzeit insgesamt über {storeCredit} Shop-Guthaben",
             "toggle_action": "Coupon/Geschenkgutschein",
-            "total_savings_text": "Sie haben insgesamt <span class=\"total-savings-highlight\">{totalSaving}</span> gespart!"
+            "total_savings_text": "Sie haben insgesamt <span class=\"total-savings-highlight\">{totalDiscount}</span> gespart!"
         },
         "remote": {
             "browser_unsupported": "Für die gewählte Zahlungsmethode ist ein anderer Webbrowser erforderlich. Bitte wählen Sie eine andere Zahlungsmethode.",

@@ -470,6 +470,7 @@
             }
         },
         "redeemable": {
+            "auto_promotion": "Automatisk rabatt",
             "applied_text": "Brukt",
             "apply_action": "Bruk",
             "apply_store_credit_after_action": "lagre kreditt for å bestille",
@@ -484,10 +485,11 @@
             "discounts_text": "Rabatter",
             "gift_certificate_remaining_text": "gjenstående",
             "gift_certificate_text": "Gavekort",
+            "manual_discount": "Manuell rabatt",
             "remove_action": "Fjern",
             "store_credit_available_text": "Kontoen din har for øyeblikket totalt {storeCredit} butikkkreditt tilgjengelig",
             "toggle_action": "Kupong/gavekort",
-            "total_savings_text": "Du sparte totalt <span class=\"total-savings-highlight\">{totalSaving}</span>!"
+            "total_savings_text": "Du sparte totalt <span class=\"total-savings-highlight\">{totalDiscount}</span>!"
         },
         "remote": {
             "browser_unsupported": "Den valgte betalingsmåten krever en annen nettleser. Velg en annen betalingsmåte.",
