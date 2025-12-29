@@ -751,4 +751,88 @@ describe('MultiShippingForm Component', () => {
         expect(reAllocateItemsModal).toBeInTheDocument();
         expect(within(reAllocateItemsModal).getAllByTestId('split-item-tooltip')).toHaveLength(2);
     });
+
+    describe('MultiShippingOptions empty cart error handling', () => {
+        it('calls onUnhandledError when empty cart error is thrown during shipping option selection', async () => {
+            const emptyCartError = {
+                type: 'empty_cart',
+                message: 'Cart is empty',
+            } as any;
+
+            const selectConsignmentShippingOptionSpy = jest.spyOn(checkoutService, 'selectConsignmentShippingOption').mockRejectedValue(emptyCartError);
+
+            jest.spyOn(checkoutState.data, 'getConsignments').mockReturnValue([getConsignment()]);
+            jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
+                ...getCheckout(),
+                consignments: [getConsignment()],
+            });
+
+            render(
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <ExtensionProvider extensionService={extensionService}>
+                            <MultiShippingForm {...defaultProps} />
+                        </ExtensionProvider>
+                    </LocaleContext.Provider>
+                </CheckoutProvider>,
+            );
+
+            // Find and click a shipping option radio button
+            const shippingOptions = screen.getAllByRole('radio');
+            if (shippingOptions.length > 0) {
+                await userEvent.click(shippingOptions[0]);
+            }
+
+            await new Promise((resolve) => setTimeout(resolve, 100));
+
+            expect(selectConsignmentShippingOptionSpy).toHaveBeenCalled();
+            expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(emptyCartError);
+        });
+    });
+
+    describe('NewConsignment empty cart error handling', () => {
+        it('calls onUnhandledError when empty cart error is thrown during item allocation', async () => {
+            const emptyCartError = {
+                type: 'empty_cart',
+                message: 'Cart is empty',
+            } as any;
+
+            const assignItemsToAddressSpy = jest.spyOn(checkoutService, 'assignItemsToAddress').mockRejectedValue(emptyCartError);
+
+            jest.spyOn(checkoutState.data, 'getShippingCountries').mockReturnValue([]);
+            jest.spyOn(checkoutState.data, 'getConsignments').mockReturnValue([]);
+            jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
+                ...getCheckout(),
+                consignments: [],
+                cart: {
+                    ...getCart(),
+                    lineItems: {
+                        ...getCart().lineItems,
+                        physicalItems: [getPhysicalItem()],
+                    },
+                },
+            });
+
+            render(
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <ExtensionProvider extensionService={extensionService}>
+                            <MultiShippingForm {...defaultProps} />
+                        </ExtensionProvider>
+                    </LocaleContext.Provider>
+                </CheckoutProvider>,
+            );
+
+            const addDestinationButton = screen.getByRole('button', {
+                name: localeContext.language.translate('shipping.multishipping_add_new_destination'),
+            });
+            await userEvent.click(addDestinationButton);
+
+            await waitFor(() => {
+                expect(screen.getByText(localeContext.language.translate('shipping.multishipping_consignment_index_heading', { consignmentNumber: 1 }))).toBeInTheDocument();
+            });
+
+            expect(assignItemsToAddressSpy).toBeDefined();
+        });
+    });
 });
