@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.718.0](https://github.com/bigcommerce/checkout-js/compare/v1.717.0...v1.718.0) (2025-12-30)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9646 Handle cart become empty during checkout ([#2747](https://github.com/bigcommerce/checkout-js/issues/2747)) ([30d6b73](https://github.com/bigcommerce/checkout-js/commit/30d6b734c9c1532d205dfc091b1634d0bcb397dc))
+
 ## [1.717.0](https://github.com/bigcommerce/checkout-js/compare/v1.716.8...v1.717.0) (2025-12-29)
 
 
