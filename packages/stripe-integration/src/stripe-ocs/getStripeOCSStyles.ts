@@ -15,7 +15,7 @@ const getStylesFromElement = (
 };
 
 const parseRadioIconSize = (size: string | number = 0): number =>
-    typeof size !== 'number' ? parseInt(size, 10) : size;
+    typeof size !== 'number' ? parseFloat(size) : size;
 
 const getRadioIconSizes = (sizes?: Record<string, string | number | undefined>) => {
     const {

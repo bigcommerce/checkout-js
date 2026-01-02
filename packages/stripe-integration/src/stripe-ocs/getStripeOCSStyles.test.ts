@@ -41,7 +41,7 @@ describe('getStripeOCSStyles', () => {
             },
             [`#${containerId}--accordion-header .form-label::before`]: {
                 'border-color': 'black',
-                'border-width': '1px',
+                'border-width': '1.5px',
                 'background-color': 'white',
                 width: '30px',
             },
@@ -151,7 +151,7 @@ describe('getStripeOCSStyles', () => {
                         fill: '#4496f6',
                     },
                     '.RadioIconOuter': {
-                        strokeWidth: '2.93px',
+                        strokeWidth: '4.40px',
                         stroke: 'black',
                         fill: 'white',
                     },
