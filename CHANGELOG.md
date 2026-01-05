@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.718.3](https://github.com/bigcommerce/checkout-js/compare/v1.718.2...v1.718.3) (2026-01-05)
+
+
+### Bug Fixes
+
+* **payment:** Stripe OCS fix radio button styling ([41a53a0](https://github.com/bigcommerce/checkout-js/commit/41a53a0afa6fbc28c9d8dcdddb6949d3439ef1b8))
+
 ### [1.718.2](https://github.com/bigcommerce/checkout-js/compare/v1.718.1...v1.718.2) (2026-01-05)
 
 
