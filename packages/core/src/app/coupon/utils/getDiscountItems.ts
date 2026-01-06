@@ -1,8 +1,8 @@
-import { type Checkout, type LanguageService } from '@bigcommerce/checkout-sdk';
+import { type Checkout, type LanguageService, type Order } from '@bigcommerce/checkout-sdk';
 
 import { type DiscountItem } from '../useMultiCoupon';
 
-export const getDiscountItems = (checkout: Checkout, language: LanguageService): DiscountItem[] => {
+export const getDiscountItems = (checkout: Checkout | Order, language: LanguageService): DiscountItem[] => {
     const discounts: DiscountItem[] = [];
 
     const autoPromotionAmount = checkout.orderBasedAutoDiscountTotal;
