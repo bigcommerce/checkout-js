@@ -17,6 +17,7 @@ interface MultiCouponProps {
     isTaxIncluded?: boolean;
     storeCreditAmount?: number;
     taxes?: Tax[];
+    isOrderConfirmation?: boolean;
 }
 
 const NewOrderSummarySubtotals: FunctionComponent<MultiCouponProps> = ({
@@ -26,6 +27,7 @@ const NewOrderSummarySubtotals: FunctionComponent<MultiCouponProps> = ({
     isTaxIncluded,
     storeCreditAmount,
     taxes,
+    isOrderConfirmation = false,
 }) => {
     const {
         appliedGiftCertificates,
@@ -44,22 +46,24 @@ const NewOrderSummarySubtotals: FunctionComponent<MultiCouponProps> = ({
 
     return (
         <>
-            <section className="cart-section optimizedCheckout-orderSummary-cartSection">
-                <a
-                    aria-controls="coupon-form-collapsable"
-                    aria-expanded={isCouponFormVisible}
-                    className="redeemable-label"
-                    data-test="redeemable-label"
-                    href="#"
-                    onClick={preventDefault(toggleCouponForm)}
-                >
-                    <TranslatedString id="redeemable.toggle_action" />
-                </a>
+            {!isOrderConfirmation && (
+                <section className="cart-section optimizedCheckout-orderSummary-cartSection">
+                    <a
+                        aria-controls="coupon-form-collapsable"
+                        aria-expanded={isCouponFormVisible}
+                        className="redeemable-label"
+                        data-test="redeemable-label"
+                        href="#"
+                        onClick={preventDefault(toggleCouponForm)}
+                    >
+                        <TranslatedString id="redeemable.toggle_action" />
+                    </a>
 
-                {isCouponFormVisible && (
-                    <CouponForm />
-                )}
-            </section>
+                    {isCouponFormVisible && (
+                        <CouponForm />
+                    )}
+                </section>
+            )}
             <section className="subtotals-with-multi-coupon cart-section optimizedCheckout-orderSummary-cartSection">
                 <Discounts />
 

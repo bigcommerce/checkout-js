@@ -56,10 +56,15 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
 
     const isMultiCouponEnabled = isExperimentEnabled(checkoutSettings, 'CHECKOUT-9674.multi_coupon_cart_checkout', false) && !!checkout;
     const isMultiCouponEnabledForOrder = isExperimentEnabled(checkoutSettings, 'CHECKOUT-9744.multi_coupon_order_confirmation', false) && !!order;
-    const totalDiscount = isMultiCouponEnabledForOrder ? 
-    order.totalDiscount : 
-    (isMultiCouponEnabled ? checkout.totalDiscount : undefined);
+    let totalDiscount;
+    
+    if (isMultiCouponEnabled) {
+        totalDiscount = checkout.totalDiscount;
+    }
 
+    if (isMultiCouponEnabledForOrder) {
+        totalDiscount = order.totalDiscount;
+    }
 
     if (!currency) {
         return null;
@@ -82,6 +87,7 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
                         fees={orderSummarySubtotalsProps.fees}
                         giftWrappingAmount={orderSummarySubtotalsProps.giftWrappingAmount}
                         handlingAmount={orderSummarySubtotalsProps.handlingAmount}
+                        isOrderConfirmation={!!order}
                         isTaxIncluded={isTaxIncluded}
                         storeCreditAmount={orderSummarySubtotalsProps.storeCreditAmount}
                         taxes={taxes}
