@@ -7,6 +7,7 @@ import { EMPTY_ARRAY } from '../common/utility';
 
 import { type AppliedGiftCertificateInfo } from './components';
 import { getDiscountItems } from './utils';
+import { hasSelectedShippingOptions } from '../shipping';
 
 export interface DiscountItem {
     name: string;
@@ -18,8 +19,8 @@ interface UIDetails {
     subtotal: number;
     discounts: number;
     discountItems: DiscountItem[];
-    shipping: number;
-    shippingBeforeDiscount: number;
+    shipping: number | undefined;
+    shippingBeforeDiscount: number | undefined;
 }
 
 interface UseMultiCouponValues {
@@ -93,12 +94,14 @@ export const useMultiCoupon = (): UseMultiCouponValues => {
     let uiDetails = {} as UIDetails;
 
     if(checkout) {
+        const allConsignmentsHaveSelectedShippingOption = hasSelectedShippingOptions(checkout.consignments);
+        
         uiDetails = {
             subtotal: checkout.subtotal,
             discounts: checkout.displayDiscountTotal,
             discountItems: getDiscountItems(checkout, language),
-            shippingBeforeDiscount: checkout.shippingCostBeforeDiscount,
-            shipping: checkout.comparisonShippingCost,
+            shippingBeforeDiscount: allConsignmentsHaveSelectedShippingOption ? checkout.shippingCostBeforeDiscount : undefined,
+            shipping: allConsignmentsHaveSelectedShippingOption ? checkout.comparisonShippingCost : undefined,
         }
     }
     
