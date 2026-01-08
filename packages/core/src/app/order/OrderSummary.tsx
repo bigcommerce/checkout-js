@@ -52,14 +52,25 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
     const { checkoutState } = useCheckout();
     const { checkoutSettings } = checkoutState.data.getConfig() ?? {};
     const checkout = checkoutState.data.getCheckout();
-    const isMultiCouponEnabled = isExperimentEnabled(checkoutSettings, 'CHECKOUT-9674.multi_coupon_cart_checkout', false) && Boolean(checkout);
-    const totalDiscount = checkout ? checkout.totalDiscount : undefined;
+    const order = checkoutState.data.getOrder();
+
+    const isMultiCouponEnabled = isExperimentEnabled(checkoutSettings, 'CHECKOUT-9674.multi_coupon_cart_checkout', false) && !!checkout;
+    const isMultiCouponEnabledForOrder = isExperimentEnabled(checkoutSettings, 'CHECKOUT-9744.multi_coupon_order_confirmation', false) && !!order;
+    let totalDiscount;
+    
+    if (isMultiCouponEnabled) {
+        totalDiscount = checkout.totalDiscount;
+    }
+
+    if (isMultiCouponEnabledForOrder) {
+        totalDiscount = order.totalDiscount;
+    }
 
     if (!currency) {
         return null;
     }
 
-    const isTotalDiscountVisible = Boolean(isMultiCouponEnabled && totalDiscount && totalDiscount > 0);
+    const isTotalDiscountVisible = Boolean(totalDiscount && totalDiscount > 0);
 
     return (
         <article className="cart optimizedCheckout-orderSummary" data-test="cart">
@@ -71,11 +82,12 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
 
             <Extension region={ExtensionRegion.SummaryLastItemAfter} />
 
-            {isMultiCouponEnabled
+            {isMultiCouponEnabled || isMultiCouponEnabledForOrder
                 ? <NewOrderSummarySubtotals
                         fees={orderSummarySubtotalsProps.fees}
                         giftWrappingAmount={orderSummarySubtotalsProps.giftWrappingAmount}
                         handlingAmount={orderSummarySubtotalsProps.handlingAmount}
+                        isOrderConfirmation={!!order}
                         isTaxIncluded={isTaxIncluded}
                         storeCreditAmount={orderSummarySubtotalsProps.storeCreditAmount}
                         taxes={taxes}

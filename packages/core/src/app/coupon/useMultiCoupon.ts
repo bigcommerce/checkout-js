@@ -43,14 +43,15 @@ export const useMultiCoupon = (): UseMultiCouponValues => {
     const { language } = useLocale();
 
     const {
-        data: { getConfig, getCheckout },
+        data: { getConfig, getCheckout, getOrder },
         statuses: { isSubmittingOrder, isPending, isApplyingCoupon, isApplyingGiftCertificate }
     } = checkoutState;
     const { checkoutSettings } = getConfig() ?? {};
     const checkout = getCheckout();
+    const order = getOrder();
 
-    if (!checkoutSettings || !checkout) {
-      throw new Error('Checkout is not available');
+    if (!checkoutSettings || !(checkout || order)) {
+        throw new Error('Checkout or order is not available');
     }
 
     const shouldDisableCouponForm = isSubmittingOrder() || isPending();
@@ -88,12 +89,27 @@ export const useMultiCoupon = (): UseMultiCouponValues => {
         await checkoutService.removeGiftCertificate(code);
     };
 
-    const uiDetails = {
-        subtotal: checkout.subtotal,
-        discounts: checkout.displayDiscountTotal,
-        discountItems: getDiscountItems(checkout, language),
-        shippingBeforeDiscount: checkout.shippingCostBeforeDiscount,
-        shipping: checkout.comparisonShippingCost,
+
+    let uiDetails = {} as UIDetails;
+
+    if(checkout) {
+        uiDetails = {
+            subtotal: checkout.subtotal,
+            discounts: checkout.displayDiscountTotal,
+            discountItems: getDiscountItems(checkout, language),
+            shippingBeforeDiscount: checkout.shippingCostBeforeDiscount,
+            shipping: checkout.comparisonShippingCost,
+        }
+    }
+    
+    if(order) {
+        uiDetails = {
+            subtotal: order.baseAmount,
+            discounts: order.displayDiscountTotal,
+            discountItems: getDiscountItems(order, language),
+            shippingBeforeDiscount: order.shippingCostBeforeDiscount,
+            shipping: order.comparisonShippingCost,
+        }
     }
 
     return {

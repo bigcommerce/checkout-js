@@ -20,9 +20,12 @@ jest.mock('./OrderSummaryPrice', () => (props: any) => (
 
 describe('OrderSummaryModal', () => {
     const checkoutService = createCheckoutService();
+    const checkoutState = checkoutService.getState();
 
     beforeEach(() => {
         order = getOrder();
+
+        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
     });
 
     it('renders order summary', () => {

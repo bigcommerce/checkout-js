@@ -30,6 +30,7 @@ describe('useMultiCoupon', () => {
             getCheckout: jest.fn(),
             getCoupons: jest.fn(),
             getGiftCertificates: jest.fn(),
+            getOrder: jest.fn(),
         },
         statuses: {
             isApplyingCoupon: jest.fn(),
@@ -50,6 +51,7 @@ describe('useMultiCoupon', () => {
         checkoutState.data.getCheckout.mockReturnValue(getCheckout());
         checkoutState.data.getCoupons.mockReturnValue([]);
         checkoutState.data.getGiftCertificates.mockReturnValue([]);
+        checkoutState.data.getOrder.mockReturnValue(undefined);
         checkoutState.statuses.isSubmittingOrder.mockReturnValue(false);
         checkoutState.statuses.isPending.mockReturnValue(false);
         checkoutState.statuses.isApplyingCoupon.mockReturnValue(false);
@@ -79,7 +81,7 @@ describe('useMultiCoupon', () => {
         checkoutState.data.getConfig.mockReturnValue(undefined);
 
         expect(() => renderHook(() => useMultiCoupon())).toThrow(
-            'Checkout is not available'
+            'Checkout or order is not available'
         );
     });
 
@@ -87,15 +89,16 @@ describe('useMultiCoupon', () => {
         checkoutState.data.getConfig.mockReturnValue({});
 
         expect(() => renderHook(() => useMultiCoupon())).toThrow(
-            'Checkout is not available'
+            'Checkout or order is not available'
         );
     });
 
-    it('throws if checkout object is not available', () => {
+    it('throws if checkout and order object is not available', () => {
         checkoutState.data.getCheckout.mockReturnValue(undefined);
+        checkoutState.data.getOrder.mockReturnValue(undefined);
 
         expect(() => renderHook(() => useMultiCoupon())).toThrow(
-            'Checkout is not available'
+            'Checkout or order is not available'
         );
     });
 
