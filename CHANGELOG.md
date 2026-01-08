@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.719.0](https://github.com/bigcommerce/checkout-js/compare/v1.718.3...v1.719.0) (2026-01-08)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9744 Update order confirmation summary with new ui ([#2764](https://github.com/bigcommerce/checkout-js/issues/2764)) ([4d017b7](https://github.com/bigcommerce/checkout-js/commit/4d017b74ae1b3cde497bf3599d3dd543d0c768fc))
+
 ### [1.718.3](https://github.com/bigcommerce/checkout-js/compare/v1.718.2...v1.718.3) (2026-01-05)
 
 
