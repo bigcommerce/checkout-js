@@ -53,12 +53,14 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
     const { checkoutSettings } = checkoutState.data.getConfig() ?? {};
     const checkout = checkoutState.data.getCheckout();
     const order = checkoutState.data.getOrder();
-
-    const isMultiCouponEnabled = isExperimentEnabled(checkoutSettings, 'CHECKOUT-9674.multi_coupon_cart_checkout', false) && !!checkout;
-    const isMultiCouponEnabledForOrder = isExperimentEnabled(checkoutSettings, 'CHECKOUT-9744.multi_coupon_order_confirmation', false) && !!order;
+    
+    const isMultiCouponEnabled = isExperimentEnabled(checkoutSettings, 'CHECKOUT-9674.multi_coupon_cart_checkout', false);
+    const isMultiCouponEnabledForCheckout = isMultiCouponEnabled && !!checkout;
+    const isMultiCouponEnabledForOrder = isMultiCouponEnabled && !checkout && !!order;
+    
     let totalDiscount;
     
-    if (isMultiCouponEnabled) {
+    if (isMultiCouponEnabledForCheckout) {
         totalDiscount = checkout.totalDiscount;
     }
 
@@ -82,12 +84,12 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
 
             <Extension region={ExtensionRegion.SummaryLastItemAfter} />
 
-            {isMultiCouponEnabled || isMultiCouponEnabledForOrder
+            {isMultiCouponEnabledForCheckout || isMultiCouponEnabledForOrder
                 ? <NewOrderSummarySubtotals
                         fees={orderSummarySubtotalsProps.fees}
                         giftWrappingAmount={orderSummarySubtotalsProps.giftWrappingAmount}
                         handlingAmount={orderSummarySubtotalsProps.handlingAmount}
-                        isOrderConfirmation={!!order}
+                        isOrderConfirmation={isMultiCouponEnabledForOrder}
                         isTaxIncluded={isTaxIncluded}
                         storeCreditAmount={orderSummarySubtotalsProps.storeCreditAmount}
                         taxes={taxes}
