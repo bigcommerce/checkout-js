@@ -444,6 +444,7 @@
                 "three_d_secure_declined": "There has been an issue with your payment, please check your payment details or contact your card issuer.",
                 "three_d_secure_failed": "The payment failed. Please try again or use a different payment option.",
                 "three_d_secure_required": "Further authentication is required to process your payment. Please contact us.",
+                "three_d_secure_payment_failed": "The credit card information is invalid or failed 3D Secure verification. Please try another card or attempt the payment again later.",
                 "token_error": "We're experiencing difficulty processing your transaction. Please try again later.",
                 "transaction_declined": "Your payment was declined. Please try again.",
                 "transaction_rejected": "Payment was declined. Please try again.",
