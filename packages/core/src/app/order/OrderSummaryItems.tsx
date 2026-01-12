@@ -1,6 +1,7 @@
 import { type LineItemMap } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
-import React, { type ReactElement, useCallback, useState } from 'react';
+import React, { type FunctionComponent, type ReactElement, type ReactNode, useCallback, useRef, useState } from 'react';
+import { CSSTransition, type CSSTransitionProps, TransitionGroup } from 'react-transition-group';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
@@ -13,6 +14,92 @@ import mapFromDigital from './mapFromDigital';
 import mapFromGiftCertificate from './mapFromGiftCertificate';
 import mapFromPhysical from './mapFromPhysical';
 import OrderSummaryItem from './OrderSummaryItem';
+
+// Animation constants - matching coupon animations
+const ANIMATION_DURATION = 300;
+const SLIDE_DISTANCE = 12;
+
+const prefersReducedMotion = () =>
+    typeof window !== 'undefined' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+interface AnimatedProductItemProps extends Partial<CSSTransitionProps> {
+    children: ReactNode;
+}
+
+const AnimatedProductItem: FunctionComponent<AnimatedProductItemProps> = ({ children, in: inProp, ...restProps }) => {
+    const nodeRef = useRef<HTMLLIElement>(null);
+
+    const handleEnter = () => {
+        const node = nodeRef.current;
+        if (!node || prefersReducedMotion()) return;
+
+        node.style.height = '0px';
+        node.style.opacity = '0';
+        node.style.transform = `translateY(-${SLIDE_DISTANCE}px)`;
+        node.style.overflow = 'hidden';
+    };
+
+    const handleEntering = () => {
+        const node = nodeRef.current;
+        if (!node || prefersReducedMotion()) return;
+
+        void node.offsetHeight;
+        node.style.height = `${node.scrollHeight}px`;
+        node.style.opacity = '1';
+        node.style.transform = 'translateY(0)';
+    };
+
+    const handleEntered = () => {
+        const node = nodeRef.current;
+        if (!node) return;
+
+        node.style.height = '';
+        node.style.opacity = '';
+        node.style.transform = '';
+        node.style.overflow = '';
+    };
+
+    const handleExit = () => {
+        const node = nodeRef.current;
+        if (!node || prefersReducedMotion()) return;
+
+        node.style.height = `${node.offsetHeight}px`;
+        node.style.opacity = '1';
+        node.style.transform = 'translateY(0)';
+        node.style.overflow = 'hidden';
+    };
+
+    const handleExiting = () => {
+        const node = nodeRef.current;
+        if (!node || prefersReducedMotion()) return;
+
+        void node.offsetHeight;
+        node.style.height = '0px';
+        node.style.opacity = '0';
+        node.style.transform = `translateY(-${SLIDE_DISTANCE}px)`;
+    };
+
+    return (
+        <CSSTransition
+            {...restProps}
+            appear
+            classNames="product-item"
+            in={inProp}
+            nodeRef={nodeRef}
+            onEnter={handleEnter}
+            onEntered={handleEntered}
+            onEntering={handleEntering}
+            onExit={handleExit}
+            onExiting={handleExiting}
+            timeout={ANIMATION_DURATION}
+        >
+            <li className="productList-item is-visible" ref={nodeRef}>
+                {children}
+            </li>
+        </CSSTransition>
+    );
+};
 
 const COLLAPSED_ITEMS_LIMIT = 4;
 const COLLAPSED_ITEMS_LIMIT_SMALL_SCREEN = 3;
@@ -41,13 +128,13 @@ const ProductList = ({ items, isExpanded, collapsedLimit }: { items: LineItemMap
     ].slice(0, isExpanded ? undefined : collapsedLimit);
 
     return (
-        <ul aria-live="polite" className="productList">
+        <TransitionGroup aria-live="polite" className="productList" component="ul">
             {summaryItems.map(summaryItemProps => (
-                <li className="productList-item is-visible" key={summaryItemProps.id}>
+                <AnimatedProductItem key={summaryItemProps.id}>
                     <OrderSummaryItem {...summaryItemProps} />
-                </li>
+                </AnimatedProductItem>
             ))}
-        </ul>
+        </TransitionGroup>
     );
 };
 
