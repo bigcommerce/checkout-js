@@ -273,6 +273,19 @@ const BraintreeCreditCardsPaymentMethod: FunctionComponent<PaymentMethodProps> =
                                 ref.current.cancelThreeDSecureVerification = undefined;
                             },
                         },
+                        onPaymentError(error: Error) {
+                            if (error.message === 'THREEDS_VERIFICATION_FAILED') {
+                                onUnhandledError?.(
+                                    new Error(
+                                        language.translate(
+                                            'payment.errors.three_d_secure_payment_failed',
+                                        ),
+                                    ),
+                                );
+                            } else {
+                                onUnhandledError?.(error);
+                            }
+                        },
                         form: isHostedFormEnabled
                             ? await getHostedFormOptions(selectedInstrument)
                             : undefined,

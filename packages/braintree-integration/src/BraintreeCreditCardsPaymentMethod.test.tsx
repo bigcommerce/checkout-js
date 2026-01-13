@@ -310,4 +310,34 @@ describe('BraintreeCreditCardsPaymentMethod', () => {
 
         expect(screen.queryByTestId('account-instrument-fieldset')).not.toBeInTheDocument();
     });
+
+    it('calls onUnhandledError with translated message when THREEDS_VERIFICATION_FAILED error occurs', async () => {
+        render(<PaymentMethodTest {...defaultProps} />);
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        const call = (checkoutService.initializePayment as jest.Mock).mock.calls[0][0];
+        const onPaymentError = call.braintree.onPaymentError;
+
+        onPaymentError(new Error('THREEDS_VERIFICATION_FAILED'));
+
+        expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(
+            expect.objectContaining({
+                message: expect.stringContaining('three_d_secure_payment_failed'),
+            }),
+        );
+    });
+
+    it('calls onUnhandledError with original error for non-3DS errors', async () => {
+        render(<PaymentMethodTest {...defaultProps} />);
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        const call = (checkoutService.initializePayment as jest.Mock).mock.calls[0][0];
+        const onPaymentError = call.braintree.onPaymentError;
+        const originalError = new Error('Some other payment error');
+
+        onPaymentError(originalError);
+
+        expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(originalError);
+    });
 });
