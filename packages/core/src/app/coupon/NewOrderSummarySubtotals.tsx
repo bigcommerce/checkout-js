@@ -4,7 +4,6 @@ import React, { type FunctionComponent, useState } from 'react';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
-import { ShopperCurrency } from '../currency';
 import { isOrderFee, OrderSummaryDiscount, OrderSummaryPrice }  from '../order';
 
 import { AppliedGiftCertificates, CouponForm, Discounts } from './components';
@@ -67,26 +66,13 @@ const NewOrderSummarySubtotals: FunctionComponent<MultiCouponProps> = ({
             <section className="subtotals-with-multi-coupon cart-section optimizedCheckout-orderSummary-cartSection">
                 <Discounts />
 
-                <div data-test="cart-shipping">
-                    <div
-                        aria-live="polite"
-                        className="cart-priceItem optimizedCheckout-contentPrimary"
-                    >
-                        <span className="cart-priceItem-label">
-                            <TranslatedString id="shipping.shipping_heading" />
-                        </span>
-                        <span className="cart-priceItem-value">
-                            {(shippingBeforeDiscount > 0 && shippingBeforeDiscount !== shipping) && (
-                                <span className="cart-priceItem-before-discount">
-                                    <ShopperCurrency amount={shippingBeforeDiscount} />
-                                </span>
-                            )}
-                            <span  data-test="cart-price-value">
-                                <ShopperCurrency amount={shipping} />
-                            </span>
-                        </span>
-                    </div>
-                </div>
+                <OrderSummaryPrice
+                    amount={shipping}
+                    amountBeforeDiscount={shippingBeforeDiscount}
+                    label={<TranslatedString id="cart.shipping_text" />}
+                    testId="cart-shipping"
+                    zeroLabel={<TranslatedString id="cart.free_text" />}
+                />
 
                 {!!giftWrappingAmount && (
                     <OrderSummaryPrice
