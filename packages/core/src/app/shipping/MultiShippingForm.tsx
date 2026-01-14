@@ -44,7 +44,10 @@ const MultiShippingForm: FunctionComponent<MultiShippingFormProps> = ({
         checkoutState: {
             data: { getConsignments, getConfig },
         },
-    } = useCheckout();
+    } = useCheckout(({ data }) => ({
+        consignments: data.getConsignments(),
+        config: data.getConfig(),
+    }));
     const { unassignedItems: { lineItems: unassignedLineItems, shippableItemsCount }, consignmentList } = useMultiShippingConsignmentItems();
 
     const consignments = getConsignments() || EMPTY_ARRAY;

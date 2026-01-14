@@ -8,7 +8,10 @@ import { isAccountInstrument } from '@bigcommerce/checkout/instrument-utils';
 const usePaypalCommerceInstrument = (method: PaymentMethod) => {
     const [currentInstrument, setCurrentInstrument] = useState<AccountInstrument | undefined>();
 
-    const { checkoutState } = useCheckout();
+    const { checkoutState } = useCheckout(({ data }) => ({
+        getCustomer: data.getCustomer,
+        getInstruments: data.getInstruments,
+    }));
     const customer = checkoutState.data.getCustomer();
     const instruments = checkoutState.data.getInstruments(method) || [];
 

@@ -18,7 +18,14 @@ export interface BillingProps {
 }
 
 const Billing = ({ navigateNextStep, onReady, onUnhandledError }:BillingProps): ReactElement => {
-    const { checkoutService, checkoutState } = useCheckout();
+    const { checkoutService, checkoutState } = useCheckout(({ data }) => ({
+        checkout: data.getCheckout(),
+        config: data.getConfig(),
+        cart: data.getCart(),
+        customer: data.getCustomer(),
+        billingAddress: data.getBillingAddress(),
+        getBillingAddressFields: data.getBillingAddressFields,
+    }));
     const { themeV2 }  = useThemeContext();
 
     const {

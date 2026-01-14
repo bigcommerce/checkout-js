@@ -62,7 +62,15 @@ const LoginForm: FunctionComponent<
     viewType = CustomerViewType.Login,
 }) => {
     const { themeV2 } = useThemeContext();
-    const { checkoutState } = useCheckout();
+    const { checkoutState } = useCheckout(({
+        data: { getCart, getConfig },
+        statuses: { isExecutingPaymentMethodCheckout, isSigningIn },
+    }) => ({
+        cart: getCart(),
+        config: getConfig(),
+        isExecutingPaymentMethodCheckout: isExecutingPaymentMethodCheckout(),
+        isSigningIn: isSigningIn(),
+    }));
 
     const {
         data: { getCart, getConfig },

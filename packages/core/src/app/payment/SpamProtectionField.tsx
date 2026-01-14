@@ -20,7 +20,7 @@ const SpamProtectionField = ({
     const {
         checkoutService: { executeSpamCheck },
         checkoutState: { statuses }
-    } = useCheckout();
+    } = useCheckout(({ statuses }) => statuses.isExecutingSpamCheck());
 
     const isExecutingSpamCheck = statuses.isExecutingSpamCheck();
 

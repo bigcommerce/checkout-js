@@ -47,7 +47,19 @@ const ConsignmentAddressSelector = ({
             createCustomerAddress,
             selectConsignmentShippingOption,
         },
-    } = useCheckout();
+    } = useCheckout(({
+        data: {
+            getCustomer,
+            getConfig,
+            getConsignments,
+            getShippingAddressFields,
+        },
+    }) => ({
+        customer: getCustomer(),
+        config: getConfig(),
+        consignments: getConsignments(),
+        getFields: getShippingAddressFields,
+    }));
 
     const customer = getCustomer();
     const config = getConfig();
