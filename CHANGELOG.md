@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.720.0](https://github.com/bigcommerce/checkout-js/compare/v1.719.0...v1.720.0) (2026-01-14)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9749 Revert  the shipping value when no costs was calculated back to “--”  ([#2765](https://github.com/bigcommerce/checkout-js/issues/2765)) ([40d8615](https://github.com/bigcommerce/checkout-js/commit/40d8615ac1ca8c5619ffc1c2289c3e3247bfc7df))
+* **payment:** PAYPAL-6141 update failed 3DS error message ([2ca9d83](https://github.com/bigcommerce/checkout-js/commit/2ca9d8326900a125e25d9df158e15d4a40fa5e16))
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-9450 Fix resolve IDs of components for hosted payment methods to match with SDK ([473581e](https://github.com/bigcommerce/checkout-js/commit/473581edb4264dc382bd4d7064cd51008c39a315))
+
 ## [1.719.0](https://github.com/bigcommerce/checkout-js/compare/v1.718.3...v1.719.0) (2026-01-08)
 
 
