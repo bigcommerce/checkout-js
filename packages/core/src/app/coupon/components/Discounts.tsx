@@ -89,7 +89,7 @@ export const Discounts: FunctionComponent = () => {
                     <ShopperCurrency amount={subtotal} />
                 </span>
             </div>
-            {discounts > 0 && (
+            {(discounts > 0 || discountItems.length > 0) && (
                 <DiscountsCollapsible discountItems={discountItems} discounts={discounts} />
             )}
         </div>
