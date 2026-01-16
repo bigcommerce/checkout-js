@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.721.2](https://github.com/bigcommerce/checkout-js/compare/v1.721.1...v1.721.2) (2026-01-16)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-9749 show the discount section when coupons are added ([#2771](https://github.com/bigcommerce/checkout-js/issues/2771)) ([6e50353](https://github.com/bigcommerce/checkout-js/commit/6e5035325b06e32dd97cc4c48857f5a95d7d4259))
+
 ### [1.721.1](https://github.com/bigcommerce/checkout-js/compare/v1.721.0...v1.721.1) (2026-01-15)
 
 ## [1.721.0](https://github.com/bigcommerce/checkout-js/compare/v1.720.2...v1.721.0) (2026-01-15)
