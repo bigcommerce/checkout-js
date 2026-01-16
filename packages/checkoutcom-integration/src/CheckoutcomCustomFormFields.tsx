@@ -1,42 +1,15 @@
 import { type BillingAddress, type PaymentMethod } from '@bigcommerce/checkout-sdk';
-import { type FieldProps } from 'formik';
-import React, {
-    type FunctionComponent,
-    type SyntheticEvent,
-    useCallback,
-    useContext,
-    useEffect,
-    useState,
-} from 'react';
+import React, { type FunctionComponent, useContext, useEffect } from 'react';
 
 import { PaymentFormContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { CheckboxFormField, DropdownTrigger, FormField } from '@bigcommerce/checkout/ui';
+import { CheckboxFormField } from '@bigcommerce/checkout/ui';
 
 import TextFieldForm from './checkoutcomFieldsets/TextFieldForm';
 
 interface CheckoutcomAPMFormProps {
     method: PaymentMethod;
     debtor: BillingAddress;
-}
-
-interface Issuer {
-    bic: string;
-    name: string;
-}
-
-interface HiddenInputProps extends FieldProps {
-    selectedIssuer?: string;
-}
-
-interface DropdownButtonProps {
-    selectedIssuer?: Issuer;
-}
-
-interface OptionButtonProps {
-    className?: string;
-    issuer: Issuer;
-    onClick?(event: SyntheticEvent<EventTarget>): void;
 }
 
 interface SepaCreditor {
@@ -117,56 +90,6 @@ const Sepa: FunctionComponent<CheckoutcomAPMFormProps> = ({ method, debtor }) =>
     );
 };
 
-export const HiddenInput: FunctionComponent<HiddenInputProps> = ({
-    field: { value, ...restField },
-    form,
-    selectedIssuer,
-}) => {
-    const Input = useCallback(() => <input {...restField} type="hidden" />, [restField]);
-
-    useEffect(() => {
-        if (value === selectedIssuer) {
-            return;
-        }
-
-        void form.setFieldValue(restField.name, selectedIssuer);
-    }, [value, form, selectedIssuer, restField.name]);
-
-    return <Input />;
-};
-
-export const OptionButton: FunctionComponent<OptionButtonProps> = ({ issuer, ...restProps }) => {
-    const { bic, name } = issuer;
-
-    return (
-        <button data-bic={bic} type="button" {...restProps}>
-            <div className="instrumentSelect-details">{`${bic} / ${name}`}</div>
-        </button>
-    );
-};
-
-const DropdownButton: FunctionComponent<DropdownButtonProps> = ({ selectedIssuer }) => {
-    if (!selectedIssuer) {
-        return (
-            <button
-                className="instrumentSelect-button optimizedCheckout-form-select dropdown-button form-input"
-                type="button"
-            >
-                <div className="instrumentSelect-details instrumentSelect-details--addNew">
-                    <div className="instrumentSelect-card">Your bank</div>
-                </div>
-            </button>
-        );
-    }
-
-    return (
-        <OptionButton
-            className="instrumentSelect-button optimizedCheckout-form-select dropdown-button form-input"
-            issuer={selectedIssuer}
-        />
-    );
-};
-
 const Fawry: FunctionComponent<CheckoutcomAPMFormProps> = () => {
     return (
         <>
@@ -186,52 +109,9 @@ const Fawry: FunctionComponent<CheckoutcomAPMFormProps> = () => {
     );
 };
 
-const Ideal: FunctionComponent<CheckoutcomAPMFormProps> = ({ method }) => {
-    const [selectedIssuer, setSelectedIssuer] = useState<Issuer | undefined>();
-    const [bicValue, setBicValue] = useState<string>('');
-    const render = useCallback(
-        (props: FieldProps) => <HiddenInput {...props} selectedIssuer={bicValue} />,
-        [bicValue],
-    );
-
-    const issuers: Issuer[] = method.initializationData.idealIssuers;
-
-    const handleClick = ({ currentTarget }: SyntheticEvent<HTMLButtonElement>) => {
-        // eslint-disable-next-line no-underscore-dangle
-        const _selectedIssuer = issuers.find(({ bic }) => bic === currentTarget.dataset.bic);
-
-        if (!_selectedIssuer) {
-            return;
-        }
-
-        setSelectedIssuer(_selectedIssuer);
-        setBicValue(_selectedIssuer.bic);
-    };
-
-    const issuersList = (
-        <ul className="instrumentSelect-dropdownMenu instrumentSelect-dropdownMenuNext dropdown-menu">
-            {issuers.map((issuer) => (
-                <li className="instrumentSelect-option dropdown-menu-item" key={issuer.bic}>
-                    <OptionButton issuer={issuer} onClick={handleClick} />
-                </li>
-            ))}
-        </ul>
-    );
-
-    return (
-        <>
-            <DropdownTrigger dropdown={issuersList}>
-                <DropdownButton selectedIssuer={selectedIssuer} />
-            </DropdownTrigger>
-            <FormField input={render} name="bic" />
-        </>
-    );
-};
-
 const checkoutcomCustomFormFields: CheckoutcomCustomFormFields = {
     fawry: Fawry,
     sepa: Sepa,
-    ideal: Ideal,
 };
 
 interface CheckoutcomCustomFormFields {

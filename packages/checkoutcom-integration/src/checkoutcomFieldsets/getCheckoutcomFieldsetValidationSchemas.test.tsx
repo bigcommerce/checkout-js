@@ -5,9 +5,6 @@ import { type TranslateValidationErrorFunction } from '@bigcommerce/checkout/pay
 import getCheckoutcomFieldsetValidationSchemas from './getCheckoutcomFieldsetValidationSchemas';
 
 const getFormfields = {
-    ideal: () => ({
-        bic: 'INGBNL2A',
-    }),
     oxxo: () => ({
         ccDocument: 'DOJH010199HJLZQQ01',
     }),
@@ -99,39 +96,6 @@ describe('getCheckoutcomFieldsetValidationSchemas', () => {
                 .catch((error: ValidationError) => error.message);
 
             expect(errors).toBe('ccDocument must be exactly 18 characters');
-        });
-    });
-
-    describe('iDeal validation schema', () => {
-        let iDealValidationSchema: ObjectSchema;
-
-        beforeEach(() => {
-            iDealValidationSchema = getCheckoutcomFieldsetValidationSchemas({
-                paymentMethod: 'ideal',
-                language: { translate },
-            });
-        });
-
-        it('resolves if valid value', async () => {
-            const spy = jest.fn();
-
-            await iDealValidationSchema
-                .validate({
-                    ...getFormfields.ideal(),
-                })
-                .then(spy);
-
-            expect(spy).toHaveBeenCalled();
-        });
-
-        it('throws error if iban is not present', async () => {
-            const errors = await iDealValidationSchema
-                .validate({
-                    bic: '',
-                })
-                .catch((error: ValidationError) => error.message);
-
-            expect(errors).toBe('bic is a required field');
         });
     });
 });
