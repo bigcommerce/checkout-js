@@ -444,6 +444,7 @@
                 "three_d_secure_declined": "Det har uppstått ett problem med din betalning. Kontrollera dina betalningsuppgifter eller kontakta din kortutgivare",
                 "three_d_secure_failed": "Betalningen misslyckades. Vänligen försök igen, eller använd ett annat betalningsalternativ.",
                 "three_d_secure_required": "Ytterligare autentisering krävs för att bearbeta din betalning. Kontakta oss.",
+                "three_d_secure_payment_failed": "Ogiltiga kreditkortsuppgifter eller misslyckad 3D Secure-verifiering. Försök med ett annat kort eller prova att betala igen senare.",
                 "token_error": "Vi kan inte bearbeta din transaktion. Försök igen senare.",
                 "transaction_declined": "Din betalning nekades. Vänligen försök igen.",
                 "transaction_rejected": "Betalningen nekades. Vänligen försök igen.",

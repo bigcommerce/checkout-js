@@ -444,6 +444,7 @@
                 "three_d_secure_declined": "Det er et problem med betalingen din. Sjekk betalingsdetaljene dine, eller kontakt kortutstederen din.",
                 "three_d_secure_failed": "Betalingen mislyktes. Prøv igjen eller bruk et annet betalingsalternativ.",
                 "three_d_secure_required": "Ytterligere autentisering er nødvendig for å behandle betalingen. Vennligst kontakt oss.",
+                "three_d_secure_payment_failed": "Kredittkortinformasjonen er ugyldig eller mislyktes i 3D Secure-verifiseringen. Pprøv et annet kort eller forsøk å betale på nytt senere.",
                 "token_error": "Vi har problemer med å behandle transaksjonen. Prøv igjen senere.",
                 "transaction_declined": "Betalingen ble avvist. Prøv igjen.",
                 "transaction_rejected": "Betalingen ble avvist. Prøv igjen.",
