@@ -444,6 +444,7 @@
                 "three_d_secure_declined": "Hubo un problema con su pago. Compruebe los detalles del pago o póngase en contacto con el emisor de su tarjeta.",
                 "three_d_secure_failed": "No se pudo procesar el pago. Vuelva a intentarlo o use una opción de pago diferente.",
                 "three_d_secure_required": "Se requiere autenticación adicional para procesar su pago. Póngase en contacto con nosotros.",
+                "three_d_secure_payment_failed": "La información de la tarjeta de crédito no es válida o no ha superado la verificación 3D Secure. Inténtalo con otra tarjeta o prueba a efectuar el pago más tarde.",
                 "token_error": "Estamos teniendo problemas para procesar su transacción. Vuelva a intentarlo más tarde.",
                 "transaction_declined": "Su pago fue declinado. Por favor, inténtelo de nuevo.",
                 "transaction_rejected": "El pago fue rechazado. Vuelva a intentarlo.",

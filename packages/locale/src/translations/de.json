@@ -444,6 +444,7 @@
                 "three_d_secure_declined": "Es gab ein Problem mit Ihrer Zahlung. Bitte überprüfen Sie Ihre Zahlungsdaten oder wenden Sie sich an Ihren Kartenaussteller.",
                 "three_d_secure_failed": "Die Zahlung ist fehlgeschlagen. Bitte versuchen Sie es erneut oder verwenden Sie eine andere Zahlungsoption.",
                 "three_d_secure_required": "Eine weitere Authentifizierung ist erforderlich, um Ihre Zahlung zu verarbeiten. Bitte nehmen Sie Kontakt zu uns auf.",
+                "three_d_secure_payment_failed": "Die Kreditkarteninformationen sind ungültig oder die 3D-Secure-Verifizierung ist fehlgeschlagen. Bitte versuchen Sie es mit einer anderen Karte oder versuchen Sie die Zahlung später erneut.",
                 "token_error": "Wir haben Schwierigkeiten bei der Verarbeitung Ihrer Transaktion. Bitte versuchen Sie es später erneut.",
                 "transaction_declined": "Ihre Zahlung wurde abgelehnt. Bitte versuchen Sie es erneut.",
                 "transaction_rejected": "Die Zahlung wurde abgelehnt. Bitte versuchen Sie es erneut.",
