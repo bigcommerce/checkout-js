@@ -11,6 +11,7 @@ import React, { act, type FunctionComponent } from 'react';
 
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
 import {
+    type AnalyticsEvents,
     AnalyticsProviderMock,
     CheckoutProvider,
     ExtensionProvider,
@@ -45,6 +46,7 @@ describe('Payment step', () => {
     let extensionService: ExtensionServiceInterface;
     let defaultProps: CheckoutProps;
     let embeddedMessengerMock: EmbeddedCheckoutMessenger;
+    let analyticsTracker: Partial<AnalyticsEvents>;
 
     beforeAll(() => {
         checkout = new CheckoutPageNodeObject();
@@ -77,6 +79,9 @@ describe('Payment step', () => {
         };
 
         jest.spyOn(defaultProps.errorLogger, 'log').mockImplementation(noop);
+        analyticsTracker = {
+            selectedPaymentMethod: jest.fn(),
+        };
 
         CheckoutTest = (props) => (
             <CheckoutProvider checkoutService={checkoutService}>
@@ -84,7 +89,7 @@ describe('Payment step', () => {
                     checkoutService={checkoutService}
                     languageService={getLanguageService()}
                 >
-                    <AnalyticsProviderMock>
+                    <AnalyticsProviderMock analyticsTracker={analyticsTracker}>
                         <ExtensionProvider extensionService={extensionService}>
                             <ThemeProvider>
                                 <Checkout {...props} />
@@ -105,6 +110,17 @@ describe('Payment step', () => {
 
         expect(screen.getByRole('radio', { name: 'Pay in Store' })).toBeInTheDocument();
         expect(screen.getByRole('radio', { name: 'Cash on Delivery' })).toBeInTheDocument();
+    });
+
+    it('tracks selected payment method on initial load', async () => {
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
+
+        render(<CheckoutTest {...defaultProps} />);
+
+        await checkout.waitForPaymentStep();
+
+        expect(analyticsTracker.selectedPaymentMethod).toHaveBeenCalledWith('Pay in Store', 'instore');
+        expect(analyticsTracker.selectedPaymentMethod).toHaveBeenCalledTimes(1);
     });
 
     it('selects another payment method and places the order successfully', async () => {
