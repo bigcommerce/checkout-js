@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.723.1](https://github.com/bigcommerce/checkout-js/compare/v1.723.0...v1.723.1) (2026-01-20)
+
+
+### Code Refactoring
+
+* **payment:** PAYPAL-6138 simplify sentry message logic for hosted payment methods ([f3dd898](https://github.com/bigcommerce/checkout-js/commit/f3dd898ebc61d9f15b5140bf14e03f245bfe094f))
+
 ## [1.723.0](https://github.com/bigcommerce/checkout-js/compare/v1.722.1...v1.723.0) (2026-01-20)
 
 
