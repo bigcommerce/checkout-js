@@ -40,10 +40,6 @@ const CheckoutcomCustomPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     checkoutState,
     ...rest
 }) => {
-    const { getConfig } = checkoutState.data;
-    const isIdealHostedPageExperimentOn =
-        getConfig()?.checkoutSettings.features['PI-2979.checkoutcom_enable_ideal_hosted_page'];
-
     const checkoutCustomMethod = method.id;
     const CheckoutcomCustomFieldset =
         checkoutCustomMethod in checkoutcomCustomFormFields
@@ -68,10 +64,7 @@ const CheckoutcomCustomPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         [checkoutService],
     );
 
-    if (
-        !isCheckoutcomPaymentMethod(checkoutCustomMethod) ||
-        (checkoutCustomMethod === 'ideal' && isIdealHostedPageExperimentOn)
-    ) {
+    if (!isCheckoutcomPaymentMethod(checkoutCustomMethod)) {
         return null;
     }
 

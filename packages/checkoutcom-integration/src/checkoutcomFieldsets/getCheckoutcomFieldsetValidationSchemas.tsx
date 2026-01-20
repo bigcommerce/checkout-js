@@ -5,14 +5,13 @@ import { boolean, object, type ObjectSchema, string } from 'yup';
 import {
     type DocumentOnlyCustomFormFieldsetValues,
     type FawryCustomFormFieldsetValues,
-    type IdealCustomFormFieldsetValues,
     type SepaCustomFormFieldsetValues,
 } from './CheckoutcomFormValues';
 
 export type checkoutcomCustomPaymentMethods = 'fawry' | 'sepa';
-export type documentPaymentMethods = 'oxxo' | 'qpay' | 'boleto' | 'ideal';
+export type documentPaymentMethods = 'oxxo' | 'qpay' | 'boleto';
 export type checkoutcomPaymentMethods = documentPaymentMethods | checkoutcomCustomPaymentMethods;
-export const checkoutcomPaymentMethodsArray = ['fawry', 'sepa', 'oxxo', 'qpay', 'boleto', 'ideal'];
+export const checkoutcomPaymentMethodsArray = ['fawry', 'sepa', 'oxxo', 'qpay', 'boleto'];
 export interface CustomValidationSchemaOptions {
     paymentMethod: checkoutcomPaymentMethods;
     language: LanguageService;
@@ -41,9 +40,6 @@ const checkoutComShemas: {
         iban: string().required(language.translate('payment.sepa_account_number_required')),
         sepaMandate: boolean().required(language.translate('payment.sepa_mandate_required')),
     }),
-    ideal: (language: LanguageService) => ({
-        bic: string().required(language.translate('payment.ideal_bic_required')),
-    }),
     fawry: (language: LanguageService) => ({
         customerMobile: string()
             .required(language.translate('payment.checkoutcom_fawry_customer_mobile_invalid_error'))
@@ -63,7 +59,6 @@ export default memoize(function getCheckoutcomValidationSchemas({
 }: CustomValidationSchemaOptions): ObjectSchema<
     | DocumentOnlyCustomFormFieldsetValues
     | FawryCustomFormFieldsetValues
-    | IdealCustomFormFieldsetValues
     | SepaCustomFormFieldsetValues
 > {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument

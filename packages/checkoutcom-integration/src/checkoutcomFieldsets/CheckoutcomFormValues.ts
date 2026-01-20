@@ -1,7 +1,3 @@
-export interface IdealCustomFormFieldsetValues {
-    bic: string;
-}
-
 export interface SepaCustomFormFieldsetValues {
     iban: string;
     sepaMandate: boolean;
