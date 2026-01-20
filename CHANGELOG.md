@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.723.0](https://github.com/bigcommerce/checkout-js/compare/v1.722.1...v1.723.0) (2026-01-20)
+
+
+### Features
+
+* **payment:** PI-4599 Cleanup Experiment: PI-2979.checkoutcom_enable_ideal_hosted_page ([#2774](https://github.com/bigcommerce/checkout-js/issues/2774)) ([db8ca8b](https://github.com/bigcommerce/checkout-js/commit/db8ca8b97cd99d3ad9ca79beb47add946c18ccce))
+
 ### [1.722.1](https://github.com/bigcommerce/checkout-js/compare/v1.722.0...v1.722.1) (2026-01-20)
 
 ## [1.722.0](https://github.com/bigcommerce/checkout-js/compare/v1.721.3...v1.722.0) (2026-01-20)
