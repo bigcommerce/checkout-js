@@ -6,6 +6,8 @@ import {
     type OrderRequestBody,
     type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
+import { createAfterpayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/afterpay';
+import { createBlueSnapV2PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bluesnap-direct';
 import { createCBAMPGSPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/cba-mpgs';
 import { createCheckoutComAPMPaymentStrategy, createCheckoutComCreditCardPaymentStrategy, createCheckoutComFawryPaymentStrategy, createCheckoutComIdealPaymentStrategy, createCheckoutComSepaPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/checkoutcom-custom';
 import { createClearpayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/clearpay';
@@ -456,6 +458,8 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
             try {
                 const state = await finalizeOrderIfNeeded({
                     integrations: [
+                        createAfterpayPaymentStrategy,
+                        createBlueSnapV2PaymentStrategy,
                         createCBAMPGSPaymentStrategy,
                         createCheckoutComAPMPaymentStrategy,
                         createCheckoutComCreditCardPaymentStrategy,
