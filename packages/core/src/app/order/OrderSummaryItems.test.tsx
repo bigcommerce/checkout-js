@@ -4,7 +4,7 @@ import React, { type FunctionComponent } from 'react';
 
 import { LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
-import { render, screen } from '@bigcommerce/checkout/test-utils';
+import { render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
 import {
     getCustomItem,
@@ -129,7 +129,9 @@ describe('OrderSummaryItems', () => {
                     expect(screen.getByText('See All')).toBeInTheDocument();
                     expect(screen.queryByText('See Less')).not.toBeInTheDocument();
                     // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
-                    expect(container.querySelectorAll('.productList-item')).toHaveLength(4);
+                    await waitFor(() => {
+                        expect(container.querySelectorAll('.productList-item')).toHaveLength(4);
+                    });
                 });
             });
         });
