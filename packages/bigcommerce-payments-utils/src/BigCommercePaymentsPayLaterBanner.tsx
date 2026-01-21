@@ -1,40 +1,43 @@
-import { createBigCommercePaymentsPayLaterPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bigcommerce-payments';
+import {
+    createBigCommercePaymentsPayLaterPaymentStrategy,
+    createBigCommercePaymentsPaymentStrategy,
+} from '@bigcommerce/checkout-sdk/integrations/bigcommerce-payments';
 import React, { type FunctionComponent, useEffect } from 'react';
 
 import { useCheckout } from '@bigcommerce/checkout/contexts';
-import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
 
 const BigCommercePaymentsPayLaterBanner: FunctionComponent<{
-    onUnhandledError?(error: Error): void
-}> = ({ onUnhandledError }) => {
+    methodId: string;
+    containerId: string;
+    onUnhandledError?(error: Error): void;
+}> = ({ methodId, containerId, onUnhandledError }) => {
     const { checkoutService } = useCheckout();
 
     useEffect(() => {
         try {
             void checkoutService.initializePayment({
-                methodId: PaymentMethodId.BigCommercePaymentsPayLater,
-                integrations: [createBigCommercePaymentsPayLaterPaymentStrategy],
-                bigcommerce_payments_paylater: {
-                    bannerContainerId: 'bigcommerce-payments-banner-container',
+                methodId,
+                integrations: [
+                    createBigCommercePaymentsPayLaterPaymentStrategy,
+                    createBigCommercePaymentsPaymentStrategy,
+                ],
+                [methodId]: {
+                    bannerContainerId: containerId,
                 },
             });
 
             void checkoutService.deinitializePayment({
-                methodId: PaymentMethodId.BigCommercePaymentsPayLater,
+                methodId,
             });
         } catch (error) {
             if (error instanceof Error) {
                 onUnhandledError?.(error);
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return (
-        <div
-            data-test='bigcommerce-payments-banner-container'
-            id='bigcommerce-payments-banner-container'
-        />
-    );
+    return <div data-test={containerId} id={containerId} />;
 };
 
 export default BigCommercePaymentsPayLaterBanner;
