@@ -128,8 +128,8 @@ describe('OrderSummaryItems', () => {
 
                     expect(screen.getByText('See All')).toBeInTheDocument();
                     expect(screen.queryByText('See Less')).not.toBeInTheDocument();
-                    // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
                     await waitFor(() => {
+                        // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
                         expect(container.querySelectorAll('.productList-item')).toHaveLength(4);
                     });
                 });
