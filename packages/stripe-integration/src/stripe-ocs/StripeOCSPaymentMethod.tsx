@@ -98,6 +98,7 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         setValidationSchema,
     } = paymentForm;
     const instruments = checkoutState.data.getInstruments(method) || [];
+
     const {
         data: { getCheckout, isPaymentDataRequired },
         statuses: { isLoadingInstruments },
@@ -149,20 +150,6 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         ],
     );
 
-    const initializeStripeCustomer = useCallback(
-        (options: CustomerInitializeOptions) => {
-            return checkoutService.initializeCustomer({
-                ...options,
-                integrations: [createStripeLinkV2CustomerStrategy],
-            });
-        },
-        [checkoutService],
-    );
-
-    if (!isPaymentDataRequired()) {
-        return null;
-    }
-
     const renderCustomOCSSectionStyles = () => (
         <style>
             {`
@@ -174,6 +161,15 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                 }
             `}
         </style>
+    );
+    const initializeStripeCustomer = useCallback(
+        (options: CustomerInitializeOptions) => {
+            return checkoutService.initializeCustomer({
+                ...options,
+                integrations: [createStripeLinkV2CustomerStrategy],
+            });
+        },
+        [checkoutService],
     );
 
     const renderCheckoutElementsForStripeOCSStyling = () => (
