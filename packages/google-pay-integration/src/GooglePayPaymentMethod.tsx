@@ -29,7 +29,7 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     onUnhandledError,
     ...rest
 }) => {
-  console.log(rest);
+    console.log(rest);
     const initializeGooglePayPayment = useCallback(
         (defaultOptions: PaymentInitializeOptions) => {
             const reinitializePayment = async (options: PaymentInitializeOptions) => {
