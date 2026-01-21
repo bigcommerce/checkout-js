@@ -348,10 +348,6 @@ function loaderConfig(options, argv) {
                 }),
                 new BuildHookPlugin({
                     onSuccess() {
-                        if (process.env.PRERELEASE) {
-                            return;
-                        }
-
                         const folder = isProduction ? 'dist' : 'build';
 
                         copyFileSync(
