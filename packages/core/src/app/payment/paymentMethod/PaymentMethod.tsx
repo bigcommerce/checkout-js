@@ -14,7 +14,6 @@ import { CaptureMessageComponent } from '@bigcommerce/checkout/payment-integrati
 
 import { withCheckout } from '../../checkout';
 
-const BraintreeCreditCardPaymentMethod = lazy(() => import(/* webpackChunkName: "braintree-credit-card-payment-method" */'./BraintreeCreditCardPaymentMethod'));
 const HostedCreditCardPaymentMethod = lazy(() => import(/* webpackChunkName: "hosted-credit-card-payment-method" */'./HostedCreditCardPaymentMethod'));
 const HostedPaymentMethod = lazy(() => import(/* webpackChunkName: "hosted-payment-method" */'./HostedPaymentMethod'));
 
@@ -51,10 +50,6 @@ const PaymentMethodComponent: FunctionComponent<
     PaymentMethodProps & WithCheckoutPaymentMethodProps
 > = (props) => {
     const { method } = props;
-
-    if (method.id === PaymentMethodId.Braintree) {
-        return <Suspense><BraintreeCreditCardPaymentMethod {...props} /></Suspense>;
-    }
 
     if (
         method.id === PaymentMethodId.Humm ||
