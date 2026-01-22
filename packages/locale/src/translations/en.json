@@ -600,7 +600,8 @@
         "order_confirmation": {
             "mandate": {
                 "adyenv3": {
-                    "boletobancario": "Boleto Bancário Ticket"
+                    "boletobancario": "Boleto Bancário Ticket",
+                    "oxxo": "OXXO Ticket"
                 },
                 "bluesnapdirect": {
                     "sepa_direct_debit":  "SEPA Direct Debit Mandate Reference: {mandate}"
