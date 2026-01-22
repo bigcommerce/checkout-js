@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.723.3](https://github.com/bigcommerce/checkout-js/compare/v1.723.2...v1.723.3) (2026-01-22)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-9450 Add AfterPay and BlueSnap strategies to order finalization ([b69c73c](https://github.com/bigcommerce/checkout-js/commit/b69c73c63972782ff2255c0f0acd595c835f2fe1))
+
 ### [1.723.2](https://github.com/bigcommerce/checkout-js/compare/v1.723.1...v1.723.2) (2026-01-21)
 
 ### [1.723.1](https://github.com/bigcommerce/checkout-js/compare/v1.723.0...v1.723.1) (2026-01-20)
