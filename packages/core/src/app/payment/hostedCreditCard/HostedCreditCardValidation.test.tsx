@@ -9,72 +9,70 @@ import { render, screen } from '@bigcommerce/checkout/test-utils';
 import { getStoreConfig } from '../../config/config.mock';
 
 import HostedCreditCardValidation, {
-    type HostedCreditCardValidationProps,
+  type HostedCreditCardValidationProps,
 } from './HostedCreditCardValidation';
 
 describe('HostedCreditCardValidation', () => {
-    let HostedCreditCardValidationTest: FunctionComponent<HostedCreditCardValidationProps>;
-    let localeContext: LocaleContextType;
+  let HostedCreditCardValidationTest: FunctionComponent<HostedCreditCardValidationProps>;
+  let localeContext: LocaleContextType;
 
-    beforeEach(() => {
-        localeContext = createLocaleContext(getStoreConfig());
+  beforeEach(() => {
+    localeContext = createLocaleContext(getStoreConfig());
 
-        HostedCreditCardValidationTest = (props) => (
-            <LocaleContext.Provider value={localeContext}>
-                <Formik initialValues={{}} onSubmit={noop}>
-                    <HostedCreditCardValidation {...props} />
-                </Formik>
-            </LocaleContext.Provider>
-        );
-    });
+    HostedCreditCardValidationTest = (props) => (
+      <LocaleContext.Provider value={localeContext}>
+        <Formik initialValues={{}} onSubmit={noop}>
+          <HostedCreditCardValidation {...props} />
+        </Formik>
+      </LocaleContext.Provider>
+    );
+  });
 
-    it('shows card number field if configured', () => {
-        render(<HostedCreditCardValidationTest cardNumberId="cardNumber" />);
+  it('shows card number field if configured', () => {
+    render(<HostedCreditCardValidationTest cardNumberId="cardNumber" />);
 
-        expect(
-            screen.getByText(localeContext.language.translate('payment.credit_card_number_label')),
-        ).toBeInTheDocument();
-    });
+    expect(
+      screen.getByText(localeContext.language.translate('payment.credit_card_number_label')),
+    ).toBeInTheDocument();
+  });
 
-    it('hides card number field if configured', () => {
-        render(<HostedCreditCardValidationTest cardCodeId="cardCode" />);
+  it('hides card number field if configured', () => {
+    render(<HostedCreditCardValidationTest cardCodeId="cardCode" />);
 
-        expect(
-            screen.queryByText(
-                localeContext.language.translate('payment.credit_card_number_label'),
-            ),
-        ).not.toBeInTheDocument();
-    });
+    expect(
+      screen.queryByText(localeContext.language.translate('payment.credit_card_number_label')),
+    ).not.toBeInTheDocument();
+  });
 
-    it('shows card code field if configured', () => {
-        render(<HostedCreditCardValidationTest cardCodeId="cardCode" />);
+  it('shows card code field if configured', () => {
+    render(<HostedCreditCardValidationTest cardCodeId="cardCode" />);
 
-        expect(
-            screen.getByText(localeContext.language.translate('payment.credit_card_cvv_label')),
-        ).toBeInTheDocument();
-    });
+    expect(
+      screen.getByText(localeContext.language.translate('payment.credit_card_cvv_label')),
+    ).toBeInTheDocument();
+  });
 
-    it('hides card code field if configured', () => {
-        render(<HostedCreditCardValidationTest cardNumberId="cardNumber" />);
+  it('hides card code field if configured', () => {
+    render(<HostedCreditCardValidationTest cardNumberId="cardNumber" />);
 
-        expect(
-            screen.queryByText(localeContext.language.translate('payment.credit_card_cvv_label')),
-        ).not.toBeInTheDocument();
-    });
+    expect(
+      screen.queryByText(localeContext.language.translate('payment.credit_card_cvv_label')),
+    ).not.toBeInTheDocument();
+  });
 
-    it('shows card expiry field if configured', () => {
-        render(<HostedCreditCardValidationTest cardExpiryId="cardExpiry" />);
+  it('shows card expiry field if configured', () => {
+    render(<HostedCreditCardValidationTest cardExpiryId="cardExpiry" />);
 
-        expect(
-            screen.getByText(localeContext.language.translate('payment.credit_card_expiration_label')),
-        ).toBeInTheDocument();
-    });
+    expect(
+      screen.getByText(localeContext.language.translate('payment.credit_card_expiration_label')),
+    ).toBeInTheDocument();
+  });
 
-    it('hides card expiry field if configured', () => {
-        render(<HostedCreditCardValidationTest cardNumberId="cardCode" />);
+  it('hides card expiry field if configured', () => {
+    render(<HostedCreditCardValidationTest cardNumberId="cardCode" />);
 
-        expect(
-            screen.queryByText(localeContext.language.translate('payment.credit_card_expiration_label')),
-        ).not.toBeInTheDocument();
-    });
+    expect(
+      screen.queryByText(localeContext.language.translate('payment.credit_card_expiration_label')),
+    ).not.toBeInTheDocument();
+  });
 });

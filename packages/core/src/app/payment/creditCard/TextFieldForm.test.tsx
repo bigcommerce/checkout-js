@@ -10,39 +10,36 @@ import { render, screen } from '@bigcommerce/checkout/test-utils';
 import TextFieldForm, { type TextFieldFormProps } from './TextFieldForm';
 
 describe('TextFieldForm', () => {
-    let defaultProps: TextFieldFormProps;
-    let TextFieldFormTest: FunctionComponent<TextFieldFormProps>;
-    let initialValues: {
-        ccDocument?: string;
+  let defaultProps: TextFieldFormProps;
+  let TextFieldFormTest: FunctionComponent<TextFieldFormProps>;
+  let initialValues: {
+    ccDocument?: string;
+  };
+
+  beforeEach(() => {
+    defaultProps = {
+      additionalClassName: 'custom-additional-class-name',
+      autoComplete: 'custom-auto-complete-label',
+      labelId: 'custom-label-id',
+      name: 'custom-name',
     };
 
-    beforeEach(() => {
-        defaultProps = {
-            additionalClassName: 'custom-additional-class-name',
-            autoComplete: 'custom-auto-complete-label',
-            labelId: 'custom-label-id',
-            name: 'custom-name',
-        };
+    initialValues = { ccDocument: '' };
 
-        initialValues = { ccDocument: '' };
+    const checkoutService = createCheckoutService();
 
-        const checkoutService = createCheckoutService();
+    TextFieldFormTest = (props) => (
+      <LocaleProvider checkoutService={checkoutService} languageService={getLanguageService()}>
+        <Formik initialValues={initialValues} onSubmit={noop}>
+          <TextFieldForm {...props} />
+        </Formik>
+      </LocaleProvider>
+    );
+  });
 
-        TextFieldFormTest = (props) => (
-            <LocaleProvider
-                checkoutService={checkoutService}
-                languageService={getLanguageService()}
-            >
-                <Formik initialValues={initialValues} onSubmit={noop}>
-                    <TextFieldForm {...props} />
-                </Formik>
-            </LocaleProvider>
-        );
-    });
+  it('renders text field with provided name', () => {
+    render(<TextFieldFormTest {...defaultProps} />);
 
-    it('renders text field with provided name', () => {
-        render(<TextFieldFormTest {...defaultProps} />);
-
-        expect(screen.getByLabelText('optimized_checkout.custom-label-id')).toBeInTheDocument();
-    });
+    expect(screen.getByLabelText('optimized_checkout.custom-label-id')).toBeInTheDocument();
+  });
 });

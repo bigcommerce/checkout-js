@@ -10,28 +10,30 @@ import { getStoreConfig } from '../../config/config.mock';
 import StoreCreditOverlay from './StoreCreditOverlay';
 
 describe('StoreCreditOverlay', () => {
-    let localeContext: LocaleContextType;
-    let languageService: LanguageService;
+  let localeContext: LocaleContextType;
+  let languageService: LanguageService;
 
-    beforeEach(() => {
-        localeContext = createLocaleContext(getStoreConfig());
-        languageService = localeContext.language;
-    });
+  beforeEach(() => {
+    localeContext = createLocaleContext(getStoreConfig());
+    languageService = localeContext.language;
+  });
 
-    it('displays "payment is not required" text', () => {
-        render(
-            <LocaleContext.Provider value={localeContext}>
-                <StoreCreditOverlay />
-            </LocaleContext.Provider>,
-        );
+  it('displays "payment is not required" text', () => {
+    render(
+      <LocaleContext.Provider value={localeContext}>
+        <StoreCreditOverlay />
+      </LocaleContext.Provider>,
+    );
 
-        expect(screen.getByText(languageService.translate('payment.payment_not_required_text'))).toBeInTheDocument();
-    });
+    expect(
+      screen.getByText(languageService.translate('payment.payment_not_required_text')),
+    ).toBeInTheDocument();
+  });
 
-    it('renders component with expected class', () => {
-        const { container } = render(<StoreCreditOverlay />);
+  it('renders component with expected class', () => {
+    const { container } = render(<StoreCreditOverlay />);
 
-        // eslint-disable-next-line testing-library/no-container
-        expect(container.querySelector('.storeCreditOverlay')).toBeInTheDocument();
-    });
+    // eslint-disable-next-line testing-library/no-container
+    expect(container.querySelector('.storeCreditOverlay')).toBeInTheDocument();
+  });
 });

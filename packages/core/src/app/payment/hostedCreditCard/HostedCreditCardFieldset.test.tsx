@@ -3,99 +3,88 @@ import { Field, Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';
 
-import {
-    type LocaleContextType,
-    LocaleProvider,
-} from '@bigcommerce/checkout/contexts';
-import {
-  createLocaleContext,
-  getLanguageService,
-} from '@bigcommerce/checkout/locale';
+import { type LocaleContextType, LocaleProvider } from '@bigcommerce/checkout/contexts';
+import { createLocaleContext, getLanguageService } from '@bigcommerce/checkout/locale';
 import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import HostedCreditCardFieldset, {
-    type HostedCreditCardFieldsetProps,
+  type HostedCreditCardFieldsetProps,
 } from './HostedCreditCardFieldset';
 
 describe('HostedCreditCardFieldset', () => {
-    let defaultProps: HostedCreditCardFieldsetProps;
-    let HostedCreditCardFieldsetTest: FunctionComponent<HostedCreditCardFieldsetProps>;
-    let localeContext: LocaleContextType;
+  let defaultProps: HostedCreditCardFieldsetProps;
+  let HostedCreditCardFieldsetTest: FunctionComponent<HostedCreditCardFieldsetProps>;
+  let localeContext: LocaleContextType;
 
-    beforeEach(() => {
-        defaultProps = {
-            cardExpiryId: 'cardExpiry',
-            cardNumberId: 'cardNumber',
-        };
+  beforeEach(() => {
+    defaultProps = {
+      cardExpiryId: 'cardExpiry',
+      cardNumberId: 'cardNumber',
+    };
 
-        const checkoutService = createCheckoutService();
+    const checkoutService = createCheckoutService();
 
-        localeContext = createLocaleContext(getStoreConfig());
+    localeContext = createLocaleContext(getStoreConfig());
 
-        HostedCreditCardFieldsetTest = (props) => (
-            <LocaleProvider
-                checkoutService={checkoutService}
-                languageService={getLanguageService()}
-            >
-                <Formik
-                    initialValues={{ hostedForm: {} }}
-                    onSubmit={noop}
-                    render={() => <HostedCreditCardFieldset {...props} />}
-                />
-            </LocaleProvider>
-        );
-    });
+    HostedCreditCardFieldsetTest = (props) => (
+      <LocaleProvider checkoutService={checkoutService} languageService={getLanguageService()}>
+        <Formik
+          initialValues={{ hostedForm: {} }}
+          onSubmit={noop}
+          render={() => <HostedCreditCardFieldset {...props} />}
+        />
+      </LocaleProvider>
+    );
+  });
 
-    it('renders required field containers', () => {
-        render(<HostedCreditCardFieldsetTest {...defaultProps} />);
+  it('renders required field containers', () => {
+    render(<HostedCreditCardFieldsetTest {...defaultProps} />);
 
-        expect(
-            screen.getByText(localeContext.language.translate('payment.credit_card_text')),
-        ).toBeInTheDocument();
-        expect(
-            screen.getByText(localeContext.language.translate('payment.credit_card_number_label')),
-        ).toBeInTheDocument();
-        expect(
-            screen.getByText(
-                localeContext.language.translate('payment.credit_card_expiration_label'),
-            ),
-        ).toBeInTheDocument();
-    });
+    expect(
+      screen.getByText(localeContext.language.translate('payment.credit_card_text')),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(localeContext.language.translate('payment.credit_card_number_label')),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(localeContext.language.translate('payment.credit_card_expiration_label')),
+    ).toBeInTheDocument();
+  });
 
-    it('renders optional field containers', () => {
-        render(
-            <HostedCreditCardFieldsetTest
-                {...defaultProps}
-                cardCodeId="cardCode"
-                cardNameId="cardName"
-            />,
-        );
-        expect(
-            screen.getByText(localeContext.language.translate('payment.credit_card_number_label')),
-        ).toBeInTheDocument();
-        expect(
-            screen.getByText(localeContext.language.translate('payment.credit_card_cvv_label')),
-        ).toBeInTheDocument();
-    });
+  it('renders optional field containers', () => {
+    render(
+      <HostedCreditCardFieldsetTest
+        {...defaultProps}
+        cardCodeId="cardCode"
+        cardNameId="cardName"
+      />,
+    );
+    expect(
+      screen.getByText(localeContext.language.translate('payment.credit_card_number_label')),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(localeContext.language.translate('payment.credit_card_cvv_label')),
+    ).toBeInTheDocument();
+  });
 
-    it('renders additional fields if provided', () => {
-        render(
-            <HostedCreditCardFieldsetTest
-                {...defaultProps}
-                additionalFields={<Field title="foobar" />}
-            />,
-        );
+  it('renders additional fields if provided', () => {
+    render(
+      <HostedCreditCardFieldsetTest
+        {...defaultProps}
+        additionalFields={<Field title="foobar" />}
+      />,
+    );
 
-        expect(screen.getByRole('textbox', { name: 'foobar' })).toBeInTheDocument();
-    });
+    expect(screen.getByRole('textbox', { name: 'foobar' })).toBeInTheDocument();
+  });
 
-    it('renders field container with focus styles', () => {
-        const { container } = render(
-            <HostedCreditCardFieldsetTest {...defaultProps} focusedFieldType="cardNumber" />,
-        );
+  it('renders field container with focus styles', () => {
+    const { container } = render(
+      <HostedCreditCardFieldsetTest {...defaultProps} focusedFieldType="cardNumber" />,
+    );
 
-        // eslint-disable-next-line testing-library/no-container
-        expect(container.querySelector('.form-input--focus')).toBeInTheDocument();
-    });
+    // eslint-disable-next-line testing-library/no-container
+    expect(container.querySelector('.form-input--focus')).toBeInTheDocument();
+  });
 });

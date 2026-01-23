@@ -12,56 +12,56 @@ import { IconHelp } from '../../ui/icon';
 import { TooltipTrigger } from '../../ui/tooltip';
 
 import HostedCreditCardCodeField, {
-    type HostedCreditCardCodeFieldProps,
+  type HostedCreditCardCodeFieldProps,
 } from './HostedCreditCardCodeField';
 
 describe('HostedCreditCardCodeField', () => {
-    let HostedCreditCardCodeFieldTest: FunctionComponent<HostedCreditCardCodeFieldProps>;
-    let defaultProps: HostedCreditCardCodeFieldProps;
-    let initialValues: { ccCvv: string };
-    let localeContext: LocaleContextType;
+  let HostedCreditCardCodeFieldTest: FunctionComponent<HostedCreditCardCodeFieldProps>;
+  let defaultProps: HostedCreditCardCodeFieldProps;
+  let initialValues: { ccCvv: string };
+  let localeContext: LocaleContextType;
 
-    beforeEach(() => {
-        initialValues = { ccCvv: '' };
-        localeContext = createLocaleContext(getStoreConfig());
-        defaultProps = {
-            appearFocused: true,
-            id: 'ccCvv',
-            name: 'ccCvv',
-        };
+  beforeEach(() => {
+    initialValues = { ccCvv: '' };
+    localeContext = createLocaleContext(getStoreConfig());
+    defaultProps = {
+      appearFocused: true,
+      id: 'ccCvv',
+      name: 'ccCvv',
+    };
 
-        HostedCreditCardCodeFieldTest = (props) => (
-            <LocaleContext.Provider value={localeContext}>
-                <Formik initialValues={initialValues} onSubmit={noop}>
-                    <HostedCreditCardCodeField {...props} />
-                </Formik>
-            </LocaleContext.Provider>
-        );
-    });
+    HostedCreditCardCodeFieldTest = (props) => (
+      <LocaleContext.Provider value={localeContext}>
+        <Formik initialValues={initialValues} onSubmit={noop}>
+          <HostedCreditCardCodeField {...props} />
+        </Formik>
+      </LocaleContext.Provider>
+    );
+  });
 
-    it('renders field with tooltip icon', () => {
-        const { container } = render(<HostedCreditCardCodeFieldTest {...defaultProps} />);
+  it('renders field with tooltip icon', () => {
+    const { container } = render(<HostedCreditCardCodeFieldTest {...defaultProps} />);
 
-        expect(
-            screen.getByText(localeContext.language.translate('payment.credit_card_cvv_label')),
-        ).toBeInTheDocument();
-        // eslint-disable-next-line testing-library/no-container,testing-library/no-node-access
-        expect(container.querySelector('.has-tip')).toBeInTheDocument();
-        // eslint-disable-next-line testing-library/no-container,testing-library/no-node-access
-        expect(container.querySelector('.has-icon')).toBeInTheDocument();
-    });
+    expect(
+      screen.getByText(localeContext.language.translate('payment.credit_card_cvv_label')),
+    ).toBeInTheDocument();
+    // eslint-disable-next-line testing-library/no-container,testing-library/no-node-access
+    expect(container.querySelector('.has-tip')).toBeInTheDocument();
+    // eslint-disable-next-line testing-library/no-container,testing-library/no-node-access
+    expect(container.querySelector('.has-icon')).toBeInTheDocument();
+  });
 
-    it('renders tooltip message after hovering on it', async () => {
-        const { container } = render(<HostedCreditCardCodeFieldTest {...defaultProps} />);
-        // eslint-disable-next-line testing-library/no-container,testing-library/no-node-access
-        const toolTip = container.querySelector('.has-tip');
+  it('renders tooltip message after hovering on it', async () => {
+    const { container } = render(<HostedCreditCardCodeFieldTest {...defaultProps} />);
+    // eslint-disable-next-line testing-library/no-container,testing-library/no-node-access
+    const toolTip = container.querySelector('.has-tip');
 
-        expect(toolTip).toBeInTheDocument();
+    expect(toolTip).toBeInTheDocument();
 
-        await userEvent.hover(toolTip);
+    await userEvent.hover(toolTip);
 
-        expect(
-            screen.getByText(localeContext.language.translate('payment.credit_card_cvv_help_text')),
-        ).toBeInTheDocument();
-    });
+    expect(
+      screen.getByText(localeContext.language.translate('payment.credit_card_cvv_help_text')),
+    ).toBeInTheDocument();
+  });
 });
