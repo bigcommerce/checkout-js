@@ -1,6 +1,6 @@
 import { type Coupon } from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent, useRef } from 'react';
-import { CSSTransition, type CSSTransitionProps, TransitionGroup } from 'react-transition-group';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import { IconCoupon, IconGiftCertificateNew, IconRemoveCoupon } from '@bigcommerce/checkout/ui';
 
@@ -13,11 +13,12 @@ const prefersReducedMotion = () =>
     typeof window !== 'undefined' &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-interface AnimatedCouponTagProps extends Partial<CSSTransitionProps> {
+interface AnimatedCouponTagProps {
     children: React.ReactNode;
+    in?: boolean;
 }
 
-const AnimatedCouponTag: FunctionComponent<AnimatedCouponTagProps> = ({ children, in: inProp, ...restProps }) => {
+const AnimatedCouponTag: FunctionComponent<AnimatedCouponTagProps> = ({ children, in: inProp }) => {
     const nodeRef = useRef<HTMLDivElement>(null);
 
     const handleEnter = () => {
@@ -67,7 +68,6 @@ const AnimatedCouponTag: FunctionComponent<AnimatedCouponTagProps> = ({ children
 
     return (
         <CSSTransition
-            {...restProps}
             appear
             classNames="coupon-tag"
             in={inProp}

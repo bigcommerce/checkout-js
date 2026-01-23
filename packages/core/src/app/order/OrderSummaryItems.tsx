@@ -1,7 +1,7 @@
 import { type LineItemMap } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import React, { type FunctionComponent, type ReactElement, type ReactNode, useCallback, useRef, useState } from 'react';
-import { CSSTransition, type CSSTransitionProps, TransitionGroup } from 'react-transition-group';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
@@ -23,11 +23,12 @@ const prefersReducedMotion = () =>
     typeof window !== 'undefined' &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-interface AnimatedProductItemProps extends Partial<CSSTransitionProps> {
+interface AnimatedProductItemProps {
     children: ReactNode;
+    in?: boolean;
 }
 
-const AnimatedProductItem: FunctionComponent<AnimatedProductItemProps> = ({ children, in: inProp, ...restProps }) => {
+const AnimatedProductItem: FunctionComponent<AnimatedProductItemProps> = ({ children, in: inProp }) => {
     const nodeRef = useRef<HTMLLIElement>(null);
 
     const handleEnter = () => {
@@ -82,7 +83,6 @@ const AnimatedProductItem: FunctionComponent<AnimatedProductItemProps> = ({ chil
 
     return (
         <CSSTransition
-            {...restProps}
             appear
             classNames="product-item"
             in={inProp}
