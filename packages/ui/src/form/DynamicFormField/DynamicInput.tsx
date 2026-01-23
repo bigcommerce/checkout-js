@@ -1,7 +1,7 @@
 import { type FormFieldItem } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { isDate, noop } from 'lodash';
-import React, { type FunctionComponent, lazy, memo, Suspense, useCallback } from 'react';
+import React, { type ChangeEventHandler, type FunctionComponent, lazy, memo, Suspense, useCallback, useEffect, useRef } from 'react';
 
 import { withDate, type WithDateProps } from '@bigcommerce/checkout/locale';
 
@@ -49,6 +49,45 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
     ...rest
 }) => {
     const inputFormat = inputDateFormat || date.inputFormat || '';
+    const phoneInputRef = useRef<HTMLInputElement>(null);
+    const nextSelectionEndRef = useRef(0);
+
+    // Restore cursor position for phone inputs after filtering
+    useEffect(() => {
+        if (fieldType === DynamicFormFieldType.TELEPHONE && phoneInputRef.current && phoneInputRef.current.selectionEnd !== nextSelectionEndRef.current) {
+            phoneInputRef.current.setSelectionRange(nextSelectionEndRef.current, nextSelectionEndRef.current);
+        }
+    });
+
+    const handlePhoneChange: ChangeEventHandler<HTMLInputElement> = useCallback(
+        (event) => {
+            const { value: inputValue = '' } = event.target;
+            const selectionEnd = phoneInputRef.current?.selectionEnd || 0;
+
+            // Filter to only allow digits (0-9)
+            const filteredValue = inputValue.replace(/\D/g, '');
+
+            // Calculate new cursor position
+            // Count how many non-digit characters were removed before the cursor position
+            const textBeforeCursor = inputValue.substring(0, selectionEnd);
+            const digitsBeforeCursor = textBeforeCursor.replace(/\D/g, '').length;
+            const newSelectionEnd = digitsBeforeCursor;
+
+            // Update cursor position ref
+            nextSelectionEndRef.current = newSelectionEnd;
+
+            // Call onChange with filtered value
+            onChange({
+                ...event,
+                target: {
+                    ...event.target,
+                    name,
+                    value: filteredValue,
+                },
+            });
+        },
+        [onChange, name],
+    );
 
     const handleDateChange = useCallback(
         (dateValue: string, event: any) =>
@@ -190,6 +229,25 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
             );
 
         default:
+            // For telephone fields, use custom handler to filter non-numeric input
+            if (fieldType === DynamicFormFieldType.TELEPHONE) {
+                return (
+                    <TextInput
+                        {...rest}
+                        id={id}
+                        isFloatingLabelEnabled={isFloatingLabelEnabled}
+                        name={name}
+                        onChange={handlePhoneChange}
+                        placeholder={placeholder}
+                        ref={phoneInputRef}
+                        testId={`${id}-text`}
+                        themeV2={themeV2}
+                        type={fieldType}
+                        value={value}
+                    />
+                );
+            }
+
             return (
                 <TextInput
                     {...rest}

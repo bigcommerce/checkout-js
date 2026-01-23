@@ -63,8 +63,30 @@ export default memoize(function getAddressFormFieldsValidationSchema({
     formFields,
     language,
 }: AddressFormFieldsValidationSchemaOptions): ObjectSchema<FormFieldValues> {
-    return getFormFieldsValidationSchema({
+    const baseSchema = getFormFieldsValidationSchema({
         formFields,
         translate: getTranslateAddressError(language),
     });
+
+    // Add phone number validation to enforce numbers only
+    const phoneField = formFields.find((field) => field.name === 'phone' || field.name === 'tel');
+    if (phoneField && language && baseSchema.fields.phone) {
+        const phoneLabel = language.translate('address.phone_number');
+        // Add numbers-only validation to phone field using test()
+        const phoneSchema = baseSchema.fields.phone as any;
+        baseSchema.fields.phone = phoneSchema.test(
+            'phone-numbers-only',
+            language.translate('address.invalid_characters_error', { label: phoneLabel }),
+            (value: string | undefined) => {
+                // Allow empty values (handled by required validation if needed)
+                if (!value || value === '') {
+                    return true;
+                }
+                // Only allow digits
+                return /^\d+$/.test(value);
+            },
+        );
+    }
+
+    return baseSchema;
 });
