@@ -93,6 +93,7 @@ const AnimatedProductItem: FunctionComponent<AnimatedProductItemProps> = ({ chil
             onExit={handleExit}
             onExiting={handleExiting}
             timeout={ANIMATION_DURATION}
+            unmountOnExit
         >
             <li className="productList-item is-visible" ref={nodeRef}>
                 {children}

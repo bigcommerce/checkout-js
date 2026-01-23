@@ -78,6 +78,7 @@ const AnimatedCouponTag: FunctionComponent<AnimatedCouponTagProps> = ({ children
             onExit={handleExit}
             onExiting={handleExiting}
             timeout={ANIMATION_DURATION}
+            unmountOnExit
         >
             <div className="coupon-tag-wrapper" ref={nodeRef}>
                 {children}
