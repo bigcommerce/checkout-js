@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.724.0](https://github.com/bigcommerce/checkout-js/compare/v1.723.4...v1.724.0) (2026-01-26)
+
+
+### Features
+
+* **payment:** PI-4799 Add text for adyenv3 oxxo ticket ([6f56481](https://github.com/bigcommerce/checkout-js/commit/6f56481f008e5c15cad29d713a9742994d0c5c5a))
+
 ### [1.723.4](https://github.com/bigcommerce/checkout-js/compare/v1.723.3...v1.723.4) (2026-01-22)
 
 ### [1.723.3](https://github.com/bigcommerce/checkout-js/compare/v1.723.2...v1.723.3) (2026-01-22)
