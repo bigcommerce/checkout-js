@@ -444,6 +444,7 @@
                 "three_d_secure_declined": "Wystąpił problem z Twoją płatnością, sprawdź szczegóły płatności lub skontaktuj się z wystawcą karty.",
                 "three_d_secure_failed": "Płatność nie powiodła się. Spróbuj ponownie lub użyj innej opcji płatności.",
                 "three_d_secure_required": "Do przetworzenia płatności wymagane jest dodatkowe uwierzytelnienie. Prosimy o kontakt.",
+                "three_d_secure_payment_failed": "The credit card information is invalid or failed 3D Secure verification. Please try another card or attempt the payment again later.",
                 "token_error": "Mamy problem z przetworzeniem Twojej transakcji. Prosimy spróbować ponownie później.",
                 "transaction_declined": "Twoja płatność została odrzucona. Prosimy spróbować ponownie.",
                 "transaction_rejected": "Płatność została odrzucona. Prosimy spróbować ponownie.",
@@ -599,7 +600,8 @@
         "order_confirmation": {
             "mandate": {
                 "adyenv3": {
-                    "boletobancario": "Bilet bankowy"
+                    "boletobancario": "Bilet bankowy",
+                    "oxxo": "Bilet do OXXO"
                 },
                 "bluesnapdirect": {
                     "sepa_direct_debit": "Numer referencyjny upoważnienia do polecenia zapłaty SEPA: {mandate}"
