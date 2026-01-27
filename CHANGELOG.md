@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.726.0](https://github.com/bigcommerce/checkout-js/compare/v1.725.0...v1.726.0) (2026-01-27)
+
+
+### Features
+
+* **payment:** PAYPAL-6137 Removed BT CC core component ([46a93c9](https://github.com/bigcommerce/checkout-js/commit/46a93c96a49ebbe413a06787bb31c16964be7745))
+
 ## [1.725.0](https://github.com/bigcommerce/checkout-js/compare/v1.724.1...v1.725.0) (2026-01-27)
 
 
