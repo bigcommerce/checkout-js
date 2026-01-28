@@ -1,2 +1,3 @@
-export { default as CheckoutContext, useCheckout } from './CheckoutContext';
-export { default as CheckoutProvider } from './CheckoutProvider';
+export { default as CheckoutContext } from './CheckoutContext';
+export { default as CheckoutProvider, type CheckoutProviderProps } from './CheckoutProvider';
+export { useCheckout } from './useCheckout';
