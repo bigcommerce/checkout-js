@@ -444,6 +444,7 @@
                 "three_d_secure_declined": "Der har været et problem med din betaling. Tjek dine betalingsoplysninger, eller kontakt din kortudsteder.",
                 "three_d_secure_failed": "Betalingen mislykkedes. Prøv igen, eller brug en anden betalingsmulighed.",
                 "three_d_secure_required": "Yderligere godkendelse er påkrævet for at behandle din betaling. Kontakt os.",
+                "three_d_secure_payment_failed": "Kreditkortoplysningerne er ugyldige eller 3D Secure-verificeringen mislykkedes. Prøv et andet kort, eller forsøg at betale igen senere.",
                 "token_error": "Vi oplever problemer med at behandle din transaktion. Prøv igen senere.",
                 "transaction_declined": "Din betaling blev afvist. Prøv igen.",
                 "transaction_rejected": "Betalingen blev afvist. Prøv igen.",
@@ -599,7 +600,8 @@
         "order_confirmation": {
             "mandate": {
                 "adyenv3": {
-                    "boletobancario": "Boleto Bancário-kvittering"
+                    "boletobancario": "Boleto Bancário-kvittering",
+                    "oxxo": "OXXO-kvittering"
                 },
                 "bluesnapdirect": {
                     "sepa_direct_debit": "SEPA Direct Debit fuldmagtsreference: {mandate}"
