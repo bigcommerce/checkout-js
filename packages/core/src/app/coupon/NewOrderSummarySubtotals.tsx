@@ -1,5 +1,6 @@
 import type { Fee, OrderFee, Tax } from '@bigcommerce/checkout-sdk';
-import React, { type FunctionComponent, useState } from 'react';
+import React, { type FunctionComponent, useRef, useState } from 'react';
+import { CSSTransition } from 'react-transition-group';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -8,6 +9,12 @@ import { isOrderFee, OrderSummaryDiscount, OrderSummaryPrice }  from '../order';
 
 import { AppliedGiftCertificates, CouponForm, Discounts } from './components';
 import { useMultiCoupon } from './useMultiCoupon';
+
+const ANIMATION_DURATION = 300;
+
+const prefersReducedMotion = () =>
+    typeof window !== 'undefined' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 interface MultiCouponProps {
     fees?: Fee[] | OrderFee[];
@@ -38,9 +45,48 @@ const NewOrderSummarySubtotals: FunctionComponent<MultiCouponProps> = ({
     } = useMultiCoupon();
 
     const [isCouponFormVisible, setIsCouponFormVisible] = useState(!isCouponFormCollapsed);
+    const couponFormRef = useRef<HTMLDivElement>(null);
 
     const toggleCouponForm = () => {
         setIsCouponFormVisible((prevState) => !prevState);
+    };
+
+    // Animation handlers - height + opacity only, no vertical slide
+    const handleEnter = () => {
+        const node = couponFormRef.current;
+        if (!node || prefersReducedMotion()) return;
+        node.style.height = '0px';
+        node.style.opacity = '0';
+    };
+
+    const handleEntering = () => {
+        const node = couponFormRef.current;
+        if (!node || prefersReducedMotion()) return;
+        void node.offsetHeight;
+        node.style.height = `${node.scrollHeight}px`;
+        node.style.opacity = '1';
+    };
+
+    const handleEntered = () => {
+        const node = couponFormRef.current;
+        if (!node) return;
+        node.style.height = 'auto';
+        node.style.opacity = '';
+    };
+
+    const handleExit = () => {
+        const node = couponFormRef.current;
+        if (!node || prefersReducedMotion()) return;
+        node.style.height = `${node.offsetHeight}px`;
+        node.style.opacity = '1';
+    };
+
+    const handleExiting = () => {
+        const node = couponFormRef.current;
+        if (!node || prefersReducedMotion()) return;
+        void node.offsetHeight;
+        node.style.height = '0px';
+        node.style.opacity = '0';
     };
 
     return (
@@ -58,9 +104,21 @@ const NewOrderSummarySubtotals: FunctionComponent<MultiCouponProps> = ({
                         <TranslatedString id="redeemable.toggle_action" />
                     </a>
 
-                    {isCouponFormVisible && (
-                        <CouponForm />
-                    )}
+                    <CSSTransition
+                        in={isCouponFormVisible}
+                        nodeRef={couponFormRef}
+                        onEnter={handleEnter}
+                        onEntered={handleEntered}
+                        onEntering={handleEntering}
+                        onExit={handleExit}
+                        onExiting={handleExiting}
+                        timeout={ANIMATION_DURATION}
+                        unmountOnExit
+                    >
+                        <div className="coupon-form-wrapper" ref={couponFormRef}>
+                            <CouponForm />
+                        </div>
+                    </CSSTransition>
                 </section>
             )}
             <section className="subtotals-with-multi-coupon cart-section optimizedCheckout-orderSummary-cartSection">

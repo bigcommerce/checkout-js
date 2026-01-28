@@ -5,7 +5,7 @@ import React from 'react';
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
 import { CheckoutProvider, ExtensionProvider, LocaleProvider } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext , getLanguageService } from '@bigcommerce/checkout/locale';
-import { render, screen } from '@bigcommerce/checkout/test-utils';
+import { render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
 import { createErrorLogger } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
@@ -116,7 +116,9 @@ describe('NewOrderSummarySubtotals', () => {
 
                 await user.click(toggleLink);
 
-                expect(screen.queryByTestId('redeemable-collapsable')).not.toBeInTheDocument();
+                await waitFor(() => {
+                    expect(screen.queryByTestId('redeemable-collapsable')).not.toBeInTheDocument();
+                });
             });
 
             it('sets correct aria attributes on toggle link', () => {
@@ -533,7 +535,9 @@ describe('NewOrderSummarySubtotals', () => {
             expect(screen.getByTestId('redeemable-collapsable')).toBeInTheDocument();
 
             await user.click(screen.getByTestId('redeemable-label'));
-            expect(screen.queryByTestId('redeemable-collapsable')).not.toBeInTheDocument();
+            await waitFor(() => {
+                expect(screen.queryByTestId('redeemable-collapsable')).not.toBeInTheDocument();
+            });
         });
 
         it('renders correctly with minimal props', () => {
