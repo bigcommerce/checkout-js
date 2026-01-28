@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.727.1](https://github.com/bigcommerce/checkout-js/compare/v1.727.0...v1.727.1) (2026-01-28)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-9450 Fix BC GooglePay button ([213130a](https://github.com/bigcommerce/checkout-js/commit/213130ac65977e9f727271cfa6b1e624be3990ad))
+
 ## [1.727.0](https://github.com/bigcommerce/checkout-js/compare/v1.726.3...v1.727.0) (2026-01-28)
 
 
