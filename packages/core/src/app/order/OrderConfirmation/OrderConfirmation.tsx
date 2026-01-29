@@ -20,6 +20,7 @@ import {
 } from '../../guestSignup/errors';
 import getPaymentInstructions from '../getPaymentInstructions';
 
+import { ExpiredTokenView } from './ExpiredTokenView';
 import { OrderConfirmationPage } from './OrderConfirmationPage';
 
 export interface OrderConfirmationProps {
@@ -95,6 +96,33 @@ export const OrderConfirmation = ({
             });
     };
 
+    const handleResendGuestToken = async (): Promise<void> => {
+        // Extract token from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+
+        if (!token) {
+            throw new Error('No token found in URL');
+        }
+
+        // Call regeneration endpoint
+        const response = await fetch('/api/storefront/orders/guest-tokens', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                order_id: orderId,
+                old_token: token,
+            }),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.detail || 'Failed to regenerate token');
+        }
+    };
+
     useEffect(() => {
         loadOrder(orderId)
             .then(({ data }) => {
@@ -111,6 +139,11 @@ export const OrderConfirmation = ({
 
     if (!order || !config || isLoadingOrder()) {
         return <OrderConfirmationPageSkeleton />;
+    }
+
+    // Show expired token view if guest token is expired
+    if ((order as any).guestTokenValidation === 'expired') {
+        return <ExpiredTokenView orderId={orderId} onResendClick={handleResendGuestToken} />;
     }
 
     const paymentInstructions = getPaymentInstructions(order);
