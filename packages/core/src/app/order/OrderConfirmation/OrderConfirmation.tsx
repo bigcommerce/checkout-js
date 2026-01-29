@@ -20,6 +20,7 @@ import {
 } from '../../guestSignup/errors';
 import getPaymentInstructions from '../getPaymentInstructions';
 
+import { ExpiredTokenView } from './ExpiredTokenView';
 import { OrderConfirmationPage } from './OrderConfirmationPage';
 
 export interface OrderConfirmationProps {
@@ -27,6 +28,7 @@ export interface OrderConfirmationProps {
     embeddedStylesheet: EmbeddedCheckoutStylesheet;
     errorLogger: ErrorLogger;
     orderId: number;
+    guestTokenValidation?: 'valid' | 'expired' | null;
     createAccount(values: SignUpFormValues): Promise<CreatedCustomer>;
     createEmbeddedMessenger(options: EmbeddedCheckoutMessengerOptions): EmbeddedCheckoutMessenger;
 }
@@ -38,6 +40,7 @@ export const OrderConfirmation = ({
     embeddedStylesheet,
     orderId,
     errorLogger,
+    guestTokenValidation,
 }: OrderConfirmationProps): ReactElement => {
     const [error, setError] = useState<Error | undefined>();
     const [hasSignedUp, setHasSignedUp] = useState<boolean | undefined>();
@@ -95,19 +98,52 @@ export const OrderConfirmation = ({
             });
     };
 
-    useEffect(() => {
-        loadOrder(orderId)
-            .then(({ data }) => {
-                const { links: { siteLink = '' } = {} } = data.getConfig() || {};
-                const messenger = createEmbeddedMessenger({ parentOrigin: siteLink });
+    const handleResendGuestToken = async (): Promise<void> => {
+        // Extract order token from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderToken = urlParams.get('orderToken'); // Order's permanent token
 
-                embeddedMessengerRef.current = messenger;
-                messenger.receiveStyles((styles) => embeddedStylesheet.append(styles));
-                messenger.postFrameLoaded({ contentId: containerId });
-                analyticsTracker.orderPurchased();
-            })
-            .catch(handleUnhandledError);
-    }, []);
+        if (!orderToken) {
+            throw new Error('No order token found in URL');
+        }
+
+        // Call regeneration endpoint with order ID in path and order token as query param
+        // This matches the pattern of the order confirmation page URL
+        const response = await fetch(`/api/storefront/orders/${orderId}/guest-token?orderToken=${encodeURIComponent(orderToken)}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.detail || 'Failed to regenerate token');
+        }
+    };
+
+    useEffect(() => {
+      // If token is expired, don't make API call - show expired view instead
+      if (guestTokenValidation === 'expired') {
+        return;
+      }
+
+      loadOrder(orderId)
+        .then(({ data }) => {
+          const { links: { siteLink = '' } = {} } = data.getConfig() || {};
+          const messenger = createEmbeddedMessenger({ parentOrigin: siteLink });
+
+          embeddedMessengerRef.current = messenger;
+          messenger.receiveStyles((styles) => embeddedStylesheet.append(styles));
+          messenger.postFrameLoaded({ contentId: containerId });
+          analyticsTracker.orderPurchased();
+        })
+        .catch(handleUnhandledError);
+    }, [guestTokenValidation]);
+
+    if (guestTokenValidation === 'expired') {
+        return <ExpiredTokenView orderId={orderId} onResendClick={handleResendGuestToken} />;
+    }
 
     if (!order || !config || isLoadingOrder()) {
         return <OrderConfirmationPageSkeleton />;
