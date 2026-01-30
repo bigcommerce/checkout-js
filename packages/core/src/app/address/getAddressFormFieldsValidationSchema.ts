@@ -68,24 +68,36 @@ export default memoize(function getAddressFormFieldsValidationSchema({
         translate: getTranslateAddressError(language),
     });
 
-    // Add phone number validation to enforce numbers only
+    // Add phone number validation to enforce numbers and optional '+' prefix only
     const phoneField = formFields.find((field) => field.name === 'phone' || field.name === 'tel');
-    if (phoneField && language && baseSchema.fields.phone) {
+    if (phoneField && language) {
         const phoneLabel = language.translate('address.phone_number');
-        // Add numbers-only validation to phone field using test()
-        const phoneSchema = baseSchema.fields.phone as any;
-        baseSchema.fields.phone = phoneSchema.test(
-            'phone-numbers-only',
-            language.translate('address.invalid_characters_error', { label: phoneLabel }),
-            (value: string | undefined) => {
-                // Allow empty values (handled by required validation if needed)
-                if (!value || value === '') {
-                    return true;
-                }
-                // Only allow digits
-                return /^\d+$/.test(value);
-            },
-        );
+        const fieldName = phoneField.name;
+        
+        // Get the schema for the appropriate field name (phone or tel)
+        if (baseSchema.fields[fieldName]) {
+            const phoneSchema = baseSchema.fields[fieldName] as any;
+            baseSchema.fields[fieldName] = phoneSchema
+                // Transform '+' alone to empty string so required validation catches it
+                .transform((value: string | undefined) => {
+                    if (value === '+') {
+                        return '';
+                    }
+                    return value;
+                })
+                .test(
+                    'phone-numbers-only',
+                    language.translate('address.invalid_characters_error', { label: phoneLabel }),
+                    (value: string | undefined) => {
+                        // Allow empty values (handled by required validation if needed)
+                        if (!value || value === '') {
+                            return true;
+                        }
+                        // Allow optional '+' at start, followed by one or more digits
+                        return /^\+?\d+$/.test(value);
+                    },
+                );
+        }
     }
 
     return baseSchema;

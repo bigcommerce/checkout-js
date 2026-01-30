@@ -64,14 +64,34 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
             const { value: inputValue = '' } = event.target;
             const selectionEnd = phoneInputRef.current?.selectionEnd || 0;
 
-            // Filter to only allow digits (0-9)
-            const filteredValue = inputValue.replace(/\D/g, '');
+            // Filter to allow only: '+' at the start, then digits
+            let filteredValue = '';
+            for (let i = 0; i < inputValue.length; i++) {
+                const char = inputValue[i];
+                if (char === '+' && filteredValue === '') {
+                    // Allow '+' only at the start
+                    filteredValue += char;
+                } else if (/\d/.test(char)) {
+                    // Allow digits anywhere
+                    filteredValue += char;
+                }
+            }
 
             // Calculate new cursor position
-            // Count how many non-digit characters were removed before the cursor position
+            // Count how many allowed characters are before the cursor position
             const textBeforeCursor = inputValue.substring(0, selectionEnd);
-            const digitsBeforeCursor = textBeforeCursor.replace(/\D/g, '').length;
-            const newSelectionEnd = digitsBeforeCursor;
+            let allowedCharsBeforeCursor = 0;
+            let hasSeenPlus = false;
+            for (let i = 0; i < textBeforeCursor.length; i++) {
+                const char = textBeforeCursor[i];
+                if (char === '+' && !hasSeenPlus) {
+                    allowedCharsBeforeCursor++;
+                    hasSeenPlus = true;
+                } else if (/\d/.test(char)) {
+                    allowedCharsBeforeCursor++;
+                }
+            }
+            const newSelectionEnd = allowedCharsBeforeCursor;
 
             // Update cursor position ref
             nextSelectionEndRef.current = newSelectionEnd;
