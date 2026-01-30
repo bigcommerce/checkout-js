@@ -63,8 +63,42 @@ export default memoize(function getAddressFormFieldsValidationSchema({
     formFields,
     language,
 }: AddressFormFieldsValidationSchemaOptions): ObjectSchema<FormFieldValues> {
-    return getFormFieldsValidationSchema({
+    const baseSchema = getFormFieldsValidationSchema({
         formFields,
         translate: getTranslateAddressError(language),
     });
+
+    // Add phone number validation to enforce numbers and optional '+' prefix only
+    const phoneField = formFields.find((field) => field.name === 'phone' || field.name === 'tel');
+    if (phoneField && language) {
+        const phoneLabel = language.translate('address.phone_number_label');
+        const fieldName = phoneField.name;
+        
+        // Get the schema for the appropriate field name (phone or tel)
+        if (baseSchema.fields[fieldName]) {
+            const phoneSchema = baseSchema.fields[fieldName] as any;
+            baseSchema.fields[fieldName] = phoneSchema
+                // Transform '+' alone to empty string so required validation catches it
+                .transform((value: string | undefined) => {
+                    if (value === '+') {
+                        return '';
+                    }
+                    return value;
+                })
+                .test(
+                    'phone-numbers-only',
+                    language.translate('address.invalid_characters_error', { label: phoneLabel }),
+                    (value: string | undefined) => {
+                        // Allow empty values (handled by required validation if needed)
+                        if (!value || value === '') {
+                            return true;
+                        }
+                        // Allow optional '+' at start, followed by one or more digits
+                        return /^\+?\d+$/.test(value);
+                    },
+                );
+        }
+    }
+
+    return baseSchema;
 });

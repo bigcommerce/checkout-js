@@ -1,4 +1,5 @@
 import { createLanguageService } from '@bigcommerce/checkout-sdk';
+import { fireEvent } from '@testing-library/react';
 import React, { type FunctionComponent } from 'react';
 
 import { LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
@@ -155,5 +156,191 @@ describe('DynamicInput', () => {
         expect(screen.getByRole('combobox')).toHaveAttribute('name', 'select');
         expect(screen.getByText('Foo')).toBeInTheDocument();
         expect(screen.getByText('Foo1')).toBeInTheDocument();
+    });
+
+    describe('phone input filtering', () => {
+        it('allows digits in phone input', () => {
+            const onChange = jest.fn();
+            render(
+                <DynamicInputTest
+                    fieldType={DynamicFormFieldType.TELEPHONE}
+                    id="phone"
+                    name="phone"
+                    onChange={onChange}
+                />,
+            );
+
+            const input = screen.getByRole('textbox');
+            fireEvent.change(input, { target: { value: '1234567890' } });
+
+            expect(onChange).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    target: expect.objectContaining({
+                        value: '1234567890',
+                    }),
+                }),
+            );
+        });
+
+        it('allows + at the start of phone input', () => {
+            const onChange = jest.fn();
+            render(
+                <DynamicInputTest
+                    fieldType={DynamicFormFieldType.TELEPHONE}
+                    id="phone"
+                    name="phone"
+                    onChange={onChange}
+                />,
+            );
+
+            const input = screen.getByRole('textbox');
+            fireEvent.change(input, { target: { value: '+1234567890' } });
+
+            expect(onChange).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    target: expect.objectContaining({
+                        value: '+1234567890',
+                    }),
+                }),
+            );
+        });
+
+        it('allows only + in phone input', () => {
+            const onChange = jest.fn();
+            render(
+                <DynamicInputTest
+                    fieldType={DynamicFormFieldType.TELEPHONE}
+                    id="phone"
+                    name="phone"
+                    onChange={onChange}
+                />,
+            );
+
+            const input = screen.getByRole('textbox');
+            fireEvent.change(input, { target: { value: '+' } });
+
+            expect(onChange).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    target: expect.objectContaining({
+                        value: '+',
+                    }),
+                }),
+            );
+        });
+
+        it('filters out letters from phone input', () => {
+            const onChange = jest.fn();
+            render(
+                <DynamicInputTest
+                    fieldType={DynamicFormFieldType.TELEPHONE}
+                    id="phone"
+                    name="phone"
+                    onChange={onChange}
+                />,
+            );
+
+            const input = screen.getByRole('textbox');
+            fireEvent.change(input, { target: { value: '555abc1234' } });
+
+            expect(onChange).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    target: expect.objectContaining({
+                        value: '5551234',
+                    }),
+                }),
+            );
+        });
+
+        it('filters out special characters (except + at start) from phone input', () => {
+            const onChange = jest.fn();
+            render(
+                <DynamicInputTest
+                    fieldType={DynamicFormFieldType.TELEPHONE}
+                    id="phone"
+                    name="phone"
+                    onChange={onChange}
+                />,
+            );
+
+            const input = screen.getByRole('textbox');
+            fireEvent.change(input, { target: { value: '(555) 123-4567' } });
+
+            expect(onChange).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    target: expect.objectContaining({
+                        value: '5551234567',
+                    }),
+                }),
+            );
+        });
+
+        it('filters out + when not at the start of phone input', () => {
+            const onChange = jest.fn();
+            render(
+                <DynamicInputTest
+                    fieldType={DynamicFormFieldType.TELEPHONE}
+                    id="phone"
+                    name="phone"
+                    onChange={onChange}
+                />,
+            );
+
+            const input = screen.getByRole('textbox');
+            fireEvent.change(input, { target: { value: '555+1234' } });
+
+            expect(onChange).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    target: expect.objectContaining({
+                        value: '5551234',
+                    }),
+                }),
+            );
+        });
+
+        it('keeps only first + and filters subsequent + characters', () => {
+            const onChange = jest.fn();
+            render(
+                <DynamicInputTest
+                    fieldType={DynamicFormFieldType.TELEPHONE}
+                    id="phone"
+                    name="phone"
+                    onChange={onChange}
+                />,
+            );
+
+            const input = screen.getByRole('textbox');
+            fireEvent.change(input, { target: { value: '++15551234' } });
+
+            expect(onChange).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    target: expect.objectContaining({
+                        value: '+15551234',
+                    }),
+                }),
+            );
+        });
+
+        it('handles international phone number format with + prefix', () => {
+            const onChange = jest.fn();
+            render(
+                <DynamicInputTest
+                    fieldType={DynamicFormFieldType.TELEPHONE}
+                    id="phone"
+                    name="phone"
+                    onChange={onChange}
+                />,
+            );
+
+            const input = screen.getByRole('textbox');
+            fireEvent.change(input, { target: { value: '+44 20 7946 0958' } });
+
+            expect(onChange).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    target: expect.objectContaining({
+                        value: '+442079460958',
+                    }),
+                }),
+            );
+        });
     });
 });
