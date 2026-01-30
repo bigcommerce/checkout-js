@@ -71,7 +71,7 @@ export default memoize(function getAddressFormFieldsValidationSchema({
     // Add phone number validation to enforce numbers and optional '+' prefix only
     const phoneField = formFields.find((field) => field.name === 'phone' || field.name === 'tel');
     if (phoneField && language) {
-        const phoneLabel = language.translate('address.phone_number');
+        const phoneLabel = language.translate('address.phone_number_label');
         const fieldName = phoneField.name;
         
         // Get the schema for the appropriate field name (phone or tel)
