@@ -1,6 +1,7 @@
 import { type Address, type CustomerAddress } from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent, memo, type ReactNode } from 'react';
 
+import { useCheckoutViewModel } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { PoweredByPayPalFastlaneLabel, usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
@@ -60,7 +61,6 @@ const AddressSelectMenu: FunctionComponent<AddressSelectProps> = ({
 );
 
 const AddressSelect = ({
-    addresses,
     selectedAddress,
     type,
     showSingleLineAddress,
@@ -80,8 +80,42 @@ const AddressSelect = ({
         onUseNewAddress(selectedAddress);
     };
 
+    const {
+        capabilities: {
+            canSearchAddresses,
+        },
+        data: {
+            addressBook: addresses,
+        }
+    } = useCheckoutViewModel();
+
     return (
         <div className="form-field">
+            {canSearchAddresses && (
+                <div
+                    aria-hidden="true"
+                    style={{
+                        width: '100%',
+                        border: '1px solid #d9dbe1',
+                        borderRadius: '4px',
+                        backgroundColor: '#ffffff',
+                        display: 'flex',
+                        alignItems: 'center',
+                        padding: '0.9rem',
+                        marginBottom: '0.75rem',
+                        boxSizing: 'border-box',
+                    }}
+                >
+                    <div
+                        style={{
+                            height: '1.9rem',
+                            width: '100%',
+                            backgroundColor: '#123',
+                            borderRadius: '3px',
+                        }}
+                    />
+                </div>
+            )}
             <div className="dropdown--select">
                 <DropdownTrigger
                     dropdown={

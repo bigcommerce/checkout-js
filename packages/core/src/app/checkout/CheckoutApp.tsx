@@ -4,7 +4,7 @@ import React, { type ReactElement, useEffect, useMemo } from 'react';
 import ReactModal from 'react-modal';
 
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
-import { AnalyticsProvider, CheckoutProvider, ExtensionProvider, LocaleProvider, ThemeProvider } from '@bigcommerce/checkout/contexts';
+import { AnalyticsProvider, CheckoutProvider, CheckoutViewModel, CheckoutViewModelType, ExtensionProvider, LocaleProvider, ThemeProvider } from '@bigcommerce/checkout/contexts';
 import { ErrorBoundary } from '@bigcommerce/checkout/error-handling-utils';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
 
@@ -52,6 +52,11 @@ const CheckoutApp = (props: CheckoutAppProps): ReactElement => {
         ReactModal.setAppElement(`#${containerId}`);
     }, []);
 
+    const checkoutViewModelType =
+        new URLSearchParams(window.location.search).get('isB2B') === 'true'
+        ? CheckoutViewModelType.B2B
+        : CheckoutViewModelType.B2C;
+
     return (
         <ErrorBoundary errorLogger={errorLogger}>
             <LocaleProvider checkoutService={checkoutService} languageService={languageService}>
@@ -59,13 +64,15 @@ const CheckoutApp = (props: CheckoutAppProps): ReactElement => {
                     <AnalyticsProvider checkoutService={checkoutService}>
                         <ExtensionProvider extensionService={extensionService}>
                             <ThemeProvider>
-                                <Checkout
-                                    {...props}
-                                    createEmbeddedMessenger={createEmbeddedCheckoutMessenger}
-                                    embeddedStylesheet={embeddedStylesheet}
-                                    embeddedSupport={embeddedSupport}
-                                    errorLogger={errorLogger}
-                                />
+                                <CheckoutViewModel checkoutService={checkoutService} type={checkoutViewModelType}>
+                                    <Checkout
+                                        {...props}
+                                        createEmbeddedMessenger={createEmbeddedCheckoutMessenger}
+                                        embeddedStylesheet={embeddedStylesheet}
+                                        embeddedSupport={embeddedSupport}
+                                        errorLogger={errorLogger}
+                                    />
+                                </CheckoutViewModel>
                             </ThemeProvider>
                         </ExtensionProvider>
                     </AnalyticsProvider>

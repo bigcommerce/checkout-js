@@ -21,3 +21,10 @@ export type {
     PaymentFormValues,
 } from './paymentForm/PaymentFormServiceType';
 export type { PaymentFormContextProps } from './paymentForm/PaymentFormContext';
+
+export {
+    CheckoutViewModelType,
+    CheckoutViewModel,
+    useCheckoutViewModel,
+} from './checkoutViewModel';
+export type { CheckoutViewModelContext } from './checkoutViewModel';
