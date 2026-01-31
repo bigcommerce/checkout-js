@@ -4,7 +4,10 @@ import isPayPalFastlaneCustomer from './is-paypal-fastlane-customer';
 import isPayPalFastlaneMethod from './is-paypal-fastlane-method';
 
 const usePayPalFastlaneAddress = () => {
-    const { checkoutState } = useCheckout();
+    const { checkoutState } = useCheckout(({ data }) => ({
+        getConfig: data.getConfig,
+        getPaymentProviderCustomer: data.getPaymentProviderCustomer,
+    }));
     const { getConfig, getPaymentProviderCustomer } = checkoutState.data;
     const paymentWithCustomCheckout: string =
         getConfig()?.checkoutSettings.providerWithCustomCheckout || '';

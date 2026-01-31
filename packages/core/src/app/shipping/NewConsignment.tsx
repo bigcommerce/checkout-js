@@ -42,7 +42,10 @@ const NewConsignment = ({
             data: { getShippingCountries, getConsignments: getPreviousConsignments },
         },
         checkoutService: { assignItemsToAddress: assignItem, selectConsignmentShippingOption },
-    } = useCheckout();
+    } = useCheckout(({ data }) => ({
+        shippingCountries: data.getShippingCountries(),
+        consignments: data.getConsignments(),
+    }));
 
     const selectedAddress = useMemo(() => {
         if (!consignmentRequest?.address) {

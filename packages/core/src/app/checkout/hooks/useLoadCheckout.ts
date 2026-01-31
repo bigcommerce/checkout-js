@@ -6,7 +6,7 @@ import { useCheckout, useExtensions } from '@bigcommerce/checkout/contexts';
 import { yieldToMain } from '../../common/utility';
 
 export const useLoadCheckout = (checkoutId: string, initialState?: CheckoutInitialState): {isLoadingCheckout: boolean} => {
-    const { checkoutService, checkoutState: { data } } = useCheckout();
+    const { checkoutService, checkoutState: { data } } = useCheckout(({ data }) => data.getCheckout());
     const [ isLoadingCheckout, setIsLoadingCheckout ] = useState(!data.getCheckout());
     const { extensionService } = useExtensions();
 

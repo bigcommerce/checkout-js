@@ -8,7 +8,10 @@ import { isAchInstrument } from '@bigcommerce/checkout/instrument-utils';
 const useEcpInstruments = (method: PaymentMethod) => {
     const [currentInstrument, setCurrentInstrument] = useState<AchInstrument | undefined>();
 
-    const { checkoutState } = useCheckout();
+    const { checkoutState } = useCheckout(({ data }) => ({
+        getCustomer: data.getCustomer,
+        getInstruments: data.getInstruments,
+    }));
     const customer = checkoutState.data.getCustomer();
     const instruments = checkoutState.data.getInstruments(method);
 

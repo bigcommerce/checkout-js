@@ -25,10 +25,11 @@ export interface CheckoutAppProps {
     publicPath?: string;
     sentryConfig?: BrowserOptions;
     sentrySampleRate?: number;
+    isUseCheckoutHookExperimentEnabled?: boolean;
 }
 
 const CheckoutApp = (props: CheckoutAppProps): ReactElement => {
-    const { containerId, sentryConfig, publicPath, sentrySampleRate } = props;
+    const { containerId, sentryConfig, publicPath, sentrySampleRate, isUseCheckoutHookExperimentEnabled } = props;
 
     const errorLogger = useMemo(() => createErrorLogger(
         { sentry: sentryConfig },
@@ -55,7 +56,7 @@ const CheckoutApp = (props: CheckoutAppProps): ReactElement => {
     return (
         <ErrorBoundary errorLogger={errorLogger}>
             <LocaleProvider checkoutService={checkoutService} languageService={languageService}>
-                <CheckoutProvider checkoutService={checkoutService} errorLogger={errorLogger}>
+                <CheckoutProvider checkoutService={checkoutService} errorLogger={errorLogger} isUseCheckoutHookExperimentEnabled={isUseCheckoutHookExperimentEnabled ?? false}>
                     <AnalyticsProvider checkoutService={checkoutService}>
                         <ExtensionProvider extensionService={extensionService}>
                             <ThemeProvider>

@@ -25,7 +25,9 @@ const BraintreeAchPaymentForm: FunctionComponent<BraintreeAchPaymentFormProps> =
     updateMandateText,
 }) => {
     const [isValidForm, setIsValidForm] = useState(false);
-    const { checkoutState } = useCheckout();
+    const { checkoutState } = useCheckout(({ data }) => ({
+        getBillingAddress: data.getBillingAddress,
+    }));
     const { paymentForm } = usePaymentFormContext();
     const { disableSubmit, getFieldValue, getFormValues, setFieldValue } = paymentForm;
     const {

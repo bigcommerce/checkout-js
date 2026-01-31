@@ -49,7 +49,7 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
     const { currency } = useLocale();
 
     // TODO: When removing the experiment, rename `NewOrderSummarySubtotals` to `OrderSummarySubtotals`.
-    const { checkoutState } = useCheckout();
+    const { checkoutState } = useCheckout(({ data }) => ({ getConfig: data.getConfig, getCheckout: data.getCheckout }));
     const { checkoutSettings } = checkoutState.data.getConfig() ?? {};
     const checkout = checkoutState.data.getCheckout();
     const order = checkoutState.data.getOrder();

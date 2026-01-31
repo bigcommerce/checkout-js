@@ -8,7 +8,10 @@ import { isSepaInstrument } from '@bigcommerce/checkout/instrument-utils';
 const useSepaInstruments = (method: PaymentMethod) => {
     const [currentInstrument, setCurrentInstrument] = useState<BankInstrument | undefined>();
 
-    const { checkoutState } = useCheckout();
+    const { checkoutState } = useCheckout(({ data }) => ({
+        getCustomer: data.getCustomer,
+        getInstruments: data.getInstruments,
+    }));
     const customer = checkoutState.data.getCustomer();
     const instruments = checkoutState.data.getInstruments(method);
 
