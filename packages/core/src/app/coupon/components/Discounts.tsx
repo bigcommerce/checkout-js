@@ -1,4 +1,4 @@
-import React, { createRef, type FunctionComponent, useState } from 'react';
+import React, { createRef, type FunctionComponent, useRef, useState } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -6,6 +6,12 @@ import { IconCoupon, IconDownArrow, IconUpArrow } from '@bigcommerce/checkout/ui
 
 import { ShopperCurrency } from '../../currency';
 import { type DiscountItem, useMultiCoupon } from '../useMultiCoupon';
+
+const ANIMATION_DURATION = 300;
+
+const prefersReducedMotion = () =>
+    typeof window !== 'undefined' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const DiscountItems: FunctionComponent<{ coupons: DiscountItem[] }> = ({ coupons }) => {
     return (
@@ -41,6 +47,45 @@ const DiscountItems: FunctionComponent<{ coupons: DiscountItem[] }> = ({ coupons
 
 const DiscountsCollapsible: FunctionComponent<{ discounts: number; discountItems: DiscountItem[] }> = ({ discounts, discountItems }) => {
     const [isCouponDiscountsVisible, setIsCouponDiscountsVisible] = useState(true);
+    const discountsRef = useRef<HTMLDivElement>(null);
+
+    // Animation handlers - height + opacity only, no vertical slide
+    const handleEnter = () => {
+        const node = discountsRef.current;
+        if (!node || prefersReducedMotion()) return;
+        node.style.height = '0px';
+        node.style.opacity = '0';
+    };
+
+    const handleEntering = () => {
+        const node = discountsRef.current;
+        if (!node || prefersReducedMotion()) return;
+        void node.offsetHeight;
+        node.style.height = `${node.scrollHeight}px`;
+        node.style.opacity = '1';
+    };
+
+    const handleEntered = () => {
+        const node = discountsRef.current;
+        if (!node) return;
+        node.style.height = 'auto';
+        node.style.opacity = '';
+    };
+
+    const handleExit = () => {
+        const node = discountsRef.current;
+        if (!node || prefersReducedMotion()) return;
+        node.style.height = `${node.offsetHeight}px`;
+        node.style.opacity = '1';
+    };
+
+    const handleExiting = () => {
+        const node = discountsRef.current;
+        if (!node || prefersReducedMotion()) return;
+        void node.offsetHeight;
+        node.style.height = '0px';
+        node.style.opacity = '0';
+    };
 
     return (
         <div>
@@ -61,11 +106,25 @@ const DiscountsCollapsible: FunctionComponent<{ discounts: number; discountItems
                     -<ShopperCurrency amount={discounts} />
                 </span>
             </div>
-            {isCouponDiscountsVisible && (
-                <div className="applied-discounts-list" id="applied-coupon-discounts-collapsable">
+            <CSSTransition
+                in={isCouponDiscountsVisible}
+                nodeRef={discountsRef}
+                onEnter={handleEnter}
+                onEntered={handleEntered}
+                onEntering={handleEntering}
+                onExit={handleExit}
+                onExiting={handleExiting}
+                timeout={ANIMATION_DURATION}
+                unmountOnExit
+            >
+                <div
+                    className="applied-discounts-list"
+                    id="applied-coupon-discounts-collapsable"
+                    ref={discountsRef}
+                >
                     <DiscountItems coupons={discountItems} />
                 </div>
-            )}
+            </CSSTransition>
         </div>
     );
 };
