@@ -28,6 +28,8 @@ export interface OrderConfirmationProps {
     embeddedStylesheet: EmbeddedCheckoutStylesheet;
     errorLogger: ErrorLogger;
     orderId: number;
+    guestTokenValidation?: 'valid' | 'expired' | 'invalid' | 'missing';
+    expiredToken?: boolean;
     createAccount(values: SignUpFormValues): Promise<CreatedCustomer>;
     createEmbeddedMessenger(options: EmbeddedCheckoutMessengerOptions): EmbeddedCheckoutMessenger;
 }
@@ -39,6 +41,8 @@ export const OrderConfirmation = ({
     embeddedStylesheet,
     orderId,
     errorLogger,
+    guestTokenValidation,
+    expiredToken,
 }: OrderConfirmationProps): ReactElement => {
     const [error, setError] = useState<Error | undefined>();
     const [hasSignedUp, setHasSignedUp] = useState<boolean | undefined>();
@@ -106,13 +110,12 @@ export const OrderConfirmation = ({
         }
 
         // Call regeneration endpoint
-        const response = await fetch('/api/storefront/orders/guest-tokens', {
+        const response = await fetch('/api/storefront/orders/' + orderId + '/guest-token', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                order_id: orderId,
                 old_token: token,
             }),
         });
@@ -124,6 +127,15 @@ export const OrderConfirmation = ({
     };
 
     useEffect(() => {
+        console.log('[OrderConfirmation] useEffect - expiredToken:', expiredToken, 'guestTokenValidation:', guestTokenValidation);
+
+        // If server redirected to expired token page, don't make API call
+        if (expiredToken || guestTokenValidation === 'expired') {
+            console.log('[OrderConfirmation] Skipping loadOrder - token is expired');
+            return;
+        }
+
+        console.log('[OrderConfirmation] Loading order:', orderId);
         loadOrder(orderId)
             .then(({ data }) => {
                 const { links: { siteLink = '' } = {} } = data.getConfig() || {};
@@ -135,13 +147,24 @@ export const OrderConfirmation = ({
                 analyticsTracker.orderPurchased();
             })
             .catch(handleUnhandledError);
-    }, []);
+    }, [expiredToken, guestTokenValidation]);
+
+    // Show expired token view immediately if server redirected to expired page
+    // This is the cleanest path - dedicated endpoint for expired tokens
+    if (expiredToken) {
+        return <ExpiredTokenView orderId={orderId} onResendClick={handleResendGuestToken} />;
+    }
+
+    // Legacy: also check guestTokenValidation from seeded data (for backward compatibility)
+    if (guestTokenValidation === 'expired') {
+        return <ExpiredTokenView orderId={orderId} onResendClick={handleResendGuestToken} />;
+    }
 
     if (!order || !config || isLoadingOrder()) {
         return <OrderConfirmationPageSkeleton />;
     }
 
-    // Show expired token view if guest token is expired
+    // Legacy check: also handle expired state from API response (for backward compatibility)
     if ((order as any).guestTokenValidation === 'expired') {
         return <ExpiredTokenView orderId={orderId} onResendClick={handleResendGuestToken} />;
     }

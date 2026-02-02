@@ -36,32 +36,36 @@ export const ExpiredTokenView: FunctionComponent<ExpiredTokenViewProps> = ({
     };
 
     return (
-        <div className="orderConfirmation">
-            <OrderConfirmationSection>
-                <div className="orderConfirmation-expiredToken">
-                    <h2>Link Expired</h2>
-                    <p>For security, this link has expired.</p>
+        <div className="layout optimizedCheckout-contentPrimary">
+            <div className="layout-main">
+                <div className="orderConfirmation">
+                    <OrderConfirmationSection>
+                        <div className="orderConfirmation-expiredToken">
+                            <h2>Link Expired</h2>
+                            <p>For security, this link has expired.</p>
 
-                    {!resendSuccess && !resendError && (
-                        <button
-                            className="button button--primary"
-                            disabled={isResending}
-                            onClick={handleResendClick}
-                            type="button"
-                        >
-                            {isResending ? 'Sending...' : 'Resend Secure Link'}
-                        </button>
-                    )}
+                            {!resendSuccess && !resendError && (
+                                <button
+                                    className="button button--primary"
+                                    disabled={isResending}
+                                    onClick={handleResendClick}
+                                    type="button"
+                                >
+                                    {isResending ? 'Sending...' : 'Resend Secure Link'}
+                                </button>
+                            )}
 
-                    {resendSuccess && (
-                        <Alert type={AlertType.Success}>
-                            A new link has been sent to your email address.
-                        </Alert>
-                    )}
+                            {resendSuccess && (
+                                <Alert type={AlertType.Success}>
+                                    A new link has been sent to your email address.
+                                </Alert>
+                            )}
 
-                    {resendError && <Alert type={AlertType.Error}>{resendError}</Alert>}
+                            {resendError && <Alert type={AlertType.Error}>{resendError}</Alert>}
+                        </div>
+                    </OrderConfirmationSection>
                 </div>
-            </OrderConfirmationSection>
+            </div>
         </div>
     );
 };

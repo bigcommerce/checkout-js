@@ -22,6 +22,8 @@ export interface OrderConfirmationAppProps {
     publicPath?: string;
     sentryConfig?: BrowserOptions;
     sentrySampleRate?: number;
+    guestTokenValidation?: 'valid' | 'expired' | 'invalid' | 'missing';
+    expiredToken?: boolean;
 }
 
 const OrderConfirmationApp: React.FC<OrderConfirmationAppProps> = ({
@@ -30,6 +32,8 @@ const OrderConfirmationApp: React.FC<OrderConfirmationAppProps> = ({
     publicPath,
     sentryConfig,
     sentrySampleRate,
+    guestTokenValidation,
+    expiredToken,
 }) => {
     const accountService = useMemo(() => new AccountService(), []);
     const errorLogger = useMemo(() => createErrorLogger(
@@ -79,6 +83,8 @@ const OrderConfirmationApp: React.FC<OrderConfirmationAppProps> = ({
                                     embeddedStylesheet={embeddedStylesheet}
                                     errorLogger={errorLogger}
                                     orderId={orderId}
+                                    guestTokenValidation={guestTokenValidation}
+                                    expiredToken={expiredToken}
                                 />
                             </ThemeProvider>
                         </ExtensionProvider>
