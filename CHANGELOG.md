@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.729.0](https://github.com/bigcommerce/checkout-js/compare/v1.728.1...v1.729.0) (2026-02-02)
+
+
+### Features
+
+* **checkout:** CHECKOUT-7731 [UX] move sign-in text to display below the customer heading in guest form ([#2798](https://github.com/bigcommerce/checkout-js/issues/2798)) ([4446c57](https://github.com/bigcommerce/checkout-js/commit/4446c57a5a48de0f474a9232172688ba7d727eeb))
+
 ### [1.728.1](https://github.com/bigcommerce/checkout-js/compare/v1.728.0...v1.728.1) (2026-01-30)
 
 
