@@ -444,6 +444,7 @@
                 "three_d_secure_declined": "Er is een probleem opgetreden met uw betaling, controleer uw betalingsgegevens of neem contact op met uw creditcarduitgever.",
                 "three_d_secure_failed": "De betaling is mislukt. Probeer het opnieuw of gebruik een andere betaalmethode.",
                 "three_d_secure_required": "Verdere authenticatie is vereist om uw betaling te verwerken. Neem contact met ons op.",
+                "three_d_secure_payment_failed": "De creditcardgegevens zijn ongeldig of de 3D Secure-verificatie is mislukt. Probeer een andere kaart of probeer de betaling later opnieuw.",
                 "token_error": "Er is een probleem opgetreden bij het verwerken van uw transactie. Probeer het later opnieuw.",
                 "transaction_declined": "Uw betaling is geweigerd. Probeer het opnieuw.",
                 "transaction_rejected": "Betaling is geweigerd. Probeer het opnieuw.",
@@ -599,7 +600,8 @@
         "order_confirmation": {
             "mandate": {
                 "adyenv3": {
-                    "boletobancario": "Boleto Bancário-ticket"
+                    "boletobancario": "Boleto Bancário-ticket",
+                    "oxxo": "OXXO-ticket"
                 },
                 "bluesnapdirect": {
                     "sepa_direct_debit": "Referentie SEPA-machtiging tot automatische incasso: {mandate}"

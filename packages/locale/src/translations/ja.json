@@ -444,6 +444,7 @@
                 "three_d_secure_declined": "お支払いに問題がありました。お支払いの詳細をご確認いただくか、カード発行会社にお問い合わせください。",
                 "three_d_secure_failed": "支払に失敗しました。 もう一度お試しになるか、他の支払オプションを使用してください。",
                 "three_d_secure_required": "支払を処理するには追加認証が必要です。 お問い合わせください。",
+                "three_d_secure_payment_failed": "クレジットカード情報が無効であるか、3Dセキュア認証に失敗しました。別のカードを試すか、後でもう一度お支払いをお試しください。",
                 "token_error": "取引を処理できません。しばらくたってからもう一度お試しください。",
                 "transaction_declined": "支払を拒否されました。 もう一度お試しください。",
                 "transaction_rejected": "支払が拒否されました。 もう一度お試しください。",
@@ -599,7 +600,8 @@
         "order_confirmation": {
             "mandate": {
                 "adyenv3": {
-                    "boletobancario": "Boleto Bancário チケット"
+                    "boletobancario": "Boleto Bancário チケット",
+                    "oxxo": "OXXOチケット"
                 },
                 "bluesnapdirect": {
                     "sepa_direct_debit": "SEPA 口座引き落とし委任状参照: {mandate}"

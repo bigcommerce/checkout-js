@@ -38,6 +38,10 @@
         }
     }
 
+    .floating-input, .floating-select, .floating-textarea {
+        background-color: $floating-label-bg-color;
+    }
+
     .form-field {
         position: relative;
         margin: 0 0 spacing("half");
@@ -48,7 +52,6 @@
 
         .floating-input,
         .floating-select {
-            background-color: $floating-label-bg-color;
             font-size: $floating-label-font-size--default;
             height: $floating-label-input-height;
             padding-bottom: 0;
@@ -65,7 +68,6 @@
         }
 
         .floating-textarea {
-            background-color: $floating-label-bg-color;
             padding-top: $input-verticalPadding * 2.5;
         }
 

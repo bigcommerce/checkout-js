@@ -11,12 +11,13 @@ import React, { act, type FunctionComponent } from 'react';
 
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
 import {
-  AnalyticsProviderMock,
-  CheckoutProvider,
-  ExtensionProvider,
-  type ExtensionServiceInterface,
-  LocaleProvider,
-  ThemeProvider,
+    type AnalyticsEvents,
+    AnalyticsProviderMock,
+    CheckoutProvider,
+    ExtensionProvider,
+    type ExtensionServiceInterface,
+    LocaleProvider,
+    ThemeProvider,
 } from '@bigcommerce/checkout/contexts';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
 import { CHECKOUT_ROOT_NODE_ID } from '@bigcommerce/checkout/payment-integration-api';
@@ -39,12 +40,13 @@ import {
 } from '../embeddedCheckout';
 
 describe('Payment step', () => {
-  let checkout: CheckoutPageNodeObject;
-  let CheckoutTest: FunctionComponent<CheckoutProps>;
-  let checkoutService: CheckoutService;
-  let extensionService: ExtensionServiceInterface;
-  let defaultProps: CheckoutProps;
-  let embeddedMessengerMock: EmbeddedCheckoutMessenger;
+    let checkout: CheckoutPageNodeObject;
+    let CheckoutTest: FunctionComponent<CheckoutProps>;
+    let checkoutService: CheckoutService;
+    let extensionService: ExtensionServiceInterface;
+    let defaultProps: CheckoutProps;
+    let embeddedMessengerMock: EmbeddedCheckoutMessenger;
+    let analyticsTracker: Partial<AnalyticsEvents>;
 
   beforeAll(() => {
     checkout = new CheckoutPageNodeObject();
@@ -168,16 +170,91 @@ describe('Payment step', () => {
       },
     });
 
-    checkout.setRequestHandler(
-      rest.post('api/storefront/checkouts/*/store-credit', (_, res, ctx) =>
-        res(
-          ctx.json({
-            ...checkoutWithShippingAndBilling,
-            isStoreCreditApplied: true,
-            outstandingBalance: 0,
-            customer: {
-              ...customer,
-              storeCredit: 1000,
+    afterAll(() => {
+        checkout.close();
+    });
+
+    beforeEach(() => {
+        window.scrollTo = jest.fn();
+
+        checkoutService = createCheckoutService();
+        extensionService = new ExtensionService(checkoutService, createErrorLogger());
+        embeddedMessengerMock = createEmbeddedCheckoutMessenger({
+            parentOrigin: 'https://store.url',
+        });
+        defaultProps = {
+            checkoutId: checkoutWithBillingEmail.id,
+            containerId: CHECKOUT_ROOT_NODE_ID,
+            createEmbeddedMessenger: () => embeddedMessengerMock,
+            embeddedStylesheet: createEmbeddedCheckoutStylesheet(),
+            embeddedSupport: createEmbeddedCheckoutSupport(getLanguageService()),
+            errorLogger: createErrorLogger(),
+        };
+
+        jest.spyOn(defaultProps.errorLogger, 'log').mockImplementation(noop);
+        analyticsTracker = {
+            selectedPaymentMethod: jest.fn(),
+        };
+
+        CheckoutTest = (props) => (
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleProvider
+                    checkoutService={checkoutService}
+                    languageService={getLanguageService()}
+                >
+                    <AnalyticsProviderMock analyticsTracker={analyticsTracker}>
+                        <ExtensionProvider extensionService={extensionService}>
+                            <ThemeProvider>
+                                <Checkout {...props} />
+                            </ThemeProvider>
+                        </ExtensionProvider>
+                    </AnalyticsProviderMock>
+                </LocaleProvider>
+            </CheckoutProvider>
+        );
+    });
+
+    it('renders payment step with 2 offline payment methods', async () => {
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
+
+        render(<CheckoutTest {...defaultProps} />);
+
+        await checkout.waitForPaymentStep();
+
+        expect(screen.getByRole('radio', { name: 'Pay in Store' })).toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: 'Cash on Delivery' })).toBeInTheDocument();
+    });
+
+    it('tracks selected payment method on initial load', async () => {
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
+
+        render(<CheckoutTest {...defaultProps} />);
+
+        await checkout.waitForPaymentStep();
+
+        expect(analyticsTracker.selectedPaymentMethod).toHaveBeenCalledWith('Pay in Store', 'instore');
+        expect(analyticsTracker.selectedPaymentMethod).toHaveBeenCalledTimes(1);
+    });
+
+    it('selects another payment method and places the order successfully', async () => {
+        checkout.setRequestHandler(rest.post(
+            '/internalapi/v1/checkout/order',
+            (_, res, ctx) => res(
+                ctx.json(orderResponse),
+            )));
+        checkout.setRequestHandler(rest.get(
+            '/api/storefront/orders/*',
+            (_, res, ctx) => res(
+                ctx.json(orderResponse),
+            )));
+
+        const location = window.location;
+
+        Object.defineProperty(window, 'location', {
+            value: {
+                // eslint-disable-next-line @typescript-eslint/no-misused-spread
+                ...location,
+                replace: jest.fn(),
             },
           }),
         ),

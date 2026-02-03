@@ -444,6 +444,7 @@
                 "three_d_secure_declined": "Ha habido un problema con tu pago: revisa tus detalles de pago o comunícate con el emisor de tu tarjeta.",
                 "three_d_secure_failed": "Error en el pago. Vuelve a intentarlo o utiliza una opción de pago diferente.",
                 "three_d_secure_required": "Se requiere autenticación adicional para procesar su pago. Póngase en contacto con nosotros.",
+                "three_d_secure_payment_failed": "La información de la tarjeta de crédito es inválida o falló la verificación 3D Secure. Por favor, prueba con otra tarjeta o vuelve a intentar el pago más adelante.",
                 "token_error": "En este momento tenemos dificultades para procesar tu transacción. Vuelve a intentarlo más tarde.",
                 "transaction_declined": "Su pago fue rechazado. Intente de nuevo.",
                 "transaction_rejected": "El pago fue rechazado. Vuelva a intentarlo.",
@@ -599,7 +600,8 @@
         "order_confirmation": {
             "mandate": {
                 "adyenv3": {
-                    "boletobancario": "Ticket del Boleto Bancário"
+                    "boletobancario": "Ticket del Boleto Bancário",
+                    "oxxo": "Ticket de OXXO"
                 },
                 "bluesnapdirect": {
                     "sepa_direct_debit": "Referencia de mandato de débito directo SEPA: {mandate}"

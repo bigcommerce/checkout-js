@@ -122,6 +122,23 @@ const GuestForm: FunctionComponent<
                     </Legend>
                 }
             >
+                {(themeV2 && !isLoading) && (
+                    <p className={classNames('customer-login-link',
+                        { 'body-regular': themeV2 })}
+                    >
+                        <TranslatedString id="customer.login_text" />{' '}
+                        <a
+                            data-test="customer-continue-button"
+                            id="checkout-customer-login"
+                            onClick={handleLogin}
+                            role="button"
+                            tabIndex={0}
+                        >
+                            <TranslatedString id="customer.login_action" />
+                        </a>
+                    </p>
+                )}
+
                 <div className="customerEmail-container">
                     <div className="customerEmail-body">
                         <EmailField isFloatingLabelEnabled={isFloatingLabelEnabled} onChange={onChangeEmail}/>
@@ -157,7 +174,7 @@ const GuestForm: FunctionComponent<
                     <PrivacyPolicyField isExpressPrivacyPolicy={isExpressPrivacyPolicy} url={privacyPolicyUrl} />
                 )}
 
-                {!isLoading && (
+                {(!themeV2 && !isLoading) && (
                     <p className={classNames('customer-login-link',
                         { 'body-regular': themeV2 })}
                     >
