@@ -1,104 +1,48 @@
-import configPromise from '@bigcommerce/eslint-config';
+import tseslint from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import globals from 'globals';
 
-const baseConfig = await configPromise;
-
 export default [
-  ...(Array.isArray(baseConfig) ? baseConfig : []),
-  // Ensure TypeScript parser is applied for TS/TSX files
   {
     files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
       parser: tsParser,
+      ecmaVersion: 'latest',
+      sourceType: 'module',
       parserOptions: {
         project: './tsconfig.json',
         tsconfigRootDir: import.meta.dirname,
       },
+      globals: {
+        ...globals.browser,
+        ...globals.jest,
+      },
+    },
+    plugins: {
+      '@typescript-eslint': tseslint,
     },
     rules: {
       '@typescript-eslint/no-unsafe-argument': 'off',
       '@typescript-eslint/no-unsafe-member-access': 'off',
       '@typescript-eslint/no-unsafe-assignment': 'off',
       '@typescript-eslint/consistent-type-assertions': 'off',
-      'jest/no-restricted-matchers': 'off',
-      'jsx-a11y/click-events-have-key-events': 'off',
-      'jsx-a11y/anchor-is-valid': 'off',
-      'jsx-a11y/no-static-element-interactions': 'off',
-      'jsx-a11y/alt-text': 'off',
-      'jsx-a11y/aria-props': 'off',
-      'jsx-a11y/no-noninteractive-tabindex': 'off',
       '@typescript-eslint/no-unnecessary-condition': 'off',
       '@typescript-eslint/no-unsafe-call': 'off',
       '@typescript-eslint/no-unsafe-return': 'off',
-      'react-hooks/exhaustive-deps': 'off',
       '@typescript-eslint/restrict-template-expressions': 'off',
       '@typescript-eslint/await-thenable': 'off',
-      '@bigcommerce/jsx-short-circuit-conditionals': 'off',
       '@typescript-eslint/no-misused-promises': 'off',
       '@typescript-eslint/no-floating-promises': 'off',
       '@typescript-eslint/naming-convention': 'off',
-      'import/no-named-default': 'off',
-      'no-underscore-dangle': 'off',
       '@typescript-eslint/no-use-before-define': 'off',
-      'import/no-extraneous-dependencies': 'off',
       '@typescript-eslint/no-shadow': 'off',
-      'react/jsx-no-useless-fragment': 'off',
-      'jest/no-conditional-expect': 'off',
-      'jest/no-identical-title': 'off',
-      'no-plusplus': 'off',
-      'no-nested-ternary': 'off',
-      'no-restricted-globals': 'off',
       '@typescript-eslint/member-ordering': 'off',
-      'react/jsx-no-bind': 'off',
-      'complexity': 'off',
-      'jest/no-if': 'off',
-      'array-callback-return': 'off',
       '@typescript-eslint/ban-ts-comment': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
-      'jest/no-standalone-expect': 'off',
-      'no-param-reassign': 'off',
-      'jest/prefer-hooks-on-top': 'off',
-      'react/destructuring-assignment': 'off',
       '@typescript-eslint/default-param-last': 'off',
       '@typescript-eslint/require-await': 'off',
-      'no-template-curly-in-string': 'off',
-      'global-require': 'off',
       '@typescript-eslint/no-var-requires': 'off',
-      'prettier/prettier': 'off',
-      'jest/valid-expect': 'off',
-      'no-multi-str': 'off',
-      'no-empty': 'off',
-      'no-proto': 'off',
-      'no-continue': 'off',
-      'no-new': 'off',
       '@typescript-eslint/no-empty-function': 'off',
-      'no-multi-assign': 'off',
-      'import/no-unresolved': 'off',
-      'testing-library/no-unnecessary-act': 'off',
-    },
-  },
-  {
-    languageOptions: {
-      ecmaVersion: 'latest',
-      globals: {
-        ...globals.browser,
-      },
-    },
-    settings: {
-      'import/resolver': {
-        typescript: {
-          project: ['./tsconfig.json'],
-        },
-      },
-    },
-  },
-  {
-    files: ['**/*.test.ts', '**/*.test.tsx', '**/*.spec.ts', '**/*.spec.tsx'],
-    languageOptions: {
-      globals: {
-        ...globals.jest,
-      },
     },
   },
   {
