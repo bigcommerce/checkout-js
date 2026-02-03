@@ -9,103 +9,101 @@ import { getCheckout as getCheckoutMock } from './checkouts.mock';
 import withCheckout from './withCheckout';
 
 describe('withCheckout()', () => {
-    it('provides checkout state to child component', () => {
-        const withMockCheckout = withCheckout(
-            ({
-                checkoutState: {
-                    data: { getCheckout },
-                },
-            }) => ({
-                checkout: getCheckout(),
-            }),
-        );
+  it('provides checkout state to child component', () => {
+    const withMockCheckout = withCheckout(
+      ({
+        checkoutState: {
+          data: { getCheckout },
+        },
+      }) => ({
+        checkout: getCheckout(),
+      }),
+    );
 
-        const Child = withMockCheckout(({ checkout }: { checkout: Checkout }) => (
-            <>{checkout.id}</>
-        ));
+    const Child = withMockCheckout(({ checkout }: { checkout: Checkout }) => <>{checkout.id}</>);
 
-        const service = createCheckoutService();
+    const service = createCheckoutService();
 
-        jest.spyOn(service.getState().data, 'getCheckout').mockReturnValue({
-            ...getCheckoutMock(),
-            id: '123',
-        });
-
-        render(
-            <CheckoutProvider checkoutService={service}>
-                <Child />
-            </CheckoutProvider>,
-        );
-
-        expect(screen.getByText('123')).toBeInTheDocument();
+    jest.spyOn(service.getState().data, 'getCheckout').mockReturnValue({
+      ...getCheckoutMock(),
+      id: '123',
     });
 
-    it('provides checkout service to child component', async () => {
-        const withMockCheckout = withCheckout(({ checkoutService }) => ({
-            loadCheckout: () => {
-                checkoutService.loadCheckout();
-            },
-        }));
+    render(
+      <CheckoutProvider checkoutService={service}>
+        <Child />
+      </CheckoutProvider>,
+    );
 
-        const Child = withMockCheckout(({ loadCheckout }: { loadCheckout(): void }) => (
-            <button onClick={loadCheckout}>Load</button>
-        ));
+    expect(screen.getByText('123')).toBeInTheDocument();
+  });
 
-        const service = createCheckoutService();
+  it('provides checkout service to child component', async () => {
+    const withMockCheckout = withCheckout(({ checkoutService }) => ({
+      loadCheckout: () => {
+        checkoutService.loadCheckout();
+      },
+    }));
 
-        jest.spyOn(service, 'loadCheckout').mockReturnValue(Promise.resolve(service.getState()));
+    const Child = withMockCheckout(({ loadCheckout }: { loadCheckout(): void }) => (
+      <button onClick={loadCheckout}>Load</button>
+    ));
 
-        render(
-            <CheckoutProvider checkoutService={service}>
-                <Child />
-            </CheckoutProvider>,
-        );
+    const service = createCheckoutService();
 
-        await userEvent.click(screen.getByRole('button'));
+    jest.spyOn(service, 'loadCheckout').mockReturnValue(Promise.resolve(service.getState()));
 
-        expect(service.loadCheckout).toHaveBeenCalled();
-    });
+    render(
+      <CheckoutProvider checkoutService={service}>
+        <Child />
+      </CheckoutProvider>,
+    );
 
-    it('does not update child if mapped props have not changed', () => {
-        const withMockCheckout = withCheckout(
-            ({
-                checkoutState: {
-                    data: { getCheckout },
-                },
-            }) => ({
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                grandTotal: getCheckout()!.grandTotal,
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                subtotal: getCheckout()!.subtotal,
-            }),
-        );
+    await userEvent.click(screen.getByRole('button'));
 
-        const OriginalChild = jest.fn((props: { grandTotal: number; subtotal: number }) => (
-            <>
-                {props.grandTotal}
-                {props.subtotal}
-            </>
-        ));
+    expect(service.loadCheckout).toHaveBeenCalled();
+  });
 
-        const Child = withMockCheckout(OriginalChild);
-        const service = createCheckoutService();
+  it('does not update child if mapped props have not changed', () => {
+    const withMockCheckout = withCheckout(
+      ({
+        checkoutState: {
+          data: { getCheckout },
+        },
+      }) => ({
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        grandTotal: getCheckout()!.grandTotal,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        subtotal: getCheckout()!.subtotal,
+      }),
+    );
 
-        jest.spyOn(service.getState().data, 'getCheckout').mockReturnValue(getCheckoutMock());
+    const OriginalChild = jest.fn((props: { grandTotal: number; subtotal: number }) => (
+      <>
+        {props.grandTotal}
+        {props.subtotal}
+      </>
+    ));
 
-        const { rerender } = render(
-            <CheckoutProvider checkoutService={service}>
-                <Child />
-            </CheckoutProvider>,
-        );
+    const Child = withMockCheckout(OriginalChild);
+    const service = createCheckoutService();
 
-        expect(OriginalChild).toHaveBeenCalledTimes(1);
+    jest.spyOn(service.getState().data, 'getCheckout').mockReturnValue(getCheckoutMock());
 
-        rerender(
-            <CheckoutProvider checkoutService={service}>
-                <Child />
-            </CheckoutProvider>,
-        )
+    const { rerender } = render(
+      <CheckoutProvider checkoutService={service}>
+        <Child />
+      </CheckoutProvider>,
+    );
 
-        expect(OriginalChild).toHaveBeenCalledTimes(1);
-    });
+    expect(OriginalChild).toHaveBeenCalledTimes(1);
+
+    rerender(
+      <CheckoutProvider checkoutService={service}>
+        <Child />
+      </CheckoutProvider>,
+    );
+
+    expect(OriginalChild).toHaveBeenCalledTimes(1);
+  });
 });

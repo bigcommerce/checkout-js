@@ -5,16 +5,22 @@
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "eslint --no-error-on-unmatched-pattern \"packages/barclay-integration/src/**/*.ts\" \"packages/barclay-integration/src/**/*.tsx\""
+      }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/packages/barclay-integration"],
+      "outputs": [
+        "{workspaceRoot}/coverage/packages/barclay-integration"
+      ],
       "options": {
         "jestConfig": "packages/barclay-integration/jest.config.js"
       }
     }
   },
-  "tags": ["scope:integration"]
+  "tags": [
+    "scope:integration"
+  ]
 }

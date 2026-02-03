@@ -1,6 +1,6 @@
 export {
-    ExtensionRegionContainer,
-    extensionRegionToContainerMap,
+  ExtensionRegionContainer,
+  extensionRegionToContainerMap,
 } from './ExtensionRegionContainer';
 export { Extension } from './Extension';
 export { ExtensionService } from './ExtensionService';

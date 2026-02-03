@@ -5,15 +5,13 @@ export { default as PaymentMethodProviderType } from './PaymentMethodProviderTyp
 export { default as PaymentMethodList, PaymentMethodListProps } from './PaymentMethodList';
 export { default as SignOutLink } from './SignOutLink';
 export {
-    default as getUniquePaymentMethodId,
-    parseUniquePaymentMethodId,
+  default as getUniquePaymentMethodId,
+  parseUniquePaymentMethodId,
 } from './getUniquePaymentMethodId';
 export { default as getPaymentMethodName } from './getPaymentMethodName';
+export { isHostedCreditCardFieldsetValues } from './HostedCreditCardFieldsetValues';
 export {
-    isHostedCreditCardFieldsetValues,
-} from './HostedCreditCardFieldsetValues';
-export {
-    default as CreditCardFieldsetValues,
-    hasCreditCardExpiry,
-    hasCreditCardNumber,
+  default as CreditCardFieldsetValues,
+  hasCreditCardExpiry,
+  hasCreditCardNumber,
 } from './CreditCardFieldsetValues';

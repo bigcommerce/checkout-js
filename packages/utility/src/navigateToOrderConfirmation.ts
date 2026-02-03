@@ -3,15 +3,15 @@ import { noop } from 'lodash';
 import isBuyNowCart from './isBuyNowCart';
 
 export default function navigateToOrderConfirmation(orderId?: number): Promise<never> {
-    let url: string;
+  let url: string;
 
-    if (orderId && isBuyNowCart()) {
-        url = `/checkout/order-confirmation/${orderId.toString()}`;
-    } else {
-        url = `${window.location.pathname.replace(/\/$/, '')}/order-confirmation`;
-    }
+  if (orderId && isBuyNowCart()) {
+    url = `/checkout/order-confirmation/${orderId.toString()}`;
+  } else {
+    url = `${window.location.pathname.replace(/\/$/, '')}/order-confirmation`;
+  }
 
-    window.location.replace(url);
+  window.location.replace(url);
 
-    return new Promise(noop);
+  return new Promise(noop);
 }

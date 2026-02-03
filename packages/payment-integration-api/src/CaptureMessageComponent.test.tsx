@@ -6,65 +6,65 @@ import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { CaptureMessageComponent } from './CaptureMessageComponent';
 
 jest.mock('@bigcommerce/checkout/contexts', () => ({
-    useCheckout: jest.fn(),
+  useCheckout: jest.fn(),
 }));
 
 describe('CaptureMessageComponent', () => {
-    const mockUseCheckout = useCheckout as jest.Mock;
+  const mockUseCheckout = useCheckout as jest.Mock;
 
-    beforeEach(() => {
-        jest.clearAllMocks();
-    });
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
-    it('calls errorLogger.logMessage with the provided non-empty message', () => {
-        const logMessage = jest.fn();
-        const message = 'hello';
+  it('calls errorLogger.logMessage with the provided non-empty message', () => {
+    const logMessage = jest.fn();
+    const message = 'hello';
 
-        mockUseCheckout.mockReturnValue({ errorLogger: { logMessage } });
+    mockUseCheckout.mockReturnValue({ errorLogger: { logMessage } });
 
-        render(<CaptureMessageComponent message={message} />);
+    render(<CaptureMessageComponent message={message} />);
 
-        expect(logMessage).toHaveBeenCalledTimes(1);
-        expect(logMessage).toHaveBeenCalledWith(message);
-    });
+    expect(logMessage).toHaveBeenCalledTimes(1);
+    expect(logMessage).toHaveBeenCalledWith(message);
+  });
 
-    it('does not call logMessage if message is an empty string', () => {
-        const logMessage = jest.fn();
+  it('does not call logMessage if message is an empty string', () => {
+    const logMessage = jest.fn();
 
-        mockUseCheckout.mockReturnValue({ errorLogger: { logMessage } });
+    mockUseCheckout.mockReturnValue({ errorLogger: { logMessage } });
 
-        render(<CaptureMessageComponent message="" />);
+    render(<CaptureMessageComponent message="" />);
 
-        expect(logMessage).not.toHaveBeenCalled();
-    });
+    expect(logMessage).not.toHaveBeenCalled();
+  });
 
-    it('does nothing if errorLogger is not provided', () => {
-        mockUseCheckout.mockReturnValue({ errorLogger: undefined });
+  it('does nothing if errorLogger is not provided', () => {
+    mockUseCheckout.mockReturnValue({ errorLogger: undefined });
 
-        const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => undefined);
+    const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => undefined);
 
-        render(<CaptureMessageComponent message="ignored" />);
+    render(<CaptureMessageComponent message="ignored" />);
 
-        expect(consoleSpy).not.toHaveBeenCalled();
+    expect(consoleSpy).not.toHaveBeenCalled();
 
-        consoleSpy.mockRestore();
-    });
+    consoleSpy.mockRestore();
+  });
 
-    it('does not log without a message change', () => {
-        const logMessage1 = jest.fn();
+  it('does not log without a message change', () => {
+    const logMessage1 = jest.fn();
 
-        mockUseCheckout.mockReturnValue({ errorLogger: { logMessage: logMessage1 } });
+    mockUseCheckout.mockReturnValue({ errorLogger: { logMessage: logMessage1 } });
 
-        const { rerender } = render(<CaptureMessageComponent message="stale" />);
+    const { rerender } = render(<CaptureMessageComponent message="stale" />);
 
-        expect(logMessage1).toHaveBeenCalledTimes(1);
+    expect(logMessage1).toHaveBeenCalledTimes(1);
 
-        const logMessage2 = jest.fn();
+    const logMessage2 = jest.fn();
 
-        mockUseCheckout.mockReturnValue({ errorLogger: { logMessage: logMessage2 } });
+    mockUseCheckout.mockReturnValue({ errorLogger: { logMessage: logMessage2 } });
 
-        rerender(<CaptureMessageComponent message="stale" />);
+    rerender(<CaptureMessageComponent message="stale" />);
 
-        expect(logMessage2).not.toHaveBeenCalled();
-    });
+    expect(logMessage2).not.toHaveBeenCalled();
+  });
 });

@@ -3,24 +3,24 @@ import { ExtensionMessageType, ExtensionQueryType } from '@bigcommerce/checkout-
 import { type QueryHandler, type QueryHandlerProps } from './QueryHandler';
 
 export function createGetConsignmentHandler({
-    checkoutService,
-    extension,
+  checkoutService,
+  extension,
 }: QueryHandlerProps): QueryHandler<ExtensionQueryType.GetConsignments> {
-    return {
-        queryType: ExtensionQueryType.GetConsignments,
-        handler: async (data) => {
-            if (!data.payload?.useCache) {
-                await checkoutService.loadCheckout();
-            }
+  return {
+    queryType: ExtensionQueryType.GetConsignments,
+    handler: async (data) => {
+      if (!data.payload?.useCache) {
+        await checkoutService.loadCheckout();
+      }
 
-            const consignments = checkoutService.getState().data.getCheckout()?.consignments || [];
+      const consignments = checkoutService.getState().data.getCheckout()?.consignments || [];
 
-            checkoutService.postMessageToExtension(extension.id, {
-                type: ExtensionMessageType.GetConsignments,
-                payload: {
-                    consignments,
-                },
-            });
+      checkoutService.postMessageToExtension(extension.id, {
+        type: ExtensionMessageType.GetConsignments,
+        payload: {
+          consignments,
         },
-    };
+      });
+    },
+  };
 }

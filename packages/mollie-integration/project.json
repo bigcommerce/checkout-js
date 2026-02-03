@@ -5,17 +5,23 @@
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "eslint --no-error-on-unmatched-pattern \"packages/mollie-integration/src/**/*.ts\" \"packages/mollie-integration/src/**/*.tsx\""
+      }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/packages/mollie-integration"],
+      "outputs": [
+        "{workspaceRoot}/coverage/packages/mollie-integration"
+      ],
       "options": {
         "jestConfig": "packages/mollie-integration/jest.config.js",
         "passWithNoTests": false
       }
     }
   },
-  "tags": ["scope:integration"]
+  "tags": [
+    "scope:integration"
+  ]
 }

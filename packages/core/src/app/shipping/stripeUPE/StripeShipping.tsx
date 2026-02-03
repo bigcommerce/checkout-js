@@ -33,7 +33,7 @@ const StripeShipping = ({
   onUnhandledError,
   isLoading,
 }: StripeShippingProps): ReactNode => {
-  const { 
+  const {
     customerMessage,
     getFields,
     isLoading: isShippingMethodLoading,

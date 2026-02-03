@@ -7,7 +7,7 @@ import { NoUI } from './NoUI';
 type ComponentMap = Record<string, ComponentType<any>>;
 
 export const initializationComponentMap: ComponentMap = {
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    card_ui: HostedCreditCardPaymentMethod,
-    none: NoUI,
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  card_ui: HostedCreditCardPaymentMethod,
+  none: NoUI,
 };

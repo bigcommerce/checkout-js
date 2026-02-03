@@ -6,37 +6,37 @@ import { render, screen } from '@bigcommerce/checkout/test-utils';
 import Toggle, { type ToggleProps } from './Toggle';
 
 describe('Toggle', () => {
-    let ToggleTest: FunctionComponent<ToggleProps>;
+  let ToggleTest: FunctionComponent<ToggleProps>;
 
-    beforeEach(() => {
-        ToggleTest = () => (
-            <Toggle openByDefault={true}>
-                {({ isOpen, toggle }) => (
-                    <>
-                        {isOpen && <span>foo</span>}
-                        <a onClick={toggle}>bar</a>
-                    </>
-                )}
-            </Toggle>
-        );
-    });
+  beforeEach(() => {
+    ToggleTest = () => (
+      <Toggle openByDefault={true}>
+        {({ isOpen, toggle }) => (
+          <>
+            {isOpen && <span>foo</span>}
+            <a onClick={toggle}>bar</a>
+          </>
+        )}
+      </Toggle>
+    );
+  });
 
-    it('renders the content when isOpen is truthy', () => {
-        render(<ToggleTest />);
+  it('renders the content when isOpen is truthy', () => {
+    render(<ToggleTest />);
 
-        expect(screen.getByText('foo')).toBeInTheDocument();
-        expect(screen.getByText('bar')).toBeInTheDocument();
-    });
+    expect(screen.getByText('foo')).toBeInTheDocument();
+    expect(screen.getByText('bar')).toBeInTheDocument();
+  });
 
-    it('toggles the content when the trigger is clicked', async () => {
-        render(<ToggleTest />);
+  it('toggles the content when the trigger is clicked', async () => {
+    render(<ToggleTest />);
 
-        await userEvent.click(screen.getByText('bar'));
+    await userEvent.click(screen.getByText('bar'));
 
-        expect(screen.queryByText('foo')).not.toBeInTheDocument();
+    expect(screen.queryByText('foo')).not.toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('bar'));
+    await userEvent.click(screen.getByText('bar'));
 
-        expect(screen.getByText('foo')).toBeInTheDocument();
-    });
+    expect(screen.getByText('foo')).toBeInTheDocument();
+  });
 });

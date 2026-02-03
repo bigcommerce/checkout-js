@@ -1,17 +1,17 @@
 export const getStoreUrl = (): string => {
-    const mode = process.env.MODE?.toLowerCase();
+  const mode = process.env.MODE?.toLowerCase();
 
-    if (mode === 'replay') {
-        return '';
-    }
+  if (mode === 'replay') {
+    return '';
+  }
 
-    const storeUrl = process.env.STOREURL;
+  const storeUrl = process.env.STOREURL;
 
-    if (!storeUrl) {
-        throw new Error('STOREURL is undefined. Please set STOREURL environment variable.');
-    }
+  if (!storeUrl) {
+    throw new Error('STOREURL is undefined. Please set STOREURL environment variable.');
+  }
 
-    const url = new URL(storeUrl);
+  const url = new URL(storeUrl);
 
-    return `${url.protocol}//${url.host}`;
+  return `${url.protocol}//${url.host}`;
 };

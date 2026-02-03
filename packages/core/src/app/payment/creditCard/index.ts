@@ -8,8 +8,8 @@ export { default as CreditCardExpiryField } from './CreditCardExpiryField';
 export { default as CreditCardNameField } from './CreditCardNameField';
 export { default as CreditCardNumberField } from './CreditCardNumberField';
 export {
-    default as getCreditCardInputStyles,
-    CreditCardInputStylesType,
+  default as getCreditCardInputStyles,
+  CreditCardInputStylesType,
 } from './getCreditCardInputStyles';
 export { default as getCreditCardValidationSchema } from './getCreditCardValidationSchema';
 export { default as unformatCreditCardNumber } from './unformatCreditCardNumber';

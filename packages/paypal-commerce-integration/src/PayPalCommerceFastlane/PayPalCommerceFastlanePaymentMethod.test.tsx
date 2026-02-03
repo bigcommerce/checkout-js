@@ -9,72 +9,72 @@ import { render } from '@bigcommerce/checkout/test-utils';
 import PayPalCommerceFastlanePaymentMethod from './PayPalCommerceFastlanePaymentMethod';
 
 describe('PayPalCommerceFastlanePaymentMethod', () => {
-    const checkoutService = createCheckoutService();
-    const checkoutState = checkoutService.getState();
-    const paymentForm = getPaymentFormServiceMock();
+  const checkoutService = createCheckoutService();
+  const checkoutState = checkoutService.getState();
+  const paymentForm = getPaymentFormServiceMock();
 
-    const method = {
-        clientToken: 'token',
-        config: {
-            displayName: 'Credit Card',
-            testMode: true,
-        },
-        id: 'paypalcommerceacceleratedcheckout',
-        initializationData: {
-            isAcceleratedCheckoutEnabled: true,
-        },
-        logoUrl: 'http://logo_url_path',
-        method: 'credit-card',
-        supportedCards: ['VISA', 'MC'],
-        type: 'PAYMENT_TYPE_API',
-    };
+  const method = {
+    clientToken: 'token',
+    config: {
+      displayName: 'Credit Card',
+      testMode: true,
+    },
+    id: 'paypalcommerceacceleratedcheckout',
+    initializationData: {
+      isAcceleratedCheckoutEnabled: true,
+    },
+    logoUrl: 'http://logo_url_path',
+    method: 'credit-card',
+    supportedCards: ['VISA', 'MC'],
+    type: 'PAYMENT_TYPE_API',
+  };
 
-    const props = {
-        method,
-        checkoutService,
-        checkoutState,
-        paymentForm,
-        language: createLanguageService(),
-        onUnhandledError: jest.fn(),
-    };
+  const props = {
+    method,
+    checkoutService,
+    checkoutState,
+    paymentForm,
+    language: createLanguageService(),
+    onUnhandledError: jest.fn(),
+  };
 
-    it('initializes PayPalCommerceFastlanePaymentMethod with required props', () => {
-        const initializePayment = jest
-            .spyOn(checkoutService, 'initializePayment')
-            .mockResolvedValue(checkoutState);
+  it('initializes PayPalCommerceFastlanePaymentMethod with required props', () => {
+    const initializePayment = jest
+      .spyOn(checkoutService, 'initializePayment')
+      .mockResolvedValue(checkoutState);
 
-        render(
-            <PaymentFormProvider paymentForm={paymentForm}>
-                <PayPalCommerceFastlanePaymentMethod {...props} />
-            </PaymentFormProvider>,
-        );
+    render(
+      <PaymentFormProvider paymentForm={paymentForm}>
+        <PayPalCommerceFastlanePaymentMethod {...props} />
+      </PaymentFormProvider>,
+    );
 
-        expect(initializePayment).toHaveBeenCalledWith({
-            methodId: props.method.id,
-            integrations: [createPayPalCommerceFastlanePaymentStrategy],
-            paypalcommercefastlane: {
-                onInit: expect.any(Function),
-                onChange: expect.any(Function),
-                onError: expect.any(Function),
-            },
-        });
+    expect(initializePayment).toHaveBeenCalledWith({
+      methodId: props.method.id,
+      integrations: [createPayPalCommerceFastlanePaymentStrategy],
+      paypalcommercefastlane: {
+        onInit: expect.any(Function),
+        onChange: expect.any(Function),
+        onError: expect.any(Function),
+      },
     });
+  });
 
-    it('deinitializes PayPalCommerceFastlanePaymentMethod with required props', () => {
-        const deinitializePayment = jest
-            .spyOn(checkoutService, 'deinitializePayment')
-            .mockResolvedValue(checkoutState);
+  it('deinitializes PayPalCommerceFastlanePaymentMethod with required props', () => {
+    const deinitializePayment = jest
+      .spyOn(checkoutService, 'deinitializePayment')
+      .mockResolvedValue(checkoutState);
 
-        const view = render(
-            <PaymentFormProvider paymentForm={paymentForm}>
-                <PayPalCommerceFastlanePaymentMethod {...props} />
-            </PaymentFormProvider>,
-        );
+    const view = render(
+      <PaymentFormProvider paymentForm={paymentForm}>
+        <PayPalCommerceFastlanePaymentMethod {...props} />
+      </PaymentFormProvider>,
+    );
 
-        view.unmount();
+    view.unmount();
 
-        expect(deinitializePayment).toHaveBeenCalledWith({
-            methodId: props.method.id,
-        });
+    expect(deinitializePayment).toHaveBeenCalledWith({
+      methodId: props.method.id,
     });
+  });
 });

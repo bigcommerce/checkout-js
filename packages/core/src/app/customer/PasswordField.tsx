@@ -10,52 +10,57 @@ import { IconEye, IconEyeSlash } from '../ui/icon';
 import { Toggle } from '../ui/toggle';
 
 interface WithFloatingLabel {
-    isFloatingLabelEnabled?: boolean;
+  isFloatingLabelEnabled?: boolean;
 }
 
-const PasswordField: FunctionComponent<WithFloatingLabel> = ({ isFloatingLabelEnabled = false }) => {
-    const { themeV2 } = useThemeContext();
+const PasswordField: FunctionComponent<WithFloatingLabel> = ({
+  isFloatingLabelEnabled = false,
+}) => {
+  const { themeV2 } = useThemeContext();
 
-    const renderInput = useCallback(
-        (props: FieldProps) => (
-            <Toggle openByDefault={false}>
-                {({ isOpen, toggle }) => (
-                    <div className="form-field-password">
-                        <TextInput
-                            {...props.field}
-                            additionalClassName="form-input--withIcon"
-                            id={props.field.name}
-                            isFloatingLabelEnabled={isFloatingLabelEnabled}
-                            themeV2={themeV2}
-                            type={isOpen ? 'text' : 'password'}
-                        />
-                        {isFloatingLabelEnabled && (
-                            <Label
-                                additionalClassName={themeV2 ? 'floating-form-field-label' : ''}
-                                htmlFor={props.field.name}
-                                id={`${props.field.name}-label`}
-                                isFloatingLabelEnabled={true}
-                            >
-                                <TranslatedString id="customer.password_label" />
-                            </Label>
-                        )}
-                        <a
-                            className="form-toggle-password form-input-icon"
-                            href="#"
-                            onClick={toggle}
-                        >
-                            {isOpen ? <IconEye /> : <IconEyeSlash />}
-                        </a>
-                    </div>
-                )}
-            </Toggle>
-        ),
-        [isFloatingLabelEnabled],
-    );
+  const renderInput = useCallback(
+    (props: FieldProps) => (
+      <Toggle openByDefault={false}>
+        {({ isOpen, toggle }) => (
+          <div className="form-field-password">
+            <TextInput
+              {...props.field}
+              additionalClassName="form-input--withIcon"
+              id={props.field.name}
+              isFloatingLabelEnabled={isFloatingLabelEnabled}
+              themeV2={themeV2}
+              type={isOpen ? 'text' : 'password'}
+            />
+            {isFloatingLabelEnabled && (
+              <Label
+                additionalClassName={themeV2 ? 'floating-form-field-label' : ''}
+                htmlFor={props.field.name}
+                id={`${props.field.name}-label`}
+                isFloatingLabelEnabled={true}
+              >
+                <TranslatedString id="customer.password_label" />
+              </Label>
+            )}
+            <a className="form-toggle-password form-input-icon" href="#" onClick={toggle}>
+              {isOpen ? <IconEye /> : <IconEyeSlash />}
+            </a>
+          </div>
+        )}
+      </Toggle>
+    ),
+    [isFloatingLabelEnabled],
+  );
 
-    const labelContent = useMemo(() => <TranslatedString id="customer.password_label" />, []);
+  const labelContent = useMemo(() => <TranslatedString id="customer.password_label" />, []);
 
-    return <FormField input={renderInput} isFloatingLabelEnabled={isFloatingLabelEnabled} labelContent={isFloatingLabelEnabled ? null : labelContent} name="password" />;
+  return (
+    <FormField
+      input={renderInput}
+      isFloatingLabelEnabled={isFloatingLabelEnabled}
+      labelContent={isFloatingLabelEnabled ? null : labelContent}
+      name="password"
+    />
+  );
 };
 
 export default memo(PasswordField);

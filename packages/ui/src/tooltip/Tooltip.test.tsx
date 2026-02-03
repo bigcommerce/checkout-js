@@ -5,16 +5,16 @@ import { render, screen } from '@bigcommerce/checkout/test-utils';
 import Tooltip from './Tooltip';
 
 describe('Tooltip', () => {
-    it('displays tooltip text and has expected CSS class', () => {
-        const { container } = render(<Tooltip>Hello world</Tooltip>);
+  it('displays tooltip text and has expected CSS class', () => {
+    const { container } = render(<Tooltip>Hello world</Tooltip>);
 
-        expect(screen.getByText('Hello world')).toBeInTheDocument();
-        expect(container.firstChild).toHaveClass('tooltip');
-    });
+    expect(screen.getByText('Hello world')).toBeInTheDocument();
+    expect(container.firstChild).toHaveClass('tooltip');
+  });
 
-    it('has expected test ID attribute', () => {
-        render(<Tooltip testId="foobar">Hello world</Tooltip>);
+  it('has expected test ID attribute', () => {
+    render(<Tooltip testId="foobar">Hello world</Tooltip>);
 
-        expect(screen.getByTestId('foobar')).toBeInTheDocument();
-    });
+    expect(screen.getByTestId('foobar')).toBeInTheDocument();
+  });
 });

@@ -1,7 +1,7 @@
 export {
-    default as getLanguageService,
-    type InitializeLanguageService,
-    initializeLanguageService,
+  default as getLanguageService,
+  type InitializeLanguageService,
+  initializeLanguageService,
 } from './getLanguageService';
 export { default as getDefaultTranslations } from './getDefaultTranslations';
 export { default as createLocaleContext } from './createLocaleContext';

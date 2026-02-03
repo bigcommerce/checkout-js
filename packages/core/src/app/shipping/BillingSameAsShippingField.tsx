@@ -6,29 +6,29 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { CheckboxFormField } from '../ui/form';
 
 export interface BillingSameAsShippingFieldProps {
-    onChange?(isChecked: boolean): void;
+  onChange?(isChecked: boolean): void;
 }
 
 const BillingSameAsShippingField: FunctionComponent<BillingSameAsShippingFieldProps> = ({
-    onChange,
+  onChange,
 }) => {
-    const { themeV2 } = useThemeContext();
+  const { themeV2 } = useThemeContext();
 
-    const labelContent = useMemo(
-        () => <TranslatedString id="billing.use_shipping_address_label" />,
-        [],
-    );
+  const labelContent = useMemo(
+    () => <TranslatedString id="billing.use_shipping_address_label" />,
+    [],
+  );
 
-    return (
-        <CheckboxFormField
-            id="sameAsBilling"
-            labelContent={labelContent}
-            name="billingSameAsShipping"
-            onChange={onChange}
-            testId="billingSameAsShipping"
-            themeV2={themeV2}
-        />
-    );
+  return (
+    <CheckboxFormField
+      id="sameAsBilling"
+      labelContent={labelContent}
+      name="billingSameAsShipping"
+      onChange={onChange}
+      testId="billingSameAsShipping"
+      themeV2={themeV2}
+    />
+  );
 };
 
 export default memo(BillingSameAsShippingField);

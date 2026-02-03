@@ -7,42 +7,42 @@ import PayPalCommerceFastlaneCreditCardForm from './PayPalCommerceFastlaneCredit
 import PayPalCommerceFastlaneInstrumentsForm from './PayPalCommerceFastlaneInstrumentsForm';
 
 interface PayPalCommerceFastlaneFormProps {
-    renderPayPalCardComponent?: PayPalFastlaneCardComponentRef['renderPayPalCardComponent'];
-    showPayPalCardSelector?: PayPalFastlaneCardComponentRef['showPayPalCardSelector'];
+  renderPayPalCardComponent?: PayPalFastlaneCardComponentRef['renderPayPalCardComponent'];
+  showPayPalCardSelector?: PayPalFastlaneCardComponentRef['showPayPalCardSelector'];
 }
 
 const PayPalCommerceFastlaneForm: FunctionComponent<PayPalCommerceFastlaneFormProps> = ({
-    renderPayPalCardComponent,
-    showPayPalCardSelector,
+  renderPayPalCardComponent,
+  showPayPalCardSelector,
 }) => {
-    const { instruments, handleSelectInstrument, selectedInstrument } =
-        usePayPalCommerceFastlaneInstruments();
+  const { instruments, handleSelectInstrument, selectedInstrument } =
+    usePayPalCommerceFastlaneInstruments();
 
-    const shouldShowInstrumentsForm = instruments.length > 0;
+  const shouldShowInstrumentsForm = instruments.length > 0;
 
-    useEffect(() => {
-        if (!selectedInstrument && instruments.length > 0) {
-            handleSelectInstrument(instruments[0]);
-        }
-    }, [instruments, selectedInstrument]);
+  useEffect(() => {
+    if (!selectedInstrument && instruments.length > 0) {
+      handleSelectInstrument(instruments[0]);
+    }
+  }, [instruments, selectedInstrument]);
 
-    return (
-        <div className="paymentMethod paymentMethod--creditCard">
-            {shouldShowInstrumentsForm && (
-                <PayPalCommerceFastlaneInstrumentsForm
-                    handleSelectInstrument={handleSelectInstrument}
-                    onChange={showPayPalCardSelector}
-                    selectedInstrument={selectedInstrument || instruments[0]}
-                />
-            )}
+  return (
+    <div className="paymentMethod paymentMethod--creditCard">
+      {shouldShowInstrumentsForm && (
+        <PayPalCommerceFastlaneInstrumentsForm
+          handleSelectInstrument={handleSelectInstrument}
+          onChange={showPayPalCardSelector}
+          selectedInstrument={selectedInstrument || instruments[0]}
+        />
+      )}
 
-            {!shouldShowInstrumentsForm && (
-                <PayPalCommerceFastlaneCreditCardForm
-                    renderPayPalCardComponent={renderPayPalCardComponent}
-                />
-            )}
-        </div>
-    );
+      {!shouldShowInstrumentsForm && (
+        <PayPalCommerceFastlaneCreditCardForm
+          renderPayPalCardComponent={renderPayPalCardComponent}
+        />
+      )}
+    </div>
+  );
 };
 
 export default PayPalCommerceFastlaneForm;

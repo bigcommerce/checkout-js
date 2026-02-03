@@ -1,43 +1,43 @@
 import {
-    createPayPalCommerceCreditPaymentStrategy,
-    createPayPalCommercePaymentStrategy,
+  createPayPalCommerceCreditPaymentStrategy,
+  createPayPalCommercePaymentStrategy,
 } from '@bigcommerce/checkout-sdk/integrations/paypal-commerce';
 import React, { type FunctionComponent, useEffect } from 'react';
 
 import { useCheckout } from '@bigcommerce/checkout/contexts';
 
 const PaypalCommerceCreditBanner: FunctionComponent<{
-    methodId: string;
-    containerId: string;
-    onUnhandledError?(error: Error): void;
+  methodId: string;
+  containerId: string;
+  onUnhandledError?(error: Error): void;
 }> = ({ methodId, containerId, onUnhandledError }) => {
-    const { checkoutService } = useCheckout();
+  const { checkoutService } = useCheckout();
 
-    useEffect(() => {
-        try {
-            void checkoutService.initializePayment({
-                methodId,
-                integrations: [
-                    createPayPalCommerceCreditPaymentStrategy,
-                    createPayPalCommercePaymentStrategy,
-                ],
-                [methodId]: {
-                    bannerContainerId: containerId,
-                },
-            });
+  useEffect(() => {
+    try {
+      void checkoutService.initializePayment({
+        methodId,
+        integrations: [
+          createPayPalCommerceCreditPaymentStrategy,
+          createPayPalCommercePaymentStrategy,
+        ],
+        [methodId]: {
+          bannerContainerId: containerId,
+        },
+      });
 
-            void checkoutService.deinitializePayment({
-                methodId,
-            });
-        } catch (error) {
-            if (error instanceof Error) {
-                onUnhandledError?.(error);
-            }
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+      void checkoutService.deinitializePayment({
+        methodId,
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        onUnhandledError?.(error);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-    return <div data-test={containerId} id={containerId} />;
+  return <div data-test={containerId} id={containerId} />;
 };
 
 export default PaypalCommerceCreditBanner;

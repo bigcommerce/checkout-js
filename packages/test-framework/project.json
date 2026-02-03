@@ -5,15 +5,21 @@
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "eslint --no-error-on-unmatched-pattern \"packages/test-framework/src/**/*.ts\" \"packages/test-framework/src/**/*.tsx\""
+      }
     },
     "regenerate-har": {
       "executor": "@nx/workspace:run-commands",
       "options": {
-        "commands": ["node packages/test-framework/scripts/polly/regenerateHar.js"]
+        "commands": [
+          "node packages/test-framework/scripts/polly/regenerateHar.js"
+        ]
       }
     }
   },
-  "tags": ["scope:shared"]
+  "tags": [
+    "scope:shared"
+  ]
 }

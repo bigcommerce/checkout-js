@@ -7,69 +7,69 @@ import { FormFieldError } from '../FormFieldError';
 import { Label } from '../Label';
 
 export interface FormFieldProps {
-    additionalClassName?: string;
-    name: string;
-    label?: ReactNode | ((fieldName: string) => ReactNode);
-    labelContent?: ReactNode;
-    footer?: ReactNode;
-    id?: string;
-    isFloatingLabelEnabled?: boolean;
-    themeV2?: boolean;
-    input(field: FieldProps<string>): ReactNode;
-    onChange?(value: string): void;
+  additionalClassName?: string;
+  name: string;
+  label?: ReactNode | ((fieldName: string) => ReactNode);
+  labelContent?: ReactNode;
+  footer?: ReactNode;
+  id?: string;
+  isFloatingLabelEnabled?: boolean;
+  themeV2?: boolean;
+  input(field: FieldProps<string>): ReactNode;
+  onChange?(value: string): void;
 }
 
 const FormField: FunctionComponent<FormFieldProps> = ({
-    additionalClassName,
-    labelContent,
-    label,
-    onChange,
-    footer,
-    input,
-    name,
-    id,
-    isFloatingLabelEnabled,
-    themeV2 = false,
+  additionalClassName,
+  labelContent,
+  label,
+  onChange,
+  footer,
+  input,
+  name,
+  id,
+  isFloatingLabelEnabled,
+  themeV2 = false,
 }) => {
-    const renderField = useCallback(
-        (props: FieldProps<string>) => (
-            <>
-                {isFloatingLabelEnabled && input(props)}
+  const renderField = useCallback(
+    (props: FieldProps<string>) => (
+      <>
+        {isFloatingLabelEnabled && input(props)}
 
-                {label !== undefined && (typeof label === 'function' ? label(name) : label)}
-                {labelContent !== undefined && !label && (
-                    <Label
-                        additionalClassName={themeV2 ? 'floating-form-field-label' : ''}
-                        htmlFor={name}
-                        id={`${id ?? name}-label`}
-                        isFloatingLabelEnabled={isFloatingLabelEnabled}
-                    >
-                        {labelContent}
-                    </Label>
-                )}
+        {label !== undefined && (typeof label === 'function' ? label(name) : label)}
+        {labelContent !== undefined && !label && (
+          <Label
+            additionalClassName={themeV2 ? 'floating-form-field-label' : ''}
+            htmlFor={name}
+            id={`${id ?? name}-label`}
+            isFloatingLabelEnabled={isFloatingLabelEnabled}
+          >
+            {labelContent}
+          </Label>
+        )}
 
-                {!isFloatingLabelEnabled && input(props)}
+        {!isFloatingLabelEnabled && input(props)}
 
-                <FormFieldError
-                    errorId={`${id ?? name}-field-error-message`}
-                    name={name}
-                    testId={`${kebabCase(name)}-field-error-message`}
-                />
-
-                {footer}
-            </>
-        ),
-        [isFloatingLabelEnabled, input, label, name, labelContent, themeV2, id, footer],
-    );
-
-    return (
-        <BasicFormField
-            additionalClassName={additionalClassName}
-            name={name}
-            onChange={onChange}
-            render={renderField}
+        <FormFieldError
+          errorId={`${id ?? name}-field-error-message`}
+          name={name}
+          testId={`${kebabCase(name)}-field-error-message`}
         />
-    );
+
+        {footer}
+      </>
+    ),
+    [isFloatingLabelEnabled, input, label, name, labelContent, themeV2, id, footer],
+  );
+
+  return (
+    <BasicFormField
+      additionalClassName={additionalClassName}
+      name={name}
+      onChange={onChange}
+      render={renderField}
+    />
+  );
 };
 
 export default memo(FormField);

@@ -6,85 +6,82 @@ import { useCheckout, usePaymentFormContext } from '@bigcommerce/checkout/contex
 import { isAccountInstrument } from '@bigcommerce/checkout/instrument-utils';
 
 const usePaypalCommerceInstrument = (method: PaymentMethod) => {
-    const [currentInstrument, setCurrentInstrument] = useState<AccountInstrument | undefined>();
+  const [currentInstrument, setCurrentInstrument] = useState<AccountInstrument | undefined>();
 
-    const { checkoutState } = useCheckout();
-    const customer = checkoutState.data.getCustomer();
-    const instruments = checkoutState.data.getInstruments(method) || [];
+  const { checkoutState } = useCheckout();
+  const customer = checkoutState.data.getCustomer();
+  const instruments = checkoutState.data.getInstruments(method) || [];
 
-    const { paymentForm } = usePaymentFormContext();
-    const { setFieldValue } = paymentForm;
+  const { paymentForm } = usePaymentFormContext();
+  const { setFieldValue } = paymentForm;
 
-    const accountInstruments = useMemo(
-        () => instruments.filter(isAccountInstrument),
-        [instruments],
+  const accountInstruments = useMemo(() => instruments.filter(isAccountInstrument), [instruments]);
+
+  const trustedAccountInstruments = useMemo(
+    () => accountInstruments.filter((instrument) => instrument.trustedShippingAddress),
+    [accountInstruments],
+  );
+
+  const hasAccountInstruments = accountInstruments.length > 0;
+
+  const isInstrumentFeatureAvailable =
+    !customer?.isGuest &&
+    Boolean(method.config.isVaultingEnabled) &&
+    !method.initializationData.isComplete;
+  const shouldShowInstrumentFieldset = isInstrumentFeatureAvailable && hasAccountInstruments;
+
+  const shouldCreateNewInstrument = shouldShowInstrumentFieldset && !currentInstrument;
+  const shouldConfirmInstrument =
+    shouldShowInstrumentFieldset && !!currentInstrument && !trustedAccountInstruments.length;
+
+  const getDefaultInstrument = (): AccountInstrument | undefined => {
+    if (!trustedAccountInstruments.length) {
+      return;
+    }
+
+    const defaultAccountInstrument = trustedAccountInstruments.filter(
+      ({ defaultInstrument }) => defaultInstrument,
     );
 
-    const trustedAccountInstruments = useMemo(
-        () => accountInstruments.filter((instrument) => instrument.trustedShippingAddress),
-        [accountInstruments],
-    );
+    return defaultAccountInstrument[0] || trustedAccountInstruments[0];
+  };
 
-    const hasAccountInstruments = accountInstruments.length > 0;
+  useEffect(() => {
+    setCurrentInstrument(isInstrumentFeatureAvailable ? getDefaultInstrument() : undefined);
+  }, [isInstrumentFeatureAvailable, trustedAccountInstruments]);
 
-    const isInstrumentFeatureAvailable =
-        !customer?.isGuest &&
-        Boolean(method.config.isVaultingEnabled) &&
-        !method.initializationData.isComplete;
-    const shouldShowInstrumentFieldset = isInstrumentFeatureAvailable && hasAccountInstruments;
+  useEffect(() => {
+    if (!shouldShowInstrumentFieldset) {
+      setFieldValue('instrumentId', '');
+    }
+  }, [setFieldValue, shouldShowInstrumentFieldset]);
 
-    const shouldCreateNewInstrument = shouldShowInstrumentFieldset && !currentInstrument;
-    const shouldConfirmInstrument =
-        shouldShowInstrumentFieldset && !!currentInstrument && !trustedAccountInstruments.length;
+  const handleSelectInstrument = useCallback(
+    (id: string) => {
+      setCurrentInstrument(find(trustedAccountInstruments, { bigpayToken: id }));
+      setFieldValue('instrumentId', id);
+      setFieldValue('shouldSetAsDefaultInstrument', false);
+    },
+    [trustedAccountInstruments, setFieldValue],
+  );
 
-    const getDefaultInstrument = (): AccountInstrument | undefined => {
-        if (!trustedAccountInstruments.length) {
-            return;
-        }
+  const handleUseNewInstrument = useCallback(() => {
+    setCurrentInstrument(undefined);
+    setFieldValue('instrumentId', '');
+    setFieldValue('shouldSaveInstrument', false);
+    setFieldValue('shouldSetAsDefaultInstrument', false);
+  }, [setFieldValue]);
 
-        const defaultAccountInstrument = trustedAccountInstruments.filter(
-            ({ defaultInstrument }) => defaultInstrument,
-        );
-
-        return defaultAccountInstrument[0] || trustedAccountInstruments[0];
-    };
-
-    useEffect(() => {
-        setCurrentInstrument(isInstrumentFeatureAvailable ? getDefaultInstrument() : undefined);
-    }, [isInstrumentFeatureAvailable, trustedAccountInstruments]);
-
-    useEffect(() => {
-        if (!shouldShowInstrumentFieldset) {
-            setFieldValue('instrumentId', '');
-        }
-    }, [setFieldValue, shouldShowInstrumentFieldset]);
-
-    const handleSelectInstrument = useCallback(
-        (id: string) => {
-            setCurrentInstrument(find(trustedAccountInstruments, { bigpayToken: id }));
-            setFieldValue('instrumentId', id);
-            setFieldValue('shouldSetAsDefaultInstrument', false);
-        },
-        [trustedAccountInstruments, setFieldValue],
-    );
-
-    const handleUseNewInstrument = useCallback(() => {
-        setCurrentInstrument(undefined);
-        setFieldValue('instrumentId', '');
-        setFieldValue('shouldSaveInstrument', false);
-        setFieldValue('shouldSetAsDefaultInstrument', false);
-    }, [setFieldValue]);
-
-    return {
-        trustedAccountInstruments,
-        currentInstrument,
-        handleSelectInstrument,
-        handleUseNewInstrument,
-        isInstrumentFeatureAvailable,
-        shouldShowInstrumentFieldset,
-        shouldCreateNewInstrument,
-        shouldConfirmInstrument,
-    };
+  return {
+    trustedAccountInstruments,
+    currentInstrument,
+    handleSelectInstrument,
+    handleUseNewInstrument,
+    isInstrumentFeatureAvailable,
+    shouldShowInstrumentFieldset,
+    shouldCreateNewInstrument,
+    shouldConfirmInstrument,
+  };
 };
 
 export default usePaypalCommerceInstrument;

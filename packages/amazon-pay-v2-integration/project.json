@@ -5,16 +5,22 @@
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "eslint --no-error-on-unmatched-pattern \"packages/amazon-pay-v2-integration/src/**/*.ts\" \"packages/amazon-pay-v2-integration/src/**/*.tsx\""
+      }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/packages/amazon-pay-v2-integration"],
+      "outputs": [
+        "{workspaceRoot}/coverage/packages/amazon-pay-v2-integration"
+      ],
       "options": {
         "jestConfig": "packages/amazon-pay-v2-integration/jest.config.js"
       }
     }
   },
-  "tags": ["scope:integration"]
+  "tags": [
+    "scope:integration"
+  ]
 }

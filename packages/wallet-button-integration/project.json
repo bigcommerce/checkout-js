@@ -5,16 +5,22 @@
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "eslint --no-error-on-unmatched-pattern \"packages/wallet-button-integration/src/**/*.ts\" \"packages/wallet-button-integration/src/**/*.tsx\""
+      }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/packages/wallet-button-integration"],
+      "outputs": [
+        "{workspaceRoot}/coverage/packages/wallet-button-integration"
+      ],
       "options": {
         "jestConfig": "packages/wallet-button-integration/jest.config.js"
       }
     }
   },
-  "tags": ["scope:shared"]
+  "tags": [
+    "scope:shared"
+  ]
 }

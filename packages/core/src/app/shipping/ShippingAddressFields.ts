@@ -1,8 +1,8 @@
 export const SHIPPING_ADDRESS_FIELDS = [
-    'address1',
-    'postalCode',
-    'countryCode',
-    'city',
-    'stateOrProvince',
-    'stateOrProvinceCode',
+  'address1',
+  'postalCode',
+  'countryCode',
+  'city',
+  'stateOrProvince',
+  'stateOrProvinceCode',
 ];

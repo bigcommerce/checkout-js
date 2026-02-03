@@ -1,9 +1,9 @@
 export { useThemeContext, ThemeContext, ThemeProvider } from './theme';
 export {
-    AnalyticsContext,
-    AnalyticsProvider,
-    AnalyticsProviderMock,
-    useAnalytics,
+  AnalyticsContext,
+  AnalyticsProvider,
+  AnalyticsProviderMock,
+  useAnalytics,
 } from './analytics';
 export { ExtensionProvider, ExtensionActionType, withExtension, useExtensions } from './extension';
 export { LocaleContext, LocaleProvider, useLocale } from './locale';
@@ -16,8 +16,8 @@ export type { ExtensionContextProps } from './extension/ExtensionContext';
 export type { LocaleContextType } from './locale/LocaleContext';
 export type { CheckoutContextProps } from './checkout/CheckoutContext';
 export type {
-    PaymentFormService,
-    PaymentFormErrors,
-    PaymentFormValues,
+  PaymentFormService,
+  PaymentFormErrors,
+  PaymentFormValues,
 } from './paymentForm/PaymentFormServiceType';
 export type { PaymentFormContextProps } from './paymentForm/PaymentFormContext';

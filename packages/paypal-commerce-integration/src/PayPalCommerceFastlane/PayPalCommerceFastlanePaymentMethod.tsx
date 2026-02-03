@@ -3,9 +3,9 @@ import { createPayPalCommerceFastlanePaymentStrategy } from '@bigcommerce/checko
 import React, { type FunctionComponent, useEffect, useRef } from 'react';
 
 import {
-    type PaymentMethodProps,
-    type PaymentMethodResolveId,
-    toResolvableComponent,
+  type PaymentMethodProps,
+  type PaymentMethodResolveId,
+  toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 import { FormContext, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
@@ -14,102 +14,96 @@ import './PayPalCommerceFastlanePaymentMethod.scss';
 import isErrorWithTranslationKey from './is-error-with-translation-key';
 
 export interface PayPalFastlaneCardComponentRef {
-    renderPayPalCardComponent?: (container: string) => void;
-    showPayPalCardSelector?: () => Promise<CardInstrument | undefined>;
+  renderPayPalCardComponent?: (container: string) => void;
+  showPayPalCardSelector?: () => Promise<CardInstrument | undefined>;
 }
 
 const PayPalCommerceFastlanePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
-    method,
-    checkoutService,
-    checkoutState,
-    onUnhandledError,
-    paymentForm,
-    language,
+  method,
+  checkoutService,
+  checkoutState,
+  onUnhandledError,
+  paymentForm,
+  language,
 }) => {
-    const paypalCardComponentRef = useRef<PayPalFastlaneCardComponentRef>({});
+  const paypalCardComponentRef = useRef<PayPalFastlaneCardComponentRef>({});
 
-    const { isLoadingPaymentMethod, isInitializingPayment } = checkoutState.statuses;
+  const { isLoadingPaymentMethod, isInitializingPayment } = checkoutState.statuses;
 
-    const initializePaymentOrThrow = async () => {
-        try {
-            await checkoutService.initializePayment({
-                methodId: method.id,
-                integrations: [createPayPalCommerceFastlanePaymentStrategy],
-                paypalcommercefastlane: {
-                    onInit: (renderPayPalCardComponent) => {
-                        paypalCardComponentRef.current.renderPayPalCardComponent =
-                            renderPayPalCardComponent;
-                    },
-                    onChange: (showPayPalCardSelector) => {
-                        paypalCardComponentRef.current.showPayPalCardSelector =
-                            showPayPalCardSelector;
-                    },
-                    onError: (error: unknown) => {
-                        let finalError: Error;
+  const initializePaymentOrThrow = async () => {
+    try {
+      await checkoutService.initializePayment({
+        methodId: method.id,
+        integrations: [createPayPalCommerceFastlanePaymentStrategy],
+        paypalcommercefastlane: {
+          onInit: (renderPayPalCardComponent) => {
+            paypalCardComponentRef.current.renderPayPalCardComponent = renderPayPalCardComponent;
+          },
+          onChange: (showPayPalCardSelector) => {
+            paypalCardComponentRef.current.showPayPalCardSelector = showPayPalCardSelector;
+          },
+          onError: (error: unknown) => {
+            let finalError: Error;
 
-                        if (isErrorWithTranslationKey(error)) {
-                            finalError = new Error(language.translate(error.translationKey));
-                        } else if (error instanceof Error) {
-                            finalError = error;
-                        } else {
-                            finalError = new Error(
-                                language.translate('payment.errors.general_error'),
-                            );
-                        }
-
-                        return onUnhandledError(finalError);
-                    },
-                },
-            });
-        } catch (error) {
-            if (error instanceof Error) {
-                onUnhandledError(error);
+            if (isErrorWithTranslationKey(error)) {
+              finalError = new Error(language.translate(error.translationKey));
+            } else if (error instanceof Error) {
+              finalError = error;
+            } else {
+              finalError = new Error(language.translate('payment.errors.general_error'));
             }
-        }
+
+            onUnhandledError(finalError);
+          },
+        },
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        onUnhandledError(error);
+      }
+    }
+  };
+
+  const deinitializePaymentOrThrow = async () => {
+    try {
+      await checkoutService.deinitializePayment({
+        methodId: method.id,
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        onUnhandledError(error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    void initializePaymentOrThrow();
+
+    return () => {
+      void deinitializePaymentOrThrow();
     };
+  }, []);
 
-    const deinitializePaymentOrThrow = async () => {
-        try {
-            await checkoutService.deinitializePayment({
-                methodId: method.id,
-            });
-        } catch (error) {
-            if (error instanceof Error) {
-                onUnhandledError(error);
-            }
-        }
-    };
+  const isLoading = isInitializingPayment() || isLoadingPaymentMethod(method.id);
 
-    useEffect(() => {
-        void initializePaymentOrThrow();
+  const formContextProps = {
+    isSubmitted: paymentForm.isSubmitted(),
+    setSubmitted: paymentForm.setSubmitted,
+  };
 
-        return () => {
-            void deinitializePaymentOrThrow();
-        };
-    }, []);
-
-    const isLoading = isInitializingPayment() || isLoadingPaymentMethod(method.id);
-
-    const formContextProps = {
-        isSubmitted: paymentForm.isSubmitted(),
-        setSubmitted: paymentForm.setSubmitted,
-    };
-
-    return (
-        <FormContext.Provider value={formContextProps}>
-            <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
-                <PayPalCommerceFastlaneForm
-                    renderPayPalCardComponent={
-                        paypalCardComponentRef.current.renderPayPalCardComponent
-                    }
-                    showPayPalCardSelector={paypalCardComponentRef.current.showPayPalCardSelector}
-                />
-            </LoadingOverlay>
-        </FormContext.Provider>
-    );
+  return (
+    <FormContext.Provider value={formContextProps}>
+      <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
+        <PayPalCommerceFastlaneForm
+          renderPayPalCardComponent={paypalCardComponentRef.current.renderPayPalCardComponent}
+          showPayPalCardSelector={paypalCardComponentRef.current.showPayPalCardSelector}
+        />
+      </LoadingOverlay>
+    </FormContext.Provider>
+  );
 };
 
 export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>(
-    PayPalCommerceFastlanePaymentMethod,
-    [{ id: 'paypalcommerceacceleratedcheckout' }],
+  PayPalCommerceFastlanePaymentMethod,
+  [{ id: 'paypalcommerceacceleratedcheckout' }],
 );

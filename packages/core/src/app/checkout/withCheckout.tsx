@@ -4,7 +4,7 @@ import { createMappableInjectHoc } from '@bigcommerce/checkout/legacy-hoc';
 export type WithCheckoutProps = CheckoutContextProps;
 
 const withCheckout = createMappableInjectHoc(CheckoutContext, {
-    displayNamePrefix: 'WithCheckout',
+  displayNamePrefix: 'WithCheckout',
 });
 
 export default withCheckout;

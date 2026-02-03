@@ -12,89 +12,89 @@ import createPaymentFormService from '../createPaymentFormService';
 import resolvePaymentMethod from '../resolvePaymentMethod';
 import withPayment, { type WithPaymentProps } from '../withPayment';
 
-const PaymentMethodV1 = lazy(() => import(/* webpackChunkName: "payment-method-v1" */'./PaymentMethod'));
+const PaymentMethodV1 = lazy(
+  () => import(/* webpackChunkName: "payment-method-v1" */ './PaymentMethod'),
+);
 
 export interface PaymentMethodProps {
-    method: PaymentMethod;
-    isEmbedded?: boolean;
-    isUsingMultiShipping?: boolean;
-    onUnhandledError(error: Error): void;
+  method: PaymentMethod;
+  isEmbedded?: boolean;
+  isUsingMultiShipping?: boolean;
+  onUnhandledError(error: Error): void;
 }
 
 const PaymentMethodContainer: ComponentType<
-    PaymentMethodProps &
-        WithCheckoutProps &
-        WithLanguageProps &
-        WithPaymentProps &
-        WithFormProps &
-        WithFormikProps<PaymentFormValues>
+  PaymentMethodProps &
+    WithCheckoutProps &
+    WithLanguageProps &
+    WithPaymentProps &
+    WithFormProps &
+    WithFormikProps<PaymentFormValues>
 > = ({
-    formik: formikContext,
-    checkoutService,
-    checkoutState,
+  formik: formikContext,
+  checkoutService,
+  checkoutState,
+  disableSubmit,
+  hidePaymentSubmitButton,
+  isEmbedded,
+  isSubmitted,
+  isUsingMultiShipping,
+  language,
+  method,
+  onUnhandledError,
+  setSubmit,
+  setSubmitted,
+  setValidationSchema,
+}) => {
+  const formContext = {
+    isSubmitted,
+    setSubmitted,
+  };
+
+  const paymentContext = {
     disableSubmit,
     hidePaymentSubmitButton,
-    isEmbedded,
-    isSubmitted,
-    isUsingMultiShipping,
-    language,
-    method,
-    onUnhandledError,
     setSubmit,
-    setSubmitted,
     setValidationSchema,
-}) => {
-    const formContext = {
-        isSubmitted,
-        setSubmitted,
-    };
+  };
 
-    const paymentContext = {
-        disableSubmit,
-        hidePaymentSubmitButton,
-        setSubmit,
-        setValidationSchema,
-    };
+  const ResolvedPaymentMethod = resolvePaymentMethod({
+    id: method.id,
+    gateway: method.gateway,
+    type: method.type,
+  });
 
-    const ResolvedPaymentMethod = resolvePaymentMethod(
-        {
-            id: method.id,
-            gateway: method.gateway,
-            type: method.type,
-        },
-    );
-
-    if (!ResolvedPaymentMethod) {
-        return (
-            <LazyContainer>
-                <PaymentMethodV1
-                    isEmbedded={isEmbedded}
-                    isUsingMultiShipping={isUsingMultiShipping}
-                    method={method}
-                    onUnhandledError={onUnhandledError}
-                />
-            </LazyContainer>
-        );
-    }
-
-    const paymentForm = createPaymentFormService(formikContext, formContext, paymentContext);
-
+  if (!ResolvedPaymentMethod) {
     return (
-        <PaymentFormProvider paymentForm={paymentForm}>
-            <Suspense>
-                <ResolvedPaymentMethod
-                    checkoutService={checkoutService}
-                    checkoutState={checkoutState}
-                    language={language}
-                    method={method}
-                    onUnhandledError={onUnhandledError}
-                    paymentForm={paymentForm}
-                />
-            </Suspense>
-        </PaymentFormProvider>
+      <LazyContainer>
+        <PaymentMethodV1
+          isEmbedded={isEmbedded}
+          isUsingMultiShipping={isUsingMultiShipping}
+          method={method}
+          onUnhandledError={onUnhandledError}
+        />
+      </LazyContainer>
     );
+  }
+
+  const paymentForm = createPaymentFormService(formikContext, formContext, paymentContext);
+
+  return (
+    <PaymentFormProvider paymentForm={paymentForm}>
+      <Suspense>
+        <ResolvedPaymentMethod
+          checkoutService={checkoutService}
+          checkoutState={checkoutState}
+          language={language}
+          method={method}
+          onUnhandledError={onUnhandledError}
+          paymentForm={paymentForm}
+        />
+      </Suspense>
+    </PaymentFormProvider>
+  );
 };
 
 export default withCheckout((props) => props)(
-    withLanguage(withPayment(withForm(connectFormik(PaymentMethodContainer)))),
+  withLanguage(withPayment(withForm(connectFormik(PaymentMethodContainer)))),
 ) as ComponentType<PaymentMethodProps>;

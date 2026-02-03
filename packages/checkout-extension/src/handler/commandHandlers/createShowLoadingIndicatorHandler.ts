@@ -5,17 +5,17 @@ import { ExtensionActionType } from '@bigcommerce/checkout/contexts';
 import { type CommandHandler, type CommandHandlerProps } from './CommandHandler';
 
 export function createShowLoadingIndicatorHandler({
-    dispatch,
+  dispatch,
 }: CommandHandlerProps): CommandHandler<ExtensionCommandType.ShowLoadingIndicator> {
-    return {
-        commandType: ExtensionCommandType.ShowLoadingIndicator,
-        handler: (data) => {
-            const { show } = data.payload;
+  return {
+    commandType: ExtensionCommandType.ShowLoadingIndicator,
+    handler: (data) => {
+      const { show } = data.payload;
 
-            dispatch({
-                type: ExtensionActionType.SHOW_LOADING_INDICATOR,
-                payload: show,
-            });
-        },
-    };
+      dispatch({
+        type: ExtensionActionType.SHOW_LOADING_INDICATOR,
+        payload: show,
+      });
+    },
+  };
 }

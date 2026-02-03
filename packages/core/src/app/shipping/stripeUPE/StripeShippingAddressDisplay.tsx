@@ -14,12 +14,11 @@ export interface StripeupeShippingAddressProps {
 }
 
 const StripeShippingAddressDisplay: FC<StripeupeShippingAddressProps> = ({
-   methodId,
-   initialize,
-   deinitialize,
-   onUnhandledError = noop,
- }) => {
-
+  methodId,
+  initialize,
+  deinitialize,
+  onUnhandledError = noop,
+}) => {
   useEffect(() => {
     const runInitialize = async () => {
       try {

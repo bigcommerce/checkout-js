@@ -5,16 +5,22 @@
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "eslint --no-error-on-unmatched-pattern \"packages/td-bank-integration/src/**/*.ts\" \"packages/td-bank-integration/src/**/*.tsx\""
+      }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/packages/td-bank-integration"],
+      "outputs": [
+        "{workspaceRoot}/coverage/packages/td-bank-integration"
+      ],
       "options": {
         "jestConfig": "packages/td-bank-integration/jest.config.js"
       }
     }
   },
-  "tags": ["scope:integration"]
+  "tags": [
+    "scope:integration"
+  ]
 }

@@ -5,16 +5,22 @@
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "eslint --no-error-on-unmatched-pattern \"packages/error-handling-utils/src/**/*.ts\" \"packages/error-handling-utils/src/**/*.tsx\""
+      }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/packages/error-handling-utils"],
+      "outputs": [
+        "{workspaceRoot}/coverage/packages/error-handling-utils"
+      ],
       "options": {
         "jestConfig": "packages/error-handling-utils/jest.config.js"
       }
     }
   },
-  "tags": ["scope:shared"]
+  "tags": [
+    "scope:shared"
+  ]
 }

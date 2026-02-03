@@ -2,25 +2,25 @@ import React from 'react';
 import testRenderer from 'react-test-renderer';
 
 import { LocaleContext } from '@bigcommerce/checkout/contexts';
-import { getLocaleContext  } from '@bigcommerce/checkout/test-mocks';
+import { getLocaleContext } from '@bigcommerce/checkout/test-mocks';
 
 import StoreCurrency from './StoreCurrency';
 
 describe('ShopperCurrency Component', () => {
-    const localeContext = getLocaleContext();
+  const localeContext = getLocaleContext();
 
-    it('renders formatted amount in shopper currency', () => {
-        jest.spyOn(localeContext.currency, 'toStoreCurrency');
+  it('renders formatted amount in shopper currency', () => {
+    jest.spyOn(localeContext.currency, 'toStoreCurrency');
 
-        const tree = testRenderer
-            .create(
-                <LocaleContext.Provider value={localeContext}>
-                    <StoreCurrency amount={10} />
-                </LocaleContext.Provider>,
-            )
-            .toJSON();
+    const tree = testRenderer
+      .create(
+        <LocaleContext.Provider value={localeContext}>
+          <StoreCurrency amount={10} />
+        </LocaleContext.Provider>,
+      )
+      .toJSON();
 
-        expect(localeContext.currency.toStoreCurrency).toHaveBeenCalledWith(10);
-        expect(tree).toMatchSnapshot();
-    });
+    expect(localeContext.currency.toStoreCurrency).toHaveBeenCalledWith(10);
+    expect(tree).toMatchSnapshot();
+  });
 });

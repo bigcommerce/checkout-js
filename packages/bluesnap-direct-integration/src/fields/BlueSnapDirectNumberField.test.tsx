@@ -5,35 +5,35 @@ import React from 'react';
 import { fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
 
 import BlueSnapDirectNumberField, {
-    type BlueSnapDirectNumberFieldProps,
+  type BlueSnapDirectNumberFieldProps,
 } from './BlueSnapDirectNumberField';
 
 describe('BlueSnapDirectNumberField', () => {
-    let initialValues: { someNumber: string };
-    let options: BlueSnapDirectNumberFieldProps;
+  let initialValues: { someNumber: string };
+  let options: BlueSnapDirectNumberFieldProps;
 
-    beforeEach(() => {
-        initialValues = {
-            someNumber: '',
-        };
+  beforeEach(() => {
+    initialValues = {
+      someNumber: '',
+    };
 
-        options = {
-            labelContent: 'Some Number',
-            name: 'someNumber',
-        };
-    });
+    options = {
+      labelContent: 'Some Number',
+      name: 'someNumber',
+    };
+  });
 
-    it('allows user to type in a number', () => {
-        render(
-            <Formik initialValues={initialValues} onSubmit={noop}>
-                <BlueSnapDirectNumberField {...options} />
-            </Formik>,
-        );
+  it('allows user to type in a number', () => {
+    render(
+      <Formik initialValues={initialValues} onSubmit={noop}>
+        <BlueSnapDirectNumberField {...options} />
+      </Formik>,
+    );
 
-        const numberField = screen.getByLabelText<HTMLInputElement>('Some Number');
+    const numberField = screen.getByLabelText<HTMLInputElement>('Some Number');
 
-        fireEvent.change(numberField, { target: { value: '999999999' } });
+    fireEvent.change(numberField, { target: { value: '999999999' } });
 
-        expect(numberField.value).toBe('999999999');
-    });
+    expect(numberField.value).toBe('999999999');
+  });
 });

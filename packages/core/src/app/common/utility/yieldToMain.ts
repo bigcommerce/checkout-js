@@ -1,9 +1,9 @@
-export function yieldToMain () {
-    if (window.scheduler?.yield) {
-        return window.scheduler.yield();
-    }
+export function yieldToMain() {
+  if (window.scheduler?.yield) {
+    return window.scheduler.yield();
+  }
 
-    return new Promise(resolve => {
-        setTimeout(resolve, 0);
-    });
+  return new Promise((resolve) => {
+    setTimeout(resolve, 0);
+  });
 }

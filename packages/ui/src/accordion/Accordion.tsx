@@ -5,43 +5,41 @@ import React, { type ReactNode, useState } from 'react';
 import AccordionContext from './AccordionContext';
 
 export interface AccordionProps {
-    children?: ReactNode;
-    className?: string;
-    defaultSelectedItemId?: string;
-    isDisabled?: boolean;
-    onSelect?(id: string): void;
+  children?: ReactNode;
+  className?: string;
+  defaultSelectedItemId?: string;
+  isDisabled?: boolean;
+  onSelect?(id: string): void;
 }
 
 const Accordion = ({
-    children,
-    className = 'accordion',
-    defaultSelectedItemId,
-    isDisabled,
-    onSelect = noop,
+  children,
+  className = 'accordion',
+  defaultSelectedItemId,
+  isDisabled,
+  onSelect = noop,
 }: AccordionProps) => {
-    const [selectedItemId, setSelectedItemId] = useState<string | undefined>(defaultSelectedItemId);
+  const [selectedItemId, setSelectedItemId] = useState<string | undefined>(defaultSelectedItemId);
 
-    const handleToggleItem: (id: string) => void = (id) => {
-        if (isDisabled) {
-            return;
-        }
+  const handleToggleItem: (id: string) => void = (id) => {
+    if (isDisabled) {
+      return;
+    }
 
-        setSelectedItemId(id);
-        onSelect(id);
-    };
+    setSelectedItemId(id);
+    onSelect(id);
+  };
 
-    const getContextValue = memoizeOne((newSelectedItemId?: string) => {
-        return {
-            onToggle: handleToggleItem,
-            selectedItemId: newSelectedItemId,
-        };
-    });
+  const getContextValue = memoizeOne((newSelectedItemId?: string) => ({
+    onToggle: handleToggleItem,
+    selectedItemId: newSelectedItemId,
+  }));
 
-    return (
-        <AccordionContext.Provider value={getContextValue(selectedItemId)}>
-            <ul className={className}>{children}</ul>
-        </AccordionContext.Provider>
-    );
+  return (
+    <AccordionContext.Provider value={getContextValue(selectedItemId)}>
+      <ul className={className}>{children}</ul>
+    </AccordionContext.Provider>
+  );
 };
 
 export default Accordion;

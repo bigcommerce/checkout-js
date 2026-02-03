@@ -1,13 +1,13 @@
-import { SubscribeSessionStorage } from "./SubscribeSessionStorage";
+import { SubscribeSessionStorage } from './SubscribeSessionStorage';
 
 describe('SubscribeSessionStorage', () => {
-    it('sets, gets and removes subscribe status successfully', () => {
-        expect(SubscribeSessionStorage.getSubscribeStatus()).toBe(false);
-        SubscribeSessionStorage.setSubscribeStatus(true);
+  it('sets, gets and removes subscribe status successfully', () => {
+    expect(SubscribeSessionStorage.getSubscribeStatus()).toBe(false);
+    SubscribeSessionStorage.setSubscribeStatus(true);
 
-        expect(SubscribeSessionStorage.getSubscribeStatus()).toBe(true);
+    expect(SubscribeSessionStorage.getSubscribeStatus()).toBe(true);
 
-        SubscribeSessionStorage.removeSubscribeStatus();
-        expect(SubscribeSessionStorage.getSubscribeStatus()).toBe(false);
-    });
+    SubscribeSessionStorage.removeSubscribeStatus();
+    expect(SubscribeSessionStorage.getSubscribeStatus()).toBe(false);
+  });
 });

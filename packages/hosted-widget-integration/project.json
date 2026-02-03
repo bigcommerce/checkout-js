@@ -5,17 +5,23 @@
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "eslint --no-error-on-unmatched-pattern \"packages/hosted-widget-integration/src/**/*.ts\" \"packages/hosted-widget-integration/src/**/*.tsx\""
+      }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/packages/hosted-widget-integration"],
+      "outputs": [
+        "{workspaceRoot}/coverage/packages/hosted-widget-integration"
+      ],
       "options": {
         "jestConfig": "packages/hosted-widget-integration/jest.config.js",
         "runInBand": true
       }
     }
   },
-  "tags": ["scope:shared"]
+  "tags": [
+    "scope:shared"
+  ]
 }

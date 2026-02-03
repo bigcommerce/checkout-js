@@ -7,24 +7,22 @@ import { getLocaleContext } from '@bigcommerce/checkout/test-mocks';
 import withDate, { type WithDateProps } from './withDate';
 
 describe('withDate()', () => {
-    let contextValue: LocaleContextType;
+  let contextValue: LocaleContextType;
 
-    beforeEach(() => {
-        contextValue = getLocaleContext();
-    });
+  beforeEach(() => {
+    contextValue = getLocaleContext();
+  });
 
-    it('injects date prop to inner component', () => {
-        const Inner: FunctionComponent<WithDateProps> = ({ date }) => (
-            <>{date && date.inputFormat}</>
-        );
-        const Outer = withDate(Inner);
+  it('injects date prop to inner component', () => {
+    const Inner: FunctionComponent<WithDateProps> = ({ date }) => <>{date && date.inputFormat}</>;
+    const Outer = withDate(Inner);
 
-        render(
-            <LocaleContext.Provider value={contextValue}>
-                <Outer />
-            </LocaleContext.Provider>,
-        );
+    render(
+      <LocaleContext.Provider value={contextValue}>
+        <Outer />
+      </LocaleContext.Provider>,
+    );
 
-        expect(screen.getByText('dd/MM/yyyy')).toBeInTheDocument();
-    });
+    expect(screen.getByText('dd/MM/yyyy')).toBeInTheDocument();
+  });
 });

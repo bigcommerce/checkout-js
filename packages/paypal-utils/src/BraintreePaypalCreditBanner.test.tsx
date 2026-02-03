@@ -3,9 +3,9 @@ import { createBraintreePaypalPaymentStrategy } from '@bigcommerce/checkout-sdk/
 import React, { type FunctionComponent } from 'react';
 
 import {
-    CheckoutProvider,
-    LocaleContext,
-    type LocaleContextType,
+  CheckoutProvider,
+  LocaleContext,
+  type LocaleContextType,
 } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
@@ -15,70 +15,70 @@ import { render } from '@bigcommerce/checkout/test-utils';
 import BraintreePaypalCreditBanner from './BraintreePaypalCreditBanner';
 
 describe('BraintreePaypalCreditBanner', () => {
-    let BraintreePaypalCreditBannerTest: FunctionComponent;
-    let localeContext: LocaleContextType;
+  let BraintreePaypalCreditBannerTest: FunctionComponent;
+  let localeContext: LocaleContextType;
 
-    const checkoutService = createCheckoutService();
-    const checkoutState = checkoutService.getState();
-    const bannerContainerId = 'braintree-credit-banner-container';
-    const defaultProps = {
-        containerId: bannerContainerId,
-        methodId: PaymentMethodId.BraintreePaypalCredit,
-        onUnhandledError: jest.fn(),
-    };
+  const checkoutService = createCheckoutService();
+  const checkoutState = checkoutService.getState();
+  const bannerContainerId = 'braintree-credit-banner-container';
+  const defaultProps = {
+    containerId: bannerContainerId,
+    methodId: PaymentMethodId.BraintreePaypalCredit,
+    onUnhandledError: jest.fn(),
+  };
 
-    beforeEach(() => {
-        localeContext = createLocaleContext(getStoreConfig());
+  beforeEach(() => {
+    localeContext = createLocaleContext(getStoreConfig());
 
-        jest.spyOn(checkoutService, 'deinitializePayment').mockResolvedValue(checkoutState);
+    jest.spyOn(checkoutService, 'deinitializePayment').mockResolvedValue(checkoutState);
 
-        jest.spyOn(checkoutService, 'initializePayment').mockResolvedValue(checkoutState);
+    jest.spyOn(checkoutService, 'initializePayment').mockResolvedValue(checkoutState);
 
-        BraintreePaypalCreditBannerTest = () => (
-            <CheckoutProvider checkoutService={checkoutService}>
-                <LocaleContext.Provider value={localeContext}>
-                    <BraintreePaypalCreditBanner {...defaultProps} />
-                </LocaleContext.Provider>
-            </CheckoutProvider>
-        );
+    BraintreePaypalCreditBannerTest = () => (
+      <CheckoutProvider checkoutService={checkoutService}>
+        <LocaleContext.Provider value={localeContext}>
+          <BraintreePaypalCreditBanner {...defaultProps} />
+        </LocaleContext.Provider>
+      </CheckoutProvider>
+    );
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+    jest.resetAllMocks();
+  });
+
+  it('initializes BraintreePaypalCreditBanner', () => {
+    render(<BraintreePaypalCreditBannerTest />);
+
+    expect(checkoutService.initializePayment).toHaveBeenCalledWith({
+      methodId: PaymentMethodId.BraintreePaypalCredit,
+      integrations: [createBraintreePaypalPaymentStrategy],
+      braintree: {
+        bannerContainerId,
+      },
     });
 
-    afterEach(() => {
-        jest.clearAllMocks();
-        jest.resetAllMocks();
+    expect(checkoutService.deinitializePayment).toHaveBeenCalledWith({
+      methodId: PaymentMethodId.BraintreePaypalCredit,
+    });
+  });
+
+  it('catches error during BraintreePaypalCreditBanner initialization', () => {
+    jest.spyOn(checkoutService, 'initializePayment').mockImplementation(() => {
+      throw new Error('something went wrong!');
     });
 
-    it('initializes BraintreePaypalCreditBanner', () => {
-        render(<BraintreePaypalCreditBannerTest />);
+    render(<BraintreePaypalCreditBannerTest />);
 
-        expect(checkoutService.initializePayment).toHaveBeenCalledWith({
-            methodId: PaymentMethodId.BraintreePaypalCredit,
-            integrations: [createBraintreePaypalPaymentStrategy],
-            braintree: {
-                bannerContainerId,
-            },
-        });
-
-        expect(checkoutService.deinitializePayment).toHaveBeenCalledWith({
-            methodId: PaymentMethodId.BraintreePaypalCredit,
-        });
+    expect(checkoutService.initializePayment).toHaveBeenCalledWith({
+      methodId: PaymentMethodId.BraintreePaypalCredit,
+      integrations: [createBraintreePaypalPaymentStrategy],
+      braintree: {
+        bannerContainerId,
+      },
     });
 
-    it('catches error during BraintreePaypalCreditBanner initialization', () => {
-        jest.spyOn(checkoutService, 'initializePayment').mockImplementation(() => {
-            throw new Error('something went wrong!');
-        });
-
-        render(<BraintreePaypalCreditBannerTest />);
-
-        expect(checkoutService.initializePayment).toHaveBeenCalledWith({
-            methodId: PaymentMethodId.BraintreePaypalCredit,
-            integrations: [createBraintreePaypalPaymentStrategy],
-            braintree: {
-                bannerContainerId,
-            },
-        });
-
-        expect(defaultProps.onUnhandledError).toHaveBeenCalled();
-    });
+    expect(defaultProps.onUnhandledError).toHaveBeenCalled();
+  });
 });

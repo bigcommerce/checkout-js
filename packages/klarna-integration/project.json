@@ -5,17 +5,23 @@
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "eslint --no-error-on-unmatched-pattern \"packages/klarna-integration/src/**/*.ts\" \"packages/klarna-integration/src/**/*.tsx\""
+      }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/packages/klarna-integration"],
+      "outputs": [
+        "{workspaceRoot}/coverage/packages/klarna-integration"
+      ],
       "options": {
         "jestConfig": "packages/klarna-integration/jest.config.js",
         "passWithNoTests": false
       }
     }
   },
-  "tags": ["scope:integration"]
+  "tags": [
+    "scope:integration"
+  ]
 }

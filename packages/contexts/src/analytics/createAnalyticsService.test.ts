@@ -1,23 +1,23 @@
 import createAnalyticsService from './createAnalyticsService';
 
 describe('createAnalyticsService', () => {
-    it('should be created once', () => {
-        const createArguments = ['create', 'arguments'];
-        const createFn = jest.fn().mockImplementation((options: string[]) => options);
+  it('should be created once', () => {
+    const createArguments = ['create', 'arguments'];
+    const createFn = jest.fn().mockImplementation((options: string[]) => options);
 
-        const getService: () => string[] = createAnalyticsService(createFn, [createArguments]);
+    const getService: () => string[] = createAnalyticsService(createFn, [createArguments]);
 
-        expect(getService()[0]).toBe('create');
-        expect(getService()[1]).toBe('arguments');
-        expect(createFn).toHaveBeenCalledTimes(1);
-    });
+    expect(getService()[0]).toBe('create');
+    expect(getService()[1]).toBe('arguments');
+    expect(createFn).toHaveBeenCalledTimes(1);
+  });
 
-    it('should be created without arguments', () => {
-        const createFn = jest.fn().mockImplementation((option: unknown) => option);
+  it('should be created without arguments', () => {
+    const createFn = jest.fn().mockImplementation((option: unknown) => option);
 
-        const getService = createAnalyticsService(createFn);
+    const getService = createAnalyticsService(createFn);
 
-        expect(getService()).toBeUndefined();
-        expect(createFn).toHaveBeenCalledTimes(1);
-    });
+    expect(getService()).toBeUndefined();
+    expect(createFn).toHaveBeenCalledTimes(1);
+  });
 });

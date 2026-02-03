@@ -1,8 +1,8 @@
 import {
-    type CheckoutSelectors,
-    type CheckoutService,
-    type CustomerInitializeOptions,
-    type CustomerRequestOptions,
+  type CheckoutSelectors,
+  type CheckoutService,
+  type CustomerInitializeOptions,
+  type CustomerRequestOptions,
 } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { type FunctionComponent, lazy, memo } from 'react';
@@ -16,114 +16,117 @@ import { withCheckout } from '../checkout';
 import { getSupportedMethodIds } from './getSupportedMethods';
 import resolveCheckoutButton from './resolveCheckoutButton';
 
-const CheckoutButtonV1Resolver = lazy(() => import(/* webpackChunkName: "wallet-button-v1-resolver" */'./WalletButtonV1Resolver'));
+const CheckoutButtonV1Resolver = lazy(
+  () => import(/* webpackChunkName: "wallet-button-v1-resolver" */ './WalletButtonV1Resolver'),
+);
 
 export interface CheckoutButtonListProps {
-    hideText?: boolean;
-    isInitializing?: boolean;
-    methodIds?: string[];
-    checkEmbeddedSupport?(methodIds: string[]): void;
-    deinitialize(options: CustomerRequestOptions): void;
-    initialize(options: CustomerInitializeOptions): void;
-    onClick?(methodId: string): void;
-    onError?(error: Error): void;
+  hideText?: boolean;
+  isInitializing?: boolean;
+  methodIds?: string[];
+  checkEmbeddedSupport?(methodIds: string[]): void;
+  deinitialize(options: CustomerRequestOptions): void;
+  initialize(options: CustomerInitializeOptions): void;
+  onClick?(methodId: string): void;
+  onError?(error: Error): void;
 }
 
 interface WithCheckoutCheckoutButtonListProps {
-    checkoutState: CheckoutSelectors;
-    checkoutService: CheckoutService;
+  checkoutState: CheckoutSelectors;
+  checkoutService: CheckoutService;
 }
 
-const CheckoutButtonList: FunctionComponent<WithCheckoutCheckoutButtonListProps & CheckoutButtonListProps> = ({
-    checkoutService,
-    checkoutState,
-    hideText = false,
-    isInitializing = false,
-    methodIds = [],
-    checkEmbeddedSupport,
-    deinitialize,
-    initialize,
-    onClick = noop,
-    onError,
+const CheckoutButtonList: FunctionComponent<
+  WithCheckoutCheckoutButtonListProps & CheckoutButtonListProps
+> = ({
+  checkoutService,
+  checkoutState,
+  hideText = false,
+  isInitializing = false,
+  methodIds = [],
+  checkEmbeddedSupport,
+  deinitialize,
+  initialize,
+  onClick = noop,
+  onError,
 }) => {
-    const { language } = useLocale();
-    const supportedMethodIds = getSupportedMethodIds(methodIds);
+  const { language } = useLocale();
+  const supportedMethodIds = getSupportedMethodIds(methodIds);
 
-    if (supportedMethodIds.length === 0) {
-        return null;
+  if (supportedMethodIds.length === 0) {
+    return null;
+  }
+
+  if (checkEmbeddedSupport) {
+    try {
+      checkEmbeddedSupport(supportedMethodIds);
+    } catch (error) {
+      if (error instanceof Error && onError) {
+        onError(error);
+      } else {
+        throw error;
+      }
+
+      return null;
     }
+  }
 
-    if (checkEmbeddedSupport) {
-        try {
-            checkEmbeddedSupport(supportedMethodIds);
-        } catch (error) {
-            if (error instanceof Error && onError) {
-                onError(error);
-            } else {
-                throw error;
-            }
+  const renderButtons = () =>
+    supportedMethodIds.map((methodId) => {
+      const ResolvedCheckoutButton = resolveCheckoutButton({ id: methodId });
 
-            return null;
-        }
-    }
+      if (!ResolvedCheckoutButton) {
+        return (
+          <LazyContainer key={methodId}>
+            <CheckoutButtonV1Resolver
+              deinitialize={deinitialize}
+              initialize={initialize}
+              isShowingWalletButtonsOnTop={false}
+              key={methodId}
+              methodId={methodId}
+              onClick={onClick}
+              onError={onClick}
+            />
+          </LazyContainer>
+        );
+      }
 
-    const renderButtons = () => {
-        return supportedMethodIds.map((methodId) => {
-            const ResolvedCheckoutButton = resolveCheckoutButton(
-                { id: methodId },
-            );
+      return (
+        <LazyContainer key={methodId}>
+          <ResolvedCheckoutButton
+            checkoutService={checkoutService}
+            checkoutState={checkoutState}
+            containerId={`${methodId}CheckoutButton`}
+            language={language}
+            methodId={methodId}
+            onUnhandledError={onClick}
+            onWalletButtonClick={onClick}
+          />
+        </LazyContainer>
+      );
+    });
 
-            if (!ResolvedCheckoutButton) {
-                return <LazyContainer key={methodId}>
-                    <CheckoutButtonV1Resolver
-                        deinitialize={deinitialize}
-                        initialize={initialize}
-                        isShowingWalletButtonsOnTop={false}
-                        key={methodId}
-                        methodId={methodId}
-                        onClick={onClick}
-                        onError={onClick}
-                    />
-                </LazyContainer>
-            }
+  return (
+    <>
+      {!isInitializing && !hideText && (
+        <p>
+          <TranslatedString id="remote.continue_with_text" />
+        </p>
+      )}
 
-            return <LazyContainer key={methodId}>
-                <ResolvedCheckoutButton
-                    checkoutService={checkoutService}
-                    checkoutState={checkoutState}
-                    containerId={`${methodId}CheckoutButton`}
-                    language={language}
-                    methodId={methodId}
-                    onUnhandledError={onClick}
-                    onWalletButtonClick={onClick}
-                />
-            </LazyContainer>;
-        });
-    };
-
-    return (
-        <>
-            {!isInitializing && !hideText && (
-                <p>
-                    <TranslatedString id="remote.continue_with_text" />
-                </p>
-            )}
-
-            <div className="checkoutRemote">
-                {renderButtons()}
-            </div>
-        </>
-    );
+      <div className="checkoutRemote">{renderButtons()}</div>
+    </>
+  );
 };
 
 function mapToCheckoutButtonListProps({
   checkoutState,
   checkoutService,
 }: CheckoutContextProps): WithCheckoutCheckoutButtonListProps | null {
-    return {
-        checkoutService,
-        checkoutState,
-    };
+  return {
+    checkoutService,
+    checkoutState,
+  };
 }
 
 export default memo(withCheckout(mapToCheckoutButtonListProps)(CheckoutButtonList));

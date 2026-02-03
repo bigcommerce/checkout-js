@@ -6,153 +6,153 @@ import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';
 
 import {
-    CheckoutProvider,
-    LocaleContext,
-    type LocaleContextType,
-    PaymentFormContext,
-    type PaymentFormService,
+  CheckoutProvider,
+  LocaleContext,
+  type LocaleContextType,
+  PaymentFormContext,
+  type PaymentFormService,
 } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import {
-    getBraintreePaypalPaymentMethod,
-    getCart,
-    getCustomer,
-    getPaymentFormServiceMock,
-    getStoreConfig,
+  getBraintreePaypalPaymentMethod,
+  getCart,
+  getCustomer,
+  getPaymentFormServiceMock,
+  getStoreConfig,
 } from '@bigcommerce/checkout/test-mocks';
 import { render } from '@bigcommerce/checkout/test-utils';
 
 import BraintreePaypalPaymentMethod from './BraintreePaypalPaymentMethod';
 
 describe('BraintreePaypalPaymentMethod', () => {
-    let eventEmitter: EventEmitter;
-    let BraintreePaypalPaymentMethodTest: FunctionComponent;
-    let paymentForm: PaymentFormService;
-    let localeContext: LocaleContextType;
+  let eventEmitter: EventEmitter;
+  let BraintreePaypalPaymentMethodTest: FunctionComponent;
+  let paymentForm: PaymentFormService;
+  let localeContext: LocaleContextType;
 
-    const checkoutService = createCheckoutService();
-    const checkoutState = checkoutService.getState();
-    const defaultProps = {
-        checkoutService,
-        checkoutState,
+  const checkoutService = createCheckoutService();
+  const checkoutState = checkoutService.getState();
+  const defaultProps = {
+    checkoutService,
+    checkoutState,
 
-        language: { translate: jest.fn() } as unknown as LanguageService,
-        method: getBraintreePaypalPaymentMethod(),
-        onUnhandledError: jest.fn(),
+    language: { translate: jest.fn() } as unknown as LanguageService,
+    method: getBraintreePaypalPaymentMethod(),
+    onUnhandledError: jest.fn(),
 
-        paymentForm: {
-            hidePaymentSubmitButton: jest.fn(),
-            setSubmitted: jest.fn(),
-            submitForm: jest.fn(),
-        } as unknown as PaymentFormService,
-    };
+    paymentForm: {
+      hidePaymentSubmitButton: jest.fn(),
+      setSubmitted: jest.fn(),
+      submitForm: jest.fn(),
+    } as unknown as PaymentFormService,
+  };
 
-    beforeEach(() => {
-        const providerError = new Error('INSTRUMENT_DECLINED');
+  beforeEach(() => {
+    const providerError = new Error('INSTRUMENT_DECLINED');
 
-        eventEmitter = new EventEmitter();
-        paymentForm = getPaymentFormServiceMock();
-        localeContext = createLocaleContext(getStoreConfig());
+    eventEmitter = new EventEmitter();
+    paymentForm = getPaymentFormServiceMock();
+    localeContext = createLocaleContext(getStoreConfig());
 
-        jest.spyOn(checkoutState.data, 'getCart').mockReturnValue(getCart());
+    jest.spyOn(checkoutState.data, 'getCart').mockReturnValue(getCart());
 
-        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
+    jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
 
-        jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
+    jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
 
-        jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
-            eventEmitter.on('onRenderButton', () => {
-                if (options.braintree?.onRenderButton) {
-                    // eslint-disable-next-line
+    jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
+      eventEmitter.on('onRenderButton', () => {
+        if (options.braintree?.onRenderButton) {
+          // eslint-disable-next-line
                     options.braintree.onRenderButton();
-                }
-            });
+        }
+      });
 
-            eventEmitter.on('onError', () => {
-                if (options.braintree?.onError) {
-                    options.braintree.onError(providerError);
-                }
-            });
+      eventEmitter.on('onError', () => {
+        if (options.braintree?.onError) {
+          options.braintree.onError(providerError);
+        }
+      });
 
-            eventEmitter.on('submitForm', () => {
-                if (options.braintree?.submitForm) {
-                    options.braintree.submitForm();
-                }
-            });
+      eventEmitter.on('submitForm', () => {
+        if (options.braintree?.submitForm) {
+          options.braintree.submitForm();
+        }
+      });
 
-            return Promise.resolve(checkoutState);
-        });
-
-        BraintreePaypalPaymentMethodTest = (props) => (
-            <CheckoutProvider checkoutService={checkoutService}>
-                <PaymentFormContext.Provider value={{ paymentForm }}>
-                    <LocaleContext.Provider value={localeContext}>
-                        <Formik initialValues={{}} onSubmit={noop}>
-                            <BraintreePaypalPaymentMethod {...defaultProps} {...props} />
-                        </Formik>
-                    </LocaleContext.Provider>
-                </PaymentFormContext.Provider>
-            </CheckoutProvider>
-        );
+      return Promise.resolve(checkoutState);
     });
 
-    it('initializes BraintreePaypalPaymentMethod', () => {
-        const initializePayment = jest
-            .spyOn(checkoutService, 'initializePayment')
-            .mockResolvedValue(checkoutState);
+    BraintreePaypalPaymentMethodTest = (props) => (
+      <CheckoutProvider checkoutService={checkoutService}>
+        <PaymentFormContext.Provider value={{ paymentForm }}>
+          <LocaleContext.Provider value={localeContext}>
+            <Formik initialValues={{}} onSubmit={noop}>
+              <BraintreePaypalPaymentMethod {...defaultProps} {...props} />
+            </Formik>
+          </LocaleContext.Provider>
+        </PaymentFormContext.Provider>
+      </CheckoutProvider>
+    );
+  });
 
-        render(<BraintreePaypalPaymentMethodTest />);
+  it('initializes BraintreePaypalPaymentMethod', () => {
+    const initializePayment = jest
+      .spyOn(checkoutService, 'initializePayment')
+      .mockResolvedValue(checkoutState);
 
-        expect(initializePayment).toHaveBeenCalledWith({
-            gatewayId: defaultProps.method.gateway,
-            methodId: defaultProps.method.id,
-            integrations: [createBraintreePaypalPaymentStrategy],
-            braintree: {
-                onError: expect.any(Function),
-                onRenderButton: expect.any(Function),
-                submitForm: expect.any(Function),
-                containerId: '#checkout-payment-continue',
-            },
-        });
+    render(<BraintreePaypalPaymentMethodTest />);
+
+    expect(initializePayment).toHaveBeenCalledWith({
+      gatewayId: defaultProps.method.gateway,
+      methodId: defaultProps.method.id,
+      integrations: [createBraintreePaypalPaymentStrategy],
+      braintree: {
+        onError: expect.any(Function),
+        onRenderButton: expect.any(Function),
+        submitForm: expect.any(Function),
+        containerId: '#checkout-payment-continue',
+      },
+    });
+  });
+
+  it('throws specific error text when receive INSTRUMENT_DECLINED error message', () => {
+    render(<BraintreePaypalPaymentMethodTest />);
+
+    eventEmitter.emit('onError');
+
+    expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(
+      new Error(defaultProps.language.translate('payment.errors.instrument_declined')),
+    );
+  });
+
+  it('hides payment submit button by calling onRenderButton callback', () => {
+    jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
+      eventEmitter.on('onRenderButton', () => {
+        if (options.braintree?.onRenderButton) {
+          options.braintree.onRenderButton();
+        }
+      });
+
+      return Promise.resolve(checkoutState);
     });
 
-    it('throws specific error text when receive INSTRUMENT_DECLINED error message', () => {
-        render(<BraintreePaypalPaymentMethodTest />);
+    render(<BraintreePaypalPaymentMethodTest />);
 
-        eventEmitter.emit('onError');
+    eventEmitter.emit('onRenderButton');
 
-        expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(
-            new Error(defaultProps.language.translate('payment.errors.instrument_declined')),
-        );
-    });
+    expect(defaultProps.paymentForm.hidePaymentSubmitButton).toHaveBeenCalledWith(
+      defaultProps.method,
+      true,
+    );
+  });
 
-    it('hides payment submit button by calling onRenderButton callback', () => {
-        jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
-            eventEmitter.on('onRenderButton', () => {
-                if (options.braintree?.onRenderButton) {
-                    options.braintree.onRenderButton();
-                }
-            });
+  it('submits payment form by calling submitForm callback', () => {
+    render(<BraintreePaypalPaymentMethodTest />);
 
-            return Promise.resolve(checkoutState);
-        });
+    eventEmitter.emit('submitForm');
 
-        render(<BraintreePaypalPaymentMethodTest />);
-
-        eventEmitter.emit('onRenderButton');
-
-        expect(defaultProps.paymentForm.hidePaymentSubmitButton).toHaveBeenCalledWith(
-            defaultProps.method,
-            true,
-        );
-    });
-
-    it('submits payment form by calling submitForm callback', () => {
-        render(<BraintreePaypalPaymentMethodTest />);
-
-        eventEmitter.emit('submitForm');
-
-        expect(defaultProps.paymentForm.setSubmitted).toHaveBeenCalledWith(true);
-        expect(defaultProps.paymentForm.submitForm).toHaveBeenCalled();
-    });
+    expect(defaultProps.paymentForm.setSubmitted).toHaveBeenCalledWith(true);
+    expect(defaultProps.paymentForm.submitForm).toHaveBeenCalled();
+  });
 });

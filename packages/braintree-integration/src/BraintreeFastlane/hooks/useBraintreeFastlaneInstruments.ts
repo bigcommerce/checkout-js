@@ -5,24 +5,24 @@ import { useCheckout, usePaymentFormContext } from '@bigcommerce/checkout/contex
 import { isPayPalFastlaneCustomer } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 export const useBraintreeFastlaneInstruments = () => {
-    const [selectedInstrument, setSelectedInstrument] = useState<CardInstrument>();
+  const [selectedInstrument, setSelectedInstrument] = useState<CardInstrument>();
 
-    const { getPaymentProviderCustomer } = useCheckout().checkoutState.data;
-    const paymentProviderCustomer = getPaymentProviderCustomer();
-    const paypalFastlaneCustomer = isPayPalFastlaneCustomer(paymentProviderCustomer)
-        ? paymentProviderCustomer
-        : {};
+  const { getPaymentProviderCustomer } = useCheckout().checkoutState.data;
+  const paymentProviderCustomer = getPaymentProviderCustomer();
+  const paypalFastlaneCustomer = isPayPalFastlaneCustomer(paymentProviderCustomer)
+    ? paymentProviderCustomer
+    : {};
 
-    const { paymentForm } = usePaymentFormContext();
+  const { paymentForm } = usePaymentFormContext();
 
-    const handleSelectInstrument = (instrument: CardInstrument): void => {
-        setSelectedInstrument(instrument);
-        paymentForm.setFieldValue('instrumentId', instrument.bigpayToken);
-    };
+  const handleSelectInstrument = (instrument: CardInstrument): void => {
+    setSelectedInstrument(instrument);
+    paymentForm.setFieldValue('instrumentId', instrument.bigpayToken);
+  };
 
-    return {
-        instruments: paypalFastlaneCustomer.instruments || [],
-        handleSelectInstrument,
-        selectedInstrument,
-    };
+  return {
+    instruments: paypalFastlaneCustomer.instruments || [],
+    handleSelectInstrument,
+    selectedInstrument,
+  };
 };

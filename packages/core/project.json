@@ -55,7 +55,9 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/packages/core"],
+      "outputs": [
+        "{workspaceRoot}/coverage/packages/core"
+      ],
       "options": {
         "jestConfig": "packages/core/jest.config.js",
         "passWithNoTests": false,
@@ -68,14 +70,10 @@
       ]
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
-      "fix": true,
-      "dependsOn": [
-        {
-          "target": "generate"
-        }
-      ]
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "eslint --no-error-on-unmatched-pattern \"packages/core/src/**/*.ts\" \"packages/core/src/**/*.tsx\""
+      }
     },
     "generate": {
       "executor": "nx:run-commands",
@@ -89,5 +87,7 @@
       }
     }
   },
-  "tags": ["scope:core"]
+  "tags": [
+    "scope:core"
+  ]
 }

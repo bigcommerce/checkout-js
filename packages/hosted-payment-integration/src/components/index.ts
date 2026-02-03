@@ -1,4 +1,4 @@
 export {
-    default as HostedPaymentComponent,
-    type HostedPaymentComponentProps,
+  default as HostedPaymentComponent,
+  type HostedPaymentComponentProps,
 } from './HostedPaymentComponent';

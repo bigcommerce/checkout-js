@@ -5,34 +5,34 @@ import React from 'react';
 import CheckoutProvider from './CheckoutProvider';
 
 describe('CheckoutProvider', () => {
-    it('subscribes to state changes when component is mounted', () => {
-        const service = createCheckoutService();
+  it('subscribes to state changes when component is mounted', () => {
+    const service = createCheckoutService();
 
-        jest.spyOn(service, 'subscribe');
+    jest.spyOn(service, 'subscribe');
 
-        render(
-            <CheckoutProvider checkoutService={service}>
-                <div />
-            </CheckoutProvider>,
-        );
+    render(
+      <CheckoutProvider checkoutService={service}>
+        <div />
+      </CheckoutProvider>,
+    );
 
-        expect(service.subscribe).toHaveBeenCalled();
-    });
+    expect(service.subscribe).toHaveBeenCalled();
+  });
 
-    it('unsubscribes to state changes when component unmounts', () => {
-        const service = createCheckoutService();
-        const unsubscribe = jest.fn();
+  it('unsubscribes to state changes when component unmounts', () => {
+    const service = createCheckoutService();
+    const unsubscribe = jest.fn();
 
-        jest.spyOn(service, 'subscribe').mockReturnValue(unsubscribe);
+    jest.spyOn(service, 'subscribe').mockReturnValue(unsubscribe);
 
-        const { unmount } = render(
-            <CheckoutProvider checkoutService={service}>
-                <div />
-            </CheckoutProvider>,
-        );
+    const { unmount } = render(
+      <CheckoutProvider checkoutService={service}>
+        <div />
+      </CheckoutProvider>,
+    );
 
-        unmount();
+    unmount();
 
-        expect(unsubscribe).toHaveBeenCalled();
-    });
+    expect(unsubscribe).toHaveBeenCalled();
+  });
 });

@@ -1,9 +1,9 @@
 import {
-    type CheckoutSelectors,
-    type CheckoutService,
-    createCheckoutService,
-    type Instrument,
-    type PaymentMethod,
+  type CheckoutSelectors,
+  type CheckoutService,
+  createCheckoutService,
+  type Instrument,
+  type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
 
 import { getCardInstrument, getCart, getPaymentMethod } from '@bigcommerce/checkout/test-mocks';
@@ -11,55 +11,55 @@ import { getCardInstrument, getCart, getPaymentMethod } from '@bigcommerce/check
 import isInstrumentCardCodeRequiredSelector from './isInstrumentCardCodeRequiredSelector';
 
 describe('isInstrumentCardCodeRequiredSelector()', () => {
-    let mockInstrument: Instrument;
-    let mockPaymentsMethod: PaymentMethod;
-    let checkoutState: CheckoutSelectors;
-    let checkoutService: CheckoutService;
+  let mockInstrument: Instrument;
+  let mockPaymentsMethod: PaymentMethod;
+  let checkoutState: CheckoutSelectors;
+  let checkoutService: CheckoutService;
 
-    beforeEach(() => {
-        checkoutService = createCheckoutService();
-        checkoutState = checkoutService.getState();
+  beforeEach(() => {
+    checkoutService = createCheckoutService();
+    checkoutState = checkoutService.getState();
 
-        jest.spyOn(checkoutState.data, 'getCart').mockReturnValue(getCart());
+    jest.spyOn(checkoutState.data, 'getCart').mockReturnValue(getCart());
 
-        mockInstrument = getCardInstrument();
-        mockPaymentsMethod = getPaymentMethod();
+    mockInstrument = getCardInstrument();
+    mockPaymentsMethod = getPaymentMethod();
+  });
+
+  it('return true if cart has lineItems.digitalItems', () => {
+    expect(
+      isInstrumentCardCodeRequiredSelector(checkoutState)(mockInstrument, mockPaymentsMethod),
+    ).toBe(true);
+  });
+
+  it('return false if cart does not have lineItems.digitalItems', () => {
+    const cart = getCart();
+
+    jest.spyOn(checkoutState.data, 'getCart').mockReturnValue({
+      ...cart,
+      lineItems: {
+        ...cart.lineItems,
+        digitalItems: [],
+      },
     });
 
-    it('return true if cart has lineItems.digitalItems', () => {
-        expect(
-            isInstrumentCardCodeRequiredSelector(checkoutState)(mockInstrument, mockPaymentsMethod),
-        ).toBe(true);
+    expect(
+      isInstrumentCardCodeRequiredSelector(checkoutState)(mockInstrument, mockPaymentsMethod),
+    ).toBe(false);
+  });
+
+  it('return false if cart does not have lineItems', () => {
+    const cart = getCart();
+
+    jest.spyOn(checkoutState.data, 'getCart').mockReturnValue({
+      ...cart,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      lineItems: undefined,
     });
 
-    it('return false if cart does not have lineItems.digitalItems', () => {
-        const cart = getCart();
-
-        jest.spyOn(checkoutState.data, 'getCart').mockReturnValue({
-            ...cart,
-            lineItems: {
-                ...cart.lineItems,
-                digitalItems: [],
-            },
-        });
-
-        expect(
-            isInstrumentCardCodeRequiredSelector(checkoutState)(mockInstrument, mockPaymentsMethod),
-        ).toBe(false);
-    });
-
-    it('return false if cart does not have lineItems', () => {
-        const cart = getCart();
-
-        jest.spyOn(checkoutState.data, 'getCart').mockReturnValue({
-            ...cart,
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            lineItems: undefined,
-        });
-
-        expect(
-            isInstrumentCardCodeRequiredSelector(checkoutState)(mockInstrument, mockPaymentsMethod),
-        ).toBe(false);
-    });
+    expect(
+      isInstrumentCardCodeRequiredSelector(checkoutState)(mockInstrument, mockPaymentsMethod),
+    ).toBe(false);
+  });
 });

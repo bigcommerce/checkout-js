@@ -3,38 +3,38 @@ import { type LanguageService, type PaymentMethod } from '@bigcommerce/checkout-
 import PaymentMethodId from './PaymentMethodId';
 
 export default function getPaymentMethodDisplayName(
-    language: LanguageService,
+  language: LanguageService,
 ): (method: PaymentMethod) => string {
-    return (method) => {
-        const { displayName } = method.config;
+  return (method) => {
+    const { displayName } = method.config;
 
-        const isCreditCard = displayName?.toLowerCase() === 'credit card';
+    const isCreditCard = displayName?.toLowerCase() === 'credit card';
 
-        if (
-            method.id === PaymentMethodId.PaypalCommerceCredit ||
-            method.id === PaymentMethodId.BigCommercePaymentsPayLater ||
-            method.id === PaymentMethodId.BraintreePaypalCredit
-        ) {
-            const { payPalCreditProductBrandName } = method.initializationData;
+    if (
+      method.id === PaymentMethodId.PaypalCommerceCredit ||
+      method.id === PaymentMethodId.BigCommercePaymentsPayLater ||
+      method.id === PaymentMethodId.BraintreePaypalCredit
+    ) {
+      const { payPalCreditProductBrandName } = method.initializationData;
 
-            if (payPalCreditProductBrandName) {
-                return payPalCreditProductBrandName.credit || payPalCreditProductBrandName;
-            }
+      if (payPalCreditProductBrandName) {
+        return payPalCreditProductBrandName.credit || payPalCreditProductBrandName;
+      }
 
-            return 'Pay Later';
-        }
+      return 'Pay Later';
+    }
 
-        if (
-            (isCreditCard && method.id === PaymentMethodId.AdyenV2) ||
-            method.id === PaymentMethodId.AdyenV3
-        ) {
-            return language.translate('payment.credit_debit_card_text');
-        }
+    if (
+      (isCreditCard && method.id === PaymentMethodId.AdyenV2) ||
+      method.id === PaymentMethodId.AdyenV3
+    ) {
+      return language.translate('payment.credit_debit_card_text');
+    }
 
-        if (isCreditCard) {
-            return language.translate('payment.credit_card_text');
-        }
+    if (isCreditCard) {
+      return language.translate('payment.credit_card_text');
+    }
 
-        return displayName || '';
-    };
+    return displayName || '';
+  };
 }

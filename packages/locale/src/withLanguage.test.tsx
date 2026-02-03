@@ -8,21 +8,21 @@ import getLanguageService from './getLanguageService';
 import withLanguage, { type WithLanguageProps } from './withLanguage';
 
 describe('withDate()', () => {
-    it('injects language prop to inner component', () => {
-        const Inner: FunctionComponent<WithLanguageProps> = ({ language }) => (
-            <>{language && language.translate('billing.billing_heading')}</>
-        );
-        const Outer = withLanguage(Inner);
+  it('injects language prop to inner component', () => {
+    const Inner: FunctionComponent<WithLanguageProps> = ({ language }) => (
+      <>{language && language.translate('billing.billing_heading')}</>
+    );
+    const Outer = withLanguage(Inner);
 
-        render(
-            <LocaleProvider
-                checkoutService={createCheckoutService()}
-                languageService={getLanguageService()}
-            >
-                <Outer />
-            </LocaleProvider>,
-        );
+    render(
+      <LocaleProvider
+        checkoutService={createCheckoutService()}
+        languageService={getLanguageService()}
+      >
+        <Outer />
+      </LocaleProvider>,
+    );
 
-        expect(screen.getByText('Billing')).toBeInTheDocument();
-    });
+    expect(screen.getByText('Billing')).toBeInTheDocument();
+  });
 });

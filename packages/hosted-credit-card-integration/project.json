@@ -5,16 +5,23 @@
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "eslint --no-error-on-unmatched-pattern \"packages/hosted-credit-card-integration/src/**/*.ts\" \"packages/hosted-credit-card-integration/src/**/*.tsx\""
+      }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/packages/hosted-credit-card-integration"],
+      "outputs": [
+        "{workspaceRoot}/coverage/packages/hosted-credit-card-integration"
+      ],
       "options": {
         "jestConfig": "packages/hosted-credit-card-integration/jest.config.js"
       }
     }
   },
-  "tags": ["scope:integration", "scope:shared"]
+  "tags": [
+    "scope:integration",
+    "scope:shared"
+  ]
 }

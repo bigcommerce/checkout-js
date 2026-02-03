@@ -8,30 +8,30 @@ import { render, screen } from '@bigcommerce/checkout/test-utils';
 import CheckboxFormField from './CheckboxFormField';
 
 describe('CheckboxFormField', () => {
-    it('renders form field with checkbox and sets initial checked value', () => {
-        render(
-            <Formik
-                initialValues={{ foobar: true }}
-                onSubmit={noop}
-                render={() => <CheckboxFormField labelContent="Foobar" name="foobar" />}
-            />,
-        );
+  it('renders form field with checkbox and sets initial checked value', () => {
+    render(
+      <Formik
+        initialValues={{ foobar: true }}
+        onSubmit={noop}
+        render={() => <CheckboxFormField labelContent="Foobar" name="foobar" />}
+      />,
+    );
 
-        expect(screen.getByLabelText('Foobar')).toBeInTheDocument();
-        expect(screen.getByLabelText('Foobar')).toBeChecked();
-    });
+    expect(screen.getByLabelText('Foobar')).toBeInTheDocument();
+    expect(screen.getByLabelText('Foobar')).toBeChecked();
+  });
 
-    it('updates checked value when clicked', async () => {
-        render(
-            <Formik
-                initialValues={{ foobar: true }}
-                onSubmit={noop}
-                render={() => <CheckboxFormField labelContent="Foobar" name="foobar" />}
-            />,
-        );
+  it('updates checked value when clicked', async () => {
+    render(
+      <Formik
+        initialValues={{ foobar: true }}
+        onSubmit={noop}
+        render={() => <CheckboxFormField labelContent="Foobar" name="foobar" />}
+      />,
+    );
 
-        await userEvent.click(screen.getByLabelText('Foobar'));
+    await userEvent.click(screen.getByLabelText('Foobar'));
 
-        expect(screen.getByLabelText('Foobar')).not.toBeChecked();
-    });
+    expect(screen.getByLabelText('Foobar')).not.toBeChecked();
+  });
 });

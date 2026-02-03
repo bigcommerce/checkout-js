@@ -5,24 +5,22 @@ import { extensionReducer } from './ExtensionReducer';
 import { type ExtensionServiceInterface } from './ExtensionType';
 
 export interface ExtensionProviderProps {
-    extensionService: ExtensionServiceInterface;
-    children?: ReactNode;
+  extensionService: ExtensionServiceInterface;
+  children?: ReactNode;
 }
 
 export const ExtensionProvider = ({ children, extensionService }: ExtensionProviderProps) => {
-    const [extensionState, dispatch] = useReducer(extensionReducer, {
-        isShowingLoadingIndicator: false,
-        shippingFormRenderTimestamp: undefined,
-    });
+  const [extensionState, dispatch] = useReducer(extensionReducer, {
+    isShowingLoadingIndicator: false,
+    shippingFormRenderTimestamp: undefined,
+  });
 
-    extensionService.setDispatch(dispatch);
+  extensionService.setDispatch(dispatch);
 
-    const extensionValues = {
-        extensionService,
-        extensionState,
-    };
+  const extensionValues = {
+    extensionService,
+    extensionState,
+  };
 
-    return (
-        <ExtensionContext.Provider value={extensionValues}>{children}</ExtensionContext.Provider>
-    );
+  return <ExtensionContext.Provider value={extensionValues}>{children}</ExtensionContext.Provider>;
 };

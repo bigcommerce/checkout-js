@@ -4,52 +4,52 @@ import { isInstrumentFeatureAvailable } from '@bigcommerce/checkout/instrument-u
 import { type PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
 
 import {
-    CreditCardPaymentMethodComponent,
-    type CreditCardPaymentMethodProps,
+  CreditCardPaymentMethodComponent,
+  type CreditCardPaymentMethodProps,
 } from './CreditCardPaymentMethodComponent';
 
 export const CreditCardPaymentMethodComponentContainer = (
-    props: CreditCardPaymentMethodProps & PaymentMethodProps,
+  props: CreditCardPaymentMethodProps & PaymentMethodProps,
 ): ReactNode => {
-    const [componentDidMount, setComponentDidMount] = useState(false);
+  const [componentDidMount, setComponentDidMount] = useState(false);
 
-    useEffect(() => {
-        const init = async () => {
-            const { checkoutService, checkoutState, isUsingMultiShipping = false, method } = props;
+  useEffect(() => {
+    const init = async () => {
+      const { checkoutService, checkoutState, isUsingMultiShipping = false, method } = props;
 
-            const {
-                data: { getConfig, getCustomer },
-            } = checkoutState;
+      const {
+        data: { getConfig, getCustomer },
+      } = checkoutState;
 
-            const config = getConfig();
-            const customer = getCustomer();
+      const config = getConfig();
+      const customer = getCustomer();
 
-            if (!config || !customer || !method) {
-                throw new Error('Unable to get checkout');
-            }
+      if (!config || !customer || !method) {
+        throw new Error('Unable to get checkout');
+      }
 
-            const isInstrumentFeatureAvailableFlag = isInstrumentFeatureAvailable({
-                config,
-                customer,
-                isUsingMultiShipping,
-                paymentMethod: method,
-            });
+      const isInstrumentFeatureAvailableFlag = isInstrumentFeatureAvailable({
+        config,
+        customer,
+        isUsingMultiShipping,
+        paymentMethod: method,
+      });
 
-            if (isInstrumentFeatureAvailableFlag) {
-                await checkoutService.loadInstruments();
-            }
+      if (isInstrumentFeatureAvailableFlag) {
+        await checkoutService.loadInstruments();
+      }
 
-            setComponentDidMount(true);
-        };
+      setComponentDidMount(true);
+    };
 
-        void init();
-    }, []);
+    void init();
+  }, []);
 
-    if (!componentDidMount) {
-        return null;
-    }
+  if (!componentDidMount) {
+    return null;
+  }
 
-    return <CreditCardPaymentMethodComponent {...props} />;
+  return <CreditCardPaymentMethodComponent {...props} />;
 };
 
 export default CreditCardPaymentMethodComponentContainer;

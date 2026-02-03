@@ -5,25 +5,25 @@ import { type BraintreeFastlaneComponentRef } from '../BraintreeFastlanePaymentM
 import './BraintreeFastlaneCreditCardForm.scss';
 
 interface BraintreeFastlaneCreditCardFormProps {
-    renderPayPalCardComponent?: BraintreeFastlaneComponentRef['renderPayPalCardComponent'];
+  renderPayPalCardComponent?: BraintreeFastlaneComponentRef['renderPayPalCardComponent'];
 }
 
 const BraintreeFastlaneCreditCardForm: FunctionComponent<BraintreeFastlaneCreditCardFormProps> = ({
-    renderPayPalCardComponent,
+  renderPayPalCardComponent,
 }) => {
-    useEffect(() => {
-        if (typeof renderPayPalCardComponent === 'function') {
-            renderPayPalCardComponent('#braintree-fastlane-cc-form-container');
-        }
-    }, [renderPayPalCardComponent]);
+  useEffect(() => {
+    if (typeof renderPayPalCardComponent === 'function') {
+      renderPayPalCardComponent('#braintree-fastlane-cc-form-container');
+    }
+  }, [renderPayPalCardComponent]);
 
-    return (
-        <div
-            className="braintree-fastlane-cc-form-container"
-            data-test="braintree-fastlane-cc-form-container"
-            id="braintree-fastlane-cc-form-container"
-        />
-    );
+  return (
+    <div
+      className="braintree-fastlane-cc-form-container"
+      data-test="braintree-fastlane-cc-form-container"
+      id="braintree-fastlane-cc-form-container"
+    />
+  );
 };
 
 export default BraintreeFastlaneCreditCardForm;

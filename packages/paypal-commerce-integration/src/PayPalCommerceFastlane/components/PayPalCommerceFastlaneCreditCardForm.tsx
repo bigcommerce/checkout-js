@@ -5,25 +5,25 @@ import { type PayPalFastlaneCardComponentRef } from '../PayPalCommerceFastlanePa
 import './PayPalCommerceFastlaneCreditCardForm.scss';
 
 interface PayPalCommerceFastlaneCreditCardFormProps {
-    renderPayPalCardComponent?: PayPalFastlaneCardComponentRef['renderPayPalCardComponent'];
+  renderPayPalCardComponent?: PayPalFastlaneCardComponentRef['renderPayPalCardComponent'];
 }
 
 const PayPalCommerceFastlaneCreditCardForm: FunctionComponent<
-    PayPalCommerceFastlaneCreditCardFormProps
+  PayPalCommerceFastlaneCreditCardFormProps
 > = ({ renderPayPalCardComponent }) => {
-    useEffect(() => {
-        if (typeof renderPayPalCardComponent === 'function') {
-            renderPayPalCardComponent('#paypal-commerce-fastlane-cc-form-container');
-        }
-    }, [renderPayPalCardComponent]);
+  useEffect(() => {
+    if (typeof renderPayPalCardComponent === 'function') {
+      renderPayPalCardComponent('#paypal-commerce-fastlane-cc-form-container');
+    }
+  }, [renderPayPalCardComponent]);
 
-    return (
-        <div
-            className="paypal-commerce-fastlane-cc-form-container"
-            data-test="paypal-commerce-fastlane-cc-form-container"
-            id="paypal-commerce-fastlane-cc-form-container"
-        />
-    );
+  return (
+    <div
+      className="paypal-commerce-fastlane-cc-form-container"
+      data-test="paypal-commerce-fastlane-cc-form-container"
+      id="paypal-commerce-fastlane-cc-form-container"
+    />
+  );
 };
 
 export default PayPalCommerceFastlaneCreditCardForm;

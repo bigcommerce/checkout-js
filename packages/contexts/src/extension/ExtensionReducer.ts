@@ -1,27 +1,27 @@
 import { type ExtensionAction, ExtensionActionType, type ExtensionState } from './ExtensionType';
 
 export const extensionReducer = (
-    state: ExtensionState,
-    action: ExtensionAction,
+  state: ExtensionState,
+  action: ExtensionAction,
 ): ExtensionState => {
-    switch (action.type) {
-        case ExtensionActionType.SHOW_LOADING_INDICATOR:
-            if (typeof action.payload === 'boolean') {
-                return { ...state, isShowingLoadingIndicator: action.payload };
-            }
+  switch (action.type) {
+    case ExtensionActionType.SHOW_LOADING_INDICATOR:
+      if (typeof action.payload === 'boolean') {
+        return { ...state, isShowingLoadingIndicator: action.payload };
+      }
 
-            break;
+      break;
 
-        case ExtensionActionType.RE_RENDER_SHIPPING_FORM:
-            if (typeof action.payload === 'number') {
-                return { ...state, shippingFormRenderTimestamp: action.payload };
-            }
+    case ExtensionActionType.RE_RENDER_SHIPPING_FORM:
+      if (typeof action.payload === 'number') {
+        return { ...state, shippingFormRenderTimestamp: action.payload };
+      }
 
-            break;
+      break;
 
-        default:
-            return state;
-    }
+    default:
+      return state;
+  }
 
-    return state;
+  return state;
 };

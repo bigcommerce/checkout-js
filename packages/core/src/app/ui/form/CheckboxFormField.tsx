@@ -7,57 +7,57 @@ import CheckboxInput from './CheckboxInput';
 import FormFieldError from './FormFieldError';
 
 export interface CheckboxFormFieldProps {
-    additionalClassName?: string;
-    disabled?: boolean;
-    name: string;
-    id?: string;
-    labelContent: ReactNode;
-    onChange?(isChecked: boolean): void;
-    testId?: string;
-    themeV2?: boolean;
+  additionalClassName?: string;
+  disabled?: boolean;
+  name: string;
+  id?: string;
+  labelContent: ReactNode;
+  onChange?(isChecked: boolean): void;
+  testId?: string;
+  themeV2?: boolean;
 }
 
 const CheckboxFormField: FunctionComponent<CheckboxFormFieldProps> = ({
-    additionalClassName,
-    disabled = false,
-    labelContent,
-    onChange,
-    name,
-    id,
-    testId,
-    themeV2 = false,
+  additionalClassName,
+  disabled = false,
+  labelContent,
+  onChange,
+  name,
+  id,
+  testId,
+  themeV2 = false,
 }) => {
-    const renderField = useCallback(
-        ({ field }: FieldProps) => (
-            <>
-                <CheckboxInput
-                    {...field}
-                    checked={!!field.value}
-                    disabled={disabled}
-                    id={id || field.name}
-                    label={labelContent}
-                    testId={testId}
-                    themeV2={themeV2}
-                />
-
-                <FormFieldError
-                    errorId={`${id ?? name}-field-error-message`}
-                    name={name}
-                    testId={`${kebabCase(name)}-field-error-message`}
-                />
-            </>
-        ),
-        [disabled, id, labelContent, name],
-    );
-
-    return (
-        <BasicFormField
-            additionalClassName={additionalClassName}
-            name={name}
-            onChange={onChange}
-            render={renderField}
+  const renderField = useCallback(
+    ({ field }: FieldProps) => (
+      <>
+        <CheckboxInput
+          {...field}
+          checked={!!field.value}
+          disabled={disabled}
+          id={id || field.name}
+          label={labelContent}
+          testId={testId}
+          themeV2={themeV2}
         />
-    );
+
+        <FormFieldError
+          errorId={`${id ?? name}-field-error-message`}
+          name={name}
+          testId={`${kebabCase(name)}-field-error-message`}
+        />
+      </>
+    ),
+    [disabled, id, labelContent, name],
+  );
+
+  return (
+    <BasicFormField
+      additionalClassName={additionalClassName}
+      name={name}
+      onChange={onChange}
+      render={renderField}
+    />
+  );
 };
 
 export default memo(CheckboxFormField);

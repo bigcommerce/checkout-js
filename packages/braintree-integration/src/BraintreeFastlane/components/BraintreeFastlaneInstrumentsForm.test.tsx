@@ -9,32 +9,32 @@ import { render, screen } from '@bigcommerce/checkout/test-utils';
 import BraintreeFastlaneInstrumentsForm from './BraintreeFastlaneInstrumentsForm';
 
 describe('BraintreeFastlaneInstrumentsForm', () => {
-    const selectedInstrumentMock = getCardInstrument();
+  const selectedInstrumentMock = getCardInstrument();
 
-    it('updates selected instrument if user selects another instrument in braintree fastlane popup', async () => {
-        const newInstrument = {
-            ...selectedInstrumentMock,
-            bigpayToken: 'newInstrumentNonce123',
-            last4: '0004',
-        };
+  it('updates selected instrument if user selects another instrument in braintree fastlane popup', async () => {
+    const newInstrument = {
+      ...selectedInstrumentMock,
+      bigpayToken: 'newInstrumentNonce123',
+      last4: '0004',
+    };
 
-        const onChange = (): Promise<CardInstrument> => Promise.resolve(newInstrument);
-        const handleSelectInstrument = jest.fn();
+    const onChange = (): Promise<CardInstrument> => Promise.resolve(newInstrument);
+    const handleSelectInstrument = jest.fn();
 
-        render(
-            <BraintreeFastlaneInstrumentsForm
-                handleSelectInstrument={handleSelectInstrument}
-                onChange={onChange}
-                selectedInstrument={selectedInstrumentMock}
-            />,
-        );
+    render(
+      <BraintreeFastlaneInstrumentsForm
+        handleSelectInstrument={handleSelectInstrument}
+        onChange={onChange}
+        selectedInstrument={selectedInstrumentMock}
+      />,
+    );
 
-        const actionButton = screen.getByTestId('braintree-fastlane-instrument-change');
+    const actionButton = screen.getByTestId('braintree-fastlane-instrument-change');
 
-        fireEvent.click(actionButton);
+    fireEvent.click(actionButton);
 
-        await new Promise((resolve) => process.nextTick(resolve));
+    await new Promise((resolve) => process.nextTick(resolve));
 
-        expect(handleSelectInstrument).toHaveBeenCalledWith(newInstrument);
-    });
+    expect(handleSelectInstrument).toHaveBeenCalledWith(newInstrument);
+  });
 });

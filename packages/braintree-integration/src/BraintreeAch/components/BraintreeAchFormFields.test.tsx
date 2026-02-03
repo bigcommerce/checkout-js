@@ -11,37 +11,37 @@ import { OwnershipTypes } from '../constants';
 import BraintreeAchFormFields from './BraintreeAchFormFields';
 
 describe('BraintreeAchFormFields Component', () => {
-    let paymentForm: PaymentFormService;
+  let paymentForm: PaymentFormService;
 
-    beforeEach(() => {
-        paymentForm = getPaymentFormServiceMock();
-    });
+  beforeEach(() => {
+    paymentForm = getPaymentFormServiceMock();
+  });
 
-    it('should render form with personal fields', () => {
-        jest.spyOn(paymentForm, 'getFieldValue').mockReturnValue(OwnershipTypes.Personal);
+  it('should render form with personal fields', () => {
+    jest.spyOn(paymentForm, 'getFieldValue').mockReturnValue(OwnershipTypes.Personal);
 
-        const view = render(
-            <Formik initialValues={{}} onSubmit={noop}>
-                <PaymentFormContext.Provider value={{ paymentForm }}>
-                    <BraintreeAchFormFields />
-                </PaymentFormContext.Provider>
-            </Formik>,
-        );
+    const view = render(
+      <Formik initialValues={{}} onSubmit={noop}>
+        <PaymentFormContext.Provider value={{ paymentForm }}>
+          <BraintreeAchFormFields />
+        </PaymentFormContext.Provider>
+      </Formik>,
+    );
 
-        expect(view).toMatchSnapshot();
-    });
+    expect(view).toMatchSnapshot();
+  });
 
-    it('should render form with business fields', () => {
-        jest.spyOn(paymentForm, 'getFieldValue').mockReturnValue(OwnershipTypes.Business);
+  it('should render form with business fields', () => {
+    jest.spyOn(paymentForm, 'getFieldValue').mockReturnValue(OwnershipTypes.Business);
 
-        const view = render(
-            <Formik initialValues={{}} onSubmit={noop}>
-                <PaymentFormContext.Provider value={{ paymentForm }}>
-                    <BraintreeAchFormFields />
-                </PaymentFormContext.Provider>
-            </Formik>,
-        );
+    const view = render(
+      <Formik initialValues={{}} onSubmit={noop}>
+        <PaymentFormContext.Provider value={{ paymentForm }}>
+          <BraintreeAchFormFields />
+        </PaymentFormContext.Provider>
+      </Formik>,
+    );
 
-        expect(view).toMatchSnapshot();
-    });
+    expect(view).toMatchSnapshot();
+  });
 });

@@ -1,8 +1,6 @@
-import { type LineItem, type LineItemOption } from "@bigcommerce/checkout-sdk";
+import { type LineItem, type LineItemOption } from '@bigcommerce/checkout-sdk';
 
-const generateHash = (values: string[]): string => {
-  return btoa(encodeURIComponent(values.join('-')));
-};
+const generateHash = (values: string[]): string => btoa(encodeURIComponent(values.join('-')));
 
 const generateProductOptionsHash = (options: LineItemOption[] | undefined): string => {
   if (!options) {
@@ -21,11 +19,10 @@ const generateProductOptionsHash = (options: LineItemOption[] | undefined): stri
   );
 };
 
-export const generateItemHash = (item: LineItem): string => {
-  return generateHash([
+export const generateItemHash = (item: LineItem): string =>
+  generateHash([
     item.productId.toString(),
     item.variantId.toString(),
     item.sku,
     generateProductOptionsHash(item.options),
   ]);
-};

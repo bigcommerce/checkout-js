@@ -5,16 +5,22 @@
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "eslint --no-error-on-unmatched-pattern \"packages/paypal-payments-pro-integration/src/**/*.ts\" \"packages/paypal-payments-pro-integration/src/**/*.tsx\""
+      }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/packages/paypal-payments-pro-integration"],
+      "outputs": [
+        "{workspaceRoot}/coverage/packages/paypal-payments-pro-integration"
+      ],
       "options": {
         "jestConfig": "packages/paypal-payments-pro-integration/jest.config.js"
       }
     }
   },
-  "tags": ["scope:integration"]
+  "tags": [
+    "scope:integration"
+  ]
 }

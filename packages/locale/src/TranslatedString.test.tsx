@@ -9,16 +9,16 @@ import TranslatedString from './TranslatedString';
 import { getLanguageService } from './index';
 
 describe('TranslatedString', () => {
-    const checkoutService = createCheckoutService();
-    const languageService = getLanguageService();
+  const checkoutService = createCheckoutService();
+  const languageService = getLanguageService();
 
-    it('renders the translated string correctly', () => {
-        render(
-            <LocaleProvider checkoutService={checkoutService} languageService={languageService}>
-                <TranslatedString id="address.address_line_1_label" />
-            </LocaleProvider>,
-        );
+  it('renders the translated string correctly', () => {
+    render(
+      <LocaleProvider checkoutService={checkoutService} languageService={languageService}>
+        <TranslatedString id="address.address_line_1_label" />
+      </LocaleProvider>,
+    );
 
-        expect(screen.getByText('Address')).toBeInTheDocument();
-    });
+    expect(screen.getByText('Address')).toBeInTheDocument();
+  });
 });

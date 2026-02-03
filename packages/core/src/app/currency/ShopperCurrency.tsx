@@ -3,12 +3,12 @@ import React, { type FunctionComponent } from 'react';
 import { withCurrency, type WithCurrencyProps } from '@bigcommerce/checkout/locale';
 
 export interface ShopperCurrencyProps {
-    amount: number;
+  amount: number;
 }
 
 const ShopperCurrency: FunctionComponent<ShopperCurrencyProps & WithCurrencyProps> = ({
-    amount,
-    currency,
+  amount,
+  currency,
 }) => <>{currency.toCustomerCurrency(amount)}</>;
 
 export default withCurrency(ShopperCurrency);

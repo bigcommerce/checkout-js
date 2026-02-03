@@ -3,104 +3,90 @@ import { type Address, type AddressKey, type FormField } from '@bigcommerce/chec
 import { DynamicFormFieldType } from '@bigcommerce/checkout/ui';
 
 export type AddressFormValues = Pick<Address, Exclude<AddressKey, 'customFields'>> & {
-    customFields: { [id: string]: any };
+  customFields: Record<string, any>;
 };
 
 export default function mapAddressToFormValues(
-    fields: FormField[],
-    address?: Address,
+  fields: FormField[],
+  address?: Address,
 ): AddressFormValues {
-    const values = {
-        ...fields.reduce(
-            (addressFormValues, { name, custom, fieldType, default: defaultValue }) => {
-                if (custom) {
-                    if (!addressFormValues.customFields) {
-                        addressFormValues.customFields = {};
-                    }
+  const values = {
+    ...fields.reduce((addressFormValues, { name, custom, fieldType, default: defaultValue }) => {
+      if (custom) {
+        if (!addressFormValues.customFields) {
+          addressFormValues.customFields = {};
+        }
 
-                    const field =
-                        address &&
-                        address.customFields &&
-                        address.customFields.find(({ fieldId }) => fieldId === name);
+        const field = address?.customFields?.find(({ fieldId }) => fieldId === name);
 
-                    const fieldValue = field && field.fieldValue;
+        const fieldValue = field?.fieldValue;
 
-                    addressFormValues.customFields[name] = getValue(
-                        fieldType,
-                        fieldValue,
-                        defaultValue,
-                    );
+        addressFormValues.customFields[name] = getValue(fieldType, fieldValue, defaultValue);
 
-                    return addressFormValues;
-                }
+        return addressFormValues;
+      }
 
-                if (isSystemAddressFieldName(name)) {
-                    const fieldValue = address && address[name];
+      if (isSystemAddressFieldName(name)) {
+        const fieldValue = address?.[name];
 
-                    addressFormValues[name] = getValue(
-                        fieldType,
-                        fieldValue,
-                        defaultValue,
-                    )?.toString() || '';
-                }
+        addressFormValues[name] = getValue(fieldType, fieldValue, defaultValue)?.toString() || '';
+      }
 
-                return addressFormValues;
-            },
-            {} as AddressFormValues,
-        ),
-    };
+      return addressFormValues;
+    }, {} as AddressFormValues),
+  };
 
-    values.shouldSaveAddress =
-        address && address.shouldSaveAddress !== undefined ? address.shouldSaveAddress : true;
+  values.shouldSaveAddress =
+    address?.shouldSaveAddress !== undefined ? address.shouldSaveAddress : true;
 
-    // Manually backfill stateOrProvince to avoid Formik warning (uncontrolled to controlled input)
-    if (values.stateOrProvince === undefined) {
-        values.stateOrProvince = '';
-    }
+  // Manually backfill stateOrProvince to avoid Formik warning (uncontrolled to controlled input)
+  if (values.stateOrProvince === undefined) {
+    values.stateOrProvince = '';
+  }
 
-    if (values.stateOrProvinceCode === undefined) {
-        values.stateOrProvinceCode = '';
-    }
+  if (values.stateOrProvinceCode === undefined) {
+    values.stateOrProvinceCode = '';
+  }
 
-    return values;
+  return values;
 }
 
 function getValue(
-    fieldType?: string,
-    fieldValue?: string | string[] | number,
-    defaultValue?: string,
+  fieldType?: string,
+  fieldValue?: string | string[] | number,
+  defaultValue?: string,
 ): string | string[] | number | Date | undefined {
-    if (fieldValue === undefined || fieldValue === null) {
-        return getDefaultValue(fieldType, defaultValue);
+  if (fieldValue === undefined || fieldValue === null) {
+    return getDefaultValue(fieldType, defaultValue);
+  }
+
+  if (fieldType === DynamicFormFieldType.DATE && typeof fieldValue === 'string') {
+    if (fieldValue) {
+      const [year, month, day] = fieldValue.split('-');
+
+      return new Date(Number(year), Number(month) - 1, Number(day));
     }
 
-    if (fieldType === DynamicFormFieldType.DATE && typeof fieldValue === 'string') {
-        if (fieldValue) {
-            const [year, month, day] = fieldValue.split('-');
+    return undefined;
+  }
 
-            return new Date(Number(year), Number(month)-1, Number(day));
-        }
-
-        return undefined;
-    }
-
-    return fieldValue;
+  return fieldValue;
 }
 
 function getDefaultValue(fieldType?: string, defaultValue?: string): string | string[] | Date {
-    if (defaultValue && fieldType === DynamicFormFieldType.DATE) {
-        return new Date(defaultValue);
-    }
+  if (defaultValue && fieldType === DynamicFormFieldType.DATE) {
+    return new Date(defaultValue);
+  }
 
-    if (fieldType === DynamicFormFieldType.CHECKBOX) {
-        return [];
-    }
+  if (fieldType === DynamicFormFieldType.CHECKBOX) {
+    return [];
+  }
 
-    return defaultValue || '';
+  return defaultValue || '';
 }
 
 function isSystemAddressFieldName(
-    fieldName: string,
+  fieldName: string,
 ): fieldName is Exclude<keyof Address, 'customFields' | 'shouldSaveAddress'> {
-    return fieldName !== 'customFields' && fieldName !== 'shouldSaveAddress';
+  return fieldName !== 'customFields' && fieldName !== 'shouldSaveAddress';
 }
