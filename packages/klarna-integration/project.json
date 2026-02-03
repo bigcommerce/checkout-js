@@ -5,15 +5,9 @@
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "executor": "nx:run-commands",
       "options": {
-        "lintFilePatterns": [
-          "packages/klarna-integration/src/**/*.ts",
-          "packages/klarna-integration/src/**/*.tsx"
-        ]
+        "command": "eslint --no-error-on-unmatched-pattern \"packages/klarna-integration/src/**/*.ts\" \"packages/klarna-integration/src/**/*.tsx\""
       }
     },
     "test": {

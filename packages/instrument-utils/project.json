@@ -5,15 +5,9 @@
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "executor": "nx:run-commands",
       "options": {
-        "lintFilePatterns": [
-          "packages/instrument-utils/src/**/*.ts",
-          "packages/instrument-utils/src/**/*.tsx"
-        ]
+        "command": "eslint --no-error-on-unmatched-pattern \"packages/instrument-utils/src/**/*.ts\" \"packages/instrument-utils/src/**/*.tsx\""
       }
     },
     "test": {

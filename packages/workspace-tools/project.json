@@ -38,15 +38,9 @@
       }
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "executor": "nx:run-commands",
       "options": {
-        "lintFilePatterns": [
-          "packages/workspace-tools/src/**/*.ts",
-          "packages/workspace-tools/src/**/*.tsx"
-        ]
+        "command": "eslint --no-error-on-unmatched-pattern \"packages/workspace-tools/src/**/*.ts\" \"packages/workspace-tools/src/**/*.tsx\""
       }
     },
     "test": {

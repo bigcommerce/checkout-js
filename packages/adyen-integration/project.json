@@ -5,15 +5,9 @@
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "executor": "nx:run-commands",
       "options": {
-        "lintFilePatterns": [
-          "packages/adyen-integration/src/**/*.ts",
-          "packages/adyen-integration/src/**/*.tsx"
-        ]
+        "command": "eslint --no-error-on-unmatched-pattern \"packages/adyen-integration/src/**/*.ts\" \"packages/adyen-integration/src/**/*.tsx\""
       }
     },
     "test": {

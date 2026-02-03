@@ -70,21 +70,9 @@
       ]
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
-      "fix": true,
-      "dependsOn": [
-        {
-          "target": "generate"
-        }
-      ],
+      "executor": "nx:run-commands",
       "options": {
-        "lintFilePatterns": [
-          "packages/core/src/**/*.ts",
-          "packages/core/src/**/*.tsx"
-        ]
+        "command": "eslint --no-error-on-unmatched-pattern \"packages/core/src/**/*.ts\" \"packages/core/src/**/*.tsx\""
       }
     },
     "generate": {

@@ -4,15 +4,9 @@
   "sourceRoot": "packages/credit-card-integration/src",
   "targets": {
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "executor": "nx:run-commands",
       "options": {
-        "lintFilePatterns": [
-          "packages/credit-card-integration/src/**/*.ts",
-          "packages/credit-card-integration/src/**/*.tsx"
-        ]
+        "command": "eslint --no-error-on-unmatched-pattern \"packages/credit-card-integration/src/**/*.ts\" \"packages/credit-card-integration/src/**/*.tsx\""
       }
     },
     "test": {

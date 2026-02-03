@@ -5,15 +5,9 @@
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "executor": "nx:run-commands",
       "options": {
-        "lintFilePatterns": [
-          "packages/td-bank-integration/src/**/*.ts",
-          "packages/td-bank-integration/src/**/*.tsx"
-        ]
+        "command": "eslint --no-error-on-unmatched-pattern \"packages/td-bank-integration/src/**/*.ts\" \"packages/td-bank-integration/src/**/*.tsx\""
       }
     },
     "test": {

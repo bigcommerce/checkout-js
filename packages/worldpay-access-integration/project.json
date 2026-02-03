@@ -5,15 +5,9 @@
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "executor": "nx:run-commands",
       "options": {
-        "lintFilePatterns": [
-          "packages/worldpay-access-integration/src/**/*.ts",
-          "packages/worldpay-access-integration/src/**/*.tsx"
-        ]
+        "command": "eslint --no-error-on-unmatched-pattern \"packages/worldpay-access-integration/src/**/*.ts\" \"packages/worldpay-access-integration/src/**/*.tsx\""
       }
     },
     "test": {

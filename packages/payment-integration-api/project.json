@@ -5,15 +5,9 @@
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "executor": "nx:run-commands",
       "options": {
-        "lintFilePatterns": [
-          "packages/payment-integration-api/src/**/*.ts",
-          "packages/payment-integration-api/src/**/*.tsx"
-        ]
+        "command": "eslint --no-error-on-unmatched-pattern \"packages/payment-integration-api/src/**/*.ts\" \"packages/payment-integration-api/src/**/*.tsx\""
       }
     },
     "test": {
