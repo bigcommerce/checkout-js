@@ -6,15 +6,27 @@
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "packages/barclay-integration/src/**/*.ts",
+          "packages/barclay-integration/src/**/*.tsx"
+        ]
+      }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/packages/barclay-integration"],
+      "outputs": [
+        "{workspaceRoot}/coverage/packages/barclay-integration"
+      ],
       "options": {
         "jestConfig": "packages/barclay-integration/jest.config.js"
       }
     }
   },
-  "tags": ["scope:integration"]
+  "tags": [
+    "scope:integration"
+  ]
 }

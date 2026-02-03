@@ -6,15 +6,27 @@
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "packages/adyen-integration/src/**/*.ts",
+          "packages/adyen-integration/src/**/*.tsx"
+        ]
+      }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/packages/adyen-integration"],
+      "outputs": [
+        "{workspaceRoot}/coverage/packages/adyen-integration"
+      ],
       "options": {
         "jestConfig": "packages/adyen-integration/jest.config.js"
       }
     }
   },
-  "tags": ["scope:integration"]
+  "tags": [
+    "scope:integration"
+  ]
 }

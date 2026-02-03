@@ -5,7 +5,9 @@
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/packages/workspace-tools",
         "main": "packages/workspace-tools/src/index.ts",
@@ -37,11 +39,21 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "packages/workspace-tools/src/**/*.ts",
+          "packages/workspace-tools/src/**/*.tsx"
+        ]
+      }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/packages/workspace-tools"],
+      "outputs": [
+        "{workspaceRoot}/coverage/packages/workspace-tools"
+      ],
       "options": {
         "jestConfig": "packages/workspace-tools/jest.config.js"
       }

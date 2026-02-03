@@ -6,15 +6,27 @@
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "packages/paypal-utils/src/**/*.ts",
+          "packages/paypal-utils/src/**/*.tsx"
+        ]
+      }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/packages/paypal-utils"],
+      "outputs": [
+        "{workspaceRoot}/coverage/packages/paypal-utils"
+      ],
       "options": {
         "jestConfig": "packages/paypal-utils/jest.config.js"
       }
     }
   },
-  "tags": ["scope:shared"]
+  "tags": [
+    "scope:shared"
+  ]
 }

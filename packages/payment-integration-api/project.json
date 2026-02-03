@@ -6,15 +6,27 @@
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "packages/payment-integration-api/src/**/*.ts",
+          "packages/payment-integration-api/src/**/*.tsx"
+        ]
+      }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/packages/payment-integration-api"],
+      "outputs": [
+        "{workspaceRoot}/coverage/packages/payment-integration-api"
+      ],
       "options": {
         "jestConfig": "packages/payment-integration-api/jest.config.js"
       }
     }
   },
-  "tags": ["scope:shared"]
+  "tags": [
+    "scope:shared"
+  ]
 }

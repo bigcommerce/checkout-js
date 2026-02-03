@@ -6,16 +6,28 @@
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "packages/stripe-integration/src/**/*.ts",
+          "packages/stripe-integration/src/**/*.tsx"
+        ]
+      }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/packages/stripe-integration"],
+      "outputs": [
+        "{workspaceRoot}/coverage/packages/stripe-integration"
+      ],
       "options": {
         "jestConfig": "packages/stripe-integration/jest.config.js",
         "passWithNoTests": false
       }
     }
   },
-  "tags": ["scope:integration"]
+  "tags": [
+    "scope:integration"
+  ]
 }

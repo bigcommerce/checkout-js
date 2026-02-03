@@ -6,16 +6,28 @@
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "packages/squarev2-integration/src/**/*.ts",
+          "packages/squarev2-integration/src/**/*.tsx"
+        ]
+      }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/packages/squarev2-integration"],
+      "outputs": [
+        "{workspaceRoot}/coverage/packages/squarev2-integration"
+      ],
       "options": {
         "jestConfig": "packages/squarev2-integration/jest.config.js",
         "passWithNoTests": false
       }
     }
   },
-  "tags": ["scope:integration"]
+  "tags": [
+    "scope:integration"
+  ]
 }

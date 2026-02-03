@@ -6,15 +6,27 @@
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "packages/checkout-extension/src/**/*.ts",
+          "packages/checkout-extension/src/**/*.tsx"
+        ]
+      }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/packages/checkout-extension"],
+      "outputs": [
+        "{workspaceRoot}/coverage/packages/checkout-extension"
+      ],
       "options": {
         "jestConfig": "packages/checkout-extension/jest.config.js"
       }
     }
   },
-  "tags": ["scope:shared"]
+  "tags": [
+    "scope:shared"
+  ]
 }

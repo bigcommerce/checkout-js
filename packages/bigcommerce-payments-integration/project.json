@@ -6,15 +6,27 @@
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "packages/bigcommerce-payments-integration/src/**/*.ts",
+          "packages/bigcommerce-payments-integration/src/**/*.tsx"
+        ]
+      }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/packages/bigcommerce-payments-integration"],
+      "outputs": [
+        "{workspaceRoot}/coverage/packages/bigcommerce-payments-integration"
+      ],
       "options": {
         "jestConfig": "packages/bigcommerce-payments-integration/jest.config.js"
       }
     }
   },
-  "tags": ["scope:integration"]
+  "tags": [
+    "scope:integration"
+  ]
 }

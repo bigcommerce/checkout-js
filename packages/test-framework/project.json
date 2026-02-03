@@ -6,14 +6,26 @@
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "packages/test-framework/src/**/*.ts",
+          "packages/test-framework/src/**/*.tsx"
+        ]
+      }
     },
     "regenerate-har": {
       "executor": "@nx/workspace:run-commands",
       "options": {
-        "commands": ["node packages/test-framework/scripts/polly/regenerateHar.js"]
+        "commands": [
+          "node packages/test-framework/scripts/polly/regenerateHar.js"
+        ]
       }
     }
   },
-  "tags": ["scope:shared"]
+  "tags": [
+    "scope:shared"
+  ]
 }

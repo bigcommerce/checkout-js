@@ -6,16 +6,28 @@
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "packages/apple-pay-integration/src/**/*.ts",
+          "packages/apple-pay-integration/src/**/*.tsx"
+        ]
+      }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/packages/apple-pay-integration"],
+      "outputs": [
+        "{workspaceRoot}/coverage/packages/apple-pay-integration"
+      ],
       "options": {
         "jestConfig": "packages/apple-pay-integration/jest.config.js",
         "passWithNoTests": false
       }
     }
   },
-  "tags": ["scope:integration"]
+  "tags": [
+    "scope:integration"
+  ]
 }

@@ -6,16 +6,28 @@
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "packages/checkoutcom-integration/src/**/*.ts",
+          "packages/checkoutcom-integration/src/**/*.tsx"
+        ]
+      }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/packages/checkoutcom-integration"],
+      "outputs": [
+        "{workspaceRoot}/coverage/packages/checkoutcom-integration"
+      ],
       "options": {
         "jestConfig": "packages/checkoutcom-integration/jest.config.js",
         "passWithNoTests": false
       }
     }
   },
-  "tags": ["scope:integration"]
+  "tags": [
+    "scope:integration"
+  ]
 }

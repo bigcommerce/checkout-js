@@ -6,16 +6,29 @@
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "packages/checkout-button-integration/src/**/*.ts",
+          "packages/checkout-button-integration/src/**/*.tsx"
+        ]
+      }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/packages/checkout-button-integration"],
+      "outputs": [
+        "{workspaceRoot}/coverage/packages/checkout-button-integration"
+      ],
       "options": {
         "jestConfig": "packages/checkout-button-integration/jest.config.js",
         "passWithNoTests": false
       }
     }
   },
-  "tags": ["scope:integration", "scope:shared"]
+  "tags": [
+    "scope:integration",
+    "scope:shared"
+  ]
 }

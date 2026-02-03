@@ -6,15 +6,27 @@
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "packages/paypal-fastlane-integration/src/**/*.ts",
+          "packages/paypal-fastlane-integration/src/**/*.tsx"
+        ]
+      }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/packages/paypal-fastlane-integration"],
+      "outputs": [
+        "{workspaceRoot}/coverage/packages/paypal-fastlane-integration"
+      ],
       "options": {
         "jestConfig": "packages/paypal-fastlane-integration/jest.config.js"
       }
     }
   },
-  "tags": ["scope:shared"]
+  "tags": [
+    "scope:shared"
+  ]
 }

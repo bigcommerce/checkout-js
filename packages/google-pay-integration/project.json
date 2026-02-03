@@ -6,16 +6,28 @@
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "packages/google-pay-integration/src/**/*.ts",
+          "packages/google-pay-integration/src/**/*.tsx"
+        ]
+      }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/packages/google-pay-integration"],
+      "outputs": [
+        "{workspaceRoot}/coverage/packages/google-pay-integration"
+      ],
       "options": {
         "jestConfig": "packages/google-pay-integration/jest.config.js",
         "passWithNoTests": false
       }
     }
   },
-  "tags": ["scope:integration"]
+  "tags": [
+    "scope:integration"
+  ]
 }
