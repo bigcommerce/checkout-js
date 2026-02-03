@@ -49,8 +49,7 @@ const ShippingSummary: FunctionComponent<ShippingSummaryProps> = ({
                         /> : 
                         <StaticConsignment
                             consignment={consignment}
-                            isShippingDiscountDisplayEnabled={isShippingDiscountDisplayEnabled
-                        }
+                            isShippingDiscountDisplayEnabled={isShippingDiscountDisplayEnabled}
                     />}
                 </div>
             ))}

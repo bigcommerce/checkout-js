@@ -520,7 +520,7 @@
             "save_shipping_address_error": "An error occurred while saving the shipping address to your price quote. Please try again.",
             "save_shipping_option_error": "An error occurred while saving the shipping quote to your order. Please try again.",
             "select_shipping_address_text": "Please select a shipping address in order to see shipping quotes",
-            "shipping_address_heading": "Shipping Address",
+            "shipping_address_heading": "Shipping address",
             "multishipping_consignment_index_heading": "Destination #{consignmentNumber}",
             "multishipping_incomplete_consignment_error": "Please complete the address, item allocation, and method selection for Destination #{consignmentNumber}.",
             "multishipping_add_new_destination": "Add new destination",

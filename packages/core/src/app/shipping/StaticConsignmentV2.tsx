@@ -8,6 +8,7 @@ import { AddressType, StaticAddress } from '../address';
 import getShippingCostAfterAutomaticDiscount from './getShippingCostAfterAutomaticDiscount';
 import { StaticShippingOption } from './shippingOption';
 import './StaticConsignment.scss';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 interface StaticConsignmentV2Props {
     consignment: Consignment;
@@ -26,14 +27,18 @@ const StaticConsignmentV2: FunctionComponent<StaticConsignmentV2Props> = ({
     return (
         <div className="staticConsignment flex-row">
             <div className="flex-column shipping-address-container">
-                <p className="title">Shipping address</p>
+                <p className="title">
+                    <TranslatedString id="shipping.shipping_address_heading" />
+                </p>
                 <StaticAddress address={address} type={AddressType.Shipping} />
                 {showPayPalFastlaneAddressLabel && <PoweredByPayPalFastlaneLabel />}
             </div>
 
             {selectedShippingOption && (
                 <div className="flex-column shipping-method">
-                    <p className="title">Shipping method</p>
+                    <p className="title">
+                        <TranslatedString id="shipping.shipping_method_label" />
+                    </p>
                     <div className="shippingOption shippingOption--alt shippingOption--selected">
                         <StaticShippingOption
                             displayAdditionalInformation={false}
