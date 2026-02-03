@@ -1,4 +1,5 @@
 import nxEslintPlugin from '@nx/eslint-plugin';
+import testingLibrary from 'eslint-plugin-testing-library';
 import globals from 'globals';
 
 // Import the shared config (returns a Promise that resolves to config array)
@@ -44,6 +45,10 @@ export default [
         },
         tsconfigRootDir: import.meta.dirname,
       },
+      globals: {
+        // Add process global for files that use process.env
+        process: 'readonly',
+      },
     },
     settings: {
       // Configure import resolver to use TypeScript path mappings
@@ -70,7 +75,7 @@ export default [
       ],
     },
   },
-  // Ensure jest globals are available in test files and test utilities
+  // Ensure jest globals and testing-library plugin are available in test files
   {
     files: [
       '**/*.test.ts',
@@ -83,10 +88,18 @@ export default [
       '**/test-utils/**/*.ts',
       '**/test-framework/**/*.ts',
     ],
+    plugins: {
+      'testing-library': testingLibrary,
+    },
     languageOptions: {
       globals: {
         ...globals.jest,
       },
+    },
+    rules: {
+      // Testing library rules
+      'testing-library/no-container': 'warn',
+      'testing-library/no-node-access': 'warn',
     },
   },
 ];
