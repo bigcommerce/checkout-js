@@ -9,33 +9,30 @@ import { LocaleContext, type LocaleContextType } from './LocaleContext';
 import LocaleProvider from './LocaleProvider';
 
 describe('LocaleProvider', () => {
-    let checkoutService: CheckoutService;
+  let checkoutService: CheckoutService;
 
-    beforeEach(() => {
-        checkoutService = createCheckoutService();
+  beforeEach(() => {
+    checkoutService = createCheckoutService();
 
-        jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(getStoreConfig());
-    });
+    jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(getStoreConfig());
+  });
 
-    it('components wrapped in locale context have access to translate method', () => {
-        const Child: FunctionComponent<LocaleContextType> = ({ language }) => (
-            <>{language && language.translate('billing.billing_heading')}</>
-        );
+  it('components wrapped in locale context have access to translate method', () => {
+    const Child: FunctionComponent<LocaleContextType> = ({ language }) => (
+      <>{language && language.translate('billing.billing_heading')}</>
+    );
 
-        render(
-            <LocaleProvider
-                checkoutService={checkoutService}
-                languageService={
-                    getLocaleContext({ 'optimized_checkout.billing.billing_heading': 'Billing' })
-                        .language
-                }
-            >
-                <LocaleContext.Consumer>
-                    {(props) => props && <Child {...props} />}
-                </LocaleContext.Consumer>
-            </LocaleProvider>,
-        );
+    render(
+      <LocaleProvider
+        checkoutService={checkoutService}
+        languageService={
+          getLocaleContext({ 'optimized_checkout.billing.billing_heading': 'Billing' }).language
+        }
+      >
+        <LocaleContext.Consumer>{(props) => props && <Child {...props} />}</LocaleContext.Consumer>
+      </LocaleProvider>,
+    );
 
-        expect(screen.getByText('Billing')).toBeInTheDocument();
-    });
+    expect(screen.getByText('Billing')).toBeInTheDocument();
+  });
 });

@@ -1,89 +1,87 @@
 import {
-    type CheckoutSelectors,
-    type CheckoutService,
-    createCheckoutService,
-    type LanguageService,
+  type CheckoutSelectors,
+  type CheckoutService,
+  createCheckoutService,
+  type LanguageService,
 } from '@bigcommerce/checkout-sdk';
 import { createPaypalExpressPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/paypal-express';
 import React, { type FunctionComponent } from 'react';
 
 import {
-    type PaymentFormService,
-    PaymentMethodId,
-    type PaymentMethodProps,
+  type PaymentFormService,
+  PaymentMethodId,
+  type PaymentMethodProps,
 } from '@bigcommerce/checkout/payment-integration-api';
 import {
-    getCart,
-    getCheckout,
-    getCustomer,
-    getPaymentMethod,
-    getStoreConfig,
+  getCart,
+  getCheckout,
+  getCustomer,
+  getPaymentMethod,
+  getStoreConfig,
 } from '@bigcommerce/checkout/test-mocks';
 import { render } from '@bigcommerce/checkout/test-utils';
 
 import PaypalExpressPaymentMethod, {
-    type PaypalExpressPaymentMethodProps,
+  type PaypalExpressPaymentMethodProps,
 } from './PaypalExpressPaymentMethod';
 
 describe('when using Paypal Express payment', () => {
-    let PaypalExpressPaymentTest: FunctionComponent<
-        PaymentMethodProps & PaypalExpressPaymentMethodProps
-    >;
-    let paypalExpressProps: PaymentMethodProps & PaypalExpressPaymentMethodProps;
-    let checkoutService: CheckoutService;
-    let checkoutState: CheckoutSelectors;
+  let PaypalExpressPaymentTest: FunctionComponent<
+    PaymentMethodProps & PaypalExpressPaymentMethodProps
+  >;
+  let paypalExpressProps: PaymentMethodProps & PaypalExpressPaymentMethodProps;
+  let checkoutService: CheckoutService;
+  let checkoutState: CheckoutSelectors;
 
-    beforeEach(() => {
-        checkoutService = createCheckoutService();
-        checkoutState = checkoutService.getState();
+  beforeEach(() => {
+    checkoutService = createCheckoutService();
+    checkoutState = checkoutService.getState();
 
-        jest.spyOn(checkoutService, 'initializePayment').mockResolvedValue(checkoutState);
-        jest.spyOn(checkoutService, 'deinitializePayment').mockResolvedValue(checkoutState);
-        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
-        jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue(getCheckout());
-        jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
-        jest.spyOn(checkoutState.data, 'getCart').mockReturnValue(getCart());
+    jest.spyOn(checkoutService, 'initializePayment').mockResolvedValue(checkoutState);
+    jest.spyOn(checkoutService, 'deinitializePayment').mockResolvedValue(checkoutState);
+    jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
+    jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue(getCheckout());
+    jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
+    jest.spyOn(checkoutState.data, 'getCart').mockReturnValue(getCart());
 
-        paypalExpressProps = {
-            checkoutService,
-            checkoutState,
-            language: { translate: jest.fn() } as unknown as LanguageService,
-            method: {
-                ...getPaymentMethod(),
-                id: PaymentMethodId.PaypalExpress,
-            },
-            onUnhandledError: jest.fn(),
-            paymentForm: jest.fn() as unknown as PaymentFormService,
-        };
+    paypalExpressProps = {
+      checkoutService,
+      checkoutState,
+      language: { translate: jest.fn() } as unknown as LanguageService,
+      method: {
+        ...getPaymentMethod(),
+        id: PaymentMethodId.PaypalExpress,
+      },
+      onUnhandledError: jest.fn(),
+      paymentForm: jest.fn() as unknown as PaymentFormService,
+    };
 
-        PaypalExpressPaymentTest = (props) => {
-            return <PaypalExpressPaymentMethod {...props} />;
-        };
+    PaypalExpressPaymentTest = (props) => <PaypalExpressPaymentMethod {...props} />;
+  });
+
+  it('successfully initializes payment with required props', () => {
+    render(<PaypalExpressPaymentTest {...paypalExpressProps} />);
+
+    expect(checkoutService.initializePayment).toHaveBeenCalledWith({
+      gatewayId: paypalExpressProps.method.gateway,
+      methodId: paypalExpressProps.method.id,
+      integrations: [createPaypalExpressPaymentStrategy],
+      paypalexpress: {
+        useRedirectFlow: false,
+      },
     });
+  });
 
-    it('successfully initializes payment with required props', () => {
-        render(<PaypalExpressPaymentTest {...paypalExpressProps} />);
+  it('successfully initializes payment with required props: embedded mode', () => {
+    render(<PaypalExpressPaymentTest {...paypalExpressProps} isEmbedded={true} />);
 
-        expect(checkoutService.initializePayment).toHaveBeenCalledWith({
-            gatewayId: paypalExpressProps.method.gateway,
-            methodId: paypalExpressProps.method.id,
-            integrations: [createPaypalExpressPaymentStrategy],
-            paypalexpress: {
-                useRedirectFlow: false,
-            },
-        });
+    expect(checkoutService.initializePayment).toHaveBeenCalledWith({
+      gatewayId: paypalExpressProps.method.gateway,
+      methodId: paypalExpressProps.method.id,
+      integrations: [createPaypalExpressPaymentStrategy],
+      paypalexpress: {
+        useRedirectFlow: true,
+      },
     });
-
-    it('successfully initializes payment with required props: embedded mode', () => {
-        render(<PaypalExpressPaymentTest {...paypalExpressProps} isEmbedded={true} />);
-
-        expect(checkoutService.initializePayment).toHaveBeenCalledWith({
-            gatewayId: paypalExpressProps.method.gateway,
-            methodId: paypalExpressProps.method.id,
-            integrations: [createPaypalExpressPaymentStrategy],
-            paypalexpress: {
-                useRedirectFlow: true,
-            },
-        });
-    });
+  });
 });

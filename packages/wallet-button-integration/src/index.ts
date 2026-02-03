@@ -1,5 +1,5 @@
 import WalletButtonPaymentMethodComponent, {
-    WalletButtonPaymentMethodProps,
+  WalletButtonPaymentMethodProps,
 } from './WalletButtonPaymentMethodComponent';
 
 export { WalletButtonPaymentMethodComponent, WalletButtonPaymentMethodProps };

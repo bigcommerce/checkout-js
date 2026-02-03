@@ -4,25 +4,25 @@ import { getPaymentMethodIconComponent } from './mapFromPaymentMethodCardType';
 import { IconSize } from './withIconContainer';
 
 export interface CreditCardIconProps {
-    cardType?: string;
+  cardType?: string;
 }
 
 const CreditCardIcon: FunctionComponent<CreditCardIconProps> = ({ cardType }) => {
-    const iconProps = {
-        additionalClassName: 'cardIcon-icon',
-        size: IconSize.Medium,
-        testId: `credit-card-icon-${cardType || 'default'}`,
-    };
+  const iconProps = {
+    additionalClassName: 'cardIcon-icon',
+    size: IconSize.Medium,
+    testId: `credit-card-icon-${cardType || 'default'}`,
+  };
 
-    const IconComponent = getPaymentMethodIconComponent(cardType);
+  const IconComponent = getPaymentMethodIconComponent(cardType);
 
-    return IconComponent ? (
-        <Suspense>
-            <IconComponent {...iconProps} />
-        </Suspense>
-    ) : (
-        <div className="cardIcon-icon cardIcon-icon--default icon icon--medium" />
-    );
+  return IconComponent ? (
+    <Suspense>
+      <IconComponent {...iconProps} />
+    </Suspense>
+  ) : (
+    <div className="cardIcon-icon cardIcon-icon--default icon icon--medium" />
+  );
 };
 
 export default memo(CreditCardIcon);

@@ -10,40 +10,40 @@ import { getPayPalCommerceCreditMethod } from '../mocks/paymentMethods.mock';
 import PayPalCommerceCreditPaymentMethod from './PayPalCommerceCreditPaymentMethod';
 
 describe('PayPalCommerceCreditPaymentMethod', () => {
-    const checkoutService = createCheckoutService();
-    const checkoutState = checkoutService.getState();
-    const props = {
-        method: getPayPalCommerceCreditMethod(),
-        checkoutService,
-        checkoutState,
+  const checkoutService = createCheckoutService();
+  const checkoutState = checkoutService.getState();
+  const props = {
+    method: getPayPalCommerceCreditMethod(),
+    checkoutService,
+    checkoutState,
 
-        paymentForm: jest.fn() as unknown as PaymentFormService,
+    paymentForm: jest.fn() as unknown as PaymentFormService,
 
-        language: { translate: jest.fn() } as unknown as LanguageService,
-        onUnhandledError: jest.fn(),
+    language: { translate: jest.fn() } as unknown as LanguageService,
+    onUnhandledError: jest.fn(),
+  };
+
+  it('renders component with provided props', () => {
+    const { container } = render(<PayPalCommerceCreditPaymentMethod {...props} />);
+
+    expect(container).toMatchSnapshot();
+  });
+
+  it('renders nothing if Payment Data is not Required', () => {
+    const mockChild = <div>test child</div>;
+    const localProps = {
+      ...props,
+      checkoutState: {
+        ...checkoutState,
+        data: {
+          ...checkoutState.data,
+          isPaymentDataRequired: jest.fn().mockReturnValue(false),
+        },
+      },
+      children: mockChild,
     };
+    const { container } = render(<PayPalCommerceCreditPaymentMethod {...localProps} />);
 
-    it('renders component with provided props', () => {
-        const { container } = render(<PayPalCommerceCreditPaymentMethod {...props} />);
-
-        expect(container).toMatchSnapshot();
-    });
-
-    it('renders nothing if Payment Data is not Required', () => {
-        const mockChild = <div>test child</div>;
-        const localProps = {
-            ...props,
-            checkoutState: {
-                ...checkoutState,
-                data: {
-                    ...checkoutState.data,
-                    isPaymentDataRequired: jest.fn().mockReturnValue(false),
-                },
-            },
-            children: mockChild,
-        };
-        const { container } = render(<PayPalCommerceCreditPaymentMethod {...localProps} />);
-
-        expect(container).toBeEmptyDOMElement();
-    });
+    expect(container).toBeEmptyDOMElement();
+  });
 });

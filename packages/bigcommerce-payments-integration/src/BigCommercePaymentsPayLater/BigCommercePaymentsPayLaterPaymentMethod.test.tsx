@@ -10,34 +10,34 @@ import { getBigCommercePaymentsFastlaneMethod } from '../mocks/paymentMethods.mo
 import BigCommercePaymentsPayLaterPaymentMethod from './BigCommercePaymentsPayLaterPaymentMethod';
 
 describe('BigCommercePaymentsPayLaterPaymentMethod', () => {
-    const checkoutService = createCheckoutService();
-    const checkoutState = checkoutService.getState();
-    const props = {
-        method: getBigCommercePaymentsFastlaneMethod(),
-        checkoutService,
-        checkoutState,
+  const checkoutService = createCheckoutService();
+  const checkoutState = checkoutService.getState();
+  const props = {
+    method: getBigCommercePaymentsFastlaneMethod(),
+    checkoutService,
+    checkoutState,
 
-        paymentForm: jest.fn() as unknown as PaymentFormService,
+    paymentForm: jest.fn() as unknown as PaymentFormService,
 
-        language: { translate: jest.fn() } as unknown as LanguageService,
-        onUnhandledError: jest.fn(),
+    language: { translate: jest.fn() } as unknown as LanguageService,
+    onUnhandledError: jest.fn(),
+  };
+
+  it('renders nothing if Payment Data is not Required', () => {
+    const mockChild = <div>test child</div>;
+    const localProps = {
+      ...props,
+      checkoutState: {
+        ...checkoutState,
+        data: {
+          ...checkoutState.data,
+          isPaymentDataRequired: jest.fn().mockReturnValue(false),
+        },
+      },
+      children: mockChild,
     };
+    const { container } = render(<BigCommercePaymentsPayLaterPaymentMethod {...localProps} />);
 
-    it('renders nothing if Payment Data is not Required', () => {
-        const mockChild = <div>test child</div>;
-        const localProps = {
-            ...props,
-            checkoutState: {
-                ...checkoutState,
-                data: {
-                    ...checkoutState.data,
-                    isPaymentDataRequired: jest.fn().mockReturnValue(false),
-                },
-            },
-            children: mockChild,
-        };
-        const { container } = render(<BigCommercePaymentsPayLaterPaymentMethod {...localProps} />);
-
-        expect(container).toBeEmptyDOMElement();
-    });
+    expect(container).toBeEmptyDOMElement();
+  });
 });

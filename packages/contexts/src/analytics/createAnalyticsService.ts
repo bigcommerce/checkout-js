@@ -1,16 +1,16 @@
 export default function createAnalyticsService<T>(
-    createFn: (args?: any) => T,
-    createArguments: unknown[] = [],
+  createFn: (args?: any) => T,
+  createArguments: unknown[] = [],
 ) {
-    let analyticsTracker: T;
+  let analyticsTracker: T;
 
-    return () => {
-        if (analyticsTracker) {
-            return analyticsTracker;
-        }
+  return () => {
+    if (analyticsTracker) {
+      return analyticsTracker;
+    }
 
-        analyticsTracker = createFn(...createArguments);
+    analyticsTracker = createFn(...createArguments);
 
-        return analyticsTracker;
-    };
+    return analyticsTracker;
+  };
 }

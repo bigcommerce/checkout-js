@@ -1,4 +1,4 @@
 export {
-    default as HostedWidgetPaymentComponent,
-    HostedWidgetComponentProps,
+  default as HostedWidgetPaymentComponent,
+  HostedWidgetComponentProps,
 } from './HostedWidgetPaymentComponent';

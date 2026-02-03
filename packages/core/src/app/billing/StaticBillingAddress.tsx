@@ -3,58 +3,62 @@ import React, { type FunctionComponent, memo } from 'react';
 
 import { type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { isPayPalFastlaneAddress, PoweredByPayPalFastlaneLabel, usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
+import {
+  isPayPalFastlaneAddress,
+  PoweredByPayPalFastlaneLabel,
+  usePayPalFastlaneAddress,
+} from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 import { AddressType, StaticAddress } from '../address';
 import { withCheckout } from '../checkout';
 import { EMPTY_ARRAY } from '../common/utility';
 
 export interface StaticBillingAddressProps {
-    address: Address;
+  address: Address;
 }
 
 interface WithCheckoutStaticBillingAddressProps {
-    fields: FormField[];
-    payments?: CheckoutPayment[];
+  fields: FormField[];
+  payments?: CheckoutPayment[];
 }
 
 const StaticBillingAddress: FunctionComponent<
-    StaticBillingAddressProps & WithCheckoutStaticBillingAddressProps
+  StaticBillingAddressProps & WithCheckoutStaticBillingAddressProps
 > = ({ address, payments = EMPTY_ARRAY }) => {
-    const { paypalFastlaneAddresses } = usePayPalFastlaneAddress();
-    const showPayPalFastlaneLabel = isPayPalFastlaneAddress(address, paypalFastlaneAddresses);
+  const { paypalFastlaneAddresses } = usePayPalFastlaneAddress();
+  const showPayPalFastlaneLabel = isPayPalFastlaneAddress(address, paypalFastlaneAddresses);
 
-    if (payments.find((payment) => payment.providerId === 'amazonpay')) {
-        return (
-            <p>
-                <TranslatedString id="billing.billing_address_amazonpay" />
-            </p>
-        );
-    }
-
+  if (payments.find((payment) => payment.providerId === 'amazonpay')) {
     return (
-        <>
-            <StaticAddress address={address} type={AddressType.Billing} />
-
-            {showPayPalFastlaneLabel && <PoweredByPayPalFastlaneLabel />}
-        </>
+      <p>
+        <TranslatedString id="billing.billing_address_amazonpay" />
+      </p>
     );
+  }
+
+  return (
+    <>
+      <StaticAddress address={address} type={AddressType.Billing} />
+
+      {showPayPalFastlaneLabel && <PoweredByPayPalFastlaneLabel />}
+    </>
+  );
 };
 
 export function mapToStaticBillingAddressProps(
-    { checkoutState }: CheckoutContextProps,
-    { address }: StaticBillingAddressProps,
+  { checkoutState }: CheckoutContextProps,
+  { address }: StaticBillingAddressProps,
 ): WithCheckoutStaticBillingAddressProps | null {
-    const {
-        data: { getBillingAddressFields, getCheckout },
-    } = checkoutState;
+  const {
+    data: { getBillingAddressFields, getCheckout },
+  } = checkoutState;
 
-    const checkout = getCheckout();
+  const checkout = getCheckout();
 
-    return {
-        fields: getBillingAddressFields(address.countryCode),
-        payments: checkout && checkout.payments,
-    };
+  return {
+    fields: getBillingAddressFields(address.countryCode),
+    payments: checkout?.payments,
+  };
 }
 
 export default withCheckout(mapToStaticBillingAddressProps)(memo(StaticBillingAddress));

@@ -7,13 +7,13 @@ import { render, screen } from '@bigcommerce/checkout/test-utils';
 import Form from './Form';
 
 describe('form', () => {
-    it('renders form component', () => {
-        render(
-            <Formik initialValues={null} onSubmit={noop}>
-                <Form data-testid="form">form</Form>
-            </Formik>,
-        );
+  it('renders form component', () => {
+    render(
+      <Formik initialValues={null} onSubmit={noop}>
+        <Form data-testid="form">form</Form>
+      </Formik>,
+    );
 
-        expect(screen.getByText('form')).toBeInTheDocument();
-    });
+    expect(screen.getByText('form')).toBeInTheDocument();
+  });
 });

@@ -6,49 +6,49 @@ import { type ShippingAddressProps } from './ShippingAddress';
 import StaticAddressEditable from './StaticAddressEditable';
 
 interface AmazonPayShippingAddressProps extends ShippingAddressProps {
-    shippingAddress:  Address,
+  shippingAddress: Address;
 }
 
 export const AmazonPayShippingAddress: FC<AmazonPayShippingAddressProps> = (props) => {
-    const {
-        methodId,
-        formFields,
-        onFieldChange,
-        initialize,
-        deinitialize,
-        shippingAddress,
-        isShippingStepPending,
-    } = props;
+  const {
+    methodId,
+    formFields,
+    onFieldChange,
+    initialize,
+    deinitialize,
+    shippingAddress,
+    isShippingStepPending,
+  } = props;
 
-    const initializeShipping = useCallback(
-        memoizeOne(
-            (defaultOptions: ShippingInitializeOptions) => (options?: ShippingInitializeOptions) =>
-                initialize({
-                    ...defaultOptions,
-                    ...options,
-                }),
-        ),
-        [],
-    );
+  const initializeShipping = useCallback(
+    memoizeOne(
+      (defaultOptions: ShippingInitializeOptions) => (options?: ShippingInitializeOptions) =>
+        initialize({
+          ...defaultOptions,
+          ...options,
+        }),
+    ),
+    [],
+  );
 
-    const editAddressButtonId = 'edit-ship-button';
+  const editAddressButtonId = 'edit-ship-button';
 
-    const options: ShippingInitializeOptions = {
-        amazonpay: {
-            editAddressButtonId,
-        },
-    };
+  const options: ShippingInitializeOptions = {
+    amazonpay: {
+      editAddressButtonId,
+    },
+  };
 
-    return (
-        <StaticAddressEditable
-            address={shippingAddress}
-            buttonId={editAddressButtonId}
-            deinitialize={deinitialize}
-            formFields={formFields}
-            initialize={initializeShipping(options)}
-            isLoading={isShippingStepPending}
-            methodId={methodId}
-            onFieldChange={onFieldChange}
-        />
-    );
+  return (
+    <StaticAddressEditable
+      address={shippingAddress}
+      buttonId={editAddressButtonId}
+      deinitialize={deinitialize}
+      formFields={formFields}
+      initialize={initializeShipping(options)}
+      isLoading={isShippingStepPending}
+      methodId={methodId}
+      onFieldChange={onFieldChange}
+    />
+  );
 };

@@ -1,3 +1,3 @@
 export default interface BoltCustomFormValues {
-    shouldCreateAccount: boolean;
+  shouldCreateAccount: boolean;
 }

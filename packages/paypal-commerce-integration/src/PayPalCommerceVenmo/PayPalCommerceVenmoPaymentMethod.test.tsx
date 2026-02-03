@@ -10,40 +10,40 @@ import { getPayPalCommerceVenmoMethod } from '../mocks/paymentMethods.mock';
 import PayPalCommerceVenmoPaymentMethod from './PayPalCommerceVenmoPaymentMethod';
 
 describe('PayPalCommerceVenmoPaymentMethod', () => {
-    const checkoutService = createCheckoutService();
-    const checkoutState = checkoutService.getState();
-    const props = {
-        method: getPayPalCommerceVenmoMethod(),
-        checkoutService,
-        checkoutState,
+  const checkoutService = createCheckoutService();
+  const checkoutState = checkoutService.getState();
+  const props = {
+    method: getPayPalCommerceVenmoMethod(),
+    checkoutService,
+    checkoutState,
 
-        paymentForm: jest.fn() as unknown as PaymentFormService,
+    paymentForm: jest.fn() as unknown as PaymentFormService,
 
-        language: { translate: jest.fn() } as unknown as LanguageService,
-        onUnhandledError: jest.fn(),
+    language: { translate: jest.fn() } as unknown as LanguageService,
+    onUnhandledError: jest.fn(),
+  };
+
+  it('renders component with provided props', () => {
+    const { container } = render(<PayPalCommerceVenmoPaymentMethod {...props} />);
+
+    expect(container).toMatchSnapshot();
+  });
+
+  it('renders nothing if Payment Data is not Required', () => {
+    const mockChild = <div>test child</div>;
+    const localProps = {
+      ...props,
+      checkoutState: {
+        ...checkoutState,
+        data: {
+          ...checkoutState.data,
+          isPaymentDataRequired: jest.fn().mockReturnValue(false),
+        },
+      },
+      children: mockChild,
     };
+    const { container } = render(<PayPalCommerceVenmoPaymentMethod {...localProps} />);
 
-    it('renders component with provided props', () => {
-        const { container } = render(<PayPalCommerceVenmoPaymentMethod {...props} />);
-
-        expect(container).toMatchSnapshot();
-    });
-
-    it('renders nothing if Payment Data is not Required', () => {
-        const mockChild = <div>test child</div>;
-        const localProps = {
-            ...props,
-            checkoutState: {
-                ...checkoutState,
-                data: {
-                    ...checkoutState.data,
-                    isPaymentDataRequired: jest.fn().mockReturnValue(false),
-                },
-            },
-            children: mockChild,
-        };
-        const { container } = render(<PayPalCommerceVenmoPaymentMethod {...localProps} />);
-
-        expect(container).toBeEmptyDOMElement();
-    });
+    expect(container).toBeEmptyDOMElement();
+  });
 });

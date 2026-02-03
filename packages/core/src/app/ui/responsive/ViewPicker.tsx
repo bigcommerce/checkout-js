@@ -4,14 +4,12 @@ import Media, { type MediaQueryObject, type MultiQueryProps } from 'react-media'
 import { MOBILE_MAX_WIDTH } from './breakpoints';
 
 const queries = {
-    print: 'print',
-    mobile: `screen and (max-width: ${MOBILE_MAX_WIDTH}px)`,
+  print: 'print',
+  mobile: `screen and (max-width: ${MOBILE_MAX_WIDTH}px)`,
 };
 
 const ViewPicker: FunctionComponent<Pick<MultiQueryProps<MediaQueryObject>, 'children'>> = ({
-    children,
-}) => {
-    return <Media queries={queries}>{children}</Media>;
-};
+  children,
+}) => <Media queries={queries}>{children}</Media>;
 
 export default memo(ViewPicker);

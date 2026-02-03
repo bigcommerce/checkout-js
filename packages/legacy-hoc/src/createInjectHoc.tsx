@@ -1,54 +1,54 @@
 import { isEmpty, pickBy } from 'lodash';
 import React, {
-    type ComponentType,
-    type Context,
-    type FunctionComponent,
-    memo,
-    useContext,
+  type ComponentType,
+  type Context,
+  type FunctionComponent,
+  memo,
+  useContext,
 } from 'react';
 
 import type InjectHoc from './InjectHoc';
 
 export interface InjectHocOptions<TInjectedProps> {
-    displayNamePrefix?: string;
-    pickProps?(value: TInjectedProps[keyof TInjectedProps], key: keyof TInjectedProps): boolean;
+  displayNamePrefix?: string;
+  pickProps?(value: TInjectedProps[keyof TInjectedProps], key: keyof TInjectedProps): boolean;
 }
 
 export default function createInjectHoc<
-    TInjectedProps extends object | undefined,
-    TPickedProps extends Partial<TInjectedProps> = TInjectedProps,
+  TInjectedProps extends object | undefined,
+  TPickedProps extends Partial<TInjectedProps> = TInjectedProps,
 >(
-    ContextComponent: Context<TInjectedProps>,
-    options?: InjectHocOptions<TInjectedProps>,
+  ContextComponent: Context<TInjectedProps>,
+  options?: InjectHocOptions<TInjectedProps>,
 ): InjectHoc<NonNullable<TPickedProps>> {
-    return <TProps extends TPickedProps>(OriginalComponent: ComponentType<TProps>) => {
-        const { displayNamePrefix = '', pickProps = () => true } = options || {};
+  return <TProps extends TPickedProps>(OriginalComponent: ComponentType<TProps>) => {
+    const { displayNamePrefix = '', pickProps = () => true } = options || {};
 
-        const InnerDecoratedComponent: FunctionComponent<TProps> = memo((props) => (
-            <OriginalComponent {...props} />
-        ));
+    const InnerDecoratedComponent: FunctionComponent<TProps> = memo((props) => (
+      <OriginalComponent {...props} />
+    ));
 
-        const DecoratedComponent = (props: Omit<TProps, keyof NonNullable<TPickedProps>>) => {
-            const context = useContext(ContextComponent);
-            const injectedProps = pickBy(context, (value, key) =>
-                pickProps(value, key as keyof TInjectedProps),
-            );
+    const DecoratedComponent = (props: Omit<TProps, keyof NonNullable<TPickedProps>>) => {
+      const context = useContext(ContextComponent);
+      const injectedProps = pickBy(context, (value, key) =>
+        pickProps(value, key as keyof TInjectedProps),
+      );
 
-            if (isEmpty(injectedProps)) {
-                return null;
-            }
+      if (isEmpty(injectedProps)) {
+        return null;
+      }
 
-            const mergedProps = { ...injectedProps, ...props } as unknown as TProps;
+      const mergedProps = { ...injectedProps, ...props } as unknown as TProps;
 
-            return <InnerDecoratedComponent {...mergedProps} />;
-        };
-
-        if (displayNamePrefix) {
-            DecoratedComponent.displayName = `${displayNamePrefix}(${
-                OriginalComponent.displayName || OriginalComponent.name
-            })`;
-        }
-
-        return DecoratedComponent;
+      return <InnerDecoratedComponent {...mergedProps} />;
     };
+
+    if (displayNamePrefix) {
+      DecoratedComponent.displayName = `${displayNamePrefix}(${
+        OriginalComponent.displayName || OriginalComponent.name
+      })`;
+    }
+
+    return DecoratedComponent;
+  };
 }

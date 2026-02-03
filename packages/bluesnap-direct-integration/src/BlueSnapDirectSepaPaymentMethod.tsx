@@ -2,13 +2,13 @@ import { createBlueSnapDirectAPMPaymentStrategy } from '@bigcommerce/checkout-sd
 import React, { type FunctionComponent, useCallback, useEffect, useState } from 'react';
 
 import {
-    AccountInstrumentFieldset,
-    StoreInstrumentFieldset,
+  AccountInstrumentFieldset,
+  StoreInstrumentFieldset,
 } from '@bigcommerce/checkout/instrument-utils';
 import {
-    type PaymentMethodProps,
-    type PaymentMethodResolveId,
-    toResolvableComponent,
+  type PaymentMethodProps,
+  type PaymentMethodResolveId,
+  toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 import { CheckboxFormField, Fieldset, Legend, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
@@ -18,156 +18,151 @@ import useSepaInstruments from './hooks/useSepaInstruments';
 import getSepaValidationSchema from './validation-schemas/getSepaValidationSchema';
 
 const BlueSnapDirectSepaPaymentMethod: FunctionComponent<PaymentMethodProps> = (props) => {
-    const {
-        method,
-        checkoutService: { initializePayment, deinitializePayment, loadInstruments },
-        checkoutState: {
-            data: { isPaymentDataRequired },
-            statuses: { isLoadingInstruments },
-        },
-        paymentForm: { disableSubmit, setValidationSchema },
-        language,
-        onUnhandledError,
-    } = props;
+  const {
+    method,
+    checkoutService: { initializePayment, deinitializePayment, loadInstruments },
+    checkoutState: {
+      data: { isPaymentDataRequired },
+      statuses: { isLoadingInstruments },
+    },
+    paymentForm: { disableSubmit, setValidationSchema },
+    language,
+    onUnhandledError,
+  } = props;
 
-    if (!isBlueSnapDirectInitializationData(method.initializationData)) {
-        throw new Error('Unable to get initialization data');
-    }
+  if (!isBlueSnapDirectInitializationData(method.initializationData)) {
+    throw new Error('Unable to get initialization data');
+  }
 
-    const [disabled, setDisabled] = useState(true);
-    const toggleSubmitButton = useCallback(
-        (shopperPermission: boolean) => setDisabled(!shopperPermission),
-        [setDisabled],
-    );
+  const [disabled, setDisabled] = useState(true);
+  const toggleSubmitButton = useCallback(
+    (shopperPermission: boolean) => setDisabled(!shopperPermission),
+    [setDisabled],
+  );
 
-    useEffect(
-        () => disableSubmit(method, isPaymentDataRequired() && disabled),
-        [disableSubmit, disabled, isPaymentDataRequired, method],
-    );
+  useEffect(
+    () => disableSubmit(method, isPaymentDataRequired() && disabled),
+    [disableSubmit, disabled, isPaymentDataRequired, method],
+  );
 
-    const initializeSepa = useCallback(async () => {
-        await initializePayment({
-            gatewayId: method.gateway,
-            methodId: method.id,
-            integrations: [createBlueSnapDirectAPMPaymentStrategy],
-        });
-    }, [initializePayment, method]);
+  const initializeSepa = useCallback(async () => {
+    await initializePayment({
+      gatewayId: method.gateway,
+      methodId: method.id,
+      integrations: [createBlueSnapDirectAPMPaymentStrategy],
+    });
+  }, [initializePayment, method]);
 
-    const deinitializeSepa = useCallback(async () => {
-        await deinitializePayment({
-            gatewayId: method.gateway,
-            methodId: method.id,
-        });
-    }, [deinitializePayment, method.gateway, method.id]);
+  const deinitializeSepa = useCallback(async () => {
+    await deinitializePayment({
+      gatewayId: method.gateway,
+      methodId: method.id,
+    });
+  }, [deinitializePayment, method.gateway, method.id]);
 
-    useEffect(() => {
-        void initializeSepa();
+  useEffect(() => {
+    void initializeSepa();
 
-        return () => {
-            void deinitializeSepa();
-        };
-    }, [deinitializeSepa, initializeSepa]);
+    return () => {
+      void deinitializeSepa();
+    };
+  }, [deinitializeSepa, initializeSepa]);
 
-    const {
-        accountInstruments,
-        currentInstrument,
-        handleSelectInstrument,
-        handleUseNewInstrument,
-        isInstrumentFeatureAvailable,
-        shouldShowInstrumentFieldset,
-        shouldCreateNewInstrument,
-    } = useSepaInstruments(method);
+  const {
+    accountInstruments,
+    currentInstrument,
+    handleSelectInstrument,
+    handleUseNewInstrument,
+    isInstrumentFeatureAvailable,
+    shouldShowInstrumentFieldset,
+    shouldCreateNewInstrument,
+  } = useSepaInstruments(method);
 
-    const shouldShowForm = !shouldShowInstrumentFieldset || shouldCreateNewInstrument;
+  const shouldShowForm = !shouldShowInstrumentFieldset || shouldCreateNewInstrument;
 
-    useEffect(() => {
-        setValidationSchema(method, getSepaValidationSchema(language, shouldShowForm));
-    }, [language, shouldShowForm, setValidationSchema, method]);
+  useEffect(() => {
+    setValidationSchema(method, getSepaValidationSchema(language, shouldShowForm));
+  }, [language, shouldShowForm, setValidationSchema, method]);
 
-    useEffect(() => {
-        const loadInstrumentsOrThrow = async () => {
-            try {
-                await loadInstruments();
-            } catch (error) {
-                if (error instanceof Error) {
-                    onUnhandledError(error);
-                }
-            }
-        };
-
-        if (isInstrumentFeatureAvailable) {
-            void loadInstrumentsOrThrow();
+  useEffect(() => {
+    const loadInstrumentsOrThrow = async () => {
+      try {
+        await loadInstruments();
+      } catch (error) {
+        if (error instanceof Error) {
+          onUnhandledError(error);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+      }
+    };
 
-    const isLoading = isLoadingInstruments();
+    if (isInstrumentFeatureAvailable) {
+      void loadInstrumentsOrThrow();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-    return (
-        <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
-            <Fieldset
-                legend={
-                    <Legend hidden>
-                        {language.translate('payment.bluesnap_direct_sepa_direct_debit')}
-                    </Legend>
-                }
-                style={{ paddingBottom: '1rem' }}
-            >
-                {shouldShowInstrumentFieldset && (
-                    <div className="checkout-ach-form__instrument">
-                        <AccountInstrumentFieldset
-                            instruments={accountInstruments}
-                            onSelectInstrument={handleSelectInstrument}
-                            onUseNewInstrument={handleUseNewInstrument}
-                            selectedInstrument={currentInstrument}
-                        />
-                    </div>
-                )}
-                {shouldShowForm && (
-                    <>
-                        <BlueSnapDirectTextField
-                            autoComplete="iban"
-                            labelContent={language.translate('payment.bluesnap_direct_iban.label')}
-                            name="iban"
-                            useFloatingLabel={true}
-                        />
-                        <BlueSnapDirectTextField
-                            labelContent={language.translate('address.first_name_label')}
-                            name="firstName"
-                            useFloatingLabel={true}
-                        />
-                        <BlueSnapDirectTextField
-                            labelContent={language.translate('address.last_name_label')}
-                            name="lastName"
-                            useFloatingLabel={true}
-                        />
-                    </>
-                )}
+  const isLoading = isLoadingInstruments();
 
-                <CheckboxFormField
-                    labelContent={language.translate(
-                        'payment.bluesnap_direct_sepa_mandate_disclaimer',
-                        {
-                            creditorName: method.initializationData.sepaCreditorCompanyName,
-                        },
-                    )}
-                    name="shopperPermission"
-                    onChange={toggleSubmitButton}
-                />
+  return (
+    <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
+      <Fieldset
+        legend={
+          <Legend hidden>{language.translate('payment.bluesnap_direct_sepa_direct_debit')}</Legend>
+        }
+        style={{ paddingBottom: '1rem' }}
+      >
+        {shouldShowInstrumentFieldset && (
+          <div className="checkout-ach-form__instrument">
+            <AccountInstrumentFieldset
+              instruments={accountInstruments}
+              onSelectInstrument={handleSelectInstrument}
+              onUseNewInstrument={handleUseNewInstrument}
+              selectedInstrument={currentInstrument}
+            />
+          </div>
+        )}
+        {shouldShowForm && (
+          <>
+            <BlueSnapDirectTextField
+              autoComplete="iban"
+              labelContent={language.translate('payment.bluesnap_direct_iban.label')}
+              name="iban"
+              useFloatingLabel={true}
+            />
+            <BlueSnapDirectTextField
+              labelContent={language.translate('address.first_name_label')}
+              name="firstName"
+              useFloatingLabel={true}
+            />
+            <BlueSnapDirectTextField
+              labelContent={language.translate('address.last_name_label')}
+              name="lastName"
+              useFloatingLabel={true}
+            />
+          </>
+        )}
 
-                {isInstrumentFeatureAvailable && (
-                    <StoreInstrumentFieldset
-                        instrumentId={currentInstrument?.bigpayToken}
-                        instruments={accountInstruments}
-                        isAccountInstrument
-                    />
-                )}
-            </Fieldset>
-        </LoadingOverlay>
-    );
+        <CheckboxFormField
+          labelContent={language.translate('payment.bluesnap_direct_sepa_mandate_disclaimer', {
+            creditorName: method.initializationData.sepaCreditorCompanyName,
+          })}
+          name="shopperPermission"
+          onChange={toggleSubmitButton}
+        />
+
+        {isInstrumentFeatureAvailable && (
+          <StoreInstrumentFieldset
+            instrumentId={currentInstrument?.bigpayToken}
+            instruments={accountInstruments}
+            isAccountInstrument
+          />
+        )}
+      </Fieldset>
+    </LoadingOverlay>
+  );
 };
 
 export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>(
-    BlueSnapDirectSepaPaymentMethod,
-    [{ id: 'sepa_direct_debit', gateway: 'bluesnapdirect' }],
+  BlueSnapDirectSepaPaymentMethod,
+  [{ id: 'sepa_direct_debit', gateway: 'bluesnapdirect' }],
 );

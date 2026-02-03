@@ -1,8 +1,8 @@
 import {
-    type CheckoutSelectors,
-    type CustomerInitializeOptions,
-    type CustomerRequestOptions,
-    type ExecutePaymentMethodCheckoutOptions,
+  type CheckoutSelectors,
+  type CustomerInitializeOptions,
+  type CustomerRequestOptions,
+  type ExecutePaymentMethodCheckoutOptions,
 } from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent, memo } from 'react';
 
@@ -14,68 +14,66 @@ import { PaymentMethodId } from '../../payment/paymentMethod';
 import BoltCheckoutSuggestion from './BoltCheckoutSuggestion';
 
 export interface CheckoutSuggestionProps {
-    onUnhandledError?(error: Error): void;
+  onUnhandledError?(error: Error): void;
 }
 
 export interface WithCheckoutSuggestionsProps {
-    isExecutingPaymentMethodCheckout: boolean;
-    providerWithCustomCheckout?: string;
-    deinitializeCustomer(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
-    executePaymentMethodCheckout(
-        options: ExecutePaymentMethodCheckoutOptions,
-    ): Promise<CheckoutSelectors>;
-    initializeCustomer(options: CustomerInitializeOptions): Promise<CheckoutSelectors>;
+  isExecutingPaymentMethodCheckout: boolean;
+  providerWithCustomCheckout?: string;
+  deinitializeCustomer(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
+  executePaymentMethodCheckout(
+    options: ExecutePaymentMethodCheckoutOptions,
+  ): Promise<CheckoutSelectors>;
+  initializeCustomer(options: CustomerInitializeOptions): Promise<CheckoutSelectors>;
 }
 
 const CheckoutSuggestion: FunctionComponent<
-    WithCheckoutSuggestionsProps & CheckoutSuggestionProps
-> = ({
-    providerWithCustomCheckout,
-    executePaymentMethodCheckout,
-    ...rest
-}) => {
-    const { analyticsTracker } = useAnalytics();
+  WithCheckoutSuggestionsProps & CheckoutSuggestionProps
+> = ({ providerWithCustomCheckout, executePaymentMethodCheckout, ...rest }) => {
+  const { analyticsTracker } = useAnalytics();
 
-    const handleExecutePaymentMethodCheckout = (options: ExecutePaymentMethodCheckoutOptions) => {
-        analyticsTracker.customerSuggestionExecute();
+  const handleExecutePaymentMethodCheckout = (options: ExecutePaymentMethodCheckoutOptions) => {
+    analyticsTracker.customerSuggestionExecute();
 
-        return executePaymentMethodCheckout(options);
-    }
+    return executePaymentMethodCheckout(options);
+  };
 
-    if (providerWithCustomCheckout === PaymentMethodId.Bolt) {
-        return <BoltCheckoutSuggestion
-                    executePaymentMethodCheckout={handleExecutePaymentMethodCheckout}
-                    methodId={providerWithCustomCheckout}
-                    {...rest}
-                />;
-    }
+  if (providerWithCustomCheckout === PaymentMethodId.Bolt) {
+    return (
+      <BoltCheckoutSuggestion
+        executePaymentMethodCheckout={handleExecutePaymentMethodCheckout}
+        methodId={providerWithCustomCheckout}
+        {...rest}
+      />
+    );
+  }
 
-    return null;
+  return null;
 };
 
 const mapToCheckoutSuggestionProps = ({
-    checkoutService,
-    checkoutState,
+  checkoutService,
+  checkoutState,
 }: CheckoutContextProps): WithCheckoutSuggestionsProps | null => {
-    const {
-        data: { getCheckout, getConfig },
-        statuses: { isExecutingPaymentMethodCheckout },
-    } = checkoutState;
+  const {
+    data: { getCheckout, getConfig },
+    statuses: { isExecutingPaymentMethodCheckout },
+  } = checkoutState;
 
-    const checkout = getCheckout();
-    const config = getConfig();
+  const checkout = getCheckout();
+  const config = getConfig();
 
-    if (!checkout || !config) {
-        return null;
-    }
+  if (!checkout || !config) {
+    return null;
+  }
 
-    return {
-        deinitializeCustomer: checkoutService.deinitializeCustomer,
-        executePaymentMethodCheckout: checkoutService.executePaymentMethodCheckout,
-        initializeCustomer: checkoutService.initializeCustomer,
-        isExecutingPaymentMethodCheckout: isExecutingPaymentMethodCheckout(),
-        providerWithCustomCheckout: config.checkoutSettings.providerWithCustomCheckout || undefined,
-    };
+  return {
+    deinitializeCustomer: checkoutService.deinitializeCustomer,
+    executePaymentMethodCheckout: checkoutService.executePaymentMethodCheckout,
+    initializeCustomer: checkoutService.initializeCustomer,
+    isExecutingPaymentMethodCheckout: isExecutingPaymentMethodCheckout(),
+    providerWithCustomCheckout: config.checkoutSettings.providerWithCustomCheckout || undefined,
+  };
 };
 
 export default withCheckout(mapToCheckoutSuggestionProps)(memo(CheckoutSuggestion));

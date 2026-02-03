@@ -4,78 +4,76 @@ import React, { createContext } from 'react';
 import createInjectHoc from './createInjectHoc';
 
 describe('createInjectHoc', () => {
-    const TestContext = createContext<{ foo?: string; bar?: string }>({});
+  const TestContext = createContext<{ foo?: string; bar?: string }>({});
 
-    const DummyComponent: React.FC<{ foo?: string; bar?: string; other?: string }> = ({
-        foo,
-        bar,
-        other,
-    }) => (
-        <div>
-            {Boolean(foo) && <span data-test="foo">{foo}</span>}
-            {Boolean(bar) && <span data-test="bar">{bar}</span>}
-            {Boolean(other) && <span data-test="other">{other}</span>}
-        </div>
+  const DummyComponent: React.FC<{ foo?: string; bar?: string; other?: string }> = ({
+    foo,
+    bar,
+    other,
+  }) => (
+    <div>
+      {Boolean(foo) && <span data-test="foo">{foo}</span>}
+      {Boolean(bar) && <span data-test="bar">{bar}</span>}
+      {Boolean(other) && <span data-test="other">{other}</span>}
+    </div>
+  );
+
+  it('renders component with injected context props', () => {
+    const Injected = createInjectHoc(TestContext)(DummyComponent);
+
+    render(
+      <TestContext.Provider value={{ foo: 'hello', bar: 'world' }}>
+        <Injected other="prop" />
+      </TestContext.Provider>,
     );
 
-    it('renders component with injected context props', () => {
-        const Injected = createInjectHoc(TestContext)(DummyComponent);
+    expect(screen.getByTestId('foo')).toHaveTextContent('hello');
+    expect(screen.getByTestId('bar')).toHaveTextContent('world');
+    expect(screen.getByTestId('other')).toHaveTextContent('prop');
+  });
 
-        render(
-            <TestContext.Provider value={{ foo: 'hello', bar: 'world' }}>
-                <Injected other="prop" />
-            </TestContext.Provider>,
-        );
+  it('filters context props using pickProps', () => {
+    const pickProps = (_: string, key: string) => key === 'foo';
 
-        expect(screen.getByTestId('foo')).toHaveTextContent('hello');
-        expect(screen.getByTestId('bar')).toHaveTextContent('world');
-        expect(screen.getByTestId('other')).toHaveTextContent('prop');
-    });
+    const Injected = createInjectHoc(TestContext, { pickProps })(DummyComponent);
 
-    it('filters context props using pickProps', () => {
-        const pickProps = (_: string, key: string) => key === 'foo';
+    render(
+      <TestContext.Provider value={{ foo: 'keep me', bar: 'remove me' }}>
+        <Injected />
+      </TestContext.Provider>,
+    );
 
-        const Injected = createInjectHoc(TestContext, { pickProps })(DummyComponent);
+    expect(screen.getByTestId('foo')).toHaveTextContent('keep me');
+    expect(screen.queryByTestId('bar')).not.toBeInTheDocument();
+  });
 
-        render(
-            <TestContext.Provider value={{ foo: 'keep me', bar: 'remove me' }}>
-                <Injected />
-            </TestContext.Provider>,
-        );
+  it('renders null when injected props are empty', () => {
+    const Injected = createInjectHoc(TestContext)(DummyComponent);
 
-        expect(screen.getByTestId('foo')).toHaveTextContent('keep me');
-        expect(screen.queryByTestId('bar')).not.toBeInTheDocument();
-    });
+    const { container } = render(
+      <TestContext.Provider value={{}}>
+        <Injected />
+      </TestContext.Provider>,
+    );
 
-    it('renders null when injected props are empty', () => {
-        const Injected = createInjectHoc(TestContext)(DummyComponent);
+    expect(container).toBeEmptyDOMElement();
+  });
 
-        const { container } = render(
-            <TestContext.Provider value={{}}>
-                <Injected />
-            </TestContext.Provider>,
-        );
+  it('sets displayName when displayNamePrefix is provided', () => {
+    const Injected = createInjectHoc(TestContext, { displayNamePrefix: 'WithContext' })(
+      DummyComponent,
+    );
 
-        expect(container).toBeEmptyDOMElement();
-    });
+    expect(Injected.displayName).toBe('WithContext(DummyComponent)');
+  });
 
-    it('sets displayName when displayNamePrefix is provided', () => {
-        const Injected = createInjectHoc(TestContext, { displayNamePrefix: 'WithContext' })(
-            DummyComponent,
-        );
+  it('sets displayName using component displayName if available', () => {
+    const NamedComponent = () => null;
 
-        expect(Injected.displayName).toBe('WithContext(DummyComponent)');
-    });
+    NamedComponent.displayName = 'CustomName';
 
-    it('sets displayName using component displayName if available', () => {
-        const NamedComponent = () => null;
+    const Injected = createInjectHoc(TestContext, { displayNamePrefix: 'Wrapper' })(NamedComponent);
 
-        NamedComponent.displayName = 'CustomName';
-
-        const Injected = createInjectHoc(TestContext, { displayNamePrefix: 'Wrapper' })(
-            NamedComponent,
-        );
-
-        expect(Injected.displayName).toBe('Wrapper(CustomName)');
-    });
+    expect(Injected.displayName).toBe('Wrapper(CustomName)');
+  });
 });

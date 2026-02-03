@@ -6,48 +6,47 @@ import { FormContext } from '@bigcommerce/checkout/ui';
 import { getNestedValue } from '../../common/utility';
 
 export interface FormFieldErrorProps {
-    name: string;
-    testId?: string;
-    errorId: string;
+  name: string;
+  testId?: string;
+  errorId: string;
 }
 
 const FormFieldError: FunctionComponent<FormFieldErrorProps> = ({ name, testId, errorId }) => {
-    const formikContext = useFormikContext<{ [key: string]: any }>();
+  const formikContext = useFormikContext<Record<string, any>>();
 
-    const hasError = getNestedValue(formikContext?.errors, name) && getNestedValue(formikContext?.touched, name);
+  const hasError =
+    getNestedValue(formikContext?.errors, name) && getNestedValue(formikContext?.touched, name);
 
-    const renderMessage = useCallback(
-        (message: string) => (
-            <label
-                aria-live="polite"
-                className="form-inlineMessage"
-                htmlFor={name}
-                id={errorId}
-                role="alert"
-            >
-                {message}
-            </label>
-        ),
-        [errorId, name],
-    );
+  const renderMessage = useCallback(
+    (message: string) => (
+      <label
+        aria-live="polite"
+        className="form-inlineMessage"
+        htmlFor={name}
+        id={errorId}
+        role="alert"
+      >
+        {message}
+      </label>
+    ),
+    [errorId, name],
+  );
 
-    return (
-        <FormContext.Consumer>
-            {({ isSubmitted }) => (
-                <ul className="form-field-errors" data-test={testId}>
-                    <li className="form-field-error">
-                        {(hasError && isSubmitted) ? <ErrorMessage name={name} render={renderMessage} /> :
-                            <span
-                                aria-hidden="true"
-                                className="is-srOnly"
-                                id={errorId}
-                            />
-                        }
-                    </li>
-                </ul>
+  return (
+    <FormContext.Consumer>
+      {({ isSubmitted }) => (
+        <ul className="form-field-errors" data-test={testId}>
+          <li className="form-field-error">
+            {hasError && isSubmitted ? (
+              <ErrorMessage name={name} render={renderMessage} />
+            ) : (
+              <span aria-hidden="true" className="is-srOnly" id={errorId} />
             )}
-        </FormContext.Consumer>
-    );
+          </li>
+        </ul>
+      )}
+    </FormContext.Consumer>
+  );
 };
 
 export default memo(FormFieldError);

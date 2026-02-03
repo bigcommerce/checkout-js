@@ -5,21 +5,21 @@ import { ExtensionProvider } from './ExtensionProvider';
 import { type ExtensionServiceInterface } from './ExtensionType';
 
 describe('ExtensionProvider', () => {
-    it('renders the children', () => {
-        const extensionService: ExtensionServiceInterface = {
-            setDispatch: jest.fn(),
-            loadExtensions: jest.fn(),
-            renderExtension: jest.fn(),
-            removeListeners: jest.fn(),
-            isRegionEnabled: jest.fn(),
-        };
+  it('renders the children', () => {
+    const extensionService: ExtensionServiceInterface = {
+      setDispatch: jest.fn(),
+      loadExtensions: jest.fn(),
+      renderExtension: jest.fn(),
+      removeListeners: jest.fn(),
+      isRegionEnabled: jest.fn(),
+    };
 
-        render(
-            <ExtensionProvider extensionService={extensionService}>
-                <div data-test="child-component">Child Component</div>
-            </ExtensionProvider>,
-        );
+    render(
+      <ExtensionProvider extensionService={extensionService}>
+        <div data-test="child-component">Child Component</div>
+      </ExtensionProvider>,
+    );
 
-        expect(screen.getByTestId('child-component')).toBeInTheDocument();
-    });
+    expect(screen.getByTestId('child-component')).toBeInTheDocument();
+  });
 });

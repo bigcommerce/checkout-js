@@ -16,8 +16,8 @@ export { default as isEmbedded } from './isEmbedded';
 export { default as PaymentFormValues } from './PaymentFormValues';
 export { TranslateValidationErrorFunction } from './TranslateValidationErrorFunction';
 export {
-    CHECKOUT_ROOT_NODE_ID,
-    MICRO_APP_NG_CHECKOUT_ROOT_NODE_ID,
+  CHECKOUT_ROOT_NODE_ID,
+  MICRO_APP_NG_CHECKOUT_ROOT_NODE_ID,
 } from './CheckoutRootWrapperIds';
 export { SpecificError } from './errors';
 export { getCountryData } from './CountryData';

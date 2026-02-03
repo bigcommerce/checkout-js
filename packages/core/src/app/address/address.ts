@@ -1,3 +1,1 @@
-export interface AddressKeyMap<T = string> {
-    [fieldName: string]: T;
-}
+export type AddressKeyMap<T = string> = Record<string, T>;

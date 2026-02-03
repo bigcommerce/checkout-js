@@ -4,12 +4,12 @@ import { LocaleContext } from '@bigcommerce/checkout/contexts';
 import { createInjectHoc, type InjectHoc } from '@bigcommerce/checkout/legacy-hoc';
 
 export interface WithLanguageProps {
-    language: LanguageService;
+  language: LanguageService;
 }
 
 const withLanguage: InjectHoc<WithLanguageProps> = createInjectHoc(LocaleContext, {
-    displayNamePrefix: 'WithLanguage',
-    pickProps: (value, key) => key === 'language' && !!value,
+  displayNamePrefix: 'WithLanguage',
+  pickProps: (value, key) => key === 'language' && !!value,
 });
 
 export default withLanguage;

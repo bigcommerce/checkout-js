@@ -1,14 +1,14 @@
 import { createCheckoutService } from '@bigcommerce/checkout-sdk';
 import {
-    createPayPalCommerceCreditPaymentStrategy,
-    createPayPalCommercePaymentStrategy,
+  createPayPalCommerceCreditPaymentStrategy,
+  createPayPalCommercePaymentStrategy,
 } from '@bigcommerce/checkout-sdk/integrations/paypal-commerce';
 import React, { type FunctionComponent } from 'react';
 
 import {
-    CheckoutProvider,
-    LocaleContext,
-    type LocaleContextType,
+  CheckoutProvider,
+  LocaleContext,
+  type LocaleContextType,
 } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
@@ -18,77 +18,77 @@ import { render } from '@bigcommerce/checkout/test-utils';
 import PaypalCommerceCreditBanner from './PaypalCommerceCreditBanner';
 
 describe('PaypalCommerceCreditBanner', () => {
-    let PaypalCommerceCreditBannerTest: FunctionComponent;
-    let localeContext: LocaleContextType;
+  let PaypalCommerceCreditBannerTest: FunctionComponent;
+  let localeContext: LocaleContextType;
 
-    const checkoutService = createCheckoutService();
-    const checkoutState = checkoutService.getState();
-    const bannerContainerId = 'paypal-commerce-credit-banner-container';
+  const checkoutService = createCheckoutService();
+  const checkoutState = checkoutService.getState();
+  const bannerContainerId = 'paypal-commerce-credit-banner-container';
 
-    const defaultProps = {
-        onUnhandledError: jest.fn(),
-        containerId: bannerContainerId,
-        methodId: 'paypalcommercecredit',
-    };
+  const defaultProps = {
+    onUnhandledError: jest.fn(),
+    containerId: bannerContainerId,
+    methodId: 'paypalcommercecredit',
+  };
 
-    beforeEach(() => {
-        localeContext = createLocaleContext(getStoreConfig());
+  beforeEach(() => {
+    localeContext = createLocaleContext(getStoreConfig());
 
-        jest.spyOn(checkoutService, 'deinitializePayment').mockResolvedValue(checkoutState);
+    jest.spyOn(checkoutService, 'deinitializePayment').mockResolvedValue(checkoutState);
 
-        jest.spyOn(checkoutService, 'initializePayment').mockResolvedValue(checkoutState);
+    jest.spyOn(checkoutService, 'initializePayment').mockResolvedValue(checkoutState);
 
-        PaypalCommerceCreditBannerTest = () => (
-            <CheckoutProvider checkoutService={checkoutService}>
-                <LocaleContext.Provider value={localeContext}>
-                    <PaypalCommerceCreditBanner {...defaultProps} />
-                </LocaleContext.Provider>
-            </CheckoutProvider>
-        );
+    PaypalCommerceCreditBannerTest = () => (
+      <CheckoutProvider checkoutService={checkoutService}>
+        <LocaleContext.Provider value={localeContext}>
+          <PaypalCommerceCreditBanner {...defaultProps} />
+        </LocaleContext.Provider>
+      </CheckoutProvider>
+    );
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+    jest.resetAllMocks();
+  });
+
+  it('initializes PaypalCommerceCreditBanner', () => {
+    render(<PaypalCommerceCreditBannerTest />);
+
+    expect(checkoutService.initializePayment).toHaveBeenCalledWith({
+      methodId: PaymentMethodId.PaypalCommerceCredit,
+      integrations: [
+        createPayPalCommerceCreditPaymentStrategy,
+        createPayPalCommercePaymentStrategy,
+      ],
+      paypalcommercecredit: {
+        bannerContainerId,
+      },
     });
 
-    afterEach(() => {
-        jest.clearAllMocks();
-        jest.resetAllMocks();
+    expect(checkoutService.deinitializePayment).toHaveBeenCalledWith({
+      methodId: PaymentMethodId.PaypalCommerceCredit,
+    });
+  });
+
+  it('catches error during PaypalCommerceCreditBanner initialization', () => {
+    jest.spyOn(checkoutService, 'initializePayment').mockImplementation(() => {
+      throw new Error('something went wrong!');
     });
 
-    it('initializes PaypalCommerceCreditBanner', () => {
-        render(<PaypalCommerceCreditBannerTest />);
+    render(<PaypalCommerceCreditBannerTest />);
 
-        expect(checkoutService.initializePayment).toHaveBeenCalledWith({
-            methodId: PaymentMethodId.PaypalCommerceCredit,
-            integrations: [
-                createPayPalCommerceCreditPaymentStrategy,
-                createPayPalCommercePaymentStrategy,
-            ],
-            paypalcommercecredit: {
-                bannerContainerId,
-            },
-        });
-
-        expect(checkoutService.deinitializePayment).toHaveBeenCalledWith({
-            methodId: PaymentMethodId.PaypalCommerceCredit,
-        });
+    expect(checkoutService.initializePayment).toHaveBeenCalledWith({
+      methodId: PaymentMethodId.PaypalCommerceCredit,
+      integrations: [
+        createPayPalCommerceCreditPaymentStrategy,
+        createPayPalCommercePaymentStrategy,
+      ],
+      paypalcommercecredit: {
+        bannerContainerId,
+      },
     });
 
-    it('catches error during PaypalCommerceCreditBanner initialization', () => {
-        jest.spyOn(checkoutService, 'initializePayment').mockImplementation(() => {
-            throw new Error('something went wrong!');
-        });
-
-        render(<PaypalCommerceCreditBannerTest />);
-
-        expect(checkoutService.initializePayment).toHaveBeenCalledWith({
-            methodId: PaymentMethodId.PaypalCommerceCredit,
-            integrations: [
-                createPayPalCommerceCreditPaymentStrategy,
-                createPayPalCommercePaymentStrategy,
-            ],
-            paypalcommercecredit: {
-                bannerContainerId,
-            },
-        });
-
-        expect(defaultProps.onUnhandledError).toHaveBeenCalled();
-    });
+    expect(defaultProps.onUnhandledError).toHaveBeenCalled();
+  });
 });

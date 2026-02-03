@@ -1,13 +1,13 @@
-import { type ShippingOptionsFormProps } from "../shippingOption/ShippingOptionsForm";
+import { type ShippingOptionsFormProps } from '../shippingOption/ShippingOptionsForm';
 
 export const getShippingOptionIds = ({ consignments }: ShippingOptionsFormProps) => {
-    const shippingOptionIds: { [id: string]: string } = {};
+  const shippingOptionIds: Record<string, string> = {};
 
-    (consignments || []).forEach((consignment) => {
-        shippingOptionIds[consignment.id] = consignment.selectedShippingOption
-            ? consignment.selectedShippingOption.id
-            : '';
-    });
+  (consignments || []).forEach((consignment) => {
+    shippingOptionIds[consignment.id] = consignment.selectedShippingOption
+      ? consignment.selectedShippingOption.id
+      : '';
+  });
 
-    return { shippingOptionIds };
+  return { shippingOptionIds };
 };

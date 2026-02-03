@@ -6,7 +6,8 @@ import getOrderShippingCostAfterAutomaticDiscount from './getOrderShippingCostAf
 import getStoreCreditAmount from './getStoreCreditAmount';
 import { type OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
 
-export default function mapToOrderSummarySubtotalsProps({
+export default function mapToOrderSummarySubtotalsProps(
+  {
     baseAmount,
     discountAmount,
     isTaxIncluded,
@@ -18,26 +19,31 @@ export default function mapToOrderSummarySubtotalsProps({
     taxes,
     fees,
     consignments,
-}: Order,
-isShippingDiscountDisplayEnabled: boolean,
+  }: Order,
+  isShippingDiscountDisplayEnabled: boolean,
 ): OrderSummarySubtotalsProps {
+  const shippingAmount =
+    isShippingDiscountDisplayEnabled && consignments.shipping.length > 0
+      ? getOrderShippingCostAfterAutomaticDiscount(
+          shippingCostBeforeDiscount,
+          consignments.shipping,
+        )
+      : shippingCostBeforeDiscount;
 
-    const shippingAmount = isShippingDiscountDisplayEnabled && consignments.shipping.length > 0
-    ? getOrderShippingCostAfterAutomaticDiscount(shippingCostBeforeDiscount, consignments.shipping)
-    : shippingCostBeforeDiscount;
-
-    return {
-        subtotalAmount: baseAmount,
-        shippingAmount,
-        shippingAmountBeforeDiscount: isShippingDiscountDisplayEnabled ? shippingCostBeforeDiscount : undefined,
-        giftWrappingAmount: giftWrappingCostTotal,
-        discountAmount,
-        storeCreditAmount: getStoreCreditAmount(payments),
-        handlingAmount: handlingCostTotal,
-        coupons,
-        giftCertificates: payments && mapFromPayments(payments),
-        taxes,
-        isTaxIncluded,
-        fees,
-    };
+  return {
+    subtotalAmount: baseAmount,
+    shippingAmount,
+    shippingAmountBeforeDiscount: isShippingDiscountDisplayEnabled
+      ? shippingCostBeforeDiscount
+      : undefined,
+    giftWrappingAmount: giftWrappingCostTotal,
+    discountAmount,
+    storeCreditAmount: getStoreCreditAmount(payments),
+    handlingAmount: handlingCostTotal,
+    coupons,
+    giftCertificates: payments && mapFromPayments(payments),
+    taxes,
+    isTaxIncluded,
+    fees,
+  };
 }

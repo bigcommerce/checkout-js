@@ -16,147 +16,139 @@ import { getPayPalCommerceMethod } from '../mocks/paymentMethods.mock';
 import PayPalCommercePaymentMethod from './PayPalCommercePaymentMethod';
 
 describe('PayPalCommercePaymentMethod', () => {
-    const checkoutService = createCheckoutService();
-    const checkoutState = checkoutService.getState();
-    const paymentForm = getPaymentFormServiceMock();
-    const localeContext = createLocaleContext(getStoreConfig());
+  const checkoutService = createCheckoutService();
+  const checkoutState = checkoutService.getState();
+  const paymentForm = getPaymentFormServiceMock();
+  const localeContext = createLocaleContext(getStoreConfig());
 
-    const props = {
-        method: getPayPalCommerceMethod(),
-        checkoutService,
-        checkoutState,
+  const props = {
+    method: getPayPalCommerceMethod(),
+    checkoutService,
+    checkoutState,
 
-        paymentForm,
-        language: localeContext.language,
-        onUnhandledError: jest.fn(),
+    paymentForm,
+    language: localeContext.language,
+    onUnhandledError: jest.fn(),
+  };
+
+  const accountInstrument: AccountInstrument = {
+    bigpayToken: '31415',
+    provider: 'paypalcommerce',
+    externalId: 'test@external-id.com',
+    trustedShippingAddress: false,
+    defaultInstrument: false,
+    method: 'paypal',
+    type: 'account',
+  };
+
+  const PayPalCommercePaymentMethodMock: FunctionComponent<PaymentMethodProps> = (
+    paymentProps: PaymentMethodProps,
+  ) => (
+    <Formik initialValues={{}} onSubmit={noop}>
+      <CheckoutContext.Provider value={{ checkoutState, checkoutService }}>
+        <LocaleContext.Provider value={localeContext}>
+          <PaymentFormContext.Provider value={{ paymentForm }}>
+            <PayPalCommercePaymentMethod {...paymentProps} />
+          </PaymentFormContext.Provider>
+        </LocaleContext.Provider>
+      </CheckoutContext.Provider>
+    </Formik>
+  );
+
+  it('renders component with provided props', () => {
+    const { container } = render(<PayPalCommercePaymentMethodMock {...props} />);
+
+    expect(container).toMatchSnapshot();
+  });
+
+  it('renders nothing if Payment Data is not Required', () => {
+    const mockChild = <div>test child</div>;
+    const localProps = {
+      ...props,
+      checkoutState: {
+        ...checkoutState,
+        data: {
+          ...checkoutState.data,
+          isPaymentDataRequired: jest.fn().mockReturnValue(false),
+        },
+      },
+      children: mockChild,
     };
+    const { container } = render(<PayPalCommercePaymentMethodMock {...localProps} />);
 
-    const accountInstrument: AccountInstrument = {
-        bigpayToken: '31415',
-        provider: 'paypalcommerce',
-        externalId: 'test@external-id.com',
-        trustedShippingAddress: false,
-        defaultInstrument: false,
-        method: 'paypal',
-        type: 'account',
-    };
+    expect(container).toBeEmptyDOMElement();
+  });
 
-    const PayPalCommercePaymentMethodMock: FunctionComponent<PaymentMethodProps> = (
-        paymentProps: PaymentMethodProps,
-    ) => {
-        return (
-            <Formik initialValues={{}} onSubmit={noop}>
-                <CheckoutContext.Provider value={{ checkoutState, checkoutService }}>
-                    <LocaleContext.Provider value={localeContext}>
-                        <PaymentFormContext.Provider value={{ paymentForm }}>
-                            <PayPalCommercePaymentMethod {...paymentProps} />
-                        </PaymentFormContext.Provider>
-                    </LocaleContext.Provider>
-                </CheckoutContext.Provider>
-            </Formik>
-        );
-    };
+  describe('store instruments feature is available', () => {
+    beforeEach(() => {
+      props.method.config.isVaultingEnabled = true;
 
-    it('renders component with provided props', () => {
-        const { container } = render(<PayPalCommercePaymentMethodMock {...props} />);
+      jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue([accountInstrument]);
 
-        expect(container).toMatchSnapshot();
+      jest.spyOn(checkoutService, 'initializePayment').mockResolvedValue(checkoutState);
+
+      jest.spyOn(checkoutService, 'loadInstruments').mockResolvedValue(checkoutState);
+
+      jest.spyOn(checkoutService.getState().data, 'isPaymentDataRequired').mockReturnValue(true);
     });
 
-    it('renders nothing if Payment Data is not Required', () => {
-        const mockChild = <div>test child</div>;
-        const localProps = {
-            ...props,
-            checkoutState: {
-                ...checkoutState,
-                data: {
-                    ...checkoutState.data,
-                    isPaymentDataRequired: jest.fn().mockReturnValue(false),
-                },
-            },
-            children: mockChild,
-        };
-        const { container } = render(<PayPalCommercePaymentMethodMock {...localProps} />);
-
-        expect(container).toBeEmptyDOMElement();
+    afterEach(() => {
+      jest.clearAllMocks();
     });
 
-    describe('store instruments feature is available', () => {
-        beforeEach(() => {
-            props.method.config.isVaultingEnabled = true;
+    it('loads instruments', async () => {
+      render(<PayPalCommercePaymentMethodMock {...props} />);
 
-            jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue([accountInstrument]);
+      await new Promise((resolve) => process.nextTick(resolve));
 
-            jest.spyOn(checkoutService, 'initializePayment').mockResolvedValue(checkoutState);
-
-            jest.spyOn(checkoutService, 'loadInstruments').mockResolvedValue(checkoutState);
-
-            jest.spyOn(checkoutService.getState().data, 'isPaymentDataRequired').mockReturnValue(
-                true,
-            );
-        });
-
-        afterEach(() => {
-            jest.clearAllMocks();
-        });
-
-        it('loads instruments', async () => {
-            render(<PayPalCommercePaymentMethodMock {...props} />);
-
-            await new Promise((resolve) => process.nextTick(resolve));
-
-            expect(checkoutService.loadInstruments).toHaveBeenCalled();
-        });
-
-        it('shows instruments fieldset when there is at least one stored instrument with trusted shipping address', async () => {
-            jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue([
-                {
-                    ...accountInstrument,
-                    trustedShippingAddress: true,
-                },
-            ]);
-
-            render(<PayPalCommercePaymentMethodMock {...props} />);
-
-            await act(async () => {
-                await new Promise((resolve) => setTimeout(resolve, 0));
-            });
-
-            expect(screen.getByText('test@external-id.com')).toBeInTheDocument();
-        });
-
-        it('shows save instrument checkbox for registered customers', () => {
-            jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue([]);
-
-            render(<PayPalCommercePaymentMethodMock {...props} />);
-
-            expect(
-                screen.getByText('Save this account for future transactions'),
-            ).toBeInTheDocument();
-        });
-
-        it('should confirm instrument if untrusted shipping address is selected', () => {
-            render(<PayPalCommercePaymentMethodMock {...props} />);
-
-            expect(
-                screen.getByText(/We noticed this is a new shipping address/i),
-            ).toBeInTheDocument();
-        });
-
-        it('should hide instrument if isComplete is true', () => {
-            props.method.initializationData.isComplete = true;
-
-            render(<PayPalCommercePaymentMethodMock {...props} />);
-
-            expect(screen.queryByText('test@external-id.com')).not.toBeInTheDocument();
-        });
-
-        it('should not load instruments if isComplete is true', () => {
-            props.method.initializationData.isComplete = true;
-
-            render(<PayPalCommercePaymentMethodMock {...props} />);
-
-            expect(checkoutService.loadInstruments).not.toHaveBeenCalled();
-        });
+      expect(checkoutService.loadInstruments).toHaveBeenCalled();
     });
+
+    it('shows instruments fieldset when there is at least one stored instrument with trusted shipping address', async () => {
+      jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue([
+        {
+          ...accountInstrument,
+          trustedShippingAddress: true,
+        },
+      ]);
+
+      render(<PayPalCommercePaymentMethodMock {...props} />);
+
+      await act(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 0));
+      });
+
+      expect(screen.getByText('test@external-id.com')).toBeInTheDocument();
+    });
+
+    it('shows save instrument checkbox for registered customers', () => {
+      jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue([]);
+
+      render(<PayPalCommercePaymentMethodMock {...props} />);
+
+      expect(screen.getByText('Save this account for future transactions')).toBeInTheDocument();
+    });
+
+    it('should confirm instrument if untrusted shipping address is selected', () => {
+      render(<PayPalCommercePaymentMethodMock {...props} />);
+
+      expect(screen.getByText(/We noticed this is a new shipping address/i)).toBeInTheDocument();
+    });
+
+    it('should hide instrument if isComplete is true', () => {
+      props.method.initializationData.isComplete = true;
+
+      render(<PayPalCommercePaymentMethodMock {...props} />);
+
+      expect(screen.queryByText('test@external-id.com')).not.toBeInTheDocument();
+    });
+
+    it('should not load instruments if isComplete is true', () => {
+      props.method.initializationData.isComplete = true;
+
+      render(<PayPalCommercePaymentMethodMock {...props} />);
+
+      expect(checkoutService.loadInstruments).not.toHaveBeenCalled();
+    });
+  });
 });

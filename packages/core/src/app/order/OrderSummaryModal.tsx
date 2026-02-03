@@ -1,7 +1,7 @@
 import {
-    type LineItemMap,
-    type ShopperCurrency as ShopperCurrencyType,
-    type StoreCurrency,
+  type LineItemMap,
+  type ShopperCurrency as ShopperCurrencyType,
+  type StoreCurrency,
 } from '@bigcommerce/checkout-sdk';
 import React, { cloneElement, type FunctionComponent, isValidElement, type ReactNode } from 'react';
 
@@ -24,169 +24,189 @@ import OrderSummarySubtotals, { type OrderSummarySubtotalsProps } from './OrderS
 import OrderSummaryTotal from './OrderSummaryTotal';
 
 export interface OrderSummaryDrawerProps {
-    children: ReactNode;
-    additionalLineItems?: ReactNode;
-    items: LineItemMap;
-    total: number;
-    storeCurrency: StoreCurrency;
-    shopperCurrency: ShopperCurrencyType;
-    isOpen: boolean;
-    headerLink?: ReactNode & React.HTMLProps<HTMLDivElement>;
-    onRequestClose?(): void;
-    onAfterOpen?(): void;
+  children: ReactNode;
+  additionalLineItems?: ReactNode;
+  items: LineItemMap;
+  total: number;
+  storeCurrency: StoreCurrency;
+  shopperCurrency: ShopperCurrencyType;
+  isOpen: boolean;
+  headerLink?: ReactNode & React.HTMLProps<HTMLDivElement>;
+  onRequestClose?(): void;
+  onAfterOpen?(): void;
 }
 
 const OrderSummaryModal: FunctionComponent<
-    OrderSummaryDrawerProps & OrderSummarySubtotalsProps
+  OrderSummaryDrawerProps & OrderSummarySubtotalsProps
 > = ({
-    additionalLineItems,
-    isTaxIncluded,
-    taxes,
-    onRequestClose,
-    onAfterOpen,
-    storeCurrency,
-    shopperCurrency,
-    isOpen,
-    headerLink,
-    items,
-    total,
-    ...orderSummarySubtotalsProps
+  additionalLineItems,
+  isTaxIncluded,
+  taxes,
+  onRequestClose,
+  onAfterOpen,
+  storeCurrency,
+  shopperCurrency,
+  isOpen,
+  headerLink,
+  items,
+  total,
+  ...orderSummarySubtotalsProps
 }) => {
-    const { currency } = useLocale();
-    const { checkoutState } = useCheckout();
-    const { checkoutSettings } = checkoutState.data.getConfig() ?? {};
-    const checkout = checkoutState.data.getCheckout();
-    const order = checkoutState.data.getOrder();
+  const { currency } = useLocale();
+  const { checkoutState } = useCheckout();
+  const { checkoutSettings } = checkoutState.data.getConfig() ?? {};
+  const checkout = checkoutState.data.getCheckout();
+  const order = checkoutState.data.getOrder();
 
-    const isMultiCouponEnabled = isExperimentEnabled(checkoutSettings, 'CHECKOUT-9674.multi_coupon_cart_checkout', false);
-    const isMultiCouponEnabledForCheckout = isMultiCouponEnabled && !!checkout;
-    const isMultiCouponEnabledForOrder = isMultiCouponEnabled && !checkout && !!order;
+  const isMultiCouponEnabled = isExperimentEnabled(
+    checkoutSettings,
+    'CHECKOUT-9674.multi_coupon_cart_checkout',
+    false,
+  );
+  const isMultiCouponEnabledForCheckout = isMultiCouponEnabled && !!checkout;
+  const isMultiCouponEnabledForOrder = isMultiCouponEnabled && !checkout && !!order;
 
-    if (!currency) {
-        return null;
-    }
+  if (!currency) {
+    return null;
+  }
 
-    let totalDiscount;
-    
-    if (isMultiCouponEnabledForCheckout) {
-        totalDiscount = checkout.totalDiscount;
-    }
+  let totalDiscount;
 
-    if (isMultiCouponEnabledForOrder) {
-        totalDiscount = order.totalDiscount;
-    }
-   
-    const displayInclusiveTax = isTaxIncluded && taxes && taxes.length > 0;
-    const isTotalDiscountVisible = Boolean(totalDiscount && totalDiscount > 0);
+  if (isMultiCouponEnabledForCheckout) {
+    totalDiscount = checkout.totalDiscount;
+  }
 
-    const subHeaderText = <OrderModalSummarySubheader
-        amountWithCurrency={<ShopperCurrency amount={total} />}
-        items={items}
-        shopperCurrencyCode={shopperCurrency.code}
-        storeCurrencyCode={storeCurrency.code}
-    />;
+  if (isMultiCouponEnabledForOrder) {
+    totalDiscount = order.totalDiscount;
+  }
 
-    const continueButton = isMobileView() && <Button
-        className='cart-modal-continue'
-        data-test="manage-instrument-cancel-button"
-        onClick={preventDefault(onRequestClose)}>
-            <TranslatedString id="cart.return_to_checkout" />
-    </Button>;
+  const displayInclusiveTax = isTaxIncluded && taxes && taxes.length > 0;
+  const isTotalDiscountVisible = Boolean(totalDiscount && totalDiscount > 0);
 
-    return <Modal
-        additionalBodyClassName="cart-modal-body optimizedCheckout-orderSummary"
-        additionalHeaderClassName="cart-modal-header optimizedCheckout-orderSummary with-continue-button"
-        additionalModalClassName="optimizedCheckout-cart-modal"
-        footer={continueButton}
-        header={renderHeader({
-            headerLink,
-            subHeaderText,
-            onRequestClose,
-        })}
-        isOpen={isOpen}
-        onAfterOpen={onAfterOpen}
-        onRequestClose={onRequestClose}
+  const subHeaderText = (
+    <OrderModalSummarySubheader
+      amountWithCurrency={<ShopperCurrency amount={total} />}
+      items={items}
+      shopperCurrencyCode={shopperCurrency.code}
+      storeCurrencyCode={storeCurrency.code}
+    />
+  );
+
+  const continueButton = isMobileView() && (
+    <Button
+      className="cart-modal-continue"
+      data-test="manage-instrument-cancel-button"
+      onClick={preventDefault(onRequestClose)}
     >
+      <TranslatedString id="cart.return_to_checkout" />
+    </Button>
+  );
+
+  return (
+    <Modal
+      additionalBodyClassName="cart-modal-body optimizedCheckout-orderSummary"
+      additionalHeaderClassName="cart-modal-header optimizedCheckout-orderSummary with-continue-button"
+      additionalModalClassName="optimizedCheckout-cart-modal"
+      footer={continueButton}
+      header={renderHeader({
+        headerLink,
+        subHeaderText,
+        onRequestClose,
+      })}
+      isOpen={isOpen}
+      onAfterOpen={onAfterOpen}
+      onRequestClose={onRequestClose}
+    >
+      <OrderSummarySection>
+        <OrderSummaryItems displayLineItemsCount={false} items={items} />
+      </OrderSummarySection>
+      {isMultiCouponEnabledForCheckout || isMultiCouponEnabledForOrder ? (
+        <NewOrderSummarySubtotals
+          fees={orderSummarySubtotalsProps.fees}
+          giftWrappingAmount={orderSummarySubtotalsProps.giftWrappingAmount}
+          handlingAmount={orderSummarySubtotalsProps.handlingAmount}
+          isOrderConfirmation={!!isMultiCouponEnabledForOrder}
+          isTaxIncluded={isTaxIncluded}
+          storeCreditAmount={orderSummarySubtotalsProps.storeCreditAmount}
+          taxes={taxes}
+        />
+      ) : (
         <OrderSummarySection>
-            <OrderSummaryItems displayLineItemsCount={false} items={items} />
+          <OrderSummarySubtotals
+            isTaxIncluded={isTaxIncluded}
+            taxes={taxes}
+            {...orderSummarySubtotalsProps}
+          />
+          {additionalLineItems}
         </OrderSummarySection>
-        {isMultiCouponEnabledForCheckout || isMultiCouponEnabledForOrder
-            ? <NewOrderSummarySubtotals
-                fees={orderSummarySubtotalsProps.fees}
-                giftWrappingAmount={orderSummarySubtotalsProps.giftWrappingAmount}
-                handlingAmount={orderSummarySubtotalsProps.handlingAmount}
-                isOrderConfirmation={!!isMultiCouponEnabledForOrder}
-                isTaxIncluded={isTaxIncluded}
-                storeCreditAmount={orderSummarySubtotalsProps.storeCreditAmount}
-                taxes={taxes}
+      )}
+      <OrderSummarySection>
+        <OrderSummaryTotal
+          orderAmount={total}
+          shopperCurrencyCode={shopperCurrency.code}
+          storeCurrencyCode={storeCurrency.code}
+        />
+        {isTotalDiscountVisible && totalDiscount && (
+          <div className="total-savings">
+            <TranslatedHtml
+              data={{ totalDiscount: currency.toCustomerCurrency(totalDiscount) }}
+              id="redeemable.total_savings_text"
             />
-            : <OrderSummarySection>
-                    <OrderSummarySubtotals isTaxIncluded={isTaxIncluded} taxes={taxes} {...orderSummarySubtotalsProps} />
-                    {additionalLineItems}
-            </OrderSummarySection>
-        }
+          </div>
+        )}
+      </OrderSummarySection>
+      {displayInclusiveTax && (
         <OrderSummarySection>
-            <OrderSummaryTotal
-                orderAmount={total}
-                shopperCurrencyCode={shopperCurrency.code}
-                storeCurrencyCode={storeCurrency.code}
+          <h5
+            className="cart-taxItem cart-taxItem--subtotal optimizedCheckout-contentPrimary"
+            data-test="tax-text"
+          >
+            <TranslatedString id="tax.inclusive_label" />
+          </h5>
+          {(taxes || []).map((tax, index) => (
+            <OrderSummaryPrice
+              amount={tax.amount}
+              key={index}
+              label={tax.name}
+              testId="cart-taxes"
             />
-            {(isTotalDiscountVisible && totalDiscount) &&
-                <div className="total-savings">
-                    <TranslatedHtml
-                        data={{ totalDiscount: currency.toCustomerCurrency(totalDiscount) }}
-                        id="redeemable.total_savings_text"
-                    />
-                </div>
-            }
+          ))}
         </OrderSummarySection>
-        {displayInclusiveTax && <OrderSummarySection>
-                <h5
-                    className="cart-taxItem cart-taxItem--subtotal optimizedCheckout-contentPrimary"
-                    data-test="tax-text"
-                >
-                    <TranslatedString
-                        id="tax.inclusive_label"
-                    />
-                </h5>
-                {(taxes || []).map((tax, index) => (
-                    <OrderSummaryPrice
-                        amount={tax.amount}
-                        key={index}
-                        label={tax.name}
-                        testId="cart-taxes"
-                    />
-                ))}
-            </OrderSummarySection>}
+      )}
     </Modal>
+  );
 };
 
 const renderHeader: FunctionComponent<{
-    headerLink?: ReactNode & React.HTMLProps<HTMLDivElement>;
-    subHeaderText: ReactNode;
-    onRequestClose?(): void;
+  headerLink?: ReactNode & React.HTMLProps<HTMLDivElement>;
+  subHeaderText: ReactNode;
+  onRequestClose?(): void;
 }> = ({ onRequestClose, headerLink, subHeaderText }) => {
-    let newHeaderLink;
+  let newHeaderLink;
 
-    if (isValidElement(headerLink)) {
-        newHeaderLink = cloneElement(headerLink, { className: 'modal-header-link cart-modal-link test' });
-    }
+  if (isValidElement(headerLink)) {
+    newHeaderLink = cloneElement(headerLink, {
+      className: 'modal-header-link cart-modal-link test',
+    });
+  }
 
-    return <>
-        {newHeaderLink ?? headerLink}
-        <ModalHeader additionalClassName="cart-modal-title">
-            <div>
-                <TranslatedString id="cart.cart_heading" />
-                <div className='cart-heading-subheader'>{subHeaderText}</div>
-            </div>
-        </ModalHeader>
-        <a className="cart-modal-close" href="#" onClick={preventDefault(onRequestClose)}>
-            <span className="is-srOnly">
-                <TranslatedString id="common.close_action" />
-            </span>
-            <IconCloseWithBorder />
-        </a>
+  return (
+    <>
+      {newHeaderLink ?? headerLink}
+      <ModalHeader additionalClassName="cart-modal-title">
+        <div>
+          <TranslatedString id="cart.cart_heading" />
+          <div className="cart-heading-subheader">{subHeaderText}</div>
+        </div>
+      </ModalHeader>
+      <a className="cart-modal-close" href="#" onClick={preventDefault(onRequestClose)}>
+        <span className="is-srOnly">
+          <TranslatedString id="common.close_action" />
+        </span>
+        <IconCloseWithBorder />
+      </a>
     </>
+  );
 };
 
 export default OrderSummaryModal;

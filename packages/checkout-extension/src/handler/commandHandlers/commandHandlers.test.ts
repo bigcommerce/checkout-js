@@ -1,8 +1,8 @@
 import {
-    type CheckoutSelectors,
-    type CheckoutService,
-    createCheckoutService,
-    ExtensionCommandType,
+  type CheckoutSelectors,
+  type CheckoutService,
+  createCheckoutService,
+  ExtensionCommandType,
 } from '@bigcommerce/checkout-sdk';
 
 import { ExtensionActionType } from '@bigcommerce/checkout/contexts';
@@ -17,115 +17,113 @@ import { createSetIframeStyleHandler } from './createSetIframeStyleHandler';
 import { createShowLoadingIndicatorHandler } from './createShowLoadingIndicatorHandler';
 
 describe('commandHandlers', () => {
-    let handlerProps: CommandHandlerProps;
-    let checkoutService: CheckoutService;
+  let handlerProps: CommandHandlerProps;
+  let checkoutService: CheckoutService;
 
-    const dispatch = jest.fn();
+  const dispatch = jest.fn();
 
-    beforeEach(() => {
-        checkoutService = createCheckoutService();
-        handlerProps = {
-            checkoutService,
-            dispatch,
-            extension: getExtensions()[0],
-        };
+  beforeEach(() => {
+    checkoutService = createCheckoutService();
+    handlerProps = {
+      checkoutService,
+      dispatch,
+      extension: getExtensions()[0],
+    };
+  });
+
+  describe('createReloadCheckoutHandler', () => {
+    it('reloads checkout', async () => {
+      const { handler } = createReloadCheckoutHandler(handlerProps);
+
+      jest.spyOn(checkoutService, 'loadCheckout').mockResolvedValue(checkoutService.getState());
+
+      await handler({
+        type: ExtensionCommandType.ReloadCheckout,
+      });
+
+      expect(checkoutService.loadCheckout).toHaveBeenCalled();
     });
+  });
 
-    describe('createReloadCheckoutHandler', () => {
-        it('reloads checkout', async () => {
-            const { handler } = createReloadCheckoutHandler(handlerProps);
+  describe('createSetIframeStyleHandler', () => {
+    it('changes iframe style', () => {
+      const { handler } = createSetIframeStyleHandler(handlerProps);
+      const container = document.createElement('div');
+      const iframe = document.createElement('iframe');
+      const style = { width: '100px', height: '200px' };
 
-            jest.spyOn(checkoutService, 'loadCheckout').mockResolvedValue(
-                checkoutService.getState(),
-            );
+      jest.spyOn(document, 'querySelector').mockReturnValue(container);
+      jest.spyOn(container, 'querySelector').mockReturnValue(iframe);
 
-            await handler({
-                type: ExtensionCommandType.ReloadCheckout,
-            });
+      void handler({
+        type: ExtensionCommandType.SetIframeStyle,
+        payload: {
+          style,
+        },
+      });
 
-            expect(checkoutService.loadCheckout).toHaveBeenCalled();
-        });
+      expect(iframe.style).toEqual(expect.objectContaining(style));
     });
+  });
 
-    describe('createSetIframeStyleHandler', () => {
-        it('changes iframe style', () => {
-            const { handler } = createSetIframeStyleHandler(handlerProps);
-            const container = document.createElement('div');
-            const iframe = document.createElement('iframe');
-            const style = { width: '100px', height: '200px' };
+  describe('createShowLoadingIndicatorHandler', () => {
+    it('dispatches an action', () => {
+      const show = true;
+      const { handler } = createShowLoadingIndicatorHandler(handlerProps);
 
-            jest.spyOn(document, 'querySelector').mockReturnValue(container);
-            jest.spyOn(container, 'querySelector').mockReturnValue(iframe);
+      void handler({
+        type: ExtensionCommandType.ShowLoadingIndicator,
+        payload: {
+          show,
+        },
+      });
 
-            void handler({
-                type: ExtensionCommandType.SetIframeStyle,
-                payload: {
-                    style,
-                },
-            });
-
-            expect(iframe.style).toEqual(expect.objectContaining(style));
-        });
+      expect(handlerProps.dispatch).toHaveBeenCalledWith({
+        type: ExtensionActionType.SHOW_LOADING_INDICATOR,
+        payload: show,
+      });
     });
+  });
 
-    describe('createShowLoadingIndicatorHandler', () => {
-        it('dispatches an action', () => {
-            const show = true;
-            const { handler } = createShowLoadingIndicatorHandler(handlerProps);
+  describe('createReRenderShippingFormHandler', () => {
+    it('reloads checkout and dispatches an action', async () => {
+      jest
+        .spyOn(checkoutService, 'loadCheckout')
+        .mockResolvedValue({} as Promise<CheckoutSelectors>);
 
-            void handler({
-                type: ExtensionCommandType.ShowLoadingIndicator,
-                payload: {
-                    show,
-                },
-            });
+      const { handler } = createReRenderShippingFormHandler(handlerProps);
 
-            expect(handlerProps.dispatch).toHaveBeenCalledWith({
-                type: ExtensionActionType.SHOW_LOADING_INDICATOR,
-                payload: show,
-            });
-        });
+      await handler({
+        type: ExtensionCommandType.ReRenderShippingForm,
+      });
+
+      expect(checkoutService.loadCheckout).toHaveBeenCalled();
+      expect(handlerProps.dispatch).toHaveBeenCalledWith({
+        type: ExtensionActionType.RE_RENDER_SHIPPING_FORM,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        payload: expect.any(Number),
+      });
     });
+  });
 
-    describe('createReRenderShippingFormHandler', () => {
-        it('reloads checkout and dispatches an action', async () => {
-            jest.spyOn(checkoutService, 'loadCheckout').mockResolvedValue(
-                {} as Promise<CheckoutSelectors>,
-            );
+  describe('createReRenderShippingStepHandler', () => {
+    it('reloads checkout and dispatches an action', async () => {
+      jest
+        .spyOn(checkoutService, 'loadCheckout')
+        .mockResolvedValue({} as Promise<CheckoutSelectors>);
 
-            const { handler } = createReRenderShippingFormHandler(handlerProps);
+      const { handler } = createReRenderShippingStepHandler(handlerProps);
 
-            await handler({
-                type: ExtensionCommandType.ReRenderShippingForm,
-            });
+      await handler({
+        type: ExtensionCommandType.ReRenderShippingStep,
+      });
 
-            expect(checkoutService.loadCheckout).toHaveBeenCalled();
-            expect(handlerProps.dispatch).toHaveBeenCalledWith({
-                type: ExtensionActionType.RE_RENDER_SHIPPING_FORM,
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                payload: expect.any(Number),
-            });
-        });
+      expect(checkoutService.loadCheckout).toHaveBeenCalled();
+      expect(handlerProps.dispatch).toHaveBeenCalledWith({
+        type: ExtensionActionType.RE_RENDER_SHIPPING_FORM,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        payload: expect.any(Number),
+      });
     });
-
-    describe('createReRenderShippingStepHandler', () => {
-        it('reloads checkout and dispatches an action', async () => {
-            jest.spyOn(checkoutService, 'loadCheckout').mockResolvedValue(
-                {} as Promise<CheckoutSelectors>,
-            );
-
-            const { handler } = createReRenderShippingStepHandler(handlerProps);
-
-            await handler({
-                type: ExtensionCommandType.ReRenderShippingStep,
-            });
-
-            expect(checkoutService.loadCheckout).toHaveBeenCalled();
-            expect(handlerProps.dispatch).toHaveBeenCalledWith({
-                type: ExtensionActionType.RE_RENDER_SHIPPING_FORM,
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                payload: expect.any(Number),
-            });
-        });
-    });
+  });
 });

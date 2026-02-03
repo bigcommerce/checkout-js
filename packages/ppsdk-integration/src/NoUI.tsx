@@ -5,10 +5,10 @@ import { type PaymentMethodProps } from '@bigcommerce/checkout/payment-integrati
 import { usePropsToOnMount } from './usePropsToOnMount';
 
 export const NoUI = (props: PaymentMethodProps) => {
-    const onMount = usePropsToOnMount(props);
+  const onMount = usePropsToOnMount(props);
 
-    useEffect(onMount, [onMount]);
+  useEffect(onMount, [onMount]);
 
-    // eslint-disable-next-line react/jsx-no-useless-fragment
-    return <></>;
+  // eslint-disable-next-line react/jsx-no-useless-fragment
+  return <></>;
 };

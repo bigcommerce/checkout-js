@@ -59,13 +59,12 @@ export interface SingleShippingFormValues {
   orderComment: string;
 }
 
-const StripeShippingForm: React.FC<SingleShippingFormProps & WithLanguageProps & FormikProps<SingleShippingFormValues>> = (props) => {
+const StripeShippingForm: React.FC<
+  SingleShippingFormProps & WithLanguageProps & FormikProps<SingleShippingFormValues>
+> = (props) => {
   const { checkoutService, checkoutState } = useCheckout();
   const {
-    data: {
-      getConsignments,
-      getShippingCountries,
-    },
+    data: { getConsignments, getShippingCountries },
   } = checkoutState;
 
   const consignments = getConsignments() || [];
@@ -102,21 +101,21 @@ const StripeShippingForm: React.FC<SingleShippingFormProps & WithLanguageProps &
     return isLoading || isUpdatingShippingData || !hasSelectedShippingOptions(consignments);
   };
 
-  const handleAddressSelect = useCallback(async (address: Address) => {
-    try {
-      await updateAddress(address);
+  const handleAddressSelect = useCallback(
+    async (address: Address) => {
+      try {
+        await updateAddress(address);
 
-      setValues({
-        ...values,
-        shippingAddress: mapAddressToFormValues(
-          getFields(address.countryCode),
-          address,
-        ),
-      });
-    } catch (error) {
-      onUnhandledError(error);
-    }
-  }, [values, setValues, onUnhandledError]);
+        setValues({
+          ...values,
+          shippingAddress: mapAddressToFormValues(getFields(address.countryCode), address),
+        });
+      } catch (error) {
+        onUnhandledError(error);
+      }
+    },
+    [values, setValues, onUnhandledError],
+  );
 
   return (
     <Form autoComplete="on">
@@ -160,15 +159,15 @@ export default withLanguage(
       onSubmit(values);
     },
     mapPropsToValues: ({
-         getFields,
-         shippingAddress,
-         isBillingSameAsShipping,
-         customerMessage,
-       }) => ({
+      getFields,
+      shippingAddress,
+      isBillingSameAsShipping,
+      customerMessage,
+    }) => ({
       billingSameAsShipping: isBillingSameAsShipping,
       orderComment: customerMessage,
       shippingAddress: mapAddressToFormValues(
-        getFields(shippingAddress && shippingAddress.countryCode),
+        getFields(shippingAddress?.countryCode),
         shippingAddress,
       ),
     }),
@@ -179,27 +178,27 @@ export default withLanguage(
         formFields: getFields(shippingAddress.countryCode),
       }).isValidSync(shippingAddress),
     validationSchema: ({
-         language,
-         getFields,
-         methodId,
-       }: SingleShippingFormProps & WithLanguageProps) =>
+      language,
+      getFields,
+      methodId,
+    }: SingleShippingFormProps & WithLanguageProps) =>
       methodId
         ? object({
-          shippingAddress: lazy<Partial<AddressFormValues>>((formValues) =>
-            getCustomFormFieldsValidationSchema({
-              translate: getTranslateAddressError(language),
-              formFields: getFields(formValues && formValues.countryCode),
-            }),
-          ),
-        })
+            shippingAddress: lazy<Partial<AddressFormValues>>((formValues) =>
+              getCustomFormFieldsValidationSchema({
+                translate: getTranslateAddressError(language),
+                formFields: getFields(formValues?.countryCode),
+              }),
+            ),
+          })
         : object({
-          shippingAddress: lazy<Partial<AddressFormValues>>((formValues) =>
-            getAddressFormFieldsValidationSchema({
-              language,
-              formFields: getFields(formValues && formValues.countryCode),
-            }),
-          ),
-        }),
+            shippingAddress: lazy<Partial<AddressFormValues>>((formValues) =>
+              getAddressFormFieldsValidationSchema({
+                language,
+                formFields: getFields(formValues?.countryCode),
+              }),
+            ),
+          }),
     enableReinitialize: false,
   })(StripeShippingForm),
 );

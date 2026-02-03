@@ -1,14 +1,14 @@
 import React, { type FunctionComponent, useEffect } from 'react';
 
 import {
-    AccountInstrumentFieldset,
-    StoreInstrumentFieldset,
+  AccountInstrumentFieldset,
+  StoreInstrumentFieldset,
 } from '@bigcommerce/checkout/instrument-utils';
 import { TranslatedHtml } from '@bigcommerce/checkout/locale';
 import {
-    type PaymentMethodProps,
-    type PaymentMethodResolveId,
-    toResolvableComponent,
+  type PaymentMethodProps,
+  type PaymentMethodResolveId,
+  toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
@@ -17,93 +17,93 @@ import PayPalCommercePaymentMethodComponent from '../components/PayPalCommercePa
 import usePaypalCommerceInstrument from './hooks/usePaypalCommerceInstruments';
 
 const PayPalCommercePaymentMethod: FunctionComponent<PaymentMethodProps> = (props) => {
-    const {
-        checkoutState: {
-            data: { isPaymentDataRequired, getCustomer, getInstruments },
-            statuses: { isLoadingInstruments, isLoadingPaymentMethod },
-        },
-        method: {
-            config: { isVaultingEnabled },
-            initializationData: { isComplete },
-        },
-        method,
-        checkoutService,
-        onUnhandledError,
-    } = props;
+  const {
+    checkoutState: {
+      data: { isPaymentDataRequired, getCustomer, getInstruments },
+      statuses: { isLoadingInstruments, isLoadingPaymentMethod },
+    },
+    method: {
+      config: { isVaultingEnabled },
+      initializationData: { isComplete },
+    },
+    method,
+    checkoutService,
+    onUnhandledError,
+  } = props;
 
-    const {
-        trustedAccountInstruments,
-        currentInstrument,
-        handleSelectInstrument,
-        handleUseNewInstrument,
-        isInstrumentFeatureAvailable,
-        shouldShowInstrumentFieldset,
-        shouldConfirmInstrument,
-    } = usePaypalCommerceInstrument(method);
+  const {
+    trustedAccountInstruments,
+    currentInstrument,
+    handleSelectInstrument,
+    handleUseNewInstrument,
+    isInstrumentFeatureAvailable,
+    shouldShowInstrumentFieldset,
+    shouldConfirmInstrument,
+  } = usePaypalCommerceInstrument(method);
 
-    useEffect(() => {
-        const loadInstrumentsOrThrow = async () => {
-            try {
-                await checkoutService.loadInstruments();
-            } catch (error) {
-                if (error instanceof Error) {
-                    onUnhandledError(error);
-                }
-            }
-        };
-
-        const { isGuest } = getCustomer() || {};
-
-        const shouldLoadInstruments = !isGuest && isVaultingEnabled && !isComplete;
-
-        if (shouldLoadInstruments) {
-            void loadInstrumentsOrThrow();
+  useEffect(() => {
+    const loadInstrumentsOrThrow = async () => {
+      try {
+        await checkoutService.loadInstruments();
+      } catch (error) {
+        if (error instanceof Error) {
+          onUnhandledError(error);
         }
-    }, []);
+      }
+    };
 
-    if (!isPaymentDataRequired()) {
-        return null;
+    const { isGuest } = getCustomer() || {};
+
+    const shouldLoadInstruments = !isGuest && isVaultingEnabled && !isComplete;
+
+    if (shouldLoadInstruments) {
+      void loadInstrumentsOrThrow();
     }
+  }, []);
 
-    const isLoading = isLoadingInstruments() || isLoadingPaymentMethod(method.id);
-    const allInstruments = getInstruments() || [];
+  if (!isPaymentDataRequired()) {
+    return null;
+  }
 
-    return (
-        <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
-            <PayPalCommercePaymentMethodComponent
-                currentInstrument={currentInstrument}
-                providerOptionsKey="paypalcommerce"
-                shouldConfirmInstrument={shouldConfirmInstrument}
-                {...props}
-            >
-                {shouldShowInstrumentFieldset && (
-                    <AccountInstrumentFieldset
-                        instruments={trustedAccountInstruments}
-                        onSelectInstrument={handleSelectInstrument}
-                        onUseNewInstrument={handleUseNewInstrument}
-                        selectedInstrument={currentInstrument}
-                    />
-                )}
+  const isLoading = isLoadingInstruments() || isLoadingPaymentMethod(method.id);
+  const allInstruments = getInstruments() || [];
 
-                {shouldConfirmInstrument && (
-                    <div>
-                        <TranslatedHtml id="payment.account_instrument_new_shipping_address" />
-                    </div>
-                )}
+  return (
+    <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
+      <PayPalCommercePaymentMethodComponent
+        currentInstrument={currentInstrument}
+        providerOptionsKey="paypalcommerce"
+        shouldConfirmInstrument={shouldConfirmInstrument}
+        {...props}
+      >
+        {shouldShowInstrumentFieldset && (
+          <AccountInstrumentFieldset
+            instruments={trustedAccountInstruments}
+            onSelectInstrument={handleSelectInstrument}
+            onUseNewInstrument={handleUseNewInstrument}
+            selectedInstrument={currentInstrument}
+          />
+        )}
 
-                {isInstrumentFeatureAvailable && (
-                    <StoreInstrumentFieldset
-                        instrumentId={currentInstrument?.bigpayToken}
-                        instruments={allInstruments}
-                        isAccountInstrument
-                    />
-                )}
-            </PayPalCommercePaymentMethodComponent>
-        </LoadingOverlay>
-    );
+        {shouldConfirmInstrument && (
+          <div>
+            <TranslatedHtml id="payment.account_instrument_new_shipping_address" />
+          </div>
+        )}
+
+        {isInstrumentFeatureAvailable && (
+          <StoreInstrumentFieldset
+            instrumentId={currentInstrument?.bigpayToken}
+            instruments={allInstruments}
+            isAccountInstrument
+          />
+        )}
+      </PayPalCommercePaymentMethodComponent>
+    </LoadingOverlay>
+  );
 };
 
 export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>(
-    PayPalCommercePaymentMethod,
-    [{ id: 'paypalcommerce' }],
+  PayPalCommercePaymentMethod,
+  [{ id: 'paypalcommerce' }],
 );

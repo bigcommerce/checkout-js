@@ -3,50 +3,50 @@ import { Component, type ReactNode } from 'react';
 import type ErrorLogger from './ErrorLogger';
 
 export interface ErrorBoundaryProps {
-    children?: ReactNode;
-    fallback?: ReactNode;
-    errorLogger?: ErrorLogger;
-    filter?(error: Error): boolean;
+  children?: ReactNode;
+  fallback?: ReactNode;
+  errorLogger?: ErrorLogger;
+  filter?(error: Error): boolean;
 }
 
 interface ErrorBoundaryState {
-    error?: Error;
+  error?: Error;
 }
 
 class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
-    static getDerivedStateFromError(error: Error): ErrorBoundaryState {
-        return { error };
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return { error };
+  }
+
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  state: ErrorBoundaryState = {};
+
+  componentDidCatch(error: Error): void {
+    const { filter = () => true, errorLogger } = this.props;
+
+    if (!filter(error)) {
+      throw error;
     }
 
-    // eslint-disable-next-line @typescript-eslint/member-ordering
-    state: ErrorBoundaryState = {};
+    // Adding errorCode with value `ErrorBoundary` to collect usage statistics of ErrorBoundary
+    if (errorLogger) {
+      errorLogger.log(error, {
+        errorCode: 'ErrorBoundary',
+      });
+    }
+  }
 
-    componentDidCatch(error: Error): void {
-        const { filter = () => true, errorLogger } = this.props;
+  render(): ReactNode {
+    const { children, fallback, filter = () => true } = this.props;
 
-        if (!filter(error)) {
-            throw error;
-        }
+    const { error } = this.state;
 
-        // Adding errorCode with value `ErrorBoundary` to collect usage statistics of ErrorBoundary
-        if (errorLogger) {
-            errorLogger.log(error, {
-                errorCode: 'ErrorBoundary',
-            });
-        }
+    if (error && filter(error)) {
+      return fallback || null;
     }
 
-    render(): ReactNode {
-        const { children, fallback, filter = () => true } = this.props;
-
-        const { error } = this.state;
-
-        if (error && filter(error)) {
-            return fallback || null;
-        }
-
-        return children;
-    }
+    return children;
+  }
 }
 
 export default ErrorBoundary;

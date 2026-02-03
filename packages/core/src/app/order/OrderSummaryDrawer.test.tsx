@@ -2,7 +2,11 @@ import { createCheckoutService, type CurrencyService, type Order } from '@bigcom
 import userEvent from '@testing-library/user-event';
 import React, { type FunctionComponent } from 'react';
 
-import { CheckoutProvider, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
+import {
+  CheckoutProvider,
+  LocaleContext,
+  type LocaleContextType,
+} from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
@@ -17,170 +21,178 @@ import { type OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
 import PrintLink from './PrintLink';
 
 describe('OrderSummaryDrawer', () => {
-    let order: Order;
-    let localeContext: LocaleContextType;
-    let currencyService: CurrencyService;
-    let OrderSummaryDrawerTest: FunctionComponent<OrderSummaryDrawerProps & OrderSummarySubtotalsProps>;
+  let order: Order;
+  let localeContext: LocaleContextType;
+  let currencyService: CurrencyService;
+  let OrderSummaryDrawerTest: FunctionComponent<
+    OrderSummaryDrawerProps & OrderSummarySubtotalsProps
+  >;
 
+  beforeEach(() => {
+    localeContext = createLocaleContext(getStoreConfig());
+    currencyService = localeContext.currency;
+
+    order = getOrder();
+  });
+
+  describe('renders order summary drawer', () => {
     beforeEach(() => {
-        localeContext = createLocaleContext(getStoreConfig());
-        currencyService = localeContext.currency;
-
-        order = getOrder();
+      OrderSummaryDrawerTest = () => (
+        <CheckoutProvider checkoutService={createCheckoutService()}>
+          <LocaleContext.Provider value={localeContext}>
+            <OrderSummaryDrawer
+              {...mapToOrderSummarySubtotalsProps(order, false)}
+              additionalLineItems="foo"
+              headerLink={<PrintLink />}
+              lineItems={order.lineItems}
+              shopperCurrency={getStoreConfig().shopperCurrency}
+              storeCurrency={getStoreConfig().currency}
+              total={order.orderAmount}
+            />
+          </LocaleContext.Provider>
+        </CheckoutProvider>
+      );
     });
 
-    describe('renders order summary drawer', () => {
+    it('renders gift certificate icon when buying only GC', () => {
+      const { container } = render(
+        <CheckoutProvider checkoutService={createCheckoutService()}>
+          <LocaleContext.Provider value={localeContext}>
+            <OrderSummaryDrawer
+              {...mapToOrderSummarySubtotalsProps(order, false)}
+              additionalLineItems="foo"
+              headerLink={<PrintLink />}
+              lineItems={{
+                giftCertificates: [getGiftCertificateItem()],
+                physicalItems: [],
+                digitalItems: [],
+              }}
+              shopperCurrency={getStoreConfig().shopperCurrency}
+              storeCurrency={getStoreConfig().currency}
+              total={order.orderAmount}
+            />
+          </LocaleContext.Provider>
+        </CheckoutProvider>,
+      );
 
-        beforeEach(() => {
-            OrderSummaryDrawerTest = () => (
-                <CheckoutProvider checkoutService={createCheckoutService()}>
-                    <LocaleContext.Provider value={localeContext}>
-                        <OrderSummaryDrawer
-                            {...mapToOrderSummarySubtotalsProps(order, false)}
-                            additionalLineItems="foo"
-                            headerLink={<PrintLink />}
-                            lineItems={order.lineItems}
-                            shopperCurrency={getStoreConfig().shopperCurrency}
-                            storeCurrency={getStoreConfig().currency}
-                            total={order.orderAmount}
-                        />
-                    </LocaleContext.Provider>
-                </CheckoutProvider>
-            );
-        });
+      const { container: iconGiftCertificateContainer } = render(<IconGiftCertificate />);
 
-        it('renders gift certificate icon when buying only GC', () => {
-            const { container } = render(
-                <CheckoutProvider checkoutService={createCheckoutService()}>
-                    <LocaleContext.Provider value={localeContext}>
-                        <OrderSummaryDrawer
-                            {...mapToOrderSummarySubtotalsProps(order, false)}
-                            additionalLineItems="foo"
-                            headerLink={<PrintLink />}
-                            lineItems={{
-                                giftCertificates: [getGiftCertificateItem()],
-                                physicalItems: [],
-                                digitalItems: [],
-                            }}
-                            shopperCurrency={getStoreConfig().shopperCurrency}
-                            storeCurrency={getStoreConfig().currency}
-                            total={order.orderAmount}
-                        />
-                    </LocaleContext.Provider>
-                </CheckoutProvider>,
-            );
-
-            const { container: iconGiftCertificateContainer } = render(<IconGiftCertificate />);
-
-            expect(container.innerHTML).toContain(iconGiftCertificateContainer.innerHTML);
-        });
-
-        it('renders order amount', () => {
-            render(<OrderSummaryDrawerTest />);
-
-            expect(screen.getByText(currencyService.toCustomerCurrency(order.orderAmount))).toBeInTheDocument();
-        });
-
-        it('renders line items count', () => {
-            render(<OrderSummaryDrawerTest />);
-
-            expect(screen.getByText(
-                localeContext.language.translate('cart.item_count_text', { count: 2 }),
-            )).toBeInTheDocument();
-        });
-
-        it('renders image of first product', () => {
-            render(<OrderSummaryDrawerTest />);
-
-            expect(screen.getByTestId('cart-item-image')).toHaveAttribute(
-                'src', getPhysicalItem().imageUrl,
-            );
-        });
+      expect(container.innerHTML).toContain(iconGiftCertificateContainer.innerHTML);
     });
 
-    describe('when clicked', () => {
-        it('renders order summary modal with the correct data', async () => {
-            render(
-                <CheckoutProvider checkoutService={createCheckoutService()}>
-                    <LocaleContext.Provider value={localeContext}>
-                        <OrderSummaryDrawer
-                            {...mapToOrderSummarySubtotalsProps(order)}
-                            additionalLineItems="foo"
-                            headerLink={<PrintLink />}
-                            lineItems={order.lineItems}
-                            shopperCurrency={getStoreConfig().shopperCurrency}
-                            storeCurrency={getStoreConfig().currency}
-                            total={order.orderAmount}
-                        />
-                    </LocaleContext.Provider>
-                </CheckoutProvider>,
-            );
+    it('renders order amount', () => {
+      render(<OrderSummaryDrawerTest />);
 
-            await userEvent.click(screen.getByTestId('cart-item-image'));
-
-            expect(screen.getByText('Order Summary')).toBeInTheDocument();
-            expect(screen.getByText(order.coupons[0].code)).toBeInTheDocument();
-            expect(screen.getByText(order.coupons[1].code)).toBeInTheDocument();
-            expect(screen.getByText(`1 x ${order.lineItems.giftCertificates[0].name}`)).toBeInTheDocument();
-            expect(screen.getByText('foo')).toBeInTheDocument();
-            expect(screen.getByText('Close')).toBeInTheDocument();
-            expect(screen.getByText('Print')).toBeInTheDocument();
-        });
+      expect(
+        screen.getByText(currencyService.toCustomerCurrency(order.orderAmount)),
+      ).toBeInTheDocument();
     });
 
-    describe('when active and enter is pressed', () => {
-        it('renders order summary modal with the correct data', async () => {
-            render(
-                <CheckoutProvider checkoutService={createCheckoutService()}>
-                    <LocaleContext.Provider value={localeContext}>
-                        <OrderSummaryDrawer
-                            {...mapToOrderSummarySubtotalsProps(order)}
-                            additionalLineItems="foo"
-                            headerLink={<PrintLink />}
-                            lineItems={order.lineItems}
-                            shopperCurrency={getStoreConfig().shopperCurrency}
-                            storeCurrency={getStoreConfig().currency}
-                            total={order.orderAmount}
-                        />
-                    </LocaleContext.Provider>
-                </CheckoutProvider>,
-            );
+    it('renders line items count', () => {
+      render(<OrderSummaryDrawerTest />);
 
-            await userEvent.keyboard('{tab}');
-            await userEvent.keyboard('{enter}');
-
-            expect(screen.getByText('Order Summary')).toBeInTheDocument();
-            expect(screen.getByText(order.coupons[0].code)).toBeInTheDocument();
-            expect(screen.getByText(order.coupons[1].code)).toBeInTheDocument();
-            expect(screen.getByText(`1 x ${order.lineItems.giftCertificates[0].name}`)).toBeInTheDocument();
-            expect(screen.getByText('foo')).toBeInTheDocument();
-            expect(screen.getByText('Close')).toBeInTheDocument();
-            expect(screen.getByText('Print')).toBeInTheDocument();
-        });
+      expect(
+        screen.getByText(localeContext.language.translate('cart.item_count_text', { count: 2 })),
+      ).toBeInTheDocument();
     });
 
-    it('renders correct summary for line items for bundled products', async () => {
-        order.lineItems.physicalItems.push({ ...getPhysicalItem(), id: '888', parentId: 'test' });
+    it('renders image of first product', () => {
+      render(<OrderSummaryDrawerTest />);
 
-        render(
-            <CheckoutProvider checkoutService={createCheckoutService()}>
-                <LocaleContext.Provider value={localeContext}>
-                    <OrderSummaryDrawer
-                        {...mapToOrderSummarySubtotalsProps(order)}
-                        additionalLineItems="foo"
-                        headerLink={<PrintLink />}
-                        lineItems={order.lineItems}
-                        shopperCurrency={getStoreConfig().shopperCurrency}
-                        storeCurrency={getStoreConfig().currency}
-                        total={order.orderAmount}
-                    />
-                </LocaleContext.Provider>
-            </CheckoutProvider>,
-        );
-
-        await userEvent.click(screen.getByTestId('cart-item-image'));
-
-        // one is physical item and other is gift certificate
-        expect(screen.getAllByTestId('cart-item')).toHaveLength(2);
+      expect(screen.getByTestId('cart-item-image')).toHaveAttribute(
+        'src',
+        getPhysicalItem().imageUrl,
+      );
     });
+  });
+
+  describe('when clicked', () => {
+    it('renders order summary modal with the correct data', async () => {
+      render(
+        <CheckoutProvider checkoutService={createCheckoutService()}>
+          <LocaleContext.Provider value={localeContext}>
+            <OrderSummaryDrawer
+              {...mapToOrderSummarySubtotalsProps(order)}
+              additionalLineItems="foo"
+              headerLink={<PrintLink />}
+              lineItems={order.lineItems}
+              shopperCurrency={getStoreConfig().shopperCurrency}
+              storeCurrency={getStoreConfig().currency}
+              total={order.orderAmount}
+            />
+          </LocaleContext.Provider>
+        </CheckoutProvider>,
+      );
+
+      await userEvent.click(screen.getByTestId('cart-item-image'));
+
+      expect(screen.getByText('Order Summary')).toBeInTheDocument();
+      expect(screen.getByText(order.coupons[0].code)).toBeInTheDocument();
+      expect(screen.getByText(order.coupons[1].code)).toBeInTheDocument();
+      expect(
+        screen.getByText(`1 x ${order.lineItems.giftCertificates[0].name}`),
+      ).toBeInTheDocument();
+      expect(screen.getByText('foo')).toBeInTheDocument();
+      expect(screen.getByText('Close')).toBeInTheDocument();
+      expect(screen.getByText('Print')).toBeInTheDocument();
+    });
+  });
+
+  describe('when active and enter is pressed', () => {
+    it('renders order summary modal with the correct data', async () => {
+      render(
+        <CheckoutProvider checkoutService={createCheckoutService()}>
+          <LocaleContext.Provider value={localeContext}>
+            <OrderSummaryDrawer
+              {...mapToOrderSummarySubtotalsProps(order)}
+              additionalLineItems="foo"
+              headerLink={<PrintLink />}
+              lineItems={order.lineItems}
+              shopperCurrency={getStoreConfig().shopperCurrency}
+              storeCurrency={getStoreConfig().currency}
+              total={order.orderAmount}
+            />
+          </LocaleContext.Provider>
+        </CheckoutProvider>,
+      );
+
+      await userEvent.keyboard('{tab}');
+      await userEvent.keyboard('{enter}');
+
+      expect(screen.getByText('Order Summary')).toBeInTheDocument();
+      expect(screen.getByText(order.coupons[0].code)).toBeInTheDocument();
+      expect(screen.getByText(order.coupons[1].code)).toBeInTheDocument();
+      expect(
+        screen.getByText(`1 x ${order.lineItems.giftCertificates[0].name}`),
+      ).toBeInTheDocument();
+      expect(screen.getByText('foo')).toBeInTheDocument();
+      expect(screen.getByText('Close')).toBeInTheDocument();
+      expect(screen.getByText('Print')).toBeInTheDocument();
+    });
+  });
+
+  it('renders correct summary for line items for bundled products', async () => {
+    order.lineItems.physicalItems.push({ ...getPhysicalItem(), id: '888', parentId: 'test' });
+
+    render(
+      <CheckoutProvider checkoutService={createCheckoutService()}>
+        <LocaleContext.Provider value={localeContext}>
+          <OrderSummaryDrawer
+            {...mapToOrderSummarySubtotalsProps(order)}
+            additionalLineItems="foo"
+            headerLink={<PrintLink />}
+            lineItems={order.lineItems}
+            shopperCurrency={getStoreConfig().shopperCurrency}
+            storeCurrency={getStoreConfig().currency}
+            total={order.orderAmount}
+          />
+        </LocaleContext.Provider>
+      </CheckoutProvider>,
+    );
+
+    await userEvent.click(screen.getByTestId('cart-item-image'));
+
+    // one is physical item and other is gift certificate
+    expect(screen.getAllByTestId('cart-item')).toHaveLength(2);
+  });
 });

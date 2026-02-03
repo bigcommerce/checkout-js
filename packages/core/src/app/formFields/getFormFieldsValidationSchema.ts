@@ -2,45 +2,43 @@ import { memoize } from '@bigcommerce/memoize';
 import { object, type ObjectSchema, string, type StringSchema } from 'yup';
 
 import getCustomFormFieldsValidationSchema, {
-    type FormFieldsValidationSchemaOptions,
+  type FormFieldsValidationSchemaOptions,
 } from './getCustomFormFieldsValidationSchema';
 
 export const WHITELIST_REGEXP = /^[^<>]*$/;
 
-export interface FormFieldValues {
-    [key: string]: string | { [id: string]: any };
-}
+export type FormFieldValues = Record<string, string | Record<string, any>>;
 
-export default memoize(function getFormFieldsValidationSchema({
+export default memoize(
+  ({
     formFields,
     translate = () => undefined,
-}: FormFieldsValidationSchemaOptions): ObjectSchema<FormFieldValues> {
-    return object({
-        ...formFields
-            .filter(({ custom }) => !custom)
-            .reduce((schema, { name, required, label, maxLength }) => {
-                schema[name] = string();
+  }: FormFieldsValidationSchemaOptions): ObjectSchema<FormFieldValues> =>
+    object({
+      ...formFields
+        .filter(({ custom }) => !custom)
+        .reduce<Record<string, StringSchema>>((schema, { name, required, label, maxLength }) => {
+          schema[name] = string();
 
-                if (required) {
-                    schema[name] = schema[name]
-                        .trim()
-                        .required(translate('required', { label, name }));
-                }
+          if (required) {
+            schema[name] = schema[name].trim().required(translate('required', { label, name }));
+          }
 
-                if ((name === 'address1' || name === 'address2') && maxLength) {
-                    schema[name] = schema[name]
-                        .max(maxLength, translate('max', { label, name, max: maxLength }));
-                }
+          if ((name === 'address1' || name === 'address2') && maxLength) {
+            schema[name] = schema[name].max(
+              maxLength,
+              translate('max', { label, name, max: maxLength }),
+            );
+          }
 
-                schema[name] = schema[name].matches(
-                    WHITELIST_REGEXP,
-                    translate('invalid', { name, label }),
-                );
+          schema[name] = schema[name].matches(
+            WHITELIST_REGEXP,
+            translate('invalid', { name, label }),
+          );
 
-                return schema;
-                // eslint-disable-next-line @typescript-eslint/prefer-reduce-type-parameter
-            }, {} as { [key: string]: StringSchema }),
+          return schema;
+        }, {}),
     }).concat(
-        getCustomFormFieldsValidationSchema({ formFields, translate }),
-    ) as ObjectSchema<FormFieldValues>;
-});
+      getCustomFormFieldsValidationSchema({ formFields, translate }),
+    ) as ObjectSchema<FormFieldValues>,
+);

@@ -1,8 +1,8 @@
 import {
-    ExtensionRegion,
-    type LineItemMap,
-    type ShopperCurrency,
-    type StoreCurrency,
+  ExtensionRegion,
+  type LineItemMap,
+  type ShopperCurrency,
+  type StoreCurrency,
 } from '@bigcommerce/checkout-sdk/essential';
 import classNames from 'classnames';
 import React, { type FunctionComponent, type ReactNode, useMemo } from 'react';
@@ -23,124 +23,131 @@ import OrderSummaryTotal from './OrderSummaryTotal';
 import removeBundledItems from './removeBundledItems';
 
 export interface OrderSummaryProps {
-    lineItems: LineItemMap;
-    total: number;
-    headerLink: ReactNode;
-    storeCurrency: StoreCurrency;
-    shopperCurrency: ShopperCurrency;
-    additionalLineItems?: ReactNode;
+  lineItems: LineItemMap;
+  total: number;
+  headerLink: ReactNode;
+  storeCurrency: StoreCurrency;
+  shopperCurrency: ShopperCurrency;
+  additionalLineItems?: ReactNode;
 }
 
 const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsProps> = ({
-    additionalLineItems,
-    headerLink,
-    isTaxIncluded,
-    lineItems,
-    shopperCurrency,
-    storeCurrency,
-    taxes,
-    total,
-    ...orderSummarySubtotalsProps
+  additionalLineItems,
+  headerLink,
+  isTaxIncluded,
+  lineItems,
+  shopperCurrency,
+  storeCurrency,
+  taxes,
+  total,
+  ...orderSummarySubtotalsProps
 }) => {
-    const nonBundledLineItems = useMemo(() => removeBundledItems(lineItems), [lineItems]);
-    const displayInclusiveTax = isTaxIncluded && taxes && taxes.length > 0;
+  const nonBundledLineItems = useMemo(() => removeBundledItems(lineItems), [lineItems]);
+  const displayInclusiveTax = isTaxIncluded && taxes && taxes.length > 0;
 
-    const { themeV2 } = useThemeContext();
-    const { currency } = useLocale();
+  const { themeV2 } = useThemeContext();
+  const { currency } = useLocale();
 
-    // TODO: When removing the experiment, rename `NewOrderSummarySubtotals` to `OrderSummarySubtotals`.
-    const { checkoutState } = useCheckout();
-    const { checkoutSettings } = checkoutState.data.getConfig() ?? {};
-    const checkout = checkoutState.data.getCheckout();
-    const order = checkoutState.data.getOrder();
-    
-    const isMultiCouponEnabled = isExperimentEnabled(checkoutSettings, 'CHECKOUT-9674.multi_coupon_cart_checkout', false);
-    const isMultiCouponEnabledForCheckout = isMultiCouponEnabled && !!checkout;
-    const isMultiCouponEnabledForOrder = isMultiCouponEnabled && !checkout && !!order;
-    
-    let totalDiscount;
-    
-    if (isMultiCouponEnabledForCheckout) {
-        totalDiscount = checkout.totalDiscount;
-    }
+  // TODO: When removing the experiment, rename `NewOrderSummarySubtotals` to `OrderSummarySubtotals`.
+  const { checkoutState } = useCheckout();
+  const { checkoutSettings } = checkoutState.data.getConfig() ?? {};
+  const checkout = checkoutState.data.getCheckout();
+  const order = checkoutState.data.getOrder();
 
-    if (isMultiCouponEnabledForOrder) {
-        totalDiscount = order.totalDiscount;
-    }
+  const isMultiCouponEnabled = isExperimentEnabled(
+    checkoutSettings,
+    'CHECKOUT-9674.multi_coupon_cart_checkout',
+    false,
+  );
+  const isMultiCouponEnabledForCheckout = isMultiCouponEnabled && !!checkout;
+  const isMultiCouponEnabledForOrder = isMultiCouponEnabled && !checkout && !!order;
 
-    if (!currency) {
-        return null;
-    }
+  let totalDiscount;
 
-    const isTotalDiscountVisible = Boolean(totalDiscount && totalDiscount > 0);
+  if (isMultiCouponEnabledForCheckout) {
+    totalDiscount = checkout.totalDiscount;
+  }
 
-    return (
-        <article className="cart optimizedCheckout-orderSummary" data-test="cart">
-            <OrderSummaryHeader>{headerLink}</OrderSummaryHeader>
+  if (isMultiCouponEnabledForOrder) {
+    totalDiscount = order.totalDiscount;
+  }
 
-            <OrderSummarySection>
-                <OrderSummaryItems displayLineItemsCount items={nonBundledLineItems} themeV2={themeV2} />
-            </OrderSummarySection>
+  if (!currency) {
+    return null;
+  }
 
-            <Extension region={ExtensionRegion.SummaryLastItemAfter} />
+  const isTotalDiscountVisible = Boolean(totalDiscount && totalDiscount > 0);
 
-            {isMultiCouponEnabledForCheckout || isMultiCouponEnabledForOrder
-                ? <NewOrderSummarySubtotals
-                        fees={orderSummarySubtotalsProps.fees}
-                        giftWrappingAmount={orderSummarySubtotalsProps.giftWrappingAmount}
-                        handlingAmount={orderSummarySubtotalsProps.handlingAmount}
-                        isOrderConfirmation={isMultiCouponEnabledForOrder}
-                        isTaxIncluded={isTaxIncluded}
-                        storeCreditAmount={orderSummarySubtotalsProps.storeCreditAmount}
-                        taxes={taxes}
-                    />
-                : <OrderSummarySection>
-                    <OrderSummarySubtotals
-                        isTaxIncluded={isTaxIncluded}
-                        taxes={taxes}
-                        {...orderSummarySubtotalsProps}
-                    />
-                    {additionalLineItems}
-                </OrderSummarySection>
-            }
+  return (
+    <article className="cart optimizedCheckout-orderSummary" data-test="cart">
+      <OrderSummaryHeader>{headerLink}</OrderSummaryHeader>
 
-            <OrderSummarySection>
-                <OrderSummaryTotal
-                    orderAmount={total}
-                    shopperCurrencyCode={shopperCurrency.code}
-                    storeCurrencyCode={storeCurrency.code}
-                />
-                {(isTotalDiscountVisible && totalDiscount) &&
-                    <div className="total-savings">
-                        <TranslatedHtml
-                            data={{ totalDiscount: currency.toCustomerCurrency(totalDiscount) }}
-                            id="redeemable.total_savings_text"
-                        />
-                    </div>
-                }
-            </OrderSummarySection>
+      <OrderSummarySection>
+        <OrderSummaryItems displayLineItemsCount items={nonBundledLineItems} themeV2={themeV2} />
+      </OrderSummarySection>
 
-            {displayInclusiveTax && <OrderSummarySection>
-                <h5
-                    className={classNames('cart-taxItem cart-taxItem--subtotal optimizedCheckout-contentPrimary',
-                        { 'body-regular': themeV2 })}
-                    data-test="tax-text"
-                >
-                    <TranslatedString
-                        id="tax.inclusive_label"
-                    />
-                </h5>
-                {(taxes || []).map((tax, index) => (
-                    <OrderSummaryPrice
-                        amount={tax.amount}
-                        key={index}
-                        label={tax.name}
-                        testId="cart-taxes"
-                    />
-                ))}
-            </OrderSummarySection>}
-        </article>
-    );
+      <Extension region={ExtensionRegion.SummaryLastItemAfter} />
+
+      {isMultiCouponEnabledForCheckout || isMultiCouponEnabledForOrder ? (
+        <NewOrderSummarySubtotals
+          fees={orderSummarySubtotalsProps.fees}
+          giftWrappingAmount={orderSummarySubtotalsProps.giftWrappingAmount}
+          handlingAmount={orderSummarySubtotalsProps.handlingAmount}
+          isOrderConfirmation={isMultiCouponEnabledForOrder}
+          isTaxIncluded={isTaxIncluded}
+          storeCreditAmount={orderSummarySubtotalsProps.storeCreditAmount}
+          taxes={taxes}
+        />
+      ) : (
+        <OrderSummarySection>
+          <OrderSummarySubtotals
+            isTaxIncluded={isTaxIncluded}
+            taxes={taxes}
+            {...orderSummarySubtotalsProps}
+          />
+          {additionalLineItems}
+        </OrderSummarySection>
+      )}
+
+      <OrderSummarySection>
+        <OrderSummaryTotal
+          orderAmount={total}
+          shopperCurrencyCode={shopperCurrency.code}
+          storeCurrencyCode={storeCurrency.code}
+        />
+        {isTotalDiscountVisible && totalDiscount && (
+          <div className="total-savings">
+            <TranslatedHtml
+              data={{ totalDiscount: currency.toCustomerCurrency(totalDiscount) }}
+              id="redeemable.total_savings_text"
+            />
+          </div>
+        )}
+      </OrderSummarySection>
+
+      {displayInclusiveTax && (
+        <OrderSummarySection>
+          <h5
+            className={classNames(
+              'cart-taxItem cart-taxItem--subtotal optimizedCheckout-contentPrimary',
+              { 'body-regular': themeV2 },
+            )}
+            data-test="tax-text"
+          >
+            <TranslatedString id="tax.inclusive_label" />
+          </h5>
+          {(taxes || []).map((tax, index) => (
+            <OrderSummaryPrice
+              amount={tax.amount}
+              key={index}
+              label={tax.name}
+              testId="cart-taxes"
+            />
+          ))}
+        </OrderSummarySection>
+      )}
+    </article>
+  );
 };
 
 export default OrderSummary;
