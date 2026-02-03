@@ -9,12 +9,12 @@ import getShippingCostAfterAutomaticDiscount from './getShippingCostAfterAutomat
 import { StaticShippingOption } from './shippingOption';
 import './StaticConsignment.scss';
 
-interface StaticConsignmentProps {
+interface StaticConsignmentV2Props {
     consignment: Consignment;
     isShippingDiscountDisplayEnabled: boolean;
 }
 
-const StaticConsignment: FunctionComponent<StaticConsignmentProps> = ({
+const StaticConsignmentV2: FunctionComponent<StaticConsignmentV2Props> = ({
     consignment, 
     isShippingDiscountDisplayEnabled,
 }) => {
@@ -24,13 +24,16 @@ const StaticConsignment: FunctionComponent<StaticConsignmentProps> = ({
     const showPayPalFastlaneAddressLabel = isPayPalFastlaneAddress(address, paypalFastlaneAddresses);
 
     return (
-        <div className="staticConsignment">
-            <StaticAddress address={address} type={AddressType.Shipping} />
-
-            {showPayPalFastlaneAddressLabel && <PoweredByPayPalFastlaneLabel />}
+        <div className="staticConsignment flex-row">
+            <div className="flex-column shipping-address-container">
+                <p className="title">Shipping address</p>
+                <StaticAddress address={address} type={AddressType.Shipping} />
+                {showPayPalFastlaneAddressLabel && <PoweredByPayPalFastlaneLabel />}
+            </div>
 
             {selectedShippingOption && (
-                <div>
+                <div className="flex-column shipping-method">
+                    <p className="title">Shipping method</p>
                     <div className="shippingOption shippingOption--alt shippingOption--selected">
                         <StaticShippingOption
                             displayAdditionalInformation={false}
@@ -44,4 +47,4 @@ const StaticConsignment: FunctionComponent<StaticConsignmentProps> = ({
     );
 };
 
-export default memo(StaticConsignment);
+export default memo(StaticConsignmentV2);
