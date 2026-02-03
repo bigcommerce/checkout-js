@@ -1,26 +1,19 @@
 import configPromise from '@bigcommerce/eslint-config';
+import tsParser from '@typescript-eslint/parser';
 import globals from 'globals';
 
 const baseConfig = await configPromise;
 
 export default [
   ...(Array.isArray(baseConfig) ? baseConfig : []),
+  // Ensure TypeScript parser is applied for TS/TSX files
   {
+    files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
-      ecmaVersion: 'latest',
-      globals: {
-        ...globals.browser,
-      },
+      parser: tsParser,
       parserOptions: {
-        project: ['./tsconfig.json'],
+        project: './tsconfig.json',
         tsconfigRootDir: import.meta.dirname,
-      },
-    },
-    settings: {
-      'import/resolver': {
-        typescript: {
-          project: ['./tsconfig.json'],
-        },
       },
     },
     rules: {
@@ -83,6 +76,21 @@ export default [
       'no-multi-assign': 'off',
       'import/no-unresolved': 'off',
       'testing-library/no-unnecessary-act': 'off',
+    },
+  },
+  {
+    languageOptions: {
+      ecmaVersion: 'latest',
+      globals: {
+        ...globals.browser,
+      },
+    },
+    settings: {
+      'import/resolver': {
+        typescript: {
+          project: ['./tsconfig.json'],
+        },
+      },
     },
   },
   {
