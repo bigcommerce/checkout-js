@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.731.0](https://github.com/bigcommerce/checkout-js/compare/v1.730.1...v1.731.0) (2026-02-04)
+
+
+### Features
+
+* **shipping:** CHECKOUT-9489 Update layout of collapsed shipping step ([#2806](https://github.com/bigcommerce/checkout-js/issues/2806)) ([ddfe29e](https://github.com/bigcommerce/checkout-js/commit/ddfe29e71752c83ec2f21c4d125b18da0e1f8f90))
+
 ### [1.730.1](https://github.com/bigcommerce/checkout-js/compare/v1.730.0...v1.730.1) (2026-02-03)
 
 ## [1.730.0](https://github.com/bigcommerce/checkout-js/compare/v1.729.2...v1.730.0) (2026-02-03)
