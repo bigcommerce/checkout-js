@@ -8,13 +8,14 @@ import Redeemable from './Redeemable';
 
 export default function withRedeemable(
     OriginalComponent: ComponentType<OrderSummaryProps & OrderSummarySubtotalsProps>,
-): FunctionComponent<WithCheckoutCartSummaryProps & { headerLink?: any }> {
+): FunctionComponent<WithCheckoutCartSummaryProps & { headerLink?: any; hideHeader?: boolean }> {
     return (props) => {
         const {
             checkout,
             storeCurrency,
             shopperCurrency,
             headerLink,
+            hideHeader,
             onRemovedCoupon,
             onRemovedGiftCertificate,
             storeCreditAmount,
@@ -35,6 +36,7 @@ export default function withRedeemable(
                     />
                 }
                 headerLink={headerLink}
+                hideHeader={hideHeader}
                 lineItems={checkout.cart.lineItems}
                 onRemovedCoupon={onRemovedCoupon}
                 onRemovedGiftCertificate={onRemovedGiftCertificate}
