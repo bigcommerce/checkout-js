@@ -2,11 +2,13 @@ import { type LineItemMap } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import React, { type ReactElement, useCallback, useState } from 'react';
 
+import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import { IconChevronDown, IconChevronUp } from '../ui/icon';
 import { isSmallScreen } from '../ui/responsive';
 
+import getBackorderCount from './getBackorderCount';
 import getItemsCount from './getItemsCount';
 import mapFromCustom from './mapFromCustom';
 import mapFromDigital from './mapFromDigital';
@@ -23,14 +25,31 @@ export interface OrderSummaryItemsProps {
     themeV2?: boolean;
 }
 
-const ItemCount = ({ items, themeV2 }: { items: LineItemMap; themeV2: boolean }): ReactElement => (
-    <h3
-        className={classNames('cart-section-heading optimizedCheckout-contentPrimary', { 'body-medium': themeV2 })}
-        data-test="cart-count-total"
-    >
-        <TranslatedString data={{ count: getItemsCount(items) }} id="cart.item_count_text" />
-    </h3>
-);
+const ItemCount = ({ items, themeV2 }: { items: LineItemMap; themeV2: boolean }): ReactElement => {
+    const backorderTotal = getBackorderCount(items);
+
+    return (
+        <h3
+            className={classNames('cart-section-heading optimizedCheckout-contentPrimary', { 'body-medium': themeV2 })}
+            data-test="cart-count-total"
+        >
+            <TranslatedString data={{ count: getItemsCount(items) }} id="cart.item_count_text" />
+            {backorderTotal > 0 && (
+                <>
+                    {' '}
+                    <a
+                        className="cart-backorder-link"
+                        data-test="cart-backorder-total"
+                        href="#"
+                        onClick={preventDefault()}
+                    >
+                        <TranslatedString data={{ count: backorderTotal }} id="cart.backorder_count_text" />
+                    </a>
+                </>
+            )}
+        </h3>
+    );
+};
 
 const ProductList = ({ items, isExpanded, collapsedLimit }: { items: LineItemMap; isExpanded: boolean; collapsedLimit: number }): ReactElement => {
     const summaryItems = [

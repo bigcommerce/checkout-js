@@ -73,6 +73,16 @@
     margin-bottom: spacing("single");
 }
 
+a.cart-backorder-link {
+    color: color("highlight");
+    text-decoration: none;
+
+    &:hover {
+        color: color("highlight", "dark");
+        text-decoration: underline;
+    }
+}
+
 .cart-actions {
     margin-top: spacing("half");
     text-align: center;
