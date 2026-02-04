@@ -2,11 +2,11 @@ import { ExtensionRegion } from '@bigcommerce/checkout-sdk/essential';
 import React, { lazy } from 'react';
 
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { CartSummarySkeleton, LazyContainer } from '@bigcommerce/checkout/ui';
 
 import { retry } from '../../common/utility';
 import { MobileView } from '../../ui/responsive';
-import { useThemeContext } from '@bigcommerce/checkout/contexts';
 
 const CartSummaryComponent = lazy(() =>
     retry(
