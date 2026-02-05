@@ -8,20 +8,13 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { IconChevronDown, IconChevronUp } from '../ui/icon';
 import { isSmallScreen } from '../ui/responsive';
 
+import { ANIMATION_DURATION, createSlideCollapseAnimationHandlers } from '../common/animation';
 import getItemsCount from './getItemsCount';
 import mapFromCustom from './mapFromCustom';
 import mapFromDigital from './mapFromDigital';
 import mapFromGiftCertificate from './mapFromGiftCertificate';
 import mapFromPhysical from './mapFromPhysical';
 import OrderSummaryItem from './OrderSummaryItem';
-
-// Animation constants - matching coupon animations
-const ANIMATION_DURATION = 300;
-const SLIDE_DISTANCE = 12;
-
-const prefersReducedMotion = () =>
-    typeof window !== 'undefined' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 interface AnimatedProductItemProps {
     children: ReactNode;
@@ -30,56 +23,7 @@ interface AnimatedProductItemProps {
 
 const AnimatedProductItem: FunctionComponent<AnimatedProductItemProps> = ({ children, in: inProp }) => {
     const nodeRef = useRef<HTMLLIElement>(null);
-
-    const handleEnter = () => {
-        const node = nodeRef.current;
-        if (!node || prefersReducedMotion()) return;
-
-        node.style.height = '0px';
-        node.style.opacity = '0';
-        node.style.transform = `translateY(-${SLIDE_DISTANCE}px)`;
-        node.style.overflow = 'hidden';
-    };
-
-    const handleEntering = () => {
-        const node = nodeRef.current;
-        if (!node || prefersReducedMotion()) return;
-
-        void node.offsetHeight;
-        node.style.height = `${node.scrollHeight}px`;
-        node.style.opacity = '1';
-        node.style.transform = 'translateY(0)';
-    };
-
-    const handleEntered = () => {
-        const node = nodeRef.current;
-        if (!node) return;
-
-        node.style.height = '';
-        node.style.opacity = '';
-        node.style.transform = '';
-        node.style.overflow = '';
-    };
-
-    const handleExit = () => {
-        const node = nodeRef.current;
-        if (!node || prefersReducedMotion()) return;
-
-        node.style.height = `${node.offsetHeight}px`;
-        node.style.opacity = '1';
-        node.style.transform = 'translateY(0)';
-        node.style.overflow = 'hidden';
-    };
-
-    const handleExiting = () => {
-        const node = nodeRef.current;
-        if (!node || prefersReducedMotion()) return;
-
-        void node.offsetHeight;
-        node.style.height = '0px';
-        node.style.opacity = '0';
-        node.style.transform = `translateY(-${SLIDE_DISTANCE}px)`;
-    };
+    const slideHandlers = createSlideCollapseAnimationHandlers(nodeRef);
 
     return (
         <CSSTransition
@@ -87,11 +31,11 @@ const AnimatedProductItem: FunctionComponent<AnimatedProductItemProps> = ({ chil
             classNames="product-item"
             in={inProp}
             nodeRef={nodeRef}
-            onEnter={handleEnter}
-            onEntered={handleEntered}
-            onEntering={handleEntering}
-            onExit={handleExit}
-            onExiting={handleExiting}
+            onEnter={slideHandlers.handleEnter}
+            onEntered={slideHandlers.handleEntered}
+            onEntering={slideHandlers.handleEntering}
+            onExit={slideHandlers.handleExit}
+            onExiting={slideHandlers.handleExiting}
             timeout={ANIMATION_DURATION}
             unmountOnExit
         >

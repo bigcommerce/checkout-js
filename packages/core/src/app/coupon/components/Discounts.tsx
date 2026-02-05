@@ -4,14 +4,9 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { IconCoupon, IconDownArrow, IconUpArrow } from '@bigcommerce/checkout/ui';
 
+import { ANIMATION_DURATION, createCollapseAnimationHandlers } from '../../common/animation';
 import { ShopperCurrency } from '../../currency';
 import { type DiscountItem, useMultiCoupon } from '../useMultiCoupon';
-
-const ANIMATION_DURATION = 300;
-
-const prefersReducedMotion = () =>
-    typeof window !== 'undefined' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const DiscountItems: FunctionComponent<{ coupons: DiscountItem[] }> = ({ coupons }) => {
     return (
@@ -49,43 +44,7 @@ const DiscountsCollapsible: FunctionComponent<{ discounts: number; discountItems
     const [isCouponDiscountsVisible, setIsCouponDiscountsVisible] = useState(true);
     const discountsRef = useRef<HTMLDivElement>(null);
 
-    // Animation handlers - height + opacity only, no vertical slide
-    const handleEnter = () => {
-        const node = discountsRef.current;
-        if (!node || prefersReducedMotion()) return;
-        node.style.height = '0px';
-        node.style.opacity = '0';
-    };
-
-    const handleEntering = () => {
-        const node = discountsRef.current;
-        if (!node || prefersReducedMotion()) return;
-        void node.offsetHeight;
-        node.style.height = `${node.scrollHeight}px`;
-        node.style.opacity = '1';
-    };
-
-    const handleEntered = () => {
-        const node = discountsRef.current;
-        if (!node) return;
-        node.style.height = 'auto';
-        node.style.opacity = '';
-    };
-
-    const handleExit = () => {
-        const node = discountsRef.current;
-        if (!node || prefersReducedMotion()) return;
-        node.style.height = `${node.offsetHeight}px`;
-        node.style.opacity = '1';
-    };
-
-    const handleExiting = () => {
-        const node = discountsRef.current;
-        if (!node || prefersReducedMotion()) return;
-        void node.offsetHeight;
-        node.style.height = '0px';
-        node.style.opacity = '0';
-    };
+    const collapseHandlers = createCollapseAnimationHandlers(discountsRef);
 
     return (
         <div>
@@ -109,11 +68,11 @@ const DiscountsCollapsible: FunctionComponent<{ discounts: number; discountItems
             <CSSTransition
                 in={isCouponDiscountsVisible}
                 nodeRef={discountsRef}
-                onEnter={handleEnter}
-                onEntered={handleEntered}
-                onEntering={handleEntering}
-                onExit={handleExit}
-                onExiting={handleExiting}
+                onEnter={collapseHandlers.handleEnter}
+                onEntered={collapseHandlers.handleEntered}
+                onEntering={collapseHandlers.handleEntering}
+                onExit={collapseHandlers.handleExit}
+                onExiting={collapseHandlers.handleExiting}
                 timeout={ANIMATION_DURATION}
                 unmountOnExit
             >

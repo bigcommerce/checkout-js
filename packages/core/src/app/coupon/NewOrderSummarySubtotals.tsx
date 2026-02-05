@@ -5,16 +5,11 @@ import { CSSTransition } from 'react-transition-group';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
+import { ANIMATION_DURATION, createCollapseAnimationHandlers } from '../common/animation';
 import { isOrderFee, OrderSummaryDiscount, OrderSummaryPrice }  from '../order';
 
 import { AppliedGiftCertificates, CouponForm, Discounts } from './components';
 import { useMultiCoupon } from './useMultiCoupon';
-
-const ANIMATION_DURATION = 300;
-
-const prefersReducedMotion = () =>
-    typeof window !== 'undefined' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 interface MultiCouponProps {
     fees?: Fee[] | OrderFee[];
@@ -51,43 +46,7 @@ const NewOrderSummarySubtotals: FunctionComponent<MultiCouponProps> = ({
         setIsCouponFormVisible((prevState) => !prevState);
     };
 
-    // Animation handlers - height + opacity only, no vertical slide
-    const handleEnter = () => {
-        const node = couponFormRef.current;
-        if (!node || prefersReducedMotion()) return;
-        node.style.height = '0px';
-        node.style.opacity = '0';
-    };
-
-    const handleEntering = () => {
-        const node = couponFormRef.current;
-        if (!node || prefersReducedMotion()) return;
-        void node.offsetHeight;
-        node.style.height = `${node.scrollHeight}px`;
-        node.style.opacity = '1';
-    };
-
-    const handleEntered = () => {
-        const node = couponFormRef.current;
-        if (!node) return;
-        node.style.height = 'auto';
-        node.style.opacity = '';
-    };
-
-    const handleExit = () => {
-        const node = couponFormRef.current;
-        if (!node || prefersReducedMotion()) return;
-        node.style.height = `${node.offsetHeight}px`;
-        node.style.opacity = '1';
-    };
-
-    const handleExiting = () => {
-        const node = couponFormRef.current;
-        if (!node || prefersReducedMotion()) return;
-        void node.offsetHeight;
-        node.style.height = '0px';
-        node.style.opacity = '0';
-    };
+    const collapseHandlers = createCollapseAnimationHandlers(couponFormRef);
 
     return (
         <>
@@ -107,11 +66,11 @@ const NewOrderSummarySubtotals: FunctionComponent<MultiCouponProps> = ({
                     <CSSTransition
                         in={isCouponFormVisible}
                         nodeRef={couponFormRef}
-                        onEnter={handleEnter}
-                        onEntered={handleEntered}
-                        onEntering={handleEntering}
-                        onExit={handleExit}
-                        onExiting={handleExiting}
+                        onEnter={collapseHandlers.handleEnter}
+                        onEntered={collapseHandlers.handleEntered}
+                        onEntering={collapseHandlers.handleEntering}
+                        onExit={collapseHandlers.handleExit}
+                        onExiting={collapseHandlers.handleExiting}
                         timeout={ANIMATION_DURATION}
                         unmountOnExit
                     >
