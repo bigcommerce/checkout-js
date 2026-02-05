@@ -10,7 +10,6 @@ export interface CustomCheckoutWindow extends Window {
         publicPath?: string;
         sentryConfig?: BrowserOptions;
         guestTokenValidation?: 'valid' | 'expired' | 'invalid' | 'missing';
-        expiredToken?: boolean;
     };
 }
 

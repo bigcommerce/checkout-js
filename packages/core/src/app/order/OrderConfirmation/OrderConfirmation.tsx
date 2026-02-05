@@ -101,10 +101,10 @@ export const OrderConfirmation = ({
     const handleResendGuestToken = async (): Promise<void> => {
         // Extract token from URL
         const urlParams = new URLSearchParams(window.location.search);
-        const token = urlParams.get('token');
+        const token = urlParams.get('guestToken');
 
         if (!token) {
-            throw new Error('No token found in URL');
+            throw new Error('No guest token found in URL');
         }
 
         // Call regeneration endpoint
