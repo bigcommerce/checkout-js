@@ -65,7 +65,7 @@ const CartSummaryDrawerV2: FunctionComponent<
                 cartUrl,
                 isBuyNowCart,
                 headerLink: null,
-                hideHeader: true,
+                showHeader: false,
             })
         )}
     </div>

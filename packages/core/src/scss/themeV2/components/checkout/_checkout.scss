@@ -71,7 +71,9 @@
 }
 
 .checkout-button-container {
-    @include themeV2-desktop {
-        padding-right: #{spacing('double') + spacing('double')};
+    padding: 0 #{spacing("base") + spacing("base")};
+
+    @include themeV2-tablet {
+        padding: 0 #{spacing('double') + spacing('double')} 0 0 ;
     }
 }
