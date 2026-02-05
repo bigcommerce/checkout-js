@@ -36,11 +36,11 @@ export default function withRedeemable(
                     />
                 }
                 headerLink={headerLink}
-                showHeader={showHeader}
                 lineItems={checkout.cart.lineItems}
                 onRemovedCoupon={onRemovedCoupon}
                 onRemovedGiftCertificate={onRemovedGiftCertificate}
                 shopperCurrency={shopperCurrency}
+                showHeader={showHeader}
                 storeCreditAmount={storeCreditAmount}
                 storeCurrency={storeCurrency}
                 total={checkout.outstandingBalance}
