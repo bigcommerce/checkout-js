@@ -15,6 +15,7 @@ import mapFromDigital from './mapFromDigital';
 import mapFromGiftCertificate from './mapFromGiftCertificate';
 import mapFromPhysical from './mapFromPhysical';
 import OrderSummaryItem from './OrderSummaryItem';
+import removeBundledItems from './removeBundledItems';
 
 const COLLAPSED_ITEMS_LIMIT = 4;
 const COLLAPSED_ITEMS_LIMIT_SMALL_SCREEN = 3;
@@ -25,7 +26,7 @@ export interface OrderSummaryItemsProps {
     themeV2?: boolean;
 }
 
-const ItemCount = ({ items, themeV2 }: { items: LineItemMap; themeV2: boolean }): ReactElement => {
+const ItemCount = ({ items, nonBundledItems, themeV2 }: { items: LineItemMap; nonBundledItems: LineItemMap; themeV2: boolean }): ReactElement => {
     const backorderTotal = getBackorderCount(items);
 
     return (
@@ -33,7 +34,7 @@ const ItemCount = ({ items, themeV2 }: { items: LineItemMap; themeV2: boolean })
             className={classNames('cart-section-heading optimizedCheckout-contentPrimary', { 'body-medium': themeV2 })}
             data-test="cart-count-total"
         >
-            <TranslatedString data={{ count: getItemsCount(items) }} id="cart.item_count_text" />
+            <TranslatedString data={{ count: getItemsCount(nonBundledItems) }} id="cart.item_count_text" />
             {backorderTotal > 0 && (
                 <>
                     {' '}
@@ -98,24 +99,25 @@ const OrderSummaryItems = ({
     themeV2 = false,
 }: OrderSummaryItemsProps): ReactElement => {
     const [isExpanded, setIsExpanded] = useState(false);
+    const nonBundledItems = removeBundledItems(items);
 
     const collapsedLimit = isSmallScreen() ? COLLAPSED_ITEMS_LIMIT_SMALL_SCREEN : COLLAPSED_ITEMS_LIMIT;
     const getLineItemCount = useCallback(
         () =>
-            ((items.customItems || []).length +
-                items.physicalItems.length +
-                items.digitalItems.length +
-                items.giftCertificates.length),
-        [items]
+            ((nonBundledItems.customItems || []).length +
+                nonBundledItems.physicalItems.length +
+                nonBundledItems.digitalItems.length +
+                nonBundledItems.giftCertificates.length),
+        [nonBundledItems]
     );
     const shouldShowActions = getLineItemCount() > collapsedLimit;
     const handleToggle = () => setIsExpanded(!isExpanded);
 
     return (
         <>
-            {displayLineItemsCount && <ItemCount items={items} themeV2={themeV2} />}
+            {displayLineItemsCount && <ItemCount items={items} nonBundledItems={nonBundledItems} themeV2={themeV2} />}
 
-            <ProductList collapsedLimit={collapsedLimit} isExpanded={isExpanded} items={items} />
+            <ProductList collapsedLimit={collapsedLimit} isExpanded={isExpanded} items={nonBundledItems} />
 
             {shouldShowActions && <CartActions isExpanded={isExpanded} onToggle={handleToggle} themeV2={themeV2} />}
         </>
