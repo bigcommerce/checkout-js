@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.733.0](https://github.com/bigcommerce/checkout-js/compare/v1.732.2...v1.733.0) (2026-02-05)
+
+
+### Features
+
+* **payment:** PAYPAL-6139 delete paypalexpress logging ([3b41094](https://github.com/bigcommerce/checkout-js/commit/3b4109492cbf5c74d2d02882e33acd198718717b))
+
 ### [1.732.2](https://github.com/bigcommerce/checkout-js/compare/v1.732.1...v1.732.2) (2026-02-05)
 
 ### [1.732.1](https://github.com/bigcommerce/checkout-js/compare/v1.732.0...v1.732.1) (2026-02-05)
