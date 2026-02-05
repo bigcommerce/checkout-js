@@ -74,7 +74,6 @@ const PaymentMethodComponent: FunctionComponent<
         const knownMethods = [
             { id: 'authorizenet', gateway: null, method: PaymentMethodType.CreditCard, type: PaymentMethodProviderType.Api },
             { id: 'clover', gateway: null, method: PaymentMethodType.CreditCard, type: PaymentMethodProviderType.Api },
-            { id: 'cba_mpgs', gateway: null, method: PaymentMethodType.CreditCard, type: PaymentMethodProviderType.Api },
             { id: 'cybersourcev2', gateway: null, method: PaymentMethodType.CreditCard, type: PaymentMethodProviderType.Api },
             { id: 'ewayrapid', gateway: null, method: PaymentMethodType.CreditCard, type: PaymentMethodProviderType.Api },
             { id: 'hps', gateway: null, method: PaymentMethodType.CreditCard, type: PaymentMethodProviderType.Api },
