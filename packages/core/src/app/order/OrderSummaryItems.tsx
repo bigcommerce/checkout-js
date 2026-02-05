@@ -36,17 +36,14 @@ const ItemCount = ({ items, nonBundledItems, themeV2 }: { items: LineItemMap; no
         >
             <TranslatedString data={{ count: getItemsCount(nonBundledItems) }} id="cart.item_count_text" />
             {backorderTotal > 0 && (
-                <>
-                    {' '}
-                    <a
-                        className="cart-backorder-link"
-                        data-test="cart-backorder-total"
-                        href="#"
-                        onClick={preventDefault()}
-                    >
-                        <TranslatedString data={{ count: backorderTotal }} id="cart.backorder_count_text" />
-                    </a>
-                </>
+                <a
+                    className="cart-backorder-link"
+                    data-test="cart-backorder-total"
+                    href="#"
+                    onClick={preventDefault()}
+                >
+                    <TranslatedString data={{ count: backorderTotal }} id="cart.backorder_count_text" />
+                </a>
             )}
         </h3>
     );

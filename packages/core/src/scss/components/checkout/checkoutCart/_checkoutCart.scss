@@ -75,6 +75,7 @@
 
 a.cart-backorder-link {
     color: color("highlight");
+    margin-left: spacing("quarter");
     text-decoration: none;
 
     &:hover {
