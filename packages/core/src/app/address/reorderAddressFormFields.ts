@@ -1,21 +1,38 @@
 import { type FormField } from '@bigcommerce/checkout-sdk';
 
+const ADDRESS_FIELD_ORDER = [
+    'countryCode',
+    'firstName',
+    'lastName',
+    'company',
+    'address1',
+    'address2',
+    'city',
+    'stateOrProvince',
+    'stateOrProvinceCode',
+    'postalCode',
+    'phone',
+];
+const ORDERED_NAMES = new Set(ADDRESS_FIELD_ORDER);
+
 export function reorderAddressFormFields(formFields: FormField[]): FormField[] {
-    const COUNTRY_CODE_FIELD = 'countryCode';
-    const COMPANY_NAME_FIELD = 'company';
-    const PHONE_FIELD = 'phone';
+    const formFieldsMap = new Map(formFields.map((field) => [field.name, field]));
 
-    const countryCodeField = formFields.find((f) => f.name === COUNTRY_CODE_FIELD);
-    const companyField = formFields.find((f) => f.name === COMPANY_NAME_FIELD);
-    const phoneField = formFields.find((f) => f.name === PHONE_FIELD);
-    const rest = formFields.filter(
-        (f) => f.name !== COUNTRY_CODE_FIELD && f.name !== COMPANY_NAME_FIELD && f.name !== PHONE_FIELD,
-    );
+    const reorderedFormFields: FormField[] = [];
 
-    return [
-        ...(countryCodeField ? [countryCodeField] : []),
-        ...(companyField ? [companyField] : []),
-        ...rest,
-        ...(phoneField ? [phoneField] : []),
-    ];
+    for (const name of ADDRESS_FIELD_ORDER) {
+        const field = formFieldsMap.get(name);
+
+        if (field) {
+            reorderedFormFields.push(field);
+        }
+    }
+
+    for (const field of formFields) {
+        if (field.name && !ORDERED_NAMES.has(field.name)) {
+            reorderedFormFields.push(field);
+        }
+    }
+
+    return reorderedFormFields;
 }

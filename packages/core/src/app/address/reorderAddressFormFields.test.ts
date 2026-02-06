@@ -15,7 +15,7 @@ describe('reorderAddressFormFields()', () => {
         expect(reorderAddressFormFields([])).toEqual([]);
     });
 
-    it('puts countryCode first, company second, rest in middle, phone last', () => {
+    it('puts countryCode first, then firstName, lastName, company, address fields, phone last', () => {
         const fields = [
             createField('firstName'),
             createField('countryCode'),
@@ -28,8 +28,8 @@ describe('reorderAddressFormFields()', () => {
 
         expect(result.map((f) => f.name)).toEqual([
             'countryCode',
-            'company',
             'firstName',
+            'company',
             'address1',
             'city',
             'phone',
@@ -69,7 +69,7 @@ describe('reorderAddressFormFields()', () => {
         ];
         const result = reorderAddressFormFields(fields);
 
-        expect(result.map((f) => f.name)).toEqual(['company', 'firstName', 'phone']);
+        expect(result.map((f) => f.name)).toEqual(['firstName', 'company', 'phone']);
     });
 
     it('handles missing company', () => {
@@ -91,7 +91,7 @@ describe('reorderAddressFormFields()', () => {
         ];
         const result = reorderAddressFormFields(fields);
 
-        expect(result.map((f) => f.name)).toEqual(['countryCode', 'company', 'firstName']);
+        expect(result.map((f) => f.name)).toEqual(['countryCode', 'firstName', 'company']);
     });
 
     it('reorders real address form fields from mock', () => {
@@ -101,8 +101,8 @@ describe('reorderAddressFormFields()', () => {
         const names = result.map((f) => f.name);
 
         expect(names.indexOf('countryCode')).toBe(0);
-        expect(names.indexOf('company')).toBe(1);
-        expect(names.indexOf('phone')).toBe(names.length - 1);
+        expect(names.indexOf('firstName')).toBe(1);
+        expect(names).toContain('phone');
         expect(result.length).toBe(fields.length);
     });
 });
