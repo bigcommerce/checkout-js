@@ -1,4 +1,5 @@
 @import "../ui/Base";
+@import "../../scss/themeV2/mixins";
 
 .checkout-address:has(.floating-form-field) {
     margin-left: -0.5 * $floating-form-field-spacing;
@@ -44,6 +45,17 @@
     .dynamic-form-field--postCode {
         @include breakpoint("small") {
             flex-basis: 30%;
+        }
+    }
+
+    .dynamic-form-field--postCode,
+    .dynamic-form-field--province,
+    .dynamic-form-field--provinceCode,
+    .dynamic-form-field--city {
+        @include themeV2 {
+            @include breakpoint("small") {
+                flex-basis: 33.33%;
+            }
         }
     }
 }
