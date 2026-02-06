@@ -2,6 +2,7 @@ import { type LineItemMap } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import React, { type ReactElement, useCallback, useState } from 'react';
 
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
@@ -28,6 +29,9 @@ export interface OrderSummaryItemsProps {
 
 const ItemCount = ({ items, nonBundledItems, themeV2 }: { items: LineItemMap; nonBundledItems: LineItemMap; themeV2: boolean }): ReactElement => {
     const backorderTotal = getBackorderCount(items);
+    const { checkoutState } = useCheckout();
+    const config = checkoutState.data.getConfig();
+    const shouldDisplayBackorderMessages = config?.inventorySettings?.shouldDisplayBackorderMessagesOnStorefront;
 
     return (
         <h3
@@ -35,7 +39,7 @@ const ItemCount = ({ items, nonBundledItems, themeV2 }: { items: LineItemMap; no
             data-test="cart-count-total"
         >
             <TranslatedString data={{ count: getItemsCount(nonBundledItems) }} id="cart.item_count_text" />
-            {backorderTotal > 0 && (
+            {shouldDisplayBackorderMessages && backorderTotal > 0 && (
                 <a
                     className="cart-backorder-link"
                     data-test="cart-backorder-total"

@@ -2,7 +2,7 @@ import { expect } from '@playwright/test';
 import userEvent from '@testing-library/user-event';
 import React, { type FunctionComponent } from 'react';
 
-import { LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
+import { LocaleContext, type LocaleContextType, useCheckout } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
@@ -16,7 +16,27 @@ import { getStoreConfig } from '../config/config.mock';
 
 import OrderSummaryItems, { type OrderSummaryItemsProps } from './OrderSummaryItems';
 
+jest.mock('@bigcommerce/checkout/contexts', () => ({
+    ...jest.requireActual('@bigcommerce/checkout/contexts'),
+    useCheckout: jest.fn(),
+}));
+
 describe('OrderSummaryItems', () => {
+    const mockUseCheckout = useCheckout as jest.Mock;
+
+    beforeEach(() => {
+        mockUseCheckout.mockReturnValue({
+            checkoutState: {
+                data: {
+                    getConfig: () => ({
+                        inventorySettings: {
+                            shouldDisplayBackorderMessagesOnStorefront: true,
+                        },
+                    }),
+                },
+            },
+        });
+    });
     describe('backorder quantity text', () => {
         it('renders backorder count when items have backorder quantities', () => {
             render(
