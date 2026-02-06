@@ -1,10 +1,10 @@
 import { type Checkout, type ShopperCurrency as ShopperCurrencyType, type StoreCurrency } from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent, useState } from 'react';
 
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { IconArrowLeft, IconChevronDown, IconChevronUp } from '@bigcommerce/checkout/ui';
 
-import { withCheckout } from '../checkout';
 import { ShopperCurrency } from '../currency';
 import OrderSummary from '../order/OrderSummary';
 
@@ -23,12 +23,21 @@ export type WithCheckoutCartSummaryProps = {
     isShippingDiscountDisplayEnabled: boolean;
 } & RedeemableProps;
 
-const CartSummaryDrawerV2: FunctionComponent<
-    WithCheckoutCartSummaryProps & {
-        isMultiShippingMode: boolean;
-    }
-    > = ({ cartUrl, isMultiShippingMode, isBuyNowCart, ...props }) => {
+export interface CartSummaryDrawerV2Props {
+    isMultiShippingMode: boolean;
+}
+
+const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({ isMultiShippingMode }) => {
     const [isExpanded, setIsExpanded] = useState(false);
+    
+    const checkoutContext = useCheckout();
+    const props = mapToCartSummaryProps(checkoutContext);
+
+    if (!props) {
+        return null;
+    }
+
+    const { cartUrl, isBuyNowCart, checkout } = props;
     
     const headerLink = isBuyNowCart ? null : (
         <EditLink
@@ -56,14 +65,12 @@ const CartSummaryDrawerV2: FunctionComponent<
                 {isExpanded ? <IconChevronUp /> : <IconChevronDown />}
             </span>
             <span className="sub-header">
-                <ShopperCurrency amount={props.checkout.outstandingBalance} />
+                <ShopperCurrency amount={checkout.outstandingBalance} />
             </span>
         </button>
         {isExpanded && (
             withRedeemable(OrderSummary)({
                 ...props,
-                cartUrl,
-                isBuyNowCart,
                 headerLink: null,
                 showHeader: false,
             })
@@ -72,4 +79,4 @@ const CartSummaryDrawerV2: FunctionComponent<
     );
 };
 
-export default withCheckout(mapToCartSummaryProps)(CartSummaryDrawerV2);
+export default CartSummaryDrawerV2;
