@@ -20,19 +20,19 @@ export function reorderAddressFormFields(formFields: FormField[]): FormField[] {
 
     const reorderedFormFields: FormField[] = [];
 
-    for (const name of ADDRESS_FIELD_ORDER) {
+    ADDRESS_FIELD_ORDER.forEach((name) => {
         const field = formFieldsMap.get(name);
 
         if (field) {
             reorderedFormFields.push(field);
         }
-    }
+    });
 
-    for (const field of formFields) {
+    formFields.forEach((field) => {
         if (field.name && !ORDERED_NAMES.has(field.name)) {
             reorderedFormFields.push(field);
         }
-    }
+    });
 
     return reorderedFormFields;
 }
