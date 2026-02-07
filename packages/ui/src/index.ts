@@ -86,6 +86,9 @@ export {
     IconRemoveCoupon,
     IconDownArrow,
     IconUpArrow,
+    IconChevronDown,
+    IconChevronUp,
+    IconArrowLeft,
 } from './icon';
 export { LazyContainer, LoadingNotification, LoadingOverlay, LoadingSpinner } from './loading';
 export {

@@ -29,6 +29,7 @@ export interface OrderSummaryProps {
     storeCurrency: StoreCurrency;
     shopperCurrency: ShopperCurrency;
     additionalLineItems?: ReactNode;
+    showHeader?: boolean;
 }
 
 const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsProps> = ({
@@ -40,6 +41,7 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
     storeCurrency,
     taxes,
     total,
+    showHeader = true,
     ...orderSummarySubtotalsProps
 }) => {
     const nonBundledLineItems = useMemo(() => removeBundledItems(lineItems), [lineItems]);
@@ -76,7 +78,7 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
 
     return (
         <article className="cart optimizedCheckout-orderSummary" data-test="cart">
-            <OrderSummaryHeader>{headerLink}</OrderSummaryHeader>
+            {showHeader && <OrderSummaryHeader>{headerLink}</OrderSummaryHeader>}
 
             <OrderSummarySection>
                 <OrderSummaryItems displayLineItemsCount items={nonBundledLineItems} themeV2={themeV2} />

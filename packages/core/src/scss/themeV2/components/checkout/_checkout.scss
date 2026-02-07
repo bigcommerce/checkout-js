@@ -1,78 +1,83 @@
 @include themeV2 {
     background-color: $color-secondaryDarker;
+}
 
-    .layout {
+.layout {
+    @include themeV2 {
         padding: 0;
+        display: flex;
+        flex-direction: column;
 
-        @include breakpoint("small") {
-            padding: 0 spacing("single") 5 * spacing("single");
+        .layout-main {
+            padding: 0;
+        }
+
+        .checkout-separator::before,
+        .checkout-separator::after {
+            background-color: $color-black;
+        }
+        
+        .checkout-steps {
+            margin-top: #{spacing('base') + spacing('base')};
+        }
+
+        .checkout-step {
+            background-color: $color-white;
+            border-bottom: none;
+            padding: #{spacing("base") + spacing("base")};
+            margin: spacing("single") 0;
+        }
+        
+        .stepHeader {
+            flex-wrap: wrap;
+            padding: 0;
+
+            .stepHeader-body {
+                order: 3;
+                width: 100%;
+                margin-left: 0;
+                margin-top: remCalc(10px);
+            }
+
+            .stepHeader-actions {
+                margin-left: auto;
+                align-self: flex-start;
+            }
+
+            .stepHeader-figure {
+                align-items: flex-end;
+            }
+        }
+
+        .checkout-button-container {
+            padding: 0 #{spacing("base") + spacing("base")};
         }
     }
 
-    .layout-main {
-        padding: 0;
+    @include themeV2-mobile {
+        padding: 0 #{spacing("single")} #{5 * spacing("single")};
 
-        @include breakpoint("small") {
+        .layout-main {
             @include grid-column(12);
         }
 
-        @include breakpoint("large") {
+        .checkout-button-container {
+            padding: 0 #{spacing('double') + spacing('double')} 0 0;
+        }
+    }
+
+    @include themeV2-desktop {
+        display: block;
+
+        .layout-main {
             width: grid-calc(7, $total-columns);
         }
+    }
 
-        @include breakpoint("xlarge") {
+    @include themeV2-widescreen {
+        .layout-main {
             width: grid-calc(8, $total-columns);
-        }
-
-        @include breakpoint("xlarge") {
             padding-right: spacing("single");
         }
-    }
-
-    .cart {
-        border: none;
-    }
-
-    .checkout-separator::before,
-    .checkout-separator::after {
-        background-color: $color-black;
-    }
-    
-    .checkout-steps {
-        margin-top: #{spacing('base') + spacing('base')};
-    }
-
-    .checkout-step {
-        background-color: $color-white;
-        border-bottom: none;
-        padding: #{spacing("base") + spacing("base")};
-        margin: spacing("single") 0;
-    }
-    
-    .stepHeader {
-        flex-wrap: wrap;
-        padding: 0;
-
-        .stepHeader-body {
-            order: 3;
-            width: 100%;
-            margin-left: 0;
-            margin-top: remCalc(10px);
-        }
-
-        .stepHeader-actions {
-            margin-left: auto;
-            align-self: flex-start;
-        }
-
-        .stepHeader-figure {
-            align-items: flex-end;
-        }
-    }
-}
-
-.checkout-button-container {
-    @include themeV2-desktop {
-        padding-right: #{spacing('double') + spacing('double')};
     }
 }
