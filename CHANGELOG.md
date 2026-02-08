@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.735.0](https://github.com/bigcommerce/checkout-js/compare/v1.734.0...v1.735.0) (2026-02-08)
+
+
+### Features
+
+* **checkout:** CHECKOUT-7834 [UX] Make the checkout order summary displayed in-line on mobile ([#2811](https://github.com/bigcommerce/checkout-js/issues/2811)) ([6932580](https://github.com/bigcommerce/checkout-js/commit/69325809cc088326af6a9847882667ce38004052))
+
 ## [1.734.0](https://github.com/bigcommerce/checkout-js/compare/v1.733.1...v1.734.0) (2026-02-08)
 
 
