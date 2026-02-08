@@ -1,18 +1,50 @@
 import { type LineItemMap } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
-import React, { type ReactElement, useCallback, useState } from 'react';
+import React, { type FunctionComponent, type ReactElement, type ReactNode, useCallback, useRef, useState } from 'react';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import { IconChevronDown, IconChevronUp } from '../ui/icon';
 import { isSmallScreen } from '../ui/responsive';
 
+import { ANIMATION_DURATION, createSlideCollapseAnimationHandlers } from '../common/animation';
 import getItemsCount from './getItemsCount';
 import mapFromCustom from './mapFromCustom';
 import mapFromDigital from './mapFromDigital';
 import mapFromGiftCertificate from './mapFromGiftCertificate';
 import mapFromPhysical from './mapFromPhysical';
 import OrderSummaryItem from './OrderSummaryItem';
+
+interface AnimatedProductItemProps {
+    children: ReactNode;
+    in?: boolean;
+}
+
+const AnimatedProductItem: FunctionComponent<AnimatedProductItemProps> = ({ children, in: inProp }) => {
+    const nodeRef = useRef<HTMLLIElement>(null);
+    const slideHandlers = createSlideCollapseAnimationHandlers(nodeRef);
+
+    return (
+        <CSSTransition
+            appear
+            classNames="product-item"
+            in={inProp}
+            nodeRef={nodeRef}
+            onEnter={slideHandlers.handleEnter}
+            onEntered={slideHandlers.handleEntered}
+            onEntering={slideHandlers.handleEntering}
+            onExit={slideHandlers.handleExit}
+            onExiting={slideHandlers.handleExiting}
+            timeout={ANIMATION_DURATION}
+            unmountOnExit
+        >
+            <li className="productList-item is-visible" ref={nodeRef}>
+                {children}
+            </li>
+        </CSSTransition>
+    );
+};
 
 const COLLAPSED_ITEMS_LIMIT = 4;
 const COLLAPSED_ITEMS_LIMIT_SMALL_SCREEN = 3;
@@ -41,13 +73,13 @@ const ProductList = ({ items, isExpanded, collapsedLimit }: { items: LineItemMap
     ].slice(0, isExpanded ? undefined : collapsedLimit);
 
     return (
-        <ul aria-live="polite" className="productList">
+        <TransitionGroup aria-live="polite" className="productList" component="ul">
             {summaryItems.map(summaryItemProps => (
-                <li className="productList-item is-visible" key={summaryItemProps.id}>
+                <AnimatedProductItem key={summaryItemProps.id}>
                     <OrderSummaryItem {...summaryItemProps} />
-                </li>
+                </AnimatedProductItem>
             ))}
-        </ul>
+        </TransitionGroup>
     );
 };
 

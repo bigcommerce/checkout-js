@@ -1,9 +1,10 @@
-import React, { createRef, type FunctionComponent, useState } from 'react';
+import React, { createRef, type FunctionComponent, useRef, useState } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { IconCoupon, IconDownArrow, IconUpArrow } from '@bigcommerce/checkout/ui';
 
+import { ANIMATION_DURATION, createCollapseAnimationHandlers } from '../../common/animation';
 import { ShopperCurrency } from '../../currency';
 import { type DiscountItem, useMultiCoupon } from '../useMultiCoupon';
 
@@ -41,6 +42,9 @@ const DiscountItems: FunctionComponent<{ coupons: DiscountItem[] }> = ({ coupons
 
 const DiscountsCollapsible: FunctionComponent<{ discounts: number; discountItems: DiscountItem[] }> = ({ discounts, discountItems }) => {
     const [isCouponDiscountsVisible, setIsCouponDiscountsVisible] = useState(true);
+    const discountsRef = useRef<HTMLDivElement>(null);
+
+    const collapseHandlers = createCollapseAnimationHandlers(discountsRef);
 
     return (
         <div>
@@ -61,11 +65,25 @@ const DiscountsCollapsible: FunctionComponent<{ discounts: number; discountItems
                     -<ShopperCurrency amount={discounts} />
                 </span>
             </div>
-            {isCouponDiscountsVisible && (
-                <div className="applied-discounts-list" id="applied-coupon-discounts-collapsable">
+            <CSSTransition
+                in={isCouponDiscountsVisible}
+                nodeRef={discountsRef}
+                onEnter={collapseHandlers.handleEnter}
+                onEntered={collapseHandlers.handleEntered}
+                onEntering={collapseHandlers.handleEntering}
+                onExit={collapseHandlers.handleExit}
+                onExiting={collapseHandlers.handleExiting}
+                timeout={ANIMATION_DURATION}
+                unmountOnExit
+            >
+                <div
+                    className="applied-discounts-list"
+                    id="applied-coupon-discounts-collapsable"
+                    ref={discountsRef}
+                >
                     <DiscountItems coupons={discountItems} />
                 </div>
-            )}
+            </CSSTransition>
         </div>
     );
 };

@@ -91,3 +91,25 @@
     text-decoration: line-through;
     font-weight: fontWeight('medium');
 }
+
+// =============================================================================
+// PRODUCT ITEM ANIMATION
+// =============================================================================
+
+$animation-duration: 300ms;
+$animation-easing: cubic-bezier(0.4, 0, 0.2, 1);
+
+// Product item animation (add/remove products via BOGO coupons)
+.productList-item {
+    transition:
+        height $animation-duration $animation-easing,
+        opacity $animation-duration $animation-easing,
+        transform $animation-duration $animation-easing;
+}
+
+// Accessibility: respect prefers-reduced-motion
+@media (prefers-reduced-motion: reduce) {
+    .productList-item {
+        transition: opacity 100ms ease-out !important;
+    }
+}
