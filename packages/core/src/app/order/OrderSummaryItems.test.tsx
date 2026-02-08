@@ -2,7 +2,7 @@ import { expect } from '@playwright/test';
 import userEvent from '@testing-library/user-event';
 import React, { type FunctionComponent } from 'react';
 
-import { LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
+import { LocaleContext, type LocaleContextType, useCheckout } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
@@ -16,7 +16,135 @@ import { getStoreConfig } from '../config/config.mock';
 
 import OrderSummaryItems, { type OrderSummaryItemsProps } from './OrderSummaryItems';
 
+jest.mock('@bigcommerce/checkout/contexts', () => ({
+    ...jest.requireActual('@bigcommerce/checkout/contexts'),
+    useCheckout: jest.fn(),
+}));
+
 describe('OrderSummaryItems', () => {
+    const mockUseCheckout = useCheckout as jest.Mock;
+
+    beforeEach(() => {
+        mockUseCheckout.mockReturnValue({
+            checkoutState: {
+                data: {
+                    getConfig: () => ({
+                        inventorySettings: {
+                            shouldDisplayBackorderMessagesOnStorefront: true,
+                        },
+                    }),
+                },
+            },
+        });
+    });
+    describe('backorder quantity text', () => {
+        it('renders backorder count when items have backorder quantities', () => {
+            render(
+                <OrderSummaryItems
+                    displayLineItemsCount
+                    items={{
+                        customItems: [],
+                        physicalItems: [
+                            {
+                                ...getPhysicalItem(),
+                                stockPosition: { quantityBackordered: 3 },
+                            },
+                        ],
+                        digitalItems: [
+                            {
+                                ...getDigitalItem(),
+                                stockPosition: { quantityBackordered: 2 },
+                            },
+                        ],
+                        giftCertificates: [],
+                    }}
+                />,
+            );
+
+            expect(screen.getByTestId('cart-backorder-total')).toBeInTheDocument();
+            expect(screen.getByTestId('cart-backorder-total')).toHaveTextContent('5 will be backordered');
+        });
+
+        it('renders backorder count from physical items only when digital items have no backorders', () => {
+            render(
+                <OrderSummaryItems
+                    displayLineItemsCount
+                    items={{
+                        customItems: [],
+                        physicalItems: [
+                            {
+                                ...getPhysicalItem(),
+                                stockPosition: { quantityBackordered: 7 },
+                            },
+                        ],
+                        digitalItems: [getDigitalItem()],
+                        giftCertificates: [],
+                    }}
+                />,
+            );
+
+            expect(screen.getByTestId('cart-backorder-total')).toHaveTextContent('7 will be backordered');
+        });
+
+        it('does not render backorder count when no items have backorder quantities', () => {
+            render(
+                <OrderSummaryItems
+                    displayLineItemsCount
+                    items={{
+                        customItems: [getCustomItem()],
+                        physicalItems: [getPhysicalItem()],
+                        digitalItems: [getDigitalItem()],
+                        giftCertificates: [getGiftCertificateItem()],
+                    }}
+                />,
+            );
+
+            expect(screen.queryByTestId('cart-backorder-total')).not.toBeInTheDocument();
+        });
+
+        it('does not render backorder count when stockPosition is undefined', () => {
+            render(
+                <OrderSummaryItems
+                    displayLineItemsCount
+                    items={{
+                        customItems: [],
+                        physicalItems: [
+                            {
+                                ...getPhysicalItem(),
+                                stockPosition: undefined,
+                            },
+                        ],
+                        digitalItems: [],
+                        giftCertificates: [],
+                    }}
+                />,
+            );
+
+            expect(screen.queryByTestId('cart-backorder-total')).not.toBeInTheDocument();
+        });
+
+        it('does not render backorder count when quantityBackordered is zero', () => {
+            render(
+                <OrderSummaryItems
+                    displayLineItemsCount
+                    items={{
+                        customItems: [],
+                        physicalItems: [
+                            {
+                                ...getPhysicalItem(),
+                                stockPosition: { quantityBackordered: 0 },
+                            },
+                        ],
+                        digitalItems: [],
+                        giftCertificates: [],
+                    }}
+                />,
+            );
+
+            expect(screen.queryByTestId('cart-backorder-total')).not.toBeInTheDocument();
+        });
+    });
+
     describe('when it has 4 line items or less', () => {
         it('renders total count', () => {
             render(
