@@ -10,9 +10,10 @@ export interface EditLinkProps {
     className?: string;
     isMultiShippingMode: boolean;
     url: string;
+    label?: React.ReactNode;
 }
 
-const EditLink: FunctionComponent<EditLinkProps> = ({ className, url, isMultiShippingMode }) => {
+const EditLink: FunctionComponent<EditLinkProps> = ({ className, url, isMultiShippingMode, label }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const { themeV2 } = useThemeContext();
@@ -39,7 +40,7 @@ const EditLink: FunctionComponent<EditLinkProps> = ({ className, url, isMultiShi
                     id="cart-edit-link"
                     onClick={preventDefault(() => setIsModalOpen(true))}
                 >
-                    <TranslatedString id="cart.edit_cart_action" />
+                    {label || <TranslatedString id="cart.edit_cart_action" />}
                 </a>
             </>
         );
@@ -54,7 +55,7 @@ const EditLink: FunctionComponent<EditLinkProps> = ({ className, url, isMultiShi
             id="cart-edit-link"
             target="_top"
         >
-            <TranslatedString id="cart.edit_cart_action" />
+            {label || <TranslatedString id="cart.edit_cart_action" />}
         </a>
     );
 };

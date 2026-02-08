@@ -1,15 +1,74 @@
 .layout-cart {
     @include themeV2 {
+        padding: 0;
+        order: -1;
+        
+        .cart-summary-drawer {
+            border: none;
+            box-shadow: none;
+            padding: 0;
+            width: 100%;
+        }
+
+        .cart {
+            border: none;
+            display: block;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
         .cart-priceItem:last-child {
             margin-bottom: 0;
         }
+
+        .cart-summary-toggle {
+            background-color: $color-white;
+            border-bottom: none;
+            display: flex;
+            justify-content: space-between;
+            padding: spacing("base") #{spacing("base") + spacing("base")};
+            width: 100%;
+        }
+
+        .cart-summary-header {
+            background-color: container("fill", "dark");
+            padding: spacing("base") spacing("single");
+            font-weight: bold;
+            display: flex;
+            gap: spacing("quarter");
+
+            svg {
+                fill: $color-highlightDarkest;
+            }
+        }
     }
 
-    @include themeV2-desktop {
+    @include themeV2-mobile {
+        @include grid-column(12);
+    }
+
+    @include themeV2-tablet {
+        .cart-summary-drawer {
+            padding-right: (spacing("double") + spacing("double"));
+        }
+    }
+
+    @include themeV2-desktop {  
+        width: grid-calc(5, $total-columns);
+        padding-right: spacing("single");
         position: sticky;
         right: auto;
         left: auto;
         top: 0;
         bottom: 0;
+        order: 0; // Reset order on large screens and above
+
+        .cart {
+            margin: spacing("double") 0 spacing("single");
+        }
+    }
+
+    @include themeV2-widescreen {
+        width: grid-calc(4, $total-columns);
     }
 }

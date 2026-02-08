@@ -39,3 +39,11 @@
         }
     }
 }
+
+@mixin themeV2-widescreen {
+    .themeV2 & {
+        @include breakpoint("xlarge") {
+            @content;
+        }
+    }
+}

@@ -1,0 +1,25 @@
+.productList {
+    @include themeV2 {
+        .product-body {
+            align-self: center;
+            order: unset;
+            width: 50%;
+        }
+
+        .product-figure {
+            max-width: remCalc(80px);
+        }
+    }
+
+    @include themeV2-mobile {
+        .product-body {
+            align-self: flex-start;
+        }
+    }
+
+    @include themeV2-desktop {
+        .product-figure {
+            max-width: none;
+        }
+    }
+}

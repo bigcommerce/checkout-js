@@ -60,3 +60,4 @@ export { default as IconRemoveCoupon } from './IconRemoveCoupon';
 export { default as IconCoupon } from './IconCoupon';
 export { default as IconDownArrow } from './IconDownArrow';
 export { default as IconUpArrow } from './IconUpArrow';
+export { default as IconArrowLeft } from './IconArrowLeft';
