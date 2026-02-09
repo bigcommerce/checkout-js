@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.736.0](https://github.com/bigcommerce/checkout-js/compare/v1.735.0...v1.736.0) (2026-02-09)
+
+
+### Features
+
+* **checkout:** display backorder qty on order summary (not include mobile view) ([#2812](https://github.com/bigcommerce/checkout-js/issues/2812)) ([6750ecf](https://github.com/bigcommerce/checkout-js/commit/6750ecf969938acbfd49f85f87205b992d998161))
+
 ## [1.735.0](https://github.com/bigcommerce/checkout-js/compare/v1.734.0...v1.735.0) (2026-02-08)
 
 
