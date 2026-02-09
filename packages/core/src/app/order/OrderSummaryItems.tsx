@@ -28,7 +28,7 @@ export interface OrderSummaryItemsProps {
 }
 
 const ItemCount = ({ items, nonBundledItems, themeV2 }: { items: LineItemMap; nonBundledItems: LineItemMap; themeV2: boolean }): ReactElement => {
-    const backorderTotal = getBackorderCount(items);
+    const backorderCount = getBackorderCount(items);
     const { checkoutState } = useCheckout();
     const config = checkoutState.data.getConfig();
     const shouldDisplayBackorderMessages = config?.inventorySettings?.shouldDisplayBackorderMessagesOnStorefront;
@@ -39,14 +39,14 @@ const ItemCount = ({ items, nonBundledItems, themeV2 }: { items: LineItemMap; no
             data-test="cart-count-total"
         >
             <TranslatedString data={{ count: getItemsCount(nonBundledItems) }} id="cart.item_count_text" />
-            {shouldDisplayBackorderMessages && backorderTotal > 0 && (
+            {shouldDisplayBackorderMessages && backorderCount > 0 && (
                 <a
                     className="cart-backorder-link"
                     data-test="cart-backorder-total"
                     href="#"
                     onClick={preventDefault()}
                 >
-                    <TranslatedString data={{ count: backorderTotal }} id="cart.backorder_count_text" />
+                    <TranslatedString data={{ count: backorderCount }} id="cart.backorder_count_text" />
                 </a>
             )}
         </h3>
