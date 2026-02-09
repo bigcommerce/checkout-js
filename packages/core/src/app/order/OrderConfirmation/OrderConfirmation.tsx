@@ -28,7 +28,7 @@ export interface OrderConfirmationProps {
     embeddedStylesheet: EmbeddedCheckoutStylesheet;
     errorLogger: ErrorLogger;
     orderId: number;
-    guestTokenValidation?: 'valid' | 'expired' | 'invalid' | 'missing';
+    guestTokenValidation?: 'valid' | 'expired' | null;
     createAccount(values: SignUpFormValues): Promise<CreatedCustomer>;
     createEmbeddedMessenger(options: EmbeddedCheckoutMessengerOptions): EmbeddedCheckoutMessenger;
 }
@@ -99,22 +99,24 @@ export const OrderConfirmation = ({
     };
 
     const handleResendGuestToken = async (): Promise<void> => {
-        // Extract token from URL
+        // Extract tokens from URL - new format uses orderToken param + optional guest token
         const urlParams = new URLSearchParams(window.location.search);
-        const token = urlParams.get('guestToken');
+        const orderToken = urlParams.get('orderToken'); // Order's permanent token
+        const guestToken = urlParams.get('guestToken'); // Guest access token (may be missing/expired)
 
-        if (!token) {
-            throw new Error('No guest token found in URL');
+        if (!orderToken) {
+            throw new Error('No order token found in URL');
         }
 
-        // Call regeneration endpoint
-        const response = await fetch('/api/storefront/orders/' + orderId + '/guest-token', {
+        // Call regeneration endpoint with order ID in path and order token as query param
+        // This matches the pattern of the order confirmation page URL
+        const response = await fetch(`/api/storefront/orders/${orderId}/guest-token?orderToken=${encodeURIComponent(orderToken)}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                old_token: token,
+                old_token: guestToken || '',
             }),
         });
 

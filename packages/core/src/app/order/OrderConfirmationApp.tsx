@@ -22,7 +22,7 @@ export interface OrderConfirmationAppProps {
     publicPath?: string;
     sentryConfig?: BrowserOptions;
     sentrySampleRate?: number;
-    guestTokenValidation?: 'valid' | 'expired' | 'invalid' | 'missing';
+    guestTokenValidation?: 'valid' | 'expired' | null;
 }
 
 const OrderConfirmationApp: React.FC<OrderConfirmationAppProps> = ({
