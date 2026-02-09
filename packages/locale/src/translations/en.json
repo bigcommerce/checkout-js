@@ -66,6 +66,7 @@
             "item": "item",
             "items": "items",
             "item_count_text": "{count, plural, one{1 Item} other{# Items} }",
+            "backorder_count_text": "{count} will be backordered",
             "print_action": "Print",
             "remaining_text": "Remaining",
             "remove_action": "remove",
