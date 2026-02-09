@@ -99,10 +99,9 @@ export const OrderConfirmation = ({
     };
 
     const handleResendGuestToken = async (): Promise<void> => {
-        // Extract tokens from URL - new format uses orderToken param + optional guest token
+        // Extract order token from URL
         const urlParams = new URLSearchParams(window.location.search);
         const orderToken = urlParams.get('orderToken'); // Order's permanent token
-        const guestToken = urlParams.get('guestToken'); // Guest access token (may be missing/expired)
 
         if (!orderToken) {
             throw new Error('No order token found in URL');
@@ -115,9 +114,6 @@ export const OrderConfirmation = ({
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                old_token: guestToken || '',
-            }),
         });
 
         if (!response.ok) {
