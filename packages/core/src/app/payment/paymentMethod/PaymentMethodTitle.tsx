@@ -5,7 +5,7 @@ import { compact } from 'lodash';
 import React, { type FunctionComponent, memo, type ReactNode } from 'react';
 
 import { BigCommercePaymentsPayLaterBanner } from '@bigcommerce/checkout/bigcommerce-payments-utils'
-import { type CheckoutContextProps, useThemeContext } from '@bigcommerce/checkout/contexts';
+import { type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { BraintreePaypalCreditBanner, PaypalCommerceCreditBanner } from '@bigcommerce/checkout/paypal-utils';
@@ -328,7 +328,6 @@ const PaymentMethodTitle: FunctionComponent<
 > = ({ cdnBasePath, checkoutSettings, storeCountryCode, onUnhandledError, formik: { values }, instruments, isSelected, language, method }) => {
     const methodName = getPaymentMethodName(language)(method);
     const { logoUrl, titleText, subtitle } = getPaymentMethodTitle(language, cdnBasePath, checkoutSettings, storeCountryCode)(method);
-    const { themeV2 } = useThemeContext();
 
     const getSelectedCardType = () => {
         if (!isSelected) {
@@ -389,8 +388,7 @@ const PaymentMethodTitle: FunctionComponent<
                 )}
 
                 {titleText && (
-                    <div className={classNames('paymentProviderHeader-name',
-                        { 'sub-header': themeV2 })}
+                    <div className="paymentProviderHeader-name sub-header"
                         data-test="payment-method-name">
                         {titleText}
                     </div>

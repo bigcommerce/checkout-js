@@ -1,5 +1,4 @@
 @import '../ui/Base';
-@import '../../scss/settings/global/global';
 
 $quantity-input-container-width: 60%;
 $quantity-input-container-width-small-screen: 90%;
@@ -42,12 +41,6 @@ $allocate-items-table-image-width-small-screen: 40%;
 
         .line-item-options {
             color: color("greys");
-        }
-
-        .body-regular {
-            .line-item-options {
-                color: $color-secondaryDarkest;
-            }
         }
     }
 }
@@ -184,12 +177,6 @@ $allocate-items-table-image-width-small-screen: 40%;
                         width: $allocate-items-table-column-width;
                         padding: spacing("base");
                         text-align: right;
-
-                        &.body-medium {
-                            font-weight: fontWeight("medium");
-                            font-size: fontSize("base");
-                            color: $color-black;
-                        }
                     }
                 }
             }
@@ -206,12 +193,6 @@ $allocate-items-table-image-width-small-screen: 40%;
                     td {
                         padding: spacing("base");
                         text-align: right;
-
-                        &.body-regular {
-                            font-weight: fontWeight("normal");
-                            font-size: fontSize("base");
-                            color: $color-black;
-                        }
 
                         div {
                             float: right;
@@ -248,21 +229,12 @@ $allocate-items-table-image-width-small-screen: 40%;
                     margin-bottom: spacing("quarter");
                     color: color("greys", "dark");
                     font-weight: fontWeight("medium");
-
-                    &.body-regular{
-                        font-weight: fontWeight("normal");
-                        color: $color-black;
-                    }
                 }
 
                 .left-to-allocate-item-option {
                     font-size: fontSize("smallest");
                     margin: 0;
                     line-height: lineHeight("small");
-
-                    &.sub-text-medium{
-                        font-size: fontSize("tiny");
-                    }
                 }
             }
         }
@@ -284,12 +256,6 @@ $allocate-items-table-image-width-small-screen: 40%;
                     line-height: lineHeight("large");
                     .line-item-options {
                         color: color("greys");
-                    }
-
-                    .body-regular {
-                        .line-item-options {
-                            color: $color-secondaryDarkest;
-                        }
                     }
                 }
 

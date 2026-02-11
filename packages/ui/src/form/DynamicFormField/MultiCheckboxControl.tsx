@@ -1,6 +1,5 @@
 /* istanbul ignore file */
 
-import classNames from 'classnames';
 import React, { type FunctionComponent, memo, type MouseEvent, useCallback } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -9,7 +8,6 @@ import './MultiCheckboxControl.scss';
 
 export interface MultiCheckboxControlProps {
     testId?: string;
-    themeV2?: boolean;
     onSelectedAll(): void;
     onSelectedNone(): void;
 }
@@ -18,7 +16,6 @@ const MultiCheckboxControl: FunctionComponent<MultiCheckboxControlProps> = ({
     testId,
     onSelectedAll,
     onSelectedNone,
-    themeV2 = false,
 }) => {
     const handleSelectAllClick = useCallback(
         (event: MouseEvent) => {
@@ -37,7 +34,7 @@ const MultiCheckboxControl: FunctionComponent<MultiCheckboxControlProps> = ({
     );
 
     return (
-        <ul className={classNames('multiCheckbox--controls', { 'body-regular': themeV2 })}>
+        <ul className="multiCheckbox--controls body-regular">
             <li className="multiCheckbox--control">
                 <TranslatedString id="address.select" />
             </li>

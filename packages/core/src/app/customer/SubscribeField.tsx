@@ -1,7 +1,6 @@
 import { type FieldProps } from 'formik';
 import React, { type FunctionComponent, memo } from 'react';
 
-import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedHtml } from '@bigcommerce/checkout/locale';
 
 import { Input, Label } from '../ui/form';
@@ -14,8 +13,6 @@ const SubscribeField: FunctionComponent<SubscribeFieldProps> = ({
     field,
     requiresMarketingConsent,
 }) => {
-    const { themeV2 } = useThemeContext();
-
     return (
         <>
             <Input
@@ -29,7 +26,7 @@ const SubscribeField: FunctionComponent<SubscribeFieldProps> = ({
             />
 
             <Label
-                additionalClassName={themeV2 ? 'body-regular' : ''}
+                additionalClassName='body-regular'
                 htmlFor={field.name}
             >
                 <TranslatedHtml

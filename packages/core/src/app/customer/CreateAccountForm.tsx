@@ -2,12 +2,10 @@
 
 // TODO: CHECKOUT-9010 Cover 'Customer registration failure due to using an existing email' in functional tests repo
 import { type FormField } from '@bigcommerce/checkout-sdk';
-import classNames from 'classnames';
 import { type FormikProps, withFormik } from 'formik';
 import { noop } from 'lodash';
 import React, { type FunctionComponent, useMemo } from 'react';
 
-import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { DynamicFormField } from '@bigcommerce/checkout/ui';
@@ -72,7 +70,6 @@ function transformFormFieldsData(formFields: FormField[], defaultShouldSubscribe
 const CreateAccountForm: FunctionComponent<
     CreateAccountFormProps & WithLanguageProps & FormikProps<CreateAccountFormValues>
 > = ({ formFields, createAccountError, isCreatingAccount, isExecutingPaymentMethodCheckout, onCancel, isFloatingLabelEnabled, defaultShouldSubscribe }) => {
-    const { themeV2 } = useThemeContext();
     const createAccountErrorMessage = useMemo(() => {
         if (!createAccountError) {
             return;
@@ -117,7 +114,6 @@ const CreateAccountForm: FunctionComponent<
                             isFloatingLabelEnabled={isFloatingLabelEnabled}
                             key={field.id}
                             parentFieldName={field.custom ? 'customFields' : undefined}
-                            themeV2={themeV2}
                         />
                     ))}
                 </div>
@@ -125,7 +121,7 @@ const CreateAccountForm: FunctionComponent<
 
             <div className="form-actions">
                 <Button
-                    className={themeV2 ? 'body-bold' : ''}
+                    className="body-bold"
                     disabled={isCreatingAccount || isExecutingPaymentMethodCheckout}
                     id="checkout-customer-create"
                     isLoading={isCreatingAccount || isExecutingPaymentMethodCheckout}
@@ -137,8 +133,7 @@ const CreateAccountForm: FunctionComponent<
                 </Button>
 
                 <a
-                    className={classNames('button optimizedCheckout-buttonSecondary',
-                        { 'body-bold': themeV2 })}
+                    className="button optimizedCheckout-buttonSecondary body-bold"
                     data-test="customer-cancel-button"
                     href="#"
                     id="checkout-customer-cancel"

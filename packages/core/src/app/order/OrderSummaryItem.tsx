@@ -2,8 +2,6 @@ import classNames from 'classnames';
 import { isNumber } from 'lodash';
 import React, { type FunctionComponent, memo, type ReactNode } from 'react';
 
-import { useThemeContext } from '@bigcommerce/checkout/contexts';
-
 import { ShopperCurrency } from '../currency';
 
 export interface OrderSummaryItemProps {
@@ -31,31 +29,23 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
     quantity,
     description,
 }) => {
-    const { themeV2 } = useThemeContext();
-
     return (
         <div className="product" data-test="cart-item">
             <figure className="product-column product-figure">{image}</figure>
 
             <div className="product-column product-body">
                 <h4
-                    className={classNames('product-title optimizedCheckout-contentPrimary',
-                        { 'body-medium': themeV2 })}
+                    className="product-title optimizedCheckout-contentPrimary body-medium"
                     data-test="cart-item-product-title"
                 >
-                    {themeV2
-                        ? (<span className="body-bold">
-                            {`${quantity} x `}
-                        </span>)
-                        : (`${quantity} x `)
-                    }
+                    <span className="body-bold">
+                        {`${quantity} x `}
+                    </span>
                     {name}
                 </h4>
                 {productOptions && productOptions.length > 0 && (
                     <ul
-                        className={classNames('product-options optimizedCheckout-contentSecondary', {
-                            'sub-text-medium': themeV2,
-                        })}
+                        className="product-options optimizedCheckout-contentSecondary sub-text-medium"
                         data-test="cart-item-product-options"
                     >
                         {productOptions.map((option, index) => (
@@ -77,9 +67,7 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
 
             <div className="product-column product-actions">
                 {isNumber(amountAfterDiscount) && amountAfterDiscount !== amount && (
-                    <div className={classNames('product-price', {
-                        'body-medium': themeV2,
-                    })} data-test="cart-item-product-price--afterDiscount">
+                    <div className="product-price body-medium" data-test="cart-item-product-price--afterDiscount">
                         <ShopperCurrency amount={amountAfterDiscount} />
                     </div>
                 )}
@@ -88,8 +76,8 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
                     className={classNames('product-price', 'optimizedCheckout-contentPrimary', {
                         'product-price--beforeDiscount':
                             isNumber(amountAfterDiscount) && amountAfterDiscount !== amount,
-                        'body-medium': themeV2 && isNumber(amountAfterDiscount) && amountAfterDiscount === amount,
-                        'body-regular': themeV2 && isNumber(amountAfterDiscount) && amountAfterDiscount !== amount,
+                        'body-medium': isNumber(amountAfterDiscount) && amountAfterDiscount === amount,
+                        'body-regular': isNumber(amountAfterDiscount) && amountAfterDiscount !== amount,
                     })}
                     data-test="cart-item-product-price"
                 >

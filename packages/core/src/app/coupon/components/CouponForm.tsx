@@ -1,7 +1,6 @@
-import classNames from 'classnames';
 import React, { type FunctionComponent, useState } from 'react';
 
-import { useLocale, useThemeContext } from '@bigcommerce/checkout/contexts';
+import { useLocale } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { Alert, AlertType, IconRemoveCoupon, TextInput } from '@bigcommerce/checkout/ui';
 
@@ -13,7 +12,6 @@ import { ManageCouponsAndGiftCertificates } from './ManageCouponsAndGiftCertific
 export const CouponForm: FunctionComponent = () => {
     const [code, setCode] = useState<string>('');
 
-    const { themeV2 } = useThemeContext();
     const { language } = useLocale();
     const {
         applyCouponOrGiftCertificate,
@@ -69,13 +67,10 @@ export const CouponForm: FunctionComponent = () => {
                     onClick={clearErrorOnClick}
                     placeholder={language.translate('redeemable.coupon_placeholder')}
                     testId="redeemableEntry-input"
-                    themeV2={themeV2}
                     value={code}
                 />
                 <Button
-                    className={classNames('coupon-button', {
-                        'body-bold': themeV2,
-                    })}
+                    className="coupon-button body-bold"
                     disabled={isCouponFormDisabled}
                     id="applyRedeemableButton"
                     isLoading={isApplyingCouponOrGiftCertificate}

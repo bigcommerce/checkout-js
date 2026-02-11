@@ -1,6 +1,5 @@
 import React, { type FunctionComponent, memo } from 'react';
 
-import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedHtml } from '@bigcommerce/checkout/locale';
 
 import { CheckboxFormField, Fieldset } from '../ui/form';
@@ -19,8 +18,8 @@ const PrivacyPolicyFieldset: FunctionComponent<{ url: string }> = ({ url }) => (
     </Fieldset>
 );
 
-const PrivacyPolicyAutoConsent: FunctionComponent<{ url: string, themeV2?: boolean }> = ({ url, themeV2 }) => (
-    <p className={themeV2 ? 'body-regular' : ''}>
+const PrivacyPolicyAutoConsent: FunctionComponent<{ url: string }> = ({ url }) => (
+    <p className='body-regular'>
         <TranslatedHtml data={{ url }} id="privacy_policy_auto_consent.label" />
     </p>
 );
@@ -29,10 +28,9 @@ const PrivacyPolicyField: FunctionComponent<{ url: string; isExpressPrivacyPolic
     url,
     isExpressPrivacyPolicy,
 }) => {
-    const { themeV2 } = useThemeContext();
 
     if (isExpressPrivacyPolicy) {
-        return <PrivacyPolicyAutoConsent themeV2={themeV2} url={url} />;
+        return <PrivacyPolicyAutoConsent url={url} />;
     }
 
     return <PrivacyPolicyFieldset url={url} />;

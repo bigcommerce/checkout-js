@@ -27,7 +27,6 @@ export interface DynamicFormFieldProps {
     placeholder?: string;
     label?: ReactNode;
     isFloatingLabelEnabled?: boolean;
-    themeV2?: boolean;
     onChange?(value: string | string[]): void;
 }
 
@@ -52,7 +51,6 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
     label,
     extraClass,
     isFloatingLabelEnabled,
-    themeV2 = false,
 }) => {
     const fieldInputId = inputId || name;
     const fieldName = parentFieldName ? `${parentFieldName}.${name}` : name;
@@ -119,7 +117,6 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
                 options={options && options.items}
                 placeholder={placeholder || (options && options.helperLabel)}
                 rows={options?.rows}
-                themeV2={themeV2}
             />
         ),
         [
@@ -132,7 +129,6 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
             min,
             options,
             placeholder,
-            themeV2,
         ],
     );
 
@@ -151,7 +147,6 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
                     name={fieldName}
                     onChange={onChange}
                     options={(options && options.items) || []}
-                    themeV2={themeV2}
                 />
             ) : (
                 <FormField

@@ -1,8 +1,7 @@
 import { type ConsignmentLineItem } from "@bigcommerce/checkout-sdk";
-import classNames from "classnames";
 import React, { type FunctionComponent, useState } from "react";
 
-import { useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
@@ -31,7 +30,6 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
     const { unassignedItems } = useMultiShippingConsignmentItems();
     const { checkoutService: { assignItemsToAddress: assignItem } } = useCheckout();
     const deleteItem = useDeallocateItem();
-    const { themeV2 } = useThemeContext();
 
     const toggleAllocateItemsModal = () => {
         setIsOpenAllocateItemsModal(!isOpenAllocateItemsModal);
@@ -97,7 +95,7 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
             />
             <div className="consignment-line-item-header">
                 <div>
-                    <h3 className={themeV2 ? 'body-bold' : ''}>
+                    <h3 className="body-bold">
                         <TranslatedString data={{ count: itemsCount }} id="shipping.multishipping_item_allocated_message" />
                     </h3>
 
@@ -106,9 +104,7 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
                     )}
 
                     <a
-                        className={classNames('expand-items-button',
-                            { 'body-cta': themeV2 }
-                        )}
+                        className="expand-items-button body-cta"
                         data-test="expand-items-button"
                         href="#"
                         onClick={preventDefault(toggleShowItems)}
@@ -127,7 +123,7 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
                     </a>
                 </div>
                 <a
-                    className={themeV2 ? 'body-cta' : ''}
+                    className="body-cta"
                     data-test="reallocate-items-button"
                     href="#"
                     onClick={preventDefault(toggleAllocateItemsModal)}
