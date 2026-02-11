@@ -22,6 +22,7 @@ const TextArea = forwardRef(
                         'form-input',
                         'optimizedCheckout-form-input',
                         additionalClassName,
+                        'body-regular',
                     )
                 }
                 data-test={testId}

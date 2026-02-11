@@ -12,7 +12,7 @@ exports[`BraintreeAchFormFields Component should render form with business field
           class="form-field"
         >
           <label
-            class="form-label optimizedCheckout-form-label"
+            class="form-label optimizedCheckout-form-label body-medium"
             for="accountType"
             id="accountType-label"
           >
@@ -63,7 +63,7 @@ exports[`BraintreeAchFormFields Component should render form with business field
           class="form-field"
         >
           <label
-            class="form-label optimizedCheckout-form-label"
+            class="form-label optimizedCheckout-form-label body-medium"
             for="accountNumber"
             id="accountNumber-label"
           >
@@ -89,7 +89,7 @@ exports[`BraintreeAchFormFields Component should render form with business field
           class="form-field"
         >
           <label
-            class="form-label optimizedCheckout-form-label"
+            class="form-label optimizedCheckout-form-label body-medium"
             for="routingNumber"
             id="routingNumber-label"
           >
@@ -113,7 +113,7 @@ exports[`BraintreeAchFormFields Component should render form with business field
           class="form-field"
         >
           <label
-            class="form-label optimizedCheckout-form-label"
+            class="form-label optimizedCheckout-form-label body-medium"
             for="ownershipType"
             id="ownershipType-label"
           >
@@ -164,7 +164,7 @@ exports[`BraintreeAchFormFields Component should render form with business field
           class="form-field"
         >
           <label
-            class="form-label optimizedCheckout-form-label"
+            class="form-label optimizedCheckout-form-label body-medium"
             for="businessName"
             id="businessName-label"
           >
@@ -191,7 +191,7 @@ exports[`BraintreeAchFormFields Component should render form with business field
         class="form-field"
       >
         <label
-          class="form-label optimizedCheckout-form-label"
+          class="form-label optimizedCheckout-form-label body-medium"
           for="accountType"
           id="accountType-label"
         >
@@ -242,7 +242,7 @@ exports[`BraintreeAchFormFields Component should render form with business field
         class="form-field"
       >
         <label
-          class="form-label optimizedCheckout-form-label"
+          class="form-label optimizedCheckout-form-label body-medium"
           for="accountNumber"
           id="accountNumber-label"
         >
@@ -268,7 +268,7 @@ exports[`BraintreeAchFormFields Component should render form with business field
         class="form-field"
       >
         <label
-          class="form-label optimizedCheckout-form-label"
+          class="form-label optimizedCheckout-form-label body-medium"
           for="routingNumber"
           id="routingNumber-label"
         >
@@ -292,7 +292,7 @@ exports[`BraintreeAchFormFields Component should render form with business field
         class="form-field"
       >
         <label
-          class="form-label optimizedCheckout-form-label"
+          class="form-label optimizedCheckout-form-label body-medium"
           for="ownershipType"
           id="ownershipType-label"
         >
@@ -343,7 +343,7 @@ exports[`BraintreeAchFormFields Component should render form with business field
         class="form-field"
       >
         <label
-          class="form-label optimizedCheckout-form-label"
+          class="form-label optimizedCheckout-form-label body-medium"
           for="businessName"
           id="businessName-label"
         >
@@ -427,7 +427,7 @@ exports[`BraintreeAchFormFields Component should render form with personal field
           class="form-field"
         >
           <label
-            class="form-label optimizedCheckout-form-label"
+            class="form-label optimizedCheckout-form-label body-medium"
             for="accountType"
             id="accountType-label"
           >
@@ -478,7 +478,7 @@ exports[`BraintreeAchFormFields Component should render form with personal field
           class="form-field"
         >
           <label
-            class="form-label optimizedCheckout-form-label"
+            class="form-label optimizedCheckout-form-label body-medium"
             for="accountNumber"
             id="accountNumber-label"
           >
@@ -504,7 +504,7 @@ exports[`BraintreeAchFormFields Component should render form with personal field
           class="form-field"
         >
           <label
-            class="form-label optimizedCheckout-form-label"
+            class="form-label optimizedCheckout-form-label body-medium"
             for="routingNumber"
             id="routingNumber-label"
           >
@@ -528,7 +528,7 @@ exports[`BraintreeAchFormFields Component should render form with personal field
           class="form-field"
         >
           <label
-            class="form-label optimizedCheckout-form-label"
+            class="form-label optimizedCheckout-form-label body-medium"
             for="ownershipType"
             id="ownershipType-label"
           >
@@ -579,7 +579,7 @@ exports[`BraintreeAchFormFields Component should render form with personal field
           class="form-field"
         >
           <label
-            class="form-label optimizedCheckout-form-label"
+            class="form-label optimizedCheckout-form-label body-medium"
             for="firstName"
             id="firstName-label"
           >
@@ -603,7 +603,7 @@ exports[`BraintreeAchFormFields Component should render form with personal field
           class="form-field"
         >
           <label
-            class="form-label optimizedCheckout-form-label"
+            class="form-label optimizedCheckout-form-label body-medium"
             for="lastName"
             id="lastName-label"
           >
@@ -630,7 +630,7 @@ exports[`BraintreeAchFormFields Component should render form with personal field
         class="form-field"
       >
         <label
-          class="form-label optimizedCheckout-form-label"
+          class="form-label optimizedCheckout-form-label body-medium"
           for="accountType"
           id="accountType-label"
         >
@@ -681,7 +681,7 @@ exports[`BraintreeAchFormFields Component should render form with personal field
         class="form-field"
       >
         <label
-          class="form-label optimizedCheckout-form-label"
+          class="form-label optimizedCheckout-form-label body-medium"
           for="accountNumber"
           id="accountNumber-label"
         >
@@ -707,7 +707,7 @@ exports[`BraintreeAchFormFields Component should render form with personal field
         class="form-field"
       >
         <label
-          class="form-label optimizedCheckout-form-label"
+          class="form-label optimizedCheckout-form-label body-medium"
           for="routingNumber"
           id="routingNumber-label"
         >
@@ -731,7 +731,7 @@ exports[`BraintreeAchFormFields Component should render form with personal field
         class="form-field"
       >
         <label
-          class="form-label optimizedCheckout-form-label"
+          class="form-label optimizedCheckout-form-label body-medium"
           for="ownershipType"
           id="ownershipType-label"
         >
@@ -782,7 +782,7 @@ exports[`BraintreeAchFormFields Component should render form with personal field
         class="form-field"
       >
         <label
-          class="form-label optimizedCheckout-form-label"
+          class="form-label optimizedCheckout-form-label body-medium"
           for="firstName"
           id="firstName-label"
         >
@@ -806,7 +806,7 @@ exports[`BraintreeAchFormFields Component should render form with personal field
         class="form-field"
       >
         <label
-          class="form-label optimizedCheckout-form-label"
+          class="form-label optimizedCheckout-form-label body-medium"
           for="lastName"
           id="lastName-label"
         >

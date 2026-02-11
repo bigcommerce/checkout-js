@@ -183,7 +183,6 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                     name={name}
                     onChange={onChange}
                     testId={`${id}-text`}
-                    themeV2={themeV2}
                     type={fieldType}
                     value={value}
                 />
