@@ -172,11 +172,10 @@ describe('OrderSummaryItems', () => {
                 },
             });
 
-            expect(screen.getAllByTestId('cart-item-product-title')).toHaveLength(4);
-            expect(screen.getByText('1 x Canvas Laundry Cart')).toBeInTheDocument();
-            expect(screen.getByText('1 x $100 Gift Certificate')).toBeInTheDocument();
-            expect(screen.getByText('1 x Digital Book')).toBeInTheDocument();
-            expect(screen.getByText('2 x Custom item')).toBeInTheDocument();
+            expect(screen.getByRole('heading', { name: '1 x Canvas Laundry Cart' })).toBeInTheDocument();
+            expect(screen.getByRole('heading', { name: '1 x $100 Gift Certificate' })).toBeInTheDocument();
+            expect(screen.getByRole('heading', { name: '1 x Digital Book' })).toBeInTheDocument();
+            expect(screen.getByRole('heading', { name: '2 x Custom item' })).toBeInTheDocument();
         });
 
         it('does not render actions', () => {

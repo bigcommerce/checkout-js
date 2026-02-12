@@ -11,7 +11,7 @@ exports[`OrderSummaryPrice when has non-zero amount and has only required props 
         class="cart-priceItem optimizedCheckout-contentPrimary extra-class"
       >
         <span
-          class="cart-priceItem-label"
+          class="cart-priceItem-label body-regular"
         >
           <span
             data-test="cart-price-label"
@@ -26,7 +26,7 @@ exports[`OrderSummaryPrice when has non-zero amount and has only required props 
           </span>
         </span>
         <span
-          class="cart-priceItem-value"
+          class="cart-priceItem-value body-medium"
         >
           <span
             data-test="cart-price-value"
@@ -58,7 +58,7 @@ exports[`OrderSummaryPrice when has non-zero amount and has only required props 
         class="cart-priceItem optimizedCheckout-contentPrimary"
       >
         <span
-          class="cart-priceItem-label"
+          class="cart-priceItem-label body-regular"
         >
           <span
             data-test="cart-price-label"
@@ -68,7 +68,7 @@ exports[`OrderSummaryPrice when has non-zero amount and has only required props 
           </span>
         </span>
         <span
-          class="cart-priceItem-value"
+          class="cart-priceItem-value body-medium"
         >
           <span
             data-test="cart-price-value"
