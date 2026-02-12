@@ -96,9 +96,9 @@ const OrderSummaryModal: FunctionComponent<
     </Button>;
 
     return <Modal
-        additionalBodyClassName={classNames("cart-modal-body optimizedCheckout-orderSummary", { "themeV2": themeV2 })}
+        additionalBodyClassName="cart-modal-body optimizedCheckout-orderSummary"
         additionalHeaderClassName="cart-modal-header optimizedCheckout-orderSummary with-continue-button"
-        additionalModalClassName="optimizedCheckout-cart-modal"
+        additionalModalClassName={classNames("optimizedCheckout-cart-modal", { "themeV2": themeV2 })}
         footer={continueButton}
         header={renderHeader({
             headerLink,
