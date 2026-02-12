@@ -135,6 +135,8 @@ const Checkout = ({
                       subscribeToConsignments,
                       themeV2
                   }: CheckoutPageProps):ReactElement => {
+    console.log("Testing CheckoutPage message");
+    
     const [state, setState] = useState<CheckoutState>({
         isBillingSameAsShipping: true,
         isCartEmpty: false,
@@ -627,8 +629,9 @@ const Checkout = ({
     }
 
     return (
-        <div className={classNames('remove-checkout-step-numbers', { 'is-embedded': isEmbedded() }, { 'themeV2': themeV2 })} data-test="checkout-page-container" id="checkout-page-container">
+        <div className={classNames('remove-checkout-step-numbers', { 'is-embedded': isEmbedded() }, { 'themeV2': themeV2 })} data-test="checkout-page-container another-data" id="checkout-page-container">           
             <div className="layout optimizedCheckout-contentPrimary">
+                <div data-test="local-dev-checkout-marker" className='local-dev-checkout-marker'>LOCAL DEV CHECKOUT BUILD</div>
                 {state.isCartEmpty ?
                     <EmptyCartMessage loginUrl={loginUrl} waitInterval={3000} />
                     :<>

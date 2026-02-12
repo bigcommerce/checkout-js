@@ -80,3 +80,14 @@
 // =============================================================================
 
 @import "themeV2/themeV2";
+
+.local-dev-checkout-marker {
+	background-color: $color-warningLight;
+	border: 2px solid $color-warning;
+	color: $color-primaryDark;
+	font-weight: 600;    
+	margin-top: spacing("half");
+	margin-bottom: spacing("half");
+	padding: spacing("single");
+	text-align: center;
+}
