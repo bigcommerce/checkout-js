@@ -138,21 +138,22 @@ const HostedCreditCardComponent: FunctionComponent<HostedCreditCardComponentProp
                               containerId: getHostedFieldId('ccNumber'),
                           },
                       },
-                styles: styleContainerId
-                    ? {
-                          default: await getCreditCardInputStyles(styleContainerId, styleProps),
-                          error: await getCreditCardInputStyles(
-                              styleContainerId,
-                              styleProps,
-                              CreditCardInputStylesType.Error,
-                          ),
-                          focus: await getCreditCardInputStyles(
-                              styleContainerId,
-                              styleProps,
-                              CreditCardInputStylesType.Focus,
-                          ),
-                      }
-                    : {},
+                styles:
+                    styleContainerId && method.config.isHostedFormEnabled === true
+                        ? {
+                              default: await getCreditCardInputStyles(styleContainerId, styleProps),
+                              error: await getCreditCardInputStyles(
+                                  styleContainerId,
+                                  styleProps,
+                                  CreditCardInputStylesType.Error,
+                              ),
+                              focus: await getCreditCardInputStyles(
+                                  styleContainerId,
+                                  styleProps,
+                                  CreditCardInputStylesType.Focus,
+                              ),
+                          }
+                        : {},
                 onBlur: ({ fieldType }) => {
                     if (focusedFieldType === fieldType) {
                         setFocusedFieldType(undefined);
