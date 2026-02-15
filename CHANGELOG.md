@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.739.0](https://github.com/bigcommerce/checkout-js/compare/v1.738.0...v1.739.0) (2026-02-15)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9299 update payment section font-styles for themeV2 ([#2825](https://github.com/bigcommerce/checkout-js/issues/2825)) ([be357ce](https://github.com/bigcommerce/checkout-js/commit/be357cebc6abf6c2cd486831e13c5b7941bc2b7d))
+
 ## [1.738.0](https://github.com/bigcommerce/checkout-js/compare/v1.737.0...v1.738.0) (2026-02-12)
 
 
