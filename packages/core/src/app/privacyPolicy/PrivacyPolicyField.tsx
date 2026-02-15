@@ -5,18 +5,17 @@ import { TranslatedHtml } from '@bigcommerce/checkout/locale';
 
 import { CheckboxFormField, Fieldset } from '../ui/form';
 
-const PrivacyPolicyCheckboxFieldLink: FunctionComponent<{ url: string, themeV2?: boolean }> = ({ url, themeV2 }) => (
+const PrivacyPolicyCheckboxFieldLink: FunctionComponent<{ url: string }> = ({ url }) => (
     <CheckboxFormField
         labelContent={<TranslatedHtml data={{ url }} id="privacy_policy.label" />}
         name="privacyPolicy"
         testId="privacy-policy-checkbox"
-        themeV2={themeV2}
     />
 );
 
-const PrivacyPolicyFieldset: FunctionComponent<{ url: string, themeV2?: boolean }> = ({ url, themeV2 }) => (
+const PrivacyPolicyFieldset: FunctionComponent<{ url: string }> = ({ url }) => (
     <Fieldset additionalClassName="checkout-privacy-policy">
-        <PrivacyPolicyCheckboxFieldLink themeV2={themeV2} url={url} />
+        <PrivacyPolicyCheckboxFieldLink url={url} />
     </Fieldset>
 );
 
@@ -36,7 +35,7 @@ const PrivacyPolicyField: FunctionComponent<{ url: string; isExpressPrivacyPolic
         return <PrivacyPolicyAutoConsent themeV2={themeV2} url={url} />;
     }
 
-    return <PrivacyPolicyFieldset themeV2={themeV2} url={url} />;
+    return <PrivacyPolicyFieldset url={url} />;
 };
 
 export default memo(PrivacyPolicyField);

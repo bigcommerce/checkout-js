@@ -111,7 +111,6 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
                 isFloatingLabelEnabled={isFloatingLabelEnabled}
                 label={renderLabel}
                 name={fieldName}
-                themeV2={themeV2}
             />
         </div>
     );

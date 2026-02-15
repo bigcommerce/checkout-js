@@ -185,7 +185,6 @@ const AddressForm: React.FC<AddressFormProps> = ({
                 <CheckboxFormField
                     labelContent={<TranslatedString id="address.save_in_addressbook" />}
                     name={fieldName ? `${fieldName}.shouldSaveAddress` : 'shouldSaveAddress'}
-                    themeV2={themeV2}
                 />
             )}
         </>

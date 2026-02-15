@@ -62,14 +62,10 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
                 !fieldType),
     );
     const labelComponent = useMemo(() => {
-        let labelClassName = '';
+        let labelClassName = 'body-medium';
 
-        if (themeV2) {
-            if (isFloatingLabelSupportedFieldType) {
-                labelClassName = 'floating-form-field-label';
-            } else {
-                labelClassName = 'body-medium';
-            }
+        if (isFloatingLabelSupportedFieldType) {
+            labelClassName = 'floating-form-field-label';
         }
 
         return (
@@ -90,7 +86,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
                 )}
             </Label>
         );
-    }, [themeV2, fieldInputId, isFloatingLabelSupportedFieldType, label, fieldLabel, required]);
+    }, [fieldInputId, isFloatingLabelSupportedFieldType, label, fieldLabel, required]);
 
     const dynamicFormFieldType = useMemo((): DynamicFormFieldType => {
         if (fieldType === 'text') {

@@ -37,7 +37,6 @@ const EmailField: FunctionComponent<EmailFieldProps> = ({ onChange, isFloatingLa
             labelContent={labelContent}
             name="email"
             onChange={onChange}
-            themeV2={themeV2}
         />
     );
 };

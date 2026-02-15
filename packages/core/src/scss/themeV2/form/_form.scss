@@ -37,4 +37,43 @@
         background-color: $color-black;
         border-color: $color-black;
     }
+
+    .floating-label {
+        &.floating-form-field-label {
+            color: $color-secondaryDarkest;
+            font-family: $fontFamily-montserrat;
+            font-size: $fontSize-smallest;
+            font-weight: $fontWeight-medium;
+            margin-top: spacing("eighth");
+
+            small {
+                font-size: $fontSize-smallest;
+            }
+        }
+    }
+
+    .react-datepicker__tab-loop + .floating-label,
+    .react-datepicker-wrapper + .floating-label,
+    select + .floating-label,
+    textarea:focus + .floating-label,
+    textarea:not(:empty) + .floating-label,
+    input:focus + .floating-label,
+    input:not(:placeholder-shown) + .floating-label {
+        &.floating-form-field-label{
+            color: $color-secondaryDarkest;
+            font-family: $fontFamily-montserrat;
+            font-size: $fontSize-tiny;
+            font-weight: $fontWeight-medium;
+            margin-top: 0;
+
+            small {
+                font-size: $fontSize-tiny;
+            }
+        }
+    }
+
+    .checkout-step--payment .form-field .form-label.body-medium {
+        color: $color-secondaryDarkest;
+        font-size: $fontSize-tiny;
+    }
 }
