@@ -1,4 +1,5 @@
 import {
+    type Cart,
     type Checkout,
     type CheckoutSelectors,
     type CheckoutService,
@@ -46,6 +47,7 @@ import {
 import { EMPTY_ARRAY } from '../common/utility';
 import { TermsConditionsType } from '../termsConditions';
 
+import CartStockPositionsChangedModal from './CartStockPositionsChangedModal';
 import mapSubmitOrderErrorMessage, { mapSubmitOrderErrorTitle } from './mapSubmitOrderErrorMessage';
 import mapToOrderRequestBody from './mapToOrderRequestBody';
 import PaymentContext from './PaymentContext';
@@ -139,6 +141,7 @@ export interface PaymentProps {
 
 interface WithCheckoutPaymentProps {
     availableStoreCredit: number;
+    cart?: Cart;
     cartUrl: string;
     defaultMethod?: PaymentMethod;
     finalizeOrderError?: Error;
@@ -188,6 +191,7 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
     const isReadyRef = useRef(state.isReady);
     const grandTotalChangeUnsubscribe = useRef<() => void>();
     const validationSchemasRef = useRef<validationSchemas>({});
+    const lastOrderRequestBodyRef = useRef<OrderRequestBody | null>(null);
 
     const renderOrderErrorModal = (): ReactNode => {
             const { finalizeOrderError, language, shouldLocaliseErrorMessages, submitOrderError } =
@@ -205,6 +209,36 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
                 error.type === 'invalid_hosted_form_value'
             ) {
                 return null;
+            }
+
+            if (
+                error.type === 'cart_stock_positions_changed' ||
+                error.body?.type === 'cart_stock_positions_changed'
+            ) {
+                const { cart, clearError, onSubmit = noop, onSubmitError: onSubmitErrorProp = noop, submitOrder: submitOrderFn, analyticsTracker } = props;
+
+                return (
+                    <CartStockPositionsChangedModal
+                        isOpen={true}
+                        lineItems={cart?.lineItems} // TODO: ony pass changed item ids from error
+                        onPlaceOrder={async () => {
+                            clearError(error);
+                            const payload = lastOrderRequestBodyRef.current;
+                            if (!payload) {
+                                return;
+                            }
+                            try {
+                                const state = await submitOrderFn(payload);
+                                const order = state.data.getOrder();
+                                analyticsTracker.paymentComplete();
+                                onSubmit(order?.orderId);
+                            } catch (submitError) {
+                                onSubmitErrorProp(submitError);
+                            }
+                        }}
+                        onRequestClose={() => clearError(error)}
+                    />
+                );
             }
 
             return (
@@ -385,8 +419,11 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
             return customSubmit(values);
         }
 
+        const orderRequestBody = mapToOrderRequestBody(values, isPaymentDataRequired());
+        lastOrderRequestBodyRef.current = orderRequestBody;
+
         try {
-            const state = await submitOrder(mapToOrderRequestBody(values, isPaymentDataRequired()));
+            const state = await submitOrder(orderRequestBody);
             const order = state.data.getOrder();
 
             analyticsTracker.paymentComplete();
@@ -643,6 +680,7 @@ export function mapToPaymentProps({
 }: CheckoutContextProps): WithCheckoutPaymentProps | null {
     const {
         data: {
+            getCart,
             getCheckout,
             getConfig,
             getCustomer,
@@ -691,6 +729,7 @@ export function mapToPaymentProps({
     return {
         applyStoreCredit: checkoutService.applyStoreCredit,
         availableStoreCredit: customer.storeCredit,
+        cart: getCart(),
         cartUrl: config.links.cartLink,
         clearError: checkoutService.clearError,
         defaultMethod,
