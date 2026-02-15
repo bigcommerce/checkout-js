@@ -1,9 +1,10 @@
 import { type Address, type ConsignmentLineItem } from "@bigcommerce/checkout-sdk";
+import classNames from "classnames";
 import { type FormikProps } from "formik";
 import React, { type FunctionComponent, useMemo } from "react";
 import { number, object } from "yup";
 
-import { useThemeContext } from '@bigcommerce/checkout/contexts';
+import { useThemeContext } from "@bigcommerce/checkout/contexts";
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { TranslatedString, withLanguage, type WithLanguageProps } from "@bigcommerce/checkout/locale";
 import { Alert, AlertType, ButtonVariant } from "@bigcommerce/checkout/ui";
@@ -50,7 +51,6 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
     onUnassignItem,
     isLoading,
 }: AllocateItemsModalProps & FormikProps<AllocateItemsModalFormValues>) => {
-
     const { themeV2 } = useThemeContext();
 
     const allocatedOrSelectedItemsMessage = useMemo(() => {
@@ -109,7 +109,7 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
     const modalFooter = (
         <>
             <Button
-                className={themeV2 ? 'body-medium' : ''}
+                className="body-medium"
                 disabled={isLoading}
                 onClick={onRequestClose}
                 variant={ButtonVariant.Secondary}
@@ -117,7 +117,7 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
                 <TranslatedString id="shipping.multishipping_items_allocate_cancel" />
             </Button>
             <Button
-                className={themeV2 ? 'body-medium' : ''}
+                className="body-medium"
                 disabled={!hasItemsAssigned && !dirty}
                 isLoading={isLoading}
                 onClick={submitForm}
@@ -134,14 +134,14 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
 
     return (
         <Modal
-            additionalModalClassName="allocate-items-modal"
+            additionalModalClassName={classNames("allocate-items-modal", { "themeV2": themeV2 })}
             footer={modalFooter}
             header={
                 <>
-                    <ModalHeader additionalClassName={themeV2 ? 'header' : ''}>
+                    <ModalHeader additionalClassName="header">
                         <TranslatedString data={{ consignmentNumber }} id="shipping.multishipping_consignment_index_heading" />
                     </ModalHeader>
-                    <h4 className={themeV2 ? 'body-medium' : ''}>{getAddressContent(address)}</h4>
+                    <h4 className="body-medium">{getAddressContent(address)}</h4>
                 </>
             }
             isOpen={isOpen}
@@ -166,7 +166,7 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
                 {hasUnassignedItems
                     ? <>
                         <div className="left-to-allocate-items-table-actions">
-                            <p className={themeV2 ? 'body-regular' : ''}>
+                            <p className="body-regular">
                                 {allocatedOrSelectedItemsMessage}
                                 {unassignedItems.hasSplitItems && (
                                     <ItemSplitTooltip />
@@ -175,7 +175,7 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
 
                             <div className="button-group">
                                 <a
-                                    className={themeV2 ? 'body-cta' : ''}
+                                    className="body-cta"
                                     data-test="clear-all-items-button"
                                     href="#"
                                     onClick={preventDefault(handleClearAll)}
@@ -183,7 +183,7 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
                                     <TranslatedString id="shipping.multishipping_items_allocate_clear_all" />
                                 </a>
                                 <a
-                                    className={themeV2 ? 'body-cta' : ''}
+                                    className="body-cta"
                                     data-test="allocate-all-items-button"
                                     href="#"
                                     onClick={preventDefault(handleSelectAll)}

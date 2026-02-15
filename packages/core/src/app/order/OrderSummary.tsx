@@ -4,11 +4,10 @@ import {
     type ShopperCurrency,
     type StoreCurrency,
 } from '@bigcommerce/checkout-sdk/essential';
-import classNames from 'classnames';
 import React, { type FunctionComponent, type ReactNode } from 'react';
 
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
-import { useCheckout, useLocale, useThemeContext } from '@bigcommerce/checkout/contexts';
+import { useCheckout, useLocale } from '@bigcommerce/checkout/contexts';
 import { TranslatedHtml, TranslatedString } from '@bigcommerce/checkout/locale';
 
 import { isExperimentEnabled } from '../common/utility';
@@ -45,7 +44,6 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
 }) => {
     const displayInclusiveTax = isTaxIncluded && taxes && taxes.length > 0;
 
-    const { themeV2 } = useThemeContext();
     const { currency } = useLocale();
 
     // TODO: When removing the experiment, rename `NewOrderSummarySubtotals` to `OrderSummarySubtotals`.
@@ -79,7 +77,7 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
             {showHeader && <OrderSummaryHeader>{headerLink}</OrderSummaryHeader>}
 
             <OrderSummarySection>
-                <OrderSummaryItems displayLineItemsCount items={lineItems} themeV2={themeV2} />
+                <OrderSummaryItems displayLineItemsCount items={lineItems} />
             </OrderSummarySection>
 
             <Extension region={ExtensionRegion.SummaryLastItemAfter} />
@@ -122,8 +120,7 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
 
             {displayInclusiveTax && <OrderSummarySection>
                 <h5
-                    className={classNames('cart-taxItem cart-taxItem--subtotal optimizedCheckout-contentPrimary',
-                        { 'body-regular': themeV2 })}
+                    className="cart-taxItem cart-taxItem--subtotal optimizedCheckout-contentPrimary body-regular"
                     data-test="tax-text"
                 >
                     <TranslatedString

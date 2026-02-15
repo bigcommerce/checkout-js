@@ -71,7 +71,7 @@ exports[`BraintreeAchFormFields Component should render form with business field
           </label>
           <input
             aria-labelledby="accountNumber-label accountNumber-field-error-message"
-            class="form-input optimizedCheckout-form-input"
+            class="form-input optimizedCheckout-form-input body-regular"
             data-test="accountNumber-text"
             id="accountNumber"
             max="9"
@@ -97,7 +97,7 @@ exports[`BraintreeAchFormFields Component should render form with business field
           </label>
           <input
             aria-labelledby="routingNumber-label routingNumber-field-error-message"
-            class="form-input optimizedCheckout-form-input"
+            class="form-input optimizedCheckout-form-input body-regular"
             data-test="routingNumber-text"
             id="routingNumber"
             name="routingNumber"
@@ -172,7 +172,7 @@ exports[`BraintreeAchFormFields Component should render form with business field
           </label>
           <input
             aria-labelledby="businessName-label businessName-field-error-message"
-            class="form-input optimizedCheckout-form-input"
+            class="form-input optimizedCheckout-form-input body-regular"
             data-test="businessName-text"
             id="businessName"
             name="businessName"
@@ -250,7 +250,7 @@ exports[`BraintreeAchFormFields Component should render form with business field
         </label>
         <input
           aria-labelledby="accountNumber-label accountNumber-field-error-message"
-          class="form-input optimizedCheckout-form-input"
+          class="form-input optimizedCheckout-form-input body-regular"
           data-test="accountNumber-text"
           id="accountNumber"
           max="9"
@@ -276,7 +276,7 @@ exports[`BraintreeAchFormFields Component should render form with business field
         </label>
         <input
           aria-labelledby="routingNumber-label routingNumber-field-error-message"
-          class="form-input optimizedCheckout-form-input"
+          class="form-input optimizedCheckout-form-input body-regular"
           data-test="routingNumber-text"
           id="routingNumber"
           name="routingNumber"
@@ -351,7 +351,7 @@ exports[`BraintreeAchFormFields Component should render form with business field
         </label>
         <input
           aria-labelledby="businessName-label businessName-field-error-message"
-          class="form-input optimizedCheckout-form-input"
+          class="form-input optimizedCheckout-form-input body-regular"
           data-test="businessName-text"
           id="businessName"
           name="businessName"
@@ -486,7 +486,7 @@ exports[`BraintreeAchFormFields Component should render form with personal field
           </label>
           <input
             aria-labelledby="accountNumber-label accountNumber-field-error-message"
-            class="form-input optimizedCheckout-form-input"
+            class="form-input optimizedCheckout-form-input body-regular"
             data-test="accountNumber-text"
             id="accountNumber"
             max="9"
@@ -512,7 +512,7 @@ exports[`BraintreeAchFormFields Component should render form with personal field
           </label>
           <input
             aria-labelledby="routingNumber-label routingNumber-field-error-message"
-            class="form-input optimizedCheckout-form-input"
+            class="form-input optimizedCheckout-form-input body-regular"
             data-test="routingNumber-text"
             id="routingNumber"
             name="routingNumber"
@@ -587,7 +587,7 @@ exports[`BraintreeAchFormFields Component should render form with personal field
           </label>
           <input
             aria-labelledby="firstName-label firstName-field-error-message"
-            class="form-input optimizedCheckout-form-input"
+            class="form-input optimizedCheckout-form-input body-regular"
             data-test="firstName-text"
             id="firstName"
             name="firstName"
@@ -611,7 +611,7 @@ exports[`BraintreeAchFormFields Component should render form with personal field
           </label>
           <input
             aria-labelledby="lastName-label lastName-field-error-message"
-            class="form-input optimizedCheckout-form-input"
+            class="form-input optimizedCheckout-form-input body-regular"
             data-test="lastName-text"
             id="lastName"
             name="lastName"
@@ -689,7 +689,7 @@ exports[`BraintreeAchFormFields Component should render form with personal field
         </label>
         <input
           aria-labelledby="accountNumber-label accountNumber-field-error-message"
-          class="form-input optimizedCheckout-form-input"
+          class="form-input optimizedCheckout-form-input body-regular"
           data-test="accountNumber-text"
           id="accountNumber"
           max="9"
@@ -715,7 +715,7 @@ exports[`BraintreeAchFormFields Component should render form with personal field
         </label>
         <input
           aria-labelledby="routingNumber-label routingNumber-field-error-message"
-          class="form-input optimizedCheckout-form-input"
+          class="form-input optimizedCheckout-form-input body-regular"
           data-test="routingNumber-text"
           id="routingNumber"
           name="routingNumber"
@@ -790,7 +790,7 @@ exports[`BraintreeAchFormFields Component should render form with personal field
         </label>
         <input
           aria-labelledby="firstName-label firstName-field-error-message"
-          class="form-input optimizedCheckout-form-input"
+          class="form-input optimizedCheckout-form-input body-regular"
           data-test="firstName-text"
           id="firstName"
           name="firstName"
@@ -814,7 +814,7 @@ exports[`BraintreeAchFormFields Component should render form with personal field
         </label>
         <input
           aria-labelledby="lastName-label lastName-field-error-message"
-          class="form-input optimizedCheckout-form-input"
+          class="form-input optimizedCheckout-form-input body-regular"
           data-test="lastName-text"
           id="lastName"
           name="lastName"

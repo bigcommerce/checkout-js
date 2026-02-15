@@ -1,9 +1,8 @@
 import { type Consignment, type ConsignmentCreateRequestBody, type ConsignmentLineItem } from "@bigcommerce/checkout-sdk";
-import classNames from "classnames";
 import { find } from "lodash";
 import React, { useMemo, useState } from "react";
 
-import { useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { TranslatedString } from "@bigcommerce/checkout/locale";
 
@@ -36,7 +35,6 @@ const NewConsignment = ({
     const [consignmentRequest, setConsignmentRequest] = useState<ConsignmentCreateRequestBody | undefined>();
     const [isOpenAllocateItemsModal, setIsOpenAllocateItemsModal] = useState(false);
     const { unassignedItems } = useMultiShippingConsignmentItems();
-    const { themeV2 } = useThemeContext();
     const {
         checkoutState: {
             data: { getShippingCountries, getConsignments: getPreviousConsignments },
@@ -103,7 +101,7 @@ const NewConsignment = ({
 
     return (
         <div className='consignment-container'>
-            <div className={classNames('consignment-header', { 'sub-header': themeV2 })}>
+            <div className="consignment-header sub-header">
                 <h3>
                     <TranslatedString data={{ consignmentNumber }} id="shipping.multishipping_consignment_index_heading" />
                 </h3>
@@ -126,11 +124,11 @@ const NewConsignment = ({
                     unassignedItems={unassignedItems}
                 />
                 <div className="new-consignment-line-item-header">
-                    <h3 className={themeV2 ? 'body-bold' : ''}>
+                    <h3 className="body-bold">
                         <TranslatedString id="shipping.multishipping_no_item_allocated_message" />
                     </h3>
                     <a
-                        className={themeV2 ? 'body-cta' : ''}
+                        className="body-cta"
                         data-test="allocate-items-button"
                         href="#"
                         onClick={preventDefault(toggleAllocateItemsModal)}

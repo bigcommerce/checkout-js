@@ -1,10 +1,9 @@
-import classNames from 'classnames';
 import { type FormikProps, withFormik } from 'formik';
 import { noop } from 'lodash';
 import React, { type FunctionComponent, memo, useCallback } from 'react';
 import { object, string } from 'yup';
 
-import { useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import {
     TranslatedHtml,
@@ -61,7 +60,6 @@ const LoginForm: FunctionComponent<
     isFloatingLabelEnabled,
     viewType = CustomerViewType.Login,
 }) => {
-    const { themeV2 } = useThemeContext();
     const { checkoutState } = useCheckout();
 
     const {
@@ -153,7 +151,7 @@ const LoginForm: FunctionComponent<
 
                 {!shouldRedirectToStorefrontForAuth && <PasswordField isFloatingLabelEnabled={isFloatingLabelEnabled} />}
 
-                <p className={classNames('form-legend-container', { 'body-cta': themeV2 })}>
+                <p className="form-legend-container body-cta">
                     <span>
                         { isSignInEmailEnabled && !isEmbedded && !isBuyNowCart &&
                             <TranslatedLink
@@ -191,7 +189,7 @@ const LoginForm: FunctionComponent<
                         />
                         :
                         <Button
-                            className={themeV2 ? 'body-bold' : ''}
+                            className="body-bold"
                             disabled={isSigningIn() || isExecutingPaymentMethodCheckout()}
                             id="checkout-customer-continue"
                             isLoading={isSigningIn() || isExecutingPaymentMethodCheckout()}
@@ -204,8 +202,7 @@ const LoginForm: FunctionComponent<
 
                     {viewType === CustomerViewType.SuggestedLogin && (
                         <a
-                            className={classNames('button optimizedCheckout-buttonSecondary',
-                                { 'body-bold': themeV2 })}
+                            className="button optimizedCheckout-buttonSecondary body-bold"
                             data-test="customer-guest-continue"
                             href="#"
                             id="checkout-guest-continue"
@@ -219,8 +216,7 @@ const LoginForm: FunctionComponent<
                         viewType !== CustomerViewType.EnforcedLogin &&
                         viewType !== CustomerViewType.SuggestedLogin && (
                             <a
-                            className={classNames('button optimizedCheckout-buttonSecondary',
-                                { 'body-bold': themeV2 })}
+                            className="button optimizedCheckout-buttonSecondary body-bold"
                                 data-test="customer-cancel-button"
                                 href="#"
                                 id="checkout-customer-cancel"

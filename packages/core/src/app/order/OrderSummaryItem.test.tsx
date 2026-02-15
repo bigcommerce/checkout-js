@@ -31,7 +31,7 @@ describe('OrderSummaryItems', () => {
                 />,
             );
 
-            expect(screen.getByText('2 x Product')).toBeInTheDocument();
+            expect(screen.getByRole('heading', { name: '2 x Product' })).toBeInTheDocument();
             expect(screen.getByText(currencyService.toCustomerCurrency(10))).toBeInTheDocument();
             expect(screen.getByTestId('cart-item-product-price--afterDiscount')).toBeInTheDocument();
             expect(screen.getByTestId('cart-item-product-price')).toHaveClass('product-price--beforeDiscount');

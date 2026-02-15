@@ -21,7 +21,6 @@ export interface CheckboxGroupFormFieldProps {
     label: ReactNode;
     name: string;
     options: FormFieldItem[];
-    themeV2?: boolean;
     onChange?(values: string[]): void;
 }
 
@@ -37,7 +36,6 @@ const MultiCheckboxFormField: FunctionComponent<MultiCheckboxFormFieldProps> = (
     options,
     push,
     remove,
-    themeV2,
 }) => {
     const handleSelectAll = useCallback(() => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -87,7 +85,6 @@ const MultiCheckboxFormField: FunctionComponent<MultiCheckboxFormFieldProps> = (
                     onSelectedAll={handleSelectAll}
                     onSelectedNone={handleSelectNone}
                     testId={id}
-                    themeV2={themeV2}
                 />
             )}
 
@@ -97,7 +94,6 @@ const MultiCheckboxFormField: FunctionComponent<MultiCheckboxFormFieldProps> = (
                 name={name}
                 onChange={handleInputChange}
                 options={options}
-                themeV2={themeV2}
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 value={getIn(values, name) || []}
             />
@@ -118,7 +114,6 @@ const CheckboxGroupFormField: FunctionComponent<CheckboxGroupFormFieldProps> = (
     name,
     onChange,
     options,
-    themeV2,
 }) => {
     const renderField = useCallback(
         (renderProps: FieldArrayRenderProps) => (
@@ -128,11 +123,10 @@ const CheckboxGroupFormField: FunctionComponent<CheckboxGroupFormFieldProps> = (
                 name={name}
                 onChange={onChange}
                 options={options}
-                themeV2={themeV2}
                 {...pick(renderProps, ['form', 'pop', 'push', 'remove'])}
             />
         ),
-        [id, label, name, onChange, options, themeV2],
+        [id, label, name, onChange, options],
     );
 
     return <FieldArray name={name} render={renderField} />;

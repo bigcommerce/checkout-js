@@ -44,7 +44,7 @@ describe('OrderSummaryModal', () => {
         expect(screen.getByText('Order Summary')).toBeInTheDocument();
         expect(screen.getByText(order.coupons[0].code)).toBeInTheDocument();
         expect(screen.getByText(order.coupons[1].code)).toBeInTheDocument();
-        expect(screen.getByText(`1 x ${order.lineItems.giftCertificates[0].name}`)).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: `1 x ${order.lineItems.giftCertificates[0].name}` })).toBeInTheDocument();
         expect(screen.getByText('foo')).toBeInTheDocument();
         expect(screen.getByText('Close')).toBeInTheDocument();
     });
@@ -70,7 +70,7 @@ describe('OrderSummaryModal', () => {
             expect(screen.getByText('Order Summary')).toBeInTheDocument();
             expect(screen.getByText(taxIncludedOrder.coupons[0].code)).toBeInTheDocument();
             expect(screen.getByText(taxIncludedOrder.coupons[1].code)).toBeInTheDocument();
-            expect(screen.getByText(`1 x ${taxIncludedOrder.lineItems.giftCertificates[0].name}`)).toBeInTheDocument();
+            expect(screen.getByRole('heading', { name: `1 x ${taxIncludedOrder.lineItems.giftCertificates[0].name}` })).toBeInTheDocument();
             expect(screen.getByText('Tax Included in Total:')).toBeInTheDocument();
         });
     });

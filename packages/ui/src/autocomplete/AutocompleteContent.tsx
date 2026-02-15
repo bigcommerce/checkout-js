@@ -2,8 +2,6 @@ import type { GetInputPropsOptions, GetItemPropsOptions, GetMenuPropsOptions } f
 import { includes, isNumber } from 'lodash';
 import React, { type ReactNode } from 'react';
 
-import { useThemeContext } from '@bigcommerce/checkout/contexts';
-
 import { Label } from '../form';
 import { Popover, PopoverList } from '../popover';
 
@@ -38,7 +36,6 @@ const AutocompleteContent: React.FC<AutocompleteContentProps> = ({
     listTestId,
     children,
 }) => {
-    const { themeV2 } = useThemeContext();
     const baseInputProps = getInputProps({ value: initialValue });
     const combinedProps = { ...baseInputProps, ...inputProps };
 
@@ -64,7 +61,6 @@ const AutocompleteContent: React.FC<AutocompleteContentProps> = ({
             <input {...validInputProps} />
             {inputProps && includes(inputProps.className, 'floating') && (
                 <Label
-                    additionalClassName={themeV2 ? 'floating-form-field-label' : ''}
                     htmlFor={inputProps.id}
                     id={inputProps['aria-labelledby']}
                     isFloatingLabelEnabled={true}

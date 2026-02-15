@@ -9,20 +9,11 @@ export interface RadioInputProps extends InputProps {
     label: ReactNode;
     value: string;
     checked: boolean;
-    themeV2?: boolean;
 }
 
 const RadioInput = forwardRef(
     (
-        {
-            additionalClassName,
-            label,
-            value,
-            checked,
-            id,
-            themeV2 = false,
-            ...rest
-        }: RadioInputProps,
+        { additionalClassName, label, value, checked, id, ...rest }: RadioInputProps,
         ref: Ref<HTMLInputElement>,
     ) => (
         <>
@@ -39,7 +30,7 @@ const RadioInput = forwardRef(
                 type="radio"
                 value={value}
             />
-            <Label additionalClassName={themeV2 ? 'body-regular' : ''} htmlFor={id}>
+            <Label additionalClassName="body-regular" htmlFor={id}>
                 {label}
             </Label>
         </>

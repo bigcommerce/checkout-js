@@ -1,8 +1,7 @@
 import { type Consignment } from '@bigcommerce/checkout-sdk';
-import classNames from 'classnames';
 import React from 'react';
 
-import { useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { Alert, AlertType } from '@bigcommerce/checkout/ui';
 
@@ -26,7 +25,6 @@ export const MultiShippingOptions = ({
     onUnhandledError,
 }: MultiShippingOptionsV2Props) => {
     const { checkoutService, checkoutState } = useCheckout();
-    const { themeV2 } = useThemeContext();
 
     const selectShippingOption = async (consignmentId: string, shippingOptionId: string) => {
         try {
@@ -42,9 +40,7 @@ export const MultiShippingOptions = ({
 
     return (
         <div>
-            <h3 className={classNames('shipping-option-header',
-                { 'body-bold': themeV2 })}
-            >
+            <h3 className="shipping-option-header body-bold">
                 <TranslatedString id="shipping.shipping_method_label" />
             </h3>
             {(!consignment.availableShippingOptions ||

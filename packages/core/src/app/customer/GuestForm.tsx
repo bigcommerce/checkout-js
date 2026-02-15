@@ -123,9 +123,7 @@ const GuestForm: FunctionComponent<
                 }
             >
                 {(themeV2 && !isLoading) && (
-                    <p className={classNames('customer-login-link',
-                        { 'body-regular': themeV2 })}
-                    >
+                    <p className="customer-login-link body-regular">
                         <TranslatedString id="customer.login_text" />{' '}
                         <a
                             data-test="customer-continue-button"
@@ -156,9 +154,7 @@ const GuestForm: FunctionComponent<
                         })}
                     >
                         <Button
-                            className={classNames('customerEmail-button', {
-                                'body-bold': themeV2,
-                            })}
+                            className='customerEmail-button body-bold'
                             id="checkout-customer-continue"
                             isLoading={isLoading}
                             testId="customer-continue-as-guest-button"
@@ -175,9 +171,7 @@ const GuestForm: FunctionComponent<
                 )}
 
                 {(!themeV2 && !isLoading) && (
-                    <p className={classNames('customer-login-link',
-                        { 'body-regular': themeV2 })}
-                    >
+                    <p className='customer-login-link'>
                         <TranslatedString id="customer.login_text" />{' '}
                         <a
                             data-test="customer-continue-button"
