@@ -1,11 +1,17 @@
-import React, { type FunctionComponent } from 'react';
+import React, { type FunctionComponent, memo } from 'react';
 
-import withIconContainer from './withIconContainer';
+import IconContainer, { type IconProps } from './IconContainer';
 
-const IconSuccess: FunctionComponent = () => (
+const IconSuccessSvg: FunctionComponent = () => (
     <svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
     </svg>
 );
 
-export default withIconContainer(IconSuccess);
+const IconSuccess: FunctionComponent<IconProps> = (props) => (
+    <IconContainer {...props}>
+        <IconSuccessSvg />
+    </IconContainer>
+);
+
+export default memo(IconSuccess);

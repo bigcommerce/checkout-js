@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { type ComponentType, memo } from 'react';
+import React, { type FunctionComponent, memo } from 'react';
 
 export enum IconSize {
     Regular = 'regular',
@@ -14,10 +14,8 @@ export interface IconProps {
     testId?: string;
 }
 
-export default function withIconContainer<TProps extends Record<string, any>>(
-    OriginalComponent: ComponentType<TProps>,
-): ComponentType<TProps & IconProps> {
-    return memo(({ additionalClassName, size, testId, ...rest }) => (
+const IconContainer: FunctionComponent<IconProps & { children: React.ReactNode }> = memo(
+    ({ additionalClassName, size, testId, children }) => (
         <div
             className={classNames(
                 'icon',
@@ -28,7 +26,9 @@ export default function withIconContainer<TProps extends Record<string, any>>(
             )}
             data-test={testId}
         >
-            <OriginalComponent {...(rest as TProps)} />
+            {children}
         </div>
-    ));
-}
+    ),
+);
+
+export default IconContainer;

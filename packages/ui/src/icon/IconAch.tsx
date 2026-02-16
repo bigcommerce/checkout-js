@@ -1,8 +1,8 @@
-import React, { type FunctionComponent } from 'react';
+import React, { type FunctionComponent, memo } from 'react';
 
-import withIconContainer from './withIconContainer';
+import IconContainer, { type IconProps } from './IconContainer';
 
-const IconAch: FunctionComponent = () => (
+const IconAchSvg: FunctionComponent = () => (
     <svg viewBox="25 0 50 48" xmlSpace="preserve" xmlns="http://www.w3.org/2000/svg">
         <title id="iconAchTitle">ACH</title>
         <path
@@ -16,4 +16,10 @@ const IconAch: FunctionComponent = () => (
     </svg>
 );
 
-export default withIconContainer(IconAch);
+const IconAch: FunctionComponent<IconProps> = (props) => (
+    <IconContainer {...props}>
+        <IconAchSvg />
+    </IconContainer>
+);
+
+export default memo(IconAch);

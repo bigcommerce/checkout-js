@@ -1,8 +1,8 @@
-import React, { type FunctionComponent } from 'react';
+import React, { type FunctionComponent, memo } from 'react';
 
-import withIconContainer from './withIconContainer';
+import IconContainer, { type IconProps } from './IconContainer';
 
-const IconError: FunctionComponent = () => (
+const IconErrorSvg: FunctionComponent = () => (
     <svg
         className="icon-error"
         height="24"
@@ -14,4 +14,10 @@ const IconError: FunctionComponent = () => (
     </svg>
 );
 
-export default withIconContainer(IconError);
+const IconError: FunctionComponent<IconProps> = (props) => (
+    <IconContainer {...props}>
+        <IconErrorSvg />
+    </IconContainer>
+);
+
+export default memo(IconError);
