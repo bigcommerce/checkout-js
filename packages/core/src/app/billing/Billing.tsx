@@ -1,7 +1,7 @@
 import type { CheckoutSelectors } from '@bigcommerce/checkout-sdk';
 import React, { type ReactElement, useEffect } from 'react';
 
-import { useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { AddressFormSkeleton } from '@bigcommerce/checkout/ui';
 
@@ -19,7 +19,6 @@ export interface BillingProps {
 
 const Billing = ({ navigateNextStep, onReady, onUnhandledError }:BillingProps): ReactElement => {
     const { checkoutService, checkoutState } = useCheckout();
-    const { themeV2 }  = useThemeContext();
 
     const {
         data: {
@@ -96,7 +95,7 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }:BillingProps): 
         <AddressFormSkeleton isLoading={isInitializing}>
             <div className="checkout-form">
                 <div className="form-legend-container">
-                    <Legend testId="billing-address-heading" themeV2={themeV2}>
+                    <Legend testId="billing-address-heading">
                         <TranslatedString id="billing.billing_address_heading" />
                     </Legend>
                 </div>

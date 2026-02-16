@@ -213,8 +213,19 @@ jobs:
             SENTRY_COMMIT=$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME@$RELEASE_REVISION
             sentry-cli releases --project $SENTRY_PROJECT --org $SENTRY_ORG new $SENTRY_RELEASE
             sentry-cli releases --project $SENTRY_PROJECT --org $SENTRY_ORG set-commits $SENTRY_RELEASE --commit $SENTRY_COMMIT
-            sentry-cli releases --project $SENTRY_PROJECT --org $SENTRY_ORG files $SENTRY_RELEASE upload-sourcemaps dist
+            sentry-cli sourcemaps upload --project $SENTRY_PROJECT --org $SENTRY_ORG --release $SENTRY_RELEASE dist
             sentry-cli releases --project $SENTRY_PROJECT --org $SENTRY_ORG finalize $SENTRY_RELEASE
+
+  upload-artifact:
+    <<: *node_executor
+    steps:
+      - ci/pre-setup
+      - attach_workspace:
+          at: .
+      - ci/create_artifact_tar
+      - ci/gcloud_login
+      - ci/upload_artifact:
+          project_name: "${CIRCLE_PROJECT_REPONAME}"
 
 workflows:
   version: 2
@@ -249,7 +260,7 @@ workflows:
             <<: *canonical_pull_request_filter
           context: org-global
           GITLEAKS_BLOCK: "false"
-      - microapp/upload-artifact:
+      - upload-artifact:
           filters:
             <<: *canonical_pull_request_filter
           context: GCR + Artifact Bucket Access
@@ -266,7 +277,7 @@ workflows:
             <<: *canonical_pull_request_filter
           context: GCR + Artifact Bucket Access
           requires:
-            - microapp/upload-artifact
+            - upload-artifact
 
   release:
     jobs:
@@ -316,7 +327,7 @@ workflows:
             <<: *release_filter
           requires:
             - release
-      - microapp/upload-artifact:
+      - upload-artifact:
           filters:
             <<: *release_filter
           context: GCR + Artifact Bucket Access
@@ -327,4 +338,4 @@ workflows:
             <<: *release_filter
           context: GCR + Artifact Bucket Access
           requires:
-            - microapp/upload-artifact
+            - upload-artifact

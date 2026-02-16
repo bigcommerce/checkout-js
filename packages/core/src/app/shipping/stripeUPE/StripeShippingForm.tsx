@@ -187,7 +187,7 @@ export default withLanguage(
         ? object({
           shippingAddress: lazy<Partial<AddressFormValues>>((formValues) =>
             getCustomFormFieldsValidationSchema({
-              translate: getTranslateAddressError(language),
+              translate: getTranslateAddressError(getFields(formValues && formValues.countryCode), language),
               formFields: getFields(formValues && formValues.countryCode),
             }),
           ),

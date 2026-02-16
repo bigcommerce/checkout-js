@@ -57,6 +57,7 @@
             "discount_text": "Sconto",
             "downloads_action": "Vai su Download",
             "edit_cart_action": "Modifica carrello",
+            "go_to_cart_action": "Cart",
             "edit_multi_shipping_cart_message": "L'impostazione predefinita per i nuovi articoli sarà la Destinazione di spedizione n. 1. Riassegnala se vuoi che vengano spediti verso altre destinazioni.",
             "estimated_total_text": "Totale stimato",
             "free_text": "Gratis",
@@ -65,12 +66,15 @@
             "item": "Articolo",
             "items": "articoli",
             "item_count_text": "{count, plural, one{1 articolo} other{# articoli} }",
+            "backorder_count_text": "{count} will be backordered",
             "print_action": "Stampa",
             "remaining_text": "rimanente",
             "remove_action": "rimuovi",
             "return_to_checkout": "TORNA AL CHECKOUT",
             "see_all_action": "Vedi tutto",
             "see_less_action": "Mostra meno",
+            "show_order_summary_action": "Show Order Summary",
+            "hide_order_summary_action": "Hide Order Summary",
             "shipping_text": "Spedizioni",
             "gift_wrapping_text": "Confezione regalo",
             "show_details_action": "Mostra dettagli",
@@ -444,6 +448,7 @@
                 "three_d_secure_declined": "Si è verificato un problema con il pagamento, controlla i dati di pagamento o contatta l'emittente della carta.",
                 "three_d_secure_failed": "Pagamento non riuscito. Riprova o utilizza un'altra opzione di pagamento.",
                 "three_d_secure_required": "È necessaria un'ulteriore autenticazione per elaborare il pagamento. Contattaci.",
+                "three_d_secure_payment_failed": "I dati della carta di credito non sono validi o la verifica 3D Secure non è riuscita. Prova con un'altra carta o riprova il pagamento più tardi.",
                 "token_error": "Si è verificato un problema durante l'elaborazione della transazione. Riprova più tardi.",
                 "transaction_declined": "Il pagamento è stato rifiutato. Riprova.",
                 "transaction_rejected": "Pagamento rifiutato. Riprova.",
@@ -599,7 +604,8 @@
         "order_confirmation": {
             "mandate": {
                 "adyenv3": {
-                    "boletobancario": "Ticket Boleto Bancário"
+                    "boletobancario": "Ticket Boleto Bancário",
+                    "oxxo": "Ticket OXXO"
                 },
                 "bluesnapdirect": {
                     "sepa_direct_debit": "Riferimento mandato di addebito diretto SEPA: {mandate}"

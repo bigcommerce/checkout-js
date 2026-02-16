@@ -52,7 +52,7 @@ const NewOrderSummarySubtotals: FunctionComponent<MultiCouponProps> = ({
                     <a
                         aria-controls="coupon-form-collapsable"
                         aria-expanded={isCouponFormVisible}
-                        className="redeemable-label"
+                        className="redeemable-label body-cta"
                         data-test="redeemable-label"
                         href="#"
                         onClick={preventDefault(toggleCouponForm)}

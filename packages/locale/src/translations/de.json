@@ -57,6 +57,7 @@
             "discount_text": "Rabatt",
             "downloads_action": "Zu Downloads",
             "edit_cart_action": "Warenkorb bearbeiten",
+            "go_to_cart_action": "Cart",
             "edit_multi_shipping_cart_message": "Für neue Artikel wird standardmäßig die Lieferadresse Nr. 1 gewählt. Ändern Sie die Zuweisung, wenn Sie möchten, dass sie an andere Ziele versendet werden.",
             "estimated_total_text": "Geschätzter Gesamtbetrag",
             "free_text": "Kostenlos",
@@ -65,12 +66,15 @@
             "item": "Artikel",
             "items": "Artikel",
             "item_count_text": "{count, plural, one{1 Artikel} other{# Artikel} }",
+            "backorder_count_text": "{count} will be backordered",
             "print_action": "Drucken",
             "remaining_text": "verbleiben",
             "remove_action": "Entfernen",
             "return_to_checkout": "ZURÜCK ZUR KASSE",
             "see_all_action": "Alle anzeigen",
             "see_less_action": "Weniger anzeigen",
+            "show_order_summary_action": "Show Order Summary",
+            "hide_order_summary_action": "Hide Order Summary",
             "shipping_text": "Versand",
             "gift_wrapping_text": "Geschenkverpackung",
             "show_details_action": "Details anzeigen",
@@ -444,6 +448,7 @@
                 "three_d_secure_declined": "Es gab ein Problem mit Ihrer Zahlung. Bitte überprüfen Sie Ihre Zahlungsdaten oder wenden Sie sich an Ihren Kartenaussteller.",
                 "three_d_secure_failed": "Die Zahlung ist fehlgeschlagen. Bitte versuchen Sie es erneut oder verwenden Sie eine andere Zahlungsoption.",
                 "three_d_secure_required": "Eine weitere Authentifizierung ist erforderlich, um Ihre Zahlung zu verarbeiten. Bitte nehmen Sie Kontakt zu uns auf.",
+                "three_d_secure_payment_failed": "Die Kreditkarteninformationen sind ungültig oder die 3D-Secure-Verifizierung ist fehlgeschlagen. Bitte versuchen Sie es mit einer anderen Karte oder versuchen Sie die Zahlung später erneut.",
                 "token_error": "Wir haben Schwierigkeiten bei der Verarbeitung Ihrer Transaktion. Bitte versuchen Sie es später erneut.",
                 "transaction_declined": "Ihre Zahlung wurde abgelehnt. Bitte versuchen Sie es erneut.",
                 "transaction_rejected": "Die Zahlung wurde abgelehnt. Bitte versuchen Sie es erneut.",
@@ -599,7 +604,8 @@
         "order_confirmation": {
             "mandate": {
                 "adyenv3": {
-                    "boletobancario": "Boleto Bancário-Ticket"
+                    "boletobancario": "Boleto Bancário-Ticket",
+                    "oxxo": "OXXO-Ticket"
                 },
                 "bluesnapdirect": {
                     "sepa_direct_debit": "SEPA-Lastschriftmandatsreferenz: {mandate}"

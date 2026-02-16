@@ -2,7 +2,10 @@
 import { type Cart, type Consignment } from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent, memo } from 'react';
 
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
+
 import StaticConsignment from './StaticConsignment';
+import StaticConsignmentV2 from './StaticConsignmentV2';
 import StaticMultiConsignment from './StaticMultiConsignment';
 
 interface ShippingSummaryProps {
@@ -18,6 +21,8 @@ const ShippingSummary: FunctionComponent<ShippingSummaryProps> = ({
     consignments,
     cart
 }) => {
+    const { themeV2 } = useThemeContext();
+    
     if (isMultiShippingMode) {
         return (
             <>
@@ -39,12 +44,15 @@ const ShippingSummary: FunctionComponent<ShippingSummaryProps> = ({
         <>
             {consignments.map((consignment) => (
                 <div className="staticConsignmentContainer" key={consignment.id}>
-                    <StaticConsignment
-                        cart={cart}
-                        compactView={consignments.length < 2}
-                        consignment={consignment}
-                        isShippingDiscountDisplayEnabled={isShippingDiscountDisplayEnabled}
-                    />
+                    {themeV2 ?
+                        <StaticConsignmentV2
+                            consignment={consignment}
+                            isShippingDiscountDisplayEnabled={isShippingDiscountDisplayEnabled}
+                        /> : 
+                        <StaticConsignment
+                            consignment={consignment}
+                            isShippingDiscountDisplayEnabled={isShippingDiscountDisplayEnabled}
+                    />}
                 </div>
             ))}
         </>

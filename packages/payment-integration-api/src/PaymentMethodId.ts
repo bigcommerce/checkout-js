@@ -48,7 +48,7 @@ enum PaymentMethodId {
     PaypalCommerceCreditCards = 'paypalcommercecreditcards',
     PaypalCommerceAlternativeMethod = 'paypalcommercealternativemethods',
     PaypalCommerceVenmo = 'paypalcommercevenmo',
-    BigCommercePaymentsPayPal = 'bigcommerce_payments_paypal',
+    BigCommercePaymentsPayPal = 'bigcommerce_payments',
     BigCommercePaymentsPayLater = 'bigcommerce_payments_paylater',
     BigCommercePaymentsCreditCards = 'bigcommerce_payments_creditcards',
     BigCommercePaymentsAlternativeMethod = 'bigcommerce_payments_apms',

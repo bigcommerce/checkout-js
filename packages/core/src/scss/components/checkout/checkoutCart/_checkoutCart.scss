@@ -73,6 +73,17 @@
     margin-bottom: spacing("single");
 }
 
+a.cart-backorder-link {
+    color: color("highlight");
+    margin-left: spacing("quarter") * 3;
+    text-decoration: none;
+
+    &:hover {
+        color: color("highlight", "dark");
+        text-decoration: none;
+    }
+}
+
 .cart-actions {
     margin-top: spacing("half");
     text-align: center;
@@ -128,10 +139,6 @@
         font-size: fontSize("larger");
         font-weight: fontWeight("bold");
         line-height: 1.2;
-
-        &.header {
-            font-size: fontSize("large");
-        }
     }
 }
 

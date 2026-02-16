@@ -20,7 +20,7 @@ const Label: FunctionComponent<LabelProps> = ({
     <label
         {...rest}
         className={classNames(
-            { 'floating-label': isFloatingLabelEnabled },
+            { 'floating-label floating-form-field-label': isFloatingLabelEnabled },
             className || 'form-label',
             { 'is-srOnly': hidden },
             'optimizedCheckout-form-label',

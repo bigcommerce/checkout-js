@@ -57,6 +57,7 @@
             "discount_text": "Rabatt",
             "downloads_action": "Gå til nedlastinger",
             "edit_cart_action": "Rediger handlekurv",
+            "go_to_cart_action": "Cart",
             "edit_multi_shipping_cart_message": "Nye varer bruker som standard leveringsdestinasjon nr. 1. Omdisponer hvis du vil at de skal sendes til andre destinasjoner.",
             "estimated_total_text": "Estimert totalsum",
             "free_text": "Kostnadsfrie",
@@ -65,12 +66,15 @@
             "item": "Vare",
             "items": "Varer",
             "item_count_text": "{count, plural, one{1 Vare } other{# Varer } }",
+            "backorder_count_text": "{count} will be backordered",
             "print_action": "Skriv ut",
             "remaining_text": "gjenstående",
             "remove_action": "Fjern",
             "return_to_checkout": "GÅ TILBAKE TIL KASSEN",
             "see_all_action": "Se alt",
             "see_less_action": "Se mindre",
+            "show_order_summary_action": "Show Order Summary",
+            "hide_order_summary_action": "Hide Order Summary",
             "shipping_text": "Frakt",
             "gift_wrapping_text": "Gaveinnpakning",
             "show_details_action": "Vis detaljer",
@@ -444,6 +448,7 @@
                 "three_d_secure_declined": "Det er et problem med betalingen din. Sjekk betalingsdetaljene dine, eller kontakt kortutstederen din.",
                 "three_d_secure_failed": "Betalingen mislyktes. Prøv igjen eller bruk et annet betalingsalternativ.",
                 "three_d_secure_required": "Ytterligere autentisering er nødvendig for å behandle betalingen. Vennligst kontakt oss.",
+                "three_d_secure_payment_failed": "Kredittkortinformasjonen er ugyldig eller mislyktes i 3D Secure-verifiseringen. Pprøv et annet kort eller forsøk å betale på nytt senere.",
                 "token_error": "Vi har problemer med å behandle transaksjonen. Prøv igjen senere.",
                 "transaction_declined": "Betalingen ble avvist. Prøv igjen.",
                 "transaction_rejected": "Betalingen ble avvist. Prøv igjen.",
@@ -599,7 +604,8 @@
         "order_confirmation": {
             "mandate": {
                 "adyenv3": {
-                    "boletobancario": "Boleto Bancário-billett"
+                    "boletobancario": "Boleto Bancário-billett",
+                    "oxxo": "OXXO-billett"
                 },
                 "bluesnapdirect": {
                     "sepa_direct_debit": "Referanse for SEPA-direktebelastningsfullmakt: {mandate}"

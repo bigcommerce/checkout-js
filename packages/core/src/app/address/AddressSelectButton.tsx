@@ -1,6 +1,5 @@
 import React, { type FunctionComponent, useState } from 'react';
 
-import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 
@@ -17,12 +16,11 @@ const AddressSelectButton: FunctionComponent<AddressSelectButtonProps & WithLang
     showSingleLineAddress,
     placeholderText,
 }) => {
-    const { themeV2 } = useThemeContext();
     const [ariaExpanded, setAriaExpanded] = useState(false);
 
     const SelectedAddress = () => {
         if (!selectedAddress) {
-            return (<span className={themeV2 ? 'body-regular' : ''} data-test="address-select-placeholder">
+            return (<span className="body-regular" data-test="address-select-placeholder">
                 {placeholderText ?? <TranslatedString id="address.enter_address_action" />}
             </span>);
         }

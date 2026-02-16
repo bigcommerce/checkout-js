@@ -1,8 +1,7 @@
 import { type CheckoutSelectors, type CheckoutService } from '@bigcommerce/checkout-sdk';
-import classNames from 'classnames';
 import React, { type FunctionComponent, lazy, memo, Suspense } from 'react';
 
-import { type CheckoutContextProps, useLocale, useThemeContext } from '@bigcommerce/checkout/contexts';
+import { type CheckoutContextProps, useLocale } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { WalletButtonsContainerSkeleton } from '@bigcommerce/checkout/ui';
 
@@ -47,7 +46,6 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
         onWalletButtonClick,
     }) => {
     const { language } = useLocale();
-    const { themeV2 } = useThemeContext();
 
     try {
         checkEmbeddedSupport(availableMethodIds);
@@ -95,9 +93,7 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
         <div className='checkout-button-container'
              style={ isPaymentStepActive ? { position: 'absolute', left: '0', top: '-100%' } : undefined }
         >
-            <p className={classNames({
-                'sub-header': themeV2,
-            })}>
+            <p className="sub-header">
                 <TranslatedString id="remote.start_with_text" />
             </p>
             <div className='checkout-buttons-auto-layout'>
@@ -108,7 +104,7 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
                 </WalletButtonsContainerSkeleton>
             </div>
             <div className='checkout-separator'>
-                <span className={classNames({ 'sub-header': themeV2 })}>
+                <span className="sub-header">
                     <TranslatedString id='remote.or_text' />
                 </span>
             </div>

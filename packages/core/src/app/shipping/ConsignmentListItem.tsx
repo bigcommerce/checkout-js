@@ -1,7 +1,6 @@
-import classNames from 'classnames';
 import React, { type FunctionComponent } from 'react';
 
-import { useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { TranslatedString } from "@bigcommerce/checkout/locale";
 
@@ -33,7 +32,6 @@ const ConsignmentListItem: FunctionComponent<ConsignmentListItemProps> = ({
 }: ConsignmentListItemProps) => {
 
     const { checkoutService: { deleteConsignment } } = useCheckout();
-    const { themeV2 } = useThemeContext();
 
     const handleClose = async () => {
         await deleteConsignment(consignment.id);
@@ -42,7 +40,7 @@ const ConsignmentListItem: FunctionComponent<ConsignmentListItemProps> = ({
 
     return (
         <div className='consignment-container'>
-            <div className={classNames('consignment-header', { 'sub-header': themeV2 })}>
+            <div className="consignment-header sub-header">
                 <h3>
                     <TranslatedString data={{ consignmentNumber }} id="shipping.multishipping_consignment_index_heading" />
                 </h3>

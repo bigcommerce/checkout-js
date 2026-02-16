@@ -6,7 +6,7 @@ import { type FormikProps, withFormik } from 'formik';
 import React, { type RefObject, useRef, useState } from 'react';
 import { lazy } from 'yup';
 
-import { useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { AddressFormSkeleton, LoadingOverlay } from '@bigcommerce/checkout/ui';
@@ -53,7 +53,6 @@ const BillingForm = ({
     const addressFormRef: RefObject<HTMLFieldSetElement> = useRef(null);
     const { isPayPalFastlaneEnabled, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
 
-    const { themeV2 } = useThemeContext();
     const { checkoutService, checkoutState } = useCheckout();
 
     const {
@@ -149,7 +148,7 @@ const BillingForm = ({
 
             <div className="form-actions">
                 <Button
-                    className={themeV2 ? 'body-bold' : ''}
+                    className="body-bold"
                     disabled={isUpdating || isResettingAddress}
                     id="checkout-billing-continue"
                     isLoading={isUpdating || isResettingAddress}
@@ -189,7 +188,7 @@ export default withLanguage(
             methodId === 'amazonpay'
                 ? lazy<Partial<AddressFormValues>>((values) =>
                       getCustomFormFieldsValidationSchema({
-                          translate: getTranslateAddressError(language),
+                          translate: getTranslateAddressError(getFields(values && values.countryCode), language),
                           formFields: getFields(values && values.countryCode),
                       }),
                   )

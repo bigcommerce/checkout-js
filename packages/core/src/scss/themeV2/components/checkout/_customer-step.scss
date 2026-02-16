@@ -1,12 +1,13 @@
 .checkout-step--customer {
-    .customerEmail-container {
+    .customer-login-link {
         @include themeV2 {
-            display: flex;
+            margin-top: #{spacing("half") + spacing("third")};
         }
     }
 
     @include themeV2-desktop {
         .customerEmail-container {
+            display: flex;
             flex-direction: row;
         }
 

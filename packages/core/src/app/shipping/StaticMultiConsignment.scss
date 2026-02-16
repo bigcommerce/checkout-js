@@ -1,5 +1,4 @@
 @import '../ui/Base';
-@import '../../scss/settings/global/global';
 
 .staticMultiConsignmentContainer {
     ul {
@@ -21,10 +20,6 @@
         .staticMultiConsignment-header {
             font-size: fontSize("small");
             margin: 0 0 spacing("base");
-
-            &.body-bold {
-                font-size: fontSize("base");
-            }
         }
 
         .staticConsignment-items {
@@ -34,12 +29,6 @@
             
             .line-item-options {
                 color: color("greys");   
-            }
-
-            .sub-text {
-                .line-item-options {
-                    color: $color-secondaryDarkest;
-                }
             }
         }
     }

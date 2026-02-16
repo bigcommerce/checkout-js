@@ -57,6 +57,7 @@
             "discount_text": "Rabatt",
             "downloads_action": "Gå till nedladdningar",
             "edit_cart_action": "Redigera kundvagn",
+            "go_to_cart_action": "Cart",
             "edit_multi_shipping_cart_message": "Nya objekt skickas som standard till leveransdestination nr 1. Byt destination om du vill att de ska skickas någon annanstans.",
             "estimated_total_text": "Beräknad totalsumma",
             "free_text": "Gratis",
@@ -65,12 +66,15 @@
             "item": "Vara",
             "items": "varor",
             "item_count_text": "{count, plural, one{1 Item} other{# Items} }",
+            "backorder_count_text": "{count} will be backordered",
             "print_action": "Skriva ut",
             "remaining_text": "återstående",
             "remove_action": "Ta bort",
             "return_to_checkout": "GÅ TILLBAKA TILL KASSAN",
             "see_all_action": "Visa alla",
             "see_less_action": "Se mindre",
+            "show_order_summary_action": "Show Order Summary",
+            "hide_order_summary_action": "Hide Order Summary",
             "shipping_text": "Frakt",
             "gift_wrapping_text": "Paketomslag",
             "show_details_action": "Visa detaljer",
@@ -444,6 +448,7 @@
                 "three_d_secure_declined": "Det har uppstått ett problem med din betalning. Kontrollera dina betalningsuppgifter eller kontakta din kortutgivare",
                 "three_d_secure_failed": "Betalningen misslyckades. Vänligen försök igen, eller använd ett annat betalningsalternativ.",
                 "three_d_secure_required": "Ytterligare autentisering krävs för att bearbeta din betalning. Kontakta oss.",
+                "three_d_secure_payment_failed": "Ogiltiga kreditkortsuppgifter eller misslyckad 3D Secure-verifiering. Försök med ett annat kort eller prova att betala igen senare.",
                 "token_error": "Vi kan inte bearbeta din transaktion. Försök igen senare.",
                 "transaction_declined": "Din betalning nekades. Vänligen försök igen.",
                 "transaction_rejected": "Betalningen nekades. Vänligen försök igen.",
@@ -599,7 +604,8 @@
         "order_confirmation": {
             "mandate": {
                 "adyenv3": {
-                    "boletobancario": "Boleto Bancário-ticket"
+                    "boletobancario": "Boleto Bancário-ticket",
+                    "oxxo": "OXXO-ticket"
                 },
                 "bluesnapdirect": {
                     "sepa_direct_debit": "Referens för SEPA-direktdebiteringsfullmakt: {mandate}"

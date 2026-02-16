@@ -1,7 +1,5 @@
-import classNames from 'classnames';
 import React, { type FunctionComponent, memo } from 'react';
 
-import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import { ShopperCurrency } from '../currency';
@@ -21,8 +19,6 @@ const OrderSummaryDiscount: FunctionComponent<OrderSummaryDiscountProps> = ({
     onRemoved,
     ...rest
 }) => {
-    const { themeV2 } = useThemeContext();
-
     return (
         <OrderSummaryPrice
             {...rest}
@@ -45,8 +41,7 @@ const OrderSummaryDiscount: FunctionComponent<OrderSummaryDiscountProps> = ({
 
             {code && (
                 <span
-                    className={classNames('cart-priceItem-postFix optimizedCheckout-contentSecondary',
-                        { 'sub-text-medium': themeV2 })}
+                    className="cart-priceItem-postFix optimizedCheckout-contentSecondary sub-text-medium"
                     data-test="cart-price-code"
                 >
                     {code}

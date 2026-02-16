@@ -2,7 +2,7 @@ import { type FormField } from '@bigcommerce/checkout-sdk';
 import { forIn, noop } from 'lodash';
 import React, { useCallback, useEffect, useRef } from 'react';
 
-import { useCheckout, useLocale,useThemeContext } from '@bigcommerce/checkout/contexts';
+import { useCheckout, useLocale } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { DynamicFormField, DynamicFormFieldType } from '@bigcommerce/checkout/ui';
 
@@ -30,7 +30,6 @@ const AddressForm: React.FC<AddressFormProps> = ({
         type,
     }) => {
     const { language } = useLocale();
-    const { themeV2 } = useThemeContext();
     const {
         checkoutState: {
             data: { getConfig, getBillingCountries, getShippingCountries }
@@ -175,7 +174,6 @@ const AddressForm: React.FC<AddressFormProps> = ({
                                     field,
                                     translatedPlaceholderId,
                                 )}
-                                themeV2={themeV2}
                             />
                         );
                     })}
@@ -185,7 +183,6 @@ const AddressForm: React.FC<AddressFormProps> = ({
                 <CheckboxFormField
                     labelContent={<TranslatedString id="address.save_in_addressbook" />}
                     name={fieldName ? `${fieldName}.shouldSaveAddress` : 'shouldSaveAddress'}
-                    themeV2={themeV2}
                 />
             )}
         </>

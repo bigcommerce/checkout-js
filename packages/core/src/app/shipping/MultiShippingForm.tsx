@@ -1,7 +1,6 @@
-import classNames from 'classnames';
 import React, { type FunctionComponent, type ReactNode, useMemo, useState } from 'react';
 
-import { useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { Alert, AlertType } from '@bigcommerce/checkout/ui';
 
@@ -39,7 +38,6 @@ const MultiShippingForm: FunctionComponent<MultiShippingFormProps> = ({
 }: MultiShippingFormProps) => {
     const [errorConsignmentNumber, setErrorConsignmentNumber] = useState<number | undefined>();
 
-    const { themeV2 } = useThemeContext();
     const {
         checkoutState: {
             data: { getConsignments, getConfig },
@@ -95,12 +93,12 @@ const MultiShippingForm: FunctionComponent<MultiShippingFormProps> = ({
 
     const renderAllocatedBanner = (shippableItemsCount: number): ReactNode => {
         if (shippableItemsCount > 0) {
-            return <Alert additionalClassName={themeV2 ? 'body-regular' : ''} type={AlertType.Info}>
+            return <Alert additionalClassName="body-regular" type={AlertType.Info}>
                 <TranslatedString data={{ count: shippableItemsCount }} id="shipping.multishipping_item_to_allocate_message" />
             </Alert>;
         }
 
-        return <Alert additionalClassName={themeV2 ? 'body-regular' : ''} type={AlertType.Success}>
+        return <Alert additionalClassName="body-regular" type={AlertType.Success}>
             <TranslatedString id="shipping.multishipping_all_items_allocated_message" />
         </Alert>;
     }
@@ -135,7 +133,7 @@ const MultiShippingForm: FunctionComponent<MultiShippingFormProps> = ({
             }
             {hasUnassignedItems &&
                 <Button
-                    className={classNames({ 'body-regular': themeV2 }, 'add-consignment-button')}
+                    className="body-regular add-consignment-button"
                     onClick={handleAddShippingDestination}
                     variant={ButtonVariant.Secondary}
                 >

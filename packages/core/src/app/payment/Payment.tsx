@@ -1,11 +1,16 @@
 import {
+    type Checkout,
     type CheckoutSelectors,
     type CheckoutService,
     type CheckoutSettings,
+    type Consignment,
     type OrderFinalizeOptions,
     type OrderRequestBody,
     type PaymentMethod,
+    type PaymentProviderCustomer,
 } from '@bigcommerce/checkout-sdk';
+import { createAfterpayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/afterpay';
+import { createBlueSnapV2PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bluesnap-direct';
 import { createCBAMPGSPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/cba-mpgs';
 import { createCheckoutComAPMPaymentStrategy, createCheckoutComCreditCardPaymentStrategy, createCheckoutComFawryPaymentStrategy, createCheckoutComIdealPaymentStrategy, createCheckoutComSepaPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/checkoutcom-custom';
 import { createClearpayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/clearpay';
@@ -50,6 +55,73 @@ import {
     PaymentMethodId,
     PaymentMethodProviderType,
 } from './paymentMethod';
+
+interface PaymentMethodSelectionParams {
+    checkout: Checkout;
+    methods: PaymentMethod[];
+    consignments?: Consignment[];
+    getPaymentMethod: (methodId: string, gatewayId?: string) => PaymentMethod | undefined;
+    paymentProviderCustomer?: PaymentProviderCustomer;
+}
+
+const getDefaultPaymentMethod = ({
+    checkout,
+    consignments,
+    getPaymentMethod,
+    methods,
+    paymentProviderCustomer,
+}: PaymentMethodSelectionParams): { filteredMethods: PaymentMethod[]; defaultMethod?: PaymentMethod } => {
+    let filteredMethods = methods;
+
+    // TODO: In accordance with the checkout team, this functionality is temporary and will be implemented in the backend instead.
+    if (paymentProviderCustomer?.stripeLinkAuthenticationState) {
+        const stripeUpePaymentMethod = filteredMethods.filter(
+            (method) => method.id === 'card' && method.gateway === PaymentMethodId.StripeUPE,
+        );
+
+        filteredMethods = stripeUpePaymentMethod.length ? stripeUpePaymentMethod : filteredMethods;
+    }
+
+    filteredMethods = filteredMethods.filter((method: PaymentMethod) => {
+        if (method.id === PaymentMethodId.Bolt && method.initializationData) {
+            return Boolean(method.initializationData.showInCheckout);
+        }
+
+        return method.id !== PaymentMethodId.BraintreeLocalPaymentMethod;
+    });
+
+    if (consignments && consignments.length > 1) {
+        const multiShippingIncompatibleMethodIds: string[] = [
+            PaymentMethodId.AmazonPay,
+        ];
+
+        filteredMethods = filteredMethods.filter(
+            (method: PaymentMethod) => !multiShippingIncompatibleMethodIds.includes(method.id),
+        );
+    }
+
+    const selectedPayment = checkout.payments
+        ? find(checkout.payments, { providerType: PaymentMethodProviderType.Hosted })
+        : undefined;
+    let selectedPaymentMethod;
+
+    if (selectedPayment) {
+        selectedPaymentMethod = getPaymentMethod(
+            selectedPayment.providerId,
+            selectedPayment.gatewayId,
+        );
+        filteredMethods = selectedPaymentMethod ? compact([selectedPaymentMethod]) : filteredMethods;
+    } else {
+        selectedPaymentMethod = find(filteredMethods, {
+            config: { hasDefaultStoredInstrument: true },
+        });
+    }
+
+    return {
+        defaultMethod: selectedPaymentMethod || filteredMethods[0],
+        filteredMethods,
+    };
+};
 
 export interface PaymentProps {
     errorLogger: ErrorLogger;
@@ -397,9 +469,20 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
         } = props;
 
         try {
-            await loadPaymentMethods();
+            const updatedState = await loadPaymentMethods();
+            const checkout = updatedState.data.getCheckout();
+            const methods = updatedState.data.getPaymentMethods() || EMPTY_ARRAY;
 
-            const selectedMethod = state.selectedMethod || props.defaultMethod;
+            const defaultMethod = checkout
+                ? getDefaultPaymentMethod({
+                      checkout,
+                      consignments: updatedState.data.getConsignments(),
+                      getPaymentMethod: updatedState.data.getPaymentMethod,
+                      methods,
+                      paymentProviderCustomer: updatedState.data.getPaymentProviderCustomer(),
+                  }).defaultMethod
+                : undefined;
+            const selectedMethod = state.selectedMethod || defaultMethod;
 
             if (selectedMethod) {
                 trackSelectedPaymentMethod(selectedMethod);
@@ -456,6 +539,8 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
             try {
                 const state = await finalizeOrderIfNeeded({
                     integrations: [
+                        createAfterpayPaymentStrategy,
+                        createBlueSnapV2PaymentStrategy,
                         createCBAMPGSPaymentStrategy,
                         createCheckoutComAPMPaymentStrategy,
                         createCheckoutComCreditCardPaymentStrategy,
@@ -579,16 +664,7 @@ export function mapToPaymentProps({
     const paymentProviderCustomer = getPaymentProviderCustomer();
 
     const { isComplete = false } = getOrder() || {};
-    let methods = getPaymentMethods() || EMPTY_ARRAY;
-
-    // TODO: In accordance with the checkout team, this functionality is temporary and will be implemented in the backend instead.
-    if (paymentProviderCustomer?.stripeLinkAuthenticationState) {
-        const stripeUpePaymentMethod = methods.filter(method =>
-            method.id === 'card' && method.gateway === PaymentMethodId.StripeUPE
-        );
-
-        methods = stripeUpePaymentMethod.length ? stripeUpePaymentMethod : methods;
-    }
+    const methods = getPaymentMethods() || EMPTY_ARRAY;
 
     if (!checkout || !config || !customer || isComplete) {
         return null;
@@ -603,55 +679,21 @@ export function mapToPaymentProps({
     } = config.checkoutSettings as CheckoutSettings & { orderTermsAndConditionsLocation: string };
 
     const isTermsConditionsRequired = isTermsConditionsEnabled;
-    const selectedPayment = find(checkout.payments, {
-        providerType: PaymentMethodProviderType.Hosted,
-    });
-
     const { isStoreCreditApplied } = checkout;
-
-    let selectedPaymentMethod;
-    let filteredMethods;
-
-    filteredMethods = methods.filter((method: PaymentMethod) => {
-        if (method.id === PaymentMethodId.Bolt && method.initializationData) {
-            return Boolean(method.initializationData.showInCheckout);
-        }
-
-        return method.id !== PaymentMethodId.BraintreeLocalPaymentMethod;
+    const { defaultMethod, filteredMethods } = getDefaultPaymentMethod({
+        checkout,
+        consignments,
+        getPaymentMethod,
+        methods,
+        paymentProviderCustomer,
     });
-
-    if (consignments && consignments.length > 1) {
-        const multiShippingIncompatibleMethodIds: string[] = [
-            PaymentMethodId.AmazonPay,
-        ];
-
-        filteredMethods = methods.filter((method: PaymentMethod) => {
-            return !multiShippingIncompatibleMethodIds.includes(method.id);
-        });
-    }
-
-    if (selectedPayment) {
-        selectedPaymentMethod = getPaymentMethod(
-            selectedPayment.providerId,
-            selectedPayment.gatewayId,
-        );
-        filteredMethods = selectedPaymentMethod
-            ? compact([selectedPaymentMethod])
-            : filteredMethods;
-    } else {
-        selectedPaymentMethod = find(filteredMethods, {
-            config: { hasDefaultStoredInstrument: true },
-        });
-        // eslint-disable-next-line no-self-assign
-        filteredMethods = filteredMethods;
-    }
 
     return {
         applyStoreCredit: checkoutService.applyStoreCredit,
         availableStoreCredit: customer.storeCredit,
         cartUrl: config.links.cartLink,
         clearError: checkoutService.clearError,
-        defaultMethod: selectedPaymentMethod || filteredMethods[0],
+        defaultMethod,
         finalizeOrderError: getFinalizeOrderError(),
         finalizeOrderIfNeeded: checkoutService.finalizeOrderIfNeeded,
         loadCheckout: checkoutService.loadCheckout,

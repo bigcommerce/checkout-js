@@ -1,7 +1,6 @@
 import { type FieldProps } from 'formik';
 import React, { type FunctionComponent, memo, useCallback, useMemo } from 'react';
 
-import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import { FormField, TextInput } from '../ui/form';
@@ -12,8 +11,6 @@ export interface EmailFieldProps {
 }
 
 const EmailField: FunctionComponent<EmailFieldProps> = ({ onChange, isFloatingLabelEnabled }) => {
-    const { themeV2 } = useThemeContext();
-
     const renderInput = useCallback(
         (props: FieldProps) => (
             <TextInput
@@ -21,7 +18,6 @@ const EmailField: FunctionComponent<EmailFieldProps> = ({ onChange, isFloatingLa
                 autoComplete={props.field.name}
                 id={props.field.name}
                 isFloatingLabelEnabled={isFloatingLabelEnabled}
-                themeV2={themeV2}
                 type="email"
             />
         ),
@@ -37,7 +33,6 @@ const EmailField: FunctionComponent<EmailFieldProps> = ({ onChange, isFloatingLa
             labelContent={labelContent}
             name="email"
             onChange={onChange}
-            themeV2={themeV2}
         />
     );
 };

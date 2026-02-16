@@ -14,6 +14,7 @@ export interface AddressFormFieldsValidationSchemaOptions {
 }
 
 export function getTranslateAddressError(
+    formFields: FormField[],
     language?: LanguageService,
 ): TranslateValidationErrorFunction {
     const requiredFieldErrorTranslationIds: { [fieldName: string]: string } = {
@@ -45,6 +46,30 @@ export function getTranslateAddressError(
             return language.translate(`address.custom_required_error`, { label });
         }
 
+        const field = formFields.find(f => f.name === name);
+
+        if ((type === 'max' || type === 'min') && field?.type === 'integer') {
+            const fieldMin = field?.min;
+            const fieldMax = field?.max;
+
+            // If both min and max are present, show range message
+            if (fieldMin !== undefined && fieldMax !== undefined) {
+                return language.translate(`address.custom_range_error`, { 
+                    label, 
+                    min: fieldMin, 
+                    max: fieldMax 
+                });
+            }
+
+            if (type === 'max' && fieldMax !== undefined) {
+                return language.translate(`address.custom_max_number_error`, { label, max: fieldMax });
+            }
+
+            if (type === 'min' && fieldMin !== undefined) {
+                return language.translate(`address.custom_min_number_error`, { label, min: fieldMin });
+            }
+        }
+
         if (type === 'max' && max) {
             return language.translate(`address.custom_max_error`, { label, max });
         }
@@ -65,6 +90,6 @@ export default memoize(function getAddressFormFieldsValidationSchema({
 }: AddressFormFieldsValidationSchemaOptions): ObjectSchema<FormFieldValues> {
     return getFormFieldsValidationSchema({
         formFields,
-        translate: getTranslateAddressError(language),
+        translate: getTranslateAddressError(formFields, language),
     });
 });

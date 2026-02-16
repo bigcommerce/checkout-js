@@ -1,8 +1,8 @@
-import React, { type FunctionComponent } from 'react';
+import React, { type FunctionComponent, memo } from 'react';
 
-import withIconContainer from './withIconContainer';
+import IconContainer, { type IconProps } from './IconContainer';
 
-const IconCardCodeVisa: FunctionComponent = () => (
+const IconCardCodeVisaSvg: FunctionComponent = () => (
     <svg height="54" viewBox="0 0 88 54" width="88" xmlns="http://www.w3.org/2000/svg">
         <title>CVV visa, mc, disc</title>
         <g fill="none" fillRule="evenodd">
@@ -18,4 +18,10 @@ const IconCardCodeVisa: FunctionComponent = () => (
     </svg>
 );
 
-export default withIconContainer(IconCardCodeVisa);
+const IconCardCodeVisa: FunctionComponent<IconProps> = (props) => (
+    <IconContainer {...props}>
+        <IconCardCodeVisaSvg />
+    </IconContainer>
+);
+
+export default memo(IconCardCodeVisa);

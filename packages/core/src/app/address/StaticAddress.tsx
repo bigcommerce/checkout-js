@@ -4,11 +4,10 @@ import {
     type Country,
     type ShippingInitializeOptions,
 } from '@bigcommerce/checkout-sdk';
-import classNames from 'classnames';
 import { isEmpty } from 'lodash';
 import React, { type FunctionComponent, memo } from 'react';
 
-import { type CheckoutContextProps, useThemeContext } from '@bigcommerce/checkout/contexts';
+import { type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
 import { localizeAddress } from '@bigcommerce/checkout/locale';
 
 import { withCheckout } from '../checkout';
@@ -37,40 +36,34 @@ const StaticAddress: FunctionComponent<
         address: addressWithoutLocalization,
     }) => {
 
-    const { themeV2 } = useThemeContext();
-
     const address = localizeAddress(addressWithoutLocalization, countries);
     const isValid = !isEmpty(address);
 
     return !isValid ? null : (
         <div className="vcard checkout-address--static" data-test="static-address">
             {(address.firstName || address.lastName) && (
-                <p className={classNames('fn address-entry',
-                    { 'body-regular': themeV2 })}>
+                <p className="fn address-entry body-regular">
                     <span className="first-name">{`${address.firstName} `}</span>
                     <span className="family-name">{address.lastName}</span>
                 </p>
             )}
 
             {(address.phone || address.company) && (
-                <p className={classNames('address-entry',
-                    { 'body-regular': themeV2 })}>
+                <p className="address-entry body-regular">
                     <span className="company-name">{`${address.company} `}</span>
                     <span className="tel">{address.phone}</span>
                 </p>
             )}
 
             <div className="adr">
-                <p className={classNames('street-address address-entry',
-                    { 'body-regular': themeV2 })}>
+                <p className="street-address address-entry body-regular">
                     <span className="address-line-1">{`${address.address1} `}</span>
                     {address.address2 && (
                         <span className="address-line-2">{` / ${address.address2}`}</span>
                     )}
                 </p>
 
-                <p className={classNames('address-entry',
-                    { 'body-regular': themeV2 })}>
+                <p className="address-entry body-regular">
                     {address.city && <span className="locality">{`${address.city}, `}</span>}
                     {address.localizedProvince && (
                         <span className="region">{`${address.localizedProvince}, `}</span>

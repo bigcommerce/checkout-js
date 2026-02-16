@@ -2,8 +2,6 @@ import { type PhysicalItem } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import React, { type FunctionComponent, memo } from 'react';
 
-import { useThemeContext } from '@bigcommerce/checkout/contexts';
-
 import { type MultiShippingTableItemWithType } from './MultishippingType';
 
 export interface ConsignmentLineItemDetailProps {
@@ -19,15 +17,15 @@ const renderProductOptionDetails = (item: MultiShippingTableItemWithType | Physi
     return (<span className="line-item-options">{` - ${item.options.map(option => option.value).join(' / ')}`}</span>);
 }
 
-export const renderItemContent = (item: MultiShippingTableItemWithType | PhysicalItem, themeV2 = false, isMultiShippingSummary = false) => {
+export const renderItemContent = (item: MultiShippingTableItemWithType | PhysicalItem, isMultiShippingSummary = false) => {
     return <span
         className={classNames(
-            { 'body-regular': themeV2 && !isMultiShippingSummary },
-            { 'sub-text': themeV2 && isMultiShippingSummary },)
+            { 'body-regular': !isMultiShippingSummary },
+            { 'sub-text': isMultiShippingSummary },)
         }>
         <span className={classNames(
-            { 'body-bold': themeV2 && !isMultiShippingSummary },
-            { 'sub-text-bold': themeV2 && isMultiShippingSummary },)
+            { 'body-bold': !isMultiShippingSummary },
+            { 'sub-text-bold': isMultiShippingSummary },)
         }>
             {`${item.quantity} x `}
         </span>
@@ -40,13 +38,12 @@ const ConsignmentLineItemDetail: FunctionComponent<ConsignmentLineItemDetailProp
     lineItems,
     isMultiShippingSummary = false,
 }) => {
-    const { themeV2 } = useThemeContext();
 
     return (
         <ul className="consignment-line-item-list">
         {lineItems.map((item) => (
             <li key={item.id}>
-                {renderItemContent(item, themeV2, isMultiShippingSummary)}
+                {renderItemContent(item, isMultiShippingSummary)}
             </li>
         ))}
     </ul>

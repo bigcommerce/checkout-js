@@ -1,8 +1,8 @@
-import React, { type FunctionComponent } from 'react';
+import React, { type FunctionComponent, memo } from 'react';
 
-import withIconContainer from './withIconContainer';
+import IconContainer, { type IconProps } from './IconContainer';
 
-const IconCardUnionPay: FunctionComponent = () => (
+const IconCardUnionPaySvg: FunctionComponent = () => (
     <svg
         aria-labelledby="iconCardUnionPayTitle"
         fill="none"
@@ -44,4 +44,10 @@ const IconCardUnionPay: FunctionComponent = () => (
     </svg>
 );
 
-export default withIconContainer(IconCardUnionPay);
+const IconCardUnionPay: FunctionComponent<IconProps> = (props) => (
+    <IconContainer {...props}>
+        <IconCardUnionPaySvg />
+    </IconContainer>
+);
+
+export default memo(IconCardUnionPay);

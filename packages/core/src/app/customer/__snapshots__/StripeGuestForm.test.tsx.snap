@@ -50,7 +50,7 @@ exports[`StripeGuestForm matches snapshot 1`] = `
                         value="false"
                       />
                       <label
-                        class="form-label optimizedCheckout-form-label"
+                        class="form-label optimizedCheckout-form-label body-regular"
                         for="shouldSubscribe"
                       >
                         <span>
@@ -155,7 +155,7 @@ exports[`StripeGuestForm matches snapshot 1`] = `
                       value="false"
                     />
                     <label
-                      class="form-label optimizedCheckout-form-label"
+                      class="form-label optimizedCheckout-form-label body-regular"
                       for="shouldSubscribe"
                     >
                       <span>

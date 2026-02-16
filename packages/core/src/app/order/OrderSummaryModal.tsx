@@ -3,9 +3,10 @@ import {
     type ShopperCurrency as ShopperCurrencyType,
     type StoreCurrency,
 } from '@bigcommerce/checkout-sdk';
+import classNames from 'classnames';
 import React, { cloneElement, type FunctionComponent, isValidElement, type ReactNode } from 'react';
 
-import { useCheckout, useLocale } from '@bigcommerce/checkout/contexts';
+import { useCheckout, useLocale, useThemeContext } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedHtml, TranslatedString } from '@bigcommerce/checkout/locale';
 import { Button, IconCloseWithBorder } from '@bigcommerce/checkout/ui';
@@ -54,6 +55,7 @@ const OrderSummaryModal: FunctionComponent<
 }) => {
     const { currency } = useLocale();
     const { checkoutState } = useCheckout();
+    const { themeV2 } = useThemeContext();
     const { checkoutSettings } = checkoutState.data.getConfig() ?? {};
     const checkout = checkoutState.data.getCheckout();
     const order = checkoutState.data.getOrder();
@@ -96,7 +98,7 @@ const OrderSummaryModal: FunctionComponent<
     return <Modal
         additionalBodyClassName="cart-modal-body optimizedCheckout-orderSummary"
         additionalHeaderClassName="cart-modal-header optimizedCheckout-orderSummary with-continue-button"
-        additionalModalClassName="optimizedCheckout-cart-modal"
+        additionalModalClassName={classNames("optimizedCheckout-cart-modal", { "themeV2": themeV2 })}
         footer={continueButton}
         header={renderHeader({
             headerLink,

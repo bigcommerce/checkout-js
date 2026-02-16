@@ -1,0 +1,25 @@
+.staticConsignment {
+    @include themeV2-mobile-tablet-only {
+        .shipping-method {
+            padding-top: spacing("half");
+        }
+    }
+
+    @include themeV2 {
+        .shippingOption {
+            border: 0;
+            margin-top: 0;
+            padding-top: 0;
+        }
+
+        .shipping-address-container {
+            width: 60%;
+        }
+
+        .title {
+            font-size: fontSize("base");
+            font-weight: fontWeight("bold");
+            margin-bottom: spacing("quarter");
+        }
+    }
+}

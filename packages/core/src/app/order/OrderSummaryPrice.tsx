@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React, { type FC, type ReactNode, useCallback, useEffect, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 
-import { useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 
 import { ShopperCurrency } from '../currency';
@@ -67,7 +67,6 @@ const OrderSummaryPrice: FC<OrderSummaryPriceProps> = ({
         }
     } = useCheckout();
 
-    const { themeV2 } = useThemeContext();
     const displayValue = getDisplayValue(amount, zeroLabel);
     const isActionDisabled = isSubmittingOrder();
 
@@ -111,8 +110,8 @@ const OrderSummaryPrice: FC<OrderSummaryPriceProps> = ({
                 >
                     <span className={classNames('cart-priceItem-label',
                         {
-                            'body-regular': themeV2 && !isOrderTotal,
-                            'sub-header': themeV2 && isOrderTotal
+                            'body-regular': !isOrderTotal,
+                            'sub-header': isOrderTotal
                         })}
                     >
                         <span data-test="cart-price-label">
@@ -129,7 +128,7 @@ const OrderSummaryPrice: FC<OrderSummaryPriceProps> = ({
                                 <a
                                     className={classNames({
                                         'link--disabled': isActionDisabled,
-                                        'body-cta': themeV2 && !isOrderTotal
+                                        'body-cta': !isOrderTotal
                                     })}
                                     data-test="cart-price-callback"
                                     href="#"
@@ -143,8 +142,8 @@ const OrderSummaryPrice: FC<OrderSummaryPriceProps> = ({
 
                     <span className={classNames('cart-priceItem-value',
                         {
-                            'body-medium': themeV2 && !isOrderTotal,
-                            'header': themeV2 && isOrderTotal
+                            'body-medium': !isOrderTotal,
+                            'header': isOrderTotal
                         })}
                     >
                         {isNumberValue(amountBeforeDiscount) && amountBeforeDiscount !== amount && (

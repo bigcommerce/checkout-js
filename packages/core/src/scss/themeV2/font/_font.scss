@@ -53,7 +53,7 @@
     }
 
     // overrides
-    .body-bold, .body-medium {
+    .body-bold, .body-medium, .sub-header {
         &.button--primary:not(:disabled){
             color: $color-white;
         }
@@ -68,7 +68,7 @@
         }
     }
 
-    .shippingOptionLabel {
+    .shippingOptionLabel, .shippingOption--selected {
         .shippingOption-price, .shippingOption-desc {
             &.body-medium {
                 font-size: $fontSize-base;
@@ -89,6 +89,57 @@
     .add-consignment-button {
         &.body-regular {
             color: $color-black;
+        }
+    }
+
+    .consignment-line-item-list li .body-regular {
+        .line-item-options {
+            color: $color-secondaryDarkest;
+        }
+    }
+
+    &.modal.modal--afterOpen {
+        background-color: $color-white;
+
+        &.allocate-items-modal .modal-body {
+            .left-to-allocate-items-table .left-to-allocate-item-name-container {
+                .left-to-allocate-item-name {
+                    &.body-regular {
+                        font-weight: fontWeight("normal");
+                        color: $color-black;
+                    }
+                }
+
+                .left-to-allocate-item-option {
+                    &.sub-text-medium {
+                        font-size: fontSize("tiny");
+                    }
+                }
+            }
+
+            .allocated-line-items .allocated-line-items-list li {
+                .body-regular {
+                    .line-item-options {
+                        color: $color-secondaryDarkest;
+                    }
+                }
+            }
+        }
+    }
+
+    .staticMultiConsignment {
+        .staticMultiConsignment-header {
+            &.body-bold {
+                font-size: fontSize("base");
+            }
+        }
+
+        .staticConsignment-items {
+            .sub-text {
+                .line-item-options {
+                    color: $color-secondaryDarkest;
+                }
+            }
         }
     }
 }

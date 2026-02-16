@@ -235,7 +235,7 @@ const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProp
     return (
         <Fieldset
             legend={
-                <Legend hidden>
+                <Legend>
                     <TranslatedString id="payment.payment_methods_text" />
                 </Legend>
             }

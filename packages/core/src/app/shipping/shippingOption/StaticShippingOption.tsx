@@ -1,8 +1,5 @@
 import { type ShippingOption } from '@bigcommerce/checkout-sdk';
-import classNames from 'classnames';
 import React from 'react';
-
-import { useThemeContext } from '@bigcommerce/checkout/contexts';
 
 import { ShopperCurrency } from '../../currency';
 
@@ -20,8 +17,6 @@ const StaticShippingOption: React.FunctionComponent<StaticShippingOptionProps> =
     method,
     shippingCostAfterDiscount,
 }) => {
-    const { themeV2 } = useThemeContext();
-
     const renderShippingPrice = () => {
         if (shippingCostAfterDiscount !== undefined && shippingCostAfterDiscount !== method.cost) {
             return (
@@ -51,7 +46,7 @@ const StaticShippingOption: React.FunctionComponent<StaticShippingOptionProps> =
                     />
                 </span>
             )}
-            <span className={classNames('shippingOption-desc', { 'body-medium': themeV2 })}>
+            <span className="shippingOption-desc body-medium">
                 {method.description}
                 {method.transitTime && (
                     <span className="shippingOption-transitTime">{method.transitTime}</span>
@@ -62,7 +57,7 @@ const StaticShippingOption: React.FunctionComponent<StaticShippingOptionProps> =
                     />
                 )}
             </span>
-            <span className={classNames('shippingOption-price', { 'body-medium': themeV2 })}>
+            <span className="shippingOption-price body-medium">
                 {renderShippingPrice()}
             </span>
         </div>

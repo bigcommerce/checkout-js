@@ -1,9 +1,8 @@
 import { type CheckoutSelectors, type CustomerRequestOptions, type CustomError } from '@bigcommerce/checkout-sdk';
-import classNames from 'classnames';
 import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';
 
-import { type CheckoutContextProps, useThemeContext } from '@bigcommerce/checkout/contexts';
+import { type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import { withCheckout } from '../checkout';
@@ -44,8 +43,6 @@ const CustomerInfo: FunctionComponent<CustomerInfoProps & WithCheckoutCustomerIn
     onSignOutError = noop,
     signOut,
 }) => {
-    const { themeV2 } = useThemeContext();
-
     const handleSignOut: () => Promise<void> = async () => {
         try {
             if (shouldRedirectToStorefrontForAuth) {
@@ -74,9 +71,7 @@ const CustomerInfo: FunctionComponent<CustomerInfoProps & WithCheckoutCustomerIn
     return (
         <div className="customerView" data-test="checkout-customer-info">
             <div
-                className={classNames('customerView-body',
-                    { 'body-regular': themeV2 },
-                )}
+                className="customerView-body body-regular"
                 data-test="customer-info"
             >
                 {email}
@@ -85,7 +80,7 @@ const CustomerInfo: FunctionComponent<CustomerInfoProps & WithCheckoutCustomerIn
             <div className="customerView-actions">
                 {isSignedIn && (
                     <Button
-                        className={themeV2 ? 'body-regular' : ''}
+                        className='body-regular'
                         isLoading={isSigningOut}
                         onClick={handleSignOut}
                         size={ButtonSize.Tiny}

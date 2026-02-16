@@ -1,8 +1,10 @@
 import { type Address, type FormField } from '@bigcommerce/checkout-sdk';
+import classNames from 'classnames';
 import { type FormikProps, withFormik } from 'formik';
 import React, { type FunctionComponent } from 'react';
 import { lazy } from 'yup';
 
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
@@ -94,21 +96,25 @@ const AddressFormModal: FunctionComponent<AddressFormModalProps> = ({
     onAfterOpen,
     onRequestClose,
     ...addressFormProps
-}) => (
-    <Modal
-        additionalModalClassName="modal--medium"
-        header={
-            <ModalHeader>
-                <TranslatedString id="address.add_address_heading" />
-            </ModalHeader>
-        }
-        isOpen={isOpen}
-        onAfterOpen={onAfterOpen}
-        onRequestClose={onRequestClose}
-        shouldShowCloseButton={true}
-    >
-        <SaveAddressForm {...addressFormProps} onRequestClose={onRequestClose} />
-    </Modal>
-);
+}) => {
+    const { themeV2 } = useThemeContext();
+
+    return (
+        <Modal
+            additionalModalClassName={classNames("modal--medium", { "themeV2": themeV2 })}
+            header={
+                <ModalHeader>
+                    <TranslatedString id="address.add_address_heading" />
+                </ModalHeader>
+            }
+            isOpen={isOpen}
+            onAfterOpen={onAfterOpen}
+            onRequestClose={onRequestClose}
+            shouldShowCloseButton={true}
+        >
+            <SaveAddressForm {...addressFormProps} onRequestClose={onRequestClose} />
+        </Modal>
+    );
+}
 
 export default AddressFormModal;

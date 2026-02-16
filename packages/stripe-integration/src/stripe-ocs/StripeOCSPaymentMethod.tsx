@@ -257,5 +257,8 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
 export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>(
     StripeOCSPaymentMethod,
-    [{ gateway: 'stripeocs', id: 'optimized_checkout' }],
+    [
+        { gateway: 'stripeocs', id: 'optimized_checkout' },
+        { gateway: 'stripeocs', id: 'checkout_session' },
+    ],
 );

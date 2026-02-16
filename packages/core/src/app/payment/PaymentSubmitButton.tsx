@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, { type FunctionComponent, memo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -7,6 +8,7 @@ import { Button, ButtonSize, ButtonVariant } from '../ui/button';
 import { IconBolt } from '../ui/icon';
 
 import { PaymentMethodId, PaymentMethodType } from './paymentMethod';
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
 
 interface PaymentSubmitButtonTextProps {
     methodGateway?: string;
@@ -150,34 +152,40 @@ const PaymentSubmitButton: FunctionComponent<
     initialisationStrategyType,
     brandName,
     isComplete,
-}) => (
-    <Button
-        className={
-            providersWithCustomClasses.includes(methodId as PaymentMethodId)
-                ? `payment-submit-button-${methodId}`
-                : undefined
-        }
-        data-test="payment-submit-button"
-        disabled={isInitializing || isSubmitting || isDisabled}
-        id="checkout-payment-continue"
-        isFullWidth
-        isLoading={isSubmitting}
-        size={ButtonSize.Large}
-        type="submit"
-        variant={ButtonVariant.Action}
-    >
-        <PaymentSubmitButtonText
-            brandName={brandName}
-            initialisationStrategyType={initialisationStrategyType}
-            isComplete={isComplete}
-            isPaymentDataRequired={isPaymentDataRequired}
-            methodGateway={methodGateway}
-            methodId={methodId}
-            methodName={methodName}
-            methodType={methodType}
-        />
-    </Button>
-);
+}) => {
+    const { themeV2 } = useThemeContext();
+
+    return (
+        <Button
+            className={classNames(
+                {
+                    [`payment-submit-button-${methodId}`]: providersWithCustomClasses.includes(methodId as PaymentMethodId)
+                },
+                'sub-header',
+            )}
+
+            data-test="payment-submit-button"
+            disabled={isInitializing || isSubmitting || isDisabled}
+            id="checkout-payment-continue"
+            isFullWidth
+            isLoading={isSubmitting}
+            size={ButtonSize.Large}
+            type="submit"
+            variant={themeV2 ? ButtonVariant.Primary : ButtonVariant.Action}
+        >
+            <PaymentSubmitButtonText
+                brandName={brandName}
+                initialisationStrategyType={initialisationStrategyType}
+                isComplete={isComplete}
+                isPaymentDataRequired={isPaymentDataRequired}
+                methodGateway={methodGateway}
+                methodId={methodId}
+                methodName={methodName}
+                methodType={methodType}
+            />
+        </Button>
+    );
+};
 
 export default withCheckout(({ checkoutState }) => {
     const {

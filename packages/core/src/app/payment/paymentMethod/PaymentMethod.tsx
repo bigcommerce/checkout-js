@@ -14,7 +14,6 @@ import { CaptureMessageComponent } from '@bigcommerce/checkout/payment-integrati
 
 import { withCheckout } from '../../checkout';
 
-const BraintreeCreditCardPaymentMethod = lazy(() => import(/* webpackChunkName: "braintree-credit-card-payment-method" */'./BraintreeCreditCardPaymentMethod'));
 const HostedCreditCardPaymentMethod = lazy(() => import(/* webpackChunkName: "hosted-credit-card-payment-method" */'./HostedCreditCardPaymentMethod'));
 const HostedPaymentMethod = lazy(() => import(/* webpackChunkName: "hosted-payment-method" */'./HostedPaymentMethod'));
 
@@ -52,33 +51,12 @@ const PaymentMethodComponent: FunctionComponent<
 > = (props) => {
     const { method } = props;
 
-    if (method.id === PaymentMethodId.Braintree) {
-        return <Suspense><BraintreeCreditCardPaymentMethod {...props} /></Suspense>;
-    }
-
     if (
         method.id === PaymentMethodId.Humm ||
         method.id === PaymentMethodId.Laybuy ||
-        method.method === PaymentMethodType.Paypal ||
-        method.method === PaymentMethodType.PaypalCredit ||
         method.type === PaymentMethodProviderType.Hosted
     ) {
-        const knownMethods = [
-            { id: "braintreepaypalcredit", gateway: null, method: "paypal-credit", type: PaymentMethodProviderType.Api },
-        ];
-
-        let sentryMessage: string;
-
-        if (knownMethods.some(knownMethod =>
-            knownMethod.id === method.id &&
-            knownMethod.gateway === method.gateway &&
-            knownMethod.method === method.method &&
-            knownMethod.type === method.type
-        )) {
-            sentryMessage = '';
-        }else {
-            sentryMessage = `DataHostedPaymentMethod ${JSON.stringify(method)}`;
-        }
+        const sentryMessage =`DataHostedPaymentMethod ${JSON.stringify(method)}`;
 
         return <>
                 <CaptureMessageComponent message={sentryMessage} />

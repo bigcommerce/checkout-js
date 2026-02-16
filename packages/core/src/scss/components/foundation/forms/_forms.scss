@@ -38,6 +38,10 @@
         }
     }
 
+    .floating-input, .floating-select, .floating-textarea {
+        background-color: $floating-label-bg-color;
+    }
+
     .form-field {
         position: relative;
         margin: 0 0 spacing("half");
@@ -48,7 +52,6 @@
 
         .floating-input,
         .floating-select {
-            background-color: $floating-label-bg-color;
             font-size: $floating-label-font-size--default;
             height: $floating-label-input-height;
             padding-bottom: 0;
@@ -65,7 +68,6 @@
         }
 
         .floating-textarea {
-            background-color: $floating-label-bg-color;
             padding-top: $input-verticalPadding * 2.5;
         }
 
@@ -92,18 +94,6 @@
                 font-size: $floating-label-font-size--default;
                 vertical-align: baseline;
             }
-
-            &.floating-form-field-label {
-                color: $color-secondaryDarkest;
-                font-family: $fontFamily-montserrat;
-                font-size: $fontSize-smallest;
-                font-weight: $fontWeight-medium;
-                margin-top: spacing("eighth");
-
-                small {
-                    font-size: $fontSize-smallest;
-                }
-            }
         }
 
         .react-datepicker__tab-loop + .floating-label,
@@ -122,18 +112,6 @@
             small {
                 font-size: fontSize("tiny");
             }
-
-            &.floating-form-field-label{
-                color: $color-secondaryDarkest;
-                font-family: $fontFamily-montserrat;
-                font-size: $fontSize-tiny;
-                font-weight: $fontWeight-medium;
-                margin-top: 0;
-
-                small {
-                    font-size: $fontSize-tiny;
-                }
-            }
         }
     }
 
@@ -143,11 +121,6 @@
         .floating-textarea {
             border-color: $floating-label-border-color;
         }
-    }
-
-    .floating-label + .form-field-errors,
-    .dynamic-form-field--addressLineAutocomplete.floating-form-field .form-field-errors {
-        padding-top: $floating-label-error-padding-top;
     }
 
     .form-input {

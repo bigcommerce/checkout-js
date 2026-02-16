@@ -5,7 +5,7 @@ export {
     getPaymentMethodIconComponent,
     filterInstrumentTypes,
 } from './mapFromPaymentMethodCardType';
-export { IconSize, IconProps } from './withIconContainer';
+export { IconSize, IconProps } from './IconContainer';
 export { default as IconBitCoin } from './IconBitCoin';
 export { default as IconBitCoinCash } from './IconBitCoinCash';
 export { default as IconBolt } from './IconBolt';
@@ -60,3 +60,4 @@ export { default as IconRemoveCoupon } from './IconRemoveCoupon';
 export { default as IconCoupon } from './IconCoupon';
 export { default as IconDownArrow } from './IconDownArrow';
 export { default as IconUpArrow } from './IconUpArrow';
+export { default as IconArrowLeft } from './IconArrowLeft';

@@ -1,11 +1,17 @@
-import React, { type FunctionComponent } from 'react';
+import React, { type FunctionComponent, memo } from 'react';
 
-import withIconContainer from './withIconContainer';
+import IconContainer, { type IconProps } from './IconContainer';
 
-const IconChevronUp: FunctionComponent = () => (
+const IconChevronUpSvg: FunctionComponent = () => (
     <svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
         <path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z" />
     </svg>
 );
 
-export default withIconContainer(IconChevronUp);
+const IconChevronUp: FunctionComponent<IconProps> = (props) => (
+    <IconContainer {...props}>
+        <IconChevronUpSvg />
+    </IconContainer>
+);
+
+export default memo(IconChevronUp);

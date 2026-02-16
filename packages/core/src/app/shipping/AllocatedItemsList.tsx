@@ -1,6 +1,5 @@
 import React from "react";
 
-import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import { IconClose } from "../ui/icon";
@@ -15,11 +14,9 @@ interface AllocatedItemsListProps {
 }
 
 const AllocatedItemsList = ({ assignedItems, onUnassignItem }: AllocatedItemsListProps) => {
-    const { themeV2 } = useThemeContext();
-
     return (
         <div className="allocated-line-items">
-            <h3 className={themeV2 ? 'body-bold' : ''}>
+            <h3 className="body-bold">
                 <TranslatedString data={{ count: assignedItems.shippableItemsCount }} id="shipping.multishipping_item_allocated_message" />
                 {assignedItems.hasSplitItems && (
                     <ItemSplitTooltip />
@@ -28,7 +25,7 @@ const AllocatedItemsList = ({ assignedItems, onUnassignItem }: AllocatedItemsLis
             <ul className="allocated-line-items-list">
                 {assignedItems.lineItems.map(item => (
                     <li key={item.id}>
-                        {renderItemContent(item, themeV2)}
+                        {renderItemContent(item)}
                         <span data-test={`remove-${item.id.toString()}-button`} onClick={() => onUnassignItem(item)}>
                             <IconClose />
                         </span>

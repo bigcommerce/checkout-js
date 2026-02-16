@@ -57,6 +57,7 @@
             "discount_text": "Korting",
             "downloads_action": "Ga naar Downloads",
             "edit_cart_action": "Winkelmandje bewerken",
+            "go_to_cart_action": "Cart",
             "edit_multi_shipping_cart_message": "Nieuwe artikelen worden standaard toegewezen aan verzendbestemming 1. Wijs ze opnieuw toe als je ze naar andere bestemmingen wilt laten verzenden.",
             "estimated_total_text": "Geschat totaal",
             "free_text": "Gratis",
@@ -65,12 +66,15 @@
             "item": "Artikel",
             "items": "artikelen",
             "item_count_text": "{count, plural, one{1 item} other{# items} }",
+            "backorder_count_text": "{count} will be backordered",
             "print_action": "Afdrukken",
             "remaining_text": "resterend",
             "remove_action": "verwijderen",
             "return_to_checkout": "TERUG NAAR AFREKENEN",
             "see_all_action": "Alles weergeven",
             "see_less_action": "Minder weergeven",
+            "show_order_summary_action": "Show Order Summary",
+            "hide_order_summary_action": "Hide Order Summary",
             "shipping_text": "Verzending",
             "gift_wrapping_text": "Cadeauverpakking",
             "show_details_action": "Details weergeven",
@@ -444,6 +448,7 @@
                 "three_d_secure_declined": "Er is een probleem opgetreden met uw betaling, controleer uw betalingsgegevens of neem contact op met uw creditcarduitgever.",
                 "three_d_secure_failed": "De betaling is mislukt. Probeer het opnieuw of gebruik een andere betaalmethode.",
                 "three_d_secure_required": "Verdere authenticatie is vereist om uw betaling te verwerken. Neem contact met ons op.",
+                "three_d_secure_payment_failed": "De creditcardgegevens zijn ongeldig of de 3D Secure-verificatie is mislukt. Probeer een andere kaart of probeer de betaling later opnieuw.",
                 "token_error": "Er is een probleem opgetreden bij het verwerken van uw transactie. Probeer het later opnieuw.",
                 "transaction_declined": "Uw betaling is geweigerd. Probeer het opnieuw.",
                 "transaction_rejected": "Betaling is geweigerd. Probeer het opnieuw.",
@@ -599,7 +604,8 @@
         "order_confirmation": {
             "mandate": {
                 "adyenv3": {
-                    "boletobancario": "Boleto Bancário-ticket"
+                    "boletobancario": "Boleto Bancário-ticket",
+                    "oxxo": "OXXO-ticket"
                 },
                 "bluesnapdirect": {
                     "sepa_direct_debit": "Referentie SEPA-machtiging tot automatische incasso: {mandate}"

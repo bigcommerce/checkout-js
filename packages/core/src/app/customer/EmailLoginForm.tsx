@@ -1,8 +1,10 @@
 import { type SignInEmail } from '@bigcommerce/checkout-sdk';
+import classNames from 'classnames';
 import { type FormikProps, withFormik } from 'formik';
 import { noop } from 'lodash';
 import React, { type FunctionComponent, memo, useMemo } from 'react';
 
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import {
     TranslatedHtml,
     TranslatedLink,
@@ -50,6 +52,8 @@ const EmailLoginForm: FunctionComponent<
     isFloatingLabelEnabled,
     values: { email: formEmail },
 }) => {
+    const { themeV2 } = useThemeContext();
+
     const modalHeaderStringId = useMemo(() => {
         if (emailHasBeenRequested) {
             if (sentEmailError) {
@@ -188,7 +192,7 @@ const EmailLoginForm: FunctionComponent<
     return (
         <Modal
             additionalBodyClassName="modal--withText"
-            additionalModalClassName="modal--medium"
+            additionalModalClassName={classNames("modal--medium", { "themeV2": themeV2 })}
             header={
                 <ModalHeader>
                     <TranslatedString id={modalHeaderStringId} />

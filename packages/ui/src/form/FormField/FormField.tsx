@@ -14,7 +14,6 @@ export interface FormFieldProps {
     footer?: ReactNode;
     id?: string;
     isFloatingLabelEnabled?: boolean;
-    themeV2?: boolean;
     input(field: FieldProps<string>): ReactNode;
     onChange?(value: string): void;
 }
@@ -29,8 +28,13 @@ const FormField: FunctionComponent<FormFieldProps> = ({
     name,
     id,
     isFloatingLabelEnabled,
-    themeV2 = false,
 }) => {
+    let labelClassName = 'body-medium';
+
+    if (isFloatingLabelEnabled) {
+        labelClassName = 'floating-form-field-label';
+    }
+
     const renderField = useCallback(
         (props: FieldProps<string>) => (
             <>
@@ -39,7 +43,7 @@ const FormField: FunctionComponent<FormFieldProps> = ({
                 {label !== undefined && (typeof label === 'function' ? label(name) : label)}
                 {labelContent !== undefined && !label && (
                     <Label
-                        additionalClassName={themeV2 ? 'floating-form-field-label' : ''}
+                        additionalClassName={labelClassName}
                         htmlFor={name}
                         id={`${id ?? name}-label`}
                         isFloatingLabelEnabled={isFloatingLabelEnabled}
@@ -59,7 +63,7 @@ const FormField: FunctionComponent<FormFieldProps> = ({
                 {footer}
             </>
         ),
-        [isFloatingLabelEnabled, input, label, name, labelContent, themeV2, id, footer],
+        [isFloatingLabelEnabled, input, label, name, labelContent, labelClassName, id, footer],
     );
 
     return (

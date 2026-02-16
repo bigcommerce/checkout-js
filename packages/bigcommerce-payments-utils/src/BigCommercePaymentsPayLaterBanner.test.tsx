@@ -1,5 +1,8 @@
 import { createCheckoutService } from '@bigcommerce/checkout-sdk';
-import { createBigCommercePaymentsPayLaterPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bigcommerce-payments';
+import {
+    createBigCommercePaymentsPayLaterPaymentStrategy,
+    createBigCommercePaymentsPaymentStrategy,
+} from '@bigcommerce/checkout-sdk/integrations/bigcommerce-payments';
 import React, { type FunctionComponent } from 'react';
 
 import {
@@ -21,6 +24,8 @@ describe('BigCommercePaymentsPayLaterBanner', () => {
     const checkoutService = createCheckoutService();
     const checkoutState = checkoutService.getState();
     const defaultProps = {
+        methodId: PaymentMethodId.BigCommercePaymentsPayLater,
+        containerId: 'bigcommerce-payments-paylater-banner-container',
         onUnhandledError: jest.fn(),
     };
 
@@ -50,9 +55,12 @@ describe('BigCommercePaymentsPayLaterBanner', () => {
 
         expect(checkoutService.initializePayment).toHaveBeenCalledWith({
             methodId: PaymentMethodId.BigCommercePaymentsPayLater,
-            integrations: [createBigCommercePaymentsPayLaterPaymentStrategy],
+            integrations: [
+                createBigCommercePaymentsPayLaterPaymentStrategy,
+                createBigCommercePaymentsPaymentStrategy,
+            ],
             bigcommerce_payments_paylater: {
-                bannerContainerId: 'bigcommerce-payments-banner-container',
+                bannerContainerId: 'bigcommerce-payments-paylater-banner-container',
             },
         });
 
@@ -70,12 +78,48 @@ describe('BigCommercePaymentsPayLaterBanner', () => {
 
         expect(checkoutService.initializePayment).toHaveBeenCalledWith({
             methodId: PaymentMethodId.BigCommercePaymentsPayLater,
-            integrations: [createBigCommercePaymentsPayLaterPaymentStrategy],
+            integrations: [
+                createBigCommercePaymentsPayLaterPaymentStrategy,
+                createBigCommercePaymentsPaymentStrategy,
+            ],
             bigcommerce_payments_paylater: {
-                bannerContainerId: 'bigcommerce-payments-banner-container',
+                bannerContainerId: 'bigcommerce-payments-paylater-banner-container',
             },
         });
 
         expect(defaultProps.onUnhandledError).toHaveBeenCalled();
+    });
+
+    it('initializes BigCommercePaymentsPayLaterBanner with bigcommerce_payments method ID', () => {
+        const propsWithBigCommercePayments = {
+            ...defaultProps,
+            methodId: PaymentMethodId.BigCommercePaymentsPayPal,
+            containerId: 'bigcommerce-payments-banner-container',
+        };
+
+        const BigCommercePaymentsBannerTest = () => (
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <BigCommercePaymentsPayLaterBanner {...propsWithBigCommercePayments} />
+                </LocaleContext.Provider>
+            </CheckoutProvider>
+        );
+
+        render(<BigCommercePaymentsBannerTest />);
+
+        expect(checkoutService.initializePayment).toHaveBeenCalledWith({
+            methodId: PaymentMethodId.BigCommercePaymentsPayPal,
+            integrations: [
+                createBigCommercePaymentsPayLaterPaymentStrategy,
+                createBigCommercePaymentsPaymentStrategy,
+            ],
+            bigcommerce_payments: {
+                bannerContainerId: 'bigcommerce-payments-banner-container',
+            },
+        });
+
+        expect(checkoutService.deinitializePayment).toHaveBeenCalledWith({
+            methodId: PaymentMethodId.BigCommercePaymentsPayPal,
+        });
     });
 });

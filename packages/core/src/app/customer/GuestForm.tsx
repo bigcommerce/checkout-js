@@ -122,6 +122,21 @@ const GuestForm: FunctionComponent<
                     </Legend>
                 }
             >
+                {(themeV2 && !isLoading) && (
+                    <p className="customer-login-link body-regular">
+                        <TranslatedString id="customer.login_text" />{' '}
+                        <a
+                            data-test="customer-continue-button"
+                            id="checkout-customer-login"
+                            onClick={handleLogin}
+                            role="button"
+                            tabIndex={0}
+                        >
+                            <TranslatedString id="customer.login_action" />
+                        </a>
+                    </p>
+                )}
+
                 <div className="customerEmail-container">
                     <div className="customerEmail-body">
                         <EmailField isFloatingLabelEnabled={isFloatingLabelEnabled} onChange={onChangeEmail}/>
@@ -139,9 +154,7 @@ const GuestForm: FunctionComponent<
                         })}
                     >
                         <Button
-                            className={classNames('customerEmail-button', {
-                                'body-bold': themeV2,
-                            })}
+                            className='customerEmail-button body-bold'
                             id="checkout-customer-continue"
                             isLoading={isLoading}
                             testId="customer-continue-as-guest-button"
@@ -157,10 +170,8 @@ const GuestForm: FunctionComponent<
                     <PrivacyPolicyField isExpressPrivacyPolicy={isExpressPrivacyPolicy} url={privacyPolicyUrl} />
                 )}
 
-                {!isLoading && (
-                    <p className={classNames('customer-login-link',
-                        { 'body-regular': themeV2 })}
-                    >
+                {(!themeV2 && !isLoading) && (
+                    <p className='customer-login-link'>
                         <TranslatedString id="customer.login_text" />{' '}
                         <a
                             data-test="customer-continue-button"

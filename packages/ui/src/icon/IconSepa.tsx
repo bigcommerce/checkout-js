@@ -1,8 +1,8 @@
-import React, { type FunctionComponent } from 'react';
+import React, { type FunctionComponent, memo } from 'react';
 
-import withIconContainer from './withIconContainer';
+import IconContainer, { type IconProps } from './IconContainer';
 
-const IconSepa: FunctionComponent = () => (
+const IconSepaSvg: FunctionComponent = () => (
     <svg fill="none" height="24" viewBox="0 0 35 24" width="35" xmlns="http://www.w3.org/2000/svg">
         <rect fill="#9A1B27" height="23" rx="3.5" stroke="#D9D9D9" width="34" x="0.5" y="0.5" />
         <path
@@ -199,4 +199,10 @@ const IconSepa: FunctionComponent = () => (
     </svg>
 );
 
-export default withIconContainer(IconSepa);
+const IconSepa: FunctionComponent<IconProps> = (props) => (
+    <IconContainer {...props}>
+        <IconSepaSvg />
+    </IconContainer>
+);
+
+export default memo(IconSepa);
