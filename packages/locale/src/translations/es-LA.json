@@ -18,6 +18,9 @@
             "custom_required_error": "{label} es un campo obligatorio",
             "custom_min_error": "{label} no debe tener menos de {min} caracteres",
             "custom_max_error": "{label} no debe tener más de {max} caracteres",
+            "custom_min_number_error": "{label} must be greater than or equal to {min}",
+            "custom_max_number_error": "{label} must be less than or equal to {max}",
+            "custom_range_error": "{label} must be between {min} and {max}",
             "invalid_characters_error": "{label} contiene caracteres no válidos",
             "custom_valid_error": "{label} no es válido",
             "edit_address_action": "Editar dirección",
@@ -57,7 +60,7 @@
             "discount_text": "Descuento",
             "downloads_action": "Ir a Descargas",
             "edit_cart_action": "Editar carrito",
-            "go_to_cart_action": "Cart",
+            "go_to_cart_action": "Carrito",
             "edit_multi_shipping_cart_message": "Los artículos nuevos se enviarán por defecto al destino de envío n.º 1. Reasígnalos si quieres que se envíen a otros destinos.",
             "estimated_total_text": "Total estimado",
             "free_text": "Gratuito",
@@ -66,15 +69,15 @@
             "item": "Artículo",
             "items": "Artículos",
             "item_count_text": "{count, plural, one{1 Item} other{# Items} }",
-            "backorder_count_text": "{count} will be backordered",
+            "backorder_count_text": "{count} estará en pedido pendiente",
             "print_action": "Imprimir",
             "remaining_text": "Restante",
             "remove_action": "Quitar",
             "return_to_checkout": "REGRESAR AL ÁREA DE PAGO",
             "see_all_action": "Ver todo",
             "see_less_action": "Ver menos",
-            "show_order_summary_action": "Show Order Summary",
-            "hide_order_summary_action": "Hide Order Summary",
+            "show_order_summary_action": "Resumen del orden del espectáculo",
+            "hide_order_summary_action": "Resumen del orden de ocultar",
             "shipping_text": "Envío",
             "gift_wrapping_text": "Envoltura de regalo",
             "show_details_action": "Mostrar detalles",
@@ -605,6 +608,11 @@
             "mandate": {
                 "adyenv3": {
                     "boletobancario": "Ticket del Boleto Bancário",
+                    "multibanco": {
+                        "reference": "Payment reference",
+                        "entity": "Entity number",
+                        "expires_at": "Fecha de vencimiento"
+                    },
                     "oxxo": "Ticket de OXXO"
                 },
                 "bluesnapdirect": {

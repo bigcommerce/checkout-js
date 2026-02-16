@@ -18,6 +18,9 @@
             "custom_required_error": "{label} er påkrevd",
             "custom_min_error": "{label} skal ikke være mindre enn {min} tegn",
             "custom_max_error": "{label} skal ikke være mer enn {max} tegn",
+            "custom_min_number_error": "{label} must be greater than or equal to {min}",
+            "custom_max_number_error": "{label} must be less than or equal to {max}",
+            "custom_range_error": "{label} must be between {min} and {max}",
             "invalid_characters_error": "{label} inneholder ugyldige tegn",
             "custom_valid_error": "{label} er ikke gyldig",
             "edit_address_action": "Rediger adresse",
@@ -57,7 +60,7 @@
             "discount_text": "Rabatt",
             "downloads_action": "Gå til nedlastinger",
             "edit_cart_action": "Rediger handlekurv",
-            "go_to_cart_action": "Cart",
+            "go_to_cart_action": "Handlekurv",
             "edit_multi_shipping_cart_message": "Nye varer bruker som standard leveringsdestinasjon nr. 1. Omdisponer hvis du vil at de skal sendes til andre destinasjoner.",
             "estimated_total_text": "Estimert totalsum",
             "free_text": "Kostnadsfrie",
@@ -66,15 +69,15 @@
             "item": "Vare",
             "items": "Varer",
             "item_count_text": "{count, plural, one{1 Vare } other{# Varer } }",
-            "backorder_count_text": "{count} will be backordered",
+            "backorder_count_text": "{count} i restordre",
             "print_action": "Skriv ut",
             "remaining_text": "gjenstående",
             "remove_action": "Fjern",
             "return_to_checkout": "GÅ TILBAKE TIL KASSEN",
             "see_all_action": "Se alt",
             "see_less_action": "Se mindre",
-            "show_order_summary_action": "Show Order Summary",
-            "hide_order_summary_action": "Hide Order Summary",
+            "show_order_summary_action": "Vis bestillingssammendrag",
+            "hide_order_summary_action": "Skjul bestillingssammendrag",
             "shipping_text": "Frakt",
             "gift_wrapping_text": "Gaveinnpakning",
             "show_details_action": "Vis detaljer",
@@ -605,6 +608,11 @@
             "mandate": {
                 "adyenv3": {
                     "boletobancario": "Boleto Bancário-billett",
+                    "multibanco": {
+                        "reference": "Payment reference",
+                        "entity": "Entity number",
+                        "expires_at": "Utløpsdato"
+                    },
                     "oxxo": "OXXO-billett"
                 },
                 "bluesnapdirect": {

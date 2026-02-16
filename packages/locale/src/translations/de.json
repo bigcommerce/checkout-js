@@ -18,6 +18,9 @@
             "custom_required_error": "{label} ist erforderlich",
             "custom_min_error": "{label} sollte nicht weniger als {min} Zeichen lang sein",
             "custom_max_error": "{label} sollte nicht mehr als {max} Zeichen lang sein",
+            "custom_min_number_error": "{label} must be greater than or equal to {min}",
+            "custom_max_number_error": "{label} must be less than or equal to {max}",
+            "custom_range_error": "{label} must be between {min} and {max}",
             "invalid_characters_error": "{label} enthält ungültige Zeichen",
             "custom_valid_error": "{label} ist nicht gültig",
             "edit_address_action": "Adresse bearbeiten",
@@ -57,7 +60,7 @@
             "discount_text": "Rabatt",
             "downloads_action": "Zu Downloads",
             "edit_cart_action": "Warenkorb bearbeiten",
-            "go_to_cart_action": "Cart",
+            "go_to_cart_action": "Warenkorb",
             "edit_multi_shipping_cart_message": "Für neue Artikel wird standardmäßig die Lieferadresse Nr. 1 gewählt. Ändern Sie die Zuweisung, wenn Sie möchten, dass sie an andere Ziele versendet werden.",
             "estimated_total_text": "Geschätzter Gesamtbetrag",
             "free_text": "Kostenlos",
@@ -66,15 +69,15 @@
             "item": "Artikel",
             "items": "Artikel",
             "item_count_text": "{count, plural, one{1 Artikel} other{# Artikel} }",
-            "backorder_count_text": "{count} will be backordered",
+            "backorder_count_text": "{count} werden nachbestellt",
             "print_action": "Drucken",
             "remaining_text": "verbleiben",
             "remove_action": "Entfernen",
             "return_to_checkout": "ZURÜCK ZUR KASSE",
             "see_all_action": "Alle anzeigen",
             "see_less_action": "Weniger anzeigen",
-            "show_order_summary_action": "Show Order Summary",
-            "hide_order_summary_action": "Hide Order Summary",
+            "show_order_summary_action": "Bestellübersicht anzeigen",
+            "hide_order_summary_action": "Bestellübersicht ausblenden",
             "shipping_text": "Versand",
             "gift_wrapping_text": "Geschenkverpackung",
             "show_details_action": "Details anzeigen",
@@ -605,6 +608,11 @@
             "mandate": {
                 "adyenv3": {
                     "boletobancario": "Boleto Bancário-Ticket",
+                    "multibanco": {
+                        "reference": "Payment reference",
+                        "entity": "Entity number",
+                        "expires_at": "Ablaufdatum"
+                    },
                     "oxxo": "OXXO-Ticket"
                 },
                 "bluesnapdirect": {

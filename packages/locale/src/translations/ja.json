@@ -18,6 +18,9 @@
             "custom_required_error": "{label}が必要です",
             "custom_min_error": "{label} は {min} 文字以上である必要があります",
             "custom_max_error": "{label} は {max} 文字以内である必要があります",
+            "custom_min_number_error": "{label} must be greater than or equal to {min}",
+            "custom_max_number_error": "{label} must be less than or equal to {max}",
+            "custom_range_error": "{label} must be between {min} and {max}",
             "invalid_characters_error": "{label}に無効な文字が含まれています",
             "custom_valid_error": "{label}は無効です",
             "edit_address_action": "住所を編集",
@@ -57,7 +60,7 @@
             "discount_text": "割引",
             "downloads_action": "ダウンロードに移動",
             "edit_cart_action": "カートを編集",
-            "go_to_cart_action": "Cart",
+            "go_to_cart_action": "ショッピングカート",
             "edit_multi_shipping_cart_message": "新しい商品は、デフォルトで配送先#1となります。他の配送先に発送したい場合は、再割り当てしてください。",
             "estimated_total_text": "見積合計",
             "free_text": "無料",
@@ -66,15 +69,15 @@
             "item": "お品物",
             "items": "お品物",
             "item_count_text": "{count, plural, one{1 Item} other{# Items} }",
-            "backorder_count_text": "{count} will be backordered",
+            "backorder_count_text": "{count}はバックオーダーになります",
             "print_action": "印刷",
             "remaining_text": "残り",
             "remove_action": "除去",
             "return_to_checkout": "決済に戻る",
             "see_all_action": "すべて表示",
             "see_less_action": "表示を減らす",
-            "show_order_summary_action": "Show Order Summary",
-            "hide_order_summary_action": "Hide Order Summary",
+            "show_order_summary_action": "注文概要を表示",
+            "hide_order_summary_action": "注文概要を非表示",
             "shipping_text": "配送",
             "gift_wrapping_text": "ギフトラッピング",
             "show_details_action": "詳細の表示",
@@ -605,6 +608,11 @@
             "mandate": {
                 "adyenv3": {
                     "boletobancario": "Boleto Bancário チケット",
+                    "multibanco": {
+                        "reference": "Payment reference",
+                        "entity": "Entity number",
+                        "expires_at": "有効期限"
+                    },
                     "oxxo": "OXXOチケット"
                 },
                 "bluesnapdirect": {

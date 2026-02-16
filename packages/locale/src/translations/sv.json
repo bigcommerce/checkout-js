@@ -18,6 +18,9 @@
             "custom_required_error": "{label} måste anges",
             "custom_min_error": "{label} får inte vara mindre än {min} tecken",
             "custom_max_error": "{label} får inte vara mer än {max} tecken",
+            "custom_min_number_error": "{label} must be greater than or equal to {min}",
+            "custom_max_number_error": "{label} must be less than or equal to {max}",
+            "custom_range_error": "{label} must be between {min} and {max}",
             "invalid_characters_error": "{label} innehåller ogiltiga tecken",
             "custom_valid_error": "{label} är inte giltig",
             "edit_address_action": "Redigera adress",
@@ -57,7 +60,7 @@
             "discount_text": "Rabatt",
             "downloads_action": "Gå till nedladdningar",
             "edit_cart_action": "Redigera kundvagn",
-            "go_to_cart_action": "Cart",
+            "go_to_cart_action": "Kundvagn",
             "edit_multi_shipping_cart_message": "Nya objekt skickas som standard till leveransdestination nr 1. Byt destination om du vill att de ska skickas någon annanstans.",
             "estimated_total_text": "Beräknad totalsumma",
             "free_text": "Gratis",
@@ -66,15 +69,15 @@
             "item": "Vara",
             "items": "varor",
             "item_count_text": "{count, plural, one{1 Item} other{# Items} }",
-            "backorder_count_text": "{count} will be backordered",
+            "backorder_count_text": "{count} kommer att restnoteras",
             "print_action": "Skriva ut",
             "remaining_text": "återstående",
             "remove_action": "Ta bort",
             "return_to_checkout": "GÅ TILLBAKA TILL KASSAN",
             "see_all_action": "Visa alla",
             "see_less_action": "Se mindre",
-            "show_order_summary_action": "Show Order Summary",
-            "hide_order_summary_action": "Hide Order Summary",
+            "show_order_summary_action": "Visa beställningssammanfattning",
+            "hide_order_summary_action": "Dölj beställningssammanfattning",
             "shipping_text": "Frakt",
             "gift_wrapping_text": "Paketomslag",
             "show_details_action": "Visa detaljer",
@@ -605,6 +608,11 @@
             "mandate": {
                 "adyenv3": {
                     "boletobancario": "Boleto Bancário-ticket",
+                    "multibanco": {
+                        "reference": "Payment reference",
+                        "entity": "Entity number",
+                        "expires_at": "Förfallodatum"
+                    },
                     "oxxo": "OXXO-ticket"
                 },
                 "bluesnapdirect": {

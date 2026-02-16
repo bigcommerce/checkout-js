@@ -18,6 +18,9 @@
             "custom_required_error": "{label} jest wymagany",
             "custom_min_error": "Długość {label} nie powinna być mniejsza od {min} znaków",
             "custom_max_error": "Długość {label} nie powinna być większa od {max} znaków",
+            "custom_min_number_error": "{label} must be greater than or equal to {min}",
+            "custom_max_number_error": "{label} must be less than or equal to {max}",
+            "custom_range_error": "{label} must be between {min} and {max}",
             "invalid_characters_error": "{label} zawiera nieprawidłowe znaki",
             "custom_valid_error": "{label} jest nieważny",
             "edit_address_action": "Edytuj adres",
@@ -57,7 +60,7 @@
             "discount_text": "Rabat",
             "downloads_action": "Przejdź do Pobrania",
             "edit_cart_action": "Edytuj koszyk",
-            "go_to_cart_action": "Cart",
+            "go_to_cart_action": "Koszyk",
             "edit_multi_shipping_cart_message": "Nowe produkty będą mieć domyślnie ustawione miejsce docelowe wysyłki nr 1. Zmień przypisanie, jeśli chcesz je wysłać do innych miejsc docelowych.",
             "estimated_total_text": "Szacunkowa suma",
             "free_text": "Bezpłatna strona",
@@ -605,6 +608,11 @@
             "mandate": {
                 "adyenv3": {
                     "boletobancario": "Bilet bankowy",
+                    "multibanco": {
+                        "reference": "Payment reference",
+                        "entity": "Entity number",
+                        "expires_at": "Data ważności"
+                    },
                     "oxxo": "Bilet do OXXO"
                 },
                 "bluesnapdirect": {
