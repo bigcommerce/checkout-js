@@ -1,8 +1,8 @@
-import React, { type FunctionComponent } from 'react';
+import React, { type FunctionComponent, memo } from 'react';
 
-import withIconContainer from './withIconContainer';
+import IconContainer, { type IconProps } from './IconContainer';
 
-const IconCardAmex: FunctionComponent = () => (
+const IconCardAmexSvg: FunctionComponent = () => (
     <svg
         aria-labelledby="iconCardAmexTitle"
         fill="none"
@@ -23,4 +23,10 @@ const IconCardAmex: FunctionComponent = () => (
     </svg>
 );
 
-export default withIconContainer(IconCardAmex);
+const IconCardAmex: FunctionComponent<IconProps> = (props) => (
+    <IconContainer {...props}>
+        <IconCardAmexSvg />
+    </IconContainer>
+);
+
+export default memo(IconCardAmex);

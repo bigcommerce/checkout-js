@@ -1,8 +1,8 @@
-import React, { type FunctionComponent } from 'react';
+import React, { type FunctionComponent, memo } from 'react';
 
-import withIconContainer from './withIconContainer';
+import IconContainer, { type IconProps } from './IconContainer';
 
-const IconPaypal: FunctionComponent = () => (
+const IconPaypalSvg: FunctionComponent = () => (
     <svg height="300" viewBox="0 0 255 300" width="255" xmlns="http://www.w3.org/2000/svg">
         <path
             d="M228.03 77.2c3.6-23.02-.03-38.7-12.48-52.89C201.83 8.7 177.07 2 145.4 2H53.4c-6.47 0-11.99 4.7-12.99 11.11L2.1 256.03a7.9 7.9 0 0 0 7.8 9.14h56.78c79.33-53.38 148.45-81.4 161.35-187.97z"
@@ -19,4 +19,10 @@ const IconPaypal: FunctionComponent = () => (
     </svg>
 );
 
-export default withIconContainer(IconPaypal);
+const IconPaypal: FunctionComponent<IconProps> = (props) => (
+    <IconContainer {...props}>
+        <IconPaypalSvg />
+    </IconContainer>
+);
+
+export default memo(IconPaypal);

@@ -1,8 +1,8 @@
-import React, { type FunctionComponent } from 'react';
+import React, { type FunctionComponent, memo } from 'react';
 
-import withIconContainer from './withIconContainer';
+import IconContainer, { type IconProps } from './IconContainer';
 
-const IconArrowLeft: FunctionComponent = () => (
+const IconArrowLeftSvg: FunctionComponent = () => (
     <svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
         <path
             clipRule="evenodd"
@@ -15,4 +15,10 @@ const IconArrowLeft: FunctionComponent = () => (
     </svg>
 );
 
-export default withIconContainer(IconArrowLeft);
+const IconArrowLeft: FunctionComponent<IconProps> = (props) => (
+    <IconContainer {...props}>
+        <IconArrowLeftSvg />
+    </IconContainer>
+);
+
+export default memo(IconArrowLeft);

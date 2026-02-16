@@ -1,8 +1,8 @@
-import React, { type FunctionComponent } from 'react';
+import React, { type FunctionComponent, memo } from 'react';
 
-import withIconContainer from './withIconContainer';
+import IconContainer, { type IconProps } from './IconContainer';
 
-const IconCloseWithBorder: FunctionComponent = () => (
+const IconCloseWithBorderSvg: FunctionComponent = () => (
     <svg fill="none" height="37" viewBox="0 0 38 37" width="38" xmlns="http://www.w3.org/2000/svg">
         <path
             d="M38 18.5C38 28.7173 29.7173 37 19.5 37C9.28273 37 1 28.7173 1 18.5C1 8.28273 9.28273 0 19.5 0C29.7173 0 38 8.28273 38 18.5Z"
@@ -23,4 +23,10 @@ const IconCloseWithBorder: FunctionComponent = () => (
     </svg>
 );
 
-export default withIconContainer(IconCloseWithBorder);
+const IconCloseWithBorder: FunctionComponent<IconProps> = (props) => (
+    <IconContainer {...props}>
+        <IconCloseWithBorderSvg />
+    </IconContainer>
+);
+
+export default memo(IconCloseWithBorder);
