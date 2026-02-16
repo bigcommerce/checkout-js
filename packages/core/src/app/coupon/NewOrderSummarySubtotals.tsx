@@ -1,11 +1,10 @@
 import type { Fee, OrderFee, Tax } from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent, useRef, useState } from 'react';
-import { CSSTransition } from 'react-transition-group';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { CollapseCSSTransition } from '@bigcommerce/checkout/ui';
 
-import { ANIMATION_DURATION, createCollapseAnimationHandlers } from '../common/animation';
 import { isOrderFee, OrderSummaryDiscount, OrderSummaryPrice }  from '../order';
 
 import { AppliedGiftCertificates, CouponForm, Discounts } from './components';
@@ -46,8 +45,6 @@ const NewOrderSummarySubtotals: FunctionComponent<MultiCouponProps> = ({
         setIsCouponFormVisible((prevState) => !prevState);
     };
 
-    const collapseHandlers = createCollapseAnimationHandlers(couponFormRef);
-
     return (
         <>
             {!isOrderConfirmation && (
@@ -63,21 +60,11 @@ const NewOrderSummarySubtotals: FunctionComponent<MultiCouponProps> = ({
                         <TranslatedString id="redeemable.toggle_action" />
                     </a>
 
-                    <CSSTransition
-                        in={isCouponFormVisible}
-                        nodeRef={couponFormRef}
-                        onEnter={collapseHandlers.handleEnter}
-                        onEntered={collapseHandlers.handleEntered}
-                        onEntering={collapseHandlers.handleEntering}
-                        onExit={collapseHandlers.handleExit}
-                        onExiting={collapseHandlers.handleExiting}
-                        timeout={ANIMATION_DURATION}
-                        unmountOnExit
-                    >
+                    <CollapseCSSTransition isVisible={isCouponFormVisible} nodeRef={couponFormRef}>
                         <div className="coupon-form-wrapper" ref={couponFormRef}>
                             <CouponForm />
                         </div>
-                    </CSSTransition>
+                    </CollapseCSSTransition>
                 </section>
             )}
             <section className="subtotals-with-multi-coupon cart-section optimizedCheckout-orderSummary-cartSection">

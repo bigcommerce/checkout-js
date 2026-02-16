@@ -2,9 +2,8 @@ import React, { createRef, type FunctionComponent, useRef, useState } from 'reac
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { IconCoupon, IconDownArrow, IconUpArrow } from '@bigcommerce/checkout/ui';
+import { CollapseCSSTransition, IconCoupon, IconDownArrow, IconUpArrow } from '@bigcommerce/checkout/ui';
 
-import { ANIMATION_DURATION, createCollapseAnimationHandlers } from '../../common/animation';
 import { ShopperCurrency } from '../../currency';
 import { type DiscountItem, useMultiCoupon } from '../useMultiCoupon';
 
@@ -44,8 +43,6 @@ const DiscountsCollapsible: FunctionComponent<{ discounts: number; discountItems
     const [isCouponDiscountsVisible, setIsCouponDiscountsVisible] = useState(true);
     const discountsRef = useRef<HTMLDivElement>(null);
 
-    const collapseHandlers = createCollapseAnimationHandlers(discountsRef);
-
     return (
         <div>
             <div
@@ -65,17 +62,7 @@ const DiscountsCollapsible: FunctionComponent<{ discounts: number; discountItems
                     -<ShopperCurrency amount={discounts} />
                 </span>
             </div>
-            <CSSTransition
-                in={isCouponDiscountsVisible}
-                nodeRef={discountsRef}
-                onEnter={collapseHandlers.handleEnter}
-                onEntered={collapseHandlers.handleEntered}
-                onEntering={collapseHandlers.handleEntering}
-                onExit={collapseHandlers.handleExit}
-                onExiting={collapseHandlers.handleExiting}
-                timeout={ANIMATION_DURATION}
-                unmountOnExit
-            >
+            <CollapseCSSTransition isVisible={isCouponDiscountsVisible} nodeRef={discountsRef}>
                 <div
                     className="applied-discounts-list"
                     id="applied-coupon-discounts-collapsable"
@@ -83,7 +70,7 @@ const DiscountsCollapsible: FunctionComponent<{ discounts: number; discountItems
                 >
                     <DiscountItems coupons={discountItems} />
                 </div>
-            </CSSTransition>
+            </CollapseCSSTransition>
         </div>
     );
 };
