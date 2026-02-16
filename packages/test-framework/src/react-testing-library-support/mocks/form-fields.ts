@@ -445,6 +445,30 @@ const customFormFields: FormField[] = [
         min: 3,
         max: 5,
     },
+    {
+        custom: true,
+        default: undefined,
+        fieldType: 'text',
+        id: 'field_34',
+        label: 'Number with max validation',
+        name: 'field_34',
+        required: false,
+        type: 'integer',
+        min: undefined,
+        max: 10,
+    },
+    {
+        custom: true,
+        default: undefined,
+        fieldType: 'text',
+        id: 'field_35',
+        label: 'Number with min validation',
+        name: 'field_35',
+        required: false,
+        type: 'integer',
+        min: 5,
+        max: undefined,
+    },
 ];
 
 export { formFields, customFormFields };
