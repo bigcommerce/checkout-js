@@ -188,7 +188,7 @@ export default withLanguage(
             methodId === 'amazonpay'
                 ? lazy<Partial<AddressFormValues>>((values) =>
                       getCustomFormFieldsValidationSchema({
-                          translate: getTranslateAddressError(language),
+                          translate: getTranslateAddressError(getFields(values && values.countryCode), language),
                           formFields: getFields(values && values.countryCode),
                       }),
                   )
