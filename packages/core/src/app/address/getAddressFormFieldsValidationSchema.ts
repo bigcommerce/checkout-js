@@ -53,7 +53,7 @@ export function getTranslateAddressError(
             const fieldMax = field?.max;
 
             // If both min and max are present, show range message
-            if (!!fieldMin && !!fieldMax) {
+            if (fieldMin !== undefined && fieldMax !== undefined) {
                 return language.translate(`address.custom_range_error`, { 
                     label, 
                     min: fieldMin, 
@@ -61,11 +61,11 @@ export function getTranslateAddressError(
                 });
             }
 
-            if (type === 'max' && fieldMax) {
+            if (type === 'max' && fieldMax !== undefined) {
                 return language.translate(`address.custom_max_number_error`, { label, max: fieldMax });
             }
 
-            if (type === 'min' && fieldMin) {
+            if (type === 'min' && fieldMin !== undefined) {
                 return language.translate(`address.custom_min_number_error`, { label, min: fieldMin });
             }
         }
