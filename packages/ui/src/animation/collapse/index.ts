@@ -2,4 +2,4 @@ export { CollapseCSSTransition, type CollapseCSSTransitionProps } from './Collap
 export { createCollapseAnimationHandlers } from './createCollapseAnimationHandlers';
 export { createSlideCollapseAnimationHandlers } from './createSlideCollapseAnimationHandlers';
 export { SlideCollapseCSSTransition, type SlideCollapseCSSTransitionProps } from './SlideCollapseCSSTransition';
-export type { CollapseAnimationHandlers } from './createCollapseAnimationHandlers';
+export type { CollapseAnimationHandlers } from './CollapseAnimationHandlers';

@@ -2,13 +2,7 @@ import type { RefObject } from 'react';
 
 import { prefersReducedMotion } from '../prefersReducedMotion';
 
-export interface CollapseAnimationHandlers {
-    handleEnter: () => void;
-    handleEntered: () => void;
-    handleEntering: () => void;
-    handleExit: () => void;
-    handleExiting: () => void;
-}
+import type { CollapseAnimationHandlers } from './CollapseAnimationHandlers';
 
 /**
  * Returns CSSTransition handlers for a height + opacity collapse (no vertical slide).

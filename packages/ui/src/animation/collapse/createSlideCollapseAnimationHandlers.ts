@@ -3,7 +3,7 @@ import type { RefObject } from 'react';
 import { SLIDE_DISTANCE } from '../constants';
 import { prefersReducedMotion } from '../prefersReducedMotion';
 
-import type { CollapseAnimationHandlers } from './createCollapseAnimationHandlers';
+import type { CollapseAnimationHandlers } from './CollapseAnimationHandlers';
 
 /**
  * Returns CSSTransition handlers for a height + opacity + vertical slide collapse.
