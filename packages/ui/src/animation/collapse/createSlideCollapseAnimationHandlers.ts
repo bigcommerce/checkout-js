@@ -10,7 +10,7 @@ import type { CollapseAnimationHandlers } from './CollapseAnimationHandlers';
  * Use for order summary product list items and coupon tags.
  */
 export const createSlideCollapseAnimationHandlers = (
-    nodeRef: RefObject<HTMLElement | null>
+    nodeRef: RefObject<HTMLElement | null>,
 ): CollapseAnimationHandlers => ({
     handleEnter: () => {
         const node = nodeRef.current;

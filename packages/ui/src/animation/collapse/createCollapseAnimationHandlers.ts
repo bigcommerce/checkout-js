@@ -9,7 +9,7 @@ import type { CollapseAnimationHandlers } from './CollapseAnimationHandlers';
  * Use for coupon form and discounts collapsibles.
  */
 export const createCollapseAnimationHandlers = (
-    nodeRef: RefObject<HTMLElement | null>
+    nodeRef: RefObject<HTMLElement | null>,
 ): CollapseAnimationHandlers => ({
     handleEnter: () => {
         const node = nodeRef.current;
