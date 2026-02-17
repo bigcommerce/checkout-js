@@ -11,6 +11,7 @@ export interface SlideCollapseCSSTransitionProps {
     classNames?: string;
     in?: boolean;
     nodeRef: React.RefObject<HTMLElement | null>;
+    onExited?: () => void;
     unmountOnExit?: boolean;
 }
 
@@ -24,6 +25,7 @@ export const SlideCollapseCSSTransition = ({
     classNames,
     in: inProp,
     nodeRef,
+    onExited,
     unmountOnExit = true,
 }: SlideCollapseCSSTransitionProps) => {
     const slideHandlers = createSlideCollapseAnimationHandlers(nodeRef);
@@ -38,6 +40,7 @@ export const SlideCollapseCSSTransition = ({
             onEntered={slideHandlers.handleEntered}
             onEntering={slideHandlers.handleEntering}
             onExit={slideHandlers.handleExit}
+            onExited={onExited}
             onExiting={slideHandlers.handleExiting}
             timeout={ANIMATION_DURATION}
             unmountOnExit={unmountOnExit}

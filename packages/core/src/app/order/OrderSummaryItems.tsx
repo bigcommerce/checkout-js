@@ -22,9 +22,10 @@ import removeBundledItems from './removeBundledItems';
 interface AnimatedProductItemProps {
     children: ReactNode;
     in?: boolean;
+    onExited?: () => void;
 }
 
-const AnimatedProductItem: FunctionComponent<AnimatedProductItemProps> = ({ children, in: inProp }) => {
+const AnimatedProductItem: FunctionComponent<AnimatedProductItemProps> = ({ children, in: inProp, onExited }) => {
     const nodeRef = useRef<HTMLLIElement>(null);
 
     return (
@@ -33,6 +34,7 @@ const AnimatedProductItem: FunctionComponent<AnimatedProductItemProps> = ({ chil
             classNames="product-item"
             in={inProp}
             nodeRef={nodeRef}
+            onExited={onExited}
         >
             <li className="productList-item is-visible" ref={nodeRef}>
                 {children}

@@ -9,9 +9,10 @@ import { useMultiCoupon } from '../useMultiCoupon';
 interface AnimatedCouponTagProps {
     children: React.ReactNode;
     in?: boolean;
+    onExited?: () => void;
 }
 
-const AnimatedCouponTag: FunctionComponent<AnimatedCouponTagProps> = ({ children, in: inProp }) => {
+const AnimatedCouponTag: FunctionComponent<AnimatedCouponTagProps> = ({ children, in: inProp, onExited }) => {
     const nodeRef = useRef<HTMLDivElement>(null);
 
     return (
@@ -20,6 +21,7 @@ const AnimatedCouponTag: FunctionComponent<AnimatedCouponTagProps> = ({ children
             classNames="coupon-tag"
             in={inProp}
             nodeRef={nodeRef}
+            onExited={onExited}
         >
             <div className="coupon-tag-wrapper" ref={nodeRef}>
                 {children}
