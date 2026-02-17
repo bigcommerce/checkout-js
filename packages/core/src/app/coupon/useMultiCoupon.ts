@@ -4,10 +4,10 @@ import { useState } from 'react';
 import { useCheckout, useLocale } from '@bigcommerce/checkout/contexts';
 
 import { EMPTY_ARRAY } from '../common/utility';
+import { hasSelectedShippingOptions } from '../shipping';
 
 import { type AppliedGiftCertificateInfo } from './components';
 import { getDiscountItems } from './utils';
-import { hasSelectedShippingOptions } from '../shipping';
 
 export interface DiscountItem {
     name: string;
@@ -107,7 +107,7 @@ export const useMultiCoupon = (): UseMultiCouponValues => {
     
     if(order) {
         uiDetails = {
-            subtotal: order.baseAmount,
+            subtotal: order.productAutoDiscountedSubtotal,
             discounts: order.displayDiscountTotal,
             discountItems: getDiscountItems(order, language),
             shippingBeforeDiscount: order.shippingCostBeforeDiscount,
