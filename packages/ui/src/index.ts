@@ -1,18 +1,6 @@
 /* istanbul ignore file */
-export {
-    ANIMATION_DURATION,
-    CollapseCSSTransition,
-    createCollapseAnimationHandlers,
-    createSlideCollapseAnimationHandlers,
-    prefersReducedMotion,
-    SlideCollapseCSSTransition,
-    SLIDE_DISTANCE,
-} from './animation';
-export type {
-    CollapseAnimationHandlers,
-    CollapseCSSTransitionProps,
-    SlideCollapseCSSTransitionProps,
-} from './animation';
+export { CollapseCSSTransition, SlideCollapseCSSTransition } from './animation';
+export type { CollapseCSSTransitionProps, SlideCollapseCSSTransitionProps } from './animation';
 export { Alert, AlertType } from './alert';
 export {
     Accordion,
