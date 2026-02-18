@@ -382,6 +382,7 @@ export default withLanguage(
             language,
             getFields,
             methodId,
+            validateMaxLength,
         }: SingleShippingFormProps & WithLanguageProps) =>
             shouldHaveCustomValidation(methodId)
                 ? object({
@@ -397,6 +398,7 @@ export default withLanguage(
                           getAddressFormFieldsValidationSchema({
                               language,
                               formFields: getFields(formValues && formValues.countryCode),
+                              validateMaxLength,
                           }),
                       ),
                   }),
