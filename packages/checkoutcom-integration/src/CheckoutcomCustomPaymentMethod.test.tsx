@@ -50,12 +50,7 @@ describe('when using Checkoutcom payment', () => {
         checkoutService = createCheckoutService();
         checkoutState = checkoutService.getState();
         localeContext = createLocaleContext(getStoreConfig());
-        method = {
-            ...getPaymentMethod(),
-            id: 'fawry',
-            gateway: PaymentMethodId.Checkoutcom,
-            config: { ...getPaymentMethod().config, isHostedFormEnabled: true },
-        };
+        method = { ...getPaymentMethod(), id: 'fawry', gateway: PaymentMethodId.Checkoutcom };
         initializePayment = jest
             .spyOn(checkoutService, 'initializePayment')
             .mockResolvedValue(checkoutState);
@@ -82,19 +77,16 @@ describe('when using Checkoutcom payment', () => {
             ...getPaymentMethod(),
             id: 'fawry',
             gateway: PaymentMethodId.Checkoutcom,
-            config: { ...getPaymentMethod().config, isHostedFormEnabled: true },
         };
         alternateMethodA = {
             ...getPaymentMethod(),
             id: 'oxxo',
             gateway: PaymentMethodId.Checkoutcom,
-            config: { ...getPaymentMethod().config, isHostedFormEnabled: true },
         };
         alternateMethodB = {
             ...getPaymentMethod(),
             id: 'qpay',
             gateway: PaymentMethodId.Checkoutcom,
-            config: { ...getPaymentMethod().config, isHostedFormEnabled: true },
         };
         PaymentMethodTest = (props = defaultProps) => (
             <CheckoutProvider checkoutService={checkoutService}>

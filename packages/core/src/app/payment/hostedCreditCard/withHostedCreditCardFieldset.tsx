@@ -160,8 +160,7 @@ export default function withHostedCreditCardFieldset<
                                   containerId: getHostedFieldId('ccNumber'),
                               },
                           },
-                    styles:
-                        styleContainerId && method.config.isHostedFormEnabled === true
+                    styles: styleContainerId
                         ? {
                               default: await getCreditCardInputStyles(styleContainerId, styleProps),
                               error: await getCreditCardInputStyles(
