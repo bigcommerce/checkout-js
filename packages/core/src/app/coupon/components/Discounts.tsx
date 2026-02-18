@@ -1,5 +1,4 @@
-import React, { createRef, type FunctionComponent, useRef, useState } from 'react';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import React, { type FunctionComponent, useRef, useState } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { CollapseCSSTransition, IconCoupon, IconDownArrow, IconUpArrow } from '@bigcommerce/checkout/ui';
@@ -7,40 +6,10 @@ import { CollapseCSSTransition, IconCoupon, IconDownArrow, IconUpArrow } from '@
 import { ShopperCurrency } from '../../currency';
 import { type DiscountItem, useMultiCoupon } from '../useMultiCoupon';
 
-const DiscountItems: FunctionComponent<{ coupons: DiscountItem[] }> = ({ coupons }) => {
-    return (
-        <TransitionGroup component={null}>
-            {coupons.map((coupon) => {
-                const nodeRef = createRef<HTMLDivElement>();
-
-                return (
-                    <CSSTransition
-                        classNames="changeHighlight"
-                        key={coupon.name}
-                        nodeRef={nodeRef}
-                        timeout={{}}
-                    >
-                        <div data-test={coupon.testId}>
-                            <div
-                                aria-live="polite"
-                                className="cart-priceItem optimizedCheckout-contentPrimary"
-                                ref={nodeRef}
-                            >
-                                <span className="cart-priceItem-label"><IconCoupon />{coupon.name}</span>
-                                <span className="cart-priceItem-value" data-test="cart-price-value">
-                                    -<ShopperCurrency amount={coupon.amount} />
-                                </span>
-                            </div>
-                        </div>
-                    </CSSTransition>
-                );
-            })}
-        </TransitionGroup>
-    );
 const DiscountItems: FunctionComponent<{ coupons: DiscountItem[] }> = ({ coupons }) => (
     <>
         {coupons.map((coupon) => (
-            <div data-test={coupon.testId}>
+            <div data-test={coupon.testId} key={coupon.name}>
                 <div
                     aria-live="polite"
                     className="cart-priceItem optimizedCheckout-contentPrimary"
