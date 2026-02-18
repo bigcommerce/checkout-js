@@ -32,6 +32,7 @@ export const createSlideCollapseAnimationHandlers = (
     },
     handleEntered: () => {
         const node = nodeRef.current;
+
         if (!node) return;
         node.style.height = '';
         node.style.opacity = '';
