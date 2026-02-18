@@ -1,6 +1,5 @@
 /* istanbul ignore file */
 export { CollapseCSSTransition, SlideCollapseCSSTransition } from './animation';
-export type { CollapseCSSTransitionProps, SlideCollapseCSSTransitionProps } from './animation';
 export { Alert, AlertType } from './alert';
 export {
     Accordion,
