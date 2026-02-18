@@ -5,4 +5,3 @@ export {
     SlideCollapseCSSTransition,
     type SlideCollapseCSSTransitionProps,
 } from './SlideCollapseCSSTransition';
-export type { CollapseAnimationHandlers } from './CollapseAnimationHandlers';
