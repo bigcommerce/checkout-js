@@ -37,7 +37,23 @@ const DiscountItems: FunctionComponent<{ coupons: DiscountItem[] }> = ({ coupons
             })}
         </TransitionGroup>
     );
-};
+const DiscountItems: FunctionComponent<{ coupons: DiscountItem[] }> = ({ coupons }) => (
+    <>
+        {coupons.map((coupon) => (
+            <div data-test={coupon.testId}>
+                <div
+                    aria-live="polite"
+                    className="cart-priceItem optimizedCheckout-contentPrimary"
+                >
+                    <span className="cart-priceItem-label"><IconCoupon />{coupon.name}</span>
+                    <span className="cart-priceItem-value" data-test="cart-price-value">
+                        -<ShopperCurrency amount={coupon.amount} />
+                    </span>
+                </div>
+            </div>
+        ))}
+    </>
+);
 
 const DiscountsCollapsible: FunctionComponent<{ discounts: number; discountItems: DiscountItem[] }> = ({ discounts, discountItems }) => {
     const [isCouponDiscountsVisible, setIsCouponDiscountsVisible] = useState(true);
