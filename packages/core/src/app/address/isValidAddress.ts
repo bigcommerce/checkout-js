@@ -6,8 +6,9 @@ import mapAddressToFormValues from './mapAddressToFormValues';
 export default function isValidAddress(
     address: Address,
     formFields: FormField[],
+    validateMaxLength?: boolean,
 ): boolean {
-    const addressSchema = getAddressFormFieldsValidationSchema({ formFields });
+    const addressSchema = getAddressFormFieldsValidationSchema({ formFields, validateMaxLength });
 
     return addressSchema.isValidSync(mapAddressToFormValues(formFields, address));
 }

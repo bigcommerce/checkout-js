@@ -27,6 +27,7 @@ export type TranslateValidationErrorFunction = (
 export interface FormFieldsValidationSchemaOptions {
     formFields: FormField[];
     translate?: TranslateValidationErrorFunction;
+    validateMaxLength?: boolean;
 }
 
 export interface CustomFormFieldValues {

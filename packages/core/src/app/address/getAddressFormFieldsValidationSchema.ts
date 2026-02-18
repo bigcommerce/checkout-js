@@ -11,6 +11,7 @@ import {
 export interface AddressFormFieldsValidationSchemaOptions {
     formFields: FormField[];
     language?: LanguageService;
+    validateMaxLength?: boolean;
 }
 
 export function getTranslateAddressError(
@@ -87,9 +88,11 @@ export function getTranslateAddressError(
 export default memoize(function getAddressFormFieldsValidationSchema({
     formFields,
     language,
+    validateMaxLength,
 }: AddressFormFieldsValidationSchemaOptions): ObjectSchema<FormFieldValues> {
     return getFormFieldsValidationSchema({
         formFields,
         translate: getTranslateAddressError(formFields, language),
+        validateMaxLength,
     });
 });
