@@ -1,38 +1,59 @@
-import React, { type ReactNode } from 'react';
+import React, { type ReactNode, useMemo } from 'react';
 import { CSSTransition } from 'react-transition-group';
 
 import { ANIMATION_DURATION } from '../constants';
 
 import { createCollapseAnimationHandlers } from './createCollapseAnimationHandlers';
+import { createSlideCollapseAnimationHandlers } from './createSlideCollapseAnimationHandlers';
 
 export interface CollapseCSSTransitionProps {
+    appear?: boolean;
     children: ReactNode;
-    isVisible: boolean;
+    classNames?: string;
+    in?: boolean;
+    isSlideAnimation?: boolean;
+    isVisible?: boolean;
     nodeRef: React.RefObject<HTMLElement | null>;
+    onExited?: () => void;
     unmountOnExit?: boolean;
 }
 
 /**
- * Wraps content in a CSSTransition with collapse (height + opacity) animation.
+ * Wraps content in a CSSTransition with collapse animation.
+ * When isSlideAnimation is true, adds a vertical slide (translateY) to the collapse.
  * The single child element should receive the same ref as nodeRef.
  */
 export const CollapseCSSTransition = ({
+    appear = false,
     children,
+    classNames,
+    in: inProp,
+    isSlideAnimation = false,
     isVisible,
     nodeRef,
+    onExited,
     unmountOnExit = true,
 }: CollapseCSSTransitionProps) => {
-    const collapseHandlers = createCollapseAnimationHandlers(nodeRef);
+    const handlers = useMemo(
+        () =>
+            isSlideAnimation
+                ? createSlideCollapseAnimationHandlers(nodeRef)
+                : createCollapseAnimationHandlers(nodeRef),
+        [isSlideAnimation, nodeRef],
+    );
 
     return (
         <CSSTransition
-            in={isVisible}
+            appear={appear}
+            classNames={classNames}
+            in={inProp ?? isVisible}
             nodeRef={nodeRef}
-            onEnter={collapseHandlers.handleEnter}
-            onEntered={collapseHandlers.handleEntered}
-            onEntering={collapseHandlers.handleEntering}
-            onExit={collapseHandlers.handleExit}
-            onExiting={collapseHandlers.handleExiting}
+            onEnter={handlers.handleEnter}
+            onEntered={handlers.handleEntered}
+            onEntering={handlers.handleEntering}
+            onExit={handlers.handleExit}
+            onExited={onExited}
+            onExiting={handlers.handleExiting}
             timeout={ANIMATION_DURATION}
             unmountOnExit={unmountOnExit}
         >

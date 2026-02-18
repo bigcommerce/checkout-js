@@ -5,7 +5,7 @@ import { TransitionGroup } from 'react-transition-group';
 import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { SlideCollapseCSSTransition } from '@bigcommerce/checkout/ui';
+import { CollapseCSSTransition } from '@bigcommerce/checkout/ui';
 
 import { IconChevronDown, IconChevronUp } from '../ui/icon';
 import { isSmallScreen } from '../ui/responsive';
@@ -29,17 +29,18 @@ const AnimatedProductItem: FunctionComponent<AnimatedProductItemProps> = ({ chil
     const nodeRef = useRef<HTMLLIElement>(null);
 
     return (
-        <SlideCollapseCSSTransition
+        <CollapseCSSTransition
             appear
             classNames="product-item"
             in={inProp}
+            isSlideAnimation
             nodeRef={nodeRef}
             onExited={onExited}
         >
             <li className="productList-item is-visible" ref={nodeRef}>
                 {children}
             </li>
-        </SlideCollapseCSSTransition>
+        </CollapseCSSTransition>
     );
 };
 

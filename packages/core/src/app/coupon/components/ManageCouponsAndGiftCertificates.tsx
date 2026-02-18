@@ -2,7 +2,7 @@ import { type Coupon } from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent, useRef } from 'react';
 import { TransitionGroup } from 'react-transition-group';
 
-import { IconCoupon, IconGiftCertificateNew, IconRemoveCoupon, SlideCollapseCSSTransition } from '@bigcommerce/checkout/ui';
+import { CollapseCSSTransition, IconCoupon, IconGiftCertificateNew, IconRemoveCoupon } from '@bigcommerce/checkout/ui';
 
 import { useMultiCoupon } from '../useMultiCoupon';
 
@@ -16,17 +16,18 @@ const AnimatedCouponTag: FunctionComponent<AnimatedCouponTagProps> = ({ children
     const nodeRef = useRef<HTMLDivElement>(null);
 
     return (
-        <SlideCollapseCSSTransition
+        <CollapseCSSTransition
             appear
             classNames="coupon-tag"
             in={inProp}
+            isSlideAnimation
             nodeRef={nodeRef}
             onExited={onExited}
         >
             <div className="coupon-tag-wrapper" ref={nodeRef}>
                 {children}
             </div>
-        </SlideCollapseCSSTransition>
+        </CollapseCSSTransition>
     );
 };
 
