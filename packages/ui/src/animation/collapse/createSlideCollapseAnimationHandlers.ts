@@ -41,6 +41,7 @@ export const createSlideCollapseAnimationHandlers = (
     },
     handleExit: () => {
         const node = nodeRef.current;
+
         if (!node || prefersReducedMotion()) return;
         node.style.height = `${node.offsetHeight}px`;
         node.style.opacity = '1';
