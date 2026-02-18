@@ -26,6 +26,7 @@ export const createCollapseAnimationHandlers = (
     },
     handleEntered: () => {
         const node = nodeRef.current;
+
         if (!node) return;
         node.style.height = 'auto';
         node.style.opacity = '';
