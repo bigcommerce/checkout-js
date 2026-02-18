@@ -30,7 +30,6 @@ const AnimatedProductItem: FunctionComponent<AnimatedProductItemProps> = ({ chil
 
     return (
         <CollapseCSSTransition
-            appear
             classNames="product-item"
             in={inProp}
             isSlideAnimation

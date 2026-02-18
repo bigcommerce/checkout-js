@@ -17,7 +17,6 @@ const AnimatedCouponTag: FunctionComponent<AnimatedCouponTagProps> = ({ children
 
     return (
         <CollapseCSSTransition
-            appear
             classNames="coupon-tag"
             in={inProp}
             isSlideAnimation
