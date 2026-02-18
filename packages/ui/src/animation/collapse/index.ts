@@ -1,2 +1,2 @@
-export { CollapseCSSTransition, type CollapseCSSTransitionProps } from './CollapseCSSTransition';
+export { CollapseCSSTransition } from './CollapseCSSTransition';
 export { SlideCollapseCSSTransition } from './SlideCollapseCSSTransition';
