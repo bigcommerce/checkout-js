@@ -14,6 +14,7 @@ export const createSlideCollapseAnimationHandlers = (
 ): CollapseAnimationHandlers => ({
     handleEnter: () => {
         const node = nodeRef.current;
+
         if (!node || prefersReducedMotion()) return;
         node.style.height = '0px';
         node.style.opacity = '0';
