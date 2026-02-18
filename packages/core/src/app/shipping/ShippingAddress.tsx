@@ -82,10 +82,10 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = (props) => {
             consignments={consignments}
             formFields={formFields}
             isLoading={isLoading}
-            validateMaxLength={validateMaxLength}
             onAddressSelect={onAddressSelect}
             onFieldChange={handleFieldChange}
             onUseNewAddress={onUseNewAddress}
+            validateMaxLength={validateMaxLength}
         />
     );
 };

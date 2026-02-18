@@ -39,6 +39,7 @@ describe('SingleShippingForm', () => {
         initialize: jest.fn(),
         updateAddress: jest.fn(),
         deleteConsignments: jest.fn(),
+        validateMaxLength: false,
     };
 
     const shippingAutosaveDelay = 100;

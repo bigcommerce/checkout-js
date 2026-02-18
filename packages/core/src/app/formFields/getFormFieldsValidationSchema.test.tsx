@@ -9,7 +9,7 @@ import {
     default as getFormFieldsValidationSchema,
 } from './getFormFieldsValidationSchema';
 
-describe('getFormFielsValidationSchema', () => {
+describe('getFormFieldsValidationSchema', () => {
     const formFields = getFormFields();
     let translate: TranslateValidationErrorFunction;
 
@@ -205,6 +205,53 @@ describe('getFormFielsValidationSchema', () => {
                 max: 10,
             });
             expect(errors).toBe('address2 must be at most 10 characters');
+        });
+    });
+
+    describe('validateMaxLength option', () => {
+        it('does not validate max length for non-address fields when validateMaxLength is false', async () => {
+            const formFieldsWithFirstNameMaxLength = formFields.map(field =>
+                field.name === 'firstName' ? { ...field, maxLength: 3 } : field,
+            );
+            const schema = getFormFieldsValidationSchema({
+                formFields: formFieldsWithFirstNameMaxLength,
+                translate,
+                validateMaxLength: false,
+            });
+            const spy = jest.fn();
+
+            await schema
+                .validate({
+                    ...getShippingAddress(),
+                    firstName: 'LongFirstName',
+                })
+                .then(spy);
+
+            expect(spy).toHaveBeenCalled();
+        });
+
+        it('validates max length for non-address fields when validateMaxLength is true', async () => {
+            const formFieldsWithFirstNameMaxLength = formFields.map(field =>
+                field.name === 'firstName' ? { ...field, maxLength: 3 } : field,
+            );
+            const schema = getFormFieldsValidationSchema({
+                formFields: formFieldsWithFirstNameMaxLength,
+                translate,
+                validateMaxLength: true,
+            });
+            const errors = await schema
+                .validate({
+                    ...getShippingAddress(),
+                    firstName: 'LongFirstName',
+                })
+                .catch((error: ValidationError) => error.message);
+
+            expect(translate).toHaveBeenCalledWith('max', {
+                label: 'First Name',
+                name: 'firstName',
+                max: 3,
+            });
+            expect(errors).toBe('firstName must be at most 3 characters');
         });
     });
 });

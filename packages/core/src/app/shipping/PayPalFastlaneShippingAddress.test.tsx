@@ -88,6 +88,7 @@ describe('PayPalFastlaneShippingAddress', () => {
                     ],
                 }
             ],
+            validateMaxLength: false,
         };
 
         jest.spyOn(checkoutState.data,'getCustomer').mockReturnValue(getCustomer());
