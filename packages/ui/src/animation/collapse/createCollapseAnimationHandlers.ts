@@ -19,6 +19,7 @@ export const createCollapseAnimationHandlers = (
     },
     handleEntering: () => {
         const node = nodeRef.current;
+
         if (!node || prefersReducedMotion()) return;
         void node.offsetHeight;
         node.style.height = `${node.scrollHeight}px`;
