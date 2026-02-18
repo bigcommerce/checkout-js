@@ -52,6 +52,7 @@ const ShippingForm = ({
         methodId,
         shouldShowOrderComments,
         shippingAddress,
+        validateMaxLength,
         signOut,
         updateShippingAddress: updateAddress
     } = useShipping();
@@ -122,6 +123,7 @@ const ShippingForm = ({
             shouldShowOrderComments={shouldShowOrderComments}
             signOut={signOut}
             updateAddress={updateAddress}
+            validateMaxLength={validateMaxLength}
         />
     );
 };

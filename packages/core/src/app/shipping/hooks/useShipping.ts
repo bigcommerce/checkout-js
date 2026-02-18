@@ -4,7 +4,7 @@ import { type CheckoutContextProps, useCheckout } from '@bigcommerce/checkout/co
 import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
 import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
 
-import { EMPTY_ARRAY } from '../../common/utility';
+import { EMPTY_ARRAY, isExperimentEnabled } from '../../common/utility';
 import getProviderWithCustomCheckout from '../../payment/getProviderWithCustomCheckout';
 import getShippableItemsCount from '../getShippableItemsCount';
 import getShippingMethodId from '../getShippingMethodId';
@@ -126,5 +126,6 @@ export const useShipping = () => {
         updateCheckout: checkoutService.updateCheckout,
         updateShippingAddress: checkoutService.updateShippingAddress,
         shouldRenderStripeForm: providerWithCustomCheckout === PaymentMethodId.StripeUPE && shouldUseStripeLinkByMinimumAmount(cart),
+        validateMaxLength: isExperimentEnabled(config.checkoutSettings, 'CHECKOUT-9768.form_fields_max_length_validation', false),
     };
 }

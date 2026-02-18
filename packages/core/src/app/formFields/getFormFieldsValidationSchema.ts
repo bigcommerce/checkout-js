@@ -20,7 +20,10 @@ export default memoize(function getFormFieldsValidationSchema({
         ...formFields
             .filter(({ custom }) => !custom)
             .reduce((schema, { name, required, label, maxLength }) => {
-                console.log(name, required, label, maxLength);
+                console.log(name, required, label, maxLength, validateMaxLength);
+                if (!validateMaxLength) {
+                    console.log('where is this coming from?');
+                }
                 schema[name] = string();
 
                 if (required) {

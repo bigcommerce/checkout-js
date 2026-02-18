@@ -6,7 +6,7 @@ import { TranslatedString } from "@bigcommerce/checkout/locale";
 
 import { AddressFormModal, type AddressFormValues, AddressSelect, AddressType, isValidAddress, mapAddressFromFormValues } from "../address";
 import { ErrorModal } from "../common/error";
-import { EMPTY_ARRAY } from "../common/utility";
+import { EMPTY_ARRAY, isExperimentEnabled } from "../common/utility";
 
 import { AssignItemFailedError, AssignItemInvalidAddressError } from "./errors";
 import GuestCustomerAddressSelector from "./GuestCustomerAddressSelector";
@@ -61,8 +61,15 @@ const ConsignmentAddressSelector = ({
 
     const isGuest = customer.isGuest;
 
+    const validateMaxLength =
+        isExperimentEnabled(
+            config?.checkoutSettings,
+            'CHECKOUT-9768.form_fields_max_length_validation',
+            false
+        );
+
     const handleSelectAddress = async (address: Address) => {
-        if (!isValidAddress(address, getFields(address.countryCode))) {
+        if (!isValidAddress(address, getFields(address.countryCode), validateMaxLength)) {
             return onUnhandledError(new AssignItemInvalidAddressError());
         }
 
