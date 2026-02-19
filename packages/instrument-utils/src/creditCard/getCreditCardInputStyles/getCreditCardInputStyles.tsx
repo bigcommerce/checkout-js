@@ -20,9 +20,7 @@ export default function getCreditCardInputStyles(
     const parentContainer = document.getElementById(containerId);
 
     if (!parentContainer) {
-        throw new Error(
-            'Unable to retrieve input styles as the provided container ID is not valid.',
-        );
+        return Promise.resolve({});
     }
 
     parentContainer.appendChild(container);
