@@ -20,6 +20,7 @@ import {
     CheckoutProvider,
     LocaleContext,
     type LocaleContextType,
+    ThemeContext,
 } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { type PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
@@ -35,17 +36,19 @@ import { screen } from '@bigcommerce/checkout/test-utils';
 import { AccordionContext, type AccordionContextProps } from '@bigcommerce/checkout/ui';
 
 import StripeOCSPaymentMethod from './StripeOCSPaymentMethod';
+import * as getStripeOCSStyles from './getStripeOCSStyles';
 
-jest.mock('./getStripeOCSStyles', () => ({
-    getAppearanceForOCSElement: () => {
-        return {
-            variables: {
-                color: '#cccccc',
-            },
-        };
-    },
-    getFonts: () => [{ cssSrc: 'fontSrc' }],
-}));
+jest.mock('./getStripeOCSStyles');
+// jest.mock('./getStripeOCSStyles', () => ({
+//     getAppearanceForOCSElement: () => {
+//         return {
+//             variables: {
+//                 color: '#cccccc',
+//             },
+//         };
+//     },
+//     getFonts: () => [{ cssSrc: 'fontSrc' }],
+// }));
 
 describe('when using Stripe OCS payment', () => {
     const methodId = 'optimized_checkout';
@@ -74,6 +77,10 @@ describe('when using Stripe OCS payment', () => {
     >;
     let onToggleMock: jest.Mock;
     let accordionContextValues: AccordionContextProps;
+    let themeContextValueMock: {
+        themeV2: boolean;
+    };
+    let getAppearanceForOCSElementMock: jest.Mock;
 
     beforeEach(() => {
         collapseElementMock = jest.fn();
@@ -96,6 +103,20 @@ describe('when using Stripe OCS payment', () => {
             onToggle: onToggleMock,
             selectedItemId: methodSelectorPrefix,
         };
+        themeContextValueMock = {
+            themeV2: false,
+        };
+
+        getAppearanceForOCSElementMock = jest.fn(() => {
+            return {
+                variables: {
+                    color: '#cccccc',
+                },
+            };
+        });
+
+        jest.spyOn(getStripeOCSStyles, 'getAppearanceForOCSElement').mockImplementation(getAppearanceForOCSElementMock);
+        jest.spyOn(getStripeOCSStyles, 'getFonts').mockImplementation(() => [{ cssSrc: 'fontSrc' }]);
 
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
 
@@ -123,7 +144,9 @@ describe('when using Stripe OCS payment', () => {
                 <LocaleContext.Provider value={localeContext}>
                     <AccordionContext.Provider value={accordionContextValues}>
                         <Formik initialValues={{}} onSubmit={noop}>
-                            <StripeOCSPaymentMethod {...props} />
+                            <ThemeContext.Provider value={themeContextValueMock}>
+                                <StripeOCSPaymentMethod {...props} />
+                            </ThemeContext.Provider>
                         </Formik>
                     </AccordionContext.Provider>
                 </LocaleContext.Provider>
@@ -342,6 +365,7 @@ describe('when using Stripe OCS payment', () => {
                     },
                 }),
             );
+            expect(getAppearanceForOCSElementMock).toHaveBeenCalledWith(expectedContainerId, undefined);
         });
 
         it('accordion collapsed when selected different payment method', () => {
@@ -395,6 +419,39 @@ describe('when using Stripe OCS payment', () => {
                     },
                 }),
             );
+        });
+
+        it('should initialize with accordion layout for themeV2', () => {
+            themeContextValueMock = {
+                themeV2: true,
+            };
+
+            render(<PaymentMethodTest {...defaultProps} method={method} />);
+
+            expect(checkoutService.initializePayment).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    methodId: method.id,
+                    gatewayId: method.gateway,
+                    [gatewayId]: {
+                        containerId: expectedContainerId,
+                        layout: {
+                            ...defaultAccordionLayout,
+                            type: 'accordion',
+                            spacedAccordionItems: true,
+                        },
+                        appearance: {
+                            variables: { color: '#cccccc' },
+                        },
+                        fonts: [{ cssSrc: 'fontSrc' }],
+                        onError: expect.any(Function),
+                        render: expect.any(Function),
+                        paymentMethodSelect: expect.any(Function),
+                        handleClosePaymentMethod: expect.any(Function),
+                        togglePreloader: expect.any(Function),
+                    },
+                }),
+            );
+            expect(getAppearanceForOCSElementMock).toHaveBeenCalledWith(expectedContainerId, 'themeV2');
         });
     });
 

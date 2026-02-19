@@ -37,7 +37,11 @@ describe('getStripeOCSStyles', () => {
             },
             [`#${containerId}--accordion-header.optimizedCheckout-form-checklist-item`]: {
                 'border-bottom': '1px solid black',
+                'border-top': '1px solid black',
+                'border-left': '1px solid black',
+                'border-right': '1px solid black',
                 'border-color': 'yellow',
+                'border-radius': '4px',
             },
             [`#${containerId}--accordion-header .form-label::before`]: {
                 'border-color': 'black',
@@ -62,6 +66,9 @@ describe('getStripeOCSStyles', () => {
             },
             [`#${containerId}--accordion-header-selected`]: {
                 'background-color': '#fcfcfc',
+                'border-color': '#4496f6',
+                'margin-bottom': '8px',
+                'margin-top': '8px',
             },
         };
 
@@ -116,11 +123,15 @@ describe('getStripeOCSStyles', () => {
                         boxShadow: '0 0 5px rgba(0, 0, 0, 0.5)',
                     },
                     '.AccordionItem': {
-                        backgroundColor: '#fcfcfc',
-                        borderRadius: 0,
-                        borderWidth: 0,
+                        borderRadius: '4px',
+                        borderTop: '1px solid black',
+                        borderRight: '1px solid black',
                         borderBottom: '1px solid black',
+                        borderLeft: '1px solid black',
                         borderColor: 'yellow',
+                        marginBottom: '8px',
+                        marginTop: '8px',
+                        backgroundColor: '#fcfcfc',
                         boxShadow: 'none',
                         fontSize: '16px',
                         fontWeight: 'bold',
@@ -128,13 +139,85 @@ describe('getStripeOCSStyles', () => {
                         padding: '10px 10px 10px 18px',
                     },
                     '.AccordionItem:hover': {
-                        color: 'green',
                         backgroundColor: '#fcfcfc',
+                        color: 'green',
                     },
                     '.AccordionItem--selected': {
                         fontWeight: 'bold',
                         color: 'green',
                         backgroundColor: '#fcfcfc',
+                        borderColor: '#4496f6',
+                    },
+                    '.TabLabel': {
+                        color: 'green',
+                    },
+                    '.RadioIcon': {
+                        width: '34.09px',
+                    },
+                    '.RadioIconInner': {
+                        r: '29.04',
+                        fill: 'white',
+                    },
+                    '.RadioIconInner--checked': {
+                        r: '29.04',
+                        fill: '#4496f6',
+                    },
+                    '.RadioIconOuter': {
+                        strokeWidth: '4.40px',
+                        stroke: 'black',
+                        fill: 'white',
+                    },
+                    '.RadioIconOuter--checked': {
+                        fill: '#4496f6',
+                        stroke: '#4496f6',
+                    },
+                },
+            });
+        });
+
+        it('returns the correct styles for the OCS element and themeV2', () => {
+            expect(getAppearanceForOCSElement(containerId, 'themeV2')).toEqual({
+                variables: {
+                    colorPrimary: '0 0 5px rgba(0, 0, 0, 0.5)',
+                    colorBackground: 'white',
+                    colorText: 'blue',
+                    colorDanger: 'red',
+                    colorTextSecondary: 'blue',
+                    colorTextPlaceholder: 'black',
+                    colorIcon: 'black',
+                    fontFamily: 'Monaco, sans-serif',
+                },
+                rules: {
+                    '.Input': {
+                        borderColor: 'gray',
+                        color: 'black',
+                        boxShadow: '0 0 5px rgba(0, 0, 0, 0.5)',
+                    },
+                    '.AccordionItem': {
+                        borderRadius: '4px',
+                        borderTop: '1px solid black',
+                        borderRight: '1px solid black',
+                        borderBottom: '1px solid black',
+                        borderLeft: '1px solid black',
+                        borderColor: 'yellow',
+                        marginBottom: '8px',
+                        marginTop: '8px',
+                        backgroundColor: '#fcfcfc',
+                        boxShadow: 'none',
+                        fontSize: '16px',
+                        fontWeight: 'bold',
+                        color: 'green',
+                        padding: '10px 10px 10px 18px',
+                    },
+                    '.AccordionItem:hover': {
+                        backgroundColor: '#fcfcfc',
+                        color: 'green',
+                    },
+                    '.AccordionItem--selected': {
+                        fontWeight: 'bold',
+                        color: 'green',
+                        backgroundColor: '#fcfcfc',
+                        borderColor: '#4496f6',
                     },
                     '.TabLabel': {
                         color: 'green',
@@ -196,11 +279,15 @@ describe('getStripeOCSStyles', () => {
                 expect.objectContaining({
                     rules: expect.objectContaining({
                         '.AccordionItem': {
-                            backgroundColor: '#fcfcfc',
-                            borderRadius: 0,
-                            borderWidth: 0,
+                            borderRadius: '4px',
+                            borderTop: '1px solid black',
+                            borderRight: '1px solid black',
                             borderBottom: '1px solid black',
+                            borderLeft: '1px solid black',
                             borderColor: 'yellow',
+                            marginBottom: '8px',
+                            marginTop: '8px',
+                            backgroundColor: '#fcfcfc',
                             boxShadow: 'none',
                             fontSize: '16px',
                             fontWeight: 'bold',
@@ -233,10 +320,15 @@ describe('getStripeOCSStyles', () => {
                         boxShadow: undefined,
                     },
                     '.AccordionItem': {
-                        borderRadius: 0,
-                        borderWidth: 0,
+                        borderRadius: undefined,
+                        borderTop: undefined,
+                        borderRight: undefined,
                         borderBottom: undefined,
+                        borderLeft: undefined,
                         borderColor: undefined,
+                        marginBottom: undefined,
+                        marginTop: undefined,
+                        backgroundColor: undefined,
                         boxShadow: 'none',
                         fontSize: undefined,
                         fontWeight: undefined,
@@ -244,13 +336,14 @@ describe('getStripeOCSStyles', () => {
                         padding: undefined,
                     },
                     '.AccordionItem:hover': {
-                        color: undefined,
                         backgroundColor: undefined,
+                        color: undefined,
                     },
                     '.AccordionItem--selected': {
                         fontWeight: 'bold',
                         color: undefined,
                         backgroundColor: undefined,
+                        borderColor: undefined,
                     },
                     '.TabLabel': {
                         color: undefined,

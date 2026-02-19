@@ -4,6 +4,11 @@ import { getAppliedStyles } from '@bigcommerce/checkout/dom-utils';
 
 import type { StripeAppearanceOptions, StripeCustomFont } from '../stripe-types';
 
+const radioIconInnerScaleList = {
+    default: 0.66,
+    themeV2: 0.36,
+};
+
 const getStylesFromElement = (
     selector: string,
     properties: string[],
@@ -75,10 +80,13 @@ export const getFonts = (selector = 'link[href*="font"]'): StripeCustomFont[] =>
     return fonts;
 };
 
-export const getAppearanceForOCSElement = (containerId: string): StripeAppearanceOptions => {
+export const getAppearanceForOCSElement = (
+    containerId: string,
+    theme: keyof typeof radioIconInnerScaleList = 'default',
+): StripeAppearanceOptions => {
     const defaultAccordionPaddingHorizontal = '18px';
     const defaultAccordionPaddingVertical = '13px';
-    const defaultRadioIconInnerScale = 0.66;
+    const defaultRadioIconInnerScale = radioIconInnerScaleList[theme];
 
     const formInputStyles = getStylesFromElement(`#${containerId}--input`, [
         'color',
@@ -106,11 +114,18 @@ export const getAppearanceForOCSElement = (containerId: string): StripeAppearanc
     ]);
     const accordionSelectedHeaderStyles = getStylesFromElement(
         `#${containerId}--accordion-header-selected`,
-        ['background-color'],
+        ['background-color', 'border-color', 'margin-bottom', 'margin-top'],
     );
     const formChecklistStyles = getStylesFromElement(
         `#${containerId}--accordion-header.optimizedCheckout-form-checklist-item`,
-        ['border-bottom', 'border-color'],
+        [
+            'border-bottom',
+            'border-top',
+            'border-left',
+            'border-right',
+            'border-color',
+            'border-radius',
+        ],
     );
     const {
         color: accordionHeaderColor,
@@ -181,10 +196,14 @@ export const getAppearanceForOCSElement = (containerId: string): StripeAppearanc
                 boxShadow: formInputStyles['box-shadow'],
             },
             '.AccordionItem': {
-                borderRadius: 0,
-                borderWidth: 0,
+                borderRadius: formChecklistStyles['border-radius'],
+                borderTop: formChecklistStyles['border-top'],
+                borderRight: formChecklistStyles['border-right'],
                 borderBottom: formChecklistStyles['border-bottom'],
+                borderLeft: formChecklistStyles['border-left'],
                 borderColor: formChecklistStyles['border-color'],
+                marginBottom: accordionSelectedHeaderStyles['margin-bottom'],
+                marginTop: accordionSelectedHeaderStyles['margin-top'],
                 backgroundColor: accordionHeaderStyles['background-color'],
                 boxShadow: 'none',
                 fontSize: accordionItemTitleFontSize,
@@ -200,6 +219,7 @@ export const getAppearanceForOCSElement = (containerId: string): StripeAppearanc
                 fontWeight: 'bold',
                 color: accordionHeaderColor,
                 backgroundColor: accordionSelectedHeaderStyles['background-color'],
+                borderColor: accordionSelectedHeaderStyles['border-color'],
             },
             '.TabLabel': {
                 color: accordionHeaderColor,
