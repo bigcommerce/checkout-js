@@ -159,9 +159,7 @@ export const CreditCardPaymentMethodComponent = (
 
         if (innerIsInstrumentFeatureAvailableProp && innerSelectedInstrument) {
             return (
-                (method.config.isHostedFormEnabled === true
-                    ? storedCardValidationSchema
-                    : undefined) ||
+                storedCardValidationSchema ||
                 getInstrumentValidationSchema({
                     instrumentBrand: innerSelectedInstrument.brand,
                     instrumentLast4: innerSelectedInstrument.last4,
@@ -179,7 +177,7 @@ export const CreditCardPaymentMethodComponent = (
         }
 
         return (
-            (method.config.isHostedFormEnabled === true ? cardValidationSchema : undefined) ||
+            cardValidationSchema ||
             getCreditCardValidationSchema({
                 isCardCodeRequired: method.config.cardCode === true,
                 language,
@@ -361,6 +359,12 @@ export const CreditCardPaymentMethodComponent = (
 
     const SentryMessage = methodProp ? `DataCreditCardFieldset ${JSON.stringify(methodProp)}` : '';
 
+    const isHostedFormExplicitlyDisabled = (method: PaymentMethod): boolean => {
+        return (
+            method.config.isHostedFormEnabled !== undefined && !method.config.isHostedFormEnabled
+        );
+    };
+
     if (!storeConfig) {
         throw Error('Unable to get config or customer');
     }
@@ -379,7 +383,7 @@ export const CreditCardPaymentMethodComponent = (
                         onUseNewInstrument={handleUseNewCard}
                         selectedInstrumentId={selectedInstrument && selectedInstrument.bigpayToken}
                         validateInstrument={
-                            methodProp.config.isHostedFormEnabled === true &&
+                            !isHostedFormExplicitlyDisabled(methodProp) &&
                             getStoredCardValidationFieldset ? (
                                 getStoredCardValidationFieldset(selectedInstrument)
                             ) : (
@@ -393,7 +397,7 @@ export const CreditCardPaymentMethodComponent = (
                 )}
 
                 {shouldShowCreditCardFieldset &&
-                    !(methodProp.config.isHostedFormEnabled === true && cardFieldset) && (
+                    (!cardFieldset || isHostedFormExplicitlyDisabled(methodProp)) && (
                         <>
                             <CaptureMessageComponent message={SentryMessage} />
                             <CreditCardFieldset
@@ -407,7 +411,7 @@ export const CreditCardPaymentMethodComponent = (
                     )}
 
                 {shouldShowCreditCardFieldset &&
-                    methodProp.config.isHostedFormEnabled === true &&
+                    !isHostedFormExplicitlyDisabled(methodProp) &&
                     cardFieldset}
 
                 {isInstrumentFeatureAvailableProp && (

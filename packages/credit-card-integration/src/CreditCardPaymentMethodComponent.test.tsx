@@ -179,11 +179,7 @@ describe('CreditCardPaymentMethod', () => {
         );
     });
 
-    it('does not use custom validation schema when hosted form is disabled', () => {
-        const expectedSchema = getCreditCardValidationSchema({
-            isCardCodeRequired: true,
-            language: localeContext.language,
-        });
+    it('uses custom validation schema when passed even when hosted form is disabled', () => {
         const customSchema = object({
             ccCvv: string(),
             ccExpiry: string(),
@@ -208,7 +204,7 @@ describe('CreditCardPaymentMethod', () => {
         const schema = (paymentForm.setValidationSchema as jest.Mock).mock.calls[0][1];
 
         expect(Object.keys(schema.describe().fields)).toEqual(
-            Object.keys(expectedSchema.describe().fields),
+            Object.keys(customSchema.describe().fields),
         );
     });
 
