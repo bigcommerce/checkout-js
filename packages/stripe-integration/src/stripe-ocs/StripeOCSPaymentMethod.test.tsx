@@ -39,16 +39,6 @@ import StripeOCSPaymentMethod from './StripeOCSPaymentMethod';
 import * as getStripeOCSStyles from './getStripeOCSStyles';
 
 jest.mock('./getStripeOCSStyles');
-// jest.mock('./getStripeOCSStyles', () => ({
-//     getAppearanceForOCSElement: () => {
-//         return {
-//             variables: {
-//                 color: '#cccccc',
-//             },
-//         };
-//     },
-//     getFonts: () => [{ cssSrc: 'fontSrc' }],
-// }));
 
 describe('when using Stripe OCS payment', () => {
     const methodId = 'optimized_checkout';
