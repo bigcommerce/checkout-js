@@ -35,8 +35,8 @@ import {
 import { screen } from '@bigcommerce/checkout/test-utils';
 import { AccordionContext, type AccordionContextProps } from '@bigcommerce/checkout/ui';
 
-import StripeOCSPaymentMethod from './StripeOCSPaymentMethod';
 import * as getStripeOCSStyles from './getStripeOCSStyles';
+import StripeOCSPaymentMethod from './StripeOCSPaymentMethod';
 
 jest.mock('./getStripeOCSStyles');
 
@@ -105,8 +105,12 @@ describe('when using Stripe OCS payment', () => {
             };
         });
 
-        jest.spyOn(getStripeOCSStyles, 'getAppearanceForOCSElement').mockImplementation(getAppearanceForOCSElementMock);
-        jest.spyOn(getStripeOCSStyles, 'getFonts').mockImplementation(() => [{ cssSrc: 'fontSrc' }]);
+        jest.spyOn(getStripeOCSStyles, 'getAppearanceForOCSElement').mockImplementation(
+            getAppearanceForOCSElementMock,
+        );
+        jest.spyOn(getStripeOCSStyles, 'getFonts').mockImplementation(() => [
+            { cssSrc: 'fontSrc' },
+        ]);
 
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
 
@@ -355,7 +359,10 @@ describe('when using Stripe OCS payment', () => {
                     },
                 }),
             );
-            expect(getAppearanceForOCSElementMock).toHaveBeenCalledWith(expectedContainerId, undefined);
+            expect(getAppearanceForOCSElementMock).toHaveBeenCalledWith(
+                expectedContainerId,
+                undefined,
+            );
         });
 
         it('accordion collapsed when selected different payment method', () => {
@@ -441,7 +448,10 @@ describe('when using Stripe OCS payment', () => {
                     },
                 }),
             );
-            expect(getAppearanceForOCSElementMock).toHaveBeenCalledWith(expectedContainerId, 'themeV2');
+            expect(getAppearanceForOCSElementMock).toHaveBeenCalledWith(
+                expectedContainerId,
+                'themeV2',
+            );
         });
     });
 
