@@ -371,6 +371,70 @@ describe('getStripeOCSStyles', () => {
                 },
             });
         });
+
+        it('returns the default radio icon scales for default checkout theme', () => {
+            mockGetAppliedStyles({
+                ...defaultStyles,
+                [`#${containerId}--accordion-header-selected .form-label::after`]: {
+                    'border-color': '#4496f6',
+                    'background-color': '#4496f6',
+                },
+            });
+
+            expect(getAppearanceForOCSElement(containerId)).toEqual(
+                expect.objectContaining({
+                    rules: expect.objectContaining({
+                        '.RadioIconInner': {
+                            r: '29.04',
+                            fill: 'white',
+                        },
+                    }),
+                }),
+            );
+        });
+
+        it('returns the default radio icon scales for checkout theme v2', () => {
+            mockGetAppliedStyles({
+                ...defaultStyles,
+                [`#${containerId}--accordion-header-selected .form-label::after`]: {
+                    'border-color': '#4496f6',
+                    'background-color': '#4496f6',
+                },
+            });
+
+            expect(getAppearanceForOCSElement(containerId, 'themeV2')).toEqual(
+                expect.objectContaining({
+                    rules: expect.objectContaining({
+                        '.RadioIconInner': {
+                            r: '15.84',
+                            fill: 'white',
+                        },
+                    }),
+                }),
+            );
+        });
+
+        it('returns the default radio icon scales from existing checkout element', () => {
+            mockGetAppliedStyles({
+                ...defaultStyles,
+                [`#${containerId}--accordion-header-selected .form-label::after`]: {
+                    'border-color': '#4496f6',
+                    'background-color': '#4496f6',
+                    transform: 'matrix(0.8, 0, 0, 0.8, 0, 0)',
+                },
+            });
+
+            expect(getAppearanceForOCSElement(containerId, 'themeV2')).toEqual(
+                expect.objectContaining({
+                    rules: expect.objectContaining({
+                        '.RadioIconInner': {
+                            r: '35.20',
+                            fill: 'white',
+                        },
+                    }),
+                }),
+            );
+        });
     });
 });
 
