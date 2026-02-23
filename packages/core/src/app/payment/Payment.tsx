@@ -31,7 +31,7 @@ import { type ObjectSchema } from 'yup';
 
 import { type AnalyticsContextProps, type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
-import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { ChecklistSkeleton } from '@bigcommerce/checkout/ui';
 
@@ -48,7 +48,6 @@ import { TermsConditionsType } from '../termsConditions';
 
 import mapSubmitOrderErrorMessage, { mapSubmitOrderErrorTitle } from './mapSubmitOrderErrorMessage';
 import mapToOrderRequestBody from './mapToOrderRequestBody';
-import { NoPaymentMethods } from './NoPaymentMethods';
 import PaymentContext from './PaymentContext';
 import PaymentForm from './PaymentForm';
 import {
@@ -604,13 +603,7 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
     return (
         <PaymentContext.Provider value={getContextValue()}>
             <ChecklistSkeleton isLoading={!state.isReady}>
-                {(props.shouldShowSubmitPaymentButton && props.isPaymentDataRequired() && isEmpty(props.methods)) && 
-                    <div className="payment-submit-button-placeholder" >
-                        <NoPaymentMethods message={<TranslatedString id="payment.payment_methods_unavailable_error" />} />
-                    </div>
-                }
-
-                {((props.shouldShowSubmitPaymentButton && !props.isPaymentDataRequired()) || (!isEmpty(props.methods) && props.defaultMethod)) && (
+                {((props.shouldShowSubmitPaymentButton) || (!isEmpty(props.methods) && props.defaultMethod)) &&
                     <PaymentForm
                         availableStoreCredit={props.availableStoreCredit}
                         defaultGatewayId={props.defaultMethod?.gateway}
@@ -636,7 +629,7 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
                         usableStoreCredit={props.usableStoreCredit}
                         validationSchema={(uniqueSelectedMethodId && validationSchemasRef.current[uniqueSelectedMethodId]) || undefined}
                     />
-                )}
+                }
             </ChecklistSkeleton>
 
             {renderOrderErrorModal()}
