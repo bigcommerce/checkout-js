@@ -7,4 +7,5 @@ export { default as isCustomError } from './isCustomError';
 export { default as isCartChangedError } from './isCartChangedError';
 export { default as isErrorWithType } from './isErrorWithType';
 export { default as isRequestError } from './isRequestError';
+export { default as isCartStockPositionChangedError } from './isCartStockPositionChangedError';
 export { setPrototypeOf } from './createCustomErrorType';

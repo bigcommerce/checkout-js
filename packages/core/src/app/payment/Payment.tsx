@@ -1,4 +1,5 @@
 import {
+    type Cart,
     type Checkout,
     type CheckoutSelectors,
     type CheckoutService,
@@ -41,11 +42,13 @@ import {
     ErrorModal,
     type ErrorModalOnCloseProps,
     isCartChangedError,
+    isCartStockPositionChangedError,
     isErrorWithType,
 } from '../common/error';
 import { EMPTY_ARRAY, isExperimentEnabled } from '../common/utility';
 import { TermsConditionsType } from '../termsConditions';
 
+import CartStockPositionsChangedModal from './CartStockPositionsChangedModal';
 import mapSubmitOrderErrorMessage, { mapSubmitOrderErrorTitle } from './mapSubmitOrderErrorMessage';
 import mapToOrderRequestBody from './mapToOrderRequestBody';
 import PaymentContext from './PaymentContext';
@@ -139,6 +142,8 @@ export interface PaymentProps {
 
 interface WithCheckoutPaymentProps {
     availableStoreCredit: number;
+    cart?: Cart;
+    consignments?: Consignment[];
     cartUrl: string;
     defaultMethod?: PaymentMethod;
     finalizeOrderError?: Error;
@@ -186,9 +191,12 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
         submitFunctions: {},
     });
 
+    const [isCartStockRefreshComplete, setIsCartStockRefreshComplete] = useState(false);
+
     const isReadyRef = useRef(state.isReady);
     const grandTotalChangeUnsubscribe = useRef<() => void>();
     const validationSchemasRef = useRef<validationSchemas>({});
+    const lastFormValuesRef = useRef<PaymentFormValues | null>(null);
 
     const renderOrderErrorModal = (): ReactNode => {
             const { finalizeOrderError, language, shouldLocaliseErrorMessages, submitOrderError } =
@@ -206,6 +214,42 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
                 error.type === 'invalid_hosted_form_value'
             ) {
                 return null;
+            }
+
+            if (isCartStockPositionChangedError(error)) {
+                if (!isCartStockRefreshComplete) {
+                    return null;
+                }
+
+                const { cart, clearError, consignments } = props;
+                const changedLineItemIds = error.changedItemIds;
+                const hasItemsToShow = (changedLineItemIds?.length ?? 0) > 0;
+
+                if (hasItemsToShow) {
+                    return (
+                        <CartStockPositionsChangedModal
+                            cart={cart}
+                            changedLineItemIds={changedLineItemIds}
+                            consignments={consignments}
+                            isOpen={true}
+                            onPlaceOrder={() => {
+                                clearError(error);
+
+                                const values = lastFormValuesRef.current;
+
+                                if (values) {
+                                    handleSubmit(values);
+                                }
+                            }}
+                            onRequestClose={() => {
+                                clearError(error);
+                                lastFormValuesRef.current = null;
+                                setIsCartStockRefreshComplete(false);
+                            }}
+                        />
+                    );
+                }
+                // No items to display — fall through to generic ErrorModal so user still gets feedback
             }
 
             return (
@@ -402,6 +446,21 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
 
             if (isCartChangedError(error)) {
                 return onCartChangedError();
+            }
+
+            if (isCartStockPositionChangedError(error)) {
+                lastFormValuesRef.current = values;
+                setIsCartStockRefreshComplete(false);
+                props.loadCheckout()
+                    .then(() => setIsCartStockRefreshComplete(true))
+                    .catch(() => {
+                        const { onUnhandledError = noop } = props;
+
+                        onUnhandledError(new Error('Cart refresh failed after stock position change'));
+                        setIsCartStockRefreshComplete(true);
+                    });
+
+                return;
             }
 
             onSubmitError(error);
@@ -645,6 +704,7 @@ export function mapToPaymentProps({
 }: CheckoutContextProps): WithCheckoutPaymentProps | null {
     const {
         data: {
+            getCart,
             getCheckout,
             getConfig,
             getCustomer,
@@ -693,6 +753,8 @@ export function mapToPaymentProps({
     return {
         applyStoreCredit: checkoutService.applyStoreCredit,
         availableStoreCredit: customer.storeCredit,
+        cart: getCart(),
+        consignments,
         cartUrl: config.links.cartLink,
         clearError: checkoutService.clearError,
         defaultMethod,
