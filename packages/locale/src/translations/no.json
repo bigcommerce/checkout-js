@@ -18,9 +18,9 @@
             "custom_required_error": "{label} er påkrevd",
             "custom_min_error": "{label} skal ikke være mindre enn {min} tegn",
             "custom_max_error": "{label} skal ikke være mer enn {max} tegn",
-            "custom_min_number_error": "{label} must be greater than or equal to {min}",
-            "custom_max_number_error": "{label} must be less than or equal to {max}",
-            "custom_range_error": "{label} must be between {min} and {max}",
+            "custom_min_number_error": "{label} må være større enn eller lik {min}",
+            "custom_max_number_error": "{label} må være mindre enn eller lik {max}",
+            "custom_range_error": "{label} må være mellom {min} og {max}",
             "invalid_characters_error": "{label} inneholder ugyldige tegn",
             "custom_valid_error": "{label} er ikke gyldig",
             "edit_address_action": "Rediger adresse",
@@ -609,8 +609,8 @@
                 "adyenv3": {
                     "boletobancario": "Boleto Bancário-billett",
                     "multibanco": {
-                        "reference": "Payment reference",
-                        "entity": "Entity number",
+                        "reference": "Betalingsreferanse",
+                        "entity": "Enhetsnummer",
                         "expires_at": "Utløpsdato"
                     },
                     "oxxo": "OXXO-billett"

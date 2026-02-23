@@ -18,9 +18,9 @@
             "custom_required_error": "{label} måste anges",
             "custom_min_error": "{label} får inte vara mindre än {min} tecken",
             "custom_max_error": "{label} får inte vara mer än {max} tecken",
-            "custom_min_number_error": "{label} must be greater than or equal to {min}",
-            "custom_max_number_error": "{label} must be less than or equal to {max}",
-            "custom_range_error": "{label} must be between {min} and {max}",
+            "custom_min_number_error": "{label} måste vara större än eller lika med {min}",
+            "custom_max_number_error": "{label} måste vara mindre än eller lika med {max}",
+            "custom_range_error": "{label} måste vara mellan {min} och {max}",
             "invalid_characters_error": "{label} innehåller ogiltiga tecken",
             "custom_valid_error": "{label} är inte giltig",
             "edit_address_action": "Redigera adress",
@@ -609,8 +609,8 @@
                 "adyenv3": {
                     "boletobancario": "Boleto Bancário-ticket",
                     "multibanco": {
-                        "reference": "Payment reference",
-                        "entity": "Entity number",
+                        "reference": "Betalningsreferens",
+                        "entity": "Enhetsnummer",
                         "expires_at": "Förfallodatum"
                     },
                     "oxxo": "OXXO-ticket"

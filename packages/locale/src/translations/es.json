@@ -18,9 +18,9 @@
             "custom_required_error": "El campo {label} es obligatorio",
             "custom_min_error": "{label} no debe tener menos de {min} caracteres",
             "custom_max_error": "{label} no debe tener más de {max} caracteres",
-            "custom_min_number_error": "{label} must be greater than or equal to {min}",
-            "custom_max_number_error": "{label} must be less than or equal to {max}",
-            "custom_range_error": "{label} must be between {min} and {max}",
+            "custom_min_number_error": "{label} debe ser mayor o igual que {min}",
+            "custom_max_number_error": "{label} debe ser menor o igual que {max}",
+            "custom_range_error": "{label} debe estar entre {min} y {max}",
             "invalid_characters_error": "El campo {label} contiene caracteres no válidos",
             "custom_valid_error": "El campo {label} no es válido",
             "edit_address_action": "Editar dirección",
@@ -609,8 +609,8 @@
                 "adyenv3": {
                     "boletobancario": "Ticket Boleto Bancário",
                     "multibanco": {
-                        "reference": "Payment reference",
-                        "entity": "Entity number",
+                        "reference": "Referencia de pago",
+                        "entity": "Número de entidad",
                         "expires_at": "Fecha de vencimiento"
                     },
                     "oxxo": "Ticket OXXO"

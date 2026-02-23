@@ -18,9 +18,9 @@
             "custom_required_error": "{label} ist erforderlich",
             "custom_min_error": "{label} sollte nicht weniger als {min} Zeichen lang sein",
             "custom_max_error": "{label} sollte nicht mehr als {max} Zeichen lang sein",
-            "custom_min_number_error": "{label} must be greater than or equal to {min}",
-            "custom_max_number_error": "{label} must be less than or equal to {max}",
-            "custom_range_error": "{label} must be between {min} and {max}",
+            "custom_min_number_error": "{label} muss größer oder gleich {min} sein",
+            "custom_max_number_error": "{label} muss kleiner oder gleich {max} sein",
+            "custom_range_error": "{label} muss zwischen {min} und {max} liegen",
             "invalid_characters_error": "{label} enthält ungültige Zeichen",
             "custom_valid_error": "{label} ist nicht gültig",
             "edit_address_action": "Adresse bearbeiten",
@@ -609,8 +609,8 @@
                 "adyenv3": {
                     "boletobancario": "Boleto Bancário-Ticket",
                     "multibanco": {
-                        "reference": "Payment reference",
-                        "entity": "Entity number",
+                        "reference": "Zahlungsreferenz",
+                        "entity": "Entitätsnummer",
                         "expires_at": "Ablaufdatum"
                     },
                     "oxxo": "OXXO-Ticket"

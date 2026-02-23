@@ -18,9 +18,9 @@
             "custom_required_error": "{label} is vereist",
             "custom_min_error": "{label} mag niet korter zijn dan {min} tekens",
             "custom_max_error": "{label} mag niet langer zijn dan {max} tekens",
-            "custom_min_number_error": "{label} must be greater than or equal to {min}",
-            "custom_max_number_error": "{label} must be less than or equal to {max}",
-            "custom_range_error": "{label} must be between {min} and {max}",
+            "custom_min_number_error": "{label} moet groter of gelijk zijn aan {min}",
+            "custom_max_number_error": "{label} moet kleiner of gelijk zijn aan {max}",
+            "custom_range_error": "{label} moet tussen {min} en {max} liggen",
             "invalid_characters_error": "{label} bevat ongeldige tekens",
             "custom_valid_error": "{label} is niet geldig",
             "edit_address_action": "Adres bewerken",
@@ -609,8 +609,8 @@
                 "adyenv3": {
                     "boletobancario": "Boleto Bancário-ticket",
                     "multibanco": {
-                        "reference": "Payment reference",
-                        "entity": "Entity number",
+                        "reference": "Betalingsreferentie",
+                        "entity": "Entiteitsnummer",
                         "expires_at": "Vervaldatum"
                     },
                     "oxxo": "OXXO-ticket"
