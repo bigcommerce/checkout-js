@@ -313,6 +313,7 @@
             "payment_method_invalid_error": "There's a problem processing your payment. Please contact us for assistance or choose another payment method.",
             "payment_method_unavailable_error": "This payment provider is temporarily unavailable. Please try again later.",
             "payment_not_required_text": "Payment is not required for this order.",
+            "payment_methods_unavailable_error": "We're unable to load payment methods at the moment. Please try again later or contact the store for assistance.",
             "paypal_complete_action": "Complete order",
             "paypal_continue_action": "Continue with PayPal",
             "paypal_pay_later_complete_action": "Complete order",

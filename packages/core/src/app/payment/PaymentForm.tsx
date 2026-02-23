@@ -15,6 +15,7 @@ import { TermsConditions } from '../termsConditions';
 import { Fieldset, Form, Legend } from '../ui/form';
 
 import getPaymentValidationSchema from './getPaymentValidationSchema';
+import { NoPaymentMethods } from './NoPaymentMethods';
 import {
     getPaymentMethodName,
     getUniquePaymentMethodId,
@@ -239,8 +240,12 @@ const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProp
                     <TranslatedString id="payment.payment_methods_text" />
                 </Legend>
             }
-        >
-            {!isPaymentDataRequired() && <StoreCreditOverlay />}
+        >   
+            {!isPaymentDataRequired() && (
+                !methods.length
+                ? <NoPaymentMethods message={<TranslatedString id="payment.payment_not_required_text" />} />
+                : <StoreCreditOverlay />)
+            }
 
             <Extension region={ExtensionRegion.PaymentPaymentMethodListBefore}/>
 
@@ -297,12 +302,14 @@ const paymentFormConfig: WithFormikConfig<PaymentFormProps & WithLanguageProps, 
         },
 
         validationSchema: ({
+            isPaymentDataRequired,
             language,
             isTermsConditionsRequired = false,
             validationSchema,
         }: PaymentFormProps & WithLanguageProps) =>
             getPaymentValidationSchema({
                 additionalValidation: validationSchema,
+                isPaymentDataRequired: isPaymentDataRequired(),
                 isTermsConditionsRequired,
                 language,
             }),

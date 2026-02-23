@@ -71,6 +71,21 @@
     padding: $payment-step-spacing-top 0;
 }
 
+.noPaymentMethods-panel {
+    border: container("border");
+    border-radius: $global-radius;
+    display: flex;
+    min-height: 5rem;
+    text-align: center;
+}
+
+.noPaymentMethods-panel-message {
+    align-self: center;
+    flex: 1;
+    margin: 0;
+    padding: spacing("half");
+}
+
 // KLUDGE: We need this override when Klarna modal is open because
 // `scroll-behavior: smooth` conflicts with the styles injected by Klarna JS,
 // cropping the content of the modal in Firefox as a result.

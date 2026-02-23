@@ -7,19 +7,21 @@ import { getTermsConditionsValidationSchema } from '../termsConditions';
 
 export interface PaymentValidationSchemaOptions {
     additionalValidation?: ObjectSchema<Partial<PaymentFormValues>>;
+    isPaymentDataRequired?: boolean;
     isTermsConditionsRequired: boolean;
     language: LanguageService;
 }
 
 export default function getPaymentValidationSchema({
     additionalValidation,
+    isPaymentDataRequired = true,
     isTermsConditionsRequired,
     language,
 }: PaymentValidationSchemaOptions): ObjectSchema<PaymentFormValues> {
     const schemaFields: {
         paymentProviderRadio: StringSchema;
     } = {
-        paymentProviderRadio: string().required(),
+        paymentProviderRadio: isPaymentDataRequired ? string().required() : string(),
     };
 
     const schemaFieldsWithTerms = object(schemaFields).concat(

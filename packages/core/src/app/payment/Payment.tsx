@@ -31,7 +31,7 @@ import { type ObjectSchema } from 'yup';
 
 import { type AnalyticsContextProps, type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
-import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { ChecklistSkeleton } from '@bigcommerce/checkout/ui';
 
@@ -43,11 +43,12 @@ import {
     isCartChangedError,
     isErrorWithType,
 } from '../common/error';
-import { EMPTY_ARRAY } from '../common/utility';
+import { EMPTY_ARRAY, isExperimentEnabled } from '../common/utility';
 import { TermsConditionsType } from '../termsConditions';
 
 import mapSubmitOrderErrorMessage, { mapSubmitOrderErrorTitle } from './mapSubmitOrderErrorMessage';
 import mapToOrderRequestBody from './mapToOrderRequestBody';
+import { NoPaymentMethods } from './NoPaymentMethods';
 import PaymentContext from './PaymentContext';
 import PaymentForm from './PaymentForm';
 import {
@@ -149,6 +150,7 @@ interface WithCheckoutPaymentProps {
     methods: PaymentMethod[];
     shouldExecuteSpamCheck: boolean;
     shouldLocaliseErrorMessages: boolean;
+    shouldShowSubmitPaymentButton: boolean;
     submitOrderError?: Error;
     termsConditionsText?: string;
     termsConditionsUrl?: string;
@@ -602,11 +604,17 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
     return (
         <PaymentContext.Provider value={getContextValue()}>
             <ChecklistSkeleton isLoading={!state.isReady}>
-                {!isEmpty(props.methods) && props.defaultMethod && (
+                {(props.shouldShowSubmitPaymentButton && props.isPaymentDataRequired() && isEmpty(props.methods)) && 
+                    <div className="payment-submit-button-placeholder" >
+                        <NoPaymentMethods message={<TranslatedString id="payment.payment_methods_unavailable_error" />} />
+                    </div>
+                }
+
+                {((props.shouldShowSubmitPaymentButton && !props.isPaymentDataRequired()) || (!isEmpty(props.methods) && props.defaultMethod)) && (
                     <PaymentForm
                         availableStoreCredit={props.availableStoreCredit}
-                        defaultGatewayId={props.defaultMethod.gateway}
-                        defaultMethodId={props.defaultMethod.id}
+                        defaultGatewayId={props.defaultMethod?.gateway}
+                        defaultMethodId={props.defaultMethod?.id || ''}
                         didExceedSpamLimit={state.didExceedSpamLimit}
                         isEmbedded={props.isEmbedded}
                         isInitializingPayment={props.isInitializingPayment}
@@ -707,6 +715,7 @@ export function mapToPaymentProps({
         shouldExecuteSpamCheck: checkout.shouldExecuteSpamCheck,
         shouldLocaliseErrorMessages:
             features['PAYMENTS-6799.localise_checkout_payment_error_messages'],
+        shouldShowSubmitPaymentButton: isExperimentEnabled(config.checkoutSettings, 'CHECKOUT-9729.show_submit_button_when_payment_not_required', false),
         submitOrder: checkoutService.submitOrder,
         submitOrderError: getSubmitOrderError(),
         checkoutServiceSubscribe: checkoutService.subscribe,
