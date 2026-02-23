@@ -138,6 +138,17 @@ const consignment: Consignment = {
             isRecommended: false,
             additionalDescription: '',
         },
+        {
+            id: 'option-id-ship-by-weight',
+            type: 'shipping_by_weight',
+            description: 'Ship by Weight',
+            imageUrl: '',
+            cost: 30,
+            costAfterDiscount: 20,
+            transitTime: '',
+            isRecommended: false,
+            additionalDescription: '',
+        },
     ],
 };
 

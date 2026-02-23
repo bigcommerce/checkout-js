@@ -15,10 +15,22 @@ interface MultiShippingOptionsListItemProps {
 export const MultiShippingOptionsListItem: FunctionComponent<
     MultiShippingOptionsListItemProps
 > = ({ consignmentId, selectedShippingOptionId, shippingOption, handleSelect }) => {
+    const costAfterDiscount = shippingOption.costAfterDiscount;
+    const showDiscount = costAfterDiscount !== undefined && costAfterDiscount !== shippingOption.cost;
+
     const label = (
         <span className="body-regular">
             {`${shippingOption.description} - `}
-            <ShopperCurrency amount={shippingOption.cost} />
+            {showDiscount ? (
+                <>
+                    <span className="shippingOption-price-before-discount">
+                        <ShopperCurrency amount={shippingOption.cost} />
+                    </span>
+                    <ShopperCurrency amount={costAfterDiscount} />
+                </>
+            ) : (
+                <ShopperCurrency amount={shippingOption.cost} />
+            )}
         </span>
     );
 

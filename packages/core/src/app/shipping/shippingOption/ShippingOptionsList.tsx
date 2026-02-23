@@ -27,7 +27,7 @@ const ShippingOptionListItem: FunctionComponent<ShippingOptionListItemProps> = (
     const renderLabel = useCallback(
         () => (
             <div className="shippingOptionLabel">
-                <StaticShippingOption displayAdditionalInformation={true} method={shippingOption} />
+                <StaticShippingOption displayAdditionalInformation={true} method={shippingOption} shippingCostAfterDiscount={shippingOption.costAfterDiscount}/>
                 {(isSelected && !isMultiShippingMode) && (
                     <Extension region={ExtensionRegion.ShippingSelectedShippingMethod} />
                 )}

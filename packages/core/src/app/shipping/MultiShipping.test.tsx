@@ -288,6 +288,59 @@ describe('Multi-shipping', () => {
         expect(allSelectedShippingOptions[1].getAttribute('value')).toBe('option-id-pick-up');
     });
 
+    it('displays shipping discount (strikethrough and costAfterDiscount) for option in multi-shipping flow', async () => {
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithMultiShippingCart);
+
+        jest.spyOn(checkoutService, 'selectConsignmentShippingOption');
+
+        render(<CheckoutTest {...defaultProps} />);
+
+        await checkout.waitForShippingStep();
+
+        await userEvent.click(screen.getByText(/Ship to multiple addresses/i));
+
+        await userEvent.click(
+            await screen.findByRole('button', {
+                name: 'Add new destination',
+            }),
+        );
+
+        checkout.updateCheckout(
+            'post',
+            '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments',
+            {
+                ...checkoutWithMultiShippingCart,
+                consignments: [
+                    {
+                        ...consignment,
+                        selectedShippingOption: undefined,
+                    },
+                ],
+            },
+        );
+
+        checkout.updateCheckout(
+            'put',
+            '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments/consignment-1',
+            {
+                ...checkoutWithMultiShippingCart,
+                consignments: [consignment],
+            },
+        );
+
+        await act(async () => {
+            await userEvent.click(screen.getByText('Choose a shipping address'));
+            await userEvent.click(screen.getByText(/111 Testing Rd/i));
+            await userEvent.click(screen.getByText('Allocate items'));
+            await userEvent.type(screen.getByLabelText('Quantity of Item X'), '1');
+            await userEvent.click(screen.getByRole('button', { name: 'Allocate' }));
+        });
+
+        expect(screen.getByRole('radio', { name: /Ship by Weight/ })).toBeInTheDocument();
+        expect(screen.getByText('$30.00')).toBeInTheDocument();
+        expect(screen.getByText(/\$20\.00/)).toBeInTheDocument();
+    });
+
     it('updates the shipping option of a consignment', async () => {
         // ✅creates the first consignment with the cart itemId `x`
         // ✅no available shipping option for the selected shipping address
