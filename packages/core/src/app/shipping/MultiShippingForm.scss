@@ -308,9 +308,3 @@ $allocate-items-table-image-width-small-screen: 40%;
 .shipping-option-item {
     margin: 0 0 spacing("quarter") 0;
 }
-
-.shippingOption-price-before-discount {
-    font-weight: fontWeight("normal");
-    text-decoration: line-through;
-    margin-right: spacing("quarter");
-}
