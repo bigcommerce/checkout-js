@@ -15,6 +15,7 @@ export function getStoreConfig(): StoreConfig {
             checkoutUserExperienceSettings: {
                 walletButtonsOnTop: false,
                 floatingLabelEnabled: false,
+                checkoutV2Theme: false,
             },
             enableOrderComments: true,
             enableTermsAndConditions: false,
