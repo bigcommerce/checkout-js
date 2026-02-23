@@ -359,7 +359,7 @@ export const CreditCardPaymentMethodComponent = (
 
     const SentryMessage = methodProp ? `DataCreditCardFieldset ${JSON.stringify(methodProp)}` : '';
 
-    const isHostedFormExplicitlyDisabled = (method: PaymentMethod): boolean => {
+    const isHostedFormExplicitlySetToFalse = (method: PaymentMethod): boolean => {
         return (
             method.config.isHostedFormEnabled !== undefined && !method.config.isHostedFormEnabled
         );
@@ -383,7 +383,7 @@ export const CreditCardPaymentMethodComponent = (
                         onUseNewInstrument={handleUseNewCard}
                         selectedInstrumentId={selectedInstrument && selectedInstrument.bigpayToken}
                         validateInstrument={
-                            !isHostedFormExplicitlyDisabled(methodProp) &&
+                            !isHostedFormExplicitlySetToFalse(methodProp) &&
                             getStoredCardValidationFieldset ? (
                                 getStoredCardValidationFieldset(selectedInstrument)
                             ) : (
@@ -397,7 +397,7 @@ export const CreditCardPaymentMethodComponent = (
                 )}
 
                 {shouldShowCreditCardFieldset &&
-                    (!cardFieldset || isHostedFormExplicitlyDisabled(methodProp)) && (
+                    (!cardFieldset || isHostedFormExplicitlySetToFalse(methodProp)) && (
                         <>
                             <CaptureMessageComponent message={SentryMessage} />
                             <CreditCardFieldset
@@ -411,7 +411,7 @@ export const CreditCardPaymentMethodComponent = (
                     )}
 
                 {shouldShowCreditCardFieldset &&
-                    !isHostedFormExplicitlyDisabled(methodProp) &&
+                    !isHostedFormExplicitlySetToFalse(methodProp) &&
                     cardFieldset}
 
                 {isInstrumentFeatureAvailableProp && (
