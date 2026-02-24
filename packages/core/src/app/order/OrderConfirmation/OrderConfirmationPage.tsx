@@ -2,7 +2,6 @@ import {
     type Order,
     type ShopperConfig,
     type ShopperCurrency,
-    type StoreConfig,
     type StoreCurrency,
 } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
@@ -27,7 +26,6 @@ import { OrderSummaryContainer } from './OrderSummaryContainer';
 
 interface OrderConfirmationPageProps {
     order: Order;
-    config: StoreConfig;
     supportEmail: string;
     supportPhoneNumber: string | undefined;
     paymentInstructions: string | undefined;
@@ -46,7 +44,6 @@ interface OrderConfirmationPageProps {
 }
 
 export const OrderConfirmationPage = ({
-    config,
     currency,
     customerCanBeCreated,
     error,
@@ -73,7 +70,6 @@ export const OrderConfirmationPage = ({
             <div className="orderConfirmation">
                 <ThankYouHeader name={order.billingAddress.firstName} />
                 <OrderStatus
-                    config={config}
                     order={order}
                     supportEmail={supportEmail}
                     supportPhoneNumber={supportPhoneNumber}

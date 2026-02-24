@@ -1,11 +1,9 @@
-import { type CheckoutService, createCheckoutService, type Order, type StoreConfig } from '@bigcommerce/checkout-sdk';
+import { type CheckoutService, createCheckoutService, type Order } from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent } from 'react';
 
 import { LocaleProvider } from '@bigcommerce/checkout/contexts';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
-
-import { getStoreConfig } from '../config/config.mock';
 
 import { getOrder, getOrderWithMandateId, getOrderWithMandateURL } from './orders.mock';
 import OrderStatus, { type OrderStatusProps } from './OrderStatus';
@@ -22,17 +20,14 @@ describe('OrderStatus', () => {
     let defaultProps: OrderStatusProps;
     let order: Order;
     let OrderStatusTest: FunctionComponent<OrderStatusProps>;
-    let config: StoreConfig;
 
     const languageService = getLanguageService();
 
     beforeEach(() => {
         checkoutService = createCheckoutService();
         order = getOrder();
-        config = getStoreConfig();
 
         defaultProps = {
-            config,
             order,
             supportEmail: 'test@example.com',
         };
@@ -133,20 +128,8 @@ describe('OrderStatus', () => {
             };
         });
 
-        it('renders message indicating order is incomplete when experiment is off', () => {
+        it('renders message indicating order is incomplete', () => {
             render(<OrderStatusTest {...defaultProps} order={order} />);
-
-            expect(screen.getByTestId('order-confirmation-order-status-text'))
-                .toHaveTextContent(getTextContent(languageService.translate('order_confirmation.order_incomplete_status_text', {
-                    orderNumber: defaultProps.order.orderId,
-                    supportEmail: defaultProps.supportEmail,
-                })));
-        });
-
-        it('renders message indicating order is incomplete when experiment is on', () => {
-            config.checkoutSettings.features['CHECKOUT-6891.update_incomplete_order_wording_on_order_confirmation_page'] = true;
-
-            render(<OrderStatusTest {...defaultProps} config={config} order={order} />);
 
             expect(screen.getByTestId('order-confirmation-order-status-text'))
                 .toHaveTextContent(getTextContent(languageService.translate('order_confirmation.order_pending_status_text', {

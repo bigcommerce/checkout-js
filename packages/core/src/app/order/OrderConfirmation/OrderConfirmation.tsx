@@ -131,7 +131,6 @@ export const OrderConfirmation = ({
 
     return (
         <OrderConfirmationPage
-            config={config}
             currency={currency}
             customerCanBeCreated={customerCanBeCreated}
             error={error}
