@@ -1,8 +1,6 @@
 import { type PhysicalItem } from '@bigcommerce/checkout-sdk';
-import classNames from 'classnames';
 import React, { type FunctionComponent } from 'react';
 
-import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import getOrderSummaryItemImage from '../order/getOrderSummaryItemImage';
@@ -12,8 +10,6 @@ export interface CartStockPositionsChangedItemProps {
 }
 
 const CartStockPositionsChangedItem: FunctionComponent<CartStockPositionsChangedItemProps> = ({ item }) => {
-    const { themeV2 } = useThemeContext();
-
     const stock = item.stockPosition;
     const quantityOnHand = stock?.quantityOnHand ?? 0;
     const quantityBackordered = stock?.quantityBackordered ?? 0;
@@ -30,20 +26,14 @@ const CartStockPositionsChangedItem: FunctionComponent<CartStockPositionsChanged
                 </figure>
                 <div className="product-column product-body">
                     <h4
-                        className={classNames(
-                            'product-title optimizedCheckout-contentPrimary',
-                            { 'body-medium': themeV2 },
-                        )}
+                        className="product-title optimizedCheckout-contentPrimary body-medium"
                         data-test="cart-item-product-title"
                     >
                         {item.name}
                     </h4>
                     {item.options && item.options.length > 0 && (
                         <ul
-                            className={classNames(
-                                'product-options optimizedCheckout-contentSecondary',
-                                { 'sub-text-medium': themeV2 },
-                            )}
+                            className="product-options optimizedCheckout-contentSecondary sub-text-medium"
                             data-test="cart-item-product-options"
                         >
                             {item.options.map((option, index) => (
@@ -58,9 +48,7 @@ const CartStockPositionsChangedItem: FunctionComponent<CartStockPositionsChanged
                         </ul>
                     )}
                     <p
-                        className={classNames('optimizedCheckout-contentSecondary', {
-                            'sub-text-medium': themeV2,
-                        })}
+                        className="optimizedCheckout-contentSecondary sub-text-medium"
                         data-test="cart-item-quantity"
                     >
                         <TranslatedString
@@ -70,10 +58,7 @@ const CartStockPositionsChangedItem: FunctionComponent<CartStockPositionsChanged
                     </p>
                 </div>
                 <div
-                    className={classNames(
-                        'cart-stock-position-details optimizedCheckout-contentSecondary',
-                        { 'sub-text-medium': themeV2 },
-                    )}
+                    className="cart-stock-position-details optimizedCheckout-contentSecondary sub-text-medium"
                     data-test="cart-item-stock-position"
                 >
                     {quantityOnHand > 0 && (

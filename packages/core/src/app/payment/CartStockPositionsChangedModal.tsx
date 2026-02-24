@@ -1,4 +1,5 @@
 import { type Cart, type Consignment } from '@bigcommerce/checkout-sdk';
+import classNames from 'classnames';
 import React, { type FunctionComponent, useMemo } from 'react';
 
 import { useThemeContext } from '@bigcommerce/checkout/contexts';
@@ -52,18 +53,20 @@ const CartStockPositionsChangedModal: FunctionComponent<CartStockPositionsChange
 
     return (
         <Modal
-            additionalModalClassName="cart-stock-positions-changed-modal"
+            additionalModalClassName={classNames('cart-stock-positions-changed-modal', {
+                themeV2,
+            })}
             footer={
                 <>
                     <Button
-                        className={themeV2 ? 'body-medium' : ''}
+                        className="body-medium"
                         onClick={onRequestClose}
                         variant={ButtonVariant.Secondary}
                     >
                         <TranslatedString id="common.back_action" />
                     </Button>
                     <Button
-                        className={themeV2 ? 'body-medium' : ''}
+                        className="body-medium"
                         onClick={onPlaceOrder}
                         variant={ButtonVariant.Primary}
                     >
@@ -72,7 +75,7 @@ const CartStockPositionsChangedModal: FunctionComponent<CartStockPositionsChange
                 </>
             }
             header={
-                <ModalHeader additionalClassName={themeV2 ? 'header' : ''}>
+                <ModalHeader additionalClassName="header">
                     <TranslatedString id="cart.backorder_quantities_changed_heading" />
                 </ModalHeader>
             }
