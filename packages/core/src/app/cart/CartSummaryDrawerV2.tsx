@@ -1,4 +1,5 @@
 import { type Checkout, type ShopperCurrency as ShopperCurrencyType, type StoreCurrency } from '@bigcommerce/checkout-sdk';
+import classNames from 'classnames';
 import React, { type FunctionComponent, useState } from 'react';
 
 import { useCheckout } from '@bigcommerce/checkout/contexts';
@@ -29,7 +30,7 @@ export interface CartSummaryDrawerV2Props {
 
 const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({ isMultiShippingMode }) => {
     const [isExpanded, setIsExpanded] = useState(false);
-    
+
     const checkoutContext = useCheckout();
     const props = mapToCartSummaryProps(checkoutContext);
 
@@ -38,7 +39,7 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({ isMu
     }
 
     const { cartUrl, isBuyNowCart, checkout } = props;
-    
+
     const headerLink = isBuyNowCart ? null : (
         <EditLink
             isMultiShippingMode={isMultiShippingMode}
@@ -53,14 +54,14 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({ isMu
             <IconArrowLeft />
             {headerLink}
         </div>
-        <button 
+        <button
             aria-expanded={isExpanded}
             className="cart-summary-toggle"
             onClick={() => setIsExpanded(!isExpanded)}
         >
             <span className='body-regular'>
-                <TranslatedString 
-                    id={isExpanded ? 'cart.hide_order_summary_action' : 'cart.show_order_summary_action'} 
+                <TranslatedString
+                    id={isExpanded ? 'cart.hide_order_summary_action' : 'cart.show_order_summary_action'}
                 />
                 {isExpanded ? <IconChevronUp /> : <IconChevronDown />}
             </span>
@@ -68,13 +69,16 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({ isMu
                 <ShopperCurrency amount={checkout.outstandingBalance} />
             </span>
         </button>
-        {isExpanded && (
-            withRedeemable(OrderSummary)({
+        <div
+            aria-hidden={!isExpanded}
+            className={classNames('cart-summary-content', { 'cart-summary-content--expanded': isExpanded })}
+        >
+            {withRedeemable(OrderSummary)({
                 ...props,
                 headerLink: null,
                 showHeader: false,
-            })
-        )}
+            })}
+        </div>
     </div>
     );
 };

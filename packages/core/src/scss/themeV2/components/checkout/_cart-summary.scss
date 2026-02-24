@@ -2,12 +2,22 @@
     @include themeV2 {
         padding: 0;
         order: -1;
-        
+
         .cart-summary-drawer {
             border: none;
             box-shadow: none;
             padding: 0;
             width: 100%;
+        }
+
+        .cart-summary-content {
+            overflow: hidden;
+            max-height: 0;
+            transition: $animation-collapse-transition;
+        }
+
+        .cart-summary-content--expanded {
+            max-height: $animation-collapse-maxHeight;;
         }
 
         .cart {
@@ -53,7 +63,7 @@
         }
     }
 
-    @include themeV2-desktop {  
+    @include themeV2-desktop {
         width: grid-calc(5, $total-columns);
         padding-right: spacing("single");
         position: sticky;
