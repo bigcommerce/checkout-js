@@ -599,11 +599,12 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
     const { selectedMethod = props.defaultMethod } = state;
     const uniqueSelectedMethodId =
         selectedMethod && getUniquePaymentMethodId(selectedMethod.id, selectedMethod.gateway);
+    const shouldShowPaymentForm = props.shouldShowSubmitPaymentButton || (!isEmpty(props.methods) && props.defaultMethod);
 
     return (
         <PaymentContext.Provider value={getContextValue()}>
             <ChecklistSkeleton isLoading={!state.isReady}>
-                {((props.shouldShowSubmitPaymentButton) || (!isEmpty(props.methods) && props.defaultMethod)) &&
+                {shouldShowPaymentForm &&
                     <PaymentForm
                         availableStoreCredit={props.availableStoreCredit}
                         defaultGatewayId={props.defaultMethod?.gateway}
