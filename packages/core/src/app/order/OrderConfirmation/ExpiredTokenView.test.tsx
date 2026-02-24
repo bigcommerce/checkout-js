@@ -1,8 +1,21 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
+import React, { type ReactNode } from 'react';
+
+import { LocaleContext } from '@bigcommerce/checkout/contexts';
+import { createLocaleContext } from '@bigcommerce/checkout/locale';
+
+import { getStoreConfig } from '../../../config/config.mock';
 
 import { ExpiredTokenView } from './ExpiredTokenView';
+
+const localeContext = createLocaleContext(getStoreConfig());
+
+const Wrapper = ({ children }: { children: ReactNode }) => (
+    <LocaleContext.Provider value={localeContext}>
+        {children}
+    </LocaleContext.Provider>
+);
 
 describe('ExpiredTokenView', () => {
     const mockOnResendClick = jest.fn();
@@ -16,28 +29,28 @@ describe('ExpiredTokenView', () => {
     });
 
     it('renders expired message', () => {
-        render(<ExpiredTokenView {...defaultProps} />);
+        render(<ExpiredTokenView {...defaultProps} />, { wrapper: Wrapper });
 
-        expect(screen.getByText('Link Expired')).toBeInTheDocument();
+        expect(screen.getByText(localeContext.language.translate('order_confirmation.expired_token.heading'))).toBeInTheDocument();
         expect(
-            screen.getByText('For security, this link has expired.'),
+            screen.getByText(localeContext.language.translate('order_confirmation.expired_token.description')),
         ).toBeInTheDocument();
     });
 
     it('renders resend button', () => {
-        render(<ExpiredTokenView {...defaultProps} />);
+        render(<ExpiredTokenView {...defaultProps} />, { wrapper: Wrapper });
 
         expect(
-            screen.getByRole('button', { name: /resend secure link/i }),
+            screen.getByRole('button', { name: localeContext.language.translate('order_confirmation.expired_token.resend_action') }),
         ).toBeInTheDocument();
     });
 
     it('calls onResendClick when button is clicked', async () => {
         mockOnResendClick.mockResolvedValue(undefined);
 
-        render(<ExpiredTokenView {...defaultProps} />);
+        render(<ExpiredTokenView {...defaultProps} />, { wrapper: Wrapper });
 
-        const button = screen.getByRole('button', { name: /resend secure link/i });
+        const button = screen.getByRole('button', { name: localeContext.language.translate('order_confirmation.expired_token.resend_action') });
 
         await userEvent.click(button);
 
@@ -49,61 +62,46 @@ describe('ExpiredTokenView', () => {
             () => new Promise((resolve) => setTimeout(resolve, 100)),
         );
 
-        render(<ExpiredTokenView {...defaultProps} />);
+        render(<ExpiredTokenView {...defaultProps} />, { wrapper: Wrapper });
 
-        const button = screen.getByRole('button', { name: /resend secure link/i });
+        const button = screen.getByRole('button', { name: localeContext.language.translate('order_confirmation.expired_token.resend_action') });
 
         await userEvent.click(button);
 
-        expect(screen.getByRole('button', { name: /sending/i })).toBeDisabled();
+        expect(screen.getByRole('button', { name: localeContext.language.translate('order_confirmation.expired_token.sending') })).toBeDisabled();
     });
 
     it('shows success message after successful resend', async () => {
         mockOnResendClick.mockResolvedValue(undefined);
 
-        render(<ExpiredTokenView {...defaultProps} />);
+        render(<ExpiredTokenView {...defaultProps} />, { wrapper: Wrapper });
 
-        const button = screen.getByRole('button', { name: /resend secure link/i });
+        const button = screen.getByRole('button', { name: localeContext.language.translate('order_confirmation.expired_token.resend_action') });
 
         await userEvent.click(button);
 
         await waitFor(() => {
             expect(
-                screen.getByText(/a new link has been sent to your email address/i),
+                screen.getByText(localeContext.language.translate('order_confirmation.expired_token.resend_success')),
             ).toBeInTheDocument();
         });
 
         // Button should be hidden after success
-        expect(screen.queryByRole('button', { name: /resend/i })).not.toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: localeContext.language.translate('order_confirmation.expired_token.resend_action') })).not.toBeInTheDocument();
     });
 
-    it('shows error message when resend fails', async () => {
-        const errorMessage = 'Too many requests';
-        mockOnResendClick.mockRejectedValue(new Error(errorMessage));
+    it('shows translated error message when resend fails', async () => {
+        mockOnResendClick.mockRejectedValue(new Error('any error'));
 
-        render(<ExpiredTokenView {...defaultProps} />);
+        render(<ExpiredTokenView {...defaultProps} />, { wrapper: Wrapper });
 
-        const button = screen.getByRole('button', { name: /resend secure link/i });
-
-        await userEvent.click(button);
-
-        await waitFor(() => {
-            expect(screen.getByText(errorMessage)).toBeInTheDocument();
-        });
-    });
-
-    it('shows generic error message when error has no message', async () => {
-        mockOnResendClick.mockRejectedValue('string error');
-
-        render(<ExpiredTokenView {...defaultProps} />);
-
-        const button = screen.getByRole('button', { name: /resend secure link/i });
+        const button = screen.getByRole('button', { name: localeContext.language.translate('order_confirmation.expired_token.resend_action') });
 
         await userEvent.click(button);
 
         await waitFor(() => {
             expect(
-                screen.getByText(/failed to resend link\. please try again later/i),
+                screen.getByText(localeContext.language.translate('order_confirmation.expired_token.resend_error')),
             ).toBeInTheDocument();
         });
     });

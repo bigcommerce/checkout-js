@@ -1,5 +1,7 @@
 import React, { type FunctionComponent, useState } from 'react';
 
+import { useLocale } from '@bigcommerce/checkout/contexts';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { Alert, AlertType } from '@bigcommerce/checkout/ui';
 
 import OrderConfirmationSection from '../OrderConfirmationSection';
@@ -13,6 +15,7 @@ export const ExpiredTokenView: FunctionComponent<ExpiredTokenViewProps> = ({
     orderId: _orderId,
     onResendClick,
 }) => {
+    const { language } = useLocale();
     const [isResending, setIsResending] = useState(false);
     const [resendSuccess, setResendSuccess] = useState(false);
     const [resendError, setResendError] = useState<string | undefined>();
@@ -24,12 +27,8 @@ export const ExpiredTokenView: FunctionComponent<ExpiredTokenViewProps> = ({
         try {
             await onResendClick();
             setResendSuccess(true);
-        } catch (error) {
-            setResendError(
-                error instanceof Error
-                    ? error.message
-                    : 'Failed to resend link. Please try again later.',
-            );
+        } catch {
+            setResendError(language.translate('order_confirmation.expired_token.resend_error'));
         } finally {
             setIsResending(false);
         }
@@ -41,8 +40,8 @@ export const ExpiredTokenView: FunctionComponent<ExpiredTokenViewProps> = ({
                 <div className="orderConfirmation">
                     <OrderConfirmationSection>
                         <div className="orderConfirmation-expiredToken">
-                            <h2>Link Expired</h2>
-                            <p>For security, this link has expired.</p>
+                            <h2><TranslatedString id="order_confirmation.expired_token.heading" /></h2>
+                            <p><TranslatedString id="order_confirmation.expired_token.description" /></p>
 
                             {!resendSuccess && !resendError && (
                                 <button
@@ -51,13 +50,15 @@ export const ExpiredTokenView: FunctionComponent<ExpiredTokenViewProps> = ({
                                     onClick={handleResendClick}
                                     type="button"
                                 >
-                                    {isResending ? 'Sending...' : 'Resend Secure Link'}
+                                    {isResending
+                                        ? language.translate('order_confirmation.expired_token.sending')
+                                        : language.translate('order_confirmation.expired_token.resend_action')}
                                 </button>
                             )}
 
                             {resendSuccess && (
                                 <Alert type={AlertType.Success}>
-                                    A new link has been sent to your email address.
+                                    <TranslatedString id="order_confirmation.expired_token.resend_success" />
                                 </Alert>
                             )}
 

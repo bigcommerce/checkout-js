@@ -4,7 +4,7 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import React, {  type ReactElement, useEffect, useRef, useState } from 'react';
 
-import { useAnalytics, useCheckout } from '@bigcommerce/checkout/contexts';
+import { useAnalytics, useCheckout, useLocale } from '@bigcommerce/checkout/contexts';
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { OrderConfirmationPageSkeleton } from '@bigcommerce/checkout/ui';
 
@@ -42,6 +42,7 @@ export const OrderConfirmation = ({
     errorLogger,
     guestTokenValidation,
 }: OrderConfirmationProps): ReactElement => {
+    const { language } = useLocale();
     const [error, setError] = useState<Error | undefined>();
     const [hasSignedUp, setHasSignedUp] = useState<boolean | undefined>();
     const [isSigningUp, setIsSigningUp] = useState<boolean | undefined>();
@@ -104,7 +105,7 @@ export const OrderConfirmation = ({
         const orderToken = urlParams.get('orderToken'); // Order's permanent token
 
         if (!orderToken) {
-            throw new Error('No order token found in URL');
+            throw new Error(language.translate('order_confirmation.expired_token.missing_order_token_error'));
         }
 
         // Call regeneration endpoint with order ID in path and order token as query param
@@ -118,7 +119,7 @@ export const OrderConfirmation = ({
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.detail || 'Failed to regenerate token');
+            throw new Error(errorData.detail || language.translate('order_confirmation.expired_token.regenerate_token_error'));
         }
     };
 
