@@ -142,7 +142,7 @@ const PaymentForm: FunctionComponent<
                     : <NoPaymentMethods message={<TranslatedString id="payment.payment_not_required_text" />} />
             )}
 
-            {(!shouldShowSubmitButtonWhenPaymentNotRequired || (shouldShowSubmitButtonWhenPaymentNotRequired && !isEmpty(methods))) && 
+            {(!shouldShowSubmitButtonWhenPaymentNotRequired || !isEmpty(methods)) && 
                 <PaymentMethodListFieldset
                     isEmbedded={isEmbedded}
                     isInitializingPayment={isInitializingPayment}
@@ -250,7 +250,7 @@ const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProp
                     <TranslatedString id="payment.payment_methods_text" />
                 </Legend>
             }
-        >   
+        >
             {!isPaymentDataRequired() && <StoreCreditOverlay />}
 
             <Extension region={ExtensionRegion.PaymentPaymentMethodListBefore}/>
