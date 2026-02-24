@@ -1,10 +1,9 @@
 import { type Checkout, type ShopperCurrency as ShopperCurrencyType, type StoreCurrency } from '@bigcommerce/checkout-sdk';
-import classNames from 'classnames';
-import React, { type FunctionComponent, useState } from 'react';
+import React, { type FunctionComponent, useRef, useState } from 'react';
 
 import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { IconArrowLeft, IconChevronDown, IconChevronUp } from '@bigcommerce/checkout/ui';
+import { CollapseCSSTransition, IconArrowLeft, IconChevronDown, IconChevronUp } from '@bigcommerce/checkout/ui';
 
 import { ShopperCurrency } from '../currency';
 import OrderSummary from '../order/OrderSummary';
@@ -30,6 +29,8 @@ export interface CartSummaryDrawerV2Props {
 
 const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({ isMultiShippingMode }) => {
     const [isExpanded, setIsExpanded] = useState(false);
+
+    const nodeRef = useRef<HTMLDivElement>(null);
 
     const checkoutContext = useCheckout();
     const props = mapToCartSummaryProps(checkoutContext);
@@ -69,16 +70,17 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({ isMu
                 <ShopperCurrency amount={checkout.outstandingBalance} />
             </span>
         </button>
-        <div
-            aria-hidden={!isExpanded}
-            className={classNames('cart-summary-content', { 'cart-summary-content--expanded': isExpanded })}
-        >
-            {withRedeemable(OrderSummary)({
-                ...props,
-                headerLink: null,
-                showHeader: false,
-            })}
-        </div>
+        <CollapseCSSTransition isVisible={isExpanded} nodeRef={nodeRef}>
+            <div ref={nodeRef}>
+                {(
+                    withRedeemable(OrderSummary)({
+                        ...props,
+                        headerLink: null,
+                        showHeader: false,
+                    })
+                )}
+            </div>
+        </CollapseCSSTransition>
     </div>
     );
 };
