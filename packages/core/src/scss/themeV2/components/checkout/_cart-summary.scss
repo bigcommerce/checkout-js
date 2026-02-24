@@ -13,11 +13,13 @@
         .cart-summary-content {
             overflow: hidden;
             max-height: 0;
+            visibility: hidden;
             transition: $animation-collapse-transition;
         }
 
         .cart-summary-content--expanded {
-            max-height: $animation-collapse-maxHeight;;
+            max-height: $animation-collapse-maxHeight;
+            visibility: visible;
         }
 
         .cart {
