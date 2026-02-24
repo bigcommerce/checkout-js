@@ -82,13 +82,6 @@ const OrderStatusMessage: FunctionComponent<OrderStatusMessageProps> = ({
             return <TranslatedHtml id="order_confirmation.order_pending_review_text" />;
 
         case 'PENDING':
-            return (
-                <TranslatedHtml
-                    data={{ orderNumber, supportEmail }}
-                    id="order_confirmation.order_pending_status_text"
-                />
-            );
-
         case 'INCOMPLETE':
             return (
                 <TranslatedHtml
