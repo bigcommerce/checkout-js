@@ -35,7 +35,7 @@ $cart-stock-modal-backorder-color: #6b4e9c;
     }
 
     .modal-footer {
-        border-top: 1px solid color("greys", "light");
+        border-top: container("border", "light");
         padding-top: spacing("single");
 
         .button--tertiary,
@@ -83,7 +83,7 @@ $cart-stock-modal-backorder-color: #6b4e9c;
 }
 
 .cart-stock-positions-changed-modal .productList-item {
-    border-bottom: 1px solid color("greys", "light");
+    border-bottom: container("border", "light");
     margin-bottom: 0;
     padding-bottom: spacing("single");
     padding-top: spacing("single");
@@ -114,11 +114,11 @@ $cart-stock-modal-backorder-color: #6b4e9c;
     flex-shrink: 0;
     margin: 0;
     padding-right: 0;
-    width: 60px;
+    width: remCalc(60px);
 
     img {
-        border: 1px solid color("greys", "light");
-        border-radius: 4px;
+        border: container("border", "light");
+        border-radius: $global-radius;
         display: block;
         width: 100%;
     }

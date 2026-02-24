@@ -82,11 +82,11 @@ const CartStockPositionsChangedItem: FunctionComponent<CartStockPositionsChanged
                                 data={{ count: quantityOnHand }}
                                 id="cart.qty_on_hand_prompt"
                             />
-                            {quantityBackordered > 0 && ' '}
                         </span>
                     )}
                     {quantityBackordered > 0 && (
                         <span className="cart-stock-position-backorder">
+                            {' '}
                             <TranslatedString
                                 data={{ count: quantityBackordered }}
                                 id="cart.qty_on_backorder_prompt"

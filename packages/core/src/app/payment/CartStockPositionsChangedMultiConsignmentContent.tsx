@@ -5,7 +5,7 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import { getAddressContent } from '../address/SingleLineStaticAddress';
 
-import CartStockPositionsChangedItem from './CartStockPositionsChangedItem';
+import CartStockPositionsChangedItemList from './CartStockPositionsChangedItemList';
 
 export interface CartStockPositionsChangedConsignmentGroup {
     consignment: Consignment;
@@ -42,11 +42,7 @@ const CartStockPositionsChangedMultiConsignmentContent: FunctionComponent<CartSt
                             id="cart.cart_stock_modal_destination"
                         />
                     </h3>
-                    <ul className="productList" data-test="cart-stock-positions-changed-items">
-                        {items.map((item) => (
-                            <CartStockPositionsChangedItem item={item} key={item.id} />
-                        ))}
-                    </ul>
+                    <CartStockPositionsChangedItemList items={items} />
                 </div>
             );
         })}

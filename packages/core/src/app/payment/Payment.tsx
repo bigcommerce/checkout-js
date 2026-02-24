@@ -1,5 +1,6 @@
 import {
     type Cart,
+    type CartStockPositionsChangedError,
     type Checkout,
     type CheckoutSelectors,
     type CheckoutService,
@@ -217,37 +218,13 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
             }
 
             if (isCartStockPositionChangedError(error)) {
+                const modal = renderCartStockPositionsChangedModal(error);
+
+                if (modal !== null) {
+                    return modal;
+                }
                 if (!isCartStockRefreshComplete) {
                     return null;
-                }
-
-                const { cart, clearError, consignments } = props;
-                const changedLineItemIds = error.changedItemIds;
-                const hasItemsToShow = (changedLineItemIds?.length ?? 0) > 0;
-
-                if (hasItemsToShow) {
-                    return (
-                        <CartStockPositionsChangedModal
-                            cart={cart}
-                            changedLineItemIds={changedLineItemIds}
-                            consignments={consignments}
-                            isOpen={true}
-                            onPlaceOrder={() => {
-                                clearError(error);
-
-                                const values = lastFormValuesRef.current;
-
-                                if (values) {
-                                    handleSubmit(values);
-                                }
-                            }}
-                            onRequestClose={() => {
-                                clearError(error);
-                                lastFormValuesRef.current = null;
-                                setIsCartStockRefreshComplete(false);
-                            }}
-                        />
-                    );
                 }
                 // No items to display — fall through to generic ErrorModal so user still gets feedback
             }
@@ -406,6 +383,19 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
         return onUnhandledError(error);
     }, []);
 
+    const onCartStockPositionChangedError = (values: PaymentFormValues): void => {
+        lastFormValuesRef.current = values;
+        setIsCartStockRefreshComplete(false);
+        props.loadCheckout()
+            .then(() => setIsCartStockRefreshComplete(true))
+            .catch(() => {
+                const { onUnhandledError = noop } = props;
+
+                onUnhandledError(new Error('Cart refresh failed after stock position change'));
+                setIsCartStockRefreshComplete(true);
+            });
+    };
+
     const handleSubmit = useCallback(async (values: PaymentFormValues) => {
         const {
             defaultMethod,
@@ -449,23 +439,49 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
             }
 
             if (isCartStockPositionChangedError(error)) {
-                lastFormValuesRef.current = values;
-                setIsCartStockRefreshComplete(false);
-                props.loadCheckout()
-                    .then(() => setIsCartStockRefreshComplete(true))
-                    .catch(() => {
-                        const { onUnhandledError = noop } = props;
-
-                        onUnhandledError(new Error('Cart refresh failed after stock position change'));
-                        setIsCartStockRefreshComplete(true);
-                    });
-
-                return;
+                return onCartStockPositionChangedError(values);
             }
 
             onSubmitError(error);
         }
     }, [props.defaultMethod, state.selectedMethod, props.isPaymentDataRequired()]);
+
+    const renderCartStockPositionsChangedModal = (error: CartStockPositionsChangedError): ReactNode => {
+        if (!isCartStockRefreshComplete) {
+            return null;
+        }
+
+        const { cart, clearError, consignments } = props;
+        const changedLineItemIds = error.changedItemIds;
+        const hasItemsToShow = !!changedLineItemIds?.length;
+
+        if (!hasItemsToShow) {
+            return null;
+        }
+
+        return (
+            <CartStockPositionsChangedModal
+                cart={cart}
+                changedLineItemIds={changedLineItemIds}
+                consignments={consignments}
+                isOpen={true}
+                onPlaceOrder={() => {
+                    clearError(error);
+
+                    const values = lastFormValuesRef.current;
+
+                    if (values) {
+                        handleSubmit(values);
+                    }
+                }}
+                onRequestClose={() => {
+                    clearError(error);
+                    lastFormValuesRef.current = null;
+                    setIsCartStockRefreshComplete(false);
+                }}
+            />
+        );
+    };
 
     const trackSelectedPaymentMethod = (method: PaymentMethod) => {
         const { analyticsTracker } = props;

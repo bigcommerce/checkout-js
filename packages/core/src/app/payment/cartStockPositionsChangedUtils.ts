@@ -16,8 +16,8 @@ import type { CartStockPositionsChangedConsignmentGroup } from './CartStockPosit
  * in the end use compact and uniqBy to remove undefined element and remove duplication of same items.
  */
 export function getChangedItemsToShow(
-  cart: Cart | undefined,
-  changedLineItemIds: Array<string | number> | undefined,
+  cart?: Cart,
+  changedLineItemIds?: Array<string | number>,
 ): PhysicalItem[] {
   const allCartPhysicalItems = cart?.lineItems?.physicalItems ?? [];
 
@@ -29,7 +29,7 @@ export function getChangedItemsToShow(
     return [];
   }
 
-  const allCartPhysicalItemsById = new Map(allCartPhysicalItems.map((it) => [it.id, it] as const));
+  const allCartPhysicalItemsById = new Map(allCartPhysicalItems.map((it) => [it.id, it]));
 
   return uniqBy(
     compact(

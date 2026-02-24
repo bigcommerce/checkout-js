@@ -3,11 +3,11 @@ import React, { type FunctionComponent } from 'react';
 
 import CartStockPositionsChangedItem from './CartStockPositionsChangedItem';
 
-export interface CartStockPositionsChangedSingleConsignmentContentProps {
+export interface CartStockPositionsChangedItemListProps {
     items: PhysicalItem[];
 }
 
-const CartStockPositionsChangedSingleConsignmentContent: FunctionComponent<CartStockPositionsChangedSingleConsignmentContentProps> = ({
+const CartStockPositionsChangedItemList: FunctionComponent<CartStockPositionsChangedItemListProps> = ({
     items,
 }) => (
     <ul className="productList" data-test="cart-stock-positions-changed-items">
@@ -17,4 +17,4 @@ const CartStockPositionsChangedSingleConsignmentContent: FunctionComponent<CartS
     </ul>
 );
 
-export default CartStockPositionsChangedSingleConsignmentContent;
+export default CartStockPositionsChangedItemList;

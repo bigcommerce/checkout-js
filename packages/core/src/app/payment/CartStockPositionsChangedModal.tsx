@@ -8,8 +8,8 @@ import { ButtonVariant } from '@bigcommerce/checkout/ui';
 import { Button } from '../ui/button';
 import { Modal, ModalHeader } from '../ui/modal';
 
+import CartStockPositionsChangedItemList from './CartStockPositionsChangedItemList';
 import CartStockPositionsChangedMultiConsignmentContent from './CartStockPositionsChangedMultiConsignmentContent';
-import CartStockPositionsChangedSingleConsignmentContent from './CartStockPositionsChangedSingleConsignmentContent';
 import {
     getChangedItemsToShow,
     groupChangedItemsByConsignment,
@@ -47,7 +47,7 @@ const CartStockPositionsChangedModal: FunctionComponent<CartStockPositionsChange
     const modalContent = groupedByConsignment ? (
         <CartStockPositionsChangedMultiConsignmentContent consignmentGroups={groupedByConsignment} />
     ) : (
-        <CartStockPositionsChangedSingleConsignmentContent items={changedItemsToShow} />
+        <CartStockPositionsChangedItemList items={changedItemsToShow} />
     );
 
     return (
