@@ -7,13 +7,6 @@ import type { CartStockPositionsChangedConsignmentGroup } from './CartStockPosit
 
 /**
  * Resolve changed line item IDs to cart items; for bundled items use parent item (we do not show bundled item separately), then dedupe.
- * first extract allCartPhysicalItemsById map to have a better lookup performance later.
- * for each changedItemID, look up in allCartPhysicalItemsById:
- *  - if not found => undefined
- *  - if found:
- *     has parent id, look up in allCartPhysicalItemsById with parent id and use the parent item => PhysicalItem. (technically parent item can be not found and return undefined)
- *     has no parent id, directly use it => PhysicalItem
- * in the end use compact and uniqBy to remove undefined element and remove duplication of same items.
  */
 export function getChangedItemsToShow(
   cart?: Cart,

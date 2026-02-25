@@ -22,13 +22,6 @@ $cart-stock-modal-backorder-color: #6b4e9c;
         padding-top: 0;
     }
 
-    .modal-header .header,
-    .modal-header-title {
-        color: color("greys", "darkest");
-        font-weight: fontWeight("bold");
-        text-align: left;
-    }
-
     .modal-body {
         padding-bottom: spacing("single");
         padding-top: spacing("single");

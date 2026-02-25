@@ -218,15 +218,11 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
             }
 
             if (isCartStockPositionChangedError(error)) {
-                const modal = renderCartStockPositionsChangedModal(error);
-
-                if (modal !== null) {
-                    return modal;
-                }
                 if (!isCartStockRefreshComplete) {
                     return null;
                 }
-                // No items to display — fall through to generic ErrorModal so user still gets feedback
+
+                return renderCartStockPositionsChangedModal(error);
             }
 
             return (
@@ -447,10 +443,6 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
     }, [props.defaultMethod, state.selectedMethod, props.isPaymentDataRequired()]);
 
     const renderCartStockPositionsChangedModal = (error: CartStockPositionsChangedError): ReactNode => {
-        if (!isCartStockRefreshComplete) {
-            return null;
-        }
-
         const { cart, clearError, consignments } = props;
         const changedLineItemIds = error.changedItemIds;
         const hasItemsToShow = !!changedLineItemIds?.length;
