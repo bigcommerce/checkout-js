@@ -139,7 +139,7 @@ describe('CreditCardPaymentMethod', () => {
 
         expect(paymentForm.setValidationSchema).toHaveBeenCalled();
 
-        const schema = (paymentForm.setValidationSchema as jest.Mock).mock.calls[0][1];
+        const schema: Schema<any> = (paymentForm.setValidationSchema as jest.Mock).mock.calls[0][1];
         const expectedSchema = getCreditCardValidationSchema({
             isCardCodeRequired: true,
             language: localeContext.language,
@@ -150,61 +150,24 @@ describe('CreditCardPaymentMethod', () => {
         );
     });
 
-    it('uses custom validation schema if passed when hosted form is enabled', () => {
+    it('uses custom validation schema if passed', () => {
         const expectedSchema = object({
             ccCvv: string(),
             ccExpiry: string(),
             ccName: string(),
             ccNumber: string(),
         });
-        const methodWithHostedForm = {
-            ...defaultProps.method,
-            config: { ...defaultProps.method.config, isHostedFormEnabled: true },
-        };
 
         render(
-            <CreditCardPaymentMethodTest
-                {...defaultProps}
-                cardValidationSchema={expectedSchema}
-                method={methodWithHostedForm}
-            />,
+            <CreditCardPaymentMethodTest {...defaultProps} cardValidationSchema={expectedSchema} />,
         );
 
         expect(paymentForm.setValidationSchema).toHaveBeenCalled();
 
-        const schema = (paymentForm.setValidationSchema as jest.Mock).mock.calls[0][1];
+        const schema: Schema<any> = (paymentForm.setValidationSchema as jest.Mock).mock.calls[0][1];
 
         expect(Object.keys(schema.describe().fields)).toEqual(
             Object.keys(expectedSchema.describe().fields),
-        );
-    });
-
-    it('uses custom validation schema when passed even when hosted form is disabled', () => {
-        const customSchema = object({
-            ccCvv: string(),
-            ccExpiry: string(),
-            ccName: string(),
-            ccNumber: string(),
-        });
-        const methodWithHostedFormDisabled = {
-            ...defaultProps.method,
-            config: { ...defaultProps.method.config, isHostedFormEnabled: false },
-        };
-
-        render(
-            <CreditCardPaymentMethodTest
-                {...defaultProps}
-                cardValidationSchema={customSchema}
-                method={methodWithHostedFormDisabled}
-            />,
-        );
-
-        expect(paymentForm.setValidationSchema).toHaveBeenCalled();
-
-        const schema = (paymentForm.setValidationSchema as jest.Mock).mock.calls[0][1];
-
-        expect(Object.keys(schema.describe().fields)).toEqual(
-            Object.keys(customSchema.describe().fields),
         );
     });
 
@@ -237,40 +200,12 @@ describe('CreditCardPaymentMethod', () => {
         expect(container.querySelector('.loadingOverlay-container')).not.toBeNull();
     });
 
-    it('renders custom credit card fieldset if passed when hosted form is enabled', () => {
+    it('renders custom credit card fieldset if passed', () => {
         const FoobarFieldset = <div>Foobar</div>;
-        const methodWithHostedForm = {
-            ...defaultProps.method,
-            config: { ...defaultProps.method.config, isHostedFormEnabled: true },
-        };
 
-        render(
-            <CreditCardPaymentMethodTest
-                {...defaultProps}
-                cardFieldset={FoobarFieldset}
-                method={methodWithHostedForm}
-            />,
-        );
+        render(<CreditCardPaymentMethodTest {...defaultProps} cardFieldset={FoobarFieldset} />);
 
         expect(screen.getByText('Foobar')).toBeInTheDocument();
-    });
-
-    it('does not render custom credit card fieldset when hosted form is disabled', () => {
-        const FoobarFieldset = <div>Foobar</div>;
-        const methodWithHostedFormDisabled = {
-            ...defaultProps.method,
-            config: { ...defaultProps.method.config, isHostedFormEnabled: false },
-        };
-
-        render(
-            <CreditCardPaymentMethodTest
-                {...defaultProps}
-                cardFieldset={FoobarFieldset}
-                method={methodWithHostedFormDisabled}
-            />,
-        );
-
-        expect(screen.queryByText('Foobar')).not.toBeInTheDocument();
     });
 
     it('does not render credit card code fieldset if card code is false', () => {
@@ -300,18 +235,14 @@ describe('CreditCardPaymentMethod', () => {
             };
         });
 
-        it('initializes payment method with stored card validation fieldset when hosted form is enabled', async () => {
+        it('initializes payment method with stored card validation fieldset', async () => {
             const getStoredCardValidationFieldset = jest.fn();
-            const vaultedMethodWithHostedForm = {
-                ...vaultedMethod,
-                config: { ...vaultedMethod.config, isHostedFormEnabled: true },
-            };
 
             render(
                 <CreditCardPaymentMethodTest
                     {...defaultProps}
                     getStoredCardValidationFieldset={getStoredCardValidationFieldset}
-                    method={vaultedMethodWithHostedForm}
+                    method={vaultedMethod}
                 />,
             );
 
@@ -320,28 +251,6 @@ describe('CreditCardPaymentMethod', () => {
             await waitFor(() => {
                 expect(getStoredCardValidationFieldset).toHaveBeenCalled();
             });
-        });
-
-        it('does not use stored card validation fieldset when hosted form is disabled', async () => {
-            const getStoredCardValidationFieldset = jest.fn();
-            const vaultedMethodWithHostedFormDisabled = {
-                ...vaultedMethod,
-                config: { ...vaultedMethod.config, isHostedFormEnabled: false },
-            };
-
-            render(
-                <CreditCardPaymentMethodTest
-                    {...defaultProps}
-                    getStoredCardValidationFieldset={getStoredCardValidationFieldset}
-                    method={vaultedMethodWithHostedFormDisabled}
-                />,
-            );
-
-            await waitFor(() => {
-                expect(paymentForm.setValidationSchema).toHaveBeenCalled();
-            });
-
-            expect(getStoredCardValidationFieldset).not.toHaveBeenCalled();
         });
 
         it('sets validation schema for stored instruments when component mounts', async () => {
