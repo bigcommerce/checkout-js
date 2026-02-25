@@ -77,8 +77,6 @@
             "hide_backorder_details": "Hide backorder details",
             "print_action": "Print",
             "qty_label": "Qty: {quantity}",
-            "qty_on_hand_prompt": "{count} ready to ship",
-            "qty_on_backorder_prompt": "{count} will be backordered",
             "remaining_text": "Remaining",
             "remove_action": "remove",
             "return_to_checkout": "RETURN TO CHECKOUT",
