@@ -20,7 +20,7 @@ import {
 } from '../../guestSignup/errors';
 import getPaymentInstructions from '../getPaymentInstructions';
 
-import { ExpiredTokenView } from './ExpiredTokenView';
+import { ExpiredPermalinkView } from './ExpiredPermalinkView';
 import { OrderConfirmationPage } from './OrderConfirmationPage';
 
 export interface OrderConfirmationProps {
@@ -28,7 +28,7 @@ export interface OrderConfirmationProps {
     embeddedStylesheet: EmbeddedCheckoutStylesheet;
     errorLogger: ErrorLogger;
     orderId: number;
-    guestTokenValidation?: 'valid' | 'expired' | null;
+    permalinkStatus?: 'valid' | 'expired' | null;
     createAccount(values: SignUpFormValues): Promise<CreatedCustomer>;
     createEmbeddedMessenger(options: EmbeddedCheckoutMessengerOptions): EmbeddedCheckoutMessenger;
 }
@@ -40,7 +40,7 @@ export const OrderConfirmation = ({
     embeddedStylesheet,
     orderId,
     errorLogger,
-    guestTokenValidation,
+    permalinkStatus,
 }: OrderConfirmationProps): ReactElement => {
     const { language } = useLocale();
     const [error, setError] = useState<Error | undefined>();
@@ -108,9 +108,7 @@ export const OrderConfirmation = ({
             throw new Error(language.translate('order_confirmation.expired_token.missing_order_token_error'));
         }
 
-        // Call regeneration endpoint with order ID in path and order token as query param
-        // This matches the pattern of the order confirmation page URL
-        const response = await fetch(`/api/storefront/orders/${orderId}/guest-token?orderToken=${encodeURIComponent(orderToken)}`, {
+        const response = await fetch(`/api/storefront/orders/permalink?orderToken=${encodeURIComponent(orderToken)}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -124,8 +122,8 @@ export const OrderConfirmation = ({
     };
 
     useEffect(() => {
-      // If token is expired, don't make API call - show expired view instead
-      if (guestTokenValidation === 'expired') {
+      // If permalink is expired, don't make API call - show expired view instead
+      if (permalinkStatus === 'expired') {
         return;
       }
 
@@ -140,10 +138,10 @@ export const OrderConfirmation = ({
           analyticsTracker.orderPurchased();
         })
         .catch(handleUnhandledError);
-    }, [guestTokenValidation]);
+    }, [permalinkStatus]);
 
-    if (guestTokenValidation === 'expired') {
-        return <ExpiredTokenView orderId={orderId} onResendClick={handleResendGuestToken} />;
+    if (permalinkStatus === 'expired') {
+        return <ExpiredPermalinkView onResendClick={handleResendGuestToken} />;
     }
 
     if (!order || !config || isLoadingOrder()) {

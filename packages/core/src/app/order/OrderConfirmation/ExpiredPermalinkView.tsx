@@ -6,13 +6,11 @@ import { Alert, AlertType } from '@bigcommerce/checkout/ui';
 
 import OrderConfirmationSection from '../OrderConfirmationSection';
 
-interface ExpiredTokenViewProps {
-    orderId: number;
+interface ExpiredPermalinkViewProps {
     onResendClick: () => Promise<void>;
 }
 
-export const ExpiredTokenView: FunctionComponent<ExpiredTokenViewProps> = ({
-    orderId: _orderId,
+export const ExpiredPermalinkView: FunctionComponent<ExpiredPermalinkViewProps> = ({
     onResendClick,
 }) => {
     const { language } = useLocale();
@@ -71,4 +69,4 @@ export const ExpiredTokenView: FunctionComponent<ExpiredTokenViewProps> = ({
     );
 };
 
-export default ExpiredTokenView;
+export default ExpiredPermalinkView;

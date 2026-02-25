@@ -5,9 +5,9 @@ import React, { type ReactNode } from 'react';
 import { LocaleContext } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 
-import { getStoreConfig } from '../../../config/config.mock';
+import { getStoreConfig } from '../../config/config.mock';
 
-import { ExpiredTokenView } from './ExpiredTokenView';
+import { ExpiredPermalinkView } from './ExpiredPermalinkView';
 
 const localeContext = createLocaleContext(getStoreConfig());
 
@@ -17,10 +17,9 @@ const Wrapper = ({ children }: { children: ReactNode }) => (
     </LocaleContext.Provider>
 );
 
-describe('ExpiredTokenView', () => {
+describe('ExpiredPermalinkView', () => {
     const mockOnResendClick = jest.fn();
     const defaultProps = {
-        orderId: 12345,
         onResendClick: mockOnResendClick,
     };
 
@@ -29,7 +28,7 @@ describe('ExpiredTokenView', () => {
     });
 
     it('renders expired message', () => {
-        render(<ExpiredTokenView {...defaultProps} />, { wrapper: Wrapper });
+        render(<ExpiredPermalinkView {...defaultProps} />, { wrapper: Wrapper });
 
         expect(screen.getByText(localeContext.language.translate('order_confirmation.expired_token.heading'))).toBeInTheDocument();
         expect(
@@ -38,7 +37,7 @@ describe('ExpiredTokenView', () => {
     });
 
     it('renders resend button', () => {
-        render(<ExpiredTokenView {...defaultProps} />, { wrapper: Wrapper });
+        render(<ExpiredPermalinkView {...defaultProps} />, { wrapper: Wrapper });
 
         expect(
             screen.getByRole('button', { name: localeContext.language.translate('order_confirmation.expired_token.resend_action') }),
@@ -48,7 +47,7 @@ describe('ExpiredTokenView', () => {
     it('calls onResendClick when button is clicked', async () => {
         mockOnResendClick.mockResolvedValue(undefined);
 
-        render(<ExpiredTokenView {...defaultProps} />, { wrapper: Wrapper });
+        render(<ExpiredPermalinkView {...defaultProps} />, { wrapper: Wrapper });
 
         const button = screen.getByRole('button', { name: localeContext.language.translate('order_confirmation.expired_token.resend_action') });
 
@@ -62,7 +61,7 @@ describe('ExpiredTokenView', () => {
             () => new Promise((resolve) => setTimeout(resolve, 100)),
         );
 
-        render(<ExpiredTokenView {...defaultProps} />, { wrapper: Wrapper });
+        render(<ExpiredPermalinkView {...defaultProps} />, { wrapper: Wrapper });
 
         const button = screen.getByRole('button', { name: localeContext.language.translate('order_confirmation.expired_token.resend_action') });
 
@@ -74,7 +73,7 @@ describe('ExpiredTokenView', () => {
     it('shows success message after successful resend', async () => {
         mockOnResendClick.mockResolvedValue(undefined);
 
-        render(<ExpiredTokenView {...defaultProps} />, { wrapper: Wrapper });
+        render(<ExpiredPermalinkView {...defaultProps} />, { wrapper: Wrapper });
 
         const button = screen.getByRole('button', { name: localeContext.language.translate('order_confirmation.expired_token.resend_action') });
 
@@ -86,14 +85,13 @@ describe('ExpiredTokenView', () => {
             ).toBeInTheDocument();
         });
 
-        // Button should be hidden after success
         expect(screen.queryByRole('button', { name: localeContext.language.translate('order_confirmation.expired_token.resend_action') })).not.toBeInTheDocument();
     });
 
     it('shows translated error message when resend fails', async () => {
         mockOnResendClick.mockRejectedValue(new Error('any error'));
 
-        render(<ExpiredTokenView {...defaultProps} />, { wrapper: Wrapper });
+        render(<ExpiredPermalinkView {...defaultProps} />, { wrapper: Wrapper });
 
         const button = screen.getByRole('button', { name: localeContext.language.translate('order_confirmation.expired_token.resend_action') });
 

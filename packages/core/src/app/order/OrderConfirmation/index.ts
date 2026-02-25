@@ -1,2 +1,2 @@
 export { OrderConfirmation } from './OrderConfirmation';
-export { ExpiredTokenView } from './ExpiredTokenView';
+export { ExpiredPermalinkView } from './ExpiredPermalinkView';
