@@ -100,19 +100,19 @@ export const OrderConfirmation = ({
     };
 
     const handleResendGuestToken = async (): Promise<void> => {
-        // Extract order token from URL
         const urlParams = new URLSearchParams(window.location.search);
-        const orderToken = urlParams.get('orderToken'); // Order's permanent token
+        const orderToken = urlParams.get('orderToken');
 
         if (!orderToken) {
             throw new Error(language.translate('order_confirmation.expired_token.missing_order_token_error'));
         }
 
-        const response = await fetch(`/api/storefront/orders/permalink?orderToken=${encodeURIComponent(orderToken)}`, {
+        const response = await fetch('/api/storefront/orders/permalink', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
+            body: JSON.stringify({ orderToken }),
         });
 
         if (!response.ok) {
