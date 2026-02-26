@@ -2,6 +2,7 @@ import {
     type EmbeddedCheckoutMessenger,
     type EmbeddedCheckoutMessengerOptions,
 } from '@bigcommerce/checkout-sdk';
+import { createRequestSender } from '@bigcommerce/request-sender';
 import React, {  type ReactElement, useEffect, useRef, useState } from 'react';
 
 import { useAnalytics, useCheckout, useLocale } from '@bigcommerce/checkout/contexts';
@@ -107,17 +108,16 @@ export const OrderConfirmation = ({
             throw new Error(language.translate('order_confirmation.expired_token.missing_order_token_error'));
         }
 
-        const response = await fetch('/api/storefront/orders/permalink', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ orderToken }),
-        });
+        const requestSender = createRequestSender();
 
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.detail || language.translate('order_confirmation.expired_token.regenerate_token_error'));
+        try {
+            await requestSender.post('/api/storefront/orders/regenerate-permalink', {
+                body: { orderToken },
+            });
+        } catch (error) {
+            const detail = (error as { body?: { detail?: string } })?.body?.detail;
+
+            throw new Error(detail || language.translate('order_confirmation.expired_token.regenerate_token_error'));
         }
     };
 
