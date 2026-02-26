@@ -1,20 +1,12 @@
 // =============================================================================
 // CART STOCK POSITIONS CHANGED MODAL
 // =============================================================================
-//
-// Modal shown when backorder quantities have changed. Matches design:
-// - Rounded modal with subtle shadow, white background
-// - Item rows with image, product info, qty, and shipping/backorder details
-// - Purple text for backorder and lead time
-// - Light gray separators between items
-// - Back (secondary) and Place order (primary) buttons in footer
-//
 
 $cart-stock-modal-backorder-color: #6b4e9c;
 
 .modal.cart-stock-positions-changed-modal {
     background: color("whites", "bright");
-    border-radius: 8px;
+    border-radius: $global-radius * 2;
     box-shadow: 0 4px 20px rgba(color("greys"), 0.15);
     padding: spacing("double");
 

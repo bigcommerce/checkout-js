@@ -199,6 +199,41 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
     const validationSchemasRef = useRef<validationSchemas>({});
     const lastFormValuesRef = useRef<PaymentFormValues | null>(null);
 
+    const renderCartStockPositionsChangedModal = (
+      error: CartStockPositionsChangedError,
+    ): ReactNode => {
+      const { cart, clearError, consignments } = props;
+      const changedLineItemIds = error.changedItemIds;
+      const hasItemsToShow = !!changedLineItemIds?.length;
+
+      if (!hasItemsToShow) {
+        return null;
+      }
+
+      return (
+        <CartStockPositionsChangedModal
+          cart={cart}
+          changedLineItemIds={changedLineItemIds}
+          consignments={consignments}
+          isOpen={true}
+          onPlaceOrder={() => {
+            clearError(error);
+
+            const values = lastFormValuesRef.current;
+
+            if (values) {
+              handleSubmit(values);
+            }
+          }}
+          onRequestClose={() => {
+            clearError(error);
+            lastFormValuesRef.current = null;
+            setIsCartStockRefreshComplete(false);
+          }}
+        />
+      );
+    };
+
     const renderOrderErrorModal = (): ReactNode => {
             const { finalizeOrderError, language, shouldLocaliseErrorMessages, submitOrderError } =
                 props;
@@ -441,39 +476,6 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
             onSubmitError(error);
         }
     }, [props.defaultMethod, state.selectedMethod, props.isPaymentDataRequired()]);
-
-    const renderCartStockPositionsChangedModal = (error: CartStockPositionsChangedError): ReactNode => {
-        const { cart, clearError, consignments } = props;
-        const changedLineItemIds = error.changedItemIds;
-        const hasItemsToShow = !!changedLineItemIds?.length;
-
-        if (!hasItemsToShow) {
-            return null;
-        }
-
-        return (
-            <CartStockPositionsChangedModal
-                cart={cart}
-                changedLineItemIds={changedLineItemIds}
-                consignments={consignments}
-                isOpen={true}
-                onPlaceOrder={() => {
-                    clearError(error);
-
-                    const values = lastFormValuesRef.current;
-
-                    if (values) {
-                        handleSubmit(values);
-                    }
-                }}
-                onRequestClose={() => {
-                    clearError(error);
-                    lastFormValuesRef.current = null;
-                    setIsCartStockRefreshComplete(false);
-                }}
-            />
-        );
-    };
 
     const trackSelectedPaymentMethod = (method: PaymentMethod) => {
         const { analyticsTracker } = props;
