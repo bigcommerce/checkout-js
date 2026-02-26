@@ -41,7 +41,7 @@ export const ExpiredPermalinkView: FunctionComponent<ExpiredPermalinkViewProps> 
                             <h2><TranslatedString id="order_confirmation.expired_token.heading" /></h2>
                             <p><TranslatedString id="order_confirmation.expired_token.description" /></p>
 
-                            {!resendSuccess && !resendError && (
+                            {!resendSuccess && (
                                 <button
                                     className="button button--primary"
                                     disabled={isResending}
