@@ -88,7 +88,7 @@ export function getPaymentMethodTitle(
             },
             [PaymentMethodId.BraintreeLocalPaymentMethod]: {
                 logoUrl: method.logoUrl || '',
-                titleText: methodDisplayName,
+                titleText: method.logoUrl ? '' : methodDisplayName,
             },
             [PaymentMethodId.BigCommercePaymentsPayPal]: {
                 logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo.svg'),
