@@ -18,9 +18,9 @@
             "custom_required_error": "{label} er påkrævet",
             "custom_min_error": "{label} bør ikke være mindre end {min} tegn",
             "custom_max_error": "{label} må ikke være mere end {max} tegn",
-            "custom_min_number_error": "{label} must be greater than or equal to {min}",
-            "custom_max_number_error": "{label} must be less than or equal to {max}",
-            "custom_range_error": "{label} must be between {min} and {max}",
+            "custom_min_number_error": "{label} skal være større end eller lig med {min}",
+            "custom_max_number_error": "{label} skal være mindre end eller lig med {max}",
+            "custom_range_error": "{label} skal være mellem {min} og {max}",
             "invalid_characters_error": "{label} indeholder ugyldige tegn",
             "custom_valid_error": "{label} er ikke gyldig",
             "edit_address_action": "Rediger adresse",
@@ -609,8 +609,8 @@
                 "adyenv3": {
                     "boletobancario": "Boleto Bancário-kvittering",
                     "multibanco": {
-                        "reference": "Payment reference",
-                        "entity": "Entity number",
+                        "reference": "Betalingsreference",
+                        "entity": "Enhedsnummer",
                         "expires_at": "Udløbsdato"
                     },
                     "oxxo": "OXXO-kvittering"

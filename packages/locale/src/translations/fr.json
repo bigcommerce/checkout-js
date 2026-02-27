@@ -18,9 +18,9 @@
             "custom_required_error": "{label} est obligatoire",
             "custom_min_error": "{label} doit comporter au moins {min} caractères",
             "custom_max_error": "{label} ne doit pas comporter plus de {max} caractères",
-            "custom_min_number_error": "{label} must be greater than or equal to {min}",
-            "custom_max_number_error": "{label} must be less than or equal to {max}",
-            "custom_range_error": "{label} must be between {min} and {max}",
+            "custom_min_number_error": "{label} doit être supérieur ou égal à {min}",
+            "custom_max_number_error": "{label} doit être inférieur ou égal à {max}",
+            "custom_range_error": "{label} doit être compris entre {min} et {max}",
             "invalid_characters_error": "{label} contient des caractères non valides",
             "custom_valid_error": "{label} n'est pas valide",
             "edit_address_action": "Modifier l'adresse",
@@ -609,8 +609,8 @@
                 "adyenv3": {
                     "boletobancario": "Ticket Boleto Bancário",
                     "multibanco": {
-                        "reference": "Payment reference",
-                        "entity": "Entity number",
+                        "reference": "Référence du paiement",
+                        "entity": "Numéro d'entité",
                         "expires_at": "Date d'expiration"
                     },
                     "oxxo": "Ticket OXXO"
