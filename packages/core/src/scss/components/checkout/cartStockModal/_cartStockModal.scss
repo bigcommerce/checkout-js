@@ -1,0 +1,161 @@
+// =============================================================================
+// CART STOCK POSITIONS CHANGED MODAL
+// =============================================================================
+
+$cart-stock-modal-backorder-color: #6b4e9c;
+
+.modal.cart-stock-positions-changed-modal {
+    background: color("whites", "bright");
+    border-radius: $global-radius * 2;
+    box-shadow: 0 4px 20px rgba(color("greys"), 0.15);
+    padding: spacing("double");
+
+    .modal-header {
+        padding-top: 0;
+    }
+
+    .modal-body {
+        padding-bottom: spacing("single");
+        padding-top: spacing("single");
+    }
+
+    .modal-footer {
+        border-top: container("border", "light");
+        padding-top: spacing("single");
+
+        .button--tertiary,
+        .optimizedCheckout-buttonSecondary {
+            color: color("primary");
+        }
+
+        .button--primary,
+        .optimizedCheckout-buttonPrimary {
+            background-color: color("primary");
+            border-radius: 6px;
+            color: color("whites", "bright");
+            font-weight: fontWeight("bold");
+        }
+    }
+}
+
+// Grouped by consignment (multiple destinations)
+.cart-stock-positions-changed-modal .cart-stock-positions-changed-modal-groups {
+    margin: 0;
+    padding: 0;
+}
+
+.cart-stock-positions-changed-modal .cart-stock-positions-changed-modal-group {
+    margin-bottom: spacing("double");
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.cart-stock-positions-changed-modal .cart-stock-positions-changed-modal-destination {
+    color: color("greys", "darkest");
+    font-size: fontSize("base");
+    font-weight: fontWeight("bold");
+    margin-bottom: spacing("single");
+    margin-top: 0;
+}
+
+// Product list: item rows with separators
+.cart-stock-positions-changed-modal .productList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.cart-stock-positions-changed-modal .productList-item {
+    border-bottom: container("border", "light");
+    margin-bottom: 0;
+    padding-bottom: spacing("single");
+    padding-top: spacing("single");
+
+    &:first-child {
+        padding-top: 0;
+    }
+
+    &:last-child {
+        border-bottom: 0;
+        padding-bottom: 0;
+    }
+}
+
+// Row layout: image | product info + qty | shipping/backorder details
+.cart-stock-positions-changed-modal .product {
+    align-items: flex-start;
+    display: flex;
+    flex-wrap: wrap;
+    gap: spacing("single");
+
+    @include breakpoint("small") {
+        flex-wrap: nowrap;
+    }
+}
+
+.cart-stock-positions-changed-modal .product-figure {
+    flex-shrink: 0;
+    margin: 0;
+    padding-right: 0;
+    width: remCalc(60px);
+
+    img {
+        border: container("border", "light");
+        border-radius: $global-radius;
+        display: block;
+        width: 100%;
+    }
+}
+
+.cart-stock-positions-changed-modal .product-body {
+    flex: 1;
+    min-width: 0;
+    order: unset;
+    padding-right: spacing("single");
+    width: auto;
+}
+
+.cart-stock-positions-changed-modal .product-title {
+    color: color("greys", "darkest");
+    font-size: fontSize("base");
+    margin-bottom: spacing("eighth");
+}
+
+.cart-stock-positions-changed-modal .product-options {
+    color: color("greys");
+    font-size: fontSize("tiny");
+    margin-bottom: spacing("eighth");
+}
+
+.cart-stock-positions-changed-modal .product-body p[data-test="cart-item-quantity"] {
+    color: color("greys", "darker");
+    font-size: fontSize("base");
+    margin-bottom: spacing("eighth");
+}
+
+// Shipping/backorder details block (right column)
+.cart-stock-positions-changed-modal .cart-stock-position-details {
+    color: color("greys", "darker");
+    flex-shrink: 0;
+    font-size: fontSize("base");
+    text-align: left;
+    width: 100%;
+
+    @include breakpoint("small") {
+        text-align: right;
+        width: auto;
+    }
+}
+
+.cart-stock-positions-changed-modal .cart-stock-position-backorder,
+.cart-stock-positions-changed-modal .cart-stock-position-backorder-message {
+    color: $cart-stock-modal-backorder-color;
+    display: block;
+    white-space: normal;
+}
+
+.cart-stock-positions-changed-modal .cart-stock-position-backorder-message {
+    margin-top: spacing("eighth");
+}
