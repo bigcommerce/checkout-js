@@ -56,7 +56,7 @@ export function groupChangedItemsByConsignment(
     const groups: CartStockPositionsChangedConsignmentGroup[] = [];
     let consignmentNumber = 0;
 
-    for (const consignment of consignments) {
+    consignments.forEach((consignment) => {
         consignmentNumber += 1;
 
         const allItems = findLineItems(cart, consignment);
@@ -65,7 +65,7 @@ export function groupChangedItemsByConsignment(
         if (items.length > 0) {
             groups.push({ consignment, consignmentNumber, items });
         }
-    }
+    });
 
     return groups.length > 0 ? groups : null;
 }

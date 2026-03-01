@@ -210,26 +210,30 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
         return null;
       }
 
+      const onCartStockModalPlaceOrder = (): void => {
+        clearError(error);
+
+        const values = lastFormValuesRef.current;
+
+        if (values) {
+          handleSubmit(values);
+        }
+      };
+
+      const onCartStockModalRequestClose = (): void => {
+        clearError(error);
+        lastFormValuesRef.current = null;
+        setIsCartStockRefreshComplete(false);
+      };
+
       return (
         <CartStockPositionsChangedModal
           cart={cart}
           changedLineItemIds={changedLineItemIds}
           consignments={consignments}
           isOpen={true}
-          onPlaceOrder={() => {
-            clearError(error);
-
-            const values = lastFormValuesRef.current;
-
-            if (values) {
-              handleSubmit(values);
-            }
-          }}
-          onRequestClose={() => {
-            clearError(error);
-            lastFormValuesRef.current = null;
-            setIsCartStockRefreshComplete(false);
-          }}
+          onPlaceOrder={onCartStockModalPlaceOrder}
+          onRequestClose={onCartStockModalRequestClose}
         />
       );
     };
