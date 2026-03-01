@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.749.0](https://github.com/bigcommerce/checkout-js/compare/v1.748.1...v1.749.0) (2026-03-01)
+
+
+### Features
+
+* **checkout:** Handle cart_stock_positions_changed error from submitting order and render the message modal ([#2830](https://github.com/bigcommerce/checkout-js/issues/2830)) ([9b6e425](https://github.com/bigcommerce/checkout-js/commit/9b6e425c2e729aba4de3a5655db8212f1e65f473))
+
 ### [1.748.1](https://github.com/bigcommerce/checkout-js/compare/v1.748.0...v1.748.1) (2026-02-25)
 
 ## [1.748.0](https://github.com/bigcommerce/checkout-js/compare/v1.747.0...v1.748.0) (2026-02-25)
