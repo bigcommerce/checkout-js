@@ -1,0 +1,34 @@
+@import '../../ui/Base';
+
+.checkout-backorder-quantities-banner {
+    align-items: center;
+    background-color: color("info", "light");
+    border-radius: spacing("quarter");
+    display: flex;
+    padding: spacing("half") spacing("half");
+    width: 88%;
+    margin-top: spacing("half");
+
+    .checkout-backorder-quantities-banner--alert {
+        background: transparent;
+        border: none;
+        flex: 1;
+        margin: 0;
+        padding: 0;
+    }
+
+    .checkout-backorder-quantities-banner--close {
+        background: none;
+        border: none;
+        color: color("greys", "darker");
+        cursor: pointer;
+        display: flex;
+        flex-shrink: 0;
+        margin-left: spacing("half");
+        padding: 0;
+
+        &:hover {
+            color: color("greys", "darkest");
+        }
+    }
+}
