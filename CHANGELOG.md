@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.751.0](https://github.com/bigcommerce/checkout-js/compare/v1.750.0...v1.751.0) (2026-03-02)
+
+
+### Features
+
+* **payment:** PI-5028 checkout-sdk bump ([0f85b20](https://github.com/bigcommerce/checkout-js/commit/0f85b20fce227aaea93aac12249c0853eef2cc24))
+
 ## [1.750.0](https://github.com/bigcommerce/checkout-js/compare/v1.749.1...v1.750.0) (2026-03-02)
 
 
