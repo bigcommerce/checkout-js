@@ -6,6 +6,7 @@ import { object } from 'yup';
 
 import { getAppliedStyles } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
 
 import type CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import { getPrivacyPolicyValidationSchema, PrivacyPolicyField } from '../privacyPolicy';
@@ -57,6 +58,7 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
     const [authentication, setAuthentication] = useState(false);
     const [isStripeLoading, setIsStripeLoading] = useState(true);
     const [isNewAuth, setIsNewAuth] = useState(false);
+    const { themeV2 } = useThemeContext();
     const handleOnClickSubmitButton = () => {
         onContinueAsGuest({
             email: emailValue,
@@ -203,6 +205,22 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
                             </Legend>
                         }
                     >
+
+                        {(themeV2 && !isLoading) && (
+                            <p className="customer-login-link body-regular">
+                                <TranslatedString id="customer.login_text" />{' '}
+                                <a
+                                    data-test="customer-continue-button"
+                                    id="checkout-customer-login"
+                                    onClick={onShowLogin}
+                                    role="button"
+                                    tabIndex={0}
+                                >
+                                    <TranslatedString id="customer.login_action" />
+                                </a>
+                            </p>
+                        )}
+                        
                         <div className="customerEmail-container">
                             <div className="customerEmail-body">
                                 <div id="stripeupeLink"/>
@@ -233,7 +251,7 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
                         )}
 
                         {
-                            !isLoading && <p>
+                            !themeV2 && !isLoading && <p>
                                 <TranslatedString id="customer.login_text"/>
                                 { ' ' }
                                 <a

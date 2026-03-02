@@ -1,6 +1,7 @@
 import React, { type FunctionComponent } from 'react';
 
 import { fireEvent, render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
+import { ThemeContext } from '@bigcommerce/checkout/contexts';
 
 import CheckoutStepType from '../checkout/CheckoutStepType';
 
@@ -8,7 +9,7 @@ import StripeGuestForm, { type StripeGuestFormProps } from './StripeGuestForm';
 
 describe('StripeGuestForm', () => {
     let defaultProps: StripeGuestFormProps;
-    let TestComponent: FunctionComponent<Partial<StripeGuestFormProps>>;
+    let TestComponent: FunctionComponent<Partial<StripeGuestFormProps> & { themeV2?: boolean }>;
     const handleContinueAsGuest = jest.fn();
     const dummyElement = document.createElement('div');
 
@@ -42,16 +43,24 @@ describe('StripeGuestForm', () => {
         jest.spyOn(document, 'getElementById')
             .mockReturnValue(dummyElement);
 
-        TestComponent = props => (
-            <StripeGuestForm
-                {...defaultProps}
-                {...props}
-            />
+        TestComponent = ({ themeV2 = false, ...props }) => (
+            <ThemeContext.Provider value={{ themeV2 }}>
+                <StripeGuestForm
+                    {...defaultProps}
+                    {...props}
+                />
+            </ThemeContext.Provider>
         );
     });
 
     it('matches snapshot', () => {
         const view = render(<TestComponent />);
+
+        expect(view).toMatchSnapshot();
+    });
+
+    it('matches snapshot with theme v2', () => {
+        const view = render(<TestComponent themeV2={true} />);
 
         expect(view).toMatchSnapshot();
     });
