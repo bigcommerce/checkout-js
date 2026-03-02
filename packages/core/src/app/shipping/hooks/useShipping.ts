@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-import { type CheckoutContextProps, useCheckout } from '@bigcommerce/checkout/contexts';
+import { type CheckoutContextProps, defaultCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
 import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
 
@@ -25,7 +25,7 @@ const deleteConsignmentsSelector = createSelector(
 );
 
 export const useShipping = () => {
-    const { checkoutState, checkoutService } = useCheckout();
+    const { checkoutState, checkoutService, Capabilities } = useCheckout();
 
     const {
         data: {
@@ -105,7 +105,11 @@ export const useShipping = () => {
         customerMessage: checkout.customerMessage,
         createCustomerAddress: checkoutService.createCustomerAddress,
         deinitializeShippingMethod: checkoutService.deinitializeShipping,
-        deleteConsignments: deleteConsignmentsSelector({ checkoutService, checkoutState }),
+        deleteConsignments: deleteConsignmentsSelector({
+            checkoutService,
+            checkoutState,
+            Capabilities: Capabilities ?? defaultCapabilities,
+        }),
         getFields: getShippingAddressFields,
         initializeShippingMethod: checkoutService.initializeShipping,
         isGuest: customer.isGuest,

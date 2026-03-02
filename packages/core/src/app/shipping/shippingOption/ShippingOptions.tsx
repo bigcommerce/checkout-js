@@ -2,7 +2,7 @@ import { type Cart, type CheckoutSelectors, type Consignment } from '@bigcommerc
 import { map, sortBy, uniq } from 'lodash';
 import { createSelector } from 'reselect';
 
-import { type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
+import { type CheckoutContextProps, defaultCapabilities } from '@bigcommerce/checkout/contexts';
 
 import { withCheckout } from '../../checkout';
 import getShippableLineItems from '../getShippableLineItems';
@@ -73,7 +73,7 @@ const sortConsignments = (cart: Cart, unsortedConsignments: Consignment[]): Cons
 };
 
 export function mapToShippingOptions(
-    { checkoutService, checkoutState }: CheckoutContextProps,
+    { checkoutService, checkoutState, Capabilities }: CheckoutContextProps,
     props: ShippingOptionsProps,
 ): WithCheckoutShippingOptionsProps | null {
     const {
@@ -105,6 +105,7 @@ export function mapToShippingOptions(
         subscribeToConsignments: subscribeToConsignmentsSelector({
             checkoutService,
             checkoutState,
+            Capabilities: Capabilities ?? defaultCapabilities,
         }),
     };
 }
