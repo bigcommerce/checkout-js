@@ -33,7 +33,7 @@ const CheckoutProvider = ({
             checkoutService,
             checkoutState,
             errorLogger,
-            Capabilities:
+            capabilities:
                 checkoutState.data.getConfig()?.checkoutSettings.capabilities ||
                 defaultCapabilities,
         }),

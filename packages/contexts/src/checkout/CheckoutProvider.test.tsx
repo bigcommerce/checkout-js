@@ -46,11 +46,11 @@ describe('CheckoutProvider', () => {
         jest.spyOn(service.getState().data, 'getConfig').mockReturnValue(getStoreConfig());
 
         const Consumer = () => {
-            const { Capabilities } = useCheckout();
+            const { capabilities } = useCheckout();
 
             return (
                 <span data-test="capabilities">
-                    {Capabilities.shipping.companyAddressBook
+                    {capabilities.shipping.companyAddressBook
                         ? 'has-companyAddressBook'
                         : 'no-companyAddressBook'}
                 </span>
@@ -86,11 +86,11 @@ describe('CheckoutProvider', () => {
         jest.spyOn(service.getState().data, 'getConfig').mockReturnValue(config);
 
         const Consumer = () => {
-            const { Capabilities } = useCheckout();
+            const { capabilities } = useCheckout();
 
             return (
                 <span data-test="capabilities">
-                    {Capabilities.shipping.companyAddressBook
+                    {capabilities.shipping.companyAddressBook
                         ? 'has-companyAddressBook'
                         : 'no-companyAddressBook'}
                 </span>

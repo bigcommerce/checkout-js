@@ -8,7 +8,7 @@ import { createContext, useContext } from 'react';
 import type ErrorLogger from './ErrorLogger';
 
 export interface CheckoutContextProps {
-    Capabilities: Capabilities;
+    capabilities: Capabilities;
     checkoutService: CheckoutService;
     checkoutState: CheckoutSelectors;
     errorLogger?: ErrorLogger;
