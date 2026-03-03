@@ -25,7 +25,7 @@ const deleteConsignmentsSelector = createSelector(
 );
 
 export const useShipping = () => {
-    const { checkoutState, checkoutService } = useCheckout();
+    const { checkoutState, checkoutService, capabilities } = useCheckout();
 
     const {
         data: {
@@ -105,7 +105,11 @@ export const useShipping = () => {
         customerMessage: checkout.customerMessage,
         createCustomerAddress: checkoutService.createCustomerAddress,
         deinitializeShippingMethod: checkoutService.deinitializeShipping,
-        deleteConsignments: deleteConsignmentsSelector({ checkoutService, checkoutState }),
+        deleteConsignments: deleteConsignmentsSelector({
+            checkoutService,
+            checkoutState,
+            capabilities,
+        }),
         getFields: getShippingAddressFields,
         initializeShippingMethod: checkoutService.initializeShipping,
         isGuest: customer.isGuest,

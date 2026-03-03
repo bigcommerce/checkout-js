@@ -8,6 +8,7 @@ import React, {
     useState,
 } from 'react';
 
+import { defaultCapabilities } from './Capability';
 import CheckoutContext from './CheckoutContext';
 import type ErrorLogger from './ErrorLogger';
 
@@ -32,6 +33,9 @@ const CheckoutProvider = ({
             checkoutService,
             checkoutState,
             errorLogger,
+            capabilities:
+                checkoutState.data.getConfig()?.checkoutSettings.capabilities ||
+                defaultCapabilities,
         }),
         [checkoutService, checkoutState, errorLogger],
     );

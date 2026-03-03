@@ -11,6 +11,7 @@ import getCheckoutStepStatuses from './getCheckoutStepStatuses';
 export default function mapToCheckoutProps({
     checkoutService,
     checkoutState,
+    capabilities,
 }: CheckoutContextProps): WithCheckoutProps {
     const { data, errors, statuses } = checkoutState;
     const { promotions = EMPTY_ARRAY } = data.getCheckout() || {};
@@ -66,6 +67,7 @@ export default function mapToCheckoutProps({
         subscribeToConsignments: subscribeToConsignmentsSelector({
             checkoutService,
             checkoutState,
+            capabilities,
         }),
         steps: getCheckoutStepStatuses(checkoutState),
     };

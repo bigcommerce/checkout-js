@@ -73,7 +73,7 @@ const sortConsignments = (cart: Cart, unsortedConsignments: Consignment[]): Cons
 };
 
 export function mapToShippingOptions(
-    { checkoutService, checkoutState }: CheckoutContextProps,
+    { checkoutService, checkoutState, capabilities }: CheckoutContextProps,
     props: ShippingOptionsProps,
 ): WithCheckoutShippingOptionsProps | null {
     const {
@@ -105,6 +105,7 @@ export function mapToShippingOptions(
         subscribeToConsignments: subscribeToConsignmentsSelector({
             checkoutService,
             checkoutState,
+            capabilities,
         }),
     };
 }

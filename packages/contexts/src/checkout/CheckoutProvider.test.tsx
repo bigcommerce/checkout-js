@@ -1,7 +1,11 @@
 import { createCheckoutService } from '@bigcommerce/checkout-sdk';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import React from 'react';
 
+import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
+
+import { defaultCapabilities } from './Capability';
+import { useCheckout } from './CheckoutContext';
 import CheckoutProvider from './CheckoutProvider';
 
 describe('CheckoutProvider', () => {
@@ -19,7 +23,7 @@ describe('CheckoutProvider', () => {
         expect(service.subscribe).toHaveBeenCalled();
     });
 
-    it('unsubscribes to state changes when component unmounts', () => {
+    it('unsubscribes from state changes when component unmounts', () => {
         const service = createCheckoutService();
         const unsubscribe = jest.fn();
 
@@ -34,5 +38,71 @@ describe('CheckoutProvider', () => {
         unmount();
 
         expect(unsubscribe).toHaveBeenCalled();
+    });
+
+    it('provides context with defaultCapabilities when config has no capabilities', () => {
+        const service = createCheckoutService();
+
+        jest.spyOn(service.getState().data, 'getConfig').mockReturnValue(getStoreConfig());
+
+        const Consumer = () => {
+            const { capabilities } = useCheckout();
+
+            return (
+                <span data-test="capabilities">
+                    {capabilities.shipping.companyAddressBook
+                        ? 'has-companyAddressBook'
+                        : 'no-companyAddressBook'}
+                </span>
+            );
+        };
+
+        render(
+            <CheckoutProvider checkoutService={service}>
+                <Consumer />
+            </CheckoutProvider>,
+        );
+
+        expect(screen.getByTestId('capabilities')).toHaveTextContent('no-companyAddressBook');
+    });
+
+    it('provides context with config capabilities when checkoutSettings.capabilities is set', () => {
+        const service = createCheckoutService();
+        const configCapabilities = {
+            ...defaultCapabilities,
+            shipping: {
+                ...defaultCapabilities.shipping,
+                companyAddressBook: true,
+            },
+        };
+        const config = {
+            ...getStoreConfig(),
+            checkoutSettings: {
+                ...getStoreConfig().checkoutSettings,
+                capabilities: configCapabilities,
+            },
+        };
+
+        jest.spyOn(service.getState().data, 'getConfig').mockReturnValue(config);
+
+        const Consumer = () => {
+            const { capabilities } = useCheckout();
+
+            return (
+                <span data-test="capabilities">
+                    {capabilities.shipping.companyAddressBook
+                        ? 'has-companyAddressBook'
+                        : 'no-companyAddressBook'}
+                </span>
+            );
+        };
+
+        render(
+            <CheckoutProvider checkoutService={service}>
+                <Consumer />
+            </CheckoutProvider>,
+        );
+
+        expect(screen.getByTestId('capabilities')).toHaveTextContent('has-companyAddressBook');
     });
 });
