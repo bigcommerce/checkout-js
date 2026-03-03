@@ -468,7 +468,7 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
             if (isErrorWithType(error) && error.type === 'missing_shipping_method') {
                 const { errorLogger, cart } = props;
 
-                errorLogger?.logMessage?.(`DataMissingShippingMethod ${JSON.stringify(cart)}`);
+                errorLogger?.logMessage?.(`DataMissingShippingMethod ${cart?.id}`);
             }
 
             if (isErrorWithType(error) && error.type === 'payment_method_invalid') {
