@@ -1,7 +1,7 @@
 import { type CheckoutSelectors, type CustomError } from '@bigcommerce/checkout-sdk/essential';
 import { createSelector } from 'reselect';
 
-import { type CheckoutContextProps, defaultCapabilities } from '@bigcommerce/checkout/contexts';
+import { type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
 
 import { EMPTY_ARRAY, isExperimentEnabled } from '../common/utility';
 
@@ -67,7 +67,7 @@ export default function mapToCheckoutProps({
         subscribeToConsignments: subscribeToConsignmentsSelector({
             checkoutService,
             checkoutState,
-            capabilities: capabilities ?? defaultCapabilities,
+            capabilities,
         }),
         steps: getCheckoutStepStatuses(checkoutState),
     };
