@@ -52,6 +52,7 @@ const checkoutSettings: Config = {
             checkoutUserExperienceSettings: {
                 walletButtonsOnTop: true,
                 floatingLabelEnabled: true,
+                checkoutV2Theme: false,
             },
             shouldRedirectToStorefrontForAuth: false,
         },
