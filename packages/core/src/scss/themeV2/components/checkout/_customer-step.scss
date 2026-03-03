@@ -1,4 +1,10 @@
 .checkout-step--customer {
+    #checkout-customer-returning {
+        @include themeV2 {
+            margin-top: spacing("single");
+        }
+    }
+
     .customer-login-link {
         @include themeV2 {
             margin-top: #{spacing("half") + spacing("third")};

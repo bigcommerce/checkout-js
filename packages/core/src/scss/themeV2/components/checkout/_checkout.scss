@@ -24,7 +24,7 @@
         .checkout-step {
             background-color: $color-white;
             border-bottom: none;
-            padding: #{spacing("base") + spacing("base")};
+            padding: #{spacing("base")} #{spacing("base") + spacing("base")};
             margin: spacing("single") 0;
         }
         
