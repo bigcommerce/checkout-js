@@ -465,6 +465,12 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
         } catch (error) {
             analyticsTracker.paymentRejected();
 
+            if (isErrorWithType(error) && error.type === 'missing_shipping_method') {
+                const { errorLogger, cart } = props;
+
+                errorLogger?.logMessage?.(JSON.stringify(cart));
+            }
+
             if (isErrorWithType(error) && error.type === 'payment_method_invalid') {
                 return loadPaymentMethods();
             }
