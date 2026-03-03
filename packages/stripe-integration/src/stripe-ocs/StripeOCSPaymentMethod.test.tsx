@@ -69,6 +69,7 @@ describe('when using Stripe OCS payment', () => {
     let accordionContextValues: AccordionContextProps;
     let themeContextValueMock: {
         themeV2: boolean;
+        themeVariant: 'light' | 'bold' | 'warm';
     };
     let getAppearanceForOCSElementMock: jest.Mock;
 
@@ -95,6 +96,7 @@ describe('when using Stripe OCS payment', () => {
         };
         themeContextValueMock = {
             themeV2: false,
+            themeVariant: 'light',
         };
 
         getAppearanceForOCSElementMock = jest.fn(() => {
@@ -421,6 +423,7 @@ describe('when using Stripe OCS payment', () => {
         it('should initialize with accordion layout for themeV2', () => {
             themeContextValueMock = {
                 themeV2: true,
+                themeVariant: 'light',
             };
 
             render(<PaymentMethodTest {...defaultProps} method={method} />);

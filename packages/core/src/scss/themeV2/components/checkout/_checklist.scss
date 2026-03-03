@@ -1,11 +1,14 @@
 .form-checklist {
     @include themeV2 {
+        background-color: var(--v2-bg-input);
+        color: var(--v2-text-primary);
         border: none;
         display: flex;
         flex-direction: column;
 
         .form-checklist-item {
-            border: 1px solid $color-greyMedium;
+            background-color: var(--v2-bg-input);
+            border: 1px solid var(--v2-border);
             border-radius: spacing("sixth");
             margin: spacing("sixth") 0;
 
@@ -19,7 +22,8 @@
         }
 
         .form-checklist-item--selected {
-            border: $input-border-width $input-border-style $color-black;
+            background-color: var(--v2-bg-input-focus);
+            border: $input-border-width $input-border-style var(--v2-black);
         }
 
         .form-checklist-header {
@@ -46,17 +50,23 @@
             box-shadow: $checklist-focus-boxShadow;
         }
 
-        & ~ .form-label::before {
-            border: 2px $input-border-style $input-border-color;
+        & ~ .form-label {
+            &::before {
+                border: 2px $input-border-style var(--v2-border);
+            }
+        
+            &::after {
+                transform: scale(0.36);
+            }
         }
     
         &:checked ~ .form-label::before {
-            border-color: $color-black;
-            background-color: $color-black;
+            border-color: var(--v2-checkbox-checked-bg);
+            background-color: var(--v2-checkbox-checked-bg);
         }
     
         &:checked ~ .form-label::after {
-            background-color: $color-white;
+            background-color: var(--v2-checklist-check-after-color);
         }
     }
 }

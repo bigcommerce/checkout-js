@@ -23,6 +23,7 @@ const CheckboxInput = forwardRef(
                     'form-checkbox',
                     'optimizedCheckout-form-checkbox',
                     additionalClassName,
+                    'floating-form-field-input',
                 )}
                 id={id}
                 ref={ref}

@@ -1,14 +1,14 @@
 @include themeV2 {
     // optimizedCheckout-headingPrimary
     .header, .header-secondary, .sub-header {
-        color: $color-black;
+        color: var(--v2-text-primary);
         font-family: $fontFamily-montserrat;
         font-size: $fontSize-large;
         font-weight: $fontWeight-bold;
     }
 
     .header-secondary {
-        color: $color-secondaryDarkest;
+        color: var(--v2-text-secondary);
     }
 
     // optimizedCheckout-headingSecondary
@@ -18,14 +18,14 @@
 
     // optimizedCheckout-contentPrimary
     .body-regular, .body-cta, .body-thin, .body-medium, .body-bold {
-        color: $color-black;
+        color: var(--v2-text-primary);
         font-family: $fontFamily-montserrat;
         font-size: $fontSize-base;
         font-weight: $fontWeight-normal;
     }
 
     .body-cta {
-        color: $color-highlightDarkest;
+        color: var(--v2-link);
     }
 
     .body-medium {
@@ -34,7 +34,7 @@
 
     .body-thin {
         font-weight: $fontWeight-thin;
-        color: $color-secondaryDarkest;
+        color: var(--v2-text-secondary);
     }
 
     .body-bold {
@@ -42,32 +42,28 @@
     }
 
     .sub-text, .sub-text-medium, .sub-text-bold {
-        color: $color-black;
+        color: var(--v2-text-primary);
         font-family: $fontFamily-montserrat;
         font-size: $fontSize-tiny;
         font-weight: $fontWeight-normal;
     }
 
     .sub-text-medium {
-        color: $color-secondaryDarkest;
+        color: var(--v2-text-secondary);
         font-weight: $fontWeight-medium;
-    }
-
-    .sub-text-bold {
-        font-weight: $fontWeight-bold;
     }
 
     // overrides
     .body-bold, .body-medium, .sub-header {
         &.button--primary:not(:disabled){
-            color: $color-white;
+            color: var(--v2-white);
         }
     }
 
     .form-checkbox + .form-label,
     .form-radio + .form-label {
         &.body-regular {
-            color: $color-black;
+            color: var(--v2-text-primary);
             font-size: $fontSize-base;
             font-weight: $fontWeight-normal;
         }
@@ -84,7 +80,7 @@
 
     .body-medium {
         small {
-            color: $color-black;
+            color: var(--v2-text-primary);
             font-family: $fontFamily-montserrat;
             font-size: $fontSize-base;
             font-weight: $fontWeight-medium;
@@ -93,25 +89,25 @@
 
     .add-consignment-button {
         &.body-regular {
-            color: $color-black;
+            color: var(--v2-text-primary);
         }
     }
 
     .consignment-line-item-list li .body-regular {
         .line-item-options {
-            color: $color-secondaryDarkest;
+            color: var(--v2-text-secondary);
         }
     }
 
     &.modal.modal--afterOpen {
-        background-color: $color-white;
+        background-color: var(--v2-white);
 
         &.allocate-items-modal .modal-body {
             .left-to-allocate-items-table .left-to-allocate-item-name-container {
                 .left-to-allocate-item-name {
                     &.body-regular {
                         font-weight: fontWeight("normal");
-                        color: $color-black;
+                        color: var(--v2-text-primary);
                     }
                 }
 
@@ -125,7 +121,7 @@
             .allocated-line-items .allocated-line-items-list li {
                 .body-regular {
                     .line-item-options {
-                        color: $color-secondaryDarkest;
+                        color: var(--v2-text-secondary);
                     }
                 }
             }
@@ -142,7 +138,7 @@
         .staticConsignment-items {
             .sub-text {
                 .line-item-options {
-                    color: $color-secondaryDarkest;
+                    color: var(--v2-text-secondary);
                 }
             }
         }

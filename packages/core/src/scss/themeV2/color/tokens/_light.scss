@@ -1,0 +1,33 @@
+// =============================================================================
+// LIGHT THEME COLOUR TOKENS
+// =============================================================================
+// One variable per colour; tokens reuse semantic names.
+
+@mixin theme-tokens-light {
+    $bg-page: #f5f5f5;
+    $bg-surface: #ffffff;
+    $bg-input: #fcfcfc;
+    $border: #dddddd;
+    $text-primary: #000000;
+    $text-secondary: #757575;
+    $accent-color: #476BEF;
+
+    --v2-bg-page: #{$bg-page};
+    --v2-bg-surface: #{$bg-surface};
+    --v2-bg-cart-header: #{$bg-page};
+    --v2-bg-input: #{$bg-input};
+    --v2-border: #{$border};
+    --v2-text-primary: #{$text-primary};
+    --v2-text-secondary: #{$text-secondary};
+    --v2-accent-color: #{$accent-color};
+    --v2-link: #{$accent-color};
+    --v2-separator: #{$text-primary};
+    --v2-button-primary-bg: #{$text-primary};
+    --v2-button-tertiary-bg: transparent;
+    --v2-white: #{$bg-surface};
+    --v2-black: #{$text-primary};
+    --v2-checkbox-bg: #{$bg-surface};
+    --v2-checkbox-checked-bg: #{$text-primary};
+    --v2-checklist-check-before-color: #{$text-primary};
+    --v2-checklist-check-after-color: #{$bg-surface};
+}

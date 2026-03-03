@@ -126,6 +126,7 @@ const GuestForm: FunctionComponent<
                     <p className="customer-login-link body-regular">
                         <TranslatedString id="customer.login_text" />{' '}
                         <a
+                            className="body-cta"
                             data-test="customer-continue-button"
                             id="checkout-customer-login"
                             onClick={handleLogin}

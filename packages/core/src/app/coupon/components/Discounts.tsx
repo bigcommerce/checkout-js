@@ -14,8 +14,8 @@ const DiscountItems: FunctionComponent<{ coupons: DiscountItem[] }> = ({ coupons
                     aria-live="polite"
                     className="cart-priceItem optimizedCheckout-contentPrimary"
                 >
-                    <span className="cart-priceItem-label"><IconCoupon />{coupon.name}</span>
-                    <span className="cart-priceItem-value" data-test="cart-price-value">
+                    <span className="cart-priceItem-label body-regular"><IconCoupon />{coupon.name}</span>
+                    <span className="cart-priceItem-value body-medium" data-test="cart-price-value">
                         -<ShopperCurrency amount={coupon.amount} />
                     </span>
                 </div>
@@ -37,13 +37,13 @@ const DiscountsCollapsible: FunctionComponent<{ discounts: number; discountItems
                 className="coupon-discount-toggle cart-priceItem optimizedCheckout-contentPrimary"
                 onClick={() => setIsCouponDiscountsVisible(!isCouponDiscountsVisible)}
             >
-                <span className="cart-priceItem-label">
+                <span className="cart-priceItem-label body-regular">
                     <div className="toggle-button">
                         <TranslatedString id="redeemable.discounts_text" />
                         {isCouponDiscountsVisible ? <IconDownArrow /> : <IconUpArrow />}
                     </div>
                 </span>
-                <span className="cart-priceItem-value">
+                <span className="cart-priceItem-value body-medium">
                     -<ShopperCurrency amount={discounts} />
                 </span>
             </div>
@@ -72,10 +72,10 @@ export const Discounts: FunctionComponent = () => {
     return (
         <div data-test="cart-subtotal">
             <div aria-live="polite" className="cart-priceItem optimizedCheckout-contentPrimary">
-                <span className="cart-priceItem-label">
+                <span className="cart-priceItem-label body-regular">
                     <TranslatedString id="cart.subtotal_text" />
                 </span>
-                <span className="cart-priceItem-value" data-test="cart-price-value">
+                <span className="cart-priceItem-value body-medium" data-test="cart-price-value">
                     <ShopperCurrency amount={subtotal} />
                 </span>
             </div>

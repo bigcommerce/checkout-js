@@ -29,7 +29,9 @@ const CheckboxInput = forwardRef(
                 ref={ref}
                 type="checkbox"
             />
-            <Label htmlFor={id}>{label}</Label>
+            <Label additionalClassName="body-regular" htmlFor={id}>
+                {label}
+            </Label>
         </>
     ),
 );

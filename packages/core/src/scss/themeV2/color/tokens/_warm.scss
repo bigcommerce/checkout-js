@@ -1,0 +1,36 @@
+// =============================================================================
+// WARM THEME COLOUR TOKENS
+// =============================================================================
+// One variable per colour; tokens reuse semantic names.
+
+@mixin theme-tokens-warm {
+    $bg-page: #f7f5f3;
+    $bg-surface: #fefdfb;
+    $bg-cart-header: #f5f3f1;
+    $bg-input: #faf8f6;
+    $border: #e0d9d2;
+    $text-primary: #4a4038;
+    $text-secondary: #6b5d54;
+    $accent-color: #476BEF;
+    $link-color: #2d6fb8;
+    $white: #ffffff;
+
+    --v2-bg-page: #{$bg-page};
+    --v2-bg-surface: #{$bg-surface};
+    --v2-bg-cart-header: #{$bg-cart-header};
+    --v2-bg-input: #{$bg-input};
+    --v2-border: #{$border};
+    --v2-text-primary: #{$text-primary};
+    --v2-text-secondary: #{$text-secondary};
+    --v2-accent-color: #{$accent-color};
+    --v2-link: #{$link-color};
+    --v2-separator: #{$text-secondary};
+    --v2-button-primary-bg: #{$text-primary};
+    --v2-button-tertiary-bg: transparent;
+    --v2-white: #{$white};
+    --v2-black: #{$text-primary};
+    --v2-checkbox-bg: #{$bg-surface};
+    --v2-checkbox-checked-bg: #{$text-primary};
+    --v2-checklist-check-before-color: #{$text-primary};
+    --v2-checklist-check-after-color: #{$white};
+}

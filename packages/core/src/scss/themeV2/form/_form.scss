@@ -4,43 +4,30 @@
 
 @include themeV2 {
     .floating-select,
-    .floating-input {
-        background-color: $color-secondaryDark;
+    .floating-input, .form-input {
+        background-color: var(--v2-bg-input);
+
+        &:focus {
+            background-color: var(--v2-bg-input-focus);
+            border-color: $color-highlightDarkest;
+        }
     }
 
     .form-field:not(.form-field--error) .floating-input:not(:focus),
     .form-field:not(.form-field--error) .floating-select:not(:focus),
     .form-field:not(.form-field--error) .floating-textarea {
-        border-color: $color-greyMedium;
+        border-color: var(--v2-border);
     }
 
-    .form-checklist-checkbox~.form-label {
-
-        &::before,
-        &::after {
-            background-color: $color-white;
-        }
-
-        &::after {
-            transform: scale(0.36);
-        }
-    }
-
-    .form-checklist-checkbox:checked~.form-label {
-        &::before {
-            background-color: $color-black;
-            border-color: $color-black;
-        }
-    }
-
-    .form-checkbox:checked + .form-label::before {
-        background-color: $color-black;
-        border-color: $color-black;
+    .form-checkbox:checked + .form-label::before,
+    .form-radio:checked + .form-label::before {
+        background-color: var(--v2-checkbox-checked-bg);
+        border-color: var(--v2-checkbox-checked-bg);
     }
 
     .floating-label {
         &.floating-form-field-label {
-            color: $color-secondaryDarkest;
+            color: var(--v2-text-secondary);
             font-family: $fontFamily-montserrat;
             font-size: $fontSize-smallest;
             font-weight: $fontWeight-medium;
@@ -60,7 +47,7 @@
     input:focus + .floating-label,
     input:not(:placeholder-shown) + .floating-label {
         &.floating-form-field-label{
-            color: $color-secondaryDarkest;
+            color: var(--v2-text-secondary);
             font-family: $fontFamily-montserrat;
             font-size: $fontSize-tiny;
             font-weight: $fontWeight-medium;
@@ -73,7 +60,24 @@
     }
 
     .checkout-step--payment .form-field .form-label.body-medium {
-        color: $color-secondaryDarkest;
+        color: var(--v2-text-secondary);
         font-size: $fontSize-tiny;
+    }
+
+    .form-field .floating-input.floating-form-field-input,
+    .form-field .floating-select.floating-form-field-input {
+        color: var(--v2-text-primary);
+    }
+
+    .button--primary {
+        background-color: var(--v2-button-primary-bg);
+    }
+
+    .button--tertiary {
+        background-color: var(--v2-button-tertiary-bg);
+    }
+
+    .coupon-form .coupon-button {
+        border-color: var(--v2-text-primary);
     }
 }

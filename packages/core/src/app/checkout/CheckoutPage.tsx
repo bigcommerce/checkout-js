@@ -23,7 +23,7 @@ import React, {
   useState,
 } from 'react';
 
-import { type AnalyticsContextProps, type ExtensionContextProps, withExtension } from '@bigcommerce/checkout/contexts';
+import { type AnalyticsContextProps, type ExtensionContextProps, type ThemeVariant, withExtension } from '@bigcommerce/checkout/contexts';
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { OrderConfirmationPageSkeleton } from '@bigcommerce/checkout/ui';
@@ -57,7 +57,8 @@ export interface CheckoutProps {
     embeddedStylesheet: EmbeddedCheckoutStylesheet;
     embeddedSupport: CheckoutSupport;
     errorLogger: ErrorLogger;
-    themeV2?:boolean;
+    themeV2?: boolean;
+    themeVariant?: ThemeVariant;
     createEmbeddedMessenger(options: EmbeddedCheckoutMessengerOptions): EmbeddedCheckoutMessenger;
 }
 
@@ -133,7 +134,8 @@ const Checkout = ({
                       embeddedStylesheet,
                       loadPaymentMethodByIds,
                       subscribeToConsignments,
-                      themeV2
+                      themeV2,
+                      themeVariant = 'light',
                   }: CheckoutPageProps):ReactElement => {
     const [state, setState] = useState<CheckoutState>({
         isBillingSameAsShipping: true,
@@ -627,7 +629,15 @@ const Checkout = ({
     }
 
     return (
-        <div className={classNames('remove-checkout-step-numbers', { 'is-embedded': isEmbedded() }, { 'themeV2': themeV2 })} data-test="checkout-page-container" id="checkout-page-container">
+        <div
+            className={classNames(
+                'remove-checkout-step-numbers',
+                { 'is-embedded': isEmbedded() },
+                themeV2 && ['themeV2', `themeV2--${themeVariant}`],
+            )}
+            data-test="checkout-page-container"
+            id="checkout-page-container"
+        >
             <div className="layout optimizedCheckout-contentPrimary">
                 {state.isCartEmpty ?
                     <EmptyCartMessage loginUrl={loginUrl} waitInterval={3000} />

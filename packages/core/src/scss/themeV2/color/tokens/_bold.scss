@@ -1,0 +1,33 @@
+// =============================================================================
+// BOLD THEME COLOUR TOKENS
+// =============================================================================
+// One variable per colour; checkbox-bg and checkbox-checked-bg both use $accent-color.
+
+@mixin theme-tokens-bold {
+    $bg-page: #373737;
+    $bg-surface: #565656;
+    $bg-input: #404040;
+    $border: #B1B1B1;
+    $text-primary: #ffffff;
+    $accent-color: #FF997E;
+
+    --v2-bg-page: #{$bg-page};
+    --v2-bg-surface: #{$bg-surface};
+    --v2-bg-cart-header: #{$bg-surface};
+    --v2-bg-input: #{$bg-surface};
+    --v2-bg-input-focus: #{$bg-input};
+    --v2-border: #{$border};
+    --v2-text-primary: #{$text-primary};
+    --v2-text-secondary: #{$border};
+    --v2-accent-color: #{$accent-color};
+    --v2-link: #{$accent-color};
+    --v2-separator: #{$border};
+    --v2-button-primary-bg: #{$accent-color};
+    --v2-button-tertiary-bg: #{$bg-surface};
+    --v2-white: #{$text-primary};
+    --v2-black: #{$color-black};
+    --v2-checkbox-bg: #{$accent-color};
+    --v2-checkbox-checked-bg: #{$color-highlightDarkest};
+    --v2-checklist-check-before-color: #{$color-black};
+    --v2-checklist-check-after-color: #{$text-primary};
+}

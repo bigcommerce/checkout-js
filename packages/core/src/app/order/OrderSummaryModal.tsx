@@ -55,7 +55,7 @@ const OrderSummaryModal: FunctionComponent<
 }) => {
     const { currency } = useLocale();
     const { checkoutState } = useCheckout();
-    const { themeV2 } = useThemeContext();
+    const { themeV2, themeVariant } = useThemeContext();
     const { checkoutSettings } = checkoutState.data.getConfig() ?? {};
     const checkout = checkoutState.data.getCheckout();
     const order = checkoutState.data.getOrder();
@@ -98,7 +98,7 @@ const OrderSummaryModal: FunctionComponent<
     return <Modal
         additionalBodyClassName="cart-modal-body optimizedCheckout-orderSummary"
         additionalHeaderClassName="cart-modal-header optimizedCheckout-orderSummary with-continue-button"
-        additionalModalClassName={classNames("optimizedCheckout-cart-modal", { "themeV2": themeV2 })}
+        additionalModalClassName={classNames("optimizedCheckout-cart-modal", themeV2 && ["themeV2", `themeV2--${themeVariant}`])}
         footer={continueButton}
         header={renderHeader({
             headerLink,

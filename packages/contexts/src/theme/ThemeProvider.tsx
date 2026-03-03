@@ -2,10 +2,22 @@ import React, { type ReactNode } from 'react';
 
 import { useCheckout } from '../checkout';
 
-import ThemeContext from './ThemeContext';
+import ThemeContext, { type ThemeVariant } from './ThemeContext';
 
 export interface ThemeProviderProps {
     children?: ReactNode;
+}
+
+const THEME_VARIANTS: ThemeVariant[] = ['light', 'bold', 'warm'];
+
+function normalizeThemeVariant(value: unknown): ThemeVariant {
+    if (typeof value !== 'string') return 'bold';
+
+    const normalized = value.toLowerCase().trim();
+
+    return THEME_VARIANTS.includes(normalized as ThemeVariant)
+        ? (normalized as ThemeVariant)
+        : 'bold';
 }
 
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
@@ -29,5 +41,11 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     const themeV2 =
         (window.location.search && window.location.search.includes('v2')) || useNewTheme;
 
-    return <ThemeContext.Provider value={{ themeV2 }}>{children}</ThemeContext.Provider>;
+    const rawVariant = (config?.checkoutSettings as { themeVariant?: string } | undefined)
+        ?.themeVariant;
+    const themeVariant = normalizeThemeVariant(rawVariant);
+
+    return (
+        <ThemeContext.Provider value={{ themeV2, themeVariant }}>{children}</ThemeContext.Provider>
+    );
 };

@@ -1,3 +1,4 @@
+// Legacy SCSS variables (fallbacks / non-themeV2 use). ThemeV2 uses CSS custom properties from tokens.
 $color-secondaryDark:               #fcfcfc;
 $color-secondaryDarker:             #f5f5f5;
 $color-secondaryDarkest:            #757575;
@@ -6,3 +7,21 @@ $color-highlightDarkest:            #476BEF;
 $color-white:                       #ffffff;
 $color-greyMedium:                  #dddddd;
 $color-black:                       #000000;
+
+// Theme token files: one set of variable names, different values per theme.
+@import "tokens/light";
+@import "tokens/bold";
+@import "tokens/warm";
+
+// Apply token values via CSS custom properties. Components use var(--v2-*).
+.themeV2 {
+    @include theme-tokens-light;
+}
+
+.themeV2.themeV2--bold {
+    @include theme-tokens-bold;
+}
+
+.themeV2.themeV2--warm {
+    @include theme-tokens-warm;
+}

@@ -11,6 +11,7 @@
         }
 
         .cart {
+            background-color: var(--v2-bg-surface);
             border: none;
             display: block;
             margin-top: 0;
@@ -22,7 +23,7 @@
         }
 
         .cart-summary-toggle {
-            background-color: $color-white;
+            background-color: var(--v2-bg-surface);
             border-bottom: none;
             display: flex;
             justify-content: space-between;
@@ -31,14 +32,14 @@
         }
 
         .cart-summary-header {
-            background-color: container("fill", "dark");
+            background-color: var(--v2-bg-cart-header);
             padding: spacing("base") spacing("single");
             font-weight: bold;
             display: flex;
             gap: spacing("quarter");
 
             svg {
-                fill: $color-highlightDarkest;
+                fill: var(--v2-link);
             }
         }
     }

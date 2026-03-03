@@ -51,7 +51,7 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
     onUnassignItem,
     isLoading,
 }: AllocateItemsModalProps & FormikProps<AllocateItemsModalFormValues>) => {
-    const { themeV2 } = useThemeContext();
+    const { themeV2, themeVariant } = useThemeContext();
 
     const allocatedOrSelectedItemsMessage = useMemo(() => {
         const leftItemsTotal = unassignedItems.shippableItemsCount;
@@ -134,7 +134,7 @@ const AllocateItemsModal: FunctionComponent<AllocateItemsModalProps & FormikProp
 
     return (
         <Modal
-            additionalModalClassName={classNames("allocate-items-modal", { "themeV2": themeV2 })}
+            additionalModalClassName={classNames("allocate-items-modal", themeV2 && ["themeV2", `themeV2--${themeVariant}`])}
             footer={modalFooter}
             header={
                 <>

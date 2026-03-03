@@ -1,2 +1,2 @@
-export { default as ThemeContext, useThemeContext } from './ThemeContext';
+export { default as ThemeContext, useThemeContext, type ThemeVariant } from './ThemeContext';
 export { ThemeProvider } from './ThemeProvider';

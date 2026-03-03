@@ -1,5 +1,5 @@
 @include themeV2 {
-    background-color: $color-secondaryDarker;
+    background-color: var(--v2-bg-page);
 }
 
 .layout {
@@ -14,7 +14,7 @@
 
         .checkout-separator::before,
         .checkout-separator::after {
-            background-color: $color-black;
+            background-color: var(--v2-separator);
         }
         
         .checkout-steps {
@@ -22,7 +22,7 @@
         }
 
         .checkout-step {
-            background-color: $color-white;
+            background-color: var(--v2-bg-surface);
             border-bottom: none;
             padding: #{spacing("base") + spacing("base")};
             margin: spacing("single") 0;

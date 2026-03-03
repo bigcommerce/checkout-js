@@ -52,7 +52,7 @@ const EmailLoginForm: FunctionComponent<
     isFloatingLabelEnabled,
     values: { email: formEmail },
 }) => {
-    const { themeV2 } = useThemeContext();
+    const { themeV2, themeVariant } = useThemeContext();
 
     const modalHeaderStringId = useMemo(() => {
         if (emailHasBeenRequested) {
@@ -192,7 +192,7 @@ const EmailLoginForm: FunctionComponent<
     return (
         <Modal
             additionalBodyClassName="modal--withText"
-            additionalModalClassName={classNames("modal--medium", { "themeV2": themeV2 })}
+            additionalModalClassName={classNames("modal--medium", themeV2 && ["themeV2", `themeV2--${themeVariant}`])}
             header={
                 <ModalHeader>
                     <TranslatedString id={modalHeaderStringId} />

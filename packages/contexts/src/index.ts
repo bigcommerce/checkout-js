@@ -1,4 +1,4 @@
-export { useThemeContext, ThemeContext, ThemeProvider } from './theme';
+export { useThemeContext, ThemeContext, ThemeProvider, type ThemeVariant } from './theme';
 export {
     AnalyticsContext,
     AnalyticsProvider,
