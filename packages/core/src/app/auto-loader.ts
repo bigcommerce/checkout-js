@@ -9,7 +9,7 @@ export interface CustomCheckoutWindow extends Window {
         checkoutId?: string;
         publicPath?: string;
         sentryConfig?: BrowserOptions;
-        permalinkStatus?: 'valid' | 'expired' | null;
+        permalinkStatus?: 'valid' | 'expired' | 'rate_limited' | null;
     };
 }
 
