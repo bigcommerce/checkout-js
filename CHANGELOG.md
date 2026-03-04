@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.755.0](https://github.com/bigcommerce/checkout-js/compare/v1.754.1...v1.755.0) (2026-03-04)
+
+
+### Features
+
+* **checkout:** BACK-523 Add banner to display if stock position has changed ([#2859](https://github.com/bigcommerce/checkout-js/issues/2859)) ([1c1ce37](https://github.com/bigcommerce/checkout-js/commit/1c1ce3761a74fc4c59cafd4f8ca3092094913edc))
+
 ### [1.754.1](https://github.com/bigcommerce/checkout-js/compare/v1.754.0...v1.754.1) (2026-03-04)
 
 
