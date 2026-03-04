@@ -23,13 +23,14 @@ import getPaymentInstructions from '../getPaymentInstructions';
 
 import { ExpiredPermalinkView } from './ExpiredPermalinkView';
 import { OrderConfirmationPage } from './OrderConfirmationPage';
+import { RateLimitedPermalinkView } from './RateLimitedPermalinkView';
 
 export interface OrderConfirmationProps {
     containerId: string;
     embeddedStylesheet: EmbeddedCheckoutStylesheet;
     errorLogger: ErrorLogger;
     orderId: number;
-    permalinkStatus?: 'valid' | 'expired' | null;
+    permalinkStatus?: 'valid' | 'expired' | 'rate_limited' | null;
     createAccount(values: SignUpFormValues): Promise<CreatedCustomer>;
     createEmbeddedMessenger(options: EmbeddedCheckoutMessengerOptions): EmbeddedCheckoutMessenger;
 }
@@ -123,7 +124,7 @@ export const OrderConfirmation = ({
 
     useEffect(() => {
       // If permalink is expired, don't make API call - show expired view instead
-      if (permalinkStatus === 'expired') {
+      if (permalinkStatus === 'expired' || permalinkStatus === 'rate_limited') {
         return;
       }
 
@@ -142,6 +143,10 @@ export const OrderConfirmation = ({
 
     if (permalinkStatus === 'expired') {
         return <ExpiredPermalinkView onResendClick={handleResendGuestToken} />;
+    }
+
+    if (permalinkStatus === 'rate_limited') {
+        return <RateLimitedPermalinkView />;
     }
 
     if (!order || !config || isLoadingOrder()) {

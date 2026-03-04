@@ -670,6 +670,10 @@
                 "resend_error": "Failed to resend link. Please try again later.",
                 "missing_order_token_error": "No order token found in URL",
                 "regenerate_token_error": "Failed to regenerate token"
+            },
+            "rate_limited": {
+                "heading": "Too Many Requests",
+                "message": "You've made too many attempts. Please wait a few minutes and try again."
             }
         }
     }
