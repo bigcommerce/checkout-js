@@ -8,6 +8,7 @@ import { EMPTY_ARRAY } from '../../common/utility';
 import { CheckoutButtonContainer } from '../../customer';
 import { PromotionBannerList } from '../../promotion';
 import CheckoutStepType from '../CheckoutStepType';
+import { BackorderQuantitiesChangedBanner } from './BackorderQuantitiesChangedBanner';
 
 export interface CheckoutHeaderProps {
     activeStepType?: CheckoutStepType;
@@ -44,6 +45,7 @@ export const CheckoutHeader: React.FC<CheckoutHeaderProps> = ({
 
     return (
         <>
+            <BackorderQuantitiesChangedBanner message={data.getFlashMessages('warning')?.[0]?.message} />
             <LoadingNotification isLoading={extensionState.isShowingLoadingIndicator} />
             <PromotionBannerList promotions={promotions} />
             {isShowingWalletButtonsOnTop && buttonConfigs?.length > 0 && (
