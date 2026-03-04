@@ -42,8 +42,8 @@ describe('SingleShippingForm', () => {
         validateMaxLength: false,
     };
 
-    const shippingAutosaveDelay = 100;
-    const waitingDelay = shippingAutosaveDelay * 1.1;
+    const shippingAutosaveDelay = 500;
+    const waitingDelay = shippingAutosaveDelay + 200;
 
     const createSingleShippingFormComponent = (props?: Partial<SingleShippingFormProps>) => {
         const localeContext = createLocaleContext(getStoreConfig());
