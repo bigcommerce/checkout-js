@@ -5,6 +5,7 @@ import {
     createEmbeddedCheckoutMessenger,
     type EmbeddedCheckoutMessenger,
 } from '@bigcommerce/checkout-sdk';
+import { createRequestSender } from '@bigcommerce/request-sender';
 import { faker } from '@faker-js/faker';
 import userEvent from '@testing-library/user-event';
 import React, { type FunctionComponent } from 'react';
@@ -33,6 +34,12 @@ import { type CreatedCustomer } from '../../guestSignup';
 import { getGatewayOrderPayment, getOrder } from '../orders.mock';
 
 import { OrderConfirmation, type OrderConfirmationProps } from './OrderConfirmation';
+
+jest.mock('@bigcommerce/request-sender', () => ({
+    createRequestSender: jest.fn(() => ({
+        post: jest.fn(() => Promise.resolve()),
+    })),
+}));
 
 const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).*$/;
 
@@ -220,5 +227,115 @@ describe('OrderConfirmation', () => {
         expect(continueButtonContainer.querySelector('form')).toHaveAttribute(
             'action', getStoreConfig().links.siteLink,
         );
+    });
+
+    describe('when permalinkStatus is expired', () => {
+        it('renders the expired permalink view instead of order confirmation', () => {
+            render(<ComponentTest {...defaultProps} permalinkStatus="expired" />);
+
+            expect(
+                screen.getByText(localeContext.language.translate('order_confirmation.expired_token.heading')),
+            ).toBeInTheDocument();
+            expect(
+                screen.getByText(localeContext.language.translate('order_confirmation.expired_token.description')),
+            ).toBeInTheDocument();
+        });
+
+        it('does not call loadOrder', () => {
+            render(<ComponentTest {...defaultProps} permalinkStatus="expired" />);
+
+            expect(checkoutService.loadOrder).not.toHaveBeenCalled();
+        });
+
+        it('renders a resend button that calls the regenerate-permalink API', async () => {
+            const mockPost = jest.fn(() => Promise.resolve());
+
+            (createRequestSender as jest.Mock).mockReturnValue({ post: mockPost });
+
+            Object.defineProperty(window, 'location', {
+                value: { search: '?orderToken=abc123' },
+                writable: true,
+            });
+
+            render(<ComponentTest {...defaultProps} permalinkStatus="expired" />);
+
+            const resendButton = screen.getByRole('button', {
+                name: localeContext.language.translate('order_confirmation.expired_token.resend_action'),
+            });
+
+            await userEvent.click(resendButton);
+
+            await waitFor(() => {
+                expect(mockPost).toHaveBeenCalledWith(
+                    '/api/storefront/orders/regenerate-permalink',
+                    { body: { orderToken: 'abc123' } },
+                );
+            });
+        });
+
+        it('shows success message after successful resend', async () => {
+            const mockPost = jest.fn(() => Promise.resolve());
+
+            (createRequestSender as jest.Mock).mockReturnValue({ post: mockPost });
+
+            Object.defineProperty(window, 'location', {
+                value: { search: '?orderToken=abc123' },
+                writable: true,
+            });
+
+            render(<ComponentTest {...defaultProps} permalinkStatus="expired" />);
+
+            const resendButton = screen.getByRole('button', {
+                name: localeContext.language.translate('order_confirmation.expired_token.resend_action'),
+            });
+
+            await userEvent.click(resendButton);
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText(localeContext.language.translate('order_confirmation.expired_token.resend_success')),
+                ).toBeInTheDocument();
+            });
+        });
+
+        it('shows error message when orderToken is missing', async () => {
+            Object.defineProperty(window, 'location', {
+                value: { search: '' },
+                writable: true,
+            });
+
+            render(<ComponentTest {...defaultProps} permalinkStatus="expired" />);
+
+            const resendButton = screen.getByRole('button', {
+                name: localeContext.language.translate('order_confirmation.expired_token.resend_action'),
+            });
+
+            await userEvent.click(resendButton);
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText(localeContext.language.translate('order_confirmation.expired_token.resend_error')),
+                ).toBeInTheDocument();
+            });
+        });
+    });
+
+    describe('when permalinkStatus is rate_limited', () => {
+        it('renders the rate limited view instead of order confirmation', () => {
+            render(<ComponentTest {...defaultProps} permalinkStatus="rate_limited" />);
+
+            expect(
+                screen.getByText(localeContext.language.translate('order_confirmation.rate_limited.heading')),
+            ).toBeInTheDocument();
+            expect(
+                screen.getByText(localeContext.language.translate('order_confirmation.rate_limited.message')),
+            ).toBeInTheDocument();
+        });
+
+        it('does not call loadOrder', () => {
+            render(<ComponentTest {...defaultProps} permalinkStatus="rate_limited" />);
+
+            expect(checkoutService.loadOrder).not.toHaveBeenCalled();
+        });
     });
 });
