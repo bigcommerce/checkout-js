@@ -5,7 +5,7 @@ import {
 import { createRequestSender } from '@bigcommerce/request-sender';
 import React, {  type ReactElement, useEffect, useRef, useState } from 'react';
 
-import { useAnalytics, useCheckout, useLocale } from '@bigcommerce/checkout/contexts';
+import { useAnalytics, useCheckout } from '@bigcommerce/checkout/contexts';
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { OrderConfirmationPageSkeleton } from '@bigcommerce/checkout/ui';
 
@@ -44,7 +44,6 @@ export const OrderConfirmation = ({
     errorLogger,
     permalinkStatus,
 }: OrderConfirmationProps): ReactElement => {
-    const { language } = useLocale();
     const [error, setError] = useState<Error | undefined>();
     const [hasSignedUp, setHasSignedUp] = useState<boolean | undefined>();
     const [isSigningUp, setIsSigningUp] = useState<boolean | undefined>();
@@ -106,20 +105,14 @@ export const OrderConfirmation = ({
         const orderToken = urlParams.get('orderToken');
 
         if (!orderToken) {
-            throw new Error(language.translate('order_confirmation.expired_token.missing_order_token_error'));
+            throw new Error('Missing orderToken query parameter');
         }
 
         const requestSender = createRequestSender();
 
-        try {
-            await requestSender.post('/api/storefront/orders/regenerate-permalink', {
-                body: { orderToken },
-            });
-        } catch (error) {
-            const detail = (error as { body?: { detail?: string } })?.body?.detail;
-
-            throw new Error(detail || language.translate('order_confirmation.expired_token.regenerate_token_error'));
-        }
+        await requestSender.post('/api/storefront/orders/regenerate-permalink', {
+            body: { orderToken },
+        });
     };
 
     useEffect(() => {
