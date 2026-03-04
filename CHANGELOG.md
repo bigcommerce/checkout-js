@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.754.1](https://github.com/bigcommerce/checkout-js/compare/v1.754.0...v1.754.1) (2026-03-04)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-9833 fix error modal viewport issue ([#2867](https://github.com/bigcommerce/checkout-js/issues/2867)) ([84ac3a3](https://github.com/bigcommerce/checkout-js/commit/84ac3a37ddb6dd9bd72c4ee53d1be2602e70a4c6))
+
 ## [1.754.0](https://github.com/bigcommerce/checkout-js/compare/v1.753.0...v1.754.0) (2026-03-03)
 
 
