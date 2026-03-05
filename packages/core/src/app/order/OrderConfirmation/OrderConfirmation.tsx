@@ -3,7 +3,7 @@ import {
     type EmbeddedCheckoutMessengerOptions,
 } from '@bigcommerce/checkout-sdk';
 import { createRequestSender } from '@bigcommerce/request-sender';
-import React, {  type ReactElement, useEffect, useRef, useState } from 'react';
+import React, { type ReactElement, useEffect, useRef, useState } from 'react';
 
 import { useAnalytics, useCheckout } from '@bigcommerce/checkout/contexts';
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
@@ -24,6 +24,8 @@ import getPaymentInstructions from '../getPaymentInstructions';
 import { ExpiredPermalinkView } from './ExpiredPermalinkView';
 import { OrderConfirmationPage } from './OrderConfirmationPage';
 import { RateLimitedPermalinkView } from './RateLimitedPermalinkView';
+
+const requestSender = createRequestSender();
 
 export interface OrderConfirmationProps {
     containerId: string;
@@ -107,8 +109,6 @@ export const OrderConfirmation = ({
         if (!orderToken) {
             throw new Error('Missing orderToken query parameter');
         }
-
-        const requestSender = createRequestSender();
 
         await requestSender.post('/api/storefront/orders/regenerate-permalink', {
             body: { orderToken },

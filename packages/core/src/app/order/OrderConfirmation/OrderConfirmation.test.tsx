@@ -249,8 +249,9 @@ describe('OrderConfirmation', () => {
 
         it('renders a resend button that calls the regenerate-permalink API', async () => {
             const mockPost = jest.fn(() => Promise.resolve());
+            const requestSenderInstance = (createRequestSender as jest.Mock).mock.results[0].value;
 
-            (createRequestSender as jest.Mock).mockReturnValue({ post: mockPost });
+            requestSenderInstance.post = mockPost;
 
             Object.defineProperty(window, 'location', {
                 value: { search: '?orderToken=abc123' },
@@ -275,8 +276,9 @@ describe('OrderConfirmation', () => {
 
         it('shows success message after successful resend', async () => {
             const mockPost = jest.fn(() => Promise.resolve());
+            const requestSenderInstance = (createRequestSender as jest.Mock).mock.results[0].value;
 
-            (createRequestSender as jest.Mock).mockReturnValue({ post: mockPost });
+            requestSenderInstance.post = mockPost;
 
             Object.defineProperty(window, 'location', {
                 value: { search: '?orderToken=abc123' },
