@@ -15,5 +15,7 @@ export function getConsignment(): Consignment {
         availableShippingOptions: [getShippingOption()],
         discounts: [],
         address: getAddress(),
+        comparisonShippingCost: 0,
+        shippingCostBeforeDiscount: 0,
     };
 }

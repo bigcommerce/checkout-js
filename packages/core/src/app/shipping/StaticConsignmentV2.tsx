@@ -6,7 +6,6 @@ import { isPayPalFastlaneAddress, PoweredByPayPalFastlaneLabel, usePayPalFastlan
 
 import { AddressType, StaticAddress } from '../address';
 
-import getShippingCostAfterAutomaticDiscount from './getShippingCostAfterAutomaticDiscount';
 import { StaticShippingOption } from './shippingOption';
 import './StaticConsignment.scss';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -24,7 +23,7 @@ const StaticConsignmentV2: FunctionComponent<StaticConsignmentV2Props> = ({
     const { paypalFastlaneAddresses } = usePayPalFastlaneAddress();
     const isMobile = isMobileView();
     
-    const { shippingAddress: address, selectedShippingOption } = consignment;
+    const { shippingAddress: address, selectedShippingOption, comparisonShippingCost } = consignment;
     const showPayPalFastlaneAddressLabel = isPayPalFastlaneAddress(address, paypalFastlaneAddresses);
 
     return (
@@ -52,7 +51,7 @@ const StaticConsignmentV2: FunctionComponent<StaticConsignmentV2Props> = ({
                         <StaticShippingOption
                             displayAdditionalInformation={false}
                             method={selectedShippingOption}
-                            shippingCostAfterDiscount={isShippingDiscountDisplayEnabled ? getShippingCostAfterAutomaticDiscount(selectedShippingOption.cost, [consignment]) : undefined}
+                            shippingCostAfterDiscount={isShippingDiscountDisplayEnabled ? comparisonShippingCost : undefined}
                         />
                     </div>
                 </div>
