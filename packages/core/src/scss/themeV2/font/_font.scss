@@ -147,4 +147,10 @@
             }
         }
     }
+
+    .applied-discounts-list {
+        .cart-priceItem-label-info.sub-text {
+            color: $color-totalSavingsHighlight;
+        }
+    }
 }

@@ -13,6 +13,7 @@ export interface DiscountItem {
     name: string;
     amount: number;
     testId: string;
+    showMaxLimitInfo?: boolean;
 }
 
 interface UIDetails {

@@ -8,11 +8,18 @@ export const getDiscountItems = (checkout: Checkout | Order, language: LanguageS
     const autoPromotionAmount = checkout.orderBasedAutoDiscountTotal;
     const manualDiscountAmount = checkout.manualDiscountTotal;
 
+    let hasOrderLevelMaxLimitReached = false;
+
+    if ('hasOrderLevelAutoDiscountMaxLimitReached' in checkout) {
+        hasOrderLevelMaxLimitReached = checkout.hasOrderLevelAutoDiscountMaxLimitReached ?? false;
+    }
+
     if (autoPromotionAmount > 0) {
         discounts.push({
             name: language.translate('redeemable.auto_promotion'),
             amount: autoPromotionAmount,
             testId : 'cart-discount',
+            showMaxLimitInfo: hasOrderLevelMaxLimitReached,
         });
     }
 
@@ -31,6 +38,7 @@ export const getDiscountItems = (checkout: Checkout | Order, language: LanguageS
             name: couponName,
             amount: coupon.discountedAmount,
             testId : 'cart-coupon',
+            showMaxLimitInfo: coupon.hasMaxLimitReached,
         });
     });
 
