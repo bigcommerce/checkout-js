@@ -454,8 +454,10 @@ describe('Checkout', () => {
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShipping, {
                 checkout: {
                     ...checkoutWithShippingDiscount,
+                    comparisonShippingCost: 0,
                     consignments: [{
                         ...checkoutWithShippingDiscount.consignments[0],
+                        comparisonShippingCost: 0,
                         discounts: [
                             { ...consignmentAutomaticDiscount, amount: 3 }
                         ]
@@ -491,6 +493,7 @@ describe('Checkout', () => {
                         {
                             ...checkoutWithShippingDiscount.consignments[0],
                             id: 'consignment-2',
+                            comparisonShippingCost: 0,
                             discounts: [
                                 { ...consignmentAutomaticDiscount, amount: 3 },
                                 { ...consignmentCouponDiscount, amount: 1 },

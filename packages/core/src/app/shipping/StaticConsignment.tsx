@@ -5,7 +5,6 @@ import { isPayPalFastlaneAddress, PoweredByPayPalFastlaneLabel, usePayPalFastlan
 
 import { AddressType, StaticAddress } from '../address';
 
-import getShippingCostAfterAutomaticDiscount from './getShippingCostAfterAutomaticDiscount';
 import { StaticShippingOption } from './shippingOption';
 import './StaticConsignment.scss';
 
@@ -20,7 +19,7 @@ const StaticConsignment: FunctionComponent<StaticConsignmentProps> = ({
 }) => {
     const { paypalFastlaneAddresses } = usePayPalFastlaneAddress();
     
-    const { shippingAddress: address, selectedShippingOption } = consignment;
+    const { shippingAddress: address, selectedShippingOption, comparisonShippingCost } = consignment;
     const showPayPalFastlaneAddressLabel = isPayPalFastlaneAddress(address, paypalFastlaneAddresses);
 
     return (
@@ -35,7 +34,7 @@ const StaticConsignment: FunctionComponent<StaticConsignmentProps> = ({
                         <StaticShippingOption
                             displayAdditionalInformation={false}
                             method={selectedShippingOption}
-                            shippingCostAfterDiscount={isShippingDiscountDisplayEnabled ? getShippingCostAfterAutomaticDiscount(selectedShippingOption.cost, [consignment]) : undefined}
+                            shippingCostAfterDiscount={isShippingDiscountDisplayEnabled ? comparisonShippingCost : undefined}
                         />
                     </div>
                 </div>

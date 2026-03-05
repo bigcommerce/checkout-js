@@ -8,7 +8,6 @@ import { isPayPalFastlaneAddress, PoweredByPayPalFastlaneLabel, usePayPalFastlan
 import ConsignmentLineItemDetail from './ConsignmentLineItemDetail';
 import findLineItems from './findLineItems';
 import getLineItemsCount from './getLineItemsCount';
-import getShippingCostAfterAutomaticDiscount from './getShippingCostAfterAutomaticDiscount';
 import { StaticShippingOption } from './shippingOption';
 
 import './StaticMultiConsignment.scss';
@@ -32,7 +31,7 @@ const StaticMultiConsignment: FunctionComponent<StaticMultiConsignmentProps> = (
         },
     } = useCheckout();
 
-    const { shippingAddress: addressWithoutLocalization, selectedShippingOption } = consignment;
+    const { shippingAddress: addressWithoutLocalization, selectedShippingOption, comparisonShippingCost } = consignment;
     const address = localizeAddress(addressWithoutLocalization, getShippingCountries());
     const { paypalFastlaneAddresses } = usePayPalFastlaneAddress();
     const showPayPalFastlaneAddressLabel = isPayPalFastlaneAddress(address, paypalFastlaneAddresses);
@@ -92,7 +91,7 @@ const StaticMultiConsignment: FunctionComponent<StaticMultiConsignmentProps> = (
                         <StaticShippingOption
                             displayAdditionalInformation={false}
                             method={selectedShippingOption}
-                            shippingCostAfterDiscount={isShippingDiscountDisplayEnabled ? getShippingCostAfterAutomaticDiscount(selectedShippingOption.cost, [consignment]) : undefined}
+                            shippingCostAfterDiscount={isShippingDiscountDisplayEnabled ? comparisonShippingCost : undefined}
                         />
                     </div>
                 </div>

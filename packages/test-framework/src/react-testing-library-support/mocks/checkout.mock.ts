@@ -109,6 +109,8 @@ const consignment: Consignment = {
         additionalDescription: '',
         isRecommended: true,
     },
+    shippingCostBeforeDiscount: 3,
+    comparisonShippingCost: 3,
     shippingAddress: {
         ...shippingAddress1,
         shouldSaveAddress: true,
@@ -339,10 +341,12 @@ const consignmentCoupon: Coupon = {
 const checkoutWithShippingDiscount: Checkout = {
     ...checkoutWithBillingEmail,
     shippingCostBeforeDiscount: 3,
+    comparisonShippingCost: 1,
     consignments: [
         {
             ...consignment,
             discounts: [consignmentAutomaticDiscount, consignmentCouponDiscount],
+            comparisonShippingCost: 1,
         },
     ],
     coupons: [consignmentCoupon],
