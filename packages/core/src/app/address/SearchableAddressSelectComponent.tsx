@@ -55,7 +55,7 @@ export const SearchableAddressSelectComponent: FunctionComponent<SearchableAddre
                 onClick={(e) => e.stopPropagation()}
             >
                 <TextInput
-                    aria-label="Search addresses"
+                    aria-label={language.translate('address.search_addresses')}
                     className="form-input optimizedCheckout-form-input"
                     data-test="address-select-search-input"
                     name="searchAddresses"
