@@ -17,6 +17,10 @@
     overflow: scroll;
 }
 
+.instrumentSelect-dropdownMenu.searchable-menu {
+    max-height: remCalc(300px);
+}
+
 .dropdownMenu .instrumentSelect-dropdownMenu {
     display: block;
     left: auto;
