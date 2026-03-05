@@ -14,7 +14,7 @@ import { createErrorLogger } from '../common/error';
 import { createEmbeddedCheckoutStylesheet } from '../embeddedCheckout';
 import { AccountService, type CreatedCustomer, type SignUpFormValues } from '../guestSignup';
 
-import { OrderConfirmation, OrderPermalinkStatus } from './OrderConfirmation';
+import { OrderConfirmation, type OrderPermalinkStatus } from './OrderConfirmation';
 
 export interface OrderConfirmationAppProps {
     containerId: string;

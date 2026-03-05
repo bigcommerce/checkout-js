@@ -33,7 +33,7 @@ import { createEmbeddedCheckoutStylesheet } from '../../embeddedCheckout';
 import { type CreatedCustomer } from '../../guestSignup';
 import { getGatewayOrderPayment, getOrder } from '../orders.mock';
 
-import { OrderConfirmation, OrderPermalinkStatus, type OrderConfirmationProps } from './OrderConfirmation';
+import { OrderConfirmation, type OrderConfirmationProps, OrderPermalinkStatus } from './OrderConfirmation';
 
 jest.mock('@bigcommerce/request-sender', () => ({
     createRequestSender: jest.fn(() => ({
