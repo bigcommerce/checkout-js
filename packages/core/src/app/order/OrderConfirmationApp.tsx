@@ -14,7 +14,7 @@ import { createErrorLogger } from '../common/error';
 import { createEmbeddedCheckoutStylesheet } from '../embeddedCheckout';
 import { AccountService, type CreatedCustomer, type SignUpFormValues } from '../guestSignup';
 
-import { OrderConfirmation, type OrderConfirmationProps } from './OrderConfirmation';
+import { OrderConfirmation, OrderPermalinkStatus } from './OrderConfirmation';
 
 export interface OrderConfirmationAppProps {
     containerId: string;
@@ -22,7 +22,7 @@ export interface OrderConfirmationAppProps {
     publicPath?: string;
     sentryConfig?: BrowserOptions;
     sentrySampleRate?: number;
-    permalinkStatus?: OrderConfirmationProps['permalinkStatus'];
+    permalinkStatus?: OrderPermalinkStatus | null;
 }
 
 const OrderConfirmationApp: React.FC<OrderConfirmationAppProps> = ({

@@ -33,7 +33,7 @@ import { createEmbeddedCheckoutStylesheet } from '../../embeddedCheckout';
 import { type CreatedCustomer } from '../../guestSignup';
 import { getGatewayOrderPayment, getOrder } from '../orders.mock';
 
-import { OrderConfirmation, type OrderConfirmationProps } from './OrderConfirmation';
+import { OrderConfirmation, OrderPermalinkStatus, type OrderConfirmationProps } from './OrderConfirmation';
 
 jest.mock('@bigcommerce/request-sender', () => ({
     createRequestSender: jest.fn(() => ({
@@ -231,7 +231,7 @@ describe('OrderConfirmation', () => {
 
     describe('when permalinkStatus is expired', () => {
         it('renders the expired permalink view instead of order confirmation', () => {
-            render(<ComponentTest {...defaultProps} permalinkStatus="expired" />);
+            render(<ComponentTest {...defaultProps} permalinkStatus={OrderPermalinkStatus.Expired} />);
 
             expect(
                 screen.getByText(localeContext.language.translate('order_confirmation.expired_token.heading')),
@@ -242,7 +242,7 @@ describe('OrderConfirmation', () => {
         });
 
         it('does not call loadOrder', () => {
-            render(<ComponentTest {...defaultProps} permalinkStatus="expired" />);
+            render(<ComponentTest {...defaultProps} permalinkStatus={OrderPermalinkStatus.Expired} />);
 
             expect(checkoutService.loadOrder).not.toHaveBeenCalled();
         });
@@ -258,7 +258,7 @@ describe('OrderConfirmation', () => {
                 writable: true,
             });
 
-            render(<ComponentTest {...defaultProps} permalinkStatus="expired" />);
+            render(<ComponentTest {...defaultProps} permalinkStatus={OrderPermalinkStatus.Expired} />);
 
             const resendButton = screen.getByRole('button', {
                 name: localeContext.language.translate('order_confirmation.expired_token.resend_action'),
@@ -285,7 +285,7 @@ describe('OrderConfirmation', () => {
                 writable: true,
             });
 
-            render(<ComponentTest {...defaultProps} permalinkStatus="expired" />);
+            render(<ComponentTest {...defaultProps} permalinkStatus={OrderPermalinkStatus.Expired} />);
 
             const resendButton = screen.getByRole('button', {
                 name: localeContext.language.translate('order_confirmation.expired_token.resend_action'),
@@ -306,7 +306,7 @@ describe('OrderConfirmation', () => {
                 writable: true,
             });
 
-            render(<ComponentTest {...defaultProps} permalinkStatus="expired" />);
+            render(<ComponentTest {...defaultProps} permalinkStatus={OrderPermalinkStatus.Expired} />);
 
             const resendButton = screen.getByRole('button', {
                 name: localeContext.language.translate('order_confirmation.expired_token.resend_action'),
@@ -324,7 +324,7 @@ describe('OrderConfirmation', () => {
 
     describe('when permalinkStatus is rate_limited', () => {
         it('renders the rate limited view instead of order confirmation', () => {
-            render(<ComponentTest {...defaultProps} permalinkStatus="rate_limited" />);
+            render(<ComponentTest {...defaultProps} permalinkStatus={OrderPermalinkStatus.RateLimited} />);
 
             expect(
                 screen.getByText(localeContext.language.translate('order_confirmation.rate_limited.heading')),
@@ -335,7 +335,7 @@ describe('OrderConfirmation', () => {
         });
 
         it('does not call loadOrder', () => {
-            render(<ComponentTest {...defaultProps} permalinkStatus="rate_limited" />);
+            render(<ComponentTest {...defaultProps} permalinkStatus={OrderPermalinkStatus.RateLimited} />);
 
             expect(checkoutService.loadOrder).not.toHaveBeenCalled();
         });

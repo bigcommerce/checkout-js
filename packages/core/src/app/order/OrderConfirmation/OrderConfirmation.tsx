@@ -27,12 +27,18 @@ import { RateLimitedPermalinkView } from './RateLimitedPermalinkView';
 
 const requestSender = createRequestSender();
 
+export enum OrderPermalinkStatus {
+    Valid = 'valid',
+    Expired = 'expired',
+    RateLimited = 'rate_limited',
+}
+
 export interface OrderConfirmationProps {
     containerId: string;
     embeddedStylesheet: EmbeddedCheckoutStylesheet;
     errorLogger: ErrorLogger;
     orderId: number;
-    permalinkStatus?: 'valid' | 'expired' | 'rate_limited' | null;
+    permalinkStatus?: OrderPermalinkStatus | null;
     createAccount(values: SignUpFormValues): Promise<CreatedCustomer>;
     createEmbeddedMessenger(options: EmbeddedCheckoutMessengerOptions): EmbeddedCheckoutMessenger;
 }
@@ -116,29 +122,28 @@ export const OrderConfirmation = ({
     };
 
     useEffect(() => {
-      // If permalink is expired, don't make API call - show expired view instead
-      if (permalinkStatus === 'expired' || permalinkStatus === 'rate_limited') {
-        return;
-      }
+        if (permalinkStatus === OrderPermalinkStatus.Expired || permalinkStatus === OrderPermalinkStatus.RateLimited) {
+            return;
+        }
 
-      loadOrder(orderId)
-        .then(({ data }) => {
-          const { links: { siteLink = '' } = {} } = data.getConfig() || {};
-          const messenger = createEmbeddedMessenger({ parentOrigin: siteLink });
+        loadOrder(orderId)
+            .then(({ data }) => {
+                const { links: { siteLink = '' } = {} } = data.getConfig() || {};
+                const messenger = createEmbeddedMessenger({ parentOrigin: siteLink });
 
-          embeddedMessengerRef.current = messenger;
-          messenger.receiveStyles((styles) => embeddedStylesheet.append(styles));
-          messenger.postFrameLoaded({ contentId: containerId });
-          analyticsTracker.orderPurchased();
-        })
-        .catch(handleUnhandledError);
+                embeddedMessengerRef.current = messenger;
+                messenger.receiveStyles((styles) => embeddedStylesheet.append(styles));
+                messenger.postFrameLoaded({ contentId: containerId });
+                analyticsTracker.orderPurchased();
+            })
+            .catch(handleUnhandledError);
     }, [permalinkStatus]);
 
-    if (permalinkStatus === 'expired') {
+    if (permalinkStatus === OrderPermalinkStatus.Expired) {
         return <ExpiredPermalinkView onResendClick={handleResendGuestToken} />;
     }
 
-    if (permalinkStatus === 'rate_limited') {
+    if (permalinkStatus === OrderPermalinkStatus.RateLimited) {
         return <RateLimitedPermalinkView />;
     }
 

@@ -2,7 +2,7 @@ import React, { type FunctionComponent, useState } from 'react';
 
 import { useLocale } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { Alert, AlertType } from '@bigcommerce/checkout/ui';
+import { Alert, AlertType, Button, ButtonVariant } from '@bigcommerce/checkout/ui';
 
 import OrderConfirmationSection from '../OrderConfirmationSection';
 
@@ -21,6 +21,7 @@ export const ExpiredPermalinkView: FunctionComponent<ExpiredPermalinkViewProps> 
     const handleResendClick = async () => {
         setIsResending(true);
         setResendError(undefined);
+        setResendSuccess(false);
 
         try {
             await onResendClick();
@@ -42,16 +43,15 @@ export const ExpiredPermalinkView: FunctionComponent<ExpiredPermalinkViewProps> 
                             <p><TranslatedString id="order_confirmation.expired_token.description" /></p>
 
                             {!resendSuccess && (
-                                <button
-                                    className="button button--primary"
-                                    disabled={isResending}
+                                <Button
+                                    isLoading={isResending}
                                     onClick={handleResendClick}
-                                    type="button"
+                                    variant={ButtonVariant.Primary}
                                 >
                                     {isResending
                                         ? language.translate('order_confirmation.expired_token.sending')
                                         : language.translate('order_confirmation.expired_token.resend_action')}
-                                </button>
+                                </Button>
                             )}
 
                             {resendSuccess && (
