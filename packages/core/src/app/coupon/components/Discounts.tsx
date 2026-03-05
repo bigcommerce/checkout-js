@@ -40,13 +40,13 @@ const DiscountsCollapsible: FunctionComponent<{ discounts: number; discountItems
                 className="coupon-discount-toggle cart-priceItem optimizedCheckout-contentPrimary"
                 onClick={() => setIsCouponDiscountsVisible(!isCouponDiscountsVisible)}
             >
-                <span className="cart-priceItem-label">
+                <span className="cart-priceItem-label body-regular">
                     <div className="toggle-button">
                         <TranslatedString id="redeemable.discounts_text" />
                         {isCouponDiscountsVisible ? <IconDownArrow /> : <IconUpArrow />}
                     </div>
                 </span>
-                <span className="cart-priceItem-value">
+                <span className="cart-priceItem-value body-medium">
                     -<ShopperCurrency amount={discounts} />
                 </span>
             </div>
