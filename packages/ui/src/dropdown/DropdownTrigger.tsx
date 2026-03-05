@@ -33,13 +33,21 @@ const DropdownTrigger: React.FC<DropdownTriggerProps> = ({
         );
     }, []);
 
-    const handleClose = useCallback(() => {
-        if (!shouldShow) {
-            return;
-        }
+    const handleClose = useCallback(
+        (event?: MouseEvent) => {
+            if (!shouldShow) {
+                return;
+            }
 
-        setShouldShow(false);
-    }, [shouldShow]);
+            // if clicked element is a text field, keep the dropdown open
+            if (event?.target instanceof HTMLInputElement) {
+                return;
+            }
+
+            setShouldShow(false);
+        },
+        [shouldShow],
+    );
 
     const handleOpen = useCallback(() => {
         if (shouldShow) {
@@ -62,6 +70,8 @@ const DropdownTrigger: React.FC<DropdownTriggerProps> = ({
 
         if (shouldShow) {
             rootElement?.addEventListener('click', handleClose);
+        } else {
+            rootElement?.removeEventListener('click', handleClose);
         }
 
         return () => {
@@ -73,7 +83,7 @@ const DropdownTrigger: React.FC<DropdownTriggerProps> = ({
         <Manager>
             <Reference>
                 {({ ref }) => (
-                    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+                    // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
                     <div className="dropdownTrigger" onClick={handleClick} ref={ref}>
                         {children}
                     </div>

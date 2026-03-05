@@ -37,6 +37,7 @@
             "postal_code_label": "Postal Code",
             "postal_code_required_error": "Postal Code is required",
             "save_in_addressbook": "Save this address in my address book.",
+            "search_addresses": "Search addresses",
             "select_country_action": "Select a country",
             "select_state_action": "Select a state",
             "state_label": "State/Province",
