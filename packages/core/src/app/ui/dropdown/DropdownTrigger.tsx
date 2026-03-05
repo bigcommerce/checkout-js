@@ -38,8 +38,10 @@ const DropdownTrigger: React.FC<DropdownTriggerProps> = ({
             return;
         }
 
-        // if clicked element is a text field, keep the dropdown open
-        if (event?.target instanceof HTMLInputElement) {
+        // if clicked element is a text field inside the dropdown menu, keep it open
+        const target = event?.target;
+
+        if (target instanceof HTMLInputElement && target.closest('.dropdownMenu')) {
             return;
         }
 
