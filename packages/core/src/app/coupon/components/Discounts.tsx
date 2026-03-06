@@ -14,8 +14,11 @@ const DiscountItems: FunctionComponent<{ coupons: DiscountItem[] }> = ({ coupons
                     aria-live="polite"
                     className="cart-priceItem optimizedCheckout-contentPrimary"
                 >
-                    <span className="cart-priceItem-label"><IconCoupon />{coupon.name}</span>
-                    <span className="cart-priceItem-value" data-test="cart-price-value">
+                    <div>
+                        <span className="cart-priceItem-label body-regular"><IconCoupon />{coupon.name}</span>
+                        {coupon.showMaxLimitInfo && <span className="sub-text cart-priceItem-label-info"><TranslatedString id="redeemable.maximum_discount_applied_text" /></span>}
+                    </div>
+                    <span className="cart-priceItem-value body-medium" data-test="cart-price-value">
                         -<ShopperCurrency amount={coupon.amount} />
                     </span>
                 </div>
@@ -37,13 +40,13 @@ const DiscountsCollapsible: FunctionComponent<{ discounts: number; discountItems
                 className="coupon-discount-toggle cart-priceItem optimizedCheckout-contentPrimary"
                 onClick={() => setIsCouponDiscountsVisible(!isCouponDiscountsVisible)}
             >
-                <span className="cart-priceItem-label">
+                <span className="cart-priceItem-label body-regular">
                     <div className="toggle-button">
                         <TranslatedString id="redeemable.discounts_text" />
                         {isCouponDiscountsVisible ? <IconDownArrow /> : <IconUpArrow />}
                     </div>
                 </span>
-                <span className="cart-priceItem-value">
+                <span className="cart-priceItem-value body-medium">
                     -<ShopperCurrency amount={discounts} />
                 </span>
             </div>

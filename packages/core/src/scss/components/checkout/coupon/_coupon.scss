@@ -177,16 +177,21 @@ $animation-easing: cubic-bezier(0.4, 0, 0.2, 1);
         vertical-align: baseline;
     }
 
-    span:last-child {
-        padding-left: spacing('half');
-    }
-
     div {
         margin-bottom: spacing('quarter') / 2;
     }
 
     .cart-priceItem-label {
         word-break: break-all;
+    }
+
+    .cart-priceItem-value {
+        padding-left: spacing('half');
+    }
+
+    .cart-priceItem-label-info {
+        color: $color-totalSavingsHighlight;
+        padding-left: spacing('single');
     }
 
     .coupon-icon {
