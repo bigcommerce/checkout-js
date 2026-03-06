@@ -79,7 +79,7 @@
     "formik": "^2.4.6",
     "jest-each": "^29.7.0",
     "local-storage-fallback": "^4.1.1",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "object-hash": "^1.3.0",
     "prop-types": "^15.6.2",
     "react": "^18.3.1",
