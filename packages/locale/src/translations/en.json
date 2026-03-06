@@ -661,7 +661,19 @@
             "thank_you_customer_heading": "Thank you {name}!",
             "thank_you_heading": "Thank you!",
             "continue_shopping": "Continue Shopping »",
-            "order_status_update_facebook_messenger_heading": "Get instant updates of your order to Messenger"
+            "order_status_update_facebook_messenger_heading": "Get instant updates of your order to Messenger",
+            "expired_token": {
+                "heading": "Link Expired",
+                "description": "For security, this link has expired.",
+                "resend_action": "Resend Secure Link",
+                "sending": "Sending...",
+                "resend_success": "A new link has been sent to your email address.",
+                "resend_error": "Failed to resend link. Please try again later."
+            },
+            "rate_limited": {
+                "heading": "Too Many Requests",
+                "message": "You've made too many attempts. Please wait a few minutes and try again."
+            }
         }
     }
 }

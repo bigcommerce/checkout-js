@@ -2,7 +2,8 @@ import {
     type EmbeddedCheckoutMessenger,
     type EmbeddedCheckoutMessengerOptions,
 } from '@bigcommerce/checkout-sdk';
-import React, {  type ReactElement, useEffect, useRef, useState } from 'react';
+import { createRequestSender } from '@bigcommerce/request-sender';
+import React, { type ReactElement, useEffect, useRef, useState } from 'react';
 
 import { useAnalytics, useCheckout } from '@bigcommerce/checkout/contexts';
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
@@ -20,13 +21,24 @@ import {
 } from '../../guestSignup/errors';
 import getPaymentInstructions from '../getPaymentInstructions';
 
+import { ExpiredPermalinkView } from './ExpiredPermalinkView';
 import { OrderConfirmationPage } from './OrderConfirmationPage';
+import { RateLimitedPermalinkView } from './RateLimitedPermalinkView';
+
+const requestSender = createRequestSender();
+
+export enum OrderPermalinkStatus {
+    Valid = 'valid',
+    Expired = 'expired',
+    RateLimited = 'rate_limited',
+}
 
 export interface OrderConfirmationProps {
     containerId: string;
     embeddedStylesheet: EmbeddedCheckoutStylesheet;
     errorLogger: ErrorLogger;
     orderId: number;
+    permalinkStatus?: OrderPermalinkStatus | null;
     createAccount(values: SignUpFormValues): Promise<CreatedCustomer>;
     createEmbeddedMessenger(options: EmbeddedCheckoutMessengerOptions): EmbeddedCheckoutMessenger;
 }
@@ -38,6 +50,7 @@ export const OrderConfirmation = ({
     embeddedStylesheet,
     orderId,
     errorLogger,
+    permalinkStatus,
 }: OrderConfirmationProps): ReactElement => {
     const [error, setError] = useState<Error | undefined>();
     const [hasSignedUp, setHasSignedUp] = useState<boolean | undefined>();
@@ -95,7 +108,24 @@ export const OrderConfirmation = ({
             });
     };
 
+    const handleResendGuestToken = async (): Promise<void> => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderToken = urlParams.get('orderToken');
+
+        if (!orderToken) {
+            throw new Error('Missing orderToken query parameter');
+        }
+
+        await requestSender.post('/api/storefront/orders/regenerate-permalink', {
+            body: { orderToken },
+        });
+    };
+
     useEffect(() => {
+        if (permalinkStatus === OrderPermalinkStatus.Expired || permalinkStatus === OrderPermalinkStatus.RateLimited) {
+            return;
+        }
+
         loadOrder(orderId)
             .then(({ data }) => {
                 const { links: { siteLink = '' } = {} } = data.getConfig() || {};
@@ -107,7 +137,15 @@ export const OrderConfirmation = ({
                 analyticsTracker.orderPurchased();
             })
             .catch(handleUnhandledError);
-    }, []);
+    }, [permalinkStatus]);
+
+    if (permalinkStatus === OrderPermalinkStatus.Expired) {
+        return <ExpiredPermalinkView onResendClick={handleResendGuestToken} />;
+    }
+
+    if (permalinkStatus === OrderPermalinkStatus.RateLimited) {
+        return <RateLimitedPermalinkView />;
+    }
 
     if (!order || !config || isLoadingOrder()) {
         return <OrderConfirmationPageSkeleton />;

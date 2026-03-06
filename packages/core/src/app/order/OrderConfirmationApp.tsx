@@ -14,7 +14,7 @@ import { createErrorLogger } from '../common/error';
 import { createEmbeddedCheckoutStylesheet } from '../embeddedCheckout';
 import { AccountService, type CreatedCustomer, type SignUpFormValues } from '../guestSignup';
 
-import { OrderConfirmation } from './OrderConfirmation';
+import { OrderConfirmation, type OrderPermalinkStatus } from './OrderConfirmation';
 
 export interface OrderConfirmationAppProps {
     containerId: string;
@@ -22,6 +22,7 @@ export interface OrderConfirmationAppProps {
     publicPath?: string;
     sentryConfig?: BrowserOptions;
     sentrySampleRate?: number;
+    permalinkStatus?: OrderPermalinkStatus | null;
 }
 
 const OrderConfirmationApp: React.FC<OrderConfirmationAppProps> = ({
@@ -30,6 +31,7 @@ const OrderConfirmationApp: React.FC<OrderConfirmationAppProps> = ({
     publicPath,
     sentryConfig,
     sentrySampleRate,
+    permalinkStatus,
 }) => {
     const accountService = useMemo(() => new AccountService(), []);
     const errorLogger = useMemo(() => createErrorLogger(
@@ -79,6 +81,7 @@ const OrderConfirmationApp: React.FC<OrderConfirmationAppProps> = ({
                                     embeddedStylesheet={embeddedStylesheet}
                                     errorLogger={errorLogger}
                                     orderId={orderId}
+                                    permalinkStatus={permalinkStatus}
                                 />
                             </ThemeProvider>
                         </ExtensionProvider>
