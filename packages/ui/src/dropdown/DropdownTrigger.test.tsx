@@ -46,4 +46,27 @@ describe('DropdownTrigger', () => {
 
         expect(screen.queryByText('Hello world')).not.toBeInTheDocument();
     });
+
+    it('does not hide dropdown when clicking on an input inside the dropdown menu', () => {
+        render(
+            <div data-test="root-node-id" id={CHECKOUT_ROOT_NODE_ID}>
+                <DropdownTrigger
+                    dropdown={
+                        <div>
+                            Hello world
+                            <input aria-label="Input" type="text" />
+                        </div>
+                    }
+                >
+                    <button>Foobar</button>
+                </DropdownTrigger>
+            </div>,
+        );
+
+        fireEvent.click(screen.getByText('Foobar'));
+        expect(screen.getByText('Hello world')).toBeInTheDocument();
+
+        fireEvent.click(screen.getByLabelText('Input'));
+        expect(screen.getByText('Hello world')).toBeInTheDocument();
+    });
 });

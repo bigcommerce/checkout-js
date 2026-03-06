@@ -1,5 +1,11 @@
 import { type Placement } from '@popperjs/core';
-import React, { type MouseEventHandler, type ReactElement, type ReactNode, useCallback, useEffect, useState } from 'react';
+import React, {
+    type MouseEventHandler,
+    type ReactNode,
+    useCallback,
+    useEffect,
+    useState,
+} from 'react';
 import { Manager, Popper, Reference } from 'react-popper';
 
 import {
@@ -13,11 +19,11 @@ export interface DropdownTriggerProps {
     children?: ReactNode;
 }
 
-const DropdownTrigger = ({
+const DropdownTrigger: React.FC<DropdownTriggerProps> = ({
     placement = 'bottom-start',
     dropdown,
-    children
-}: DropdownTriggerProps): ReactElement => {
+    children,
+}) => {
     const [shouldShow, setShouldShow] = useState(false);
 
     const getRootElement = useCallback(() => {
@@ -27,8 +33,15 @@ const DropdownTrigger = ({
         );
     }, []);
 
-    const handleClose = useCallback(() => {
+    const handleClose = useCallback((event?: MouseEvent) => {
         if (!shouldShow) {
+            return;
+        }
+
+        // if clicked element is a text field inside the dropdown menu, keep it open
+        const target = event?.target;
+
+        if (target instanceof HTMLInputElement && target.closest('.dropdownMenu')) {
             return;
         }
 
