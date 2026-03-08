@@ -465,18 +465,6 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
         } catch (error) {
             analyticsTracker.paymentRejected();
 
-            if (isErrorWithType(error) && error.type === 'missing_shipping_method') {
-                const { errorLogger, cart, consignments } = props;
-
-                const consignmentsWithShippingDetails = consignments?.map((consignment) => ({
-                    consignmentId: consignment.id,
-                    availableMethods: consignment.availableShippingOptions?.map((o) => o.id) ?? [],
-                    selectedMethod: consignment.selectedShippingOption?.id,
-                }));
-
-                errorLogger?.logMessage?.(`DataMissingShippingMethod ${cart?.id} - consignments: ${JSON.stringify(consignmentsWithShippingDetails)}`);
-            }
-
             if (isErrorWithType(error) && error.type === 'payment_method_invalid') {
                 return loadPaymentMethods();
             }
