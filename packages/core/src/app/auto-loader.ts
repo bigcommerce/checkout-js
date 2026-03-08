@@ -9,6 +9,7 @@ export interface CustomCheckoutWindow extends Window {
         checkoutId?: string;
         publicPath?: string;
         sentryConfig?: BrowserOptions;
+        rollOutLazyPaymentStrategies?: boolean;
     };
 }
 
