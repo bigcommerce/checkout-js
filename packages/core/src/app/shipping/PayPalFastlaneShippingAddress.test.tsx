@@ -5,6 +5,7 @@ import { noop } from 'lodash';
 import React from 'react';
 
 import {
+    CapabilitiesContext,
     CheckoutContext,
     defaultCapabilities,
     LocaleContext,
@@ -107,7 +108,6 @@ describe('PayPalFastlaneShippingAddress', () => {
                     <CheckoutContext.Provider value={{
                         checkoutState,
                         checkoutService,
-                        capabilities: defaultCapabilities,
                     }}>
                         <ThemeProvider>
                             <PayPalFastlaneShippingAddress {...defaultProps} />
@@ -131,7 +131,6 @@ describe('PayPalFastlaneShippingAddress', () => {
                     <CheckoutContext.Provider value={{
                         checkoutState,
                         checkoutService,
-                        capabilities: defaultCapabilities,
                     }}>
                         <ThemeProvider>
                             <PayPalFastlaneShippingAddress {...defaultProps} initialize={initializeMock} />
@@ -162,11 +161,12 @@ describe('PayPalFastlaneShippingAddress', () => {
                     <CheckoutContext.Provider value={{
                         checkoutState,
                         checkoutService,
-                        capabilities: defaultCapabilities,
                     }}>
-                        <ThemeProvider>
-                            <PayPalFastlaneShippingAddress {...defaultProps} />
-                        </ThemeProvider>
+                        <CapabilitiesContext.Provider value={{ capabilities: defaultCapabilities }}>
+                            <ThemeProvider>
+                                <PayPalFastlaneShippingAddress {...defaultProps} />
+                            </ThemeProvider>
+                        </CapabilitiesContext.Provider>
                     </CheckoutContext.Provider>
                 </LocaleContext.Provider>
             </Formik>
