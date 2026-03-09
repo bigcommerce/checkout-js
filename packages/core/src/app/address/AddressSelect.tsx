@@ -1,7 +1,7 @@
 import { type Address, type CustomerAddress } from '@bigcommerce/checkout-sdk';
 import React, { memo, type ReactNode } from 'react';
 
-import { useCheckout } from '@bigcommerce/checkout/contexts';
+import { useCapabilities } from '@bigcommerce/checkout/contexts';
 import { PoweredByPayPalFastlaneLabel, usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 import { DropdownTrigger } from '../ui/dropdown';
@@ -33,7 +33,7 @@ const AddressSelect = ({
     onUseNewAddress,
     placeholderText,
 }: AddressSelectProps) => {
-    const { capabilities } = useCheckout();
+    const { capabilities } = useCapabilities();
     const { shouldShowPayPalFastlaneLabel } = usePayPalFastlaneAddress();
 
     const handleSelectAddress = (newAddress: Address) => {
