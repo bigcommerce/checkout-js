@@ -1,5 +1,5 @@
 import { type CheckoutSelectors } from '@bigcommerce/checkout-sdk';
-import React, { type ReactElement, type ReactNode, useMemo } from 'react';
+import React, { type ReactElement, type ReactNode } from 'react';
 
 import { defaultCapabilities } from './Capability';
 import CapabilitiesContext from './CapabilitiesContext';
@@ -16,10 +16,8 @@ const CapabilitiesProvider = ({
     const capabilities =
         checkoutState.data.getConfig()?.checkoutSettings.capabilities ?? defaultCapabilities;
 
-    const contextValue = useMemo(() => ({ capabilities }), [capabilities]);
-
     return (
-        <CapabilitiesContext.Provider value={contextValue}>{children}</CapabilitiesContext.Provider>
+        <CapabilitiesContext.Provider value={capabilities}>{children}</CapabilitiesContext.Provider>
     );
 };
 

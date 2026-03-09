@@ -1,9 +1,10 @@
 import { type Checkout, type ShopperCurrency as ShopperCurrencyType, type StoreCurrency } from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent, useRef, useState } from 'react';
 
-import { useCheckout } from '@bigcommerce/checkout/contexts';
+import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { CollapseCSSTransition, IconArrowLeft, IconChevronDown, IconChevronUp } from '@bigcommerce/checkout/ui';
+import { hideEditCartLink } from '@bigcommerce/checkout/utility';
 
 import { ShopperCurrency } from '../currency';
 import OrderSummary from '../order/OrderSummary';
@@ -33,6 +34,7 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({ isMu
     const nodeRef = useRef<HTMLDivElement>(null);
 
     const checkoutContext = useCheckout();
+    const { userJourney: { disableEditCart } } = useCapabilities();
     const props = mapToCartSummaryProps(checkoutContext);
 
     if (!props) {
@@ -41,7 +43,7 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({ isMu
 
     const { cartUrl, isBuyNowCart, checkout } = props;
 
-    const headerLink = isBuyNowCart ? null : (
+    const headerLink = hideEditCartLink(isBuyNowCart, disableEditCart) ? null : (
         <EditLink
             isMultiShippingMode={isMultiShippingMode}
             label={<TranslatedString id="cart.go_to_cart_action" />}

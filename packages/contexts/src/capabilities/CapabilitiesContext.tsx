@@ -1,9 +1,7 @@
 import { type Capabilities } from '@bigcommerce/checkout-sdk/essential';
 import { createContext, useContext } from 'react';
 
-export interface CapabilitiesContextProps {
-    capabilities: Capabilities;
-}
+export type CapabilitiesContextProps = Capabilities;
 
 const CapabilitiesContext = createContext<CapabilitiesContextProps | undefined>(undefined);
 

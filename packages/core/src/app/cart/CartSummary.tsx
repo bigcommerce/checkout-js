@@ -8,6 +8,8 @@ import EditLink from './EditLink';
 import mapToCartSummaryProps from './mapToCartSummaryProps';
 import { type RedeemableProps } from './Redeemable';
 import withRedeemable from './withRedeemable';
+import { useCapabilities } from '@bigcommerce/checkout/contexts';
+import { hideEditCartLink } from '@bigcommerce/checkout/utility';
 
 export type WithCheckoutCartSummaryProps = {
     checkout: Checkout;
@@ -24,7 +26,9 @@ const CartSummary: FunctionComponent<
         isMultiShippingMode: boolean;
     }
     > = ({ cartUrl, isMultiShippingMode, isBuyNowCart, ...props }) => {
-    const headerLink = isBuyNowCart ? null : (
+    const { userJourney: { disableEditCart } } = useCapabilities();
+
+    const headerLink = hideEditCartLink(isBuyNowCart, disableEditCart) ? null : (
         <EditLink
             isMultiShippingMode={isMultiShippingMode}
             url={cartUrl}

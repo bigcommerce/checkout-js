@@ -45,7 +45,7 @@ describe('CheckoutProvider', () => {
         jest.spyOn(service.getState().data, 'getConfig').mockReturnValue(getStoreConfig());
 
         const Consumer = () => {
-            const { capabilities } = useCapabilities();
+            const capabilities = useCapabilities();
 
             return (
                 <span data-test="capabilities">
@@ -85,7 +85,7 @@ describe('CheckoutProvider', () => {
         jest.spyOn(service.getState().data, 'getConfig').mockReturnValue(config);
 
         const Consumer = () => {
-            const { capabilities } = useCapabilities();
+            const capabilities = useCapabilities();
 
             return (
                 <span data-test="capabilities">

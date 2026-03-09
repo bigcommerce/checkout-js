@@ -4,8 +4,7 @@ export const defaultCapabilities: Capabilities = {
     userJourney: {
         quoteCheckout: false,
         invoiceCheckout: false,
-        disableEditCartForQuote: false,
-        disableEditCartForInvoice: false,
+        disableEditCart: false,
     },
     customer: {
         inlineSignIn: false,
