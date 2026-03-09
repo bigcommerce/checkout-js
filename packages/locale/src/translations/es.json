@@ -18,9 +18,9 @@
             "custom_required_error": "El campo {label} es obligatorio",
             "custom_min_error": "{label} no debe tener menos de {min} caracteres",
             "custom_max_error": "{label} no debe tener más de {max} caracteres",
-            "custom_min_number_error": "{label} must be greater than or equal to {min}",
-            "custom_max_number_error": "{label} must be less than or equal to {max}",
-            "custom_range_error": "{label} must be between {min} and {max}",
+            "custom_min_number_error": "{label} debe ser mayor o igual que {min}",
+            "custom_max_number_error": "{label} debe ser menor o igual que {max}",
+            "custom_range_error": "{label} debe estar entre {min} y {max}",
             "invalid_characters_error": "El campo {label} contiene caracteres no válidos",
             "custom_valid_error": "El campo {label} no es válido",
             "edit_address_action": "Editar dirección",
@@ -70,7 +70,13 @@
             "items": "artículos",
             "item_count_text": "{count, plural, one{1 artículo} other{# artículos} }",
             "backorder_count_text": "Se añadirá a pedidos pendientes: {count}",
+            "backorder_quantities_changed_heading": "Las cantidades de pedidos pendientes han cambiado para los siguientes artículos:",
+            "cart_stock_modal_destination": "Destino #{consignmentNumber} ({address})",
+            "ready_to_ship_count_text": "{count} listo para enviar",
+            "show_backorder_details": "Mostrar detalles de pedidos pendientes",
+            "hide_backorder_details": "Ocultar detalles de pedidos pendientes",
             "print_action": "Imprimir",
+            "qty_label": "Cantidad: {quantity}",
             "remaining_text": "resta",
             "remove_action": "eliminar",
             "return_to_checkout": "VOLVER AL PROCESO DE PAGO",
@@ -313,6 +319,7 @@
             "payment_method_invalid_error": "Ha habido un problema al procesar su pago. Póngase en contacto con nosotros para obtener ayuda o elija otro método de pago.",
             "payment_method_unavailable_error": "Este proveedor de pagos no está disponible temporalmente. Vuelva a intentarlo más tarde.",
             "payment_not_required_text": "No se requiere ningún pago para este pedido.",
+            "payment_methods_unavailable_error": "No se pueden cargar los métodos de pago en este momento. Vuelve a intentarlo más tarde o ponte en contacto con la tienda para obtener ayuda.",
             "paypal_complete_action": "Completar pedido",
             "paypal_continue_action": "Continuar con PayPal",
             "paypal_pay_later_complete_action": "Completar pedido",
@@ -494,6 +501,7 @@
             "gift_certificate_remaining_text": "resta",
             "gift_certificate_text": "Cupón de regalo",
             "manual_discount": "Descuento manual",
+            "maximum_discount_applied_text": "Maximum discount applied",
             "remove_action": "Eliminar",
             "store_credit_available_text": "Tu cuenta tiene actualmente disponible un total de {storeCredit} de crédito en tienda",
             "toggle_action": "Cupón de regalo",
@@ -555,6 +563,7 @@
             "multishipping_left_to_allocate_items_table_item": "Artículo",
             "multishipping_left_to_allocate_items_table_left_to_allocate": "Por asignar",
             "multishipping_left_to_allocate_items_table_quantity": "Cantidad",
+            "multishipping_backordered_quantity": "(Se añadirá a pedidos pendientes: {count})",
             "no_countries_available_heading": "Tenemos problemas para cargar tu país de envío",
             "no_countries_available_message": "Actualiza la página o vuelve a intentarlo en un momento. Si el problema continúa, contacta con nuestro equipo de soporte y te ayudaremos a completar tu pedido.",
             "multishipping_item_split_tooltip_message": "Las cantidades de estos artículos se dividen en una fila separada debido a una promoción por cantidad o a un precio personalizado.",
@@ -609,8 +618,8 @@
                 "adyenv3": {
                     "boletobancario": "Ticket Boleto Bancário",
                     "multibanco": {
-                        "reference": "Payment reference",
-                        "entity": "Entity number",
+                        "reference": "Referencia de pago",
+                        "entity": "Número de entidad",
                         "expires_at": "Fecha de vencimiento"
                     },
                     "oxxo": "Ticket OXXO"
@@ -652,7 +661,19 @@
             "thank_you_customer_heading": "¡Muchas gracias, {name}!",
             "thank_you_heading": "¡Gracias!",
             "continue_shopping": "Seguir comprando »",
-            "order_status_update_facebook_messenger_heading": "Reciba actualizaciones instantáneas de su pedido en Messenger"
+            "order_status_update_facebook_messenger_heading": "Reciba actualizaciones instantáneas de su pedido en Messenger",
+            "expired_token": {
+                "heading": "Link Expired",
+                "description": "For security, this link has expired.",
+                "resend_action": "Resend Secure Link",
+                "sending": "Sending...",
+                "resend_success": "A new link has been sent to your email address.",
+                "resend_error": "Failed to resend link. Please try again later."
+            },
+            "rate_limited": {
+                "heading": "Too Many Requests",
+                "message": "You've made too many attempts. Please wait a few minutes and try again."
+            }
         }
     }
 }

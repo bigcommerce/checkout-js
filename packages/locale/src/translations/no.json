@@ -18,9 +18,9 @@
             "custom_required_error": "{label} er påkrevd",
             "custom_min_error": "{label} skal ikke være mindre enn {min} tegn",
             "custom_max_error": "{label} skal ikke være mer enn {max} tegn",
-            "custom_min_number_error": "{label} must be greater than or equal to {min}",
-            "custom_max_number_error": "{label} must be less than or equal to {max}",
-            "custom_range_error": "{label} must be between {min} and {max}",
+            "custom_min_number_error": "{label} må være større enn eller lik {min}",
+            "custom_max_number_error": "{label} må være mindre enn eller lik {max}",
+            "custom_range_error": "{label} må være mellom {min} og {max}",
             "invalid_characters_error": "{label} inneholder ugyldige tegn",
             "custom_valid_error": "{label} er ikke gyldig",
             "edit_address_action": "Rediger adresse",
@@ -70,7 +70,13 @@
             "items": "Varer",
             "item_count_text": "{count, plural, one{1 Vare } other{# Varer } }",
             "backorder_count_text": "{count} i restordre",
+            "backorder_quantities_changed_heading": "Restordremengdene er endret for varene nedenfor:",
+            "cart_stock_modal_destination": "Destinasjon #{consignmentNumber} ({address})",
+            "ready_to_ship_count_text": "{count} er klargjort for sending",
+            "show_backorder_details": "Vis restordredetaljer",
+            "hide_backorder_details": "Skjul restordredetaljer",
             "print_action": "Skriv ut",
+            "qty_label": "Antall: {quantity}",
             "remaining_text": "gjenstående",
             "remove_action": "Fjern",
             "return_to_checkout": "GÅ TILBAKE TIL KASSEN",
@@ -313,6 +319,7 @@
             "payment_method_invalid_error": "Det har oppstått et problem med å behandle betalingen din. Kontakt oss for å få hjelp, eller velg en annen betalingsmåte.",
             "payment_method_unavailable_error": "Denne betalingsleverandøren er midlertidig utilgjengelig. Prøv igjen senere.",
             "payment_not_required_text": "Betaling kreves ikke for denne bestillingen.",
+            "payment_methods_unavailable_error": "Vi kan ikke belaste betalingsmetodene for øyeblikket. Prøv igjen senere, eller kontakt butikken for å få hjelp.",
             "paypal_complete_action": "Fullfør bestilling",
             "paypal_continue_action": "Fortsett med PayPal",
             "paypal_pay_later_complete_action": "Fullfør bestilling",
@@ -494,6 +501,7 @@
             "gift_certificate_remaining_text": "gjenstående",
             "gift_certificate_text": "Gavekort",
             "manual_discount": "Manuell rabatt",
+            "maximum_discount_applied_text": "Maximum discount applied",
             "remove_action": "Fjern",
             "store_credit_available_text": "Kontoen din har for øyeblikket totalt {storeCredit} butikkkreditt tilgjengelig",
             "toggle_action": "Kupong/gavekort",
@@ -555,6 +563,7 @@
             "multishipping_left_to_allocate_items_table_item": "Vare",
             "multishipping_left_to_allocate_items_table_left_to_allocate": "Igjen å tildele",
             "multishipping_left_to_allocate_items_table_quantity": "Mengde",
+            "multishipping_backordered_quantity": "({count} i restordre)",
             "no_countries_available_heading": "Vi har problemer med å laste inn leveringslandet ditt",
             "no_countries_available_message": "Oppdater siden, eller prøv igjen om et øyeblikk. Hvis problemet fortsetter, må du kontakte brukerstøtteteamet vårt, så hjelper vi deg med å fullføre bestillingen din.",
             "multishipping_item_split_tooltip_message": "Disse varemengdene er delt inn i en egen rad på grunn av en mengdebasert kampanje eller tilpasset pris.",
@@ -609,8 +618,8 @@
                 "adyenv3": {
                     "boletobancario": "Boleto Bancário-billett",
                     "multibanco": {
-                        "reference": "Payment reference",
-                        "entity": "Entity number",
+                        "reference": "Betalingsreferanse",
+                        "entity": "Enhetsnummer",
                         "expires_at": "Utløpsdato"
                     },
                     "oxxo": "OXXO-billett"
@@ -652,7 +661,19 @@
             "thank_you_customer_heading": "Takk, {name}!",
             "thank_you_heading": "Takk!",
             "continue_shopping": "Fortsett å handle »",
-            "order_status_update_facebook_messenger_heading": "Få umiddelbare oppdateringer om bestillingen din sendt til Messenger"
+            "order_status_update_facebook_messenger_heading": "Få umiddelbare oppdateringer om bestillingen din sendt til Messenger",
+            "expired_token": {
+                "heading": "Link Expired",
+                "description": "For security, this link has expired.",
+                "resend_action": "Resend Secure Link",
+                "sending": "Sending...",
+                "resend_success": "A new link has been sent to your email address.",
+                "resend_error": "Failed to resend link. Please try again later."
+            },
+            "rate_limited": {
+                "heading": "Too Many Requests",
+                "message": "You've made too many attempts. Please wait a few minutes and try again."
+            }
         }
     }
 }

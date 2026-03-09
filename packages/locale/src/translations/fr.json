@@ -18,9 +18,9 @@
             "custom_required_error": "{label} est obligatoire",
             "custom_min_error": "{label} doit comporter au moins {min} caractères",
             "custom_max_error": "{label} ne doit pas comporter plus de {max} caractères",
-            "custom_min_number_error": "{label} must be greater than or equal to {min}",
-            "custom_max_number_error": "{label} must be less than or equal to {max}",
-            "custom_range_error": "{label} must be between {min} and {max}",
+            "custom_min_number_error": "{label} doit être supérieur ou égal à {min}",
+            "custom_max_number_error": "{label} doit être inférieur ou égal à {max}",
+            "custom_range_error": "{label} doit être compris entre {min} et {max}",
             "invalid_characters_error": "{label} contient des caractères non valides",
             "custom_valid_error": "{label} n'est pas valide",
             "edit_address_action": "Modifier l'adresse",
@@ -70,7 +70,13 @@
             "items": "articles",
             "item_count_text": "{count, plural, one{1 article} other{# articles} }",
             "backorder_count_text": "{count} seront en attente de réapprovisionnement",
+            "backorder_quantities_changed_heading": "La quantité de commandes en attente de réapprovisionnement ont changé pour les articles ci-dessous :",
+            "cart_stock_modal_destination": "Destination n°{consignmentNumber} ({address})",
+            "ready_to_ship_count_text": "{count} prêt·s pour expédition",
+            "show_backorder_details": "Afficher les détails de la commande en attente",
+            "hide_backorder_details": "Masquer les détails de la commande en attente",
             "print_action": "Imprimer",
+            "qty_label": "Qté : {quantity}",
             "remaining_text": "restant·s",
             "remove_action": "supprimer",
             "return_to_checkout": "REVENIR AU PAIEMENT",
@@ -313,6 +319,7 @@
             "payment_method_invalid_error": "Une erreur s'est produite lors du traitement de votre paiement. Veuillez choisir un autre mode de paiement ou nous contacter pour obtenir de l'aide.",
             "payment_method_unavailable_error": "Ce prestataire de paiement est temporairement indisponible. Veuillez réessayer plus tard.",
             "payment_not_required_text": "Aucun paiement n'est requis pour cette commande.",
+            "payment_methods_unavailable_error": "Nous ne pouvons pas charger les modes de paiement pour le moment. Veuillez réessayer plus tard ou contacter la boutique pour obtenir de l'aide.",
             "paypal_complete_action": "Terminer la commande",
             "paypal_continue_action": "Continuer avec PayPal",
             "paypal_pay_later_complete_action": "Terminer la commande",
@@ -494,6 +501,7 @@
             "gift_certificate_remaining_text": "restant·s",
             "gift_certificate_text": "Chèque-cadeau",
             "manual_discount": "Remise manuelle",
+            "maximum_discount_applied_text": "Maximum discount applied",
             "remove_action": "Supprimer",
             "store_credit_available_text": "Un avoir de {storeCredit} est actuellement disponible sur votre compte",
             "toggle_action": "Code promotionnel/chèque-cadeau",
@@ -555,6 +563,7 @@
             "multishipping_left_to_allocate_items_table_item": "Article",
             "multishipping_left_to_allocate_items_table_left_to_allocate": "Articles restants pour attribution",
             "multishipping_left_to_allocate_items_table_quantity": "Quantité",
+            "multishipping_backordered_quantity": "({count} seront en attente de réapprovisionnement)",
             "no_countries_available_heading": "Nous rencontrons des difficultés à charger votre pays de livraison",
             "no_countries_available_message": "Veuillez actualiser la page ou réessayer dans un instant. Si le problème persiste, contactez notre équipe d’assistance et nous vous aiderons à finaliser votre commande.",
             "multishipping_item_split_tooltip_message": "Ces quantités d'articles sont réparties sur une ligne distincte en raison d'une promotion basée sur la quantité ou d'un prix personnalisé.",
@@ -609,8 +618,8 @@
                 "adyenv3": {
                     "boletobancario": "Ticket Boleto Bancário",
                     "multibanco": {
-                        "reference": "Payment reference",
-                        "entity": "Entity number",
+                        "reference": "Référence du paiement",
+                        "entity": "Numéro d'entité",
                         "expires_at": "Date d'expiration"
                     },
                     "oxxo": "Ticket OXXO"
@@ -652,7 +661,19 @@
             "thank_you_customer_heading": "Merci {name} !",
             "thank_you_heading": "Merci !",
             "continue_shopping": "Continuer mes achats »",
-            "order_status_update_facebook_messenger_heading": "Recevez toutes les mises à jour de votre commande sur Messenger"
+            "order_status_update_facebook_messenger_heading": "Recevez toutes les mises à jour de votre commande sur Messenger",
+            "expired_token": {
+                "heading": "Link Expired",
+                "description": "For security, this link has expired.",
+                "resend_action": "Resend Secure Link",
+                "sending": "Sending...",
+                "resend_success": "A new link has been sent to your email address.",
+                "resend_error": "Failed to resend link. Please try again later."
+            },
+            "rate_limited": {
+                "heading": "Too Many Requests",
+                "message": "You've made too many attempts. Please wait a few minutes and try again."
+            }
         }
     }
 }

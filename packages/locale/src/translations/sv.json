@@ -18,9 +18,9 @@
             "custom_required_error": "{label} måste anges",
             "custom_min_error": "{label} får inte vara mindre än {min} tecken",
             "custom_max_error": "{label} får inte vara mer än {max} tecken",
-            "custom_min_number_error": "{label} must be greater than or equal to {min}",
-            "custom_max_number_error": "{label} must be less than or equal to {max}",
-            "custom_range_error": "{label} must be between {min} and {max}",
+            "custom_min_number_error": "{label} måste vara större än eller lika med {min}",
+            "custom_max_number_error": "{label} måste vara mindre än eller lika med {max}",
+            "custom_range_error": "{label} måste vara mellan {min} och {max}",
             "invalid_characters_error": "{label} innehåller ogiltiga tecken",
             "custom_valid_error": "{label} är inte giltig",
             "edit_address_action": "Redigera adress",
@@ -70,7 +70,13 @@
             "items": "varor",
             "item_count_text": "{count, plural, one{1 Item} other{# Items} }",
             "backorder_count_text": "{count} kommer att restnoteras",
+            "backorder_quantities_changed_heading": "Efterbeställningskvantiteterna har ändrats för nedanstående artiklar:",
+            "cart_stock_modal_destination": "Destination #{consignmentNumber} ({address})",
+            "ready_to_ship_count_text": "{count} redo att skickas",
+            "show_backorder_details": "Visa restordersdetaljer",
+            "hide_backorder_details": "Dölj restordersdetaljer",
             "print_action": "Skriva ut",
+            "qty_label": "Antal: {quantity}",
             "remaining_text": "återstående",
             "remove_action": "Ta bort",
             "return_to_checkout": "GÅ TILLBAKA TILL KASSAN",
@@ -313,6 +319,7 @@
             "payment_method_invalid_error": "Det gick inte att behandla din betalning. Kontakta oss för att få hjälp eller välj en annan betalningsmetod.",
             "payment_method_unavailable_error": "Denna betalningsleverantör är tillfälligt otillgänglig. Försök igen senare.",
             "payment_not_required_text": "Betalning krävs inte för denna beställning.",
+            "payment_methods_unavailable_error": "Vi kan inte ladda betalningsmetoder för tillfället. Försök igen senare eller kontakta butiken för hjälp.",
             "paypal_complete_action": "Slutför beställning",
             "paypal_continue_action": "Fortsätt med PayPal",
             "paypal_pay_later_complete_action": "Slutför beställning",
@@ -494,6 +501,7 @@
             "gift_certificate_remaining_text": "återstående",
             "gift_certificate_text": "Presentkort",
             "manual_discount": "Manuell rabatt",
+            "maximum_discount_applied_text": "Maximum discount applied",
             "remove_action": "Ta bort",
             "store_credit_available_text": "Ditt konto har för närvarande totalt {storeCredit} tillgängliga butikskrediter",
             "toggle_action": "Kupong/presentkort",
@@ -555,6 +563,7 @@
             "multishipping_left_to_allocate_items_table_item": "Vara",
             "multishipping_left_to_allocate_items_table_left_to_allocate": "Kvar att tilldela",
             "multishipping_left_to_allocate_items_table_quantity": "Kvantitet",
+            "multishipping_backordered_quantity": "({count} kommer att restnoteras)",
             "no_countries_available_heading": "Det gick inte att läsa in ditt leveransland",
             "no_countries_available_message": "Uppdatera sidan eller försök igen om en stund. Om problemet kvarstår kan du kontakta vårt supportteam, så hjälper vi dig att slutföra beställningen.",
             "multishipping_item_split_tooltip_message": "Dessa artikelkvantiteter är uppdelade på en separat rad på grund av en kvantitetsbaserad kampanj eller ett anpassat pris.",
@@ -609,8 +618,8 @@
                 "adyenv3": {
                     "boletobancario": "Boleto Bancário-ticket",
                     "multibanco": {
-                        "reference": "Payment reference",
-                        "entity": "Entity number",
+                        "reference": "Betalningsreferens",
+                        "entity": "Enhetsnummer",
                         "expires_at": "Förfallodatum"
                     },
                     "oxxo": "OXXO-ticket"
@@ -652,7 +661,19 @@
             "thank_you_customer_heading": "Tack, {name}!",
             "thank_you_heading": "Tack!",
             "continue_shopping": "Fortsätt handla »",
-            "order_status_update_facebook_messenger_heading": "Få omedelbara uppdateringar om din beställning till Messenger"
+            "order_status_update_facebook_messenger_heading": "Få omedelbara uppdateringar om din beställning till Messenger",
+            "expired_token": {
+                "heading": "Link Expired",
+                "description": "For security, this link has expired.",
+                "resend_action": "Resend Secure Link",
+                "sending": "Sending...",
+                "resend_success": "A new link has been sent to your email address.",
+                "resend_error": "Failed to resend link. Please try again later."
+            },
+            "rate_limited": {
+                "heading": "Too Many Requests",
+                "message": "You've made too many attempts. Please wait a few minutes and try again."
+            }
         }
     }
 }

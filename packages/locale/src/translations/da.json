@@ -18,9 +18,9 @@
             "custom_required_error": "{label} er påkrævet",
             "custom_min_error": "{label} bør ikke være mindre end {min} tegn",
             "custom_max_error": "{label} må ikke være mere end {max} tegn",
-            "custom_min_number_error": "{label} must be greater than or equal to {min}",
-            "custom_max_number_error": "{label} must be less than or equal to {max}",
-            "custom_range_error": "{label} must be between {min} and {max}",
+            "custom_min_number_error": "{label} skal være større end eller lig med {min}",
+            "custom_max_number_error": "{label} skal være mindre end eller lig med {max}",
+            "custom_range_error": "{label} skal være mellem {min} og {max}",
             "invalid_characters_error": "{label} indeholder ugyldige tegn",
             "custom_valid_error": "{label} er ikke gyldig",
             "edit_address_action": "Rediger adresse",
@@ -70,7 +70,13 @@
             "items": "Varer",
             "item_count_text": "{count, plural, one{1 vare} other{# varer} }",
             "backorder_count_text": "{count} vil være i restordre",
+            "backorder_quantities_changed_heading": "Restordremængderne er ændret for nedenstående varer:",
+            "cart_stock_modal_destination": "Destinationsnr. {consignmentNumber} ({address})",
+            "ready_to_ship_count_text": "{count} klar til afsendelse",
+            "show_backorder_details": "Vis oplysninger om restordre",
+            "hide_backorder_details": "Skjul oplysninger om restordre",
             "print_action": "Udskriv",
+            "qty_label": "Antal: {quantity}",
             "remaining_text": "Resterende",
             "remove_action": "Fjern",
             "return_to_checkout": "TILBAGE TIL KASSEN",
@@ -313,6 +319,7 @@
             "payment_method_invalid_error": "Der er et problem med at behandle din betaling. Kontakt os for at få hjælp, eller vælg en anden betalingsmetode.",
             "payment_method_unavailable_error": "Denne betalingsudbyder er midlertidigt utilgængelig. Prøv igen senere.",
             "payment_not_required_text": "Der kræves ikke betaling for denne ordre.",
+            "payment_methods_unavailable_error": "Vi kan ikke indlæse betalingsmetoder i øjeblikket. Prøv igen senere, eller kontakt butikken for at få hjælp.",
             "paypal_complete_action": "Gennemfør ordre",
             "paypal_continue_action": "Fortsæt med PayPal",
             "paypal_pay_later_complete_action": "Gennemfør ordre",
@@ -494,6 +501,7 @@
             "gift_certificate_remaining_text": "Resterende",
             "gift_certificate_text": "Gavekort",
             "manual_discount": "Manuel rabat",
+            "maximum_discount_applied_text": "Maximum discount applied",
             "remove_action": "Fjern",
             "store_credit_available_text": "Din konto har i øjeblikket {storeCredit} butikskredit i alt tilgængelig",
             "toggle_action": "Kupon/gavekort",
@@ -555,6 +563,7 @@
             "multishipping_left_to_allocate_items_table_item": "Vare",
             "multishipping_left_to_allocate_items_table_left_to_allocate": "Tilbage at tildele",
             "multishipping_left_to_allocate_items_table_quantity": "Antal",
+            "multishipping_backordered_quantity": "({count} vil være i restordre)",
             "no_countries_available_heading": "Vi har problemer med at indlæse dit leveringsland",
             "no_countries_available_message": "Opdater siden, eller prøv igen om et øjeblik. Hvis problemet fortsætter, skal du kontakte vores supportteam. Så hjælper vi dig med at fuldføre din ordre.",
             "multishipping_item_split_tooltip_message": "Disse varemængder er opdelt i en separat række på grund af en mængdebaseret kampagne eller brugerdefineret pris.",
@@ -609,8 +618,8 @@
                 "adyenv3": {
                     "boletobancario": "Boleto Bancário-kvittering",
                     "multibanco": {
-                        "reference": "Payment reference",
-                        "entity": "Entity number",
+                        "reference": "Betalingsreference",
+                        "entity": "Enhedsnummer",
                         "expires_at": "Udløbsdato"
                     },
                     "oxxo": "OXXO-kvittering"
@@ -652,7 +661,19 @@
             "thank_you_customer_heading": "Tak, {name}.",
             "thank_you_heading": "Tak.",
             "continue_shopping": "Shop videre »",
-            "order_status_update_facebook_messenger_heading": "Få øjeblikkelige opdateringer af din ordre på Messenger"
+            "order_status_update_facebook_messenger_heading": "Få øjeblikkelige opdateringer af din ordre på Messenger",
+            "expired_token": {
+                "heading": "Link Expired",
+                "description": "For security, this link has expired.",
+                "resend_action": "Resend Secure Link",
+                "sending": "Sending...",
+                "resend_success": "A new link has been sent to your email address.",
+                "resend_error": "Failed to resend link. Please try again later."
+            },
+            "rate_limited": {
+                "heading": "Too Many Requests",
+                "message": "You've made too many attempts. Please wait a few minutes and try again."
+            }
         }
     }
 }
