@@ -57,12 +57,6 @@ describe('SearchableAddressSelectComponent', () => {
         expect(screen.getByText('Enter a new address')).toBeInTheDocument();
     });
 
-    it('does not render "Enter a new address" link when addresses array is empty', () => {
-        renderComponent({ addresses: [] });
-
-        expect(screen.queryByTestId('add-new-address')).not.toBeInTheDocument();
-    });
-
     it('renders search input with placeholder and aria-label', () => {
         renderComponent();
 

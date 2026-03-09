@@ -37,17 +37,15 @@ export const SearchableAddressSelectComponent: FunctionComponent<SearchableAddre
 
     return (
         <ul className="dropdown-menu instrumentSelect-dropdownMenu searchable-menu" id="addressDropdown">
-            {addresses.length > 0 &&
-                <li className="dropdown-menu-item dropdown-menu-item--select">
-                    <a
-                        data-test="add-new-address"
-                        href="#"
-                        onClick={preventDefault(() => onUseNewAddress(selectedAddress))}
-                    >
-                        <TranslatedString id="address.enter_address_action" />
-                    </a>
-                </li>
-            }
+            <li className="dropdown-menu-item dropdown-menu-item--select">
+                <a
+                    data-test="add-new-address"
+                    href="#"
+                    onClick={preventDefault(() => onUseNewAddress(selectedAddress))}
+                >
+                    <TranslatedString id="address.enter_address_action" />
+                </a>
+            </li>
             {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
             <li
                 className="dropdown-menu-item"
