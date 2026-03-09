@@ -4,8 +4,7 @@ import React from 'react';
 
 import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
-import { defaultCapabilities } from './Capability';
-import { useCheckout } from './CheckoutContext';
+import { defaultCapabilities, useCapabilities } from '../capabilities';
 import CheckoutProvider from './CheckoutProvider';
 
 describe('CheckoutProvider', () => {
@@ -46,7 +45,7 @@ describe('CheckoutProvider', () => {
         jest.spyOn(service.getState().data, 'getConfig').mockReturnValue(getStoreConfig());
 
         const Consumer = () => {
-            const { capabilities } = useCheckout();
+            const { capabilities } = useCapabilities();
 
             return (
                 <span data-test="capabilities">
@@ -86,7 +85,7 @@ describe('CheckoutProvider', () => {
         jest.spyOn(service.getState().data, 'getConfig').mockReturnValue(config);
 
         const Consumer = () => {
-            const { capabilities } = useCheckout();
+            const { capabilities } = useCapabilities();
 
             return (
                 <span data-test="capabilities">
