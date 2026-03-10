@@ -1,5 +1,5 @@
 import { type Address, type CustomerAddress } from '@bigcommerce/checkout-sdk';
-import React, { type ChangeEvent, type FunctionComponent, useState } from 'react';
+import React, { type ChangeEvent, type FunctionComponent, useMemo, useState } from 'react';
 
 import { useLocale } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
@@ -29,7 +29,10 @@ export const SearchableAddressSelectComponent: FunctionComponent<SearchableAddre
 
     const { language } = useLocale();
 
-    const filteredAddresses = searchingAddresses(addresses, searchQuery);
+    const filteredAddresses = useMemo(
+        () => searchingAddresses(addresses, searchQuery),
+        [addresses, searchQuery],
+    );
 
     const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(e.target.value);
@@ -54,7 +57,6 @@ export const SearchableAddressSelectComponent: FunctionComponent<SearchableAddre
             >
                 <TextInput
                     aria-label={language.translate('address.search_addresses')}
-                    className="form-input optimizedCheckout-form-input"
                     data-test="address-select-search-input"
                     name="searchAddresses"
                     onChange={handleSearchChange}
