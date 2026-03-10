@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react';
 
-import { useCheckout, useExtensions } from '@bigcommerce/checkout/contexts';
+import { useCapabilities, useCheckout, useExtensions } from '@bigcommerce/checkout/contexts';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
 
 import { CustomError } from '../common/error';
+import { isExperimentEnabled } from '../common/utility';
+
 import { useShipping } from './hooks/useShipping';
 import isUsingMultiShipping from './isUsingMultiShipping';
 import MultiShippingForm, { type MultiShippingFormValues } from './MultiShippingForm';
 import SingleShippingForm, { type SingleShippingFormValues } from './SingleShippingForm';
-import { isExperimentEnabled } from '../common/utility';
 
 export interface ShippingFormProps {
     cartHasChanged: boolean;
@@ -38,6 +39,7 @@ const ShippingForm = ({
             data: { getConfig },
         },
     } = useCheckout();
+    const { shipping: { hideBillingSameAsShippingCheck } } = useCapabilities();
     const {
         cart,
         consignments,
@@ -109,6 +111,7 @@ const ShippingForm = ({
             deinitialize={deinitialize}
             deleteConsignments={deleteConsignments}
             getFields={getFields}
+            hideBillingSameAsShippingCheck={hideBillingSameAsShippingCheck}
             initialize={initialize}
             isBillingSameAsShipping={isBillingSameAsShipping}
             isInitialValueLoaded={isInitialValueLoaded}

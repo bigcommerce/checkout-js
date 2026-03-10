@@ -39,6 +39,7 @@ import { SHIPPING_ADDRESS_FIELDS } from './ShippingAddressFields';
 import ShippingFormFooter from './ShippingFormFooter';
 
 export interface SingleShippingFormProps {
+    hideBillingSameAsShippingCheck?: boolean;
     isBillingSameAsShipping: boolean;
     cartHasChanged: boolean;
     consignments: Consignment[];
@@ -178,6 +179,7 @@ class SingleShippingForm extends PureComponent<
 
     render(): ReactNode {
         const {
+            hideBillingSameAsShippingCheck = false,
             cartHasChanged,
             isInitialValueLoaded,
             isLoading,
@@ -199,9 +201,9 @@ class SingleShippingForm extends PureComponent<
             this.state;
 
         const PAYMENT_METHOD_VALID = ['amazonpay'];
-        const shouldShowBillingSameAsShipping = !PAYMENT_METHOD_VALID.some(
-            (method) => method === methodId,
-        );
+        const shouldShowBillingSameAsShipping =
+            !hideBillingSameAsShippingCheck &&
+            !PAYMENT_METHOD_VALID.some((method) => method === methodId);
 
         return (
             <Form autoComplete="on">
