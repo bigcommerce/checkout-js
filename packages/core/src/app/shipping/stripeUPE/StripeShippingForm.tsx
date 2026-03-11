@@ -10,7 +10,7 @@ import { noop } from 'lodash';
 import React, { useCallback, useState } from 'react';
 import { lazy, object } from 'yup';
 
-import { useCheckout } from '@bigcommerce/checkout/contexts';
+import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 
 import {
@@ -61,6 +61,7 @@ export interface SingleShippingFormValues {
 
 const StripeShippingForm: React.FC<SingleShippingFormProps & WithLanguageProps & FormikProps<SingleShippingFormValues>> = (props) => {
   const { checkoutService, checkoutState } = useCheckout();
+  const { shipping: { hideBillingSameAsShippingCheck } } = useCapabilities();
   const {
     data: {
       getConsignments,
@@ -137,7 +138,7 @@ const StripeShippingForm: React.FC<SingleShippingFormProps & WithLanguageProps &
         />
 
         <div className="form-body">
-          <BillingSameAsShippingField />
+          {!hideBillingSameAsShippingCheck && <BillingSameAsShippingField />}
         </div>
       </Fieldset>
 
