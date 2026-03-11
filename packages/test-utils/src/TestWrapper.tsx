@@ -43,8 +43,11 @@ const WithCapabilitiesProvider = ({ children }: { children: React.ReactNode }) =
 
 const customRender = (ui: ReactElement, options?: Omit<RenderOptions, 'wrapper'>) =>
     render(ui, { ...options, wrapper: AllTheProviders, legacyRoot: true });
-const customRenderWithCapabilitiesOnly = (ui: ReactElement, options?: RenderOptions) =>
-    render(ui, { ...options, wrapper: WithCapabilitiesProvider, legacyRoot: true });
+
+const customRenderWithCapabilitiesOnly = (
+    ui: ReactElement,
+    options?: Omit<RenderOptions, 'wrapper'>,
+) => render(ui, { ...options, wrapper: WithCapabilitiesProvider, legacyRoot: true });
 
 // eslint-disable-next-line import/export
 export * from '@testing-library/react';
