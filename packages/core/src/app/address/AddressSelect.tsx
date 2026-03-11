@@ -33,7 +33,7 @@ const AddressSelect = ({
     onUseNewAddress,
     placeholderText,
 }: AddressSelectProps) => {
-    const { capabilities } = useCapabilities();
+    const { shipping: { companyAddressBook } } = useCapabilities();
     const { shouldShowPayPalFastlaneLabel } = usePayPalFastlaneAddress();
 
     const handleSelectAddress = (newAddress: Address) => {
@@ -50,7 +50,7 @@ const AddressSelect = ({
         <div className="form-field">
             <div className="dropdown--select">
                 <DropdownTrigger
-                    dropdown={capabilities.shipping.companyAddressBook
+                    dropdown={companyAddressBook
                         ? <SearchableAddressSelectComponent
                             addresses={addresses}
                             onSelectAddress={handleSelectAddress}
