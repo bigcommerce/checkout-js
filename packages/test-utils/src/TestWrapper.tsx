@@ -24,7 +24,7 @@ const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
 
 const WithCapabilitiesProvider = ({ children }: { children: React.ReactNode }) => {
     const storeConfig = getStoreConfig();
-    const configWithCompanyAddressBook = {
+    const configWithDefaultCapabilities = {
         ...storeConfig,
         checkoutSettings: {
             ...storeConfig.checkoutSettings,
@@ -34,7 +34,7 @@ const WithCapabilitiesProvider = ({ children }: { children: React.ReactNode }) =
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     const checkoutState = {
         data: {
-            getConfig: () => configWithCompanyAddressBook,
+            getConfig: () => configWithDefaultCapabilities,
         },
     } as CheckoutSelectors;
 
@@ -43,7 +43,7 @@ const WithCapabilitiesProvider = ({ children }: { children: React.ReactNode }) =
 
 const customRender = (ui: ReactElement, options?: Omit<RenderOptions, 'wrapper'>) =>
     render(ui, { ...options, wrapper: AllTheProviders, legacyRoot: true });
-const customRenderWithoutWrapper = (ui: ReactElement, options?: RenderOptions) =>
+const customRenderWithCapabilitiesOnly = (ui: ReactElement, options?: RenderOptions) =>
     render(ui, { ...options, wrapper: WithCapabilitiesProvider, legacyRoot: true });
 
 // eslint-disable-next-line import/export
@@ -51,4 +51,4 @@ export * from '@testing-library/react';
 
 // eslint-disable-next-line import/export
 export { customRender as render };
-export { customRenderWithoutWrapper as renderWithoutWrapper };
+export { customRenderWithCapabilitiesOnly as renderWithoutWrapper };
