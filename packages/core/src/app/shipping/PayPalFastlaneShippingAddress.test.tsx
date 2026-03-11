@@ -162,7 +162,7 @@ describe('PayPalFastlaneShippingAddress', () => {
                         checkoutState,
                         checkoutService,
                     }}>
-                        <CapabilitiesContext.Provider value={{ capabilities: defaultCapabilities }}>
+                        <CapabilitiesContext.Provider value={defaultCapabilities}>
                             <ThemeProvider>
                                 <PayPalFastlaneShippingAddress {...defaultProps} />
                             </ThemeProvider>
