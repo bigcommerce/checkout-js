@@ -191,6 +191,8 @@ const GuestForm: FunctionComponent<
     );
 };
 
+(GuestForm as any).whyDidYouRender = true;
+
 export default withLanguage(
     withFormik<GuestFormProps & WithLanguageProps, GuestFormValues>({
         mapPropsToValues: ({
