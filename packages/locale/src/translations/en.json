@@ -49,6 +49,7 @@
         "billing": {
             "billing_address_heading": "Billing Address",
             "billing_heading": "Billing",
+            "no_billing_addresses_warning": "Sorry, you have no billing address to choose from, please go to your address book to create an address or contact your site admin.",
             "save_billing_address_error": "An error occurred while saving the billing address to your price quote. Please try again.",
             "billing_address_amazonpay": "Managed by Amazon Pay",
             "use_shipping_address_label": "My billing address is the same as my shipping address."
@@ -536,6 +537,7 @@
             "save_shipping_address_error": "An error occurred while saving the shipping address to your price quote. Please try again.",
             "save_shipping_option_error": "An error occurred while saving the shipping quote to your order. Please try again.",
             "select_shipping_address_text": "Please select a shipping address in order to see shipping quotes",
+            "no_shipping_addresses_warning": "Sorry, you have no shipping address to choose from, please go to your address book to create an address or contact your site admin.",
             "shipping_address_heading": "Shipping address",
             "multishipping_consignment_index_heading": "Destination #{consignmentNumber}",
             "multishipping_incomplete_consignment_error": "Please complete the address, item allocation, and method selection for Destination #{consignmentNumber}.",

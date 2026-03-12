@@ -6,7 +6,7 @@ import { type FormikProps, withFormik } from 'formik';
 import React, { type RefObject, useRef, useState } from 'react';
 import { lazy } from 'yup';
 
-import { useCheckout } from '@bigcommerce/checkout/contexts';
+import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { AddressFormSkeleton, LoadingOverlay } from '@bigcommerce/checkout/ui';
@@ -54,6 +54,7 @@ const BillingForm = ({
     const { isPayPalFastlaneEnabled, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
 
     const { checkoutService, checkoutState } = useCheckout();
+    const { billing: { hideSaveToAddressBookCheck, restrictManualAddressEntry } } = useCapabilities();
 
     const {
         data: { getCustomer, getConfig, getCart },
@@ -87,6 +88,7 @@ const BillingForm = ({
     const isUpdating  = isUpdatingBillingAddress() || isUpdatingCheckout();
     const { enableOrderComments } = config.checkoutSettings;
     const shouldShowOrderComments  = enableOrderComments && getShippableItemsCount(cart) < 1;
+    const shouldShowSaveAddress = !hideSaveToAddressBookCheck && !isGuest;
 
     const handleSelectAddress = async (address: Partial<Address>) => {
         setIsResettingAddress(true);
@@ -131,13 +133,13 @@ const BillingForm = ({
                     </Fieldset>
                 )}
 
-                {!hasValidCustomerAddress && (
+                {!restrictManualAddressEntry && !hasValidCustomerAddress && (
                     <AddressFormSkeleton isLoading={isResettingAddress}>
                         <AddressForm
                             countryCode={values.countryCode}
                             formFields={editableFormFields}
                             setFieldValue={setFieldValue}
-                            shouldShowSaveAddress={!isGuest}
+                            shouldShowSaveAddress={shouldShowSaveAddress}
                             type={AddressType.Billing}
                         />
                     </AddressFormSkeleton>
