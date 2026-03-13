@@ -49,7 +49,7 @@ describe('CheckoutProvider', () => {
 
             return (
                 <span data-test="capabilities">
-                    {capabilities.shipping.companyAddressBook
+                    {capabilities.userJourney.hasCompanyAddressBook
                         ? 'has-companyAddressBook'
                         : 'no-companyAddressBook'}
                 </span>
@@ -69,9 +69,9 @@ describe('CheckoutProvider', () => {
         const service = createCheckoutService();
         const configCapabilities = {
             ...defaultCapabilities,
-            shipping: {
-                ...defaultCapabilities.shipping,
-                companyAddressBook: true,
+            userJourney: {
+                ...defaultCapabilities.userJourney,
+                hasCompanyAddressBook: true,
             },
         };
         const config = {
@@ -89,7 +89,7 @@ describe('CheckoutProvider', () => {
 
             return (
                 <span data-test="capabilities">
-                    {capabilities.shipping.companyAddressBook
+                    {capabilities.userJourney.hasCompanyAddressBook
                         ? 'has-companyAddressBook'
                         : 'no-companyAddressBook'}
                 </span>

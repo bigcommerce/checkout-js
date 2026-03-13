@@ -141,9 +141,9 @@ describe('AddressSelect component', () => {
                 ...storeConfig.checkoutSettings,
                 capabilities: {
                     ...defaultCapabilities,
-                    shipping: {
-                        ...defaultCapabilities.shipping,
-                        companyAddressBook: true,
+                    userJourney: {
+                        ...defaultCapabilities.userJourney,
+                        hasCompanyAddressBook: true,
                     },
                 },
             },
