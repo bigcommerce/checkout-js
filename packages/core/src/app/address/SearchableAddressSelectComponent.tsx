@@ -32,8 +32,6 @@ export const SearchableAddressSelectComponent: FunctionComponent<SearchableAddre
         shipping: { restrictManualAddressEntry : restrictManualAddressEntryForShipping }, 
         billing: { restrictManualAddressEntry : restrictManualAddressEntryForBilling } 
     } = useCapabilities();
-
-
     const restrictManualAddressEntry = type === AddressType.Shipping ? restrictManualAddressEntryForShipping : restrictManualAddressEntryForBilling;
 
     const filteredAddresses = useMemo(
