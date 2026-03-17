@@ -16,7 +16,7 @@ export interface CheckoutProviderProps {
     checkoutService: CheckoutService;
     children: ReactNode;
     errorLogger?: ErrorLogger;
-    isCheckoutHookExperimentEnabled?: boolean
+    isCheckoutHookExperimentEnabled?: boolean;
 }
 
 const CheckoutProviderV2: React.FC<CheckoutProviderProps> = ({
@@ -25,14 +25,33 @@ const CheckoutProviderV2: React.FC<CheckoutProviderProps> = ({
     children,
     isCheckoutHookExperimentEnabled,
 }) => {
-    const checkoutState = checkoutService.getState();
+    const [checkoutState, setCheckoutState] = useState<CheckoutSelectors>(() =>
+        checkoutService.getState(),
+    );
+    const unsubscribeRef = useRef<(() => void) | undefined>();
 
-    const contextValue = {
-        checkoutService,
-        checkoutState, // TODO: this can be removed once experiment is over
-        errorLogger,
-        isCheckoutHookExperimentEnabled,
-    };
+    useEffect(() => {
+        unsubscribeRef.current = checkoutService.subscribe((newCheckoutState) =>
+            setCheckoutState(newCheckoutState),
+        );
+
+        return () => {
+            if (unsubscribeRef.current) {
+                unsubscribeRef.current();
+                unsubscribeRef.current = undefined;
+            }
+        };
+    }, [checkoutService]);
+
+    const contextValue = useMemo(
+        () => ({
+            checkoutService,
+            checkoutState, // TODO: this can be removed once experiment is over
+            errorLogger,
+            isCheckoutHookExperimentEnabled,
+        }),
+        [checkoutService, checkoutState, errorLogger, isCheckoutHookExperimentEnabled],
+    );
 
     return (
         <CheckoutContext.Provider value={contextValue}>
@@ -85,10 +104,12 @@ const CheckoutProvider: React.FC<CheckoutProviderProps> = ({
     ...props
 }) => {
     if (isCheckoutHookExperimentEnabled) {
-        return <CheckoutProviderV2
-            isCheckoutHookExperimentEnabled={isCheckoutHookExperimentEnabled}
-            {...props} 
-        />;
+        return (
+            <CheckoutProviderV2
+                isCheckoutHookExperimentEnabled={isCheckoutHookExperimentEnabled}
+                {...props}
+            />
+        );
     }
 
     return <CheckoutProviderV1 {...props} />;

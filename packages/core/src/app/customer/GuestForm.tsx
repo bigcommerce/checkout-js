@@ -63,13 +63,9 @@ const GuestForm: FunctionComponent<
     setFieldValue,
 }) => {
     const {
-        checkoutState: {
-            data: { getConfig }
-        }
-    } = useCheckout();
+        selectedState: config,
+    } = useCheckout(({ data }) => data.getConfig());
     const { themeV2 } = useThemeContext();
-
-    const config = getConfig();
 
     const renderField = useCallback(
         (fieldProps: FieldProps<boolean>) => (
@@ -190,8 +186,6 @@ const GuestForm: FunctionComponent<
         </Form>
     );
 };
-
-(GuestForm as any).whyDidYouRender = true;
 
 export default withLanguage(
     withFormik<GuestFormProps & WithLanguageProps, GuestFormValues>({

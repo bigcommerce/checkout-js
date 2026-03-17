@@ -59,7 +59,11 @@ const withCheckout = <TMappedProps, TOwnProps>(
             );
 
             if (isCheckoutHookExperimentEnabled) {
-                const mergedProps = { ...(selectedState ?? {}), ...props } as unknown as TProps;
+                if (!selectedState) {
+                    return null;
+                }
+
+                const mergedProps = { ...selectedState, ...props } as unknown as TProps;
 
                 return <InnerDecoratedComponent {...mergedProps} />;
             }

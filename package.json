@@ -190,7 +190,7 @@
     "webpack-subresource-integrity": "^5.1.0",
     "yargs": "^14.0.0"
   },
-  "sideEffects": false,
+  "sideEffects": ["**/wdyr.ts", "**/*.scss"],
   "standard-version": {
     "scripts": {
       "prebump": "./scripts/standard-version/prebump.js"

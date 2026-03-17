@@ -83,6 +83,7 @@ describe('renderCheckout()', () => {
         renderCheckout(options);
 
         expect(require('@welldone-software/why-did-you-render')).toHaveBeenCalledWith(React, {
+            trackAllPureComponents: false,
             collapseGroups: true,
         });
 

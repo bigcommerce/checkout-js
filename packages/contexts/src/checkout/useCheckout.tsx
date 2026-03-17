@@ -1,9 +1,9 @@
-import { useCallback, useContext, useEffect, useRef, useSyncExternalStore } from "react";
-import CheckoutContext, { CheckoutContextProps } from "./CheckoutContext";
-import { CheckoutSelectors } from "@bigcommerce/checkout-sdk";
+import { useCallback, useContext, useEffect, useRef, useSyncExternalStore } from 'react';
+import CheckoutContext, { type CheckoutContextProps } from './CheckoutContext';
+import { type CheckoutSelectors } from '@bigcommerce/checkout-sdk';
 
 export function useCheckout<T>(
-    selectFn?: (state: CheckoutSelectors) => T
+    selectFn?: (state: CheckoutSelectors) => T,
 ): CheckoutContextProps & { selectedState: T | undefined } {
     const context = useContext(CheckoutContext);
 
@@ -30,18 +30,15 @@ export function useCheckout<T>(
             });
 
             return unsubscribe;
-        }
-    , [checkoutService, isCheckoutHookExperimentEnabled]);
+        },
+        [checkoutService, isCheckoutHookExperimentEnabled],
+    );
 
-    const stateSnapshot = useSyncExternalStore(subscribe, checkoutService.getState);
-    
+    const stateSnapshot = useSyncExternalStore(subscribe, () => checkoutService.getState());
+
     return {
         ...context,
-        checkoutState: isCheckoutHookExperimentEnabled
-            ? stateSnapshot
-            : checkoutState,
-        selectedState: selectFn
-            ? selectFn(stateSnapshot)
-            : undefined,
+        checkoutState: isCheckoutHookExperimentEnabled ? stateSnapshot : checkoutState,
+        selectedState: selectFn ? selectFn(stateSnapshot) : undefined,
     };
-};
+}
