@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { useCapabilities, useCheckout, useExtensions } from '@bigcommerce/checkout/contexts';
+import { useCheckout, useExtensions } from '@bigcommerce/checkout/contexts';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
 
 import { CustomError } from '../common/error';
@@ -39,7 +39,6 @@ const ShippingForm = ({
             data: { getConfig },
         },
     } = useCheckout();
-    const { shipping: { hideBillingSameAsShippingCheck } } = useCapabilities();
     const {
         cart,
         consignments,
@@ -56,7 +55,6 @@ const ShippingForm = ({
         shouldShowOrderComments,
         shippingAddress,
         validateMaxLength,
-        signOut,
         updateShippingAddress: updateAddress
     } = useShipping();
     const { extensionState: { shippingFormRenderTimestamp } } = useExtensions();
@@ -113,12 +111,10 @@ const ShippingForm = ({
             deinitialize={deinitialize}
             deleteConsignments={deleteConsignments}
             getFields={getFields}
-            hideBillingSameAsShippingCheck={hideBillingSameAsShippingCheck}
             initialize={initialize}
             isBillingSameAsShipping={isBillingSameAsShipping}
             isInitialValueLoaded={isInitialValueLoaded}
             isLoading={isLoading}
-            isMultiShippingMode={isMultiShippingMode}
             isShippingStepPending={isShippingStepPending}
             methodId={methodId}
             onSubmit={onSingleShippingSubmit}
@@ -126,7 +122,6 @@ const ShippingForm = ({
             shippingAddress={shippingAddress}
             shippingFormRenderTimestamp={shippingFormRenderTimestamp}
             shouldShowOrderComments={shouldShowOrderComments}
-            signOut={signOut}
             updateAddress={updateAddress}
             validateMaxLength={validateMaxLength}
         />
