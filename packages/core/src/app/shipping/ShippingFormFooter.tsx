@@ -13,6 +13,7 @@ import { ShippingOptions } from './shippingOption';
 
 export interface ShippingFormFooterProps {
     cartHasChanged: boolean;
+    defaultShippingExpectationMessage?: string;
     isMultiShippingMode: boolean;
     shouldShowOrderComments: boolean;
     shouldShowShippingOptions?: boolean;
@@ -24,6 +25,7 @@ export interface ShippingFormFooterProps {
 
 const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
     cartHasChanged,
+    defaultShippingExpectationMessage,
     isMultiShippingMode,
     shouldShowOrderComments,
     shouldShowShippingOptions = true,
@@ -61,6 +63,8 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
                     shouldShowShippingOptions={shouldShowShippingOptions}
                 />
             </Fieldset>
+
+            {defaultShippingExpectationMessage && <p>{defaultShippingExpectationMessage}</p>}
 
             {shouldShowOrderComments && <OrderComments />}
 

@@ -45,6 +45,7 @@ const ShippingForm = ({
         consignments,
         countries,
         customerMessage,
+        defaultShippingExpectationMessage,
         deleteConsignments,
         deinitializeShippingMethod: deinitialize,
         getFields,
@@ -108,6 +109,7 @@ const ShippingForm = ({
             cartHasChanged={cartHasChanged}
             consignments={consignments}
             customerMessage={customerMessage}
+            defaultShippingExpectationMessage={defaultShippingExpectationMessage}
             deinitialize={deinitialize}
             deleteConsignments={deleteConsignments}
             getFields={getFields}

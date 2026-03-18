@@ -9,6 +9,7 @@ import getProviderWithCustomCheckout from '../../payment/getProviderWithCustomCh
 import getShippableItemsCount from '../getShippableItemsCount';
 import getShippingMethodId from '../getShippingMethodId';
 import hasPromotionalItems from '../hasPromotionalItems';
+import getBackorderCount from '../../order/getBackorderCount';
 
 const deleteConsignmentsSelector = createSelector(
     ({ checkoutService: { deleteConsignment } }: CheckoutContextProps) => deleteConsignment,
@@ -104,6 +105,8 @@ export const useShipping = () => {
         customer,
         customerMessage: checkout.customerMessage,
         createCustomerAddress: checkoutService.createCustomerAddress,
+        defaultShippingExpectationMessage: getBackorderCount(cart.lineItems) > 0 && config.inventorySettings?.showDefaultShippingExpectationPrompt ?
+            config.inventorySettings.defaultShippingExpectationPrompt : undefined,
         deinitializeShippingMethod: checkoutService.deinitializeShipping,
         deleteConsignments: deleteConsignmentsSelector({
             checkoutService,

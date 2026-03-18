@@ -44,6 +44,7 @@ export interface SingleShippingFormProps {
     cartHasChanged: boolean;
     consignments: Consignment[];
     customerMessage: string;
+    defaultShippingExpectationMessage?: string;
     isLoading: boolean;
     isShippingStepPending: boolean;
     isMultiShippingMode: boolean;
@@ -195,6 +196,7 @@ class SingleShippingForm extends PureComponent<
             isShippingStepPending,
             shippingFormRenderTimestamp,
             validateMaxLength,
+            defaultShippingExpectationMessage,
         } = this.props;
 
         const { isResettingAddress, isUpdatingShippingData, hasRequestedShippingOptions } =
@@ -233,6 +235,7 @@ class SingleShippingForm extends PureComponent<
 
                 <ShippingFormFooter
                     cartHasChanged={cartHasChanged}
+                    defaultShippingExpectationMessage={defaultShippingExpectationMessage}
                     isInitialValueLoaded={isInitialValueLoaded}
                     isLoading={isLoading || isUpdatingShippingData}
                     isMultiShippingMode={false}
