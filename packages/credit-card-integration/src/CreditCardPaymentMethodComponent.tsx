@@ -206,8 +206,11 @@ export const CreditCardPaymentMethodComponent = (
         } = props;
         const { instruments } = getCreditCardPaymentMethodDerivedProps();
         const { selectedInstrumentId } = state;
+        const remainingInstruments = instruments.filter(
+            (instrument) => instrument.bigpayToken !== id,
+        );
 
-        if (instruments.length === 0) {
+        if (remainingInstruments.length === 0) {
             setState({
                 ...state,
                 isAddingNewCard: true,
