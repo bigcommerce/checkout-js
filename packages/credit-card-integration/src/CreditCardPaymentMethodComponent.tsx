@@ -210,6 +210,7 @@ export const CreditCardPaymentMethodComponent = (
             (instrument) => instrument.bigpayToken !== id,
         );
 
+        // TODO: revert to if(instruments.length === 0) after state management issue with delete instrument is resolved
         if (remainingInstruments.length === 0) {
             setState({
                 ...state,
