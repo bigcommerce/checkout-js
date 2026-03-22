@@ -91,6 +91,7 @@ describe('useShipping', () => {
                 {
                     ...getCart(),
                     lineItems: {
+                        ...getCart().lineItems,
                         physicalItems: [
                             {
                                 ...getCart().lineItems.physicalItems[0],

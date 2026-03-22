@@ -95,6 +95,9 @@ export const useShipping = () => {
         config.checkoutSettings.providerWithCustomCheckout,
     );
 
+    const showDefaultShippingExpectationPrompt = getBackorderCount(cart.lineItems) > 0 && config.inventorySettings?.showDefaultShippingExpectationPrompt;
+    const defaultShippingExpectationPrompt = config.inventorySettings?.defaultShippingExpectationPrompt ?? undefined;
+
     return {
         assignItem: checkoutService.assignItemsToAddress,
         billingAddress: getBillingAddress(),
@@ -105,8 +108,7 @@ export const useShipping = () => {
         customer,
         customerMessage: checkout.customerMessage,
         createCustomerAddress: checkoutService.createCustomerAddress,
-        defaultShippingExpectationMessage: getBackorderCount(cart.lineItems) > 0 && config.inventorySettings?.showDefaultShippingExpectationPrompt ?
-            config.inventorySettings.defaultShippingExpectationPrompt : undefined,
+        defaultShippingExpectationMessage: showDefaultShippingExpectationPrompt ? defaultShippingExpectationPrompt : undefined,
         deinitializeShippingMethod: checkoutService.deinitializeShipping,
         deleteConsignments: deleteConsignmentsSelector({
             checkoutService,
