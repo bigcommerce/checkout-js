@@ -37,6 +37,7 @@
             "postal_code_label": "Código postal",
             "postal_code_required_error": "O código postal é obrigatório",
             "save_in_addressbook": "Salve este endereço no meu catálogo de endereços.",
+            "search_addresses": "Search addresses",
             "select_country_action": "Selecione um país",
             "select_state_action": "Selecione um estado",
             "state_label": "Estado/Província",
@@ -48,6 +49,7 @@
         "billing": {
             "billing_address_heading": "Endereço de cobrança",
             "billing_heading": "Faturamento",
+            "no_billing_addresses_warning": "Sorry, you have no billing address to choose from, please go to your address book to create an address or contact your site admin.",
             "save_billing_address_error": "Ocorreu um erro ao salvar o endereço de faturamento na sua cotação. Tente novamente.",
             "billing_address_amazonpay": "Gerenciado pelo Amazon Pay",
             "use_shipping_address_label": "Meu endereço de faturamento é o mesmo do meu endereço de entrega."
@@ -535,6 +537,7 @@
             "save_shipping_address_error": "Ocorreu um erro ao salvar o endereço de envio na sua cotação. Tente novamente.",
             "save_shipping_option_error": "Ocorreu um erro ao salvar a cotação do envio no seu pedido. Tente novamente.",
             "select_shipping_address_text": "Selecione um endereço de entrega para ver os preços de envio",
+            "no_shipping_addresses_warning": "Sorry, you have no shipping address to choose from, please go to your address book to create an address or contact your site admin.",
             "shipping_address_heading": "Endereço de entrega",
             "multishipping_consignment_index_heading": "Destino n.º {consignmentNumber}",
             "multishipping_incomplete_consignment_error": "Preencha o endereço, a alocação do item e a seleção do método para o Destino n<sup>o</sup>{consignmentNumber}.",
