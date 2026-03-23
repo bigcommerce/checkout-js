@@ -101,6 +101,6 @@ function getDefaultValue(fieldType?: string, defaultValue?: string): string | st
 
 function isSystemAddressFieldName(
     fieldName: string,
-): fieldName is Exclude<keyof Address, 'customFields' | 'shouldSaveAddress'> {
-    return fieldName !== 'customFields' && fieldName !== 'shouldSaveAddress';
+): fieldName is Exclude<keyof Address, 'customFields' | 'shouldSaveAddress' | 'extraFields'> {
+    return fieldName !== 'customFields' && fieldName !== 'shouldSaveAddress' && fieldName !== 'extraFields';
 }
