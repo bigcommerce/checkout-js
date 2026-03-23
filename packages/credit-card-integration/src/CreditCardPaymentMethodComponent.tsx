@@ -356,6 +356,12 @@ export const CreditCardPaymentMethodComponent = (
 
     const storeConfig = getStoreConfig();
 
+    const isHostedFormExplicitlySetToFalse = (method: PaymentMethod): boolean => {
+        return (
+            method.config.isHostedFormEnabled !== undefined && !method.config.isHostedFormEnabled
+        );
+    };
+
     if (!storeConfig) {
         throw Error('Unable to get config or customer');
     }
@@ -386,16 +392,19 @@ export const CreditCardPaymentMethodComponent = (
                     />
                 )}
 
-                {shouldShowCreditCardFieldset && !cardFieldset && (
-                    <CreditCardFieldset
-                        shouldShowCardCodeField={
-                            methodProp.config.cardCode || methodProp.config.cardCode === null
-                        }
-                        shouldShowCustomerCodeField={methodProp.config.requireCustomerCode}
-                    />
-                )}
+                {shouldShowCreditCardFieldset &&
+                    (!cardFieldset || isHostedFormExplicitlySetToFalse(methodProp)) && (
+                        <CreditCardFieldset
+                            shouldShowCardCodeField={
+                                methodProp.config.cardCode || methodProp.config.cardCode === null
+                            }
+                            shouldShowCustomerCodeField={methodProp.config.requireCustomerCode}
+                        />
+                    )}
 
-                {shouldShowCreditCardFieldset && cardFieldset}
+                {shouldShowCreditCardFieldset &&
+                    !isHostedFormExplicitlySetToFalse(methodProp) &&
+                    cardFieldset}
 
                 {isInstrumentFeatureAvailableProp && (
                     <StoreInstrumentFieldset
