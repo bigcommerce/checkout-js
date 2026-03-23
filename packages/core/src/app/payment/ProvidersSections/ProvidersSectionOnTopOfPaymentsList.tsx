@@ -19,8 +19,6 @@ const ProviderSection = ({ method }: ProviderSectionProps) => {
     const providerIdPrefix = gateway ? `${gateway}-${id}` : `${id}`;
     const containerId = `${providerIdPrefix}-provider-section-on-top-of-payments-list`;
 
-    console.log('method', method);
-
     return (
         <div id={containerId} />
     );
