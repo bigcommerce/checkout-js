@@ -1,7 +1,7 @@
 import type { CheckoutSelectors } from '@bigcommerce/checkout-sdk';
 import React, { type ReactElement, useEffect } from 'react';
 
-import { useCheckout } from '@bigcommerce/checkout/contexts';
+import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { AddressFormSkeleton } from '@bigcommerce/checkout/ui';
 
@@ -19,6 +19,7 @@ export interface BillingProps {
 
 const Billing = ({ navigateNextStep, onReady, onUnhandledError }:BillingProps): ReactElement => {
     const { checkoutService, checkoutState } = useCheckout();
+    const { userJourney: { hasExtraAddressFields } } = useCapabilities();
 
     const {
         data: {
@@ -28,6 +29,7 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }:BillingProps): 
             getCustomer,
             getBillingAddress,
             getBillingAddressFields,
+            getAddressExtraFormFields,
         },
         statuses: { isLoadingBillingCountries },
     } = checkoutState;
@@ -47,6 +49,7 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }:BillingProps): 
     const methodId  = getBillingMethodId(checkout);
     const billingAddress  = getBillingAddress();
     const getFields  = getBillingAddressFields;
+    const extraFields = hasExtraAddressFields ? getAddressExtraFormFields() : [];
     const handleSubmit = async ({
                                     orderComment,
                                     ...addressValues
@@ -55,7 +58,10 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }:BillingProps): 
         const updateCheckout  = checkoutService.updateCheckout;
         const billingAddress  = getBillingAddress();
         const promises: Array<Promise<CheckoutSelectors>> = [];
-        const address = mapAddressFromFormValues(addressValues);
+        const { extraFields, ...address } = mapAddressFromFormValues(addressValues);
+
+        // TODO: Update extra fields in session storage
+        console.log('extraFields', extraFields);
 
         if (address && !isEqualAddress(address, billingAddress)) {
             promises.push(updateAddress(address));
@@ -115,6 +121,7 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }:BillingProps): 
                 <BillingForm
                     billingAddress={billingAddress}
                     customerMessage={customerMessage}
+                    extraFields={extraFields}
                     getFields={getFields}
                     methodId={methodId}
                     navigateNextStep={navigateNextStep}

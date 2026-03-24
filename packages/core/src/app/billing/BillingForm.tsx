@@ -35,6 +35,7 @@ export interface BillingFormProps {
     methodId?: string;
     billingAddress?: Address;
     customerMessage: string;
+    extraFields: FormField[];
     navigateNextStep(): void;
     onSubmit(values: BillingFormValues): void;
     onUnhandledError(error: Error): void;
@@ -44,6 +45,7 @@ export interface BillingFormProps {
 const BillingForm = ({
     methodId,
     getFields,
+    extraFields,
     billingAddress,
     setFieldValue,
     values,
@@ -71,7 +73,7 @@ const BillingForm = ({
     const isGuest = customer.isGuest;
     const addresses = customer.addresses;
     const shouldRenderStaticAddress = methodId === 'amazonpay';
-    const allFormFields = getFields(values.countryCode);
+    const allFormFields = [...getFields(values.countryCode), ...extraFields];
     const customFormFields = allFormFields.filter(({ custom }) => custom);
     const hasCustomFormFields = customFormFields.length > 0;
     const editableFormFields =
@@ -169,9 +171,9 @@ export default withLanguage(
         handleSubmit: (values, { props: { onSubmit } }) => {
             onSubmit(values);
         },
-        mapPropsToValues: ({ getFields, customerMessage, billingAddress }) => ({
+        mapPropsToValues: ({ getFields, extraFields, customerMessage, billingAddress }) => ({
             ...mapAddressToFormValues(
-                getFields(billingAddress && billingAddress.countryCode),
+                [...getFields(billingAddress && billingAddress.countryCode), ...extraFields],
                 billingAddress,
             ),
             orderComment: customerMessage,

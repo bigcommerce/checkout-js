@@ -118,6 +118,8 @@ const AddressForm: React.FC<AddressFormProps> = ({
                     ref={containerRef}
                 >
                     {formFields.map((field) => {
+                        if (field.hidden) return null;
+
                         const addressFieldName = field.name;
                         const translatedPlaceholderId = PLACEHOLDER[addressFieldName];
 
