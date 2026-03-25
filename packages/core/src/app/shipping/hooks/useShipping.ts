@@ -5,11 +5,11 @@ import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instru
 import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
 
 import { EMPTY_ARRAY, isExperimentEnabled } from '../../common/utility';
+import getBackorderCount from '../../order/getBackorderCount';
 import getProviderWithCustomCheckout from '../../payment/getProviderWithCustomCheckout';
 import getShippableItemsCount from '../getShippableItemsCount';
 import getShippingMethodId from '../getShippingMethodId';
 import hasPromotionalItems from '../hasPromotionalItems';
-import getBackorderCount from '../../order/getBackorderCount';
 
 const deleteConsignmentsSelector = createSelector(
     ({ checkoutService: { deleteConsignment } }: CheckoutContextProps) => deleteConsignment,
@@ -120,7 +120,7 @@ export const useShipping = () => {
         isGuest: customer.isGuest,
         isInitializing: isLoadingShippingCountries() || isLoadingShippingOptions(),
         isLoading,
-        isNoCountriesErrorOnCheckoutEnabled: isExperimentEnabled(config.checkoutSettings, 'CHECKOUT-9630.no_countries_error_on_checkout', false),
+        isNoCountriesErrorOnCheckoutEnabled: isExperimentEnabled(config.checkoutSettings, 'CHECKOUT-9630.no_countries_error_on_checkout', true),
         isShippingStepPending: isShippingStepPending(),
         loadShippingAddressFields: checkoutService.loadShippingAddressFields,
         loadBillingAddressFields: checkoutService.loadBillingAddressFields,
