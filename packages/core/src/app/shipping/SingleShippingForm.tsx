@@ -9,7 +9,7 @@ import {
     type ShippingRequestOptions,
 } from '@bigcommerce/checkout-sdk';
 import { type FormikProps } from 'formik';
-import { debounce, isEqual, noop } from 'lodash';
+import { debounce, type DebouncedFunc, isEqual, noop } from 'lodash';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { lazy, object } from 'yup';
 
@@ -115,6 +115,9 @@ const SingleShippingForm: React.FC<
     const { shipping: { hideBillingSameAsShippingCheck } } = useCapabilities();
 
     const propsRef = useRef({ values, shippingAddress });
+    const debouncedUpdateAddressRef = useRef<
+        DebouncedFunc<(address: Address, includeShippingOptions: boolean) => Promise<void>> | undefined
+    >(undefined);
 
     propsRef.current = { values, shippingAddress };
 
@@ -127,8 +130,6 @@ const SingleShippingForm: React.FC<
             values.shippingAddress?.countryCode,
         ).find(({ name }) => name === 'stateOrProvinceCode');
     }, [getFields, values.shippingAddress?.countryCode]);
-
-    const debouncedUpdateAddressRef = useRef<any>();
 
     useEffect(() => {
         debouncedUpdateAddressRef.current = debounce(
@@ -216,12 +217,9 @@ const SingleShippingForm: React.FC<
 
     const handleFieldChange = async (name: string) => {
         if (name === 'countryCode') {
-            setFieldValue('shippingAddress.stateOrProvince', '');
-            setFieldValue('shippingAddress.stateOrProvinceCode', '');
+            await setFieldValue('shippingAddress.stateOrProvince', '');
+            await setFieldValue('shippingAddress.stateOrProvinceCode', '');
         }
-
-        // Enqueue the following code to run after Formik has run validation
-        await new Promise((resolve) => setTimeout(resolve));
 
         const errors = await validateForm();
         const addressErrors = errors.shippingAddress;
