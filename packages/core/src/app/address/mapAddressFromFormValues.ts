@@ -11,6 +11,11 @@ export default function mapAddressFromFormValues(formValues: AddressFormValues):
         ...address,
         shouldSaveAddress,
         customFields: mapCustomFormFieldsFromFormValues(customFields),
-        extraFields,
+        extraFields: extraFields
+            ? Object.entries(extraFields).map(([id, value]) => ({
+                  fieldId: id,
+                  fieldValue: value,
+              }))
+            : [],
     };
 }
