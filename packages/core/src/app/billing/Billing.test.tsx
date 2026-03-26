@@ -13,6 +13,7 @@ import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
 import {
     AnalyticsProviderMock,
     CheckoutProvider,
+    defaultCapabilities,
     ExtensionProvider,
     type ExtensionServiceInterface,
     LocaleProvider,
@@ -32,6 +33,7 @@ import {
     checkoutWithShippingAndBilling,
     consignment,
     customer,
+    extraAddressFormFields,
     formFields,
     payments,
     shippingAddress,
@@ -133,6 +135,8 @@ describe('Billing step', () => {
         render(<CheckoutTest {...defaultProps} />);
 
         await checkout.waitForBillingStep();
+
+        expect(screen.queryByText(extraAddressFormFields[0].labelName)).not.toBeInTheDocument();
 
         await checkout.fillAddressForm();
 
@@ -291,6 +295,33 @@ describe('Billing step', () => {
         expect(screen.getByText('Custom Checkbox is required')).toBeInTheDocument();
         expect(screen.getByText('Custom Radio is required')).toBeInTheDocument();
         expect(screen.getByText('Custom Dropdown is required')).toBeInTheDocument();
+    });
+
+    it('renders extra address fields when hasExtraAddressFields is enabled', async () => {
+        const configOverrides = {
+            ...checkoutSettings,
+            storeConfig: {
+                ...checkoutSettings.storeConfig,
+                checkoutSettings: {
+                    ...checkoutSettings.storeConfig.checkoutSettings,
+                    capabilities: {
+                        ...defaultCapabilities,
+                        userJourney: {
+                            ...defaultCapabilities.userJourney,
+                            hasExtraAddressFields: true,
+                        },
+                    },
+                },
+            },
+        };
+
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndExtraAddressFields, { config: configOverrides });
+
+        render(<CheckoutTest {...defaultProps} />);
+
+        await checkout.waitForBillingStep();
+
+        expect(screen.getByText(extraAddressFormFields[0].labelName)).toBeInTheDocument();
     });
 
     describe('registered customer', () => {

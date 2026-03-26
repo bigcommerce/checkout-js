@@ -1,4 +1,4 @@
-import { type FormField, type FormFields } from '@bigcommerce/checkout-sdk';
+import { type ExtraField, type FormField, type FormFields } from '@bigcommerce/checkout-sdk';
 
 const formFields: FormFields = {
     billingAddress: [
@@ -471,4 +471,16 @@ const customFormFields: FormField[] = [
     },
 ];
 
-export { formFields, customFormFields };
+const extraAddressFormFields: ExtraField[] = [
+    {
+        id: 1,
+        fieldName: 'b2bExtraField',
+        fieldType: 0,
+        isRequired: false,
+        visibleToEnduser: true,
+        defaultValue: '',
+        labelName: 'B2B Billing Extra',
+    },
+];
+
+export { extraAddressFormFields, formFields, customFormFields };

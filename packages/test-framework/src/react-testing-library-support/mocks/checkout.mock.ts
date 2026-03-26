@@ -480,6 +480,7 @@ enum CheckoutPreset {
     CheckoutWithPromotions = 'CheckoutWithPromotions',
     CheckoutWithShipping = 'CheckoutWithShipping',
     CheckoutWithShippingAndBilling = 'CheckoutWithShippingAndBilling',
+    CheckoutWithShippingAndExtraAddressFields = 'CheckoutWithShippingAndExtraAddressFields',
     CustomErrorFlashMessage = 'CustomErrorFlashMessage',
     ErrorFlashMessage = 'ErrorFlashMessage',
     UnsupportedProvider = 'UnsupportedProvider',

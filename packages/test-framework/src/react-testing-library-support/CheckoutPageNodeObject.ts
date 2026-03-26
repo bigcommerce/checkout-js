@@ -37,6 +37,7 @@ import {
     countries,
     customer,
     customFormFields,
+    extraAddressFormFields,
     formFields,
     payments,
     shippingAddress,
@@ -291,6 +292,20 @@ export class CheckoutPageNodeObject {
                 void checkoutService.hydrateInitialState({
                     ...initialState,
                     checkout: { ...checkoutWithShipping, ...overrides?.checkout },
+                });
+                break;
+
+            case CheckoutPreset.CheckoutWithShippingAndExtraAddressFields:
+                this.server.use(
+                    rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
+                        res(ctx.json(checkoutWithShipping)),
+                    ),
+                );
+
+                void checkoutService.hydrateInitialState({
+                    ...initialState,
+                    checkout: { ...checkoutWithShipping, ...overrides?.checkout },
+                    extraFields: extraAddressFormFields,
                 });
                 break;
 
