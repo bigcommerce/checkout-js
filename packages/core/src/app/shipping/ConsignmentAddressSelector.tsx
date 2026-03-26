@@ -10,6 +10,7 @@ import { EMPTY_ARRAY, isExperimentEnabled } from "../common/utility";
 
 import { AssignItemFailedError, AssignItemInvalidAddressError } from "./errors";
 import GuestCustomerAddressSelector from "./GuestCustomerAddressSelector";
+import { useShipping } from "./hooks/useShipping";
 import { type MultiShippingConsignmentData } from "./MultishippingType";
 import { setRecommendedOrMissingShippingOption } from './utils';
 
@@ -39,7 +40,6 @@ const ConsignmentAddressSelector = ({
                 getCustomer,
                 getConfig,
                 getConsignments: getPreviousConsignments,
-                getShippingAddressFields: getFields,
             },
         },
         checkoutService: {
@@ -48,6 +48,8 @@ const ConsignmentAddressSelector = ({
             selectConsignmentShippingOption,
         },
     } = useCheckout();
+
+    const { getFields } = useShipping();
 
     const customer = getCustomer();
     const config = getConfig();

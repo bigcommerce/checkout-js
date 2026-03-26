@@ -7,6 +7,8 @@ import {
 
 import { DynamicFormFieldType } from '@bigcommerce/checkout/ui';
 
+import { ADDRESS_FIELD_ORDER } from './reorderAddressFormFields';
+
 export type AddressFormValues = Pick<Address, Exclude<AddressKey, 'customFields' | 'extraFields'>> & {
     customFields: { [id: string]: any };
     extraFields?: { [id: string]: any };
@@ -118,8 +120,10 @@ function getDefaultValue(fieldType?: string, defaultValue?: string): string | st
     return defaultValue || '';
 }
 
+const SYSTEM_ADDRESS_FIELD_NAMES: ReadonlySet<string> = new Set(ADDRESS_FIELD_ORDER);
+
 function isSystemAddressFieldName(
     fieldName: string,
-): fieldName is Exclude<keyof Address, 'customFields' | 'shouldSaveAddress' | 'extraFields'> {
-    return fieldName !== 'customFields' && fieldName !== 'shouldSaveAddress' && fieldName !== 'extraFields';
+): fieldName is (typeof ADDRESS_FIELD_ORDER)[number] {
+    return SYSTEM_ADDRESS_FIELD_NAMES.has(fieldName);
 }

@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-import { type CheckoutContextProps, useCheckout } from '@bigcommerce/checkout/contexts';
+import { type CheckoutContextProps, useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
 import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
 
@@ -27,6 +27,7 @@ const deleteConsignmentsSelector = createSelector(
 
 export const useShipping = () => {
     const { checkoutState, checkoutService } = useCheckout();
+    const { userJourney: { hasExtraAddressFields } } = useCapabilities();
 
     const {
         data: {
@@ -39,6 +40,7 @@ export const useShipping = () => {
             getBillingAddress,
             getShippingAddressFields,
             getShippingCountries,
+            getAddressExtraFormFields,
         },
         statuses: {
             isShippingStepPending,
@@ -98,6 +100,18 @@ export const useShipping = () => {
     const showDefaultShippingExpectationPrompt = getBackorderCount(cart.lineItems) > 0 && config.inventorySettings?.showDefaultShippingExpectationPrompt;
     const defaultShippingExpectationPrompt = config.inventorySettings?.defaultShippingExpectationPrompt ?? undefined;
 
+    const getFieldsWithExtraFields = (countryCode?: string) => {
+        const baseFields = getShippingAddressFields(countryCode || '');
+
+        if (!hasExtraAddressFields) {
+            return baseFields;
+        }
+
+        const extraFields = getAddressExtraFormFields();
+
+        return [...baseFields, ...extraFields];
+    };
+
     return {
         assignItem: checkoutService.assignItemsToAddress,
         billingAddress: getBillingAddress(),
@@ -114,8 +128,8 @@ export const useShipping = () => {
             checkoutService,
             checkoutState,
         }),
-        getFields: getShippingAddressFields,
         hasMultiShippingEnabled,
+        getFields: getFieldsWithExtraFields,
         initializeShippingMethod: checkoutService.initializeShipping,
         isGuest: customer.isGuest,
         isInitializing: isLoadingShippingCountries() || isLoadingShippingOptions(),

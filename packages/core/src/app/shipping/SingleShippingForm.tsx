@@ -26,7 +26,7 @@ import {
 } from '../address';
 import { isErrorWithType } from '../common/error';
 import { withFormikExtended } from '../common/form';
-import { getCustomFormFieldsValidationSchema } from '../formFields';
+import { getCustomFormFieldsValidationSchema, getExtraFormFieldsValidationSchema } from '../formFields';
 import { PaymentMethodId } from '../payment/paymentMethod';
 import { Fieldset, Form } from '../ui/form';
 
@@ -156,7 +156,7 @@ const SingleShippingForm: React.FC<
             },
             shippingAutosaveDelay,
         );
-        
+
         return () => {
             debouncedUpdateAddressRef.current?.cancel();
         };
@@ -359,12 +359,20 @@ export default withLanguage(
         }: SingleShippingFormProps & WithLanguageProps) =>
             shouldHaveCustomValidation(methodId)
                 ? object({
-                      shippingAddress: lazy<Partial<AddressFormValues>>((formValues) =>
-                          getCustomFormFieldsValidationSchema({
-                              translate: getTranslateAddressError(getFields(formValues?.countryCode), language),
-                              formFields: getFields(formValues?.countryCode),
-                          }),
-                      ),
+                      shippingAddress: lazy<Partial<AddressFormValues>>((formValues) => {
+                          const fields = getFields(formValues && formValues.countryCode);
+                          const translate = getTranslateAddressError(fields, language);
+
+                          return getCustomFormFieldsValidationSchema({
+                              translate,
+                              formFields: fields,
+                          }).concat(
+                              getExtraFormFieldsValidationSchema({
+                                  translate,
+                                  formFields: fields,
+                              }),
+                          );
+                      }),
                   })
                 : object({
                       shippingAddress: lazy<Partial<AddressFormValues>>((formValues) =>

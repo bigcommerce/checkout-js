@@ -10,6 +10,7 @@ __temp__
 node_modules
 build
 coverage
+/.claude
 /dist-tools
 /packages/**/generated
 /packages/test-framework/report

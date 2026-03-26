@@ -1,5 +1,5 @@
 import { getAddressFormFields } from './formField.mock';
-import { reorderAddressFormFields } from './reorderAddressFormFields';
+import { ADDRESS_FIELD_ORDER, reorderAddressFormFields } from './reorderAddressFormFields';
 
 const createField = (name: string, id = name) => ({
     custom: false,
@@ -15,9 +15,10 @@ describe('reorderAddressFormFields()', () => {
         expect(reorderAddressFormFields([])).toEqual([]);
     });
 
-    it('puts countryCode first, then firstName, lastName, company, address fields, phone last', () => {
+    it('puts country and countryCode first, then firstName, lastName, company, address fields, phone last', () => {
         const fields = [
             createField('firstName'),
+            createField('country'),
             createField('countryCode'),
             createField('company'),
             createField('address1'),
@@ -27,6 +28,7 @@ describe('reorderAddressFormFields()', () => {
         const result = reorderAddressFormFields(fields);
 
         expect(result.map((f) => f.name)).toEqual([
+            'country',
             'countryCode',
             'firstName',
             'company',
@@ -36,11 +38,13 @@ describe('reorderAddressFormFields()', () => {
         ]);
     });
 
-    it('preserves order of non-special fields (rest)', () => {
+    it('places custom fields after all ordered fields', () => {
         const fields = [
+            createField('field_25'),
             createField('address2'),
             createField('stateOrProvince'),
             createField('postalCode'),
+            createField('field_27'),
         ];
         const result = reorderAddressFormFields(fields);
 
@@ -48,6 +52,8 @@ describe('reorderAddressFormFields()', () => {
             'address2',
             'stateOrProvince',
             'postalCode',
+            'field_25',
+            'field_27',
         ]);
     });
 
@@ -86,12 +92,18 @@ describe('reorderAddressFormFields()', () => {
     it('handles missing phone', () => {
         const fields = [
             createField('firstName'),
+            createField('country'),
             createField('countryCode'),
             createField('company'),
         ];
         const result = reorderAddressFormFields(fields);
 
-        expect(result.map((f) => f.name)).toEqual(['countryCode', 'firstName', 'company']);
+        expect(result.map((f) => f.name)).toEqual([
+            'country',
+            'countryCode',
+            'firstName',
+            'company',
+        ]);
     });
 
     it('reorders real address form fields from mock', () => {
@@ -100,9 +112,17 @@ describe('reorderAddressFormFields()', () => {
 
         const names = result.map((f) => f.name);
 
-        expect(names.indexOf('countryCode')).toBe(0);
-        expect(names.indexOf('firstName')).toBe(1);
+        expect(names.indexOf('country')).toBe(0);
+        expect(names.indexOf('countryCode')).toBe(1);
+        expect(names.indexOf('firstName')).toBe(2);
         expect(names).toContain('phone');
         expect(result.length).toBe(fields.length);
+    });
+
+    it('exports ADDRESS_FIELD_ORDER with country before countryCode', () => {
+        expect(ADDRESS_FIELD_ORDER.indexOf('country')).toBeLessThan(
+            ADDRESS_FIELD_ORDER.indexOf('countryCode'),
+        );
+        expect(ADDRESS_FIELD_ORDER[0]).toBe('country');
     });
 });
