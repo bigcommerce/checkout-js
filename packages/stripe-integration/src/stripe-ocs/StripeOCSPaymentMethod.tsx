@@ -126,7 +126,7 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                     layout: {
                         type: isCustomChecklistItem ? 'accordion' : 'auto',
                         defaultCollapsed: selectedItemId !== methodSelector,
-                        radios: true,
+                        radios: 'always',
                         linkInAccordion: true,
                         spacedAccordionItems: !!themeV2,
                         visibleAccordionItemsCount: 0,
