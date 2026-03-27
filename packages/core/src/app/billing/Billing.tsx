@@ -58,10 +58,7 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }:BillingProps): 
         const updateCheckout  = checkoutService.updateCheckout;
         const billingAddress  = getBillingAddress();
         const promises: Array<Promise<CheckoutSelectors>> = [];
-        const { extraFields, ...address } = mapAddressFromFormValues(addressValues);
-
-        // TODO: Update extra fields in session storage
-        console.log('extraFields', extraFields);
+        const address = mapAddressFromFormValues(addressValues);
 
         if (address && !isEqualAddress(address, billingAddress)) {
             promises.push(updateAddress(address));
