@@ -68,6 +68,40 @@ interface PaymentMethodSelectionParams {
     paymentProviderCustomer?: PaymentProviderCustomer;
 }
 
+const groupMethodsByPrefix = (methods: PaymentMethod[], prefix: string): PaymentMethod[] => {
+    const group = methods.filter((m) => m.id.startsWith(prefix));
+
+    if (group.length <= 1) {
+        return methods;
+    }
+
+    const sorted = [...group].sort((a, b) => {
+        const toNum = (id: string) => parseInt(id.slice(prefix.length), 10) || 0;
+
+        return toNum(a.id) - toNum(b.id);
+    });
+
+    const [first] = sorted;
+    const representative: PaymentMethod = {
+        ...first,
+        config: {
+            ...first.config,
+            displayName: first.config.displayName?.replace(/^\d+x\s+/i, '') ?? first.config.displayName,
+        },
+        initializationData: {
+            ...(first.initializationData as Record<string, unknown>),
+            groupedMethods: sorted,
+        },
+    };
+
+    return methods.flatMap((m) => {
+        if (!m.id.startsWith(prefix)) return [m];
+        if (m.id === first.id) return [representative];
+
+        return [];
+    });
+};
+
 const getDefaultPaymentMethod = ({
     checkout,
     consignments,
@@ -76,7 +110,6 @@ const getDefaultPaymentMethod = ({
     paymentProviderCustomer,
 }: PaymentMethodSelectionParams): { filteredMethods: PaymentMethod[]; defaultMethod?: PaymentMethod } => {
     let filteredMethods = methods;
-
     // TODO: In accordance with the checkout team, this functionality is temporary and will be implemented in the backend instead.
     if (paymentProviderCustomer?.stripeLinkAuthenticationState) {
         const stripeUpePaymentMethod = filteredMethods.filter(
@@ -93,6 +126,10 @@ const getDefaultPaymentMethod = ({
 
         return method.id !== PaymentMethodId.BraintreeLocalPaymentMethod;
     });
+
+  const GROUPED_METHOD_ID_PREFIXES = ['facilypay_'];
+
+  filteredMethods = GROUPED_METHOD_ID_PREFIXES.reduce(groupMethodsByPrefix, filteredMethods);
 
     if (consignments && consignments.length > 1) {
         const multiShippingIncompatibleMethodIds: string[] = [
