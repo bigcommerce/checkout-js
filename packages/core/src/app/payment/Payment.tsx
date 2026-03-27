@@ -64,6 +64,7 @@ interface PaymentMethodSelectionParams {
     checkout: Checkout;
     methods: PaymentMethod[];
     consignments?: Consignment[];
+    checkoutSettings?: CheckoutSettings;
     getPaymentMethod: (methodId: string, gatewayId?: string) => PaymentMethod | undefined;
     paymentProviderCustomer?: PaymentProviderCustomer;
 }
@@ -104,6 +105,7 @@ const groupMethodsByPrefix = (methods: PaymentMethod[], prefix: string): Payment
 
 const getDefaultPaymentMethod = ({
     checkout,
+    checkoutSettings,
     consignments,
     getPaymentMethod,
     methods,
@@ -127,9 +129,11 @@ const getDefaultPaymentMethod = ({
         return method.id !== PaymentMethodId.BraintreeLocalPaymentMethod;
     });
 
-  const GROUPED_METHOD_ID_PREFIXES = ['facilypay_'];
+  if (isExperimentEnabled(checkoutSettings, 'PAYMENTS-XXXX.oney_facilypay_grouping', false)) {
+      const GROUPED_METHOD_ID_PREFIXES = ['facilypay_'];
 
-  filteredMethods = GROUPED_METHOD_ID_PREFIXES.reduce(groupMethodsByPrefix, filteredMethods);
+      filteredMethods = GROUPED_METHOD_ID_PREFIXES.reduce(groupMethodsByPrefix, filteredMethods);
+  }
 
     if (consignments && consignments.length > 1) {
         const multiShippingIncompatibleMethodIds: string[] = [
@@ -587,6 +591,7 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
             const defaultMethod = checkout
                 ? getDefaultPaymentMethod({
                       checkout,
+                      checkoutSettings: updatedState.data.getConfig()?.checkoutSettings,
                       consignments: updatedState.data.getConsignments(),
                       getPaymentMethod: updatedState.data.getPaymentMethod,
                       methods,
