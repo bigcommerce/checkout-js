@@ -1,5 +1,5 @@
 import type { CheckoutSelectors } from '@bigcommerce/checkout-sdk';
-import React, { type ReactElement, useEffect } from 'react';
+import React, { type ReactElement, useCallback, useEffect } from 'react';
 
 import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -48,8 +48,6 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }:BillingProps): 
     const customerMessage  = checkout.customerMessage;
     const methodId  = getBillingMethodId(checkout);
     const billingAddress  = getBillingAddress();
-    const getFields  = getBillingAddressFields;
-    const extraFields = hasExtraAddressFields ? getAddressExtraFormFields() : [];
     const handleSubmit = async ({
                                     orderComment,
                                     ...addressValues
@@ -94,6 +92,19 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }:BillingProps): 
         void init();
     }, []);
 
+    const getFieldsWithExtraFields = useCallback((countryCode?: string) => {
+        const addressFields = getBillingAddressFields(countryCode || '');
+
+        if (!hasExtraAddressFields) {
+            return addressFields;
+        }
+
+        const extraAddressFields = getAddressExtraFormFields();
+
+        return [...addressFields, ...extraAddressFields];
+    }, [getBillingAddressFields, getAddressExtraFormFields, hasExtraAddressFields]);
+    
+
     // TODO: Show warning message when restrictManualAddressEntry is true and no addresses are available
     // Yet to decide where we get the addresses from in b2b flow??
     // const hasAddresses = customer?.addresses && customer.addresses.length > 0;
@@ -118,8 +129,7 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }:BillingProps): 
                 <BillingForm
                     billingAddress={billingAddress}
                     customerMessage={customerMessage}
-                    extraFields={extraFields}
-                    getFields={getFields}
+                    getFields={getFieldsWithExtraFields}
                     methodId={methodId}
                     navigateNextStep={navigateNextStep}
                     onSubmit={handleSubmit}
