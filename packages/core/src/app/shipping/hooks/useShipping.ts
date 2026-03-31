@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { createSelector } from 'reselect';
 
 import { type CheckoutContextProps, useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
@@ -100,17 +101,17 @@ export const useShipping = () => {
     const showDefaultShippingExpectationPrompt = getBackorderCount(cart.lineItems) > 0 && config.inventorySettings?.showDefaultShippingExpectationPrompt;
     const defaultShippingExpectationPrompt = config.inventorySettings?.defaultShippingExpectationPrompt ?? undefined;
 
-    const getFieldsWithExtraFields = (countryCode?: string) => {
-        const baseFields = getShippingAddressFields(countryCode || '');
+    const getFieldsWithExtraFields = useCallback((countryCode?: string) => {
+        const addressFields = getShippingAddressFields(countryCode || '');
 
         if (!hasExtraAddressFields) {
-            return baseFields;
+            return addressFields;
         }
 
-        const extraFields = getAddressExtraFormFields();
+        const extraAddressFields = getAddressExtraFormFields();
 
-        return [...baseFields, ...extraFields];
-    };
+        return [...addressFields, ...extraAddressFields];
+    }, [getShippingAddressFields, getAddressExtraFormFields, hasExtraAddressFields]);
 
     return {
         assignItem: checkoutService.assignItemsToAddress,

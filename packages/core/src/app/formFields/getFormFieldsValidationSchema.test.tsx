@@ -209,39 +209,11 @@ describe('getFormFieldsValidationSchema', () => {
     });
 
     describe('extra form fields', () => {
-        it('excludes extra fields from base system field validation', async () => {
-            const formFieldsWithExtra = [
-                ...formFields,
-                {
-                    custom: true,
-                    default: '',
-                    id: 'b2bExtraField_100',
-                    label: 'Company Name',
-                    name: 'b2bExtraField_100',
-                    required: true,
-                } as any,
-            ];
-
-            const schema = getFormFieldsValidationSchema({
-                formFields: formFieldsWithExtra,
-                translate,
-            });
-
-            const error = await schema
-                .validate({
-                    ...getShippingAddress(),
-                    extraFields: { b2bExtraField_100: '' },
-                })
-                .catch((e: ValidationError) => e.message);
-
-            expect(error).toBeDefined();
-        });
-
         it('validates extra fields via the concatenated extra schema', async () => {
             const formFieldsWithExtra = [
                 ...formFields,
                 {
-                    custom: true,
+                    custom: false,
                     default: '',
                     id: 'b2bExtraField_100',
                     label: 'Company Name',
@@ -275,7 +247,7 @@ describe('getFormFieldsValidationSchema', () => {
             const formFieldsWithExtra = [
                 ...formFields,
                 {
-                    custom: true,
+                    custom: false,
                     default: '',
                     id: 'b2bExtraField_100',
                     label: 'Company Name',
@@ -298,6 +270,93 @@ describe('getFormFieldsValidationSchema', () => {
                 .then(spy);
 
             expect(spy).toHaveBeenCalled();
+        });
+
+        describe('integer extra fields', () => {
+            const formFieldsWithIntegerExtra = [
+                ...getFormFields(),
+                {
+                    custom: false,
+                    default: '',
+                    id: 'b2bExtraField_200',
+                    label: 'Employee Count',
+                    name: 'b2bExtraField_200',
+                    required: true,
+                    type: 'integer',
+                    max: 100,
+                } as any,
+            ];
+
+            it('validates max for extra integer field', async () => {
+                const schema = getFormFieldsValidationSchema({
+                    formFields: formFieldsWithIntegerExtra,
+                    translate,
+                });
+
+                const error = await schema
+                    .validate({
+                        ...getShippingAddress(),
+                        extraFields: { b2bExtraField_200: 101 },
+                    })
+                    .catch((e: ValidationError) => e.message);
+
+                expect(translate).toHaveBeenCalledWith('max', {
+                    label: 'Employee Count',
+                    name: 'b2bExtraField_200',
+                    max: 100,
+                });
+                expect(error).toBeDefined();
+            });
+
+            it('does not validate min for extra integer field', async () => {
+                const formFieldsWithMin = [
+                    ...getFormFields(),
+                    {
+                        custom: false,
+                        default: '',
+                        id: 'b2bExtraField_200',
+                        label: 'Employee Count',
+                        name: 'b2bExtraField_200',
+                        required: false,
+                        type: 'integer',
+                        min: 5,
+                    } as any,
+                ];
+                const schema = getFormFieldsValidationSchema({
+                    formFields: formFieldsWithMin,
+                    translate,
+                });
+                const spy = jest.fn();
+
+                await schema
+                    .validate({
+                        ...getShippingAddress(),
+                        extraFields: { b2bExtraField_200: 1 },
+                    })
+                    .then(spy);
+
+                expect(spy).toHaveBeenCalled();
+            });
+
+            it('validates required extra integer field', async () => {
+                const schema = getFormFieldsValidationSchema({
+                    formFields: formFieldsWithIntegerExtra,
+                    translate,
+                });
+
+                const error = await schema
+                    .validate({
+                        ...getShippingAddress(),
+                        extraFields: { b2bExtraField_200: undefined },
+                    })
+                    .catch((e: ValidationError) => e.message);
+
+                expect(translate).toHaveBeenCalledWith('required', {
+                    label: 'Employee Count',
+                    name: 'b2bExtraField_200',
+                });
+                expect(error).toBeDefined();
+            });
         });
     });
 

@@ -15,32 +15,35 @@ describe('mapAddressFromFormValues', () => {
         expect(mapAddressFromFormValues(formValues)).toMatchObject(getShippingAddress());
     });
 
-    it('strips extra fields with b2bExtraField_ prefix from the result', () => {
+    it('strips extraFields from the result', () => {
         const formValues: AddressFormValues = {
             ...omit(getShippingAddress(), 'customFields'),
             customFields: {},
-            b2bExtraField_100: 'Acme Corp',
-            b2bExtraField_200: 'Engineering',
+            extraFields: {
+                b2bExtraField_100: 'Acme Corp',
+                b2bExtraField_200: 'Engineering',
+            },
         };
 
         const result = mapAddressFromFormValues(formValues);
 
-        expect(result).not.toHaveProperty('b2bExtraField_100');
-        expect(result).not.toHaveProperty('b2bExtraField_200');
+        expect(result).not.toHaveProperty('extraFields');
     });
 
-    it('preserves non-extra fields when stripping extra fields', () => {
+    it('preserves non-extra fields when stripping extraFields', () => {
         const formValues: AddressFormValues = {
             ...omit(getShippingAddress(), 'customFields'),
             customFields: {},
-            b2bExtraField_100: 'Acme Corp',
+            extraFields: {
+                b2bExtraField_100: 'Acme Corp',
+            },
         };
 
         const result = mapAddressFromFormValues(formValues);
 
         expect(result.firstName).toBe(getShippingAddress().firstName);
         expect(result.lastName).toBe(getShippingAddress().lastName);
-        expect(result).not.toHaveProperty('b2bExtraField_100');
+        expect(result).not.toHaveProperty('extraFields');
     });
 
     it('converts formats date values to YYYY-MM-DD format', () => {

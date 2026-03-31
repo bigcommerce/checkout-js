@@ -1,7 +1,6 @@
 import { type FormField } from '@bigcommerce/checkout-sdk';
 
-export const ADDRESS_FIELD_ORDER = [
-    'country',
+const ADDRESS_FIELD_ORDER = [
     'countryCode',
     'firstName',
     'lastName',
@@ -13,9 +12,8 @@ export const ADDRESS_FIELD_ORDER = [
     'stateOrProvinceCode',
     'postalCode',
     'phone',
-] as const;
-
-const ORDERED_NAMES = new Set<string>(ADDRESS_FIELD_ORDER);
+];
+const ORDERED_NAMES = new Set(ADDRESS_FIELD_ORDER);
 
 export function reorderAddressFormFields(formFields: FormField[]): FormField[] {
     const formFieldsMap = new Map(formFields.map((field) => [field.name, field]));

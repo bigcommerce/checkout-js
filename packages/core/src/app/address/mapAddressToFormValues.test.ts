@@ -24,7 +24,7 @@ describe('mapAddressToFormValues', () => {
         const fields: FormField[] = [
             ...getFormFields(),
             {
-                custom: true,
+                custom: false,
                 default: 'Acme Corp',
                 id: 'b2bExtraField_100',
                 label: 'Company Name',
@@ -32,7 +32,7 @@ describe('mapAddressToFormValues', () => {
                 required: false,
             },
             {
-                custom: true,
+                custom: false,
                 default: 'Engineering',
                 id: 'b2bExtraField_200',
                 label: 'Department',
@@ -47,29 +47,11 @@ describe('mapAddressToFormValues', () => {
         expect(result.extraFields?.b2bExtraField_200).toBe('Engineering');
     });
 
-    it('uses default value for extra field', () => {
-        const fields: FormField[] = [
-            ...getFormFields(),
-            {
-                custom: true,
-                default: 'Default Co',
-                id: 'b2bExtraField_100',
-                label: 'Company Name',
-                name: 'b2bExtraField_100',
-                required: false,
-            },
-        ];
-
-        const result = mapAddressToFormValues(fields);
-
-        expect(result.extraFields?.b2bExtraField_100).toBe('Default Co');
-    });
-
     it('uses empty string when extra field has no default', () => {
         const fields: FormField[] = [
             ...getFormFields(),
             {
-                custom: true,
+                custom: false,
                 default: '',
                 id: 'b2bExtraField_100',
                 label: 'Company Name',
@@ -81,24 +63,5 @@ describe('mapAddressToFormValues', () => {
         const result = mapAddressToFormValues(fields);
 
         expect(result.extraFields?.b2bExtraField_100).toBe('');
-    });
-
-    it('does not put extra fields into customFields', () => {
-        const fields: FormField[] = [
-            ...getFormFields(),
-            {
-                custom: true,
-                default: 'Acme Corp',
-                id: 'b2bExtraField_100',
-                label: 'Company Name',
-                name: 'b2bExtraField_100',
-                required: false,
-            },
-        ];
-
-        const result = mapAddressToFormValues(fields);
-
-        expect(result.customFields).not.toHaveProperty('b2bExtraField_100');
-        expect(result.extraFields?.b2bExtraField_100).toBe('Acme Corp');
     });
 });

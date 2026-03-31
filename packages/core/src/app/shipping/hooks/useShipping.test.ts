@@ -207,7 +207,7 @@ describe('useShipping', () => {
             },
         ];
 
-        it('returns base fields combined with extra fields when hasExtraAddressFields is true', () => {
+        it('returns system fields combined with extra fields when hasExtraAddressFields is true', () => {
             jest.spyOn(contexts, 'useCapabilities').mockReturnValue({
                 ...defaultCapabilities,
                 userJourney: { ...defaultCapabilities.userJourney, hasExtraAddressFields: true },
@@ -217,13 +217,13 @@ describe('useShipping', () => {
             const { result } = renderHook(() => useShipping());
             const fields = result.current.getFields('US');
 
-            const baseFields = getAddressFormFields();
+            const addressFormFields = getAddressFormFields();
 
-            expect(fields.length).toBe(baseFields.length + extraFields.length);
+            expect(fields.length).toBe(addressFormFields.length + extraFields.length);
             expect(fields[fields.length - 1].name).toBe('b2bExtraField_100');
         });
 
-        it('returns only base fields when hasExtraAddressFields is false even if extra fields exist', () => {
+        it('returns only system fields when hasExtraAddressFields is false even if extra fields exist', () => {
             jest.spyOn(contexts, 'useCapabilities').mockReturnValue({
                 ...defaultCapabilities,
                 userJourney: { ...defaultCapabilities.userJourney, hasExtraAddressFields: false },
@@ -236,7 +236,7 @@ describe('useShipping', () => {
             expect(fields.length).toBe(getAddressFormFields().length);
         });
 
-        it('returns only base fields when no extra fields exist', () => {
+        it('returns only system fields when no extra fields exist', () => {
             jest.spyOn(contexts, 'useCapabilities').mockReturnValue({
                 ...defaultCapabilities,
                 userJourney: { ...defaultCapabilities.userJourney, hasExtraAddressFields: true },

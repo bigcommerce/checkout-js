@@ -17,25 +17,17 @@ export default memoize(function getExtraFormFieldsValidationSchema({
         extraFields: object(
             formFields
                 .filter((field) => isExtraFormField(field))
-                .reduce<Record<string, Schema<unknown>>>((schema, { name, label, required, type, maxLength, max, min }) => {
+                .reduce<Record<string, Schema<unknown>>>((schema, { name, label, required, type, maxLength, max }) => {
                     if (type === 'integer') {
                         let fieldSchema = number()
                             .transform((value) => (isNaN(value) ? undefined : value));
 
                         const maxValue = typeof max === 'number' ? max : undefined;
-                        const minValue = typeof min === 'number' ? min : undefined;
 
                         if (maxValue !== undefined) {
                             fieldSchema = fieldSchema.max(
                                 maxValue,
                                 translate('max', { label, name, max: maxValue }),
-                            );
-                        }
-
-                        if (minValue !== undefined) {
-                            fieldSchema = fieldSchema.min(
-                                minValue,
-                                translate('min', { label, name, min: minValue }),
                             );
                         }
 

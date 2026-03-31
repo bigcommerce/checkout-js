@@ -10,38 +10,10 @@ describe('getExtraFormFieldsValidationSchema', () => {
         translate = jest.fn();
     });
 
-    it('ignores non-extra fields', async () => {
-        const formFields: FormField[] = [
-            {
-                custom: false,
-                default: '',
-                id: 'firstName',
-                label: 'First Name',
-                name: 'firstName',
-                required: true,
-            },
-            {
-                custom: true,
-                default: '',
-                id: 'field_25',
-                label: 'Custom Field',
-                name: 'field_25',
-                required: false,
-            },
-        ];
-
-        const schema = getExtraFormFieldsValidationSchema({ formFields, translate });
-        const spy = jest.fn();
-
-        await schema.validate({}).then(spy);
-
-        expect(spy).toHaveBeenCalled();
-    });
-
     describe('string extra fields', () => {
         const formFields: FormField[] = [
             {
-                custom: true,
+                custom: false,
                 default: '',
                 id: 'b2bExtraField_100',
                 label: 'Company Name',
@@ -91,7 +63,7 @@ describe('getExtraFormFieldsValidationSchema', () => {
     describe('integer extra fields', () => {
         const formFields: FormField[] = [
             {
-                custom: true,
+                custom: false,
                 default: '',
                 id: 'b2bExtraField_200',
                 label: 'Employee Count',
@@ -99,7 +71,6 @@ describe('getExtraFormFieldsValidationSchema', () => {
                 required: true,
                 type: 'integer',
                 max: 100,
-                min: 1,
             } as FormField,
         ];
 
@@ -130,20 +101,6 @@ describe('getExtraFormFieldsValidationSchema', () => {
             expect(error).toBeDefined();
         });
 
-        it('validates min for integer field', async () => {
-            const schema = getExtraFormFieldsValidationSchema({ formFields, translate });
-            const error = await schema
-                .validate({ extraFields: { b2bExtraField_200: 0 } })
-                .catch((e) => e.message);
-
-            expect(translate).toHaveBeenCalledWith('min', {
-                name: 'b2bExtraField_200',
-                label: 'Employee Count',
-                min: 1,
-            });
-            expect(error).toBeDefined();
-        });
-
         it('passes for a valid integer value', async () => {
             const schema = getExtraFormFieldsValidationSchema({ formFields, translate });
             const spy = jest.fn();
@@ -158,7 +115,7 @@ describe('getExtraFormFieldsValidationSchema', () => {
         it('passes when optional string field is empty', async () => {
             const formFields: FormField[] = [
                 {
-                    custom: true,
+                    custom: false,
                     default: '',
                     id: 'b2bExtraField_300',
                     label: 'Notes',
@@ -178,7 +135,7 @@ describe('getExtraFormFieldsValidationSchema', () => {
         it('passes when optional integer field is undefined', async () => {
             const formFields: FormField[] = [
                 {
-                    custom: true,
+                    custom: false,
                     default: '',
                     id: 'b2bExtraField_400',
                     label: 'Score',
