@@ -1,5 +1,5 @@
-import type { CheckoutSelectors } from '@bigcommerce/checkout-sdk';
-import React, { type ReactElement, useCallback, useEffect } from 'react';
+import type { CheckoutSelectors, FormField } from '@bigcommerce/checkout-sdk';
+import React, { type ReactElement, useEffect } from 'react';
 
 import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -16,6 +16,18 @@ export interface BillingProps {
     onReady(): void;
     onUnhandledError(error: Error): void;
 }
+
+const getFieldsWithExtraFields = (getBillingAddressFields: (countryCode: string) => FormField[], hasExtraAddressFields: boolean, getAddressExtraFormFields: () => FormField[], countryCode?: string) => {
+    const addressFields = getBillingAddressFields(countryCode || '');
+
+    if (!hasExtraAddressFields) {
+        return addressFields;
+    }
+
+    const extraAddressFields = getAddressExtraFormFields();
+
+    return [...addressFields, ...extraAddressFields];
+};
 
 const Billing = ({ navigateNextStep, onReady, onUnhandledError }:BillingProps): ReactElement => {
     const { checkoutService, checkoutState } = useCheckout();
@@ -92,19 +104,6 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }:BillingProps): 
         void init();
     }, []);
 
-    const getFieldsWithExtraFields = useCallback((countryCode?: string) => {
-        const addressFields = getBillingAddressFields(countryCode || '');
-
-        if (!hasExtraAddressFields) {
-            return addressFields;
-        }
-
-        const extraAddressFields = getAddressExtraFormFields();
-
-        return [...addressFields, ...extraAddressFields];
-    }, [getBillingAddressFields, getAddressExtraFormFields, hasExtraAddressFields]);
-    
-
     // TODO: Show warning message when restrictManualAddressEntry is true and no addresses are available
     // Yet to decide where we get the addresses from in b2b flow??
     // const hasAddresses = customer?.addresses && customer.addresses.length > 0;
@@ -129,7 +128,7 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }:BillingProps): 
                 <BillingForm
                     billingAddress={billingAddress}
                     customerMessage={customerMessage}
-                    getFields={getFieldsWithExtraFields}
+                    getFields={(countryCode?: string) => getFieldsWithExtraFields(getBillingAddressFields, hasExtraAddressFields, getAddressExtraFormFields, countryCode)}
                     methodId={methodId}
                     navigateNextStep={navigateNextStep}
                     onSubmit={handleSubmit}
