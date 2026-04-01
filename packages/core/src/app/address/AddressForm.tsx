@@ -92,7 +92,6 @@ const AddressForm: React.FC<AddressFormProps> = ({
             }
 
             setFieldValue(fieldName, value as string);
-            onChange(fieldName, value as string);
         });
 
         const address1 = address.address1 ? address.address1 : autocompleteValue;
@@ -100,7 +99,7 @@ const AddressForm: React.FC<AddressFormProps> = ({
         if (address1) {
             syncNonFormikValue(AUTOCOMPLETE_FIELD_NAME, address1);
         }
-    }, [countries, setFieldValue, onChange, syncNonFormikValue]);
+    }, [countries, setFieldValue, syncNonFormikValue]);
 
     const getPlaceholderValue = useCallback((field: FormField, translatedPlaceholderId: string): string => {
         if (field.default && field.fieldType !== 'dropdown') {

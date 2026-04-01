@@ -216,9 +216,15 @@ const SingleShippingForm: React.FC<
     };
 
     const handleFieldChange = async (name: string) => {
-        if (name === 'countryCode') {
-            await setFieldValue('shippingAddress.stateOrProvince', '');
-            await setFieldValue('shippingAddress.stateOrProvinceCode', '');
+        if (name === 'countryCode' && propsRef.current.values.shippingAddress) {
+            setValues({
+                ...propsRef.current.values,
+                shippingAddress: {
+                    ...propsRef.current.values.shippingAddress,
+                    stateOrProvince: '',
+                    stateOrProvinceCode: '',
+                },
+            });
         }
 
         const errors = await validateForm();
