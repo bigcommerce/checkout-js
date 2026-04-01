@@ -285,5 +285,5 @@ const WorldpayCreditCardPaymentMethod: FunctionComponent<PaymentMethodProps> = (
 
 export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>(
     WorldpayCreditCardPaymentMethod,
-    [{ id: 'worldpayaccess' }],
+    [{ id: 'credit_card', gateway: 'worldpayaccess' }, { id: 'worldpayaccess' }],
 );
