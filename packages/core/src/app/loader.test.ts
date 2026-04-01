@@ -95,22 +95,6 @@ describe('loadFiles', () => {
         });
     });
 
-    it('loads required JS files listed in manifest when experiment is off', async () => {
-        await loadFiles({
-            ...options,
-            isIntegrityHashExperimentEnabled: false,
-        });
-
-        expect(getScriptLoader().loadScript).toHaveBeenCalledWith('https://cdn.foo.bar/vendor.js', {
-            async: false,
-            attributes: {},
-        });
-        expect(getScriptLoader().loadScript).toHaveBeenCalledWith('https://cdn.foo.bar/main.js', {
-            async: false,
-            attributes: {},
-        });
-    });
-
     it('loads required CSS files listed in manifest', async () => {
         await loadFiles(options);
 
@@ -127,19 +111,6 @@ describe('loadFiles', () => {
                 crossorigin: 'anonymous',
                 integrity: 'hash-main-css',
             },
-        });
-    });
-
-    it('loads required CSS files listed in manifest when experiment is off', async () => {
-        await loadFiles(options);
-
-        expect(getStylesheetLoader().loadStylesheet).toHaveBeenCalledWith('https://cdn.foo.bar/vendor.css', {
-            prepend: true,
-            attributes: {},
-        });
-        expect(getStylesheetLoader().loadStylesheet).toHaveBeenCalledWith('https://cdn.foo.bar/main.css', {
-            prepend: true,
-            attributes: {},
         });
     });
 
@@ -210,7 +181,6 @@ describe('loadFiles', () => {
     it('initializes language service with default translations', async () => {
         await loadFiles({
             ...options,
-            isCspNonceExperimentEnabled: true,
         });
 
         expect(appExports.initializeLanguageService).toHaveBeenCalledWith({
@@ -218,7 +188,6 @@ describe('loadFiles', () => {
             locale: expect.any(String),
             locales: expect.any(Object),
             translations: expect.any(Object),
-            isCspNonceExperimentEnabled: true,
         });
     });
 });
