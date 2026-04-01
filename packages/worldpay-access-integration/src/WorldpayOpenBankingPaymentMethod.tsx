@@ -1,5 +1,5 @@
 import { createWorldpayAccessOpenBankingPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/worldpayaccess';
-import { type FunctionComponent, useCallback, useEffect } from 'react';
+import { type FunctionComponent, useEffect } from 'react';
 
 import {
     type PaymentMethodProps,
@@ -10,29 +10,43 @@ import {
 const WorldpayOpenBankingPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     method,
     checkoutService: { initializePayment, deinitializePayment },
+    onUnhandledError,
 }) => {
-    const initializeOpenBanking = useCallback(async () => {
-        await initializePayment({
-            gatewayId: method.gateway,
-            methodId: method.id,
-            integrations: [createWorldpayAccessOpenBankingPaymentStrategy],
-        });
-    }, [initializePayment, method]);
-
-    const deinitializeOpenBanking = useCallback(async () => {
-        await deinitializePayment({
-            gatewayId: method.gateway,
-            methodId: method.id,
-        });
-    }, [deinitializePayment, method.gateway, method.id]);
-
     useEffect(() => {
+        const initializeOpenBanking = async () => {
+            try {
+                await initializePayment({
+                    gatewayId: method.gateway,
+                    methodId: method.id,
+                    integrations: [createWorldpayAccessOpenBankingPaymentStrategy],
+                });
+            } catch (error) {
+                if (error instanceof Error) {
+                    onUnhandledError(error);
+                }
+            }
+        };
+
         void initializeOpenBanking();
 
         return () => {
+            const deinitializeOpenBanking = async () => {
+                try {
+                    await deinitializePayment({
+                        gatewayId: method.gateway,
+                        methodId: method.id,
+                    });
+                } catch (error) {
+                    if (error instanceof Error) {
+                        onUnhandledError(error);
+                    }
+                }
+            };
+
             void deinitializeOpenBanking();
         };
-    }, [deinitializeOpenBanking, initializeOpenBanking]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return null;
 };

@@ -25,6 +25,13 @@ export default function getPaymentMethodDisplayName(
         }
 
         if (
+            method.gateway === PaymentMethodId.WorldpayAccess &&
+            method.id === 'open_banking'
+        ) {
+            return language.translate('payment.open_banking_display_name_text');
+        }
+
+        if (
             (isCreditCard && method.id === PaymentMethodId.AdyenV2) ||
             method.id === PaymentMethodId.AdyenV3
         ) {
