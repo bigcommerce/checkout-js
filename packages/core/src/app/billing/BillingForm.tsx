@@ -17,6 +17,7 @@ import {
   type AddressFormValues,
   AddressSelect,
   AddressType,
+  B2BExtraAddressFieldsSessionStorage,
   getAddressFormFieldsValidationSchema,
   getTranslateAddressError,
   isValidCustomerAddress,
@@ -171,7 +172,11 @@ export default withLanguage(
             onSubmit(values);
         },
         mapPropsToValues: ({ getFields, customerMessage, billingAddress }) => ({
-            ...mapAddressToFormValues(getFields(billingAddress && billingAddress.countryCode), billingAddress),
+            ...mapAddressToFormValues(
+                getFields(billingAddress && billingAddress.countryCode),
+                billingAddress,
+                B2BExtraAddressFieldsSessionStorage.BILLING_KEY,
+            ),
             orderComment: customerMessage,
         }),
         isInitialValid: ({ billingAddress, getFields, language }) =>

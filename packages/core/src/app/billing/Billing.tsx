@@ -5,7 +5,7 @@ import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { AddressFormSkeleton } from '@bigcommerce/checkout/ui';
 
-import { isEqualAddress, mapAddressFromFormValues } from '../address';
+import { B2BExtraAddressFieldsSessionStorage, isEqualAddress, mapAddressFromFormValues } from '../address';
 import { Legend } from '../ui/form';
 
 import BillingForm, { type BillingFormValues } from './BillingForm';
@@ -68,7 +68,7 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }:BillingProps): 
         const updateCheckout  = checkoutService.updateCheckout;
         const billingAddress  = getBillingAddress();
         const promises: Array<Promise<CheckoutSelectors>> = [];
-        const address = mapAddressFromFormValues(addressValues);
+        const address = mapAddressFromFormValues(addressValues, B2BExtraAddressFieldsSessionStorage.BILLING_KEY);
 
         if (address && !isEqualAddress(address, billingAddress)) {
             promises.push(updateAddress(address));

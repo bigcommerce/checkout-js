@@ -1,26 +1,15 @@
-import { type Address, type AddressKey, type FormField } from '@bigcommerce/checkout-sdk';
-import { isExtraFormField } from '@bigcommerce/checkout-sdk/essential';
+import { type Address, type AddressKey } from '@bigcommerce/checkout-sdk';
 
 import { mapCustomFormFieldsFromFormValues } from '../formFields';
 
+import { B2BExtraAddressFieldsSessionStorage } from './B2BExtraAddressFieldsSessionStorage';
 import { type AddressFormValues } from './mapAddressToFormValues';
 
-export default function mapAddressFromFormValues(formValues: AddressFormValues): Pick<Address, Exclude<AddressKey, 'extraFields'>> {
+export default function mapAddressFromFormValues(formValues: AddressFormValues, storageKey?: string): Pick<Address, Exclude<AddressKey, 'extraFields'>> {
     const { customFields, extraFields, shouldSaveAddress, ...address } = formValues;
 
-    // TODO: CHECKOUT-9890 Save extraFields extra fields into sessionStorage
-    console.log("extraFields", extraFields);
-
-    // TODO: CHECKOUT-9890 Save removed extra fields into sessionStorage
-    for (const key of Object.keys(address)) {
-        if (isExtraFormField({ name: key } as FormField)) {
-            // Adding console log for testing purpose before implementing CHECKOUT-9890
-            // eslint-disable-next-line no-console
-            console.log(`Removed extra field ${key}:${(address as Record<string, unknown>)[key]} from address form values`);
-
-            // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-            delete (address as Record<string, unknown>)[key];
-        }
+    if (storageKey && extraFields && Object.keys(extraFields).length > 0) {
+        B2BExtraAddressFieldsSessionStorage.setFields(storageKey, extraFields as Record<string, unknown>);
     }
 
     return {

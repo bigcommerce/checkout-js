@@ -7,6 +7,8 @@ import {
 
 import { DynamicFormFieldType } from '@bigcommerce/checkout/ui';
 
+import { B2BExtraAddressFieldsSessionStorage } from './B2BExtraAddressFieldsSessionStorage';
+
 export type AddressFormValues = Pick<Address, Exclude<AddressKey, 'customFields' | 'extraFields'>> & {
     customFields: { [id: string]: any };
     extraFields?: { [id: string]: any };
@@ -15,6 +17,7 @@ export type AddressFormValues = Pick<Address, Exclude<AddressKey, 'customFields'
 export default function mapAddressToFormValues(
     fields: FormField[],
     address?: Address,
+    storageKey?: string,
 ): AddressFormValues {
     const values = {
         ...fields.reduce(
@@ -79,6 +82,14 @@ export default function mapAddressToFormValues(
 
     if (values.stateOrProvinceCode === undefined) {
         values.stateOrProvinceCode = '';
+    }
+
+    if (storageKey && values.extraFields) {
+        const stored = B2BExtraAddressFieldsSessionStorage.getFields(storageKey);
+
+        if (stored) {
+            values.extraFields = { ...values.extraFields, ...stored };
+        }
     }
 
     return values;
