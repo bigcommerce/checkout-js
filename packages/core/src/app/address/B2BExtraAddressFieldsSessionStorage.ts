@@ -28,4 +28,14 @@ export class B2BExtraAddressFieldsSessionStorage {
     static removeFields(key: string): void {
         sessionStorage.removeItem(key);
     }
+
+    static reassignConsignmentKey(consignmentId: string): void {
+        const tempKey = this.getConsignmentKey('');
+        const fields = this.getFields(tempKey);
+
+        if (fields) {
+            this.setFields(this.getConsignmentKey(consignmentId), fields);
+            this.removeFields(tempKey);
+        }
+    }
 }

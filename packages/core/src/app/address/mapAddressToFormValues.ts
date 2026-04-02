@@ -29,8 +29,12 @@ export default function mapAddressToFormValues(
                         addressFormValues.extraFields = {};
                     }
 
-                    // Populate from field.default; sessionStorage-based values can be layered on top externally
-                    addressFormValues.extraFields[name] = defaultValue || '';
+                    // sessionStorage-based values will override API side extra field values later
+                    const extraFieldValue = address?.extraFields?.find(
+                        ({ fieldId }) => fieldId === name,
+                    )?.fieldValue;
+
+                    addressFormValues.extraFields[name] = extraFieldValue ?? defaultValue ?? '';
 
                     return addressFormValues;
                 }

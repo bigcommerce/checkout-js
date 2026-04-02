@@ -10,3 +10,4 @@ export {
 } from './getCustomFormFieldsValidationSchema';
 export { default as getExtraFormFieldsValidationSchema } from './getExtraFormFieldsValidationSchema';
 export { default as mapCustomFormFieldsFromFormValues } from './mapCustomFormFieldsFromFormValues';
+export { default as mapExtraFormFieldsFromFormValues } from './mapExtraFormFieldsFromFormValues';
