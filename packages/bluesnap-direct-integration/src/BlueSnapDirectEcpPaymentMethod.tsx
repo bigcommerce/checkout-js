@@ -163,3 +163,4 @@ export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>
     BlueSnapDirectEcpPaymentMethod,
     [{ id: 'ecp', gateway: 'bluesnapdirect' }],
 );
+
