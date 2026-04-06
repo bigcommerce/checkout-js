@@ -40,6 +40,9 @@ const BlueSnapDirectEcpPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     );
 
     const initializeEcp = useCallback(async () => {
+        console.log('*** method', method);
+        console.log('*** createBlueSnapDirectAPMPaymentStrategy', createBlueSnapDirectAPMPaymentStrategy);
+
         await initializePayment({
             gatewayId: method.gateway,
             methodId: method.id,
@@ -163,4 +166,3 @@ export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>
     BlueSnapDirectEcpPaymentMethod,
     [{ id: 'ecp', gateway: 'bluesnapdirect' }],
 );
-
