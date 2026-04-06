@@ -37,6 +37,7 @@
             "postal_code_label": "Codice postale",
             "postal_code_required_error": "Il CAP è necessario",
             "save_in_addressbook": "Salva l'indirizzo nella mia rubrica.",
+            "search_addresses": "Cerca indirizzi",
             "select_country_action": "Seleziona un paese",
             "select_state_action": "Seleziona uno stato",
             "state_label": "Stato/provincia",
@@ -48,6 +49,7 @@
         "billing": {
             "billing_address_heading": "Indirizzo di fatturazione",
             "billing_heading": "Fatturazione",
+            "no_billing_addresses_warning": "Spiacenti, non è presente alcun indirizzo di fatturazione tra cui scegliere. Vai nella tua rubrica per crearne uno o contatta l'amministratore del sito.",
             "save_billing_address_error": "Si è verificato un errore durante il salvataggio dell'indirizzo di fatturazione nel preventivo. Riprova.",
             "billing_address_amazonpay": "Gestito da Amazon Pay",
             "use_shipping_address_label": "L'indirizzo di fatturazione corrisponde all'indirizzo di spedizione."
@@ -501,7 +503,7 @@
             "gift_certificate_remaining_text": "rimanente",
             "gift_certificate_text": "Buono regalo",
             "manual_discount": "Sconto manuale",
-            "maximum_discount_applied_text": "Maximum discount applied",
+            "maximum_discount_applied_text": "Sconto massimo applicato",
             "remove_action": "Rimuovi",
             "store_credit_available_text": "Al momento il tuo account dispone di {storeCredit} crediti totali del negozio disponibili",
             "toggle_action": "Coupon/buono regalo",
@@ -535,6 +537,7 @@
             "save_shipping_address_error": "Si è verificato un errore nel salvare l'indirizzo di spedizione nel preventivo. Riprova.",
             "save_shipping_option_error": "Si è verificato un errore nel salvare i costi di spedizione nell'ordine. Riprova.",
             "select_shipping_address_text": "Seleziona un indirizzo di spedizione per visualizzare i relativi costi",
+            "no_shipping_addresses_warning": "Spiacenti, non è presente alcun indirizzo di spedizione tra cui scegliere. Vai nella tua rubrica per crearne uno o contatta l'amministratore del sito.",
             "shipping_address_heading": "Indirizzo di spedizione",
             "multishipping_consignment_index_heading": "Destinazione #{consignmentNumber}",
             "multishipping_incomplete_consignment_error": "Completa l'indirizzo, l'assegnazione degli articoli e la selezione del metodo per la Destinazione n.{consignmentNumber}.",
@@ -663,16 +666,16 @@
             "continue_shopping": "Continua a fare acquisti »",
             "order_status_update_facebook_messenger_heading": "Ricevi aggiornamenti istantanei sul tuo ordine su Messenger",
             "expired_token": {
-                "heading": "Link Expired",
-                "description": "For security, this link has expired.",
-                "resend_action": "Resend Secure Link",
-                "sending": "Sending...",
-                "resend_success": "A new link has been sent to your email address.",
-                "resend_error": "Failed to resend link. Please try again later."
+                "heading": "Link scaduto",
+                "description": "Per motivi di sicurezza, questo link è scaduto.",
+                "resend_action": "Reinvia il link sicuro",
+                "sending": "Invio in corso...",
+                "resend_success": "Un nuovo link è stato inviato al tuo indirizzo e-mail.",
+                "resend_error": "Impossibile inviare nuovamente il link. Riprova più tardi."
             },
             "rate_limited": {
-                "heading": "Too Many Requests",
-                "message": "You've made too many attempts. Please wait a few minutes and try again."
+                "heading": "Troppe richieste",
+                "message": "Hai fatto troppi tentativi. Attendi qualche minuto e riprova."
             }
         }
     }
