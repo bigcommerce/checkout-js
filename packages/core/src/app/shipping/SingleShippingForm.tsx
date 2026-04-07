@@ -170,13 +170,16 @@ const SingleShippingForm: React.FC<
         if (
             stateOrProvinceCodeFormField &&
             shippingAddress?.stateOrProvinceCode &&
-            !values.shippingAddress?.stateOrProvinceCode
+            !values.shippingAddress?.stateOrProvinceCode &&
+            shippingAddress?.countryCode === values.shippingAddress?.countryCode
         ) {
             setFieldValue('shippingAddress.stateOrProvinceCode', shippingAddress.stateOrProvinceCode);
         }
     }, [
         stateOrProvinceCodeFormField,
+        shippingAddress?.countryCode,
         shippingAddress?.stateOrProvinceCode,
+        values.shippingAddress?.countryCode,
         values.shippingAddress?.stateOrProvinceCode,
     ]);
 
@@ -216,18 +219,22 @@ const SingleShippingForm: React.FC<
     };
 
     const handleFieldChange = async (name: string) => {
+        let updatedValues = propsRef.current.values;
+
         if (name === 'countryCode' && propsRef.current.values.shippingAddress) {
-            setValues({
+            updatedValues = {
                 ...propsRef.current.values,
                 shippingAddress: {
                     ...propsRef.current.values.shippingAddress,
                     stateOrProvince: '',
                     stateOrProvinceCode: '',
                 },
-            });
+            };
+            setValues(updatedValues);
         }
 
-        const errors = await validateForm();
+        const errors = await validateForm(updatedValues);
+        
         const addressErrors = errors.shippingAddress;
 
         // Only update address if there are no address errors
