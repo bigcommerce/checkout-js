@@ -8,28 +8,16 @@ export class B2BExtraAddressFieldsSessionStorage {
     }
 
     static setFields(key: string, fields: Record<string, unknown>): void {
-        try {
-            sessionStorage.setItem(key, JSON.stringify(fields));
-        } catch {
-            // sessionStorage may be unavailable (e.g. private browsing restrictions)
-        }
+        sessionStorage.setItem(key, JSON.stringify(fields));
     }
 
     static getFields(key: string): Record<string, unknown> | undefined {
-        try {
-            const raw = sessionStorage.getItem(key);
+        const raw = sessionStorage.getItem(key);
 
-            return raw ? (JSON.parse(raw) as Record<string, unknown>) : undefined;
-        } catch {
-            return undefined;
-        }
+        return raw ? (JSON.parse(raw) as Record<string, unknown>) : undefined;
     }
 
     static removeFields(key: string): void {
-        try {
-            sessionStorage.removeItem(key);
-        } catch {
-            // ignore
-        }
+        sessionStorage.removeItem(key);
     }
 }

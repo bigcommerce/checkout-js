@@ -85,10 +85,10 @@ export default function mapAddressToFormValues(
     }
 
     if (storageKey && values.extraFields) {
-        const stored = B2BExtraAddressFieldsSessionStorage.getFields(storageKey);
+        const storedExtraFields = B2BExtraAddressFieldsSessionStorage.getFields(storageKey);
 
-        if (stored) {
-            values.extraFields = { ...values.extraFields, ...stored };
+        if (storedExtraFields) {
+            values.extraFields = { ...values.extraFields, ...storedExtraFields };
         }
     }
 
