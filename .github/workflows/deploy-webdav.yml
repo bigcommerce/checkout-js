@@ -45,6 +45,19 @@ jobs:
           [ "$MISSING" -eq 0 ] || exit 1
           echo "All required variables are set."
 
+      - name: Verify WebDAV connection
+        run: |
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
+            --digest -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
+            "$WEBDAV_URL$WEBDAV_PATH/")
+
+          if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+            echo "WebDAV connection OK (HTTP $HTTP_CODE)."
+          else
+            echo "::error::WebDAV connection failed (HTTP $HTTP_CODE). Check WEBDAV_URL, WEBDAV_USER, and WEBDAV_PASSWORD."
+            exit 1
+          fi
+
       - name: Create .env file
         run: |
           cat > .env << 'ENVEOF'
