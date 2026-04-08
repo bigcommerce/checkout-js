@@ -88,7 +88,9 @@ export default function mapAddressToFormValues(
         const storedExtraFields = B2BExtraAddressFieldsSessionStorage.getFields(storageKey);
 
         if (storedExtraFields) {
-            values.extraFields = { ...values.extraFields, ...storedExtraFields };
+            values.extraFields = Object.fromEntries(
+                Object.entries(values.extraFields).map(([key, val]) => [key, storedExtraFields[key] ?? val]),
+            );
         }
     }
 
