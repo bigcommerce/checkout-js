@@ -127,6 +127,12 @@ function Shipping({
             !isEqualAddress(updatedShippingAddress, billingAddress) &&
             !hasRemoteBilling
         ) {
+            const shippingExtraFields = B2BExtraAddressFieldsSessionStorage.getFields(B2BExtraAddressFieldsSessionStorage.SHIPPING_KEY);
+
+            if (shippingExtraFields) {
+                B2BExtraAddressFieldsSessionStorage.setFields(B2BExtraAddressFieldsSessionStorage.BILLING_KEY, shippingExtraFields);
+            }
+
             promises.push(updateBillingAddress(updatedShippingAddress));
         }
 
