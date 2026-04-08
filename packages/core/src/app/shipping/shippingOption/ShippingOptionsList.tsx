@@ -1,5 +1,5 @@
 import { ExtensionRegion, type ShippingOption } from '@bigcommerce/checkout-sdk/essential';
-import React, { type FunctionComponent, memo, useCallback, useEffect, useState } from 'react';
+import React, { type FunctionComponent, memo, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
@@ -65,6 +65,35 @@ export interface ShippingOptionListProps {
   onSelectedOption(consignmentId: string, shippingOptionId: string): void;
 }
 
+function filterByPickupRules(
+  options: ShippingOption[],
+  carrierNames: string[],
+  customerGroupId: number | undefined,
+  postalCode: string,
+  stateOrProvince: string,
+): ShippingOption[] {
+  const isSelanusaGroup = customerGroupId === 570 && stateOrProvince === 'Ciudad de México';
+
+  return carrierNames.reduce<ShippingOption[]>((result, carrierName) => {
+    const option = options.find((el) => el.description === carrierName);
+
+    if (!option) return result;
+
+    if (option.description === 'Boutique Selanusa' || option.description === 'Recoger CLS') {
+      const allowedPickup =
+        isSelanusaGroup &&
+        ((postalCode === '06080' && option.description === 'Boutique Selanusa') ||
+          (postalCode === '07040' && option.description === 'Recoger CLS'));
+
+      if (!allowedPickup) return result;
+    }
+
+    result.push(option);
+
+    return result;
+  }, []);
+}
+
 const ShippingOptionsList: FunctionComponent<ShippingOptionListProps> = ({
   consignmentId,
   customerId,
@@ -78,74 +107,47 @@ const ShippingOptionsList: FunctionComponent<ShippingOptionListProps> = ({
   selectedShippingOptionId,
   onSelectedOption,
 }) => {
-  const [filteredShippingOptions, setFilteredShippingOptions] = useState<ShippingOption[]>([]);
+  const [carriers, setCarriers] = useState<string[]>([]);
+
   const handleSelect = useCallback(
     (value: string) => {
       onSelectedOption(consignmentId, value);
     },
     [consignmentId, onSelectedOption],
   );
-  const setFilterCarriers = async () => {
-    if (!shippingOptions.length) return;
 
-    // Carriers from Bundle
-    const newCarriers = (await getCarriers(customerId)) || [];
-    const bundleCarriers = pushAndFilterCarriers(newCarriers);
-
-    // Default Carriers
-    const newDefaultCarriers = await GetDefaultCarriers();
-    const defaultCarriersFromDb = pushAndFilterCarriers(newDefaultCarriers);
-
-    const allCarriers = defaultCarriersFromDb.concat(bundleCarriers);
-
-    setFilteredShippingOptions(allCarriers);
-  };
-
+  // Fetch carriers ONCE — they only depend on customerId/customerGroupId
   useEffect(() => {
-    setFilterCarriers();
-  }, [postalCode, stateOrProvince]);
+    let cancelled = false;
 
-  const pushAndFilterCarriers = (Carriers: string[]) => {
-    const newFilteredShipping = [];
+    const fetchCarriers = async () => {
+      const [bundleCarriers, defaultCarriers] = await Promise.all([
+        getCarriers(customerId).then((c) => c || []),
+        GetDefaultCarriers(),
+      ]);
 
-    for (const carrierName of Carriers) {
-      const filteredShipping = shippingOptions.find(
-        (element) => element.description === carrierName,
-      );
-
-      if (!filteredShipping) continue;
-
-      const isTheStateAndSelanusasGroup =
-        customerGroupId === 570 && stateOrProvince === 'Ciudad de México';
-
-      // has to be one of the selected pickup in store, has the correcto postalCode and be in the state México
-      if (
-        filteredShipping.description === 'Boutique Selanusa' ||
-        filteredShipping.description === 'Recoger CLS'
-      ) {
-        if (
-          !(
-            (postalCode === '06080' && filteredShipping.description === 'Boutique Selanusa') ||
-            (postalCode === '07040' && filteredShipping.description === 'Recoger CLS')
-          ) ||
-          !isTheStateAndSelanusasGroup
-        )
-          continue;
+      if (!cancelled) {
+        setCarriers([...defaultCarriers, ...bundleCarriers]);
       }
+    };
 
-      newFilteredShipping.push(filteredShipping);
-    }
+    fetchCarriers();
 
-    return newFilteredShipping;
-  };
+    return () => {
+      cancelled = true;
+    };
+  }, [customerId, customerGroupId]);
 
-  if (!shippingOptions.length) {
-    return null;
-  }
+  // Re-filter when postalCode, stateOrProvince, or shippingOptions change (no fetch)
+  const filteredShippingOptions = useMemo(
+    () =>
+      filterByPickupRules(shippingOptions, carriers, customerGroupId, postalCode, stateOrProvince),
+    [shippingOptions, carriers, customerGroupId, postalCode, stateOrProvince],
+  );
 
   return (
     <LoadingOverlay isLoading={isLoading}>
-      {filteredShippingOptions ? (
+      {filteredShippingOptions.length > 0 ? (
         <Checklist
           aria-live="polite"
           defaultSelectedItemId={selectedShippingOptionId}
