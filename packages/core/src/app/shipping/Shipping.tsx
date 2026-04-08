@@ -121,19 +121,16 @@ function Shipping({
             promises.push(updateShippingAddress(updatedShippingAddress || {}));
         }
 
-        if (
-            values.billingSameAsShipping &&
-            updatedShippingAddress &&
-            !isEqualAddress(updatedShippingAddress, billingAddress) &&
-            !hasRemoteBilling
-        ) {
+        if (values.billingSameAsShipping && updatedShippingAddress && !hasRemoteBilling) {
             const shippingExtraFields = B2BExtraAddressFieldsSessionStorage.getFields(B2BExtraAddressFieldsSessionStorage.SHIPPING_KEY);
 
             if (shippingExtraFields) {
                 B2BExtraAddressFieldsSessionStorage.setFields(B2BExtraAddressFieldsSessionStorage.BILLING_KEY, shippingExtraFields);
             }
 
-            promises.push(updateBillingAddress(updatedShippingAddress));
+            if (!isEqualAddress(updatedShippingAddress, billingAddress)) {
+                promises.push(updateBillingAddress(updatedShippingAddress));
+            }
         }
 
         if (customerMessage !== values.orderComment) {
