@@ -1,0 +1,92 @@
+name: Rollback BigCommerce WebDAV
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: 'Run ID of the deploy to rollback to (find it in the deploy workflow URL)'
+        required: true
+        type: string
+
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+    environment: Production
+    env:
+      WEBDAV_URL: ${{ vars.WEBDAV_URL }}
+      WEBDAV_USER: ${{ vars.WEBDAV_USER }}
+      WEBDAV_PASSWORD: ${{ secrets.WEBDAV_PASSWORD }}
+      WEBDAV_PATH: /content/checkout
+
+    steps:
+      - name: Download rollback artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: rollback-${{ github.event.inputs.run_id }}
+          path: /tmp/rollback
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.inputs.run_id }}
+
+      - name: Verify rollback content
+        run: |
+          if [ ! -f /tmp/rollback/deploy-manifest.txt ]; then
+            echo "::error::deploy-manifest.txt not found in rollback artifact."
+            exit 1
+          fi
+          FILE_COUNT=$(wc -l < /tmp/rollback/deploy-manifest.txt)
+          echo "Rollback contains $FILE_COUNT files."
+          cat /tmp/rollback/deploy-manifest.txt
+
+      - name: Upload rollback assets (excluding auto-loader)
+        run: |
+          FAIL=0
+          while IFS= read -r file; do
+            [[ "$file" == auto-loader* ]] && continue
+            [ ! -f "/tmp/rollback/$file" ] && echo "Skipping $file (not in backup)" && continue
+
+            echo "Restoring $file..."
+            HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
+              -T "/tmp/rollback/$file" \
+              -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
+              "$WEBDAV_URL$WEBDAV_PATH/$file")
+
+            if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+              echo "  $file -> $HTTP_CODE OK"
+            else
+              echo "::error::Rollback upload failed: $file (HTTP $HTTP_CODE)"
+              FAIL=1
+            fi
+          done < /tmp/rollback/deploy-manifest.txt
+
+          if [ "$FAIL" -eq 1 ]; then
+            echo "::error::Some rollback uploads failed. Auto-loader NOT restored."
+            exit 1
+          fi
+
+      - name: Restore auto-loader (last)
+        run: |
+          for file in /tmp/rollback/auto-loader*; do
+            [ ! -f "$file" ] && continue
+            filename=$(basename "$file")
+            [[ "$filename" == *.map ]] && continue
+
+            echo "Restoring $filename (final)..."
+            HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
+              -T "$file" \
+              -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
+              "$WEBDAV_URL$WEBDAV_PATH/$filename")
+
+            if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+              echo "  $filename -> $HTTP_CODE OK"
+            else
+              echo "::error::Auto-loader rollback failed: $filename (HTTP $HTTP_CODE)"
+              exit 1
+            fi
+          done
+
+      - name: Restore deploy manifest
+        run: |
+          curl -s -o /dev/null -T /tmp/rollback/deploy-manifest.txt \
+            -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
+            "$WEBDAV_URL$WEBDAV_PATH/deploy-manifest.txt"
+          echo "Rollback complete. Deploy manifest restored."

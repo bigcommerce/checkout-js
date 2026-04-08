@@ -1,0 +1,221 @@
+name: Build & Deploy to BigCommerce WebDAV
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: Production
+    env:
+      BUNDLEURL: ${{ vars.BUNDLEURL }}
+      BUNDLEAUTHTOKEN: ${{ secrets.BUNDLEAUTHTOKEN }}
+      SELANUSAAPIURL: ${{ vars.SELANUSAAPIURL }}
+      MINMAX_LIMIT: ${{ vars.MINMAX_LIMIT }}
+      WEBDAV_URL: ${{ vars.WEBDAV_URL }}
+      WEBDAV_USER: ${{ vars.WEBDAV_USER }}
+      WEBDAV_PASSWORD: ${{ secrets.WEBDAV_PASSWORD }}
+      WEBDAV_PATH: /content/checkout
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Validate required env vars
+        run: |
+          MISSING=0
+          for VAR in BUNDLEURL BUNDLEAUTHTOKEN SELANUSAAPIURL MINMAX_LIMIT \
+                     WEBDAV_URL WEBDAV_USER WEBDAV_PASSWORD; do
+            if [ -z "${!VAR}" ]; then
+              echo "::error::Missing secret or variable: $VAR"
+              MISSING=1
+            fi
+          done
+          [ "$MISSING" -eq 0 ] || exit 1
+          echo "All required variables are set."
+
+      - name: Create .env file
+        run: |
+          cat > .env << 'ENVEOF'
+          BUNDLEURL=${{ vars.BUNDLEURL }}
+          BUNDLEAUTHTOKEN=${{ secrets.BUNDLEAUTHTOKEN }}
+          SELANUSAAPIURL=${{ vars.SELANUSAAPIURL }}
+          MINMAX_LIMIT=${{ vars.MINMAX_LIMIT }}
+          ENVEOF
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Clean build (no cache)
+        run: |
+          rm -rf dist/ node_modules/.cache/webpack
+          NX_SKIP_NX_CACHE=true npx nx run core:build
+
+      - name: Verify SRI integrity
+        run: |
+          node -e "
+            const fs = require('fs');
+            const crypto = require('crypto');
+            const manifest = JSON.parse(fs.readFileSync('dist/manifest.json', 'utf8'));
+            const integrity = manifest.integrity || {};
+            let errors = 0;
+
+            for (const [file, hashes] of Object.entries(integrity)) {
+              const filePath = 'dist/' + file;
+              if (!fs.existsSync(filePath)) continue;
+
+              const sha256 = 'sha256-' + crypto.createHash('sha256').update(fs.readFileSync(filePath)).digest('base64');
+              const expectedSha256 = hashes.split(' ').find(h => h.startsWith('sha256-'));
+
+              if (sha256 !== expectedSha256) {
+                console.error('SRI MISMATCH:', file);
+                errors++;
+              }
+            }
+
+            if (errors > 0) {
+              console.error(errors + ' SRI mismatches found. Aborting deploy.');
+              process.exit(1);
+            }
+
+            console.log('All SRI hashes verified.');
+          "
+
+      - name: Generate new deploy manifest
+        run: |
+          cd dist && find . -maxdepth 2 -type f \
+            ! -name '*.map' \
+            ! -name '*.LICENSE.txt' \
+            ! -name 'deploy-manifest.txt' \
+            | sed 's|^\./||' | sort > deploy-manifest.txt
+
+      - name: Download previous deploy manifest from WebDAV
+        id: prev_manifest
+        run: |
+          HTTP_CODE=$(curl -s -o /tmp/prev-manifest.txt -w "%{http_code}" \
+            -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
+            "$WEBDAV_URL$WEBDAV_PATH/deploy-manifest.txt")
+
+          if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+            echo "has_previous=true" >> "$GITHUB_OUTPUT"
+            echo "Previous manifest downloaded ($(wc -l < /tmp/prev-manifest.txt) files)."
+          else
+            echo "has_previous=false" >> "$GITHUB_OUTPUT"
+            echo "No previous manifest found (HTTP $HTTP_CODE). First deploy — skipping backup."
+          fi
+
+      - name: Backup previous deploy from WebDAV
+        if: steps.prev_manifest.outputs.has_previous == 'true'
+        run: |
+          mkdir -p /tmp/backup
+          while IFS= read -r file; do
+            mkdir -p "/tmp/backup/$(dirname "$file")"
+            curl -s -f -o "/tmp/backup/$file" \
+              -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
+              "$WEBDAV_URL$WEBDAV_PATH/$file" || echo "Could not download $file (may have been removed)"
+          done < /tmp/prev-manifest.txt
+          cp /tmp/prev-manifest.txt /tmp/backup/deploy-manifest.txt
+          echo "Backup complete ($(ls /tmp/backup | wc -l) items)."
+
+      - name: Save rollback artifact
+        if: steps.prev_manifest.outputs.has_previous == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: rollback-${{ github.sha }}
+          path: /tmp/backup/
+          retention-days: 30
+
+      - name: Ensure WebDAV directories exist
+        run: |
+          curl -s -o /dev/null -X MKCOL -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
+            "$WEBDAV_URL$WEBDAV_PATH/" 2>/dev/null || true
+          curl -s -o /dev/null -X MKCOL -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
+            "$WEBDAV_URL$WEBDAV_PATH/static/" 2>/dev/null || true
+
+      - name: Upload assets (excluding auto-loader)
+        run: |
+          FAIL=0
+          while IFS= read -r file; do
+            [[ "$file" == auto-loader* ]] && continue
+
+            echo "Uploading $file..."
+            HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
+              -T "dist/$file" \
+              -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
+              "$WEBDAV_URL$WEBDAV_PATH/$file")
+
+            if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+              echo "  $file -> $HTTP_CODE OK"
+            else
+              echo "::error::Upload failed: $file (HTTP $HTTP_CODE)"
+              FAIL=1
+            fi
+          done < dist/deploy-manifest.txt
+
+          if [ "$FAIL" -eq 1 ]; then
+            echo "::error::Some uploads failed. Auto-loader NOT uploaded."
+            exit 1
+          fi
+
+      - name: Upload auto-loader (last)
+        run: |
+          for file in dist/auto-loader*; do
+            filename=$(basename "$file")
+            [[ "$filename" == *.map ]] && continue
+
+            echo "Uploading $filename (final)..."
+            HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
+              -T "$file" \
+              -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
+              "$WEBDAV_URL$WEBDAV_PATH/$filename")
+
+            if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+              echo "  $filename -> $HTTP_CODE OK"
+            else
+              echo "::error::Auto-loader upload failed: $filename (HTTP $HTTP_CODE)"
+              exit 1
+            fi
+          done
+
+      - name: Clean orphaned files from WebDAV
+        if: steps.prev_manifest.outputs.has_previous == 'true'
+        run: |
+          comm -23 /tmp/prev-manifest.txt dist/deploy-manifest.txt > /tmp/orphans.txt
+          ORPHAN_COUNT=$(wc -l < /tmp/orphans.txt)
+
+          if [ "$ORPHAN_COUNT" -eq 0 ]; then
+            echo "No orphaned files to clean."
+          else
+            echo "Cleaning $ORPHAN_COUNT orphaned files..."
+            while IFS= read -r file; do
+              curl -s -o /dev/null -X DELETE \
+                -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
+                "$WEBDAV_URL$WEBDAV_PATH/$file"
+              echo "  Deleted: $file"
+            done < /tmp/orphans.txt
+          fi
+
+      - name: Upload deploy manifest
+        run: |
+          curl -s -o /dev/null -T dist/deploy-manifest.txt \
+            -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
+            "$WEBDAV_URL$WEBDAV_PATH/deploy-manifest.txt"
+          echo "Deploy manifest uploaded ($(wc -l < dist/deploy-manifest.txt) files)."
+
+      - name: Save current dist artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ github.sha }}
+          path: dist/
+          retention-days: 30
