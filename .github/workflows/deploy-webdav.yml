@@ -48,13 +48,20 @@ jobs:
       - name: Verify WebDAV connection
         run: |
           HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
+            -X PROPFIND -H "Depth: 0" \
             --digest -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
             "$WEBDAV_URL$WEBDAV_PATH/")
 
-          if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+          if [ "$HTTP_CODE" = "207" ] || [ "$HTTP_CODE" = "200" ]; then
             echo "WebDAV connection OK (HTTP $HTTP_CODE)."
+          elif [ "$HTTP_CODE" = "401" ]; then
+            echo "::error::WebDAV authentication failed. Check WEBDAV_USER and WEBDAV_PASSWORD."
+            exit 1
+          elif [ "$HTTP_CODE" = "404" ]; then
+            echo "::error::WebDAV path not found. Check WEBDAV_URL and WEBDAV_PATH."
+            exit 1
           else
-            echo "::error::WebDAV connection failed (HTTP $HTTP_CODE). Check WEBDAV_URL, WEBDAV_USER, and WEBDAV_PASSWORD."
+            echo "::error::WebDAV connection failed (HTTP $HTTP_CODE)."
             exit 1
           fi
 
