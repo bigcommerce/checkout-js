@@ -86,15 +86,28 @@ function filterByPickupRules(
 
     // Default carriers: always show
     if (defaultCarriersSet.has(description)) {
+      // eslint-disable-next-line no-console
+      console.log(`[filterByPickupRules] "${description}" -> SHOW (default carrier)`);
       return true;
     }
 
     // Managed carriers (from /carriers endpoint): only show if in bundle
     if (managedCarriersSet.has(description)) {
-      return bundleCarriersSet.has(description) && validatePickupRules(description, isSelanusaGroup, postalCode);
+      const inBundle = bundleCarriersSet.has(description);
+      const passPickup = validatePickupRules(description, isSelanusaGroup, postalCode);
+      const show = inBundle && passPickup;
+
+      // eslint-disable-next-line no-console
+      console.log(
+        `[filterByPickupRules] "${description}" -> ${show ? 'SHOW' : 'HIDE'} (managed: inBundle=${inBundle}, passPickup=${passPickup})`
+      );
+
+      return show;
     }
 
     // Unmanaged carriers: always show
+    // eslint-disable-next-line no-console
+    console.log(`[filterByPickupRules] "${description}" -> SHOW (unmanaged carrier)`);
     return true;
   });
 }
@@ -107,7 +120,14 @@ function validatePickupRules(
   const pickup = PICKUP_STORES[carrierName as keyof typeof PICKUP_STORES];
   if (!pickup) return true;
 
-  return isSelanusaGroup && postalCode === pickup.postalCode;
+  const passes = isSelanusaGroup && postalCode === pickup.postalCode;
+
+  // eslint-disable-next-line no-console
+  console.log(
+    `[validatePickupRules] "${carrierName}" -> ${passes ? 'PASS' : 'FAIL'} (isSelanusaGroup=${isSelanusaGroup}, postalCode=${postalCode}, required=${pickup.postalCode})`
+  );
+
+  return passes;
 }
 
 const ShippingOptionsList: FunctionComponent<ShippingOptionListProps> = ({
@@ -134,11 +154,12 @@ const ShippingOptionsList: FunctionComponent<ShippingOptionListProps> = ({
     [consignmentId, onSelectedOption],
   );
 
-  // Fetch carriers: managed (filterable) + bundle (customer-specific) + defaults (always show)
+  // Fetch carriers once when customerId changes (independent of shipping options)
   useEffect(() => {
     let cancelled = false;
 
-    if (!shippingOptions.length) return;
+    // eslint-disable-next-line no-console
+    console.log('[ShippingOptionsList] Fetching carriers for customerId:', customerId);
 
     Promise.all([
       getCarriers(customerId).then((c) => c || []),
@@ -146,6 +167,13 @@ const ShippingOptionsList: FunctionComponent<ShippingOptionListProps> = ({
       getAllCarriers(),
     ]).then(([bundleCarriers, defaultCarriers, managedCarriers]) => {
       if (cancelled) return;
+
+      // eslint-disable-next-line no-console
+      console.log('[ShippingOptionsList] Carriers fetched:', {
+        bundle: bundleCarriers,
+        defaults: defaultCarriers,
+        managed: managedCarriers,
+      });
 
       setDefaultCarriersSet(new Set(defaultCarriers));
       setBundleCarriersSet(new Set(bundleCarriers));
@@ -155,20 +183,21 @@ const ShippingOptionsList: FunctionComponent<ShippingOptionListProps> = ({
     return () => {
       cancelled = true;
     };
-  }, [shippingOptions, customerId]);
+  }, [customerId]);
 
-  const filteredShippingOptions = useMemo(
-    () =>
-      filterByPickupRules(
-        shippingOptions,
-        defaultCarriersSet,
-        bundleCarriersSet,
-        managedCarriersSet,
-        customerGroupId,
-        postalCode,
-        stateOrProvince,
-      ),
-    [
+  const filteredShippingOptions = useMemo(() => {
+    // eslint-disable-next-line no-console
+    console.log('[ShippingOptionsList] Filtering with:', {
+      postalCode,
+      stateOrProvince,
+      customerGroupId,
+      defaultCarriers: Array.from(defaultCarriersSet),
+      bundleCarriers: Array.from(bundleCarriersSet),
+      managedCarriers: Array.from(managedCarriersSet),
+      shippingOptionsCount: shippingOptions.length,
+    });
+
+    const result = filterByPickupRules(
       shippingOptions,
       defaultCarriersSet,
       bundleCarriersSet,
@@ -176,8 +205,24 @@ const ShippingOptionsList: FunctionComponent<ShippingOptionListProps> = ({
       customerGroupId,
       postalCode,
       stateOrProvince,
-    ],
-  );
+    );
+
+    // eslint-disable-next-line no-console
+    console.log('[ShippingOptionsList] Filtered result:', {
+      count: result.length,
+      carriers: result.map((r) => r.description),
+    });
+
+    return result;
+  }, [
+    shippingOptions,
+    defaultCarriersSet,
+    bundleCarriersSet,
+    managedCarriersSet,
+    customerGroupId,
+    postalCode,
+    stateOrProvince,
+  ]);
 
   if (!shippingOptions.length) {
     return null;
