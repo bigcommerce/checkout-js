@@ -104,7 +104,7 @@ jobs:
         id: prev_manifest
         run: |
           HTTP_CODE=$(curl -s -o /tmp/prev-manifest.txt -w "%{http_code}" \
-            -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
+            --digest -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
             "$WEBDAV_URL$WEBDAV_PATH/deploy-manifest.txt")
 
           if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
@@ -122,7 +122,7 @@ jobs:
           while IFS= read -r file; do
             mkdir -p "/tmp/backup/$(dirname "$file")"
             curl -s -f -o "/tmp/backup/$file" \
-              -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
+              --digest -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
               "$WEBDAV_URL$WEBDAV_PATH/$file" || echo "Could not download $file (may have been removed)"
           done < /tmp/prev-manifest.txt
           cp /tmp/prev-manifest.txt /tmp/backup/deploy-manifest.txt
@@ -138,9 +138,9 @@ jobs:
 
       - name: Ensure WebDAV directories exist
         run: |
-          curl -s -o /dev/null -X MKCOL -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
+          curl -s -o /dev/null -X MKCOL --digest -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
             "$WEBDAV_URL$WEBDAV_PATH/" 2>/dev/null || true
-          curl -s -o /dev/null -X MKCOL -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
+          curl -s -o /dev/null -X MKCOL --digest -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
             "$WEBDAV_URL$WEBDAV_PATH/static/" 2>/dev/null || true
 
       - name: Upload assets (excluding auto-loader)
@@ -152,7 +152,7 @@ jobs:
             echo "Uploading $file..."
             HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
               -T "dist/$file" \
-              -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
+              --digest -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
               "$WEBDAV_URL$WEBDAV_PATH/$file")
 
             if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
@@ -177,7 +177,7 @@ jobs:
             echo "Uploading $filename (final)..."
             HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
               -T "$file" \
-              -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
+              --digest -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
               "$WEBDAV_URL$WEBDAV_PATH/$filename")
 
             if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
@@ -200,7 +200,7 @@ jobs:
             echo "Cleaning $ORPHAN_COUNT orphaned files..."
             while IFS= read -r file; do
               curl -s -o /dev/null -X DELETE \
-                -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
+                --digest -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
                 "$WEBDAV_URL$WEBDAV_PATH/$file"
               echo "  Deleted: $file"
             done < /tmp/orphans.txt
@@ -209,7 +209,7 @@ jobs:
       - name: Upload deploy manifest
         run: |
           curl -s -o /dev/null -T dist/deploy-manifest.txt \
-            -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
+            --digest -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
             "$WEBDAV_URL$WEBDAV_PATH/deploy-manifest.txt"
           echo "Deploy manifest uploaded ($(wc -l < dist/deploy-manifest.txt) files)."
 

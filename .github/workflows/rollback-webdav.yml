@@ -47,7 +47,7 @@ jobs:
             echo "Restoring $file..."
             HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
               -T "/tmp/rollback/$file" \
-              -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
+              --digest -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
               "$WEBDAV_URL$WEBDAV_PATH/$file")
 
             if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
@@ -73,7 +73,7 @@ jobs:
             echo "Restoring $filename (final)..."
             HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
               -T "$file" \
-              -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
+              --digest -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
               "$WEBDAV_URL$WEBDAV_PATH/$filename")
 
             if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
@@ -87,6 +87,6 @@ jobs:
       - name: Restore deploy manifest
         run: |
           curl -s -o /dev/null -T /tmp/rollback/deploy-manifest.txt \
-            -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
+            --digest -u "$WEBDAV_USER:$WEBDAV_PASSWORD" \
             "$WEBDAV_URL$WEBDAV_PATH/deploy-manifest.txt"
           echo "Rollback complete. Deploy manifest restored."
