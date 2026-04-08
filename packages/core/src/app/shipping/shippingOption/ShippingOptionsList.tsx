@@ -6,10 +6,15 @@ import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import { EMPTY_ARRAY } from '../../common/utility';
 import { Checklist, ChecklistItem } from '../../ui/form';
-import { getCarriers } from '../carriers/getCarriers';
+import { getAllCarriers, getCarriers } from '../carriers/getCarriers';
 import GetDefaultCarriers from '../carriers/getDefaultCarriers';
 
 import StaticShippingOption from './StaticShippingOption';
+
+const PICKUP_STORES = {
+  'Boutique Selanusa': { postalCode: '06080' },
+  'Recoger CLS': { postalCode: '07040' },
+} as const;
 
 interface ShippingOptionListItemProps {
   consignmentId: string;
@@ -67,31 +72,42 @@ export interface ShippingOptionListProps {
 
 function filterByPickupRules(
   options: ShippingOption[],
-  carrierNames: string[],
+  defaultCarriersSet: Set<string>,
+  bundleCarriersSet: Set<string>,
+  managedCarriersSet: Set<string>,
   customerGroupId: number | undefined,
   postalCode: string,
   stateOrProvince: string,
 ): ShippingOption[] {
   const isSelanusaGroup = customerGroupId === 570 && stateOrProvince === 'Ciudad de México';
 
-  return carrierNames.reduce<ShippingOption[]>((result, carrierName) => {
-    const option = options.find((el) => el.description === carrierName);
+  return options.filter((option) => {
+    const { description } = option;
 
-    if (!option) return result;
-
-    if (option.description === 'Boutique Selanusa' || option.description === 'Recoger CLS') {
-      const allowedPickup =
-        isSelanusaGroup &&
-        ((postalCode === '06080' && option.description === 'Boutique Selanusa') ||
-          (postalCode === '07040' && option.description === 'Recoger CLS'));
-
-      if (!allowedPickup) return result;
+    // Default carriers: always show
+    if (defaultCarriersSet.has(description)) {
+      return true;
     }
 
-    result.push(option);
+    // Managed carriers (from /carriers endpoint): only show if in bundle
+    if (managedCarriersSet.has(description)) {
+      return bundleCarriersSet.has(description) && validatePickupRules(description, isSelanusaGroup, postalCode);
+    }
 
-    return result;
-  }, []);
+    // Unmanaged carriers: always show
+    return true;
+  });
+}
+
+function validatePickupRules(
+  carrierName: string,
+  isSelanusaGroup: boolean,
+  postalCode: string,
+): boolean {
+  const pickup = PICKUP_STORES[carrierName as keyof typeof PICKUP_STORES];
+  if (!pickup) return true;
+
+  return isSelanusaGroup && postalCode === pickup.postalCode;
 }
 
 const ShippingOptionsList: FunctionComponent<ShippingOptionListProps> = ({
@@ -107,7 +123,9 @@ const ShippingOptionsList: FunctionComponent<ShippingOptionListProps> = ({
   selectedShippingOptionId,
   onSelectedOption,
 }) => {
-  const [carriers, setCarriers] = useState<string[]>([]);
+  const [defaultCarriersSet, setDefaultCarriersSet] = useState<Set<string>>(new Set());
+  const [bundleCarriersSet, setBundleCarriersSet] = useState<Set<string>>(new Set());
+  const [managedCarriersSet, setManagedCarriersSet] = useState<Set<string>>(new Set());
 
   const handleSelect = useCallback(
     (value: string) => {
@@ -116,34 +134,54 @@ const ShippingOptionsList: FunctionComponent<ShippingOptionListProps> = ({
     [consignmentId, onSelectedOption],
   );
 
-  // Fetch carriers ONCE — they only depend on customerId/customerGroupId
+  // Fetch carriers: managed (filterable) + bundle (customer-specific) + defaults (always show)
   useEffect(() => {
     let cancelled = false;
 
-    const fetchCarriers = async () => {
-      const [bundleCarriers, defaultCarriers] = await Promise.all([
-        getCarriers(customerId).then((c) => c || []),
-        GetDefaultCarriers(),
-      ]);
+    if (!shippingOptions.length) return;
 
-      if (!cancelled) {
-        setCarriers([...defaultCarriers, ...bundleCarriers]);
-      }
-    };
+    Promise.all([
+      getCarriers(customerId).then((c) => c || []),
+      GetDefaultCarriers(),
+      getAllCarriers(),
+    ]).then(([bundleCarriers, defaultCarriers, managedCarriers]) => {
+      if (cancelled) return;
 
-    fetchCarriers();
+      setDefaultCarriersSet(new Set(defaultCarriers));
+      setBundleCarriersSet(new Set(bundleCarriers));
+      setManagedCarriersSet(new Set(managedCarriers));
+    });
 
     return () => {
       cancelled = true;
     };
-  }, [customerId, customerGroupId]);
+  }, [shippingOptions, customerId]);
 
-  // Re-filter when postalCode, stateOrProvince, or shippingOptions change (no fetch)
   const filteredShippingOptions = useMemo(
     () =>
-      filterByPickupRules(shippingOptions, carriers, customerGroupId, postalCode, stateOrProvince),
-    [shippingOptions, carriers, customerGroupId, postalCode, stateOrProvince],
+      filterByPickupRules(
+        shippingOptions,
+        defaultCarriersSet,
+        bundleCarriersSet,
+        managedCarriersSet,
+        customerGroupId,
+        postalCode,
+        stateOrProvince,
+      ),
+    [
+      shippingOptions,
+      defaultCarriersSet,
+      bundleCarriersSet,
+      managedCarriersSet,
+      customerGroupId,
+      postalCode,
+      stateOrProvince,
+    ],
   );
+
+  if (!shippingOptions.length) {
+    return null;
+  }
 
   return (
     <LoadingOverlay isLoading={isLoading}>
