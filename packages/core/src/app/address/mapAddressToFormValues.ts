@@ -84,13 +84,17 @@ export default function mapAddressToFormValues(
         values.stateOrProvinceCode = '';
     }
 
-    if (storageKey && values.extraFields) {
+    const extraFields = values.extraFields;
+
+    if (storageKey && extraFields) {
         const storedExtraFields = B2BExtraAddressFieldsSessionStorage.getFields(storageKey);
 
         if (storedExtraFields) {
-            values.extraFields = Object.fromEntries(
-                Object.entries(values.extraFields).map(([key, val]) => [key, storedExtraFields[key] ?? val]),
-            );
+            Object.keys(extraFields).forEach(key => {
+                if (storedExtraFields[key] !== undefined) {
+                    extraFields[key] = storedExtraFields[key];
+                }
+            });
         }
     }
 
