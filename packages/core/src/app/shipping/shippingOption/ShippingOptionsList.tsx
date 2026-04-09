@@ -94,7 +94,6 @@ function filterByPickupRules(
 
     // Default carriers
     if (defaultCarriersSet.has(description)) {
-      console.log(`[filterByPickupRules] "${description}" -> ${passPickup ? 'SHOW' : 'HIDE'} (default)`);
       return passPickup;
     }
 
@@ -103,19 +102,10 @@ function filterByPickupRules(
       const inBundle = bundleCarriersSet.has(description);
       const show = inBundle && passPickup;
 
-      console.log(
-        `[filterByPickupRules] "${description}" -> ${show ? 'SHOW' : 'HIDE'} (managed: inBundle=${inBundle}, passPickup=${passPickup})`
-      );
-
       return show;
     }
 
-    // Unmanaged carriers
-    console.log(
-      `[filterByPickupRules] "${description}" -> ${passPickup ? 'SHOW' : 'HIDE'} (unmanaged)`
-    );
-
-    return passPickup; // ✅ THIS is the key fix
+    return passPickup;
   });
 }
 function validatePickupRules(
@@ -127,11 +117,6 @@ function validatePickupRules(
   if (!pickup) return true;
 
   const passes = isSelanusaGroup && postalCode === pickup.postalCode;
-
-  // eslint-disable-next-line no-console
-  console.log(
-    `[validatePickupRules] "${carrierName}" -> ${passes ? 'PASS' : 'FAIL'} (isSelanusaGroup=${isSelanusaGroup}, postalCode=${postalCode}, required=${pickup.postalCode})`
-  );
 
   return passes;
 }
@@ -164,22 +149,12 @@ const ShippingOptionsList: FunctionComponent<ShippingOptionListProps> = ({
   useEffect(() => {
     let cancelled = false;
 
-    // eslint-disable-next-line no-console
-    console.log('[ShippingOptionsList] Fetching carriers for customerId:', customerId);
-
     Promise.all([
       getCarriers(customerId).then((c) => c || []),
       GetDefaultCarriers(),
       getAllCarriers(),
     ]).then(([bundleCarriers, defaultCarriers, managedCarriers]) => {
       if (cancelled) return;
-
-      // eslint-disable-next-line no-console
-      console.log('[ShippingOptionsList] Carriers fetched:', {
-        bundle: bundleCarriers,
-        defaults: defaultCarriers,
-        managed: managedCarriers,
-      });
 
       setDefaultCarriersSet(new Set(defaultCarriers));
       setBundleCarriersSet(new Set(bundleCarriers));
@@ -192,17 +167,6 @@ const ShippingOptionsList: FunctionComponent<ShippingOptionListProps> = ({
   }, [customerId]);
 
   const filteredShippingOptions = useMemo(() => {
-    // eslint-disable-next-line no-console
-    console.log('[ShippingOptionsList] Filtering with:', {
-      postalCode,
-      stateOrProvince,
-      customerGroupId,
-      defaultCarriers: Array.from(defaultCarriersSet),
-      bundleCarriers: Array.from(bundleCarriersSet),
-      managedCarriers: Array.from(managedCarriersSet),
-      shippingOptionsCount: shippingOptions.length,
-    });
-
     const result = filterByPickupRules(
       shippingOptions,
       defaultCarriersSet,
@@ -212,12 +176,6 @@ const ShippingOptionsList: FunctionComponent<ShippingOptionListProps> = ({
       postalCode,
       stateOrProvince,
     );
-
-    // eslint-disable-next-line no-console
-    console.log('[ShippingOptionsList] Filtered result:', {
-      count: result.length,
-      carriers: result.map((r) => r.description),
-    });
 
     return result;
   }, [
