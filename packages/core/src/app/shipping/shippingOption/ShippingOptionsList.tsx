@@ -79,25 +79,30 @@ function filterByPickupRules(
   postalCode: string,
   stateOrProvince: string,
 ): ShippingOption[] {
-  const isSelanusaGroup = customerGroupId === 570 && stateOrProvince === 'Ciudad de México';
+  const isSelanusaGroup =
+    customerGroupId === 570 &&
+    stateOrProvince === 'Ciudad de México';
 
   return options.filter((option) => {
     const { description } = option;
 
-    // Default carriers: always show
+    const passPickup = validatePickupRules(
+      description,
+      isSelanusaGroup,
+      postalCode
+    );
+
+    // Default carriers
     if (defaultCarriersSet.has(description)) {
-      // eslint-disable-next-line no-console
-      console.log(`[filterByPickupRules] "${description}" -> SHOW (default carrier)`);
-      return true;
+      console.log(`[filterByPickupRules] "${description}" -> ${passPickup ? 'SHOW' : 'HIDE'} (default)`);
+      return passPickup;
     }
 
-    // Managed carriers (from /carriers endpoint): only show if in bundle
+    // Managed carriers
     if (managedCarriersSet.has(description)) {
       const inBundle = bundleCarriersSet.has(description);
-      const passPickup = validatePickupRules(description, isSelanusaGroup, postalCode);
       const show = inBundle && passPickup;
 
-      // eslint-disable-next-line no-console
       console.log(
         `[filterByPickupRules] "${description}" -> ${show ? 'SHOW' : 'HIDE'} (managed: inBundle=${inBundle}, passPickup=${passPickup})`
       );
@@ -105,13 +110,14 @@ function filterByPickupRules(
       return show;
     }
 
-    // Unmanaged carriers: always show
-    // eslint-disable-next-line no-console
-    console.log(`[filterByPickupRules] "${description}" -> SHOW (unmanaged carrier)`);
-    return true;
+    // Unmanaged carriers
+    console.log(
+      `[filterByPickupRules] "${description}" -> ${passPickup ? 'SHOW' : 'HIDE'} (unmanaged)`
+    );
+
+    return passPickup; // ✅ THIS is the key fix
   });
 }
-
 function validatePickupRules(
   carrierName: string,
   isSelanusaGroup: boolean,
