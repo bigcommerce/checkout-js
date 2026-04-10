@@ -14,7 +14,15 @@ export class B2BExtraAddressFieldsSessionStorage {
     static getFields(key: string): Record<string, unknown> | undefined {
         const raw = sessionStorage.getItem(key);
 
-        return raw ? (JSON.parse(decodeURIComponent(atob(raw))) as Record<string, unknown>) : undefined;
+        if (!raw) {
+            return undefined;
+        }
+
+        try {
+            return JSON.parse(decodeURIComponent(atob(raw))) as Record<string, unknown>;
+        } catch {
+            return undefined;
+        }
     }
 
     static removeFields(key: string): void {
