@@ -8,13 +8,13 @@ export class B2BExtraAddressFieldsSessionStorage {
     }
 
     static setFields(key: string, fields: Record<string, unknown>): void {
-        sessionStorage.setItem(key, JSON.stringify(fields));
+        sessionStorage.setItem(key, btoa(encodeURIComponent(JSON.stringify(fields))));
     }
 
     static getFields(key: string): Record<string, unknown> | undefined {
         const raw = sessionStorage.getItem(key);
 
-        return raw ? (JSON.parse(raw) as Record<string, unknown>) : undefined;
+        return raw ? (JSON.parse(decodeURIComponent(atob(raw))) as Record<string, unknown>) : undefined;
     }
 
     static removeFields(key: string): void {

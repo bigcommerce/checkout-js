@@ -362,6 +362,7 @@ export default withLanguage(
         }),
         isInitialValid: ({ shippingAddress, getFields, language, validateMaxLength }) => {
             if (!shippingAddress) return false;
+
             const fields = getFields(shippingAddress.countryCode);
             const formValues = mapAddressToFormValues(
                 fields,
