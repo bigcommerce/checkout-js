@@ -27,20 +27,6 @@ describe('mapAddressFromFormValues', () => {
 
         const result = mapAddressFromFormValues(formValues);
 
-        expect(result).not.toHaveProperty('extraFields');
-    });
-
-    it('preserves non-extra fields when stripping extraFields', () => {
-        const formValues: AddressFormValues = {
-            ...omit(getShippingAddress(), 'customFields'),
-            customFields: {},
-            extraFields: {
-                b2bExtraField_100: 'Acme Corp',
-            },
-        };
-
-        const result = mapAddressFromFormValues(formValues);
-
         expect(result.firstName).toBe(getShippingAddress().firstName);
         expect(result.lastName).toBe(getShippingAddress().lastName);
         expect(result).not.toHaveProperty('extraFields');

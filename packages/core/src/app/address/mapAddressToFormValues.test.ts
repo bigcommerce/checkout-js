@@ -47,6 +47,54 @@ describe('mapAddressToFormValues', () => {
         expect(result.extraFields?.b2bExtraField_200).toBe('Engineering');
     });
 
+    it('uses extra field value from address over default', () => {
+        const fields: FormField[] = [
+            ...getFormFields(),
+            {
+                custom: false,
+                default: 'Default Corp',
+                id: 'b2bExtraField_100',
+                label: 'Company Name',
+                name: 'b2bExtraField_100',
+                required: false,
+            },
+        ];
+
+        const address = {
+            firstName: 'John',
+            extraFields: [
+                { fieldId: 'b2bExtraField_100', fieldValue: 'Actual Corp' },
+            ],
+        } as Address;
+
+        const result = mapAddressToFormValues(fields, address);
+
+        expect(result.extraFields?.b2bExtraField_100).toBe('Actual Corp');
+    });
+
+    it('falls back to default when address has no matching extra field', () => {
+        const fields: FormField[] = [
+            ...getFormFields(),
+            {
+                custom: false,
+                default: 'Default Corp',
+                id: 'b2bExtraField_100',
+                label: 'Company Name',
+                name: 'b2bExtraField_100',
+                required: false,
+            },
+        ];
+
+        const address = {
+            firstName: 'John',
+            extraFields: [],
+        } as Address;
+
+        const result = mapAddressToFormValues(fields, address);
+
+        expect(result.extraFields?.b2bExtraField_100).toBe('Default Corp');
+    });
+
     it('uses empty string when extra field has no default', () => {
         const fields: FormField[] = [
             ...getFormFields(),
