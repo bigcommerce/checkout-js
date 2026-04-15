@@ -1,7 +1,7 @@
 import {
     type Address,
     type FormField,
-    isExtraFormField,
+    isExtraField,
 } from '@bigcommerce/checkout-sdk/essential';
 import { type FormikProps, withFormik } from 'formik';
 import React, { type RefObject, useRef, useState } from 'react';
@@ -17,13 +17,13 @@ import {
   type AddressFormValues,
   AddressSelect,
   AddressType,
-  B2BExtraAddressFieldsSessionStorage,
+  B2BExtraFieldsSessionStorage,
   getAddressFormFieldsValidationSchema,
   getTranslateAddressError,
   isValidCustomerAddress,
   mapAddressToFormValues,
 } from '../address';
-import { getCustomFormFieldsValidationSchema, getExtraFormFieldsValidationSchema } from '../formFields';
+import { getAddressExtraFieldsValidationSchema, getCustomFormFieldsValidationSchema } from '../formFields';
 import { OrderComments } from '../orderComments';
 import { getShippableItemsCount } from '../shipping';
 import { Button, ButtonVariant } from '../ui/button';
@@ -74,10 +74,10 @@ const BillingForm = ({
     const addresses = customer.addresses;
     const shouldRenderStaticAddress = methodId === 'amazonpay';
     const allFormFields = getFields(values.countryCode);
-    const customOrExtraFormFields = allFormFields.filter((field) => field.custom || isExtraFormField(field));
-    const hasCustomOrExtraFormFields = customOrExtraFormFields.length > 0;
+    const customOrExtraFields = allFormFields.filter((field) => field.custom || isExtraField(field));
+    const hasCustomOrExtraFields = customOrExtraFields.length > 0;
     const editableFormFields =
-        shouldRenderStaticAddress && hasCustomOrExtraFormFields ? customOrExtraFormFields : allFormFields;
+        shouldRenderStaticAddress && hasCustomOrExtraFields ? customOrExtraFields : allFormFields;
     const billingAddresses = isGuest && isPayPalFastlaneEnabled ? paypalFastlaneAddresses : addresses;
     const hasAddresses = billingAddresses?.length > 0;
     const hasValidCustomerAddress =
@@ -175,7 +175,7 @@ export default withLanguage(
             ...mapAddressToFormValues(
                 getFields(billingAddress && billingAddress.countryCode),
                 billingAddress,
-                B2BExtraAddressFieldsSessionStorage.BILLING_KEY,
+                B2BExtraFieldsSessionStorage.BILLING_KEY,
             ),
             orderComment: customerMessage,
         }),
@@ -186,7 +186,7 @@ export default withLanguage(
             const formValues = mapAddressToFormValues(
                 fields,
                 billingAddress,
-                B2BExtraAddressFieldsSessionStorage.BILLING_KEY,
+                B2BExtraFieldsSessionStorage.BILLING_KEY,
             );
 
             return getAddressFormFieldsValidationSchema({
@@ -198,7 +198,7 @@ export default withLanguage(
             language,
             getFields,
             methodId,
-        }: BillingFormProps & WithLanguageProps) => 
+        }: BillingFormProps & WithLanguageProps) =>
             methodId === 'amazonpay'
                 ? lazy<Partial<AddressFormValues>>((values) => {
                     const translate = getTranslateAddressError(getFields(values && values.countryCode), language);
@@ -207,7 +207,7 @@ export default withLanguage(
                           translate,
                           formFields: getFields(values && values.countryCode),
                       }).concat(
-                        getExtraFormFieldsValidationSchema({
+                        getAddressExtraFieldsValidationSchema({
                             translate,
                             formFields: getFields(values && values.countryCode),
                         })

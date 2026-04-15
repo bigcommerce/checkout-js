@@ -1,9 +1,9 @@
 import { type FormField } from '@bigcommerce/checkout-sdk';
 
 import { type TranslateValidationErrorFunction } from './getCustomFormFieldsValidationSchema';
-import getExtraFormFieldsValidationSchema from './getExtraFormFieldsValidationSchema';
+import getAddressExtraFieldsValidationSchema from './getAddressExtraFieldsValidationSchema';
 
-describe('getExtraFormFieldsValidationSchema', () => {
+describe('getAddressExtraFieldsValidationSchema', () => {
     let translate: TranslateValidationErrorFunction;
 
     beforeEach(() => {
@@ -24,7 +24,7 @@ describe('getExtraFormFieldsValidationSchema', () => {
         ];
 
         it('validates required string field', async () => {
-            const schema = getExtraFormFieldsValidationSchema({ formFields, translate });
+            const schema = getAddressExtraFieldsValidationSchema({ formFields, translate });
             const error = await schema
                 .validate({ extraFields: { b2bExtraField_100: '' } })
                 .catch((e) => e.message);
@@ -37,7 +37,7 @@ describe('getExtraFormFieldsValidationSchema', () => {
         });
 
         it('validates maxLength for string field', async () => {
-            const schema = getExtraFormFieldsValidationSchema({ formFields, translate });
+            const schema = getAddressExtraFieldsValidationSchema({ formFields, translate });
             const error = await schema
                 .validate({ extraFields: { b2bExtraField_100: 'this string is too long' } })
                 .catch((e) => e.message);
@@ -51,7 +51,7 @@ describe('getExtraFormFieldsValidationSchema', () => {
         });
 
         it('passes for a valid string value', async () => {
-            const schema = getExtraFormFieldsValidationSchema({ formFields, translate });
+            const schema = getAddressExtraFieldsValidationSchema({ formFields, translate });
             const spy = jest.fn();
 
             await schema.validate({ extraFields: { b2bExtraField_100: 'valid' } }).then(spy);
@@ -75,7 +75,7 @@ describe('getExtraFormFieldsValidationSchema', () => {
         ];
 
         it('validates required integer field', async () => {
-            const schema = getExtraFormFieldsValidationSchema({ formFields, translate });
+            const schema = getAddressExtraFieldsValidationSchema({ formFields, translate });
             const error = await schema
                 .validate({ extraFields: { b2bExtraField_200: undefined } })
                 .catch((e) => e.message);
@@ -88,7 +88,7 @@ describe('getExtraFormFieldsValidationSchema', () => {
         });
 
         it('validates max for integer field', async () => {
-            const schema = getExtraFormFieldsValidationSchema({ formFields, translate });
+            const schema = getAddressExtraFieldsValidationSchema({ formFields, translate });
             const error = await schema
                 .validate({ extraFields: { b2bExtraField_200: 101 } })
                 .catch((e) => e.message);
@@ -102,7 +102,7 @@ describe('getExtraFormFieldsValidationSchema', () => {
         });
 
         it('passes for a valid integer value', async () => {
-            const schema = getExtraFormFieldsValidationSchema({ formFields, translate });
+            const schema = getAddressExtraFieldsValidationSchema({ formFields, translate });
             const spy = jest.fn();
 
             await schema.validate({ extraFields: { b2bExtraField_200: 50 } }).then(spy);
@@ -124,7 +124,7 @@ describe('getExtraFormFieldsValidationSchema', () => {
                 },
             ];
 
-            const schema = getExtraFormFieldsValidationSchema({ formFields, translate });
+            const schema = getAddressExtraFieldsValidationSchema({ formFields, translate });
             const spy = jest.fn();
 
             await schema.validate({ extraFields: { b2bExtraField_300: '' } }).then(spy);
@@ -145,7 +145,7 @@ describe('getExtraFormFieldsValidationSchema', () => {
                 } as FormField,
             ];
 
-            const schema = getExtraFormFieldsValidationSchema({ formFields, translate });
+            const schema = getAddressExtraFieldsValidationSchema({ formFields, translate });
             const spy = jest.fn();
 
             await schema.validate({ extraFields: { b2bExtraField_400: undefined } }).then(spy);

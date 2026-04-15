@@ -14,6 +14,7 @@ import { type SetupServer, setupServer } from 'msw/node';
 import { act } from 'react';
 
 import {
+    addressExtraFields,
     applepayMethod,
     checkout,
     CheckoutPreset,
@@ -37,7 +38,6 @@ import {
     countries,
     customer,
     customFormFields,
-    extraAddressFormFields,
     formFields,
     payments,
     shippingAddress,
@@ -295,7 +295,7 @@ export class CheckoutPageNodeObject {
                 });
                 break;
 
-            case CheckoutPreset.CheckoutWithShippingAndExtraAddressFields:
+            case CheckoutPreset.CheckoutWithShippingAndAddressExtraFields:
                 this.server.use(
                     rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
                         res(ctx.json(checkoutWithShipping)),
@@ -305,7 +305,7 @@ export class CheckoutPageNodeObject {
                 void checkoutService.hydrateInitialState({
                     ...initialState,
                     checkout: { ...checkoutWithShipping, ...overrides?.checkout },
-                    extraFields: extraAddressFormFields,
+                    extraFields: { address: addressExtraFields, order: [] },
                 });
                 break;
 

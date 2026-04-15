@@ -2,7 +2,7 @@ export * from './checkout.mock';
 export * from './checkout-settings.mock';
 export { applepayMethod } from './payment-method.mock';
 export { countries } from './countries';
-export { extraAddressFormFields, formFields, customFormFields } from './form-fields';
+export { addressExtraFields, formFields, customFormFields } from './form-fields';
 export { payments } from './payments';
 export { orderResponse } from './order';
 export { initialState } from './initial-state';

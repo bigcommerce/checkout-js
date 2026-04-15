@@ -24,6 +24,7 @@ import {
     CHECKOUT_ROOT_NODE_ID,
 } from '@bigcommerce/checkout/payment-integration-api';
 import {
+    addressExtraFields,
     CheckoutPageNodeObject,
     CheckoutPreset,
     checkoutSettings,
@@ -33,7 +34,6 @@ import {
     checkoutWithShippingAndBilling,
     consignment,
     customer,
-    extraAddressFormFields,
     formFields,
     payments,
     shippingAddress,
@@ -136,7 +136,7 @@ describe('Billing step', () => {
 
         await checkout.waitForBillingStep();
 
-        expect(screen.queryByText(extraAddressFormFields[0].labelName)).not.toBeInTheDocument();
+        expect(screen.queryByText(addressExtraFields[0].name)).not.toBeInTheDocument();
 
         await checkout.fillAddressForm();
 
@@ -297,7 +297,7 @@ describe('Billing step', () => {
         expect(screen.getByText('Custom Dropdown is required')).toBeInTheDocument();
     });
 
-    it('renders extra address fields when hasExtraAddressFields is enabled', async () => {
+    it('renders extra address fields when hasAddressExtraFields is enabled', async () => {
         const configOverrides = {
             ...checkoutSettings,
             storeConfig: {
@@ -308,20 +308,20 @@ describe('Billing step', () => {
                         ...defaultCapabilities,
                         userJourney: {
                             ...defaultCapabilities.userJourney,
-                            hasExtraAddressFields: true,
+                            hasAddressExtraFields: true,
                         },
                     },
                 },
             },
         };
 
-        checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndExtraAddressFields, { config: configOverrides });
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndAddressExtraFields, { config: configOverrides });
 
         render(<CheckoutTest {...defaultProps} />);
 
         await checkout.waitForBillingStep();
 
-        expect(screen.getByText(extraAddressFormFields[0].labelName)).toBeInTheDocument();
+        expect(screen.getByText(addressExtraFields[0].name)).toBeInTheDocument();
     });
 
     describe('registered customer', () => {

@@ -1,4 +1,4 @@
-import { type FormField, isExtraFormField } from '@bigcommerce/checkout-sdk/essential';
+import { type FormField, isExtraField } from '@bigcommerce/checkout-sdk/essential';
 import { forIn, noop } from 'lodash';
 import React, { useCallback, useEffect, useRef } from 'react';
 
@@ -126,7 +126,7 @@ const AddressForm: React.FC<AddressFormProps> = ({
                                 return fieldName ? `${fieldName}.customFields` : 'customFields';
                             }
 
-                            if (isExtraFormField(field)) {
+                            if (isExtraField(field)) {
                                 return fieldName ? `${fieldName}.extraFields` : 'extraFields';
                             }
 
@@ -168,7 +168,7 @@ const AddressForm: React.FC<AddressFormProps> = ({
                                 isFloatingLabelEnabled={isFloatingLabelEnabledValue}
                                 key={`${field.id}-${field.name}`}
                                 label={
-                                    (field.custom || isExtraFormField(field)) ? (
+                                    (field.custom || isExtraField(field)) ? (
                                         field.label
                                     ) : (
                                         <TranslatedString id={LABEL[field.name]} />

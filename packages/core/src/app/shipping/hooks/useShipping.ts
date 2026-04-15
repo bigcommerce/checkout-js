@@ -28,7 +28,7 @@ const deleteConsignmentsSelector = createSelector(
 
 export const useShipping = () => {
     const { checkoutState, checkoutService } = useCheckout();
-    const { userJourney: { hasExtraAddressFields } } = useCapabilities();
+    const { userJourney: { hasAddressExtraFields } } = useCapabilities();
 
     const {
         data: {
@@ -41,7 +41,7 @@ export const useShipping = () => {
             getBillingAddress,
             getShippingAddressFields,
             getShippingCountries,
-            getAddressExtraFormFields,
+            getAddressExtraFields,
         },
         statuses: {
             isShippingStepPending,
@@ -104,14 +104,14 @@ export const useShipping = () => {
     const getFieldsWithExtraFields = useCallback((countryCode?: string) => {
         const addressFields = getShippingAddressFields(countryCode || '');
 
-        if (!hasExtraAddressFields) {
+        if (!hasAddressExtraFields) {
             return addressFields;
         }
 
-        const extraAddressFields = getAddressExtraFormFields();
+        const addressExtraFields = getAddressExtraFields();
 
-        return [...addressFields, ...extraAddressFields];
-    }, [getShippingAddressFields, getAddressExtraFormFields, hasExtraAddressFields]);
+        return [...addressFields, ...addressExtraFields];
+    }, [getShippingAddressFields, getAddressExtraFields, hasAddressExtraFields]);
 
     return {
         assignItem: checkoutService.assignItemsToAddress,

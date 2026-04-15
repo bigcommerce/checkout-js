@@ -1,11 +1,11 @@
-import { isExtraFormField } from '@bigcommerce/checkout-sdk/essential';
+import { isExtraField } from '@bigcommerce/checkout-sdk/essential';
 import { memoize } from '@bigcommerce/memoize';
 import { object, type ObjectSchema, string, type StringSchema } from 'yup';
 
 import getCustomFormFieldsValidationSchema, {
     type FormFieldsValidationSchemaOptions,
 } from './getCustomFormFieldsValidationSchema';
-import getExtraFormFieldsValidationSchema from './getExtraFormFieldsValidationSchema';
+import getAddressExtraFieldsValidationSchema from './getAddressExtraFieldsValidationSchema';
 
 export const WHITELIST_REGEXP = /^[^<>]*$/;
 
@@ -20,7 +20,7 @@ export default memoize(function getFormFieldsValidationSchema({
 }: FormFieldsValidationSchemaOptions): ObjectSchema<FormFieldValues> {
     return object({
         ...formFields
-            .filter((field) => !field.custom && !isExtraFormField(field))
+            .filter((field) => !field.custom && !isExtraField(field))
             .reduce((schema, { name, required, label, maxLength }) => {
                 schema[name] = string();
 
@@ -49,6 +49,6 @@ export default memoize(function getFormFieldsValidationSchema({
     }).concat(
         getCustomFormFieldsValidationSchema({ formFields, translate }),
     ).concat(
-        getExtraFormFieldsValidationSchema({ formFields, translate }),
+        getAddressExtraFieldsValidationSchema({ formFields, translate }),
     ) as ObjectSchema<FormFieldValues>;
 });

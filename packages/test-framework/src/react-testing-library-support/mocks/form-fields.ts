@@ -471,16 +471,17 @@ const customFormFields: FormField[] = [
     },
 ];
 
-const extraAddressFormFields: ExtraField[] = [
+const addressExtraFields: ExtraField[] = [
     {
-        id: 1,
-        fieldName: 'b2bExtraField',
-        fieldType: 0,
+        id: '1',
+        name: 'B2B Billing Extra',
+        visibleToStorefront: true,
         isRequired: false,
-        visibleToEnduser: true,
-        defaultValue: '',
-        labelName: 'B2B Billing Extra',
+        type: 'text',
+        config: {
+            defaultValue: '',
+        },
     },
 ];
 
-export { extraAddressFormFields, formFields, customFormFields };
+export { addressExtraFields, formFields, customFormFields };

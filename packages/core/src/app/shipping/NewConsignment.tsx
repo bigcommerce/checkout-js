@@ -6,7 +6,7 @@ import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { TranslatedString } from "@bigcommerce/checkout/locale";
 
-import { B2BExtraAddressFieldsSessionStorage } from '../address';
+import { B2BExtraFieldsSessionStorage } from '../address';
 import { EMPTY_ARRAY } from "../common/utility";
 
 import AllocateItemsModal from "./AllocateItemsModal";
@@ -87,7 +87,7 @@ const NewConsignment = ({
             );
 
             if (newConsignment) {
-                B2BExtraAddressFieldsSessionStorage.reassignConsignmentKey(newConsignment.id);
+                B2BExtraFieldsSessionStorage.reassignConsignmentKey(newConsignment.id);
             }
         } catch (error) {
             if (error instanceof AssignItemFailedError) {

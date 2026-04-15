@@ -45,7 +45,7 @@ describe('useShipping', () => {
             getBillingAddress,
             getShippingAddressFields: getAddressFormFields,
             getShippingCountries: getCountries,
-            getAddressExtraFormFields: jest.fn().mockReturnValue([]),
+            getAddressExtraFields: jest.fn().mockReturnValue([]),
         },
         statuses: {
             isShippingStepPending: () => false,
@@ -207,12 +207,12 @@ describe('useShipping', () => {
             },
         ];
 
-        it('returns system fields combined with extra fields when hasExtraAddressFields is true', () => {
+        it('returns system fields combined with extra fields when hasAddressExtraFields is true', () => {
             jest.spyOn(contexts, 'useCapabilities').mockReturnValue({
                 ...defaultCapabilities,
-                userJourney: { ...defaultCapabilities.userJourney, hasExtraAddressFields: true },
+                userJourney: { ...defaultCapabilities.userJourney, hasAddressExtraFields: true },
             });
-            checkoutState.data.getAddressExtraFormFields.mockReturnValue(extraFields);
+            checkoutState.data.getAddressExtraFields.mockReturnValue(extraFields);
 
             const { result } = renderHook(() => useShipping());
             const fields = result.current.getFields('US');
@@ -223,12 +223,12 @@ describe('useShipping', () => {
             expect(fields[fields.length - 1].name).toBe('b2bExtraField_100');
         });
 
-        it('returns only system fields when hasExtraAddressFields is false even if extra fields exist', () => {
+        it('returns only system fields when hasAddressExtraFields is false even if extra fields exist', () => {
             jest.spyOn(contexts, 'useCapabilities').mockReturnValue({
                 ...defaultCapabilities,
-                userJourney: { ...defaultCapabilities.userJourney, hasExtraAddressFields: false },
+                userJourney: { ...defaultCapabilities.userJourney, hasAddressExtraFields: false },
             });
-            checkoutState.data.getAddressExtraFormFields.mockReturnValue(extraFields);
+            checkoutState.data.getAddressExtraFields.mockReturnValue(extraFields);
 
             const { result } = renderHook(() => useShipping());
             const fields = result.current.getFields('US');
@@ -239,9 +239,9 @@ describe('useShipping', () => {
         it('returns only system fields when no extra fields exist', () => {
             jest.spyOn(contexts, 'useCapabilities').mockReturnValue({
                 ...defaultCapabilities,
-                userJourney: { ...defaultCapabilities.userJourney, hasExtraAddressFields: true },
+                userJourney: { ...defaultCapabilities.userJourney, hasAddressExtraFields: true },
             });
-            checkoutState.data.getAddressExtraFormFields.mockReturnValue([]);
+            checkoutState.data.getAddressExtraFields.mockReturnValue([]);
 
             const { result } = renderHook(() => useShipping());
             const fields = result.current.getFields('US');

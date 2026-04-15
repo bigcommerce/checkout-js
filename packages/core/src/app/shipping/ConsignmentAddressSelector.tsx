@@ -9,14 +9,14 @@ import {
     type AddressFormValues,
     AddressSelect,
     AddressType,
-    B2BExtraAddressFieldsSessionStorage,
+    B2BExtraFieldsSessionStorage,
     isValidAddress,
     mapAddressFromFormValues,
     stripExtraFieldsFromAddress,
 } from '../address';
 import { ErrorModal } from "../common/error";
 import { EMPTY_ARRAY, isExperimentEnabled } from "../common/utility";
-import { mapExtraFormFieldsFromFormValues } from '../formFields';
+import { mapAddressExtraFieldsFromFormValues } from '../formFields';
 
 import { AssignItemFailedError, AssignItemInvalidAddressError } from "./errors";
 import GuestCustomerAddressSelector from "./GuestCustomerAddressSelector";
@@ -68,7 +68,7 @@ const ConsignmentAddressSelector = ({
         return null;
     }
 
-    const storageKey = B2BExtraAddressFieldsSessionStorage.getConsignmentKey(consignment?.id ?? '');
+    const storageKey = B2BExtraFieldsSessionStorage.getConsignmentKey(consignment?.id ?? '');
 
     // TODO: add filter for addresses
     const addresses = customer.addresses || EMPTY_ARRAY;
@@ -138,7 +138,7 @@ const ConsignmentAddressSelector = ({
 
         await handleSelectAddress({
             ...address,
-            extraFields: mapExtraFormFieldsFromFormValues(addressFormValues.extraFields),
+            extraFields: mapAddressExtraFieldsFromFormValues(addressFormValues.extraFields),
         });
 
         if (!isGuest) {

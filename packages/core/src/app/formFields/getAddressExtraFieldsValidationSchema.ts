@@ -1,22 +1,22 @@
-import { type FormField, isExtraFormField } from '@bigcommerce/checkout-sdk/essential';
+import { type FormField, isExtraField } from '@bigcommerce/checkout-sdk/essential';
 import { memoize } from '@bigcommerce/memoize';
 import { number, object, type ObjectSchema, type Schema, string } from 'yup';
 
 import { type TranslateValidationErrorFunction } from './getCustomFormFieldsValidationSchema';
 
-export interface ExtraFormFieldsValidationSchemaOptions {
+export interface AddressExtraFieldsValidationSchemaOptions {
     formFields: FormField[];
     translate?: TranslateValidationErrorFunction;
 }
 
-export default memoize(function getExtraFormFieldsValidationSchema({
+export default memoize(function getAddressExtraFieldsValidationSchema({
     formFields,
     translate = () => undefined,
-}: ExtraFormFieldsValidationSchemaOptions): ObjectSchema<Record<string, any>> {
+}: AddressExtraFieldsValidationSchemaOptions): ObjectSchema<Record<string, any>> {
     return object({
         extraFields: object(
             formFields
-                .filter((field) => isExtraFormField(field))
+                .filter((field) => isExtraField(field))
                 .reduce<Record<string, Schema<unknown>>>((schema, { name, label, required, type, maxLength, max }) => {
                     if (type === 'integer') {
                         let fieldSchema = number()

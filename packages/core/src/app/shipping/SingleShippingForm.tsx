@@ -18,7 +18,7 @@ import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/loca
 
 import {
     type AddressFormValues,
-    B2BExtraAddressFieldsSessionStorage,
+    B2BExtraFieldsSessionStorage,
     getAddressFormFieldsValidationSchema,
     getTranslateAddressError,
     isEqualAddress,
@@ -27,7 +27,7 @@ import {
 } from '../address';
 import { isErrorWithType } from '../common/error';
 import { withFormikExtended } from '../common/form';
-import { getCustomFormFieldsValidationSchema, getExtraFormFieldsValidationSchema } from '../formFields';
+import { getAddressExtraFieldsValidationSchema, getCustomFormFieldsValidationSchema } from '../formFields';
 import { PaymentMethodId } from '../payment/paymentMethod';
 import { Fieldset, Form } from '../ui/form';
 
@@ -192,7 +192,7 @@ const SingleShippingForm: React.FC<
                 shippingAddress: mapAddressToFormValues(
                     getFields(shippingAddress?.countryCode),
                     shippingAddress,
-                    B2BExtraAddressFieldsSessionStorage.SHIPPING_KEY,
+                    B2BExtraFieldsSessionStorage.SHIPPING_KEY,
                 ),
             });
         }
@@ -236,7 +236,7 @@ const SingleShippingForm: React.FC<
         }
 
         const errors = await validateForm(updatedValues);
-        
+
         const addressErrors = errors.shippingAddress;
 
         // Only update address if there are no address errors
@@ -357,7 +357,7 @@ export default withLanguage(
             shippingAddress: mapAddressToFormValues(
                 getFields(shippingAddress?.countryCode),
                 shippingAddress,
-                B2BExtraAddressFieldsSessionStorage.SHIPPING_KEY,
+                B2BExtraFieldsSessionStorage.SHIPPING_KEY,
             ),
         }),
         isInitialValid: ({ shippingAddress, getFields, language, validateMaxLength }) => {
@@ -367,7 +367,7 @@ export default withLanguage(
             const formValues = mapAddressToFormValues(
                 fields,
                 shippingAddress,
-                B2BExtraAddressFieldsSessionStorage.SHIPPING_KEY,
+                B2BExtraFieldsSessionStorage.SHIPPING_KEY,
             );
 
             return getAddressFormFieldsValidationSchema({
@@ -392,7 +392,7 @@ export default withLanguage(
                               translate,
                               formFields: fields,
                           }).concat(
-                              getExtraFormFieldsValidationSchema({
+                              getAddressExtraFieldsValidationSchema({
                                   translate,
                                   formFields: fields,
                               }),
