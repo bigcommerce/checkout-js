@@ -45,9 +45,10 @@ describe('when using Stripe OCS payment', () => {
     const gatewayId = 'stripeocs';
     const methodSelectorPrefix = `${gatewayId}-${methodId}`;
     const expectedContainerId = `${methodSelectorPrefix}-component-field`;
+    const expectedCurrencySelectorContainerId = `${methodSelectorPrefix}-provider-section-on-top-of-payments-list`;
     const defaultAccordionLayout = {
         defaultCollapsed: false,
-        radios: true,
+        radios: 'always',
         spacedAccordionItems: false,
         type: 'accordion',
         visibleAccordionItemsCount: 0,
@@ -163,6 +164,7 @@ describe('when using Stripe OCS payment', () => {
             integrations: [createStripeOCSPaymentStrategy, createStripeCSPaymentStrategy],
             [gatewayId]: {
                 containerId: expectedContainerId,
+                currencySelectorContainerId: expectedCurrencySelectorContainerId,
                 layout: defaultAccordionLayout,
                 appearance: {
                     variables: { color: '#cccccc' },
@@ -194,6 +196,7 @@ describe('when using Stripe OCS payment', () => {
             integrations: [createStripeOCSPaymentStrategy, createStripeCSPaymentStrategy],
             [gatewayId]: {
                 containerId: expectedContainerId,
+                currencySelectorContainerId: expectedCurrencySelectorContainerId,
                 layout: defaultAccordionLayout,
                 appearance: {
                     variables: { color: '#cccccc' },
@@ -217,6 +220,7 @@ describe('when using Stripe OCS payment', () => {
                 gatewayId: method.gateway,
                 [gatewayId]: {
                     containerId: expectedContainerId,
+                    currencySelectorContainerId: expectedCurrencySelectorContainerId,
                     layout: defaultAccordionLayout,
                     appearance: {
                         variables: { color: '#cccccc' },
@@ -246,6 +250,7 @@ describe('when using Stripe OCS payment', () => {
                 gatewayId: method.gateway,
                 [gatewayId]: {
                     containerId: expectedContainerId,
+                    currencySelectorContainerId: expectedCurrencySelectorContainerId,
                     layout: defaultAccordionLayout,
                     appearance: {
                         variables: { color: '#cccccc' },
@@ -309,6 +314,7 @@ describe('when using Stripe OCS payment', () => {
                     gatewayId: method.gateway,
                     [gatewayId]: {
                         containerId: expectedContainerId,
+                        currencySelectorContainerId: expectedCurrencySelectorContainerId,
                         layout: {
                             ...defaultAccordionLayout,
                             type: 'auto',
@@ -343,6 +349,7 @@ describe('when using Stripe OCS payment', () => {
                     gatewayId: method.gateway,
                     [gatewayId]: {
                         containerId: expectedContainerId,
+                        currencySelectorContainerId: expectedCurrencySelectorContainerId,
                         layout: {
                             ...defaultAccordionLayout,
                             type: 'accordion',
@@ -376,6 +383,7 @@ describe('when using Stripe OCS payment', () => {
                     gatewayId: method.gateway,
                     [gatewayId]: {
                         containerId: expectedContainerId,
+                        currencySelectorContainerId: expectedCurrencySelectorContainerId,
                         layout: {
                             ...defaultAccordionLayout,
                             defaultCollapsed: true,
@@ -403,6 +411,7 @@ describe('when using Stripe OCS payment', () => {
                     gatewayId: method.gateway,
                     [gatewayId]: {
                         containerId: expectedContainerId,
+                        currencySelectorContainerId: expectedCurrencySelectorContainerId,
                         layout: defaultAccordionLayout,
                         appearance: {
                             variables: { color: '#cccccc' },
@@ -431,6 +440,7 @@ describe('when using Stripe OCS payment', () => {
                     gatewayId: method.gateway,
                     [gatewayId]: {
                         containerId: expectedContainerId,
+                        currencySelectorContainerId: expectedCurrencySelectorContainerId,
                         layout: {
                             ...defaultAccordionLayout,
                             type: 'accordion',
@@ -527,6 +537,48 @@ describe('when using Stripe OCS payment', () => {
             rerender(<PaymentMethodTest {...defaultProps} method={method} />);
 
             expect(collapseElementMock).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('# Currency selector', () => {
+        beforeEach(() => {
+            jest.spyOn(checkoutService, 'initializePayment').mockImplementation(
+                (options: WithStripeOCSPaymentInitializeOptions) => {
+                    options.stripeocs?.togglePreloader?.(false);
+
+                    return Promise.resolve(checkoutState);
+                },
+            );
+        });
+
+        it('should render currency selector styles for non-themeV2', () => {
+            themeContextValueMock = { themeV2: false };
+
+            render(<PaymentMethodTest {...defaultProps} method={method} />);
+
+            expect(screen.queryByTestId('stripe-accordion-skeleton')).not.toBeInTheDocument();
+            expect(checkoutService.initializePayment).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    [gatewayId]: expect.objectContaining({
+                        currencySelectorContainerId: expectedCurrencySelectorContainerId,
+                    }),
+                }),
+            );
+        });
+
+        it('should render currency selector styles for themeV2', () => {
+            themeContextValueMock = { themeV2: true };
+
+            render(<PaymentMethodTest {...defaultProps} method={method} />);
+
+            expect(screen.queryByTestId('stripe-accordion-skeleton')).not.toBeInTheDocument();
+            expect(checkoutService.initializePayment).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    [gatewayId]: expect.objectContaining({
+                        currencySelectorContainerId: expectedCurrencySelectorContainerId,
+                    }),
+                }),
+            );
         });
     });
 });
