@@ -67,6 +67,7 @@ enum PaymentMethodId {
     StripeOCSGooglePay = 'googlepaystripeocs',
     StripeV3 = 'stripev3',
     StripeUPE = 'stripeupe',
+    StripeOCS = 'stripeocs',
     WorldpayAccess = 'worldpayaccess',
     WorldpayAccessGooglePay = 'googlepayworldpayaccess',
     Zip = 'zip',

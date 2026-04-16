@@ -3,6 +3,7 @@ import {
     createCheckoutService,
     createEmbeddedCheckoutMessenger,
     type EmbeddedCheckoutMessenger,
+    type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
 import userEvent from '@testing-library/user-event';
 import { noop } from 'lodash';
@@ -23,6 +24,7 @@ import { getLanguageService } from '@bigcommerce/checkout/locale';
 import {
     CHECKOUT_ROOT_NODE_ID,
 } from '@bigcommerce/checkout/payment-integration-api';
+import * as stripeUtils from '@bigcommerce/checkout/stripe-utils';
 import {
     CheckoutPageNodeObject,
     CheckoutPreset,
@@ -82,6 +84,8 @@ describe('Payment step', () => {
         analyticsTracker = {
             selectedPaymentMethod: jest.fn(),
         };
+
+        jest.spyOn(stripeUtils, 'stripeMethodsFiltering').mockImplementation((methods: PaymentMethod[]) => methods);
 
         CheckoutTest = (props) => (
             <CheckoutProvider checkoutService={checkoutService}>

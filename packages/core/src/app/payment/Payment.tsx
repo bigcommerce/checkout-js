@@ -36,6 +36,7 @@ import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { ChecklistSkeleton } from '@bigcommerce/checkout/ui';
+import { stripeMethodsFiltering } from '@bigcommerce/checkout/stripe-utils';
 
 import { withAnalytics } from '../analytics';
 import { withCheckout } from '../checkout';
@@ -77,14 +78,7 @@ const getDefaultPaymentMethod = ({
 }: PaymentMethodSelectionParams): { filteredMethods: PaymentMethod[]; defaultMethod?: PaymentMethod } => {
     let filteredMethods = methods;
 
-    // TODO: In accordance with the checkout team, this functionality is temporary and will be implemented in the backend instead.
-    if (paymentProviderCustomer?.stripeLinkAuthenticationState) {
-        const stripeUpePaymentMethod = filteredMethods.filter(
-            (method) => method.id === 'card' && method.gateway === PaymentMethodId.StripeUPE,
-        );
-
-        filteredMethods = stripeUpePaymentMethod.length ? stripeUpePaymentMethod : filteredMethods;
-    }
+    filteredMethods = stripeMethodsFiltering(filteredMethods, paymentProviderCustomer);
 
     filteredMethods = filteredMethods.filter((method: PaymentMethod) => {
         if (method.id === PaymentMethodId.Bolt && method.initializationData) {
