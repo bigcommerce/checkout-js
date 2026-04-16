@@ -523,7 +523,7 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
         }));
     };
 
-    const setValidationSchema = (
+    const setValidationSchema = useCallback((
         method: PaymentMethod,
         schema: ObjectSchema<Partial<PaymentFormValues>> | null,
     ): void => {
@@ -534,7 +534,7 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
         }
 
         validationSchemasRef.current[uniqueId] = schema;
-    };
+    }, []);
 
     const loadPaymentMethodsOrThrow = async (): Promise<void> => {
         const {

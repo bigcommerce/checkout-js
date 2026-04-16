@@ -1,5 +1,5 @@
 import { createBlueSnapDirectAPMPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bluesnap-direct';
-import React, { type FunctionComponent, useCallback, useEffect, useRef } from 'react';
+import React, { type FunctionComponent, useCallback, useEffect } from 'react';
 
 import {
     type PaymentMethodProps,
@@ -22,19 +22,15 @@ const BlueSnapDirectPayByBankPaymentMethod: FunctionComponent<PaymentMethodProps
         throw new Error('Unable to get initialization data');
     }
 
-    const setValidationSchemaRef = useRef(setValidationSchema);
-
-    setValidationSchemaRef.current = setValidationSchema;
-
     const initializePayByBank = useCallback(async () => {
-        setValidationSchemaRef.current(method, getPayByBankValidationSchema(language));
+        setValidationSchema(method, getPayByBankValidationSchema(language));
 
         await initializePayment({
             gatewayId: method.gateway,
             methodId: method.id,
             integrations: [createBlueSnapDirectAPMPaymentStrategy],
         });
-    }, [initializePayment, language, method]);
+    }, [initializePayment, language, method, setValidationSchema]);
 
     const deinitializePayByBank = useCallback(async () => {
         await deinitializePayment({
