@@ -18,10 +18,8 @@ export default function mapToOrderRequestBody(
         return {};
     }
 
-    const { paymentProviderRadio, methodIdOverride, ...rest } = values;
-    const { methodId: baseMethodId, gatewayId } = parseUniquePaymentMethodId(paymentProviderRadio);
-    const methodId =
-        typeof methodIdOverride === 'string' ? methodIdOverride || baseMethodId : baseMethodId;
+    const { paymentProviderRadio, ...rest } = values;
+    const { methodId, gatewayId } = parseUniquePaymentMethodId(paymentProviderRadio);
     const payload: OrderRequestBody = {
         payment: { gatewayId, methodId },
     };

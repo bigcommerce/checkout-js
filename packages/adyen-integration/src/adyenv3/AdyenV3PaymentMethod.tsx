@@ -5,10 +5,20 @@ import {
     type PaymentInitializeOptions,
 } from '@bigcommerce/checkout-sdk';
 import { createAdyenV3PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/adyen';
-import React, { type FunctionComponent, useCallback, useRef, useState } from 'react';
+import { useFormikContext } from 'formik';
+import { compact } from 'lodash';
+import React, {
+    type FunctionComponent,
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react';
 
 import { type HostedWidgetComponentProps } from '@bigcommerce/checkout/hosted-widget-integration';
 import {
+    type PaymentFormValues,
     type PaymentMethodProps,
     type PaymentMethodResolveId,
     toResolvableComponent,
@@ -58,6 +68,21 @@ const AdyenV3PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     const cardVerificationContainerId = `adyen-${method.id}-tsv-component-field`;
     const component = method.id;
     const shouldHideInstrumentExpiryDate = component === AdyenV3PaymentMethodType.bcmc;
+
+    const { values } = useFormikContext<PaymentFormValues>();
+    const { setFieldValue } = paymentForm;
+    const radioId = useMemo(
+        () => compact([method.gateway, method.id]).join('-'),
+        [method.gateway, method.id],
+    );
+
+    useEffect(() => {
+        if (values.paymentProviderRadio !== radioId) {
+            return;
+        }
+
+        setFieldValue('paymentProviderRadio', radioId);
+    }, [values.paymentProviderRadio, radioId, setFieldValue]);
 
     const onBeforeLoad = useCallback((shopperInteraction: boolean) => {
         ref.current.shouldShowModal = shopperInteraction;
