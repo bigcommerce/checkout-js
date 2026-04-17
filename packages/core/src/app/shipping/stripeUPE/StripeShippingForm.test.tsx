@@ -1,7 +1,6 @@
 import {
   type CheckoutSelectors,
   createCheckoutService,
-  type StripeShippingEvent,
 } from '@bigcommerce/checkout-sdk';
 import userEvent from '@testing-library/user-event';
 import React, { act } from 'react';
@@ -19,6 +18,7 @@ import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
 import { getShippingAddress } from '../shipping-addresses.mock';
 
+import { type StripeShippingEvent } from './stripe-types';
 import StripeShippingForm from './StripeShippingForm';
 
 let hasSelectedShippingOptionsReturn = false;

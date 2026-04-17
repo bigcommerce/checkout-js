@@ -229,6 +229,7 @@ const checkout: Checkout = {
     displayDiscountTotal: 0,
     manualDiscountTotal: 0,
     orderBasedAutoDiscountTotal: 0,
+    totalDiscount: 0,
     handlingCostTotal: 0,
     taxTotal: 18.18,
     giftWrappingCostTotal: 0,

@@ -23,5 +23,6 @@ export function getSquareV2(): PaymentMethod {
                 nonce: undefined,
             },
         },
+        skipRedirectConfirmationAlert: false,
     };
 }

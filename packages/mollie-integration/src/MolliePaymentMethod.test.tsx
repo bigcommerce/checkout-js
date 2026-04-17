@@ -157,6 +157,7 @@ describe('MolliePaymentMethod', () => {
                 config: {},
                 type: 'PAYMENT_TYPE_API',
                 gateway: 'mollie',
+                skipRedirectConfirmationAlert: false,
             };
         });
 

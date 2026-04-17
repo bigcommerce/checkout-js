@@ -41,6 +41,7 @@ describe('MollieAPMCustomForm', () => {
                 },
             ],
         },
+        skipRedirectConfirmationAlert: false,
     };
     let MollieAPMCustomFormTest: FunctionComponent<MollieCustomCardFormProps>;
 
