@@ -5,6 +5,7 @@ export const defaultCapabilities: Capabilities = {
         disableEditCart: false,
         hasCompanyAddressBook: false,
         hasAddressExtraFields: false,
+        requiresB2BToken: false,
     },
     customer: {
         superAdminCompanySelector: false,
