@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { useExtensions } from '@bigcommerce/checkout/contexts';
+import { useCapabilities, useExtensions } from '@bigcommerce/checkout/contexts';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
 
 import { CustomError } from '../common/error';
@@ -9,6 +9,7 @@ import { useShipping } from './hooks/useShipping';
 import isUsingMultiShipping from './isUsingMultiShipping';
 import MultiShippingForm, { type MultiShippingFormValues } from './MultiShippingForm';
 import SingleShippingForm, { type SingleShippingFormValues } from './SingleShippingForm';
+import SingleShippingFormClassComponent from './SingleShippingFormClass';
 
 export interface ShippingFormProps {
     cartHasChanged: boolean;
@@ -51,8 +52,10 @@ const ShippingForm = ({
         shouldShowOrderComments,
         shippingAddress,
         validateMaxLength,
-        updateShippingAddress: updateAddress
+        updateShippingAddress: updateAddress,
+        useSingleShippingFormFunctionComponent,
     } = useShipping();
+    const { shipping: { hideBillingSameAsShippingCheck } } = useCapabilities();
     const { extensionState: { shippingFormRenderTimestamp } } = useExtensions();
 
     useEffect(() => {
@@ -88,6 +91,41 @@ const ShippingForm = ({
         />;
     };
 
+    const getSingleShippingForm = () => {
+        const singleShippingFormProps = {
+            cartHasChanged,
+            consignments,
+            customerMessage,
+            defaultShippingExpectationMessage,
+            deinitialize,
+            deleteConsignments,
+            getFields,
+            initialize,
+            isBillingSameAsShipping,
+            isInitialValueLoaded,
+            isLoading,
+            isShippingStepPending,
+            methodId,
+            onSubmit: onSingleShippingSubmit,
+            onUnhandledError,
+            shippingAddress,
+            shippingFormRenderTimestamp,
+            shouldShowOrderComments,
+            updateAddress,
+            validateMaxLength,
+        };
+
+        if (useSingleShippingFormFunctionComponent) {
+            return <SingleShippingForm {...singleShippingFormProps} />;
+        }
+
+        return <SingleShippingFormClassComponent
+            {...singleShippingFormProps}
+            hideBillingSameAsShippingCheck={hideBillingSameAsShippingCheck}
+            isMultiShippingMode={isMultiShippingMode}
+        />;
+    }
+
     if (isInitialValueLoaded && countries.length === 0 && isNoCountriesErrorOnCheckoutEnabled) {
         return null;
     }
@@ -95,28 +133,7 @@ const ShippingForm = ({
     return isMultiShippingMode ? (
         getMultiShippingForm()
     ) : (
-        <SingleShippingForm
-            cartHasChanged={cartHasChanged}
-            consignments={consignments}
-            customerMessage={customerMessage}
-            defaultShippingExpectationMessage={defaultShippingExpectationMessage}
-            deinitialize={deinitialize}
-            deleteConsignments={deleteConsignments}
-            getFields={getFields}
-            initialize={initialize}
-            isBillingSameAsShipping={isBillingSameAsShipping}
-            isInitialValueLoaded={isInitialValueLoaded}
-            isLoading={isLoading}
-            isShippingStepPending={isShippingStepPending}
-            methodId={methodId}
-            onSubmit={onSingleShippingSubmit}
-            onUnhandledError={onUnhandledError}
-            shippingAddress={shippingAddress}
-            shippingFormRenderTimestamp={shippingFormRenderTimestamp}
-            shouldShowOrderComments={shouldShowOrderComments}
-            updateAddress={updateAddress}
-            validateMaxLength={validateMaxLength}
-        />
+        getSingleShippingForm()
     );
 };
 
