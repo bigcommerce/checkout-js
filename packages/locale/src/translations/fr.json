@@ -73,7 +73,7 @@
             "item_count_text": "{count, plural, one{1 article} other{# articles} }",
             "backorder_count_text": "{count} seront en attente de réapprovisionnement",
             "backorder_quantities_changed_heading": "La quantité de commandes en attente de réapprovisionnement ont changé pour les articles ci-dessous :",
-            "cart_stock_modal_destination": "Destination n°{consignmentNumber} ({address})",
+            "cart_stock_modal_destination": "Destination #{consignmentNumber}",
             "ready_to_ship_count_text": "{count} prêt·s pour expédition",
             "show_backorder_details": "Afficher les détails de la commande en attente",
             "hide_backorder_details": "Masquer les détails de la commande en attente",

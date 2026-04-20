@@ -73,7 +73,7 @@
             "item_count_text": "{count, plural, one{1 Item} other{# Items} }",
             "backorder_count_text": "{count} estará en pedido pendiente",
             "backorder_quantities_changed_heading": "Las cantidades de pedidos pendientes cambiaron para los siguientes artículos:",
-            "cart_stock_modal_destination": "Destino #{consignmentNumber} ({address})",
+            "cart_stock_modal_destination": "Destino #{consignmentNumber}",
             "ready_to_ship_count_text": "{count} listo para enviar",
             "show_backorder_details": "Detalles de la lista pendiente de los programas",
             "hide_backorder_details": "Ocultar detalles de la reservación pendiente",

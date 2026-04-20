@@ -73,7 +73,7 @@
             "item_count_text": "{count, plural, one{1 Artikel} other{# Artikel} }",
             "backorder_count_text": "{count} werden nachbestellt",
             "backorder_quantities_changed_heading": "Die Rückstandsbestellmengen haben sich für die folgenden Artikel geändert:",
-            "cart_stock_modal_destination": "Zielort #{consignmentNumber} ({address})",
+            "cart_stock_modal_destination": "Zielort #{consignmentNumber}",
             "ready_to_ship_count_text": "{count} bereit zum Versand",
             "show_backorder_details": "Nachbestellungsdetails anzeigen",
             "hide_backorder_details": "Nachbestellungsdetails verbergen",

@@ -73,7 +73,7 @@
             "item_count_text": "{count, plural, one{1 Vare } other{# Varer } }",
             "backorder_count_text": "{count} i restordre",
             "backorder_quantities_changed_heading": "Restordremengdene er endret for varene nedenfor:",
-            "cart_stock_modal_destination": "Destinasjon #{consignmentNumber} ({address})",
+            "cart_stock_modal_destination": "Destinasjon #{consignmentNumber}",
             "ready_to_ship_count_text": "{count} er klargjort for sending",
             "show_backorder_details": "Vis restordredetaljer",
             "hide_backorder_details": "Skjul restordredetaljer",

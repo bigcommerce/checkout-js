@@ -73,7 +73,7 @@
             "item_count_text": "{count, plural, one{1 Item} other{# Items} }",
             "backorder_count_text": "{count} kommer att restnoteras",
             "backorder_quantities_changed_heading": "Efterbeställningskvantiteterna har ändrats för nedanstående artiklar:",
-            "cart_stock_modal_destination": "Destination #{consignmentNumber} ({address})",
+            "cart_stock_modal_destination": "Destination #{consignmentNumber}",
             "ready_to_ship_count_text": "{count} redo att skickas",
             "show_backorder_details": "Visa restordersdetaljer",
             "hide_backorder_details": "Dölj restordersdetaljer",

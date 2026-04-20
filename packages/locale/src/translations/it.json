@@ -73,7 +73,7 @@
             "item_count_text": "{count, plural, one{1 articolo} other{# articoli} }",
             "backorder_count_text": "{count} in attesa di disponibilità",
             "backorder_quantities_changed_heading": "Le quantità in arretrato sono cambiate per i seguenti articoli:",
-            "cart_stock_modal_destination": "Destinazione n. {consignmentNumber} ({address})",
+            "cart_stock_modal_destination": "Destinazione #{consignmentNumber}",
             "ready_to_ship_count_text": "{count} pronto per la spedizione",
             "show_backorder_details": "Mostra dettagli dell'ordine arretrato",
             "hide_backorder_details": "Nascondi dettagli dell'ordine arretrato",
