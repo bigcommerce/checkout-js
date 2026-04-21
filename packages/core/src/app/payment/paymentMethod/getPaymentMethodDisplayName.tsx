@@ -26,7 +26,7 @@ export default function getPaymentMethodDisplayName(
 
         if (
             method.gateway === PaymentMethodId.WorldpayAccess &&
-            method.id === 'open_banking'
+            method.id === PaymentMethodId.WorldpayAccessOpenBanking
         ) {
             return language.translate('payment.open_banking_display_name_text');
         }

@@ -247,7 +247,7 @@ export function getPaymentMethodTitle(
         };
 
         if (method.gateway === PaymentMethodId.WorldpayAccess) {
-            if (method.id === 'open_banking') {
+            if (method.id === PaymentMethodId.WorldpayAccessOpenBanking) {
                 return { logoUrl: '', titleText: methodDisplayName };
             }
 

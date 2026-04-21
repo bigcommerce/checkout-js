@@ -68,6 +68,7 @@ enum PaymentMethodId {
     StripeUPE = 'stripeupe',
     WorldpayAccess = 'worldpayaccess',
     WorldpayAccessGooglePay = 'googlepayworldpayaccess',
+    WorldpayAccessOpenBanking = 'open_banking',
     Zip = 'zip',
     TdOnlineMartGooglePay = 'googlepaytdonlinemart',
 }
