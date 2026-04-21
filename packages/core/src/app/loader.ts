@@ -21,8 +21,6 @@ export interface AssetManifest {
 
 export interface LoadFilesOptions {
     publicPath?: string;
-    isIntegrityHashExperimentEnabled?: boolean;
-    isCspNonceExperimentEnabled?: boolean;
 }
 
 export interface LoadFilesResult {
@@ -33,8 +31,6 @@ export interface LoadFilesResult {
 
 export function loadFiles(options?: LoadFilesOptions): Promise<LoadFilesResult> {
     const publicPath = configurePublicPath(options && options.publicPath);
-    const isIntegrityHashExperimentEnabled = options?.isIntegrityHashExperimentEnabled ?? true;
-    const isCspNonceExperimentEnabled = options?.isCspNonceExperimentEnabled ?? true;
     const {
         appVersion,
         css = [],
@@ -46,7 +42,7 @@ export function loadFiles(options?: LoadFilesOptions): Promise<LoadFilesResult> 
     const scripts = Promise.all(js.filter(path => !path.startsWith('loader')).map((path) =>
         getScriptLoader().loadScript(joinPaths(publicPath, path), {
             async: false,
-            attributes: isIntegrityHashExperimentEnabled && integrity[path] ? {
+            attributes: integrity[path] ? {
                 crossorigin: 'anonymous',
                 integrity: integrity[path],
             } : {},
@@ -56,7 +52,7 @@ export function loadFiles(options?: LoadFilesOptions): Promise<LoadFilesResult> 
     const stylesheets = Promise.all(css.map((path) =>
         getStylesheetLoader().loadStylesheet(joinPaths(publicPath, path), {
             prepend: true,
-            attributes: isIntegrityHashExperimentEnabled && integrity[path] ? {
+            attributes: integrity[path] ? {
                 crossorigin: 'anonymous',
                 integrity: integrity[path],
             } : {},
@@ -99,7 +95,6 @@ export function loadFiles(options?: LoadFilesOptions): Promise<LoadFilesResult> 
             initializeLanguageService({
                 ...languageConfig,
                 defaultTranslations,
-                isCspNonceExperimentEnabled,
             });
 
             return {

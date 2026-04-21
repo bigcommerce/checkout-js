@@ -1,4 +1,4 @@
-import { type CheckoutService, createCheckoutService, type StripeShippingEvent } from '@bigcommerce/checkout-sdk';
+import { type CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
 import noop from 'lodash/noop';
 import React from 'react';
 
@@ -9,6 +9,7 @@ import { getCountries } from '../../geography/countries.mock';
 import { getConsignment } from '../consignment.mock';
 import { getShippingAddress } from '../shipping-addresses.mock';
 
+import { type StripeShippingEvent } from './stripe-types';
 import StripeShippingAddress, { type StripeShippingAddressProps } from './StripeShippingAddress';
 
 describe('StripeShippingAddress Component', () => {
@@ -35,20 +36,20 @@ describe('StripeShippingAddress Component', () => {
         },
     };
 
-    const renderTestComponent = (props?: Partial<StripeShippingAddressProps>) => 
+    const renderTestComponent = (props?: Partial<StripeShippingAddressProps>) =>
         render(<StripeShippingAddress {...defaultProps} {...props} />);
 
     const getInitializeMock = (
         onChangeShippingPayload?: StripeShippingEvent,
         stripeExperiments: Record<string, boolean> = {},
-    ): jest.Mock => 
+    ): jest.Mock =>
         jest.fn((options) => {
             const {
                 getStyles = noop,
                 onChangeShipping = noop,
                 setStripeExperiments = noop,
             } = options.stripeupe || {};
-            
+
             setStripeExperiments(stripeExperiments);
             onChangeShipping(onChangeShippingPayload || stripeEvent);
             getStyles();

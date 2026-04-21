@@ -143,13 +143,19 @@ const Customer: React.FC<CustomerProps> = ({
 
     const handleSignIn = useCallback(async (credentials: CustomerCredentials) => {
         try {
-            await customerData.actions.signIn(credentials);
-            onSignIn();
-            setState(prevState => ({ ...prevState, draftEmail: undefined }));
+          const methodId = customerData.data.providerWithCustomCheckout;
+
+          await customerData.actions.signIn(credentials, {
+            methodId: methodId !== PaymentMethodId.StripeUPE ? methodId : undefined,
+          });
+
+          onSignIn();
+
+          setState((prevState) => ({ ...prevState, draftEmail: undefined }));
         } catch (error) {
             onSignInError(error);
         }
-    }, [customerData.actions.signIn, onSignIn, onSignInError]);
+    }, [customerData.actions.signIn, customerData.data.providerWithCustomCheckout, onSignIn, onSignInError]);
 
     const handleContinueAsGuest = useCallback(async (formValues: GuestFormValues) => {
         const email = formValues.email.trim();

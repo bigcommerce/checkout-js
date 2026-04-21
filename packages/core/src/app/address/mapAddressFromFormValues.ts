@@ -1,12 +1,16 @@
-import { type Address } from '@bigcommerce/checkout-sdk';
+import { type Address, type AddressKey } from '@bigcommerce/checkout-sdk';
 
 import { mapCustomFormFieldsFromFormValues } from '../formFields';
 
+import { B2BExtraFieldsSessionStorage } from './B2BExtraFieldsSessionStorage';
 import { type AddressFormValues } from './mapAddressToFormValues';
 
-export default function mapAddressFromFormValues(formValues: AddressFormValues): Address {
-    const { customFields, ...address } = formValues;
-    const shouldSaveAddress = formValues.shouldSaveAddress;
+export default function mapAddressFromFormValues(formValues: AddressFormValues, storageKey?: string): Pick<Address, Exclude<AddressKey, 'extraFields'>> {
+    const { customFields, extraFields, shouldSaveAddress, ...address } = formValues;
+
+    if (storageKey && extraFields && Object.keys(extraFields).length > 0) {
+        B2BExtraFieldsSessionStorage.setFields(storageKey, extraFields as Record<string, unknown>);
+    }
 
     return {
         ...address,

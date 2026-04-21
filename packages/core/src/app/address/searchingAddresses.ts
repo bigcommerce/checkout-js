@@ -19,6 +19,10 @@ export function searchingAddresses(addresses: CustomerAddress[], query: string):
             address.postalCode,
             address.country,
             address.countryCode,
+            ...(address.customFields ?? []).map(({ fieldValue }) =>
+                Array.isArray(fieldValue) ? fieldValue.join(' ') : String(fieldValue),
+            ),
+            ...(address.extraFields ?? []).map(({ fieldValue }) => String(fieldValue)),
         ]
             .filter(Boolean)
             .join(' ')

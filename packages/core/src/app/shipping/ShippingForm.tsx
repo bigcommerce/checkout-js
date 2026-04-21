@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 
-import { useCapabilities, useCheckout, useExtensions } from '@bigcommerce/checkout/contexts';
+import { useCapabilities, useExtensions } from '@bigcommerce/checkout/contexts';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
 
 import { CustomError } from '../common/error';
-import { isExperimentEnabled } from '../common/utility';
 
 import { useShipping } from './hooks/useShipping';
 import isUsingMultiShipping from './isUsingMultiShipping';
 import MultiShippingForm, { type MultiShippingFormValues } from './MultiShippingForm';
 import SingleShippingForm, { type SingleShippingFormValues } from './SingleShippingForm';
+import SingleShippingFormClassComponent from './SingleShippingFormClass';
 
 export interface ShippingFormProps {
     cartHasChanged: boolean;
@@ -35,37 +35,31 @@ const ShippingForm = ({
     setIsMultishippingMode,
 }: ShippingFormProps) => {
     const {
-        checkoutState: {
-            data: { getConfig },
-        },
-    } = useCheckout();
-    const { shipping: { hideBillingSameAsShippingCheck } } = useCapabilities();
-    const {
         cart,
         consignments,
         countries,
         customerMessage,
+        defaultShippingExpectationMessage,
         deleteConsignments,
         deinitializeShippingMethod: deinitialize,
         getFields,
+        hasMultiShippingEnabled,
         isLoading,
         initializeShippingMethod: initialize,
         isShippingStepPending,
+        isNoCountriesErrorOnCheckoutEnabled,
         methodId,
         shouldShowOrderComments,
         shippingAddress,
         validateMaxLength,
-        signOut,
-        updateShippingAddress: updateAddress
+        updateShippingAddress: updateAddress,
+        useSingleShippingFormFunctionComponent,
     } = useShipping();
+    const { shipping: { hideBillingSameAsShippingCheck } } = useCapabilities();
     const { extensionState: { shippingFormRenderTimestamp } } = useExtensions();
-
-    const config = getConfig();
-    const isNoCountriesErrorOnCheckoutEnabled = isExperimentEnabled(config?.checkoutSettings, 'CHECKOUT-9630.no_countries_error_on_checkout', false);
 
     useEffect(() => {
         if (shippingFormRenderTimestamp) {
-            const hasMultiShippingEnabled = config?.checkoutSettings?.hasMultiShippingEnabled ?? false;
             const isMultiShippingMode =
                 !!cart &&
                 !!consignments &&
@@ -97,6 +91,41 @@ const ShippingForm = ({
         />;
     };
 
+    const getSingleShippingForm = () => {
+        const singleShippingFormProps = {
+            cartHasChanged,
+            consignments,
+            customerMessage,
+            defaultShippingExpectationMessage,
+            deinitialize,
+            deleteConsignments,
+            getFields,
+            initialize,
+            isBillingSameAsShipping,
+            isInitialValueLoaded,
+            isLoading,
+            isShippingStepPending,
+            methodId,
+            onSubmit: onSingleShippingSubmit,
+            onUnhandledError,
+            shippingAddress,
+            shippingFormRenderTimestamp,
+            shouldShowOrderComments,
+            updateAddress,
+            validateMaxLength,
+        };
+
+        if (useSingleShippingFormFunctionComponent) {
+            return <SingleShippingForm {...singleShippingFormProps} />;
+        }
+
+        return <SingleShippingFormClassComponent
+            {...singleShippingFormProps}
+            hideBillingSameAsShippingCheck={hideBillingSameAsShippingCheck}
+            isMultiShippingMode={isMultiShippingMode}
+        />;
+    }
+
     if (isInitialValueLoaded && countries.length === 0 && isNoCountriesErrorOnCheckoutEnabled) {
         return null;
     }
@@ -104,30 +133,7 @@ const ShippingForm = ({
     return isMultiShippingMode ? (
         getMultiShippingForm()
     ) : (
-        <SingleShippingForm
-            cartHasChanged={cartHasChanged}
-            consignments={consignments}
-            customerMessage={customerMessage}
-            deinitialize={deinitialize}
-            deleteConsignments={deleteConsignments}
-            getFields={getFields}
-            hideBillingSameAsShippingCheck={hideBillingSameAsShippingCheck}
-            initialize={initialize}
-            isBillingSameAsShipping={isBillingSameAsShipping}
-            isInitialValueLoaded={isInitialValueLoaded}
-            isLoading={isLoading}
-            isMultiShippingMode={isMultiShippingMode}
-            isShippingStepPending={isShippingStepPending}
-            methodId={methodId}
-            onSubmit={onSingleShippingSubmit}
-            onUnhandledError={onUnhandledError}
-            shippingAddress={shippingAddress}
-            shippingFormRenderTimestamp={shippingFormRenderTimestamp}
-            shouldShowOrderComments={shouldShowOrderComments}
-            signOut={signOut}
-            updateAddress={updateAddress}
-            validateMaxLength={validateMaxLength}
-        />
+        getSingleShippingForm()
     );
 };
 

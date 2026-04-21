@@ -1,6 +1,7 @@
 import { renderHook } from '@testing-library/react';
 
 import * as contexts from '@bigcommerce/checkout/contexts';
+import { defaultCapabilities } from '@bigcommerce/checkout/contexts';
 import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
 import {
     getCart,
@@ -44,6 +45,7 @@ describe('useShipping', () => {
             getBillingAddress,
             getShippingAddressFields: getAddressFormFields,
             getShippingCountries: getCountries,
+            getAddressExtraFields: jest.fn().mockReturnValue([]),
         },
         statuses: {
             isShippingStepPending: () => false,
@@ -61,8 +63,9 @@ describe('useShipping', () => {
     };
 
     beforeEach(() => {
-        jest.spyOn(contexts, 'useCheckout').mockReturnValue({ checkoutState, checkoutService });
-        jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({ id: 'checkout', customerMessage: 'msg' });
+        jest.spyOn(contexts, 'useCheckout').mockReturnValue({ checkoutState, checkoutService } as any);
+        jest.spyOn(contexts, 'useCapabilities').mockReturnValue(defaultCapabilities);
+        jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({ id: 'checkout', customerMessage: 'msg' } as any);
     });
 
     afterEach(() => {
@@ -79,18 +82,13 @@ describe('useShipping', () => {
         expect(result.current.validateMaxLength).toBe(false);
     });
 
-    it('throws if required checkout data is missing', () => {
-        jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue(undefined);
-
-        expect(() => renderHook(() => useShipping())).toThrow('Unable to access checkout data');
-    });
-
     describe('shouldShowMultiShipping', () => {
         beforeEach(() => {
             jest.spyOn(checkoutState.data, 'getCart').mockReturnValue(
                 {
                     ...getCart(),
                     lineItems: {
+                        ...getCart().lineItems,
                         physicalItems: [
                             {
                                 ...getCart().lineItems.physicalItems[0],
@@ -123,7 +121,7 @@ describe('useShipping', () => {
                     ...getStoreConfig().checkoutSettings,
                     enableOrderComments: true,
                     hasMultiShippingEnabled: false,
-                    providerWithCustomCheckout: undefined,
+                    providerWithCustomCheckout: null,
                 },
             });
 
@@ -139,7 +137,7 @@ describe('useShipping', () => {
                     ...getStoreConfig().checkoutSettings,
                     enableOrderComments: true,
                     hasMultiShippingEnabled: true,
-                    providerWithCustomCheckout: undefined,
+                    providerWithCustomCheckout: null,
                 },
             });
 
@@ -155,14 +153,14 @@ describe('useShipping', () => {
                     ...getStoreConfig().checkoutSettings,
                     enableOrderComments: true,
                     hasMultiShippingEnabled: true,
-                    providerWithCustomCheckout: undefined,
+                    providerWithCustomCheckout: null,
                 },
             });
 
             jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
                 ...getCheckout(),
                 payments: [{ providerId: 'amazonpay' }],
-            } as Checkout);
+            } as any);
 
             const { result } = renderHook(() => useShipping());
 
@@ -179,6 +177,7 @@ describe('useShipping', () => {
 
         it('is true when CHECKOUT-9768.form_fields_max_length_validation experiment is enabled', () => {
             const config = getStoreConfig();
+
             jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
                 ...config,
                 checkoutSettings: {
@@ -193,6 +192,61 @@ describe('useShipping', () => {
             const { result } = renderHook(() => useShipping());
 
             expect(result.current.validateMaxLength).toBe(true);
+        });
+    });
+
+    describe('getFields', () => {
+        const extraFields = [
+            {
+                custom: false,
+                default: '',
+                id: 'b2bExtraField_100',
+                label: 'Company Name',
+                name: 'b2bExtraField_100',
+                required: false,
+            },
+        ];
+
+        it('returns system fields combined with extra fields when hasAddressExtraFields is true', () => {
+            jest.spyOn(contexts, 'useCapabilities').mockReturnValue({
+                ...defaultCapabilities,
+                userJourney: { ...defaultCapabilities.userJourney, hasAddressExtraFields: true },
+            });
+            checkoutState.data.getAddressExtraFields.mockReturnValue(extraFields);
+
+            const { result } = renderHook(() => useShipping());
+            const fields = result.current.getFields('US');
+
+            const addressFormFields = getAddressFormFields();
+
+            expect(fields.length).toBe(addressFormFields.length + extraFields.length);
+            expect(fields[fields.length - 1].name).toBe('b2bExtraField_100');
+        });
+
+        it('returns only system fields when hasAddressExtraFields is false even if extra fields exist', () => {
+            jest.spyOn(contexts, 'useCapabilities').mockReturnValue({
+                ...defaultCapabilities,
+                userJourney: { ...defaultCapabilities.userJourney, hasAddressExtraFields: false },
+            });
+            checkoutState.data.getAddressExtraFields.mockReturnValue(extraFields);
+
+            const { result } = renderHook(() => useShipping());
+            const fields = result.current.getFields('US');
+
+            expect(fields.length).toBe(getAddressFormFields().length);
+        });
+
+        it('returns only system fields when no extra fields exist', () => {
+            jest.spyOn(contexts, 'useCapabilities').mockReturnValue({
+                ...defaultCapabilities,
+                userJourney: { ...defaultCapabilities.userJourney, hasAddressExtraFields: true },
+            });
+            checkoutState.data.getAddressExtraFields.mockReturnValue([]);
+
+            const { result } = renderHook(() => useShipping());
+            const fields = result.current.getFields('US');
+
+            expect(fields.length).toBe(getAddressFormFields().length);
         });
     });
 

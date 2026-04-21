@@ -67,9 +67,14 @@ export interface CustomerActions {
     continueAsGuest: (credentials: GuestCredentials) => Promise<CheckoutSelectors>;
     sendLoginEmail: (params: { email: string }) => Promise<CheckoutSelectors>;
     deinitializeCustomer: (options: CustomerRequestOptions) => Promise<CheckoutSelectors>;
-    executePaymentMethodCheckout: (options: ExecutePaymentMethodCheckoutOptions) => Promise<CheckoutSelectors>;
+    executePaymentMethodCheckout: (
+      options: ExecutePaymentMethodCheckoutOptions,
+    ) => Promise<CheckoutSelectors>;
     initializeCustomer: (options: CustomerInitializeOptions) => Promise<CheckoutSelectors>;
-    signIn: (credentials: CustomerCredentials) => Promise<CheckoutSelectors>;
+    signIn: (
+      credentials: CustomerCredentials,
+      options?: CustomerRequestOptions,
+    ) => Promise<CheckoutSelectors>;
 }
 
 export interface UseCustomerReturn {

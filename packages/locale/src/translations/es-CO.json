@@ -37,6 +37,7 @@
             "postal_code_label": "Código postal",
             "postal_code_required_error": "El campo Código postal es obligatorio.",
             "save_in_addressbook": "Guardar esta dirección en mi libreta de direcciones.",
+            "search_addresses": "Direcciones de búsqueda",
             "select_country_action": "Seleccionar un país",
             "select_state_action": "Seleccionar un estado",
             "state_label": "Estado/Provincia",
@@ -48,6 +49,7 @@
         "billing": {
             "billing_address_heading": "Dirección de facturación",
             "billing_heading": "Facturación",
+            "no_billing_addresses_warning": "Lo sentimos, no tienes una dirección de facturación para elegir, por favor ve a tu agenda para crear una dirección o contacta con el administrador de tu sitio.",
             "save_billing_address_error": "Ocurrió un error al guardar la dirección de facturación en tu cotización. Vuelve a intentarlo.",
             "billing_address_amazonpay": "Administrado por Amazon Pay",
             "use_shipping_address_label": "Mi dirección de facturación es la misma que mi dirección de envío."
@@ -501,7 +503,7 @@
             "gift_certificate_remaining_text": "Restante",
             "gift_certificate_text": "Certificado de regalo",
             "manual_discount": "Descuento manual",
-            "maximum_discount_applied_text": "Maximum discount applied",
+            "maximum_discount_applied_text": "Descuento máximo aplicado",
             "remove_action": "Quitar",
             "store_credit_available_text": "Actualmente, tu cuenta tiene {storeCredit} de crédito total de la tienda disponible",
             "toggle_action": "Cupón/Certificado de regalo",
@@ -535,6 +537,7 @@
             "save_shipping_address_error": "Ocurrió un error al guardar la dirección de envío en tu cotización. Vuelve a intentarlo.",
             "save_shipping_option_error": "Ocurrió un error al guardar la cotización de envío en tu pedido. Vuelve a intentarlo.",
             "select_shipping_address_text": "Selecciona una dirección de envío para ver las cotizaciones de envío",
+            "no_shipping_addresses_warning": "Lo siento, no tienes una dirección de envío para elegir, por favor ve a tu agenda para crear una dirección o contacta con el administrador de tu sitio.",
             "shipping_address_heading": "Dirección de envío",
             "multishipping_consignment_index_heading": "Destino #{consignmentNumber}",
             "multishipping_incomplete_consignment_error": "Completa la dirección, la asignación de artículos y la selección del método para el destino n.°{consignmentNumber}.",
@@ -663,16 +666,16 @@
             "continue_shopping": "Seguir comprando »",
             "order_status_update_facebook_messenger_heading": "Recibe actualizaciones al instante de tu pedido en Messenger",
             "expired_token": {
-                "heading": "Link Expired",
-                "description": "For security, this link has expired.",
-                "resend_action": "Resend Secure Link",
-                "sending": "Sending...",
-                "resend_success": "A new link has been sent to your email address.",
-                "resend_error": "Failed to resend link. Please try again later."
+                "heading": "Enlace expirado",
+                "description": "Por seguridad, este enlace expiró.",
+                "resend_action": "Reenviar enlace seguro",
+                "sending": "Enviando...",
+                "resend_success": "Se envió un nuevo enlace a tu dirección de email.",
+                "resend_error": "No se pudo reenviar el enlace. Intente de nuevo más tarde."
             },
             "rate_limited": {
-                "heading": "Too Many Requests",
-                "message": "You've made too many attempts. Please wait a few minutes and try again."
+                "heading": "Demasiadas solicitudes",
+                "message": "Hiciste demasiados intentos. Por favor, espera unos minutos y vuelve a intentarlo."
             }
         }
     }

@@ -28,6 +28,7 @@ describe('MollieCustomForm', () => {
                 },
             ],
         },
+        skipRedirectConfirmationAlert: false,
     };
     const options = {
         cardNumberElementOptions: {

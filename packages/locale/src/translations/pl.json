@@ -37,6 +37,7 @@
             "postal_code_label": "Kod pocztowy",
             "postal_code_required_error": "Kod pocztowy jest wymagany",
             "save_in_addressbook": "Zapisz ten adres w mojej książce adresowej.",
+            "search_addresses": "Search addresses",
             "select_country_action": "Wybierz kraj",
             "select_state_action": "Wybierz stan",
             "state_label": "Państwo/Prowincja",
@@ -48,6 +49,7 @@
         "billing": {
             "billing_address_heading": "Adres rozliczeniowy",
             "billing_heading": "Billing",
+            "no_billing_addresses_warning": "Sorry, you have no billing address to choose from, please go to your address book to create an address or contact your site admin.",
             "save_billing_address_error": "Podczas zapisywania adresu rozliczeniowego do oferty cenowej wystąpił błąd. Spróbuj ponownie.",
             "billing_address_amazonpay": "Zarządzane przez Amazon Pay",
             "use_shipping_address_label": "Mój adres do faktury jest taki sam jak adres do wysyłki."
@@ -535,6 +537,7 @@
             "save_shipping_address_error": "Wystąpił błąd podczas zapisywania adresu dostawy do oferty cenowej. Prosimy spróbować ponownie.",
             "save_shipping_option_error": "Podczas zapisywania wyceny wysyłki do zamówienia wystąpił błąd. Prosimy spróbować ponownie.",
             "select_shipping_address_text": "Wybierz adres dostawy, aby zobaczyć wycenę wysyłki.",
+            "no_shipping_addresses_warning": "Sorry, you have no shipping address to choose from, please go to your address book to create an address or contact your site admin.",
             "shipping_address_heading": "Adres dostawy",
             "multishipping_consignment_index_heading": "Miejsce docelowe nr {consignmentNumber}",
             "multishipping_incomplete_consignment_error": "Uzupełnij dane adresu, przydziału produktów i metody dla miejsca docelowego nr {consignmentNumber}.",

@@ -37,10 +37,13 @@ const CartStockPositionsChangedMultiConsignmentContent: FunctionComponent<CartSt
                         className="cart-stock-positions-changed-modal-destination"
                         data-test="cart-stock-positions-changed-destination"
                     >
-                        <TranslatedString
-                            data={{ address, consignmentNumber }}
-                            id="cart.cart_stock_modal_destination"
-                        />
+                        <span className="body-bold">
+                            <TranslatedString
+                                data={{ consignmentNumber }}
+                                id="cart.cart_stock_modal_destination"
+                            />
+                        </span>
+                        <span className="body-medium">{` (${address})`}</span>
                     </h3>
                     <CartStockPositionsChangedItemList items={items} />
                 </div>

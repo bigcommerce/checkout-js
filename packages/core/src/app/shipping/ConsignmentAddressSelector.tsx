@@ -4,12 +4,23 @@ import React, { useState } from "react";
 import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from "@bigcommerce/checkout/locale";
 
-import { AddressFormModal, type AddressFormValues, AddressSelect, AddressType, isValidAddress, mapAddressFromFormValues } from "../address";
+import {
+    AddressFormModal,
+    type AddressFormValues,
+    AddressSelect,
+    AddressType,
+    B2BExtraFieldsSessionStorage,
+    isValidAddress,
+    mapAddressFromFormValues,
+    stripExtraFieldsFromAddress,
+} from '../address';
 import { ErrorModal } from "../common/error";
 import { EMPTY_ARRAY, isExperimentEnabled } from "../common/utility";
+import { mapAddressExtraFieldsFromFormValues } from '../formFields';
 
 import { AssignItemFailedError, AssignItemInvalidAddressError } from "./errors";
 import GuestCustomerAddressSelector from "./GuestCustomerAddressSelector";
+import { useShipping } from "./hooks/useShipping";
 import { type MultiShippingConsignmentData } from "./MultishippingType";
 import { setRecommendedOrMissingShippingOption } from './utils';
 
@@ -39,7 +50,6 @@ const ConsignmentAddressSelector = ({
                 getCustomer,
                 getConfig,
                 getConsignments: getPreviousConsignments,
-                getShippingAddressFields: getFields,
             },
         },
         checkoutService: {
@@ -49,12 +59,16 @@ const ConsignmentAddressSelector = ({
         },
     } = useCheckout();
 
+    const { getFields } = useShipping();
+
     const customer = getCustomer();
     const config = getConfig();
 
     if (!config || !customer) {
         return null;
     }
+
+    const storageKey = B2BExtraFieldsSessionStorage.getConsignmentKey(consignment?.id ?? '');
 
     // TODO: add filter for addresses
     const addresses = customer.addresses || EMPTY_ARRAY;
@@ -73,10 +87,12 @@ const ConsignmentAddressSelector = ({
             return onUnhandledError(new AssignItemInvalidAddressError());
         }
 
+        const addressWithoutExtraFields = stripExtraFieldsFromAddress(address);
+
         if (!consignment) {
             setConsignmentRequest?.({
-                address,
-                shippingAddress: address,
+                address: addressWithoutExtraFields,
+                shippingAddress: addressWithoutExtraFields,
                 lineItems: [],
             });
 
@@ -88,8 +104,8 @@ const ConsignmentAddressSelector = ({
                 data: { getConsignments },
             } = await updateConsignment({
                 id: consignment.id,
-                address,
-                shippingAddress: address,
+                address: addressWithoutExtraFields,
+                shippingAddress: addressWithoutExtraFields,
                 lineItems: consignment.lineItems.map(({ id, quantity }) => ({ itemId: id, quantity })),
             });
 
@@ -118,9 +134,12 @@ const ConsignmentAddressSelector = ({
     }
 
     const handleSaveAddress = async (addressFormValues: AddressFormValues) => {
-        const address = mapAddressFromFormValues(addressFormValues);
+        const address = mapAddressFromFormValues(addressFormValues, storageKey);
 
-        await handleSelectAddress(address);
+        await handleSelectAddress({
+            ...address,
+            extraFields: mapAddressExtraFieldsFromFormValues(addressFormValues.extraFields),
+        });
 
         if (!isGuest) {
             try {
@@ -160,6 +179,7 @@ const ConsignmentAddressSelector = ({
                 onRequestClose={handleCloseAddAddressForm}
                 onSaveAddress={handleSaveAddress}
                 selectedAddress={isGuest ? selectedAddress : undefined}
+                storageKey={storageKey}
             />
             {isGuest
                 ? <GuestCustomerAddressSelector

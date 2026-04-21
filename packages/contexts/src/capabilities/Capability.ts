@@ -4,7 +4,8 @@ export const defaultCapabilities: Capabilities = {
     userJourney: {
         disableEditCart: false,
         hasCompanyAddressBook: false,
-        hasExtraAddressFields: false,
+        hasAddressExtraFields: false,
+        requiresB2BToken: false,
     },
     customer: {
         superAdminCompanySelector: false,

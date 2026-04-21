@@ -336,5 +336,55 @@ describe('CreditCardPaymentMethod', () => {
                 ),
             ).toBeInTheDocument();
         });
+
+        it('deletes the last stored instrument and shows "use new card" view', async () => {
+            const instruments = getInstruments();
+            const singleInstrument = [instruments[0]];
+
+            jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue(singleInstrument);
+
+            const { rerender } = render(
+                <CreditCardPaymentMethodTest {...defaultProps} method={vaultedMethod} />,
+            );
+
+            expect(
+                screen.queryByText(
+                    localeContext.language.translate(
+                        'payment.instrument_save_payment_method_label',
+                    ),
+                ),
+            ).not.toBeInTheDocument();
+
+            jest.spyOn(checkoutService, 'deleteInstrument').mockResolvedValue(checkoutState);
+
+            await checkoutService.deleteInstrument(singleInstrument[0].bigpayToken);
+
+            expect(checkoutService.deleteInstrument).toHaveBeenCalledWith(
+                singleInstrument[0].bigpayToken,
+            );
+
+            const remainingInstruments = singleInstrument.filter(
+                (instrument) => instrument.bigpayToken !== singleInstrument[0].bigpayToken,
+            );
+
+            expect(remainingInstruments).toHaveLength(0);
+
+            jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue(remainingInstruments);
+
+            subscribeEventEmitter.emit('change');
+
+            rerender(<CreditCardPaymentMethodTest {...defaultProps} method={vaultedMethod} />);
+
+            expect(
+                await screen.findByText(
+                    localeContext.language.translate(
+                        'payment.instrument_save_payment_method_label',
+                    ),
+                ),
+            ).toBeInTheDocument();
+
+            expect(screen.getByRole('textbox', { name: 'Credit Card Number' })).toBeInTheDocument();
+            expect(screen.getByRole('textbox', { name: 'Name on Card' })).toBeInTheDocument();
+        });
     });
 });

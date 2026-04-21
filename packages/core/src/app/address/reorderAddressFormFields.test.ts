@@ -36,11 +36,13 @@ describe('reorderAddressFormFields()', () => {
         ]);
     });
 
-    it('preserves order of non-special fields (rest)', () => {
+    it('places non-system address fields after all ordered fields', () => {
         const fields = [
+            createField('field_25'),
             createField('address2'),
             createField('stateOrProvince'),
             createField('postalCode'),
+            createField('field_27'),
         ];
         const result = reorderAddressFormFields(fields);
 
@@ -48,6 +50,8 @@ describe('reorderAddressFormFields()', () => {
             'address2',
             'stateOrProvince',
             'postalCode',
+            'field_25',
+            'field_27',
         ]);
     });
 

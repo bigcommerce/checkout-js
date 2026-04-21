@@ -12,5 +12,6 @@ export function getMethod(): PaymentMethod {
             testMode: false,
         },
         type: 'PAYMENT_TYPE_OFFLINE',
+        skipRedirectConfirmationAlert: false,
     };
 }

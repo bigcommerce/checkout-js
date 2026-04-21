@@ -33,5 +33,6 @@ export function getBlueSnapDirect(
                 { issuerId: 'test-bank-1', issuerName: 'Test Bank1' },
             ],
         },
+        skipRedirectConfirmationAlert: false,
     };
 }

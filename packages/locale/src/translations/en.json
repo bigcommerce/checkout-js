@@ -73,7 +73,7 @@
             "item_count_text": "{count, plural, one{1 Item} other{# Items} }",
             "backorder_count_text": "{count} will be backordered",
             "backorder_quantities_changed_heading": "The backorder quantities have changed for below items:",
-            "cart_stock_modal_destination": "Destination #{consignmentNumber} ({address})",
+            "cart_stock_modal_destination": "Destination #{consignmentNumber}",
             "ready_to_ship_count_text": "{count} ready to ship",
             "show_backorder_details": "Show backorder details",
             "hide_backorder_details": "Hide backorder details",

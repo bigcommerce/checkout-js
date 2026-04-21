@@ -23,7 +23,7 @@ const CartStockPositionsChangedItem: FunctionComponent<CartStockPositionsChanged
           </figure>
           <div className="product-column product-body">
             <h4
-              className="product-title optimizedCheckout-contentPrimary body-medium"
+              className="product-title optimizedCheckout-contentPrimary body-regular"
               data-test="cart-item-product-title"
             >
               {item.name}
@@ -40,8 +40,10 @@ const CartStockPositionsChangedItem: FunctionComponent<CartStockPositionsChanged
                 ))}
               </ul>
             )}
+          </div>
+          <div className="cart-item-quantity">
             <p
-              className="optimizedCheckout-contentSecondary sub-text-medium"
+              className="optimizedCheckout-contentPrimary body-regular"
               data-test="cart-item-quantity"
             >
               <TranslatedString data={{ quantity: item.quantity }} id="cart.qty_label" />

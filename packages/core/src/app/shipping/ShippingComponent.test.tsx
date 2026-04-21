@@ -245,6 +245,7 @@ describe('Shipping component', () => {
             jest.spyOn(checkoutState.data, 'getCart').mockReturnValue({
                 ...getCart(),
                 lineItems: {
+                    ...getCart().lineItems,
                     physicalItems: [
                         {
                             ...getPhysicalItem(),

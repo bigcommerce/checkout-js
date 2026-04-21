@@ -77,4 +77,10 @@ describe('getHostedCreditCardValidationSchema', () => {
             'payment.credit_card_number_invalid_error',
         );
     });
+
+    it('throws error if card name field is invalid', () => {
+        values.hostedForm.errors = { cardName: 'invalid_card_name' };
+
+        expect(() => schema.validateSync(values)).toThrow('payment.credit_card_name_invalid_error');
+    });
 });

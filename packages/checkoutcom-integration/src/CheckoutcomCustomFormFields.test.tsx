@@ -62,6 +62,7 @@ const getAPMProps = {
             clientToken: null,
             returnUrl:
                 'https://test-store.store.bcdev/checkout.php?action=set_external_checkout&provider=checkoutcom',
+            skipRedirectConfirmationAlert: false,
         },
     }),
     oxxo: () => ({
@@ -80,6 +81,7 @@ const getAPMProps = {
             clientToken: null,
             returnUrl:
                 'https://test-store.store.bcdev/checkout.php?action=set_external_checkout&provider=checkoutcom',
+            skipRedirectConfirmationAlert: false,
         },
     }),
     fawry: () => ({
@@ -98,6 +100,7 @@ const getAPMProps = {
             clientToken: null,
             returnUrl:
                 'https://test-store.store.bcdev/checkout.php?action=set_external_checkout&provider=checkoutcom',
+            skipRedirectConfirmationAlert: false,
         },
     }),
 };

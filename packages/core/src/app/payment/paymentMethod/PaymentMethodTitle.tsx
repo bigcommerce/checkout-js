@@ -164,10 +164,6 @@ export function getPaymentMethodTitle(
                         : cdnPath('/img/payment-providers/klarna-header.png'),
                 titleText: methodDisplayName,
             },
-            [PaymentMethodId.Laybuy]: {
-                logoUrl: cdnPath('/img/payment-providers/laybuy-checkout-header.png'),
-                titleText: '',
-            },
             [PaymentMethodType.Paypal]: {
                 // TODO: method.id === PaymentMethodId.BraintreeVenmo should be removed after the PAYPAL-1380.checkout_button_strategies_update experiment removal
                 logoUrl:
@@ -266,11 +262,11 @@ export function getPaymentMethodTitle(
 
         if (method.gateway === PaymentMethodId.BlueSnapDirect) {
             if (method.id === 'credit_card') {
-                return { logoUrl: '', titleText: language.translate('payment.credit_card_text') };
+                return { logoUrl: '', titleText: methodDisplayName }
             }
 
             if (method.id === 'ecp') {
-                return { logoUrl: '', titleText: language.translate('payment.bluesnap_direct_electronic_check_label') };
+                return { logoUrl: '', titleText: methodDisplayName };
             }
 
             if (method.id === 'banktransfer') {

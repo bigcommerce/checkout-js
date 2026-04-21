@@ -51,6 +51,7 @@ describe('When using Affirm Payment Method', () => {
                 config: {},
                 type: 'card',
                 gateway: 'affirm',
+                skipRedirectConfirmationAlert: false,
             },
             checkoutService,
             checkoutState,

@@ -63,6 +63,8 @@ describe('MultiShippingForm Component', () => {
 
         jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
 
+        jest.spyOn(checkoutState.data, 'getCart').mockReturnValue(getCart());
+
         jest.spyOn(checkoutState.data, 'getConsignments').mockReturnValue([getConsignment()]);
 
         jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({

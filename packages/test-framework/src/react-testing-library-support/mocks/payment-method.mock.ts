@@ -29,6 +29,7 @@ const applepayMethod: PaymentMethod = {
         merchantId: 'abc',
         paymentsUrl: 'https://url',
     },
+    skipRedirectConfirmationAlert: false,
 };
 
 export { applepayMethod };

@@ -18,7 +18,7 @@
             "custom_required_error": "{label}が必要です",
             "custom_min_error": "{label} は {min} 文字以上である必要があります",
             "custom_max_error": "{label} は {max} 文字以内である必要があります",
-            "custom_min_number_error": "{label}は 以上である必要があります{min}",
+            "custom_min_number_error": "{label}は 0 以上である必要があります{min}",
             "custom_max_number_error": "{label}は 以下である必要があります{max}",
             "custom_range_error": "{label} {min}と{max}の間でなければなりません",
             "invalid_characters_error": "{label}に無効な文字が含まれています",
@@ -37,6 +37,7 @@
             "postal_code_label": "郵便番号",
             "postal_code_required_error": "郵便番号が必要です",
             "save_in_addressbook": "この住所をアドレス帳に保存します。",
+            "search_addresses": "検索アドレス",
             "select_country_action": "国を選択",
             "select_state_action": "ステータスを選択",
             "state_label": "都道府県",
@@ -48,6 +49,7 @@
         "billing": {
             "billing_address_heading": "請求先住所",
             "billing_heading": "請求",
+            "no_billing_addresses_warning": "申し訳ありませんが、請求先住所が登録されていません。住所録から住所を作成するか、サイト管理者にお問い合わせください。",
             "save_billing_address_error": "請求先住所の保存中にエラーが発生しました。もう一度やり直してください。",
             "billing_address_amazonpay": "Amazon Payで管理",
             "use_shipping_address_label": "請求先住所は配送先住所と同じです。"
@@ -501,7 +503,7 @@
             "gift_certificate_remaining_text": "残り",
             "gift_certificate_text": "ギフト券",
             "manual_discount": "手動割引",
-            "maximum_discount_applied_text": "Maximum discount applied",
+            "maximum_discount_applied_text": "最大割引が適用されます",
             "remove_action": "除去",
             "store_credit_available_text": "現在、アカウントには合計 {storeCredit} のストアクレジットが利用可能です",
             "toggle_action": "クーポン/ギフト券",
@@ -535,6 +537,7 @@
             "save_shipping_address_error": "配送先住所の保存中にエラーが発生しました。もう一度やり直してください。",
             "save_shipping_option_error": "ご注文の出荷情報を保存中にエラーが発生しました。もう一度やり直してください。",
             "select_shipping_address_text": "配送目安を表示するには、配送先住所を選択してください",
+            "no_shipping_addresses_warning": "申し訳ありませんが、配送先住所が登録されていません。住所録から住所を作成するか、サイト管理者にお問い合わせください。",
             "shipping_address_heading": "配送先住所",
             "multishipping_consignment_index_heading": "配送先#{consignmentNumber}",
             "multishipping_incomplete_consignment_error": "宛先番号{consignmentNumber}の住所、アイテムの割り当て、方法の選択を完了してください。",
@@ -663,16 +666,16 @@
             "continue_shopping": "買い物を続ける≫",
             "order_status_update_facebook_messenger_heading": "注文の最新情報をMessengerですぐに送信する",
             "expired_token": {
-                "heading": "Link Expired",
-                "description": "For security, this link has expired.",
-                "resend_action": "Resend Secure Link",
-                "sending": "Sending...",
-                "resend_success": "A new link has been sent to your email address.",
-                "resend_error": "Failed to resend link. Please try again later."
+                "heading": "リンクの有効期限が切れました",
+                "description": "セキュリティ上の理由により、このリンクは期限切れです。",
+                "resend_action": "セキュアリンクを再送信",
+                "sending": "送信中...",
+                "resend_success": "新しいリンクがあなたのメールアドレスに送信されました。",
+                "resend_error": "リンクの再送信に失敗しました。しばらくしてから再度お試しください"
             },
             "rate_limited": {
-                "heading": "Too Many Requests",
-                "message": "You've made too many attempts. Please wait a few minutes and try again."
+                "heading": "リクエストが多すぎる",
+                "message": "何度も試みすぎました。数分待ってからもう一度お試しください。"
             }
         }
     }

@@ -106,10 +106,13 @@ describe('Registered Customer', () => {
             name: localeContext.language.translate('customer.sign_in_action')
         }));
 
-        expect(checkoutService.signInCustomer).toHaveBeenCalledWith({
+        expect(checkoutService.signInCustomer).toHaveBeenCalledWith(
+          {
             email,
             password,
-        });
+          },
+          { methodId: undefined },
+        );
     });
 
     it('displays error message if invalid email', async () => {
@@ -203,10 +206,13 @@ describe('Registered Customer', () => {
             name: localeContext.language.translate('customer.sign_in_action')
         }));
 
-        expect(checkoutService.signInCustomer).toHaveBeenCalledWith({
+        expect(checkoutService.signInCustomer).toHaveBeenCalledWith(
+          {
             email,
             password,
-        });
+          },
+          { methodId: undefined },
+        );
         expect(screen.getByText(localeContext.language.translate('customer.sign_in_error'))).toBeInTheDocument();
 
         const cancelButton = screen.getByRole('link', { name: localeContext.language.translate('common.cancel_action') });

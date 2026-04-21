@@ -1,4 +1,4 @@
-import { type FormField } from '@bigcommerce/checkout-sdk';
+import { type FormField, isExtraField } from '@bigcommerce/checkout-sdk/essential';
 import { forIn, noop } from 'lodash';
 import React, { useCallback, useEffect, useRef } from 'react';
 
@@ -92,7 +92,6 @@ const AddressForm: React.FC<AddressFormProps> = ({
             }
 
             setFieldValue(fieldName, value as string);
-            onChange(fieldName, value as string);
         });
 
         const address1 = address.address1 ? address.address1 : autocompleteValue;
@@ -100,7 +99,7 @@ const AddressForm: React.FC<AddressFormProps> = ({
         if (address1) {
             syncNonFormikValue(AUTOCOMPLETE_FIELD_NAME, address1);
         }
-    }, [countries, setFieldValue, onChange, syncNonFormikValue]);
+    }, [countries, setFieldValue, syncNonFormikValue]);
 
     const getPlaceholderValue = useCallback((field: FormField, translatedPlaceholderId: string): string => {
         if (field.default && field.fieldType !== 'dropdown') {
@@ -118,8 +117,21 @@ const AddressForm: React.FC<AddressFormProps> = ({
                     ref={containerRef}
                 >
                     {formFields.map((field) => {
+                        if (field.hidden) return null;
+
                         const addressFieldName = field.name;
                         const translatedPlaceholderId = PLACEHOLDER[addressFieldName];
+                        const getParentFieldName = () => {
+                            if (field.custom) {
+                                return fieldName ? `${fieldName}.customFields` : 'customFields';
+                            }
+
+                            if (isExtraField(field)) {
+                                return fieldName ? `${fieldName}.extraFields` : 'extraFields';
+                            }
+
+                            return fieldName;
+                        };
 
                         if (
                             addressFieldName === 'address1' &&
@@ -156,20 +168,14 @@ const AddressForm: React.FC<AddressFormProps> = ({
                                 isFloatingLabelEnabled={isFloatingLabelEnabledValue}
                                 key={`${field.id}-${field.name}`}
                                 label={
-                                    field.custom ? (
+                                    (field.custom || isExtraField(field)) ? (
                                         field.label
                                     ) : (
                                         <TranslatedString id={LABEL[field.name]} />
                                     )
                                 }
                                 onChange={handleDynamicFormFieldChange(addressFieldName)}
-                                parentFieldName={
-                                    field.custom
-                                        ? fieldName
-                                            ? `${fieldName}.customFields`
-                                            : 'customFields'
-                                        : fieldName
-                                }
+                                parentFieldName={getParentFieldName()}
                                 placeholder={getPlaceholderValue(
                                     field,
                                     translatedPlaceholderId,

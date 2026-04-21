@@ -76,6 +76,40 @@ describe('mapToOrderRequestBody()', () => {
         });
     });
 
+    it('uses methodIdOverride as methodId when provided', () => {
+        const result = mapToOrderRequestBody(
+            {
+                paymentProviderRadio: 'adyen-paypal',
+                methodIdOverride: 'scheme',
+            },
+            true,
+        );
+
+        expect(result).toEqual({
+            payment: {
+                gatewayId: 'adyen',
+                methodId: 'scheme',
+            },
+        });
+    });
+
+    it('falls back to parsed methodId when methodIdOverride is an empty string', () => {
+        const result = mapToOrderRequestBody(
+            {
+                paymentProviderRadio: 'adyen-paypal',
+                methodIdOverride: '',
+            },
+            true,
+        );
+
+        expect(result).toEqual({
+            payment: {
+                gatewayId: 'adyen',
+                methodId: 'paypal',
+            },
+        });
+    });
+
     it('transforms form values into order payload for order that does not required additional payment details', () => {
         const result = mapToOrderRequestBody(
             {

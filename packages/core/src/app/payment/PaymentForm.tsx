@@ -111,7 +111,6 @@ const PaymentForm: FunctionComponent<
 
     const { checkoutState } = useCheckout();
     const { checkoutSettings } = checkoutState.data.getConfig() ?? {};
-    const isMultiCouponEnabled = isExperimentEnabled(checkoutSettings, 'CHECKOUT-9674.multi_coupon_cart_checkout', false);
     const shouldShowSubmitButtonWhenPaymentNotRequired = isExperimentEnabled(checkoutSettings, 'CHECKOUT-9729.show_submit_button_when_payment_not_required', false);
     const hideSubmitPaymentButton = shouldHidePaymentSubmitButton || (shouldShowSubmitButtonWhenPaymentNotRequired && isPaymentDataRequired() && isEmpty(methods));
     
@@ -156,7 +155,7 @@ const PaymentForm: FunctionComponent<
                 />
             }
 
-            {!isMultiCouponEnabled && <PaymentRedeemables />}
+            <PaymentRedeemables />
 
             {isTermsConditionsRequired && (
                 <TermsConditions
