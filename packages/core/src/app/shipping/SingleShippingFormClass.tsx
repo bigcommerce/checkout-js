@@ -18,6 +18,7 @@ import { FormContext } from '@bigcommerce/checkout/ui';
 
 import {
     type AddressFormValues,
+    B2BExtraFieldsSessionStorage,
     getAddressFormFieldsValidationSchema,
     getTranslateAddressError,
     isEqualAddress,
@@ -372,15 +373,25 @@ export default withLanguage(
             shippingAddress: mapAddressToFormValues(
                 getFields(shippingAddress && shippingAddress.countryCode),
                 shippingAddress,
+                B2BExtraFieldsSessionStorage.SHIPPING_KEY,
             ),
         }),
-        isInitialValid: ({ shippingAddress, getFields, language, validateMaxLength }) =>
-            !!shippingAddress &&
-            getAddressFormFieldsValidationSchema({
+        isInitialValid: ({ shippingAddress, getFields, language, validateMaxLength }) => {
+            if (!shippingAddress) return false;
+
+            const fields = getFields(shippingAddress.countryCode);
+            const formValues = mapAddressToFormValues(
+                fields,
+                shippingAddress,
+                B2BExtraFieldsSessionStorage.SHIPPING_KEY,
+            );
+
+            return getAddressFormFieldsValidationSchema({
                 language,
-                formFields: getFields(shippingAddress.countryCode),
+                formFields: fields,
                 validateMaxLength,
-            }).isValidSync(shippingAddress),
+            }).isValidSync(formValues);
+        },
         validationSchema: ({
             language,
             getFields,

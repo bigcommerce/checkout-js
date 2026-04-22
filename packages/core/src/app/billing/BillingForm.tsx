@@ -129,6 +129,7 @@ const BillingForm = ({
                                 selectedAddress={
                                     hasValidCustomerAddress ? billingAddress : undefined
                                 }
+                                storageKey={B2BExtraFieldsSessionStorage.BILLING_KEY}
                                 type={AddressType.Billing}
                             />
                         </LoadingOverlay>

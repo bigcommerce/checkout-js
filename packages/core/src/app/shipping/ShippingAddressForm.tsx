@@ -8,7 +8,14 @@ import React, { type ReactElement } from 'react';
 import { useCapabilities, useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
-import { AddressForm, AddressSelect, AddressType, isValidCustomerAddress, reorderAddressFormFields } from '../address';
+import {
+    AddressForm,
+    AddressSelect,
+    AddressType,
+    B2BExtraFieldsSessionStorage,
+    isValidCustomerAddress,
+    reorderAddressFormFields
+} from '../address';
 import { connectFormik, type ConnectFormikProps } from '../common/form';
 import { Fieldset } from '../ui/form';
 
@@ -106,6 +113,7 @@ const ShippingAddressForm = (
                             selectedAddress={
                                 hasValidCustomerAddress ? shippingAddress : undefined
                             }
+                            storageKey={B2BExtraFieldsSessionStorage.SHIPPING_KEY}
                             type={AddressType.Shipping}
                         />
                     </LoadingOverlay>
