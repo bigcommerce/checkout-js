@@ -8,7 +8,11 @@ export interface ProvidersSectionOnTopOfPaymentsListProps {
 
 export const ProvidersSectionOnTopOfPaymentsList = ({ methods }: ProvidersSectionOnTopOfPaymentsListProps) => {
     const methodsWithTopSection = methods.filter((method) => method.initializationData?.hasSectionOnTopOfPaymentsList);
-    
+
+    if (!methodsWithTopSection.length) {
+        return null;
+    }
+
     return (
         <div className="providers-section-on-top-of-payments-list" data-test="providers-section-on-top-of-payments-list">
             {methodsWithTopSection.map((method) => {

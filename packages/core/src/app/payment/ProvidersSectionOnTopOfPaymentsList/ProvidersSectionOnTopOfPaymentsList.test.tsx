@@ -8,44 +8,38 @@ import { getPaymentMethod } from '../payment-methods.mock';
 import { ProvidersSectionOnTopOfPaymentsList } from './ProvidersSectionOnTopOfPaymentsList';
 
 describe('ProvidersSectionOnTopOfPaymentsList', () => {
-    it('renders wrapper div with correct class name', () => {
-        render(
+    it('returns null when methods array is empty', () => {
+        const { container } = render(
             <ProvidersSectionOnTopOfPaymentsList methods={[]} />,
         );
 
-        expect(
-            screen.getByTestId('providers-section-on-top-of-payments-list'),
-        ).toBeInTheDocument();
+        expect(container).toBeEmptyDOMElement();
     });
 
-    it('does not render container for methods without hasSectionOnTopOfPaymentsList', () => {
+    it('returns null when no methods have hasSectionOnTopOfPaymentsList', () => {
         const method: PaymentMethod = {
             ...getPaymentMethod(),
             initializationData: {},
         };
 
-        render(
+        const { container } = render(
             <ProvidersSectionOnTopOfPaymentsList methods={[method]} />,
         );
 
-        expect(
-            screen.queryByTestId(`${method.id}-provider-section-on-top-of-payments-list`),
-        ).not.toBeInTheDocument();
+        expect(container).toBeEmptyDOMElement();
     });
 
-    it('does not render container when initializationData is undefined', () => {
+    it('returns null when initializationData is undefined', () => {
         const method: PaymentMethod = {
             ...getPaymentMethod(),
             initializationData: undefined,
         };
 
-        render(
+        const { container } = render(
             <ProvidersSectionOnTopOfPaymentsList methods={[method]} />,
         );
 
-        expect(
-            screen.queryByTestId(`${method.id}-provider-section-on-top-of-payments-list`),
-        ).not.toBeInTheDocument();
+        expect(container).toBeEmptyDOMElement();
     });
 
     it('renders container div for method with hasSectionOnTopOfPaymentsList', () => {
