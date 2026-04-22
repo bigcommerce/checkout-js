@@ -43,6 +43,7 @@ export function getCheckout(): Checkout {
         channelId: 123456,
         fees: [],
         totalDiscount: 0,
+        version: 0,
     };
 }
 

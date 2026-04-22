@@ -8,6 +8,7 @@ export function getShippingOption(): ShippingOption {
         imageUrl: '',
         isRecommended: true,
         cost: 0,
+        costAfterDiscount: 0,
         transitTime: '',
         type: 'shipping_flatrate',
     };
@@ -21,6 +22,7 @@ export function getShippingOptionPickUpStore(): ShippingOption {
         imageUrl: '',
         isRecommended: false,
         cost: 0,
+        costAfterDiscount: 0,
         transitTime: '',
         type: 'shipping_pickupinstore',
     };

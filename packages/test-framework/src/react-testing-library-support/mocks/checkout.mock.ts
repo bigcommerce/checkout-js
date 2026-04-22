@@ -105,6 +105,7 @@ const consignment: Consignment = {
         description: 'Pickup In Store',
         imageUrl: '',
         cost: 3,
+        costAfterDiscount: 3,
         transitTime: '',
         additionalDescription: '',
         isRecommended: true,
@@ -126,6 +127,7 @@ const consignment: Consignment = {
             description: 'Pickup In Store',
             imageUrl: '',
             cost: 3,
+            costAfterDiscount: 3,
             transitTime: '',
             isRecommended: true,
             additionalDescription: '',
@@ -136,6 +138,7 @@ const consignment: Consignment = {
             description: 'Flat Rate',
             imageUrl: '',
             cost: 10,
+            costAfterDiscount: 10,
             transitTime: '',
             isRecommended: false,
             additionalDescription: '',
@@ -265,6 +268,7 @@ const checkout: Checkout = {
     balanceDue: 200,
     discounts: [],
     fees: [],
+    version: 0,
 };
 
 const checkoutWithDigitalCart: Checkout = {
@@ -386,6 +390,7 @@ const checkoutWithCustomShippingAndBilling = {
                 description: 'Manual Order Custom Shipping Method',
                 imageUrl: '',
                 cost: 256,
+                costAfterDiscount: 256,
                 transitTime: '',
                 additionalDescription: '',
                 isRecommended: false,
