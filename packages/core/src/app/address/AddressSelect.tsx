@@ -98,7 +98,7 @@ function getAddressWithExtraFields(address: Address, storageKey?: string): Addre
         ...address,
         extraFields: Object.entries(storedExtraFields).map(([fieldId, fieldValue]) => ({
             fieldId,
-            fieldValue: String(fieldValue),
+            fieldValue: typeof fieldValue === 'number' ? fieldValue : String(fieldValue),
         })),
     };
 }

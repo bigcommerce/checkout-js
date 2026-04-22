@@ -7,6 +7,7 @@ import { CheckoutProvider, ExtensionProvider, LocaleContext } from '@bigcommerce
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
+import { B2BExtraFieldsSessionStorage } from '../address';
 import { getAddressFormFields } from '../address/formField.mock';
 import { createErrorLogger } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
@@ -384,6 +385,33 @@ describe('SingleShippingForm', () => {
         );
 
         expect(screen.getByTestId('customInput-text')).toHaveValue('BigCommerce Sydney');
+    });
+
+    it('initializes extra field form values from session storage on mount', async () => {
+        B2BExtraFieldsSessionStorage.setFields(
+            B2BExtraFieldsSessionStorage.SHIPPING_KEY,
+            { 'b2bExtraField_test': 'stored_value' },
+        );
+
+        renderSingleShippingFormComponent({
+            getFields: () => [
+                ...addressFormFields,
+                {
+                    custom: false,
+                    default: '',
+                    fieldType: 'text' as const,
+                    id: 'b2bExtraField_test',
+                    label: 'Extra field',
+                    name: 'b2bExtraField_test',
+                    required: false,
+                    type: 'string',
+                },
+            ],
+        });
+
+        expect(screen.getByTestId('b2bExtraField_testInput-text')).toHaveValue('stored_value');
+
+        B2BExtraFieldsSessionStorage.removeFields(B2BExtraFieldsSessionStorage.SHIPPING_KEY);
     });
 
     it('calls onUnhandledError when empty cart error is thrown', async () => {

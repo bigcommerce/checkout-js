@@ -19,6 +19,7 @@ import { getCustomer } from '../customer/customers.mock';
 import { getAddress } from './address.mock';
 import AddressSelect, { type AddressSelectProps } from './AddressSelect';
 import AddressType from './AddressType';
+import { B2BExtraFieldsSessionStorage } from './B2BExtraFieldsSessionStorage';
 import { getAddressContent } from './SingleLineStaticAddress';
 
 describe('AddressSelect component', () => {
@@ -158,6 +159,79 @@ describe('AddressSelect component', () => {
         expect(
             screen.getByRole('textbox', { name: 'Search addresses' }),
         ).toBeInTheDocument();
+    });
+
+    describe('storageKey / reading extra fields', () => {
+        const storageKey = 'test_storage_key';
+
+        afterEach(() => {
+            B2BExtraFieldsSessionStorage.removeFields(storageKey);
+        });
+
+        it('enriches address with extra fields from session storage when storageKey is provided', () => {
+            const onSelectAddress = jest.fn();
+
+            B2BExtraFieldsSessionStorage.setFields(storageKey, { 'b2bExtraField_foo': 'bar' });
+
+            renderAddressSelect({ onSelectAddress, storageKey });
+
+            fireEvent.click(screen.getByTestId('address-select-button'));
+            fireEvent.click(screen.getAllByTestId('address-select-option-action')[0]);
+
+            expect(onSelectAddress).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    extraFields: [{ fieldId: 'b2bExtraField_foo', fieldValue: 'bar' }],
+                }),
+            );
+        });
+
+        it('preserves numeric extra field values without string coercion', () => {
+            const onSelectAddress = jest.fn();
+
+            B2BExtraFieldsSessionStorage.setFields(storageKey, { 'b2bExtraField_num': 42 });
+
+            renderAddressSelect({ onSelectAddress, storageKey });
+
+            fireEvent.click(screen.getByTestId('address-select-button'));
+            fireEvent.click(screen.getAllByTestId('address-select-option-action')[0]);
+
+            expect(onSelectAddress).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    extraFields: [{ fieldId: 'b2bExtraField_num', fieldValue: 42 }],
+                }),
+            );
+        });
+
+        it('does not call onSelectAddress when re-selecting an address whose extra fields match session storage', () => {
+            const onSelectAddress = jest.fn();
+
+            B2BExtraFieldsSessionStorage.setFields(storageKey, { 'b2bExtraField_foo': 'bar' });
+
+            const selectedAddress = {
+                ...getCustomer().addresses[0],
+                extraFields: [{ fieldId: 'b2bExtraField_foo', fieldValue: 'bar' }],
+            };
+
+            renderAddressSelect({ onSelectAddress, selectedAddress, storageKey });
+
+            fireEvent.click(screen.getByTestId('address-select-button'));
+            fireEvent.click(screen.getAllByTestId('address-select-option-action')[0]);
+
+            expect(onSelectAddress).not.toHaveBeenCalled();
+        });
+
+        it('calls onSelectAddress without extra fields when no storageKey is provided', () => {
+            const onSelectAddress = jest.fn();
+
+            renderAddressSelect({ onSelectAddress });
+
+            fireEvent.click(screen.getByTestId('address-select-button'));
+            fireEvent.click(screen.getAllByTestId('address-select-option-action')[0]);
+
+            expect(onSelectAddress).toHaveBeenCalledWith(
+                expect.not.objectContaining({ extraFields: expect.anything() }),
+            );
+        });
     });
 
     it('shows Powered By PP Fastlane label', () => {
