@@ -98,7 +98,10 @@ export const useShipping = () => {
         config.checkoutSettings.providerWithCustomCheckout,
     );
 
-    const showDefaultShippingExpectationPrompt = getBackorderCount(cart.lineItems) > 0 && config.inventorySettings?.showDefaultShippingExpectationPrompt;
+    const showDefaultShippingExpectationPrompt =
+      config.inventorySettings?.shouldDisplayBackorderMessagesOnStorefront &&
+      config.inventorySettings?.showDefaultShippingExpectationPrompt &&
+      getBackorderCount(cart.lineItems) > 0;
     const defaultShippingExpectationPrompt = config.inventorySettings?.defaultShippingExpectationPrompt ?? undefined;
 
     const getFieldsWithExtraFields = useCallback((countryCode?: string) => {
