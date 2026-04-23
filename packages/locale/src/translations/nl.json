@@ -73,7 +73,7 @@
             "item_count_text": "{count, plural, one{1 item} other{# items} }",
             "backorder_count_text": "{count} worden nabesteld",
             "backorder_quantities_changed_heading": "De nabestelhoeveelheden voor onderstaande artikelen zijn gewijzigd:",
-            "cart_stock_modal_destination": "Bestemming # {consignmentNumber}",
+            "cart_stock_modal_destination": "Bestemming #{consignmentNumber}",
             "ready_to_ship_count_text": "{count} klaar om te verzenden",
             "show_backorder_details": "Details van nabestellingen tonen",
             "hide_backorder_details": "Details van achterstallige bestellingen verbergen",
