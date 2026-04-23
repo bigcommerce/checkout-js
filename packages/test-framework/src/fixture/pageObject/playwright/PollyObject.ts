@@ -79,6 +79,12 @@ export class PollyObject {
             if (req.body && req.body.length > 0) {
                 req.body = JSON.stringify(this.sortPayload(req.jsonBody()));
             }
+
+            // The store-credit endpoint sends a checkout `version` field that changes between
+            // environments. Clear the body so CI and local both match the same HAR entry.
+            if (includes(req.url, '/store-credit')) {
+                req.body = '';
+            }
         });
     }
 
