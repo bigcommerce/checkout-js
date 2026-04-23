@@ -23,7 +23,7 @@ import React, {
   useState,
 } from 'react';
 
-import { type AnalyticsContextProps, type ExtensionContextProps, withExtension } from '@bigcommerce/checkout/contexts';
+import { type AnalyticsContextProps, type ExtensionContextProps, useCapabilities, withExtension } from '@bigcommerce/checkout/contexts';
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { OrderConfirmationPageSkeleton } from '@bigcommerce/checkout/ui';
@@ -49,6 +49,7 @@ import type CheckoutSupport from './CheckoutSupport';
 import { BillingStep, CartSummary, CheckoutHeader, CustomerStep, PaymentStep, ShippingStep } from './components';
 import { mapCheckoutComponentErrorMessage } from './mapErrorMessage';
 import mapToCheckoutProps from './mapToCheckoutProps';
+import useB2BToken from './hooks/useB2BToken';
 
 export interface CheckoutProps {
     checkoutId: string;
@@ -135,6 +136,9 @@ const Checkout = ({
                       subscribeToConsignments,
                       themeV2
                   }: CheckoutPageProps):ReactElement => {
+    const { userJourney: { requiresB2BToken } } = useCapabilities();
+    const { fetchB2BToken } = useB2BToken();
+
     const [state, setState] = useState<CheckoutState>({
         isBillingSameAsShipping: true,
         isCartEmpty: false,
@@ -362,6 +366,14 @@ const Checkout = ({
         setCustomerViewType(CustomerViewType.CreateAccount);
     }, [setCustomerViewType]);
 
+    const handleSignIn = useCallback((): void => {
+        if (requiresB2BToken) {
+            void fetchB2BToken();
+        }
+
+        navigateToNextIncompleteStep();
+    }, [requiresB2BToken, fetchB2BToken, navigateToNextIncompleteStep]);
+
     const handleBeforeExit = useCallback((): void => {
         analyticsTracker.exitCheckout();
     }, []);
@@ -401,7 +413,7 @@ const Checkout = ({
                     onEdit={handleEditStep}
                     onExpanded={handleExpanded}
                     onReady={handleReady}
-                    onSignIn={navigateToNextIncompleteStep}
+                    onSignIn={handleSignIn}
                     onSignInError={handleError}
                     onSignOut={handleSignOut}
                     onSignOutError={handleError}
@@ -574,6 +586,10 @@ const Checkout = ({
                 }
 
                 window.addEventListener('beforeunload', handleBeforeExitRef.current);
+
+                if (requiresB2BToken && !data.getCustomer()?.isGuest) {
+                    void fetchB2BToken();
+                }
 
                 handleReady();
             } catch (error) {
