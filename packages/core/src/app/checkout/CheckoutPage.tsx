@@ -366,14 +366,6 @@ const Checkout = ({
         setCustomerViewType(CustomerViewType.CreateAccount);
     }, [setCustomerViewType]);
 
-    const handleSignIn = useCallback((): void => {
-        if (requiresB2BToken) {
-            void fetchB2BToken();
-        }
-
-        navigateToNextIncompleteStep();
-    }, [requiresB2BToken, fetchB2BToken, navigateToNextIncompleteStep]);
-
     const handleBeforeExit = useCallback((): void => {
         analyticsTracker.exitCheckout();
     }, []);
@@ -413,7 +405,7 @@ const Checkout = ({
                     onEdit={handleEditStep}
                     onExpanded={handleExpanded}
                     onReady={handleReady}
-                    onSignIn={handleSignIn}
+                    onSignIn={navigateToNextIncompleteStep}
                     onSignInError={handleError}
                     onSignOut={handleSignOut}
                     onSignOutError={handleError}
