@@ -296,6 +296,7 @@
             "credit_card_number_required_error": "Wymagany jest numer karty kredytowej",
             "credit_card_number_mismatch_error": "Wprowadzony numer karty nie jest zgodny z kartą zapisaną na Twoim koncie",
             "credit_debit_card_text": "Karta kredytowa/debetowa",
+            "open_banking_display_name_text": "Open Banking",
             "payment_methods_text": "Metody płatności",
             "redeemable_payments_text": "Redeemable Payments",
             "instrument_storage_options_text": "Payment Storage Options",

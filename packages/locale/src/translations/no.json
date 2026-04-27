@@ -296,6 +296,7 @@
             "credit_card_number_required_error": "Kredittkortnummer er påkrevd",
             "credit_card_number_mismatch_error": "Kortnummeret som er angitt, samsvarer ikke med kortet som er lagret på kontoen din",
             "credit_debit_card_text": "Kreditt-/debetkort",
+            "open_banking_display_name_text": "Open Banking",
             "payment_methods_text": "Betalingsmåter",
             "redeemable_payments_text": "Innløsbare betalinger",
             "instrument_storage_options_text": "Alternativer for betalingslagring",
