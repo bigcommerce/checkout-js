@@ -1,6 +1,6 @@
 import { type PaymentMethod } from '@bigcommerce/checkout-sdk';
 
-/** Payment method ids with any of these prefixes may be merged when grouping is enabled. */
+// Payment method ids with any of these prefixes may be merged when grouping is enabled
 export const GROUPED_METHOD_ID_PREFIXES = ['facilypay_'] as const;
 
 const selectAndSortPaymentMethodsByPrefix = (
@@ -30,13 +30,13 @@ const buildGroupedPaymentMethodRepresentative = (sortedGroup: PaymentMethod[]): 
             displayName: first.config.displayName?.replace(/^\d+x\s+/i, '') ?? first.config.displayName,
         },
         initializationData: {
-            ...(first.initializationData as Record<string, unknown>),
+            ...first.initializationData,
             groupedMethods: sortedGroup,
         },
     };
 };
 
-const spliceGroupedPaymentMethodRepresentativeIntoList = (
+const flatMapGroupedPaymentMethodRepresentativeIntoList = (
     methods: PaymentMethod[],
     prefix: string,
     representativeSourceId: string,
@@ -54,7 +54,7 @@ const spliceGroupedPaymentMethodRepresentativeIntoList = (
         return [];
     });
 
-export const groupMethodsByPrefix = (methods: PaymentMethod[], prefix: string): PaymentMethod[] => {
+export const groupPaymentMethodsByPrefix = (methods: PaymentMethod[], prefix: string): PaymentMethod[] => {
     const sortedGroup = selectAndSortPaymentMethodsByPrefix(methods, prefix);
 
     if (!sortedGroup) {
@@ -63,7 +63,7 @@ export const groupMethodsByPrefix = (methods: PaymentMethod[], prefix: string): 
 
     const representative = buildGroupedPaymentMethodRepresentative(sortedGroup);
 
-    return spliceGroupedPaymentMethodRepresentativeIntoList(
+    return flatMapGroupedPaymentMethodRepresentativeIntoList(
         methods,
         prefix,
         sortedGroup[0].id,
