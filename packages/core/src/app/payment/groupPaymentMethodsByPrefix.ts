@@ -66,7 +66,7 @@ export const groupPaymentMethodsByPrefix = (methods: PaymentMethod[], prefix: st
     return flatMapGroupedPaymentMethodRepresentativeIntoList(
         methods,
         prefix,
-        sortedGroup[0].id,
+        representative.id,
         representative,
     );
 };
