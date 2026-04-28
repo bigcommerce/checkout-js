@@ -23,7 +23,7 @@ import React, {
   useState,
 } from 'react';
 
-import { type AnalyticsContextProps, type ExtensionContextProps, withExtension } from '@bigcommerce/checkout/contexts';
+import { type AnalyticsContextProps, type ExtensionContextProps, useCapabilities, withExtension } from '@bigcommerce/checkout/contexts';
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { OrderConfirmationPageSkeleton } from '@bigcommerce/checkout/ui';
@@ -156,6 +156,8 @@ const Checkout = ({
         hasSelectedShippingOptions: state.hasSelectedShippingOptions,
     });
 
+    const { orderConfirmation: { invoiceRedirect } } = useCapabilities();
+
     const navigateToStep = useCallback((type: CheckoutStepType, options?: { isDefault?: boolean }):void => {
         const step = find(stepsRef.current, { type });
 
@@ -218,6 +220,15 @@ const Checkout = ({
         SubscribeSessionStorage.removeSubscribeStatus();
 
         setState(prevState => ({ ...prevState, isRedirecting: true }));
+
+        if (invoiceRedirect && orderId !== undefined) {
+            const { links: { siteLink = '' } = {} } = data.getConfig() || {};
+
+            // TODO: CHECKOUT-9813 Get receiptId via B2B v1 API, more details in CHECKOUT-9813
+            window.location.replace(`${siteLink}/#/invoice?receiptId=`);
+
+            return;
+        }
 
         void navigateToOrderConfirmationUtility(orderId);
     }, []);

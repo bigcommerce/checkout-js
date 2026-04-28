@@ -13,7 +13,9 @@ import {
     type AnalyticsContextProps,
     type AnalyticsEvents,
     AnalyticsProviderMock,
+    CapabilitiesContext,
     CheckoutProvider,
+    defaultCapabilities,
     ExtensionProvider,
     type ExtensionServiceInterface,
     LocaleProvider,
@@ -580,6 +582,72 @@ describe('Checkout', () => {
             await waitFor(() => {
                 expect(defaultProps.errorLogger.log).toHaveBeenCalledWith(error);
             });
+        });
+
+        it('redirects to B2B buyer portal after payment when invoiceRedirect capability is enabled', async () => {
+            const originalLocation = window.location;
+
+            Object.defineProperty(window, 'location', {
+                value: {
+                    // eslint-disable-next-line @typescript-eslint/no-misused-spread
+                    ...window.location,
+                    replace: jest.fn(),
+                },
+                configurable: true,
+                writable: true,
+            });
+
+            try {
+                checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
+
+                jest.spyOn(checkoutService, 'submitOrder').mockResolvedValue({
+                    data: {
+                        getOrder: () => ({ orderId: 123 } as any),
+                    },
+                } as any);
+
+                const invoiceRedirectCapabilities = {
+                    ...defaultCapabilities,
+                    orderConfirmation: {
+                        ...defaultCapabilities.orderConfirmation,
+                        invoiceRedirect: true,
+                    },
+                };
+
+                const CheckoutWithInvoiceRedirect: FunctionComponent<CheckoutProps> = (props) => (
+                    <CheckoutProvider checkoutService={checkoutService}>
+                        <LocaleProvider checkoutService={checkoutService} languageService={getLanguageService()}>
+                            <AnalyticsProviderMock>
+                                <ExtensionProvider extensionService={extensionService}>
+                                    <ThemeProvider>
+                                        <CapabilitiesContext.Provider value={invoiceRedirectCapabilities}>
+                                            <Checkout {...props} />
+                                        </CapabilitiesContext.Provider>
+                                    </ThemeProvider>
+                                </ExtensionProvider>
+                            </AnalyticsProviderMock>
+                        </LocaleProvider>
+                    </CheckoutProvider>
+                );
+
+                render(<CheckoutWithInvoiceRedirect {...defaultProps} />);
+
+                await checkout.waitForPaymentStep();
+
+                await userEvent.click(screen.getByText(/place order/i));
+
+                await waitFor(() => {
+                    expect(window.location.replace).toHaveBeenCalledWith(
+                        'https://store.url/#/invoice?receiptId=',
+                    );
+                });
+            } finally {
+                Object.defineProperty(window, 'location', {
+                    value: originalLocation,
+                    configurable: true,
+                    writable: true,
+                });
+            }
         });
     });
 });
