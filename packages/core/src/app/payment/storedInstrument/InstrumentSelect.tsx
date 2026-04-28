@@ -7,9 +7,8 @@ import { find, noop } from 'lodash';
 import React, { type FunctionComponent, PureComponent, type ReactNode, useCallback } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { CreditCardIcon } from '@bigcommerce/checkout/ui';
+import { CreditCardIcon, DropdownTrigger } from '@bigcommerce/checkout/ui';
 
-import { DropdownTrigger } from '../../ui/dropdown';
 
 import mapFromInstrumentCardType from './mapFromInstrumentCardType';
 
