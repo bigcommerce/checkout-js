@@ -1,7 +1,8 @@
 import DOMPurify from 'dompurify';
 import React, { type FunctionComponent, memo } from 'react';
 
-import { Alert, AlertType } from '../ui/alert';
+import { Alert, AlertType } from '@bigcommerce/checkout/ui';
+
 import { IconTag } from '../ui/icon';
 
 export interface PromotionBannerProps {

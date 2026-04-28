@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.778.1](https://github.com/bigcommerce/checkout-js/compare/v1.778.0...v1.778.1) (2026-04-28)
+
+## [1.778.0](https://github.com/bigcommerce/checkout-js/compare/v1.777.4...v1.778.0) (2026-04-28)
+
+
+### Features
+
+* **order:** BACK-392 Update order confirmation page to support backorders ([1393f4a](https://github.com/bigcommerce/checkout-js/commit/1393f4a44f67ed6c74abe7fe2f6efa3d26d82a96))
+* **order:** BACK-392 Update order confirmation page to support backorders - refactor maps ([ac0e2ed](https://github.com/bigcommerce/checkout-js/commit/ac0e2ed6b80726dcd9593c3e58694da7f53aabde))
+
 ### [1.777.4](https://github.com/bigcommerce/checkout-js/compare/v1.777.3...v1.777.4) (2026-04-23)
 
 ### [1.777.3](https://github.com/bigcommerce/checkout-js/compare/v1.777.2...v1.777.3) (2026-04-23)

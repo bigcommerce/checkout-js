@@ -5,7 +5,7 @@ export default function getBackorderCount({
     digitalItems,
 }: LineItemMap): number {
     return [...physicalItems, ...digitalItems].reduce(
-        (total, item) => total + (item.stockPosition?.quantityBackordered ?? 0),
+        (total, item) => total + Number(item.stockPosition?.quantityBackordered ?? item.quantityBackordered ?? 0),
         0,
     );
 }

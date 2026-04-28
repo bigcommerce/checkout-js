@@ -4,6 +4,7 @@ import React from 'react';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import getOrderSummaryItemImage from './getOrderSummaryItemImage';
+import { mapBackorderDetails } from './mapBackorderDetails';
 import { type OrderItemType, type OrderSummaryItemOption } from './OrderSummaryItem';
 
 function mapFromDigital(item: DigitalItem): OrderItemType {
@@ -21,9 +22,7 @@ function mapFromDigital(item: DigitalItem): OrderItemType {
             })),
             getDigitalItemDescription(item),
         ],
-        quantityBackordered: item.stockPosition?.quantityBackordered,
-        quantityOnHand: item.stockPosition?.quantityOnHand,
-        backorderMessage: item.stockPosition?.backorderMessage || undefined,
+        ...mapBackorderDetails(item),
     };
 }
 

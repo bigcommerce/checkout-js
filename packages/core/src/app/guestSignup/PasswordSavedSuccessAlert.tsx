@@ -1,8 +1,7 @@
 import React, { type FunctionComponent } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-
-import { Alert, AlertType } from '../ui/alert';
+import { Alert, AlertType } from '@bigcommerce/checkout/ui';
 
 const PasswordSavedSuccessAlert: FunctionComponent = () => (
     <Alert type={AlertType.Success}>

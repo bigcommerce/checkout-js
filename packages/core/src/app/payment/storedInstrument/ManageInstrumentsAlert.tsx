@@ -1,8 +1,7 @@
 import React, { type FunctionComponent, memo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-
-import { Alert, AlertType } from '../../ui/alert';
+import { Alert, AlertType } from '@bigcommerce/checkout/ui';
 
 export interface ManageInstrumentsAlertProps {
     error: any; // TODO: Fix typing

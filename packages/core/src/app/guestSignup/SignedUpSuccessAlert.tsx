@@ -1,8 +1,8 @@
 import React, { type FunctionComponent } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { Alert, AlertType } from '@bigcommerce/checkout/ui';
 
-import { Alert, AlertType } from '../ui/alert';
 
 const SignedUpSuccessAlert: FunctionComponent = () => (
     <Alert type={AlertType.Success}>
