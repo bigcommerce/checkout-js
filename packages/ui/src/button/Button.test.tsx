@@ -12,71 +12,58 @@ describe('Button', () => {
         expect(screen.getByText('Hello world')).toBeInTheDocument();
     });
 
-    it('renders button in various sizes', () => {
-        const { container: largeButtonContainer } = render(
-            <Button size={ButtonSize.Large}>Hello world</Button>,
-        );
+    it('renders large size button correctly', () => {
+        render(<Button size={ButtonSize.Large}>Hello world</Button>);
 
-        // eslint-disable-next-line testing-library/no-node-access
-        expect(largeButtonContainer.firstChild).toHaveClass('button--large');
-
-        const { container: smallButtonContainer } = render(
-            <Button size={ButtonSize.Small}>Hello world</Button>,
-        );
-
-        // eslint-disable-next-line testing-library/no-node-access
-        expect(smallButtonContainer.firstChild).toHaveClass('button--small');
-
-        const { container: tinyButtonContainer } = render(
-            <Button size={ButtonSize.Tiny}>Hello world</Button>,
-        );
-
-        // eslint-disable-next-line testing-library/no-node-access
-        expect(tinyButtonContainer.firstChild).toHaveClass('button--tiny');
+        expect(screen.getByRole('button', { name: 'Hello world' })).toHaveClass('button--large');
     });
 
-    it('renders button in various styles', () => {
-        const { container: primaryButtonContainer } = render(
-            <Button variant={ButtonVariant.Primary}>Hello world</Button>,
-        );
+    it('renders small size button correctly', () => {
+        render(<Button size={ButtonSize.Small}>Hello world</Button>);
 
-        // eslint-disable-next-line testing-library/no-node-access
-        expect(primaryButtonContainer.firstChild).toHaveClass('button--primary');
-
-        const { container: secondaryButtonContainer } = render(
-            <Button variant={ButtonVariant.Secondary}>Hello world</Button>,
-        );
-
-        // eslint-disable-next-line testing-library/no-node-access
-        expect(secondaryButtonContainer.firstChild).toHaveClass('button--tertiary');
-
-        const { container: actionButtonContainer } = render(
-            <Button variant={ButtonVariant.Action}>Hello world</Button>,
-        );
-
-        // eslint-disable-next-line testing-library/no-node-access
-        expect(actionButtonContainer.firstChild).toHaveClass('button--action');
+        expect(screen.getByRole('button', { name: 'Hello world' })).toHaveClass('button--small');
     });
 
-    it('renders button in full width', () => {
-        const { container: fullWidthButtonContainer } = render(
-            <Button isFullWidth>Hello world</Button>,
-        );
+    it('renders tiny size button correctly', () => {
+        render(<Button size={ButtonSize.Tiny}>Hello world</Button>);
 
-        // eslint-disable-next-line testing-library/no-node-access
-        expect(fullWidthButtonContainer.firstChild).toHaveClass('button--slab');
+        expect(screen.getByRole('button', { name: 'Hello world' })).toHaveClass('button--tiny');
+    });
 
-        const { container: defaultButtonContainer } = render(<Button>Hello world</Button>);
+    it('renders primary button style correctly', () => {
+        render(<Button variant={ButtonVariant.Primary}>Hello world</Button>);
 
-        // eslint-disable-next-line testing-library/no-node-access
-        expect(defaultButtonContainer.firstChild).not.toHaveClass('button--slab');
+        expect(screen.getByRole('button', { name: 'Hello world' })).toHaveClass('button--primary');
+    });
+
+    it('renders secondary button style correctly', () => {
+        render(<Button variant={ButtonVariant.Secondary}>Hello world</Button>);
+
+        expect(screen.getByRole('button', { name: 'Hello world' })).toHaveClass('button--tertiary');
+    });
+
+    it('renders action button style correctly', () => {
+        render(<Button variant={ButtonVariant.Action}>Hello world</Button>);
+
+        expect(screen.getByRole('button', { name: 'Hello world' })).toHaveClass('button--action');
+    });
+
+    it('renders button in full width correctly', () => {
+        render(<Button isFullWidth>Hello world</Button>);
+
+        expect(screen.getByRole('button', { name: 'Hello world' })).toHaveClass('button--slab');
+    });
+
+    it('does not apply full width to buttons by default', () => {
+        render(<Button>Hello world</Button>);
+
+        expect(screen.getByRole('button', { name: 'Hello world' })).not.toHaveClass('button--slab');
     });
 
     it('shows loading indicator', () => {
-        const { container } = render(<Button isLoading>Hello world</Button>);
+        render(<Button isLoading>Hello world</Button>);
 
-        // eslint-disable-next-line testing-library/no-node-access
-        expect(container.firstChild).toHaveClass('is-loading');
+        expect(screen.getByRole('button', { name: 'Hello world' })).toHaveClass('is-loading');
     });
 
     it('listens to DOM events', async () => {
