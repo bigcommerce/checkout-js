@@ -3,10 +3,10 @@ import React, { type FunctionComponent } from 'react';
 
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { Button, ButtonVariant } from '@bigcommerce/checkout/ui';
 
 import { OrderComments } from '../orderComments';
 import { Alert, AlertType } from '../ui/alert';
-import { Button, ButtonVariant } from '../ui/button';
 import { Fieldset, Legend } from '../ui/form';
 
 import { ShippingOptions } from './shippingOption';

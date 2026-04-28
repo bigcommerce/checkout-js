@@ -6,9 +6,8 @@ import { lazy } from 'yup';
 
 import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { LoadingOverlay } from '@bigcommerce/checkout/ui';
+import { Button, ButtonVariant, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
-import { Button, ButtonVariant } from '../ui/button';
 import { Form } from '../ui/form';
 import { Modal, ModalHeader } from '../ui/modal';
 

@@ -8,11 +8,10 @@ import React, { type FunctionComponent, useMemo } from 'react';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { DynamicFormField } from '@bigcommerce/checkout/ui';
+import { Button, ButtonVariant, DynamicFormField } from '@bigcommerce/checkout/ui';
 
 import { isRequestError } from '../common/error';
 import { Alert, AlertType } from '../ui/alert';
-import { Button, ButtonVariant } from '../ui/button';
 import { Fieldset, Form } from '../ui/form';
 
 import getCreateCustomerValidationSchema, {

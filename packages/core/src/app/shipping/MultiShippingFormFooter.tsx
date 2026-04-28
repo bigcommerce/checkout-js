@@ -1,10 +1,10 @@
 import React, { type FunctionComponent } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { Button, ButtonVariant } from '@bigcommerce/checkout/ui';
 
 import { OrderComments } from '../orderComments';
 import { Alert, AlertType } from '../ui/alert';
-import { Button, ButtonVariant } from '../ui/button';
 import { Form } from '../ui/form';
 
 export interface ShippingFormFooterProps {
