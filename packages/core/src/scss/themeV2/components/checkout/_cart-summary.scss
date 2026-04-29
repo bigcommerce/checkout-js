@@ -10,6 +10,13 @@
             width: 100%;
         }
 
+        .cart-summary-content {
+            overflow: hidden;
+            transition:
+                height $animation-collapse-transitionSpeed $animation-collapse-transitionCurve,
+                opacity $animation-collapse-transitionSpeed $animation-collapse-transitionCurve;
+        }
+
         .cart {
             border: none;
             display: block;

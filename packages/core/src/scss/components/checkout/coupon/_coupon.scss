@@ -2,23 +2,20 @@
 // ANIMATIONS
 // =============================================================================
 
-$animation-duration: 300ms;
-$animation-easing: cubic-bezier(0.4, 0, 0.2, 1);
-
 // Coupon tag animation (add/remove coupon tags)
 .coupon-tag-wrapper {
     transition:
-        height $animation-duration $animation-easing,
-        opacity $animation-duration $animation-easing,
-        transform $animation-duration $animation-easing;
+        height $animation-collapse-transitionSpeed $animation-collapse-transitionCurve,
+        opacity $animation-collapse-transitionSpeed $animation-collapse-transitionCurve,
+        transform $animation-collapse-transitionSpeed $animation-collapse-transitionCurve;
 }
 
 // Expand/collapse animations (coupon form + discounts section)
 .coupon-form-wrapper {
     overflow: hidden;
     transition:
-        height $animation-duration $animation-easing,
-        opacity $animation-duration $animation-easing;
+        height $animation-collapse-transitionSpeed $animation-collapse-transitionCurve,
+        opacity $animation-collapse-transitionSpeed $animation-collapse-transitionCurve;
 }
 
 // Accessibility: respect prefers-reduced-motion
@@ -161,8 +158,8 @@ $animation-easing: cubic-bezier(0.4, 0, 0.2, 1);
     // Animation for expand/collapse
     overflow: hidden;
     transition:
-        height $animation-duration $animation-easing,
-        opacity $animation-duration $animation-easing;
+        height $animation-collapse-transitionSpeed $animation-collapse-transitionCurve,
+        opacity $animation-collapse-transitionSpeed $animation-collapse-transitionCurve;
 
     // Remove extra top margin from first item (overflow:hidden prevents margin collapse)
     > .cart-priceItem:first-child,

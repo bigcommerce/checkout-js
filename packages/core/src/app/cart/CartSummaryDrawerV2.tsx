@@ -73,7 +73,7 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({ isMu
             </span>
         </button>
         <CollapseCSSTransition isVisible={isExpanded} nodeRef={nodeRef}>
-            <div ref={nodeRef}>
+            <div className="cart-summary-content" ref={nodeRef}>
                 {(
                     withRedeemable(OrderSummary)({
                         ...props,
