@@ -2,8 +2,9 @@ import { type FieldProps } from 'formik';
 import React, { type FunctionComponent, memo, useCallback, useMemo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { FormField } from '@bigcommerce/checkout/ui';
 
-import { FormField, TextInput } from '../ui/form';
+import { TextInput } from '../ui/form';
 
 export interface EmailFieldProps {
     isFloatingLabelEnabled?: boolean;
