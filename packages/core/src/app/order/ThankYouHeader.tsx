@@ -1,8 +1,7 @@
 import React, { type FunctionComponent, memo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-
-import { PrimaryHeader } from '../ui/header';
+import { PrimaryHeader } from '@bigcommerce/checkout/ui';
 
 export interface HeaderProps {
     name?: string;

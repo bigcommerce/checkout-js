@@ -1,14 +1,12 @@
 import React, { type FunctionComponent } from 'react';
 
-export interface HeaderProps {
+interface PrimaryHeaderProps {
     children: React.ReactNode;
     testId?: string;
 }
 
-const PrimaryHeader: FunctionComponent<HeaderProps> = ({ children, testId }) => (
+export const PrimaryHeader: FunctionComponent<PrimaryHeaderProps> = ({ children, testId }) => (
     <h1 className="optimizedCheckout-headingPrimary" data-test={testId}>
         {children}
     </h1>
 );
-
-export default PrimaryHeader;
