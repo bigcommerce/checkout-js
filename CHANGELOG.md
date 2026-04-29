@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.781.3](https://github.com/bigcommerce/checkout-js/compare/v1.781.2...v1.781.3) (2026-04-29)
+
+### [1.781.2](https://github.com/bigcommerce/checkout-js/compare/v1.781.1...v1.781.2) (2026-04-29)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-9783 Consolidate Animation Configs ([#2975](https://github.com/bigcommerce/checkout-js/issues/2975)) ([ac93cc8](https://github.com/bigcommerce/checkout-js/commit/ac93cc8a6502fb066dd2f4f3a2f9c37847b04641))
+
+### [1.781.1](https://github.com/bigcommerce/checkout-js/compare/v1.781.0...v1.781.1) (2026-04-29)
+
 ## [1.781.0](https://github.com/bigcommerce/checkout-js/compare/v1.780.0...v1.781.0) (2026-04-28)
 
 

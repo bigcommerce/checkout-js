@@ -10,7 +10,7 @@ import { lazy } from 'yup';
 import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
-import { AddressFormSkeleton, LoadingOverlay } from '@bigcommerce/checkout/ui';
+import { AddressFormSkeleton, Button, ButtonVariant, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import {
   AddressForm,
@@ -26,7 +26,6 @@ import {
 import { getAddressExtraFieldsValidationSchema, getCustomFormFieldsValidationSchema } from '../formFields';
 import { OrderComments } from '../orderComments';
 import { getShippableItemsCount } from '../shipping';
-import { Button, ButtonVariant } from '../ui/button';
 import { Fieldset, Form } from '../ui/form';
 
 import StaticBillingAddress from './StaticBillingAddress';

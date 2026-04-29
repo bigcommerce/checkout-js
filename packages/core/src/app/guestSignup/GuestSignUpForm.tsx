@@ -3,9 +3,9 @@ import React, { type FunctionComponent, memo } from 'react';
 import { object, ref, string } from 'yup';
 
 import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { Button, ButtonVariant } from '@bigcommerce/checkout/ui';
 
 import { type PasswordRequirements } from '../customer';
-import { Button, ButtonVariant } from '../ui/button';
 import { Fieldset, Form, Legend } from '../ui/form';
 
 import SignUpPasswordField from './SignUpPasswordField';

@@ -8,9 +8,8 @@ import { object, string } from 'yup';
 import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { Alert, AlertType, type FormContextType, FormField, FormProvider } from '@bigcommerce/checkout/ui';
+import { Alert, AlertType, Button, ButtonVariant, type FormContextType, FormField, FormProvider } from '@bigcommerce/checkout/ui';
 
-import { Button, ButtonVariant } from '../ui/button';
 import { Label, TextInput } from '../ui/form';
 import { Toggle } from '../ui/toggle';
 

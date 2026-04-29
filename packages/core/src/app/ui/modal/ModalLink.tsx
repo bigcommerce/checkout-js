@@ -2,8 +2,7 @@ import React, { type FunctionComponent, type ReactNode, useCallback } from 'reac
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-
-import { Button, ButtonSize } from '../button';
+import { Button, ButtonSize } from '@bigcommerce/checkout/ui';
 
 import Modal from './Modal';
 import './ModalLink.scss';

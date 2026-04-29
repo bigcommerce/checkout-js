@@ -1,7 +1,7 @@
 import { noop } from 'lodash';
 import React, { useRef, useState } from 'react';
 
-import { Autocomplete, type AutocompleteItem } from '../../ui/autocomplete';
+import { Autocomplete, type AutocompleteItem } from '@bigcommerce/checkout/ui';
 
 import GoogleAutocompleteService from './GoogleAutocompleteService';
 import { type GoogleAutocompleteOptionTypes } from './googleAutocompleteTypes';
@@ -55,7 +55,7 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
 
     const onSelectHandler = (item: AutocompleteItem) => {
         const service = googleAutocompleteServiceRef.current;
-        
+
         if (!service) return;
 
         service.getPlacesServices().then((placesService) => {
@@ -92,7 +92,7 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
         }
 
         const service = googleAutocompleteServiceRef.current;
-        
+
         if (!service) return;
 
         service.getAutocompleteService().then((autocompleteService) => {

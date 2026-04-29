@@ -6,9 +6,6 @@
 //
 // -----------------------------------------------------------------------------
 
-$animation-duration: 300ms;
-$animation-easing: cubic-bezier(0.4, 0, 0.2, 1);
-
 .productList {
     @include u-listBullets("none");
 
@@ -79,8 +76,8 @@ $animation-easing: cubic-bezier(0.4, 0, 0.2, 1);
 .product-backorder-details-container {
     overflow: hidden;
     transition:
-        height $animation-duration $animation-easing,
-        opacity $animation-duration $animation-easing;
+        height $animation-collapse-transitionSpeed $animation-collapse-transitionCurve,
+        opacity $animation-collapse-transitionSpeed $animation-collapse-transitionCurve;
 }
 
 .product-actions {
@@ -109,9 +106,9 @@ $animation-easing: cubic-bezier(0.4, 0, 0.2, 1);
 // Product item animation (add/remove products via BOGO coupons)
 .productList-item {
     transition:
-        height $animation-duration $animation-easing,
-        opacity $animation-duration $animation-easing,
-        transform $animation-duration $animation-easing;
+        height $animation-collapse-transitionSpeed $animation-collapse-transitionCurve,
+        opacity $animation-collapse-transitionSpeed $animation-collapse-transitionCurve,
+        transform $animation-collapse-transitionSpeed $animation-collapse-transitionCurve;
 }
 
 // Accessibility: respect prefers-reduced-motion

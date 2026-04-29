@@ -2,9 +2,8 @@ import React, { type FunctionComponent, useState } from 'react';
 
 import { useLocale } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { Alert, AlertType, IconRemoveCoupon, TextInput } from '@bigcommerce/checkout/ui';
+import { Alert, AlertType, Button, ButtonVariant, IconRemoveCoupon, TextInput } from '@bigcommerce/checkout/ui';
 
-import { Button, ButtonVariant } from '../../ui/button';
 import { useMultiCoupon } from '../useMultiCoupon';
 
 import { ManageCouponsAndGiftCertificates } from './ManageCouponsAndGiftCertificates';

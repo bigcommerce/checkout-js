@@ -1,8 +1,8 @@
 import React, { type ReactElement } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { Button, ButtonVariant } from '@bigcommerce/checkout/ui';
 
-import { Button, ButtonVariant } from '../../ui/button';
 
 export const ContinueButton = ({ siteLink }:{siteLink: string}): ReactElement => (
     <div className="continueButtonContainer">

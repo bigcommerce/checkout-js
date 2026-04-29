@@ -2,11 +2,10 @@ import React, { type FunctionComponent, type ReactNode, useMemo, useState } from
 
 import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { Alert, AlertType } from '@bigcommerce/checkout/ui';
+import { Alert, AlertType, Button, ButtonVariant } from '@bigcommerce/checkout/ui';
 
 import { withFormikExtended } from '../common/form';
 import { EMPTY_ARRAY } from '../common/utility';
-import { Button, ButtonVariant } from '../ui/button';
 
 import ConsignmentListItem from './ConsignmentListItem';
 import hasSelectedShippingOptions from './hasSelectedShippingOptions';

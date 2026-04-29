@@ -3,8 +3,8 @@ import { noop } from 'lodash';
 import React, { type ReactElement, type ReactNode, type SyntheticEvent } from 'react';
 
 import { TranslatedHtml, TranslatedString } from '@bigcommerce/checkout/locale';
+import { Button, ButtonSize } from '@bigcommerce/checkout/ui';
 
-import { Button, ButtonSize } from '../../ui/button';
 import { IconError, IconSize } from '../../ui/icon';
 import { Modal, ModalHeader } from '../../ui/modal';
 

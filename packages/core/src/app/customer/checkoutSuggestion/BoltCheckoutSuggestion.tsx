@@ -11,8 +11,8 @@ import React, { type FunctionComponent, memo, useEffect, useState } from 'react'
 import { useAnalytics } from '@bigcommerce/checkout/contexts';
 import { stopPropagation } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { Button } from '@bigcommerce/checkout/ui';
 
-import { Button } from '../../ui/button';
 import { IconBolt } from '../../ui/icon';
 
 export interface BoltCheckoutSuggestionProps {
