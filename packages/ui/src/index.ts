@@ -13,7 +13,6 @@ export {
 export { Autocomplete, AutocompleteItem } from './autocomplete';
 export { Button, ButtonSize, ButtonVariant } from './button';
 export { DropdownTrigger } from './dropdown';
-export { PrimaryHeader } from './header';
 export {
     AddressFormSkeleton,
     BasicFormField,
