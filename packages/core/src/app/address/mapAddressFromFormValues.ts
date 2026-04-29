@@ -9,7 +9,12 @@ export default function mapAddressFromFormValues(formValues: AddressFormValues, 
     const { customFields, extraFields, shouldSaveAddress, ...address } = formValues;
 
     if (storageKey && extraFields && Object.keys(extraFields).length > 0) {
-        B2BExtraFieldsSessionStorage.setFields(storageKey, extraFields as Record<string, unknown>);
+        const fieldsToStore = {
+            ...extraFields,
+            shouldSaveAddress,
+        }
+
+        B2BExtraFieldsSessionStorage.setFields(storageKey, fieldsToStore as Record<string, unknown>);
     }
 
     return {

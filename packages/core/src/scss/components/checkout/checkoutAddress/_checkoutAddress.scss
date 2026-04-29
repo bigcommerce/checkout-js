@@ -18,5 +18,5 @@
 }
 
 .no-addresses-warning {
-    padding: spacing("base") 0 spacing("double") 0;
+    padding: spacing("single") 0 (spacing("single") + spacing("third")) 0;
 }

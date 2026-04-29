@@ -31,7 +31,7 @@ const getFieldsWithExtraFields = (getBillingAddressFields: (countryCode: string)
 
 const Billing = ({ navigateNextStep, onReady, onUnhandledError }:BillingProps): ReactElement => {
     const { checkoutService, checkoutState } = useCheckout();
-    const { userJourney: { hasAddressExtraFields } } = useCapabilities();
+    const { userJourney: { hasAddressExtraFields }, billing: { restrictManualAddressEntry } } = useCapabilities();
 
     const {
         data: {
@@ -104,18 +104,17 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }:BillingProps): 
         void init();
     }, []);
 
-    // TODO: Show warning message when restrictManualAddressEntry is true and no addresses are available
-    // Yet to decide where we get the addresses from in b2b flow??
-    // const hasAddresses = customer?.addresses && customer.addresses.length > 0;
-    // const showWarningMessage = restrictManualAddressEntry && !hasAddresses;
+    // Show warning message when restrictManualAddressEntry is true and no addresses are available
+    const hasAddresses = customer?.addresses && customer.addresses.length > 0;
+    const showWarningMessage = restrictManualAddressEntry && !hasAddresses;
 
-    // if (showWarningMessage) {
-    //     return (
-    //         <div className="no-addresses-warning body-regular">
-    //             <TranslatedString id="billing.no_billing_addresses_warning" />
-    //         </div>
-    //     );
-    // }
+    if (showWarningMessage) {
+        return (
+            <div className="no-addresses-warning body-regular">
+                <TranslatedString id="billing.no_billing_addresses_warning" />
+            </div>
+        );
+    }
 
     return (
         <AddressFormSkeleton isLoading={isInitializing}>
