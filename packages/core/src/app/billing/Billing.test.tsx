@@ -12,6 +12,7 @@ import React, { type FunctionComponent } from 'react';
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
 import {
     AnalyticsProviderMock,
+    CapabilitiesContext,
     CheckoutProvider,
     defaultCapabilities,
     ExtensionProvider,
@@ -34,13 +35,14 @@ import {
     checkoutWithShippingAndBilling,
     consignment,
     customer,
+    customerWithoutSavedAddresses,
     formFields,
     payments,
     shippingAddress,
     shippingAddress2,
     shippingAddress3,
 } from '@bigcommerce/checkout/test-framework';
-import { act, renderWithoutWrapper as render, screen } from '@bigcommerce/checkout/test-utils';
+import { act, renderWithoutWrapper as render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
 import Checkout from '../checkout/Checkout';
 import { type CheckoutInitializerProps } from '../checkout/CheckoutInitializer';
@@ -480,6 +482,59 @@ describe('Billing step', () => {
 
             expect(checkoutService.updateBillingAddress).toHaveBeenCalled();
             expect(screen.getByRole('radio', { name: payments[0].config.displayName })).toBeInTheDocument();
+        });
+    });
+
+    describe('restrictManualAddressEntry warning', () => {
+        const checkoutWithShippingAndNoAddresses = {
+            ...checkoutWithShipping,
+            customer: customerWithoutSavedAddresses,
+        };
+
+        it('shows a warning when restrictManualAddressEntry is true and the customer has no saved addresses', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShipping, {
+                checkout: checkoutWithShippingAndNoAddresses,
+            });
+
+            const restrictManualAddressCapabilities = {
+                ...defaultCapabilities,
+                billing: {
+                    ...defaultCapabilities.billing,
+                    restrictManualAddressEntry: true,
+                },
+            };
+
+            const CheckoutWithRestrictedAddressEntry: FunctionComponent<CheckoutInitializerProps> = (props) => (
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <LocaleProvider checkoutService={checkoutService} languageService={getLanguageService()}>
+                        <AnalyticsProviderMock>
+                            <ExtensionProvider extensionService={extensionService}>
+                                <ThemeProvider>
+                                    <CapabilitiesContext.Provider value={restrictManualAddressCapabilities}>
+                                        <Checkout {...props} />
+                                    </CapabilitiesContext.Provider>
+                                </ThemeProvider>
+                            </ExtensionProvider>
+                        </AnalyticsProviderMock>
+                    </LocaleProvider>
+                </CheckoutProvider>
+            );
+
+            render(<CheckoutWithRestrictedAddressEntry {...defaultProps} />);
+
+            expect(await screen.findByText(/no billing address to choose from/i)).toBeInTheDocument();
+        });
+
+        it('does not show the warning when restrictManualAddressEntry is false', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShipping, {
+                checkout: checkoutWithShippingAndNoAddresses,
+            });
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForBillingStep();
+
+            expect(screen.queryByText(/no billing address to choose from/i)).not.toBeInTheDocument();
         });
     });
 });

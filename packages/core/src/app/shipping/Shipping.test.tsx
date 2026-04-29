@@ -11,7 +11,9 @@ import React, { type FunctionComponent } from 'react';
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
 import {
     AnalyticsProviderMock,
+    CapabilitiesContext,
     CheckoutProvider,
+    defaultCapabilities,
     ExtensionProvider,
     type ExtensionServiceInterface,
     LocaleProvider,
@@ -27,6 +29,7 @@ import {
     checkoutSettings,
     checkoutWithBillingEmail,
     checkoutWithCustomerHavingInvalidAddress,
+    checkoutWithLoggedInCustomer,
     checkoutWithMultiShippingCart,
     checkoutWithShipping,
     checkoutWithShippingAndBilling,
@@ -949,6 +952,54 @@ describe('Shipping step', () => {
                     type: 'custom',
                 })
             );
+        });
+    });
+
+    describe('restrictManualAddressEntry warning', () => {
+        it('shows a warning when restrictManualAddressEntry is true and the customer has no saved addresses', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithLoggedInCustomer, {
+                checkout: checkoutWithLoggedInCustomer,
+            });
+
+            const restrictManualAddressCapabilities = {
+                ...defaultCapabilities,
+                shipping: {
+                    ...defaultCapabilities.shipping,
+                    restrictManualAddressEntry: true,
+                },
+            };
+
+            const CheckoutWithRestrictedAddressEntry: FunctionComponent<CheckoutProps> = (props) => (
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <LocaleProvider checkoutService={checkoutService} languageService={getLanguageService()}>
+                        <AnalyticsProviderMock>
+                            <ExtensionProvider extensionService={extensionService}>
+                                <ThemeProvider>
+                                    <CapabilitiesContext.Provider value={restrictManualAddressCapabilities}>
+                                        <Checkout {...props} />
+                                    </CapabilitiesContext.Provider>
+                                </ThemeProvider>
+                            </ExtensionProvider>
+                        </AnalyticsProviderMock>
+                    </LocaleProvider>
+                </CheckoutProvider>
+            );
+
+            render(<CheckoutWithRestrictedAddressEntry {...defaultProps} />);
+
+            expect(await screen.findByText(/no shipping address to choose from/i)).toBeInTheDocument();
+        });
+
+        it('does not show the warning when restrictManualAddressEntry is false', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithLoggedInCustomer, {
+                checkout: checkoutWithLoggedInCustomer,
+            });
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForShippingStep();
+
+            expect(screen.queryByText(/no shipping address to choose from/i)).not.toBeInTheDocument();
         });
     });
 });
