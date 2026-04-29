@@ -3,8 +3,7 @@ import React, { memo, type ReactNode } from 'react';
 
 import { useCapabilities } from '@bigcommerce/checkout/contexts';
 import { PoweredByPayPalFastlaneLabel, usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
-
-import { DropdownTrigger } from '../ui/dropdown';
+import { DropdownTrigger } from '@bigcommerce/checkout/ui';
 
 import AddressSelectButton from './AddressSelectButton';
 import { AddressSelectComponent } from './AddressSelectComponent';
