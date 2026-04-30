@@ -3,9 +3,7 @@ import React, { type FunctionComponent } from 'react';
 import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { TranslatedString } from "@bigcommerce/checkout/locale";
-import { IconClose } from '@bigcommerce/checkout/ui';
-
-import { IconSize } from "../ui/icon";
+import { IconClose, IconSize } from '@bigcommerce/checkout/ui';
 
 import ConsignmentAddressSelector from './ConsignmentAddressSelector';
 import ConsignmentLineItem from './ConsignmentLineItem';

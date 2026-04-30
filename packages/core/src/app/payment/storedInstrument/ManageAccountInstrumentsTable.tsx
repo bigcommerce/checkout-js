@@ -2,9 +2,7 @@ import { type AccountInstrument, type BankInstrument } from '@bigcommerce/checko
 import React, { type FunctionComponent, memo, useCallback } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { IconPaypal, LoadingOverlay } from '@bigcommerce/checkout/ui';
-
-import { IconSize } from '../../ui/icon';
+import { IconPaypal, IconSize, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import isBankAccountInstrument from './isBankAccountInstrument';
 

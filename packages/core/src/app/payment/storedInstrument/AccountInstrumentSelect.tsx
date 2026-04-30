@@ -5,9 +5,7 @@ import { find, noop } from 'lodash';
 import React, { type FunctionComponent, PureComponent, type ReactNode, useCallback } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { DropdownTrigger, IconNewAccount, IconPaypal } from '@bigcommerce/checkout/ui';
-
-import { IconSize } from '../../ui/icon';
+import { DropdownTrigger, IconNewAccount, IconPaypal, IconSize } from '@bigcommerce/checkout/ui';
 
 import isBankAccountInstrument from './isBankAccountInstrument';
 
