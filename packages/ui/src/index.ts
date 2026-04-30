@@ -44,6 +44,7 @@ export {
     mapFromPaymentMethodCardType,
     getPaymentMethodIconComponent,
     filterInstrumentTypes,
+    IconBolt,
     IconNewAccount,
     IconPaypal,
     IconPayPalFastlane,

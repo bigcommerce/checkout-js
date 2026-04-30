@@ -2,8 +2,7 @@ import classNames from 'classnames';
 import React, { type FunctionComponent, memo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { Button, ButtonSize, ButtonVariant } from '@bigcommerce/checkout/ui';
-import IconBolt from '@bigcommerce/checkout/ui/icon/IconBolt';
+import { Button, ButtonSize, ButtonVariant, IconBolt } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../checkout';
 

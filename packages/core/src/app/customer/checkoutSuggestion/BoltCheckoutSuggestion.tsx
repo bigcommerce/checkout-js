@@ -11,8 +11,7 @@ import React, { type FunctionComponent, memo, useEffect, useState } from 'react'
 import { useAnalytics } from '@bigcommerce/checkout/contexts';
 import { stopPropagation } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { Button } from '@bigcommerce/checkout/ui';
-import IconBolt from '@bigcommerce/checkout/ui/icon/IconBolt';
+import { Button, IconBolt } from '@bigcommerce/checkout/ui';
 
 export interface BoltCheckoutSuggestionProps {
     isExecutingPaymentMethodCheckout: boolean;
