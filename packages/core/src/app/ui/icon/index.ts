@@ -1,5 +1,4 @@
 export { IconSize, IconProps } from './IconContainer';
-export { default as IconCardCodeVisa } from './IconCardCodeVisa';
 export { default as IconCardDankort } from './IconCardDankort';
 export { default as IconCardDinersClub } from './IconCardDinersClub';
 export { default as IconCardDiscover } from './IconCardDiscover';

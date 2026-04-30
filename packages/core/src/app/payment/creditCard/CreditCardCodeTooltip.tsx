@@ -1,9 +1,9 @@
 import React, { type FunctionComponent } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { IconCardCodeAmex } from '@bigcommerce/checkout/ui';
+import { IconCardCodeAmex, IconCardCodeVisa } from '@bigcommerce/checkout/ui';
 
-import { IconCardCodeVisa, IconSize } from '../../ui/icon';
+import { IconSize } from '../../ui/icon';
 
 import './CreditCardCodeTooltip.scss';
 
