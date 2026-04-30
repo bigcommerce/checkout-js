@@ -1,15 +1,4 @@
 export { IconSize, IconProps } from './IconContainer';
-export { default as IconCardDiscover } from './IconCardDiscover';
-export { default as IconCardElectron } from './IconCardElectron';
-export { default as IconCardElo } from './IconCardElo';
-export { default as IconCardHipercard } from './IconCardHipercard';
-export { default as IconCardJCB } from './IconCardJCB';
-export { default as IconCardMada } from './IconCardMada';
-export { default as IconCardMaestro } from './IconCardMaestro';
-export { default as IconCardMastercard } from './IconCardMastercard';
-export { default as IconCardVisa } from './IconCardVisa';
-export { default as IconCardUnionPay } from './IconCardUnionPay';
-export { default as IconCardTroy } from './IconCardTroy';
 export { default as IconCheck } from './IconCheck';
 export { default as IconChevronUp } from './IconChevronUp';
 export { default as IconChevronDown } from './IconChevronDown';
