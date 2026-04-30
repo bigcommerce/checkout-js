@@ -4,8 +4,8 @@ import React, { type FunctionComponent, useState } from "react";
 import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { IconChevronDown, IconChevronUp } from "@bigcommerce/checkout/ui";
 
-import { IconChevronDown, IconChevronUp } from "../ui/icon";
 import { isMobileView as isMobileViewUI } from "../ui/responsive";
 
 import AllocateItemsModal from "./AllocateItemsModal";

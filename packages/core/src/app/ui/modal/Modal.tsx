@@ -5,8 +5,7 @@ import ReactModal from 'react-modal';
 import { type Omit } from 'utility-types';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
-
-import { IconClose } from '../icon';
+import { IconClose } from '@bigcommerce/checkout/ui';
 
 export type ModalProps = Omit<
     ReactModal.Props,

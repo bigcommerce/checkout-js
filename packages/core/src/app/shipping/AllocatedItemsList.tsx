@@ -1,8 +1,7 @@
 import React from "react";
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-
-import { IconClose } from "../ui/icon";
+import { IconClose } from "@bigcommerce/checkout/ui";
 
 import { ConsignmentLineItemContent } from "./ConsignmentLineItemDetail";
 import { ItemSplitTooltip } from "./ItemSplitTooltip";

@@ -1,8 +1,4 @@
 export { IconSize, IconProps } from './IconContainer';
-export { default as IconCheck } from './IconCheck';
-export { default as IconChevronUp } from './IconChevronUp';
-export { default as IconChevronDown } from './IconChevronDown';
-export { default as IconClose } from './IconClose';
 export { default as IconError } from './IconError';
 export { default as IconGiftCertificate } from './IconGiftCertificate';
 export { default as IconHelp } from './IconHelp';
