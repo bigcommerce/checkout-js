@@ -4,7 +4,6 @@ import {
     type CartStockPositionsChangedError,
     type CheckoutSelectors,
     type CheckoutService,
-    type CheckoutSettings,
     type Consignment,
     type OrderFinalizeOptions,
     type OrderRequestBody,
@@ -77,7 +76,6 @@ export interface PaymentProps {
 interface WithCheckoutPaymentProps {
     availableStoreCredit: number;
     cart?: Cart;
-    checkoutSettings: CheckoutSettings;
     consignments?: Consignment[];
     cartUrl: string;
     defaultMethod?: PaymentMethod;
@@ -681,10 +679,7 @@ export function mapToPaymentProps(
         return null;
     }
 
-    const checkoutSettings = config.checkoutSettings & {
-        orderTermsAndConditionsLocation: string,
-    };
-
+    const checkoutSettings = config.checkoutSettings;
     const {
         enableTermsAndConditions: isTermsConditionsEnabled,
         features,
@@ -708,7 +703,6 @@ export function mapToPaymentProps(
         applyStoreCredit: checkoutService.applyStoreCredit,
         availableStoreCredit: customer.storeCredit,
         cart: getCart(),
-        checkoutSettings,
         consignments,
         cartUrl: config.links.cartLink,
         clearError: checkoutService.clearError,

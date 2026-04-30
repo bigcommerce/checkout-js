@@ -8,7 +8,7 @@ import {
 import { find } from 'lodash';
 
 import { isExperimentEnabled } from '../../common/utility';
-import { GROUPED_METHOD_ID_PREFIXES, groupMethodsByPrefix } from '../groupPaymentMethodsByPrefix';
+import { GROUPED_METHOD_ID_PREFIXES, groupPaymentMethodsByPrefix } from '../groupPaymentMethodsByPrefix';
 import { PaymentMethodProviderType } from '../paymentMethod';
 
 import { applyPaymentMethodFilters } from './applyPaymentMethodFilters';
@@ -71,7 +71,7 @@ export const getFilteredPaymentMethodsWithDefault = ({
         isExperimentEnabled(checkoutSettings, 'PAYMENTS-5142.payment_method_grouping', false)
     ) {
         filteredMethods = GROUPED_METHOD_ID_PREFIXES.reduce(
-            (acc, prefix) => groupMethodsByPrefix(acc, prefix),
+            (acc, prefix) => groupPaymentMethodsByPrefix(acc, prefix),
             filteredMethods,
         );
     }

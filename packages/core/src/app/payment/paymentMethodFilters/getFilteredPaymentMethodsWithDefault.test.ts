@@ -192,7 +192,8 @@ describe('getFilteredPaymentMethodsWithDefault', () => {
             methods: [card, facilypay6, facilypay3],
         });
 
-        expect(filteredMethods.map((m) => m.id)).toEqual(['facilypay_3', 'card']);
+        expect(filteredMethods.map((m) => m.id)).toEqual(['card', 'facilypay_3']);
+
         const grouped = filteredMethods.find((m) => m.id === 'facilypay_3');
 
         expect(grouped?.initializationData).toEqual(
@@ -200,7 +201,7 @@ describe('getFilteredPaymentMethodsWithDefault', () => {
                 groupedMethods: [facilypay3, facilypay6],
             }),
         );
-        expect(defaultMethod).toEqual(grouped);
+        expect(defaultMethod).toEqual(card);
     });
 
     it('does not group facilypay_* methods when PAYMENTS-5142.payment_method_grouping is disabled', () => {

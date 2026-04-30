@@ -27,7 +27,7 @@ const buildGroupedPaymentMethodRepresentative = (sortedGroup: PaymentMethod[]): 
         ...first,
         config: {
             ...first.config,
-            displayName: first.config.displayName?.replace(/^\d+x\s+/i, '') ?? first.config.displayName,
+            displayName: first.config.displayName?.replace(/^\d+x\s+/i, ''),
         },
         initializationData: {
             ...first.initializationData,
