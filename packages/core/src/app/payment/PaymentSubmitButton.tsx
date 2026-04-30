@@ -3,9 +3,9 @@ import React, { type FunctionComponent, memo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { Button, ButtonSize, ButtonVariant } from '@bigcommerce/checkout/ui';
+import IconBolt from '@bigcommerce/checkout/ui/icon/IconBolt';
 
 import { withCheckout } from '../checkout';
-import { IconBolt } from '../ui/icon';
 
 import { PaymentMethodId, PaymentMethodType } from './paymentMethod';
 import { useThemeContext } from '@bigcommerce/checkout/contexts';

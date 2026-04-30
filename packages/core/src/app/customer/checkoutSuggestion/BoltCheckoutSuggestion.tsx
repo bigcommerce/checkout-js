@@ -12,8 +12,7 @@ import { useAnalytics } from '@bigcommerce/checkout/contexts';
 import { stopPropagation } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { Button } from '@bigcommerce/checkout/ui';
-
-import { IconBolt } from '../../ui/icon';
+import IconBolt from '@bigcommerce/checkout/ui/icon/IconBolt';
 
 export interface BoltCheckoutSuggestionProps {
     isExecutingPaymentMethodCheckout: boolean;
