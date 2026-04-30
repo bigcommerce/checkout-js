@@ -1,13 +1,2 @@
 export { IconSize, IconProps } from './IconContainer';
 export { default as IconError } from './IconError';
-export { default as IconGiftCertificate } from './IconGiftCertificate';
-export { default as IconHelp } from './IconHelp';
-export { default as IconEye } from './IconEye';
-export { default as IconEyeSlash } from './IconEyeSlash';
-export { default as IconInfo } from './IconInfo';
-export { default as IconLock } from './IconLock';
-export { default as IconPrint } from './IconPrint';
-export { default as IconSuccess } from './IconSuccess';
-export { default as IconTag } from './IconTag';
-export { default as IconRemove } from './IconRemove';
-export { default as IconNewAccount } from './IconNewAccount';

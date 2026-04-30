@@ -8,8 +8,6 @@ import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../../config/config.mock';
-import { IconHelp } from '../../ui/icon';
-import { TooltipTrigger } from '../../ui/tooltip';
 
 import HostedCreditCardCodeField, {
     type HostedCreditCardCodeFieldProps,

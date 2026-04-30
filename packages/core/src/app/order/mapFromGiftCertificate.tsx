@@ -1,7 +1,7 @@
 import { type GiftCertificateItem } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
-import { IconGiftCertificate } from '../ui/icon';
+import { IconGiftCertificate } from '@bigcommerce/checkout/ui';
 
 import { type OrderItemType } from './OrderSummaryItem';
 

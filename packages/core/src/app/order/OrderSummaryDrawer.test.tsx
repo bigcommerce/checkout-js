@@ -5,10 +5,10 @@ import React, { type FunctionComponent } from 'react';
 import { CheckoutProvider, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
+import { IconGiftCertificate } from '@bigcommerce/checkout/ui';
 
 import { getGiftCertificateItem, getPhysicalItem } from '../cart/lineItem.mock';
 import { getStoreConfig } from '../config/config.mock';
-import { IconGiftCertificate } from '../ui/icon';
 
 import mapToOrderSummarySubtotalsProps from './mapToOrderSummarySubtotalsProps';
 import { getOrder } from './orders.mock';

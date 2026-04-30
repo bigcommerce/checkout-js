@@ -2,8 +2,7 @@ import classNames from 'classnames';
 import React, { type FunctionComponent, type ReactNode } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-
-import { IconRemove } from '../ui/icon';
+import { IconRemove } from '@bigcommerce/checkout/ui';
 
 import './AppliedRedeemable.scss';
 

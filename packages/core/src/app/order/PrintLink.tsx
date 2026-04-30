@@ -3,8 +3,7 @@ import React, { type FunctionComponent, memo, useCallback } from 'react';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-
-import { IconPrint } from '../ui/icon';
+import { IconPrint } from '@bigcommerce/checkout/ui';
 
 export interface PrintLinkProps {
     className?: string;
