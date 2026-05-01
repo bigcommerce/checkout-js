@@ -3,6 +3,7 @@ export { BasicFormField } from './BasicFormField';
 export { DynamicFormField, DynamicFormFieldType, DynamicInput } from './DynamicFormField';
 export { CheckboxFormField } from './CheckboxFormField';
 export { Fieldset } from './Fieldset';
+export { Form } from './Form';
 export { FormField } from './FormField';
 export { Input, InputProps } from './Input';
 export { Legend } from './Legend';

@@ -6,10 +6,10 @@ import { object, string } from 'yup';
 import { useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { PayPalFastlaneWatermark } from '@bigcommerce/checkout/paypal-fastlane-integration';
-import { Button, ButtonVariant, Fieldset } from '@bigcommerce/checkout/ui';
+import { Button, ButtonVariant, Fieldset, Form } from '@bigcommerce/checkout/ui';
 
 import { getPrivacyPolicyValidationSchema, PrivacyPolicyField } from '../privacyPolicy';
-import { BasicFormField, Form, Legend } from '../ui/form';
+import { BasicFormField, Legend } from '../ui/form';
 
 import EmailField from './EmailField';
 import SubscribeField from './SubscribeField';
