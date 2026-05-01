@@ -2,8 +2,9 @@ import { type FieldProps } from 'formik';
 import React, { type FunctionComponent, useCallback, useMemo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { Label } from '@bigcommerce/checkout/ui';
 
-import { Fieldset, FormField, Label, Legend, TextInput } from '../ui/form';
+import { Fieldset, FormField, Legend, TextInput } from '../ui/form';
 
 const OrderComments: FunctionComponent = () => {
     const renderLabel = useCallback(

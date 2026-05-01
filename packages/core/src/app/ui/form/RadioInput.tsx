@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React, { forwardRef, type ReactNode, type Ref } from 'react';
 
 import Input, { type InputProps } from './Input';
-import Label from './Label';
+import { Label } from '@bigcommerce/checkout/ui';
 
 export interface RadioInputProps extends InputProps {
     additionalClassName?: string;

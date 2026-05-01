@@ -1,7 +1,7 @@
 import React, { type FunctionComponent, type InputHTMLAttributes } from 'react';
 
 import Input from './Input';
-import Label from './Label';
+import { Label } from '@bigcommerce/checkout/ui';
 
 export interface ChecklistItemInputProps extends InputHTMLAttributes<HTMLInputElement> {
     isSelected: boolean;

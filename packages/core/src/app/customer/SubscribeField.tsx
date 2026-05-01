@@ -2,8 +2,9 @@ import { type FieldProps } from 'formik';
 import React, { type FunctionComponent, memo } from 'react';
 
 import { TranslatedHtml } from '@bigcommerce/checkout/locale';
+import { Label } from '@bigcommerce/checkout/ui';
 
-import { Input, Label } from '../ui/form';
+import { Input } from '../ui/form';
 
 export type SubscribeFieldProps = FieldProps<boolean> & {
     requiresMarketingConsent: boolean;
