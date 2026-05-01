@@ -3,9 +3,8 @@ import { type FieldProps } from 'formik';
 import { kebabCase } from 'lodash';
 import React, { type FunctionComponent, memo, type ReactNode, useCallback, useContext } from 'react';
 
-import { AccordionItem, type AccordionItemHeaderProps } from '@bigcommerce/checkout/ui';
+import { AccordionItem, type AccordionItemHeaderProps, BasicFormField } from '@bigcommerce/checkout/ui';
 
-import BasicFormField from './BasicFormField';
 import { ChecklistContext } from './Checklist';
 import ChecklistItemInput from './ChecklistItemInput';
 
