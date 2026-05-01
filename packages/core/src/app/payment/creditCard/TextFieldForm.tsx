@@ -2,8 +2,9 @@ import { type FieldProps } from 'formik';
 import React, { type FunctionComponent, memo, useCallback, useMemo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { TextInput } from '@bigcommerce/checkout/ui';
 
-import { Fieldset, FormField, TextInput } from '../../ui/form';
+import { Fieldset, FormField } from '../../ui/form';
 
 export interface TextFieldProps {
     additionalClassName: string;

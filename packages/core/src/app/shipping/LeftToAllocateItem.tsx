@@ -1,8 +1,9 @@
 import React, { type FunctionComponent } from "react";
 
 import { TranslatedString } from "@bigcommerce/checkout/locale";
+import { TextInput } from "@bigcommerce/checkout/ui";
 
-import { FormField, TextInput } from "../ui/form";
+import { FormField } from "../ui/form";
 import { isMobileView as isMobileViewUI } from "../ui/responsive";
 
 import { type MultiShippingTableItemWithType } from "./MultishippingType";

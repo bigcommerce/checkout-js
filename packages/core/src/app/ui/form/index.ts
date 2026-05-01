@@ -10,7 +10,6 @@ export { default as CustomChecklistItem } from './CustomChecklistItem';
 export { default as FormFieldError, FormFieldErrorProps } from './FormFieldError';
 export { default as FormFieldContainer } from './FormFieldContainer';
 export { default as TextArea, TextAreaProps } from './TextArea';
-export { default as TextInput, TextInputProps } from './TextInput';
 export { default as TextInputIframeContainer } from './TextInputIframeContainer';
 export { default as RadioInput } from './RadioInput';
 export { default as CheckboxInput } from './CheckboxInput';
