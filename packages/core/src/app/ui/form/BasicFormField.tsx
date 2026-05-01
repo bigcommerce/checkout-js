@@ -11,7 +11,7 @@ import React, {
 } from 'react';
 import shallowEqual from 'shallowequal';
 
-import FormFieldContainer from './FormFieldContainer';
+import { FormFieldContainer } from '@bigcommerce/checkout/ui';
 
 export interface BasicFormFieldProps extends FieldConfig {
     additionalClassName?: string;
