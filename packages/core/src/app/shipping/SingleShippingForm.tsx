@@ -15,6 +15,7 @@ import { lazy, object } from 'yup';
 
 import { useCapabilities } from '@bigcommerce/checkout/contexts';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { Fieldset } from '@bigcommerce/checkout/ui';
 
 import {
     type AddressFormValues,
@@ -29,7 +30,7 @@ import { isErrorWithType } from '../common/error';
 import { withFormikExtended } from '../common/form';
 import { getAddressExtraFieldsValidationSchema, getCustomFormFieldsValidationSchema } from '../formFields';
 import { PaymentMethodId } from '../payment/paymentMethod';
-import { Fieldset, Form } from '../ui/form';
+import { Form } from '../ui/form';
 
 import BillingSameAsShippingField from './BillingSameAsShippingField';
 import hasSelectedShippingOptions from './hasSelectedShippingOptions';
