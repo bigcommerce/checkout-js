@@ -4,7 +4,7 @@ export { DynamicFormField, DynamicFormFieldType, DynamicInput } from './DynamicF
 export { CheckboxFormField } from './CheckboxFormField';
 export { Fieldset } from './Fieldset';
 export { FormField } from './FormField';
-export { Input } from './Input';
+export { Input, InputProps } from './Input';
 export { Legend } from './Legend';
 export { TextArea } from './TextArea';
 export { TextInput } from './TextInput';

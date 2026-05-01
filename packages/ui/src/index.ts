@@ -33,6 +33,7 @@ export {
     Label,
     Legend,
     Input,
+    InputProps,
     TextInput,
     TextInputIframeContainer,
     WalletButtonsContainerSkeleton,

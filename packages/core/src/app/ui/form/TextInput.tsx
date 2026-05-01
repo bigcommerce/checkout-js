@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { forwardRef, type Ref } from 'react';
 
-import Input, { type InputProps } from './Input';
+import { Input, type InputProps } from '@bigcommerce/checkout/ui';
 
 export interface TextInputProps extends InputProps {
     additionalClassName?: string;
