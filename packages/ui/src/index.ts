@@ -34,6 +34,7 @@ export {
     Legend,
     Input,
     InputProps,
+    TextArea,
     TextInput,
     TextInputIframeContainer,
     WalletButtonsContainerSkeleton,
