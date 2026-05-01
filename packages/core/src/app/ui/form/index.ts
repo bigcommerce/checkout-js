@@ -9,7 +9,6 @@ export { default as ChecklistItem, ChecklistItemProps } from './ChecklistItem';
 export { default as CustomChecklistItem } from './CustomChecklistItem';
 export { default as FormFieldError, FormFieldErrorProps } from './FormFieldError';
 export { default as FormFieldContainer } from './FormFieldContainer';
-export { default as RadioInput } from './RadioInput';
 export { default as CheckboxInput } from './CheckboxInput';
 export { default as Legend, LegendProps } from './Legend';
 export { default as ChecklistItemInput, ChecklistItemInputProps } from './ChecklistItemInput';
