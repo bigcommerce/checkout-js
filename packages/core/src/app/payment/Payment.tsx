@@ -1,4 +1,5 @@
 import {
+    type Capabilities,
     type Cart,
     type CartStockPositionsChangedError,
     type CheckoutSelectors,
@@ -59,6 +60,7 @@ import {
 import { getFilteredPaymentMethodsWithDefault } from './paymentMethodFilters';
 
 export interface PaymentProps {
+    capabilities: Capabilities;
     errorLogger: ErrorLogger;
     isEmbedded?: boolean;
     isUsingMultiShipping?: boolean;
@@ -486,6 +488,7 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
                       getPaymentMethod: updatedState.data.getPaymentMethod,
                       methods,
                       paymentProviderCustomer: updatedState.data.getPaymentProviderCustomer(),
+                      capabilities: props.capabilities,
                   }).defaultMethod
                 : undefined;
             const selectedMethod = state.selectedMethod || defaultMethod;
@@ -644,10 +647,10 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
     );
 }
 
-export function mapToPaymentProps({
-        checkoutService,
-        checkoutState,
-}: CheckoutContextProps): WithCheckoutPaymentProps | null {
+export function mapToPaymentProps(
+    { checkoutService, checkoutState }: CheckoutContextProps,
+    { capabilities } : PaymentProps,
+): WithCheckoutPaymentProps | null {
     const {
         data: {
             getCart,
@@ -694,6 +697,7 @@ export function mapToPaymentProps({
         getPaymentMethod,
         methods,
         paymentProviderCustomer,
+        capabilities,
     });
 
     return {

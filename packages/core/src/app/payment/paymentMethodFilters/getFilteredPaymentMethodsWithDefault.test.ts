@@ -1,9 +1,11 @@
 import { type PaymentMethod } from '@bigcommerce/checkout-sdk';
 
+import { defaultCapabilities } from '@bigcommerce/checkout/contexts';
+
 import { getCheckout, getCheckoutPayment } from '../../checkout/checkouts.mock';
 import { getStoreConfig } from '../../config/config.mock';
 import { getPaymentMethod } from '../payment-methods.mock';
-import { PaymentMethodId } from '../paymentMethod';
+import { PaymentMethodId, PaymentMethodProviderType } from '../paymentMethod';
 
 import { getFilteredPaymentMethodsWithDefault } from './getFilteredPaymentMethodsWithDefault';
 
@@ -20,6 +22,7 @@ describe('getFilteredPaymentMethodsWithDefault', () => {
         const authorizenet = buildMethod({ id: 'authorizenet' });
 
         const { filteredMethods } = getFilteredPaymentMethodsWithDefault({
+            capabilities: defaultCapabilities,
             checkout: getCheckout(),
             checkoutSettings,
             getPaymentMethod: jest.fn(),
@@ -34,6 +37,7 @@ describe('getFilteredPaymentMethodsWithDefault', () => {
         const second = buildMethod({ id: 'paypalexpress' });
 
         const { defaultMethod } = getFilteredPaymentMethodsWithDefault({
+            capabilities: defaultCapabilities,
             checkout: getCheckout(),
             checkoutSettings,
             getPaymentMethod: jest.fn(),
@@ -51,6 +55,7 @@ describe('getFilteredPaymentMethodsWithDefault', () => {
         });
 
         const { defaultMethod } = getFilteredPaymentMethodsWithDefault({
+            capabilities: defaultCapabilities,
             checkout: getCheckout(),
             checkoutSettings,
             getPaymentMethod: jest.fn(),
@@ -68,6 +73,7 @@ describe('getFilteredPaymentMethodsWithDefault', () => {
         };
 
         const { defaultMethod, filteredMethods } = getFilteredPaymentMethodsWithDefault({
+            capabilities: defaultCapabilities,
             checkout,
             checkoutSettings,
             getPaymentMethod: jest.fn().mockReturnValue(amazon),
@@ -90,6 +96,7 @@ describe('getFilteredPaymentMethodsWithDefault', () => {
         };
 
         const { defaultMethod } = getFilteredPaymentMethodsWithDefault({
+            capabilities: defaultCapabilities,
             checkout,
             checkoutSettings,
             getPaymentMethod: jest.fn().mockReturnValue(amazon),
@@ -107,6 +114,7 @@ describe('getFilteredPaymentMethodsWithDefault', () => {
         const other = buildMethod({ id: 'authorizenet' });
 
         const { defaultMethod, filteredMethods } = getFilteredPaymentMethodsWithDefault({
+            capabilities: defaultCapabilities,
             checkout: getCheckout(),
             checkoutSettings,
             getPaymentMethod: jest.fn(),
@@ -122,6 +130,7 @@ describe('getFilteredPaymentMethodsWithDefault', () => {
         const braintreeLocal = buildMethod({ id: PaymentMethodId.BraintreeLocalPaymentMethod });
 
         const { defaultMethod, filteredMethods } = getFilteredPaymentMethodsWithDefault({
+            capabilities: defaultCapabilities,
             checkout: getCheckout(),
             checkoutSettings,
             getPaymentMethod: jest.fn(),
@@ -130,5 +139,27 @@ describe('getFilteredPaymentMethodsWithDefault', () => {
 
         expect(filteredMethods).toEqual([]);
         expect(defaultMethod).toBeUndefined();
+    });
+
+    it('excludes PPSDK methods when capabilities.payment.excludePPSDK is true', () => {
+        const ppsdk = buildMethod({
+            id: 'ppsdk-provider',
+            type: PaymentMethodProviderType.PPSDK,
+        });
+        const authorizenet = buildMethod({ id: 'authorizenet' });
+
+        const { defaultMethod, filteredMethods } = getFilteredPaymentMethodsWithDefault({
+            capabilities: {
+                ...defaultCapabilities,
+                payment: { ...defaultCapabilities.payment, excludePPSDK: true },
+            },
+            checkout: getCheckout(),
+            checkoutSettings,
+            getPaymentMethod: jest.fn(),
+            methods: [ppsdk, authorizenet],
+        });
+
+        expect(filteredMethods).toEqual([authorizenet]);
+        expect(defaultMethod).toEqual(authorizenet);
     });
 });

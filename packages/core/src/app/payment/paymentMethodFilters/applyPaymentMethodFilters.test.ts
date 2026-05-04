@@ -1,5 +1,7 @@
 import { type PaymentMethod } from '@bigcommerce/checkout-sdk';
 
+import { defaultCapabilities } from '@bigcommerce/checkout/contexts';
+
 import { getCheckout, getCheckoutPayment } from '../../checkout/checkouts.mock';
 import { getStoreConfig } from '../../config/config.mock';
 import { getConsignment } from '../../shipping/consignment.mock';
@@ -33,6 +35,7 @@ describe('applyPaymentMethodFilters', () => {
     const authorizenet: PaymentMethod = { ...getPaymentMethod(), id: 'authorizenet' };
 
     const baseContext = (): PaymentMethodFilterContext => ({
+        capabilities: defaultCapabilities,
         checkout: getCheckout(),
         checkoutSettings: getStoreConfig().checkoutSettings,
         getPaymentMethod: jest.fn(),

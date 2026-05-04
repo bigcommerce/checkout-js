@@ -1,4 +1,5 @@
 import {
+    type Capabilities,
     type Checkout,
     type CheckoutSettings,
     type PaymentMethod,
@@ -11,6 +12,7 @@ import { PaymentMethodProviderType } from '../paymentMethod';
 import { applyPaymentMethodFilters } from './applyPaymentMethodFilters';
 
 export interface PaymentMethodSelectionProps {
+    capabilities: Capabilities;
     checkout: Checkout;
     checkoutSettings: CheckoutSettings; // this is for passing experiment flags, we don't have any experiment in filters currently.
     methods: PaymentMethod[];
@@ -48,12 +50,14 @@ export const getFilteredPaymentMethodsWithDefault = ({
     getPaymentMethod,
     methods,
     paymentProviderCustomer,
+    capabilities,
 }: PaymentMethodSelectionProps): DefaultPaymentMethodResult => {
     const filteredMethods = applyPaymentMethodFilters(methods, {
         checkout,
         checkoutSettings,
         getPaymentMethod,
         paymentProviderCustomer,
+        capabilities,
     });
 
     return {
