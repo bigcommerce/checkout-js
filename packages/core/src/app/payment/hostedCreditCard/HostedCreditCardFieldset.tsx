@@ -1,8 +1,9 @@
 import React, { type FunctionComponent, type ReactNode } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { Legend } from '@bigcommerce/checkout/ui';
 
-import { Fieldset, Legend } from '../../ui/form';
+import { Fieldset } from '../../ui/form';
 
 import HostedCreditCardCodeField from './HostedCreditCardCodeField';
 import HostedCreditCardExpiryField from './HostedCreditCardExpiryField';
