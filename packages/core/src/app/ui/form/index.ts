@@ -13,7 +13,6 @@ export { default as TextArea, TextAreaProps } from './TextArea';
 export { default as TextInput, TextInputProps } from './TextInput';
 export { default as TextInputIframeContainer } from './TextInputIframeContainer';
 export { default as RadioInput } from './RadioInput';
-export { default as CheckboxInput } from './CheckboxInput';
 export { default as Label, LabelProps } from './Label';
 export { default as Legend, LegendProps } from './Legend';
 export { default as ChecklistItemInput, ChecklistItemInputProps } from './ChecklistItemInput';

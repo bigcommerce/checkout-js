@@ -22,6 +22,7 @@ export {
     DynamicFormFieldType,
     DynamicInput,
     CheckboxFormField,
+    CheckboxInput,
     ChecklistSkeleton,
     OrderConfirmationPageSkeleton,
     Fieldset,
