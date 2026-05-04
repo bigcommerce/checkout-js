@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.783.0](https://github.com/bigcommerce/checkout-js/compare/v1.782.3...v1.783.0) (2026-05-04)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9817 Introduce paymentMethodFilters ([#2979](https://github.com/bigcommerce/checkout-js/issues/2979)) ([09e573d](https://github.com/bigcommerce/checkout-js/commit/09e573d073130606e6723811c9e9e58c318135fb))
+
 ### [1.782.3](https://github.com/bigcommerce/checkout-js/compare/v1.782.2...v1.782.3) (2026-05-01)
 
 ### [1.782.2](https://github.com/bigcommerce/checkout-js/compare/v1.782.1...v1.782.2) (2026-05-01)
