@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.785.0](https://github.com/bigcommerce/checkout-js/compare/v1.784.0...v1.785.0) (2026-05-04)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9817 Add excludePPSDKFilter ([#2990](https://github.com/bigcommerce/checkout-js/issues/2990)) ([fc6b751](https://github.com/bigcommerce/checkout-js/commit/fc6b7517b2847354ba95fc11f95ee48a38fc9411))
+
 ## [1.784.0](https://github.com/bigcommerce/checkout-js/compare/v1.783.1...v1.784.0) (2026-05-04)
 
 
