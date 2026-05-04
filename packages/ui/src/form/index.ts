@@ -5,6 +5,7 @@ export { CheckboxFormField } from './CheckboxFormField';
 export { CheckboxInput } from './CheckboxInput';
 export { Fieldset } from './Fieldset';
 export { FormField } from './FormField';
+export { FormFieldError } from './FormFieldError';
 export { Input } from './Input';
 export { Legend } from './Legend';
 export { TextArea } from './TextArea';

@@ -6,7 +6,6 @@ export { default as BasicFormField, BasicFormFieldProps } from './BasicFormField
 export { default as Checklist, ChecklistProps } from './Checklist';
 export { default as ChecklistItem, ChecklistItemProps } from './ChecklistItem';
 export { default as CustomChecklistItem } from './CustomChecklistItem';
-export { default as FormFieldError, FormFieldErrorProps } from './FormFieldError';
 export { default as FormFieldContainer } from './FormFieldContainer';
 export { default as Input, InputProps } from './Input';
 export { default as TextArea, TextAreaProps } from './TextArea';

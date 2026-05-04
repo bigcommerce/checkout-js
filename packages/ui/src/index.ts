@@ -27,6 +27,7 @@ export {
     OrderConfirmationPageSkeleton,
     Fieldset,
     FormField,
+    FormFieldError,
     FormContext,
     FormProvider,
     FormFieldContainer,
