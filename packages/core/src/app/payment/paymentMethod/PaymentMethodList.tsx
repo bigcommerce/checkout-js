@@ -7,8 +7,8 @@ import { Checklist, ChecklistItem } from '@bigcommerce/checkout/ui';
 
 import { connectFormik, type ConnectFormikProps } from '../../common/form';
 import { isMobile } from '../../common/utility';
-import { CustomChecklistItem } from '../../ui/form';
 
+import CustomChecklistItem from './CustomChecklistItem';
 import getPaymentMethodName from './getPaymentMethodName';
 import getUniquePaymentMethodId, { parseUniquePaymentMethodId } from './getUniquePaymentMethodId';
 import PaymentMethodTitle, { getPaymentMethodTitle } from './PaymentMethodTitle';
