@@ -3,10 +3,11 @@ import { find, get, noop } from 'lodash';
 import React, { type FunctionComponent, memo, useCallback, useMemo } from 'react';
 
 import { useCheckout, useLocale } from '@bigcommerce/checkout/contexts';
+import { Checklist } from '@bigcommerce/checkout/ui';
 
 import { connectFormik, type ConnectFormikProps } from '../../common/form';
 import { isMobile } from '../../common/utility';
-import { Checklist, ChecklistItem, CustomChecklistItem } from '../../ui/form';
+import { ChecklistItem, CustomChecklistItem } from '../../ui/form';
 
 import getPaymentMethodName from './getPaymentMethodName';
 import getUniquePaymentMethodId, { parseUniquePaymentMethodId } from './getUniquePaymentMethodId';

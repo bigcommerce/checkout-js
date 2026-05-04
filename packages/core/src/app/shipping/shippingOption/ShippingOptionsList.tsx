@@ -2,10 +2,10 @@ import { ExtensionRegion, type ShippingOption } from '@bigcommerce/checkout-sdk/
 import React, { type FunctionComponent, memo, useCallback } from 'react';
 
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
-import { LoadingOverlay } from '@bigcommerce/checkout/ui';
+import { Checklist, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import { EMPTY_ARRAY } from '../../common/utility';
-import { Checklist, ChecklistItem } from '../../ui/form';
+import { ChecklistItem } from '../../ui/form';
 
 import StaticShippingOption from './StaticShippingOption';
 

@@ -17,6 +17,8 @@ export {
     AddressFormSkeleton,
     BasicFormField,
     CartSummarySkeleton,
+    Checklist,
+    ChecklistContext,
     CheckoutPageSkeleton,
     DynamicFormField,
     DynamicFormFieldType,
