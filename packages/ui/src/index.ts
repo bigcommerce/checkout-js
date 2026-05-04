@@ -19,6 +19,7 @@ export {
     CartSummarySkeleton,
     Checklist,
     ChecklistContext,
+    ChecklistItem,
     CheckoutPageSkeleton,
     DynamicFormField,
     DynamicFormFieldType,
