@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.784.0](https://github.com/bigcommerce/checkout-js/compare/v1.783.1...v1.784.0) (2026-05-04)
+
+
+### Features
+
+* **payment:** Add provider section container on top of payment methods list ([#2944](https://github.com/bigcommerce/checkout-js/issues/2944)) ([a5b3143](https://github.com/bigcommerce/checkout-js/commit/a5b31432c50721703311e31d49463363e6c35eef))
+* **payment:** enable Stripe Adaptive Pricing element ([#2949](https://github.com/bigcommerce/checkout-js/issues/2949)) ([492b63e](https://github.com/bigcommerce/checkout-js/commit/492b63ef74742e607728d72122195e5c879d1e13))
+
 ### [1.783.1](https://github.com/bigcommerce/checkout-js/compare/v1.783.0...v1.783.1) (2026-05-04)
 
 ## [1.783.0](https://github.com/bigcommerce/checkout-js/compare/v1.782.3...v1.783.0) (2026-05-04)
