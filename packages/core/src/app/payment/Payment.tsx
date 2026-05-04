@@ -77,6 +77,7 @@ export interface PaymentProps {
 interface WithCheckoutPaymentProps {
     availableStoreCredit: number;
     cart?: Cart;
+    checkoutSettings: CheckoutSettings;
     consignments?: Consignment[];
     cartUrl: string;
     defaultMethod?: PaymentMethod;
@@ -480,7 +481,6 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
             const checkout = updatedState.data.getCheckout();
             const config = updatedState.data.getConfig();
             const methods = updatedState.data.getPaymentMethods() || EMPTY_ARRAY;
-
             const defaultMethod = (checkout && config)
                 ? getFilteredPaymentMethodsWithDefault({
                       checkout,
@@ -681,13 +681,17 @@ export function mapToPaymentProps(
         return null;
     }
 
+    const checkoutSettings = config.checkoutSettings as CheckoutSettings & {
+        orderTermsAndConditionsLocation: string;
+    };
+
     const {
         enableTermsAndConditions: isTermsConditionsEnabled,
         features,
         orderTermsAndConditionsType: termsConditionsType,
         orderTermsAndConditions: termsCondtitionsText,
         orderTermsAndConditionsLink: termsCondtitionsUrl,
-    } = config.checkoutSettings as CheckoutSettings & { orderTermsAndConditionsLocation: string };
+    } = checkoutSettings;
 
     const isTermsConditionsRequired = isTermsConditionsEnabled;
     const { isStoreCreditApplied } = checkout;
@@ -704,6 +708,7 @@ export function mapToPaymentProps(
         applyStoreCredit: checkoutService.applyStoreCredit,
         availableStoreCredit: customer.storeCredit,
         cart: getCart(),
+        checkoutSettings,
         consignments,
         cartUrl: config.links.cartLink,
         clearError: checkoutService.clearError,
@@ -721,7 +726,7 @@ export function mapToPaymentProps(
         shouldExecuteSpamCheck: checkout.shouldExecuteSpamCheck,
         shouldLocaliseErrorMessages:
             features['PAYMENTS-6799.localise_checkout_payment_error_messages'],
-        shouldShowSubmitPaymentButton: isExperimentEnabled(config.checkoutSettings, 'CHECKOUT-9729.show_submit_button_when_payment_not_required', false),
+        shouldShowSubmitPaymentButton: isExperimentEnabled(checkoutSettings, 'CHECKOUT-9729.show_submit_button_when_payment_not_required', false),
         submitOrder: checkoutService.submitOrder,
         submitOrderError: getSubmitOrderError(),
         checkoutServiceSubscribe: checkoutService.subscribe,
