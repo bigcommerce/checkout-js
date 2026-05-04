@@ -1,4 +1,3 @@
-export { default as withForm, WithFormProps } from './withForm';
 export { default as Fieldset, FieldsetProps } from './Fieldset';
 export { default as Form, FormProps } from './Form';
 export { default as BasicFormField, BasicFormFieldProps } from './BasicFormField';
