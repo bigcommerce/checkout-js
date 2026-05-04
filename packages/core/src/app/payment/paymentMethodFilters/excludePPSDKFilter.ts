@@ -1,6 +1,6 @@
-import { PaymentMethodProviderType } from '../paymentMethod';
+import { type PaymentMethodFilter } from '@bigcommerce/checkout/payment-integration-api';
 
-import { type PaymentMethodFilter } from './types';
+import { PaymentMethodProviderType } from '../paymentMethod';
 
 export const excludePPSDKFilter: PaymentMethodFilter = {
     name: 'excludePPSDK',

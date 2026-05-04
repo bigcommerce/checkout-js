@@ -1,6 +1,7 @@
 import { type PaymentMethod } from '@bigcommerce/checkout-sdk';
 
 import { defaultCapabilities } from '@bigcommerce/checkout/contexts';
+import { type PaymentMethodFilterContext } from '@bigcommerce/checkout/payment-integration-api';
 
 import { getCheckout, getCheckoutPayment } from '../../checkout/checkouts.mock';
 import { getStoreConfig } from '../../config/config.mock';
@@ -8,7 +9,6 @@ import { getPaymentMethod } from '../payment-methods.mock';
 import { PaymentMethodProviderType } from '../paymentMethod';
 
 import { selectedHostedPaymentFilter } from './selectedHostedPaymentFilter';
-import { type PaymentMethodFilterContext } from './types';
 
 describe('selectedHostedPaymentFilter', () => {
     const amazon: PaymentMethod = { ...getPaymentMethod(), id: 'amazonpay' };

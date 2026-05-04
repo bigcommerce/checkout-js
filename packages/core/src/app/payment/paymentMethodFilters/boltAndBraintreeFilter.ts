@@ -1,6 +1,6 @@
-import { PaymentMethodId } from '../paymentMethod';
+import { type PaymentMethodFilter } from '@bigcommerce/checkout/payment-integration-api';
 
-import { type PaymentMethodFilter } from './types';
+import { PaymentMethodId } from '../paymentMethod';
 
 export const boltAndBraintreeFilter: PaymentMethodFilter = {
     name: 'boltAndBraintree',
