@@ -3,9 +3,9 @@ import React, { type FunctionComponent, memo, useCallback, useMemo } from 'react
 
 import { parseAnchor } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedHtml, TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { CheckboxFormField } from '@bigcommerce/checkout/ui';
+import { CheckboxFormField, FormField } from '@bigcommerce/checkout/ui';
 
-import { Fieldset, FormField, Legend, TextArea } from '../ui/form';
+import { Fieldset, Legend, TextArea } from '../ui/form';
 import { ModalHeader, ModalLink } from '../ui/modal';
 import { MultiLineText } from '../ui/text';
 

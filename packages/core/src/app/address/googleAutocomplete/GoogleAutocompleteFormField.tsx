@@ -4,9 +4,9 @@ import { type FieldProps } from 'formik';
 import React, { type FunctionComponent, memo, useCallback, useMemo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { type AutocompleteItem } from '@bigcommerce/checkout/ui';
+import { type AutocompleteItem, FormField } from '@bigcommerce/checkout/ui';
 
-import { FormField, Label } from '../../ui/form';
+import { Label } from '../../ui/form';
 import {
     getAddressFormFieldInputId,
     getAddressFormFieldLabelId,
