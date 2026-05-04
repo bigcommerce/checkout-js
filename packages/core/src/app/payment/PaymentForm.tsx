@@ -26,6 +26,7 @@ import PaymentRedeemables from './PaymentRedeemables';
 import PaymentSubmitButton from './PaymentSubmitButton';
 import SpamProtectionField from './SpamProtectionField';
 import { StoreCreditField, StoreCreditOverlay } from './storeCredit';
+import { ProvidersSectionOnTopOfPaymentsList } from './ProvidersSectionOnTopOfPaymentsList';
 
 export interface PaymentFormProps {
     availableStoreCredit?: number;
@@ -253,6 +254,8 @@ const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProp
             {!isPaymentDataRequired() && <StoreCreditOverlay />}
 
             <Extension region={ExtensionRegion.PaymentPaymentMethodListBefore}/>
+
+            <ProvidersSectionOnTopOfPaymentsList methods={methods} />
 
             <PaymentMethodList
                 isEmbedded={isEmbedded}
