@@ -40,8 +40,8 @@ const FormField: FunctionComponent<FormFieldProps> = ({
             <>
                 {isFloatingLabelEnabled && input(props)}
 
-                {label !== undefined && (typeof label === 'function' ? label(name) : label)}
-                {labelContent !== undefined && !label && (
+                {label != null && (typeof label === 'function' ? label(name) : label)}
+                {labelContent != null && label == null && (
                     <Label
                         additionalClassName={labelClassName}
                         htmlFor={name}
