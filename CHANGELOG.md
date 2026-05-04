@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.786.0](https://github.com/bigcommerce/checkout-js/compare/v1.785.0...v1.786.0) (2026-05-04)
+
+
+### Features
+
+* **payment:** Stripe payments methods filter ([#2948](https://github.com/bigcommerce/checkout-js/issues/2948)) ([a96caa6](https://github.com/bigcommerce/checkout-js/commit/a96caa6fcd5bbc776d2ccd6771219c4b7d2799da))
+
 ## [1.785.0](https://github.com/bigcommerce/checkout-js/compare/v1.784.0...v1.785.0) (2026-05-04)
 
 
