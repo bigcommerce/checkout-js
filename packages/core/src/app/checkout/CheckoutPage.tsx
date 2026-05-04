@@ -136,7 +136,11 @@ const Checkout = ({
                       subscribeToConsignments,
                       themeV2
                   }: CheckoutPageProps):ReactElement => {
-    const { userJourney: { requiresB2BToken } } = useCapabilities();
+    const capabilities = useCapabilities();
+    const {
+        userJourney: { requiresB2BToken },
+        orderConfirmation: { invoiceRedirect },
+    } = capabilities;
     const { fetchB2BToken } = useB2BToken();
 
     const [state, setState] = useState<CheckoutState>({
@@ -159,8 +163,6 @@ const Checkout = ({
     }>({
         hasSelectedShippingOptions: state.hasSelectedShippingOptions,
     });
-
-    const { orderConfirmation: { invoiceRedirect } } = useCapabilities();
 
     const navigateToStep = useCallback((type: CheckoutStepType, options?: { isDefault?: boolean }):void => {
         const step = find(stepsRef.current, { type });
@@ -460,6 +462,7 @@ const Checkout = ({
 
             case CheckoutStepType.Payment:
                 return <PaymentStep
+                    capabilities={capabilities}
                     cart={cart}
                     checkEmbeddedSupport={checkEmbeddedSupport}
                     consignments={consignments}

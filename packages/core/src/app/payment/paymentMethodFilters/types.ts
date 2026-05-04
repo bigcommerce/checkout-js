@@ -1,4 +1,5 @@
 import {
+    type Capabilities,
     type Checkout,
     type CheckoutSettings,
     type PaymentMethod,
@@ -6,6 +7,7 @@ import {
 } from '@bigcommerce/checkout-sdk';
 
 export interface PaymentMethodFilterContext {
+    capabilities: Capabilities;
     checkout: Checkout;
     checkoutSettings: CheckoutSettings;
     getPaymentMethod: (methodId: string, gatewayId?: string) => PaymentMethod | undefined;

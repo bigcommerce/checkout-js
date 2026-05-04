@@ -1,6 +1,7 @@
 import { type PaymentMethod } from '@bigcommerce/checkout-sdk';
 
 import { boltAndBraintreeFilter } from './boltAndBraintreeFilter';
+import { excludePPSDKFilter } from './excludePPSDKFilter';
 import { multiShippingFilter } from './multiShippingFilter';
 import { selectedHostedPaymentFilter } from './selectedHostedPaymentFilter';
 import { stripeLinkAuthFilter } from './stripeLinkAuthFilter';
@@ -12,6 +13,7 @@ const FILTERS: PaymentMethodFilter[] = [
     stripeLinkAuthFilter,
     boltAndBraintreeFilter,
     multiShippingFilter,
+    excludePPSDKFilter,
     selectedHostedPaymentFilter,
 ];
 
