@@ -55,8 +55,8 @@ beforeAll(() => {
     console.error = (...args: unknown[]) => {
         const message = args.map(String).join();
 
-        // FIXME: Remove these ignored errors once we have enabled react 18 features
-        if (/Formik|createRoot|React.act|findDOMNode/.test(message)) {
+        // Suppress known third-party warnings unrelated to our code
+        if (/Formik|React.act/.test(message)) {
             return;
         }
 

@@ -1,4 +1,4 @@
-import React, { type FunctionComponent } from 'react';
+import React, { act, type FunctionComponent } from 'react';
 
 import { configurePublicPath } from '../common/bundler';
 
@@ -54,7 +54,9 @@ describe('renderOrderConfirmation()', () => {
     });
 
     it('configures public path before mounting app component', () => {
-        renderOrderConfirmation(options);
+        act(() => {
+            renderOrderConfirmation(options);
+        });
 
         expect(configurePublicPath).toHaveBeenCalledWith(options.publicPath);
 
@@ -62,13 +64,17 @@ describe('renderOrderConfirmation()', () => {
     });
 
     it('passes props to app component', () => {
-        renderOrderConfirmation(options);
+        act(() => {
+            renderOrderConfirmation(options);
+        });
 
         expect(OrderConfirmationApp).toHaveBeenCalledWith(options, {});
     });
 
     it('does not configure `whyDidYouRender` if not in development mode', () => {
-        renderOrderConfirmation(options);
+        act(() => {
+            renderOrderConfirmation(options);
+        });
 
         expect(require('@welldone-software/why-did-you-render')).not.toHaveBeenCalled();
 
@@ -80,7 +86,9 @@ describe('renderOrderConfirmation()', () => {
 
         process.env.NODE_ENV = 'development';
 
-        renderOrderConfirmation(options);
+        act(() => {
+            renderOrderConfirmation(options);
+        });
 
         expect(require('@welldone-software/why-did-you-render')).toHaveBeenCalledWith(React, {
             collapseGroups: true,
