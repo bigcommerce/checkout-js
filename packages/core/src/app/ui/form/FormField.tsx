@@ -2,7 +2,8 @@ import { type FieldProps } from 'formik';
 import { kebabCase } from 'lodash';
 import React, { type FunctionComponent, memo, type ReactNode, useCallback } from 'react';
 
-import BasicFormField from './BasicFormField';
+import { BasicFormField } from '@bigcommerce/checkout/ui';
+
 import FormFieldError from './FormFieldError';
 import Label from './Label';
 

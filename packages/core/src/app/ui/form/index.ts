@@ -2,7 +2,6 @@ export { default as withForm, WithFormProps } from './withForm';
 export { default as Fieldset, FieldsetProps } from './Fieldset';
 export { default as Form, FormProps } from './Form';
 export { default as FormField, FormFieldProps } from './FormField';
-export { default as BasicFormField, BasicFormFieldProps } from './BasicFormField';
 export { default as CheckboxFormField, CheckboxFormFieldProps } from './CheckboxFormField';
 export { default as Checklist, ChecklistProps } from './Checklist';
 export { default as ChecklistItem, ChecklistItemProps } from './ChecklistItem';
