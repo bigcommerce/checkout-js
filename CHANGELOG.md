@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.787.0](https://github.com/bigcommerce/checkout-js/compare/v1.786.1...v1.787.0) (2026-05-05)
+
+
+### Features
+
+* **payment:** PI-5142 [Oney] Add Oney payment method ([#2965](https://github.com/bigcommerce/checkout-js/issues/2965)) ([051a116](https://github.com/bigcommerce/checkout-js/commit/051a116999393e3b1aff1cb5668039ac40402aa5))
+
 ### [1.786.1](https://github.com/bigcommerce/checkout-js/compare/v1.786.0...v1.786.1) (2026-05-05)
 
 ## [1.786.0](https://github.com/bigcommerce/checkout-js/compare/v1.785.0...v1.786.0) (2026-05-04)
