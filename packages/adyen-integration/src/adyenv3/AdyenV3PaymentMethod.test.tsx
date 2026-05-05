@@ -8,6 +8,7 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import { createAdyenV3PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/adyen';
 import { act, fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';
@@ -231,6 +232,202 @@ describe('when using AdyenV3 payment', () => {
             );
             expect(cancelAdditionalActionModalFlow).toHaveBeenCalledTimes(1);
             expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+        });
+    });
+
+    describe('when method has grouped FacilyPay variants', () => {
+        it('renders a variant select and initializes payment for the default variant', () => {
+            const variantLow: PaymentMethod = {
+                ...getPaymentMethod(),
+                id: 'facilypay_3',
+                gateway: 'adyenv3',
+                method: 'scheme',
+                config: {
+                    ...getPaymentMethod().config,
+                    displayName: 'Option 3',
+                },
+            };
+            const variantHigh: PaymentMethod = {
+                ...getPaymentMethod(),
+                id: 'facilypay_12',
+                gateway: 'adyenv3',
+                method: 'scheme',
+                config: {
+                    ...getPaymentMethod().config,
+                    displayName: 'Option 12',
+                },
+            };
+            const groupedRepresentative: PaymentMethod = {
+                ...variantLow,
+                initializationData: {
+                    groupedMethods: [variantLow, variantHigh],
+                },
+            };
+
+            const defaultAdyenProps: PaymentMethodProps = {
+                method: groupedRepresentative,
+                onUnhandledError: jest.fn(),
+                checkoutService,
+                checkoutState,
+                paymentForm,
+                language: createLanguageService(),
+            };
+
+            render(<PaymentMethodTest {...defaultAdyenProps} />);
+
+            expect(screen.getByRole('combobox')).toBeInTheDocument();
+            expect(screen.getByRole('option', { name: 'Option 3' })).toBeInTheDocument();
+            expect(screen.getByRole('option', { name: 'Option 12' })).toBeInTheDocument();
+
+            expect(initializePayment).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    methodId: 'facilypay_3',
+                }),
+            );
+        });
+
+        it('sets methodIdOverride when the shopper selects another variant', async () => {
+            const variantLow: PaymentMethod = {
+                ...getPaymentMethod(),
+                id: 'facilypay_3',
+                gateway: 'adyenv3',
+                method: 'scheme',
+                config: {
+                    ...getPaymentMethod().config,
+                    displayName: 'Option 3',
+                },
+            };
+            const variantHigh: PaymentMethod = {
+                ...getPaymentMethod(),
+                id: 'facilypay_12',
+                gateway: 'adyenv3',
+                method: 'scheme',
+                config: {
+                    ...getPaymentMethod().config,
+                    displayName: 'Option 12',
+                },
+            };
+            const groupedRepresentative: PaymentMethod = {
+                ...variantLow,
+                initializationData: {
+                    groupedMethods: [variantLow, variantHigh],
+                },
+            };
+
+            const defaultAdyenProps: PaymentMethodProps = {
+                method: groupedRepresentative,
+                onUnhandledError: jest.fn(),
+                checkoutService,
+                checkoutState,
+                paymentForm,
+                language: createLanguageService(),
+            };
+
+            render(<PaymentMethodTest {...defaultAdyenProps} />);
+
+            await userEvent.selectOptions(screen.getByRole('combobox'), 'facilypay_12');
+
+            expect(paymentForm.setFieldValue).toHaveBeenCalledWith(
+                'methodIdOverride',
+                'facilypay_12',
+            );
+        });
+
+        it('clears methodIdOverride on unmount while grouped', () => {
+            const variantLow: PaymentMethod = {
+                ...getPaymentMethod(),
+                id: 'facilypay_3',
+                gateway: 'adyenv3',
+                method: 'scheme',
+                config: {
+                    ...getPaymentMethod().config,
+                    displayName: 'Option 3',
+                },
+            };
+            const variantHigh: PaymentMethod = {
+                ...getPaymentMethod(),
+                id: 'facilypay_12',
+                gateway: 'adyenv3',
+                method: 'scheme',
+                config: {
+                    ...getPaymentMethod().config,
+                    displayName: 'Option 12',
+                },
+            };
+            const groupedRepresentative: PaymentMethod = {
+                ...variantLow,
+                initializationData: {
+                    groupedMethods: [variantLow, variantHigh],
+                },
+            };
+
+            const defaultAdyenProps: PaymentMethodProps = {
+                method: groupedRepresentative,
+                onUnhandledError: jest.fn(),
+                checkoutService,
+                checkoutState,
+                paymentForm,
+                language: createLanguageService(),
+            };
+
+            jest.clearAllMocks();
+
+            const { unmount } = render(<PaymentMethodTest {...defaultAdyenProps} />);
+
+            unmount();
+
+            expect(paymentForm.setFieldValue).toHaveBeenCalledWith('methodIdOverride', undefined);
+        });
+
+        it('does not clear methodIdOverride during grouped rerender', async () => {
+            const variantLow: PaymentMethod = {
+                ...getPaymentMethod(),
+                id: 'facilypay_3',
+                gateway: 'adyenv3',
+                method: 'scheme',
+                config: {
+                    ...getPaymentMethod().config,
+                    displayName: 'Option 3',
+                },
+            };
+            const variantHigh: PaymentMethod = {
+                ...getPaymentMethod(),
+                id: 'facilypay_12',
+                gateway: 'adyenv3',
+                method: 'scheme',
+                config: {
+                    ...getPaymentMethod().config,
+                    displayName: 'Option 12',
+                },
+            };
+            const groupedRepresentative: PaymentMethod = {
+                ...variantLow,
+                initializationData: {
+                    groupedMethods: [variantLow, variantHigh],
+                },
+            };
+
+            const defaultAdyenProps: PaymentMethodProps = {
+                method: groupedRepresentative,
+                onUnhandledError: jest.fn(),
+                checkoutService,
+                checkoutState,
+                paymentForm,
+                language: createLanguageService(),
+            };
+
+            const { rerender } = render(<PaymentMethodTest {...defaultAdyenProps} />);
+
+            await userEvent.selectOptions(screen.getByRole('combobox'), 'facilypay_12');
+
+            jest.clearAllMocks();
+
+            rerender(<PaymentMethodTest {...defaultAdyenProps} />);
+
+            expect(paymentForm.setFieldValue).not.toHaveBeenCalledWith(
+                'methodIdOverride',
+                undefined,
+            );
         });
     });
 });

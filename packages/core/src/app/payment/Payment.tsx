@@ -4,7 +4,6 @@ import {
     type CartStockPositionsChangedError,
     type CheckoutSelectors,
     type CheckoutService,
-    type CheckoutSettings,
     type Consignment,
     type OrderFinalizeOptions,
     type OrderRequestBody,
@@ -480,7 +479,6 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
             const checkout = updatedState.data.getCheckout();
             const config = updatedState.data.getConfig();
             const methods = updatedState.data.getPaymentMethods() || EMPTY_ARRAY;
-
             const defaultMethod = (checkout && config)
                 ? getFilteredPaymentMethodsWithDefault({
                       checkout,
@@ -681,13 +679,14 @@ export function mapToPaymentProps(
         return null;
     }
 
+    const checkoutSettings = config.checkoutSettings;
     const {
         enableTermsAndConditions: isTermsConditionsEnabled,
         features,
         orderTermsAndConditionsType: termsConditionsType,
         orderTermsAndConditions: termsCondtitionsText,
         orderTermsAndConditionsLink: termsCondtitionsUrl,
-    } = config.checkoutSettings as CheckoutSettings & { orderTermsAndConditionsLocation: string };
+    } = checkoutSettings;
 
     const isTermsConditionsRequired = isTermsConditionsEnabled;
     const { isStoreCreditApplied } = checkout;
@@ -721,7 +720,7 @@ export function mapToPaymentProps(
         shouldExecuteSpamCheck: checkout.shouldExecuteSpamCheck,
         shouldLocaliseErrorMessages:
             features['PAYMENTS-6799.localise_checkout_payment_error_messages'],
-        shouldShowSubmitPaymentButton: isExperimentEnabled(config.checkoutSettings, 'CHECKOUT-9729.show_submit_button_when_payment_not_required', false),
+        shouldShowSubmitPaymentButton: isExperimentEnabled(checkoutSettings, 'CHECKOUT-9729.show_submit_button_when_payment_not_required', false),
         submitOrder: checkoutService.submitOrder,
         submitOrderError: getSubmitOrderError(),
         checkoutServiceSubscribe: checkoutService.subscribe,

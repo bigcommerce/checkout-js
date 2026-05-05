@@ -26,6 +26,7 @@ import {
 import {
     CheckoutPageNodeObject,
     CheckoutPreset,
+    checkoutSettings,
     checkoutWithBillingEmail, checkoutWithShippingAndBilling, customer,
     orderResponse,
     payments,
@@ -286,6 +287,151 @@ describe('Payment step', () => {
 
         expect(screen.getByRole('radio')).toBeInTheDocument();
         expect(screen.queryByText(/BrainTree/)).not.toBeInTheDocument();
+    });
+
+    it('groups payment methods that match configured prefix when PAYMENTS-5142 experiment is enabled', async () => {
+        const facilypay3 = {
+            ...payments[0],
+            id: 'facilypay_3',
+            config: {
+                ...payments[0].config,
+                displayName: '3x Oney',
+            },
+        };
+        const facilypay6 = {
+            ...payments[0],
+            id: 'facilypay_6',
+            config: {
+                ...payments[0].config,
+                displayName: '6x Oney',
+            },
+        };
+        const card = {
+            ...payments[0],
+            id: 'card',
+            config: {
+                ...payments[0].config,
+                displayName: 'Card',
+            },
+        };
+
+        const configWithGroupingExperiment = {
+            ...checkoutSettings,
+            storeConfig: {
+                ...checkoutSettings.storeConfig,
+                checkoutSettings: {
+                    ...checkoutSettings.storeConfig.checkoutSettings,
+                    features: {
+                        ...checkoutSettings.storeConfig.checkoutSettings.features,
+                        'PAYMENTS-5142.payment_method_grouping': true,
+                    },
+                },
+            },
+        };
+
+        checkout.setRequestHandler(rest.get(
+            '/api/storefront/payments',
+            (_, res, ctx) => res(
+                ctx.json([card, facilypay6, facilypay3]),
+            )));
+
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+            config: configWithGroupingExperiment,
+        });
+
+        render(<CheckoutTest {...defaultProps} />);
+
+        await checkout.waitForPaymentStep();
+
+        expect(screen.getByRole('radio', { name: 'Oney' })).toBeInTheDocument();
+        expect(screen.queryByRole('radio', { name: '3x Oney' })).not.toBeInTheDocument();
+        expect(screen.queryByRole('radio', { name: '6x Oney' })).not.toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: 'Card' })).toBeInTheDocument();
+    });
+
+    it('does not group prefixed payment methods when PAYMENTS-5142 experiment is disabled', async () => {
+        const facilypay3 = {
+            ...payments[0],
+            id: 'facilypay_3',
+            config: {
+                ...payments[0].config,
+                displayName: '3x Oney',
+            },
+        };
+        const facilypay6 = {
+            ...payments[0],
+            id: 'facilypay_6',
+            config: {
+                ...payments[0].config,
+                displayName: '6x Oney',
+            },
+        };
+
+        const configWithoutGroupingExperiment = {
+            ...checkoutSettings,
+            storeConfig: {
+                ...checkoutSettings.storeConfig,
+                checkoutSettings: {
+                    ...checkoutSettings.storeConfig.checkoutSettings,
+                    features: {
+                        ...checkoutSettings.storeConfig.checkoutSettings.features,
+                        'PAYMENTS-5142.payment_method_grouping': false,
+                    },
+                },
+            },
+        };
+
+        checkout.setRequestHandler(rest.get(
+            '/api/storefront/payments',
+            (_, res, ctx) => res(
+                ctx.json([facilypay6, facilypay3]),
+            )));
+
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+            config: configWithoutGroupingExperiment,
+        });
+
+        render(<CheckoutTest {...defaultProps} />);
+
+        await checkout.waitForPaymentStep();
+
+        expect(screen.getByRole('radio', { name: '3x Oney' })).toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: '6x Oney' })).toBeInTheDocument();
+        expect(screen.queryByRole('radio', { name: 'Oney' })).not.toBeInTheDocument();
+    });
+
+    it('does not group payment methods when no configured prefix matches', async () => {
+        const installments3 = {
+            ...payments[0],
+            id: 'installments_3',
+            config: {
+                ...payments[0].config,
+                displayName: '3x Installments',
+            },
+        };
+        const installments6 = {
+            ...payments[0],
+            id: 'installments_6',
+            config: {
+                ...payments[0].config,
+                displayName: '6x Installments',
+            },
+        };
+
+        checkout.setRequestHandler(rest.get(
+            '/api/storefront/payments',
+            (_, res, ctx) => res(
+                ctx.json([installments3, installments6]),
+            )));
+
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
+
+        render(<CheckoutTest {...defaultProps} />);
+
+        await checkout.waitForPaymentStep();
+
+        expect(screen.getByRole('radio', { name: '3x Installments' })).toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: '6x Installments' })).toBeInTheDocument();
     });
 
     it('does not render payment form if there are no methods', async () => {
