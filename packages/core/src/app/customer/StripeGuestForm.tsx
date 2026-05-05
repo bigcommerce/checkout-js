@@ -6,12 +6,12 @@ import { object } from 'yup';
 
 import { getAppliedStyles } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { Button, ButtonVariant, Fieldset, Form } from '@bigcommerce/checkout/ui';
+import { BasicFormField, Button, ButtonVariant, Fieldset, Form } from '@bigcommerce/checkout/ui';
 import { useThemeContext } from '@bigcommerce/checkout/contexts';
 
 import type CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import { getPrivacyPolicyValidationSchema, PrivacyPolicyField } from '../privacyPolicy';
-import { BasicFormField, Legend } from '../ui/form';
+import { Legend } from '../ui/form';
 
 import { type GuestFormValues } from './GuestForm';
 import SubscribeField from './SubscribeField';

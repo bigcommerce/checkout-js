@@ -50,6 +50,7 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     const { themeV2 } = useThemeContext();
     const methodSelector = `${method.gateway}-${method.id}`;
     const containerId = `${methodSelector}-component-field`;
+    const currencySelectorContainerId = `${methodSelector}-provider-section-on-top-of-payments-list`;
     const paymentContext = paymentForm;
 
     useEffect(() => {
@@ -121,10 +122,11 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                 integrations: [createStripeOCSPaymentStrategy, createStripeCSPaymentStrategy],
                 stripeocs: {
                     containerId,
+                    currencySelectorContainerId,
                     layout: {
                         type: isCustomChecklistItem ? 'accordion' : 'auto',
                         defaultCollapsed: selectedItemId !== methodSelector,
-                        radios: true,
+                        radios: 'always',
                         linkInAccordion: true,
                         spacedAccordionItems: !!themeV2,
                         visibleAccordionItemsCount: 0,
@@ -143,6 +145,7 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         },
         [
             containerId,
+            currencySelectorContainerId,
             selectedItemId,
             methodSelector,
             isCustomChecklistItem,
@@ -170,6 +173,12 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     }
 
     const renderCustomOCSSectionStyles = () => {
+        const currencySelectorStyles = `
+            #${currencySelectorContainerId} {
+                margin-bottom: 20px;
+            }
+        `;
+
         return themeV2 ? (
             <style>
                 {`
@@ -177,6 +186,7 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                         border: none;
                     }
                 `}
+                {currencySelectorStyles}
             </style>
         ) : (
             <style>
@@ -188,6 +198,7 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                         margin-bottom: -1px;
                     }
                 `}
+                {currencySelectorStyles}
             </style>
         );
     };

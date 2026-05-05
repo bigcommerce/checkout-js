@@ -30,6 +30,7 @@ package-lock.json @bigcommerce/team-checkout @bigcommerce/team-integrations @big
 /packages/squarev2-integration @bigcommerce/team-integrations
 /packages/td-bank-integration @bigcommerce/team-integrations
 /packages/stripe-integration @bigcommerce/team-integrations
+/packages/stripe-utils @bigcommerce/team-integrations
 /packages/klarna-integration @bigcommerce/team-integrations
 /packages/amazon-pay-v2-integration @bigcommerce/team-integrations
 /packages/moneris-integration @bigcommerce/team-integrations
