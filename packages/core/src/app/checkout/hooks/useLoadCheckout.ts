@@ -8,6 +8,7 @@ import { yieldToMain } from '../../common/utility';
 export const useLoadCheckout = (checkoutId: string, initialState?: CheckoutInitialState): {isLoadingCheckout: boolean} => {
     const { checkoutService, checkoutState: { data } } = useCheckout();
     const [ isLoadingCheckout, setIsLoadingCheckout ] = useState(!data.getCheckout());
+    const [ , setLoadError ] = useState<Error | null>(null);
     const { extensionService } = useExtensions();
 
     const fetchData = async () => {
@@ -45,9 +46,16 @@ export const useLoadCheckout = (checkoutId: string, initialState?: CheckoutIniti
     };
 
     const hydrateInitialState = async (initialState: CheckoutInitialState) => {
-        await yieldToMain();
-        await checkoutService.hydrateInitialState(initialState);
-        setIsLoadingCheckout(false);
+        // yieldToMain() uses window.scheduler.yield() when available (Chromium).
+        // Under React 18 concurrent rendering the scheduler can defer this
+        // indefinitely in automated/test environments, so wrap the state update
+        // in a try/finally so it always fires even if the yield is slow.
+        try {
+            await yieldToMain();
+        } finally {
+            await checkoutService.hydrateInitialState(initialState);
+            setIsLoadingCheckout(false);
+        }
     }
 
     useEffect(() => {
@@ -59,8 +67,11 @@ export const useLoadCheckout = (checkoutId: string, initialState?: CheckoutIniti
             // If the initial data has not been preloaded from the server, we need to make API calls to fetch it.
             fetchDataWithRetry()
                 .then(() => setIsLoadingCheckout(false))
-                .catch((error) => {
-                    throw error;
+                .catch((error: Error) => {
+                    // Surface the error through React's error boundary mechanism
+                    // instead of throwing an unhandled rejection (which crashes the
+                    // page under React 18's createRoot / concurrent rendering).
+                    setLoadError(() => { throw error; });
                 });
         } else {
             hydrateInitialState(initialState);
