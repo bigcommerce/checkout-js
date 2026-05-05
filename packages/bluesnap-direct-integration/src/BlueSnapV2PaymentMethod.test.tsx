@@ -121,7 +121,7 @@ describe('when using BlueSnapV2 payment', () => {
         expect(screen.getByTestId('my-iframe')).toBeInTheDocument();
     });
 
-    it('renders modal but does not append bluesnap payment page because is empty', async () => {
+    it('renders modal but does not append bluesnap payment page because is empty', () => {
         render(<BlueSnapV2PaymentMethodTest />);
 
         const initializeOptions = initializePayment.mock.calls[0][0];
