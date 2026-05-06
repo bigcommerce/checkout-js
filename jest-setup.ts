@@ -55,8 +55,8 @@ beforeAll(() => {
     console.error = (...args: unknown[]) => {
         const message = args.map(String).join();
 
-        // Suppress known third-party warnings unrelated to our code
-        if (/Formik|React.act/.test(message)) {
+        // Suppress known third-party warnings
+        if (/Formik|React.act|findDOMNode/.test(message)) {
             return;
         }
 
