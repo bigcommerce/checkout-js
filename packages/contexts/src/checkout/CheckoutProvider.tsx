@@ -7,6 +7,7 @@ import React, {
     useRef,
     useState,
 } from 'react';
+import { flushSync } from 'react-dom';
 
 import { CapabilitiesProvider } from '../capabilities';
 import CheckoutContext from './CheckoutContext';
@@ -31,8 +32,14 @@ const CheckoutProviderV2: React.FC<CheckoutProviderProps> = ({
     const unsubscribeRef = useRef<(() => void) | undefined>();
 
     useEffect(() => {
+        // flushSync ensures checkout service state updates are applied synchronously,
+        // so stepsRef.current in CheckoutPage is up-to-date before any async
+        // continuation (e.g. onContinueAsGuest) reads from it. Without this, React 18
+        // Concurrent Mode batches the setState and defers the re-render, causing
+        // navigateToNextIncompleteStep to read stale step statuses and navigate to the
+        // wrong step (Customer instead of Shipping) after guest checkout.
         unsubscribeRef.current = checkoutService.subscribe((newCheckoutState) =>
-            setCheckoutState(newCheckoutState),
+            flushSync(() => setCheckoutState(newCheckoutState)),
         );
 
         return () => {
@@ -80,8 +87,9 @@ const CheckoutProviderV1: React.FC<CheckoutProviderProps> = ({
     );
 
     useEffect(() => {
+        // See comment in CheckoutProviderV2 for why flushSync is needed here.
         unsubscribeRef.current = checkoutService.subscribe((newCheckoutState) =>
-            setCheckoutState(newCheckoutState),
+            flushSync(() => setCheckoutState(newCheckoutState)),
         );
 
         return () => {
