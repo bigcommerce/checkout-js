@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.788.0](https://github.com/bigcommerce/checkout-js/compare/v1.787.0...v1.788.0) (2026-05-07)
+
+
+### Features
+
+* **payment:** PAYPAL-6267 replaced paypal logo cdn url ([9155b7d](https://github.com/bigcommerce/checkout-js/commit/9155b7dce0eaae9a5858ceff31c88c738ba726b9))
+
 ## [1.787.0](https://github.com/bigcommerce/checkout-js/compare/v1.786.1...v1.787.0) (2026-05-05)
 
 
