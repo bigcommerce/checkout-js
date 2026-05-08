@@ -3,10 +3,9 @@ import React, { type FunctionComponent, memo, useCallback, useMemo } from 'react
 
 import { parseAnchor } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedHtml, TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { Fieldset, ModalLink, TextArea } from '@bigcommerce/checkout/ui';
+import { Fieldset, ModalHeader, ModalLink, TextArea } from '@bigcommerce/checkout/ui';
 
 import { CheckboxFormField, FormField, Legend } from '../ui/form';
-import { ModalHeader } from '../ui/modal';
 import { MultiLineText } from '../ui/text';
 
 export enum TermsConditionsType {

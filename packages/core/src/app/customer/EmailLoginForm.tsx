@@ -12,9 +12,7 @@ import {
     withLanguage,
     type WithLanguageProps,
 } from '@bigcommerce/checkout/locale';
-import { Alert, AlertType, Button, ButtonVariant, Form, LoadingSpinner, Modal } from '@bigcommerce/checkout/ui';
-
-import { ModalHeader } from '../ui/modal';
+import { Alert, AlertType, Button, ButtonVariant, Form, LoadingSpinner, Modal, ModalHeader } from '@bigcommerce/checkout/ui';
 
 import EmailField from './EmailField';
 import getEmailValidationSchema from './getEmailValidationSchema';
