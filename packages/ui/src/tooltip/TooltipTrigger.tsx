@@ -1,18 +1,18 @@
 import { type Placement } from '@popperjs/core';
-import React, { type ReactElement, type ReactEventHandler, type ReactNode, useState } from 'react';
+import React, { type ReactEventHandler, type ReactNode, useState } from 'react';
 import { Manager, Popper, Reference } from 'react-popper';
 
-export interface TooltipTriggerProps {
+interface TooltipTriggerProps {
     placement?: Placement;
     tooltip: ReactNode;
     children?: ReactNode;
 }
 
-const TooltipTrigger = ({
+const TooltipTrigger: React.FC<TooltipTriggerProps> = ({
     children,
     placement = 'bottom',
     tooltip,
-}: TooltipTriggerProps): ReactElement => {
+}) => {
     const [shouldShow, setShouldShow] = useState(false);
 
     const handleShow: ReactEventHandler<HTMLElement> = () => {
