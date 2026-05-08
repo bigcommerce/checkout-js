@@ -1,12 +1,12 @@
 import userEvent from '@testing-library/user-event';
-import React from 'react';
+import React, { type FunctionComponent, type PropsWithChildren } from 'react';
 
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import Toggle, { type ToggleProps } from './Toggle';
+import { Toggle } from './Toggle';
 
 describe('Toggle', () => {
-    let ToggleTest: FunctionComponent<ToggleProps>;
+    let ToggleTest: FunctionComponent<PropsWithChildren>;
 
     beforeEach(() => {
         ToggleTest = () => (
@@ -14,7 +14,9 @@ describe('Toggle', () => {
                 {({ isOpen, toggle }) => (
                     <>
                         {isOpen && <span>foo</span>}
-                        <a onClick={toggle}>bar</a>
+                        <a href="#" onClick={toggle}>
+                            bar
+                        </a>
                     </>
                 )}
             </Toggle>

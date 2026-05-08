@@ -113,3 +113,4 @@ export {
 } from './modal';
 export { TooltipTrigger } from './tooltip';
 export { MultiLineText } from './text';
+export { Toggle } from './toggle';
