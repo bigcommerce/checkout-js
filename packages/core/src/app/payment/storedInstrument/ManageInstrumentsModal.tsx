@@ -4,10 +4,10 @@ import React, { Component, type ReactNode } from 'react';
 
 import { type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { Button, ButtonSize, ButtonVariant } from '@bigcommerce/checkout/ui';
+import { Button, ButtonSize, ButtonVariant, Modal } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../../checkout';
-import { Modal, ModalHeader } from '../../ui/modal';
+import { ModalHeader } from '../../ui/modal';
 
 import isAccountInstrument from './isAccountInstrument';
 import isBankAccountInstrument from './isBankAccountInstrument';

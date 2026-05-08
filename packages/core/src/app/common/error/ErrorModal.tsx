@@ -3,9 +3,9 @@ import { noop } from 'lodash';
 import React, { type ReactElement, type ReactNode, type SyntheticEvent } from 'react';
 
 import { TranslatedHtml, TranslatedString } from '@bigcommerce/checkout/locale';
-import { Button, ButtonSize, IconError, IconSize } from '@bigcommerce/checkout/ui';
+import { Button, ButtonSize, IconError, IconSize, Modal } from '@bigcommerce/checkout/ui';
 
-import { Modal, ModalHeader } from '../../ui/modal';
+import { ModalHeader } from '../../ui/modal';
 
 import computeErrorCode from './computeErrorCode';
 import ErrorCode from './ErrorCode';

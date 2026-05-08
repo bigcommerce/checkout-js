@@ -7,11 +7,11 @@ import { number, object } from "yup";
 import { useThemeContext } from "@bigcommerce/checkout/contexts";
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { TranslatedString, withLanguage, type WithLanguageProps } from "@bigcommerce/checkout/locale";
-import { Alert, AlertType, Button, ButtonVariant, Form } from "@bigcommerce/checkout/ui";
+import { Alert, AlertType, Button, ButtonVariant, Form, Modal } from "@bigcommerce/checkout/ui";
 
 import { getAddressContent } from "../address/SingleLineStaticAddress";
 import { withFormikExtended } from "../common/form";
-import { Modal, ModalHeader } from "../ui/modal";
+import { ModalHeader } from "../ui/modal";
 
 import AllocatedItemsList from "./AllocatedItemsList";
 import { ItemSplitTooltip } from "./ItemSplitTooltip";
