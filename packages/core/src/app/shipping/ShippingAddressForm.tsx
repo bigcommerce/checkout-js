@@ -6,7 +6,7 @@ import {
 import React, { type ReactElement } from 'react';
 
 import { useCapabilities, useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
-import { LoadingOverlay } from '@bigcommerce/checkout/ui';
+import { Fieldset, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import {
     AddressForm,
@@ -17,7 +17,6 @@ import {
     reorderAddressFormFields
 } from '../address';
 import { connectFormik, type ConnectFormikProps } from '../common/form';
-import { Fieldset } from '../ui/form';
 
 import { type SingleShippingFormValues } from './SingleShippingForm';
 

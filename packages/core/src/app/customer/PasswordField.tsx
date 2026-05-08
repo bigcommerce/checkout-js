@@ -2,10 +2,9 @@ import { type FieldProps } from 'formik';
 import React, { type FunctionComponent, memo, useCallback, useMemo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { IconEye, IconEyeSlash } from '@bigcommerce/checkout/ui';
+import { IconEye, IconEyeSlash, Label, TextInput } from '@bigcommerce/checkout/ui';
 
-import { FormField, TextInput } from '../ui/form';
-import Label from '../ui/form/Label';
+import { FormField } from '../ui/form';
 import { Toggle } from '../ui/toggle';
 
 interface WithFloatingLabel {

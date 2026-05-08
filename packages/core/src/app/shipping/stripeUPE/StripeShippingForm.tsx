@@ -12,6 +12,7 @@ import { lazy, object } from 'yup';
 
 import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { Fieldset, Form } from '@bigcommerce/checkout/ui';
 
 import {
   type AddressFormValues,
@@ -23,7 +24,6 @@ import type CheckoutStepStatus from '../../checkout/CheckoutStepStatus';
 import { withFormikExtended } from '../../common/form';
 import { EMPTY_ARRAY } from '../../common/utility';
 import { getCustomFormFieldsValidationSchema } from '../../formFields';
-import { Fieldset, Form } from '../../ui/form';
 import BillingSameAsShippingField from '../BillingSameAsShippingField';
 import hasSelectedShippingOptions from '../hasSelectedShippingOptions';
 import ShippingFormFooter from '../ShippingFormFooter';

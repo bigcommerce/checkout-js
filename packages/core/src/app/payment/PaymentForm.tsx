@@ -8,11 +8,11 @@ import { Extension } from '@bigcommerce/checkout/checkout-extension';
 import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
-import { FormContext } from '@bigcommerce/checkout/ui';
+import { Fieldset, Form, FormContext } from '@bigcommerce/checkout/ui';
 
 import { isExperimentEnabled } from '../common/utility';
 import { TermsConditions } from '../termsConditions';
-import { Fieldset, Form, Legend } from '../ui/form';
+import { Legend } from '../ui/form';
 
 import getPaymentValidationSchema from './getPaymentValidationSchema';
 import { NoPaymentMethods } from './NoPaymentMethods';

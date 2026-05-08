@@ -1,8 +1,9 @@
 import React, { type FunctionComponent, memo } from 'react';
 
 import { TranslatedHtml } from '@bigcommerce/checkout/locale';
+import { Fieldset } from '@bigcommerce/checkout/ui';
 
-import { CheckboxFormField, Fieldset } from '../ui/form';
+import { CheckboxFormField } from '../ui/form';
 
 const PrivacyPolicyCheckboxFieldLink: FunctionComponent<{ url: string }> = ({ url }) => (
     <CheckboxFormField
