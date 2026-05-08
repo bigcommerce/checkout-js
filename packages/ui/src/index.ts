@@ -111,6 +111,6 @@ export {
     ModalTrigger,
     ModalTriggerModalProps,
 } from './modal';
-export { TooltipTrigger } from './tooltip';
+export { Tooltip, TooltipTrigger } from './tooltip';
 export { MultiLineText } from './text';
 export { Toggle } from './toggle';
