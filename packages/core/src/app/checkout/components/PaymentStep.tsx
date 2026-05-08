@@ -35,6 +35,7 @@ export interface PaymentStepProps extends PaymentProps {
 const PaymentStep = ({
     step,
     cart,
+    capabilities,
     consignments,
     errorLogger,
     onEdit,
@@ -56,6 +57,7 @@ const PaymentStep = ({
     >
         <LazyContainer loadingSkeleton={<ChecklistSkeleton />}>
             <Payment
+                capabilities={capabilities}
                 checkEmbeddedSupport={checkEmbeddedSupport}
                 errorLogger={errorLogger}
                 isEmbedded={isEmbedded()}

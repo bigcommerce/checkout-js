@@ -1,8 +1,8 @@
 import { compact, find } from 'lodash';
 
-import { PaymentMethodProviderType } from '../paymentMethod';
+import { type PaymentMethodFilter } from '@bigcommerce/checkout/payment-integration-api';
 
-import { type PaymentMethodFilter } from './types';
+import { PaymentMethodProviderType } from '../paymentMethod';
 
 export const selectedHostedPaymentFilter: PaymentMethodFilter = {
     name: 'selectedHostedPayment',

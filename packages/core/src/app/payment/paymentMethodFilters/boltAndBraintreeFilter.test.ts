@@ -1,18 +1,21 @@
 import { type PaymentMethod } from '@bigcommerce/checkout-sdk';
 
+import { defaultCapabilities } from '@bigcommerce/checkout/contexts';
+import { type PaymentMethodFilterContext } from '@bigcommerce/checkout/payment-integration-api';
+
 import { getCheckout } from '../../checkout/checkouts.mock';
 import { getStoreConfig } from '../../config/config.mock';
 import { getPaymentMethod } from '../payment-methods.mock';
 import { PaymentMethodId } from '../paymentMethod';
 
 import { boltAndBraintreeFilter } from './boltAndBraintreeFilter';
-import { type PaymentMethodFilterContext } from './types';
 
 describe('boltAndBraintreeFilter', () => {
     let context: PaymentMethodFilterContext;
 
     beforeEach(() => {
         context = {
+            capabilities: defaultCapabilities,
             checkout: getCheckout(),
             checkoutSettings: getStoreConfig().checkoutSettings,
             getPaymentMethod: jest.fn(),

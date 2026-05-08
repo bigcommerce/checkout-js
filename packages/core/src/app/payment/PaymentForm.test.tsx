@@ -23,6 +23,12 @@ import PaymentForm, { type PaymentFormProps } from './PaymentForm';
 
 jest.useFakeTimers({ legacyFakeTimers: true });
 
+jest.mock('./ProvidersSectionOnTopOfPaymentsList', () => ({
+    ProvidersSectionOnTopOfPaymentsList: jest.fn(() =>
+        <div data-test="providers-section-on-top-of-payments-list" />
+    ),
+}));
+
 describe('PaymentForm', () => {
     let checkoutService: CheckoutService;
     let extensionService: ExtensionServiceInterface;
@@ -81,6 +87,7 @@ describe('PaymentForm', () => {
         expect(screen.getAllByRole('radio')).toHaveLength(2);
         expect(screen.getAllByText('Authorizenet')).toHaveLength(3);  // 2 radio buttons + 1 title for a11y (hidden)
         expect(screen.getByText(localeContext.language.translate('payment.place_order_action'))).toBeInTheDocument();
+        expect(screen.getByTestId('providers-section-on-top-of-payments-list')).toBeInTheDocument();
     });
 
     it('renders terms and conditions field if copy is provided', () => {

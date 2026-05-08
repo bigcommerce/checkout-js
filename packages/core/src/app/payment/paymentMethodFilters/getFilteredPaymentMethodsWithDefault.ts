@@ -1,4 +1,5 @@
 import {
+    type Capabilities,
     type Checkout,
     type CheckoutSettings,
     type PaymentMethod,
@@ -6,11 +7,14 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import { find } from 'lodash';
 
+import { isExperimentEnabled } from '../../common/utility';
+import { GROUPED_METHOD_ID_PREFIXES, groupPaymentMethodsByPrefix } from '../groupPaymentMethodsByPrefix';
 import { PaymentMethodProviderType } from '../paymentMethod';
 
 import { applyPaymentMethodFilters } from './applyPaymentMethodFilters';
 
 export interface PaymentMethodSelectionProps {
+    capabilities: Capabilities;
     checkout: Checkout;
     checkoutSettings: CheckoutSettings; // this is for passing experiment flags, we don't have any experiment in filters currently.
     methods: PaymentMethod[];
@@ -48,13 +52,29 @@ export const getFilteredPaymentMethodsWithDefault = ({
     getPaymentMethod,
     methods,
     paymentProviderCustomer,
+    capabilities,
 }: PaymentMethodSelectionProps): DefaultPaymentMethodResult => {
-    const filteredMethods = applyPaymentMethodFilters(methods, {
+    let filteredMethods = applyPaymentMethodFilters(methods, {
         checkout,
         checkoutSettings,
         getPaymentMethod,
         paymentProviderCustomer,
+        capabilities,
     });
+
+    const shouldGroupPaymentMethodsByPrefix = filteredMethods.some((method) =>
+        GROUPED_METHOD_ID_PREFIXES.some((prefix) => method.id.startsWith(prefix)),
+    );
+
+    if (
+        shouldGroupPaymentMethodsByPrefix &&
+        isExperimentEnabled(checkoutSettings, 'PAYMENTS-5142.payment_method_grouping', false)
+    ) {
+        filteredMethods = GROUPED_METHOD_ID_PREFIXES.reduce(
+            (acc, prefix) => groupPaymentMethodsByPrefix(acc, prefix),
+            filteredMethods,
+        );
+    }
 
     return {
         defaultMethod: selectDefaultMethod(filteredMethods, checkout),

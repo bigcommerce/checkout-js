@@ -1,9 +1,9 @@
 import {
+    type Capabilities,
     type Cart,
     type CartStockPositionsChangedError,
     type CheckoutSelectors,
     type CheckoutService,
-    type CheckoutSettings,
     type Consignment,
     type OrderFinalizeOptions,
     type OrderRequestBody,
@@ -59,6 +59,7 @@ import {
 import { getFilteredPaymentMethodsWithDefault } from './paymentMethodFilters';
 
 export interface PaymentProps {
+    capabilities: Capabilities;
     errorLogger: ErrorLogger;
     isEmbedded?: boolean;
     isUsingMultiShipping?: boolean;
@@ -478,7 +479,6 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
             const checkout = updatedState.data.getCheckout();
             const config = updatedState.data.getConfig();
             const methods = updatedState.data.getPaymentMethods() || EMPTY_ARRAY;
-
             const defaultMethod = (checkout && config)
                 ? getFilteredPaymentMethodsWithDefault({
                       checkout,
@@ -486,6 +486,7 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
                       getPaymentMethod: updatedState.data.getPaymentMethod,
                       methods,
                       paymentProviderCustomer: updatedState.data.getPaymentProviderCustomer(),
+                      capabilities: props.capabilities,
                   }).defaultMethod
                 : undefined;
             const selectedMethod = state.selectedMethod || defaultMethod;
@@ -644,10 +645,10 @@ const Payment= (props: PaymentProps & WithCheckoutPaymentProps & WithLanguagePro
     );
 }
 
-export function mapToPaymentProps({
-        checkoutService,
-        checkoutState,
-}: CheckoutContextProps): WithCheckoutPaymentProps | null {
+export function mapToPaymentProps(
+    { checkoutService, checkoutState }: CheckoutContextProps,
+    { capabilities } : PaymentProps,
+): WithCheckoutPaymentProps | null {
     const {
         data: {
             getCart,
@@ -678,13 +679,14 @@ export function mapToPaymentProps({
         return null;
     }
 
+    const checkoutSettings = config.checkoutSettings;
     const {
         enableTermsAndConditions: isTermsConditionsEnabled,
         features,
         orderTermsAndConditionsType: termsConditionsType,
         orderTermsAndConditions: termsCondtitionsText,
         orderTermsAndConditionsLink: termsCondtitionsUrl,
-    } = config.checkoutSettings as CheckoutSettings & { orderTermsAndConditionsLocation: string };
+    } = checkoutSettings;
 
     const isTermsConditionsRequired = isTermsConditionsEnabled;
     const { isStoreCreditApplied } = checkout;
@@ -694,6 +696,7 @@ export function mapToPaymentProps({
         getPaymentMethod,
         methods,
         paymentProviderCustomer,
+        capabilities,
     });
 
     return {
@@ -717,7 +720,7 @@ export function mapToPaymentProps({
         shouldExecuteSpamCheck: checkout.shouldExecuteSpamCheck,
         shouldLocaliseErrorMessages:
             features['PAYMENTS-6799.localise_checkout_payment_error_messages'],
-        shouldShowSubmitPaymentButton: isExperimentEnabled(config.checkoutSettings, 'CHECKOUT-9729.show_submit_button_when_payment_not_required', false),
+        shouldShowSubmitPaymentButton: isExperimentEnabled(checkoutSettings, 'CHECKOUT-9729.show_submit_button_when_payment_not_required', false),
         submitOrder: checkoutService.submitOrder,
         submitOrderError: getSubmitOrderError(),
         checkoutServiceSubscribe: checkoutService.subscribe,

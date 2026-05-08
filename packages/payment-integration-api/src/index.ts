@@ -26,3 +26,4 @@ export { CaptureMessageComponent } from './CaptureMessageComponent';
 // export types separately
 export type { CountryData } from './CountryData';
 export type { default as CreditCardFieldsetValues } from './CreditCardFieldsetValues';
+export type { PaymentMethodFilter, PaymentMethodFilterContext } from './PaymentMethodFilter';

@@ -1,10 +1,9 @@
 import React, { type FunctionComponent } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { Alert, AlertType, Button, ButtonVariant } from '@bigcommerce/checkout/ui';
+import { Alert, AlertType, Button, ButtonVariant, Form } from '@bigcommerce/checkout/ui';
 
 import { OrderComments } from '../orderComments';
-import { Form } from '../ui/form';
 
 export interface ShippingFormFooterProps {
     shouldShowOrderComments: boolean;

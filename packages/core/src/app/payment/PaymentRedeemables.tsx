@@ -2,11 +2,12 @@ import React, { type FunctionComponent, memo } from 'react';
 
 import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { Fieldset } from '@bigcommerce/checkout/ui';
 
 import { mapToRedeemableProps, Redeemable, type RedeemableProps } from '../cart';
 import { withCheckout } from '../checkout';
 import { isExperimentEnabled } from '../common/utility';
-import { Fieldset, Legend } from '../ui/form';
+import { Legend } from '../ui/form';
 
 const PaymentRedeemables: FunctionComponent<RedeemableProps> = (redeemableProps) => {
     const { checkoutState } = useCheckout();
