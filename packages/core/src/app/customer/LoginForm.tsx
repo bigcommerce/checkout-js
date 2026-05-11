@@ -12,9 +12,7 @@ import {
     withLanguage,
     type WithLanguageProps,
 } from '@bigcommerce/checkout/locale';
-import { Alert, AlertType, Button, ButtonVariant, Fieldset, Form } from '@bigcommerce/checkout/ui';
-
-import { Legend } from '../ui/form';
+import { Alert, AlertType, Button, ButtonVariant, Fieldset, Form, Legend } from '@bigcommerce/checkout/ui';
 
 import CustomerViewType from './CustomerViewType';
 import EmailField from './EmailField';

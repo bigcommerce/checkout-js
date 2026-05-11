@@ -3,9 +3,8 @@ import { type FieldProps } from 'formik';
 import React, { type FunctionComponent, memo, useCallback } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { BasicFormField, Fieldset } from '@bigcommerce/checkout/ui';
+import { BasicFormField, Fieldset, Legend } from '@bigcommerce/checkout/ui';
 
-import { Legend } from '../../ui/form';
 import { ModalTrigger, type ModalTriggerModalProps } from '../../ui/modal';
 
 import InstrumentSelect from './InstrumentSelect';
