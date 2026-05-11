@@ -1,9 +1,11 @@
 import { type PaymentMethod } from '@bigcommerce/checkout-sdk';
 
+import { defaultCapabilities } from '@bigcommerce/checkout/contexts';
+
 import { getCheckout, getCheckoutPayment } from '../../checkout/checkouts.mock';
 import { getStoreConfig } from '../../config/config.mock';
 import { getPaymentMethod } from '../payment-methods.mock';
-import { PaymentMethodId } from '../paymentMethod';
+import { PaymentMethodId, PaymentMethodProviderType } from '../paymentMethod';
 
 import { getFilteredPaymentMethodsWithDefault } from './getFilteredPaymentMethodsWithDefault';
 
@@ -20,6 +22,7 @@ describe('getFilteredPaymentMethodsWithDefault', () => {
         const authorizenet = buildMethod({ id: 'authorizenet' });
 
         const { filteredMethods } = getFilteredPaymentMethodsWithDefault({
+            capabilities: defaultCapabilities,
             checkout: getCheckout(),
             checkoutSettings,
             getPaymentMethod: jest.fn(),
@@ -34,6 +37,7 @@ describe('getFilteredPaymentMethodsWithDefault', () => {
         const second = buildMethod({ id: 'paypalexpress' });
 
         const { defaultMethod } = getFilteredPaymentMethodsWithDefault({
+            capabilities: defaultCapabilities,
             checkout: getCheckout(),
             checkoutSettings,
             getPaymentMethod: jest.fn(),
@@ -51,6 +55,7 @@ describe('getFilteredPaymentMethodsWithDefault', () => {
         });
 
         const { defaultMethod } = getFilteredPaymentMethodsWithDefault({
+            capabilities: defaultCapabilities,
             checkout: getCheckout(),
             checkoutSettings,
             getPaymentMethod: jest.fn(),
@@ -68,6 +73,7 @@ describe('getFilteredPaymentMethodsWithDefault', () => {
         };
 
         const { defaultMethod, filteredMethods } = getFilteredPaymentMethodsWithDefault({
+            capabilities: defaultCapabilities,
             checkout,
             checkoutSettings,
             getPaymentMethod: jest.fn().mockReturnValue(amazon),
@@ -90,6 +96,7 @@ describe('getFilteredPaymentMethodsWithDefault', () => {
         };
 
         const { defaultMethod } = getFilteredPaymentMethodsWithDefault({
+            capabilities: defaultCapabilities,
             checkout,
             checkoutSettings,
             getPaymentMethod: jest.fn().mockReturnValue(amazon),
@@ -107,6 +114,7 @@ describe('getFilteredPaymentMethodsWithDefault', () => {
         const other = buildMethod({ id: 'authorizenet' });
 
         const { defaultMethod, filteredMethods } = getFilteredPaymentMethodsWithDefault({
+            capabilities: defaultCapabilities,
             checkout: getCheckout(),
             checkoutSettings,
             getPaymentMethod: jest.fn(),
@@ -122,6 +130,7 @@ describe('getFilteredPaymentMethodsWithDefault', () => {
         const braintreeLocal = buildMethod({ id: PaymentMethodId.BraintreeLocalPaymentMethod });
 
         const { defaultMethod, filteredMethods } = getFilteredPaymentMethodsWithDefault({
+            capabilities: defaultCapabilities,
             checkout: getCheckout(),
             checkoutSettings,
             getPaymentMethod: jest.fn(),
@@ -130,5 +139,96 @@ describe('getFilteredPaymentMethodsWithDefault', () => {
 
         expect(filteredMethods).toEqual([]);
         expect(defaultMethod).toBeUndefined();
+    });
+
+    it('excludes PPSDK methods when capabilities.payment.excludePPSDK is true', () => {
+        const ppsdk = buildMethod({
+            id: 'ppsdk-provider',
+            type: PaymentMethodProviderType.PPSDK,
+        });
+        const authorizenet = buildMethod({ id: 'authorizenet' });
+
+        const { defaultMethod, filteredMethods } = getFilteredPaymentMethodsWithDefault({
+            capabilities: {
+                ...defaultCapabilities,
+                payment: { ...defaultCapabilities.payment, excludePPSDK: true },
+            },
+            checkout: getCheckout(),
+            checkoutSettings,
+            getPaymentMethod: jest.fn(),
+            methods: [ppsdk, authorizenet],
+        });
+
+        expect(filteredMethods).toEqual([authorizenet]);
+        expect(defaultMethod).toEqual(authorizenet);
+    });
+
+    it('groups facilypay_* methods when PAYMENTS-5142.payment_method_grouping is enabled', () => {
+        const facilypay3 = buildMethod({
+            id: 'facilypay_3',
+            config: { ...getPaymentMethod().config, displayName: '3x Oney' },
+        });
+        const facilypay6 = buildMethod({
+            id: 'facilypay_6',
+            config: { ...getPaymentMethod().config, displayName: '6x Oney' },
+        });
+        const card = buildMethod({
+            id: 'card',
+            config: { ...getPaymentMethod().config, displayName: 'Card' },
+        });
+        const checkoutSettingsWithGrouping = {
+            ...checkoutSettings,
+            features: {
+                ...checkoutSettings.features,
+                'PAYMENTS-5142.payment_method_grouping': true,
+            },
+        };
+
+        const { defaultMethod, filteredMethods } = getFilteredPaymentMethodsWithDefault({
+            capabilities: defaultCapabilities,
+            checkout: getCheckout(),
+            checkoutSettings: checkoutSettingsWithGrouping,
+            getPaymentMethod: jest.fn(),
+            methods: [card, facilypay6, facilypay3],
+        });
+
+        expect(filteredMethods.map((m) => m.id)).toEqual(['card', 'facilypay_3']);
+
+        const grouped = filteredMethods.find((m) => m.id === 'facilypay_3');
+
+        expect(grouped?.initializationData).toEqual(
+            expect.objectContaining({
+                groupedMethods: [facilypay3, facilypay6],
+            }),
+        );
+        expect(defaultMethod).toEqual(card);
+    });
+
+    it('does not group facilypay_* methods when PAYMENTS-5142.payment_method_grouping is disabled', () => {
+        const facilypay3 = buildMethod({
+            id: 'facilypay_3',
+            config: { ...getPaymentMethod().config, displayName: '3x Oney' },
+        });
+        const facilypay6 = buildMethod({
+            id: 'facilypay_6',
+            config: { ...getPaymentMethod().config, displayName: '6x Oney' },
+        });
+        const checkoutSettingsWithoutGrouping = {
+            ...checkoutSettings,
+            features: {
+                ...checkoutSettings.features,
+                'PAYMENTS-5142.payment_method_grouping': false,
+            },
+        };
+
+        const { filteredMethods } = getFilteredPaymentMethodsWithDefault({
+            capabilities: defaultCapabilities,
+            checkout: getCheckout(),
+            checkoutSettings: checkoutSettingsWithoutGrouping,
+            getPaymentMethod: jest.fn(),
+            methods: [facilypay6, facilypay3],
+        });
+
+        expect(filteredMethods).toEqual([facilypay6, facilypay3]);
     });
 });

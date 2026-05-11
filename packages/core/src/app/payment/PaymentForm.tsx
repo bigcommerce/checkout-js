@@ -8,11 +8,10 @@ import { Extension } from '@bigcommerce/checkout/checkout-extension';
 import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
-import { FormContext, Legend } from '@bigcommerce/checkout/ui';
+import { Fieldset, Form, FormContext, Legend } from '@bigcommerce/checkout/ui';
 
 import { isExperimentEnabled } from '../common/utility';
 import { TermsConditions } from '../termsConditions';
-import { Fieldset, Form } from '../ui/form';
 
 import getPaymentValidationSchema from './getPaymentValidationSchema';
 import { NoPaymentMethods } from './NoPaymentMethods';
@@ -26,6 +25,7 @@ import PaymentRedeemables from './PaymentRedeemables';
 import PaymentSubmitButton from './PaymentSubmitButton';
 import SpamProtectionField from './SpamProtectionField';
 import { StoreCreditField, StoreCreditOverlay } from './storeCredit';
+import { ProvidersSectionOnTopOfPaymentsList } from './ProvidersSectionOnTopOfPaymentsList';
 
 export interface PaymentFormProps {
     availableStoreCredit?: number;
@@ -253,6 +253,8 @@ const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProp
             {!isPaymentDataRequired() && <StoreCreditOverlay />}
 
             <Extension region={ExtensionRegion.PaymentPaymentMethodListBefore}/>
+
+            <ProvidersSectionOnTopOfPaymentsList methods={methods} />
 
             <PaymentMethodList
                 isEmbedded={isEmbedded}

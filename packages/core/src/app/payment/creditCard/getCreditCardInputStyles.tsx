@@ -3,9 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { getAppliedStyles } from '@bigcommerce/checkout/dom-utils';
-import { FormContext } from '@bigcommerce/checkout/ui';
-
-import { FormFieldContainer, TextInput } from '../../ui/form';
+import { FormContext, FormFieldContainer, TextInput } from '@bigcommerce/checkout/ui';
 
 export enum CreditCardInputStylesType {
     Default = 'default',

@@ -4,10 +4,9 @@ import React, { useCallback, useEffect, useRef } from 'react';
 
 import { useCheckout, useLocale } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { type AutocompleteItem, CheckboxFormField, DynamicFormField, DynamicFormFieldType } from '@bigcommerce/checkout/ui';
+import { type AutocompleteItem, CheckboxFormField, DynamicFormField, DynamicFormFieldType, Fieldset } from '@bigcommerce/checkout/ui';
 
 import { EMPTY_ARRAY, isFloatingLabelEnabled } from '../common/utility';
-import { Fieldset } from '../ui/form';
 
 import { type AddressFormProps, AUTOCOMPLETE, AUTOCOMPLETE_FIELD_NAME, LABEL, PLACEHOLDER } from './AddressFormType';
 import AddressType from './AddressType';

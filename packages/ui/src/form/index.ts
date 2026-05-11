@@ -1,12 +1,14 @@
 /* istanbul ignore file */
 export { BasicFormField } from './BasicFormField';
+export { Checklist, ChecklistContext } from './Checklist';
+export { ChecklistItem } from './ChecklistItem';
 export { DynamicFormField, DynamicFormFieldType, DynamicInput } from './DynamicFormField';
 export { CheckboxFormField } from './CheckboxFormField';
 export { CheckboxInput } from './CheckboxInput';
 export { Fieldset } from './Fieldset';
+export { Form } from './Form';
 export { FormField } from './FormField';
-export { FormFieldError } from './FormFieldError';
-export { Input } from './Input';
+export { Input, InputProps } from './Input';
 export { Legend } from './Legend';
 export { TextArea } from './TextArea';
 export { TextInput } from './TextInput';

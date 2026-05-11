@@ -1,6 +1,7 @@
+import { type PaymentMethodFilter } from '@bigcommerce/checkout/payment-integration-api';
+
 import { PaymentMethodId } from '../paymentMethod';
 
-import { type PaymentMethodFilter } from './types';
 
 const MULTI_SHIPPING_INCOMPATIBLE_METHOD_IDS: string[] = [PaymentMethodId.AmazonPay];
 

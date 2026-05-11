@@ -169,7 +169,7 @@ export function getPaymentMethodTitle(
                 logoUrl:
                     method.id === PaymentMethodId.BraintreeVenmo && method.logoUrl
                         ? method.logoUrl
-                        : cdnPath('/img/payment-providers/paypalpaymentsprouk.png'),
+                        : cdnPath('/img/payment-providers/paypal.svg'),
                 titleText: '',
                 subtitle: (props: PaymentMethodSubtitleProps): ReactNode => {
                     if (method.id === PaymentMethodId.BraintreePaypalCredit || method.id === PaymentMethodId.BraintreePaypal) {

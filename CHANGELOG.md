@@ -2,6 +2,48 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.788.2](https://github.com/bigcommerce/checkout-js/compare/v1.788.1...v1.788.2) (2026-05-11)
+
+### [1.788.1](https://github.com/bigcommerce/checkout-js/compare/v1.788.0...v1.788.1) (2026-05-08)
+
+## [1.788.0](https://github.com/bigcommerce/checkout-js/compare/v1.787.0...v1.788.0) (2026-05-07)
+
+
+### Features
+
+* **payment:** PAYPAL-6267 replaced paypal logo cdn url ([9155b7d](https://github.com/bigcommerce/checkout-js/commit/9155b7dce0eaae9a5858ceff31c88c738ba726b9))
+
+## [1.787.0](https://github.com/bigcommerce/checkout-js/compare/v1.786.1...v1.787.0) (2026-05-05)
+
+
+### Features
+
+* **payment:** PI-5142 [Oney] Add Oney payment method ([#2965](https://github.com/bigcommerce/checkout-js/issues/2965)) ([051a116](https://github.com/bigcommerce/checkout-js/commit/051a116999393e3b1aff1cb5668039ac40402aa5))
+
+### [1.786.1](https://github.com/bigcommerce/checkout-js/compare/v1.786.0...v1.786.1) (2026-05-05)
+
+## [1.786.0](https://github.com/bigcommerce/checkout-js/compare/v1.785.0...v1.786.0) (2026-05-04)
+
+
+### Features
+
+* **payment:** Stripe payments methods filter ([#2948](https://github.com/bigcommerce/checkout-js/issues/2948)) ([a96caa6](https://github.com/bigcommerce/checkout-js/commit/a96caa6fcd5bbc776d2ccd6771219c4b7d2799da))
+
+## [1.785.0](https://github.com/bigcommerce/checkout-js/compare/v1.784.0...v1.785.0) (2026-05-04)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9817 Add excludePPSDKFilter ([#2990](https://github.com/bigcommerce/checkout-js/issues/2990)) ([fc6b751](https://github.com/bigcommerce/checkout-js/commit/fc6b7517b2847354ba95fc11f95ee48a38fc9411))
+
+## [1.784.0](https://github.com/bigcommerce/checkout-js/compare/v1.783.1...v1.784.0) (2026-05-04)
+
+
+### Features
+
+* **payment:** Add provider section container on top of payment methods list ([#2944](https://github.com/bigcommerce/checkout-js/issues/2944)) ([a5b3143](https://github.com/bigcommerce/checkout-js/commit/a5b31432c50721703311e31d49463363e6c35eef))
+* **payment:** enable Stripe Adaptive Pricing element ([#2949](https://github.com/bigcommerce/checkout-js/issues/2949)) ([492b63e](https://github.com/bigcommerce/checkout-js/commit/492b63ef74742e607728d72122195e5c879d1e13))
+
 ### [1.783.1](https://github.com/bigcommerce/checkout-js/compare/v1.783.0...v1.783.1) (2026-05-04)
 
 ## [1.783.0](https://github.com/bigcommerce/checkout-js/compare/v1.782.3...v1.783.0) (2026-05-04)

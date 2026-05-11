@@ -2,9 +2,7 @@ import { type FieldProps } from 'formik';
 import React, { type FunctionComponent, memo, useCallback, useMemo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { FormField } from '@bigcommerce/checkout/ui';
-
-import { TextInput } from '../../ui/form';
+import { FormField, TextInput } from '@bigcommerce/checkout/ui';
 
 export interface CreditCardNameFieldProps {
     name: string;
