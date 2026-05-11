@@ -1,12 +1,18 @@
 import { memoizeOne } from '@bigcommerce/memoize';
 import { type FieldProps } from 'formik';
 import { kebabCase } from 'lodash';
-import React, { type FunctionComponent, memo, type ReactNode, useCallback, useContext } from 'react';
+import React, {
+    type FunctionComponent,
+    memo,
+    type ReactNode,
+    useCallback,
+    useContext,
+} from 'react';
 
-import { AccordionItem, type AccordionItemHeaderProps, BasicFormField } from '@bigcommerce/checkout/ui';
-
-import { ChecklistContext } from './Checklist';
-import ChecklistItemInput from './ChecklistItemInput';
+import { AccordionItem, type AccordionItemHeaderProps } from '../../accordion';
+import { BasicFormField } from '../BasicFormField';
+import { ChecklistContext } from '../Checklist/Checklist';
+import { ChecklistItemInput } from '../ChecklistItemInput';
 
 export interface ChecklistItemProps {
     content?: ReactNode;
@@ -26,6 +32,7 @@ const ChecklistItem: FunctionComponent<ChecklistItemProps> = ({
 }) => {
     const { name = '' } = useContext(ChecklistContext) || {};
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const renderInput = useCallback(
         memoizeOne((isSelected: boolean) => ({ field }: FieldProps) => (
             <ChecklistItemInput
@@ -41,6 +48,7 @@ const ChecklistItem: FunctionComponent<ChecklistItemProps> = ({
         [htmlId, isDisabled, label, value],
     );
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const handleChange = useCallback(
         memoizeOne((onToggle: (id: string) => void) => (selectedValue: string) => {
             if (value === selectedValue) {
