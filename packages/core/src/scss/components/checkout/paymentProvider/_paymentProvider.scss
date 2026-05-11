@@ -94,6 +94,10 @@ body.klarna-payments-fso-open {
     scroll-behavior: auto;
 }
 
+[id^="adyen-facilypay_"][id$="-component-field"] .adyen-checkout-form-instruction {
+    visibility: hidden;
+}
+
 .stripe-sepa-mandate-disclaimer {
     margin-bottom: 0;
     padding-bottom: remCalc(20px);
