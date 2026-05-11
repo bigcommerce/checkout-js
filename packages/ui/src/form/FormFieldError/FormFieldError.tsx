@@ -1,7 +1,7 @@
 import { ErrorMessage, useFormikContext } from 'formik';
 import React, { type FunctionComponent, memo, useCallback } from 'react';
 
-import { FormContext } from '@bigcommerce/checkout/ui';
+import { FormContext } from '../contexts';
 
 import getNestedValue from './getNestedValue';
 
