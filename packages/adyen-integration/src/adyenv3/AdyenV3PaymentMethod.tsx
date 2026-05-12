@@ -18,6 +18,7 @@ import { FormContext, LoadingOverlay, Modal } from '@bigcommerce/checkout/ui';
 
 import AdyenV3CardValidation from './AdyenV3CardValidation';
 import AdyenV3Form from './AdyenV3Form';
+import './AdyenV3Oney.scss';
 
 export interface AdyenOptions {
     [key: string]: AdyenCreditCardComponentOptions;
