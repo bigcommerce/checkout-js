@@ -9,12 +9,11 @@ import React, { cloneElement, type FunctionComponent, isValidElement, type React
 import { useCheckout, useLocale, useThemeContext } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedHtml, TranslatedString } from '@bigcommerce/checkout/locale';
-import { Button, IconCloseWithBorder } from '@bigcommerce/checkout/ui';
+import { Button, IconCloseWithBorder, Modal, ModalHeader } from '@bigcommerce/checkout/ui';
 
 import { isExperimentEnabled } from '../common/utility';
 import { NewOrderSummarySubtotals } from '../coupon';
 import { ShopperCurrency } from '../currency';
-import { Modal, ModalHeader } from '../ui/modal';
 import { isMobileView } from '../ui/responsive';
 
 import OrderModalSummarySubheader from './OrderModalSummarySubheader';

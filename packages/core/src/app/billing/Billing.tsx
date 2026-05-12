@@ -3,10 +3,9 @@ import React, { type ReactElement, useEffect } from 'react';
 
 import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { AddressFormSkeleton } from '@bigcommerce/checkout/ui';
+import { AddressFormSkeleton, Legend } from '@bigcommerce/checkout/ui';
 
 import { B2BExtraFieldsSessionStorage, isEqualAddress, mapAddressFromFormValues } from '../address';
-import { Legend } from '../ui/form';
 
 import BillingForm, { type BillingFormValues } from './BillingForm';
 import getBillingMethodId from './getBillingMethodId';

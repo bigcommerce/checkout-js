@@ -5,9 +5,7 @@ import React, { type FunctionComponent, memo, useState } from 'react';
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { ConfirmationModal } from '@bigcommerce/checkout/ui';
-
-import { Legend } from '../ui/form';
+import { ConfirmationModal, Legend } from '@bigcommerce/checkout/ui';
 
 import './ShippingHeader.scss';
 

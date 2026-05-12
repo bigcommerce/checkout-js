@@ -15,7 +15,6 @@ import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integratio
 
 import { withCheckout } from '../../checkout';
 import { connectFormik, type ConnectFormikProps } from '../../common/form';
-import { withForm, type WithFormProps } from '../../ui/form';
 import {
     CreditCardCustomerCodeField,
     CreditCardInputStylesType,
@@ -26,6 +25,7 @@ import {
     isInstrumentCardNumberRequiredSelector,
     isInstrumentFeatureAvailable,
 } from '../storedInstrument';
+import withForm, { type WithFormProps } from '../withForm';
 
 import getHostedCreditCardValidationSchema, {
     type HostedCreditCardValidationSchemaShape,

@@ -2,11 +2,10 @@ import React, { type FunctionComponent } from 'react';
 
 import { type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { Fieldset } from '@bigcommerce/checkout/ui';
+import { Fieldset, Legend } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../../checkout';
 import { connectFormik, type ConnectFormikProps } from '../../common/form';
-import { Legend } from '../../ui/form';
 
 import InstrumentStorageField from './InstrumentStorageField';
 import InstrumentStoreAsDefaultField from './InstrumentStoreAsDefaultField';

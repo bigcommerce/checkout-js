@@ -25,7 +25,6 @@ export interface CheckoutAppProps {
     publicPath?: string;
     sentryConfig?: BrowserOptions;
     sentrySampleRate?: number;
-    rollOutLazyPaymentStrategies?: boolean;
 }
 
 const CheckoutApp = (props: CheckoutAppProps): ReactElement => {
@@ -51,7 +50,6 @@ const CheckoutApp = (props: CheckoutAppProps): ReactElement => {
         locale: languageService.getLocale(),
         shouldWarnMutation: process.env.NODE_ENV === 'development',
         errorLogger,
-        rollOutLazyPaymentStrategies: props.rollOutLazyPaymentStrategies,
     }), []);
     const extensionService = useMemo(() => new ExtensionService(checkoutService, errorLogger), []);
     const embeddedStylesheet = useMemo(() => createEmbeddedCheckoutStylesheet(), []);
