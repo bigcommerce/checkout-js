@@ -13,9 +13,7 @@ import React, {
 } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { IconLock, TextInput } from '@bigcommerce/checkout/ui';
-
-import { FormField } from '../../ui/form';
+import { FormField, IconLock, TextInput } from '@bigcommerce/checkout/ui';
 
 import formatCreditCardNumber from './formatCreditCardNumber';
 

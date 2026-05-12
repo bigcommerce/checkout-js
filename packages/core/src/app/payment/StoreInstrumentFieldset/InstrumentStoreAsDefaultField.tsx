@@ -1,8 +1,7 @@
 import React, { type FunctionComponent, memo, useMemo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-
-import { CheckboxFormField } from '../../ui/form';
+import { CheckboxFormField } from '@bigcommerce/checkout/ui';
 
 interface InstrumentStoreAsDefaultFieldProps {
     isAccountInstrument: boolean;

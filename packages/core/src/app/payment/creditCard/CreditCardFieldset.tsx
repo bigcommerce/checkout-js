@@ -1,9 +1,7 @@
 import React, { type FunctionComponent, memo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { Fieldset } from '@bigcommerce/checkout/ui';
-
-import { Legend } from '../../ui/form';
+import { Fieldset, Legend } from '@bigcommerce/checkout/ui';
 
 import CreditCardCodeField from './CreditCardCodeField';
 import CreditCardCustomerCodeField from './CreditCardCustomerCodeField';

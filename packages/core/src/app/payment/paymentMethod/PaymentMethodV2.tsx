@@ -7,9 +7,9 @@ import { LazyContainer } from '@bigcommerce/checkout/ui';
 
 import { withCheckout, type WithCheckoutProps } from '../../checkout';
 import { connectFormik, type WithFormikProps } from '../../common/form';
-import { withForm, type WithFormProps } from '../../ui/form';
 import createPaymentFormService from '../createPaymentFormService';
 import resolvePaymentMethod from '../resolvePaymentMethod';
+import withForm, { type WithFormProps } from '../withForm';
 import withPayment, { type WithPaymentProps } from '../withPayment';
 
 const PaymentMethodV1 = lazy(() => import(/* webpackChunkName: "payment-method-v1" */'./PaymentMethod'));

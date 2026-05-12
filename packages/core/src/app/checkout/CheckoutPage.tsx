@@ -49,6 +49,7 @@ import type CheckoutSupport from './CheckoutSupport';
 import { BillingStep, CartSummary, CheckoutHeader, CustomerStep, PaymentStep, ShippingStep } from './components';
 import { mapCheckoutComponentErrorMessage } from './mapErrorMessage';
 import mapToCheckoutProps from './mapToCheckoutProps';
+import { shouldShowShippingOptionExpiredError } from './shouldShowShippingOptionExpiredError';
 import useB2BToken from './hooks/useB2BToken';
 
 export interface CheckoutProps {
@@ -260,7 +261,7 @@ const Checkout = ({
         navigateToStep(CheckoutStepType.Shipping);
     }, [navigateToStep]);
 
-    const handleConsignmentsUpdated = ({ data }: CheckoutSelectors):void => {
+    const handleConsignmentsUpdated = ({ data, statuses }: CheckoutSelectors):void => {
         const { hasSelectedShippingOptions: prevHasSelectedShippingOptions, activeStepType, defaultStepType } =
             stateRef.current;
 
@@ -277,11 +278,12 @@ const Checkout = ({
             findIndex(stepsRef.current, { type: CheckoutStepType.Shipping }) <
             findIndex(stepsRef.current, { type: activeStepType }) || isDefaultStepPaymentOrBilling;
 
-        if (
-            prevHasSelectedShippingOptions &&
-            !newHasSelectedShippingOptions &&
-            isShippingStepFinished
-        ) {
+        if (shouldShowShippingOptionExpiredError({
+            prevHasSelectedShippingOptions,
+            newHasSelectedShippingOptions,
+            isShippingStepFinished,
+            isSigningOut: statuses.isSigningOut(),
+        })) {
             navigateToStep(CheckoutStepType.Shipping);
             setState(prevState => ({ ...prevState, error: new ShippingOptionExpiredError() }));
         }

@@ -20,11 +20,25 @@ exports[`BraintreeAchMandateText renders mandate text checkbox with business dat
             value=""
           />
           <label
-            class="form-label optimizedCheckout-form-label"
+            class="form-label optimizedCheckout-form-label body-regular"
             for="orderConsent"
           >
             By clicking Place Order, I authorize Braintree, a service of PayPal, on behalf of s1504098821 to verify my bank account information using bank information and consumer reports and I authorize s1504098821 to initiate an ACH/electronic debit to my savings account, Depository Name: BigcommerceStore, Routing Number: 010000015 and Account Number: 100000000, in the amount of $190 on 01.01.2023. I agree the ACH transactions I authorize comply with all applicable laws.
           </label>
+          <ul
+            class="form-field-errors"
+            data-test="order-consent-field-error-message"
+          >
+            <li
+              class="form-field-error"
+            >
+              <span
+                aria-hidden="true"
+                class="is-srOnly"
+                id="orderConsent-field-error-message"
+              />
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -45,11 +59,25 @@ exports[`BraintreeAchMandateText renders mandate text checkbox with business dat
           value=""
         />
         <label
-          class="form-label optimizedCheckout-form-label"
+          class="form-label optimizedCheckout-form-label body-regular"
           for="orderConsent"
         >
           By clicking Place Order, I authorize Braintree, a service of PayPal, on behalf of s1504098821 to verify my bank account information using bank information and consumer reports and I authorize s1504098821 to initiate an ACH/electronic debit to my savings account, Depository Name: BigcommerceStore, Routing Number: 010000015 and Account Number: 100000000, in the amount of $190 on 01.01.2023. I agree the ACH transactions I authorize comply with all applicable laws.
         </label>
+        <ul
+          class="form-field-errors"
+          data-test="order-consent-field-error-message"
+        >
+          <li
+            class="form-field-error"
+          >
+            <span
+              aria-hidden="true"
+              class="is-srOnly"
+              id="orderConsent-field-error-message"
+            />
+          </li>
+        </ul>
       </div>
     </div>
   </div>,
@@ -127,11 +155,25 @@ exports[`BraintreeAchMandateText renders mandate text checkbox with personal dat
             value=""
           />
           <label
-            class="form-label optimizedCheckout-form-label"
+            class="form-label optimizedCheckout-form-label body-regular"
             for="orderConsent"
           >
             By clicking Place Order, I authorize Braintree, a service of PayPal, on behalf of s1504098821 to verify my bank account information using bank information and consumer reports and I authorize s1504098821 to initiate an ACH/electronic debit to my savings account, Depository Name: Name Surname, Routing Number: 010000015 and Account Number: 100000000, in the amount of $190 on 01.01.2023. I agree the ACH transactions I authorize comply with all applicable laws.
           </label>
+          <ul
+            class="form-field-errors"
+            data-test="order-consent-field-error-message"
+          >
+            <li
+              class="form-field-error"
+            >
+              <span
+                aria-hidden="true"
+                class="is-srOnly"
+                id="orderConsent-field-error-message"
+              />
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -152,11 +194,25 @@ exports[`BraintreeAchMandateText renders mandate text checkbox with personal dat
           value=""
         />
         <label
-          class="form-label optimizedCheckout-form-label"
+          class="form-label optimizedCheckout-form-label body-regular"
           for="orderConsent"
         >
           By clicking Place Order, I authorize Braintree, a service of PayPal, on behalf of s1504098821 to verify my bank account information using bank information and consumer reports and I authorize s1504098821 to initiate an ACH/electronic debit to my savings account, Depository Name: Name Surname, Routing Number: 010000015 and Account Number: 100000000, in the amount of $190 on 01.01.2023. I agree the ACH transactions I authorize comply with all applicable laws.
         </label>
+        <ul
+          class="form-field-errors"
+          data-test="order-consent-field-error-message"
+        >
+          <li
+            class="form-field-error"
+          >
+            <span
+              aria-hidden="true"
+              class="is-srOnly"
+              id="orderConsent-field-error-message"
+            />
+          </li>
+        </ul>
       </div>
     </div>
   </div>,
@@ -234,11 +290,25 @@ exports[`BraintreeAchMandateText renders mandate text checkbox with text for vau
             value=""
           />
           <label
-            class="form-label optimizedCheckout-form-label"
+            class="form-label optimizedCheckout-form-label body-regular"
             for="orderConsent"
           >
             By clicking Place Order, I authorize Braintree, a service of PayPal, on behalf of s1504098821 to verify my bank account information using bank information and consumer reports and I authorize s1504098821 to initiate an ACH/electronic debit to my savings account, Depository Name: Name Surname, Routing Number: 010000015 and Account Number: 100000000, in the amount of $190 on 01.01.2023. I agree the ACH transactions I authorize comply with all applicable laws.
           </label>
+          <ul
+            class="form-field-errors"
+            data-test="order-consent-field-error-message"
+          >
+            <li
+              class="form-field-error"
+            >
+              <span
+                aria-hidden="true"
+                class="is-srOnly"
+                id="orderConsent-field-error-message"
+              />
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -259,11 +329,25 @@ exports[`BraintreeAchMandateText renders mandate text checkbox with text for vau
           value=""
         />
         <label
-          class="form-label optimizedCheckout-form-label"
+          class="form-label optimizedCheckout-form-label body-regular"
           for="orderConsent"
         >
           By clicking Place Order, I authorize Braintree, a service of PayPal, on behalf of s1504098821 to verify my bank account information using bank information and consumer reports and I authorize s1504098821 to initiate an ACH/electronic debit to my savings account, Depository Name: Name Surname, Routing Number: 010000015 and Account Number: 100000000, in the amount of $190 on 01.01.2023. I agree the ACH transactions I authorize comply with all applicable laws.
         </label>
+        <ul
+          class="form-field-errors"
+          data-test="order-consent-field-error-message"
+        >
+          <li
+            class="form-field-error"
+          >
+            <span
+              aria-hidden="true"
+              class="is-srOnly"
+              id="orderConsent-field-error-message"
+            />
+          </li>
+        </ul>
       </div>
     </div>
   </div>,

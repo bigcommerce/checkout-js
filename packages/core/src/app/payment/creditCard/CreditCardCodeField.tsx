@@ -2,9 +2,8 @@ import { type FieldProps } from 'formik';
 import React, { type FunctionComponent, memo, useCallback, useMemo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { IconHelp, IconLock, TextInput } from '@bigcommerce/checkout/ui';
+import { FormField, IconHelp, IconLock, TextInput } from '@bigcommerce/checkout/ui';
 
-import { FormField } from '../../ui/form';
 import { TooltipTrigger } from '../../ui/tooltip';
 
 import CreditCardCodeTooltip from './CreditCardCodeTooltip';
