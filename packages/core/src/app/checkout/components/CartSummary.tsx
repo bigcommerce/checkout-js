@@ -3,10 +3,9 @@ import React, { lazy } from 'react';
 
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
 import { useThemeContext } from '@bigcommerce/checkout/contexts';
-import { CartSummarySkeleton, LazyContainer } from '@bigcommerce/checkout/ui';
+import { CartSummarySkeleton, LazyContainer, MobileView } from '@bigcommerce/checkout/ui';
 
 import { retry } from '../../common/utility';
-import { MobileView } from '../../ui/responsive';
 
 const CartSummaryComponent = lazy(() =>
     retry(

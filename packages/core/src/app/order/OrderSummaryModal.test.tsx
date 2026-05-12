@@ -4,9 +4,9 @@ import React from 'react';
 import { LocaleProvider } from '@bigcommerce/checkout/contexts';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
+import { SMALL_SCREEN_MAX_WIDTH } from '@bigcommerce/checkout/ui';
 
 import { getStoreConfig } from '../config/config.mock';
-import { SMALL_SCREEN_MAX_WIDTH } from '../ui/responsive';
 
 import mapToOrderSummarySubtotalsProps from './mapToOrderSummarySubtotalsProps';
 import { getOrder } from './orders.mock';

@@ -1,6 +1,6 @@
 import React, { type FunctionComponent } from 'react';
 
-import { isMobileView } from '../../utils';
+import { isMobileView } from '../../responsive';
 
 import { CartSummarySkeleton } from './CartSummarySkeleton';
 

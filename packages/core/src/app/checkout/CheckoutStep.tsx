@@ -3,7 +3,7 @@ import { noop } from 'lodash';
 import React, { type ReactElement, type ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 
-import { isMobileView, MobileView } from '../ui/responsive';
+import { isMobileView, MobileView } from '@bigcommerce/checkout/ui';
 
 import CheckoutStepHeader from './CheckoutStepHeader';
 import type CheckoutStepType from './CheckoutStepType';

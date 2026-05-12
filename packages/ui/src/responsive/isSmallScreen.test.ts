@@ -1,11 +1,11 @@
-import { SMALL_SCREEN_MAX_WIDTH } from "./breakpoints";
-import isSmallScreen from "./isSmallScreen";
+import { SMALL_SCREEN_MAX_WIDTH } from './breakpoints';
+import { isSmallScreen } from './isSmallScreen';
 
 describe('isSmallScreen', () => {
     beforeAll(() => {
         Object.defineProperty(window, 'matchMedia', {
             writable: true,
-            value: jest.fn().mockImplementation(query => ({
+            value: jest.fn().mockImplementation((query: string) => ({
                 matches: window.innerWidth <= SMALL_SCREEN_MAX_WIDTH,
                 media: query,
                 onchange: null,

@@ -5,7 +5,7 @@ jest.mock('../../utils', () => ({
     isMobileView: jest.fn(),
 }));
 
-import { isMobileView } from '../../utils';
+import { isMobileView } from '../../responsive';
 
 import OrderConfirmationPageSkeleton from './OrderConfirmationPageSkeleton';
 
