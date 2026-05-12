@@ -53,6 +53,12 @@ describe('renderOrderConfirmation()', () => {
         publicPath = '';
     });
 
+    it('throws when container element does not exist', () => {
+        expect(() => {
+            renderOrderConfirmation({ ...options, containerId: 'non-existent-id' });
+        }).toThrow('Unable to find order confirmation container: #non-existent-id');
+    });
+
     it('configures public path before mounting app component', () => {
         act(() => {
             renderOrderConfirmation(options);

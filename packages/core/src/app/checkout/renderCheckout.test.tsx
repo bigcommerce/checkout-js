@@ -53,6 +53,12 @@ describe('renderCheckout()', () => {
         publicPath = '';
     });
 
+    it('throws when container element does not exist', () => {
+        expect(() => {
+            renderCheckout({ ...options, containerId: 'non-existent-id' });
+        }).toThrow('Unable to find checkout container: #non-existent-id');
+    });
+
     it('configures public path before mounting app component', () => {
         act(() => {
             renderCheckout(options);
