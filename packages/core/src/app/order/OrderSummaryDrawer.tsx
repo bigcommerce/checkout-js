@@ -7,10 +7,9 @@ import classNames from 'classnames';
 import React, { type FunctionComponent, memo, type ReactNode, useCallback, useMemo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { IconGiftCertificate } from '@bigcommerce/checkout/ui';
+import { IconGiftCertificate, ModalTrigger } from '@bigcommerce/checkout/ui';
 
 import { ShopperCurrency } from '../currency';
-import { ModalTrigger } from '../ui/modal';
 
 import getItemsCount from './getItemsCount';
 import getLineItemsCount from './getLineItemsCount';

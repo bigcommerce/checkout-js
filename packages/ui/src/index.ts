@@ -110,6 +110,7 @@ export {
     ConfirmationModal,
     Modal,
     ModalHeader,
+    ModalLink,
     ModalTrigger,
     ModalTriggerModalProps,
 } from './modal';

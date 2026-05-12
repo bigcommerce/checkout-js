@@ -4,9 +4,7 @@ import React, { type FunctionComponent, useMemo } from 'react';
 
 import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { Button, ButtonVariant } from '@bigcommerce/checkout/ui';
-
-import { Modal, ModalHeader } from '../ui/modal';
+import { Button, ButtonVariant, Modal, ModalHeader } from '@bigcommerce/checkout/ui';
 
 import CartStockPositionsChangedItemList from './CartStockPositionsChangedItemList';
 import CartStockPositionsChangedMultiConsignmentContent from './CartStockPositionsChangedMultiConsignmentContent';
