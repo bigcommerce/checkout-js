@@ -10,8 +10,8 @@ export enum CheckoutTheme {
 }
 
 const radioIconInnerScaleList: Record<CheckoutTheme, number> = {
-    default: 0.66,
-    themeV2: 0.36,
+    [CheckoutTheme.DEFAULT]: 0.66,
+    [CheckoutTheme.THEME_V2]: 0.36,
 };
 
 const getStylesFromElement = (
