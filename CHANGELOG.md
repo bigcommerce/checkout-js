@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.790.0](https://github.com/bigcommerce/checkout-js/compare/v1.789.3...v1.790.0) (2026-05-13)
+
+
+### Features
+
+* **payment:** Stripe adaptive pricing styling ([9bd33cf](https://github.com/bigcommerce/checkout-js/commit/9bd33cf90c5832f11069c428fd7050b3eb1640f4))
+
 ### [1.789.3](https://github.com/bigcommerce/checkout-js/compare/v1.789.2...v1.789.3) (2026-05-13)
 
 ### [1.789.2](https://github.com/bigcommerce/checkout-js/compare/v1.789.1...v1.789.2) (2026-05-13)
