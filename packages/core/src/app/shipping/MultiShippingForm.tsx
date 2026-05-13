@@ -1,15 +1,14 @@
 import React, { type FunctionComponent, type ReactNode, useMemo, useState } from 'react';
 
-import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { Alert, AlertType, Button, ButtonVariant } from '@bigcommerce/checkout/ui';
 
 import { withFormikExtended } from '../common/form';
-import { EMPTY_ARRAY } from '../common/utility';
 
 import ConsignmentListItem from './ConsignmentListItem';
 import hasSelectedShippingOptions from './hasSelectedShippingOptions';
 import { useMultiShippingConsignmentItems } from './hooks/useMultishippingConsignmentItems';
+import { useShipping } from './hooks/useShipping';
 import isSelectedShippingOptionValid from './isSelectedShippingOptionValid';
 import MultiShippingFormFooter from './MultiShippingFormFooter';
 import { type MultiShippingConsignmentData } from './MultishippingType';
@@ -36,16 +35,9 @@ const MultiShippingForm: FunctionComponent<MultiShippingFormProps> = ({
     cartHasChanged,
 }: MultiShippingFormProps) => {
     const [errorConsignmentNumber, setErrorConsignmentNumber] = useState<number | undefined>();
-
-    const {
-        checkoutState: {
-            data: { getConsignments, getConfig },
-        },
-    } = useCheckout();
+    
+    const { consignments, shouldShowOrderComments, shippingQuoteFailedMessage } = useShipping();
     const { unassignedItems: { lineItems: unassignedLineItems, shippableItemsCount }, consignmentList } = useMultiShippingConsignmentItems();
-
-    const consignments = getConsignments() || EMPTY_ARRAY;
-    const config = getConfig();
 
     const [isAddShippingDestination, setIsAddShippingDestination] = useState(
         consignments.length === 0,
@@ -55,17 +47,6 @@ const MultiShippingForm: FunctionComponent<MultiShippingFormProps> = ({
     const shouldDisableSubmit = useMemo(() => {
         return isLoading || !!unassignedLineItems.length || !isEveryConsignmentHasShippingOption || !isSelectedShippingOptionValid(consignments);
     }, [isLoading, consignments]);
-
-    if (!config) {
-        return null;
-    }
-
-    const {
-        checkoutSettings: {
-            enableOrderComments: shouldShowOrderComments,
-            shippingQuoteFailedMessage,
-        },
-    } = config;
 
     const handleAddShippingDestination = () => {
         if (!isAddShippingDestination && !isEveryConsignmentHasShippingOption) {

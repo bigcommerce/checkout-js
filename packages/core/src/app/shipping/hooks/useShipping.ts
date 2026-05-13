@@ -79,6 +79,7 @@ export const useShipping = () => {
         checkoutSettings: {
             enableOrderComments,
             hasMultiShippingEnabled,
+            shippingQuoteFailedMessage
         },
     } = config;
 
@@ -155,6 +156,7 @@ export const useShipping = () => {
         shippingAddress,
         shouldShowMultiShipping,
         shouldShowOrderComments: enableOrderComments,
+        shippingQuoteFailedMessage,
         signOut: checkoutService.signOutCustomer,
         unassignItem: checkoutService.unassignItemsToAddress,
         updateBillingAddress: checkoutService.updateBillingAddress,
