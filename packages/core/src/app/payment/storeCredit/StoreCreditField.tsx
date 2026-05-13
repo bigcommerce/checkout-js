@@ -4,9 +4,7 @@ import React, { type FunctionComponent, useCallback, useMemo } from 'react';
 import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString, withCurrency, type WithCurrencyProps } from '@bigcommerce/checkout/locale';
-import { CheckboxInput } from '@bigcommerce/checkout/ui';
-
-import { Tooltip, TooltipTrigger } from '../../ui/tooltip';
+import { CheckboxInput, Tooltip, TooltipTrigger } from '@bigcommerce/checkout/ui';
 
 export interface StoreCreditFieldProps {
     availableStoreCredit: number;

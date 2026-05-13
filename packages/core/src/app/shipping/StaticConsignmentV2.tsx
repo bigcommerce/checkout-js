@@ -2,14 +2,15 @@ import { type Consignment } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import React, { type FunctionComponent, memo } from 'react';
 
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { isPayPalFastlaneAddress, PoweredByPayPalFastlaneLabel, usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
+import { isMobileView } from '@bigcommerce/checkout/ui';
 
 import { AddressType, StaticAddress } from '../address';
 
 import { StaticShippingOption } from './shippingOption';
+
 import './StaticConsignment.scss';
-import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { isMobileView } from '../ui/responsive';
 
 interface StaticConsignmentV2Props {
     consignment: Consignment;

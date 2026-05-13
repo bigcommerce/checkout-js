@@ -2,8 +2,7 @@ import { noop } from 'lodash';
 import React from 'react';
 
 import { render, screen } from '@bigcommerce/checkout/test-utils';
-
-import { MOBILE_MAX_WIDTH } from '../ui/responsive';
+import { MOBILE_MAX_WIDTH } from '@bigcommerce/checkout/ui';
 
 import CheckoutStep, { type CheckoutStepProps } from './CheckoutStep';
 import CheckoutStepType from './CheckoutStepType';

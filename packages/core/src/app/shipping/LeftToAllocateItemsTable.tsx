@@ -2,8 +2,7 @@ import { type FormikErrors } from "formik";
 import React, { type FunctionComponent } from "react";
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-
-import { isMobileView as isMobileViewUI } from "../ui/responsive";
+import { isMobileView as isMobileViewUI } from "@bigcommerce/checkout/ui";
 
 import { type AllocateItemsModalFormValues } from "./AllocateItemsModal";
 import LeftToAllocateItem from "./LeftToAllocateItem";

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import { MultiLineText } from '.';
+import { MultiLineText } from './MultiLineText';
 
 describe('MultiLineText', () => {
     it('should render MultiLineText', () => {
@@ -12,4 +12,4 @@ describe('MultiLineText', () => {
 
         expect(screen.getByText(text)).toBeInTheDocument();
     });
-})
+});

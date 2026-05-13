@@ -1,6 +1,4 @@
-// copied from core package
-export const MOBILE_MAX_WIDTH = 968;
-export const SMALL_SCREEN_MAX_WIDTH = 551;
+import { MOBILE_MAX_WIDTH } from './breakpoints';
 
 let query: MediaQueryList;
 

@@ -1,10 +1,9 @@
 import { type Order, type ShopperCurrency, type StoreCurrency } from '@bigcommerce/checkout-sdk';
 import React, { lazy, type ReactElement } from 'react';
 
-import { CartSummarySkeleton, LazyContainer } from '@bigcommerce/checkout/ui';
+import { CartSummarySkeleton, LazyContainer, MobileView } from '@bigcommerce/checkout/ui';
 
 import { retry } from '../../common/utility';
-import { MobileView } from '../../ui/responsive';
 import mapToOrderSummarySubtotalsProps from '../mapToOrderSummarySubtotalsProps';
 import PrintLink from '../PrintLink';
 

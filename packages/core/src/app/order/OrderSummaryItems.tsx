@@ -5,9 +5,7 @@ import { TransitionGroup } from 'react-transition-group';
 import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { CollapseCSSTransition, IconChevronDown, IconChevronUp } from '@bigcommerce/checkout/ui';
-
-import { isSmallScreen } from '../ui/responsive';
+import { CollapseCSSTransition, IconChevronDown, IconChevronUp, isSmallScreen } from '@bigcommerce/checkout/ui';
 
 import getBackorderCount from './getBackorderCount';
 import getItemsCount from './getItemsCount';

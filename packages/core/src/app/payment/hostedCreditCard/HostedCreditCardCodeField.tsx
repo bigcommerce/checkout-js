@@ -1,9 +1,8 @@
 import React, { type FunctionComponent, useCallback, useMemo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { FormField, IconHelp, IconLock, TextInputIframeContainer } from '@bigcommerce/checkout/ui';
+import { FormField, IconHelp, IconLock, TextInputIframeContainer, TooltipTrigger } from '@bigcommerce/checkout/ui';
 
-import { TooltipTrigger } from '../../ui/tooltip';
 import { CreditCardCodeTooltip } from '../creditCard';
 
 export interface HostedCreditCardCodeFieldProps {
