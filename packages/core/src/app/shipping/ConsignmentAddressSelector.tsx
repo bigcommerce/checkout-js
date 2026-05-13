@@ -1,7 +1,6 @@
 import { type Address, type ConsignmentCreateRequestBody } from "@bigcommerce/checkout-sdk";
 import React, { useState } from "react";
 
-import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from "@bigcommerce/checkout/locale";
 
 import {
@@ -15,7 +14,7 @@ import {
     stripExtraFieldsFromAddress,
 } from '../address';
 import { ErrorModal } from "../common/error";
-import { EMPTY_ARRAY, isExperimentEnabled } from "../common/utility";
+import { EMPTY_ARRAY } from "../common/utility";
 import { mapAddressExtraFieldsFromFormValues } from '../formFields';
 
 import { AssignItemFailedError, AssignItemInvalidAddressError } from "./errors";
@@ -44,29 +43,7 @@ const ConsignmentAddressSelector = ({
     const [isOpenNewAddressModal, setIsOpenNewAddressModal] = useState(false);
     const [createCustomerAddressError, setCreateCustomerAddressError] = useState<Error>();
 
-    const {
-        checkoutState: {
-            data: {
-                getCustomer,
-                getConfig,
-                getConsignments: getPreviousConsignments,
-            },
-        },
-        checkoutService: {
-            updateConsignment,
-            createCustomerAddress,
-            selectConsignmentShippingOption,
-        },
-    } = useCheckout();
-
-    const { getFields } = useShipping();
-
-    const customer = getCustomer();
-    const config = getConfig();
-
-    if (!config || !customer) {
-        return null;
-    }
+    const { getFields, consignments, selectConsignmentShippingOption, updateConsignment, createCustomerAddress, customer, validateMaxLength } = useShipping();
 
     const storageKey = B2BExtraFieldsSessionStorage.getConsignmentKey(consignment?.id ?? '');
 
@@ -74,13 +51,6 @@ const ConsignmentAddressSelector = ({
     const addresses = customer.addresses || EMPTY_ARRAY;
 
     const isGuest = customer.isGuest;
-
-    const validateMaxLength =
-        isExperimentEnabled(
-            config?.checkoutSettings,
-            'CHECKOUT-9768.form_fields_max_length_validation',
-            false
-        );
 
     const handleSelectAddress = async (address: Address) => {
         if (!isValidAddress(address, getFields(address.countryCode), validateMaxLength)) {
@@ -113,7 +83,7 @@ const ConsignmentAddressSelector = ({
 
             if (currentConsignments && currentConsignments.length > 0) {
                 await setRecommendedOrMissingShippingOption(
-                    getPreviousConsignments() ?? [],
+                    consignments,
                     currentConsignments,
                     selectConsignmentShippingOption,
                 );

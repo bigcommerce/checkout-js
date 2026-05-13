@@ -2,19 +2,18 @@ import { type Consignment, type ConsignmentCreateRequestBody, type ConsignmentLi
 import { find } from "lodash";
 import React, { useMemo, useState } from "react";
 
-import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { TranslatedString } from "@bigcommerce/checkout/locale";
 
 import { B2BExtraFieldsSessionStorage } from '../address';
-import { EMPTY_ARRAY } from "../common/utility";
+import { isErrorWithType } from "../common/error";
 
 import AllocateItemsModal from "./AllocateItemsModal";
 import ConsignmentAddressSelector from './ConsignmentAddressSelector';
 import { AssignItemFailedError } from "./errors";
 import { useMultiShippingConsignmentItems } from "./hooks/useMultishippingConsignmentItems";
+import { useShipping } from "./hooks/useShipping";
 import { setRecommendedOrMissingShippingOption } from './utils';
-import { isErrorWithType } from "../common/error";
 
 interface NewConsignmentProps {
     consignmentNumber: number;
@@ -35,27 +34,22 @@ const NewConsignment = ({
 }: NewConsignmentProps) => {
     const [consignmentRequest, setConsignmentRequest] = useState<ConsignmentCreateRequestBody | undefined>();
     const [isOpenAllocateItemsModal, setIsOpenAllocateItemsModal] = useState(false);
+    
     const { unassignedItems } = useMultiShippingConsignmentItems();
-    const {
-        checkoutState: {
-            data: { getShippingCountries, getConsignments: getPreviousConsignments },
-        },
-        checkoutService: { assignItemsToAddress: assignItem, selectConsignmentShippingOption },
-    } = useCheckout();
+    const { countries, consignments, assignItem, selectConsignmentShippingOption } = useShipping();
 
     const selectedAddress = useMemo(() => {
         if (!consignmentRequest?.address) {
             return undefined;
         }
 
-        const countries = getShippingCountries() || EMPTY_ARRAY;
         const country = find(countries, { code: consignmentRequest.address.countryCode });
 
         return {
             ...consignmentRequest.address,
             country: country ? country.name : consignmentRequest.address.countryCode,
         };
-    }, [consignmentRequest]);
+    }, [consignmentRequest, countries]);
 
     const toggleAllocateItemsModal = () => {
         setIsOpenAllocateItemsModal(!isOpenAllocateItemsModal);
@@ -69,7 +63,7 @@ const NewConsignment = ({
         }
 
         const previousConsignmentIds = new Set(
-            (getPreviousConsignments() ?? []).map((c) => c.id),
+            consignments.map((c) => c.id),
         );
 
         try {
@@ -104,7 +98,7 @@ const NewConsignment = ({
 
             if (currentConsignments && currentConsignments.length > 0) {
                 await setRecommendedOrMissingShippingOption(
-                    getPreviousConsignments() ?? [],
+                    consignments,
                     currentConsignments,
                     selectConsignmentShippingOption,
                 );

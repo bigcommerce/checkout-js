@@ -1,13 +1,13 @@
 import { type Cart, type Consignment } from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent, memo } from 'react';
 
-import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { localizeAddress, TranslatedString } from '@bigcommerce/checkout/locale';
 import { isPayPalFastlaneAddress, PoweredByPayPalFastlaneLabel, usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 import ConsignmentLineItemDetail from './ConsignmentLineItemDetail';
 import findLineItems from './findLineItems';
 import getLineItemsCount from './getLineItemsCount';
+import { useShipping } from './hooks/useShipping';
 import { StaticShippingOption } from './shippingOption';
 
 import './StaticMultiConsignment.scss';
@@ -25,14 +25,10 @@ const StaticMultiConsignment: FunctionComponent<StaticMultiConsignmentProps> = (
     consignmentNumber,
     isShippingDiscountDisplayEnabled,
 }) => {
-    const {
-        checkoutState: {
-            data: { getShippingCountries },
-        },
-    } = useCheckout();
+    const { countries } = useShipping();
 
     const { shippingAddress: addressWithoutLocalization, selectedShippingOption, comparisonShippingCost } = consignment;
-    const address = localizeAddress(addressWithoutLocalization, getShippingCountries());
+    const address = localizeAddress(addressWithoutLocalization, countries);
     const { paypalFastlaneAddresses } = usePayPalFastlaneAddress();
     const showPayPalFastlaneAddressLabel = isPayPalFastlaneAddress(address, paypalFastlaneAddresses);
 
