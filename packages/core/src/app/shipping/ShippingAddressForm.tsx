@@ -5,7 +5,7 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import React, { type ReactElement } from 'react';
 
-import { useCapabilities, useThemeContext } from '@bigcommerce/checkout/contexts';
+import { useCapabilities, useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
 import { Fieldset, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import {
@@ -18,7 +18,6 @@ import {
 } from '../address';
 import { connectFormik, type ConnectFormikProps } from '../common/form';
 
-import { useShipping } from './hooks/useShipping';
 import { type SingleShippingFormValues } from './SingleShippingForm';
 
 export interface ShippingAddressFormProps {
@@ -49,10 +48,17 @@ const ShippingAddressForm = (
         onFieldChange,
     }: ShippingAddressFormProps & ConnectFormikProps<SingleShippingFormValues>,
 ): ReactElement => {
+     const {
+        checkoutState:{
+            data:{
+                getCustomer,
+            },
+        },
+    } = useCheckout();
     const { themeV2 } = useThemeContext();
     const { shipping: { hideSaveToAddressBookCheck, restrictManualAddressEntry } } = useCapabilities();
-    const { customer } = useShipping();
     
+    const customer = getCustomer();
     const addresses = customer?.addresses || [];
     const shouldShowSaveAddress = !hideSaveToAddressBookCheck && !(customer?.isGuest);
 

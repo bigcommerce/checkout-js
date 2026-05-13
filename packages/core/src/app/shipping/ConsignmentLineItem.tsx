@@ -1,6 +1,7 @@
 import { type ConsignmentLineItem } from "@bigcommerce/checkout-sdk";
 import React, { type FunctionComponent, useState } from "react";
 
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { IconChevronDown, IconChevronUp, isMobileView as isMobileViewUI } from "@bigcommerce/checkout/ui";
@@ -10,7 +11,6 @@ import ConsignmentLineItemDetail from "./ConsignmentLineItemDetail";
 import { AssignItemFailedError, UnassignItemError } from "./errors";
 import { useDeallocateItem } from "./hooks/useDeallocateItem";
 import { useMultiShippingConsignmentItems } from "./hooks/useMultishippingConsignmentItems";
-import { useShipping } from "./hooks/useShipping";
 import { ItemSplitTooltip } from "./ItemSplitTooltip";
 import { type MultiShippingConsignmentData, type MultiShippingTableItemWithType } from "./MultishippingType";
 
@@ -25,8 +25,8 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({ cons
     const [isOpenAllocateItemsModal, setIsOpenAllocateItemsModal] = useState(false);
     const [showItems, setShowItems] = useState(true);
 
-    const { assignItem } = useShipping();
     const { unassignedItems } = useMultiShippingConsignmentItems();
+    const { checkoutService: { assignItemsToAddress: assignItem } } = useCheckout();
     const deleteItem = useDeallocateItem();
 
     const toggleAllocateItemsModal = () => {
