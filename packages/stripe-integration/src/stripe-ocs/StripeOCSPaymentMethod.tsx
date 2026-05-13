@@ -30,7 +30,7 @@ import {
 } from '@bigcommerce/checkout/payment-integration-api';
 import { AccordionContext, ChecklistSkeleton } from '@bigcommerce/checkout/ui';
 
-import { getAppearanceForOCSElement, getFonts } from './getStripeOCSStyles';
+import { CheckoutTheme, getAppearanceForOCSElement, getFonts } from './getStripeOCSStyles';
 
 const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     paymentForm,
@@ -115,7 +115,7 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         async (options: PaymentInitializeOptions) => {
             setIsOCSLoading(true);
 
-            const theme = themeV2 ? 'themeV2' : undefined;
+            const theme = themeV2 ? CheckoutTheme.THEME_V2 : CheckoutTheme.DEFAULT;
 
             return checkoutService.initializePayment({
                 ...options,

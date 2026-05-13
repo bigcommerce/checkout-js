@@ -11,7 +11,7 @@ import {
     createStripeCSPaymentStrategy,
     createStripeOCSPaymentStrategy,
 } from '@bigcommerce/checkout-sdk/integrations/stripe';
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';
@@ -38,7 +38,14 @@ import { AccordionContext, type AccordionContextProps } from '@bigcommerce/check
 import * as getStripeOCSStyles from './getStripeOCSStyles';
 import StripeOCSPaymentMethod from './StripeOCSPaymentMethod';
 
-jest.mock('./getStripeOCSStyles');
+jest.mock('./getStripeOCSStyles', () => ({
+    ...jest.requireActual<typeof import('./getStripeOCSStyles')>('./getStripeOCSStyles'),
+    getAppearanceForOCSElement: jest.fn(),
+    getFonts: jest.fn(),
+}));
+
+const { CheckoutTheme } =
+    jest.requireActual<typeof import('./getStripeOCSStyles')>('./getStripeOCSStyles');
 
 describe('when using Stripe OCS payment', () => {
     const methodId = 'optimized_checkout';
@@ -368,7 +375,7 @@ describe('when using Stripe OCS payment', () => {
             );
             expect(getAppearanceForOCSElementMock).toHaveBeenCalledWith(
                 expectedContainerId,
-                undefined,
+                CheckoutTheme.DEFAULT,
             );
         });
 
@@ -460,7 +467,7 @@ describe('when using Stripe OCS payment', () => {
             );
             expect(getAppearanceForOCSElementMock).toHaveBeenCalledWith(
                 expectedContainerId,
-                'themeV2',
+                CheckoutTheme.THEME_V2,
             );
         });
     });
@@ -537,6 +544,154 @@ describe('when using Stripe OCS payment', () => {
             rerender(<PaymentMethodTest {...defaultProps} method={method} />);
 
             expect(collapseElementMock).not.toHaveBeenCalled();
+        });
+
+        it('forwards Stripe errors to onUnhandledError', () => {
+            const onUnhandledErrorMock = jest.fn();
+            const stripeError = new Error('Stripe initialization failed');
+
+            jest.spyOn(checkoutService, 'initializePayment').mockImplementation(
+                (options: WithStripeOCSPaymentInitializeOptions) => {
+                    options.stripeocs?.onError?.(stripeError);
+
+                    return Promise.resolve(checkoutState);
+                },
+            );
+
+            render(
+                <PaymentMethodTest
+                    {...defaultProps}
+                    method={method}
+                    onUnhandledError={onUnhandledErrorMock}
+                />,
+            );
+
+            expect(onUnhandledErrorMock).toHaveBeenCalledWith(stripeError);
+        });
+    });
+
+    describe('# Delayed BC accordion toggle', () => {
+        beforeEach(() => {
+            jest.useFakeTimers();
+        });
+
+        afterEach(() => {
+            jest.useRealTimers();
+        });
+
+        it('schedules a delayed onToggle when the Stripe-selected method differs from the BC selectedItemId', () => {
+            accordionContextValues = {
+                onToggle: onToggleMock,
+                selectedItemId: 'nonStripeItem',
+            };
+
+            let paymentMethodSelectRef: ((id: string) => void) | undefined;
+
+            jest.spyOn(checkoutService, 'initializePayment').mockImplementation(
+                (options: WithStripeOCSPaymentInitializeOptions) => {
+                    paymentMethodSelectRef = options.stripeocs?.paymentMethodSelect;
+
+                    return Promise.resolve(checkoutState);
+                },
+            );
+
+            const { rerender } = render(<PaymentMethodTest {...defaultProps} method={method} />);
+
+            act(() => {
+                paymentMethodSelectRef?.('selectedStripeMethodId');
+            });
+
+            const newOnToggleMock = jest.fn();
+
+            accordionContextValues = {
+                onToggle: newOnToggleMock,
+                selectedItemId: 'nonStripeItem',
+            };
+            rerender(<PaymentMethodTest {...defaultProps} method={method} />);
+
+            act(() => {
+                jest.advanceTimersByTime(100);
+            });
+
+            expect(newOnToggleMock).toHaveBeenCalledWith('selectedStripeMethodId');
+        });
+
+        it('cancels a pending delayed onToggle when onToggle changes again before it fires', () => {
+            accordionContextValues = {
+                onToggle: onToggleMock,
+                selectedItemId: 'nonStripeItem',
+            };
+
+            let paymentMethodSelectRef: ((id: string) => void) | undefined;
+
+            jest.spyOn(checkoutService, 'initializePayment').mockImplementation(
+                (options: WithStripeOCSPaymentInitializeOptions) => {
+                    paymentMethodSelectRef = options.stripeocs?.paymentMethodSelect;
+
+                    return Promise.resolve(checkoutState);
+                },
+            );
+
+            const { rerender } = render(<PaymentMethodTest {...defaultProps} method={method} />);
+
+            act(() => {
+                paymentMethodSelectRef?.('selectedStripeMethodId');
+            });
+
+            const firstOnToggleMock = jest.fn();
+
+            accordionContextValues = {
+                onToggle: firstOnToggleMock,
+                selectedItemId: 'nonStripeItem',
+            };
+            rerender(<PaymentMethodTest {...defaultProps} method={method} />);
+
+            const secondOnToggleMock = jest.fn();
+
+            accordionContextValues = {
+                onToggle: secondOnToggleMock,
+                selectedItemId: 'nonStripeItem',
+            };
+            rerender(<PaymentMethodTest {...defaultProps} method={method} />);
+
+            act(() => {
+                jest.advanceTimersByTime(100);
+            });
+
+            expect(firstOnToggleMock).not.toHaveBeenCalled();
+            expect(secondOnToggleMock).toHaveBeenCalledWith('selectedStripeMethodId');
+        });
+
+        it('does not schedule onToggle when selected payment method already matches selectedItemId', () => {
+            let paymentMethodSelectRef: ((id: string) => void) | undefined;
+
+            jest.spyOn(checkoutService, 'initializePayment').mockImplementation(
+                (options: WithStripeOCSPaymentInitializeOptions) => {
+                    paymentMethodSelectRef = options.stripeocs?.paymentMethodSelect;
+
+                    return Promise.resolve(checkoutState);
+                },
+            );
+
+            const { rerender } = render(<PaymentMethodTest {...defaultProps} method={method} />);
+
+            act(() => {
+                paymentMethodSelectRef?.(methodSelectorPrefix);
+            });
+
+            const newOnToggleMock = jest.fn();
+
+            accordionContextValues = {
+                onToggle: newOnToggleMock,
+                selectedItemId: methodSelectorPrefix,
+            };
+            rerender(<PaymentMethodTest {...defaultProps} method={method} />);
+
+            act(() => {
+                jest.advanceTimersByTime(100);
+            });
+
+            expect(newOnToggleMock).not.toHaveBeenCalled();
         });
     });
 

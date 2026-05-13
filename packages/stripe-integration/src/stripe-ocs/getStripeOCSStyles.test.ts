@@ -1,6 +1,6 @@
 import * as domUtils from '@bigcommerce/checkout/dom-utils';
 
-import { getAppearanceForOCSElement, getFonts } from './getStripeOCSStyles';
+import { CheckoutTheme, getAppearanceForOCSElement, getFonts } from './getStripeOCSStyles';
 
 describe('getStripeOCSStyles', () => {
     afterEach(() => {
@@ -115,6 +115,7 @@ describe('getStripeOCSStyles', () => {
                     colorTextPlaceholder: 'black',
                     colorIcon: 'black',
                     fontFamily: 'Monaco, sans-serif',
+                    accordionItemSpacing: '16px',
                 },
                 rules: {
                     '.Input': {
@@ -129,8 +130,6 @@ describe('getStripeOCSStyles', () => {
                         borderBottom: '1px solid black',
                         borderLeft: '1px solid black',
                         borderColor: 'yellow',
-                        marginBottom: '8px',
-                        marginTop: '8px',
                         backgroundColor: '#fcfcfc',
                         boxShadow: 'none',
                         fontSize: '16px',
@@ -171,12 +170,27 @@ describe('getStripeOCSStyles', () => {
                         fill: '#4496f6',
                         stroke: '#4496f6',
                     },
+                    '.ToggleItem': {
+                        borderRadius: '4px',
+                        border: '1px solid black',
+                        backgroundColor: '#fcfcfc',
+                        boxShadow: 'none',
+                        outline: 'none',
+                    },
+                    '.ToggleItem--selected': {
+                        fontWeight: 'bold',
+                        color: 'green',
+                        backgroundColor: '#fcfcfc',
+                        borderColor: '#4496f6',
+                        outline: 'none',
+                        boxShadow: 'none',
+                    },
                 },
             });
         });
 
         it('returns the correct styles for the OCS element and themeV2', () => {
-            expect(getAppearanceForOCSElement(containerId, 'themeV2')).toEqual({
+            expect(getAppearanceForOCSElement(containerId, CheckoutTheme.THEME_V2)).toEqual({
                 variables: {
                     colorPrimary: '0 0 5px rgba(0, 0, 0, 0.5)',
                     colorBackground: 'white',
@@ -186,6 +200,7 @@ describe('getStripeOCSStyles', () => {
                     colorTextPlaceholder: 'black',
                     colorIcon: 'black',
                     fontFamily: 'Monaco, sans-serif',
+                    accordionItemSpacing: '16px',
                 },
                 rules: {
                     '.Input': {
@@ -200,8 +215,6 @@ describe('getStripeOCSStyles', () => {
                         borderBottom: '1px solid black',
                         borderLeft: '1px solid black',
                         borderColor: 'yellow',
-                        marginBottom: '8px',
-                        marginTop: '8px',
                         backgroundColor: '#fcfcfc',
                         boxShadow: 'none',
                         fontSize: '16px',
@@ -241,6 +254,21 @@ describe('getStripeOCSStyles', () => {
                     '.RadioIconOuter--checked': {
                         fill: '#4496f6',
                         stroke: '#4496f6',
+                    },
+                    '.ToggleItem': {
+                        borderRadius: '4px',
+                        border: '1px solid black',
+                        backgroundColor: '#fcfcfc',
+                        boxShadow: 'none',
+                        outline: 'none',
+                    },
+                    '.ToggleItem--selected': {
+                        fontWeight: 'bold',
+                        color: 'green',
+                        backgroundColor: '#fcfcfc',
+                        borderColor: '#4496f6',
+                        outline: 'none',
+                        boxShadow: 'none',
                     },
                 },
             });
@@ -285,8 +313,6 @@ describe('getStripeOCSStyles', () => {
                             borderBottom: '1px solid black',
                             borderLeft: '1px solid black',
                             borderColor: 'yellow',
-                            marginBottom: '8px',
-                            marginTop: '8px',
                             backgroundColor: '#fcfcfc',
                             boxShadow: 'none',
                             fontSize: '16px',
@@ -312,6 +338,7 @@ describe('getStripeOCSStyles', () => {
                     colorTextPlaceholder: undefined,
                     colorIcon: undefined,
                     fontFamily: undefined,
+                    accordionItemSpacing: '0px',
                 },
                 rules: {
                     '.Input': {
@@ -326,8 +353,6 @@ describe('getStripeOCSStyles', () => {
                         borderBottom: undefined,
                         borderLeft: undefined,
                         borderColor: undefined,
-                        marginBottom: undefined,
-                        marginTop: undefined,
                         backgroundColor: undefined,
                         boxShadow: 'none',
                         fontSize: undefined,
@@ -368,6 +393,20 @@ describe('getStripeOCSStyles', () => {
                         stroke: undefined,
                         fill: undefined,
                     },
+                    '.ToggleItem': {
+                        borderRadius: '4px',
+                        border: undefined,
+                        backgroundColor: undefined,
+                        boxShadow: 'none',
+                        outline: 'none',
+                    },
+                    '.ToggleItem--selected': {
+                        fontWeight: 'bold',
+                        color: undefined,
+                        backgroundColor: undefined,
+                        outline: 'none',
+                        boxShadow: 'none',
+                    },
                 },
             });
         });
@@ -402,7 +441,7 @@ describe('getStripeOCSStyles', () => {
                 },
             });
 
-            expect(getAppearanceForOCSElement(containerId, 'themeV2')).toEqual(
+            expect(getAppearanceForOCSElement(containerId, CheckoutTheme.THEME_V2)).toEqual(
                 expect.objectContaining({
                     rules: expect.objectContaining({
                         '.RadioIconInner': {
@@ -424,7 +463,7 @@ describe('getStripeOCSStyles', () => {
                 },
             });
 
-            expect(getAppearanceForOCSElement(containerId, 'themeV2')).toEqual(
+            expect(getAppearanceForOCSElement(containerId, CheckoutTheme.THEME_V2)).toEqual(
                 expect.objectContaining({
                     rules: expect.objectContaining({
                         '.RadioIconInner': {
@@ -434,6 +473,123 @@ describe('getStripeOCSStyles', () => {
                     }),
                 }),
             );
+        });
+
+        it('sums accordion header top and bottom margins into accordionItemSpacing', () => {
+            mockGetAppliedStyles({
+                ...defaultStyles,
+                [`#${containerId}--accordion-header-selected`]: {
+                    ...defaultStyles[`#${containerId}--accordion-header-selected`],
+                    'margin-top': '5px',
+                    'margin-bottom': '7px',
+                },
+            });
+
+            expect(getAppearanceForOCSElement(containerId)).toEqual(
+                expect.objectContaining({
+                    variables: expect.objectContaining({
+                        accordionItemSpacing: '12px',
+                    }),
+                }),
+            );
+        });
+
+        it('falls back to 0px accordionItemSpacing when margins are missing', () => {
+            mockGetAppliedStyles({
+                ...defaultStyles,
+                [`#${containerId}--accordion-header-selected`]: {
+                    ...defaultStyles[`#${containerId}--accordion-header-selected`],
+                    'margin-top': undefined,
+                    'margin-bottom': undefined,
+                },
+            });
+
+            expect(getAppearanceForOCSElement(containerId)).toEqual(
+                expect.objectContaining({
+                    variables: expect.objectContaining({
+                        accordionItemSpacing: '0px',
+                    }),
+                }),
+            );
+        });
+
+        it('uses hardcoded 4px ToggleItem border radius and radio inner color for selected border in default theme', () => {
+            expect(getAppearanceForOCSElement(containerId)).toEqual(
+                expect.objectContaining({
+                    rules: expect.objectContaining({
+                        '.ToggleItem': expect.objectContaining({
+                            borderRadius: '4px',
+                        }),
+                        '.ToggleItem--selected': expect.objectContaining({
+                            borderColor: '#4496f6',
+                        }),
+                    }),
+                }),
+            );
+        });
+
+        it('uses form checklist border radius and accordion selected border color for ToggleItem in themeV2', () => {
+            mockGetAppliedStyles({
+                ...defaultStyles,
+                [`#${containerId}--accordion-header.optimizedCheckout-form-checklist-item`]: {
+                    ...defaultStyles[
+                        `#${containerId}--accordion-header.optimizedCheckout-form-checklist-item`
+                    ],
+                    'border-radius': '12px',
+                },
+                [`#${containerId}--accordion-header-selected`]: {
+                    ...defaultStyles[`#${containerId}--accordion-header-selected`],
+                    'border-color': '#abcdef',
+                },
+            });
+
+            expect(getAppearanceForOCSElement(containerId, CheckoutTheme.THEME_V2)).toEqual(
+                expect.objectContaining({
+                    rules: expect.objectContaining({
+                        '.ToggleItem': expect.objectContaining({
+                            borderRadius: '12px',
+                        }),
+                        '.ToggleItem--selected': expect.objectContaining({
+                            borderColor: '#abcdef',
+                        }),
+                    }),
+                }),
+            );
+        });
+
+        it('omits ToggleItem borderRadius for themeV2 when form checklist border radius is missing', () => {
+            mockGetAppliedStyles({
+                ...defaultStyles,
+                [`#${containerId}--accordion-header.optimizedCheckout-form-checklist-item`]: {
+                    ...defaultStyles[
+                        `#${containerId}--accordion-header.optimizedCheckout-form-checklist-item`
+                    ],
+                    'border-radius': undefined,
+                },
+            });
+
+            const appearance = getAppearanceForOCSElement(containerId, CheckoutTheme.THEME_V2);
+
+            expect(appearance.rules?.['.ToggleItem']).not.toHaveProperty('borderRadius');
+        });
+
+        it('omits ToggleItem--selected borderColor for default theme when radio inner background is missing', () => {
+            mockGetAppliedStyles({
+                ...defaultStyles,
+                [`#${containerId}--accordion-header-selected .form-label::after`]: {
+                    ...defaultStyles[
+                        `#${containerId}--accordion-header-selected .form-label::after`
+                    ],
+                    'background-color': undefined,
+                },
+                '.form-checklist-header--selected .form-label::after': {
+                    'background-color': undefined,
+                },
+            });
+
+            const appearance = getAppearanceForOCSElement(containerId);
+
+            expect(appearance.rules?.['.ToggleItem--selected']).not.toHaveProperty('borderColor');
         });
     });
 });
