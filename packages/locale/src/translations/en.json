@@ -200,6 +200,9 @@
             "unsupported_error": "The following payment methods are not supported by Embedded Checkout: {methods}. Please contact us for assistance."
         },
         "payment": {
+            "po_number_label": "PO Number / Reference Number",
+            "po_number_optional": "(Optional)",
+            "po_number_required_error": "PO Number / Reference Number is required.",
             "affirm_name_text": "Affirm",
             "affirm_display_name_text": "Pay over time",
             "affirm_body_text": "You will be redirected to Affirm to securely complete your purchase. Just fill out a few pieces of basic information and get a real-time decision. Checking your eligibility won't affect your credit score.",

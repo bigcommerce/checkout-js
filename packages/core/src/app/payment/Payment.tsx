@@ -38,6 +38,7 @@ import { type ObjectSchema } from 'yup';
 import {
     type AnalyticsContextProps,
     type CheckoutContextProps,
+    useCapabilities,
 } from '@bigcommerce/checkout/contexts';
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
@@ -46,6 +47,7 @@ import { ChecklistSkeleton } from '@bigcommerce/checkout/ui';
 
 import { withAnalytics } from '../analytics';
 import { withCheckout } from '../checkout';
+import useB2BToken from '../checkout/hooks/useB2BToken';
 import {
     ErrorModal,
     type ErrorModalOnCloseProps,
@@ -57,11 +59,13 @@ import { EMPTY_ARRAY, isExperimentEnabled } from '../common/utility';
 import { TermsConditionsType } from '../termsConditions';
 
 import CartStockPositionsChangedModal from './CartStockPositionsChangedModal';
+import usePoConfig from './hooks/usePoConfig';
 import mapSubmitOrderErrorMessage, { mapSubmitOrderErrorTitle } from './mapSubmitOrderErrorMessage';
 import mapToOrderRequestBody from './mapToOrderRequestBody';
 import PaymentContext from './PaymentContext';
 import PaymentForm from './PaymentForm';
 import { getUniquePaymentMethodId, PaymentMethodProviderType } from './paymentMethod';
+import { getPoNumber } from './paymentMethod/poNumberStorage';
 import { getFilteredPaymentMethodsWithDefault } from './paymentMethodFilters';
 
 export interface PaymentProps {
@@ -133,6 +137,18 @@ const Payment = (
     });
 
     const [isCartStockRefreshComplete, setIsCartStockRefreshComplete] = useState(false);
+
+    const { poConfig, fetchPoConfig } = usePoConfig();
+    const {
+        userJourney: { requiresB2BToken },
+    } = useCapabilities();
+    const { b2bToken } = useB2BToken();
+
+    useEffect(() => {
+        if (requiresB2BToken && b2bToken) {
+            void fetchPoConfig();
+        }
+    }, [requiresB2BToken, b2bToken]);
 
     const isReadyRef = useRef(state.isReady);
     const grandTotalChangeUnsubscribe = useRef<() => void>();
@@ -399,6 +415,18 @@ const Payment = (
 
             if (customSubmit) {
                 return customSubmit(values);
+            }
+
+            const isPoRequired =
+                selectedMethod?.id === 'cheque' &&
+                poConfig?.enabled &&
+                poConfig?.required &&
+                isPaymentDataRequired();
+
+            if (isPoRequired && !getPoNumber()) {
+                return handleError(
+                    new Error(props.language.translate('payment.po_number_required_error')),
+                );
             }
 
             try {
