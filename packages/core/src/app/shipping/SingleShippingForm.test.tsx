@@ -11,34 +11,36 @@ import { getAddressFormFields } from '../address/formField.mock';
 import { createErrorLogger } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
 
+import { useShipping } from './hooks/useShipping';
+import { getUseShippingTestMock } from './hooks/useShipping.mock';
 import { getShippingAddress } from './shipping-addresses.mock';
 import SingleShippingForm, { type SingleShippingFormProps } from './SingleShippingForm';
+
+jest.mock('./hooks/useShipping');
 
 describe('SingleShippingForm', () => {
     const checkoutService = createCheckoutService();
     const extensionService = new ExtensionService(checkoutService, createErrorLogger());
     const addressFormFields = getAddressFormFields().filter(({ custom }) => !custom);
 
+    const mockUseShipping = useShipping as jest.MockedFunction<typeof useShipping>;
+
+    const defaultUseShippingValues = getUseShippingTestMock();
+
+    beforeEach(() => {
+        mockUseShipping.mockReturnValue(defaultUseShippingValues);
+    });
+
     const defaultProps: SingleShippingFormProps = {
-        isMultiShippingMode: false,
         shippingAddress: getShippingAddress(),
         customerMessage: '',
-        shouldShowOrderComments: true,
-        consignments: [],
         cartHasChanged: false,
         isBillingSameAsShipping: false,
         isInitialValueLoaded: true,
-        isLoading: false,
-        isShippingStepPending: false,
         shippingFormRenderTimestamp: undefined,
         onSubmit: jest.fn(),
         getFields: jest.fn(() => addressFormFields),
         onUnhandledError: jest.fn(),
-        deinitialize: jest.fn(),
-        signOut: jest.fn(),
-        initialize: jest.fn(),
-        updateAddress: jest.fn(),
-        deleteConsignments: jest.fn(),
         validateMaxLength: false,
     };
 
@@ -68,9 +70,10 @@ describe('SingleShippingForm', () => {
     };
 
     it('calls updateAddress with last event during a given timeframe', async () => {
-        const updateAddress = jest.fn();
+        const updateShippingAddress = jest.fn();
 
-        renderSingleShippingFormComponent({ updateAddress });
+        mockUseShipping.mockReturnValue({ ...defaultUseShippingValues, updateShippingAddress });
+        renderSingleShippingFormComponent();
 
         await userEvent.clear(screen.getByTestId('addressLine1Input-text'));
         await userEvent.keyboard('foo 1');
@@ -80,8 +83,8 @@ describe('SingleShippingForm', () => {
 
         await new Promise((resolve) => setTimeout(resolve, waitingDelay));
 
-        expect(updateAddress).toHaveBeenCalledTimes(1);
-        expect(updateAddress).toHaveBeenCalledWith(
+        expect(updateShippingAddress).toHaveBeenCalledTimes(1);
+        expect(updateShippingAddress).toHaveBeenCalledWith(
             {
                 ...getShippingAddress(),
                 address1: 'foo 2',
@@ -97,10 +100,10 @@ describe('SingleShippingForm', () => {
     });
 
     it('calls updateAddress if modified field does not affect shipping but makes form valid', async () => {
-        const updateAddress = jest.fn();
+        const updateShippingAddress = jest.fn();
 
+        mockUseShipping.mockReturnValue({ ...defaultUseShippingValues, updateShippingAddress });
         renderSingleShippingFormComponent({
-            updateAddress,
             getFields: () => [
                 ...addressFormFields.map((field) => ({ ...field, required: true })),
             ],
@@ -111,8 +114,8 @@ describe('SingleShippingForm', () => {
 
         await new Promise((resolve) => setTimeout(resolve, waitingDelay));
 
-        expect(updateAddress).toHaveBeenCalledTimes(1);
-        expect(updateAddress).toHaveBeenCalledWith(
+        expect(updateShippingAddress).toHaveBeenCalledTimes(1);
+        expect(updateShippingAddress).toHaveBeenCalledWith(
             {
                 ...getShippingAddress(),
                 address2: 'foo 1',
@@ -128,17 +131,18 @@ describe('SingleShippingForm', () => {
     });
 
     it('calls updateAddress including shipping options if modified field does not affect shipping but has never requested shipping options', async () => {
-        const updateAddress = jest.fn();
+        const updateShippingAddress = jest.fn();
 
-        renderSingleShippingFormComponent({ updateAddress });
+        mockUseShipping.mockReturnValue({ ...defaultUseShippingValues, updateShippingAddress });
+        renderSingleShippingFormComponent();
 
         await userEvent.clear(screen.getByTestId('addressLine2Input-text'));
         await userEvent.keyboard('foo 1');
 
         await new Promise((resolve) => setTimeout(resolve, waitingDelay));
 
-        expect(updateAddress).toHaveBeenCalledTimes(1);
-        expect(updateAddress).toHaveBeenCalledWith(
+        expect(updateShippingAddress).toHaveBeenCalledTimes(1);
+        expect(updateShippingAddress).toHaveBeenCalledWith(
             {
                 ...getShippingAddress(),
                 address2: 'foo 1',
@@ -154,10 +158,10 @@ describe('SingleShippingForm', () => {
     });
 
     it('calls updateAddress including shipping options if custom form fields are updated', async () => {
-        const updateAddress = jest.fn();
+        const updateShippingAddress = jest.fn();
 
+        mockUseShipping.mockReturnValue({ ...defaultUseShippingValues, updateShippingAddress });
         renderSingleShippingFormComponent({
-            updateAddress,
             getFields: () => [
                 ...addressFormFields,
                 {
@@ -178,8 +182,8 @@ describe('SingleShippingForm', () => {
 
         await new Promise((resolve) => setTimeout(resolve, waitingDelay));
 
-        expect(updateAddress).toHaveBeenCalledTimes(1);
-        expect(updateAddress).toHaveBeenCalledWith(
+        expect(updateShippingAddress).toHaveBeenCalledTimes(1);
+        expect(updateShippingAddress).toHaveBeenCalledWith(
             {
                 ...getShippingAddress(),
                 customFields: [
@@ -200,9 +204,10 @@ describe('SingleShippingForm', () => {
     });
 
     it('calls updateAddress without shipping options if modified field does not affect shipping and shipping options have already been requested', async () => {
-        const updateAddress = jest.fn();
+        const updateShippingAddress = jest.fn();
 
-        renderSingleShippingFormComponent({ updateAddress });
+        mockUseShipping.mockReturnValue({ ...defaultUseShippingValues, updateShippingAddress });
+        renderSingleShippingFormComponent();
 
         await userEvent.clear(screen.getByTestId('addressLine2Input-text'));
         await userEvent.keyboard('foo1');
@@ -214,7 +219,7 @@ describe('SingleShippingForm', () => {
 
         await new Promise((resolve) => setTimeout(resolve, waitingDelay));
 
-        expect(updateAddress).toHaveBeenCalledWith(
+        expect(updateShippingAddress).toHaveBeenCalledWith(
             {
                 ...getShippingAddress(),
                 address2: 'foo2',
@@ -230,21 +235,23 @@ describe('SingleShippingForm', () => {
     });
 
     it('does not call updateAddress if modified field produces invalid address', async () => {
-        const updateAddress = jest.fn();
+        const updateShippingAddress = jest.fn();
 
-        renderSingleShippingFormComponent({ updateAddress });
+        mockUseShipping.mockReturnValue({ ...defaultUseShippingValues, updateShippingAddress });
+        renderSingleShippingFormComponent();
 
         await userEvent.clear(screen.getByTestId('addressLine1Input-text'));
 
         await new Promise((resolve) => setTimeout(resolve, waitingDelay));
 
-        expect(updateAddress).not.toHaveBeenCalled();
+        expect(updateShippingAddress).not.toHaveBeenCalled();
     });
 
     it('does not call updateAddress if same address', async () => {
-        const updateAddress = jest.fn();
+        const updateShippingAddress = jest.fn();
 
-        renderSingleShippingFormComponent({ updateAddress });
+        mockUseShipping.mockReturnValue({ ...defaultUseShippingValues, updateShippingAddress });
+        renderSingleShippingFormComponent();
 
         const shippingCountry = defaultProps.shippingAddress?.country || '';
         const countryLastChar = shippingCountry.charAt(shippingCountry.length - 1);
@@ -254,15 +261,15 @@ describe('SingleShippingForm', () => {
 
         await new Promise((resolve) => setTimeout(resolve, waitingDelay));
 
-        expect(updateAddress).not.toHaveBeenCalled();
+        expect(updateShippingAddress).not.toHaveBeenCalled();
     });
 
     it('calls update address for amazon pay if required custom fields are filled out', async () => {
-        const updateAddress = jest.fn();
+        const updateShippingAddress = jest.fn();
 
+        mockUseShipping.mockReturnValue({ ...defaultUseShippingValues, updateShippingAddress });
         renderSingleShippingFormComponent({
             methodId: 'amazonpay',
-            updateAddress,
             getFields: () => [
                 ...addressFormFields,
                 {
@@ -283,8 +290,8 @@ describe('SingleShippingForm', () => {
 
         await new Promise((resolve) => setTimeout(resolve, waitingDelay));
 
-        expect(updateAddress).toHaveBeenCalledTimes(1);
-        expect(updateAddress).toHaveBeenCalledWith(
+        expect(updateShippingAddress).toHaveBeenCalledTimes(1);
+        expect(updateShippingAddress).toHaveBeenCalledWith(
             {
                 ...getShippingAddress(),
                 customFields: [
@@ -305,11 +312,11 @@ describe('SingleShippingForm', () => {
     });
 
     it('does not update address for amazon pay if required custom fields is left empty', async () => {
-        const updateAddress = jest.fn();
+        const updateShippingAddress = jest.fn();
 
+        mockUseShipping.mockReturnValue({ ...defaultUseShippingValues, updateShippingAddress });
         renderSingleShippingFormComponent({
             methodId: 'amazonpay',
-            updateAddress,
             getFields: () => [
                 ...addressFormFields,
                 {
@@ -329,7 +336,7 @@ describe('SingleShippingForm', () => {
 
         await new Promise((resolve) => setTimeout(resolve, waitingDelay));
 
-        expect(updateAddress).not.toHaveBeenCalled();
+        expect(updateShippingAddress).not.toHaveBeenCalled();
     });
 
     it('does not render billing same as shipping checkbox for amazon pay', async () => {
@@ -393,19 +400,17 @@ describe('SingleShippingForm', () => {
             message: 'Cart is empty',
         } as any;
 
-        const updateAddress = jest.fn().mockRejectedValue(emptyCartError);
+        const updateShippingAddress = jest.fn().mockRejectedValue(emptyCartError);
 
-        renderSingleShippingFormComponent({
-            updateAddress,
-            onUnhandledError,
-        });
+        mockUseShipping.mockReturnValue({ ...defaultUseShippingValues, updateShippingAddress });
+        renderSingleShippingFormComponent({ onUnhandledError });
 
         await userEvent.clear(screen.getByTestId('addressLine1Input-text'));
         await userEvent.keyboard('foo 1');
 
         await new Promise((resolve) => setTimeout(resolve, waitingDelay));
 
-        expect(updateAddress).toHaveBeenCalled();
+        expect(updateShippingAddress).toHaveBeenCalled();
         expect(onUnhandledError).toHaveBeenCalledWith(emptyCartError);
     });
 });
