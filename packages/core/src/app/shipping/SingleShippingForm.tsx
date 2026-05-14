@@ -1,12 +1,6 @@
 import {
     type Address,
-    type CheckoutParams,
-    type CheckoutSelectors,
-    type Consignment,
     type FormField,
-    type RequestOptions,
-    type ShippingInitializeOptions,
-    type ShippingRequestOptions,
 } from '@bigcommerce/checkout-sdk';
 import { type FormikProps } from 'formik';
 import { debounce, type DebouncedFunc, isEqual, noop } from 'lodash';
@@ -33,6 +27,7 @@ import { PaymentMethodId } from '../payment/paymentMethod';
 
 import BillingSameAsShippingField from './BillingSameAsShippingField';
 import hasSelectedShippingOptions from './hasSelectedShippingOptions';
+import { useShipping } from './hooks/useShipping';
 import isSelectedShippingOptionValid from './isSelectedShippingOptionValid';
 import ShippingAddress from './ShippingAddress';
 import { SHIPPING_ADDRESS_FIELDS } from './ShippingAddressFields';
@@ -41,28 +36,16 @@ import ShippingFormFooter from './ShippingFormFooter';
 export interface SingleShippingFormProps {
     isBillingSameAsShipping: boolean;
     cartHasChanged: boolean;
-    consignments: Consignment[];
     customerMessage: string;
-    defaultShippingExpectationMessage?: string;
-    isLoading: boolean;
-    isShippingStepPending: boolean;
     methodId?: string;
     shippingAddress?: Address;
     shippingAutosaveDelay?: number;
-    shouldShowOrderComments: boolean;
     isInitialValueLoaded: boolean;
     shippingFormRenderTimestamp?: number;
     validateMaxLength: boolean;
-    deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
-    deleteConsignments(): Promise<Address | undefined>;
     getFields(countryCode?: string): FormField[];
-    initialize(options: ShippingInitializeOptions): Promise<CheckoutSelectors>;
     onSubmit(values: SingleShippingFormValues): void;
     onUnhandledError?(error: Error): void;
-    updateAddress(
-        address: Partial<Address>,
-        options?: RequestOptions<CheckoutParams>,
-    ): Promise<CheckoutSelectors>;
 }
 
 export interface SingleShippingFormValues {
@@ -88,16 +71,10 @@ const SingleShippingForm: React.FC<
     SingleShippingFormProps & WithLanguageProps & FormikProps<SingleShippingFormValues>
 > = ({
         cartHasChanged,
-        consignments,
         customerMessage,
-        deinitialize,
-        deleteConsignments,
         getFields,
-        initialize,
         isBillingSameAsShipping,
         isInitialValueLoaded,
-        isLoading,
-        isShippingStepPending,
         isValid,
         methodId,
         onUnhandledError = noop,
@@ -107,12 +84,20 @@ const SingleShippingForm: React.FC<
         shippingAutosaveDelay = SHIPPING_AUTOSAVE_DELAY,
         shippingFormRenderTimestamp,
         validateMaxLength,
-        defaultShippingExpectationMessage,
-        shouldShowOrderComments,
-        updateAddress,
         values,
     }) => {
     const { shipping: { hideBillingSameAsShippingCheck } } = useCapabilities();
+    const {
+        consignments,
+        deinitializeShippingMethod: deinitialize,
+        deleteConsignments,
+        initializeShippingMethod: initialize,
+        isLoading,
+        isShippingStepPending,
+        defaultShippingExpectationMessage,
+        shouldShowOrderComments,
+        updateShippingAddress: updateAddress,
+    } = useShipping();
 
     const propsRef = useRef({ values, shippingAddress, isValid });
     const debouncedUpdateAddressRef = useRef<

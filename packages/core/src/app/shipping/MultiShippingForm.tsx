@@ -23,20 +23,18 @@ export interface MultiShippingFormProps {
     cartHasChanged: boolean;
     customerMessage: string;
     defaultCountryCode?: string;
-    isLoading: boolean;
     onUnhandledError(error: Error): void;
     onSubmit(values: MultiShippingFormValues): void;
 }
 
 const MultiShippingForm: FunctionComponent<MultiShippingFormProps> = ({
     defaultCountryCode,
-    isLoading,
     onUnhandledError,
     cartHasChanged,
 }: MultiShippingFormProps) => {
     const [errorConsignmentNumber, setErrorConsignmentNumber] = useState<number | undefined>();
     
-    const { consignments, shouldShowOrderComments, shippingQuoteFailedMessage } = useShipping();
+    const { consignments, shouldShowOrderComments, shippingQuoteFailedMessage, isLoading } = useShipping();
     const { unassignedItems: { lineItems: unassignedLineItems, shippableItemsCount }, consignmentList } = useMultiShippingConsignmentItems();
 
     const [isAddShippingDestination, setIsAddShippingDestination] = useState(
