@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { createSelector } from 'reselect';
 
 import { type CheckoutContextProps, useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
@@ -12,28 +12,21 @@ import getShippableItemsCount from '../getShippableItemsCount';
 import getShippingMethodId from '../getShippingMethodId';
 import hasPromotionalItems from '../hasPromotionalItems';
 
+const deleteConsignmentsSelector = createSelector(
+    ({ checkoutService: { deleteConsignment } }: CheckoutContextProps) => deleteConsignment,
+    ({ checkoutState: { data } }: CheckoutContextProps) => data.getConsignments(),
+    (deleteConsignment, consignments) => async () => {
+        if (!consignments || !consignments.length) {
+            return;
+        }
+
+        const [{ data }] = await Promise.all(consignments.map(({ id }) => deleteConsignment(id)));
+
+        return data.getShippingAddress();
+    },
+);
+
 export const useShipping = () => {
-    const deleteConsignmentsSelector = useMemo(
-        () =>
-            createSelector(
-                ({ checkoutService: { deleteConsignment } }: CheckoutContextProps) =>
-                    deleteConsignment,
-                ({ checkoutState: { data } }: CheckoutContextProps) => data.getConsignments(),
-                (deleteConsignment, consignments) => async () => {
-                    if (!consignments || !consignments.length) {
-                        return;
-                    }
-
-                    const [{ data }] = await Promise.all(
-                        consignments.map(({ id }) => deleteConsignment(id)),
-                    );
-
-                    return data.getShippingAddress();
-                },
-            ),
-        [],
-    );
-
     const { checkoutState, checkoutService } = useCheckout();
     const { userJourney: { hasAddressExtraFields } } = useCapabilities();
 
