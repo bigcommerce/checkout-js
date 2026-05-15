@@ -155,9 +155,9 @@ describe('StripeShippingForm', () => {
 
     it('calls updateAddress correctly', async () => {
         const initializeShippingMethod = jest.fn();
-        const updateBillingAddress = jest.fn();
+        const updateShippingAddress = jest.fn();
 
-        mockUseShipping.mockReturnValue({ ...defaultUseShippingValues, initializeShippingMethod, updateBillingAddress });
+        mockUseShipping.mockReturnValue({ ...defaultUseShippingValues, initializeShippingMethod, updateShippingAddress });
 
         const address = {
             line1: '12345 Testing',
@@ -189,7 +189,7 @@ describe('StripeShippingForm', () => {
             await stripeupe.onChangeShipping(shippingChangeEvent);
         });
 
-        expect(updateBillingAddress).toHaveBeenCalledWith({
+        expect(updateShippingAddress).toHaveBeenCalledWith({
             "address1": "12345 Testing",
             "address2": "Main str",
             "city": "City",
@@ -209,9 +209,9 @@ describe('StripeShippingForm', () => {
 
     it('catches an error if something is wrong', async () => {
         const initializeShippingMethod = jest.fn();
-        const updateBillingAddress = jest.fn().mockRejectedValue(new Error('update failed'));
+        const updateShippingAddress = jest.fn().mockRejectedValue(new Error('update failed'));
 
-        mockUseShipping.mockReturnValue({ ...defaultUseShippingValues, initializeShippingMethod, updateBillingAddress });
+        mockUseShipping.mockReturnValue({ ...defaultUseShippingValues, initializeShippingMethod, updateShippingAddress });
 
         const address = {
             line1: '12345 Testing',

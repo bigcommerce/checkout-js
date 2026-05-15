@@ -59,7 +59,7 @@ const StripeShippingForm: React.FC<SingleShippingFormProps & WithLanguageProps &
     deinitializeShippingMethod: deinitialize,
     isLoading: isShippingMethodLoading,
     shouldShowOrderComments,
-    updateBillingAddress: updateAddress 
+    updateShippingAddress: updateAddress,
   } = useShipping();
 
   const [isUpdatingShippingData] = useState(false);
