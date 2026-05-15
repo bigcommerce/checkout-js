@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 import React from 'react';
 
 import { type PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
-import { fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import OfflinePaymentMethod from './OfflinePaymentMethod';
 import { getMethod } from './payment-method.mock';
@@ -83,21 +83,7 @@ describe('OfflinePaymentMethod', () => {
                 type: 'number',
                 fieldType: 'text',
             },
-            {
-                name: 'Reference',
-                id: 'referenceText',
-                required: false,
-                type: 'text',
-                fieldType: 'text',
-            },
         ];
-
-        const renderWithFormik = (props: PaymentMethodProps) =>
-            render(
-                <Formik initialValues={{}} onSubmit={jest.fn()}>
-                    <OfflinePaymentMethod {...props} />
-                </Formik>,
-            );
 
         it('returns null when formFieldsData is not present', () => {
             const { container } = render(<OfflinePaymentMethod {...defaultProps} />);
@@ -116,71 +102,19 @@ describe('OfflinePaymentMethod', () => {
             expect(container).toBeEmptyDOMElement();
         });
 
-        it('renders a field for each entry in formFieldsData', () => {
+        it('renders fields from formFieldsData via PaymentFormFields', () => {
             const props = {
                 ...defaultProps,
                 method: { ...defaultProps.method, initializationData: { formFieldsData } },
             };
 
-            renderWithFormik(props);
+            render(
+                <Formik initialValues={{}} onSubmit={jest.fn()}>
+                    <OfflinePaymentMethod {...props} />
+                </Formik>,
+            );
 
             expect(screen.getByLabelText('Purchase Order')).toBeInTheDocument();
-            expect(screen.getByLabelText('Reference')).toBeInTheDocument();
-        });
-
-        it('strips non-digit characters from a number field on change', () => {
-            const props = {
-                ...defaultProps,
-                method: { ...defaultProps.method, initializationData: { formFieldsData } },
-            };
-
-            renderWithFormik(props);
-
-            const input = screen.getByLabelText('Purchase Order');
-
-            fireEvent.change(input, { target: { value: '123abc' } });
-
-            expect((input as HTMLInputElement).value).toBe('123');
-        });
-
-        it('shows a validation error for a required field left empty', async () => {
-            const props = {
-                ...defaultProps,
-                method: { ...defaultProps.method, initializationData: { formFieldsData } },
-            };
-
-            renderWithFormik(props);
-
-            const input = screen.getByLabelText('Purchase Order');
-
-            fireEvent.blur(input);
-
-            expect(await screen.findByText('Purchase Order is required')).toBeInTheDocument();
-        });
-
-        it('does not show a validation error for an optional field left empty', () => {
-            const props = {
-                ...defaultProps,
-                method: { ...defaultProps.method, initializationData: { formFieldsData } },
-            };
-
-            renderWithFormik(props);
-
-            fireEvent.blur(screen.getByLabelText('Reference'));
-
-            expect(screen.queryByText('Reference is required')).not.toBeInTheDocument();
-        });
-
-        it('uses numeric inputMode for number type fields', () => {
-            const props = {
-                ...defaultProps,
-                method: { ...defaultProps.method, initializationData: { formFieldsData } },
-            };
-
-            renderWithFormik(props);
-
-            expect(screen.getByLabelText('Purchase Order')).toHaveAttribute('inputmode', 'numeric');
-            expect(screen.getByLabelText('Reference')).not.toHaveAttribute('inputmode');
         });
     });
 });

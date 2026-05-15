@@ -22,6 +22,7 @@ export {
 export { SpecificError } from './errors';
 export { getCountryData } from './CountryData';
 export { CaptureMessageComponent } from './CaptureMessageComponent';
+export { getPaymentFormFields, type PaymentFormField } from './PaymentFormFields';
 
 // export types separately
 export type { CountryData } from './CountryData';
