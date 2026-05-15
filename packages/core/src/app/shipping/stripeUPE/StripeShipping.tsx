@@ -36,12 +36,9 @@ const StripeShipping = ({
   const { 
     customerMessage,
     getFields,
-    isLoading: isShippingMethodLoading,
     methodId,
-    updateShippingAddress: updateAddress,
     shippingAddress,
     shouldShowMultiShipping,
-    shouldShowOrderComments,
   } = useShipping();
 
   const [isStripeLoading, setIsStripeLoading] = useState(true);
@@ -75,16 +72,13 @@ const StripeShipping = ({
           isInitialValueLoaded={isInitialValueLoaded}
           isLoading={isLoading}
           isMultiShippingMode={isMultiShippingMode}
-          isShippingMethodLoading={isShippingMethodLoading}
           isStripeAutoStep={handleIsAutoStep}
           isStripeLoading={stripeLoadedCallback}
           methodId={methodId}
           onSubmit={onSubmit}
           onUnhandledError={onUnhandledError}
           shippingAddress={shippingAddress}
-          shouldShowOrderComments={shouldShowOrderComments}
           step={step}
-          updateAddress={updateAddress}
         />
       </div>
     </>
