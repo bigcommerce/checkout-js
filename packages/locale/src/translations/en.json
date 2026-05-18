@@ -112,6 +112,7 @@
             "loading_text": "Loading",
             "missing_shipping_method_heading": "Shipping method unavailable",
             "invalid_shipping_address": "Invalid shipping address",
+            "invalid_billing_address": "Invalid billing address",
             "ok_action": "Ok",
             "error_code": "Error code:",
             "request_id": "Request ID:",

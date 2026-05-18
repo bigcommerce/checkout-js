@@ -82,5 +82,9 @@ export function mapSubmitOrderErrorTitle(
         return translate('common.invalid_shipping_address');
     }
 
+    if (error.type === 'invalid_billing_address') {
+        return translate('common.invalid_billing_address');
+    }
+
     return translate('common.error_heading');
 }

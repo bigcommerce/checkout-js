@@ -319,4 +319,15 @@ describe('mapSubmitOrderErrorTitle()', () => {
 
         expect(title).toEqual(translate('common.invalid_shipping_address'));
     });
+
+    it('returns correct title when error type is "invalid_billing_address"', () => {
+        const title = mapSubmitOrderErrorTitle(
+            {
+                type: 'invalid_billing_address',
+            },
+            translate,
+        );
+
+        expect(title).toEqual(translate('common.invalid_billing_address'));
+    });
 });
