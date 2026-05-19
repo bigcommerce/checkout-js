@@ -157,6 +157,7 @@ export const useShipping = () => {
         updateCheckout: checkoutService.updateCheckout,
         updateShippingAddress: checkoutService.updateShippingAddress,
         updateConsignment: checkoutService.updateConsignment,
+        getConsignments,
         shouldRenderStripeForm: providerWithCustomCheckout === PaymentMethodId.StripeUPE && shouldUseStripeLinkByMinimumAmount(cart),
         validateMaxLength: isExperimentEnabled(config.checkoutSettings, 'CHECKOUT-9768.form_fields_max_length_validation', false),
     };

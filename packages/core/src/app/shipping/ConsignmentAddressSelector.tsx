@@ -1,7 +1,6 @@
 import { type Address, type ConsignmentCreateRequestBody } from "@bigcommerce/checkout-sdk";
 import React, { useState } from "react";
 
-import { useCheckout } from "@bigcommerce/checkout/contexts";
 import { TranslatedString } from "@bigcommerce/checkout/locale";
 
 import {
@@ -44,15 +43,7 @@ const ConsignmentAddressSelector = ({
     const [isOpenNewAddressModal, setIsOpenNewAddressModal] = useState(false);
     const [createCustomerAddressError, setCreateCustomerAddressError] = useState<Error>();
 
-    const {
-        checkoutState: {
-            data: {
-                getConsignments: getPreviousConsignments,
-            },
-        },
-    } = useCheckout();
-
-    const { getFields, selectConsignmentShippingOption, updateConsignment, createCustomerAddress, customer, validateMaxLength } = useShipping();
+    const { getFields, selectConsignmentShippingOption, updateConsignment, createCustomerAddress, customer, validateMaxLength, getConsignments: getPreviousConsignments } = useShipping();
 
     const storageKey = B2BExtraFieldsSessionStorage.getConsignmentKey(consignment?.id ?? '');
 
