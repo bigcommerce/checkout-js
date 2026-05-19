@@ -8,9 +8,7 @@ describe('stripExtraFieldsFromAddress', () => {
     it('removes extraFields from address', () => {
         const address: Address = {
             ...getShippingAddress(),
-            extraFields: [
-                { fieldId: 'b2bExtraField_100', fieldValue: 'Acme Corp' },
-            ],
+            extraFields: [{ fieldId: 'b2bExtraField_100', fieldValue: 'Acme Corp' }],
         };
 
         const result = stripExtraFieldsFromAddress(address);

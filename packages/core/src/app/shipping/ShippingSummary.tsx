@@ -1,4 +1,3 @@
-
 import { type Cart, type Consignment } from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent, memo } from 'react';
 
@@ -19,10 +18,10 @@ const ShippingSummary: FunctionComponent<ShippingSummaryProps> = ({
     isShippingDiscountDisplayEnabled,
     isMultiShippingMode,
     consignments,
-    cart
+    cart,
 }) => {
     const { themeV2 } = useThemeContext();
-    
+
     if (isMultiShippingMode) {
         return (
             <>
@@ -44,15 +43,17 @@ const ShippingSummary: FunctionComponent<ShippingSummaryProps> = ({
         <>
             {consignments.map((consignment) => (
                 <div className="staticConsignmentContainer" key={consignment.id}>
-                    {themeV2 ?
+                    {themeV2 ? (
                         <StaticConsignmentV2
                             consignment={consignment}
                             isShippingDiscountDisplayEnabled={isShippingDiscountDisplayEnabled}
-                        /> : 
+                        />
+                    ) : (
                         <StaticConsignment
                             consignment={consignment}
                             isShippingDiscountDisplayEnabled={isShippingDiscountDisplayEnabled}
-                    />}
+                        />
+                    )}
                 </div>
             ))}
         </>

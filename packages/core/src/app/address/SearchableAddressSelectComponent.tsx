@@ -28,11 +28,14 @@ export const SearchableAddressSelectComponent: FunctionComponent<SearchableAddre
     const [searchQuery, setSearchQuery] = useState('');
 
     const { language } = useLocale();
-    const { 
-        shipping: { restrictManualAddressEntry : restrictManualAddressEntryForShipping }, 
-        billing: { restrictManualAddressEntry : restrictManualAddressEntryForBilling } 
+    const {
+        shipping: { restrictManualAddressEntry: restrictManualAddressEntryForShipping },
+        billing: { restrictManualAddressEntry: restrictManualAddressEntryForBilling },
     } = useCapabilities();
-    const restrictManualAddressEntry = type === AddressType.Shipping ? restrictManualAddressEntryForShipping : restrictManualAddressEntryForBilling;
+    const restrictManualAddressEntry =
+        type === AddressType.Shipping
+            ? restrictManualAddressEntryForShipping
+            : restrictManualAddressEntryForBilling;
 
     const filteredAddresses = useMemo(
         () => searchingAddresses(addresses, searchQuery),
@@ -44,8 +47,11 @@ export const SearchableAddressSelectComponent: FunctionComponent<SearchableAddre
     };
 
     return (
-        <ul className="dropdown-menu instrumentSelect-dropdownMenu searchable-menu" id="addressDropdown">
-            {!restrictManualAddressEntry &&
+        <ul
+            className="dropdown-menu instrumentSelect-dropdownMenu searchable-menu"
+            id="addressDropdown"
+        >
+            {!restrictManualAddressEntry && (
                 <li className="dropdown-menu-item dropdown-menu-item--select">
                     <a
                         data-test="add-new-address"
@@ -55,7 +61,7 @@ export const SearchableAddressSelectComponent: FunctionComponent<SearchableAddre
                         <TranslatedString id="address.enter_address_action" />
                     </a>
                 </li>
-            }
+            )}
             {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
             <li
                 className="dropdown-menu-item"

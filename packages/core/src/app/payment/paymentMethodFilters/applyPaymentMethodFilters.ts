@@ -1,6 +1,9 @@
 import { type PaymentMethod } from '@bigcommerce/checkout-sdk';
 
-import { type PaymentMethodFilter, type PaymentMethodFilterContext } from '@bigcommerce/checkout/payment-integration-api';
+import {
+    type PaymentMethodFilter,
+    type PaymentMethodFilterContext,
+} from '@bigcommerce/checkout/payment-integration-api';
 import { stripeMethodsFiltering } from '@bigcommerce/checkout/stripe-utils';
 
 import { boltAndBraintreeFilter } from './boltAndBraintreeFilter';

@@ -1,13 +1,20 @@
 import React, { type FunctionComponent, useState } from 'react';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
-import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
+import {
+    TranslatedString,
+    withLanguage,
+    type WithLanguageProps,
+} from '@bigcommerce/checkout/locale';
 
 import { type AddressSelectProps } from './AddressSelect';
 import SingleLineStaticAddress from './SingleLineStaticAddress';
 import StaticAddress from './StaticAddress';
 
-type AddressSelectButtonProps = Pick<AddressSelectProps, 'selectedAddress' | 'addresses' | 'type' | 'showSingleLineAddress' | 'placeholderText'>;
+type AddressSelectButtonProps = Pick<
+    AddressSelectProps,
+    'selectedAddress' | 'addresses' | 'type' | 'showSingleLineAddress' | 'placeholderText'
+>;
 
 const AddressSelectButton: FunctionComponent<AddressSelectButtonProps & WithLanguageProps> = ({
     selectedAddress,
@@ -20,15 +27,19 @@ const AddressSelectButton: FunctionComponent<AddressSelectButtonProps & WithLang
 
     const SelectedAddress = () => {
         if (!selectedAddress) {
-            return (<span className="body-regular" data-test="address-select-placeholder">
-                {placeholderText ?? <TranslatedString id="address.enter_address_action" />}
-            </span>);
+            return (
+                <span className="body-regular" data-test="address-select-placeholder">
+                    {placeholderText ?? <TranslatedString id="address.enter_address_action" />}
+                </span>
+            );
         }
 
-        return showSingleLineAddress
-            ? <SingleLineStaticAddress address={selectedAddress} type={type} />
-            : <StaticAddress address={selectedAddress} type={type} />;
-    }
+        return showSingleLineAddress ? (
+            <SingleLineStaticAddress address={selectedAddress} type={type} />
+        ) : (
+            <StaticAddress address={selectedAddress} type={type} />
+        );
+    };
 
     return (
         <a

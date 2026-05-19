@@ -36,13 +36,12 @@ describe('BackorderQuantitiesChangedBanner', () => {
     it('renders a close button', () => {
         render(<BackorderQuantitiesChangedBanner message={defaultMessage} />);
 
-        expect(
-            screen.getByTestId('backorder-quantities-changed-banner-close'),
-        ).toBeInTheDocument();
+        expect(screen.getByTestId('backorder-quantities-changed-banner-close')).toBeInTheDocument();
     });
 
     it('dismisses the banner when close button is clicked', async () => {
         const user = userEvent.setup();
+
         render(<BackorderQuantitiesChangedBanner message={defaultMessage} />);
 
         expect(screen.getByTestId('backorder-quantities-changed-banner')).toBeInTheDocument();

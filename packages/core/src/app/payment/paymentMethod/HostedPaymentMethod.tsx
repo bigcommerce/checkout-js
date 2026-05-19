@@ -77,10 +77,7 @@ class HostedPaymentMethod extends Component<
             await initializePayment({
                 gatewayId: method.gateway,
                 methodId: method.id,
-                integrations: [
-                    createHummPaymentStrategy,
-                    createOffsitePaymentStrategy,
-                ],
+                integrations: [createHummPaymentStrategy, createOffsitePaymentStrategy],
             });
 
             if (isInstrumentFeatureAvailableProp) {

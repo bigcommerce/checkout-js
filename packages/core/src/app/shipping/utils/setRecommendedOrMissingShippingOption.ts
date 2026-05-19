@@ -1,4 +1,8 @@
-import { type CheckoutSelectors, type Consignment, type ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
+import {
+    type CheckoutSelectors,
+    type Consignment,
+    type ShippingRequestOptions,
+} from '@bigcommerce/checkout-sdk';
 
 const createShippingOptionsMap = (consignments: Consignment[]): Map<string, string | undefined> => {
     return new Map(

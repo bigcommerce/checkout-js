@@ -10,7 +10,9 @@ import { withCheckout } from '../checkout';
 import { getSupportedMethodIds } from './getSupportedMethods';
 import resolveCheckoutButton from './resolveCheckoutButton';
 
-const CheckoutButtonV1Resolver = lazy(() => import(/* webpackChunkName: "wallet-button-v1-resolver" */'./WalletButtonV1Resolver'));
+const CheckoutButtonV1Resolver = lazy(
+    () => import(/* webpackChunkName: "wallet-button-v1-resolver" */ './WalletButtonV1Resolver'),
+);
 
 interface CheckoutButtonContainerProps {
     isPaymentStepActive: boolean;
@@ -26,25 +28,22 @@ interface WithCheckoutCheckoutButtonContainerProps {
     isLoading: boolean;
 }
 
-const paypalCommerceIds = [
-    'paypalcommerce',
-    'paypalcommercecredit',
-    'paypalcommercevenmo',
-];
+const paypalCommerceIds = ['paypalcommerce', 'paypalcommercecredit', 'paypalcommercevenmo'];
 
 const isPayPalCommerce = (methodId: string): boolean => paypalCommerceIds.includes(methodId);
 
-const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & WithCheckoutCheckoutButtonContainerProps> = (
-    {
-        availableMethodIds,
-        checkoutService,
-        checkoutState,
-        checkEmbeddedSupport,
-        isLoading,
-        isPaymentStepActive,
-        onUnhandledError,
-        onWalletButtonClick,
-    }) => {
+const CheckoutButtonContainer: FunctionComponent<
+    CheckoutButtonContainerProps & WithCheckoutCheckoutButtonContainerProps
+> = ({
+    availableMethodIds,
+    checkoutService,
+    checkoutState,
+    checkEmbeddedSupport,
+    isLoading,
+    isPaymentStepActive,
+    onUnhandledError,
+    onWalletButtonClick,
+}) => {
     const { language } = useLocale();
 
     try {
@@ -53,59 +52,66 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
         return null;
     }
 
-    const renderButtons = () => availableMethodIds.map((methodId) => {
-        if (isPaymentStepActive && isPayPalCommerce(methodId)) {
-            return null;
-        }
+    const renderButtons = () =>
+        availableMethodIds.map((methodId) => {
+            if (isPaymentStepActive && isPayPalCommerce(methodId)) {
+                return null;
+            }
 
-        const ResolvedCheckoutButton = resolveCheckoutButton(
-            { id: methodId },
-        );
+            const ResolvedCheckoutButton = resolveCheckoutButton({ id: methodId });
 
-        if (!ResolvedCheckoutButton) {
-            return <Suspense key={methodId}>
-                <CheckoutButtonV1Resolver
-                    deinitialize={checkoutService.deinitializeCustomer}
-                    initialize={checkoutService.initializeCustomer}
-                    isShowingWalletButtonsOnTop={true}
-                    key={methodId}
-                    methodId={methodId}
-                    onClick={onWalletButtonClick}
-                    onError={onUnhandledError}
-                />
-            </Suspense>
-        }
+            if (!ResolvedCheckoutButton) {
+                return (
+                    <Suspense key={methodId}>
+                        <CheckoutButtonV1Resolver
+                            deinitialize={checkoutService.deinitializeCustomer}
+                            initialize={checkoutService.initializeCustomer}
+                            isShowingWalletButtonsOnTop={true}
+                            key={methodId}
+                            methodId={methodId}
+                            onClick={onWalletButtonClick}
+                            onError={onUnhandledError}
+                        />
+                    </Suspense>
+                );
+            }
 
-        return <Suspense key={methodId}>
-            <ResolvedCheckoutButton
-                checkoutService={checkoutService}
-                checkoutState={checkoutState}
-                containerId={`${methodId}CheckoutButton`}
-                language={language}
-                methodId={methodId}
-                onUnhandledError={onUnhandledError}
-                onWalletButtonClick={onWalletButtonClick}
-            />
-        </Suspense>;
-    });
+            return (
+                <Suspense key={methodId}>
+                    <ResolvedCheckoutButton
+                        checkoutService={checkoutService}
+                        checkoutState={checkoutState}
+                        containerId={`${methodId}CheckoutButton`}
+                        language={language}
+                        methodId={methodId}
+                        onUnhandledError={onUnhandledError}
+                        onWalletButtonClick={onWalletButtonClick}
+                    />
+                </Suspense>
+            );
+        });
 
     return (
-        <div className='checkout-button-container'
-             style={ isPaymentStepActive ? { position: 'absolute', left: '0', top: '-100%' } : undefined }
+        <div
+            className="checkout-button-container"
+            style={
+                isPaymentStepActive ? { position: 'absolute', left: '0', top: '-100%' } : undefined
+            }
         >
             <p className="sub-header">
                 <TranslatedString id="remote.start_with_text" />
             </p>
-            <div className='checkout-buttons-auto-layout'>
-                <WalletButtonsContainerSkeleton buttonsCount={availableMethodIds.length} isLoading={isLoading}>
-                    <div className="checkoutRemote">
-                        {renderButtons()}
-                    </div>
+            <div className="checkout-buttons-auto-layout">
+                <WalletButtonsContainerSkeleton
+                    buttonsCount={availableMethodIds.length}
+                    isLoading={isLoading}
+                >
+                    <div className="checkoutRemote">{renderButtons()}</div>
                 </WalletButtonsContainerSkeleton>
             </div>
-            <div className='checkout-separator'>
+            <div className="checkout-separator">
                 <span className="sub-header">
-                    <TranslatedString id='remote.or_text' />
+                    <TranslatedString id="remote.or_text" />
                 </span>
             </div>
         </div>
@@ -117,18 +123,10 @@ function mapToCheckoutButtonContainerProps({
     checkoutService,
 }: CheckoutContextProps): WithCheckoutCheckoutButtonContainerProps | null {
     const {
-        data: {
-            getConfig,
-            getCustomer,
-            isPaymentDataRequired,
-        },
-        statuses: {
-            isInitializedCustomer,
-        },
-        errors: {
-            getInitializeCustomerError,
-        }
-     } = checkoutState;
+        data: { getConfig, getCustomer, isPaymentDataRequired },
+        statuses: { isInitializedCustomer },
+        errors: { getInitializeCustomerError },
+    } = checkoutState;
     const config = getConfig();
     const providers = config?.checkoutSettings.remoteCheckoutProviders ?? [];
 
@@ -143,16 +141,18 @@ function mapToCheckoutButtonContainerProps({
         return null;
     }
 
-    const isLoading = availableMethodIds.filter(
-        (methodId) => Boolean(getInitializeCustomerError(methodId)) || isInitializedCustomer(methodId)
-    ).length !== availableMethodIds.length;
+    const isLoading =
+        availableMethodIds.filter(
+            (methodId) =>
+                Boolean(getInitializeCustomerError(methodId)) || isInitializedCustomer(methodId),
+        ).length !== availableMethodIds.length;
 
     return {
         checkoutService,
         checkoutState,
         availableMethodIds,
         isLoading,
-    }
+    };
 }
 
 export default memo(withCheckout(mapToCheckoutButtonContainerProps)(CheckoutButtonContainer));

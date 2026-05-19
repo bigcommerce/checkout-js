@@ -10,7 +10,6 @@ export interface BillingSameAsShippingFieldProps {
 const BillingSameAsShippingField: FunctionComponent<BillingSameAsShippingFieldProps> = ({
     onChange,
 }) => {
-
     const labelContent = useMemo(
         () => <TranslatedString id="billing.use_shipping_address_label" />,
         [],

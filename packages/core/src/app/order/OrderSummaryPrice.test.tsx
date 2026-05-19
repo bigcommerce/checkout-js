@@ -9,7 +9,9 @@ jest.mock('react-transition-group', () => ({
 }));
 
 jest.mock('../currency', () => ({
-    ShopperCurrency: ({ amount }: {amount: number}) => <div data-test="ShopperCurrency">{amount}</div>
+    ShopperCurrency: ({ amount }: { amount: number }) => (
+        <div data-test="ShopperCurrency">{amount}</div>
+    ),
 }));
 
 import OrderSummaryPrice, { type OrderSummaryPriceProps } from './OrderSummaryPrice';
@@ -19,20 +21,18 @@ describe('OrderSummaryPrice', () => {
         jest.spyOn(contexts, 'useCheckout').mockImplementation(
             jest.fn().mockImplementation(() => ({
                 checkoutState: {
-                    data: { getConfig:noop },
+                    data: { getConfig: noop },
                     statuses: {
                         isSubmittingOrder: () => isSubmittingOrder,
-                    }
-                }
-            }))
+                    },
+                },
+            })),
         );
     };
 
-    const renderTestComponent = (
-        props: OrderSummaryPriceProps & { children?: ReactNode }
-    ) => {
+    const renderTestComponent = (props: OrderSummaryPriceProps & { children?: ReactNode }) => {
         return render(<OrderSummaryPrice {...props} />);
-    }
+    };
 
     describe('when has non-zero amount', () => {
         const amount = 10;
@@ -67,7 +67,9 @@ describe('OrderSummaryPrice', () => {
                 expect(baseElement).toMatchSnapshot();
 
                 expect(screen.getByText('(EUR)')).toBeInTheDocument();
-                expect(screen.getByTestId('cart-price-value-superscript')).toHaveTextContent('superscript');
+                expect(screen.getByTestId('cart-price-value-superscript')).toHaveTextContent(
+                    'superscript',
+                );
             });
         });
     });

@@ -17,48 +17,52 @@ export default memoize(function getAddressExtraFieldsValidationSchema({
         extraFields: object(
             formFields
                 .filter((field) => isExtraField(field))
-                .reduce<Record<string, Schema<unknown>>>((schema, { name, label, required, type, maxLength, max }) => {
-                    if (type === 'integer') {
-                        let fieldSchema = number()
-                            .transform((value) => (isNaN(value) ? undefined : value));
-
-                        const maxValue = typeof max === 'number' ? max : undefined;
-
-                        if (maxValue !== undefined) {
-                            fieldSchema = fieldSchema.max(
-                                maxValue,
-                                translate('max', { label, name, max: maxValue }),
+                .reduce<Record<string, Schema<unknown>>>(
+                    (schema, { name, label, required, type, maxLength, max }) => {
+                        if (type === 'integer') {
+                            let fieldSchema = number().transform((value) =>
+                                isNaN(value) ? undefined : value,
                             );
+
+                            const maxValue = typeof max === 'number' ? max : undefined;
+
+                            if (maxValue !== undefined) {
+                                fieldSchema = fieldSchema.max(
+                                    maxValue,
+                                    translate('max', { label, name, max: maxValue }),
+                                );
+                            }
+
+                            if (required) {
+                                fieldSchema = fieldSchema.required(
+                                    translate('required', { name, label }),
+                                );
+                            }
+
+                            schema[name] = fieldSchema;
+                        } else {
+                            let fieldSchema = string();
+
+                            if (required) {
+                                fieldSchema = fieldSchema
+                                    .trim()
+                                    .required(translate('required', { name, label }));
+                            }
+
+                            if (maxLength) {
+                                fieldSchema = fieldSchema.max(
+                                    maxLength,
+                                    translate('max', { label, name, max: maxLength }),
+                                );
+                            }
+
+                            schema[name] = fieldSchema;
                         }
 
-                        if (required) {
-                            fieldSchema = fieldSchema.required(
-                                translate('required', { name, label }),
-                            );
-                        }
-
-                        schema[name] = fieldSchema;
-                    } else {
-                        let fieldSchema = string();
-
-                        if (required) {
-                            fieldSchema = fieldSchema
-                                .trim()
-                                .required(translate('required', { name, label }));
-                        }
-
-                        if (maxLength) {
-                            fieldSchema = fieldSchema.max(
-                                maxLength,
-                                translate('max', { label, name, max: maxLength }),
-                            );
-                        }
-
-                        schema[name] = fieldSchema;
-                    }
-
-                    return schema;
-                }, {}),
+                        return schema;
+                    },
+                    {},
+                ),
         ).nullable(true),
     }) as ObjectSchema<Record<string, any>>;
 });

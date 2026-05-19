@@ -15,7 +15,7 @@ import {
     ExtensionProvider,
     type ExtensionServiceInterface,
     LocaleContext,
-    type LocaleContextType
+    type LocaleContextType,
 } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { render, screen, within } from '@bigcommerce/checkout/test-utils';
@@ -65,7 +65,7 @@ describe('Shipping component', () => {
                 isComplete: true,
                 isEditable: true,
                 isRequired: true,
-                type: CheckoutStepType.Shipping
+                type: CheckoutStepType.Shipping,
             },
         };
 
@@ -152,7 +152,7 @@ describe('Shipping component', () => {
         it('opens confirmation dialog on clicking the link and calls onToggleMultiShipping when confirm is clicked', async () => {
             render(<ComponentTest {...defaultProps} isMultiShippingMode={true} />);
 
-            const shippingModeToggle = await screen.findByTestId("shipping-mode-toggle");
+            const shippingModeToggle = await screen.findByTestId('shipping-mode-toggle');
 
             expect(shippingModeToggle.innerHTML).toBe('Ship to a single address');
 
@@ -161,10 +161,22 @@ describe('Shipping component', () => {
             const confirmationModal = await screen.findByRole('dialog');
 
             expect(confirmationModal).toBeInTheDocument();
-            expect(within(confirmationModal).getByText(localeContext.language.translate('shipping.ship_to_single_action'))).toBeInTheDocument();
-            expect(within(confirmationModal).getByText(localeContext.language.translate('shipping.ship_to_single_message'))).toBeInTheDocument();
+            expect(
+                within(confirmationModal).getByText(
+                    localeContext.language.translate('shipping.ship_to_single_action'),
+                ),
+            ).toBeInTheDocument();
+            expect(
+                within(confirmationModal).getByText(
+                    localeContext.language.translate('shipping.ship_to_single_message'),
+                ),
+            ).toBeInTheDocument();
 
-            await userEvent.click(within(confirmationModal).getByText(localeContext.language.translate('common.proceed_action')));
+            await userEvent.click(
+                within(confirmationModal).getByText(
+                    localeContext.language.translate('common.proceed_action'),
+                ),
+            );
 
             expect(defaultProps.onToggleMultiShipping).toHaveBeenCalled();
         });
@@ -184,26 +196,40 @@ describe('Shipping component', () => {
                             id: '123',
                             quantity: 1,
                             addedByPromotion: true,
-                        }
+                        },
                     ],
                 },
             } as Cart);
 
             render(<ComponentTest {...defaultProps} isMultiShippingMode={false} />);
 
-            const shippingModeToggle = await screen.findByTestId("shipping-mode-toggle");
+            const shippingModeToggle = await screen.findByTestId('shipping-mode-toggle');
 
-            expect(shippingModeToggle.innerHTML).toBe(localeContext.language.translate('shipping.ship_to_multi'));
+            expect(shippingModeToggle.innerHTML).toBe(
+                localeContext.language.translate('shipping.ship_to_multi'),
+            );
 
             await userEvent.click(shippingModeToggle);
 
             const confirmationModal = await screen.findByRole('dialog');
 
             expect(confirmationModal).toBeInTheDocument();
-            expect(within(confirmationModal).getByText(localeContext.language.translate('shipping.multishipping_unavailable_action'))).toBeInTheDocument();
-            expect(within(confirmationModal).getByText(localeContext.language.translate('shipping.multishipping_unavailable_message'))).toBeInTheDocument();
+            expect(
+                within(confirmationModal).getByText(
+                    localeContext.language.translate('shipping.multishipping_unavailable_action'),
+                ),
+            ).toBeInTheDocument();
+            expect(
+                within(confirmationModal).getByText(
+                    localeContext.language.translate('shipping.multishipping_unavailable_message'),
+                ),
+            ).toBeInTheDocument();
 
-            await userEvent.click(within(confirmationModal).getByText(localeContext.language.translate('common.back_action')));
+            await userEvent.click(
+                within(confirmationModal).getByText(
+                    localeContext.language.translate('common.back_action'),
+                ),
+            );
 
             expect(defaultProps.onToggleMultiShipping).not.toHaveBeenCalled();
         });
@@ -223,7 +249,7 @@ describe('Shipping component', () => {
                             id: '123',
                             quantity: 1,
                             addedByPromotion: true,
-                        }
+                        },
                     ],
                 },
             } as Cart);
@@ -233,10 +259,24 @@ describe('Shipping component', () => {
             const confirmationModal = await screen.findByRole('dialog');
 
             expect(confirmationModal).toBeInTheDocument();
-            expect(within(confirmationModal).getByText(localeContext.language.translate('shipping.multishipping_unavailable_action'))).toBeInTheDocument();
-            expect(within(confirmationModal).getByText(localeContext.language.translate('shipping.checkout_switched_to_single_shipping'))).toBeInTheDocument();
+            expect(
+                within(confirmationModal).getByText(
+                    localeContext.language.translate('shipping.multishipping_unavailable_action'),
+                ),
+            ).toBeInTheDocument();
+            expect(
+                within(confirmationModal).getByText(
+                    localeContext.language.translate(
+                        'shipping.checkout_switched_to_single_shipping',
+                    ),
+                ),
+            ).toBeInTheDocument();
 
-            await userEvent.click(within(confirmationModal).getByText(localeContext.language.translate('common.ok_action')));
+            await userEvent.click(
+                within(confirmationModal).getByText(
+                    localeContext.language.translate('common.ok_action'),
+                ),
+            );
 
             expect(defaultProps.onToggleMultiShipping).toHaveBeenCalled();
         });
@@ -254,14 +294,14 @@ describe('Shipping component', () => {
                             ...getPhysicalItem(),
                             id: '123',
                             parentId: getPhysicalItem().id,
-                        }
+                        },
                     ],
                 },
             } as Cart);
 
             render(<ComponentTest {...defaultProps} isMultiShippingMode={false} />);
 
-            expect(screen.queryByTestId("shipping-mode-toggle")).not.toBeInTheDocument();
+            expect(screen.queryByTestId('shipping-mode-toggle')).not.toBeInTheDocument();
         });
     });
 

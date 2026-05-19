@@ -60,12 +60,7 @@ const CustomerStep: React.FC<CustomerStepProps> = ({
             onEdit={onEdit}
             onExpanded={onExpanded}
             suggestion={<CheckoutSuggestion />}
-            summary={
-                <CustomerInfo
-                    onSignOut={onSignOut}
-                    onSignOutError={onSignOutError}
-                />
-            }
+            summary={<CustomerInfo onSignOut={onSignOut} onSignOutError={onSignOutError} />}
         >
             <LazyContainer>
                 <Customer

@@ -13,9 +13,9 @@ describe('shouldShowShippingOptionExpiredError', () => {
     });
 
     it('returns false during a wallet sign-out even when shipping options were lost', () => {
-        expect(
-            shouldShowShippingOptionExpiredError({ ...conditions, isSigningOut: true }),
-        ).toBe(false);
+        expect(shouldShowShippingOptionExpiredError({ ...conditions, isSigningOut: true })).toBe(
+            false,
+        );
     });
 
     it('returns false when shipping options are still present', () => {

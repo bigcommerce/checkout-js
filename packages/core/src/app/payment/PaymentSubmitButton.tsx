@@ -1,13 +1,13 @@
 import classNames from 'classnames';
 import React, { type FunctionComponent, memo } from 'react';
 
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { Button, ButtonSize, ButtonVariant, IconBolt } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../checkout';
 
 import { PaymentMethodId, PaymentMethodType } from './paymentMethod';
-import { useThemeContext } from '@bigcommerce/checkout/contexts';
 
 interface PaymentSubmitButtonTextProps {
     methodGateway?: string;
@@ -74,32 +74,31 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
         }
 
         if (methodType === PaymentMethodType.Paypal) {
-            const continueActionId = methodId === PaymentMethodId.PaypalCommerce
-                ? 'payment.place_order_action'
-                : 'payment.paypal_continue_action';
+            const continueActionId =
+                methodId === PaymentMethodId.PaypalCommerce
+                    ? 'payment.place_order_action'
+                    : 'payment.paypal_continue_action';
 
-            return <TranslatedString
-                data={{ isComplete }}
-                id={isComplete ? 'payment.paypal_complete_action' : continueActionId}
-            />;
+            return (
+                <TranslatedString
+                    data={{ isComplete }}
+                    id={isComplete ? 'payment.paypal_complete_action' : continueActionId}
+                />
+            );
         }
 
         if (methodType === PaymentMethodType.PaypalCredit) {
             const continueTranslationId = brandName
                 ? 'payment.continue_with_brand'
-                : 'payment.paypal_pay_later_continue_action'
+                : 'payment.paypal_pay_later_continue_action';
             const completeTranslationId = brandName
                 ? 'payment.complete_with_brand'
-                : 'payment.paypal_pay_later_complete_action'
+                : 'payment.paypal_pay_later_complete_action';
 
             return (
                 <TranslatedString
                     data={{ brandName, isComplete, continueTranslationId, completeTranslationId }}
-                    id={
-                        isComplete
-                            ? completeTranslationId
-                            : continueTranslationId
-                    }
+                    id={isComplete ? completeTranslationId : continueTranslationId}
                 />
             );
         }
@@ -158,11 +157,12 @@ const PaymentSubmitButton: FunctionComponent<
         <Button
             className={classNames(
                 {
-                    [`payment-submit-button-${methodId}`]: providersWithCustomClasses.includes(methodId as PaymentMethodId)
+                    [`payment-submit-button-${methodId}`]: providersWithCustomClasses.includes(
+                        methodId as PaymentMethodId,
+                    ),
                 },
                 'sub-header',
             )}
-
             data-test="payment-submit-button"
             disabled={isInitializing || isSubmitting || isDisabled}
             id="checkout-payment-continue"

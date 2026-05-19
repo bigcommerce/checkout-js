@@ -5,7 +5,10 @@ import { ErrorLevelType } from '@bigcommerce/checkout/error-handling-utils';
 
 import computeErrorCode from './computeErrorCode';
 import ConsoleErrorLogger from './ConsoleErrorLogger';
-import SentryErrorLogger, { type SentryErrorLoggerOptions, SeverityLevelEnum } from './SentryErrorLogger';
+import SentryErrorLogger, {
+    type SentryErrorLoggerOptions,
+    SeverityLevelEnum,
+} from './SentryErrorLogger';
 
 jest.mock('@bigcommerce/script-loader', () => ({
     getScriptLoader: jest.fn(() => ({
@@ -37,7 +40,10 @@ window.Sentry = mockSentry;
 describe('SentryErrorLogger', () => {
     let config: BrowserOptions;
     let options: SentryErrorLoggerOptions;
-    let mockScriptLoader: Pick<ScriptLoader, 'loadScript' | 'loadScripts' | 'preloadScript' | 'preloadScripts'>;
+    let mockScriptLoader: Pick<
+        ScriptLoader,
+        'loadScript' | 'loadScripts' | 'preloadScript' | 'preloadScripts'
+    >;
 
     beforeEach(() => {
         config = {
@@ -86,11 +92,9 @@ describe('SentryErrorLogger', () => {
                 sampleRate: 0.123,
                 denyUrls: ['polyfill~checkout'],
                 beforeSend: expect.any(Function),
-                integrations: expect.arrayContaining([
-                    expect.any(Object),
-                ]),
+                integrations: expect.arrayContaining([expect.any(Object)]),
                 dsn: 'https://abc@sentry.io/123',
-            })
+            }),
         );
 
         expect(mockSentry.globalHandlersIntegration).toHaveBeenCalledWith({
@@ -100,9 +104,7 @@ describe('SentryErrorLogger', () => {
 
         expect(mockSentry.lazyLoadIntegration).toHaveBeenCalledWith('rewriteFramesIntegration');
 
-        expect(mockSentry.addIntegration).toHaveBeenCalledWith(
-            expect.any(Object)
-        );
+        expect(mockSentry.addIntegration).toHaveBeenCalledWith(expect.any(Object));
     });
 
     it('loads Sentry script from CDN with correct URL', async () => {
@@ -117,7 +119,7 @@ describe('SentryErrorLogger', () => {
                     crossorigin: 'anonymous',
                 },
                 async: false,
-            }
+            },
         );
     });
 
@@ -218,7 +220,7 @@ describe('SentryErrorLogger', () => {
                                 { filename: 'app:///js/app-123.js' },
                                 { filename: 'app:///js/app-456.js' },
                                 { filename: 'https://cdn.foo.bar/js/app-456.js' },
-                            ]
+                            ],
                         },
                         type: 'Error',
                         value: 'test error',
@@ -247,7 +249,7 @@ describe('SentryErrorLogger', () => {
                             frames: [
                                 { filename: 'https://cdn.foo.bar/js/app-123.js' },
                                 { filename: 'https://cdn.foo.bar/js/app-456.js' },
-                            ]
+                            ],
                         },
                         type: 'Error',
                         value: 'test error',
@@ -346,18 +348,34 @@ describe('SentryErrorLogger', () => {
             await logger.log(error, undefined, ErrorLevelType.Info);
             await logger.log(error, undefined, ErrorLevelType.Debug);
 
-            expect(mockSentry.captureException).toHaveBeenNthCalledWith(1, error, expect.objectContaining({
-                level: SeverityLevelEnum.ERROR,
-            }));
-            expect(mockSentry.captureException).toHaveBeenNthCalledWith(2, error, expect.objectContaining({
-                level: SeverityLevelEnum.WARNING,
-            }));
-            expect(mockSentry.captureException).toHaveBeenNthCalledWith(3, error, expect.objectContaining({
-                level: SeverityLevelEnum.INFO,
-            }));
-            expect(mockSentry.captureException).toHaveBeenNthCalledWith(4, error, expect.objectContaining({
-                level: SeverityLevelEnum.DEBUG,
-            }));
+            expect(mockSentry.captureException).toHaveBeenNthCalledWith(
+                1,
+                error,
+                expect.objectContaining({
+                    level: SeverityLevelEnum.ERROR,
+                }),
+            );
+            expect(mockSentry.captureException).toHaveBeenNthCalledWith(
+                2,
+                error,
+                expect.objectContaining({
+                    level: SeverityLevelEnum.WARNING,
+                }),
+            );
+            expect(mockSentry.captureException).toHaveBeenNthCalledWith(
+                3,
+                error,
+                expect.objectContaining({
+                    level: SeverityLevelEnum.INFO,
+                }),
+            );
+            expect(mockSentry.captureException).toHaveBeenNthCalledWith(
+                4,
+                error,
+                expect.objectContaining({
+                    level: SeverityLevelEnum.DEBUG,
+                }),
+            );
         });
 
         it('logs error in console if console logger is provided', async () => {

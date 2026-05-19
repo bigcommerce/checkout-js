@@ -8,8 +8,8 @@ describe('isSelectedShippingOptionValid', () => {
     let consignments: Consignment[];
 
     beforeEach(() => {
-        consignments = [getConsignment()]
-    })
+        consignments = [getConsignment()];
+    });
 
     it('returns true if selected option is in available option', () => {
         expect(isSelectedShippingOptionValid(consignments)).toBe(true);
@@ -20,8 +20,8 @@ describe('isSelectedShippingOptionValid', () => {
             ...getConsignment(),
             selectedShippingOption: {
                 ...getShippingOption(),
-                id: '1'
-            }
+                id: '1',
+            },
         };
 
         consignments.push(consignment2);
@@ -33,15 +33,15 @@ describe('isSelectedShippingOptionValid', () => {
         const customConsignment = {
             ...getConsignment(),
             selectedShippingOption: {
-                id: "",
-                type: "custom",
-                description: "test",
-                imageUrl: "",
+                id: '',
+                type: 'custom',
+                description: 'test',
+                imageUrl: '',
                 cost: 5,
-                transitTime: "",
-                additionalDescription: "",
+                transitTime: '',
+                additionalDescription: '',
                 isRecommended: false,
-            }
+            },
         };
 
         expect(isSelectedShippingOptionValid([customConsignment])).toBe(true);
@@ -51,15 +51,15 @@ describe('isSelectedShippingOptionValid', () => {
         const customConsignment = {
             ...getConsignment(),
             selectedShippingOption: {
-                id: "",
-                type: "custom",
-                description: "test",
-                imageUrl: "",
+                id: '',
+                type: 'custom',
+                description: 'test',
+                imageUrl: '',
                 cost: 5,
-                transitTime: "",
-                additionalDescription: "",
+                transitTime: '',
+                additionalDescription: '',
                 isRecommended: false,
-            }
+            },
         };
 
         consignments.push(customConsignment);
@@ -71,23 +71,23 @@ describe('isSelectedShippingOptionValid', () => {
         const customConsignment = {
             ...getConsignment(),
             selectedShippingOption: {
-                id: "",
-                type: "custom",
-                description: "test",
-                imageUrl: "",
+                id: '',
+                type: 'custom',
+                description: 'test',
+                imageUrl: '',
                 cost: 5,
-                transitTime: "",
-                additionalDescription: "",
+                transitTime: '',
+                additionalDescription: '',
                 isRecommended: false,
-            }
+            },
         };
 
         const invalidConsignment = {
             ...getConsignment(),
             selectedShippingOption: {
                 ...getShippingOption(),
-                id: '1'
-            }
+                id: '1',
+            },
         };
 
         expect(isSelectedShippingOptionValid([customConsignment, invalidConsignment])).toBe(false);

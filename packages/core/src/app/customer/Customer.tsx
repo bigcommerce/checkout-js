@@ -1,11 +1,12 @@
-import {
-    type CustomerCredentials,
-} from '@bigcommerce/checkout-sdk';
+import { type CustomerCredentials } from '@bigcommerce/checkout-sdk';
 import { createBigCommercePaymentsFastlaneCustomerStrategy } from '@bigcommerce/checkout-sdk/integrations/bigcommerce-payments';
 import { createBoltCustomerStrategy } from '@bigcommerce/checkout-sdk/integrations/bolt';
 import { createBraintreeFastlaneCustomerStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
 import { createPayPalCommerceFastlaneCustomerStrategy } from '@bigcommerce/checkout-sdk/integrations/paypal-commerce';
-import { createStripeLinkV2CustomerStrategy, createStripeUPECustomerStrategy } from '@bigcommerce/checkout-sdk/integrations/stripe';
+import {
+    createStripeLinkV2CustomerStrategy,
+    createStripeUPECustomerStrategy,
+} from '@bigcommerce/checkout-sdk/integrations/stripe';
 import { noop } from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
 
@@ -82,7 +83,7 @@ const Customer: React.FC<CustomerProps> = ({
 
     // Initialize draftEmail on mount
     useEffect(() => {
-        setState(prevState => ({
+        setState((prevState) => ({
             ...prevState,
             draftEmail: customerData.data.email,
         }));
@@ -92,8 +93,10 @@ const Customer: React.FC<CustomerProps> = ({
     useEffect(() => {
         const initializeCustomer = async () => {
             try {
-                if (customerData.data.providerWithCustomCheckout && 
-                    customerData.data.providerWithCustomCheckout !== PaymentMethodId.StripeUPE) {
+                if (
+                    customerData.data.providerWithCustomCheckout &&
+                    customerData.data.providerWithCustomCheckout !== PaymentMethodId.StripeUPE
+                ) {
                     // TODO: Split out into separate chunks so they can be lazy loaded
                     await customerData.actions.initializeCustomer({
                         methodId: customerData.data.providerWithCustomCheckout,
@@ -111,7 +114,7 @@ const Customer: React.FC<CustomerProps> = ({
                 onUnhandledError(error);
             }
 
-            setState(prevState => ({ ...prevState, isReady: true }));
+            setState((prevState) => ({ ...prevState, isReady: true }));
             onReady();
         };
 
@@ -123,8 +126,8 @@ const Customer: React.FC<CustomerProps> = ({
         return () => {
             const cleanup = async () => {
                 try {
-                    await customerData.actions.deinitializeCustomer({ 
-                        methodId: customerData.data.providerWithCustomCheckout 
+                    await customerData.actions.deinitializeCustomer({
+                        methodId: customerData.data.providerWithCustomCheckout,
                     });
                 } catch (error) {
                     onUnhandledError(error);
@@ -133,111 +136,152 @@ const Customer: React.FC<CustomerProps> = ({
 
             void cleanup();
         };
-    }, [customerData.actions.deinitializeCustomer, customerData.data.providerWithCustomCheckout, onUnhandledError]);
+    }, [
+        customerData.actions.deinitializeCustomer,
+        customerData.data.providerWithCustomCheckout,
+        onUnhandledError,
+    ]);
 
     // Event handlers converted to useCallback
-    const handleChangeEmail = useCallback((email: string) => {
-        setState(prevState => ({ ...prevState, draftEmail: email }));
-        analyticsTracker.customerEmailEntry(email);
-    }, [analyticsTracker]);
+    const handleChangeEmail = useCallback(
+        (email: string) => {
+            setState((prevState) => ({ ...prevState, draftEmail: email }));
+            analyticsTracker.customerEmailEntry(email);
+        },
+        [analyticsTracker],
+    );
 
-    const handleSignIn = useCallback(async (credentials: CustomerCredentials) => {
-        try {
-          const methodId = customerData.data.providerWithCustomCheckout;
+    const handleSignIn = useCallback(
+        async (credentials: CustomerCredentials) => {
+            try {
+                const methodId = customerData.data.providerWithCustomCheckout;
 
-          await customerData.actions.signIn(credentials, {
-            methodId: methodId !== PaymentMethodId.StripeUPE ? methodId : undefined,
-          });
+                await customerData.actions.signIn(credentials, {
+                    methodId: methodId !== PaymentMethodId.StripeUPE ? methodId : undefined,
+                });
 
-          onSignIn();
+                onSignIn();
 
-          setState((prevState) => ({ ...prevState, draftEmail: undefined }));
-        } catch (error) {
-            onSignInError(error);
-        }
-    }, [customerData.actions.signIn, customerData.data.providerWithCustomCheckout, onSignIn, onSignInError]);
+                setState((prevState) => ({ ...prevState, draftEmail: undefined }));
+            } catch (error) {
+                onSignInError(error);
+            }
+        },
+        [
+            customerData.actions.signIn,
+            customerData.data.providerWithCustomCheckout,
+            onSignIn,
+            onSignInError,
+        ],
+    );
 
-    const handleContinueAsGuest = useCallback(async (formValues: GuestFormValues) => {
-        const email = formValues.email.trim();
-        const updateSubscriptionWhenUnchecked =
-            customerData.data.hasBillingId || customerData.data.defaultShouldSubscribe ? false : undefined;
+    const handleContinueAsGuest = useCallback(
+        async (formValues: GuestFormValues) => {
+            const email = formValues.email.trim();
+            const updateSubscriptionWhenUnchecked =
+                customerData.data.hasBillingId || customerData.data.defaultShouldSubscribe
+                    ? false
+                    : undefined;
 
-        try {
-            const { data } = await customerData.actions.continueAsGuest({
-                email,
-                acceptsMarketingNewsletter:
-                    customerData.data.canSubscribe && formValues.shouldSubscribe
+            try {
+                const { data } = await customerData.actions.continueAsGuest({
+                    email,
+                    acceptsMarketingNewsletter:
+                        customerData.data.canSubscribe && formValues.shouldSubscribe
+                            ? true
+                            : updateSubscriptionWhenUnchecked,
+                    acceptsAbandonedCartEmails: formValues.shouldSubscribe
                         ? true
                         : updateSubscriptionWhenUnchecked,
-                acceptsAbandonedCartEmails: formValues.shouldSubscribe
-                    ? true
-                    : updateSubscriptionWhenUnchecked,
-            });
+                });
 
-            onSubscribeToNewsletter(formValues.shouldSubscribe);
+                onSubscribeToNewsletter(formValues.shouldSubscribe);
 
-            SubscribeSessionStorage.setSubscribeStatus(formValues.shouldSubscribe);
+                SubscribeSessionStorage.setSubscribeStatus(formValues.shouldSubscribe);
 
-            const customer = data.getCustomer();
-            const paymentProviderCustomer = data.getPaymentProviderCustomer();
+                const customer = data.getCustomer();
+                const paymentProviderCustomer = data.getPaymentProviderCustomer();
 
-            if (customer && customer.shouldEncourageSignIn && customer.isGuest && !paymentProviderCustomer?.stripeLinkAuthenticationState) {
-                return onChangeViewType(CustomerViewType.SuggestedLogin);
+                if (
+                    customer &&
+                    customer.shouldEncourageSignIn &&
+                    customer.isGuest &&
+                    !paymentProviderCustomer?.stripeLinkAuthenticationState
+                ) {
+                    return onChangeViewType(CustomerViewType.SuggestedLogin);
+                }
+
+                await executePaymentMethodCheckoutOrContinue();
+
+                setState((prevState) => ({ ...prevState, draftEmail: undefined }));
+            } catch (error) {
+                if (
+                    isErrorWithType(error) &&
+                    (error.type === 'update_subscriptions' ||
+                        error.type === 'payment_method_client_invalid')
+                ) {
+                    setState((prevState) => ({ ...prevState, draftEmail: undefined }));
+                    onContinueAsGuest();
+                }
+
+                if (isErrorWithType(error) && error.type === 'empty_cart') {
+                    return onContinueAsGuestError(error);
+                }
+
+                if (isErrorWithType(error) && error.status === 429) {
+                    return onChangeViewType(CustomerViewType.EnforcedLogin);
+                }
+
+                if (isErrorWithType(error) && error.status === 403) {
+                    return onChangeViewType(CustomerViewType.CancellableEnforcedLogin);
+                }
+
+                onContinueAsGuestError(error);
             }
-
-            await executePaymentMethodCheckoutOrContinue();
-
-            setState(prevState => ({ ...prevState, draftEmail: undefined }));
-        } catch (error) {
-            if (
-                isErrorWithType(error) &&
-                (error.type === 'update_subscriptions' ||
-                    error.type === 'payment_method_client_invalid')
-            ) {
-                setState(prevState => ({ ...prevState, draftEmail: undefined }));
-                onContinueAsGuest();
-            }
-
-            if (isErrorWithType(error) && error.type === 'empty_cart') {
-                return onContinueAsGuestError(error);
-            }
-
-            if (isErrorWithType(error) && error.status === 429) {
-                return onChangeViewType(CustomerViewType.EnforcedLogin);
-            }
-
-            if (isErrorWithType(error) && error.status === 403) {
-                return onChangeViewType(CustomerViewType.CancellableEnforcedLogin);
-            }
-
-            onContinueAsGuestError(error);
-        }
-    }, [customerData, onSubscribeToNewsletter, onChangeViewType, onContinueAsGuest, onContinueAsGuestError]);
+        },
+        [
+            customerData,
+            onSubscribeToNewsletter,
+            onChangeViewType,
+            onContinueAsGuest,
+            onContinueAsGuestError,
+        ],
+    );
 
     const executePaymentMethodCheckoutOrContinue = useCallback(async () => {
-        if (customerData.data.providerWithCustomCheckout && 
-            customerData.data.providerWithCustomCheckout !== PaymentMethodId.StripeUPE) {
+        if (
+            customerData.data.providerWithCustomCheckout &&
+            customerData.data.providerWithCustomCheckout !== PaymentMethodId.StripeUPE
+        ) {
             await customerData.actions.executePaymentMethodCheckout({
                 methodId: customerData.data.providerWithCustomCheckout,
                 continueWithCheckoutCallback: onContinueAsGuest,
                 checkoutPaymentMethodExecuted: (payload) => {
                     analyticsTracker.customerPaymentMethodExecuted(payload);
-                }
+                },
             });
         } else {
             onContinueAsGuest();
         }
-    }, [customerData.actions.executePaymentMethodCheckout, customerData.data.providerWithCustomCheckout, onContinueAsGuest, analyticsTracker]);
+    }, [
+        customerData.actions.executePaymentMethodCheckout,
+        customerData.data.providerWithCustomCheckout,
+        onContinueAsGuest,
+        analyticsTracker,
+    ]);
 
     // Additional event handlers
     const handleShowLogin = useCallback(() => {
         onChangeViewType(CustomerViewType.Login);
     }, [onChangeViewType]);
 
-    const handleCreateAccount = useCallback(async (values: CreateAccountFormValues) => {
-        await customerData.actions.createAccount(mapCreateAccountFromFormValues(values));
-        onAccountCreated();
-    }, [customerData.actions.createAccount, onAccountCreated]);
+    const handleCreateAccount = useCallback(
+        async (values: CreateAccountFormValues) => {
+            await customerData.actions.createAccount(mapCreateAccountFromFormValues(values));
+            onAccountCreated();
+        },
+        [customerData.actions.createAccount, onAccountCreated],
+    );
 
     const handleCancelCreateAccount = useCallback(() => {
         if (customerData.data.createAccountError) {
@@ -259,15 +303,18 @@ const Customer: React.FC<CustomerProps> = ({
         onChangeViewType(CustomerViewType.CreateAccount);
     }, [onChangeViewType]);
 
-    const handleSendLoginEmail = useCallback(async (values: EmailLoginFormValues) => {
-        try {
-            await customerData.actions.sendLoginEmail(values);
-        } catch {
-            // Need to write catch block since one test covers the case when `sendLoginEmail` fails
-        } finally {
-            setState(prevState => ({ ...prevState, hasRequestedLoginEmail: true }));
-        }
-    }, [customerData.actions.sendLoginEmail]);
+    const handleSendLoginEmail = useCallback(
+        async (values: EmailLoginFormValues) => {
+            try {
+                await customerData.actions.sendLoginEmail(values);
+            } catch {
+                // Need to write catch block since one test covers the case when `sendLoginEmail` fails
+            } finally {
+                setState((prevState) => ({ ...prevState, hasRequestedLoginEmail: true }));
+            }
+        },
+        [customerData.actions.sendLoginEmail],
+    );
 
     const handleEmailLoginClicked = useCallback(async () => {
         try {
@@ -275,12 +322,12 @@ const Customer: React.FC<CustomerProps> = ({
                 await handleSendLoginEmail({ email: state.draftEmail });
             }
         } finally {
-            setState(prevState => ({ ...prevState, isEmailLoginFormOpen: true }));
+            setState((prevState) => ({ ...prevState, isEmailLoginFormOpen: true }));
         }
     }, [viewType, state.draftEmail, handleSendLoginEmail]);
 
     const closeEmailLoginFormForm = useCallback(() => {
-        setState(prevState => ({
+        setState((prevState) => ({
             ...prevState,
             isEmailLoginFormOpen: false,
             hasRequestedLoginEmail: false,
@@ -311,7 +358,7 @@ const Customer: React.FC<CustomerProps> = ({
                     sentEmailError={customerData.data.signInEmailError}
                 />
             )}
-            
+
             {shouldRenderLoginForm && (
                 <LoginForm
                     continueAsGuestButtonLabelId="customer.continue_as_guest_action"
@@ -328,7 +375,7 @@ const Customer: React.FC<CustomerProps> = ({
                     viewType={viewType}
                 />
             )}
-            
+
             {shouldRenderGuestForm && (
                 <GuestFormContainer
                     email={state.draftEmail || customerData.data.email}
@@ -343,14 +390,16 @@ const Customer: React.FC<CustomerProps> = ({
                     step={step}
                 />
             )}
-            
+
             {shouldRenderCreateAccountForm && (
                 <CreateAccountForm
                     createAccountError={customerData.data.createAccountError}
                     defaultShouldSubscribe={customerData.data.defaultShouldSubscribe}
                     formFields={customerData.data.customerAccountFields}
                     isCreatingAccount={customerData.data.isCreatingAccount}
-                    isExecutingPaymentMethodCheckout={customerData.data.isExecutingPaymentMethodCheckout}
+                    isExecutingPaymentMethodCheckout={
+                        customerData.data.isExecutingPaymentMethodCheckout
+                    }
                     isFloatingLabelEnabled={customerData.data.isFloatingLabelEnabled}
                     onCancel={handleCancelCreateAccount}
                     onSubmit={handleCreateAccount}

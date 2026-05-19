@@ -5,10 +5,7 @@ export interface CustomChecklistItemProps {
     htmlId?: string;
 }
 
-const CustomChecklistItem: FunctionComponent<CustomChecklistItemProps> = ({
-    content,
-    htmlId,
-}) => {
+const CustomChecklistItem: FunctionComponent<CustomChecklistItemProps> = ({ content, htmlId }) => {
     return (
         <li
             className="form-checklist-item optimizedCheckout-form-checklist-item custom-checklist-item"

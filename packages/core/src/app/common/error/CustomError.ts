@@ -24,7 +24,6 @@ export default class CustomError extends Error {
             this.stack = new Error().stack;
         }
 
-         
         this.data = data;
         this.message = message;
         this.name = name;

@@ -38,7 +38,7 @@ describe('AddressSelect component', () => {
                         {...props}
                     />
                 </LocaleContext.Provider>
-            </CheckoutProvider>
+            </CheckoutProvider>,
         );
     };
 
@@ -150,15 +150,15 @@ describe('AddressSelect component', () => {
             },
         };
 
-        jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(configWithCompanyAddressBook);
+        jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(
+            configWithCompanyAddressBook,
+        );
 
         renderAddressSelect();
 
         fireEvent.click(screen.getByTestId('address-select-button'));
 
-        expect(
-            screen.getByRole('textbox', { name: 'Search addresses' }),
-        ).toBeInTheDocument();
+        expect(screen.getByRole('textbox', { name: 'Search addresses' })).toBeInTheDocument();
     });
 
     describe('storageKey / reading extra fields', () => {
@@ -171,7 +171,7 @@ describe('AddressSelect component', () => {
         it('enriches address with extra fields from session storage when storageKey is provided', () => {
             const onSelectAddress = jest.fn();
 
-            B2BExtraFieldsSessionStorage.setFields(storageKey, { 'b2bExtraField_foo': 'bar' });
+            B2BExtraFieldsSessionStorage.setFields(storageKey, { b2bExtraField_foo: 'bar' });
 
             renderAddressSelect({ onSelectAddress, storageKey });
 
@@ -188,7 +188,7 @@ describe('AddressSelect component', () => {
         it('preserves numeric extra field values without string coercion', () => {
             const onSelectAddress = jest.fn();
 
-            B2BExtraFieldsSessionStorage.setFields(storageKey, { 'b2bExtraField_num': 42 });
+            B2BExtraFieldsSessionStorage.setFields(storageKey, { b2bExtraField_num: 42 });
 
             renderAddressSelect({ onSelectAddress, storageKey });
 
@@ -205,7 +205,7 @@ describe('AddressSelect component', () => {
         it('does not call onSelectAddress when re-selecting an address whose extra fields match session storage', () => {
             const onSelectAddress = jest.fn();
 
-            B2BExtraFieldsSessionStorage.setFields(storageKey, { 'b2bExtraField_foo': 'bar' });
+            B2BExtraFieldsSessionStorage.setFields(storageKey, { b2bExtraField_foo: 'bar' });
 
             const selectedAddress = {
                 ...getCustomer().addresses[0],

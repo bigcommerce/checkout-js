@@ -10,7 +10,9 @@ describe('ManageInstrumentsAlert', () => {
 
         render(<ManageInstrumentsAlert error={error} />);
 
-        expect(screen.getByText(/There was a problem authorizing your request/)).toBeInTheDocument();
+        expect(
+            screen.getByText(/There was a problem authorizing your request/),
+        ).toBeInTheDocument();
     });
 
     it('displays error message caused by client issue', () => {
@@ -18,7 +20,9 @@ describe('ManageInstrumentsAlert', () => {
 
         render(<ManageInstrumentsAlert error={error} />);
 
-        expect(screen.getByText(/payment method no longer exists or cannot be deleted/)).toBeInTheDocument();
+        expect(
+            screen.getByText(/payment method no longer exists or cannot be deleted/),
+        ).toBeInTheDocument();
     });
 
     it('displays error message caused by server issue', () => {

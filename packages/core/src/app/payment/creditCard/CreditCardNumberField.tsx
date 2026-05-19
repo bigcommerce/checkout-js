@@ -49,13 +49,19 @@ interface CreditCardNumberInputProps {
     form: FieldProps<string>['form'];
 }
 
-const CreditCardNumberInput: FunctionComponent<CreditCardNumberInputProps> = ({ field, form }): ReactElement => {
+const CreditCardNumberInput: FunctionComponent<CreditCardNumberInputProps> = ({
+    field,
+    form,
+}): ReactElement => {
     const inputRef = useRef<HTMLInputElement>(null);
     const nextSelectionEndRef = useRef(0);
 
     useEffect(() => {
         if (inputRef.current && inputRef.current.selectionEnd !== nextSelectionEndRef.current) {
-            inputRef.current.setSelectionRange(nextSelectionEndRef.current, nextSelectionEndRef.current);
+            inputRef.current.setSelectionRange(
+                nextSelectionEndRef.current,
+                nextSelectionEndRef.current,
+            );
         }
     });
 

@@ -106,7 +106,7 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
                     const autocompleteItems = toAutocompleteItems(results ?? undefined);
 
                     setItems(autocompleteItems);
-                }
+                },
             );
         });
     };

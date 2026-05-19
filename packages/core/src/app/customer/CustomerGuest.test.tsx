@@ -12,7 +12,12 @@ import { faker } from '@faker-js/faker';
 import userEvent from '@testing-library/user-event';
 import React, { type FunctionComponent } from 'react';
 
-import { AnalyticsProviderMock, CheckoutProvider, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
+import {
+    AnalyticsProviderMock,
+    CheckoutProvider,
+    LocaleContext,
+    type LocaleContextType,
+} from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { getGuestCustomer } from '@bigcommerce/checkout/test-mocks';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
@@ -88,17 +93,20 @@ describe('Customer Guest', () => {
         render(<CustomerTest viewType={CustomerViewType.Guest} {...defaultProps} />);
 
         expect(screen.getByTestId('checkout-customer-guest')).toBeInTheDocument();
-        expect(screen.getByLabelText(
-            localeContext.language.translate('customer.email_label'),
-        )).toBeInTheDocument();
+        expect(
+            screen.getByLabelText(localeContext.language.translate('customer.email_label')),
+        ).toBeInTheDocument();
 
-        await userEvent.type(screen.getByLabelText(
-            localeContext.language.translate('customer.email_label'),
-        ), email);
+        await userEvent.type(
+            screen.getByLabelText(localeContext.language.translate('customer.email_label')),
+            email,
+        );
 
-        await userEvent.click(screen.getByRole('button', {
-            name: localeContext.language.translate('customer.continue')
-        }));
+        await userEvent.click(
+            screen.getByRole('button', {
+                name: localeContext.language.translate('customer.continue'),
+            }),
+        );
 
         expect(checkoutService.continueAsGuest).toHaveBeenCalledWith({
             email,
@@ -113,16 +121,22 @@ describe('Customer Guest', () => {
         expect(screen.getByTestId('checkout-customer-guest')).toBeInTheDocument();
 
         const invalidEmail = 'test@test.';
-        const emailField = screen.getByLabelText(localeContext.language.translate('customer.email_label'));
+        const emailField = screen.getByLabelText(
+            localeContext.language.translate('customer.email_label'),
+        );
 
         expect(emailField).toBeInTheDocument();
         await userEvent.type(emailField, invalidEmail);
 
-        await userEvent.click(screen.getByRole('button', {
-            name: localeContext.language.translate('customer.continue')
-        }));
+        await userEvent.click(
+            screen.getByRole('button', {
+                name: localeContext.language.translate('customer.continue'),
+            }),
+        );
 
-        expect(screen.getByLabelText(localeContext.language.translate('customer.email_invalid_error'))).toBeInTheDocument();
+        expect(
+            screen.getByLabelText(localeContext.language.translate('customer.email_invalid_error')),
+        ).toBeInTheDocument();
 
         expect(checkoutService.continueAsGuest).not.toHaveBeenCalled();
 
@@ -131,9 +145,11 @@ describe('Customer Guest', () => {
         await userEvent.clear(emailField);
         await userEvent.type(emailField, email);
 
-        await userEvent.click(screen.getByRole('button', {
-            name: localeContext.language.translate('customer.continue')
-        }));
+        await userEvent.click(
+            screen.getByRole('button', {
+                name: localeContext.language.translate('customer.continue'),
+            }),
+        );
 
         expect(checkoutService.continueAsGuest).toHaveBeenCalledWith({
             email,
@@ -155,13 +171,14 @@ describe('Customer Guest', () => {
         render(<CustomerTest viewType={CustomerViewType.Guest} {...defaultProps} />);
 
         expect(screen.getByTestId('checkout-customer-guest')).toBeInTheDocument();
-        expect(screen.getByLabelText(
-            localeContext.language.translate('customer.email_label'),
-        )).toBeInTheDocument();
+        expect(
+            screen.getByLabelText(localeContext.language.translate('customer.email_label')),
+        ).toBeInTheDocument();
 
-        await userEvent.type(screen.getByLabelText(
-            localeContext.language.translate('customer.email_label'),
-        ), email);
+        await userEvent.type(
+            screen.getByLabelText(localeContext.language.translate('customer.email_label')),
+            email,
+        );
 
         const subscribeCheckbox = screen.getByLabelText(
             localeContext.language.translate('customer.guest_marketing_consent'),
@@ -169,9 +186,11 @@ describe('Customer Guest', () => {
 
         expect(subscribeCheckbox).toBeInTheDocument();
 
-        await userEvent.click(screen.getByRole('button', {
-            name: localeContext.language.translate('customer.continue')
-        }));
+        await userEvent.click(
+            screen.getByRole('button', {
+                name: localeContext.language.translate('customer.continue'),
+            }),
+        );
 
         expect(checkoutService.continueAsGuest).toHaveBeenCalledWith({
             email,
@@ -185,7 +204,9 @@ describe('Customer Guest', () => {
 
         render(<CustomerTest viewType={CustomerViewType.Guest} {...defaultProps} />);
 
-        const emailField = screen.getByLabelText(localeContext.language.translate('customer.email_label'));
+        const emailField = screen.getByLabelText(
+            localeContext.language.translate('customer.email_label'),
+        );
 
         await userEvent.type(emailField, email);
 
@@ -195,9 +216,11 @@ describe('Customer Guest', () => {
 
         await userEvent.click(subscribeCheckbox);
 
-        await userEvent.click(screen.getByRole('button', {
-            name: localeContext.language.translate('customer.continue')
-        }));
+        await userEvent.click(
+            screen.getByRole('button', {
+                name: localeContext.language.translate('customer.continue'),
+            }),
+        );
 
         expect(checkoutService.continueAsGuest).toHaveBeenCalledWith({
             email,
@@ -207,7 +230,7 @@ describe('Customer Guest', () => {
     });
 
     it('selects `Subscribe to our newsletter` checkbox by default', async () => {
-        const props = { ...defaultProps, isSubscribed:true };
+        const props = { ...defaultProps, isSubscribed: true };
 
         render(<CustomerTest viewType={CustomerViewType.Guest} {...props} />);
 
@@ -229,19 +252,26 @@ describe('Customer Guest', () => {
         render(<CustomerTest viewType={CustomerViewType.Guest} {...defaultProps} />);
 
         expect(screen.getByTestId('checkout-customer-guest')).toBeInTheDocument();
-        expect(screen.getByLabelText(
-            localeContext.language.translate('customer.email_label'),
-        )).toBeInTheDocument();
+        expect(
+            screen.getByLabelText(localeContext.language.translate('customer.email_label')),
+        ).toBeInTheDocument();
 
-        await userEvent.type(screen.getByLabelText(
-            localeContext.language.translate('customer.email_label'),
-        ), email);
+        await userEvent.type(
+            screen.getByLabelText(localeContext.language.translate('customer.email_label')),
+            email,
+        );
 
-        await userEvent.click(screen.getByRole('button', {
-            name: localeContext.language.translate('customer.continue')
-        }));
+        await userEvent.click(
+            screen.getByRole('button', {
+                name: localeContext.language.translate('customer.continue'),
+            }),
+        );
 
-        expect(screen.getByLabelText(localeContext.language.translate('privacy_policy.required_error'))).toBeInTheDocument();
+        expect(
+            screen.getByLabelText(
+                localeContext.language.translate('privacy_policy.required_error'),
+            ),
+        ).toBeInTheDocument();
 
         expect(checkoutService.continueAsGuest).not.toHaveBeenCalled();
 
@@ -253,9 +283,11 @@ describe('Customer Guest', () => {
         expect(screen.getByTestId('privacy-policy-checkbox')).toBeInTheDocument();
         await userEvent.click(screen.getByTestId('privacy-policy-checkbox'));
 
-        await userEvent.click(screen.getByRole('button', {
-            name: localeContext.language.translate('customer.continue')
-        }));
+        await userEvent.click(
+            screen.getByRole('button', {
+                name: localeContext.language.translate('customer.continue'),
+            }),
+        );
 
         expect(checkoutService.continueAsGuest).toHaveBeenCalledWith({
             email,
@@ -279,8 +311,14 @@ describe('Customer Guest', () => {
 
         const unhandledError = jest.fn();
 
-        render(<CustomerTest {...defaultProps} onUnhandledError={unhandledError} viewType={CustomerViewType.Guest} />);
-        await new Promise(resolve => process.nextTick(resolve));
+        render(
+            <CustomerTest
+                {...defaultProps}
+                onUnhandledError={unhandledError}
+                viewType={CustomerViewType.Guest}
+            />,
+        );
+        await new Promise((resolve) => process.nextTick(resolve));
 
         expect(unhandledError).toHaveBeenCalledWith(error);
     });
@@ -292,11 +330,17 @@ describe('Customer Guest', () => {
 
         const unhandledError = jest.fn();
 
-        const { unmount } = render(<CustomerTest {...defaultProps} onUnhandledError={unhandledError} viewType={CustomerViewType.Guest} />);
+        const { unmount } = render(
+            <CustomerTest
+                {...defaultProps}
+                onUnhandledError={unhandledError}
+                viewType={CustomerViewType.Guest}
+            />,
+        );
 
-        await new Promise(resolve => process.nextTick(resolve));
+        await new Promise((resolve) => process.nextTick(resolve));
         unmount();
-        await new Promise(resolve => process.nextTick(resolve));
+        await new Promise((resolve) => process.nextTick(resolve));
 
         expect(unhandledError).toHaveBeenCalledWith(error);
     });
@@ -319,17 +363,20 @@ describe('Customer Guest', () => {
         );
 
         expect(screen.getByTestId('checkout-customer-guest')).toBeInTheDocument();
-        expect(screen.getByLabelText(
-            localeContext.language.translate('customer.email_label'),
-        )).toBeInTheDocument();
+        expect(
+            screen.getByLabelText(localeContext.language.translate('customer.email_label')),
+        ).toBeInTheDocument();
 
-        await userEvent.type(screen.getByLabelText(
-            localeContext.language.translate('customer.email_label'),
-        ), email);
+        await userEvent.type(
+            screen.getByLabelText(localeContext.language.translate('customer.email_label')),
+            email,
+        );
 
-        await userEvent.click(screen.getByRole('button', {
-            name: localeContext.language.translate('customer.continue')
-        }));
+        await userEvent.click(
+            screen.getByRole('button', {
+                name: localeContext.language.translate('customer.continue'),
+            }),
+        );
 
         expect(checkoutService.continueAsGuest).toHaveBeenCalledWith({
             email,
@@ -356,17 +403,20 @@ describe('Customer Guest', () => {
         );
 
         expect(screen.getByTestId('checkout-customer-guest')).toBeInTheDocument();
-        expect(screen.getByLabelText(
-            localeContext.language.translate('customer.email_label'),
-        )).toBeInTheDocument();
+        expect(
+            screen.getByLabelText(localeContext.language.translate('customer.email_label')),
+        ).toBeInTheDocument();
 
-        await userEvent.type(screen.getByLabelText(
-            localeContext.language.translate('customer.email_label'),
-        ), email);
+        await userEvent.type(
+            screen.getByLabelText(localeContext.language.translate('customer.email_label')),
+            email,
+        );
 
-        await userEvent.click(screen.getByRole('button', {
-            name: localeContext.language.translate('customer.continue')
-        }));
+        await userEvent.click(
+            screen.getByRole('button', {
+                name: localeContext.language.translate('customer.continue'),
+            }),
+        );
 
         expect(checkoutService.continueAsGuest).toHaveBeenCalledWith({
             email,
@@ -381,7 +431,10 @@ describe('Customer Guest', () => {
         const email = faker.internet.email();
         const onChangeViewType = jest.fn();
 
-        jest.spyOn(checkoutService, 'continueAsGuest').mockRejectedValue({ type: 'error', status: 429 });
+        jest.spyOn(checkoutService, 'continueAsGuest').mockRejectedValue({
+            type: 'error',
+            status: 429,
+        });
 
         const { rerender } = render(
             <CustomerTest
@@ -493,7 +546,10 @@ describe('Customer Guest', () => {
         const email = faker.internet.email();
         const onChangeViewType = jest.fn();
 
-        jest.spyOn(checkoutService, 'continueAsGuest').mockRejectedValue({ type: 'error', status: 403 });
+        jest.spyOn(checkoutService, 'continueAsGuest').mockRejectedValue({
+            type: 'error',
+            status: 403,
+        });
 
         const { rerender } = render(
             <CustomerTest

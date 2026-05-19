@@ -2,7 +2,14 @@ import React, { type FunctionComponent, useState } from 'react';
 
 import { useLocale } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { Alert, AlertType, Button, ButtonVariant, IconRemoveCoupon, TextInput } from '@bigcommerce/checkout/ui';
+import {
+    Alert,
+    AlertType,
+    Button,
+    ButtonVariant,
+    IconRemoveCoupon,
+    TextInput,
+} from '@bigcommerce/checkout/ui';
 
 import { useMultiCoupon } from '../useMultiCoupon';
 
@@ -77,21 +84,22 @@ export const CouponForm: FunctionComponent = () => {
                     testId="redeemableEntry-submit"
                     variant={ButtonVariant.Secondary}
                 >
-                    <TranslatedString id="redeemable.apply_action"/>
+                    <TranslatedString id="redeemable.apply_action" />
                 </Button>
             </div>
             <div className="applied-coupons-list">
-                {Boolean(couponError) &&
+                {Boolean(couponError) && (
                     <Alert additionalClassName="no-padding" type={AlertType.Error}>
                         <ul className="applied-coupon-error-message">
                             <span>{couponError}</span>
-                            <span onClick={() => setCouponError(null)}><IconRemoveCoupon /></span>
+                            <span onClick={() => setCouponError(null)}>
+                                <IconRemoveCoupon />
+                            </span>
                         </ul>
                     </Alert>
-                }
+                )}
                 <ManageCouponsAndGiftCertificates />
             </div>
         </>
     );
 };
-

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { getStoreConfig } from '@bigcommerce/checkout/test-mocks'
+import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { default as AppliedGiftCertificate } from './AppliedGiftCertificate';
@@ -19,8 +19,14 @@ describe('AppliedGiftCertificate', () => {
     it('renders correctly if gift certificate is applied', () => {
         render(<AppliedGiftCertificate giftCertificate={giftCertificate} />);
 
-        const usedAmount = roundTo(giftCertificate.used * config.shopperCurrency.exchangeRate, parseInt(config.shopperCurrency.decimalPlaces, 10));
-        const remainingAmount = roundTo(giftCertificate.remaining * config.shopperCurrency.exchangeRate, parseInt(config.shopperCurrency.decimalPlaces, 10));
+        const usedAmount = roundTo(
+            giftCertificate.used * config.shopperCurrency.exchangeRate,
+            parseInt(config.shopperCurrency.decimalPlaces, 10),
+        );
+        const remainingAmount = roundTo(
+            giftCertificate.remaining * config.shopperCurrency.exchangeRate,
+            parseInt(config.shopperCurrency.decimalPlaces, 10),
+        );
 
         expect(screen.getByTestId('giftCertificate-amount')).toHaveTextContent(usedAmount);
         expect(screen.getByTestId('giftCertificate-remaining')).toHaveTextContent(remainingAmount);

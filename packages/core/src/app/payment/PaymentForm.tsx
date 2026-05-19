@@ -6,7 +6,11 @@ import { type ObjectSchema } from 'yup';
 
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
 import { useCheckout } from '@bigcommerce/checkout/contexts';
-import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
+import {
+    TranslatedString,
+    withLanguage,
+    type WithLanguageProps,
+} from '@bigcommerce/checkout/locale';
 import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { Fieldset, Form, FormContext, Legend } from '@bigcommerce/checkout/ui';
 
@@ -23,9 +27,9 @@ import {
 } from './paymentMethod';
 import PaymentRedeemables from './PaymentRedeemables';
 import PaymentSubmitButton from './PaymentSubmitButton';
+import { ProvidersSectionOnTopOfPaymentsList } from './ProvidersSectionOnTopOfPaymentsList';
 import SpamProtectionField from './SpamProtectionField';
 import { StoreCreditField, StoreCreditOverlay } from './storeCredit';
-import { ProvidersSectionOnTopOfPaymentsList } from './ProvidersSectionOnTopOfPaymentsList';
 
 export interface PaymentFormProps {
     availableStoreCredit?: number;
@@ -111,9 +115,17 @@ const PaymentForm: FunctionComponent<
 
     const { checkoutState } = useCheckout();
     const { checkoutSettings } = checkoutState.data.getConfig() ?? {};
-    const shouldShowSubmitButtonWhenPaymentNotRequired = isExperimentEnabled(checkoutSettings, 'CHECKOUT-9729.show_submit_button_when_payment_not_required', false);
-    const hideSubmitPaymentButton = shouldHidePaymentSubmitButton || (shouldShowSubmitButtonWhenPaymentNotRequired && isPaymentDataRequired() && isEmpty(methods));
-    
+    const shouldShowSubmitButtonWhenPaymentNotRequired = isExperimentEnabled(
+        checkoutSettings,
+        'CHECKOUT-9729.show_submit_button_when_payment_not_required',
+        false,
+    );
+    const hideSubmitPaymentButton =
+        shouldHidePaymentSubmitButton ||
+        (shouldShowSubmitButtonWhenPaymentNotRequired &&
+            isPaymentDataRequired() &&
+            isEmpty(methods));
+
     if (shouldExecuteSpamCheck) {
         return (
             <SpamProtectionField
@@ -135,13 +147,21 @@ const PaymentForm: FunctionComponent<
                 />
             )}
 
-            {shouldShowSubmitButtonWhenPaymentNotRequired && isEmpty(methods) && (
-                isPaymentDataRequired()
-                    ? <NoPaymentMethods message={<TranslatedString id="payment.payment_methods_unavailable_error" />} />
-                    : <NoPaymentMethods message={<TranslatedString id="payment.payment_not_required_text" />} />
-            )}
+            {shouldShowSubmitButtonWhenPaymentNotRequired &&
+                isEmpty(methods) &&
+                (isPaymentDataRequired() ? (
+                    <NoPaymentMethods
+                        message={
+                            <TranslatedString id="payment.payment_methods_unavailable_error" />
+                        }
+                    />
+                ) : (
+                    <NoPaymentMethods
+                        message={<TranslatedString id="payment.payment_not_required_text" />}
+                    />
+                ))}
 
-            {(!shouldShowSubmitButtonWhenPaymentNotRequired || !isEmpty(methods)) && 
+            {(!shouldShowSubmitButtonWhenPaymentNotRequired || !isEmpty(methods)) && (
                 <PaymentMethodListFieldset
                     isEmbedded={isEmbedded}
                     isInitializingPayment={isInitializingPayment}
@@ -153,7 +173,7 @@ const PaymentForm: FunctionComponent<
                     resetForm={resetForm}
                     values={values}
                 />
-            }
+            )}
 
             <PaymentRedeemables />
 
@@ -252,7 +272,7 @@ const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProp
         >
             {!isPaymentDataRequired() && <StoreCreditOverlay />}
 
-            <Extension region={ExtensionRegion.PaymentPaymentMethodListBefore}/>
+            <Extension region={ExtensionRegion.PaymentPaymentMethodListBefore} />
 
             <ProvidersSectionOnTopOfPaymentsList methods={methods} />
 

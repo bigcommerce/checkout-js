@@ -10,7 +10,7 @@ import {
 describe('getShippabgetRecommendedShippingOptioneLineItems()', () => {
     it('returns undefined if no shipping option available', () => {
         expect(
-          getRecommendedShippingOption(undefined as unknown as ShippingOption[]) === undefined,
+            getRecommendedShippingOption(undefined as unknown as ShippingOption[]) === undefined,
         ).toBeTruthy();
     });
 

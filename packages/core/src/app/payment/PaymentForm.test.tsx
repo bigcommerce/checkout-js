@@ -8,7 +8,13 @@ import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';
 
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
-import { CheckoutProvider, ExtensionProvider ,type ExtensionServiceInterface, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
+import {
+    CheckoutProvider,
+    ExtensionProvider,
+    type ExtensionServiceInterface,
+    LocaleContext,
+    type LocaleContextType,
+} from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
@@ -24,9 +30,9 @@ import PaymentForm, { type PaymentFormProps } from './PaymentForm';
 jest.useFakeTimers({ legacyFakeTimers: true });
 
 jest.mock('./ProvidersSectionOnTopOfPaymentsList', () => ({
-    ProvidersSectionOnTopOfPaymentsList: jest.fn(() =>
+    ProvidersSectionOnTopOfPaymentsList: jest.fn(() => (
         <div data-test="providers-section-on-top-of-payments-list" />
-    ),
+    )),
 }));
 
 describe('PaymentForm', () => {
@@ -85,8 +91,10 @@ describe('PaymentForm', () => {
         expect(screen.getAllByRole('listitem')).toHaveLength(8);
         expect(screen.getAllByRole('group')).toHaveLength(2);
         expect(screen.getAllByRole('radio')).toHaveLength(2);
-        expect(screen.getAllByText('Authorizenet')).toHaveLength(3);  // 2 radio buttons + 1 title for a11y (hidden)
-        expect(screen.getByText(localeContext.language.translate('payment.place_order_action'))).toBeInTheDocument();
+        expect(screen.getAllByText('Authorizenet')).toHaveLength(3); // 2 radio buttons + 1 title for a11y (hidden)
+        expect(
+            screen.getByText(localeContext.language.translate('payment.place_order_action')),
+        ).toBeInTheDocument();
         expect(screen.getByTestId('providers-section-on-top-of-payments-list')).toBeInTheDocument();
     });
 
@@ -101,19 +109,23 @@ describe('PaymentForm', () => {
             />,
         );
 
-        expect(screen.getByText(
-            localeContext.language.translate('terms_and_conditions.terms_and_conditions_heading'),
-        )).toBeInTheDocument();
-        expect(screen.getByText(
-            localeContext.language.translate('terms_and_conditions.agreement_text'),
-        )).toBeInTheDocument();
-        expect(screen.getByText(
-            textAcceptTerms,
-        )).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                localeContext.language.translate(
+                    'terms_and_conditions.terms_and_conditions_heading',
+                ),
+            ),
+        ).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                localeContext.language.translate('terms_and_conditions.agreement_text'),
+            ),
+        ).toBeInTheDocument();
+        expect(screen.getByText(textAcceptTerms)).toBeInTheDocument();
     });
 
     it('renders terms and conditions field if terms URL is provided', () => {
-        const url = "https://foobar.com/terms";
+        const url = 'https://foobar.com/terms';
 
         render(
             <PaymentFormTest
@@ -123,26 +135,33 @@ describe('PaymentForm', () => {
             />,
         );
 
-        expect(screen.getByText(
-            localeContext.language.translate('terms_and_conditions.terms_and_conditions_heading'),
-        )).toBeInTheDocument();
-        expect(screen.getByRole(
-            'link', { name: 'terms and conditions' },
-        )).toHaveAttribute("href", url);
+        expect(
+            screen.getByText(
+                localeContext.language.translate(
+                    'terms_and_conditions.terms_and_conditions_heading',
+                ),
+            ),
+        ).toBeInTheDocument();
+        expect(screen.getByRole('link', { name: 'terms and conditions' })).toHaveAttribute(
+            'href',
+            url,
+        );
     });
 
     it('does not render terms and conditions field if it is not required', () => {
         render(<PaymentFormTest {...defaultProps} />);
 
-        expect(screen.queryByText(
-            localeContext.language.translate('terms_and_conditions.terms_and_conditions_heading'),
-        )).not.toBeInTheDocument();
+        expect(
+            screen.queryByText(
+                localeContext.language.translate(
+                    'terms_and_conditions.terms_and_conditions_heading',
+                ),
+            ),
+        ).not.toBeInTheDocument();
     });
 
     it('renders spam protection field if spam check should be executed', () => {
-        render(
-            <PaymentFormTest {...defaultProps} shouldExecuteSpamCheck={true} />,
-        );
+        render(<PaymentFormTest {...defaultProps} shouldExecuteSpamCheck={true} />);
 
         expect(document.querySelector('.loadingOverlay-container')).toBeInTheDocument();
         expect(document.querySelector('.spamProtection-container')).toBeInTheDocument();
@@ -151,9 +170,11 @@ describe('PaymentForm', () => {
     it('renders store credit field if store credit can be applied', () => {
         render(<PaymentFormTest {...defaultProps} usableStoreCredit={100} />);
 
-        expect(screen.getByRole('checkbox', {
-            name: 'Apply $112.00 store credit to order',
-        })).toBeInTheDocument();
+        expect(
+            screen.getByRole('checkbox', {
+                name: 'Apply $112.00 store credit to order',
+            }),
+        ).toBeInTheDocument();
         expect(screen.getByText(/Apply/)).toBeInTheDocument();
         expect(screen.getByText('$112.00')).toBeInTheDocument();
         expect(screen.getByText(/store credit to order/)).toBeInTheDocument();
@@ -170,22 +191,28 @@ describe('PaymentForm', () => {
 
         render(<PaymentFormTest {...defaultProps} usableStoreCredit={1000000} />);
 
-        expect(screen.getByRole('checkbox', {
-            name: 'Apply $1,120,000.00 store credit to order',
-        })).toBeInTheDocument();
-        expect(screen.getByText(
-            localeContext.language.translate('payment.payment_not_required_text'),
-        )).toBeInTheDocument();
+        expect(
+            screen.getByRole('checkbox', {
+                name: 'Apply $1,120,000.00 store credit to order',
+            }),
+        ).toBeInTheDocument();
+        expect(
+            screen.getByText(localeContext.language.translate('payment.payment_not_required_text')),
+        ).toBeInTheDocument();
     });
 
     it('does not show overlay if store credit cannot cover total cost of order', () => {
         render(<PaymentFormTest {...defaultProps} usableStoreCredit={1} />);
 
-        expect(screen.getByRole('checkbox', {
-            name: 'Apply $1.12 store credit to order',
-        })).toBeInTheDocument();
-        expect(screen.queryByText(
-            localeContext.language.translate('payment.payment_not_required_text'),
-        )).not.toBeInTheDocument();
+        expect(
+            screen.getByRole('checkbox', {
+                name: 'Apply $1.12 store credit to order',
+            }),
+        ).toBeInTheDocument();
+        expect(
+            screen.queryByText(
+                localeContext.language.translate('payment.payment_not_required_text'),
+            ),
+        ).not.toBeInTheDocument();
     });
 });

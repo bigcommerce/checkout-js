@@ -21,7 +21,9 @@ describe('CheckoutButtonList', () => {
         );
 
         expect(await screen.findByTestId('applepayCheckoutButton')).toBeInTheDocument();
-        expect(await screen.findByTestId('braintreevisacheckoutCheckoutButton')).toBeInTheDocument();
+        expect(
+            await screen.findByTestId('braintreevisacheckoutCheckoutButton'),
+        ).toBeInTheDocument();
         expect(await screen.findByTestId('amazonpayCheckoutButton')).toBeInTheDocument();
     });
 

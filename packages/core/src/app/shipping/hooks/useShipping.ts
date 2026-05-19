@@ -1,7 +1,11 @@
 import { useCallback } from 'react';
 import { createSelector } from 'reselect';
 
-import { type CheckoutContextProps, useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
+import {
+    type CheckoutContextProps,
+    useCapabilities,
+    useCheckout,
+} from '@bigcommerce/checkout/contexts';
 import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
 import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
 
@@ -28,7 +32,9 @@ const deleteConsignmentsSelector = createSelector(
 
 export const useShipping = () => {
     const { checkoutState, checkoutService } = useCheckout();
-    const { userJourney: { hasAddressExtraFields } } = useCapabilities();
+    const {
+        userJourney: { hasAddressExtraFields },
+    } = useCapabilities();
 
     const {
         data: {
@@ -69,10 +75,7 @@ export const useShipping = () => {
     }
 
     const {
-        checkoutSettings: {
-            enableOrderComments,
-            hasMultiShippingEnabled,
-        },
+        checkoutSettings: { enableOrderComments, hasMultiShippingEnabled },
     } = config;
 
     const methodId = getShippingMethodId(checkout, config);
@@ -88,8 +91,7 @@ export const useShipping = () => {
         isLoadingCheckout();
 
     const shippableItemsCount = getShippableItemsCount(cart);
-    const shouldShowMultiShipping =
-        hasMultiShippingEnabled && !methodId && shippableItemsCount > 1;
+    const shouldShowMultiShipping = hasMultiShippingEnabled && !methodId && shippableItemsCount > 1;
 
     const shippingAddress =
         !shouldShowMultiShipping && consignments.length > 1 ? undefined : getShippingAddress();
@@ -99,22 +101,26 @@ export const useShipping = () => {
     );
 
     const showDefaultShippingExpectationPrompt =
-      config.inventorySettings?.shouldDisplayBackorderMessagesOnStorefront &&
-      config.inventorySettings?.showDefaultShippingExpectationPrompt &&
-      getBackorderCount(cart.lineItems) > 0;
-    const defaultShippingExpectationPrompt = config.inventorySettings?.defaultShippingExpectationPrompt ?? undefined;
+        config.inventorySettings?.shouldDisplayBackorderMessagesOnStorefront &&
+        config.inventorySettings?.showDefaultShippingExpectationPrompt &&
+        getBackorderCount(cart.lineItems) > 0;
+    const defaultShippingExpectationPrompt =
+        config.inventorySettings?.defaultShippingExpectationPrompt ?? undefined;
 
-    const getFieldsWithExtraFields = useCallback((countryCode?: string) => {
-        const addressFields = getShippingAddressFields(countryCode || '');
+    const getFieldsWithExtraFields = useCallback(
+        (countryCode?: string) => {
+            const addressFields = getShippingAddressFields(countryCode || '');
 
-        if (!hasAddressExtraFields) {
-            return addressFields;
-        }
+            if (!hasAddressExtraFields) {
+                return addressFields;
+            }
 
-        const addressExtraFields = getAddressExtraFields();
+            const addressExtraFields = getAddressExtraFields();
 
-        return [...addressFields, ...addressExtraFields];
-    }, [getShippingAddressFields, getAddressExtraFields, hasAddressExtraFields]);
+            return [...addressFields, ...addressExtraFields];
+        },
+        [getShippingAddressFields, getAddressExtraFields, hasAddressExtraFields],
+    );
 
     return {
         assignItem: checkoutService.assignItemsToAddress,
@@ -126,7 +132,9 @@ export const useShipping = () => {
         customer,
         customerMessage: checkout.customerMessage,
         createCustomerAddress: checkoutService.createCustomerAddress,
-        defaultShippingExpectationMessage: showDefaultShippingExpectationPrompt ? defaultShippingExpectationPrompt : undefined,
+        defaultShippingExpectationMessage: showDefaultShippingExpectationPrompt
+            ? defaultShippingExpectationPrompt
+            : undefined,
         deinitializeShippingMethod: checkoutService.deinitializeShipping,
         deleteConsignments: deleteConsignmentsSelector({
             checkoutService,
@@ -138,7 +146,11 @@ export const useShipping = () => {
         isGuest: customer.isGuest,
         isInitializing: isLoadingShippingCountries() || isLoadingShippingOptions(),
         isLoading,
-        isNoCountriesErrorOnCheckoutEnabled: isExperimentEnabled(config.checkoutSettings, 'CHECKOUT-9630.no_countries_error_on_checkout', true),
+        isNoCountriesErrorOnCheckoutEnabled: isExperimentEnabled(
+            config.checkoutSettings,
+            'CHECKOUT-9630.no_countries_error_on_checkout',
+            true,
+        ),
         isShippingStepPending: isShippingStepPending(),
         loadShippingAddressFields: checkoutService.loadShippingAddressFields,
         loadBillingAddressFields: checkoutService.loadBillingAddressFields,
@@ -153,7 +165,13 @@ export const useShipping = () => {
         updateBillingAddress: checkoutService.updateBillingAddress,
         updateCheckout: checkoutService.updateCheckout,
         updateShippingAddress: checkoutService.updateShippingAddress,
-        shouldRenderStripeForm: providerWithCustomCheckout === PaymentMethodId.StripeUPE && shouldUseStripeLinkByMinimumAmount(cart),
-        validateMaxLength: isExperimentEnabled(config.checkoutSettings, 'CHECKOUT-9768.form_fields_max_length_validation', false),
+        shouldRenderStripeForm:
+            providerWithCustomCheckout === PaymentMethodId.StripeUPE &&
+            shouldUseStripeLinkByMinimumAmount(cart),
+        validateMaxLength: isExperimentEnabled(
+            config.checkoutSettings,
+            'CHECKOUT-9768.form_fields_max_length_validation',
+            false,
+        ),
     };
-}
+};

@@ -32,6 +32,7 @@ describe('cartStockPositionsChangedUtils', () => {
                     physicalItems: [item],
                 },
             };
+
             // Backend could return a string or other non-array with .length; must not call .map() on it
             expect(getChangedItemsToShow(cart, '123' as unknown as Array<string | number>)).toEqual(
                 [],
@@ -116,9 +117,7 @@ describe('cartStockPositionsChangedUtils', () => {
             const items: PhysicalItem[] = [getPhysicalItem()];
 
             expect(groupChangedItemsByConsignment(cart, [], items)).toBeNull();
-            expect(
-                groupChangedItemsByConsignment(cart, [getConsignment()], items),
-            ).toBeNull();
+            expect(groupChangedItemsByConsignment(cart, [getConsignment()], items)).toBeNull();
         });
 
         it('returns null when no consignment has changed items', () => {
@@ -157,11 +156,7 @@ describe('cartStockPositionsChangedUtils', () => {
             const consignments: Consignment[] = [consignmentA, consignmentB];
             const changedItemsToShow: PhysicalItem[] = [item1, item2];
 
-            const result = groupChangedItemsByConsignment(
-                cart,
-                consignments,
-                changedItemsToShow,
-            );
+            const result = groupChangedItemsByConsignment(cart, consignments, changedItemsToShow);
 
             expect(result).not.toBeNull();
             expect(result).toHaveLength(2);
@@ -191,11 +186,7 @@ describe('cartStockPositionsChangedUtils', () => {
             const consignments: Consignment[] = [consignmentA, consignmentB, consignmentC];
             const changedItemsToShow: PhysicalItem[] = [item1, item3];
 
-            const result = groupChangedItemsByConsignment(
-                cart,
-                consignments,
-                changedItemsToShow,
-            );
+            const result = groupChangedItemsByConsignment(cart, consignments, changedItemsToShow);
 
             expect(result).not.toBeNull();
             expect(result).toHaveLength(2);

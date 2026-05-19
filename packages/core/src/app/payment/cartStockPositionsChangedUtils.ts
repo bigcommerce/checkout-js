@@ -9,33 +9,35 @@ import type { CartStockPositionsChangedConsignmentGroup } from './CartStockPosit
  * Resolve changed line item IDs to cart items; for bundled items use parent item (we do not show bundled item separately), then dedupe.
  */
 export function getChangedItemsToShow(
-  cart?: Cart,
-  changedLineItemIds?: Array<string | number>,
+    cart?: Cart,
+    changedLineItemIds?: Array<string | number>,
 ): PhysicalItem[] {
-  const allCartPhysicalItems = cart?.lineItems?.physicalItems ?? [];
+    const allCartPhysicalItems = cart?.lineItems?.physicalItems ?? [];
 
-  if (
-    !allCartPhysicalItems.length ||
-    !Array.isArray(changedLineItemIds) ||
-    !changedLineItemIds.length
-  ) {
-    return [];
-  }
+    if (
+        !allCartPhysicalItems.length ||
+        !Array.isArray(changedLineItemIds) ||
+        !changedLineItemIds.length
+    ) {
+        return [];
+    }
 
-  const allCartPhysicalItemsById = new Map(allCartPhysicalItems.map((it) => [it.id, it]));
+    const allCartPhysicalItemsById = new Map(allCartPhysicalItems.map((it) => [it.id, it]));
 
-  return uniqBy(
-    compact(
-      changedLineItemIds.map((id) => {
-        const item = allCartPhysicalItemsById.get(id);
+    return uniqBy(
+        compact(
+            changedLineItemIds.map((id) => {
+                const item = allCartPhysicalItemsById.get(id);
 
-        if (!item) return undefined;
+                if (!item) return undefined;
 
-        return item.parentId != null ? (allCartPhysicalItemsById.get(item.parentId) ?? item) : item;
-      }),
-    ),
-    'id',
-  );
+                return item.parentId != null
+                    ? (allCartPhysicalItemsById.get(item.parentId) ?? item)
+                    : item;
+            }),
+        ),
+        'id',
+    );
 }
 
 /**

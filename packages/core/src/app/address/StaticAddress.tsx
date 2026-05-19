@@ -31,11 +31,7 @@ interface WithCheckoutStaticAddressProps {
 
 const StaticAddress: FunctionComponent<
     StaticAddressEditableProps & WithCheckoutStaticAddressProps
-    > = ({
-        countries,
-        address: addressWithoutLocalization,
-    }) => {
-
+> = ({ countries, address: addressWithoutLocalization }) => {
     const address = localizeAddress(addressWithoutLocalization, countries);
     const isValid = !isEmpty(address);
 
@@ -91,9 +87,7 @@ export function mapToStaticAddressProps(
     } = context;
 
     return {
-        countries: type === AddressType.Billing
-            ? getBillingCountries()
-            : getShippingCountries(),
+        countries: type === AddressType.Billing ? getBillingCountries() : getShippingCountries(),
     };
 }
 

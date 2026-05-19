@@ -6,17 +6,16 @@ export default function isSelectedShippingOptionValid(consignments: Consignment[
         return false;
     }
 
-    return every(
-        consignments,
-        consignment => {
-            if (consignment.selectedShippingOption?.type === 'custom') {
-                return true;
-            }
-
-            return consignment.availableShippingOptions &&
-                consignment.availableShippingOptions.find(
-                    ({ id }) => id === consignment.selectedShippingOption?.id
-                );
+    return every(consignments, (consignment) => {
+        if (consignment.selectedShippingOption?.type === 'custom') {
+            return true;
         }
-    );
+
+        return (
+            consignment.availableShippingOptions &&
+            consignment.availableShippingOptions.find(
+                ({ id }) => id === consignment.selectedShippingOption?.id,
+            )
+        );
+    });
 }

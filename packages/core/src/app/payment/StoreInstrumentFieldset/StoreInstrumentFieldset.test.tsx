@@ -58,17 +58,21 @@ describe('StoreInstrumentFieldset', () => {
             it('shows the "save card" input', () => {
                 render(<StoreInstrumentFieldsetTest />);
 
-                expect(screen.getByRole('checkbox',{
-                    name: translate('payment.instrument_save_payment_method_label') },
-                )).toBeInTheDocument();
+                expect(
+                    screen.getByRole('checkbox', {
+                        name: translate('payment.instrument_save_payment_method_label'),
+                    }),
+                ).toBeInTheDocument();
             });
 
             it('does not show the "make default" input', () => {
                 render(<StoreInstrumentFieldsetTest />);
 
-                expect(screen.queryByRole('checkbox',{
-                    name: translate('payment.instrument_save_as_default_payment_method_label') },
-                )).not.toBeInTheDocument();
+                expect(
+                    screen.queryByRole('checkbox', {
+                        name: translate('payment.instrument_save_as_default_payment_method_label'),
+                    }),
+                ).not.toBeInTheDocument();
             });
         });
 
@@ -76,17 +80,21 @@ describe('StoreInstrumentFieldset', () => {
             it('shows the "save account instrument" input', () => {
                 render(<StoreInstrumentFieldsetTest isAccountInstrument={true} />);
 
-                expect(screen.getByText(
-                    translate('payment.account_instrument_save_payment_method_label'),
-                )).toBeInTheDocument();
+                expect(
+                    screen.getByText(
+                        translate('payment.account_instrument_save_payment_method_label'),
+                    ),
+                ).toBeInTheDocument();
             });
 
             it('does not show the "make default" input', () => {
                 render(<StoreInstrumentFieldsetTest isAccountInstrument={true} />);
 
-                expect(screen.queryByRole('checkbox', {
-                    name: /default/i,
-                })).not.toBeInTheDocument();
+                expect(
+                    screen.queryByRole('checkbox', {
+                        name: /default/i,
+                    }),
+                ).not.toBeInTheDocument();
             });
         });
     });
@@ -100,12 +108,16 @@ describe('StoreInstrumentFieldset', () => {
             it('shows the both the "save card" and "make default" inputs', () => {
                 render(<StoreInstrumentFieldsetTest />);
 
-                expect(screen.getByRole('checkbox',{
-                    name: translate('payment.instrument_save_payment_method_label'),
-                })).toBeInTheDocument();
-                expect(screen.getByRole('checkbox',{
-                    name: translate('payment.instrument_save_as_default_payment_method_label'),
-                })).toBeInTheDocument();
+                expect(
+                    screen.getByRole('checkbox', {
+                        name: translate('payment.instrument_save_payment_method_label'),
+                    }),
+                ).toBeInTheDocument();
+                expect(
+                    screen.getByRole('checkbox', {
+                        name: translate('payment.instrument_save_as_default_payment_method_label'),
+                    }),
+                ).toBeInTheDocument();
             });
         });
 
@@ -113,12 +125,18 @@ describe('StoreInstrumentFieldset', () => {
             it('shows the both the "save account instrument" and "make default" inputs', () => {
                 render(<StoreInstrumentFieldsetTest isAccountInstrument={true} />);
 
-                expect(screen.getByRole('checkbox', {
-                    name: translate('payment.account_instrument_save_payment_method_label'),
-                })).toBeInTheDocument();
-                expect(screen.getByRole('checkbox',{
-                    name: translate('payment.account_instrument_save_as_default_payment_method_label'),
-                })).toBeInTheDocument();
+                expect(
+                    screen.getByRole('checkbox', {
+                        name: translate('payment.account_instrument_save_payment_method_label'),
+                    }),
+                ).toBeInTheDocument();
+                expect(
+                    screen.getByRole('checkbox', {
+                        name: translate(
+                            'payment.account_instrument_save_as_default_payment_method_label',
+                        ),
+                    }),
+                ).toBeInTheDocument();
             });
         });
 
@@ -160,9 +178,9 @@ describe('StoreInstrumentFieldset', () => {
                     <StoreInstrumentFieldsetTest instrumentId={getInstruments()[1].bigpayToken} />,
                 );
 
-                expect(screen.queryByText(
-                    translate('payment.instrument_save_payment_method_label'),
-                )).not.toBeInTheDocument();
+                expect(
+                    screen.queryByText(translate('payment.instrument_save_payment_method_label')),
+                ).not.toBeInTheDocument();
             });
 
             it('shows the "make default" input', () => {
@@ -170,9 +188,11 @@ describe('StoreInstrumentFieldset', () => {
                     <StoreInstrumentFieldsetTest instrumentId={getInstruments()[1].bigpayToken} />,
                 );
 
-                expect(screen.getByRole('checkbox',{
-                    name: translate('payment.instrument_save_as_default_payment_method_label'),
-                })).toBeInTheDocument();
+                expect(
+                    screen.getByRole('checkbox', {
+                        name: translate('payment.instrument_save_as_default_payment_method_label'),
+                    }),
+                ).toBeInTheDocument();
             });
         });
 
@@ -196,9 +216,11 @@ describe('StoreInstrumentFieldset', () => {
                     <StoreInstrumentFieldsetTest instrumentId="4123" isAccountInstrument={true} />,
                 );
 
-                expect(screen.queryByText(
-                    translate('payment.instrument_save_as_default_payment_method_label'),
-                )).not.toBeInTheDocument();
+                expect(
+                    screen.queryByText(
+                        translate('payment.instrument_save_as_default_payment_method_label'),
+                    ),
+                ).not.toBeInTheDocument();
             });
 
             it('shows the "make default" input', () => {
@@ -206,9 +228,13 @@ describe('StoreInstrumentFieldset', () => {
                     <StoreInstrumentFieldsetTest instrumentId="4123" isAccountInstrument={true} />,
                 );
 
-                expect(screen.getByRole('checkbox',{
-                    name: translate('payment.account_instrument_save_as_default_payment_method_label'),
-                })).toBeInTheDocument();
+                expect(
+                    screen.getByRole('checkbox', {
+                        name: translate(
+                            'payment.account_instrument_save_as_default_payment_method_label',
+                        ),
+                    }),
+                ).toBeInTheDocument();
             });
         });
     });

@@ -27,8 +27,14 @@ const getStripeLinkAndCheckoutPageIsReloaded = (
     shouldUseStripeLinkByMinimumAmount: boolean,
     providerWithCustomCheckout?: string | null,
 ) => {
-    return !isUsingWallet && providerWithCustomCheckout === PaymentMethodId.StripeUPE && hasEmail && isGuest && shouldUseStripeLinkByMinimumAmount;
-}
+    return (
+        !isUsingWallet &&
+        providerWithCustomCheckout === PaymentMethodId.StripeUPE &&
+        hasEmail &&
+        isGuest &&
+        shouldUseStripeLinkByMinimumAmount
+    );
+};
 
 const getCustomerStepStatus = createSelector(
     ({ data }: CheckoutSelectors) => data.getCheckout(),
@@ -44,8 +50,8 @@ const getCustomerStepStatus = createSelector(
         );
         const isUsingWallet =
             checkout && checkout.payments
-                ? checkout.payments.some(
-                    (payment: CheckoutPayment) => SUPPORTED_METHODS.includes(payment.providerId),
+                ? checkout.payments.some((payment: CheckoutPayment) =>
+                      SUPPORTED_METHODS.includes(payment.providerId),
                   )
                 : false;
         const isGuest = !!(customer && customer.isGuest);
@@ -96,8 +102,8 @@ const getBillingStepStatus = createSelector(
             : false;
         const isUsingWallet =
             checkout && checkout.payments
-                ? checkout.payments.some(
-                      (payment) => SUPPORTED_METHODS.includes(payment.providerId),
+                ? checkout.payments.some((payment) =>
+                      SUPPORTED_METHODS.includes(payment.providerId),
                   )
                 : false;
         const isComplete = hasAddress || isUsingWallet;
@@ -125,9 +131,12 @@ const getBillingStepStatus = createSelector(
             };
         }
 
-        const isUsingGooglePay = (checkout && checkout.payments
-                ? checkout.payments.some((payment) => (payment?.providerId || '').startsWith('googlepay'))
-                : false);
+        const isUsingGooglePay =
+            checkout && checkout.payments
+                ? checkout.payments.some((payment) =>
+                      (payment?.providerId || '').startsWith('googlepay'),
+                  )
+                : false;
 
         if (isUsingGooglePay) {
             return {
@@ -141,17 +150,16 @@ const getBillingStepStatus = createSelector(
 
         const isUsingPaypal =
             checkout && checkout.payments
-                ? checkout.payments.some(
-                    (payment) =>
-                        [
-                            'braintreepaypal',
-                            'braintreepaypalcredit',
-                            'braintreevenmo',
-                            'paypalcommerce',
-                            'paypalcommercecredit',
-                            'paypalcommercevenmo'
-                        ]
-                            .includes(payment.providerId))
+                ? checkout.payments.some((payment) =>
+                      [
+                          'braintreepaypal',
+                          'braintreepaypalcredit',
+                          'braintreevenmo',
+                          'paypalcommerce',
+                          'paypalcommercecredit',
+                          'paypalcommercevenmo',
+                      ].includes(payment.providerId),
+                  )
                 : false;
 
         if (isUsingPaypal) {
@@ -187,12 +195,11 @@ const getShippingStepStatus = createSelector(
     },
     ({ data }: CheckoutSelectors) => data.getConfig(),
     (shippingAddress, consignments, cart, shippingAddressFields, config) => {
-        const validateMaxLength =
-            isExperimentEnabled(
-                config?.checkoutSettings,
-                'CHECKOUT-9768.form_fields_max_length_validation',
-                false
-            );
+        const validateMaxLength = isExperimentEnabled(
+            config?.checkoutSettings,
+            'CHECKOUT-9768.form_fields_max_length_validation',
+            false,
+        );
         const hasAddress = shippingAddress
             ? isValidAddress(shippingAddress, shippingAddressFields, validateMaxLength)
             : false;

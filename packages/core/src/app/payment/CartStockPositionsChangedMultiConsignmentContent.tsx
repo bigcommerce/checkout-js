@@ -17,9 +17,9 @@ export interface CartStockPositionsChangedMultiConsignmentContentProps {
     consignmentGroups: CartStockPositionsChangedConsignmentGroup[];
 }
 
-const CartStockPositionsChangedMultiConsignmentContent: FunctionComponent<CartStockPositionsChangedMultiConsignmentContentProps> = ({
-    consignmentGroups,
-}) => (
+const CartStockPositionsChangedMultiConsignmentContent: FunctionComponent<
+    CartStockPositionsChangedMultiConsignmentContentProps
+> = ({ consignmentGroups }) => (
     <div
         className="cart-stock-positions-changed-modal-groups"
         data-test="cart-stock-positions-changed-groups"

@@ -2,7 +2,10 @@ import { type Checkout, type LanguageService, type Order } from '@bigcommerce/ch
 
 import { type DiscountItem } from '../useMultiCoupon';
 
-export const getDiscountItems = (checkout: Checkout | Order, language: LanguageService): DiscountItem[] => {
+export const getDiscountItems = (
+    checkout: Checkout | Order,
+    language: LanguageService,
+): DiscountItem[] => {
     const discounts: DiscountItem[] = [];
 
     const autoPromotionAmount = checkout.orderBasedAutoDiscountTotal;
@@ -18,7 +21,7 @@ export const getDiscountItems = (checkout: Checkout | Order, language: LanguageS
         discounts.push({
             name: language.translate('redeemable.auto_promotion'),
             amount: autoPromotionAmount,
-            testId : 'cart-discount',
+            testId: 'cart-discount',
             showMaxLimitInfo: hasOrderLevelMaxLimitReached,
         });
     }
@@ -27,17 +30,19 @@ export const getDiscountItems = (checkout: Checkout | Order, language: LanguageS
         discounts.push({
             name: language.translate('redeemable.manual_discount'),
             amount: manualDiscountAmount,
-            testId : 'cart-manual-discount',
+            testId: 'cart-manual-discount',
         });
     }
 
     checkout.coupons.forEach((coupon) => {
-        const couponName = coupon.displayName ? `${coupon.displayName} (${coupon.code})` : coupon.code;
+        const couponName = coupon.displayName
+            ? `${coupon.displayName} (${coupon.code})`
+            : coupon.code;
 
         discounts.push({
             name: couponName,
             amount: coupon.discountedAmount,
-            testId : 'cart-coupon',
+            testId: 'cart-coupon',
             showMaxLimitInfo: coupon.hasMaxLimitReached,
         });
     });

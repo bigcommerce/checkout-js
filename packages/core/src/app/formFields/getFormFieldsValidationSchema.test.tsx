@@ -126,20 +126,22 @@ describe('getFormFieldsValidationSchema', () => {
 
     describe('google autocomplete validation', () => {
         it('throws error for google maps autocomplete validation for max length', async () => {
-            const formFieldsWithMaxLength = formFields.map(field => {
+            const formFieldsWithMaxLength = formFields.map((field) => {
                 const { name } = field;
 
                 return name === 'address1' ? { ...field, maxLength: 20 } : field;
             });
 
-            const schema = getFormFieldsValidationSchema({ formFields: formFieldsWithMaxLength, translate });
+            const schema = getFormFieldsValidationSchema({
+                formFields: formFieldsWithMaxLength,
+                translate,
+            });
             const errors = await schema
                 .validate({
                     ...getShippingAddress(),
                     address1: 'this is a long address 1 from somewhere',
                 })
                 .catch((error: ValidationError) => error.message);
-
 
             expect(translate).toHaveBeenCalledWith('max', {
                 label: 'Address Line 1',
@@ -152,24 +154,26 @@ describe('getFormFieldsValidationSchema', () => {
 
     describe('address fields max length validation', () => {
         it('throws error for address field 1 validation for max length', async () => {
-            const formFieldsWithMaxLength = formFields.map(field => {
+            const formFieldsWithMaxLength = formFields.map((field) => {
                 const { name } = field;
 
-                if(name === 'address1') {
+                if (name === 'address1') {
                     return { ...field, maxLength: 15 };
                 }
 
                 return field;
             });
 
-            const schema = getFormFieldsValidationSchema({ formFields: formFieldsWithMaxLength, translate });
+            const schema = getFormFieldsValidationSchema({
+                formFields: formFieldsWithMaxLength,
+                translate,
+            });
             const errors = await schema
                 .validate({
                     ...getShippingAddress(),
                     address1: 'this is a long address 1 from somewhere',
                 })
                 .catch((error: ValidationError) => error.message);
-
 
             expect(translate).toHaveBeenCalledWith('max', {
                 label: 'Address Line 1',
@@ -180,24 +184,26 @@ describe('getFormFieldsValidationSchema', () => {
         });
 
         it('throws error for address field 2 validation for max length', async () => {
-            const formFieldsWithMaxLength = formFields.map(field => {
+            const formFieldsWithMaxLength = formFields.map((field) => {
                 const { name } = field;
 
-                if(name === 'address2') {
+                if (name === 'address2') {
                     return { ...field, maxLength: 10 };
                 }
 
                 return field;
             });
 
-            const schema = getFormFieldsValidationSchema({ formFields: formFieldsWithMaxLength, translate });
+            const schema = getFormFieldsValidationSchema({
+                formFields: formFieldsWithMaxLength,
+                translate,
+            });
             const errors = await schema
                 .validate({
                     ...getShippingAddress(),
                     address2: 'this is a long address 2 from somewhere',
                 })
                 .catch((error: ValidationError) => error.message);
-
 
             expect(translate).toHaveBeenCalledWith('max', {
                 label: 'Address Line 2',
@@ -362,7 +368,7 @@ describe('getFormFieldsValidationSchema', () => {
 
     describe('validateMaxLength option', () => {
         it('does not validate max length for non-address fields when validateMaxLength is false', async () => {
-            const formFieldsWithFirstNameMaxLength = formFields.map(field =>
+            const formFieldsWithFirstNameMaxLength = formFields.map((field) =>
                 field.name === 'firstName' ? { ...field, maxLength: 3 } : field,
             );
             const schema = getFormFieldsValidationSchema({
@@ -383,7 +389,7 @@ describe('getFormFieldsValidationSchema', () => {
         });
 
         it('validates max length for non-address fields when validateMaxLength is true', async () => {
-            const formFieldsWithFirstNameMaxLength = formFields.map(field =>
+            const formFieldsWithFirstNameMaxLength = formFields.map((field) =>
                 field.name === 'firstName' ? { ...field, maxLength: 3 } : field,
             );
             const schema = getFormFieldsValidationSchema({

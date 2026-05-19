@@ -20,14 +20,14 @@ import {
     ThemeProvider,
 } from '@bigcommerce/checkout/contexts';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
-import {
-    CHECKOUT_ROOT_NODE_ID,
-} from '@bigcommerce/checkout/payment-integration-api';
+import { CHECKOUT_ROOT_NODE_ID } from '@bigcommerce/checkout/payment-integration-api';
 import {
     CheckoutPageNodeObject,
     CheckoutPreset,
     checkoutSettings,
-    checkoutWithBillingEmail, checkoutWithShippingAndBilling, customer,
+    checkoutWithBillingEmail,
+    checkoutWithShippingAndBilling,
+    customer,
     orderResponse,
     payments,
 } from '@bigcommerce/checkout/test-framework';
@@ -120,21 +120,22 @@ describe('Payment step', () => {
 
         await checkout.waitForPaymentStep();
 
-        expect(analyticsTracker.selectedPaymentMethod).toHaveBeenCalledWith('Pay in Store', 'instore');
+        expect(analyticsTracker.selectedPaymentMethod).toHaveBeenCalledWith(
+            'Pay in Store',
+            'instore',
+        );
         expect(analyticsTracker.selectedPaymentMethod).toHaveBeenCalledTimes(1);
     });
 
     it('selects another payment method and places the order successfully', async () => {
-        checkout.setRequestHandler(rest.post(
-            '/internalapi/v1/checkout/order',
-            (_, res, ctx) => res(
-                ctx.json(orderResponse),
-            )));
-        checkout.setRequestHandler(rest.get(
-            '/api/storefront/orders/*',
-            (_, res, ctx) => res(
-                ctx.json(orderResponse),
-            )));
+        checkout.setRequestHandler(
+            rest.post('/internalapi/v1/checkout/order', (_, res, ctx) =>
+                res(ctx.json(orderResponse)),
+            ),
+        );
+        checkout.setRequestHandler(
+            rest.get('/api/storefront/orders/*', (_, res, ctx) => res(ctx.json(orderResponse))),
+        );
 
         const location = window.location;
 
@@ -153,11 +154,17 @@ describe('Payment step', () => {
 
         await checkout.waitForPaymentStep();
 
-        expect(screen.getByRole('radio', { name: 'Pay in Store', checked: true })).toBeInTheDocument();
+        expect(
+            screen.getByRole('radio', { name: 'Pay in Store', checked: true }),
+        ).toBeInTheDocument();
 
-        await act(async () => userEvent.click(screen.getByRole('radio', { name: 'Cash on Delivery' })));
+        await act(async () =>
+            userEvent.click(screen.getByRole('radio', { name: 'Cash on Delivery' })),
+        );
 
-        expect(await screen.findByRole('radio', { name: 'Cash on Delivery', checked: true })).toBeInTheDocument();
+        expect(
+            await screen.findByRole('radio', { name: 'Cash on Delivery', checked: true }),
+        ).toBeInTheDocument();
 
         await act(async () => userEvent.click(screen.getByText('Place Order')));
 
@@ -190,19 +197,21 @@ describe('Payment step', () => {
             },
         });
 
-        checkout.setRequestHandler(rest.post(
-            'api/storefront/checkouts/*/store-credit',
-            (_, res, ctx) => res(
-                ctx.json({
-                    ...checkoutWithShippingAndBilling,
-                    isStoreCreditApplied: true,
-                    outstandingBalance: 0,
-                    customer: {
-                        ...customer,
-                        storeCredit: 1000,
-                    },
-                })
-            )));
+        checkout.setRequestHandler(
+            rest.post('api/storefront/checkouts/*/store-credit', (_, res, ctx) =>
+                res(
+                    ctx.json({
+                        ...checkoutWithShippingAndBilling,
+                        isStoreCreditApplied: true,
+                        outstandingBalance: 0,
+                        customer: {
+                            ...customer,
+                            storeCredit: 1000,
+                        },
+                    }),
+                ),
+            ),
+        );
 
         render(<CheckoutTest {...defaultProps} />);
 
@@ -213,19 +222,19 @@ describe('Payment step', () => {
 
     it('does not render amazon if multi-shipping', async () => {
         const amazonPay = {
-                ...payments[0],
-                id: 'amazonpay',
-                config: {
-                    ...payments[0].config,
-                    displayName: 'Amazon Pay',
-                },
-            };
+            ...payments[0],
+            id: 'amazonpay',
+            config: {
+                ...payments[0].config,
+                displayName: 'Amazon Pay',
+            },
+        };
 
-        checkout.setRequestHandler(rest.get(
-            '/api/storefront/payments',
-            (_, res, ctx) => res(
-                ctx.json([payments[0], amazonPay])
-            )));
+        checkout.setRequestHandler(
+            rest.get('/api/storefront/payments', (_, res, ctx) =>
+                res(ctx.json([payments[0], amazonPay])),
+            ),
+        );
 
         checkoutService = checkout.use(CheckoutPreset.CheckoutWithMultiShippingAndBilling);
 
@@ -248,11 +257,11 @@ describe('Payment step', () => {
             },
         };
 
-        checkout.setRequestHandler(rest.get(
-            '/api/storefront/payments',
-            (_, res, ctx) => res(
-                ctx.json([payments[0], bolt])
-            )));
+        checkout.setRequestHandler(
+            rest.get('/api/storefront/payments', (_, res, ctx) =>
+                res(ctx.json([payments[0], bolt])),
+            ),
+        );
 
         checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
 
@@ -267,17 +276,18 @@ describe('Payment step', () => {
     it('does not render methods with braintreelocalmethods id', async () => {
         const braintree = {
             ...payments[0],
-            id: 'braintreelocalmethods',config: {
+            id: 'braintreelocalmethods',
+            config: {
                 ...payments[0].config,
                 displayName: 'BrainTree Local Methods',
             },
         };
 
-        checkout.setRequestHandler(rest.get(
-            '/api/storefront/payments',
-            (_, res, ctx) => res(
-                ctx.json([payments[0], braintree])
-            )));
+        checkout.setRequestHandler(
+            rest.get('/api/storefront/payments', (_, res, ctx) =>
+                res(ctx.json([payments[0], braintree])),
+            ),
+        );
 
         checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
 
@@ -329,11 +339,11 @@ describe('Payment step', () => {
             },
         };
 
-        checkout.setRequestHandler(rest.get(
-            '/api/storefront/payments',
-            (_, res, ctx) => res(
-                ctx.json([card, facilypay6, facilypay3]),
-            )));
+        checkout.setRequestHandler(
+            rest.get('/api/storefront/payments', (_, res, ctx) =>
+                res(ctx.json([card, facilypay6, facilypay3])),
+            ),
+        );
 
         checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
             config: configWithGroupingExperiment,
@@ -381,11 +391,11 @@ describe('Payment step', () => {
             },
         };
 
-        checkout.setRequestHandler(rest.get(
-            '/api/storefront/payments',
-            (_, res, ctx) => res(
-                ctx.json([facilypay6, facilypay3]),
-            )));
+        checkout.setRequestHandler(
+            rest.get('/api/storefront/payments', (_, res, ctx) =>
+                res(ctx.json([facilypay6, facilypay3])),
+            ),
+        );
 
         checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
             config: configWithoutGroupingExperiment,
@@ -418,11 +428,11 @@ describe('Payment step', () => {
             },
         };
 
-        checkout.setRequestHandler(rest.get(
-            '/api/storefront/payments',
-            (_, res, ctx) => res(
-                ctx.json([installments3, installments6]),
-            )));
+        checkout.setRequestHandler(
+            rest.get('/api/storefront/payments', (_, res, ctx) =>
+                res(ctx.json([installments3, installments6])),
+            ),
+        );
 
         checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
 
@@ -435,11 +445,9 @@ describe('Payment step', () => {
     });
 
     it('does not render payment form if there are no methods', async () => {
-        checkout.setRequestHandler(rest.get(
-            '/api/storefront/payments',
-            (_, res, ctx) => res(
-                ctx.json([])
-            )));
+        checkout.setRequestHandler(
+            rest.get('/api/storefront/payments', (_, res, ctx) => res(ctx.json([]))),
+        );
 
         checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
 
@@ -450,15 +458,17 @@ describe('Payment step', () => {
     });
 
     it('renders error modal if there is error when submitting order', async () => {
-        checkout.setRequestHandler(rest.post(
-            '/internalapi/v1/checkout/order',
-            (_, res, ctx) => res(
-                ctx.status(500),
-                ctx.json({
-                    title: 'The tax provider is unavailable.',
-                    type: 'order_error',
-                }),
-            )));
+        checkout.setRequestHandler(
+            rest.post('/internalapi/v1/checkout/order', (_, res, ctx) =>
+                res(
+                    ctx.status(500),
+                    ctx.json({
+                        title: 'The tax provider is unavailable.',
+                        type: 'order_error',
+                    }),
+                ),
+            ),
+        );
 
         checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
 
@@ -467,10 +477,10 @@ describe('Payment step', () => {
         await checkout.waitForPaymentStep();
         await userEvent.click(screen.getByText('Place Order'));
 
-        expect(screen.getByText('Something\'s gone wrong')).toBeInTheDocument();
+        expect(screen.getByText("Something's gone wrong")).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Ok'));
 
-        expect(screen.queryByText('Something\'s gone wrong')).not.toBeInTheDocument();
+        expect(screen.queryByText("Something's gone wrong")).not.toBeInTheDocument();
     });
 });

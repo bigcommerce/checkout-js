@@ -1,7 +1,7 @@
 import { type FormField } from '@bigcommerce/checkout-sdk';
 
-import { type TranslateValidationErrorFunction } from './getCustomFormFieldsValidationSchema';
 import getAddressExtraFieldsValidationSchema from './getAddressExtraFieldsValidationSchema';
+import { type TranslateValidationErrorFunction } from './getCustomFormFieldsValidationSchema';
 
 describe('getAddressExtraFieldsValidationSchema', () => {
     let translate: TranslateValidationErrorFunction;

@@ -56,17 +56,12 @@ describe('loadFiles', () => {
             renderOrderConfirmation: jest.fn(),
             initializeLanguageService: jest.fn(),
         };
-        (global as any).PRELOAD_ASSETS = [
-            'step-a.js',
-            'step-b.js',
-            'step-a.css',
-            'step-b.css',
-        ];
+        (global as any).PRELOAD_ASSETS = ['step-a.js', 'step-b.js', 'step-a.css', 'step-b.css'];
 
         (global as any).scheduler = {
             yield() {
                 return new Promise((resolve) => process.nextTick(resolve));
-            }
+            },
         };
     });
 
@@ -98,20 +93,26 @@ describe('loadFiles', () => {
     it('loads required CSS files listed in manifest', async () => {
         await loadFiles(options);
 
-        expect(getStylesheetLoader().loadStylesheet).toHaveBeenCalledWith('https://cdn.foo.bar/vendor.css', {
-            prepend: true,
-            attributes: {
-                crossorigin: 'anonymous',
-                integrity: 'hash-vendor-css',
+        expect(getStylesheetLoader().loadStylesheet).toHaveBeenCalledWith(
+            'https://cdn.foo.bar/vendor.css',
+            {
+                prepend: true,
+                attributes: {
+                    crossorigin: 'anonymous',
+                    integrity: 'hash-vendor-css',
+                },
             },
-        });
-        expect(getStylesheetLoader().loadStylesheet).toHaveBeenCalledWith('https://cdn.foo.bar/main.css', {
-            prepend: true,
-            attributes: {
-                crossorigin: 'anonymous',
-                integrity: 'hash-main-css',
+        );
+        expect(getStylesheetLoader().loadStylesheet).toHaveBeenCalledWith(
+            'https://cdn.foo.bar/main.css',
+            {
+                prepend: true,
+                attributes: {
+                    crossorigin: 'anonymous',
+                    integrity: 'hash-main-css',
+                },
             },
-        });
+        );
     });
 
     it('prefetches dynamic JS chunks listed in manifest', async () => {

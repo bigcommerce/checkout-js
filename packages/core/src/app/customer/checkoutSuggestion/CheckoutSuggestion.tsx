@@ -29,25 +29,23 @@ export interface WithCheckoutSuggestionsProps {
 
 const CheckoutSuggestion: FunctionComponent<
     WithCheckoutSuggestionsProps & CheckoutSuggestionProps
-> = ({
-    providerWithCustomCheckout,
-    executePaymentMethodCheckout,
-    ...rest
-}) => {
+> = ({ providerWithCustomCheckout, executePaymentMethodCheckout, ...rest }) => {
     const { analyticsTracker } = useAnalytics();
 
     const handleExecutePaymentMethodCheckout = (options: ExecutePaymentMethodCheckoutOptions) => {
         analyticsTracker.customerSuggestionExecute();
 
         return executePaymentMethodCheckout(options);
-    }
+    };
 
     if (providerWithCustomCheckout === PaymentMethodId.Bolt) {
-        return <BoltCheckoutSuggestion
-                    executePaymentMethodCheckout={handleExecutePaymentMethodCheckout}
-                    methodId={providerWithCustomCheckout}
-                    {...rest}
-                />;
+        return (
+            <BoltCheckoutSuggestion
+                executePaymentMethodCheckout={handleExecutePaymentMethodCheckout}
+                methodId={providerWithCustomCheckout}
+                {...rest}
+            />
+        );
     }
 
     return null;

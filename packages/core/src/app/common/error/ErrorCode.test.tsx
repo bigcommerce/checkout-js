@@ -6,9 +6,7 @@ import ErrorCode from './ErrorCode';
 
 describe('ErrorCode', () => {
     it('displays label if passed', () => {
-        const label = (
-            <div>label</div>
-        );
+        const label = <div>label</div>;
 
         render(<ErrorCode code="foo" label={label} />);
 
