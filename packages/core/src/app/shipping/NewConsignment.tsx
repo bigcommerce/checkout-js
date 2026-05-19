@@ -2,6 +2,7 @@ import { type Consignment, type ConsignmentCreateRequestBody, type ConsignmentLi
 import { find } from "lodash";
 import React, { useMemo, useState } from "react";
 
+import { useCheckout } from "@bigcommerce/checkout/contexts";
 import { preventDefault } from "@bigcommerce/checkout/dom-utils";
 import { TranslatedString } from "@bigcommerce/checkout/locale";
 
@@ -36,7 +37,12 @@ const NewConsignment = ({
     const [isOpenAllocateItemsModal, setIsOpenAllocateItemsModal] = useState(false);
     
     const { unassignedItems } = useMultiShippingConsignmentItems();
-    const { countries, consignments, assignItem, selectConsignmentShippingOption } = useShipping();
+    const {
+        checkoutState: {
+            data: { getConsignments: getPreviousConsignments },
+        },
+    } = useCheckout();
+    const { countries, assignItem, selectConsignmentShippingOption } = useShipping();
 
     const selectedAddress = useMemo(() => {
         if (!consignmentRequest?.address) {
@@ -62,8 +68,10 @@ const NewConsignment = ({
             return;
         }
 
+        const previousConsignments = getPreviousConsignments() ?? [];
+
         const previousConsignmentIds = new Set(
-            consignments.map((c) => c.id),
+            previousConsignments.map((c) => c.id),
         );
 
         try {
@@ -98,7 +106,7 @@ const NewConsignment = ({
 
             if (currentConsignments && currentConsignments.length > 0) {
                 await setRecommendedOrMissingShippingOption(
-                    consignments,
+                    previousConsignments,
                     currentConsignments,
                     selectConsignmentShippingOption,
                 );
