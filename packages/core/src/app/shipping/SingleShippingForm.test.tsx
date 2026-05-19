@@ -101,9 +101,7 @@ describe('SingleShippingForm', () => {
 
         renderSingleShippingFormComponent({
             updateAddress,
-            getFields: () => [
-                ...addressFormFields.map((field) => ({ ...field, required: true })),
-            ],
+            getFields: () => [...addressFormFields.map((field) => ({ ...field, required: true }))],
         });
 
         await userEvent.clear(screen.getByTestId('addressLine2Input-text'));

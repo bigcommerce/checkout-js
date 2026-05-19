@@ -7,7 +7,9 @@ import getCustomFormFieldsValidationSchema, {
     type CustomFormFieldValues,
     type TranslateValidationErrorFunction,
 } from './getCustomFormFieldsValidationSchema';
-import getFormFieldsValidationSchema, { type FormFieldValues } from './getFormFieldsValidationSchema';
+import getFormFieldsValidationSchema, {
+    type FormFieldValues,
+} from './getFormFieldsValidationSchema';
 
 describe('getCustomFormFieldsValidationSchema', () => {
     const formFields = getFormFields();

@@ -2,7 +2,12 @@ import { type Coupon } from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent, useRef } from 'react';
 import { TransitionGroup } from 'react-transition-group';
 
-import { CollapseCSSTransition, IconCoupon, IconGiftCertificateNew, IconRemoveCoupon } from '@bigcommerce/checkout/ui';
+import {
+    CollapseCSSTransition,
+    IconCoupon,
+    IconGiftCertificateNew,
+    IconRemoveCoupon,
+} from '@bigcommerce/checkout/ui';
 
 import { useMultiCoupon } from '../useMultiCoupon';
 
@@ -12,7 +17,11 @@ interface AnimatedCouponTagProps {
     onExited?: () => void;
 }
 
-const AnimatedCouponTag: FunctionComponent<AnimatedCouponTagProps> = ({ children, in: inProp, onExited }) => {
+const AnimatedCouponTag: FunctionComponent<AnimatedCouponTagProps> = ({
+    children,
+    in: inProp,
+    onExited,
+}) => {
     const nodeRef = useRef<HTMLDivElement>(null);
 
     return (
@@ -30,7 +39,10 @@ const AnimatedCouponTag: FunctionComponent<AnimatedCouponTagProps> = ({ children
     );
 };
 
-const AppliedCouponsPills: FunctionComponent<{ coupons: Coupon[], removeCoupon: (code: string) => void }> = ({ coupons, removeCoupon }) => {
+const AppliedCouponsPills: FunctionComponent<{
+    coupons: Coupon[];
+    removeCoupon: (code: string) => void;
+}> = ({ coupons, removeCoupon }) => {
     return (
         <TransitionGroup component={null}>
             {coupons.map(({ code, displayName }) => (
@@ -47,19 +59,12 @@ const AppliedCouponsPills: FunctionComponent<{ coupons: Coupon[], removeCoupon: 
 };
 
 export const ManageCouponsAndGiftCertificates: FunctionComponent = () => {
-    const {
-        appliedCoupons,
-        appliedGiftCertificates,
-        removeCoupon,
-        removeGiftCertificate,
-    } = useMultiCoupon();
+    const { appliedCoupons, appliedGiftCertificates, removeCoupon, removeGiftCertificate } =
+        useMultiCoupon();
 
     return (
         <>
-            <AppliedCouponsPills
-                coupons={appliedCoupons}
-                removeCoupon={removeCoupon}
-            />
+            <AppliedCouponsPills coupons={appliedCoupons} removeCoupon={removeCoupon} />
             <TransitionGroup component={null}>
                 {appliedGiftCertificates.map(({ code }) => (
                     <AnimatedCouponTag key={code}>

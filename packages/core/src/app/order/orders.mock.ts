@@ -80,38 +80,35 @@ export function getOrderWithMandateURL(): Order {
 }
 
 const mockOrderShippingConsignment: OrderShippingConsignment = {
-    lineItems: [
-        { id: 101 },
-        { id: 102 },
-    ],
+    lineItems: [{ id: 101 }, { id: 102 }],
     shippingAddressId: 2001,
-    firstName: "John",
-    lastName: "Doe",
-    company: "Tech Solutions",
-    address1: "123 Main St",
-    address2: "Apt 4B",
-    city: "Sydney",
-    stateOrProvince: "NSW",
-    postalCode: "2000",
-    country: "Australia",
-    countryCode: "AU",
-    email: "john.doe@example.com",
-    phone: "+61 400 123 456",
+    firstName: 'John',
+    lastName: 'Doe',
+    company: 'Tech Solutions',
+    address1: '123 Main St',
+    address2: 'Apt 4B',
+    city: 'Sydney',
+    stateOrProvince: 'NSW',
+    postalCode: '2000',
+    country: 'Australia',
+    countryCode: 'AU',
+    email: 'john.doe@example.com',
+    phone: '+61 400 123 456',
     itemsTotal: 2,
     itemsShipped: 2,
-    shippingMethod: "Express Shipping",
-    baseCost: 20.00,
+    shippingMethod: 'Express Shipping',
+    baseCost: 20.0,
     costExTax: 18.18,
-    costIncTax: 20.00,
+    costIncTax: 20.0,
     costTax: 1.82,
     costTaxClassId: 1,
-    baseHandlingCost: 5.00,
+    baseHandlingCost: 5.0,
     handlingCostExTax: 4.55,
-    handlingCostIncTax: 5.00,
+    handlingCostIncTax: 5.0,
     handlingCostTax: 0.45,
     handlingCostTaxClassId: 1,
     shippingZoneId: 101,
-    shippingZoneName: "Australia - NSW",
+    shippingZoneName: 'Australia - NSW',
     customFields: [],
     discounts: [],
 };
@@ -121,9 +118,22 @@ export function getOrderWithShippingDiscount(): Order {
         ...getOrder(),
         consignments: {
             shipping: [
-                { ...mockOrderShippingConsignment, discounts: [{ id: 1, amount: 2, code: 'coupon-shipping-discount', }, { id: 2, amount: 2, code: null, }] },
-                { ...mockOrderShippingConsignment, discounts: [{ id: 1, amount: 3, code: 'coupon-shipping-discount', }, { id: 2, amount: 3, code: null, }, { id: 3, amount: 3, code: null, }] },
-            ]
+                {
+                    ...mockOrderShippingConsignment,
+                    discounts: [
+                        { id: 1, amount: 2, code: 'coupon-shipping-discount' },
+                        { id: 2, amount: 2, code: null },
+                    ],
+                },
+                {
+                    ...mockOrderShippingConsignment,
+                    discounts: [
+                        { id: 1, amount: 3, code: 'coupon-shipping-discount' },
+                        { id: 2, amount: 3, code: null },
+                        { id: 3, amount: 3, code: null },
+                    ],
+                },
+            ],
         },
         coupons: [getShippingCoupon()],
         shippingCostTotal: 10,
@@ -204,5 +214,5 @@ export function getOrderFee(): OrderFee {
         type: 'custom_fee',
         source: 'somewhere',
         customerDisplayName: 'display name for customer',
-    }
+    };
 }

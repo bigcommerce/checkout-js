@@ -3,7 +3,13 @@ import { type FieldProps } from 'formik';
 import React, { type FunctionComponent, memo, useCallback } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { BasicFormField, Fieldset, Legend, ModalTrigger, type ModalTriggerModalProps } from '@bigcommerce/checkout/ui';
+import {
+    BasicFormField,
+    Fieldset,
+    Legend,
+    ModalTrigger,
+    type ModalTriggerModalProps,
+} from '@bigcommerce/checkout/ui';
 
 import InstrumentSelect from './InstrumentSelect';
 import ManageInstrumentsModal from './ManageInstrumentsModal';
@@ -20,7 +26,7 @@ export interface CardInstrumentFieldsetProps {
 
 export enum UntrustedShippingCardVerificationType {
     CVV = 'cvv',
-    PAN = 'pan'
+    PAN = 'pan',
 }
 
 const CardInstrumentFieldset: FunctionComponent<CardInstrumentFieldsetProps> = ({

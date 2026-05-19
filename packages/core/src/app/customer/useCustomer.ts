@@ -7,7 +7,7 @@ import {
     type ExecutePaymentMethodCheckoutOptions,
     type FormField,
     type GuestCredentials,
-    type SignInEmail
+    type SignInEmail,
 } from '@bigcommerce/checkout-sdk';
 
 import { useCheckout } from '@bigcommerce/checkout/contexts';
@@ -68,12 +68,12 @@ export interface CustomerActions {
     sendLoginEmail: (params: { email: string }) => Promise<CheckoutSelectors>;
     deinitializeCustomer: (options: CustomerRequestOptions) => Promise<CheckoutSelectors>;
     executePaymentMethodCheckout: (
-      options: ExecutePaymentMethodCheckoutOptions,
+        options: ExecutePaymentMethodCheckoutOptions,
     ) => Promise<CheckoutSelectors>;
     initializeCustomer: (options: CustomerInitializeOptions) => Promise<CheckoutSelectors>;
     signIn: (
-      credentials: CustomerCredentials,
-      options?: CustomerRequestOptions,
+        credentials: CustomerCredentials,
+        options?: CustomerRequestOptions,
     ) => Promise<CheckoutSelectors>;
 }
 
@@ -137,9 +137,7 @@ export const useCustomer = (): UseCustomerReturn => {
             showNewsletterSignup: canSubscribe,
             defaultNewsletterSignup: defaultShouldSubscribe,
         },
-        links: {
-            forgotPasswordLink: forgotPasswordUrl,
-        },
+        links: { forgotPasswordLink: forgotPasswordUrl },
     } = config;
 
     const customCheckoutProvider = getProviderWithCustomCheckout(providerWithCustomCheckout);
@@ -186,7 +184,9 @@ export const useCustomer = (): UseCustomerReturn => {
         checkoutButtonIds,
         providerWithCustomCheckout: customCheckoutProvider,
         isPaymentDataRequired: isPaymentDataRequired(),
-        shouldRenderStripeForm: customCheckoutProvider === PaymentMethodId.StripeUPE && shouldUseStripeLinkByMinimumAmount(cart),
+        shouldRenderStripeForm:
+            customCheckoutProvider === PaymentMethodId.StripeUPE &&
+            shouldUseStripeLinkByMinimumAmount(cart),
     };
 
     // Customer actions

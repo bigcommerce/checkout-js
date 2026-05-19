@@ -25,9 +25,9 @@ describe('useDeallocateItem', () => {
     });
 
     it('should delete consignment if it has only one item', async () => {
-        const { result: {
-            current: deallocateItem,
-        } } = renderHook(() => useDeallocateItem());
+        const {
+            result: { current: deallocateItem },
+        } = renderHook(() => useDeallocateItem());
 
         await act(async () => {
             await deallocateItem(consignmentRequest, 'x', { ...consignment, lineItemIds: ['x'] });
@@ -46,16 +46,15 @@ describe('useDeallocateItem', () => {
             },
         });
 
-        const { result: {
-            current: deallocateItem,
-        } } = renderHook(() => useDeallocateItem());
+        const {
+            result: { current: deallocateItem },
+        } = renderHook(() => useDeallocateItem());
 
         await act(async () => {
-            await deallocateItem(
-                consignmentRequest,
-                'y',
-                { ...consignment, lineItemIds: ['y','z'] },
-                );
+            await deallocateItem(consignmentRequest, 'y', {
+                ...consignment,
+                lineItemIds: ['y', 'z'],
+            });
         });
 
         expect(createConsignments).toHaveBeenCalledWith([consignmentRequest]);
@@ -69,16 +68,12 @@ describe('useDeallocateItem', () => {
             },
         });
 
-        const { result: {
-            current: deallocateItem,
-        } } = renderHook(() => useDeallocateItem());
+        const {
+            result: { current: deallocateItem },
+        } = renderHook(() => useDeallocateItem());
 
-        await expect(
-            () => deallocateItem(
-                consignmentRequest,
-                'x',
-                { ...consignment, lineItemIds: ['x', 'y'] },
-                ),
+        await expect(() =>
+            deallocateItem(consignmentRequest, 'x', { ...consignment, lineItemIds: ['x', 'y'] }),
         ).rejects.toThrow('Unable to find consignment to delete');
 
         expect(createConsignments).toHaveBeenCalledWith([consignmentRequest]);

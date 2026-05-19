@@ -1,8 +1,17 @@
 import React, { type ComponentType, memo, useContext, useMemo } from 'react';
 import { type Omit } from 'utility-types';
 
-import { CheckoutContext, type CheckoutContextProps, useCheckout } from '@bigcommerce/checkout/contexts';
-import { createMappableInjectHoc, type MapToProps, type MapToPropsFactory, type MatchedProps } from '@bigcommerce/checkout/legacy-hoc';
+import {
+    CheckoutContext,
+    type CheckoutContextProps,
+    useCheckout,
+} from '@bigcommerce/checkout/contexts';
+import {
+    createMappableInjectHoc,
+    type MapToProps,
+    type MapToPropsFactory,
+    type MatchedProps,
+} from '@bigcommerce/checkout/legacy-hoc';
 
 export type WithCheckoutProps = CheckoutContextProps;
 
@@ -45,18 +54,19 @@ const withCheckout = <TMappedProps, TOwnProps>(
                 [],
             );
 
-            const { selectedState, isCheckoutHookExperimentEnabled } = useCheckout<TMappedProps | null>(
-                contextSnapshot
-                    ? (state) => {
-                          const contextForMapping: CheckoutContextProps = {
-                              ...contextSnapshot,
-                              checkoutState: state,
-                          };
+            const { selectedState, isCheckoutHookExperimentEnabled } =
+                useCheckout<TMappedProps | null>(
+                    contextSnapshot
+                        ? (state) => {
+                              const contextForMapping: CheckoutContextProps = {
+                                  ...contextSnapshot,
+                                  checkoutState: state,
+                              };
 
-                          return mapToProps(contextForMapping, props as unknown as TOwnProps);
-                      }
-                    : undefined,
-            );
+                              return mapToProps(contextForMapping, props as unknown as TOwnProps);
+                          }
+                        : undefined,
+                );
 
             if (isCheckoutHookExperimentEnabled) {
                 if (!selectedState) {

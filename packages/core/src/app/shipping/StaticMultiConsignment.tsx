@@ -3,7 +3,11 @@ import React, { type FunctionComponent, memo } from 'react';
 
 import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { localizeAddress, TranslatedString } from '@bigcommerce/checkout/locale';
-import { isPayPalFastlaneAddress, PoweredByPayPalFastlaneLabel, usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
+import {
+    isPayPalFastlaneAddress,
+    PoweredByPayPalFastlaneLabel,
+    usePayPalFastlaneAddress,
+} from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 import ConsignmentLineItemDetail from './ConsignmentLineItemDetail';
 import findLineItems from './findLineItems';
@@ -31,17 +35,27 @@ const StaticMultiConsignment: FunctionComponent<StaticMultiConsignmentProps> = (
         },
     } = useCheckout();
 
-    const { shippingAddress: addressWithoutLocalization, selectedShippingOption, comparisonShippingCost } = consignment;
+    const {
+        shippingAddress: addressWithoutLocalization,
+        selectedShippingOption,
+        comparisonShippingCost,
+    } = consignment;
     const address = localizeAddress(addressWithoutLocalization, getShippingCountries());
     const { paypalFastlaneAddresses } = usePayPalFastlaneAddress();
-    const showPayPalFastlaneAddressLabel = isPayPalFastlaneAddress(address, paypalFastlaneAddresses);
+    const showPayPalFastlaneAddressLabel = isPayPalFastlaneAddress(
+        address,
+        paypalFastlaneAddresses,
+    );
 
     const lineItems = findLineItems(cart, consignment);
 
     return (
         <div className="staticMultiConsignment">
             <h3 className="staticMultiConsignment-header body-bold">
-                <TranslatedString data={{ consignmentNumber }} id="shipping.multishipping_consignment_index_heading" />
+                <TranslatedString
+                    data={{ consignmentNumber }}
+                    id="shipping.multishipping_consignment_index_heading"
+                />
             </h3>
 
             <div className="checkout-address--static">
@@ -76,14 +90,14 @@ const StaticMultiConsignment: FunctionComponent<StaticMultiConsignmentProps> = (
 
             <div className="staticConsignment-items">
                 <span className="body-bold">
-                <TranslatedString
-                    data={{ count: getLineItemsCount(lineItems) }}
-                    id="cart.item_count_text"
-                />
+                    <TranslatedString
+                        data={{ count: getLineItemsCount(lineItems) }}
+                        id="cart.item_count_text"
+                    />
                 </span>
 
                 <ConsignmentLineItemDetail isMultiShippingSummary lineItems={lineItems} />
-        </div>
+            </div>
 
             {selectedShippingOption && (
                 <div>
@@ -91,7 +105,11 @@ const StaticMultiConsignment: FunctionComponent<StaticMultiConsignmentProps> = (
                         <StaticShippingOption
                             displayAdditionalInformation={false}
                             method={selectedShippingOption}
-                            shippingCostAfterDiscount={isShippingDiscountDisplayEnabled ? comparisonShippingCost : undefined}
+                            shippingCostAfterDiscount={
+                                isShippingDiscountDisplayEnabled
+                                    ? comparisonShippingCost
+                                    : undefined
+                            }
                         />
                     </div>
                 </div>

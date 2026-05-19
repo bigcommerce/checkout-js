@@ -3,7 +3,11 @@ import { expect } from '@playwright/test';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
-import { CheckoutProvider, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
+import {
+    CheckoutProvider,
+    LocaleContext,
+    type LocaleContextType,
+} from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
@@ -27,7 +31,7 @@ describe('OrderSummaryItems', () => {
                 <LocaleContext.Provider value={localeContext}>
                     <OrderSummaryItems {...props} />
                 </LocaleContext.Provider>
-            </CheckoutProvider>
+            </CheckoutProvider>,
         );
     };
 
@@ -71,7 +75,9 @@ describe('OrderSummaryItems', () => {
             });
 
             expect(screen.getByTestId('cart-backorder-link')).toBeInTheDocument();
-            expect(screen.getByTestId('cart-backorder-link')).toHaveTextContent('Show backorder details');
+            expect(screen.getByTestId('cart-backorder-link')).toHaveTextContent(
+                'Show backorder details',
+            );
         });
 
         it('renders backorder details link from physical items only when digital items have no backorders', () => {
@@ -90,7 +96,9 @@ describe('OrderSummaryItems', () => {
                 },
             });
 
-            expect(screen.getByTestId('cart-backorder-link')).toHaveTextContent('Show backorder details');
+            expect(screen.getByTestId('cart-backorder-link')).toHaveTextContent(
+                'Show backorder details',
+            );
         });
 
         it('does not render backorder details link when no items have backorder quantities', () => {
@@ -172,8 +180,12 @@ describe('OrderSummaryItems', () => {
                 },
             });
 
-            expect(screen.getByRole('heading', { name: '1 x Canvas Laundry Cart' })).toBeInTheDocument();
-            expect(screen.getByRole('heading', { name: '1 x $100 Gift Certificate' })).toBeInTheDocument();
+            expect(
+                screen.getByRole('heading', { name: '1 x Canvas Laundry Cart' }),
+            ).toBeInTheDocument();
+            expect(
+                screen.getByRole('heading', { name: '1 x $100 Gift Certificate' }),
+            ).toBeInTheDocument();
             expect(screen.getByRole('heading', { name: '1 x Digital Book' })).toBeInTheDocument();
             expect(screen.getByRole('heading', { name: '2 x Custom item' })).toBeInTheDocument();
         });
@@ -220,7 +232,6 @@ describe('OrderSummaryItems', () => {
         });
 
         describe('when action is clicked', () => {
-
             it('shows the rest of the items', async () => {
                 const { container } = renderOrderSummaryItems(fiveOrMoreItemsProps);
 

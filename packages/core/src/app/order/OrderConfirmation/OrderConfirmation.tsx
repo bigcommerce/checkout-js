@@ -11,10 +11,7 @@ import { OrderConfirmationPageSkeleton } from '@bigcommerce/checkout/ui';
 
 import { isExperimentEnabled } from '../../common/utility';
 import { type EmbeddedCheckoutStylesheet } from '../../embeddedCheckout';
-import {
-    type CreatedCustomer,
-    type SignUpFormValues,
-} from '../../guestSignup';
+import { type CreatedCustomer, type SignUpFormValues } from '../../guestSignup';
 import {
     AccountCreationFailedError,
     AccountCreationRequirementsError,
@@ -63,9 +60,7 @@ export const OrderConfirmation = ({
             data: { getOrder, getConfig },
             statuses: { isLoadingOrder },
         },
-        checkoutService: {
-            loadOrder,
-        },
+        checkoutService: { loadOrder },
     } = useCheckout();
     const { analyticsTracker } = useAnalytics();
 
@@ -88,7 +83,10 @@ export const OrderConfirmation = ({
     const handleSignUp = ({ password, confirmPassword }: SignUpFormValues) => {
         const shopperConfig = config && config.shopperConfig;
         const passwordRequirements =
-            (shopperConfig && shopperConfig.passwordRequirements && shopperConfig.passwordRequirements.error) || '';
+            (shopperConfig &&
+                shopperConfig.passwordRequirements &&
+                shopperConfig.passwordRequirements.error) ||
+            '';
 
         setIsSigningUp(true);
 
@@ -122,7 +120,10 @@ export const OrderConfirmation = ({
     };
 
     useEffect(() => {
-        if (permalinkStatus === OrderPermalinkStatus.Expired || permalinkStatus === OrderPermalinkStatus.RateLimited) {
+        if (
+            permalinkStatus === OrderPermalinkStatus.Expired ||
+            permalinkStatus === OrderPermalinkStatus.RateLimited
+        ) {
             return;
         }
 

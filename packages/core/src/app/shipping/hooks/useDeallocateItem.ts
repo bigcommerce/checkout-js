@@ -1,4 +1,4 @@
-import { type Consignment, type ConsignmentCreateRequestBody } from "@bigcommerce/checkout-sdk";
+import { type Consignment, type ConsignmentCreateRequestBody } from '@bigcommerce/checkout-sdk';
 
 import { useCheckout } from '@bigcommerce/checkout/contexts';
 
@@ -10,7 +10,11 @@ export const useDeallocateItem = () => {
     // this is a workaround to handle removing an item from a consignment
     // current consignment API does not support removing an item directly - Oct 2024
 
-    const deleteItem = async (consignmentRequest: ConsignmentCreateRequestBody, itemId: string, consignment: Consignment) => {
+    const deleteItem = async (
+        consignmentRequest: ConsignmentCreateRequestBody,
+        itemId: string,
+        consignment: Consignment,
+    ) => {
         let consignmentIdToBeDeleted: string | undefined = consignment.id;
 
         if (consignment.lineItemIds.length > 1) {
@@ -28,7 +32,7 @@ export const useDeallocateItem = () => {
         }
 
         deleteConsignment(consignmentIdToBeDeleted);
-    }
+    };
 
     return deleteItem;
-}
+};

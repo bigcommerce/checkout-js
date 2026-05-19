@@ -47,8 +47,7 @@ export default class AddressSelector {
         type: GoogleAddressFieldType,
         access: Exclude<keyof google.maps.GeocoderAddressComponent, 'types'>,
     ): string {
-        const element =
-            this._address && this._address.find((field) => field.types.includes(type));
+        const element = this._address && this._address.find((field) => field.types.includes(type));
 
         if (element) {
             return element[access];

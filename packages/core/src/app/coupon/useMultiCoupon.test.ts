@@ -1,7 +1,13 @@
 import { act, renderHook } from '@testing-library/react';
 
 import { useCheckout, useLocale } from '@bigcommerce/checkout/contexts';
-import { getConsignment, getDigitalItem, getLocaleContext, getPhysicalItem, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
+import {
+    getConsignment,
+    getDigitalItem,
+    getLocaleContext,
+    getPhysicalItem,
+    getStoreConfig,
+} from '@bigcommerce/checkout/test-mocks';
 
 import { getCheckout } from '../checkout/checkouts.mock';
 
@@ -81,7 +87,7 @@ describe('useMultiCoupon', () => {
         checkoutState.data.getConfig.mockReturnValue(undefined);
 
         expect(() => renderHook(() => useMultiCoupon())).toThrow(
-            'Checkout or order is not available'
+            'Checkout or order is not available',
         );
     });
 
@@ -89,7 +95,7 @@ describe('useMultiCoupon', () => {
         checkoutState.data.getConfig.mockReturnValue({});
 
         expect(() => renderHook(() => useMultiCoupon())).toThrow(
-            'Checkout or order is not available'
+            'Checkout or order is not available',
         );
     });
 
@@ -98,7 +104,7 @@ describe('useMultiCoupon', () => {
         checkoutState.data.getOrder.mockReturnValue(undefined);
 
         expect(() => renderHook(() => useMultiCoupon())).toThrow(
-            'Checkout or order is not available'
+            'Checkout or order is not available',
         );
     });
 
@@ -244,7 +250,7 @@ describe('useMultiCoupon', () => {
             await expect(
                 act(async () => {
                     await result.current.applyCouponOrGiftCertificate(code);
-                })
+                }),
             ).rejects.toThrow('Invalid coupon');
 
             expect(applyGiftCertificate).toHaveBeenCalledWith(code);
@@ -372,18 +378,19 @@ describe('useMultiCoupon', () => {
     });
 
     describe('uiDetails', () => {
-
         it('returns correct uiDetails structure when consignments information is complete', () => {
             const checkout = {
                 ...getCheckout(),
-                consignments: [{
-                    ...getConsignment(),
-                    lineItemIds: [
-                        getPhysicalItem().id.toString(),
-                        getDigitalItem().id.toString(),
-                    ]
-                }],
-            }
+                consignments: [
+                    {
+                        ...getConsignment(),
+                        lineItemIds: [
+                            getPhysicalItem().id.toString(),
+                            getDigitalItem().id.toString(),
+                        ],
+                    },
+                ],
+            };
 
             checkoutState.data.getCheckout.mockReturnValue(checkout);
 
@@ -397,9 +404,11 @@ describe('useMultiCoupon', () => {
             expect(result.current.uiDetails.subtotal).toBe(checkout.subtotal);
             expect(result.current.uiDetails.discounts).toBe(checkout.displayDiscountTotal);
             expect(result.current.uiDetails.shipping).toBe(checkout.comparisonShippingCost);
-            expect(result.current.uiDetails.shippingBeforeDiscount).toBe(checkout.shippingCostBeforeDiscount);
+            expect(result.current.uiDetails.shippingBeforeDiscount).toBe(
+                checkout.shippingCostBeforeDiscount,
+            );
         });
-        
+
         it('returns correct uiDetails structure when consignments information is incomplete', () => {
             const checkout = getCheckout();
 
@@ -428,7 +437,7 @@ describe('useMultiCoupon', () => {
                 const { result } = renderHook(() => useMultiCoupon());
 
                 const autoPromotion = result.current.uiDetails.discountItems.find(
-                    item => item.amount === 10 && item.name.includes('auto_promotion')
+                    (item) => item.amount === 10 && item.name.includes('auto_promotion'),
                 );
 
                 expect(autoPromotion).toBeDefined();
@@ -445,7 +454,7 @@ describe('useMultiCoupon', () => {
                 const { result } = renderHook(() => useMultiCoupon());
 
                 const manualDiscount = result.current.uiDetails.discountItems.find(
-                    item => item.amount === 15 && item.name.includes('manual_discount')
+                    (item) => item.amount === 15 && item.name.includes('manual_discount'),
                 );
 
                 expect(manualDiscount).toBeDefined();
@@ -470,7 +479,7 @@ describe('useMultiCoupon', () => {
                 const { result } = renderHook(() => useMultiCoupon());
 
                 const couponItem = result.current.uiDetails.discountItems.find(
-                    item => item.name === 'Save 10% (SAVE10)'
+                    (item) => item.name === 'Save 10% (SAVE10)',
                 );
 
                 expect(couponItem).toBeDefined();
@@ -486,14 +495,14 @@ describe('useMultiCoupon', () => {
                         couponType: 'promotion',
                         discountedAmount: 20,
                         id: '1',
-                    } as typeof checkout.coupons[0],
+                    } as (typeof checkout.coupons)[0],
                 ];
                 checkoutState.data.getCheckout.mockReturnValue(checkout);
 
                 const { result } = renderHook(() => useMultiCoupon());
 
                 const couponItem = result.current.uiDetails.discountItems.find(
-                    item => item.name === 'SAVE10'
+                    (item) => item.name === 'SAVE10',
                 );
 
                 expect(couponItem).toBeDefined();
@@ -519,15 +528,21 @@ describe('useMultiCoupon', () => {
                 const { result } = renderHook(() => useMultiCoupon());
 
                 expect(result.current.uiDetails.discountItems).toHaveLength(3);
-                expect(result.current.uiDetails.discountItems.some(
-                    item => item.amount === 10 && item.name.includes('auto_promotion')
-                )).toBe(true);
-                expect(result.current.uiDetails.discountItems.some(
-                    item => item.amount === 15 && item.name.includes('manual_discount')
-                )).toBe(true);
-                expect(result.current.uiDetails.discountItems.some(
-                    item => item.name === 'Save 10% (SAVE10)'
-                )).toBe(true);
+                expect(
+                    result.current.uiDetails.discountItems.some(
+                        (item) => item.amount === 10 && item.name.includes('auto_promotion'),
+                    ),
+                ).toBe(true);
+                expect(
+                    result.current.uiDetails.discountItems.some(
+                        (item) => item.amount === 15 && item.name.includes('manual_discount'),
+                    ),
+                ).toBe(true);
+                expect(
+                    result.current.uiDetails.discountItems.some(
+                        (item) => item.name === 'Save 10% (SAVE10)',
+                    ),
+                ).toBe(true);
             });
 
             it('excludes auto promotion when orderBasedAutoDiscountTotal is 0', () => {
@@ -538,8 +553,8 @@ describe('useMultiCoupon', () => {
 
                 const { result } = renderHook(() => useMultiCoupon());
 
-                const autoPromotion = result.current.uiDetails.discountItems.find(
-                    item => item.name.includes('auto_promotion')
+                const autoPromotion = result.current.uiDetails.discountItems.find((item) =>
+                    item.name.includes('auto_promotion'),
                 );
 
                 expect(autoPromotion).toBeUndefined();
@@ -553,8 +568,8 @@ describe('useMultiCoupon', () => {
 
                 const { result } = renderHook(() => useMultiCoupon());
 
-                const manualDiscount = result.current.uiDetails.discountItems.find(
-                    item => item.name.includes('manual_discount')
+                const manualDiscount = result.current.uiDetails.discountItems.find((item) =>
+                    item.name.includes('manual_discount'),
                 );
 
                 expect(manualDiscount).toBeUndefined();
@@ -562,4 +577,3 @@ describe('useMultiCoupon', () => {
         });
     });
 });
-

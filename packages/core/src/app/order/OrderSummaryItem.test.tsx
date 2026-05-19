@@ -36,8 +36,12 @@ describe('OrderSummaryItem', () => {
 
             expect(screen.getByRole('heading', { name: '2 x Product' })).toBeInTheDocument();
             expect(screen.getByText(currencyService.toCustomerCurrency(10))).toBeInTheDocument();
-            expect(screen.getByTestId('cart-item-product-price--afterDiscount')).toBeInTheDocument();
-            expect(screen.getByTestId('cart-item-product-price')).toHaveClass('product-price--beforeDiscount');
+            expect(
+                screen.getByTestId('cart-item-product-price--afterDiscount'),
+            ).toBeInTheDocument();
+            expect(screen.getByTestId('cart-item-product-price')).toHaveClass(
+                'product-price--beforeDiscount',
+            );
             expect(screen.getByText(currencyService.toCustomerCurrency(8))).toBeInTheDocument();
         });
     });
@@ -51,8 +55,12 @@ describe('OrderSummaryItem', () => {
                 />,
             );
 
-            expect(screen.queryByTestId('cart-item-product-price--afterDiscount')).not.toBeInTheDocument();
-            expect(screen.queryByTestId('cart-item-product-price')).not.toHaveClass('product-price--beforeDiscount');
+            expect(
+                screen.queryByTestId('cart-item-product-price--afterDiscount'),
+            ).not.toBeInTheDocument();
+            expect(screen.queryByTestId('cart-item-product-price')).not.toHaveClass(
+                'product-price--beforeDiscount',
+            );
         });
     });
 
@@ -68,11 +76,15 @@ describe('OrderSummaryItem', () => {
                         quantity: 2,
                     }}
                     shouldExpandBackorderDetails={false}
-                />
+                />,
             );
 
-            expect(screen.queryByTestId('cart-item-product-price--afterDiscount')).not.toBeInTheDocument();
-            expect(screen.queryByTestId('cart-item-product-price')).not.toHaveClass('product-price--beforeDiscount');
+            expect(
+                screen.queryByTestId('cart-item-product-price--afterDiscount'),
+            ).not.toBeInTheDocument();
+            expect(screen.queryByTestId('cart-item-product-price')).not.toHaveClass(
+                'product-price--beforeDiscount',
+            );
         });
     });
 
@@ -88,10 +100,12 @@ describe('OrderSummaryItem', () => {
                         quantity: 2,
                     }}
                     shouldExpandBackorderDetails={false}
-                />
+                />,
             );
 
-            expect(screen.getByTestId('cart-item-product-description')).toHaveTextContent('Description');
+            expect(screen.getByTestId('cart-item-product-description')).toHaveTextContent(
+                'Description',
+            );
         });
     });
 });

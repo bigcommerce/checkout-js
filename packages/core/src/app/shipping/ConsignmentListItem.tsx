@@ -1,8 +1,8 @@
 import React, { type FunctionComponent } from 'react';
 
 import { useCheckout } from '@bigcommerce/checkout/contexts';
-import { preventDefault } from "@bigcommerce/checkout/dom-utils";
-import { TranslatedString } from "@bigcommerce/checkout/locale";
+import { preventDefault } from '@bigcommerce/checkout/dom-utils';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { IconClose, IconSize } from '@bigcommerce/checkout/ui';
 
 import ConsignmentAddressSelector from './ConsignmentAddressSelector';
@@ -29,8 +29,9 @@ const ConsignmentListItem: FunctionComponent<ConsignmentListItemProps> = ({
     onUnhandledError,
     resetErrorConsignmentNumber,
 }: ConsignmentListItemProps) => {
-
-    const { checkoutService: { deleteConsignment } } = useCheckout();
+    const {
+        checkoutService: { deleteConsignment },
+    } = useCheckout();
 
     const handleClose = async () => {
         await deleteConsignment(consignment.id);
@@ -38,10 +39,13 @@ const ConsignmentListItem: FunctionComponent<ConsignmentListItemProps> = ({
     };
 
     return (
-        <div className='consignment-container'>
+        <div className="consignment-container">
             <div className="consignment-header sub-header">
                 <h3>
-                    <TranslatedString data={{ consignmentNumber }} id="shipping.multishipping_consignment_index_heading" />
+                    <TranslatedString
+                        data={{ consignmentNumber }}
+                        id="shipping.multishipping_consignment_index_heading"
+                    />
                 </h3>
                 <a
                     className="delete-consignment"

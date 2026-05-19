@@ -39,8 +39,12 @@ export const ExpiredPermalinkView: FunctionComponent<ExpiredPermalinkViewProps> 
                 <div className="orderConfirmation">
                     <OrderConfirmationSection>
                         <div className="orderConfirmation-expiredToken">
-                            <h2><TranslatedString id="order_confirmation.expired_token.heading" /></h2>
-                            <p><TranslatedString id="order_confirmation.expired_token.description" /></p>
+                            <h2>
+                                <TranslatedString id="order_confirmation.expired_token.heading" />
+                            </h2>
+                            <p>
+                                <TranslatedString id="order_confirmation.expired_token.description" />
+                            </p>
 
                             {!resendSuccess && (
                                 <Button
@@ -49,8 +53,12 @@ export const ExpiredPermalinkView: FunctionComponent<ExpiredPermalinkViewProps> 
                                     variant={ButtonVariant.Primary}
                                 >
                                     {isResending
-                                        ? language.translate('order_confirmation.expired_token.sending')
-                                        : language.translate('order_confirmation.expired_token.resend_action')}
+                                        ? language.translate(
+                                              'order_confirmation.expired_token.sending',
+                                          )
+                                        : language.translate(
+                                              'order_confirmation.expired_token.resend_action',
+                                          )}
                                 </Button>
                             )}
 

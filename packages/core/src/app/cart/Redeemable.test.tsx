@@ -1,8 +1,17 @@
-import { type CheckoutSelectors, type CheckoutService, createCheckoutService, type RequestError } from '@bigcommerce/checkout-sdk';
+import {
+    type CheckoutSelectors,
+    type CheckoutService,
+    createCheckoutService,
+    type RequestError,
+} from '@bigcommerce/checkout-sdk';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
-import { CheckoutContext, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
+import {
+    CheckoutContext,
+    LocaleContext,
+    type LocaleContextType,
+} from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
@@ -50,7 +59,7 @@ describe('CartSummary Component', () => {
         localeContext = createLocaleContext(getStoreConfig());
         checkoutService = createCheckoutService();
         checkoutState = checkoutService.getState();
-        translate=localeContext.language.translate;
+        translate = localeContext.language.translate;
     });
 
     it('renders errors when coupon code is not collapsed', () => {
@@ -71,21 +80,25 @@ describe('CartSummary Component', () => {
 
         expect(submit).toHaveClass('is-loading');
         expect(submit).toBeDisabled();
-        expect(screen.getByText(translate('redeemable.coupon_min_order_total'))).toBeInTheDocument();
+        expect(
+            screen.getByText(translate('redeemable.coupon_min_order_total')),
+        ).toBeInTheDocument();
         expect(screen.queryByTestId('redeemable-label')).not.toBeInTheDocument();
         expect(screen.getByTestId('redeemableEntry-input')).toBeInTheDocument();
         expect(screen.getByLabelText('Gift Certificate or Coupon Code')).toBeInTheDocument();
 
-        rerender(<RedeemableTestComponent
-            appliedRedeemableError={notApplicableError}
-            applyCoupon={applyCoupon}
-            applyGiftCertificate={applyGiftCertificate}
-            clearError={clearError}
-            isApplyingRedeemable={true}
-            onRemovedCoupon={onRemovedCoupon}
-            onRemovedGiftCertificate={onRemovedGiftCertificate}
-            shouldCollapseCouponCode={false}
-        />);
+        rerender(
+            <RedeemableTestComponent
+                appliedRedeemableError={notApplicableError}
+                applyCoupon={applyCoupon}
+                applyGiftCertificate={applyGiftCertificate}
+                clearError={clearError}
+                isApplyingRedeemable={true}
+                onRemovedCoupon={onRemovedCoupon}
+                onRemovedGiftCertificate={onRemovedGiftCertificate}
+                shouldCollapseCouponCode={false}
+            />,
+        );
 
         expect(screen.getByText(translate('redeemable.coupon_location_error'))).toBeInTheDocument();
     });
@@ -125,15 +138,17 @@ describe('CartSummary Component', () => {
     });
 
     describe('when coupon code is collapsed', () => {
-        const TestComponent = () => <RedeemableTestComponent
-            appliedRedeemableError={appliedError}
-            applyCoupon={applyCoupon}
-            applyGiftCertificate={applyGiftCertificate}
-            clearError={clearError}
-            onRemovedCoupon={onRemovedCoupon}
-            onRemovedGiftCertificate={onRemovedGiftCertificate}
-            shouldCollapseCouponCode={true}
-        />;
+        const TestComponent = () => (
+            <RedeemableTestComponent
+                appliedRedeemableError={appliedError}
+                applyCoupon={applyCoupon}
+                applyGiftCertificate={applyGiftCertificate}
+                clearError={clearError}
+                onRemovedCoupon={onRemovedCoupon}
+                onRemovedGiftCertificate={onRemovedGiftCertificate}
+                shouldCollapseCouponCode={true}
+            />
+        );
 
         it('renders redeemable toggle link', () => {
             render(<TestComponent />);
@@ -157,7 +172,9 @@ describe('CartSummary Component', () => {
 
                 await userEvent.click(submit);
 
-                expect(screen.getByTestId('redeemable-code-field-error-message')).toBeInTheDocument();
+                expect(
+                    screen.getByTestId('redeemable-code-field-error-message'),
+                ).toBeInTheDocument();
             });
 
             it('applies a coupon with clicking Apply button', async () => {
@@ -166,7 +183,7 @@ describe('CartSummary Component', () => {
                 applyGiftCertificate.mockRejectedValue(new Error());
 
                 await userEvent.click(screen.getByTestId('redeemable-label'));
-                await userEvent.type(screen.getByTestId('redeemableEntry-input'),' foo {enter}');
+                await userEvent.type(screen.getByTestId('redeemableEntry-input'), ' foo {enter}');
                 await userEvent.click(screen.getByTestId('redeemableEntry-submit'));
 
                 expect(clearError).toHaveBeenCalledWith(appliedError);

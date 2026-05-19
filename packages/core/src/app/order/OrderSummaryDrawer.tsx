@@ -116,7 +116,9 @@ const OrderSummaryDrawer: FunctionComponent<
                             'cartDrawer-figure--stack': getLineItemsCount(nonBundledLineItems) > 1,
                         })}
                     >
-                        <div className="cartDrawer-imageWrapper">{getImage(nonBundledLineItems)}</div>
+                        <div className="cartDrawer-imageWrapper">
+                            {getImage(nonBundledLineItems)}
+                        </div>
                     </figure>
                     <div className="cartDrawer-body">
                         <h3 className="cartDrawer-items optimizedCheckout-headingPrimary">

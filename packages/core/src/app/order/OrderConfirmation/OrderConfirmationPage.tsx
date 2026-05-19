@@ -95,11 +95,7 @@ export const OrderConfirmationPage = ({
                 )}
 
                 {hasSignedUp &&
-                    (order?.customerId ? (
-                        <PasswordSavedSuccessAlert />
-                    ) : (
-                        <SignedUpSuccessAlert />
-                    ))}
+                    (order?.customerId ? <PasswordSavedSuccessAlert /> : <SignedUpSuccessAlert />)}
 
                 <ContinueButton siteLink={siteLink} />
             </div>
@@ -115,4 +111,3 @@ export const OrderConfirmationPage = ({
         <ErrorModal error={error} onClose={onErrorModalClose} shouldShowErrorCode={false} />
     </div>
 );
-

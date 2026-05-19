@@ -6,7 +6,7 @@ import { type ShippingAddressProps } from './ShippingAddress';
 import StaticAddressEditable from './StaticAddressEditable';
 
 interface AmazonPayShippingAddressProps extends ShippingAddressProps {
-    shippingAddress:  Address,
+    shippingAddress: Address;
 }
 
 export const AmazonPayShippingAddress: FC<AmazonPayShippingAddressProps> = (props) => {

@@ -11,6 +11,6 @@ const OrderSummaryHeader: FunctionComponent<{ children?: React.ReactNode }> = ({
             {children}
         </header>
     );
-}
+};
 
 export default OrderSummaryHeader;

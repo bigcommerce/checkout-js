@@ -3,7 +3,9 @@ import React, { type FunctionComponent } from 'react';
 import { configurePublicPath } from '../common/bundler';
 
 import { type OrderConfirmationAppProps } from './OrderConfirmationApp';
-import renderOrderConfirmation, { type RenderOrderConfirmationOptions } from './renderOrderConfirmation';
+import renderOrderConfirmation, {
+    type RenderOrderConfirmationOptions,
+} from './renderOrderConfirmation';
 
 let OrderConfirmationApp: FunctionComponent<OrderConfirmationAppProps>;
 let publicPath: string;

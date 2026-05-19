@@ -62,9 +62,7 @@ describe('mapAddressToFormValues', () => {
 
         const address = {
             firstName: 'John',
-            extraFields: [
-                { fieldId: 'b2bExtraField_100', fieldValue: 'Actual Corp' },
-            ],
+            extraFields: [{ fieldId: 'b2bExtraField_100', fieldValue: 'Actual Corp' }],
         } as Address;
 
         const result = mapAddressToFormValues(fields, address);

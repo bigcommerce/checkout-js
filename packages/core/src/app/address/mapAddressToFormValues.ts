@@ -9,7 +9,10 @@ import { DynamicFormFieldType } from '@bigcommerce/checkout/ui';
 
 import { B2BExtraFieldsSessionStorage } from './B2BExtraFieldsSessionStorage';
 
-export type AddressFormValues = Pick<Address, Exclude<AddressKey, 'customFields' | 'extraFields'>> & {
+export type AddressFormValues = Pick<
+    Address,
+    Exclude<AddressKey, 'customFields' | 'extraFields'>
+> & {
     customFields: { [id: string]: any };
     extraFields?: { [id: string]: any };
 };
@@ -20,60 +23,54 @@ export default function mapAddressToFormValues(
     storageKey?: string,
 ): AddressFormValues {
     const values = {
-        ...fields.reduce(
-            (addressFormValues, field) => {
-                const { name, custom, fieldType, default: defaultValue } = field;
+        ...fields.reduce((addressFormValues, field) => {
+            const { name, custom, fieldType, default: defaultValue } = field;
 
-                if (isExtraField(field)) {
-                    if (!addressFormValues.extraFields) {
-                        addressFormValues.extraFields = {};
-                    }
-
-                    // sessionStorage-based values will override API side extra field values later
-                    const extraFieldValue = address?.extraFields?.find(
-                        ({ fieldId }) => fieldId === name,
-                    )?.fieldValue;
-
-                    addressFormValues.extraFields[name] = extraFieldValue ?? defaultValue ?? '';
-
-                    return addressFormValues;
+            if (isExtraField(field)) {
+                if (!addressFormValues.extraFields) {
+                    addressFormValues.extraFields = {};
                 }
 
-                if (custom) {
-                    if (!addressFormValues.customFields) {
-                        addressFormValues.customFields = {};
-                    }
+                // sessionStorage-based values will override API side extra field values later
+                const extraFieldValue = address?.extraFields?.find(
+                    ({ fieldId }) => fieldId === name,
+                )?.fieldValue;
 
-                    const field =
-                        address &&
-                        address.customFields &&
-                        address.customFields.find(({ fieldId }) => fieldId === name);
-
-                    const fieldValue = field && field.fieldValue;
-
-                    addressFormValues.customFields[name] = getValue(
-                        fieldType,
-                        fieldValue,
-                        defaultValue,
-                    );
-
-                    return addressFormValues;
-                }
-
-                if (isSystemAddressFieldName(name)) {
-                    const fieldValue = address && address[name];
-
-                    addressFormValues[name] = getValue(
-                        fieldType,
-                        fieldValue,
-                        defaultValue,
-                    )?.toString() || '';
-                }
+                addressFormValues.extraFields[name] = extraFieldValue ?? defaultValue ?? '';
 
                 return addressFormValues;
-            },
-            {} as AddressFormValues,
-        ),
+            }
+
+            if (custom) {
+                if (!addressFormValues.customFields) {
+                    addressFormValues.customFields = {};
+                }
+
+                const field =
+                    address &&
+                    address.customFields &&
+                    address.customFields.find(({ fieldId }) => fieldId === name);
+
+                const fieldValue = field && field.fieldValue;
+
+                addressFormValues.customFields[name] = getValue(
+                    fieldType,
+                    fieldValue,
+                    defaultValue,
+                );
+
+                return addressFormValues;
+            }
+
+            if (isSystemAddressFieldName(name)) {
+                const fieldValue = address && address[name];
+
+                addressFormValues[name] =
+                    getValue(fieldType, fieldValue, defaultValue)?.toString() || '';
+            }
+
+            return addressFormValues;
+        }, {} as AddressFormValues),
     };
 
     values.shouldSaveAddress =
@@ -94,7 +91,7 @@ export default function mapAddressToFormValues(
         const storedExtraFields = B2BExtraFieldsSessionStorage.getFields(storageKey);
 
         if (storedExtraFields) {
-            Object.keys(extraFields).forEach(key => {
+            Object.keys(extraFields).forEach((key) => {
                 if (storedExtraFields[key] !== undefined) {
                     extraFields[key] = storedExtraFields[key];
                 }
@@ -118,7 +115,7 @@ function getValue(
         if (fieldValue) {
             const [year, month, day] = fieldValue.split('-');
 
-            return new Date(Number(year), Number(month)-1, Number(day));
+            return new Date(Number(year), Number(month) - 1, Number(day));
         }
 
         return undefined;
@@ -142,5 +139,9 @@ function getDefaultValue(fieldType?: string, defaultValue?: string): string | st
 function isSystemAddressFieldName(
     fieldName: string,
 ): fieldName is Exclude<keyof Address, 'customFields' | 'shouldSaveAddress' | 'extraFields'> {
-    return fieldName !== 'customFields' && fieldName !== 'shouldSaveAddress' && fieldName !== 'extraFields';
+    return (
+        fieldName !== 'customFields' &&
+        fieldName !== 'shouldSaveAddress' &&
+        fieldName !== 'extraFields'
+    );
 }

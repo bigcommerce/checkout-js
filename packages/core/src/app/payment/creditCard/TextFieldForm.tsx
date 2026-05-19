@@ -22,7 +22,9 @@ const TextField: FunctionComponent<TextFieldProps> = (props) => {
     const { additionalClassName, autoComplete, labelId, name } = props;
 
     const renderInput = useCallback(
-        ({ field }: FieldProps) => <TextInput {...field} autoComplete={autoComplete} id={field.name} />,
+        ({ field }: FieldProps) => (
+            <TextInput {...field} autoComplete={autoComplete} id={field.name} />
+        ),
         [autoComplete],
     );
 

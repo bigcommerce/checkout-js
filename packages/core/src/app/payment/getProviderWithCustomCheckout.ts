@@ -1,11 +1,16 @@
 import { PaymentMethodId } from './paymentMethod';
 
-export default function getProviderWithCustomCheckout(methodId?: string | null): string | undefined {
+export default function getProviderWithCustomCheckout(
+    methodId?: string | null,
+): string | undefined {
     if (!methodId) {
         return undefined;
     }
 
-    if (methodId === PaymentMethodId.PaypalCommerce || methodId === PaymentMethodId.PaypalCommerceCreditCards) {
+    if (
+        methodId === PaymentMethodId.PaypalCommerce ||
+        methodId === PaymentMethodId.PaypalCommerceCreditCards
+    ) {
         return PaymentMethodId.PayPalCommerceAcceleratedCheckout;
     }
 

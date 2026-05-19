@@ -1,7 +1,11 @@
 import { createCheckoutService, type CurrencyService } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
-import { CheckoutProvider, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
+import {
+    CheckoutProvider,
+    LocaleContext,
+    type LocaleContextType,
+} from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
@@ -51,7 +55,9 @@ describe('OrderSummaryTotal', () => {
                 </CheckoutProvider>,
             );
 
-            expect(screen.getByTestId('cart-total')).toHaveTextContent(`Estimated Total (USD) ${currencyService.toCustomerCurrency(100)}*`);
+            expect(screen.getByTestId('cart-total')).toHaveTextContent(
+                `Estimated Total (USD) ${currencyService.toCustomerCurrency(100)}*`,
+            );
         });
     });
 });

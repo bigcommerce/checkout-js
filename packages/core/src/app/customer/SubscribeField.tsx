@@ -24,10 +24,7 @@ const SubscribeField: FunctionComponent<SubscribeFieldProps> = ({
                 value={String(field.value)}
             />
 
-            <Label
-                additionalClassName='body-regular'
-                htmlFor={field.name}
-            >
+            <Label additionalClassName="body-regular" htmlFor={field.name}>
                 <TranslatedHtml
                     id={
                         requiresMarketingConsent
@@ -38,6 +35,6 @@ const SubscribeField: FunctionComponent<SubscribeFieldProps> = ({
             </Label>
         </>
     );
-}
+};
 
 export default memo(SubscribeField);

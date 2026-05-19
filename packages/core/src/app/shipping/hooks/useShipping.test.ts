@@ -63,9 +63,15 @@ describe('useShipping', () => {
     };
 
     beforeEach(() => {
-        jest.spyOn(contexts, 'useCheckout').mockReturnValue({ checkoutState, checkoutService } as any);
+        jest.spyOn(contexts, 'useCheckout').mockReturnValue({
+            checkoutState,
+            checkoutService,
+        } as any);
         jest.spyOn(contexts, 'useCapabilities').mockReturnValue(defaultCapabilities);
-        jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({ id: 'checkout', customerMessage: 'msg' } as any);
+        jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
+            id: 'checkout',
+            customerMessage: 'msg',
+        } as any);
     });
 
     afterEach(() => {
@@ -84,20 +90,18 @@ describe('useShipping', () => {
 
     describe('shouldShowMultiShipping', () => {
         beforeEach(() => {
-            jest.spyOn(checkoutState.data, 'getCart').mockReturnValue(
-                {
-                    ...getCart(),
-                    lineItems: {
-                        ...getCart().lineItems,
-                        physicalItems: [
-                            {
-                                ...getCart().lineItems.physicalItems[0],
-                                quantity: 2,
-                            },
-                        ],
-                    },
-                }
-            );
+            jest.spyOn(checkoutState.data, 'getCart').mockReturnValue({
+                ...getCart(),
+                lineItems: {
+                    ...getCart().lineItems,
+                    physicalItems: [
+                        {
+                            ...getCart().lineItems.physicalItems[0],
+                            quantity: 2,
+                        },
+                    ],
+                },
+            });
             jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
                 ...getStoreConfig(),
                 checkoutSettings: {
@@ -251,14 +255,10 @@ describe('useShipping', () => {
     });
 
     it('shouldRenderStripeForm is true if providerWithCustomCheckout is StripeUPE and shouldUseStripeLinkByMinimumAmount returns true', () => {
-
-        jest.mock(
-            '@bigcommerce/checkout/instrument-utils',
-            () => ({
-                ...jest.requireActual('@bigcommerce/checkout/instrument-utils'),
-                shouldUseStripeLinkByMinimumAmount: jest.fn().mockResolvedValue(true),
-            }),
-        );
+        jest.mock('@bigcommerce/checkout/instrument-utils', () => ({
+            ...jest.requireActual('@bigcommerce/checkout/instrument-utils'),
+            shouldUseStripeLinkByMinimumAmount: jest.fn().mockResolvedValue(true),
+        }));
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
             ...getStoreConfig(),
             checkoutSettings: {

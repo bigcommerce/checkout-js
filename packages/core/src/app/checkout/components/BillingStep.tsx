@@ -20,7 +20,7 @@ const Billing = lazy(() =>
     ),
 );
 
-export interface BillingStepProps extends BillingProps{
+export interface BillingStepProps extends BillingProps {
     step: CheckoutStepStatus;
     billingAddress?: Address;
     onEdit(type: CheckoutStepType): void;
@@ -57,4 +57,3 @@ const BillingStep: React.FC<BillingStepProps> = ({
 };
 
 export default BillingStep;
-

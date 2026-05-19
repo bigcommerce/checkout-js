@@ -87,7 +87,9 @@ describe('getHostedInstrumentValidationSchema', () => {
         });
         values.hostedForm.errors = { cardExpiryVerification: 'required' };
 
-        expect(() => schema.validateSync(values)).toThrow('payment.credit_card_expiration_required_error');
+        expect(() => schema.validateSync(values)).toThrow(
+            'payment.credit_card_expiration_required_error',
+        );
     });
 
     it('throws error if card number field is invalid', () => {

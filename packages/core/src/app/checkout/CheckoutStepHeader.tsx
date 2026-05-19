@@ -48,29 +48,33 @@ const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
                 />
 
                 <h2
-                    className={classNames('stepHeader-title optimizedCheckout-headingPrimary',
-                        { 'header': isActive || isComplete },
-                        { 'header-secondary': !isActive && !isComplete })}
-                >{heading}</h2>
+                    className={classNames(
+                        'stepHeader-title optimizedCheckout-headingPrimary',
+                        { header: isActive || isComplete },
+                        { 'header-secondary': !isActive && !isComplete },
+                    )}
+                >
+                    {heading}
+                </h2>
             </div>
 
-            {themeV2 && !isActive && isComplete &&
+            {themeV2 && !isActive && isComplete && (
                 <div
                     className="stepHeader-body stepHeader-column optimizedCheckout-contentPrimary body-regular"
                     data-test="step-info"
-                    >
-                        {summary}
+                >
+                    {summary}
                 </div>
-            }
+            )}
 
-            {!themeV2 &&
+            {!themeV2 && (
                 <div
                     className="stepHeader-body stepHeader-column optimizedCheckout-contentPrimary"
                     data-test="step-info"
                 >
                     {!isActive && isComplete && summary}
                 </div>
-            }
+            )}
 
             {isEditable && !isActive && (
                 <div className="stepHeader-actions stepHeader-column">

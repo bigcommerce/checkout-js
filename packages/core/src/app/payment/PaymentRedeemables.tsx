@@ -11,10 +11,14 @@ import { isExperimentEnabled } from '../common/utility';
 const PaymentRedeemables: FunctionComponent<RedeemableProps> = (redeemableProps) => {
     const { checkoutState } = useCheckout();
     const { checkoutSettings } = checkoutState.data.getConfig() ?? {};
-    const isMultiCouponEnabled = isExperimentEnabled(checkoutSettings, 'CHECKOUT-9674.multi_coupon_cart_checkout', false);
+    const isMultiCouponEnabled = isExperimentEnabled(
+        checkoutSettings,
+        'CHECKOUT-9674.multi_coupon_cart_checkout',
+        false,
+    );
 
     return (
-        <Fieldset 
+        <Fieldset
             additionalClassName="redeemable-payments"
             legend={
                 <Legend hidden>

@@ -1,14 +1,5 @@
-import {
-    type FormikProps,
-    type FormikValues,
-    withFormik,
-    type WithFormikConfig,
-} from 'formik';
-import React, {
-    type ComponentType,
-    useEffect,
-    useRef,
-} from 'react';
+import { type FormikProps, type FormikValues, withFormik, type WithFormikConfig } from 'formik';
+import React, { type ComponentType, useEffect, useRef } from 'react';
 
 export interface WithFormikExtendedProps {
     isInitialValueLoaded?: boolean;
@@ -22,13 +13,9 @@ export interface WithFormikExtendedProps {
 export default function withFormikExtended<
     TOuterProps extends object,
     TValues extends FormikValues = FormikValues,
-    TPayload = TValues
->(
-    config: WithFormikConfig<TOuterProps, TValues, TPayload>
-) {
-    return (
-        OriginalComponent: ComponentType<TOuterProps & FormikProps<TValues>>
-    ) => {
+    TPayload = TValues,
+>(config: WithFormikConfig<TOuterProps, TValues, TPayload>) {
+    return (OriginalComponent: ComponentType<TOuterProps & FormikProps<TValues>>) => {
         const DecoratedComponent: ComponentType<
             TOuterProps & FormikProps<TValues> & WithFormikExtendedProps
         > = (props) => {

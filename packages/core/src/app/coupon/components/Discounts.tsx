@@ -1,7 +1,12 @@
 import React, { type FunctionComponent, useRef, useState } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { CollapseCSSTransition, IconCoupon, IconDownArrow, IconUpArrow } from '@bigcommerce/checkout/ui';
+import {
+    CollapseCSSTransition,
+    IconCoupon,
+    IconDownArrow,
+    IconUpArrow,
+} from '@bigcommerce/checkout/ui';
 
 import { ShopperCurrency } from '../../currency';
 import { type DiscountItem, useMultiCoupon } from '../useMultiCoupon';
@@ -10,13 +15,17 @@ const DiscountItems: FunctionComponent<{ coupons: DiscountItem[] }> = ({ coupons
     <>
         {coupons.map((coupon) => (
             <div data-test={coupon.testId} key={coupon.name}>
-                <div
-                    aria-live="polite"
-                    className="cart-priceItem optimizedCheckout-contentPrimary"
-                >
+                <div aria-live="polite" className="cart-priceItem optimizedCheckout-contentPrimary">
                     <div>
-                        <span className="cart-priceItem-label body-regular"><IconCoupon />{coupon.name}</span>
-                        {coupon.showMaxLimitInfo && <span className="sub-text cart-priceItem-label-info"><TranslatedString id="redeemable.maximum_discount_applied_text" /></span>}
+                        <span className="cart-priceItem-label body-regular">
+                            <IconCoupon />
+                            {coupon.name}
+                        </span>
+                        {coupon.showMaxLimitInfo && (
+                            <span className="sub-text cart-priceItem-label-info">
+                                <TranslatedString id="redeemable.maximum_discount_applied_text" />
+                            </span>
+                        )}
                     </div>
                     <span className="cart-priceItem-value body-medium" data-test="cart-price-value">
                         -<ShopperCurrency amount={coupon.amount} />
@@ -27,7 +36,10 @@ const DiscountItems: FunctionComponent<{ coupons: DiscountItem[] }> = ({ coupons
     </>
 );
 
-const DiscountsCollapsible: FunctionComponent<{ discounts: number; discountItems: DiscountItem[] }> = ({ discounts, discountItems }) => {
+const DiscountsCollapsible: FunctionComponent<{
+    discounts: number;
+    discountItems: DiscountItem[];
+}> = ({ discounts, discountItems }) => {
     const [isCouponDiscountsVisible, setIsCouponDiscountsVisible] = useState(true);
     const discountsRef = useRef<HTMLDivElement>(null);
 
@@ -65,11 +77,7 @@ const DiscountsCollapsible: FunctionComponent<{ discounts: number; discountItems
 
 export const Discounts: FunctionComponent = () => {
     const {
-        uiDetails: {
-            subtotal,
-            discounts,
-            discountItems,
-        },
+        uiDetails: { subtotal, discounts, discountItems },
     } = useMultiCoupon();
 
     return (

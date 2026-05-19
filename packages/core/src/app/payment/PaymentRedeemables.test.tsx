@@ -29,11 +29,11 @@ describe('PaymentRedeemables', () => {
         const link = screen.getByRole('link', { name: 'Coupon / gift certificate' });
 
         expect(screen.getByRole('group')).toBeInTheDocument();
-        expect(screen.getByRole('group')).toHaveClass("form-fieldset redeemable-payments");
-        expect(link).toHaveAttribute("aria-controls", "redeemable-collapsable");
-        expect(link).toHaveAttribute("aria-expanded", "false");
-        expect(link).toHaveAttribute("href", "#");
-        expect(link).toHaveAttribute("data-test", "redeemable-label");
-        expect(link).toHaveClass("redeemable-label");
+        expect(screen.getByRole('group')).toHaveClass('form-fieldset redeemable-payments');
+        expect(link).toHaveAttribute('aria-controls', 'redeemable-collapsable');
+        expect(link).toHaveAttribute('aria-expanded', 'false');
+        expect(link).toHaveAttribute('href', '#');
+        expect(link).toHaveAttribute('data-test', 'redeemable-label');
+        expect(link).toHaveClass('redeemable-label');
     });
 });

@@ -6,30 +6,36 @@ import getOrderShippingCostAfterAutomaticDiscount from './getOrderShippingCostAf
 import getStoreCreditAmount from './getStoreCreditAmount';
 import { type OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
 
-export default function mapToOrderSummarySubtotalsProps({
-    baseAmount,
-    discountAmount,
-    isTaxIncluded,
-    shippingCostBeforeDiscount,
-    payments,
-    handlingCostTotal,
-    giftWrappingCostTotal,
-    coupons,
-    taxes,
-    fees,
-    consignments,
-}: Order,
-isShippingDiscountDisplayEnabled: boolean,
+export default function mapToOrderSummarySubtotalsProps(
+    {
+        baseAmount,
+        discountAmount,
+        isTaxIncluded,
+        shippingCostBeforeDiscount,
+        payments,
+        handlingCostTotal,
+        giftWrappingCostTotal,
+        coupons,
+        taxes,
+        fees,
+        consignments,
+    }: Order,
+    isShippingDiscountDisplayEnabled: boolean,
 ): OrderSummarySubtotalsProps {
-
-    const shippingAmount = isShippingDiscountDisplayEnabled && consignments.shipping.length > 0
-    ? getOrderShippingCostAfterAutomaticDiscount(shippingCostBeforeDiscount, consignments.shipping)
-    : shippingCostBeforeDiscount;
+    const shippingAmount =
+        isShippingDiscountDisplayEnabled && consignments.shipping.length > 0
+            ? getOrderShippingCostAfterAutomaticDiscount(
+                  shippingCostBeforeDiscount,
+                  consignments.shipping,
+              )
+            : shippingCostBeforeDiscount;
 
     return {
         subtotalAmount: baseAmount,
         shippingAmount,
-        shippingAmountBeforeDiscount: isShippingDiscountDisplayEnabled ? shippingCostBeforeDiscount : undefined,
+        shippingAmountBeforeDiscount: isShippingDiscountDisplayEnabled
+            ? shippingCostBeforeDiscount
+            : undefined,
         giftWrappingAmount: giftWrappingCostTotal,
         discountAmount,
         storeCreditAmount: getStoreCreditAmount(payments),

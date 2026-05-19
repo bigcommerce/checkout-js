@@ -14,8 +14,14 @@ describe('getProviderWithCustomCheckout', () => {
     });
 
     it('returns mapped method id', () => {
-        expect(getProviderWithCustomCheckout(PaymentMethodId.PaypalCommerce)).toEqual(PaymentMethodId.PayPalCommerceAcceleratedCheckout);
-        expect(getProviderWithCustomCheckout(PaymentMethodId.PaypalCommerceCreditCards)).toEqual(PaymentMethodId.PayPalCommerceAcceleratedCheckout);
-        expect(getProviderWithCustomCheckout(PaymentMethodId.Braintree)).toEqual(PaymentMethodId.BraintreeAcceleratedCheckout);
+        expect(getProviderWithCustomCheckout(PaymentMethodId.PaypalCommerce)).toEqual(
+            PaymentMethodId.PayPalCommerceAcceleratedCheckout,
+        );
+        expect(getProviderWithCustomCheckout(PaymentMethodId.PaypalCommerceCreditCards)).toEqual(
+            PaymentMethodId.PayPalCommerceAcceleratedCheckout,
+        );
+        expect(getProviderWithCustomCheckout(PaymentMethodId.Braintree)).toEqual(
+            PaymentMethodId.BraintreeAcceleratedCheckout,
+        );
     });
 });

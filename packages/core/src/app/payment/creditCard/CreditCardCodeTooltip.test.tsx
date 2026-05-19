@@ -15,7 +15,7 @@ describe('CreditCardCodeTooltip', () => {
         render(
             <LocaleContext.Provider value={localeContext}>
                 <CreditCardCodeTooltip />
-            </LocaleContext.Provider>
+            </LocaleContext.Provider>,
         );
 
         expect(screen.getByText('CVV visa, mc, disc')).toBeInTheDocument();

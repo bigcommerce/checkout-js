@@ -46,7 +46,7 @@ export const useMultiCoupon = (): UseMultiCouponValues => {
 
     const {
         data: { getConfig, getCheckout, getOrder },
-        statuses: { isSubmittingOrder, isPending, isApplyingCoupon, isApplyingGiftCertificate }
+        statuses: { isSubmittingOrder, isPending, isApplyingCoupon, isApplyingGiftCertificate },
     } = checkoutState;
     const { checkoutSettings } = getConfig() ?? {};
     const checkout = getCheckout();
@@ -60,17 +60,14 @@ export const useMultiCoupon = (): UseMultiCouponValues => {
 
     const appliedCoupons = checkoutState.data.getCoupons() ?? EMPTY_ARRAY;
 
-    const appliedGiftCertificates = checkoutState.data.getGiftCertificates()?.map(({ code, used }) => ({
-        code,
-        amount: used,
-    })) ?? EMPTY_ARRAY;
+    const appliedGiftCertificates =
+        checkoutState.data.getGiftCertificates()?.map(({ code, used }) => ({
+            code,
+            amount: used,
+        })) ?? EMPTY_ARRAY;
 
     const applyCouponOrGiftCertificate = async (code: string) => {
-        const {
-            applyCoupon,
-            applyGiftCertificate,
-            clearError,
-        } = checkoutService;
+        const { applyCoupon, applyGiftCertificate, clearError } = checkoutService;
 
         try {
             await applyGiftCertificate(code);
@@ -91,29 +88,34 @@ export const useMultiCoupon = (): UseMultiCouponValues => {
         await checkoutService.removeGiftCertificate(code);
     };
 
-
     let uiDetails = {} as UIDetails;
 
-    if(checkout) {
-        const allConsignmentsHaveSelectedShippingOption = hasSelectedShippingOptions(checkout.consignments);
-        
+    if (checkout) {
+        const allConsignmentsHaveSelectedShippingOption = hasSelectedShippingOptions(
+            checkout.consignments,
+        );
+
         uiDetails = {
             subtotal: checkout.subtotal,
             discounts: checkout.displayDiscountTotal,
             discountItems: getDiscountItems(checkout, language),
-            shippingBeforeDiscount: allConsignmentsHaveSelectedShippingOption ? checkout.shippingCostBeforeDiscount : undefined,
-            shipping: allConsignmentsHaveSelectedShippingOption ? checkout.comparisonShippingCost : undefined,
-        }
+            shippingBeforeDiscount: allConsignmentsHaveSelectedShippingOption
+                ? checkout.shippingCostBeforeDiscount
+                : undefined,
+            shipping: allConsignmentsHaveSelectedShippingOption
+                ? checkout.comparisonShippingCost
+                : undefined,
+        };
     }
-    
-    if(order) {
+
+    if (order) {
         uiDetails = {
             subtotal: order.productAutoDiscountedSubtotal,
             discounts: order.displayDiscountTotal,
             discountItems: getDiscountItems(order, language),
             shippingBeforeDiscount: order.shippingCostBeforeDiscount,
             shipping: order.comparisonShippingCost,
-        }
+        };
     }
 
     return {

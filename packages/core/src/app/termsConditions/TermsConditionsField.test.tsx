@@ -30,7 +30,9 @@ describe('TermsConditionsField', () => {
             </LocaleContext.Provider>,
         );
 
-        expect(screen.getByText(translate('terms_and_conditions.terms_and_conditions_heading'))).toBeInTheDocument();
+        expect(
+            screen.getByText(translate('terms_and_conditions.terms_and_conditions_heading')),
+        ).toBeInTheDocument();
         expect(screen.getByText(/I agree/)).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('terms and conditions'));
@@ -51,7 +53,9 @@ describe('TermsConditionsField', () => {
             </LocaleContext.Provider>,
         );
 
-        expect(screen.getByText(translate('terms_and_conditions.terms_and_conditions_heading'))).toBeInTheDocument();
+        expect(
+            screen.getByText(translate('terms_and_conditions.terms_and_conditions_heading')),
+        ).toBeInTheDocument();
         expect(screen.getByText(/I agree/)).toBeInTheDocument();
         expect(screen.getByRole('textbox')).toHaveTextContent(terms);
     });

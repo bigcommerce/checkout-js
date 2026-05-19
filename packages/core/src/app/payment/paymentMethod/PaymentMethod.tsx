@@ -6,15 +6,22 @@ import {
     type PaymentMethod,
     type PaymentRequestOptions,
 } from '@bigcommerce/checkout-sdk';
-import { createNoPaymentStrategy, } from '@bigcommerce/checkout-sdk/integrations/no-payment';
+import { createNoPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/no-payment';
 import React, { type FunctionComponent, lazy, memo, Suspense } from 'react';
 
 import { type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
 
 import { withCheckout } from '../../checkout';
 
-const HostedCreditCardPaymentMethod = lazy(() => import(/* webpackChunkName: "hosted-credit-card-payment-method" */'./HostedCreditCardPaymentMethod'));
-const HostedPaymentMethod = lazy(() => import(/* webpackChunkName: "hosted-payment-method" */'./HostedPaymentMethod'));
+const HostedCreditCardPaymentMethod = lazy(
+    () =>
+        import(
+            /* webpackChunkName: "hosted-credit-card-payment-method" */ './HostedCreditCardPaymentMethod'
+        ),
+);
+const HostedPaymentMethod = lazy(
+    () => import(/* webpackChunkName: "hosted-payment-method" */ './HostedPaymentMethod'),
+);
 
 import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodProviderType from './PaymentMethodProviderType';
@@ -50,12 +57,11 @@ const PaymentMethodComponent: FunctionComponent<
 > = (props) => {
     const { method } = props;
 
-    if (
-        method.id === PaymentMethodId.Humm ||
-        method.type === PaymentMethodProviderType.Hosted
-    ) {
+    if (method.id === PaymentMethodId.Humm || method.type === PaymentMethodProviderType.Hosted) {
         return (
-            <Suspense><HostedPaymentMethod {...props} /></Suspense>
+            <Suspense>
+                <HostedPaymentMethod {...props} />
+            </Suspense>
         );
     }
 
@@ -67,7 +73,9 @@ const PaymentMethodComponent: FunctionComponent<
         method.type === PaymentMethodProviderType.Api
     ) {
         return (
-            <Suspense><HostedCreditCardPaymentMethod {...props} /></Suspense>
+            <Suspense>
+                <HostedCreditCardPaymentMethod {...props} />
+            </Suspense>
         );
     }
 
@@ -90,7 +98,7 @@ function mapToWithCheckoutPaymentMethodProps(
             return checkoutService.initializePayment({
                 ...options,
                 integrations: [
-                    ...options.integrations ?? [],
+                    ...(options.integrations ?? []),
                     // The strategies below don’t appear to correspond to any existing component,
                     // so they are initialized globally at the root level.
                     createNoPaymentStrategy,

@@ -16,7 +16,12 @@ export interface BillingProps {
     onUnhandledError(error: Error): void;
 }
 
-const getFieldsWithExtraFields = (getBillingAddressFields: (countryCode: string) => FormField[], hasAddressExtraFields: boolean, getAddressExtraFields: () => FormField[], countryCode?: string) => {
+const getFieldsWithExtraFields = (
+    getBillingAddressFields: (countryCode: string) => FormField[],
+    hasAddressExtraFields: boolean,
+    getAddressExtraFields: () => FormField[],
+    countryCode?: string,
+) => {
     const addressFields = getBillingAddressFields(countryCode || '');
 
     if (!hasAddressExtraFields) {
@@ -28,9 +33,12 @@ const getFieldsWithExtraFields = (getBillingAddressFields: (countryCode: string)
     return [...addressFields, ...addressExtraFields];
 };
 
-const Billing = ({ navigateNextStep, onReady, onUnhandledError }:BillingProps): ReactElement => {
+const Billing = ({ navigateNextStep, onReady, onUnhandledError }: BillingProps): ReactElement => {
     const { checkoutService, checkoutState } = useCheckout();
-    const { userJourney: { hasAddressExtraFields }, billing: { restrictManualAddressEntry } } = useCapabilities();
+    const {
+        userJourney: { hasAddressExtraFields },
+        billing: { restrictManualAddressEntry },
+    } = useCapabilities();
 
     const {
         data: {
@@ -50,24 +58,27 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }:BillingProps): 
     const cart = getCart();
 
     if (!config || !customer || !checkout || !cart) {
-        throw new Error('Unable to access checkout data')
+        throw new Error('Unable to access checkout data');
     }
 
-    const isInitializing  = isLoadingBillingCountries();
+    const isInitializing = isLoadingBillingCountries();
 
     // Below constants are for <BillingForm />'s HOC props
-    const customerMessage  = checkout.customerMessage;
-    const methodId  = getBillingMethodId(checkout);
-    const billingAddress  = getBillingAddress();
+    const customerMessage = checkout.customerMessage;
+    const methodId = getBillingMethodId(checkout);
+    const billingAddress = getBillingAddress();
     const handleSubmit = async ({
-                                    orderComment,
-                                    ...addressValues
-                                }: BillingFormValues):Promise<void> => {
-        const updateAddress  = checkoutService.updateBillingAddress;
-        const updateCheckout  = checkoutService.updateCheckout;
-        const billingAddress  = getBillingAddress();
+        orderComment,
+        ...addressValues
+    }: BillingFormValues): Promise<void> => {
+        const updateAddress = checkoutService.updateBillingAddress;
+        const updateCheckout = checkoutService.updateCheckout;
+        const billingAddress = getBillingAddress();
         const promises: Array<Promise<CheckoutSelectors>> = [];
-        const address = mapAddressFromFormValues(addressValues, B2BExtraFieldsSessionStorage.BILLING_KEY);
+        const address = mapAddressFromFormValues(
+            addressValues,
+            B2BExtraFieldsSessionStorage.BILLING_KEY,
+        );
 
         if (address && !isEqualAddress(address, billingAddress)) {
             promises.push(updateAddress(address));
@@ -98,7 +109,7 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }:BillingProps): 
                     onUnhandledError(error);
                 }
             }
-        }
+        };
 
         void init();
     }, []);
@@ -126,7 +137,14 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }:BillingProps): 
                 <BillingForm
                     billingAddress={billingAddress}
                     customerMessage={customerMessage}
-                    getFields={(countryCode?: string) => getFieldsWithExtraFields(getBillingAddressFields, hasAddressExtraFields, getAddressExtraFields, countryCode)}
+                    getFields={(countryCode?: string) =>
+                        getFieldsWithExtraFields(
+                            getBillingAddressFields,
+                            hasAddressExtraFields,
+                            getAddressExtraFields,
+                            countryCode,
+                        )
+                    }
                     methodId={methodId}
                     navigateNextStep={navigateNextStep}
                     onSubmit={handleSubmit}
@@ -135,6 +153,6 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }:BillingProps): 
             </div>
         </AddressFormSkeleton>
     );
-}
+};
 
 export default Billing;

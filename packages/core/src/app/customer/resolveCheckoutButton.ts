@@ -9,7 +9,7 @@ import { resolveLazyComponent } from '../common/resolver';
 import * as lazyCheckoutButtons from '../generated/checkoutButtons';
 
 export default function resolveCheckoutButton(
-    resolveId: CheckoutButtonResolveId
+    resolveId: CheckoutButtonResolveId,
 ): ComponentType<CheckoutButtonProps> | undefined {
     const { ComponentRegistry, ...components } = lazyCheckoutButtons;
 

@@ -1,14 +1,22 @@
-import { type CardInstrument, type CheckoutSettings, type LanguageService, type PaymentMethod } from '@bigcommerce/checkout-sdk';
+import {
+    type CardInstrument,
+    type CheckoutSettings,
+    type LanguageService,
+    type PaymentMethod,
+} from '@bigcommerce/checkout-sdk';
 import { number } from 'card-validator';
 import classNames from 'classnames';
 import { compact } from 'lodash';
 import React, { type FunctionComponent, memo, type ReactNode } from 'react';
 
-import { BigCommercePaymentsPayLaterBanner } from '@bigcommerce/checkout/bigcommerce-payments-utils'
+import { BigCommercePaymentsPayLaterBanner } from '@bigcommerce/checkout/bigcommerce-payments-utils';
 import { type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
-import { BraintreePaypalCreditBanner, PaypalCommerceCreditBanner } from '@bigcommerce/checkout/paypal-utils';
+import {
+    BraintreePaypalCreditBanner,
+    PaypalCommerceCreditBanner,
+} from '@bigcommerce/checkout/paypal-utils';
 import { CreditCardIconList, mapFromPaymentMethodCardType } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../../checkout';
@@ -49,8 +57,8 @@ export function getPaymentMethodTitle(
     storeCountryCode: string,
 ): (method: PaymentMethod) => {
     logoUrl: string;
-    titleText: string,
-    subtitle?: SubtitleType
+    titleText: string;
+    subtitle?: SubtitleType;
 } {
     const cdnPath = (path: string) => `${basePath}${path}`;
 
@@ -62,7 +70,13 @@ export function getPaymentMethodTitle(
         const methodDisplayName = getPaymentMethodDisplayName(language)(method);
         // TODO: API could provide the data below so UI can read simply read it.
         // However, I'm not sure how we deal with translation yet. TBC.
-        const customTitles: { [key: string]: { logoUrl: string; titleText: string, subtitle?: ReactNode | ((props: any) => ReactNode) } } = {
+        const customTitles: {
+            [key: string]: {
+                logoUrl: string;
+                titleText: string;
+                subtitle?: ReactNode | ((props: any) => ReactNode);
+            };
+        } = {
             [PaymentMethodType.CreditCard]: {
                 logoUrl: '',
                 titleText: methodName,
@@ -75,7 +89,10 @@ export function getPaymentMethodTitle(
                 logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo_letter.svg'),
                 titleText: methodDisplayName,
                 subtitle: (props: PaymentMethodSubtitleProps): ReactNode => (
-                    <BraintreePaypalCreditBanner containerId='braintree-credit-banner-container' {...props} />
+                    <BraintreePaypalCreditBanner
+                        containerId="braintree-credit-banner-container"
+                        {...props}
+                    />
                 ),
             },
             [PaymentMethodType.PaypalCredit]: {
@@ -93,12 +110,22 @@ export function getPaymentMethodTitle(
             [PaymentMethodId.BigCommercePaymentsPayPal]: {
                 logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo.svg'),
                 titleText: '',
-                subtitle: (props: PaymentMethodSubtitleProps) => <BigCommercePaymentsPayLaterBanner containerId='bigcommerce-payments-banner-container' {...props} />
+                subtitle: (props: PaymentMethodSubtitleProps) => (
+                    <BigCommercePaymentsPayLaterBanner
+                        containerId="bigcommerce-payments-banner-container"
+                        {...props}
+                    />
+                ),
             },
             [PaymentMethodId.BigCommercePaymentsPayLater]: {
                 logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo_letter.svg'),
                 titleText: methodDisplayName,
-                subtitle: (props: PaymentMethodSubtitleProps) => <BigCommercePaymentsPayLaterBanner containerId='bigcommerce-payments-paylater-banner-container' {...props} />
+                subtitle: (props: PaymentMethodSubtitleProps) => (
+                    <BigCommercePaymentsPayLaterBanner
+                        containerId="bigcommerce-payments-paylater-banner-container"
+                        {...props}
+                    />
+                ),
             },
             [PaymentMethodId.BigCommercePaymentsAlternativeMethod]: {
                 logoUrl: method.logoUrl || '',
@@ -107,12 +134,22 @@ export function getPaymentMethodTitle(
             [PaymentMethodId.PaypalCommerce]: {
                 logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo.svg'),
                 titleText: '',
-                subtitle: (props: PaymentMethodSubtitleProps) => <PaypalCommerceCreditBanner containerId='paypal-commerce-banner-container' {...props} />
+                subtitle: (props: PaymentMethodSubtitleProps) => (
+                    <PaypalCommerceCreditBanner
+                        containerId="paypal-commerce-banner-container"
+                        {...props}
+                    />
+                ),
             },
             [PaymentMethodId.PaypalCommerceCredit]: {
                 logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo_letter.svg'),
                 titleText: methodDisplayName,
-                subtitle: (props: PaymentMethodSubtitleProps) => <PaypalCommerceCreditBanner containerId='paypal-commerce-credit-banner-container' {...props} />
+                subtitle: (props: PaymentMethodSubtitleProps) => (
+                    <PaypalCommerceCreditBanner
+                        containerId="paypal-commerce-credit-banner-container"
+                        {...props}
+                    />
+                ),
             },
             [PaymentMethodId.PaypalCommerceAlternativeMethod]: {
                 logoUrl: method.logoUrl || '',
@@ -127,7 +164,13 @@ export function getPaymentMethodTitle(
                 titleText: language.translate('payment.affirm_display_name_text'),
             },
             [PaymentMethodId.Afterpay]: {
-                logoUrl: isExperimentEnabled(checkoutSettings, 'PROJECT-6993.change_afterpay_logo_for_us_stores') && storeCountryCode === 'US' ? cdnPath('/img/payment-providers/afterpay-new-us.svg') : cdnPath('/img/payment-providers/afterpay-badge-blackonmint.png'),
+                logoUrl:
+                    isExperimentEnabled(
+                        checkoutSettings,
+                        'PROJECT-6993.change_afterpay_logo_for_us_stores',
+                    ) && storeCountryCode === 'US'
+                        ? cdnPath('/img/payment-providers/afterpay-new-us.svg')
+                        : cdnPath('/img/payment-providers/afterpay-badge-blackonmint.png'),
                 titleText: methodName,
             },
             [PaymentMethodId.AmazonPay]: {
@@ -160,8 +203,8 @@ export function getPaymentMethodTitle(
             },
             [PaymentMethodId.Klarna]: {
                 logoUrl: method.initializationData?.enableBillie
-                        ? cdnPath('/img/payment-providers/klarna-billie-header.png')
-                        : cdnPath('/img/payment-providers/klarna-header.png'),
+                    ? cdnPath('/img/payment-providers/klarna-billie-header.png')
+                    : cdnPath('/img/payment-providers/klarna-header.png'),
                 titleText: methodDisplayName,
             },
             [PaymentMethodType.Paypal]: {
@@ -172,8 +215,16 @@ export function getPaymentMethodTitle(
                         : cdnPath('/img/payment-providers/paypal.svg'),
                 titleText: '',
                 subtitle: (props: PaymentMethodSubtitleProps): ReactNode => {
-                    if (method.id === PaymentMethodId.BraintreePaypalCredit || method.id === PaymentMethodId.BraintreePaypal) {
-                        return <BraintreePaypalCreditBanner containerId='braintree-banner-container' {...props} />;
+                    if (
+                        method.id === PaymentMethodId.BraintreePaypalCredit ||
+                        method.id === PaymentMethodId.BraintreePaypal
+                    ) {
+                        return (
+                            <BraintreePaypalCreditBanner
+                                containerId="braintree-banner-container"
+                                {...props}
+                            />
+                        );
                     }
 
                     return null;
@@ -248,7 +299,10 @@ export function getPaymentMethodTitle(
             }
 
             if (method.id === 'credit_card' || method.id === PaymentMethodId.WorldpayAccess) {
-                return { logoUrl: '', titleText: language.translate('payment.credit_debit_card_text') };
+                return {
+                    logoUrl: '',
+                    titleText: language.translate('payment.credit_debit_card_text'),
+                };
             }
         }
 
@@ -258,7 +312,7 @@ export function getPaymentMethodTitle(
 
         if (method.gateway === PaymentMethodId.BlueSnapDirect) {
             if (method.id === 'credit_card') {
-                return { logoUrl: '', titleText: methodDisplayName }
+                return { logoUrl: '', titleText: methodDisplayName };
             }
 
             if (method.id === 'ecp') {
@@ -266,7 +320,12 @@ export function getPaymentMethodTitle(
             }
 
             if (method.id === 'banktransfer') {
-                return { logoUrl: '', titleText: language.translate('payment.bluesnap_direct_local_bank_transfer_label') };
+                return {
+                    logoUrl: '',
+                    titleText: language.translate(
+                        'payment.bluesnap_direct_local_bank_transfer_label',
+                    ),
+                };
             }
         }
 
@@ -275,8 +334,8 @@ export function getPaymentMethodTitle(
         }
 
         if (
-          method.gateway === PaymentMethodId.BigCommercePaymentsAlternativeMethod &&
-          method.id === PaymentMethodId.Klarna
+            method.gateway === PaymentMethodId.BigCommercePaymentsAlternativeMethod &&
+            method.id === PaymentMethodId.Klarna
         ) {
             return {
                 logoUrl: cdnPath('/img/payment-providers/klarna.png'),
@@ -299,7 +358,10 @@ export function getPaymentMethodTitle(
         }
 
         if (method.id === PaymentMethodId.Ratepay) {
-            return { logoUrl: method.logoUrl || '', titleText: language.translate('payment.ratepay.payment_method_title') };
+            return {
+                logoUrl: method.logoUrl || '',
+                titleText: language.translate('payment.ratepay.payment_method_title'),
+            };
         }
 
         return (
@@ -314,10 +376,14 @@ export function getPaymentMethodTitle(
 function getInstrumentForMethod(
     instruments: CardInstrument[],
     method: PaymentMethod,
-    values: PaymentFormValues
+    values: PaymentFormValues,
 ): CardInstrument | undefined {
-    const instrumentsForMethod = instruments.filter(instrument => instrument.provider === method.id);
-    const selectedInstrument = instrumentsForMethod.find(instrument => instrument.bigpayToken === values.instrumentId);
+    const instrumentsForMethod = instruments.filter(
+        (instrument) => instrument.provider === method.id,
+    );
+    const selectedInstrument = instrumentsForMethod.find(
+        (instrument) => instrument.bigpayToken === values.instrumentId,
+    );
 
     return selectedInstrument;
 }
@@ -327,9 +393,24 @@ const PaymentMethodTitle: FunctionComponent<
         WithLanguageProps &
         WithPaymentTitleProps &
         ConnectFormikProps<PaymentFormValues>
-> = ({ cdnBasePath, checkoutSettings, storeCountryCode, onUnhandledError, formik: { values }, instruments, isSelected, language, method }) => {
+> = ({
+    cdnBasePath,
+    checkoutSettings,
+    storeCountryCode,
+    onUnhandledError,
+    formik: { values },
+    instruments,
+    isSelected,
+    language,
+    method,
+}) => {
     const methodName = getPaymentMethodName(language)(method);
-    const { logoUrl, titleText, subtitle } = getPaymentMethodTitle(language, cdnBasePath, checkoutSettings, storeCountryCode)(method);
+    const { logoUrl, titleText, subtitle } = getPaymentMethodTitle(
+        language,
+        cdnBasePath,
+        checkoutSettings,
+        storeCountryCode,
+    )(method);
 
     const getSelectedCardType = () => {
         if (!isSelected) {
@@ -358,20 +439,20 @@ const PaymentMethodTitle: FunctionComponent<
     };
 
     const getSubtitle = () => {
-        const node = subtitle instanceof Function ? subtitle({ onUnhandledError, methodId: method.id }) : subtitle;
+        const node =
+            subtitle instanceof Function
+                ? subtitle({ onUnhandledError, methodId: method.id })
+                : subtitle;
 
-        return node ? <div className="paymentProviderHeader-subtitleContainer">
-            {node}
-        </div> : null
-    }
+        return node ? <div className="paymentProviderHeader-subtitleContainer">{node}</div> : null;
+    };
 
     return (
-        <div className={
-            classNames(
-                'paymentProviderHeader-container',
-                { 'paymentProviderHeader-container-googlePay': method.id.includes('googlepay') },
-            )
-        }>
+        <div
+            className={classNames('paymentProviderHeader-container', {
+                'paymentProviderHeader-container-googlePay': method.id.includes('googlepay'),
+            })}
+        >
             <div
                 className="paymentProviderHeader-nameContainer"
                 data-test={`payment-method-${method.id}`}
@@ -382,7 +463,10 @@ const PaymentMethodTitle: FunctionComponent<
                         className={classNames(
                             'paymentProviderHeader-img',
                             { 'paymentProviderHeader-img-applePay': method.id === 'applepay' },
-                            { 'paymentProviderHeader-img-googlePay': method.id.includes('googlepay') },
+                            {
+                                'paymentProviderHeader-img-googlePay':
+                                    method.id.includes('googlepay'),
+                            },
                         )}
                         data-test="payment-method-logo"
                         src={logoUrl}
@@ -390,8 +474,10 @@ const PaymentMethodTitle: FunctionComponent<
                 )}
 
                 {titleText && (
-                    <div className="paymentProviderHeader-name sub-header"
-                        data-test="payment-method-name">
+                    <div
+                        className="paymentProviderHeader-name sub-header"
+                        data-test="payment-method-name"
+                    >
                         {titleText}
                     </div>
                 )}
@@ -419,7 +505,7 @@ function mapToCheckoutProps({ checkoutState }: CheckoutContextProps): WithPaymen
         return null;
     }
 
-    const storeCountryCode = config.storeProfile.storeCountryCode
+    const storeCountryCode = config.storeProfile.storeCountryCode;
 
     return {
         instruments,

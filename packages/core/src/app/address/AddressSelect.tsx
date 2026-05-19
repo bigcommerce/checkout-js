@@ -2,7 +2,10 @@ import { type Address, type CustomerAddress } from '@bigcommerce/checkout-sdk';
 import React, { memo, type ReactNode } from 'react';
 
 import { useCapabilities } from '@bigcommerce/checkout/contexts';
-import { PoweredByPayPalFastlaneLabel, usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
+import {
+    PoweredByPayPalFastlaneLabel,
+    usePayPalFastlaneAddress,
+} from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { DropdownTrigger } from '@bigcommerce/checkout/ui';
 
 import AddressSelectButton from './AddressSelectButton';
@@ -35,7 +38,9 @@ const AddressSelect = ({
     onUseNewAddress,
     placeholderText,
 }: AddressSelectProps) => {
-    const { userJourney: { hasCompanyAddressBook } } = useCapabilities();
+    const {
+        userJourney: { hasCompanyAddressBook },
+    } = useCapabilities();
     const { shouldShowPayPalFastlaneLabel } = usePayPalFastlaneAddress();
 
     const handleSelectAddress = (newAddress: Address) => {
@@ -54,21 +59,24 @@ const AddressSelect = ({
         <div className="form-field">
             <div className="dropdown--select">
                 <DropdownTrigger
-                    dropdown={hasCompanyAddressBook
-                        ? <SearchableAddressSelectComponent
-                            addresses={addresses}
-                            onSelectAddress={handleSelectAddress}
-                            onUseNewAddress={handleUseNewAddress}
-                            selectedAddress={selectedAddress}
-                            type={type}
-                        />
-                        : <AddressSelectComponent
-                            addresses={addresses}
-                            onSelectAddress={handleSelectAddress}
-                            onUseNewAddress={handleUseNewAddress}
-                            selectedAddress={selectedAddress}
-                            type={type}
-                        />
+                    dropdown={
+                        hasCompanyAddressBook ? (
+                            <SearchableAddressSelectComponent
+                                addresses={addresses}
+                                onSelectAddress={handleSelectAddress}
+                                onUseNewAddress={handleUseNewAddress}
+                                selectedAddress={selectedAddress}
+                                type={type}
+                            />
+                        ) : (
+                            <AddressSelectComponent
+                                addresses={addresses}
+                                onSelectAddress={handleSelectAddress}
+                                onUseNewAddress={handleUseNewAddress}
+                                selectedAddress={selectedAddress}
+                                type={type}
+                            />
+                        )
                     }
                 >
                     <AddressSelectButton
@@ -84,7 +92,7 @@ const AddressSelect = ({
             {shouldShowPayPalFastlaneLabel && <PoweredByPayPalFastlaneLabel />}
         </div>
     );
-}
+};
 
 function getAddressWithExtraFields(address: Address, storageKey?: string): Address {
     if (!storageKey) return address;

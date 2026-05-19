@@ -12,7 +12,9 @@ import resolvePaymentMethod from '../resolvePaymentMethod';
 import withForm, { type WithFormProps } from '../withForm';
 import withPayment, { type WithPaymentProps } from '../withPayment';
 
-const PaymentMethodV1 = lazy(() => import(/* webpackChunkName: "payment-method-v1" */'./PaymentMethod'));
+const PaymentMethodV1 = lazy(
+    () => import(/* webpackChunkName: "payment-method-v1" */ './PaymentMethod'),
+);
 
 export interface PaymentMethodProps {
     method: PaymentMethod;
@@ -56,13 +58,11 @@ const PaymentMethodContainer: ComponentType<
         setValidationSchema,
     };
 
-    const ResolvedPaymentMethod = resolvePaymentMethod(
-        {
-            id: method.id,
-            gateway: method.gateway,
-            type: method.type,
-        },
-    );
+    const ResolvedPaymentMethod = resolvePaymentMethod({
+        id: method.id,
+        gateway: method.gateway,
+        type: method.type,
+    });
 
     if (!ResolvedPaymentMethod) {
         return (

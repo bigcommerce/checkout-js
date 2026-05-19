@@ -43,7 +43,9 @@ const CartStockPositionsChangedModal: FunctionComponent<CartStockPositionsChange
     );
 
     const modalContent = groupedByConsignment ? (
-        <CartStockPositionsChangedMultiConsignmentContent consignmentGroups={groupedByConsignment} />
+        <CartStockPositionsChangedMultiConsignmentContent
+            consignmentGroups={groupedByConsignment}
+        />
     ) : (
         <CartStockPositionsChangedItemList items={changedItemsToShow} />
     );

@@ -48,17 +48,19 @@ export const CartSummary: React.FC<CartSummaryProps> = ({ isMultiShippingMode })
         <MobileView>
             {(matched) => {
                 if (matched) {
-                    if(themeV2) {
+                    if (themeV2) {
                         return (
                             <LazyContainer loadingSkeleton={<></>}>
                                 <aside aria-label="Cart Summary" className="layout-cart">
-                                    <CartSummaryDrawerV2 isMultiShippingMode={isMultiShippingMode} />
+                                    <CartSummaryDrawerV2
+                                        isMultiShippingMode={isMultiShippingMode}
+                                    />
                                     <Extension region={ExtensionRegion.SummaryAfter} />
                                 </aside>
                             </LazyContainer>
-                        ) 
+                        );
                     }
-                    
+
                     return (
                         <LazyContainer loadingSkeleton={<></>}>
                             <Extension region={ExtensionRegion.SummaryAfter} />
