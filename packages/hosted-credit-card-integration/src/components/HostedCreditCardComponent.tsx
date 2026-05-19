@@ -6,6 +6,7 @@ import {
 import { createBlueSnapDirectCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bluesnap-direct';
 import { createCheckoutComCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/checkoutcom-custom';
 import { createCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/credit-card';
+import { createCyberSourceV2PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/cybersource';
 import { createTDOnlineMartPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/td-bank';
 import { compact, forIn } from 'lodash';
 import React, { type FunctionComponent, type ReactNode, useCallback, useState } from 'react';
@@ -256,6 +257,7 @@ const HostedCreditCardComponent: FunctionComponent<HostedCreditCardComponentProp
                     ...options,
                     integrations: [
                         createCreditCardPaymentStrategy,
+                        createCyberSourceV2PaymentStrategy,
                         createBlueSnapDirectCreditCardPaymentStrategy,
                         createTDOnlineMartPaymentStrategy,
                         createCheckoutComCreditCardPaymentStrategy,
