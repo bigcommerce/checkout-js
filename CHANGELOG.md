@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.790.2](https://github.com/bigcommerce/checkout-js/compare/v1.790.1...v1.790.2) (2026-05-19)
+
+
+### Bug Fixes
+
+* **shipping:** CHECKOUT-9999 Update autocomplete to to avoid cursor jumping to end on edit ([#3018](https://github.com/bigcommerce/checkout-js/issues/3018)) ([7b9404f](https://github.com/bigcommerce/checkout-js/commit/7b9404f0e724d5cb6c48bd1e9645fd62da87e13a))
+
 ### [1.790.1](https://github.com/bigcommerce/checkout-js/compare/v1.790.0...v1.790.1) (2026-05-13)
 
 ## [1.790.0](https://github.com/bigcommerce/checkout-js/compare/v1.789.3...v1.790.0) (2026-05-13)
