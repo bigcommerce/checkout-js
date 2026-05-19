@@ -49,7 +49,6 @@
     "no-template-curly-in-string": "off", // 1 error
     "global-require": "off", // 22 errors
     "@typescript-eslint/no-var-requires": "off", // 22 errors
-    "prettier/prettier": "off", // 11 errors
     "jest/valid-expect": "off", // 19 errors
     "no-multi-str": "off", // 1 error
     "no-empty": "off", // 1 error
