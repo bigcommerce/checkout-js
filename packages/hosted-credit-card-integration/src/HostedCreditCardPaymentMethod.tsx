@@ -31,13 +31,13 @@ const HostedCreditCardPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>(
     HostedCreditCardPaymentMethod,
     [
+        { id: 'cba_mpgs' },
+        { id: 'credit_card', gateway: 'bluesnapdirect' },
+        { id: 'credit_card', gateway: 'checkoutcom' },
+        { id: 'cybersourcev2' },
         {
             id: 'hosted-credit-card',
         },
-        { id: 'credit_card', gateway: 'bluesnapdirect' },
-        { id: 'credit_card', gateway: 'checkoutcom' },
-
         { id: 'tdonlinemart' },
-        { id: 'cba_mpgs' },
     ],
 );
