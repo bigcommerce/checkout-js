@@ -260,6 +260,7 @@ describe('OrderConfirmation', () => {
         ).toBeInTheDocument();
 
         const continueButtonContainer =
+            // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
             container.getElementsByClassName('continueButtonContainer')[0];
 
         // eslint-disable-next-line testing-library/no-node-access

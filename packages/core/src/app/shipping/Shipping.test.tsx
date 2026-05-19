@@ -818,6 +818,7 @@ describe('Shipping step', () => {
             expect(checkoutService.updateShippingAddress).toHaveBeenCalled();
 
             expect(
+                // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
                 container.getElementsByClassName('form-checklist-item--selected')[0],
             ).toHaveTextContent('Pickup In Store$3.00');
 
@@ -826,6 +827,7 @@ describe('Shipping step', () => {
             expect(checkoutService.selectConsignmentShippingOption).toHaveBeenCalled();
 
             expect(
+                // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
                 container.getElementsByClassName('form-checklist-item--selected')[0],
             ).toHaveTextContent('Flat Rate$10.00');
         });
