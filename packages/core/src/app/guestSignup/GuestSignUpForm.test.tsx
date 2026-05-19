@@ -34,7 +34,9 @@ describe('GuestSignUpForm', () => {
 
         expect(screen.getByText(translate('customer.create_account_text'))).toBeInTheDocument();
         expect(screen.getByText(/case sensitive/)).toBeInTheDocument();
-        expect(screen.getByText(translate('customer.password_confirmation_label'))).toBeInTheDocument();
+        expect(
+            screen.getByText(translate('customer.password_confirmation_label')),
+        ).toBeInTheDocument();
         expect(screen.getByText(translate('customer.create_account_action'))).toBeInTheDocument();
     });
 
@@ -87,7 +89,9 @@ describe('GuestSignUpForm', () => {
         await userEvent.click(screen.getByRole('button', { name: 'Create Account' }));
 
         expect(await screen.findByText(passwordRequirements.description)).toBeInTheDocument();
-        expect(await screen.findByText(translate('customer.password_confirmation_required_error'))).toBeInTheDocument();
+        expect(
+            await screen.findByText(translate('customer.password_confirmation_required_error')),
+        ).toBeInTheDocument();
     });
 
     it('displays error message if passwords do not match', async () => {
@@ -105,6 +109,8 @@ describe('GuestSignUpForm', () => {
         await userEvent.type(screen.getByLabelText('Confirm Password'), 'password2');
         await userEvent.click(screen.getByRole('button', { name: 'Create Account' }));
 
-        expect(await screen.findByText(translate('customer.password_confirmation_error'))).toBeInTheDocument();
+        expect(
+            await screen.findByText(translate('customer.password_confirmation_error')),
+        ).toBeInTheDocument();
     });
 });

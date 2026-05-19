@@ -39,35 +39,43 @@ export function loadFiles(options?: LoadFilesOptions): Promise<LoadFilesResult> 
         integrity = {},
     } = MANIFEST_JSON;
 
-    const scripts = Promise.all(js.filter(path => !path.startsWith('loader')).map((path) =>
-        getScriptLoader().loadScript(joinPaths(publicPath, path), {
-            async: false,
-            attributes: integrity[path] ? {
-                crossorigin: 'anonymous',
-                integrity: integrity[path],
-            } : {},
-        })
-    ));
+    const scripts = Promise.all(
+        js
+            .filter((path) => !path.startsWith('loader'))
+            .map((path) =>
+                getScriptLoader().loadScript(joinPaths(publicPath, path), {
+                    async: false,
+                    attributes: integrity[path]
+                        ? {
+                              crossorigin: 'anonymous',
+                              integrity: integrity[path],
+                          }
+                        : {},
+                }),
+            ),
+    );
 
-    const stylesheets = Promise.all(css.map((path) =>
-        getStylesheetLoader().loadStylesheet(joinPaths(publicPath, path), {
-            prepend: true,
-            attributes: integrity[path] ? {
-                crossorigin: 'anonymous',
-                integrity: integrity[path],
-            } : {},
-        })
-    ));
+    const stylesheets = Promise.all(
+        css.map((path) =>
+            getStylesheetLoader().loadStylesheet(joinPaths(publicPath, path), {
+                prepend: true,
+                attributes: integrity[path]
+                    ? {
+                          crossorigin: 'anonymous',
+                          integrity: integrity[path],
+                      }
+                    : {},
+            }),
+        ),
+    );
 
     getScriptLoader().preloadScripts(
-        jsDynamicChunks
-            .map((path) => joinPaths(publicPath, path)),
+        jsDynamicChunks.map((path) => joinPaths(publicPath, path)),
         { prefetch: true },
     );
 
     getStylesheetLoader().preloadStylesheets(
-        cssDynamicChunks
-            .map((path) => joinPaths(publicPath, path)),
+        cssDynamicChunks.map((path) => joinPaths(publicPath, path)),
         { prefetch: true },
     );
 

@@ -21,9 +21,7 @@ import {
     ThemeProvider,
 } from '@bigcommerce/checkout/contexts';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
-import {
-    CHECKOUT_ROOT_NODE_ID,
-} from '@bigcommerce/checkout/payment-integration-api';
+import { CHECKOUT_ROOT_NODE_ID } from '@bigcommerce/checkout/payment-integration-api';
 import {
     CheckoutPageNodeObject,
     CheckoutPreset,
@@ -107,14 +105,9 @@ describe('Multi-shipping', () => {
 
         CheckoutTest = (props) => (
             <CheckoutProvider checkoutService={checkoutService}>
-                <LocaleProvider
-                    checkoutService={checkoutService}
-                    languageService={languageService}
-                >
+                <LocaleProvider checkoutService={checkoutService} languageService={languageService}>
                     <AnalyticsProviderMock>
-                        <ExtensionProvider
-                            extensionService={extensionService}
-                        >
+                        <ExtensionProvider extensionService={extensionService}>
                             <ThemeProvider>
                                 <Checkout {...props} />
                             </ThemeProvider>
@@ -432,20 +425,22 @@ describe('Multi-shipping', () => {
         expect(await screen.findByText(/items left to allocate/)).toBeInTheDocument();
         expect(await screen.findByText(/No shipping address entered/i)).toBeInTheDocument();
 
-        const address = JSON.parse(JSON.stringify({
-            firstName: faker.name.firstName(),
-            lastName: faker.name.lastName(),
-            address1: faker.address.streetAddress(),
-            city: faker.address.city(),
-            countryCode: 'AU',
-            stateOrProvinceCode: faker.helpers.arrayElement(['NSW', 'VIC', 'QLD', 'TAS']),
-            postalCode: faker.address.zipCode(),
-        }));
+        const address = JSON.parse(
+            JSON.stringify({
+                firstName: faker.name.firstName(),
+                lastName: faker.name.lastName(),
+                address1: faker.address.streetAddress(),
+                city: faker.address.city(),
+                countryCode: 'AU',
+                stateOrProvinceCode: faker.helpers.arrayElement(['NSW', 'VIC', 'QLD', 'TAS']),
+                postalCode: faker.address.zipCode(),
+            }),
+        );
 
         const updatedAddress = {
             ...address,
             firstName: `${address.firstName} Updated`,
-        }
+        };
 
         checkout.updateCheckout(
             'post',
@@ -468,11 +463,13 @@ describe('Multi-shipping', () => {
             '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments/consignment-1',
             {
                 ...checkoutWithGuestMultiShippingCart,
-                consignments: [{
-                    ...consignment,
-                    shippingAddress: address,
-                    lineItemIds: ['x', 'y', 'z'],
-                }],
+                consignments: [
+                    {
+                        ...consignment,
+                        shippingAddress: address,
+                        lineItemIds: ['x', 'y', 'z'],
+                    },
+                ],
             },
         );
 
@@ -512,26 +509,28 @@ describe('Multi-shipping', () => {
         expect(selectedShippingOptions[0].getAttribute('value')).toBe('option-id-pick-up');
         expect(checkoutService.selectConsignmentShippingOption).toHaveBeenCalledTimes(1);
 
-        expect(screen.getByText("All items are allocated.")).toBeInTheDocument();
+        expect(screen.getByText('All items are allocated.')).toBeInTheDocument();
 
         expect(screen.getByText('Destination #1')).toBeInTheDocument();
         expect(screen.getByText(getAddressContent(address))).toBeInTheDocument();
-        expect(screen.getByText("5 items allocated")).toBeInTheDocument();
+        expect(screen.getByText('5 items allocated')).toBeInTheDocument();
 
         checkout.updateCheckout(
             'put',
             '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments/consignment-1',
             {
                 ...checkoutWithGuestMultiShippingCart,
-                consignments: [{
-                    ...consignment,
-                    shippingAddress: updatedAddress,
-                    lineItemIds: ['x', 'y', 'z'],
-                }],
+                consignments: [
+                    {
+                        ...consignment,
+                        shippingAddress: updatedAddress,
+                        lineItemIds: ['x', 'y', 'z'],
+                    },
+                ],
             },
         );
 
-        await userEvent.click(screen.getByTestId("edit-shipping-address"));
+        await userEvent.click(screen.getByTestId('edit-shipping-address'));
 
         expect(screen.getByLabelText('First Name')).toHaveDisplayValue(address.firstName);
         expect(screen.getByLabelText('Last Name')).toHaveDisplayValue(address.lastName);

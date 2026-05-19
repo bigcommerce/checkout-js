@@ -104,7 +104,7 @@ describe('withCheckout()', () => {
             <CheckoutProvider checkoutService={service}>
                 <Child />
             </CheckoutProvider>,
-        )
+        );
 
         expect(OriginalChild).toHaveBeenCalledTimes(1);
     });

@@ -25,7 +25,9 @@ describe('StoreCreditOverlay', () => {
             </LocaleContext.Provider>,
         );
 
-        expect(screen.getByText(languageService.translate('payment.payment_not_required_text'))).toBeInTheDocument();
+        expect(
+            screen.getByText(languageService.translate('payment.payment_not_required_text')),
+        ).toBeInTheDocument();
     });
 
     it('renders component with expected class', () => {

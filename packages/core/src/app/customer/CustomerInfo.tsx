@@ -1,4 +1,8 @@
-import { type CheckoutSelectors, type CustomerRequestOptions, type CustomError } from '@bigcommerce/checkout-sdk';
+import {
+    type CheckoutSelectors,
+    type CustomerRequestOptions,
+    type CustomError,
+} from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';
 
@@ -70,17 +74,14 @@ const CustomerInfo: FunctionComponent<CustomerInfoProps & WithCheckoutCustomerIn
 
     return (
         <div className="customerView" data-test="checkout-customer-info">
-            <div
-                className="customerView-body body-regular"
-                data-test="customer-info"
-            >
+            <div className="customerView-body body-regular" data-test="customer-info">
                 {email}
             </div>
 
             <div className="customerView-actions">
                 {isSignedIn && (
                     <Button
-                        className='body-regular'
+                        className="body-regular"
                         isLoading={isSigningOut}
                         onClick={handleSignOut}
                         size={ButtonSize.Tiny}
@@ -113,7 +114,10 @@ function mapToWithCheckoutCustomerInfoProps({
         return null;
     }
 
-    const { checkoutSettings, links: { checkoutLink, logoutLink } } = config;
+    const {
+        checkoutSettings,
+        links: { checkoutLink, logoutLink },
+    } = config;
 
     const methodId =
         checkout.payments && checkout.payments.length === 1 ? checkout.payments[0].providerId : '';

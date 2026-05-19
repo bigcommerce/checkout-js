@@ -5,7 +5,13 @@ import {
     type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
 import { compact, forIn } from 'lodash';
-import React, { type ComponentType, type FunctionComponent, type ReactNode, useCallback, useState } from 'react';
+import React, {
+    type ComponentType,
+    type FunctionComponent,
+    type ReactNode,
+    useCallback,
+    useState,
+} from 'react';
 import { type ObjectSchema } from 'yup';
 
 import { type CheckoutContextProps } from '@bigcommerce/checkout/contexts';

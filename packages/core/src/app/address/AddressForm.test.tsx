@@ -1,11 +1,19 @@
 import '@testing-library/jest-dom';
-import { type CheckoutService, createCheckoutService, type FormField } from '@bigcommerce/checkout-sdk';
+import {
+    type CheckoutService,
+    createCheckoutService,
+    type FormField,
+} from '@bigcommerce/checkout-sdk';
 import userEvent from '@testing-library/user-event';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
-import { CheckoutProvider, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
+import {
+    CheckoutProvider,
+    LocaleContext,
+    type LocaleContextType,
+} from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
@@ -25,10 +33,10 @@ describe('AddressForm Component', () => {
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
                     <Formik initialValues={{}} onSubmit={noop}>
-                        <AddressForm { ...addressFormProps } />
+                        <AddressForm {...addressFormProps} />
                     </Formik>
                 </LocaleContext.Provider>
-            </CheckoutProvider>
+            </CheckoutProvider>,
         );
     };
 

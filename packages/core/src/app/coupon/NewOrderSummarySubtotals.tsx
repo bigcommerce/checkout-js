@@ -5,7 +5,7 @@ import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { CollapseCSSTransition } from '@bigcommerce/checkout/ui';
 
-import { isOrderFee, OrderSummaryDiscount, OrderSummaryPrice }  from '../order';
+import { isOrderFee, OrderSummaryDiscount, OrderSummaryPrice } from '../order';
 
 import { AppliedGiftCertificates, CouponForm, Discounts } from './components';
 import { useMultiCoupon } from './useMultiCoupon';
@@ -32,10 +32,7 @@ const NewOrderSummarySubtotals: FunctionComponent<MultiCouponProps> = ({
     const {
         appliedGiftCertificates,
         isCouponFormCollapsed,
-        uiDetails:{
-            shipping,
-            shippingBeforeDiscount,
-        }
+        uiDetails: { shipping, shippingBeforeDiscount },
     } = useMultiCoupon();
 
     const [isCouponFormVisible, setIsCouponFormVisible] = useState(!isCouponFormCollapsed);
@@ -103,16 +100,17 @@ const NewOrderSummarySubtotals: FunctionComponent<MultiCouponProps> = ({
                     />
                 ))}
 
-                {!isTaxIncluded && (taxes || []).map((tax, index) => (
-                    <OrderSummaryPrice
-                        amount={tax.amount}
-                        key={index}
-                        label={tax.name}
-                        testId="cart-taxes"
-                    />
-                ))}
+                {!isTaxIncluded &&
+                    (taxes || []).map((tax, index) => (
+                        <OrderSummaryPrice
+                            amount={tax.amount}
+                            key={index}
+                            label={tax.name}
+                            testId="cart-taxes"
+                        />
+                    ))}
 
-                <AppliedGiftCertificates giftCertificates={appliedGiftCertificates}/>
+                <AppliedGiftCertificates giftCertificates={appliedGiftCertificates} />
 
                 {!!storeCreditAmount && (
                     <OrderSummaryDiscount

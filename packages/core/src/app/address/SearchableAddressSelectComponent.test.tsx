@@ -3,7 +3,11 @@ import { type CheckoutService, createCheckoutService } from '@bigcommerce/checko
 import { noop } from 'lodash';
 import React from 'react';
 
-import { CheckoutProvider, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
+import {
+    CheckoutProvider,
+    LocaleContext,
+    type LocaleContextType,
+} from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
 
@@ -36,7 +40,7 @@ describe('SearchableAddressSelectComponent', () => {
                 <LocaleContext.Provider value={localeContext}>
                     <SearchableAddressSelectComponent {...defaultProps} {...props} />
                 </LocaleContext.Provider>
-            </CheckoutProvider>
+            </CheckoutProvider>,
         );
     };
 
@@ -46,8 +50,12 @@ describe('SearchableAddressSelectComponent', () => {
 
         jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue(getCheckout());
         jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(getStoreConfig());
-        jest.spyOn(checkoutService.getState().data, 'getBillingCountries').mockReturnValue(getCountries());
-        jest.spyOn(checkoutService.getState().data, 'getShippingCountries').mockReturnValue(getCountries());
+        jest.spyOn(checkoutService.getState().data, 'getBillingCountries').mockReturnValue(
+            getCountries(),
+        );
+        jest.spyOn(checkoutService.getState().data, 'getShippingCountries').mockReturnValue(
+            getCountries(),
+        );
     });
 
     it('renders "Enter a new address" link when addresses exist', () => {

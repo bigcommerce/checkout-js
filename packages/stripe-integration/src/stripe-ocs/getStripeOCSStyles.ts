@@ -4,9 +4,14 @@ import { getAppliedStyles } from '@bigcommerce/checkout/dom-utils';
 
 import type { StripeAppearanceOptions, StripeCustomFont } from '../stripe-types';
 
-const radioIconInnerScaleList = {
-    default: 0.66,
-    themeV2: 0.36,
+export enum CheckoutTheme {
+    DEFAULT = 'default',
+    THEME_V2 = 'themeV2',
+}
+
+const radioIconInnerScaleList: Record<CheckoutTheme, number> = {
+    [CheckoutTheme.DEFAULT]: 0.66,
+    [CheckoutTheme.THEME_V2]: 0.36,
 };
 
 const getStylesFromElement = (
@@ -65,6 +70,15 @@ const getScaleFromTransformMatrix = (transformMatrixString = ''): number | undef
     return matrixValues[0];
 };
 
+const getAccordionItemSpacing = (
+    accordionSelectedHeaderStyles: Record<string, string | undefined>,
+) => {
+    const marginTop = parseFloat(accordionSelectedHeaderStyles['margin-top'] || '0');
+    const marginBottom = parseFloat(accordionSelectedHeaderStyles['margin-bottom'] || '0');
+
+    return `${marginTop + marginBottom}px`;
+};
+
 export const getFonts = (selector = 'link[href*="font"]'): StripeCustomFont[] => {
     const elementsList: NodeListOf<Element> = document.querySelectorAll(selector);
     const fonts: StripeCustomFont[] = [];
@@ -82,7 +96,7 @@ export const getFonts = (selector = 'link[href*="font"]'): StripeCustomFont[] =>
 
 export const getAppearanceForOCSElement = (
     containerId: string,
-    theme: keyof typeof radioIconInnerScaleList = 'default',
+    theme: CheckoutTheme = CheckoutTheme.DEFAULT,
 ): StripeAppearanceOptions => {
     const defaultAccordionPaddingHorizontal = '18px';
     const defaultAccordionPaddingVertical = '13px';
@@ -178,6 +192,15 @@ export const getAppearanceForOCSElement = (
             radioInnerParsedSize && parseRadioIconSize(radioInnerParsedSize) * radioInnerWidthScale,
     });
 
+    const toggleItemBorderRadius = {
+        [CheckoutTheme.DEFAULT]: '4px',
+        [CheckoutTheme.THEME_V2]: formChecklistStyles['border-radius'],
+    };
+    const toggleItemSelectedBorderColor = {
+        [CheckoutTheme.DEFAULT]: radioInnerChecked['background-color'],
+        [CheckoutTheme.THEME_V2]: accordionSelectedHeaderStyles['border-color'],
+    };
+
     return {
         variables: {
             colorPrimary: formInputStyles['box-shadow'],
@@ -188,6 +211,7 @@ export const getAppearanceForOCSElement = (
             colorTextPlaceholder: formInputStyles.color,
             colorIcon: formInputStyles.color,
             fontFamily: accordionHeaderFontFamily || formInputStyles['font-family'],
+            accordionItemSpacing: getAccordionItemSpacing(accordionSelectedHeaderStyles),
         },
         rules: {
             '.Input': {
@@ -202,8 +226,6 @@ export const getAppearanceForOCSElement = (
                 borderBottom: formChecklistStyles['border-bottom'],
                 borderLeft: formChecklistStyles['border-left'],
                 borderColor: formChecklistStyles['border-color'],
-                marginBottom: accordionSelectedHeaderStyles['margin-bottom'],
-                marginTop: accordionSelectedHeaderStyles['margin-top'],
                 backgroundColor: accordionHeaderStyles['background-color'],
                 boxShadow: 'none',
                 fontSize: accordionItemTitleFontSize,
@@ -243,6 +265,25 @@ export const getAppearanceForOCSElement = (
             '.RadioIconOuter--checked': {
                 stroke: radioOuterChecked['border-color'],
                 fill: radioOuterChecked['background-color'],
+            },
+            '.ToggleItem': {
+                ...(toggleItemBorderRadius[theme]
+                    ? { borderRadius: toggleItemBorderRadius[theme] }
+                    : {}),
+                border: formChecklistStyles['border-bottom'],
+                backgroundColor: accordionHeaderStyles['background-color'],
+                boxShadow: 'none',
+                outline: 'none',
+            },
+            '.ToggleItem--selected': {
+                fontWeight: 'bold',
+                color: accordionHeaderColor,
+                backgroundColor: accordionSelectedHeaderStyles['background-color'],
+                ...(toggleItemSelectedBorderColor[theme]
+                    ? { borderColor: toggleItemSelectedBorderColor[theme] }
+                    : {}),
+                outline: 'none',
+                boxShadow: 'none',
             },
         },
     };

@@ -17,7 +17,10 @@ export default function isInstrumentCardNumberRequired({
 
     if (instrument.trustedShippingAddress) {
         return false;
-    }  
-    
-    return !(instrument.untrustedShippingCardVerificationMode === UntrustedShippingCardVerificationType.CVV);
+    }
+
+    return !(
+        instrument.untrustedShippingCardVerificationMode ===
+        UntrustedShippingCardVerificationType.CVV
+    );
 }

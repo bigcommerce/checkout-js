@@ -1,4 +1,8 @@
-import { createRequestSender, type RequestSender, type Response } from '@bigcommerce/request-sender';
+import {
+    createRequestSender,
+    type RequestSender,
+    type Response,
+} from '@bigcommerce/request-sender';
 
 import AccountService, { type CustomerCreateRequestBody } from './AccountService';
 import { type CreatedCustomer } from './CreatedCustomer';

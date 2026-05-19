@@ -12,7 +12,12 @@ export interface EditLinkProps {
     label?: React.ReactNode;
 }
 
-const EditLink: FunctionComponent<EditLinkProps> = ({ className, url, isMultiShippingMode, label }) => {
+const EditLink: FunctionComponent<EditLinkProps> = ({
+    className,
+    url,
+    isMultiShippingMode,
+    label,
+}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const gotoCartPage = () => {
@@ -30,8 +35,7 @@ const EditLink: FunctionComponent<EditLinkProps> = ({ className, url, isMultiShi
                     onRequestClose={() => setIsModalOpen(false)}
                 />
                 <a
-                    className={classNames((className || 'cart-header-link'),
-                        'body-cta')}
+                    className={classNames(className || 'cart-header-link', 'body-cta')}
                     data-test="cart-edit-link"
                     href="#"
                     id="cart-edit-link"
@@ -45,8 +49,7 @@ const EditLink: FunctionComponent<EditLinkProps> = ({ className, url, isMultiShi
 
     return (
         <a
-            className={classNames((className || 'cart-header-link'),
-               'body-cta')}
+            className={classNames(className || 'cart-header-link', 'body-cta')}
             data-test="cart-edit-link"
             href={url}
             id="cart-edit-link"

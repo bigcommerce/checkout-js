@@ -8,7 +8,13 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
-import { CheckoutProvider, ExtensionProvider ,type ExtensionServiceInterface, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
+import {
+    CheckoutProvider,
+    ExtensionProvider,
+    type ExtensionServiceInterface,
+    LocaleContext,
+    type LocaleContextType,
+} from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { render, screen, waitFor, within } from '@bigcommerce/checkout/test-utils';
 
@@ -44,7 +50,7 @@ describe('MultiShippingForm Component', () => {
             customerMessage: 'x',
             isLoading: false,
             onUnhandledError: jest.fn(),
-            onSubmit: jest.fn()
+            onSubmit: jest.fn(),
         };
 
         jest.spyOn(checkoutState.data, 'getBillingAddressFields').mockReturnValue(
@@ -69,10 +75,12 @@ describe('MultiShippingForm Component', () => {
 
         jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
             ...getCheckout(),
-            consignments: [{
-                ...getConsignment(),
-                lineItemIds: [getPhysicalItem().id],
-            }],
+            consignments: [
+                {
+                    ...getConsignment(),
+                    lineItemIds: [getPhysicalItem().id],
+                },
+            ],
         });
     });
 
@@ -128,11 +136,15 @@ describe('MultiShippingForm Component', () => {
         await userEvent.click(screen.getByText(/12345 Testing Way/));
         await userEvent.click(screen.getByText(/Infinity Testing Way/));
 
-        expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(new AssignItemInvalidAddressError());
+        expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(
+            new AssignItemInvalidAddressError(),
+        );
 
         await userEvent.click(screen.getByText(/67890 Testing Way/));
 
-        expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(new AssignItemFailedError(new Error()));
+        expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(
+            new AssignItemFailedError(new Error()),
+        );
     });
 
     it('renders correct allocated items in banner if bundled items are present', async () => {
@@ -143,21 +155,23 @@ describe('MultiShippingForm Component', () => {
                 ...getCart(),
                 lineItems: {
                     ...getCart().lineItems,
-                    physicalItems: [{
-                        ...getPhysicalItem(),
-                        id: '1',
-                    },
-                    {
-                        ...getPhysicalItem(),
-                        id: '2',
-                        quantity: 1,
-                    },
-                    {
-                        ...getPhysicalItem(),
-                        id: '3',
-                        quantity: 1,
-                        parentId: '1'
-                    }],
+                    physicalItems: [
+                        {
+                            ...getPhysicalItem(),
+                            id: '1',
+                        },
+                        {
+                            ...getPhysicalItem(),
+                            id: '2',
+                            quantity: 1,
+                        },
+                        {
+                            ...getPhysicalItem(),
+                            id: '3',
+                            quantity: 1,
+                            parentId: '1',
+                        },
+                    ],
                     digitalItems: [],
                 },
             },
@@ -196,7 +210,9 @@ describe('MultiShippingForm Component', () => {
         // eslint-disable-next-line testing-library/no-node-access
         const destination1 = screen.getByText('Destination #1').parentElement?.parentElement;
 
-        expect(within(destination1).getByText('Canvas Laundry Cart', { exact: false })).toBeInTheDocument();
+        expect(
+            within(destination1).getByText('Canvas Laundry Cart', { exact: false }),
+        ).toBeInTheDocument();
 
         const showItemsButton = screen.getByTestId('expand-items-button');
 
@@ -204,33 +220,39 @@ describe('MultiShippingForm Component', () => {
         await userEvent.click(showItemsButton);
 
         await waitFor(() => {
-            expect(within(destination1).queryByText('Canvas Laundry Cart', { exact: false })).not.toBeInTheDocument();
+            expect(
+                within(destination1).queryByText('Canvas Laundry Cart', { exact: false }),
+            ).not.toBeInTheDocument();
         });
     });
 
     it('adds new shipping destination and open allocate items modal and validate quantity input', async () => {
         jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
             ...getCheckout(),
-            consignments: [{
-                ...getConsignment(),
-                lineItemIds: ['1']
-            }],
+            consignments: [
+                {
+                    ...getConsignment(),
+                    lineItemIds: ['1'],
+                },
+            ],
             cart: {
                 ...getCart(),
                 lineItems: {
                     ...getCart().lineItems,
-                    physicalItems: [{
-                        ...getPhysicalItem(),
-                        id: '1',
-                        name: 'Product 1',
-                        quantity: 2,
-                    },
-                    {
-                        ...getPhysicalItem(),
-                        id: '2',
-                        name: 'Product 2',
-                        quantity: 1,
-                    }],
+                    physicalItems: [
+                        {
+                            ...getPhysicalItem(),
+                            id: '1',
+                            name: 'Product 1',
+                            quantity: 2,
+                        },
+                        {
+                            ...getPhysicalItem(),
+                            id: '2',
+                            name: 'Product 2',
+                            quantity: 1,
+                        },
+                    ],
                     digitalItems: [],
                     customItems: [getCustomItem()],
                 },
@@ -255,9 +277,7 @@ describe('MultiShippingForm Component', () => {
         expect(screen.getByText('3 items left to allocate')).toBeInTheDocument();
 
         const addShippingDestinationButton = screen.getByRole('button', {
-            name: localeContext.language.translate(
-                'shipping.multishipping_add_new_destination',
-            ),
+            name: localeContext.language.translate('shipping.multishipping_add_new_destination'),
         });
 
         expect(addShippingDestinationButton).toBeInTheDocument();
@@ -281,7 +301,13 @@ describe('MultiShippingForm Component', () => {
         ).toBeInTheDocument();
 
         await waitFor(() => {
-            expect(screen.queryByText(localeContext.language.translate('shipping.multishipping_no_item_allocated_message'))).not.toBeInTheDocument();
+            expect(
+                screen.queryByText(
+                    localeContext.language.translate(
+                        'shipping.multishipping_no_item_allocated_message',
+                    ),
+                ),
+            ).not.toBeInTheDocument();
         });
 
         // eslint-disable-next-line testing-library/no-node-access
@@ -299,7 +325,13 @@ describe('MultiShippingForm Component', () => {
             await userEvent.click(addressOption);
         }
 
-        expect(screen.getByText(localeContext.language.translate('shipping.multishipping_no_item_allocated_message'))).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                localeContext.language.translate(
+                    'shipping.multishipping_no_item_allocated_message',
+                ),
+            ),
+        ).toBeInTheDocument();
 
         const allocateItemsButton = screen.getByTestId('allocate-items-button');
 
@@ -314,14 +346,21 @@ describe('MultiShippingForm Component', () => {
 
         expect(allocateItemsModalHeader).toBeInTheDocument();
 
-        expect(screen.queryByText(localeContext.language.translate('shipping.multishipping_digital_item_no_shipping_banner'))).not.toBeInTheDocument();
+        expect(
+            screen.queryByText(
+                localeContext.language.translate(
+                    'shipping.multishipping_digital_item_no_shipping_banner',
+                ),
+            ),
+        ).not.toBeInTheDocument();
 
         await waitFor(() => {
             expect(within(allocateItemsModal).queryByText('Product 1')).not.toBeInTheDocument();
         });
         expect(within(allocateItemsModal).getByText('Product 2')).toBeInTheDocument();
 
-        const physicalItemQuantityInput = within(allocateItemsModal).getByLabelText('Quantity of Product 2');
+        const physicalItemQuantityInput =
+            within(allocateItemsModal).getByLabelText('Quantity of Product 2');
 
         expect(physicalItemQuantityInput).toBeInTheDocument();
         expect(physicalItemQuantityInput).toHaveValue(0);
@@ -333,13 +372,18 @@ describe('MultiShippingForm Component', () => {
         expect(within(allocateItemsModal).getByRole('button', { name: 'Allocate' })).toBeEnabled();
 
         await userEvent.click(within(allocateItemsModal).getByRole('button', { name: 'Allocate' }));
-        expect(within(allocateItemsModal).getByText(localeContext.language.translate('shipping.quantity_max_error'))).toBeInTheDocument();
+        expect(
+            within(allocateItemsModal).getByText(
+                localeContext.language.translate('shipping.quantity_max_error'),
+            ),
+        ).toBeInTheDocument();
 
         await userEvent.clear(physicalItemQuantityInput);
         await userEvent.type(physicalItemQuantityInput, '1');
         expect(physicalItemQuantityInput).toHaveValue(1);
 
-        const customItemQuantityInput = within(allocateItemsModal).getByLabelText('Quantity of Custom item');
+        const customItemQuantityInput =
+            within(allocateItemsModal).getByLabelText('Quantity of Custom item');
 
         expect(customItemQuantityInput).toBeInTheDocument();
         expect(customItemQuantityInput).toHaveValue(0);
@@ -349,7 +393,11 @@ describe('MultiShippingForm Component', () => {
         expect(customItemQuantityInput).toHaveValue(5);
 
         await userEvent.click(within(allocateItemsModal).getByRole('button', { name: 'Allocate' }));
-        expect(within(allocateItemsModal).getByText(localeContext.language.translate('shipping.custom_item_quantity_error'))).toBeInTheDocument();
+        expect(
+            within(allocateItemsModal).getByText(
+                localeContext.language.translate('shipping.custom_item_quantity_error'),
+            ),
+        ).toBeInTheDocument();
 
         await userEvent.clear(customItemQuantityInput);
         await userEvent.type(customItemQuantityInput, `${getCustomItem().quantity}`);
@@ -387,7 +435,13 @@ describe('MultiShippingForm Component', () => {
         expect(screen.getByText('Destination #2')).toBeInTheDocument();
 
         await waitFor(() => {
-            expect(screen.queryByText(localeContext.language.translate('shipping.multishipping_no_item_allocated_message'))).not.toBeInTheDocument();
+            expect(
+                screen.queryByText(
+                    localeContext.language.translate(
+                        'shipping.multishipping_no_item_allocated_message',
+                    ),
+                ),
+            ).not.toBeInTheDocument();
         });
 
         // eslint-disable-next-line testing-library/no-node-access
@@ -405,7 +459,13 @@ describe('MultiShippingForm Component', () => {
             await userEvent.click(addressOption);
         }
 
-        expect(screen.getByText(localeContext.language.translate('shipping.multishipping_no_item_allocated_message'))).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                localeContext.language.translate(
+                    'shipping.multishipping_no_item_allocated_message',
+                ),
+            ),
+        ).toBeInTheDocument();
 
         const allocateItemsButton = screen.getByTestId('allocate-items-button');
 
@@ -420,31 +480,39 @@ describe('MultiShippingForm Component', () => {
 
         expect(allocateItemsModalHeader).toBeInTheDocument();
 
-        expect(screen.getByText(localeContext.language.translate('shipping.multishipping_digital_item_no_shipping_banner'))).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                localeContext.language.translate(
+                    'shipping.multishipping_digital_item_no_shipping_banner',
+                ),
+            ),
+        ).toBeInTheDocument();
     });
 
     it('displays 1 item left to allocate banner', async () => {
         jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
             ...getCheckout(),
-            consignments: [{
-                ...getConsignment(),
-                lineItemIds: [
-                    getPhysicalItem().id.toString(),
-                ]
-            }],
+            consignments: [
+                {
+                    ...getConsignment(),
+                    lineItemIds: [getPhysicalItem().id.toString()],
+                },
+            ],
             cart: {
                 ...getCart(),
                 lineItems: {
                     ...getCart().lineItems,
-                    physicalItems: [{
-                        ...getPhysicalItem(),
-                        quantity: 2,
-                    },
-                    {
-                        ...getPhysicalItem(),
-                        id: '2',
-                        quantity: 1,
-                    }],
+                    physicalItems: [
+                        {
+                            ...getPhysicalItem(),
+                            quantity: 2,
+                        },
+                        {
+                            ...getPhysicalItem(),
+                            id: '2',
+                            quantity: 1,
+                        },
+                    ],
                 },
             },
         });
@@ -470,26 +538,27 @@ describe('MultiShippingForm Component', () => {
     it('displays all items are allocated banner', async () => {
         jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
             ...getCheckout(),
-            consignments: [{
-                ...getConsignment(),
-                lineItemIds: [
-                    getPhysicalItem().id.toString(),
-                    '2',
-                ]
-            }],
+            consignments: [
+                {
+                    ...getConsignment(),
+                    lineItemIds: [getPhysicalItem().id.toString(), '2'],
+                },
+            ],
             cart: {
                 ...getCart(),
                 lineItems: {
                     ...getCart().lineItems,
-                    physicalItems: [{
-                        ...getPhysicalItem(),
-                        quantity: 2,
-                    },
-                    {
-                        ...getPhysicalItem(),
-                        id: '2',
-                        quantity: 1,
-                    }],
+                    physicalItems: [
+                        {
+                            ...getPhysicalItem(),
+                            quantity: 2,
+                        },
+                        {
+                            ...getPhysicalItem(),
+                            id: '2',
+                            quantity: 1,
+                        },
+                    ],
                 },
             },
         });
@@ -509,38 +578,47 @@ describe('MultiShippingForm Component', () => {
         expect(screen.getByText('Destination #1')).toBeInTheDocument();
         expect(screen.getByText(getAddressContent(address))).toBeInTheDocument();
 
-        expect(screen.getByText(localeContext.language.translate('shipping.multishipping_all_items_allocated_message'))).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                localeContext.language.translate(
+                    'shipping.multishipping_all_items_allocated_message',
+                ),
+            ),
+        ).toBeInTheDocument();
     });
 
     it('edits consignment line items', async () => {
         jest.spyOn(checkoutService, 'deleteConsignment').mockResolvedValue({} as CheckoutSelectors);
-        jest.spyOn(checkoutService, 'createConsignments').mockResolvedValue({} as CheckoutSelectors);
+        jest.spyOn(checkoutService, 'createConsignments').mockResolvedValue(
+            {} as CheckoutSelectors,
+        );
 
         jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
             ...getCheckout(),
-            consignments: [{
-                ...getConsignment(),
-                lineItemIds: [
-                    getPhysicalItem().id.toString(),
-                    "2",
-                ]
-            }],
+            consignments: [
+                {
+                    ...getConsignment(),
+                    lineItemIds: [getPhysicalItem().id.toString(), '2'],
+                },
+            ],
             cart: {
                 ...getCart(),
                 lineItems: {
                     ...getCart().lineItems,
-                    physicalItems: [{
-                        ...getPhysicalItem(),
-                        quantity: 2,
-                        sku: 'sku1',
-                    },
-                    {
-                        ...getPhysicalItem(),
-                        id: '2',
-                        name: 'Product 2',
-                        sku: 'sku2',
-                        quantity: 1,
-                    }],
+                    physicalItems: [
+                        {
+                            ...getPhysicalItem(),
+                            quantity: 2,
+                            sku: 'sku1',
+                        },
+                        {
+                            ...getPhysicalItem(),
+                            id: '2',
+                            name: 'Product 2',
+                            sku: 'sku2',
+                            quantity: 1,
+                        },
+                    ],
                 },
             },
         });
@@ -559,7 +637,13 @@ describe('MultiShippingForm Component', () => {
 
         expect(screen.getByText('Destination #1')).toBeInTheDocument();
         expect(screen.getByText(getAddressContent(address))).toBeInTheDocument();
-        expect(screen.getByText(localeContext.language.translate('shipping.multishipping_all_items_allocated_message'))).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                localeContext.language.translate(
+                    'shipping.multishipping_all_items_allocated_message',
+                ),
+            ),
+        ).toBeInTheDocument();
 
         const reAllocateItemsButton = screen.getByTestId('reallocate-items-button');
 
@@ -571,9 +655,13 @@ describe('MultiShippingForm Component', () => {
         expect(reAllocateItemsModal).toBeInTheDocument();
         expect(within(reAllocateItemsModal).getByText('Canvas Laundry Cart')).toBeInTheDocument();
 
-        expect(within(reAllocateItemsModal).queryByTestId('split-item-tooltip')).not.toBeInTheDocument();
+        expect(
+            within(reAllocateItemsModal).queryByTestId('split-item-tooltip'),
+        ).not.toBeInTheDocument();
 
-        const removeItemButton = within(reAllocateItemsModal).getByTestId(`remove-${getPhysicalItem().id.toString()}-button`);
+        const removeItemButton = within(reAllocateItemsModal).getByTestId(
+            `remove-${getPhysicalItem().id.toString()}-button`,
+        );
 
         expect(removeItemButton).toBeInTheDocument();
 
@@ -588,26 +676,28 @@ describe('MultiShippingForm Component', () => {
 
         jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
             ...getCheckout(),
-            consignments: [{
-                ...getConsignment(),
-                lineItemIds: [
-                    getPhysicalItem().id.toString(),
-                ]
-            }],
+            consignments: [
+                {
+                    ...getConsignment(),
+                    lineItemIds: [getPhysicalItem().id.toString()],
+                },
+            ],
             cart: {
                 ...getCart(),
                 lineItems: {
                     ...getCart().lineItems,
-                    physicalItems: [{
-                        ...getPhysicalItem(),
-                        quantity: 2,
-                    },
-                    {
-                        ...getPhysicalItem(),
-                        id: '2',
-                        name: 'Product 2',
-                        quantity: 1,
-                    }],
+                    physicalItems: [
+                        {
+                            ...getPhysicalItem(),
+                            quantity: 2,
+                        },
+                        {
+                            ...getPhysicalItem(),
+                            id: '2',
+                            name: 'Product 2',
+                            quantity: 1,
+                        },
+                    ],
                 },
             },
         });
@@ -638,7 +728,9 @@ describe('MultiShippingForm Component', () => {
         expect(reAllocateItemsModal).toBeInTheDocument();
         expect(within(reAllocateItemsModal).getByText('Canvas Laundry Cart')).toBeInTheDocument();
 
-        const removeItemButton = within(reAllocateItemsModal).getByTestId(`remove-${getPhysicalItem().id.toString()}-button`);
+        const removeItemButton = within(reAllocateItemsModal).getByTestId(
+            `remove-${getPhysicalItem().id.toString()}-button`,
+        );
 
         expect(removeItemButton).toBeInTheDocument();
 
@@ -654,25 +746,27 @@ describe('MultiShippingForm Component', () => {
 
         jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
             ...getCheckout(),
-            consignments: [{
-                ...getConsignment(),
-                lineItemIds: [
-                    getPhysicalItem().id.toString(),
-                ]
-            }],
+            consignments: [
+                {
+                    ...getConsignment(),
+                    lineItemIds: [getPhysicalItem().id.toString()],
+                },
+            ],
             cart: {
                 ...getCart(),
                 lineItems: {
                     ...getCart().lineItems,
-                    physicalItems: [{
-                        ...getPhysicalItem(),
-                        quantity: 2,
-                    },
-                    {
-                        ...getPhysicalItem(),
-                        id: '2',
-                        quantity: 1,
-                    }],
+                    physicalItems: [
+                        {
+                            ...getPhysicalItem(),
+                            quantity: 2,
+                        },
+                        {
+                            ...getPhysicalItem(),
+                            id: '2',
+                            quantity: 1,
+                        },
+                    ],
                 },
             },
         });
@@ -701,13 +795,12 @@ describe('MultiShippingForm Component', () => {
     it('displays split item tooltip', async () => {
         jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
             ...getCheckout(),
-            consignments: [{
-                ...getConsignment(),
-                lineItemIds: [
-                    '1',
-                    '2',
-                ]
-            }],
+            consignments: [
+                {
+                    ...getConsignment(),
+                    lineItemIds: ['1', '2'],
+                },
+            ],
             cart: {
                 ...getCart(),
                 lineItems: {
@@ -761,7 +854,9 @@ describe('MultiShippingForm Component', () => {
                 message: 'Cart is empty',
             } as any;
 
-            const selectConsignmentShippingOptionSpy = jest.spyOn(checkoutService, 'selectConsignmentShippingOption').mockRejectedValue(emptyCartError);
+            const selectConsignmentShippingOptionSpy = jest
+                .spyOn(checkoutService, 'selectConsignmentShippingOption')
+                .mockRejectedValue(emptyCartError);
 
             jest.spyOn(checkoutState.data, 'getConsignments').mockReturnValue([getConsignment()]);
             jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
@@ -781,6 +876,7 @@ describe('MultiShippingForm Component', () => {
 
             // Find and click a shipping option radio button
             const shippingOptions = screen.getAllByRole('radio');
+
             if (shippingOptions.length > 0) {
                 await userEvent.click(shippingOptions[0]);
             }
@@ -799,7 +895,9 @@ describe('MultiShippingForm Component', () => {
                 message: 'Cart is empty',
             } as any;
 
-            const assignItemsToAddressSpy = jest.spyOn(checkoutService, 'assignItemsToAddress').mockRejectedValue(emptyCartError);
+            const assignItemsToAddressSpy = jest
+                .spyOn(checkoutService, 'assignItemsToAddress')
+                .mockRejectedValue(emptyCartError);
 
             jest.spyOn(checkoutState.data, 'getShippingCountries').mockReturnValue([]);
             jest.spyOn(checkoutState.data, 'getConsignments').mockReturnValue([]);
@@ -826,12 +924,22 @@ describe('MultiShippingForm Component', () => {
             );
 
             const addDestinationButton = screen.getByRole('button', {
-                name: localeContext.language.translate('shipping.multishipping_add_new_destination'),
+                name: localeContext.language.translate(
+                    'shipping.multishipping_add_new_destination',
+                ),
             });
+
             await userEvent.click(addDestinationButton);
 
             await waitFor(() => {
-                expect(screen.getByText(localeContext.language.translate('shipping.multishipping_consignment_index_heading', { consignmentNumber: 1 }))).toBeInTheDocument();
+                expect(
+                    screen.getByText(
+                        localeContext.language.translate(
+                            'shipping.multishipping_consignment_index_heading',
+                            { consignmentNumber: 1 },
+                        ),
+                    ),
+                ).toBeInTheDocument();
             });
 
             expect(assignItemsToAddressSpy).toBeDefined();

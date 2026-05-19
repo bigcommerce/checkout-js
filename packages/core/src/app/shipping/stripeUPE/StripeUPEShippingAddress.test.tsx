@@ -2,7 +2,9 @@ import React from 'react';
 
 import { render } from '@bigcommerce/checkout/test-utils';
 
-import StripeShippingAddressDisplay, { type StripeupeShippingAddressProps } from './StripeShippingAddressDisplay';
+import StripeShippingAddressDisplay, {
+    type StripeupeShippingAddressProps,
+} from './StripeShippingAddressDisplay';
 
 describe('StripeUpe Shipping Component', () => {
     const defaultProps: StripeupeShippingAddressProps = {
@@ -13,21 +15,23 @@ describe('StripeUpe Shipping Component', () => {
     };
 
     it('calls initialize prop on mount', () => {
-        render(<StripeShippingAddressDisplay { ...defaultProps } />);
+        render(<StripeShippingAddressDisplay {...defaultProps} />);
 
         expect(defaultProps.initialize).toHaveBeenCalled();
     });
 
     it('calls deinitialize prop on unmount', () => {
-        render(<StripeShippingAddressDisplay { ...defaultProps } />).unmount();
+        render(<StripeShippingAddressDisplay {...defaultProps} />).unmount();
 
         expect(defaultProps.deinitialize).toHaveBeenCalled();
     });
 
     it('calls onUnhandledError if initialize was failed', () => {
-        defaultProps.initialize = jest.fn(() => { throw new Error(); });
+        defaultProps.initialize = jest.fn(() => {
+            throw new Error();
+        });
 
-        render(<StripeShippingAddressDisplay { ...defaultProps } />);
+        render(<StripeShippingAddressDisplay {...defaultProps} />);
 
         expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(expect.any(Error));
     });
@@ -37,9 +41,8 @@ describe('StripeUpe Shipping Component', () => {
             throw new Error();
         });
 
-        render(<StripeShippingAddressDisplay { ...defaultProps } />).unmount();
+        render(<StripeShippingAddressDisplay {...defaultProps} />).unmount();
 
         expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(expect.any(Error));
     });
-
 });

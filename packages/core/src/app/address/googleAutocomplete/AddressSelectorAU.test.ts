@@ -1,5 +1,5 @@
-import AddressSelectorAU from "./AddressSelectorAU";
-import { getGoogleAutocompletePlaceMock } from "./googleAutocompleteResult.mock";
+import AddressSelectorAU from './AddressSelectorAU';
+import { getGoogleAutocompletePlaceMock } from './googleAutocompleteResult.mock';
 
 describe('AddressSelectorAU', () => {
     const googleAutocompletePlaceMock = getGoogleAutocompletePlaceMock();

@@ -31,20 +31,21 @@ export interface ShippingProps {
 }
 
 function Shipping({
-        cartHasChanged,
-        navigateNextStep,
-        onCreateAccount,
-        onReady = noop,
-        onSignIn,
-        onUnhandledError = noop,
-        onToggleMultiShipping = noop,
-        isMultiShippingMode,
-        isBillingSameAsShipping,
-        setIsMultishippingMode,
-        step,
-    }: ShippingProps) {
+    cartHasChanged,
+    navigateNextStep,
+    onCreateAccount,
+    onReady = noop,
+    onSignIn,
+    onUnhandledError = noop,
+    onToggleMultiShipping = noop,
+    isMultiShippingMode,
+    isBillingSameAsShipping,
+    setIsMultishippingMode,
+    step,
+}: ShippingProps) {
     const [isInitializing, setIsInitializing] = useState(true);
-    const [isMultiShippingUnavailableModalOpen, setIsMultiShippingUnavailableModalOpen] = useState(false);
+    const [isMultiShippingUnavailableModalOpen, setIsMultiShippingUnavailableModalOpen] =
+        useState(false);
 
     const {
         billingAddress,
@@ -65,12 +66,18 @@ function Shipping({
         updateShippingAddress,
         updateBillingAddress,
     } = useShipping();
-    const { shipping: { restrictManualAddressEntry } } = useCapabilities();
+    const {
+        shipping: { restrictManualAddressEntry },
+    } = useCapabilities();
 
     useEffect(() => {
         const initializeShipping = async () => {
             try {
-                await Promise.all([loadShippingAddressFields(), loadShippingOptions(), loadBillingAddressFields()]);
+                await Promise.all([
+                    loadShippingAddressFields(),
+                    loadShippingOptions(),
+                    loadBillingAddressFields(),
+                ]);
 
                 if (cartHasPromotionalItems && isMultiShippingMode) {
                     setIsMultiShippingUnavailableModalOpen(true);
@@ -115,19 +122,32 @@ function Shipping({
     }, []);
 
     const handleSingleShippingSubmit = async (values: SingleShippingFormValues) => {
-        const updatedShippingAddress = values.shippingAddress && mapAddressFromFormValues(values.shippingAddress, B2BExtraFieldsSessionStorage.SHIPPING_KEY);
+        const updatedShippingAddress =
+            values.shippingAddress &&
+            mapAddressFromFormValues(
+                values.shippingAddress,
+                B2BExtraFieldsSessionStorage.SHIPPING_KEY,
+            );
         const promises: Array<Promise<CheckoutSelectors>> = [];
         const hasRemoteBilling = hasRemoteBillingFn(methodId);
 
-        if (!isEqualAddress(updatedShippingAddress, shippingAddress) || shippingAddress?.shouldSaveAddress !== updatedShippingAddress?.shouldSaveAddress) {
+        if (
+            !isEqualAddress(updatedShippingAddress, shippingAddress) ||
+            shippingAddress?.shouldSaveAddress !== updatedShippingAddress?.shouldSaveAddress
+        ) {
             promises.push(updateShippingAddress(updatedShippingAddress || {}));
         }
 
         if (values.billingSameAsShipping && updatedShippingAddress && !hasRemoteBilling) {
-            const shippingExtraFields = B2BExtraFieldsSessionStorage.getFields(B2BExtraFieldsSessionStorage.SHIPPING_KEY);
+            const shippingExtraFields = B2BExtraFieldsSessionStorage.getFields(
+                B2BExtraFieldsSessionStorage.SHIPPING_KEY,
+            );
 
             if (shippingExtraFields) {
-                B2BExtraFieldsSessionStorage.setFields(B2BExtraFieldsSessionStorage.BILLING_KEY, shippingExtraFields);
+                B2BExtraFieldsSessionStorage.setFields(
+                    B2BExtraFieldsSessionStorage.BILLING_KEY,
+                    shippingExtraFields,
+                );
             }
 
             if (!isEqualAddress(updatedShippingAddress, billingAddress)) {
@@ -147,7 +167,7 @@ function Shipping({
                 onUnhandledError(error);
             }
         }
-    }
+    };
 
     const handleMultiShippingSubmit = async (values: MultiShippingFormValues) => {
         try {
@@ -161,7 +181,7 @@ function Shipping({
                 onUnhandledError(error);
             }
         }
-    }
+    };
 
     function hasRemoteBillingFn(methodId?: string) {
         const PAYMENT_METHOD_VALID = ['amazonpay'];
@@ -170,18 +190,20 @@ function Shipping({
     }
 
     if (shouldRenderStripeForm && !customer.email && countries.length > 0) {
-        return <StripeShipping
-            cartHasChanged={cartHasChanged}
-            isBillingSameAsShipping={isBillingSameAsShipping}
-            isInitialValueLoaded={!isInitializing}
-            isInitializing={isInitializing}
-            isLoading={isInitializing}
-            isMultiShippingMode={isMultiShippingMode}
-            onMultiShippingChange={handleMultiShippingModeSwitch}
-            onSubmit={handleSingleShippingSubmit}
-            onUnhandledError={onUnhandledError}
-            step={step}
-        />;
+        return (
+            <StripeShipping
+                cartHasChanged={cartHasChanged}
+                isBillingSameAsShipping={isBillingSameAsShipping}
+                isInitialValueLoaded={!isInitializing}
+                isInitializing={isInitializing}
+                isLoading={isInitializing}
+                isMultiShippingMode={isMultiShippingMode}
+                onMultiShippingChange={handleMultiShippingModeSwitch}
+                onSubmit={handleSingleShippingSubmit}
+                onUnhandledError={onUnhandledError}
+                step={step}
+            />
+        );
     }
 
     // Show warning message when restrictManualAddressEntry is true and no addresses are available

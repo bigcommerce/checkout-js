@@ -45,7 +45,9 @@ const ShippingForm = ({
         shippingAddress,
         validateMaxLength,
     } = useShipping();
-    const { extensionState: { shippingFormRenderTimestamp } } = useExtensions();
+    const {
+        extensionState: { shippingFormRenderTimestamp },
+    } = useExtensions();
 
     useEffect(() => {
         if (shippingFormRenderTimestamp) {
@@ -61,22 +63,30 @@ const ShippingForm = ({
 
     useEffect(() => {
         if (isInitialValueLoaded && countries.length === 0 && isNoCountriesErrorOnCheckoutEnabled) {
-            onUnhandledError(new CustomError({
-                name: 'no_countries_available',
-                message: getLanguageService().translate('shipping.no_countries_available_message'),
-                title: getLanguageService().translate('shipping.no_countries_available_heading'),
-            }));
+            onUnhandledError(
+                new CustomError({
+                    name: 'no_countries_available',
+                    message: getLanguageService().translate(
+                        'shipping.no_countries_available_message',
+                    ),
+                    title: getLanguageService().translate(
+                        'shipping.no_countries_available_heading',
+                    ),
+                }),
+            );
         }
     }, [isInitialValueLoaded, countries.length]);
 
     const getMultiShippingForm = () => {
-        return <MultiShippingForm
-            cartHasChanged={cartHasChanged}
-            customerMessage={customerMessage}
-            defaultCountryCode={shippingAddress?.countryCode}
-            onSubmit={onMultiShippingSubmit}
-            onUnhandledError={onUnhandledError}
-        />;
+        return (
+            <MultiShippingForm
+                cartHasChanged={cartHasChanged}
+                customerMessage={customerMessage}
+                defaultCountryCode={shippingAddress?.countryCode}
+                onSubmit={onMultiShippingSubmit}
+                onUnhandledError={onUnhandledError}
+            />
+        );
     };
 
     if (isInitialValueLoaded && countries.length === 0 && isNoCountriesErrorOnCheckoutEnabled) {

@@ -59,12 +59,12 @@ const OrderSummaryPrice: FC<OrderSummaryPriceProps> = ({
     zeroLabel,
     isOrderTotal = false,
 }) => {
-    const [ highlight, setHighlight ] = useState<boolean>(false);
-    const [ previousAmount, setPreviousAmount ] = useState<OrderSummaryPriceProps['amount']>(amount);
+    const [highlight, setHighlight] = useState<boolean>(false);
+    const [previousAmount, setPreviousAmount] = useState<OrderSummaryPriceProps['amount']>(amount);
     const {
         checkoutState: {
-            statuses: { isSubmittingOrder }
-        }
+            statuses: { isSubmittingOrder },
+        },
     } = useCheckout();
 
     const displayValue = getDisplayValue(amount, zeroLabel);
@@ -73,16 +73,19 @@ const OrderSummaryPrice: FC<OrderSummaryPriceProps> = ({
     useEffect(() => {
         setHighlight(amount !== previousAmount);
         setPreviousAmount(amount);
-    }, [ amount ]);
+    }, [amount]);
 
-    const handleTransitionEnd: (node: HTMLElement, done: () => void) => void = useCallback((node, done) => {
-        node.addEventListener('animationend', ({ target }) => {
-            if (target === node) {
-                setHighlight(false);
-                done();
-            }
-        });
-    }, [ setHighlight ]);
+    const handleTransitionEnd: (node: HTMLElement, done: () => void) => void = useCallback(
+        (node, done) => {
+            node.addEventListener('animationend', ({ target }) => {
+                if (target === node) {
+                    setHighlight(false);
+                    done();
+                }
+            });
+        },
+        [setHighlight],
+    );
 
     const handleActionTrigger = () => {
         if (isActionDisabled || !onActionTriggered) {
@@ -90,7 +93,7 @@ const OrderSummaryPrice: FC<OrderSummaryPriceProps> = ({
         }
 
         onActionTriggered();
-    }
+    };
 
     return (
         <div data-test={testId}>
@@ -108,10 +111,10 @@ const OrderSummaryPrice: FC<OrderSummaryPriceProps> = ({
                         className,
                     )}
                 >
-                    <span className={classNames('cart-priceItem-label',
-                        {
+                    <span
+                        className={classNames('cart-priceItem-label', {
                             'body-regular': !isOrderTotal,
-                            'sub-header': isOrderTotal
+                            'sub-header': isOrderTotal,
                         })}
                     >
                         <span data-test="cart-price-label">
@@ -128,7 +131,7 @@ const OrderSummaryPrice: FC<OrderSummaryPriceProps> = ({
                                 <a
                                     className={classNames({
                                         'link--disabled': isActionDisabled,
-                                        'body-cta': !isOrderTotal
+                                        'body-cta': !isOrderTotal,
                                     })}
                                     data-test="cart-price-callback"
                                     href="#"
@@ -140,10 +143,10 @@ const OrderSummaryPrice: FC<OrderSummaryPriceProps> = ({
                         )}
                     </span>
 
-                    <span className={classNames('cart-priceItem-value',
-                        {
+                    <span
+                        className={classNames('cart-priceItem-value', {
                             'body-medium': !isOrderTotal,
-                            'header': isOrderTotal
+                            header: isOrderTotal,
                         })}
                     >
                         {isNumberValue(amountBeforeDiscount) && amountBeforeDiscount !== amount && (

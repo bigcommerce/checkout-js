@@ -85,4 +85,3 @@ const ShippingStep: React.FC<ShippingStepProps> = ({
 };
 
 export default ShippingStep;
-

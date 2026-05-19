@@ -1,7 +1,7 @@
 import { type Address } from '@bigcommerce/checkout-sdk';
-import React from "react";
+import React from 'react';
 
-import { preventDefault } from "@bigcommerce/checkout/dom-utils";
+import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { IconEdit } from '@bigcommerce/checkout/ui';
 
@@ -12,11 +12,14 @@ interface GuestCustomerAddressSelectorProps {
     selectedAddress?: Address;
 }
 
-const GuestCustomerAddressSelector = ({ onUseNewAddress, selectedAddress }: GuestCustomerAddressSelectorProps) => {
-    return <div className='guest-consignment-line-item-header'>
-        {
-            !selectedAddress
-                ? <>
+const GuestCustomerAddressSelector = ({
+    onUseNewAddress,
+    selectedAddress,
+}: GuestCustomerAddressSelectorProps) => {
+    return (
+        <div className="guest-consignment-line-item-header">
+            {!selectedAddress ? (
+                <>
                     <h3 className="body-bold">
                         <TranslatedString id="shipping.guest_multishipping_no_shipping_address_message" />
                     </h3>
@@ -29,7 +32,8 @@ const GuestCustomerAddressSelector = ({ onUseNewAddress, selectedAddress }: Gues
                         <TranslatedString id="shipping.guest_multishipping_enter_shipping_address_action" />
                     </a>
                 </>
-                : <>
+            ) : (
+                <>
                     <SingleLineStaticAddress address={selectedAddress} />
                     <a
                         className="body-cta"
@@ -40,8 +44,9 @@ const GuestCustomerAddressSelector = ({ onUseNewAddress, selectedAddress }: Gues
                         <IconEdit />
                     </a>
                 </>
-        }
-    </div>;
-}
+            )}
+        </div>
+    );
+};
 
 export default GuestCustomerAddressSelector;

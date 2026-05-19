@@ -2,7 +2,11 @@ import { createCheckoutService, type Order } from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent } from 'react';
 
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
-import { CheckoutProvider, ExtensionProvider, LocaleProvider } from '@bigcommerce/checkout/contexts';
+import {
+    CheckoutProvider,
+    ExtensionProvider,
+    LocaleProvider,
+} from '@bigcommerce/checkout/contexts';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
@@ -19,7 +23,9 @@ let order: Order;
 let OrderSummaryTest: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsProps>;
 
 jest.mock('../currency', () => ({
-    ShopperCurrency: ({ amount }: {amount: number}) => <div data-test="ShopperCurrency">{amount}</div>
+    ShopperCurrency: ({ amount }: { amount: number }) => (
+        <div data-test="ShopperCurrency">{amount}</div>
+    ),
 }));
 
 describe('OrderSummary', () => {
@@ -38,9 +44,9 @@ describe('OrderSummary', () => {
                 <CheckoutProvider checkoutService={checkoutService}>
                     <ExtensionProvider extensionService={extensionService}>
                         <LocaleProvider
-                    checkoutService={checkoutService}
-                    languageService={languageService}
-                >
+                            checkoutService={checkoutService}
+                            languageService={languageService}
+                        >
                             <OrderSummary
                                 {...mapToOrderSummarySubtotalsProps(order, true)}
                                 headerLink={<PrintLink />}
@@ -62,7 +68,11 @@ describe('OrderSummary', () => {
             expect(screen.getByText('2 Items')).toBeInTheDocument();
             expect(screen.getByText(order.coupons[0].code)).toBeInTheDocument();
             expect(screen.getByText(order.coupons[1].code)).toBeInTheDocument();
-            expect(screen.getByRole('heading', { name: `1 x ${order.lineItems.giftCertificates[0].name}` })).toBeInTheDocument();
+            expect(
+                screen.getByRole('heading', {
+                    name: `1 x ${order.lineItems.giftCertificates[0].name}`,
+                }),
+            ).toBeInTheDocument();
         });
 
         it('does not render currency cart note', () => {
@@ -84,9 +94,9 @@ describe('OrderSummary', () => {
                 <CheckoutProvider checkoutService={checkoutService}>
                     <ExtensionProvider extensionService={extensionService}>
                         <LocaleProvider
-                    checkoutService={checkoutService}
-                    languageService={languageService}
-                >
+                            checkoutService={checkoutService}
+                            languageService={languageService}
+                        >
                             <OrderSummary
                                 {...mapToOrderSummarySubtotalsProps(taxIncludedOrder, true)}
                                 headerLink={<PrintLink />}
@@ -104,7 +114,11 @@ describe('OrderSummary', () => {
             expect(screen.getByText('2 Items')).toBeInTheDocument();
             expect(screen.getByText(taxIncludedOrder.coupons[0].code)).toBeInTheDocument();
             expect(screen.getByText(taxIncludedOrder.coupons[1].code)).toBeInTheDocument();
-            expect(screen.getByRole('heading', { name: `1 x ${taxIncludedOrder.lineItems.giftCertificates[0].name}` })).toBeInTheDocument();
+            expect(
+                screen.getByRole('heading', {
+                    name: `1 x ${taxIncludedOrder.lineItems.giftCertificates[0].name}`,
+                }),
+            ).toBeInTheDocument();
             expect(screen.getByText('Tax Included in Total:')).toBeInTheDocument();
             // eslint-disable-next-line testing-library/no-container
             expect(container.querySelector('.cart-taxItem')).toBeInTheDocument();
@@ -118,9 +132,9 @@ describe('OrderSummary', () => {
             render(
                 <CheckoutProvider checkoutService={checkoutService}>
                     <LocaleProvider
-                    checkoutService={checkoutService}
-                    languageService={languageService}
-                >
+                        checkoutService={checkoutService}
+                        languageService={languageService}
+                    >
                         <ExtensionProvider extensionService={extensionService}>
                             <OrderSummary
                                 {...mapToOrderSummarySubtotalsProps(order, true)}
@@ -156,9 +170,9 @@ describe('OrderSummary', () => {
             render(
                 <CheckoutProvider checkoutService={checkoutService}>
                     <LocaleProvider
-                    checkoutService={checkoutService}
-                    languageService={languageService}
-                >
+                        checkoutService={checkoutService}
+                        languageService={languageService}
+                    >
                         <ExtensionProvider extensionService={extensionService}>
                             <OrderSummary
                                 {...mapToOrderSummarySubtotalsProps(order, false)}

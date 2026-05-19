@@ -2,7 +2,13 @@ import { type CheckoutService, createCheckoutService } from '@bigcommerce/checko
 import React from 'react';
 
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
-import { CheckoutProvider, ExtensionProvider, type ExtensionServiceInterface, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
+import {
+    CheckoutProvider,
+    ExtensionProvider,
+    type ExtensionServiceInterface,
+    LocaleContext,
+    type LocaleContextType,
+} from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
@@ -60,7 +66,7 @@ describe('CartSummary Component', () => {
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
                     <ExtensionProvider extensionService={extensionService}>
-                        <CartSummary isMultiShippingMode={false}/>
+                        <CartSummary isMultiShippingMode={false} />
                     </ExtensionProvider>
                 </LocaleContext.Provider>
             </CheckoutProvider>,

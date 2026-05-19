@@ -180,7 +180,6 @@ class CreditCardPaymentMethod extends Component<
                     },
                     this.getSelectedInstrument(),
                 );
-
             } catch (error) {
                 onUnhandledError(error);
             }
@@ -215,7 +214,10 @@ class CreditCardPaymentMethod extends Component<
 
         return (
             <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
-                <div className="paymentMethod paymentMethod--creditCard" data-test='credit-cart-payment-method'>
+                <div
+                    className="paymentMethod paymentMethod--creditCard"
+                    data-test="credit-cart-payment-method"
+                >
                     {shouldShowInstrumentFieldset && (
                         <CardInstrumentFieldset
                             instruments={instruments}

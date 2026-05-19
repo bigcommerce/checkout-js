@@ -13,7 +13,7 @@ const OrderSummary = lazy(() =>
             import(
                 /* webpackChunkName: "order-summary" */
                 '../OrderSummary'
-                ),
+            ),
     ),
 );
 
@@ -23,7 +23,7 @@ const OrderSummaryDrawer = lazy(() =>
             import(
                 /* webpackChunkName: "order-summary-drawer" */
                 '../OrderSummaryDrawer'
-                ),
+            ),
     ),
 );
 
@@ -39,14 +39,17 @@ export const OrderSummaryContainer = ({
     isShippingDiscountDisplayEnabled,
     order,
     shopperCurrency,
-}:OrderSummaryContainerProps):ReactElement => (
+}: OrderSummaryContainerProps): ReactElement => (
     <MobileView>
         {(matched) => {
             if (matched) {
                 return (
                     <LazyContainer loadingSkeleton={<></>}>
                         <OrderSummaryDrawer
-                            {...mapToOrderSummarySubtotalsProps(order, isShippingDiscountDisplayEnabled)}
+                            {...mapToOrderSummarySubtotalsProps(
+                                order,
+                                isShippingDiscountDisplayEnabled,
+                            )}
                             headerLink={<PrintLink className="modal-header-link cart-modal-link" />}
                             lineItems={order.lineItems}
                             shopperCurrency={shopperCurrency}
@@ -62,7 +65,10 @@ export const OrderSummaryContainer = ({
                     <aside className="layout-cart">
                         <OrderSummary
                             headerLink={<PrintLink />}
-                            {...mapToOrderSummarySubtotalsProps(order, isShippingDiscountDisplayEnabled)}
+                            {...mapToOrderSummarySubtotalsProps(
+                                order,
+                                isShippingDiscountDisplayEnabled,
+                            )}
                             lineItems={order.lineItems}
                             shopperCurrency={shopperCurrency}
                             storeCurrency={currency}

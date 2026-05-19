@@ -56,32 +56,21 @@ describe('reorderAddressFormFields()', () => {
     });
 
     it('handles only countryCode and phone', () => {
-        const fields = [
-            createField('phone'),
-            createField('countryCode'),
-        ];
+        const fields = [createField('phone'), createField('countryCode')];
         const result = reorderAddressFormFields(fields);
 
         expect(result.map((f) => f.name)).toEqual(['countryCode', 'phone']);
     });
 
     it('handles missing countryCode', () => {
-        const fields = [
-            createField('company'),
-            createField('firstName'),
-            createField('phone'),
-        ];
+        const fields = [createField('company'), createField('firstName'), createField('phone')];
         const result = reorderAddressFormFields(fields);
 
         expect(result.map((f) => f.name)).toEqual(['firstName', 'company', 'phone']);
     });
 
     it('handles missing company', () => {
-        const fields = [
-            createField('countryCode'),
-            createField('firstName'),
-            createField('phone'),
-        ];
+        const fields = [createField('countryCode'), createField('firstName'), createField('phone')];
         const result = reorderAddressFormFields(fields);
 
         expect(result.map((f) => f.name)).toEqual(['countryCode', 'firstName', 'phone']);

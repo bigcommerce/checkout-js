@@ -48,8 +48,8 @@ const PaymentMethodList: FunctionComponent<
     const { language } = useLocale();
     const {
         checkoutState: {
-            data: { getConfig }
-        }
+            data: { getConfig },
+        },
     } = useCheckout();
 
     const config = getConfig();
@@ -59,15 +59,23 @@ const PaymentMethodList: FunctionComponent<
             const checkoutSettings = config.checkoutSettings;
             const cdnBasePath = config.cdnPath;
             const storeCountryCode = config.storeProfile.storeCountryCode;
-            const paymentMethod = getPaymentMethodFromListValue(methods, values.paymentProviderRadio);
+            const paymentMethod = getPaymentMethodFromListValue(
+                methods,
+                values.paymentProviderRadio,
+            );
             const methodName = getPaymentMethodName(language)(paymentMethod);
-            const { titleText } = getPaymentMethodTitle(language, cdnBasePath, checkoutSettings, storeCountryCode)(paymentMethod);
+            const { titleText } = getPaymentMethodTitle(
+                language,
+                cdnBasePath,
+                checkoutSettings,
+                storeCountryCode,
+            )(paymentMethod);
 
             return titleText || methodName;
         }
 
         return '';
-    }, [config, values.paymentProviderRadio])
+    }, [config, values.paymentProviderRadio]);
 
     const handleSelect = useCallback(
         (value: string) => {
@@ -78,7 +86,9 @@ const PaymentMethodList: FunctionComponent<
 
     return (
         <>
-            <div aria-live="assertive" className='is-srOnly' role="status">{titleText}</div>
+            <div aria-live="assertive" className="is-srOnly" role="status">
+                {titleText}
+            </div>
             <Checklist
                 defaultSelectedItemId={values.paymentProviderRadio}
                 isDisabled={isInitializingPayment}
@@ -143,17 +153,18 @@ const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
     }, [isEmbedded, isUsingMultiShipping, method, onUnhandledError]);
 
     const renderPaymentMethodTitle = useCallback(
-        (isSelected: boolean) => <PaymentMethodTitle isSelected={isSelected} method={method} onUnhandledError={onUnhandledError} />,
+        (isSelected: boolean) => (
+            <PaymentMethodTitle
+                isSelected={isSelected}
+                method={method}
+                onUnhandledError={onUnhandledError}
+            />
+        ),
         [method],
     );
 
     if (method.initializationData?.isCustomChecklistItem) {
-        return (
-            <CustomChecklistItem
-                content={renderPaymentMethod}
-                htmlId={`radio-${value}`}
-            />
-        );
+        return <CustomChecklistItem content={renderPaymentMethod} htmlId={`radio-${value}`} />;
     }
 
     return (

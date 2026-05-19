@@ -20,9 +20,7 @@ import {
     ThemeProvider,
 } from '@bigcommerce/checkout/contexts';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
-import {
-    CHECKOUT_ROOT_NODE_ID,
-} from '@bigcommerce/checkout/payment-integration-api';
+import { CHECKOUT_ROOT_NODE_ID } from '@bigcommerce/checkout/payment-integration-api';
 import {
     CheckoutPageNodeObject,
     CheckoutPreset,
@@ -38,7 +36,12 @@ import {
     shippingAddress,
     shippingQuoteFailedMessage,
 } from '@bigcommerce/checkout/test-framework';
-import { renderWithoutWrapper as render, screen, waitFor, within } from '@bigcommerce/checkout/test-utils';
+import {
+    renderWithoutWrapper as render,
+    screen,
+    waitFor,
+    within,
+} from '@bigcommerce/checkout/test-utils';
 
 import Checkout, { type CheckoutProps } from '../checkout/Checkout';
 import { createErrorLogger } from '../common/error';
@@ -92,7 +95,7 @@ describe('Shipping step', () => {
 
         jest.mock('lodash', () => ({
             ...jest.requireActual('lodash'),
-            debounce: (fn:any) => {
+            debounce: (fn: any) => {
                 fn.cancel = jest.fn();
 
                 return fn;
@@ -164,7 +167,9 @@ describe('Shipping step', () => {
             );
             // eslint-disable-next-line jest-dom/prefer-to-have-attribute
             expect(
-                screen.getByLabelText('My billing address is the same as my shipping address.').hasAttribute('checked'),
+                screen
+                    .getByLabelText('My billing address is the same as my shipping address.')
+                    .hasAttribute('checked'),
             ).toBeTruthy();
 
             checkout.updateCheckout(
@@ -180,7 +185,9 @@ describe('Shipping step', () => {
             await checkout.waitForPaymentStep();
 
             expect(checkoutService.updateBillingAddress).toHaveBeenCalled();
-            expect(screen.getByRole('radio', { name: payments[0].config.displayName })).toBeInTheDocument();
+            expect(
+                screen.getByRole('radio', { name: payments[0].config.displayName }),
+            ).toBeInTheDocument();
         });
 
         it('completes the shipping step as a guest and goes to the billing step', async () => {
@@ -216,7 +223,9 @@ describe('Shipping step', () => {
             );
 
             await checkout.fillAddressForm();
-            await userEvent.click(screen.getByLabelText('My billing address is the same as my shipping address.'));
+            await userEvent.click(
+                screen.getByLabelText('My billing address is the same as my shipping address.'),
+            );
             await userEvent.click(screen.getByRole('button', { name: 'Continue' }));
             await checkout.waitForBillingStep();
 
@@ -272,11 +281,15 @@ describe('Shipping step', () => {
             );
             // eslint-disable-next-line jest-dom/prefer-to-have-attribute
             expect(
-                screen.getByLabelText('My billing address is the same as my shipping address.').hasAttribute('checked'),
+                screen
+                    .getByLabelText('My billing address is the same as my shipping address.')
+                    .hasAttribute('checked'),
             ).toBeTruthy();
             // eslint-disable-next-line jest-dom/prefer-to-have-attribute
             expect(
-                screen.getByLabelText('Save this address in my address book.').hasAttribute('checked'),
+                screen
+                    .getByLabelText('Save this address in my address book.')
+                    .hasAttribute('checked'),
             ).toBeTruthy();
 
             checkout.updateCheckout(
@@ -292,7 +305,9 @@ describe('Shipping step', () => {
             await checkout.waitForPaymentStep();
 
             expect(checkoutService.updateBillingAddress).toHaveBeenCalled();
-            expect(screen.getByRole('radio', { name: payments[0].config.displayName })).toBeInTheDocument();
+            expect(
+                screen.getByRole('radio', { name: payments[0].config.displayName }),
+            ).toBeInTheDocument();
         });
 
         it('selects the valid customer address and completes the shipping step', async () => {
@@ -351,7 +366,9 @@ describe('Shipping step', () => {
             );
             // eslint-disable-next-line jest-dom/prefer-to-have-attribute
             expect(
-                screen.getByLabelText('My billing address is the same as my shipping address.').hasAttribute('checked'),
+                screen
+                    .getByLabelText('My billing address is the same as my shipping address.')
+                    .hasAttribute('checked'),
             ).toBeTruthy();
 
             await userEvent.click(screen.getByRole('button', { name: 'Continue' }));
@@ -359,11 +376,12 @@ describe('Shipping step', () => {
             await checkout.waitForPaymentStep();
 
             expect(checkoutService.updateBillingAddress).toHaveBeenCalled();
-            expect(screen.getByRole('radio', { name: payments[0].config.displayName })).toBeInTheDocument();
+            expect(
+                screen.getByRole('radio', { name: payments[0].config.displayName }),
+            ).toBeInTheDocument();
         });
 
         it('enters new address for the customer with saved address and completes the shipping step', async () => {
-
             const config = {
                 ...checkoutSettings,
                 storeConfig: {
@@ -375,7 +393,9 @@ describe('Shipping step', () => {
                 },
             };
 
-            checkoutService = checkout.use(CheckoutPreset.CheckoutWithMultiShippingCart, { config });
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithMultiShippingCart, {
+                config,
+            });
 
             jest.spyOn(checkoutService, 'updateShippingAddress');
             jest.spyOn(checkoutService, 'updateBillingAddress');
@@ -431,16 +451,22 @@ describe('Shipping step', () => {
             );
 
             expect(
-                screen.queryByLabelText('My billing address is the same as my shipping address.')?.hasAttribute('checked'),
+                screen
+                    .queryByLabelText('My billing address is the same as my shipping address.')
+                    ?.hasAttribute('checked'),
             ).toBeFalsy();
 
-            await userEvent.click(screen.getByLabelText('My billing address is the same as my shipping address.'));
+            await userEvent.click(
+                screen.getByLabelText('My billing address is the same as my shipping address.'),
+            );
             await userEvent.click(screen.getByRole('button', { name: 'Continue' }));
 
             await checkout.waitForPaymentStep();
 
             expect(checkoutService.updateBillingAddress).toHaveBeenCalled();
-            expect(screen.getByRole('radio', { name: payments[0].config.displayName })).toBeInTheDocument();
+            expect(
+                screen.getByRole('radio', { name: payments[0].config.displayName }),
+            ).toBeInTheDocument();
         });
 
         it('selects the invalid customer address, fills the address form and finally completes the shipping step', async () => {
@@ -470,7 +496,9 @@ describe('Shipping step', () => {
             expect(await screen.findByLabelText('First Name')).toHaveDisplayValue('Fourth');
             expect(await screen.findByLabelText('Last Name')).toHaveDisplayValue('Address');
             expect(screen.getByText('Address is required')).toBeInTheDocument();
-            expect(screen.getByLabelText('Save this address in my address book.')).toBeInTheDocument();
+            expect(
+                screen.getByLabelText('Save this address in my address book.'),
+            ).toBeInTheDocument();
 
             checkout.updateCheckout(
                 'post',
@@ -512,7 +540,9 @@ describe('Shipping step', () => {
             );
             // eslint-disable-next-line jest-dom/prefer-to-have-attribute
             expect(
-                screen.getByLabelText('My billing address is the same as my shipping address.').hasAttribute('checked'),
+                screen
+                    .getByLabelText('My billing address is the same as my shipping address.')
+                    .hasAttribute('checked'),
             ).toBeTruthy();
 
             checkout.updateCheckout(
@@ -528,7 +558,9 @@ describe('Shipping step', () => {
             await checkout.waitForPaymentStep();
 
             expect(checkoutService.updateBillingAddress).toHaveBeenCalled();
-            expect(screen.getByRole('radio', { name: payments[0].config.displayName })).toBeInTheDocument();
+            expect(
+                screen.getByRole('radio', { name: payments[0].config.displayName }),
+            ).toBeInTheDocument();
         });
 
         it('goes back to the shipping step as a guest and updates the shipping address form correctly', async () => {
@@ -562,12 +594,11 @@ describe('Shipping step', () => {
             };
 
             await checkout.fillAddressForm(randomAddress1);
-            await userEvent.selectOptions(
-                screen.getByTestId('field_60Input-select'),
-                '2',
-            );
+            await userEvent.selectOptions(screen.getByTestId('field_60Input-select'), '2');
 
-            expect((checkoutService.updateShippingAddress as any).mock.calls.slice(-1)[0][0]).toEqual(
+            expect(
+                (checkoutService.updateShippingAddress as any).mock.calls.slice(-1)[0][0],
+            ).toEqual(
                 expect.objectContaining({
                     ...randomAddress1,
                     customFields: [{ fieldId: 'field_60', fieldValue: '2' }],
@@ -585,15 +616,14 @@ describe('Shipping step', () => {
             };
 
             await checkout.fillAddressForm(randomAddress2);
-            await userEvent.selectOptions(
-                screen.getByTestId('field_60Input-select'),
-                '1',
-            );
+            await userEvent.selectOptions(screen.getByTestId('field_60Input-select'), '1');
 
-            expect((checkoutService.updateShippingAddress as any).mock.calls.slice(-1)[0][0]).toEqual(
+            expect(
+                (checkoutService.updateShippingAddress as any).mock.calls.slice(-1)[0][0],
+            ).toEqual(
                 expect.objectContaining({
-                        ...randomAddress2,
-                        customFields: [{ fieldId: 'field_60', fieldValue: '1' }],
+                    ...randomAddress2,
+                    customFields: [{ fieldId: 'field_60', fieldValue: '1' }],
                 }),
             );
         });
@@ -674,7 +704,9 @@ describe('Shipping step', () => {
 
         await userEvent.type(screen.getByLabelText('Number with min validation (Optional)'), '2');
 
-        expect(screen.getByText('Number with min validation must be greater than or equal to 5')).toBeInTheDocument();
+        expect(
+            screen.getByText('Number with min validation must be greater than or equal to 5'),
+        ).toBeInTheDocument();
 
         await userEvent.clear(screen.getByLabelText('Number with min validation (Optional)'));
         await userEvent.type(screen.getByLabelText('Number with min validation (Optional)'), '6');
@@ -682,7 +714,9 @@ describe('Shipping step', () => {
         await userEvent.clear(screen.getByLabelText('Number with max validation (Optional)'));
         await userEvent.type(screen.getByLabelText('Number with max validation (Optional)'), '11');
 
-        expect(screen.getByText('Number with max validation must be less than or equal to 10')).toBeInTheDocument();
+        expect(
+            screen.getByText('Number with max validation must be less than or equal to 10'),
+        ).toBeInTheDocument();
 
         await userEvent.clear(screen.getByLabelText('Number with max validation (Optional)'));
         await userEvent.type(screen.getByLabelText('Number with max validation (Optional)'), '9');
@@ -712,7 +746,7 @@ describe('Shipping step', () => {
         it('sees the quote failed message when no shipping option available', async () => {
             jest.mock('lodash', () => ({
                 ...jest.requireActual('lodash'),
-                debounce: (fn:any) => {
+                debounce: (fn: any) => {
                     fn.cancel = jest.fn();
 
                     return fn;
@@ -753,9 +787,7 @@ describe('Shipping step', () => {
             await checkout.fillAddressForm();
 
             expect(checkoutService.updateShippingAddress).toHaveBeenCalled();
-            expect(
-                screen.getByText(shippingQuoteFailedMessage),
-            ).toBeInTheDocument();
+            expect(screen.getByText(shippingQuoteFailedMessage)).toBeInTheDocument();
         });
 
         it('selects another shipping option', async () => {
@@ -764,7 +796,7 @@ describe('Shipping step', () => {
             jest.spyOn(checkoutService, 'updateShippingAddress');
             jest.spyOn(checkoutService, 'selectConsignmentShippingOption');
 
-            const  { container } = render(<CheckoutTest {...defaultProps} />);
+            const { container } = render(<CheckoutTest {...defaultProps} />);
 
             await checkout.waitForShippingStep();
 
@@ -784,14 +816,20 @@ describe('Shipping step', () => {
             await checkout.fillAddressForm();
 
             expect(checkoutService.updateShippingAddress).toHaveBeenCalled();
-            // eslint-disable-next-line testing-library/no-container,testing-library/no-node-access
-            expect(container.getElementsByClassName('form-checklist-item--selected')[0]).toHaveTextContent('Pickup In Store$3.00');
+
+            expect(
+                // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
+                container.getElementsByClassName('form-checklist-item--selected')[0],
+            ).toHaveTextContent('Pickup In Store$3.00');
 
             await userEvent.click(screen.getByRole('radio', { name: 'Flat Rate $10.00' }));
 
             expect(checkoutService.selectConsignmentShippingOption).toHaveBeenCalled();
-            // eslint-disable-next-line testing-library/no-container,testing-library/no-node-access
-            expect(container.getElementsByClassName('form-checklist-item--selected')[0]).toHaveTextContent('Flat Rate$10.00');
+
+            expect(
+                // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
+                container.getElementsByClassName('form-checklist-item--selected')[0],
+            ).toHaveTextContent('Flat Rate$10.00');
         });
 
         it('displays strikethrough on shipping option when costAfterDiscount differs from cost', async () => {
@@ -826,9 +864,13 @@ describe('Shipping step', () => {
 
             await checkout.fillAddressForm();
 
-            expect(screen.getByRole('radio', { name: 'Pickup In Store $3.00' })).toBeInTheDocument();
+            expect(
+                screen.getByRole('radio', { name: 'Pickup In Store $3.00' }),
+            ).toBeInTheDocument();
             expect(screen.getByRole('radio', { name: 'Flat Rate $10.00' })).toBeInTheDocument();
-            expect(screen.getByRole('radio', { name: 'Ship by Weight $30.00 $20.00' })).toBeInTheDocument();
+            expect(
+                screen.getByRole('radio', { name: 'Ship by Weight $30.00 $20.00' }),
+            ).toBeInTheDocument();
         });
     });
 
@@ -900,9 +942,15 @@ describe('Shipping step', () => {
 
             jest.spyOn(checkoutService.getState().data, 'getShippingCountries').mockReturnValue([]);
 
-            jest.spyOn(checkoutService, 'loadShippingAddressFields').mockResolvedValue(checkoutService.getState());
-            jest.spyOn(checkoutService, 'loadShippingOptions').mockResolvedValue(checkoutService.getState());
-            jest.spyOn(checkoutService, 'loadBillingAddressFields').mockResolvedValue(checkoutService.getState());
+            jest.spyOn(checkoutService, 'loadShippingAddressFields').mockResolvedValue(
+                checkoutService.getState(),
+            );
+            jest.spyOn(checkoutService, 'loadShippingOptions').mockResolvedValue(
+                checkoutService.getState(),
+            );
+            jest.spyOn(checkoutService, 'loadBillingAddressFields').mockResolvedValue(
+                checkoutService.getState(),
+            );
 
             jest.spyOn(defaultProps.errorLogger, 'log');
             render(<CheckoutTest {...defaultProps} />);
@@ -914,7 +962,7 @@ describe('Shipping step', () => {
                     expect.objectContaining({
                         name: 'no_countries_available',
                         type: 'custom',
-                    })
+                    }),
                 );
             });
         });
@@ -950,7 +998,7 @@ describe('Shipping step', () => {
                 expect.objectContaining({
                     name: 'no_countries_available',
                     type: 'custom',
-                })
+                }),
             );
         });
     });
@@ -969,13 +1017,20 @@ describe('Shipping step', () => {
                 },
             };
 
-            const CheckoutWithRestrictedAddressEntry: FunctionComponent<CheckoutProps> = (props) => (
+            const CheckoutWithRestrictedAddressEntry: FunctionComponent<CheckoutProps> = (
+                props,
+            ) => (
                 <CheckoutProvider checkoutService={checkoutService}>
-                    <LocaleProvider checkoutService={checkoutService} languageService={getLanguageService()}>
+                    <LocaleProvider
+                        checkoutService={checkoutService}
+                        languageService={getLanguageService()}
+                    >
                         <AnalyticsProviderMock>
                             <ExtensionProvider extensionService={extensionService}>
                                 <ThemeProvider>
-                                    <CapabilitiesContext.Provider value={restrictManualAddressCapabilities}>
+                                    <CapabilitiesContext.Provider
+                                        value={restrictManualAddressCapabilities}
+                                    >
                                         <Checkout {...props} />
                                     </CapabilitiesContext.Provider>
                                 </ThemeProvider>
@@ -987,7 +1042,9 @@ describe('Shipping step', () => {
 
             render(<CheckoutWithRestrictedAddressEntry {...defaultProps} />);
 
-            expect(await screen.findByText(/no shipping address to choose from/i)).toBeInTheDocument();
+            expect(
+                await screen.findByText(/no shipping address to choose from/i),
+            ).toBeInTheDocument();
         });
 
         it('does not show the warning when restrictManualAddressEntry is false', async () => {
@@ -999,7 +1056,9 @@ describe('Shipping step', () => {
 
             await checkout.waitForShippingStep();
 
-            expect(screen.queryByText(/no shipping address to choose from/i)).not.toBeInTheDocument();
+            expect(
+                screen.queryByText(/no shipping address to choose from/i),
+            ).not.toBeInTheDocument();
         });
     });
 });

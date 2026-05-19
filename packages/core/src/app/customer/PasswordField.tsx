@@ -2,13 +2,22 @@ import { type FieldProps } from 'formik';
 import React, { type FunctionComponent, memo, useCallback, useMemo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { FormField, IconEye, IconEyeSlash, Label, TextInput, Toggle } from '@bigcommerce/checkout/ui';
+import {
+    FormField,
+    IconEye,
+    IconEyeSlash,
+    Label,
+    TextInput,
+    Toggle,
+} from '@bigcommerce/checkout/ui';
 
 interface WithFloatingLabel {
     isFloatingLabelEnabled?: boolean;
 }
 
-const PasswordField: FunctionComponent<WithFloatingLabel> = ({ isFloatingLabelEnabled = false }) => {
+const PasswordField: FunctionComponent<WithFloatingLabel> = ({
+    isFloatingLabelEnabled = false,
+}) => {
     const renderInput = useCallback(
         (props: FieldProps) => (
             <Toggle openByDefault={false}>
@@ -47,7 +56,14 @@ const PasswordField: FunctionComponent<WithFloatingLabel> = ({ isFloatingLabelEn
 
     const labelContent = useMemo(() => <TranslatedString id="customer.password_label" />, []);
 
-    return <FormField input={renderInput} isFloatingLabelEnabled={isFloatingLabelEnabled} labelContent={isFloatingLabelEnabled ? null : labelContent} name="password" />;
+    return (
+        <FormField
+            input={renderInput}
+            isFloatingLabelEnabled={isFloatingLabelEnabled}
+            labelContent={isFloatingLabelEnabled ? null : labelContent}
+            name="password"
+        />
+    );
 };
 
 export default memo(PasswordField);

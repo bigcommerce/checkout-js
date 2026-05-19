@@ -149,7 +149,7 @@ describe('CustomerInfo', () => {
                 checkoutSettings: {
                     ...getStoreConfig().checkoutSettings,
                     shouldRedirectToStorefrontForAuth: true,
-                }
+                },
             });
 
             const expectedLogoutLink = getStoreConfig().links.logoutLink;
@@ -159,7 +159,9 @@ describe('CustomerInfo', () => {
 
             await userEvent.click(screen.getByTestId('sign-out-link'));
 
-            expect(window.location.assign).toHaveBeenCalledWith(`${expectedLogoutLink}?redirectTo=${expectedCheckoutLink}`);
+            expect(window.location.assign).toHaveBeenCalledWith(
+                `${expectedLogoutLink}?redirectTo=${expectedCheckoutLink}`,
+            );
         });
     });
 });

@@ -3,7 +3,6 @@ import React, { type FunctionComponent } from 'react';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { Alert, AlertType } from '@bigcommerce/checkout/ui';
 
-
 const SignedUpSuccessAlert: FunctionComponent = () => (
     <Alert type={AlertType.Success}>
         <strong>

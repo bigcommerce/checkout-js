@@ -23,8 +23,5 @@ export default function canSignOut(
     }
 
     // Return false if payment method offers its own checkout button
-    return every(
-        checkout.payments,
-        (payment) => !SUPPORTED_METHODS.includes(payment.providerId),
-    );
+    return every(checkout.payments, (payment) => !SUPPORTED_METHODS.includes(payment.providerId));
 }

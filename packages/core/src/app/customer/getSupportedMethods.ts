@@ -34,4 +34,4 @@ export const SUPPORTED_METHODS: string[] = [
 
 export const getSupportedMethodIds = (methodIds: string[]): string[] => {
     return methodIds.filter((methodId) => SUPPORTED_METHODS.includes(methodId));
-}
+};

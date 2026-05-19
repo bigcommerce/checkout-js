@@ -12,11 +12,15 @@ interface MultiShippingOptionsListItemProps {
     handleSelect: (consignmentId: string, shippingOptionId: string) => void;
 }
 
-export const MultiShippingOptionsListItem: FunctionComponent<
-    MultiShippingOptionsListItemProps
-> = ({ consignmentId, selectedShippingOptionId, shippingOption, handleSelect }) => {
+export const MultiShippingOptionsListItem: FunctionComponent<MultiShippingOptionsListItemProps> = ({
+    consignmentId,
+    selectedShippingOptionId,
+    shippingOption,
+    handleSelect,
+}) => {
     const costAfterDiscount = shippingOption.costAfterDiscount;
-    const showDiscount = costAfterDiscount !== undefined && costAfterDiscount !== shippingOption.cost;
+    const showDiscount =
+        costAfterDiscount !== undefined && costAfterDiscount !== shippingOption.cost;
 
     const label = (
         <span className="body-regular">

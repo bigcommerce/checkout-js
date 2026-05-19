@@ -27,7 +27,7 @@ export default function mapSubmitOrderErrorMessage(
 
         case 'cart_consistency':
             return translate('cart.consistency_error');
-        
+
         case 'empty_cart':
             return translate('cart.empty_cart_error_message');
 

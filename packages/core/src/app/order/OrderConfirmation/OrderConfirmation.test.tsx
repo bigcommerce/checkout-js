@@ -21,10 +21,7 @@ import {
     LocaleProvider,
     ThemeProvider,
 } from '@bigcommerce/checkout/contexts';
-import {
-    createLocaleContext,
-    getLanguageService,
-} from '@bigcommerce/checkout/locale';
+import { createLocaleContext, getLanguageService } from '@bigcommerce/checkout/locale';
 import { renderWithoutWrapper as render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
 import { createErrorLogger } from '../../common/error';
@@ -33,7 +30,11 @@ import { createEmbeddedCheckoutStylesheet } from '../../embeddedCheckout';
 import { type CreatedCustomer } from '../../guestSignup';
 import { getGatewayOrderPayment, getOrder } from '../orders.mock';
 
-import { OrderConfirmation, type OrderConfirmationProps, OrderPermalinkStatus } from './OrderConfirmation';
+import {
+    OrderConfirmation,
+    type OrderConfirmationProps,
+    OrderPermalinkStatus,
+} from './OrderConfirmation';
 
 jest.mock('@bigcommerce/request-sender', () => ({
     createRequestSender: jest.fn(() => ({
@@ -52,7 +53,7 @@ const generateValidPassword = () => {
     } while (!passwordRegex.test(password));
 
     return password;
-}
+};
 
 describe('OrderConfirmation', () => {
     let checkoutService: CheckoutService;
@@ -74,7 +75,7 @@ describe('OrderConfirmation', () => {
         embeddedMessengerMock = createEmbeddedCheckoutMessenger({
             parentOrigin: getStoreConfig().links.siteLink,
         });
-        localeContext = createLocaleContext(getStoreConfig())
+        localeContext = createLocaleContext(getStoreConfig());
 
         jest.spyOn(checkoutService, 'loadOrder').mockResolvedValue(checkoutState);
 
@@ -161,11 +162,19 @@ describe('OrderConfirmation', () => {
 
         // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
         expect(container.getElementsByClassName('orderConfirmation')).toHaveLength(1);
-        expect(screen.getByText(localeContext.language.translate('order_confirmation.thank_you_customer_heading', {
-            name: order.billingAddress.firstName,
-        }))).toBeInTheDocument();
-        expect(screen.getByText(localeContext.language.translate('customer.create_account_text'))).toBeInTheDocument();
-        expect(screen.getByTestId('payment-instructions').innerHTML).toBe(getGatewayOrderPayment().detail.instructions);
+        expect(
+            screen.getByText(
+                localeContext.language.translate('order_confirmation.thank_you_customer_heading', {
+                    name: order.billingAddress.firstName,
+                }),
+            ),
+        ).toBeInTheDocument();
+        expect(
+            screen.getByText(localeContext.language.translate('customer.create_account_text')),
+        ).toBeInTheDocument();
+        expect(screen.getByTestId('payment-instructions').innerHTML).toBe(
+            getGatewayOrderPayment().detail.instructions,
+        );
     });
 
     it('renders create account form, fills in the form and submit data', async () => {
@@ -173,19 +182,30 @@ describe('OrderConfirmation', () => {
 
         render(<ComponentTest {...defaultProps} />);
 
-        expect(screen.getByText(localeContext.language.translate('customer.create_account_text'))).toBeInTheDocument();
+        expect(
+            screen.getByText(localeContext.language.translate('customer.create_account_text')),
+        ).toBeInTheDocument();
 
-        const passwordField = screen.getByLabelText(localeContext.language.translate('customer.password_minimum_character_label'), { exact: false });
-        const confirmPasswordField = screen.getByLabelText(localeContext.language.translate('customer.password_confirmation_label'));
-        const submitButton = screen.getByText(localeContext.language.translate('customer.create_account_action'));
+        const passwordField = screen.getByLabelText(
+            localeContext.language.translate('customer.password_minimum_character_label'),
+            { exact: false },
+        );
+        const confirmPasswordField = screen.getByLabelText(
+            localeContext.language.translate('customer.password_confirmation_label'),
+        );
+        const submitButton = screen.getByText(
+            localeContext.language.translate('customer.create_account_action'),
+        );
 
         await userEvent.type(passwordField, password);
         await userEvent.type(confirmPasswordField, password);
         await userEvent.click(submitButton);
-        await waitFor(() => expect(defaultProps.createAccount).toHaveBeenCalledWith({
-            password,
-            confirmPassword: password,
-        }));
+        await waitFor(() =>
+            expect(defaultProps.createAccount).toHaveBeenCalledWith({
+                password,
+                confirmPassword: password,
+            }),
+        );
     });
 
     it('renders set password form, fills in the form and submit data', async () => {
@@ -198,51 +218,82 @@ describe('OrderConfirmation', () => {
 
         render(<ComponentTest {...defaultProps} />);
 
-        expect(screen.getByText(localeContext.language.translate('customer.set_password_text'))).toBeInTheDocument();
-        expect(screen.getByText(localeContext.language.translate('customer.account_created_text'))).toBeInTheDocument();
-        expect(screen.getByText(localeContext.language.translate('customer.set_password_action'))).toBeInTheDocument();
+        expect(
+            screen.getByText(localeContext.language.translate('customer.set_password_text')),
+        ).toBeInTheDocument();
+        expect(
+            screen.getByText(localeContext.language.translate('customer.account_created_text')),
+        ).toBeInTheDocument();
+        expect(
+            screen.getByText(localeContext.language.translate('customer.set_password_action')),
+        ).toBeInTheDocument();
 
-        const passwordField = screen.getByLabelText(localeContext.language.translate('customer.password_minimum_character_label'), { exact: false });
-        const confirmPasswordField = screen.getByLabelText(localeContext.language.translate('customer.password_confirmation_label'));
-        const submitButton = screen.getByText(localeContext.language.translate('customer.set_password_action'));
+        const passwordField = screen.getByLabelText(
+            localeContext.language.translate('customer.password_minimum_character_label'),
+            { exact: false },
+        );
+        const confirmPasswordField = screen.getByLabelText(
+            localeContext.language.translate('customer.password_confirmation_label'),
+        );
+        const submitButton = screen.getByText(
+            localeContext.language.translate('customer.set_password_action'),
+        );
 
         await userEvent.type(passwordField, password);
         await userEvent.type(confirmPasswordField, password);
         await userEvent.click(submitButton);
-        await waitFor(() => expect(defaultProps.createAccount).toHaveBeenCalledWith({
-            password,
-            confirmPassword: password,
-        }));
+        await waitFor(() =>
+            expect(defaultProps.createAccount).toHaveBeenCalledWith({
+                password,
+                confirmPassword: password,
+            }),
+        );
     });
 
     it('renders continue shopping button', async () => {
         const { container } = render(<ComponentTest {...defaultProps} />);
 
-        expect(screen.getByText(localeContext.language.translate('order_confirmation.continue_shopping'))).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                localeContext.language.translate('order_confirmation.continue_shopping'),
+            ),
+        ).toBeInTheDocument();
 
-        // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
-        const continueButtonContainer = container.getElementsByClassName('continueButtonContainer')[0];
+        const continueButtonContainer =
+            // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
+            container.getElementsByClassName('continueButtonContainer')[0];
 
         // eslint-disable-next-line testing-library/no-node-access
         expect(continueButtonContainer.querySelector('form')).toHaveAttribute(
-            'action', getStoreConfig().links.siteLink,
+            'action',
+            getStoreConfig().links.siteLink,
         );
     });
 
     describe('when permalinkStatus is expired', () => {
         it('renders the expired permalink view instead of order confirmation', () => {
-            render(<ComponentTest {...defaultProps} permalinkStatus={OrderPermalinkStatus.Expired} />);
+            render(
+                <ComponentTest {...defaultProps} permalinkStatus={OrderPermalinkStatus.Expired} />,
+            );
 
             expect(
-                screen.getByText(localeContext.language.translate('order_confirmation.expired_token.heading')),
+                screen.getByText(
+                    localeContext.language.translate('order_confirmation.expired_token.heading'),
+                ),
             ).toBeInTheDocument();
             expect(
-                screen.getByText(localeContext.language.translate('order_confirmation.expired_token.description')),
+                screen.getByText(
+                    localeContext.language.translate(
+                        'order_confirmation.expired_token.description',
+                    ),
+                ),
             ).toBeInTheDocument();
         });
 
         it('does not call loadOrder', () => {
-            render(<ComponentTest {...defaultProps} permalinkStatus={OrderPermalinkStatus.Expired} />);
+            render(
+                <ComponentTest {...defaultProps} permalinkStatus={OrderPermalinkStatus.Expired} />,
+            );
 
             expect(checkoutService.loadOrder).not.toHaveBeenCalled();
         });
@@ -258,10 +309,14 @@ describe('OrderConfirmation', () => {
                 writable: true,
             });
 
-            render(<ComponentTest {...defaultProps} permalinkStatus={OrderPermalinkStatus.Expired} />);
+            render(
+                <ComponentTest {...defaultProps} permalinkStatus={OrderPermalinkStatus.Expired} />,
+            );
 
             const resendButton = screen.getByRole('button', {
-                name: localeContext.language.translate('order_confirmation.expired_token.resend_action'),
+                name: localeContext.language.translate(
+                    'order_confirmation.expired_token.resend_action',
+                ),
             });
 
             await userEvent.click(resendButton);
@@ -285,17 +340,25 @@ describe('OrderConfirmation', () => {
                 writable: true,
             });
 
-            render(<ComponentTest {...defaultProps} permalinkStatus={OrderPermalinkStatus.Expired} />);
+            render(
+                <ComponentTest {...defaultProps} permalinkStatus={OrderPermalinkStatus.Expired} />,
+            );
 
             const resendButton = screen.getByRole('button', {
-                name: localeContext.language.translate('order_confirmation.expired_token.resend_action'),
+                name: localeContext.language.translate(
+                    'order_confirmation.expired_token.resend_action',
+                ),
             });
 
             await userEvent.click(resendButton);
 
             await waitFor(() => {
                 expect(
-                    screen.getByText(localeContext.language.translate('order_confirmation.expired_token.resend_success')),
+                    screen.getByText(
+                        localeContext.language.translate(
+                            'order_confirmation.expired_token.resend_success',
+                        ),
+                    ),
                 ).toBeInTheDocument();
             });
         });
@@ -306,17 +369,25 @@ describe('OrderConfirmation', () => {
                 writable: true,
             });
 
-            render(<ComponentTest {...defaultProps} permalinkStatus={OrderPermalinkStatus.Expired} />);
+            render(
+                <ComponentTest {...defaultProps} permalinkStatus={OrderPermalinkStatus.Expired} />,
+            );
 
             const resendButton = screen.getByRole('button', {
-                name: localeContext.language.translate('order_confirmation.expired_token.resend_action'),
+                name: localeContext.language.translate(
+                    'order_confirmation.expired_token.resend_action',
+                ),
             });
 
             await userEvent.click(resendButton);
 
             await waitFor(() => {
                 expect(
-                    screen.getByText(localeContext.language.translate('order_confirmation.expired_token.resend_error')),
+                    screen.getByText(
+                        localeContext.language.translate(
+                            'order_confirmation.expired_token.resend_error',
+                        ),
+                    ),
                 ).toBeInTheDocument();
             });
         });
@@ -324,18 +395,32 @@ describe('OrderConfirmation', () => {
 
     describe('when permalinkStatus is rate_limited', () => {
         it('renders the rate limited view instead of order confirmation', () => {
-            render(<ComponentTest {...defaultProps} permalinkStatus={OrderPermalinkStatus.RateLimited} />);
+            render(
+                <ComponentTest
+                    {...defaultProps}
+                    permalinkStatus={OrderPermalinkStatus.RateLimited}
+                />,
+            );
 
             expect(
-                screen.getByText(localeContext.language.translate('order_confirmation.rate_limited.heading')),
+                screen.getByText(
+                    localeContext.language.translate('order_confirmation.rate_limited.heading'),
+                ),
             ).toBeInTheDocument();
             expect(
-                screen.getByText(localeContext.language.translate('order_confirmation.rate_limited.message')),
+                screen.getByText(
+                    localeContext.language.translate('order_confirmation.rate_limited.message'),
+                ),
             ).toBeInTheDocument();
         });
 
         it('does not call loadOrder', () => {
-            render(<ComponentTest {...defaultProps} permalinkStatus={OrderPermalinkStatus.RateLimited} />);
+            render(
+                <ComponentTest
+                    {...defaultProps}
+                    permalinkStatus={OrderPermalinkStatus.RateLimited}
+                />,
+            );
 
             expect(checkoutService.loadOrder).not.toHaveBeenCalled();
         });

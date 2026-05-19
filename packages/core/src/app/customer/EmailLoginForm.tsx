@@ -12,7 +12,16 @@ import {
     withLanguage,
     type WithLanguageProps,
 } from '@bigcommerce/checkout/locale';
-import { Alert, AlertType, Button, ButtonVariant, Form, LoadingSpinner, Modal, ModalHeader } from '@bigcommerce/checkout/ui';
+import {
+    Alert,
+    AlertType,
+    Button,
+    ButtonVariant,
+    Form,
+    LoadingSpinner,
+    Modal,
+    ModalHeader,
+} from '@bigcommerce/checkout/ui';
 
 import EmailField from './EmailField';
 import getEmailValidationSchema from './getEmailValidationSchema';
@@ -187,7 +196,7 @@ const EmailLoginForm: FunctionComponent<
     return (
         <Modal
             additionalBodyClassName="modal--withText"
-            additionalModalClassName={classNames("modal--medium", { "themeV2": themeV2 })}
+            additionalModalClassName={classNames('modal--medium', { themeV2 })}
             header={
                 <ModalHeader>
                     <TranslatedString id={modalHeaderStringId} />

@@ -1,5 +1,5 @@
 import type { Cart, Consignment } from '@bigcommerce/checkout-sdk/essential';
-import React, { lazy ,type  ReactElement } from 'react';
+import React, { lazy, type ReactElement } from 'react';
 
 import type { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -62,7 +62,9 @@ const PaymentStep = ({
                 errorLogger={errorLogger}
                 isEmbedded={isEmbedded()}
                 isUsingMultiShipping={
-                    cart && consignments ? isUsingMultiShipping(consignments, cart.lineItems) : false
+                    cart && consignments
+                        ? isUsingMultiShipping(consignments, cart.lineItems)
+                        : false
                 }
                 onCartChangedError={onCartChangedError}
                 onFinalize={onFinalize}
@@ -76,4 +78,3 @@ const PaymentStep = ({
 );
 
 export default PaymentStep;
-

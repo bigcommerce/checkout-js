@@ -1,3 +1,3 @@
 interface Document {
-  readonly prerendering: boolean;
+    readonly prerendering: boolean;
 }

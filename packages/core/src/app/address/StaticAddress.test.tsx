@@ -68,7 +68,7 @@ describe('StaticAddress Component', () => {
     });
 
     it('renders component if required fields for shipping address are not missing', () => {
-        render(<StaticAddressTest {...defaultProps} type={AddressType.Shipping} />,);
+        render(<StaticAddressTest {...defaultProps} type={AddressType.Shipping} />);
 
         expect(screen.getByText(defaultProps.address.address1)).toBeInTheDocument();
     });

@@ -10,7 +10,14 @@ import React, { type ReactElement, useEffect } from 'react';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { Button, ButtonSize, ButtonVariant, DynamicFormField, Fieldset, LoadingOverlay } from '@bigcommerce/checkout/ui';
+import {
+    Button,
+    ButtonSize,
+    ButtonVariant,
+    DynamicFormField,
+    Fieldset,
+    LoadingOverlay,
+} from '@bigcommerce/checkout/ui';
 
 import { StaticAddress } from '../address/';
 

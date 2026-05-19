@@ -13,13 +13,7 @@ export default function createPaymentFormService(
     formContext: FormContextType,
     paymentContext: PaymentContextProps,
 ): PaymentFormService {
-    const {
-        setFieldTouched,
-        setFieldValue,
-        submitForm,
-        validateForm,
-        values,
-    } = formikContext;
+    const { setFieldTouched, setFieldValue, submitForm, validateForm, values } = formikContext;
 
     const { isSubmitted, setSubmitted } = formContext;
 

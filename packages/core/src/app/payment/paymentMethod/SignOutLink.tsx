@@ -2,7 +2,11 @@ import { type PaymentMethod } from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent } from 'react';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
-import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
+import {
+    TranslatedString,
+    withLanguage,
+    type WithLanguageProps,
+} from '@bigcommerce/checkout/locale';
 
 import getPaymentMethodName from './getPaymentMethodName';
 

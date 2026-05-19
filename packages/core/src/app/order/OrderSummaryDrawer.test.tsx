@@ -2,7 +2,11 @@ import { createCheckoutService, type CurrencyService, type Order } from '@bigcom
 import userEvent from '@testing-library/user-event';
 import React, { type FunctionComponent } from 'react';
 
-import { CheckoutProvider, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
+import {
+    CheckoutProvider,
+    LocaleContext,
+    type LocaleContextType,
+} from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 import { IconGiftCertificate } from '@bigcommerce/checkout/ui';
@@ -20,7 +24,9 @@ describe('OrderSummaryDrawer', () => {
     let order: Order;
     let localeContext: LocaleContextType;
     let currencyService: CurrencyService;
-    let OrderSummaryDrawerTest: FunctionComponent<OrderSummaryDrawerProps & OrderSummarySubtotalsProps>;
+    let OrderSummaryDrawerTest: FunctionComponent<
+        OrderSummaryDrawerProps & OrderSummarySubtotalsProps
+    >;
 
     beforeEach(() => {
         localeContext = createLocaleContext(getStoreConfig());
@@ -30,7 +36,6 @@ describe('OrderSummaryDrawer', () => {
     });
 
     describe('renders order summary drawer', () => {
-
         beforeEach(() => {
             OrderSummaryDrawerTest = () => (
                 <CheckoutProvider checkoutService={createCheckoutService()}>
@@ -78,22 +83,27 @@ describe('OrderSummaryDrawer', () => {
         it('renders order amount', () => {
             render(<OrderSummaryDrawerTest />);
 
-            expect(screen.getByText(currencyService.toCustomerCurrency(order.orderAmount))).toBeInTheDocument();
+            expect(
+                screen.getByText(currencyService.toCustomerCurrency(order.orderAmount)),
+            ).toBeInTheDocument();
         });
 
         it('renders line items count', () => {
             render(<OrderSummaryDrawerTest />);
 
-            expect(screen.getByText(
-                localeContext.language.translate('cart.item_count_text', { count: 2 }),
-            )).toBeInTheDocument();
+            expect(
+                screen.getByText(
+                    localeContext.language.translate('cart.item_count_text', { count: 2 }),
+                ),
+            ).toBeInTheDocument();
         });
 
         it('renders image of first product', () => {
             render(<OrderSummaryDrawerTest />);
 
             expect(screen.getByTestId('cart-item-image')).toHaveAttribute(
-                'src', getPhysicalItem().imageUrl,
+                'src',
+                getPhysicalItem().imageUrl,
             );
         });
     });
@@ -121,7 +131,11 @@ describe('OrderSummaryDrawer', () => {
             expect(screen.getByText('Order Summary')).toBeInTheDocument();
             expect(screen.getByText(order.coupons[0].code)).toBeInTheDocument();
             expect(screen.getByText(order.coupons[1].code)).toBeInTheDocument();
-            expect(screen.getByRole('heading', { name: `1 x ${order.lineItems.giftCertificates[0].name}` })).toBeInTheDocument();
+            expect(
+                screen.getByRole('heading', {
+                    name: `1 x ${order.lineItems.giftCertificates[0].name}`,
+                }),
+            ).toBeInTheDocument();
             expect(screen.getByText('foo')).toBeInTheDocument();
             expect(screen.getByText('Close')).toBeInTheDocument();
             expect(screen.getByText('Print')).toBeInTheDocument();
@@ -152,7 +166,11 @@ describe('OrderSummaryDrawer', () => {
             expect(screen.getByText('Order Summary')).toBeInTheDocument();
             expect(screen.getByText(order.coupons[0].code)).toBeInTheDocument();
             expect(screen.getByText(order.coupons[1].code)).toBeInTheDocument();
-            expect(screen.getByRole('heading', { name: `1 x ${order.lineItems.giftCertificates[0].name}` })).toBeInTheDocument();
+            expect(
+                screen.getByRole('heading', {
+                    name: `1 x ${order.lineItems.giftCertificates[0].name}`,
+                }),
+            ).toBeInTheDocument();
             expect(screen.getByText('foo')).toBeInTheDocument();
             expect(screen.getByText('Close')).toBeInTheDocument();
             expect(screen.getByText('Print')).toBeInTheDocument();

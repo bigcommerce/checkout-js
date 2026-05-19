@@ -1,6 +1,6 @@
-export default function mapAddressExtraFieldsFromFormValues(
-    extraFields?: { [id: string]: any },
-): Array<{ fieldId: string; fieldValue: string | number }> | undefined {
+export default function mapAddressExtraFieldsFromFormValues(extraFields?: {
+    [id: string]: any;
+}): Array<{ fieldId: string; fieldValue: string | number }> | undefined {
     if (!extraFields) {
         return undefined;
     }

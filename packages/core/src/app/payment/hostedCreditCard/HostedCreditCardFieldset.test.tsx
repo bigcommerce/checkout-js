@@ -3,14 +3,8 @@ import { Field, Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';
 
-import {
-    type LocaleContextType,
-    LocaleProvider,
-} from '@bigcommerce/checkout/contexts';
-import {
-  createLocaleContext,
-  getLanguageService,
-} from '@bigcommerce/checkout/locale';
+import { type LocaleContextType, LocaleProvider } from '@bigcommerce/checkout/contexts';
+import { createLocaleContext, getLanguageService } from '@bigcommerce/checkout/locale';
 import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 

@@ -63,7 +63,11 @@ describe('ManageCardInstrumentsTable', () => {
             </LocaleContext.Provider>,
         );
 
-        expect(screen.getByText(localeContext.language.translate('payment.instrument_manage_modal_empty_text'))).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                localeContext.language.translate('payment.instrument_manage_modal_empty_text'),
+            ),
+        ).toBeInTheDocument();
     });
 
     it('shows loading overlay when deleting', () => {

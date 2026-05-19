@@ -22,9 +22,7 @@ import {
     ThemeProvider,
 } from '@bigcommerce/checkout/contexts';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
-import {
-    CHECKOUT_ROOT_NODE_ID,
-} from '@bigcommerce/checkout/payment-integration-api';
+import { CHECKOUT_ROOT_NODE_ID } from '@bigcommerce/checkout/payment-integration-api';
 import {
     CheckoutPageNodeObject,
     CheckoutPreset,
@@ -105,7 +103,10 @@ describe('Checkout', () => {
 
         CheckoutTest = (props) => (
             <CheckoutProvider checkoutService={checkoutService}>
-                <LocaleProvider checkoutService={checkoutService} languageService={getLanguageService()}>
+                <LocaleProvider
+                    checkoutService={checkoutService}
+                    languageService={getLanguageService()}
+                >
                     <AnalyticsProviderMock>
                         <ExtensionProvider extensionService={extensionService}>
                             <ThemeProvider>
@@ -249,7 +250,7 @@ describe('Checkout', () => {
             expect(mockAddEventListener).not.toHaveBeenCalledWith(
                 'prerenderingchange',
                 expect.any(Function),
-                { once: true }
+                { once: true },
             );
         });
 
@@ -264,7 +265,7 @@ describe('Checkout', () => {
             expect(mockAddEventListener).toHaveBeenCalledWith(
                 'prerenderingchange',
                 expect.any(Function),
-                { once: true }
+                { once: true },
             );
         });
 
@@ -383,7 +384,9 @@ describe('Checkout', () => {
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithBillingEmail);
 
             // Mock countries to ensure form renders
-            jest.spyOn(checkoutService.getState().data, 'getShippingCountries').mockReturnValue(getCountries());
+            jest.spyOn(checkoutService.getState().data, 'getShippingCountries').mockReturnValue(
+                getCountries(),
+            );
 
             jest.spyOn(checkoutService, 'loadShippingAddressFields').mockImplementation(() => {
                 throw error;
@@ -457,13 +460,13 @@ describe('Checkout', () => {
                 checkout: {
                     ...checkoutWithShippingDiscount,
                     comparisonShippingCost: 0,
-                    consignments: [{
-                        ...checkoutWithShippingDiscount.consignments[0],
-                        comparisonShippingCost: 0,
-                        discounts: [
-                            { ...consignmentAutomaticDiscount, amount: 3 }
-                        ]
-                    }],
+                    consignments: [
+                        {
+                            ...checkoutWithShippingDiscount.consignments[0],
+                            comparisonShippingCost: 0,
+                            discounts: [{ ...consignmentAutomaticDiscount, amount: 3 }],
+                        },
+                    ],
                     coupons: [],
                 },
             });
@@ -499,13 +502,15 @@ describe('Checkout', () => {
                             discounts: [
                                 { ...consignmentAutomaticDiscount, amount: 3 },
                                 { ...consignmentCouponDiscount, amount: 1 },
-                            ]
-                        }
+                            ],
+                        },
                     ],
-                    coupons: [{
-                        ...checkoutWithShippingDiscount.coupons[0],
-                        discountedAmount: 4,
-                    }]
+                    coupons: [
+                        {
+                            ...checkoutWithShippingDiscount.coupons[0],
+                            discountedAmount: 4,
+                        },
+                    ],
                 },
             });
 
@@ -513,7 +518,8 @@ describe('Checkout', () => {
 
             await checkout.waitForBillingStep();
 
-            const shippingOptionsInShippingSummary = screen.getAllByTestId('static-shipping-option');
+            const shippingOptionsInShippingSummary =
+                screen.getAllByTestId('static-shipping-option');
 
             expect(shippingOptionsInShippingSummary).toHaveLength(2);
             expect(shippingOptionsInShippingSummary[0]).toHaveTextContent('Pickup In Store');
@@ -549,7 +555,7 @@ describe('Checkout', () => {
 
             await checkout.waitForBillingStep();
 
-            await waitFor(()=>{
+            await waitFor(() => {
                 expect(defaultProps.errorLogger.log).toHaveBeenCalledWith(error);
             });
         });
@@ -602,7 +608,7 @@ describe('Checkout', () => {
 
                 jest.spyOn(checkoutService, 'submitOrder').mockResolvedValue({
                     data: {
-                        getOrder: () => ({ orderId: 123 } as any),
+                        getOrder: () => ({ orderId: 123 }) as any,
                     },
                 } as any);
 
@@ -616,11 +622,16 @@ describe('Checkout', () => {
 
                 const CheckoutWithInvoiceRedirect: FunctionComponent<CheckoutProps> = (props) => (
                     <CheckoutProvider checkoutService={checkoutService}>
-                        <LocaleProvider checkoutService={checkoutService} languageService={getLanguageService()}>
+                        <LocaleProvider
+                            checkoutService={checkoutService}
+                            languageService={getLanguageService()}
+                        >
                             <AnalyticsProviderMock>
                                 <ExtensionProvider extensionService={extensionService}>
                                     <ThemeProvider>
-                                        <CapabilitiesContext.Provider value={invoiceRedirectCapabilities}>
+                                        <CapabilitiesContext.Provider
+                                            value={invoiceRedirectCapabilities}
+                                        >
                                             <Checkout {...props} />
                                         </CapabilitiesContext.Provider>
                                     </ThemeProvider>
