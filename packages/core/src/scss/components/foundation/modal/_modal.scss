@@ -67,6 +67,12 @@
             }
         }
 
+        &.modal--address {
+            @include breakpoint("small") {
+                max-width: 680px;
+            }
+        }
+
         &.modal--error,&.modal--confirm {
             padding-bottom: spacing("half");
             padding-left: #{spacing("half") + spacing("double")};
