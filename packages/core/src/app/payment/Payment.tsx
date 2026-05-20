@@ -42,12 +42,12 @@ import {
 } from '@bigcommerce/checkout/contexts';
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { getPoNumber } from '@bigcommerce/checkout/offline-payment-integration';
 import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { ChecklistSkeleton } from '@bigcommerce/checkout/ui';
 
 import { withAnalytics } from '../analytics';
 import { withCheckout } from '../checkout';
-import useB2BToken from '../checkout/hooks/useB2BToken';
 import {
     ErrorModal,
     type ErrorModalOnCloseProps,
@@ -59,13 +59,11 @@ import { EMPTY_ARRAY, isExperimentEnabled } from '../common/utility';
 import { TermsConditionsType } from '../termsConditions';
 
 import CartStockPositionsChangedModal from './CartStockPositionsChangedModal';
-import usePoConfig from './hooks/usePoConfig';
 import mapSubmitOrderErrorMessage, { mapSubmitOrderErrorTitle } from './mapSubmitOrderErrorMessage';
 import mapToOrderRequestBody from './mapToOrderRequestBody';
 import PaymentContext from './PaymentContext';
 import PaymentForm from './PaymentForm';
 import { getUniquePaymentMethodId, PaymentMethodProviderType } from './paymentMethod';
-import { getPoNumber } from './paymentMethod/poNumberStorage';
 import { getFilteredPaymentMethodsWithDefault } from './paymentMethodFilters';
 
 export interface PaymentProps {
@@ -138,17 +136,9 @@ const Payment = (
 
     const [isCartStockRefreshComplete, setIsCartStockRefreshComplete] = useState(false);
 
-    const { poConfig, fetchPoConfig } = usePoConfig();
     const {
-        userJourney: { requiresB2BToken },
+        payment: { poPaymentMethod, poConfig },
     } = useCapabilities();
-    const { b2bToken } = useB2BToken();
-
-    useEffect(() => {
-        if (requiresB2BToken && b2bToken) {
-            void fetchPoConfig();
-        }
-    }, [requiresB2BToken, b2bToken]);
 
     const isReadyRef = useRef(state.isReady);
     const grandTotalChangeUnsubscribe = useRef<() => void>();

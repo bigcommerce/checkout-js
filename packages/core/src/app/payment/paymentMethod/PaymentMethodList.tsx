@@ -7,15 +7,12 @@ import { Checklist, ChecklistItem } from '@bigcommerce/checkout/ui';
 
 import { connectFormik, type ConnectFormikProps } from '../../common/form';
 import { isMobile } from '../../common/utility';
-import usePoConfig from '../hooks/usePoConfig';
 
 import CustomChecklistItem from './CustomChecklistItem';
 import getPaymentMethodName from './getPaymentMethodName';
 import getUniquePaymentMethodId, { parseUniquePaymentMethodId } from './getUniquePaymentMethodId';
-import PaymentMethodProviderType from './PaymentMethodProviderType';
 import PaymentMethodTitle, { getPaymentMethodTitle } from './PaymentMethodTitle';
 import PaymentMethodV2 from './PaymentMethodV2';
-import PoNumber from './PoNumber';
 
 export interface PaymentMethodListProps {
     isEmbedded?: boolean;
@@ -144,18 +141,7 @@ const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
     onUnhandledError,
     value,
 }) => {
-    const { poConfig } = usePoConfig();
-
-    const isPoNumberMode =
-        poConfig?.enabled &&
-        method.type === PaymentMethodProviderType.Offline &&
-        method.id === 'cheque';
-
     const renderPaymentMethod = useMemo(() => {
-        if (isPoNumberMode && poConfig) {
-            return <PoNumber isRequired={poConfig.required} label={poConfig.label} />;
-        }
-
         return (
             <PaymentMethodV2
                 isEmbedded={isEmbedded}
@@ -164,7 +150,7 @@ const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
                 onUnhandledError={onUnhandledError || noop}
             />
         );
-    }, [isEmbedded, isUsingMultiShipping, method, onUnhandledError, isPoNumberMode]);
+    }, [isEmbedded, isUsingMultiShipping, method, onUnhandledError]);
 
     const renderPaymentMethodTitle = useCallback(
         (isSelected: boolean) => (

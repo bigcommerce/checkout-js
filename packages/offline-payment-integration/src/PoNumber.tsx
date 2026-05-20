@@ -30,7 +30,10 @@ const PoNumber: FunctionComponent<PoNumberProps> = ({ label, isRequired }) => {
                 <label className="po-number-label" htmlFor={PO_NUMBER_INPUT_ID}>
                     <span>{label}</span>
                     {!isRequired && (
-                        <span>{' '}<TranslatedString id="payment.po_number_optional" /></span>
+                        <span>
+                            {' '}
+                            <TranslatedString id="payment.po_number_optional" />
+                        </span>
                     )}
                 </label>
             </Legend>

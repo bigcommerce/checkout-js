@@ -1,16 +1,23 @@
 import { createOfflinePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/offline';
-import { type FunctionComponent, useEffect } from 'react';
+import React, { type FunctionComponent, useEffect } from 'react';
 
+import { useCapabilities } from '@bigcommerce/checkout/contexts';
 import {
     type PaymentMethodProps,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
+
+import PoNumber from './PoNumber';
 
 const OfflinePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     method,
     checkoutService,
     onUnhandledError,
 }) => {
+    const {
+        payment: { poConfig },
+    } = useCapabilities();
+
     useEffect(() => {
         const initializePayment = async () => {
             try {
@@ -45,6 +52,12 @@ const OfflinePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             void deinitializePayment();
         };
     }, [checkoutService, method.gateway, method.id, onUnhandledError]);
+
+    const shouldShowPoNumber = Boolean(poConfig) && method.id === 'cheque';
+
+    if (shouldShowPoNumber && poConfig) {
+        return <PoNumber isRequired={poConfig.required} label={poConfig.label} />;
+    }
 
     return null;
 };
