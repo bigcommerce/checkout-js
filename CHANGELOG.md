@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.792.0](https://github.com/bigcommerce/checkout-js/compare/v1.791.2...v1.792.0) (2026-05-21)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9821 Update loading B2B token ([#3024](https://github.com/bigcommerce/checkout-js/issues/3024)) ([934c37b](https://github.com/bigcommerce/checkout-js/commit/934c37be7af98a5eb10cebf2147633c54bd03e5f))
+
 ### [1.791.2](https://github.com/bigcommerce/checkout-js/compare/v1.791.1...v1.791.2) (2026-05-19)
 
 ### [1.791.1](https://github.com/bigcommerce/checkout-js/compare/v1.791.0...v1.791.1) (2026-05-19)
