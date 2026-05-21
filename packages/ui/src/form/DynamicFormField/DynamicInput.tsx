@@ -187,23 +187,24 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
 
         case DynamicFormFieldType.TELEPHONE:
             return (
-                <IntlTelInput
-                    initialCountry="us"
-                    inputProps={{
-                        id,
-                        name,
-                        className: classNames('form-input', 'optimizedCheckout-form-input', {
-                            'floating-input floating-form-field-input': isFloatingLabelEnabled,
-                        }),
-                        placeholder,
-                    }}
-                    loadUtils={() =>
-                        import(
-                            /* webpackChunkName: "intl-tel-input-utils" */
-                            'intl-tel-input/utils'
-                        )
-                    }
-                />
+                <span className="iti-wrapper">
+                    <IntlTelInput
+                        initialCountry="us"
+                        inputProps={{
+                            id,
+                            name,
+                            className:
+                                'form-input optimizedCheckout-form-input floating-input floating-form-field-input',
+                            placeholder,
+                        }}
+                        loadUtils={() =>
+                            import(
+                                /* webpackChunkName: "intl-tel-input-utils" */
+                                'intl-tel-input/utils'
+                            )
+                        }
+                    />
+                </span>
             );
 
         default:
