@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.792.1](https://github.com/bigcommerce/checkout-js/compare/v1.792.0...v1.792.1) (2026-05-21)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10023 Fix State/Province field placeholder text overlapping in desktop modals ([dd25a68](https://github.com/bigcommerce/checkout-js/commit/dd25a68731eaf82321237785d2967a7b516a1e71))
+
 ## [1.792.0](https://github.com/bigcommerce/checkout-js/compare/v1.791.2...v1.792.0) (2026-05-21)
 
 
