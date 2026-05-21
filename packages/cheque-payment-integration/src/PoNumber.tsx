@@ -2,8 +2,10 @@ import React, { type ChangeEvent, type FunctionComponent, useState } from 'react
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { Legend, TextInput } from '@bigcommerce/checkout/ui';
-
-import { getPoNumber, setPoNumber as setPoNumberinSessionStorage } from './poNumberStorage';
+import {
+    getPoNumber,
+    setPoNumber as setPoNumberinSessionStorage,
+} from '@bigcommerce/checkout/utility';
 
 import './PoNumber.scss';
 

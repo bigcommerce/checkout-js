@@ -42,9 +42,9 @@ import {
 } from '@bigcommerce/checkout/contexts';
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { getPoNumber } from '@bigcommerce/checkout/offline-payment-integration';
 import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { ChecklistSkeleton } from '@bigcommerce/checkout/ui';
+import { getPoNumber } from '@bigcommerce/checkout/utility';
 
 import { withAnalytics } from '../analytics';
 import { withCheckout } from '../checkout';
@@ -137,7 +137,7 @@ const Payment = (
     const [isCartStockRefreshComplete, setIsCartStockRefreshComplete] = useState(false);
 
     const {
-        payment: { poPaymentMethod, poConfig },
+        payment: { poConfig },
     } = useCapabilities();
 
     const isReadyRef = useRef(state.isReady);
@@ -409,7 +409,7 @@ const Payment = (
 
             const isPoRequired =
                 selectedMethod?.id === 'cheque' &&
-                poConfig?.enabled &&
+                Boolean(poConfig) &&
                 poConfig?.required &&
                 isPaymentDataRequired();
 
