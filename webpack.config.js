@@ -216,6 +216,14 @@ function appConfig(options, argv) {
                         ],
                     },
                     {
+                        test: /\.css$/,
+                        use: [
+                            isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
+                            'css-loader',
+                        ],
+                        sideEffects: true,
+                    },
+                    {
                         test: /\.scss$/,
                         use: [
                             isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
@@ -253,7 +261,7 @@ function appConfig(options, argv) {
                         sideEffects: true,
                     },
                     {
-                        test: /\.(gif|png|jpe?g|svg)$/i,
+                        test: /\.(gif|png|jpe?g|svg|webp)$/i,
                         use: [
                             {
                                 loader: 'file-loader',
