@@ -71,6 +71,26 @@
             padding-top: $input-verticalPadding * 2.5;
         }
 
+        .iti {
+            display: block;
+            width: 100%;
+
+            .iti__country-container {
+                top: $input-verticalPadding * 1.5;
+                padding-top: $input-verticalPadding * 0.5;
+                padding-bottom: $input-verticalPadding * 0.5;
+            }
+
+            .iti__selected-country-primary {
+                background-color: transparent !important;
+                padding: 0 var(--iti-arrow-padding) 0 1.05rem;
+            }
+
+            .iti__dropdown-content {
+                max-width: remCalc(300px);
+            }
+        }
+
         .dropdown-chevron,
         .floating-select-chevron {
             position: absolute;
@@ -98,6 +118,7 @@
 
         .react-datepicker__tab-loop + .floating-label,
         .react-datepicker-wrapper + .floating-label,
+        span:has(> .iti) + .floating-label,
         select + .floating-label,
         textarea:focus + .floating-label,
         textarea:not(:empty) + .floating-label,

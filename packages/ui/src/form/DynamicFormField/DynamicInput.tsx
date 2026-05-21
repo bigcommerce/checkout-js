@@ -1,4 +1,6 @@
 import { type FormFieldItem } from '@bigcommerce/checkout-sdk';
+import IntlTelInput from '@intl-tel-input/react';
+import 'intl-tel-input/styles';
 import classNames from 'classnames';
 import { isDate, noop } from 'lodash';
 import React, { type FunctionComponent, lazy, memo, Suspense, useCallback } from 'react';
@@ -180,6 +182,27 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                     testId={`${id}-text`}
                     type={fieldType}
                     value={value}
+                />
+            );
+
+        case DynamicFormFieldType.TELEPHONE:
+            return (
+                <IntlTelInput
+                    initialCountry="us"
+                    inputProps={{
+                        id,
+                        name,
+                        className: classNames('form-input', 'optimizedCheckout-form-input', {
+                            'floating-input floating-form-field-input': isFloatingLabelEnabled,
+                        }),
+                        placeholder,
+                    }}
+                    loadUtils={() =>
+                        import(
+                            /* webpackChunkName: "intl-tel-input-utils" */
+                            'intl-tel-input/utils'
+                        )
+                    }
                 />
             );
 
