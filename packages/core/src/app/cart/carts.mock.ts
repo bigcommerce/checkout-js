@@ -7,6 +7,7 @@ export function getCart(): Cart {
     return {
         id: 'b20deef40f9699e48671bbc3fef6ca44dc80e3c7',
         customerId: 4,
+        companyId: 1,
         currency: {
             name: 'US Dollar',
             code: 'USD',

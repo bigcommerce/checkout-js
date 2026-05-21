@@ -649,7 +649,7 @@ const Checkout = ({
                 window.addEventListener('beforeunload', handleBeforeExitRef.current);
 
                 if (requiresB2BToken && !data.getCustomer()?.isGuest) {
-                    void fetchB2BToken();
+                    await fetchB2BToken();
                 }
 
                 handleReady();

@@ -3,8 +3,10 @@ import { type Capabilities } from '@bigcommerce/checkout-sdk/essential';
 export const defaultCapabilities: Capabilities = {
     userJourney: {
         disableEditCart: false,
+        disableStoreCredit: false,
         hasCompanyAddressBook: false,
         hasAddressExtraFields: false,
+        hasOrderExtraFields: false,
         requiresB2BToken: false,
     },
     customer: {
