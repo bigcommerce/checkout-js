@@ -23,9 +23,11 @@ export const defaultCapabilities: Capabilities = {
         hideSaveToAddressBookCheck: false,
     },
     payment: {
+        additionalField: null,
         paymentMethodFiltering: false,
         b2bPaymentMethodFilter: false,
         poPaymentMethod: false,
+        poConfig: null,
         additionalPaymentNotes: false,
         excludeOfflineForInvoice: false,
         excludePPSDK: false,
