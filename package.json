@@ -54,6 +54,7 @@
     "@bigcommerce/memoize": "^1.0.0",
     "@bigcommerce/request-sender": "^1.2.4",
     "@bigcommerce/script-loader": "^2.2.2",
+    "@intl-tel-input/react": "^28.1.0",
     "@sentry/browser": "^9.40.0",
     "@types/card-validator": "^4.1.0",
     "@types/classnames": "^2.2.6",
