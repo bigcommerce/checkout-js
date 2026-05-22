@@ -6,16 +6,14 @@ import {
     type PaymentMethodProps,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
-import { getPoNumber } from '@bigcommerce/checkout/utility';
 
-import getPoNumberValidationSchema from './getPoNumberValidationSchema';
-import PoNumber, { PO_NUMBER_FIELD_NAME } from './PoNumber';
+import PoNumber from './PoNumber';
 
 const ChequePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     method,
     checkoutService,
     onUnhandledError,
-    paymentForm: { setFieldValue, setValidationSchema },
+    paymentForm,
     language,
 }) => {
     const {
@@ -57,22 +55,16 @@ const ChequePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         };
     }, [checkoutService, method.gateway, method.id, onUnhandledError]);
 
-    useEffect(() => {
-        if (!poConfig) {
-            return;
-        }
-
-        setFieldValue(PO_NUMBER_FIELD_NAME, getPoNumber());
-        setValidationSchema(method, getPoNumberValidationSchema(language, poConfig.required));
-
-        return () => {
-            setValidationSchema(method, null);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [poConfig, language, method, setValidationSchema]);
-
     if (poConfig) {
-        return <PoNumber isRequired={poConfig.required} label={poConfig.label} />;
+        return (
+            <PoNumber
+                isRequired={poConfig.required}
+                label={poConfig.label}
+                language={language}
+                method={method}
+                paymentForm={paymentForm}
+            />
+        );
     }
 
     return null;

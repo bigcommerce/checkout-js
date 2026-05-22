@@ -1,20 +1,42 @@
+import { type LanguageService, type PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { type FieldProps } from 'formik';
-import React, { type FunctionComponent, useCallback } from 'react';
+import React, { type FunctionComponent, useCallback, useEffect } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { type PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
 import { FormField, Legend, TextInput } from '@bigcommerce/checkout/ui';
-import { setPoNumber } from '@bigcommerce/checkout/utility';
+import { getPoNumber, setPoNumber } from '@bigcommerce/checkout/utility';
+
+import getPoNumberValidationSchema from './getPoNumberValidationSchema';
 
 import './PoNumber.scss';
 
 export interface PoNumberProps {
     label: string;
     isRequired: boolean;
+    method: PaymentMethod;
+    language: LanguageService;
+    paymentForm: PaymentFormService;
 }
 
 export const PO_NUMBER_FIELD_NAME = 'poNumber';
 
-const PoNumber: FunctionComponent<PoNumberProps> = ({ label, isRequired }) => {
+const PoNumber: FunctionComponent<PoNumberProps> = ({
+    label,
+    isRequired,
+    method,
+    language,
+    paymentForm: { setFieldValue, setValidationSchema },
+}) => {
+    useEffect(() => {
+        setFieldValue(PO_NUMBER_FIELD_NAME, getPoNumber());
+        setValidationSchema(method, getPoNumberValidationSchema(language, isRequired));
+
+        return () => {
+            setValidationSchema(method, null);
+        };
+    }, [isRequired, language, method, setFieldValue, setValidationSchema]);
+
     const renderInput = useCallback(
         ({ field }: FieldProps<string>) => (
             <TextInput
