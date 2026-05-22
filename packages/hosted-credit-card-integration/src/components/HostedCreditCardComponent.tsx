@@ -4,6 +4,10 @@ import {
     type LegacyHostedFormOptions,
 } from '@bigcommerce/checkout-sdk';
 import { createBlueSnapDirectCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bluesnap-direct';
+import {
+    createCyberSourcePaymentStrategy,
+    createCyberSourceV2PaymentStrategy,
+} from '@bigcommerce/checkout-sdk/integrations/cybersource';
 import { createCheckoutComCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/checkoutcom-custom';
 import { createCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/credit-card';
 import { createTDOnlineMartPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/td-bank';
@@ -256,6 +260,8 @@ const HostedCreditCardComponent: FunctionComponent<HostedCreditCardComponentProp
                     ...options,
                     integrations: [
                         createCreditCardPaymentStrategy,
+                        createCyberSourcePaymentStrategy,
+                        createCyberSourceV2PaymentStrategy,
                         createBlueSnapDirectCreditCardPaymentStrategy,
                         createTDOnlineMartPaymentStrategy,
                         createCheckoutComCreditCardPaymentStrategy,
