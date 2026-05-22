@@ -38,13 +38,11 @@ import { type ObjectSchema } from 'yup';
 import {
     type AnalyticsContextProps,
     type CheckoutContextProps,
-    useCapabilities,
 } from '@bigcommerce/checkout/contexts';
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { ChecklistSkeleton } from '@bigcommerce/checkout/ui';
-import { getPoNumber } from '@bigcommerce/checkout/utility';
 
 import { withAnalytics } from '../analytics';
 import { withCheckout } from '../checkout';
@@ -135,10 +133,6 @@ const Payment = (
     });
 
     const [isCartStockRefreshComplete, setIsCartStockRefreshComplete] = useState(false);
-
-    const {
-        payment: { poConfig },
-    } = useCapabilities();
 
     const isReadyRef = useRef(state.isReady);
     const grandTotalChangeUnsubscribe = useRef<() => void>();
@@ -405,18 +399,6 @@ const Payment = (
 
             if (customSubmit) {
                 return customSubmit(values);
-            }
-
-            const isPoRequired =
-                selectedMethod?.id === 'cheque' &&
-                Boolean(poConfig) &&
-                poConfig?.required &&
-                isPaymentDataRequired();
-
-            if (isPoRequired && !getPoNumber()) {
-                return handleError(
-                    new Error(props.language.translate('payment.po_number_required_error')),
-                );
             }
 
             try {

@@ -1,9 +1,12 @@
 import { createCheckoutService, createLanguageService } from '@bigcommerce/checkout-sdk';
 import { createOfflinePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/offline';
+import { Formik } from 'formik';
+import { noop } from 'lodash';
 import React, { type ReactElement } from 'react';
 
 import { CapabilitiesContext, defaultCapabilities } from '@bigcommerce/checkout/contexts';
 import { type PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
+import { getPaymentFormServiceMock } from '@bigcommerce/checkout/test-mocks';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import ChequePaymentMethod from './ChequePaymentMethod';
@@ -22,7 +25,9 @@ const renderWithCapabilities = (
                 payment: { ...defaultCapabilities.payment, ...paymentOverrides },
             }}
         >
-            {ui}
+            <Formik initialValues={{ poNumber: '' }} onSubmit={noop}>
+                {ui}
+            </Formik>
         </CapabilitiesContext.Provider>,
     );
 
@@ -37,9 +42,7 @@ describe('ChequePaymentMethod', () => {
             method: getMethod(),
             checkoutService,
             checkoutState: checkoutService.getState(),
-
-            paymentForm: jest.fn() as unknown as PaymentMethodProps['paymentForm'],
-
+            paymentForm: getPaymentFormServiceMock(),
             language: createLanguageService(),
             onUnhandledError: jest.fn(),
         };
@@ -127,6 +130,15 @@ describe('ChequePaymentMethod', () => {
             });
 
             expect(screen.getByText(/Optional/i)).toBeInTheDocument();
+        });
+
+        it('registers the PO number validation schema with the payment form', () => {
+            renderWithCapabilities(<ChequePaymentMethod {...defaultProps} />, { poConfig });
+
+            expect(defaultProps.paymentForm.setValidationSchema).toHaveBeenCalledWith(
+                defaultProps.method,
+                expect.anything(),
+            );
         });
     });
 });

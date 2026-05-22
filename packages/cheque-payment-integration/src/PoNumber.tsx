@@ -1,11 +1,9 @@
-import React, { type ChangeEvent, type FunctionComponent, useState } from 'react';
+import { type FieldProps } from 'formik';
+import React, { type FunctionComponent, useCallback } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { Legend, TextInput } from '@bigcommerce/checkout/ui';
-import {
-    getPoNumber,
-    setPoNumber as setPoNumberinSessionStorage,
-} from '@bigcommerce/checkout/utility';
+import { FormField, Legend, TextInput } from '@bigcommerce/checkout/ui';
+import { setPoNumber } from '@bigcommerce/checkout/utility';
 
 import './PoNumber.scss';
 
@@ -14,36 +12,47 @@ export interface PoNumberProps {
     isRequired: boolean;
 }
 
-const PO_NUMBER_INPUT_ID = 'po-number';
+export const PO_NUMBER_FIELD_NAME = 'poNumber';
 
 const PoNumber: FunctionComponent<PoNumberProps> = ({ label, isRequired }) => {
-    const [poNumber, setPoNumber] = useState<string>(getPoNumber());
+    const renderInput = useCallback(
+        ({ field }: FieldProps<string>) => (
+            <TextInput
+                {...field}
+                aria-labelledby={`${PO_NUMBER_FIELD_NAME}-label ${PO_NUMBER_FIELD_NAME}-field-error-message`}
+                id={PO_NUMBER_FIELD_NAME}
+            />
+        ),
+        [],
+    );
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-
-        setPoNumber(value);
-        setPoNumberinSessionStorage(value);
-    };
+    const handleChange = useCallback((value: string) => {
+        setPoNumber(value.trim());
+    }, []);
 
     return (
         <div className="po-number-container">
-            <Legend>
-                <label className="po-number-label" htmlFor={PO_NUMBER_INPUT_ID}>
-                    <span>{label}</span>
-                    {!isRequired && (
-                        <span>
-                            {' '}
-                            <TranslatedString id="payment.po_number_optional" />
-                        </span>
-                    )}
-                </label>
-            </Legend>
-            <TextInput
-                id={PO_NUMBER_INPUT_ID}
-                name={PO_NUMBER_INPUT_ID}
+            <FormField
+                input={renderInput}
+                label={
+                    <Legend>
+                        <label
+                            className="po-number-label"
+                            htmlFor={PO_NUMBER_FIELD_NAME}
+                            id={`${PO_NUMBER_FIELD_NAME}-label`}
+                        >
+                            <span>{label}</span>
+                            {!isRequired && (
+                                <span>
+                                    {' '}
+                                    <TranslatedString id="payment.po_number_optional" />
+                                </span>
+                            )}
+                        </label>
+                    </Legend>
+                }
+                name={PO_NUMBER_FIELD_NAME}
                 onChange={handleChange}
-                value={poNumber}
             />
         </div>
     );
