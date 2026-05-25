@@ -20,13 +20,21 @@ const Form: FunctionComponent<FormProps> = ({ className, testId, ...rest }) => {
             return;
         }
 
+        /*
+        :not selectors are needed to make focus on error work for phone inputs.
+        intl-tel-input library injects a search input for country selection
+        This code makes sure we focus on number input and not country search input
+        NOTE: delete this if removing country selection
+        */
         const errorInputSelectors = [
-            '.form-field--error input',
+            '.form-field--error input:not([type="search"]):not([type="hidden"])',
             '.form-field--error textarea',
             '.form-field--error select',
         ];
 
-        const erroredFormField = current.querySelector<HTMLElement>(errorInputSelectors.join(', '));
+        const erroredFormField = Array.from(
+            current.querySelectorAll<HTMLElement>(errorInputSelectors.join(', ')),
+        ).find((el) => el.offsetParent !== null);
 
         if (erroredFormField) {
             erroredFormField.focus({ preventScroll: true });
