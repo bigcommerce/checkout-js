@@ -66,7 +66,7 @@ export const useShipping = () => {
 
     const checkout = getCheckout();
     const config = getConfig();
-    const consignments = getConsignments() || [];
+    const consignments = getConsignments() || EMPTY_ARRAY;
     const customer = getCustomer();
     const cart = getCart();
 
@@ -75,7 +75,11 @@ export const useShipping = () => {
     }
 
     const {
-        checkoutSettings: { enableOrderComments, hasMultiShippingEnabled },
+        checkoutSettings: {
+            enableOrderComments,
+            hasMultiShippingEnabled,
+            shippingQuoteFailedMessage,
+        },
     } = config;
 
     const methodId = getShippingMethodId(checkout, config);
@@ -160,11 +164,15 @@ export const useShipping = () => {
         shippingAddress,
         shouldShowMultiShipping,
         shouldShowOrderComments: enableOrderComments,
+        shippingQuoteFailedMessage,
+        selectConsignmentShippingOption: checkoutService.selectConsignmentShippingOption,
         signOut: checkoutService.signOutCustomer,
         unassignItem: checkoutService.unassignItemsToAddress,
         updateBillingAddress: checkoutService.updateBillingAddress,
         updateCheckout: checkoutService.updateCheckout,
         updateShippingAddress: checkoutService.updateShippingAddress,
+        updateConsignment: checkoutService.updateConsignment,
+        getConsignments,
         shouldRenderStripeForm:
             providerWithCustomCheckout === PaymentMethodId.StripeUPE &&
             shouldUseStripeLinkByMinimumAmount(cart),

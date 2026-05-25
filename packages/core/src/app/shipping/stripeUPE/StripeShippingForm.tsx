@@ -1,16 +1,10 @@
-import {
-    type Address,
-    type CheckoutParams,
-    type CheckoutSelectors,
-    type FormField,
-    type RequestOptions,
-} from '@bigcommerce/checkout-sdk';
+import { type Address, type FormField } from '@bigcommerce/checkout-sdk';
 import { type FormikProps } from 'formik';
 import { noop } from 'lodash';
 import React, { useCallback, useState } from 'react';
 import { lazy, object } from 'yup';
 
-import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
+import { useCapabilities } from '@bigcommerce/checkout/contexts';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { Fieldset, Form } from '@bigcommerce/checkout/ui';
 
@@ -22,10 +16,10 @@ import {
 } from '../../address';
 import type CheckoutStepStatus from '../../checkout/CheckoutStepStatus';
 import { withFormikExtended } from '../../common/form';
-import { EMPTY_ARRAY } from '../../common/utility';
 import { getCustomFormFieldsValidationSchema } from '../../formFields';
 import BillingSameAsShippingField from '../BillingSameAsShippingField';
 import hasSelectedShippingOptions from '../hasSelectedShippingOptions';
+import { useShipping } from '../hooks/useShipping';
 import ShippingFormFooter from '../ShippingFormFooter';
 
 import StripeShippingAddress from './StripeShippingAddress';
@@ -35,11 +29,9 @@ export interface SingleShippingFormProps {
     cartHasChanged: boolean;
     customerMessage: string;
     isLoading: boolean;
-    isShippingMethodLoading: boolean;
     isMultiShippingMode: boolean;
     methodId?: string;
     shippingAddress?: Address;
-    shouldShowOrderComments: boolean;
     step: CheckoutStepStatus;
     isInitialValueLoaded: boolean;
     isStripeLoading?(): void;
@@ -47,10 +39,6 @@ export interface SingleShippingFormProps {
     getFields(countryCode?: string): FormField[];
     onSubmit(values: SingleShippingFormValues): void;
     onUnhandledError?(error: Error): void;
-    updateAddress(
-        address: Partial<Address>,
-        options?: RequestOptions<CheckoutParams>,
-    ): Promise<CheckoutSelectors>;
 }
 
 export interface SingleShippingFormValues {
@@ -62,18 +50,18 @@ export interface SingleShippingFormValues {
 const StripeShippingForm: React.FC<
     SingleShippingFormProps & WithLanguageProps & FormikProps<SingleShippingFormValues>
 > = (props) => {
-    const { checkoutService, checkoutState } = useCheckout();
     const {
         shipping: { hideBillingSameAsShippingCheck },
     } = useCapabilities();
     const {
-        data: { getConsignments, getShippingCountries },
-    } = checkoutState;
-
-    const consignments = getConsignments() || [];
-    const initialize = checkoutService.initializeShipping;
-    const deinitialize = checkoutService.deinitializeShipping;
-    const countries = getShippingCountries() || EMPTY_ARRAY;
+        consignments,
+        countries,
+        initializeShippingMethod: initialize,
+        deinitializeShippingMethod: deinitialize,
+        isLoading: isShippingMethodLoading,
+        shouldShowOrderComments,
+        updateShippingAddress: updateAddress,
+    } = useShipping();
 
     const [isUpdatingShippingData] = useState(false);
 
@@ -83,13 +71,10 @@ const StripeShippingForm: React.FC<
         isLoading,
         isStripeLoading,
         shippingAddress,
-        shouldShowOrderComments,
         isValid,
         onSubmit,
         isStripeAutoStep,
         step,
-        isShippingMethodLoading,
-        updateAddress,
         onUnhandledError = noop,
         values,
         setValues,

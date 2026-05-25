@@ -38,20 +38,12 @@ const ShippingForm = ({
         consignments,
         countries,
         customerMessage,
-        defaultShippingExpectationMessage,
-        deleteConsignments,
-        deinitializeShippingMethod: deinitialize,
         getFields,
         hasMultiShippingEnabled,
-        isLoading,
-        initializeShippingMethod: initialize,
-        isShippingStepPending,
         isNoCountriesErrorOnCheckoutEnabled,
         methodId,
-        shouldShowOrderComments,
         shippingAddress,
         validateMaxLength,
-        updateShippingAddress: updateAddress,
     } = useShipping();
     const {
         extensionState: { shippingFormRenderTimestamp },
@@ -91,7 +83,6 @@ const ShippingForm = ({
                 cartHasChanged={cartHasChanged}
                 customerMessage={customerMessage}
                 defaultCountryCode={shippingAddress?.countryCode}
-                isLoading={isLoading}
                 onSubmit={onMultiShippingSubmit}
                 onUnhandledError={onUnhandledError}
             />
@@ -107,24 +98,15 @@ const ShippingForm = ({
     ) : (
         <SingleShippingForm
             cartHasChanged={cartHasChanged}
-            consignments={consignments}
             customerMessage={customerMessage}
-            defaultShippingExpectationMessage={defaultShippingExpectationMessage}
-            deinitialize={deinitialize}
-            deleteConsignments={deleteConsignments}
             getFields={getFields}
-            initialize={initialize}
             isBillingSameAsShipping={isBillingSameAsShipping}
             isInitialValueLoaded={isInitialValueLoaded}
-            isLoading={isLoading}
-            isShippingStepPending={isShippingStepPending}
             methodId={methodId}
             onSubmit={onSingleShippingSubmit}
             onUnhandledError={onUnhandledError}
             shippingAddress={shippingAddress}
             shippingFormRenderTimestamp={shippingFormRenderTimestamp}
-            shouldShowOrderComments={shouldShowOrderComments}
-            updateAddress={updateAddress}
             validateMaxLength={validateMaxLength}
         />
     );
