@@ -200,6 +200,9 @@
             "unsupported_error": "Följande betalningsmetoder stöds inte av inbyggd kassa: {methods}. Kontakta oss för att få hjälp."
         },
         "payment": {
+            "po_number_label": "PO Number / Reference Number",
+            "po_number_optional": "(Frivillig)",
+            "po_number_required_error": "PO Number / Reference Number is required.",
             "affirm_name_text": "Bekräfta",
             "affirm_display_name_text": "Betala med tiden",
             "affirm_body_text": "Du kommer att omdirigeras till Affirm för att slutföra ditt köp på ett säkert sätt. Fyll i grundläggande information och få ett beslut i realtid. Din kreditvärdighet påverkas inte när du kontrollerar din behörighet.",

@@ -200,6 +200,9 @@
             "unsupported_error": "De volgende betaalmethoden worden niet ondersteund door Embedded Checkout: {methods}. Neem voor hulp contact met ons op."
         },
         "payment": {
+            "po_number_label": "PO Number / Reference Number",
+            "po_number_optional": "(Optioneel)",
+            "po_number_required_error": "PO Number / Reference Number is required.",
             "affirm_name_text": "Affirm",
             "affirm_display_name_text": "Later betalen",
             "affirm_body_text": "U wordt omgeleid naar Affirm om uw aankoop veilig te voltooien. Als u enkele basisgegevens invult, krijgt u in real time een beslissing. Het controleren van uw geschiktheid heeft geen invloed op uw creditscore.",

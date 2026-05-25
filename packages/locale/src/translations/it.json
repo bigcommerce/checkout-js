@@ -200,6 +200,9 @@
             "unsupported_error": "I seguenti metodi di pagamento non sono supportati dal Checkout incorporato: {methods}. Contattaci per ricevere assistenza."
         },
         "payment": {
+            "po_number_label": "PO Number / Reference Number",
+            "po_number_optional": "(Facoltativo)",
+            "po_number_required_error": "PO Number / Reference Number is required.",
             "affirm_name_text": "Affirm",
             "affirm_display_name_text": "Pagamento nel tempo",
             "affirm_body_text": "Verrai reindirizzato su Affirm per completare il tuo acquisto in modo sicuro. Da lì ti basterà inserire alcune informazioni di base e prendere una decisione in tempo reale. Verificare la tua idoneità non influirà sul tuo punteggio di credito.",

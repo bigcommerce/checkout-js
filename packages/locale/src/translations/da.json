@@ -200,6 +200,9 @@
             "unsupported_error": "Følgende betalingsmetoder understøttes ikke af Embedded Checkout: {methods}. Kontakt os for at få hjælp."
         },
         "payment": {
+            "po_number_label": "PO Number / Reference Number",
+            "po_number_optional": "(Valgfrit)",
+            "po_number_required_error": "PO Number / Reference Number is required.",
             "affirm_name_text": "Affirm",
             "affirm_display_name_text": "Betal over tid",
             "affirm_body_text": "Du vil blive omdirigeret til Affirm for at gennemføre dit køb på sikker vis. Du skal bare udfylde lidt grundlæggende oplysninger og få en beslutning i realtid. Det påvirker ikke din kreditværdighed, at vi kontrollerer din berettigelse.",

@@ -200,6 +200,9 @@
             "unsupported_error": "Die folgenden Zahlungsmethoden werden von Embedded Checkout nicht unterstützt: {methods}. Bitte wenden Sie sich an uns, um Hilfe zu erhalten."
         },
         "payment": {
+            "po_number_label": "PO Number / Reference Number",
+            "po_number_optional": "(Optional)",
+            "po_number_required_error": "PO Number / Reference Number is required.",
             "affirm_name_text": "Bestätigen",
             "affirm_display_name_text": "Im Laufe der Zeit bezahlen",
             "affirm_body_text": "Sie werden zu Affirm weitergeleitet, um Ihren Kauf sicher abzuschließen. Füllen Sie einfach ein paar grundlegende Informationen aus und Sie erhalten eine Entscheidung in Echtzeit. Die Überprüfung Ihrer Berechtigung wirkt sich nicht auf Ihre Bonität aus.",

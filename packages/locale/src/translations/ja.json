@@ -200,6 +200,9 @@
             "unsupported_error": "次の支払方法は、Embedded Checkoutではサポートされていません:{methods}。お問い合わせください。"
         },
         "payment": {
+            "po_number_label": "PO Number / Reference Number",
+            "po_number_optional": "(オプション)",
+            "po_number_required_error": "PO Number / Reference Number is required.",
             "affirm_name_text": "Affirm",
             "affirm_display_name_text": "Pay over time",
             "affirm_body_text": "購入を安全に完了するためにAffirmにリダイレクトされます。いくつかの基本情報を入力するだけで、リアルタイムで審査結果が表示されます。資格を確認しても信用スコアには影響しません。",
