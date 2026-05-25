@@ -74,6 +74,7 @@
         // iti is a class coming from intl-tel-input (phone number library)
         .iti {
             display: block;
+            position: relative;
             width: 100%;
 
             .iti__selected-country-primary {
@@ -92,6 +93,8 @@
 
             .iti__country-container {
                 top: $input-verticalPadding * 1.5;
+                bottom: auto;
+                height: $floating-label-input-height - $input-verticalPadding * 1.5;
                 padding-top: $input-verticalPadding * 0.5;
                 padding-bottom: $input-verticalPadding * 0.5;
             }

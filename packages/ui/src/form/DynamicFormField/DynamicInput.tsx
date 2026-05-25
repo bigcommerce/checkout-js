@@ -203,6 +203,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                                 'intl-tel-input/utils'
                             )
                         }
+                        separateDialCode={false}
                     />
                 </span>
             );
