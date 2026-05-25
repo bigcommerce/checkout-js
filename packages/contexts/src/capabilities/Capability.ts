@@ -29,6 +29,8 @@ export const defaultCapabilities: Capabilities = {
         additionalPaymentNotes: false,
         excludeOfflineForInvoice: false,
         excludePPSDK: false,
+        poConfig: null,
+        additionalField: null,
     },
     orderConfirmation: {
         orderSummary: false,
