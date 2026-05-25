@@ -1,15 +1,7 @@
 import { type CardInstrument, type LegacyHostedFormOptions } from '@bigcommerce/checkout-sdk';
 import { createBraintreeCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
 import { compact, forIn } from 'lodash';
-import React, {
-    createRef,
-    type FunctionComponent,
-    type ReactNode,
-    type RefObject,
-    useCallback,
-    useRef,
-    useState,
-} from 'react';
+import React, { type FunctionComponent, type ReactNode, useCallback, useState } from 'react';
 
 import {
     CreditCardPaymentMethodComponent,
@@ -28,30 +20,18 @@ import {
     isInstrumentCardCodeRequiredSelector,
     isInstrumentCardNumberRequiredSelector,
 } from '@bigcommerce/checkout/instrument-utils';
-import { TranslatedString } from '@bigcommerce/checkout/locale';
 import {
     type PaymentMethodProps,
     type PaymentMethodResolveId,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
-import { Modal } from '@bigcommerce/checkout/ui';
-
-interface BraintreeCreditCardPaymentMethodRef {
-    threeDSecureContentRef: RefObject<HTMLDivElement>;
-    cancelThreeDSecureVerification?(): void;
-}
 
 const BraintreeCreditCardsPaymentMethod: FunctionComponent<PaymentMethodProps> = (props) => {
     const { checkoutService, checkoutState, paymentForm, language, method, onUnhandledError } =
         props;
     const { isHostedFormEnabled } = method.config;
 
-    const [threeDSecureContent, setThreeDSecureContent] = useState<HTMLElement>();
     const [focusedFieldType, setFocusedFieldType] = useState<string>();
-
-    const ref = useRef<BraintreeCreditCardPaymentMethodRef>({
-        threeDSecureContentRef: createRef(),
-    });
 
     const { cardCode, showCardHolderName, requireCustomerCode } = method.config;
     const { setFieldTouched, setFieldValue, setSubmitted, submitForm } = paymentForm;
@@ -255,24 +235,6 @@ const BraintreeCreditCardsPaymentMethod: FunctionComponent<PaymentMethodProps> =
                     ...options,
                     integrations: [createBraintreeCreditCardPaymentStrategy],
                     braintree: {
-                        threeDSecure: {
-                            addFrame(
-                                error: Error | undefined,
-                                content: HTMLIFrameElement,
-                                cancel: () => Promise<unknown> | undefined,
-                            ) {
-                                if (error) {
-                                    return onUnhandledError(error);
-                                }
-
-                                setThreeDSecureContent(content);
-                                ref.current.cancelThreeDSecureVerification = cancel;
-                            },
-                            removeFrame() {
-                                setThreeDSecureContent(undefined);
-                                ref.current.cancelThreeDSecureVerification = undefined;
-                            },
-                        },
                         onPaymentError(error: Error) {
                             if (error.message === 'THREEDS_VERIFICATION_FAILED') {
                                 onUnhandledError?.(
@@ -294,21 +256,6 @@ const BraintreeCreditCardsPaymentMethod: FunctionComponent<PaymentMethodProps> =
             },
             [getHostedFormOptions, initializePayment, onUnhandledError],
         );
-
-    const appendThreeDSecureContent = useCallback(() => {
-        if (ref.current.threeDSecureContentRef.current && threeDSecureContent) {
-            ref.current.threeDSecureContentRef.current.appendChild(threeDSecureContent);
-        }
-    }, [threeDSecureContent]);
-
-    const cancelThreeDSecureModalFlow = useCallback(() => {
-        setThreeDSecureContent(undefined);
-
-        if (ref.current.cancelThreeDSecureVerification) {
-            ref.current.cancelThreeDSecureVerification();
-            ref.current.cancelThreeDSecureVerification = undefined;
-        }
-    }, []);
 
     if (!method.config.isHostedFormEnabled) {
         return (
@@ -348,16 +295,6 @@ const BraintreeCreditCardsPaymentMethod: FunctionComponent<PaymentMethodProps> =
                     isCardExpiryRequired: true,
                 })}
             />
-
-            <Modal
-                additionalBodyClassName="modal-body--center"
-                closeButtonLabel={<TranslatedString id="common.close_action" />}
-                isOpen={!!threeDSecureContent}
-                onAfterOpen={appendThreeDSecureContent}
-                onRequestClose={cancelThreeDSecureModalFlow}
-            >
-                <div ref={ref.current.threeDSecureContentRef} />
-            </Modal>
         </>
     );
 };
