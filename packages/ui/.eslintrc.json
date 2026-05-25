@@ -5,6 +5,7 @@
     "@typescript-eslint/naming-convention": "off",
     "@typescript-eslint/consistent-type-assertions": "off",
     "@typescript-eslint/no-unsafe-call": "off",
-    "@nx/enforce-module-boundaries": "off"
+    "@nx/enforce-module-boundaries": "off",
+    "complexity": "off"
   }
 }

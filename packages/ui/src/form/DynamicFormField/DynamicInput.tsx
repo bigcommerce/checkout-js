@@ -1,5 +1,5 @@
 import { type FormFieldItem } from '@bigcommerce/checkout-sdk';
-import IntlTelInput from '@intl-tel-input/react';
+import IntlTelInput, { type IntlTelInputRef } from '@intl-tel-input/react';
 import 'intl-tel-input/styles';
 import classNames from 'classnames';
 import { isDate, noop } from 'lodash';
@@ -30,6 +30,7 @@ export interface DynamicInputProps extends InputProps {
     value?: string | string[];
     rows?: number;
     fieldType?: DynamicFormFieldType;
+    itiRef?: React.RefObject<IntlTelInputRef>;
     options?: FormFieldItem[];
     isFloatingLabelEnabled?: boolean;
     inputDateFormat?: string;
@@ -38,6 +39,7 @@ export interface DynamicInputProps extends InputProps {
 const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
     fieldType,
     id,
+    itiRef,
     name,
     onChange = noop,
     options,
@@ -191,6 +193,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                     <IntlTelInput
                         initialCountry="us"
                         inputProps={{
+                            ...rest,
                             id,
                             name,
                             className:
@@ -203,7 +206,14 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                                 'intl-tel-input/utils'
                             )
                         }
+                        onChangeNumber={(number) => {
+                            onChange({
+                                target: { name, value: number },
+                            } as React.ChangeEvent<HTMLInputElement>);
+                        }}
+                        ref={itiRef}
                         separateDialCode={false}
+                        value={value ? String(value) : ''}
                     />
                 </span>
             );
