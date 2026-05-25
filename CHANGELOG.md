@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.793.0](https://github.com/bigcommerce/checkout-js/compare/v1.792.1...v1.793.0) (2026-05-25)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9820 show PO Number field in cheque payment method when enabled ([#3013](https://github.com/bigcommerce/checkout-js/issues/3013)) ([19424c7](https://github.com/bigcommerce/checkout-js/commit/19424c788c78099ad6dfee65ef14533ff33808c3))
+
 ### [1.792.1](https://github.com/bigcommerce/checkout-js/compare/v1.792.0...v1.792.1) (2026-05-21)
 
 
