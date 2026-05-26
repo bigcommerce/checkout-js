@@ -2,6 +2,7 @@ import {
     type CheckoutSelectors,
     type CheckoutService,
     createCheckoutService,
+    type FormField,
 } from '@bigcommerce/checkout-sdk';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
@@ -18,6 +19,7 @@ import {
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
+import { B2BExtraFieldsSessionStorage } from '../address';
 import { getCart } from '../cart/carts.mock';
 import { createErrorLogger } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
@@ -214,5 +216,68 @@ describe('PaymentForm', () => {
                 localeContext.language.translate('payment.payment_not_required_text'),
             ),
         ).not.toBeInTheDocument();
+    });
+
+    describe('order extra fields', () => {
+        const orderExtraFields: FormField[] = [
+            {
+                custom: false,
+                default: 'default value',
+                id: 'b2bExtraField_500',
+                label: 'Order Note',
+                name: 'b2bExtraField_500',
+                required: true,
+                fieldType: 'text',
+                type: 'string',
+            } as FormField,
+        ];
+
+        beforeEach(() => {
+            sessionStorage.clear();
+        });
+
+        it('seeds inputs from session storage when stored values exist', () => {
+            B2BExtraFieldsSessionStorage.setFields(B2BExtraFieldsSessionStorage.ORDER_KEY, {
+                b2bExtraField_500: 'restored value',
+            });
+
+            render(<PaymentFormTest {...defaultProps} orderExtraFields={orderExtraFields} />);
+
+            expect(screen.getByDisplayValue('restored value')).toBeInTheDocument();
+        });
+
+        it('uses field default when session storage is empty', () => {
+            render(<PaymentFormTest {...defaultProps} orderExtraFields={orderExtraFields} />);
+
+            expect(screen.getByDisplayValue('default value')).toBeInTheDocument();
+        });
+
+        it('falls back to default when stored value has an unexpected type', () => {
+            B2BExtraFieldsSessionStorage.setFields(B2BExtraFieldsSessionStorage.ORDER_KEY, {
+                b2bExtraField_500: { tampered: true },
+            });
+
+            render(<PaymentFormTest {...defaultProps} orderExtraFields={orderExtraFields} />);
+
+            expect(screen.getByDisplayValue('default value')).toBeInTheDocument();
+        });
+
+        it('renders the order-extra-fields fieldset when fields are provided', () => {
+            render(<PaymentFormTest {...defaultProps} orderExtraFields={orderExtraFields} />);
+
+            expect(screen.getByTestId('order-extra-fields')).toBeInTheDocument();
+        });
+
+        it('does not render the fieldset when orderExtraFields is empty', () => {
+            render(<PaymentFormTest {...defaultProps} orderExtraFields={[]} />);
+
+            expect(screen.queryByTestId('order-extra-fields')).not.toBeInTheDocument();
+        });
+
+        it('does not render the fieldset when orderExtraFields prop is omitted', () => {
+            render(<PaymentFormTest {...defaultProps} />);
+
+            expect(screen.queryByTestId('order-extra-fields')).not.toBeInTheDocument();
+        });
     });
 });
