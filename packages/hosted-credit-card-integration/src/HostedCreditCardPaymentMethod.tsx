@@ -38,6 +38,5 @@ export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>
         { id: 'credit_card', gateway: 'checkoutcom' },
 
         { id: 'tdonlinemart' },
-        { id: 'cba_mpgs' },
     ],
 );
