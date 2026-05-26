@@ -4,6 +4,14 @@ const nxPreset = require('@nx/jest/preset').default;
 module.exports = {
   ...nxPreset,
   testPathIgnorePatterns: ['<rootDir>/e2e/'],
+  transformIgnorePatterns: [
+    '/node_modules/(?!@intl-tel-input)',
+    '\\.pnp\\.[^\\/]+$',
+  ],
+  moduleNameMapper: {
+    '\\.css$': `${__dirname}/scripts/jest/file-transformer.js`,
+    'intl-tel-input/styles': `${__dirname}/scripts/jest/file-transformer.js`,
+  },
   coverageThreshold: {
     global: {
       branches: 80,
