@@ -2,8 +2,9 @@ import { type FormFieldItem } from '@bigcommerce/checkout-sdk';
 import IntlTelInput, { type IntlTelInputRef } from '@intl-tel-input/react';
 import 'intl-tel-input/styles';
 import classNames from 'classnames';
+import { type Iso2 } from 'intl-tel-input';
 import { isDate, noop } from 'lodash';
-import React, { type FunctionComponent, lazy, memo, Suspense, useCallback } from 'react';
+import React, { type FunctionComponent, lazy, memo, Suspense, useCallback, useEffect } from 'react';
 
 import { withDate, type WithDateProps } from '@bigcommerce/checkout/locale';
 
@@ -34,6 +35,7 @@ export interface DynamicInputProps extends InputProps {
     options?: FormFieldItem[];
     isFloatingLabelEnabled?: boolean;
     inputDateFormat?: string;
+    selectedCountry?: string;
 }
 
 const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
@@ -48,9 +50,19 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
     isFloatingLabelEnabled,
     date,
     inputDateFormat,
+    selectedCountry,
     ...rest
 }) => {
     const inputFormat = inputDateFormat || date.inputFormat || '';
+
+    useEffect(() => {
+        if (fieldType !== DynamicFormFieldType.TELEPHONE || !selectedCountry || value) return;
+
+        const selectedCountryInIsoFormat = selectedCountry.toLowerCase() as Iso2;
+
+        itiRef?.current?.getInstance()?.setCountry(selectedCountryInIsoFormat);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedCountry]);
 
     const handleDateChange = useCallback(
         (dateValue: string, event: any) =>
@@ -191,7 +203,6 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
             return (
                 <span className="iti-wrapper">
                     <IntlTelInput
-                        initialCountry="us"
                         inputProps={{
                             ...rest,
                             id,

@@ -199,6 +199,7 @@ const AddressForm: React.FC<AddressFormProps> = ({
                                 onChange={handleDynamicFormFieldChange(addressFieldName)}
                                 parentFieldName={getParentFieldName()}
                                 placeholder={getPlaceholderValue(field, translatedPlaceholderId)}
+                                selectedCountry={countryCode}
                             />
                         );
                     })}
