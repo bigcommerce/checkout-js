@@ -2,10 +2,10 @@ import { isExtraField } from '@bigcommerce/checkout-sdk/essential';
 import { memoize } from '@bigcommerce/memoize';
 import { object, type ObjectSchema, string, type StringSchema } from 'yup';
 
-import getAddressExtraFieldsValidationSchema from './getAddressExtraFieldsValidationSchema';
 import getCustomFormFieldsValidationSchema, {
     type FormFieldsValidationSchemaOptions,
 } from './getCustomFormFieldsValidationSchema';
+import { getAddressExtraFieldsValidationSchema } from './getExtraFieldsValidationSchema';
 
 export const WHITELIST_REGEXP = /^[^<>]*$/;
 
