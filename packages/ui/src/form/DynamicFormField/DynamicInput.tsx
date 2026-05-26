@@ -36,6 +36,7 @@ export interface DynamicInputProps extends InputProps {
     isFloatingLabelEnabled?: boolean;
     inputDateFormat?: string;
     selectedCountry?: string;
+    isNewPhoneFieldWithValidation?: boolean;
 }
 
 const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
@@ -51,16 +52,20 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
     date,
     inputDateFormat,
     selectedCountry,
+    isNewPhoneFieldWithValidation = false,
     ...rest
 }) => {
     const inputFormat = inputDateFormat || date.inputFormat || '';
 
     useEffect(() => {
-        if (fieldType !== DynamicFormFieldType.TELEPHONE || !selectedCountry || value) return;
+        // auto-set phone number country based on shipping address
+        if (isNewPhoneFieldWithValidation) {
+            if (!selectedCountry || value) return;
 
-        const selectedCountryInIsoFormat = selectedCountry.toLowerCase() as Iso2;
+            const selectedCountryInIsoFormat = selectedCountry.toLowerCase() as Iso2;
 
-        itiRef?.current?.getInstance()?.setCountry(selectedCountryInIsoFormat);
+            itiRef?.current?.getInstance()?.setCountry(selectedCountryInIsoFormat);
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedCountry]);
 
@@ -75,6 +80,37 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
             }),
         [onChange, name],
     );
+
+    if (isNewPhoneFieldWithValidation) {
+        return (
+            <span className="iti-wrapper">
+                <IntlTelInput
+                    inputProps={{
+                        ...rest,
+                        id,
+                        name,
+                        className:
+                            'form-input optimizedCheckout-form-input floating-input floating-form-field-input',
+                        placeholder,
+                    }}
+                    loadUtils={() =>
+                        import(
+                            /* webpackChunkName: "intl-tel-input-utils" */
+                            'intl-tel-input/utils'
+                        )
+                    }
+                    onChangeNumber={(number) => {
+                        onChange({
+                            target: { name, value: number },
+                        } as React.ChangeEvent<HTMLInputElement>);
+                    }}
+                    ref={itiRef}
+                    separateDialCode={false}
+                    value={value ? String(value) : ''}
+                />
+            </span>
+        );
+    }
 
     switch (fieldType) {
         case DynamicFormFieldType.DROPDOWN:
@@ -197,36 +233,6 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                     type={fieldType}
                     value={value}
                 />
-            );
-
-        case DynamicFormFieldType.TELEPHONE:
-            return (
-                <span className="iti-wrapper">
-                    <IntlTelInput
-                        inputProps={{
-                            ...rest,
-                            id,
-                            name,
-                            className:
-                                'form-input optimizedCheckout-form-input floating-input floating-form-field-input',
-                            placeholder,
-                        }}
-                        loadUtils={() =>
-                            import(
-                                /* webpackChunkName: "intl-tel-input-utils" */
-                                'intl-tel-input/utils'
-                            )
-                        }
-                        onChangeNumber={(number) => {
-                            onChange({
-                                target: { name, value: number },
-                            } as React.ChangeEvent<HTMLInputElement>);
-                        }}
-                        ref={itiRef}
-                        separateDialCode={false}
-                        value={value ? String(value) : ''}
-                    />
-                </span>
             );
 
         default:

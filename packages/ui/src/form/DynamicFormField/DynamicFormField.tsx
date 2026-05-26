@@ -36,6 +36,7 @@ export interface DynamicFormFieldProps {
     placeholder?: string;
     label?: ReactNode;
     isFloatingLabelEnabled?: boolean;
+    isNewPhoneValidationExperimentEnabled?: boolean;
     selectedCountry?: string;
     onChange?(value: string | string[]): void;
 }
@@ -62,6 +63,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
     extraClass,
     isFloatingLabelEnabled,
     selectedCountry,
+    isNewPhoneValidationExperimentEnabled = false,
 }) => {
     const fieldInputId = inputId || name;
     const fieldName = parentFieldName ? `${parentFieldName}.${name}` : name;
@@ -129,6 +131,10 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
         [language],
     );
 
+    const isNewPhoneFieldWithValidation =
+        isNewPhoneValidationExperimentEnabled &&
+        dynamicFormFieldType === DynamicFormFieldType.TELEPHONE;
+
     const renderInput = useCallback(
         ({ field }: FieldProps<string>) => (
             <DynamicInput
@@ -138,20 +144,15 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
                 fieldType={dynamicFormFieldType}
                 id={fieldInputId}
                 isFloatingLabelEnabled={isFloatingLabelSupportedFieldType}
-                itiRef={
-                    dynamicFormFieldType === DynamicFormFieldType.TELEPHONE ? itiRef : undefined
-                }
+                isNewPhoneFieldWithValidation={isNewPhoneFieldWithValidation}
+                itiRef={isNewPhoneFieldWithValidation ? itiRef : undefined}
                 max={max}
                 maxLength={maxLength || undefined}
                 min={min}
                 options={options && options.items}
                 placeholder={placeholder || (options && options.helperLabel)}
                 rows={options?.rows}
-                selectedCountry={
-                    dynamicFormFieldType === DynamicFormFieldType.TELEPHONE
-                        ? selectedCountry
-                        : undefined
-                }
+                selectedCountry={isNewPhoneFieldWithValidation ? selectedCountry : undefined}
             />
         ),
         [
@@ -160,6 +161,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
             dynamicFormFieldType,
             itiRef,
             isFloatingLabelSupportedFieldType,
+            isNewPhoneFieldWithValidation,
             max,
             maxLength,
             min,
@@ -193,11 +195,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
                     label={labelComponent}
                     name={fieldName}
                     onChange={onChange}
-                    validate={
-                        dynamicFormFieldType === DynamicFormFieldType.TELEPHONE
-                            ? validatePhone
-                            : undefined
-                    }
+                    validate={isNewPhoneFieldWithValidation ? validatePhone : undefined}
                 />
             )}
         </div>
