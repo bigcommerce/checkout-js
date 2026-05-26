@@ -71,15 +71,14 @@
             padding-top: $input-verticalPadding * 2.5;
         }
 
-        // iti is a class coming from intl-tel-input (phone number library)
+        // phone validation
         .iti {
             display: block;
             position: relative;
             width: 100%;
 
             .iti__selected-country-primary {
-                // I want to remove default background color on hover to keep the style consistent with our form
-                // The library sets a background on hover/focus via !important so we need to do the same
+                // remove default background to align with out form style
                 background-color: transparent !important;
             }
 
