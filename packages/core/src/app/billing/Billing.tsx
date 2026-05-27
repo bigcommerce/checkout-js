@@ -104,7 +104,7 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }: BillingProps):
             try {
                 await checkoutService.loadBillingAddressFields();
 
-                if (hasCompanyAddressBook && !getBillingAddress()) {
+                if (hasCompanyAddressBook && !getBillingAddress()?.address1) {
                     const defaultBillingAddress = customer.addresses?.find(
                         ({ isDefaultBilling }) => isDefaultBilling,
                     );

@@ -50,6 +50,12 @@ function normalizeAddress(address: ComparableAddress) {
         'type',
         'email',
         'country',
+        'extraFields',
+        'isShipping',
+        'isBilling',
+        'isDefaultShipping',
+        'isDefaultBilling',
+        'label',
     ];
 
     return omit(
