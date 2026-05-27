@@ -1,7 +1,7 @@
 import { createLanguageService, type FormField as FormFieldType } from '@bigcommerce/checkout-sdk';
 import userEvent from '@testing-library/user-event';
 import { Formik } from 'formik';
-import React from 'react';
+import React, { forwardRef, useImperativeHandle } from 'react';
 
 import { LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -10,17 +10,37 @@ import { fireEvent, render, screen, waitFor } from '@bigcommerce/checkout/test-u
 import { FormProvider } from '../contexts';
 
 import DynamicFormField from './DynamicFormField';
-import { getIntlTelInputPackageMock } from './mocks/intl-tel-input.mock';
 
 const mockIsValidNumber = jest.fn();
 const mockSetCountry = jest.fn();
 
-jest.mock('@intl-tel-input/react', () =>
-    getIntlTelInputPackageMock({
-        isValidNumber: mockIsValidNumber,
-        setCountry: mockSetCountry,
+jest.mock('@intl-tel-input/react', () => ({
+    __esModule: true,
+    default: forwardRef<
+        unknown,
+        {
+            inputProps?: Record<string, unknown>;
+            onChangeNumber?: (value: string) => void;
+            value?: string;
+        }
+    >(({ inputProps, onChangeNumber, value }, ref) => {
+        useImperativeHandle(ref, () => ({
+            getInstance: () => ({
+                isValidNumber: mockIsValidNumber,
+                setCountry: mockSetCountry,
+            }),
+        }));
+
+        return (
+            <input
+                data-test="iti-phone-input"
+                {...inputProps}
+                onChange={(e) => onChangeNumber?.(e.target.value)}
+                value={value ?? ''}
+            />
+        );
     }),
-);
+}));
 
 describe('DynamicFormField Component', () => {
     const localeContext: LocaleContextType = { language: createLanguageService() };
@@ -78,7 +98,7 @@ describe('DynamicFormField Component', () => {
             </LocaleContext.Provider>,
         );
 
-        // eslint-disable-next-line testing-library/no-container
+        // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
         expect(container.querySelector('.dynamic-form-field--addressLine1')).toBeInTheDocument();
     });
 
@@ -113,7 +133,7 @@ describe('DynamicFormField Component', () => {
         expect(
             screen.getByText(localeContext.language.translate('address.address_line_1_label')),
         ).toBeInTheDocument();
-        // eslint-disable-next-line testing-library/no-container
+        // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
         expect(container.querySelector('.optimizedCheckout-contentSecondary')).toBeNull();
     });
 

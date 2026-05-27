@@ -1,23 +1,43 @@
 import { createLanguageService } from '@bigcommerce/checkout-sdk';
 import { type IntlTelInputRef } from '@intl-tel-input/react';
-import React, { createRef, type FunctionComponent } from 'react';
+import React, { createRef, forwardRef, type FunctionComponent, useImperativeHandle } from 'react';
 
 import { LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
 import { render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
 import DynamicFormFieldType from './DynamicFormFieldType';
 import DynamicInput, { type DynamicInputProps } from './DynamicInput';
-import { getIntlTelInputPackageMock } from './mocks/intl-tel-input.mock';
 
 const mockIsValidNumber = jest.fn();
 const mockSetCountry = jest.fn();
 
-jest.mock('@intl-tel-input/react', () =>
-    getIntlTelInputPackageMock({
-        isValidNumber: mockIsValidNumber,
-        setCountry: mockSetCountry,
+jest.mock('@intl-tel-input/react', () => ({
+    __esModule: true,
+    default: forwardRef<
+        unknown,
+        {
+            inputProps?: Record<string, unknown>;
+            onChangeNumber?: (value: string) => void;
+            value?: string;
+        }
+    >(({ inputProps, onChangeNumber, value }, ref) => {
+        useImperativeHandle(ref, () => ({
+            getInstance: () => ({
+                isValidNumber: mockIsValidNumber,
+                setCountry: mockSetCountry,
+            }),
+        }));
+
+        return (
+            <input
+                data-test="iti-phone-input"
+                {...inputProps}
+                onChange={(e) => onChangeNumber?.(e.target.value)}
+                value={value ?? ''}
+            />
+        );
     }),
-);
+}));
 
 describe('DynamicInput', () => {
     let localeContext: LocaleContextType;
