@@ -51,7 +51,8 @@ const CheckoutButtonList: FunctionComponent<
     onError,
 }) => {
     const { language } = useLocale();
-    const supportedMethodIds = getSupportedMethodIds(methodIds);
+    const paymentMethods = checkoutState.data.getPaymentMethods();
+    const supportedMethodIds = getSupportedMethodIds(methodIds, paymentMethods);
 
     if (supportedMethodIds.length === 0) {
         return null;
