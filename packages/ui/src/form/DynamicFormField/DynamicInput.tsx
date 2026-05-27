@@ -89,9 +89,9 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                         ...rest,
                         id,
                         name,
-                        className:
-                            'form-input optimizedCheckout-form-input floating-input floating-form-field-input',
-                        placeholder,
+                        className: classNames('form-input optimizedCheckout-form-input', {
+                            'floating-input floating-form-field-input': isFloatingLabelEnabled,
+                        }),
                     }}
                     loadUtils={() =>
                         import(
