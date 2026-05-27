@@ -317,7 +317,9 @@ describe('when using Google Pay payment', () => {
         it('renders the direct-pay branch so the SDK can inject the branded button', () => {
             render(<GooglePayPaymentMethodTest {...defaultProps} />);
 
-            expect(screen.getByText('direct pay enabled!!!!!!')).toBeInTheDocument();
+            // GooglePayPaymentMethodComponent renders null but hides the Place Order button
+            // on mount so the SDK can inject the branded Google Pay button into the container.
+            expect(paymentForm.hidePaymentSubmitButton).toHaveBeenCalledWith(method, true);
         });
 
         it('keeps the direct-pay component when checkout.payments is updated mid-flow', () => {
@@ -344,8 +346,9 @@ describe('when using Google Pay payment', () => {
                 ),
             ).not.toBeInTheDocument();
 
-            // The direct-pay branch is still rendered
-            expect(screen.getByText('direct pay enabled!!!!!!')).toBeInTheDocument();
+            // The direct-pay branch stayed mounted — cleanup (which would call
+            // hidePaymentSubmitButton(method, false)) was never triggered.
+            expect(paymentForm.hidePaymentSubmitButton).not.toHaveBeenCalledWith(method, false);
         });
     });
 
