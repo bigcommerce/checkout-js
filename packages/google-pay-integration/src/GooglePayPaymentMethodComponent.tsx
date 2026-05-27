@@ -14,11 +14,6 @@ const GooglePayPaymentMethodComponent: FunctionComponent<PaymentMethodProps> = (
     onUnhandledError,
 }) => {
     useEffect(() => {
-        // Hiding the Place Order button causes Payment.tsx to render the
-        // #checkout-payment-continue container div.  That state update is
-        // committed to the DOM before any setTimeout(0) macrotask fires, so
-        // by the time initializePayment runs the container is already present
-        // and the SDK can append the branded Google Pay button into it directly.
         paymentForm.hidePaymentSubmitButton(method, true);
 
         const timeoutId = setTimeout(async () => {

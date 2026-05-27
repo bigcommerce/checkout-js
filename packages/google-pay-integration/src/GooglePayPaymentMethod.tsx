@@ -30,10 +30,8 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     const checkout = getCheckout();
     const isPaymentSelected = checkout ? some(checkout.payments, { providerId: method.id }) : false;
 
-    // Capture whether Google Pay was already selected at mount time (express-entry
-    // from PDP/Cart button). If payment becomes selected AFTER mount — during the
-    // direct-pay sheet interaction — we must not switch branches; the SDK will
-    // redirect to order confirmation without any intermediate UI change.
+    // Capture whether Google Pay was already selected at mount time
+    // (PDP/Cart/Customer step button)
     const wasPaymentSelectedAtMountRef = useRef(isPaymentSelected);
 
     const features = getConfig()?.checkoutSettings.features ?? {};
@@ -161,8 +159,6 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         [checkoutService, method, onUnhandledError],
     );
 
-    // Express-entry flow: GPay was selected via PDP/Cart/top-of-checkout button.
-    // Payment data is already set — show the existing wallet UI (PaymentView + Place Order).
     if (wasPaymentSelectedAtMountRef.current) {
         return (
             <WalletButtonPaymentMethodComponent
@@ -178,8 +174,6 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         );
     }
 
-    // Accordion-selection flow (experiment on): replace the Place Order button with a
-    // branded Google Pay button that opens the payment sheet and completes the order directly.
     if (isDirectPayEnabled) {
         return (
             <GooglePayPaymentMethodComponent
@@ -192,7 +186,6 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         );
     }
 
-    // Accordion-selection flow (experiment off): legacy wallet-button flow.
     return (
         <WalletButtonPaymentMethodComponent
             {...rest}

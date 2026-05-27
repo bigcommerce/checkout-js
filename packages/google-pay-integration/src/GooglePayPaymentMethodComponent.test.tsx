@@ -51,7 +51,7 @@ describe('GooglePayPaymentMethodComponent', () => {
         jest.useRealTimers();
     });
 
-    it('hides the Place Order button immediately on mount', () => {
+    it('hides the Place Order button on mount', () => {
         render(<GooglePayPaymentMethodComponent {...defaultProps()} />);
 
         expect(paymentForm.hidePaymentSubmitButton).toHaveBeenCalledWith(method, true);

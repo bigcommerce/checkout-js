@@ -132,7 +132,7 @@ describe('when using Google Pay payment', () => {
         );
     });
 
-    describe('when direct pay is disabled (PI-5111 = false)', () => {
+    describe('when Direct Pay is disabled', () => {
         it('initializes payment method when component mounts', () => {
             render(<GooglePayPaymentMethodTest {...defaultProps} />);
 
@@ -156,7 +156,7 @@ describe('when using Google Pay payment', () => {
             );
         });
 
-        it('renders Visa Checkout as wallet button method', () => {
+        it('renders Google Pay as a wallet button method', () => {
             render(<GooglePayPaymentMethodTest {...defaultProps} method={method} />);
 
             expect(
@@ -184,7 +184,7 @@ describe('when using Google Pay payment', () => {
             PaymentMethodId.StripeUPEGooglePay,
             PaymentMethodId.WorldpayAccessGooglePay,
             GooglePayPaymentMethodId.tdOnlineMartGooglePay,
-        ]).it('initializes %s with required config', (id: PaymentMethodId) => {
+        ]).it('initializes with required config', (id: PaymentMethodId) => {
             method.id = id;
 
             render(<GooglePayPaymentMethodTest {...defaultProps} method={method} />);
@@ -293,14 +293,14 @@ describe('when using Google Pay payment', () => {
         });
     });
 
-    describe('when direct pay is enabled (PI-5111 = true)', () => {
+    describe('when Direct Pay is enabled', () => {
         beforeEach(() => {
             jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(
                 storeConfigWithDirectPayEnabled,
             );
         });
 
-        it('does not render the wallet sign-in button', () => {
+        it('does not render the wallet button', () => {
             render(<GooglePayPaymentMethodTest {...defaultProps} />);
 
             expect(
@@ -314,20 +314,19 @@ describe('when using Google Pay payment', () => {
             ).not.toBeInTheDocument();
         });
 
-        it('renders the direct-pay branch so the SDK can inject the branded button', () => {
+        it('renders the Direct Pay branch so the SDK can inject the branded button', () => {
             render(<GooglePayPaymentMethodTest {...defaultProps} />);
 
-            // GooglePayPaymentMethodComponent renders null but hides the Place Order button
-            // on mount so the SDK can inject the branded Google Pay button into the container.
+            // GooglePayPaymentMethodComponent renders null, but hides the Place Order button
+            // on mount so the SDK can inject the Google Pay button into the container.
             expect(paymentForm.hidePaymentSubmitButton).toHaveBeenCalledWith(method, true);
         });
 
-        it('keeps the direct-pay component when checkout.payments is updated mid-flow', () => {
+        it('keeps the Direct Pay component when checkout.payments is updated mid-flow', () => {
             jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue(getCheckout());
 
             const { rerender } = render(<GooglePayPaymentMethodTest {...defaultProps} />);
 
-            // Simulate loadCheckout() populating checkout.payments during the sheet interaction
             jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
                 ...getCheckout(),
                 payments: [{ ...getCheckoutPayment(), providerId: method.id }],
@@ -335,7 +334,6 @@ describe('when using Google Pay payment', () => {
 
             rerender(<GooglePayPaymentMethodTest {...defaultProps} />);
 
-            // Wallet sign-in UI must NOT appear — direct-pay component stays
             expect(
                 screen.queryByText(
                     defaultProps.language.translate('remote.sign_in_action', {
@@ -346,13 +344,11 @@ describe('when using Google Pay payment', () => {
                 ),
             ).not.toBeInTheDocument();
 
-            // The direct-pay branch stayed mounted — cleanup (which would call
-            // hidePaymentSubmitButton(method, false)) was never triggered.
             expect(paymentForm.hidePaymentSubmitButton).not.toHaveBeenCalledWith(method, false);
         });
     });
 
-    describe('when payment is already selected (express-entry flow)', () => {
+    describe('when payment is already selected (Express Entry flow)', () => {
         beforeEach(() => {
             jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
                 ...getCheckout(),
@@ -367,8 +363,6 @@ describe('when using Google Pay payment', () => {
 
             render(<GooglePayPaymentMethodTest {...defaultProps} />);
 
-            // When payment is already selected, WalletButtonPaymentMethodComponent shows
-            // the signed-in view (sign-out link) rather than the GooglePayPaymentMethodComponent.
             expect(
                 screen.getByText(
                     defaultProps.language.translate('remote.sign_out_action', {
