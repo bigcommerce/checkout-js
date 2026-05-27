@@ -5,20 +5,6 @@ import {
     createCheckoutService,
     type LanguageService,
 } from '@bigcommerce/checkout-sdk';
-import {
-    createGooglePayAdyenV2PaymentStrategy,
-    createGooglePayAdyenV3PaymentStrategy,
-    createGooglePayAuthorizeNetPaymentStrategy,
-    createGooglePayBigCommercePaymentsPaymentStrategy,
-    createGooglePayBraintreePaymentStrategy,
-    createGooglePayCheckoutComPaymentStrategy,
-    createGooglePayCybersourcePaymentStrategy,
-    createGooglePayOrbitalPaymentStrategy,
-    createGooglePayPPCPPaymentStrategy,
-    createGooglePayStripePaymentStrategy,
-    createGooglePayTdOnlineMartPaymentStrategy,
-    createGooglePayWorldpayAccessPaymentStrategy,
-} from '@bigcommerce/checkout-sdk/integrations/google-pay';
 import { render } from '@testing-library/react';
 import React from 'react';
 
@@ -26,6 +12,7 @@ import { type PaymentFormService } from '@bigcommerce/checkout/payment-integrati
 import { getPaymentFormServiceMock, getPaymentMethod } from '@bigcommerce/checkout/test-mocks';
 
 import GooglePayPaymentMethodComponent from './GooglePayPaymentMethodComponent';
+import googlePayIntegrations from './googlePayIntegrations';
 
 describe('GooglePayPaymentMethodComponent', () => {
     let checkoutService: CheckoutService;
@@ -85,20 +72,7 @@ describe('GooglePayPaymentMethodComponent', () => {
             expect.objectContaining({
                 methodId: method.id,
                 gatewayId: method.gateway,
-                integrations: [
-                    createGooglePayAdyenV2PaymentStrategy,
-                    createGooglePayAdyenV3PaymentStrategy,
-                    createGooglePayAuthorizeNetPaymentStrategy,
-                    createGooglePayCheckoutComPaymentStrategy,
-                    createGooglePayCybersourcePaymentStrategy,
-                    createGooglePayOrbitalPaymentStrategy,
-                    createGooglePayStripePaymentStrategy,
-                    createGooglePayWorldpayAccessPaymentStrategy,
-                    createGooglePayBraintreePaymentStrategy,
-                    createGooglePayPPCPPaymentStrategy,
-                    createGooglePayBigCommercePaymentsPaymentStrategy,
-                    createGooglePayTdOnlineMartPaymentStrategy,
-                ],
+                integrations: googlePayIntegrations,
                 [method.id]: {
                     container: 'checkout-payment-continue',
                     buttonColor: 'default',
