@@ -67,6 +67,7 @@ const BillingForm = ({
     const { checkoutService, checkoutState } = useCheckout();
     const {
         billing: { hideSaveToAddressBookCheck, restrictManualAddressEntry },
+        userJourney: { hasAddressExtraFields },
     } = useCapabilities();
 
     const {
@@ -94,6 +95,7 @@ const BillingForm = ({
     const billingAddresses =
         isGuest && isPayPalFastlaneEnabled ? paypalFastlaneAddresses : addresses;
     const hasAddresses = billingAddresses?.length > 0;
+
     const hasValidCustomerAddress =
         billingAddress &&
         isValidCustomerAddress(
@@ -101,6 +103,7 @@ const BillingForm = ({
             billingAddresses,
             getFields(billingAddress.countryCode),
         );
+
     const isUpdating = isUpdatingBillingAddress() || isUpdatingCheckout();
     const { enableOrderComments } = config.checkoutSettings;
     const shouldShowOrderComments = enableOrderComments && getShippableItemsCount(cart) < 1;
@@ -128,6 +131,12 @@ const BillingForm = ({
     };
 
     const handleUseNewAddress = () => {
+        // For B2B, drop any extra fields persisted from a prior submit so the
+        // fresh-address form starts blank instead of carrying values forward.
+        if (hasAddressExtraFields) {
+            B2BExtraFieldsSessionStorage.removeFields(B2BExtraFieldsSessionStorage.BILLING_KEY);
+        }
+
         void handleSelectAddress({});
     };
 

@@ -1,5 +1,5 @@
 import type { CheckoutSelectors, FormField } from '@bigcommerce/checkout-sdk';
-import React, { type ReactElement, useEffect, useState } from 'react';
+import React, { type ReactElement, useEffect, useMemo, useState } from 'react';
 
 import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -67,7 +67,25 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }: BillingProps):
     // Below constants are for <BillingForm />'s HOC props
     const customerMessage = checkout.customerMessage;
     const methodId = getBillingMethodId(checkout);
-    const billingAddress = getBillingAddress();
+    const rawBillingAddress = getBillingAddress();
+    // B2B extraFields aren't round-tripped by `updateBillingAddress`, so graft
+    // them on from the matching customer address book entry. B2B only — for B2C
+    // there are no extraFields anywhere and this is a no-op passthrough.
+    const billingAddress = useMemo(() => {
+        if (!hasAddressExtraFields || !rawBillingAddress) {
+            return rawBillingAddress;
+        }
+
+        if (rawBillingAddress.extraFields?.length) {
+            return rawBillingAddress;
+        }
+
+        const match = customer.addresses?.find((addr) => isEqualAddress(addr, rawBillingAddress));
+
+        return match?.extraFields?.length
+            ? { ...rawBillingAddress, extraFields: match.extraFields }
+            : rawBillingAddress;
+    }, [hasAddressExtraFields, rawBillingAddress, customer.addresses]);
     const handleSubmit = async ({
         orderComment,
         ...addressValues

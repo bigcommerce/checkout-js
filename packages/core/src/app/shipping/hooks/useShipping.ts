@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { createSelector } from 'reselect';
 
 import {
@@ -9,6 +9,7 @@ import {
 import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
 import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
 
+import { isEqualAddress } from '../../address';
 import { EMPTY_ARRAY, isExperimentEnabled } from '../../common/utility';
 import getBackorderCount from '../../order/getBackorderCount';
 import getProviderWithCustomCheckout from '../../payment/getProviderWithCustomCheckout';
@@ -97,8 +98,27 @@ export const useShipping = () => {
     const shippableItemsCount = getShippableItemsCount(cart);
     const shouldShowMultiShipping = hasMultiShippingEnabled && !methodId && shippableItemsCount > 1;
 
-    const shippingAddress =
+    const rawShippingAddress =
         !shouldShowMultiShipping && consignments.length > 1 ? undefined : getShippingAddress();
+
+    // B2B extraFields aren't round-tripped by `updateShippingAddress`, so graft
+    // them on from the matching customer address book entry. B2B only — for B2C
+    // there are no extraFields anywhere and this is a no-op passthrough.
+    const shippingAddress = useMemo(() => {
+        if (!hasAddressExtraFields || !rawShippingAddress) {
+            return rawShippingAddress;
+        }
+
+        if (rawShippingAddress.extraFields?.length) {
+            return rawShippingAddress;
+        }
+
+        const match = customer.addresses?.find((addr) => isEqualAddress(addr, rawShippingAddress));
+
+        return match?.extraFields?.length
+            ? { ...rawShippingAddress, extraFields: match.extraFields }
+            : rawShippingAddress;
+    }, [hasAddressExtraFields, rawShippingAddress, customer.addresses]);
 
     const providerWithCustomCheckout = getProviderWithCustomCheckout(
         config.checkoutSettings.providerWithCustomCheckout,
