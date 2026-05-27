@@ -5,7 +5,12 @@ import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { AddressFormSkeleton, Legend } from '@bigcommerce/checkout/ui';
 
-import { B2BExtraFieldsSessionStorage, isEqualAddress, mapAddressFromFormValues } from '../address';
+import {
+    B2BExtraFieldsSessionStorage,
+    getAddressWithCustomerExtraFields,
+    isEqualAddress,
+    mapAddressFromFormValues,
+} from '../address';
 
 import BillingForm, { type BillingFormValues } from './BillingForm';
 import getBillingMethodId from './getBillingMethodId';
@@ -68,24 +73,15 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }: BillingProps):
     const customerMessage = checkout.customerMessage;
     const methodId = getBillingMethodId(checkout);
     const rawBillingAddress = getBillingAddress();
-    // B2B extraFields aren't round-tripped by `updateBillingAddress`, so graft
-    // them on from the matching customer address book entry. B2B only — for B2C
-    // there are no extraFields anywhere and this is a no-op passthrough.
-    const billingAddress = useMemo(() => {
-        if (!hasAddressExtraFields || !rawBillingAddress) {
-            return rawBillingAddress;
-        }
-
-        if (rawBillingAddress.extraFields?.length) {
-            return rawBillingAddress;
-        }
-
-        const match = customer.addresses?.find((addr) => isEqualAddress(addr, rawBillingAddress));
-
-        return match?.extraFields?.length
-            ? { ...rawBillingAddress, extraFields: match.extraFields }
-            : rawBillingAddress;
-    }, [hasAddressExtraFields, rawBillingAddress, customer.addresses]);
+    const billingAddress = useMemo(
+        () =>
+            getAddressWithCustomerExtraFields(
+                rawBillingAddress,
+                customer.addresses,
+                hasAddressExtraFields,
+            ),
+        [hasAddressExtraFields, rawBillingAddress, customer.addresses],
+    );
     const handleSubmit = async ({
         orderComment,
         ...addressValues
