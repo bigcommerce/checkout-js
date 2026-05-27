@@ -37,7 +37,7 @@ export default function mapAddressToFormValues(
                 }
 
                 // SDK schema prefixes extra-field names with `B2B_EXTRA_FIELD_PREFIX`, but `Address.extraFields[i].fieldId`
-                // is the raw id — strip the prefix when matching. Remove once the SDK normalizes both sides.
+                // is the raw id — strip the prefix when matching.
                 const rawFieldId = name.startsWith(B2B_EXTRA_FIELD_PREFIX)
                     ? name.slice(B2B_EXTRA_FIELD_PREFIX.length)
                     : name;

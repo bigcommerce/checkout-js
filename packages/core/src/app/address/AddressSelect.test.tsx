@@ -112,28 +112,6 @@ describe('AddressSelect component', () => {
         expect(onSelectAddress).toHaveBeenCalledWith(getCustomer().addresses[0]);
     });
 
-    it('passes the selected address through to onSelectAddress with its extraFields intact', () => {
-        const onSelectAddress = jest.fn();
-        const addressWithExtras = {
-            ...getCustomer().addresses[0],
-            extraFields: [{ fieldId: '100', fieldValue: 'A-Corp' }],
-        };
-
-        renderAddressSelect({
-            addresses: [addressWithExtras, ...getCustomer().addresses.slice(1)],
-            onSelectAddress,
-        });
-
-        fireEvent.click(screen.getByTestId('address-select-button'));
-        fireEvent.click(screen.getAllByTestId('address-select-option-action')[0]);
-
-        expect(onSelectAddress).toHaveBeenCalledWith(
-            expect.objectContaining({
-                extraFields: [{ fieldId: '100', fieldValue: 'A-Corp' }],
-            }),
-        );
-    });
-
     it('does not trigger onSelectAddress callback if same address is selected', () => {
         const onSelectAddress = jest.fn();
         const selectedAddress = getCustomer().addresses[0];

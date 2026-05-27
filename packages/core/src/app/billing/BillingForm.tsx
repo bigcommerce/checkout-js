@@ -56,7 +56,6 @@ const BillingForm = ({
     getFields,
     billingAddress,
     setFieldValue,
-    setValues,
     values,
     onUnhandledError,
 }: BillingFormProps & WithLanguageProps & FormikProps<BillingFormValues>) => {
@@ -95,7 +94,6 @@ const BillingForm = ({
     const billingAddresses =
         isGuest && isPayPalFastlaneEnabled ? paypalFastlaneAddresses : addresses;
     const hasAddresses = billingAddresses?.length > 0;
-
     const hasValidCustomerAddress =
         billingAddress &&
         isValidCustomerAddress(
@@ -103,7 +101,6 @@ const BillingForm = ({
             billingAddresses,
             getFields(billingAddress.countryCode),
         );
-
     const isUpdating = isUpdatingBillingAddress() || isUpdatingCheckout();
     const { enableOrderComments } = config.checkoutSettings;
     const shouldShowOrderComments = enableOrderComments && getShippableItemsCount(cart) < 1;
@@ -114,13 +111,6 @@ const BillingForm = ({
 
         try {
             await checkoutService.updateBillingAddress(address);
-
-            if (address.countryCode) {
-                setValues({
-                    ...values,
-                    ...mapAddressToFormValues(getFields(address.countryCode), address as Address),
-                });
-            }
         } catch (error) {
             if (error instanceof Error) {
                 onUnhandledError(error);
@@ -131,8 +121,6 @@ const BillingForm = ({
     };
 
     const handleUseNewAddress = () => {
-        // For B2B, drop any extra fields persisted from a prior submit so the
-        // fresh-address form starts blank instead of carrying values forward.
         if (hasAddressExtraFields) {
             B2BExtraFieldsSessionStorage.removeFields(B2BExtraFieldsSessionStorage.BILLING_KEY);
         }
