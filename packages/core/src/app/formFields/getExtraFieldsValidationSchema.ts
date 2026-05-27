@@ -4,7 +4,7 @@ import { number, object, type ObjectSchema, type Schema, string } from 'yup';
 
 import { type TranslateValidationErrorFunction } from './getCustomFormFieldsValidationSchema';
 
-export interface ExtraFieldsValidationSchemaOptions {
+interface ExtraFieldsValidationSchemaOptions {
     formFields: FormField[];
     translate?: TranslateValidationErrorFunction;
 }

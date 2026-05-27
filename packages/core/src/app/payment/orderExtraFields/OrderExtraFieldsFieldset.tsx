@@ -3,7 +3,7 @@ import React, { type FunctionComponent } from 'react';
 
 import { DynamicFormField } from '@bigcommerce/checkout/ui';
 
-export interface OrderExtraFieldsFieldsetProps {
+interface OrderExtraFieldsFieldsetProps {
     formFields: FormField[];
 }
 

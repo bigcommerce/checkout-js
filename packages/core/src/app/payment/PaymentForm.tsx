@@ -25,7 +25,7 @@ import { TermsConditions } from '../termsConditions';
 
 import getPaymentValidationSchema from './getPaymentValidationSchema';
 import { NoPaymentMethods } from './NoPaymentMethods';
-import { OrderExtraFieldsFieldset } from './orderExtraFields';
+import { getInitialOrderExtraFieldsValues, OrderExtraFieldsFieldset } from './orderExtraFields';
 import {
     getPaymentMethodName,
     getUniquePaymentMethodId,
@@ -335,18 +335,9 @@ const paymentFormConfig: WithFormikConfig<PaymentFormProps & WithLanguageProps, 
                 },
                 accountNumber: '',
                 routingNumber: '',
-                orderExtraFields: (orderExtraFields ?? []).reduce<Record<string, string | number>>(
-                    (acc, field) => {
-                        const raw = storedOrderExtraFields?.[field.name];
-
-                        acc[field.name] =
-                            typeof raw === 'string' || typeof raw === 'number'
-                                ? raw
-                                : (field.default ?? '');
-
-                        return acc;
-                    },
-                    {},
+                orderExtraFields: getInitialOrderExtraFieldsValues(
+                    orderExtraFields,
+                    storedOrderExtraFields,
                 ),
             };
         },
