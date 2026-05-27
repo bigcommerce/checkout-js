@@ -13,7 +13,7 @@ import StaticAddress from './StaticAddress';
 
 type AddressSelectButtonProps = Pick<
     AddressSelectProps,
-    'selectedAddress' | 'addresses' | 'type' | 'showSingleLineAddress' | 'placeholderText'
+    'selectedAddress' | 'type' | 'showSingleLineAddress' | 'placeholderText'
 >;
 
 const AddressSelectButton: FunctionComponent<AddressSelectButtonProps & WithLanguageProps> = ({

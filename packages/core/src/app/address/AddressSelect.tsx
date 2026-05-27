@@ -75,7 +75,6 @@ const AddressSelect = ({
                     }
                 >
                     <AddressSelectButton
-                        addresses={addresses}
                         placeholderText={placeholderText}
                         selectedAddress={selectedAddress}
                         showSingleLineAddress={showSingleLineAddress}

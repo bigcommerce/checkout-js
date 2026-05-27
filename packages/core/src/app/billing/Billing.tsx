@@ -1,5 +1,5 @@
 import type { CheckoutSelectors, FormField } from '@bigcommerce/checkout-sdk';
-import React, { type ReactElement, useEffect } from 'react';
+import React, { type ReactElement, useEffect, useState } from 'react';
 
 import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -61,7 +61,8 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }: BillingProps):
         throw new Error('Unable to access checkout data');
     }
 
-    const isInitializing = isLoadingBillingCountries();
+    const [isApplyingDefaultAddress, setIsApplyingDefaultAddress] = useState(true);
+    const isInitializing = isLoadingBillingCountries() || isApplyingDefaultAddress;
 
     // Below constants are for <BillingForm />'s HOC props
     const customerMessage = checkout.customerMessage;
@@ -119,6 +120,8 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }: BillingProps):
                 if (error instanceof Error) {
                     onUnhandledError(error);
                 }
+            } finally {
+                setIsApplyingDefaultAddress(false);
             }
         };
 

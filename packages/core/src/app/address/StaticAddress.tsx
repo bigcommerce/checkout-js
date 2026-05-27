@@ -2,6 +2,7 @@ import {
     type Address,
     type CheckoutSelectors,
     type Country,
+    type CustomerAddress,
     type ShippingInitializeOptions,
 } from '@bigcommerce/checkout-sdk';
 import { isEmpty } from 'lodash';
@@ -13,6 +14,7 @@ import { localizeAddress } from '@bigcommerce/checkout/locale';
 import { withCheckout } from '../checkout';
 
 import AddressType from './AddressType';
+import getAddressWithLabel from './getAddressWithLabel';
 
 import './StaticAddress.scss';
 
@@ -27,12 +29,14 @@ export interface StaticAddressEditableProps extends StaticAddressProps {
 
 interface WithCheckoutStaticAddressProps {
     countries?: Country[];
+    customerAddresses?: CustomerAddress[];
 }
 
 const StaticAddress: FunctionComponent<
     StaticAddressEditableProps & WithCheckoutStaticAddressProps
-> = ({ countries, address: addressWithoutLocalization }) => {
-    const address = localizeAddress(addressWithoutLocalization, countries);
+> = ({ countries, customerAddresses, address: addressWithoutLocalization }) => {
+    const addressWithLabel = getAddressWithLabel(addressWithoutLocalization, customerAddresses);
+    const address = localizeAddress(addressWithLabel, countries);
     const isValid = !isEmpty(address);
 
     return !isValid ? null : (
@@ -88,12 +92,13 @@ export function mapToStaticAddressProps(
 ): WithCheckoutStaticAddressProps | null {
     const {
         checkoutState: {
-            data: { getBillingCountries, getShippingCountries },
+            data: { getBillingCountries, getShippingCountries, getCustomer },
         },
     } = context;
 
     return {
         countries: type === AddressType.Billing ? getBillingCountries() : getShippingCountries(),
+        customerAddresses: getCustomer()?.addresses,
     };
 }
 
