@@ -165,15 +165,18 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     );
 
     return (
-        <WalletButtonPaymentMethodComponent
-            {...rest}
-            buttonId="walletButton"
-            deinitializePayment={checkoutService.deinitializePayment}
-            initializePayment={initializeGooglePayPayment}
-            method={method}
-            shouldShowEditButton
-            signOutCustomer={checkoutService.signOutCustomer}
-        />
+        <>
+            <div>{'This is a test'}</div>
+            <WalletButtonPaymentMethodComponent
+                {...rest}
+                buttonId="walletButton"
+                deinitializePayment={checkoutService.deinitializePayment}
+                initializePayment={initializeGooglePayPayment}
+                method={method}
+                shouldShowEditButton
+                signOutCustomer={checkoutService.signOutCustomer}
+            />
+        </>
     );
 };
 
