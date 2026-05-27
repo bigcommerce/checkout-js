@@ -1,11 +1,23 @@
 import { createLanguageService } from '@bigcommerce/checkout-sdk';
-import React, { type FunctionComponent } from 'react';
+import { type IntlTelInputRef } from '@intl-tel-input/react';
+import React, { createRef, type FunctionComponent } from 'react';
 
 import { LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
 import { render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
 import DynamicFormFieldType from './DynamicFormFieldType';
 import DynamicInput, { type DynamicInputProps } from './DynamicInput';
+import { getIntlTelInputPackageMock } from './mocks/intl-tel-input.mock';
+
+const mockIsValidNumber = jest.fn();
+const mockSetCountry = jest.fn();
+
+jest.mock('@intl-tel-input/react', () =>
+    getIntlTelInputPackageMock({
+        isValidNumber: mockIsValidNumber,
+        setCountry: mockSetCountry,
+    }),
+);
 
 describe('DynamicInput', () => {
     let localeContext: LocaleContextType;
@@ -155,5 +167,77 @@ describe('DynamicInput', () => {
         expect(screen.getByRole('combobox')).toHaveAttribute('name', 'select');
         expect(screen.getByText('Foo')).toBeInTheDocument();
         expect(screen.getByText('Foo1')).toBeInTheDocument();
+    });
+
+    describe('when isNewPhoneFieldWithValidation is true', () => {
+        beforeEach(() => {
+            mockSetCountry.mockClear();
+            mockIsValidNumber.mockClear();
+        });
+
+        it('renders IntlTelInput instead of a regular tel input', () => {
+            render(
+                <DynamicInputTest
+                    fieldType={DynamicFormFieldType.TELEPHONE}
+                    id="field_33"
+                    isNewPhoneFieldWithValidation
+                    name="phone"
+                />,
+            );
+
+            expect(screen.getByTestId('iti-phone-input')).toBeInTheDocument();
+            expect(screen.queryByRole('textbox')).not.toHaveAttribute('type', 'tel');
+        });
+
+        it('auto-sets country via itiRef when selectedCountry is provided and field value is empty', () => {
+            const itiRefMock = createRef<IntlTelInputRef>();
+
+            render(
+                <DynamicInputTest
+                    fieldType={DynamicFormFieldType.TELEPHONE}
+                    id="field_33"
+                    isNewPhoneFieldWithValidation
+                    itiRef={itiRefMock}
+                    name="phone"
+                    selectedCountry="US"
+                />,
+            );
+
+            expect(mockSetCountry).toHaveBeenCalledWith('us');
+        });
+
+        it('does not auto-set country when a value is already present', () => {
+            const itiRefMock = createRef<IntlTelInputRef>();
+
+            render(
+                <DynamicInputTest
+                    fieldType={DynamicFormFieldType.TELEPHONE}
+                    id="field_33"
+                    isNewPhoneFieldWithValidation
+                    itiRef={itiRefMock}
+                    name="phone"
+                    selectedCountry="US"
+                    value="+15551234567"
+                />,
+            );
+
+            expect(mockSetCountry).not.toHaveBeenCalled();
+        });
+
+        it('does not auto-set country when selectedCountry is not provided', () => {
+            const itiRefMock = createRef<IntlTelInputRef>();
+
+            render(
+                <DynamicInputTest
+                    fieldType={DynamicFormFieldType.TELEPHONE}
+                    id="field_33"
+                    isNewPhoneFieldWithValidation
+                    itiRef={itiRefMock}
+                    name="phone"
+                />,
+            );
+
+            expect(mockSetCountry).not.toHaveBeenCalled();
+        });
     });
 });
