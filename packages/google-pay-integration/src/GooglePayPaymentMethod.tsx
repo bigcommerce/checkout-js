@@ -159,22 +159,7 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         [checkoutService, method, onUnhandledError],
     );
 
-    if (wasPaymentSelectedAtMountRef.current) {
-        return (
-            <WalletButtonPaymentMethodComponent
-                {...rest}
-                buttonId="walletButton"
-                deinitializePayment={checkoutService.deinitializePayment}
-                initializePayment={initializeGooglePayPayment}
-                method={method}
-                paymentForm={paymentForm}
-                shouldShowEditButton
-                signOutCustomer={checkoutService.signOutCustomer}
-            />
-        );
-    }
-
-    if (isDirectPayEnabled) {
+    if (isDirectPayEnabled && !wasPaymentSelectedAtMountRef.current) {
         return (
             <GooglePayPaymentMethodComponent
                 {...rest}
