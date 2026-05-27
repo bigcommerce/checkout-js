@@ -37,7 +37,7 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     const wasPaymentSelectedAtMountRef = useRef(isPaymentSelected);
 
     const features = getConfig()?.checkoutSettings.features ?? {};
-    const isDirectPayEnabled = Boolean(features['PI-5111.google_pay_direct_pay_on_click'] ?? true);
+    const isDirectPayEnabled = Boolean(features['PI-5111.google_pay_direct_pay_on_click'] ?? false);
 
     const initializeGooglePayPayment = useCallback(
         (defaultOptions: PaymentInitializeOptions) => {
