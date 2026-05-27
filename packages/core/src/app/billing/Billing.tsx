@@ -36,7 +36,7 @@ const getFieldsWithExtraFields = (
 const Billing = ({ navigateNextStep, onReady, onUnhandledError }: BillingProps): ReactElement => {
     const { checkoutService, checkoutState } = useCheckout();
     const {
-        userJourney: { hasAddressExtraFields },
+        userJourney: { hasAddressExtraFields, hasCompanyAddressBook },
         billing: { restrictManualAddressEntry },
     } = useCapabilities();
 
@@ -103,6 +103,17 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }: BillingProps):
         const init = async () => {
             try {
                 await checkoutService.loadBillingAddressFields();
+
+                if (hasCompanyAddressBook && !getBillingAddress()) {
+                    const defaultBillingAddress = customer.addresses?.find(
+                        ({ isDefaultBilling }) => isDefaultBilling,
+                    );
+
+                    if (defaultBillingAddress) {
+                        await checkoutService.updateBillingAddress(defaultBillingAddress);
+                    }
+                }
+
                 onReady();
             } catch (error) {
                 if (error instanceof Error) {

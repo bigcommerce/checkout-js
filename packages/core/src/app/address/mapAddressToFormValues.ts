@@ -1,6 +1,7 @@
 import {
     type Address,
     type AddressKey,
+    B2B_EXTRA_FIELD_PREFIX,
     type FormField,
     isExtraField,
 } from '@bigcommerce/checkout-sdk/essential';
@@ -22,6 +23,10 @@ export default function mapAddressToFormValues(
     address?: Address,
     storageKey?: string,
 ): AddressFormValues {
+    const storedExtraFields = storageKey
+        ? B2BExtraFieldsSessionStorage.getFields(storageKey)
+        : undefined;
+
     const values = {
         ...fields.reduce((addressFormValues, field) => {
             const { name, custom, fieldType, default: defaultValue } = field;
@@ -31,12 +36,17 @@ export default function mapAddressToFormValues(
                     addressFormValues.extraFields = {};
                 }
 
-                // sessionStorage-based values will override API side extra field values later
+                // SDK schema prefixes extra-field names with `B2B_EXTRA_FIELD_PREFIX`, but `Address.extraFields[i].fieldId`
+                // is the raw id — strip the prefix when matching. Remove once the SDK normalizes both sides.
+                const rawFieldId = name.startsWith(B2B_EXTRA_FIELD_PREFIX)
+                    ? name.slice(B2B_EXTRA_FIELD_PREFIX.length)
+                    : name;
                 const extraFieldValue = address?.extraFields?.find(
-                    ({ fieldId }) => fieldId === name,
+                    ({ fieldId }) => fieldId === rawFieldId,
                 )?.fieldValue;
 
-                addressFormValues.extraFields[name] = extraFieldValue ?? defaultValue ?? '';
+                addressFormValues.extraFields[name] =
+                    extraFieldValue ?? storedExtraFields?.[name] ?? defaultValue ?? '';
 
                 return addressFormValues;
             }
@@ -83,20 +93,6 @@ export default function mapAddressToFormValues(
 
     if (values.stateOrProvinceCode === undefined) {
         values.stateOrProvinceCode = '';
-    }
-
-    const extraFields = values.extraFields;
-
-    if (storageKey && extraFields) {
-        const storedExtraFields = B2BExtraFieldsSessionStorage.getFields(storageKey);
-
-        if (storedExtraFields) {
-            Object.keys(extraFields).forEach((key) => {
-                if (storedExtraFields[key] !== undefined) {
-                    extraFields[key] = storedExtraFields[key];
-                }
-            });
-        }
     }
 
     return values;

@@ -11,7 +11,6 @@ import { DropdownTrigger } from '@bigcommerce/checkout/ui';
 import AddressSelectButton from './AddressSelectButton';
 import { AddressSelectComponent } from './AddressSelectComponent';
 import type AddressType from './AddressType';
-import { B2BExtraFieldsSessionStorage } from './B2BExtraFieldsSessionStorage';
 import isEqualAddress from './isEqualAddress';
 import { SearchableAddressSelectComponent } from './SearchableAddressSelectComponent';
 
@@ -22,7 +21,6 @@ export interface AddressSelectProps {
     selectedAddress?: Address;
     type: AddressType;
     showSingleLineAddress?: boolean;
-    storageKey?: string;
     onSelectAddress(address: Address): void;
     onUseNewAddress(currentAddress?: Address): void;
     placeholderText?: ReactNode;
@@ -33,7 +31,6 @@ const AddressSelect = ({
     selectedAddress,
     type,
     showSingleLineAddress,
-    storageKey,
     onSelectAddress,
     onUseNewAddress,
     placeholderText,
@@ -44,10 +41,8 @@ const AddressSelect = ({
     const { shouldShowPayPalFastlaneLabel } = usePayPalFastlaneAddress();
 
     const handleSelectAddress = (newAddress: Address) => {
-        const addressWithExtraFields = getAddressWithExtraFields(newAddress, storageKey);
-
-        if (!isEqualAddress(selectedAddress, addressWithExtraFields)) {
-            onSelectAddress(addressWithExtraFields);
+        if (!isEqualAddress(selectedAddress, newAddress)) {
+            onSelectAddress(newAddress);
         }
     };
 
@@ -93,21 +88,5 @@ const AddressSelect = ({
         </div>
     );
 };
-
-function getAddressWithExtraFields(address: Address, storageKey?: string): Address {
-    if (!storageKey) return address;
-
-    const storedExtraFields = B2BExtraFieldsSessionStorage.getFields(storageKey);
-
-    if (!storedExtraFields) return address;
-
-    return {
-        ...address,
-        extraFields: Object.entries(storedExtraFields).map(([fieldId, fieldValue]) => ({
-            fieldId,
-            fieldValue: typeof fieldValue === 'number' ? fieldValue : String(fieldValue),
-        })),
-    };
-}
 
 export default memo(AddressSelect);

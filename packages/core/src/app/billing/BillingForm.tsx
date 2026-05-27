@@ -56,6 +56,7 @@ const BillingForm = ({
     getFields,
     billingAddress,
     setFieldValue,
+    setValues,
     values,
     onUnhandledError,
 }: BillingFormProps & WithLanguageProps & FormikProps<BillingFormValues>) => {
@@ -110,6 +111,13 @@ const BillingForm = ({
 
         try {
             await checkoutService.updateBillingAddress(address);
+
+            if (address.countryCode) {
+                setValues({
+                    ...values,
+                    ...mapAddressToFormValues(getFields(address.countryCode), address as Address),
+                });
+            }
         } catch (error) {
             if (error instanceof Error) {
                 onUnhandledError(error);
@@ -142,7 +150,6 @@ const BillingForm = ({
                                 selectedAddress={
                                     hasValidCustomerAddress ? billingAddress : undefined
                                 }
-                                storageKey={B2BExtraFieldsSessionStorage.BILLING_KEY}
                                 type={AddressType.Billing}
                             />
                         </LoadingOverlay>
