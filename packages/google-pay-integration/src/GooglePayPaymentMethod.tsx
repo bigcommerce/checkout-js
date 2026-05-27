@@ -13,8 +13,10 @@ import {
     createGooglePayTdOnlineMartPaymentStrategy,
     createGooglePayWorldpayAccessPaymentStrategy,
 } from '@bigcommerce/checkout-sdk/integrations/google-pay';
+import { some } from 'lodash';
 import React, { type FunctionComponent, useCallback } from 'react';
 
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 import {
     type CheckoutButtonResolveId,
     PaymentMethodId,
@@ -23,12 +25,27 @@ import {
 } from '@bigcommerce/checkout/payment-integration-api';
 import { WalletButtonPaymentMethodComponent } from '@bigcommerce/checkout/wallet-button-integration';
 
+import GooglePayPaymentMethodComponent from './GooglePayPaymentMethodComponent';
+
 const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     checkoutService,
     method,
     onUnhandledError,
+    paymentForm,
     ...rest
 }) => {
+    const {
+        checkoutState: {
+            data: { getCheckout, getConfig },
+        },
+    } = useCheckout();
+
+    const checkout = getCheckout();
+    const isPaymentSelected = checkout ? some(checkout.payments, { providerId: method.id }) : false;
+
+    const features = getConfig()?.checkoutSettings.features ?? {};
+    const isDirectPayEnabled = Boolean(features['PI-5111.google_pay_direct_pay_on_click'] ?? true);
+
     const initializeGooglePayPayment = useCallback(
         (defaultOptions: PaymentInitializeOptions) => {
             const reinitializePayment = async (options: PaymentInitializeOptions) => {
@@ -163,7 +180,38 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         },
         [checkoutService, method, onUnhandledError],
     );
+    // Express-entry flow: GPay was selected via PDP/Cart/top-of-checkout button.
+    // Payment data is already set — show the existing wallet UI (PaymentView + Place Order).
+    if (isPaymentSelected) {
+        return (
+            <WalletButtonPaymentMethodComponent
+                {...rest}
+                buttonId="walletButton"
+                deinitializePayment={checkoutService.deinitializePayment}
+                initializePayment={initializeGooglePayPayment}
+                method={method}
+                paymentForm={paymentForm}
+                shouldShowEditButton
+                signOutCustomer={checkoutService.signOutCustomer}
+            />
+        );
+    }
 
+    // Accordion-selection flow (experiment on): replace the Place Order button with a
+    // branded Google Pay button that opens the payment sheet and completes the order directly.
+    if (isDirectPayEnabled) {
+        return (
+            <GooglePayPaymentMethodComponent
+                {...rest}
+                checkoutService={checkoutService}
+                method={method}
+                onUnhandledError={onUnhandledError}
+                paymentForm={paymentForm}
+            />
+        );
+    }
+
+    // Accordion-selection flow (experiment off): legacy wallet-button flow.
     return (
         <WalletButtonPaymentMethodComponent
             {...rest}
@@ -171,7 +219,7 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             deinitializePayment={checkoutService.deinitializePayment}
             initializePayment={initializeGooglePayPayment}
             method={method}
-            shouldShowEditButton
+            paymentForm={paymentForm}
             signOutCustomer={checkoutService.signOutCustomer}
         />
     );
