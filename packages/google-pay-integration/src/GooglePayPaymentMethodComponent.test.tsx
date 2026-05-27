@@ -104,6 +104,7 @@ describe('GooglePayPaymentMethodComponent', () => {
                     buttonColor: 'default',
                     buttonSizeMode: 'fill',
                     buttonType: 'pay',
+                    loadingContainerId: 'checkout-app',
                     onError: expect.any(Function),
                 },
             }),
@@ -124,7 +125,7 @@ describe('GooglePayPaymentMethodComponent', () => {
     it('renders null — no visible DOM output', () => {
         const { container } = render(<GooglePayPaymentMethodComponent {...defaultProps()} />);
 
-        expect(container.firstChild).toBeEmptyDOMElement();
+        expect(container).toBeEmptyDOMElement();
     });
 
     it('restores the Place Order button on unmount', () => {
