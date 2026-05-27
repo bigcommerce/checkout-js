@@ -111,7 +111,9 @@ describe('when using Google Pay payment', () => {
             language: localeContext.language,
         };
 
-        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(storeConfigWithDirectPayDisabled);
+        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(
+            storeConfigWithDirectPayDisabled,
+        );
 
         jest.spyOn(checkoutService, 'deinitializePayment').mockResolvedValue(checkoutState);
 
@@ -160,7 +162,9 @@ describe('when using Google Pay payment', () => {
             expect(
                 screen.getByText(
                     defaultProps.language.translate('remote.sign_in_action', {
-                        providerName: getPaymentMethodName(defaultProps.language)(defaultProps.method),
+                        providerName: getPaymentMethodName(defaultProps.language)(
+                            defaultProps.method,
+                        ),
                     }),
                 ),
             ).toBeInTheDocument();
@@ -218,8 +222,9 @@ describe('when using Google Pay payment', () => {
             method.id = id;
             render(<GooglePayPaymentMethodTest {...defaultProps} method={method} />);
 
-            const options: PaymentInitializeOptions = (checkoutService.initializePayment as jest.Mock)
-                .mock.calls[0][0];
+            const options: PaymentInitializeOptions = (
+                checkoutService.initializePayment as jest.Mock
+            ).mock.calls[0][0];
 
             (checkoutService.initializePayment as jest.Mock).mockReset();
 
@@ -264,8 +269,9 @@ describe('when using Google Pay payment', () => {
                 Promise.reject(new Error('test error')),
             );
 
-            const options: PaymentInitializeOptions = (checkoutService.initializePayment as jest.Mock)
-                .mock.calls[0][0];
+            const options: PaymentInitializeOptions = (
+                checkoutService.initializePayment as jest.Mock
+            ).mock.calls[0][0];
 
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (options as Record<string, any>)[id]!.onPaymentSelect!();
@@ -289,7 +295,9 @@ describe('when using Google Pay payment', () => {
 
     describe('when direct pay is enabled (PI-5111 = true)', () => {
         beforeEach(() => {
-            jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(storeConfigWithDirectPayEnabled);
+            jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(
+                storeConfigWithDirectPayEnabled,
+            );
         });
 
         it('does not render the wallet sign-in button', () => {
@@ -298,7 +306,9 @@ describe('when using Google Pay payment', () => {
             expect(
                 screen.queryByText(
                     defaultProps.language.translate('remote.sign_in_action', {
-                        providerName: getPaymentMethodName(defaultProps.language)(defaultProps.method),
+                        providerName: getPaymentMethodName(defaultProps.language)(
+                            defaultProps.method,
+                        ),
                     }),
                 ),
             ).not.toBeInTheDocument();
@@ -327,7 +337,9 @@ describe('when using Google Pay payment', () => {
             expect(
                 screen.queryByText(
                     defaultProps.language.translate('remote.sign_in_action', {
-                        providerName: getPaymentMethodName(defaultProps.language)(defaultProps.method),
+                        providerName: getPaymentMethodName(defaultProps.language)(
+                            defaultProps.method,
+                        ),
                     }),
                 ),
             ).not.toBeInTheDocument();
@@ -346,7 +358,9 @@ describe('when using Google Pay payment', () => {
         });
 
         it('renders the wallet UI with a sign-out option regardless of the feature flag', () => {
-            jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(storeConfigWithDirectPayEnabled);
+            jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(
+                storeConfigWithDirectPayEnabled,
+            );
 
             render(<GooglePayPaymentMethodTest {...defaultProps} />);
 
@@ -355,7 +369,9 @@ describe('when using Google Pay payment', () => {
             expect(
                 screen.getByText(
                     defaultProps.language.translate('remote.sign_out_action', {
-                        providerName: getPaymentMethodName(defaultProps.language)(defaultProps.method),
+                        providerName: getPaymentMethodName(defaultProps.language)(
+                            defaultProps.method,
+                        ),
                     }),
                 ),
             ).toBeInTheDocument();

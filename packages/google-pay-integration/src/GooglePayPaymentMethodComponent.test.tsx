@@ -117,14 +117,14 @@ describe('GooglePayPaymentMethodComponent', () => {
 
         const call = (checkoutService.initializePayment as jest.Mock).mock.calls[0][0];
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         expect((call as Record<string, any>)[method.id].onError).toBe(onUnhandledError);
     });
 
     it('renders null — no visible DOM output', () => {
         const { container } = render(<GooglePayPaymentMethodComponent {...defaultProps()} />);
 
-        expect(container.firstChild).toBeNull();
+        expect(container.firstChild).toBeEmptyDOMElement();
     });
 
     it('restores the Place Order button on unmount', () => {

@@ -32,6 +32,7 @@ const GooglePayPaymentMethodComponent: FunctionComponent<PaymentMethodProps> = (
         // by the time initializePayment runs the container is already present
         // and the SDK can append the branded Google Pay button into it directly.
         paymentForm.hidePaymentSubmitButton(method, true);
+
         const timeoutId = setTimeout(async () => {
             try {
                 const mergedOptions: PaymentInitializeOptions = {
@@ -56,6 +57,7 @@ const GooglePayPaymentMethodComponent: FunctionComponent<PaymentMethodProps> = (
                         buttonColor: 'default',
                         buttonSizeMode: 'fill',
                         buttonType: 'pay',
+                        loadingContainerId: 'checkout-app',
                         onError: onUnhandledError,
                     },
                 };

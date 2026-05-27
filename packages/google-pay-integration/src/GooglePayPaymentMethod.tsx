@@ -186,6 +186,7 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         },
         [checkoutService, method, onUnhandledError],
     );
+
     // Express-entry flow: GPay was selected via PDP/Cart/top-of-checkout button.
     // Payment data is already set — show the existing wallet UI (PaymentView + Place Order).
     if (wasPaymentSelectedAtMountRef.current) {
@@ -207,16 +208,13 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     // branded Google Pay button that opens the payment sheet and completes the order directly.
     if (isDirectPayEnabled) {
         return (
-            <>
-                <div>{/* direct pay enabled!!!!!! */}</div>
-                <GooglePayPaymentMethodComponent
-                    {...rest}
-                    checkoutService={checkoutService}
-                    method={method}
-                    onUnhandledError={onUnhandledError}
-                    paymentForm={paymentForm}
-                />
-            </>
+            <GooglePayPaymentMethodComponent
+                {...rest}
+                checkoutService={checkoutService}
+                method={method}
+                onUnhandledError={onUnhandledError}
+                paymentForm={paymentForm}
+            />
         );
     }
 
