@@ -2,6 +2,7 @@ export class B2BExtraFieldsSessionStorage {
     static readonly BILLING_KEY = 'b2bAddressExtraFields_billing';
     static readonly SHIPPING_KEY = 'b2bAddressExtraFields_shipping';
     static readonly CONSIGNMENT_KEY_PREFIX = 'b2bAddressExtraFields_consignment_';
+    static readonly ORDER_KEY = 'b2bOrderExtraFields';
 
     static getConsignmentKey(consignmentId: string): string {
         return `${this.CONSIGNMENT_KEY_PREFIX}${consignmentId}`;

@@ -8,6 +8,9 @@ export {
     TranslateValidationErrorFunction,
     CustomFormFieldValues,
 } from './getCustomFormFieldsValidationSchema';
-export { default as getAddressExtraFieldsValidationSchema } from './getAddressExtraFieldsValidationSchema';
+export {
+    getAddressExtraFieldsValidationSchema,
+    getOrderExtraFieldsValidationSchema,
+} from './getExtraFieldsValidationSchema';
 export { default as mapCustomFormFieldsFromFormValues } from './mapCustomFormFieldsFromFormValues';
 export { default as mapAddressExtraFieldsFromFormValues } from './mapAddressExtraFieldsFromFormValues';

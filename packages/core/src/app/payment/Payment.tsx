@@ -5,6 +5,7 @@ import {
     type CheckoutSelectors,
     type CheckoutService,
     type Consignment,
+    type FormField,
     type OrderFinalizeOptions,
     type OrderRequestBody,
     type PaymentMethod,
@@ -91,6 +92,7 @@ interface WithCheckoutPaymentProps {
     isStoreCreditApplied: boolean;
     isTermsConditionsRequired: boolean;
     methods: PaymentMethod[];
+    orderExtraFields?: FormField[];
     shouldExecuteSpamCheck: boolean;
     shouldLocaliseErrorMessages: boolean;
     shouldShowSubmitPaymentButton: boolean;
@@ -645,6 +647,7 @@ const Payment = (
                         onStoreCreditChange={handleStoreCreditChange}
                         onSubmit={handleSubmit}
                         onUnhandledError={handleError}
+                        orderExtraFields={props.orderExtraFields}
                         selectedMethod={state.selectedMethod}
                         shouldDisableSubmit={
                             (uniqueSelectedMethodId &&
@@ -688,6 +691,7 @@ export function mapToPaymentProps(
             getCustomer,
             getConsignments,
             getOrder,
+            getOrderExtraFields,
             getPaymentMethod,
             getPaymentMethods,
             isPaymentDataRequired,
@@ -721,6 +725,11 @@ export function mapToPaymentProps(
 
     const isTermsConditionsRequired = isTermsConditionsEnabled;
     const { isStoreCreditApplied } = checkout;
+
+    const orderExtraFields = capabilities.userJourney.hasOrderExtraFields
+        ? getOrderExtraFields()
+        : undefined;
+
     const { defaultMethod, filteredMethods } = getFilteredPaymentMethodsWithDefault({
         checkout,
         checkoutSettings: config.checkoutSettings,
@@ -748,6 +757,7 @@ export function mapToPaymentProps(
         isTermsConditionsRequired,
         loadPaymentMethods: checkoutService.loadPaymentMethods,
         methods: filteredMethods,
+        orderExtraFields,
         shouldExecuteSpamCheck: checkout.shouldExecuteSpamCheck,
         shouldLocaliseErrorMessages:
             features['PAYMENTS-6799.localise_checkout_payment_error_messages'],
