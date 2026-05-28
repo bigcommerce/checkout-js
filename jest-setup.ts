@@ -56,7 +56,7 @@ beforeAll(() => {
         const message = args.map(String).join();
 
         // FIXME: Remove these ignored errors once we have enabled react 18 features
-        if (/Formik|createRoot|React.act|findDOMNode/.test(message)) {
+        if (/Formik|createRoot|React.act|findDOMNode|not wrapped in act/.test(message)) {
             return;
         }
 
@@ -64,7 +64,9 @@ beforeAll(() => {
     };
 
     console.warn = (...args: unknown[]) => {
-        if (args.map(String).join().includes('Formik')) {
+        const message = args.map(String).join();
+
+        if (/Formik|should not be used on a non-HTTPS page/.test(message)) {
             return;
         }
 
