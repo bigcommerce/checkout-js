@@ -123,14 +123,14 @@ function mapToCheckoutButtonContainerProps({
     checkoutService,
 }: CheckoutContextProps): WithCheckoutCheckoutButtonContainerProps | null {
     const {
-        data: { getConfig, getCustomer, isPaymentDataRequired },
+        data: { getConfig, getCustomer, isPaymentDataRequired, getPaymentMethods },
         statuses: { isInitializedCustomer },
         errors: { getInitializeCustomerError },
     } = checkoutState;
     const config = getConfig();
     const providers = config?.checkoutSettings.remoteCheckoutProviders ?? [];
-
-    const availableMethodIds = getSupportedMethodIds(providers);
+    const paymentMethods = getPaymentMethods();
+    const availableMethodIds = getSupportedMethodIds(providers, paymentMethods);
     const customer = getCustomer();
 
     if (!isPaymentDataRequired()) {
