@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.794.3](https://github.com/bigcommerce/checkout-js/compare/v1.794.2...v1.794.3) (2026-05-28)
+
+
+### Bug Fixes
+
+* **payment:** Hide buttons that was cashed by checkout-settings 'remoteCheckoutProviders' ([#2984](https://github.com/bigcommerce/checkout-js/issues/2984)) ([e6b158b](https://github.com/bigcommerce/checkout-js/commit/e6b158b2e875980e41cb06e736c9f1760d4231f7))
+
 ### [1.794.2](https://github.com/bigcommerce/checkout-js/compare/v1.794.1...v1.794.2) (2026-05-28)
 
 ### [1.794.1](https://github.com/bigcommerce/checkout-js/compare/v1.794.0...v1.794.1) (2026-05-28)
