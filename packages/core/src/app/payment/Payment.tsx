@@ -410,6 +410,7 @@ const Payment = (
 
             try {
                 if (b2bToken) {
+                    // TODO CHECKOUT-10062 Refactor the capability flag
                     await refreshB2BPaymentMethods();
                 }
 
@@ -577,6 +578,7 @@ const Payment = (
 
             if (b2bToken && orderId) {
                 try {
+                    // TODO CHECKOUT-10062 Refactor the capability flag
                     await refreshB2BPaymentMethods();
                 } catch (error) {
                     if (error instanceof Error) {
