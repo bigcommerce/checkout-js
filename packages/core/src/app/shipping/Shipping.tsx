@@ -86,7 +86,11 @@ function Shipping({
                     );
 
                     if (defaultShippingAddress) {
-                        await updateShippingAddress(defaultShippingAddress);
+                        try {
+                            await updateShippingAddress(defaultShippingAddress);
+                        } catch {
+                            /* Do nothing: we should not block shoppers from buying. */
+                        }
                     }
                 }
 

@@ -125,7 +125,11 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }: BillingProps):
                     );
 
                     if (defaultBillingAddress) {
-                        await checkoutService.updateBillingAddress(defaultBillingAddress);
+                        try {
+                            await checkoutService.updateBillingAddress(defaultBillingAddress);
+                        } catch {
+                            /* Do nothing: we should not block shoppers from buying. */
+                        }
                     }
                 }
 
