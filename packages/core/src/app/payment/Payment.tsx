@@ -82,6 +82,7 @@ export interface PaymentProps {
 
 interface WithCheckoutPaymentProps {
     availableStoreCredit: number;
+    b2bToken?: string;
     cart?: Cart;
     consignments?: Consignment[];
     cartUrl: string;
@@ -93,6 +94,7 @@ interface WithCheckoutPaymentProps {
     isTermsConditionsRequired: boolean;
     methods: PaymentMethod[];
     orderExtraFields?: FormField[];
+    orderId?: number;
     shouldExecuteSpamCheck: boolean;
     shouldLocaliseErrorMessages: boolean;
     shouldShowSubmitPaymentButton: boolean;
@@ -106,6 +108,7 @@ interface WithCheckoutPaymentProps {
     isPaymentDataRequired(): boolean;
     loadCheckout(): Promise<CheckoutSelectors>;
     loadPaymentMethods(): Promise<CheckoutSelectors>;
+    refreshB2BPaymentMethods: CheckoutService['refreshB2BPaymentMethods'];
     submitOrder(values: OrderRequestBody): Promise<CheckoutSelectors>;
     checkoutServiceSubscribe: CheckoutService['subscribe'];
 }
@@ -379,12 +382,14 @@ const Payment = (
     const handleSubmit = useCallback(
         async (values: PaymentFormValues) => {
             const {
+                b2bToken,
                 defaultMethod,
                 loadPaymentMethods,
                 isPaymentDataRequired,
                 onCartChangedError = noop,
                 onSubmit = noop,
                 onSubmitError = noop,
+                refreshB2BPaymentMethods,
                 submitOrder,
                 analyticsTracker,
             } = props;
@@ -404,6 +409,10 @@ const Payment = (
             }
 
             try {
+                if (b2bToken) {
+                    await refreshB2BPaymentMethods();
+                }
+
                 const state = await submitOrder(
                     mapToOrderRequestBody(values, isPaymentDataRequired()),
                 );
@@ -548,10 +557,13 @@ const Payment = (
     useEffect(() => {
         const init = async () => {
             const {
+                b2bToken,
                 finalizeOrderIfNeeded,
                 onFinalize = noop,
                 onFinalizeError = noop,
                 onReady = noop,
+                orderId,
+                refreshB2BPaymentMethods,
                 usableStoreCredit,
                 checkoutServiceSubscribe,
             } = props;
@@ -561,6 +573,10 @@ const Payment = (
             }
 
             await loadPaymentMethodsOrThrow();
+
+            if (b2bToken && orderId) {
+                await refreshB2BPaymentMethods();
+            }
 
             try {
                 const state = await finalizeOrderIfNeeded({
@@ -742,6 +758,7 @@ export function mapToPaymentProps(
     return {
         applyStoreCredit: checkoutService.applyStoreCredit,
         availableStoreCredit: customer.storeCredit,
+        b2bToken: checkoutState.data.getB2BToken(),
         cart: getCart(),
         consignments,
         cartUrl: config.links.cartLink,
@@ -758,6 +775,8 @@ export function mapToPaymentProps(
         loadPaymentMethods: checkoutService.loadPaymentMethods,
         methods: filteredMethods,
         orderExtraFields,
+        orderId: checkout.orderId,
+        refreshB2BPaymentMethods: checkoutService.refreshB2BPaymentMethods,
         shouldExecuteSpamCheck: checkout.shouldExecuteSpamCheck,
         shouldLocaliseErrorMessages:
             features['PAYMENTS-6799.localise_checkout_payment_error_messages'],
