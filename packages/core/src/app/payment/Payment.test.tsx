@@ -674,6 +674,29 @@ describe('Payment step', () => {
             expect(refreshSpy).not.toHaveBeenCalled();
         });
 
+        it('completes initialization and renders the payment step when mount-time B2B refresh fails', async () => {
+            mockB2BTokenEndpoints();
+
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                config: createConfigWithB2B(),
+                checkout: {
+                    ...checkoutWithShippingAndBilling,
+                    customer,
+                    orderId: 12345,
+                },
+            });
+
+            jest.spyOn(checkoutService, 'refreshB2BPaymentMethods').mockRejectedValue(
+                new Error('B2B payments refresh failed'),
+            );
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            expect(screen.getByText(/place order/i)).toBeInTheDocument();
+        });
+
         it('does not submit the order when B2B payment methods refresh fails before submit', async () => {
             mockB2BTokenEndpoints();
             checkout.setRequestHandler(

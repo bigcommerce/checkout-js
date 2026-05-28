@@ -562,6 +562,7 @@ const Payment = (
                 onFinalize = noop,
                 onFinalizeError = noop,
                 onReady = noop,
+                onUnhandledError = noop,
                 orderId,
                 refreshB2BPaymentMethods,
                 usableStoreCredit,
@@ -575,7 +576,13 @@ const Payment = (
             await loadPaymentMethodsOrThrow();
 
             if (b2bToken && orderId) {
-                await refreshB2BPaymentMethods();
+                try {
+                    await refreshB2BPaymentMethods();
+                } catch (error) {
+                    if (error instanceof Error) {
+                        onUnhandledError(error);
+                    }
+                }
             }
 
             try {
