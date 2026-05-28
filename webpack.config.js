@@ -53,11 +53,17 @@ function appConfig(options, argv) {
             cache: {
                 type: 'filesystem',
             },
+            snapshot: {
+                managedPaths: [
+                    /^(.+?[\\/]node_modules[\\/](?!\.cache)(?!@bigcommerce[\\/]checkout-sdk)(?:@.+?[\\/])?.+?)(?:[\\/].*)?$/,
+                ],
+            },
             devtool: isProduction ? 'source-map' : 'eval-source-map',
             resolve: {
                 alias,
                 extensions: ['.ts', '.tsx', '.js'],
                 mainFields: ['browser', 'module', 'main'],
+                symlinks: false,
             },
             optimization: {
                 runtimeChunk: 'single',
@@ -171,11 +177,12 @@ function appConfig(options, argv) {
             ].filter(Boolean),
             module: {
                 rules: [
-                    ...(isProduction ?  [{
+                    {
                         test: /\.[tj]sx?$/,
                         enforce: 'pre',
                         loader: require.resolve('source-map-loader'),
-                    }]: []),
+                        include: /[\\/]node_modules[\\/]@bigcommerce[\\/]checkout-sdk[\\/]/,
+                    },
                     {
                         test: /\.tsx?$/,
                         include: tsLoaderIncludes,
@@ -294,11 +301,17 @@ function loaderConfig(options, argv) {
                 ),
             },
             mode,
+            snapshot: {
+                managedPaths: [
+                    /^(.+?[\\/]node_modules[\\/](?!\.cache)(?!@bigcommerce[\\/]checkout-sdk)(?:@.+?[\\/])?.+?)(?:[\\/].*)?$/,
+                ],
+            },
             devtool: isProduction ? 'source-map' : 'eval-source-map',
             resolve: {
                 alias,
                 extensions: ['.ts', '.tsx', '.js'],
                 mainFields: ['module', 'browser', 'main'],
+                symlinks: false,
             },
             output: {
                 path: isProduction ? join(__dirname, 'dist') : join(__dirname, 'build'),
