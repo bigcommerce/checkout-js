@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.794.0](https://github.com/bigcommerce/checkout-js/compare/v1.793.3...v1.794.0) (2026-05-28)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10010 Enable Order Extra Field ([#3034](https://github.com/bigcommerce/checkout-js/issues/3034)) ([16db9b7](https://github.com/bigcommerce/checkout-js/commit/16db9b7318310bd715faead720129af609bf41d9))
+
 ### [1.793.3](https://github.com/bigcommerce/checkout-js/compare/v1.793.2...v1.793.3) (2026-05-26)
 
 ### [1.793.2](https://github.com/bigcommerce/checkout-js/compare/v1.793.1...v1.793.2) (2026-05-25)
