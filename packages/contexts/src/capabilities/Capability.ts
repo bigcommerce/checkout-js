@@ -24,7 +24,7 @@ export const defaultCapabilities: Capabilities = {
     },
     payment: {
         paymentMethodFiltering: false,
-        b2bPaymentMethodFilter: false,
+        b2bPaymentMethodFilterType: null,
         poPaymentMethod: false,
         additionalPaymentNotes: false,
         excludeOfflineForInvoice: false,
