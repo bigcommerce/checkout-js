@@ -14,6 +14,7 @@ import {
     ExtensionProvider,
     LocaleProvider,
     ThemeProvider,
+    ThemeProviderV2,
 } from '@bigcommerce/checkout/contexts';
 import { ErrorBoundary } from '@bigcommerce/checkout/error-handling-utils';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
@@ -74,6 +75,8 @@ const CheckoutApp = (props: CheckoutAppProps): ReactElement => {
     const embeddedStylesheet = useMemo(() => createEmbeddedCheckoutStylesheet(), []);
     const embeddedSupport = useMemo(() => createEmbeddedCheckoutSupport(getLanguageService()), []);
 
+    const ActiveThemeProvider = isCheckoutHookExperimentEnabled ? ThemeProviderV2 : ThemeProvider;
+
     useEffect(() => {
         ReactModal.setAppElement(`#${containerId}`);
     }, []);
@@ -88,7 +91,7 @@ const CheckoutApp = (props: CheckoutAppProps): ReactElement => {
                 >
                     <AnalyticsProvider checkoutService={checkoutService}>
                         <ExtensionProvider extensionService={extensionService}>
-                            <ThemeProvider>
+                            <ActiveThemeProvider>
                                 <Checkout
                                     {...props}
                                     createEmbeddedMessenger={createEmbeddedCheckoutMessenger}
@@ -96,7 +99,7 @@ const CheckoutApp = (props: CheckoutAppProps): ReactElement => {
                                     embeddedSupport={embeddedSupport}
                                     errorLogger={errorLogger}
                                 />
-                            </ThemeProvider>
+                            </ActiveThemeProvider>
                         </ExtensionProvider>
                     </AnalyticsProvider>
                 </CheckoutProvider>
