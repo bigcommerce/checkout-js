@@ -13,7 +13,13 @@ export const RedirectToStorefrontLogin: React.FC<RedirectToStorefrontLoginProps>
     isDisabled,
     isLoading,
 }) => {
-    const { selectedState: config } = useCheckout(({ data }) => data.getConfig());
+    const {
+        checkoutState: {
+            data: { getConfig },
+        },
+    } = useCheckout();
+
+    const config = getConfig();
 
     if (!config) {
         return null;
