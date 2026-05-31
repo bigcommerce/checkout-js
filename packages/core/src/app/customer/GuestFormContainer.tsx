@@ -47,23 +47,7 @@ export const GuestFormContainer: React.FC<GuestFormContainerProps> = ({
     onWalletButtonClick,
     onUnhandledError,
 }) => {
-    const { checkoutState, checkoutService } = useCheckout(
-        ({
-            data: { isPaymentDataRequired, getConfig, getCart },
-            statuses: {
-                isInitializingCustomer,
-                isContinuingAsGuest,
-                isExecutingPaymentMethodCheckout,
-            },
-        }) => ({
-            isPaymentDataRequired: isPaymentDataRequired(),
-            config: getConfig(),
-            cart: getCart(),
-            isInitializingCustomer: isInitializingCustomer(),
-            isContinuingAsGuest: isContinuingAsGuest(),
-            isExecutingPaymentMethodCheckout: isExecutingPaymentMethodCheckout(),
-        }),
-    );
+    const { checkoutState, checkoutService } = useCheckout();
     const {
         data: { isPaymentDataRequired, getConfig, getCart },
         statuses: { isInitializingCustomer, isContinuingAsGuest, isExecutingPaymentMethodCheckout },

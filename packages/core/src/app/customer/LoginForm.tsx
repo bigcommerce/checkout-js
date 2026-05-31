@@ -65,17 +65,7 @@ const LoginForm: FunctionComponent<
     isFloatingLabelEnabled,
     viewType = CustomerViewType.Login,
 }) => {
-    const { checkoutState } = useCheckout(
-        ({
-            data: { getCart, getConfig },
-            statuses: { isExecutingPaymentMethodCheckout, isSigningIn },
-        }) => ({
-            cart: getCart(),
-            config: getConfig(),
-            isExecutingPaymentMethodCheckout: isExecutingPaymentMethodCheckout(),
-            isSigningIn: isSigningIn(),
-        }),
-    );
+    const { checkoutState } = useCheckout();
 
     const {
         data: { getCart, getConfig },
