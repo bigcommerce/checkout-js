@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.795.0](https://github.com/bigcommerce/checkout-js/compare/v1.794.5...v1.795.0) (2026-06-01)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9823 billing and shipping extra fields enhancements ([#3038](https://github.com/bigcommerce/checkout-js/issues/3038)) ([91c9c19](https://github.com/bigcommerce/checkout-js/commit/91c9c193a125dd3652661d4202854171d2b55226))
+
 ### [1.794.5](https://github.com/bigcommerce/checkout-js/compare/v1.794.4...v1.794.5) (2026-06-01)
 
 ### [1.794.4](https://github.com/bigcommerce/checkout-js/compare/v1.794.3...v1.794.4) (2026-05-28)
