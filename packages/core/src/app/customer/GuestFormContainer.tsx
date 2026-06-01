@@ -47,33 +47,28 @@ export const GuestFormContainer: React.FC<GuestFormContainerProps> = ({
     onWalletButtonClick,
     onUnhandledError,
 }) => {
-    const { checkoutState, checkoutService } = useCheckout(
-        ({
-            data: { isPaymentDataRequired, getConfig, getCart },
-            statuses: {
-                isInitializingCustomer,
-                isContinuingAsGuest,
-                isExecutingPaymentMethodCheckout,
-            },
-        }) => ({
-            isPaymentDataRequired: isPaymentDataRequired(),
-            config: getConfig(),
-            cart: getCart(),
-            isInitializingCustomer: isInitializingCustomer(),
-            isContinuingAsGuest: isContinuingAsGuest(),
-            isExecutingPaymentMethodCheckout: isExecutingPaymentMethodCheckout(),
-        }),
-    );
     const {
-        data: { isPaymentDataRequired, getConfig, getCart },
-        statuses: { isInitializingCustomer, isContinuingAsGuest, isExecutingPaymentMethodCheckout },
-    } = checkoutState;
+        selectedState: {
+            isPaymentDataRequired,
+            config,
+            cart,
+            isInitializingCustomer,
+            isContinuingAsGuest,
+            isExecutingPaymentMethodCheckout,
+        },
+        checkoutService,
+    } = useCheckout(({ data, statuses }) => ({
+        isPaymentDataRequired: data.isPaymentDataRequired(),
+        config: data.getConfig(),
+        cart: data.getCart(),
+        isInitializingCustomer: statuses.isInitializingCustomer(),
+        isContinuingAsGuest: statuses.isContinuingAsGuest(),
+        isExecutingPaymentMethodCheckout: statuses.isExecutingPaymentMethodCheckout(),
+    }));
 
     const { deinitializeCustomer, initializeCustomer } = checkoutService;
 
-    const config = getConfig();
-    const cart = getCart();
-    const isLoadingGuestForm = isContinuingAsGuest() || isExecutingPaymentMethodCheckout();
+    const isLoadingGuestForm = isContinuingAsGuest || isExecutingPaymentMethodCheckout;
 
     if (!config || !cart) {
         return null;
@@ -93,12 +88,12 @@ export const GuestFormContainer: React.FC<GuestFormContainerProps> = ({
     const customCheckoutProvider = getProviderWithCustomCheckout(providerWithCustomCheckout);
 
     const checkoutButtons =
-        isWalletButtonsOnTop || !isPaymentDataRequired() ? null : (
+        isWalletButtonsOnTop || !isPaymentDataRequired ? null : (
             <CheckoutButtonList
                 checkEmbeddedSupport={checkEmbeddedSupport}
                 deinitialize={deinitializeCustomer}
                 initialize={initializeCustomer}
-                isInitializing={isInitializingCustomer()}
+                isInitializing={isInitializingCustomer}
                 methodIds={checkoutButtonIds}
                 onClick={onWalletButtonClick}
                 onError={onUnhandledError}
@@ -117,9 +112,9 @@ export const GuestFormContainer: React.FC<GuestFormContainerProps> = ({
                 initialize={initializeCustomer}
                 isExpressPrivacyPolicy={isExpressPrivacyPolicy}
                 isLoading={
-                    isContinuingAsGuest() ||
-                    isInitializingCustomer() ||
-                    isExecutingPaymentMethodCheckout()
+                    isContinuingAsGuest ||
+                    isInitializingCustomer ||
+                    isExecutingPaymentMethodCheckout
                 }
                 onChangeEmail={handleChangeEmail}
                 onContinueAsGuest={handleContinueAsGuest}

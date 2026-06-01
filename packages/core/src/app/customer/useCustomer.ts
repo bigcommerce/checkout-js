@@ -83,61 +83,19 @@ export interface UseCustomerReturn {
 }
 
 export const useCustomer = (): UseCustomerReturn => {
-    const { checkoutState, checkoutService } = useCheckout(
-        ({
-            data: {
-                getBillingAddress,
-                getCustomerAccountFields,
-                getCheckout,
-                getCustomer,
-                getCart,
-                getSignInEmail,
-                getConfig,
-                isPaymentDataRequired,
-            },
-            errors: { getSignInError, getSignInEmailError, getCreateCustomerAccountError },
-            statuses: {
-                isContinuingAsGuest,
-                isExecutingPaymentMethodCheckout,
-                isInitializingCustomer,
-                isSigningIn,
-                isSendingSignInEmail,
-                isCreatingCustomerAccount,
-            },
-        }) => ({
-            billingAddress: getBillingAddress(),
-            checkout: getCheckout(),
-            customer: getCustomer(),
-            cart: getCart(),
-            signInEmail: getSignInEmail(),
-            config: getConfig(),
-            isPaymentDataRequired: isPaymentDataRequired(),
-            signInError: getSignInError(),
-            signInEmailError: getSignInEmailError(),
-            createCustomerAccountError: getCreateCustomerAccountError(),
-            isContinuingAsGuest: isContinuingAsGuest(),
-            isExecutingPaymentMethodCheckout: isExecutingPaymentMethodCheckout(),
-            isInitializingCustomer: isInitializingCustomer(),
-            isSigningIn: isSigningIn(),
-            isSendingSignInEmail: isSendingSignInEmail(),
-            isCreatingCustomerAccount: isCreatingCustomerAccount(),
-            getCustomerAccountFields,
-        }),
-    );
-
     const {
-        data: {
-            getBillingAddress,
-            getCustomerAccountFields,
-            getCheckout,
-            getCustomer,
-            getCart,
-            getSignInEmail,
-            getConfig,
+        selectedState: {
+            billingAddress,
+            checkout,
+            customer,
+            cart,
+            signInEmail,
+            config,
+            customerAccountFields,
             isPaymentDataRequired,
-        },
-        errors: { getSignInError, getSignInEmailError, getCreateCustomerAccountError },
-        statuses: {
+            signInError,
+            signInEmailError,
+            createCustomerAccountError,
             isContinuingAsGuest,
             isExecutingPaymentMethodCheckout,
             isInitializingCustomer,
@@ -145,14 +103,26 @@ export const useCustomer = (): UseCustomerReturn => {
             isSendingSignInEmail,
             isCreatingCustomerAccount,
         },
-    } = checkoutState;
-
-    const billingAddress = getBillingAddress();
-    const checkout = getCheckout();
-    const customer = getCustomer();
-    const cart = getCart();
-    const signInEmail = getSignInEmail();
-    const config = getConfig();
+        checkoutService,
+    } = useCheckout(({ data, errors, statuses }) => ({
+        billingAddress: data.getBillingAddress(),
+        checkout: data.getCheckout(),
+        customer: data.getCustomer(),
+        cart: data.getCart(),
+        signInEmail: data.getSignInEmail(),
+        config: data.getConfig(),
+        customerAccountFields: data.getCustomerAccountFields(),
+        isPaymentDataRequired: data.isPaymentDataRequired(),
+        signInError: errors.getSignInError(),
+        signInEmailError: errors.getSignInEmailError(),
+        createCustomerAccountError: errors.getCreateCustomerAccountError(),
+        isContinuingAsGuest: statuses.isContinuingAsGuest(),
+        isExecutingPaymentMethodCheckout: statuses.isExecutingPaymentMethodCheckout(),
+        isInitializingCustomer: statuses.isInitializingCustomer(),
+        isSigningIn: statuses.isSigningIn(),
+        isSendingSignInEmail: statuses.isSendingSignInEmail(),
+        isCreatingCustomerAccount: statuses.isCreatingCustomerAccount(),
+    }));
 
     // Return null-like data if essential data is missing
     if (!checkout || !config || !cart) {
@@ -191,7 +161,7 @@ export const useCustomer = (): UseCustomerReturn => {
         isBuyNowCart: cart.source === 'BUY_NOW',
 
         // Form data
-        customerAccountFields: getCustomerAccountFields(),
+        customerAccountFields,
         canSubscribe,
         defaultShouldSubscribe,
         requiresMarketingConsent,
@@ -207,23 +177,23 @@ export const useCustomer = (): UseCustomerReturn => {
         shouldRedirectToStorefrontForAuth,
 
         // Status flags
-        isContinuingAsGuest: isContinuingAsGuest(),
-        isExecutingPaymentMethodCheckout: isExecutingPaymentMethodCheckout(),
-        isInitializing: isInitializingCustomer(),
-        isSigningIn: isSigningIn(),
-        isSendingSignInEmail: isSendingSignInEmail(),
-        isCreatingAccount: isCreatingCustomerAccount(),
+        isContinuingAsGuest,
+        isExecutingPaymentMethodCheckout,
+        isInitializing: isInitializingCustomer,
+        isSigningIn,
+        isSendingSignInEmail,
+        isCreatingAccount: isCreatingCustomerAccount,
 
         // Errors
-        signInError: getSignInError(),
-        signInEmailError: getSignInEmailError(),
-        createAccountError: getCreateCustomerAccountError(),
+        signInError,
+        signInEmailError,
+        createAccountError: createCustomerAccountError,
 
         // Other data
         signInEmail,
         checkoutButtonIds,
         providerWithCustomCheckout: customCheckoutProvider,
-        isPaymentDataRequired: isPaymentDataRequired(),
+        isPaymentDataRequired,
         shouldRenderStripeForm:
             customCheckoutProvider === PaymentMethodId.StripeUPE &&
             shouldUseStripeLinkByMinimumAmount(cart),
