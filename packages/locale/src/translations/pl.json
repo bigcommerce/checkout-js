@@ -200,6 +200,9 @@
             "unsupported_error": "Następujące metody płatności nie są obsługiwane przez Embedded Checkout: {methods}. Skontaktuj się z nami, aby uzyskać pomoc."
         },
         "payment": {
+            "po_number_label": "PO Number / Reference Number",
+            "po_number_optional": "(opcjonalnie)",
+            "po_number_required_error": "PO Number / Reference Number is required.",
             "affirm_name_text": "Afirmuj",
             "affirm_display_name_text": "Płać w czasie",
             "affirm_body_text": "Zostaniesz przekierowany na stronę Affirm, aby bezpiecznie dokończyć swój zakup. Wystarczy wypełnić kilka podstawowych informacji, by otrzymać decyzję w czasie rzeczywistym. Sprawdzenie Twojej kwalifikowalności nie będzie miało wpływu na Twoją ocenę kredytową.",

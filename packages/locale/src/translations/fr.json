@@ -200,6 +200,9 @@
             "unsupported_error": "Les modes de paiement suivants ne sont pas pris en charge par Embedded Checkout : {methods}. Veuillez nous contacter pour obtenir de l'aide."
         },
         "payment": {
+            "po_number_label": "Numéro de bon de commande / Numéro de référence",
+            "po_number_optional": "(Facultatif)",
+            "po_number_required_error": "Le numéro de bon de commande / numéro de référence est requis.",
             "affirm_name_text": "Confirmer",
             "affirm_display_name_text": "Payer en plusieurs fois",
             "affirm_body_text": "Vous allez être redirigé·e vers Affirm afin de finaliser votre achat en toute sécurité. Il vous suffira de renseigner certaines informations de base pour obtenir une réponse en temps réel. La vérification de votre éligibilité n'affectera en rien votre fiabilité.",

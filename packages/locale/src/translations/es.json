@@ -200,6 +200,9 @@
             "unsupported_error": "El proceso de pago integrado no admite los siguientes métodos de pago: {methods}. Póngase en contacto con nosotros para obtener ayuda."
         },
         "payment": {
+            "po_number_label": "Número de pedido / número de referencia",
+            "po_number_optional": "(Opcional)",
+            "po_number_required_error": "El número de pedido/número de referencia es obligatorio.",
             "affirm_name_text": "Affirm",
             "affirm_display_name_text": "Pago aplazado",
             "affirm_body_text": "Se le redirigirá a Affirm para completar su compra de forma segura. Solo hay que rellenar unos pocos datos básicos y obtendrá una decisión en tiempo real. Verificar su elegibilidad no afectará su puntuación crediticia.",

@@ -200,6 +200,9 @@
             "unsupported_error": "Los siguientes métodos de pago no son compatibles con el pago integrado: {methods}. Comunícate con nosotros para obtener ayuda."
         },
         "payment": {
+            "po_number_label": "Número de Oficina / Número de Referencia",
+            "po_number_optional": "(Opcional)",
+            "po_number_required_error": "Se requiere un número de correo / número de referencia.",
             "affirm_name_text": "Affirm",
             "affirm_display_name_text": "Paga después",
             "affirm_body_text": "Se te redirigirá a Affirm para completar de forma segura tu compra. Simplemente, proporciona algunos datos básicos y obtén una decisión en tiempo real. La verificación de tu elegibilidad no afectará tu puntaje crediticio.",

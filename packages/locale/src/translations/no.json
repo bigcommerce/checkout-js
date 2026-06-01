@@ -200,6 +200,9 @@
             "unsupported_error": "Følgende betalingsmåter støttes ikke av Embedded Checkout: {methods}. Ta kontakt med oss for å få hjelp."
         },
         "payment": {
+            "po_number_label": "PO-nummer / Referansenummer",
+            "po_number_optional": "(Valgfri)",
+            "po_number_required_error": "PO-nummer / Referansenummer er påkrevd.",
             "affirm_name_text": "Bekreft",
             "affirm_display_name_text": "Betal over tid",
             "affirm_body_text": "Du viderekobles til Affirm for å fullføre kjøpet på en sikker måte. Bare fyll ut noen felt med grunnleggende informasjon og få en avgjørelse i sanntid. En sjekk om du er kvalifisert påvirker ikke kredittscoren din.",
@@ -296,7 +299,7 @@
             "credit_card_number_required_error": "Kredittkortnummer er påkrevd",
             "credit_card_number_mismatch_error": "Kortnummeret som er angitt, samsvarer ikke med kortet som er lagret på kontoen din",
             "credit_debit_card_text": "Kreditt-/debetkort",
-            "open_banking_display_name_text": "Open Banking",
+            "open_banking_display_name_text": "Åpen bankvirksomhet",
             "payment_methods_text": "Betalingsmåter",
             "redeemable_payments_text": "Innløsbare betalinger",
             "instrument_storage_options_text": "Alternativer for betalingslagring",
