@@ -1,12 +1,16 @@
+const fs = require('fs');
 const path = require('path');
 
-const { projects } = require('../../workspace.json');
+const packagesDir = path.join(__dirname, '../../packages');
+const packageNames = fs
+    .readdirSync(packagesDir)
+    .filter((name) => fs.existsSync(path.join(packagesDir, name, 'project.json')));
 
 const tsLoaderIncludes = [];
 const aliasMap = {};
 
-for (const [packageName, packagePath] of Object.entries(projects)) {
-    const packageSrcPath = path.join(__dirname, '../../', `${packagePath}/src`);
+for (const packageName of packageNames) {
+    const packageSrcPath = path.join(packagesDir, packageName, 'src');
 
     tsLoaderIncludes.push(packageSrcPath);
 

@@ -9,11 +9,12 @@ try {
         fs.mkdirSync('test-results');
     }
 
-    const workspaceConfig = JSON.parse(fs.readFileSync('workspace.json', 'utf8'));
-    const packages = Object.keys(workspaceConfig.projects);
+    const packages = fs
+        .readdirSync('packages')
+        .filter((name) => fs.existsSync(path.join('packages', name, 'project.json')));
 
     packages.forEach((packageName) => {
-        const packagePath = workspaceConfig.projects[packageName];
+        const packagePath = path.join('packages', packageName);
         const junitFile = path.join(packagePath, 'test-results', 'junit.xml');
 
         if (fs.existsSync(junitFile)) {
