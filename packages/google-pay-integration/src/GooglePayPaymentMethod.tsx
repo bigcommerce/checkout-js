@@ -1,20 +1,8 @@
 import { type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
-import {
-    createGooglePayAdyenV2PaymentStrategy,
-    createGooglePayAdyenV3PaymentStrategy,
-    createGooglePayAuthorizeNetPaymentStrategy,
-    createGooglePayBigCommercePaymentsPaymentStrategy,
-    createGooglePayBraintreePaymentStrategy,
-    createGooglePayCheckoutComPaymentStrategy,
-    createGooglePayCybersourcePaymentStrategy,
-    createGooglePayOrbitalPaymentStrategy,
-    createGooglePayPPCPPaymentStrategy,
-    createGooglePayStripePaymentStrategy,
-    createGooglePayTdOnlineMartPaymentStrategy,
-    createGooglePayWorldpayAccessPaymentStrategy,
-} from '@bigcommerce/checkout-sdk/integrations/google-pay';
-import React, { type FunctionComponent, useCallback } from 'react';
+import { some } from 'lodash';
+import React, { type FunctionComponent, useCallback, useRef } from 'react';
 
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 import {
     type CheckoutButtonResolveId,
     PaymentMethodId,
@@ -23,12 +11,32 @@ import {
 } from '@bigcommerce/checkout/payment-integration-api';
 import { WalletButtonPaymentMethodComponent } from '@bigcommerce/checkout/wallet-button-integration';
 
+import GooglePayPaymentMethodComponent from './GooglePayPaymentMethodComponent';
+import googlePayIntegrations from './googlePayIntegrations';
+
 const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     checkoutService,
     method,
     onUnhandledError,
+    paymentForm,
     ...rest
 }) => {
+    const {
+        checkoutState: {
+            data: { getCheckout, getConfig },
+        },
+    } = useCheckout();
+
+    const checkout = getCheckout();
+    const isPaymentSelected = checkout ? some(checkout.payments, { providerId: method.id }) : false;
+
+    // Capture whether Google Pay was already selected at mount time
+    // (PDP/Cart/Customer step button)
+    const wasPaymentSelectedAtMountRef = useRef(isPaymentSelected);
+
+    const features = getConfig()?.checkoutSettings.features ?? {};
+    const isDirectPayEnabled = Boolean(features['PI-5111.google_pay_direct_pay_on_click'] ?? false);
+
     const initializeGooglePayPayment = useCallback(
         (defaultOptions: PaymentInitializeOptions) => {
             const reinitializePayment = async (options: PaymentInitializeOptions) => {
@@ -53,20 +61,7 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             const loadingContainerId = 'checkout-app';
             const mergedOptions: PaymentInitializeOptions = {
                 ...defaultOptions,
-                integrations: [
-                    createGooglePayAdyenV2PaymentStrategy,
-                    createGooglePayAdyenV3PaymentStrategy,
-                    createGooglePayAuthorizeNetPaymentStrategy,
-                    createGooglePayCheckoutComPaymentStrategy,
-                    createGooglePayCybersourcePaymentStrategy,
-                    createGooglePayOrbitalPaymentStrategy,
-                    createGooglePayStripePaymentStrategy,
-                    createGooglePayWorldpayAccessPaymentStrategy,
-                    createGooglePayBraintreePaymentStrategy,
-                    createGooglePayPPCPPaymentStrategy,
-                    createGooglePayBigCommercePaymentsPaymentStrategy,
-                    createGooglePayTdOnlineMartPaymentStrategy,
-                ],
+                integrations: googlePayIntegrations,
                 [PaymentMethodId.AdyenV2GooglePay]: {
                     loadingContainerId,
                     walletButton: 'walletButton',
@@ -164,6 +159,18 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         [checkoutService, method, onUnhandledError],
     );
 
+    if (isDirectPayEnabled && !wasPaymentSelectedAtMountRef.current) {
+        return (
+            <GooglePayPaymentMethodComponent
+                {...rest}
+                checkoutService={checkoutService}
+                method={method}
+                onUnhandledError={onUnhandledError}
+                paymentForm={paymentForm}
+            />
+        );
+    }
+
     return (
         <WalletButtonPaymentMethodComponent
             {...rest}
@@ -171,6 +178,7 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             deinitializePayment={checkoutService.deinitializePayment}
             initializePayment={initializeGooglePayPayment}
             method={method}
+            paymentForm={paymentForm}
             shouldShowEditButton
             signOutCustomer={checkoutService.signOutCustomer}
         />
