@@ -2,13 +2,13 @@ import { type FormFieldItem } from '@bigcommerce/checkout-sdk';
 import IntlTelInput, { type IntlTelInputRef } from '@intl-tel-input/react';
 import 'intl-tel-input/styles';
 import classNames from 'classnames';
-import { type Iso2 } from 'intl-tel-input';
 import { isDate, noop } from 'lodash';
 import React, { type FunctionComponent, lazy, memo, Suspense, useCallback, useEffect } from 'react';
 
 import { withDate, type WithDateProps } from '@bigcommerce/checkout/locale';
 
 import { IconChevronDown } from '../../icon';
+import { isIso2 } from '../../utils';
 import { CheckboxInput } from '../CheckboxInput';
 import { type InputProps } from '../Input';
 import { RadioInput } from '../RadioInput';
@@ -60,11 +60,15 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
     useEffect(() => {
         // auto-set phone number country based on shipping address
         if (isNewPhoneFieldWithValidation) {
-            if (!selectedCountry || value) return;
+            if (!selectedCountry || value) {
+                return;
+            }
 
-            const selectedCountryInIsoFormat = selectedCountry.toLowerCase() as Iso2;
+            const selectedCountryInIsoFormat = selectedCountry.toLowerCase();
 
-            intlTelInputRef?.current?.getInstance()?.setCountry(selectedCountryInIsoFormat);
+            if (isIso2(selectedCountryInIsoFormat)) {
+                intlTelInputRef?.current?.getInstance()?.setCountry(selectedCountryInIsoFormat);
+            }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedCountry]);
