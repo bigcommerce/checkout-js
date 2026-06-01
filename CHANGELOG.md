@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.796.0](https://github.com/bigcommerce/checkout-js/compare/v1.795.0...v1.796.0) (2026-06-01)
+
+
+### Features
+
+* **payment:** PI-5216 Create GooglePayPaymentMethodComponent for accordion-selection direct-pay flow ([#3040](https://github.com/bigcommerce/checkout-js/issues/3040)) ([f8cc254](https://github.com/bigcommerce/checkout-js/commit/f8cc2549e616475fd1dac0a45b0f4024fbf0351e))
+
 ## [1.795.0](https://github.com/bigcommerce/checkout-js/compare/v1.794.5...v1.795.0) (2026-06-01)
 
 
