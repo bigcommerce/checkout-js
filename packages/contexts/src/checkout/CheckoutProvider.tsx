@@ -29,7 +29,7 @@ const CheckoutProviderV2: React.FC<CheckoutProviderProps> = ({
     const contextValue = useMemo(
         () => ({
             checkoutService,
-            checkoutState: checkoutService.getState(),
+            checkoutState: checkoutService.getState(), // TODO: this can be removed once experiment is over
             errorLogger,
             isCheckoutHookExperimentEnabled,
         }),
