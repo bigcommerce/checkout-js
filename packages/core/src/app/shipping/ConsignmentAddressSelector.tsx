@@ -175,7 +175,6 @@ const ConsignmentAddressSelector = ({
                     placeholderText={<TranslatedString id="shipping.choose_shipping_address" />}
                     selectedAddress={selectedAddress}
                     showSingleLineAddress
-                    storageKey={storageKey}
                     type={AddressType.Shipping}
                 />
             )}

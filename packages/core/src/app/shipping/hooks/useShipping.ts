@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { createSelector } from 'reselect';
 
 import {
@@ -9,6 +9,7 @@ import {
 import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
 import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
 
+import { getAddressWithCustomerExtraFields } from '../../address';
 import { EMPTY_ARRAY, isExperimentEnabled } from '../../common/utility';
 import getBackorderCount from '../../order/getBackorderCount';
 import getProviderWithCustomCheckout from '../../payment/getProviderWithCustomCheckout';
@@ -97,8 +98,18 @@ export const useShipping = () => {
     const shippableItemsCount = getShippableItemsCount(cart);
     const shouldShowMultiShipping = hasMultiShippingEnabled && !methodId && shippableItemsCount > 1;
 
-    const shippingAddress =
+    const rawShippingAddress =
         !shouldShowMultiShipping && consignments.length > 1 ? undefined : getShippingAddress();
+
+    const shippingAddress = useMemo(
+        () =>
+            getAddressWithCustomerExtraFields(
+                rawShippingAddress,
+                customer.addresses,
+                hasAddressExtraFields,
+            ),
+        [hasAddressExtraFields, rawShippingAddress, customer.addresses],
+    );
 
     const providerWithCustomCheckout = getProviderWithCustomCheckout(
         config.checkoutSettings.providerWithCustomCheckout,

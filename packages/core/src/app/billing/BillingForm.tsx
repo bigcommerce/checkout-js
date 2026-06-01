@@ -66,6 +66,7 @@ const BillingForm = ({
     const { checkoutService, checkoutState } = useCheckout();
     const {
         billing: { hideSaveToAddressBookCheck, restrictManualAddressEntry },
+        userJourney: { hasAddressExtraFields },
     } = useCapabilities();
 
     const {
@@ -120,6 +121,10 @@ const BillingForm = ({
     };
 
     const handleUseNewAddress = () => {
+        if (hasAddressExtraFields) {
+            B2BExtraFieldsSessionStorage.removeFields(B2BExtraFieldsSessionStorage.BILLING_KEY);
+        }
+
         void handleSelectAddress({});
     };
 
@@ -142,7 +147,6 @@ const BillingForm = ({
                                 selectedAddress={
                                     hasValidCustomerAddress ? billingAddress : undefined
                                 }
-                                storageKey={B2BExtraFieldsSessionStorage.BILLING_KEY}
                                 type={AddressType.Billing}
                             />
                         </LoadingOverlay>

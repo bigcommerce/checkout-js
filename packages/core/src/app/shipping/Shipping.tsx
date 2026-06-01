@@ -68,6 +68,7 @@ function Shipping({
     } = useShipping();
     const {
         shipping: { restrictManualAddressEntry },
+        userJourney: { hasCompanyAddressBook },
     } = useCapabilities();
 
     useEffect(() => {
@@ -78,6 +79,20 @@ function Shipping({
                     loadShippingOptions(),
                     loadBillingAddressFields(),
                 ]);
+
+                if (hasCompanyAddressBook && !shippingAddress) {
+                    const defaultShippingAddress = customer.addresses?.find(
+                        ({ isDefaultShipping }) => isDefaultShipping,
+                    );
+
+                    if (defaultShippingAddress) {
+                        try {
+                            await updateShippingAddress(defaultShippingAddress);
+                        } catch {
+                            /* Do nothing: we should not block shoppers from buying. */
+                        }
+                    }
+                }
 
                 if (cartHasPromotionalItems && isMultiShippingMode) {
                     setIsMultiShippingUnavailableModalOpen(true);

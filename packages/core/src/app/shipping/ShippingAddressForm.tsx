@@ -8,7 +8,6 @@ import {
     AddressForm,
     AddressSelect,
     AddressType,
-    B2BExtraFieldsSessionStorage,
     isValidCustomerAddress,
     reorderAddressFormFields,
 } from '../address';
@@ -104,7 +103,6 @@ const ShippingAddressForm = ({
                             onSelectAddress={onAddressSelect}
                             onUseNewAddress={onUseNewAddress}
                             selectedAddress={hasValidCustomerAddress ? shippingAddress : undefined}
-                            storageKey={B2BExtraFieldsSessionStorage.SHIPPING_KEY}
                             type={AddressType.Shipping}
                         />
                     </LoadingOverlay>

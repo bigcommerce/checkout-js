@@ -88,6 +88,7 @@ const SingleShippingForm: React.FC<
 }) => {
     const {
         shipping: { hideBillingSameAsShippingCheck },
+        userJourney: { hasAddressExtraFields },
     } = useCapabilities();
     const {
         consignments,
@@ -253,6 +254,12 @@ const SingleShippingForm: React.FC<
         setIsResettingAddress(true);
 
         try {
+            if (hasAddressExtraFields) {
+                B2BExtraFieldsSessionStorage.removeFields(
+                    B2BExtraFieldsSessionStorage.SHIPPING_KEY,
+                );
+            }
+
             const address = await deleteConsignments();
 
             setValues({

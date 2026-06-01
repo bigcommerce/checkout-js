@@ -37,10 +37,13 @@ export const SearchableAddressSelectComponent: FunctionComponent<SearchableAddre
             ? restrictManualAddressEntryForShipping
             : restrictManualAddressEntryForBilling;
 
-    const filteredAddresses = useMemo(
-        () => searchingAddresses(addresses, searchQuery),
-        [addresses, searchQuery],
-    );
+    const filteredAddresses = useMemo(() => {
+        const addressesByType = addresses.filter((address) =>
+            type === AddressType.Shipping ? address.isShipping : address.isBilling,
+        );
+
+        return searchingAddresses(addressesByType, searchQuery);
+    }, [addresses, searchQuery, type]);
 
     const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(e.target.value);
