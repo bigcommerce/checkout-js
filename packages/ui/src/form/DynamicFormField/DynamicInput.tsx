@@ -31,7 +31,7 @@ export interface DynamicInputProps extends InputProps {
     value?: string | string[];
     rows?: number;
     fieldType?: DynamicFormFieldType;
-    itiRef?: React.RefObject<IntlTelInputRef>;
+    intlTelInputRef?: React.RefObject<IntlTelInputRef>;
     options?: FormFieldItem[];
     isFloatingLabelEnabled?: boolean;
     inputDateFormat?: string;
@@ -42,7 +42,7 @@ export interface DynamicInputProps extends InputProps {
 const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
     fieldType,
     id,
-    itiRef,
+    intlTelInputRef,
     name,
     onChange = noop,
     options,
@@ -64,7 +64,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
 
             const selectedCountryInIsoFormat = selectedCountry.toLowerCase() as Iso2;
 
-            itiRef?.current?.getInstance()?.setCountry(selectedCountryInIsoFormat);
+            intlTelInputRef?.current?.getInstance()?.setCountry(selectedCountryInIsoFormat);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedCountry]);
@@ -104,7 +104,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                             target: { name, value: number },
                         } as React.ChangeEvent<HTMLInputElement>);
                     }}
-                    ref={itiRef}
+                    ref={intlTelInputRef}
                     separateDialCode={false}
                     value={value ? String(value) : ''}
                 />

@@ -116,11 +116,11 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
         return fieldType as DynamicFormFieldType;
     }, [fieldType, type, secret, name]);
 
-    const itiRef = useRef<IntlTelInputRef>(null);
+    const intlTelInputRef = useRef<IntlTelInputRef>(null);
 
     const validatePhone = useCallback(
         (value: string) => {
-            const isPhoneNumberValid = itiRef.current?.getInstance()?.isValidNumber();
+            const isPhoneNumberValid = intlTelInputRef.current?.getInstance()?.isValidNumber();
 
             if (value && !isPhoneNumberValid) {
                 return language.translate('address.phone_number_invalid_error');
@@ -145,7 +145,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
                 id={fieldInputId}
                 isFloatingLabelEnabled={isFloatingLabelSupportedFieldType}
                 isNewPhoneFieldWithValidation={isNewPhoneFieldWithValidation}
-                itiRef={isNewPhoneFieldWithValidation ? itiRef : undefined}
+                intlTelInputRef={isNewPhoneFieldWithValidation ? intlTelInputRef : undefined}
                 max={max}
                 maxLength={maxLength || undefined}
                 min={min}
@@ -159,7 +159,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
             fieldInputId,
             autocomplete,
             dynamicFormFieldType,
-            itiRef,
+            intlTelInputRef,
             isFloatingLabelSupportedFieldType,
             isNewPhoneFieldWithValidation,
             max,

@@ -209,15 +209,15 @@ describe('DynamicInput', () => {
             expect(screen.queryByRole('textbox')).not.toHaveAttribute('type', 'tel');
         });
 
-        it('auto-sets country via itiRef when selectedCountry is provided and field value is empty', () => {
-            const itiRefMock = createRef<IntlTelInputRef>();
+        it('auto-sets country via intlTelInputRef when selectedCountry is provided and field value is empty', () => {
+            const intlTelInputRefMock = createRef<IntlTelInputRef>();
 
             render(
                 <DynamicInputTest
                     fieldType={DynamicFormFieldType.TELEPHONE}
                     id="field_33"
+                    intlTelInputRef={intlTelInputRefMock}
                     isNewPhoneFieldWithValidation
-                    itiRef={itiRefMock}
                     name="phone"
                     selectedCountry="US"
                 />,
@@ -227,14 +227,14 @@ describe('DynamicInput', () => {
         });
 
         it('does not auto-set country when a value is already present', () => {
-            const itiRefMock = createRef<IntlTelInputRef>();
+            const intlTelInputRefMock = createRef<IntlTelInputRef>();
 
             render(
                 <DynamicInputTest
                     fieldType={DynamicFormFieldType.TELEPHONE}
                     id="field_33"
+                    intlTelInputRef={intlTelInputRefMock}
                     isNewPhoneFieldWithValidation
-                    itiRef={itiRefMock}
                     name="phone"
                     selectedCountry="US"
                     value="+15551234567"
@@ -245,14 +245,14 @@ describe('DynamicInput', () => {
         });
 
         it('does not auto-set country when selectedCountry is not provided', () => {
-            const itiRefMock = createRef<IntlTelInputRef>();
+            const intlTelInputRefMock = createRef<IntlTelInputRef>();
 
             render(
                 <DynamicInputTest
                     fieldType={DynamicFormFieldType.TELEPHONE}
                     id="field_33"
+                    intlTelInputRef={intlTelInputRefMock}
                     isNewPhoneFieldWithValidation
-                    itiRef={itiRefMock}
                     name="phone"
                 />,
             );
