@@ -36,7 +36,14 @@ export const PhoneFormField: FunctionComponent<PhoneFormFieldProps> = memo(
 
         const validatePhone = useCallback(
             (value: string) => {
-                const isPhoneNumberValid = intlTelInputRef.current?.getInstance()?.isValidNumber();
+                let isPhoneNumberValid: boolean | null | undefined;
+
+                try {
+                    isPhoneNumberValid = intlTelInputRef.current?.getInstance()?.isValidNumber();
+                } catch {
+                    // edge case for when intl-tel-input/utils haven't finished loading yet; skip validation
+                    return undefined;
+                }
 
                 if (value && !isPhoneNumberValid) {
                     return language.translate('address.phone_number_invalid_error');
