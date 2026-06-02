@@ -39,6 +39,7 @@ import { type ObjectSchema } from 'yup';
 import {
     type AnalyticsContextProps,
     type CheckoutContextProps,
+    useCapabilities,
 } from '@bigcommerce/checkout/contexts';
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
@@ -143,6 +144,10 @@ const Payment = (
     const grandTotalChangeUnsubscribe = useRef<() => void>();
     const validationSchemasRef = useRef<validationSchemas>({});
     const lastFormValuesRef = useRef<PaymentFormValues | null>(null);
+
+    const {
+        orderConfirmation: { persistB2BMetadata },
+    } = useCapabilities();
 
     const renderCartStockPositionsChangedModal = (
         error: CartStockPositionsChangedError,
@@ -382,7 +387,6 @@ const Payment = (
     const handleSubmit = useCallback(
         async (values: PaymentFormValues) => {
             const {
-                b2bToken,
                 defaultMethod,
                 loadPaymentMethods,
                 isPaymentDataRequired,
@@ -409,8 +413,7 @@ const Payment = (
             }
 
             try {
-                if (b2bToken) {
-                    // TODO CHECKOUT-10062 Refactor the capability flag
+                if (persistB2BMetadata) {
                     await refreshB2BPaymentMethods();
                 }
 
@@ -558,7 +561,6 @@ const Payment = (
     useEffect(() => {
         const init = async () => {
             const {
-                b2bToken,
                 finalizeOrderIfNeeded,
                 onFinalize = noop,
                 onFinalizeError = noop,
@@ -576,9 +578,8 @@ const Payment = (
 
             await loadPaymentMethodsOrThrow();
 
-            if (b2bToken && orderId) {
+            if (persistB2BMetadata && orderId) {
                 try {
-                    // TODO CHECKOUT-10062 Refactor the capability flag
                     await refreshB2BPaymentMethods();
                 } catch (error) {
                     if (error instanceof Error) {

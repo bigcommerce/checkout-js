@@ -486,47 +486,26 @@ describe('Payment step', () => {
     });
 
     describe('B2B payment methods refresh', () => {
-        const B2B_BASE_URL = 'https://api-b2b.test';
-
-        const createConfigWithB2B = () => ({
+        const createConfigWithPersistB2BMetadata = () => ({
             ...checkoutSettings,
             storeConfig: {
                 ...checkoutSettings.storeConfig,
-                b2bApiSettings: {
-                    baseUrl: B2B_BASE_URL,
-                    clientId: 'fake-client-id',
-                },
                 checkoutSettings: {
                     ...checkoutSettings.storeConfig.checkoutSettings,
                     capabilities: {
                         ...defaultCapabilities,
-                        userJourney: {
-                            ...defaultCapabilities.userJourney,
-                            requiresB2BToken: true,
+                        orderConfirmation: {
+                            ...defaultCapabilities.orderConfirmation,
+                            persistB2BMetadata: true,
                         },
                     },
                 },
             },
         });
 
-        const mockB2BTokenEndpoints = () => {
-            checkout.setRequestHandler(
-                rest.get('/customer/current.jwt', (_, res, ctx) =>
-                    res(ctx.json({ token: 'fake-jwt' })),
-                ),
-            );
-            checkout.setRequestHandler(
-                rest.post(`${B2B_BASE_URL}/api/v2/login`, (_, res, ctx) =>
-                    res(ctx.json({ code: 0, data: { token: 'fake-b2b-token' } })),
-                ),
-            );
-        };
-
-        it('refreshes B2B payment methods on mount when b2bToken is loaded and orderId is present on checkout', async () => {
-            mockB2BTokenEndpoints();
-
+        it('refreshes B2B payment methods on mount when persistB2BMetadata capability is enabled and orderId is present on checkout', async () => {
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
-                config: createConfigWithB2B(),
+                config: createConfigWithPersistB2BMetadata(),
                 checkout: {
                     ...checkoutWithShippingAndBilling,
                     customer,
@@ -546,10 +525,8 @@ describe('Payment step', () => {
         });
 
         it('does not refresh B2B payment methods on mount when checkout has no orderId', async () => {
-            mockB2BTokenEndpoints();
-
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
-                config: createConfigWithB2B(),
+                config: createConfigWithPersistB2BMetadata(),
                 checkout: {
                     ...checkoutWithShippingAndBilling,
                     customer,
@@ -567,7 +544,7 @@ describe('Payment step', () => {
             expect(refreshSpy).not.toHaveBeenCalled();
         });
 
-        it('does not refresh B2B payment methods on mount for non-B2B user even when orderId is present', async () => {
+        it('does not refresh B2B payment methods on mount when persistB2BMetadata capability is disabled even when orderId is present', async () => {
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
                 checkout: {
                     ...checkoutWithShippingAndBilling,
@@ -586,8 +563,7 @@ describe('Payment step', () => {
             expect(refreshSpy).not.toHaveBeenCalled();
         });
 
-        it('refreshes B2B payment methods before submitting order for B2B user', async () => {
-            mockB2BTokenEndpoints();
+        it('refreshes B2B payment methods before submitting order when persistB2BMetadata capability is enabled', async () => {
             checkout.setRequestHandler(
                 rest.post('/internalapi/v1/checkout/order', (_, res, ctx) =>
                     res(ctx.json(orderResponse)),
@@ -609,7 +585,7 @@ describe('Payment step', () => {
             });
 
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
-                config: createConfigWithB2B(),
+                config: createConfigWithPersistB2BMetadata(),
                 checkout: {
                     ...checkoutWithShippingAndBilling,
                     customer,
@@ -638,7 +614,7 @@ describe('Payment step', () => {
             expect(refreshCallOrder).toBeLessThan(submitOrderCallOrder);
         });
 
-        it('does not refresh B2B payment methods before submitting order for non-B2B user', async () => {
+        it('does not refresh B2B payment methods before submitting order when persistB2BMetadata capability is disabled', async () => {
             checkout.setRequestHandler(
                 rest.post('/internalapi/v1/checkout/order', (_, res, ctx) =>
                     res(ctx.json(orderResponse)),
@@ -675,10 +651,8 @@ describe('Payment step', () => {
         });
 
         it('completes initialization and renders the payment step when mount-time B2B refresh fails', async () => {
-            mockB2BTokenEndpoints();
-
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
-                config: createConfigWithB2B(),
+                config: createConfigWithPersistB2BMetadata(),
                 checkout: {
                     ...checkoutWithShippingAndBilling,
                     customer,
@@ -698,7 +672,6 @@ describe('Payment step', () => {
         });
 
         it('does not submit the order when B2B payment methods refresh fails before submit', async () => {
-            mockB2BTokenEndpoints();
             checkout.setRequestHandler(
                 rest.post('/internalapi/v1/checkout/order', (_, res, ctx) =>
                     res(ctx.json(orderResponse)),
@@ -706,7 +679,7 @@ describe('Payment step', () => {
             );
 
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
-                config: createConfigWithB2B(),
+                config: createConfigWithPersistB2BMetadata(),
                 checkout: {
                     ...checkoutWithShippingAndBilling,
                     customer,
