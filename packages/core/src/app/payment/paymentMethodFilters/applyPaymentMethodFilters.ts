@@ -7,7 +7,6 @@ import {
 import { stripeMethodsFiltering } from '@bigcommerce/checkout/stripe-utils';
 
 import { boltAndBraintreeFilter } from './boltAndBraintreeFilter';
-import { excludePPSDKFilter } from './excludePPSDKFilter';
 import { multiShippingFilter } from './multiShippingFilter';
 import { selectedHostedPaymentFilter } from './selectedHostedPaymentFilter';
 
@@ -17,7 +16,6 @@ const FILTERS: PaymentMethodFilter[] = [
     stripeMethodsFiltering,
     boltAndBraintreeFilter,
     multiShippingFilter,
-    excludePPSDKFilter,
     selectedHostedPaymentFilter,
 ];
 
