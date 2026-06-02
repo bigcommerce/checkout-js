@@ -121,7 +121,7 @@ export const useCustomer = (): UseCustomerReturn => {
             isSigningIn: isSigningIn(),
             isSendingSignInEmail: isSendingSignInEmail(),
             isCreatingCustomerAccount: isCreatingCustomerAccount(),
-            getCustomerAccountFields,
+            customerAccountFields: getCustomerAccountFields(),
         }),
     );
 
