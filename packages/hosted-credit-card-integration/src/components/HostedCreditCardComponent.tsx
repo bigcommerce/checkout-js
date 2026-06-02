@@ -48,7 +48,7 @@ const HostedCreditCardComponent: FunctionComponent<HostedCreditCardComponentProp
     const isInstrumentCardNumberRequiredProp =
         isInstrumentCardNumberRequiredSelector(checkoutState);
     const {
-        config: { cardCode, isHostedFormEnabled, showCardHolderName },
+        config: { cardCode, showCardHolderName },
     } = method;
     const isCardCodeRequired = cardCode || cardCode === null;
     const isCardHolderNameRequired = showCardHolderName ?? true;
@@ -260,15 +260,13 @@ const HostedCreditCardComponent: FunctionComponent<HostedCreditCardComponentProp
                         createTDOnlineMartPaymentStrategy,
                         createCheckoutComCreditCardPaymentStrategy,
                     ],
-                    ...(isHostedFormEnabled && {
-                        creditCard: {
-                            form: await getHostedFormOptions(selectedInstrument),
-                            bigpayToken: selectedInstrument?.bigpayToken,
-                        },
-                    }),
+                    creditCard: {
+                        form: await getHostedFormOptions(selectedInstrument),
+                        bigpayToken: selectedInstrument?.bigpayToken,
+                    },
                 });
             },
-            [getHostedFormOptions, initializePayment, isHostedFormEnabled],
+            [getHostedFormOptions, initializePayment],
         );
 
     const hostedStoredCardValidationSchema = getHostedInstrumentValidationSchema({ language });
@@ -285,15 +283,13 @@ const HostedCreditCardComponent: FunctionComponent<HostedCreditCardComponentProp
     return (
         <CreditCardPaymentMethodComponent
             {...props}
-            {...(isHostedFormEnabled && {
-                cardFieldset: hostedFieldset,
-                cardValidationSchema: hostedValidationSchema,
-                getHostedFormOptions,
-                getStoredCardValidationFieldset: getHostedStoredCardValidationFieldset,
-                storedCardValidationSchema: hostedStoredCardValidationSchema,
-            })}
+            cardFieldset={hostedFieldset}
+            cardValidationSchema={hostedValidationSchema}
             deinitializePayment={checkoutService.deinitializePayment}
+            getHostedFormOptions={getHostedFormOptions}
+            getStoredCardValidationFieldset={getHostedStoredCardValidationFieldset}
             initializePayment={initializeHostedCreditCardPayment}
+            storedCardValidationSchema={hostedStoredCardValidationSchema}
         />
     );
 };
