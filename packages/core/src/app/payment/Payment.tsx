@@ -39,6 +39,7 @@ import { type ObjectSchema } from 'yup';
 import {
     type AnalyticsContextProps,
     type CheckoutContextProps,
+    useCapabilities,
 } from '@bigcommerce/checkout/contexts';
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
@@ -82,6 +83,7 @@ export interface PaymentProps {
 
 interface WithCheckoutPaymentProps {
     availableStoreCredit: number;
+    b2bToken?: string;
     cart?: Cart;
     consignments?: Consignment[];
     cartUrl: string;
@@ -93,6 +95,7 @@ interface WithCheckoutPaymentProps {
     isTermsConditionsRequired: boolean;
     methods: PaymentMethod[];
     orderExtraFields?: FormField[];
+    orderId?: number;
     shouldExecuteSpamCheck: boolean;
     shouldLocaliseErrorMessages: boolean;
     shouldShowSubmitPaymentButton: boolean;
@@ -106,6 +109,7 @@ interface WithCheckoutPaymentProps {
     isPaymentDataRequired(): boolean;
     loadCheckout(): Promise<CheckoutSelectors>;
     loadPaymentMethods(): Promise<CheckoutSelectors>;
+    refreshB2BPaymentMethods: CheckoutService['refreshB2BPaymentMethods'];
     submitOrder(values: OrderRequestBody): Promise<CheckoutSelectors>;
     checkoutServiceSubscribe: CheckoutService['subscribe'];
 }
@@ -140,6 +144,10 @@ const Payment = (
     const grandTotalChangeUnsubscribe = useRef<() => void>();
     const validationSchemasRef = useRef<validationSchemas>({});
     const lastFormValuesRef = useRef<PaymentFormValues | null>(null);
+
+    const {
+        orderConfirmation: { persistB2BMetadata },
+    } = useCapabilities();
 
     const renderCartStockPositionsChangedModal = (
         error: CartStockPositionsChangedError,
@@ -385,6 +393,7 @@ const Payment = (
                 onCartChangedError = noop,
                 onSubmit = noop,
                 onSubmitError = noop,
+                refreshB2BPaymentMethods,
                 submitOrder,
                 analyticsTracker,
             } = props;
@@ -404,6 +413,10 @@ const Payment = (
             }
 
             try {
+                if (persistB2BMetadata) {
+                    await refreshB2BPaymentMethods();
+                }
+
                 const state = await submitOrder(
                     mapToOrderRequestBody(values, isPaymentDataRequired()),
                 );
@@ -552,6 +565,9 @@ const Payment = (
                 onFinalize = noop,
                 onFinalizeError = noop,
                 onReady = noop,
+                onUnhandledError = noop,
+                orderId,
+                refreshB2BPaymentMethods,
                 usableStoreCredit,
                 checkoutServiceSubscribe,
             } = props;
@@ -561,6 +577,16 @@ const Payment = (
             }
 
             await loadPaymentMethodsOrThrow();
+
+            if (persistB2BMetadata && orderId) {
+                try {
+                    await refreshB2BPaymentMethods();
+                } catch (error) {
+                    if (error instanceof Error) {
+                        onUnhandledError(error);
+                    }
+                }
+            }
 
             try {
                 const state = await finalizeOrderIfNeeded({
@@ -742,6 +768,7 @@ export function mapToPaymentProps(
     return {
         applyStoreCredit: checkoutService.applyStoreCredit,
         availableStoreCredit: customer.storeCredit,
+        b2bToken: checkoutState.data.getB2BToken(),
         cart: getCart(),
         consignments,
         cartUrl: config.links.cartLink,
@@ -758,6 +785,8 @@ export function mapToPaymentProps(
         loadPaymentMethods: checkoutService.loadPaymentMethods,
         methods: filteredMethods,
         orderExtraFields,
+        orderId: checkout.orderId,
+        refreshB2BPaymentMethods: checkoutService.refreshB2BPaymentMethods,
         shouldExecuteSpamCheck: checkout.shouldExecuteSpamCheck,
         shouldLocaliseErrorMessages:
             features['PAYMENTS-6799.localise_checkout_payment_error_messages'],
