@@ -1,15 +1,6 @@
-import { type CheckoutSelectors } from '@bigcommerce/checkout-sdk';
 import { useCallback, useContext, useEffect, useRef, useSyncExternalStore } from 'react';
-
 import CheckoutContext, { type CheckoutContextProps } from './CheckoutContext';
-
-// TODO: Remove TypeScript function overloads once CheckoutProviderV2 is fully rolled out
-export function useCheckout<T>(
-    selectFn: (state: CheckoutSelectors) => T,
-): CheckoutContextProps & { selectedState: T };
-export function useCheckout(
-    selectFn?: undefined,
-): CheckoutContextProps & { selectedState: undefined };
+import { type CheckoutSelectors } from '@bigcommerce/checkout-sdk';
 
 export function useCheckout<T>(
     selectFn?: (state: CheckoutSelectors) => T,
