@@ -1,5 +1,4 @@
 import { type IntlTelInputRef } from '@intl-tel-input/react';
-import 'intl-tel-input/styles';
 import { type FieldProps } from 'formik';
 import React, { type FunctionComponent, memo, type ReactNode, useCallback, useRef } from 'react';
 
