@@ -65,14 +65,24 @@ const LoginForm: FunctionComponent<
     isFloatingLabelEnabled,
     viewType = CustomerViewType.Login,
 }) => {
+    const { checkoutState } = useCheckout(
+        ({
+            data: { getCart, getConfig },
+            statuses: { isExecutingPaymentMethodCheckout, isSigningIn },
+        }) => ({
+            cart: getCart(),
+            config: getConfig(),
+            isExecutingPaymentMethodCheckout: isExecutingPaymentMethodCheckout(),
+            isSigningIn: isSigningIn(),
+        }),
+    );
+
     const {
-        selectedState: { cart, config, isExecutingPaymentMethodCheckout, isSigningIn },
-    } = useCheckout(({ data: { getCart, getConfig }, statuses }) => ({
-        cart: getCart(),
-        config: getConfig(),
-        isExecutingPaymentMethodCheckout: statuses.isExecutingPaymentMethodCheckout(),
-        isSigningIn: statuses.isSigningIn(),
-    }));
+        data: { getCart, getConfig },
+        statuses: { isExecutingPaymentMethodCheckout, isSigningIn },
+    } = checkoutState;
+    const cart = getCart();
+    const config = getConfig();
 
     if (!cart || !config) {
         throw new Error('cart is not available');
@@ -194,15 +204,17 @@ const LoginForm: FunctionComponent<
                 <div className="form-actions">
                     {shouldRedirectToStorefrontForAuth ? (
                         <RedirectToStorefrontLogin
-                            isDisabled={isSigningIn || isExecutingPaymentMethodCheckout}
-                            isLoading={isSigningIn || isExecutingPaymentMethodCheckout}
+                            isDisabled={Boolean(
+                                isSigningIn() || isExecutingPaymentMethodCheckout(),
+                            )}
+                            isLoading={Boolean(isSigningIn() || isExecutingPaymentMethodCheckout())}
                         />
                     ) : (
                         <Button
                             className="body-bold"
-                            disabled={isSigningIn || isExecutingPaymentMethodCheckout}
+                            disabled={isSigningIn() || isExecutingPaymentMethodCheckout()}
                             id="checkout-customer-continue"
-                            isLoading={isSigningIn || isExecutingPaymentMethodCheckout}
+                            isLoading={isSigningIn() || isExecutingPaymentMethodCheckout()}
                             testId="customer-continue-button"
                             type="submit"
                             variant={ButtonVariant.Primary}
