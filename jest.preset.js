@@ -11,6 +11,7 @@ module.exports = {
   moduleNameMapper: {
     '\\.css$': `${__dirname}/scripts/jest/file-transformer.js`,
     'intl-tel-input/styles': `${__dirname}/scripts/jest/file-transformer.js`,
+    'intl-tel-input/data': `${__dirname}/scripts/jest/intl-tel-input-data.js`,
   },
   coverageThreshold: {
     global: {
