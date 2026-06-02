@@ -31,7 +31,7 @@ const ConsignmentListItem: FunctionComponent<ConsignmentListItemProps> = ({
 }: ConsignmentListItemProps) => {
     const {
         checkoutService: { deleteConsignment },
-    } = useCheckout();
+    } = useCheckout(() => undefined);
 
     const handleClose = async () => {
         await deleteConsignment(consignment.id);

@@ -40,7 +40,7 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({
     const { unassignedItems } = useMultiShippingConsignmentItems();
     const {
         checkoutService: { assignItemsToAddress: assignItem },
-    } = useCheckout();
+    } = useCheckout(() => undefined);
     const deleteItem = useDeallocateItem();
 
     const toggleAllocateItemsModal = () => {

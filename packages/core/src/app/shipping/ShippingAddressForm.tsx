@@ -41,17 +41,12 @@ const ShippingAddressForm = ({
     },
     onFieldChange,
 }: ShippingAddressFormProps & ConnectFormikProps<SingleShippingFormValues>): ReactElement => {
-    const {
-        checkoutState: {
-            data: { getCustomer },
-        },
-    } = useCheckout();
+    const { selectedState: customer } = useCheckout(({ data }) => data.getCustomer());
     const { themeV2 } = useThemeContext();
     const {
         shipping: { hideSaveToAddressBookCheck, restrictManualAddressEntry },
     } = useCapabilities();
 
-    const customer = getCustomer();
     const addresses = customer?.addresses || [];
     const shouldShowSaveAddress = !hideSaveToAddressBookCheck && !customer?.isGuest;
 

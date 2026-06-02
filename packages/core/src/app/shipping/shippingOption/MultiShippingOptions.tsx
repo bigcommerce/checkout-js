@@ -25,7 +25,7 @@ export const MultiShippingOptions = ({
     shippingQuoteFailedMessage,
     onUnhandledError,
 }: MultiShippingOptionsV2Props) => {
-    const { checkoutService, checkoutState } = useCheckout();
+    const { checkoutService, checkoutState } = useCheckout((state) => state);
 
     const selectShippingOption = async (consignmentId: string, shippingOptionId: string) => {
         try {

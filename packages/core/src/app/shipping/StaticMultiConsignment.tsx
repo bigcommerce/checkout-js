@@ -33,7 +33,9 @@ const StaticMultiConsignment: FunctionComponent<StaticMultiConsignmentProps> = (
         checkoutState: {
             data: { getShippingCountries },
         },
-    } = useCheckout();
+    } = useCheckout(({ data }) => ({
+        shippingCountries: data.getShippingCountries(),
+    }));
 
     const {
         shippingAddress: addressWithoutLocalization,
