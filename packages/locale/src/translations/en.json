@@ -403,6 +403,8 @@
                 "phone_number_required_error": "Phone Number is required",
                 "business_name_required_error": "Business Name is required",
                 "only_numbers_error": "{label} must contain only numbers",
+                "disabled_PO_number_credit": "This purchase exceeds your available credit, please select an alternative payment method",
+                "disabled_PO_number_currency_mismatch": "Please use {currency} to utilize the {name}",
                 "additional_action_required": "Please continue with additional actions.",
                 "authorization_expired": "The authorization for this transaction has expired.",
                 "authorization_revoked": "The authorization for this transaction has been revoked.",

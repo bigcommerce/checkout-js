@@ -11,7 +11,11 @@ import React, { type FunctionComponent, memo, type ReactNode } from 'react';
 
 import { BigCommercePaymentsPayLaterBanner } from '@bigcommerce/checkout/bigcommerce-payments-utils';
 import { type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
-import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
+import {
+    TranslatedString,
+    withLanguage,
+    type WithLanguageProps,
+} from '@bigcommerce/checkout/locale';
 import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import {
     BraintreePaypalCreditBanner,
@@ -29,10 +33,12 @@ import getPaymentMethodName from './getPaymentMethodName';
 import { isHostedCreditCardFieldsetValues } from './HostedCreditCardFieldsetValues';
 import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodType from './PaymentMethodType';
+import { type PoDisabledReason } from './usePoMethodDisabledReason';
 
 export interface PaymentMethodTitleProps {
     method: PaymentMethod;
     isSelected?: boolean;
+    disabledReason?: PoDisabledReason;
     onUnhandledError?(error: Error): void;
 }
 
@@ -397,6 +403,7 @@ const PaymentMethodTitle: FunctionComponent<
     cdnBasePath,
     checkoutSettings,
     storeCountryCode,
+    disabledReason,
     onUnhandledError,
     formik: { values },
     instruments,
@@ -454,7 +461,9 @@ const PaymentMethodTitle: FunctionComponent<
             })}
         >
             <div
-                className="paymentProviderHeader-nameContainer"
+                className={classNames('paymentProviderHeader-nameContainer', {
+                    'paymentProviderHeader-poDisabledContainer': Boolean(disabledReason),
+                })}
                 data-test={`payment-method-${method.id}`}
             >
                 {logoUrl && (
@@ -479,6 +488,24 @@ const PaymentMethodTitle: FunctionComponent<
                         data-test="payment-method-name"
                     >
                         {titleText}
+                    </div>
+                )}
+                {disabledReason && titleText && (
+                    <div
+                        className="paymentProviderHeader-poDisabledMessage"
+                        data-test={`payment-method-disabled-${method.id}`}
+                    >
+                        {disabledReason.kind === 'creditLimit' ? (
+                            <TranslatedString id="payment.errors.disabled_PO_number_credit" />
+                        ) : (
+                            <TranslatedString
+                                data={{
+                                    currency: disabledReason.expectedCurrency,
+                                    name: titleText,
+                                }}
+                                id="payment.errors.disabled_PO_number_currency_mismatch"
+                            />
+                        )}
                     </div>
                 )}
                 {getSubtitle()}
