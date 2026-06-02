@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.797.2](https://github.com/bigcommerce/checkout-js/compare/v1.797.1...v1.797.2) (2026-06-02)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-10062 Refactor Capability Object ([#3055](https://github.com/bigcommerce/checkout-js/issues/3055)) ([d008917](https://github.com/bigcommerce/checkout-js/commit/d008917f899e57a690158dd232f4118dd44f5c5e))
+
 ### [1.797.1](https://github.com/bigcommerce/checkout-js/compare/v1.797.0...v1.797.1) (2026-06-02)
 
 ## [1.797.0](https://github.com/bigcommerce/checkout-js/compare/v1.796.1...v1.797.0) (2026-06-02)
