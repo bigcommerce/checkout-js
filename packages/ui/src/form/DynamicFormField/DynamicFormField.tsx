@@ -1,26 +1,14 @@
 import { type FormField as FormFieldType } from '@bigcommerce/checkout-sdk';
-import { type IntlTelInputRef } from '@intl-tel-input/react';
 import classNames from 'classnames';
-import { type FieldProps } from 'formik';
 import { includes } from 'lodash';
-import React, {
-    type FunctionComponent,
-    memo,
-    type ReactNode,
-    useCallback,
-    useMemo,
-    useRef,
-} from 'react';
+import React, { type FunctionComponent, memo, type ReactNode, useMemo } from 'react';
 
-import { useLocale } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
-import { FormField } from '../FormField';
 import { Label } from '../Label';
 
-import CheckboxGroupFormField from './CheckboxGroupFormField';
+import { DynamicFormFieldSelector } from './DynamicFormFieldSelector';
 import DynamicFormFieldType from './DynamicFormFieldType';
-import DynamicInput from './DynamicInput';
 
 export interface DynamicFormFieldOption {
     code: string;
@@ -67,7 +55,6 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
 }) => {
     const fieldInputId = inputId || name;
     const fieldName = parentFieldName ? `${parentFieldName}.${name}` : name;
-    const { language } = useLocale();
     const isFloatingLabelSupportedFieldType = Boolean(
         isFloatingLabelEnabled &&
             (includes(['text', 'password', 'dropdown', 'date', 'multiline'], fieldType) ||
@@ -116,60 +103,9 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
         return fieldType as DynamicFormFieldType;
     }, [fieldType, type, secret, name]);
 
-    const intlTelInputRef = useRef<IntlTelInputRef>(null);
-
-    const validatePhone = useCallback(
-        (value: string) => {
-            const isPhoneNumberValid = intlTelInputRef.current?.getInstance()?.isValidNumber();
-
-            if (value && !isPhoneNumberValid) {
-                return language.translate('address.phone_number_invalid_error');
-            }
-
-            return undefined;
-        },
-        [language],
-    );
-
     const isNewPhoneFieldWithValidation =
         isNewPhoneValidationExperimentEnabled &&
         dynamicFormFieldType === DynamicFormFieldType.TELEPHONE;
-
-    const renderInput = useCallback(
-        ({ field }: FieldProps<string>) => (
-            <DynamicInput
-                {...field}
-                aria-labelledby={`${fieldInputId}-label ${fieldInputId}-field-error-message`}
-                autoComplete={autocomplete}
-                fieldType={dynamicFormFieldType}
-                id={fieldInputId}
-                isFloatingLabelEnabled={isFloatingLabelSupportedFieldType}
-                isNewPhoneFieldWithValidation={isNewPhoneFieldWithValidation}
-                intlTelInputRef={isNewPhoneFieldWithValidation ? intlTelInputRef : undefined}
-                max={max}
-                maxLength={maxLength || undefined}
-                min={min}
-                options={options && options.items}
-                placeholder={placeholder || (options && options.helperLabel)}
-                rows={options?.rows}
-                selectedCountry={isNewPhoneFieldWithValidation ? selectedCountry : undefined}
-            />
-        ),
-        [
-            fieldInputId,
-            autocomplete,
-            dynamicFormFieldType,
-            intlTelInputRef,
-            isFloatingLabelSupportedFieldType,
-            isNewPhoneFieldWithValidation,
-            max,
-            maxLength,
-            min,
-            options,
-            placeholder,
-            selectedCountry,
-        ],
-    );
 
     return (
         <div
@@ -179,25 +115,23 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
                 extraClass,
             )}
         >
-            {fieldType === DynamicFormFieldType.CHECKBOX ? (
-                <CheckboxGroupFormField
-                    id={fieldInputId}
-                    label={labelComponent}
-                    name={fieldName}
-                    onChange={onChange}
-                    options={(options && options.items) || []}
-                />
-            ) : (
-                <FormField
-                    id={fieldInputId}
-                    input={renderInput}
-                    isFloatingLabelEnabled={isFloatingLabelSupportedFieldType}
-                    label={labelComponent}
-                    name={fieldName}
-                    onChange={onChange}
-                    validate={isNewPhoneFieldWithValidation ? validatePhone : undefined}
-                />
-            )}
+            <DynamicFormFieldSelector
+                autocomplete={autocomplete}
+                dynamicFormFieldType={dynamicFormFieldType}
+                fieldType={fieldType}
+                id={fieldInputId}
+                isFloatingLabelEnabled={isFloatingLabelSupportedFieldType}
+                isNewPhoneFieldWithValidation={isNewPhoneFieldWithValidation}
+                label={labelComponent}
+                max={max}
+                maxLength={maxLength}
+                min={min}
+                name={fieldName}
+                onChange={onChange}
+                options={options}
+                placeholder={placeholder}
+                selectedCountry={selectedCountry}
+            />
         </div>
     );
 };

@@ -1,43 +1,11 @@
 import { createLanguageService } from '@bigcommerce/checkout-sdk';
-import { type IntlTelInputRef } from '@intl-tel-input/react';
-import React, { createRef, forwardRef, type FunctionComponent, useImperativeHandle } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import { LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
 import { render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
 import DynamicFormFieldType from './DynamicFormFieldType';
 import DynamicInput, { type DynamicInputProps } from './DynamicInput';
-
-const mockIsValidNumber = jest.fn();
-const mockSetCountry = jest.fn();
-
-jest.mock('@intl-tel-input/react', () => ({
-    __esModule: true,
-    default: forwardRef<
-        unknown,
-        {
-            inputProps?: Record<string, unknown>;
-            onChangeNumber?: (value: string) => void;
-            value?: string;
-        }
-    >(({ inputProps, onChangeNumber, value }, ref) => {
-        useImperativeHandle(ref, () => ({
-            getInstance: () => ({
-                isValidNumber: mockIsValidNumber,
-                setCountry: mockSetCountry,
-            }),
-        }));
-
-        return (
-            <input
-                data-test="iti-phone-input"
-                {...inputProps}
-                onChange={(e) => onChangeNumber?.(e.target.value)}
-                value={value ?? ''}
-            />
-        );
-    }),
-}));
 
 describe('DynamicInput', () => {
     let localeContext: LocaleContextType;
@@ -187,77 +155,5 @@ describe('DynamicInput', () => {
         expect(screen.getByRole('combobox')).toHaveAttribute('name', 'select');
         expect(screen.getByText('Foo')).toBeInTheDocument();
         expect(screen.getByText('Foo1')).toBeInTheDocument();
-    });
-
-    describe('when isNewPhoneFieldWithValidation is true', () => {
-        beforeEach(() => {
-            mockSetCountry.mockClear();
-            mockIsValidNumber.mockClear();
-        });
-
-        it('renders IntlTelInput instead of a regular tel input', () => {
-            render(
-                <DynamicInputTest
-                    fieldType={DynamicFormFieldType.TELEPHONE}
-                    id="field_33"
-                    isNewPhoneFieldWithValidation
-                    name="phone"
-                />,
-            );
-
-            expect(screen.getByTestId('iti-phone-input')).toBeInTheDocument();
-            expect(screen.queryByRole('textbox')).not.toHaveAttribute('type', 'tel');
-        });
-
-        it('auto-sets country via intlTelInputRef when selectedCountry is provided and field value is empty', () => {
-            const intlTelInputRefMock = createRef<IntlTelInputRef>();
-
-            render(
-                <DynamicInputTest
-                    fieldType={DynamicFormFieldType.TELEPHONE}
-                    id="field_33"
-                    intlTelInputRef={intlTelInputRefMock}
-                    isNewPhoneFieldWithValidation
-                    name="phone"
-                    selectedCountry="US"
-                />,
-            );
-
-            expect(mockSetCountry).toHaveBeenCalledWith('us');
-        });
-
-        it('does not auto-set country when a value is already present', () => {
-            const intlTelInputRefMock = createRef<IntlTelInputRef>();
-
-            render(
-                <DynamicInputTest
-                    fieldType={DynamicFormFieldType.TELEPHONE}
-                    id="field_33"
-                    intlTelInputRef={intlTelInputRefMock}
-                    isNewPhoneFieldWithValidation
-                    name="phone"
-                    selectedCountry="US"
-                    value="+15551234567"
-                />,
-            );
-
-            expect(mockSetCountry).not.toHaveBeenCalled();
-        });
-
-        it('does not auto-set country when selectedCountry is not provided', () => {
-            const intlTelInputRefMock = createRef<IntlTelInputRef>();
-
-            render(
-                <DynamicInputTest
-                    fieldType={DynamicFormFieldType.TELEPHONE}
-                    id="field_33"
-                    intlTelInputRef={intlTelInputRefMock}
-                    isNewPhoneFieldWithValidation
-                    name="phone"
-                />,
-            );
-
-            expect(mockSetCountry).not.toHaveBeenCalled();
-        });
     });
 });

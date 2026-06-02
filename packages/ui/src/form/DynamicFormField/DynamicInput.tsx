@@ -1,14 +1,11 @@
 import { type FormFieldItem } from '@bigcommerce/checkout-sdk';
-import IntlTelInput, { type IntlTelInputRef } from '@intl-tel-input/react';
-import 'intl-tel-input/styles';
 import classNames from 'classnames';
 import { isDate, noop } from 'lodash';
-import React, { type FunctionComponent, lazy, memo, Suspense, useCallback, useEffect } from 'react';
+import React, { type FunctionComponent, lazy, memo, Suspense, useCallback } from 'react';
 
 import { withDate, type WithDateProps } from '@bigcommerce/checkout/locale';
 
 import { IconChevronDown } from '../../icon';
-import { isIso2 } from '../../utils';
 import { CheckboxInput } from '../CheckboxInput';
 import { type InputProps } from '../Input';
 import { RadioInput } from '../RadioInput';
@@ -31,18 +28,14 @@ export interface DynamicInputProps extends InputProps {
     value?: string | string[];
     rows?: number;
     fieldType?: DynamicFormFieldType;
-    intlTelInputRef?: React.RefObject<IntlTelInputRef>;
     options?: FormFieldItem[];
     isFloatingLabelEnabled?: boolean;
     inputDateFormat?: string;
-    selectedCountry?: string;
-    isNewPhoneFieldWithValidation?: boolean;
 }
 
 const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
     fieldType,
     id,
-    intlTelInputRef,
     name,
     onChange = noop,
     options,
@@ -51,27 +44,9 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
     isFloatingLabelEnabled,
     date,
     inputDateFormat,
-    selectedCountry,
-    isNewPhoneFieldWithValidation = false,
     ...rest
 }) => {
     const inputFormat = inputDateFormat || date.inputFormat || '';
-
-    useEffect(() => {
-        // auto-set phone number country based on shipping address
-        if (isNewPhoneFieldWithValidation) {
-            if (!selectedCountry || value) {
-                return;
-            }
-
-            const selectedCountryInIsoFormat = selectedCountry.toLowerCase();
-
-            if (isIso2(selectedCountryInIsoFormat)) {
-                intlTelInputRef?.current?.getInstance()?.setCountry(selectedCountryInIsoFormat);
-            }
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectedCountry]);
 
     const handleDateChange = useCallback(
         (dateValue: string, event: any) =>
@@ -84,37 +59,6 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
             }),
         [onChange, name],
     );
-
-    if (isNewPhoneFieldWithValidation) {
-        return (
-            <span className="iti-wrapper">
-                <IntlTelInput
-                    inputProps={{
-                        ...rest,
-                        id,
-                        name,
-                        className: classNames('form-input optimizedCheckout-form-input', {
-                            'floating-input floating-form-field-input': isFloatingLabelEnabled,
-                        }),
-                    }}
-                    loadUtils={() =>
-                        import(
-                            /* webpackChunkName: "intl-tel-input-utils" */
-                            'intl-tel-input/utils'
-                        )
-                    }
-                    onChangeNumber={(number) => {
-                        onChange({
-                            target: { name, value: number },
-                        } as React.ChangeEvent<HTMLInputElement>);
-                    }}
-                    ref={intlTelInputRef}
-                    separateDialCode={false}
-                    value={value ? String(value) : ''}
-                />
-            </span>
-        );
-    }
 
     switch (fieldType) {
         case DynamicFormFieldType.DROPDOWN:
