@@ -2,6 +2,8 @@
 /* eslint-disable no-console */
 
 const { execSync } = require('child_process');
+const fs = require('fs');
+const path = require('path');
 const yargs = require('yargs');
 
 /**
@@ -66,11 +68,13 @@ function parseArguments() {
 
 function getAllProjects() {
     try {
-        const workspaceConfig = require('../../workspace.json');
+        const packagesDir = path.join(__dirname, '../../packages');
 
-        return Object.keys(workspaceConfig.projects);
+        return fs
+            .readdirSync(packagesDir)
+            .filter((name) => fs.existsSync(path.join(packagesDir, name, 'project.json')));
     } catch (error) {
-        console.error('Error reading workspace.json:', error.message);
+        console.error('Error reading packages directory:', error.message);
 
         return [];
     }
