@@ -125,8 +125,8 @@ const PaymentForm: FunctionComponent<
 
     const { checkoutState } = useCheckout();
     const { checkoutSettings } = checkoutState.data.getConfig() ?? {};
-    const selectedMethodDisabledReason = usePoMethodDisabledReason(selectedMethod);
-    const isSubmitDisabled = shouldDisableSubmit || Boolean(selectedMethodDisabledReason);
+    const poMethodDisabledReason = usePoMethodDisabledReason(selectedMethod);
+    const isSubmitDisabled = shouldDisableSubmit || Boolean(poMethodDisabledReason);
     const shouldShowSubmitButtonWhenPaymentNotRequired = isExperimentEnabled(
         checkoutSettings,
         'CHECKOUT-9729.show_submit_button_when_payment_not_required',

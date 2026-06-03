@@ -10,7 +10,7 @@ import { compact } from 'lodash';
 import React, { type FunctionComponent, memo, type ReactNode } from 'react';
 
 import { BigCommercePaymentsPayLaterBanner } from '@bigcommerce/checkout/bigcommerce-payments-utils';
-import { type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
+import { type CheckoutContextProps, useCapabilities } from '@bigcommerce/checkout/contexts';
 import {
     TranslatedString,
     withLanguage,
@@ -411,6 +411,9 @@ const PaymentMethodTitle: FunctionComponent<
     language,
     method,
 }) => {
+    const {
+        payment: { poConfig },
+    } = useCapabilities();
     const methodName = getPaymentMethodName(language)(method);
     const { logoUrl, titleText, subtitle } = getPaymentMethodTitle(
         language,
@@ -495,12 +498,12 @@ const PaymentMethodTitle: FunctionComponent<
                         className="paymentProviderHeader-poDisabledMessage"
                         data-test={`payment-method-disabled-${method.id}`}
                     >
-                        {disabledReason.kind === 'creditLimit' ? (
+                        {disabledReason === 'creditLimit' ? (
                             <TranslatedString id="payment.errors.disabled_PO_number_credit" />
                         ) : (
                             <TranslatedString
                                 data={{
-                                    currency: disabledReason.expectedCurrency,
+                                    currency: poConfig?.currency ?? '',
                                     name: titleText,
                                 }}
                                 id="payment.errors.disabled_PO_number_currency_mismatch"

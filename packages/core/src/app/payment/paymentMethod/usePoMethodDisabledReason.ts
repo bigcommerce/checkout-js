@@ -3,9 +3,7 @@ import { useMemo } from 'react';
 
 import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 
-export type PoDisabledReason =
-    | { kind: 'creditLimit' }
-    | { kind: 'currencyMismatch'; expectedCurrency: string };
+export type PoDisabledReason = 'creditLimit' | 'currencyMismatch';
 
 export interface GetPoMethodDisabledReasonArgs {
     method: PaymentMethod;
@@ -20,23 +18,23 @@ export function getPoMethodDisabledReason({
     grandTotal,
     cartCurrencyCode,
 }: GetPoMethodDisabledReasonArgs): PoDisabledReason | null {
-    if (
-        method.id !== 'cheque' ||
-        !poConfig ||
-        poConfig.creditLimit == null ||
-        !poConfig.currency ||
-        grandTotal == null ||
-        !cartCurrencyCode
-    ) {
+    const creditLimit = poConfig?.creditLimit;
+    const expectedCurrency = poConfig?.currency;
+
+    const isNotPoMethod = method.id !== 'cheque';
+    const isPoConfigIncomplete = creditLimit == null || !expectedCurrency;
+    const isCartDataMissing = grandTotal == null || !cartCurrencyCode;
+
+    if (isNotPoMethod || isPoConfigIncomplete || isCartDataMissing) {
         return null;
     }
 
-    if (poConfig.currency.toUpperCase() !== cartCurrencyCode.toUpperCase()) {
-        return { kind: 'currencyMismatch', expectedCurrency: poConfig.currency };
+    if (expectedCurrency.toUpperCase() !== cartCurrencyCode.toUpperCase()) {
+        return 'currencyMismatch';
     }
 
-    if (grandTotal > poConfig.creditLimit) {
-        return { kind: 'creditLimit' };
+    if (grandTotal > creditLimit) {
+        return 'creditLimit';
     }
 
     return null;
@@ -45,17 +43,16 @@ export function getPoMethodDisabledReason({
 export function usePoMethodDisabledReason(
     method: PaymentMethod | undefined,
 ): PoDisabledReason | undefined {
-    const {
-        checkoutState: {
-            data: { getCart, getCheckout },
-        },
-    } = useCheckout();
+    const { selectedState } = useCheckout(({ data }) => ({
+        grandTotal: data.getCheckout()?.grandTotal,
+        cartCurrencyCode: data.getCart()?.currency.code,
+    }));
     const {
         payment: { poConfig },
     } = useCapabilities();
 
-    const grandTotal = getCheckout()?.grandTotal;
-    const cartCurrencyCode = getCart()?.currency.code;
+    const grandTotal = selectedState?.grandTotal;
+    const cartCurrencyCode = selectedState?.cartCurrencyCode;
 
     return useMemo(() => {
         if (!method) {

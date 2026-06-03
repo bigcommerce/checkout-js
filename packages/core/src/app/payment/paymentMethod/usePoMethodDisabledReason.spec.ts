@@ -63,10 +63,9 @@ describe('getPoMethodDisabledReason', () => {
     });
 
     it('returns currencyMismatch when poConfig.currency differs from cart currency', () => {
-        expect(getPoMethodDisabledReason({ ...baseArgs, cartCurrencyCode: 'EUR' })).toEqual({
-            kind: 'currencyMismatch',
-            expectedCurrency: 'USD',
-        });
+        expect(getPoMethodDisabledReason({ ...baseArgs, cartCurrencyCode: 'EUR' })).toBe(
+            'currencyMismatch',
+        );
     });
 
     it('treats currency comparison as case-insensitive', () => {
@@ -86,13 +85,11 @@ describe('getPoMethodDisabledReason', () => {
                 cartCurrencyCode: 'EUR',
                 grandTotal: 9999,
             }),
-        ).toEqual({ kind: 'currencyMismatch', expectedCurrency: 'USD' });
+        ).toBe('currencyMismatch');
     });
 
     it('returns creditLimit when grandTotal exceeds the credit limit', () => {
-        expect(getPoMethodDisabledReason({ ...baseArgs, grandTotal: 150 })).toEqual({
-            kind: 'creditLimit',
-        });
+        expect(getPoMethodDisabledReason({ ...baseArgs, grandTotal: 150 })).toBe('creditLimit');
     });
 
     it('returns null when grandTotal is exactly at the credit limit', () => {
