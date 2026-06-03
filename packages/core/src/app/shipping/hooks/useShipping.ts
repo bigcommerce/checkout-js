@@ -44,6 +44,7 @@ export const useShipping = () => {
                 getBillingAddress,
                 getShippingAddressFields,
                 getShippingCountries,
+                getAddressExtraFields,
             },
             statuses: {
                 isShippingStepPending,
@@ -79,6 +80,7 @@ export const useShipping = () => {
             isDeletingConsignment: isDeletingConsignment(),
             isLoadingCheckout: isLoadingCheckout(),
             getShippingAddressFields,
+            getAddressExtraFields,
         }),
     );
     const {
