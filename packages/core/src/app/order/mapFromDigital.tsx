@@ -1,4 +1,4 @@
-import { type DigitalItem } from '@bigcommerce/checkout-sdk';
+import { type DigitalItem, type PhysicalItem } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -7,7 +7,23 @@ import getOrderSummaryItemImage from './getOrderSummaryItemImage';
 import { mapBackorderDetails } from './mapBackorderDetails';
 import { type OrderItemType, type OrderSummaryItemOption } from './OrderSummaryItem';
 
-function mapFromDigital(item: DigitalItem): OrderItemType {
+function mapFromDigital(
+    item: DigitalItem,
+    bundleItemsMap?: Map<string | number, Array<PhysicalItem | DigitalItem>>,
+    pickListExperimentEnabled?: boolean,
+): OrderItemType {
+    const bundledItems = bundleItemsMap?.get(String(item.id));
+    const bundledItemsAddedByAttributeIds = bundledItems?.map(
+        (bundledItem) => bundledItem.addedByAttributeId,
+    );
+    const options = pickListExperimentEnabled
+        ? item.options?.filter(
+              (option) =>
+                  option.attributeId &&
+                  !bundledItemsAddedByAttributeIds?.includes(option.attributeId),
+          )
+        : item.options;
+
     return {
         id: item.id,
         quantity: item.quantity,
@@ -16,7 +32,7 @@ function mapFromDigital(item: DigitalItem): OrderItemType {
         name: item.name,
         image: getOrderSummaryItemImage(item),
         productOptions: [
-            ...(item.options || []).map((option) => ({
+            ...(options || []).map((option) => ({
                 testId: 'cart-item-product-option',
                 content: `${option.name} ${option.value}`,
             })),

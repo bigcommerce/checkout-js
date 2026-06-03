@@ -1,10 +1,27 @@
-import { type PhysicalItem } from '@bigcommerce/checkout-sdk';
+import { type DigitalItem, type PhysicalItem } from '@bigcommerce/checkout-sdk';
 
 import getOrderSummaryItemImage from './getOrderSummaryItemImage';
 import { mapBackorderDetails } from './mapBackorderDetails';
 import { type OrderItemType } from './OrderSummaryItem';
 
-function mapFromPhysical(item: PhysicalItem): OrderItemType {
+function mapFromPhysical(
+    item: PhysicalItem,
+    bundleItemsMap?: Map<string | number, Array<PhysicalItem | DigitalItem>>,
+    pickListExperimentEnabled?: boolean,
+): OrderItemType {
+    const bundledItems = bundleItemsMap?.get(String(item.id));
+
+    const bundledItemsAddedByAttributeIds = bundledItems?.map(
+        (bundledItem) => bundledItem.addedByAttributeId,
+    );
+    const options = pickListExperimentEnabled
+        ? item.options?.filter(
+              (option) =>
+                  option.attributeId &&
+                  !bundledItemsAddedByAttributeIds?.includes(option.attributeId),
+          )
+        : item.options;
+
     return {
         id: item.id,
         quantity: item.quantity,
@@ -13,9 +30,14 @@ function mapFromPhysical(item: PhysicalItem): OrderItemType {
         name: item.name,
         image: getOrderSummaryItemImage(item),
         description: item.giftWrapping ? item.giftWrapping.name : undefined,
-        productOptions: (item.options || []).map((option) => ({
+        productOptions: (options || []).map((option) => ({
             testId: 'cart-item-product-option',
-            content: `${option.name} ${option.value}`,
+            content: `${option.name}: ${option.value}`,
+        })),
+        bundledItems: bundledItems?.map((item) => ({
+            name: item.name,
+            id: String(item.id),
+            ...mapBackorderDetails(item),
         })),
         ...mapBackorderDetails(item),
     };

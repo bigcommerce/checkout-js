@@ -15,7 +15,7 @@ import getItemsCount from './getItemsCount';
 import getLineItemsCount from './getLineItemsCount';
 import OrderSummaryModal from './OrderSummaryModal';
 import { type OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
-import removeBundledItems from './removeBundledItems';
+import { removeBundledItems } from './removeBundledItems';
 
 export interface OrderSummaryDrawerProps {
     lineItems: LineItemMap;
