@@ -40,6 +40,7 @@ import { StoreCreditField, StoreCreditOverlay } from './storeCredit';
 
 export interface PaymentFormProps {
     availableStoreCredit?: number;
+    disableStoreCredit?: boolean;
     defaultGatewayId?: string;
     defaultMethodId: string;
     didExceedSpamLimit?: boolean;
@@ -70,6 +71,7 @@ const PaymentForm: FunctionComponent<
     PaymentFormProps & FormikProps<PaymentFormValues> & WithLanguageProps
 > = ({
     availableStoreCredit = 0,
+    disableStoreCredit = false,
     didExceedSpamLimit,
     isEmbedded,
     isInitializingPayment,
@@ -146,7 +148,7 @@ const PaymentForm: FunctionComponent<
 
     return (
         <Form className="checkout-form" testId="payment-form">
-            {usableStoreCredit > 0 && (
+            {usableStoreCredit > 0 && !disableStoreCredit && (
                 <StoreCreditField
                     availableStoreCredit={availableStoreCredit}
                     isStoreCreditApplied={isStoreCreditApplied}

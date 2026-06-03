@@ -188,6 +188,29 @@ describe('PaymentForm', () => {
         expect(screen.queryByText(/store credit/)).not.toBeInTheDocument();
     });
 
+    it('does not render store credit field when disableStoreCredit is true even if store credit is available', () => {
+        render(
+            <PaymentFormTest {...defaultProps} disableStoreCredit={true} usableStoreCredit={100} />,
+        );
+
+        expect(screen.queryByRole('checkbox', { name: /store credit/ })).not.toBeInTheDocument();
+        expect(screen.queryByText(/store credit/)).not.toBeInTheDocument();
+    });
+
+    it('renders store credit field when disableStoreCredit is false and store credit is available', () => {
+        render(
+            <PaymentFormTest
+                {...defaultProps}
+                disableStoreCredit={false}
+                usableStoreCredit={100}
+            />,
+        );
+
+        expect(
+            screen.getByRole('checkbox', { name: 'Apply $112.00 store credit to order' }),
+        ).toBeInTheDocument();
+    });
+
     it('shows overlay if store credit can cover total cost of order', () => {
         jest.spyOn(defaultProps, 'isPaymentDataRequired').mockReturnValue(false);
 
