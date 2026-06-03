@@ -11,13 +11,14 @@ import React, { type FunctionComponent } from 'react';
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
 import {
     CheckoutProvider,
+    defaultCapabilities,
     ExtensionProvider,
     type ExtensionServiceInterface,
     LocaleContext,
     type LocaleContextType,
 } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
-import { render, screen } from '@bigcommerce/checkout/test-utils';
+import { fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { B2BExtraFieldsSessionStorage } from '../address';
 import { getCart } from '../cart/carts.mock';
@@ -25,6 +26,7 @@ import { createErrorLogger } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
 
+import { InvoicePaymentCommentSessionStorage } from './InvoicePaymentCommentSessionStorage';
 import { getPaymentMethod } from './payment-methods.mock';
 import PaymentContext, { type PaymentContextProps } from './PaymentContext';
 import PaymentForm, { type PaymentFormProps } from './PaymentForm';
@@ -278,6 +280,80 @@ describe('PaymentForm', () => {
             render(<PaymentFormTest {...defaultProps} />);
 
             expect(screen.queryByTestId('order-extra-fields')).not.toBeInTheDocument();
+        });
+    });
+
+    describe('invoice payment comment', () => {
+        const enableCapability = () => {
+            const storeConfig = getStoreConfig();
+
+            jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
+                ...storeConfig,
+                checkoutSettings: {
+                    ...storeConfig.checkoutSettings,
+                    capabilities: {
+                        ...defaultCapabilities,
+                        payment: {
+                            ...defaultCapabilities.payment,
+                            invoicePaymentComment: true,
+                        },
+                    },
+                },
+            });
+        };
+
+        beforeEach(() => {
+            sessionStorage.clear();
+        });
+
+        it('renders the textarea when the capability is enabled', () => {
+            enableCapability();
+
+            render(<PaymentFormTest {...defaultProps} />);
+
+            expect(screen.getByTestId('invoicePaymentComment-input')).toBeInTheDocument();
+            expect(
+                screen.getByText(
+                    localeContext.language.translate('payment.invoice_payment_comment_label'),
+                ),
+            ).toBeInTheDocument();
+        });
+
+        it('does not render the textarea when the capability is disabled', () => {
+            render(<PaymentFormTest {...defaultProps} />);
+
+            expect(screen.queryByTestId('invoicePaymentComment-input')).not.toBeInTheDocument();
+        });
+
+        it('seeds the textarea from session storage when a value is stored', () => {
+            enableCapability();
+            InvoicePaymentCommentSessionStorage.set('restored comment');
+
+            render(<PaymentFormTest {...defaultProps} />);
+
+            expect(screen.getByDisplayValue('restored comment')).toBeInTheDocument();
+        });
+
+        it('writes typed values to session storage and strips them from the submit payload', async () => {
+            enableCapability();
+
+            const onSubmit = jest.fn();
+
+            render(<PaymentFormTest {...defaultProps} onSubmit={onSubmit} />);
+
+            fireEvent.change(screen.getByTestId('invoicePaymentComment-input'), {
+                target: { value: 'note for invoice' },
+            });
+
+            expect(InvoicePaymentCommentSessionStorage.get()).toBe('note for invoice');
+
+            fireEvent.submit(screen.getByTestId('payment-form'));
+
+            await new Promise((resolve) => process.nextTick(resolve));
+
+            expect(onSubmit).toHaveBeenCalledWith(
+                expect.not.objectContaining({ invoicePaymentComment: expect.anything() }),
+            );
         });
     });
 });

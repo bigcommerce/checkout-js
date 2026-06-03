@@ -9,7 +9,7 @@ import React, { type FunctionComponent, memo, useCallback, useContext, useMemo }
 import { type ObjectSchema } from 'yup';
 
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
-import { useCheckout } from '@bigcommerce/checkout/contexts';
+import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import {
     TranslatedString,
     withLanguage,
@@ -24,6 +24,8 @@ import { getOrderExtraFieldsValidationSchema } from '../formFields';
 import { TermsConditions } from '../termsConditions';
 
 import getPaymentValidationSchema from './getPaymentValidationSchema';
+import InvoicePaymentCommentField from './InvoicePaymentCommentField';
+import { InvoicePaymentCommentSessionStorage } from './InvoicePaymentCommentSessionStorage';
 import { NoPaymentMethods } from './NoPaymentMethods';
 import { getInitialOrderExtraFieldsValues, OrderExtraFieldsFieldset } from './orderExtraFields';
 import {
@@ -123,6 +125,9 @@ const PaymentForm: FunctionComponent<
     }, [selectedMethod]);
 
     const { checkoutState } = useCheckout();
+    const {
+        payment: { invoicePaymentComment },
+    } = useCapabilities();
     const { checkoutSettings } = checkoutState.data.getConfig() ?? {};
     const shouldShowSubmitButtonWhenPaymentNotRequired = isExperimentEnabled(
         checkoutSettings,
@@ -196,6 +201,8 @@ const PaymentForm: FunctionComponent<
             {orderExtraFields && orderExtraFields.length > 0 && (
                 <OrderExtraFieldsFieldset formFields={orderExtraFields} />
             )}
+
+            {invoicePaymentComment && <InvoicePaymentCommentField />}
 
             <div className="form-actions">
                 {hideSubmitPaymentButton ? (
@@ -339,12 +346,18 @@ const paymentFormConfig: WithFormikConfig<PaymentFormProps & WithLanguageProps, 
                     orderExtraFields,
                     storedOrderExtraFields,
                 ),
+                invoicePaymentComment: InvoicePaymentCommentSessionStorage.get(),
             };
         },
 
         handleSubmit: (values, { props: { onSubmit = noop } }) => {
-            const { orderExtraFields, ...rest } = values as PaymentFormValues & {
+            const {
+                orderExtraFields,
+                invoicePaymentComment: _invoicePaymentComment,
+                ...rest
+            } = values as PaymentFormValues & {
                 orderExtraFields?: Record<string, unknown>;
+                invoicePaymentComment?: string;
             };
 
             if (orderExtraFields && Object.keys(orderExtraFields).length > 0) {
