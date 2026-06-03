@@ -39,6 +39,7 @@ export function getPhysicalItem(): PhysicalItem {
         extendedComparisonPrice: 250,
         isShippingRequired: true,
         addedByPromotion: false,
+        addedByAttributeId: null,
         options: [
             {
                 name: 'n',
@@ -77,6 +78,7 @@ export function getDigitalItem(): DigitalItem {
         extendedSalePrice: 200,
         extendedComparisonPrice: 250,
         addedByPromotion: false,
+        addedByAttributeId: null,
         options: [
             {
                 name: 'm',
@@ -133,6 +135,7 @@ export function getPicklistItem(): PhysicalItem[] {
             extendedComparisonPrice: 250,
             isShippingRequired: true,
             addedByPromotion: false,
+            addedByAttributeId: null,
             options: [
                 {
                     name: 'n',
@@ -166,6 +169,7 @@ export function getPicklistItem(): PhysicalItem[] {
             extendedComparisonPrice: 150,
             isShippingRequired: true,
             addedByPromotion: false,
+            addedByAttributeId: null,
             categoryNames: ['Cat 1'],
             parentId: '666',
             retailPrice: 1,
