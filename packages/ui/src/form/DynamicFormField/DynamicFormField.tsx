@@ -103,10 +103,6 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
         return fieldType as DynamicFormFieldType;
     }, [fieldType, type, secret, name]);
 
-    const isNewPhoneFieldWithValidation =
-        isNewPhoneValidationExperimentEnabled &&
-        dynamicFormFieldType === DynamicFormFieldType.TELEPHONE;
-
     return (
         <div
             className={classNames(
@@ -121,7 +117,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
                 fieldType={fieldType}
                 id={fieldInputId}
                 isFloatingLabelEnabled={isFloatingLabelSupportedFieldType}
-                isNewPhoneFieldWithValidation={isNewPhoneFieldWithValidation}
+                isNewPhoneValidationExperimentEnabled={isNewPhoneValidationExperimentEnabled}
                 label={labelComponent}
                 max={max}
                 maxLength={maxLength}

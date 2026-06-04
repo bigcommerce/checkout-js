@@ -25,7 +25,6 @@ export const PhoneInput: FunctionComponent<PhoneInputProps> = ({
     intlTelInputRef,
 }) => {
     useEffect(() => {
-        // auto-set phone number country based on shipping address
         if (!selectedCountry || value) {
             return;
         }

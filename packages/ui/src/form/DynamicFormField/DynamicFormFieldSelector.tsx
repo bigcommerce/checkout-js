@@ -22,7 +22,7 @@ export interface DynamicFormFieldControlProps {
     min?: FormFieldType['min'];
     maxLength?: FormFieldType['maxLength'];
     isFloatingLabelEnabled?: boolean;
-    isNewPhoneFieldWithValidation: boolean;
+    isNewPhoneValidationExperimentEnabled: boolean;
     selectedCountry?: string;
     onChange?(value: string | string[]): void;
 }
@@ -41,10 +41,14 @@ export const DynamicFormFieldSelector: FunctionComponent<DynamicFormFieldControl
         min,
         maxLength,
         isFloatingLabelEnabled,
-        isNewPhoneFieldWithValidation,
+        isNewPhoneValidationExperimentEnabled,
         selectedCountry,
         onChange,
     }) => {
+        const isNewPhoneFieldWithValidation =
+            isNewPhoneValidationExperimentEnabled &&
+            dynamicFormFieldType === DynamicFormFieldType.TELEPHONE;
+
         const renderInput = useCallback(
             ({ field }: FieldProps<string>) => (
                 <DynamicInput
