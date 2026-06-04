@@ -40,7 +40,13 @@ describe('mapFromDigital()', () => {
                 ...getDigitalItem(),
                 id: '667',
                 options: [
-                    { name: 'Color', nameId: 10, value: 'Red', valueId: 1, attributeId: 'attr-color' },
+                    {
+                        name: 'Color',
+                        nameId: 10,
+                        value: 'Red',
+                        valueId: 1,
+                        attributeId: 'attr-color',
+                    },
                     {
                         name: 'Pick List Option',
                         nameId: 11,
@@ -51,15 +57,17 @@ describe('mapFromDigital()', () => {
                 ] as LineItemOption[],
             };
 
-            const bundleItemsMap = new Map<string | number, Array<PhysicalItem>>([
+            const bundleItemsMap = new Map<string | number, PhysicalItem[]>([
                 ['667', [bundledChild]],
             ]);
 
             const { productOptions = [] } = mapFromDigital(item, bundleItemsMap, true);
-            const itemOptions = productOptions.filter((o) => o.testId === 'cart-item-product-option');
+            const itemOptions = productOptions.filter(
+                (o) => o.testId === 'cart-item-product-option',
+            );
 
             expect(itemOptions).toHaveLength(1);
-            expect(itemOptions[0].content).toBe('Color Red');
+            expect(itemOptions[0].content).toBe('Color: Red');
         });
 
         it('returns bundledItems with backorder details from stockPosition', () => {
@@ -79,7 +87,7 @@ describe('mapFromDigital()', () => {
 
             const item = { ...getDigitalItem(), id: '667', options: [] as LineItemOption[] };
 
-            const bundleItemsMap = new Map<string | number, Array<PhysicalItem>>([
+            const bundleItemsMap = new Map<string | number, PhysicalItem[]>([
                 ['667', [bundledChild]],
             ]);
 
@@ -95,7 +103,7 @@ describe('mapFromDigital()', () => {
 
         it('returns undefined bundledItems when item has no children in the map', () => {
             const item = { ...getDigitalItem(), id: '667' };
-            const bundleItemsMap = new Map<string | number, Array<PhysicalItem>>();
+            const bundleItemsMap = new Map<string | number, PhysicalItem[]>();
 
             const { bundledItems } = mapFromDigital(item, bundleItemsMap, true);
 
@@ -126,15 +134,19 @@ describe('mapFromDigital()', () => {
                 ] as LineItemOption[],
             };
 
-            const bundleItemsMap = new Map<string | number, Array<PhysicalItem>>([
+            const bundleItemsMap = new Map<string | number, PhysicalItem[]>([
                 ['667', [bundledChild]],
             ]);
 
-            const { productOptions = [], bundledItems } = mapFromDigital(item, bundleItemsMap, false);
-
-            expect(productOptions.filter((o) => o.testId === 'cart-item-product-option')).toHaveLength(
-                1,
+            const { productOptions = [], bundledItems } = mapFromDigital(
+                item,
+                bundleItemsMap,
+                false,
             );
+
+            expect(
+                productOptions.filter((o) => o.testId === 'cart-item-product-option'),
+            ).toHaveLength(1);
             expect(bundledItems).toBeUndefined();
         });
     });

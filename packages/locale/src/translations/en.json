@@ -75,6 +75,7 @@
             "backorder_quantities_changed_heading": "The backorder quantities have changed for below items:",
             "cart_stock_modal_destination": "Destination #{consignmentNumber}",
             "ready_to_ship_count_text": "{count} ready to ship",
+            "bundled_item_label": "Bundle:",
             "show_backorder_details": "Show backorder details",
             "hide_backorder_details": "Hide backorder details",
             "print_action": "Print",

@@ -34,7 +34,13 @@ describe('mapFromPhysical()', () => {
             const item = {
                 ...getPhysicalItem(),
                 options: [
-                    { name: 'Color', nameId: 10, value: 'Red', valueId: 1, attributeId: 'attr-color' },
+                    {
+                        name: 'Color',
+                        nameId: 10,
+                        value: 'Red',
+                        valueId: 1,
+                        attributeId: 'attr-color',
+                    },
                 ] as LineItemOption[],
             };
             const result = mapFromPhysical(item, undefined, true);
@@ -54,7 +60,13 @@ describe('mapFromPhysical()', () => {
                 ...getPhysicalItem(),
                 id: '666',
                 options: [
-                    { name: 'Color', nameId: 10, value: 'Blue', valueId: 1, attributeId: 'attr-color' },
+                    {
+                        name: 'Color',
+                        nameId: 10,
+                        value: 'Blue',
+                        valueId: 1,
+                        attributeId: 'attr-color',
+                    },
                     {
                         name: 'Pick List',
                         nameId: 11,
@@ -65,9 +77,7 @@ describe('mapFromPhysical()', () => {
                 ] as LineItemOption[],
             };
 
-            const bundleItemsMap = new Map<string | number, Array<PhysicalItem>>([
-                ['666', [child]],
-            ]);
+            const bundleItemsMap = new Map<string | number, PhysicalItem[]>([['666', [child]]]);
 
             const result = mapFromPhysical(parent, bundleItemsMap, true);
 
@@ -92,9 +102,7 @@ describe('mapFromPhysical()', () => {
 
             const parent = { ...getPhysicalItem(), id: '666' };
 
-            const bundleItemsMap = new Map<string | number, Array<PhysicalItem>>([
-                ['666', [child]],
-            ]);
+            const bundleItemsMap = new Map<string | number, PhysicalItem[]>([['666', [child]]]);
 
             const { bundledItems } = mapFromPhysical(parent, bundleItemsMap, true);
 
@@ -120,9 +128,7 @@ describe('mapFromPhysical()', () => {
                 addedByAttributeId: 'attr-picklist',
             } as unknown as PhysicalItem;
 
-            const bundleItemsMap = new Map<string | number, Array<PhysicalItem>>([
-                ['666', [child]],
-            ]);
+            const bundleItemsMap = new Map<string | number, PhysicalItem[]>([['666', [child]]]);
 
             const { bundledItems } = mapFromPhysical(
                 { ...getPhysicalItem(), id: '666' },
@@ -158,9 +164,7 @@ describe('mapFromPhysical()', () => {
                 ] as LineItemOption[],
             };
 
-            const bundleItemsMap = new Map<string | number, Array<PhysicalItem>>([
-                ['666', [child]],
-            ]);
+            const bundleItemsMap = new Map<string | number, PhysicalItem[]>([['666', [child]]]);
 
             const result = mapFromPhysical(parent, bundleItemsMap, false);
 

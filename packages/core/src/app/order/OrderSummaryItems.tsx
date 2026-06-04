@@ -195,30 +195,16 @@ const OrderSummaryItems = ({
 }: OrderSummaryItemsProps): ReactElement => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [showBackorderDetails, setShowBackorderDetails] = useState(false);
-    let nonBundledItems: LineItemMap;
-    let bundleItemsMap: Map<string | number, Array<PhysicalItem | DigitalItem>> | undefined;
-    let nonBundledAndBundleMap;
     const { checkoutState } = useCheckout();
     const config = checkoutState.data.getConfig();
 
-    if (!config) {
-        return <></>;
-    }
+    const pickListExperimentEnabled = config
+        ? isExperimentEnabled(config.checkoutSettings, 'BACK-425.update_bundle_item_ux', false)
+        : false;
 
-    const pickListExperimentEnabled = isExperimentEnabled(
-        config.checkoutSettings,
-        'BACK-425.update_bundle_item_ux',
-        false,
-    );
-
-    if (pickListExperimentEnabled) {
-        nonBundledAndBundleMap = removeAndBundleItemsTogether(items);
-
-        nonBundledItems = nonBundledAndBundleMap.nonBundledItems;
-        bundleItemsMap = nonBundledAndBundleMap.bundleItemsMap;
-    } else {
-        nonBundledItems = removeBundledItems(items);
-    }
+    const { nonBundledItems, bundleItemsMap } = pickListExperimentEnabled
+        ? removeAndBundleItemsTogether(items)
+        : { nonBundledItems: removeBundledItems(items), bundleItemsMap: undefined };
 
     const collapsedLimit = isSmallScreen()
         ? COLLAPSED_ITEMS_LIMIT_SMALL_SCREEN

@@ -34,7 +34,9 @@ function mapFromDigital(
         productOptions: [
             ...(options || []).map((option) => ({
                 testId: 'cart-item-product-option',
-                content: `${option.name} ${option.value}`,
+                content: pickListExperimentEnabled
+                    ? `${option.name}: ${option.value}`
+                    : `${option.name} ${option.value}`,
             })),
             getDigitalItemDescription(item),
         ],

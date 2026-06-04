@@ -100,6 +100,7 @@
 }
 
 .bundled-items-container {
+    margin-left: 0;
     margin-top: spacing("quarter");
 
     .bundled-item {
@@ -110,6 +111,10 @@
 
     .bundled-item-name {
         margin-bottom: 0;
+    }
+
+    .body-bold {
+        font-weight: $fontWeight-bold;
     }
 }
 

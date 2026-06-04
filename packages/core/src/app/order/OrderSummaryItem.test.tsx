@@ -127,7 +127,13 @@ describe('OrderSummaryItem', () => {
         it('renders each bundled item name with the Bundle label', () => {
             render(
                 <OrderSummaryItem
-                    orderItem={{ amount: 10, id: 'foo', name: 'Product', quantity: 1, bundledItems }}
+                    orderItem={{
+                        amount: 10,
+                        id: 'foo',
+                        name: 'Product',
+                        quantity: 1,
+                        bundledItems,
+                    }}
                     shouldExpandBackorderDetails={false}
                 />,
             );
@@ -150,15 +156,38 @@ describe('OrderSummaryItem', () => {
             expect(screen.queryByTestId('cart-item-bundled-item-name')).not.toBeInTheDocument();
         });
 
-        it('renders a bundled-items-container element', () => {
-            const { container } = render(
+        it('renders bundled items in a <ul> element', () => {
+            render(
                 <OrderSummaryItem
-                    orderItem={{ amount: 10, id: 'foo', name: 'Product', quantity: 1, bundledItems }}
+                    orderItem={{
+                        amount: 10,
+                        id: 'foo',
+                        name: 'Product',
+                        quantity: 1,
+                        bundledItems,
+                    }}
                     shouldExpandBackorderDetails={false}
                 />,
             );
 
-            expect(container.querySelector('.bundled-items-container')).toBeInTheDocument();
+            expect(screen.getByRole('list')).toBeInTheDocument();
+        });
+
+        it('does not render the bundled items container when bundledItems is an empty array', () => {
+            render(
+                <OrderSummaryItem
+                    orderItem={{
+                        amount: 10,
+                        id: 'foo',
+                        name: 'Product',
+                        quantity: 1,
+                        bundledItems: [],
+                    }}
+                    shouldExpandBackorderDetails={false}
+                />,
+            );
+
+            expect(screen.queryByRole('list')).not.toBeInTheDocument();
         });
     });
 });
