@@ -74,14 +74,12 @@ const OrderSummaryItemBackorderDetails = ({
 
     return (
         <CollapseCSSTransition isVisible={isExpanded} nodeRef={backorderDetailsRef}>
-            {/* <div className="product-backorder-details-container" ref={backorderDetailsRef}> */}
             <div
-                className="product-backorder-details-container product-options optimizedCheckout-contentSecondary sub-text-medium"
+                className="product-backorder-details-container optimizedCheckout-contentSecondary sub-text-medium"
                 ref={backorderDetailsRef}
             >
                 {shouldDisplayQuantityOnHand && (
-                    // <div className="sub-text" data-test="cart-item-onhand-qty">
-                    <div className="product-option" data-test="cart-item-onhand-qty">
+                    <div data-test="cart-item-onhand-qty">
                         <TranslatedString
                             data={{ count: quantityOnHand }}
                             id="cart.ready_to_ship_count_text"
@@ -89,8 +87,7 @@ const OrderSummaryItemBackorderDetails = ({
                     </div>
                 )}
                 {shouldDisplayQuantityOnBackorder && (
-                    // <div className="sub-text" data-test="cart-item-backorder-qty">
-                    <div className="product-option" data-test="cart-item-backorder-qty">
+                    <div data-test="cart-item-backorder-qty">
                         <TranslatedString
                             data={{ count: quantityBackordered }}
                             id="cart.backorder_count_text"
@@ -98,10 +95,7 @@ const OrderSummaryItemBackorderDetails = ({
                     </div>
                 )}
                 {shouldDisplayBackorderMessage && (
-                    // <div className="sub-text" data-test="cart-item-backorder-message">
-                    <div className="product-option" data-test="cart-item-backorder-message">
-                        {backorderMessage}
-                    </div>
+                    <div data-test="cart-item-backorder-message">{backorderMessage}</div>
                 )}
             </div>
         </CollapseCSSTransition>
@@ -125,8 +119,6 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
         backorderMessage,
         bundledItems,
     } = orderItem;
-
-    console.log(bundledItems);
 
     return (
         <div className="product" data-test="cart-item">
@@ -167,20 +159,23 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
                     quantityOnHand={quantityOnHand}
                 />
 
-                <div style={{ marginTop: '10px' }}>
+                <div className="bundled-items-container">
                     {bundledItems?.map((item) => (
                         <li
-                            className="product-options optimizedCheckout-contentSecondary sub-text-medium"
+                            className="bundled-item optimizedCheckout-contentSecondary sub-text-medium"
                             key={item.id}
                         >
-                            <div className="product-option" style={{ marginBottom: '0' }}>
-                                <span style={{ fontWeight: 'bold' }}>Bundle:</span> {item.name}
+                            <div
+                                className="bundled-item-name"
+                                data-test="cart-item-bundled-item-name"
+                            >
+                                <span className="body-bold">Bundle:</span> {item.name}
                             </div>
                             <OrderSummaryItemBackorderDetails
                                 backorderMessage={item.backorderMessage}
                                 isExpanded={shouldExpandBackorderDetails}
                                 quantityBackordered={item.quantityBackordered}
-                                quantityOnHand={item.quantityBackordered}
+                                quantityOnHand={item.quantityOnHand}
                             />
                         </li>
                     ))}
