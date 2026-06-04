@@ -3,7 +3,11 @@ import React from 'react';
 
 import { renderWithoutWrapper } from '@bigcommerce/checkout/test-utils';
 
-import HostedCreditCardComponent from './HostedCreditCardComponent';
+import HostedCreditCardComponent, {
+    type HostedCreditCardComponentProps,
+} from './HostedCreditCardComponent';
+import { type HostedCreditCardFieldsetProps } from './HostedCreditCardFieldset';
+import { type HostedCreditCardValidationProps } from './HostedCreditCardValidation';
 
 jest.mock('@bigcommerce/checkout/credit-card-integration', () => ({
     // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -31,7 +35,7 @@ jest.mock('./HostedCreditCardFieldset', () => ({
         cardNumberId,
         focusedFieldType,
         additionalFields,
-    }) => (
+    }: HostedCreditCardFieldsetProps) => (
         <div data-test="fieldset">
             {cardCodeId && <div data-test="cc-cvv">{cardCodeId}</div>}
             {cardExpiryId && <div data-test="cc-expiry">{cardExpiryId}</div>}
@@ -44,7 +48,11 @@ jest.mock('./HostedCreditCardFieldset', () => ({
 }));
 
 jest.mock('./HostedCreditCardValidation', () => ({
-    HostedCreditCardValidation: ({ cardCodeId, cardNumberId, focusedFieldType }) => (
+    HostedCreditCardValidation: ({
+        cardCodeId,
+        cardNumberId,
+        focusedFieldType,
+    }: HostedCreditCardValidationProps) => (
         <div data-test="validation">
             {cardCodeId && <div data-test="val-cc-cvv">{cardCodeId}</div>}
             {cardNumberId && <div data-test="val-cc-number">{cardNumberId}</div>}
@@ -53,17 +61,14 @@ jest.mock('./HostedCreditCardValidation', () => ({
     ),
 }));
 
-jest.mock(
-    '@bigcommerce/checkout/instrument-utils',
-    // eslint-disable-next-line  @typescript-eslint/no-unsafe-return
-    () => ({
-        ...jest.requireActual('@bigcommerce/checkout/instrument-utils'),
-        getCreditCardInputStyles: jest.fn().mockResolvedValue({}),
-        isInstrumentCardCodeRequiredSelector: () => () => true,
-        isInstrumentCardNumberRequiredSelector: () => () => true,
-        CreditCardCustomerCodeField: () => <div data-test="customer-code-field" />,
-    }),
-);
+// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+jest.mock('@bigcommerce/checkout/instrument-utils', () => ({
+    ...jest.requireActual('@bigcommerce/checkout/instrument-utils'),
+    getCreditCardInputStyles: jest.fn().mockResolvedValue({}),
+    isInstrumentCardCodeRequiredSelector: () => () => true,
+    isInstrumentCardNumberRequiredSelector: () => () => true,
+    CreditCardCustomerCodeField: () => <div data-test="customer-code-field" />,
+}));
 
 jest.mock('./getHostedCreditCardValidationSchema', () => ({
     getHostedCreditCardValidationSchema: jest.fn(() => ({})),
@@ -72,33 +77,35 @@ jest.mock('./getHostedInstrumentValidationSchema', () => ({
     getHostedInstrumentValidationSchema: jest.fn(() => ({})),
 }));
 
-const getDefaultProps = (overrides = {}) => ({
-    method: {
-        id: 'credit_card',
-        gateway: 'bluesnapdirect',
-        config: {
-            cardCode: true,
-            showCardHolderName: true,
-            requireCustomerCode: false,
+const getDefaultProps = (overrides = {}): HostedCreditCardComponentProps =>
+    ({
+        method: {
+            id: 'credit_card',
+            gateway: 'bluesnapdirect',
+            config: {
+                cardCode: true,
+                isHostedFormEnabled: true,
+                showCardHolderName: true,
+                requireCustomerCode: false,
+            },
         },
-    },
-    checkoutService: {
-        initializePayment: jest.fn().mockResolvedValue(undefined),
-        deinitializePayment: jest.fn(),
-    },
-    checkoutState: {},
-    paymentForm: {
-        setFieldTouched: jest.fn(),
-        setFieldValue: jest.fn(),
-        setSubmitted: jest.fn(),
-        submitForm: jest.fn(),
-    },
-    language: {
-        translate: (key: string) => key,
-    },
-    onUnhandledError: jest.fn(),
-    ...overrides,
-});
+        checkoutService: {
+            initializePayment: jest.fn().mockResolvedValue(undefined),
+            deinitializePayment: jest.fn(),
+        },
+        checkoutState: {},
+        paymentForm: {
+            setFieldTouched: jest.fn(),
+            setFieldValue: jest.fn(),
+            setSubmitted: jest.fn(),
+            submitForm: jest.fn(),
+        },
+        language: {
+            translate: (key: string) => key,
+        },
+        onUnhandledError: jest.fn(),
+        ...overrides,
+    }) as unknown as HostedCreditCardComponentProps;
 
 describe('HostedCreditCardComponent', () => {
     it('renders HostedCreditCardFieldset with correct ids', () => {
@@ -126,6 +133,7 @@ describe('HostedCreditCardComponent', () => {
                         gateway: 'bluesnapdirect',
                         config: {
                             cardCode: true,
+                            isHostedFormEnabled: true,
                             showCardHolderName: true,
                             requireCustomerCode: true,
                         },
@@ -170,6 +178,7 @@ describe('HostedCreditCardComponent', () => {
                         gateway: 'bluesnapdirect',
                         config: {
                             cardCode: false,
+                            isHostedFormEnabled: true,
                             showCardHolderName: false,
                             requireCustomerCode: false,
                         },
@@ -360,6 +369,76 @@ describe('HostedCreditCardComponent', () => {
             accessibilityLabel: 'payment.credit_card_number_label',
             containerId: 'bluesnapdirect-credit_card-ccNumber',
             instrumentId: 'token456',
+        });
+    });
+
+    describe('when Feature_HostedPaymentForm is disabled (isHostedFormEnabled: false)', () => {
+        const getDisabledFlagProps = () =>
+            getDefaultProps({
+                method: {
+                    id: 'credit_card',
+                    gateway: 'bluesnapdirect',
+                    config: {
+                        cardCode: true,
+                        isHostedFormEnabled: false,
+                        showCardHolderName: true,
+                        requireCustomerCode: false,
+                    },
+                },
+            });
+
+        it('does not render HostedCreditCardFieldset', () => {
+            renderWithoutWrapper(<HostedCreditCardComponent {...getDisabledFlagProps()} />);
+
+            expect(screen.queryByTestId('fieldset')).not.toBeInTheDocument();
+        });
+
+        it('calls initializePayment without creditCard options', async () => {
+            const initializePayment = jest.fn().mockResolvedValue(undefined);
+
+            renderWithoutWrapper(
+                <HostedCreditCardComponent
+                    {...getDisabledFlagProps()}
+                    checkoutService={
+                        {
+                            initializePayment,
+                            deinitializePayment: jest.fn(),
+                        } as unknown as HostedCreditCardComponentProps['checkoutService']
+                    }
+                />,
+            );
+
+            fireEvent.click(screen.getByTestId('init-btn'));
+
+            await waitFor(() => expect(initializePayment).toHaveBeenCalled());
+
+            expect(initializePayment.mock.calls[0][0]).not.toHaveProperty('creditCard');
+        });
+    });
+
+    describe('when Feature_HostedPaymentForm is enabled (isHostedFormEnabled: true)', () => {
+        it('renders HostedCreditCardFieldset', () => {
+            renderWithoutWrapper(<HostedCreditCardComponent {...getDefaultProps()} />);
+
+            expect(screen.getByTestId('fieldset')).toBeInTheDocument();
+        });
+
+        it('calls initializePayment with creditCard options', async () => {
+            const initializePayment = jest.fn().mockResolvedValue(undefined);
+
+            renderWithoutWrapper(
+                <HostedCreditCardComponent
+                    {...getDefaultProps({
+                        checkoutService: { initializePayment, deinitializePayment: jest.fn() },
+                    })}
+                />,
+            );
+
+            fireEvent.click(screen.getByTestId('init-btn'));
+
+            await waitFor(() => expect(initializePayment).toHaveBeenCalled());
+
+            expect(initializePayment.mock.calls[0][0]).toHaveProperty('creditCard');
         });
     });
 });
