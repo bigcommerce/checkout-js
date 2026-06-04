@@ -9,13 +9,7 @@ export interface ThemeProviderProps {
 }
 
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
-    const {
-        checkoutState: {
-            data: { getConfig },
-        },
-    } = useCheckout();
-
-    const config = getConfig();
+    const { selectedState: config } = useCheckout((state) => state.data.getConfig());
 
     let themeV2 = false;
 

@@ -8,7 +8,8 @@ import React, {
     useState,
 } from 'react';
 
-import { CapabilitiesProvider } from '../capabilities';
+import { CapabilitiesProvider, CapabilitiesProviderV2 } from '../capabilities';
+
 import CheckoutContext from './CheckoutContext';
 import type ErrorLogger from './ErrorLogger';
 
@@ -25,37 +26,19 @@ const CheckoutProviderV2: React.FC<CheckoutProviderProps> = ({
     children,
     isCheckoutHookExperimentEnabled,
 }) => {
-    const [checkoutState, setCheckoutState] = useState<CheckoutSelectors>(() =>
-        checkoutService.getState(),
-    );
-    const unsubscribeRef = useRef<(() => void) | undefined>();
-
-    useEffect(() => {
-        unsubscribeRef.current = checkoutService.subscribe((newCheckoutState) =>
-            setCheckoutState(newCheckoutState),
-        );
-
-        return () => {
-            if (unsubscribeRef.current) {
-                unsubscribeRef.current();
-                unsubscribeRef.current = undefined;
-            }
-        };
-    }, [checkoutService]);
-
     const contextValue = useMemo(
         () => ({
             checkoutService,
-            checkoutState, // TODO: this can be removed once experiment is over
+            checkoutState: checkoutService.getState(), // TODO: this can be removed once experiment is over
             errorLogger,
             isCheckoutHookExperimentEnabled,
         }),
-        [checkoutService, checkoutState, errorLogger, isCheckoutHookExperimentEnabled],
+        [checkoutService, errorLogger, isCheckoutHookExperimentEnabled],
     );
 
     return (
         <CheckoutContext.Provider value={contextValue}>
-            <CapabilitiesProvider checkoutState={checkoutState}>{children}</CapabilitiesProvider>
+            <CapabilitiesProviderV2>{children}</CapabilitiesProviderV2>
         </CheckoutContext.Provider>
     );
 };
