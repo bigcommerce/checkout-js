@@ -83,7 +83,47 @@ export interface UseCustomerReturn {
 }
 
 export const useCustomer = (): UseCustomerReturn => {
-    const { checkoutState, checkoutService } = useCheckout();
+    const { checkoutState, checkoutService } = useCheckout(
+        ({
+            data: {
+                getBillingAddress,
+                getCustomerAccountFields,
+                getCheckout,
+                getCustomer,
+                getCart,
+                getSignInEmail,
+                getConfig,
+                isPaymentDataRequired,
+            },
+            errors: { getSignInError, getSignInEmailError, getCreateCustomerAccountError },
+            statuses: {
+                isContinuingAsGuest,
+                isExecutingPaymentMethodCheckout,
+                isInitializingCustomer,
+                isSigningIn,
+                isSendingSignInEmail,
+                isCreatingCustomerAccount,
+            },
+        }) => ({
+            billingAddress: getBillingAddress(),
+            checkout: getCheckout(),
+            customer: getCustomer(),
+            cart: getCart(),
+            signInEmail: getSignInEmail(),
+            config: getConfig(),
+            isPaymentDataRequired: isPaymentDataRequired(),
+            signInError: getSignInError(),
+            signInEmailError: getSignInEmailError(),
+            createCustomerAccountError: getCreateCustomerAccountError(),
+            isContinuingAsGuest: isContinuingAsGuest(),
+            isExecutingPaymentMethodCheckout: isExecutingPaymentMethodCheckout(),
+            isInitializingCustomer: isInitializingCustomer(),
+            isSigningIn: isSigningIn(),
+            isSendingSignInEmail: isSendingSignInEmail(),
+            isCreatingCustomerAccount: isCreatingCustomerAccount(),
+            customerAccountFields: getCustomerAccountFields(),
+        }),
+    );
 
     const {
         data: {
