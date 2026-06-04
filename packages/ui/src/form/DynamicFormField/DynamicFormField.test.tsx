@@ -1,7 +1,7 @@
 import { createLanguageService, type FormField as FormFieldType } from '@bigcommerce/checkout-sdk';
 import userEvent from '@testing-library/user-event';
 import { Formik } from 'formik';
-import React from 'react';
+import React, { forwardRef, useImperativeHandle } from 'react';
 
 import { LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -10,6 +10,37 @@ import { fireEvent, render, screen, waitFor } from '@bigcommerce/checkout/test-u
 import { FormProvider } from '../contexts';
 
 import DynamicFormField from './DynamicFormField';
+
+const mockIsValidNumber = jest.fn();
+const mockSetCountry = jest.fn();
+
+jest.mock('@intl-tel-input/react', () => ({
+    __esModule: true,
+    default: forwardRef<
+        unknown,
+        {
+            inputProps?: Record<string, unknown>;
+            onChangeNumber?: (value: string) => void;
+            value?: string;
+        }
+    >(({ inputProps, onChangeNumber, value }, ref) => {
+        useImperativeHandle(ref, () => ({
+            getInstance: () => ({
+                isValidNumber: mockIsValidNumber,
+                setCountry: mockSetCountry,
+            }),
+        }));
+
+        return (
+            <input
+                data-test="iti-phone-input"
+                {...inputProps}
+                onChange={(e) => onChangeNumber?.(e.target.value)}
+                value={value ?? ''}
+            />
+        );
+    }),
+}));
 
 describe('DynamicFormField Component', () => {
     const localeContext: LocaleContextType = { language: createLanguageService() };
@@ -88,7 +119,7 @@ describe('DynamicFormField Component', () => {
     });
 
     it('renders label', () => {
-        render(
+        const { container } = render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={{}} onSubmit={jest.fn()}>
                     <DynamicFormField
@@ -102,9 +133,8 @@ describe('DynamicFormField Component', () => {
         expect(
             screen.getByText(localeContext.language.translate('address.address_line_1_label')),
         ).toBeInTheDocument();
-        expect(
-            screen.queryByText(localeContext.language.translate('common.optional_text')),
-        ).not.toBeInTheDocument();
+        // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
+        expect(container.querySelector('.optimizedCheckout-contentSecondary')).toBeNull();
     });
 
     it('renders `optional` label when field is not required', () => {
@@ -174,13 +204,22 @@ describe('DynamicFormField Component', () => {
                 </LocaleContext.Provider>,
             );
 
+        beforeEach(() => {
+            mockIsValidNumber.mockClear();
+            mockSetCountry.mockClear();
+        });
+
         it('shows a validation error when the phone number is invalid and the experiment is enabled', async () => {
+            mockIsValidNumber.mockReturnValue(false);
+
             renderMockFormField({
                 field: phoneFieldMock,
                 isNewPhoneValidationExperimentEnabled: true,
             });
 
-            await userEvent.type(screen.getByRole('textbox'), '123');
+            fireEvent.change(screen.getByTestId('iti-phone-input'), {
+                target: { value: '123' },
+            });
             await userEvent.click(screen.getByText('Submit'));
 
             await waitFor(() => {
@@ -189,12 +228,16 @@ describe('DynamicFormField Component', () => {
         });
 
         it('does not show a validation error when the phone number is valid', async () => {
+            mockIsValidNumber.mockReturnValue(true);
+
             renderMockFormField({
                 field: phoneFieldMock,
                 isNewPhoneValidationExperimentEnabled: true,
             });
 
-            await userEvent.type(screen.getByRole('textbox'), '+447700900123');
+            fireEvent.change(screen.getByTestId('iti-phone-input'), {
+                target: { value: '+15551234567' },
+            });
             await userEvent.click(screen.getByText('Submit'));
 
             await waitFor(() => {
@@ -204,6 +247,8 @@ describe('DynamicFormField Component', () => {
 
         it('does not show a validation error when the phone field is empty', async () => {
             // there is a required check already, so no need to check validity in addition
+            mockIsValidNumber.mockReturnValue(false);
+
             renderMockFormField({
                 field: phoneFieldMock,
                 isNewPhoneValidationExperimentEnabled: true,
@@ -218,6 +263,8 @@ describe('DynamicFormField Component', () => {
         });
 
         it('does not validate phone when the experiment flag is disabled', async () => {
+            mockIsValidNumber.mockReturnValue(false);
+
             renderMockFormField({
                 field: phoneFieldMock,
                 isNewPhoneValidationExperimentEnabled: false,
@@ -233,6 +280,8 @@ describe('DynamicFormField Component', () => {
         });
 
         it('does not validate phone for non-telephone fields even when experiment is enabled', async () => {
+            mockIsValidNumber.mockReturnValue(false);
+
             renderMockFormField({
                 field: nonPhoneFieldMock,
                 isNewPhoneValidationExperimentEnabled: true,
