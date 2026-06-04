@@ -147,6 +147,7 @@ const Payment = (
 
     const {
         orderConfirmation: { persistB2BMetadata },
+        userJourney: { disableStoreCredit },
     } = useCapabilities();
 
     const renderCartStockPositionsChangedModal = (
@@ -572,7 +573,11 @@ const Payment = (
                 checkoutServiceSubscribe,
             } = props;
 
-            if (usableStoreCredit) {
+            if (disableStoreCredit) {
+                if (props.isStoreCreditApplied) {
+                    await handleStoreCreditChange(false);
+                }
+            } else if (usableStoreCredit) {
                 await handleStoreCreditChange(true);
             }
 
@@ -662,6 +667,7 @@ const Payment = (
                         defaultGatewayId={props.defaultMethod?.gateway}
                         defaultMethodId={props.defaultMethod?.id || ''}
                         didExceedSpamLimit={state.didExceedSpamLimit}
+                        disableStoreCredit={disableStoreCredit}
                         isEmbedded={props.isEmbedded}
                         isInitializingPayment={props.isInitializingPayment}
                         isPaymentDataRequired={props.isPaymentDataRequired}
