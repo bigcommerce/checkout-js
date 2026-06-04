@@ -55,7 +55,7 @@ const PaymentMethodList: FunctionComponent<
 
     const config = getConfig();
 
-    const chequeMethod = useMemo(() => find(methods, { id: 'cheque' }), [methods]);
+    const chequeMethod = find(methods, { id: 'cheque' });
     const chequeDisabledReason = usePoMethodDisabledReason(chequeMethod);
 
     const titleText = useMemo(() => {
