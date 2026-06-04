@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.800.0](https://github.com/bigcommerce/checkout-js/compare/v1.799.0...v1.800.0) (2026-06-04)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10009 add credit limit checks on PO payment method ([#3058](https://github.com/bigcommerce/checkout-js/issues/3058)) ([9b629f5](https://github.com/bigcommerce/checkout-js/commit/9b629f5def46e0ace2b83aa7760fa0e125753c93))
+
 ## [1.799.0](https://github.com/bigcommerce/checkout-js/compare/v1.798.2...v1.799.0) (2026-06-04)
 
 
