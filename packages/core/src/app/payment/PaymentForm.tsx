@@ -33,6 +33,7 @@ import {
     getUniquePaymentMethodId,
     PaymentMethodId,
     PaymentMethodList,
+    usePoMethodDisabledReason,
 } from './paymentMethod';
 import PaymentRedeemables from './PaymentRedeemables';
 import PaymentSubmitButton from './PaymentSubmitButton';
@@ -129,6 +130,8 @@ const PaymentForm: FunctionComponent<
         payment: { invoicePaymentComment },
     } = useCapabilities();
     const { checkoutSettings } = checkoutState.data.getConfig() ?? {};
+    const poMethodDisabledReason = usePoMethodDisabledReason(selectedMethod);
+    const isSubmitDisabled = shouldDisableSubmit || Boolean(poMethodDisabledReason);
     const shouldShowSubmitButtonWhenPaymentNotRequired = isExperimentEnabled(
         checkoutSettings,
         'CHECKOUT-9729.show_submit_button_when_payment_not_required',
@@ -214,7 +217,7 @@ const PaymentForm: FunctionComponent<
                             selectedMethod && selectedMethod.initializationStrategy?.type
                         }
                         isComplete={!!selectedMethod?.initializationData?.isComplete}
-                        isDisabled={shouldDisableSubmit}
+                        isDisabled={isSubmitDisabled}
                         methodGateway={selectedMethod && selectedMethod.gateway}
                         methodId={selectedMethodId}
                         methodName={

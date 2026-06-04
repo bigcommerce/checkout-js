@@ -674,7 +674,7 @@ const Payment = (
                         onSubmit={handleSubmit}
                         onUnhandledError={handleError}
                         orderExtraFields={props.orderExtraFields}
-                        selectedMethod={state.selectedMethod}
+                        selectedMethod={state.selectedMethod || props.defaultMethod}
                         shouldDisableSubmit={
                             (uniqueSelectedMethodId &&
                                 state.shouldDisableSubmit[uniqueSelectedMethodId]) ||

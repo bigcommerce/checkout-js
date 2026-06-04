@@ -64,6 +64,17 @@
     flex-shrink: 1;
 }
 
+.paymentProviderHeader-poDisabledContainer {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.paymentProviderHeader-poDisabledMessage {
+    color: color("greys", "dark");
+    flex-basis: 100%;
+    font-size: fontSize("smallest");
+}
+
 .paymentMethod--creditCard,
 .paymentMethod--hosted,
 .paymentMethod--walletButton {
