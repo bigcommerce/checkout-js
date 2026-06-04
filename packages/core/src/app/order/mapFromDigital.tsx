@@ -38,6 +38,13 @@ function mapFromDigital(
             })),
             getDigitalItemDescription(item),
         ],
+        bundledItems: pickListExperimentEnabled
+            ? bundledItems?.map((bundledItem) => ({
+                  name: bundledItem.name,
+                  id: String(bundledItem.id),
+                  ...mapBackorderDetails(bundledItem),
+              }))
+            : undefined,
         ...mapBackorderDetails(item),
     };
 }

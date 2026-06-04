@@ -143,7 +143,7 @@ const ProductList = ({
         ...items.digitalItems
             .slice()
             .sort((item) => item.variantId)
-            .map((item) => mapFromDigital(item, bundleItemsMap)),
+            .map((item) => mapFromDigital(item, bundleItemsMap, pickListExperimentEnabled)),
         ...(items.customItems || []).map(mapFromCustom),
     ].slice(0, isExpanded ? undefined : collapsedLimit);
 
