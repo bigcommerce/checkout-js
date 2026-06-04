@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.799.0](https://github.com/bigcommerce/checkout-js/compare/v1.798.2...v1.799.0) (2026-06-04)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10057 Add payment comment ([#3061](https://github.com/bigcommerce/checkout-js/issues/3061)) ([4d6344b](https://github.com/bigcommerce/checkout-js/commit/4d6344b5eab1a6556269c0fd012f8abdf51d402a))
+
 ### [1.798.2](https://github.com/bigcommerce/checkout-js/compare/v1.798.1...v1.798.2) (2026-06-03)
 
 ### [1.798.1](https://github.com/bigcommerce/checkout-js/compare/v1.798.0...v1.798.1) (2026-06-02)
