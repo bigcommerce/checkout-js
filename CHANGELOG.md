@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.802.0](https://github.com/bigcommerce/checkout-js/compare/v1.801.1...v1.802.0) (2026-06-04)
+
+
+### Features
+
+* **checkout:** Prepare HostedCreditCardComponent for migration from the core ([#3046](https://github.com/bigcommerce/checkout-js/issues/3046)) ([#3062](https://github.com/bigcommerce/checkout-js/issues/3062)) ([c59b901](https://github.com/bigcommerce/checkout-js/commit/c59b90120bfa5e3bc0e225a4ff8f1633e7418118))
+
 ### [1.801.1](https://github.com/bigcommerce/checkout-js/compare/v1.801.0...v1.801.1) (2026-06-04)
 
 ## [1.801.0](https://github.com/bigcommerce/checkout-js/compare/v1.800.0...v1.801.0) (2026-06-04)
