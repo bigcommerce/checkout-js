@@ -13,8 +13,8 @@ function mapFromDigital(
     pickListExperimentEnabled?: boolean,
 ): OrderItemType {
     const bundledItems = bundleItemsMap?.get(String(item.id));
-    const bundledItemsAddedByAttributeIds = bundledItems?.map(
-        (bundledItem) => bundledItem.addedByAttributeId,
+    const bundledItemsAddedByAttributeIds = bundledItems?.flatMap(({ addedByAttributeId }) =>
+        addedByAttributeId ? [addedByAttributeId] : [],
     );
     const options = pickListExperimentEnabled
         ? item.options?.filter(
