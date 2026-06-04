@@ -32,13 +32,17 @@ function mapFromPhysical(
         description: item.giftWrapping ? item.giftWrapping.name : undefined,
         productOptions: (options || []).map((option) => ({
             testId: 'cart-item-product-option',
-            content: `${option.name}: ${option.value}`,
+            content: pickListExperimentEnabled
+                ? `${option.name}: ${option.value}`
+                : `${option.name} ${option.value}`,
         })),
-        bundledItems: bundledItems?.map((item) => ({
-            name: item.name,
-            id: String(item.id),
-            ...mapBackorderDetails(item),
-        })),
+        bundledItems: pickListExperimentEnabled
+            ? bundledItems?.map((item) => ({
+                  name: item.name,
+                  id: String(item.id),
+                  ...mapBackorderDetails(item),
+              }))
+            : undefined,
         ...mapBackorderDetails(item),
     };
 }

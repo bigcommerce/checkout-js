@@ -19,6 +19,8 @@ import {
     isSmallScreen,
 } from '@bigcommerce/checkout/ui';
 
+import { isExperimentEnabled } from '../common/utility';
+
 import getBackorderCount from './getBackorderCount';
 import getItemsCount from './getItemsCount';
 import mapFromCustom from './mapFromCustom';
@@ -191,12 +193,23 @@ const OrderSummaryItems = ({
     displayLineItemsCount = true,
     items,
 }: OrderSummaryItemsProps): ReactElement => {
-    const pickListExperimentEnabled = true;
     const [isExpanded, setIsExpanded] = useState(false);
     const [showBackorderDetails, setShowBackorderDetails] = useState(false);
     let nonBundledItems: LineItemMap;
     let bundleItemsMap: Map<string | number, Array<PhysicalItem | DigitalItem>> | undefined;
     let nonBundledAndBundleMap;
+    const { checkoutState } = useCheckout();
+    const config = checkoutState.data.getConfig();
+
+    if (!config) {
+        return <></>;
+    }
+
+    const pickListExperimentEnabled = isExperimentEnabled(
+        config.checkoutSettings,
+        'BACK-425.update_bundle_item_ux',
+        false,
+    );
 
     if (pickListExperimentEnabled) {
         nonBundledAndBundleMap = removeAndBundleItemsTogether(items);
