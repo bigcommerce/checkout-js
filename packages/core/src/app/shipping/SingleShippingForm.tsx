@@ -350,22 +350,7 @@ export default withLanguage(
                 B2BExtraFieldsSessionStorage.SHIPPING_KEY,
             ),
         }),
-        isInitialValid: ({ shippingAddress, getFields, language, validateMaxLength }) => {
-            if (!shippingAddress) return false;
-
-            const fields = getFields(shippingAddress.countryCode);
-            const formValues = mapAddressToFormValues(
-                fields,
-                shippingAddress,
-                B2BExtraFieldsSessionStorage.SHIPPING_KEY,
-            );
-
-            return getAddressFormFieldsValidationSchema({
-                language,
-                formFields: fields,
-                validateMaxLength,
-            }).isValidSync(formValues);
-        },
+        validateOnMount: true,
         validationSchema: ({
             language,
             getFields,
