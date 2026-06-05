@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.804.0](https://github.com/bigcommerce/checkout-js/compare/v1.803.0...v1.804.0) (2026-06-05)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9819 add additional payment field for b2b ([#3066](https://github.com/bigcommerce/checkout-js/issues/3066)) ([51257aa](https://github.com/bigcommerce/checkout-js/commit/51257aae66880a07f143e0b0d4c7587bcf9a6aee))
+
 ## [1.803.0](https://github.com/bigcommerce/checkout-js/compare/v1.802.1...v1.803.0) (2026-06-05)
 
 
