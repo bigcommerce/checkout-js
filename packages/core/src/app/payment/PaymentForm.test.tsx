@@ -26,6 +26,7 @@ import { createErrorLogger } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
 
+import { AdditionalPaymentFieldSessionStorage } from './AdditionalPaymentFieldSessionStorage';
 import { InvoicePaymentCommentSessionStorage } from './InvoicePaymentCommentSessionStorage';
 import { getPaymentMethod } from './payment-methods.mock';
 import PaymentContext, { type PaymentContextProps } from './PaymentContext';
@@ -377,6 +378,114 @@ describe('PaymentForm', () => {
             expect(onSubmit).toHaveBeenCalledWith(
                 expect.not.objectContaining({ invoicePaymentComment: expect.anything() }),
             );
+        });
+    });
+
+    describe('additional payment field', () => {
+        beforeEach(() => {
+            sessionStorage.clear();
+        });
+
+        it('renders the field when the additionalField capability is set', () => {
+            render(
+                <PaymentFormTest
+                    {...defaultProps}
+                    additionalField={{ label: 'Order notes', required: false }}
+                />,
+            );
+
+            expect(screen.getByTestId('additionalPaymentField-input')).toBeInTheDocument();
+            expect(screen.getByText('Order notes')).toBeInTheDocument();
+            expect(
+                screen.getByText(
+                    localeContext.language.translate('common.optional_text'),
+                ),
+            ).toBeInTheDocument();
+        });
+
+        it('does not render the field when the additionalField capability is null', () => {
+            render(<PaymentFormTest {...defaultProps} />);
+
+            expect(screen.queryByTestId('additionalPaymentField-input')).not.toBeInTheDocument();
+        });
+
+        it('hides the optional hint when the field is required', () => {
+            render(
+                <PaymentFormTest
+                    {...defaultProps}
+                    additionalField={{ label: 'Order notes', required: true }}
+                />,
+            );
+
+            expect(
+                screen.queryByText(
+                    localeContext.language.translate('common.optional_text'),
+                ),
+            ).not.toBeInTheDocument();
+        });
+
+        it('seeds the field from session storage when a value is stored', () => {
+            AdditionalPaymentFieldSessionStorage.set('restored note');
+
+            render(
+                <PaymentFormTest
+                    {...defaultProps}
+                    additionalField={{ label: 'Order notes', required: false }}
+                />,
+            );
+
+            expect(screen.getByDisplayValue('restored note')).toBeInTheDocument();
+        });
+
+        it('writes typed values to session storage and strips them from the submit payload', async () => {
+            const onSubmit = jest.fn();
+
+            render(
+                <PaymentFormTest
+                    {...defaultProps}
+                    additionalField={{ label: 'Order notes', required: false }}
+                    onSubmit={onSubmit}
+                />,
+            );
+
+            fireEvent.change(screen.getByTestId('additionalPaymentField-input'), {
+                target: { value: 'special handling' },
+            });
+
+            expect(AdditionalPaymentFieldSessionStorage.get()).toBe('special handling');
+
+            fireEvent.submit(screen.getByTestId('payment-form'));
+
+            await new Promise((resolve) => process.nextTick(resolve));
+
+            expect(onSubmit).toHaveBeenCalledWith(
+                expect.not.objectContaining({ additionalPaymentField: expect.anything() }),
+            );
+        });
+
+        it('blocks submit and shows a validation error when required and empty', async () => {
+            const onSubmit = jest.fn();
+
+            render(
+                <PaymentFormTest
+                    {...defaultProps}
+                    additionalField={{ label: 'Order notes', required: true }}
+                    onSubmit={onSubmit}
+                />,
+            );
+
+            fireEvent.submit(screen.getByTestId('payment-form'));
+
+            await new Promise((resolve) => process.nextTick(resolve));
+
+            expect(onSubmit).not.toHaveBeenCalled();
+            expect(
+                screen.getByText(
+                    localeContext.language.translate('payment.errors.field_required_error', {
+                        label: 'Order notes',
+                    }),
+                ),
+            ).toBeInTheDocument();
         });
     });
 });
