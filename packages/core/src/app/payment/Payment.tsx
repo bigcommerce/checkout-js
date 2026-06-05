@@ -663,6 +663,7 @@ const Payment = (
             <ChecklistSkeleton isLoading={!state.isReady}>
                 {shouldShowPaymentForm && (
                     <PaymentForm
+                        additionalField={props.capabilities.payment.additionalField}
                         availableStoreCredit={props.availableStoreCredit}
                         defaultGatewayId={props.defaultMethod?.gateway}
                         defaultMethodId={props.defaultMethod?.id || ''}

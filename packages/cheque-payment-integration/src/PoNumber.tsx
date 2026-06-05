@@ -30,12 +30,12 @@ const PoNumber: FunctionComponent<PoNumberProps> = ({
 }) => {
     useEffect(() => {
         setFieldValue(PO_NUMBER_FIELD_NAME, getPoNumber());
-        setValidationSchema(method, getPoNumberValidationSchema(language, isRequired));
+        setValidationSchema(method, getPoNumberValidationSchema(language, isRequired, label));
 
         return () => {
             setValidationSchema(method, null);
         };
-    }, [isRequired, language, method, setFieldValue, setValidationSchema]);
+    }, [isRequired, label, language, method, setFieldValue, setValidationSchema]);
 
     const renderInput = useCallback(
         ({ field }: FieldProps<string>) => (
@@ -67,7 +67,7 @@ const PoNumber: FunctionComponent<PoNumberProps> = ({
                             {!isRequired && (
                                 <span>
                                     {' '}
-                                    <TranslatedString id="payment.po_number_optional" />
+                                    <TranslatedString id="common.optional_text" />
                                 </span>
                             )}
                         </label>

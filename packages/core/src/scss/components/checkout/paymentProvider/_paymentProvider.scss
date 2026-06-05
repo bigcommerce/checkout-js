@@ -73,6 +73,7 @@
     color: color("greys", "dark");
     flex-basis: 100%;
     font-size: fontSize("smallest");
+    line-height: lineHeight("base");
 }
 
 .paymentMethod--creditCard,
