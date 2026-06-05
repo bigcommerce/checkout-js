@@ -41,9 +41,7 @@ describe('AdditionalPaymentField', () => {
         renderField({ isRequired: false });
 
         expect(
-            screen.getByText(
-                localeContext.language.translate('common.optional_text'),
-            ),
+            screen.getByText(localeContext.language.translate('common.optional_text')),
         ).toBeInTheDocument();
     });
 
@@ -51,9 +49,7 @@ describe('AdditionalPaymentField', () => {
         renderField({ isRequired: true });
 
         expect(
-            screen.queryByText(
-                localeContext.language.translate('common.optional_text'),
-            ),
+            screen.queryByText(localeContext.language.translate('common.optional_text')),
         ).not.toBeInTheDocument();
     });
 

@@ -397,9 +397,7 @@ describe('PaymentForm', () => {
             expect(screen.getByTestId('additionalPaymentField-input')).toBeInTheDocument();
             expect(screen.getByText('Order notes')).toBeInTheDocument();
             expect(
-                screen.getByText(
-                    localeContext.language.translate('common.optional_text'),
-                ),
+                screen.getByText(localeContext.language.translate('common.optional_text')),
             ).toBeInTheDocument();
         });
 
@@ -418,9 +416,7 @@ describe('PaymentForm', () => {
             );
 
             expect(
-                screen.queryByText(
-                    localeContext.language.translate('common.optional_text'),
-                ),
+                screen.queryByText(localeContext.language.translate('common.optional_text')),
             ).not.toBeInTheDocument();
         });
 
