@@ -64,6 +64,7 @@ export const PhoneInput: FunctionComponent<PhoneInputProps> = ({
                 }}
                 ref={intlTelInputRef}
                 separateDialCode={false}
+                strictRejectAnimation={false}
                 value={value ? String(value) : ''}
             />
         </span>
