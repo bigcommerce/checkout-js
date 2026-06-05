@@ -108,4 +108,86 @@ describe('OrderSummaryItem', () => {
             );
         });
     });
+
+    describe('when bundledItems are present', () => {
+        const bundledItems = [
+            {
+                id: 'b1',
+                name: 'Bundled Hat',
+                quantityBackordered: 2,
+                quantityOnHand: 3,
+                backorderMessage: 'Ships in 5 days',
+            },
+            {
+                id: 'b2',
+                name: 'Bundled Scarf',
+            },
+        ];
+
+        it('renders each bundled item name with the Bundle label', () => {
+            render(
+                <OrderSummaryItem
+                    orderItem={{
+                        amount: 10,
+                        id: 'foo',
+                        name: 'Product',
+                        quantity: 1,
+                        bundledItems,
+                    }}
+                    shouldExpandBackorderDetails={false}
+                />,
+            );
+
+            const nameEls = screen.getAllByTestId('cart-item-bundled-item-name');
+
+            expect(nameEls).toHaveLength(2);
+            expect(nameEls[0]).toHaveTextContent('Bundled Hat');
+            expect(nameEls[1]).toHaveTextContent('Bundled Scarf');
+        });
+
+        it('renders nothing for bundled items section when bundledItems is undefined', () => {
+            render(
+                <OrderSummaryItem
+                    orderItem={{ amount: 10, id: 'foo', name: 'Product', quantity: 1 }}
+                    shouldExpandBackorderDetails={false}
+                />,
+            );
+
+            expect(screen.queryByTestId('cart-item-bundled-item-name')).not.toBeInTheDocument();
+        });
+
+        it('renders bundled items in a <ul> element', () => {
+            render(
+                <OrderSummaryItem
+                    orderItem={{
+                        amount: 10,
+                        id: 'foo',
+                        name: 'Product',
+                        quantity: 1,
+                        bundledItems,
+                    }}
+                    shouldExpandBackorderDetails={false}
+                />,
+            );
+
+            expect(screen.getByRole('list')).toBeInTheDocument();
+        });
+
+        it('does not render the bundled items container when bundledItems is an empty array', () => {
+            render(
+                <OrderSummaryItem
+                    orderItem={{
+                        amount: 10,
+                        id: 'foo',
+                        name: 'Product',
+                        quantity: 1,
+                        bundledItems: [],
+                    }}
+                    shouldExpandBackorderDetails={false}
+                />,
+            );
+
+            expect(screen.queryByRole('list')).not.toBeInTheDocument();
+        });
+    });
 });

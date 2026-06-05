@@ -1,4 +1,4 @@
-import { type LineItemMap } from '@bigcommerce/checkout-sdk';
+import { type DigitalItem, type LineItemMap, type PhysicalItem } from '@bigcommerce/checkout-sdk';
 import React, {
     type FunctionComponent,
     type ReactElement,
@@ -19,6 +19,8 @@ import {
     isSmallScreen,
 } from '@bigcommerce/checkout/ui';
 
+import { isExperimentEnabled } from '../common/utility';
+
 import getBackorderCount from './getBackorderCount';
 import getItemsCount from './getItemsCount';
 import mapFromCustom from './mapFromCustom';
@@ -26,7 +28,7 @@ import mapFromDigital from './mapFromDigital';
 import mapFromGiftCertificate from './mapFromGiftCertificate';
 import mapFromPhysical from './mapFromPhysical';
 import OrderSummaryItem from './OrderSummaryItem';
-import removeBundledItems from './removeBundledItems';
+import { removeAndBundleItemsTogether, removeBundledItems } from './removeBundledItems';
 
 interface AnimatedProductItemProps {
     children: ReactNode;
@@ -122,22 +124,26 @@ const ProductList = ({
     isExpanded,
     collapsedLimit,
     showBackorderDetails,
+    bundleItemsMap,
+    pickListExperimentEnabled,
 }: {
     items: LineItemMap;
     isExpanded: boolean;
     collapsedLimit: number;
     showBackorderDetails: boolean;
+    bundleItemsMap?: Map<string | number, Array<PhysicalItem | DigitalItem>>;
+    pickListExperimentEnabled?: boolean;
 }): ReactElement => {
     const summaryItems = [
         ...items.physicalItems
             .slice()
             .sort((item) => item.variantId)
-            .map((item) => mapFromPhysical(item)),
+            .map((item) => mapFromPhysical(item, bundleItemsMap, pickListExperimentEnabled)),
         ...items.giftCertificates.slice().map(mapFromGiftCertificate),
         ...items.digitalItems
             .slice()
             .sort((item) => item.variantId)
-            .map(mapFromDigital),
+            .map((item) => mapFromDigital(item, bundleItemsMap, pickListExperimentEnabled)),
         ...(items.customItems || []).map(mapFromCustom),
     ].slice(0, isExpanded ? undefined : collapsedLimit);
 
@@ -189,7 +195,16 @@ const OrderSummaryItems = ({
 }: OrderSummaryItemsProps): ReactElement => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [showBackorderDetails, setShowBackorderDetails] = useState(false);
-    const nonBundledItems = removeBundledItems(items);
+    const { checkoutState } = useCheckout();
+    const config = checkoutState.data.getConfig();
+
+    const pickListExperimentEnabled = config
+        ? isExperimentEnabled(config.checkoutSettings, 'BACK-425.update_bundle_item_ux', false)
+        : false;
+
+    const { nonBundledItems, bundleItemsMap } = pickListExperimentEnabled
+        ? removeAndBundleItemsTogether(items)
+        : { nonBundledItems: removeBundledItems(items), bundleItemsMap: undefined };
 
     const collapsedLimit = isSmallScreen()
         ? COLLAPSED_ITEMS_LIMIT_SMALL_SCREEN
@@ -216,9 +231,11 @@ const OrderSummaryItems = ({
                 />
             )}
             <ProductList
+                bundleItemsMap={bundleItemsMap}
                 collapsedLimit={collapsedLimit}
                 isExpanded={isExpanded}
                 items={nonBundledItems}
+                pickListExperimentEnabled={pickListExperimentEnabled}
                 showBackorderDetails={showBackorderDetails}
             />
 

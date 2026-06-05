@@ -63,7 +63,7 @@
     margin-bottom: spacing("eighth");
 }
 
-.product-options {
+.product-options, .product-backorder-details-container {
     color: color("greys");
     font-size: fontSize("tiny");
     margin: 0;
@@ -97,6 +97,25 @@
     color: $color-secondaryDarkest;
     text-decoration: line-through;
     font-weight: fontWeight('medium');
+}
+
+.bundled-items-container {
+    margin-left: 0;
+    margin-top: spacing("quarter");
+
+    .bundled-item {
+        color: color("greys");
+        font-size: fontSize("tiny");
+        margin: 0;
+    }
+
+    .bundled-item-name {
+        margin-bottom: 0;
+    }
+
+    .body-bold {
+        font-weight: $fontWeight-bold;
+    }
 }
 
 // =============================================================================

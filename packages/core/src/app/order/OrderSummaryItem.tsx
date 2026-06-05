@@ -20,6 +20,13 @@ export interface OrderItemType {
     quantityBackordered?: number;
     quantityOnHand?: number;
     backorderMessage?: string;
+    bundledItems?: Array<{
+        id: string;
+        name: string;
+        quantityBackordered?: number;
+        quantityOnHand?: number;
+        backorderMessage?: string;
+    }>;
 }
 
 interface OrderSummaryItemProps {
@@ -67,9 +74,12 @@ const OrderSummaryItemBackorderDetails = ({
 
     return (
         <CollapseCSSTransition isVisible={isExpanded} nodeRef={backorderDetailsRef}>
-            <div className="product-backorder-details-container" ref={backorderDetailsRef}>
+            <div
+                className="product-backorder-details-container optimizedCheckout-contentSecondary sub-text-medium"
+                ref={backorderDetailsRef}
+            >
                 {shouldDisplayQuantityOnHand && (
-                    <div className="sub-text" data-test="cart-item-onhand-qty">
+                    <div data-test="cart-item-onhand-qty">
                         <TranslatedString
                             data={{ count: quantityOnHand }}
                             id="cart.ready_to_ship_count_text"
@@ -77,7 +87,7 @@ const OrderSummaryItemBackorderDetails = ({
                     </div>
                 )}
                 {shouldDisplayQuantityOnBackorder && (
-                    <div className="sub-text" data-test="cart-item-backorder-qty">
+                    <div data-test="cart-item-backorder-qty">
                         <TranslatedString
                             data={{ count: quantityBackordered }}
                             id="cart.backorder_count_text"
@@ -85,9 +95,7 @@ const OrderSummaryItemBackorderDetails = ({
                     </div>
                 )}
                 {shouldDisplayBackorderMessage && (
-                    <div className="sub-text" data-test="cart-item-backorder-message">
-                        {backorderMessage}
-                    </div>
+                    <div data-test="cart-item-backorder-message">{backorderMessage}</div>
                 )}
             </div>
         </CollapseCSSTransition>
@@ -109,6 +117,7 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
         quantityBackordered,
         quantityOnHand,
         backorderMessage,
+        bundledItems,
     } = orderItem;
 
     return (
@@ -149,6 +158,33 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
                     quantityBackordered={quantityBackordered}
                     quantityOnHand={quantityOnHand}
                 />
+
+                {bundledItems && bundledItems.length > 0 && (
+                    <ul className="bundled-items-container">
+                        {bundledItems.map((item) => (
+                            <li
+                                className="bundled-item optimizedCheckout-contentSecondary sub-text-medium"
+                                key={item.id}
+                            >
+                                <div
+                                    className="bundled-item-name"
+                                    data-test="cart-item-bundled-item-name"
+                                >
+                                    <span className="body-bold">
+                                        <TranslatedString id="cart.bundled_item_label" />
+                                    </span>{' '}
+                                    {item.name}
+                                </div>
+                                <OrderSummaryItemBackorderDetails
+                                    backorderMessage={item.backorderMessage}
+                                    isExpanded={shouldExpandBackorderDetails}
+                                    quantityBackordered={item.quantityBackordered}
+                                    quantityOnHand={item.quantityOnHand}
+                                />
+                            </li>
+                        ))}
+                    </ul>
+                )}
             </div>
 
             <div className="product-column product-actions">
