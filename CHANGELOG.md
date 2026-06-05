@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.803.0](https://github.com/bigcommerce/checkout-js/compare/v1.802.1...v1.803.0) (2026-06-05)
+
+
+### Features
+
+* **checkout:** BACK-425 Bundle picklist under parent items ([#3063](https://github.com/bigcommerce/checkout-js/issues/3063)) ([a22e585](https://github.com/bigcommerce/checkout-js/commit/a22e5857f40f7642a7cde1161ad313de334f59ed))
+
 ### [1.802.1](https://github.com/bigcommerce/checkout-js/compare/v1.802.0...v1.802.1) (2026-06-04)
 
 ## [1.802.0](https://github.com/bigcommerce/checkout-js/compare/v1.801.1...v1.802.0) (2026-06-04)
