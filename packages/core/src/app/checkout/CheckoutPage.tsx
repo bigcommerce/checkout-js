@@ -27,6 +27,7 @@ import {
     type AnalyticsContextProps,
     type ExtensionContextProps,
     useCapabilities,
+    useCheckout,
     withExtension,
 } from '@bigcommerce/checkout/contexts';
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
@@ -152,6 +153,7 @@ const Checkout = ({
         orderConfirmation: { invoiceRedirect },
     } = capabilities;
     const { fetchB2BToken } = useB2BToken();
+    const { checkoutService } = useCheckout();
 
     const [state, setState] = useState<CheckoutState>({
         isBillingSameAsShipping: true,
@@ -246,11 +248,12 @@ const Checkout = ({
 
         setState((prevState) => ({ ...prevState, isRedirecting: true }));
 
-        if (invoiceRedirect && orderId !== undefined) {
+        const receiptId = checkoutService.getState().data.getB2BReceiptId();
+
+        if (invoiceRedirect && receiptId) {
             const { links: { siteLink = '' } = {} } = data.getConfig() || {};
 
-            // TODO: CHECKOUT-9813 Get receiptId via B2B v1 API, more details in CHECKOUT-9813
-            window.location.replace(`${siteLink}/#/invoice?receiptId=`);
+            window.location.replace(`${siteLink}/#/invoice?receiptId=${receiptId}`);
 
             return;
         }
