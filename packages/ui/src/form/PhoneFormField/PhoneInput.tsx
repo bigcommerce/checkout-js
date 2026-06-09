@@ -39,8 +39,8 @@ export const PhoneInput: FunctionComponent<PhoneInputProps> = ({
     }, [selectedCountry]);
 
     const handleChangeNumber = useCallback(
-        (number: string) => {
-            void setFieldValue(name, number);
+        (newPhoneNumber: string) => {
+            void setFieldValue(name, newPhoneNumber);
         },
         [name, setFieldValue],
     );
