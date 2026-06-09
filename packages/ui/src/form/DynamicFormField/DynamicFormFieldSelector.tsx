@@ -9,7 +9,7 @@ import CheckboxGroupFormField from './CheckboxGroupFormField';
 import DynamicFormFieldType from './DynamicFormFieldType';
 import DynamicInput from './DynamicInput';
 
-export interface DynamicFormFieldControlProps {
+interface DynamicFormFieldSelectorProps {
     fieldType?: FormFieldType['fieldType'];
     dynamicFormFieldType: DynamicFormFieldType;
     id: string;
@@ -27,7 +27,7 @@ export interface DynamicFormFieldControlProps {
     onChange?(value: string | string[]): void;
 }
 
-export const DynamicFormFieldSelector: FunctionComponent<DynamicFormFieldControlProps> = memo(
+export const DynamicFormFieldSelector: FunctionComponent<DynamicFormFieldSelectorProps> = memo(
     ({
         fieldType,
         dynamicFormFieldType,
