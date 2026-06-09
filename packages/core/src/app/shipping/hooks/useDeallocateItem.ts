@@ -5,7 +5,7 @@ import { useCheckout } from '@bigcommerce/checkout/contexts';
 export const useDeallocateItem = () => {
     const {
         checkoutService: { createConsignments, deleteConsignment },
-    } = useCheckout();
+    } = useCheckout(() => undefined);
 
     // this is a workaround to handle removing an item from a consignment
     // current consignment API does not support removing an item directly - Oct 2024

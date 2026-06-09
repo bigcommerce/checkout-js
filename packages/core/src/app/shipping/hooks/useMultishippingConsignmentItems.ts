@@ -119,13 +119,7 @@ const defaultMultiShippingConsignmentItems: MultiShippingConsignmentItemsHook = 
 };
 
 export const useMultiShippingConsignmentItems = (): MultiShippingConsignmentItemsHook => {
-    const {
-        checkoutState: {
-            data: { getCheckout },
-        },
-    } = useCheckout();
-
-    const checkout = getCheckout();
+    const { selectedState: checkout } = useCheckout(({ data }) => data.getCheckout());
 
     if (!checkout) {
         return defaultMultiShippingConsignmentItems;

@@ -29,8 +29,8 @@ export const ConsignmentLineItemContent = ({
     item: MultiShippingTableItemWithType | PhysicalItem;
     isMultiShippingSummary?: boolean;
 }) => {
-    const { checkoutState } = useCheckout();
-    const config = checkoutState.data.getConfig();
+    const { selectedState: config } = useCheckout(({ data }) => data.getConfig());
+
     const shouldDisplayBackorderQuantity =
         !!config?.inventorySettings?.shouldDisplayBackorderMessagesOnStorefront &&
         config?.inventorySettings?.showQuantityOnBackorder &&

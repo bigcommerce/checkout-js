@@ -29,18 +29,16 @@ const StaticMultiConsignment: FunctionComponent<StaticMultiConsignmentProps> = (
     consignmentNumber,
     isShippingDiscountDisplayEnabled,
 }) => {
-    const {
-        checkoutState: {
-            data: { getShippingCountries },
-        },
-    } = useCheckout();
+    const { selectedState: shippingCountries } = useCheckout(({ data }) =>
+        data.getShippingCountries(),
+    );
 
     const {
         shippingAddress: addressWithoutLocalization,
         selectedShippingOption,
         comparisonShippingCost,
     } = consignment;
-    const address = localizeAddress(addressWithoutLocalization, getShippingCountries());
+    const address = localizeAddress(addressWithoutLocalization, shippingCountries);
     const { paypalFastlaneAddresses } = usePayPalFastlaneAddress();
     const showPayPalFastlaneAddressLabel = isPayPalFastlaneAddress(
         address,
