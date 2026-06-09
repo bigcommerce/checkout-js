@@ -17,7 +17,7 @@ import {
 import { ShopperCurrency } from '../currency';
 import OrderSummary from '../order/OrderSummary';
 
-import CartHeaderLink from './CartHeaderLink';
+import { CartHeaderLink } from './CartHeaderLink';
 import mapToCartSummaryProps from './mapToCartSummaryProps';
 import { type RedeemableProps } from './Redeemable';
 import withRedeemable from './withRedeemable';

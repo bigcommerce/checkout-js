@@ -5,7 +5,7 @@ import { hideEditCartLink } from '@bigcommerce/checkout/utility';
 
 import EditLink from './EditLink';
 
-export interface CartHeaderLinkProps {
+interface CartHeaderLinkProps {
     cartUrl: string;
     isBuyNowCart: boolean;
     isMultiShippingMode: boolean;
@@ -13,7 +13,7 @@ export interface CartHeaderLinkProps {
     label?: React.ReactNode;
 }
 
-const CartHeaderLink: FunctionComponent<CartHeaderLinkProps> = ({
+export const CartHeaderLink: FunctionComponent<CartHeaderLinkProps> = ({
     cartUrl,
     className,
     isBuyNowCart,
@@ -42,5 +42,3 @@ const CartHeaderLink: FunctionComponent<CartHeaderLinkProps> = ({
         />
     );
 };
-
-export default CartHeaderLink;

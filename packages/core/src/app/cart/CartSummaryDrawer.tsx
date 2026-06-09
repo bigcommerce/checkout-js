@@ -3,7 +3,7 @@ import React, { type FunctionComponent, memo } from 'react';
 import { withCheckout } from '../checkout';
 import OrderSummaryDrawer from '../order/OrderSummaryDrawer';
 
-import CartHeaderLink from './CartHeaderLink';
+import { CartHeaderLink } from './CartHeaderLink';
 import { type WithCheckoutCartSummaryProps } from './CartSummary';
 import mapToCartSummaryProps from './mapToCartSummaryProps';
 import withRedeemable from './withRedeemable';

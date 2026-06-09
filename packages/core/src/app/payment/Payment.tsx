@@ -394,7 +394,7 @@ const Payment = (
             return;
         }
 
-        const invoiceComment = InvoicePaymentCommentSessionStorage.get() ?? '';
+        const invoiceComment = InvoicePaymentCommentSessionStorage.get();
 
         // TODO: CHECKOUT-9891 Remove all B2B sessionStorage usages after this all
         await submitB2BMetadata({

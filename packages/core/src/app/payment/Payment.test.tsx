@@ -32,7 +32,7 @@ import {
     orderResponse,
     payments,
 } from '@bigcommerce/checkout/test-framework';
-import { renderWithoutWrapper as render, screen } from '@bigcommerce/checkout/test-utils';
+import { renderWithoutWrapper as render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
 import Checkout, { type CheckoutProps } from '../checkout/Checkout';
 import { createErrorLogger } from '../common/error';
@@ -699,6 +699,79 @@ describe('Payment step', () => {
             await act(async () => userEvent.click(screen.getByText('Place Order')));
 
             expect(submitOrderSpy).not.toHaveBeenCalled();
+        });
+
+        it('persists B2B metadata after finalizing the order on mount when persistB2BMetadata capability is enabled', async () => {
+            const location = window.location;
+
+            Object.defineProperty(window, 'location', {
+                value: {
+                    // eslint-disable-next-line @typescript-eslint/no-misused-spread
+                    ...location,
+                    replace: jest.fn(),
+                },
+                writable: true,
+            });
+
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                config: createConfigWithPersistB2BMetadata(),
+                checkout: {
+                    ...checkoutWithShippingAndBilling,
+                    customer,
+                    orderId: 12345,
+                },
+            });
+
+            jest.spyOn(checkoutService, 'refreshB2BPaymentMethods').mockImplementation(() =>
+                Promise.resolve(checkoutService.getState()),
+            );
+            jest.spyOn(checkoutService, 'finalizeOrderIfNeeded').mockResolvedValue(
+                checkoutService.getState(),
+            );
+
+            const persistSpy = jest
+                .spyOn(checkoutService, 'persistB2BMetadata')
+                .mockImplementation(() => Promise.resolve(checkoutService.getState()));
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await waitFor(() =>
+                expect(persistSpy).toHaveBeenCalledWith({ isInvoice: false, invoiceComment: '' }),
+            );
+        });
+
+        it('does not persist B2B metadata after finalizing the order on mount when persistB2BMetadata capability is disabled', async () => {
+            const location = window.location;
+
+            Object.defineProperty(window, 'location', {
+                value: {
+                    // eslint-disable-next-line @typescript-eslint/no-misused-spread
+                    ...location,
+                    replace: jest.fn(),
+                },
+                writable: true,
+            });
+
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                checkout: {
+                    ...checkoutWithShippingAndBilling,
+                    customer,
+                    orderId: 12345,
+                },
+            });
+
+            const finalizeSpy = jest
+                .spyOn(checkoutService, 'finalizeOrderIfNeeded')
+                .mockResolvedValue(checkoutService.getState());
+            const persistSpy = jest
+                .spyOn(checkoutService, 'persistB2BMetadata')
+                .mockImplementation(() => Promise.resolve(checkoutService.getState()));
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await waitFor(() => expect(finalizeSpy).toHaveBeenCalled());
+
+            expect(persistSpy).not.toHaveBeenCalled();
         });
     });
 });
