@@ -46,12 +46,16 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
 
     const { currency } = useLocale();
 
-    // TODO: When removing the experiment, rename `NewOrderSummarySubtotals` to `OrderSummarySubtotals`.
-    const { checkoutState } = useCheckout();
+    const { checkoutState } = useCheckout(({ data }) => ({
+        getConfig: data.getConfig,
+        getCheckout: data.getCheckout,
+        getOrder: data.getOrder,
+    }));
     const { checkoutSettings } = checkoutState.data.getConfig() ?? {};
     const checkout = checkoutState.data.getCheckout();
     const order = checkoutState.data.getOrder();
 
+    // TODO: When removing the experiment, rename `NewOrderSummarySubtotals` to `OrderSummarySubtotals`.
     const isMultiCouponEnabled = isExperimentEnabled(
         checkoutSettings,
         'CHECKOUT-9674.multi_coupon_cart_checkout',

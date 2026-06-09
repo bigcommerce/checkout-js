@@ -58,7 +58,11 @@ const OrderSummaryModal: FunctionComponent<
     ...orderSummarySubtotalsProps
 }) => {
     const { currency } = useLocale();
-    const { checkoutState } = useCheckout();
+    const { checkoutState } = useCheckout(({ data }) => ({
+        getConfig: data.getConfig,
+        getCheckout: data.getCheckout,
+        getOrder: data.getOrder,
+    }));
     const { themeV2 } = useThemeContext();
     const { checkoutSettings } = checkoutState.data.getConfig() ?? {};
     const checkout = checkoutState.data.getCheckout();
