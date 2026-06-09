@@ -5,7 +5,7 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent, useRef, useState } from 'react';
 
-import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import {
     CollapseCSSTransition,
@@ -13,12 +13,11 @@ import {
     IconChevronDown,
     IconChevronUp,
 } from '@bigcommerce/checkout/ui';
-import { hideEditCartLink } from '@bigcommerce/checkout/utility';
 
 import { ShopperCurrency } from '../currency';
 import OrderSummary from '../order/OrderSummary';
 
-import EditLink from './EditLink';
+import { CartHeaderLink } from './CartHeaderLink';
 import mapToCartSummaryProps from './mapToCartSummaryProps';
 import { type RedeemableProps } from './Redeemable';
 import withRedeemable from './withRedeemable';
@@ -45,9 +44,6 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({
     const nodeRef = useRef<HTMLDivElement>(null);
 
     const checkoutContext = useCheckout();
-    const {
-        userJourney: { disableEditCart },
-    } = useCapabilities();
     const props = mapToCartSummaryProps(checkoutContext);
 
     if (!props) {
@@ -56,19 +52,16 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({
 
     const { cartUrl, isBuyNowCart, checkout } = props;
 
-    const headerLink = hideEditCartLink(isBuyNowCart, disableEditCart) ? null : (
-        <EditLink
-            isMultiShippingMode={isMultiShippingMode}
-            label={<TranslatedString id="cart.go_to_cart_action" />}
-            url={cartUrl}
-        />
-    );
-
     return (
         <div className="cart-summary-drawer">
             <div className="cart-summary-header">
                 <IconArrowLeft />
-                {headerLink}
+                <CartHeaderLink
+                    cartUrl={cartUrl}
+                    isBuyNowCart={isBuyNowCart}
+                    isMultiShippingMode={isMultiShippingMode}
+                    label={<TranslatedString id="cart.go_to_cart_action" />}
+                />
             </div>
             <button
                 aria-expanded={isExpanded}

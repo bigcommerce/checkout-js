@@ -1,13 +1,10 @@
 import { type Checkout, type ShopperCurrency, type StoreCurrency } from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent } from 'react';
 
-import { useCapabilities } from '@bigcommerce/checkout/contexts';
-import { hideEditCartLink } from '@bigcommerce/checkout/utility';
-
 import { withCheckout } from '../checkout';
 import OrderSummary from '../order/OrderSummary';
 
-import EditLink from './EditLink';
+import { CartHeaderLink } from './CartHeaderLink';
 import mapToCartSummaryProps from './mapToCartSummaryProps';
 import { type RedeemableProps } from './Redeemable';
 import withRedeemable from './withRedeemable';
@@ -27,19 +24,17 @@ const CartSummary: FunctionComponent<
         isMultiShippingMode: boolean;
     }
 > = ({ cartUrl, isMultiShippingMode, isBuyNowCart, ...props }) => {
-    const {
-        userJourney: { disableEditCart },
-    } = useCapabilities();
-
-    const headerLink = hideEditCartLink(isBuyNowCart, disableEditCart) ? null : (
-        <EditLink isMultiShippingMode={isMultiShippingMode} url={cartUrl} />
-    );
-
     return withRedeemable(OrderSummary)({
         ...props,
         cartUrl,
         isBuyNowCart,
-        headerLink,
+        headerLink: (
+            <CartHeaderLink
+                cartUrl={cartUrl}
+                isBuyNowCart={isBuyNowCart}
+                isMultiShippingMode={isMultiShippingMode}
+            />
+        ),
     });
 };
 

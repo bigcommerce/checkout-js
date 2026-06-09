@@ -611,12 +611,27 @@ describe('Checkout', () => {
                         getOrder: () => ({ orderId: 123 }) as any,
                     },
                 } as any);
+                jest.spyOn(checkoutService, 'refreshB2BPaymentMethods').mockResolvedValue(
+                    {} as any,
+                );
+                jest.spyOn(checkoutService, 'persistB2BMetadata').mockResolvedValue({} as any);
+
+                const getState = checkoutService.getState.bind(checkoutService);
+
+                jest.spyOn(checkoutService, 'getState').mockImplementation(() => {
+                    const state = getState();
+
+                    state.data.getB2BReceiptId = () => '123';
+
+                    return state;
+                });
 
                 const invoiceRedirectCapabilities = {
                     ...defaultCapabilities,
                     orderConfirmation: {
                         ...defaultCapabilities.orderConfirmation,
                         invoiceRedirect: true,
+                        persistB2BMetadata: true,
                     },
                 };
 
@@ -649,7 +664,7 @@ describe('Checkout', () => {
 
                 await waitFor(() => {
                     expect(window.location.replace).toHaveBeenCalledWith(
-                        'https://store.url/#/invoice?receiptId=',
+                        'https://store.url/#/invoice?receiptId=123',
                     );
                 });
             } finally {

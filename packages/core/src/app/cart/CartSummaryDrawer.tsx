@@ -1,13 +1,10 @@
 import React, { type FunctionComponent, memo } from 'react';
 
-import { useCapabilities } from '@bigcommerce/checkout/contexts';
-import { hideEditCartLink } from '@bigcommerce/checkout/utility';
-
 import { withCheckout } from '../checkout';
 import OrderSummaryDrawer from '../order/OrderSummaryDrawer';
 
+import { CartHeaderLink } from './CartHeaderLink';
 import { type WithCheckoutCartSummaryProps } from './CartSummary';
-import EditLink from './EditLink';
 import mapToCartSummaryProps from './mapToCartSummaryProps';
 import withRedeemable from './withRedeemable';
 
@@ -16,19 +13,16 @@ const CartSummaryDrawer: FunctionComponent<
         isMultiShippingMode: boolean;
     }
 > = ({ cartUrl, isMultiShippingMode, isBuyNowCart, ...props }) => {
-    const {
-        userJourney: { disableEditCart },
-    } = useCapabilities();
-
     return withRedeemable(OrderSummaryDrawer)({
         ...props,
         isBuyNowCart,
         cartUrl,
-        headerLink: hideEditCartLink(isBuyNowCart, disableEditCart) ? null : (
-            <EditLink
+        headerLink: (
+            <CartHeaderLink
+                cartUrl={cartUrl}
                 className="modal-header-link cart-modal-link"
+                isBuyNowCart={isBuyNowCart}
                 isMultiShippingMode={isMultiShippingMode}
-                url={cartUrl}
             />
         ),
     });
