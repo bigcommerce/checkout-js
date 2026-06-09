@@ -2,7 +2,7 @@ import IntlTelInput, { type IntlTelInputRef } from '@intl-tel-input/react';
 import 'intl-tel-input/styles';
 import classNames from 'classnames';
 import { type FieldProps } from 'formik';
-import React, { type FunctionComponent, type RefObject, useEffect } from 'react';
+import React, { type FunctionComponent, type RefObject, useCallback, useEffect } from 'react';
 
 import { isIso2 } from '../../utils';
 
@@ -16,7 +16,8 @@ interface PhoneInputProps extends FieldProps<string> {
 }
 
 export const PhoneInput: FunctionComponent<PhoneInputProps> = ({
-    field: { name, value, onBlur, onChange },
+    field: { name, value, onBlur },
+    form: { setFieldValue },
     id,
     autocomplete,
     maxLength,
@@ -36,6 +37,13 @@ export const PhoneInput: FunctionComponent<PhoneInputProps> = ({
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedCountry]);
+
+    const handleChangeNumber = useCallback(
+        (number: string) => {
+            void setFieldValue(name, number);
+        },
+        [name, setFieldValue],
+    );
 
     return (
         <span className="iti-wrapper">
@@ -57,11 +65,7 @@ export const PhoneInput: FunctionComponent<PhoneInputProps> = ({
                         'intl-tel-input/utils'
                     )
                 }
-                onChangeNumber={(number) => {
-                    onChange({
-                        target: { name, value: number },
-                    } as React.ChangeEvent<HTMLInputElement>);
-                }}
+                onChangeNumber={handleChangeNumber}
                 ref={intlTelInputRef}
                 separateDialCode={false}
                 strictRejectAnimation={false}
