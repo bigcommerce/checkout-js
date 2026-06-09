@@ -1,0 +1,20 @@
+{
+  "name": "net-terms-payment-integration",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/net-terms-payment-integration/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/packages/net-terms-payment-integration"],
+      "options": {
+        "jestConfig": "packages/net-terms-payment-integration/jest.config.js"
+      }
+    }
+  },
+  "tags": ["scope:integration"]
+}

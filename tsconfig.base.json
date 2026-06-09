@@ -73,6 +73,9 @@
       "@bigcommerce/checkout/locale": ["packages/locale/src/index.ts"],
       "@bigcommerce/checkout/mollie-integration": ["packages/mollie-integration/src/index.ts"],
       "@bigcommerce/checkout/moneris-integration": ["packages/moneris-integration/src/index.ts"],
+      "@bigcommerce/checkout/net-terms-payment-integration": [
+        "packages/net-terms-payment-integration/src/index.ts"
+      ],
       "@bigcommerce/checkout/offline-payment-integration": [
         "packages/offline-payment-integration/src/index.ts"
       ],

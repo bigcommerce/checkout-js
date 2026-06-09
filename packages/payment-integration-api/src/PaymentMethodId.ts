@@ -38,6 +38,7 @@ enum PaymentMethodId {
     Klarna = 'klarna',
     Mollie = 'mollie',
     Moneris = 'moneris',
+    NetTerms = 'b2b.net_terms',
     OrbitalGooglePay = 'googlepayorbital',
     Oxxo = 'oxxo',
     PaypalExpress = 'paypalexpress',
