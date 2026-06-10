@@ -62,9 +62,9 @@ export const OrderConfirmation = ({
         },
         checkoutService: { loadOrder },
     } = useCheckout(({ data, statuses }) => ({
-        getOrder: data.getOrder,
-        getConfig: data.getConfig,
-        isLoadingOrder: statuses.isLoadingOrder,
+        getOrder: data.getOrder(),
+        getConfig: data.getConfig(),
+        isLoadingOrder: statuses.isLoadingOrder(),
     }));
     const { analyticsTracker } = useAnalytics();
 
