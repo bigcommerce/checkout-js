@@ -12,7 +12,7 @@ import { checkPaymentMethodFilter } from './checkPaymentMethodFilter';
 describe('checkPaymentMethodFilter', () => {
     let context: PaymentMethodFilterContext;
 
-    it('hides cheque when capability is true', () => {
+    it('hides check when capability is true', () => {
         context = {
             capabilities: {
                 ...defaultCapabilities,
@@ -40,7 +40,7 @@ describe('checkPaymentMethodFilter', () => {
         ]);
     });
 
-    it('keeps cheque when capability is false', () => {
+    it('keeps check when capability is false', () => {
         context = {
             capabilities: {
                 ...defaultCapabilities,
