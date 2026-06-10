@@ -7,12 +7,14 @@ import {
 import { stripeMethodsFiltering } from '@bigcommerce/checkout/stripe-utils';
 
 import { boltAndBraintreeFilter } from './boltAndBraintreeFilter';
+import { chequePaymentMethodFilter } from './chequePaymentMethodFilter';
 import { multiShippingFilter } from './multiShippingFilter';
 import { selectedHostedPaymentFilter } from './selectedHostedPaymentFilter';
 
 // Order matters. selectedHostedPaymentFilter must run last because it can
 // collapse the list to a single method when a hosted payment is already in flight.
 const FILTERS: PaymentMethodFilter[] = [
+    chequePaymentMethodFilter,
     stripeMethodsFiltering,
     boltAndBraintreeFilter,
     multiShippingFilter,
