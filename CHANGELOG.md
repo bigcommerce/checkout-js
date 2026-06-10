@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.806.0](https://github.com/bigcommerce/checkout-js/compare/v1.805.0...v1.806.0) (2026-06-10)
+
+
+### Features
+
+* **ui:** CHECKOUT-9019 Add phone number validation to Checkout forms ([#3025](https://github.com/bigcommerce/checkout-js/issues/3025)) ([3544595](https://github.com/bigcommerce/checkout-js/commit/3544595e166dde957d1a81c07d591636d87f8464))
+
 ## [1.805.0](https://github.com/bigcommerce/checkout-js/compare/v1.804.1...v1.805.0) (2026-06-09)
 
 
