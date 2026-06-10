@@ -21,7 +21,7 @@ const BlueSnapDirectSelectField: FunctionComponent<BlueSnapDirectSelectFieldProp
             <DynamicInput
                 {...field}
                 aria-labelledby={`${field.name}-label ${field.name}-field-error-message`}
-                fieldType={DynamicFormFieldType.DROPDOWM}
+                fieldType={DynamicFormFieldType.DROPDOWN}
                 id={field.name}
                 isFloatingLabelEnabled={useFloatingLabel}
                 options={items}

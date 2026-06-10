@@ -141,7 +141,7 @@ describe('DynamicInput', () => {
         render(
             <DynamicInputTest
                 defaultValue="foo"
-                fieldType={DynamicFormFieldType.DROPDOWM}
+                fieldType={DynamicFormFieldType.DROPDOWN}
                 id="field_33"
                 name="select"
                 options={[

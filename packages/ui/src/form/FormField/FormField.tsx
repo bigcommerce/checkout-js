@@ -1,4 +1,4 @@
-import { type FieldProps } from 'formik';
+import { type FieldConfig, type FieldProps } from 'formik';
 import { kebabCase } from 'lodash';
 import React, { type FunctionComponent, memo, type ReactNode, useCallback } from 'react';
 
@@ -14,6 +14,7 @@ export interface FormFieldProps {
     footer?: ReactNode;
     id?: string;
     isFloatingLabelEnabled?: boolean;
+    validate?: FieldConfig['validate'];
     input(field: FieldProps<string>): ReactNode;
     onChange?(value: string): void;
 }
@@ -28,6 +29,7 @@ const FormField: FunctionComponent<FormFieldProps> = ({
     name,
     id,
     isFloatingLabelEnabled,
+    validate,
 }) => {
     let labelClassName = 'body-medium';
 
@@ -72,6 +74,7 @@ const FormField: FunctionComponent<FormFieldProps> = ({
             name={name}
             onChange={onChange}
             render={renderField}
+            validate={validate}
         />
     );
 };

@@ -71,6 +71,38 @@
             padding-top: $input-verticalPadding * 2.5;
         }
 
+        // phone validation
+        .iti {
+            display: block;
+            position: relative;
+            width: 100%;
+
+            .iti__selected-country-primary {
+                // remove default background to align with out form style
+                background-color: transparent !important;
+            }
+
+            .iti__dropdown-content {
+                max-width: remCalc(300px);
+            }
+        }
+
+        .iti-wrapper {
+            display: block;
+
+            .iti__country-container {
+                top: $input-verticalPadding * 1.5;
+                bottom: auto;
+                height: $floating-label-input-height - $input-verticalPadding * 1.5;
+                padding-top: $input-verticalPadding * 0.5;
+                padding-bottom: $input-verticalPadding * 0.5;
+            }
+
+            .iti__selected-country-primary {
+                padding: 0 var(--iti-arrow-padding) 0 1.05rem;
+            }
+        }
+
         .dropdown-chevron,
         .floating-select-chevron {
             position: absolute;
@@ -98,6 +130,7 @@
 
         .react-datepicker__tab-loop + .floating-label,
         .react-datepicker-wrapper + .floating-label,
+        .iti-wrapper + .floating-label,
         select + .floating-label,
         textarea:focus + .floating-label,
         textarea:not(:empty) + .floating-label,
