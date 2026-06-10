@@ -50,10 +50,10 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
         checkoutState: {
             data: { getConfig, getCheckout, getOrder },
         },
-    } = useCheckout(({ data: { getConfig, getCheckout, getOrder } }) => ({
-        config: getConfig(),
-        checkout: getCheckout(),
-        order: getOrder(),
+    } = useCheckout(({ data }) => ({
+        config: data.getConfig(),
+        checkout: data.getCheckout(),
+        order: data.getOrder(),
     }));
     const { checkoutSettings } = getConfig() ?? {};
     const checkout = getCheckout();
