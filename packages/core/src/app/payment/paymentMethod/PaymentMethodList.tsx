@@ -47,13 +47,7 @@ const PaymentMethodList: FunctionComponent<
     onUnhandledError,
 }) => {
     const { language } = useLocale();
-    const {
-        checkoutState: {
-            data: { getConfig },
-        },
-    } = useCheckout();
-
-    const config = getConfig();
+    const { selectedState: config } = useCheckout(({ data }) => data.getConfig());
 
     const chequeMethod = find(methods, { id: 'cheque' });
     const chequeDisabledReason = usePoMethodDisabledReason(chequeMethod);
