@@ -28,6 +28,7 @@ export const defaultCapabilities: Capabilities = {
         invoicePaymentComment: false,
         poConfig: null,
         additionalField: null,
+        hideCheckPaymentMethod: false,
     },
     orderConfirmation: {
         canCreatePersonalAccount: false,
