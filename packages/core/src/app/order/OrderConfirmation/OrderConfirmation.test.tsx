@@ -15,6 +15,7 @@ import {
     type AnalyticsEvents,
     AnalyticsProviderMock,
     CheckoutProvider,
+    defaultCapabilities,
     ExtensionProvider,
     type ExtensionServiceInterface,
     type LocaleContextType,
@@ -248,6 +249,70 @@ describe('OrderConfirmation', () => {
                 confirmPassword: password,
             }),
         );
+    });
+
+    describe('when cannotCreatePersonalAccount capability is enabled', () => {
+        beforeEach(() => {
+            jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
+                ...getStoreConfig(),
+                checkoutSettings: {
+                    ...getStoreConfig().checkoutSettings,
+                    capabilities: {
+                        ...defaultCapabilities,
+                        orderConfirmation: {
+                            ...defaultCapabilities.orderConfirmation,
+                            cannotCreatePersonalAccount: true,
+                        },
+                    },
+                },
+            });
+        });
+
+        it('does not render the create account form', async () => {
+            render(<ComponentTest {...defaultProps} />);
+
+            await waitFor(() => {
+                expect(analyticsTracker.orderPurchased).toHaveBeenCalled();
+            });
+
+            expect(
+                screen.getByText(
+                    localeContext.language.translate('order_confirmation.continue_shopping'),
+                ),
+            ).toBeInTheDocument();
+            expect(
+                screen.queryByText(
+                    localeContext.language.translate('customer.create_account_text'),
+                ),
+            ).not.toBeInTheDocument();
+            expect(
+                screen.queryByText(
+                    localeContext.language.translate('customer.create_account_action'),
+                ),
+            ).not.toBeInTheDocument();
+        });
+
+        it('does not render the set password form for an existing customer', async () => {
+            jest.spyOn(checkoutState.data, 'getOrder').mockReturnValue({
+                ...getOrder(),
+                customerId: 1,
+            });
+
+            render(<ComponentTest {...defaultProps} />);
+
+            await waitFor(() => {
+                expect(analyticsTracker.orderPurchased).toHaveBeenCalled();
+            });
+
+            expect(
+                screen.queryByText(localeContext.language.translate('customer.set_password_text')),
+            ).not.toBeInTheDocument();
+            expect(
+                screen.queryByText(
+                    localeContext.language.translate('customer.set_password_action'),
+                ),
+            ).not.toBeInTheDocument();
+        });
     });
 
     it('renders continue shopping button', async () => {
