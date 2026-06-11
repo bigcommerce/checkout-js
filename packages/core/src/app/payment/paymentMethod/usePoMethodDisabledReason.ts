@@ -7,7 +7,7 @@ export type PoDisabledReason = 'creditLimit' | 'currencyMismatch';
 
 export interface GetPoMethodDisabledReasonArgs {
     method: PaymentMethod;
-    poConfig: { creditLimit: number | null; currency: string } | null;
+    poConfig: { creditLimitCheck: { creditLimit: number; currency: string } | null } | null;
     grandTotal: number | undefined;
     cartCurrencyCode: string | undefined;
 }
@@ -18,8 +18,8 @@ export function getPoMethodDisabledReason({
     grandTotal,
     cartCurrencyCode,
 }: GetPoMethodDisabledReasonArgs): PoDisabledReason | null {
-    const creditLimit = poConfig?.creditLimit;
-    const expectedCurrency = poConfig?.currency;
+    const creditLimit = poConfig?.creditLimitCheck?.creditLimit;
+    const expectedCurrency = poConfig?.creditLimitCheck?.currency;
 
     const isNotPoMethod = method.id !== 'cheque';
     const isPoConfigIncomplete = creditLimit == null || !expectedCurrency;
