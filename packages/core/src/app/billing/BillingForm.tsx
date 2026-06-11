@@ -63,7 +63,13 @@ const BillingForm = ({
     const addressFormRef: RefObject<HTMLFieldSetElement> = useRef(null);
     const { isPayPalFastlaneEnabled, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
 
-    const { checkoutService, checkoutState } = useCheckout();
+    const { checkoutService, checkoutState } = useCheckout(({ data, statuses }) => ({
+        customer: data.getCustomer(),
+        config: data.getConfig(),
+        cart: data.getCart(),
+        isUpdatingBillingAddress: statuses.isUpdatingBillingAddress(),
+        isUpdatingCheckout: statuses.isUpdatingCheckout(),
+    }));
     const {
         billing: { hideSaveToAddressBookCheck, restrictManualAddressEntry },
         userJourney: { hasAddressExtraFields },

@@ -39,7 +39,14 @@ const getFieldsWithExtraFields = (
 };
 
 const Billing = ({ navigateNextStep, onReady, onUnhandledError }: BillingProps): ReactElement => {
-    const { checkoutService, checkoutState } = useCheckout();
+    const { checkoutService, checkoutState } = useCheckout(({ data, statuses }) => ({
+        checkout: data.getCheckout(),
+        config: data.getConfig(),
+        cart: data.getCart(),
+        customer: data.getCustomer(),
+        billingAddress: data.getBillingAddress(),
+        isLoadingBillingCountries: statuses.isLoadingBillingCountries(),
+    }));
     const {
         userJourney: { hasAddressExtraFields, hasCompanyAddressBook },
         billing: { restrictManualAddressEntry },

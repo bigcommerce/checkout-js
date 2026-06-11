@@ -102,7 +102,9 @@ const RedeemableForm: FunctionComponent<
         checkoutState: {
             statuses: { isSubmittingOrder },
         },
-    } = useCheckout();
+    } = useCheckout(({ statuses }) => ({
+        isSubmittingOrder: statuses.isSubmittingOrder(),
+    }));
 
     const handleSubmitForm = (setSubmitted: FormContextType['setSubmitted']) => {
         if (isSubmittingOrder()) {
