@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react';
 
-import { useCheckout, useLocale } from '@bigcommerce/checkout/contexts';
+import { useCapabilities, useCheckout, useLocale } from '@bigcommerce/checkout/contexts';
 import {
     getConsignment,
     getDigitalItem,
@@ -53,6 +53,9 @@ describe('useMultiCoupon', () => {
             checkoutState,
         });
         (useLocale as jest.Mock).mockReturnValue(getLocaleContext());
+        (useCapabilities as jest.Mock).mockReturnValue({
+            userJourney: { disableCoupon: false, disableGiftCertificate: false },
+        });
         checkoutState.data.getConfig.mockReturnValue(getStoreConfig());
         checkoutState.data.getCheckout.mockReturnValue(getCheckout());
         checkoutState.data.getCoupons.mockReturnValue([]);
@@ -234,6 +237,129 @@ describe('useMultiCoupon', () => {
             expect(clearError).not.toHaveBeenCalled();
             expect(applyCoupon).toHaveBeenCalledWith(code);
             expect(applyCoupon).toHaveBeenCalledTimes(1);
+        });
+
+        describe('disableGiftCertificate is true', () => {
+            beforeEach(() => {
+                (useCapabilities as jest.Mock).mockReturnValue({
+                    userJourney: { disableCoupon: false, disableGiftCertificate: true },
+                });
+            });
+
+            it('calls only applyCoupon, skips applyGiftCertificate', async () => {
+                const code = 'COUPON123';
+
+                applyCoupon.mockResolvedValue(undefined);
+
+                const { result } = renderHook(() => useMultiCoupon());
+
+                await act(async () => {
+                    await result.current.applyCouponOrGiftCertificate(code);
+                });
+
+                expect(applyCoupon).toHaveBeenCalledWith(code);
+                expect(applyCoupon).toHaveBeenCalledTimes(1);
+                expect(applyGiftCertificate).not.toHaveBeenCalled();
+            });
+
+            it('propagates error if applyCoupon fails', async () => {
+                const code = 'COUPON123';
+                const error = new Error('Invalid coupon');
+
+                applyCoupon.mockRejectedValue(error);
+
+                const { result } = renderHook(() => useMultiCoupon());
+
+                await expect(
+                    act(async () => {
+                        await result.current.applyCouponOrGiftCertificate(code);
+                    }),
+                ).rejects.toThrow('Invalid coupon');
+
+                expect(applyCoupon).toHaveBeenCalledWith(code);
+                expect(applyGiftCertificate).not.toHaveBeenCalled();
+            });
+
+            it('propagates error if applyCoupon fails with non-Error instance', async () => {
+                const code = 'COUPON123';
+                const error = 'Invalid coupon string';
+
+                applyCoupon.mockRejectedValue(error);
+
+                const { result } = renderHook(() => useMultiCoupon());
+
+                await expect(
+                    act(async () => {
+                        await result.current.applyCouponOrGiftCertificate(code);
+                    }),
+                ).rejects.toBe(error);
+
+                expect(applyCoupon).toHaveBeenCalledWith(code);
+                expect(clearError).not.toHaveBeenCalled();
+                expect(applyGiftCertificate).not.toHaveBeenCalled();
+            });
+        });
+
+        describe('disableCoupon is true', () => {
+            beforeEach(() => {
+                (useCapabilities as jest.Mock).mockReturnValue({
+                    userJourney: { disableCoupon: true, disableGiftCertificate: false },
+                });
+            });
+
+            it('calls only applyGiftCertificate, skips applyCoupon', async () => {
+                const code = 'GIFT123';
+
+                applyGiftCertificate.mockResolvedValue(undefined);
+
+                const { result } = renderHook(() => useMultiCoupon());
+
+                await act(async () => {
+                    await result.current.applyCouponOrGiftCertificate(code);
+                });
+
+                expect(applyGiftCertificate).toHaveBeenCalledWith(code);
+                expect(applyGiftCertificate).toHaveBeenCalledTimes(1);
+                expect(applyCoupon).not.toHaveBeenCalled();
+            });
+
+            it('propagates error if applyGiftCertificate fails, does not fall back to applyCoupon', async () => {
+                const code = 'GIFT123';
+                const error = new Error('Invalid gift certificate');
+
+                applyGiftCertificate.mockRejectedValue(error);
+
+                const { result } = renderHook(() => useMultiCoupon());
+
+                await expect(
+                    act(async () => {
+                        await result.current.applyCouponOrGiftCertificate(code);
+                    }),
+                ).rejects.toThrow('Invalid gift certificate');
+
+                expect(applyGiftCertificate).toHaveBeenCalledWith(code);
+                expect(clearError).not.toHaveBeenCalled();
+                expect(applyCoupon).not.toHaveBeenCalled();
+            });
+
+            it('propagates error if applyGiftCertificate fails with non-Error instance, does not fall back to applyCoupon', async () => {
+                const code = 'GIFT123';
+                const error = 'Invalid gift certificate string';
+
+                applyGiftCertificate.mockRejectedValue(error);
+
+                const { result } = renderHook(() => useMultiCoupon());
+
+                await expect(
+                    act(async () => {
+                        await result.current.applyCouponOrGiftCertificate(code);
+                    }),
+                ).rejects.toBe(error);
+
+                expect(applyGiftCertificate).toHaveBeenCalledWith(code);
+                expect(clearError).not.toHaveBeenCalled();
+                expect(applyCoupon).not.toHaveBeenCalled();
+            });
         });
 
         it('propagates error when both gift certificate and coupon fail', async () => {

@@ -1,7 +1,7 @@
 import { type Coupon } from '@bigcommerce/checkout-sdk';
 import { useState } from 'react';
 
-import { useCheckout, useLocale } from '@bigcommerce/checkout/contexts';
+import { useCapabilities, useCheckout, useLocale } from '@bigcommerce/checkout/contexts';
 
 import { EMPTY_ARRAY } from '../common/utility';
 import { hasSelectedShippingOptions } from '../shipping';
@@ -43,6 +43,9 @@ export const useMultiCoupon = (): UseMultiCouponValues => {
 
     const { checkoutState, checkoutService } = useCheckout();
     const { language } = useLocale();
+    const {
+        userJourney: { disableCoupon, disableGiftCertificate },
+    } = useCapabilities();
 
     const {
         data: { getConfig, getCheckout, getOrder },
@@ -69,15 +72,23 @@ export const useMultiCoupon = (): UseMultiCouponValues => {
     const applyCouponOrGiftCertificate = async (code: string) => {
         const { applyCoupon, applyGiftCertificate, clearError } = checkoutService;
 
-        try {
-            await applyGiftCertificate(code);
-        } catch (error) {
-            if (error instanceof Error) {
-                await clearError(error);
-            }
+        if (!disableGiftCertificate) {
+            try {
+                await applyGiftCertificate(code);
 
-            await applyCoupon(code);
+                return;
+            } catch (error) {
+                if (disableCoupon) {
+                    throw error;
+                }
+
+                if (error instanceof Error) {
+                    await clearError(error);
+                }
+            }
         }
+
+        await applyCoupon(code);
     };
 
     const removeCoupon = async (code: string) => {
