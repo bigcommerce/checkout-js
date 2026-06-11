@@ -80,6 +80,7 @@
             "bundled_item_label": "Bundle:",
             "show_backorder_details": "Show backorder details",
             "hide_backorder_details": "Hide backorder details",
+            "backorder_details": "Backorder details",
             "print_action": "Print",
             "qty_label": "Qty: {quantity}",
             "remaining_text": "Remaining",

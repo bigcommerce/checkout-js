@@ -10,13 +10,14 @@ import React, {
 import { TransitionGroup } from 'react-transition-group';
 
 import { useCheckout } from '@bigcommerce/checkout/contexts';
-import { preventDefault } from '@bigcommerce/checkout/dom-utils';
+// import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import {
     CollapseCSSTransition,
     IconChevronDown,
     IconChevronUp,
     isSmallScreen,
+    Switch,
 } from '@bigcommerce/checkout/ui';
 
 import { isExperimentEnabled } from '../common/utility';
@@ -85,36 +86,35 @@ const ItemCount = ({
             !!config?.inventorySettings?.showBackorderMessage);
 
     return (
-        <h3
-            className="cart-section-heading optimizedCheckout-contentPrimary body-medium"
-            data-test="cart-count-total"
-        >
-            <TranslatedString
-                data={{ count: getItemsCount(nonBundledItems) }}
-                id="cart.item_count_text"
-            />
+        <div className="cart-section-heading-container">
+            <h3
+                className="cart-section-heading optimizedCheckout-contentPrimary body-medium"
+                data-test="cart-count-total"
+            >
+                <TranslatedString
+                    data={{ count: getItemsCount(nonBundledItems) }}
+                    id="cart.item_count_text"
+                />
+            </h3>
             {shouldDisplayBackorderDetails && backorderCount > 0 && (
-                <a
-                    className="cart-backorder-link"
-                    data-test="cart-backorder-link"
-                    href="#"
-                    onClick={preventDefault(() => setShowBackorderDetails((prev) => !prev))}
-                >
+                <>
                     {showBackorderDetails && (
-                        <>
-                            <TranslatedString id="cart.hide_backorder_details" />
-                            <IconChevronUp />
-                        </>
+                        <Switch
+                            checked={showBackorderDetails}
+                            label={<TranslatedString id="cart.backorder_details" />}
+                            onChange={() => setShowBackorderDetails((prev) => !prev)}
+                        />
                     )}
                     {!showBackorderDetails && (
-                        <>
-                            <TranslatedString id="cart.show_backorder_details" />
-                            <IconChevronDown />
-                        </>
+                        <Switch
+                            checked={showBackorderDetails}
+                            label={<TranslatedString id="cart.backorder_details" />}
+                            onChange={() => setShowBackorderDetails((prev) => !prev)}
+                        />
                     )}
-                </a>
+                </>
             )}
-        </h3>
+        </div>
     );
 };
 
