@@ -14,7 +14,11 @@ export const Extension = ({ region }: ExtensionProps): ReactNode | null => {
         checkoutState: {
             data: { getExtensions, getConfig, getCheckout },
         },
-    } = useCheckout();
+    } = useCheckout(({ data }) => ({
+        extensions: data.getExtensions(),
+        config: data.getConfig(),
+        checkout: data.getCheckout(),
+    }));
     const extensions = getExtensions();
     const config = getConfig();
     const checkout = getCheckout();

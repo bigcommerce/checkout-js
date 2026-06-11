@@ -28,10 +28,14 @@ export const CheckoutHeader: React.FC<CheckoutHeaderProps> = ({
     onUnhandledError,
     onWalletButtonClick,
 }) => {
-    const { checkoutState } = useCheckout();
+    const {
+        checkoutState: { data },
+    } = useCheckout(({ data }) => ({
+        checkout: data.getCheckout(),
+        config: data.getConfig(),
+        flashMessages: data.getFlashMessages('warning'),
+    }));
     const { extensionState } = useExtensions();
-
-    const { data } = checkoutState;
 
     const { promotions = EMPTY_ARRAY } = data.getCheckout() || {};
 

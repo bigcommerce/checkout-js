@@ -12,7 +12,7 @@ export const useLoadCheckout = (
     const {
         checkoutService,
         checkoutState: { data },
-    } = useCheckout();
+    } = useCheckout(() => undefined);
     const [isLoadingCheckout, setIsLoadingCheckout] = useState(!data.getCheckout());
     const { extensionService } = useExtensions();
 
