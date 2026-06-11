@@ -593,11 +593,7 @@ const Payment = (
                 checkoutServiceSubscribe,
             } = props;
 
-            if (disableStoreCredit) {
-                if (props.isStoreCreditApplied) {
-                    await handleStoreCreditChange(false);
-                }
-            } else if (usableStoreCredit) {
+            if (!disableStoreCredit && usableStoreCredit) {
                 await handleStoreCreditChange(true);
             }
 
