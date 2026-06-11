@@ -33,13 +33,18 @@ import {
     payments,
 } from '@bigcommerce/checkout/test-framework';
 import { renderWithoutWrapper as render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
+import { getPoNumber, setPoNumber } from '@bigcommerce/checkout/utility';
 
+import { B2BExtraFieldsSessionStorage } from '../address';
 import Checkout, { type CheckoutProps } from '../checkout/Checkout';
 import { createErrorLogger } from '../common/error';
 import {
     createEmbeddedCheckoutStylesheet,
     createEmbeddedCheckoutSupport,
 } from '../embeddedCheckout';
+
+import { AdditionalPaymentFieldSessionStorage } from './AdditionalPaymentFieldSessionStorage';
+import { InvoicePaymentCommentSessionStorage } from './InvoicePaymentCommentSessionStorage';
 
 describe('Payment step', () => {
     let checkout: CheckoutPageNodeObject;
@@ -57,6 +62,7 @@ describe('Payment step', () => {
 
     afterEach(() => {
         checkout.resetHandlers();
+        sessionStorage.clear();
     });
 
     afterAll(() => {
@@ -775,8 +781,281 @@ describe('Payment step', () => {
             render(<CheckoutTest {...defaultProps} />);
 
             await waitFor(() =>
-                expect(persistSpy).toHaveBeenCalledWith({ isInvoice: false, invoiceComment: '' }),
+                expect(persistSpy).toHaveBeenCalledWith({
+                    isInvoice: false,
+                    invoiceComment: '',
+                    poNumber: '',
+                    referenceNumber: '',
+                    extraFields: [],
+                    extraInfo: {},
+                }),
             );
+        });
+
+        it('persists the full B2B metadata payload from sessionStorage and clears it afterwards', async () => {
+            const location = window.location;
+
+            Object.defineProperty(window, 'location', {
+                value: {
+                    // eslint-disable-next-line @typescript-eslint/no-misused-spread
+                    ...location,
+                    replace: jest.fn(),
+                },
+                writable: true,
+            });
+
+            setPoNumber('PO-123');
+            AdditionalPaymentFieldSessionStorage.set('REF-456');
+            InvoicePaymentCommentSessionStorage.set('Please rush this order');
+            B2BExtraFieldsSessionStorage.setFields(B2BExtraFieldsSessionStorage.ORDER_KEY, {
+                costCentre: 'Engineering',
+            });
+            B2BExtraFieldsSessionStorage.setFields(B2BExtraFieldsSessionStorage.BILLING_KEY, {
+                department: 'Finance',
+            });
+            B2BExtraFieldsSessionStorage.setFields(B2BExtraFieldsSessionStorage.SHIPPING_KEY, {
+                dock: 'B7',
+            });
+
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                config: createConfigWithPersistB2BMetadata(),
+                checkout: {
+                    ...checkoutWithShippingAndBilling,
+                    customer,
+                    orderId: 12345,
+                },
+            });
+
+            jest.spyOn(checkoutService, 'refreshB2BPaymentMethods').mockImplementation(() =>
+                Promise.resolve(checkoutService.getState()),
+            );
+            jest.spyOn(checkoutService, 'finalizeOrderIfNeeded').mockResolvedValue(
+                checkoutService.getState(),
+            );
+
+            const persistSpy = jest
+                .spyOn(checkoutService, 'persistB2BMetadata')
+                .mockImplementation(() => Promise.resolve(checkoutService.getState()));
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await waitFor(() =>
+                expect(persistSpy).toHaveBeenCalledWith({
+                    isInvoice: false,
+                    invoiceComment: 'Please rush this order',
+                    poNumber: 'PO-123',
+                    referenceNumber: 'REF-456',
+                    extraFields: [{ fieldName: 'costCentre', fieldValue: 'Engineering' }],
+                    extraInfo: {
+                        addressExtraFields: {
+                            billingAddressExtraFields: [
+                                { fieldName: 'department', fieldValue: 'Finance' },
+                            ],
+                            shippingAddressExtraFields: [{ fieldName: 'dock', fieldValue: 'B7' }],
+                        },
+                    },
+                }),
+            );
+
+            // The shipping key is cleared last, so once it is gone every earlier key is too.
+            await waitFor(() =>
+                expect(
+                    B2BExtraFieldsSessionStorage.getFields(
+                        B2BExtraFieldsSessionStorage.SHIPPING_KEY,
+                    ),
+                ).toBeUndefined(),
+            );
+
+            expect(getPoNumber()).toBe('');
+            expect(AdditionalPaymentFieldSessionStorage.get()).toBe('');
+            expect(InvoicePaymentCommentSessionStorage.get()).toBe('');
+            expect(
+                B2BExtraFieldsSessionStorage.getFields(B2BExtraFieldsSessionStorage.ORDER_KEY),
+            ).toBeUndefined();
+            expect(
+                B2BExtraFieldsSessionStorage.getFields(B2BExtraFieldsSessionStorage.BILLING_KEY),
+            ).toBeUndefined();
+        });
+
+        it('persists the stored billing and shipping address IDs and clears them afterwards', async () => {
+            const location = window.location;
+
+            Object.defineProperty(window, 'location', {
+                value: {
+                    // eslint-disable-next-line @typescript-eslint/no-misused-spread
+                    ...location,
+                    replace: jest.fn(),
+                },
+                writable: true,
+            });
+
+            B2BExtraFieldsSessionStorage.setAddressId(
+                B2BExtraFieldsSessionStorage.BILLING_ADDRESS_ID_KEY,
+                111,
+            );
+            B2BExtraFieldsSessionStorage.setAddressId(
+                B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY,
+                222,
+            );
+
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                config: createConfigWithPersistB2BMetadata(),
+                checkout: {
+                    ...checkoutWithShippingAndBilling,
+                    customer,
+                    orderId: 12345,
+                },
+            });
+
+            jest.spyOn(checkoutService, 'refreshB2BPaymentMethods').mockImplementation(() =>
+                Promise.resolve(checkoutService.getState()),
+            );
+            jest.spyOn(checkoutService, 'finalizeOrderIfNeeded').mockResolvedValue(
+                checkoutService.getState(),
+            );
+
+            const persistSpy = jest
+                .spyOn(checkoutService, 'persistB2BMetadata')
+                .mockImplementation(() => Promise.resolve(checkoutService.getState()));
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await waitFor(() =>
+                expect(persistSpy).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        extraInfo: {
+                            billingAddressId: 111,
+                            shipppingAddressId: 222,
+                        },
+                    }),
+                ),
+            );
+
+            // The shipping address ID is cleared last, so once it is gone the billing one is too.
+            await waitFor(() =>
+                expect(
+                    B2BExtraFieldsSessionStorage.getAddressId(
+                        B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY,
+                    ),
+                ).toBeUndefined(),
+            );
+
+            expect(
+                B2BExtraFieldsSessionStorage.getAddressId(
+                    B2BExtraFieldsSessionStorage.BILLING_ADDRESS_ID_KEY,
+                ),
+            ).toBeUndefined();
+        });
+
+        it('persists B2B metadata with isInvoice true when the invoiceRedirect capability is enabled', async () => {
+            const location = window.location;
+
+            Object.defineProperty(window, 'location', {
+                value: {
+                    // eslint-disable-next-line @typescript-eslint/no-misused-spread
+                    ...location,
+                    replace: jest.fn(),
+                },
+                writable: true,
+            });
+
+            InvoicePaymentCommentSessionStorage.set('Invoice me');
+
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                config: {
+                    ...checkoutSettings,
+                    storeConfig: {
+                        ...checkoutSettings.storeConfig,
+                        checkoutSettings: {
+                            ...checkoutSettings.storeConfig.checkoutSettings,
+                            capabilities: {
+                                ...defaultCapabilities,
+                                orderConfirmation: {
+                                    ...defaultCapabilities.orderConfirmation,
+                                    persistB2BMetadata: true,
+                                    invoiceRedirect: true,
+                                },
+                            },
+                        },
+                    },
+                },
+                checkout: {
+                    ...checkoutWithShippingAndBilling,
+                    customer,
+                    orderId: 12345,
+                },
+            });
+
+            jest.spyOn(checkoutService, 'refreshB2BPaymentMethods').mockImplementation(() =>
+                Promise.resolve(checkoutService.getState()),
+            );
+            jest.spyOn(checkoutService, 'finalizeOrderIfNeeded').mockResolvedValue(
+                checkoutService.getState(),
+            );
+
+            const persistSpy = jest
+                .spyOn(checkoutService, 'persistB2BMetadata')
+                .mockImplementation(() => Promise.resolve(checkoutService.getState()));
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await waitFor(() =>
+                expect(persistSpy).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        isInvoice: true,
+                        invoiceComment: 'Invoice me',
+                    }),
+                ),
+            );
+        });
+
+        it('does not clear B2B sessionStorage when persisting metadata fails', async () => {
+            const location = window.location;
+
+            Object.defineProperty(window, 'location', {
+                value: {
+                    // eslint-disable-next-line @typescript-eslint/no-misused-spread
+                    ...location,
+                    replace: jest.fn(),
+                },
+                writable: true,
+            });
+
+            setPoNumber('PO-123');
+            InvoicePaymentCommentSessionStorage.set('Keep me');
+            B2BExtraFieldsSessionStorage.setFields(B2BExtraFieldsSessionStorage.ORDER_KEY, {
+                costCentre: 'Engineering',
+            });
+
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                config: createConfigWithPersistB2BMetadata(),
+                checkout: {
+                    ...checkoutWithShippingAndBilling,
+                    customer,
+                    orderId: 12345,
+                },
+            });
+
+            jest.spyOn(checkoutService, 'refreshB2BPaymentMethods').mockImplementation(() =>
+                Promise.resolve(checkoutService.getState()),
+            );
+            jest.spyOn(checkoutService, 'finalizeOrderIfNeeded').mockResolvedValue(
+                checkoutService.getState(),
+            );
+
+            const persistSpy = jest
+                .spyOn(checkoutService, 'persistB2BMetadata')
+                .mockRejectedValue(new Error('Persist failed'));
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await waitFor(() => expect(persistSpy).toHaveBeenCalled());
+
+            expect(getPoNumber()).toBe('PO-123');
+            expect(InvoicePaymentCommentSessionStorage.get()).toBe('Keep me');
+            expect(
+                B2BExtraFieldsSessionStorage.getFields(B2BExtraFieldsSessionStorage.ORDER_KEY),
+            ).toEqual({ costCentre: 'Engineering' });
         });
 
         it('does not persist B2B metadata after finalizing the order on mount when persistB2BMetadata capability is disabled', async () => {
