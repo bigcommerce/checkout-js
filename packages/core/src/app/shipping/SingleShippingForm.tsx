@@ -1,4 +1,4 @@
-import { type Address, type FormField } from '@bigcommerce/checkout-sdk';
+import { type Address, type CustomerAddress, type FormField } from '@bigcommerce/checkout-sdk';
 import { type FormikProps } from 'formik';
 import { debounce, type DebouncedFunc, isEqual, noop } from 'lodash';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
@@ -88,7 +88,7 @@ const SingleShippingForm: React.FC<
 }) => {
     const {
         shipping: { hideBillingSameAsShippingCheck },
-        userJourney: { hasAddressExtraFields },
+        userJourney: { hasAddressExtraFields, hasCompanyAddressBook },
     } = useCapabilities();
     const {
         consignments,
@@ -236,6 +236,17 @@ const SingleShippingForm: React.FC<
     const handleAddressSelect = async (address: Address) => {
         setIsResettingAddress(true);
 
+        B2BExtraFieldsSessionStorage.removeAddressId(
+            B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY,
+        );
+
+        if (hasCompanyAddressBook && (address as CustomerAddress).id) {
+            B2BExtraFieldsSessionStorage.setAddressId(
+                B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY,
+                (address as CustomerAddress).id,
+            );
+        }
+
         try {
             await updateAddress(address);
 
@@ -259,6 +270,10 @@ const SingleShippingForm: React.FC<
                     B2BExtraFieldsSessionStorage.SHIPPING_KEY,
                 );
             }
+
+            B2BExtraFieldsSessionStorage.removeAddressId(
+                B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY,
+            );
 
             const address = await deleteConsignments();
 

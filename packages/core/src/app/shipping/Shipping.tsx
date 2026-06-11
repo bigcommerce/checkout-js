@@ -165,6 +165,22 @@ function Shipping({
                 );
             }
 
+            // Copy shipping address ID to billing when billing same as shipping
+            const shippingAddressId = B2BExtraFieldsSessionStorage.getAddressId(
+                B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY,
+            );
+
+            if (shippingAddressId) {
+                B2BExtraFieldsSessionStorage.setAddressId(
+                    B2BExtraFieldsSessionStorage.BILLING_ADDRESS_ID_KEY,
+                    shippingAddressId,
+                );
+            } else {
+                B2BExtraFieldsSessionStorage.removeAddressId(
+                    B2BExtraFieldsSessionStorage.BILLING_ADDRESS_ID_KEY,
+                );
+            }
+
             if (!isEqualAddress(updatedShippingAddress, billingAddress)) {
                 promises.push(updateBillingAddress(updatedShippingAddress));
             }
