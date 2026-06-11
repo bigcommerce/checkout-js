@@ -58,8 +58,8 @@ import {
 import { EMPTY_ARRAY, isExperimentEnabled } from '../common/utility';
 import { TermsConditionsType } from '../termsConditions';
 
+import { buildB2BMetadataOptions, clearB2BMetadataStorage } from './b2bMetadata';
 import CartStockPositionsChangedModal from './CartStockPositionsChangedModal';
-import { InvoicePaymentCommentSessionStorage } from './InvoicePaymentCommentSessionStorage';
 import mapSubmitOrderErrorMessage, { mapSubmitOrderErrorTitle } from './mapSubmitOrderErrorMessage';
 import mapToOrderRequestBody from './mapToOrderRequestBody';
 import PaymentContext from './PaymentContext';
@@ -394,13 +394,11 @@ const Payment = (
             return;
         }
 
-        const invoiceComment = InvoicePaymentCommentSessionStorage.get();
+        const metaDataPayload = buildB2BMetadataOptions(invoiceRedirect);
 
-        // TODO: CHECKOUT-9891 Remove all B2B sessionStorage usages after this all
-        await submitB2BMetadata({
-            isInvoice: invoiceRedirect,
-            invoiceComment,
-        });
+        await submitB2BMetadata(metaDataPayload);
+
+        clearB2BMetadataStorage();
     };
 
     const handleSubmit = useCallback(

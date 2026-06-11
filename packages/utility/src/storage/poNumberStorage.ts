@@ -1,4 +1,4 @@
-const KEY = 'PoNumber';
+const KEY = 'poNumber';
 
 export const getPoNumber = (): string => sessionStorage.getItem(KEY) ?? '';
 

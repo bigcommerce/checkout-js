@@ -1,4 +1,9 @@
-import { type Address, type FormField, isExtraField } from '@bigcommerce/checkout-sdk/essential';
+import {
+    type Address,
+    type CustomerAddress,
+    type FormField,
+    isExtraField,
+} from '@bigcommerce/checkout-sdk/essential';
 import { type FormikProps, withFormik } from 'formik';
 import React, { type RefObject, useRef, useState } from 'react';
 import { lazy } from 'yup';
@@ -66,7 +71,7 @@ const BillingForm = ({
     const { checkoutService, checkoutState } = useCheckout();
     const {
         billing: { hideSaveToAddressBookCheck, restrictManualAddressEntry },
-        userJourney: { hasAddressExtraFields },
+        userJourney: { hasAddressExtraFields, hasCompanyAddressBook },
     } = useCapabilities();
 
     const {
@@ -109,6 +114,17 @@ const BillingForm = ({
     const handleSelectAddress = async (address: Partial<Address>) => {
         setIsResettingAddress(true);
 
+        B2BExtraFieldsSessionStorage.removeAddressId(
+            B2BExtraFieldsSessionStorage.BILLING_ADDRESS_ID_KEY,
+        );
+
+        if (hasCompanyAddressBook && (address as CustomerAddress).id) {
+            B2BExtraFieldsSessionStorage.setAddressId(
+                B2BExtraFieldsSessionStorage.BILLING_ADDRESS_ID_KEY,
+                (address as CustomerAddress).id,
+            );
+        }
+
         try {
             await checkoutService.updateBillingAddress(address);
         } catch (error) {
@@ -124,6 +140,10 @@ const BillingForm = ({
         if (hasAddressExtraFields) {
             B2BExtraFieldsSessionStorage.removeFields(B2BExtraFieldsSessionStorage.BILLING_KEY);
         }
+
+        B2BExtraFieldsSessionStorage.removeAddressId(
+            B2BExtraFieldsSessionStorage.BILLING_ADDRESS_ID_KEY,
+        );
 
         void handleSelectAddress({});
     };
