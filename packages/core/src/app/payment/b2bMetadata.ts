@@ -1,4 +1,4 @@
-import { type PersistB2BMetadataOptions } from '@bigcommerce/checkout-sdk';
+import { type FormField, type PersistB2BMetadataOptions } from '@bigcommerce/checkout-sdk';
 
 import { clearPoNumber, getPoNumber } from '@bigcommerce/checkout/utility';
 
@@ -10,20 +10,25 @@ import { InvoicePaymentCommentSessionStorage } from './InvoicePaymentCommentSess
 export type B2BMetadataExtraField = NonNullable<PersistB2BMetadataOptions['extraFields']>[number];
 export type B2BMetadataExtraInfo = NonNullable<PersistB2BMetadataOptions['extraInfo']>;
 
-export const buildExtraFields = (stored?: Record<string, unknown>): B2BMetadataExtraField[] =>
+export const buildExtraFields = (
+    stored?: Record<string, unknown>,
+    fields?: FormField[],
+): B2BMetadataExtraField[] =>
     stored
         ? Object.entries(stored).map(([fieldName, fieldValue]) => ({
-              fieldName,
+              // The API expects the field label, but values are stored keyed by field name (id).
+              fieldName: fields?.find((field) => field.name === fieldName)?.label ?? fieldName,
               fieldValue: fieldValue as B2BMetadataExtraField['fieldValue'],
           }))
         : [];
 
-export const buildOrderExtraFields = (): B2BMetadataExtraField[] =>
+export const buildOrderExtraFields = (orderExtraFields?: FormField[]): B2BMetadataExtraField[] =>
     buildExtraFields(
         B2BExtraFieldsSessionStorage.getFields(B2BExtraFieldsSessionStorage.ORDER_KEY),
+        orderExtraFields,
     );
 
-export const buildAddressExtraInfo = (): B2BMetadataExtraInfo => {
+export const buildAddressExtraInfo = (addressExtraFields?: FormField[]): B2BMetadataExtraInfo => {
     const billing = B2BExtraFieldsSessionStorage.getFields(
         B2BExtraFieldsSessionStorage.BILLING_KEY,
     );
@@ -41,8 +46,8 @@ export const buildAddressExtraInfo = (): B2BMetadataExtraInfo => {
 
     if (billing || shipping) {
         extraInfo.addressExtraFields = {
-            billingAddressExtraFields: buildExtraFields(billing),
-            shippingAddressExtraFields: buildExtraFields(shipping),
+            billingAddressExtraFields: buildExtraFields(billing, addressExtraFields),
+            shippingAddressExtraFields: buildExtraFields(shipping, addressExtraFields),
         };
     }
 
@@ -58,15 +63,21 @@ export const buildAddressExtraInfo = (): B2BMetadataExtraInfo => {
     return extraInfo;
 };
 
+export interface B2BMetadataFieldDefinitions {
+    orderExtraFields?: FormField[];
+    addressExtraFields?: FormField[];
+}
+
 export const buildB2BMetadataOptions = (
     isInvoice: PersistB2BMetadataOptions['isInvoice'],
+    { orderExtraFields, addressExtraFields }: B2BMetadataFieldDefinitions = {},
 ): PersistB2BMetadataOptions => ({
     isInvoice,
     invoiceComment: InvoicePaymentCommentSessionStorage.get(),
     poNumber: getPoNumber(),
     referenceNumber: AdditionalPaymentFieldSessionStorage.get(),
-    extraFields: buildOrderExtraFields(),
-    extraInfo: buildAddressExtraInfo(),
+    extraFields: buildOrderExtraFields(orderExtraFields),
+    extraInfo: buildAddressExtraInfo(addressExtraFields),
 });
 
 // Clear all B2B sessionStorage after a successful persist.
