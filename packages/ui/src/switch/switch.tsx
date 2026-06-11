@@ -1,9 +1,9 @@
-import React, { type FunctionComponent, memo, useCallback, useRef } from 'react';
+import React, { type FunctionComponent, memo, useCallback, useId } from 'react';
 
 export interface SwitchProps {
     checked: boolean;
+    label: React.ReactNode;
     onChange?: (checked: boolean, event: React.ChangeEvent<HTMLInputElement>) => void;
-    label?: React.ReactNode;
     id?: string;
     name?: string;
     testId?: string;
@@ -11,8 +11,8 @@ export interface SwitchProps {
 
 export const Switch: FunctionComponent<SwitchProps> = memo(
     ({ checked, onChange, label, id, name, testId }) => {
-        const autoId = useRef(`bc-switch-${Math.random().toString(36).slice(2, 8)}`);
-        const inputId = id ?? autoId.current;
+        const autoId = useId();
+        const inputId = id ?? autoId;
 
         const handleChange = useCallback(
             (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +31,6 @@ export const Switch: FunctionComponent<SwitchProps> = memo(
             >
                 <span className="bc-switch__control">
                     <input
-                        aria-label={label ? undefined : 'switch label'}
                         checked={checked}
                         className="bc-switch__input"
                         id={inputId}
@@ -45,7 +44,7 @@ export const Switch: FunctionComponent<SwitchProps> = memo(
                         <span className="bc-switch__thumb" />
                     </span>
                 </span>
-                {label ? <span className="bc-switch__label">{label}</span> : null}
+                <span className="bc-switch__label">{label}</span>
             </label>
         );
     },

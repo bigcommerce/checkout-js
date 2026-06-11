@@ -10,7 +10,6 @@ import React, {
 import { TransitionGroup } from 'react-transition-group';
 
 import { useCheckout } from '@bigcommerce/checkout/contexts';
-// import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import {
     CollapseCSSTransition,
@@ -79,6 +78,10 @@ const ItemCount = ({
     showBackorderDetails: boolean;
 }): ReactElement => {
     const { selectedState: config } = useCheckout(({ data }) => data.getConfig());
+    const handleBackorderToggle = useCallback(
+        () => setShowBackorderDetails((prev) => !prev),
+        [setShowBackorderDetails],
+    );
     const backorderCount = getBackorderCount(items);
     const shouldDisplayBackorderDetails =
         !!config?.inventorySettings?.shouldDisplayBackorderMessagesOnStorefront &&
@@ -97,22 +100,12 @@ const ItemCount = ({
                 />
             </h3>
             {shouldDisplayBackorderDetails && backorderCount > 0 && (
-                <>
-                    {showBackorderDetails && (
-                        <Switch
-                            checked={showBackorderDetails}
-                            label={<TranslatedString id="cart.backorder_details" />}
-                            onChange={() => setShowBackorderDetails((prev) => !prev)}
-                        />
-                    )}
-                    {!showBackorderDetails && (
-                        <Switch
-                            checked={showBackorderDetails}
-                            label={<TranslatedString id="cart.backorder_details" />}
-                            onChange={() => setShowBackorderDetails((prev) => !prev)}
-                        />
-                    )}
-                </>
+                <Switch
+                    checked={showBackorderDetails}
+                    label={<TranslatedString id="cart.backorder_details" />}
+                    onChange={handleBackorderToggle}
+                    testId="cart-backorder-link"
+                />
             )}
         </div>
     );

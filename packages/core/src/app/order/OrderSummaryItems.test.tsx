@@ -76,7 +76,7 @@ describe('OrderSummaryItems', () => {
 
             expect(screen.getByTestId('cart-backorder-link')).toBeInTheDocument();
             expect(screen.getByTestId('cart-backorder-link')).toHaveTextContent(
-                'Show backorder details',
+                'Backorder details',
             );
         });
 
@@ -97,7 +97,7 @@ describe('OrderSummaryItems', () => {
             });
 
             expect(screen.getByTestId('cart-backorder-link')).toHaveTextContent(
-                'Show backorder details',
+                'Backorder details',
             );
         });
 
