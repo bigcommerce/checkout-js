@@ -5,7 +5,7 @@ import {
 import { createRequestSender } from '@bigcommerce/request-sender';
 import React, { type ReactElement, useEffect, useRef, useState } from 'react';
 
-import { useAnalytics, useCheckout } from '@bigcommerce/checkout/contexts';
+import { useAnalytics, useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { OrderConfirmationPageSkeleton } from '@bigcommerce/checkout/ui';
 
@@ -63,6 +63,9 @@ export const OrderConfirmation = ({
         checkoutService: { loadOrder },
     } = useCheckout();
     const { analyticsTracker } = useAnalytics();
+    const {
+        orderConfirmation: { cannotCreatePersonalAccount },
+    } = useCapabilities();
 
     const config = getConfig();
     const order = getOrder();
@@ -170,6 +173,7 @@ export const OrderConfirmation = ({
 
     return (
         <OrderConfirmationPage
+            cannotCreatePersonalAccount={cannotCreatePersonalAccount}
             currency={currency}
             customerCanBeCreated={customerCanBeCreated}
             error={error}
