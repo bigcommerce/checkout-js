@@ -221,6 +221,45 @@ describe('Payment step', () => {
         expect(screen.getByText(/Payment is not required/)).toBeInTheDocument();
     });
 
+    it('does not apply store credit automatically when disableStoreCredit is true', async () => {
+        const configWithDisableStoreCredit = {
+            ...checkoutSettings,
+            storeConfig: {
+                ...checkoutSettings.storeConfig,
+                checkoutSettings: {
+                    ...checkoutSettings.storeConfig.checkoutSettings,
+                    capabilities: {
+                        ...defaultCapabilities,
+                        userJourney: {
+                            ...defaultCapabilities.userJourney,
+                            disableStoreCredit: true,
+                        },
+                    },
+                },
+            },
+        };
+
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+            config: configWithDisableStoreCredit,
+            checkout: {
+                ...checkoutWithShippingAndBilling,
+                isStoreCreditApplied: false,
+                customer: {
+                    ...customer,
+                    storeCredit: 1000,
+                },
+            },
+        });
+
+        const applyStoreCreditSpy = jest.spyOn(checkoutService, 'applyStoreCredit');
+
+        render(<CheckoutTest {...defaultProps} />);
+
+        await checkout.waitForPaymentStep();
+
+        expect(applyStoreCreditSpy).not.toHaveBeenCalledWith(true);
+    });
+
     it('does not render amazon if multi-shipping', async () => {
         const amazonPay = {
             ...payments[0],
