@@ -45,6 +45,7 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }: BillingProps):
         cart: data.getCart(),
         customer: data.getCustomer(),
         billingAddress: data.getBillingAddress(),
+        addressExtraFields: data.getAddressExtraFields(),
         isLoadingBillingCountries: statuses.isLoadingBillingCountries(),
     }));
     const {
