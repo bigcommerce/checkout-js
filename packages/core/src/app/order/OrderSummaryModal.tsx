@@ -59,18 +59,14 @@ const OrderSummaryModal: FunctionComponent<
 }) => {
     const { currency } = useLocale();
     const {
-        checkoutState: {
-            data: { getConfig, getCheckout, getOrder },
-        },
+        selectedState: { config, checkout, order },
     } = useCheckout(({ data }) => ({
-        getConfig: data.getConfig(),
-        getCheckout: data.getCheckout(),
-        getOrder: data.getOrder(),
+        config: data.getConfig(),
+        checkout: data.getCheckout(),
+        order: data.getOrder(),
     }));
     const { themeV2 } = useThemeContext();
-    const { checkoutSettings } = getConfig() ?? {};
-    const checkout = getCheckout();
-    const order = getOrder();
+    const { checkoutSettings } = config ?? {};
 
     const isMultiCouponEnabled = isExperimentEnabled(
         checkoutSettings,

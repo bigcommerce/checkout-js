@@ -56,20 +56,14 @@ export const OrderConfirmation = ({
     const embeddedMessengerRef = useRef<EmbeddedCheckoutMessenger | undefined>();
 
     const {
-        checkoutState: {
-            data: { getOrder, getConfig },
-            statuses: { isLoadingOrder },
-        },
+        selectedState: { order, config, isLoadingOrder },
         checkoutService: { loadOrder },
     } = useCheckout(({ data, statuses }) => ({
-        getOrder: data.getOrder(),
-        getConfig: data.getConfig(),
+        order: data.getOrder(),
+        config: data.getConfig(),
         isLoadingOrder: statuses.isLoadingOrder(),
     }));
     const { analyticsTracker } = useAnalytics();
-
-    const config = getConfig();
-    const order = getOrder();
 
     const handleUnhandledError = (e: Error) => {
         setError(e);
@@ -152,7 +146,7 @@ export const OrderConfirmation = ({
         return <RateLimitedPermalinkView />;
     }
 
-    if (!order || !config || isLoadingOrder()) {
+    if (!order || !config || isLoadingOrder) {
         return <OrderConfirmationPageSkeleton />;
     }
 
