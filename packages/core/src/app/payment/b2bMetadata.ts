@@ -28,12 +28,28 @@ export const buildOrderExtraFields = (orderExtraFields?: FormField[]): B2BMetada
         orderExtraFields,
     );
 
+// TODO: CHECKOUT-10080`shouldSaveAddress` is persisted alongside the address extra fields for a separate
+// "save to company address book" task, so it must not be sent in the post-order payload.
+const SHOULD_SAVE_ADDRESS_KEY = 'shouldSaveAddress';
+
+const omitShouldSaveAddress = (
+    stored?: Record<string, unknown>,
+): Record<string, unknown> | undefined => {
+    if (!stored) {
+        return stored;
+    }
+
+    const { [SHOULD_SAVE_ADDRESS_KEY]: _shouldSaveAddress, ...rest } = stored;
+
+    return rest;
+};
+
 export const buildAddressExtraInfo = (addressExtraFields?: FormField[]): B2BMetadataExtraInfo => {
-    const billing = B2BExtraFieldsSessionStorage.getFields(
-        B2BExtraFieldsSessionStorage.BILLING_KEY,
+    const billing = omitShouldSaveAddress(
+        B2BExtraFieldsSessionStorage.getFields(B2BExtraFieldsSessionStorage.BILLING_KEY),
     );
-    const shipping = B2BExtraFieldsSessionStorage.getFields(
-        B2BExtraFieldsSessionStorage.SHIPPING_KEY,
+    const shipping = omitShouldSaveAddress(
+        B2BExtraFieldsSessionStorage.getFields(B2BExtraFieldsSessionStorage.SHIPPING_KEY),
     );
     const billingAddressId = B2BExtraFieldsSessionStorage.getAddressId(
         B2BExtraFieldsSessionStorage.BILLING_ADDRESS_ID_KEY,

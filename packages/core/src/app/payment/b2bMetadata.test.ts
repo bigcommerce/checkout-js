@@ -86,5 +86,23 @@ describe('b2bMetadata', () => {
                 },
             });
         });
+
+        it('excludes the shouldSaveAddress flag from the address extra fields payload', () => {
+            B2BExtraFieldsSessionStorage.setFields(B2BExtraFieldsSessionStorage.BILLING_KEY, {
+                field_30: '3',
+                shouldSaveAddress: true,
+            });
+            B2BExtraFieldsSessionStorage.setFields(B2BExtraFieldsSessionStorage.SHIPPING_KEY, {
+                field_31: 'B7',
+                shouldSaveAddress: false,
+            });
+
+            expect(buildAddressExtraInfo(addressExtraFields)).toEqual({
+                addressExtraFields: {
+                    billingAddressExtraFields: [{ fieldName: 'Floor', fieldValue: '3' }],
+                    shippingAddressExtraFields: [{ fieldName: 'Dock', fieldValue: 'B7' }],
+                },
+            });
+        });
     });
 });
