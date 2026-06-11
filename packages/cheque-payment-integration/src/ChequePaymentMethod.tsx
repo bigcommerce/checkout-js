@@ -55,11 +55,11 @@ const ChequePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         };
     }, [checkoutService, method.gateway, method.id, onUnhandledError]);
 
-    if (poConfig) {
+    if (poConfig?.field) {
         return (
             <PoNumber
-                isRequired={poConfig.required}
-                label={poConfig.label}
+                isRequired={poConfig.field.required}
+                label={poConfig.field.label}
                 language={language}
                 method={method}
                 paymentForm={paymentForm}

@@ -503,7 +503,7 @@ const PaymentMethodTitle: FunctionComponent<
                         ) : (
                             <TranslatedString
                                 data={{
-                                    currency: poConfig?.currency ?? '',
+                                    currency: poConfig?.creditLimitCheck?.currency ?? '',
                                     name: titleText,
                                 }}
                                 id="payment.errors.disabled_PO_number_currency_mismatch"
