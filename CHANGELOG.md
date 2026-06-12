@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.807.1](https://github.com/bigcommerce/checkout-js/compare/v1.807.0...v1.807.1) (2026-06-12)
+
+
+### Bug Fixes
+
+* **ui:** CHECKOUT-10110 Fix country flag z-index for phone numbers ([#3084](https://github.com/bigcommerce/checkout-js/issues/3084)) ([e30073a](https://github.com/bigcommerce/checkout-js/commit/e30073ab716d5611e9589290ed89c87eb8b2956c))
+
 ## [1.807.0](https://github.com/bigcommerce/checkout-js/compare/v1.806.0...v1.807.0) (2026-06-12)
 
 
