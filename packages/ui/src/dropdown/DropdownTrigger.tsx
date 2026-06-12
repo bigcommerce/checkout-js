@@ -108,7 +108,7 @@ const DropdownTrigger: React.FC<DropdownTriggerProps> = ({
                             style={{
                                 ...style,
                                 width: '100%',
-                                zIndex: 1,
+                                zIndex: 2,
                             }}
                         >
                             {dropdown}
