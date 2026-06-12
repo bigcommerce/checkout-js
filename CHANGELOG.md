@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.807.0](https://github.com/bigcommerce/checkout-js/compare/v1.806.0...v1.807.0) (2026-06-12)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10048 CHECKOUT-10050 disable gift certificate and coupon capabilities ([#3070](https://github.com/bigcommerce/checkout-js/issues/3070)) ([29b643d](https://github.com/bigcommerce/checkout-js/commit/29b643d923fcfa7541b98bd89e7af4e92a634970))
+* **checkout:** CHECKOUT-10081 Use cannotCreatePersonalAccount Capability ([#3083](https://github.com/bigcommerce/checkout-js/issues/3083)) ([27cad2d](https://github.com/bigcommerce/checkout-js/commit/27cad2dff65782b5b75c24b944c09ad115be560d))
+* **payment:** CHECKOUT-10085 Add filter for check method ([#3074](https://github.com/bigcommerce/checkout-js/issues/3074)) ([86f8e2c](https://github.com/bigcommerce/checkout-js/commit/86f8e2c43289b81b14cb5f7c7c8168d349aa1f85))
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10037 Remove FE store credit unapply on disableStoreCredit ([#3078](https://github.com/bigcommerce/checkout-js/issues/3078)) ([79f627a](https://github.com/bigcommerce/checkout-js/commit/79f627a7a0ed2f43a3642d9217215a5f46920998))
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-10091 Update Capabilities ([#3080](https://github.com/bigcommerce/checkout-js/issues/3080)) ([7e6a8d3](https://github.com/bigcommerce/checkout-js/commit/7e6a8d3490369ec41cffc8cf3f8c400acb89b9db))
+* **checkout:** CHECKOUT-10091 Update Shipping Option Style ([#3079](https://github.com/bigcommerce/checkout-js/issues/3079)) ([f7ecfe7](https://github.com/bigcommerce/checkout-js/commit/f7ecfe70debc472e91928ce611760fad1f012a4d))
+
 ## [1.806.0](https://github.com/bigcommerce/checkout-js/compare/v1.805.0...v1.806.0) (2026-06-10)
 
 
