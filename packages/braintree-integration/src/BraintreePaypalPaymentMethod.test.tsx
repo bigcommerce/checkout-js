@@ -43,11 +43,9 @@ describe('BraintreePaypalPaymentMethod', () => {
     };
 
     beforeEach(() => {
-        // jest.spyOn(paymentForm, 'validateForm').mockResolvedValue({});
         const providerError = new Error('INSTRUMENT_DECLINED');
 
         eventEmitter = new EventEmitter();
-        // paymentForm = getPaymentFormServiceMock();
         jest.spyOn(paymentForm, 'validateForm').mockResolvedValue({});
         localeContext = createLocaleContext(getStoreConfig());
 
