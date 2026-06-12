@@ -155,32 +155,7 @@ function Shipping({
         }
 
         if (values.billingSameAsShipping && updatedShippingAddress && !hasRemoteBilling) {
-            const shippingExtraFields = B2BExtraFieldsSessionStorage.getFields(
-                B2BExtraFieldsSessionStorage.SHIPPING_KEY,
-            );
-
-            if (shippingExtraFields) {
-                B2BExtraFieldsSessionStorage.setFields(
-                    B2BExtraFieldsSessionStorage.BILLING_KEY,
-                    shippingExtraFields,
-                );
-            }
-
-            // Copy shipping address ID to billing when billing same as shipping
-            const shippingAddressId = B2BExtraFieldsSessionStorage.getAddressId(
-                B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY,
-            );
-
-            if (shippingAddressId) {
-                B2BExtraFieldsSessionStorage.setAddressId(
-                    B2BExtraFieldsSessionStorage.BILLING_ADDRESS_ID_KEY,
-                    shippingAddressId,
-                );
-            } else {
-                B2BExtraFieldsSessionStorage.removeAddressId(
-                    B2BExtraFieldsSessionStorage.BILLING_ADDRESS_ID_KEY,
-                );
-            }
+            B2BExtraFieldsSessionStorage.copyShippingToBilling();
 
             if (!isEqualAddress(updatedShippingAddress, billingAddress)) {
                 promises.push(updateBillingAddress(updatedShippingAddress));

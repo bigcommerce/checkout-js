@@ -46,6 +46,22 @@ export class B2BExtraFieldsSessionStorage {
         sessionStorage.removeItem(key);
     }
 
+    static copyShippingToBilling(): void {
+        const shippingFields = this.getFields(this.SHIPPING_KEY);
+
+        if (shippingFields) {
+            this.setFields(this.BILLING_KEY, shippingFields);
+        }
+
+        const shippingAddressId = this.getAddressId(this.SHIPPING_ADDRESS_ID_KEY);
+
+        if (shippingAddressId) {
+            this.setAddressId(this.BILLING_ADDRESS_ID_KEY, shippingAddressId);
+        } else {
+            this.removeAddressId(this.BILLING_ADDRESS_ID_KEY);
+        }
+    }
+
     static reassignConsignmentKey(consignmentId: string): void {
         const tempKey = this.getConsignmentKey('');
         const fields = this.getFields(tempKey);
