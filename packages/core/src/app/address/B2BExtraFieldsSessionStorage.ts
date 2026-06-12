@@ -39,4 +39,23 @@ export class B2BExtraFieldsSessionStorage {
             this.removeFields(tempKey);
         }
     }
+
+    static removeAll(): void {
+        const keysToRemove: string[] = [];
+
+        for (let i = 0; i < sessionStorage.length; i++) {
+            const key = sessionStorage.key(i);
+
+            if (
+                key === this.BILLING_KEY ||
+                key === this.SHIPPING_KEY ||
+                key === this.ORDER_KEY ||
+                (key !== null && key.startsWith(this.CONSIGNMENT_KEY_PREFIX))
+            ) {
+                keysToRemove.push(key);
+            }
+        }
+
+        keysToRemove.forEach((key) => sessionStorage.removeItem(key));
+    }
 }

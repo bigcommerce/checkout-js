@@ -47,6 +47,7 @@ import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integratio
 import { ChecklistSkeleton } from '@bigcommerce/checkout/ui';
 
 import { withAnalytics } from '../analytics';
+import { B2BExtraFieldsSessionStorage } from '../address';
 import { withCheckout } from '../checkout';
 import {
     ErrorModal,
@@ -59,6 +60,7 @@ import { EMPTY_ARRAY, isExperimentEnabled } from '../common/utility';
 import { TermsConditionsType } from '../termsConditions';
 
 import CartStockPositionsChangedModal from './CartStockPositionsChangedModal';
+import { AdditionalPaymentFieldSessionStorage } from './AdditionalPaymentFieldSessionStorage';
 import { InvoicePaymentCommentSessionStorage } from './InvoicePaymentCommentSessionStorage';
 import mapSubmitOrderErrorMessage, { mapSubmitOrderErrorTitle } from './mapSubmitOrderErrorMessage';
 import mapToOrderRequestBody from './mapToOrderRequestBody';
@@ -396,7 +398,6 @@ const Payment = (
 
         const invoiceComment = InvoicePaymentCommentSessionStorage.get();
 
-        // TODO: CHECKOUT-9891 Remove all B2B sessionStorage usages after this all
         await submitB2BMetadata({
             isInvoice: invoiceRedirect,
             invoiceComment,
@@ -442,6 +443,10 @@ const Payment = (
                 const order = state.data.getOrder();
 
                 await persistB2BMetadataIfNeeded();
+
+                B2BExtraFieldsSessionStorage.removeAll();
+                AdditionalPaymentFieldSessionStorage.remove();
+                InvoicePaymentCommentSessionStorage.remove();
 
                 analyticsTracker.paymentComplete();
 

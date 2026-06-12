@@ -38,4 +38,39 @@ describe('B2BExtraFieldsSessionStorage', () => {
             ).toBeUndefined();
         });
     });
+
+    describe('removeAll', () => {
+        it('removes billing, shipping, order, and consignment keys', () => {
+            const fields = { field: 'value' };
+
+            B2BExtraFieldsSessionStorage.setFields(B2BExtraFieldsSessionStorage.BILLING_KEY, fields);
+            B2BExtraFieldsSessionStorage.setFields(B2BExtraFieldsSessionStorage.SHIPPING_KEY, fields);
+            B2BExtraFieldsSessionStorage.setFields(B2BExtraFieldsSessionStorage.ORDER_KEY, fields);
+            B2BExtraFieldsSessionStorage.setFields(
+                B2BExtraFieldsSessionStorage.getConsignmentKey('c1'),
+                fields,
+            );
+            B2BExtraFieldsSessionStorage.setFields(
+                B2BExtraFieldsSessionStorage.getConsignmentKey('c2'),
+                fields,
+            );
+
+            B2BExtraFieldsSessionStorage.removeAll();
+
+            expect(B2BExtraFieldsSessionStorage.getFields(B2BExtraFieldsSessionStorage.BILLING_KEY)).toBeUndefined();
+            expect(B2BExtraFieldsSessionStorage.getFields(B2BExtraFieldsSessionStorage.SHIPPING_KEY)).toBeUndefined();
+            expect(B2BExtraFieldsSessionStorage.getFields(B2BExtraFieldsSessionStorage.ORDER_KEY)).toBeUndefined();
+            expect(B2BExtraFieldsSessionStorage.getFields(B2BExtraFieldsSessionStorage.getConsignmentKey('c1'))).toBeUndefined();
+            expect(B2BExtraFieldsSessionStorage.getFields(B2BExtraFieldsSessionStorage.getConsignmentKey('c2'))).toBeUndefined();
+        });
+
+        it('does not remove unrelated sessionStorage keys', () => {
+            sessionStorage.setItem('unrelated', 'data');
+
+            B2BExtraFieldsSessionStorage.setFields(B2BExtraFieldsSessionStorage.BILLING_KEY, { field: 'value' });
+            B2BExtraFieldsSessionStorage.removeAll();
+
+            expect(sessionStorage.getItem('unrelated')).toBe('data');
+        });
+    });
 });
