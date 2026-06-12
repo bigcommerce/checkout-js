@@ -14,6 +14,7 @@ import {
     getAddressFormFieldsValidationSchema,
     getTranslateAddressError,
     isEqualAddress,
+    isValidCustomerAddress,
     mapAddressFromFormValues,
     mapAddressToFormValues,
 } from '../address';
@@ -92,6 +93,7 @@ const SingleShippingForm: React.FC<
     } = useCapabilities();
     const {
         consignments,
+        customer,
         deinitializeShippingMethod: deinitialize,
         deleteConsignments,
         initializeShippingMethod: initialize,
@@ -101,6 +103,13 @@ const SingleShippingForm: React.FC<
         shouldShowOrderComments,
         updateShippingAddress: updateAddress,
     } = useShipping();
+
+    const hasValidShippingCustomerAddress = isValidCustomerAddress(
+        shippingAddress,
+        customer.addresses,
+        getFields(shippingAddress?.countryCode),
+        validateMaxLength,
+    );
 
     const propsRef = useRef({ values, shippingAddress, isValid });
     const debouncedUpdateAddressRef = useRef<
@@ -113,6 +122,22 @@ const SingleShippingForm: React.FC<
     const [isResettingAddress, setIsResettingAddress] = useState(false);
     const [isUpdatingShippingData, setIsUpdatingShippingData] = useState(false);
     const [hasRequestedShippingOptions, setHasRequestedShippingOptions] = useState(false);
+
+    // Once the address form opens (selected address is invalid or no longer matches a
+    // book entry), the stored book id can't faithfully represent it, so drop it.
+    useEffect(() => {
+        if (
+            hasCompanyAddressBook &&
+            !hasValidShippingCustomerAddress &&
+            B2BExtraFieldsSessionStorage.getAddressId(
+                B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY,
+            )
+        ) {
+            B2BExtraFieldsSessionStorage.removeAddressId(
+                B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY,
+            );
+        }
+    }, [hasCompanyAddressBook, hasValidShippingCustomerAddress]);
 
     const stateOrProvinceCodeFormField = useMemo(() => {
         return getFields(values.shippingAddress?.countryCode).find(
@@ -236,19 +261,21 @@ const SingleShippingForm: React.FC<
     const handleAddressSelect = async (address: Address) => {
         setIsResettingAddress(true);
 
-        B2BExtraFieldsSessionStorage.removeAddressId(
-            B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY,
-        );
-
-        if (hasCompanyAddressBook && (address as CustomerAddress).id) {
-            B2BExtraFieldsSessionStorage.setAddressId(
-                B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY,
-                (address as CustomerAddress).id,
-            );
-        }
-
         try {
             await updateAddress(address);
+
+            B2BExtraFieldsSessionStorage.removeAddressId(
+                B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY,
+            );
+
+            const selectedAddressId = (address as CustomerAddress).id;
+
+            if (hasCompanyAddressBook && selectedAddressId) {
+                B2BExtraFieldsSessionStorage.setAddressId(
+                    B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY,
+                    selectedAddressId,
+                );
+            }
 
             setValues({
                 ...propsRef.current.values,
@@ -265,6 +292,8 @@ const SingleShippingForm: React.FC<
         setIsResettingAddress(true);
 
         try {
+            const address = await deleteConsignments();
+
             if (hasAddressExtraFields) {
                 B2BExtraFieldsSessionStorage.removeFields(
                     B2BExtraFieldsSessionStorage.SHIPPING_KEY,
@@ -274,8 +303,6 @@ const SingleShippingForm: React.FC<
             B2BExtraFieldsSessionStorage.removeAddressId(
                 B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY,
             );
-
-            const address = await deleteConsignments();
 
             setValues({
                 ...propsRef.current.values,

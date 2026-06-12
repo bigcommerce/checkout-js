@@ -6,7 +6,12 @@ import { useCapabilities } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { AddressFormSkeleton, ConfirmationModal } from '@bigcommerce/checkout/ui';
 
-import { B2BExtraFieldsSessionStorage, isEqualAddress, mapAddressFromFormValues } from '../address';
+import {
+    B2BExtraFieldsSessionStorage,
+    isEqualAddress,
+    mapAddressFromFormValues,
+    setDefaultAddress,
+} from '../address';
 import type CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 
 import { useShipping } from './hooks/useShipping';
@@ -80,18 +85,16 @@ function Shipping({
                     loadBillingAddressFields(),
                 ]);
 
-                if (hasCompanyAddressBook && !shippingAddress) {
-                    const defaultShippingAddress = customer.addresses?.find(
-                        ({ isDefaultShipping }) => isDefaultShipping,
-                    );
-
-                    if (defaultShippingAddress) {
-                        try {
-                            await updateShippingAddress(defaultShippingAddress);
-                        } catch {
-                            /* Do nothing: we should not block shoppers from buying. */
-                        }
-                    }
+                if (hasCompanyAddressBook) {
+                    await setDefaultAddress({
+                        addressIdKey: B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY,
+                        currentAddress: shippingAddress,
+                        addresses: customer.addresses,
+                        defaultAddress: customer.addresses?.find(
+                            ({ isDefaultShipping }) => isDefaultShipping,
+                        ),
+                        updateAddress: updateShippingAddress,
+                    });
                 }
 
                 if (cartHasPromotionalItems && isMultiShippingMode) {
