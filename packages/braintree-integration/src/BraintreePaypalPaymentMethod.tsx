@@ -1,5 +1,8 @@
 import { type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
-import { createBraintreePaypalPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
+import {
+    BraintreePaypalPaymentInitializeOptions,
+    createBraintreePaypalPaymentStrategy
+} from '@bigcommerce/checkout-sdk/integrations/braintree';
 import React, { type FunctionComponent, useCallback, useEffect, useRef } from 'react';
 
 import { HostedPaymentComponent } from '@bigcommerce/checkout/hosted-payment-integration';
@@ -84,7 +87,7 @@ const BraintreePaypalPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                     onRenderButton: () => {
                         paymentForm.hidePaymentSubmitButton(method, true);
                     },
-                },
+                } as BraintreePaypalPaymentInitializeOptions,
             });
         },
         [rest, checkoutService],
