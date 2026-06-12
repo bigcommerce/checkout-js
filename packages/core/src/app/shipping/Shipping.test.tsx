@@ -32,6 +32,7 @@ import {
     checkoutWithShipping,
     checkoutWithShippingAndBilling,
     consignment,
+    customer,
     payments,
     shippingAddress,
     shippingQuoteFailedMessage,
@@ -43,6 +44,7 @@ import {
     within,
 } from '@bigcommerce/checkout/test-utils';
 
+import { B2BExtraFieldsSessionStorage } from '../address';
 import Checkout, { type CheckoutProps } from '../checkout/Checkout';
 import { createErrorLogger } from '../common/error';
 import {
@@ -66,6 +68,7 @@ describe('Shipping step', () => {
     afterEach(() => {
         jest.unmock('lodash');
         checkout.resetHandlers();
+        sessionStorage.clear();
     });
 
     afterAll(() => {
@@ -1059,6 +1062,91 @@ describe('Shipping step', () => {
             expect(
                 screen.queryByText(/no shipping address to choose from/i),
             ).not.toBeInTheDocument();
+        });
+    });
+
+    describe('B2B company address book', () => {
+        const companyAddressBookCapabilities = {
+            ...defaultCapabilities,
+            userJourney: {
+                ...defaultCapabilities.userJourney,
+                hasCompanyAddressBook: true,
+            },
+        };
+
+        const CheckoutWithCompanyAddressBook: FunctionComponent<CheckoutProps> = (props) => (
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleProvider
+                    checkoutService={checkoutService}
+                    languageService={getLanguageService()}
+                >
+                    <AnalyticsProviderMock>
+                        <ExtensionProvider extensionService={extensionService}>
+                            <ThemeProvider>
+                                <CapabilitiesContext.Provider
+                                    value={companyAddressBookCapabilities}
+                                >
+                                    <Checkout {...props} />
+                                </CapabilitiesContext.Provider>
+                            </ThemeProvider>
+                        </ExtensionProvider>
+                    </AnalyticsProviderMock>
+                </LocaleProvider>
+            </CheckoutProvider>
+        );
+
+        it('stores the selected shipping address id when hasCompanyAddressBook is enabled', async () => {
+            // The searchable address book only lists addresses flagged for shipping.
+            const checkoutWithCompanyShippingAddress = {
+                ...checkoutWithMultiShippingCart,
+                customer: {
+                    ...customer,
+                    addresses: [{ ...shippingAddress, id: 1, isShipping: true }],
+                },
+            };
+
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithMultiShippingCart, {
+                checkout: checkoutWithCompanyShippingAddress,
+            });
+
+            jest.spyOn(checkoutService, 'updateShippingAddress').mockResolvedValue(
+                checkoutService.getState(),
+            );
+
+            render(<CheckoutWithCompanyAddressBook {...defaultProps} />);
+
+            await checkout.waitForShippingStep();
+
+            await userEvent.click(screen.getByTestId('address-select-button'));
+            await userEvent.click(screen.getByTestId('address-select-option-action'));
+
+            expect(
+                B2BExtraFieldsSessionStorage.getAddressId(
+                    B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY,
+                ),
+            ).toBe(1);
+        });
+
+        it('does not store the shipping address id when hasCompanyAddressBook is disabled', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithMultiShippingCart);
+
+            jest.spyOn(checkoutService, 'updateShippingAddress').mockResolvedValue(
+                checkoutService.getState(),
+            );
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForShippingStep();
+
+            await userEvent.click(screen.getByTestId('address-select-button'));
+            // 111 Testing Rd is the customer's saved address with id 1.
+            await userEvent.click(screen.getByText(/111 Testing Rd/i));
+
+            expect(
+                B2BExtraFieldsSessionStorage.getAddressId(
+                    B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY,
+                ),
+            ).toBeUndefined();
         });
     });
 });

@@ -47,6 +47,7 @@ import {
     waitFor,
 } from '@bigcommerce/checkout/test-utils';
 
+import { B2BExtraFieldsSessionStorage } from '../address';
 import Checkout from '../checkout/Checkout';
 import { type CheckoutInitializerProps } from '../checkout/CheckoutInitializer';
 import { getCheckoutPayment } from '../checkout/checkouts.mock';
@@ -77,6 +78,7 @@ describe('Billing step', () => {
     afterEach(() => {
         jest.unmock('lodash');
         checkout.resetHandlers();
+        sessionStorage.clear();
     });
 
     afterAll(() => {
@@ -565,6 +567,101 @@ describe('Billing step', () => {
             expect(
                 screen.queryByText(/no billing address to choose from/i),
             ).not.toBeInTheDocument();
+        });
+    });
+
+    describe('B2B company address book', () => {
+        const companyAddressBookCapabilities = {
+            ...defaultCapabilities,
+            userJourney: {
+                ...defaultCapabilities.userJourney,
+                hasCompanyAddressBook: true,
+            },
+        };
+
+        const CheckoutWithCompanyAddressBook: FunctionComponent<CheckoutInitializerProps> = (
+            props,
+        ) => (
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleProvider
+                    checkoutService={checkoutService}
+                    languageService={getLanguageService()}
+                >
+                    <AnalyticsProviderMock>
+                        <ExtensionProvider extensionService={extensionService}>
+                            <ThemeProvider>
+                                <CapabilitiesContext.Provider
+                                    value={companyAddressBookCapabilities}
+                                >
+                                    <Checkout {...props} />
+                                </CapabilitiesContext.Provider>
+                            </ThemeProvider>
+                        </ExtensionProvider>
+                    </AnalyticsProviderMock>
+                </LocaleProvider>
+            </CheckoutProvider>
+        );
+
+        // With hasCompanyAddressBook enabled the searchable address book is rendered, which only
+        // lists addresses flagged for billing. shippingAddress3 is given id 3 and isBilling.
+        const customerWithCompanyBillingAddress = {
+            ...customer,
+            addresses: [{ ...shippingAddress3, id: 3, isBilling: true }],
+        };
+        const checkoutWithCompanyBillingAddress = {
+            ...checkoutWithShipping,
+            customer: customerWithCompanyBillingAddress,
+        };
+
+        it('stores the selected billing address id when hasCompanyAddressBook is enabled', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShipping, {
+                checkout: checkoutWithCompanyBillingAddress,
+            });
+
+            jest.spyOn(checkoutService, 'updateBillingAddress').mockResolvedValue(
+                checkoutService.getState(),
+            );
+
+            render(<CheckoutWithCompanyAddressBook {...defaultProps} />);
+
+            await checkout.waitForBillingStep();
+
+            await act(async () => {
+                await userEvent.click(screen.getByTestId('address-select-button'));
+                await userEvent.click(screen.getByTestId('address-select-option-action'));
+            });
+
+            expect(
+                B2BExtraFieldsSessionStorage.getAddressId(
+                    B2BExtraFieldsSessionStorage.BILLING_ADDRESS_ID_KEY,
+                ),
+            ).toBe(3);
+        });
+
+        it('does not store the billing address id when hasCompanyAddressBook is disabled', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShipping, {
+                checkout: checkoutWithCustomer,
+            });
+
+            jest.spyOn(checkoutService, 'updateBillingAddress').mockResolvedValue(
+                checkoutService.getState(),
+            );
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForBillingStep();
+
+            await act(async () => {
+                await userEvent.click(screen.getByTestId('address-select-button'));
+                // shippingAddress3 is the customer's saved address with id 3.
+                await userEvent.click(screen.getByText(shippingAddress3.address1));
+            });
+
+            expect(
+                B2BExtraFieldsSessionStorage.getAddressId(
+                    B2BExtraFieldsSessionStorage.BILLING_ADDRESS_ID_KEY,
+                ),
+            ).toBeUndefined();
         });
     });
 });
