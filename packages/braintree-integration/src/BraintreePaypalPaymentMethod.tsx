@@ -1,7 +1,7 @@
 import { type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import {
-    BraintreePaypalPaymentInitializeOptions,
-    createBraintreePaypalPaymentStrategy
+    type BraintreePaypalPaymentInitializeOptions,
+    createBraintreePaypalPaymentStrategy,
 } from '@bigcommerce/checkout-sdk/integrations/braintree';
 import React, { type FunctionComponent, useCallback, useEffect, useRef } from 'react';
 
