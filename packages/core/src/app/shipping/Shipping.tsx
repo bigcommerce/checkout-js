@@ -7,6 +7,7 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { AddressFormSkeleton, ConfirmationModal } from '@bigcommerce/checkout/ui';
 
 import {
+    AddressType,
     B2BExtraFieldsSessionStorage,
     isEqualAddress,
     mapAddressFromFormValues,
@@ -87,12 +88,9 @@ function Shipping({
 
                 if (hasCompanyAddressBook) {
                     await setDefaultAddress({
-                        addressIdKey: B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY,
+                        type: AddressType.Shipping,
                         currentAddress: shippingAddress,
                         addresses: customer.addresses,
-                        defaultAddress: customer.addresses?.find(
-                            ({ isDefaultShipping }) => isDefaultShipping,
-                        ),
                         updateAddress: updateShippingAddress,
                     });
                 }

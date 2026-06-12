@@ -1,23 +1,34 @@
 import { type Address, type CustomerAddress } from '@bigcommerce/checkout-sdk';
 
+import AddressType from './AddressType';
 import { B2BExtraFieldsSessionStorage } from './B2BExtraFieldsSessionStorage';
 import isEqualAddress from './isEqualAddress';
 
 interface SetDefaultAddressOptions {
-    addressIdKey: string;
+    type: AddressType;
     currentAddress?: Address;
     addresses?: CustomerAddress[];
-    defaultAddress?: CustomerAddress;
     updateAddress(address: Address): Promise<unknown>;
 }
 
 export default async function setDefaultAddress({
-    addressIdKey,
+    type,
     currentAddress,
     addresses,
-    defaultAddress,
     updateAddress,
 }: SetDefaultAddressOptions): Promise<void> {
+    const isShipping = type === AddressType.Shipping;
+    const addressIdKey = isShipping
+        ? B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY
+        : B2BExtraFieldsSessionStorage.BILLING_ADDRESS_ID_KEY;
+
+    const filteredAddresses = addresses?.filter((address) =>
+        isShipping ? address.isShipping : address.isBilling,
+    );
+    const defaultAddress = filteredAddresses?.find((address) =>
+        isShipping ? address.isDefaultShipping : address.isDefaultBilling,
+    );
+
     if (!currentAddress?.address1) {
         if (!defaultAddress) {
             return;
@@ -37,7 +48,7 @@ export default async function setDefaultAddress({
     }
 
     const storedAddressId = B2BExtraFieldsSessionStorage.getAddressId(addressIdKey);
-    const storedIdStillMatches = addresses?.some(
+    const storedIdStillMatches = filteredAddresses?.some(
         (address) => address.id === storedAddressId && isEqualAddress(address, currentAddress),
     );
 
@@ -46,7 +57,9 @@ export default async function setDefaultAddress({
     }
 
     // Pre-existing address (e.g. resumed checkout): recover its book ID by matching.
-    const matchedAddress = addresses?.find((address) => isEqualAddress(address, currentAddress));
+    const matchedAddress = filteredAddresses?.find((address) =>
+        isEqualAddress(address, currentAddress),
+    );
 
     if (matchedAddress?.id) {
         B2BExtraFieldsSessionStorage.setAddressId(addressIdKey, matchedAddress.id);

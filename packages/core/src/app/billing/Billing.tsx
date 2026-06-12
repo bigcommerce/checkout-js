@@ -6,6 +6,7 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { AddressFormSkeleton, Legend } from '@bigcommerce/checkout/ui';
 
 import {
+    AddressType,
     B2BExtraFieldsSessionStorage,
     getAddressWithCustomerExtraFields,
     isEqualAddress,
@@ -122,12 +123,9 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }: BillingProps):
 
                 if (hasCompanyAddressBook) {
                     await setDefaultAddress({
-                        addressIdKey: B2BExtraFieldsSessionStorage.BILLING_ADDRESS_ID_KEY,
+                        type: AddressType.Billing,
                         currentAddress: getBillingAddress(),
                         addresses: customer.addresses,
-                        defaultAddress: customer.addresses?.find(
-                            ({ isDefaultBilling }) => isDefaultBilling,
-                        ),
                         updateAddress: checkoutService.updateBillingAddress,
                     });
                 }
