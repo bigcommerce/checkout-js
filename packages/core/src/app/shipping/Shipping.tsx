@@ -118,6 +118,15 @@ function Shipping({
 
             if (isMultiShippingMode && consignments.length) {
                 await updateShippingAddress(consignments[0].shippingAddress);
+
+                if (hasCompanyAddressBook) {
+                    await setDefaultAddress({
+                        type: AddressType.Shipping,
+                        currentAddress: consignments[0].shippingAddress,
+                        addresses: customer.addresses,
+                        updateAddress: updateShippingAddress,
+                    });
+                }
             } else {
                 await deleteConsignments();
             }

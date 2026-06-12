@@ -115,6 +115,19 @@ describe('setDefaultAddress', () => {
             expect(B2BExtraFieldsSessionStorage.getAddressId(shippingIdKey)).toBeUndefined();
         });
 
+        it('clears a stale stored id when no book address matches', async () => {
+            B2BExtraFieldsSessionStorage.setAddressId(shippingIdKey, 99);
+
+            await setDefaultAddress({
+                type: AddressType.Shipping,
+                currentAddress: getAddress(),
+                addresses: [getCustomerAddress({ id: 3, address1: 'Somewhere else' })],
+                updateAddress,
+            });
+
+            expect(B2BExtraFieldsSessionStorage.getAddressId(shippingIdKey)).toBeUndefined();
+        });
+
         it('keeps the stored id when it still matches the current address', async () => {
             B2BExtraFieldsSessionStorage.setAddressId(shippingIdKey, 42);
 

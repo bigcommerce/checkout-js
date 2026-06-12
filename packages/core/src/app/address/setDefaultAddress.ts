@@ -56,12 +56,15 @@ export default async function setDefaultAddress({
         return;
     }
 
-    // Pre-existing address (e.g. resumed checkout): recover its book ID by matching.
+    // Pre-existing address (e.g. resumed checkout): recover its book ID by matching,
+    // or clear a stale ID when the address no longer corresponds to a book entry.
     const matchedAddress = filteredAddresses?.find((address) =>
         isEqualAddress(address, currentAddress),
     );
 
     if (matchedAddress?.id) {
         B2BExtraFieldsSessionStorage.setAddressId(addressIdKey, matchedAddress.id);
+    } else {
+        B2BExtraFieldsSessionStorage.removeAddressId(addressIdKey);
     }
 }
