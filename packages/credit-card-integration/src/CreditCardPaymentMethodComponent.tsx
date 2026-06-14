@@ -15,6 +15,7 @@ import React, { type ReactElement, type ReactNode, useEffect, useRef, useState }
 import { type ObjectSchema } from 'yup';
 
 import {
+    AutoVaultNotice,
     CardInstrumentFieldset,
     configureCardValidator,
     CreditCardFieldset,
@@ -22,6 +23,7 @@ import {
     CreditCardValidation,
     getCreditCardValidationSchema,
     getInstrumentValidationSchema,
+    isAutoVaultingNoticeApplicable,
     isCardInstrument,
     isInstrumentCardCodeRequiredSelector,
     isInstrumentCardNumberRequiredSelector,
@@ -56,6 +58,7 @@ interface CreditCardPaymentMethodDerivedProps {
     isInstrumentFeatureAvailable: boolean;
     isLoadingInstruments: boolean;
     isPaymentDataRequired: boolean;
+    shouldShowAutoVaultNotice: boolean;
     shouldShowInstrumentFieldset: boolean;
     isInstrumentCardCodeRequired(instrument: Instrument, method: PaymentMethod): boolean;
     isInstrumentCardNumberRequired(instrument: Instrument, method: PaymentMethod): boolean;
@@ -114,6 +117,7 @@ export const CreditCardPaymentMethodComponent = (
             isInstrumentFeatureAvailable: isInstrumentFeatureAvailableFlag,
             isLoadingInstruments: isLoadingInstrumentsProp(),
             isPaymentDataRequired: isPaymentDataRequired(),
+            shouldShowAutoVaultNotice: isAutoVaultingNoticeApplicable({ paymentMethod: method }),
             shouldShowInstrumentFieldset:
                 isInstrumentFeatureAvailableFlag && instruments.length > 0,
         };
@@ -343,6 +347,7 @@ export const CreditCardPaymentMethodComponent = (
         isInstrumentCardNumberRequired: isInstrumentCardNumberRequiredProp,
         isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
         isLoadingInstruments,
+        shouldShowAutoVaultNotice,
         shouldShowInstrumentFieldset,
     } = getCreditCardPaymentMethodDerivedProps();
 
@@ -407,6 +412,8 @@ export const CreditCardPaymentMethodComponent = (
                         instruments={outerInstruments}
                     />
                 )}
+
+                {shouldShowAutoVaultNotice && shouldShowCreditCardFieldset && <AutoVaultNotice />}
             </div>
         </LoadingOverlay>
     );

@@ -1,6 +1,7 @@
 export {
     AccountInstrumentFieldset,
     AccountInstrumentSelect,
+    AutoVaultNotice,
     CardInstrumentFieldset,
     getInstrumentValidationSchema,
     InstrumentSelect,
@@ -39,6 +40,7 @@ export {
     assertIsCardInstrument,
     isAccountInstrument,
     isAchInstrument,
+    isAutoVaultingNoticeApplicable,
     isSepaInstrument,
     isBankAccountInstrument,
     isCardInstrument,

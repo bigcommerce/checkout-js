@@ -1,6 +1,7 @@
 /* istanbul ignore file */
 export { AccountInstrumentFieldset } from './AccountInstrumentFieldset';
 export { AccountInstrumentSelect } from './AccountInstrumentSelect';
+export { AutoVaultNotice } from './AutoVaultNotice';
 export { CardInstrumentFieldset } from './CardInstrumentFieldset';
 export { getInstrumentValidationSchema } from './getInstrumentValidationSchema';
 export { InstrumentSelect } from './InstrumentSelect';
