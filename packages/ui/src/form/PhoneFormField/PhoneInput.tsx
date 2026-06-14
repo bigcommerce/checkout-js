@@ -50,7 +50,7 @@ export const PhoneInput: FunctionComponent<PhoneInputProps> = ({
             <IntlTelInput
                 inputProps={{
                     'aria-labelledby': `${id}-label ${id}-field-error-message`,
-                    // using the spread to avoid type error, types are incorrect on the library side
+                    // using spread to avoid type error, data-test is valid but types are incorrect on the library side
                     ...{ 'data-test': `${id}-text` },
                     autoComplete: autocomplete,
                     id,
