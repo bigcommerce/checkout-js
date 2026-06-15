@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.808.1](https://github.com/bigcommerce/checkout-js/compare/v1.808.0...v1.808.1) (2026-06-15)
+
+
+### Bug Fixes
+
+* **other:** CHECKOUT-9953 Remove isInitialValid from Formik as it is deprecated ([#3065](https://github.com/bigcommerce/checkout-js/issues/3065)) ([36aecac](https://github.com/bigcommerce/checkout-js/commit/36aecac333ea67d69d575f469102176ba4a12a53))
+
 ## [1.808.0](https://github.com/bigcommerce/checkout-js/compare/v1.807.1...v1.808.0) (2026-06-12)
 
 
