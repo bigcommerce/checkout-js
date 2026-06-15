@@ -231,21 +231,7 @@ export default withLanguage(
             ),
             orderComment: customerMessage,
         }),
-        isInitialValid: ({ billingAddress, getFields, language }) => {
-            if (!billingAddress) return false;
-
-            const fields = getFields(billingAddress.countryCode);
-            const formValues = mapAddressToFormValues(
-                fields,
-                billingAddress,
-                B2BExtraFieldsSessionStorage.BILLING_KEY,
-            );
-
-            return getAddressFormFieldsValidationSchema({
-                language,
-                formFields: fields,
-            }).isValidSync(formValues);
-        },
+        validateOnMount: true,
         validationSchema: ({
             language,
             getFields,
