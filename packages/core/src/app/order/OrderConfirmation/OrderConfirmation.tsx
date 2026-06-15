@@ -5,7 +5,7 @@ import {
 import { createRequestSender } from '@bigcommerce/request-sender';
 import React, { type ReactElement, useEffect, useRef, useState } from 'react';
 
-import { useAnalytics, useCheckout } from '@bigcommerce/checkout/contexts';
+import { useAnalytics, useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { OrderConfirmationPageSkeleton } from '@bigcommerce/checkout/ui';
 
@@ -56,10 +56,7 @@ export const OrderConfirmation = ({
     const embeddedMessengerRef = useRef<EmbeddedCheckoutMessenger | undefined>();
 
     const {
-        checkoutState: {
-            data: { getOrder, getConfig },
-            statuses: { isLoadingOrder },
-        },
+        selectedState: { order, config, isLoadingOrder },
         checkoutService: { loadOrder },
     } = useCheckout(({ data, statuses }) => ({
         order: data.getOrder(),
@@ -67,9 +64,9 @@ export const OrderConfirmation = ({
         isLoadingOrder: statuses.isLoadingOrder(),
     }));
     const { analyticsTracker } = useAnalytics();
-
-    const config = getConfig();
-    const order = getOrder();
+    const {
+        orderConfirmation: { cannotCreatePersonalAccount },
+    } = useCapabilities();
 
     const handleUnhandledError = (e: Error) => {
         setError(e);
@@ -152,7 +149,7 @@ export const OrderConfirmation = ({
         return <RateLimitedPermalinkView />;
     }
 
-    if (!order || !config || isLoadingOrder()) {
+    if (!order || !config || isLoadingOrder) {
         return <OrderConfirmationPageSkeleton />;
     }
 
@@ -174,6 +171,7 @@ export const OrderConfirmation = ({
 
     return (
         <OrderConfirmationPage
+            cannotCreatePersonalAccount={cannotCreatePersonalAccount}
             currency={currency}
             customerCanBeCreated={customerCanBeCreated}
             error={error}

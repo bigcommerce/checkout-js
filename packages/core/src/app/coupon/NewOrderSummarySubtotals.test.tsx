@@ -11,6 +11,7 @@ import React from 'react';
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
 import {
     CheckoutProvider,
+    defaultCapabilities,
     ExtensionProvider,
     LocaleProvider,
     useCapabilities,
@@ -85,7 +86,12 @@ describe('NewOrderSummarySubtotals', () => {
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
         mockUseMultiCoupon.mockReturnValue(defaultMockReturn);
         mockUseCapabilities.mockReturnValue({
-            userJourney: { disableCoupon: false, disableGiftCertificate: false },
+            ...defaultCapabilities,
+            userJourney: {
+                ...defaultCapabilities.userJourney,
+                disableCoupon: false,
+                disableGiftCertificate: false,
+            },
         });
     });
 
@@ -695,7 +701,12 @@ describe('NewOrderSummarySubtotals', () => {
     describe('disableGiftCertificate and disableCoupon capabilities', () => {
         it('shows "Coupon" label when disableGiftCertificate is true', () => {
             mockUseCapabilities.mockReturnValue({
-                userJourney: { disableCoupon: false, disableGiftCertificate: true },
+                ...defaultCapabilities,
+                userJourney: {
+                    ...defaultCapabilities.userJourney,
+                    disableCoupon: false,
+                    disableGiftCertificate: true,
+                },
             });
 
             renderComponent();
@@ -709,7 +720,12 @@ describe('NewOrderSummarySubtotals', () => {
 
         it('shows "Gift certificate" label when disableCoupon is true', () => {
             mockUseCapabilities.mockReturnValue({
-                userJourney: { disableCoupon: true, disableGiftCertificate: false },
+                ...defaultCapabilities,
+                userJourney: {
+                    ...defaultCapabilities.userJourney,
+                    disableCoupon: true,
+                    disableGiftCertificate: false,
+                },
             });
 
             renderComponent();
@@ -723,7 +739,12 @@ describe('NewOrderSummarySubtotals', () => {
 
         it('shows default toggle label when both flags are false', () => {
             mockUseCapabilities.mockReturnValue({
-                userJourney: { disableCoupon: false, disableGiftCertificate: false },
+                ...defaultCapabilities,
+                userJourney: {
+                    ...defaultCapabilities.userJourney,
+                    disableCoupon: false,
+                    disableGiftCertificate: false,
+                },
             });
 
             renderComponent();
@@ -737,7 +758,12 @@ describe('NewOrderSummarySubtotals', () => {
 
         it('hides entire coupon section when both disableCoupon and disableGiftCertificate are true', () => {
             mockUseCapabilities.mockReturnValue({
-                userJourney: { disableCoupon: true, disableGiftCertificate: true },
+                ...defaultCapabilities,
+                userJourney: {
+                    ...defaultCapabilities.userJourney,
+                    disableCoupon: true,
+                    disableGiftCertificate: true,
+                },
             });
 
             renderComponent();

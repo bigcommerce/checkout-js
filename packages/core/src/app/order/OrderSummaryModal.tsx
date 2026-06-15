@@ -58,11 +58,15 @@ const OrderSummaryModal: FunctionComponent<
     ...orderSummarySubtotalsProps
 }) => {
     const { currency } = useLocale();
-    const { checkoutState } = useCheckout();
+    const {
+        selectedState: { config, checkout, order },
+    } = useCheckout(({ data }) => ({
+        config: data.getConfig(),
+        checkout: data.getCheckout(),
+        order: data.getOrder(),
+    }));
     const { themeV2 } = useThemeContext();
-    const { checkoutSettings } = checkoutState.data.getConfig() ?? {};
-    const checkout = checkoutState.data.getCheckout();
-    const order = checkoutState.data.getOrder();
+    const { checkoutSettings } = config ?? {};
 
     const isMultiCouponEnabled = isExperimentEnabled(
         checkoutSettings,

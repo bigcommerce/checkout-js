@@ -6,7 +6,13 @@ import { useCapabilities } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { AddressFormSkeleton, ConfirmationModal } from '@bigcommerce/checkout/ui';
 
-import { B2BExtraFieldsSessionStorage, isEqualAddress, mapAddressFromFormValues } from '../address';
+import {
+    AddressType,
+    B2BExtraFieldsSessionStorage,
+    isEqualAddress,
+    mapAddressFromFormValues,
+    setDefaultAddress,
+} from '../address';
 import type CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 
 import { useShipping } from './hooks/useShipping';
@@ -80,18 +86,13 @@ function Shipping({
                     loadBillingAddressFields(),
                 ]);
 
-                if (hasCompanyAddressBook && !shippingAddress) {
-                    const defaultShippingAddress = customer.addresses?.find(
-                        ({ isDefaultShipping }) => isDefaultShipping,
-                    );
-
-                    if (defaultShippingAddress) {
-                        try {
-                            await updateShippingAddress(defaultShippingAddress);
-                        } catch {
-                            /* Do nothing: we should not block shoppers from buying. */
-                        }
-                    }
+                if (hasCompanyAddressBook) {
+                    await setDefaultAddress({
+                        type: AddressType.Shipping,
+                        currentAddress: shippingAddress,
+                        addresses: customer.addresses,
+                        updateAddress: updateShippingAddress,
+                    });
                 }
 
                 if (cartHasPromotionalItems && isMultiShippingMode) {
@@ -117,6 +118,15 @@ function Shipping({
 
             if (isMultiShippingMode && consignments.length) {
                 await updateShippingAddress(consignments[0].shippingAddress);
+
+                if (hasCompanyAddressBook) {
+                    await setDefaultAddress({
+                        type: AddressType.Shipping,
+                        currentAddress: consignments[0].shippingAddress,
+                        addresses: customer.addresses,
+                        updateAddress: updateShippingAddress,
+                    });
+                }
             } else {
                 await deleteConsignments();
             }
@@ -154,16 +164,7 @@ function Shipping({
         }
 
         if (values.billingSameAsShipping && updatedShippingAddress && !hasRemoteBilling) {
-            const shippingExtraFields = B2BExtraFieldsSessionStorage.getFields(
-                B2BExtraFieldsSessionStorage.SHIPPING_KEY,
-            );
-
-            if (shippingExtraFields) {
-                B2BExtraFieldsSessionStorage.setFields(
-                    B2BExtraFieldsSessionStorage.BILLING_KEY,
-                    shippingExtraFields,
-                );
-            }
+            B2BExtraFieldsSessionStorage.copyShippingToBilling();
 
             if (!isEqualAddress(updatedShippingAddress, billingAddress)) {
                 promises.push(updateBillingAddress(updatedShippingAddress));
