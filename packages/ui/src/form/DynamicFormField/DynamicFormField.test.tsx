@@ -33,7 +33,6 @@ jest.mock('@intl-tel-input/react', () => ({
 
         return (
             <input
-                data-test="iti-phone-input"
                 {...inputProps}
                 onChange={(e) => onChangeNumber?.(e.target.value)}
                 value={value ?? ''}
@@ -217,7 +216,7 @@ describe('DynamicFormField Component', () => {
                 isNewPhoneValidationExperimentEnabled: true,
             });
 
-            fireEvent.change(screen.getByTestId('iti-phone-input'), {
+            fireEvent.change(screen.getByTestId('phone-text'), {
                 target: { value: '123' },
             });
             await userEvent.click(screen.getByText('Submit'));
@@ -235,7 +234,7 @@ describe('DynamicFormField Component', () => {
                 isNewPhoneValidationExperimentEnabled: true,
             });
 
-            fireEvent.change(screen.getByTestId('iti-phone-input'), {
+            fireEvent.change(screen.getByTestId('phone-text'), {
                 target: { value: '+15551234567' },
             });
             await userEvent.click(screen.getByText('Submit'));

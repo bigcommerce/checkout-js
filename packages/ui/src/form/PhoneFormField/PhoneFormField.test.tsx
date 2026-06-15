@@ -32,7 +32,6 @@ jest.mock('@intl-tel-input/react', () => ({
 
         return (
             <input
-                data-test="iti-phone-input"
                 {...inputProps}
                 onChange={(e) => onChangeNumber?.(e.target.value)}
                 value={value ?? ''}
@@ -76,7 +75,7 @@ describe('PhoneFormField', () => {
     it('renders IntlTelInput', () => {
         renderPhoneFormField();
 
-        expect(screen.getByTestId('iti-phone-input')).toBeInTheDocument();
+        expect(screen.getByTestId('phone-text')).toBeInTheDocument();
     });
 
     it('auto-sets country when selectedCountry is provided and the field value is empty', () => {
@@ -115,7 +114,7 @@ describe('PhoneFormField', () => {
 
         renderPhoneFormField();
 
-        fireEvent.change(screen.getByTestId('iti-phone-input'), { target: { value: '123' } });
+        fireEvent.change(screen.getByTestId('phone-text'), { target: { value: '123' } });
         await userEvent.click(screen.getByText('Submit'));
 
         await waitFor(() => {
@@ -128,7 +127,7 @@ describe('PhoneFormField', () => {
 
         renderPhoneFormField();
 
-        fireEvent.change(screen.getByTestId('iti-phone-input'), {
+        fireEvent.change(screen.getByTestId('phone-text'), {
             target: { value: '+15551234567' },
         });
         await userEvent.click(screen.getByText('Submit'));
