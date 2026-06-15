@@ -32,6 +32,8 @@ const GooglePayPaymentMethodComponent: FunctionComponent<PaymentMethodProps> = (
     paymentFormRef.current = paymentForm;
 
     useEffect(() => {
+        let isMounted = true;
+
         paymentFormRef.current.hidePaymentSubmitButton(method, true);
 
         const guardTermsConditions = (event: MouseEvent) => {
@@ -49,6 +51,10 @@ const GooglePayPaymentMethodComponent: FunctionComponent<PaymentMethodProps> = (
                 event.preventDefault();
 
                 void paymentFormRef.current.validateForm().then((errors) => {
+                    if (!isMounted) {
+                        return;
+                    }
+
                     paymentFormRef.current.setSubmitted(true);
 
                     if (errors.terms) {
@@ -85,6 +91,7 @@ const GooglePayPaymentMethodComponent: FunctionComponent<PaymentMethodProps> = (
         }, 0);
 
         return () => {
+            isMounted = false;
             clearTimeout(timeoutId);
             document.removeEventListener('click', guardTermsConditions, true);
             paymentFormRef.current.hidePaymentSubmitButton(method, false);

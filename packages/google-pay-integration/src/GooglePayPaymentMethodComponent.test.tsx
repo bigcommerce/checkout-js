@@ -296,5 +296,38 @@ describe('GooglePayPaymentMethodComponent', () => {
 
             expect(event.stopPropagation).not.toHaveBeenCalled();
         });
+
+        it('does not update payment form after unmount when validateForm is pending', async () => {
+            jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(
+                storeConfigWithTermsRequired,
+            );
+            (paymentForm.getFormValues as jest.Mock).mockReturnValue({ terms: false });
+
+            let resolveValidateForm: (errors: { terms?: string }) => void;
+
+            (paymentForm.validateForm as jest.Mock).mockReturnValue(
+                new Promise((resolve) => {
+                    resolveValidateForm = resolve;
+                }),
+            );
+
+            const { unmount } = renderComponent();
+
+            fireClickOn(googlePayButton);
+
+            expect(paymentForm.validateForm).toHaveBeenCalled();
+            expect(paymentForm.setSubmitted).not.toHaveBeenCalled();
+
+            unmount();
+
+            resolveValidateForm!({
+                terms: 'terms_and_conditions.agreement_required_error',
+            });
+
+            await Promise.resolve();
+
+            expect(paymentForm.setSubmitted).not.toHaveBeenCalled();
+            expect(paymentForm.setFieldTouched).not.toHaveBeenCalled();
+        });
     });
 });
