@@ -11,11 +11,11 @@ type B2BMetadataExtraField = NonNullable<PersistB2BMetadataOptions['extraFields'
 type B2BMetadataExtraInfo = NonNullable<PersistB2BMetadataOptions['extraInfo']>;
 
 export const buildExtraFields = (
-    stored?: Record<string, unknown>,
+    storedExtraFields?: Record<string, unknown>,
     fields?: FormField[],
 ): B2BMetadataExtraField[] =>
-    stored
-        ? Object.entries(stored).map(([fieldName, fieldValue]) => ({
+    storedExtraFields
+        ? Object.entries(storedExtraFields).map(([fieldName, fieldValue]) => ({
               // The API expects the field label, but values are stored keyed by field name (id).
               fieldName: fields?.find((field) => field.name === fieldName)?.label ?? fieldName,
               fieldValue: fieldValue as B2BMetadataExtraField['fieldValue'],
@@ -33,13 +33,13 @@ export const buildOrderExtraFields = (orderExtraFields?: FormField[]): B2BMetada
 const SHOULD_SAVE_ADDRESS_KEY = 'shouldSaveAddress';
 
 const omitShouldSaveAddress = (
-    stored?: Record<string, unknown>,
+    storedExtraFields?: Record<string, unknown>,
 ): Record<string, unknown> | undefined => {
-    if (!stored) {
-        return stored;
+    if (!storedExtraFields) {
+        return storedExtraFields;
     }
 
-    const { [SHOULD_SAVE_ADDRESS_KEY]: _shouldSaveAddress, ...rest } = stored;
+    const { [SHOULD_SAVE_ADDRESS_KEY]: _shouldSaveAddress, ...rest } = storedExtraFields;
 
     return rest;
 };
