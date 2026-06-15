@@ -395,12 +395,12 @@ const Payment = (
             return;
         }
 
-        const metaDataPayload = buildB2BMetadataOptions(invoiceRedirect, {
+        const metadataPayload = buildB2BMetadataOptions(invoiceRedirect, {
             orderExtraFields,
             addressExtraFields,
         });
 
-        await submitB2BMetadata(metaDataPayload);
+        await submitB2BMetadata(metadataPayload);
 
         clearB2BMetadataStorage();
     };

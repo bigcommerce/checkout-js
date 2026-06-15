@@ -7,8 +7,8 @@ import { B2BExtraFieldsSessionStorage } from '../address';
 import { AdditionalPaymentFieldSessionStorage } from './AdditionalPaymentFieldSessionStorage';
 import { InvoicePaymentCommentSessionStorage } from './InvoicePaymentCommentSessionStorage';
 
-export type B2BMetadataExtraField = NonNullable<PersistB2BMetadataOptions['extraFields']>[number];
-export type B2BMetadataExtraInfo = NonNullable<PersistB2BMetadataOptions['extraInfo']>;
+type B2BMetadataExtraField = NonNullable<PersistB2BMetadataOptions['extraFields']>[number];
+type B2BMetadataExtraInfo = NonNullable<PersistB2BMetadataOptions['extraInfo']>;
 
 export const buildExtraFields = (
     stored?: Record<string, unknown>,
@@ -79,7 +79,7 @@ export const buildAddressExtraInfo = (addressExtraFields?: FormField[]): B2BMeta
     return extraInfo;
 };
 
-export interface B2BMetadataFieldDefinitions {
+interface B2BMetadataFieldDefinitions {
     orderExtraFields?: FormField[];
     addressExtraFields?: FormField[];
 }
