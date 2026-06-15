@@ -61,14 +61,11 @@ const OrderSummaryPrice: FC<OrderSummaryPriceProps> = ({
 }) => {
     const [highlight, setHighlight] = useState<boolean>(false);
     const [previousAmount, setPreviousAmount] = useState<OrderSummaryPriceProps['amount']>(amount);
-    const {
-        checkoutState: {
-            statuses: { isSubmittingOrder },
-        },
-    } = useCheckout();
+    const { selectedState: isActionDisabled } = useCheckout(({ statuses }) =>
+        statuses.isSubmittingOrder(),
+    );
 
     const displayValue = getDisplayValue(amount, zeroLabel);
-    const isActionDisabled = isSubmittingOrder();
 
     useEffect(() => {
         setHighlight(amount !== previousAmount);

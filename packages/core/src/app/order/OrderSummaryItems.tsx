@@ -77,9 +77,8 @@ const ItemCount = ({
     setShowBackorderDetails: React.Dispatch<React.SetStateAction<boolean>>;
     showBackorderDetails: boolean;
 }): ReactElement => {
-    const { checkoutState } = useCheckout();
+    const { selectedState: config } = useCheckout(({ data }) => data.getConfig());
     const backorderCount = getBackorderCount(items);
-    const config = checkoutState.data.getConfig();
     const shouldDisplayBackorderDetails =
         !!config?.inventorySettings?.shouldDisplayBackorderMessagesOnStorefront &&
         (!!config?.inventorySettings?.showQuantityOnBackorder ||
@@ -195,8 +194,7 @@ const OrderSummaryItems = ({
 }: OrderSummaryItemsProps): ReactElement => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [showBackorderDetails, setShowBackorderDetails] = useState(false);
-    const { checkoutState } = useCheckout();
-    const config = checkoutState.data.getConfig();
+    const { selectedState: config } = useCheckout(({ data }) => data.getConfig());
 
     const pickListExperimentEnabled = config
         ? isExperimentEnabled(config.checkoutSettings, 'BACK-425.update_bundle_item_ux', false)
