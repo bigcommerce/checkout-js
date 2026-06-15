@@ -15,7 +15,7 @@ import React, { type ReactElement, type ReactNode, useEffect, useRef, useState }
 import { type ObjectSchema } from 'yup';
 
 import {
-    AutoVaultNotice,
+    AutoVaultingDisclaimer,
     CardInstrumentFieldset,
     configureCardValidator,
     CreditCardFieldset,
@@ -23,11 +23,11 @@ import {
     CreditCardValidation,
     getCreditCardValidationSchema,
     getInstrumentValidationSchema,
-    isAutoVaultingNoticeApplicable,
     isCardInstrument,
     isInstrumentCardCodeRequiredSelector,
     isInstrumentCardNumberRequiredSelector,
     isInstrumentFeatureAvailable,
+    isPaymentMethodAutoVaultingInstruments,
     StoreInstrumentFieldset,
 } from '@bigcommerce/checkout/instrument-utils';
 import {
@@ -58,7 +58,7 @@ interface CreditCardPaymentMethodDerivedProps {
     isInstrumentFeatureAvailable: boolean;
     isLoadingInstruments: boolean;
     isPaymentDataRequired: boolean;
-    shouldShowAutoVaultNotice: boolean;
+    shouldShowAutoVaultingDisclaimer: boolean;
     shouldShowInstrumentFieldset: boolean;
     isInstrumentCardCodeRequired(instrument: Instrument, method: PaymentMethod): boolean;
     isInstrumentCardNumberRequired(instrument: Instrument, method: PaymentMethod): boolean;
@@ -117,7 +117,7 @@ export const CreditCardPaymentMethodComponent = (
             isInstrumentFeatureAvailable: isInstrumentFeatureAvailableFlag,
             isLoadingInstruments: isLoadingInstrumentsProp(),
             isPaymentDataRequired: isPaymentDataRequired(),
-            shouldShowAutoVaultNotice: isAutoVaultingNoticeApplicable({ paymentMethod: method }),
+            shouldShowAutoVaultingDisclaimer: isPaymentMethodAutoVaultingInstruments(method),
             shouldShowInstrumentFieldset:
                 isInstrumentFeatureAvailableFlag && instruments.length > 0,
         };
@@ -347,7 +347,7 @@ export const CreditCardPaymentMethodComponent = (
         isInstrumentCardNumberRequired: isInstrumentCardNumberRequiredProp,
         isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
         isLoadingInstruments,
-        shouldShowAutoVaultNotice,
+        shouldShowAutoVaultingDisclaimer,
         shouldShowInstrumentFieldset,
     } = getCreditCardPaymentMethodDerivedProps();
 
@@ -413,7 +413,9 @@ export const CreditCardPaymentMethodComponent = (
                     />
                 )}
 
-                {shouldShowAutoVaultNotice && shouldShowCreditCardFieldset && <AutoVaultNotice />}
+                {shouldShowAutoVaultingDisclaimer && shouldShowCreditCardFieldset && (
+                    <AutoVaultingDisclaimer />
+                )}
             </div>
         </LoadingOverlay>
     );
