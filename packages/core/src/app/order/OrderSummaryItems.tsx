@@ -81,7 +81,7 @@ const ItemCount = ({
     const backorderCount = getBackorderCount(items);
     const config = checkoutState.data.getConfig();
     const shouldDisplayBackorderDetails =
-        !!config?.inventorySettings?.shouldDisplayBackorderMessagesOnStorefront &&
+        !!config?.inventorySettings?.shouldDisplayBackorderMessages &&
         (!!config?.inventorySettings?.showQuantityOnBackorder ||
             !!config?.inventorySettings?.showBackorderMessage);
 

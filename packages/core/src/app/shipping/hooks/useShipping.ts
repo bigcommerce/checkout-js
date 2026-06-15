@@ -166,7 +166,7 @@ export const useShipping = () => {
     );
 
     const showDefaultShippingExpectationPrompt =
-        config.inventorySettings?.shouldDisplayBackorderMessagesOnStorefront &&
+        config.inventorySettings?.shouldDisplayBackorderMessages &&
         config.inventorySettings?.showDefaultShippingExpectationPrompt &&
         getBackorderCount(cart.lineItems) > 0;
     const defaultShippingExpectationPrompt =

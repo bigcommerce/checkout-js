@@ -47,7 +47,7 @@ describe('OrderSummaryItems', () => {
                 showQuantityOnHand: false,
                 showBackorderAvailabilityPrompt: false,
                 backorderAvailabilityPrompt: null,
-                shouldDisplayBackorderMessagesOnStorefront: true,
+                shouldDisplayBackorderMessages: true,
             },
         });
     });

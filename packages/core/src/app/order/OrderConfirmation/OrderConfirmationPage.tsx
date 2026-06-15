@@ -5,7 +5,7 @@ import {
     type StoreCurrency,
 } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
-import DOMPurify from 'dompurify';
+import domPurify from 'dompurify';
 import React, { type ReactElement } from 'react';
 
 import { ErrorModal } from '../../common/error';
@@ -80,7 +80,7 @@ export const OrderConfirmationPage = ({
                     <OrderConfirmationSection>
                         <div
                             dangerouslySetInnerHTML={{
-                                __html: DOMPurify.sanitize(paymentInstructions),
+                                __html: domPurify.sanitize(paymentInstructions),
                             }}
                             data-test="payment-instructions"
                         />

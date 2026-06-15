@@ -32,7 +32,7 @@ export const ConsignmentLineItemContent = ({
     const { selectedState: config } = useCheckout(({ data }) => data.getConfig());
 
     const shouldDisplayBackorderQuantity =
-        !!config?.inventorySettings?.shouldDisplayBackorderMessagesOnStorefront &&
+        !!config?.inventorySettings?.shouldDisplayBackorderMessages &&
         config?.inventorySettings?.showQuantityOnBackorder &&
         !!item.stockPosition?.quantityBackordered;
 

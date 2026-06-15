@@ -57,13 +57,9 @@ const OrderSummaryItemBackorderDetails = ({
     const inventorySettings = config?.inventorySettings;
     const showQuantityOnBackorder = !!inventorySettings?.showQuantityOnBackorder;
     const showBackorderMessage = !!inventorySettings?.showBackorderMessage;
-    const shouldDisplayBackorderMessagesOnStorefront =
-        !!inventorySettings?.shouldDisplayBackorderMessagesOnStorefront;
+    const shouldDisplayBackorderMessages = !!inventorySettings?.shouldDisplayBackorderMessages;
 
-    if (
-        !shouldDisplayBackorderMessagesOnStorefront ||
-        (!showQuantityOnBackorder && !showBackorderMessage)
-    ) {
+    if (!shouldDisplayBackorderMessages || (!showQuantityOnBackorder && !showBackorderMessage)) {
         return null;
     }
 
