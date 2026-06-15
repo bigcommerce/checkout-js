@@ -19,12 +19,8 @@ const SpamProtectionField = ({
 
     const {
         checkoutService: { executeSpamCheck },
-        checkoutState: { statuses },
-    } = useCheckout(({ statuses }) => ({
-        isExecutingSpamCheck: statuses.isExecutingSpamCheck(),
-    }));
-
-    const isExecutingSpamCheck = statuses.isExecutingSpamCheck();
+        selectedState: isExecutingSpamCheck,
+    } = useCheckout(({ statuses }) => statuses.isExecutingSpamCheck());
 
     const verify: () => void = async () => {
         try {

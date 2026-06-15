@@ -61,7 +61,7 @@ const StoreCreditField: FunctionComponent<StoreCreditFieldProps & WithCurrencyPr
     return (
         <CheckboxInput
             checked={isStoreCreditApplied}
-            disabled={Boolean(isSubmittingOrder)}
+            disabled={isSubmittingOrder}
             id={name}
             label={labelContent}
             name={name}
