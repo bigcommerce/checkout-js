@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.809.0](https://github.com/bigcommerce/checkout-js/compare/v1.808.1...v1.809.0) (2026-06-15)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9819 Post-order B2B metadata submission and extra fields ([#3087](https://github.com/bigcommerce/checkout-js/issues/3087)) ([f5e2ce6](https://github.com/bigcommerce/checkout-js/commit/f5e2ce6c9823805075f99eefefd39556960bcf51))
+
 ### [1.808.1](https://github.com/bigcommerce/checkout-js/compare/v1.808.0...v1.808.1) (2026-06-15)
 
 
