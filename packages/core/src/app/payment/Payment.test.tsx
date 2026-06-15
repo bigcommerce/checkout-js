@@ -33,9 +33,8 @@ import {
     payments,
 } from '@bigcommerce/checkout/test-framework';
 import { renderWithoutWrapper as render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
-import { B2BPaymentFieldsSessionStorage } from '@bigcommerce/checkout/utility';
+import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
-import { B2BExtraFieldsSessionStorage } from '../address';
 import Checkout, { type CheckoutProps } from '../checkout/Checkout';
 import { createErrorLogger } from '../common/error';
 import {
@@ -801,25 +800,16 @@ describe('Payment step', () => {
                 writable: true,
             });
 
-            B2BPaymentFieldsSessionStorage.set(
-                B2BPaymentFieldsSessionStorage.PO_NUMBER_KEY,
-                'PO-123',
-            );
-            B2BPaymentFieldsSessionStorage.set(
-                B2BPaymentFieldsSessionStorage.ADDITIONAL_PAYMENT_FIELD_KEY,
-                'REF-456',
-            );
-            B2BPaymentFieldsSessionStorage.set(
-                B2BPaymentFieldsSessionStorage.INVOICE_COMMENT_KEY,
-                'Please rush this order',
-            );
-            B2BExtraFieldsSessionStorage.setFields(B2BExtraFieldsSessionStorage.ORDER_KEY, {
+            B2BSessionStorage.set(B2BSessionStorage.poNumberKey, 'PO-123');
+            B2BSessionStorage.set(B2BSessionStorage.additionalPaymentFieldKey, 'REF-456');
+            B2BSessionStorage.set(B2BSessionStorage.invoiceCommentKey, 'Please rush this order');
+            B2BSessionStorage.set(B2BSessionStorage.orderExtraFieldsKey, {
                 costCentre: 'Engineering',
             });
-            B2BExtraFieldsSessionStorage.setFields(B2BExtraFieldsSessionStorage.BILLING_KEY, {
+            B2BSessionStorage.set(B2BSessionStorage.billingExtraFieldsKey, {
                 department: 'Finance',
             });
-            B2BExtraFieldsSessionStorage.setFields(B2BExtraFieldsSessionStorage.SHIPPING_KEY, {
+            B2BSessionStorage.set(B2BSessionStorage.shippingExtraFieldsKey, {
                 dock: 'B7',
             });
 
@@ -866,31 +856,17 @@ describe('Payment step', () => {
             // The shipping key is cleared last, so once it is gone every earlier key is too.
             await waitFor(() =>
                 expect(
-                    B2BExtraFieldsSessionStorage.getFields(
-                        B2BExtraFieldsSessionStorage.SHIPPING_KEY,
-                    ),
+                    B2BSessionStorage.get(B2BSessionStorage.shippingExtraFieldsKey),
                 ).toBeUndefined(),
             );
 
-            expect(
-                B2BPaymentFieldsSessionStorage.get(B2BPaymentFieldsSessionStorage.PO_NUMBER_KEY),
-            ).toBe('');
-            expect(
-                B2BPaymentFieldsSessionStorage.get(
-                    B2BPaymentFieldsSessionStorage.ADDITIONAL_PAYMENT_FIELD_KEY,
-                ),
-            ).toBe('');
-            expect(
-                B2BPaymentFieldsSessionStorage.get(
-                    B2BPaymentFieldsSessionStorage.INVOICE_COMMENT_KEY,
-                ),
-            ).toBe('');
-            expect(
-                B2BExtraFieldsSessionStorage.getFields(B2BExtraFieldsSessionStorage.ORDER_KEY),
-            ).toBeUndefined();
-            expect(
-                B2BExtraFieldsSessionStorage.getFields(B2BExtraFieldsSessionStorage.BILLING_KEY),
-            ).toBeUndefined();
+            expect(B2BSessionStorage.getValue(B2BSessionStorage.poNumberKey)).toBe('');
+            expect(B2BSessionStorage.getValue(B2BSessionStorage.additionalPaymentFieldKey)).toBe(
+                '',
+            );
+            expect(B2BSessionStorage.getValue(B2BSessionStorage.invoiceCommentKey)).toBe('');
+            expect(B2BSessionStorage.get(B2BSessionStorage.orderExtraFieldsKey)).toBeUndefined();
+            expect(B2BSessionStorage.get(B2BSessionStorage.billingExtraFieldsKey)).toBeUndefined();
         });
 
         it('persists the stored billing and shipping address IDs and clears them afterwards', async () => {
@@ -905,14 +881,8 @@ describe('Payment step', () => {
                 writable: true,
             });
 
-            B2BExtraFieldsSessionStorage.setAddressId(
-                B2BExtraFieldsSessionStorage.BILLING_ADDRESS_ID_KEY,
-                111,
-            );
-            B2BExtraFieldsSessionStorage.setAddressId(
-                B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY,
-                222,
-            );
+            B2BSessionStorage.set(B2BSessionStorage.billingAddressIdKey, 111);
+            B2BSessionStorage.set(B2BSessionStorage.shippingAddressIdKey, 222);
 
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
                 config: createConfigWithPersistB2BMetadata(),
@@ -950,16 +920,12 @@ describe('Payment step', () => {
             // The shipping address ID is cleared last, so once it is gone the billing one is too.
             await waitFor(() =>
                 expect(
-                    B2BExtraFieldsSessionStorage.getAddressId(
-                        B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY,
-                    ),
+                    B2BSessionStorage.getAddressId(B2BSessionStorage.shippingAddressIdKey),
                 ).toBeUndefined(),
             );
 
             expect(
-                B2BExtraFieldsSessionStorage.getAddressId(
-                    B2BExtraFieldsSessionStorage.BILLING_ADDRESS_ID_KEY,
-                ),
+                B2BSessionStorage.getAddressId(B2BSessionStorage.billingAddressIdKey),
             ).toBeUndefined();
         });
 
@@ -975,10 +941,7 @@ describe('Payment step', () => {
                 writable: true,
             });
 
-            B2BPaymentFieldsSessionStorage.set(
-                B2BPaymentFieldsSessionStorage.INVOICE_COMMENT_KEY,
-                'Invoice me',
-            );
+            B2BSessionStorage.set(B2BSessionStorage.invoiceCommentKey, 'Invoice me');
 
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
                 config: {
@@ -1040,15 +1003,9 @@ describe('Payment step', () => {
                 writable: true,
             });
 
-            B2BPaymentFieldsSessionStorage.set(
-                B2BPaymentFieldsSessionStorage.PO_NUMBER_KEY,
-                'PO-123',
-            );
-            B2BPaymentFieldsSessionStorage.set(
-                B2BPaymentFieldsSessionStorage.INVOICE_COMMENT_KEY,
-                'Keep me',
-            );
-            B2BExtraFieldsSessionStorage.setFields(B2BExtraFieldsSessionStorage.ORDER_KEY, {
+            B2BSessionStorage.set(B2BSessionStorage.poNumberKey, 'PO-123');
+            B2BSessionStorage.set(B2BSessionStorage.invoiceCommentKey, 'Keep me');
+            B2BSessionStorage.set(B2BSessionStorage.orderExtraFieldsKey, {
                 costCentre: 'Engineering',
             });
 
@@ -1076,17 +1033,11 @@ describe('Payment step', () => {
 
             await waitFor(() => expect(persistSpy).toHaveBeenCalled());
 
-            expect(
-                B2BPaymentFieldsSessionStorage.get(B2BPaymentFieldsSessionStorage.PO_NUMBER_KEY),
-            ).toBe('PO-123');
-            expect(
-                B2BPaymentFieldsSessionStorage.get(
-                    B2BPaymentFieldsSessionStorage.INVOICE_COMMENT_KEY,
-                ),
-            ).toBe('Keep me');
-            expect(
-                B2BExtraFieldsSessionStorage.getFields(B2BExtraFieldsSessionStorage.ORDER_KEY),
-            ).toEqual({ costCentre: 'Engineering' });
+            expect(B2BSessionStorage.getValue(B2BSessionStorage.poNumberKey)).toBe('PO-123');
+            expect(B2BSessionStorage.getValue(B2BSessionStorage.invoiceCommentKey)).toBe('Keep me');
+            expect(B2BSessionStorage.get(B2BSessionStorage.orderExtraFieldsKey)).toEqual({
+                costCentre: 'Engineering',
+            });
         });
 
         it('does not persist B2B metadata after finalizing the order on mount when persistB2BMetadata capability is disabled', async () => {

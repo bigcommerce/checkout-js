@@ -1,11 +1,14 @@
 import { type FormField, type PersistB2BMetadataOptions } from '@bigcommerce/checkout-sdk';
 
-import { B2BPaymentFieldsSessionStorage } from '@bigcommerce/checkout/utility';
-
-import { B2BExtraFieldsSessionStorage } from '../address';
+import { B2BSessionStorage, type B2BStoredMetadata } from '@bigcommerce/checkout/utility';
 
 type B2BMetadataExtraField = NonNullable<PersistB2BMetadataOptions['extraFields']>[number];
 type B2BMetadataExtraInfo = NonNullable<PersistB2BMetadataOptions['extraInfo']>;
+
+type StoredAddressMetadata = Pick<
+    B2BStoredMetadata,
+    'billingExtraFields' | 'shippingExtraFields' | 'billingAddressId' | 'shippingAddressId'
+>;
 
 export const buildExtraFields = (
     storedExtraFields?: Record<string, unknown>,
@@ -19,12 +22,6 @@ export const buildExtraFields = (
           }))
         : [];
 
-export const buildOrderExtraFields = (orderExtraFields?: FormField[]): B2BMetadataExtraField[] =>
-    buildExtraFields(
-        B2BExtraFieldsSessionStorage.getFields(B2BExtraFieldsSessionStorage.ORDER_KEY),
-        orderExtraFields,
-    );
-
 // TODO: CHECKOUT-10080`shouldSaveAddress` is persisted alongside the address extra fields for a separate
 // "save to company address book" task, so it must not be sent in the post-order payload.
 const SHOULD_SAVE_ADDRESS_KEY = 'shouldSaveAddress';
@@ -36,24 +33,23 @@ const omitShouldSaveAddress = (
         return storedExtraFields;
     }
 
-    const { [SHOULD_SAVE_ADDRESS_KEY]: _shouldSaveAddress, ...rest } = storedExtraFields;
+    const { [SHOULD_SAVE_ADDRESS_KEY]: _shouldSaveAddress, ...extraFieldsToPersist } =
+        storedExtraFields;
 
-    return rest;
+    return extraFieldsToPersist;
 };
 
-export const buildAddressExtraInfo = (addressExtraFields?: FormField[]): B2BMetadataExtraInfo => {
-    const billing = omitShouldSaveAddress(
-        B2BExtraFieldsSessionStorage.getFields(B2BExtraFieldsSessionStorage.BILLING_KEY),
-    );
-    const shipping = omitShouldSaveAddress(
-        B2BExtraFieldsSessionStorage.getFields(B2BExtraFieldsSessionStorage.SHIPPING_KEY),
-    );
-    const billingAddressId = B2BExtraFieldsSessionStorage.getAddressId(
-        B2BExtraFieldsSessionStorage.BILLING_ADDRESS_ID_KEY,
-    );
-    const shippingAddressId = B2BExtraFieldsSessionStorage.getAddressId(
-        B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY,
-    );
+export const buildAddressExtraInfo = (
+    {
+        billingExtraFields,
+        shippingExtraFields,
+        billingAddressId,
+        shippingAddressId,
+    }: StoredAddressMetadata,
+    addressExtraFields?: FormField[],
+): B2BMetadataExtraInfo => {
+    const billing = omitShouldSaveAddress(billingExtraFields);
+    const shipping = omitShouldSaveAddress(shippingExtraFields);
 
     const extraInfo: B2BMetadataExtraInfo = {};
 
@@ -84,21 +80,26 @@ interface B2BMetadataFieldDefinitions {
 export const buildB2BMetadataOptions = (
     isInvoice: PersistB2BMetadataOptions['isInvoice'],
     { orderExtraFields, addressExtraFields }: B2BMetadataFieldDefinitions = {},
-): PersistB2BMetadataOptions => ({
-    isInvoice,
-    invoiceComment: B2BPaymentFieldsSessionStorage.get(
-        B2BPaymentFieldsSessionStorage.INVOICE_COMMENT_KEY,
-    ),
-    poNumber: B2BPaymentFieldsSessionStorage.get(B2BPaymentFieldsSessionStorage.PO_NUMBER_KEY),
-    referenceNumber: B2BPaymentFieldsSessionStorage.get(
-        B2BPaymentFieldsSessionStorage.ADDITIONAL_PAYMENT_FIELD_KEY,
-    ),
-    extraFields: buildOrderExtraFields(orderExtraFields),
-    extraInfo: buildAddressExtraInfo(addressExtraFields),
-});
+): PersistB2BMetadataOptions => {
+    const {
+        invoiceComment,
+        poNumber,
+        additionalPaymentField,
+        orderExtraFields: storedOrderExtraFields,
+        ...storedAddressMetadata
+    } = B2BSessionStorage.getAll();
+
+    return {
+        isInvoice,
+        invoiceComment,
+        poNumber,
+        referenceNumber: additionalPaymentField,
+        extraFields: buildExtraFields(storedOrderExtraFields, orderExtraFields),
+        extraInfo: buildAddressExtraInfo(storedAddressMetadata, addressExtraFields),
+    };
+};
 
 // Clear all B2B sessionStorage after a successful persist.
 export const clearB2BMetadataStorage = (): void => {
-    B2BPaymentFieldsSessionStorage.clearAll();
-    B2BExtraFieldsSessionStorage.clearAll();
+    B2BSessionStorage.clearAll();
 };

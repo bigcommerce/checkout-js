@@ -23,13 +23,13 @@ import {
     Form,
     LoadingOverlay,
 } from '@bigcommerce/checkout/ui';
+import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
 import {
     AddressForm,
     type AddressFormValues,
     AddressSelect,
     AddressType,
-    B2BExtraFieldsSessionStorage,
     getAddressFormFieldsValidationSchema,
     getTranslateAddressError,
     isValidCustomerAddress,
@@ -117,13 +117,9 @@ const BillingForm = ({
         if (
             hasCompanyAddressBook &&
             !hasValidCustomerAddress &&
-            B2BExtraFieldsSessionStorage.getAddressId(
-                B2BExtraFieldsSessionStorage.BILLING_ADDRESS_ID_KEY,
-            )
+            B2BSessionStorage.getAddressId(B2BSessionStorage.billingAddressIdKey)
         ) {
-            B2BExtraFieldsSessionStorage.removeAddressId(
-                B2BExtraFieldsSessionStorage.BILLING_ADDRESS_ID_KEY,
-            );
+            B2BSessionStorage.remove(B2BSessionStorage.billingAddressIdKey);
         }
     }, [hasCompanyAddressBook, hasValidCustomerAddress]);
 
@@ -133,17 +129,12 @@ const BillingForm = ({
         try {
             await checkoutService.updateBillingAddress(address);
 
-            B2BExtraFieldsSessionStorage.removeAddressId(
-                B2BExtraFieldsSessionStorage.BILLING_ADDRESS_ID_KEY,
-            );
+            B2BSessionStorage.remove(B2BSessionStorage.billingAddressIdKey);
 
             const selectedAddressId = (address as CustomerAddress).id;
 
             if (hasCompanyAddressBook && selectedAddressId) {
-                B2BExtraFieldsSessionStorage.setAddressId(
-                    B2BExtraFieldsSessionStorage.BILLING_ADDRESS_ID_KEY,
-                    selectedAddressId,
-                );
+                B2BSessionStorage.set(B2BSessionStorage.billingAddressIdKey, selectedAddressId);
             }
         } catch (error) {
             if (error instanceof Error) {
@@ -156,7 +147,7 @@ const BillingForm = ({
 
     const handleUseNewAddress = () => {
         if (hasAddressExtraFields) {
-            B2BExtraFieldsSessionStorage.removeFields(B2BExtraFieldsSessionStorage.BILLING_KEY);
+            B2BSessionStorage.remove(B2BSessionStorage.billingExtraFieldsKey);
         }
 
         void handleSelectAddress({});
@@ -227,7 +218,7 @@ export default withLanguage(
             ...mapAddressToFormValues(
                 getFields(billingAddress && billingAddress.countryCode),
                 billingAddress,
-                B2BExtraFieldsSessionStorage.BILLING_KEY,
+                B2BSessionStorage.billingExtraFieldsKey,
             ),
             orderComment: customerMessage,
         }),

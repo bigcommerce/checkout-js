@@ -46,8 +46,8 @@ import {
     screen,
     waitFor,
 } from '@bigcommerce/checkout/test-utils';
+import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
-import { B2BExtraFieldsSessionStorage } from '../address';
 import Checkout from '../checkout/Checkout';
 import { type CheckoutInitializerProps } from '../checkout/CheckoutInitializer';
 import { getCheckoutPayment } from '../checkout/checkouts.mock';
@@ -631,11 +631,7 @@ describe('Billing step', () => {
                 await userEvent.click(screen.getByTestId('address-select-option-action'));
             });
 
-            expect(
-                B2BExtraFieldsSessionStorage.getAddressId(
-                    B2BExtraFieldsSessionStorage.BILLING_ADDRESS_ID_KEY,
-                ),
-            ).toBe(3);
+            expect(B2BSessionStorage.getAddressId(B2BSessionStorage.billingAddressIdKey)).toBe(3);
         });
 
         it('does not store the billing address id when hasCompanyAddressBook is disabled', async () => {
@@ -658,9 +654,7 @@ describe('Billing step', () => {
             });
 
             expect(
-                B2BExtraFieldsSessionStorage.getAddressId(
-                    B2BExtraFieldsSessionStorage.BILLING_ADDRESS_ID_KEY,
-                ),
+                B2BSessionStorage.getAddressId(B2BSessionStorage.billingAddressIdKey),
             ).toBeUndefined();
         });
     });

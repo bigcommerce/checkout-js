@@ -43,8 +43,8 @@ import {
     waitFor,
     within,
 } from '@bigcommerce/checkout/test-utils';
+import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
-import { B2BExtraFieldsSessionStorage } from '../address';
 import Checkout, { type CheckoutProps } from '../checkout/Checkout';
 import { createErrorLogger } from '../common/error';
 import {
@@ -1120,11 +1120,7 @@ describe('Shipping step', () => {
             await userEvent.click(screen.getByTestId('address-select-button'));
             await userEvent.click(screen.getByTestId('address-select-option-action'));
 
-            expect(
-                B2BExtraFieldsSessionStorage.getAddressId(
-                    B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY,
-                ),
-            ).toBe(1);
+            expect(B2BSessionStorage.getAddressId(B2BSessionStorage.shippingAddressIdKey)).toBe(1);
         });
 
         it('does not store the shipping address id when hasCompanyAddressBook is disabled', async () => {
@@ -1143,9 +1139,7 @@ describe('Shipping step', () => {
             await userEvent.click(screen.getByText(/111 Testing Rd/i));
 
             expect(
-                B2BExtraFieldsSessionStorage.getAddressId(
-                    B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY,
-                ),
+                B2BSessionStorage.getAddressId(B2BSessionStorage.shippingAddressIdKey),
             ).toBeUndefined();
         });
     });

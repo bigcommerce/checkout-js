@@ -3,7 +3,7 @@ import React, { type FunctionComponent, useCallback } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { FormField, TextInput } from '@bigcommerce/checkout/ui';
-import { B2BPaymentFieldsSessionStorage } from '@bigcommerce/checkout/utility';
+import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
 interface AdditionalPaymentFieldProps {
     label: string;
@@ -21,8 +21,8 @@ const AdditionalPaymentField: FunctionComponent<AdditionalPaymentFieldProps> = (
                 id="additionalPaymentField"
                 onChange={(event) => {
                     field.onChange(event);
-                    B2BPaymentFieldsSessionStorage.set(
-                        B2BPaymentFieldsSessionStorage.ADDITIONAL_PAYMENT_FIELD_KEY,
+                    B2BSessionStorage.set(
+                        B2BSessionStorage.additionalPaymentFieldKey,
                         event.target.value,
                     );
                 }}

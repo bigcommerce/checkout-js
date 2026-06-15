@@ -1,6 +1,7 @@
 import { type Address, type FormField } from '@bigcommerce/checkout-sdk';
 
-import { B2BExtraFieldsSessionStorage } from './B2BExtraFieldsSessionStorage';
+import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
+
 import { getFormFields } from './formField.mock';
 import mapAddressToFormValues from './mapAddressToFormValues';
 
@@ -125,13 +126,13 @@ describe('mapAddressToFormValues', () => {
         };
 
         afterEach(() => {
-            B2BExtraFieldsSessionStorage.removeFields(storageKey);
+            B2BSessionStorage.remove(storageKey);
         });
 
         it('prefers extra field value from address over session storage', () => {
             const fields: FormField[] = [...getFormFields(), extraField];
 
-            B2BExtraFieldsSessionStorage.setFields(storageKey, {
+            B2BSessionStorage.set(storageKey, {
                 b2bExtraField_100: 'Stored Corp',
             });
 
@@ -148,7 +149,7 @@ describe('mapAddressToFormValues', () => {
         it('falls back to session storage when address has no value for the extra field', () => {
             const fields: FormField[] = [...getFormFields(), extraField];
 
-            B2BExtraFieldsSessionStorage.setFields(storageKey, {
+            B2BSessionStorage.set(storageKey, {
                 b2bExtraField_100: 'Stored Corp',
             });
 
