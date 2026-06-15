@@ -100,10 +100,8 @@ describe('ChequePaymentMethod', () => {
 
     describe('PO Number rendering', () => {
         const poConfig = {
-            label: 'PO Number',
-            required: true,
-            creditLimit: 5000,
-            currency: 'USD',
+            field: { label: 'PO Number', required: true },
+            creditLimitCheck: { creditLimit: 5000, currency: 'USD' },
         };
 
         beforeEach(() => {
@@ -121,12 +119,12 @@ describe('ChequePaymentMethod', () => {
         it('renders PoNumber input with the configured label when poConfig is set', () => {
             renderWithCapabilities(<ChequePaymentMethod {...defaultProps} />, { poConfig });
 
-            expect(screen.getByText(poConfig.label)).toBeInTheDocument();
+            expect(screen.getByText(poConfig.field.label)).toBeInTheDocument();
         });
 
-        it('shows the optional suffix when poConfig.required is false', () => {
+        it('shows the optional suffix when poConfig.field.required is false', () => {
             renderWithCapabilities(<ChequePaymentMethod {...defaultProps} />, {
-                poConfig: { ...poConfig, required: false },
+                poConfig: { ...poConfig, field: { ...poConfig.field, required: false } },
             });
 
             expect(screen.getByText(/Optional/i)).toBeInTheDocument();

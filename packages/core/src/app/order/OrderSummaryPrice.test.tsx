@@ -26,6 +26,7 @@ describe('OrderSummaryPrice', () => {
                         isSubmittingOrder: () => isSubmittingOrder,
                     },
                 },
+                selectedState: isSubmittingOrder,
             })),
         );
     };

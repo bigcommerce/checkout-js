@@ -1,17 +1,14 @@
 import { type FormField as FormFieldType } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
-import { type FieldProps } from 'formik';
 import { includes } from 'lodash';
-import React, { type FunctionComponent, memo, type ReactNode, useCallback, useMemo } from 'react';
+import React, { type FunctionComponent, memo, type ReactNode, useMemo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
-import { FormField } from '../FormField';
 import { Label } from '../Label';
 
-import CheckboxGroupFormField from './CheckboxGroupFormField';
+import { DynamicFormFieldSelector } from './DynamicFormFieldSelector';
 import DynamicFormFieldType from './DynamicFormFieldType';
-import DynamicInput from './DynamicInput';
 
 export interface DynamicFormFieldOption {
     code: string;
@@ -27,6 +24,8 @@ export interface DynamicFormFieldProps {
     placeholder?: string;
     label?: ReactNode;
     isFloatingLabelEnabled?: boolean;
+    isNewPhoneValidationExperimentEnabled?: boolean;
+    selectedCountry?: string;
     onChange?(value: string | string[]): void;
 }
 
@@ -51,6 +50,8 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
     label,
     extraClass,
     isFloatingLabelEnabled,
+    selectedCountry,
+    isNewPhoneValidationExperimentEnabled = false,
 }) => {
     const fieldInputId = inputId || name;
     const fieldName = parentFieldName ? `${parentFieldName}.${name}` : name;
@@ -102,36 +103,6 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
         return fieldType as DynamicFormFieldType;
     }, [fieldType, type, secret, name]);
 
-    const renderInput = useCallback(
-        ({ field }: FieldProps<string>) => (
-            <DynamicInput
-                {...field}
-                aria-labelledby={`${fieldInputId}-label ${fieldInputId}-field-error-message`}
-                autoComplete={autocomplete}
-                fieldType={dynamicFormFieldType}
-                id={fieldInputId}
-                isFloatingLabelEnabled={isFloatingLabelSupportedFieldType}
-                max={max}
-                maxLength={maxLength || undefined}
-                min={min}
-                options={options && options.items}
-                placeholder={placeholder || (options && options.helperLabel)}
-                rows={options?.rows}
-            />
-        ),
-        [
-            fieldInputId,
-            autocomplete,
-            dynamicFormFieldType,
-            isFloatingLabelSupportedFieldType,
-            max,
-            maxLength,
-            min,
-            options,
-            placeholder,
-        ],
-    );
-
     return (
         <div
             className={classNames(
@@ -140,24 +111,23 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
                 extraClass,
             )}
         >
-            {fieldType === DynamicFormFieldType.CHECKBOX ? (
-                <CheckboxGroupFormField
-                    id={fieldInputId}
-                    label={labelComponent}
-                    name={fieldName}
-                    onChange={onChange}
-                    options={(options && options.items) || []}
-                />
-            ) : (
-                <FormField
-                    id={fieldInputId}
-                    input={renderInput}
-                    isFloatingLabelEnabled={isFloatingLabelSupportedFieldType}
-                    label={labelComponent}
-                    name={fieldName}
-                    onChange={onChange}
-                />
-            )}
+            <DynamicFormFieldSelector
+                autocomplete={autocomplete}
+                dynamicFormFieldType={dynamicFormFieldType}
+                fieldType={fieldType}
+                id={fieldInputId}
+                isFloatingLabelEnabled={isFloatingLabelSupportedFieldType}
+                isNewPhoneValidationExperimentEnabled={isNewPhoneValidationExperimentEnabled}
+                label={labelComponent}
+                max={max}
+                maxLength={maxLength}
+                min={min}
+                name={fieldName}
+                onChange={onChange}
+                options={options}
+                placeholder={placeholder}
+                selectedCountry={selectedCountry}
+            />
         </div>
     );
 };

@@ -58,7 +58,8 @@
     textarea:focus + .floating-label,
     textarea:not(:empty) + .floating-label,
     input:focus + .floating-label,
-    input:not(:placeholder-shown) + .floating-label {
+    input:not(:placeholder-shown) + .floating-label,
+    .iti-wrapper + .floating-label {
         &.floating-form-field-label{
             color: $color-secondaryDarkest;
             font-family: $fontFamily-montserrat;

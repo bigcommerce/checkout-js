@@ -10,6 +10,8 @@ export const defaultCapabilities: Capabilities = {
         hasAddressExtraFields: false,
         hasOrderExtraFields: false,
         requiresB2BToken: false,
+        hasAddressLabel: false,
+        quoteConfig: null,
     },
     customer: {
         superAdminCompanySelector: false,
@@ -28,9 +30,10 @@ export const defaultCapabilities: Capabilities = {
         invoicePaymentComment: false,
         poConfig: null,
         additionalField: null,
+        hideCheckPaymentMethod: false,
     },
     orderConfirmation: {
-        canCreatePersonalAccount: false,
+        cannotCreatePersonalAccount: false,
         persistB2BMetadata: false,
         invoiceRedirect: false,
     },

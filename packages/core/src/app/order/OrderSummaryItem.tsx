@@ -51,8 +51,7 @@ const OrderSummaryItemBackorderDetails = ({
     backorderMessage?: string;
 }) => {
     const backorderDetailsRef = useRef<HTMLDivElement>(null);
-    const { checkoutState } = useCheckout();
-    const config = checkoutState.data.getConfig();
+    const { selectedState: config } = useCheckout(({ data }) => data.getConfig());
 
     const inventorySettings = config?.inventorySettings;
     const showQuantityOnBackorder = !!inventorySettings?.showQuantityOnBackorder;

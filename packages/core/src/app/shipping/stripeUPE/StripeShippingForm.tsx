@@ -162,12 +162,7 @@ export default withLanguage(
                 shippingAddress,
             ),
         }),
-        isInitialValid: ({ shippingAddress, getFields, language }) =>
-            !!shippingAddress &&
-            getAddressFormFieldsValidationSchema({
-                language,
-                formFields: getFields(shippingAddress.countryCode),
-            }).isValidSync(shippingAddress),
+        validateOnMount: true,
         validationSchema: ({
             language,
             getFields,
