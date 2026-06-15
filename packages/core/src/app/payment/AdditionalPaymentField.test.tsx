@@ -5,11 +5,11 @@ import React from 'react';
 import { LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
+import { B2BPaymentFieldsSessionStorage } from '@bigcommerce/checkout/utility';
 
 import { getStoreConfig } from '../config/config.mock';
 
 import AdditionalPaymentField from './AdditionalPaymentField';
-import { AdditionalPaymentFieldSessionStorage } from './AdditionalPaymentFieldSessionStorage';
 
 describe('AdditionalPaymentField', () => {
     const localeContext: LocaleContextType = createLocaleContext(getStoreConfig());
@@ -60,17 +60,26 @@ describe('AdditionalPaymentField', () => {
             target: { value: 'leave at front door' },
         });
 
-        expect(AdditionalPaymentFieldSessionStorage.get()).toBe('leave at front door');
+        expect(
+            B2BPaymentFieldsSessionStorage.get(
+                B2BPaymentFieldsSessionStorage.ADDITIONAL_PAYMENT_FIELD_KEY,
+            ),
+        ).toBe('leave at front door');
     });
 
     it('removes the key from session storage when the field is cleared', () => {
-        sessionStorage.setItem(AdditionalPaymentFieldSessionStorage.KEY, 'existing');
+        sessionStorage.setItem(
+            B2BPaymentFieldsSessionStorage.ADDITIONAL_PAYMENT_FIELD_KEY,
+            'existing',
+        );
         renderField({}, 'existing');
 
         fireEvent.change(screen.getByTestId('additionalPaymentField-input'), {
             target: { value: '' },
         });
 
-        expect(sessionStorage.getItem(AdditionalPaymentFieldSessionStorage.KEY)).toBeNull();
+        expect(
+            sessionStorage.getItem(B2BPaymentFieldsSessionStorage.ADDITIONAL_PAYMENT_FIELD_KEY),
+        ).toBeNull();
     });
 });

@@ -1,10 +1,11 @@
 export class B2BExtraFieldsSessionStorage {
-    static readonly BILLING_KEY = 'b2bAddressExtraFields_billing';
-    static readonly SHIPPING_KEY = 'b2bAddressExtraFields_shipping';
-    static readonly CONSIGNMENT_KEY_PREFIX = 'b2bAddressExtraFields_consignment_';
-    static readonly ORDER_KEY = 'b2bOrderExtraFields';
-    static readonly BILLING_ADDRESS_ID_KEY = 'b2bBillingAddressId';
-    static readonly SHIPPING_ADDRESS_ID_KEY = 'b2bShippingAddressId';
+    static readonly KEY_PREFIX = 'b2b';
+    static readonly BILLING_KEY = `${this.KEY_PREFIX}AddressExtraFields_billing`;
+    static readonly SHIPPING_KEY = `${this.KEY_PREFIX}AddressExtraFields_shipping`;
+    static readonly CONSIGNMENT_KEY_PREFIX = `${this.KEY_PREFIX}AddressExtraFields_consignment_`;
+    static readonly ORDER_KEY = `${this.KEY_PREFIX}OrderExtraFields`;
+    static readonly BILLING_ADDRESS_ID_KEY = `${this.KEY_PREFIX}BillingAddressId`;
+    static readonly SHIPPING_ADDRESS_ID_KEY = `${this.KEY_PREFIX}ShippingAddressId`;
 
     static getConsignmentKey(consignmentId: string): string {
         return `${this.CONSIGNMENT_KEY_PREFIX}${consignmentId}`;
@@ -44,6 +45,14 @@ export class B2BExtraFieldsSessionStorage {
 
     static removeAddressId(key: string): void {
         sessionStorage.removeItem(key);
+    }
+
+    static clearAll(): void {
+        // Every key this class manages is namespaced with KEY_PREFIX (including the
+        // per-consignment keys), so a single prefix sweep removes them all.
+        Object.keys(sessionStorage)
+            .filter((key) => key.startsWith(this.KEY_PREFIX))
+            .forEach((key) => sessionStorage.removeItem(key));
     }
 
     static copyShippingToBilling(): void {

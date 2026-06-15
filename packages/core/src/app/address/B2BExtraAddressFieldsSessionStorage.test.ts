@@ -5,6 +5,46 @@ describe('B2BExtraFieldsSessionStorage', () => {
         sessionStorage.clear();
     });
 
+    describe('clearAll', () => {
+        it('removes every fixed key plus all consignment keys, leaving unrelated keys', () => {
+            B2BExtraFieldsSessionStorage.setFields(B2BExtraFieldsSessionStorage.ORDER_KEY, {
+                a: 1,
+            });
+            B2BExtraFieldsSessionStorage.setFields(B2BExtraFieldsSessionStorage.BILLING_KEY, {
+                b: 2,
+            });
+            B2BExtraFieldsSessionStorage.setFields(B2BExtraFieldsSessionStorage.SHIPPING_KEY, {
+                c: 3,
+            });
+            B2BExtraFieldsSessionStorage.setAddressId(
+                B2BExtraFieldsSessionStorage.BILLING_ADDRESS_ID_KEY,
+                11,
+            );
+            B2BExtraFieldsSessionStorage.setAddressId(
+                B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY,
+                22,
+            );
+            B2BExtraFieldsSessionStorage.setFields(
+                B2BExtraFieldsSessionStorage.getConsignmentKey('123'),
+                { d: 4 },
+            );
+            sessionStorage.setItem('unrelatedKey', 'keep-me');
+
+            B2BExtraFieldsSessionStorage.clearAll();
+
+            [
+                B2BExtraFieldsSessionStorage.ORDER_KEY,
+                B2BExtraFieldsSessionStorage.BILLING_KEY,
+                B2BExtraFieldsSessionStorage.SHIPPING_KEY,
+                B2BExtraFieldsSessionStorage.BILLING_ADDRESS_ID_KEY,
+                B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY,
+                B2BExtraFieldsSessionStorage.getConsignmentKey('123'),
+            ].forEach((key) => expect(sessionStorage.getItem(key)).toBeNull());
+
+            expect(sessionStorage.getItem('unrelatedKey')).toBe('keep-me');
+        });
+    });
+
     describe('reassignConsignmentKey', () => {
         it('moves fields from temp key to the real consignment key', () => {
             const fields = { b2bExtraField_100: 'Acme Corp' };

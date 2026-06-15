@@ -1,8 +1,15 @@
 import { type FormField } from '@bigcommerce/checkout-sdk';
 
+import { B2BPaymentFieldsSessionStorage } from '@bigcommerce/checkout/utility';
+
 import { B2BExtraFieldsSessionStorage } from '../address';
 
-import { buildAddressExtraInfo, buildExtraFields, buildOrderExtraFields } from './b2bMetadata';
+import {
+    buildAddressExtraInfo,
+    buildExtraFields,
+    buildOrderExtraFields,
+    clearB2BMetadataStorage,
+} from './b2bMetadata';
 
 describe('b2bMetadata', () => {
     const orderExtraFields = [
@@ -103,6 +110,61 @@ describe('b2bMetadata', () => {
                     shippingAddressExtraFields: [{ fieldName: 'Dock', fieldValue: 'B7' }],
                 },
             });
+        });
+    });
+
+    describe('clearB2BMetadataStorage', () => {
+        it('clears every B2B payment and extra field, including consignment keys, leaving unrelated keys', () => {
+            B2BPaymentFieldsSessionStorage.set(
+                B2BPaymentFieldsSessionStorage.PO_NUMBER_KEY,
+                'PO-123',
+            );
+            B2BPaymentFieldsSessionStorage.set(
+                B2BPaymentFieldsSessionStorage.ADDITIONAL_PAYMENT_FIELD_KEY,
+                'REF-456',
+            );
+            B2BPaymentFieldsSessionStorage.set(
+                B2BPaymentFieldsSessionStorage.INVOICE_COMMENT_KEY,
+                'Invoice me',
+            );
+            B2BExtraFieldsSessionStorage.setFields(B2BExtraFieldsSessionStorage.ORDER_KEY, {
+                a: 1,
+            });
+            B2BExtraFieldsSessionStorage.setFields(B2BExtraFieldsSessionStorage.BILLING_KEY, {
+                b: 2,
+            });
+            B2BExtraFieldsSessionStorage.setFields(B2BExtraFieldsSessionStorage.SHIPPING_KEY, {
+                c: 3,
+            });
+            B2BExtraFieldsSessionStorage.setAddressId(
+                B2BExtraFieldsSessionStorage.BILLING_ADDRESS_ID_KEY,
+                11,
+            );
+            B2BExtraFieldsSessionStorage.setAddressId(
+                B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY,
+                22,
+            );
+            B2BExtraFieldsSessionStorage.setFields(
+                B2BExtraFieldsSessionStorage.getConsignmentKey('123'),
+                { d: 4 },
+            );
+            sessionStorage.setItem('unrelatedKey', 'keep-me');
+
+            clearB2BMetadataStorage();
+
+            [
+                B2BPaymentFieldsSessionStorage.PO_NUMBER_KEY,
+                B2BPaymentFieldsSessionStorage.ADDITIONAL_PAYMENT_FIELD_KEY,
+                B2BPaymentFieldsSessionStorage.INVOICE_COMMENT_KEY,
+                B2BExtraFieldsSessionStorage.ORDER_KEY,
+                B2BExtraFieldsSessionStorage.BILLING_KEY,
+                B2BExtraFieldsSessionStorage.SHIPPING_KEY,
+                B2BExtraFieldsSessionStorage.BILLING_ADDRESS_ID_KEY,
+                B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY,
+                B2BExtraFieldsSessionStorage.getConsignmentKey('123'),
+            ].forEach((key) => expect(sessionStorage.getItem(key)).toBeNull());
+
+            expect(sessionStorage.getItem('unrelatedKey')).toBe('keep-me');
         });
     });
 });

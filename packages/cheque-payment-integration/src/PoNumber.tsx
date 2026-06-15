@@ -5,7 +5,7 @@ import React, { type FunctionComponent, useCallback, useEffect } from 'react';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { type PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
 import { FormField, Legend, TextInput } from '@bigcommerce/checkout/ui';
-import { getPoNumber, setPoNumber } from '@bigcommerce/checkout/utility';
+import { B2BPaymentFieldsSessionStorage } from '@bigcommerce/checkout/utility';
 
 import getPoNumberValidationSchema from './getPoNumberValidationSchema';
 
@@ -29,7 +29,10 @@ const PoNumber: FunctionComponent<PoNumberProps> = ({
     paymentForm: { setFieldValue, setValidationSchema },
 }) => {
     useEffect(() => {
-        setFieldValue(PO_NUMBER_FIELD_NAME, getPoNumber());
+        setFieldValue(
+            PO_NUMBER_FIELD_NAME,
+            B2BPaymentFieldsSessionStorage.get(B2BPaymentFieldsSessionStorage.PO_NUMBER_KEY),
+        );
         setValidationSchema(method, getPoNumberValidationSchema(language, isRequired, label));
 
         return () => {
@@ -49,7 +52,10 @@ const PoNumber: FunctionComponent<PoNumberProps> = ({
     );
 
     const handleChange = useCallback((value: string) => {
-        setPoNumber(value.trim());
+        B2BPaymentFieldsSessionStorage.set(
+            B2BPaymentFieldsSessionStorage.PO_NUMBER_KEY,
+            value.trim(),
+        );
     }, []);
 
     return (

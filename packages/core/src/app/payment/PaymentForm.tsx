@@ -18,6 +18,7 @@ import {
 } from '@bigcommerce/checkout/locale';
 import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { Fieldset, Form, FormContext, Legend } from '@bigcommerce/checkout/ui';
+import { B2BPaymentFieldsSessionStorage } from '@bigcommerce/checkout/utility';
 
 import { B2BExtraFieldsSessionStorage, getTranslateAddressError } from '../address';
 import { isExperimentEnabled } from '../common/utility';
@@ -25,10 +26,8 @@ import { getOrderExtraFieldsValidationSchema } from '../formFields';
 import { TermsConditions } from '../termsConditions';
 
 import AdditionalPaymentField from './AdditionalPaymentField';
-import { AdditionalPaymentFieldSessionStorage } from './AdditionalPaymentFieldSessionStorage';
 import getPaymentValidationSchema from './getPaymentValidationSchema';
 import InvoicePaymentCommentField from './InvoicePaymentCommentField';
-import { InvoicePaymentCommentSessionStorage } from './InvoicePaymentCommentSessionStorage';
 import { NoPaymentMethods } from './NoPaymentMethods';
 import { getInitialOrderExtraFieldsValues, OrderExtraFieldsFieldset } from './orderExtraFields';
 import {
@@ -363,8 +362,12 @@ const paymentFormConfig: WithFormikConfig<PaymentFormProps & WithLanguageProps, 
                     orderExtraFields,
                     storedOrderExtraFields,
                 ),
-                invoicePaymentComment: InvoicePaymentCommentSessionStorage.get(),
-                additionalPaymentField: AdditionalPaymentFieldSessionStorage.get(),
+                invoicePaymentComment: B2BPaymentFieldsSessionStorage.get(
+                    B2BPaymentFieldsSessionStorage.INVOICE_COMMENT_KEY,
+                ),
+                additionalPaymentField: B2BPaymentFieldsSessionStorage.get(
+                    B2BPaymentFieldsSessionStorage.ADDITIONAL_PAYMENT_FIELD_KEY,
+                ),
             };
         },
 

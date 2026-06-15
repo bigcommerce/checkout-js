@@ -33,7 +33,7 @@ import {
     payments,
 } from '@bigcommerce/checkout/test-framework';
 import { renderWithoutWrapper as render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
-import { getPoNumber, setPoNumber } from '@bigcommerce/checkout/utility';
+import { B2BPaymentFieldsSessionStorage } from '@bigcommerce/checkout/utility';
 
 import { B2BExtraFieldsSessionStorage } from '../address';
 import Checkout, { type CheckoutProps } from '../checkout/Checkout';
@@ -42,9 +42,6 @@ import {
     createEmbeddedCheckoutStylesheet,
     createEmbeddedCheckoutSupport,
 } from '../embeddedCheckout';
-
-import { AdditionalPaymentFieldSessionStorage } from './AdditionalPaymentFieldSessionStorage';
-import { InvoicePaymentCommentSessionStorage } from './InvoicePaymentCommentSessionStorage';
 
 describe('Payment step', () => {
     let checkout: CheckoutPageNodeObject;
@@ -804,9 +801,18 @@ describe('Payment step', () => {
                 writable: true,
             });
 
-            setPoNumber('PO-123');
-            AdditionalPaymentFieldSessionStorage.set('REF-456');
-            InvoicePaymentCommentSessionStorage.set('Please rush this order');
+            B2BPaymentFieldsSessionStorage.set(
+                B2BPaymentFieldsSessionStorage.PO_NUMBER_KEY,
+                'PO-123',
+            );
+            B2BPaymentFieldsSessionStorage.set(
+                B2BPaymentFieldsSessionStorage.ADDITIONAL_PAYMENT_FIELD_KEY,
+                'REF-456',
+            );
+            B2BPaymentFieldsSessionStorage.set(
+                B2BPaymentFieldsSessionStorage.INVOICE_COMMENT_KEY,
+                'Please rush this order',
+            );
             B2BExtraFieldsSessionStorage.setFields(B2BExtraFieldsSessionStorage.ORDER_KEY, {
                 costCentre: 'Engineering',
             });
@@ -866,9 +872,19 @@ describe('Payment step', () => {
                 ).toBeUndefined(),
             );
 
-            expect(getPoNumber()).toBe('');
-            expect(AdditionalPaymentFieldSessionStorage.get()).toBe('');
-            expect(InvoicePaymentCommentSessionStorage.get()).toBe('');
+            expect(
+                B2BPaymentFieldsSessionStorage.get(B2BPaymentFieldsSessionStorage.PO_NUMBER_KEY),
+            ).toBe('');
+            expect(
+                B2BPaymentFieldsSessionStorage.get(
+                    B2BPaymentFieldsSessionStorage.ADDITIONAL_PAYMENT_FIELD_KEY,
+                ),
+            ).toBe('');
+            expect(
+                B2BPaymentFieldsSessionStorage.get(
+                    B2BPaymentFieldsSessionStorage.INVOICE_COMMENT_KEY,
+                ),
+            ).toBe('');
             expect(
                 B2BExtraFieldsSessionStorage.getFields(B2BExtraFieldsSessionStorage.ORDER_KEY),
             ).toBeUndefined();
@@ -959,7 +975,10 @@ describe('Payment step', () => {
                 writable: true,
             });
 
-            InvoicePaymentCommentSessionStorage.set('Invoice me');
+            B2BPaymentFieldsSessionStorage.set(
+                B2BPaymentFieldsSessionStorage.INVOICE_COMMENT_KEY,
+                'Invoice me',
+            );
 
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
                 config: {
@@ -1021,8 +1040,14 @@ describe('Payment step', () => {
                 writable: true,
             });
 
-            setPoNumber('PO-123');
-            InvoicePaymentCommentSessionStorage.set('Keep me');
+            B2BPaymentFieldsSessionStorage.set(
+                B2BPaymentFieldsSessionStorage.PO_NUMBER_KEY,
+                'PO-123',
+            );
+            B2BPaymentFieldsSessionStorage.set(
+                B2BPaymentFieldsSessionStorage.INVOICE_COMMENT_KEY,
+                'Keep me',
+            );
             B2BExtraFieldsSessionStorage.setFields(B2BExtraFieldsSessionStorage.ORDER_KEY, {
                 costCentre: 'Engineering',
             });
@@ -1051,8 +1076,14 @@ describe('Payment step', () => {
 
             await waitFor(() => expect(persistSpy).toHaveBeenCalled());
 
-            expect(getPoNumber()).toBe('PO-123');
-            expect(InvoicePaymentCommentSessionStorage.get()).toBe('Keep me');
+            expect(
+                B2BPaymentFieldsSessionStorage.get(B2BPaymentFieldsSessionStorage.PO_NUMBER_KEY),
+            ).toBe('PO-123');
+            expect(
+                B2BPaymentFieldsSessionStorage.get(
+                    B2BPaymentFieldsSessionStorage.INVOICE_COMMENT_KEY,
+                ),
+            ).toBe('Keep me');
             expect(
                 B2BExtraFieldsSessionStorage.getFields(B2BExtraFieldsSessionStorage.ORDER_KEY),
             ).toEqual({ costCentre: 'Engineering' });

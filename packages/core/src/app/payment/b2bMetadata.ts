@@ -1,11 +1,8 @@
 import { type FormField, type PersistB2BMetadataOptions } from '@bigcommerce/checkout-sdk';
 
-import { clearPoNumber, getPoNumber } from '@bigcommerce/checkout/utility';
+import { B2BPaymentFieldsSessionStorage } from '@bigcommerce/checkout/utility';
 
 import { B2BExtraFieldsSessionStorage } from '../address';
-
-import { AdditionalPaymentFieldSessionStorage } from './AdditionalPaymentFieldSessionStorage';
-import { InvoicePaymentCommentSessionStorage } from './InvoicePaymentCommentSessionStorage';
 
 type B2BMetadataExtraField = NonNullable<PersistB2BMetadataOptions['extraFields']>[number];
 type B2BMetadataExtraInfo = NonNullable<PersistB2BMetadataOptions['extraInfo']>;
@@ -89,25 +86,19 @@ export const buildB2BMetadataOptions = (
     { orderExtraFields, addressExtraFields }: B2BMetadataFieldDefinitions = {},
 ): PersistB2BMetadataOptions => ({
     isInvoice,
-    invoiceComment: InvoicePaymentCommentSessionStorage.get(),
-    poNumber: getPoNumber(),
-    referenceNumber: AdditionalPaymentFieldSessionStorage.get(),
+    invoiceComment: B2BPaymentFieldsSessionStorage.get(
+        B2BPaymentFieldsSessionStorage.INVOICE_COMMENT_KEY,
+    ),
+    poNumber: B2BPaymentFieldsSessionStorage.get(B2BPaymentFieldsSessionStorage.PO_NUMBER_KEY),
+    referenceNumber: B2BPaymentFieldsSessionStorage.get(
+        B2BPaymentFieldsSessionStorage.ADDITIONAL_PAYMENT_FIELD_KEY,
+    ),
     extraFields: buildOrderExtraFields(orderExtraFields),
     extraInfo: buildAddressExtraInfo(addressExtraFields),
 });
 
 // Clear all B2B sessionStorage after a successful persist.
 export const clearB2BMetadataStorage = (): void => {
-    clearPoNumber();
-    AdditionalPaymentFieldSessionStorage.remove();
-    InvoicePaymentCommentSessionStorage.remove();
-    B2BExtraFieldsSessionStorage.removeFields(B2BExtraFieldsSessionStorage.ORDER_KEY);
-    B2BExtraFieldsSessionStorage.removeFields(B2BExtraFieldsSessionStorage.BILLING_KEY);
-    B2BExtraFieldsSessionStorage.removeFields(B2BExtraFieldsSessionStorage.SHIPPING_KEY);
-    B2BExtraFieldsSessionStorage.removeAddressId(
-        B2BExtraFieldsSessionStorage.BILLING_ADDRESS_ID_KEY,
-    );
-    B2BExtraFieldsSessionStorage.removeAddressId(
-        B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY,
-    );
+    B2BPaymentFieldsSessionStorage.clearAll();
+    B2BExtraFieldsSessionStorage.clearAll();
 };
