@@ -61,6 +61,9 @@ describe('GooglePayPaymentMethodComponent', () => {
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
 
         (paymentForm.getFormValues as jest.Mock).mockReturnValue({ terms: false });
+        (paymentForm.validateForm as jest.Mock).mockResolvedValue({
+            terms: 'terms_and_conditions.agreement_required_error',
+        });
     });
 
     afterEach(() => {
@@ -218,7 +221,7 @@ describe('GooglePayPaymentMethodComponent', () => {
             expect(paymentForm.setFieldTouched).not.toHaveBeenCalled();
         });
 
-        it('blocks the click when T&C is required and unchecked', () => {
+        it('blocks the click when T&C is required and unchecked', async () => {
             jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(
                 storeConfigWithTermsRequired,
             );
@@ -230,6 +233,10 @@ describe('GooglePayPaymentMethodComponent', () => {
 
             expect(event.stopPropagation).toHaveBeenCalled();
             expect(event.preventDefault).toHaveBeenCalled();
+
+            await Promise.resolve();
+
+            expect(paymentForm.validateForm).toHaveBeenCalled();
             expect(paymentForm.setSubmitted).toHaveBeenCalledWith(true);
             expect(paymentForm.setFieldTouched).toHaveBeenCalledWith('terms', true);
         });

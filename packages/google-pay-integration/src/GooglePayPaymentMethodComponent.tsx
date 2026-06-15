@@ -47,8 +47,14 @@ const GooglePayPaymentMethodComponent: FunctionComponent<PaymentMethodProps> = (
             if (isTermsConditionsRequired && !terms) {
                 event.stopPropagation();
                 event.preventDefault();
-                paymentFormRef.current.setSubmitted(true);
-                paymentFormRef.current.setFieldTouched('terms', true);
+
+                void paymentFormRef.current.validateForm().then((errors) => {
+                    paymentFormRef.current.setSubmitted(true);
+
+                    if (errors.terms) {
+                        paymentFormRef.current.setFieldTouched('terms', true);
+                    }
+                });
             }
         };
 
