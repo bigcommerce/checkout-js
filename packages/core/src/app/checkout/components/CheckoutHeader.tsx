@@ -29,7 +29,7 @@ export const CheckoutHeader: React.FC<CheckoutHeaderProps> = ({
     onWalletButtonClick,
 }) => {
     const {
-        checkoutState: { data },
+        selectedState: { checkout, config, flashMessages },
     } = useCheckout(({ data }) => ({
         checkout: data.getCheckout(),
         config: data.getConfig(),
@@ -37,9 +37,8 @@ export const CheckoutHeader: React.FC<CheckoutHeaderProps> = ({
     }));
     const { extensionState } = useExtensions();
 
-    const { promotions = EMPTY_ARRAY } = data.getCheckout() || {};
+    const { promotions = EMPTY_ARRAY } = checkout || {};
 
-    const config = data.getConfig();
     const isShowingWalletButtonsOnTop = Boolean(
         config?.checkoutSettings?.checkoutUserExperienceSettings?.walletButtonsOnTop,
     );
@@ -50,9 +49,7 @@ export const CheckoutHeader: React.FC<CheckoutHeaderProps> = ({
 
     return (
         <>
-            <BackorderQuantitiesChangedBanner
-                message={data.getFlashMessages('warning')?.[0]?.message}
-            />
+            <BackorderQuantitiesChangedBanner message={flashMessages?.[0]?.message} />
             <LoadingNotification isLoading={extensionState.isShowingLoadingIndicator} />
             <PromotionBannerList promotions={promotions} />
             {isShowingWalletButtonsOnTop && buttonConfigs?.length > 0 && (
