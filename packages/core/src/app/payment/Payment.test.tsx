@@ -526,7 +526,7 @@ describe('Payment step', () => {
         expect(screen.queryByText("Something's gone wrong")).not.toBeInTheDocument();
     });
 
-    describe('B2B payment methods refresh', () => {
+    describe('B2B metadata', () => {
         const createConfigWithPersistB2BMetadata = () => ({
             ...checkoutSettings,
             storeConfig: {
@@ -544,7 +544,7 @@ describe('Payment step', () => {
             },
         });
 
-        it('refreshes B2B payment methods on mount when persistB2BMetadata capability is enabled and orderId is present on checkout', async () => {
+        it('persists pre-order B2B metadata on mount when persistB2BMetadata capability is enabled and orderId is present on checkout', async () => {
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
                 config: createConfigWithPersistB2BMetadata(),
                 checkout: {
@@ -554,18 +554,18 @@ describe('Payment step', () => {
                 },
             });
 
-            const refreshSpy = jest
-                .spyOn(checkoutService, 'refreshB2BPaymentMethods')
+            const preOrderSpy = jest
+                .spyOn(checkoutService, 'persistPreOrderB2BMetadata')
                 .mockImplementation(() => Promise.resolve(checkoutService.getState()));
 
             render(<CheckoutTest {...defaultProps} />);
 
             await checkout.waitForPaymentStep();
 
-            expect(refreshSpy).toHaveBeenCalled();
+            expect(preOrderSpy).toHaveBeenCalled();
         });
 
-        it('does not refresh B2B payment methods on mount when checkout has no orderId', async () => {
+        it('does not persist pre-order B2B metadata on mount when checkout has no orderId', async () => {
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
                 config: createConfigWithPersistB2BMetadata(),
                 checkout: {
@@ -574,18 +574,18 @@ describe('Payment step', () => {
                 },
             });
 
-            const refreshSpy = jest
-                .spyOn(checkoutService, 'refreshB2BPaymentMethods')
+            const preOrderSpy = jest
+                .spyOn(checkoutService, 'persistPreOrderB2BMetadata')
                 .mockImplementation(() => Promise.resolve(checkoutService.getState()));
 
             render(<CheckoutTest {...defaultProps} />);
 
             await checkout.waitForPaymentStep();
 
-            expect(refreshSpy).not.toHaveBeenCalled();
+            expect(preOrderSpy).not.toHaveBeenCalled();
         });
 
-        it('does not refresh B2B payment methods on mount when persistB2BMetadata capability is disabled even when orderId is present', async () => {
+        it('does not persist pre-order B2B metadata on mount when persistB2BMetadata capability is disabled even when orderId is present', async () => {
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
                 checkout: {
                     ...checkoutWithShippingAndBilling,
@@ -593,18 +593,93 @@ describe('Payment step', () => {
                 },
             });
 
-            const refreshSpy = jest
-                .spyOn(checkoutService, 'refreshB2BPaymentMethods')
+            const preOrderSpy = jest
+                .spyOn(checkoutService, 'persistPreOrderB2BMetadata')
                 .mockImplementation(() => Promise.resolve(checkoutService.getState()));
 
             render(<CheckoutTest {...defaultProps} />);
 
             await checkout.waitForPaymentStep();
 
-            expect(refreshSpy).not.toHaveBeenCalled();
+            expect(preOrderSpy).not.toHaveBeenCalled();
         });
 
-        it('refreshes B2B payment methods before submitting order when persistB2BMetadata capability is enabled', async () => {
+        it('completes initialization and renders the payment step when mount-time pre-order persist fails', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                config: createConfigWithPersistB2BMetadata(),
+                checkout: {
+                    ...checkoutWithShippingAndBilling,
+                    customer,
+                    orderId: 12345,
+                },
+            });
+
+            jest.spyOn(checkoutService, 'persistPreOrderB2BMetadata').mockRejectedValue(
+                new Error('B2B pre-order metadata persistence failed'),
+            );
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            expect(screen.getByText(/place order/i)).toBeInTheDocument();
+        });
+
+        it('persists pre-order B2B metadata with the stored metadata but without the invoice fields', async () => {
+            const location = window.location;
+
+            Object.defineProperty(window, 'location', {
+                value: {
+                    // eslint-disable-next-line @typescript-eslint/no-misused-spread
+                    ...location,
+                    replace: jest.fn(),
+                },
+                writable: true,
+            });
+
+            B2BSessionStorage.set(B2BSessionStorage.poNumberKey, 'PO-123');
+            B2BSessionStorage.set(B2BSessionStorage.additionalPaymentFieldKey, 'REF-456');
+            // Invoice comment is stored for the post-order persist but must not reach the pre-order payload.
+            B2BSessionStorage.set(B2BSessionStorage.invoiceCommentKey, 'Invoice me');
+            B2BSessionStorage.set(B2BSessionStorage.orderExtraFieldsKey, {
+                costCentre: 'Engineering',
+            });
+
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                config: createConfigWithPersistB2BMetadata(),
+                checkout: {
+                    ...checkoutWithShippingAndBilling,
+                    customer,
+                    orderId: 12345,
+                },
+            });
+
+            jest.spyOn(checkoutService, 'finalizeOrderIfNeeded').mockResolvedValue(
+                checkoutService.getState(),
+            );
+
+            const preOrderSpy = jest
+                .spyOn(checkoutService, 'persistPreOrderB2BMetadata')
+                .mockImplementation(() => Promise.resolve(checkoutService.getState()));
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await waitFor(() =>
+                expect(preOrderSpy).toHaveBeenCalledWith({
+                    poNumber: 'PO-123',
+                    referenceNumber: 'REF-456',
+                    extraFields: [{ fieldName: 'costCentre', fieldValue: 'Engineering' }],
+                    extraInfo: {},
+                }),
+            );
+
+            const payload = preOrderSpy.mock.calls[0][0];
+
+            expect(payload).not.toHaveProperty('isInvoice');
+            expect(payload).not.toHaveProperty('invoiceComment');
+        });
+
+        it('persists B2B metadata before submitting order when persistB2BMetadata capability is enabled', async () => {
             checkout.setRequestHandler(
                 rest.post('/internalapi/v1/checkout/order', (_, res, ctx) =>
                     res(ctx.json(orderResponse)),
@@ -633,8 +708,8 @@ describe('Payment step', () => {
                 },
             });
 
-            const refreshSpy = jest
-                .spyOn(checkoutService, 'refreshB2BPaymentMethods')
+            const preOrderSpy = jest
+                .spyOn(checkoutService, 'persistPreOrderB2BMetadata')
                 .mockImplementation(() => Promise.resolve(checkoutService.getState()));
             const submitOrderSpy = jest.spyOn(checkoutService, 'submitOrder');
 
@@ -642,20 +717,20 @@ describe('Payment step', () => {
 
             await checkout.waitForPaymentStep();
 
-            refreshSpy.mockClear();
+            preOrderSpy.mockClear();
 
             await act(async () => userEvent.click(screen.getByText('Place Order')));
 
-            expect(refreshSpy).toHaveBeenCalledTimes(1);
+            expect(preOrderSpy).toHaveBeenCalledTimes(1);
             expect(submitOrderSpy).toHaveBeenCalledTimes(1);
 
-            const refreshCallOrder = refreshSpy.mock.invocationCallOrder[0];
+            const preOrderCallOrder = preOrderSpy.mock.invocationCallOrder[0];
             const submitOrderCallOrder = submitOrderSpy.mock.invocationCallOrder[0];
 
-            expect(refreshCallOrder).toBeLessThan(submitOrderCallOrder);
+            expect(preOrderCallOrder).toBeLessThan(submitOrderCallOrder);
         });
 
-        it('does not refresh B2B payment methods before submitting order when persistB2BMetadata capability is disabled', async () => {
+        it('does not persist B2B metadata before submitting order when persistB2BMetadata capability is disabled', async () => {
             checkout.setRequestHandler(
                 rest.post('/internalapi/v1/checkout/order', (_, res, ctx) =>
                     res(ctx.json(orderResponse)),
@@ -678,8 +753,8 @@ describe('Payment step', () => {
 
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
 
-            const refreshSpy = jest
-                .spyOn(checkoutService, 'refreshB2BPaymentMethods')
+            const preOrderSpy = jest
+                .spyOn(checkoutService, 'persistPreOrderB2BMetadata')
                 .mockImplementation(() => Promise.resolve(checkoutService.getState()));
 
             render(<CheckoutTest {...defaultProps} />);
@@ -688,31 +763,10 @@ describe('Payment step', () => {
 
             await act(async () => userEvent.click(screen.getByText('Place Order')));
 
-            expect(refreshSpy).not.toHaveBeenCalled();
+            expect(preOrderSpy).not.toHaveBeenCalled();
         });
 
-        it('completes initialization and renders the payment step when mount-time B2B refresh fails', async () => {
-            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
-                config: createConfigWithPersistB2BMetadata(),
-                checkout: {
-                    ...checkoutWithShippingAndBilling,
-                    customer,
-                    orderId: 12345,
-                },
-            });
-
-            jest.spyOn(checkoutService, 'refreshB2BPaymentMethods').mockRejectedValue(
-                new Error('B2B payments refresh failed'),
-            );
-
-            render(<CheckoutTest {...defaultProps} />);
-
-            await checkout.waitForPaymentStep();
-
-            expect(screen.getByText(/place order/i)).toBeInTheDocument();
-        });
-
-        it('does not submit the order when B2B payment methods refresh fails before submit', async () => {
+        it('does not submit the order when persisting B2B metadata fails before submit', async () => {
             checkout.setRequestHandler(
                 rest.post('/internalapi/v1/checkout/order', (_, res, ctx) =>
                     res(ctx.json(orderResponse)),
@@ -727,8 +781,8 @@ describe('Payment step', () => {
                 },
             });
 
-            jest.spyOn(checkoutService, 'refreshB2BPaymentMethods').mockRejectedValue(
-                new Error('B2B payments refresh failed'),
+            jest.spyOn(checkoutService, 'persistPreOrderB2BMetadata').mockRejectedValue(
+                new Error('B2B metadata persistence failed'),
             );
 
             const submitOrderSpy = jest.spyOn(checkoutService, 'submitOrder');
@@ -763,9 +817,6 @@ describe('Payment step', () => {
                 },
             });
 
-            jest.spyOn(checkoutService, 'refreshB2BPaymentMethods').mockImplementation(() =>
-                Promise.resolve(checkoutService.getState()),
-            );
             jest.spyOn(checkoutService, 'finalizeOrderIfNeeded').mockResolvedValue(
                 checkoutService.getState(),
             );
@@ -822,9 +873,6 @@ describe('Payment step', () => {
                 },
             });
 
-            jest.spyOn(checkoutService, 'refreshB2BPaymentMethods').mockImplementation(() =>
-                Promise.resolve(checkoutService.getState()),
-            );
             jest.spyOn(checkoutService, 'finalizeOrderIfNeeded').mockResolvedValue(
                 checkoutService.getState(),
             );
@@ -893,9 +941,6 @@ describe('Payment step', () => {
                 },
             });
 
-            jest.spyOn(checkoutService, 'refreshB2BPaymentMethods').mockImplementation(() =>
-                Promise.resolve(checkoutService.getState()),
-            );
             jest.spyOn(checkoutService, 'finalizeOrderIfNeeded').mockResolvedValue(
                 checkoutService.getState(),
             );
@@ -968,9 +1013,6 @@ describe('Payment step', () => {
                 },
             });
 
-            jest.spyOn(checkoutService, 'refreshB2BPaymentMethods').mockImplementation(() =>
-                Promise.resolve(checkoutService.getState()),
-            );
             jest.spyOn(checkoutService, 'finalizeOrderIfNeeded').mockResolvedValue(
                 checkoutService.getState(),
             );
@@ -1018,9 +1060,6 @@ describe('Payment step', () => {
                 },
             });
 
-            jest.spyOn(checkoutService, 'refreshB2BPaymentMethods').mockImplementation(() =>
-                Promise.resolve(checkoutService.getState()),
-            );
             jest.spyOn(checkoutService, 'finalizeOrderIfNeeded').mockResolvedValue(
                 checkoutService.getState(),
             );

@@ -111,7 +111,7 @@ interface WithCheckoutPaymentProps {
     isPaymentDataRequired(): boolean;
     loadCheckout(): Promise<CheckoutSelectors>;
     loadPaymentMethods(): Promise<CheckoutSelectors>;
-    refreshB2BPaymentMethods: CheckoutService['refreshB2BPaymentMethods'];
+    submitPreOrderMetaData: CheckoutService['persistPreOrderB2BMetadata'];
     submitB2BMetadata: CheckoutService['persistB2BMetadata'];
     submitOrder(values: OrderRequestBody): Promise<CheckoutSelectors>;
     checkoutServiceSubscribe: CheckoutService['subscribe'];
@@ -388,6 +388,18 @@ const Payment = (
             });
     };
 
+    const persistPreOrderB2BMetadataIfNeeded = async (): Promise<void> => {
+        const { addressExtraFields, orderExtraFields, submitPreOrderMetaData } = props;
+
+        if (!persistB2BMetadata) {
+            return;
+        }
+
+        const metadataPayload = buildB2BMetadataOptions({ orderExtraFields, addressExtraFields });
+
+        await submitPreOrderMetaData(metadataPayload);
+    };
+
     const persistB2BMetadataIfNeeded = async (): Promise<void> => {
         const { addressExtraFields, orderExtraFields, submitB2BMetadata } = props;
 
@@ -395,10 +407,10 @@ const Payment = (
             return;
         }
 
-        const metadataPayload = buildB2BMetadataOptions(invoiceRedirect, {
-            orderExtraFields,
-            addressExtraFields,
-        });
+        const metadataPayload = buildB2BMetadataOptions(
+            { orderExtraFields, addressExtraFields },
+            invoiceRedirect,
+        );
 
         await submitB2BMetadata(metadataPayload);
 
@@ -414,7 +426,6 @@ const Payment = (
                 onCartChangedError = noop,
                 onSubmit = noop,
                 onSubmitError = noop,
-                refreshB2BPaymentMethods,
                 submitOrder,
                 analyticsTracker,
             } = props;
@@ -434,9 +445,7 @@ const Payment = (
             }
 
             try {
-                if (persistB2BMetadata) {
-                    await refreshB2BPaymentMethods();
-                }
+                await persistPreOrderB2BMetadataIfNeeded();
 
                 const state = await submitOrder(
                     mapToOrderRequestBody(values, isPaymentDataRequired()),
@@ -590,7 +599,6 @@ const Payment = (
                 onReady = noop,
                 onUnhandledError = noop,
                 orderId,
-                refreshB2BPaymentMethods,
                 usableStoreCredit,
                 checkoutServiceSubscribe,
             } = props;
@@ -601,9 +609,9 @@ const Payment = (
 
             await loadPaymentMethodsOrThrow();
 
-            if (persistB2BMetadata && orderId) {
+            if (orderId) {
                 try {
-                    await refreshB2BPaymentMethods();
+                    await persistPreOrderB2BMetadataIfNeeded();
                 } catch (error) {
                     if (error instanceof Error) {
                         onUnhandledError(error);
@@ -819,7 +827,7 @@ export function mapToPaymentProps(
         methods: filteredMethods,
         orderExtraFields,
         orderId: checkout.orderId,
-        refreshB2BPaymentMethods: checkoutService.refreshB2BPaymentMethods,
+        submitPreOrderMetaData: checkoutService.persistPreOrderB2BMetadata,
         submitB2BMetadata: checkoutService.persistB2BMetadata,
         shouldExecuteSpamCheck: checkout.shouldExecuteSpamCheck,
         shouldLocaliseErrorMessages:
