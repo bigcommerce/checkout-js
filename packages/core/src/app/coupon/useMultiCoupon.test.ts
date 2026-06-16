@@ -48,10 +48,20 @@ describe('useMultiCoupon', () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
-        (useCheckout as jest.Mock).mockReturnValue({
+        (useCheckout as jest.Mock).mockImplementation(() => ({
             checkoutService,
-            checkoutState,
-        });
+            selectedState: {
+                config: checkoutState.data.getConfig(),
+                checkout: checkoutState.data.getCheckout(),
+                order: checkoutState.data.getOrder(),
+                coupons: checkoutState.data.getCoupons(),
+                giftCertificates: checkoutState.data.getGiftCertificates(),
+                isSubmittingOrder: checkoutState.statuses.isSubmittingOrder(),
+                isPending: checkoutState.statuses.isPending(),
+                isApplyingCoupon: checkoutState.statuses.isApplyingCoupon(),
+                isApplyingGiftCertificate: checkoutState.statuses.isApplyingGiftCertificate(),
+            },
+        }));
         (useLocale as jest.Mock).mockReturnValue(getLocaleContext());
         (useCapabilities as jest.Mock).mockReturnValue({
             userJourney: { disableCoupon: false, disableGiftCertificate: false },
