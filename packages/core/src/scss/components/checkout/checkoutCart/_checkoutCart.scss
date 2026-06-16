@@ -67,6 +67,22 @@
     padding: $checkoutCart-padding;
 }
 
+.cart-section-heading-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: spacing("single");
+
+    .cart-section-heading {
+        margin-bottom: 0;
+    }
+
+    .bc-switch {
+        margin-right: -(spacing("half"));
+    }
+}
+
 .cart-section-heading {
     @include headingStyle("h5");
 

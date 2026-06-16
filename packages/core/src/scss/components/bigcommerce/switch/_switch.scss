@@ -1,0 +1,98 @@
+// =============================================================================
+// SWITCH COMPONENT
+// =============================================================================
+
+$switch-onColor: color("primary");
+
+.bc-switch {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+
+    &--label-start { flex-direction: row-reverse; }
+
+    &__control {
+        position: relative;
+        flex: 0 0 auto;
+        display: inline-block;
+        width: remCalc(58px);
+        height: remCalc(38px);
+    }
+
+    &__input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        opacity: 0;
+        cursor: inherit;
+        z-index: 2;
+    }
+
+    // track: centred pill behind the thumb
+    &__track {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: remCalc(34px);
+        height: remCalc(14px);
+        border-radius: 999px;
+        background-color: rgba(color("primary"), 0.30);
+        transition: background-color 200ms ease, opacity 200ms ease;
+    }
+
+    // base: padded layer carrying thumb + halo; slides on toggle
+    &__base {
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: remCalc(9px);
+        pointer-events: none;
+        transition: transform 180ms cubic-bezier(0.4, 0, 0.2, 1);
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: remCalc(19px);
+            width: remCalc(38px);
+            height: remCalc(38px);
+            border-radius: 50%;
+            background-color: rgba($switch-onColor, 0.12);
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 150ms ease;
+        }
+    }
+
+    &__thumb {
+        display: block;
+        width: remCalc(20px);
+        height: remCalc(20px);
+        border-radius: 50%;
+        background-color: color("whites", "bright");
+        box-shadow: 0 1px 3px rgba($color-black, 0.30), 0 1px 1px rgba($color-black, 0.14);
+        transition: background-color 180ms ease;
+    }
+
+    // ON state
+    &__input:checked ~ &__base { transform: translateX(remCalc(20px)); }
+    &__input:checked ~ &__track { background-color: $switch-onColor; opacity: 0.5; }
+    &__input:checked ~ &__base &__thumb { background-color: $switch-onColor; }
+
+    // hover / focus halo
+    &__control:hover &__base::before,
+    &__input:focus-visible ~ &__base::before { transform: translate(-50%, -50%) scale(.85); }
+
+    &__label { padding-top: remCalc(1px); }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .bc-switch__base,
+    .bc-switch__track,
+    .bc-switch__base::before { transition: none; }
+}
