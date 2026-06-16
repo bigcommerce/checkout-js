@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.812.1](https://github.com/bigcommerce/checkout-js/compare/v1.812.0...v1.812.1) (2026-06-16)
+
+
+### Bug Fixes
+
+* **payment:** PI-5401 [Google Pay] Block flow when terms and conditions are unchecked ([#3097](https://github.com/bigcommerce/checkout-js/issues/3097)) ([df4081b](https://github.com/bigcommerce/checkout-js/commit/df4081bca76831935f9cbaecf11f5bdb2f52be64))
+
 ## [1.812.0](https://github.com/bigcommerce/checkout-js/compare/v1.811.0...v1.812.0) (2026-06-16)
 
 
