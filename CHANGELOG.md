@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.812.0](https://github.com/bigcommerce/checkout-js/compare/v1.811.0...v1.812.0) (2026-06-16)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10103 Accessibility - wrap promotion banners on checkout page for valid list structure ([e77d280](https://github.com/bigcommerce/checkout-js/commit/e77d28022a755e8f39649477a3e0b16d2336d637))
+
 ## [1.811.0](https://github.com/bigcommerce/checkout-js/compare/v1.810.0...v1.811.0) (2026-06-16)
 
 
