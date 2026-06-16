@@ -7,10 +7,10 @@ import { lazy, object } from 'yup';
 import { useCapabilities } from '@bigcommerce/checkout/contexts';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { Fieldset, Form } from '@bigcommerce/checkout/ui';
+import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
 import {
     type AddressFormValues,
-    B2BExtraFieldsSessionStorage,
     getAddressFormFieldsValidationSchema,
     getTranslateAddressError,
     isEqualAddress,
@@ -129,13 +129,9 @@ const SingleShippingForm: React.FC<
         if (
             hasCompanyAddressBook &&
             !hasValidShippingCustomerAddress &&
-            B2BExtraFieldsSessionStorage.getAddressId(
-                B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY,
-            )
+            B2BSessionStorage.getAddressId(B2BSessionStorage.shippingAddressIdKey)
         ) {
-            B2BExtraFieldsSessionStorage.removeAddressId(
-                B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY,
-            );
+            B2BSessionStorage.remove(B2BSessionStorage.shippingAddressIdKey);
         }
     }, [hasCompanyAddressBook, hasValidShippingCustomerAddress]);
 
@@ -208,7 +204,7 @@ const SingleShippingForm: React.FC<
                 shippingAddress: mapAddressToFormValues(
                     getFields(shippingAddress?.countryCode),
                     shippingAddress,
-                    B2BExtraFieldsSessionStorage.SHIPPING_KEY,
+                    B2BSessionStorage.shippingExtraFieldsKey,
                 ),
             });
         }
@@ -264,17 +260,12 @@ const SingleShippingForm: React.FC<
         try {
             await updateAddress(address);
 
-            B2BExtraFieldsSessionStorage.removeAddressId(
-                B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY,
-            );
+            B2BSessionStorage.remove(B2BSessionStorage.shippingAddressIdKey);
 
             const selectedAddressId = (address as CustomerAddress).id;
 
             if (hasCompanyAddressBook && selectedAddressId) {
-                B2BExtraFieldsSessionStorage.setAddressId(
-                    B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY,
-                    selectedAddressId,
-                );
+                B2BSessionStorage.set(B2BSessionStorage.shippingAddressIdKey, selectedAddressId);
             }
 
             setValues({
@@ -295,14 +286,10 @@ const SingleShippingForm: React.FC<
             const address = await deleteConsignments();
 
             if (hasAddressExtraFields) {
-                B2BExtraFieldsSessionStorage.removeFields(
-                    B2BExtraFieldsSessionStorage.SHIPPING_KEY,
-                );
+                B2BSessionStorage.remove(B2BSessionStorage.shippingExtraFieldsKey);
             }
 
-            B2BExtraFieldsSessionStorage.removeAddressId(
-                B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY,
-            );
+            B2BSessionStorage.remove(B2BSessionStorage.shippingAddressIdKey);
 
             setValues({
                 ...propsRef.current.values,
@@ -389,7 +376,7 @@ export default withLanguage(
             shippingAddress: mapAddressToFormValues(
                 getFields(shippingAddress?.countryCode),
                 shippingAddress,
-                B2BExtraFieldsSessionStorage.SHIPPING_KEY,
+                B2BSessionStorage.shippingExtraFieldsKey,
             ),
         }),
         validateOnMount: true,

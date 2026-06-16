@@ -1,7 +1,8 @@
 import { type Address, type CustomerAddress } from '@bigcommerce/checkout-sdk';
 
+import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
+
 import AddressType from './AddressType';
-import { B2BExtraFieldsSessionStorage } from './B2BExtraFieldsSessionStorage';
 import isEqualAddress from './isEqualAddress';
 
 interface SetDefaultAddressOptions {
@@ -19,8 +20,8 @@ export default async function setDefaultAddress({
 }: SetDefaultAddressOptions): Promise<void> {
     const isShipping = type === AddressType.Shipping;
     const addressIdKey = isShipping
-        ? B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY
-        : B2BExtraFieldsSessionStorage.BILLING_ADDRESS_ID_KEY;
+        ? B2BSessionStorage.shippingAddressIdKey
+        : B2BSessionStorage.billingAddressIdKey;
 
     const filteredAddresses = addresses?.filter((address) =>
         isShipping ? address.isShipping : address.isBilling,
@@ -38,7 +39,7 @@ export default async function setDefaultAddress({
             await updateAddress(defaultAddress);
 
             if (defaultAddress.id) {
-                B2BExtraFieldsSessionStorage.setAddressId(addressIdKey, defaultAddress.id);
+                B2BSessionStorage.set(addressIdKey, defaultAddress.id);
             }
         } catch {
             /* Do nothing: we should not block shoppers from buying. */
@@ -47,7 +48,7 @@ export default async function setDefaultAddress({
         return;
     }
 
-    const storedAddressId = B2BExtraFieldsSessionStorage.getAddressId(addressIdKey);
+    const storedAddressId = B2BSessionStorage.getAddressId(addressIdKey);
     const storedIdStillMatches = filteredAddresses?.some(
         (address) => address.id === storedAddressId && isEqualAddress(address, currentAddress),
     );
@@ -63,8 +64,8 @@ export default async function setDefaultAddress({
     );
 
     if (matchedAddress?.id) {
-        B2BExtraFieldsSessionStorage.setAddressId(addressIdKey, matchedAddress.id);
+        B2BSessionStorage.set(addressIdKey, matchedAddress.id);
     } else {
-        B2BExtraFieldsSessionStorage.removeAddressId(addressIdKey);
+        B2BSessionStorage.remove(addressIdKey);
     }
 }

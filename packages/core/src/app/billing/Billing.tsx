@@ -4,10 +4,10 @@ import React, { type ReactElement, useEffect, useMemo, useState } from 'react';
 import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { AddressFormSkeleton, Legend } from '@bigcommerce/checkout/ui';
+import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
 import {
     AddressType,
-    B2BExtraFieldsSessionStorage,
     getAddressWithCustomerExtraFields,
     isEqualAddress,
     mapAddressFromFormValues,
@@ -94,7 +94,7 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }: BillingProps):
         const promises: Array<Promise<CheckoutSelectors>> = [];
         const address = mapAddressFromFormValues(
             addressValues,
-            B2BExtraFieldsSessionStorage.BILLING_KEY,
+            B2BSessionStorage.billingExtraFieldsKey,
         );
 
         if (address && !isEqualAddress(address, billingAddress)) {

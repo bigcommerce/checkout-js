@@ -1,4 +1,3 @@
-export { B2BExtraFieldsSessionStorage } from './B2BExtraFieldsSessionStorage';
 export { default as mapAddressToFormValues, AddressFormValues } from './mapAddressToFormValues';
 export { default as mapAddressFromFormValues } from './mapAddressFromFormValues';
 export { default as stripExtraFieldsFromAddress } from './stripExtraFieldsFromAddress';

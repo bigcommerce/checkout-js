@@ -8,8 +8,8 @@ import React, { useMemo, useState } from 'react';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
-import { B2BExtraFieldsSessionStorage } from '../address';
 import { isErrorWithType } from '../common/error';
 
 import AllocateItemsModal from './AllocateItemsModal';
@@ -92,7 +92,7 @@ const NewConsignment = ({
             );
 
             if (newConsignment) {
-                B2BExtraFieldsSessionStorage.reassignConsignmentKey(newConsignment.id);
+                B2BSessionStorage.reassignConsignmentKey(newConsignment.id);
             }
         } catch (error) {
             if (error instanceof AssignItemFailedError) {

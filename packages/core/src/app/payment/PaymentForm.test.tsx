@@ -19,15 +19,13 @@ import {
 } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
+import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
-import { B2BExtraFieldsSessionStorage } from '../address';
 import { getCart } from '../cart/carts.mock';
 import { createErrorLogger } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
 
-import { AdditionalPaymentFieldSessionStorage } from './AdditionalPaymentFieldSessionStorage';
-import { InvoicePaymentCommentSessionStorage } from './InvoicePaymentCommentSessionStorage';
 import { getPaymentMethod } from './payment-methods.mock';
 import PaymentContext, { type PaymentContextProps } from './PaymentContext';
 import PaymentForm, { type PaymentFormProps } from './PaymentForm';
@@ -263,7 +261,7 @@ describe('PaymentForm', () => {
         });
 
         it('seeds inputs from session storage when stored values exist', () => {
-            B2BExtraFieldsSessionStorage.setFields(B2BExtraFieldsSessionStorage.ORDER_KEY, {
+            B2BSessionStorage.set(B2BSessionStorage.orderExtraFieldsKey, {
                 b2bExtraField_500: 'restored value',
             });
 
@@ -279,7 +277,7 @@ describe('PaymentForm', () => {
         });
 
         it('falls back to default when stored value has an unexpected type', () => {
-            B2BExtraFieldsSessionStorage.setFields(B2BExtraFieldsSessionStorage.ORDER_KEY, {
+            B2BSessionStorage.set(B2BSessionStorage.orderExtraFieldsKey, {
                 b2bExtraField_500: { tampered: true },
             });
 
@@ -351,7 +349,7 @@ describe('PaymentForm', () => {
 
         it('seeds the textarea from session storage when a value is stored', () => {
             enableCapability();
-            InvoicePaymentCommentSessionStorage.set('restored comment');
+            B2BSessionStorage.set(B2BSessionStorage.invoiceCommentKey, 'restored comment');
 
             render(<PaymentFormTest {...defaultProps} />);
 
@@ -369,7 +367,9 @@ describe('PaymentForm', () => {
                 target: { value: 'note for invoice' },
             });
 
-            expect(InvoicePaymentCommentSessionStorage.get()).toBe('note for invoice');
+            expect(B2BSessionStorage.getValue(B2BSessionStorage.invoiceCommentKey)).toBe(
+                'note for invoice',
+            );
 
             fireEvent.submit(screen.getByTestId('payment-form'));
 
@@ -421,7 +421,7 @@ describe('PaymentForm', () => {
         });
 
         it('seeds the field from session storage when a value is stored', () => {
-            AdditionalPaymentFieldSessionStorage.set('restored note');
+            B2BSessionStorage.set(B2BSessionStorage.additionalPaymentFieldKey, 'restored note');
 
             render(
                 <PaymentFormTest
@@ -448,7 +448,9 @@ describe('PaymentForm', () => {
                 target: { value: 'special handling' },
             });
 
-            expect(AdditionalPaymentFieldSessionStorage.get()).toBe('special handling');
+            expect(B2BSessionStorage.getValue(B2BSessionStorage.additionalPaymentFieldKey)).toBe(
+                'special handling',
+            );
 
             fireEvent.submit(screen.getByTestId('payment-form'));
 

@@ -18,17 +18,16 @@ import {
 } from '@bigcommerce/checkout/locale';
 import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { Fieldset, Form, FormContext, Legend } from '@bigcommerce/checkout/ui';
+import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
-import { B2BExtraFieldsSessionStorage, getTranslateAddressError } from '../address';
+import { getTranslateAddressError } from '../address';
 import { isExperimentEnabled } from '../common/utility';
 import { getOrderExtraFieldsValidationSchema } from '../formFields';
 import { TermsConditions } from '../termsConditions';
 
 import AdditionalPaymentField from './AdditionalPaymentField';
-import { AdditionalPaymentFieldSessionStorage } from './AdditionalPaymentFieldSessionStorage';
 import getPaymentValidationSchema from './getPaymentValidationSchema';
 import InvoicePaymentCommentField from './InvoicePaymentCommentField';
-import { InvoicePaymentCommentSessionStorage } from './InvoicePaymentCommentSessionStorage';
 import { NoPaymentMethods } from './NoPaymentMethods';
 import { getInitialOrderExtraFieldsValues, OrderExtraFieldsFieldset } from './orderExtraFields';
 import {
@@ -328,8 +327,8 @@ const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProp
 const paymentFormConfig: WithFormikConfig<PaymentFormProps & WithLanguageProps, PaymentFormValues> =
     {
         mapPropsToValues: ({ defaultGatewayId, defaultMethodId, orderExtraFields }) => {
-            const storedOrderExtraFields = B2BExtraFieldsSessionStorage.getFields(
-                B2BExtraFieldsSessionStorage.ORDER_KEY,
+            const storedOrderExtraFields = B2BSessionStorage.get(
+                B2BSessionStorage.orderExtraFieldsKey,
             );
 
             return {
@@ -363,8 +362,12 @@ const paymentFormConfig: WithFormikConfig<PaymentFormProps & WithLanguageProps, 
                     orderExtraFields,
                     storedOrderExtraFields,
                 ),
-                invoicePaymentComment: InvoicePaymentCommentSessionStorage.get(),
-                additionalPaymentField: AdditionalPaymentFieldSessionStorage.get(),
+                invoicePaymentComment: B2BSessionStorage.getValue(
+                    B2BSessionStorage.invoiceCommentKey,
+                ),
+                additionalPaymentField: B2BSessionStorage.getValue(
+                    B2BSessionStorage.additionalPaymentFieldKey,
+                ),
             };
         },
 
@@ -381,10 +384,7 @@ const paymentFormConfig: WithFormikConfig<PaymentFormProps & WithLanguageProps, 
             };
 
             if (orderExtraFields && Object.keys(orderExtraFields).length > 0) {
-                B2BExtraFieldsSessionStorage.setFields(
-                    B2BExtraFieldsSessionStorage.ORDER_KEY,
-                    orderExtraFields,
-                );
+                B2BSessionStorage.set(B2BSessionStorage.orderExtraFieldsKey, orderExtraFields);
             }
 
             onSubmit(

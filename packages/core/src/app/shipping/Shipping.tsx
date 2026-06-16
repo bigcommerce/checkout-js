@@ -5,10 +5,10 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useCapabilities } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { AddressFormSkeleton, ConfirmationModal } from '@bigcommerce/checkout/ui';
+import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
 import {
     AddressType,
-    B2BExtraFieldsSessionStorage,
     isEqualAddress,
     mapAddressFromFormValues,
     setDefaultAddress,
@@ -151,7 +151,7 @@ function Shipping({
             values.shippingAddress &&
             mapAddressFromFormValues(
                 values.shippingAddress,
-                B2BExtraFieldsSessionStorage.SHIPPING_KEY,
+                B2BSessionStorage.shippingExtraFieldsKey,
             );
         const promises: Array<Promise<CheckoutSelectors>> = [];
         const hasRemoteBilling = hasRemoteBillingFn(methodId);
@@ -164,7 +164,7 @@ function Shipping({
         }
 
         if (values.billingSameAsShipping && updatedShippingAddress && !hasRemoteBilling) {
-            B2BExtraFieldsSessionStorage.copyShippingToBilling();
+            B2BSessionStorage.copyShippingToBilling();
 
             if (!isEqualAddress(updatedShippingAddress, billingAddress)) {
                 promises.push(updateBillingAddress(updatedShippingAddress));

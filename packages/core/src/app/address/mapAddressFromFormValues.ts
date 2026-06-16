@@ -1,8 +1,9 @@
 import { type Address, type AddressKey } from '@bigcommerce/checkout-sdk';
 
+import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
+
 import { mapCustomFormFieldsFromFormValues } from '../formFields';
 
-import { B2BExtraFieldsSessionStorage } from './B2BExtraFieldsSessionStorage';
 import { type AddressFormValues } from './mapAddressToFormValues';
 
 export default function mapAddressFromFormValues(
@@ -17,10 +18,7 @@ export default function mapAddressFromFormValues(
             shouldSaveAddress,
         };
 
-        B2BExtraFieldsSessionStorage.setFields(
-            storageKey,
-            fieldsToStore as Record<string, unknown>,
-        );
+        B2BSessionStorage.set(storageKey, fieldsToStore as Record<string, unknown>);
     }
 
     return {

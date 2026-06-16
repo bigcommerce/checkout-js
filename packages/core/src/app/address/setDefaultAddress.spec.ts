@@ -1,13 +1,14 @@
 import { type CustomerAddress } from '@bigcommerce/checkout-sdk';
 
+import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
+
 import { getAddress } from './address.mock';
 import AddressType from './AddressType';
-import { B2BExtraFieldsSessionStorage } from './B2BExtraFieldsSessionStorage';
 import setDefaultAddress from './setDefaultAddress';
 
 describe('setDefaultAddress', () => {
-    const shippingIdKey = B2BExtraFieldsSessionStorage.SHIPPING_ADDRESS_ID_KEY;
-    const billingIdKey = B2BExtraFieldsSessionStorage.BILLING_ADDRESS_ID_KEY;
+    const shippingIdKey = B2BSessionStorage.shippingAddressIdKey;
+    const billingIdKey = B2BSessionStorage.billingAddressIdKey;
 
     const getCustomerAddress = (overrides: Partial<CustomerAddress> = {}): CustomerAddress => ({
         ...getAddress(),
@@ -37,7 +38,7 @@ describe('setDefaultAddress', () => {
             });
 
             expect(updateAddress).toHaveBeenCalledWith(defaultAddress);
-            expect(B2BExtraFieldsSessionStorage.getAddressId(shippingIdKey)).toBe(7);
+            expect(B2BSessionStorage.getAddressId(shippingIdKey)).toBe(7);
         });
 
         it('applies the default address but does not store an id when it has none', async () => {
@@ -54,7 +55,7 @@ describe('setDefaultAddress', () => {
             });
 
             expect(updateAddress).toHaveBeenCalledWith(defaultAddress);
-            expect(B2BExtraFieldsSessionStorage.getAddressId(shippingIdKey)).toBeUndefined();
+            expect(B2BSessionStorage.getAddressId(shippingIdKey)).toBeUndefined();
         });
 
         it('does nothing when there is no default address', async () => {
@@ -66,7 +67,7 @@ describe('setDefaultAddress', () => {
             });
 
             expect(updateAddress).not.toHaveBeenCalled();
-            expect(B2BExtraFieldsSessionStorage.getAddressId(shippingIdKey)).toBeUndefined();
+            expect(B2BSessionStorage.getAddressId(shippingIdKey)).toBeUndefined();
         });
 
         it('does not store an id when applying the default address fails', async () => {
@@ -81,7 +82,7 @@ describe('setDefaultAddress', () => {
                 updateAddress,
             });
 
-            expect(B2BExtraFieldsSessionStorage.getAddressId(shippingIdKey)).toBeUndefined();
+            expect(B2BSessionStorage.getAddressId(shippingIdKey)).toBeUndefined();
         });
     });
 
@@ -101,7 +102,7 @@ describe('setDefaultAddress', () => {
             });
 
             expect(updateAddress).not.toHaveBeenCalled();
-            expect(B2BExtraFieldsSessionStorage.getAddressId(shippingIdKey)).toBe(42);
+            expect(B2BSessionStorage.getAddressId(shippingIdKey)).toBe(42);
         });
 
         it('does nothing when no book address matches', async () => {
@@ -112,11 +113,11 @@ describe('setDefaultAddress', () => {
                 updateAddress,
             });
 
-            expect(B2BExtraFieldsSessionStorage.getAddressId(shippingIdKey)).toBeUndefined();
+            expect(B2BSessionStorage.getAddressId(shippingIdKey)).toBeUndefined();
         });
 
         it('clears a stale stored id when no book address matches', async () => {
-            B2BExtraFieldsSessionStorage.setAddressId(shippingIdKey, 99);
+            B2BSessionStorage.set(shippingIdKey, 99);
 
             await setDefaultAddress({
                 type: AddressType.Shipping,
@@ -125,11 +126,11 @@ describe('setDefaultAddress', () => {
                 updateAddress,
             });
 
-            expect(B2BExtraFieldsSessionStorage.getAddressId(shippingIdKey)).toBeUndefined();
+            expect(B2BSessionStorage.getAddressId(shippingIdKey)).toBeUndefined();
         });
 
         it('keeps the stored id when it still matches the current address', async () => {
-            B2BExtraFieldsSessionStorage.setAddressId(shippingIdKey, 42);
+            B2BSessionStorage.set(shippingIdKey, 42);
 
             await setDefaultAddress({
                 type: AddressType.Shipping,
@@ -139,11 +140,11 @@ describe('setDefaultAddress', () => {
             });
 
             expect(updateAddress).not.toHaveBeenCalled();
-            expect(B2BExtraFieldsSessionStorage.getAddressId(shippingIdKey)).toBe(42);
+            expect(B2BSessionStorage.getAddressId(shippingIdKey)).toBe(42);
         });
 
         it('replaces a stale stored id when the current address matches a different entry', async () => {
-            B2BExtraFieldsSessionStorage.setAddressId(shippingIdKey, 99);
+            B2BSessionStorage.set(shippingIdKey, 99);
 
             await setDefaultAddress({
                 type: AddressType.Shipping,
@@ -156,7 +157,7 @@ describe('setDefaultAddress', () => {
             });
 
             expect(updateAddress).not.toHaveBeenCalled();
-            expect(B2BExtraFieldsSessionStorage.getAddressId(shippingIdKey)).toBe(42);
+            expect(B2BSessionStorage.getAddressId(shippingIdKey)).toBe(42);
         });
     });
 
@@ -172,7 +173,7 @@ describe('setDefaultAddress', () => {
                 updateAddress,
             });
 
-            expect(B2BExtraFieldsSessionStorage.getAddressId(shippingIdKey)).toBe(42);
+            expect(B2BSessionStorage.getAddressId(shippingIdKey)).toBe(42);
         });
 
         it('does not store a billing-only row id under the shipping key', async () => {
@@ -185,7 +186,7 @@ describe('setDefaultAddress', () => {
                 updateAddress,
             });
 
-            expect(B2BExtraFieldsSessionStorage.getAddressId(shippingIdKey)).toBeUndefined();
+            expect(B2BSessionStorage.getAddressId(shippingIdKey)).toBeUndefined();
         });
 
         it('matches a billing row over a content-identical shipping-only row for the billing key', async () => {
@@ -199,7 +200,7 @@ describe('setDefaultAddress', () => {
                 updateAddress,
             });
 
-            expect(B2BExtraFieldsSessionStorage.getAddressId(billingIdKey)).toBe(24);
+            expect(B2BSessionStorage.getAddressId(billingIdKey)).toBe(24);
         });
     });
 });

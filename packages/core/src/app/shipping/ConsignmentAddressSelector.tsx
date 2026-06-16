@@ -2,13 +2,13 @@ import { type Address, type ConsignmentCreateRequestBody } from '@bigcommerce/ch
 import React, { useState } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
 import {
     AddressFormModal,
     type AddressFormValues,
     AddressSelect,
     AddressType,
-    B2BExtraFieldsSessionStorage,
     isValidAddress,
     mapAddressFromFormValues,
     stripExtraFieldsFromAddress,
@@ -53,7 +53,7 @@ const ConsignmentAddressSelector = ({
         getConsignments: getPreviousConsignments,
     } = useShipping();
 
-    const storageKey = B2BExtraFieldsSessionStorage.getConsignmentKey(consignment?.id ?? '');
+    const storageKey = B2BSessionStorage.getConsignmentKey(consignment?.id ?? '');
 
     // TODO: add filter for addresses
     const addresses = customer.addresses || EMPTY_ARRAY;
