@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.811.0](https://github.com/bigcommerce/checkout-js/compare/v1.810.0...v1.811.0) (2026-06-16)
+
+
+### Features
+
+* **checkout:** BACK-578 Add switch toggle ([#3086](https://github.com/bigcommerce/checkout-js/issues/3086)) ([c56dad5](https://github.com/bigcommerce/checkout-js/commit/c56dad54ae54b664c4c3f867de8fcf610bc89b3f))
+
 ## [1.810.0](https://github.com/bigcommerce/checkout-js/compare/v1.809.3...v1.810.0) (2026-06-16)
 
 
