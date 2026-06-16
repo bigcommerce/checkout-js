@@ -1,7 +1,11 @@
 import { type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
-import { type FunctionComponent, useEffect } from 'react';
+import { type FunctionComponent, useEffect, useRef } from 'react';
 
-import { type PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
+import { useCheckout } from '@bigcommerce/checkout/contexts';
+import {
+    type PaymentFormService,
+    type PaymentMethodProps,
+} from '@bigcommerce/checkout/payment-integration-api';
 
 import googlePayIntegrations from './googlePayIntegrations';
 
@@ -13,8 +17,54 @@ const GooglePayPaymentMethodComponent: FunctionComponent<PaymentMethodProps> = (
     paymentForm,
     onUnhandledError,
 }) => {
+    const {
+        checkoutState: {
+            data: { getConfig },
+        },
+    } = useCheckout();
+
+    const isTermsConditionsRequired = Boolean(
+        getConfig()?.checkoutSettings.enableTermsAndConditions,
+    );
+
+    const paymentFormRef = useRef<PaymentFormService>(paymentForm);
+
+    paymentFormRef.current = paymentForm;
+
     useEffect(() => {
-        paymentForm.hidePaymentSubmitButton(method, true);
+        let isMounted = true;
+
+        paymentFormRef.current.hidePaymentSubmitButton(method, true);
+
+        const guardTermsConditions = (event: MouseEvent) => {
+            const container = document.getElementById(GOOGLE_PAY_BUTTON_CONTAINER_ID);
+            const target = event.target;
+
+            if (!container || !(target instanceof Node) || !container.contains(target)) {
+                return;
+            }
+
+            const { terms } = paymentFormRef.current.getFormValues();
+
+            if (isTermsConditionsRequired && !terms) {
+                event.stopPropagation();
+                event.preventDefault();
+
+                void paymentFormRef.current.validateForm().then((errors) => {
+                    if (!isMounted) {
+                        return;
+                    }
+
+                    paymentFormRef.current.setSubmitted(true);
+
+                    if (errors.terms) {
+                        paymentFormRef.current.setFieldTouched('terms', true);
+                    }
+                });
+            }
+        };
+
+        document.addEventListener('click', guardTermsConditions, true);
 
         const timeoutId = setTimeout(async () => {
             try {
@@ -41,8 +91,10 @@ const GooglePayPaymentMethodComponent: FunctionComponent<PaymentMethodProps> = (
         }, 0);
 
         return () => {
+            isMounted = false;
             clearTimeout(timeoutId);
-            paymentForm.hidePaymentSubmitButton(method, false);
+            document.removeEventListener('click', guardTermsConditions, true);
+            paymentFormRef.current.hidePaymentSubmitButton(method, false);
 
             void checkoutService.deinitializePayment({
                 gatewayId: method.gateway,
