@@ -2,6 +2,56 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.809.1](https://github.com/bigcommerce/checkout-js/compare/v1.809.0...v1.809.1) (2026-06-15)
+
+## [1.809.0](https://github.com/bigcommerce/checkout-js/compare/v1.808.1...v1.809.0) (2026-06-15)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9819 Post-order B2B metadata submission and extra fields ([#3087](https://github.com/bigcommerce/checkout-js/issues/3087)) ([f5e2ce6](https://github.com/bigcommerce/checkout-js/commit/f5e2ce6c9823805075f99eefefd39556960bcf51))
+
+### [1.808.1](https://github.com/bigcommerce/checkout-js/compare/v1.808.0...v1.808.1) (2026-06-15)
+
+
+### Bug Fixes
+
+* **other:** CHECKOUT-9953 Remove isInitialValid from Formik as it is deprecated ([#3065](https://github.com/bigcommerce/checkout-js/issues/3065)) ([36aecac](https://github.com/bigcommerce/checkout-js/commit/36aecac333ea67d69d575f469102176ba4a12a53))
+
+## [1.808.0](https://github.com/bigcommerce/checkout-js/compare/v1.807.1...v1.808.0) (2026-06-12)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9819 persist company address book address IDs ([#3082](https://github.com/bigcommerce/checkout-js/issues/3082)) ([b58cc62](https://github.com/bigcommerce/checkout-js/commit/b58cc621f4459ae68a1891841fb65410a9547259))
+
+### [1.807.1](https://github.com/bigcommerce/checkout-js/compare/v1.807.0...v1.807.1) (2026-06-12)
+
+
+### Bug Fixes
+
+* **ui:** CHECKOUT-10110 Fix country flag z-index for phone numbers ([#3084](https://github.com/bigcommerce/checkout-js/issues/3084)) ([e30073a](https://github.com/bigcommerce/checkout-js/commit/e30073ab716d5611e9589290ed89c87eb8b2956c))
+
+## [1.807.0](https://github.com/bigcommerce/checkout-js/compare/v1.806.0...v1.807.0) (2026-06-12)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10048 CHECKOUT-10050 disable gift certificate and coupon capabilities ([#3070](https://github.com/bigcommerce/checkout-js/issues/3070)) ([29b643d](https://github.com/bigcommerce/checkout-js/commit/29b643d923fcfa7541b98bd89e7af4e92a634970))
+* **checkout:** CHECKOUT-10081 Use cannotCreatePersonalAccount Capability ([#3083](https://github.com/bigcommerce/checkout-js/issues/3083)) ([27cad2d](https://github.com/bigcommerce/checkout-js/commit/27cad2dff65782b5b75c24b944c09ad115be560d))
+* **payment:** CHECKOUT-10085 Add filter for check method ([#3074](https://github.com/bigcommerce/checkout-js/issues/3074)) ([86f8e2c](https://github.com/bigcommerce/checkout-js/commit/86f8e2c43289b81b14cb5f7c7c8168d349aa1f85))
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10037 Remove FE store credit unapply on disableStoreCredit ([#3078](https://github.com/bigcommerce/checkout-js/issues/3078)) ([79f627a](https://github.com/bigcommerce/checkout-js/commit/79f627a7a0ed2f43a3642d9217215a5f46920998))
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-10091 Update Capabilities ([#3080](https://github.com/bigcommerce/checkout-js/issues/3080)) ([7e6a8d3](https://github.com/bigcommerce/checkout-js/commit/7e6a8d3490369ec41cffc8cf3f8c400acb89b9db))
+* **checkout:** CHECKOUT-10091 Update Shipping Option Style ([#3079](https://github.com/bigcommerce/checkout-js/issues/3079)) ([f7ecfe7](https://github.com/bigcommerce/checkout-js/commit/f7ecfe70debc472e91928ce611760fad1f012a4d))
+
 ## [1.806.0](https://github.com/bigcommerce/checkout-js/compare/v1.805.0...v1.806.0) (2026-06-10)
 
 

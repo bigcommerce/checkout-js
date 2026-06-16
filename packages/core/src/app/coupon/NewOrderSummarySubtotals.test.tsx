@@ -11,8 +11,10 @@ import React from 'react';
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
 import {
     CheckoutProvider,
+    defaultCapabilities,
     ExtensionProvider,
     LocaleProvider,
+    useCapabilities,
 } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext, getLanguageService } from '@bigcommerce/checkout/locale';
 import { render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
@@ -24,6 +26,10 @@ import NewOrderSummarySubtotals from './NewOrderSummarySubtotals';
 import { useMultiCoupon } from './useMultiCoupon';
 
 jest.mock('./useMultiCoupon');
+jest.mock('@bigcommerce/checkout/contexts', () => ({
+    ...jest.requireActual('@bigcommerce/checkout/contexts'),
+    useCapabilities: jest.fn(),
+}));
 
 describe('NewOrderSummarySubtotals', () => {
     const checkoutService = createCheckoutService();
@@ -73,10 +79,20 @@ describe('NewOrderSummarySubtotals', () => {
         );
     };
 
+    const mockUseCapabilities = useCapabilities as jest.MockedFunction<typeof useCapabilities>;
+
     beforeEach(() => {
         jest.clearAllMocks();
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
         mockUseMultiCoupon.mockReturnValue(defaultMockReturn);
+        mockUseCapabilities.mockReturnValue({
+            ...defaultCapabilities,
+            userJourney: {
+                ...defaultCapabilities.userJourney,
+                disableCoupon: false,
+                disableGiftCertificate: false,
+            },
+        });
     });
 
     describe('Unit Tests', () => {
@@ -679,6 +695,80 @@ describe('NewOrderSummarySubtotals', () => {
             expect(screen.getByTestId('cart-handling')).toBeInTheDocument();
             expect(screen.getAllByTestId('cart-gift-certificate')).toHaveLength(2);
             expect(screen.getByTestId('cart-store-credit')).toBeInTheDocument();
+        });
+    });
+
+    describe('disableGiftCertificate and disableCoupon capabilities', () => {
+        it('shows "Coupon" label when disableGiftCertificate is true', () => {
+            mockUseCapabilities.mockReturnValue({
+                ...defaultCapabilities,
+                userJourney: {
+                    ...defaultCapabilities.userJourney,
+                    disableCoupon: false,
+                    disableGiftCertificate: true,
+                },
+            });
+
+            renderComponent();
+
+            const toggleLabel = screen.getByTestId('redeemable-label');
+
+            expect(toggleLabel).toHaveTextContent(
+                localeContext.language.translate('redeemable.coupon_text'),
+            );
+        });
+
+        it('shows "Gift certificate" label when disableCoupon is true', () => {
+            mockUseCapabilities.mockReturnValue({
+                ...defaultCapabilities,
+                userJourney: {
+                    ...defaultCapabilities.userJourney,
+                    disableCoupon: true,
+                    disableGiftCertificate: false,
+                },
+            });
+
+            renderComponent();
+
+            const toggleLabel = screen.getByTestId('redeemable-label');
+
+            expect(toggleLabel).toHaveTextContent(
+                localeContext.language.translate('redeemable.gift_certificate_text'),
+            );
+        });
+
+        it('shows default toggle label when both flags are false', () => {
+            mockUseCapabilities.mockReturnValue({
+                ...defaultCapabilities,
+                userJourney: {
+                    ...defaultCapabilities.userJourney,
+                    disableCoupon: false,
+                    disableGiftCertificate: false,
+                },
+            });
+
+            renderComponent();
+
+            const toggleLabel = screen.getByTestId('redeemable-label');
+
+            expect(toggleLabel).toHaveTextContent(
+                localeContext.language.translate('redeemable.toggle_action'),
+            );
+        });
+
+        it('hides entire coupon section when both disableCoupon and disableGiftCertificate are true', () => {
+            mockUseCapabilities.mockReturnValue({
+                ...defaultCapabilities,
+                userJourney: {
+                    ...defaultCapabilities.userJourney,
+                    disableCoupon: true,
+                    disableGiftCertificate: true,
+                },
+            });
+
+            renderComponent();
+
+            expect(screen.queryByTestId('redeemable-label')).not.toBeInTheDocument();
         });
     });
 });

@@ -1,6 +1,6 @@
 import React, { type FunctionComponent, memo } from 'react';
 
-import { useCheckout } from '@bigcommerce/checkout/contexts';
+import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { Fieldset, Legend } from '@bigcommerce/checkout/ui';
 
@@ -17,6 +17,10 @@ const PaymentRedeemables: FunctionComponent<RedeemableProps> = (redeemableProps)
         false,
     );
 
+    const {
+        userJourney: { disableCoupon, disableGiftCertificate },
+    } = useCapabilities();
+
     return (
         <Fieldset
             additionalClassName="redeemable-payments"
@@ -26,7 +30,12 @@ const PaymentRedeemables: FunctionComponent<RedeemableProps> = (redeemableProps)
                 </Legend>
             }
         >
-            <Redeemable {...redeemableProps} showAppliedRedeemables={!isMultiCouponEnabled} />
+            <Redeemable
+                {...redeemableProps}
+                disableCoupon={disableCoupon}
+                disableGiftCertificate={disableGiftCertificate}
+                showAppliedRedeemables={!isMultiCouponEnabled}
+            />
         </Fieldset>
     );
 };

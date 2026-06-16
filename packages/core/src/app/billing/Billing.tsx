@@ -6,10 +6,12 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { AddressFormSkeleton, Legend } from '@bigcommerce/checkout/ui';
 
 import {
+    AddressType,
     B2BExtraFieldsSessionStorage,
     getAddressWithCustomerExtraFields,
     isEqualAddress,
     mapAddressFromFormValues,
+    setDefaultAddress,
 } from '../address';
 
 import BillingForm, { type BillingFormValues } from './BillingForm';
@@ -127,18 +129,13 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }: BillingProps):
             try {
                 await checkoutService.loadBillingAddressFields();
 
-                if (hasCompanyAddressBook && !getBillingAddress()?.address1) {
-                    const defaultBillingAddress = customer.addresses?.find(
-                        ({ isDefaultBilling }) => isDefaultBilling,
-                    );
-
-                    if (defaultBillingAddress) {
-                        try {
-                            await checkoutService.updateBillingAddress(defaultBillingAddress);
-                        } catch {
-                            /* Do nothing: we should not block shoppers from buying. */
-                        }
-                    }
+                if (hasCompanyAddressBook) {
+                    await setDefaultAddress({
+                        type: AddressType.Billing,
+                        currentAddress: getBillingAddress(),
+                        addresses: customer.addresses,
+                        updateAddress: checkoutService.updateBillingAddress,
+                    });
                 }
 
                 onReady();

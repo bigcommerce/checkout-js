@@ -1,6 +1,16 @@
-import { useCallback, useContext, useEffect, useRef, useSyncExternalStore } from 'react';
-import CheckoutContext, { type CheckoutContextProps } from './CheckoutContext';
 import { type CheckoutSelectors } from '@bigcommerce/checkout-sdk';
+import { useCallback, useContext, useEffect, useRef, useSyncExternalStore } from 'react';
+
+import CheckoutContext, { type CheckoutContextProps } from './CheckoutContext';
+
+export function useCheckout(): CheckoutContextProps & { selectedState: undefined };
+export function useCheckout<T>(
+    selectFn: (state: CheckoutSelectors) => T,
+): CheckoutContextProps & { selectedState: T };
+// TODO: Remove this overload when withCheckout HOC is deprecated
+export function useCheckout<T>(
+    selectFn: ((state: CheckoutSelectors) => T) | undefined,
+): CheckoutContextProps & { selectedState: T | undefined };
 
 export function useCheckout<T>(
     selectFn?: (state: CheckoutSelectors) => T,

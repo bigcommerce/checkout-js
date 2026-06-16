@@ -31,6 +31,8 @@ import {
     Toggle,
 } from '@bigcommerce/checkout/ui';
 
+import { getRedeemableLabelId } from '../coupon/utils';
+
 import AppliedRedeemables, { type AppliedRedeemablesProps } from './AppliedRedeemables';
 
 export interface RedeemableFormValues {
@@ -49,6 +51,8 @@ export type ReedemableChildrenProps = Pick<
 
 export type RedeemableProps = {
     appliedRedeemableError?: RequestError;
+    disableCoupon?: boolean;
+    disableGiftCertificate?: boolean;
     isApplyingRedeemable?: boolean;
     isRemovingRedeemable?: boolean;
     removedRedeemableError?: RequestError;
@@ -61,7 +65,19 @@ export type RedeemableProps = {
 
 const Redeemable: FunctionComponent<
     RedeemableProps & WithLanguageProps & FormikProps<RedeemableFormValues>
-> = ({ shouldCollapseCouponCode, showAppliedRedeemables, ...formProps }) => {
+> = ({
+    disableCoupon,
+    disableGiftCertificate,
+    shouldCollapseCouponCode,
+    showAppliedRedeemables,
+    ...formProps
+}) => {
+    if (disableCoupon && disableGiftCertificate) {
+        return null;
+    }
+
+    const toggleLabelId = getRedeemableLabelId(disableGiftCertificate, disableCoupon);
+
     return (
         <Toggle openByDefault={!shouldCollapseCouponCode}>
             {({ toggle, isOpen }): ReactNode => (
@@ -75,12 +91,12 @@ const Redeemable: FunctionComponent<
                             href="#"
                             onClick={preventDefault(toggle)}
                         >
-                            <TranslatedString id="redeemable.toggle_action" />
+                            <TranslatedString id={toggleLabelId} />
                         </a>
                     )}
                     {!shouldCollapseCouponCode && (
                         <div className="redeemable-label body-cta">
-                            <TranslatedString id="redeemable.toggle_action" />
+                            <TranslatedString id={toggleLabelId} />
                         </div>
                     )}
                     {(isOpen || !shouldCollapseCouponCode) && (
@@ -237,19 +253,35 @@ export default withLanguage(
 
         async handleSubmit(
             { redeemableCode },
-            { props: { applyCoupon, applyGiftCertificate, clearError } },
+            {
+                props: {
+                    applyCoupon,
+                    applyGiftCertificate,
+                    clearError,
+                    disableCoupon,
+                    disableGiftCertificate,
+                },
+            },
         ) {
             const code = redeemableCode.trim();
 
-            try {
-                await applyGiftCertificate(code);
-            } catch (error) {
-                if (error instanceof Error) {
-                    clearError(error);
-                }
+            if (!disableGiftCertificate) {
+                try {
+                    await applyGiftCertificate(code);
 
-                applyCoupon(code);
+                    return;
+                } catch (error) {
+                    if (disableCoupon) {
+                        throw error;
+                    }
+
+                    if (error instanceof Error) {
+                        clearError(error);
+                    }
+                }
             }
+
+            await applyCoupon(code);
         },
 
         validationSchema({ language }: RedeemableProps & WithLanguageProps) {

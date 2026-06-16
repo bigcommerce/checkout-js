@@ -15,7 +15,8 @@ function getChequeMethod(): PaymentMethod {
 }
 
 describe('getPoMethodDisabledReason', () => {
-    const poConfig = { creditLimit: 100, currency: 'USD' };
+    const creditLimitCheck = { creditLimit: 100, currency: 'USD' };
+    const poConfig = { creditLimitCheck };
 
     const baseArgs = {
         method: getChequeMethod(),
@@ -34,21 +35,21 @@ describe('getPoMethodDisabledReason', () => {
         expect(getPoMethodDisabledReason({ ...baseArgs, poConfig: null })).toBeNull();
     });
 
-    it('returns null when poConfig.creditLimit is null (no limit configured)', () => {
+    it('returns null when creditLimitCheck is null (no limit configured)', () => {
         expect(
             getPoMethodDisabledReason({
                 ...baseArgs,
-                poConfig: { ...poConfig, creditLimit: null },
+                poConfig: { creditLimitCheck: null },
                 grandTotal: 9999,
             }),
         ).toBeNull();
     });
 
-    it('returns null when poConfig.currency is an empty string', () => {
+    it('returns null when creditLimitCheck.currency is an empty string', () => {
         expect(
             getPoMethodDisabledReason({
                 ...baseArgs,
-                poConfig: { ...poConfig, currency: '' },
+                poConfig: { creditLimitCheck: { ...creditLimitCheck, currency: '' } },
                 cartCurrencyCode: 'EUR',
             }),
         ).toBeNull();
@@ -62,7 +63,7 @@ describe('getPoMethodDisabledReason', () => {
         expect(getPoMethodDisabledReason({ ...baseArgs, cartCurrencyCode: undefined })).toBeNull();
     });
 
-    it('returns currencyMismatch when poConfig.currency differs from cart currency', () => {
+    it('returns currencyMismatch when creditLimitCheck.currency differs from cart currency', () => {
         expect(getPoMethodDisabledReason({ ...baseArgs, cartCurrencyCode: 'EUR' })).toBe(
             'currencyMismatch',
         );
@@ -72,7 +73,7 @@ describe('getPoMethodDisabledReason', () => {
         expect(
             getPoMethodDisabledReason({
                 ...baseArgs,
-                poConfig: { ...poConfig, currency: 'usd' },
+                poConfig: { creditLimitCheck: { ...creditLimitCheck, currency: 'usd' } },
                 cartCurrencyCode: 'USD',
             }),
         ).toBeNull();

@@ -19,7 +19,7 @@ export default function withFormikExtended<
         const DecoratedComponent: ComponentType<
             TOuterProps & FormikProps<TValues> & WithFormikExtendedProps
         > = (props) => {
-            const { resetForm, isInitialValueLoaded, initialValues } = props;
+            const { resetForm, validateForm, isInitialValueLoaded, initialValues } = props;
             const previousIsInitialValueLoadedRef = useRef(isInitialValueLoaded);
 
             useEffect(() => {
@@ -28,10 +28,11 @@ export default function withFormikExtended<
                     isInitialValueLoaded === true
                 ) {
                     resetForm({ values: initialValues ?? {} });
+                    void validateForm(initialValues ?? {});
                 }
 
                 previousIsInitialValueLoadedRef.current = isInitialValueLoaded;
-            }, [isInitialValueLoaded, initialValues, resetForm]);
+            }, [isInitialValueLoaded, initialValues, resetForm, validateForm]);
 
             return <OriginalComponent {...props} />;
         };

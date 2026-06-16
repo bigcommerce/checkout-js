@@ -215,6 +215,107 @@ describe('CartSummary Component', () => {
         expect(screen.getByText(translate('redeemable.code_required_error'))).toBeInTheDocument();
     });
 
+    describe('disableCoupon and disableGiftCertificate props', () => {
+        beforeEach(() => {
+            jest.clearAllMocks();
+        });
+
+        it('returns null when both disableCoupon and disableGiftCertificate are true', () => {
+            const { container } = render(
+                <RedeemableTestComponent
+                    applyCoupon={applyCoupon}
+                    applyGiftCertificate={applyGiftCertificate}
+                    clearError={clearError}
+                    disableCoupon={true}
+                    disableGiftCertificate={true}
+                    onRemovedCoupon={onRemovedCoupon}
+                    onRemovedGiftCertificate={onRemovedGiftCertificate}
+                    shouldCollapseCouponCode={false}
+                />,
+            );
+
+            expect(container).toBeEmptyDOMElement();
+        });
+
+        it('shows "Coupon" label when disableGiftCertificate is true', () => {
+            render(
+                <RedeemableTestComponent
+                    applyCoupon={applyCoupon}
+                    applyGiftCertificate={applyGiftCertificate}
+                    clearError={clearError}
+                    disableGiftCertificate={true}
+                    onRemovedCoupon={onRemovedCoupon}
+                    onRemovedGiftCertificate={onRemovedGiftCertificate}
+                    shouldCollapseCouponCode={false}
+                />,
+            );
+
+            expect(screen.getByText(translate('redeemable.coupon_text'))).toBeInTheDocument();
+        });
+
+        it('shows "Gift certificate" label when disableCoupon is true', () => {
+            render(
+                <RedeemableTestComponent
+                    applyCoupon={applyCoupon}
+                    applyGiftCertificate={applyGiftCertificate}
+                    clearError={clearError}
+                    disableCoupon={true}
+                    onRemovedCoupon={onRemovedCoupon}
+                    onRemovedGiftCertificate={onRemovedGiftCertificate}
+                    shouldCollapseCouponCode={false}
+                />,
+            );
+
+            expect(
+                screen.getByText(translate('redeemable.gift_certificate_text')),
+            ).toBeInTheDocument();
+        });
+
+        it('calls only applyCoupon when disableGiftCertificate is true and form is submitted', async () => {
+            applyCoupon.mockResolvedValue(undefined);
+
+            render(
+                <RedeemableTestComponent
+                    applyCoupon={applyCoupon}
+                    applyGiftCertificate={applyGiftCertificate}
+                    clearError={clearError}
+                    disableGiftCertificate={true}
+                    onRemovedCoupon={onRemovedCoupon}
+                    onRemovedGiftCertificate={onRemovedGiftCertificate}
+                    shouldCollapseCouponCode={false}
+                />,
+            );
+
+            await userEvent.type(screen.getByTestId('redeemableEntry-input'), 'MYCODE');
+            await userEvent.click(screen.getByTestId('redeemableEntry-submit'));
+
+            expect(applyCoupon).toHaveBeenCalledWith('MYCODE');
+            expect(applyGiftCertificate).not.toHaveBeenCalled();
+        });
+
+        it('calls only applyGiftCertificate when disableCoupon is true and form is submitted', async () => {
+            applyGiftCertificate.mockResolvedValue(undefined);
+
+            render(
+                <RedeemableTestComponent
+                    applyCoupon={applyCoupon}
+                    applyGiftCertificate={applyGiftCertificate}
+                    clearError={clearError}
+                    disableCoupon={true}
+                    onRemovedCoupon={onRemovedCoupon}
+                    onRemovedGiftCertificate={onRemovedGiftCertificate}
+                    shouldCollapseCouponCode={false}
+                />,
+            );
+
+            await userEvent.type(screen.getByTestId('redeemableEntry-input'), 'GIFTCODE');
+            await userEvent.click(screen.getByTestId('redeemableEntry-submit'));
+
+            expect(applyGiftCertificate).toHaveBeenCalledWith('GIFTCODE');
+            expect(applyCoupon).not.toHaveBeenCalled();
+        });
+    });
+
     it('disables apply button when payment is submitting', async () => {
         const applyGiftCertificate = jest.fn();
         const applyCoupon = jest.fn();
