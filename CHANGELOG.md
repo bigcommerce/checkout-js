@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.810.0](https://github.com/bigcommerce/checkout-js/compare/v1.809.3...v1.810.0) (2026-06-16)
+
+
+### Features
+
+* **checkout:** CHECKOUT-9891 refactor b2b session storage ([#3092](https://github.com/bigcommerce/checkout-js/issues/3092)) ([146aec6](https://github.com/bigcommerce/checkout-js/commit/146aec6d4a7cd2d97f762bbded9b987c8f0b8111))
+
 ### [1.809.3](https://github.com/bigcommerce/checkout-js/compare/v1.809.2...v1.809.3) (2026-06-15)
 
 ### [1.809.2](https://github.com/bigcommerce/checkout-js/compare/v1.809.1...v1.809.2) (2026-06-15)
