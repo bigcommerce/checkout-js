@@ -9,8 +9,8 @@ import { withCheckout } from '../checkout';
 import { isExperimentEnabled } from '../common/utility';
 
 const PaymentRedeemables: FunctionComponent<RedeemableProps> = (redeemableProps) => {
-    const { checkoutState } = useCheckout();
-    const { checkoutSettings } = checkoutState.data.getConfig() ?? {};
+    const { selectedState: config } = useCheckout(({ data }) => data.getConfig());
+    const { checkoutSettings } = config ?? {};
     const isMultiCouponEnabled = isExperimentEnabled(
         checkoutSettings,
         'CHECKOUT-9674.multi_coupon_cart_checkout',

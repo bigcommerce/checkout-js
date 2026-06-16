@@ -131,11 +131,11 @@ const PaymentForm: FunctionComponent<
         );
     }, [selectedMethod]);
 
-    const { checkoutState } = useCheckout();
+    const { selectedState: config } = useCheckout(({ data }) => data.getConfig());
     const {
         payment: { invoicePaymentComment },
     } = useCapabilities();
-    const { checkoutSettings } = checkoutState.data.getConfig() ?? {};
+    const { checkoutSettings } = config ?? {};
     const poMethodDisabledReason = usePoMethodDisabledReason(selectedMethod);
     const isSubmitDisabled = shouldDisableSubmit || Boolean(poMethodDisabledReason);
     const shouldShowSubmitButtonWhenPaymentNotRequired = isExperimentEnabled(
