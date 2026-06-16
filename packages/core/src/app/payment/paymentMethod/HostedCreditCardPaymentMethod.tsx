@@ -1,9 +1,5 @@
 import { createCBAMPGSPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/cba-mpgs';
 import { createCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/credit-card';
-import {
-    createCyberSourcePaymentStrategy,
-    createCyberSourceV2PaymentStrategy,
-} from '@bigcommerce/checkout-sdk/integrations/cybersource';
 import { createSagePayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/sagepay';
 import React, { type FunctionComponent, useCallback } from 'react';
 
@@ -43,8 +39,6 @@ const HostedCreditCardPaymentMethod: FunctionComponent<
                     integrations: [
                         ...(options.integrations ?? []),
                         createCreditCardPaymentStrategy,
-                        createCyberSourcePaymentStrategy,
-                        createCyberSourceV2PaymentStrategy,
                         createSagePayPaymentStrategy,
                         createCBAMPGSPaymentStrategy,
                     ],
