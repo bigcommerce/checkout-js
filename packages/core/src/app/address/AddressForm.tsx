@@ -41,19 +41,15 @@ const AddressForm: React.FC<AddressFormProps> = ({
 }) => {
     const { language } = useLocale();
     const {
-        checkoutState: {
-            data: { getConfig, getBillingCountries, getShippingCountries },
-        },
+        selectedState: { config, billingCountries, shippingCountries },
     } = useCheckout(({ data }) => ({
         config: data.getConfig(),
         billingCountries: data.getBillingCountries(),
         shippingCountries: data.getShippingCountries(),
     }));
 
-    const config = getConfig();
     const countries =
-        (type === AddressType.Billing ? getBillingCountries() : getShippingCountries()) ||
-        EMPTY_ARRAY;
+        (type === AddressType.Billing ? billingCountries : shippingCountries) || EMPTY_ARRAY;
     const googleMapsApiKey = config?.checkoutSettings.googleMapsApiKey || '';
     const isFloatingLabelEnabledValue = config
         ? isFloatingLabelEnabled(config.checkoutSettings)
