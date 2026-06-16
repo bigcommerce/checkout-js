@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.813.0](https://github.com/bigcommerce/checkout-js/compare/v1.812.1...v1.813.0) (2026-06-16)
+
+
+### Features
+
+* **paymnet:** Migrate CyberSource v2 to Resolver Configuration ([#3047](https://github.com/bigcommerce/checkout-js/issues/3047)) ([46a12d0](https://github.com/bigcommerce/checkout-js/commit/46a12d0da308e8ac9cb284a83f03e23794d7ea35))
+
 ### [1.812.1](https://github.com/bigcommerce/checkout-js/compare/v1.812.0...v1.812.1) (2026-06-16)
 
 
