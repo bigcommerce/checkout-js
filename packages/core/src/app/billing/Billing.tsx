@@ -47,10 +47,12 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }: BillingProps):
             config,
             cart,
             customer,
-            billingAddress: rawBillingAddress,
             isLoadingBillingCountries,
             getBillingAddressFields,
             getAddressExtraFields,
+        },
+        checkoutState: {
+            data: { getBillingAddress },
         },
         checkoutService,
     } = useCheckout(({ data, statuses }) => ({
@@ -75,8 +77,10 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }: BillingProps):
     const [isApplyingDefaultAddress, setIsApplyingDefaultAddress] = useState(true);
     const isInitializing = isLoadingBillingCountries || isApplyingDefaultAddress;
 
+    // Below constants are for <BillingForm />'s HOC props
     const customerMessage = checkout.customerMessage;
     const methodId = getBillingMethodId(checkout);
+    const rawBillingAddress = getBillingAddress();
     const billingAddress = useMemo(
         () =>
             getAddressWithCustomerExtraFields(
@@ -102,13 +106,14 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }: BillingProps):
         orderComment,
         ...addressValues
     }: BillingFormValues): Promise<void> => {
+        const billingAddress = getBillingAddress();
         const promises: Array<Promise<CheckoutSelectors>> = [];
         const address = mapAddressFromFormValues(
             addressValues,
             B2BExtraFieldsSessionStorage.BILLING_KEY,
         );
 
-        if (address && !isEqualAddress(address, rawBillingAddress)) {
+        if (address && !isEqualAddress(address, billingAddress)) {
             promises.push(checkoutService.updateBillingAddress(address));
         }
 
@@ -135,7 +140,7 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }: BillingProps):
                 if (hasCompanyAddressBook) {
                     await setDefaultAddress({
                         type: AddressType.Billing,
-                        currentAddress: rawBillingAddress,
+                        currentAddress: getBillingAddress(),
                         addresses: customer.addresses,
                         updateAddress: checkoutService.updateBillingAddress,
                     });
