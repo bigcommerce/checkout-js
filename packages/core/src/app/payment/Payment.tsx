@@ -111,7 +111,7 @@ interface WithCheckoutPaymentProps {
     isPaymentDataRequired(): boolean;
     loadCheckout(): Promise<CheckoutSelectors>;
     loadPaymentMethods(): Promise<CheckoutSelectors>;
-    submitPreOrderMetaData: CheckoutService['persistPreOrderB2BMetadata'];
+    syncPreOrderB2BMetadata: CheckoutService['persistPreOrderB2BMetadata'];
     submitB2BMetadata: CheckoutService['persistB2BMetadata'];
     submitOrder(values: OrderRequestBody): Promise<CheckoutSelectors>;
     checkoutServiceSubscribe: CheckoutService['subscribe'];
@@ -389,7 +389,7 @@ const Payment = (
     };
 
     const persistPreOrderB2BMetadataIfNeeded = async (): Promise<void> => {
-        const { addressExtraFields, orderExtraFields, submitPreOrderMetaData } = props;
+        const { addressExtraFields, orderExtraFields, syncPreOrderB2BMetadata } = props;
 
         if (!persistB2BMetadata) {
             return;
@@ -397,7 +397,7 @@ const Payment = (
 
         const metadataPayload = buildB2BMetadataOptions({ orderExtraFields, addressExtraFields });
 
-        await submitPreOrderMetaData(metadataPayload);
+        await syncPreOrderB2BMetadata(metadataPayload);
     };
 
     const persistB2BMetadataIfNeeded = async (): Promise<void> => {
@@ -599,6 +599,7 @@ const Payment = (
                 onReady = noop,
                 onUnhandledError = noop,
                 orderId,
+                syncPreOrderB2BMetadata,
                 usableStoreCredit,
                 checkoutServiceSubscribe,
             } = props;
@@ -609,9 +610,10 @@ const Payment = (
 
             await loadPaymentMethodsOrThrow();
 
-            if (orderId) {
+            if (persistB2BMetadata && orderId) {
                 try {
-                    await persistPreOrderB2BMetadataIfNeeded();
+                    // Calling without a payload only refreshes the B2B payment methods.
+                    await syncPreOrderB2BMetadata();
                 } catch (error) {
                     if (error instanceof Error) {
                         onUnhandledError(error);
@@ -827,7 +829,7 @@ export function mapToPaymentProps(
         methods: filteredMethods,
         orderExtraFields,
         orderId: checkout.orderId,
-        submitPreOrderMetaData: checkoutService.persistPreOrderB2BMetadata,
+        syncPreOrderB2BMetadata: checkoutService.persistPreOrderB2BMetadata,
         submitB2BMetadata: checkoutService.persistB2BMetadata,
         shouldExecuteSpamCheck: checkout.shouldExecuteSpamCheck,
         shouldLocaliseErrorMessages:

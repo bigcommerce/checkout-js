@@ -544,7 +544,7 @@ describe('Payment step', () => {
             },
         });
 
-        it('persists pre-order B2B metadata on mount when persistB2BMetadata capability is enabled and orderId is present on checkout', async () => {
+        it('refreshes B2B payment methods on mount when persistB2BMetadata capability is enabled and orderId is present on checkout', async () => {
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
                 config: createConfigWithPersistB2BMetadata(),
                 checkout: {
@@ -562,10 +562,11 @@ describe('Payment step', () => {
 
             await checkout.waitForPaymentStep();
 
-            expect(preOrderSpy).toHaveBeenCalled();
+            // On mount it is called with no payload, which only refreshes the B2B payment methods.
+            expect(preOrderSpy).toHaveBeenCalledWith();
         });
 
-        it('does not persist pre-order B2B metadata on mount when checkout has no orderId', async () => {
+        it('does not refresh B2B payment methods on mount when checkout has no orderId', async () => {
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
                 config: createConfigWithPersistB2BMetadata(),
                 checkout: {
@@ -585,7 +586,7 @@ describe('Payment step', () => {
             expect(preOrderSpy).not.toHaveBeenCalled();
         });
 
-        it('does not persist pre-order B2B metadata on mount when persistB2BMetadata capability is disabled even when orderId is present', async () => {
+        it('does not refresh B2B payment methods on mount when persistB2BMetadata capability is disabled even when orderId is present', async () => {
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
                 checkout: {
                     ...checkoutWithShippingAndBilling,
@@ -604,7 +605,7 @@ describe('Payment step', () => {
             expect(preOrderSpy).not.toHaveBeenCalled();
         });
 
-        it('completes initialization and renders the payment step when mount-time pre-order persist fails', async () => {
+        it('completes initialization and renders the payment step when mount-time B2B refresh fails', async () => {
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
                 config: createConfigWithPersistB2BMetadata(),
                 checkout: {
@@ -625,7 +626,16 @@ describe('Payment step', () => {
             expect(screen.getByText(/place order/i)).toBeInTheDocument();
         });
 
-        it('persists pre-order B2B metadata with the stored metadata but without the invoice fields', async () => {
+        it('persists pre-order B2B metadata with the stored metadata but without the invoice fields when submitting order', async () => {
+            checkout.setRequestHandler(
+                rest.post('/internalapi/v1/checkout/order', (_, res, ctx) =>
+                    res(ctx.json(orderResponse)),
+                ),
+            );
+            checkout.setRequestHandler(
+                rest.get('/api/storefront/orders/*', (_, res, ctx) => res(ctx.json(orderResponse))),
+            );
+
             const location = window.location;
 
             Object.defineProperty(window, 'location', {
@@ -650,13 +660,8 @@ describe('Payment step', () => {
                 checkout: {
                     ...checkoutWithShippingAndBilling,
                     customer,
-                    orderId: 12345,
                 },
             });
-
-            jest.spyOn(checkoutService, 'finalizeOrderIfNeeded').mockResolvedValue(
-                checkoutService.getState(),
-            );
 
             const preOrderSpy = jest
                 .spyOn(checkoutService, 'persistPreOrderB2BMetadata')
@@ -664,14 +669,16 @@ describe('Payment step', () => {
 
             render(<CheckoutTest {...defaultProps} />);
 
-            await waitFor(() =>
-                expect(preOrderSpy).toHaveBeenCalledWith({
-                    poNumber: 'PO-123',
-                    referenceNumber: 'REF-456',
-                    extraFields: [{ fieldName: 'costCentre', fieldValue: 'Engineering' }],
-                    extraInfo: {},
-                }),
-            );
+            await checkout.waitForPaymentStep();
+
+            await act(async () => userEvent.click(screen.getByText('Place Order')));
+
+            expect(preOrderSpy).toHaveBeenCalledWith({
+                poNumber: 'PO-123',
+                referenceNumber: 'REF-456',
+                extraFields: [{ fieldName: 'costCentre', fieldValue: 'Engineering' }],
+                extraInfo: {},
+            });
 
             const payload = preOrderSpy.mock.calls[0][0];
 

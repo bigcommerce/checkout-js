@@ -1,7 +1,7 @@
 import {
+    type B2BOrderMetadataOptions,
     type FormField,
     type PersistB2BMetadataOptions,
-    type PreOrderB2BMetadataOptions,
 } from '@bigcommerce/checkout-sdk';
 
 import { B2BSessionStorage, type B2BStoredMetadata } from '@bigcommerce/checkout/utility';
@@ -83,7 +83,7 @@ interface B2BMetadataFieldDefinitions {
 
 export function buildB2BMetadataOptions(
     fields?: B2BMetadataFieldDefinitions,
-): PreOrderB2BMetadataOptions;
+): B2BOrderMetadataOptions;
 export function buildB2BMetadataOptions(
     fields: B2BMetadataFieldDefinitions | undefined,
     isInvoice: PersistB2BMetadataOptions['isInvoice'],
@@ -92,7 +92,7 @@ export function buildB2BMetadataOptions(
 export function buildB2BMetadataOptions(
     { orderExtraFields, addressExtraFields }: B2BMetadataFieldDefinitions = {},
     isInvoice?: PersistB2BMetadataOptions['isInvoice'],
-): PersistB2BMetadataOptions | PreOrderB2BMetadataOptions {
+): PersistB2BMetadataOptions | B2BOrderMetadataOptions {
     const {
         invoiceComment,
         poNumber,
@@ -101,7 +101,7 @@ export function buildB2BMetadataOptions(
         ...storedAddressMetadata
     } = B2BSessionStorage.getAll();
 
-    const options: PreOrderB2BMetadataOptions = {
+    const options: B2BOrderMetadataOptions = {
         poNumber,
         referenceNumber: additionalPaymentField,
         extraFields: buildExtraFields(storedOrderExtraFields, orderExtraFields),
