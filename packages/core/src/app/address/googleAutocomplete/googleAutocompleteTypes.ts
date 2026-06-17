@@ -39,6 +39,14 @@ export interface GoogleAutocompleteWindow extends Window {
     };
 }
 
+export interface WindowWithGoogleMaps extends Window {
+    google?: {
+        maps: {
+            importLibrary: (libraryName: string) => Promise<google.maps.PlacesLibrary>;
+        };
+    };
+}
+
 export type GoogleAddressFieldType =
     | 'postal_town'
     | 'administrative_area_level_1'
