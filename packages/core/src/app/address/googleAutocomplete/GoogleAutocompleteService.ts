@@ -1,46 +1,43 @@
 import getGoogleAutocompleteScriptLoader from './getGoogleAutocompleteScriptLoader';
-import type { GoogleAutocompleteScriptLoader } from './GoogleAutocompleteScriptLoader';
+import { type GoogleAutocompleteScriptLoader } from './GoogleAutocompleteScriptLoader';
 
 export default class GoogleAutocompleteService {
-    private _autocompletePromise?: Promise<google.maps.places.AutocompleteService>;
-    private _placesPromise?: Promise<google.maps.places.PlacesService>;
-
     constructor(
         private _apiKey: string,
         private _scriptLoader: GoogleAutocompleteScriptLoader = getGoogleAutocompleteScriptLoader(),
     ) {}
 
-    getAutocompleteService(): Promise<google.maps.places.AutocompleteService> {
-        if (!this._autocompletePromise) {
-            this._autocompletePromise = this._scriptLoader
-                .loadMapsSdk(this._apiKey)
-                .then((googleMapsSdk) => {
-                    if (!googleMapsSdk.places.AutocompleteService) {
-                        throw new Error('`AutocompleteService` is undefined');
-                    }
+    private convertToRegionCodes(
+        country: string | string[] | null | undefined,
+    ): string[] | undefined {
+        if (!country) return undefined;
 
-                    return new googleMapsSdk.places.AutocompleteService();
-                });
-        }
-
-        return this._autocompletePromise;
+        return Array.isArray(country) ? country : [country];
     }
 
-    getPlacesServices(): Promise<google.maps.places.PlacesService> {
-        const node = document.createElement('div');
+    async getSuggestions(
+        input: string,
+        types: string[],
+        componentRestrictions?: google.maps.places.ComponentRestrictions,
+    ): Promise<google.maps.places.AutocompleteSuggestion[]> {
+        const { AutocompleteSuggestion } = await this._scriptLoader.loadPlacesLibrary(this._apiKey);
+        const includedRegionCodes = this.convertToRegionCodes(componentRestrictions?.country);
 
-        if (!this._placesPromise) {
-            this._placesPromise = this._scriptLoader
-                .loadMapsSdk(this._apiKey)
-                .then((googleMapsSdk) => {
-                    if (!googleMapsSdk.places.PlacesService) {
-                        throw new Error('`PlacesService` is undefined');
-                    }
+        const { suggestions } = await AutocompleteSuggestion.fetchAutocompleteSuggestions({
+            input,
+            includedPrimaryTypes: types,
+            includedRegionCodes,
+        });
 
-                    return new googleMapsSdk.places.PlacesService(node);
-                });
-        }
+        return suggestions;
+    }
 
-        return this._placesPromise;
+    async getPlaceDetails(placeId: string, fields: string[]): Promise<google.maps.places.Place> {
+        const { Place } = await this._scriptLoader.loadPlacesLibrary(this._apiKey);
+        const place = new Place({ id: placeId });
+
+        await place.fetchFields({ fields });
+
+        return place;
     }
 }
