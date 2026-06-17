@@ -1,9 +1,10 @@
 import { createCheckoutService, createLanguageService } from '@bigcommerce/checkout-sdk';
 import { createOfflinePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/offline';
+import { Formik } from 'formik';
 import React from 'react';
 
 import { type PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
-import { render } from '@bigcommerce/checkout/test-utils';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import OfflinePaymentMethod from './OfflinePaymentMethod';
 import { getMethod } from './payment-method.mock';
@@ -71,5 +72,49 @@ describe('OfflinePaymentMethod', () => {
         unmount();
 
         await expect(checkoutService.deinitializePayment).rejects.toThrow('test error');
+    });
+
+    describe('formFieldsData', () => {
+        const formFieldsData = [
+            {
+                name: 'Purchase Order',
+                id: 'purchaseOrderNumber',
+                required: true,
+                type: 'number',
+                fieldType: 'text',
+            },
+        ];
+
+        it('returns null when formFieldsData is not present', () => {
+            const { container } = render(<OfflinePaymentMethod {...defaultProps} />);
+
+            expect(container).toBeEmptyDOMElement();
+        });
+
+        it('returns null when formFieldsData is an empty array', () => {
+            const props = {
+                ...defaultProps,
+                method: { ...defaultProps.method, initializationData: { formFieldsData: [] } },
+            };
+
+            const { container } = render(<OfflinePaymentMethod {...props} />);
+
+            expect(container).toBeEmptyDOMElement();
+        });
+
+        it('renders fields from formFieldsData via PaymentFormFields', () => {
+            const props = {
+                ...defaultProps,
+                method: { ...defaultProps.method, initializationData: { formFieldsData } },
+            };
+
+            render(
+                <Formik initialValues={{}} onSubmit={jest.fn()}>
+                    <OfflinePaymentMethod {...props} />
+                </Formik>,
+            );
+
+            expect(screen.getByLabelText('Purchase Order')).toBeInTheDocument();
+        });
     });
 });
