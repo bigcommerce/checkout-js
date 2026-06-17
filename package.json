@@ -99,7 +99,7 @@
     "yup": "0.30.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.0",
+    "@babel/core": "^7.29.6",
     "@babel/preset-env": "^7.9.0",
     "@bigcommerce/eslint-config": "^2.6.1",
     "@bigcommerce/eslint-plugin": "^1.4.0",
