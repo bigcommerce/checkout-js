@@ -27,9 +27,9 @@ import BraintreePaypalPaymentMethod from './BraintreePaypalPaymentMethod';
 describe('BraintreePaypalPaymentMethod', () => {
     let eventEmitter: EventEmitter;
     let BraintreePaypalPaymentMethodTest: FunctionComponent;
-    let paymentForm: PaymentFormService;
     let localeContext: LocaleContextType;
 
+    const paymentForm: PaymentFormService = getPaymentFormServiceMock();
     const checkoutService = createCheckoutService();
     const checkoutState = checkoutService.getState();
     const defaultProps = {
@@ -39,19 +39,14 @@ describe('BraintreePaypalPaymentMethod', () => {
         language: { translate: jest.fn() } as unknown as LanguageService,
         method: getBraintreePaypalPaymentMethod(),
         onUnhandledError: jest.fn(),
-
-        paymentForm: {
-            hidePaymentSubmitButton: jest.fn(),
-            setSubmitted: jest.fn(),
-            submitForm: jest.fn(),
-        } as unknown as PaymentFormService,
+        paymentForm,
     };
 
     beforeEach(() => {
         const providerError = new Error('INSTRUMENT_DECLINED');
 
         eventEmitter = new EventEmitter();
-        paymentForm = getPaymentFormServiceMock();
+        jest.spyOn(paymentForm, 'validateForm').mockResolvedValue({});
         localeContext = createLocaleContext(getStoreConfig());
 
         jest.spyOn(checkoutState.data, 'getCart').mockReturnValue(getCart());
@@ -111,6 +106,8 @@ describe('BraintreePaypalPaymentMethod', () => {
                 onError: expect.any(Function),
                 onRenderButton: expect.any(Function),
                 submitForm: expect.any(Function),
+                onValidate: expect.any(Function),
+                onInitButton: expect.any(Function),
                 containerId: '#checkout-payment-continue',
             },
         });
@@ -124,6 +121,61 @@ describe('BraintreePaypalPaymentMethod', () => {
         expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(
             new Error(defaultProps.language.translate('payment.errors.instrument_declined')),
         );
+    });
+
+    it('passed form validation by calling onValidate callback', async () => {
+        jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
+            eventEmitter.on('onValidate', async (resolve: () => void, reject: () => void) => {
+                if (options.braintree?.onError) {
+                    await options.braintree.onValidate?.(resolve, reject);
+                }
+            });
+
+            return Promise.resolve(checkoutState);
+        });
+
+        const validationSuccess = jest.fn();
+
+        render(<BraintreePaypalPaymentMethodTest />);
+
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        eventEmitter.emit('onValidate', validationSuccess, () => {});
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        expect(defaultProps.paymentForm.validateForm).toHaveBeenCalled();
+        expect(validationSuccess).toHaveBeenCalled();
+    });
+
+    it('is not passing form validation by calling onValidate callback', async () => {
+        jest.spyOn(paymentForm, 'validateForm').mockResolvedValue({
+            field1: 'validation error message',
+            field2: 'validation error message',
+        });
+
+        jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
+            eventEmitter.on('onValidate', async (resolve: () => void, reject: () => void) => {
+                if (options.braintree?.onError) {
+                    await options.braintree.onValidate?.(resolve, reject);
+                }
+            });
+
+            return Promise.resolve(checkoutState);
+        });
+
+        const validationReject = jest.fn();
+
+        render(<BraintreePaypalPaymentMethodTest />);
+
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        eventEmitter.emit('onValidate', () => {}, validationReject);
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        expect(paymentForm.validateForm).toHaveBeenCalled();
+        expect(paymentForm.setSubmitted).toHaveBeenCalled();
+        expect(paymentForm.setFieldTouched).toHaveBeenCalledTimes(2);
+        expect(validationReject).toHaveBeenCalled();
     });
 
     it('hides payment submit button by calling onRenderButton callback', () => {
