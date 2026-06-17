@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.814.0](https://github.com/bigcommerce/checkout-js/compare/v1.813.3...v1.814.0) (2026-06-17)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10108 Accessibility - Make discounts toggle on the checkout page accessible ([40aba57](https://github.com/bigcommerce/checkout-js/commit/40aba57300b6c9f8e8e016e658c31aa43175f8b7))
+
 ### [1.813.3](https://github.com/bigcommerce/checkout-js/compare/v1.813.2...v1.813.3) (2026-06-17)
 
 
