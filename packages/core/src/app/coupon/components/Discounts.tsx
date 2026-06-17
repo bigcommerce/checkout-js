@@ -51,6 +51,14 @@ const DiscountsCollapsible: FunctionComponent<{
                 aria-live="polite"
                 className="coupon-discount-toggle cart-priceItem optimizedCheckout-contentPrimary"
                 onClick={() => setIsCouponDiscountsVisible(!isCouponDiscountsVisible)}
+                onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        setIsCouponDiscountsVisible(!isCouponDiscountsVisible);
+                    }
+                }}
+                role="button"
+                tabIndex={0}
             >
                 <span className="cart-priceItem-label body-regular">
                     <div className="toggle-button">
