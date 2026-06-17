@@ -51,6 +51,7 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }: BillingProps):
             getBillingAddressFields,
             getAddressExtraFields,
         },
+        // using getBillingAddress function to guarantee latest state inside of async function in useEffect
         checkoutState: {
             data: { getBillingAddress },
         },
