@@ -28,6 +28,10 @@
         }
     }
 
+    .form-fieldset--storedInstrument,.form-fieldset--creditCardFieldset {
+        margin-bottom: 10px;
+    }
+
     #checkoutShippingAddress.form-fieldset:has(.floating-form-field) {
         margin-bottom: $fontSize-root - $floating-form-field-spacing;
     }

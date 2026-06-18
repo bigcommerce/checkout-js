@@ -21,7 +21,7 @@ describe('AutoVaultingDisclaimer', () => {
         const disclaimer = screen.getByText(/placing this order/i);
 
         expect(disclaimer.tagName).toBe('P');
-        expect(disclaimer).toHaveClass('optimizedCheckout-contentSecondary');
+        expect(disclaimer).toHaveClass('optimizedCheckout-secondaryDarkest');
         expect(disclaimer).toHaveClass('sub-text-medium');
     });
 });
