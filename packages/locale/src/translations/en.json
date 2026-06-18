@@ -361,6 +361,7 @@
             "instrument_manage_delete_server_error": "There was an error when attempting to delete that stored payment method, please try again.",
             "instrument_manage_delete_auth_error": "There was a problem authorizing your request. Please try signing in again",
             "instrument_manage_delete_client_error": "There was an error when attempting to delete the stored payment method: payment method no longer exists or cannot be deleted.",
+            "auto_vaulting_disclaimer": "By providing your card information and placing this order, you agree that your card may be charged for future payments in accordance with the terms of the merchant.",
             "instrument_save_payment_method_label": "Save this card for future transactions",
             "instrument_save_as_default_payment_method_label": "Use this card as the default payment method for future transactions",
             "account_instrument_add_action": "Use a different account",
