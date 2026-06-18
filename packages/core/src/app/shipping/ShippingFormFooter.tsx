@@ -50,10 +50,6 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
                             <TranslatedString id="shipping.shipping_method_label" />
                         </Legend>
 
-                        {defaultShippingExpectationMessage && (
-                            <p>{defaultShippingExpectationMessage}</p>
-                        )}
-
                         {cartHasChanged && (
                             <Alert type={AlertType.Error}>
                                 <strong>
@@ -72,6 +68,10 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
                     shouldShowShippingOptions={shouldShowShippingOptions}
                 />
             </Fieldset>
+
+            {defaultShippingExpectationMessage && (
+                <p className="shipping-ExpectationMessage">{defaultShippingExpectationMessage}</p>
+            )}
 
             {shouldShowOrderComments && <OrderComments />}
 
