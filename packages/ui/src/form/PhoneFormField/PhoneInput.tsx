@@ -48,6 +48,7 @@ export const PhoneInput: FunctionComponent<PhoneInputProps> = ({
     return (
         <span className="iti-wrapper">
             <IntlTelInput
+                autoPlaceholder="off"
                 inputProps={{
                     'aria-labelledby': `${id}-label ${id}-field-error-message`,
                     // using spread to avoid type error, data-test is valid but types are incorrect on the library side
