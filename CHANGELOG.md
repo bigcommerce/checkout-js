@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.815.0](https://github.com/bigcommerce/checkout-js/compare/v1.814.2...v1.815.0) (2026-06-18)
+
+
+### Features
+
+* **payment:** PAYMENTS-11661 Add AutoVaultingNotice component to show up when payment method support vaulting all payments ([26680d6](https://github.com/bigcommerce/checkout-js/commit/26680d6313be089240c9463b112b25b8704ea671))
+
+
+### Bug Fixes
+
+* **payment:** PAYMENTS-11661 Reduce the spacing, styling text for auto vaulting disclaimer ([093dd9e](https://github.com/bigcommerce/checkout-js/commit/093dd9efbc45accfa1d5426718e46fdde1b9e207))
+* **payment:** PAYMENTS-11661 Rename and expose correctly ([b5e0122](https://github.com/bigcommerce/checkout-js/commit/b5e0122b1df3bbab1676f0ee63f29892921551c5))
+* **payment:** PAYMENTS-11661 Use spacing instead of hardcoded px value ([2e0dc62](https://github.com/bigcommerce/checkout-js/commit/2e0dc62d706a648be0ec77bcd6a528ae896f0bf5))
+
 ### [1.814.2](https://github.com/bigcommerce/checkout-js/compare/v1.814.1...v1.814.2) (2026-06-18)
 
 
