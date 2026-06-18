@@ -37,10 +37,13 @@ function mapFromPhysical(
                 : `${option.name} ${option.value}`,
         })),
         bundledItems: pickListExperimentEnabled
-            ? bundledItems?.map((item) => ({
-                  name: item.name,
-                  id: String(item.id),
-                  ...mapBackorderDetails(item),
+            ? bundledItems?.map((bundledItem) => ({
+                  name: bundledItem.name,
+                  id: String(bundledItem.id),
+                  bundleLabel: item.options?.find(
+                      (option) => option.attributeId === bundledItem.addedByAttributeId,
+                  )?.name,
+                  ...mapBackorderDetails(bundledItem),
               }))
             : undefined,
         ...mapBackorderDetails(item),
