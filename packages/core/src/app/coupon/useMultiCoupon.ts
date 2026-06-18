@@ -41,30 +41,47 @@ interface UseMultiCouponValues {
 export const useMultiCoupon = (): UseMultiCouponValues => {
     const [couponError, setCouponError] = useState<string | null>(null);
 
-    const { checkoutState, checkoutService } = useCheckout();
+    const {
+        selectedState: {
+            config,
+            checkout,
+            order,
+            coupons,
+            giftCertificates,
+            isSubmittingOrder,
+            isPending,
+            isApplyingCoupon,
+            isApplyingGiftCertificate,
+        },
+        checkoutService,
+    } = useCheckout(({ data, statuses }) => ({
+        config: data.getConfig(),
+        checkout: data.getCheckout(),
+        order: data.getOrder(),
+        coupons: data.getCoupons(),
+        giftCertificates: data.getGiftCertificates(),
+        isSubmittingOrder: statuses.isSubmittingOrder(),
+        isPending: statuses.isPending(),
+        isApplyingCoupon: statuses.isApplyingCoupon(),
+        isApplyingGiftCertificate: statuses.isApplyingGiftCertificate(),
+    }));
     const { language } = useLocale();
     const {
         userJourney: { disableCoupon, disableGiftCertificate },
     } = useCapabilities();
 
-    const {
-        data: { getConfig, getCheckout, getOrder },
-        statuses: { isSubmittingOrder, isPending, isApplyingCoupon, isApplyingGiftCertificate },
-    } = checkoutState;
-    const { checkoutSettings } = getConfig() ?? {};
-    const checkout = getCheckout();
-    const order = getOrder();
+    const { checkoutSettings } = config ?? {};
 
     if (!checkoutSettings || !(checkout || order)) {
         throw new Error('Checkout or order is not available');
     }
 
-    const shouldDisableCouponForm = isSubmittingOrder() || isPending();
+    const shouldDisableCouponForm = isSubmittingOrder || isPending;
 
-    const appliedCoupons = checkoutState.data.getCoupons() ?? EMPTY_ARRAY;
+    const appliedCoupons = coupons ?? EMPTY_ARRAY;
 
     const appliedGiftCertificates =
-        checkoutState.data.getGiftCertificates()?.map(({ code, used }) => ({
+        giftCertificates?.map(({ code, used }) => ({
             code,
             amount: used,
         })) ?? EMPTY_ARRAY;
@@ -133,7 +150,7 @@ export const useMultiCoupon = (): UseMultiCouponValues => {
         appliedCoupons,
         appliedGiftCertificates,
         couponError,
-        isApplyingCouponOrGiftCertificate: isApplyingCoupon() || isApplyingGiftCertificate(),
+        isApplyingCouponOrGiftCertificate: isApplyingCoupon || isApplyingGiftCertificate,
         isCouponFormCollapsed: checkoutSettings.isCouponCodeCollapsed,
         isCouponFormDisabled: shouldDisableCouponForm,
         uiDetails,
