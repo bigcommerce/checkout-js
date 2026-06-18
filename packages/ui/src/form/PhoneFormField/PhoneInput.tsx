@@ -6,6 +6,8 @@ import React, { type FunctionComponent, type RefObject, useCallback, useEffect }
 
 import { isIso2 } from '../../utils';
 
+import { getPhoneNumberPlaceholder } from './utils';
+
 interface PhoneInputProps extends FieldProps<string> {
     id: string;
     autocomplete?: string;
@@ -48,7 +50,7 @@ export const PhoneInput: FunctionComponent<PhoneInputProps> = ({
     return (
         <span className="iti-wrapper">
             <IntlTelInput
-                autoPlaceholder="off"
+                customPlaceholder={getPhoneNumberPlaceholder}
                 inputProps={{
                     'aria-labelledby': `${id}-label ${id}-field-error-message`,
                     // using spread to avoid type error, data-test is valid but types are incorrect on the library side
@@ -68,6 +70,7 @@ export const PhoneInput: FunctionComponent<PhoneInputProps> = ({
                         'intl-tel-input/utils'
                     )
                 }
+                nationalMode={true}
                 onChangeNumber={handleChangeNumber}
                 ref={intlTelInputRef}
                 separateDialCode={false}
