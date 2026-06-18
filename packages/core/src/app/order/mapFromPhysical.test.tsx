@@ -114,6 +114,37 @@ describe('mapFromPhysical()', () => {
             expect(bundledItems![0].backorderMessage).toBe('Available soon');
         });
 
+        it('returns bundledItems with bundleLabel from the matching parent option', () => {
+            const child = {
+                ...getPhysicalItem(),
+                id: '777',
+                name: 'Bundled Product',
+                parentId: '666',
+                addedByAttributeId: 'attr-picklist',
+            } as unknown as PhysicalItem;
+
+            const parent = {
+                ...getPhysicalItem(),
+                id: '666',
+                options: [
+                    {
+                        name: 'Pick List',
+                        nameId: 11,
+                        value: 'Item A',
+                        valueId: 2,
+                        attributeId: 'attr-picklist',
+                    },
+                ] as LineItemOption[],
+            };
+
+            const bundleItemsMap = new Map<string | number, PhysicalItem[]>([['666', [child]]]);
+
+            const { bundledItems } = mapFromPhysical(parent, bundleItemsMap, true);
+
+            expect(bundledItems).toHaveLength(1);
+            expect(bundledItems![0].bundleLabel).toBe('Pick List');
+        });
+
         it('returns no bundledItems when the item has no children', () => {
             const result = mapFromPhysical(getPhysicalItem(), new Map(), true);
 

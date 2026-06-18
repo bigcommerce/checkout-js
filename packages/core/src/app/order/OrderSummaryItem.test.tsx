@@ -114,6 +114,7 @@ describe('OrderSummaryItem', () => {
             {
                 id: 'b1',
                 name: 'Bundled Hat',
+                bundleLabel: 'Accessories',
                 quantityBackordered: 2,
                 quantityOnHand: 3,
                 backorderMessage: 'Ships in 5 days',
@@ -121,6 +122,7 @@ describe('OrderSummaryItem', () => {
             {
                 id: 'b2',
                 name: 'Bundled Scarf',
+                bundleLabel: 'Accessories',
             },
         ];
 
@@ -141,8 +143,8 @@ describe('OrderSummaryItem', () => {
             const nameEls = screen.getAllByTestId('cart-item-bundled-item-name');
 
             expect(nameEls).toHaveLength(2);
-            expect(nameEls[0]).toHaveTextContent('Bundled Hat');
-            expect(nameEls[1]).toHaveTextContent('Bundled Scarf');
+            expect(nameEls[0]).toHaveTextContent('Accessories: Bundled Hat');
+            expect(nameEls[1]).toHaveTextContent('Accessories: Bundled Scarf');
         });
 
         it('renders nothing for bundled items section when bundledItems is undefined', () => {

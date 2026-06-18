@@ -44,6 +44,9 @@ function mapFromDigital(
             ? bundledItems?.map((bundledItem) => ({
                   name: bundledItem.name,
                   id: String(bundledItem.id),
+                  bundleLabel: item.options?.find(
+                      (option) => option.attributeId === bundledItem.addedByAttributeId,
+                  )?.name,
                   ...mapBackorderDetails(bundledItem),
               }))
             : undefined,
