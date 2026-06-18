@@ -170,7 +170,14 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
                                     className="bundled-item-name"
                                     data-test="cart-item-bundled-item-name"
                                 >
-                                    <span className="body-bold">{item.bundleLabel}:</span>{' '}
+                                    <span className="body-bold">
+                                        {item.bundleLabel ? (
+                                            item.bundleLabel
+                                        ) : (
+                                            <TranslatedString id="cart.bundled_item_label" />
+                                        )}
+                                        :
+                                    </span>{' '}
                                     {item.name}
                                 </div>
                                 <OrderSummaryItemBackorderDetails
