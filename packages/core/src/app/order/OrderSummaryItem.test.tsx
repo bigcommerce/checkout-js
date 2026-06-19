@@ -114,6 +114,7 @@ describe('OrderSummaryItem', () => {
             {
                 id: 'b1',
                 name: 'Bundled Hat',
+                bundleLabel: 'Accessories',
                 quantityBackordered: 2,
                 quantityOnHand: 3,
                 backorderMessage: 'Ships in 5 days',
@@ -121,10 +122,11 @@ describe('OrderSummaryItem', () => {
             {
                 id: 'b2',
                 name: 'Bundled Scarf',
+                bundleLabel: 'Accessories',
             },
         ];
 
-        it('renders each bundled item name with the Bundle label', () => {
+        it('renders each bundled item name with its bundle label', () => {
             render(
                 <OrderSummaryItem
                     orderItem={{
@@ -141,8 +143,28 @@ describe('OrderSummaryItem', () => {
             const nameEls = screen.getAllByTestId('cart-item-bundled-item-name');
 
             expect(nameEls).toHaveLength(2);
-            expect(nameEls[0]).toHaveTextContent('Bundled Hat');
-            expect(nameEls[1]).toHaveTextContent('Bundled Scarf');
+            expect(nameEls[0]).toHaveTextContent('Accessories: Bundled Hat');
+            expect(nameEls[1]).toHaveTextContent('Accessories: Bundled Scarf');
+        });
+
+        it('falls back to the default bundle label when a bundled item has no bundleLabel', () => {
+            render(
+                <OrderSummaryItem
+                    orderItem={{
+                        amount: 10,
+                        id: 'foo',
+                        name: 'Product',
+                        quantity: 1,
+                        bundledItems: [{ id: 'b1', name: 'Bundled Hat' }],
+                    }}
+                    shouldExpandBackorderDetails={false}
+                />,
+            );
+
+            const nameEl = screen.getByTestId('cart-item-bundled-item-name');
+
+            expect(nameEl).toHaveTextContent('Bundle: Bundled Hat');
+            expect(nameEl).not.toHaveTextContent('Bundle::');
         });
 
         it('renders nothing for bundled items section when bundledItems is undefined', () => {

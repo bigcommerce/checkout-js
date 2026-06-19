@@ -23,6 +23,7 @@ export interface OrderItemType {
     bundledItems?: Array<{
         id: string;
         name: string;
+        bundleLabel?: string;
         quantityBackordered?: number;
         quantityOnHand?: number;
         backorderMessage?: string;
@@ -170,7 +171,11 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
                                     data-test="cart-item-bundled-item-name"
                                 >
                                     <span className="body-bold">
-                                        <TranslatedString id="cart.bundled_item_label" />
+                                        {item.bundleLabel ? (
+                                            `${item.bundleLabel}:`
+                                        ) : (
+                                            <TranslatedString id="cart.bundled_item_label" />
+                                        )}
                                     </span>{' '}
                                     {item.name}
                                 </div>

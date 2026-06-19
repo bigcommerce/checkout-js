@@ -101,6 +101,39 @@ describe('mapFromDigital()', () => {
             expect(bundledItems![0].backorderMessage).toBe('Ships in 5 days');
         });
 
+        it('returns bundledItems with bundleLabel from the matching parent option', () => {
+            const bundledChild = {
+                ...getPhysicalItem(),
+                id: '777',
+                name: 'Bundled Product',
+                parentId: '667',
+                addedByAttributeId: 'attr-picklist',
+            } as unknown as PhysicalItem;
+
+            const item = {
+                ...getDigitalItem(),
+                id: '667',
+                options: [
+                    {
+                        name: 'Pick List Option',
+                        nameId: 11,
+                        value: 'Item A',
+                        valueId: 2,
+                        attributeId: 'attr-picklist',
+                    },
+                ] as LineItemOption[],
+            };
+
+            const bundleItemsMap = new Map<string | number, PhysicalItem[]>([
+                ['667', [bundledChild]],
+            ]);
+
+            const { bundledItems } = mapFromDigital(item, bundleItemsMap, true);
+
+            expect(bundledItems).toHaveLength(1);
+            expect(bundledItems![0].bundleLabel).toBe('Pick List Option');
+        });
+
         it('returns undefined bundledItems when item has no children in the map', () => {
             const item = { ...getDigitalItem(), id: '667' };
             const bundleItemsMap = new Map<string | number, PhysicalItem[]>();
