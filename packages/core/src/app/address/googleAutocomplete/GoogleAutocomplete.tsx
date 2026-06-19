@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react';
 
 import { Autocomplete, type AutocompleteItem } from '@bigcommerce/checkout/ui';
 
-import GoogleAutocompleteService from './GoogleAutocompleteService';
+import { GoogleAutocompleteService } from './GoogleAutocompleteService';
 import { type GoogleAutocompleteOptionTypes } from './googleAutocompleteTypes';
 import {
     mapToAutocompleteItems,

@@ -2,7 +2,7 @@ import { GoogleAutocompleteScriptLoader } from './GoogleAutocompleteScriptLoader
 
 let instance: GoogleAutocompleteScriptLoader;
 
-export default function getGoogleAutocompleteScriptLoader(): GoogleAutocompleteScriptLoader {
+export function getGoogleAutocompleteScriptLoader(): GoogleAutocompleteScriptLoader {
     if (!instance) {
         instance = new GoogleAutocompleteScriptLoader();
     }

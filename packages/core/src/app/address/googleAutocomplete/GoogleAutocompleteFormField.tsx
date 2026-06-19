@@ -50,12 +50,12 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
                 'floating-input floating-form-field-input': isFloatingLabelEnabled,
             }),
             id: getAddressFormFieldInputId(name),
-            'aria-labelledby': labelId,
+            'aria-labelledby': getAddressFormFieldLabelId(name),
             placeholder: isFloatingLabelEnabled ? ' ' : placeholder,
             labelText: isFloatingLabelEnabled ? labelContent : null,
             maxLength: maxLength || undefined,
         }),
-        [name, labelId, placeholder, labelContent, maxLength],
+        [name, placeholder, labelContent, maxLength, isFloatingLabelEnabled],
     );
 
     const renderInput = useCallback(
