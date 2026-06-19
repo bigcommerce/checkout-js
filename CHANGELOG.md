@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.818.0](https://github.com/bigcommerce/checkout-js/compare/v1.817.0...v1.818.0) (2026-06-19)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10133 Accessiblity - wrap applied-coupon label list items in <li> for valid list structure ([9da9702](https://github.com/bigcommerce/checkout-js/commit/9da97021e2d1e670eea35c40ecb6bc04b1710eb4))
+
 ## [1.817.0](https://github.com/bigcommerce/checkout-js/compare/v1.816.0...v1.817.0) (2026-06-19)
 
 
