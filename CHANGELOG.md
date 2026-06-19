@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.817.0](https://github.com/bigcommerce/checkout-js/compare/v1.816.0...v1.817.0) (2026-06-19)
+
+
+### Features
+
+* **shipping:** BACK-683 Update position of shipping expectation message under shipping method ([#3112](https://github.com/bigcommerce/checkout-js/issues/3112)) ([fb6b3a8](https://github.com/bigcommerce/checkout-js/commit/fb6b3a8c8f832984cbc706cd4a77e4e0163782cc))
+
 ## [1.816.0](https://github.com/bigcommerce/checkout-js/compare/v1.815.0...v1.816.0) (2026-06-19)
 
 
