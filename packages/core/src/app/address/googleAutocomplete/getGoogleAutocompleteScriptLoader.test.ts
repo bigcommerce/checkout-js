@@ -1,7 +1,14 @@
 import { getScriptLoader, type ScriptLoader } from '@bigcommerce/script-loader';
 
 import { GoogleAutocompleteScriptLoader } from './GoogleAutocompleteScriptLoader';
-import { type WindowWithGoogleMaps } from './googleAutocompleteTypes';
+
+interface WindowWithGoogleMaps extends Window {
+    google?: {
+        maps: {
+            importLibrary: (libraryName: string) => Promise<google.maps.PlacesLibrary>;
+        };
+    };
+}
 
 const mockPlacesLibrary = {} as google.maps.PlacesLibrary;
 

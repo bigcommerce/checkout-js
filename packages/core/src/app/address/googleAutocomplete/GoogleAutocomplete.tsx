@@ -61,7 +61,8 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
                 }
 
                 onSelect(placeResult, item);
-            });
+            })
+            .catch(() => resetAutocomplete());
     };
 
     const resetAutocomplete = (): void => {

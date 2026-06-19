@@ -27,11 +27,11 @@ describe('mapToAutocompleteItems', () => {
     });
 
     it('skips suggestions without placePrediction', () => {
-        const mockSuggestionsWothoutPlacePrediction: google.maps.places.AutocompleteSuggestion[] = [
+        const mockSuggestionsWithoutPlacePrediction: google.maps.places.AutocompleteSuggestion[] = [
             { placePrediction: null },
         ];
 
-        expect(mapToAutocompleteItems(mockSuggestionsWothoutPlacePrediction)).toEqual([]);
+        expect(mapToAutocompleteItems(mockSuggestionsWithoutPlacePrediction)).toEqual([]);
     });
 });
 

@@ -12,7 +12,7 @@ export const mapToAutocompleteItems = (
             {
                 label: placePrediction.text.text,
                 value: placePrediction.mainText?.text ?? '',
-                highlightedSlices: placePrediction.text.matches.map(
+                highlightedSlices: (placePrediction.text.matches ?? []).map(
                     ({ startOffset, endOffset }) => ({
                         offset: startOffset,
                         length: endOffset - startOffset,
