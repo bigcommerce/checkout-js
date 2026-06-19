@@ -5,6 +5,7 @@ import { Autocomplete, type AutocompleteItem } from '@bigcommerce/checkout/ui';
 
 import GoogleAutocompleteService from './GoogleAutocompleteService';
 import { type GoogleAutocompleteOptionTypes } from './googleAutocompleteTypes';
+import { mapToAutocompleteItems, mapToGeocoderAddressComponent } from './utils';
 import './GoogleAutocomplete.scss';
 
 export interface GoogleAutocompleteProps {
@@ -20,17 +21,6 @@ export interface GoogleAutocompleteProps {
     onToggleOpen?(state: { inputValue: string; isOpen: boolean }): void;
     onChange?(value: string, isOpen: boolean): void;
 }
-
-const toAutocompleteItems = (
-    results?: google.maps.places.AutocompletePrediction[],
-): AutocompleteItem[] => {
-    return (results || []).map((result) => ({
-        label: result.description,
-        value: result.structured_formatting.main_text,
-        highlightedSlices: result.matched_substrings,
-        id: result.place_id,
-    }));
-};
 
 const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
     initialValue,
@@ -53,26 +43,25 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
         googleAutocompleteServiceRef.current = new GoogleAutocompleteService(apiKey);
     }
 
-    const onSelectHandler = (item: AutocompleteItem) => {
+    const handleSelect = (item: AutocompleteItem) => {
         const service = googleAutocompleteServiceRef.current;
 
         if (!service) return;
 
-        service.getPlacesServices().then((placesService) => {
-            placesService.getDetails(
-                {
-                    placeId: item.id,
-                    fields: fields || ['address_components', 'name'],
-                },
-                (result) => {
-                    if (nextElement) {
-                        nextElement.focus();
-                    }
+        service
+            .getPlaceDetails(item.id, fields || ['addressComponents', 'displayName'])
+            .then((place) => {
+                const placeResult: google.maps.places.PlaceResult = {
+                    address_components: place.addressComponents?.map(mapToGeocoderAddressComponent),
+                    name: place.displayName ?? '',
+                };
 
-                    onSelect(result, item);
-                },
-            );
-        });
+                if (nextElement) {
+                    nextElement.focus();
+                }
+
+                onSelect(placeResult, item);
+            });
     };
 
     const resetAutocomplete = (): void => {
@@ -95,23 +84,13 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
 
         if (!service) return;
 
-        service.getAutocompleteService().then((autocompleteService) => {
-            autocompleteService.getPlacePredictions(
-                {
-                    input,
-                    types: types || ['geocode'],
-                    componentRestrictions,
-                },
-                (results) => {
-                    const autocompleteItems = toAutocompleteItems(results ?? undefined);
-
-                    setItems(autocompleteItems);
-                },
-            );
-        });
+        service
+            .getSuggestions(input, types || ['geocode'], componentRestrictions)
+            .then((suggestions) => setItems(mapToAutocompleteItems(suggestions)))
+            .catch(() => setItems([]));
     };
 
-    const onChangeHandler = (input: string) => {
+    const handleChange = (input: string) => {
         onChange(input, false);
 
         if (!isAutocompleteEnabled) {
@@ -133,8 +112,8 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
             }}
             items={items}
             listTestId="address-autocomplete-suggestions"
-            onChange={onChangeHandler}
-            onSelect={onSelectHandler}
+            onChange={handleChange}
+            onSelect={handleSelect}
             onToggleOpen={onToggleOpen}
         >
             <div className="co-googleAutocomplete-footer" />
