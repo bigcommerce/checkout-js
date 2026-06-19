@@ -69,7 +69,9 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
                 />
             </Fieldset>
 
-            {defaultShippingExpectationMessage && <p>{defaultShippingExpectationMessage}</p>}
+            {defaultShippingExpectationMessage && (
+                <p className="shipping-ExpectationMessage">{defaultShippingExpectationMessage}</p>
+            )}
 
             {shouldShowOrderComments && <OrderComments />}
 
