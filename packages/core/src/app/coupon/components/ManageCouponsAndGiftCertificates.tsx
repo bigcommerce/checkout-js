@@ -48,9 +48,11 @@ const AppliedCouponsPills: FunctionComponent<{
             {coupons.map(({ code, displayName }) => (
                 <AnimatedCouponTag key={code}>
                     <ul>
-                        <IconCoupon />
-                        {displayName ? `${displayName} (${code})` : code}
-                        <IconRemoveCoupon onClick={() => removeCoupon(code)} />
+                        <li>
+                            <IconCoupon />
+                            {displayName ? `${displayName} (${code})` : code}
+                            <IconRemoveCoupon onClick={() => removeCoupon(code)} />
+                        </li>
                     </ul>
                 </AnimatedCouponTag>
             ))}
@@ -69,9 +71,11 @@ export const ManageCouponsAndGiftCertificates: FunctionComponent = () => {
                 {appliedGiftCertificates.map(({ code }) => (
                     <AnimatedCouponTag key={code}>
                         <ul>
-                            <IconGiftCertificateNew />
-                            {code}
-                            <IconRemoveCoupon onClick={() => removeGiftCertificate(code)} />
+                            <li>
+                                <IconGiftCertificateNew />
+                                {code}
+                                <IconRemoveCoupon onClick={() => removeGiftCertificate(code)} />
+                            </li>
                         </ul>
                     </AnimatedCouponTag>
                 ))}
