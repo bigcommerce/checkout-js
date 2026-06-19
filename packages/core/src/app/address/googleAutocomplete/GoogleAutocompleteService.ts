@@ -17,7 +17,7 @@ export default class GoogleAutocompleteService {
 
     async getSuggestions(
         input: string,
-        types: string[],
+        types: string[] | undefined,
         componentRestrictions?: google.maps.places.ComponentRestrictions,
     ): Promise<google.maps.places.AutocompleteSuggestion[]> {
         const { AutocompleteSuggestion } = await this._scriptLoader.loadPlacesLibrary(this._apiKey);

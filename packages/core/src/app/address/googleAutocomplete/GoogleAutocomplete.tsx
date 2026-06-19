@@ -5,7 +5,11 @@ import { Autocomplete, type AutocompleteItem } from '@bigcommerce/checkout/ui';
 
 import GoogleAutocompleteService from './GoogleAutocompleteService';
 import { type GoogleAutocompleteOptionTypes } from './googleAutocompleteTypes';
-import { mapToAutocompleteItems, mapToGeocoderAddressComponent } from './utils';
+import {
+    mapToAutocompleteItems,
+    mapToGeocoderAddressComponent,
+    mapToIncludedPrimaryTypes,
+} from './utils';
 import './GoogleAutocomplete.scss';
 
 export interface GoogleAutocompleteProps {
@@ -22,7 +26,7 @@ export interface GoogleAutocompleteProps {
     onChange?(value: string, isOpen: boolean): void;
 }
 
-const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
+export const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
     initialValue,
     onToggleOpen = noop,
     inputProps = {},
@@ -62,7 +66,11 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
 
                 onSelect(placeResult, item);
             })
-            .catch(() => resetAutocomplete());
+            .catch(() => {
+                // keep user suggestion text if api call fails
+                onSelect({ name: item.label }, item);
+                resetAutocomplete();
+            });
     };
 
     const resetAutocomplete = (): void => {
@@ -86,7 +94,11 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
         if (!service) return;
 
         service
-            .getSuggestions(input, types || ['geocode'], componentRestrictions)
+            .getSuggestions(
+                input,
+                mapToIncludedPrimaryTypes(types || ['geocode']),
+                componentRestrictions,
+            )
             .then((suggestions) => setItems(mapToAutocompleteItems(suggestions)))
             .catch(() => setItems([]));
     };
@@ -121,5 +133,3 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
         </Autocomplete>
     );
 };
-
-export default GoogleAutocomplete;

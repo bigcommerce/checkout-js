@@ -11,7 +11,7 @@ import {
     getAddressFormFieldLabelId,
 } from '../getAddressFormFieldInputId';
 
-import GoogleAutocomplete from './GoogleAutocomplete';
+import { GoogleAutocomplete } from './GoogleAutocomplete';
 
 export interface GoogleAutocompleteFormFieldProps {
     apiKey: string;

@@ -1,4 +1,30 @@
-import { mapToAutocompleteItems, mapToGeocoderAddressComponent } from './utils';
+import {
+    mapToAutocompleteItems,
+    mapToGeocoderAddressComponent,
+    mapToIncludedPrimaryTypes,
+} from './utils';
+
+describe('mapToIncludedPrimaryTypes', () => {
+    it('maps "address" to "street_address"', () => {
+        expect(mapToIncludedPrimaryTypes(['address'])).toEqual(['street_address']);
+    });
+
+    it('keeps "establishment" as-is', () => {
+        expect(mapToIncludedPrimaryTypes(['establishment'])).toEqual(['establishment']);
+    });
+
+    it('returns undefined for "geocode" (no direct equivalent)', () => {
+        expect(mapToIncludedPrimaryTypes(['geocode'])).toBeUndefined();
+    });
+
+    it('filters out null-mapped types and returns the rest', () => {
+        expect(mapToIncludedPrimaryTypes(['geocode', 'address'])).toEqual(['street_address']);
+    });
+
+    it('returns undefined for an empty array', () => {
+        expect(mapToIncludedPrimaryTypes([])).toBeUndefined();
+    });
+});
 
 describe('mapToAutocompleteItems', () => {
     it('maps a suggestion to an autocomplete item', () => {
