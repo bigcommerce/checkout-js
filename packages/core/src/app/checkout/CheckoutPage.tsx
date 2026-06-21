@@ -153,7 +153,7 @@ const Checkout = ({
         orderConfirmation: { invoiceRedirect },
     } = capabilities;
     const { fetchB2BToken } = useB2BToken();
-    const { checkoutService } = useCheckout();
+    const { checkoutService } = useCheckout(() => undefined);
 
     const [state, setState] = useState<CheckoutState>({
         isBillingSameAsShipping: true,
