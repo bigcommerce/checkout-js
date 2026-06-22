@@ -1,5 +1,4 @@
 import { type CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
-import { expect } from '@playwright/test';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
@@ -19,7 +18,10 @@ import {
 } from '../cart/lineItem.mock';
 import { getStoreConfig } from '../config/config.mock';
 
-import OrderSummaryItems, { type OrderSummaryItemsProps } from './OrderSummaryItems';
+import OrderSummaryItems, {
+    type OrderSummaryItemsProps,
+    resetBackorderDetailsExpanded,
+} from './OrderSummaryItems';
 
 describe('OrderSummaryItems', () => {
     let checkoutService: CheckoutService;
@@ -50,6 +52,12 @@ describe('OrderSummaryItems', () => {
                 shouldDisplayBackorderMessagesOnStorefront: true,
             },
         });
+    });
+
+    afterEach(() => {
+        // The toggle selection is held in a module-scoped value so it can survive the
+        // responsive remount; reset it between tests to avoid leaking state.
+        resetBackorderDetailsExpanded();
     });
 
     describe('backorder quantity text', () => {
@@ -151,6 +159,136 @@ describe('OrderSummaryItems', () => {
             });
 
             expect(screen.queryByTestId('cart-backorder-link')).not.toBeInTheDocument();
+        });
+    });
+
+    describe('backorder details toggle parity and persistence', () => {
+        const backorderItems = {
+            customItems: [],
+            physicalItems: [
+                {
+                    ...getPhysicalItem(),
+                    stockPosition: { quantityBackordered: 3 },
+                },
+            ],
+            digitalItems: [],
+            giftCertificates: [],
+        };
+
+        it('renders the toggle on mobile even though the line items count is hidden', () => {
+            renderOrderSummaryItems({
+                displayLineItemsCount: false,
+                items: backorderItems,
+            });
+
+            expect(screen.getByTestId('cart-backorder-link')).toBeInTheDocument();
+            expect(screen.queryByTestId('cart-count-total')).not.toBeInTheDocument();
+        });
+
+        it('defaults to off on a fresh mount', () => {
+            renderOrderSummaryItems({
+                displayLineItemsCount: true,
+                items: backorderItems,
+            });
+
+            expect(screen.getByRole('switch')).not.toBeChecked();
+        });
+
+        it('persists the selection when the component is remounted across the breakpoint', async () => {
+            const { unmount } = renderOrderSummaryItems({
+                displayLineItemsCount: true,
+                items: backorderItems,
+            });
+
+            await userEvent.click(screen.getByRole('switch'));
+
+            expect(screen.getByRole('switch')).toBeChecked();
+
+            // Simulate the MobileView breakpoint swap: the current subtree unmounts and a
+            // fresh instance (here the mobile variant) mounts in its place.
+            unmount();
+
+            renderOrderSummaryItems({
+                displayLineItemsCount: false,
+                items: backorderItems,
+            });
+
+            expect(screen.getByRole('switch')).toBeChecked();
+        });
+    });
+
+    describe('backorder details for bundle items (pick-list experiment enabled)', () => {
+        const enableBundleExperiment = () => {
+            const config = getStoreConfig();
+
+            jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue({
+                ...config,
+                checkoutSettings: {
+                    ...config.checkoutSettings,
+                    features: {
+                        ...config.checkoutSettings.features,
+                        'BACK-425.update_bundle_item_ux': true,
+                    },
+                },
+                inventorySettings: {
+                    showQuantityOnBackorder: true,
+                    showBackorderMessage: true,
+                    showQuantityOnHand: false,
+                    showBackorderAvailabilityPrompt: false,
+                    backorderAvailabilityPrompt: null,
+                    shouldDisplayBackorderMessagesOnStorefront: true,
+                },
+            });
+        };
+
+        const bundleProps: OrderSummaryItemsProps = {
+            displayLineItemsCount: true,
+            items: {
+                customItems: [],
+                physicalItems: [
+                    { ...getPhysicalItem(), id: '666' },
+                    {
+                        ...getPhysicalItem(),
+                        id: '777',
+                        name: 'Bundled Hat',
+                        parentId: '666',
+                        stockPosition: {
+                            quantityBackordered: 2,
+                            quantityOnHand: 3,
+                            quantityOutOfStock: 0,
+                            backorderMessage: 'Ships in 5 days',
+                        },
+                    },
+                ],
+                digitalItems: [],
+                giftCertificates: [],
+            },
+        };
+
+        it('renders the bundled child nested under its parent', () => {
+            enableBundleExperiment();
+
+            renderOrderSummaryItems(bundleProps);
+
+            expect(screen.getByTestId('cart-item-bundled-item-name')).toHaveTextContent(
+                'Bundled Hat',
+            );
+        });
+
+        it('shows the bundled child backorder details when the toggle is turned on', async () => {
+            enableBundleExperiment();
+
+            renderOrderSummaryItems(bundleProps);
+
+            // Collapsed by default — the backorder line is not mounted yet.
+            expect(screen.queryByTestId('cart-item-backorder-qty')).not.toBeInTheDocument();
+
+            await userEvent.click(screen.getByTestId('cart-backorder-link'));
+
+            expect(screen.getByTestId('cart-item-backorder-qty')).toBeInTheDocument();
+            expect(screen.getByTestId('cart-item-backorder-message')).toHaveTextContent(
+                'Ships in 5 days',
+            );
         });
     });
 

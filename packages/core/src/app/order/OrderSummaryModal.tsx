@@ -27,6 +27,7 @@ import OrderSummaryPrice from './OrderSummaryPrice';
 import OrderSummarySection from './OrderSummarySection';
 import OrderSummarySubtotals, { type OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
 import OrderSummaryTotal from './OrderSummaryTotal';
+import { removeBundledItems } from './removeBundledItems';
 
 export interface OrderSummaryDrawerProps {
     children: ReactNode;
@@ -93,10 +94,15 @@ const OrderSummaryModal: FunctionComponent<
     const displayInclusiveTax = isTaxIncluded && taxes && taxes.length > 0;
     const isTotalDiscountVisible = Boolean(totalDiscount && totalDiscount > 0);
 
+    // The item list (OrderSummaryItems) receives the raw line items so it can do its own
+    // experiment-aware bundle grouping. The subheader count, however, must exclude bundle
+    // children so the "X items" total matches the desktop summary.
+    const nonBundledItems = removeBundledItems(items);
+
     const subHeaderText = (
         <OrderModalSummarySubheader
             amountWithCurrency={<ShopperCurrency amount={total} />}
-            items={items}
+            items={nonBundledItems}
             shopperCurrencyCode={shopperCurrency.code}
             storeCurrencyCode={storeCurrency.code}
         />

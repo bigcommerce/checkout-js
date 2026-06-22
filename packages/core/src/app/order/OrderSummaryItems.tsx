@@ -1,4 +1,5 @@
 import { type DigitalItem, type LineItemMap, type PhysicalItem } from '@bigcommerce/checkout-sdk';
+import classNames from 'classnames';
 import React, {
     type FunctionComponent,
     type ReactElement,
@@ -29,6 +30,24 @@ import mapFromGiftCertificate from './mapFromGiftCertificate';
 import mapFromPhysical from './mapFromPhysical';
 import OrderSummaryItem from './OrderSummaryItem';
 import { removeAndBundleItemsTogether, removeBundledItems } from './removeBundledItems';
+
+// The backorder-details toggle must survive the responsive remount (desktop/mobile
+// breakpoint swap unmounts and remounts the order summary subtree) and stay consistent
+// between the desktop and mobile instances. Because <MobileView> renders mutually
+// exclusive subtrees, only one OrderSummaryItems is mounted at a time, so a module-scoped
+// value written on toggle and read on mount is sufficient. It re-initializes to OFF on a
+// full page reload, which matches the requirement of persisting across resize only.
+let backorderDetailsExpanded = false;
+
+const getBackorderDetailsExpanded = (): boolean => backorderDetailsExpanded;
+
+const setBackorderDetailsExpanded = (value: boolean): void => {
+    backorderDetailsExpanded = value;
+};
+
+export const resetBackorderDetailsExpanded = (): void => {
+    backorderDetailsExpanded = false;
+};
 
 interface AnimatedProductItemProps {
     children: ReactNode;
@@ -66,30 +85,25 @@ export interface OrderSummaryItemsProps {
     items: LineItemMap;
 }
 
-const ItemCount = ({
-    items,
+const SummaryHeading = ({
+    displayLineItemsCount,
     nonBundledItems,
     showBackorderDetails,
-    setShowBackorderDetails,
+    showBackorderToggle,
+    toggleBackorderDetails,
 }: {
-    items: LineItemMap;
+    displayLineItemsCount: boolean;
     nonBundledItems: LineItemMap;
-    setShowBackorderDetails: React.Dispatch<React.SetStateAction<boolean>>;
     showBackorderDetails: boolean;
-}): ReactElement => {
-    const { selectedState: config } = useCheckout(({ data }) => data.getConfig());
-    const handleBackorderToggle = useCallback(
-        () => setShowBackorderDetails((prev) => !prev),
-        [setShowBackorderDetails],
-    );
-    const backorderCount = getBackorderCount(items);
-    const shouldDisplayBackorderDetails =
-        !!config?.inventorySettings?.shouldDisplayBackorderMessagesOnStorefront &&
-        (!!config?.inventorySettings?.showQuantityOnBackorder ||
-            !!config?.inventorySettings?.showBackorderMessage);
-
-    return (
-        <div className="cart-section-heading-container">
+    showBackorderToggle: boolean;
+    toggleBackorderDetails(): void;
+}): ReactElement => (
+    <div
+        className={classNames('cart-section-heading-container', {
+            'cart-section-heading-container--switch-only': !displayLineItemsCount,
+        })}
+    >
+        {displayLineItemsCount && (
             <h3
                 className="cart-section-heading optimizedCheckout-contentPrimary body-medium"
                 data-test="cart-count-total"
@@ -99,17 +113,17 @@ const ItemCount = ({
                     id="cart.item_count_text"
                 />
             </h3>
-            {shouldDisplayBackorderDetails && backorderCount > 0 && (
-                <Switch
-                    checked={showBackorderDetails}
-                    label={<TranslatedString id="cart.backorder_details" />}
-                    onChange={handleBackorderToggle}
-                    testId="cart-backorder-link"
-                />
-            )}
-        </div>
-    );
-};
+        )}
+        {showBackorderToggle && (
+            <Switch
+                checked={showBackorderDetails}
+                label={<TranslatedString id="cart.backorder_details" />}
+                onChange={toggleBackorderDetails}
+                testId="cart-backorder-link"
+            />
+        )}
+    </div>
+);
 
 const ProductList = ({
     items,
@@ -186,8 +200,25 @@ const OrderSummaryItems = ({
     items,
 }: OrderSummaryItemsProps): ReactElement => {
     const [isExpanded, setIsExpanded] = useState(false);
-    const [showBackorderDetails, setShowBackorderDetails] = useState(false);
+    const [showBackorderDetails, setShowBackorderDetails] = useState(getBackorderDetailsExpanded);
     const { selectedState: config } = useCheckout(({ data }) => data.getConfig());
+
+    const toggleBackorderDetails = useCallback(() => {
+        setShowBackorderDetails((prev) => {
+            const next = !prev;
+
+            setBackorderDetailsExpanded(next);
+
+            return next;
+        });
+    }, []);
+
+    const backorderCount = getBackorderCount(items);
+    const shouldDisplayBackorderDetails =
+        !!config?.inventorySettings?.shouldDisplayBackorderMessagesOnStorefront &&
+        (!!config?.inventorySettings?.showQuantityOnBackorder ||
+            !!config?.inventorySettings?.showBackorderMessage);
+    const showBackorderToggle = shouldDisplayBackorderDetails && backorderCount > 0;
 
     const pickListExperimentEnabled = config
         ? isExperimentEnabled(config.checkoutSettings, 'BACK-425.update_bundle_item_ux', false)
@@ -213,12 +244,13 @@ const OrderSummaryItems = ({
 
     return (
         <>
-            {displayLineItemsCount && (
-                <ItemCount
-                    items={items}
+            {(displayLineItemsCount || showBackorderToggle) && (
+                <SummaryHeading
+                    displayLineItemsCount={displayLineItemsCount}
                     nonBundledItems={nonBundledItems}
-                    setShowBackorderDetails={setShowBackorderDetails}
                     showBackorderDetails={showBackorderDetails}
+                    showBackorderToggle={showBackorderToggle}
+                    toggleBackorderDetails={toggleBackorderDetails}
                 />
             )}
             <ProductList

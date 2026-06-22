@@ -1,6 +1,11 @@
-import { type CurrencyService } from '@bigcommerce/checkout-sdk';
+import {
+    type CheckoutService,
+    createCheckoutService,
+    type CurrencyService,
+} from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
+import { CheckoutProvider, LocaleContext } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
@@ -210,6 +215,69 @@ describe('OrderSummaryItem', () => {
             );
 
             expect(screen.queryByRole('list')).not.toBeInTheDocument();
+        });
+    });
+
+    describe('when bundled items are backordered and details are expanded', () => {
+        let checkoutService: CheckoutService;
+
+        const renderWithConfig = (shouldExpandBackorderDetails: boolean) =>
+            render(
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <OrderSummaryItem
+                            orderItem={{
+                                amount: 10,
+                                id: 'foo',
+                                name: 'Product',
+                                quantity: 1,
+                                bundledItems: [
+                                    {
+                                        id: 'b1',
+                                        name: 'Bundled Hat',
+                                        bundleLabel: 'Accessories',
+                                        quantityBackordered: 2,
+                                        quantityOnHand: 3,
+                                        backorderMessage: 'Ships in 5 days',
+                                    },
+                                ],
+                            }}
+                            shouldExpandBackorderDetails={shouldExpandBackorderDetails}
+                        />
+                    </LocaleContext.Provider>
+                </CheckoutProvider>,
+            );
+
+        beforeEach(() => {
+            checkoutService = createCheckoutService();
+
+            jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue({
+                ...getStoreConfig(),
+                inventorySettings: {
+                    showQuantityOnBackorder: true,
+                    showBackorderMessage: true,
+                    showQuantityOnHand: false,
+                    showBackorderAvailabilityPrompt: false,
+                    backorderAvailabilityPrompt: null,
+                    shouldDisplayBackorderMessagesOnStorefront: true,
+                },
+            });
+        });
+
+        it('renders the backorder quantity and message for the bundled child item', () => {
+            renderWithConfig(true);
+
+            expect(screen.getByTestId('cart-item-backorder-qty')).toBeInTheDocument();
+            expect(screen.getByTestId('cart-item-backorder-message')).toHaveTextContent(
+                'Ships in 5 days',
+            );
+        });
+
+        it('does not render the bundled child backorder details when collapsed', () => {
+            renderWithConfig(false);
+
+            expect(screen.queryByTestId('cart-item-backorder-qty')).not.toBeInTheDocument();
+            expect(screen.queryByTestId('cart-item-backorder-message')).not.toBeInTheDocument();
         });
     });
 });
