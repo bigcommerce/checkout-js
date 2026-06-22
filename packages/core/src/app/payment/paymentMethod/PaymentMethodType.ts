@@ -1,6 +1,5 @@
 enum PaymentMethodType {
     ApplePay = 'applepay',
-    Barclaycard = 'barclaycard',
     CreditCard = 'credit-card',
     GooglePay = 'googlepay',
     PayWithGoogle = 'paywithgoogle',
