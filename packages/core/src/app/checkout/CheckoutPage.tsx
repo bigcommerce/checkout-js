@@ -60,6 +60,7 @@ import {
 import useB2BToken from './hooks/useB2BToken';
 import { mapCheckoutComponentErrorMessage } from './mapErrorMessage';
 import mapToCheckoutProps from './mapToCheckoutProps';
+import RenderProfiler from './RenderProfiler';
 import { shouldShowShippingOptionExpiredError } from './shouldShowShippingOptionExpiredError';
 
 export interface CheckoutProps {
@@ -460,88 +461,96 @@ const Checkout = ({
         switch (step.type) {
             case CheckoutStepType.Customer:
                 return (
-                    <CustomerStep
-                        checkEmbeddedSupport={checkEmbeddedSupport}
-                        isSubscribed={isSubscribed}
-                        isWalletButtonsOnTop={isShowingWalletButtonsOnTop}
-                        onAccountCreated={navigateToNextIncompleteStep}
-                        onChangeViewType={setCustomerViewType}
-                        onContinueAsGuest={navigateToNextIncompleteStep}
-                        onContinueAsGuestError={handleError}
-                        onEdit={handleEditStep}
-                        onExpanded={handleExpanded}
-                        onReady={handleReady}
-                        onSignIn={navigateToNextIncompleteStep}
-                        onSignInError={handleError}
-                        onSignOut={handleSignOut}
-                        onSignOutError={handleError}
-                        onSubscribeToNewsletter={handleNewsletterSubscription}
-                        onUnhandledError={handleUnhandledError}
-                        onWalletButtonClick={handleWalletButtonClick}
-                        step={step}
-                        viewType={customerViewType}
-                    />
+                    <RenderProfiler id="CustomerStep">
+                        <CustomerStep
+                            checkEmbeddedSupport={checkEmbeddedSupport}
+                            isSubscribed={isSubscribed}
+                            isWalletButtonsOnTop={isShowingWalletButtonsOnTop}
+                            onAccountCreated={navigateToNextIncompleteStep}
+                            onChangeViewType={setCustomerViewType}
+                            onContinueAsGuest={navigateToNextIncompleteStep}
+                            onContinueAsGuestError={handleError}
+                            onEdit={handleEditStep}
+                            onExpanded={handleExpanded}
+                            onReady={handleReady}
+                            onSignIn={navigateToNextIncompleteStep}
+                            onSignInError={handleError}
+                            onSignOut={handleSignOut}
+                            onSignOutError={handleError}
+                            onSubscribeToNewsletter={handleNewsletterSubscription}
+                            onUnhandledError={handleUnhandledError}
+                            onWalletButtonClick={handleWalletButtonClick}
+                            step={step}
+                            viewType={customerViewType}
+                        />
+                    </RenderProfiler>
                 );
 
             case CheckoutStepType.Shipping:
                 return (
-                    <ShippingStep
-                        cart={cart}
-                        cartHasChanged={hasCartChanged}
-                        consignments={consignments || []}
-                        isBillingSameAsShipping={isBillingSameAsShipping}
-                        isMultiShippingMode={isMultiShippingMode}
-                        isShippingDiscountDisplayEnabled={isShippingDiscountDisplayEnabled}
-                        navigateNextStep={handleShippingNextStep}
-                        onCreateAccount={handleShippingCreateAccount}
-                        onEdit={handleEditStep}
-                        onExpanded={handleExpanded}
-                        onReady={handleReady}
-                        onSignIn={handleShippingSignIn}
-                        onToggleMultiShipping={handleToggleMultiShipping}
-                        onUnhandledError={handleUnhandledError}
-                        setIsMultishippingMode={handleSetIsMultishippingMode}
-                        step={step}
-                    />
+                    <RenderProfiler id="ShippingStep">
+                        <ShippingStep
+                            cart={cart}
+                            cartHasChanged={hasCartChanged}
+                            consignments={consignments || []}
+                            isBillingSameAsShipping={isBillingSameAsShipping}
+                            isMultiShippingMode={isMultiShippingMode}
+                            isShippingDiscountDisplayEnabled={isShippingDiscountDisplayEnabled}
+                            navigateNextStep={handleShippingNextStep}
+                            onCreateAccount={handleShippingCreateAccount}
+                            onEdit={handleEditStep}
+                            onExpanded={handleExpanded}
+                            onReady={handleReady}
+                            onSignIn={handleShippingSignIn}
+                            onToggleMultiShipping={handleToggleMultiShipping}
+                            onUnhandledError={handleUnhandledError}
+                            setIsMultishippingMode={handleSetIsMultishippingMode}
+                            step={step}
+                        />
+                    </RenderProfiler>
                 );
 
             case CheckoutStepType.Billing:
                 return (
-                    <BillingStep
-                        billingAddress={billingAddress}
-                        navigateNextStep={navigateToNextIncompleteStep}
-                        onEdit={handleEditStep}
-                        onExpanded={handleExpanded}
-                        onReady={handleReady}
-                        onUnhandledError={handleUnhandledError}
-                        step={step}
-                    />
+                    <RenderProfiler id="BillingStep">
+                        <BillingStep
+                            billingAddress={billingAddress}
+                            navigateNextStep={navigateToNextIncompleteStep}
+                            onEdit={handleEditStep}
+                            onExpanded={handleExpanded}
+                            onReady={handleReady}
+                            onUnhandledError={handleUnhandledError}
+                            step={step}
+                        />
+                    </RenderProfiler>
                 );
 
             case CheckoutStepType.Payment:
                 return (
-                    <PaymentStep
-                        capabilities={capabilities}
-                        cart={cart}
-                        checkEmbeddedSupport={checkEmbeddedSupport}
-                        consignments={consignments}
-                        errorLogger={errorLogger}
-                        isEmbedded={isEmbedded()}
-                        isUsingMultiShipping={
-                            cart && consignments
-                                ? isUsingMultiShipping(consignments, cart.lineItems)
-                                : false
-                        }
-                        onCartChangedError={handleCartChangedError}
-                        onEdit={handleEditStep}
-                        onExpanded={handleExpanded}
-                        onFinalize={navigateToOrderConfirmation}
-                        onReady={handleReady}
-                        onSubmit={navigateToOrderConfirmation}
-                        onSubmitError={handleError}
-                        onUnhandledError={handleUnhandledError}
-                        step={step}
-                    />
+                    <RenderProfiler id="PaymentStep">
+                        <PaymentStep
+                            capabilities={capabilities}
+                            cart={cart}
+                            checkEmbeddedSupport={checkEmbeddedSupport}
+                            consignments={consignments}
+                            errorLogger={errorLogger}
+                            isEmbedded={isEmbedded()}
+                            isUsingMultiShipping={
+                                cart && consignments
+                                    ? isUsingMultiShipping(consignments, cart.lineItems)
+                                    : false
+                            }
+                            onCartChangedError={handleCartChangedError}
+                            onEdit={handleEditStep}
+                            onExpanded={handleExpanded}
+                            onFinalize={navigateToOrderConfirmation}
+                            onReady={handleReady}
+                            onSubmit={navigateToOrderConfirmation}
+                            onSubmitError={handleError}
+                            onUnhandledError={handleUnhandledError}
+                            step={step}
+                        />
+                    </RenderProfiler>
                 );
 
             default:
@@ -712,50 +721,54 @@ const Checkout = ({
     }
 
     return (
-        <div
-            className={classNames(
-                'remove-checkout-step-numbers',
-                { 'is-embedded': isEmbedded() },
-                { themeV2 },
-            )}
-            data-test="checkout-page-container"
-            id="checkout-page-container"
-        >
-            <div className="layout optimizedCheckout-contentPrimary">
-                {state.isCartEmpty ? (
-                    <EmptyCartMessage loginUrl={loginUrl} waitInterval={3000} />
-                ) : (
-                    <>
-                        <div className="layout-main">
-                            <CheckoutHeader
-                                activeStepType={state.activeStepType}
-                                buttonConfigs={state.buttonConfigs}
-                                checkEmbeddedSupport={checkEmbeddedSupport}
-                                defaultStepType={state.defaultStepType}
-                                onUnhandledError={handleUnhandledError}
-                                onWalletButtonClick={handleWalletButtonClick}
-                            />
-
-                            <ol className="checkout-steps">
-                                {stepsRef.current
-                                    .filter((step) => step.isRequired)
-                                    .map((step) =>
-                                        renderStep({
-                                            ...step,
-                                            isActive: state.activeStepType
-                                                ? state.activeStepType === step.type
-                                                : state.defaultStepType === step.type,
-                                            isBusy: isPending,
-                                        }),
-                                    )}
-                            </ol>
-                        </div>
-                    </>
+        <RenderProfiler id="CheckoutPage">
+            <div
+                className={classNames(
+                    'remove-checkout-step-numbers',
+                    { 'is-embedded': isEmbedded() },
+                    { themeV2 },
                 )}
-                <CartSummary isMultiShippingMode={state.isMultiShippingMode} />
+                data-test="checkout-page-container"
+                id="checkout-page-container"
+            >
+                <div className="layout optimizedCheckout-contentPrimary">
+                    {state.isCartEmpty ? (
+                        <EmptyCartMessage loginUrl={loginUrl} waitInterval={3000} />
+                    ) : (
+                        <>
+                            <div className="layout-main">
+                                <RenderProfiler id="CheckoutHeader">
+                                    <CheckoutHeader
+                                        activeStepType={state.activeStepType}
+                                        buttonConfigs={state.buttonConfigs}
+                                        checkEmbeddedSupport={checkEmbeddedSupport}
+                                        defaultStepType={state.defaultStepType}
+                                        onUnhandledError={handleUnhandledError}
+                                        onWalletButtonClick={handleWalletButtonClick}
+                                    />
+                                </RenderProfiler>
+
+                                <ol className="checkout-steps">
+                                    {stepsRef.current
+                                        .filter((step) => step.isRequired)
+                                        .map((step) =>
+                                            renderStep({
+                                                ...step,
+                                                isActive: state.activeStepType
+                                                    ? state.activeStepType === step.type
+                                                    : state.defaultStepType === step.type,
+                                                isBusy: isPending,
+                                            }),
+                                        )}
+                                </ol>
+                            </div>
+                        </>
+                    )}
+                    <CartSummary isMultiShippingMode={state.isMultiShippingMode} />
+                </div>
+                {errorModal}
             </div>
-            {errorModal}
-        </div>
+        </RenderProfiler>
     );
 };
 
