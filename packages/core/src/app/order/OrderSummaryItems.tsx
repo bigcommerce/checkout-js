@@ -36,12 +36,8 @@ let backorderDetailsExpanded = false;
 
 const getBackorderDetailsExpanded = (): boolean => backorderDetailsExpanded;
 
-const setBackorderDetailsExpanded = (value: boolean): void => {
+export const setBackorderDetailsExpanded = (value: boolean): void => {
     backorderDetailsExpanded = value;
-};
-
-export const resetBackorderDetailsExpanded = (): void => {
-    setBackorderDetailsExpanded(false);
 };
 
 interface AnimatedProductItemProps {

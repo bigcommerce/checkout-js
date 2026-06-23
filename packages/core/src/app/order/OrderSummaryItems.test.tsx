@@ -20,7 +20,7 @@ import { getStoreConfig } from '../config/config.mock';
 
 import OrderSummaryItems, {
     type OrderSummaryItemsProps,
-    resetBackorderDetailsExpanded,
+    setBackorderDetailsExpanded,
 } from './OrderSummaryItems';
 
 describe('OrderSummaryItems', () => {
@@ -84,7 +84,7 @@ describe('OrderSummaryItems', () => {
     afterEach(() => {
         // The toggle selection is held in a module-scoped value so it can survive the
         // responsive remount; reset it between tests to avoid leaking state.
-        resetBackorderDetailsExpanded();
+        setBackorderDetailsExpanded(false);
     });
 
     describe('backorder quantity text', () => {

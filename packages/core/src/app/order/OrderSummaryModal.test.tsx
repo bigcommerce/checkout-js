@@ -11,7 +11,7 @@ import { getStoreConfig } from '../config/config.mock';
 
 import mapToOrderSummarySubtotalsProps from './mapToOrderSummarySubtotalsProps';
 import { getOrder } from './orders.mock';
-import { resetBackorderDetailsExpanded } from './OrderSummaryItems';
+import { setBackorderDetailsExpanded } from './OrderSummaryItems';
 import OrderSummaryModal from './OrderSummaryModal';
 
 let order: Order;
@@ -30,7 +30,7 @@ describe('OrderSummaryModal', () => {
 
     afterEach(() => {
         // The backorder toggle selection is module-scoped; reset it so it can't leak between tests.
-        resetBackorderDetailsExpanded();
+        setBackorderDetailsExpanded(false);
     });
 
     it('renders order summary', () => {
