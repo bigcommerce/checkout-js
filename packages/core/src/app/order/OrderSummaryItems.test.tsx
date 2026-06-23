@@ -55,6 +55,8 @@ describe('OrderSummaryItems', () => {
                 showQuantityOnHand: false,
                 showBackorderAvailabilityPrompt: false,
                 backorderAvailabilityPrompt: null,
+                showDefaultShippingExpectationPrompt: false,
+                defaultShippingExpectationPrompt: null,
                 shouldDisplayBackorderMessagesOnStorefront: true,
             },
         });
@@ -72,6 +74,8 @@ describe('OrderSummaryItems', () => {
                 showQuantityOnHand: false,
                 showBackorderAvailabilityPrompt: false,
                 backorderAvailabilityPrompt: null,
+                showDefaultShippingExpectationPrompt: false,
+                defaultShippingExpectationPrompt: null,
                 shouldDisplayBackorderMessagesOnStorefront: true,
             },
         });
@@ -227,6 +231,7 @@ describe('OrderSummaryItems', () => {
         it('hides the toggle on the mobile cart modal when the bundle experiment is off', () => {
             renderOrderSummaryItems({
                 displayLineItemsCount: false,
+                isMobileCartModal: true,
                 items: backorderItems,
             });
 
@@ -237,6 +242,7 @@ describe('OrderSummaryItems', () => {
         it('hides the toggle on the mobile cart modal when only hidden bundle children are backordered (experiment off)', () => {
             renderOrderSummaryItems({
                 displayLineItemsCount: false,
+                isMobileCartModal: true,
                 items: hiddenBundleChildBackordered,
             });
 
@@ -248,6 +254,7 @@ describe('OrderSummaryItems', () => {
 
             renderOrderSummaryItems({
                 displayLineItemsCount: false,
+                isMobileCartModal: true,
                 items: backorderItems,
             });
 
@@ -283,6 +290,7 @@ describe('OrderSummaryItems', () => {
 
             renderOrderSummaryItems({
                 displayLineItemsCount: false,
+                isMobileCartModal: true,
                 items: backorderItems,
             });
 

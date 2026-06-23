@@ -78,6 +78,7 @@ const COLLAPSED_ITEMS_LIMIT_SMALL_SCREEN = 3;
 export interface OrderSummaryItemsProps {
     displayLineItemsCount: boolean;
     items: LineItemMap;
+    isMobileCartModal?: boolean;
 }
 
 const SummaryHeading = ({
@@ -193,6 +194,7 @@ const CartActions = ({
 const OrderSummaryItems = ({
     displayLineItemsCount = true,
     items,
+    isMobileCartModal = false,
 }: OrderSummaryItemsProps): ReactElement => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [showBackorderDetails, setShowBackorderDetails] = useState(getBackorderDetailsExpanded);
@@ -217,13 +219,13 @@ const OrderSummaryItems = ({
         ? isExperimentEnabled(config.checkoutSettings, 'BACK-425.update_bundle_item_ux', false)
         : false;
 
-    // The item-count heading is hidden only in the mobile cart modal, where bundle children are
-    // not rendered while the bundle experiment is off. Gate the backorder toggle behind the
-    // experiment there so it can't appear when only hidden bundle children are backordered.
+    // On the mobile cart modal, bundle children are not rendered while the bundle experiment is
+    // off, so gate the backorder toggle behind the experiment there to stop it appearing when
+    // only hidden bundle children are backordered.
     const showBackorderToggle =
         shouldDisplayBackorderDetails &&
         backorderCount > 0 &&
-        (displayLineItemsCount || pickListExperimentEnabled);
+        (!isMobileCartModal || pickListExperimentEnabled);
 
     const { nonBundledItems, bundleItemsMap } = pickListExperimentEnabled
         ? removeAndBundleItemsTogether(items)

@@ -11,6 +11,7 @@ import { getStoreConfig } from '../config/config.mock';
 
 import mapToOrderSummarySubtotalsProps from './mapToOrderSummarySubtotalsProps';
 import { getOrder } from './orders.mock';
+import { resetBackorderDetailsExpanded } from './OrderSummaryItems';
 import OrderSummaryModal from './OrderSummaryModal';
 
 let order: Order;
@@ -25,6 +26,11 @@ describe('OrderSummaryModal', () => {
         order = getOrder();
 
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
+    });
+
+    afterEach(() => {
+        // The backorder toggle selection is module-scoped; reset it so it can't leak between tests.
+        resetBackorderDetailsExpanded();
     });
 
     it('renders order summary', () => {
@@ -128,6 +134,8 @@ describe('OrderSummaryModal', () => {
                     showQuantityOnHand: false,
                     showBackorderAvailabilityPrompt: false,
                     backorderAvailabilityPrompt: null,
+                    showDefaultShippingExpectationPrompt: false,
+                    defaultShippingExpectationPrompt: null,
                     shouldDisplayBackorderMessagesOnStorefront: true,
                 },
             });

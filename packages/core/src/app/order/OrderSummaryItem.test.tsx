@@ -259,6 +259,8 @@ describe('OrderSummaryItem', () => {
                     showQuantityOnHand: false,
                     showBackorderAvailabilityPrompt: false,
                     backorderAvailabilityPrompt: null,
+                    showDefaultShippingExpectationPrompt: false,
+                    defaultShippingExpectationPrompt: null,
                     shouldDisplayBackorderMessagesOnStorefront: true,
                 },
             });
