@@ -227,6 +227,11 @@ const OrderSummaryItems = ({
         backorderCount > 0 &&
         (!isMobileCartModal || pickListExperimentEnabled);
 
+    // Only expand line-item backorder details when the toggle is actually available; otherwise the
+    // persisted (module-scoped) selection could expand details on a surface where the toggle is
+    // hidden (e.g. the mobile cart modal with the bundle experiment off).
+    const expandBackorderDetails = showBackorderToggle && showBackorderDetails;
+
     const { nonBundledItems, bundleItemsMap } = pickListExperimentEnabled
         ? removeAndBundleItemsTogether(items)
         : { nonBundledItems: removeBundledItems(items), bundleItemsMap: undefined };
@@ -262,7 +267,7 @@ const OrderSummaryItems = ({
                 isExpanded={isExpanded}
                 items={nonBundledItems}
                 pickListExperimentEnabled={pickListExperimentEnabled}
-                showBackorderDetails={showBackorderDetails}
+                showBackorderDetails={expandBackorderDetails}
             />
 
             {shouldShowActions && <CartActions isExpanded={isExpanded} onToggle={handleToggle} />}

@@ -296,6 +296,32 @@ describe('OrderSummaryItems', () => {
 
             expect(screen.getByRole('switch')).toBeChecked();
         });
+
+        it('keeps line item details collapsed on the gated mobile modal even if previously expanded', async () => {
+            // Turn the toggle on where it is available (desktop) so the module-scoped selection
+            // persists as expanded.
+            const { unmount } = renderOrderSummaryItems({
+                displayLineItemsCount: true,
+                items: backorderItems,
+            });
+
+            await userEvent.click(screen.getByRole('switch'));
+
+            expect(screen.getByTestId('cart-item-backorder-qty')).toBeInTheDocument();
+
+            unmount();
+
+            // Mobile cart modal with the experiment off: the toggle is gated away, so the persisted
+            // selection must NOT expand the line item details.
+            renderOrderSummaryItems({
+                displayLineItemsCount: false,
+                isMobileCartModal: true,
+                items: backorderItems,
+            });
+
+            expect(screen.queryByTestId('cart-backorder-link')).not.toBeInTheDocument();
+            expect(screen.queryByTestId('cart-item-backorder-qty')).not.toBeInTheDocument();
+        });
     });
 
     describe('backorder details for bundle items (pick-list experiment enabled)', () => {
