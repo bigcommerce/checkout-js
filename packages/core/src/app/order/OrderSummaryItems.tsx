@@ -46,7 +46,7 @@ const setBackorderDetailsExpanded = (value: boolean): void => {
 };
 
 export const resetBackorderDetailsExpanded = (): void => {
-    backorderDetailsExpanded = false;
+    setBackorderDetailsExpanded(false);
 };
 
 interface AnimatedProductItemProps {
@@ -222,15 +222,13 @@ const OrderSummaryItems = ({
         ? isExperimentEnabled(config.checkoutSettings, 'BACK-425.update_bundle_item_ux', false)
         : false;
 
-    // The item-count heading is hidden only in the mobile cart modal. There, bundle children are
-    // not rendered while the bundle experiment is off, so gate the backorder toggle behind the
-    // experiment to stop it appearing when only hidden bundle children are backordered.
-    const isMobileCartModal = !displayLineItemsCount;
-
+    // The item-count heading is hidden only in the mobile cart modal, where bundle children are
+    // not rendered while the bundle experiment is off. Gate the backorder toggle behind the
+    // experiment there so it can't appear when only hidden bundle children are backordered.
     const showBackorderToggle =
         shouldDisplayBackorderDetails &&
         backorderCount > 0 &&
-        (!isMobileCartModal || pickListExperimentEnabled);
+        (displayLineItemsCount || pickListExperimentEnabled);
 
     const { nonBundledItems, bundleItemsMap } = pickListExperimentEnabled
         ? removeAndBundleItemsTogether(items)
