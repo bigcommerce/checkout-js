@@ -37,6 +37,29 @@ describe('OrderSummaryItems', () => {
         );
     };
 
+    const enableBundleExperiment = () => {
+        const config = getStoreConfig();
+
+        jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue({
+            ...config,
+            checkoutSettings: {
+                ...config.checkoutSettings,
+                features: {
+                    ...config.checkoutSettings.features,
+                    'BACK-425.update_bundle_item_ux': true,
+                },
+            },
+            inventorySettings: {
+                showQuantityOnBackorder: true,
+                showBackorderMessage: true,
+                showQuantityOnHand: false,
+                showBackorderAvailabilityPrompt: false,
+                backorderAvailabilityPrompt: null,
+                shouldDisplayBackorderMessagesOnStorefront: true,
+            },
+        });
+    };
+
     beforeEach(() => {
         checkoutService = createCheckoutService();
         localeContext = createLocaleContext(getStoreConfig());
@@ -162,7 +185,7 @@ describe('OrderSummaryItems', () => {
         });
     });
 
-    describe('backorder details toggle parity and persistence', () => {
+    describe('backorder details toggle gating (mobile vs desktop) and persistence', () => {
         const backorderItems = {
             customItems: [],
             physicalItems: [
@@ -175,7 +198,54 @@ describe('OrderSummaryItems', () => {
             giftCertificates: [],
         };
 
-        it('renders the toggle on mobile even though the line items count is hidden', () => {
+        // A bundle parent whose only backordered line is its child. With the experiment off the
+        // child is stripped from display, so the backorder toggle would have nothing to show.
+        const hiddenBundleChildBackordered = {
+            customItems: [],
+            physicalItems: [
+                { ...getPhysicalItem(), id: '666' },
+                {
+                    ...getPhysicalItem(),
+                    id: '777',
+                    parentId: '666',
+                    stockPosition: { quantityBackordered: 2 },
+                },
+            ],
+            digitalItems: [],
+            giftCertificates: [],
+        };
+
+        it('renders the toggle on desktop when the bundle experiment is off', () => {
+            renderOrderSummaryItems({
+                displayLineItemsCount: true,
+                items: backorderItems,
+            });
+
+            expect(screen.getByTestId('cart-backorder-link')).toBeInTheDocument();
+        });
+
+        it('hides the toggle on the mobile cart modal when the bundle experiment is off', () => {
+            renderOrderSummaryItems({
+                displayLineItemsCount: false,
+                items: backorderItems,
+            });
+
+            expect(screen.queryByTestId('cart-backorder-link')).not.toBeInTheDocument();
+            expect(screen.queryByTestId('cart-count-total')).not.toBeInTheDocument();
+        });
+
+        it('hides the toggle on the mobile cart modal when only hidden bundle children are backordered (experiment off)', () => {
+            renderOrderSummaryItems({
+                displayLineItemsCount: false,
+                items: hiddenBundleChildBackordered,
+            });
+
+            expect(screen.queryByTestId('cart-backorder-link')).not.toBeInTheDocument();
+        });
+
+        it('renders the toggle on the mobile cart modal when the bundle experiment is on', () => {
+            enableBundleExperiment();
+
             renderOrderSummaryItems({
                 displayLineItemsCount: false,
                 items: backorderItems,
@@ -195,6 +265,9 @@ describe('OrderSummaryItems', () => {
         });
 
         it('persists the selection when the component is remounted across the breakpoint', async () => {
+            // The mobile re-mount only shows the toggle while the bundle experiment is on.
+            enableBundleExperiment();
+
             const { unmount } = renderOrderSummaryItems({
                 displayLineItemsCount: true,
                 items: backorderItems,
@@ -218,29 +291,6 @@ describe('OrderSummaryItems', () => {
     });
 
     describe('backorder details for bundle items (pick-list experiment enabled)', () => {
-        const enableBundleExperiment = () => {
-            const config = getStoreConfig();
-
-            jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue({
-                ...config,
-                checkoutSettings: {
-                    ...config.checkoutSettings,
-                    features: {
-                        ...config.checkoutSettings.features,
-                        'BACK-425.update_bundle_item_ux': true,
-                    },
-                },
-                inventorySettings: {
-                    showQuantityOnBackorder: true,
-                    showBackorderMessage: true,
-                    showQuantityOnHand: false,
-                    showBackorderAvailabilityPrompt: false,
-                    backorderAvailabilityPrompt: null,
-                    shouldDisplayBackorderMessagesOnStorefront: true,
-                },
-            });
-        };
-
         const bundleProps: OrderSummaryItemsProps = {
             displayLineItemsCount: true,
             items: {

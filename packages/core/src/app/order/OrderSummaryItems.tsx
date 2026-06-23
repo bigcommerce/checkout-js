@@ -218,11 +218,19 @@ const OrderSummaryItems = ({
         !!config?.inventorySettings?.shouldDisplayBackorderMessagesOnStorefront &&
         (!!config?.inventorySettings?.showQuantityOnBackorder ||
             !!config?.inventorySettings?.showBackorderMessage);
-    const showBackorderToggle = shouldDisplayBackorderDetails && backorderCount > 0;
-
     const pickListExperimentEnabled = config
         ? isExperimentEnabled(config.checkoutSettings, 'BACK-425.update_bundle_item_ux', false)
         : false;
+
+    // The item-count heading is hidden only in the mobile cart modal. There, bundle children are
+    // not rendered while the bundle experiment is off, so gate the backorder toggle behind the
+    // experiment to stop it appearing when only hidden bundle children are backordered.
+    const isMobileCartModal = !displayLineItemsCount;
+
+    const showBackorderToggle =
+        shouldDisplayBackorderDetails &&
+        backorderCount > 0 &&
+        (!isMobileCartModal || pickListExperimentEnabled);
 
     const { nonBundledItems, bundleItemsMap } = pickListExperimentEnabled
         ? removeAndBundleItemsTogether(items)
