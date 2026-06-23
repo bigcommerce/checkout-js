@@ -65,7 +65,7 @@ const OrderSummaryDrawer: FunctionComponent<
                 handlingAmount={handlingAmount}
                 headerLink={headerLink}
                 isTaxIncluded={isTaxIncluded}
-                items={nonBundledLineItems}
+                items={lineItems}
                 onRemovedCoupon={onRemovedCoupon}
                 onRemovedGiftCertificate={onRemovedGiftCertificate}
                 shippingAmount={shippingAmount}
@@ -86,7 +86,7 @@ const OrderSummaryDrawer: FunctionComponent<
             handlingAmount,
             headerLink,
             isTaxIncluded,
-            nonBundledLineItems,
+            lineItems,
             onRemovedCoupon,
             onRemovedGiftCertificate,
             giftWrappingAmount,
