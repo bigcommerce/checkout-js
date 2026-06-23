@@ -30,6 +30,7 @@ const HostedCreditCardPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
 export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>(
     HostedCreditCardPaymentMethod,
+    // experiment should be write with underscore because point after build will set this value like variable
     [
         {
             id: 'hosted-credit-card',
@@ -38,6 +39,6 @@ export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>
         { id: 'credit_card', gateway: 'checkoutcom' },
 
         { id: 'tdonlinemart' },
-        { id: 'cba_mpgs' },
+        { id: 'cba_mpgs', experiment: 'PI-4748_cba_resolver_configuration' },
     ],
 );

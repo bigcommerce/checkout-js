@@ -93,7 +93,15 @@ const getDefaultProps = (overrides = {}): HostedCreditCardComponentProps =>
             initializePayment: jest.fn().mockResolvedValue(undefined),
             deinitializePayment: jest.fn(),
         },
-        checkoutState: {},
+        checkoutState: {
+            data: {
+                getConfig: jest.fn().mockReturnValue({
+                    checkoutSettings: {
+                        features: {},
+                    },
+                }),
+            },
+        },
         paymentForm: {
             setFieldTouched: jest.fn(),
             setFieldValue: jest.fn(),
