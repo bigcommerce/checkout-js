@@ -31,12 +31,7 @@ import mapFromPhysical from './mapFromPhysical';
 import OrderSummaryItem from './OrderSummaryItem';
 import { removeAndBundleItemsTogether, removeBundledItems } from './removeBundledItems';
 
-// The backorder-details toggle must survive the responsive remount (desktop/mobile
-// breakpoint swap unmounts and remounts the order summary subtree) and stay consistent
-// between the desktop and mobile instances. Because <MobileView> renders mutually
-// exclusive subtrees, only one OrderSummaryItems is mounted at a time, so a module-scoped
-// value written on toggle and read on mount is sufficient. It re-initializes to OFF on a
-// full page reload, which matches the requirement of persisting across resize only.
+// Module-scoped to survive the responsive remount. Safe as MobileView mounts only one instance at a time.
 let backorderDetailsExpanded = false;
 
 const getBackorderDetailsExpanded = (): boolean => backorderDetailsExpanded;
