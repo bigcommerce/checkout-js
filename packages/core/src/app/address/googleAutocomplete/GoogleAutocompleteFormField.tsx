@@ -11,7 +11,7 @@ import {
     getAddressFormFieldLabelId,
 } from '../getAddressFormFieldInputId';
 
-import { GoogleAutocomplete } from './GoogleAutocomplete';
+import GoogleAutocomplete from './GoogleAutocomplete';
 
 export interface GoogleAutocompleteFormFieldProps {
     apiKey: string;
@@ -50,12 +50,12 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
                 'floating-input floating-form-field-input': isFloatingLabelEnabled,
             }),
             id: getAddressFormFieldInputId(name),
-            'aria-labelledby': getAddressFormFieldLabelId(name),
+            'aria-labelledby': labelId,
             placeholder: isFloatingLabelEnabled ? ' ' : placeholder,
             labelText: isFloatingLabelEnabled ? labelContent : null,
             maxLength: maxLength || undefined,
         }),
-        [name, placeholder, labelContent, maxLength, isFloatingLabelEnabled],
+        [name, labelId, placeholder, labelContent, maxLength],
     );
 
     const renderInput = useCallback(

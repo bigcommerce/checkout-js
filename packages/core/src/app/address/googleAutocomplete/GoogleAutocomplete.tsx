@@ -3,8 +3,7 @@ import React, { useRef, useState } from 'react';
 
 import { Autocomplete, type AutocompleteItem } from '@bigcommerce/checkout/ui';
 
-import type { IGoogleAutocompleteService } from './IGoogleAutocompleteService';
-import { GoogleAutocompleteService as PlacesNewService } from './placesNew/GoogleAutocompleteService';
+import GoogleAutocompleteService from './GoogleAutocompleteService';
 import { type GoogleAutocompleteOptionTypes } from './googleAutocompleteTypes';
 import './GoogleAutocomplete.scss';
 
@@ -17,17 +16,23 @@ export interface GoogleAutocompleteProps {
     inputProps?: any;
     isAutocompleteEnabled?: boolean;
     types?: GoogleAutocompleteOptionTypes[];
-    /**
-     * Override the autocomplete backend. Defaults to the Places API (New) implementation.
-     * Pass `new GoogleAutocompleteService(apiKey)` (legacy) to use the old Places API.
-     */
-    service?: IGoogleAutocompleteService;
     onSelect?(place: google.maps.places.PlaceResult, item: AutocompleteItem): void;
     onToggleOpen?(state: { inputValue: string; isOpen: boolean }): void;
     onChange?(value: string, isOpen: boolean): void;
 }
 
-export const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
+const toAutocompleteItems = (
+    results?: google.maps.places.AutocompletePrediction[],
+): AutocompleteItem[] => {
+    return (results || []).map((result) => ({
+        label: result.description,
+        value: result.structured_formatting.main_text,
+        highlightedSlices: result.matched_substrings,
+        id: result.place_id,
+    }));
+};
+
+const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
     initialValue,
     onToggleOpen = noop,
     inputProps = {},
@@ -39,34 +44,35 @@ export const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
     componentRestrictions,
     types,
     apiKey,
-    service,
 }) => {
     const [items, setItems] = useState<AutocompleteItem[]>([]);
     const [autoComplete, setAutoComplete] = useState<string>('off');
-    const serviceRef = useRef<IGoogleAutocompleteService>();
+    const googleAutocompleteServiceRef = useRef<GoogleAutocompleteService>();
 
-    if (!serviceRef.current) {
-        serviceRef.current = service ?? new PlacesNewService(apiKey);
+    if (!googleAutocompleteServiceRef.current) {
+        googleAutocompleteServiceRef.current = new GoogleAutocompleteService(apiKey);
     }
 
-    const handleSelect = (item: AutocompleteItem) => {
-        const svc = serviceRef.current;
+    const onSelectHandler = (item: AutocompleteItem) => {
+        const service = googleAutocompleteServiceRef.current;
 
-        if (!svc) return;
+        if (!service) return;
 
-        svc.getPlaceDetails(item.id, fields)
-            .then((placeResult) => {
-                if (nextElement) {
-                    nextElement.focus();
-                }
+        service.getPlacesServices().then((placesService) => {
+            placesService.getDetails(
+                {
+                    placeId: item.id,
+                    fields: fields || ['address_components', 'name'],
+                },
+                (result) => {
+                    if (nextElement) {
+                        nextElement.focus();
+                    }
 
-                onSelect(placeResult, item);
-            })
-            .catch(() => {
-                // keep user suggestion text if api call fails
-                onSelect({ name: item.label }, item);
-                resetAutocomplete();
-            });
+                    onSelect(result, item);
+                },
+            );
+        });
     };
 
     const resetAutocomplete = (): void => {
@@ -85,16 +91,27 @@ export const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
             return;
         }
 
-        const svc = serviceRef.current;
+        const service = googleAutocompleteServiceRef.current;
 
-        if (!svc) return;
+        if (!service) return;
 
-        svc.getSuggestions(input, types, componentRestrictions)
-            .then((suggestions) => setItems(suggestions))
-            .catch(() => setItems([]));
+        service.getAutocompleteService().then((autocompleteService) => {
+            autocompleteService.getPlacePredictions(
+                {
+                    input,
+                    types: types || ['geocode'],
+                    componentRestrictions,
+                },
+                (results) => {
+                    const autocompleteItems = toAutocompleteItems(results ?? undefined);
+
+                    setItems(autocompleteItems);
+                },
+            );
+        });
     };
 
-    const handleChange = (input: string) => {
+    const onChangeHandler = (input: string) => {
         onChange(input, false);
 
         if (!isAutocompleteEnabled) {
@@ -116,11 +133,13 @@ export const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
             }}
             items={items}
             listTestId="address-autocomplete-suggestions"
-            onChange={handleChange}
-            onSelect={handleSelect}
+            onChange={onChangeHandler}
+            onSelect={onSelectHandler}
             onToggleOpen={onToggleOpen}
         >
             <div className="co-googleAutocomplete-footer" />
         </Autocomplete>
     );
 };
+
+export default GoogleAutocomplete;

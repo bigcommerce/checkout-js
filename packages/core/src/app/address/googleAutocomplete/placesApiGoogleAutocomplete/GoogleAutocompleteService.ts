@@ -1,7 +1,7 @@
 import type { AutocompleteItem } from '@bigcommerce/checkout/ui';
 
-import type { IGoogleAutocompleteService } from '../IGoogleAutocompleteService';
 import type { GoogleAutocompleteOptionTypes } from '../googleAutocompleteTypes';
+
 import { getGoogleAutocompleteScriptLoader } from './getGoogleAutocompleteScriptLoader';
 import type { GoogleAutocompleteScriptLoader } from './GoogleAutocompleteScriptLoader';
 import {
@@ -10,7 +10,7 @@ import {
     mapToIncludedPrimaryTypes,
 } from './utils';
 
-export class GoogleAutocompleteService implements IGoogleAutocompleteService {
+export class GoogleAutocompleteService {
     private _sessionToken?: google.maps.places.AutocompleteSessionToken;
 
     constructor(
@@ -59,12 +59,10 @@ export class GoogleAutocompleteService implements IGoogleAutocompleteService {
 
         const place = new Place({ id: placeId });
 
-        // sessionToken is a valid runtime property but absent from the type definition
         await place.fetchFields({
             fields: fields?.length ? fields : ['addressComponents', 'displayName'],
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            sessionToken: sessionToken as any,
-        } as any);
+            sessionToken,
+        });
 
         return {
             address_components: place.addressComponents?.map(mapToGeocoderAddressComponent),

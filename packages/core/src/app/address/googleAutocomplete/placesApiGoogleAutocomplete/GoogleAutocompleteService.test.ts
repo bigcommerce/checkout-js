@@ -139,7 +139,10 @@ describe('GoogleAutocompleteService', () => {
         });
 
         it('returns place details mapped to PlaceResult', async () => {
-            const result = await service.getPlaceDetails('place-1', ['addressComponents', 'displayName']);
+            const result = await service.getPlaceDetails('place-1', [
+                'addressComponents',
+                'displayName',
+            ]);
 
             expect(result).toEqual({
                 address_components: [],
