@@ -5,6 +5,7 @@ import { Autocomplete, type AutocompleteItem } from '@bigcommerce/checkout/ui';
 
 import GoogleAutocompleteService from './GoogleAutocompleteService';
 import { type GoogleAutocompleteOptionTypes } from './googleAutocompleteTypes';
+import { GoogleAutocompleteService as PlacesApiGoogleAutocompleteService } from './placesApiGoogleAutocomplete/GoogleAutocompleteService';
 import './GoogleAutocomplete.scss';
 
 export interface GoogleAutocompleteProps {
@@ -48,23 +49,54 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
     const [items, setItems] = useState<AutocompleteItem[]>([]);
     const [autoComplete, setAutoComplete] = useState<string>('off');
     const googleAutocompleteServiceRef = useRef<GoogleAutocompleteService>();
+    const placesApiServiceRef = useRef<PlacesApiGoogleAutocompleteService>();
+    const isLegacyUnavailableRef = useRef(false);
 
     if (!googleAutocompleteServiceRef.current) {
         googleAutocompleteServiceRef.current = new GoogleAutocompleteService(apiKey);
     }
 
+    if (!placesApiServiceRef.current) {
+        placesApiServiceRef.current = new PlacesApiGoogleAutocompleteService(apiKey);
+    }
+
     const onSelectHandler = (item: AutocompleteItem) => {
-        const service = googleAutocompleteServiceRef.current;
+        if (isLegacyUnavailableRef.current) {
+            placesApiServiceRef.current!
+                .getPlaceDetails(item.id, fields)
+                .then((result) => {
+                    if (nextElement) {
+                        nextElement.focus();
+                    }
 
-        if (!service) return;
+                    onSelect(result, item);
+                });
 
-        service.getPlacesServices().then((placesService) => {
+            return;
+        }
+
+        googleAutocompleteServiceRef.current!.getPlacesServices().then((placesService) => {
             placesService.getDetails(
                 {
                     placeId: item.id,
                     fields: fields || ['address_components', 'name'],
                 },
-                (result) => {
+                (result, status) => {
+                    if (status === 'REQUEST_DENIED') {
+                        isLegacyUnavailableRef.current = true;
+                        placesApiServiceRef.current!
+                            .getPlaceDetails(item.id, fields)
+                            .then((newResult) => {
+                                if (nextElement) {
+                                    nextElement.focus();
+                                }
+
+                                onSelect(newResult, item);
+                            });
+
+                        return;
+                    }
+
                     if (nextElement) {
                         nextElement.focus();
                     }
@@ -95,6 +127,14 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
 
         if (!service) return;
 
+        if (isLegacyUnavailableRef.current) {
+            placesApiServiceRef.current!
+                .getSuggestions(input, types, componentRestrictions)
+                .then(setItems);
+
+            return;
+        }
+
         service.getAutocompleteService().then((autocompleteService) => {
             autocompleteService.getPlacePredictions(
                 {
@@ -102,10 +142,17 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
                     types: types || ['geocode'],
                     componentRestrictions,
                 },
-                (results) => {
-                    const autocompleteItems = toAutocompleteItems(results ?? undefined);
+                (results, status) => {
+                    if (status === 'REQUEST_DENIED') {
+                        isLegacyUnavailableRef.current = true;
+                        placesApiServiceRef.current!
+                            .getSuggestions(input, types, componentRestrictions)
+                            .then(setItems);
 
-                    setItems(autocompleteItems);
+                        return;
+                    }
+
+                    setItems(toAutocompleteItems(results ?? undefined));
                 },
             );
         });
