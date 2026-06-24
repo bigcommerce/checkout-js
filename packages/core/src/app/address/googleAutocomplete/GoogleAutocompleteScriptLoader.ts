@@ -1,26 +1,59 @@
 import { getScriptLoader, type ScriptLoader } from '@bigcommerce/script-loader';
 
-export class GoogleAutocompleteScriptLoader {
-    private _scriptLoader: ScriptLoader = getScriptLoader();
-    private _placesPromise?: Promise<google.maps.PlacesLibrary>;
+import { type GoogleAutocompleteWindow, type GoogleMapsSdk } from './googleAutocompleteTypes';
 
-    loadPlacesLibrary(apiKey: string): Promise<google.maps.PlacesLibrary> {
-        if (this._placesPromise) {
-            return this._placesPromise;
+export default class GoogleAutocompleteScriptLoader {
+    private _scriptLoader: ScriptLoader;
+    private _googleAutoComplete?: Promise<GoogleMapsSdk>;
+
+    constructor() {
+        this._scriptLoader = getScriptLoader();
+    }
+
+    loadMapsSdk(apiKey: string): Promise<GoogleMapsSdk> {
+        if (this._googleAutoComplete) {
+            return this._googleAutoComplete;
         }
 
-        const params = ['language=en', `key=${apiKey}`, 'loading=async'].join('&');
+        this._googleAutoComplete = new Promise((resolve, reject) => {
+            const callbackName = 'initAutoComplete';
+            const params = [
+                'language=en',
+                `key=${apiKey}`,
+                'libraries=places',
+                `callback=${callbackName}`,
+            ].join('&');
 
-        const promise = this._scriptLoader
-            .loadScript(`//maps.googleapis.com/maps/api/js?${params}`)
-            .then(() => google.maps.importLibrary('places') as Promise<google.maps.PlacesLibrary>)
-            .catch((e) => {
-                this._placesPromise = undefined;
-                throw e;
-            });
+            (window as GoogleCallbackWindow)[callbackName] = () => {
+                if (isAutocompleteWindow(window)) {
+                    resolve(window.google.maps);
+                }
 
-        this._placesPromise = promise;
+                reject(new Error('Failed to initialize Google Maps Autocomplete SDK.'));
+            };
 
-        return promise;
+            this._scriptLoader
+                .loadScript(`//maps.googleapis.com/maps/api/js?${params}`)
+                .catch((e) => {
+                    this._googleAutoComplete = undefined;
+                    throw e;
+                });
+        });
+
+        return this._googleAutoComplete;
     }
+}
+
+function isAutocompleteWindow(window: Window): window is GoogleAutocompleteWindow {
+    const autocompleteWindow = window as GoogleAutocompleteWindow;
+
+    return Boolean(
+        autocompleteWindow.google &&
+            autocompleteWindow.google.maps &&
+            autocompleteWindow.google.maps.places,
+    );
+}
+
+export interface GoogleCallbackWindow extends Window {
+    initAutoComplete?(): void;
 }

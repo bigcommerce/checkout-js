@@ -1,10 +1,8 @@
-// Tests have moved to placesNew/utils.test.ts.
-// This file is kept as a shim; all assertions run against the re-exported functions.
 import {
     mapToAutocompleteItems,
     mapToGeocoderAddressComponent,
     mapToIncludedPrimaryTypes,
-} from './placesNew/utils';
+} from './utils';
 
 describe('mapToIncludedPrimaryTypes', () => {
     it('maps "address" to "street_address"', () => {

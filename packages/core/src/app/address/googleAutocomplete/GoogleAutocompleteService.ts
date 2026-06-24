@@ -1,59 +1,93 @@
-import { getGoogleAutocompleteScriptLoader } from './getGoogleAutocompleteScriptLoader';
-import { type GoogleAutocompleteScriptLoader } from './GoogleAutocompleteScriptLoader';
+import type { AutocompleteItem } from '@bigcommerce/checkout/ui';
 
-export class GoogleAutocompleteService {
-    private _sessionToken?: google.maps.places.AutocompleteSessionToken;
+import getGoogleAutocompleteScriptLoader from './getGoogleAutocompleteScriptLoader';
+import type GoogleAutocompleteScriptLoader from './GoogleAutocompleteScriptLoader';
+import type { IGoogleAutocompleteService } from './IGoogleAutocompleteService';
+
+const toAutocompleteItems = (
+    results?: google.maps.places.AutocompletePrediction[],
+): AutocompleteItem[] =>
+    (results || []).map((result) => ({
+        label: result.description,
+        value: result.structured_formatting.main_text,
+        highlightedSlices: result.matched_substrings,
+        id: result.place_id,
+    }));
+
+export default class GoogleAutocompleteService implements IGoogleAutocompleteService {
+    private _autocompletePromise?: Promise<google.maps.places.AutocompleteService>;
+    private _placesPromise?: Promise<google.maps.places.PlacesService>;
 
     constructor(
         private _apiKey: string,
         private _scriptLoader: GoogleAutocompleteScriptLoader = getGoogleAutocompleteScriptLoader(),
     ) {}
 
-    private convertToRegionCodes(
-        country: string | string[] | null | undefined,
-    ): string[] | undefined {
-        if (!country) return undefined;
-
-        return Array.isArray(country) ? country : [country];
-    }
-
-    async getSuggestions(
+    getSuggestions(
         input: string,
         types: string[] | undefined,
         componentRestrictions?: google.maps.places.ComponentRestrictions,
-    ): Promise<google.maps.places.AutocompleteSuggestion[]> {
-        const { AutocompleteSuggestion, AutocompleteSessionToken } =
-            await this._scriptLoader.loadPlacesLibrary(this._apiKey);
-
-        if (!this._sessionToken) {
-            this._sessionToken = new AutocompleteSessionToken();
-        }
-
-        const includedRegionCodes = this.convertToRegionCodes(componentRestrictions?.country);
-
-        const { suggestions } = await AutocompleteSuggestion.fetchAutocompleteSuggestions({
-            input,
-            includedPrimaryTypes: types,
-            includedRegionCodes,
-            sessionToken: this._sessionToken,
-        });
-
-        return suggestions;
+    ): Promise<AutocompleteItem[]> {
+        return this.getAutocompleteService().then(
+            (autocompleteService) =>
+                new Promise((resolve) => {
+                    autocompleteService.getPlacePredictions(
+                        { input, types: types || ['geocode'], componentRestrictions },
+                        (results) => resolve(toAutocompleteItems(results ?? undefined)),
+                    );
+                }),
+        );
     }
 
-    async getPlaceDetails(placeId: string, fields: string[]): Promise<google.maps.places.Place> {
-        const { Place } = await this._scriptLoader.loadPlacesLibrary(this._apiKey);
+    getPlaceDetails(
+        placeId: string,
+        fields?: string[],
+    ): Promise<google.maps.places.PlaceResult> {
+        return this.getPlacesServices().then(
+            (placesService) =>
+                new Promise((resolve) => {
+                    placesService.getDetails(
+                        {
+                            placeId,
+                            fields: fields?.length ? fields : ['address_components', 'name'],
+                        },
+                        (result) => resolve(result ?? {}),
+                    );
+                }),
+        );
+    }
 
-        // Consume and reset the session token — the session ends when fetchFields is called.
-        // A new token will be created automatically on the next getSuggestions call.
-        const sessionToken = this._sessionToken;
+    getAutocompleteService(): Promise<google.maps.places.AutocompleteService> {
+        if (!this._autocompletePromise) {
+            this._autocompletePromise = this._scriptLoader
+                .loadMapsSdk(this._apiKey)
+                .then((googleMapsSdk) => {
+                    if (!googleMapsSdk.places.AutocompleteService) {
+                        throw new Error('`AutocompleteService` is undefined');
+                    }
 
-        this._sessionToken = undefined;
+                    return new googleMapsSdk.places.AutocompleteService();
+                });
+        }
 
-        const place = new Place({ id: placeId });
+        return this._autocompletePromise;
+    }
 
-        await place.fetchFields({ fields, sessionToken });
+    getPlacesServices(): Promise<google.maps.places.PlacesService> {
+        const node = document.createElement('div');
 
-        return place;
+        if (!this._placesPromise) {
+            this._placesPromise = this._scriptLoader
+                .loadMapsSdk(this._apiKey)
+                .then((googleMapsSdk) => {
+                    if (!googleMapsSdk.places.PlacesService) {
+                        throw new Error('`PlacesService` is undefined');
+                    }
+
+                    return new googleMapsSdk.places.PlacesService(node);
+                });
+        }
+
+        return this._placesPromise;
     }
 }

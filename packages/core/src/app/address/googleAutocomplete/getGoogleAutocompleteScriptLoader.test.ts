@@ -1,60 +1,54 @@
 import { getScriptLoader, type ScriptLoader } from '@bigcommerce/script-loader';
 
-import { GoogleAutocompleteScriptLoader } from './GoogleAutocompleteScriptLoader';
-
-interface WindowWithGoogleMaps extends Window {
-    google?: {
-        maps: {
-            importLibrary: (libraryName: string) => Promise<google.maps.PlacesLibrary>;
-        };
-    };
-}
-
-const mockPlacesLibrary = {} as google.maps.PlacesLibrary;
+import GoogleAutocompleteScriptLoader, {
+    type GoogleCallbackWindow,
+} from './GoogleAutocompleteScriptLoader';
+import { type GoogleAutocompleteWindow } from './googleAutocompleteTypes';
 
 describe('GoogleAutocompleteScriptLoader', () => {
     const scriptLoader: ScriptLoader = getScriptLoader();
     let googleScriptLoader: GoogleAutocompleteScriptLoader;
 
-    describe('#loadPlacesLibrary()', () => {
-        let spiedLoadScript: jest.SpyInstance;
+    describe('#loadMapsSdk()', () => {
+        let spiedLoadScript: any;
 
         beforeEach(async () => {
             spiedLoadScript = jest.spyOn(scriptLoader, 'loadScript');
 
-            spiedLoadScript.mockResolvedValue(undefined);
+            spiedLoadScript.mockImplementation(() => {
+                (window as GoogleAutocompleteWindow).google = {
+                    maps: {
+                        places: {},
+                    } as any,
+                };
 
-            (window as WindowWithGoogleMaps).google = {
-                maps: {
-                    importLibrary: jest.fn().mockResolvedValue(mockPlacesLibrary),
-                },
-            };
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                (window as GoogleCallbackWindow).initAutoComplete!();
+            });
 
             googleScriptLoader = new GoogleAutocompleteScriptLoader();
-            await googleScriptLoader.loadPlacesLibrary('foo');
+            await googleScriptLoader.loadMapsSdk('foo');
         });
 
         afterEach(() => {
             spiedLoadScript.mockReset();
-            delete (window as WindowWithGoogleMaps).google;
         });
 
         it('calls loadScript with the right parameters', () => {
             expect(scriptLoader.loadScript).toHaveBeenCalledWith(
-                '//maps.googleapis.com/maps/api/js?language=en&key=foo&loading=async',
+                [
+                    '//maps.googleapis.com/maps/api/js?language=en',
+                    'key=foo',
+                    'libraries=places',
+                    'callback=initAutoComplete',
+                ].join('&'),
             );
         });
 
-        it('resolves with the places library', async () => {
-            const result = await googleScriptLoader.loadPlacesLibrary('foo');
-
-            expect(result).toBe(mockPlacesLibrary);
-        });
-
-        it('calls loadScript once regardless of how many times loadPlacesLibrary is called', async () => {
-            await googleScriptLoader.loadPlacesLibrary('x');
-            await googleScriptLoader.loadPlacesLibrary('y');
-            await googleScriptLoader.loadPlacesLibrary('z');
+        it('calls loadScript once', async () => {
+            await googleScriptLoader.loadMapsSdk('x');
+            await googleScriptLoader.loadMapsSdk('y');
+            await googleScriptLoader.loadMapsSdk('z');
 
             expect(scriptLoader.loadScript).toHaveBeenCalledTimes(1);
         });
