@@ -15,6 +15,7 @@ export interface PhoneFormFieldProps {
     autocomplete?: string;
     maxLength?: number;
     isFloatingLabelEnabled?: boolean;
+    required?: boolean;
     selectedCountry?: string;
     onChange?(value: string): void;
 }
@@ -27,6 +28,7 @@ export const PhoneFormField: FunctionComponent<PhoneFormFieldProps> = memo(
         autocomplete,
         maxLength,
         isFloatingLabelEnabled,
+        required,
         selectedCountry,
         onChange,
     }) => {
@@ -35,6 +37,10 @@ export const PhoneFormField: FunctionComponent<PhoneFormFieldProps> = memo(
 
         const validatePhone = useCallback(
             (value: string) => {
+                if (!required && !value) {
+                    return undefined;
+                }
+
                 try {
                     const isPhoneNumberValid = intlTelInputRef.current
                         ?.getInstance()
@@ -50,7 +56,7 @@ export const PhoneFormField: FunctionComponent<PhoneFormFieldProps> = memo(
 
                 return undefined;
             },
-            [language],
+            [language, required],
         );
 
         const renderInput = useCallback(
