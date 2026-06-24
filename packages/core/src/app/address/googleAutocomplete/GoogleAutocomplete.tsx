@@ -33,6 +33,12 @@ const toAutocompleteItems = (
     }));
 };
 
+// Persisted at module scope so the legacy-unavailable signal survives
+// unmount/remount when navigating between Shipping and Billing steps.
+// Once the legacy API fails for a given API key it won't recover mid-session,
+// so a single module-level flag is safe to share across all instances.
+let isLegacyUnavailable = false;
+
 const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
     initialValue,
     onToggleOpen = noop,
@@ -50,7 +56,6 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
     const [autoComplete, setAutoComplete] = useState<string>('off');
     const googleAutocompleteServiceRef = useRef<GoogleAutocompleteService>();
     const placesApiServiceRef = useRef<PlacesApiGoogleAutocompleteService>();
-    const isLegacyUnavailableRef = useRef(false);
     const currentInputRef = useRef<string>('');
 
     if (!googleAutocompleteServiceRef.current) {
@@ -71,7 +76,7 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
 
         win.gm_authFailure = () => {
             win.gm_authFailure = prev;
-            isLegacyUnavailableRef.current = true;
+            isLegacyUnavailable = true;
 
             if (currentInputRef.current) {
                 placesApiServiceRef
@@ -87,7 +92,7 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
     }, []);
 
     const onSelectHandler = (item: AutocompleteItem) => {
-        if (isLegacyUnavailableRef.current) {
+        if (isLegacyUnavailable) {
             placesApiServiceRef.current!.getPlaceDetails(item.id, fields).then((result) => {
                 if (nextElement) {
                     nextElement.focus();
@@ -106,7 +111,7 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
                     { placeId: item.id, fields: fields || ['address_components', 'name'] },
                     (result, status) => {
                         if (status === 'REQUEST_DENIED') {
-                            isLegacyUnavailableRef.current = true;
+                            isLegacyUnavailable = true;
                             placesApiServiceRef.current!
                                 .getPlaceDetails(item.id, fields)
                                 .then((newResult) => {
@@ -129,7 +134,7 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
                 );
             })
             .catch(() => {
-                isLegacyUnavailableRef.current = true;
+                isLegacyUnavailable = true;
                 placesApiServiceRef.current!.getPlaceDetails(item.id, fields).then((result) => {
                     if (nextElement) {
                         nextElement.focus();
@@ -162,10 +167,11 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
             return;
         }
 
-        if (isLegacyUnavailableRef.current) {
+        if (isLegacyUnavailable) {
             placesApiServiceRef.current!
                 .getSuggestions(input, types, componentRestrictions)
-                .then(setItems);
+                .then(setItems)
+                .catch(noop);
 
             return;
         }
@@ -177,7 +183,7 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
                     { input, types: types || ['geocode'], componentRestrictions },
                     (results, status) => {
                         if (status === 'REQUEST_DENIED') {
-                            isLegacyUnavailableRef.current = true;
+                            isLegacyUnavailable = true;
                             placesApiServiceRef.current!
                                 .getSuggestions(input, types, componentRestrictions)
                                 .then(setItems);
@@ -190,7 +196,7 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
                 );
             })
             .catch(() => {
-                isLegacyUnavailableRef.current = true;
+                isLegacyUnavailable = true;
                 placesApiServiceRef.current!
                     .getSuggestions(input, types, componentRestrictions)
                     .then(setItems);
