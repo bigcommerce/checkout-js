@@ -12,6 +12,7 @@ import {
     PaymentFormContext,
     type PaymentFormService,
 } from '@bigcommerce/checkout/contexts';
+import { InstrumentDeclinedError } from '@bigcommerce/checkout/error-handling-utils';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import {
     getBraintreePaypalPaymentMethod,
@@ -118,9 +119,7 @@ describe('BraintreePaypalPaymentMethod', () => {
 
         eventEmitter.emit('onError');
 
-        expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(
-            new Error(defaultProps.language.translate('payment.errors.instrument_declined')),
-        );
+        expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(new InstrumentDeclinedError());
     });
 
     it('passed form validation by calling onValidate callback', async () => {

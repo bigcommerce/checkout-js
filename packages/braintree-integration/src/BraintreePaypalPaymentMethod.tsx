@@ -1,6 +1,7 @@
 import { type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import { createBraintreePaypalPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
 import React, { type FunctionComponent, useCallback, useEffect, useRef } from 'react';
+import { InstrumentDeclinedError } from '@bigcommerce/checkout/error-handling-utils';
 
 import { HostedPaymentComponent } from '@bigcommerce/checkout/hosted-payment-integration';
 import {
@@ -45,7 +46,7 @@ const BraintreePaypalPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
     const initializeBraintreePaypalPaymentMethod = useCallback(
         (defaultOptions: PaymentInitializeOptions) => {
-            const { onUnhandledError, language, method, paymentForm } = rest;
+            const { onUnhandledError, method, paymentForm } = rest;
 
             return checkoutService.initializePayment({
                 ...defaultOptions,
@@ -58,9 +59,7 @@ const BraintreePaypalPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                     },
                     onError: (error: Error) => {
                         if (error.message === 'INSTRUMENT_DECLINED') {
-                            onUnhandledError?.(
-                                new Error(language.translate('payment.errors.instrument_declined')),
-                            );
+                            onUnhandledError?.(new InstrumentDeclinedError());
                         } else {
                             onUnhandledError?.(error);
                         }

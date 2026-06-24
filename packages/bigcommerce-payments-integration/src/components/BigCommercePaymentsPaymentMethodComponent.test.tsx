@@ -15,6 +15,7 @@ import { render } from '@testing-library/react';
 import { EventEmitter } from 'events';
 import React from 'react';
 
+import { InstrumentDeclinedError } from '@bigcommerce/checkout/error-handling-utils';
 import { type PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
 import { getPaymentFormServiceMock } from '@bigcommerce/checkout/test-mocks';
 
@@ -346,9 +347,7 @@ describe('BigCommercePaymentsPaymentMethodComponent', () => {
 
         eventEmitter.emit('onError');
 
-        expect(onUnhandledErrorMock).toHaveBeenCalledWith(
-            new Error(props.language.translate('payment.errors.instrument_declined')),
-        );
+        expect(onUnhandledErrorMock).toHaveBeenCalledWith(new InstrumentDeclinedError());
     });
 
     it('passed form validation by calling onValidate callback', async () => {
