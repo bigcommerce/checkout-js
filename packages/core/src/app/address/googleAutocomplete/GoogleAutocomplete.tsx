@@ -1,5 +1,5 @@
 import { noop } from 'lodash';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Autocomplete, type AutocompleteItem } from '@bigcommerce/checkout/ui';
 
@@ -51,6 +51,7 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
     const googleAutocompleteServiceRef = useRef<GoogleAutocompleteService>();
     const placesApiServiceRef = useRef<PlacesApiGoogleAutocompleteService>();
     const isLegacyUnavailableRef = useRef(false);
+    const currentInputRef = useRef<string>('');
 
     if (!googleAutocompleteServiceRef.current) {
         googleAutocompleteServiceRef.current = new GoogleAutocompleteService(apiKey);
@@ -60,51 +61,83 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
         placesApiServiceRef.current = new PlacesApiGoogleAutocompleteService(apiKey);
     }
 
+    // gm_authFailure fires when the Maps JS SDK processes an auth error asynchronously
+    // (e.g. ApiTargetBlockedMapError for keys without legacy Places API access).
+    // In that case getPlacePredictions' callback never fires, so we detect the failure
+    // here and immediately retry the current input against the new Places API.
+    useEffect(() => {
+        const win = window as Window & { gm_authFailure?: () => void };
+        const prev = win.gm_authFailure;
+
+        win.gm_authFailure = () => {
+            win.gm_authFailure = prev;
+            isLegacyUnavailableRef.current = true;
+
+            if (currentInputRef.current) {
+                placesApiServiceRef
+                    .current!.getSuggestions(currentInputRef.current, types, componentRestrictions)
+                    .then(setItems)
+                    .catch(noop);
+            }
+        };
+
+        return () => {
+            win.gm_authFailure = prev;
+        };
+    }, []);
+
     const onSelectHandler = (item: AutocompleteItem) => {
         if (isLegacyUnavailableRef.current) {
-            placesApiServiceRef.current!
-                .getPlaceDetails(item.id, fields)
-                .then((result) => {
+            placesApiServiceRef.current!.getPlaceDetails(item.id, fields).then((result) => {
+                if (nextElement) {
+                    nextElement.focus();
+                }
+
+                onSelect(result, item);
+            });
+
+            return;
+        }
+
+        googleAutocompleteServiceRef.current!
+            .getPlacesServices()
+            .then((placesService) => {
+                placesService.getDetails(
+                    { placeId: item.id, fields: fields || ['address_components', 'name'] },
+                    (result, status) => {
+                        if (status === 'REQUEST_DENIED') {
+                            isLegacyUnavailableRef.current = true;
+                            placesApiServiceRef.current!
+                                .getPlaceDetails(item.id, fields)
+                                .then((newResult) => {
+                                    if (nextElement) {
+                                        nextElement.focus();
+                                    }
+
+                                    onSelect(newResult, item);
+                                });
+
+                            return;
+                        }
+
+                        if (nextElement) {
+                            nextElement.focus();
+                        }
+
+                        onSelect(result, item);
+                    },
+                );
+            })
+            .catch(() => {
+                isLegacyUnavailableRef.current = true;
+                placesApiServiceRef.current!.getPlaceDetails(item.id, fields).then((result) => {
                     if (nextElement) {
                         nextElement.focus();
                     }
 
                     onSelect(result, item);
                 });
-
-            return;
-        }
-
-        googleAutocompleteServiceRef.current!.getPlacesServices().then((placesService) => {
-            placesService.getDetails(
-                {
-                    placeId: item.id,
-                    fields: fields || ['address_components', 'name'],
-                },
-                (result, status) => {
-                    if (status === 'REQUEST_DENIED') {
-                        isLegacyUnavailableRef.current = true;
-                        placesApiServiceRef.current!
-                            .getPlaceDetails(item.id, fields)
-                            .then((newResult) => {
-                                if (nextElement) {
-                                    nextElement.focus();
-                                }
-
-                                onSelect(newResult, item);
-                            });
-
-                        return;
-                    }
-
-                    if (nextElement) {
-                        nextElement.focus();
-                    }
-
-                    onSelect(result, item);
-                },
-            );
-        });
+            });
     };
 
     const resetAutocomplete = (): void => {
@@ -125,7 +158,9 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
 
         const service = googleAutocompleteServiceRef.current;
 
-        if (!service) return;
+        if (!service) {
+            return;
+        }
 
         if (isLegacyUnavailableRef.current) {
             placesApiServiceRef.current!
@@ -135,30 +170,35 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
             return;
         }
 
-        service.getAutocompleteService().then((autocompleteService) => {
-            autocompleteService.getPlacePredictions(
-                {
-                    input,
-                    types: types || ['geocode'],
-                    componentRestrictions,
-                },
-                (results, status) => {
-                    if (status === 'REQUEST_DENIED') {
-                        isLegacyUnavailableRef.current = true;
-                        placesApiServiceRef.current!
-                            .getSuggestions(input, types, componentRestrictions)
-                            .then(setItems);
+        service
+            .getAutocompleteService()
+            .then((autocompleteService) => {
+                autocompleteService.getPlacePredictions(
+                    { input, types: types || ['geocode'], componentRestrictions },
+                    (results, status) => {
+                        if (status === 'REQUEST_DENIED') {
+                            isLegacyUnavailableRef.current = true;
+                            placesApiServiceRef.current!
+                                .getSuggestions(input, types, componentRestrictions)
+                                .then(setItems);
 
-                        return;
-                    }
+                            return;
+                        }
 
-                    setItems(toAutocompleteItems(results ?? undefined));
-                },
-            );
-        });
+                        setItems(toAutocompleteItems(results ?? undefined));
+                    },
+                );
+            })
+            .catch(() => {
+                isLegacyUnavailableRef.current = true;
+                placesApiServiceRef.current!
+                    .getSuggestions(input, types, componentRestrictions)
+                    .then(setItems);
+            });
     };
 
     const onChangeHandler = (input: string) => {
+        currentInputRef.current = input;
         onChange(input, false);
 
         if (!isAutocompleteEnabled) {

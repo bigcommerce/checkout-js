@@ -9,18 +9,23 @@ export class GoogleAutocompleteScriptLoader {
             return this._placesPromise;
         }
 
-        const params = ['language=en', `key=${apiKey}`, 'loading=async'].join('&');
+        // If Maps JS is already on the page (e.g. loaded by the legacy AutocompleteService),
+        // skip injecting a second script tag — loading the SDK twice corrupts its internal
+        // state and causes fetchAutocompleteSuggestions to throw. Go straight to importLibrary.
+        const mapsReady =
+            typeof google !== 'undefined' && google?.maps
+                ? Promise.resolve()
+                : this._scriptLoader.loadScript(
+                      `//maps.googleapis.com/maps/api/js?${['language=en', `key=${apiKey}`, 'loading=async'].join('&')}`,
+                  );
 
-        const promise = this._scriptLoader
-            .loadScript(`//maps.googleapis.com/maps/api/js?${params}`)
+        this._placesPromise = mapsReady
             .then(() => google.maps.importLibrary('places') as Promise<google.maps.PlacesLibrary>)
             .catch((e) => {
                 this._placesPromise = undefined;
                 throw e;
             });
 
-        this._placesPromise = promise;
-
-        return promise;
+        return this._placesPromise;
     }
 }

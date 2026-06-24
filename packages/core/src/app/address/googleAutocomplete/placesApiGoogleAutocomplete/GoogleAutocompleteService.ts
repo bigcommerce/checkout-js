@@ -4,11 +4,16 @@ import type { GoogleAutocompleteOptionTypes } from '../googleAutocompleteTypes';
 
 import { getGoogleAutocompleteScriptLoader } from './getGoogleAutocompleteScriptLoader';
 import type { GoogleAutocompleteScriptLoader } from './GoogleAutocompleteScriptLoader';
-import {
-    mapToAutocompleteItems,
-    mapToGeocoderAddressComponent,
-    mapToIncludedPrimaryTypes,
-} from './utils';
+import { mapToAutocompleteItems, mapToIncludedPrimaryTypes } from './utils';
+
+interface PlacesRestResponse {
+    addressComponents?: Array<{
+        longText?: string;
+        shortText?: string;
+        types?: string[];
+    }>;
+    displayName?: { text: string };
+}
 
 export class GoogleAutocompleteService {
     private _sessionToken?: google.maps.places.AutocompleteSessionToken;
@@ -49,24 +54,31 @@ export class GoogleAutocompleteService {
         placeId: string,
         fields?: string[],
     ): Promise<google.maps.places.PlaceResult> {
-        const { Place } = await this._scriptLoader.loadPlacesLibrary(this._apiKey);
-
-        // Consume and reset the session token — the session ends when fetchFields is called.
-        // A new token will be created automatically on the next getSuggestions call.
-        const sessionToken = this._sessionToken;
-
+        // Consume and reset the session token
         this._sessionToken = undefined;
 
-        const place = new Place({ id: placeId });
+        // Place.fetchFields silently does nothing when Maps JS was loaded via libraries=places
+        // (ApiTargetBlockedMapError corrupts the SDK transport). Use the Places REST API
+        // directly — it is completely independent of JS SDK auth state.
+        const requestedFields = fields?.length ? fields : ['addressComponents', 'displayName'];
+        const response = await fetch(
+            `https://places.googleapis.com/v1/places/${encodeURIComponent(placeId)}?key=${this._apiKey}`,
+            { headers: { 'X-Goog-FieldMask': requestedFields.join(',') } },
+        );
 
-        await place.fetchFields({
-            fields: fields?.length ? fields : ['addressComponents', 'displayName'],
-            sessionToken,
-        });
+        if (!response.ok) {
+            throw new Error(`Places API request failed with status ${response.status}`);
+        }
+
+        const data = (await response.json()) as PlacesRestResponse;
 
         return {
-            address_components: place.addressComponents?.map(mapToGeocoderAddressComponent),
-            name: place.displayName ?? '',
+            address_components: data.addressComponents?.map((c) => ({
+                long_name: c.longText ?? '',
+                short_name: c.shortText ?? '',
+                types: c.types ?? [],
+            })),
+            name: data.displayName?.text ?? '',
         };
     }
 
