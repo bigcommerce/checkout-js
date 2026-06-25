@@ -26,14 +26,20 @@ export const PhoneInput: FunctionComponent<PhoneInputProps> = ({
     intlTelInputRef,
 }) => {
     useEffect(() => {
-        if (!selectedCountry || value) {
+        if (!selectedCountry) {
+            return;
+        }
+
+        const intlTelInputInstance = intlTelInputRef.current?.getInstance();
+
+        if (intlTelInputInstance?.getSelectedCountryData()) {
             return;
         }
 
         const selectedCountryInIsoFormat = selectedCountry.toLowerCase();
 
         if (isIso2(selectedCountryInIsoFormat)) {
-            intlTelInputRef.current?.getInstance()?.setCountry(selectedCountryInIsoFormat);
+            intlTelInputInstance?.setCountry(selectedCountryInIsoFormat);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedCountry]);
