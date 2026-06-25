@@ -114,8 +114,6 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
     orderItem,
     shouldExpandBackorderDetails,
 }) => {
-    console.log('orderItem', orderItem);
-
     const {
         amount,
         amountAfterDiscount,
