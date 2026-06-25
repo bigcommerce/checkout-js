@@ -48,8 +48,6 @@ function mapFromDigital(
         : item.options?.map((option) => ({
               testId: 'cart-item-product-option',
               content: `${option.name} ${option.value}`,
-              name: `${option.name}:`,
-              value: option.value,
               isMainBundledItem: false,
           }));
 

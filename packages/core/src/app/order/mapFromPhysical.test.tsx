@@ -15,11 +15,13 @@ describe('mapFromPhysical()', () => {
             expect(result.quantity).toBe(item.quantity);
         });
 
-        it('formats options without colon separator', () => {
+        it('formats options without colon separator and does not set name/value', () => {
             const item = getPhysicalItem();
             const result = mapFromPhysical(item);
 
             expect(result.productOptions![0].content).toBe('n v');
+            expect(result.productOptions![0].name).toBeUndefined();
+            expect(result.productOptions![0].value).toBeUndefined();
         });
 
         it('returns no bundledItems', () => {

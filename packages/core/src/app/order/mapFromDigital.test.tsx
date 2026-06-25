@@ -128,17 +128,9 @@ describe('mapFromDigital()', () => {
     });
 
     describe('without pickListExperimentEnabled', () => {
-        it('maps all options and returns no bundledItems', () => {
-            const bundledChild = {
-                ...getPhysicalItem(),
-                id: '777',
-                parentId: '667',
-                addedByAttributeId: 'attr-picklist',
-            } as unknown as PhysicalItem;
-
+        it('maps all options without colon separator and does not set name/value', () => {
             const item = {
                 ...getDigitalItem(),
-                id: '667',
                 options: [
                     {
                         name: 'Pick List Option',
@@ -150,19 +142,30 @@ describe('mapFromDigital()', () => {
                 ] as LineItemOption[],
             };
 
+            const { productOptions = [] } = mapFromDigital(item, undefined, false);
+            const itemOption = productOptions.find((o) => o.testId === 'cart-item-product-option');
+
+            expect(itemOption?.content).toBe('Pick List Option Item A');
+            expect(itemOption?.name).toBeUndefined();
+            expect(itemOption?.value).toBeUndefined();
+        });
+
+        it('returns no bundledItems even when map has children', () => {
+            const bundledChild = {
+                ...getPhysicalItem(),
+                id: '777',
+                parentId: '667',
+                addedByAttributeId: 'attr-picklist',
+            } as unknown as PhysicalItem;
+
+            const item = { ...getDigitalItem(), id: '667', options: [] as LineItemOption[] };
+
             const bundleItemsMap = new Map<string | number, PhysicalItem[]>([
                 ['667', [bundledChild]],
             ]);
 
-            const { productOptions = [], bundledItems } = mapFromDigital(
-                item,
-                bundleItemsMap,
-                false,
-            );
+            const { bundledItems } = mapFromDigital(item, bundleItemsMap, false);
 
-            expect(
-                productOptions.filter((o) => o.testId === 'cart-item-product-option'),
-            ).toHaveLength(1);
             expect(bundledItems).toBeUndefined();
         });
     });

@@ -49,11 +49,7 @@ function mapFromPhysical(
           })
         : item.options?.map((option) => ({
               testId: 'cart-item-product-option',
-              content: pickListExperimentEnabled
-                  ? `${option.name}: ${option.value}`
-                  : `${option.name} ${option.value}`,
-              name: `${option.name}:`,
-              value: option.value,
+              content: `${option.name} ${option.value}`,
               isMainBundledItem: false,
           }));
 
