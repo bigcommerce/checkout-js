@@ -12,6 +12,7 @@ import { PhoneFormField, type PhoneFormFieldProps } from './PhoneFormField';
 
 const mockIsValidNumber = jest.fn();
 const mockSetCountry = jest.fn();
+const mockGetSelectedCountryData = jest.fn();
 
 jest.mock('@intl-tel-input/react', () => ({
     __esModule: true,
@@ -25,6 +26,7 @@ jest.mock('@intl-tel-input/react', () => ({
     >(({ inputProps, onChangeNumber, value }, ref) => {
         useImperativeHandle(ref, () => ({
             getInstance: () => ({
+                getSelectedCountryData: mockGetSelectedCountryData,
                 isValidNumber: mockIsValidNumber,
                 setCountry: mockSetCountry,
             }),
@@ -68,6 +70,7 @@ describe('PhoneFormField', () => {
         );
 
     beforeEach(() => {
+        mockGetSelectedCountryData.mockClear();
         mockIsValidNumber.mockClear();
         mockSetCountry.mockClear();
     });
@@ -90,26 +93,16 @@ describe('PhoneFormField', () => {
         expect(mockSetCountry).not.toHaveBeenCalled();
     });
 
-    it('does not auto-set country when a value is already present', () => {
-        render(
-            <LocaleContext.Provider value={localeContextMock}>
-                <Formik initialValues={{ phone: '+15551234567' }} onSubmit={jest.fn()}>
-                    <FormProvider initialIsSubmitted>
-                        <PhoneFormField
-                            id="phone"
-                            label="Phone Number"
-                            name="phone"
-                            selectedCountry="US"
-                        />
-                    </FormProvider>
-                </Formik>
-            </LocaleContext.Provider>,
-        );
+    it('does not auto-set country when a country is already selected in the input', () => {
+        mockGetSelectedCountryData.mockReturnValue({ iso2: 'us' });
+
+        renderPhoneFormField({ selectedCountry: 'US' });
 
         expect(mockSetCountry).not.toHaveBeenCalled();
     });
 
     it('shows a validation error when the phone number is invalid', async () => {
+        mockGetSelectedCountryData.mockReturnValue({ iso2: 'us' });
         mockIsValidNumber.mockReturnValue(false);
 
         renderPhoneFormField();
@@ -123,6 +116,7 @@ describe('PhoneFormField', () => {
     });
 
     it('does not show a validation error when the phone number is valid', async () => {
+        mockGetSelectedCountryData.mockReturnValue({ iso2: 'us' });
         mockIsValidNumber.mockReturnValue(true);
 
         renderPhoneFormField();
@@ -130,6 +124,20 @@ describe('PhoneFormField', () => {
         fireEvent.change(screen.getByTestId('phone-text'), {
             target: { value: '+15551234567' },
         });
+        await userEvent.click(screen.getByText('Submit'));
+
+        await waitFor(() => {
+            expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+        });
+    });
+
+    it('does not show a validation error when no country is selected', async () => {
+        mockGetSelectedCountryData.mockReturnValue(null);
+        mockIsValidNumber.mockReturnValue(false);
+
+        renderPhoneFormField();
+
+        fireEvent.change(screen.getByTestId('phone-text'), { target: { value: '123' } });
         await userEvent.click(screen.getByText('Submit'));
 
         await waitFor(() => {
