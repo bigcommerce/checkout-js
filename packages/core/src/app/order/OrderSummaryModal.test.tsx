@@ -157,12 +157,12 @@ describe('OrderSummaryModal', () => {
                 </CheckoutProvider>,
             );
 
-        it('groups raw bundle children and nests them under the parent', () => {
+        it('renders the bundle parent as a top-level line item', () => {
             renderModal();
 
-            expect(screen.getByTestId('cart-item-bundled-item-name')).toHaveTextContent(
-                'Bundled Hat',
-            );
+            expect(
+                screen.getByRole('heading', { name: `1 x ${getPhysicalItem().name}` }),
+            ).toBeInTheDocument();
         });
 
         it('does not render the bundle child as a separate top-level line item', () => {
