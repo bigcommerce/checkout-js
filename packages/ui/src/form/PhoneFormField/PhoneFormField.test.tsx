@@ -93,10 +93,21 @@ describe('PhoneFormField', () => {
         expect(mockSetCountry).not.toHaveBeenCalled();
     });
 
-    it('does not auto-set country when a country is already selected in the input', () => {
-        mockGetSelectedCountryData.mockReturnValue({ iso2: 'us' });
-
-        renderPhoneFormField({ selectedCountry: 'US' });
+    it('does not auto-set country when a value is already present', () => {
+        render(
+            <LocaleContext.Provider value={localeContextMock}>
+                <Formik initialValues={{ phone: '+15551234567' }} onSubmit={jest.fn()}>
+                    <FormProvider initialIsSubmitted>
+                        <PhoneFormField
+                            id="phone"
+                            label="Phone Number"
+                            name="phone"
+                            selectedCountry="US"
+                        />
+                    </FormProvider>
+                </Formik>
+            </LocaleContext.Provider>,
+        );
 
         expect(mockSetCountry).not.toHaveBeenCalled();
     });
@@ -150,6 +161,20 @@ describe('PhoneFormField', () => {
 
         renderPhoneFormField();
 
+        await userEvent.click(screen.getByText('Submit'));
+
+        await waitFor(() => {
+            expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+        });
+    });
+
+    it('does not show a validation error when the field is optional', async () => {
+        mockGetSelectedCountryData.mockReturnValue({ iso2: 'us' });
+        mockIsValidNumber.mockReturnValue(false);
+
+        renderPhoneFormField({ required: false });
+
+        fireEvent.change(screen.getByTestId('phone-text'), { target: { value: '123' } });
         await userEvent.click(screen.getByText('Submit'));
 
         await waitFor(() => {

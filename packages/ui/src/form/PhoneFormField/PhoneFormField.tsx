@@ -37,7 +37,7 @@ export const PhoneFormField: FunctionComponent<PhoneFormFieldProps> = memo(
 
         const validatePhone = useCallback(
             (value: string) => {
-                if (!required && !value) {
+                if (!required) {
                     return undefined;
                 }
 
