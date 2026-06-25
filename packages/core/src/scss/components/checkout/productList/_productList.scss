@@ -77,7 +77,8 @@
     overflow: hidden;
     transition:
         height $animation-collapse-transitionSpeed $animation-collapse-transitionCurve,
-        opacity $animation-collapse-transitionSpeed $animation-collapse-transitionCurve;
+        opacity $animation-collapse-transitionSpeed $animation-collapse-transitionCurve,
+        margin $animation-collapse-transitionSpeed $animation-collapse-transitionCurve;
 }
 
 .product-actions {

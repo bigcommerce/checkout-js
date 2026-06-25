@@ -15,8 +15,6 @@ function mapFromPhysical(
         addedByAttributeId ? [addedByAttributeId] : [],
     );
 
-    console.log('bundledItemsAddedByAttributeIds', bundledItemsAddedByAttributeIds);
-
     const options = pickListExperimentEnabled
         ? item.options?.map((option) => {
               if (
