@@ -42,11 +42,13 @@ export const PhoneFormField: FunctionComponent<PhoneFormFieldProps> = memo(
                 }
 
                 try {
-                    const isPhoneNumberValid = intlTelInputRef.current
-                        ?.getInstance()
-                        ?.isValidNumber();
+                    const intlTelInputInstance = intlTelInputRef.current?.getInstance();
 
-                    if (value && !isPhoneNumberValid) {
+                    if (!intlTelInputInstance?.getSelectedCountryData()) {
+                        return undefined;
+                    }
+
+                    if (value && !intlTelInputInstance.isValidNumber()) {
                         return language.translate('address.phone_number_invalid_error');
                     }
                 } catch {
