@@ -15,7 +15,13 @@ export const CreditCardPaymentMethodComponentContainer = (
 
     useEffect(() => {
         const init = async () => {
-            const { checkoutService, checkoutState, isUsingMultiShipping = false, method } = props;
+            const {
+                checkoutService,
+                checkoutState,
+                isUsingMultiShipping = false,
+                method,
+                onUnhandledError,
+            } = props;
 
             const {
                 data: { getConfig, getCustomer },
@@ -36,7 +42,17 @@ export const CreditCardPaymentMethodComponentContainer = (
             });
 
             if (isInstrumentFeatureAvailableFlag) {
-                await checkoutService.loadInstruments();
+                try {
+                    await checkoutService.loadInstruments();
+                } catch (error) {
+                    const status = (error as { status?: number })?.status;
+                    const is40x = typeof status === 'number' && status >= 400 && status < 500;
+
+                    // For a 40x (e.g. an expired vault token) fall back silently to the credit card fields
+                    if (!is40x && error instanceof Error) {
+                        onUnhandledError(error);
+                    }
+                }
             }
 
             setComponentDidMount(true);
