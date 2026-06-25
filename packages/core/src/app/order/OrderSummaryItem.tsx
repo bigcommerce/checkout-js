@@ -38,6 +38,14 @@ interface OrderSummaryItemProps {
 export interface OrderSummaryItemOption {
     testId: string;
     content: ReactNode;
+    name: string;
+    value: string;
+    isMainBundledItem?: boolean;
+    stockPosition?: {
+        quantityBackordered?: number;
+        quantityOnHand?: number;
+        backorderMessage?: string;
+    };
 }
 
 const OrderSummaryItemBackorderDetails = ({
@@ -106,6 +114,8 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
     orderItem,
     shouldExpandBackorderDetails,
 }) => {
+    console.log('orderItem', orderItem);
+
     const {
         amount,
         amountAfterDiscount,
@@ -117,7 +127,7 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
         quantityBackordered,
         quantityOnHand,
         backorderMessage,
-        bundledItems,
+        // bundledItems,
     } = orderItem;
 
     return (
@@ -132,6 +142,12 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
                     <span className="body-bold">{`${quantity} x `}</span>
                     {name}
                 </h4>
+                <OrderSummaryItemBackorderDetails
+                    backorderMessage={backorderMessage}
+                    isExpanded={shouldExpandBackorderDetails}
+                    quantityBackordered={quantityBackordered}
+                    quantityOnHand={quantityOnHand}
+                />
                 {productOptions && productOptions.length > 0 && (
                     <ul
                         className="product-options optimizedCheckout-contentSecondary sub-text-medium"
@@ -139,7 +155,20 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
                     >
                         {productOptions.map((option, index) => (
                             <li className="product-option" data-test={option.testId} key={index}>
-                                {option.content}
+                                <span className={option.isMainBundledItem ? 'body-bold' : ''}>
+                                    {option.name}
+                                </span>{' '}
+                                <span>{option.value}</span>
+                                {option.stockPosition && (
+                                    <OrderSummaryItemBackorderDetails
+                                        backorderMessage={option.stockPosition.backorderMessage}
+                                        isExpanded={shouldExpandBackorderDetails}
+                                        quantityBackordered={
+                                            option.stockPosition.quantityBackordered
+                                        }
+                                        quantityOnHand={option.stockPosition.quantityOnHand}
+                                    />
+                                )}
                             </li>
                         ))}
                     </ul>
@@ -152,14 +181,8 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
                         {description}
                     </div>
                 )}
-                <OrderSummaryItemBackorderDetails
-                    backorderMessage={backorderMessage}
-                    isExpanded={shouldExpandBackorderDetails}
-                    quantityBackordered={quantityBackordered}
-                    quantityOnHand={quantityOnHand}
-                />
 
-                {bundledItems && bundledItems.length > 0 && (
+                {/* {bundledItems && bundledItems.length > 0 && (
                     <ul className="bundled-items-container">
                         {bundledItems.map((item) => (
                             <li
@@ -188,7 +211,7 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
                             </li>
                         ))}
                     </ul>
-                )}
+                )} */}
             </div>
 
             <div className="product-column product-actions">

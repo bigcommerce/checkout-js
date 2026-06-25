@@ -14,13 +14,50 @@ function mapFromPhysical(
     const bundledItemsAddedByAttributeIds = bundledItems?.flatMap(({ addedByAttributeId }) =>
         addedByAttributeId ? [addedByAttributeId] : [],
     );
+
+    console.log('bundledItemsAddedByAttributeIds', bundledItemsAddedByAttributeIds);
+
     const options = pickListExperimentEnabled
-        ? item.options?.filter(
-              (option) =>
+        ? item.options?.map((option) => {
+              if (
                   option.attributeId &&
-                  !bundledItemsAddedByAttributeIds?.includes(option.attributeId),
-          )
-        : item.options;
+                  bundledItemsAddedByAttributeIds?.includes(option.attributeId)
+              ) {
+                  const bundledItem = bundledItems?.find(
+                      ({ addedByAttributeId }) => addedByAttributeId === option.attributeId,
+                  );
+
+                  return {
+                      testId: 'cart-item-product-option',
+                      content: pickListExperimentEnabled
+                          ? `${option.name}: ${option.value}`
+                          : `${option.name} ${option.value}`,
+                      name: `${option.name}:`,
+                      value: option.value,
+                      isMainBundledItem: true,
+                      stockPosition: bundledItem ? mapBackorderDetails(bundledItem) : undefined,
+                  };
+              }
+
+              return {
+                  testId: 'cart-item-product-option',
+                  content: pickListExperimentEnabled
+                      ? `${option.name}: ${option.value}`
+                      : `${option.name} ${option.value}`,
+                  name: `${option.name}:`,
+                  value: option.value,
+                  isMainBundledItem: false,
+              };
+          })
+        : item.options?.map((option) => ({
+              testId: 'cart-item-product-option',
+              content: pickListExperimentEnabled
+                  ? `${option.name}: ${option.value}`
+                  : `${option.name} ${option.value}`,
+              name: `${option.name}:`,
+              value: option.value,
+              isMainBundledItem: false,
+          }));
 
     return {
         id: item.id,
@@ -30,22 +67,7 @@ function mapFromPhysical(
         name: item.name,
         image: getOrderSummaryItemImage(item),
         description: item.giftWrapping ? item.giftWrapping.name : undefined,
-        productOptions: (options || []).map((option) => ({
-            testId: 'cart-item-product-option',
-            content: pickListExperimentEnabled
-                ? `${option.name}: ${option.value}`
-                : `${option.name} ${option.value}`,
-        })),
-        bundledItems: pickListExperimentEnabled
-            ? bundledItems?.map((bundledItem) => ({
-                  name: bundledItem.name,
-                  id: String(bundledItem.id),
-                  bundleLabel: item.options?.find(
-                      (option) => option.attributeId === bundledItem.addedByAttributeId,
-                  )?.name,
-                  ...mapBackorderDetails(bundledItem),
-              }))
-            : undefined,
+        productOptions: options,
         ...mapBackorderDetails(item),
     };
 }
