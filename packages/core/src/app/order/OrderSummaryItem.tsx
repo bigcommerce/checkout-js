@@ -38,8 +38,8 @@ interface OrderSummaryItemProps {
 export interface OrderSummaryItemOption {
     testId: string;
     content: ReactNode;
-    name: string;
-    value: string;
+    name?: string;
+    value?: string;
     isMainBundledItem?: boolean;
     stockPosition?: {
         quantityBackordered?: number;
@@ -155,10 +155,18 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
                     >
                         {productOptions.map((option, index) => (
                             <li className="product-option" data-test={option.testId} key={index}>
-                                <span className={option.isMainBundledItem ? 'body-bold' : ''}>
-                                    {option.name}
-                                </span>{' '}
-                                <span>{option.value}</span>
+                                {option.name ? (
+                                    <>
+                                        <span
+                                            className={option.isMainBundledItem ? 'body-bold' : ''}
+                                        >
+                                            {option.name}
+                                        </span>{' '}
+                                        <span>{option.value}</span>
+                                    </>
+                                ) : (
+                                    option.content
+                                )}
                                 {option.stockPosition && (
                                     <OrderSummaryItemBackorderDetails
                                         backorderMessage={option.stockPosition.backorderMessage}
