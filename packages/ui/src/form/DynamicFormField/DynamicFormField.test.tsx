@@ -216,7 +216,7 @@ describe('DynamicFormField Component', () => {
             mockIsValidNumber.mockReturnValue(false);
 
             renderMockFormField({
-                field: phoneFieldMock,
+                field: { ...phoneFieldMock, required: true },
                 isNewPhoneValidationExperimentEnabled: true,
             });
 
@@ -235,7 +235,7 @@ describe('DynamicFormField Component', () => {
             mockIsValidNumber.mockReturnValue(true);
 
             renderMockFormField({
-                field: phoneFieldMock,
+                field: { ...phoneFieldMock, required: true },
                 isNewPhoneValidationExperimentEnabled: true,
             });
 
