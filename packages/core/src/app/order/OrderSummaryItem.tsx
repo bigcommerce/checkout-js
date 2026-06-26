@@ -125,7 +125,6 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
         quantityBackordered,
         quantityOnHand,
         backorderMessage,
-        // bundledItems,
     } = orderItem;
 
     return (
@@ -187,37 +186,6 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
                         {description}
                     </div>
                 )}
-
-                {/* {bundledItems && bundledItems.length > 0 && (
-                    <ul className="bundled-items-container">
-                        {bundledItems.map((item) => (
-                            <li
-                                className="bundled-item optimizedCheckout-contentSecondary sub-text-medium"
-                                key={item.id}
-                            >
-                                <div
-                                    className="bundled-item-name"
-                                    data-test="cart-item-bundled-item-name"
-                                >
-                                    <span className="body-bold">
-                                        {item.bundleLabel ? (
-                                            `${item.bundleLabel}:`
-                                        ) : (
-                                            <TranslatedString id="cart.bundled_item_label" />
-                                        )}
-                                    </span>{' '}
-                                    {item.name}
-                                </div>
-                                <OrderSummaryItemBackorderDetails
-                                    backorderMessage={item.backorderMessage}
-                                    isExpanded={shouldExpandBackorderDetails}
-                                    quantityBackordered={item.quantityBackordered}
-                                    quantityOnHand={item.quantityOnHand}
-                                />
-                            </li>
-                        ))}
-                    </ul>
-                )} */}
             </div>
 
             <div className="product-column product-actions">
