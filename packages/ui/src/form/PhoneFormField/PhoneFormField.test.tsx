@@ -116,7 +116,7 @@ describe('PhoneFormField', () => {
         mockGetSelectedCountryData.mockReturnValue({ iso2: 'us' });
         mockIsValidNumber.mockReturnValue(false);
 
-        renderPhoneFormField();
+        renderPhoneFormField({ required: true });
 
         fireEvent.change(screen.getByTestId('phone-text'), { target: { value: '123' } });
         await userEvent.click(screen.getByText('Submit'));
@@ -130,7 +130,7 @@ describe('PhoneFormField', () => {
         mockGetSelectedCountryData.mockReturnValue({ iso2: 'us' });
         mockIsValidNumber.mockReturnValue(true);
 
-        renderPhoneFormField();
+        renderPhoneFormField({ required: true });
 
         fireEvent.change(screen.getByTestId('phone-text'), {
             target: { value: '+15551234567' },
