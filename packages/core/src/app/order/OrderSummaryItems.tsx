@@ -266,7 +266,9 @@ const OrderSummaryItems = ({
                 showBackorderDetails={expandBackorderDetails}
             />
 
-            {shouldShowActions && <CartActions isExpanded={isExpanded} onToggleSwitch={handleToggleSwitch} />}
+            {shouldShowActions && (
+                <CartActions isExpanded={isExpanded} onToggleSwitch={handleToggleSwitch} />
+            )}
         </>
     );
 };

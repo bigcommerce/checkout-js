@@ -74,3 +74,8 @@ $toggle-travel:   remCalc(16px);
         cursor: not-allowed;
     }
 }
+
+@media (prefers-reduced-motion: reduce) {
+    .bc-toggle__track,
+    .bc-toggle__thumb { transition: none; }
+}
