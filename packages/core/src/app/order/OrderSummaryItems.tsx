@@ -17,7 +17,7 @@ import {
     IconChevronDown,
     IconChevronUp,
     isSmallScreen,
-    ToggleSwitch,
+    Switch,
 } from '@bigcommerce/checkout/ui';
 
 import { isExperimentEnabled } from '../common/utility';
@@ -81,13 +81,13 @@ const SummaryHeading = ({
     displayLineItemsCount,
     nonBundledItems,
     showBackorderDetails,
-    showBackorderToggleSwitch,
+    showBackorderSwitch,
     toggleBackorderDetails,
 }: {
     displayLineItemsCount: boolean;
     nonBundledItems: LineItemMap;
     showBackorderDetails: boolean;
-    showBackorderToggleSwitch: boolean;
+    showBackorderSwitch: boolean;
     toggleBackorderDetails(): void;
 }): ReactElement => (
     <div
@@ -106,8 +106,8 @@ const SummaryHeading = ({
                 />
             </h3>
         )}
-        {showBackorderToggleSwitch && (
-            <ToggleSwitch
+        {showBackorderSwitch && (
+            <Switch
                 checked={showBackorderDetails}
                 label={<TranslatedString id="cart.backorder_details" />}
                 onChange={toggleBackorderDetails}
@@ -161,15 +161,15 @@ const ProductList = ({
 
 const CartActions = ({
     isExpanded,
-    onToggleSwitch,
+    onSwitch,
 }: {
     isExpanded: boolean;
-    onToggleSwitch(): void;
+    onSwitch(): void;
 }): ReactElement => (
     <div className="cart-actions">
         <button
             className="button button--tertiary button--tiny optimizedCheckout-buttonSecondary sub-text-medium"
-            onClick={onToggleSwitch}
+            onClick={onSwitch}
             type="button"
         >
             {isExpanded ? (
@@ -218,7 +218,7 @@ const OrderSummaryItems = ({
     // On the mobile cart modal, bundle children are not rendered while the bundle experiment is
     // off, so gate the backorder toggle behind the experiment there to stop it appearing when
     // only hidden bundle children are backordered.
-    const showBackorderToggleSwitch =
+    const showBackorderSwitch =
         shouldDisplayBackorderDetails &&
         backorderCount > 0 &&
         (!isMobileCartModal || pickListExperimentEnabled);
@@ -226,7 +226,7 @@ const OrderSummaryItems = ({
     // Only expand line-item backorder details when the toggle is actually available; otherwise the
     // persisted (module-scoped) selection could expand details on a surface where the toggle is
     // hidden (e.g. the mobile cart modal with the bundle experiment off).
-    const expandBackorderDetails = showBackorderToggleSwitch && showBackorderDetails;
+    const expandBackorderDetails = showBackorderSwitch && showBackorderDetails;
 
     const { nonBundledItems, bundleItemsMap } = pickListExperimentEnabled
         ? removeAndBundleItemsTogether(items)
@@ -244,16 +244,16 @@ const OrderSummaryItems = ({
         [nonBundledItems],
     );
     const shouldShowActions = getLineItemCount() > collapsedLimit;
-    const handleToggleSwitch = () => setIsExpanded(!isExpanded);
+    const handleSwitch = () => setIsExpanded(!isExpanded);
 
     return (
         <>
-            {(displayLineItemsCount || showBackorderToggleSwitch) && (
+            {(displayLineItemsCount || showBackorderSwitch) && (
                 <SummaryHeading
                     displayLineItemsCount={displayLineItemsCount}
                     nonBundledItems={nonBundledItems}
                     showBackorderDetails={showBackorderDetails}
-                    showBackorderToggleSwitch={showBackorderToggleSwitch}
+                    showBackorderSwitch={showBackorderSwitch}
                     toggleBackorderDetails={toggleBackorderDetails}
                 />
             )}
@@ -267,7 +267,7 @@ const OrderSummaryItems = ({
             />
 
             {shouldShowActions && (
-                <CartActions isExpanded={isExpanded} onToggleSwitch={handleToggleSwitch} />
+                <CartActions isExpanded={isExpanded} onSwitch={handleSwitch} />
             )}
         </>
     );

@@ -1,6 +1,6 @@
 import React, { type FunctionComponent, memo, useCallback, useId } from 'react';
 
-export interface ToggleSwitchProps {
+export interface SwitchProps {
     checked: boolean;
     label: React.ReactNode;
     onChange?: (checked: boolean, event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -9,7 +9,7 @@ export interface ToggleSwitchProps {
     testId?: string;
 }
 
-export const ToggleSwitch: FunctionComponent<ToggleSwitchProps> = memo(
+export const Switch: FunctionComponent<SwitchProps> = memo(
     ({ checked, onChange, label, id, name, testId }) => {
         const autoId = useId();
         const inputId = id ?? autoId;
@@ -22,19 +22,19 @@ export const ToggleSwitch: FunctionComponent<ToggleSwitchProps> = memo(
         );
 
         return (
-            <label className="bc-toggle" data-test={testId} htmlFor={inputId}>
-                <span className="bc-toggle__label">{label}</span>
+            <label className="bc-switch" data-test={testId} htmlFor={inputId}>
+                <span className="bc-switch__label">{label}</span>
                 <input
                     checked={checked}
-                    className="bc-toggle__input"
+                    className="bc-switch__input"
                     id={inputId}
                     name={name}
                     onChange={handleChange}
                     role="switch"
                     type="checkbox"
                 />
-                <span aria-hidden="true" className="bc-toggle__track">
-                    <span className="bc-toggle__thumb" />
+                <span aria-hidden="true" className="bc-switch__track">
+                    <span className="bc-switch__thumb" />
                 </span>
             </label>
         );

@@ -3,59 +3,59 @@ import React from 'react';
 
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import { ToggleSwitch } from './ToggleSwitch';
+import { Switch } from './Switch';
 
-describe('ToggleSwitch', () => {
+describe('Switch', () => {
     it('renders an input with role="switch"', () => {
-        render(<ToggleSwitch checked={false} label="ToggleSwitch" />);
+        render(<Switch checked={false} label="Toggle" />);
 
         expect(screen.getByRole('switch')).toBeInTheDocument();
     });
 
     it('reflects checked state on the input', () => {
-        const { rerender } = render(<ToggleSwitch checked={false} label="ToggleSwitch" />);
+        const { rerender } = render(<Switch checked={false} label="Toggle" />);
 
         expect(screen.getByRole('switch')).not.toBeChecked();
 
-        rerender(<ToggleSwitch checked={true} label="ToggleSwitch" />);
+        rerender(<Switch checked={true} label="Toggle" />);
 
         expect(screen.getByRole('switch')).toBeChecked();
     });
 
     it('renders the label text', () => {
-        render(<ToggleSwitch checked={false} label="Backorder details" />);
+        render(<Switch checked={false} label="Backorder details" />);
 
         expect(screen.getByText('Backorder details')).toBeInTheDocument();
     });
 
     it('associates the label with the input via htmlFor/id', () => {
-        render(<ToggleSwitch checked={false} label="Backorder details" />);
+        render(<Switch checked={false} label="Backorder details" />);
 
         expect(screen.getByLabelText('Backorder details')).toBeInTheDocument();
     });
 
     it('forwards the id prop to the input', () => {
-        render(<ToggleSwitch checked={false} id="my-switch" label="ToggleSwitch" />);
+        render(<Switch checked={false} id="my-toggle" label="Toggle" />);
 
-        expect(screen.getByRole('switch')).toHaveAttribute('id', 'my-switch');
+        expect(screen.getByRole('switch')).toHaveAttribute('id', 'my-toggle');
     });
 
     it('forwards the name prop to the input', () => {
-        render(<ToggleSwitch checked={false} label="ToggleSwitch" name="my-switch-name" />);
+        render(<Switch checked={false} label="Toggle" name="my-toggle-name" />);
 
-        expect(screen.getByRole('switch')).toHaveAttribute('name', 'my-switch-name');
+        expect(screen.getByRole('switch')).toHaveAttribute('name', 'my-toggle-name');
     });
 
     it('sets data-test attribute via testId prop', () => {
-        render(<ToggleSwitch checked={false} label="ToggleSwitch" testId="my-switch-test" />);
+        render(<Switch checked={false} label="Toggle" testId="my-toggle-test" />);
 
-        expect(screen.getByTestId('my-switch-test')).toBeInTheDocument();
+        expect(screen.getByTestId('my-toggle-test')).toBeInTheDocument();
     });
 
     it('calls onChange with the new checked value', async () => {
         const onChange = jest.fn();
 
-        render(<ToggleSwitch checked={false} label="ToggleSwitch" onChange={onChange} />);
+        render(<Switch checked={false} label="Toggle" onChange={onChange} />);
 
         await userEvent.click(screen.getByRole('switch'));
 
@@ -64,13 +64,13 @@ describe('ToggleSwitch', () => {
     });
 
     it('does not throw when onChange is not provided', async () => {
-        render(<ToggleSwitch checked={false} label="ToggleSwitch" />);
+        render(<Switch checked={false} label="Toggle" />);
 
         await expect(userEvent.click(screen.getByRole('switch'))).resolves.not.toThrow();
     });
 
     it('renders label as a React node', () => {
-        render(<ToggleSwitch checked={false} label={<span>Rich label</span>} />);
+        render(<Switch checked={false} label={<span>Rich label</span>} />);
 
         expect(screen.getByText('Rich label')).toBeInTheDocument();
     });
