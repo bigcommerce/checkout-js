@@ -330,12 +330,25 @@ describe('OrderSummaryItems', () => {
             items: {
                 customItems: [],
                 physicalItems: [
-                    { ...getPhysicalItem(), id: '666' },
+                    {
+                        ...getPhysicalItem(),
+                        id: '666',
+                        options: [
+                            {
+                                name: 'Pick List',
+                                nameId: 1,
+                                value: 'Bundled Hat',
+                                valueId: 3,
+                                attributeId: 'attr-picklist',
+                            },
+                        ],
+                    },
                     {
                         ...getPhysicalItem(),
                         id: '777',
                         name: 'Bundled Hat',
                         parentId: '666',
+                        addedByAttributeId: 'attr-picklist',
                         stockPosition: {
                             quantityBackordered: 2,
                             quantityOnHand: 3,
@@ -349,14 +362,17 @@ describe('OrderSummaryItems', () => {
             },
         };
 
-        it('renders the bundled child nested under its parent', () => {
+        it('renders the parent item and hides the bundle child as a separate line item', () => {
             enableBundleExperiment();
 
             renderOrderSummaryItems(bundleProps);
 
-            expect(screen.getByTestId('cart-item-bundled-item-name')).toHaveTextContent(
-                'Bundled Hat',
-            );
+            expect(
+                screen.getByRole('heading', { name: `1 x ${getPhysicalItem().name}` }),
+            ).toBeInTheDocument();
+            expect(
+                screen.queryByRole('heading', { name: '1 x Bundled Hat' }),
+            ).not.toBeInTheDocument();
         });
 
         it('shows the bundled child backorder details when the toggle is turned on', async () => {

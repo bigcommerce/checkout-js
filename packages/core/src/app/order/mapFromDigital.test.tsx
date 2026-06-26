@@ -28,12 +28,19 @@ describe('mapFromDigital()', () => {
     });
 
     describe('with pickListExperimentEnabled', () => {
-        it('filters out options whose attributeId matches a bundled item', () => {
+        it('marks pick-list option as isMainBundledItem true with stockPosition', () => {
             const bundledChild = {
                 ...getPhysicalItem(),
                 id: '777',
+                name: 'Bundled Product',
                 parentId: '667',
                 addedByAttributeId: 'attr-picklist',
+                stockPosition: {
+                    quantityBackordered: 2,
+                    quantityOnHand: 3,
+                    quantityOutOfStock: 0,
+                    backorderMessage: 'Ships in 5 days',
+                },
             } as unknown as PhysicalItem;
 
             const item = {
@@ -66,23 +73,46 @@ describe('mapFromDigital()', () => {
                 (o) => o.testId === 'cart-item-product-option',
             );
 
-            expect(itemOptions).toHaveLength(1);
-            expect(itemOptions[0].content).toBe('Color: Red');
+            expect(itemOptions).toHaveLength(2);
+
+            const pickListOption = itemOptions.find((o) => o.name === 'Pick List Option:');
+            const colorOption = itemOptions.find((o) => o.name === 'Color:');
+
+            expect(pickListOption?.isMainBundledItem).toBe(true);
+            expect(pickListOption?.stockPosition?.quantityBackordered).toBe(2);
+            expect(pickListOption?.stockPosition?.quantityOnHand).toBe(3);
+            expect(pickListOption?.stockPosition?.backorderMessage).toBe('Ships in 5 days');
+
+            expect(colorOption?.isMainBundledItem).toBe(false);
+            expect(colorOption?.stockPosition).toBeUndefined();
         });
 
-        it('returns bundledItems with backorder details from stockPosition', () => {
+        it('preserves options without attributeId when experiment is enabled', () => {
+            const item = {
+                ...getDigitalItem(),
+                id: '667',
+                options: [
+                    { name: 'Size', nameId: 10, value: 'Large', valueId: 1 },
+                ] as LineItemOption[],
+            };
+
+            const bundleItemsMap = new Map<string | number, PhysicalItem[]>();
+
+            const { productOptions = [] } = mapFromDigital(item, bundleItemsMap, true);
+            const itemOptions = productOptions.filter(
+                (o) => o.testId === 'cart-item-product-option',
+            );
+
+            expect(itemOptions).toHaveLength(1);
+            expect(itemOptions[0].isMainBundledItem).toBe(false);
+        });
+
+        it('does not return bundledItems', () => {
             const bundledChild = {
                 ...getPhysicalItem(),
                 id: '777',
-                name: 'Bundled Product',
                 parentId: '667',
                 addedByAttributeId: 'attr-picklist',
-                stockPosition: {
-                    quantityBackordered: 2,
-                    quantityOnHand: 3,
-                    quantityOutOfStock: 0,
-                    backorderMessage: 'Ships in 5 days',
-                },
             } as unknown as PhysicalItem;
 
             const item = { ...getDigitalItem(), id: '667', options: [] as LineItemOption[] };
@@ -93,69 +123,14 @@ describe('mapFromDigital()', () => {
 
             const { bundledItems } = mapFromDigital(item, bundleItemsMap, true);
 
-            expect(bundledItems).toHaveLength(1);
-            expect(bundledItems![0].id).toBe('777');
-            expect(bundledItems![0].name).toBe('Bundled Product');
-            expect(bundledItems![0].quantityBackordered).toBe(2);
-            expect(bundledItems![0].quantityOnHand).toBe(3);
-            expect(bundledItems![0].backorderMessage).toBe('Ships in 5 days');
-        });
-
-        it('returns bundledItems with bundleLabel from the matching parent option', () => {
-            const bundledChild = {
-                ...getPhysicalItem(),
-                id: '777',
-                name: 'Bundled Product',
-                parentId: '667',
-                addedByAttributeId: 'attr-picklist',
-            } as unknown as PhysicalItem;
-
-            const item = {
-                ...getDigitalItem(),
-                id: '667',
-                options: [
-                    {
-                        name: 'Pick List Option',
-                        nameId: 11,
-                        value: 'Item A',
-                        valueId: 2,
-                        attributeId: 'attr-picklist',
-                    },
-                ] as LineItemOption[],
-            };
-
-            const bundleItemsMap = new Map<string | number, PhysicalItem[]>([
-                ['667', [bundledChild]],
-            ]);
-
-            const { bundledItems } = mapFromDigital(item, bundleItemsMap, true);
-
-            expect(bundledItems).toHaveLength(1);
-            expect(bundledItems![0].bundleLabel).toBe('Pick List Option');
-        });
-
-        it('returns undefined bundledItems when item has no children in the map', () => {
-            const item = { ...getDigitalItem(), id: '667' };
-            const bundleItemsMap = new Map<string | number, PhysicalItem[]>();
-
-            const { bundledItems } = mapFromDigital(item, bundleItemsMap, true);
-
             expect(bundledItems).toBeUndefined();
         });
     });
 
     describe('without pickListExperimentEnabled', () => {
-        it('does not filter options and returns no bundledItems', () => {
-            const bundledChild = {
-                ...getPhysicalItem(),
-                id: '777',
-                parentId: '667',
-                addedByAttributeId: 'attr-picklist',
-            } as unknown as PhysicalItem;
-
+        it('maps all options without colon separator and does not set name/value', () => {
             const item = {
                 ...getDigitalItem(),
-                id: '667',
                 options: [
                     {
                         name: 'Pick List Option',
@@ -167,19 +142,30 @@ describe('mapFromDigital()', () => {
                 ] as LineItemOption[],
             };
 
+            const { productOptions = [] } = mapFromDigital(item, undefined, false);
+            const itemOption = productOptions.find((o) => o.testId === 'cart-item-product-option');
+
+            expect(itemOption?.content).toBe('Pick List Option Item A');
+            expect(itemOption?.name).toBeUndefined();
+            expect(itemOption?.value).toBeUndefined();
+        });
+
+        it('returns no bundledItems even when map has children', () => {
+            const bundledChild = {
+                ...getPhysicalItem(),
+                id: '777',
+                parentId: '667',
+                addedByAttributeId: 'attr-picklist',
+            } as unknown as PhysicalItem;
+
+            const item = { ...getDigitalItem(), id: '667', options: [] as LineItemOption[] };
+
             const bundleItemsMap = new Map<string | number, PhysicalItem[]>([
                 ['667', [bundledChild]],
             ]);
 
-            const { productOptions = [], bundledItems } = mapFromDigital(
-                item,
-                bundleItemsMap,
-                false,
-            );
+            const { bundledItems } = mapFromDigital(item, bundleItemsMap, false);
 
-            expect(
-                productOptions.filter((o) => o.testId === 'cart-item-product-option'),
-            ).toHaveLength(1);
             expect(bundledItems).toBeUndefined();
         });
     });

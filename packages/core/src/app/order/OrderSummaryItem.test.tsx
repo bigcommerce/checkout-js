@@ -114,24 +114,8 @@ describe('OrderSummaryItem', () => {
         });
     });
 
-    describe('when bundledItems are present', () => {
-        const bundledItems = [
-            {
-                id: 'b1',
-                name: 'Bundled Hat',
-                bundleLabel: 'Accessories',
-                quantityBackordered: 2,
-                quantityOnHand: 3,
-                backorderMessage: 'Ships in 5 days',
-            },
-            {
-                id: 'b2',
-                name: 'Bundled Scarf',
-                bundleLabel: 'Accessories',
-            },
-        ];
-
-        it('renders each bundled item name with its bundle label', () => {
+    describe('when productOptions include an isMainBundledItem option', () => {
+        it('renders a pick-list option name in bold', () => {
             render(
                 <OrderSummaryItem
                     orderItem={{
@@ -139,86 +123,36 @@ describe('OrderSummaryItem', () => {
                         id: 'foo',
                         name: 'Product',
                         quantity: 1,
-                        bundledItems,
+                        productOptions: [
+                            {
+                                testId: 'cart-item-product-option',
+                                content: 'Pick List: Item A',
+                                name: 'Pick List:',
+                                value: 'Item A',
+                                isMainBundledItem: true,
+                            },
+                            {
+                                testId: 'cart-item-product-option',
+                                content: 'Color: Blue',
+                                name: 'Color:',
+                                value: 'Blue',
+                                isMainBundledItem: false,
+                            },
+                        ],
                     }}
                     shouldExpandBackorderDetails={false}
                 />,
             );
 
-            const nameEls = screen.getAllByTestId('cart-item-bundled-item-name');
+            const options = screen.getAllByTestId('cart-item-product-option');
 
-            expect(nameEls).toHaveLength(2);
-            expect(nameEls[0]).toHaveTextContent('Accessories: Bundled Hat');
-            expect(nameEls[1]).toHaveTextContent('Accessories: Bundled Scarf');
-        });
-
-        it('falls back to the default bundle label when a bundled item has no bundleLabel', () => {
-            render(
-                <OrderSummaryItem
-                    orderItem={{
-                        amount: 10,
-                        id: 'foo',
-                        name: 'Product',
-                        quantity: 1,
-                        bundledItems: [{ id: 'b1', name: 'Bundled Hat' }],
-                    }}
-                    shouldExpandBackorderDetails={false}
-                />,
-            );
-
-            const nameEl = screen.getByTestId('cart-item-bundled-item-name');
-
-            expect(nameEl).toHaveTextContent('Bundle: Bundled Hat');
-            expect(nameEl).not.toHaveTextContent('Bundle::');
-        });
-
-        it('renders nothing for bundled items section when bundledItems is undefined', () => {
-            render(
-                <OrderSummaryItem
-                    orderItem={{ amount: 10, id: 'foo', name: 'Product', quantity: 1 }}
-                    shouldExpandBackorderDetails={false}
-                />,
-            );
-
-            expect(screen.queryByTestId('cart-item-bundled-item-name')).not.toBeInTheDocument();
-        });
-
-        it('renders bundled items in a <ul> element', () => {
-            render(
-                <OrderSummaryItem
-                    orderItem={{
-                        amount: 10,
-                        id: 'foo',
-                        name: 'Product',
-                        quantity: 1,
-                        bundledItems,
-                    }}
-                    shouldExpandBackorderDetails={false}
-                />,
-            );
-
-            expect(screen.getByRole('list')).toBeInTheDocument();
-        });
-
-        it('does not render the bundled items container when bundledItems is an empty array', () => {
-            render(
-                <OrderSummaryItem
-                    orderItem={{
-                        amount: 10,
-                        id: 'foo',
-                        name: 'Product',
-                        quantity: 1,
-                        bundledItems: [],
-                    }}
-                    shouldExpandBackorderDetails={false}
-                />,
-            );
-
-            expect(screen.queryByRole('list')).not.toBeInTheDocument();
+            expect(options[0].querySelector('.body-bold')).toBeInTheDocument();
+            expect(options[0]).toHaveTextContent('Pick List: Item A');
+            expect(options[1].querySelector('.body-bold')).not.toBeInTheDocument();
         });
     });
 
-    describe('when bundled items are backordered and details are expanded', () => {
+    describe('when a product option has stockPosition backorder details', () => {
         let checkoutService: CheckoutService;
 
         const renderWithConfig = (shouldExpandBackorderDetails: boolean) =>
@@ -231,14 +165,18 @@ describe('OrderSummaryItem', () => {
                                 id: 'foo',
                                 name: 'Product',
                                 quantity: 1,
-                                bundledItems: [
+                                productOptions: [
                                     {
-                                        id: 'b1',
-                                        name: 'Bundled Hat',
-                                        bundleLabel: 'Accessories',
-                                        quantityBackordered: 2,
-                                        quantityOnHand: 3,
-                                        backorderMessage: 'Ships in 5 days',
+                                        testId: 'cart-item-product-option',
+                                        content: 'Pick List: Item A',
+                                        name: 'Pick List:',
+                                        value: 'Item A',
+                                        isMainBundledItem: true,
+                                        stockPosition: {
+                                            quantityBackordered: 2,
+                                            quantityOnHand: 3,
+                                            backorderMessage: 'Ships in 5 days',
+                                        },
                                     },
                                 ],
                             }}
@@ -266,7 +204,7 @@ describe('OrderSummaryItem', () => {
             });
         });
 
-        it('renders the backorder quantity and message for the bundled child item', () => {
+        it('renders backorder quantity and message when expanded', () => {
             renderWithConfig(true);
 
             expect(screen.getByTestId('cart-item-backorder-qty')).toBeInTheDocument();
@@ -275,7 +213,7 @@ describe('OrderSummaryItem', () => {
             );
         });
 
-        it('does not render the bundled child backorder details when collapsed', () => {
+        it('does not render backorder details when collapsed', () => {
             renderWithConfig(false);
 
             expect(screen.queryByTestId('cart-item-backorder-qty')).not.toBeInTheDocument();
