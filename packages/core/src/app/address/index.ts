@@ -11,7 +11,6 @@ export { default as isValidCustomerAddress } from './isValidCustomerAddress';
 export { default as isEqualAddress } from './isEqualAddress';
 export { default as setDefaultAddress } from './setDefaultAddress';
 export { default as getAddressWithLabel } from './getAddressWithLabel';
-export { default as getAddressWithCustomerExtraFields } from './getAddressWithCustomerExtraFields';
 export { reorderAddressFormFields } from './reorderAddressFormFields';
 export {
     default as getAddressFormFieldsValidationSchema,
