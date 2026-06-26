@@ -17,7 +17,7 @@ import {
     IconChevronDown,
     IconChevronUp,
     isSmallScreen,
-    Switch,
+    ToggleSwitch,
 } from '@bigcommerce/checkout/ui';
 
 import { isExperimentEnabled } from '../common/utility';
@@ -81,18 +81,18 @@ const SummaryHeading = ({
     displayLineItemsCount,
     nonBundledItems,
     showBackorderDetails,
-    showBackorderToggle,
+    showBackorderToggleSwitch,
     toggleBackorderDetails,
 }: {
     displayLineItemsCount: boolean;
     nonBundledItems: LineItemMap;
     showBackorderDetails: boolean;
-    showBackorderToggle: boolean;
+    showBackorderToggleSwitch: boolean;
     toggleBackorderDetails(): void;
 }): ReactElement => (
     <div
         className={classNames('cart-section-heading-container', {
-            'cart-section-heading-container--switch-only': !displayLineItemsCount,
+            'cart-section-heading-container--toggle-only': !displayLineItemsCount,
         })}
     >
         {displayLineItemsCount && (
@@ -106,8 +106,8 @@ const SummaryHeading = ({
                 />
             </h3>
         )}
-        {showBackorderToggle && (
-            <Switch
+        {showBackorderToggleSwitch && (
+            <ToggleSwitch
                 checked={showBackorderDetails}
                 label={<TranslatedString id="cart.backorder_details" />}
                 onChange={toggleBackorderDetails}
@@ -161,15 +161,15 @@ const ProductList = ({
 
 const CartActions = ({
     isExpanded,
-    onToggle,
+    onToggleSwitch,
 }: {
     isExpanded: boolean;
-    onToggle(): void;
+    onToggleSwitch(): void;
 }): ReactElement => (
     <div className="cart-actions">
         <button
             className="button button--tertiary button--tiny optimizedCheckout-buttonSecondary sub-text-medium"
-            onClick={onToggle}
+            onClick={onToggleSwitch}
             type="button"
         >
             {isExpanded ? (
@@ -218,7 +218,7 @@ const OrderSummaryItems = ({
     // On the mobile cart modal, bundle children are not rendered while the bundle experiment is
     // off, so gate the backorder toggle behind the experiment there to stop it appearing when
     // only hidden bundle children are backordered.
-    const showBackorderToggle =
+    const showBackorderToggleSwitch =
         shouldDisplayBackorderDetails &&
         backorderCount > 0 &&
         (!isMobileCartModal || pickListExperimentEnabled);
@@ -226,7 +226,7 @@ const OrderSummaryItems = ({
     // Only expand line-item backorder details when the toggle is actually available; otherwise the
     // persisted (module-scoped) selection could expand details on a surface where the toggle is
     // hidden (e.g. the mobile cart modal with the bundle experiment off).
-    const expandBackorderDetails = showBackorderToggle && showBackorderDetails;
+    const expandBackorderDetails = showBackorderToggleSwitch && showBackorderDetails;
 
     const { nonBundledItems, bundleItemsMap } = pickListExperimentEnabled
         ? removeAndBundleItemsTogether(items)
@@ -244,16 +244,16 @@ const OrderSummaryItems = ({
         [nonBundledItems],
     );
     const shouldShowActions = getLineItemCount() > collapsedLimit;
-    const handleToggle = () => setIsExpanded(!isExpanded);
+    const handleToggleSwitch = () => setIsExpanded(!isExpanded);
 
     return (
         <>
-            {(displayLineItemsCount || showBackorderToggle) && (
+            {(displayLineItemsCount || showBackorderToggleSwitch) && (
                 <SummaryHeading
                     displayLineItemsCount={displayLineItemsCount}
                     nonBundledItems={nonBundledItems}
                     showBackorderDetails={showBackorderDetails}
-                    showBackorderToggle={showBackorderToggle}
+                    showBackorderToggleSwitch={showBackorderToggleSwitch}
                     toggleBackorderDetails={toggleBackorderDetails}
                 />
             )}
@@ -266,7 +266,7 @@ const OrderSummaryItems = ({
                 showBackorderDetails={expandBackorderDetails}
             />
 
-            {shouldShowActions && <CartActions isExpanded={isExpanded} onToggle={handleToggle} />}
+            {shouldShowActions && <CartActions isExpanded={isExpanded} onToggleSwitch={handleToggleSwitch} />}
         </>
     );
 };

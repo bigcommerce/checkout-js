@@ -1,6 +1,6 @@
 import React, { type FunctionComponent, memo, useCallback, useId } from 'react';
 
-export interface SwitchProps {
+export interface ToggleSwitchProps {
     checked: boolean;
     label: React.ReactNode;
     onChange?: (checked: boolean, event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -9,7 +9,7 @@ export interface SwitchProps {
     testId?: string;
 }
 
-export const Switch: FunctionComponent<SwitchProps> = memo(
+export const ToggleSwitch: FunctionComponent<ToggleSwitchProps> = memo(
     ({ checked, onChange, label, id, name, testId }) => {
         const autoId = useId();
         const inputId = id ?? autoId;

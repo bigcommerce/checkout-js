@@ -74,7 +74,7 @@
     justify-content: space-between;
     margin-bottom: spacing("single");
 
-    &--switch-only {
+    &--toggle-only {
         justify-content: flex-end;
     }
 
@@ -82,7 +82,7 @@
         margin-bottom: 0;
     }
 
-    .bc-switch {
+    .bc-toggle {
         margin-right: -(spacing("half"));
     }
 }

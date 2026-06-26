@@ -124,4 +124,4 @@ export {
     isMobileView,
     isSmallScreen,
 } from './responsive';
-export { Switch } from './switch';
+export { ToggleSwitch } from './switch';
