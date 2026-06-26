@@ -80,8 +80,6 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }: BillingProps):
     // Below constants are for <BillingForm />'s HOC props
     const customerMessage = checkout.customerMessage;
     const methodId = getBillingMethodId(checkout);
-    // `extraFields` now round-trip on the billing address from checkout state,
-    // so we no longer need to graft them from the customer address book.
     const billingAddress = getBillingAddress();
 
     const getFields = useCallback(

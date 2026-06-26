@@ -12,6 +12,7 @@ import {
     AddressType,
     isValidAddress,
     mapAddressFromFormValues,
+    stripCustomerAddressFields,
     stripExtraFieldsFromAddress,
 } from '../address';
 import { ErrorModal } from '../common/error';
@@ -69,10 +70,12 @@ const ConsignmentAddressSelector = ({
             return onUnhandledError(new AssignItemInvalidAddressError());
         }
 
+        const consignmentAddress = stripCustomerAddressFields(address);
+
         if (!consignment) {
             setConsignmentRequest?.({
-                address,
-                shippingAddress: address,
+                address: consignmentAddress,
+                shippingAddress: consignmentAddress,
                 lineItems: [],
             });
 
@@ -84,8 +87,8 @@ const ConsignmentAddressSelector = ({
                 data: { getConsignments },
             } = await updateConsignment({
                 id: consignment.id,
-                address,
-                shippingAddress: address,
+                address: consignmentAddress,
+                shippingAddress: consignmentAddress,
                 lineItems: consignment.lineItems.map(({ id, quantity }) => ({
                     itemId: id,
                     quantity,
