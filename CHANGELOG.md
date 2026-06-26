@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.822.0](https://github.com/bigcommerce/checkout-js/compare/v1.821.0...v1.822.0) (2026-06-26)
+
+
+### Features
+
+* **payment:** PAYPAL-6671 added declined instrument error ([0aa4b06](https://github.com/bigcommerce/checkout-js/commit/0aa4b067c49c9ec84138e6dbf24b5287ce55a6f7))
+
 ## [1.821.0](https://github.com/bigcommerce/checkout-js/compare/v1.820.2...v1.821.0) (2026-06-26)
 
 
