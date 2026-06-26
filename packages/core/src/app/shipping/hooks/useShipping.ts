@@ -211,7 +211,6 @@ export const useShipping = () => {
         loadShippingOptions: checkoutService.loadShippingOptions,
         methodId,
         providerWithCustomCheckout,
-        getShippingAddress,
         shippingAddress,
         shouldShowMultiShipping,
         shouldShowOrderComments: enableOrderComments,

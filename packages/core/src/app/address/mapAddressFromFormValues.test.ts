@@ -30,8 +30,8 @@ describe('mapAddressFromFormValues', () => {
         expect(result.firstName).toBe(getShippingAddress().firstName);
         expect(result.lastName).toBe(getShippingAddress().lastName);
         expect(result.extraFields).toEqual([
-            { fieldId: 'b2bExtraField_100', fieldValue: 'Acme Corp' },
-            { fieldId: 'b2bExtraField_200', fieldValue: 'Engineering' },
+            { fieldId: '100', fieldValue: 'Acme Corp' },
+            { fieldId: '200', fieldValue: 'Engineering' },
         ]);
     });
 
