@@ -18,7 +18,10 @@ export default function mapToOrderRequestBody(
         return {};
     }
 
-    const { paymentProviderRadio, methodIdOverride, ...rest } = values;
+    // `selectedSubMethodId` is a READ-ONLY channel used only for the STRIPE-1525
+    // timing signal (consumed by `Payment.tsx handleSubmit`). It must never be
+    // included in the submitted order body, so it is destructured out here.
+    const { paymentProviderRadio, methodIdOverride, selectedSubMethodId, ...rest } = values;
     const { methodId: baseMethodId, gatewayId } = parseUniquePaymentMethodId(paymentProviderRadio);
     const methodId =
         typeof methodIdOverride === 'string' ? methodIdOverride || baseMethodId : baseMethodId;

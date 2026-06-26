@@ -4,6 +4,7 @@ import {
     type CartStockPositionsChangedError,
     type CheckoutSelectors,
     type CheckoutService,
+    type CheckoutSettings,
     type Consignment,
     type FormField,
     type OrderFinalizeOptions,
@@ -62,6 +63,7 @@ import { buildB2BMetadataOptions, clearB2BMetadataStorage } from './b2bMetadata'
 import CartStockPositionsChangedModal from './CartStockPositionsChangedModal';
 import mapSubmitOrderErrorMessage, { mapSubmitOrderErrorTitle } from './mapSubmitOrderErrorMessage';
 import mapToOrderRequestBody from './mapToOrderRequestBody';
+import reportOrderPlacementStart from './OrderPlacementTiming';
 import PaymentContext from './PaymentContext';
 import PaymentForm from './PaymentForm';
 import { getUniquePaymentMethodId, PaymentMethodProviderType } from './paymentMethod';
@@ -87,6 +89,8 @@ interface WithCheckoutPaymentProps {
     availableStoreCredit: number;
     b2bToken?: string;
     cart?: Cart;
+    checkoutId?: string;
+    checkoutSettings?: CheckoutSettings;
     consignments?: Consignment[];
     cartUrl: string;
     defaultMethod?: PaymentMethod;
@@ -408,6 +412,8 @@ const Payment = (
     const handleSubmit = useCallback(
         async (values: PaymentFormValues) => {
             const {
+                checkoutId,
+                checkoutSettings,
                 defaultMethod,
                 loadPaymentMethods,
                 isPaymentDataRequired,
@@ -422,6 +428,27 @@ const Payment = (
             const { selectedMethod = defaultMethod, submitFunctions } = state;
 
             analyticsTracker.clickPayButton({ shouldCreateAccount: values.shouldCreateAccount });
+
+            if (selectedMethod) {
+                // STRIPE-1525: prefer the shopper-selected Stripe sub-method (e.g.
+                // `card`, `us_bank_account`) over the generic method id (e.g.
+                // `optimized_checkout`) when available. `selectedSubMethodId` is a
+                // READ-ONLY channel set by the Stripe OCS/CS widget and is NOT part of
+                // the submitted order body. Falls back to the generic id when absent.
+                const reportedMethodId =
+                    (typeof values.selectedSubMethodId === 'string' &&
+                        values.selectedSubMethodId) ||
+                    selectedMethod.id;
+
+                // Awaited so the server beacon's session write commits before submitOrder runs
+                // (avoids the concurrent session-write race). Self-guarded; never throws.
+                await reportOrderPlacementStart({
+                    checkoutSettings,
+                    checkoutId,
+                    provider: selectedMethod.gateway ?? selectedMethod.id,
+                    methodId: reportedMethodId,
+                });
+            }
 
             const customSubmit =
                 selectedMethod &&
@@ -803,6 +830,8 @@ export function mapToPaymentProps(
         addressExtraFields,
         b2bToken: checkoutState.data.getB2BToken(),
         cart: getCart(),
+        checkoutId: checkout.id,
+        checkoutSettings,
         consignments,
         cartUrl: config.links.cartLink,
         clearError: checkoutService.clearError,

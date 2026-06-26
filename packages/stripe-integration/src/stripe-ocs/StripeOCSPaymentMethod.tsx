@@ -78,8 +78,10 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         }
 
         setSelectedPaymentMethodId(selectedItemId);
+        // STRIPE-1525: clear the lifted sub-method when this Stripe item is deselected.
+        paymentForm.setFieldValue('selectedSubMethodId', undefined);
         collapseStripeElement.current?.();
-    }, [selectedItemId, methodSelector]);
+    }, [selectedItemId, methodSelector, paymentForm]);
 
     useEffect(() => {
         if (selectedPaymentMethodId !== methodSelector) {
@@ -101,6 +103,30 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         setSubmit,
         setValidationSchema,
     } = paymentForm;
+
+    // STRIPE-1525: lift the shopper-selected Stripe sub-method (e.g. `card`,
+    // `us_bank_account`) into a READ-ONLY Formik field so `Payment.tsx
+    // handleSubmit` can use it for the timing signal. This is NOT submitted with
+    // the order (see `mapToOrderRequestBody`, which destructures it out).
+    // NOTE: `selectedSubMethod` is the NEW optional 2nd arg of the SDK's
+    // `paymentMethodSelect` callback. The installed SDK type does not declare it
+    // yet, so it is typed inline and will be `undefined` at runtime until the SDK
+    // is republished — falling back to the generic method id in that case.
+    const handlePaymentMethodSelect = useCallback(
+        (methodId: string, selectedSubMethod?: string) => {
+            setSelectedPaymentMethodId(methodId);
+            setFieldValue('selectedSubMethodId', selectedSubMethod);
+        },
+        [setFieldValue],
+    );
+
+    useEffect(() => {
+        return () => {
+            setFieldValue('selectedSubMethodId', undefined);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const instruments = checkoutState.data.getInstruments(method) || [];
     const {
         data: { getCheckout, isPaymentDataRequired },
@@ -135,7 +161,9 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                     fonts: getFonts(),
                     onError: onUnhandledError,
                     render: renderSubmitButton,
-                    paymentMethodSelect: setSelectedPaymentMethodId,
+                    // STRIPE-1525: typed inline because the installed SDK does not yet
+                    // declare the optional 2nd `selectedSubMethod` arg (ships separately).
+                    paymentMethodSelect: handlePaymentMethodSelect,
                     handleClosePaymentMethod: (collapseElement: () => void) => {
                         collapseStripeElement.current = collapseElement;
                     },
@@ -153,7 +181,7 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             checkoutService,
             onUnhandledError,
             renderSubmitButton,
-            setSelectedPaymentMethodId,
+            handlePaymentMethodSelect,
             setIsOCSLoading,
         ],
     );

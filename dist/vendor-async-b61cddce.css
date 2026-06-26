@@ -977,7 +977,7 @@
       }
     }
   }
-  .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])) {
+  .iti__country-container:not(:has(+ input[disabled]), :has(+ input[readonly])) {
     .iti__selected-country-primary:hover,
     .iti__selected-country:has(+ .iti__dropdown-content:hover) .iti__selected-country-primary {
       background-color: var(--iti-hover-color);
