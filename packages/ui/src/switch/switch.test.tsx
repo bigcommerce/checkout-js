@@ -3,7 +3,7 @@ import React from 'react';
 
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import { Switch } from './switch';
+import { Switch } from './toggle';
 
 describe('Switch', () => {
     it('renders an input with role="switch"', () => {

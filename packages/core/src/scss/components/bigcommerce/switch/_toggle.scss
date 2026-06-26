@@ -1,0 +1,76 @@
+// =============================================================================
+// TOGGLE COMPONENT
+// =============================================================================
+
+// geometry
+$toggle-w:        remCalc(36px);
+$toggle-h:        remCalc(20px);
+$toggle-pad:      remCalc(2px);
+$toggle-thumb-sz: remCalc(16px);
+$toggle-travel:   remCalc(16px);
+
+.bc-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: $fontFamily-sans;
+    cursor: pointer;
+    user-select: none;
+
+    &__input {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        padding: 0;
+        border: 0;
+        clip: rect(0 0 0 0);
+        clip-path: inset(50%);
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    &__track {
+        position: relative;
+        flex: none;
+        width: $toggle-w;
+        height: $toggle-h;
+        border-radius: 999px;
+        background: rgba(color("greys", "darkest"), 0.28);
+        transition: background .2s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    &__thumb {
+        position: absolute;
+        top: $toggle-pad;
+        left: $toggle-pad;
+        width: $toggle-thumb-sz;
+        height: $toggle-thumb-sz;
+        border-radius: 50%;
+        background: color("whites", "bright");
+        box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+        transition: transform .18s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    // --- checked ------------------------------------------------------------
+    &__input:checked + .bc-toggle__track {
+        background: $color-black;
+    }
+    &__input:checked + .bc-toggle__track .bc-toggle__thumb {
+        transform: translateX($toggle-travel);
+    }
+
+    // --- focus ring (keyboard only) ----------------------------------------
+    &__input:focus-visible + .bc-toggle__track {
+        box-shadow: 0 0 0 2px #fff, 0 0 0 4px $color-highlight;
+    }
+
+    // --- disabled -----------------------------------------------------------
+    &__input:disabled + .bc-toggle__track {
+        opacity: .45;
+        cursor: not-allowed;
+    }
+    &:has(&__input:disabled) {
+        cursor: not-allowed;
+    }
+}
