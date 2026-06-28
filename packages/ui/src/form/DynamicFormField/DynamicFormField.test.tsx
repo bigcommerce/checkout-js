@@ -13,6 +13,7 @@ import DynamicFormField from './DynamicFormField';
 
 const mockIsValidNumber = jest.fn();
 const mockSetCountry = jest.fn();
+const mockGetSelectedCountryData = jest.fn();
 
 jest.mock('@intl-tel-input/react', () => ({
     __esModule: true,
@@ -26,6 +27,7 @@ jest.mock('@intl-tel-input/react', () => ({
     >(({ inputProps, onChangeNumber, value }, ref) => {
         useImperativeHandle(ref, () => ({
             getInstance: () => ({
+                getSelectedCountryData: mockGetSelectedCountryData,
                 isValidNumber: mockIsValidNumber,
                 setCountry: mockSetCountry,
             }),
@@ -204,15 +206,17 @@ describe('DynamicFormField Component', () => {
             );
 
         beforeEach(() => {
+            mockGetSelectedCountryData.mockClear();
             mockIsValidNumber.mockClear();
             mockSetCountry.mockClear();
         });
 
         it('shows a validation error when the phone number is invalid and the experiment is enabled', async () => {
+            mockGetSelectedCountryData.mockReturnValue({ iso2: 'us' });
             mockIsValidNumber.mockReturnValue(false);
 
             renderMockFormField({
-                field: phoneFieldMock,
+                field: { ...phoneFieldMock, required: true },
                 isNewPhoneValidationExperimentEnabled: true,
             });
 
@@ -227,10 +231,11 @@ describe('DynamicFormField Component', () => {
         });
 
         it('does not show a validation error when the phone number is valid', async () => {
+            mockGetSelectedCountryData.mockReturnValue({ iso2: 'us' });
             mockIsValidNumber.mockReturnValue(true);
 
             renderMockFormField({
-                field: phoneFieldMock,
+                field: { ...phoneFieldMock, required: true },
                 isNewPhoneValidationExperimentEnabled: true,
             });
 

@@ -126,6 +126,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
                 onChange={onChange}
                 options={options}
                 placeholder={placeholder}
+                required={required}
                 selectedCountry={selectedCountry}
             />
         </div>
