@@ -92,7 +92,7 @@ const SummaryHeading = ({
 }): ReactElement => (
     <div
         className={classNames('cart-section-heading-container', {
-            'cart-section-heading-container--toggle-only': !displayLineItemsCount,
+            'cart-section-heading-container--switch-only': !displayLineItemsCount,
         })}
     >
         {displayLineItemsCount && (
@@ -266,9 +266,7 @@ const OrderSummaryItems = ({
                 showBackorderDetails={expandBackorderDetails}
             />
 
-            {shouldShowActions && (
-                <CartActions isExpanded={isExpanded} onSwitch={handleSwitch} />
-            )}
+            {shouldShowActions && <CartActions isExpanded={isExpanded} onSwitch={handleSwitch} />}
         </>
     );
 };
