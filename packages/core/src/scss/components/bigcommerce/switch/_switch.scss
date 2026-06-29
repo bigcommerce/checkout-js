@@ -9,7 +9,7 @@ $switch-pad:      remCalc(2px);
 $switch-thumb-sz: remCalc(16px);
 $switch-travel:   remCalc(16px);
 
-.bc-switch {
+.switch {
     display: inline-flex;
     align-items: center;
     gap: remCalc(6px);
@@ -53,20 +53,20 @@ $switch-travel:   remCalc(16px);
     }
 
     // --- checked ------------------------------------------------------------
-    &__input:checked + .bc-switch__track {
+    &__input:checked + .switch__track {
         background: $color-black;
     }
-    &__input:checked + .bc-switch__track .bc-switch__thumb {
+    &__input:checked + .switch__track .switch__thumb {
         transform: translateX($switch-travel);
     }
 
     // --- focus ring (keyboard only) ----------------------------------------
-    &__input:focus-visible + .bc-switch__track {
+    &__input:focus-visible + .switch__track {
         box-shadow: 0 0 0 2px #fff, 0 0 0 4px $color-highlight;
     }
 
     // --- disabled -----------------------------------------------------------
-    &__input:disabled + .bc-switch__track {
+    &__input:disabled + .switch__track {
         opacity: .45;
         cursor: not-allowed;
     }
@@ -76,6 +76,6 @@ $switch-travel:   remCalc(16px);
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .bc-switch__track,
-    .bc-switch__thumb { transition: none; }
+    .switch__track,
+    .switch__thumb { transition: none; }
 }
