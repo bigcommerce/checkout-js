@@ -123,9 +123,7 @@ const ConsignmentAddressSelector = ({
 
         await handleSelectAddress(address);
 
-        // Skip the BC customer address-book save when the B2B company address book
-        // is in use: that book is managed by B2B and the API won't accept the
-        // extra fields anyway. Otherwise save without extra fields, as before.
+        // Skip the BC customer address-book save when the B2B company address book is in use
         if (!isGuest && !hasCompanyAddressBook) {
             try {
                 await createCustomerAddress(address);

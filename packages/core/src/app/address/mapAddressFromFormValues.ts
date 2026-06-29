@@ -28,6 +28,10 @@ export default function mapAddressFromFormValues(
         ...address,
         shouldSaveAddress,
         customFields: mapCustomFormFieldsFromFormValues(customFields),
-        extraFields: mapAddressExtraFieldsFromFormValues(extraFields),
+        // Only carries extra-field values when the form collected them, which only
+        // happens when the `hasAddressExtraFields` capability renders the inputs.
+        // This keeps both billing and shipping/consignment calls sending extra
+        // fields from a single place, and is a no-op for B2C.
+        ...(extraFields ? { extraFields: mapAddressExtraFieldsFromFormValues(extraFields) } : {}),
     };
 }
