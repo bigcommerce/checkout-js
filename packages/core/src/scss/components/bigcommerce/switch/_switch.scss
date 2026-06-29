@@ -2,97 +2,80 @@
 // SWITCH COMPONENT
 // =============================================================================
 
-$switch-onColor: color("primary");
+// geometry
+$switch-w:        remCalc(36px);
+$switch-h:        remCalc(20px);
+$switch-pad:      remCalc(2px);
+$switch-thumb-sz: remCalc(16px);
+$switch-travel:   remCalc(16px);
 
-.bc-switch {
+.switch {
     display: inline-flex;
     align-items: center;
+    gap: remCalc(6px);
+    font-family: $fontFamily-sans;
     cursor: pointer;
     user-select: none;
 
-    &--label-start { flex-direction: row-reverse; }
-
-    &__control {
-        position: relative;
-        flex: 0 0 auto;
-        display: inline-block;
-        width: remCalc(58px);
-        height: remCalc(38px);
-    }
-
     &__input {
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        opacity: 0;
-        cursor: inherit;
-        z-index: 2;
+        width: remCalc(1px);
+        height: remCalc(1px);
+        margin: remCalc(-1px);
+        padding: 0;
+        border: 0;
+        clip: rect(0 0 0 0);
+        clip-path: inset(50%);
+        overflow: hidden;
+        white-space: nowrap;
     }
 
-    // track: centred pill behind the thumb
     &__track {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: remCalc(34px);
-        height: remCalc(14px);
-        border-radius: 999px;
-        background-color: rgba(color("primary"), 0.30);
-        transition: background-color 200ms ease, opacity 200ms ease;
-    }
-
-    // base: padded layer carrying thumb + halo; slides on toggle
-    &__base {
-        position: absolute;
-        top: 0;
-        left: 0;
-        padding: remCalc(9px);
-        pointer-events: none;
-        transition: transform 180ms cubic-bezier(0.4, 0, 0.2, 1);
-
-        &::before {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: remCalc(19px);
-            width: remCalc(38px);
-            height: remCalc(38px);
-            border-radius: 50%;
-            background-color: rgba($switch-onColor, 0.12);
-            transform: translate(-50%, -50%) scale(0);
-            transition: transform 150ms ease;
-        }
+        position: relative;
+        flex: none;
+        width: $switch-w;
+        height: $switch-h;
+        border-radius: remCalc(999px);
+        background: rgba(color("greys", "darkest"), 0.28);
+        transition: background .2s cubic-bezier(.4, 0, .2, 1);
     }
 
     &__thumb {
-        display: block;
-        width: remCalc(20px);
-        height: remCalc(20px);
+        position: absolute;
+        top: $switch-pad;
+        left: $switch-pad;
+        width: $switch-thumb-sz;
+        height: $switch-thumb-sz;
         border-radius: 50%;
-        background-color: color("whites", "bright");
-        box-shadow: 0 1px 3px rgba($color-black, 0.30), 0 1px 1px rgba($color-black, 0.14);
-        transition: background-color 180ms ease;
+        background: color("whites", "bright");
+        box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+        transition: transform .18s cubic-bezier(.4, 0, .2, 1);
     }
 
-    // ON state
-    &__input:checked ~ &__base { transform: translateX(remCalc(20px)); }
-    &__input:checked ~ &__track { background-color: $switch-onColor; opacity: 0.5; }
-    &__input:checked ~ &__base &__thumb { background-color: $switch-onColor; }
+    // --- checked ------------------------------------------------------------
+    &__input:checked + .switch__track {
+        background: $color-black;
+    }
+    &__input:checked + .switch__track .switch__thumb {
+        transform: translateX($switch-travel);
+    }
 
-    // hover / focus halo
-    &__control:hover &__base::before,
-    &__input:focus-visible ~ &__base::before { transform: translate(-50%, -50%) scale(.85); }
+    // --- focus ring (keyboard only) ----------------------------------------
+    &__input:focus-visible + .switch__track {
+        box-shadow: 0 0 0 2px #fff, 0 0 0 4px $color-highlight;
+    }
 
-    &__label { padding-top: remCalc(1px); }
-
+    // --- disabled -----------------------------------------------------------
+    &__input:disabled + .switch__track {
+        opacity: .45;
+        cursor: not-allowed;
+    }
+    &:has(&__input:disabled) {
+        cursor: not-allowed;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .bc-switch__base,
-    .bc-switch__track,
-    .bc-switch__base::before { transition: none; }
+    .switch__track,
+    .switch__thumb { transition: none; }
 }
