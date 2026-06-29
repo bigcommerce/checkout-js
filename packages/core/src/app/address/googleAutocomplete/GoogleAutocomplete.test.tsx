@@ -11,7 +11,7 @@ import LegacyGoogleAutocompleteService from './GoogleAutocompleteService';
 import { NewGooglePlacesApiService } from './newGooglePlacesApi/NewGooglePlacesApiService';
 
 jest.mock('./GoogleAutocompleteService');
-jest.mock('./placesApiGoogleAutocomplete/GoogleAutocompleteService');
+jest.mock('./newGooglePlacesApi/NewGooglePlacesApiService');
 
 const MockLegacyService = LegacyGoogleAutocompleteService as jest.MockedClass<
     typeof LegacyGoogleAutocompleteService
