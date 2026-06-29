@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.823.0](https://github.com/bigcommerce/checkout-js/compare/v1.822.3...v1.823.0) (2026-06-29)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10143 Remove persistB2BMetadata ([#3123](https://github.com/bigcommerce/checkout-js/issues/3123)) ([fff9e1c](https://github.com/bigcommerce/checkout-js/commit/fff9e1ce89244e3db3f72efa2d2e64e5e3df89a9))
+
 ### [1.822.3](https://github.com/bigcommerce/checkout-js/compare/v1.822.2...v1.822.3) (2026-06-29)
 
 
