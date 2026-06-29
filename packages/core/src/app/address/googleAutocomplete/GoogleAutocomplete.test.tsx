@@ -3,7 +3,10 @@ import React from 'react';
 
 import { render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
-import GoogleAutocomplete, { type GoogleAutocompleteProps } from './GoogleAutocomplete';
+import GoogleAutocomplete, {
+    type GoogleAutocompleteProps,
+    legacyAutocompleteState,
+} from './GoogleAutocomplete';
 import LegacyGoogleAutocompleteService from './GoogleAutocompleteService';
 import { GoogleAutocompleteService as PlacesApiService } from './placesApiGoogleAutocomplete/GoogleAutocompleteService';
 
@@ -44,6 +47,10 @@ describe('GoogleAutocomplete', () => {
     let defaultProps: GoogleAutocompleteProps;
 
     beforeEach(() => {
+        // The component persists an "is legacy unavailable" flag at module scope so it
+        // survives unmount/remount. Reset it between tests to keep cases independent.
+        legacyAutocompleteState.isUnavailable = false;
+
         mockGetPlacePredictions = jest.fn();
         mockGetDetails = jest.fn();
         mockGetSuggestions = jest.fn().mockResolvedValue(newApiSuggestions);

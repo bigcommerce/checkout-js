@@ -48,8 +48,25 @@ export const mapToAutocompleteItems = (
         ];
     });
 
+/**
+ * Maps legacy Places API field names (snake_case, used by the legacy getDetails
+ * service) to the new Places REST API field-mask names (camelCase). Names that
+ * are already new-API names — or any unrecognised name — pass through unchanged,
+ * and the result is de-duplicated. Defaults to address + name when none given.
+ */
+const LEGACY_FIELD_MAP: Record<string, string> = {
+    address_components: 'addressComponents',
+    name: 'displayName',
+};
+
+export const mapToPlaceDetailsFieldMask = (fields?: string[]): string[] => {
+    const source = fields?.length ? fields : ['address_components', 'name'];
+
+    return Array.from(new Set(source.map((field) => LEGACY_FIELD_MAP[field] ?? field)));
+};
+
 export const mapToGeocoderAddressComponent = (
-    c: google.maps.places.AddressComponent,
+    c: { longText?: string | null; shortText?: string | null; types?: string[] | null },
 ): google.maps.GeocoderAddressComponent => ({
     long_name: c.longText ?? '',
     short_name: c.shortText ?? '',

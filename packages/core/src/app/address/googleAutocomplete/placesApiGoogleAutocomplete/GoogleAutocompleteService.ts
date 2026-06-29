@@ -4,7 +4,12 @@ import type { GoogleAutocompleteOptionTypes } from '../googleAutocompleteTypes';
 
 import { getGoogleAutocompleteScriptLoader } from './getGoogleAutocompleteScriptLoader';
 import type { GoogleAutocompleteScriptLoader } from './GoogleAutocompleteScriptLoader';
-import { mapToAutocompleteItems, mapToIncludedPrimaryTypes } from './utils';
+import {
+    mapToAutocompleteItems,
+    mapToGeocoderAddressComponent,
+    mapToIncludedPrimaryTypes,
+    mapToPlaceDetailsFieldMask,
+} from './utils';
 
 interface PlacesRestResponse {
     addressComponents?: Array<{
@@ -16,8 +21,6 @@ interface PlacesRestResponse {
 }
 
 export class GoogleAutocompleteService {
-    private _sessionToken?: google.maps.places.AutocompleteSessionToken;
-
     constructor(
         private _apiKey: string,
         private _scriptLoader: GoogleAutocompleteScriptLoader = getGoogleAutocompleteScriptLoader(),
@@ -25,26 +28,18 @@ export class GoogleAutocompleteService {
 
     async getSuggestions(
         input: string,
-        types: string[] | undefined,
+        types: GoogleAutocompleteOptionTypes[] | undefined,
         componentRestrictions?: google.maps.places.ComponentRestrictions,
     ): Promise<AutocompleteItem[]> {
-        const { AutocompleteSuggestion, AutocompleteSessionToken } =
-            await this._scriptLoader.loadPlacesLibrary(this._apiKey);
-
-        if (!this._sessionToken) {
-            this._sessionToken = new AutocompleteSessionToken();
-        }
+        const { AutocompleteSuggestion } = await this._scriptLoader.loadPlacesLibrary(this._apiKey);
 
         const includedRegionCodes = this.convertToRegionCodes(componentRestrictions?.country);
-        const includedPrimaryTypes = mapToIncludedPrimaryTypes(
-            (types ?? ['geocode']) as GoogleAutocompleteOptionTypes[],
-        );
+        const includedPrimaryTypes = mapToIncludedPrimaryTypes(types ?? ['geocode']);
 
         const { suggestions } = await AutocompleteSuggestion.fetchAutocompleteSuggestions({
             input,
             includedPrimaryTypes,
             includedRegionCodes,
-            sessionToken: this._sessionToken,
         });
 
         return mapToAutocompleteItems(suggestions);
@@ -54,16 +49,16 @@ export class GoogleAutocompleteService {
         placeId: string,
         fields?: string[],
     ): Promise<google.maps.places.PlaceResult> {
-        // Consume and reset the session token
-        this._sessionToken = undefined;
-
         // Place.fetchFields silently does nothing when Maps JS was loaded via libraries=places
         // (ApiTargetBlockedMapError corrupts the SDK transport). Use the Places REST API
         // directly — it is completely independent of JS SDK auth state.
-        const requestedFields = fields?.length ? fields : ['addressComponents', 'displayName'];
+        //
+        // Callers pass legacy (snake_case) field names since the same `fields` prop also
+        // feeds the legacy getDetails API; translate them to the new REST field-mask names.
+        const fieldMask = mapToPlaceDetailsFieldMask(fields).join(',');
         const response = await fetch(
             `https://places.googleapis.com/v1/places/${encodeURIComponent(placeId)}?key=${this._apiKey}`,
-            { headers: { 'X-Goog-FieldMask': requestedFields.join(',') } },
+            { headers: { 'X-Goog-FieldMask': fieldMask } },
         );
 
         if (!response.ok) {
@@ -73,11 +68,7 @@ export class GoogleAutocompleteService {
         const data = (await response.json()) as PlacesRestResponse;
 
         return {
-            address_components: data.addressComponents?.map((c) => ({
-                long_name: c.longText ?? '',
-                short_name: c.shortText ?? '',
-                types: c.types ?? [],
-            })),
+            address_components: data.addressComponents?.map(mapToGeocoderAddressComponent),
             name: data.displayName?.text ?? '',
         };
     }

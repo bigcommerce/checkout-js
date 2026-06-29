@@ -11,13 +11,10 @@ const mockSuggestions = [
     },
 ] as unknown as google.maps.places.AutocompleteSuggestion[];
 
-const mockSessionToken = {} as google.maps.places.AutocompleteSessionToken;
-
 const mockPlacesLibrary = {
     AutocompleteSuggestion: {
         fetchAutocompleteSuggestions: jest.fn().mockResolvedValue({ suggestions: mockSuggestions }),
     },
-    AutocompleteSessionToken: jest.fn().mockImplementation(() => mockSessionToken),
 } as unknown as google.maps.PlacesLibrary;
 
 const mockScriptLoader = {
@@ -89,23 +86,6 @@ describe('GoogleAutocompleteService', () => {
                 mockPlacesLibrary.AutocompleteSuggestion.fetchAutocompleteSuggestions,
             ).toHaveBeenCalledWith(expect.objectContaining({ includedRegionCodes: undefined }));
         });
-
-        it('creates a session token on the first call and passes it to the API', async () => {
-            await service.getSuggestions('123 Main', ['address']);
-
-            expect(mockPlacesLibrary.AutocompleteSessionToken).toHaveBeenCalledTimes(1);
-            expect(
-                mockPlacesLibrary.AutocompleteSuggestion.fetchAutocompleteSuggestions,
-            ).toHaveBeenCalledWith(expect.objectContaining({ sessionToken: mockSessionToken }));
-        });
-
-        it('reuses the same session token across multiple calls', async () => {
-            await service.getSuggestions('1', ['address']);
-            await service.getSuggestions('12', ['address']);
-            await service.getSuggestions('123', ['address']);
-
-            expect(mockPlacesLibrary.AutocompleteSessionToken).toHaveBeenCalledTimes(1);
-        });
     });
 
     describe('#getPlaceDetails()', () => {
@@ -114,6 +94,17 @@ describe('GoogleAutocompleteService', () => {
 
             expect(global.fetch).toHaveBeenCalledWith(
                 'https://places.googleapis.com/v1/places/place-1?key=test-api-key',
+                expect.objectContaining({
+                    headers: { 'X-Goog-FieldMask': 'addressComponents,displayName' },
+                }),
+            );
+        });
+
+        it('translates legacy snake_case field names into a valid REST field mask', async () => {
+            await service.getPlaceDetails('place-1', ['address_components', 'name']);
+
+            expect(global.fetch).toHaveBeenCalledWith(
+                expect.any(String),
                 expect.objectContaining({
                     headers: { 'X-Goog-FieldMask': 'addressComponents,displayName' },
                 }),
@@ -144,14 +135,6 @@ describe('GoogleAutocompleteService', () => {
             const result = await service.getPlaceDetails('place-1');
 
             expect(result.name).toBe('123 Main St');
-        });
-
-        it('resets the session token after getPlaceDetails so the next session gets a fresh token', async () => {
-            await service.getSuggestions('123 Main', ['address']);
-            await service.getPlaceDetails('place-1', ['addressComponents']);
-            await service.getSuggestions('456 Oak', ['address']);
-
-            expect(mockPlacesLibrary.AutocompleteSessionToken).toHaveBeenCalledTimes(2);
         });
 
         it('throws when the REST API returns a non-ok status', async () => {

@@ -2,7 +2,33 @@ import {
     mapToAutocompleteItems,
     mapToGeocoderAddressComponent,
     mapToIncludedPrimaryTypes,
+    mapToPlaceDetailsFieldMask,
 } from './utils';
+
+describe('mapToPlaceDetailsFieldMask', () => {
+    it('maps legacy snake_case field names to new-API camelCase names', () => {
+        expect(mapToPlaceDetailsFieldMask(['address_components', 'name'])).toEqual([
+            'addressComponents',
+            'displayName',
+        ]);
+    });
+
+    it('passes through new-API field names unchanged', () => {
+        expect(mapToPlaceDetailsFieldMask(['addressComponents', 'displayName'])).toEqual([
+            'addressComponents',
+            'displayName',
+        ]);
+    });
+
+    it('de-duplicates fields that map to the same name', () => {
+        expect(mapToPlaceDetailsFieldMask(['name', 'displayName'])).toEqual(['displayName']);
+    });
+
+    it('defaults to address components and display name when none provided', () => {
+        expect(mapToPlaceDetailsFieldMask()).toEqual(['addressComponents', 'displayName']);
+        expect(mapToPlaceDetailsFieldMask([])).toEqual(['addressComponents', 'displayName']);
+    });
+});
 
 describe('mapToIncludedPrimaryTypes', () => {
     it('maps "address" to "street_address"', () => {
