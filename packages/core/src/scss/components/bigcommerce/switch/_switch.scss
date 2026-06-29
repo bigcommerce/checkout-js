@@ -12,7 +12,7 @@ $switch-travel:   remCalc(16px);
 .bc-switch {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: remCalc(6px);
     font-family: $fontFamily-sans;
     cursor: pointer;
     user-select: none;
