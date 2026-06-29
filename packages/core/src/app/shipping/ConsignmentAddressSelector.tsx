@@ -12,8 +12,7 @@ import {
     AddressType,
     isValidAddress,
     mapAddressFromFormValues,
-    stripCustomerAddressFields,
-    stripExtraFieldsFromAddress,
+    stripCompanyAddressFields,
 } from '../address';
 import { ErrorModal } from '../common/error';
 import { EMPTY_ARRAY } from '../common/utility';
@@ -70,7 +69,7 @@ const ConsignmentAddressSelector = ({
             return onUnhandledError(new AssignItemInvalidAddressError());
         }
 
-        const consignmentAddress = stripCustomerAddressFields(address);
+        const consignmentAddress = stripCompanyAddressFields(address);
 
         if (!consignment) {
             setConsignmentRequest?.({
@@ -129,7 +128,7 @@ const ConsignmentAddressSelector = ({
         // extra fields anyway. Otherwise save without extra fields, as before.
         if (!isGuest && !hasCompanyAddressBook) {
             try {
-                await createCustomerAddress(stripExtraFieldsFromAddress(address));
+                await createCustomerAddress(address);
             } catch (error) {
                 if (error instanceof Error) {
                     setCreateCustomerAddressError(error);

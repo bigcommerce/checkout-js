@@ -13,6 +13,6 @@ const CUSTOMER_ADDRESS_ONLY_FIELDS = [
     'isDefaultBilling',
 ];
 
-export default function stripCustomerAddressFields<T extends Partial<Address>>(address: T): T {
+export default function stripCompanyAddressFields<T extends Partial<Address>>(address: T): T {
     return omit(address, CUSTOMER_ADDRESS_ONLY_FIELDS) as T;
 }

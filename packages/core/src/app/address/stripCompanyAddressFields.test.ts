@@ -2,7 +2,7 @@ import { type Address, type CustomerAddress } from '@bigcommerce/checkout-sdk';
 
 import { getShippingAddress } from '../shipping/shipping-addresses.mock';
 
-import stripCustomerAddressFields from './stripCustomerAddressFields';
+import stripCustomerAddressFields from './stripCompanyAddressFields';
 
 describe('stripCustomerAddressFields', () => {
     it('removes CustomerAddress-only metadata from the address', () => {

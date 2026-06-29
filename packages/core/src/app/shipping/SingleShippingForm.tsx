@@ -17,7 +17,7 @@ import {
     isValidCustomerAddress,
     mapAddressFromFormValues,
     mapAddressToFormValues,
-    stripCustomerAddressFields,
+    stripCompanyAddressFields,
 } from '../address';
 import { isErrorWithType } from '../common/error';
 import { withFormikExtended } from '../common/form';
@@ -259,7 +259,7 @@ const SingleShippingForm: React.FC<
         setIsResettingAddress(true);
 
         try {
-            await updateAddress(stripCustomerAddressFields(address));
+            await updateAddress(stripCompanyAddressFields(address));
 
             B2BSessionStorage.remove(B2BSessionStorage.shippingAddressIdKey);
 

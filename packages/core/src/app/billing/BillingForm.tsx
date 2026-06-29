@@ -34,7 +34,7 @@ import {
     getTranslateAddressError,
     isValidCustomerAddress,
     mapAddressToFormValues,
-    stripCustomerAddressFields,
+    stripCompanyAddressFields,
 } from '../address';
 import {
     getAddressExtraFieldsValidationSchema,
@@ -129,7 +129,7 @@ const BillingForm = ({
         setIsResettingAddress(true);
 
         try {
-            await checkoutService.updateBillingAddress(stripCustomerAddressFields(address));
+            await checkoutService.updateBillingAddress(stripCompanyAddressFields(address));
 
             B2BSessionStorage.remove(B2BSessionStorage.billingAddressIdKey);
 
