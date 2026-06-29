@@ -22,19 +22,19 @@ export const Switch: FunctionComponent<SwitchProps> = memo(
         );
 
         return (
-            <label className="bc-switch" data-test={testId} htmlFor={inputId}>
-                <span className="bc-switch__label">{label}</span>
+            <label className="switch" data-test={testId} htmlFor={inputId}>
+                <span className="switch__label">{label}</span>
                 <input
                     checked={checked}
-                    className="bc-switch__input"
+                    className="switch__input"
                     id={inputId}
                     name={name}
                     onChange={handleChange}
                     role="switch"
                     type="checkbox"
                 />
-                <span aria-hidden="true" className="bc-switch__track">
-                    <span className="bc-switch__thumb" />
+                <span aria-hidden="true" className="switch__track">
+                    <span className="switch__thumb" />
                 </span>
             </label>
         );
