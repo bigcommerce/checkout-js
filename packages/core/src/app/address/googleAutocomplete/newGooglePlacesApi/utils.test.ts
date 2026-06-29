@@ -1,58 +1,65 @@
 import {
-    mapToAutocompleteItems,
-    mapToGeocoderAddressComponent,
-    mapToIncludedPrimaryTypes,
-    mapToPlaceDetailsFieldMask,
+    mapLegacyToNewIncludedPrimaryTypes,
+    mapLegacyToNewPlaceDetailsFieldMask,
+    mapNewToOldGeocoderAddressComponent,
+    mapSuggestionsToAutocompleteItems,
 } from './utils';
 
-describe('mapToPlaceDetailsFieldMask', () => {
+describe('mapLegacyToNewPlaceDetailsFieldMask', () => {
     it('maps legacy snake_case field names to new-API camelCase names', () => {
-        expect(mapToPlaceDetailsFieldMask(['address_components', 'name'])).toEqual([
+        expect(mapLegacyToNewPlaceDetailsFieldMask(['address_components', 'name'])).toEqual([
             'addressComponents',
             'displayName',
         ]);
     });
 
     it('passes through new-API field names unchanged', () => {
-        expect(mapToPlaceDetailsFieldMask(['addressComponents', 'displayName'])).toEqual([
+        expect(mapLegacyToNewPlaceDetailsFieldMask(['addressComponents', 'displayName'])).toEqual([
             'addressComponents',
             'displayName',
         ]);
     });
 
     it('de-duplicates fields that map to the same name', () => {
-        expect(mapToPlaceDetailsFieldMask(['name', 'displayName'])).toEqual(['displayName']);
+        expect(mapLegacyToNewPlaceDetailsFieldMask(['name', 'displayName'])).toEqual([
+            'displayName',
+        ]);
     });
 
     it('defaults to address components and display name when none provided', () => {
-        expect(mapToPlaceDetailsFieldMask()).toEqual(['addressComponents', 'displayName']);
-        expect(mapToPlaceDetailsFieldMask([])).toEqual(['addressComponents', 'displayName']);
+        expect(mapLegacyToNewPlaceDetailsFieldMask()).toEqual(['addressComponents', 'displayName']);
+        expect(mapLegacyToNewPlaceDetailsFieldMask([])).toEqual([
+            'addressComponents',
+            'displayName',
+        ]);
     });
 });
 
-describe('mapToIncludedPrimaryTypes', () => {
+describe('mapLegacyToNewIncludedPrimaryTypes', () => {
     it('maps "address" to "street_address"', () => {
-        expect(mapToIncludedPrimaryTypes(['address'])).toEqual(['street_address']);
+        expect(mapLegacyToNewIncludedPrimaryTypes(['address'])).toEqual(['street_address']);
     });
 
     it('keeps "establishment" as-is', () => {
-        expect(mapToIncludedPrimaryTypes(['establishment'])).toEqual(['establishment']);
+        expect(mapLegacyToNewIncludedPrimaryTypes(['establishment'])).toEqual(['establishment']);
     });
 
     it('returns undefined for "geocode" (no direct equivalent)', () => {
-        expect(mapToIncludedPrimaryTypes(['geocode'])).toBeUndefined();
+        expect(mapLegacyToNewIncludedPrimaryTypes(['geocode'])).toBeUndefined();
     });
 
     it('filters out null-mapped types and returns the rest', () => {
-        expect(mapToIncludedPrimaryTypes(['geocode', 'address'])).toEqual(['street_address']);
+        expect(mapLegacyToNewIncludedPrimaryTypes(['geocode', 'address'])).toEqual([
+            'street_address',
+        ]);
     });
 
     it('returns undefined for an empty array', () => {
-        expect(mapToIncludedPrimaryTypes([])).toBeUndefined();
+        expect(mapLegacyToNewIncludedPrimaryTypes([])).toBeUndefined();
     });
 });
 
-describe('mapToAutocompleteItems', () => {
+describe('mapSuggestionsToAutocompleteItems', () => {
     it('maps a suggestion to an autocomplete item', () => {
         const mockSuggestions: google.maps.places.AutocompleteSuggestion[] = [
             {
@@ -67,7 +74,7 @@ describe('mapToAutocompleteItems', () => {
             },
         ];
 
-        const items = mapToAutocompleteItems(mockSuggestions);
+        const items = mapSuggestionsToAutocompleteItems(mockSuggestions);
 
         expect(items).toHaveLength(1);
         expect(items[0]).toMatchObject({
@@ -83,11 +90,13 @@ describe('mapToAutocompleteItems', () => {
             { placePrediction: null },
         ];
 
-        expect(mapToAutocompleteItems(mockSuggestionsWithoutPlacePrediction)).toEqual([]);
+        expect(mapSuggestionsToAutocompleteItems(mockSuggestionsWithoutPlacePrediction)).toEqual(
+            [],
+        );
     });
 });
 
-describe('mapToGeocoderAddressComponent', () => {
+describe('mapNewToOldGeocoderAddressComponent', () => {
     it('maps an AddressComponent to a GeocoderAddressComponent', () => {
         const addressComponentMock = {
             longText: 'New York',
@@ -95,7 +104,7 @@ describe('mapToGeocoderAddressComponent', () => {
             types: ['locality', 'political'],
         } as google.maps.places.AddressComponent;
 
-        expect(mapToGeocoderAddressComponent(addressComponentMock)).toEqual({
+        expect(mapNewToOldGeocoderAddressComponent(addressComponentMock)).toEqual({
             long_name: 'New York',
             short_name: 'NY',
             types: ['locality', 'political'],
@@ -105,7 +114,7 @@ describe('mapToGeocoderAddressComponent', () => {
     it('falls back to empty strings and empty array when fields are missing', () => {
         const component = {} as google.maps.places.AddressComponent;
 
-        expect(mapToGeocoderAddressComponent(component)).toEqual({
+        expect(mapNewToOldGeocoderAddressComponent(component)).toEqual({
             long_name: '',
             short_name: '',
             types: [],

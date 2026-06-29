@@ -8,7 +8,7 @@ import GoogleAutocomplete, {
     legacyAutocompleteState,
 } from './GoogleAutocomplete';
 import LegacyGoogleAutocompleteService from './GoogleAutocompleteService';
-import { GoogleAutocompleteService as PlacesApiService } from './placesApiGoogleAutocomplete/GoogleAutocompleteService';
+import { NewGooglePlacesApiService } from './newGooglePlacesApi/NewGooglePlacesApiService';
 
 jest.mock('./GoogleAutocompleteService');
 jest.mock('./placesApiGoogleAutocomplete/GoogleAutocompleteService');
@@ -16,7 +16,9 @@ jest.mock('./placesApiGoogleAutocomplete/GoogleAutocompleteService');
 const MockLegacyService = LegacyGoogleAutocompleteService as jest.MockedClass<
     typeof LegacyGoogleAutocompleteService
 >;
-const MockPlacesApiService = PlacesApiService as jest.MockedClass<typeof PlacesApiService>;
+const MockPlacesApiService = NewGooglePlacesApiService as jest.MockedClass<
+    typeof NewGooglePlacesApiService
+>;
 
 const legacySuggestions = [
     {
@@ -25,14 +27,16 @@ const legacySuggestions = [
         matched_substrings: [],
         place_id: 'legacy-place-1',
     },
-] as unknown as google.maps.places.AutocompletePrediction[];
+];
 
 const legacyPlaceResult = {
     name: '123 Legacy St',
     address_components: [],
 } as google.maps.places.PlaceResult;
 
-const newApiSuggestions = [{ id: 'new-place-1', label: '123 New API Ave', value: '123 New API Ave' }];
+const newApiSuggestions = [
+    { id: 'new-place-1', label: '123 New API Ave', value: '123 New API Ave' },
+];
 
 const newApiPlaceResult = {
     name: '123 New API Ave',
@@ -47,8 +51,6 @@ describe('GoogleAutocomplete', () => {
     let defaultProps: GoogleAutocompleteProps;
 
     beforeEach(() => {
-        // The component persists an "is legacy unavailable" flag at module scope so it
-        // survives unmount/remount. Reset it between tests to keep cases independent.
         legacyAutocompleteState.isUnavailable = false;
 
         mockGetPlacePredictions = jest.fn();
@@ -62,9 +64,7 @@ describe('GoogleAutocomplete', () => {
                     getAutocompleteService: jest
                         .fn()
                         .mockResolvedValue({ getPlacePredictions: mockGetPlacePredictions }),
-                    getPlacesServices: jest
-                        .fn()
-                        .mockResolvedValue({ getDetails: mockGetDetails }),
+                    getPlacesServices: jest.fn().mockResolvedValue({ getDetails: mockGetDetails }),
                 }) as unknown as LegacyGoogleAutocompleteService,
         );
 
@@ -73,7 +73,7 @@ describe('GoogleAutocomplete', () => {
                 ({
                     getSuggestions: mockGetSuggestions,
                     getPlaceDetails: mockGetPlaceDetails,
-                }) as unknown as PlacesApiService,
+                }) as unknown as NewGooglePlacesApiService,
         );
 
         defaultProps = {
@@ -86,9 +86,7 @@ describe('GoogleAutocomplete', () => {
 
     describe('legacy API available (existing customers)', () => {
         beforeEach(() => {
-            mockGetPlacePredictions.mockImplementation((_req, cb) =>
-                cb(legacySuggestions, 'OK'),
-            );
+            mockGetPlacePredictions.mockImplementation((_req, cb) => cb(legacySuggestions, 'OK'));
             mockGetDetails.mockImplementation((_req, cb) => cb(legacyPlaceResult, 'OK'));
         });
 
@@ -97,9 +95,7 @@ describe('GoogleAutocomplete', () => {
 
             await userEvent.type(screen.getByRole('textbox'), '123');
 
-            await waitFor(() =>
-                expect(screen.getByText('123 Legacy St, New York')).toBeInTheDocument(),
-            );
+            await screen.findByText('123 Legacy St, New York');
             expect(mockGetSuggestions).not.toHaveBeenCalled();
         });
 
@@ -107,9 +103,7 @@ describe('GoogleAutocomplete', () => {
             render(<GoogleAutocomplete {...defaultProps} />);
 
             await userEvent.type(screen.getByRole('textbox'), '123');
-            await waitFor(() =>
-                expect(screen.getByText('123 Legacy St, New York')).toBeInTheDocument(),
-            );
+            await screen.findByText('123 Legacy St, New York');
             await userEvent.click(screen.getByText('123 Legacy St, New York'));
 
             await waitFor(() =>
@@ -124,9 +118,7 @@ describe('GoogleAutocomplete', () => {
 
     describe('legacy API unavailable (new customers)', () => {
         beforeEach(() => {
-            mockGetPlacePredictions.mockImplementation((_req, cb) =>
-                cb(null, 'REQUEST_DENIED'),
-            );
+            mockGetPlacePredictions.mockImplementation((_req, cb) => cb(null, 'REQUEST_DENIED'));
             mockGetDetails.mockImplementation((_req, cb) => cb(null, 'REQUEST_DENIED'));
         });
 
@@ -135,9 +127,7 @@ describe('GoogleAutocomplete', () => {
 
             await userEvent.type(screen.getByRole('textbox'), '123');
 
-            await waitFor(() =>
-                expect(screen.getByText('123 New API Ave')).toBeInTheDocument(),
-            );
+            await screen.findByText('123 New API Ave');
             expect(mockGetSuggestions).toHaveBeenCalledWith(
                 expect.stringContaining('123'),
                 undefined,
@@ -159,17 +149,13 @@ describe('GoogleAutocomplete', () => {
         it('falls back to the new API for place details on REQUEST_DENIED', async () => {
             // Return OK for suggestions so the dropdown has an item to click,
             // but REQUEST_DENIED for getDetails (set in beforeEach).
-            mockGetPlacePredictions.mockImplementation((_req, cb) =>
-                cb(legacySuggestions, 'OK'),
-            );
+            mockGetPlacePredictions.mockImplementation((_req, cb) => cb(legacySuggestions, 'OK'));
 
             render(<GoogleAutocomplete {...defaultProps} />);
 
             // Type a single character so only one getPlacePredictions call fires
             await userEvent.type(screen.getByRole('textbox'), '1');
-            await waitFor(() =>
-                expect(screen.getByText('123 Legacy St, New York')).toBeInTheDocument(),
-            );
+            await screen.findByText('123 Legacy St, New York');
             await userEvent.click(screen.getByText('123 Legacy St, New York'));
 
             await waitFor(() =>

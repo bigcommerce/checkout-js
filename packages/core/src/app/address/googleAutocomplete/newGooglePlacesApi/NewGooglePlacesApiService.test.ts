@@ -1,5 +1,5 @@
-import { type GoogleAutocompleteScriptLoader } from './GoogleAutocompleteScriptLoader';
-import { GoogleAutocompleteService } from './GoogleAutocompleteService';
+import { type NewGooglePlacesApiScriptLoader } from './NewGooglePlacesApiScriptLoader';
+import { NewGooglePlacesApiService } from './NewGooglePlacesApiService';
 
 const mockSuggestions = [
     {
@@ -9,17 +9,17 @@ const mockSuggestions = [
             mainText: { text: '123 Main St' },
         },
     },
-] as unknown as google.maps.places.AutocompleteSuggestion[];
+];
 
 const mockPlacesLibrary = {
     AutocompleteSuggestion: {
         fetchAutocompleteSuggestions: jest.fn().mockResolvedValue({ suggestions: mockSuggestions }),
     },
-} as unknown as google.maps.PlacesLibrary;
+};
 
 const mockScriptLoader = {
     loadPlacesLibrary: jest.fn().mockResolvedValue(mockPlacesLibrary),
-} as unknown as GoogleAutocompleteScriptLoader;
+} as unknown as NewGooglePlacesApiScriptLoader;
 
 const mockPlaceDetailsResponse = {
     addressComponents: [
@@ -29,20 +29,20 @@ const mockPlaceDetailsResponse = {
     displayName: { text: '123 Main St' },
 };
 
-describe('GoogleAutocompleteService', () => {
-    let service: GoogleAutocompleteService;
+describe('NewGooglePlacesApiService', () => {
+    let service: NewGooglePlacesApiService;
 
     beforeEach(() => {
         jest.clearAllMocks();
-        service = new GoogleAutocompleteService('test-api-key', mockScriptLoader);
+        service = new NewGooglePlacesApiService('test-api-key', mockScriptLoader);
 
         global.fetch = jest.fn().mockResolvedValue({
             ok: true,
             json: jest.fn().mockResolvedValue(mockPlaceDetailsResponse),
-        } as unknown as Response);
+        });
     });
 
-    describe('#getSuggestions()', () => {
+    describe('getSuggestions', () => {
         it('returns suggestions mapped to AutocompleteItems', async () => {
             const result = await service.getSuggestions('123 Main', ['address']);
 
@@ -88,7 +88,7 @@ describe('GoogleAutocompleteService', () => {
         });
     });
 
-    describe('#getPlaceDetails()', () => {
+    describe('getPlaceDetails', () => {
         it('fetches from the Places REST API with the correct URL and field mask', async () => {
             await service.getPlaceDetails('place-1', ['addressComponents', 'displayName']);
 
@@ -126,7 +126,11 @@ describe('GoogleAutocompleteService', () => {
             const result = await service.getPlaceDetails('place-1');
 
             expect(result.address_components).toEqual([
-                { long_name: 'New South Wales', short_name: 'NSW', types: ['administrative_area_level_1'] },
+                {
+                    long_name: 'New South Wales',
+                    short_name: 'NSW',
+                    types: ['administrative_area_level_1'],
+                },
                 { long_name: 'Australia', short_name: 'AU', types: ['country'] },
             ]);
         });
@@ -141,7 +145,7 @@ describe('GoogleAutocompleteService', () => {
             (global.fetch as jest.Mock).mockResolvedValueOnce({
                 ok: false,
                 status: 403,
-            } as unknown as Response);
+            });
 
             await expect(service.getPlaceDetails('place-1')).rejects.toThrow(
                 'Places API request failed with status 403',

@@ -1,10 +1,11 @@
-import { Autocomplete, type AutocompleteItem } from '@bigcommerce/checkout/ui';
 import { noop } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 
+import { Autocomplete, type AutocompleteItem } from '@bigcommerce/checkout/ui';
+
 import GoogleAutocompleteService from './GoogleAutocompleteService';
 import { type GoogleAutocompleteOptionTypes } from './googleAutocompleteTypes';
-import { GoogleAutocompleteService as PlacesApiGoogleAutocompleteService } from './placesApiGoogleAutocomplete/GoogleAutocompleteService';
+import { NewGooglePlacesApiService } from './newGooglePlacesApi';
 import './GoogleAutocomplete.scss';
 
 declare global {
@@ -39,11 +40,6 @@ const toAutocompleteItems = (
     }));
 };
 
-// Persisted at module scope so the legacy-unavailable signal survives
-// unmount/remount when navigating between Shipping and Billing steps.
-// Once the legacy API fails for a given API key it won't recover mid-session,
-// so a single module-level flag is safe to share across all instances.
-// Held on an object (rather than a bare `let`) so tests can reset it between cases.
 export const legacyAutocompleteState = { isUnavailable: false };
 
 const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
@@ -62,7 +58,7 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
     const [items, setItems] = useState<AutocompleteItem[]>([]);
     const [autoComplete, setAutoComplete] = useState<string>('off');
     const googleAutocompleteServiceRef = useRef<GoogleAutocompleteService>();
-    const placesApiServiceRef = useRef<PlacesApiGoogleAutocompleteService>();
+    const newGooglePlacesApiServiceRef = useRef<NewGooglePlacesApiService>();
     const currentInputRef = useRef<string>('');
 
     // Track the latest values so the long-lived gm_authFailure handler (installed once,
@@ -77,14 +73,11 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
         googleAutocompleteServiceRef.current = new GoogleAutocompleteService(apiKey);
     }
 
-    if (!placesApiServiceRef.current) {
-        placesApiServiceRef.current = new PlacesApiGoogleAutocompleteService(apiKey);
+    if (!newGooglePlacesApiServiceRef.current) {
+        newGooglePlacesApiServiceRef.current = new NewGooglePlacesApiService(apiKey);
     }
 
-    // gm_authFailure fires when the Maps JS SDK processes an auth error asynchronously
-    // (e.g. ApiTargetBlockedMapError for keys without legacy Places API access).
-    // In that case getPlacePredictions' callback never fires, so we detect the failure
-    // here and immediately retry the current input against the new Places API.
+    // this is to catch errors in legacy Autocomplete SDK
     useEffect(() => {
         const prev = window.gm_authFailure;
 
@@ -93,7 +86,7 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
             legacyAutocompleteState.isUnavailable = true;
 
             if (currentInputRef.current) {
-                placesApiServiceRef
+                newGooglePlacesApiServiceRef
                     .current!.getSuggestions(
                         currentInputRef.current,
                         typesRef.current,
@@ -121,7 +114,7 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
     };
 
     const selectViaNewApi = (item: AutocompleteItem) =>
-        placesApiServiceRef
+        newGooglePlacesApiServiceRef
             .current!.getPlaceDetails(item.id, fields)
             .then((result) => finalizeSelection(result, item))
             .catch(noop);
@@ -179,7 +172,7 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
         }
 
         if (legacyAutocompleteState.isUnavailable) {
-            placesApiServiceRef
+            newGooglePlacesApiServiceRef
                 .current!.getSuggestions(input, types, componentRestrictions)
                 .then(setItems)
                 .catch(noop);
@@ -195,7 +188,7 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
                     (results, status) => {
                         if (status === 'REQUEST_DENIED') {
                             legacyAutocompleteState.isUnavailable = true;
-                            placesApiServiceRef
+                            newGooglePlacesApiServiceRef
                                 .current!.getSuggestions(input, types, componentRestrictions)
                                 .then(setItems)
                                 .catch(noop);
@@ -209,7 +202,7 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
             })
             .catch(() => {
                 legacyAutocompleteState.isUnavailable = true;
-                placesApiServiceRef
+                newGooglePlacesApiServiceRef
                     .current!.getSuggestions(input, types, componentRestrictions)
                     .then(setItems)
                     .catch(noop);
