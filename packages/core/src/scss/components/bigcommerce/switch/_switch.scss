@@ -19,9 +19,9 @@ $switch-travel:   remCalc(16px);
 
     &__input {
         position: absolute;
-        width: 1px;
-        height: 1px;
-        margin: -1px;
+        width: remCalc(1px);
+        height: remCalc(1px);
+        margin: remCalc(-1px);
         padding: 0;
         border: 0;
         clip: rect(0 0 0 0);
@@ -35,7 +35,7 @@ $switch-travel:   remCalc(16px);
         flex: none;
         width: $switch-w;
         height: $switch-h;
-        border-radius: 999px;
+        border-radius: remCalc(999px);
         background: rgba(color("greys", "darkest"), 0.28);
         transition: background .2s cubic-bezier(.4, 0, .2, 1);
     }
