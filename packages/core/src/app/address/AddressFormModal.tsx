@@ -42,14 +42,14 @@ export interface AddressFormProps {
 
 const SaveAddress: FunctionComponent<
     AddressFormProps & WithLanguageProps & FormikProps<AddressFormValues>
-> = ({ getFields, values, setFieldValue, isLoading, onRequestClose }) => (
+> = ({ getFields, values, setFieldValue, isLoading, onRequestClose, shouldShowSaveAddress }) => (
     <Form autoComplete="on">
         <LoadingOverlay isLoading={isLoading}>
             <AddressForm
                 countryCode={values.countryCode}
                 formFields={getFields(values.countryCode)}
                 setFieldValue={setFieldValue}
-                shouldShowSaveAddress={false}
+                shouldShowSaveAddress={shouldShowSaveAddress}
                 type={AddressType.Shipping}
             />
             <div className="form-actions">

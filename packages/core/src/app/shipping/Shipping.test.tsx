@@ -1123,6 +1123,72 @@ describe('Shipping step', () => {
             expect(B2BSessionStorage.getAddressId(B2BSessionStorage.shippingAddressIdKey)).toBe(1);
         });
 
+        it('shows save address checkbox in multi-shipping new address modal when hasCompanyAddressBook is true', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithMultiShippingCart);
+
+            render(<CheckoutWithCompanyAddressBook {...defaultProps} />);
+
+            await checkout.waitForShippingStep();
+
+            await userEvent.click(screen.getByTestId('address-select-button'));
+            await userEvent.click(screen.getByTestId('add-new-address'));
+
+            expect(
+                screen.getByLabelText('Save this address in my address book.'),
+            ).toBeInTheDocument();
+        });
+
+        it('does not show save address checkbox in multi-shipping new address modal when hasCompanyAddressBook is false', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithMultiShippingCart);
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForShippingStep();
+
+            await userEvent.click(screen.getByTestId('shipping-mode-toggle'));
+
+            await userEvent.click(await screen.findByTestId('address-select-button'));
+            await userEvent.click(screen.getByTestId('add-new-address'));
+
+            const modal = await screen.findByRole('dialog');
+
+            expect(
+                within(modal).queryByLabelText('Save this address in my address book.'),
+            ).not.toBeInTheDocument();
+        });
+
+        it('does not call createCustomerAddress when hasCompanyAddressBook is true', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithMultiShippingCart);
+
+            jest.spyOn(checkoutService, 'createCustomerAddress');
+
+            render(<CheckoutWithCompanyAddressBook {...defaultProps} />);
+
+            await checkout.waitForShippingStep();
+
+            await userEvent.click(screen.getByTestId('shipping-mode-toggle'));
+
+            await userEvent.click(await screen.findByTestId('address-select-button'));
+            await userEvent.click(screen.getByTestId('add-new-address'));
+
+            const modal = await screen.findByRole('dialog');
+
+            await userEvent.clear(within(modal).getByLabelText('First Name'));
+            await userEvent.type(within(modal).getByLabelText('First Name'), customer.firstName);
+            await userEvent.clear(within(modal).getByLabelText('Last Name'));
+            await userEvent.type(within(modal).getByLabelText('Last Name'), customer.lastName);
+            await userEvent.clear(within(modal).getByTestId('addressLine1Input-text'));
+            await userEvent.type(
+                within(modal).getByTestId('addressLine1Input-text'),
+                shippingAddress.address1,
+            );
+            await userEvent.click(within(modal).getByText('Save Address'));
+
+            await waitFor(() =>
+                expect(checkoutService.createCustomerAddress).not.toHaveBeenCalled(),
+            );
+        });
+
         it('does not store the shipping address id when hasCompanyAddressBook is disabled', async () => {
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithMultiShippingCart);
 
