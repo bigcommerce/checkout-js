@@ -12,7 +12,6 @@ import {
     AddressType,
     isValidAddress,
     mapAddressFromFormValues,
-    stripCompanyAddressFields,
 } from '../address';
 import { ErrorModal } from '../common/error';
 import { EMPTY_ARRAY } from '../common/utility';
@@ -69,12 +68,10 @@ const ConsignmentAddressSelector = ({
             return onUnhandledError(new AssignItemInvalidAddressError());
         }
 
-        const consignmentAddress = stripCompanyAddressFields(address);
-
         if (!consignment) {
             setConsignmentRequest?.({
-                address: consignmentAddress,
-                shippingAddress: consignmentAddress,
+                address,
+                shippingAddress: address,
                 lineItems: [],
             });
 
@@ -86,8 +83,8 @@ const ConsignmentAddressSelector = ({
                 data: { getConsignments },
             } = await updateConsignment({
                 id: consignment.id,
-                address: consignmentAddress,
-                shippingAddress: consignmentAddress,
+                address,
+                shippingAddress: address,
                 lineItems: consignment.lineItems.map(({ id, quantity }) => ({
                     itemId: id,
                     quantity,
