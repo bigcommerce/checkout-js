@@ -52,12 +52,12 @@ export const mapLegacyToNewPlaceDetailsFieldMask = (fields?: string[]): string[]
     return Array.from(new Set(source.map((field) => LEGACY_TO_NEW_FIELD_MAP[field] ?? field)));
 };
 
-export const mapNewToLegacyGeocoderAddressComponent = (newAdressComponent: {
+export const mapNewToLegacyGeocoderAddressComponent = (newAddressComponent: {
     longText?: string | null;
     shortText?: string | null;
     types?: string[] | null;
 }): google.maps.GeocoderAddressComponent => ({
-    long_name: newAdressComponent.longText ?? '',
-    short_name: newAdressComponent.shortText ?? '',
-    types: newAdressComponent.types ?? [],
+    long_name: newAddressComponent.longText ?? '',
+    short_name: newAddressComponent.shortText ?? '',
+    types: newAddressComponent.types ?? [],
 });

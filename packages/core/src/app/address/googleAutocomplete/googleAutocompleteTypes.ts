@@ -26,19 +26,6 @@ export type GoogleAutocompleteFields =
 
 export type GoogleAutocompleteEvent = 'place_changed';
 
-export interface GoogleMapsSdk {
-    places: {
-        AutocompleteService?: new () => google.maps.places.AutocompleteService;
-        PlacesService?: new (attrContainer: HTMLDivElement) => google.maps.places.PlacesService;
-    };
-}
-
-export interface GoogleAutocompleteWindow extends Window {
-    google: {
-        maps: GoogleMapsSdk;
-    };
-}
-
 export type GoogleAddressFieldType =
     | 'postal_town'
     | 'administrative_area_level_1'
