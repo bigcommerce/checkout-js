@@ -1,5 +1,5 @@
-import { getNewGooglePlacesApiScriptLoader } from './newGooglePlacesApi/getNewGooglePlacesApiScriptLoader';
-import type { NewGooglePlacesApiScriptLoader } from './newGooglePlacesApi/NewGooglePlacesApiScriptLoader';
+import getGoogleAutocompleteScriptLoader from './getGoogleAutocompleteScriptLoader';
+import { type GoogleAutocompleteScriptLoader } from './GoogleAutocompleteScriptLoader';
 
 export default class GoogleAutocompleteService {
     private _autocompletePromise?: Promise<google.maps.places.AutocompleteService>;
@@ -7,11 +7,7 @@ export default class GoogleAutocompleteService {
 
     constructor(
         private _apiKey: string,
-        // Shares the single Maps JS bootstrap with the new Places API service. Both the
-        // legacy and new classes live on the same `places` library, so loading it once via
-        // `importLibrary` serves both — and avoids injecting the SDK twice, which corrupts
-        // its internal state.
-        private _scriptLoader: NewGooglePlacesApiScriptLoader = getNewGooglePlacesApiScriptLoader(),
+        private _scriptLoader: GoogleAutocompleteScriptLoader = getGoogleAutocompleteScriptLoader(),
     ) {}
 
     getAutocompleteService(): Promise<google.maps.places.AutocompleteService> {

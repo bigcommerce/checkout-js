@@ -1,9 +1,9 @@
 import type { AutocompleteItem } from '@bigcommerce/checkout/ui';
 
+import getGoogleAutocompleteScriptLoader from '../getGoogleAutocompleteScriptLoader';
+import { type GoogleAutocompleteScriptLoader } from '../GoogleAutocompleteScriptLoader';
 import type { GoogleAutocompleteOptionTypes } from '../googleAutocompleteTypes';
 
-import { getNewGooglePlacesApiScriptLoader } from './getNewGooglePlacesApiScriptLoader';
-import type { NewGooglePlacesApiScriptLoader } from './NewGooglePlacesApiScriptLoader';
 import {
     mapLegacyToNewIncludedPrimaryTypes,
     mapLegacyToNewPlaceDetailsFieldMask,
@@ -17,7 +17,7 @@ export class NewGooglePlacesApiService {
 
     constructor(
         private _apiKey: string,
-        private _scriptLoader: NewGooglePlacesApiScriptLoader = getNewGooglePlacesApiScriptLoader(),
+        private _scriptLoader: GoogleAutocompleteScriptLoader = getGoogleAutocompleteScriptLoader(),
     ) {}
 
     async getSuggestions(

@@ -1,4 +1,5 @@
-import { type NewGooglePlacesApiScriptLoader } from './NewGooglePlacesApiScriptLoader';
+import { type GoogleAutocompleteScriptLoader } from '../GoogleAutocompleteScriptLoader';
+
 import { NewGooglePlacesApiService } from './NewGooglePlacesApiService';
 
 const mockPlaceAddressComponents = [
@@ -46,7 +47,7 @@ const mockPlacesLibrary = {
 
 const mockScriptLoader = {
     loadPlacesLibrary: jest.fn().mockResolvedValue(mockPlacesLibrary),
-} as unknown as NewGooglePlacesApiScriptLoader;
+} as unknown as GoogleAutocompleteScriptLoader;
 
 describe('NewGooglePlacesApiService', () => {
     let service: NewGooglePlacesApiService;

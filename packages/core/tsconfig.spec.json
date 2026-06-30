@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "types": ["jest", "node", "google.maps"],
+    "types": ["jest", "node"],
   },
   "include": [
     "**/*.test.ts",

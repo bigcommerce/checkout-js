@@ -1,8 +1,8 @@
-import { NewGooglePlacesApiScriptLoader } from './NewGooglePlacesApiScriptLoader';
+import { GoogleAutocompleteScriptLoader } from './GoogleAutocompleteScriptLoader';
 
 type MutableWindow = Record<string, any>;
 
-describe('NewGooglePlacesApiScriptLoader', () => {
+describe('GoogleAutocompleteScriptLoader', () => {
     const placesLibrary = {
         AutocompleteSuggestion: {},
         AutocompleteSessionToken: {},
@@ -28,7 +28,7 @@ describe('NewGooglePlacesApiScriptLoader', () => {
         });
 
         it('loads the places library via the existing importLibrary without bootstrapping', async () => {
-            const loader = new NewGooglePlacesApiScriptLoader();
+            const loader = new GoogleAutocompleteScriptLoader();
 
             const library = await loader.loadPlacesLibrary('foo');
 
@@ -38,7 +38,7 @@ describe('NewGooglePlacesApiScriptLoader', () => {
         });
 
         it('memoizes the library so importLibrary is only called once', async () => {
-            const loader = new NewGooglePlacesApiScriptLoader();
+            const loader = new GoogleAutocompleteScriptLoader();
 
             await loader.loadPlacesLibrary('foo');
             await loader.loadPlacesLibrary('foo');
@@ -52,7 +52,7 @@ describe('NewGooglePlacesApiScriptLoader', () => {
                 .mockRejectedValueOnce(new Error('places unavailable'))
                 .mockResolvedValueOnce(placesLibrary);
 
-            const loader = new NewGooglePlacesApiScriptLoader();
+            const loader = new GoogleAutocompleteScriptLoader();
 
             await expect(loader.loadPlacesLibrary('foo')).rejects.toThrow('places unavailable');
 
@@ -65,7 +65,7 @@ describe('NewGooglePlacesApiScriptLoader', () => {
 
     describe('when importLibrary is missing', () => {
         it('bootstraps the Maps JS loader so importLibrary becomes available', () => {
-            const loader = new NewGooglePlacesApiScriptLoader();
+            const loader = new GoogleAutocompleteScriptLoader();
 
             // The bootstrap installs `importLibrary` synchronously; the returned promise stays
             // pending until the injected script fires its callback (never, in jsdom), so we do

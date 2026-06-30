@@ -59,7 +59,7 @@ function bootstrapGoogleMapsImportLibrary({ key, v, language }: MapsBootstrapCon
     };
 }
 
-export class NewGooglePlacesApiScriptLoader {
+export class GoogleAutocompleteScriptLoader {
     private _placesPromise?: Promise<google.maps.PlacesLibrary>;
 
     loadPlacesLibrary(apiKey: string): Promise<google.maps.PlacesLibrary> {
