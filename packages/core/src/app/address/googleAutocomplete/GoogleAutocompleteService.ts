@@ -1,5 +1,5 @@
-import getGoogleAutocompleteScriptLoader from './getGoogleAutocompleteScriptLoader';
-import type GoogleAutocompleteScriptLoader from './GoogleAutocompleteScriptLoader';
+import { getNewGooglePlacesApiScriptLoader } from './newGooglePlacesApi/getNewGooglePlacesApiScriptLoader';
+import type { NewGooglePlacesApiScriptLoader } from './newGooglePlacesApi/NewGooglePlacesApiScriptLoader';
 
 export default class GoogleAutocompleteService {
     private _autocompletePromise?: Promise<google.maps.places.AutocompleteService>;
@@ -7,20 +7,18 @@ export default class GoogleAutocompleteService {
 
     constructor(
         private _apiKey: string,
-        private _scriptLoader: GoogleAutocompleteScriptLoader = getGoogleAutocompleteScriptLoader(),
+        // Shares the single Maps JS bootstrap with the new Places API service. Both the
+        // legacy and new classes live on the same `places` library, so loading it once via
+        // `importLibrary` serves both — and avoids injecting the SDK twice, which corrupts
+        // its internal state.
+        private _scriptLoader: NewGooglePlacesApiScriptLoader = getNewGooglePlacesApiScriptLoader(),
     ) {}
 
     getAutocompleteService(): Promise<google.maps.places.AutocompleteService> {
         if (!this._autocompletePromise) {
             this._autocompletePromise = this._scriptLoader
-                .loadMapsSdk(this._apiKey)
-                .then((googleMapsSdk) => {
-                    if (!googleMapsSdk.places.AutocompleteService) {
-                        throw new Error('`AutocompleteService` is undefined');
-                    }
-
-                    return new googleMapsSdk.places.AutocompleteService();
-                });
+                .loadPlacesLibrary(this._apiKey)
+                .then(({ AutocompleteService }) => new AutocompleteService());
         }
 
         return this._autocompletePromise;
@@ -31,14 +29,8 @@ export default class GoogleAutocompleteService {
 
         if (!this._placesPromise) {
             this._placesPromise = this._scriptLoader
-                .loadMapsSdk(this._apiKey)
-                .then((googleMapsSdk) => {
-                    if (!googleMapsSdk.places.PlacesService) {
-                        throw new Error('`PlacesService` is undefined');
-                    }
-
-                    return new googleMapsSdk.places.PlacesService(node);
-                });
+                .loadPlacesLibrary(this._apiKey)
+                .then(({ PlacesService }) => new PlacesService(node));
         }
 
         return this._placesPromise;

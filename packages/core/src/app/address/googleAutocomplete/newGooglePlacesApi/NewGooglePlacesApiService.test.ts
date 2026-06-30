@@ -1,33 +1,52 @@
 import { type NewGooglePlacesApiScriptLoader } from './NewGooglePlacesApiScriptLoader';
 import { NewGooglePlacesApiService } from './NewGooglePlacesApiService';
 
+const mockPlaceAddressComponents = [
+    { longText: 'New South Wales', shortText: 'NSW', types: ['administrative_area_level_1'] },
+    { longText: 'Australia', shortText: 'AU', types: ['country'] },
+];
+
+const mockFetchFields = jest.fn().mockResolvedValue(undefined);
+
+const mockPlaceFromPrediction = {
+    fetchFields: mockFetchFields,
+    addressComponents: mockPlaceAddressComponents,
+    displayName: '123 Main St',
+};
+
+const mockToPlace = jest.fn().mockReturnValue(mockPlaceFromPrediction);
+
 const mockSuggestions = [
     {
         placePrediction: {
             placeId: 'place-1',
             text: { text: '123 Main St, NY', matches: [] },
             mainText: { text: '123 Main St' },
+            toPlace: mockToPlace,
         },
     },
 ];
+
+const MockPlace = jest.fn().mockImplementation(({ id }: { id: string }) => ({
+    id,
+    fetchFields: mockFetchFields,
+    addressComponents: mockPlaceAddressComponents,
+    displayName: '123 Main St',
+}));
+
+const MockSessionToken = jest.fn().mockImplementation(() => ({}));
 
 const mockPlacesLibrary = {
     AutocompleteSuggestion: {
         fetchAutocompleteSuggestions: jest.fn().mockResolvedValue({ suggestions: mockSuggestions }),
     },
+    AutocompleteSessionToken: MockSessionToken,
+    Place: MockPlace,
 };
 
 const mockScriptLoader = {
     loadPlacesLibrary: jest.fn().mockResolvedValue(mockPlacesLibrary),
 } as unknown as NewGooglePlacesApiScriptLoader;
-
-const mockPlaceDetailsResponse = {
-    addressComponents: [
-        { longText: 'New South Wales', shortText: 'NSW', types: ['administrative_area_level_1'] },
-        { longText: 'Australia', shortText: 'AU', types: ['country'] },
-    ],
-    displayName: { text: '123 Main St' },
-};
 
 describe('NewGooglePlacesApiService', () => {
     let service: NewGooglePlacesApiService;
@@ -35,11 +54,6 @@ describe('NewGooglePlacesApiService', () => {
     beforeEach(() => {
         jest.clearAllMocks();
         service = new NewGooglePlacesApiService('test-api-key', mockScriptLoader);
-
-        global.fetch = jest.fn().mockResolvedValue({
-            ok: true,
-            json: jest.fn().mockResolvedValue(mockPlaceDetailsResponse),
-        });
     });
 
     describe('getSuggestions', () => {
@@ -89,37 +103,29 @@ describe('NewGooglePlacesApiService', () => {
     });
 
     describe('getPlaceDetails', () => {
-        it('fetches from the Places REST API with the correct URL and field mask', async () => {
+        it('fetches place details via the SDK with the mapped field mask', async () => {
             await service.getPlaceDetails('place-1', ['addressComponents', 'displayName']);
 
-            expect(global.fetch).toHaveBeenCalledWith(
-                'https://places.googleapis.com/v1/places/place-1?key=test-api-key',
-                expect.objectContaining({
-                    headers: { 'X-Goog-FieldMask': 'addressComponents,displayName' },
-                }),
-            );
+            expect(MockPlace).toHaveBeenCalledWith({ id: 'place-1' });
+            expect(mockFetchFields).toHaveBeenCalledWith({
+                fields: ['addressComponents', 'displayName'],
+            });
         });
 
-        it('translates legacy snake_case field names into a valid REST field mask', async () => {
+        it('translates legacy snake_case field names into SDK field names', async () => {
             await service.getPlaceDetails('place-1', ['address_components', 'name']);
 
-            expect(global.fetch).toHaveBeenCalledWith(
-                expect.any(String),
-                expect.objectContaining({
-                    headers: { 'X-Goog-FieldMask': 'addressComponents,displayName' },
-                }),
-            );
+            expect(mockFetchFields).toHaveBeenCalledWith({
+                fields: ['addressComponents', 'displayName'],
+            });
         });
 
         it('uses default fields when none provided', async () => {
             await service.getPlaceDetails('place-1');
 
-            expect(global.fetch).toHaveBeenCalledWith(
-                expect.any(String),
-                expect.objectContaining({
-                    headers: { 'X-Goog-FieldMask': 'addressComponents,displayName' },
-                }),
-            );
+            expect(mockFetchFields).toHaveBeenCalledWith({
+                fields: ['addressComponents', 'displayName'],
+            });
         });
 
         it('maps addressComponents to the legacy GeocoderAddressComponent shape', async () => {
@@ -141,15 +147,56 @@ describe('NewGooglePlacesApiService', () => {
             expect(result.name).toBe('123 Main St');
         });
 
-        it('throws when the REST API returns a non-ok status', async () => {
-            (global.fetch as jest.Mock).mockResolvedValueOnce({
-                ok: false,
-                status: 403,
-            });
+        it('rejects when fetchFields fails', async () => {
+            mockFetchFields.mockRejectedValueOnce(new Error('Maps JS auth failed'));
 
-            await expect(service.getPlaceDetails('place-1')).rejects.toThrow(
-                'Places API request failed with status 403',
-            );
+            await expect(service.getPlaceDetails('place-1')).rejects.toThrow('Maps JS auth failed');
+        });
+
+        it('falls back to a tokenless Place lookup when no matching prediction is cached', async () => {
+            await service.getPlaceDetails('unknown-place');
+
+            expect(MockPlace).toHaveBeenCalledWith({ id: 'unknown-place' });
+            expect(mockToPlace).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('session tokens', () => {
+        it('creates a session token and passes it to fetchAutocompleteSuggestions', async () => {
+            await service.getSuggestions('123 Main', ['address']);
+
+            expect(MockSessionToken).toHaveBeenCalledTimes(1);
+            expect(
+                mockPlacesLibrary.AutocompleteSuggestion.fetchAutocompleteSuggestions,
+            ).toHaveBeenCalledWith(expect.objectContaining({ sessionToken: expect.any(Object) }));
+        });
+
+        it('reuses the same token across keystrokes within one session', async () => {
+            await service.getSuggestions('1', ['address']);
+            await service.getSuggestions('12', ['address']);
+
+            expect(MockSessionToken).toHaveBeenCalledTimes(1);
+
+            const { calls } =
+                mockPlacesLibrary.AutocompleteSuggestion.fetchAutocompleteSuggestions.mock;
+
+            expect(calls[0][0].sessionToken).toBe(calls[1][0].sessionToken);
+        });
+
+        it('concludes the session via the prediction toPlace() and starts a fresh token next time', async () => {
+            await service.getSuggestions('123 Main', ['address']);
+
+            const result = await service.getPlaceDetails('place-1');
+
+            // Resolved through the cached prediction, not a freshly constructed Place.
+            expect(mockToPlace).toHaveBeenCalledTimes(1);
+            expect(MockPlace).not.toHaveBeenCalled();
+            expect(result.name).toBe('123 Main St');
+
+            // The next address entry opens a brand-new session.
+            await service.getSuggestions('456 Oak', ['address']);
+
+            expect(MockSessionToken).toHaveBeenCalledTimes(2);
         });
     });
 });
