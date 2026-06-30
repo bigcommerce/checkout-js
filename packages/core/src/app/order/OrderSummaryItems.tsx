@@ -29,7 +29,11 @@ import mapFromDigital from './mapFromDigital';
 import mapFromGiftCertificate from './mapFromGiftCertificate';
 import mapFromPhysical from './mapFromPhysical';
 import OrderSummaryItem from './OrderSummaryItem';
-import { removeAndBundleItemsTogether, removeBundledItems } from './removeBundledItems';
+import {
+    buildBundleItemsMapFromOrder,
+    removeAndBundleItemsTogether,
+    removeBundledItems,
+} from './removeBundledItems';
 
 // Module-scoped to survive the responsive remount. Safe as MobileView mounts only one instance at a time.
 let backorderDetailsExpanded = false;
@@ -194,7 +198,12 @@ const OrderSummaryItems = ({
 }: OrderSummaryItemsProps): ReactElement => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [showBackorderDetails, setShowBackorderDetails] = useState(getBackorderDetailsExpanded);
-    const { selectedState: config } = useCheckout(({ data }) => data.getConfig());
+    const {
+        selectedState: { config, order },
+    } = useCheckout(({ data }) => ({
+        config: data.getConfig(),
+        order: data.getOrder(),
+    }));
 
     const toggleBackorderDetails = useCallback(() => {
         setShowBackorderDetails((prev) => {
@@ -229,7 +238,9 @@ const OrderSummaryItems = ({
     const expandBackorderDetails = showBackorderSwitch && showBackorderDetails;
 
     const { nonBundledItems, bundleItemsMap } = pickListExperimentEnabled
-        ? removeAndBundleItemsTogether(items)
+        ? order?.bundledItems
+            ? buildBundleItemsMapFromOrder(items, order.bundledItems)
+            : removeAndBundleItemsTogether(items)
         : { nonBundledItems: removeBundledItems(items), bundleItemsMap: undefined };
 
     const collapsedLimit = isSmallScreen()
