@@ -7,42 +7,48 @@ export function buildBundleItemsMapFromOrder(
     nonBundledItems: LineItemMap;
     bundleItemsMap: Map<string | number, Array<PhysicalItem | DigitalItem>>;
 } {
-    const attrToChild = new Map<string, PhysicalItem | DigitalItem>();
+    const attributeItemMap = new Map<string, PhysicalItem | DigitalItem>();
+    const bundledItemIds = new Set<string>();
 
-    for (const child of [...orderBundledItems.physicalItems, ...orderBundledItems.digitalItems]) {
-        if (child.addedByAttributeId) {
-            attrToChild.set(child.addedByAttributeId, child);
+    [...orderBundledItems.physicalItems, ...orderBundledItems.digitalItems].forEach((item) => {
+        if (item.addedByAttributeId) {
+            attributeItemMap.set(item.addedByAttributeId, item);
         }
-    }
 
-    const bundledIds = new Set([
-        ...orderBundledItems.physicalItems.map((item) => String(item.id)),
-        ...orderBundledItems.digitalItems.map((item) => String(item.id)),
-    ]);
+        bundledItemIds.add(String(item.id));
+    });
 
     const bundleItemsMap = new Map<string | number, Array<PhysicalItem | DigitalItem>>();
 
-    for (const parent of [...lineItems.physicalItems, ...lineItems.digitalItems]) {
-        const children = (parent.options ?? []).flatMap((opt) => {
-            if (!opt.attributeId) return [];
+    [...lineItems.physicalItems, ...lineItems.digitalItems].forEach((item) => {
+        if (item.options && item.options.length === 0) {
+            return [];
+        }
 
-            const child = attrToChild.get(opt.attributeId);
+        const children = (item.options ?? []).flatMap((option) => {
+            if (!option.attributeId) {
+                return [];
+            }
 
-            return child ? [child] : [];
+            const bundledItem = attributeItemMap.get(option.attributeId);
+
+            return bundledItem ? [bundledItem] : [];
         });
 
         if (children.length > 0) {
-            bundleItemsMap.set(String(parent.id), children);
+            bundleItemsMap.set(String(item.id), children);
         }
-    }
+    });
 
     return {
         nonBundledItems: {
             ...lineItems,
             physicalItems: lineItems.physicalItems.filter(
-                (item) => !bundledIds.has(String(item.id)),
+                (item) => !bundledItemIds.has(String(item.id)),
             ),
-            digitalItems: lineItems.digitalItems.filter((item) => !bundledIds.has(String(item.id))),
+            digitalItems: lineItems.digitalItems.filter(
+                (item) => !bundledItemIds.has(String(item.id)),
+            ),
         },
         bundleItemsMap,
     };
