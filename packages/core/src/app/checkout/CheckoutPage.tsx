@@ -57,6 +57,7 @@ import {
     PaymentStep,
     ShippingStep,
 } from './components';
+import { deleteCartOnExit } from './deleteCartOnExit';
 import useB2BToken from './hooks/useB2BToken';
 import { mapCheckoutComponentErrorMessage } from './mapErrorMessage';
 import mapToCheckoutProps from './mapToCheckoutProps';
@@ -149,7 +150,7 @@ const Checkout = ({
 }: CheckoutPageProps): ReactElement => {
     const capabilities = useCapabilities();
     const {
-        userJourney: { requiresB2BToken },
+        userJourney: { requiresB2BToken, quoteConfig },
         orderConfirmation: { invoiceRedirect },
     } = capabilities;
     const { fetchB2BToken } = useB2BToken();
@@ -164,6 +165,12 @@ const Checkout = ({
         isSubscribed: false,
         buttonConfigs: [],
     });
+
+    useEffect(() => {
+        if (quoteConfig?.id) {
+            return deleteCartOnExit(checkoutService);
+        }
+    }, []);
 
     // Initialize refs 1/2
     const stepsRef = useRef<CheckoutStepStatus[]>(steps);
