@@ -52,7 +52,7 @@ export const mapLegacyToNewPlaceDetailsFieldMask = (fields?: string[]): string[]
     return Array.from(new Set(source.map((field) => LEGACY_TO_NEW_FIELD_MAP[field] ?? field)));
 };
 
-export const mapNewToOldGeocoderAddressComponent = (newAdressComponent: {
+export const mapNewToLegacyGeocoderAddressComponent = (newAdressComponent: {
     longText?: string | null;
     shortText?: string | null;
     types?: string[] | null;

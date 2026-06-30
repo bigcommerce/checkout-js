@@ -1,10 +1,11 @@
-import { noop } from 'lodash';
-import React, { useRef, useState } from 'react';
+import { debounce, noop } from 'lodash';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import { Autocomplete, type AutocompleteItem } from '@bigcommerce/checkout/ui';
 
 import GoogleAutocompleteService from './GoogleAutocompleteService';
 import { type GoogleAutocompleteOptionTypes } from './googleAutocompleteTypes';
+import { NewGooglePlacesApiService } from './newGooglePlacesApi';
 import './GoogleAutocomplete.scss';
 
 export interface GoogleAutocompleteProps {
@@ -32,6 +33,10 @@ const toAutocompleteItems = (
     }));
 };
 
+export const newGooglePlacesApiState = { isUnavailable: false };
+
+const SUGGESTIONS_DEBOUNCE_MS = 300;
+
 const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
     initialValue,
     onToggleOpen = noop,
@@ -47,32 +52,84 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
 }) => {
     const [items, setItems] = useState<AutocompleteItem[]>([]);
     const [autoComplete, setAutoComplete] = useState<string>('off');
+    const newGooglePlacesApiServiceRef = useRef<NewGooglePlacesApiService>();
     const googleAutocompleteServiceRef = useRef<GoogleAutocompleteService>();
+
+    if (!newGooglePlacesApiServiceRef.current) {
+        newGooglePlacesApiServiceRef.current = new NewGooglePlacesApiService(apiKey);
+    }
 
     if (!googleAutocompleteServiceRef.current) {
         googleAutocompleteServiceRef.current = new GoogleAutocompleteService(apiKey);
     }
 
+    const finalizeSelection = (
+        place: google.maps.places.PlaceResult | null,
+        item: AutocompleteItem,
+    ) => {
+        if (nextElement) {
+            nextElement.focus();
+        }
+
+        onSelect(place, item);
+    };
+
+    const handleFetchLegacySuggestions = (input: string): void => {
+        googleAutocompleteServiceRef
+            .current!.getAutocompleteService()
+            .then((autocompleteService) => {
+                autocompleteService.getPlacePredictions(
+                    { input, types: types || ['geocode'], componentRestrictions },
+                    (results) => {
+                        setItems(toAutocompleteItems(results ?? undefined));
+                    },
+                );
+            })
+            .catch(noop);
+    };
+
+    const handleFetchNewApiSuggestions = (input: string): void => {
+        newGooglePlacesApiServiceRef
+            .current!.getSuggestions(input, types, componentRestrictions)
+            .then(setItems)
+            .catch(() => {
+                newGooglePlacesApiState.isUnavailable = true;
+                handleFetchLegacySuggestions(input);
+            });
+    };
+
+    const handleSelectViaLegacy = (item: AutocompleteItem): void => {
+        googleAutocompleteServiceRef
+            .current!.getPlacesServices()
+            .then((placesService) => {
+                placesService.getDetails(
+                    { placeId: item.id, fields: fields || ['address_components', 'name'] },
+                    (result) => {
+                        finalizeSelection(result, item);
+                    },
+                );
+            })
+            .catch(noop);
+    };
+
+    const handleSelectViaNewApi = (item: AutocompleteItem): void => {
+        newGooglePlacesApiServiceRef
+            .current!.getPlaceDetails(item.id, fields)
+            .then((result) => finalizeSelection(result, item))
+            .catch(() => {
+                newGooglePlacesApiState.isUnavailable = true;
+                handleSelectViaLegacy(item);
+            });
+    };
+
     const onSelectHandler = (item: AutocompleteItem) => {
-        const service = googleAutocompleteServiceRef.current;
+        if (newGooglePlacesApiState.isUnavailable) {
+            handleSelectViaLegacy(item);
 
-        if (!service) return;
+            return;
+        }
 
-        service.getPlacesServices().then((placesService) => {
-            placesService.getDetails(
-                {
-                    placeId: item.id,
-                    fields: fields || ['address_components', 'name'],
-                },
-                (result) => {
-                    if (nextElement) {
-                        nextElement.focus();
-                    }
-
-                    onSelect(result, item);
-                },
-            );
-        });
+        handleSelectViaNewApi(item);
     };
 
     const resetAutocomplete = (): void => {
@@ -84,42 +141,53 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
         setAutoComplete(input && input.length ? 'nope' : 'off');
     };
 
-    const setItemsFromInput = (input: string): void => {
-        if (!input) {
-            setItems([]);
+    const fetchSuggestions = (input: string): void => {
+        if (newGooglePlacesApiState.isUnavailable) {
+            handleFetchLegacySuggestions(input);
 
             return;
         }
 
-        const service = googleAutocompleteServiceRef.current;
-
-        if (!service) return;
-
-        service.getAutocompleteService().then((autocompleteService) => {
-            autocompleteService.getPlacePredictions(
-                {
-                    input,
-                    types: types || ['geocode'],
-                    componentRestrictions,
-                },
-                (results) => {
-                    const autocompleteItems = toAutocompleteItems(results ?? undefined);
-
-                    setItems(autocompleteItems);
-                },
-            );
-        });
+        handleFetchNewApiSuggestions(input);
     };
+
+    const fetchSuggestionsRef = useRef(fetchSuggestions);
+
+    fetchSuggestionsRef.current = fetchSuggestions;
+
+    // using ref to make sure the function is always up to date
+    const debouncedFetchSuggestions = useMemo(
+        () =>
+            debounce(
+                (input: string) => fetchSuggestionsRef.current(input),
+                SUGGESTIONS_DEBOUNCE_MS,
+            ),
+        [],
+    );
+
+    // cleanup debounce on component unmount
+    useEffect(() => () => debouncedFetchSuggestions.cancel(), [debouncedFetchSuggestions]);
 
     const onChangeHandler = (input: string) => {
         onChange(input, false);
 
         if (!isAutocompleteEnabled) {
+            debouncedFetchSuggestions.cancel();
+
             return resetAutocomplete();
         }
 
         setAutocompleteValue(input);
-        setItemsFromInput(input);
+
+        // Clearing the field should empty the list immediately, not after the debounce.
+        if (!input) {
+            debouncedFetchSuggestions.cancel();
+            setItems([]);
+
+            return;
+        }
+
+        debouncedFetchSuggestions(input);
     };
 
     return (

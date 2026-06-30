@@ -7,16 +7,11 @@ import type { NewGooglePlacesApiScriptLoader } from './NewGooglePlacesApiScriptL
 import {
     mapLegacyToNewIncludedPrimaryTypes,
     mapLegacyToNewPlaceDetailsFieldMask,
-    mapNewToOldGeocoderAddressComponent,
+    mapNewToLegacyGeocoderAddressComponent,
     mapSuggestionsToAutocompleteItems,
 } from './utils';
 
 export class NewGooglePlacesApiService {
-    // A session bundles many autocomplete keystrokes with the single place-details
-    // fetch that follows, so Google bills them as one session instead of per request.
-    // The token is created on the first keystroke and discarded once details are
-    // fetched; the predictions are kept so selection can be resolved via toPlace(),
-    // which is what ties the details fetch to the session.
     private _sessionToken?: google.maps.places.AutocompleteSessionToken;
     private _predictionsById = new Map<string, google.maps.places.PlacePrediction>();
 
@@ -64,22 +59,20 @@ export class NewGooglePlacesApiService {
         this.resetSession();
 
         return {
-            address_components: place.addressComponents?.map(mapNewToOldGeocoderAddressComponent),
+            address_components: place.addressComponents?.map(
+                mapNewToLegacyGeocoderAddressComponent,
+            ),
             name: place.displayName ?? '',
         };
     }
 
     private async resolvePlace(placeId: string): Promise<google.maps.places.Place> {
-        // Resolving via the cached prediction keeps the details fetch inside the
-        // billing session that the autocomplete keystrokes opened.
         const prediction = this._predictionsById.get(placeId);
 
         if (prediction) {
             return prediction.toPlace();
         }
 
-        // No matching prediction (e.g. the session was reset) — fall back to a
-        // tokenless lookup, which is billed per request but still resolves.
         const { Place } = await this._scriptLoader.loadPlacesLibrary(this._apiKey);
 
         return new Place({ id: placeId });

@@ -12,6 +12,7 @@ describe('NewGooglePlacesApiScriptLoader', () => {
     };
 
     afterEach(() => {
+        // this only removes the google property for test isolation
         delete (window as MutableWindow).google;
         document.head
             .querySelectorAll('script[src*="maps.googleapis.com"]')
@@ -33,9 +34,7 @@ describe('NewGooglePlacesApiScriptLoader', () => {
 
             expect(importLibrary).toHaveBeenCalledWith('places');
             expect(library).toBe(placesLibrary);
-            expect(
-                document.head.querySelector('script[src*="maps.googleapis.com"]'),
-            ).toBeNull();
+            expect(document.head.querySelector('script[src*="maps.googleapis.com"]')).toBeNull();
         });
 
         it('memoizes the library so importLibrary is only called once', async () => {

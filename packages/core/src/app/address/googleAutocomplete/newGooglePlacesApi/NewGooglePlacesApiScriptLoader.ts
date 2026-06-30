@@ -5,20 +5,13 @@ interface MapsBootstrapConfig {
 }
 
 /**
- * Google's official inline bootstrap loader, rewritten in readable form. Loading the Maps JS
- * SDK with a plain `<script>` tag populates `google.maps` but does NOT define
- * `google.maps.importLibrary` — Dynamic Library Import is only set up by this bootstrap.
- *
- * It is safe to run when nothing, or even a classic Maps script, is already on the page: it
- * installs `importLibrary` only when it is missing and no-ops otherwise, so the SDK is never
- * loaded twice.
- *
- * Reference: https://developers.google.com/maps/documentation/javascript/load-maps-js-api
+ * Google's official inline Maps JavaScript API bootstrap loader based on:
+ * https://developers.google.com/maps/documentation/javascript/load-maps-js-api
  */
 function bootstrapGoogleMapsImportLibrary({ key, v, language }: MapsBootstrapConfig): void {
     const CALLBACK_KEY = '__ib__';
     const doc = document;
-    const globalScope = window as unknown as Record<string, any>;
+    const globalScope = window as Record<string, any>;
     const googleNs = (globalScope.google = globalScope.google || {});
     const mapsNs = (googleNs.maps = googleNs.maps || {});
 
@@ -59,8 +52,6 @@ function bootstrapGoogleMapsImportLibrary({ key, v, language }: MapsBootstrapCon
         return loadPromise;
     };
 
-    // Stub that defers the actual script load until the first import. Once the real SDK loads
-    // it replaces `importLibrary` with Google's implementation, which the recursive call hits.
     mapsNs.importLibrary = (library: string, ...rest: unknown[]): Promise<unknown> => {
         requestedLibraries.add(library);
 
@@ -76,9 +67,7 @@ export class NewGooglePlacesApiScriptLoader {
             return this._placesPromise;
         }
 
-        // `importLibrary` is the single entry point both the new and legacy classes load
-        // through, so we only need to guarantee it exists. The bootstrap is a no-op when it
-        // is already set up, which keeps the SDK to a single load.
+        // `importLibrary` is the single entry point both the new and legacy classes
         if (typeof google === 'undefined' || typeof google.maps?.importLibrary !== 'function') {
             bootstrapGoogleMapsImportLibrary({ key: apiKey, v: 'weekly', language: 'en' });
         }

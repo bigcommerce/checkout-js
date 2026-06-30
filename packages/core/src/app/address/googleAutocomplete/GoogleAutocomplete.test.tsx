@@ -3,8 +3,10 @@ import React from 'react';
 
 import { render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
-import AutocompleteWrapper, { newGooglePlacesApiState } from './AutocompleteWrapper';
-import { type GoogleAutocompleteProps } from './GoogleAutocomplete';
+import GoogleAutocomplete, {
+    type GoogleAutocompleteProps,
+    newGooglePlacesApiState,
+} from './GoogleAutocomplete';
 import LegacyGoogleAutocompleteService from './GoogleAutocompleteService';
 import { NewGooglePlacesApiService } from './newGooglePlacesApi/NewGooglePlacesApiService';
 
@@ -41,7 +43,7 @@ const newApiPlaceResult = {
     address_components: [],
 } as google.maps.places.PlaceResult;
 
-describe('AutocompleteWrapper', () => {
+describe('GoogleAutocomplete', () => {
     let mockGetPlacePredictions: jest.Mock;
     let mockGetDetails: jest.Mock;
     let mockGetSuggestions: jest.Mock;
@@ -84,7 +86,7 @@ describe('AutocompleteWrapper', () => {
 
     describe('new API available (preferred path)', () => {
         it('shows suggestions from the new API', async () => {
-            render(<AutocompleteWrapper {...defaultProps} />);
+            render(<GoogleAutocomplete {...defaultProps} />);
 
             await userEvent.type(screen.getByRole('textbox'), '123');
 
@@ -93,7 +95,7 @@ describe('AutocompleteWrapper', () => {
         });
 
         it('debounces rapid keystrokes into a single new API request', async () => {
-            render(<AutocompleteWrapper {...defaultProps} />);
+            render(<GoogleAutocomplete {...defaultProps} />);
 
             await userEvent.type(screen.getByRole('textbox'), '123');
 
@@ -105,7 +107,7 @@ describe('AutocompleteWrapper', () => {
         });
 
         it('calls onSelect with the new API place result when a suggestion is picked', async () => {
-            render(<AutocompleteWrapper {...defaultProps} />);
+            render(<GoogleAutocomplete {...defaultProps} />);
 
             await userEvent.type(screen.getByRole('textbox'), '123');
             await screen.findByText('123 New API Ave');
@@ -130,7 +132,7 @@ describe('AutocompleteWrapper', () => {
         it('falls back to the legacy service for suggestions when the new API rejects', async () => {
             mockGetSuggestions.mockRejectedValue(new Error('new API down'));
 
-            render(<AutocompleteWrapper {...defaultProps} />);
+            render(<GoogleAutocomplete {...defaultProps} />);
 
             await userEvent.type(screen.getByRole('textbox'), '123');
 
@@ -141,7 +143,7 @@ describe('AutocompleteWrapper', () => {
         it('skips the new API on later input once it has failed', async () => {
             mockGetSuggestions.mockRejectedValue(new Error('new API down'));
 
-            render(<AutocompleteWrapper {...defaultProps} />);
+            render(<GoogleAutocomplete {...defaultProps} />);
 
             const input = screen.getByRole('textbox');
 
@@ -161,7 +163,7 @@ describe('AutocompleteWrapper', () => {
             // but getPlaceDetails rejects, forcing the legacy getDetails fallback.
             mockGetPlaceDetails.mockRejectedValue(new Error('new API down'));
 
-            render(<AutocompleteWrapper {...defaultProps} />);
+            render(<GoogleAutocomplete {...defaultProps} />);
 
             await userEvent.type(screen.getByRole('textbox'), '1');
             await screen.findByText('123 New API Ave');

@@ -1,7 +1,7 @@
 import {
     mapLegacyToNewIncludedPrimaryTypes,
     mapLegacyToNewPlaceDetailsFieldMask,
-    mapNewToOldGeocoderAddressComponent,
+    mapNewToLegacyGeocoderAddressComponent,
     mapSuggestionsToAutocompleteItems,
 } from './utils';
 
@@ -96,7 +96,7 @@ describe('mapSuggestionsToAutocompleteItems', () => {
     });
 });
 
-describe('mapNewToOldGeocoderAddressComponent', () => {
+describe('mapNewToLegacyGeocoderAddressComponent', () => {
     it('maps an AddressComponent to a GeocoderAddressComponent', () => {
         const addressComponentMock = {
             longText: 'New York',
@@ -104,7 +104,7 @@ describe('mapNewToOldGeocoderAddressComponent', () => {
             types: ['locality', 'political'],
         } as google.maps.places.AddressComponent;
 
-        expect(mapNewToOldGeocoderAddressComponent(addressComponentMock)).toEqual({
+        expect(mapNewToLegacyGeocoderAddressComponent(addressComponentMock)).toEqual({
             long_name: 'New York',
             short_name: 'NY',
             types: ['locality', 'political'],
@@ -114,7 +114,7 @@ describe('mapNewToOldGeocoderAddressComponent', () => {
     it('falls back to empty strings and empty array when fields are missing', () => {
         const component = {} as google.maps.places.AddressComponent;
 
-        expect(mapNewToOldGeocoderAddressComponent(component)).toEqual({
+        expect(mapNewToLegacyGeocoderAddressComponent(component)).toEqual({
             long_name: '',
             short_name: '',
             types: [],

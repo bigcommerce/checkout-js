@@ -11,7 +11,7 @@ import {
     getAddressFormFieldLabelId,
 } from '../getAddressFormFieldInputId';
 
-import AutocompleteWrapper from './AutocompleteWrapper';
+import GoogleAutocomplete from './GoogleAutocomplete';
 
 export interface GoogleAutocompleteFormFieldProps {
     apiKey: string;
@@ -60,7 +60,7 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
 
     const renderInput = useCallback(
         ({ field }: FieldProps) => (
-            <AutocompleteWrapper
+            <GoogleAutocomplete
                 apiKey={apiKey}
                 componentRestrictions={countryCode ? { country: countryCode } : undefined}
                 initialValue={field.value}
