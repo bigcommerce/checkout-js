@@ -6,6 +6,7 @@ import { Autocomplete, type AutocompleteItem } from '@bigcommerce/checkout/ui';
 import GoogleAutocompleteService from './GoogleAutocompleteService';
 import { type GoogleAutocompleteOptionTypes } from './googleAutocompleteTypes';
 import { NewGooglePlacesApiService } from './newGooglePlacesApi';
+import { isNewPlacesApiPermissionDenied } from './newGooglePlacesApi/utils';
 import './GoogleAutocomplete.scss';
 
 export interface GoogleAutocompleteProps {
@@ -92,8 +93,11 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
         newGooglePlacesApiServiceRef
             .current!.getSuggestions(input, types, componentRestrictions)
             .then(setItems)
-            .catch(() => {
-                newGooglePlacesApiState.isUnavailable = true;
+            .catch((error) => {
+                if (isNewPlacesApiPermissionDenied(error)) {
+                    newGooglePlacesApiState.isUnavailable = true;
+                }
+
                 handleFetchLegacySuggestions(input);
             });
     };
@@ -116,8 +120,11 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
         newGooglePlacesApiServiceRef
             .current!.getPlaceDetails(item.id, fields)
             .then((result) => finalizeSelection(result, item))
-            .catch(() => {
-                newGooglePlacesApiState.isUnavailable = true;
+            .catch((error) => {
+                if (isNewPlacesApiPermissionDenied(error)) {
+                    newGooglePlacesApiState.isUnavailable = true;
+                }
+
                 handleSelectViaLegacy(item);
             });
     };

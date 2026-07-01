@@ -43,6 +43,9 @@ const newApiPlaceResult = {
     address_components: [],
 } as google.maps.places.PlaceResult;
 
+const gRpcPermissionDeniedErrorMock = { name: 'RpcError', code: 7 };
+const gRpcSomeOtherErrorMock = { name: 'RpcError', code: 14 };
+
 describe('GoogleAutocomplete', () => {
     let mockGetPlacePredictions: jest.Mock;
     let mockGetDetails: jest.Mock;
@@ -130,7 +133,7 @@ describe('GoogleAutocomplete', () => {
         });
 
         it('falls back to the legacy service for suggestions when the new API rejects', async () => {
-            mockGetSuggestions.mockRejectedValue(new Error('new API down'));
+            mockGetSuggestions.mockRejectedValue(gRpcSomeOtherErrorMock);
 
             render(<GoogleAutocomplete {...defaultProps} />);
 
@@ -140,14 +143,14 @@ describe('GoogleAutocomplete', () => {
             expect(mockGetPlacePredictions).toHaveBeenCalled();
         });
 
-        it('skips the new API on later input once it has failed', async () => {
-            mockGetSuggestions.mockRejectedValue(new Error('new API down'));
+        it('latches onto legacy after a permission denial and stops retrying the new API', async () => {
+            mockGetSuggestions.mockRejectedValue(gRpcPermissionDeniedErrorMock);
 
             render(<GoogleAutocomplete {...defaultProps} />);
 
             const input = screen.getByRole('textbox');
 
-            // First debounced request hits the new API, fails, and flips the fallback flag.
+            // First debounced request hits the new API, is denied, and latches the fallback flag.
             await userEvent.type(input, '1');
             await screen.findByText('123 Legacy St, New York');
             expect(mockGetSuggestions).toHaveBeenCalledTimes(1);
@@ -156,6 +159,23 @@ describe('GoogleAutocomplete', () => {
             await userEvent.type(input, '2');
             await waitFor(() => expect(mockGetPlacePredictions).toHaveBeenCalledTimes(2));
             expect(mockGetSuggestions).toHaveBeenCalledTimes(1);
+        });
+
+        it('keeps retrying the new API on later input after a transient failure', async () => {
+            mockGetSuggestions.mockRejectedValue(gRpcSomeOtherErrorMock);
+
+            render(<GoogleAutocomplete {...defaultProps} />);
+
+            const input = screen.getByRole('textbox');
+
+            // First request fails transiently and falls back, but must NOT latch onto legacy.
+            await userEvent.type(input, '1');
+            await screen.findByText('123 Legacy St, New York');
+            expect(mockGetSuggestions).toHaveBeenCalledTimes(1);
+
+            // The new API is tried again on the next input, since the failure was not permanent.
+            await userEvent.type(input, '2');
+            await waitFor(() => expect(mockGetSuggestions).toHaveBeenCalledTimes(2));
         });
 
         it('falls back to the legacy service for place details when the new API rejects', async () => {

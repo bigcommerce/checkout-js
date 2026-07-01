@@ -1,4 +1,5 @@
 import {
+    isNewPlacesApiPermissionDenied,
     mapLegacyToNewIncludedPrimaryTypes,
     mapLegacyToNewPlaceDetailsFieldMask,
     mapNewToLegacyGeocoderAddressComponent,
@@ -119,5 +120,26 @@ describe('mapNewToLegacyGeocoderAddressComponent', () => {
             short_name: '',
             types: [],
         });
+    });
+});
+
+describe('isNewPlacesApiPermissionDenied', () => {
+    it('returns true for an RpcError with PERMISSION_DENIED (code 7)', () => {
+        expect(isNewPlacesApiPermissionDenied({ name: 'RpcError', code: 7 })).toBe(true);
+    });
+
+    it('returns false for an RpcError with some transient code', () => {
+        expect(isNewPlacesApiPermissionDenied({ name: 'RpcError', code: 14 })).toBe(false);
+    });
+
+    it('returns false for a non-RpcError carrying code 7', () => {
+        expect(isNewPlacesApiPermissionDenied({ name: 'TypeError', code: 7 })).toBe(false);
+    });
+
+    it('returns false for unrelated error shapes and non-objects', () => {
+        expect(isNewPlacesApiPermissionDenied(new Error('boom'))).toBe(false);
+        expect(isNewPlacesApiPermissionDenied(undefined)).toBe(false);
+        expect(isNewPlacesApiPermissionDenied(null)).toBe(false);
+        expect(isNewPlacesApiPermissionDenied('PERMISSION_DENIED')).toBe(false);
     });
 });

@@ -61,3 +61,13 @@ export const mapNewToLegacyGeocoderAddressComponent = (newAddressComponent: {
     short_name: newAddressComponent.shortText ?? '',
     types: newAddressComponent.types ?? [],
 });
+
+// places.googleapis.com is gRPC-Web, so failures arrive as an `RpcError` with a numeric gRPC status `code`.
+// Code 7 is a consistent PERMISSION_DENIED and not anything transient
+const GRPC_PERMISSION_DENIED = 7;
+
+export const isNewPlacesApiPermissionDenied = (error: unknown): boolean => {
+    const rpcError = error as { name?: unknown; code?: unknown } | null | undefined;
+
+    return rpcError?.name === 'RpcError' && rpcError.code === GRPC_PERMISSION_DENIED;
+};
