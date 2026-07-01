@@ -1,87 +1,56 @@
-import { GoogleAutocompleteScriptLoader } from './GoogleAutocompleteScriptLoader';
+import { getScriptLoader, type ScriptLoader } from '@bigcommerce/script-loader';
 
-type MutableWindow = Record<string, any>;
+import GoogleAutocompleteScriptLoader, {
+    type GoogleCallbackWindow,
+} from './GoogleAutocompleteScriptLoader';
+import { type GoogleAutocompleteWindow } from './googleAutocompleteTypes';
 
 describe('GoogleAutocompleteScriptLoader', () => {
-    const placesLibrary = {
-        AutocompleteSuggestion: {},
-        AutocompleteSessionToken: {},
-        Place: {},
-        AutocompleteService: {},
-        PlacesService: {},
-    };
+    const scriptLoader: ScriptLoader = getScriptLoader();
+    let googleScriptLoader: GoogleAutocompleteScriptLoader;
 
-    afterEach(() => {
-        // this only removes the google property for test isolation
-        delete (window as MutableWindow).google;
-        document.head
-            .querySelectorAll('script[src*="maps.googleapis.com"]')
-            .forEach((node) => node.remove());
-    });
+    describe('#loadMapsSdk()', () => {
+        let spiedLoadScript: any;
 
-    describe('when importLibrary is already available', () => {
-        let importLibrary: jest.Mock;
+        beforeEach(async () => {
+            spiedLoadScript = jest.spyOn(scriptLoader, 'loadScript');
 
-        beforeEach(() => {
-            importLibrary = jest.fn().mockResolvedValue(placesLibrary);
-            (window as MutableWindow).google = { maps: { importLibrary } };
+            spiedLoadScript.mockImplementation(() => {
+                (window as GoogleAutocompleteWindow).google = {
+                    maps: {
+                        places: {},
+                    } as any,
+                };
+
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                (window as GoogleCallbackWindow).initAutoComplete!();
+            });
+
+            googleScriptLoader = new GoogleAutocompleteScriptLoader();
+            await googleScriptLoader.loadMapsSdk('foo');
         });
 
-        it('loads the places library via the existing importLibrary without bootstrapping', async () => {
-            const loader = new GoogleAutocompleteScriptLoader();
-
-            const library = await loader.loadPlacesLibrary('foo');
-
-            expect(importLibrary).toHaveBeenCalledWith('places');
-            expect(library).toBe(placesLibrary);
-            expect(document.head.querySelector('script[src*="maps.googleapis.com"]')).toBeNull();
+        afterEach(() => {
+            spiedLoadScript.mockReset();
         });
 
-        it('memoizes the library so importLibrary is only called once', async () => {
-            const loader = new GoogleAutocompleteScriptLoader();
-
-            await loader.loadPlacesLibrary('foo');
-            await loader.loadPlacesLibrary('foo');
-            await loader.loadPlacesLibrary('foo');
-
-            expect(importLibrary).toHaveBeenCalledTimes(1);
-        });
-
-        it('clears the cached promise on failure so a later call can retry', async () => {
-            importLibrary
-                .mockRejectedValueOnce(new Error('places unavailable'))
-                .mockResolvedValueOnce(placesLibrary);
-
-            const loader = new GoogleAutocompleteScriptLoader();
-
-            await expect(loader.loadPlacesLibrary('foo')).rejects.toThrow('places unavailable');
-
-            const library = await loader.loadPlacesLibrary('foo');
-
-            expect(library).toBe(placesLibrary);
-            expect(importLibrary).toHaveBeenCalledTimes(2);
-        });
-    });
-
-    describe('when importLibrary is missing', () => {
-        it('bootstraps the Maps JS loader so importLibrary becomes available', () => {
-            const loader = new GoogleAutocompleteScriptLoader();
-
-            // The bootstrap installs `importLibrary` synchronously; the returned promise stays
-            // pending until the injected script fires its callback (never, in jsdom), so we do
-            // not await it here.
-            loader.loadPlacesLibrary('foo').catch(() => undefined);
-
-            expect(typeof (window as MutableWindow).google.maps.importLibrary).toBe('function');
-
-            const script = document.head.querySelector<HTMLScriptElement>(
-                'script[src*="maps.googleapis.com"]',
+        it('calls loadScript with the right parameters', () => {
+            expect(scriptLoader.loadScript).toHaveBeenCalledWith(
+                [
+                    '//maps.googleapis.com/maps/api/js?language=en',
+                    'key=foo',
+                    'libraries=places',
+                    'callback=initAutoComplete',
+                ].join('&'),
             );
+        });
 
-            expect(script).not.toBeNull();
-            expect(script?.src).toContain('key=foo');
-            expect(script?.src).toContain('libraries=places');
-            expect(script?.src).toContain('callback=google.maps.__ib__');
+        it('calls loadScript once', async () => {
+            await googleScriptLoader.loadMapsSdk('x');
+            await googleScriptLoader.loadMapsSdk('y');
+            await googleScriptLoader.loadMapsSdk('z');
+
+            expect(scriptLoader.loadScript).toHaveBeenCalledTimes(1);
         });
     });
 });

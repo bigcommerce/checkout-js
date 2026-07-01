@@ -5,7 +5,7 @@ import { Autocomplete, type AutocompleteItem } from '@bigcommerce/checkout/ui';
 
 import GoogleAutocompleteService from './GoogleAutocompleteService';
 import { type GoogleAutocompleteOptionTypes } from './googleAutocompleteTypes';
-import { NewGooglePlacesApiService } from './newGooglePlacesApi';
+import { getNewGooglePlacesApiScriptLoader, NewGooglePlacesApiService } from './newGooglePlacesApi';
 import { isNewPlacesApiPermissionDenied } from './newGooglePlacesApi/utils';
 import './GoogleAutocomplete.scss';
 
@@ -17,6 +17,7 @@ export interface GoogleAutocompleteProps {
     nextElement?: HTMLElement;
     inputProps?: any;
     isAutocompleteEnabled?: boolean;
+    isNewPlacesApiEnabled?: boolean;
     types?: GoogleAutocompleteOptionTypes[];
     onSelect?(place: google.maps.places.PlaceResult, item: AutocompleteItem): void;
     onToggleOpen?(state: { inputValue: string; isOpen: boolean }): void;
@@ -46,6 +47,7 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
     onSelect = noop,
     nextElement,
     isAutocompleteEnabled,
+    isNewPlacesApiEnabled = false,
     onChange = noop,
     componentRestrictions,
     types,
@@ -61,7 +63,14 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
     }
 
     if (!googleAutocompleteServiceRef.current) {
-        googleAutocompleteServiceRef.current = new GoogleAutocompleteService(apiKey);
+        // When the new Places API is enabled, the legacy service must share the same
+        // script-loader instance as NewGooglePlacesApiService (rather than loading the Maps
+        // JS API a second time via the old loader), so its permission-denied fallback stays
+        // reliable for stores whose API key doesn't yet support the new Places API.
+        googleAutocompleteServiceRef.current = new GoogleAutocompleteService(
+            apiKey,
+            isNewPlacesApiEnabled ? getNewGooglePlacesApiScriptLoader() : undefined,
+        );
     }
 
     const finalizeSelection = (
@@ -96,9 +105,8 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
             .catch((error) => {
                 if (isNewPlacesApiPermissionDenied(error)) {
                     newGooglePlacesApiState.isUnavailable = true;
+                    handleFetchLegacySuggestions(input);
                 }
-
-                handleFetchLegacySuggestions(input);
             });
     };
 
@@ -123,14 +131,13 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
             .catch((error) => {
                 if (isNewPlacesApiPermissionDenied(error)) {
                     newGooglePlacesApiState.isUnavailable = true;
+                    handleSelectViaLegacy(item);
                 }
-
-                handleSelectViaLegacy(item);
             });
     };
 
     const onSelectHandler = (item: AutocompleteItem) => {
-        if (newGooglePlacesApiState.isUnavailable) {
+        if (!isNewPlacesApiEnabled || newGooglePlacesApiState.isUnavailable) {
             handleSelectViaLegacy(item);
 
             return;
@@ -149,7 +156,7 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
     };
 
     const fetchSuggestions = (input: string): void => {
-        if (newGooglePlacesApiState.isUnavailable) {
+        if (!isNewPlacesApiEnabled || newGooglePlacesApiState.isUnavailable) {
             handleFetchLegacySuggestions(input);
 
             return;

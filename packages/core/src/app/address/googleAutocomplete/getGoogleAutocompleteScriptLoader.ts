@@ -1,4 +1,4 @@
-import { GoogleAutocompleteScriptLoader } from './GoogleAutocompleteScriptLoader';
+import GoogleAutocompleteScriptLoader from './GoogleAutocompleteScriptLoader';
 
 let instance: GoogleAutocompleteScriptLoader;
 

@@ -82,6 +82,7 @@ describe('GoogleAutocomplete', () => {
         defaultProps = {
             apiKey: 'test-api-key',
             isAutocompleteEnabled: true,
+            isNewPlacesApiEnabled: true,
             onSelect: jest.fn(),
             onChange: jest.fn(),
         };
@@ -132,8 +133,8 @@ describe('GoogleAutocomplete', () => {
             mockGetDetails.mockImplementation((_req, cb) => cb(legacyPlaceResult, 'OK'));
         });
 
-        it('falls back to the legacy service for suggestions when the new API rejects', async () => {
-            mockGetSuggestions.mockRejectedValue(gRpcSomeOtherErrorMock);
+        it('falls back to the legacy service for suggestions when the new API is denied', async () => {
+            mockGetSuggestions.mockRejectedValue(gRpcPermissionDeniedErrorMock);
 
             render(<GoogleAutocomplete {...defaultProps} />);
 
@@ -141,6 +142,18 @@ describe('GoogleAutocomplete', () => {
 
             await screen.findByText('123 Legacy St, New York');
             expect(mockGetPlacePredictions).toHaveBeenCalled();
+        });
+
+        it('does not fall back to legacy for a non-permission suggestions failure', async () => {
+            mockGetSuggestions.mockRejectedValue(gRpcSomeOtherErrorMock);
+
+            render(<GoogleAutocomplete {...defaultProps} />);
+
+            await userEvent.type(screen.getByRole('textbox'), '123');
+
+            await waitFor(() => expect(mockGetSuggestions).toHaveBeenCalled());
+            expect(screen.queryByText('123 Legacy St, New York')).not.toBeInTheDocument();
+            expect(mockGetPlacePredictions).not.toHaveBeenCalled();
         });
 
         it('latches onto legacy after a permission denial and stops retrying the new API', async () => {
@@ -161,27 +174,27 @@ describe('GoogleAutocomplete', () => {
             expect(mockGetSuggestions).toHaveBeenCalledTimes(1);
         });
 
-        it('keeps retrying the new API on later input after a transient failure', async () => {
+        it('keeps retrying the new API on later input after a transient failure, without falling back', async () => {
             mockGetSuggestions.mockRejectedValue(gRpcSomeOtherErrorMock);
 
             render(<GoogleAutocomplete {...defaultProps} />);
 
             const input = screen.getByRole('textbox');
 
-            // First request fails transiently and falls back, but must NOT latch onto legacy.
+            // First request fails transiently; no fallback and no latch, since it's not a permission denial.
             await userEvent.type(input, '1');
-            await screen.findByText('123 Legacy St, New York');
-            expect(mockGetSuggestions).toHaveBeenCalledTimes(1);
+            await waitFor(() => expect(mockGetSuggestions).toHaveBeenCalledTimes(1));
+            expect(mockGetPlacePredictions).not.toHaveBeenCalled();
 
             // The new API is tried again on the next input, since the failure was not permanent.
             await userEvent.type(input, '2');
             await waitFor(() => expect(mockGetSuggestions).toHaveBeenCalledTimes(2));
         });
 
-        it('falls back to the legacy service for place details when the new API rejects', async () => {
+        it('falls back to the legacy service for place details when the new API denies permission', async () => {
             // Suggestions still come from the new API so the dropdown has an item to click,
-            // but getPlaceDetails rejects, forcing the legacy getDetails fallback.
-            mockGetPlaceDetails.mockRejectedValue(new Error('new API down'));
+            // but getPlaceDetails is denied, forcing the legacy getDetails fallback.
+            mockGetPlaceDetails.mockRejectedValue(gRpcPermissionDeniedErrorMock);
 
             render(<GoogleAutocomplete {...defaultProps} />);
 
@@ -196,6 +209,52 @@ describe('GoogleAutocomplete', () => {
                 ),
             );
             expect(mockGetDetails).toHaveBeenCalled();
+        });
+
+        it('does not fall back to legacy for a non-permission place details failure', async () => {
+            mockGetPlaceDetails.mockRejectedValue(new Error('new API down'));
+
+            render(<GoogleAutocomplete {...defaultProps} />);
+
+            await userEvent.type(screen.getByRole('textbox'), '1');
+            await screen.findByText('123 New API Ave');
+            await userEvent.click(screen.getByText('123 New API Ave'));
+
+            await waitFor(() => expect(mockGetPlaceDetails).toHaveBeenCalled());
+            expect(mockGetDetails).not.toHaveBeenCalled();
+            expect(defaultProps.onSelect).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('new API disabled via experiment flag', () => {
+        beforeEach(() => {
+            mockGetPlacePredictions.mockImplementation((_req, cb) => cb(legacySuggestions, 'OK'));
+            mockGetDetails.mockImplementation((_req, cb) => cb(legacyPlaceResult, 'OK'));
+        });
+
+        it('goes straight to the legacy service for suggestions without calling the new API', async () => {
+            render(<GoogleAutocomplete {...defaultProps} isNewPlacesApiEnabled={false} />);
+
+            await userEvent.type(screen.getByRole('textbox'), '123');
+
+            await screen.findByText('123 Legacy St, New York');
+            expect(mockGetSuggestions).not.toHaveBeenCalled();
+        });
+
+        it('goes straight to the legacy service for place details without calling the new API', async () => {
+            render(<GoogleAutocomplete {...defaultProps} isNewPlacesApiEnabled={false} />);
+
+            await userEvent.type(screen.getByRole('textbox'), '1');
+            await screen.findByText('123 Legacy St, New York');
+            await userEvent.click(screen.getByText('123 Legacy St, New York'));
+
+            await waitFor(() =>
+                expect(defaultProps.onSelect).toHaveBeenCalledWith(
+                    legacyPlaceResult,
+                    expect.objectContaining({ id: 'legacy-place-1' }),
+                ),
+            );
+            expect(mockGetPlaceDetails).not.toHaveBeenCalled();
         });
     });
 });
