@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.826.0](https://github.com/bigcommerce/checkout-js/compare/v1.825.0...v1.826.0) (2026-07-01)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10140 normalize extraFields behaviour for b2c customer ([#3131](https://github.com/bigcommerce/checkout-js/issues/3131)) ([a86fc33](https://github.com/bigcommerce/checkout-js/commit/a86fc33d86a5ab948e7a8fe04cf79f156258fc0c))
+
 ## [1.825.0](https://github.com/bigcommerce/checkout-js/compare/v1.824.0...v1.825.0) (2026-07-01)
 
 
