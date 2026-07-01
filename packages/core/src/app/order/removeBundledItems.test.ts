@@ -42,7 +42,9 @@ describe('buildBundleItemsMapFromOrder()', () => {
         const parent = {
             ...getPhysicalItem(),
             id: 'parent-1',
-            options: [{ name: 'Color', nameId: 10, value: 'Red', valueId: 20, attributeId: 'attr-1' }],
+            options: [
+                { name: 'Color', nameId: 10, value: 'Red', valueId: 20, attributeId: 'attr-1' },
+            ],
         };
         const child = { ...getPhysicalItem(), id: 'child-1', addedByAttributeId: 'attr-1' };
         const lineItems = { ...emptyLineItems, physicalItems: [parent] };
@@ -52,6 +54,7 @@ describe('buildBundleItemsMapFromOrder()', () => {
             const { bundleItemsMap } = buildBundleItemsMapFromOrder(lineItems, orderBundledItems);
 
             expect(bundleItemsMap.size).toBe(1);
+
             const children = bundleItemsMap.get('parent-1');
 
             expect(children).toHaveLength(1);
@@ -70,7 +73,9 @@ describe('buildBundleItemsMapFromOrder()', () => {
         const parent = {
             ...getDigitalItem(),
             id: 'parent-d',
-            options: [{ name: 'Format', nameId: 11, value: 'PDF', valueId: 21, attributeId: 'attr-d' }],
+            options: [
+                { name: 'Format', nameId: 11, value: 'PDF', valueId: 21, attributeId: 'attr-d' },
+            ],
         };
         const child = { ...getDigitalItem(), id: 'child-d', addedByAttributeId: 'attr-d' };
         const lineItems = { ...emptyLineItems, digitalItems: [parent] };
@@ -245,6 +250,7 @@ describe('removeAndBundleItemsTogether()', () => {
             const { bundleItemsMap } = removeAndBundleItemsTogether(items);
 
             expect(bundleItemsMap.size).toBe(1);
+
             const children = bundleItemsMap.get(String(parent.id));
 
             expect(children).toHaveLength(1);
@@ -262,6 +268,7 @@ describe('removeAndBundleItemsTogether()', () => {
             const { nonBundledItems, bundleItemsMap } = removeAndBundleItemsTogether(items);
 
             expect(nonBundledItems.physicalItems).toHaveLength(1);
+
             const children = bundleItemsMap.get(String(parent.id));
 
             expect(children).toHaveLength(2);
