@@ -13,7 +13,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
 
     let themeV2 = false;
 
-    if (config) {
+    if (config?.checkoutSettings) {
         const newThemeExperimentEnabled = Boolean(
             config.checkoutSettings.features['CHECKOUT-7962.update_font_style_on_checkout_page'] ??
                 true,

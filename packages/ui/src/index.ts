@@ -117,6 +117,7 @@ export {
 export { Tooltip, TooltipTrigger } from './tooltip';
 export { MultiLineText } from './text';
 export { Toggle } from './toggle';
+export { Switch, type SwitchProps } from './switch';
 export {
     MOBILE_MAX_WIDTH,
     SMALL_SCREEN_MAX_WIDTH,
@@ -124,4 +125,3 @@ export {
     isMobileView,
     isSmallScreen,
 } from './responsive';
-export { Switch } from './switch';

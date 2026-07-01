@@ -1,15 +1,18 @@
-import { type Address, type AddressKey } from '@bigcommerce/checkout-sdk';
+import { type Address } from '@bigcommerce/checkout-sdk';
 
 import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
-import { mapCustomFormFieldsFromFormValues } from '../formFields';
+import {
+    mapAddressExtraFieldsFromFormValues,
+    mapCustomFormFieldsFromFormValues,
+} from '../formFields';
 
 import { type AddressFormValues } from './mapAddressToFormValues';
 
 export default function mapAddressFromFormValues(
     formValues: AddressFormValues,
     storageKey?: string,
-): Pick<Address, Exclude<AddressKey, 'extraFields'>> {
+): Address {
     const { customFields, extraFields, shouldSaveAddress, ...address } = formValues;
 
     if (storageKey && extraFields && Object.keys(extraFields).length > 0) {
@@ -25,5 +28,10 @@ export default function mapAddressFromFormValues(
         ...address,
         shouldSaveAddress,
         customFields: mapCustomFormFieldsFromFormValues(customFields),
+        // Only carries extra-field values when the form collected them, which only
+        // happens when the `hasAddressExtraFields` capability renders the inputs.
+        // This keeps both billing and shipping/consignment calls sending extra
+        // fields from a single place, and is a no-op for B2C.
+        ...(extraFields ? { extraFields: mapAddressExtraFieldsFromFormValues(extraFields) } : {}),
     };
 }

@@ -15,6 +15,7 @@ export interface PhoneFormFieldProps {
     autocomplete?: string;
     maxLength?: number;
     isFloatingLabelEnabled?: boolean;
+    required?: boolean;
     selectedCountry?: string;
     onChange?(value: string): void;
 }
@@ -27,6 +28,7 @@ export const PhoneFormField: FunctionComponent<PhoneFormFieldProps> = memo(
         autocomplete,
         maxLength,
         isFloatingLabelEnabled,
+        required,
         selectedCountry,
         onChange,
     }) => {
@@ -35,12 +37,18 @@ export const PhoneFormField: FunctionComponent<PhoneFormFieldProps> = memo(
 
         const validatePhone = useCallback(
             (value: string) => {
-                try {
-                    const isPhoneNumberValid = intlTelInputRef.current
-                        ?.getInstance()
-                        ?.isValidNumber();
+                if (!required) {
+                    return undefined;
+                }
 
-                    if (value && !isPhoneNumberValid) {
+                try {
+                    const intlTelInputInstance = intlTelInputRef.current?.getInstance();
+
+                    if (!intlTelInputInstance?.getSelectedCountryData()) {
+                        return undefined;
+                    }
+
+                    if (value && !intlTelInputInstance.isValidNumber()) {
                         return language.translate('address.phone_number_invalid_error');
                     }
                 } catch {
@@ -50,7 +58,7 @@ export const PhoneFormField: FunctionComponent<PhoneFormFieldProps> = memo(
 
                 return undefined;
             },
-            [language],
+            [language, required],
         );
 
         const renderInput = useCallback(

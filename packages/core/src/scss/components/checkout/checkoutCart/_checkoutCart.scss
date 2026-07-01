@@ -74,11 +74,15 @@
     justify-content: space-between;
     margin-bottom: spacing("single");
 
+    &--switch-only {
+        justify-content: flex-end;
+    }
+
     .cart-section-heading {
         margin-bottom: 0;
     }
 
-    .bc-switch {
+    .switch {
         margin-right: -(spacing("half"));
     }
 }

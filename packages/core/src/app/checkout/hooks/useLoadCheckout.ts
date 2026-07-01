@@ -9,10 +9,11 @@ export const useLoadCheckout = (
     checkoutId: string,
     initialState?: CheckoutInitialState,
 ): { isLoadingCheckout: boolean } => {
+    // no reason to subscribe to getCheckout() here because we only use it to set isLoadingCheckout state on mount
     const {
         checkoutService,
         checkoutState: { data },
-    } = useCheckout();
+    } = useCheckout(() => undefined);
     const [isLoadingCheckout, setIsLoadingCheckout] = useState(!data.getCheckout());
     const { extensionService } = useExtensions();
 

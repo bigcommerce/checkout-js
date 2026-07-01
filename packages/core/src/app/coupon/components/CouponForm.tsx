@@ -91,10 +91,12 @@ export const CouponForm: FunctionComponent = () => {
                 {Boolean(couponError) && (
                     <Alert additionalClassName="no-padding" type={AlertType.Error}>
                         <ul className="applied-coupon-error-message">
-                            <span>{couponError}</span>
-                            <span onClick={() => setCouponError(null)}>
-                                <IconRemoveCoupon />
-                            </span>
+                            <li>
+                                <span>{couponError}</span>
+                                <span onClick={() => setCouponError(null)}>
+                                    <IconRemoveCoupon />
+                                </span>
+                            </li>
                         </ul>
                     </Alert>
                 )}

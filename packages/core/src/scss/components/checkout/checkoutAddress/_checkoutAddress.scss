@@ -20,3 +20,10 @@
 .no-addresses-warning {
     padding: spacing("single") 0 (spacing("single") + spacing("third")) 0;
 }
+
+.shipping-ExpectationMessage {
+    color: $color-secondaryDarkest;
+    font-size: $fontSize-smallest;
+    font-weight: fontWeight("normal");
+    margin-bottom: spacing("base");
+}

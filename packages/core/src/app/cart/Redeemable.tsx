@@ -114,11 +114,14 @@ const Redeemable: FunctionComponent<
 const RedeemableForm: FunctionComponent<
     Partial<RedeemableProps> & FormikProps<RedeemableFormValues> & WithLanguageProps
 > = ({ appliedRedeemableError, isApplyingRedeemable, clearError = noop, submitForm, language }) => {
+    // Keeping it as a function intentionally to have memoizeOne behavior unchanged
     const {
         checkoutState: {
             statuses: { isSubmittingOrder },
         },
-    } = useCheckout();
+    } = useCheckout(({ statuses }) => ({
+        isSubmittingOrder: statuses.isSubmittingOrder(),
+    }));
 
     const handleSubmitForm = (setSubmitted: FormContextType['setSubmitted']) => {
         if (isSubmittingOrder()) {

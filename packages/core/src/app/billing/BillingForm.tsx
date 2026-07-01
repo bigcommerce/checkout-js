@@ -68,19 +68,20 @@ const BillingForm = ({
     const addressFormRef: RefObject<HTMLFieldSetElement> = useRef(null);
     const { isPayPalFastlaneEnabled, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
 
-    const { checkoutService, checkoutState } = useCheckout();
+    const {
+        checkoutService,
+        selectedState: { customer, config, cart, isUpdatingBillingAddress, isUpdatingCheckout },
+    } = useCheckout(({ data, statuses }) => ({
+        customer: data.getCustomer(),
+        config: data.getConfig(),
+        cart: data.getCart(),
+        isUpdatingBillingAddress: statuses.isUpdatingBillingAddress(),
+        isUpdatingCheckout: statuses.isUpdatingCheckout(),
+    }));
     const {
         billing: { hideSaveToAddressBookCheck, restrictManualAddressEntry },
         userJourney: { hasAddressExtraFields, hasCompanyAddressBook },
     } = useCapabilities();
-
-    const {
-        data: { getCustomer, getConfig, getCart },
-        statuses: { isUpdatingBillingAddress, isUpdatingCheckout },
-    } = checkoutState;
-    const customer = getCustomer();
-    const config = getConfig();
-    const cart = getCart();
 
     if (!config || !customer || !cart) {
         throw new Error('checkout data is not available');
@@ -106,7 +107,7 @@ const BillingForm = ({
             billingAddresses,
             getFields(billingAddress.countryCode),
         );
-    const isUpdating = isUpdatingBillingAddress() || isUpdatingCheckout();
+    const isUpdating = isUpdatingBillingAddress || isUpdatingCheckout;
     const { enableOrderComments } = config.checkoutSettings;
     const shouldShowOrderComments = enableOrderComments && getShippableItemsCount(cart) < 1;
     const shouldShowSaveAddress = !hideSaveToAddressBookCheck && !isGuest;

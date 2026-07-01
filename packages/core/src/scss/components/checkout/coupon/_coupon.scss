@@ -61,6 +61,10 @@
         padding-left: spacing('quarter');
     }
 
+    ul > li {
+        display: contents;
+    }
+
     ul {
         background: $color-greyLightest;
         color: $color-primary;

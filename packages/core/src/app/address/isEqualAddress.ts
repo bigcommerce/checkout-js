@@ -50,7 +50,6 @@ function normalizeAddress(address: ComparableAddress) {
         'type',
         'email',
         'country',
-        'extraFields',
         'isShipping',
         'isBilling',
         'isDefaultShipping',
@@ -62,6 +61,11 @@ function normalizeAddress(address: ComparableAddress) {
         {
             ...address,
             customFields: (address.customFields || []).filter(({ fieldValue }) => !!fieldValue),
+            // Normalize `extraFields` so an unchanged address compares equal instead of
+            // refiring update calls. Guards against any future path where one side has `[]`
+            // and the other omits it (e.g. backend behavior flips again, or a saved/customer
+            // address arrives with `[]`).
+            extraFields: address.extraFields || [],
         },
         ignoredFields,
     );
