@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.826.2](https://github.com/bigcommerce/checkout-js/compare/v1.826.1...v1.826.2) (2026-07-01)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10139 Bring back optional validation ([#3134](https://github.com/bigcommerce/checkout-js/issues/3134)) ([0146359](https://github.com/bigcommerce/checkout-js/commit/0146359ffdd35cc72169e3392ff94cfa5f04969c))
+
 ### [1.826.1](https://github.com/bigcommerce/checkout-js/compare/v1.826.0...v1.826.1) (2026-07-01)
 
 ## [1.826.0](https://github.com/bigcommerce/checkout-js/compare/v1.825.0...v1.826.0) (2026-07-01)
