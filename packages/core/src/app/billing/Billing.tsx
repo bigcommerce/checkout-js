@@ -1,5 +1,5 @@
 import type { CheckoutSelectors, FormField } from '@bigcommerce/checkout-sdk';
-import React, { type ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { type ReactElement, useCallback, useEffect, useState } from 'react';
 
 import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -8,7 +8,6 @@ import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
 import {
     AddressType,
-    getAddressWithCustomerExtraFields,
     isEqualAddress,
     mapAddressFromFormValues,
     setDefaultAddress,
@@ -81,16 +80,7 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }: BillingProps):
     // Below constants are for <BillingForm />'s HOC props
     const customerMessage = checkout.customerMessage;
     const methodId = getBillingMethodId(checkout);
-    const rawBillingAddress = getBillingAddress();
-    const billingAddress = useMemo(
-        () =>
-            getAddressWithCustomerExtraFields(
-                rawBillingAddress,
-                customer.addresses,
-                hasAddressExtraFields,
-            ),
-        [hasAddressExtraFields, rawBillingAddress, customer.addresses],
-    );
+    const billingAddress = getBillingAddress();
 
     const getFields = useCallback(
         (countryCode?: string) =>

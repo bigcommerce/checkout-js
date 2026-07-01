@@ -115,4 +115,52 @@ describe('isEqualAddress', () => {
             }),
         ).toBeTruthy();
     });
+
+    describe('extraFields', () => {
+        it('returns true when extra fields match', () => {
+            expect(
+                isEqualAddress(
+                    {
+                        ...getAddress(),
+                        extraFields: [{ fieldId: 'costCenter', fieldValue: '5000' }],
+                    },
+                    {
+                        ...getAddress(),
+                        extraFields: [{ fieldId: 'costCenter', fieldValue: '5000' }],
+                    },
+                ),
+            ).toBeTruthy();
+        });
+
+        it('returns false when extra field values differ', () => {
+            expect(
+                isEqualAddress(
+                    {
+                        ...getAddress(),
+                        extraFields: [{ fieldId: 'costCenter', fieldValue: '5000' }],
+                    },
+                    {
+                        ...getAddress(),
+                        extraFields: [{ fieldId: 'costCenter', fieldValue: '9999' }],
+                    },
+                ),
+            ).toBeFalsy();
+        });
+
+        it('returns false when only one address carries extra fields', () => {
+            expect(
+                isEqualAddress(
+                    {
+                        ...getAddress(),
+                        extraFields: [{ fieldId: 'costCenter', fieldValue: '5000' }],
+                    },
+                    getAddress(),
+                ),
+            ).toBeFalsy();
+        });
+
+        it('returns true for B2C addresses without extra fields', () => {
+            expect(isEqualAddress(getAddress(), getAddress())).toBeTruthy();
+        });
+    });
 });
