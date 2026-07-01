@@ -1133,9 +1133,7 @@ describe('Shipping step', () => {
             await userEvent.click(screen.getByTestId('address-select-button'));
             await userEvent.click(screen.getByTestId('add-new-address'));
 
-            expect(
-                screen.getByLabelText('Save this address in my address book.'),
-            ).toBeInTheDocument();
+            expect(screen.getByLabelText('Save to company address book.')).toBeInTheDocument();
         });
 
         it('does not show save address checkbox in multi-shipping new address modal when hasCompanyAddressBook is false', async () => {

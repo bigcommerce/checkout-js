@@ -2,7 +2,7 @@ import { type FormField, isExtraField } from '@bigcommerce/checkout-sdk/essentia
 import { forIn, noop } from 'lodash';
 import React, { useCallback, useEffect, useRef } from 'react';
 
-import { useCheckout, useLocale } from '@bigcommerce/checkout/contexts';
+import { useCapabilities, useCheckout, useLocale } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import {
     type AutocompleteItem,
@@ -39,6 +39,9 @@ const AddressForm: React.FC<AddressFormProps> = ({
     onChange = noop,
     type,
 }) => {
+    const {
+        userJourney: { hasCompanyAddressBook },
+    } = useCapabilities();
     const { language } = useLocale();
     const {
         selectedState: { config, countries },
@@ -214,7 +217,15 @@ const AddressForm: React.FC<AddressFormProps> = ({
             </Fieldset>
             {shouldShowSaveAddress && (
                 <CheckboxFormField
-                    labelContent={<TranslatedString id="address.save_in_addressbook" />}
+                    labelContent={
+                        <TranslatedString
+                            id={
+                                hasCompanyAddressBook
+                                    ? 'address.save_to_company_addressbook'
+                                    : 'address.save_in_addressbook'
+                            }
+                        />
+                    }
                     name={fieldName ? `${fieldName}.shouldSaveAddress` : 'shouldSaveAddress'}
                 />
             )}
