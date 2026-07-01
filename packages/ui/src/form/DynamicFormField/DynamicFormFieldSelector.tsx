@@ -23,7 +23,6 @@ interface DynamicFormFieldSelectorProps {
     maxLength?: FormFieldType['maxLength'];
     isFloatingLabelEnabled?: boolean;
     isNewPhoneValidationExperimentEnabled: boolean;
-    required?: boolean;
     selectedCountry?: string;
     onChange?(value: string | string[]): void;
 }
@@ -43,7 +42,6 @@ export const DynamicFormFieldSelector: FunctionComponent<DynamicFormFieldSelecto
         maxLength,
         isFloatingLabelEnabled,
         isNewPhoneValidationExperimentEnabled,
-        required,
         selectedCountry,
         onChange,
     }) => {
@@ -103,7 +101,6 @@ export const DynamicFormFieldSelector: FunctionComponent<DynamicFormFieldSelecto
                     maxLength={maxLength || undefined}
                     name={name}
                     onChange={onChange}
-                    required={required}
                     selectedCountry={selectedCountry}
                 />
             );
