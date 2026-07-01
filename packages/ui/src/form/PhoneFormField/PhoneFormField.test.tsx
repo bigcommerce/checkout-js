@@ -116,7 +116,7 @@ describe('PhoneFormField', () => {
         mockGetSelectedCountryData.mockReturnValue({ iso2: 'us' });
         mockIsValidNumber.mockReturnValue(false);
 
-        renderPhoneFormField({ required: true });
+        renderPhoneFormField();
 
         fireEvent.change(screen.getByTestId('phone-text'), { target: { value: '123' } });
         await userEvent.click(screen.getByText('Submit'));
@@ -130,7 +130,7 @@ describe('PhoneFormField', () => {
         mockGetSelectedCountryData.mockReturnValue({ iso2: 'us' });
         mockIsValidNumber.mockReturnValue(true);
 
-        renderPhoneFormField({ required: true });
+        renderPhoneFormField();
 
         fireEvent.change(screen.getByTestId('phone-text'), {
             target: { value: '+15551234567' },
@@ -161,20 +161,6 @@ describe('PhoneFormField', () => {
 
         renderPhoneFormField();
 
-        await userEvent.click(screen.getByText('Submit'));
-
-        await waitFor(() => {
-            expect(screen.queryByRole('alert')).not.toBeInTheDocument();
-        });
-    });
-
-    it('does not show a validation error when the field is optional', async () => {
-        mockGetSelectedCountryData.mockReturnValue({ iso2: 'us' });
-        mockIsValidNumber.mockReturnValue(false);
-
-        renderPhoneFormField({ required: false });
-
-        fireEvent.change(screen.getByTestId('phone-text'), { target: { value: '123' } });
         await userEvent.click(screen.getByText('Submit'));
 
         await waitFor(() => {
