@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.825.0](https://github.com/bigcommerce/checkout-js/compare/v1.824.0...v1.825.0) (2026-07-01)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10140 add extra fields to billing and consignment calls ([#3124](https://github.com/bigcommerce/checkout-js/issues/3124)) ([0e86c86](https://github.com/bigcommerce/checkout-js/commit/0e86c86d37b34c73aa3b8d4235f77f60a2b7e440))
+
 ## [1.824.0](https://github.com/bigcommerce/checkout-js/compare/v1.823.1...v1.824.0) (2026-06-30)
 
 
