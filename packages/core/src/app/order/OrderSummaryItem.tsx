@@ -110,7 +110,7 @@ const OrderSummaryItemBackorderDetails = ({
                 )}
                 {shouldDisplayBackorderMessage && (
                     <div
-                        className="product-backorder-lead-time"
+                        className="product-backorder-message"
                         data-test="cart-item-backorder-message"
                     >
                         {backorderMessage}
