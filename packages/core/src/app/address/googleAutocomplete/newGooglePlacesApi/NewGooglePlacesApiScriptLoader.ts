@@ -54,8 +54,13 @@ function bootstrapGoogleMapsImportLibrary({ key, v, language }: MapsBootstrapCon
 
             script.src = `https://maps.googleapis.com/maps/api/js?${params.toString()}`;
             script.nonce = doc.querySelector<HTMLScriptElement>('script[nonce]')?.nonce ?? '';
-            script.onerror = () =>
+
+            script.onerror = () => {
+                // Clear the cached promise so a later retry appends a fresh <script> tag
+                loadPromise = undefined;
                 reject(new Error('The Google Maps JavaScript API could not load.'));
+            };
+
             mapsNs[CALLBACK_KEY] = resolve;
             doc.head.append(script);
         });

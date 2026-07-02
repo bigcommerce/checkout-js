@@ -53,17 +53,19 @@ export class NewGooglePlacesApiService {
     ): Promise<google.maps.places.PlaceResult> {
         const place = await this.resolvePlace(placeId);
 
-        await place.fetchFields({ fields: mapLegacyToNewPlaceDetailsFieldMask(fields) });
+        try {
+            await place.fetchFields({ fields: mapLegacyToNewPlaceDetailsFieldMask(fields) });
 
-        // Fetching details ends the autocomplete session and the next entry should start a new one
-        this.resetSession();
-
-        return {
-            address_components: place.addressComponents?.map(
-                mapNewToLegacyGeocoderAddressComponent,
-            ),
-            name: place.displayName ?? '',
-        };
+            return {
+                address_components: place.addressComponents?.map(
+                    mapNewToLegacyGeocoderAddressComponent,
+                ),
+                name: place.displayName ?? '',
+            };
+        } finally {
+            // Fetching details ends the autocomplete session and the next entry should start a new one
+            this.resetSession();
+        }
     }
 
     private async resolvePlace(placeId: string): Promise<google.maps.places.Place> {
