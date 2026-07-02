@@ -5,6 +5,9 @@ import { Autocomplete, type AutocompleteItem } from '@bigcommerce/checkout/ui';
 
 import GoogleAutocompleteService from './GoogleAutocompleteService';
 import { type GoogleAutocompleteOptionTypes } from './googleAutocompleteTypes';
+import { NewGooglePlacesApiService } from './newGooglePlacesApi';
+import { getNewGooglePlacesApiScriptLoader } from './newGooglePlacesApi/getNewGooglePlacesApiScriptLoader';
+import { isNewPlacesApiPermissionDenied } from './newGooglePlacesApi/utils';
 import './GoogleAutocomplete.scss';
 
 export interface GoogleAutocompleteProps {
@@ -15,6 +18,7 @@ export interface GoogleAutocompleteProps {
     nextElement?: HTMLElement;
     inputProps?: any;
     isAutocompleteEnabled?: boolean;
+    isNewPlacesApiEnabled?: boolean;
     types?: GoogleAutocompleteOptionTypes[];
     onSelect?(place: google.maps.places.PlaceResult, item: AutocompleteItem): void;
     onToggleOpen?(state: { inputValue: string; isOpen: boolean }): void;
@@ -32,6 +36,13 @@ const toAutocompleteItems = (
     }));
 };
 
+// module-scoped because we want to persist across all checkout steps
+const newGooglePlacesApiState = { isUnavailable: false };
+
+export function resetNewGooglePlacesApiState(): void {
+    newGooglePlacesApiState.isUnavailable = false;
+}
+
 const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
     initialValue,
     onToggleOpen = noop,
@@ -40,6 +51,7 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
     onSelect = noop,
     nextElement,
     isAutocompleteEnabled,
+    isNewPlacesApiEnabled = false,
     onChange = noop,
     componentRestrictions,
     types,
@@ -47,32 +59,105 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
 }) => {
     const [items, setItems] = useState<AutocompleteItem[]>([]);
     const [autoComplete, setAutoComplete] = useState<string>('off');
+    const newGooglePlacesApiServiceRef = useRef<NewGooglePlacesApiService>();
     const googleAutocompleteServiceRef = useRef<GoogleAutocompleteService>();
 
-    if (!googleAutocompleteServiceRef.current) {
-        googleAutocompleteServiceRef.current = new GoogleAutocompleteService(apiKey);
+    if (!newGooglePlacesApiServiceRef.current) {
+        newGooglePlacesApiServiceRef.current = new NewGooglePlacesApiService(apiKey);
     }
 
-    const onSelectHandler = (item: AutocompleteItem) => {
+    if (!googleAutocompleteServiceRef.current) {
+        // When the new Places API is enabled, the legacy service must share the same script-loader instance.
+        // Otherwise Maps JS API that they depend on will be loaded twice and that breaks both services
+        googleAutocompleteServiceRef.current = new GoogleAutocompleteService(
+            apiKey,
+            isNewPlacesApiEnabled ? getNewGooglePlacesApiScriptLoader() : undefined,
+        );
+    }
+
+    const isUsingLegacyApi = !isNewPlacesApiEnabled || newGooglePlacesApiState.isUnavailable;
+
+    const finalizeSelection = (
+        place: google.maps.places.PlaceResult | null,
+        item: AutocompleteItem,
+    ) => {
+        if (nextElement) {
+            nextElement.focus();
+        }
+
+        onSelect(place, item);
+    };
+
+    const fetchSuggestionsWithLegacyApi = (input: string): void => {
+        const service = googleAutocompleteServiceRef.current;
+
+        if (!service) return;
+
+        service.getAutocompleteService().then((autocompleteService) => {
+            autocompleteService.getPlacePredictions(
+                { input, types: types || ['geocode'], componentRestrictions },
+                (results) => {
+                    setItems(toAutocompleteItems(results ?? undefined));
+                },
+            );
+        });
+    };
+
+    const fetchSuggestionsWithNewApi = (input: string): void => {
+        const service = newGooglePlacesApiServiceRef.current;
+
+        if (!service) return;
+
+        service
+            .getSuggestions(input, types, componentRestrictions)
+            .then(setItems)
+            .catch((error) => {
+                if (isNewPlacesApiPermissionDenied(error)) {
+                    newGooglePlacesApiState.isUnavailable = true;
+                    fetchSuggestionsWithLegacyApi(input);
+                }
+            });
+    };
+
+    const selectWithLegacyApi = (item: AutocompleteItem): void => {
         const service = googleAutocompleteServiceRef.current;
 
         if (!service) return;
 
         service.getPlacesServices().then((placesService) => {
             placesService.getDetails(
-                {
-                    placeId: item.id,
-                    fields: fields || ['address_components', 'name'],
-                },
+                { placeId: item.id, fields: fields || ['address_components', 'name'] },
                 (result) => {
-                    if (nextElement) {
-                        nextElement.focus();
-                    }
-
-                    onSelect(result, item);
+                    finalizeSelection(result, item);
                 },
             );
         });
+    };
+
+    const selectWithNewApi = (item: AutocompleteItem): void => {
+        const service = newGooglePlacesApiServiceRef.current;
+
+        if (!service) return;
+
+        service
+            .getPlaceDetails(item.id, fields)
+            .then((result) => finalizeSelection(result, item))
+            .catch((error) => {
+                if (isNewPlacesApiPermissionDenied(error)) {
+                    newGooglePlacesApiState.isUnavailable = true;
+                    selectWithLegacyApi(item);
+                }
+            });
+    };
+
+    const handleSelect = (item: AutocompleteItem) => {
+        if (isUsingLegacyApi) {
+            selectWithLegacyApi(item);
+
+            return;
+        }
+
+        selectWithNewApi(item);
     };
 
     const resetAutocomplete = (): void => {
@@ -84,34 +169,17 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
         setAutoComplete(input && input.length ? 'nope' : 'off');
     };
 
-    const setItemsFromInput = (input: string): void => {
-        if (!input) {
-            setItems([]);
+    const fetchSuggestions = (input: string): void => {
+        if (isUsingLegacyApi) {
+            fetchSuggestionsWithLegacyApi(input);
 
             return;
         }
 
-        const service = googleAutocompleteServiceRef.current;
-
-        if (!service) return;
-
-        service.getAutocompleteService().then((autocompleteService) => {
-            autocompleteService.getPlacePredictions(
-                {
-                    input,
-                    types: types || ['geocode'],
-                    componentRestrictions,
-                },
-                (results) => {
-                    const autocompleteItems = toAutocompleteItems(results ?? undefined);
-
-                    setItems(autocompleteItems);
-                },
-            );
-        });
+        fetchSuggestionsWithNewApi(input);
     };
 
-    const onChangeHandler = (input: string) => {
+    const handleChange = (input: string) => {
         onChange(input, false);
 
         if (!isAutocompleteEnabled) {
@@ -119,7 +187,14 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
         }
 
         setAutocompleteValue(input);
-        setItemsFromInput(input);
+
+        if (!input) {
+            setItems([]);
+
+            return;
+        }
+
+        fetchSuggestions(input);
     };
 
     return (
@@ -133,8 +208,8 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
             }}
             items={items}
             listTestId="address-autocomplete-suggestions"
-            onChange={onChangeHandler}
-            onSelect={onSelectHandler}
+            onChange={handleChange}
+            onSelect={handleSelect}
             onToggleOpen={onToggleOpen}
         >
             <div className="co-googleAutocomplete-footer" />
