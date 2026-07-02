@@ -2,7 +2,7 @@ import type { AutocompleteItem } from '@bigcommerce/checkout/ui';
 
 import type { GoogleAutocompleteOptionTypes } from '../googleAutocompleteTypes';
 
-import getNewGooglePlacesApiScriptLoader from './getNewGooglePlacesApiScriptLoader';
+import { getNewGooglePlacesApiScriptLoader } from './getNewGooglePlacesApiScriptLoader';
 import { type NewGooglePlacesApiScriptLoader } from './NewGooglePlacesApiScriptLoader';
 import {
     mapLegacyToNewIncludedPrimaryTypes,
