@@ -10,7 +10,7 @@ import React, { type FunctionComponent, memo, useCallback, useContext, useMemo }
 import { object, type ObjectSchema, string } from 'yup';
 
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
-import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
+import { useCapabilities, useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
 import {
     TranslatedString,
     withLanguage,
@@ -26,6 +26,7 @@ import { getOrderExtraFieldsValidationSchema } from '../formFields';
 import { TermsConditions } from '../termsConditions';
 
 import AdditionalPaymentField from './AdditionalPaymentField';
+import { PaymentBillingBlock } from './billingForm';
 import getPaymentValidationSchema from './getPaymentValidationSchema';
 import InvoicePaymentCommentField from './InvoicePaymentCommentField';
 import { NoPaymentMethods } from './NoPaymentMethods';
@@ -132,6 +133,7 @@ const PaymentForm: FunctionComponent<
     }, [selectedMethod]);
 
     const { selectedState: config } = useCheckout(({ data }) => data.getConfig());
+    const { themeV2 } = useThemeContext();
     const {
         payment: { invoicePaymentComment },
     } = useCapabilities();
@@ -197,6 +199,8 @@ const PaymentForm: FunctionComponent<
                     values={values}
                 />
             )}
+
+            {themeV2 && <PaymentBillingBlock />}
 
             <PaymentRedeemables />
 
