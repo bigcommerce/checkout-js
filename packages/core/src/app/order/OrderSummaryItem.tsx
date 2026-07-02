@@ -87,7 +87,10 @@ const OrderSummaryItemBackorderDetails = ({
                 ref={backorderDetailsRef}
             >
                 {shouldDisplayQuantityOnHand && (
-                    <div data-test="cart-item-onhand-qty">
+                    <div
+                        className="product-backorder-status product-backorder-status--onhand"
+                        data-test="cart-item-onhand-qty"
+                    >
                         <TranslatedString
                             data={{ count: quantityOnHand }}
                             id="cart.ready_to_ship_count_text"
@@ -95,7 +98,10 @@ const OrderSummaryItemBackorderDetails = ({
                     </div>
                 )}
                 {shouldDisplayQuantityOnBackorder && (
-                    <div data-test="cart-item-backorder-qty">
+                    <div
+                        className="product-backorder-status product-backorder-status--backorder"
+                        data-test="cart-item-backorder-qty"
+                    >
                         <TranslatedString
                             data={{ count: quantityBackordered }}
                             id="cart.backorder_count_text"
@@ -103,7 +109,12 @@ const OrderSummaryItemBackorderDetails = ({
                     </div>
                 )}
                 {shouldDisplayBackorderMessage && (
-                    <div data-test="cart-item-backorder-message">{backorderMessage}</div>
+                    <div
+                        className="product-backorder-lead-time"
+                        data-test="cart-item-backorder-message"
+                    >
+                        {backorderMessage}
+                    </div>
                 )}
             </div>
         </CollapseCSSTransition>

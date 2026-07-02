@@ -64,7 +64,6 @@
 }
 
 .product-options, .product-backorder-details-container {
-    color: color("greys");
     font-size: fontSize("tiny");
     margin: 0;
 }
@@ -79,6 +78,43 @@
         height $animation-collapse-transitionSpeed $animation-collapse-transitionCurve,
         opacity $animation-collapse-transitionSpeed $animation-collapse-transitionCurve,
         margin $animation-collapse-transitionSpeed $animation-collapse-transitionCurve;
+}
+
+.product-backorder-status {
+    align-items: center;
+    display: flex;
+
+    &::before {
+        border-radius: 50%;
+        content: '';
+        display: inline-block;
+        flex-shrink: 0;
+        height: remCalc(8px);
+        margin-right: spacing("quarter");
+        width: remCalc(8px);
+    }
+
+    &--onhand {
+        color: $color-successDarker;
+
+        &::before {
+            background-color: $color-successDark;
+        }
+    }
+
+    &--backorder {
+        color: $color-warningDark;
+
+        &::before {
+            background-color: $color-warningDark;
+        }
+    }
+}
+
+.product-backorder-lead-time {
+    color: $color-warningDark;
+    padding-left: calc(#{remCalc(8px)} + #{spacing("quarter")});
+    padding-bottom: spacing("quarter");
 }
 
 .product-actions {
