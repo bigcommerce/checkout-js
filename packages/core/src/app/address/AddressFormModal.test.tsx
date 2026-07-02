@@ -122,6 +122,20 @@ describe('AddressFormModal Component', () => {
         );
     });
 
+    it('does not show save address checkbox when shouldShowSaveAddress is false', () => {
+        renderAddressFormModal({ shouldShowSaveAddress: false });
+
+        expect(
+            screen.queryByLabelText('Save this address in my address book.'),
+        ).not.toBeInTheDocument();
+    });
+
+    it('shows save address checkbox when shouldShowSaveAddress is true', () => {
+        renderAddressFormModal({ shouldShowSaveAddress: true });
+
+        expect(screen.getByLabelText('Save this address in my address book.')).toBeInTheDocument();
+    });
+
     it('renders prefilled address form in the modal when selectedAddress is present', () => {
         const address = JSON.parse(
             JSON.stringify({
