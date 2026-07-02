@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.827.0](https://github.com/bigcommerce/checkout-js/compare/v1.826.2...v1.827.0) (2026-07-02)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10114 Save shouldSaveAddress Flag for Multi-shipping ([#3132](https://github.com/bigcommerce/checkout-js/issues/3132)) ([dfa7778](https://github.com/bigcommerce/checkout-js/commit/dfa777875753def0eb32cf140a37a8ad03e1de60))
+
 ### [1.826.2](https://github.com/bigcommerce/checkout-js/compare/v1.826.1...v1.826.2) (2026-07-01)
 
 
