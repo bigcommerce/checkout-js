@@ -1,1 +1,1 @@
-export { default as PaymentBillingBlock } from './PaymentBillingBlock';
+export { PaymentBillingBlock } from './PaymentBillingBlock';

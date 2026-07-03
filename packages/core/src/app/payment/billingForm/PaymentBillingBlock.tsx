@@ -7,14 +7,6 @@ import React, { type FunctionComponent } from 'react';
  * will live within the payment step. The actual `BillingForm` and
  * same-as-shipping orchestration arrive in CHECKOUT-10150 / CHECKOUT-10151.
  */
-const PaymentBillingBlock: FunctionComponent = () => {
-    return (
-        <div
-            className="paymentBillingBlock"
-            data-test="payment-billing-block"
-            id="payment-billing-block"
-        />
-    );
+export const PaymentBillingBlock: FunctionComponent = () => {
+    return <div className="paymentBillingBlock" data-test="payment-billing-block" />;
 };
-
-export default PaymentBillingBlock;
