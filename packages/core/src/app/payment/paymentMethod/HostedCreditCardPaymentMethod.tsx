@@ -7,6 +7,9 @@ import {
 import { createSagePayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/sagepay';
 import React, { type FunctionComponent, useCallback } from 'react';
 
+import { useCheckout } from '@bigcommerce/checkout/contexts';
+
+import { isExperimentEnabled } from '../../common/utility';
 import {
     withHostedCreditCardFieldset,
     type WithInjectedHostedCreditCardFieldsetProps,
@@ -35,6 +38,13 @@ const HostedCreditCardPaymentMethod: FunctionComponent<
     initializePayment,
     ...rest
 }) => {
+    const { selectedState: config } = useCheckout(({ data }) => data.getConfig());
+    const isCBAMPGSResolverEnabled = isExperimentEnabled(
+        config?.checkoutSettings,
+        'PI-4748.cba_resolver_configuration',
+        false,
+    );
+
     const initializeHostedCreditCardPayment: CreditCardPaymentMethodProps['initializePayment'] =
         useCallback(
             async (options, selectedInstrument) => {
@@ -46,14 +56,14 @@ const HostedCreditCardPaymentMethod: FunctionComponent<
                         createCyberSourcePaymentStrategy,
                         createCyberSourceV2PaymentStrategy,
                         createSagePayPaymentStrategy,
-                        createCBAMPGSPaymentStrategy,
+                        ...(!isCBAMPGSResolverEnabled ? [createCBAMPGSPaymentStrategy] : []),
                     ],
                     creditCard: getHostedFormOptions && {
                         form: await getHostedFormOptions(selectedInstrument),
                     },
                 });
             },
-            [getHostedFormOptions, initializePayment],
+            [getHostedFormOptions, initializePayment, isCBAMPGSResolverEnabled],
         );
 
     return (

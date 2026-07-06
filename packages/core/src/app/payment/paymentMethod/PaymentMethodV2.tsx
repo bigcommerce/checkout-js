@@ -58,11 +58,15 @@ const PaymentMethodContainer: ComponentType<
         setValidationSchema,
     };
 
-    const ResolvedPaymentMethod = resolvePaymentMethod({
-        id: method.id,
-        gateway: method.gateway,
-        type: method.type,
-    });
+    const config = checkoutState.data.getConfig();
+    const ResolvedPaymentMethod = resolvePaymentMethod(
+        {
+            id: method.id,
+            gateway: method.gateway,
+            type: method.type,
+        },
+        config?.checkoutSettings,
+    );
 
     if (!ResolvedPaymentMethod) {
         return (
