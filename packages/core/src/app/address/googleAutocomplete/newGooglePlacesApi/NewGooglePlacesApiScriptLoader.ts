@@ -6,6 +6,15 @@ interface MapsBootstrapConfig {
 
 import { type GoogleMapsSdk } from '../googleAutocompleteTypes';
 
+interface BootstrapGlobalScope {
+    google?: {
+        maps?: {
+            importLibrary?: (library: string, ...rest: unknown[]) => Promise<unknown>;
+            [key: string]: unknown;
+        };
+    };
+}
+
 /**
  * This is based on the official Google Maps JavaScript API loader example:
  * https://developers.google.com/maps/documentation/javascript/load-maps-js-api
@@ -22,7 +31,7 @@ import { type GoogleMapsSdk } from '../googleAutocompleteTypes';
 function bootstrapGoogleMapsImportLibrary({ key, v, language }: MapsBootstrapConfig): void {
     const CALLBACK_KEY = '__ib__';
     const doc = document;
-    const globalScope = window as Record<string, any>;
+    const globalScope: BootstrapGlobalScope = window;
     const googleNs = (globalScope.google = globalScope.google || {});
     const mapsNs = (googleNs.maps = googleNs.maps || {});
 
@@ -71,7 +80,7 @@ function bootstrapGoogleMapsImportLibrary({ key, v, language }: MapsBootstrapCon
     mapsNs.importLibrary = (library: string, ...rest: unknown[]): Promise<unknown> => {
         requestedLibraries.add(library);
 
-        return loadScript().then(() => mapsNs.importLibrary(library, ...rest));
+        return loadScript().then(() => mapsNs.importLibrary?.(library, ...rest));
     };
 }
 
