@@ -16,6 +16,7 @@ import {
     type ExtensionServiceInterface,
     LocaleContext,
     type LocaleContextType,
+    ThemeContext,
 } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
@@ -45,9 +46,11 @@ describe('PaymentForm', () => {
     let defaultProps: PaymentFormProps;
     let localeContext: LocaleContextType;
     let paymentContext: PaymentContextProps;
+    let themeV2: boolean;
     let PaymentFormTest: FunctionComponent<PaymentFormProps>;
 
     beforeEach(() => {
+        themeV2 = false;
         defaultProps = {
             isStoreCreditApplied: true,
             defaultMethodId: getPaymentMethod().id,
@@ -76,11 +79,13 @@ describe('PaymentForm', () => {
             <CheckoutProvider checkoutService={checkoutService}>
                 <PaymentContext.Provider value={paymentContext}>
                     <LocaleContext.Provider value={localeContext}>
-                        <Formik initialValues={null} onSubmit={noop}>
-                            <ExtensionProvider extensionService={extensionService}>
-                                <PaymentForm {...props} />
-                            </ExtensionProvider>
-                        </Formik>
+                        <ThemeContext.Provider value={{ themeV2 }}>
+                            <Formik initialValues={null} onSubmit={noop}>
+                                <ExtensionProvider extensionService={extensionService}>
+                                    <PaymentForm {...props} />
+                                </ExtensionProvider>
+                            </Formik>
+                        </ThemeContext.Provider>
                     </LocaleContext.Provider>
                 </PaymentContext.Provider>
             </CheckoutProvider>
@@ -484,6 +489,24 @@ describe('PaymentForm', () => {
                     }),
                 ),
             ).toBeInTheDocument();
+        });
+    });
+
+    describe('billing-in-payment scaffold (themeV2)', () => {
+        it('renders the placeholder billing block when themeV2 is enabled', () => {
+            themeV2 = true;
+
+            render(<PaymentFormTest {...defaultProps} />);
+
+            expect(screen.getByTestId('payment-billing-block')).toBeInTheDocument();
+        });
+
+        it('does not render the billing block when themeV2 is disabled', () => {
+            themeV2 = false;
+
+            render(<PaymentFormTest {...defaultProps} />);
+
+            expect(screen.queryByTestId('payment-billing-block')).not.toBeInTheDocument();
         });
     });
 });
