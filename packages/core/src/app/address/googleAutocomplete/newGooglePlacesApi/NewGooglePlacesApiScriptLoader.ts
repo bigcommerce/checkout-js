@@ -30,7 +30,6 @@ interface BootstrapGlobalScope {
  */
 function bootstrapGoogleMapsImportLibrary({ key, v, language }: MapsBootstrapConfig): void {
     const CALLBACK_KEY = '__ib__';
-    const doc = document;
     const globalScope: BootstrapGlobalScope = window;
     const googleNs = (globalScope.google = globalScope.google || {});
     const mapsNs = (googleNs.maps = googleNs.maps || {});
@@ -59,10 +58,10 @@ function bootstrapGoogleMapsImportLibrary({ key, v, language }: MapsBootstrapCon
                 params.set('language', language);
             }
 
-            const script = doc.createElement('script');
+            const script = document.createElement('script');
 
             script.src = `https://maps.googleapis.com/maps/api/js?${params.toString()}`;
-            script.nonce = doc.querySelector<HTMLScriptElement>('script[nonce]')?.nonce ?? '';
+            script.nonce = document.querySelector<HTMLScriptElement>('script[nonce]')?.nonce ?? '';
 
             script.onerror = () => {
                 // Clear the cached promise so a later retry appends a fresh <script> tag
@@ -71,7 +70,7 @@ function bootstrapGoogleMapsImportLibrary({ key, v, language }: MapsBootstrapCon
             };
 
             mapsNs[CALLBACK_KEY] = resolve;
-            doc.head.append(script);
+            document.head.append(script);
         });
 
         return loadPromise;
