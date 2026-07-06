@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.830.0](https://github.com/bigcommerce/checkout-js/compare/v1.829.0...v1.830.0) (2026-07-06)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10026 Add new Google Places API services ([#3135](https://github.com/bigcommerce/checkout-js/issues/3135)) ([b0b09b5](https://github.com/bigcommerce/checkout-js/commit/b0b09b536ec7e91940dd199babc00536a41c175b))
+
 ## [1.829.0](https://github.com/bigcommerce/checkout-js/compare/v1.828.0...v1.829.0) (2026-07-06)
 
 
