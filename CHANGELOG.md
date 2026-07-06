@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.829.0](https://github.com/bigcommerce/checkout-js/compare/v1.828.0...v1.829.0) (2026-07-06)
+
+
+### Features
+
+* **checkout:** Migrate CBA MPGS to Resolver Configuration ([#3075](https://github.com/bigcommerce/checkout-js/issues/3075)) ([8693dc2](https://github.com/bigcommerce/checkout-js/commit/8693dc23c83cc87740527907f78481d0bdd16d0a))
+
 ## [1.828.0](https://github.com/bigcommerce/checkout-js/compare/v1.827.3...v1.828.0) (2026-07-06)
 
 
