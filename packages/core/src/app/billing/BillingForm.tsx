@@ -1,6 +1,6 @@
 import { type Address, type FormField, isExtraField } from '@bigcommerce/checkout-sdk/essential';
 import { type FormikProps, withFormik } from 'formik';
-import React, { type RefObject, useRef, useState } from 'react';
+import React, { type FocusEvent, type RefObject, useCallback, useRef, useState } from 'react';
 import { lazy } from 'yup';
 
 import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
@@ -44,6 +44,11 @@ export interface BillingFormProps {
     methodId?: string;
     billingAddress?: Address;
     customerMessage: string;
+    // When true, the form renders without its own <form> wrapper and submit
+    // button so it can be embedded inside another form (e.g. the payment step
+    // under themeV2). Instead of submitting, it persists via `onSubmit` when the
+    // shopper finishes editing (focus leaves the block) and the form is valid.
+    isEmbedded?: boolean;
     navigateNextStep(): void;
     onSubmit(values: BillingFormValues): void;
     onUnhandledError(error: Error): void;
@@ -54,7 +59,10 @@ const BillingForm = ({
     methodId,
     getFields,
     billingAddress,
+    isEmbedded,
+    onSubmit,
     setFieldValue,
+    validateForm,
     values,
     onUnhandledError,
 }: BillingFormProps & WithLanguageProps & FormikProps<BillingFormValues>) => {
@@ -123,8 +131,29 @@ const BillingForm = ({
         void handleSelectAddress({});
     };
 
-    return (
-        <Form autoComplete="on">
+    // Embedded mode: persist the address when the shopper finishes editing and
+    // focus leaves the whole billing block. We validate first and bail on any
+    // error, so `onSubmit` (which calls updateBillingAddress) never runs against
+    // an invalid address. The container dedupes unchanged addresses.
+    const handleEmbeddedBlur = useCallback(
+        async (event: FocusEvent<HTMLDivElement>) => {
+            if (event.currentTarget.contains(event.relatedTarget)) {
+                return;
+            }
+
+            const errors = await validateForm();
+
+            if (Object.keys(errors).length > 0) {
+                return;
+            }
+
+            onSubmit(values);
+        },
+        [validateForm, onSubmit, values],
+    );
+
+    const formContent = (
+        <>
             {shouldRenderStaticAddress && billingAddress && (
                 <div className="form-fieldset">
                     <StaticBillingAddress address={billingAddress} />
@@ -162,6 +191,24 @@ const BillingForm = ({
             </Fieldset>
 
             {shouldShowOrderComments && <OrderComments />}
+        </>
+    );
+
+    if (isEmbedded) {
+        return (
+            <div
+                className="checkout-billing-form"
+                data-test="checkout-billing-form"
+                onBlur={handleEmbeddedBlur}
+            >
+                {formContent}
+            </div>
+        );
+    }
+
+    return (
+        <Form autoComplete="on">
+            {formContent}
 
             <div className="form-actions">
                 <Button

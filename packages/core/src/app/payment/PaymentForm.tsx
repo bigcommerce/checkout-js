@@ -200,7 +200,7 @@ const PaymentForm: FunctionComponent<
                 />
             )}
 
-            {themeV2 && <PaymentBillingBlock />}
+            {themeV2 && <PaymentBillingBlock onUnhandledError={onUnhandledError ?? noop} />}
 
             <PaymentRedeemables />
 
