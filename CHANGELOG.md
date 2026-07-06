@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.828.0](https://github.com/bigcommerce/checkout-js/compare/v1.827.3...v1.828.0) (2026-07-06)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10149 attach temporary billing component in payment step ([#3138](https://github.com/bigcommerce/checkout-js/issues/3138)) ([bd2747b](https://github.com/bigcommerce/checkout-js/commit/bd2747b5c90d4a74bcbbca4b133a288862476d53))
+
 ### [1.827.3](https://github.com/bigcommerce/checkout-js/compare/v1.827.2...v1.827.3) (2026-07-03)
 
 ### [1.827.2](https://github.com/bigcommerce/checkout-js/compare/v1.827.1...v1.827.2) (2026-07-02)
