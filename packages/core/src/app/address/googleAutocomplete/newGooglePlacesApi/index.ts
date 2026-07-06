@@ -1,0 +1,1 @@
+export { NewGooglePlacesApiService } from './NewGooglePlacesApiService';
