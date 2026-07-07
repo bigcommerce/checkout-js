@@ -76,7 +76,7 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
         );
     }
 
-    const isUsingLegacyApi = !isNewPlacesApiEnabled || newGooglePlacesApiState.isUnavailable;
+    const isUsingLegacyApi = () => !isNewPlacesApiEnabled || newGooglePlacesApiState.isUnavailable;
 
     const finalizeSelection = (
         place: google.maps.places.PlaceResult | null,
@@ -164,7 +164,7 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
     };
 
     const handleSelect = (item: AutocompleteItem) => {
-        if (isUsingLegacyApi) {
+        if (isUsingLegacyApi()) {
             selectWithLegacyApi(item);
 
             return;
@@ -183,7 +183,7 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
     };
 
     const fetchSuggestions = (input: string): void => {
-        if (isUsingLegacyApi) {
+        if (isUsingLegacyApi()) {
             fetchSuggestionsWithLegacyApi(input);
 
             return;
