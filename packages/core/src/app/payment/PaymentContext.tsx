@@ -4,7 +4,15 @@ import { type ObjectSchema } from 'yup';
 
 import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 
+// Flushes a pending themeV2 billing edit: validates, persists when valid, and
+// resolves to whether the caller may proceed (false = invalid, block submit).
+export type BillingAddressFlush = () => Promise<boolean>;
+
 export interface PaymentContextProps {
+    // Lets the themeV2 payment billing form register a flush the payment submit
+    // awaits, so the order can't finalize against a stale billing address. Pass
+    // null to unregister. Optional: only the themeV2 billing form uses it.
+    registerBillingAddressFlush?(flush: BillingAddressFlush | null): void;
     disableSubmit(method: PaymentMethod, disabled?: boolean): void;
     // NOTE: This prop allows certain payment methods to override the default
     // form submission behaviour. It is not recommended to use it because

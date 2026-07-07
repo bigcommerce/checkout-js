@@ -20,29 +20,30 @@ import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 import { mapAddressFromFormValues, mapAddressToFormValues } from '../../address';
 import { getFormFields } from '../../address/formField.mock';
 import { getBillingAddress } from '../../billing/billingAddresses.mock';
-import { type BillingFormProps, type BillingFormValues } from '../../billing/BillingForm';
+import { type BillingFormValues } from '../../billing/billingFormConfig';
 import { getCheckout } from '../../checkout/checkouts.mock';
 import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
 
-import PaymentBillingBlock from './PaymentBillingBlock';
+import { PaymentBillingBlock } from './PaymentBillingBlock';
+import { type PaymentBillingFormProps } from './PaymentBillingForm';
 
-let mockCapturedProps: BillingFormProps;
+let mockCapturedProps: PaymentBillingFormProps;
 
 let mockPersistValues: BillingFormValues;
 
-// Stand in for BillingForm: capture the props the container passes and expose a
-// button that invokes the embedded auto-save callback (onSubmit) so we can test
-// the container's persistence wiring without driving the real address form.
-jest.mock('../../billing/BillingForm', () => ({
+// Stand in for PaymentBillingForm: capture the props the container passes and
+// expose a button that invokes onPersist, so we can test the container's
+// persistence wiring without driving the real address form.
+jest.mock('./PaymentBillingForm', () => ({
     __esModule: true,
-    default: (props: BillingFormProps) => {
+    default: (props: PaymentBillingFormProps) => {
         mockCapturedProps = props;
 
         return (
             <button
                 data-test="trigger-persist"
-                onClick={() => props.onSubmit(mockPersistValues)}
+                onClick={() => props.onPersist(mockPersistValues)}
                 type="button"
             >
                 persist
@@ -105,12 +106,13 @@ describe('PaymentBillingBlock', () => {
         expect(checkoutService.loadBillingAddressFields).toHaveBeenCalled();
     });
 
-    it('renders BillingForm in embedded mode', async () => {
+    it('renders PaymentBillingForm with the resolved method id and fields', async () => {
         render(<PaymentBillingBlockTest />);
 
         await screen.findByTestId('trigger-persist');
 
-        expect(mockCapturedProps.isEmbedded).toBe(true);
+        expect(mockCapturedProps.getFields).toEqual(expect.any(Function));
+        expect(mockCapturedProps.onPersist).toEqual(expect.any(Function));
     });
 
     it('persists a changed billing address via updateBillingAddress', async () => {

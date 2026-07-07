@@ -1,70 +1,73 @@
-import { type Address, type FormField, isExtraField } from '@bigcommerce/checkout-sdk/essential';
-import { type FormikProps, withFormik } from 'formik';
-import React, { type RefObject, useRef, useState } from 'react';
+import {
+    type Address,
+    type CustomerAddress,
+    type FormField,
+    isExtraField,
+} from '@bigcommerce/checkout-sdk/essential';
+import { type FormikProps, setNestedObjectValues, withFormik } from 'formik';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 
 import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
-import {
-    TranslatedString,
-    withLanguage,
-    type WithLanguageProps,
-} from '@bigcommerce/checkout/locale';
+import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
-import {
-    AddressFormSkeleton,
-    Button,
-    ButtonVariant,
-    Fieldset,
-    Form,
-    LoadingOverlay,
-} from '@bigcommerce/checkout/ui';
+import { AddressFormSkeleton, Fieldset, LoadingOverlay } from '@bigcommerce/checkout/ui';
+import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
-import { AddressForm, AddressSelect, AddressType, isValidCustomerAddress } from '../address';
-import { OrderComments } from '../orderComments';
-import { getShippableItemsCount } from '../shipping';
-
+import { AddressForm, AddressSelect, AddressType, isValidCustomerAddress } from '../../address';
 import {
     type BillingFormValues,
     getBillingFormInitialValues,
     getBillingFormValidationSchema,
-} from './billingFormConfig';
-import StaticBillingAddress from './StaticBillingAddress';
+} from '../../billing/billingFormConfig';
+import StaticBillingAddress from '../../billing/StaticBillingAddress';
+import { OrderComments } from '../../orderComments';
+import { getShippableItemsCount } from '../../shipping';
+import PaymentContext from '../PaymentContext';
 
-export type { BillingFormValues } from './billingFormConfig';
-
-export interface BillingFormProps {
+export interface PaymentBillingFormProps {
     methodId?: string;
     billingAddress?: Address;
     customerMessage: string;
-    navigateNextStep(): void;
-    onSubmit(values: BillingFormValues): void;
-    onUnhandledError(error: Error): void;
     getFields(countryCode?: string): FormField[];
+    // Persists the billing address (updateBillingAddress). Must throw on failure
+    // so the pre-submit flush can block the order.
+    onPersist(values: BillingFormValues): Promise<void>;
+    onUnhandledError(error: Error): void;
 }
 
-const BillingForm = ({
+/**
+ * Billing address form for the payment step under themeV2. Unlike the legacy
+ * standalone BillingForm it renders no <form> wrapper and no submit button, and
+ * it persists via a flush the payment submit awaits (registered on PaymentContext)
+ * rather than on its own submit — so the order can't finalize against a stale
+ * billing address.
+ */
+const PaymentBillingForm = ({
     methodId,
     getFields,
     billingAddress,
     setFieldValue,
+    setTouched,
+    validateForm,
     values,
+    onPersist,
     onUnhandledError,
-}: BillingFormProps & WithLanguageProps & FormikProps<BillingFormValues>) => {
+}: PaymentBillingFormProps & WithLanguageProps & FormikProps<BillingFormValues>) => {
     const [isResettingAddress, setIsResettingAddress] = useState(false);
-    const addressFormRef: RefObject<HTMLFieldSetElement> = useRef(null);
     const { isPayPalFastlaneEnabled, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
+    const paymentContext = useContext(PaymentContext);
 
     const {
         checkoutService,
-        selectedState: { customer, config, cart, isUpdatingBillingAddress, isUpdatingCheckout },
-    } = useCheckout(({ data, statuses }) => ({
+        selectedState: { customer, config, cart },
+    } = useCheckout(({ data }) => ({
         customer: data.getCustomer(),
         config: data.getConfig(),
         cart: data.getCart(),
-        isUpdatingBillingAddress: statuses.isUpdatingBillingAddress(),
-        isUpdatingCheckout: statuses.isUpdatingCheckout(),
     }));
     const {
         billing: { hideSaveToAddressBookCheck, restrictManualAddressEntry },
+        userJourney: { hasAddressExtraFields, hasCompanyAddressBook },
     } = useCapabilities();
 
     if (!config || !customer || !cart) {
@@ -91,16 +94,65 @@ const BillingForm = ({
             billingAddresses,
             getFields(billingAddress.countryCode),
         );
-    const isUpdating = isUpdatingBillingAddress || isUpdatingCheckout;
     const { enableOrderComments } = config.checkoutSettings;
     const shouldShowOrderComments = enableOrderComments && getShippableItemsCount(cart) < 1;
     const shouldShowSaveAddress = !hideSaveToAddressBookCheck && !isGuest;
+
+    // Once the address form opens (selected address is invalid or no longer matches a
+    // book entry), the stored book id can't faithfully represent it, so drop it.
+    useEffect(() => {
+        if (
+            hasCompanyAddressBook &&
+            !hasValidCustomerAddress &&
+            B2BSessionStorage.getAddressId(B2BSessionStorage.billingAddressIdKey)
+        ) {
+            B2BSessionStorage.remove(B2BSessionStorage.billingAddressIdKey);
+        }
+    }, [hasCompanyAddressBook, hasValidCustomerAddress]);
+
+    // Flush a pending edit before the payment step places the order: validate,
+    // surface errors + block on invalid, otherwise persist and allow the order.
+    const flush = useCallback(async (): Promise<boolean> => {
+        const errors = await validateForm();
+
+        if (Object.keys(errors).length > 0) {
+            await setTouched(setNestedObjectValues(errors, true));
+
+            return false;
+        }
+
+        await onPersist(values);
+
+        return true;
+    }, [validateForm, setTouched, onPersist, values]);
+
+    useEffect(() => {
+        const registerBillingAddressFlush = paymentContext?.registerBillingAddressFlush;
+
+        if (!registerBillingAddressFlush) {
+            return;
+        }
+
+        registerBillingAddressFlush(flush);
+
+        return () => {
+            registerBillingAddressFlush(null);
+        };
+    }, [paymentContext, flush]);
 
     const handleSelectAddress = async (address: Partial<Address>) => {
         setIsResettingAddress(true);
 
         try {
             await checkoutService.updateBillingAddress(address);
+
+            B2BSessionStorage.remove(B2BSessionStorage.billingAddressIdKey);
+
+            const selectedAddressId = (address as CustomerAddress).id;
+
+            if (hasCompanyAddressBook && selectedAddressId) {
+                B2BSessionStorage.set(B2BSessionStorage.billingAddressIdKey, selectedAddressId);
+            }
         } catch (error) {
             if (error instanceof Error) {
                 onUnhandledError(error);
@@ -111,18 +163,22 @@ const BillingForm = ({
     };
 
     const handleUseNewAddress = () => {
+        if (hasAddressExtraFields) {
+            B2BSessionStorage.remove(B2BSessionStorage.billingExtraFieldsKey);
+        }
+
         void handleSelectAddress({});
     };
 
     return (
-        <Form autoComplete="on">
+        <div className="checkout-billing-form" data-test="checkout-billing-form">
             {shouldRenderStaticAddress && billingAddress && (
                 <div className="form-fieldset">
                     <StaticBillingAddress address={billingAddress} />
                 </div>
             )}
 
-            <Fieldset id="checkoutBillingAddress" ref={addressFormRef}>
+            <Fieldset id="checkoutBillingAddress">
                 {hasAddresses && !shouldRenderStaticAddress && (
                     <Fieldset id="billingAddresses">
                         <LoadingOverlay isLoading={isResettingAddress}>
@@ -153,28 +209,14 @@ const BillingForm = ({
             </Fieldset>
 
             {shouldShowOrderComments && <OrderComments />}
-
-            <div className="form-actions">
-                <Button
-                    className="body-bold"
-                    disabled={isUpdating || isResettingAddress}
-                    id="checkout-billing-continue"
-                    isLoading={isUpdating || isResettingAddress}
-                    type="submit"
-                    variant={ButtonVariant.Primary}
-                >
-                    <TranslatedString id="common.continue_action" />
-                </Button>
-            </div>
-        </Form>
+        </div>
     );
 };
 
 export default withLanguage(
-    withFormik<BillingFormProps & WithLanguageProps, BillingFormValues>({
-        handleSubmit: (values, { props: { onSubmit } }) => {
-            onSubmit(values);
-        },
+    withFormik<PaymentBillingFormProps & WithLanguageProps, BillingFormValues>({
+        // No submit button — persistence happens via the flush, not on submit.
+        handleSubmit: () => undefined,
         mapPropsToValues: ({ getFields, customerMessage, billingAddress }) =>
             getBillingFormInitialValues(getFields, billingAddress, customerMessage),
         validateOnMount: true,
@@ -182,8 +224,8 @@ export default withLanguage(
             language,
             getFields,
             methodId,
-        }: BillingFormProps & WithLanguageProps) =>
+        }: PaymentBillingFormProps & WithLanguageProps) =>
             getBillingFormValidationSchema(language, getFields, methodId),
         enableReinitialize: true,
-    })(BillingForm),
+    })(PaymentBillingForm),
 );

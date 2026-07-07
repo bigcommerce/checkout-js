@@ -42,6 +42,29 @@ import {
     createEmbeddedCheckoutSupport,
 } from '../embeddedCheckout';
 
+// Controllable billing flush for the themeV2 pre-submit gate. Other tests keep
+// themeV2 off, so the block never renders and this stays unused there.
+
+let mockBillingFlush: jest.Mock<Promise<boolean>>;
+
+jest.mock('./billingForm', () => {
+    const ReactActual = require('react');
+
+    const { default: PaymentContextActual } = require('./PaymentContext');
+
+    return {
+        PaymentBillingBlock: () => {
+            const context = ReactActual.useContext(PaymentContextActual);
+
+            ReactActual.useEffect(() => {
+                context?.registerBillingAddressFlush(mockBillingFlush);
+            }, [context]);
+
+            return ReactActual.createElement('div', { 'data-test': 'payment-billing-block' });
+        },
+    };
+});
+
 describe('Payment step', () => {
     let checkout: CheckoutPageNodeObject;
     let CheckoutTest: FunctionComponent<CheckoutProps>;
@@ -172,6 +195,52 @@ describe('Payment step', () => {
         await act(async () => userEvent.click(screen.getByText('Place Order')));
 
         expect(window.location.replace).toHaveBeenCalledWith('/order-confirmation');
+    });
+
+    it('does not place the order when embedded billing (themeV2) is invalid', async () => {
+        const themeV2Config = {
+            ...checkoutSettings,
+            storeConfig: {
+                ...checkoutSettings.storeConfig,
+                checkoutSettings: {
+                    ...checkoutSettings.storeConfig.checkoutSettings,
+                    checkoutUserExperienceSettings: {
+                        ...checkoutSettings.storeConfig.checkoutSettings
+                            .checkoutUserExperienceSettings,
+                        checkoutV2Theme: true,
+                    },
+                },
+            },
+        };
+
+        mockBillingFlush = jest.fn<Promise<boolean>, []>().mockResolvedValue(false);
+
+        const location = window.location;
+
+        Object.defineProperty(window, 'location', {
+            value: {
+                // eslint-disable-next-line @typescript-eslint/no-misused-spread
+                ...location,
+                replace: jest.fn(),
+            },
+            writable: true,
+        });
+
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+            config: themeV2Config,
+        });
+
+        const submitOrderSpy = jest.spyOn(checkoutService, 'submitOrder');
+
+        render(<CheckoutTest {...defaultProps} />);
+
+        await checkout.waitForPaymentStep();
+
+        await act(async () => userEvent.click(screen.getByText('Place Order')));
+
+        expect(mockBillingFlush).toHaveBeenCalled();
+        expect(submitOrderSpy).not.toHaveBeenCalled();
+        expect(window.location.replace).not.toHaveBeenCalled();
     });
 
     it('goes back to billing step after unmounting the component', async () => {

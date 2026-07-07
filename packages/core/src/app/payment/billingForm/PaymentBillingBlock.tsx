@@ -1,5 +1,4 @@
 import type { CheckoutSelectors, FormField } from '@bigcommerce/checkout-sdk';
-import { noop } from 'lodash';
 import React, { type FunctionComponent, useCallback, useEffect, useState } from 'react';
 
 import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
@@ -13,8 +12,10 @@ import {
     mapAddressFromFormValues,
     setDefaultAddress,
 } from '../../address';
-import BillingForm, { type BillingFormValues } from '../../billing/BillingForm';
+import { type BillingFormValues } from '../../billing/billingFormConfig';
 import getBillingMethodId from '../../billing/getBillingMethodId';
+
+import PaymentBillingForm from './PaymentBillingForm';
 
 export interface PaymentBillingBlockProps {
     onUnhandledError(error: Error): void;
@@ -38,13 +39,14 @@ const getFieldsWithExtraFields = (
 };
 
 /**
- * Billing address rendered inside the payment step under themeV2 (CHECKOUT-10150).
- *
- * Reuses `BillingForm` in embedded mode so it renders without its own <form>
- * wrapper/submit button and persists via `updateBillingAddress` when the shopper
- * finishes editing. The standalone Billing step remains for the legacy (v1) path.
+ * Billing address container rendered inside the payment step under themeV2
+ * (CHECKOUT-10150). Loads billing fields / default address and hosts
+ * `PaymentBillingForm`, which persists via a pre-submit flush. The standalone
+ * Billing step remains for the legacy (v1) path.
  */
-export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = ({ onUnhandledError }) => {
+export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = ({
+    onUnhandledError,
+}) => {
     const {
         selectedState: {
             checkout,
@@ -94,9 +96,9 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
     );
 
     // Persist without navigating — the payment step's "Place Order" is the only
-    // submit. Called by BillingForm's embedded auto-save once the address is
-    // valid; the isEqualAddress guard prevents redundant updateBillingAddress
-    // calls when nothing changed.
+    // submit. Called by PaymentBillingForm's pre-submit flush; the isEqualAddress
+    // guard prevents a redundant updateBillingAddress when nothing changed. Errors
+    // propagate so the flush can block the order.
     const handlePersist = async ({
         orderComment,
         ...addressValues
@@ -116,13 +118,7 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
             promises.push(checkoutService.updateCheckout({ customerMessage: orderComment }));
         }
 
-        try {
-            await Promise.all(promises);
-        } catch (error) {
-            if (error instanceof Error) {
-                onUnhandledError(error);
-            }
-        }
+        await Promise.all(promises);
     };
 
     useEffect(() => {
@@ -158,14 +154,12 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
                         <TranslatedString id="billing.billing_address_heading" />
                     </Legend>
                 </div>
-                <BillingForm
+                <PaymentBillingForm
                     billingAddress={billingAddress}
                     customerMessage={customerMessage}
                     getFields={getFields}
-                    isEmbedded={true}
                     methodId={methodId}
-                    navigateNextStep={noop}
-                    onSubmit={handlePersist}
+                    onPersist={handlePersist}
                     onUnhandledError={onUnhandledError}
                 />
             </div>

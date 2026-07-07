@@ -28,6 +28,7 @@ import { createSagePayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrat
 import { memoizeOne } from '@bigcommerce/memoize';
 import { isEmpty, noop } from 'lodash';
 import React, {
+    type MutableRefObject,
     type ReactElement,
     type ReactNode,
     useCallback,
@@ -70,7 +71,7 @@ import { mapToB2BOrderRequestBody } from './b2bMetadataForSubmitOrder';
 import CartStockPositionsChangedModal from './CartStockPositionsChangedModal';
 import mapSubmitOrderErrorMessage, { mapSubmitOrderErrorTitle } from './mapSubmitOrderErrorMessage';
 import mapToOrderRequestBody from './mapToOrderRequestBody';
-import PaymentContext from './PaymentContext';
+import PaymentContext, { type BillingAddressFlush } from './PaymentContext';
 import PaymentForm from './PaymentForm';
 import { getUniquePaymentMethodId, PaymentMethodProviderType } from './paymentMethod';
 import { getFilteredPaymentMethodsWithDefault } from './paymentMethodFilters';
@@ -157,6 +158,10 @@ const Payment = (
     const grandTotalChangeUnsubscribe = useRef<() => void>();
     const validationSchemasRef = useRef<validationSchemas>({});
     const lastFormValuesRef = useRef<PaymentFormValues | null>(null);
+    // Set by the embedded billing block (themeV2). Awaited before submitOrder so
+    // an in-flight billing autosave can't let the order finalize against a stale
+    // billing address.
+    const billingAddressFlushRef: MutableRefObject<BillingAddressFlush | null> = useRef(null);
 
     const {
         orderConfirmation: { persistB2BMetadata, invoiceRedirect },
@@ -475,6 +480,15 @@ const Payment = (
                 return customSubmit(orderValues);
             }
 
+            // Flush any pending embedded billing edit (themeV2) before placing
+            // the order. If billing is invalid, block the order — errors are
+            // surfaced inline by the billing form.
+            const flushBillingAddress = billingAddressFlushRef.current;
+
+            if (flushBillingAddress && !(await flushBillingAddress())) {
+                return;
+            }
+
             try {
                 if (persistB2BMetadata) {
                     await refreshB2BPaymentMethods();
@@ -582,6 +596,10 @@ const Payment = (
         [],
     );
 
+    const registerBillingAddressFlush = useCallback((flush: BillingAddressFlush | null): void => {
+        billingAddressFlushRef.current = flush;
+    }, []);
+
     const loadPaymentMethodsOrThrow = async (): Promise<void> => {
         const { loadPaymentMethods, onUnhandledError = noop } = props;
 
@@ -628,6 +646,7 @@ const Payment = (
     const getContextValue = memoizeOne(() => {
         return {
             disableSubmit,
+            registerBillingAddressFlush,
             setSubmit,
             setValidationSchema,
             hidePaymentSubmitButton,
