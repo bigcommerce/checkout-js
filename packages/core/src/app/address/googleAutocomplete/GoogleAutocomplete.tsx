@@ -61,6 +61,7 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
     const [autoComplete, setAutoComplete] = useState<string>('off');
     const newGooglePlacesApiServiceRef = useRef<NewGooglePlacesApiService>();
     const googleAutocompleteServiceRef = useRef<GoogleAutocompleteService>();
+    const latestNewApiInputRef = useRef<string>();
 
     if (!newGooglePlacesApiServiceRef.current) {
         newGooglePlacesApiServiceRef.current = new NewGooglePlacesApiService(apiKey);
@@ -108,13 +109,25 @@ const GoogleAutocomplete: React.FC<GoogleAutocompleteProps> = ({
 
         if (!service) return;
 
+        latestNewApiInputRef.current = input;
+
         service
             .getSuggestions(input, types, componentRestrictions)
-            .then(setItems)
+            .then((results) => {
+                if (latestNewApiInputRef.current === input) {
+                    setItems(results);
+                }
+            })
             .catch((error) => {
                 if (isNewPlacesApiPermissionDenied(error)) {
                     newGooglePlacesApiState.isUnavailable = true;
                     fetchSuggestionsWithLegacyApi(input);
+
+                    return;
+                }
+
+                if (latestNewApiInputRef.current === input) {
+                    setItems([]);
                 }
             });
     };
