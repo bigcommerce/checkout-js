@@ -47,35 +47,37 @@ const gRpcPermissionDeniedErrorMock = { name: 'RpcError', code: 7 };
 const gRpcSomeOtherErrorMock = { name: 'RpcError', code: 14 };
 
 describe('GoogleAutocomplete', () => {
-    let mockGetPlacePredictions: jest.Mock;
-    let mockGetDetails: jest.Mock;
-    let mockGetSuggestions: jest.Mock;
-    let mockGetPlaceDetails: jest.Mock;
+    let mockGetLegacyApiSuggestions: jest.Mock;
+    let mockGetLegacyApiPlaceDetails: jest.Mock;
+    let mockGetNewApiSuggestions: jest.Mock;
+    let mockGetNewApiPlaceDetails: jest.Mock;
     let defaultProps: GoogleAutocompleteProps;
 
     beforeEach(() => {
         resetNewGooglePlacesApiState();
 
-        mockGetPlacePredictions = jest.fn();
-        mockGetDetails = jest.fn();
-        mockGetSuggestions = jest.fn().mockResolvedValue(newApiSuggestions);
-        mockGetPlaceDetails = jest.fn().mockResolvedValue(newApiPlaceResult);
+        mockGetLegacyApiSuggestions = jest.fn();
+        mockGetLegacyApiPlaceDetails = jest.fn();
+        mockGetNewApiSuggestions = jest.fn().mockResolvedValue(newApiSuggestions);
+        mockGetNewApiPlaceDetails = jest.fn().mockResolvedValue(newApiPlaceResult);
 
         MockLegacyService.mockImplementation(
             () =>
                 ({
-                    getAutocompleteService: jest
+                    getAutocompleteService: jest.fn().mockResolvedValue({
+                        getPlacePredictions: mockGetLegacyApiSuggestions,
+                    }),
+                    getPlacesServices: jest
                         .fn()
-                        .mockResolvedValue({ getPlacePredictions: mockGetPlacePredictions }),
-                    getPlacesServices: jest.fn().mockResolvedValue({ getDetails: mockGetDetails }),
+                        .mockResolvedValue({ getDetails: mockGetLegacyApiPlaceDetails }),
                 }) as unknown as LegacyGoogleAutocompleteService,
         );
 
         MockPlacesApiService.mockImplementation(
             () =>
                 ({
-                    getSuggestions: mockGetSuggestions,
-                    getPlaceDetails: mockGetPlaceDetails,
+                    getSuggestions: mockGetNewApiSuggestions,
+                    getPlaceDetails: mockGetNewApiPlaceDetails,
                 }) as unknown as NewGooglePlacesApiService,
         );
 
@@ -95,7 +97,7 @@ describe('GoogleAutocomplete', () => {
             await userEvent.type(screen.getByRole('textbox'), '123');
 
             await screen.findByText('123 New API Ave');
-            expect(mockGetPlacePredictions).not.toHaveBeenCalled();
+            expect(mockGetLegacyApiSuggestions).not.toHaveBeenCalled();
         });
 
         it('calls onSelect with the new API place result when a suggestion is picked', async () => {
@@ -111,41 +113,45 @@ describe('GoogleAutocomplete', () => {
                     expect.objectContaining({ id: 'new-place-1' }),
                 ),
             );
-            expect(mockGetDetails).not.toHaveBeenCalled();
+            expect(mockGetLegacyApiPlaceDetails).not.toHaveBeenCalled();
         });
     });
 
     describe('new API unavailable (fall back to legacy)', () => {
         beforeEach(() => {
-            mockGetPlacePredictions.mockImplementation((_req, cb) => cb(legacySuggestions, 'OK'));
-            mockGetDetails.mockImplementation((_req, cb) => cb(legacyPlaceResult, 'OK'));
+            mockGetLegacyApiSuggestions.mockImplementation((_req, cb) =>
+                cb(legacySuggestions, 'OK'),
+            );
+            mockGetLegacyApiPlaceDetails.mockImplementation((_req, cb) =>
+                cb(legacyPlaceResult, 'OK'),
+            );
         });
 
         it('falls back to the legacy service for suggestions when the new API is denied', async () => {
-            mockGetSuggestions.mockRejectedValue(gRpcPermissionDeniedErrorMock);
+            mockGetNewApiSuggestions.mockRejectedValue(gRpcPermissionDeniedErrorMock);
 
             render(<GoogleAutocomplete {...defaultProps} />);
 
             await userEvent.type(screen.getByRole('textbox'), '123');
 
             await screen.findByText('123 Legacy St, New York');
-            expect(mockGetPlacePredictions).toHaveBeenCalled();
+            expect(mockGetLegacyApiSuggestions).toHaveBeenCalled();
         });
 
         it('does not fall back to legacy for a non-permission suggestions failure', async () => {
-            mockGetSuggestions.mockRejectedValue(gRpcSomeOtherErrorMock);
+            mockGetNewApiSuggestions.mockRejectedValue(gRpcSomeOtherErrorMock);
 
             render(<GoogleAutocomplete {...defaultProps} />);
 
             await userEvent.type(screen.getByRole('textbox'), '123');
 
-            await waitFor(() => expect(mockGetSuggestions).toHaveBeenCalled());
+            await waitFor(() => expect(mockGetNewApiSuggestions).toHaveBeenCalled());
             expect(screen.queryByText('123 Legacy St, New York')).not.toBeInTheDocument();
-            expect(mockGetPlacePredictions).not.toHaveBeenCalled();
+            expect(mockGetLegacyApiSuggestions).not.toHaveBeenCalled();
         });
 
         it('latches onto legacy after a permission denial and stops retrying the new API', async () => {
-            mockGetSuggestions.mockRejectedValue(gRpcPermissionDeniedErrorMock);
+            mockGetNewApiSuggestions.mockRejectedValue(gRpcPermissionDeniedErrorMock);
 
             render(<GoogleAutocomplete {...defaultProps} />);
 
@@ -154,16 +160,18 @@ describe('GoogleAutocomplete', () => {
             // First request hits the new API, is denied, and latches the fallback flag.
             await userEvent.type(input, '1');
             await screen.findByText('123 Legacy St, New York');
-            expect(mockGetSuggestions).toHaveBeenCalledTimes(1);
+            expect(mockGetNewApiSuggestions).toHaveBeenCalledTimes(1);
 
             // A later request goes straight to legacy without retrying the new API.
             await userEvent.type(input, '2');
-            await waitFor(() => expect(mockGetPlacePredictions).toHaveBeenCalledTimes(2));
-            expect(mockGetSuggestions).toHaveBeenCalledTimes(1);
+            // legacy is called twice for both cases
+            await waitFor(() => expect(mockGetLegacyApiSuggestions).toHaveBeenCalledTimes(2));
+            // new api is called only once for previous input
+            expect(mockGetNewApiSuggestions).toHaveBeenCalledTimes(1);
         });
 
         it('keeps retrying the new API on later input after a transient failure, without falling back', async () => {
-            mockGetSuggestions.mockRejectedValue(gRpcSomeOtherErrorMock);
+            mockGetNewApiSuggestions.mockRejectedValue(gRpcSomeOtherErrorMock);
 
             render(<GoogleAutocomplete {...defaultProps} />);
 
@@ -171,18 +179,18 @@ describe('GoogleAutocomplete', () => {
 
             // First request fails transiently; no fallback and no latch, since it's not a permission denial.
             await userEvent.type(input, '1');
-            await waitFor(() => expect(mockGetSuggestions).toHaveBeenCalledTimes(1));
-            expect(mockGetPlacePredictions).not.toHaveBeenCalled();
+            await waitFor(() => expect(mockGetNewApiSuggestions).toHaveBeenCalledTimes(1));
+            expect(mockGetLegacyApiSuggestions).not.toHaveBeenCalled();
 
             // The new API is tried again on the next input, since the failure was not permanent.
             await userEvent.type(input, '2');
-            await waitFor(() => expect(mockGetSuggestions).toHaveBeenCalledTimes(2));
+            await waitFor(() => expect(mockGetNewApiSuggestions).toHaveBeenCalledTimes(2));
         });
 
         it('falls back to the legacy service for place details when the new API denies permission', async () => {
             // Suggestions still come from the new API so the dropdown has an item to click,
             // but getPlaceDetails is denied, forcing the legacy getDetails fallback.
-            mockGetPlaceDetails.mockRejectedValue(gRpcPermissionDeniedErrorMock);
+            mockGetNewApiPlaceDetails.mockRejectedValue(gRpcPermissionDeniedErrorMock);
 
             render(<GoogleAutocomplete {...defaultProps} />);
 
@@ -196,11 +204,11 @@ describe('GoogleAutocomplete', () => {
                     expect.objectContaining({ id: 'new-place-1' }),
                 ),
             );
-            expect(mockGetDetails).toHaveBeenCalled();
+            expect(mockGetLegacyApiPlaceDetails).toHaveBeenCalled();
         });
 
         it('does not fall back to legacy for a non-permission place details failure', async () => {
-            mockGetPlaceDetails.mockRejectedValue(new Error('new API down'));
+            mockGetNewApiPlaceDetails.mockRejectedValue(new Error('new API down'));
 
             render(<GoogleAutocomplete {...defaultProps} />);
 
@@ -208,16 +216,20 @@ describe('GoogleAutocomplete', () => {
             await screen.findByText('123 New API Ave');
             await userEvent.click(screen.getByText('123 New API Ave'));
 
-            await waitFor(() => expect(mockGetPlaceDetails).toHaveBeenCalled());
-            expect(mockGetDetails).not.toHaveBeenCalled();
+            await waitFor(() => expect(mockGetNewApiPlaceDetails).toHaveBeenCalled());
+            expect(mockGetLegacyApiPlaceDetails).not.toHaveBeenCalled();
             expect(defaultProps.onSelect).not.toHaveBeenCalled();
         });
     });
 
     describe('new API disabled via experiment flag', () => {
         beforeEach(() => {
-            mockGetPlacePredictions.mockImplementation((_req, cb) => cb(legacySuggestions, 'OK'));
-            mockGetDetails.mockImplementation((_req, cb) => cb(legacyPlaceResult, 'OK'));
+            mockGetLegacyApiSuggestions.mockImplementation((_req, cb) =>
+                cb(legacySuggestions, 'OK'),
+            );
+            mockGetLegacyApiPlaceDetails.mockImplementation((_req, cb) =>
+                cb(legacyPlaceResult, 'OK'),
+            );
         });
 
         it('goes straight to the legacy service for suggestions without calling the new API', async () => {
@@ -226,7 +238,7 @@ describe('GoogleAutocomplete', () => {
             await userEvent.type(screen.getByRole('textbox'), '123');
 
             await screen.findByText('123 Legacy St, New York');
-            expect(mockGetSuggestions).not.toHaveBeenCalled();
+            expect(mockGetNewApiSuggestions).not.toHaveBeenCalled();
         });
 
         it('goes straight to the legacy service for place details without calling the new API', async () => {
@@ -242,7 +254,7 @@ describe('GoogleAutocomplete', () => {
                     expect.objectContaining({ id: 'legacy-place-1' }),
                 ),
             );
-            expect(mockGetPlaceDetails).not.toHaveBeenCalled();
+            expect(mockGetNewApiPlaceDetails).not.toHaveBeenCalled();
         });
     });
 });
