@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.830.1](https://github.com/bigcommerce/checkout-js/compare/v1.830.0...v1.830.1) (2026-07-08)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10190 Fix StylelintWebpackPlugin linting files outside packages ([#3144](https://github.com/bigcommerce/checkout-js/issues/3144)) ([22fdccd](https://github.com/bigcommerce/checkout-js/commit/22fdccd48d26a8144e1fc32f85d4a210407a341f))
+
 ## [1.830.0](https://github.com/bigcommerce/checkout-js/compare/v1.829.0...v1.830.0) (2026-07-06)
 
 
