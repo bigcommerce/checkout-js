@@ -140,6 +140,7 @@ function appConfig(options, argv) {
                     enabled: isProduction,
                 }),
                 new StyleLintPlugin({
+                    files: 'packages/**/*.{scss,sass,css}',
                     fix: !isProduction,
                     cache: true,
                     cacheLocation: join(process.cwd(), 'node_modules/.cache/'),
