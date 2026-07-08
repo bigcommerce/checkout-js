@@ -76,11 +76,14 @@ function mapToWithCheckoutSignedInCustomerWalletButtonsProps({
     const isWalletButtonsOnTop = Boolean(
         checkoutSettings.checkoutUserExperienceSettings?.walletButtonsOnTop,
     );
+    const requiresB2BToken = Boolean(checkoutSettings.capabilities?.userJourney.requiresB2BToken);
+    const showWalletButtons =
+        !customer.isGuest && !isWalletButtonsOnTop && !requiresB2BToken && isPaymentDataRequired();
 
     return {
         checkoutButtonIds: checkoutSettings.remoteCheckoutProviders,
         isInitializingCustomer: isInitializingCustomer(),
-        showWalletButtons: !customer.isGuest && !isWalletButtonsOnTop && isPaymentDataRequired(),
+        showWalletButtons,
         deinitializeCustomer: checkoutService.deinitializeCustomer,
         initializeCustomer: checkoutService.initializeCustomer,
     };
