@@ -4,7 +4,6 @@ import React, { type ReactElement, useCallback, useEffect, useState } from 'reac
 import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { AddressFormSkeleton, Legend } from '@bigcommerce/checkout/ui';
-import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
 import {
     AddressType,
@@ -99,10 +98,7 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }: BillingProps):
     }: BillingFormValues): Promise<void> => {
         const billingAddress = getBillingAddress();
         const promises: Array<Promise<CheckoutSelectors>> = [];
-        const address = mapAddressFromFormValues(
-            addressValues,
-            B2BSessionStorage.billingExtraFieldsKey,
-        );
+        const address = mapAddressFromFormValues(addressValues);
 
         if (address && !isEqualAddress(address, billingAddress)) {
             promises.push(checkoutService.updateBillingAddress(address));

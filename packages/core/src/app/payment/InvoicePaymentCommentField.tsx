@@ -3,7 +3,6 @@ import React, { type FunctionComponent, useCallback } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { FormField, TextArea } from '@bigcommerce/checkout/ui';
-import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
 const InvoicePaymentCommentField: FunctionComponent = () => {
     const renderInput = useCallback(
@@ -11,10 +10,6 @@ const InvoicePaymentCommentField: FunctionComponent = () => {
             <TextArea
                 {...field}
                 id="invoicePaymentComment"
-                onChange={(event) => {
-                    field.onChange(event);
-                    B2BSessionStorage.set(B2BSessionStorage.invoiceCommentKey, event.target.value);
-                }}
                 rows={4}
                 testId="invoicePaymentComment-input"
             />

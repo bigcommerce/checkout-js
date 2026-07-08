@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 
 import { useCapabilities } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
 import {
     AddressFormModal,
@@ -55,8 +54,6 @@ const ConsignmentAddressSelector = ({
         validateMaxLength,
         getConsignments: getPreviousConsignments,
     } = useShipping();
-
-    const storageKey = B2BSessionStorage.getConsignmentKey(consignment?.id ?? '');
 
     // TODO: add filter for addresses
     const addresses = customer.addresses || EMPTY_ARRAY;
@@ -116,7 +113,7 @@ const ConsignmentAddressSelector = ({
     };
 
     const handleSaveAddress = async (addressFormValues: AddressFormValues) => {
-        const address = mapAddressFromFormValues(addressFormValues, storageKey);
+        const address = mapAddressFromFormValues(addressFormValues);
 
         await handleSelectAddress(address);
 
@@ -160,7 +157,6 @@ const ConsignmentAddressSelector = ({
                 onSaveAddress={handleSaveAddress}
                 selectedAddress={isGuest ? selectedAddress : undefined}
                 shouldShowSaveAddress={hasCompanyAddressBook}
-                storageKey={storageKey}
             />
             {isGuest ? (
                 <GuestCustomerAddressSelector

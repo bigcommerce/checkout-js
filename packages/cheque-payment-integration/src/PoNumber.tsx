@@ -29,10 +29,7 @@ const PoNumber: FunctionComponent<PoNumberProps> = ({
     paymentForm: { setFieldValue, setValidationSchema },
 }) => {
     useEffect(() => {
-        setFieldValue(
-            PO_NUMBER_FIELD_NAME,
-            B2BSessionStorage.getValue(B2BSessionStorage.poNumberKey),
-        );
+        setFieldValue(PO_NUMBER_FIELD_NAME, B2BSessionStorage.getPaymentValues()?.poNumber ?? '');
         setValidationSchema(method, getPoNumberValidationSchema(language, isRequired, label));
 
         return () => {
@@ -50,10 +47,6 @@ const PoNumber: FunctionComponent<PoNumberProps> = ({
         ),
         [],
     );
-
-    const handleChange = useCallback((value: string) => {
-        B2BSessionStorage.set(B2BSessionStorage.poNumberKey, value.trim());
-    }, []);
 
     return (
         <div className="po-number-container">
@@ -77,7 +70,6 @@ const PoNumber: FunctionComponent<PoNumberProps> = ({
                     </Legend>
                 }
                 name={PO_NUMBER_FIELD_NAME}
-                onChange={handleChange}
             />
         </div>
     );

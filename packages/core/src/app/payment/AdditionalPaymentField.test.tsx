@@ -5,7 +5,6 @@ import React from 'react';
 import { LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
-import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
 import { getStoreConfig } from '../config/config.mock';
 
@@ -25,10 +24,6 @@ describe('AdditionalPaymentField', () => {
                 </Formik>
             </LocaleContext.Provider>,
         );
-
-    beforeEach(() => {
-        sessionStorage.clear();
-    });
 
     it('renders the provided label and an input', () => {
         renderField({ label: 'Delivery instructions' });
@@ -53,26 +48,13 @@ describe('AdditionalPaymentField', () => {
         ).not.toBeInTheDocument();
     });
 
-    it('writes the typed value to session storage on change', () => {
+    it('updates the field value on change', () => {
         renderField();
 
         fireEvent.change(screen.getByTestId('additionalPaymentField-input'), {
             target: { value: 'leave at front door' },
         });
 
-        expect(B2BSessionStorage.getValue(B2BSessionStorage.additionalPaymentFieldKey)).toBe(
-            'leave at front door',
-        );
-    });
-
-    it('stores an empty value when the field is cleared', () => {
-        B2BSessionStorage.set(B2BSessionStorage.additionalPaymentFieldKey, 'existing');
-        renderField({}, 'existing');
-
-        fireEvent.change(screen.getByTestId('additionalPaymentField-input'), {
-            target: { value: '' },
-        });
-
-        expect(B2BSessionStorage.getValue(B2BSessionStorage.additionalPaymentFieldKey)).toBe('');
+        expect(screen.getByDisplayValue('leave at front door')).toBeInTheDocument();
     });
 });

@@ -43,7 +43,6 @@ import {
     waitFor,
     within,
 } from '@bigcommerce/checkout/test-utils';
-import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
 import { getCustomerAddressB2B } from '../address/address.mock';
 import Checkout, { type CheckoutProps } from '../checkout/Checkout';
@@ -1096,7 +1095,7 @@ describe('Shipping step', () => {
             </CheckoutProvider>
         );
 
-        it('stores the selected shipping address id when hasCompanyAddressBook is enabled', async () => {
+        it('updates the shipping address when a company address is selected', async () => {
             // The searchable address book only lists addresses flagged for shipping.
             const checkoutWithCompanyShippingAddress = {
                 ...checkoutWithMultiShippingCart,
@@ -1116,9 +1115,9 @@ describe('Shipping step', () => {
                 checkout: checkoutWithCompanyShippingAddress,
             });
 
-            jest.spyOn(checkoutService, 'updateShippingAddress').mockResolvedValue(
-                checkoutService.getState(),
-            );
+            const updateShippingAddressSpy = jest
+                .spyOn(checkoutService, 'updateShippingAddress')
+                .mockResolvedValue(checkoutService.getState());
 
             render(<CheckoutWithCompanyAddressBook {...defaultProps} />);
 
@@ -1127,7 +1126,9 @@ describe('Shipping step', () => {
             await userEvent.click(screen.getByTestId('address-select-button'));
             await userEvent.click(screen.getByTestId('address-select-option-action'));
 
-            expect(B2BSessionStorage.getAddressId(B2BSessionStorage.shippingAddressIdKey)).toBe(1);
+            expect(updateShippingAddressSpy).toHaveBeenCalledWith(
+                expect.objectContaining({ id: 1 }),
+            );
         });
 
         it('shows save address checkbox in multi-shipping new address modal when hasCompanyAddressBook is true', async () => {
@@ -1192,26 +1193,6 @@ describe('Shipping step', () => {
             await waitFor(() =>
                 expect(checkoutService.createCustomerAddress).not.toHaveBeenCalled(),
             );
-        });
-
-        it('does not store the shipping address id when hasCompanyAddressBook is disabled', async () => {
-            checkoutService = checkout.use(CheckoutPreset.CheckoutWithMultiShippingCart);
-
-            jest.spyOn(checkoutService, 'updateShippingAddress').mockResolvedValue(
-                checkoutService.getState(),
-            );
-
-            render(<CheckoutTest {...defaultProps} />);
-
-            await checkout.waitForShippingStep();
-
-            await userEvent.click(screen.getByTestId('address-select-button'));
-            // 111 Testing Rd is the customer's saved address with id 1.
-            await userEvent.click(screen.getByText(/111 Testing Rd/i));
-
-            expect(
-                B2BSessionStorage.getAddressId(B2BSessionStorage.shippingAddressIdKey),
-            ).toBeUndefined();
         });
     });
 });
