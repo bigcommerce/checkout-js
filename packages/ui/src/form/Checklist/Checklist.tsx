@@ -27,6 +27,7 @@ export interface ChecklistContextProps {
 export const ChecklistContext = createContext<ChecklistContextProps | undefined>(undefined);
 
 export const Checklist: FunctionComponent<ChecklistProps> = ({
+    defaultSelectedItemId,
     name,
     onSelect = noop,
     ...props
@@ -34,6 +35,10 @@ export const Checklist: FunctionComponent<ChecklistProps> = ({
     const { setFieldValue } = useFormikContext();
 
     useEffect(() => {
+        if (defaultSelectedItemId) {
+            void setFieldValue(name, defaultSelectedItemId);
+        }
+
         return () => {
             void setFieldValue(name, '');
         };
@@ -55,6 +60,7 @@ export const Checklist: FunctionComponent<ChecklistProps> = ({
             <Accordion
                 {...props}
                 className="form-checklist optimizedCheckout-form-checklist"
+                defaultSelectedItemId={defaultSelectedItemId}
                 onSelect={handleSelect}
             />
         </ChecklistContext.Provider>
