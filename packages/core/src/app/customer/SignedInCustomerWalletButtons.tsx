@@ -1,13 +1,6 @@
-import {
-    type CheckoutSelectors,
-    type CustomerInitializeOptions,
-    type CustomerRequestOptions,
-} from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent } from 'react';
 
-import { type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
-
-import { withCheckout } from '../checkout';
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 
 import CheckoutButtonList from './CheckoutButtonList';
 
@@ -17,56 +10,18 @@ interface SignedInCustomerWalletButtonsProps {
     onWalletButtonClick?(methodName: string): void;
 }
 
-interface WithCheckoutSignedInCustomerWalletButtonsProps {
-    checkoutButtonIds: string[];
-    isInitializingCustomer: boolean;
-    showWalletButtons: boolean;
-    deinitializeCustomer(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
-    initializeCustomer(options: CustomerInitializeOptions): Promise<CheckoutSelectors>;
-}
-
-const SignedInCustomerWalletButtons: FunctionComponent<
-    SignedInCustomerWalletButtonsProps & WithCheckoutSignedInCustomerWalletButtonsProps
-> = ({
-    checkoutButtonIds,
-    isInitializingCustomer,
-    showWalletButtons,
-    checkEmbeddedSupport,
-    deinitializeCustomer,
-    initializeCustomer,
-    onUnhandledError,
-    onWalletButtonClick,
-}) => {
-    if (!showWalletButtons) {
-        return null;
-    }
-
-    return (
-        <div className="signedInCustomerWalletButtons">
-            <CheckoutButtonList
-                checkEmbeddedSupport={checkEmbeddedSupport}
-                deinitialize={deinitializeCustomer}
-                initialize={initializeCustomer}
-                isInitializing={isInitializingCustomer}
-                methodIds={checkoutButtonIds}
-                onClick={onWalletButtonClick}
-                onError={onUnhandledError}
-            />
-        </div>
-    );
-};
-
-function mapToWithCheckoutSignedInCustomerWalletButtonsProps({
-    checkoutService,
-    checkoutState,
-}: CheckoutContextProps): WithCheckoutSignedInCustomerWalletButtonsProps | null {
+export const SignedInCustomerWalletButtons: FunctionComponent<
+    SignedInCustomerWalletButtonsProps
+> = ({ checkEmbeddedSupport, onUnhandledError, onWalletButtonClick }) => {
     const {
-        data: { getCustomer, getConfig, isPaymentDataRequired },
-        statuses: { isInitializingCustomer },
-    } = checkoutState;
-
-    const customer = getCustomer();
-    const config = getConfig();
+        checkoutService,
+        selectedState: { customer, config, isPaymentDataRequired, isInitializingCustomer },
+    } = useCheckout(({ data, statuses }) => ({
+        customer: data.getCustomer(),
+        config: data.getConfig(),
+        isPaymentDataRequired: data.isPaymentDataRequired(),
+        isInitializingCustomer: statuses.isInitializingCustomer(),
+    }));
 
     if (!customer || !config) {
         return null;
@@ -77,18 +32,25 @@ function mapToWithCheckoutSignedInCustomerWalletButtonsProps({
         checkoutSettings.checkoutUserExperienceSettings?.walletButtonsOnTop,
     );
     const requiresB2BToken = Boolean(checkoutSettings.capabilities?.userJourney.requiresB2BToken);
+
     const showWalletButtons =
-        !customer.isGuest && !isWalletButtonsOnTop && !requiresB2BToken && isPaymentDataRequired();
+        !customer.isGuest && !isWalletButtonsOnTop && !requiresB2BToken && isPaymentDataRequired;
 
-    return {
-        checkoutButtonIds: checkoutSettings.remoteCheckoutProviders,
-        isInitializingCustomer: isInitializingCustomer(),
-        showWalletButtons,
-        deinitializeCustomer: checkoutService.deinitializeCustomer,
-        initializeCustomer: checkoutService.initializeCustomer,
-    };
-}
+    if (!showWalletButtons) {
+        return null;
+    }
 
-export default withCheckout(mapToWithCheckoutSignedInCustomerWalletButtonsProps)(
-    SignedInCustomerWalletButtons,
-);
+    return (
+        <div className="signedInCustomerWalletButtons">
+            <CheckoutButtonList
+                checkEmbeddedSupport={checkEmbeddedSupport}
+                deinitialize={checkoutService.deinitializeCustomer}
+                initialize={checkoutService.initializeCustomer}
+                isInitializing={isInitializingCustomer}
+                methodIds={checkoutSettings.remoteCheckoutProviders}
+                onClick={onWalletButtonClick}
+                onError={onUnhandledError}
+            />
+        </div>
+    );
+};
