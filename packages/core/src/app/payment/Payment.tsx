@@ -154,7 +154,6 @@ const Payment = (
 
     const isReadyRef = useRef(state.isReady);
     const grandTotalChangeUnsubscribe = useRef<() => void>();
-    const b2bContextChangeUnsubscribe = useRef<() => void>();
     const validationSchemasRef = useRef<validationSchemas>({});
     const lastFormValuesRef = useRef<PaymentFormValues | null>(null);
 
@@ -429,6 +428,7 @@ const Payment = (
             const {
                 defaultMethod,
                 loadPaymentMethods,
+                checkoutServiceSubscribe,
                 isPaymentDataRequired,
                 onCartChangedError = noop,
                 onSubmit = noop,
@@ -475,9 +475,23 @@ const Payment = (
                     await refreshB2BPaymentMethods();
                 }
 
+                const unsubscribeB2BContext = persistB2BMetadata
+                    ? checkoutServiceSubscribe(
+                          ({ data }) => {
+                              const b2bContext = data.getB2BContext();
+
+                              if (b2bContext?.billingAddressId || b2bContext?.shippingAddressId) {
+                                  B2BSessionStorage.setAddressIds(b2bContext);
+                              }
+                          },
+                          ({ data }) => data.getB2BContext(),
+                      )
+                    : noop;
+
                 const state = await submitOrder(
                     mapToOrderRequestBody(orderValues, isPaymentDataRequired()),
-                );
+                ).finally(unsubscribeB2BContext);
+
                 const order = state.data.getOrder();
 
                 await persistB2BMetadataIfNeeded(b2bPaymentValues);
@@ -638,24 +652,6 @@ const Payment = (
 
             await loadPaymentMethodsOrThrow();
 
-            if (persistB2BMetadata) {
-                // The order endpoint responds with the ids of the company addresses
-                // created during order submission. Off-site payment methods redirect
-                // away immediately afterwards, so mirror the ids into sessionStorage
-                // as soon as they land in checkout state — the post-redirect persist
-                // call reads them back from there.
-                b2bContextChangeUnsubscribe.current = checkoutServiceSubscribe(
-                    ({ data }) => {
-                        const b2bContext = data.getB2BContext();
-
-                        if (b2bContext?.billingAddressId || b2bContext?.shippingAddressId) {
-                            B2BSessionStorage.setAddressIds(b2bContext);
-                        }
-                    },
-                    ({ data }) => data.getB2BContext(),
-                );
-            }
-
             if (persistB2BMetadata && orderId) {
                 try {
                     await refreshB2BPaymentMethods();
@@ -712,11 +708,6 @@ const Payment = (
                 if (grandTotalChangeUnsubscribe.current) {
                     grandTotalChangeUnsubscribe.current();
                     grandTotalChangeUnsubscribe.current = undefined;
-                }
-
-                if (b2bContextChangeUnsubscribe.current) {
-                    b2bContextChangeUnsubscribe.current();
-                    b2bContextChangeUnsubscribe.current = undefined;
                 }
 
                 window.removeEventListener('beforeunload', handleBeforeUnload);
