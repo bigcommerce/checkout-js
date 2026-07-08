@@ -11,3 +11,4 @@ export {
 } from './getPasswordRequirements';
 export { SUPPORTED_METHODS } from './getSupportedMethods';
 export { default as CheckoutButtonContainer } from './CheckoutButtonContainer';
+export { default as SignedInCustomerWalletButtons } from './SignedInCustomerWalletButtons';

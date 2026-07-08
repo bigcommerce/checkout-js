@@ -9,6 +9,7 @@ import {
     CustomerInfo,
     type CustomerProps,
     type CustomerSignOutEvent,
+    SignedInCustomerWalletButtons,
 } from '../../customer';
 import { isEmbedded } from '../../embeddedCheckout';
 import CheckoutStep from '../CheckoutStep';
@@ -59,7 +60,16 @@ const CustomerStep: React.FC<CustomerStepProps> = ({
             key={step.type}
             onEdit={onEdit}
             onExpanded={onExpanded}
-            suggestion={<CheckoutSuggestion />}
+            suggestion={
+                <>
+                    <CheckoutSuggestion />
+                    <SignedInCustomerWalletButtons
+                        checkEmbeddedSupport={checkEmbeddedSupport}
+                        onUnhandledError={onUnhandledError}
+                        onWalletButtonClick={onWalletButtonClick}
+                    />
+                </>
+            }
             summary={<CustomerInfo onSignOut={onSignOut} onSignOutError={onSignOutError} />}
         >
             <LazyContainer>
