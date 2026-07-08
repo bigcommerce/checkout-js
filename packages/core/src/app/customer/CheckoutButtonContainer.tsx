@@ -1,8 +1,9 @@
+import { type CheckoutSelectors, type CheckoutService } from '@bigcommerce/checkout-sdk';
+import React, { type FunctionComponent, lazy, memo, Suspense } from 'react';
+
 import { type CheckoutContextProps, useLocale } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { WalletButtonsContainerSkeleton } from '@bigcommerce/checkout/ui';
-import { type CheckoutSelectors, type CheckoutService } from '@bigcommerce/checkout-sdk';
-import React, { type FunctionComponent, lazy, memo, Suspense } from 'react';
 
 import { withCheckout } from '../checkout';
 
@@ -130,7 +131,9 @@ function mapToCheckoutButtonContainerProps({
     const providers = config?.checkoutSettings.remoteCheckoutProviders ?? [];
     const paymentMethods = getPaymentMethods();
     const availableMethodIds = getSupportedMethodIds(providers, paymentMethods);
-    const requiresB2BToken = config?.checkoutSettings.capabilities?.userJourney.requiresB2BToken;
+    const requiresB2BToken = Boolean(
+        config?.checkoutSettings.capabilities?.userJourney.requiresB2BToken,
+    );
 
     if (!isPaymentDataRequired()) {
         return null;
