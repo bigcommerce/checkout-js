@@ -1,4 +1,8 @@
-import { CheckoutProvider, LocaleProvider } from '@bigcommerce/checkout/contexts';
+import {
+    CheckoutProvider,
+    defaultCapabilities,
+    LocaleProvider,
+} from '@bigcommerce/checkout/contexts';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
 import { type CheckoutButtonProps } from '@bigcommerce/checkout/payment-integration-api';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
@@ -92,6 +96,28 @@ describe('CheckoutButtonContainer', () => {
 
     it('does not render when payment data is not required', () => {
         jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(false);
+
+        const { container } = render(<CheckoutButtonContainerTest />);
+
+        expect(container).toBeEmptyDOMElement();
+    });
+
+    it('does not render for a B2B customer', () => {
+        jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
+        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
+            ...getStoreConfig(),
+            checkoutSettings: {
+                ...getStoreConfig().checkoutSettings,
+                remoteCheckoutProviders: ['applepay'],
+                capabilities: {
+                    ...defaultCapabilities,
+                    userJourney: {
+                        ...defaultCapabilities.userJourney,
+                        requiresB2BToken: true,
+                    },
+                },
+            },
+        });
 
         const { container } = render(<CheckoutButtonContainerTest />);
 
