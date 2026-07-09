@@ -94,7 +94,7 @@ const PaymentBillingFormComponent = ({
     // error channel and blocks the order — it must not surface as a payment
     // failure, so this never throws.
     const ensureBillingAddressSaved = useCallback(async (): Promise<boolean> => {
-        if (isLoading) {
+        if (isLoading || isResettingAddress) {
             return false;
         }
 
@@ -117,7 +117,15 @@ const PaymentBillingFormComponent = ({
         }
 
         return true;
-    }, [isLoading, validateForm, setTouched, onPersist, values, onUnhandledError]);
+    }, [
+        isLoading,
+        isResettingAddress,
+        validateForm,
+        setTouched,
+        onPersist,
+        values,
+        onUnhandledError,
+    ]);
 
     useEffect(() => {
         const register = paymentContext?.registerEnsureBillingAddressSaved;

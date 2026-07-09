@@ -14,7 +14,7 @@ import {
     type LocaleContextType,
 } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
-import { render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
+import { fireEvent, render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
 import { getFormFields } from '../../address/formField.mock';
 import { getBillingAddress, getEmptyBillingAddress } from '../../billing/billingAddresses.mock';
@@ -111,6 +111,32 @@ describe('PaymentBillingForm', () => {
 
     it('blocks (resolves false) and does not persist while still loading', async () => {
         renderForm({ ...defaultProps, isLoading: true });
+
+        await waitFor(() =>
+            expect(capturedEnsureBillingAddressSaved).toEqual(expect.any(Function)),
+        );
+
+        await expect(capturedEnsureBillingAddressSaved?.()).resolves.toBe(false);
+        expect(onPersist).not.toHaveBeenCalled();
+    });
+
+    it('blocks and does not persist while an address selection is still being applied', async () => {
+        // Registered customer with a saved address so the address book renders.
+        jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue({
+            ...getCustomer(),
+            isGuest: false,
+        });
+        // Keep updateBillingAddress in flight so isResettingAddress stays true.
+        jest.spyOn(checkoutService, 'updateBillingAddress').mockReturnValue(
+            new Promise(() => undefined),
+        );
+
+        renderForm(defaultProps);
+
+        // Trigger an address-book selection ("Enter a new address"), which sets
+        // isResettingAddress while updateBillingAddress runs.
+        fireEvent.click(await screen.findByTestId('address-select-button'));
+        fireEvent.click(await screen.findByTestId('add-new-address'));
 
         await waitFor(() =>
             expect(capturedEnsureBillingAddressSaved).toEqual(expect.any(Function)),
