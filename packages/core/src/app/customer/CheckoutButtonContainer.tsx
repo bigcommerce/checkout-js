@@ -6,6 +6,7 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { WalletButtonsContainerSkeleton } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../checkout';
+import { isExperimentEnabled } from '../common/utility';
 
 import { getSupportedMethodIds } from './getSupportedMethods';
 import resolveCheckoutButton from './resolveCheckoutButton';
@@ -123,7 +124,7 @@ function mapToCheckoutButtonContainerProps({
     checkoutService,
 }: CheckoutContextProps): WithCheckoutCheckoutButtonContainerProps | null {
     const {
-        data: { getConfig, isPaymentDataRequired, getPaymentMethods },
+        data: { getConfig, getCustomer, isPaymentDataRequired, getPaymentMethods },
         statuses: { isInitializedCustomer },
         errors: { getInitializeCustomerError },
     } = checkoutState;
@@ -134,12 +135,21 @@ function mapToCheckoutButtonContainerProps({
     const requiresB2BToken = Boolean(
         config?.checkoutSettings.capabilities?.userJourney.requiresB2BToken,
     );
+    const isWalletButtonsForLoggedInShoppersEnabled = isExperimentEnabled(
+        config?.checkoutSettings,
+        'CHECKOUT-10028.wallet_buttons_for_logged_in_shoppers',
+        false,
+    );
+    const isGuest = Boolean(getCustomer()?.isGuest);
+    const isEligibleForWalletButtons = isWalletButtonsForLoggedInShoppersEnabled
+        ? !requiresB2BToken
+        : isGuest;
 
     if (!isPaymentDataRequired()) {
         return null;
     }
 
-    if (!config || availableMethodIds.length === 0 || requiresB2BToken) {
+    if (!config || availableMethodIds.length === 0 || !isEligibleForWalletButtons) {
         return null;
     }
 

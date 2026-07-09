@@ -103,6 +103,7 @@ export interface WithCheckoutProps {
     isPriceHiddenFromGuests: boolean;
     isShowingWalletButtonsOnTop: boolean;
     isShippingDiscountDisplayEnabled: boolean;
+    isWalletButtonsForLoggedInShoppersEnabled: boolean;
     loginUrl: string;
     cartUrl: string;
     createAccountUrl: string;
@@ -133,6 +134,7 @@ const Checkout = ({
     isShowingWalletButtonsOnTop,
     hasCartChanged,
     isShippingDiscountDisplayEnabled,
+    isWalletButtonsForLoggedInShoppersEnabled,
     clearError,
     error,
     steps,
@@ -475,6 +477,9 @@ const Checkout = ({
                         checkEmbeddedSupport={checkEmbeddedSupport}
                         isPaymentStepActive={isPaymentStepActive}
                         isSubscribed={isSubscribed}
+                        isWalletButtonsForLoggedInShoppersEnabled={
+                            isWalletButtonsForLoggedInShoppersEnabled
+                        }
                         isWalletButtonsOnTop={isShowingWalletButtonsOnTop}
                         onAccountCreated={navigateToNextIncompleteStep}
                         onChangeViewType={setCustomerViewType}

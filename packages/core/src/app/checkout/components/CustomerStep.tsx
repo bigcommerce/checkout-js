@@ -27,6 +27,7 @@ const Customer = lazy(() =>
 
 export interface CustomerStepProps extends CustomerProps {
     isPaymentStepActive: boolean;
+    isWalletButtonsForLoggedInShoppersEnabled: boolean;
     onEdit(type: CheckoutStepType): void;
     onExpanded(type: CheckoutStepType): void;
     onSignOut(event: CustomerSignOutEvent): void;
@@ -38,6 +39,7 @@ const CustomerStep: React.FC<CustomerStepProps> = ({
     viewType,
     isPaymentStepActive,
     isSubscribed,
+    isWalletButtonsForLoggedInShoppersEnabled,
     isWalletButtonsOnTop,
     onEdit,
     onExpanded,
@@ -65,12 +67,14 @@ const CustomerStep: React.FC<CustomerStepProps> = ({
             suggestion={
                 <>
                     <CheckoutSuggestion />
-                    <SignedInCustomerWalletButtons
-                        checkEmbeddedSupport={checkEmbeddedSupport}
-                        isPaymentStepActive={isPaymentStepActive}
-                        onUnhandledError={onUnhandledError}
-                        onWalletButtonClick={onWalletButtonClick}
-                    />
+                    {isWalletButtonsForLoggedInShoppersEnabled && (
+                        <SignedInCustomerWalletButtons
+                            checkEmbeddedSupport={checkEmbeddedSupport}
+                            isPaymentStepActive={isPaymentStepActive}
+                            onUnhandledError={onUnhandledError}
+                            onWalletButtonClick={onWalletButtonClick}
+                        />
+                    )}
                 </>
             }
             summary={<CustomerInfo onSignOut={onSignOut} onSignOutError={onSignOutError} />}

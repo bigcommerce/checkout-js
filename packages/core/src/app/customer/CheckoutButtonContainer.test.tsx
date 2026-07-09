@@ -67,12 +67,30 @@ describe('CheckoutButtonContainer', () => {
         );
     });
 
-    it('renders wallet buttons for a signed-in customer', async () => {
+    it('renders wallet buttons for a signed-in customer when the experiment is enabled', async () => {
         jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
+        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
+            ...getStoreConfig(),
+            checkoutSettings: {
+                ...getStoreConfig().checkoutSettings,
+                remoteCheckoutProviders: ['applepay'],
+                features: {
+                    'CHECKOUT-10028.wallet_buttons_for_logged_in_shoppers': true,
+                },
+            },
+        });
 
         render(<CheckoutButtonContainerTest />);
 
         expect(await screen.findByTestId('applepayCheckoutButton')).toBeInTheDocument();
+    });
+
+    it('does not render for a signed-in customer when the experiment is disabled', () => {
+        jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
+
+        const { container } = render(<CheckoutButtonContainerTest />);
+
+        expect(container).toBeEmptyDOMElement();
     });
 
     it('still renders wallet buttons for a guest customer', async () => {
@@ -110,6 +128,9 @@ describe('CheckoutButtonContainer', () => {
             checkoutSettings: {
                 ...getStoreConfig().checkoutSettings,
                 remoteCheckoutProviders: ['applepay'],
+                features: {
+                    'CHECKOUT-10028.wallet_buttons_for_logged_in_shoppers': true,
+                },
                 capabilities: {
                     ...defaultCapabilities,
                     userJourney: {
