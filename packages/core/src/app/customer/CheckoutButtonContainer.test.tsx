@@ -1,4 +1,12 @@
 import {
+    type CheckoutSelectors,
+    type CheckoutService,
+    createCheckoutService,
+} from '@bigcommerce/checkout-sdk';
+import { noop } from 'lodash';
+import React, { type FunctionComponent } from 'react';
+
+import {
     CheckoutProvider,
     defaultCapabilities,
     LocaleProvider,
@@ -6,13 +14,6 @@ import {
 import { getLanguageService } from '@bigcommerce/checkout/locale';
 import { type CheckoutButtonProps } from '@bigcommerce/checkout/payment-integration-api';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
-import {
-    type CheckoutSelectors,
-    type CheckoutService,
-    createCheckoutService,
-} from '@bigcommerce/checkout-sdk';
-import { noop } from 'lodash';
-import React, { type FunctionComponent } from 'react';
 
 import { getStoreConfig } from '../config/config.mock';
 

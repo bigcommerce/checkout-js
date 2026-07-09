@@ -464,11 +464,16 @@ const Checkout = ({
             isMultiShippingMode,
         } = state;
 
+        const isPaymentStepActive = state.activeStepType
+            ? state.activeStepType === CheckoutStepType.Payment
+            : state.defaultStepType === CheckoutStepType.Payment;
+
         switch (step.type) {
             case CheckoutStepType.Customer:
                 return (
                     <CustomerStep
                         checkEmbeddedSupport={checkEmbeddedSupport}
+                        isPaymentStepActive={isPaymentStepActive}
                         isSubscribed={isSubscribed}
                         isWalletButtonsOnTop={isShowingWalletButtonsOnTop}
                         onAccountCreated={navigateToNextIncompleteStep}

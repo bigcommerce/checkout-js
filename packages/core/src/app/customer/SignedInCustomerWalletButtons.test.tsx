@@ -30,7 +30,7 @@ jest.mock('./resolveCheckoutButton', () => ({
 }));
 
 describe('SignedInCustomerWalletButtons', () => {
-    let SignedInCustomerWalletButtonsTest: FunctionComponent;
+    let SignedInCustomerWalletButtonsTest: FunctionComponent<{ isPaymentStepActive?: boolean }>;
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
 
@@ -50,7 +50,7 @@ describe('SignedInCustomerWalletButtons', () => {
         jest.spyOn(checkoutState.data, 'getPaymentMethods').mockReturnValue([]);
         jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
 
-        SignedInCustomerWalletButtonsTest = () => (
+        SignedInCustomerWalletButtonsTest = ({ isPaymentStepActive = false }) => (
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleProvider
                     checkoutService={checkoutService}
@@ -58,6 +58,7 @@ describe('SignedInCustomerWalletButtons', () => {
                 >
                     <SignedInCustomerWalletButtons
                         checkEmbeddedSupport={noop}
+                        isPaymentStepActive={isPaymentStepActive}
                         onUnhandledError={noop}
                         onWalletButtonClick={noop}
                     />
@@ -116,6 +117,12 @@ describe('SignedInCustomerWalletButtons', () => {
         });
 
         const { container } = render(<SignedInCustomerWalletButtonsTest />);
+
+        expect(container).toBeEmptyDOMElement();
+    });
+
+    it('does not render when the payment step is active', () => {
+        const { container } = render(<SignedInCustomerWalletButtonsTest isPaymentStepActive />);
 
         expect(container).toBeEmptyDOMElement();
     });

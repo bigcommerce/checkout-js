@@ -5,6 +5,7 @@ import { useCheckout } from '@bigcommerce/checkout/contexts';
 import CheckoutButtonList from './CheckoutButtonList';
 
 interface SignedInCustomerWalletButtonsProps {
+    isPaymentStepActive: boolean;
     checkEmbeddedSupport?(methodIds: string[]): void;
     onUnhandledError?(error: Error): void;
     onWalletButtonClick?(methodName: string): void;
@@ -12,7 +13,7 @@ interface SignedInCustomerWalletButtonsProps {
 
 export const SignedInCustomerWalletButtons: FunctionComponent<
     SignedInCustomerWalletButtonsProps
-> = ({ checkEmbeddedSupport, onUnhandledError, onWalletButtonClick }) => {
+> = ({ checkEmbeddedSupport, isPaymentStepActive, onUnhandledError, onWalletButtonClick }) => {
     const {
         checkoutService,
         selectedState: { customer, config, isPaymentDataRequired, isInitializingCustomer },
@@ -34,7 +35,11 @@ export const SignedInCustomerWalletButtons: FunctionComponent<
     const requiresB2BToken = Boolean(checkoutSettings.capabilities?.userJourney.requiresB2BToken);
 
     const showWalletButtons =
-        !customer.isGuest && !isWalletButtonsOnTop && !requiresB2BToken && isPaymentDataRequired;
+        !customer.isGuest &&
+        !isWalletButtonsOnTop &&
+        !requiresB2BToken &&
+        !isPaymentStepActive &&
+        isPaymentDataRequired;
 
     if (!showWalletButtons) {
         return null;
