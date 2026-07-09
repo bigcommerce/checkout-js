@@ -1,7 +1,7 @@
 import { noop } from 'lodash';
 import React from 'react';
 
-import { render, screen } from '@bigcommerce/checkout/test-utils';
+import { render, screen, within } from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../config/config.mock';
 
@@ -67,7 +67,7 @@ describe('CheckoutButtonList', () => {
     });
 
     it('wraps its content in the given wrapper class when there are supported methods', async () => {
-        const { container } = render(
+        render(
             <CheckoutButtonList
                 checkoutSettings={checkoutSettings}
                 deinitialize={noop}
@@ -77,12 +77,14 @@ describe('CheckoutButtonList', () => {
             />,
         );
 
-        expect(await screen.findByTestId('applepayCheckoutButton')).toBeInTheDocument();
-        expect(container.querySelector('.signedInCustomerWalletButtons')).toBeInTheDocument();
+        const wrapper = await screen.findByTestId('checkout-button-list-wrapper');
+
+        expect(wrapper).toHaveClass('signedInCustomerWalletButtons');
+        expect(within(wrapper).getByTestId('applepayCheckoutButton')).toBeInTheDocument();
     });
 
     it('does not render the wrapper class when there are no supported methods', () => {
-        const { container } = render(
+        render(
             <CheckoutButtonList
                 checkoutSettings={checkoutSettings}
                 deinitialize={noop}
@@ -92,7 +94,7 @@ describe('CheckoutButtonList', () => {
             />,
         );
 
-        expect(container).toBeEmptyDOMElement();
+        expect(screen.queryByTestId('checkout-button-list-wrapper')).not.toBeInTheDocument();
     });
 
     it('notifies parent if methods are incompatible with Embedded Checkout', () => {

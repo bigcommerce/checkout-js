@@ -7,7 +7,7 @@ import {
     order222,
     orderPayment,
     payment,
-} from './GooglePayMockingResponses';
+} from './GooglePayCheckoutComMockingResponses';
 
 test.describe('Google Pay CheckoutCom', () => {
     test('Google Pay CheckoutCom wallet button is working', async ({

@@ -126,7 +126,11 @@ const CheckoutButtonList: FunctionComponent<
         return content;
     }
 
-    return <div className={wrapperClassName}>{content}</div>;
+    return (
+        <div className={wrapperClassName} data-test="checkout-button-list-wrapper">
+            {content}
+        </div>
+    );
 };
 
 function mapToCheckoutButtonListProps({
