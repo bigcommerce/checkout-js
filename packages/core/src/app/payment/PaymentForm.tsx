@@ -200,7 +200,12 @@ const PaymentForm: FunctionComponent<
                 />
             )}
 
-            {themeV2 && <PaymentBillingBlock onUnhandledError={onUnhandledError ?? noop} />}
+            {themeV2 && (
+                <PaymentBillingBlock
+                    methodId={selectedMethod?.id}
+                    onUnhandledError={onUnhandledError ?? noop}
+                />
+            )}
 
             <PaymentRedeemables />
 

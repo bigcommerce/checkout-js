@@ -56,7 +56,7 @@ describe('PaymentBillingBlock', () => {
     let checkoutState: CheckoutSelectors;
     let localeContext: LocaleContextType;
     let onUnhandledError: jest.Mock;
-    let PaymentBillingBlockTest: FunctionComponent;
+    let PaymentBillingBlockTest: FunctionComponent<{ methodId?: string }>;
 
     const formFields = getFormFields();
 
@@ -82,11 +82,14 @@ describe('PaymentBillingBlock', () => {
         jest.spyOn(checkoutState.data, 'getAddressExtraFields').mockReturnValue([]);
         jest.spyOn(checkoutState.data, 'getBillingAddress').mockReturnValue(undefined);
 
-        PaymentBillingBlockTest = () => (
+        PaymentBillingBlockTest = ({ methodId }) => (
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
                     <CapabilitiesContext.Provider value={defaultCapabilities}>
-                        <PaymentBillingBlock onUnhandledError={onUnhandledError} />
+                        <PaymentBillingBlock
+                            methodId={methodId}
+                            onUnhandledError={onUnhandledError}
+                        />
                     </CapabilitiesContext.Provider>
                 </LocaleContext.Provider>
             </CheckoutProvider>
@@ -105,13 +108,21 @@ describe('PaymentBillingBlock', () => {
         expect(checkoutService.loadBillingAddressFields).toHaveBeenCalled();
     });
 
-    it('renders PaymentBillingForm with the resolved method id and fields', async () => {
+    it('renders PaymentBillingForm with the fields and persist handler', async () => {
         render(<PaymentBillingBlockTest />);
 
         await screen.findByTestId('trigger-persist');
 
         expect(mockCapturedProps.getFields).toEqual(expect.any(Function));
         expect(mockCapturedProps.onPersist).toEqual(expect.any(Function));
+    });
+
+    it('forwards the selected method id to PaymentBillingForm', async () => {
+        render(<PaymentBillingBlockTest methodId="amazonpay" />);
+
+        await screen.findByTestId('trigger-persist');
+
+        expect(mockCapturedProps.methodId).toBe('amazonpay');
     });
 
     it('shows a warning instead of the form when manual entry is restricted and there are no saved addresses', async () => {

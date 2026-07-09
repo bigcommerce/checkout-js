@@ -13,11 +13,14 @@ import {
     setDefaultAddress,
 } from '../../address';
 import { type BillingFormValues } from '../../billing/billingFormConfig';
-import getBillingMethodId from '../../billing/getBillingMethodId';
 
 import { PaymentBillingForm } from './PaymentBillingForm';
 
 export interface PaymentBillingBlockProps {
+    // Id of the payment method currently selected on the payment step. Drives the
+    // billing form's method-specific behaviour (e.g. Amazon Pay's static address
+    // + reduced schema). Must reflect the live selection, not checkout.payments.
+    methodId?: string;
     onUnhandledError(error: Error): void;
 }
 
@@ -39,6 +42,7 @@ const getFieldsWithExtraFields = (
 };
 
 export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = ({
+    methodId,
     onUnhandledError,
 }) => {
     const {
@@ -79,7 +83,6 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
     const showNoAddressesWarning = restrictManualAddressEntry && !hasAddresses;
 
     const customerMessage = checkout.customerMessage;
-    const methodId = getBillingMethodId(checkout);
     const billingAddress = getBillingAddress();
 
     const getFields = useCallback(
