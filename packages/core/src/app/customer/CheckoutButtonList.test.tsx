@@ -66,6 +66,35 @@ describe('CheckoutButtonList', () => {
         expect(screen.queryByText('Or continue with')).not.toBeInTheDocument();
     });
 
+    it('wraps its content in the given wrapper class when there are supported methods', async () => {
+        const { container } = render(
+            <CheckoutButtonList
+                checkoutSettings={checkoutSettings}
+                deinitialize={noop}
+                initialize={noop}
+                methodIds={['applepay']}
+                wrapperClassName="signedInCustomerWalletButtons"
+            />,
+        );
+
+        expect(await screen.findByTestId('applepayCheckoutButton')).toBeInTheDocument();
+        expect(container.querySelector('.signedInCustomerWalletButtons')).toBeInTheDocument();
+    });
+
+    it('does not render the wrapper class when there are no supported methods', () => {
+        const { container } = render(
+            <CheckoutButtonList
+                checkoutSettings={checkoutSettings}
+                deinitialize={noop}
+                initialize={noop}
+                methodIds={['foobar']}
+                wrapperClassName="signedInCustomerWalletButtons"
+            />,
+        );
+
+        expect(container).toBeEmptyDOMElement();
+    });
+
     it('notifies parent if methods are incompatible with Embedded Checkout', () => {
         const methodIds = ['amazonpay', 'braintreevisacheckout'];
         const onError = jest.fn();

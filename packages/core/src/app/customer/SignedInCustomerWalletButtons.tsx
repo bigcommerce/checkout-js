@@ -41,16 +41,15 @@ export const SignedInCustomerWalletButtons: FunctionComponent<
     }
 
     return (
-        <div className="signedInCustomerWalletButtons">
-            <CheckoutButtonList
-                checkEmbeddedSupport={checkEmbeddedSupport}
-                deinitialize={checkoutService.deinitializeCustomer}
-                initialize={checkoutService.initializeCustomer}
-                isInitializing={isInitializingCustomer}
-                methodIds={checkoutSettings.remoteCheckoutProviders}
-                onClick={onWalletButtonClick}
-                onError={onUnhandledError}
-            />
-        </div>
+        <CheckoutButtonList
+            checkEmbeddedSupport={checkEmbeddedSupport}
+            deinitialize={checkoutService.deinitializeCustomer}
+            initialize={checkoutService.initializeCustomer}
+            isInitializing={isInitializingCustomer}
+            methodIds={checkoutSettings.remoteCheckoutProviders}
+            onClick={onWalletButtonClick}
+            onError={onUnhandledError}
+            wrapperClassName="signedInCustomerWalletButtons"
+        />
     );
 };

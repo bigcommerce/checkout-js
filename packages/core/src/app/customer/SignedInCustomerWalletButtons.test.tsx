@@ -137,8 +137,23 @@ describe('SignedInCustomerWalletButtons', () => {
             },
         });
 
-        render(<SignedInCustomerWalletButtonsTest />);
+        const { container } = render(<SignedInCustomerWalletButtonsTest />);
 
         expect(screen.queryByTestId('applepayCheckoutButton')).not.toBeInTheDocument();
+        expect(container).toBeEmptyDOMElement();
+    });
+
+    it('does not render the wrapper when configured providers are unsupported', () => {
+        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
+            ...getStoreConfig(),
+            checkoutSettings: {
+                ...getStoreConfig().checkoutSettings,
+                remoteCheckoutProviders: ['unsupportedmethod'],
+            },
+        });
+
+        const { container } = render(<SignedInCustomerWalletButtonsTest />);
+
+        expect(container).toBeEmptyDOMElement();
     });
 });
