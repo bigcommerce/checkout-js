@@ -110,7 +110,10 @@ export function useGoogleAutocomplete({
             .catch((error) => {
                 if (isNewPlacesApiPermissionDenied(error)) {
                     newGooglePlacesApiState.isUnavailable = true;
-                    fetchSuggestionsWithLegacyApi(input);
+
+                    if (latestNewApiInputRef.current === input) {
+                        fetchSuggestionsWithLegacyApi(input);
+                    }
 
                     return;
                 }
