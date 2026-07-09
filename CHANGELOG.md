@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.830.2](https://github.com/bigcommerce/checkout-js/compare/v1.830.1...v1.830.2) (2026-07-09)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10180 Initialize checklist formik with correct value ([#3143](https://github.com/bigcommerce/checkout-js/issues/3143)) ([d3e4afc](https://github.com/bigcommerce/checkout-js/commit/d3e4afc88b2263f33ec3242d78914f344185b541))
+
 ### [1.830.1](https://github.com/bigcommerce/checkout-js/compare/v1.830.0...v1.830.1) (2026-07-08)
 
 
