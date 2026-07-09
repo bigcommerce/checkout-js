@@ -42,10 +42,10 @@ import {
     createEmbeddedCheckoutSupport,
 } from '../embeddedCheckout';
 
-// Controllable billing flush for the themeV2 pre-submit gate. Other tests keep
+// Controllable billing save for the themeV2 pre-submit gate. Other tests keep
 // themeV2 off, so the block never renders and this stays unused there.
 
-let mockBillingFlush: jest.Mock<Promise<boolean>>;
+let mockEnsureBillingAddressSaved: jest.Mock<Promise<boolean>>;
 
 jest.mock('./billingForm', () => {
     const ReactActual = require('react');
@@ -57,7 +57,7 @@ jest.mock('./billingForm', () => {
             const context = ReactActual.useContext(PaymentContextActual);
 
             ReactActual.useEffect(() => {
-                context?.registerBillingAddressFlush(mockBillingFlush);
+                context?.registerEnsureBillingAddressSaved(mockEnsureBillingAddressSaved);
             }, [context]);
 
             return ReactActual.createElement('div', { 'data-test': 'payment-billing-block' });
@@ -213,7 +213,7 @@ describe('Payment step', () => {
             },
         };
 
-        mockBillingFlush = jest.fn<Promise<boolean>, []>().mockResolvedValue(false);
+        mockEnsureBillingAddressSaved = jest.fn<Promise<boolean>, []>().mockResolvedValue(false);
 
         const location = window.location;
 
@@ -238,7 +238,7 @@ describe('Payment step', () => {
 
         await act(async () => userEvent.click(screen.getByText('Place Order')));
 
-        expect(mockBillingFlush).toHaveBeenCalled();
+        expect(mockEnsureBillingAddressSaved).toHaveBeenCalled();
         expect(submitOrderSpy).not.toHaveBeenCalled();
         expect(window.location.replace).not.toHaveBeenCalled();
     });

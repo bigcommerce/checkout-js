@@ -71,7 +71,7 @@ import { mapToB2BOrderRequestBody } from './b2bMetadataForSubmitOrder';
 import CartStockPositionsChangedModal from './CartStockPositionsChangedModal';
 import mapSubmitOrderErrorMessage, { mapSubmitOrderErrorTitle } from './mapSubmitOrderErrorMessage';
 import mapToOrderRequestBody from './mapToOrderRequestBody';
-import PaymentContext, { type BillingAddressFlush } from './PaymentContext';
+import PaymentContext, { type EnsureBillingAddressSaved } from './PaymentContext';
 import PaymentForm from './PaymentForm';
 import { getUniquePaymentMethodId, PaymentMethodProviderType } from './paymentMethod';
 import { getFilteredPaymentMethodsWithDefault } from './paymentMethodFilters';
@@ -158,10 +158,10 @@ const Payment = (
     const grandTotalChangeUnsubscribe = useRef<() => void>();
     const validationSchemasRef = useRef<validationSchemas>({});
     const lastFormValuesRef = useRef<PaymentFormValues | null>(null);
-    // Set by the embedded billing block (themeV2). Awaited before submitOrder so
-    // an in-flight billing autosave can't let the order finalize against a stale
-    // billing address.
-    const billingAddressFlushRef: MutableRefObject<BillingAddressFlush | null> = useRef(null);
+    // Set by the themeV2 billing form. Awaited before submitOrder so the order
+    // can't finalize before the entered billing address is validated and saved.
+    const ensureBillingAddressSavedRef: MutableRefObject<EnsureBillingAddressSaved | null> =
+        useRef(null);
 
     const {
         orderConfirmation: { persistB2BMetadata, invoiceRedirect },
@@ -480,12 +480,12 @@ const Payment = (
                 return customSubmit(orderValues);
             }
 
-            // Flush any pending embedded billing edit (themeV2) before placing
+            // Ensure any pending themeV2 billing edit is saved before placing
             // the order. If billing is invalid, block the order — errors are
             // surfaced inline by the billing form.
-            const flushBillingAddress = billingAddressFlushRef.current;
+            const ensureBillingAddressSaved = ensureBillingAddressSavedRef.current;
 
-            if (flushBillingAddress && !(await flushBillingAddress())) {
+            if (ensureBillingAddressSaved && !(await ensureBillingAddressSaved())) {
                 return;
             }
 
@@ -596,9 +596,12 @@ const Payment = (
         [],
     );
 
-    const registerBillingAddressFlush = useCallback((flush: BillingAddressFlush | null): void => {
-        billingAddressFlushRef.current = flush;
-    }, []);
+    const registerEnsureBillingAddressSaved = useCallback(
+        (ensureBillingAddressSaved: EnsureBillingAddressSaved | null): void => {
+            ensureBillingAddressSavedRef.current = ensureBillingAddressSaved;
+        },
+        [],
+    );
 
     const loadPaymentMethodsOrThrow = async (): Promise<void> => {
         const { loadPaymentMethods, onUnhandledError = noop } = props;
@@ -646,7 +649,7 @@ const Payment = (
     const getContextValue = memoizeOne(() => {
         return {
             disableSubmit,
-            registerBillingAddressFlush,
+            registerEnsureBillingAddressSaved,
             setSubmit,
             setValidationSchema,
             hidePaymentSubmitButton,

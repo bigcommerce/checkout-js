@@ -15,7 +15,7 @@ import {
 import { type BillingFormValues } from '../../billing/billingFormConfig';
 import getBillingMethodId from '../../billing/getBillingMethodId';
 
-import PaymentBillingForm from './PaymentBillingForm';
+import { PaymentBillingForm } from './PaymentBillingForm';
 
 export interface PaymentBillingBlockProps {
     onUnhandledError(error: Error): void;
@@ -38,12 +38,6 @@ const getFieldsWithExtraFields = (
     return [...addressFields, ...addressExtraFields];
 };
 
-/**
- * Billing address container rendered inside the payment step under themeV2
- * (CHECKOUT-10150). Loads billing fields / default address and hosts
- * `PaymentBillingForm`, which persists via a pre-submit flush. The standalone
- * Billing step remains for the legacy (v1) path.
- */
 export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = ({
     onUnhandledError,
 }) => {
@@ -70,6 +64,7 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
         getAddressExtraFields: data.getAddressExtraFields,
     }));
     const {
+        billing: { restrictManualAddressEntry },
         userJourney: { hasAddressExtraFields, hasCompanyAddressBook },
     } = useCapabilities();
 
@@ -79,6 +74,9 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
 
     const [isApplyingDefaultAddress, setIsApplyingDefaultAddress] = useState(true);
     const isInitializing = isLoadingBillingCountries || isApplyingDefaultAddress;
+
+    const hasAddresses = Boolean(customer.addresses && customer.addresses.length > 0);
+    const showNoAddressesWarning = restrictManualAddressEntry && !hasAddresses;
 
     const customerMessage = checkout.customerMessage;
     const methodId = getBillingMethodId(checkout);
@@ -96,9 +94,9 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
     );
 
     // Persist without navigating — the payment step's "Place Order" is the only
-    // submit. Called by PaymentBillingForm's pre-submit flush; the isEqualAddress
+    // submit. Called by PaymentBillingForm's pre-submit save; the isEqualAddress
     // guard prevents a redundant updateBillingAddress when nothing changed. Errors
-    // propagate so the flush can block the order.
+    // propagate so the pre-submit save can block the order.
     const handlePersist = async ({
         orderComment,
         ...addressValues
@@ -146,8 +144,16 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
         void init();
     }, []);
 
+    if (showNoAddressesWarning) {
+        return (
+            <div className="no-addresses-warning body-regular">
+                <TranslatedString id="billing.no_billing_addresses_warning" />
+            </div>
+        );
+    }
+
     return (
-        <AddressFormSkeleton isLoading={isInitializing}>
+        <AddressFormSkeleton isLoading={isInitializing} renderWhileLoading>
             <div className="checkout-billing" data-test="payment-billing-block">
                 <div className="form-legend-container">
                     <Legend testId="billing-address-heading">
@@ -158,6 +164,7 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
                     billingAddress={billingAddress}
                     customerMessage={customerMessage}
                     getFields={getFields}
+                    isLoading={isInitializing}
                     methodId={methodId}
                     onPersist={handlePersist}
                     onUnhandledError={onUnhandledError}

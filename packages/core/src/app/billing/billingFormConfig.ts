@@ -16,8 +16,6 @@ import {
 
 export type BillingFormValues = AddressFormValues & { orderComment: string };
 
-// Shared by the legacy standalone BillingForm and the themeV2 PaymentBillingForm
-// so the (error-prone) validation + value mapping lives in exactly one place.
 export const getBillingFormInitialValues = (
     getFields: (countryCode?: string) => FormField[],
     billingAddress: Address | undefined,

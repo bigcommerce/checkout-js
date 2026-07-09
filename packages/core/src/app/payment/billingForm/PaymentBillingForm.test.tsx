@@ -2,7 +2,6 @@ import {
     type CheckoutSelectors,
     type CheckoutService,
     createCheckoutService,
-    type FormField,
 } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React from 'react';
@@ -17,56 +16,23 @@ import {
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
+import { getFormFields } from '../../address/formField.mock';
 import { getBillingAddress, getEmptyBillingAddress } from '../../billing/billingAddresses.mock';
 import { getCart } from '../../cart/carts.mock';
+import { getCheckout } from '../../checkout/checkouts.mock';
 import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
-import PaymentContext, { type BillingAddressFlush } from '../PaymentContext';
+import PaymentContext, { type EnsureBillingAddressSaved } from '../PaymentContext';
 
-import PaymentBillingForm, { type PaymentBillingFormProps } from './PaymentBillingForm';
-
-// Lightweight focus/render stubs — validity is driven by billingAddress + fields,
-// so validateForm still gates the flush without the real address form.
-jest.mock('../../address', () => ({
-    ...jest.requireActual('../../address'),
-    AddressForm: () => <div data-test="billing-fields" />,
-    AddressSelect: () => <div data-test="address-select" />,
-}));
-
-const billingFields: FormField[] = [
-    {
-        custom: false,
-        default: '',
-        id: 'field_14',
-        label: 'First Name',
-        name: 'firstName',
-        required: true,
-    },
-    {
-        custom: false,
-        default: '',
-        id: 'field_15',
-        label: 'Last Name',
-        name: 'lastName',
-        required: true,
-    },
-    {
-        custom: false,
-        default: '',
-        id: 'field_18',
-        label: 'Address Line 1',
-        name: 'address1',
-        required: true,
-    },
-];
+import { PaymentBillingForm, type PaymentBillingFormProps } from './PaymentBillingForm';
 
 describe('PaymentBillingForm', () => {
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
     let localeContext: LocaleContextType;
     let onPersist: jest.Mock;
-    let capturedFlush: BillingAddressFlush | null;
-    let registerBillingAddressFlush: jest.Mock;
+    let capturedEnsureBillingAddressSaved: EnsureBillingAddressSaved | null;
+    let registerEnsureBillingAddressSaved: jest.Mock;
     let defaultProps: PaymentBillingFormProps;
 
     const renderForm = (props: PaymentBillingFormProps) =>
@@ -76,7 +42,7 @@ describe('PaymentBillingForm', () => {
                     <CapabilitiesContext.Provider value={defaultCapabilities}>
                         <PaymentContext.Provider
                             value={{
-                                registerBillingAddressFlush,
+                                registerEnsureBillingAddressSaved,
                                 disableSubmit: jest.fn(),
                                 setSubmit: jest.fn(),
                                 setValidationSchema: jest.fn(),
@@ -95,11 +61,14 @@ describe('PaymentBillingForm', () => {
         checkoutState = checkoutService.getState();
         localeContext = createLocaleContext(getStoreConfig());
         onPersist = jest.fn().mockResolvedValue(undefined);
-        capturedFlush = null;
-        registerBillingAddressFlush = jest.fn((flush: BillingAddressFlush | null) => {
-            capturedFlush = flush;
-        });
+        capturedEnsureBillingAddressSaved = null;
+        registerEnsureBillingAddressSaved = jest.fn(
+            (ensureBillingAddressSaved: EnsureBillingAddressSaved | null) => {
+                capturedEnsureBillingAddressSaved = ensureBillingAddressSaved;
+            },
+        );
 
+        jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue(getCheckout());
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
         jest.spyOn(checkoutState.data, 'getCart').mockReturnValue(getCart());
         jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue({
@@ -111,7 +80,8 @@ describe('PaymentBillingForm', () => {
         defaultProps = {
             billingAddress: getBillingAddress(),
             customerMessage: '',
-            getFields: () => billingFields,
+            getFields: () => getFormFields(),
+            isLoading: false,
             onPersist,
             onUnhandledError: noop,
         };
@@ -121,7 +91,7 @@ describe('PaymentBillingForm', () => {
         renderForm(defaultProps);
 
         expect(screen.getByTestId('checkout-billing-form')).toBeInTheDocument();
-        expect(screen.getByTestId('billing-fields')).toBeInTheDocument();
+        expect(screen.getByText('First Name')).toBeInTheDocument();
         expect(screen.queryByRole('button', { name: 'Continue' })).not.toBeInTheDocument();
     });
 
@@ -131,29 +101,60 @@ describe('PaymentBillingForm', () => {
         expect(document.querySelector('form')).not.toBeInTheDocument();
     });
 
-    it('registers a flush on PaymentContext', async () => {
+    it('registers its ensureBillingAddressSaved on the payment context', async () => {
         renderForm(defaultProps);
 
         await waitFor(() =>
-            expect(registerBillingAddressFlush).toHaveBeenCalledWith(expect.any(Function)),
+            expect(registerEnsureBillingAddressSaved).toHaveBeenCalledWith(expect.any(Function)),
         );
     });
 
-    it('flush persists and resolves true when the address is valid', async () => {
+    it('blocks (resolves false) and does not persist while still loading', async () => {
+        renderForm({ ...defaultProps, isLoading: true });
+
+        await waitFor(() =>
+            expect(capturedEnsureBillingAddressSaved).toEqual(expect.any(Function)),
+        );
+
+        await expect(capturedEnsureBillingAddressSaved?.()).resolves.toBe(false);
+        expect(onPersist).not.toHaveBeenCalled();
+    });
+
+    it('persists and resolves true when the address is valid', async () => {
         renderForm(defaultProps);
 
-        await waitFor(() => expect(capturedFlush).toEqual(expect.any(Function)));
+        await waitFor(() =>
+            expect(capturedEnsureBillingAddressSaved).toEqual(expect.any(Function)),
+        );
 
-        await expect(capturedFlush?.()).resolves.toBe(true);
+        await expect(capturedEnsureBillingAddressSaved?.()).resolves.toBe(true);
         expect(onPersist).toHaveBeenCalled();
     });
 
-    it('flush resolves false and does not persist when the address is invalid', async () => {
+    it('resolves false and does not persist when the address is invalid', async () => {
         renderForm({ ...defaultProps, billingAddress: getEmptyBillingAddress() });
 
-        await waitFor(() => expect(capturedFlush).toEqual(expect.any(Function)));
+        await waitFor(() =>
+            expect(capturedEnsureBillingAddressSaved).toEqual(expect.any(Function)),
+        );
 
-        await expect(capturedFlush?.()).resolves.toBe(false);
+        await expect(capturedEnsureBillingAddressSaved?.()).resolves.toBe(false);
         expect(onPersist).not.toHaveBeenCalled();
+    });
+
+    it('reports a persist failure via onUnhandledError and resolves false without throwing', async () => {
+        const error = new Error('failed to save billing address');
+        const onUnhandledError = jest.fn();
+
+        onPersist.mockRejectedValueOnce(error);
+
+        renderForm({ ...defaultProps, onUnhandledError });
+
+        await waitFor(() =>
+            expect(capturedEnsureBillingAddressSaved).toEqual(expect.any(Function)),
+        );
+
+        await expect(capturedEnsureBillingAddressSaved?.()).resolves.toBe(false);
+        expect(onUnhandledError).toHaveBeenCalledWith(error);
     });
 });

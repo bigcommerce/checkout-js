@@ -36,8 +36,7 @@ let mockPersistValues: BillingFormValues;
 // expose a button that invokes onPersist, so we can test the container's
 // persistence wiring without driving the real address form.
 jest.mock('./PaymentBillingForm', () => ({
-    __esModule: true,
-    default: (props: PaymentBillingFormProps) => {
+    PaymentBillingForm: (props: PaymentBillingFormProps) => {
         mockCapturedProps = props;
 
         return (
@@ -115,6 +114,34 @@ describe('PaymentBillingBlock', () => {
         expect(mockCapturedProps.onPersist).toEqual(expect.any(Function));
     });
 
+    it('shows a warning instead of the form when manual entry is restricted and there are no saved addresses', async () => {
+        jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue({
+            ...getCustomer(),
+            addresses: [],
+        });
+
+        render(
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <CapabilitiesContext.Provider
+                        value={{
+                            ...defaultCapabilities,
+                            billing: {
+                                ...defaultCapabilities.billing,
+                                restrictManualAddressEntry: true,
+                            },
+                        }}
+                    >
+                        <PaymentBillingBlock onUnhandledError={onUnhandledError} />
+                    </CapabilitiesContext.Provider>
+                </LocaleContext.Provider>
+            </CheckoutProvider>,
+        );
+
+        expect(await screen.findByText(/no billing address to choose from/i)).toBeInTheDocument();
+        expect(screen.queryByTestId('trigger-persist')).not.toBeInTheDocument();
+    });
+
     it('persists a changed billing address via updateBillingAddress', async () => {
         render(<PaymentBillingBlockTest />);
 
@@ -157,5 +184,16 @@ describe('PaymentBillingBlock', () => {
         expect(checkoutService.updateCheckout).toHaveBeenCalledWith({
             customerMessage: 'new comment',
         });
+    });
+
+    it('keeps the billing form mounted (with isLoading) while billing is still loading', async () => {
+        jest.spyOn(checkoutService, 'loadBillingAddressFields').mockReturnValue(
+            new Promise(() => undefined),
+        );
+
+        render(<PaymentBillingBlockTest />);
+
+        expect(await screen.findByTestId('trigger-persist')).toBeInTheDocument();
+        expect(mockCapturedProps.isLoading).toBe(true);
     });
 });

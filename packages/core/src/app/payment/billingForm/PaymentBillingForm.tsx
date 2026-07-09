@@ -1,9 +1,4 @@
-import {
-    type Address,
-    type CustomerAddress,
-    type FormField,
-    isExtraField,
-} from '@bigcommerce/checkout-sdk/essential';
+import { type Address, type FormField, isExtraField } from '@bigcommerce/checkout-sdk/essential';
 import { type FormikProps, setNestedObjectValues, withFormik } from 'formik';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 
@@ -28,24 +23,19 @@ export interface PaymentBillingFormProps {
     methodId?: string;
     billingAddress?: Address;
     customerMessage: string;
+    isLoading: boolean;
     getFields(countryCode?: string): FormField[];
     // Persists the billing address (updateBillingAddress). Must throw on failure
-    // so the pre-submit flush can block the order.
+    // so the pre-submit ensureBillingAddressSaved can block the order.
     onPersist(values: BillingFormValues): Promise<void>;
     onUnhandledError(error: Error): void;
 }
 
-/**
- * Billing address form for the payment step under themeV2. Unlike the legacy
- * standalone BillingForm it renders no <form> wrapper and no submit button, and
- * it persists via a flush the payment submit awaits (registered on PaymentContext)
- * rather than on its own submit — so the order can't finalize against a stale
- * billing address.
- */
-const PaymentBillingForm = ({
+const PaymentBillingFormComponent = ({
     methodId,
     getFields,
     billingAddress,
+    isLoading,
     setFieldValue,
     setTouched,
     validateForm,
@@ -67,7 +57,7 @@ const PaymentBillingForm = ({
     }));
     const {
         billing: { hideSaveToAddressBookCheck, restrictManualAddressEntry },
-        userJourney: { hasAddressExtraFields, hasCompanyAddressBook },
+        userJourney: { hasAddressExtraFields },
     } = useCapabilities();
 
     if (!config || !customer || !cart) {
@@ -98,21 +88,16 @@ const PaymentBillingForm = ({
     const shouldShowOrderComments = enableOrderComments && getShippableItemsCount(cart) < 1;
     const shouldShowSaveAddress = !hideSaveToAddressBookCheck && !isGuest;
 
-    // Once the address form opens (selected address is invalid or no longer matches a
-    // book entry), the stored book id can't faithfully represent it, so drop it.
-    useEffect(() => {
-        if (
-            hasCompanyAddressBook &&
-            !hasValidCustomerAddress &&
-            B2BSessionStorage.getAddressId(B2BSessionStorage.billingAddressIdKey)
-        ) {
-            B2BSessionStorage.remove(B2BSessionStorage.billingAddressIdKey);
+    // Ensure a pending edit is saved before the payment step places the order:
+    // block while still loading, otherwise validate (surfacing errors + blocking
+    // on invalid) and persist. A persist failure is reported through the billing
+    // error channel and blocks the order — it must not surface as a payment
+    // failure, so this never throws.
+    const ensureBillingAddressSaved = useCallback(async (): Promise<boolean> => {
+        if (isLoading) {
+            return false;
         }
-    }, [hasCompanyAddressBook, hasValidCustomerAddress]);
 
-    // Flush a pending edit before the payment step places the order: validate,
-    // surface errors + block on invalid, otherwise persist and allow the order.
-    const flush = useCallback(async (): Promise<boolean> => {
         const errors = await validateForm();
 
         if (Object.keys(errors).length > 0) {
@@ -121,38 +106,38 @@ const PaymentBillingForm = ({
             return false;
         }
 
-        await onPersist(values);
+        try {
+            await onPersist(values);
+        } catch (error) {
+            if (error instanceof Error) {
+                onUnhandledError(error);
+            }
+
+            return false;
+        }
 
         return true;
-    }, [validateForm, setTouched, onPersist, values]);
+    }, [isLoading, validateForm, setTouched, onPersist, values, onUnhandledError]);
 
     useEffect(() => {
-        const registerBillingAddressFlush = paymentContext?.registerBillingAddressFlush;
+        const register = paymentContext?.registerEnsureBillingAddressSaved;
 
-        if (!registerBillingAddressFlush) {
+        if (!register) {
             return;
         }
 
-        registerBillingAddressFlush(flush);
+        register(ensureBillingAddressSaved);
 
         return () => {
-            registerBillingAddressFlush(null);
+            register(null);
         };
-    }, [paymentContext, flush]);
+    }, [paymentContext, ensureBillingAddressSaved]);
 
     const handleSelectAddress = async (address: Partial<Address>) => {
         setIsResettingAddress(true);
 
         try {
             await checkoutService.updateBillingAddress(address);
-
-            B2BSessionStorage.remove(B2BSessionStorage.billingAddressIdKey);
-
-            const selectedAddressId = (address as CustomerAddress).id;
-
-            if (hasCompanyAddressBook && selectedAddressId) {
-                B2BSessionStorage.set(B2BSessionStorage.billingAddressIdKey, selectedAddressId);
-            }
         } catch (error) {
             if (error instanceof Error) {
                 onUnhandledError(error);
@@ -213,9 +198,9 @@ const PaymentBillingForm = ({
     );
 };
 
-export default withLanguage(
+export const PaymentBillingForm = withLanguage(
     withFormik<PaymentBillingFormProps & WithLanguageProps, BillingFormValues>({
-        // No submit button — persistence happens via the flush, not on submit.
+        // No submit button — persistence happens via ensureBillingAddressSaved.
         handleSubmit: () => undefined,
         mapPropsToValues: ({ getFields, customerMessage, billingAddress }) =>
             getBillingFormInitialValues(getFields, billingAddress, customerMessage),
@@ -227,5 +212,5 @@ export default withLanguage(
         }: PaymentBillingFormProps & WithLanguageProps) =>
             getBillingFormValidationSchema(language, getFields, methodId),
         enableReinitialize: true,
-    })(PaymentBillingForm),
+    })(PaymentBillingFormComponent),
 );
