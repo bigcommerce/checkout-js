@@ -44,6 +44,11 @@ const HostedCreditCardPaymentMethod: FunctionComponent<
         'PI-4748.cba_resolver_configuration',
         false,
     );
+    const isCyberSourceResolverEnabled = isExperimentEnabled(
+        config?.checkoutSettings,
+        'PI-4749.cyber_source_resolver_configuration',
+        false,
+    );
 
     const initializeHostedCreditCardPayment: CreditCardPaymentMethodProps['initializePayment'] =
         useCallback(
@@ -53,8 +58,9 @@ const HostedCreditCardPaymentMethod: FunctionComponent<
                     integrations: [
                         ...(options.integrations ?? []),
                         createCreditCardPaymentStrategy,
-                        createCyberSourcePaymentStrategy,
-                        createCyberSourceV2PaymentStrategy,
+                        ...(!isCyberSourceResolverEnabled
+                            ? [createCyberSourcePaymentStrategy, createCyberSourceV2PaymentStrategy]
+                            : []),
                         createSagePayPaymentStrategy,
                         ...(!isCBAMPGSResolverEnabled ? [createCBAMPGSPaymentStrategy] : []),
                     ],
@@ -63,7 +69,12 @@ const HostedCreditCardPaymentMethod: FunctionComponent<
                     },
                 });
             },
-            [getHostedFormOptions, initializePayment, isCBAMPGSResolverEnabled],
+            [
+                getHostedFormOptions,
+                initializePayment,
+                isCBAMPGSResolverEnabled,
+                isCyberSourceResolverEnabled,
+            ],
         );
 
     return (
