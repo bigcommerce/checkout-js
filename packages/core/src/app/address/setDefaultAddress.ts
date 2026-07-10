@@ -24,10 +24,10 @@ export default async function setDefaultAddress({
         : B2BSessionStorage.billingAddressIdKey;
 
     const filteredAddresses = addresses?.filter((address) =>
-        isShipping ? address.isShipping : address.isBilling,
+        isShipping ? address.b2b?.isShipping : address.b2b?.isBilling,
     );
     const defaultAddress = filteredAddresses?.find((address) =>
-        isShipping ? address.isDefaultShipping : address.isDefaultBilling,
+        isShipping ? address.b2b?.isDefaultShipping : address.b2b?.isDefaultBilling,
     );
 
     if (!currentAddress?.address1) {

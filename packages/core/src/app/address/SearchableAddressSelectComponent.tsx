@@ -39,7 +39,7 @@ export const SearchableAddressSelectComponent: FunctionComponent<SearchableAddre
 
     const filteredAddresses = useMemo(() => {
         const addressesByType = addresses.filter((address) =>
-            type === AddressType.Shipping ? address.isShipping : address.isBilling,
+            type === AddressType.Shipping ? address.b2b?.isShipping : address.b2b?.isBilling,
         );
 
         return searchingAddresses(addressesByType, searchQuery);

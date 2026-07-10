@@ -1,5 +1,6 @@
 import { type Customer } from '@bigcommerce/checkout-sdk';
 
+import { getCustomerAddressB2B } from '../address/address.mock';
 import { getShippingAddress } from '../shipping/shipping-addresses.mock';
 
 // TODO: Consider exporting mock objects from SDK
@@ -73,24 +74,21 @@ export function getB2BCustomer(): Customer {
                 ...getShippingAddress(),
                 id: 9,
                 type: 'commercial',
-                isShipping: true,
-                isBilling: true,
+                b2b: getCustomerAddressB2B({ isShipping: true, isBilling: true }),
             },
             {
                 ...getShippingAddress(),
                 id: 10,
                 type: 'commercial',
                 address1: 'Shipping Only Way',
-                isShipping: true,
-                isBilling: false,
+                b2b: getCustomerAddressB2B({ isShipping: true }),
             },
             {
                 ...getShippingAddress(),
                 id: 11,
                 type: 'commercial',
                 address1: 'Billing Only Way',
-                isShipping: false,
-                isBilling: true,
+                b2b: getCustomerAddressB2B({ isBilling: true }),
             },
             {
                 ...getShippingAddress(),
@@ -99,8 +97,7 @@ export function getB2BCustomer(): Customer {
                 address1: 'Invalid B2B Way',
                 firstName: 'Invalid Address',
                 lastName: '',
-                isShipping: true,
-                isBilling: true,
+                b2b: getCustomerAddressB2B({ isShipping: true, isBilling: true }),
             },
         ],
         isGuest: false,
