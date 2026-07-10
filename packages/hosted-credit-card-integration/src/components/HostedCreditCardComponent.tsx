@@ -8,6 +8,10 @@ import { createCBAMPGSPaymentStrategy } from '@bigcommerce/checkout-sdk/integrat
 import { createCheckoutComCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/checkoutcom-custom';
 import { createCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/credit-card';
 import { createSagePayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/sagepay';
+import {
+    createCyberSourcePaymentStrategy,
+    createCyberSourceV2PaymentStrategy,
+} from '@bigcommerce/checkout-sdk/integrations/cybersource';
 import { createTDOnlineMartPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/td-bank';
 import { compact, forIn } from 'lodash';
 import React, { type FunctionComponent, type ReactNode, useCallback, useState } from 'react';
@@ -64,6 +68,11 @@ const HostedCreditCardComponent: FunctionComponent<HostedCreditCardComponentProp
     const isSagePayResolverEnabled =
         checkoutState.data.getConfig()?.checkoutSettings.features?.[
             'PI-4754.sage_pay_resolver_configuration'
+        ] ?? false;
+
+    const isCyberSourceResolverEnabled =
+        checkoutState.data.getConfig()?.checkoutSettings.features?.[
+            'PI-4749.cyber_source_resolver_configuration'
         ] ?? false;
 
     const { setFieldTouched, setFieldValue, setSubmitted, submitForm } = paymentForm;
@@ -282,6 +291,9 @@ const HostedCreditCardComponent: FunctionComponent<HostedCreditCardComponentProp
                         createBlueSnapDirectCreditCardPaymentStrategy,
                         ...(isCBAMPGSResolverEnabled ? [createCBAMPGSPaymentStrategy] : []),
                         ...(isSagePayResolverEnabled ? [createSagePayPaymentStrategy] : []),
+                        ...(isCyberSourceResolverEnabled
+                            ? [createCyberSourcePaymentStrategy, createCyberSourceV2PaymentStrategy]
+                            : []),
                         createTDOnlineMartPaymentStrategy,
                         createCheckoutComCreditCardPaymentStrategy,
                     ],
@@ -310,6 +322,7 @@ const HostedCreditCardComponent: FunctionComponent<HostedCreditCardComponentProp
                 isCBAMPGSResolverEnabled,
                 isSagePayResolverEnabled,
                 language,
+                isCyberSourceResolverEnabled,
             ],
         );
 
