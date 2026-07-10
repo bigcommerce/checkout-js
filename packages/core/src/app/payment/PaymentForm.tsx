@@ -5,7 +5,7 @@ import {
     type PaymentMethod,
 } from '@bigcommerce/checkout-sdk/essential';
 import { type FormikProps, type FormikState, withFormik, type WithFormikConfig } from 'formik';
-import { isEmpty, isNil, noop, omitBy } from 'lodash';
+import { isEmpty, noop, omitBy } from 'lodash';
 import React, { type FunctionComponent, memo, useCallback, useContext, useMemo } from 'react';
 import { object, type ObjectSchema, string } from 'yup';
 
@@ -375,7 +375,7 @@ const paymentFormConfig: WithFormikConfig<PaymentFormProps & WithLanguageProps, 
             onSubmit(
                 omitBy(
                     values,
-                    (value, key) => isNil(value) || value === '' || key === 'hostedForm',
+                    (value, key) => value == null || value === '' || key === 'hostedForm',
                 ),
             );
         },

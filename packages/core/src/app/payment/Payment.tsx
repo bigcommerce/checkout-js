@@ -418,9 +418,13 @@ const Payment = (
             addressExtraFields,
         });
 
-        await submitB2BMetadata(metadataPayload);
-
-        clearB2BMetadataStorage();
+        try {
+            await submitB2BMetadata(metadataPayload);
+        } catch {
+            /* Do nothing: failing to persist B2B metadata should not fail the checkout flow. */
+        } finally {
+            clearB2BMetadataStorage();
+        }
     };
 
     const handleSubmit = useCallback(

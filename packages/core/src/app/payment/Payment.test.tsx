@@ -986,7 +986,7 @@ describe('Payment step', () => {
             );
         });
 
-        it('does not clear B2B sessionStorage when persisting metadata fails', async () => {
+        it('clears B2B sessionStorage even when persisting metadata fails', async () => {
             const location = window.location;
 
             Object.defineProperty(window, 'location', {
@@ -1024,10 +1024,12 @@ describe('Payment step', () => {
 
             await waitFor(() => expect(persistSpy).toHaveBeenCalled());
 
-            expect(B2BSessionStorage.getAddressIds()).toEqual({
-                billingAddressId: 111,
-                shippingAddressId: 222,
-            });
+            await waitFor(() =>
+                expect(B2BSessionStorage.getAddressIds()).toEqual({
+                    billingAddressId: undefined,
+                    shippingAddressId: undefined,
+                }),
+            );
         });
 
         it('does not persist B2B metadata after finalizing the order on mount when persistB2BMetadata capability is disabled', async () => {

@@ -10,6 +10,33 @@ export interface B2BStoredPaymentValues {
     orderExtraFields?: Record<string, unknown>;
 }
 
+function isStringValue(value: unknown): value is string | undefined {
+    return value === undefined || typeof value === 'string';
+}
+
+function isB2BStoredPaymentValues(value: unknown): value is B2BStoredPaymentValues {
+    if (typeof value !== 'object' || value === null) {
+        return false;
+    }
+
+    const poNumber = 'poNumber' in value ? value.poNumber : undefined;
+    const invoicePaymentComment =
+        'invoicePaymentComment' in value ? value.invoicePaymentComment : undefined;
+    const additionalPaymentField =
+        'additionalPaymentField' in value ? value.additionalPaymentField : undefined;
+    const orderExtraFields = 'orderExtraFields' in value ? value.orderExtraFields : undefined;
+
+    return (
+        isStringValue(poNumber) &&
+        isStringValue(invoicePaymentComment) &&
+        isStringValue(additionalPaymentField) &&
+        (orderExtraFields === undefined ||
+            (typeof orderExtraFields === 'object' &&
+                orderExtraFields !== null &&
+                !Array.isArray(orderExtraFields)))
+    );
+}
+
 export class B2BSessionStorage {
     static readonly keyPrefix = 'checkout_js_b2b';
     static readonly billingAddressIdKey = `${this.keyPrefix}_billingAddressId`;
@@ -37,10 +64,7 @@ export class B2BSessionStorage {
     static getPaymentValues(): B2BStoredPaymentValues | undefined {
         const value = this.decode(this.paymentValuesKey);
 
-        return typeof value === 'object' && value !== null
-            ? // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-              (value as B2BStoredPaymentValues)
-            : undefined;
+        return isB2BStoredPaymentValues(value) ? value : undefined;
     }
 
     static clearAll(): void {

@@ -20,11 +20,11 @@ export default async function setDefaultAddress({
     }
 
     const isShipping = type === AddressType.Shipping;
-    const defaultAddress = addresses
-        ?.filter((address) => (isShipping ? address.b2b?.isShipping : address.b2b?.isBilling))
-        .find((address) =>
-            isShipping ? address.b2b?.isDefaultShipping : address.b2b?.isDefaultBilling,
-        );
+    const defaultAddress = addresses?.find(({ b2b }) =>
+        isShipping
+            ? b2b?.isShipping && b2b.isDefaultShipping
+            : b2b?.isBilling && b2b.isDefaultBilling,
+    );
 
     if (!defaultAddress) {
         return;
