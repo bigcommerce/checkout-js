@@ -30,9 +30,25 @@ jest.mock('./resolveCheckoutButton', () => ({
 }));
 
 describe('SignedInCustomerWalletButtons', () => {
-    let SignedInCustomerWalletButtonsTest: FunctionComponent<{ isPaymentStepActive?: boolean }>;
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
+
+    const renderSignedInCustomerWalletButtons = (isPaymentStepActive = false) =>
+        render(
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleProvider
+                    checkoutService={checkoutService}
+                    languageService={getLanguageService()}
+                >
+                    <SignedInCustomerWalletButtons
+                        checkEmbeddedSupport={noop}
+                        isPaymentStepActive={isPaymentStepActive}
+                        onUnhandledError={noop}
+                        onWalletButtonClick={noop}
+                    />
+                </LocaleProvider>
+            </CheckoutProvider>,
+        );
 
     beforeEach(() => {
         checkoutService = createCheckoutService();
@@ -49,26 +65,10 @@ describe('SignedInCustomerWalletButtons', () => {
         jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(true);
         jest.spyOn(checkoutState.data, 'getPaymentMethods').mockReturnValue([]);
         jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
-
-        SignedInCustomerWalletButtonsTest = ({ isPaymentStepActive = false }) => (
-            <CheckoutProvider checkoutService={checkoutService}>
-                <LocaleProvider
-                    checkoutService={checkoutService}
-                    languageService={getLanguageService()}
-                >
-                    <SignedInCustomerWalletButtons
-                        checkEmbeddedSupport={noop}
-                        isPaymentStepActive={isPaymentStepActive}
-                        onUnhandledError={noop}
-                        onWalletButtonClick={noop}
-                    />
-                </LocaleProvider>
-            </CheckoutProvider>
-        );
     });
 
     it('renders wallet buttons for a signed-in customer', async () => {
-        render(<SignedInCustomerWalletButtonsTest />);
+        renderSignedInCustomerWalletButtons();
 
         expect(await screen.findByTestId('applepayCheckoutButton')).toBeInTheDocument();
     });
@@ -76,7 +76,7 @@ describe('SignedInCustomerWalletButtons', () => {
     it('does not render for a guest customer', () => {
         jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getGuestCustomer());
 
-        const { container } = render(<SignedInCustomerWalletButtonsTest />);
+        const { container } = renderSignedInCustomerWalletButtons();
 
         expect(container).toBeEmptyDOMElement();
     });
@@ -98,7 +98,7 @@ describe('SignedInCustomerWalletButtons', () => {
             },
         });
 
-        const { container } = render(<SignedInCustomerWalletButtonsTest />);
+        const { container } = renderSignedInCustomerWalletButtons();
 
         expect(container).toBeEmptyDOMElement();
     });
@@ -116,13 +116,13 @@ describe('SignedInCustomerWalletButtons', () => {
             },
         });
 
-        const { container } = render(<SignedInCustomerWalletButtonsTest />);
+        const { container } = renderSignedInCustomerWalletButtons();
 
         expect(container).toBeEmptyDOMElement();
     });
 
     it('does not render when the payment step is active', () => {
-        const { container } = render(<SignedInCustomerWalletButtonsTest isPaymentStepActive />);
+        const { container } = renderSignedInCustomerWalletButtons(true);
 
         expect(container).toBeEmptyDOMElement();
     });
@@ -130,7 +130,7 @@ describe('SignedInCustomerWalletButtons', () => {
     it('does not render when payment data is not required', () => {
         jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(false);
 
-        const { container } = render(<SignedInCustomerWalletButtonsTest />);
+        const { container } = renderSignedInCustomerWalletButtons();
 
         expect(container).toBeEmptyDOMElement();
     });
@@ -144,7 +144,7 @@ describe('SignedInCustomerWalletButtons', () => {
             },
         });
 
-        const { container } = render(<SignedInCustomerWalletButtonsTest />);
+        const { container } = renderSignedInCustomerWalletButtons();
 
         expect(screen.queryByTestId('applepayCheckoutButton')).not.toBeInTheDocument();
         expect(container).toBeEmptyDOMElement();
@@ -159,7 +159,7 @@ describe('SignedInCustomerWalletButtons', () => {
             },
         });
 
-        const { container } = render(<SignedInCustomerWalletButtonsTest />);
+        const { container } = renderSignedInCustomerWalletButtons();
 
         expect(container).toBeEmptyDOMElement();
     });

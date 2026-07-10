@@ -110,7 +110,7 @@ const CheckoutButtonList: FunctionComponent<
         });
     };
 
-    const content = (
+    const checkoutButtonListContent = (
         <>
             {!isInitializing && !hideText && (
                 <p>
@@ -123,12 +123,12 @@ const CheckoutButtonList: FunctionComponent<
     );
 
     if (!wrapperClassName) {
-        return content;
+        return checkoutButtonListContent;
     }
 
     return (
         <div className={wrapperClassName} data-test="checkout-button-list-wrapper">
-            {content}
+            {checkoutButtonListContent}
         </div>
     );
 };

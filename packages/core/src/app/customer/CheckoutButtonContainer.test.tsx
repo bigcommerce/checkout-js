@@ -30,9 +30,25 @@ jest.mock('./resolveCheckoutButton', () => ({
 }));
 
 describe('CheckoutButtonContainer', () => {
-    let CheckoutButtonContainerTest: FunctionComponent<{ isPaymentStepActive?: boolean }>;
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
+
+    const renderCheckoutButtonContainer = (isPaymentStepActive = false) =>
+        render(
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleProvider
+                    checkoutService={checkoutService}
+                    languageService={getLanguageService()}
+                >
+                    <CheckoutButtonContainer
+                        checkEmbeddedSupport={noop}
+                        isPaymentStepActive={isPaymentStepActive}
+                        onUnhandledError={noop}
+                        onWalletButtonClick={noop}
+                    />
+                </LocaleProvider>
+            </CheckoutProvider>,
+        );
 
     beforeEach(() => {
         checkoutService = createCheckoutService();
@@ -49,22 +65,6 @@ describe('CheckoutButtonContainer', () => {
         jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(true);
         jest.spyOn(checkoutState.data, 'getPaymentMethods').mockReturnValue([]);
         jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getGuestCustomer());
-
-        CheckoutButtonContainerTest = ({ isPaymentStepActive = false }) => (
-            <CheckoutProvider checkoutService={checkoutService}>
-                <LocaleProvider
-                    checkoutService={checkoutService}
-                    languageService={getLanguageService()}
-                >
-                    <CheckoutButtonContainer
-                        checkEmbeddedSupport={noop}
-                        isPaymentStepActive={isPaymentStepActive}
-                        onUnhandledError={noop}
-                        onWalletButtonClick={noop}
-                    />
-                </LocaleProvider>
-            </CheckoutProvider>
-        );
     });
 
     it('renders wallet buttons for a signed-in customer when the experiment is enabled', async () => {
@@ -80,7 +80,7 @@ describe('CheckoutButtonContainer', () => {
             },
         });
 
-        render(<CheckoutButtonContainerTest />);
+        renderCheckoutButtonContainer();
 
         expect(await screen.findByTestId('applepayCheckoutButton')).toBeInTheDocument();
     });
@@ -88,13 +88,13 @@ describe('CheckoutButtonContainer', () => {
     it('does not render for a signed-in customer when the experiment is disabled', () => {
         jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
 
-        const { container } = render(<CheckoutButtonContainerTest />);
+        const { container } = renderCheckoutButtonContainer();
 
         expect(container).toBeEmptyDOMElement();
     });
 
     it('still renders wallet buttons for a guest customer', async () => {
-        render(<CheckoutButtonContainerTest />);
+        renderCheckoutButtonContainer();
 
         expect(await screen.findByTestId('applepayCheckoutButton')).toBeInTheDocument();
     });
@@ -108,7 +108,7 @@ describe('CheckoutButtonContainer', () => {
             },
         });
 
-        const { container } = render(<CheckoutButtonContainerTest />);
+        const { container } = renderCheckoutButtonContainer();
 
         expect(container).toBeEmptyDOMElement();
     });
@@ -116,7 +116,7 @@ describe('CheckoutButtonContainer', () => {
     it('does not render when payment data is not required', () => {
         jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(false);
 
-        const { container } = render(<CheckoutButtonContainerTest />);
+        const { container } = renderCheckoutButtonContainer();
 
         expect(container).toBeEmptyDOMElement();
     });
@@ -141,7 +141,7 @@ describe('CheckoutButtonContainer', () => {
             },
         });
 
-        const { container } = render(<CheckoutButtonContainerTest />);
+        const { container } = renderCheckoutButtonContainer();
 
         expect(container).toBeEmptyDOMElement();
     });
