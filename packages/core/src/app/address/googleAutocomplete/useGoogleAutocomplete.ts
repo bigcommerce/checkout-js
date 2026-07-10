@@ -78,91 +78,93 @@ export function useGoogleAutocomplete({
         onSelect(place, item);
     };
 
-    const fetchSuggestionsWithLegacyApi = (input: string): void => {
-        const service = googleAutocompleteServiceRef.current;
+    const legacyApi = {
+        fetchSuggestions: (input: string): void => {
+            const service = googleAutocompleteServiceRef.current;
 
-        if (!service) return;
+            if (!service) return;
 
-        service.getAutocompleteService().then((autocompleteService) => {
-            autocompleteService.getPlacePredictions(
-                { input, types: types || ['geocode'], componentRestrictions },
-                (results) => {
-                    setItems(toAutocompleteItems(results ?? undefined));
-                },
-            );
-        });
+            service.getAutocompleteService().then((autocompleteService) => {
+                autocompleteService.getPlacePredictions(
+                    { input, types: types || ['geocode'], componentRestrictions },
+                    (results) => {
+                        setItems(toAutocompleteItems(results ?? undefined));
+                    },
+                );
+            });
+        },
+        select: (item: AutocompleteItem): void => {
+            const service = googleAutocompleteServiceRef.current;
+
+            if (!service) return;
+
+            service.getPlacesServices().then((placesService) => {
+                placesService.getDetails(
+                    { placeId: item.id, fields: fields || ['address_components', 'name'] },
+                    (result) => {
+                        finalizeSelection(result, item);
+                    },
+                );
+            });
+        },
     };
 
-    const fetchSuggestionsWithNewApi = (input: string): void => {
-        const service = newGooglePlacesApiServiceRef.current;
+    const newApi = {
+        fetchSuggestions: (input: string): void => {
+            const service = newGooglePlacesApiServiceRef.current;
 
-        if (!service) return;
+            if (!service) return;
 
-        latestNewApiInputRef.current = input;
+            latestNewApiInputRef.current = input;
 
-        service
-            .getSuggestions(input, types, componentRestrictions)
-            .then((results) => {
-                if (latestNewApiInputRef.current === input) {
-                    setItems(results);
-                }
-            })
-            .catch((error) => {
-                if (isNewPlacesApiPermissionDenied(error)) {
-                    newGooglePlacesApiState.isUnavailable = true;
-
+            service
+                .getSuggestions(input, types, componentRestrictions)
+                .then((results) => {
                     if (latestNewApiInputRef.current === input) {
-                        fetchSuggestionsWithLegacyApi(input);
+                        setItems(results);
+                    }
+                })
+                .catch((error) => {
+                    if (isNewPlacesApiPermissionDenied(error)) {
+                        newGooglePlacesApiState.isUnavailable = true;
+
+                        if (latestNewApiInputRef.current === input) {
+                            legacyApi.fetchSuggestions(input);
+                        }
+
+                        return;
                     }
 
-                    return;
-                }
+                    if (latestNewApiInputRef.current === input) {
+                        setItems([]);
+                    }
+                });
+        },
+        select: (item: AutocompleteItem): void => {
+            const service = newGooglePlacesApiServiceRef.current;
 
-                if (latestNewApiInputRef.current === input) {
-                    setItems([]);
-                }
-            });
-    };
+            if (!service) return;
 
-    const selectWithLegacyApi = (item: AutocompleteItem): void => {
-        const service = googleAutocompleteServiceRef.current;
-
-        if (!service) return;
-
-        service.getPlacesServices().then((placesService) => {
-            placesService.getDetails(
-                { placeId: item.id, fields: fields || ['address_components', 'name'] },
-                (result) => {
-                    finalizeSelection(result, item);
-                },
-            );
-        });
-    };
-
-    const selectWithNewApi = (item: AutocompleteItem): void => {
-        const service = newGooglePlacesApiServiceRef.current;
-
-        if (!service) return;
-
-        service
-            .getPlaceDetails(item.id, fields)
-            .then((result) => finalizeSelection(result, item))
-            .catch((error) => {
-                if (isNewPlacesApiPermissionDenied(error)) {
-                    newGooglePlacesApiState.isUnavailable = true;
-                    selectWithLegacyApi(item);
-                }
-            });
+            service
+                .getPlaceDetails(item.id, fields)
+                .then((result) => finalizeSelection(result, item))
+                .catch((error) => {
+                    if (isNewPlacesApiPermissionDenied(error)) {
+                        newGooglePlacesApiState.isUnavailable = true;
+                        legacyApi.select(item);
+                    }
+                });
+        },
     };
 
     const handleSelect = (item: AutocompleteItem) => {
         if (isUsingLegacyApi()) {
-            selectWithLegacyApi(item);
+            legacyApi.select(item);
 
             return;
         }
 
-        selectWithNewApi(item);
+        newApi.select(item);
     };
 
     const resetAutocomplete = (): void => {
@@ -176,12 +178,12 @@ export function useGoogleAutocomplete({
 
     const fetchSuggestions = (input: string): void => {
         if (isUsingLegacyApi()) {
-            fetchSuggestionsWithLegacyApi(input);
+            legacyApi.fetchSuggestions(input);
 
             return;
         }
 
-        fetchSuggestionsWithNewApi(input);
+        newApi.fetchSuggestions(input);
     };
 
     const handleChange = (input: string) => {
