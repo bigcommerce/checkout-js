@@ -243,6 +243,53 @@ describe('Payment step', () => {
         expect(window.location.replace).not.toHaveBeenCalled();
     });
 
+    it('disables Place Order while the embedded billing (themeV2) address is being persisted', async () => {
+        const themeV2Config = {
+            ...checkoutSettings,
+            storeConfig: {
+                ...checkoutSettings.storeConfig,
+                checkoutSettings: {
+                    ...checkoutSettings.storeConfig.checkoutSettings,
+                    checkoutUserExperienceSettings: {
+                        ...checkoutSettings.storeConfig.checkoutSettings
+                            .checkoutUserExperienceSettings,
+                        checkoutV2Theme: true,
+                    },
+                },
+            },
+        };
+
+        mockEnsureBillingAddressSaved = jest.fn<Promise<boolean>, []>().mockResolvedValue(true);
+
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+            config: themeV2Config,
+        });
+
+        // Keep the billing-address update in flight so isUpdatingBillingAddress
+        // stays true while we assert the submit button is disabled.
+        checkout.setRequestHandler(
+            rest.put(
+                '/api/storefront/checkouts/*/billing-address/*',
+                () => new Promise<never>(() => undefined),
+            ),
+        );
+
+        render(<CheckoutTest {...defaultProps} />);
+
+        await checkout.waitForPaymentStep();
+
+        await act(async () => {
+            void checkoutService.updateBillingAddress({});
+        });
+
+        await waitFor(() =>
+            // eslint-disable-next-line jest-dom/prefer-to-have-attribute
+            expect(
+                screen.getByRole('button', { name: /place order/i }).hasAttribute('disabled'),
+            ).toBeTruthy(),
+        );
+    });
+
     it('goes back to billing step after unmounting the component', async () => {
         checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
 

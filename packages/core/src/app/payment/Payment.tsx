@@ -42,6 +42,7 @@ import {
     type AnalyticsContextProps,
     type CheckoutContextProps,
     useCapabilities,
+    useThemeContext,
 } from '@bigcommerce/checkout/contexts';
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
@@ -103,9 +104,12 @@ interface WithCheckoutPaymentProps {
     defaultMethod?: PaymentMethod;
     finalizeOrderError?: Error;
     isInitializingPayment: boolean;
+    isLoadingBillingCountries: boolean;
     isSubmittingOrder: boolean;
     isStoreCreditApplied: boolean;
     isTermsConditionsRequired: boolean;
+    isUpdatingBillingAddress: boolean;
+    isUpdatingCheckout: boolean;
     methods: PaymentMethod[];
     orderExtraFields?: FormField[];
     orderId?: number;
@@ -167,6 +171,7 @@ const Payment = (
         orderConfirmation: { persistB2BMetadata, invoiceRedirect },
         userJourney: { disableStoreCredit },
     } = useCapabilities();
+    const { themeV2 } = useThemeContext();
 
     const renderCartStockPositionsChangedModal = (
         error: CartStockPositionsChangedError,
@@ -756,6 +761,16 @@ const Payment = (
         selectedMethod && getUniquePaymentMethodId(selectedMethod.id, selectedMethod.gateway);
     const shouldShowPaymentForm =
         props.shouldShowSubmitPaymentButton || (!isEmpty(props.methods) && props.defaultMethod);
+    // themeV2 embeds the billing form in the payment step. Disable "Place Order"
+    // while its billing address is loading or being persisted (initialization,
+    // address-book change, or the pre-submit save), so a click can't silently
+    // no-op or trigger a duplicate order submission. Scoped to themeV2 because
+    // only that layout owns the embedded billing form.
+    const isBillingFormBusy =
+        themeV2 &&
+        (props.isLoadingBillingCountries ||
+            props.isUpdatingBillingAddress ||
+            props.isUpdatingCheckout);
 
     return (
         <PaymentContext.Provider value={getContextValue()}>
@@ -784,6 +799,7 @@ const Payment = (
                         shouldDisableSubmit={
                             (uniqueSelectedMethodId &&
                                 state.shouldDisableSubmit[uniqueSelectedMethodId]) ||
+                            isBillingFormBusy ||
                             undefined
                         }
                         shouldExecuteSpamCheck={props.shouldExecuteSpamCheck}
@@ -833,7 +849,13 @@ export function mapToPaymentProps(
             getPaymentProviderCustomer,
         },
         errors: { getFinalizeOrderError, getSubmitOrderError },
-        statuses: { isInitializingPayment, isSubmittingOrder },
+        statuses: {
+            isInitializingPayment,
+            isLoadingBillingCountries,
+            isSubmittingOrder,
+            isUpdatingBillingAddress,
+            isUpdatingCheckout,
+        },
     } = checkoutState;
 
     const checkout = getCheckout();
@@ -894,9 +916,12 @@ export function mapToPaymentProps(
         finalizeOrderIfNeeded: checkoutService.finalizeOrderIfNeeded,
         loadCheckout: checkoutService.loadCheckout,
         isInitializingPayment: isInitializingPayment(),
+        isLoadingBillingCountries: isLoadingBillingCountries(),
         isPaymentDataRequired,
         isStoreCreditApplied,
         isSubmittingOrder: isSubmittingOrder(),
+        isUpdatingBillingAddress: isUpdatingBillingAddress(),
+        isUpdatingCheckout: isUpdatingCheckout(),
         isTermsConditionsRequired,
         loadPaymentMethods: checkoutService.loadPaymentMethods,
         methods: filteredMethods,
