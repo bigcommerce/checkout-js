@@ -1,4 +1,20 @@
-import { type Address } from '@bigcommerce/checkout-sdk';
+import { type Address, type CustomerAddress } from '@bigcommerce/checkout-sdk';
+
+type CustomerAddressB2B = NonNullable<CustomerAddress['b2b']>;
+
+export function getCustomerAddressB2B(
+    overrides: Partial<CustomerAddressB2B> = {},
+): CustomerAddressB2B {
+    return {
+        isShipping: false,
+        isBilling: false,
+        isDefaultShipping: false,
+        isDefaultBilling: false,
+        label: '',
+        extraFields: [],
+        ...overrides,
+    };
+}
 
 export function getAddress(): Address {
     return {

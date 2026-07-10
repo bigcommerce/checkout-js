@@ -2,7 +2,7 @@ import { type CustomerAddress } from '@bigcommerce/checkout-sdk';
 
 import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
-import { getAddress } from './address.mock';
+import { getAddress, getCustomerAddressB2B } from './address.mock';
 import AddressType from './AddressType';
 import setDefaultAddress from './setDefaultAddress';
 
@@ -14,8 +14,7 @@ describe('setDefaultAddress', () => {
         ...getAddress(),
         id: 1,
         type: 'residential',
-        isShipping: true,
-        isBilling: true,
+        b2b: getCustomerAddressB2B({ isShipping: true, isBilling: true }),
         ...overrides,
     });
 
@@ -28,7 +27,10 @@ describe('setDefaultAddress', () => {
 
     describe('when there is no current address', () => {
         it('applies the default address and stores its id', async () => {
-            const defaultAddress = getCustomerAddress({ id: 7, isDefaultShipping: true });
+            const defaultAddress = getCustomerAddress({
+                id: 7,
+                b2b: getCustomerAddressB2B({ isShipping: true, isDefaultShipping: true }),
+            });
 
             await setDefaultAddress({
                 type: AddressType.Shipping,
@@ -44,7 +46,7 @@ describe('setDefaultAddress', () => {
         it('applies the default address but does not store an id when it has none', async () => {
             const defaultAddress = getCustomerAddress({
                 id: undefined as unknown as number,
-                isDefaultShipping: true,
+                b2b: getCustomerAddressB2B({ isShipping: true, isDefaultShipping: true }),
             });
 
             await setDefaultAddress({
@@ -73,7 +75,10 @@ describe('setDefaultAddress', () => {
         it('does not store an id when applying the default address fails', async () => {
             updateAddress.mockRejectedValue(new Error('update failed'));
 
-            const defaultAddress = getCustomerAddress({ id: 7, isDefaultShipping: true });
+            const defaultAddress = getCustomerAddress({
+                id: 7,
+                b2b: getCustomerAddressB2B({ isShipping: true, isDefaultShipping: true }),
+            });
 
             await setDefaultAddress({
                 type: AddressType.Shipping,
@@ -163,8 +168,14 @@ describe('setDefaultAddress', () => {
 
     describe('when company rows duplicate fields across types', () => {
         it('matches a shipping row over a content-identical billing-only row for the shipping key', async () => {
-            const billingOnly = getCustomerAddress({ id: 50, isShipping: false, isBilling: true });
-            const shippingRow = getCustomerAddress({ id: 42, isShipping: true, isBilling: false });
+            const billingOnly = getCustomerAddress({
+                id: 50,
+                b2b: getCustomerAddressB2B({ isBilling: true }),
+            });
+            const shippingRow = getCustomerAddress({
+                id: 42,
+                b2b: getCustomerAddressB2B({ isShipping: true }),
+            });
 
             await setDefaultAddress({
                 type: AddressType.Shipping,
@@ -177,7 +188,10 @@ describe('setDefaultAddress', () => {
         });
 
         it('does not store a billing-only row id under the shipping key', async () => {
-            const billingOnly = getCustomerAddress({ id: 50, isShipping: false, isBilling: true });
+            const billingOnly = getCustomerAddress({
+                id: 50,
+                b2b: getCustomerAddressB2B({ isBilling: true }),
+            });
 
             await setDefaultAddress({
                 type: AddressType.Shipping,
@@ -190,8 +204,14 @@ describe('setDefaultAddress', () => {
         });
 
         it('matches a billing row over a content-identical shipping-only row for the billing key', async () => {
-            const shippingOnly = getCustomerAddress({ id: 60, isShipping: true, isBilling: false });
-            const billingRow = getCustomerAddress({ id: 24, isShipping: false, isBilling: true });
+            const shippingOnly = getCustomerAddress({
+                id: 60,
+                b2b: getCustomerAddressB2B({ isShipping: true }),
+            });
+            const billingRow = getCustomerAddress({
+                id: 24,
+                b2b: getCustomerAddressB2B({ isBilling: true }),
+            });
 
             await setDefaultAddress({
                 type: AddressType.Billing,

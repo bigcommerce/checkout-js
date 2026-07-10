@@ -255,12 +255,12 @@ const Checkout = ({
 
         setState((prevState) => ({ ...prevState, isRedirecting: true }));
 
-        const receiptId = checkoutService.getState().data.getB2BReceiptId();
+        const b2bContext = checkoutService.getState().data.getB2BContext();
 
-        if (invoiceRedirect && receiptId) {
+        if (invoiceRedirect && b2bContext?.receiptId) {
             const { links: { siteLink = '' } = {} } = data.getConfig() || {};
 
-            window.location.replace(`${siteLink}/#/invoice?receiptId=${receiptId}`);
+            window.location.replace(`${siteLink}/#/invoice?receiptId=${b2bContext.receiptId}`);
 
             return;
         }

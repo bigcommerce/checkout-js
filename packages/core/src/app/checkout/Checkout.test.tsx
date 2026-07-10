@@ -614,13 +614,14 @@ describe('Checkout', () => {
                 jest.spyOn(checkoutService, 'refreshB2BPaymentMethods').mockResolvedValue(
                     {} as any,
                 );
+                jest.spyOn(checkoutService, 'persistB2BMetadata').mockResolvedValue({} as any);
 
                 const getState = checkoutService.getState.bind(checkoutService);
 
                 jest.spyOn(checkoutService, 'getState').mockImplementation(() => {
                     const state = getState();
 
-                    state.data.getB2BReceiptId = () => 123;
+                    state.data.getB2BContext = () => ({ receiptId: '123' });
 
                     return state;
                 });

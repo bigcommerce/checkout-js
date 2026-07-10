@@ -48,6 +48,7 @@ import {
 } from '@bigcommerce/checkout/test-utils';
 import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
+import { getCustomerAddressB2B } from '../address/address.mock';
 import Checkout from '../checkout/Checkout';
 import { type CheckoutInitializerProps } from '../checkout/CheckoutInitializer';
 import { getCheckoutPayment } from '../checkout/checkouts.mock';
@@ -606,7 +607,9 @@ describe('Billing step', () => {
         // lists addresses flagged for billing. shippingAddress3 is given id 3 and isBilling.
         const customerWithCompanyBillingAddress = {
             ...customer,
-            addresses: [{ ...shippingAddress3, id: 3, isBilling: true }],
+            addresses: [
+                { ...shippingAddress3, id: 3, b2b: getCustomerAddressB2B({ isBilling: true }) },
+            ],
         };
         const checkoutWithCompanyBillingAddress = {
             ...checkoutWithShipping,

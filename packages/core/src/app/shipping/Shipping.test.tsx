@@ -45,6 +45,7 @@ import {
 } from '@bigcommerce/checkout/test-utils';
 import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
+import { getCustomerAddressB2B } from '../address/address.mock';
 import Checkout, { type CheckoutProps } from '../checkout/Checkout';
 import { createErrorLogger } from '../common/error';
 import {
@@ -1101,7 +1102,13 @@ describe('Shipping step', () => {
                 ...checkoutWithMultiShippingCart,
                 customer: {
                     ...customer,
-                    addresses: [{ ...shippingAddress, id: 1, isShipping: true }],
+                    addresses: [
+                        {
+                            ...shippingAddress,
+                            id: 1,
+                            b2b: getCustomerAddressB2B({ isShipping: true }),
+                        },
+                    ],
                 },
             };
 
