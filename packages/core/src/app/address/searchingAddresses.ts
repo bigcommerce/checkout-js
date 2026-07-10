@@ -22,9 +22,7 @@ export function searchingAddresses(addresses: CustomerAddress[], query: string):
             ...(address.customFields ?? []).map(({ fieldValue }) =>
                 Array.isArray(fieldValue) ? fieldValue.join(' ') : String(fieldValue),
             ),
-            ...(address.b2b?.extraFields ?? address.extraFields ?? []).map(({ fieldValue }) =>
-                String(fieldValue),
-            ),
+            ...(address.b2b?.extraFields ?? []).map(({ fieldValue }) => String(fieldValue)),
         ]
             .filter(Boolean)
             .join(' ')

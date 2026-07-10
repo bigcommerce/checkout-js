@@ -20,7 +20,7 @@ export default function getAddressWithLabel<T extends Address>(
         isEqualAddress(address, customerAddress),
     );
 
-    const label = match?.b2b?.label ?? match?.label;
+    const label = match?.b2b?.label;
 
     return label ? { ...address, label } : address;
 }

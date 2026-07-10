@@ -1,5 +1,6 @@
 import { type CustomerAddress } from '@bigcommerce/checkout-sdk';
 
+import { getCustomerAddressB2B } from './address.mock';
 import { searchingAddresses } from './searchingAddresses';
 
 const baseAddress: CustomerAddress = {
@@ -68,7 +69,9 @@ describe('searchingAddresses', () => {
     it('matches on extraFields string value', () => {
         const address: CustomerAddress = {
             ...baseAddress,
-            extraFields: [{ fieldId: 'ef_1', fieldValue: 'extra-value' }],
+            b2b: getCustomerAddressB2B({
+                extraFields: [{ fieldId: 'ef_1', fieldValue: 'extra-value' }],
+            }),
         };
 
         expect(searchingAddresses([address], 'extra-value')).toEqual([address]);
@@ -78,7 +81,9 @@ describe('searchingAddresses', () => {
     it('matches on extraFields numeric value', () => {
         const address: CustomerAddress = {
             ...baseAddress,
-            extraFields: [{ fieldId: 'ef_2', fieldValue: 99 }],
+            b2b: getCustomerAddressB2B({
+                extraFields: [{ fieldId: 'ef_2', fieldValue: 99 }],
+            }),
         };
 
         expect(searchingAddresses([address], '99')).toEqual([address]);
