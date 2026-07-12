@@ -62,10 +62,11 @@ import { TermsConditionsType } from '../termsConditions';
 
 import {
     type B2BPaymentFormValues,
-    buildB2BMetadataOptions,
     clearB2BMetadataStorage,
     storeB2BPaymentValues,
 } from './b2bMetadata';
+import { getB2BMetadataPayload } from './b2bMetadataForPostOrder';
+import { mapToB2BOrderRequestBody } from './b2bMetadataForSubmitOrder';
 import CartStockPositionsChangedModal from './CartStockPositionsChangedModal';
 import mapSubmitOrderErrorMessage, { mapSubmitOrderErrorTitle } from './mapSubmitOrderErrorMessage';
 import mapToOrderRequestBody from './mapToOrderRequestBody';
@@ -410,7 +411,7 @@ const Payment = (
             return;
         }
 
-        const metadataPayload = buildB2BMetadataOptions(invoiceRedirect, {
+        const metadataPayload = getB2BMetadataPayload(invoiceRedirect, {
             formValues: values,
             billingAddress,
             shippingAddress,
@@ -492,9 +493,10 @@ const Payment = (
                       )
                     : noop;
 
-                const state = await submitOrder(
-                    mapToOrderRequestBody(orderValues, isPaymentDataRequired()),
-                ).finally(unsubscribeB2BContext);
+                const state = await submitOrder({
+                    ...mapToOrderRequestBody(orderValues, isPaymentDataRequired()),
+                    ...(persistB2BMetadata ? mapToB2BOrderRequestBody(b2bPaymentValues) : {}),
+                }).finally(unsubscribeB2BContext);
 
                 const order = state.data.getOrder();
 
