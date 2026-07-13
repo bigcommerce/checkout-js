@@ -8,7 +8,6 @@ import React, { useMemo, useState } from 'react';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
 import { isErrorWithType } from '../common/error';
 
@@ -75,8 +74,6 @@ const NewConsignment = ({
 
         const previousConsignments = getPreviousConsignments() ?? [];
 
-        const previousConsignmentIds = new Set(previousConsignments.map((c) => c.id));
-
         try {
             const {
                 data: { getConsignments },
@@ -86,14 +83,6 @@ const NewConsignment = ({
             });
 
             currentConsignments = getConsignments();
-
-            const newConsignment = currentConsignments?.find(
-                (c) => !previousConsignmentIds.has(c.id),
-            );
-
-            if (newConsignment) {
-                B2BSessionStorage.reassignConsignmentKey(newConsignment.id);
-            }
         } catch (error) {
             if (error instanceof AssignItemFailedError) {
                 onUnhandledError(error);

@@ -1,11 +1,6 @@
-import {
-    type Address,
-    type CustomerAddress,
-    type FormField,
-    isExtraField,
-} from '@bigcommerce/checkout-sdk/essential';
+import { type Address, type FormField, isExtraField } from '@bigcommerce/checkout-sdk/essential';
 import { type FormikProps, withFormik } from 'formik';
-import React, { type RefObject, useEffect, useRef, useState } from 'react';
+import React, { type RefObject, useRef, useState } from 'react';
 import { lazy } from 'yup';
 
 import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
@@ -23,7 +18,6 @@ import {
     Form,
     LoadingOverlay,
 } from '@bigcommerce/checkout/ui';
-import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
 import {
     AddressForm,
@@ -80,7 +74,6 @@ const BillingForm = ({
     }));
     const {
         billing: { hideSaveToAddressBookCheck, restrictManualAddressEntry },
-        userJourney: { hasAddressExtraFields, hasCompanyAddressBook },
     } = useCapabilities();
 
     if (!config || !customer || !cart) {
@@ -112,31 +105,11 @@ const BillingForm = ({
     const shouldShowOrderComments = enableOrderComments && getShippableItemsCount(cart) < 1;
     const shouldShowSaveAddress = !hideSaveToAddressBookCheck && !isGuest;
 
-    // Once the address form opens (selected address is invalid or no longer matches a
-    // book entry), the stored book id can't faithfully represent it, so drop it.
-    useEffect(() => {
-        if (
-            hasCompanyAddressBook &&
-            !hasValidCustomerAddress &&
-            B2BSessionStorage.getAddressId(B2BSessionStorage.billingAddressIdKey)
-        ) {
-            B2BSessionStorage.remove(B2BSessionStorage.billingAddressIdKey);
-        }
-    }, [hasCompanyAddressBook, hasValidCustomerAddress]);
-
     const handleSelectAddress = async (address: Partial<Address>) => {
         setIsResettingAddress(true);
 
         try {
             await checkoutService.updateBillingAddress(address);
-
-            B2BSessionStorage.remove(B2BSessionStorage.billingAddressIdKey);
-
-            const selectedAddressId = (address as CustomerAddress).id;
-
-            if (hasCompanyAddressBook && selectedAddressId) {
-                B2BSessionStorage.set(B2BSessionStorage.billingAddressIdKey, selectedAddressId);
-            }
         } catch (error) {
             if (error instanceof Error) {
                 onUnhandledError(error);
@@ -147,10 +120,6 @@ const BillingForm = ({
     };
 
     const handleUseNewAddress = () => {
-        if (hasAddressExtraFields) {
-            B2BSessionStorage.remove(B2BSessionStorage.billingExtraFieldsKey);
-        }
-
         void handleSelectAddress({});
     };
 
@@ -219,7 +188,6 @@ export default withLanguage(
             ...mapAddressToFormValues(
                 getFields(billingAddress && billingAddress.countryCode),
                 billingAddress,
-                B2BSessionStorage.billingExtraFieldsKey,
             ),
             orderComment: customerMessage,
         }),

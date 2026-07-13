@@ -1,4 +1,5 @@
 import {
+    type Address,
     type Capabilities,
     type Cart,
     type CartStockPositionsChangedError,
@@ -45,6 +46,7 @@ import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { ChecklistSkeleton } from '@bigcommerce/checkout/ui';
+import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
 import { withAnalytics } from '../analytics';
 import { withCheckout } from '../checkout';
@@ -58,6 +60,13 @@ import {
 import { EMPTY_ARRAY, isExperimentEnabled } from '../common/utility';
 import { TermsConditionsType } from '../termsConditions';
 
+import {
+    type B2BPaymentFormValues,
+    clearB2BMetadataStorage,
+    storeB2BPaymentValues,
+} from './b2bMetadata';
+import { getB2BMetadataPayload } from './b2bMetadataForPostOrder';
+import { mapToB2BOrderRequestBody } from './b2bMetadataForSubmitOrder';
 import CartStockPositionsChangedModal from './CartStockPositionsChangedModal';
 import mapSubmitOrderErrorMessage, { mapSubmitOrderErrorTitle } from './mapSubmitOrderErrorMessage';
 import mapToOrderRequestBody from './mapToOrderRequestBody';
@@ -85,8 +94,10 @@ interface WithCheckoutPaymentProps {
     addressExtraFields?: FormField[];
     availableStoreCredit: number;
     b2bToken?: string;
+    billingAddress?: Address;
     cart?: Cart;
     consignments?: Consignment[];
+    shippingAddress?: Address;
     cartUrl: string;
     defaultMethod?: PaymentMethod;
     finalizeOrderError?: Error;
@@ -111,6 +122,7 @@ interface WithCheckoutPaymentProps {
     loadCheckout(): Promise<CheckoutSelectors>;
     loadPaymentMethods(): Promise<CheckoutSelectors>;
     refreshB2BPaymentMethods: CheckoutService['refreshB2BPaymentMethods'];
+    submitB2BMetadata: CheckoutService['persistB2BMetadata'];
     submitOrder(values: OrderRequestBody): Promise<CheckoutSelectors>;
     checkoutServiceSubscribe: CheckoutService['subscribe'];
 }
@@ -147,7 +159,7 @@ const Payment = (
     const lastFormValuesRef = useRef<PaymentFormValues | null>(null);
 
     const {
-        orderConfirmation: { persistB2BMetadata },
+        orderConfirmation: { persistB2BMetadata, invoiceRedirect },
         userJourney: { disableStoreCredit },
     } = useCapabilities();
 
@@ -386,11 +398,42 @@ const Payment = (
             });
     };
 
+    const persistB2BMetadataIfNeeded = async (values?: B2BPaymentFormValues): Promise<void> => {
+        const {
+            addressExtraFields,
+            billingAddress,
+            orderExtraFields,
+            shippingAddress,
+            submitB2BMetadata,
+        } = props;
+
+        if (!persistB2BMetadata) {
+            return;
+        }
+
+        const metadataPayload = getB2BMetadataPayload(invoiceRedirect, {
+            formValues: values,
+            billingAddress,
+            shippingAddress,
+            orderExtraFields,
+            addressExtraFields,
+        });
+
+        try {
+            await submitB2BMetadata(metadataPayload);
+        } catch {
+            /* Do nothing: failing to persist B2B metadata should not fail the checkout flow. */
+        } finally {
+            clearB2BMetadataStorage();
+        }
+    };
+
     const handleSubmit = useCallback(
         async (values: PaymentFormValues) => {
             const {
                 defaultMethod,
                 loadPaymentMethods,
+                checkoutServiceSubscribe,
                 isPaymentDataRequired,
                 onCartChangedError = noop,
                 onSubmit = noop,
@@ -404,6 +447,24 @@ const Payment = (
 
             analyticsTracker.clickPayButton({ shouldCreateAccount: values.shouldCreateAccount });
 
+            const {
+                additionalPaymentField,
+                invoicePaymentComment,
+                orderExtraFields,
+                ...orderValues
+            } = values;
+            const b2bPaymentValues: B2BPaymentFormValues = {
+                poNumber: values.poNumber,
+                invoicePaymentComment,
+                additionalPaymentField,
+                orderExtraFields,
+            };
+
+            if (persistB2BMetadata) {
+                clearB2BMetadataStorage();
+                storeB2BPaymentValues(b2bPaymentValues);
+            }
+
             const customSubmit =
                 selectedMethod &&
                 submitFunctions[
@@ -411,7 +472,7 @@ const Payment = (
                 ];
 
             if (customSubmit) {
-                return customSubmit(values);
+                return customSubmit(orderValues);
             }
 
             try {
@@ -419,10 +480,27 @@ const Payment = (
                     await refreshB2BPaymentMethods();
                 }
 
-                const state = await submitOrder(
-                    mapToOrderRequestBody(values, isPaymentDataRequired()),
-                );
+                const unsubscribeB2BContext = persistB2BMetadata
+                    ? checkoutServiceSubscribe(
+                          ({ data }) => {
+                              const b2bContext = data.getB2BContext();
+
+                              if (b2bContext?.billingAddressId || b2bContext?.shippingAddressId) {
+                                  B2BSessionStorage.setAddressIds(b2bContext);
+                              }
+                          },
+                          ({ data }) => data.getB2BContext(),
+                      )
+                    : noop;
+
+                const state = await submitOrder({
+                    ...mapToOrderRequestBody(orderValues, isPaymentDataRequired()),
+                    ...(persistB2BMetadata ? mapToB2BOrderRequestBody(b2bPaymentValues) : {}),
+                }).finally(unsubscribeB2BContext);
+
                 const order = state.data.getOrder();
+
+                await persistB2BMetadataIfNeeded(b2bPaymentValues);
 
                 analyticsTracker.paymentComplete();
 
@@ -609,6 +687,8 @@ const Payment = (
                 });
                 const order = state.data.getOrder();
 
+                await persistB2BMetadataIfNeeded();
+
                 onFinalize(order?.orderId);
             } catch (error) {
                 if (isErrorWithType(error) && error.type !== 'order_finalization_not_required') {
@@ -716,6 +796,7 @@ export function mapToPaymentProps(
     const {
         data: {
             getAddressExtraFields,
+            getBillingAddress,
             getCart,
             getCheckout,
             getConfig,
@@ -725,6 +806,7 @@ export function mapToPaymentProps(
             getOrderExtraFields,
             getPaymentMethod,
             getPaymentMethods,
+            getShippingAddress,
             isPaymentDataRequired,
             getPaymentProviderCustomer,
         },
@@ -779,8 +861,10 @@ export function mapToPaymentProps(
         availableStoreCredit: customer.storeCredit,
         addressExtraFields,
         b2bToken: checkoutState.data.getB2BToken(),
+        billingAddress: getBillingAddress(),
         cart: getCart(),
         consignments,
+        shippingAddress: getShippingAddress(),
         cartUrl: config.links.cartLink,
         clearError: checkoutService.clearError,
         defaultMethod,
@@ -797,6 +881,7 @@ export function mapToPaymentProps(
         orderExtraFields,
         orderId: checkout.orderId,
         refreshB2BPaymentMethods: checkoutService.refreshB2BPaymentMethods,
+        submitB2BMetadata: checkoutService.persistB2BMetadata,
         shouldExecuteSpamCheck: checkout.shouldExecuteSpamCheck,
         shouldLocaliseErrorMessages:
             features['PAYMENTS-6799.localise_checkout_payment_error_messages'],

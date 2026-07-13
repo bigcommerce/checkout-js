@@ -40,13 +40,7 @@ import {
     shippingAddress2,
     shippingAddress3,
 } from '@bigcommerce/checkout/test-framework';
-import {
-    act,
-    renderWithoutWrapper as render,
-    screen,
-    waitFor,
-} from '@bigcommerce/checkout/test-utils';
-import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
+import { act, renderWithoutWrapper as render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getCustomerAddressB2B } from '../address/address.mock';
 import Checkout from '../checkout/Checkout';
@@ -616,14 +610,14 @@ describe('Billing step', () => {
             customer: customerWithCompanyBillingAddress,
         };
 
-        it('stores the selected billing address id when hasCompanyAddressBook is enabled', async () => {
+        it('updates the billing address when a company address is selected', async () => {
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShipping, {
                 checkout: checkoutWithCompanyBillingAddress,
             });
 
-            jest.spyOn(checkoutService, 'updateBillingAddress').mockResolvedValue(
-                checkoutService.getState(),
-            );
+            const updateBillingAddressSpy = jest
+                .spyOn(checkoutService, 'updateBillingAddress')
+                .mockResolvedValue(checkoutService.getState());
 
             render(<CheckoutWithCompanyAddressBook {...defaultProps} />);
 
@@ -634,31 +628,9 @@ describe('Billing step', () => {
                 await userEvent.click(screen.getByTestId('address-select-option-action'));
             });
 
-            expect(B2BSessionStorage.getAddressId(B2BSessionStorage.billingAddressIdKey)).toBe(3);
-        });
-
-        it('does not store the billing address id when hasCompanyAddressBook is disabled', async () => {
-            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShipping, {
-                checkout: checkoutWithCustomer,
-            });
-
-            jest.spyOn(checkoutService, 'updateBillingAddress').mockResolvedValue(
-                checkoutService.getState(),
+            expect(updateBillingAddressSpy).toHaveBeenCalledWith(
+                expect.objectContaining({ id: 3 }),
             );
-
-            render(<CheckoutTest {...defaultProps} />);
-
-            await checkout.waitForBillingStep();
-
-            await act(async () => {
-                await userEvent.click(screen.getByTestId('address-select-button'));
-                // shippingAddress3 is the customer's saved address with id 3.
-                await userEvent.click(screen.getByText(shippingAddress3.address1));
-            });
-
-            expect(
-                B2BSessionStorage.getAddressId(B2BSessionStorage.billingAddressIdKey),
-            ).toBeUndefined();
         });
     });
 });

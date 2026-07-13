@@ -265,9 +265,15 @@ describe('PaymentForm', () => {
             sessionStorage.clear();
         });
 
-        it('seeds inputs from session storage when stored values exist', () => {
-            B2BSessionStorage.set(B2BSessionStorage.orderExtraFieldsKey, {
-                b2bExtraField_500: 'restored value',
+        it('seeds inputs with the field default value', () => {
+            render(<PaymentFormTest {...defaultProps} orderExtraFields={orderExtraFields} />);
+
+            expect(screen.getByDisplayValue('default value')).toBeInTheDocument();
+        });
+
+        it('restores inputs from the values captured at submit time', () => {
+            B2BSessionStorage.setPaymentValues({
+                orderExtraFields: { b2bExtraField_500: 'restored value' },
             });
 
             render(<PaymentFormTest {...defaultProps} orderExtraFields={orderExtraFields} />);
@@ -275,15 +281,9 @@ describe('PaymentForm', () => {
             expect(screen.getByDisplayValue('restored value')).toBeInTheDocument();
         });
 
-        it('uses field default when session storage is empty', () => {
-            render(<PaymentFormTest {...defaultProps} orderExtraFields={orderExtraFields} />);
-
-            expect(screen.getByDisplayValue('default value')).toBeInTheDocument();
-        });
-
-        it('falls back to default when stored value has an unexpected type', () => {
-            B2BSessionStorage.set(B2BSessionStorage.orderExtraFieldsKey, {
-                b2bExtraField_500: { tampered: true },
+        it('falls back to the default when a captured value has an unexpected type', () => {
+            B2BSessionStorage.setPaymentValues({
+                orderExtraFields: { b2bExtraField_500: { tampered: true } },
             });
 
             render(<PaymentFormTest {...defaultProps} orderExtraFields={orderExtraFields} />);
@@ -352,16 +352,16 @@ describe('PaymentForm', () => {
             expect(screen.queryByTestId('invoicePaymentComment-input')).not.toBeInTheDocument();
         });
 
-        it('seeds the textarea from session storage when a value is stored', () => {
+        it('restores the textarea from the value captured at submit time', () => {
             enableCapability();
-            B2BSessionStorage.set(B2BSessionStorage.invoiceCommentKey, 'restored comment');
+            B2BSessionStorage.setPaymentValues({ invoicePaymentComment: 'restored comment' });
 
             render(<PaymentFormTest {...defaultProps} />);
 
             expect(screen.getByDisplayValue('restored comment')).toBeInTheDocument();
         });
 
-        it('writes typed values to session storage and strips them from the submit payload', async () => {
+        it('includes the typed value in the submit payload', async () => {
             enableCapability();
 
             const onSubmit = jest.fn();
@@ -372,16 +372,12 @@ describe('PaymentForm', () => {
                 target: { value: 'note for invoice' },
             });
 
-            expect(B2BSessionStorage.getValue(B2BSessionStorage.invoiceCommentKey)).toBe(
-                'note for invoice',
-            );
-
             fireEvent.submit(screen.getByTestId('payment-form'));
 
             await new Promise((resolve) => process.nextTick(resolve));
 
             expect(onSubmit).toHaveBeenCalledWith(
-                expect.not.objectContaining({ invoicePaymentComment: expect.anything() }),
+                expect.objectContaining({ invoicePaymentComment: 'note for invoice' }),
             );
         });
     });
@@ -425,8 +421,8 @@ describe('PaymentForm', () => {
             ).not.toBeInTheDocument();
         });
 
-        it('seeds the field from session storage when a value is stored', () => {
-            B2BSessionStorage.set(B2BSessionStorage.additionalPaymentFieldKey, 'restored note');
+        it('restores the field from the value captured at submit time', () => {
+            B2BSessionStorage.setPaymentValues({ additionalPaymentField: 'restored note' });
 
             render(
                 <PaymentFormTest
@@ -438,7 +434,7 @@ describe('PaymentForm', () => {
             expect(screen.getByDisplayValue('restored note')).toBeInTheDocument();
         });
 
-        it('writes typed values to session storage and strips them from the submit payload', async () => {
+        it('includes the typed value in the submit payload', async () => {
             const onSubmit = jest.fn();
 
             render(
@@ -453,16 +449,12 @@ describe('PaymentForm', () => {
                 target: { value: 'special handling' },
             });
 
-            expect(B2BSessionStorage.getValue(B2BSessionStorage.additionalPaymentFieldKey)).toBe(
-                'special handling',
-            );
-
             fireEvent.submit(screen.getByTestId('payment-form'));
 
             await new Promise((resolve) => process.nextTick(resolve));
 
             expect(onSubmit).toHaveBeenCalledWith(
-                expect.not.objectContaining({ additionalPaymentField: expect.anything() }),
+                expect.objectContaining({ additionalPaymentField: 'special handling' }),
             );
         });
 

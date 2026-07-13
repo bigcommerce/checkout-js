@@ -3,7 +3,6 @@ import React, { type FunctionComponent, useCallback } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { FormField, TextInput } from '@bigcommerce/checkout/ui';
-import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
 interface AdditionalPaymentFieldProps {
     label: string;
@@ -19,13 +18,6 @@ const AdditionalPaymentField: FunctionComponent<AdditionalPaymentFieldProps> = (
             <TextInput
                 {...field}
                 id="additionalPaymentField"
-                onChange={(event) => {
-                    field.onChange(event);
-                    B2BSessionStorage.set(
-                        B2BSessionStorage.additionalPaymentFieldKey,
-                        event.target.value,
-                    );
-                }}
                 testId="additionalPaymentField-input"
             />
         ),

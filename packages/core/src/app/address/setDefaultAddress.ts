@@ -1,9 +1,6 @@
 import { type Address, type CustomerAddress } from '@bigcommerce/checkout-sdk';
 
-import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
-
 import AddressType from './AddressType';
-import isEqualAddress from './isEqualAddress';
 
 interface SetDefaultAddressOptions {
     type: AddressType;
@@ -18,54 +15,24 @@ export default async function setDefaultAddress({
     addresses,
     updateAddress,
 }: SetDefaultAddressOptions): Promise<void> {
+    if (currentAddress?.address1) {
+        return;
+    }
+
     const isShipping = type === AddressType.Shipping;
-    const addressIdKey = isShipping
-        ? B2BSessionStorage.shippingAddressIdKey
-        : B2BSessionStorage.billingAddressIdKey;
-
-    const filteredAddresses = addresses?.filter((address) =>
-        isShipping ? address.b2b?.isShipping : address.b2b?.isBilling,
-    );
-    const defaultAddress = filteredAddresses?.find((address) =>
-        isShipping ? address.b2b?.isDefaultShipping : address.b2b?.isDefaultBilling,
+    const defaultAddress = addresses?.find(({ b2b }) =>
+        isShipping
+            ? b2b?.isShipping && b2b.isDefaultShipping
+            : b2b?.isBilling && b2b.isDefaultBilling,
     );
 
-    if (!currentAddress?.address1) {
-        if (!defaultAddress) {
-            return;
-        }
-
-        try {
-            await updateAddress(defaultAddress);
-
-            if (defaultAddress.id) {
-                B2BSessionStorage.set(addressIdKey, defaultAddress.id);
-            }
-        } catch {
-            /* Do nothing: we should not block shoppers from buying. */
-        }
-
+    if (!defaultAddress) {
         return;
     }
 
-    const storedAddressId = B2BSessionStorage.getAddressId(addressIdKey);
-    const storedIdStillMatches = filteredAddresses?.some(
-        (address) => address.id === storedAddressId && isEqualAddress(address, currentAddress),
-    );
-
-    if (storedAddressId && storedIdStillMatches) {
-        return;
-    }
-
-    // Pre-existing address (e.g. resumed checkout): recover its book ID by matching,
-    // or clear a stale ID when the address no longer corresponds to a book entry.
-    const matchedAddress = filteredAddresses?.find((address) =>
-        isEqualAddress(address, currentAddress),
-    );
-
-    if (matchedAddress?.id) {
-        B2BSessionStorage.set(addressIdKey, matchedAddress.id);
-    } else {
-        B2BSessionStorage.remove(addressIdKey);
+    try {
+        await updateAddress(defaultAddress);
+    } catch {
+        /* Do nothing: we should not block shoppers from buying. */
     }
 }
