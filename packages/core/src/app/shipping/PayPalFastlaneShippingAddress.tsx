@@ -115,7 +115,7 @@ export const PayPalFastlaneShippingAddress: FC<PayPalFastlaneShippingAddressProp
                     address={shippingAddress}
                     consignments={props.consignments}
                     formFields={formFields}
-                    isLoading={isLoadingStrategy}
+                    isLoading={isLoadingStrategy || isLoading}
                     onAddressSelect={onAddressSelect}
                     onFieldChange={handleFieldChange}
                     onUseNewAddress={props.onUseNewAddress}
