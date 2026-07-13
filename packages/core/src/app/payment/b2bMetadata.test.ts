@@ -34,6 +34,21 @@ describe('b2bMetadata', () => {
 
             expect(B2BSessionStorage.getPaymentValues()).toEqual({});
         });
+
+        it('drops an array orderExtraFields without losing the other stored values', () => {
+            storeB2BPaymentValues({
+                poNumber: 'PO-123',
+                invoicePaymentComment: 'Please rush this order',
+                additionalPaymentField: 'REF-456',
+                orderExtraFields: ['not', 'a', 'record'],
+            });
+
+            expect(B2BSessionStorage.getPaymentValues()).toEqual({
+                poNumber: 'PO-123',
+                invoicePaymentComment: 'Please rush this order',
+                additionalPaymentField: 'REF-456',
+            });
+        });
     });
 
     describe('clearB2BMetadataStorage', () => {

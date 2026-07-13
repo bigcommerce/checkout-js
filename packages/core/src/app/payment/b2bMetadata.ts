@@ -11,7 +11,9 @@ export const getStringValue = (value: unknown): string | undefined =>
     typeof value === 'string' ? value : undefined;
 
 export const getRecordValue = (value: unknown): Record<string, unknown> | undefined =>
-    typeof value === 'object' && value !== null ? (value as Record<string, unknown>) : undefined;
+    typeof value === 'object' && value !== null && !Array.isArray(value)
+        ? (value as Record<string, unknown>)
+        : undefined;
 
 export const storeB2BPaymentValues = ({
     poNumber,
