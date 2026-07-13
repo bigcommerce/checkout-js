@@ -7,7 +7,12 @@ import {
 
 import { B2BSessionStorage, type B2BStoredPaymentValues } from '@bigcommerce/checkout/utility';
 
-import { type B2BPaymentFormValues, getRecordValue, getStringValue } from './b2bMetadata';
+import {
+    type B2BPaymentFormValues,
+    getRecordValue,
+    getStringValue,
+    hasNonEmptyExtraFieldValue,
+} from './b2bMetadata';
 
 type B2BMetadataExtraField = NonNullable<PersistB2BMetadataOptions['extraFields']>[number];
 type B2BMetadataExtraInfo = NonNullable<PersistB2BMetadataOptions['extraInfo']>;
@@ -21,7 +26,6 @@ interface B2BMetadataSources {
     addressExtraFields?: FormField[];
 }
 
-const isNonEmptyExtraFieldValue = (value: unknown): boolean => value != null && value !== '';
 const getExtraFieldLabel = (
     fieldName: string,
     fieldLabels: FieldLabelLookup,
@@ -33,11 +37,11 @@ const mapOrderExtraFieldsValues = (
     fieldLabels: FieldLabelLookup,
 ): B2BMetadataExtraField[] =>
     Object.entries(formExtraFields)
-        .filter(([, fieldValue]) => isNonEmptyExtraFieldValue(fieldValue))
+        .filter(hasNonEmptyExtraFieldValue)
         .map(([fieldName, fieldValue]) => ({
             // The API expects the field label, but form values are keyed by field name (id).
             fieldName: getExtraFieldLabel(fieldName, fieldLabels),
-            fieldValue: fieldValue as B2BMetadataExtraField['fieldValue'],
+            fieldValue,
         }));
 
 const createExtraFieldLabelLookup = (fields?: FormField[]): FieldLabelLookup =>

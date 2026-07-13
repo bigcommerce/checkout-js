@@ -1,6 +1,11 @@
 import { B2B_EXTRA_FIELD_PREFIX, type OrderRequestBody } from '@bigcommerce/checkout-sdk/essential';
 
-import { type B2BPaymentFormValues, getRecordValue, getStringValue } from './b2bMetadata';
+import {
+    type B2BPaymentFormValues,
+    getRecordValue,
+    getStringValue,
+    hasNonEmptyExtraFieldValue,
+} from './b2bMetadata';
 
 type B2BOrderRequestExtraField = NonNullable<OrderRequestBody['orderExtraFields']>[number];
 
@@ -13,14 +18,6 @@ const toRawExtraFieldId = (fieldName: string): string =>
     fieldName.startsWith(B2B_EXTRA_FIELD_PREFIX)
         ? fieldName.slice(B2B_EXTRA_FIELD_PREFIX.length)
         : fieldName;
-
-const hasNonEmptyExtraFieldValue = (
-    entry: [string, unknown],
-): entry is [string, string | number] => {
-    const value = entry[1];
-
-    return typeof value === 'number' || (typeof value === 'string' && value !== '');
-};
 
 const getOrderExtraFieldValues = (value: unknown): B2BOrderRequestExtraField[] =>
     Object.entries(getRecordValue(value) ?? {})

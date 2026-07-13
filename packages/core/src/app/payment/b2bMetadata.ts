@@ -15,6 +15,14 @@ export const getRecordValue = (value: unknown): Record<string, unknown> | undefi
         ? (value as Record<string, unknown>)
         : undefined;
 
+export const hasNonEmptyExtraFieldValue = (
+    entry: [string, unknown],
+): entry is [string, string | number] => {
+    const value = entry[1];
+
+    return typeof value === 'number' || (typeof value === 'string' && value !== '');
+};
+
 export const storeB2BPaymentValues = ({
     poNumber,
     invoicePaymentComment,
