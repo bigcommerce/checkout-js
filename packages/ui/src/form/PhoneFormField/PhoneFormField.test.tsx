@@ -69,6 +69,21 @@ describe('PhoneFormField', () => {
             </LocaleContext.Provider>,
         );
 
+    const renderWithSelectedCountry = (selectedCountry: string) => (
+        <LocaleContext.Provider value={localeContextMock}>
+            <Formik initialValues={{ phone: '' }} onSubmit={jest.fn()}>
+                <FormProvider initialIsSubmitted>
+                    <PhoneFormField
+                        id="phone"
+                        label="Phone Number"
+                        name="phone"
+                        selectedCountry={selectedCountry}
+                    />
+                </FormProvider>
+            </Formik>
+        </LocaleContext.Provider>
+    );
+
     beforeEach(() => {
         mockGetSelectedCountryData.mockClear();
         mockIsValidNumber.mockClear();
@@ -110,6 +125,32 @@ describe('PhoneFormField', () => {
         );
 
         expect(mockSetCountry).not.toHaveBeenCalled();
+    });
+
+    it('retries auto-set country on a later selectedCountry change if setCountry previously threw', () => {
+        mockSetCountry.mockImplementationOnce(() => {
+            throw new Error('Invalid iso2 code');
+        });
+
+        const { rerender } = render(renderWithSelectedCountry('US'));
+
+        expect(mockSetCountry).toHaveBeenCalledTimes(1);
+
+        rerender(renderWithSelectedCountry('CA'));
+
+        expect(mockSetCountry).toHaveBeenCalledTimes(2);
+        expect(mockSetCountry).toHaveBeenLastCalledWith('ca');
+        expect(screen.getByTestId('phone-text')).toBeInTheDocument();
+    });
+
+    it('does not re-apply auto-set country on a later selectedCountry change once it already succeeded', () => {
+        const { rerender } = render(renderWithSelectedCountry('US'));
+
+        expect(mockSetCountry).toHaveBeenCalledTimes(1);
+
+        rerender(renderWithSelectedCountry('CA'));
+
+        expect(mockSetCountry).toHaveBeenCalledTimes(1);
     });
 
     it('shows a validation error when the phone number is invalid', async () => {

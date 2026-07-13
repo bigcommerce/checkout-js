@@ -46,13 +46,16 @@ export const PhoneInput: FunctionComponent<PhoneInputProps> = ({
             return;
         }
 
-        isPhoneCountryAutoSetRef.current = true;
-
         try {
-            intlTelInputRef.current?.getInstance()?.setCountry(selectedCountryInIsoFormat);
+            const intlTelInputInstance = intlTelInputRef.current?.getInstance();
+
+            if (intlTelInputInstance) {
+                intlTelInputInstance.setCountry(selectedCountryInIsoFormat);
+                isPhoneCountryAutoSetRef.current = true;
+            }
         } catch {
             // Defensive: the underlying library throws for unrecognized iso2 codes.
-            // A mismatch here shouldn't be able to break the form.
+            // Ref stays unset so a later, different selectedCountry can still be applied.
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedCountry]);
