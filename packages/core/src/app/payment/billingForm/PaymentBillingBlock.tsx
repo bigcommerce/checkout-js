@@ -4,7 +4,6 @@ import React, { type FunctionComponent, useCallback, useEffect, useState } from 
 import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { AddressFormSkeleton, Legend } from '@bigcommerce/checkout/ui';
-import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
 import {
     AddressType,
@@ -106,10 +105,7 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
     }: BillingFormValues): Promise<void> => {
         const currentBillingAddress = getBillingAddress();
         const promises: Array<Promise<CheckoutSelectors>> = [];
-        const address = mapAddressFromFormValues(
-            addressValues,
-            B2BSessionStorage.billingExtraFieldsKey,
-        );
+        const address = mapAddressFromFormValues(addressValues);
 
         if (address && !isEqualAddress(address, currentBillingAddress)) {
             promises.push(checkoutService.updateBillingAddress(address));

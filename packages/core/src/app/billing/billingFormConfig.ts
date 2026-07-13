@@ -1,8 +1,6 @@
 import { type Address, type FormField, type LanguageService } from '@bigcommerce/checkout-sdk';
 import { lazy } from 'yup';
 
-import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
-
 import {
     type AddressFormValues,
     getAddressFormFieldsValidationSchema,
@@ -24,7 +22,6 @@ export const getBillingFormInitialValues = (
     ...mapAddressToFormValues(
         getFields(billingAddress && billingAddress.countryCode),
         billingAddress,
-        B2BSessionStorage.billingExtraFieldsKey,
     ),
     orderComment: customerMessage,
 });

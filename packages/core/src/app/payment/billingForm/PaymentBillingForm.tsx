@@ -6,7 +6,6 @@ import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { AddressFormSkeleton, Fieldset, LoadingOverlay } from '@bigcommerce/checkout/ui';
-import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
 import { AddressForm, AddressSelect, AddressType, isValidCustomerAddress } from '../../address';
 import {
@@ -57,7 +56,6 @@ const PaymentBillingFormComponent = ({
     }));
     const {
         billing: { hideSaveToAddressBookCheck, restrictManualAddressEntry },
-        userJourney: { hasAddressExtraFields },
     } = useCapabilities();
 
     if (!config || !customer || !cart) {
@@ -156,10 +154,6 @@ const PaymentBillingFormComponent = ({
     };
 
     const handleUseNewAddress = () => {
-        if (hasAddressExtraFields) {
-            B2BSessionStorage.remove(B2BSessionStorage.billingExtraFieldsKey);
-        }
-
         void handleSelectAddress({});
     };
 

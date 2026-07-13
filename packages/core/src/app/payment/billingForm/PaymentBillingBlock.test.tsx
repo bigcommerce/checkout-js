@@ -15,7 +15,6 @@ import {
     type LocaleContextType,
 } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
-import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
 import { mapAddressFromFormValues, mapAddressToFormValues } from '../../address';
 import { getFormFields } from '../../address/formField.mock';
@@ -165,10 +164,7 @@ describe('PaymentBillingBlock', () => {
 
     it('does not call updateBillingAddress when the address is unchanged', async () => {
         const { orderComment: _orderComment, ...addressValues } = mockPersistValues;
-        const unchangedAddress = mapAddressFromFormValues(
-            addressValues,
-            B2BSessionStorage.billingExtraFieldsKey,
-        );
+        const unchangedAddress = mapAddressFromFormValues(addressValues);
 
         jest.spyOn(checkoutState.data, 'getBillingAddress').mockReturnValue(
             unchangedAddress as BillingAddress,
