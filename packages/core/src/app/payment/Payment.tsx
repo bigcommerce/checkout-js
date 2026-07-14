@@ -77,6 +77,9 @@ import PaymentForm from './PaymentForm';
 import { getUniquePaymentMethodId, PaymentMethodProviderType } from './paymentMethod';
 import { getFilteredPaymentMethodsWithDefault } from './paymentMethodFilters';
 
+// Must match SURCHARGE_FEE_NAME in the SDK surcharge handler.
+const SURCHARGE_FEE_NAME = 'corporate_card_surcharge';
+
 export interface PaymentProps {
     capabilities: Capabilities;
     errorLogger: ErrorLogger;
@@ -160,6 +163,7 @@ const Payment = (
 
     const isReadyRef = useRef(state.isReady);
     const grandTotalChangeUnsubscribe = useRef<() => void>();
+    const lastSurchargeTotalRef = useRef(0);
     const validationSchemasRef = useRef<validationSchemas>({});
     const lastFormValuesRef = useRef<PaymentFormValues | null>(null);
     // Set by the themeV2 billing form. Awaited before submitOrder so the order
@@ -637,10 +641,25 @@ const Payment = (
         }
     };
 
-    const handleCartTotalChange = async (): Promise<void> => {
+    const handleCartTotalChange = async (state?: CheckoutSelectors): Promise<void> => {
         const isReady = isReadyRef.current;
 
         if (!isReady) {
+            return;
+        }
+
+        // If the total change was caused by applying the
+        // surcharge fee, skip reloading payment methods. Reloading re-initialises the hosted
+        // (iframe) card fields and clears the card the shopper just entered. A real cart
+        // change (coupon/shipping) leaves the surcharge total unchanged and reloads as usual.
+        const checkout = state?.data.getCheckout();
+        const surchargeTotal = (checkout?.fees ?? [])
+            .filter((fee) => fee.name === SURCHARGE_FEE_NAME)
+            .reduce((sum, fee) => sum + fee.cost, 0);
+
+        if (surchargeTotal !== lastSurchargeTotalRef.current) {
+            lastSurchargeTotalRef.current = surchargeTotal;
+
             return;
         }
 
@@ -724,7 +743,11 @@ const Payment = (
             }
 
             grandTotalChangeUnsubscribe.current = checkoutServiceSubscribe(
-                () => handleCartTotalChange(),
+                // Pass state so we can detect a
+                // surcharge-driven total change and skip the payment-methods reload.
+                (state) => {
+                    void handleCartTotalChange(state);
+                },
                 ({ data }) => data.getCheckout()?.grandTotal,
                 ({ data }) => data.getCheckout()?.outstandingBalance,
             );
