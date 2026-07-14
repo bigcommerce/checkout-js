@@ -38,6 +38,8 @@ const PaymentStep = ({
     capabilities,
     consignments,
     errorLogger,
+    isBillingSameAsShipping,
+    onBillingSameAsShippingChange,
     onEdit,
     onExpanded,
     checkEmbeddedSupport,
@@ -60,12 +62,14 @@ const PaymentStep = ({
                 capabilities={capabilities}
                 checkEmbeddedSupport={checkEmbeddedSupport}
                 errorLogger={errorLogger}
+                isBillingSameAsShipping={isBillingSameAsShipping}
                 isEmbedded={isEmbedded()}
                 isUsingMultiShipping={
                     cart && consignments
                         ? isUsingMultiShipping(consignments, cart.lineItems)
                         : false
                 }
+                onBillingSameAsShippingChange={onBillingSameAsShippingChange}
                 onCartChangedError={onCartChangedError}
                 onFinalize={onFinalize}
                 onReady={onReady}

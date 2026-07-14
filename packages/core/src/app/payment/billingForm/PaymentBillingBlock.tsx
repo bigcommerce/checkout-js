@@ -20,6 +20,8 @@ export interface PaymentBillingBlockProps {
     // billing form's method-specific behaviour (e.g. Amazon Pay's static address
     // + reduced schema). Must reflect the live selection, not checkout.payments.
     methodId?: string;
+    isBillingSameAsShipping: boolean;
+    onBillingSameAsShippingChange(isBillingSameAsShipping: boolean): void;
     onUnhandledError(error: Error): void;
 }
 
@@ -42,6 +44,8 @@ const getFieldsWithExtraFields = (
 
 export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = ({
     methodId,
+    isBillingSameAsShipping,
+    onBillingSameAsShippingChange,
     onUnhandledError,
 }) => {
     const {
@@ -85,12 +89,8 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
     const customerMessage = checkout.customerMessage;
     const billingAddress = getBillingAddress();
 
-    const [isBillingSameAsShipping, setIsBillingSameAsShipping] = useState(
-        config.checkoutSettings.checkoutBillingSameAsShippingEnabled ?? true,
-    );
-
     const handleBillingSameAsShippingChange = (checked: boolean) => {
-        setIsBillingSameAsShipping(checked);
+        onBillingSameAsShippingChange(checked);
 
         if (!checked) {
             return;

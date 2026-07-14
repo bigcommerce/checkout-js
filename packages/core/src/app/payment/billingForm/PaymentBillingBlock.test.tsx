@@ -83,18 +83,29 @@ describe('PaymentBillingBlock', () => {
         jest.spyOn(checkoutState.data, 'getBillingAddress').mockReturnValue(undefined);
         jest.spyOn(checkoutState.data, 'getShippingAddress').mockReturnValue(getShippingAddress());
 
-        PaymentBillingBlockTest = ({ methodId }) => (
-            <CheckoutProvider checkoutService={checkoutService}>
-                <LocaleContext.Provider value={localeContext}>
-                    <CapabilitiesContext.Provider value={defaultCapabilities}>
-                        <PaymentBillingBlock
-                            methodId={methodId}
-                            onUnhandledError={onUnhandledError}
-                        />
-                    </CapabilitiesContext.Provider>
-                </LocaleContext.Provider>
-            </CheckoutProvider>
-        );
+        // "Billing same as shipping" is now checkout-wide state owned by
+        // CheckoutPage. Stand in for that here so the block reflects the value and
+        // reports the shopper's choice back up, matching the real wiring.
+        PaymentBillingBlockTest = ({ methodId }) => {
+            const [isBillingSameAsShipping, setIsBillingSameAsShipping] = React.useState(
+                getStoreConfig().checkoutSettings.checkoutBillingSameAsShippingEnabled ?? true,
+            );
+
+            return (
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <CapabilitiesContext.Provider value={defaultCapabilities}>
+                            <PaymentBillingBlock
+                                isBillingSameAsShipping={isBillingSameAsShipping}
+                                methodId={methodId}
+                                onBillingSameAsShippingChange={setIsBillingSameAsShipping}
+                                onUnhandledError={onUnhandledError}
+                            />
+                        </CapabilitiesContext.Provider>
+                    </LocaleContext.Provider>
+                </CheckoutProvider>
+            );
+        };
     });
 
     it('renders the billing address heading', async () => {
@@ -139,7 +150,9 @@ describe('PaymentBillingBlock', () => {
 
         await screen.findByTestId('trigger-persist');
 
-        mockCapturedProps.onBillingSameAsShippingChange(true);
+        act(() => {
+            mockCapturedProps.onBillingSameAsShippingChange(true);
+        });
 
         await new Promise((resolve) => process.nextTick(resolve));
 
@@ -151,7 +164,9 @@ describe('PaymentBillingBlock', () => {
 
         await screen.findByTestId('trigger-persist');
 
-        mockCapturedProps.onBillingSameAsShippingChange(false);
+        act(() => {
+            mockCapturedProps.onBillingSameAsShippingChange(false);
+        });
 
         await new Promise((resolve) => process.nextTick(resolve));
 
@@ -190,7 +205,11 @@ describe('PaymentBillingBlock', () => {
                             },
                         }}
                     >
-                        <PaymentBillingBlock onUnhandledError={onUnhandledError} />
+                        <PaymentBillingBlock
+                            isBillingSameAsShipping={true}
+                            onBillingSameAsShippingChange={jest.fn()}
+                            onUnhandledError={onUnhandledError}
+                        />
                     </CapabilitiesContext.Provider>
                 </LocaleContext.Provider>
             </CheckoutProvider>,
