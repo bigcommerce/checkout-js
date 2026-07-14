@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.832.0](https://github.com/bigcommerce/checkout-js/compare/v1.831.0...v1.832.0) (2026-07-14)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10150 add billing form in payment step ([#3140](https://github.com/bigcommerce/checkout-js/issues/3140)) ([7677dba](https://github.com/bigcommerce/checkout-js/commit/7677dbac269ee2232a1795a2bcd52d8337a3bdd3))
+
 ## [1.831.0](https://github.com/bigcommerce/checkout-js/compare/v1.830.4...v1.831.0) (2026-07-13)
 
 
