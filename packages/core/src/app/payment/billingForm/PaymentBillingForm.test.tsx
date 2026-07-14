@@ -4,7 +4,7 @@ import {
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import {
     CapabilitiesContext,
@@ -35,26 +35,28 @@ describe('PaymentBillingForm', () => {
     let setEnsureBillingAddressSaved: jest.Mock;
     let defaultProps: PaymentBillingFormProps;
 
+    const PaymentBillingFormTest: FunctionComponent<PaymentBillingFormProps> = (props) => (
+        <CheckoutProvider checkoutService={checkoutService}>
+            <LocaleContext.Provider value={localeContext}>
+                <CapabilitiesContext.Provider value={defaultCapabilities}>
+                    <PaymentContext.Provider
+                        value={{
+                            setEnsureBillingAddressSaved,
+                            disableSubmit: jest.fn(),
+                            setSubmit: jest.fn(),
+                            setValidationSchema: jest.fn(),
+                            hidePaymentSubmitButton: jest.fn(),
+                        }}
+                    >
+                        <PaymentBillingForm {...props} />
+                    </PaymentContext.Provider>
+                </CapabilitiesContext.Provider>
+            </LocaleContext.Provider>
+        </CheckoutProvider>
+    );
+
     const renderForm = (props: PaymentBillingFormProps) =>
-        render(
-            <CheckoutProvider checkoutService={checkoutService}>
-                <LocaleContext.Provider value={localeContext}>
-                    <CapabilitiesContext.Provider value={defaultCapabilities}>
-                        <PaymentContext.Provider
-                            value={{
-                                setEnsureBillingAddressSaved,
-                                disableSubmit: jest.fn(),
-                                setSubmit: jest.fn(),
-                                setValidationSchema: jest.fn(),
-                                hidePaymentSubmitButton: jest.fn(),
-                            }}
-                        >
-                            <PaymentBillingForm {...props} />
-                        </PaymentContext.Provider>
-                    </CapabilitiesContext.Provider>
-                </LocaleContext.Provider>
-            </CheckoutProvider>,
-        );
+        render(<PaymentBillingFormTest {...props} />);
 
     beforeEach(() => {
         checkoutService = createCheckoutService();
@@ -81,7 +83,9 @@ describe('PaymentBillingForm', () => {
             billingAddress: getBillingAddress(),
             customerMessage: '',
             getFields: () => getFormFields(),
+            isBillingSameAsShipping: false,
             isLoading: false,
+            onBillingSameAsShippingChange: jest.fn(),
             onPersist,
             onUnhandledError: noop,
         };
@@ -168,6 +172,20 @@ describe('PaymentBillingForm', () => {
         expect(onPersist).not.toHaveBeenCalled();
     });
 
+    it('does not include the same-as-shipping flag in the persisted billing values', async () => {
+        renderForm(defaultProps);
+
+        await waitFor(() =>
+            expect(capturedEnsureBillingAddressSaved).toEqual(expect.any(Function)),
+        );
+
+        await capturedEnsureBillingAddressSaved?.();
+
+        expect(onPersist).toHaveBeenCalledWith(
+            expect.not.objectContaining({ billingSameAsShipping: expect.anything() }),
+        );
+    });
+
     it('reports a persist failure via onUnhandledError and resolves false without throwing', async () => {
         const error = new Error('failed to save billing address');
         const onUnhandledError = jest.fn();
@@ -182,5 +200,79 @@ describe('PaymentBillingForm', () => {
 
         await expect(capturedEnsureBillingAddressSaved?.()).resolves.toBe(false);
         expect(onUnhandledError).toHaveBeenCalledWith(error);
+    });
+
+    describe('billing same as shipping toggle', () => {
+        it('renders the toggle with the payment-step label', () => {
+            renderForm(defaultProps);
+
+            expect(screen.getByTestId('billingSameAsShipping')).toBeInTheDocument();
+            expect(screen.getByText('Same as shipping address')).toBeInTheDocument();
+        });
+
+        it('collapses the billing address fields when checked', () => {
+            renderForm({ ...defaultProps, isBillingSameAsShipping: true });
+
+            expect(screen.getByTestId('billingSameAsShipping')).toBeInTheDocument();
+            expect(screen.queryByText('First Name')).not.toBeInTheDocument();
+        });
+
+        it('shows the billing address fields when unchecked', () => {
+            renderForm({ ...defaultProps, isBillingSameAsShipping: false });
+
+            expect(screen.getByText('First Name')).toBeInTheDocument();
+        });
+
+        it('resolves true without persisting when checked (billing mirrors shipping)', async () => {
+            renderForm({ ...defaultProps, isBillingSameAsShipping: true });
+
+            await waitFor(() =>
+                expect(capturedEnsureBillingAddressSaved).toEqual(expect.any(Function)),
+            );
+
+            await expect(capturedEnsureBillingAddressSaved?.()).resolves.toBe(true);
+            expect(onPersist).not.toHaveBeenCalled();
+        });
+
+        it('hides the toggle for static-address methods (e.g. Amazon Pay)', () => {
+            renderForm({ ...defaultProps, methodId: 'amazonpay' });
+
+            expect(screen.queryByTestId('billingSameAsShipping')).not.toBeInTheDocument();
+        });
+
+        it('stays unchecked and does not re-fire on a billing address reinitialize', async () => {
+            const onBillingSameAsShippingChange = jest.fn();
+            const props = {
+                ...defaultProps,
+                isBillingSameAsShipping: false,
+                billingAddress: getBillingAddress(),
+                onBillingSameAsShippingChange,
+            };
+
+            const { rerender } = renderForm(props);
+
+            expect(screen.getByText('First Name')).toBeInTheDocument();
+
+            rerender(
+                <PaymentBillingFormTest {...props} billingAddress={getEmptyBillingAddress()} />,
+            );
+
+            expect(await screen.findByText('First Name')).toBeInTheDocument();
+            expect(onBillingSameAsShippingChange).not.toHaveBeenCalledWith(true);
+        });
+
+        it('notifies onBillingSameAsShippingChange when the shopper checks it', async () => {
+            const onBillingSameAsShippingChange = jest.fn();
+
+            renderForm({
+                ...defaultProps,
+                isBillingSameAsShipping: false,
+                onBillingSameAsShippingChange,
+            });
+
+            fireEvent.click(screen.getByTestId('billingSameAsShipping'));
+
+            await waitFor(() => expect(onBillingSameAsShippingChange).toHaveBeenCalledWith(true));
+        });
     });
 });

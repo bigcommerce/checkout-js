@@ -16,17 +16,25 @@ import {
 import StaticBillingAddress from '../../billing/StaticBillingAddress';
 import { OrderComments } from '../../orderComments';
 import { getShippableItemsCount } from '../../shipping';
+import BillingSameAsShippingField from '../../shipping/BillingSameAsShippingField';
 import PaymentContext from '../PaymentContext';
+
+// The payment-step billing form adds the "billing same as shipping" toggle on
+// top of the shared billing values.
+export type PaymentBillingFormValues = BillingFormValues & { billingSameAsShipping: boolean };
 
 export interface PaymentBillingFormProps {
     methodId?: string;
     billingAddress?: Address;
     customerMessage: string;
     isLoading: boolean;
+    // Default for the "billing same as shipping" toggle (from checkout settings).
+    isBillingSameAsShipping: boolean;
     getFields(countryCode?: string): FormField[];
     // Persists the billing address (updateBillingAddress). Must throw on failure
     // so the pre-submit ensureBillingAddressSaved can block the order.
     onPersist(values: BillingFormValues): Promise<void>;
+    onBillingSameAsShippingChange(isBillingSameAsShipping: boolean): void;
     onUnhandledError(error: Error): void;
 }
 
@@ -40,8 +48,9 @@ const PaymentBillingFormComponent = ({
     validateForm,
     values,
     onPersist,
+    onBillingSameAsShippingChange,
     onUnhandledError,
-}: PaymentBillingFormProps & WithLanguageProps & FormikProps<BillingFormValues>) => {
+}: PaymentBillingFormProps & WithLanguageProps & FormikProps<PaymentBillingFormValues>) => {
     const [isResettingAddress, setIsResettingAddress] = useState(false);
     const { isPayPalFastlaneEnabled, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
     const paymentContext = useContext(PaymentContext);
@@ -85,6 +94,9 @@ const PaymentBillingFormComponent = ({
     const { enableOrderComments } = config.checkoutSettings;
     const shouldShowOrderComments = enableOrderComments && getShippableItemsCount(cart) < 1;
     const shouldShowSaveAddress = !hideSaveToAddressBookCheck && !isGuest;
+    const shouldShowBillingSameAsShipping = !shouldRenderStaticAddress;
+    const isBillingAddressCollapsed =
+        shouldShowBillingSameAsShipping && values.billingSameAsShipping;
 
     // Ensure a pending edit is saved before the payment step places the order:
     // block while still loading, otherwise validate (surfacing errors + blocking
@@ -96,6 +108,14 @@ const PaymentBillingFormComponent = ({
             return false;
         }
 
+        // Collapsed "same as shipping": billing already mirrors the shipping
+        // address (copied on toggle + on shipping-continue), so nothing to
+        // validate or persist here. Only when the toggle is actually shown —
+        // static-address methods (e.g. Amazon Pay) hide it and must still persist.
+        if (shouldShowBillingSameAsShipping && values.billingSameAsShipping) {
+            return true;
+        }
+
         const errors = await validateForm();
 
         if (Object.keys(errors).length > 0) {
@@ -105,7 +125,9 @@ const PaymentBillingFormComponent = ({
         }
 
         try {
-            await onPersist(values);
+            const { billingSameAsShipping: _billingSameAsShipping, ...billingValues } = values;
+
+            await onPersist(billingValues);
         } catch (error) {
             if (error instanceof Error) {
                 onUnhandledError(error);
@@ -118,6 +140,7 @@ const PaymentBillingFormComponent = ({
     }, [
         isLoading,
         isResettingAddress,
+        shouldShowBillingSameAsShipping,
         validateForm,
         setTouched,
         onPersist,
@@ -159,53 +182,72 @@ const PaymentBillingFormComponent = ({
 
     return (
         <div className="checkout-billing-form" data-test="checkout-billing-form">
-            {shouldRenderStaticAddress && billingAddress && (
-                <div className="form-fieldset">
-                    <StaticBillingAddress address={billingAddress} />
-                </div>
+            {shouldShowBillingSameAsShipping && (
+                <BillingSameAsShippingField
+                    labelStringId="billing.same_as_shipping_label"
+                    onChange={onBillingSameAsShippingChange}
+                />
             )}
 
-            <Fieldset id="checkoutBillingAddress">
-                {hasAddresses && !shouldRenderStaticAddress && (
-                    <Fieldset id="billingAddresses">
-                        <LoadingOverlay isLoading={isResettingAddress}>
-                            <AddressSelect
-                                addresses={billingAddresses}
-                                onSelectAddress={handleSelectAddress}
-                                onUseNewAddress={handleUseNewAddress}
-                                selectedAddress={
-                                    hasValidCustomerAddress ? billingAddress : undefined
-                                }
-                                type={AddressType.Billing}
-                            />
-                        </LoadingOverlay>
+            {/* Collapse the billing address when it mirrors shipping. */}
+            {!isBillingAddressCollapsed && (
+                <>
+                    {shouldRenderStaticAddress && billingAddress && (
+                        <div className="form-fieldset">
+                            <StaticBillingAddress address={billingAddress} />
+                        </div>
+                    )}
+
+                    <Fieldset id="checkoutBillingAddress">
+                        {hasAddresses && !shouldRenderStaticAddress && (
+                            <Fieldset id="billingAddresses">
+                                <LoadingOverlay isLoading={isResettingAddress}>
+                                    <AddressSelect
+                                        addresses={billingAddresses}
+                                        onSelectAddress={handleSelectAddress}
+                                        onUseNewAddress={handleUseNewAddress}
+                                        selectedAddress={
+                                            hasValidCustomerAddress ? billingAddress : undefined
+                                        }
+                                        type={AddressType.Billing}
+                                    />
+                                </LoadingOverlay>
+                            </Fieldset>
+                        )}
+
+                        {!restrictManualAddressEntry && !hasValidCustomerAddress && (
+                            <AddressFormSkeleton isLoading={isResettingAddress}>
+                                <AddressForm
+                                    countryCode={values.countryCode}
+                                    formFields={editableFormFields}
+                                    setFieldValue={setFieldValue}
+                                    shouldShowSaveAddress={shouldShowSaveAddress}
+                                    type={AddressType.Billing}
+                                />
+                            </AddressFormSkeleton>
+                        )}
                     </Fieldset>
-                )}
 
-                {!restrictManualAddressEntry && !hasValidCustomerAddress && (
-                    <AddressFormSkeleton isLoading={isResettingAddress}>
-                        <AddressForm
-                            countryCode={values.countryCode}
-                            formFields={editableFormFields}
-                            setFieldValue={setFieldValue}
-                            shouldShowSaveAddress={shouldShowSaveAddress}
-                            type={AddressType.Billing}
-                        />
-                    </AddressFormSkeleton>
-                )}
-            </Fieldset>
-
-            {shouldShowOrderComments && <OrderComments />}
+                    {shouldShowOrderComments && <OrderComments />}
+                </>
+            )}
         </div>
     );
 };
 
 export const PaymentBillingForm = withLanguage(
-    withFormik<PaymentBillingFormProps & WithLanguageProps, BillingFormValues>({
+    withFormik<PaymentBillingFormProps & WithLanguageProps, PaymentBillingFormValues>({
         // No submit button — persistence happens via ensureBillingAddressSaved.
         handleSubmit: () => undefined,
-        mapPropsToValues: ({ getFields, customerMessage, billingAddress }) =>
-            getBillingFormInitialValues(getFields, billingAddress, customerMessage),
+        mapPropsToValues: ({
+            getFields,
+            customerMessage,
+            billingAddress,
+            isBillingSameAsShipping,
+        }) => ({
+            ...getBillingFormInitialValues(getFields, billingAddress, customerMessage),
+            billingSameAsShipping: isBillingSameAsShipping,
+        }),
         validateOnMount: true,
         validationSchema: ({
             language,

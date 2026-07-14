@@ -53,9 +53,10 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
             getBillingAddressFields,
             getAddressExtraFields,
         },
-        // getBillingAddress guarantees the latest state inside async callbacks
+        // getBillingAddress / getShippingAddress guarantee the latest state inside
+        // async callbacks
         checkoutState: {
-            data: { getBillingAddress },
+            data: { getBillingAddress, getShippingAddress },
         },
         checkoutService,
     } = useCheckout(({ data, statuses }) => ({
@@ -83,6 +84,28 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
 
     const customerMessage = checkout.customerMessage;
     const billingAddress = getBillingAddress();
+
+    const [isBillingSameAsShipping, setIsBillingSameAsShipping] = useState(
+        config.checkoutSettings.checkoutBillingSameAsShippingEnabled ?? true,
+    );
+
+    const handleBillingSameAsShippingChange = (checked: boolean) => {
+        setIsBillingSameAsShipping(checked);
+
+        if (!checked) {
+            return;
+        }
+
+        const shippingAddress = getShippingAddress();
+
+        if (shippingAddress && !isEqualAddress(shippingAddress, getBillingAddress())) {
+            checkoutService.updateBillingAddress(shippingAddress).catch((error) => {
+                if (error instanceof Error) {
+                    onUnhandledError(error);
+                }
+            });
+        }
+    };
 
     const getFields = useCallback(
         (countryCode?: string) =>
@@ -163,8 +186,10 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
                     billingAddress={billingAddress}
                     customerMessage={customerMessage}
                     getFields={getFields}
+                    isBillingSameAsShipping={isBillingSameAsShipping}
                     isLoading={isInitializing}
                     methodId={methodId}
+                    onBillingSameAsShippingChange={handleBillingSameAsShippingChange}
                     onPersist={handlePersist}
                     onUnhandledError={onUnhandledError}
                 />

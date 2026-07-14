@@ -4,7 +4,7 @@ import {
     type CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React, { type FunctionComponent } from 'react';
 
 import {
@@ -23,6 +23,7 @@ import { type BillingFormValues } from '../../billing/billingFormConfig';
 import { getCheckout } from '../../checkout/checkouts.mock';
 import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
+import { getShippingAddress } from '../../shipping/shipping-addresses.mock';
 
 import { PaymentBillingBlock } from './PaymentBillingBlock';
 import { type PaymentBillingFormProps } from './PaymentBillingForm';
@@ -80,6 +81,7 @@ describe('PaymentBillingBlock', () => {
         jest.spyOn(checkoutState.data, 'getBillingAddressFields').mockReturnValue(formFields);
         jest.spyOn(checkoutState.data, 'getAddressExtraFields').mockReturnValue([]);
         jest.spyOn(checkoutState.data, 'getBillingAddress').mockReturnValue(undefined);
+        jest.spyOn(checkoutState.data, 'getShippingAddress').mockReturnValue(getShippingAddress());
 
         PaymentBillingBlockTest = ({ methodId }) => (
             <CheckoutProvider checkoutService={checkoutService}>
@@ -122,6 +124,52 @@ describe('PaymentBillingBlock', () => {
         await screen.findByTestId('trigger-persist');
 
         expect(mockCapturedProps.methodId).toBe('amazonpay');
+    });
+
+    it('defaults the same-as-shipping toggle from checkout settings', async () => {
+        render(<PaymentBillingBlockTest />);
+
+        await screen.findByTestId('trigger-persist');
+
+        expect(mockCapturedProps.isBillingSameAsShipping).toBe(true);
+    });
+
+    it('copies the shipping address to billing when the toggle is checked', async () => {
+        render(<PaymentBillingBlockTest />);
+
+        await screen.findByTestId('trigger-persist');
+
+        mockCapturedProps.onBillingSameAsShippingChange(true);
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        expect(checkoutService.updateBillingAddress).toHaveBeenCalledWith(getShippingAddress());
+    });
+
+    it('does not copy shipping to billing when the toggle is unchecked', async () => {
+        render(<PaymentBillingBlockTest />);
+
+        await screen.findByTestId('trigger-persist');
+
+        mockCapturedProps.onBillingSameAsShippingChange(false);
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        expect(checkoutService.updateBillingAddress).not.toHaveBeenCalled();
+    });
+
+    it('remembers the shopper unchecking the toggle across re-renders', async () => {
+        render(<PaymentBillingBlockTest />);
+
+        await screen.findByTestId('trigger-persist');
+
+        expect(mockCapturedProps.isBillingSameAsShipping).toBe(true);
+
+        act(() => {
+            mockCapturedProps.onBillingSameAsShippingChange(false);
+        });
+
+        await waitFor(() => expect(mockCapturedProps.isBillingSameAsShipping).toBe(false));
     });
 
     it('shows a warning instead of the form when manual entry is restricted and there are no saved addresses', async () => {
