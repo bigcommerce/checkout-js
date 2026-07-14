@@ -65,6 +65,7 @@ const PaymentBillingFormComponent = ({
     }));
     const {
         billing: { hideSaveToAddressBookCheck, restrictManualAddressEntry },
+        shipping: { hideBillingSameAsShippingCheck },
     } = useCapabilities();
 
     if (!config || !customer || !cart) {
@@ -94,7 +95,8 @@ const PaymentBillingFormComponent = ({
     const { enableOrderComments } = config.checkoutSettings;
     const shouldShowOrderComments = enableOrderComments && getShippableItemsCount(cart) < 1;
     const shouldShowSaveAddress = !hideSaveToAddressBookCheck && !isGuest;
-    const shouldShowBillingSameAsShipping = !shouldRenderStaticAddress;
+    const shouldShowBillingSameAsShipping =
+        !shouldRenderStaticAddress && !hideBillingSameAsShippingCheck;
     const isBillingAddressCollapsed =
         shouldShowBillingSameAsShipping && values.billingSameAsShipping;
 
