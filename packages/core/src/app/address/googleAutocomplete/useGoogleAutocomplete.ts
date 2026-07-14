@@ -206,6 +206,7 @@ export function useGoogleAutocomplete({
         setAutocompleteValue(input);
 
         if (!input) {
+            newApiInputRef.current = input;
             setItems([]);
 
             return;
