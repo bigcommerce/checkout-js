@@ -24,7 +24,6 @@ export interface CheckoutButtonListProps {
     hideText?: boolean;
     isInitializing?: boolean;
     methodIds?: string[];
-    wrapperClassName?: string;
     checkEmbeddedSupport?(methodIds: string[]): void;
     deinitialize(options: CustomerRequestOptions): void;
     initialize(options: CustomerInitializeOptions): void;
@@ -45,7 +44,6 @@ const CheckoutButtonList: FunctionComponent<
     hideText = false,
     isInitializing = false,
     methodIds = [],
-    wrapperClassName,
     checkEmbeddedSupport,
     deinitialize,
     initialize,
@@ -110,7 +108,7 @@ const CheckoutButtonList: FunctionComponent<
         });
     };
 
-    const checkoutButtonListContent = (
+    return (
         <>
             {!isInitializing && !hideText && (
                 <p>
@@ -120,16 +118,6 @@ const CheckoutButtonList: FunctionComponent<
 
             <div className="checkoutRemote">{renderButtons()}</div>
         </>
-    );
-
-    if (!wrapperClassName) {
-        return checkoutButtonListContent;
-    }
-
-    return (
-        <div className={wrapperClassName} data-test="checkout-button-list-wrapper">
-            {checkoutButtonListContent}
-        </div>
     );
 };
 

@@ -1,7 +1,7 @@
 import { noop } from 'lodash';
 import React from 'react';
 
-import { render, screen, within } from '@bigcommerce/checkout/test-utils';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../config/config.mock';
 
@@ -64,37 +64,6 @@ describe('CheckoutButtonList', () => {
         );
 
         expect(screen.queryByText('Or continue with')).not.toBeInTheDocument();
-    });
-
-    it('wraps its content in the given wrapper class when there are supported methods', async () => {
-        render(
-            <CheckoutButtonList
-                checkoutSettings={checkoutSettings}
-                deinitialize={noop}
-                initialize={noop}
-                methodIds={['applepay']}
-                wrapperClassName="signedInCustomerWalletButtons"
-            />,
-        );
-
-        const wrapper = await screen.findByTestId('checkout-button-list-wrapper');
-
-        expect(wrapper).toHaveClass('signedInCustomerWalletButtons');
-        expect(within(wrapper).getByTestId('applepayCheckoutButton')).toBeInTheDocument();
-    });
-
-    it('does not render the wrapper class when there are no supported methods', () => {
-        render(
-            <CheckoutButtonList
-                checkoutSettings={checkoutSettings}
-                deinitialize={noop}
-                initialize={noop}
-                methodIds={['foobar']}
-                wrapperClassName="signedInCustomerWalletButtons"
-            />,
-        );
-
-        expect(screen.queryByTestId('checkout-button-list-wrapper')).not.toBeInTheDocument();
     });
 
     it('notifies parent if methods are incompatible with Embedded Checkout', () => {

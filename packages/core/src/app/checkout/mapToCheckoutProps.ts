@@ -43,11 +43,6 @@ export default function mapToCheckoutProps({
         data.getConfig()?.checkoutSettings,
         'PROJECT-6643.enable_shipping_discounts_in_orders',
     );
-    const isWalletButtonsForLoggedInShoppersEnabled = isExperimentEnabled(
-        data.getConfig()?.checkoutSettings,
-        'CHECKOUT-10028.wallet_buttons_for_logged_in_shoppers',
-        false,
-    );
 
     return {
         billingAddress: data.getBillingAddress(),
@@ -62,7 +57,6 @@ export default function mapToCheckoutProps({
         isPending: statuses.isPending(),
         isPriceHiddenFromGuests,
         isShowingWalletButtonsOnTop: walletButtonsOnTopFlag,
-        isWalletButtonsForLoggedInShoppersEnabled,
         loadCheckout: checkoutService.loadCheckout,
         loadPaymentMethodByIds: checkoutService.loadPaymentMethodByIds,
         loginUrl,
