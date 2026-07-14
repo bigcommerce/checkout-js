@@ -50,7 +50,7 @@ export function useGoogleAutocomplete({
     const [autoComplete, setAutoComplete] = useState<string>('off');
     const newGooglePlacesApiServiceRef = useRef<NewGooglePlacesApiService>();
     const googleAutocompleteServiceRef = useRef<GoogleAutocompleteService>();
-    const latestNewApiInputRef = useRef<string>();
+    const newApiInputRef = useRef<string>();
 
     if (!newGooglePlacesApiServiceRef.current) {
         newGooglePlacesApiServiceRef.current = new NewGooglePlacesApiService(apiKey);
@@ -82,7 +82,9 @@ export function useGoogleAutocomplete({
         fetchSuggestions: (input: string): void => {
             const service = googleAutocompleteServiceRef.current;
 
-            if (!service) return;
+            if (!service) {
+                return;
+            }
 
             service.getAutocompleteService().then((autocompleteService) => {
                 autocompleteService.getPlacePredictions(
@@ -96,7 +98,9 @@ export function useGoogleAutocomplete({
         select: (item: AutocompleteItem): void => {
             const service = googleAutocompleteServiceRef.current;
 
-            if (!service) return;
+            if (!service) {
+                return;
+            }
 
             service.getPlacesServices().then((placesService) => {
                 placesService.getDetails(
@@ -113,14 +117,16 @@ export function useGoogleAutocomplete({
         fetchSuggestions: (input: string): void => {
             const service = newGooglePlacesApiServiceRef.current;
 
-            if (!service) return;
+            if (!service) {
+                return;
+            }
 
-            latestNewApiInputRef.current = input;
+            newApiInputRef.current = input;
 
             service
                 .getSuggestions(input, types, componentRestrictions)
                 .then((results) => {
-                    if (latestNewApiInputRef.current === input) {
+                    if (newApiInputRef.current === input) {
                         setItems(results);
                     }
                 })
@@ -128,14 +134,14 @@ export function useGoogleAutocomplete({
                     if (isNewPlacesApiPermissionDenied(error)) {
                         newGooglePlacesApiState.isUnavailable = true;
 
-                        if (latestNewApiInputRef.current === input) {
+                        if (newApiInputRef.current === input) {
                             legacyApi.fetchSuggestions(input);
                         }
 
                         return;
                     }
 
-                    if (latestNewApiInputRef.current === input) {
+                    if (newApiInputRef.current === input) {
                         setItems([]);
                     }
                 });
@@ -143,7 +149,9 @@ export function useGoogleAutocomplete({
         select: (item: AutocompleteItem): void => {
             const service = newGooglePlacesApiServiceRef.current;
 
-            if (!service) return;
+            if (!service) {
+                return;
+            }
 
             service
                 .getPlaceDetails(item.id, fields)
