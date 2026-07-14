@@ -42,6 +42,29 @@ import {
     createEmbeddedCheckoutSupport,
 } from '../embeddedCheckout';
 
+// Controllable billing save for the themeV2 pre-submit gate. Other tests keep
+// themeV2 off, so the block never renders and this stays unused there.
+
+let mockEnsureBillingAddressSaved: jest.Mock<Promise<boolean>>;
+
+jest.mock('./billingForm', () => {
+    const ReactActual = require('react');
+
+    const { default: PaymentContextActual } = require('./PaymentContext');
+
+    return {
+        PaymentBillingBlock: () => {
+            const context = ReactActual.useContext(PaymentContextActual);
+
+            ReactActual.useEffect(() => {
+                context?.setEnsureBillingAddressSaved(mockEnsureBillingAddressSaved);
+            }, [context]);
+
+            return ReactActual.createElement('div', { 'data-test': 'payment-billing-block' });
+        },
+    };
+});
+
 describe('Payment step', () => {
     let checkout: CheckoutPageNodeObject;
     let CheckoutTest: FunctionComponent<CheckoutProps>;
@@ -172,6 +195,99 @@ describe('Payment step', () => {
         await act(async () => userEvent.click(screen.getByText('Place Order')));
 
         expect(window.location.replace).toHaveBeenCalledWith('/order-confirmation');
+    });
+
+    it('does not place the order when embedded billing (themeV2) is invalid', async () => {
+        const themeV2Config = {
+            ...checkoutSettings,
+            storeConfig: {
+                ...checkoutSettings.storeConfig,
+                checkoutSettings: {
+                    ...checkoutSettings.storeConfig.checkoutSettings,
+                    checkoutUserExperienceSettings: {
+                        ...checkoutSettings.storeConfig.checkoutSettings
+                            .checkoutUserExperienceSettings,
+                        checkoutV2Theme: true,
+                    },
+                },
+            },
+        };
+
+        mockEnsureBillingAddressSaved = jest.fn<Promise<boolean>, []>().mockResolvedValue(false);
+
+        const location = window.location;
+
+        Object.defineProperty(window, 'location', {
+            value: {
+                // eslint-disable-next-line @typescript-eslint/no-misused-spread
+                ...location,
+                replace: jest.fn(),
+            },
+            writable: true,
+        });
+
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+            config: themeV2Config,
+        });
+
+        const submitOrderSpy = jest.spyOn(checkoutService, 'submitOrder');
+
+        render(<CheckoutTest {...defaultProps} />);
+
+        await checkout.waitForPaymentStep();
+
+        await act(async () => userEvent.click(screen.getByText('Place Order')));
+
+        expect(mockEnsureBillingAddressSaved).toHaveBeenCalled();
+        expect(submitOrderSpy).not.toHaveBeenCalled();
+        expect(window.location.replace).not.toHaveBeenCalled();
+    });
+
+    it('disables Place Order while the embedded billing (themeV2) address is being persisted', async () => {
+        const themeV2Config = {
+            ...checkoutSettings,
+            storeConfig: {
+                ...checkoutSettings.storeConfig,
+                checkoutSettings: {
+                    ...checkoutSettings.storeConfig.checkoutSettings,
+                    checkoutUserExperienceSettings: {
+                        ...checkoutSettings.storeConfig.checkoutSettings
+                            .checkoutUserExperienceSettings,
+                        checkoutV2Theme: true,
+                    },
+                },
+            },
+        };
+
+        mockEnsureBillingAddressSaved = jest.fn<Promise<boolean>, []>().mockResolvedValue(true);
+
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+            config: themeV2Config,
+        });
+
+        // Keep the billing-address update in flight so isUpdatingBillingAddress
+        // stays true while we assert the submit button is disabled.
+        checkout.setRequestHandler(
+            rest.put(
+                '/api/storefront/checkouts/*/billing-address/*',
+                () => new Promise<never>(() => undefined),
+            ),
+        );
+
+        render(<CheckoutTest {...defaultProps} />);
+
+        await checkout.waitForPaymentStep();
+
+        await act(async () => {
+            void checkoutService.updateBillingAddress({});
+        });
+
+        await waitFor(() =>
+            // eslint-disable-next-line jest-dom/prefer-to-have-attribute
+            expect(
+                screen.getByRole('button', { name: /place order/i }).hasAttribute('disabled'),
+            ).toBeTruthy(),
+        );
     });
 
     it('goes back to billing step after unmounting the component', async () => {

@@ -1,67 +1,58 @@
 import { type Address, type FormField, isExtraField } from '@bigcommerce/checkout-sdk/essential';
-import { type FormikProps, withFormik } from 'formik';
-import React, { type RefObject, useRef, useState } from 'react';
+import { type FormikProps, setNestedObjectValues, withFormik } from 'formik';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 
 import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
-import {
-    TranslatedString,
-    withLanguage,
-    type WithLanguageProps,
-} from '@bigcommerce/checkout/locale';
+import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
-import {
-    AddressFormSkeleton,
-    Button,
-    ButtonVariant,
-    Fieldset,
-    Form,
-    LoadingOverlay,
-} from '@bigcommerce/checkout/ui';
+import { AddressFormSkeleton, Fieldset, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
-import { AddressForm, AddressSelect, AddressType, isValidCustomerAddress } from '../address';
-import { OrderComments } from '../orderComments';
-import { getShippableItemsCount } from '../shipping';
-
+import { AddressForm, AddressSelect, AddressType, isValidCustomerAddress } from '../../address';
 import {
     type BillingFormValues,
     getBillingFormInitialValues,
     getBillingFormValidationSchema,
-} from './billingFormConfig';
-import StaticBillingAddress from './StaticBillingAddress';
+} from '../../billing/billingFormConfig';
+import StaticBillingAddress from '../../billing/StaticBillingAddress';
+import { OrderComments } from '../../orderComments';
+import { getShippableItemsCount } from '../../shipping';
+import PaymentContext from '../PaymentContext';
 
-export type { BillingFormValues } from './billingFormConfig';
-
-export interface BillingFormProps {
+export interface PaymentBillingFormProps {
     methodId?: string;
     billingAddress?: Address;
     customerMessage: string;
-    navigateNextStep(): void;
-    onSubmit(values: BillingFormValues): void;
-    onUnhandledError(error: Error): void;
+    isLoading: boolean;
     getFields(countryCode?: string): FormField[];
+    // Persists the billing address (updateBillingAddress). Must throw on failure
+    // so the pre-submit ensureBillingAddressSaved can block the order.
+    onPersist(values: BillingFormValues): Promise<void>;
+    onUnhandledError(error: Error): void;
 }
 
-const BillingForm = ({
+const PaymentBillingFormComponent = ({
     methodId,
     getFields,
     billingAddress,
+    isLoading,
     setFieldValue,
+    setTouched,
+    validateForm,
     values,
+    onPersist,
     onUnhandledError,
-}: BillingFormProps & WithLanguageProps & FormikProps<BillingFormValues>) => {
+}: PaymentBillingFormProps & WithLanguageProps & FormikProps<BillingFormValues>) => {
     const [isResettingAddress, setIsResettingAddress] = useState(false);
-    const addressFormRef: RefObject<HTMLFieldSetElement> = useRef(null);
     const { isPayPalFastlaneEnabled, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
+    const paymentContext = useContext(PaymentContext);
 
     const {
         checkoutService,
-        selectedState: { customer, config, cart, isUpdatingBillingAddress, isUpdatingCheckout },
-    } = useCheckout(({ data, statuses }) => ({
+        selectedState: { customer, config, cart },
+    } = useCheckout(({ data }) => ({
         customer: data.getCustomer(),
         config: data.getConfig(),
         cart: data.getCart(),
-        isUpdatingBillingAddress: statuses.isUpdatingBillingAddress(),
-        isUpdatingCheckout: statuses.isUpdatingCheckout(),
     }));
     const {
         billing: { hideSaveToAddressBookCheck, restrictManualAddressEntry },
@@ -91,10 +82,62 @@ const BillingForm = ({
             billingAddresses,
             getFields(billingAddress.countryCode),
         );
-    const isUpdating = isUpdatingBillingAddress || isUpdatingCheckout;
     const { enableOrderComments } = config.checkoutSettings;
     const shouldShowOrderComments = enableOrderComments && getShippableItemsCount(cart) < 1;
     const shouldShowSaveAddress = !hideSaveToAddressBookCheck && !isGuest;
+
+    // Ensure a pending edit is saved before the payment step places the order:
+    // block while still loading, otherwise validate (surfacing errors + blocking
+    // on invalid) and persist. A persist failure is reported through the billing
+    // error channel and blocks the order — it must not surface as a payment
+    // failure, so this never throws.
+    const ensureBillingAddressSaved = useCallback(async (): Promise<boolean> => {
+        if (isLoading || isResettingAddress) {
+            return false;
+        }
+
+        const errors = await validateForm();
+
+        if (Object.keys(errors).length > 0) {
+            await setTouched(setNestedObjectValues(errors, true));
+
+            return false;
+        }
+
+        try {
+            await onPersist(values);
+        } catch (error) {
+            if (error instanceof Error) {
+                onUnhandledError(error);
+            }
+
+            return false;
+        }
+
+        return true;
+    }, [
+        isLoading,
+        isResettingAddress,
+        validateForm,
+        setTouched,
+        onPersist,
+        values,
+        onUnhandledError,
+    ]);
+
+    useEffect(() => {
+        const setEnsureBillingAddressSaved = paymentContext?.setEnsureBillingAddressSaved;
+
+        if (!setEnsureBillingAddressSaved) {
+            return;
+        }
+
+        setEnsureBillingAddressSaved(ensureBillingAddressSaved);
+
+        return () => {
+            setEnsureBillingAddressSaved(null);
+        };
+    }, [paymentContext, ensureBillingAddressSaved]);
 
     const handleSelectAddress = async (address: Partial<Address>) => {
         setIsResettingAddress(true);
@@ -115,14 +158,14 @@ const BillingForm = ({
     };
 
     return (
-        <Form autoComplete="on">
+        <div className="checkout-billing-form" data-test="checkout-billing-form">
             {shouldRenderStaticAddress && billingAddress && (
                 <div className="form-fieldset">
                     <StaticBillingAddress address={billingAddress} />
                 </div>
             )}
 
-            <Fieldset id="checkoutBillingAddress" ref={addressFormRef}>
+            <Fieldset id="checkoutBillingAddress">
                 {hasAddresses && !shouldRenderStaticAddress && (
                     <Fieldset id="billingAddresses">
                         <LoadingOverlay isLoading={isResettingAddress}>
@@ -153,28 +196,14 @@ const BillingForm = ({
             </Fieldset>
 
             {shouldShowOrderComments && <OrderComments />}
-
-            <div className="form-actions">
-                <Button
-                    className="body-bold"
-                    disabled={isUpdating || isResettingAddress}
-                    id="checkout-billing-continue"
-                    isLoading={isUpdating || isResettingAddress}
-                    type="submit"
-                    variant={ButtonVariant.Primary}
-                >
-                    <TranslatedString id="common.continue_action" />
-                </Button>
-            </div>
-        </Form>
+        </div>
     );
 };
 
-export default withLanguage(
-    withFormik<BillingFormProps & WithLanguageProps, BillingFormValues>({
-        handleSubmit: (values, { props: { onSubmit } }) => {
-            onSubmit(values);
-        },
+export const PaymentBillingForm = withLanguage(
+    withFormik<PaymentBillingFormProps & WithLanguageProps, BillingFormValues>({
+        // No submit button — persistence happens via ensureBillingAddressSaved.
+        handleSubmit: () => undefined,
         mapPropsToValues: ({ getFields, customerMessage, billingAddress }) =>
             getBillingFormInitialValues(getFields, billingAddress, customerMessage),
         validateOnMount: true,
@@ -182,8 +211,8 @@ export default withLanguage(
             language,
             getFields,
             methodId,
-        }: BillingFormProps & WithLanguageProps) =>
+        }: PaymentBillingFormProps & WithLanguageProps) =>
             getBillingFormValidationSchema(language, getFields, methodId),
         enableReinitialize: true,
-    })(BillingForm),
+    })(PaymentBillingFormComponent),
 );

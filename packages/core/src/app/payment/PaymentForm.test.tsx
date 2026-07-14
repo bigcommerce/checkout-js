@@ -39,6 +39,10 @@ jest.mock('./ProvidersSectionOnTopOfPaymentsList', () => ({
     )),
 }));
 
+jest.mock('./billingForm', () => ({
+    PaymentBillingBlock: jest.fn(() => <div data-test="payment-billing-block" />),
+}));
+
 describe('PaymentForm', () => {
     let checkoutService: CheckoutService;
     let extensionService: ExtensionServiceInterface;
