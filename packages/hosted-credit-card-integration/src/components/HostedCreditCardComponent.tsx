@@ -7,6 +7,10 @@ import { createBlueSnapDirectCreditCardPaymentStrategy } from '@bigcommerce/chec
 import { createCBAMPGSPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/cba-mpgs';
 import { createCheckoutComCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/checkoutcom-custom';
 import { createCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/credit-card';
+import {
+    createCyberSourcePaymentStrategy,
+    createCyberSourceV2PaymentStrategy,
+} from '@bigcommerce/checkout-sdk/integrations/cybersource';
 import { createTDOnlineMartPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/td-bank';
 import { compact, forIn } from 'lodash';
 import React, { type FunctionComponent, type ReactNode, useCallback, useState } from 'react';
@@ -47,6 +51,11 @@ const HostedCreditCardComponent: FunctionComponent<HostedCreditCardComponentProp
     const isCBAMPGSResolverEnabled =
         checkoutState.data.getConfig()?.checkoutSettings.features?.[
             'PI-4748.cba_resolver_configuration'
+        ] ?? false;
+
+    const isCyberSourceResolverEnabled =
+        checkoutState.data.getConfig()?.checkoutSettings.features?.[
+            'PI-4749.cyber_source_resolver_configuration'
         ] ?? false;
 
     const { setFieldTouched, setFieldValue, setSubmitted, submitForm } = paymentForm;
@@ -264,6 +273,9 @@ const HostedCreditCardComponent: FunctionComponent<HostedCreditCardComponentProp
                         createCreditCardPaymentStrategy,
                         createBlueSnapDirectCreditCardPaymentStrategy,
                         ...(isCBAMPGSResolverEnabled ? [createCBAMPGSPaymentStrategy] : []),
+                        ...(isCyberSourceResolverEnabled
+                            ? [createCyberSourcePaymentStrategy, createCyberSourceV2PaymentStrategy]
+                            : []),
                         createTDOnlineMartPaymentStrategy,
                         createCheckoutComCreditCardPaymentStrategy,
                     ],
@@ -280,6 +292,7 @@ const HostedCreditCardComponent: FunctionComponent<HostedCreditCardComponentProp
                 initializePayment,
                 isHostedFormEnabled,
                 isCBAMPGSResolverEnabled,
+                isCyberSourceResolverEnabled,
             ],
         );
 

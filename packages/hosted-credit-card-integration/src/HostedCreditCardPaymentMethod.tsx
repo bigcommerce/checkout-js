@@ -40,5 +40,8 @@ export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>
 
         { id: 'tdonlinemart' },
         { id: 'cba_mpgs', experiment: 'PI-4748_cba_resolver_configuration' },
+        { id: 'cybersource', experiment: 'PI-4749_cyber_source_resolver_configuration' },
+        { id: 'cybersourcev2', experiment: 'PI-4749_cyber_source_resolver_configuration' },
+        { id: 'bnz', experiment: 'PI-4749_cyber_source_resolver_configuration' },
     ],
 );
