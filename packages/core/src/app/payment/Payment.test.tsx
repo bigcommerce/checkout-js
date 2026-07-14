@@ -57,7 +57,7 @@ jest.mock('./billingForm', () => {
             const context = ReactActual.useContext(PaymentContextActual);
 
             ReactActual.useEffect(() => {
-                context?.registerEnsureBillingAddressSaved(mockEnsureBillingAddressSaved);
+                context?.setEnsureBillingAddressSaved(mockEnsureBillingAddressSaved);
             }, [context]);
 
             return ReactActual.createElement('div', { 'data-test': 'payment-billing-block' });

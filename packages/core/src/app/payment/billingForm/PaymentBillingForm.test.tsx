@@ -32,7 +32,7 @@ describe('PaymentBillingForm', () => {
     let localeContext: LocaleContextType;
     let onPersist: jest.Mock;
     let capturedEnsureBillingAddressSaved: EnsureBillingAddressSaved | null;
-    let registerEnsureBillingAddressSaved: jest.Mock;
+    let setEnsureBillingAddressSaved: jest.Mock;
     let defaultProps: PaymentBillingFormProps;
 
     const renderForm = (props: PaymentBillingFormProps) =>
@@ -42,7 +42,7 @@ describe('PaymentBillingForm', () => {
                     <CapabilitiesContext.Provider value={defaultCapabilities}>
                         <PaymentContext.Provider
                             value={{
-                                registerEnsureBillingAddressSaved,
+                                setEnsureBillingAddressSaved,
                                 disableSubmit: jest.fn(),
                                 setSubmit: jest.fn(),
                                 setValidationSchema: jest.fn(),
@@ -62,7 +62,7 @@ describe('PaymentBillingForm', () => {
         localeContext = createLocaleContext(getStoreConfig());
         onPersist = jest.fn().mockResolvedValue(undefined);
         capturedEnsureBillingAddressSaved = null;
-        registerEnsureBillingAddressSaved = jest.fn(
+        setEnsureBillingAddressSaved = jest.fn(
             (ensureBillingAddressSaved: EnsureBillingAddressSaved | null) => {
                 capturedEnsureBillingAddressSaved = ensureBillingAddressSaved;
             },
@@ -101,11 +101,11 @@ describe('PaymentBillingForm', () => {
         expect(document.querySelector('form')).not.toBeInTheDocument();
     });
 
-    it('registers its ensureBillingAddressSaved on the payment context', async () => {
+    it('sets its ensureBillingAddressSaved on the payment context', async () => {
         renderForm(defaultProps);
 
         await waitFor(() =>
-            expect(registerEnsureBillingAddressSaved).toHaveBeenCalledWith(expect.any(Function)),
+            expect(setEnsureBillingAddressSaved).toHaveBeenCalledWith(expect.any(Function)),
         );
     });
 

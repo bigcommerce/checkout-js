@@ -126,16 +126,16 @@ const PaymentBillingFormComponent = ({
     ]);
 
     useEffect(() => {
-        const register = paymentContext?.registerEnsureBillingAddressSaved;
+        const setEnsureBillingAddressSaved = paymentContext?.setEnsureBillingAddressSaved;
 
-        if (!register) {
+        if (!setEnsureBillingAddressSaved) {
             return;
         }
 
-        register(ensureBillingAddressSaved);
+        setEnsureBillingAddressSaved(ensureBillingAddressSaved);
 
         return () => {
-            register(null);
+            setEnsureBillingAddressSaved(null);
         };
     }, [paymentContext, ensureBillingAddressSaved]);
 

@@ -601,7 +601,7 @@ const Payment = (
         [],
     );
 
-    const registerEnsureBillingAddressSaved = useCallback(
+    const setEnsureBillingAddressSaved = useCallback(
         (ensureBillingAddressSaved: EnsureBillingAddressSaved | null): void => {
             ensureBillingAddressSavedRef.current = ensureBillingAddressSaved;
         },
@@ -654,7 +654,7 @@ const Payment = (
     const getContextValue = memoizeOne(() => {
         return {
             disableSubmit,
-            registerEnsureBillingAddressSaved,
+            setEnsureBillingAddressSaved,
             setSubmit,
             setValidationSchema,
             hidePaymentSubmitButton,
