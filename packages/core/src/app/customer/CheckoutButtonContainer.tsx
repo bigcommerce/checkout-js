@@ -132,18 +132,13 @@ function mapToCheckoutButtonContainerProps({
     const providers = config?.checkoutSettings.remoteCheckoutProviders ?? [];
     const paymentMethods = getPaymentMethods();
     const availableMethodIds = getSupportedMethodIds(providers, paymentMethods);
-    const requiresB2BToken = Boolean(
-        config?.checkoutSettings.capabilities?.userJourney.requiresB2BToken,
-    );
     const isWalletButtonsForLoggedInShoppersEnabled = isExperimentEnabled(
         config?.checkoutSettings,
         'CHECKOUT-10028.wallet_buttons_for_logged_in_shoppers',
         false,
     );
     const isGuest = Boolean(getCustomer()?.isGuest);
-    const isEligibleForWalletButtons = isWalletButtonsForLoggedInShoppersEnabled
-        ? !requiresB2BToken
-        : isGuest;
+    const isEligibleForWalletButtons = isWalletButtonsForLoggedInShoppersEnabled ? true : isGuest;
 
     if (!isPaymentDataRequired()) {
         return null;

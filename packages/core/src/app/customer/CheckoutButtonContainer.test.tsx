@@ -6,11 +6,7 @@ import {
 import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';
 
-import {
-    CheckoutProvider,
-    defaultCapabilities,
-    LocaleProvider,
-} from '@bigcommerce/checkout/contexts';
+import { CheckoutProvider, LocaleProvider } from '@bigcommerce/checkout/contexts';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
 import { type CheckoutButtonProps } from '@bigcommerce/checkout/payment-integration-api';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
@@ -115,31 +111,6 @@ describe('CheckoutButtonContainer', () => {
 
     it('does not render when payment data is not required', () => {
         jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(false);
-
-        const { container } = renderCheckoutButtonContainer();
-
-        expect(container).toBeEmptyDOMElement();
-    });
-
-    it('does not render for a B2B customer', () => {
-        jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
-        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
-            ...getStoreConfig(),
-            checkoutSettings: {
-                ...getStoreConfig().checkoutSettings,
-                remoteCheckoutProviders: ['applepay'],
-                features: {
-                    'CHECKOUT-10028.wallet_buttons_for_logged_in_shoppers': true,
-                },
-                capabilities: {
-                    ...defaultCapabilities,
-                    userJourney: {
-                        ...defaultCapabilities.userJourney,
-                        requiresB2BToken: true,
-                    },
-                },
-            },
-        });
 
         const { container } = renderCheckoutButtonContainer();
 
