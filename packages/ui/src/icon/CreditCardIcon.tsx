@@ -1,7 +1,7 @@
 import React, { type FunctionComponent, memo, Suspense } from 'react';
 
-import { getPaymentMethodIconComponent } from './mapFromPaymentMethodCardType';
 import { IconSize } from './IconContainer';
+import { getPaymentMethodIconComponent } from './mapFromPaymentMethodCardType';
 
 export interface CreditCardIconProps {
     cardType?: string;

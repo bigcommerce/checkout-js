@@ -128,7 +128,7 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                         defaultCollapsed: selectedItemId !== methodSelector,
                         radios: 'always',
                         linkInAccordion: true,
-                        spacedAccordionItems: !!themeV2,
+                        spacedAccordionItems: themeV2,
                         visibleAccordionItemsCount: 0,
                     },
                     appearance: getAppearanceForOCSElement(containerId, theme),

@@ -113,11 +113,11 @@ const useBraintreeAchValidation = (method: PaymentMethod) => {
                 isValidLastName,
                 isValidBusinessName,
             ] = await Promise.all([
-                await validationSchema.fields.accountNumber?.isValid(accountNumber),
-                await validationSchema.fields.routingNumber?.isValid(routingNumber),
-                await validationSchema.fields.firstName?.isValid(firstName),
-                await validationSchema.fields.lastName?.isValid(lastName),
-                await validationSchema.fields.businessName?.isValid(businessName),
+                validationSchema.fields.accountNumber?.isValid(accountNumber),
+                validationSchema.fields.routingNumber?.isValid(routingNumber),
+                validationSchema.fields.firstName?.isValid(firstName),
+                validationSchema.fields.lastName?.isValid(lastName),
+                validationSchema.fields.businessName?.isValid(businessName),
             ]);
 
             const isValidDepositoryName =

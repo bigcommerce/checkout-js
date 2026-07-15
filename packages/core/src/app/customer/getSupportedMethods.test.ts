@@ -1,7 +1,8 @@
 import { type PaymentMethod } from '@bigcommerce/checkout-sdk';
 
-import { getSupportedMethodIds } from './getSupportedMethods';
 import { getPaymentMethod } from '@bigcommerce/checkout/test-mocks';
+
+import { getSupportedMethodIds } from './getSupportedMethods';
 
 const buildPaymentMethod = (id: string, isHidden?: boolean): PaymentMethod => ({
     ...getPaymentMethod(),

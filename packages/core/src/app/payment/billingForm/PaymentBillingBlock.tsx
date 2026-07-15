@@ -78,7 +78,7 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
     const [isApplyingDefaultAddress, setIsApplyingDefaultAddress] = useState(true);
     const isInitializing = isLoadingBillingCountries || isApplyingDefaultAddress;
 
-    const hasAddresses = Boolean(customer.addresses && customer.addresses.length > 0);
+    const hasAddresses = customer.addresses && customer.addresses.length > 0;
     const showNoAddressesWarning = restrictManualAddressEntry && !hasAddresses;
 
     const customerMessage = checkout.customerMessage;

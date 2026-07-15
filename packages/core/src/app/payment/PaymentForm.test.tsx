@@ -262,7 +262,7 @@ describe('PaymentForm', () => {
                 required: true,
                 fieldType: 'text',
                 type: 'string',
-            } as FormField,
+            },
         ];
 
         beforeEach(() => {

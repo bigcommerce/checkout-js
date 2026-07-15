@@ -117,6 +117,7 @@
                 "@typescript-eslint/no-misused-promises": "off",
                 "@typescript-eslint/no-redundant-type-constituents": "off",
                 "@typescript-eslint/no-unnecessary-type-parameters": "off",
+                "@typescript-eslint/no-useless-default-assignment": "off",
                 "@typescript-eslint/no-unsafe-enum-comparison": "off",
                 "@typescript-eslint/no-unsafe-member-access": "off",
                 "@typescript-eslint/non-nullable-type-assertion-style": "off",

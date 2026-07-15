@@ -143,7 +143,7 @@ const OrderSummaryModal: FunctionComponent<
                     fees={orderSummarySubtotalsProps.fees}
                     giftWrappingAmount={orderSummarySubtotalsProps.giftWrappingAmount}
                     handlingAmount={orderSummarySubtotalsProps.handlingAmount}
-                    isOrderConfirmation={!!isMultiCouponEnabledForOrder}
+                    isOrderConfirmation={isMultiCouponEnabledForOrder}
                     isTaxIncluded={isTaxIncluded}
                     storeCreditAmount={orderSummarySubtotalsProps.storeCreditAmount}
                     taxes={taxes}

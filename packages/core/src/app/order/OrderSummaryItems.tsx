@@ -218,8 +218,8 @@ const OrderSummaryItems = ({
     const backorderCount = getBackorderCount(items);
     const shouldDisplayBackorderDetails =
         !!config?.inventorySettings?.shouldDisplayBackorderMessagesOnStorefront &&
-        (!!config?.inventorySettings?.showQuantityOnBackorder ||
-            !!config?.inventorySettings?.showBackorderMessage);
+        (config?.inventorySettings?.showQuantityOnBackorder ||
+            config?.inventorySettings?.showBackorderMessage);
     const pickListExperimentEnabled = config
         ? isExperimentEnabled(config.checkoutSettings, 'BACK-425.update_bundle_item_ux', false)
         : false;

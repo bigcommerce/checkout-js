@@ -45,7 +45,7 @@ export default memoize(function getCustomFormFieldsValidationSchema({
     return object({
         customFields: object(
             formFields
-                .filter(({ custom }) => !!custom)
+                .filter(({ custom }) => custom)
                 .reduce<{ [key: string]: Schema<any> }>(
                     (schema, { name, label, required, fieldType, type, min, max }) => {
                         let maxValue: number | undefined;

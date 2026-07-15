@@ -38,7 +38,7 @@ export default function mapToCheckoutProps({
         },
     );
 
-    const walletButtonsOnTopFlag = Boolean(checkoutUserExperienceSettings.walletButtonsOnTop);
+    const walletButtonsOnTopFlag = checkoutUserExperienceSettings.walletButtonsOnTop;
     const isShippingDiscountDisplayEnabled = isExperimentEnabled(
         data.getConfig()?.checkoutSettings,
         'PROJECT-6643.enable_shipping_discounts_in_orders',

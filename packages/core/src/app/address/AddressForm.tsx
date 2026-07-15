@@ -118,7 +118,7 @@ const AddressForm: React.FC<AddressFormProps> = ({
                     return;
                 }
 
-                setFieldValue(fieldName, value as string);
+                setFieldValue(fieldName, value);
             });
 
             const address1 = address.address1 ? address.address1 : autocompleteValue;

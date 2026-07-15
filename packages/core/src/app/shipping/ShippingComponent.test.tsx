@@ -94,7 +94,7 @@ describe('Shipping component', () => {
                     },
                 ],
             },
-        } as Cart);
+        });
 
         jest.spyOn(checkoutState.data, 'getShippingAddress').mockReturnValue(getShippingAddress());
 
@@ -199,7 +199,7 @@ describe('Shipping component', () => {
                         },
                     ],
                 },
-            } as Cart);
+            });
 
             render(<ComponentTest {...defaultProps} isMultiShippingMode={false} />);
 
@@ -252,7 +252,7 @@ describe('Shipping component', () => {
                         },
                     ],
                 },
-            } as Cart);
+            });
 
             render(<ComponentTest {...defaultProps} isMultiShippingMode={true} />);
 

@@ -59,6 +59,7 @@ describe('BigCommercePaymentsPayLaterBanner', () => {
                 createBigCommercePaymentsPayLaterPaymentStrategy,
                 createBigCommercePaymentsPaymentStrategy,
             ],
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             bigcommerce_payments_paylater: {
                 bannerContainerId: 'bigcommerce-payments-paylater-banner-container',
             },
@@ -82,6 +83,7 @@ describe('BigCommercePaymentsPayLaterBanner', () => {
                 createBigCommercePaymentsPayLaterPaymentStrategy,
                 createBigCommercePaymentsPaymentStrategy,
             ],
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             bigcommerce_payments_paylater: {
                 bannerContainerId: 'bigcommerce-payments-paylater-banner-container',
             },
@@ -113,6 +115,7 @@ describe('BigCommercePaymentsPayLaterBanner', () => {
                 createBigCommercePaymentsPayLaterPaymentStrategy,
                 createBigCommercePaymentsPaymentStrategy,
             ],
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             bigcommerce_payments: {
                 bannerContainerId: 'bigcommerce-payments-banner-container',
             },
