@@ -44,7 +44,9 @@ import Checkout, { type CheckoutProps } from './Checkout';
 
 describe('Checkout', () => {
     let checkout: CheckoutPageNodeObject;
-    let CheckoutTest: FunctionComponent<CheckoutProps>;
+    let CheckoutTest: FunctionComponent<
+        CheckoutProps & { capabilities?: typeof defaultCapabilities }
+    >;
     let checkoutService: CheckoutService;
     let extensionService: ExtensionServiceInterface;
     let defaultProps: CheckoutProps & AnalyticsContextProps;
@@ -101,7 +103,7 @@ describe('Checkout', () => {
 
         jest.spyOn(defaultProps.errorLogger, 'log').mockImplementation(noop);
 
-        CheckoutTest = (props) => (
+        CheckoutTest = ({ capabilities, ...props }) => (
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleProvider
                     checkoutService={checkoutService}
@@ -110,7 +112,13 @@ describe('Checkout', () => {
                     <AnalyticsProviderMock>
                         <ExtensionProvider extensionService={extensionService}>
                             <ThemeProvider>
-                                <Checkout {...props} />
+                                {capabilities ? (
+                                    <CapabilitiesContext.Provider value={capabilities}>
+                                        <Checkout {...props} />
+                                    </CapabilitiesContext.Provider>
+                                ) : (
+                                    <Checkout {...props} />
+                                )}
                             </ThemeProvider>
                         </ExtensionProvider>
                     </AnalyticsProviderMock>
@@ -635,28 +643,9 @@ describe('Checkout', () => {
                     },
                 };
 
-                const CheckoutWithInvoiceRedirect: FunctionComponent<CheckoutProps> = (props) => (
-                    <CheckoutProvider checkoutService={checkoutService}>
-                        <LocaleProvider
-                            checkoutService={checkoutService}
-                            languageService={getLanguageService()}
-                        >
-                            <AnalyticsProviderMock>
-                                <ExtensionProvider extensionService={extensionService}>
-                                    <ThemeProvider>
-                                        <CapabilitiesContext.Provider
-                                            value={invoiceRedirectCapabilities}
-                                        >
-                                            <Checkout {...props} />
-                                        </CapabilitiesContext.Provider>
-                                    </ThemeProvider>
-                                </ExtensionProvider>
-                            </AnalyticsProviderMock>
-                        </LocaleProvider>
-                    </CheckoutProvider>
+                render(
+                    <CheckoutTest {...defaultProps} capabilities={invoiceRedirectCapabilities} />,
                 );
-
-                render(<CheckoutWithInvoiceRedirect {...defaultProps} />);
 
                 await checkout.waitForPaymentStep();
 
@@ -674,6 +663,64 @@ describe('Checkout', () => {
                     writable: true,
                 });
             }
+        });
+    });
+
+    describe('cart deletion on exit', () => {
+        beforeEach(() => {
+            jest.spyOn(checkoutService, 'deleteCheckout').mockResolvedValue({} as any);
+        });
+
+        it('deletes cart on page exit when invoiceRedirect capability is enabled', async () => {
+            render(
+                <CheckoutTest
+                    {...defaultProps}
+                    capabilities={{
+                        ...defaultCapabilities,
+                        orderConfirmation: {
+                            ...defaultCapabilities.orderConfirmation,
+                            invoiceRedirect: true,
+                        },
+                    }}
+                />,
+            );
+
+            await checkout.waitForCustomerStep();
+
+            window.dispatchEvent(new Event('beforeunload'));
+
+            expect(checkoutService.deleteCheckout).toHaveBeenCalled();
+        });
+
+        it('deletes cart on page exit when quote config is present', async () => {
+            render(
+                <CheckoutTest
+                    {...defaultProps}
+                    capabilities={{
+                        ...defaultCapabilities,
+                        userJourney: {
+                            ...defaultCapabilities.userJourney,
+                            quoteConfig: { id: 1 },
+                        },
+                    }}
+                />,
+            );
+
+            await checkout.waitForCustomerStep();
+
+            window.dispatchEvent(new Event('beforeunload'));
+
+            expect(checkoutService.deleteCheckout).toHaveBeenCalled();
+        });
+
+        it('does not delete cart on page exit when neither quote config nor invoiceRedirect is enabled', async () => {
+            render(<CheckoutTest {...defaultProps} capabilities={defaultCapabilities} />);
+
+            await checkout.waitForCustomerStep();
+
+            window.dispatchEvent(new Event('beforeunload'));
+
+            expect(checkoutService.deleteCheckout).not.toHaveBeenCalled();
         });
     });
 });
