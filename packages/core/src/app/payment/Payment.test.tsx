@@ -660,9 +660,45 @@ describe('Payment step', () => {
             },
         });
 
+        const createConfigWithB2BToken = () => ({
+            ...checkoutSettings,
+            storeConfig: {
+                ...checkoutSettings.storeConfig,
+                checkoutSettings: {
+                    ...checkoutSettings.storeConfig.checkoutSettings,
+                    capabilities: {
+                        ...defaultCapabilities,
+                        orderConfirmation: {
+                            ...defaultCapabilities.orderConfirmation,
+                            persistB2BMetadata: true,
+                        },
+                        userJourney: {
+                            ...defaultCapabilities.userJourney,
+                            requiresB2BToken: true,
+                        },
+                    },
+                },
+            },
+        });
+
+        const mockB2BTokenEndpoints = (): void => {
+            checkout.setRequestHandler(
+                rest.get('/customer/current.jwt', (_, res, ctx) =>
+                    res(ctx.json({ token: 'jwt-token' })),
+                ),
+            );
+            checkout.setRequestHandler(
+                rest.post('/api/v2/login', (_, res, ctx) =>
+                    res(ctx.json({ code: 200, data: { token: 'b2b-token' } })),
+                ),
+            );
+        };
+
         it('refreshes B2B payment methods on mount when persistB2BMetadata capability is enabled and orderId is present on checkout', async () => {
+            mockB2BTokenEndpoints();
+
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
-                config: createConfigWithPersistB2BMetadata(),
+                config: createConfigWithB2BToken(),
                 checkout: {
                     ...checkoutWithShippingAndBilling,
                     customer,
@@ -720,6 +756,26 @@ describe('Payment step', () => {
             expect(refreshSpy).not.toHaveBeenCalled();
         });
 
+        it('does not refresh B2B payment methods on mount when there is no b2bToken even though persistB2BMetadata is enabled and orderId is present', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                config: createConfigWithPersistB2BMetadata(),
+                checkout: {
+                    ...checkoutWithShippingAndBilling,
+                    orderId: 12345,
+                },
+            });
+
+            const refreshSpy = jest
+                .spyOn(checkoutService, 'refreshB2BPaymentMethods')
+                .mockImplementation(() => Promise.resolve(checkoutService.getState()));
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            expect(refreshSpy).not.toHaveBeenCalled();
+        });
+
         it('refreshes B2B payment methods before submitting order when persistB2BMetadata capability is enabled', async () => {
             checkout.setRequestHandler(
                 rest.post('/internalapi/v1/checkout/order', (_, res, ctx) =>
@@ -741,8 +797,10 @@ describe('Payment step', () => {
                 writable: true,
             });
 
+            mockB2BTokenEndpoints();
+
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
-                config: createConfigWithPersistB2BMetadata(),
+                config: createConfigWithB2BToken(),
                 checkout: {
                     ...checkoutWithShippingAndBilling,
                     customer,
@@ -807,9 +865,55 @@ describe('Payment step', () => {
             expect(refreshSpy).not.toHaveBeenCalled();
         });
 
-        it('completes initialization and renders the payment step when mount-time B2B refresh fails', async () => {
+        it('does not refresh B2B payment methods before submitting order when there is no b2bToken', async () => {
+            checkout.setRequestHandler(
+                rest.post('/internalapi/v1/checkout/order', (_, res, ctx) =>
+                    res(ctx.json(orderResponse)),
+                ),
+            );
+            checkout.setRequestHandler(
+                rest.get('/api/storefront/orders/*', (_, res, ctx) => res(ctx.json(orderResponse))),
+            );
+
+            const location = window.location;
+
+            Object.defineProperty(window, 'location', {
+                value: {
+                    // eslint-disable-next-line @typescript-eslint/no-misused-spread
+                    ...location,
+                    replace: jest.fn(),
+                },
+                writable: true,
+            });
+
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
                 config: createConfigWithPersistB2BMetadata(),
+                checkout: {
+                    ...checkoutWithShippingAndBilling,
+                    customer,
+                },
+            });
+
+            const refreshSpy = jest
+                .spyOn(checkoutService, 'refreshB2BPaymentMethods')
+                .mockImplementation(() => Promise.resolve(checkoutService.getState()));
+            const submitOrderSpy = jest.spyOn(checkoutService, 'submitOrder');
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            await act(async () => userEvent.click(screen.getByText('Place Order')));
+
+            expect(refreshSpy).not.toHaveBeenCalled();
+            expect(submitOrderSpy).toHaveBeenCalledTimes(1);
+        });
+
+        it('completes initialization and renders the payment step when mount-time B2B refresh fails', async () => {
+            mockB2BTokenEndpoints();
+
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                config: createConfigWithB2BToken(),
                 checkout: {
                     ...checkoutWithShippingAndBilling,
                     customer,
@@ -828,15 +932,17 @@ describe('Payment step', () => {
             expect(screen.getByText(/place order/i)).toBeInTheDocument();
         });
 
-        it('does not submit the order when B2B payment methods refresh fails before submit', async () => {
+        it('still submits the order when B2B payment methods refresh fails before submit', async () => {
             checkout.setRequestHandler(
                 rest.post('/internalapi/v1/checkout/order', (_, res, ctx) =>
                     res(ctx.json(orderResponse)),
                 ),
             );
 
+            mockB2BTokenEndpoints();
+
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
-                config: createConfigWithPersistB2BMetadata(),
+                config: createConfigWithB2BToken(),
                 checkout: {
                     ...checkoutWithShippingAndBilling,
                     customer,
@@ -855,7 +961,7 @@ describe('Payment step', () => {
 
             await act(async () => userEvent.click(screen.getByText('Place Order')));
 
-            expect(submitOrderSpy).not.toHaveBeenCalled();
+            expect(submitOrderSpy).toHaveBeenCalledTimes(1);
         });
 
         it('persists B2B metadata after finalizing the order on mount when persistB2BMetadata capability is enabled', async () => {

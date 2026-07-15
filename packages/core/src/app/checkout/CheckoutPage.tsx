@@ -659,7 +659,13 @@ const Checkout = ({
                 window.addEventListener('beforeunload', handleBeforeExitRef.current);
 
                 if (requiresB2BToken && !data.getCustomer()?.isGuest) {
-                    await fetchB2BToken();
+                    try {
+                        await fetchB2BToken();
+                    } catch (error) {
+                        if (error instanceof Error) {
+                            handleError(error);
+                        }
+                    }
                 }
 
                 handleReady();

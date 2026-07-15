@@ -441,6 +441,7 @@ const Payment = (
     const handleSubmit = useCallback(
         async (values: PaymentFormValues) => {
             const {
+                b2bToken,
                 defaultMethod,
                 loadPaymentMethods,
                 checkoutServiceSubscribe,
@@ -495,8 +496,14 @@ const Payment = (
             }
 
             try {
-                if (persistB2BMetadata) {
-                    await refreshB2BPaymentMethods();
+                if (persistB2BMetadata && b2bToken) {
+                    try {
+                        await refreshB2BPaymentMethods();
+                    } catch (error) {
+                        if (error instanceof Error) {
+                            onSubmitError(error);
+                        }
+                    }
                 }
 
                 const unsubscribeB2BContext = persistB2BMetadata
@@ -668,6 +675,7 @@ const Payment = (
     useEffect(() => {
         const init = async () => {
             const {
+                b2bToken,
                 finalizeOrderIfNeeded,
                 onFinalize = noop,
                 onFinalizeError = noop,
@@ -685,7 +693,7 @@ const Payment = (
 
             await loadPaymentMethodsOrThrow();
 
-            if (persistB2BMetadata && orderId) {
+            if (persistB2BMetadata && orderId && b2bToken) {
                 try {
                     await refreshB2BPaymentMethods();
                 } catch (error) {

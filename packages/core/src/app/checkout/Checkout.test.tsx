@@ -27,9 +27,11 @@ import {
     CheckoutPageNodeObject,
     CheckoutPreset,
     checkoutWithBillingEmail,
+    checkoutWithShippingAndBilling,
     checkoutWithShippingDiscount,
     consignmentAutomaticDiscount,
     consignmentCouponDiscount,
+    customer,
 } from '@bigcommerce/checkout/test-framework';
 import { renderWithoutWrapper as render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
@@ -588,6 +590,55 @@ describe('Checkout', () => {
             await waitFor(() => {
                 expect(defaultProps.errorLogger.log).toHaveBeenCalledWith(error);
             });
+        });
+
+        it('does not block checkout when fetching the B2B token fails', async () => {
+            const error = new Error('B2B token fetch failed');
+
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                checkout: {
+                    ...checkoutWithShippingAndBilling,
+                    customer,
+                },
+            });
+
+            jest.spyOn(checkoutService, 'getB2BToken').mockRejectedValue(error);
+
+            const requiresB2BTokenCapabilities = {
+                ...defaultCapabilities,
+                userJourney: {
+                    ...defaultCapabilities.userJourney,
+                    requiresB2BToken: true,
+                },
+            };
+
+            const CheckoutWithB2BToken: FunctionComponent<CheckoutProps> = (props) => (
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <LocaleProvider
+                        checkoutService={checkoutService}
+                        languageService={getLanguageService()}
+                    >
+                        <AnalyticsProviderMock>
+                            <ExtensionProvider extensionService={extensionService}>
+                                <ThemeProvider>
+                                    <CapabilitiesContext.Provider
+                                        value={requiresB2BTokenCapabilities}
+                                    >
+                                        <Checkout {...props} />
+                                    </CapabilitiesContext.Provider>
+                                </ThemeProvider>
+                            </ExtensionProvider>
+                        </AnalyticsProviderMock>
+                    </LocaleProvider>
+                </CheckoutProvider>
+            );
+
+            render(<CheckoutWithB2BToken {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            expect(defaultProps.errorLogger.log).toHaveBeenCalledWith(error);
+            expect(screen.getByText(/place order/i)).toBeInTheDocument();
         });
 
         it('redirects to B2B buyer portal after payment when invoiceRedirect capability is enabled', async () => {
