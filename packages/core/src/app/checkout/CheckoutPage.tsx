@@ -167,7 +167,7 @@ const Checkout = ({
     });
 
     useEffect(() => {
-        if (quoteConfig?.id) {
+        if (quoteConfig?.id || invoiceRedirect) {
             return deleteCartOnExit(checkoutService);
         }
     }, []);
