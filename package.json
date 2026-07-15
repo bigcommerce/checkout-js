@@ -181,16 +181,24 @@
     "stylelint-webpack-plugin": "^4.1.0",
     "terser-webpack-plugin": "^5.4.0",
     "thread-loader": "^4.0.4",
-    "ts-jest": "29.1.5",
-    "ts-loader": "^9.3.0",
+    "ts-jest": "29.4.11",
+    "ts-loader": "^9.6.2",
     "tslib": "^2.5.3",
-    "typescript": "^5.6.2",
+    "typescript": "6.0.3",
     "webpack": "^5.105.0",
     "webpack-assets-manifest": "^5.1.0",
     "webpack-cli": "^4.9.2",
     "webpack-inject-plugin": "^1.5.3",
     "webpack-subresource-integrity": "^5.1.0",
     "yargs": "^14.0.0"
+  },
+  "overrides": {
+    "@bigcommerce/eslint-plugin": {
+      "typescript": "$typescript"
+    },
+    "@bigcommerce/eslint-config": {
+      "typescript": "$typescript"
+    }
   },
   "sideEffects": [
     "**/wdyr.ts",

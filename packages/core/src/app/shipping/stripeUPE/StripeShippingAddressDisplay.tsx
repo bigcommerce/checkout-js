@@ -24,7 +24,7 @@ const StripeShippingAddressDisplay: FC<StripeupeShippingAddressProps> = ({
             try {
                 await initialize({ methodId });
             } catch (error) {
-                onUnhandledError(error as Error);
+                onUnhandledError(error);
             }
         };
 
@@ -35,7 +35,7 @@ const StripeShippingAddressDisplay: FC<StripeupeShippingAddressProps> = ({
                 try {
                     await deinitialize({ methodId });
                 } catch (error) {
-                    onUnhandledError(error as Error);
+                    onUnhandledError(error);
                 }
             };
 

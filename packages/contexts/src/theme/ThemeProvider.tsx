@@ -14,13 +14,11 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     let themeV2 = false;
 
     if (config?.checkoutSettings) {
-        const newThemeExperimentEnabled = Boolean(
+        const newThemeExperimentEnabled =
             config.checkoutSettings.features['CHECKOUT-7962.update_font_style_on_checkout_page'] ??
-                true,
-        );
-        const newThemeSettingEnabled = Boolean(
-            config.checkoutSettings.checkoutUserExperienceSettings.checkoutV2Theme ?? false,
-        );
+            true;
+        const newThemeSettingEnabled =
+            config.checkoutSettings.checkoutUserExperienceSettings.checkoutV2Theme ?? false;
 
         themeV2 = newThemeSettingEnabled && newThemeExperimentEnabled;
     }

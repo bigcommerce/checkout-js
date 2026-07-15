@@ -68,7 +68,7 @@ describe('PaymentBillingBlock', () => {
         mockPersistValues = {
             ...mapAddressToFormValues(formFields, getBillingAddress()),
             orderComment: getCheckout().customerMessage,
-        } as BillingFormValues;
+        };
 
         jest.spyOn(checkoutService, 'loadBillingAddressFields').mockResolvedValue(checkoutState);
         jest.spyOn(checkoutService, 'updateBillingAddress').mockResolvedValue(checkoutState);
