@@ -19,9 +19,7 @@ import { getShippableItemsCount } from '../../shipping';
 import BillingSameAsShippingField from '../../shipping/BillingSameAsShippingField';
 import PaymentContext from '../PaymentContext';
 
-// The payment-step billing form adds the "billing same as shipping" toggle on
-// top of the shared billing values.
-export type PaymentBillingFormValues = BillingFormValues & { billingSameAsShipping: boolean };
+type PaymentBillingFormValues = BillingFormValues & { billingSameAsShipping: boolean };
 
 export interface PaymentBillingFormProps {
     methodId?: string;
@@ -191,7 +189,6 @@ const PaymentBillingFormComponent = ({
                 />
             )}
 
-            {/* Collapse the billing address when it mirrors shipping. */}
             {!isBillingAddressCollapsed && (
                 <>
                     {shouldRenderStaticAddress && billingAddress && (

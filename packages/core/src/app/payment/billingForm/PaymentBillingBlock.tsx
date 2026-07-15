@@ -100,6 +100,8 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
 
         if (shippingAddress && !isEqualAddress(shippingAddress, getBillingAddress())) {
             checkoutService.updateBillingAddress(shippingAddress).catch((error) => {
+                onBillingSameAsShippingChange(false);
+
                 if (error instanceof Error) {
                     onUnhandledError(error);
                 }

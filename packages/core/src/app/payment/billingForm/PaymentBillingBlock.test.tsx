@@ -159,6 +159,24 @@ describe('PaymentBillingBlock', () => {
         expect(checkoutService.updateBillingAddress).toHaveBeenCalledWith(getShippingAddress());
     });
 
+    it('reverts the toggle and reports the error when copying shipping to billing fails', async () => {
+        const error = new Error('update failed');
+
+        jest.spyOn(checkoutService, 'updateBillingAddress').mockRejectedValue(error);
+
+        render(<PaymentBillingBlockTest />);
+
+        await screen.findByTestId('trigger-persist');
+
+        act(() => {
+            mockCapturedProps.onBillingSameAsShippingChange(true);
+        });
+
+        await waitFor(() => expect(mockCapturedProps.isBillingSameAsShipping).toBe(false));
+
+        expect(onUnhandledError).toHaveBeenCalledWith(error);
+    });
+
     it('does not copy shipping to billing when the toggle is unchecked', async () => {
         render(<PaymentBillingBlockTest />);
 
