@@ -21,7 +21,7 @@ import { Fieldset, Form, FormContext, Legend } from '@bigcommerce/checkout/ui';
 import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
 import { getTranslateAddressError } from '../address';
-import { isExperimentEnabled } from '../common/utility';
+import { isExperimentEnabled, isFloatingLabelEnabled } from '../common/utility';
 import { getOrderExtraFieldsValidationSchema } from '../formFields';
 import { TermsConditions } from '../termsConditions';
 
@@ -43,6 +43,8 @@ import PaymentSubmitButton from './PaymentSubmitButton';
 import { ProvidersSectionOnTopOfPaymentsList } from './ProvidersSectionOnTopOfPaymentsList';
 import SpamProtectionField from './SpamProtectionField';
 import { StoreCreditField, StoreCreditOverlay } from './storeCredit';
+
+import './PaymentForm.scss';
 
 export interface PaymentFormProps {
     additionalField?: Capabilities['payment']['additionalField'];
@@ -138,6 +140,9 @@ const PaymentForm: FunctionComponent<
         payment: { invoicePaymentComment },
     } = useCapabilities();
     const { checkoutSettings } = config ?? {};
+    const isFloatingLabelEnabledValue = checkoutSettings
+        ? isFloatingLabelEnabled(checkoutSettings)
+        : false;
     const poMethodDisabledReason = usePoMethodDisabledReason(selectedMethod);
     const isSubmitDisabled = shouldDisableSubmit || Boolean(poMethodDisabledReason);
     const shouldShowSubmitButtonWhenPaymentNotRequired = isExperimentEnabled(
@@ -211,6 +216,7 @@ const PaymentForm: FunctionComponent<
 
             {additionalField && (
                 <AdditionalPaymentField
+                    isFloatingLabelEnabled={isFloatingLabelEnabledValue}
                     isRequired={additionalField.required}
                     label={additionalField.label}
                 />
@@ -224,10 +230,15 @@ const PaymentForm: FunctionComponent<
             )}
 
             {orderExtraFields && orderExtraFields.length > 0 && (
-                <OrderExtraFieldsFieldset formFields={orderExtraFields} />
+                <OrderExtraFieldsFieldset
+                    formFields={orderExtraFields}
+                    isFloatingLabelEnabled={isFloatingLabelEnabledValue}
+                />
             )}
 
-            {invoicePaymentComment && <InvoicePaymentCommentField />}
+            {invoicePaymentComment && (
+                <InvoicePaymentCommentField isFloatingLabelEnabled={isFloatingLabelEnabledValue} />
+            )}
 
             <div className="form-actions">
                 {hideSubmitPaymentButton ? (

@@ -5,10 +5,12 @@ import { DynamicFormField } from '@bigcommerce/checkout/ui';
 
 interface OrderExtraFieldsFieldsetProps {
     formFields: FormField[];
+    isFloatingLabelEnabled?: boolean;
 }
 
 const OrderExtraFieldsFieldset: FunctionComponent<OrderExtraFieldsFieldsetProps> = ({
     formFields,
+    isFloatingLabelEnabled,
 }) => {
     const extraFields = formFields.filter((field) => isExtraField(field));
 
@@ -21,6 +23,7 @@ const OrderExtraFieldsFieldset: FunctionComponent<OrderExtraFieldsFieldsetProps>
             {extraFields.map((field) => (
                 <DynamicFormField
                     field={field}
+                    isFloatingLabelEnabled={isFloatingLabelEnabled}
                     key={`${field.id}-${field.name}`}
                     label={field.label}
                     parentFieldName="orderExtraFields"

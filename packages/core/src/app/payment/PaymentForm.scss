@@ -1,0 +1,7 @@
+@import "../../scss/Base";
+
+.checkout-step--payment {
+    .dynamic-form-field.floating-form-field {
+        margin-bottom: $floating-form-field-spacing;
+    }
+}
