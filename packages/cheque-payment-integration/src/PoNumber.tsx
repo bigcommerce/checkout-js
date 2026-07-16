@@ -14,6 +14,7 @@ import './PoNumber.scss';
 export interface PoNumberProps {
     label: string;
     isRequired: boolean;
+    isFloatingLabelEnabled?: boolean;
     method: PaymentMethod;
     language: LanguageService;
     paymentForm: PaymentFormService;
@@ -24,6 +25,7 @@ export const PO_NUMBER_FIELD_NAME = 'poNumber';
 const PoNumber: FunctionComponent<PoNumberProps> = ({
     label,
     isRequired,
+    isFloatingLabelEnabled,
     method,
     language,
     paymentForm: { setFieldValue, setValidationSchema },
@@ -43,8 +45,10 @@ const PoNumber: FunctionComponent<PoNumberProps> = ({
                 {...field}
                 aria-labelledby={`${PO_NUMBER_FIELD_NAME}-label ${PO_NUMBER_FIELD_NAME}-field-error-message`}
                 id={PO_NUMBER_FIELD_NAME}
+                isFloatingLabelEnabled={isFloatingLabelEnabled}
             />
         ),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [],
     );
 
@@ -52,22 +56,40 @@ const PoNumber: FunctionComponent<PoNumberProps> = ({
         <div className="po-number-container">
             <FormField
                 input={renderInput}
+                isFloatingLabelEnabled={isFloatingLabelEnabled}
                 label={
-                    <Legend>
-                        <label
-                            className="po-number-label"
-                            htmlFor={PO_NUMBER_FIELD_NAME}
-                            id={`${PO_NUMBER_FIELD_NAME}-label`}
-                        >
-                            <span>{label}</span>
+                    isFloatingLabelEnabled ? undefined : (
+                        <Legend>
+                            <label
+                                className="po-number-label"
+                                htmlFor={PO_NUMBER_FIELD_NAME}
+                                id={`${PO_NUMBER_FIELD_NAME}-label`}
+                            >
+                                <span>{label}</span>
+                                {!isRequired && (
+                                    <span>
+                                        {' '}
+                                        <TranslatedString id="common.optional_text" />
+                                    </span>
+                                )}
+                            </label>
+                        </Legend>
+                    )
+                }
+                labelContent={
+                    isFloatingLabelEnabled ? (
+                        <>
+                            {label}
                             {!isRequired && (
-                                <span>
+                                <>
                                     {' '}
-                                    <TranslatedString id="common.optional_text" />
-                                </span>
+                                    <small>
+                                        <TranslatedString id="common.optional_text" />
+                                    </small>
+                                </>
                             )}
-                        </label>
-                    </Legend>
+                        </>
+                    ) : undefined
                 }
                 name={PO_NUMBER_FIELD_NAME}
             />

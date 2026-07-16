@@ -12,6 +12,7 @@ import PoNumber from './PoNumber';
 const ChequePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     method,
     checkoutService,
+    checkoutState,
     onUnhandledError,
     paymentForm,
     language,
@@ -19,6 +20,10 @@ const ChequePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     const {
         payment: { poConfig },
     } = useCapabilities();
+    const isFloatingLabelEnabled = Boolean(
+        checkoutState.data.getConfig()?.checkoutSettings.checkoutUserExperienceSettings
+            .floatingLabelEnabled,
+    );
 
     useEffect(() => {
         const initializePayment = async () => {
@@ -58,6 +63,7 @@ const ChequePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     if (poConfig?.field) {
         return (
             <PoNumber
+                isFloatingLabelEnabled={isFloatingLabelEnabled}
                 isRequired={poConfig.field.required}
                 label={poConfig.field.label}
                 language={language}
