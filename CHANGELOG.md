@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.834.1](https://github.com/bigcommerce/checkout-js/compare/v1.834.0...v1.834.1) (2026-07-16)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10225 Enable Floating Fields for Extra Fields ([#3158](https://github.com/bigcommerce/checkout-js/issues/3158)) ([d199768](https://github.com/bigcommerce/checkout-js/commit/d199768196cbc4dfc4056306ab332b799f5cddd7))
+
 ## [1.834.0](https://github.com/bigcommerce/checkout-js/compare/v1.833.1...v1.834.0) (2026-07-16)
 
 
