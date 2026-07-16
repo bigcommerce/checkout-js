@@ -480,6 +480,49 @@ describe('getCheckoutStepStatuses()', () => {
         ]);
     });
 
+    describe('themeV2 (billing captured on the payment step)', () => {
+        const getThemeV2Config = () => ({
+            ...getStoreConfig(),
+            checkoutSettings: {
+                ...getStoreConfig().checkoutSettings,
+                features: {
+                    ...getStoreConfig().checkoutSettings.features,
+                    'CHECKOUT-7962.update_font_style_on_checkout_page': true,
+                },
+                checkoutUserExperienceSettings: {
+                    ...getStoreConfig().checkoutSettings.checkoutUserExperienceSettings,
+                    checkoutV2Theme: true,
+                },
+            },
+        });
+
+        beforeEach(() => {
+            jest.spyOn(state.data, 'getConfig').mockReturnValue(getThemeV2Config());
+        });
+
+        it('omits the standalone billing step', () => {
+            expect(
+                find(getCheckoutStepStatuses(state), { type: CheckoutStepType.Billing }),
+            ).toBeUndefined();
+        });
+
+        it('returns the remaining steps in order without billing', () => {
+            expect(getCheckoutStepStatuses(state).map((step) => step.type)).toEqual([
+                CheckoutStepType.Customer,
+                CheckoutStepType.Shipping,
+                CheckoutStepType.Payment,
+            ]);
+        });
+
+        it('still omits the billing step when a wallet payment (e.g. Amazon Pay) is present', () => {
+            jest.spyOn(state.data, 'getCheckout').mockReturnValue(getCheckoutWithPayments());
+
+            expect(
+                find(getCheckoutStepStatuses(state), { type: CheckoutStepType.Billing }),
+            ).toBeUndefined();
+        });
+    });
+
     it('marks latter steps as non-editable if earlier steps are incomplete', () => {
         jest.spyOn(state.data, 'getShippingAddress').mockReturnValue(undefined);
 
