@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.836.1](https://github.com/bigcommerce/checkout-js/compare/v1.836.0...v1.836.1) (2026-07-16)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10206 Stabilise the phone input component so it handles unmount and remount better ([#3153](https://github.com/bigcommerce/checkout-js/issues/3153)) ([4a7bbde](https://github.com/bigcommerce/checkout-js/commit/4a7bbde4b2009375f9a2a879cffb227320796aaf))
+
 ## [1.836.0](https://github.com/bigcommerce/checkout-js/compare/v1.835.0...v1.836.0) (2026-07-16)
 
 
