@@ -2,6 +2,7 @@ import { type CheckoutPayment, type CheckoutSelectors } from '@bigcommerce/check
 import { compact } from 'lodash';
 import { createSelector } from 'reselect';
 
+import { isThemeV2Enabled } from '@bigcommerce/checkout/contexts';
 import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
 
 import { isValidAddress } from '../address';
@@ -96,7 +97,11 @@ const getBillingStepStatus = createSelector(
             : EMPTY_ARRAY;
     },
     ({ data }: CheckoutSelectors) => data.getConfig(),
-    (checkout, billingAddress, billingAddressFields) => {
+    (checkout, billingAddress, billingAddressFields, config) => {
+        if (isThemeV2Enabled(config)) {
+            return undefined;
+        }
+
         const hasAddress = billingAddress
             ? isValidAddress(billingAddress, billingAddressFields)
             : false;

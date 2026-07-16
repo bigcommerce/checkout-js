@@ -421,13 +421,13 @@ const Checkout = ({
         (isBillingSameAsShipping: boolean): void => {
             setState((prev) => ({ ...prev, isBillingSameAsShipping }));
 
-            if (isBillingSameAsShipping) {
+            if (isBillingSameAsShipping || themeV2) {
                 navigateToNextIncompleteStep();
             } else {
                 navigateToStep(CheckoutStepType.Billing);
             }
         },
-        [navigateToNextIncompleteStep, navigateToStep],
+        [navigateToNextIncompleteStep, navigateToStep, themeV2],
     );
 
     const handleBillingSameAsShippingChange = useCallback(
