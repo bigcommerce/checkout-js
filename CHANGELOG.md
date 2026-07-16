@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.836.0](https://github.com/bigcommerce/checkout-js/compare/v1.835.0...v1.836.0) (2026-07-16)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10028 Show wallet payment buttons for logged in users ([#3145](https://github.com/bigcommerce/checkout-js/issues/3145)) ([c197d12](https://github.com/bigcommerce/checkout-js/commit/c197d127a7790b3548cf7b70593bc26cd3a93282))
+
 ## [1.835.0](https://github.com/bigcommerce/checkout-js/compare/v1.834.1...v1.835.0) (2026-07-16)
 
 
