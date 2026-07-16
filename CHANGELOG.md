@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.835.0](https://github.com/bigcommerce/checkout-js/compare/v1.834.1...v1.835.0) (2026-07-16)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10150 add billing same as shipping toggle ([#3154](https://github.com/bigcommerce/checkout-js/issues/3154)) ([4c2623d](https://github.com/bigcommerce/checkout-js/commit/4c2623da44bfb048413aa905c5c29b0a68e423e5))
+
 ### [1.834.1](https://github.com/bigcommerce/checkout-js/compare/v1.834.0...v1.834.1) (2026-07-16)
 
 
