@@ -6,6 +6,7 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { WalletButtonsContainerSkeleton } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../checkout';
+import { isExperimentEnabled } from '../common/utility';
 
 import { getSupportedMethodIds } from './getSupportedMethods';
 import resolveCheckoutButton from './resolveCheckoutButton';
@@ -131,13 +132,19 @@ function mapToCheckoutButtonContainerProps({
     const providers = config?.checkoutSettings.remoteCheckoutProviders ?? [];
     const paymentMethods = getPaymentMethods();
     const availableMethodIds = getSupportedMethodIds(providers, paymentMethods);
-    const customer = getCustomer();
+    const isWalletButtonsForLoggedInShoppersEnabled = isExperimentEnabled(
+        config?.checkoutSettings,
+        'CHECKOUT-10028.wallet_buttons_for_logged_in_shoppers',
+        false,
+    );
+    const isGuest = Boolean(getCustomer()?.isGuest);
+    const isEligibleForWalletButtons = isWalletButtonsForLoggedInShoppersEnabled ? true : isGuest;
 
     if (!isPaymentDataRequired()) {
         return null;
     }
 
-    if (!config || availableMethodIds.length === 0 || !customer?.isGuest) {
+    if (!config || availableMethodIds.length === 0 || !isEligibleForWalletButtons) {
         return null;
     }
 
