@@ -92,6 +92,35 @@ describe('AddressForm Component', () => {
         expect(screen.getByTestId('google-autocomplete-form-field')).toBeInTheDocument();
     });
 
+    it('renders translated placeholder as first option of extra dropdown field', () => {
+        const extraDropdownField = {
+            custom: false,
+            default: '',
+            id: 'b2bExtraField_1',
+            label: 'Extra Dropdown Field',
+            name: 'b2bExtraField_1',
+            required: false,
+            fieldType: 'dropdown',
+            type: 'string',
+            options: {
+                items: [
+                    { value: 'option1', label: 'Option 1' },
+                    { value: 'option2', label: 'Option 2' },
+                ],
+            },
+        } as FormField;
+
+        renderAddressFormComponent({
+            formFields: [...formFields, extraDropdownField],
+        });
+
+        const placeholderOption = screen.getByRole('option', { name: 'Please Select' });
+
+        expect(placeholderOption).toBeInTheDocument();
+        expect(placeholderOption).toHaveValue('');
+        expect(screen.getByRole('option', { name: 'Option 1' })).toBeInTheDocument();
+    });
+
     it('updates field with new value', async () => {
         const onChange = jest.fn();
         const fieldValue = 'test';

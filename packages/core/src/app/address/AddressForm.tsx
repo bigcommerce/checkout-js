@@ -141,6 +141,10 @@ const AddressForm: React.FC<AddressFormProps> = ({
                 return field.default;
             }
 
+            if (isExtraField(field) && field.fieldType === DynamicFormFieldType.DROPDOWN) {
+                return language.translate('common.please_select_text');
+            }
+
             return translatedPlaceholderId && language.translate(translatedPlaceholderId);
         },
         [language],

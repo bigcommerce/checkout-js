@@ -120,6 +120,7 @@
             "error_code": "Error code:",
             "request_id": "Request ID:",
             "optional_text": "(Optional)",
+            "please_select_text": "Please Select",
             "unavailable_error": "Checkout is temporarily unavailable. Please try again later.",
             "unavailable_heading": "Checkout is temporarily unavailable",
             "unstable_network_error": "It looks like the server is taking too long to respond, this can be caused by either poor connectivity or an error with our servers. Please try again in a while.",

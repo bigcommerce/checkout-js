@@ -978,7 +978,13 @@ describe('Payment step', () => {
                             ...orderResponse,
                             data: {
                                 ...orderResponse.data,
-                                b2bContext: { billingAddressId: 111, shippingAddressId: 222 },
+                                order: {
+                                    ...orderResponse.data.order,
+                                    b2bMetadata: {
+                                        billingAddressId: 111,
+                                        shippingAddressId: 222,
+                                    },
+                                },
                             },
                         }),
                     ),
