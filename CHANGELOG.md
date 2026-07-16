@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.836.2](https://github.com/bigcommerce/checkout-js/compare/v1.836.1...v1.836.2) (2026-07-16)
+
+
+### Bug Fixes
+
+* **payment:** CHECKOUT-9045 Show error with timeout if hosted form fails to load ([#3160](https://github.com/bigcommerce/checkout-js/issues/3160)) ([867fc62](https://github.com/bigcommerce/checkout-js/commit/867fc623b669c182d9728181d054d6741f4eb0b2))
+
 ### [1.836.1](https://github.com/bigcommerce/checkout-js/compare/v1.836.0...v1.836.1) (2026-07-16)
 
 
