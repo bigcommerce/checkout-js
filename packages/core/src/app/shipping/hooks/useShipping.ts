@@ -8,8 +8,9 @@ import {
 } from '@bigcommerce/checkout/contexts';
 import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
 import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
+import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
-import { EMPTY_ARRAY, isExperimentEnabled } from '../../common/utility';
+import { EMPTY_ARRAY } from '../../common/utility';
 import getBackorderCount from '../../order/getBackorderCount';
 import getProviderWithCustomCheckout from '../../payment/getProviderWithCustomCheckout';
 import getShippableItemsCount from '../getShippableItemsCount';

@@ -11,8 +11,9 @@ import {
     DynamicFormFieldType,
     Fieldset,
 } from '@bigcommerce/checkout/ui';
+import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
-import { EMPTY_ARRAY, isExperimentEnabled, isFloatingLabelEnabled } from '../common/utility';
+import { EMPTY_ARRAY, isFloatingLabelEnabled } from '../common/utility';
 
 import {
     type AddressFormProps,

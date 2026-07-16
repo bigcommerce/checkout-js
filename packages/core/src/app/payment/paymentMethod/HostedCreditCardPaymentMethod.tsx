@@ -8,8 +8,8 @@ import { createSagePayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrat
 import React, { type FunctionComponent, useCallback } from 'react';
 
 import { useCheckout } from '@bigcommerce/checkout/contexts';
+import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
-import { isExperimentEnabled } from '../../common/utility';
 import {
     withHostedCreditCardFieldset,
     type WithInjectedHostedCreditCardFieldsetProps,

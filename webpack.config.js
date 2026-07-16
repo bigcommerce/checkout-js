@@ -425,6 +425,7 @@ function loaderConfig(options, argv) {
                             join(__dirname, 'packages', 'legacy-hoc', 'src'),
                             join(__dirname, 'packages', 'locale', 'src'),
                             join(__dirname, 'packages', 'test-mocks', 'src'),
+                            join(__dirname, 'packages', 'utility', 'src'),
                         ],
                         use: [
                             {

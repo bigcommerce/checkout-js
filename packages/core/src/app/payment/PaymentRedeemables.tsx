@@ -3,10 +3,10 @@ import React, { type FunctionComponent, memo } from 'react';
 import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { Fieldset, Legend } from '@bigcommerce/checkout/ui';
+import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
 import { mapToRedeemableProps, Redeemable, type RedeemableProps } from '../cart';
 import { withCheckout } from '../checkout';
-import { isExperimentEnabled } from '../common/utility';
 
 const PaymentRedeemables: FunctionComponent<RedeemableProps> = (redeemableProps) => {
     const { selectedState: config } = useCheckout(({ data }) => data.getConfig());

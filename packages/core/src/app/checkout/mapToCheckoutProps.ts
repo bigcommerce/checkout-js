@@ -2,8 +2,9 @@ import { type CheckoutSelectors, type CustomError } from '@bigcommerce/checkout-
 import { createSelector } from 'reselect';
 
 import { type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
+import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
-import { EMPTY_ARRAY, isExperimentEnabled } from '../common/utility';
+import { EMPTY_ARRAY } from '../common/utility';
 
 import { type WithCheckoutProps } from './Checkout';
 import getCheckoutStepStatuses from './getCheckoutStepStatuses';

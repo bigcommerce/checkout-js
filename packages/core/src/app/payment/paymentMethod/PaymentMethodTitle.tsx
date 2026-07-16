@@ -22,10 +22,10 @@ import {
     PaypalCommerceCreditBanner,
 } from '@bigcommerce/checkout/paypal-utils';
 import { CreditCardIconList, mapFromPaymentMethodCardType } from '@bigcommerce/checkout/ui';
+import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
 import { withCheckout } from '../../checkout';
 import { connectFormik, type ConnectFormikProps } from '../../common/form';
-import { isExperimentEnabled } from '../../common/utility';
 
 import { hasCreditCardNumber } from './CreditCardFieldsetValues';
 import getPaymentMethodDisplayName from './getPaymentMethodDisplayName';

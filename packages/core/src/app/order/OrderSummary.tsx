@@ -9,8 +9,8 @@ import React, { type FunctionComponent, type ReactNode } from 'react';
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
 import { useCheckout, useLocale } from '@bigcommerce/checkout/contexts';
 import { TranslatedHtml, TranslatedString } from '@bigcommerce/checkout/locale';
+import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
-import { isExperimentEnabled } from '../common/utility';
 import { NewOrderSummarySubtotals } from '../coupon';
 
 import OrderSummaryHeader from './OrderSummaryHeader';
