@@ -2,7 +2,13 @@ import IntlTelInput, { type IntlTelInputRef } from '@intl-tel-input/react';
 import 'intl-tel-input/styles';
 import classNames from 'classnames';
 import { type FieldProps } from 'formik';
-import React, { type FunctionComponent, type RefObject, useCallback, useEffect } from 'react';
+import React, {
+    type FunctionComponent,
+    type RefObject,
+    useCallback,
+    useEffect,
+    useRef,
+} from 'react';
 
 import { isIso2 } from '../../utils';
 
@@ -25,24 +31,45 @@ export const PhoneInput: FunctionComponent<PhoneInputProps> = ({
     selectedCountry,
     intlTelInputRef,
 }) => {
+    const isPhoneCountryAutoSetRef = useRef(false);
+
+    const currentValue = value ? String(value) : '';
+
     useEffect(() => {
-        if (!selectedCountry || value) {
+        if (!selectedCountry || value || isPhoneCountryAutoSetRef.current) {
             return;
         }
 
         const selectedCountryInIsoFormat = selectedCountry.toLowerCase();
 
-        if (isIso2(selectedCountryInIsoFormat)) {
-            intlTelInputRef.current?.getInstance()?.setCountry(selectedCountryInIsoFormat);
+        if (!isIso2(selectedCountryInIsoFormat)) {
+            return;
+        }
+
+        try {
+            const intlTelInputInstance = intlTelInputRef.current?.getInstance();
+
+            if (intlTelInputInstance) {
+                intlTelInputInstance.setCountry(selectedCountryInIsoFormat);
+                isPhoneCountryAutoSetRef.current = true;
+            }
+        } catch {
+            // Defensive: the underlying library throws for unrecognized iso2 codes.
+            // Ref stays unset so a later, different selectedCountry can still be applied.
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedCountry]);
 
     const handleChangeNumber = useCallback(
         (newPhoneNumber: string) => {
+            // Ignore no-op emissions fired by the library itself
+            if (newPhoneNumber === currentValue) {
+                return;
+            }
+
             void setFieldValue(name, newPhoneNumber);
         },
-        [name, setFieldValue],
+        [name, setFieldValue, currentValue],
     );
 
     return (
@@ -72,7 +99,7 @@ export const PhoneInput: FunctionComponent<PhoneInputProps> = ({
                 ref={intlTelInputRef}
                 separateDialCode={false}
                 strictRejectAnimation={false}
-                value={value ? String(value) : ''}
+                value={currentValue}
             />
         </span>
     );
