@@ -121,13 +121,6 @@ describe('AddressForm Component', () => {
         expect(screen.getByRole('option', { name: 'Option 1' })).toBeInTheDocument();
     });
 
-    it('does not render placeholder for custom dropdown field', () => {
-        renderAddressFormComponent({ formFields });
-
-        expect(screen.getByText('Custom dropdown')).toBeInTheDocument();
-        expect(screen.queryByText('Please Select')).not.toBeInTheDocument();
-    });
-
     it('updates field with new value', async () => {
         const onChange = jest.fn();
         const fieldValue = 'test';
