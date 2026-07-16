@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.838.0](https://github.com/bigcommerce/checkout-js/compare/v1.837.0...v1.838.0) (2026-07-16)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10226 Show Placeholder for Extra Dropdown Field ([#3162](https://github.com/bigcommerce/checkout-js/issues/3162)) ([6d8d567](https://github.com/bigcommerce/checkout-js/commit/6d8d56712d20d2b79f41694d5d4958345e52b965))
+
 ## [1.837.0](https://github.com/bigcommerce/checkout-js/compare/v1.836.2...v1.837.0) (2026-07-16)
 
 
