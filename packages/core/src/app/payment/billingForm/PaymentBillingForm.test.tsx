@@ -78,6 +78,7 @@ describe('PaymentBillingForm', () => {
             isGuest: true,
             addresses: [],
         });
+        jest.spyOn(checkoutState.statuses, 'isUpdatingBillingAddress').mockReturnValue(false);
 
         defaultProps = {
             billingAddress: getBillingAddress(),
@@ -208,6 +209,14 @@ describe('PaymentBillingForm', () => {
 
             expect(screen.getByTestId('billingSameAsShipping')).toBeInTheDocument();
             expect(screen.getByText('Same as shipping address')).toBeInTheDocument();
+        });
+
+        it('disables the toggle while a billing address update is in flight', () => {
+            jest.spyOn(checkoutState.statuses, 'isUpdatingBillingAddress').mockReturnValue(true);
+
+            renderForm(defaultProps);
+
+            expect(screen.getByTestId('billingSameAsShipping')).toBeDisabled();
         });
 
         it('collapses the billing address fields when checked', () => {

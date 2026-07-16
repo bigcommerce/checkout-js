@@ -32,9 +32,6 @@ let mockCapturedProps: PaymentBillingFormProps;
 
 let mockPersistValues: BillingFormValues;
 
-// Stand in for PaymentBillingForm: capture the props the container passes and
-// expose a button that invokes onPersist, so we can test the container's
-// persistence wiring without driving the real address form.
 jest.mock('./PaymentBillingForm', () => ({
     PaymentBillingForm: (props: PaymentBillingFormProps) => {
         mockCapturedProps = props;
@@ -83,9 +80,6 @@ describe('PaymentBillingBlock', () => {
         jest.spyOn(checkoutState.data, 'getBillingAddress').mockReturnValue(undefined);
         jest.spyOn(checkoutState.data, 'getShippingAddress').mockReturnValue(getShippingAddress());
 
-        // "Billing same as shipping" is now checkout-wide state owned by
-        // CheckoutPage. Stand in for that here so the block reflects the value and
-        // reports the shopper's choice back up, matching the real wiring.
         PaymentBillingBlockTest = ({ methodId }) => {
             const [isBillingSameAsShipping, setIsBillingSameAsShipping] = React.useState(
                 getStoreConfig().checkoutSettings.checkoutBillingSameAsShippingEnabled ?? true,

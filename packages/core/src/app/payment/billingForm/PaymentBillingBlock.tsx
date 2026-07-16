@@ -57,8 +57,6 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
             getBillingAddressFields,
             getAddressExtraFields,
         },
-        // getBillingAddress / getShippingAddress guarantee the latest state inside
-        // async callbacks
         checkoutState: {
             data: { getBillingAddress, getShippingAddress },
         },
@@ -121,9 +119,7 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
     );
 
     // Persist without navigating — the payment step's "Place Order" is the only
-    // submit. Called by PaymentBillingForm's pre-submit save; the isEqualAddress
-    // guard prevents a redundant updateBillingAddress when nothing changed. Errors
-    // propagate so the pre-submit save can block the order.
+    // submit. Called by PaymentBillingForm's pre-submit save;
     const handlePersist = async ({
         orderComment,
         ...addressValues

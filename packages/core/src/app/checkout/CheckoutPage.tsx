@@ -430,10 +430,6 @@ const Checkout = ({
         [navigateToNextIncompleteStep, navigateToStep],
     );
 
-    // themeV2 embeds the billing form in the payment step, so the same-as-shipping
-    // toggle lives there instead of on shipping. Keep the checkout-wide value in
-    // sync so returning to shipping doesn't re-copy shipping over a billing address
-    // the shopper set on payment. Unlike handleShippingNextStep this never navigates.
     const handleBillingSameAsShippingChange = useCallback(
         (isBillingSameAsShipping: boolean): void => {
             setState((prev) => ({ ...prev, isBillingSameAsShipping }));

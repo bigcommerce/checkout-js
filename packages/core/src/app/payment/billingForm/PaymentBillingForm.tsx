@@ -26,7 +26,6 @@ export interface PaymentBillingFormProps {
     billingAddress?: Address;
     customerMessage: string;
     isLoading: boolean;
-    // Default for the "billing same as shipping" toggle (from checkout settings).
     isBillingSameAsShipping: boolean;
     getFields(countryCode?: string): FormField[];
     // Persists the billing address (updateBillingAddress). Must throw on failure
@@ -55,11 +54,12 @@ const PaymentBillingFormComponent = ({
 
     const {
         checkoutService,
-        selectedState: { customer, config, cart },
-    } = useCheckout(({ data }) => ({
+        selectedState: { customer, config, cart, isUpdatingBillingAddress },
+    } = useCheckout(({ data, statuses }) => ({
         customer: data.getCustomer(),
         config: data.getConfig(),
         cart: data.getCart(),
+        isUpdatingBillingAddress: statuses.isUpdatingBillingAddress(),
     }));
     const {
         billing: { hideSaveToAddressBookCheck, restrictManualAddressEntry },
@@ -98,20 +98,12 @@ const PaymentBillingFormComponent = ({
     const isBillingAddressCollapsed =
         shouldShowBillingSameAsShipping && values.billingSameAsShipping;
 
-    // Ensure a pending edit is saved before the payment step places the order:
-    // block while still loading, otherwise validate (surfacing errors + blocking
-    // on invalid) and persist. A persist failure is reported through the billing
-    // error channel and blocks the order — it must not surface as a payment
-    // failure, so this never throws.
     const ensureBillingAddressSaved = useCallback(async (): Promise<boolean> => {
         if (isLoading || isResettingAddress) {
             return false;
         }
 
-        // Collapsed "same as shipping": billing already mirrors the shipping
-        // address (copied on toggle + on shipping-continue), so nothing to
-        // validate or persist here. Only when the toggle is actually shown —
-        // static-address methods (e.g. Amazon Pay) hide it and must still persist.
+        // A checked, visible toggle is trusted as proof billing already mirrors shipping.
         if (shouldShowBillingSameAsShipping && values.billingSameAsShipping) {
             return true;
         }
@@ -184,6 +176,7 @@ const PaymentBillingFormComponent = ({
         <div className="checkout-billing-form" data-test="checkout-billing-form">
             {shouldShowBillingSameAsShipping && (
                 <BillingSameAsShippingField
+                    disabled={isUpdatingBillingAddress}
                     labelStringId="billing.same_as_shipping_label"
                     onChange={onBillingSameAsShippingChange}
                 />
