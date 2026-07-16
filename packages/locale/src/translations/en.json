@@ -54,7 +54,8 @@
             "no_billing_addresses_warning": "Sorry, you have no billing address to choose from, please go to your address book to create an address or contact your site admin.",
             "save_billing_address_error": "An error occurred while saving the billing address to your price quote. Please try again.",
             "billing_address_amazonpay": "Managed by Amazon Pay",
-            "use_shipping_address_label": "My billing address is the same as my shipping address."
+            "use_shipping_address_label": "My billing address is the same as my shipping address.",
+            "same_as_shipping_label": "Same as shipping address"
         },
         "cart": {
             "billed_amount_text": "*You will be charged and invoiced {total} ({code}) for this order.",

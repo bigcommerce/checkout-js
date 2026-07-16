@@ -20,6 +20,8 @@ export interface PaymentBillingBlockProps {
     // billing form's method-specific behaviour (e.g. Amazon Pay's static address
     // + reduced schema). Must reflect the live selection, not checkout.payments.
     methodId?: string;
+    isBillingSameAsShipping: boolean;
+    onBillingSameAsShippingChange(isBillingSameAsShipping: boolean): void;
     onUnhandledError(error: Error): void;
 }
 
@@ -42,6 +44,8 @@ const getFieldsWithExtraFields = (
 
 export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = ({
     methodId,
+    isBillingSameAsShipping,
+    onBillingSameAsShippingChange,
     onUnhandledError,
 }) => {
     const {
@@ -53,9 +57,8 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
             getBillingAddressFields,
             getAddressExtraFields,
         },
-        // getBillingAddress guarantees the latest state inside async callbacks
         checkoutState: {
-            data: { getBillingAddress },
+            data: { getBillingAddress, getShippingAddress },
         },
         checkoutService,
     } = useCheckout(({ data, statuses }) => ({
@@ -84,6 +87,26 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
     const customerMessage = checkout.customerMessage;
     const billingAddress = getBillingAddress();
 
+    const handleBillingSameAsShippingChange = (checked: boolean) => {
+        onBillingSameAsShippingChange(checked);
+
+        if (!checked) {
+            return;
+        }
+
+        const shippingAddress = getShippingAddress();
+
+        if (shippingAddress && !isEqualAddress(shippingAddress, getBillingAddress())) {
+            checkoutService.updateBillingAddress(shippingAddress).catch((error) => {
+                onBillingSameAsShippingChange(false);
+
+                if (error instanceof Error) {
+                    onUnhandledError(error);
+                }
+            });
+        }
+    };
+
     const getFields = useCallback(
         (countryCode?: string) =>
             getFieldsWithExtraFields(
@@ -96,9 +119,7 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
     );
 
     // Persist without navigating — the payment step's "Place Order" is the only
-    // submit. Called by PaymentBillingForm's pre-submit save; the isEqualAddress
-    // guard prevents a redundant updateBillingAddress when nothing changed. Errors
-    // propagate so the pre-submit save can block the order.
+    // submit. Called by PaymentBillingForm's pre-submit save;
     const handlePersist = async ({
         orderComment,
         ...addressValues
@@ -163,8 +184,10 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
                     billingAddress={billingAddress}
                     customerMessage={customerMessage}
                     getFields={getFields}
+                    isBillingSameAsShipping={isBillingSameAsShipping}
                     isLoading={isInitializing}
                     methodId={methodId}
+                    onBillingSameAsShippingChange={handleBillingSameAsShippingChange}
                     onPersist={handlePersist}
                     onUnhandledError={onUnhandledError}
                 />

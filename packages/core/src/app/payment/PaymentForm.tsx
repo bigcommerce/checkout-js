@@ -53,6 +53,7 @@ export interface PaymentFormProps {
     defaultGatewayId?: string;
     defaultMethodId: string;
     didExceedSpamLimit?: boolean;
+    isBillingSameAsShipping?: boolean;
     isEmbedded?: boolean;
     isInitializingPayment?: boolean;
     isTermsConditionsRequired?: boolean;
@@ -70,6 +71,7 @@ export interface PaymentFormProps {
     usableStoreCredit?: number;
     validationSchema?: ObjectSchema<Partial<PaymentFormValues>>;
     isPaymentDataRequired(): boolean;
+    onBillingSameAsShippingChange?(isBillingSameAsShipping: boolean): void;
     onMethodSelect?(method: PaymentMethod): void;
     onStoreCreditChange?(useStoreCredit?: boolean): void;
     onSubmit?(values: PaymentFormValues): void;
@@ -83,6 +85,7 @@ const PaymentForm: FunctionComponent<
     availableStoreCredit = 0,
     disableStoreCredit = false,
     didExceedSpamLimit,
+    isBillingSameAsShipping,
     isEmbedded,
     isInitializingPayment,
     isPaymentDataRequired,
@@ -91,6 +94,7 @@ const PaymentForm: FunctionComponent<
     isUsingMultiShipping,
     language,
     methods,
+    onBillingSameAsShippingChange,
     onMethodSelect,
     onStoreCreditChange,
     onUnhandledError,
@@ -207,7 +211,9 @@ const PaymentForm: FunctionComponent<
 
             {themeV2 && (
                 <PaymentBillingBlock
+                    isBillingSameAsShipping={isBillingSameAsShipping ?? true}
                     methodId={selectedMethod?.id}
+                    onBillingSameAsShippingChange={onBillingSameAsShippingChange ?? noop}
                     onUnhandledError={onUnhandledError ?? noop}
                 />
             )}

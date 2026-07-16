@@ -430,6 +430,13 @@ const Checkout = ({
         [navigateToNextIncompleteStep, navigateToStep],
     );
 
+    const handleBillingSameAsShippingChange = useCallback(
+        (isBillingSameAsShipping: boolean): void => {
+            setState((prev) => ({ ...prev, isBillingSameAsShipping }));
+        },
+        [],
+    );
+
     const handleShippingSignIn = useCallback((): void => {
         setCustomerViewType(CustomerViewType.Login);
     }, [setCustomerViewType]);
@@ -533,12 +540,14 @@ const Checkout = ({
                         checkEmbeddedSupport={checkEmbeddedSupport}
                         consignments={consignments}
                         errorLogger={errorLogger}
+                        isBillingSameAsShipping={isBillingSameAsShipping}
                         isEmbedded={isEmbedded()}
                         isUsingMultiShipping={
                             cart && consignments
                                 ? isUsingMultiShipping(consignments, cart.lineItems)
                                 : false
                         }
+                        onBillingSameAsShippingChange={handleBillingSameAsShippingChange}
                         onCartChangedError={handleCartChangedError}
                         onEdit={handleEditStep}
                         onExpanded={handleExpanded}

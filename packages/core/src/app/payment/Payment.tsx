@@ -80,9 +80,11 @@ import { getFilteredPaymentMethodsWithDefault } from './paymentMethodFilters';
 export interface PaymentProps {
     capabilities: Capabilities;
     errorLogger: ErrorLogger;
+    isBillingSameAsShipping?: boolean;
     isEmbedded?: boolean;
     isUsingMultiShipping?: boolean;
     checkEmbeddedSupport?(methodIds: string[]): void; // TODO: We're currently doing this check in multiple places, perhaps we should move it up so this check get be done in a single place instead.
+    onBillingSameAsShippingChange?(isBillingSameAsShipping: boolean): void;
     onCartChangedError?(): void;
     onFinalize?(): void;
     onFinalizeError?(error: Error): void;
@@ -783,6 +785,7 @@ const Payment = (
                         defaultMethodId={props.defaultMethod?.id || ''}
                         didExceedSpamLimit={state.didExceedSpamLimit}
                         disableStoreCredit={disableStoreCredit}
+                        isBillingSameAsShipping={props.isBillingSameAsShipping}
                         isEmbedded={props.isEmbedded}
                         isInitializingPayment={props.isInitializingPayment}
                         isPaymentDataRequired={props.isPaymentDataRequired}
@@ -790,6 +793,7 @@ const Payment = (
                         isTermsConditionsRequired={props.isTermsConditionsRequired}
                         isUsingMultiShipping={props.isUsingMultiShipping}
                         methods={props.methods}
+                        onBillingSameAsShippingChange={props.onBillingSameAsShippingChange}
                         onMethodSelect={setSelectedMethod}
                         onStoreCreditChange={handleStoreCreditChange}
                         onSubmit={handleSubmit}

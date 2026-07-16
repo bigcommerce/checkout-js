@@ -4,7 +4,7 @@ import {
     type CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React, { type FunctionComponent } from 'react';
 
 import {
@@ -23,6 +23,7 @@ import { type BillingFormValues } from '../../billing/billingFormConfig';
 import { getCheckout } from '../../checkout/checkouts.mock';
 import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
+import { getShippingAddress } from '../../shipping/shipping-addresses.mock';
 
 import { PaymentBillingBlock } from './PaymentBillingBlock';
 import { type PaymentBillingFormProps } from './PaymentBillingForm';
@@ -31,9 +32,6 @@ let mockCapturedProps: PaymentBillingFormProps;
 
 let mockPersistValues: BillingFormValues;
 
-// Stand in for PaymentBillingForm: capture the props the container passes and
-// expose a button that invokes onPersist, so we can test the container's
-// persistence wiring without driving the real address form.
 jest.mock('./PaymentBillingForm', () => ({
     PaymentBillingForm: (props: PaymentBillingFormProps) => {
         mockCapturedProps = props;
@@ -80,19 +78,28 @@ describe('PaymentBillingBlock', () => {
         jest.spyOn(checkoutState.data, 'getBillingAddressFields').mockReturnValue(formFields);
         jest.spyOn(checkoutState.data, 'getAddressExtraFields').mockReturnValue([]);
         jest.spyOn(checkoutState.data, 'getBillingAddress').mockReturnValue(undefined);
+        jest.spyOn(checkoutState.data, 'getShippingAddress').mockReturnValue(getShippingAddress());
 
-        PaymentBillingBlockTest = ({ methodId }) => (
-            <CheckoutProvider checkoutService={checkoutService}>
-                <LocaleContext.Provider value={localeContext}>
-                    <CapabilitiesContext.Provider value={defaultCapabilities}>
-                        <PaymentBillingBlock
-                            methodId={methodId}
-                            onUnhandledError={onUnhandledError}
-                        />
-                    </CapabilitiesContext.Provider>
-                </LocaleContext.Provider>
-            </CheckoutProvider>
-        );
+        PaymentBillingBlockTest = ({ methodId }) => {
+            const [isBillingSameAsShipping, setIsBillingSameAsShipping] = React.useState(
+                getStoreConfig().checkoutSettings.checkoutBillingSameAsShippingEnabled ?? true,
+            );
+
+            return (
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <CapabilitiesContext.Provider value={defaultCapabilities}>
+                            <PaymentBillingBlock
+                                isBillingSameAsShipping={isBillingSameAsShipping}
+                                methodId={methodId}
+                                onBillingSameAsShippingChange={setIsBillingSameAsShipping}
+                                onUnhandledError={onUnhandledError}
+                            />
+                        </CapabilitiesContext.Provider>
+                    </LocaleContext.Provider>
+                </CheckoutProvider>
+            );
+        };
     });
 
     it('renders the billing address heading', async () => {
@@ -124,6 +131,74 @@ describe('PaymentBillingBlock', () => {
         expect(mockCapturedProps.methodId).toBe('amazonpay');
     });
 
+    it('defaults the same-as-shipping toggle from checkout settings', async () => {
+        render(<PaymentBillingBlockTest />);
+
+        await screen.findByTestId('trigger-persist');
+
+        expect(mockCapturedProps.isBillingSameAsShipping).toBe(true);
+    });
+
+    it('copies the shipping address to billing when the toggle is checked', async () => {
+        render(<PaymentBillingBlockTest />);
+
+        await screen.findByTestId('trigger-persist');
+
+        act(() => {
+            mockCapturedProps.onBillingSameAsShippingChange(true);
+        });
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        expect(checkoutService.updateBillingAddress).toHaveBeenCalledWith(getShippingAddress());
+    });
+
+    it('reverts the toggle and reports the error when copying shipping to billing fails', async () => {
+        const error = new Error('update failed');
+
+        jest.spyOn(checkoutService, 'updateBillingAddress').mockRejectedValue(error);
+
+        render(<PaymentBillingBlockTest />);
+
+        await screen.findByTestId('trigger-persist');
+
+        act(() => {
+            mockCapturedProps.onBillingSameAsShippingChange(true);
+        });
+
+        await waitFor(() => expect(mockCapturedProps.isBillingSameAsShipping).toBe(false));
+
+        expect(onUnhandledError).toHaveBeenCalledWith(error);
+    });
+
+    it('does not copy shipping to billing when the toggle is unchecked', async () => {
+        render(<PaymentBillingBlockTest />);
+
+        await screen.findByTestId('trigger-persist');
+
+        act(() => {
+            mockCapturedProps.onBillingSameAsShippingChange(false);
+        });
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        expect(checkoutService.updateBillingAddress).not.toHaveBeenCalled();
+    });
+
+    it('remembers the shopper unchecking the toggle across re-renders', async () => {
+        render(<PaymentBillingBlockTest />);
+
+        await screen.findByTestId('trigger-persist');
+
+        expect(mockCapturedProps.isBillingSameAsShipping).toBe(true);
+
+        act(() => {
+            mockCapturedProps.onBillingSameAsShippingChange(false);
+        });
+
+        await waitFor(() => expect(mockCapturedProps.isBillingSameAsShipping).toBe(false));
+    });
+
     it('shows a warning instead of the form when manual entry is restricted and there are no saved addresses', async () => {
         jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue({
             ...getCustomer(),
@@ -142,7 +217,11 @@ describe('PaymentBillingBlock', () => {
                             },
                         }}
                     >
-                        <PaymentBillingBlock onUnhandledError={onUnhandledError} />
+                        <PaymentBillingBlock
+                            isBillingSameAsShipping={true}
+                            onBillingSameAsShippingChange={jest.fn()}
+                            onUnhandledError={onUnhandledError}
+                        />
                     </CapabilitiesContext.Provider>
                 </LocaleContext.Provider>
             </CheckoutProvider>,

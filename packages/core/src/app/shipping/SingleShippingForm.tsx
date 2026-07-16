@@ -4,7 +4,7 @@ import { debounce, type DebouncedFunc, isEqual, noop } from 'lodash';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { lazy, object } from 'yup';
 
-import { useCapabilities } from '@bigcommerce/checkout/contexts';
+import { useCapabilities, useThemeContext } from '@bigcommerce/checkout/contexts';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { Fieldset, Form } from '@bigcommerce/checkout/ui';
 
@@ -88,6 +88,7 @@ const SingleShippingForm: React.FC<
     const {
         shipping: { hideBillingSameAsShippingCheck },
     } = useCapabilities();
+    const { themeV2 } = useThemeContext();
     const {
         consignments,
         deinitializeShippingMethod: deinitialize,
@@ -279,6 +280,7 @@ const SingleShippingForm: React.FC<
 
     const shouldShowBillingSameAsShipping =
         !hideBillingSameAsShippingCheck &&
+        !themeV2 &&
         !PAYMENT_METHOD_VALID.some((method) => method === methodId);
 
     return (
