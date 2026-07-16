@@ -33,7 +33,7 @@ export const PhoneInput: FunctionComponent<PhoneInputProps> = ({
 }) => {
     const isPhoneCountryAutoSetRef = useRef(false);
 
-    const currentValue = value ? String(value) : '';
+    const currentValue = `${value}`;
 
     useEffect(() => {
         if (!selectedCountry || value || isPhoneCountryAutoSetRef.current) {
