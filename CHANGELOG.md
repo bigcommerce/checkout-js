@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.837.0](https://github.com/bigcommerce/checkout-js/compare/v1.836.2...v1.837.0) (2026-07-16)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10152 skip the standalone billing step for themeV2 ([#3161](https://github.com/bigcommerce/checkout-js/issues/3161)) ([399f38a](https://github.com/bigcommerce/checkout-js/commit/399f38a54c373b1e0cf24ddedd7fc855225a611f))
+
 ### [1.836.2](https://github.com/bigcommerce/checkout-js/compare/v1.836.1...v1.836.2) (2026-07-16)
 
 
