@@ -33,6 +33,18 @@ export interface HostedCreditCardComponentProps extends PaymentMethodProps {
     initializePayment?: CheckoutService['initializePayment'];
 }
 
+const HOSTED_FIELD_INIT_TIMEOUT_MS = 30000;
+
+function withTimeout<T>(promise: Promise<T>, ms: number, timeoutError: Error): Promise<T> {
+    let timer: ReturnType<typeof setTimeout>;
+
+    const timeoutPromise = new Promise<never>((_resolve, reject) => {
+        timer = setTimeout(() => reject(timeoutError), ms);
+    });
+
+    return Promise.race([promise, timeoutPromise]).finally(() => clearTimeout(timer));
+}
+
 const HostedCreditCardComponent: FunctionComponent<HostedCreditCardComponentProps> = ({
     method,
     checkoutService,
@@ -258,7 +270,7 @@ const HostedCreditCardComponent: FunctionComponent<HostedCreditCardComponentProp
     const initializeHostedCreditCardPayment: CreditCardPaymentMethodProps['initializePayment'] =
         useCallback(
             async (options, selectedInstrument) => {
-                return initializePayment({
+                const initializeOptions = {
                     ...options,
                     integrations: [
                         createCreditCardPaymentStrategy,
@@ -273,13 +285,24 @@ const HostedCreditCardComponent: FunctionComponent<HostedCreditCardComponentProp
                             bigpayToken: selectedInstrument?.bigpayToken,
                         },
                     }),
-                });
+                };
+
+                if (!isHostedFormEnabled) {
+                    return initializePayment(initializeOptions);
+                }
+
+                return withTimeout(
+                    initializePayment(initializeOptions),
+                    HOSTED_FIELD_INIT_TIMEOUT_MS,
+                    new Error(language.translate('payment.payment_method_unavailable_error')),
+                );
             },
             [
                 getHostedFormOptions,
                 initializePayment,
                 isHostedFormEnabled,
                 isCBAMPGSResolverEnabled,
+                language,
             ],
         );
 
