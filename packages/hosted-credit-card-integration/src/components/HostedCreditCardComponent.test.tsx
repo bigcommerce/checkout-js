@@ -171,6 +171,56 @@ describe('HostedCreditCardComponent', () => {
         expect(initializePayment.mock.calls[0][0]).toHaveProperty('creditCard');
     });
 
+    it('rejects with a timeout error when initializePayment never settles', async () => {
+        jest.useFakeTimers();
+
+        const initializePayment = jest.fn().mockReturnValue(new Promise(() => undefined));
+
+        renderWithoutWrapper(
+            <HostedCreditCardComponent
+                {...getDefaultProps({
+                    checkoutService: { initializePayment, deinitializePayment: jest.fn() },
+                })}
+            />,
+        );
+
+        const wrappedInitializePayment = (
+            jest.requireMock('@bigcommerce/checkout/credit-card-integration')
+                .CreditCardPaymentMethodComponent as jest.Mock
+        ).mock.calls.slice(-1)[0][0].initializePayment;
+
+        const assertion = expect(wrappedInitializePayment({}, undefined)).rejects.toThrow(
+            'payment.payment_method_unavailable_error',
+        );
+
+        await jest.advanceTimersByTimeAsync(30_000);
+        await assertion;
+
+        jest.useRealTimers();
+    });
+
+    it('does not leave a pending timer once initializePayment resolves', async () => {
+        jest.useFakeTimers();
+
+        const initializePayment = jest.fn().mockResolvedValue(undefined);
+
+        renderWithoutWrapper(
+            <HostedCreditCardComponent
+                {...getDefaultProps({
+                    checkoutService: { initializePayment, deinitializePayment: jest.fn() },
+                })}
+            />,
+        );
+
+        fireEvent.click(screen.getByTestId('init-btn'));
+
+        await jest.runOnlyPendingTimersAsync();
+
+        expect(jest.getTimerCount()).toBe(0);
+
+        jest.useRealTimers();
+    });
+
     it('passes correct validation schemas to CreditCardPaymentMethodComponent', () => {
         renderWithoutWrapper(<HostedCreditCardComponent {...getDefaultProps()} />);
 
