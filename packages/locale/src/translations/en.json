@@ -72,6 +72,7 @@
             "free_text": "Free",
             "gift_certificate_text": "Gift Certificate",
             "handling_text": "Handling",
+            "surcharge_text": "Surcharge",
             "item": "item",
             "items": "items",
             "item_count_text": "{count, plural, one{1 Item} other{# Items} }",

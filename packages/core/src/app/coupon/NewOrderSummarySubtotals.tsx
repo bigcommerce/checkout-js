@@ -9,6 +9,13 @@ import { CollapseCSSTransition } from '@bigcommerce/checkout/ui';
 import { isOrderFee, OrderSummaryDiscount, OrderSummaryPrice } from '../order';
 
 import { AppliedGiftCertificates, CouponForm, Discounts } from './components';
+
+// Must match SURCHARGE_FEE_NAME in the SDK surcharge handler.
+const SURCHARGE_FEE_NAME = 'corporate_card_surcharge';
+
+const isSurchargeFee = (fee: Fee | OrderFee): boolean =>
+    'name' in fee && fee.name === SURCHARGE_FEE_NAME;
+
 import { useMultiCoupon } from './useMultiCoupon';
 import { getRedeemableLabelId } from './utils';
 
@@ -43,6 +50,12 @@ const NewOrderSummarySubtotals: FunctionComponent<MultiCouponProps> = ({
 
     const [isCouponFormVisible, setIsCouponFormVisible] = useState(!isCouponFormCollapsed);
     const couponFormRef = useRef<HTMLDivElement>(null);
+
+    // Shown as its own labelled row; other fees stay generic.
+    // NOTE: the surcharge fee comes from the BE Fees API (Checkout.fees). Until that endpoint
+    // is implemented on the BE, no surcharge fee is present, so this row simply won't render.
+    const surchargeFee = (fees ?? []).find(isSurchargeFee);
+    const otherFees = (fees ?? []).filter((fee) => !isSurchargeFee(fee)) as typeof fees;
 
     const toggleCouponForm = () => {
         setIsCouponFormVisible((prevState) => !prevState);
@@ -99,7 +112,16 @@ const NewOrderSummarySubtotals: FunctionComponent<MultiCouponProps> = ({
                     />
                 )}
 
-                {fees?.map((fee, index) => (
+                {/* Surcharge placeholder — shown once applied in-flight. */}
+                {!!surchargeFee && (
+                    <OrderSummaryPrice
+                        amount={surchargeFee.cost}
+                        label={<TranslatedString id="cart.surcharge_text" />}
+                        testId="cart-surcharge"
+                    />
+                )}
+
+                {otherFees?.map((fee, index) => (
                     <OrderSummaryPrice
                         amount={fee.cost}
                         key={index}
