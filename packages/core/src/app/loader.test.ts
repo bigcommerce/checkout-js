@@ -1,7 +1,6 @@
+import { CHECKOUT_ROOT_NODE_ID } from '@bigcommerce/checkout/payment-integration-api';
 import { getScriptLoader, getStylesheetLoader } from '@bigcommerce/script-loader';
 import { noop } from 'lodash';
-
-import { CHECKOUT_ROOT_NODE_ID } from '@bigcommerce/checkout/payment-integration-api';
 
 import type AppExport from './AppExport';
 import { type AssetManifest, loadFiles, type LoadFilesOptions } from './loader';
@@ -25,6 +24,8 @@ describe('loadFiles', () => {
     let appExports: AppExport;
 
     beforeEach(() => {
+        jest.clearAllMocks();
+
         options = {
             publicPath: 'https://cdn.foo.bar/',
         };
@@ -133,6 +134,53 @@ describe('loadFiles', () => {
         );
     });
 
+    describe('when isSafePrefetchEnabled is true', () => {
+        afterEach(() => {
+            document.head.querySelectorAll('link[rel="prefetch"]').forEach((link) => {
+                link.remove();
+            });
+        });
+
+        it('does not use script-loader to prefetch dynamic JS or CSS chunks', async () => {
+            await loadFiles({ ...options, isSafePrefetchEnabled: true });
+
+            expect(getScriptLoader().preloadScripts).not.toHaveBeenCalled();
+            expect(getStylesheetLoader().preloadStylesheets).not.toHaveBeenCalled();
+        });
+
+        it('prefetches dynamic JS chunks with matching crossorigin and integrity attributes', async () => {
+            await loadFiles({ ...options, isSafePrefetchEnabled: true });
+
+            const links = document.head.querySelectorAll<HTMLLinkElement>(
+                'link[rel="prefetch"][as="script"]',
+            );
+
+            expect(links).toHaveLength(2);
+            expect(links[0]).toHaveAttribute('href', 'https://cdn.foo.bar/step-a.js');
+            expect(links[0]).toHaveAttribute('crossorigin', 'anonymous');
+            expect(links[0]).toHaveAttribute('integrity', 'hash-step-a-js');
+            expect(links[1]).toHaveAttribute('href', 'https://cdn.foo.bar/step-b.js');
+            expect(links[1]).toHaveAttribute('crossorigin', 'anonymous');
+            expect(links[1]).toHaveAttribute('integrity', 'hash-step-b-js');
+        });
+
+        it('prefetches dynamic CSS chunks with matching crossorigin and integrity attributes', async () => {
+            await loadFiles({ ...options, isSafePrefetchEnabled: true });
+
+            const links = document.head.querySelectorAll<HTMLLinkElement>(
+                'link[rel="prefetch"][as="style"]',
+            );
+
+            expect(links).toHaveLength(2);
+            expect(links[0]).toHaveAttribute('href', 'https://cdn.foo.bar/step-a.css');
+            expect(links[0]).toHaveAttribute('crossorigin', 'anonymous');
+            expect(links[0]).toHaveAttribute('integrity', 'hash-step-a-css');
+            expect(links[1]).toHaveAttribute('href', 'https://cdn.foo.bar/step-b.css');
+            expect(links[1]).toHaveAttribute('crossorigin', 'anonymous');
+            expect(links[1]).toHaveAttribute('integrity', 'hash-step-b-css');
+        });
+    });
+
     it('resolves with app version', async () => {
         const result = await loadFiles(options);
 
@@ -189,6 +237,47 @@ describe('loadFiles', () => {
             locale: expect.any(String),
             locales: expect.any(Object),
             translations: expect.any(Object),
+        });
+    });
+
+    describe('bootstrap diagnostics', () => {
+        it('does not log anything when isSafePrefetchEnabled is off, preserving existing behavior', async () => {
+            const consoleErrorSpy = jest
+                .spyOn(console, 'error')
+                .mockImplementation(() => undefined);
+            const bootstrapError = new Error('vendor.js failed to load');
+
+            jest.spyOn(getScriptLoader(), 'loadScript').mockImplementation((src: string) =>
+                src.includes('vendor.js') ? Promise.reject(bootstrapError) : Promise.resolve(),
+            );
+
+            await expect(loadFiles(options)).rejects.toThrow(bootstrapError);
+
+            expect(consoleErrorSpy).not.toHaveBeenCalled();
+
+            consoleErrorSpy.mockRestore();
+        });
+
+        it('logs a clear, greppable message and still rejects if bootstrapping fails when isSafePrefetchEnabled is on', async () => {
+            const consoleErrorSpy = jest
+                .spyOn(console, 'error')
+                .mockImplementation(() => undefined);
+            const bootstrapError = new Error('vendor.js failed to load');
+
+            jest.spyOn(getScriptLoader(), 'loadScript').mockImplementation((src: string) =>
+                src.includes('vendor.js') ? Promise.reject(bootstrapError) : Promise.resolve(),
+            );
+
+            await expect(loadFiles({ ...options, isSafePrefetchEnabled: true })).rejects.toThrow(
+                bootstrapError,
+            );
+
+            expect(consoleErrorSpy).toHaveBeenCalledWith(
+                '[checkout-js] Failed to bootstrap checkout:',
+                bootstrapError,
+            );
+
+            consoleErrorSpy.mockRestore();
         });
     });
 });

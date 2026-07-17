@@ -16,6 +16,7 @@ export interface CustomCheckoutWindow extends Window {
         publicPath?: string;
         sentryConfig?: BrowserOptions;
         permalinkStatus?: OrderPermalinkStatus | null;
+        isSafePrefetchEnabled?: boolean;
     };
 }
 
@@ -30,13 +31,41 @@ function isCustomCheckoutWindow(window: Window): window is CustomCheckoutWindow 
         throw new Error('Checkout config is missing.');
     }
 
-    const { renderOrderConfirmation, renderCheckout } = await loadFiles();
+    const isSafePrefetchEnabled = Boolean(window.checkoutConfig.isSafePrefetchEnabled);
 
-    const { orderId, checkoutId, ...appProps } = window.checkoutConfig;
+    const bootstrap = async (customCheckoutWindow: CustomCheckoutWindow): Promise<void> => {
+        const { renderOrderConfirmation, renderCheckout } = await loadFiles({
+            isSafePrefetchEnabled,
+        });
 
-    if (orderId) {
-        renderOrderConfirmation({ ...appProps, orderId });
-    } else if (checkoutId) {
-        renderCheckout({ ...appProps, checkoutId });
+        const {
+            orderId,
+            checkoutId,
+            isSafePrefetchEnabled: _isSafePrefetchEnabled,
+            ...appProps
+        } = customCheckoutWindow.checkoutConfig;
+
+        if (orderId) {
+            renderOrderConfirmation({ ...appProps, orderId });
+        } else if (checkoutId) {
+            renderCheckout({ ...appProps, checkoutId });
+        }
+    };
+
+    // Gated behind the same flag as the crossorigin/SRI prefetch fix: existing stores
+    // (flag off) get the exact same fire-and-forget bootstrap as before this diagnostics
+    // work existed -- a failure is a silent unhandled rejection, same as always. Only
+    // flag-on stores get it caught and logged.
+    if (!isSafePrefetchEnabled) {
+        await bootstrap(window);
+
+        return;
+    }
+
+    try {
+        await bootstrap(window);
+    } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error('[checkout-js] Checkout failed to bootstrap:', error);
     }
 })();
