@@ -17,6 +17,7 @@ import {
 } from '@bigcommerce/checkout/contexts';
 import { ErrorBoundary } from '@bigcommerce/checkout/error-handling-utils';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
+import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
 import '../../scss/App.scss';
 
@@ -38,15 +39,12 @@ export interface CheckoutAppProps {
 }
 
 const CheckoutApp = (props: CheckoutAppProps): ReactElement => {
-    let isCheckoutHookExperimentEnabled = false;
     const { containerId, sentryConfig, publicPath, sentrySampleRate, initialState } = props;
-
-    if (initialState) {
-        isCheckoutHookExperimentEnabled =
-            initialState?.config?.storeConfig.checkoutSettings.features[
-                'CHECKOUT-9842.roll_out_state_new_checkout_hook'
-            ] ?? false;
-    }
+    const isCheckoutHookExperimentEnabled = isExperimentEnabled(
+        initialState?.config?.storeConfig.checkoutSettings,
+        'CHECKOUT-9842.roll_out_state_new_checkout_hook',
+        false,
+    );
 
     const errorLogger = useMemo(
         () =>
