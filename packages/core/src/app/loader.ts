@@ -32,32 +32,6 @@ export interface LoadFilesResult {
 
 const DIAGNOSTIC_PREFIX = '[checkout-js]';
 
-let areBootstrapDiagnosticsInstalled = false;
-
-function installBootstrapDiagnostics(): void {
-    if (areBootstrapDiagnosticsInstalled || typeof window === 'undefined') {
-        return;
-    }
-
-    areBootstrapDiagnosticsInstalled = true;
-
-    window.addEventListener('error', (event) => {
-        // eslint-disable-next-line no-console
-        console.error(
-            `${DIAGNOSTIC_PREFIX} Uncaught error on the checkout page:`,
-            event.error || event.message,
-        );
-    });
-
-    window.addEventListener('unhandledrejection', (event) => {
-        // eslint-disable-next-line no-console
-        console.error(
-            `${DIAGNOSTIC_PREFIX} Unhandled promise rejection on the checkout page:`,
-            event.reason,
-        );
-    });
-}
-
 function preloadWithConsistentCrossOrigin(
     tags: Array<{ rel: string; as: string; href: string; integrity?: string }>,
 ): void {
@@ -73,6 +47,14 @@ function preloadWithConsistentCrossOrigin(
             link.setAttribute('integrity', integrity);
         }
 
+        link.addEventListener('error', () => {
+            // eslint-disable-next-line no-console
+            console.error(
+                `${DIAGNOSTIC_PREFIX} Failed to prefetch (load or integrity check failed):`,
+                href,
+            );
+        });
+
         document.head.appendChild(link);
     });
 }
@@ -80,11 +62,6 @@ function preloadWithConsistentCrossOrigin(
 export function loadFiles(options?: LoadFilesOptions): Promise<LoadFilesResult> {
     const publicPath = configurePublicPath(options && options.publicPath);
     const isConsistentCrossOriginFixEnabled = Boolean(options?.isConsistentCrossOriginFixEnabled);
-
-    // diagnostics is also gated behind the same experiment
-    if (isConsistentCrossOriginFixEnabled) {
-        installBootstrapDiagnostics();
-    }
 
     const {
         appVersion,

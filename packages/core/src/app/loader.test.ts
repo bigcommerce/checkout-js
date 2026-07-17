@@ -135,7 +135,7 @@ describe('loadFiles', () => {
         );
     });
 
-    describe('when isSafePrefetchEnabled is true', () => {
+    describe('when isConsistentCrossOriginFixEnabled is true', () => {
         afterEach(() => {
             document.head.querySelectorAll('link[rel="prefetch"]').forEach((link) => {
                 link.remove();
@@ -179,6 +179,35 @@ describe('loadFiles', () => {
             expect(links[1]).toHaveAttribute('href', 'https://cdn.foo.bar/step-b.css');
             expect(links[1]).toHaveAttribute('crossorigin', 'anonymous');
             expect(links[1]).toHaveAttribute('integrity', 'hash-step-b-css');
+        });
+
+        it('logs a failure tied to the specific prefetch link that failed, without a page-wide listener', async () => {
+            const consoleErrorSpy = jest
+                .spyOn(console, 'error')
+                .mockImplementation(() => undefined);
+            const addEventListenerSpy = jest.spyOn(window, 'addEventListener');
+
+            await loadFiles({ ...options, isConsistentCrossOriginFixEnabled: true });
+
+            expect(addEventListenerSpy).not.toHaveBeenCalledWith('error', expect.anything());
+            expect(addEventListenerSpy).not.toHaveBeenCalledWith(
+                'unhandledrejection',
+                expect.anything(),
+            );
+
+            const [failingLink] = document.head.querySelectorAll<HTMLLinkElement>(
+                'link[rel="prefetch"][as="script"]',
+            );
+
+            failingLink.dispatchEvent(new Event('error'));
+
+            expect(consoleErrorSpy).toHaveBeenCalledWith(
+                '[checkout-js] Failed to prefetch (load or integrity check failed):',
+                'https://cdn.foo.bar/step-a.js',
+            );
+
+            addEventListenerSpy.mockRestore();
+            consoleErrorSpy.mockRestore();
         });
     });
 
@@ -242,7 +271,7 @@ describe('loadFiles', () => {
     });
 
     describe('bootstrap diagnostics', () => {
-        it('does not log anything when isSafePrefetchEnabled is off, preserving existing behavior', async () => {
+        it('does not log anything when isConsistentCrossOriginFixEnabled is off, preserving existing behavior', async () => {
             const consoleErrorSpy = jest
                 .spyOn(console, 'error')
                 .mockImplementation(() => undefined);
@@ -259,7 +288,7 @@ describe('loadFiles', () => {
             consoleErrorSpy.mockRestore();
         });
 
-        it('logs a clear, greppable message and still rejects if bootstrapping fails when isSafePrefetchEnabled is on', async () => {
+        it('logs a clear, greppable message and still rejects if bootstrapping fails when isConsistentCrossOriginFixEnabled is on', async () => {
             const consoleErrorSpy = jest
                 .spyOn(console, 'error')
                 .mockImplementation(() => undefined);
