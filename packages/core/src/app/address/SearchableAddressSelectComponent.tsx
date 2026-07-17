@@ -1,7 +1,7 @@
 import { type Address, type CustomerAddress } from '@bigcommerce/checkout-sdk';
 import React, { type ChangeEvent, type FunctionComponent, useMemo, useState } from 'react';
 
-import { useCapabilities, useLocale } from '@bigcommerce/checkout/contexts';
+import { useLocale } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { TextInput } from '@bigcommerce/checkout/ui';
@@ -9,6 +9,7 @@ import { TextInput } from '@bigcommerce/checkout/ui';
 import AddressType from './AddressType';
 import { searchingAddresses } from './searchingAddresses';
 import StaticAddress from './StaticAddress';
+import { useRestrictManualAddressEntry } from './useRestrictManualAddressEntry';
 
 export interface SearchableAddressSelectProps {
     addresses: CustomerAddress[];
@@ -28,14 +29,7 @@ export const SearchableAddressSelectComponent: FunctionComponent<SearchableAddre
     const [searchQuery, setSearchQuery] = useState('');
 
     const { language } = useLocale();
-    const {
-        shipping: { restrictManualAddressEntry: restrictManualAddressEntryForShipping },
-        billing: { restrictManualAddressEntry: restrictManualAddressEntryForBilling },
-    } = useCapabilities();
-    const restrictManualAddressEntry =
-        type === AddressType.Shipping
-            ? restrictManualAddressEntryForShipping
-            : restrictManualAddressEntryForBilling;
+    const restrictManualAddressEntry = useRestrictManualAddressEntry(type);
 
     const filteredAddresses = useMemo(() => {
         const addressesByType = addresses.filter((address) =>

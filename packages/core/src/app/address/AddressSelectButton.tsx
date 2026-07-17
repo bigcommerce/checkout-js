@@ -10,6 +10,7 @@ import {
 import { type AddressSelectProps } from './AddressSelect';
 import SingleLineStaticAddress from './SingleLineStaticAddress';
 import StaticAddress from './StaticAddress';
+import { useRestrictManualAddressEntry } from './useRestrictManualAddressEntry';
 
 type AddressSelectButtonProps = Pick<
     AddressSelectProps,
@@ -24,12 +25,21 @@ const AddressSelectButton: FunctionComponent<AddressSelectButtonProps & WithLang
     placeholderText,
 }) => {
     const [ariaExpanded, setAriaExpanded] = useState(false);
+    const restrictManualAddressEntry = useRestrictManualAddressEntry(type);
 
     const SelectedAddress = () => {
         if (!selectedAddress) {
             return (
                 <span className="body-regular" data-test="address-select-placeholder">
-                    {placeholderText ?? <TranslatedString id="address.enter_address_action" />}
+                    {placeholderText ?? (
+                        <TranslatedString
+                            id={
+                                restrictManualAddressEntry
+                                    ? 'address.select_address_action'
+                                    : 'address.enter_address_action'
+                            }
+                        />
+                    )}
                 </span>
             );
         }
