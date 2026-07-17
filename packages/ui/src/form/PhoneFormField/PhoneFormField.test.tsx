@@ -12,6 +12,7 @@ import { PhoneFormField, type PhoneFormFieldProps } from './PhoneFormField';
 
 const mockIsValidNumber = jest.fn();
 const mockSetCountry = jest.fn();
+const mockSetNumber = jest.fn();
 const mockGetSelectedCountryData = jest.fn();
 
 jest.mock('@intl-tel-input/react', () => ({
@@ -29,6 +30,7 @@ jest.mock('@intl-tel-input/react', () => ({
                 getSelectedCountryData: mockGetSelectedCountryData,
                 isValidNumber: mockIsValidNumber,
                 setCountry: mockSetCountry,
+                setNumber: mockSetNumber,
             }),
         }));
 
@@ -88,6 +90,7 @@ describe('PhoneFormField', () => {
         mockGetSelectedCountryData.mockClear();
         mockIsValidNumber.mockClear();
         mockSetCountry.mockClear();
+        mockSetNumber.mockClear();
     });
 
     it('renders IntlTelInput', () => {
@@ -100,6 +103,17 @@ describe('PhoneFormField', () => {
         renderPhoneFormField({ selectedCountry: 'US' });
 
         expect(mockSetCountry).toHaveBeenCalledWith('us');
+    });
+
+    it('clears any stale number before auto-setting the country', () => {
+        renderPhoneFormField({ selectedCountry: 'US' });
+
+        expect(mockSetNumber).toHaveBeenCalledWith('');
+
+        const setNumberOrder = mockSetNumber.mock.invocationCallOrder[0];
+        const setCountryOrder = mockSetCountry.mock.invocationCallOrder[0];
+
+        expect(setNumberOrder).toBeLessThan(setCountryOrder);
     });
 
     it('does not auto-set country when selectedCountry is not provided', () => {
