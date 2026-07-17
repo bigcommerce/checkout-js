@@ -16,7 +16,7 @@ export interface CustomCheckoutWindow extends Window {
         publicPath?: string;
         sentryConfig?: BrowserOptions;
         permalinkStatus?: OrderPermalinkStatus | null;
-        isSafePrefetchEnabled?: boolean;
+        isConsistentCrossOriginFixEnabled?: boolean;
     };
 }
 
@@ -31,17 +31,19 @@ function isCustomCheckoutWindow(window: Window): window is CustomCheckoutWindow 
         throw new Error('Checkout config is missing.');
     }
 
-    const isSafePrefetchEnabled = Boolean(window.checkoutConfig.isSafePrefetchEnabled);
+    const isConsistentCrossOriginFixEnabled = Boolean(
+        window.checkoutConfig.isConsistentCrossOriginFixEnabled,
+    );
 
     const bootstrap = async (customCheckoutWindow: CustomCheckoutWindow): Promise<void> => {
         const { renderOrderConfirmation, renderCheckout } = await loadFiles({
-            isSafePrefetchEnabled,
+            isConsistentCrossOriginFixEnabled,
         });
 
         const {
             orderId,
             checkoutId,
-            isSafePrefetchEnabled: _isSafePrefetchEnabled,
+            isConsistentCrossOriginFixEnabled: _isConsistentCrossOriginFixEnabled,
             ...appProps
         } = customCheckoutWindow.checkoutConfig;
 
@@ -52,11 +54,7 @@ function isCustomCheckoutWindow(window: Window): window is CustomCheckoutWindow 
         }
     };
 
-    // Gated behind the same flag as the crossorigin/SRI prefetch fix: existing stores
-    // (flag off) get the exact same fire-and-forget bootstrap as before this diagnostics
-    // work existed -- a failure is a silent unhandled rejection, same as always. Only
-    // flag-on stores get it caught and logged.
-    if (!isSafePrefetchEnabled) {
+    if (!isConsistentCrossOriginFixEnabled) {
         await bootstrap(window);
 
         return;

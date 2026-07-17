@@ -1,5 +1,6 @@
-import { getDefaultTranslations, isLanguageWindow } from '@bigcommerce/checkout/locale';
 import { getScriptLoader, getStylesheetLoader } from '@bigcommerce/script-loader';
+
+import { getDefaultTranslations, isLanguageWindow } from '@bigcommerce/checkout/locale';
 
 import { isAppExport } from './AppExport';
 import { type RenderCheckoutOptions } from './checkout';
@@ -20,7 +21,7 @@ export interface AssetManifest {
 
 export interface LoadFilesOptions {
     publicPath?: string;
-    isSafePrefetchEnabled?: boolean;
+    isConsistentCrossOriginFixEnabled?: boolean;
 }
 
 export interface LoadFilesResult {
@@ -33,17 +34,6 @@ const DIAGNOSTIC_PREFIX = '[checkout-js]';
 
 let areBootstrapDiagnosticsInstalled = false;
 
-/**
- * Bootstrap failures (a chunk that never loads, an uncaught exception thrown by
- * another script on the page, a rejected promise inside the loader itself) currently
- * have no error reporting: Sentry is only initialized once the checkout app has
- * rendered, which is exactly the thing that doesn't happen when bootstrap fails. These
- * listeners are a last-resort safety net so a failure at least leaves a clear,
- * greppable trace in the console instead of a silent, unexplained hang. They are
- * intentionally left installed for the lifetime of the page (not just the bootstrap
- * window), since we've also seen checkout go silent minutes after a successful initial
- * load (e.g. mid-way through the shipping step).
- */
 function installBootstrapDiagnostics(): void {
     if (areBootstrapDiagnosticsInstalled || typeof window === 'undefined') {
         return;
@@ -68,7 +58,7 @@ function installBootstrapDiagnostics(): void {
     });
 }
 
-function preloadWithCrossOrigin(
+function preloadWithConsistentCrossOrigin(
     tags: Array<{ rel: string; as: string; href: string; integrity?: string }>,
 ): void {
     tags.forEach(({ rel, as, href, integrity }) => {
@@ -89,13 +79,10 @@ function preloadWithCrossOrigin(
 
 export function loadFiles(options?: LoadFilesOptions): Promise<LoadFilesResult> {
     const publicPath = configurePublicPath(options && options.publicPath);
-    const isSafePrefetchEnabled = Boolean(options?.isSafePrefetchEnabled);
+    const isConsistentCrossOriginFixEnabled = Boolean(options?.isConsistentCrossOriginFixEnabled);
 
-    // Gated behind the same flag as the crossorigin/SRI prefetch fix below: existing
-    // stores (flag off) get byte-for-byte the same behavior as before this diagnostics
-    // work existed. Only stores opted into the fix also get the extra error visibility
-    // while we validate the rollout.
-    if (isSafePrefetchEnabled) {
+    // diagnostics is also gated behind the same experiment
+    if (isConsistentCrossOriginFixEnabled) {
         installBootstrapDiagnostics();
     }
 
@@ -137,14 +124,8 @@ export function loadFiles(options?: LoadFilesOptions): Promise<LoadFilesResult> 
         ),
     );
 
-    if (isSafePrefetchEnabled) {
-        // `@bigcommerce/script-loader`'s preloadScripts/preloadStylesheets create
-        // `<link rel="prefetch">` tags with no `crossorigin` attribute, while webpack's
-        // runtime later loads these same chunk URLs with `crossorigin="anonymous"` plus a
-        // Subresource Integrity hash. A browser can end up reusing the crossorigin-less
-        // prefetch response for the later CORS+SRI request, which silently fails to
-        // execute. Build the prefetch tags ourselves so the attributes match.
-        preloadWithCrossOrigin(
+    if (isConsistentCrossOriginFixEnabled) {
+        preloadWithConsistentCrossOrigin(
             jsDynamicChunks.map((path) => ({
                 rel: 'prefetch',
                 as: 'script',
@@ -153,7 +134,7 @@ export function loadFiles(options?: LoadFilesOptions): Promise<LoadFilesResult> 
             })),
         );
 
-        preloadWithCrossOrigin(
+        preloadWithConsistentCrossOrigin(
             cssDynamicChunks.map((path) => ({
                 rel: 'prefetch',
                 as: 'style',
@@ -214,9 +195,7 @@ export function loadFiles(options?: LoadFilesOptions): Promise<LoadFilesResult> 
         };
     });
 
-    // Same gating as above: don't attach a `.catch()` at all unless the flag is on, so
-    // existing stores get the exact same promise behavior as before this existed.
-    if (!isSafePrefetchEnabled) {
+    if (!isConsistentCrossOriginFixEnabled) {
         return filesPromise;
     }
 

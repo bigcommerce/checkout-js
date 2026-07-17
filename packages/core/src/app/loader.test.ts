@@ -1,6 +1,7 @@
-import { CHECKOUT_ROOT_NODE_ID } from '@bigcommerce/checkout/payment-integration-api';
 import { getScriptLoader, getStylesheetLoader } from '@bigcommerce/script-loader';
 import { noop } from 'lodash';
+
+import { CHECKOUT_ROOT_NODE_ID } from '@bigcommerce/checkout/payment-integration-api';
 
 import type AppExport from './AppExport';
 import { type AssetManifest, loadFiles, type LoadFilesOptions } from './loader';
@@ -142,14 +143,14 @@ describe('loadFiles', () => {
         });
 
         it('does not use script-loader to prefetch dynamic JS or CSS chunks', async () => {
-            await loadFiles({ ...options, isSafePrefetchEnabled: true });
+            await loadFiles({ ...options, isConsistentCrossOriginFixEnabled: true });
 
             expect(getScriptLoader().preloadScripts).not.toHaveBeenCalled();
             expect(getStylesheetLoader().preloadStylesheets).not.toHaveBeenCalled();
         });
 
         it('prefetches dynamic JS chunks with matching crossorigin and integrity attributes', async () => {
-            await loadFiles({ ...options, isSafePrefetchEnabled: true });
+            await loadFiles({ ...options, isConsistentCrossOriginFixEnabled: true });
 
             const links = document.head.querySelectorAll<HTMLLinkElement>(
                 'link[rel="prefetch"][as="script"]',
@@ -165,7 +166,7 @@ describe('loadFiles', () => {
         });
 
         it('prefetches dynamic CSS chunks with matching crossorigin and integrity attributes', async () => {
-            await loadFiles({ ...options, isSafePrefetchEnabled: true });
+            await loadFiles({ ...options, isConsistentCrossOriginFixEnabled: true });
 
             const links = document.head.querySelectorAll<HTMLLinkElement>(
                 'link[rel="prefetch"][as="style"]',
@@ -268,9 +269,9 @@ describe('loadFiles', () => {
                 src.includes('vendor.js') ? Promise.reject(bootstrapError) : Promise.resolve(),
             );
 
-            await expect(loadFiles({ ...options, isSafePrefetchEnabled: true })).rejects.toThrow(
-                bootstrapError,
-            );
+            await expect(
+                loadFiles({ ...options, isConsistentCrossOriginFixEnabled: true }),
+            ).rejects.toThrow(bootstrapError);
 
             expect(consoleErrorSpy).toHaveBeenCalledWith(
                 '[checkout-js] Failed to bootstrap checkout:',
