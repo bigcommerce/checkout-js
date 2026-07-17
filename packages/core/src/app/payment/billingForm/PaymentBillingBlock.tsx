@@ -1,17 +1,12 @@
-import type { CheckoutSelectors, FormField } from '@bigcommerce/checkout-sdk';
-import React, { type FunctionComponent, useCallback, useEffect, useState } from 'react';
+import type { CheckoutSelectors } from '@bigcommerce/checkout-sdk';
+import React, { type FunctionComponent } from 'react';
 
-import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { AddressFormSkeleton, Legend } from '@bigcommerce/checkout/ui';
 
-import {
-    AddressType,
-    isEqualAddress,
-    mapAddressFromFormValues,
-    setDefaultAddress,
-} from '../../address';
+import { isEqualAddress, mapAddressFromFormValues } from '../../address';
 import { type BillingFormValues } from '../../billing/billingFormConfig';
+import { useBilling } from '../../billing/hooks/useBilling';
 
 import { PaymentBillingForm } from './PaymentBillingForm';
 
@@ -25,23 +20,6 @@ export interface PaymentBillingBlockProps {
     onUnhandledError(error: Error): void;
 }
 
-const getFieldsWithExtraFields = (
-    getBillingAddressFields: (countryCode: string) => FormField[],
-    hasAddressExtraFields: boolean,
-    getAddressExtraFields: () => FormField[],
-    countryCode?: string,
-) => {
-    const addressFields = getBillingAddressFields(countryCode || '');
-
-    if (!hasAddressExtraFields) {
-        return addressFields;
-    }
-
-    const addressExtraFields = getAddressExtraFields();
-
-    return [...addressFields, ...addressExtraFields];
-};
-
 export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = ({
     methodId,
     isBillingSameAsShipping,
@@ -49,43 +27,16 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
     onUnhandledError,
 }) => {
     const {
-        selectedState: {
-            checkout,
-            config,
-            customer,
-            isLoadingBillingCountries,
-            getBillingAddressFields,
-            getAddressExtraFields,
-        },
-        checkoutState: {
-            data: { getBillingAddress, getShippingAddress },
-        },
-        checkoutService,
-    } = useCheckout(({ data, statuses }) => ({
-        checkout: data.getCheckout(),
-        config: data.getConfig(),
-        customer: data.getCustomer(),
-        isLoadingBillingCountries: statuses.isLoadingBillingCountries(),
-        getBillingAddressFields: data.getBillingAddressFields,
-        getAddressExtraFields: data.getAddressExtraFields,
-    }));
-    const {
-        billing: { restrictManualAddressEntry },
-        userJourney: { hasAddressExtraFields, hasCompanyAddressBook },
-    } = useCapabilities();
-
-    if (!config || !customer || !checkout) {
-        throw new Error('Unable to access checkout data');
-    }
-
-    const [isApplyingDefaultAddress, setIsApplyingDefaultAddress] = useState(true);
-    const isInitializing = isLoadingBillingCountries || isApplyingDefaultAddress;
-
-    const hasAddresses = Boolean(customer.addresses && customer.addresses.length > 0);
-    const showNoAddressesWarning = restrictManualAddressEntry && !hasAddresses;
-
-    const customerMessage = checkout.customerMessage;
-    const billingAddress = getBillingAddress();
+        billingAddress,
+        customerMessage,
+        getBillingAddress,
+        getFields,
+        getShippingAddress,
+        isInitializing,
+        showNoAddressesWarning,
+        updateBillingAddress,
+        updateCheckout,
+    } = useBilling({ onUnhandledError });
 
     const handleBillingSameAsShippingChange = (checked: boolean) => {
         onBillingSameAsShippingChange(checked);
@@ -97,7 +48,7 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
         const shippingAddress = getShippingAddress();
 
         if (shippingAddress && !isEqualAddress(shippingAddress, getBillingAddress())) {
-            checkoutService.updateBillingAddress(shippingAddress).catch((error) => {
+            updateBillingAddress(shippingAddress).catch((error) => {
                 onBillingSameAsShippingChange(false);
 
                 if (error instanceof Error) {
@@ -106,17 +57,6 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
             });
         }
     };
-
-    const getFields = useCallback(
-        (countryCode?: string) =>
-            getFieldsWithExtraFields(
-                getBillingAddressFields,
-                hasAddressExtraFields,
-                getAddressExtraFields,
-                countryCode,
-            ),
-        [getBillingAddressFields, hasAddressExtraFields, getAddressExtraFields],
-    );
 
     // Persist without navigating — the payment step's "Place Order" is the only
     // submit. Called by PaymentBillingForm's pre-submit save;
@@ -129,40 +69,15 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
         const address = mapAddressFromFormValues(addressValues);
 
         if (address && !isEqualAddress(address, currentBillingAddress)) {
-            promises.push(checkoutService.updateBillingAddress(address));
+            promises.push(updateBillingAddress(address));
         }
 
         if (customerMessage !== orderComment) {
-            promises.push(checkoutService.updateCheckout({ customerMessage: orderComment }));
+            promises.push(updateCheckout({ customerMessage: orderComment }));
         }
 
         await Promise.all(promises);
     };
-
-    useEffect(() => {
-        const init = async () => {
-            try {
-                await checkoutService.loadBillingAddressFields();
-
-                if (hasCompanyAddressBook) {
-                    await setDefaultAddress({
-                        type: AddressType.Billing,
-                        currentAddress: getBillingAddress(),
-                        addresses: customer.addresses,
-                        updateAddress: checkoutService.updateBillingAddress,
-                    });
-                }
-            } catch (error) {
-                if (error instanceof Error) {
-                    onUnhandledError(error);
-                }
-            } finally {
-                setIsApplyingDefaultAddress(false);
-            }
-        };
-
-        void init();
-    }, []);
 
     if (showNoAddressesWarning) {
         return (
