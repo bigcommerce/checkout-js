@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.839.0](https://github.com/bigcommerce/checkout-js/compare/v1.838.0...v1.839.0) (2026-07-17)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10152 add new useBilling hook to manage common logic between 2 billing components ([#3163](https://github.com/bigcommerce/checkout-js/issues/3163)) ([30d4c57](https://github.com/bigcommerce/checkout-js/commit/30d4c579b678f4e6242f107fe996e5ae7fca84dd))
+
 ## [1.838.0](https://github.com/bigcommerce/checkout-js/compare/v1.837.0...v1.838.0) (2026-07-16)
 
 
