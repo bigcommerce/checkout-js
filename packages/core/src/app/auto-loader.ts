@@ -65,5 +65,7 @@ function isCustomCheckoutWindow(window: Window): window is CustomCheckoutWindow 
     } catch (error) {
         // eslint-disable-next-line no-console
         console.error('[checkout-js] Checkout failed to bootstrap:', error);
+
+        throw error;
     }
 })();
