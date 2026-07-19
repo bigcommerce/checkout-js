@@ -40,5 +40,9 @@ export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>
 
         { id: 'tdonlinemart' },
         { id: 'cba_mpgs', experiment: 'PI-4748_cba_resolver_configuration' },
+        {
+            id: 'sagepay',
+            experiment: 'PI-4754_sage_pay_resolver_configuration',
+        },
     ],
 );

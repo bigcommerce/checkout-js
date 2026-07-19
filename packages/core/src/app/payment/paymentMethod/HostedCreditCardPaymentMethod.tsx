@@ -44,6 +44,11 @@ const HostedCreditCardPaymentMethod: FunctionComponent<
         'PI-4748.cba_resolver_configuration',
         false,
     );
+    const isSagePayResolverEnabled = isExperimentEnabled(
+        config?.checkoutSettings,
+        'PI-4754.sage_pay_resolver_configuration',
+        false,
+    );
 
     const initializeHostedCreditCardPayment: CreditCardPaymentMethodProps['initializePayment'] =
         useCallback(
@@ -55,7 +60,7 @@ const HostedCreditCardPaymentMethod: FunctionComponent<
                         createCreditCardPaymentStrategy,
                         createCyberSourcePaymentStrategy,
                         createCyberSourceV2PaymentStrategy,
-                        createSagePayPaymentStrategy,
+                        ...(!isSagePayResolverEnabled ? [createSagePayPaymentStrategy] : []),
                         ...(!isCBAMPGSResolverEnabled ? [createCBAMPGSPaymentStrategy] : []),
                     ],
                     creditCard: getHostedFormOptions && {
@@ -63,7 +68,12 @@ const HostedCreditCardPaymentMethod: FunctionComponent<
                     },
                 });
             },
-            [getHostedFormOptions, initializePayment, isCBAMPGSResolverEnabled],
+            [
+                getHostedFormOptions,
+                initializePayment,
+                isCBAMPGSResolverEnabled,
+                isSagePayResolverEnabled,
+            ],
         );
 
     return (
