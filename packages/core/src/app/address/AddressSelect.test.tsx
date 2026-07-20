@@ -55,6 +55,55 @@ describe('AddressSelect component', () => {
         expect(screen.getByText('Enter a new address')).toBeInTheDocument();
     });
 
+    it('renders `Select an address` when there is no selected address and manual address entry is restricted', () => {
+        const storeConfig = getStoreConfig();
+
+        jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue({
+            ...storeConfig,
+            checkoutSettings: {
+                ...storeConfig.checkoutSettings,
+                capabilities: {
+                    ...defaultCapabilities,
+                    billing: {
+                        ...defaultCapabilities.billing,
+                        restrictManualAddressEntry: true,
+                    },
+                },
+            },
+        });
+
+        renderAddressSelect({ type: AddressType.Billing });
+
+        expect(screen.getByTestId('address-select-placeholder')).toHaveTextContent(
+            'Select an address',
+        );
+        expect(screen.queryByText('Enter a new address')).not.toBeInTheDocument();
+    });
+
+    it('renders `Enter Address` when manual address entry is only restricted for the other address type', () => {
+        const storeConfig = getStoreConfig();
+
+        jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue({
+            ...storeConfig,
+            checkoutSettings: {
+                ...storeConfig.checkoutSettings,
+                capabilities: {
+                    ...defaultCapabilities,
+                    shipping: {
+                        ...defaultCapabilities.shipping,
+                        restrictManualAddressEntry: true,
+                    },
+                },
+            },
+        });
+
+        renderAddressSelect({ type: AddressType.Billing });
+
+        expect(screen.getByTestId('address-select-placeholder')).toHaveTextContent(
+            'Enter a new address',
+        );
+    });
+
     it('renders static address when there is a selected address', () => {
         const selectedAddress = getAddress();
 
