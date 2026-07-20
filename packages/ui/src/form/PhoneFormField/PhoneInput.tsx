@@ -50,6 +50,8 @@ export const PhoneInput: FunctionComponent<PhoneInputProps> = ({
             const intlTelInputInstance = intlTelInputRef.current?.getInstance();
 
             if (intlTelInputInstance) {
+                // library's internal instance can have stale digits in edge cases (bug on their side)
+                intlTelInputInstance.setNumber('');
                 intlTelInputInstance.setCountry(selectedCountryInIsoFormat);
                 isPhoneCountryAutoSetRef.current = true;
             }
