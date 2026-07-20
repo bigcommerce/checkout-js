@@ -67,13 +67,14 @@ export const OrderConfirmation = ({
         isLoadingOrder: statuses.isLoadingOrder(),
     }));
     const { analyticsTracker } = useAnalytics();
-    const [cannotCreatePersonalAccount] = useState(() => {
-        const value = CannotCreatePersonalAccountSessionStorage.getCannotCreatePersonalAccount();
+    const [cannotCreatePersonalAccount, setCannotCreatePersonalAccount] = useState(false);
 
+    useEffect(() => {
+        setCannotCreatePersonalAccount(
+            CannotCreatePersonalAccountSessionStorage.getCannotCreatePersonalAccount(),
+        );
         CannotCreatePersonalAccountSessionStorage.removeCannotCreatePersonalAccount();
-
-        return value;
-    });
+    }, []);
 
     const handleUnhandledError = (e: Error) => {
         setError(e);
