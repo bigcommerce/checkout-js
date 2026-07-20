@@ -58,6 +58,8 @@ describe('loadFiles', () => {
             renderOrderConfirmation: jest.fn(),
             initializeLanguageService: jest.fn(),
         };
+        (global as any).PRELOAD_ASSETS = ['step-a.js', 'step-b.js', 'step-a.css', 'step-b.css'];
+
         (global as any).scheduler = {
             yield() {
                 return new Promise((resolve) => process.nextTick(resolve));
