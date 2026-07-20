@@ -31,41 +31,22 @@ function isCustomCheckoutWindow(window: Window): window is CustomCheckoutWindow 
         throw new Error('Checkout config is missing.');
     }
 
-    const isConsistentCrossOriginFixEnabled = Boolean(
-        window.checkoutConfig.isConsistentCrossOriginFixEnabled,
-    );
+    const { renderOrderConfirmation, renderCheckout } = await loadFiles({
+        isConsistentCrossOriginFixEnabled: Boolean(
+            window.checkoutConfig.isConsistentCrossOriginFixEnabled,
+        ),
+    });
 
-    const bootstrap = async (customCheckoutWindow: CustomCheckoutWindow): Promise<void> => {
-        const { renderOrderConfirmation, renderCheckout } = await loadFiles({
-            isConsistentCrossOriginFixEnabled,
-        });
+    const {
+        orderId,
+        checkoutId,
+        isConsistentCrossOriginFixEnabled: _isConsistentCrossOriginFixEnabled,
+        ...appProps
+    } = window.checkoutConfig;
 
-        const {
-            orderId,
-            checkoutId,
-            isConsistentCrossOriginFixEnabled: _isConsistentCrossOriginFixEnabled,
-            ...appProps
-        } = customCheckoutWindow.checkoutConfig;
-
-        if (orderId) {
-            renderOrderConfirmation({ ...appProps, orderId });
-        } else if (checkoutId) {
-            renderCheckout({ ...appProps, checkoutId });
-        }
-    };
-
-    if (!isConsistentCrossOriginFixEnabled) {
-        await bootstrap(window);
-
-        return;
-    }
-
-    try {
-        await bootstrap(window);
-    } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error('[checkout-js] Checkout failed to bootstrap:', error);
-
-        throw error;
+    if (orderId) {
+        renderOrderConfirmation({ ...appProps, orderId });
+    } else if (checkoutId) {
+        renderCheckout({ ...appProps, checkoutId });
     }
 })();

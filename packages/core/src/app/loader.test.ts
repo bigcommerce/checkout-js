@@ -58,8 +58,6 @@ describe('loadFiles', () => {
             renderOrderConfirmation: jest.fn(),
             initializeLanguageService: jest.fn(),
         };
-        (global as any).PRELOAD_ASSETS = ['step-a.js', 'step-b.js', 'step-a.css', 'step-b.css'];
-
         (global as any).scheduler = {
             yield() {
                 return new Promise((resolve) => process.nextTick(resolve));
@@ -68,6 +66,12 @@ describe('loadFiles', () => {
     });
 
     afterEach(() => {
+        jest.restoreAllMocks();
+
+        document.head.querySelectorAll('link[rel="prefetch"]').forEach((link) => {
+            link.remove();
+        });
+
         delete (global as any).MANIFEST_JSON;
         delete (global as any).LIBRARY_NAME;
         delete (global as any).checkout;
@@ -136,12 +140,6 @@ describe('loadFiles', () => {
     });
 
     describe('when isConsistentCrossOriginFixEnabled is true', () => {
-        afterEach(() => {
-            document.head.querySelectorAll('link[rel="prefetch"]').forEach((link) => {
-                link.remove();
-            });
-        });
-
         it('does not use script-loader to prefetch dynamic JS or CSS chunks', async () => {
             await loadFiles({ ...options, isConsistentCrossOriginFixEnabled: true });
 
@@ -149,7 +147,7 @@ describe('loadFiles', () => {
             expect(getStylesheetLoader().preloadStylesheets).not.toHaveBeenCalled();
         });
 
-        it('prefetches dynamic JS chunks with matching crossorigin and integrity attributes', async () => {
+        it('prefetches dynamic JS chunks with crossorigin matching the real chunk requests', async () => {
             await loadFiles({ ...options, isConsistentCrossOriginFixEnabled: true });
 
             const links = document.head.querySelectorAll<HTMLLinkElement>(
@@ -159,13 +157,11 @@ describe('loadFiles', () => {
             expect(links).toHaveLength(2);
             expect(links[0]).toHaveAttribute('href', 'https://cdn.foo.bar/step-a.js');
             expect(links[0]).toHaveAttribute('crossorigin', 'anonymous');
-            expect(links[0]).toHaveAttribute('integrity', 'hash-step-a-js');
             expect(links[1]).toHaveAttribute('href', 'https://cdn.foo.bar/step-b.js');
             expect(links[1]).toHaveAttribute('crossorigin', 'anonymous');
-            expect(links[1]).toHaveAttribute('integrity', 'hash-step-b-js');
         });
 
-        it('prefetches dynamic CSS chunks with matching crossorigin and integrity attributes', async () => {
+        it('prefetches dynamic CSS chunks with crossorigin matching the real chunk requests', async () => {
             await loadFiles({ ...options, isConsistentCrossOriginFixEnabled: true });
 
             const links = document.head.querySelectorAll<HTMLLinkElement>(
@@ -175,10 +171,19 @@ describe('loadFiles', () => {
             expect(links).toHaveLength(2);
             expect(links[0]).toHaveAttribute('href', 'https://cdn.foo.bar/step-a.css');
             expect(links[0]).toHaveAttribute('crossorigin', 'anonymous');
-            expect(links[0]).toHaveAttribute('integrity', 'hash-step-a-css');
             expect(links[1]).toHaveAttribute('href', 'https://cdn.foo.bar/step-b.css');
             expect(links[1]).toHaveAttribute('crossorigin', 'anonymous');
-            expect(links[1]).toHaveAttribute('integrity', 'hash-step-b-css');
+        });
+
+        it('omits integrity from prefetch links since browsers ignore it and SRI is checked on the real chunk requests', async () => {
+            await loadFiles({ ...options, isConsistentCrossOriginFixEnabled: true });
+
+            const links = document.head.querySelectorAll<HTMLLinkElement>('link[rel="prefetch"]');
+
+            expect(links).toHaveLength(4);
+            links.forEach((link) => {
+                expect(link).not.toHaveAttribute('integrity');
+            });
         });
 
         it('logs a failure tied to the specific prefetch link that failed, without a page-wide listener', async () => {
@@ -202,12 +207,9 @@ describe('loadFiles', () => {
             failingLink.dispatchEvent(new Event('error'));
 
             expect(consoleErrorSpy).toHaveBeenCalledWith(
-                '[checkout-js] Failed to prefetch (load or integrity check failed):',
+                '[checkout-js] Failed to prefetch:',
                 'https://cdn.foo.bar/step-a.js',
             );
-
-            addEventListenerSpy.mockRestore();
-            consoleErrorSpy.mockRestore();
         });
     });
 
@@ -284,8 +286,6 @@ describe('loadFiles', () => {
             await expect(loadFiles(options)).rejects.toThrow(bootstrapError);
 
             expect(consoleErrorSpy).not.toHaveBeenCalled();
-
-            consoleErrorSpy.mockRestore();
         });
 
         it('logs a clear, greppable message and still rejects if bootstrapping fails when isConsistentCrossOriginFixEnabled is on', async () => {
@@ -306,8 +306,6 @@ describe('loadFiles', () => {
                 '[checkout-js] Failed to bootstrap checkout:',
                 bootstrapError,
             );
-
-            consoleErrorSpy.mockRestore();
         });
     });
 });

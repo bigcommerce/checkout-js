@@ -32,27 +32,20 @@ export interface LoadFilesResult {
 
 const DIAGNOSTIC_PREFIX = '[checkout-js]';
 
-function preloadWithConsistentCrossOrigin(
-    tags: Array<{ rel: string; as: string; href: string; integrity?: string }>,
+function prefetchWithConsistentCrossOrigin(
+    tags: Array<{ as: 'script' | 'style'; href: string }>,
 ): void {
-    tags.forEach(({ rel, as, href, integrity }) => {
+    tags.forEach(({ as, href }) => {
         const link = document.createElement('link');
 
-        link.setAttribute('rel', rel);
+        link.setAttribute('rel', 'prefetch');
         link.setAttribute('as', as);
         link.setAttribute('href', href);
         link.setAttribute('crossorigin', 'anonymous');
 
-        if (integrity) {
-            link.setAttribute('integrity', integrity);
-        }
-
         link.addEventListener('error', () => {
             // eslint-disable-next-line no-console
-            console.error(
-                `${DIAGNOSTIC_PREFIX} Failed to prefetch (load or integrity check failed):`,
-                href,
-            );
+            console.error(`${DIAGNOSTIC_PREFIX} Failed to prefetch:`, href);
         });
 
         document.head.appendChild(link);
@@ -102,21 +95,17 @@ export function loadFiles(options?: LoadFilesOptions): Promise<LoadFilesResult> 
     );
 
     if (isConsistentCrossOriginFixEnabled) {
-        preloadWithConsistentCrossOrigin(
+        prefetchWithConsistentCrossOrigin(
             jsDynamicChunks.map((path) => ({
-                rel: 'prefetch',
                 as: 'script',
                 href: joinPaths(publicPath, path),
-                integrity: integrity[path],
             })),
         );
 
-        preloadWithConsistentCrossOrigin(
+        prefetchWithConsistentCrossOrigin(
             cssDynamicChunks.map((path) => ({
-                rel: 'prefetch',
                 as: 'style',
                 href: joinPaths(publicPath, path),
-                integrity: integrity[path],
             })),
         );
     } else {
@@ -135,7 +124,7 @@ export function loadFiles(options?: LoadFilesOptions): Promise<LoadFilesResult> 
         ? window.language
         : { locale: 'en', locales: {}, translations: {} };
 
-    const filesPromise = Promise.all([
+    const filesPromise: Promise<LoadFilesResult> = Promise.all([
         getDefaultTranslations(languageConfig.locale),
         scripts,
         stylesheets,
