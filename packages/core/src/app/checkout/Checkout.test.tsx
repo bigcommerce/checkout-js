@@ -32,6 +32,7 @@ import {
     consignmentCouponDiscount,
 } from '@bigcommerce/checkout/test-framework';
 import { renderWithoutWrapper as render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
+import { CannotCreatePersonalAccountSessionStorage } from '@bigcommerce/checkout/utility';
 
 import { createErrorLogger } from '../common/error';
 import {
@@ -657,6 +658,58 @@ describe('Checkout', () => {
                     );
                 });
             } finally {
+                Object.defineProperty(window, 'location', {
+                    value: originalLocation,
+                    configurable: true,
+                    writable: true,
+                });
+            }
+        });
+
+        it('persists cannotCreatePersonalAccount to session storage when navigating to order confirmation', async () => {
+            const originalLocation = window.location;
+
+            Object.defineProperty(window, 'location', {
+                value: {
+                    // eslint-disable-next-line @typescript-eslint/no-misused-spread
+                    ...window.location,
+                    replace: jest.fn(),
+                },
+                configurable: true,
+                writable: true,
+            });
+
+            try {
+                checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
+
+                jest.spyOn(checkoutService, 'submitOrder').mockResolvedValue({
+                    data: {
+                        getOrder: () => ({ orderId: 123 }) as any,
+                    },
+                } as any);
+
+                const capabilities = {
+                    ...defaultCapabilities,
+                    orderConfirmation: {
+                        ...defaultCapabilities.orderConfirmation,
+                        cannotCreatePersonalAccount: true,
+                    },
+                };
+
+                render(<CheckoutTest {...defaultProps} capabilities={capabilities} />);
+
+                await checkout.waitForPaymentStep();
+
+                await userEvent.click(screen.getByText(/place order/i));
+
+                await waitFor(() => {
+                    expect(
+                        CannotCreatePersonalAccountSessionStorage.getCannotCreatePersonalAccount(),
+                    ).toBe(true);
+                });
+                expect(window.location.replace).toHaveBeenCalled();
+            } finally {
+                CannotCreatePersonalAccountSessionStorage.removeCannotCreatePersonalAccount();
                 Object.defineProperty(window, 'location', {
                     value: originalLocation,
                     configurable: true,
