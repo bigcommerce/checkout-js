@@ -16,7 +16,6 @@ import {
     isEqualAddress,
     mapAddressFromFormValues,
     mapAddressToFormValues,
-    useAddressLabelDecoder,
 } from '../address';
 import { isErrorWithType } from '../common/error';
 import { withFormikExtended } from '../common/form';
@@ -97,13 +96,11 @@ const SingleShippingForm: React.FC<
     shippingAutosaveDelay = SHIPPING_AUTOSAVE_DELAY,
     shippingFormRenderTimestamp,
     values,
-    errors,
 }) => {
     const {
         shipping: { hideBillingSameAsShippingCheck },
     } = useCapabilities();
     const { themeV2 } = useThemeContext();
-    const decode = useAddressLabelDecoder();
     const {
         consignments,
         deinitializeShippingMethod: deinitialize,
@@ -116,13 +113,13 @@ const SingleShippingForm: React.FC<
         updateShippingAddress: updateAddress,
     } = useShipping();
 
-    const propsRef = useRef({ values, shippingAddress, isValid, errors });
+    const propsRef = useRef({ values, shippingAddress, isValid });
     const debouncedUpdateAddressRef = useRef<
         | DebouncedFunc<(address: Address, includeShippingOptions: boolean) => Promise<void>>
         | undefined
     >(undefined);
 
-    propsRef.current = { values, shippingAddress, isValid, errors };
+    propsRef.current = { values, shippingAddress, isValid };
 
     const [isResettingAddress, setIsResettingAddress] = useState(false);
     const [isUpdatingShippingData, setIsUpdatingShippingData] = useState(false);
@@ -249,15 +246,12 @@ const SingleShippingForm: React.FC<
     const handleAddressSelect = async (address: Address) => {
         setIsResettingAddress(true);
 
-        // Decoded for form state; the useShipping wrapper encodes it for the write.
-        const decoded = decode(address);
-
         try {
-            await updateAddress(decoded);
+            await updateAddress(address);
 
             setValues({
                 ...propsRef.current.values,
-                shippingAddress: mapAddressToFormValues(getFields(decoded.countryCode), decoded),
+                shippingAddress: mapAddressToFormValues(getFields(address.countryCode), address),
             });
         } catch (error) {
             onUnhandledError(error);

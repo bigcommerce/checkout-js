@@ -97,15 +97,14 @@ const PaymentBillingFormComponent = ({
         isGuest && isPayPalFastlaneEnabled ? paypalFastlaneAddresses : customer.addresses;
 
     const billingAddresses = rawBillingAddresses.map(decode);
-    const decodedBillingAddress = decode(billingAddress);
 
     const hasAddresses = rawBillingAddresses.length > 0;
     const hasValidCustomerAddress =
-        decodedBillingAddress &&
+        billingAddress &&
         isValidCustomerAddress(
-            decodedBillingAddress,
+            billingAddress,
             billingAddresses,
-            getFields(decodedBillingAddress.countryCode),
+            getFields(billingAddress.countryCode),
         );
     const { enableOrderComments } = config.checkoutSettings;
     const shouldShowOrderComments = enableOrderComments && getShippableItemsCount(cart) < 1;
@@ -220,9 +219,7 @@ const PaymentBillingFormComponent = ({
                                         onSelectAddress={handleSelectAddress}
                                         onUseNewAddress={handleUseNewAddress}
                                         selectedAddress={
-                                            hasValidCustomerAddress
-                                                ? decodedBillingAddress
-                                                : undefined
+                                            hasValidCustomerAddress ? billingAddress : undefined
                                         }
                                         type={AddressType.Billing}
                                     />

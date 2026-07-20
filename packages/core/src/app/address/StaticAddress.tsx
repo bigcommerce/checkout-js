@@ -1,5 +1,3 @@
-import { type CheckoutContextProps, useCapabilities } from '@bigcommerce/checkout/contexts';
-import { localizeAddress } from '@bigcommerce/checkout/locale';
 import {
     type Address,
     type CheckoutSelectors,
@@ -8,6 +6,9 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import { isEmpty } from 'lodash';
 import React, { type FunctionComponent, memo } from 'react';
+
+import { type CheckoutContextProps, useCapabilities } from '@bigcommerce/checkout/contexts';
+import { localizeAddress } from '@bigcommerce/checkout/locale';
 
 import { withCheckout } from '../checkout';
 
@@ -38,8 +39,6 @@ const StaticAddress: FunctionComponent<
     const address = localizeAddress(addressWithoutLocalization, countries);
     const isValid = !isEmpty(address);
 
-    // Reconstruct "label/ company" for display; falls back to raw company (e.g. consignment data
-    // whose company is still encoded).
     const companyDisplay =
         hasAddressLabel && address.label
             ? joinLabelAndCompany(address.label, address.company)

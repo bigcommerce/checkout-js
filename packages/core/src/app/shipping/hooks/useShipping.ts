@@ -202,9 +202,6 @@ export const useShipping = () => {
         [encodeAddr, hasAddressLabel],
     );
 
-    // Spread `...rest` (rather than naming args[1]) so the underlying call keeps the exact arity
-    // it was invoked with — appending an explicit `undefined` options arg would change call
-    // signatures observed by callers/tests.
     const assignItem = useCallback(
         (...args: Parameters<typeof checkoutService.assignItemsToAddress>) => {
             const [req, ...rest] = args;
@@ -212,14 +209,6 @@ export const useShipping = () => {
             return checkoutService.assignItemsToAddress(encodeConsignmentReq(req), ...rest);
         },
         [checkoutService, encodeConsignmentReq],
-    );
-    const createCustomerAddress = useCallback(
-        (...args: Parameters<typeof checkoutService.createCustomerAddress>) => {
-            const [address, ...rest] = args;
-
-            return checkoutService.createCustomerAddress(encodeAddr(address), ...rest);
-        },
-        [checkoutService, encodeAddr],
     );
     const updateShippingAddress = useCallback(
         (...args: Parameters<typeof checkoutService.updateShippingAddress>) => {
@@ -247,7 +236,7 @@ export const useShipping = () => {
         countries: getShippingCountries() || EMPTY_ARRAY,
         customer,
         customerMessage: checkout.customerMessage,
-        createCustomerAddress,
+        createCustomerAddress: checkoutService.createCustomerAddress,
         defaultShippingExpectationMessage: showDefaultShippingExpectationPrompt
             ? defaultShippingExpectationPrompt
             : undefined,

@@ -11,9 +11,6 @@ import { type AddressFormValues } from './mapAddressToFormValues';
 export default function mapAddressFromFormValues(formValues: AddressFormValues): Address {
     const { customFields, extraFields, shouldSaveAddress, label, ...address } = formValues;
 
-    // encodeAddressForWrite folds `label` into `company`; the encoded output also lets the
-    // isEqualAddress change-detection compare like-for-like against the stored (encoded) address.
-    // It's a no-op for non-B2B: there's no label, and the company round-trips unchanged.
     return encodeAddressForWrite({
         ...address,
         label,

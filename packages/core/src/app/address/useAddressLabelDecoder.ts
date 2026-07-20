@@ -5,9 +5,6 @@ import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 
 import { decodeAddressLabel } from './addressLabelUtils';
 
-// Returns a decode function (usable on one address or via `list.map`) that gates on the capability,
-// backfills an empty company with cart.companyName, and is a no-op passthrough when off/undefined —
-// so callers don't repeat that in every form.
 export default function useAddressLabelDecoder(): <T extends Address | undefined>(address: T) => T {
     const {
         userJourney: { hasAddressLabel },
