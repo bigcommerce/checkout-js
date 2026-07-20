@@ -204,6 +204,7 @@ const AddressForm: React.FC<AddressFormProps> = ({
                                     inputId={getAddressFormFieldInputId(addressFieldName)}
                                     isFloatingLabelEnabled={isFloatingLabelEnabledValue}
                                     key={`${field.id}-${field.name}`}
+                                    onChange={handleDynamicFormFieldChange(addressFieldName)}
                                     parentFieldName={getParentFieldName()}
                                 />
                             );

@@ -266,10 +266,11 @@ const SingleShippingForm: React.FC<
 
         try {
             const address = await deleteConsignments();
+            const decoded = toFormAddress(address, hasAddressLabel);
 
             setValues({
                 ...propsRef.current.values,
-                shippingAddress: mapAddressToFormValues(getFields(address?.countryCode), address),
+                shippingAddress: mapAddressToFormValues(getFields(decoded?.countryCode), decoded),
             });
         } catch (error) {
             onUnhandledError(error);

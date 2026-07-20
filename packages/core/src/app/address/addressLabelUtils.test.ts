@@ -4,7 +4,11 @@ import {
     type CustomerAddress,
 } from '@bigcommerce/checkout-sdk';
 
-import { decodeAddressLabel, encodeAddressForWrite, joinLabelAndCompany } from './addressLabelUtils';
+import {
+    decodeAddressLabel,
+    encodeAddressForWrite,
+    joinLabelAndCompany,
+} from './addressLabelUtils';
 
 describe('decodeAddressLabel', () => {
     it('splits a label out of company when no b2b label is present', () => {

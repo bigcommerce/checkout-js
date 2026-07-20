@@ -1,5 +1,3 @@
-import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { DynamicInput, Label } from '@bigcommerce/checkout/ui';
 import { type FormField } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { useField } from 'formik';
@@ -10,6 +8,9 @@ import React, {
     type ReactNode,
     useState,
 } from 'react';
+
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { DynamicInput, Label } from '@bigcommerce/checkout/ui';
 
 import { getAddressFormFieldInputId } from './getAddressFormFieldInputId';
 
@@ -74,6 +75,7 @@ export interface AddressLabelFormFieldProps {
     parentFieldName?: string;
     inputId?: string;
     isFloatingLabelEnabled?: boolean;
+    onChange?(value: string): void;
 }
 
 // Renders the Address Label input next to Company Name. Both are plain Formik fields; the label is
@@ -83,6 +85,7 @@ const AddressLabelFormField: FunctionComponent<AddressLabelFormFieldProps> = ({
     parentFieldName,
     inputId,
     isFloatingLabelEnabled,
+    onChange,
 }) => {
     const labelPath = parentFieldName ? `${parentFieldName}.label` : 'label';
     const companyPath = parentFieldName ? `${parentFieldName}.company` : 'company';
@@ -91,6 +94,10 @@ const AddressLabelFormField: FunctionComponent<AddressLabelFormFieldProps> = ({
     const [labelField, , labelHelpers] = useField<string>(labelPath);
     const [companyField] = useField<string>(companyPath);
     const [slashError, setSlashError] = useState(false);
+
+    // Label and company both change the value persisted to `company` (encoded on write), so either
+    // edit should notify the parent to run its autosave.
+    const notifyChange = (value = companyField.value ?? '') => onChange?.(value);
 
     const handleLabelChange = (event: ChangeEvent<HTMLInputElement>) => {
         const newLabel = event.target.value;
@@ -104,6 +111,12 @@ const AddressLabelFormField: FunctionComponent<AddressLabelFormFieldProps> = ({
 
         setSlashError(false);
         void labelHelpers.setValue(newLabel);
+        notifyChange();
+    };
+
+    const handleCompanyChange = (event: ChangeEvent<HTMLInputElement>) => {
+        companyField.onChange(event);
+        notifyChange(event.target.value);
     };
 
     const wrapperClass = (extraClass: string) =>
@@ -141,7 +154,7 @@ const AddressLabelFormField: FunctionComponent<AddressLabelFormFieldProps> = ({
                     id={companyInputId}
                     isFloatingLabelEnabled={isFloatingLabelEnabled}
                     name={companyField.name}
-                    onChange={companyField.onChange}
+                    onChange={handleCompanyChange}
                     value={companyField.value ?? ''}
                 >
                     <TranslatedString id="address.company_name_label" />
