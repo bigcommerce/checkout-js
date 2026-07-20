@@ -79,7 +79,9 @@ export default function mapAddressToFormValues(
     values.shouldSaveAddress =
         address && address.shouldSaveAddress !== undefined ? address.shouldSaveAddress : true;
 
-    values.label = address?.label ?? '';
+    if (address?.label !== undefined) {
+        values.label = address.label;
+    }
 
     // Manually backfill stateOrProvince to avoid Formik warning (uncontrolled to controlled input)
     if (values.stateOrProvince === undefined) {

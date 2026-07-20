@@ -1,3 +1,7 @@
+import { type AddressRequestBody } from '@bigcommerce/checkout-sdk';
+import { useCallback } from 'react';
+import { createSelector } from 'reselect';
+
 import {
     type CheckoutContextProps,
     useCapabilities,
@@ -6,9 +10,6 @@ import {
 import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
 import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
 import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
-import { type AddressRequestBody, type FormField } from '@bigcommerce/checkout-sdk';
-import { useCallback } from 'react';
-import { createSelector } from 'reselect';
 
 import { encodeAddressForWrite } from '../../address';
 import { EMPTY_ARRAY } from '../../common/utility';
