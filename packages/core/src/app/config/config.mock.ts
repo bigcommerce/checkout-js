@@ -73,7 +73,6 @@ export function getStoreConfig(): StoreConfig {
         paymentSettings: {
             bigpayBaseUrl: 'https://bigpay.integration.zone',
             clientSidePaymentProviders: [
-                'migs',
                 'eway',
                 'securenet',
                 'usaepay',
