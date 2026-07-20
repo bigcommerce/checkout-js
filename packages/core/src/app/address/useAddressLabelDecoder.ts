@@ -1,6 +1,7 @@
-import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import { type Address, type Cart } from '@bigcommerce/checkout-sdk';
 import { useCallback } from 'react';
+
+import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 
 import { decodeAddressLabel } from './addressLabelUtils';
 
@@ -18,9 +19,7 @@ export default function useAddressLabelDecoder(): <T extends Address | undefined
 
     return useCallback(
         <T extends Address | undefined>(address: T): T =>
-            hasAddressLabel && address
-                ? decodeAddressLabel({ ...address, company: address.company || cartCompanyName })
-                : address,
+            hasAddressLabel && address ? decodeAddressLabel(address, cartCompanyName) : address,
         [hasAddressLabel, cartCompanyName],
     );
 }

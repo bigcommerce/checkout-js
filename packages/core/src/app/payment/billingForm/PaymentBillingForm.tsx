@@ -1,7 +1,3 @@
-import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
-import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
-import { AddressFormSkeleton, Fieldset, LoadingOverlay } from '@bigcommerce/checkout/ui';
 import {
     type Address,
     type CustomerAddress,
@@ -10,6 +6,11 @@ import {
 } from '@bigcommerce/checkout-sdk/essential';
 import { type FormikProps, setNestedObjectValues, withFormik } from 'formik';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
+
+import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
+import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
+import { AddressFormSkeleton, Fieldset, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import {
     AddressForm,

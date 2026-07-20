@@ -1,3 +1,12 @@
+import {
+    type Address,
+    type CustomerAddress,
+    type FormField,
+    isExtraField,
+} from '@bigcommerce/checkout-sdk/essential';
+import { type FormikProps, withFormik } from 'formik';
+import React, { type RefObject, useRef, useState } from 'react';
+
 import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import {
     TranslatedString,
@@ -13,14 +22,6 @@ import {
     Form,
     LoadingOverlay,
 } from '@bigcommerce/checkout/ui';
-import {
-    type Address,
-    type CustomerAddress,
-    type FormField,
-    isExtraField,
-} from '@bigcommerce/checkout-sdk/essential';
-import { type FormikProps, withFormik } from 'formik';
-import React, { type RefObject, useRef, useState } from 'react';
 
 import {
     AddressForm,

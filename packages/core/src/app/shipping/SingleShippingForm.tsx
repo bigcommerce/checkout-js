@@ -39,6 +39,7 @@ export interface SingleShippingFormProps {
     cartHasChanged: boolean;
     customerMessage: string;
     hasAddressLabel?: boolean;
+    cartCompanyName?: string;
     methodId?: string;
     shippingAddress?: Address;
     shippingAutosaveDelay?: number;
@@ -52,8 +53,11 @@ export interface SingleShippingFormProps {
 // Decode the consignment address for form population when the capability is on (its `company`
 // is stored encoded). Not applied to the raw prop used for isEqualAddress comparison, which stays
 // encoded to match mapAddressFromFormValues output.
-const toFormAddress = (address: Address | undefined, hasAddressLabel?: boolean) =>
-    hasAddressLabel && address ? decodeAddressLabel(address) : address;
+const toFormAddress = (
+    address: Address | undefined,
+    hasAddressLabel?: boolean,
+    cartCompanyName = '',
+) => (hasAddressLabel && address ? decodeAddressLabel(address, cartCompanyName) : address);
 
 export interface SingleShippingFormValues {
     billingSameAsShipping: boolean;
@@ -81,6 +85,7 @@ const SingleShippingForm: React.FC<
     customerMessage,
     getFields,
     hasAddressLabel,
+    cartCompanyName,
     isBillingSameAsShipping,
     isInitialValueLoaded,
     isValid,
@@ -191,7 +196,7 @@ const SingleShippingForm: React.FC<
                 orderComment: customerMessage,
                 shippingAddress: mapAddressToFormValues(
                     getFields(shippingAddress?.countryCode),
-                    toFormAddress(shippingAddress, hasAddressLabel),
+                    toFormAddress(shippingAddress, hasAddressLabel, cartCompanyName),
                 ),
             });
         }
@@ -346,6 +351,7 @@ export default withLanguage(
             getFields,
             shippingAddress,
             hasAddressLabel,
+            cartCompanyName,
             isBillingSameAsShipping,
             customerMessage,
         }) => ({
@@ -353,7 +359,7 @@ export default withLanguage(
             orderComment: customerMessage,
             shippingAddress: mapAddressToFormValues(
                 getFields(shippingAddress?.countryCode),
-                toFormAddress(shippingAddress, hasAddressLabel),
+                toFormAddress(shippingAddress, hasAddressLabel, cartCompanyName),
             ),
         }),
         validateOnMount: true,

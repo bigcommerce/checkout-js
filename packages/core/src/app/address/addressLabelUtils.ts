@@ -24,20 +24,17 @@ export function joinLabelAndCompany(label: string, company: string): string {
     return label ? `${label}${DELIMITER}${company}` : company;
 }
 
-/**
- * READ boundary: split `company` into a plain company + separate `label`.
- *
- * Idempotent: an existing top-level `label` is preferred so a second decode doesn't try to
- * re-parse the now-plain `company` (which no longer holds the delimiter) and clear the label. This
- * relies on decoded state (label + plain company) and encoded state (no label + encoded company)
- * being mutually exclusive, which they are across our flows.
- */
-export function decodeAddressLabel<T extends Address | CustomerAddress>(address: T): T {
+/** READ boundary: split `company` into a plain company + separate `label`. Idempotent. */
+export function decodeAddressLabel<T extends Address | CustomerAddress>(
+    address: T,
+    companyFallback = '',
+): T {
+    const company = address.company || companyFallback;
+
     return {
         ...address,
-        label:
-            address.label || (address as CustomerAddress).b2b?.label || parseLabel(address.company),
-        company: parseCompany(address.company),
+        label: address.label || (address as CustomerAddress).b2b?.label || parseLabel(company),
+        company: parseCompany(company),
     };
 }
 

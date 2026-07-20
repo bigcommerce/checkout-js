@@ -1,4 +1,3 @@
-import { DynamicFormFieldType } from '@bigcommerce/checkout/ui';
 import {
     type Address,
     type AddressKey,
@@ -6,6 +5,8 @@ import {
     type FormField,
     isExtraField,
 } from '@bigcommerce/checkout-sdk/essential';
+
+import { DynamicFormFieldType } from '@bigcommerce/checkout/ui';
 
 import getAddressExtraFields from './getAddressExtraFields';
 
