@@ -4,9 +4,9 @@ import React, { type FunctionComponent, lazy, memo, Suspense } from 'react';
 import { type CheckoutContextProps, useLocale } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { WalletButtonsContainerSkeleton } from '@bigcommerce/checkout/ui';
+import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
 import { withCheckout } from '../checkout';
-import { isExperimentEnabled } from '../common/utility';
 
 import { getSupportedMethodIds } from './getSupportedMethods';
 import resolveCheckoutButton from './resolveCheckoutButton';

@@ -18,10 +18,10 @@ import {
 } from '@bigcommerce/checkout/locale';
 import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { Fieldset, Form, FormContext, Legend } from '@bigcommerce/checkout/ui';
-import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
+import { B2BSessionStorage, isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
 import { getTranslateAddressError } from '../address';
-import { isExperimentEnabled, isFloatingLabelEnabled } from '../common/utility';
+import { isFloatingLabelEnabled } from '../common/utility';
 import { getOrderExtraFieldsValidationSchema } from '../formFields';
 import { TermsConditions } from '../termsConditions';
 

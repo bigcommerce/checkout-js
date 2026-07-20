@@ -5,8 +5,8 @@ import {
     type PaymentMethodProps,
     type PaymentMethodResolveId,
 } from '@bigcommerce/checkout/payment-integration-api';
+import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
-import { isExperimentEnabled } from '../common/utility';
 import { resolveLazyComponent } from '../common/resolver';
 import * as lazyPaymentMethods from '../generated/paymentIntegrations';
 

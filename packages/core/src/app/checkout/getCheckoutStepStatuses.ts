@@ -4,9 +4,10 @@ import { createSelector } from 'reselect';
 
 import { isThemeV2Enabled } from '@bigcommerce/checkout/contexts';
 import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
+import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
 import { isValidAddress } from '../address';
-import { EMPTY_ARRAY, isExperimentEnabled } from '../common/utility';
+import { EMPTY_ARRAY } from '../common/utility';
 import { SUPPORTED_METHODS } from '../customer';
 import { PaymentMethodId } from '../payment/paymentMethod';
 import {

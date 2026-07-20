@@ -48,7 +48,7 @@ import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { ChecklistSkeleton } from '@bigcommerce/checkout/ui';
-import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
+import { B2BSessionStorage, isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
 import { withAnalytics } from '../analytics';
 import { withCheckout } from '../checkout';
@@ -59,7 +59,7 @@ import {
     isCartStockPositionChangedError,
     isErrorWithType,
 } from '../common/error';
-import { EMPTY_ARRAY, isExperimentEnabled } from '../common/utility';
+import { EMPTY_ARRAY } from '../common/utility';
 import { TermsConditionsType } from '../termsConditions';
 
 import {

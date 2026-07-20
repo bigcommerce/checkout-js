@@ -19,8 +19,7 @@ import {
     isSmallScreen,
     Switch,
 } from '@bigcommerce/checkout/ui';
-
-import { isExperimentEnabled } from '../common/utility';
+import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
 import getBackorderCount from './getBackorderCount';
 import getItemsCount from './getItemsCount';

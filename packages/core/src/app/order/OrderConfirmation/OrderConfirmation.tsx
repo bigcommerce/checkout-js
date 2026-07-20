@@ -8,8 +8,8 @@ import React, { type ReactElement, useEffect, useRef, useState } from 'react';
 import { useAnalytics, useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { OrderConfirmationPageSkeleton } from '@bigcommerce/checkout/ui';
+import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
-import { isExperimentEnabled } from '../../common/utility';
 import { type EmbeddedCheckoutStylesheet } from '../../embeddedCheckout';
 import { type CreatedCustomer, type SignUpFormValues } from '../../guestSignup';
 import {

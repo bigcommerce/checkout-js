@@ -16,8 +16,8 @@ import {
     Modal,
     ModalHeader,
 } from '@bigcommerce/checkout/ui';
+import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
-import { isExperimentEnabled } from '../common/utility';
 import { NewOrderSummarySubtotals } from '../coupon';
 import { ShopperCurrency } from '../currency';
 
