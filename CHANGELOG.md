@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.840.0](https://github.com/bigcommerce/checkout-js/compare/v1.839.0...v1.840.0) (2026-07-20)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10152 Move isExperimentEnabled to utility package ([#3166](https://github.com/bigcommerce/checkout-js/issues/3166)) ([fd25c9e](https://github.com/bigcommerce/checkout-js/commit/fd25c9ef27616df1b0baf241b96f58afa64ba79e))
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10206 Clear phone number internal state ([#3165](https://github.com/bigcommerce/checkout-js/issues/3165)) ([2b9826c](https://github.com/bigcommerce/checkout-js/commit/2b9826cfae822aa589b2c795d8834065f4f67b74))
+* **checkout:** CHECKOUT-10240 Show "Select an address" ([#3167](https://github.com/bigcommerce/checkout-js/issues/3167)) ([1c509dd](https://github.com/bigcommerce/checkout-js/commit/1c509dd66e28b22aa94e4b016bbbd61dfd29144d))
+
 ## [1.839.0](https://github.com/bigcommerce/checkout-js/compare/v1.838.0...v1.839.0) (2026-07-17)
 
 
