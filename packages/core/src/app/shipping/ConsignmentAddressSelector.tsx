@@ -1,8 +1,7 @@
-import { type Address, type ConsignmentCreateRequestBody } from '@bigcommerce/checkout-sdk';
-import React, { useState } from 'react';
-
 import { useCapabilities } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { type Address, type ConsignmentCreateRequestBody } from '@bigcommerce/checkout-sdk';
+import React, { useState } from 'react';
 
 import {
     AddressFormModal,
@@ -11,6 +10,7 @@ import {
     AddressType,
     isValidAddress,
     mapAddressFromFormValues,
+    useAddressLabelDecoder,
 } from '../address';
 import { ErrorModal } from '../common/error';
 import { EMPTY_ARRAY } from '../common/utility';
@@ -44,6 +44,7 @@ const ConsignmentAddressSelector = ({
     const {
         userJourney: { hasCompanyAddressBook },
     } = useCapabilities();
+    const decode = useAddressLabelDecoder();
 
     const {
         getFields,
@@ -55,11 +56,13 @@ const ConsignmentAddressSelector = ({
     } = useShipping();
 
     // TODO: add filter for addresses
-    const addresses = customer.addresses || EMPTY_ARRAY;
+    const addresses = (customer.addresses || EMPTY_ARRAY).map(decode);
 
     const isGuest = customer.isGuest;
 
-    const handleSelectAddress = async (address: Address) => {
+    const handleSelectAddress = async (rawAddress: Address) => {
+        const address = decode(rawAddress);
+
         if (!isValidAddress(address, getFields(address.countryCode), true)) {
             return onUnhandledError(new AssignItemInvalidAddressError());
         }

@@ -1,12 +1,11 @@
+import { useCapabilities, useThemeContext } from '@bigcommerce/checkout/contexts';
+import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { Fieldset, Form } from '@bigcommerce/checkout/ui';
 import { type Address, type FormField } from '@bigcommerce/checkout-sdk';
 import { type FormikProps } from 'formik';
 import { debounce, type DebouncedFunc, isEqual, noop } from 'lodash';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { lazy, object } from 'yup';
-
-import { useCapabilities, useThemeContext } from '@bigcommerce/checkout/contexts';
-import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { Fieldset, Form } from '@bigcommerce/checkout/ui';
 
 import {
     type AddressFormValues,
@@ -15,6 +14,7 @@ import {
     isEqualAddress,
     mapAddressFromFormValues,
     mapAddressToFormValues,
+    useAddressLabelDecoder,
 } from '../address';
 import { isErrorWithType } from '../common/error';
 import { withFormikExtended } from '../common/form';
@@ -82,11 +82,13 @@ const SingleShippingForm: React.FC<
     shippingAutosaveDelay = SHIPPING_AUTOSAVE_DELAY,
     shippingFormRenderTimestamp,
     values,
+    errors,
 }) => {
     const {
         shipping: { hideBillingSameAsShippingCheck },
     } = useCapabilities();
     const { themeV2 } = useThemeContext();
+    const decode = useAddressLabelDecoder();
     const {
         consignments,
         deinitializeShippingMethod: deinitialize,
@@ -99,13 +101,13 @@ const SingleShippingForm: React.FC<
         updateShippingAddress: updateAddress,
     } = useShipping();
 
-    const propsRef = useRef({ values, shippingAddress, isValid });
+    const propsRef = useRef({ values, shippingAddress, isValid, errors });
     const debouncedUpdateAddressRef = useRef<
         | DebouncedFunc<(address: Address, includeShippingOptions: boolean) => Promise<void>>
         | undefined
     >(undefined);
 
-    propsRef.current = { values, shippingAddress, isValid };
+    propsRef.current = { values, shippingAddress, isValid, errors };
 
     const [isResettingAddress, setIsResettingAddress] = useState(false);
     const [isUpdatingShippingData, setIsUpdatingShippingData] = useState(false);
@@ -232,12 +234,15 @@ const SingleShippingForm: React.FC<
     const handleAddressSelect = async (address: Address) => {
         setIsResettingAddress(true);
 
+        // Decoded for form state; the useShipping wrapper encodes it for the write.
+        const decoded = decode(address);
+
         try {
-            await updateAddress(address);
+            await updateAddress(decoded);
 
             setValues({
                 ...propsRef.current.values,
-                shippingAddress: mapAddressToFormValues(getFields(address.countryCode), address),
+                shippingAddress: mapAddressToFormValues(getFields(decoded.countryCode), decoded),
             });
         } catch (error) {
             onUnhandledError(error);

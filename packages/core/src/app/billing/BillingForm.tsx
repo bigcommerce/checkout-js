@@ -1,7 +1,3 @@
-import { type Address, type FormField, isExtraField } from '@bigcommerce/checkout-sdk/essential';
-import { type FormikProps, withFormik } from 'formik';
-import React, { type RefObject, useRef, useState } from 'react';
-
 import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import {
     TranslatedString,
@@ -17,8 +13,23 @@ import {
     Form,
     LoadingOverlay,
 } from '@bigcommerce/checkout/ui';
+import {
+    type Address,
+    type CustomerAddress,
+    type FormField,
+    isExtraField,
+} from '@bigcommerce/checkout-sdk/essential';
+import { type FormikProps, withFormik } from 'formik';
+import React, { type RefObject, useRef, useState } from 'react';
 
-import { AddressForm, AddressSelect, AddressType, isValidCustomerAddress } from '../address';
+import {
+    AddressForm,
+    AddressSelect,
+    AddressType,
+    encodeAddressForWrite,
+    isValidCustomerAddress,
+    useAddressLabelDecoder,
+} from '../address';
 import { OrderComments } from '../orderComments';
 import { getShippableItemsCount } from '../shipping';
 
@@ -65,14 +76,16 @@ const BillingForm = ({
     }));
     const {
         billing: { hideSaveToAddressBookCheck, restrictManualAddressEntry },
+        userJourney: { hasAddressLabel },
     } = useCapabilities();
+    const decode = useAddressLabelDecoder();
 
     if (!config || !customer || !cart) {
         throw new Error('checkout data is not available');
     }
 
     const isGuest = customer.isGuest;
-    const addresses = customer.addresses;
+    const rawAddresses = customer.addresses;
     const shouldRenderStaticAddress = methodId === 'amazonpay';
     const allFormFields = getFields(values.countryCode);
     const customOrExtraFields = allFormFields.filter(
@@ -81,15 +94,19 @@ const BillingForm = ({
     const hasCustomOrExtraFields = customOrExtraFields.length > 0;
     const editableFormFields =
         shouldRenderStaticAddress && hasCustomOrExtraFields ? customOrExtraFields : allFormFields;
-    const billingAddresses =
-        isGuest && isPayPalFastlaneEnabled ? paypalFastlaneAddresses : addresses;
-    const hasAddresses = billingAddresses?.length > 0;
+    const rawBillingAddresses =
+        isGuest && isPayPalFastlaneEnabled ? paypalFastlaneAddresses : rawAddresses;
+
+    const billingAddresses = rawBillingAddresses.map(decode);
+    const decodedBillingAddress = decode(billingAddress);
+
+    const hasAddresses = rawBillingAddresses.length > 0;
     const hasValidCustomerAddress =
-        billingAddress &&
+        decodedBillingAddress &&
         isValidCustomerAddress(
-            billingAddress,
+            decodedBillingAddress,
             billingAddresses,
-            getFields(billingAddress.countryCode),
+            getFields(decodedBillingAddress.countryCode),
         );
     const isUpdating = isUpdatingBillingAddress || isUpdatingCheckout;
     const { enableOrderComments } = config.checkoutSettings;
@@ -99,8 +116,12 @@ const BillingForm = ({
     const handleSelectAddress = async (address: Partial<Address>) => {
         setIsResettingAddress(true);
 
+        const prepared = hasAddressLabel
+            ? encodeAddressForWrite(decode(address as CustomerAddress))
+            : address;
+
         try {
-            await checkoutService.updateBillingAddress(address);
+            await checkoutService.updateBillingAddress(prepared);
         } catch (error) {
             if (error instanceof Error) {
                 onUnhandledError(error);
@@ -131,7 +152,7 @@ const BillingForm = ({
                                 onSelectAddress={handleSelectAddress}
                                 onUseNewAddress={handleUseNewAddress}
                                 selectedAddress={
-                                    hasValidCustomerAddress ? billingAddress : undefined
+                                    hasValidCustomerAddress ? decodedBillingAddress : undefined
                                 }
                                 type={AddressType.Billing}
                             />
