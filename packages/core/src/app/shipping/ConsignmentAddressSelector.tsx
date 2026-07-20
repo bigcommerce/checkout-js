@@ -57,6 +57,7 @@ const ConsignmentAddressSelector = ({
 
     // TODO: add filter for addresses
     const addresses = (customer.addresses || EMPTY_ARRAY).map(decode);
+    const decodedSelectedAddress = selectedAddress && decode(selectedAddress);
 
     const isGuest = customer.isGuest;
 
@@ -157,13 +158,13 @@ const ConsignmentAddressSelector = ({
                 isOpen={isOpenNewAddressModal}
                 onRequestClose={handleCloseAddAddressForm}
                 onSaveAddress={handleSaveAddress}
-                selectedAddress={isGuest ? selectedAddress : undefined}
+                selectedAddress={isGuest ? decodedSelectedAddress : undefined}
                 shouldShowSaveAddress={hasCompanyAddressBook}
             />
             {isGuest ? (
                 <GuestCustomerAddressSelector
                     onUseNewAddress={handleUseNewAddress}
-                    selectedAddress={selectedAddress}
+                    selectedAddress={decodedSelectedAddress}
                 />
             ) : (
                 <AddressSelect
@@ -171,7 +172,7 @@ const ConsignmentAddressSelector = ({
                     onSelectAddress={handleSelectAddress}
                     onUseNewAddress={handleUseNewAddress}
                     placeholderText={<TranslatedString id="shipping.choose_shipping_address" />}
-                    selectedAddress={selectedAddress}
+                    selectedAddress={decodedSelectedAddress}
                     showSingleLineAddress
                     type={AddressType.Shipping}
                 />
