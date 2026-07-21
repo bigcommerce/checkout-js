@@ -7,7 +7,6 @@ import { type OrderItemType } from './OrderSummaryItem';
 function mapFromPhysical(
     item: PhysicalItem,
     bundleItemsMap?: Map<string | number, Array<PhysicalItem | DigitalItem>>,
-    pickListExperimentEnabled?: boolean,
 ): OrderItemType {
     const bundledItems = bundleItemsMap?.get(String(item.id));
 
@@ -15,43 +14,30 @@ function mapFromPhysical(
         addedByAttributeId ? [addedByAttributeId] : [],
     );
 
-    const options = pickListExperimentEnabled
-        ? item.options?.map((option) => {
-              if (
-                  option.attributeId &&
-                  bundledItemsAddedByAttributeIds?.includes(option.attributeId)
-              ) {
-                  const bundledItem = bundledItems?.find(
-                      ({ addedByAttributeId }) => addedByAttributeId === option.attributeId,
-                  );
+    const options = item.options?.map((option) => {
+        if (option.attributeId && bundledItemsAddedByAttributeIds?.includes(option.attributeId)) {
+            const bundledItem = bundledItems?.find(
+                ({ addedByAttributeId }) => addedByAttributeId === option.attributeId,
+            );
 
-                  return {
-                      testId: 'cart-item-product-option',
-                      content: pickListExperimentEnabled
-                          ? `${option.name}: ${option.value}`
-                          : `${option.name} ${option.value}`,
-                      name: `${option.name}:`,
-                      value: option.value,
-                      isMainBundledItem: true,
-                      stockPosition: bundledItem ? mapBackorderDetails(bundledItem) : undefined,
-                  };
-              }
+            return {
+                testId: 'cart-item-product-option',
+                content: `${option.name}: ${option.value}`,
+                name: `${option.name}:`,
+                value: option.value,
+                isMainBundledItem: true,
+                stockPosition: bundledItem ? mapBackorderDetails(bundledItem) : undefined,
+            };
+        }
 
-              return {
-                  testId: 'cart-item-product-option',
-                  content: pickListExperimentEnabled
-                      ? `${option.name}: ${option.value}`
-                      : `${option.name} ${option.value}`,
-                  name: `${option.name}:`,
-                  value: option.value,
-                  isMainBundledItem: false,
-              };
-          })
-        : item.options?.map((option) => ({
-              testId: 'cart-item-product-option',
-              content: `${option.name} ${option.value}`,
-              isMainBundledItem: false,
-          }));
+        return {
+            testId: 'cart-item-product-option',
+            content: `${option.name}: ${option.value}`,
+            name: `${option.name}:`,
+            value: option.value,
+            isMainBundledItem: false,
+        };
+    });
 
     return {
         id: item.id,

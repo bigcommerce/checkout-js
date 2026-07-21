@@ -27,7 +27,7 @@ describe('mapFromDigital()', () => {
         expect(productOptions[0].content).toMatchSnapshot();
     });
 
-    describe('with pickListExperimentEnabled', () => {
+    describe('with bundleItemsMap', () => {
         it('marks pick-list option as isMainBundledItem true with stockPosition', () => {
             const bundledChild = {
                 ...getPhysicalItem(),
@@ -68,7 +68,7 @@ describe('mapFromDigital()', () => {
                 ['667', [bundledChild]],
             ]);
 
-            const { productOptions = [] } = mapFromDigital(item, bundleItemsMap, true);
+            const { productOptions = [] } = mapFromDigital(item, bundleItemsMap);
             const itemOptions = productOptions.filter(
                 (o) => o.testId === 'cart-item-product-option',
             );
@@ -87,7 +87,7 @@ describe('mapFromDigital()', () => {
             expect(colorOption?.stockPosition).toBeUndefined();
         });
 
-        it('preserves options without attributeId when experiment is enabled', () => {
+        it('preserves options without attributeId', () => {
             const item = {
                 ...getDigitalItem(),
                 id: '667',
@@ -98,7 +98,7 @@ describe('mapFromDigital()', () => {
 
             const bundleItemsMap = new Map<string | number, PhysicalItem[]>();
 
-            const { productOptions = [] } = mapFromDigital(item, bundleItemsMap, true);
+            const { productOptions = [] } = mapFromDigital(item, bundleItemsMap);
             const itemOptions = productOptions.filter(
                 (o) => o.testId === 'cart-item-product-option',
             );
@@ -121,50 +121,7 @@ describe('mapFromDigital()', () => {
                 ['667', [bundledChild]],
             ]);
 
-            const { bundledItems } = mapFromDigital(item, bundleItemsMap, true);
-
-            expect(bundledItems).toBeUndefined();
-        });
-    });
-
-    describe('without pickListExperimentEnabled', () => {
-        it('maps all options without colon separator and does not set name/value', () => {
-            const item = {
-                ...getDigitalItem(),
-                options: [
-                    {
-                        name: 'Pick List Option',
-                        nameId: 11,
-                        value: 'Item A',
-                        valueId: 2,
-                        attributeId: 'attr-picklist',
-                    },
-                ] as LineItemOption[],
-            };
-
-            const { productOptions = [] } = mapFromDigital(item, undefined, false);
-            const itemOption = productOptions.find((o) => o.testId === 'cart-item-product-option');
-
-            expect(itemOption?.content).toBe('Pick List Option Item A');
-            expect(itemOption?.name).toBeUndefined();
-            expect(itemOption?.value).toBeUndefined();
-        });
-
-        it('returns no bundledItems even when map has children', () => {
-            const bundledChild = {
-                ...getPhysicalItem(),
-                id: '777',
-                parentId: '667',
-                addedByAttributeId: 'attr-picklist',
-            } as unknown as PhysicalItem;
-
-            const item = { ...getDigitalItem(), id: '667', options: [] as LineItemOption[] };
-
-            const bundleItemsMap = new Map<string | number, PhysicalItem[]>([
-                ['667', [bundledChild]],
-            ]);
-
-            const { bundledItems } = mapFromDigital(item, bundleItemsMap, false);
+            const { bundledItems } = mapFromDigital(item, bundleItemsMap);
 
             expect(bundledItems).toBeUndefined();
         });

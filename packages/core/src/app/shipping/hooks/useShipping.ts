@@ -227,10 +227,5 @@ export const useShipping = () => {
         shouldRenderStripeForm:
             providerWithCustomCheckout === PaymentMethodId.StripeUPE &&
             shouldUseStripeLinkByMinimumAmount(cart),
-        validateMaxLength: isExperimentEnabled(
-            config.checkoutSettings,
-            'CHECKOUT-9768.form_fields_max_length_validation',
-            false,
-        ),
     };
 };

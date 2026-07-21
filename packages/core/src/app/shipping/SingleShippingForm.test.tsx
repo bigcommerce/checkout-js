@@ -46,7 +46,6 @@ describe('SingleShippingForm', () => {
         onSubmit: jest.fn(),
         getFields: jest.fn(() => addressFormFields),
         onUnhandledError: jest.fn(),
-        validateMaxLength: false,
     };
 
     const shippingAutosaveDelay = 500;

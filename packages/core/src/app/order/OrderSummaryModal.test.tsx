@@ -88,7 +88,7 @@ describe('OrderSummaryModal', () => {
         });
     });
 
-    describe('when the bundle pick-list experiment is enabled', () => {
+    describe('bundle pick-list rendering', () => {
         const localeContext = createLocaleContext(getStoreConfig());
 
         // Raw line items, exactly as the mobile drawer now passes them through: a bundle
@@ -121,13 +121,6 @@ describe('OrderSummaryModal', () => {
 
             jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
                 ...config,
-                checkoutSettings: {
-                    ...config.checkoutSettings,
-                    features: {
-                        ...config.checkoutSettings.features,
-                        'BACK-425.update_bundle_item_ux': true,
-                    },
-                },
                 inventorySettings: {
                     showQuantityOnBackorder: true,
                     showBackorderMessage: true,
@@ -168,29 +161,6 @@ describe('OrderSummaryModal', () => {
         it('does not render the bundle child as a separate top-level line item', () => {
             renderModal();
 
-            expect(
-                screen.queryByRole('heading', { name: '1 x Bundled Hat' }),
-            ).not.toBeInTheDocument();
-        });
-
-        it('keeps the bundle child hidden when the experiment is disabled (gating intact)', () => {
-            const config = getStoreConfig();
-
-            jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
-                ...config,
-                checkoutSettings: {
-                    ...config.checkoutSettings,
-                    features: {
-                        ...config.checkoutSettings.features,
-                        'BACK-425.update_bundle_item_ux': false,
-                    },
-                },
-            });
-
-            renderModal();
-
-            // Experiment off: the child must neither nest nor appear as its own line item.
-            expect(screen.queryByTestId('cart-item-bundled-item-name')).not.toBeInTheDocument();
             expect(
                 screen.queryByRole('heading', { name: '1 x Bundled Hat' }),
             ).not.toBeInTheDocument();

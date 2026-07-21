@@ -5,7 +5,7 @@ import { getPhysicalItem } from '../cart/lineItem.mock';
 import mapFromPhysical from './mapFromPhysical';
 
 describe('mapFromPhysical()', () => {
-    describe('without bundleItemsMap (legacy path)', () => {
+    describe('without bundleItemsMap', () => {
         it('maps basic item fields', () => {
             const item = getPhysicalItem();
             const result = mapFromPhysical(item);
@@ -15,13 +15,11 @@ describe('mapFromPhysical()', () => {
             expect(result.quantity).toBe(item.quantity);
         });
 
-        it('formats options without colon separator and does not set name/value', () => {
+        it('formats options with colon separator', () => {
             const item = getPhysicalItem();
             const result = mapFromPhysical(item);
 
-            expect(result.productOptions![0].content).toBe('n v');
-            expect(result.productOptions![0].name).toBeUndefined();
-            expect(result.productOptions![0].value).toBeUndefined();
+            expect(result.productOptions![0].content).toBe('n: v');
         });
 
         it('returns no bundledItems', () => {
@@ -31,7 +29,7 @@ describe('mapFromPhysical()', () => {
         });
     });
 
-    describe('with pickListExperimentEnabled', () => {
+    describe('with bundleItemsMap', () => {
         it('formats options with colon separator', () => {
             const item = {
                 ...getPhysicalItem(),
@@ -45,7 +43,7 @@ describe('mapFromPhysical()', () => {
                     },
                 ] as LineItemOption[],
             };
-            const result = mapFromPhysical(item, undefined, true);
+            const result = mapFromPhysical(item);
 
             expect(result.productOptions![0].content).toBe('Color: Red');
         });
@@ -81,7 +79,7 @@ describe('mapFromPhysical()', () => {
 
             const bundleItemsMap = new Map<string | number, PhysicalItem[]>([['666', [child]]]);
 
-            const result = mapFromPhysical(parent, bundleItemsMap, true);
+            const result = mapFromPhysical(parent, bundleItemsMap);
 
             expect(result.productOptions).toHaveLength(2);
 
@@ -123,7 +121,7 @@ describe('mapFromPhysical()', () => {
 
             const bundleItemsMap = new Map<string | number, PhysicalItem[]>([['666', [child]]]);
 
-            const result = mapFromPhysical(parent, bundleItemsMap, true);
+            const result = mapFromPhysical(parent, bundleItemsMap);
             const pickListOption = result.productOptions!.find((o) => o.name === 'Pick List:');
 
             expect(pickListOption?.isMainBundledItem).toBe(true);
@@ -150,47 +148,15 @@ describe('mapFromPhysical()', () => {
 
             const bundleItemsMap = new Map<string | number, PhysicalItem[]>([['666', [child]]]);
 
-            const result = mapFromPhysical(parent, bundleItemsMap, true);
+            const result = mapFromPhysical(parent, bundleItemsMap);
 
             expect(result.productOptions).toHaveLength(1);
             expect(result.productOptions![0].isMainBundledItem).toBe(false);
         });
 
         it('returns no bundledItems when the item has no children', () => {
-            const result = mapFromPhysical(getPhysicalItem(), new Map(), true);
+            const result = mapFromPhysical(getPhysicalItem(), new Map());
 
-            expect(result.bundledItems).toBeUndefined();
-        });
-    });
-
-    describe('without pickListExperimentEnabled', () => {
-        it('does not filter options and returns no bundledItems even when map has children', () => {
-            const child = {
-                ...getPhysicalItem(),
-                id: '777',
-                parentId: '666',
-                addedByAttributeId: 'attr-picklist',
-            } as unknown as PhysicalItem;
-
-            const parent = {
-                ...getPhysicalItem(),
-                id: '666',
-                options: [
-                    {
-                        name: 'Pick List',
-                        nameId: 11,
-                        value: 'Item A',
-                        valueId: 2,
-                        attributeId: 'attr-picklist',
-                    },
-                ] as LineItemOption[],
-            };
-
-            const bundleItemsMap = new Map<string | number, PhysicalItem[]>([['666', [child]]]);
-
-            const result = mapFromPhysical(parent, bundleItemsMap, false);
-
-            expect(result.productOptions).toHaveLength(1);
             expect(result.bundledItems).toBeUndefined();
         });
     });

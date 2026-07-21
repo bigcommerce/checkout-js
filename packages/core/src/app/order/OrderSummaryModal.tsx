@@ -136,7 +136,7 @@ const OrderSummaryModal: FunctionComponent<
             onRequestClose={onRequestClose}
         >
             <OrderSummarySection>
-                <OrderSummaryItems displayLineItemsCount={false} isMobileCartModal items={items} />
+                <OrderSummaryItems displayLineItemsCount={false} items={items} />
             </OrderSummarySection>
             {isMultiCouponEnabledForCheckout || isMultiCouponEnabledForOrder ? (
                 <NewOrderSummarySubtotals
