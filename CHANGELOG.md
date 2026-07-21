@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.840.3](https://github.com/bigcommerce/checkout-js/compare/v1.840.2...v1.840.3) (2026-07-21)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-10241 Add CannotCreatePersonalAccountSessionStorage ([#3170](https://github.com/bigcommerce/checkout-js/issues/3170)) ([450f273](https://github.com/bigcommerce/checkout-js/commit/450f273f29fb5c8da2b369f6b9e939c4ec9a3f51))
+
 ### [1.840.2](https://github.com/bigcommerce/checkout-js/compare/v1.840.1...v1.840.2) (2026-07-21)
 
 
