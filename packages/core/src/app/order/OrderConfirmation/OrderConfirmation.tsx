@@ -5,10 +5,13 @@ import {
 import { createRequestSender } from '@bigcommerce/request-sender';
 import React, { type ReactElement, useEffect, useRef, useState } from 'react';
 
-import { useAnalytics, useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
+import { useAnalytics, useCheckout } from '@bigcommerce/checkout/contexts';
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { OrderConfirmationPageSkeleton } from '@bigcommerce/checkout/ui';
-import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
+import {
+    CannotCreatePersonalAccountSessionStorage,
+    isExperimentEnabled,
+} from '@bigcommerce/checkout/utility';
 
 import { type EmbeddedCheckoutStylesheet } from '../../embeddedCheckout';
 import { type CreatedCustomer, type SignUpFormValues } from '../../guestSignup';
@@ -64,9 +67,14 @@ export const OrderConfirmation = ({
         isLoadingOrder: statuses.isLoadingOrder(),
     }));
     const { analyticsTracker } = useAnalytics();
-    const {
-        orderConfirmation: { cannotCreatePersonalAccount },
-    } = useCapabilities();
+    const [cannotCreatePersonalAccount, setCannotCreatePersonalAccount] = useState(false);
+
+    useEffect(() => {
+        setCannotCreatePersonalAccount(
+            CannotCreatePersonalAccountSessionStorage.getCannotCreatePersonalAccount(),
+        );
+        CannotCreatePersonalAccountSessionStorage.removeCannotCreatePersonalAccount();
+    }, []);
 
     const handleUnhandledError = (e: Error) => {
         setError(e);

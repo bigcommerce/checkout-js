@@ -8,3 +8,4 @@ export {
     type B2BStoredAddressIds,
     type B2BStoredPaymentValues,
 } from './storage/B2BSessionStorage';
+export { CannotCreatePersonalAccountSessionStorage } from './storage/CannotCreatePersonalAccountSessionStorage';

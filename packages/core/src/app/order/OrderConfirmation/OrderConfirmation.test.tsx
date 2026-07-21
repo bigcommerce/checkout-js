@@ -15,7 +15,6 @@ import {
     type AnalyticsEvents,
     AnalyticsProviderMock,
     CheckoutProvider,
-    defaultCapabilities,
     ExtensionProvider,
     type ExtensionServiceInterface,
     type LocaleContextType,
@@ -24,6 +23,7 @@ import {
 } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext, getLanguageService } from '@bigcommerce/checkout/locale';
 import { renderWithoutWrapper as render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
+import { CannotCreatePersonalAccountSessionStorage } from '@bigcommerce/checkout/utility';
 
 import { createErrorLogger } from '../../common/error';
 import { getStoreConfig } from '../../config/config.mock';
@@ -251,21 +251,30 @@ describe('OrderConfirmation', () => {
         );
     });
 
-    describe('when cannotCreatePersonalAccount capability is enabled', () => {
+    describe('when cannotCreatePersonalAccount is stored in session storage', () => {
         beforeEach(() => {
-            jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
-                ...getStoreConfig(),
-                checkoutSettings: {
-                    ...getStoreConfig().checkoutSettings,
-                    capabilities: {
-                        ...defaultCapabilities,
-                        orderConfirmation: {
-                            ...defaultCapabilities.orderConfirmation,
-                            cannotCreatePersonalAccount: true,
-                        },
-                    },
-                },
+            CannotCreatePersonalAccountSessionStorage.setCannotCreatePersonalAccount(true);
+        });
+
+        afterEach(() => {
+            CannotCreatePersonalAccountSessionStorage.removeCannotCreatePersonalAccount();
+        });
+
+        it('removes the stored value after consuming it once', async () => {
+            render(<ComponentTest {...defaultProps} />);
+
+            await waitFor(() => {
+                expect(analyticsTracker.orderPurchased).toHaveBeenCalled();
             });
+
+            expect(
+                sessionStorage.getItem(CannotCreatePersonalAccountSessionStorage.key),
+            ).toBeNull();
+            expect(
+                screen.queryByText(
+                    localeContext.language.translate('customer.create_account_text'),
+                ),
+            ).not.toBeInTheDocument();
         });
 
         it('does not render the create account form', async () => {

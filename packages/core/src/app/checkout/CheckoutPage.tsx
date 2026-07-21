@@ -33,7 +33,10 @@ import {
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { OrderConfirmationPageSkeleton } from '@bigcommerce/checkout/ui';
-import { navigateToOrderConfirmation as navigateToOrderConfirmationUtility } from '@bigcommerce/checkout/utility';
+import {
+    CannotCreatePersonalAccountSessionStorage,
+    navigateToOrderConfirmation as navigateToOrderConfirmationUtility,
+} from '@bigcommerce/checkout/utility';
 
 import { withAnalytics } from '../analytics';
 import { EmptyCartMessage } from '../cart';
@@ -151,7 +154,7 @@ const Checkout = ({
     const capabilities = useCapabilities();
     const {
         userJourney: { requiresB2BToken, quoteConfig },
-        orderConfirmation: { invoiceRedirect },
+        orderConfirmation: { cannotCreatePersonalAccount, invoiceRedirect },
     } = capabilities;
     const { fetchB2BToken } = useB2BToken();
     const { checkoutService } = useCheckout(() => undefined);
@@ -264,6 +267,10 @@ const Checkout = ({
 
             return;
         }
+
+        CannotCreatePersonalAccountSessionStorage.setCannotCreatePersonalAccount(
+            cannotCreatePersonalAccount,
+        );
 
         void navigateToOrderConfirmationUtility(orderId);
     }, []);
