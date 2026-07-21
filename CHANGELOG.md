@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.840.2](https://github.com/bigcommerce/checkout-js/compare/v1.840.1...v1.840.2) (2026-07-21)
+
+
+### Bug Fixes
+
+* **payment:** CHECKOUT-10244 Hide hidden order extra fields in checkout UI ([#3175](https://github.com/bigcommerce/checkout-js/issues/3175)) ([8cf1aa1](https://github.com/bigcommerce/checkout-js/commit/8cf1aa1a21e53d5923ceccdf39b2f554f18b7f00))
+
 ### [1.840.1](https://github.com/bigcommerce/checkout-js/compare/v1.840.0...v1.840.1) (2026-07-20)
 
 ## [1.840.0](https://github.com/bigcommerce/checkout-js/compare/v1.839.0...v1.840.0) (2026-07-20)
