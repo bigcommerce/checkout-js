@@ -227,6 +227,5 @@ export const useShipping = () => {
         shouldRenderStripeForm:
             providerWithCustomCheckout === PaymentMethodId.StripeUPE &&
             shouldUseStripeLinkByMinimumAmount(cart),
-        validateMaxLength: true,
     };
 };

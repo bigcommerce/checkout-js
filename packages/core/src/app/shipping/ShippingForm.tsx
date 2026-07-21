@@ -43,7 +43,6 @@ const ShippingForm = ({
         isNoCountriesErrorOnCheckoutEnabled,
         methodId,
         shippingAddress,
-        validateMaxLength,
     } = useShipping();
     const {
         extensionState: { shippingFormRenderTimestamp },
@@ -107,7 +106,6 @@ const ShippingForm = ({
             onUnhandledError={onUnhandledError}
             shippingAddress={shippingAddress}
             shippingFormRenderTimestamp={shippingFormRenderTimestamp}
-            validateMaxLength={validateMaxLength}
         />
     );
 };

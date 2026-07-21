@@ -41,7 +41,6 @@ export interface SingleShippingFormProps {
     shippingAutosaveDelay?: number;
     isInitialValueLoaded: boolean;
     shippingFormRenderTimestamp?: number;
-    validateMaxLength: boolean;
     getFields(countryCode?: string): FormField[];
     onSubmit(values: SingleShippingFormValues): void;
     onUnhandledError?(error: Error): void;
@@ -82,7 +81,6 @@ const SingleShippingForm: React.FC<
     shippingAddress,
     shippingAutosaveDelay = SHIPPING_AUTOSAVE_DELAY,
     shippingFormRenderTimestamp,
-    validateMaxLength,
     values,
 }) => {
     const {
@@ -300,7 +298,6 @@ const SingleShippingForm: React.FC<
                     onUnhandledError={onUnhandledError}
                     onUseNewAddress={handleUseNewAddress}
                     shippingAddress={shippingAddress}
-                    validateMaxLength={validateMaxLength}
                 />
                 {shouldShowBillingSameAsShipping && (
                     <div className="form-body">
@@ -347,7 +344,6 @@ export default withLanguage(
             language,
             getFields,
             methodId,
-            validateMaxLength,
         }: SingleShippingFormProps & WithLanguageProps) =>
             shouldHaveCustomValidation(methodId)
                 ? object({
@@ -371,7 +367,7 @@ export default withLanguage(
                           getAddressFormFieldsValidationSchema({
                               language,
                               formFields: getFields(formValues?.countryCode),
-                              validateMaxLength,
+                              validateMaxLength: true,
                           }),
                       ),
                   }),

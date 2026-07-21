@@ -85,7 +85,6 @@ describe('useShipping', () => {
         expect(result.current.customer).toEqual(getCustomer());
         expect(result.current.shouldShowOrderComments).toBe(true);
         expect(result.current.shouldShowMultiShipping).toBe(false);
-        expect(result.current.validateMaxLength).toBe(true);
     });
 
     describe('shouldShowMultiShipping', () => {
@@ -159,14 +158,6 @@ describe('useShipping', () => {
             const { result } = renderHook(() => useShipping());
 
             expect(result.current.shouldShowMultiShipping).toBe(false);
-        });
-    });
-
-    describe('validateMaxLength', () => {
-        it('is always true', () => {
-            const { result } = renderHook(() => useShipping());
-
-            expect(result.current.validateMaxLength).toBe(true);
         });
     });
 

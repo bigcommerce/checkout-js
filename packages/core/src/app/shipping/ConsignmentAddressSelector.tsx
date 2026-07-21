@@ -51,7 +51,6 @@ const ConsignmentAddressSelector = ({
         updateConsignment,
         createCustomerAddress,
         customer,
-        validateMaxLength,
         getConsignments: getPreviousConsignments,
     } = useShipping();
 
@@ -61,7 +60,7 @@ const ConsignmentAddressSelector = ({
     const isGuest = customer.isGuest;
 
     const handleSelectAddress = async (address: Address) => {
-        if (!isValidAddress(address, getFields(address.countryCode), validateMaxLength)) {
+        if (!isValidAddress(address, getFields(address.countryCode), true)) {
             return onUnhandledError(new AssignItemInvalidAddressError());
         }
 
