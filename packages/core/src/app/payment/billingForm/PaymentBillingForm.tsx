@@ -11,7 +11,6 @@ import {
     AddressForm,
     AddressSelect,
     AddressType,
-    encodeAddressForWrite,
     isValidCustomerAddress,
     useAddressLabelDecoder,
 } from '../../address';
@@ -40,6 +39,7 @@ export interface PaymentBillingFormProps {
     onPersist(values: BillingFormValues): Promise<void>;
     onBillingSameAsShippingChange(isBillingSameAsShipping: boolean): void;
     onUnhandledError(error: Error): void;
+    updateBillingAddress(address: Partial<Address>): Promise<unknown>;
 }
 
 const PaymentBillingFormComponent = ({
@@ -54,13 +54,13 @@ const PaymentBillingFormComponent = ({
     onPersist,
     onBillingSameAsShippingChange,
     onUnhandledError,
+    updateBillingAddress,
 }: PaymentBillingFormProps & WithLanguageProps & FormikProps<PaymentBillingFormValues>) => {
     const [isResettingAddress, setIsResettingAddress] = useState(false);
     const { isPayPalFastlaneEnabled, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
     const paymentContext = useContext(PaymentContext);
 
     const {
-        checkoutService,
         selectedState: { customer, config, cart, isUpdatingBillingAddress },
     } = useCheckout(({ data, statuses }) => ({
         customer: data.getCustomer(),
@@ -71,7 +71,6 @@ const PaymentBillingFormComponent = ({
     const {
         billing: { hideSaveToAddressBookCheck, restrictManualAddressEntry },
         shipping: { hideBillingSameAsShippingCheck },
-        userJourney: { hasAddressLabel },
     } = useCapabilities();
     const decode = useAddressLabelDecoder();
 
@@ -168,10 +167,8 @@ const PaymentBillingFormComponent = ({
     const handleSelectAddress = async (address: Partial<Address>) => {
         setIsResettingAddress(true);
 
-        const addressToSave = hasAddressLabel ? encodeAddressForWrite(address) : address;
-
         try {
-            await checkoutService.updateBillingAddress(addressToSave);
+            await updateBillingAddress(address);
         } catch (error) {
             if (error instanceof Error) {
                 onUnhandledError(error);

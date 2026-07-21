@@ -1,7 +1,8 @@
-import { useCapabilities } from '@bigcommerce/checkout/contexts';
-import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { type Address, type ConsignmentCreateRequestBody } from '@bigcommerce/checkout-sdk';
 import React, { useState } from 'react';
+
+import { useCapabilities } from '@bigcommerce/checkout/contexts';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import {
     AddressFormModal,

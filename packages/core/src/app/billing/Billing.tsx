@@ -80,6 +80,7 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }: BillingProps):
                     navigateNextStep={navigateNextStep}
                     onSubmit={handleSubmit}
                     onUnhandledError={onUnhandledError}
+                    updateBillingAddress={updateBillingAddress}
                 />
             </div>
         </AddressFormSkeleton>

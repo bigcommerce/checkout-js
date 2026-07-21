@@ -106,6 +106,7 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
                     onBillingSameAsShippingChange={handleBillingSameAsShippingChange}
                     onPersist={handlePersist}
                     onUnhandledError={onUnhandledError}
+                    updateBillingAddress={updateBillingAddress}
                 />
             </div>
         </AddressFormSkeleton>

@@ -1,6 +1,5 @@
 import { type Address, type CustomerAddress } from '@bigcommerce/checkout-sdk';
 
-import { encodeAddressForWrite } from './addressLabelUtils';
 import AddressType from './AddressType';
 
 interface SetDefaultAddressOptions {
@@ -34,10 +33,9 @@ export default async function setDefaultAddress({
     }
 
     // Book entries carry the B2B label in `b2b.label`; decode lifts it into `label` (no-op when the
-    // capability is off) and encode folds it into `company` for the write. encode is lossless when
-    // there's no label, so this is safe for non-B2B addresses too.
+    // capability is off). The caller's `updateAddress` wrapper folds it into `company` on write.
     try {
-        await updateAddress(encodeAddressForWrite(decode(defaultAddress)));
+        await updateAddress(decode(defaultAddress));
     } catch {
         /* Do nothing: we should not block shoppers from buying. */
     }
