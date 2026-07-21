@@ -26,7 +26,7 @@ import { createOffsitePaymentStrategy } from '@bigcommerce/checkout-sdk/integrat
 import { createPaypalExpressPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/paypal-express';
 import { createSagePayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/sagepay';
 import { memoizeOne } from '@bigcommerce/memoize';
-import { isEmpty, noop } from 'lodash';
+import { noop } from 'lodash';
 import React, {
     type MutableRefObject,
     type ReactElement,
@@ -48,7 +48,7 @@ import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { ChecklistSkeleton } from '@bigcommerce/checkout/ui';
-import { B2BSessionStorage, isExperimentEnabled } from '@bigcommerce/checkout/utility';
+import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
 import { withAnalytics } from '../analytics';
 import { withCheckout } from '../checkout';
@@ -117,7 +117,6 @@ interface WithCheckoutPaymentProps {
     orderId?: number;
     shouldExecuteSpamCheck: boolean;
     shouldLocaliseErrorMessages: boolean;
-    shouldShowSubmitPaymentButton: boolean;
     submitOrderError?: Error;
     termsConditionsText?: string;
     termsConditionsUrl?: string;
@@ -761,8 +760,6 @@ const Payment = (
     const { selectedMethod = props.defaultMethod } = state;
     const uniqueSelectedMethodId =
         selectedMethod && getUniquePaymentMethodId(selectedMethod.id, selectedMethod.gateway);
-    const shouldShowPaymentForm =
-        props.shouldShowSubmitPaymentButton || (!isEmpty(props.methods) && props.defaultMethod);
     // themeV2 embeds the billing form in the payment step. Disable "Place Order"
     // while its billing address is loading or being persisted (initialization,
     // address-book change, or the pre-submit save), so a click can't silently
@@ -777,52 +774,50 @@ const Payment = (
     return (
         <PaymentContext.Provider value={getContextValue()}>
             <ChecklistSkeleton isLoading={!state.isReady}>
-                {shouldShowPaymentForm && (
-                    <PaymentForm
-                        additionalField={props.capabilities.payment.additionalField}
-                        availableStoreCredit={props.availableStoreCredit}
-                        defaultGatewayId={props.defaultMethod?.gateway}
-                        defaultMethodId={props.defaultMethod?.id || ''}
-                        didExceedSpamLimit={state.didExceedSpamLimit}
-                        disableStoreCredit={disableStoreCredit}
-                        isBillingSameAsShipping={props.isBillingSameAsShipping}
-                        isEmbedded={props.isEmbedded}
-                        isInitializingPayment={props.isInitializingPayment}
-                        isPaymentDataRequired={props.isPaymentDataRequired}
-                        isStoreCreditApplied={props.isStoreCreditApplied}
-                        isTermsConditionsRequired={props.isTermsConditionsRequired}
-                        isUsingMultiShipping={props.isUsingMultiShipping}
-                        methods={props.methods}
-                        onBillingSameAsShippingChange={props.onBillingSameAsShippingChange}
-                        onMethodSelect={setSelectedMethod}
-                        onStoreCreditChange={handleStoreCreditChange}
-                        onSubmit={handleSubmit}
-                        onUnhandledError={handleError}
-                        orderExtraFields={props.orderExtraFields}
-                        selectedMethod={state.selectedMethod || props.defaultMethod}
-                        shouldDisableSubmit={
-                            (uniqueSelectedMethodId &&
-                                state.shouldDisableSubmit[uniqueSelectedMethodId]) ||
-                            isBillingFormBusy ||
-                            undefined
-                        }
-                        shouldExecuteSpamCheck={props.shouldExecuteSpamCheck}
-                        shouldHidePaymentSubmitButton={
-                            (uniqueSelectedMethodId &&
-                                props.isPaymentDataRequired() &&
-                                state.shouldHidePaymentSubmitButton[uniqueSelectedMethodId]) ||
-                            undefined
-                        }
-                        termsConditionsText={props.termsConditionsText}
-                        termsConditionsUrl={props.termsConditionsUrl}
-                        usableStoreCredit={props.usableStoreCredit}
-                        validationSchema={
-                            (uniqueSelectedMethodId &&
-                                validationSchemasRef.current[uniqueSelectedMethodId]) ||
-                            undefined
-                        }
-                    />
-                )}
+                <PaymentForm
+                    additionalField={props.capabilities.payment.additionalField}
+                    availableStoreCredit={props.availableStoreCredit}
+                    defaultGatewayId={props.defaultMethod?.gateway}
+                    defaultMethodId={props.defaultMethod?.id || ''}
+                    didExceedSpamLimit={state.didExceedSpamLimit}
+                    disableStoreCredit={disableStoreCredit}
+                    isBillingSameAsShipping={props.isBillingSameAsShipping}
+                    isEmbedded={props.isEmbedded}
+                    isInitializingPayment={props.isInitializingPayment}
+                    isPaymentDataRequired={props.isPaymentDataRequired}
+                    isStoreCreditApplied={props.isStoreCreditApplied}
+                    isTermsConditionsRequired={props.isTermsConditionsRequired}
+                    isUsingMultiShipping={props.isUsingMultiShipping}
+                    methods={props.methods}
+                    onBillingSameAsShippingChange={props.onBillingSameAsShippingChange}
+                    onMethodSelect={setSelectedMethod}
+                    onStoreCreditChange={handleStoreCreditChange}
+                    onSubmit={handleSubmit}
+                    onUnhandledError={handleError}
+                    orderExtraFields={props.orderExtraFields}
+                    selectedMethod={state.selectedMethod || props.defaultMethod}
+                    shouldDisableSubmit={
+                        (uniqueSelectedMethodId &&
+                            state.shouldDisableSubmit[uniqueSelectedMethodId]) ||
+                        isBillingFormBusy ||
+                        undefined
+                    }
+                    shouldExecuteSpamCheck={props.shouldExecuteSpamCheck}
+                    shouldHidePaymentSubmitButton={
+                        (uniqueSelectedMethodId &&
+                            props.isPaymentDataRequired() &&
+                            state.shouldHidePaymentSubmitButton[uniqueSelectedMethodId]) ||
+                        undefined
+                    }
+                    termsConditionsText={props.termsConditionsText}
+                    termsConditionsUrl={props.termsConditionsUrl}
+                    usableStoreCredit={props.usableStoreCredit}
+                    validationSchema={
+                        (uniqueSelectedMethodId &&
+                            validationSchemasRef.current[uniqueSelectedMethodId]) ||
+                        undefined
+                    }
+                />
             </ChecklistSkeleton>
 
             {renderOrderErrorModal()}
@@ -936,11 +931,6 @@ export function mapToPaymentProps(
         shouldExecuteSpamCheck: checkout.shouldExecuteSpamCheck,
         shouldLocaliseErrorMessages:
             features['PAYMENTS-6799.localise_checkout_payment_error_messages'],
-        shouldShowSubmitPaymentButton: isExperimentEnabled(
-            checkoutSettings,
-            'CHECKOUT-9729.show_submit_button_when_payment_not_required',
-            false,
-        ),
         submitOrder: checkoutService.submitOrder,
         submitOrderError: getSubmitOrderError(),
         checkoutServiceSubscribe: checkoutService.subscribe,

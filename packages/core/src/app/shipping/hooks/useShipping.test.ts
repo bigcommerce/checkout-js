@@ -85,7 +85,7 @@ describe('useShipping', () => {
         expect(result.current.customer).toEqual(getCustomer());
         expect(result.current.shouldShowOrderComments).toBe(true);
         expect(result.current.shouldShowMultiShipping).toBe(false);
-        expect(result.current.validateMaxLength).toBe(false);
+        expect(result.current.validateMaxLength).toBe(true);
     });
 
     describe('shouldShowMultiShipping', () => {
@@ -100,16 +100,6 @@ describe('useShipping', () => {
                             quantity: 2,
                         },
                     ],
-                },
-            });
-            jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
-                ...getStoreConfig(),
-                checkoutSettings: {
-                    ...getStoreConfig().checkoutSettings,
-                    features: {
-                        ...getStoreConfig().checkoutSettings?.features,
-                        'CHECKOUT-9768.form_fields_max_length_validation': true,
-                    },
                 },
             });
         });
@@ -173,26 +163,7 @@ describe('useShipping', () => {
     });
 
     describe('validateMaxLength', () => {
-        it('is false when experiment is not enabled', () => {
-            const { result } = renderHook(() => useShipping());
-
-            expect(result.current.validateMaxLength).toBe(false);
-        });
-
-        it('is true when CHECKOUT-9768.form_fields_max_length_validation experiment is enabled', () => {
-            const config = getStoreConfig();
-
-            jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
-                ...config,
-                checkoutSettings: {
-                    ...config.checkoutSettings,
-                    features: {
-                        ...config.checkoutSettings.features,
-                        'CHECKOUT-9768.form_fields_max_length_validation': true,
-                    },
-                },
-            });
-
+        it('is always true', () => {
             const { result } = renderHook(() => useShipping());
 
             expect(result.current.validateMaxLength).toBe(true);

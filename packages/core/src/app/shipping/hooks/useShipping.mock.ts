@@ -43,5 +43,5 @@ export const getUseShippingTestMock: () => ReturnType<typeof useShipping> = () =
     updateCheckout: jest.fn(),
     updateConsignment: jest.fn(),
     updateShippingAddress: jest.fn(),
-    validateMaxLength: false,
+    validateMaxLength: true,
 });

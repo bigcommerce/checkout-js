@@ -18,7 +18,7 @@ import {
 } from '@bigcommerce/checkout/locale';
 import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { Fieldset, Form, FormContext, Legend } from '@bigcommerce/checkout/ui';
-import { B2BSessionStorage, isExperimentEnabled } from '@bigcommerce/checkout/utility';
+import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
 import { getTranslateAddressError } from '../address';
 import { isFloatingLabelEnabled } from '../common/utility';
@@ -149,16 +149,8 @@ const PaymentForm: FunctionComponent<
         : false;
     const poMethodDisabledReason = usePoMethodDisabledReason(selectedMethod);
     const isSubmitDisabled = shouldDisableSubmit || Boolean(poMethodDisabledReason);
-    const shouldShowSubmitButtonWhenPaymentNotRequired = isExperimentEnabled(
-        checkoutSettings,
-        'CHECKOUT-9729.show_submit_button_when_payment_not_required',
-        false,
-    );
     const hideSubmitPaymentButton =
-        shouldHidePaymentSubmitButton ||
-        (shouldShowSubmitButtonWhenPaymentNotRequired &&
-            isPaymentDataRequired() &&
-            isEmpty(methods));
+        shouldHidePaymentSubmitButton || (isPaymentDataRequired() && isEmpty(methods));
 
     if (shouldExecuteSpamCheck) {
         return (
@@ -181,8 +173,7 @@ const PaymentForm: FunctionComponent<
                 />
             )}
 
-            {shouldShowSubmitButtonWhenPaymentNotRequired &&
-                isEmpty(methods) &&
+            {isEmpty(methods) &&
                 (isPaymentDataRequired() ? (
                     <NoPaymentMethods
                         message={
@@ -195,7 +186,7 @@ const PaymentForm: FunctionComponent<
                     />
                 ))}
 
-            {(!shouldShowSubmitButtonWhenPaymentNotRequired || !isEmpty(methods)) && (
+            {!isEmpty(methods) && (
                 <PaymentMethodListFieldset
                     isEmbedded={isEmbedded}
                     isInitializingPayment={isInitializingPayment}
