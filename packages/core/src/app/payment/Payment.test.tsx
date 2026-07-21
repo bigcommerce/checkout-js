@@ -321,19 +321,36 @@ describe('Payment step', () => {
     });
 
     it('does not submit the order when disableSubmit is called for another method right after the selected one', async () => {
+        // Mirrors the real PAYPAL-6795 scenario: PayPal is selected while Stripe's
+        // checklist item mounts unconditionally and toggles its own flag.
+        const paypal = {
+            ...payments[0],
+            id: 'paypal',
+            config: { ...payments[0].config, displayName: 'PayPal' },
+        };
+        const stripe = {
+            ...payments[0],
+            id: 'stripe',
+            config: { ...payments[0].config, displayName: 'Stripe' },
+        };
+
+        checkout.setRequestHandler(
+            rest.get('/api/storefront/payments', (_, res, ctx) => res(ctx.json([paypal, stripe]))),
+        );
+
         checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
 
-        // "instore" ("Pay in Store") is the preset's default selected method.
+        // PayPal is first in the list above, so it's selected by default.
         // disableSubmit only reads id/gateway, so minimal stand-ins are enough.
         // Calling disableSubmit for a second, different method straight after it
         // used to wipe out the first method's disabled state before Payment
         // re-rendered.
-        const instoreMethod = { id: 'instore', gateway: null } as unknown as PaymentMethod;
-        const codMethod = { id: 'cod', gateway: null } as unknown as PaymentMethod;
+        const paypalMethod = { id: 'paypal', gateway: null } as unknown as PaymentMethod;
+        const stripeMethod = { id: 'stripe', gateway: null } as unknown as PaymentMethod;
 
         mockPaymentContextEffect = (context) => {
-            context.disableSubmit(instoreMethod, true);
-            context.disableSubmit(codMethod, true);
+            context.disableSubmit(paypalMethod, true);
+            context.disableSubmit(stripeMethod, true);
         };
 
         const submitOrderSpy = jest.spyOn(checkoutService, 'submitOrder');
