@@ -33,6 +33,7 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
         isComplete,
         isPaymentDataRequired,
     }) => {
+      console.log('SUBMIT BUTTON', methodId, methodType, isComplete, initialisationStrategyType);
         if (!isPaymentDataRequired) {
             return <TranslatedString id="payment.place_order_action" />;
         }
