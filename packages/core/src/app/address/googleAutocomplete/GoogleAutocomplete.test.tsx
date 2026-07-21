@@ -100,6 +100,30 @@ describe('GoogleAutocomplete', () => {
             expect(mockGetLegacyApiSuggestions).not.toHaveBeenCalled();
         });
 
+        it('debounces suggestion requests into a single call while typing', async () => {
+            render(<GoogleAutocomplete {...defaultProps} />);
+
+            await userEvent.type(screen.getByRole('textbox'), '123');
+
+            await screen.findByText('123 New API Ave');
+            expect(mockGetNewApiSuggestions).toHaveBeenCalledTimes(1);
+            expect(mockGetNewApiSuggestions).toHaveBeenCalledWith('123', undefined, undefined);
+        });
+
+        it('does not request suggestions when the input is cleared before the debounce elapses', async () => {
+            render(<GoogleAutocomplete {...defaultProps} />);
+
+            const input = screen.getByRole('textbox');
+
+            await userEvent.type(input, '123');
+            await userEvent.clear(input);
+
+            await new Promise((resolve) => setTimeout(resolve, 400));
+
+            expect(mockGetNewApiSuggestions).not.toHaveBeenCalled();
+            expect(screen.queryByText('123 New API Ave')).not.toBeInTheDocument();
+        });
+
         it('calls onSelect with the new API place result when a suggestion is picked', async () => {
             render(<GoogleAutocomplete {...defaultProps} />);
 
