@@ -39,7 +39,7 @@ export function decodeAddressLabel<T extends Address | CustomerAddress>(
 }
 
 /** WRITE boundary: fold `label` back into `company` for the BC API and drop it. Idempotent. */
-export function encodeAddressForWrite<T extends AddressRequestBody>(address: T): T {
+export function encodeAddressForWrite<T extends Partial<AddressRequestBody>>(address: T): T {
     const label = address.label || parseLabel(address.company);
     const { label: _label, ...rest } = address;
 

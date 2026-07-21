@@ -1,9 +1,4 @@
-import {
-    type Address,
-    type CustomerAddress,
-    type FormField,
-    isExtraField,
-} from '@bigcommerce/checkout-sdk/essential';
+import { type Address, type FormField, isExtraField } from '@bigcommerce/checkout-sdk/essential';
 import { type FormikProps, withFormik } from 'formik';
 import React, { type RefObject, useRef, useState } from 'react';
 
@@ -116,12 +111,10 @@ const BillingForm = ({
     const handleSelectAddress = async (address: Partial<Address>) => {
         setIsResettingAddress(true);
 
-        const prepared = hasAddressLabel
-            ? encodeAddressForWrite(decode(address as CustomerAddress))
-            : address;
+        const addressToSave = hasAddressLabel ? encodeAddressForWrite(address) : address;
 
         try {
-            await checkoutService.updateBillingAddress(prepared);
+            await checkoutService.updateBillingAddress(addressToSave);
         } catch (error) {
             if (error instanceof Error) {
                 onUnhandledError(error);

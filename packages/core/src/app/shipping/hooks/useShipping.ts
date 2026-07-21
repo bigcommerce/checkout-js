@@ -183,9 +183,7 @@ export const useShipping = () => {
     // just before the request leaves the app (idempotent, no-op unless the capability is on).
     const encodeAddr = useCallback(
         <T extends Partial<AddressRequestBody> | undefined>(address: T): T =>
-            address && hasAddressLabel
-                ? (encodeAddressForWrite(address as AddressRequestBody) as T)
-                : address,
+            address && hasAddressLabel ? encodeAddressForWrite(address) : address,
         [hasAddressLabel],
     );
     const encodeConsignmentReq = useCallback(
