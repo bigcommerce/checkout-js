@@ -1,4 +1,5 @@
-import { useRef, useState } from 'react';
+import { debounce } from 'lodash';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { type AutocompleteItem } from '@bigcommerce/checkout/ui';
 
@@ -7,7 +8,7 @@ import { type GoogleAutocompleteOptionTypes } from './googleAutocompleteTypes';
 import { NewGooglePlacesApiService } from './newGooglePlacesApi';
 import { getNewGooglePlacesApiScriptLoader } from './newGooglePlacesApi/getNewGooglePlacesApiScriptLoader';
 import { isNewPlacesApiPermissionDenied } from './newGooglePlacesApi/utils';
-import { toAutocompleteItems } from './utils';
+import { FETCH_SUGGESTIONS_DEBOUNCE_WAIT, toAutocompleteItems } from './utils';
 
 export interface UseGoogleAutocompleteProps {
     apiKey: string;
@@ -194,10 +195,26 @@ export function useGoogleAutocomplete({
         newApi.fetchSuggestions(input);
     };
 
+    const fetchSuggestionsRef = useRef(fetchSuggestions);
+
+    fetchSuggestionsRef.current = fetchSuggestions;
+
+    const debouncedFetchSuggestions = useMemo(
+        () =>
+            debounce(
+                (input: string) => fetchSuggestionsRef.current(input),
+                FETCH_SUGGESTIONS_DEBOUNCE_WAIT,
+            ),
+        [],
+    );
+
+    useEffect(() => () => debouncedFetchSuggestions.cancel(), [debouncedFetchSuggestions]);
+
     const handleChange = (input: string) => {
         onChange(input, false);
 
         if (!isAutocompleteEnabled) {
+            debouncedFetchSuggestions.cancel();
             resetAutocomplete();
 
             return;
@@ -206,13 +223,14 @@ export function useGoogleAutocomplete({
         setAutocompleteValue(input);
 
         if (!input) {
+            debouncedFetchSuggestions.cancel();
             newApiInputRef.current = input;
             setItems([]);
 
             return;
         }
 
-        fetchSuggestions(input);
+        debouncedFetchSuggestions(input);
     };
 
     return { items, autoComplete, handleSelect, handleChange };
