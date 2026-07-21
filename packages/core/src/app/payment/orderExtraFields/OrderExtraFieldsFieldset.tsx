@@ -14,7 +14,7 @@ const OrderExtraFieldsFieldset: FunctionComponent<OrderExtraFieldsFieldsetProps>
     isFloatingLabelEnabled,
 }) => {
     const { language } = useLocale();
-    const extraFields = formFields.filter((field) => isExtraField(field));
+    const extraFields = formFields.filter((field) => isExtraField(field) && !field.hidden);
 
     if (extraFields.length === 0) {
         return null;

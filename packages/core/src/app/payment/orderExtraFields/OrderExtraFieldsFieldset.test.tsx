@@ -64,6 +64,18 @@ describe('OrderExtraFieldsFieldset', () => {
         },
     } as FormField;
 
+    const hiddenExtraField: FormField = {
+        custom: false,
+        default: '',
+        hidden: true,
+        id: 'b2bExtraField_400',
+        label: 'Internal Reference',
+        name: 'b2bExtraField_400',
+        required: true,
+        fieldType: 'text',
+        type: 'string',
+    } as FormField;
+
     const renderFieldset = (formFields: FormField[]) =>
         render(
             <LocaleContext.Provider value={localeContext}>
@@ -90,6 +102,19 @@ describe('OrderExtraFieldsFieldset', () => {
 
     it('returns null when no extra fields are provided', () => {
         renderFieldset([nonExtraField]);
+
+        expect(screen.queryByTestId('order-extra-fields')).not.toBeInTheDocument();
+    });
+
+    it('filters out hidden extra fields', () => {
+        renderFieldset([extraField, hiddenExtraField]);
+
+        expect(screen.getByText('PO Number')).toBeInTheDocument();
+        expect(screen.queryByText('Internal Reference')).not.toBeInTheDocument();
+    });
+
+    it('returns null when all extra fields are hidden', () => {
+        renderFieldset([hiddenExtraField]);
 
         expect(screen.queryByTestId('order-extra-fields')).not.toBeInTheDocument();
     });
