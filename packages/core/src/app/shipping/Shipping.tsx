@@ -11,6 +11,7 @@ import {
     isEqualAddress,
     mapAddressFromFormValues,
     setDefaultAddress,
+    useAddressLabelDecoder,
 } from '../address';
 import type CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 
@@ -75,6 +76,7 @@ function Shipping({
         shipping: { restrictManualAddressEntry },
         userJourney: { hasCompanyAddressBook },
     } = useCapabilities();
+    const decode = useAddressLabelDecoder();
 
     useEffect(() => {
         const initializeShipping = async () => {
@@ -90,6 +92,7 @@ function Shipping({
                         type: AddressType.Shipping,
                         currentAddress: shippingAddress,
                         addresses: customer.addresses,
+                        decode,
                         updateAddress: updateShippingAddress,
                     });
                 }
@@ -123,6 +126,7 @@ function Shipping({
                         type: AddressType.Shipping,
                         currentAddress: consignments[0].shippingAddress,
                         addresses: customer.addresses,
+                        decode,
                         updateAddress: updateShippingAddress,
                     });
                 }

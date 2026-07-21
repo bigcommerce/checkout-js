@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 
-import { AddressType, setDefaultAddress } from '../../address';
+import { AddressType, setDefaultAddress, useAddressLabelDecoder } from '../../address';
 import getBillingMethodId from '../getBillingMethodId';
 
 const getFieldsWithExtraFields = (
@@ -55,6 +55,7 @@ export const useBilling = ({ onReady, onUnhandledError }: UseBillingOptions) => 
         userJourney: { hasAddressExtraFields, hasCompanyAddressBook },
         billing: { restrictManualAddressEntry },
     } = useCapabilities();
+    const decode = useAddressLabelDecoder();
 
     if (!config || !customer || !checkout) {
         throw new Error('Unable to access checkout data');
@@ -91,6 +92,7 @@ export const useBilling = ({ onReady, onUnhandledError }: UseBillingOptions) => 
                         type: AddressType.Billing,
                         currentAddress: getBillingAddress(),
                         addresses: customer.addresses,
+                        decode,
                         updateAddress: checkoutService.updateBillingAddress,
                     });
                 }
