@@ -11,6 +11,7 @@ import {
     AddressType,
     isValidAddress,
     mapAddressFromFormValues,
+    useAddressLabelDecoder,
 } from '../address';
 import { ErrorModal } from '../common/error';
 import { EMPTY_ARRAY } from '../common/utility';
@@ -44,6 +45,7 @@ const ConsignmentAddressSelector = ({
     const {
         userJourney: { hasCompanyAddressBook },
     } = useCapabilities();
+    const decode = useAddressLabelDecoder();
 
     const {
         getFields,
@@ -55,11 +57,14 @@ const ConsignmentAddressSelector = ({
     } = useShipping();
 
     // TODO: add filter for addresses
-    const addresses = customer.addresses || EMPTY_ARRAY;
+    const addresses = (customer.addresses || EMPTY_ARRAY).map(decode);
+    const decodedSelectedAddress = selectedAddress && decode(selectedAddress);
 
     const isGuest = customer.isGuest;
 
-    const handleSelectAddress = async (address: Address) => {
+    const handleSelectAddress = async (rawAddress: Address) => {
+        const address = decode(rawAddress);
+
         if (!isValidAddress(address, getFields(address.countryCode), true)) {
             return onUnhandledError(new AssignItemInvalidAddressError());
         }
@@ -154,13 +159,13 @@ const ConsignmentAddressSelector = ({
                 isOpen={isOpenNewAddressModal}
                 onRequestClose={handleCloseAddAddressForm}
                 onSaveAddress={handleSaveAddress}
-                selectedAddress={isGuest ? selectedAddress : undefined}
+                selectedAddress={isGuest ? decodedSelectedAddress : undefined}
                 shouldShowSaveAddress={hasCompanyAddressBook}
             />
             {isGuest ? (
                 <GuestCustomerAddressSelector
                     onUseNewAddress={handleUseNewAddress}
-                    selectedAddress={selectedAddress}
+                    selectedAddress={decodedSelectedAddress}
                 />
             ) : (
                 <AddressSelect
@@ -168,7 +173,7 @@ const ConsignmentAddressSelector = ({
                     onSelectAddress={handleSelectAddress}
                     onUseNewAddress={handleUseNewAddress}
                     placeholderText={<TranslatedString id="shipping.choose_shipping_address" />}
-                    selectedAddress={selectedAddress}
+                    selectedAddress={decodedSelectedAddress}
                     showSingleLineAddress
                     type={AddressType.Shipping}
                 />

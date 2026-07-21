@@ -36,7 +36,9 @@
     .dynamic-form-field--firstName,
     .dynamic-form-field--lastName,
     .dynamic-form-field--phone,
-    .dynamic-form-field--city {
+    .dynamic-form-field--city,
+    .dynamic-form-field--addressLabel,
+    .dynamic-form-field--labelCompany {
         @include breakpoint("small") {
             flex-basis: 50%;
         }

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { useExtensions } from '@bigcommerce/checkout/contexts';
+import { useCapabilities, useExtensions } from '@bigcommerce/checkout/contexts';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
 
 import { CustomError } from '../common/error';
@@ -47,6 +47,10 @@ const ShippingForm = ({
     const {
         extensionState: { shippingFormRenderTimestamp },
     } = useExtensions();
+    const {
+        userJourney: { hasAddressLabel },
+    } = useCapabilities();
+    const cartCompanyName = cart?.companyName ?? '';
 
     useEffect(() => {
         if (shippingFormRenderTimestamp) {
@@ -96,9 +100,11 @@ const ShippingForm = ({
         getMultiShippingForm()
     ) : (
         <SingleShippingForm
+            cartCompanyName={cartCompanyName}
             cartHasChanged={cartHasChanged}
             customerMessage={customerMessage}
             getFields={getFields}
+            hasAddressLabel={hasAddressLabel}
             isBillingSameAsShipping={isBillingSameAsShipping}
             isInitialValueLoaded={isInitialValueLoaded}
             methodId={methodId}

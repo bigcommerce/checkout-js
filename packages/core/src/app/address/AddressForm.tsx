@@ -22,6 +22,7 @@ import {
     LABEL,
     PLACEHOLDER,
 } from './AddressFormType';
+import AddressLabelFormField from './AddressLabelFormField';
 import AddressType from './AddressType';
 import {
     getAddressFormFieldInputId,
@@ -41,7 +42,7 @@ const AddressForm: React.FC<AddressFormProps> = ({
     type,
 }) => {
     const {
-        userJourney: { hasCompanyAddressBook },
+        userJourney: { hasCompanyAddressBook, hasAddressLabel },
     } = useCapabilities();
     const { language } = useLocale();
     const {
@@ -192,6 +193,19 @@ const AddressForm: React.FC<AddressFormProps> = ({
                                     onToggleOpen={onAutocompleteToggle}
                                     parentFieldName={fieldName}
                                     supportedCountries={countriesWithAutocomplete}
+                                />
+                            );
+                        }
+
+                        if (hasAddressLabel && addressFieldName === 'company') {
+                            return (
+                                <AddressLabelFormField
+                                    field={field}
+                                    inputId={getAddressFormFieldInputId(addressFieldName)}
+                                    isFloatingLabelEnabled={isFloatingLabelEnabledValue}
+                                    key={`${field.id}-${field.name}`}
+                                    onChange={handleDynamicFormFieldChange(addressFieldName)}
+                                    parentFieldName={getParentFieldName()}
                                 />
                             );
                         }

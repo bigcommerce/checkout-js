@@ -18,7 +18,13 @@ import {
     LoadingOverlay,
 } from '@bigcommerce/checkout/ui';
 
-import { AddressForm, AddressSelect, AddressType, isValidCustomerAddress } from '../address';
+import {
+    AddressForm,
+    AddressSelect,
+    AddressType,
+    isValidCustomerAddress,
+    useAddressLabelDecoder,
+} from '../address';
 import { OrderComments } from '../orderComments';
 import { getShippableItemsCount } from '../shipping';
 
@@ -39,6 +45,7 @@ export interface BillingFormProps {
     onSubmit(values: BillingFormValues): void;
     onUnhandledError(error: Error): void;
     getFields(countryCode?: string): FormField[];
+    updateBillingAddress(address: Partial<Address>): Promise<unknown>;
 }
 
 const BillingForm = ({
@@ -48,13 +55,13 @@ const BillingForm = ({
     setFieldValue,
     values,
     onUnhandledError,
+    updateBillingAddress,
 }: BillingFormProps & WithLanguageProps & FormikProps<BillingFormValues>) => {
     const [isResettingAddress, setIsResettingAddress] = useState(false);
     const addressFormRef: RefObject<HTMLFieldSetElement> = useRef(null);
     const { isPayPalFastlaneEnabled, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
 
     const {
-        checkoutService,
         selectedState: { customer, config, cart, isUpdatingBillingAddress, isUpdatingCheckout },
     } = useCheckout(({ data, statuses }) => ({
         customer: data.getCustomer(),
@@ -66,13 +73,14 @@ const BillingForm = ({
     const {
         billing: { hideSaveToAddressBookCheck, restrictManualAddressEntry },
     } = useCapabilities();
+    const decode = useAddressLabelDecoder();
 
     if (!config || !customer || !cart) {
         throw new Error('checkout data is not available');
     }
 
     const isGuest = customer.isGuest;
-    const addresses = customer.addresses;
+    const rawAddresses = customer.addresses;
     const shouldRenderStaticAddress = methodId === 'amazonpay';
     const allFormFields = getFields(values.countryCode);
     const customOrExtraFields = allFormFields.filter(
@@ -81,9 +89,12 @@ const BillingForm = ({
     const hasCustomOrExtraFields = customOrExtraFields.length > 0;
     const editableFormFields =
         shouldRenderStaticAddress && hasCustomOrExtraFields ? customOrExtraFields : allFormFields;
-    const billingAddresses =
-        isGuest && isPayPalFastlaneEnabled ? paypalFastlaneAddresses : addresses;
-    const hasAddresses = billingAddresses?.length > 0;
+    const rawBillingAddresses =
+        isGuest && isPayPalFastlaneEnabled ? paypalFastlaneAddresses : rawAddresses;
+
+    const billingAddresses = rawBillingAddresses.map(decode);
+
+    const hasAddresses = rawBillingAddresses.length > 0;
     const hasValidCustomerAddress =
         billingAddress &&
         isValidCustomerAddress(
@@ -100,7 +111,7 @@ const BillingForm = ({
         setIsResettingAddress(true);
 
         try {
-            await checkoutService.updateBillingAddress(address);
+            await updateBillingAddress(address);
         } catch (error) {
             if (error instanceof Error) {
                 onUnhandledError(error);

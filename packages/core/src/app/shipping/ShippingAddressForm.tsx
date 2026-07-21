@@ -1,8 +1,7 @@
-import { type Address, type Consignment, type FormField } from '@bigcommerce/checkout-sdk';
-import React, { type ReactElement } from 'react';
-
 import { useCapabilities, useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
 import { Fieldset, LoadingOverlay } from '@bigcommerce/checkout/ui';
+import { type Address, type Consignment, type FormField } from '@bigcommerce/checkout-sdk';
+import React, { type ReactElement } from 'react';
 
 import {
     AddressForm,
@@ -10,6 +9,7 @@ import {
     AddressType,
     isValidCustomerAddress,
     reorderAddressFormFields,
+    useAddressLabelDecoder,
 } from '../address';
 import { connectFormik, type ConnectFormikProps } from '../common/form';
 
@@ -41,13 +41,18 @@ const ShippingAddressForm = ({
     },
     onFieldChange,
 }: ShippingAddressFormProps & ConnectFormikProps<SingleShippingFormValues>): ReactElement => {
-    const { selectedState: customer } = useCheckout(({ data }) => data.getCustomer());
+    const {
+        selectedState: { customer },
+    } = useCheckout(({ data }) => ({ customer: data.getCustomer() }));
     const { themeV2 } = useThemeContext();
     const {
         shipping: { hideSaveToAddressBookCheck, restrictManualAddressEntry },
     } = useCapabilities();
+    const decode = useAddressLabelDecoder();
 
-    const addresses = customer?.addresses || [];
+    const rawAddresses = customer?.addresses || [];
+    const addresses = rawAddresses.map(decode);
+    const decodedShippingAddress = decode(shippingAddress);
     const shouldShowSaveAddress = !hideSaveToAddressBookCheck && !customer?.isGuest;
 
     const setFieldValue = (fieldName: string, fieldValue: string) => {
@@ -78,9 +83,9 @@ const ShippingAddressForm = ({
         }
     };
 
-    const hasAddresses = addresses && addresses.length > 0;
+    const hasAddresses = rawAddresses.length > 0;
     const hasValidCustomerAddress = isValidCustomerAddress(
-        shippingAddress,
+        decodedShippingAddress,
         addresses,
         formFields,
         validateMaxLength,
@@ -97,7 +102,9 @@ const ShippingAddressForm = ({
                             addresses={addresses}
                             onSelectAddress={onAddressSelect}
                             onUseNewAddress={onUseNewAddress}
-                            selectedAddress={hasValidCustomerAddress ? shippingAddress : undefined}
+                            selectedAddress={
+                                hasValidCustomerAddress ? decodedShippingAddress : undefined
+                            }
                             type={AddressType.Shipping}
                         />
                     </LoadingOverlay>

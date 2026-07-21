@@ -7,7 +7,13 @@ import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/loca
 import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { AddressFormSkeleton, Fieldset, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
-import { AddressForm, AddressSelect, AddressType, isValidCustomerAddress } from '../../address';
+import {
+    AddressForm,
+    AddressSelect,
+    AddressType,
+    isValidCustomerAddress,
+    useAddressLabelDecoder,
+} from '../../address';
 import {
     type BillingFormValues,
     getBillingFormInitialValues,
@@ -33,6 +39,7 @@ export interface PaymentBillingFormProps {
     onPersist(values: BillingFormValues): Promise<void>;
     onBillingSameAsShippingChange(isBillingSameAsShipping: boolean): void;
     onUnhandledError(error: Error): void;
+    updateBillingAddress(address: Partial<Address>): Promise<unknown>;
 }
 
 const PaymentBillingFormComponent = ({
@@ -47,13 +54,13 @@ const PaymentBillingFormComponent = ({
     onPersist,
     onBillingSameAsShippingChange,
     onUnhandledError,
+    updateBillingAddress,
 }: PaymentBillingFormProps & WithLanguageProps & FormikProps<PaymentBillingFormValues>) => {
     const [isResettingAddress, setIsResettingAddress] = useState(false);
     const { isPayPalFastlaneEnabled, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
     const paymentContext = useContext(PaymentContext);
 
     const {
-        checkoutService,
         selectedState: { customer, config, cart, isUpdatingBillingAddress },
     } = useCheckout(({ data, statuses }) => ({
         customer: data.getCustomer(),
@@ -65,13 +72,13 @@ const PaymentBillingFormComponent = ({
         billing: { hideSaveToAddressBookCheck, restrictManualAddressEntry },
         shipping: { hideBillingSameAsShippingCheck },
     } = useCapabilities();
+    const decode = useAddressLabelDecoder();
 
     if (!config || !customer || !cart) {
         throw new Error('checkout data is not available');
     }
 
     const isGuest = customer.isGuest;
-    const addresses = customer.addresses;
     const shouldRenderStaticAddress = methodId === 'amazonpay';
     const allFormFields = getFields(values.countryCode);
     const customOrExtraFields = allFormFields.filter(
@@ -80,9 +87,12 @@ const PaymentBillingFormComponent = ({
     const hasCustomOrExtraFields = customOrExtraFields.length > 0;
     const editableFormFields =
         shouldRenderStaticAddress && hasCustomOrExtraFields ? customOrExtraFields : allFormFields;
-    const billingAddresses =
-        isGuest && isPayPalFastlaneEnabled ? paypalFastlaneAddresses : addresses;
-    const hasAddresses = billingAddresses?.length > 0;
+    const rawBillingAddresses =
+        isGuest && isPayPalFastlaneEnabled ? paypalFastlaneAddresses : customer.addresses;
+
+    const billingAddresses = rawBillingAddresses.map(decode);
+
+    const hasAddresses = rawBillingAddresses.length > 0;
     const hasValidCustomerAddress =
         billingAddress &&
         isValidCustomerAddress(
@@ -158,7 +168,7 @@ const PaymentBillingFormComponent = ({
         setIsResettingAddress(true);
 
         try {
-            await checkoutService.updateBillingAddress(address);
+            await updateBillingAddress(address);
         } catch (error) {
             if (error instanceof Error) {
                 onUnhandledError(error);

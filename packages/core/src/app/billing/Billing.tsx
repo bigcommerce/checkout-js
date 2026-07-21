@@ -4,7 +4,7 @@ import React, { type ReactElement } from 'react';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { AddressFormSkeleton, Legend } from '@bigcommerce/checkout/ui';
 
-import { isEqualAddress, mapAddressFromFormValues } from '../address';
+import { isEqualAddress, mapAddressFromFormValues, useAddressLabelDecoder } from '../address';
 
 import BillingForm, { type BillingFormValues } from './BillingForm';
 import { useBilling } from './hooks/useBilling';
@@ -27,6 +27,7 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }: BillingProps):
         updateBillingAddress,
         updateCheckout,
     } = useBilling({ onReady, onUnhandledError });
+    const decode = useAddressLabelDecoder();
 
     const handleSubmit = async ({
         orderComment,
@@ -72,13 +73,14 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }: BillingProps):
                     </Legend>
                 </div>
                 <BillingForm
-                    billingAddress={billingAddress}
+                    billingAddress={decode(billingAddress)}
                     customerMessage={customerMessage}
                     getFields={getFields}
                     methodId={methodId}
                     navigateNextStep={navigateNextStep}
                     onSubmit={handleSubmit}
                     onUnhandledError={onUnhandledError}
+                    updateBillingAddress={updateBillingAddress}
                 />
             </div>
         </AddressFormSkeleton>

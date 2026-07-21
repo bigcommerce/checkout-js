@@ -2,19 +2,18 @@ import {
     type Address,
     type CheckoutSelectors,
     type Country,
-    type CustomerAddress,
     type ShippingInitializeOptions,
 } from '@bigcommerce/checkout-sdk';
 import { isEmpty } from 'lodash';
 import React, { type FunctionComponent, memo } from 'react';
 
-import { type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
+import { type CheckoutContextProps, useCapabilities } from '@bigcommerce/checkout/contexts';
 import { localizeAddress } from '@bigcommerce/checkout/locale';
 
 import { withCheckout } from '../checkout';
 
+import { joinLabelAndCompany } from './addressLabelUtils';
 import AddressType from './AddressType';
-import getAddressWithLabel from './getAddressWithLabel';
 
 import './StaticAddress.scss';
 
@@ -29,15 +28,21 @@ export interface StaticAddressEditableProps extends StaticAddressProps {
 
 interface WithCheckoutStaticAddressProps {
     countries?: Country[];
-    customerAddresses?: CustomerAddress[];
 }
 
 const StaticAddress: FunctionComponent<
     StaticAddressEditableProps & WithCheckoutStaticAddressProps
-> = ({ countries, customerAddresses, address: addressWithoutLocalization }) => {
-    const addressWithLabel = getAddressWithLabel(addressWithoutLocalization, customerAddresses);
-    const address = localizeAddress(addressWithLabel, countries);
+> = ({ countries, address: addressWithoutLocalization }) => {
+    const {
+        userJourney: { hasAddressLabel },
+    } = useCapabilities();
+    const address = localizeAddress(addressWithoutLocalization, countries);
     const isValid = !isEmpty(address);
+
+    const companyDisplay =
+        hasAddressLabel && address.label
+            ? joinLabelAndCompany(address.label, address.company)
+            : address.company;
 
     return !isValid ? null : (
         <div className="vcard checkout-address--static" data-test="static-address">
@@ -48,15 +53,9 @@ const StaticAddress: FunctionComponent<
                 </p>
             )}
 
-            {address.label && (
+            {(address.phone || companyDisplay) && (
                 <p className="address-entry body-regular">
-                    <span className="label">{address.label}</span>
-                </p>
-            )}
-
-            {(address.phone || address.company) && (
-                <p className="address-entry body-regular">
-                    <span className="company-name">{`${address.company} `}</span>
+                    <span className="company-name">{`${companyDisplay} `}</span>
                     <span className="tel">{address.phone}</span>
                 </p>
             )}
@@ -92,13 +91,12 @@ export function mapToStaticAddressProps(
 ): WithCheckoutStaticAddressProps | null {
     const {
         checkoutState: {
-            data: { getBillingCountries, getShippingCountries, getCustomer },
+            data: { getBillingCountries, getShippingCountries },
         },
     } = context;
 
     return {
         countries: type === AddressType.Billing ? getBillingCountries() : getShippingCountries(),
-        customerAddresses: getCustomer()?.addresses,
     };
 }
 

@@ -10,6 +10,7 @@ import { Fieldset, Form } from '@bigcommerce/checkout/ui';
 
 import {
     type AddressFormValues,
+    decodeAddressLabel,
     getAddressFormFieldsValidationSchema,
     getTranslateAddressError,
     isEqualAddress,
@@ -36,6 +37,8 @@ export interface SingleShippingFormProps {
     isBillingSameAsShipping: boolean;
     cartHasChanged: boolean;
     customerMessage: string;
+    hasAddressLabel?: boolean;
+    cartCompanyName?: string;
     methodId?: string;
     shippingAddress?: Address;
     shippingAutosaveDelay?: number;
@@ -45,6 +48,15 @@ export interface SingleShippingFormProps {
     onSubmit(values: SingleShippingFormValues): void;
     onUnhandledError?(error: Error): void;
 }
+
+// Decode the consignment address for form population when the capability is on (its `company`
+// is stored encoded). Not applied to the raw prop used for isEqualAddress comparison, which stays
+// encoded to match mapAddressFromFormValues output.
+const toFormAddress = (
+    address: Address | undefined,
+    hasAddressLabel?: boolean,
+    cartCompanyName = '',
+) => (hasAddressLabel && address ? decodeAddressLabel(address, cartCompanyName) : address);
 
 export interface SingleShippingFormValues {
     billingSameAsShipping: boolean;
@@ -71,6 +83,8 @@ const SingleShippingForm: React.FC<
     cartHasChanged,
     customerMessage,
     getFields,
+    hasAddressLabel,
+    cartCompanyName,
     isBillingSameAsShipping,
     isInitialValueLoaded,
     isValid,
@@ -179,7 +193,7 @@ const SingleShippingForm: React.FC<
                 orderComment: customerMessage,
                 shippingAddress: mapAddressToFormValues(
                     getFields(shippingAddress?.countryCode),
-                    shippingAddress,
+                    toFormAddress(shippingAddress, hasAddressLabel, cartCompanyName),
                 ),
             });
         }
@@ -251,10 +265,11 @@ const SingleShippingForm: React.FC<
 
         try {
             const address = await deleteConsignments();
+            const decoded = toFormAddress(address, hasAddressLabel);
 
             setValues({
                 ...propsRef.current.values,
-                shippingAddress: mapAddressToFormValues(getFields(address?.countryCode), address),
+                shippingAddress: mapAddressToFormValues(getFields(decoded?.countryCode), decoded),
             });
         } catch (error) {
             onUnhandledError(error);
@@ -329,6 +344,8 @@ export default withLanguage(
         mapPropsToValues: ({
             getFields,
             shippingAddress,
+            hasAddressLabel,
+            cartCompanyName,
             isBillingSameAsShipping,
             customerMessage,
         }) => ({
@@ -336,7 +353,7 @@ export default withLanguage(
             orderComment: customerMessage,
             shippingAddress: mapAddressToFormValues(
                 getFields(shippingAddress?.countryCode),
-                shippingAddress,
+                toFormAddress(shippingAddress, hasAddressLabel, cartCompanyName),
             ),
         }),
         validateOnMount: true,

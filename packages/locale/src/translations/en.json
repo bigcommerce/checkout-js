@@ -9,6 +9,7 @@
             "consignment_address_updated_text": "The item was successfully assigned the new address.",
             "city_label": "City",
             "city_required_error": "City is required",
+            "address_label_label": "Address Label",
             "company_name_label": "Company Name",
             "company_name_required_error": "Company is required",
             "confirm_address_action": "Proceed with current address",

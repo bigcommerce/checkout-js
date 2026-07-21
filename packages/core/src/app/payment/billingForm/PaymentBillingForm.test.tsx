@@ -89,6 +89,7 @@ describe('PaymentBillingForm', () => {
             onBillingSameAsShippingChange: jest.fn(),
             onPersist,
             onUnhandledError: noop,
+            updateBillingAddress: jest.fn().mockResolvedValue(undefined),
         };
     });
 
@@ -132,11 +133,9 @@ describe('PaymentBillingForm', () => {
             isGuest: false,
         });
         // Keep updateBillingAddress in flight so isResettingAddress stays true.
-        jest.spyOn(checkoutService, 'updateBillingAddress').mockReturnValue(
-            new Promise(() => undefined),
-        );
+        const updateBillingAddress = jest.fn().mockReturnValue(new Promise(() => undefined));
 
-        renderForm(defaultProps);
+        renderForm({ ...defaultProps, updateBillingAddress });
 
         // Trigger an address-book selection ("Enter a new address"), which sets
         // isResettingAddress while updateBillingAddress runs.

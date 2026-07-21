@@ -8,6 +8,8 @@ import {
 
 import { DynamicFormFieldType } from '@bigcommerce/checkout/ui';
 
+import getAddressExtraFields from './getAddressExtraFields';
+
 export type AddressFormValues = Pick<
     Address,
     Exclude<AddressKey, 'customFields' | 'extraFields'>
@@ -34,7 +36,7 @@ export default function mapAddressToFormValues(
                 const rawFieldId = name.startsWith(B2B_EXTRA_FIELD_PREFIX)
                     ? name.slice(B2B_EXTRA_FIELD_PREFIX.length)
                     : name;
-                const extraFieldValue = address?.extraFields?.find(
+                const extraFieldValue = getAddressExtraFields(address).find(
                     ({ fieldId }) => fieldId === rawFieldId,
                 )?.fieldValue;
 
@@ -77,6 +79,10 @@ export default function mapAddressToFormValues(
 
     values.shouldSaveAddress =
         address && address.shouldSaveAddress !== undefined ? address.shouldSaveAddress : true;
+
+    if (address?.label !== undefined) {
+        values.label = address.label;
+    }
 
     // Manually backfill stateOrProvince to avoid Formik warning (uncontrolled to controlled input)
     if (values.stateOrProvince === undefined) {

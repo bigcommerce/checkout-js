@@ -3,7 +3,12 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 
-import { AddressType, setDefaultAddress } from '../../address';
+import {
+    AddressType,
+    encodeAddressForWrite,
+    setDefaultAddress,
+    useAddressLabelDecoder,
+} from '../../address';
 import getBillingMethodId from '../getBillingMethodId';
 
 const getFieldsWithExtraFields = (
@@ -52,9 +57,21 @@ export const useBilling = ({ onReady, onUnhandledError }: UseBillingOptions) => 
         getAddressExtraFields: data.getAddressExtraFields,
     }));
     const {
-        userJourney: { hasAddressExtraFields, hasCompanyAddressBook },
+        userJourney: { hasAddressExtraFields, hasAddressLabel, hasCompanyAddressBook },
         billing: { restrictManualAddressEntry },
     } = useCapabilities();
+    const decode = useAddressLabelDecoder();
+    // Write boundary for the address label: folds the label into `company` (and drops the
+    // client-only `label`) just before the request leaves the app. Idempotent and a no-op unless the
+    // capability is on, so every billing write that routes through useBilling is covered.
+    const updateBillingAddress = useCallback(
+        (...[address, ...rest]: Parameters<typeof checkoutService.updateBillingAddress>) =>
+            checkoutService.updateBillingAddress(
+                hasAddressLabel ? encodeAddressForWrite(address) : address,
+                ...rest,
+            ),
+        [checkoutService, hasAddressLabel],
+    );
 
     if (!config || !customer || !checkout) {
         throw new Error('Unable to access checkout data');
@@ -91,7 +108,8 @@ export const useBilling = ({ onReady, onUnhandledError }: UseBillingOptions) => 
                         type: AddressType.Billing,
                         currentAddress: getBillingAddress(),
                         addresses: customer.addresses,
-                        updateAddress: checkoutService.updateBillingAddress,
+                        decode,
+                        updateAddress: updateBillingAddress,
                     });
                 }
 
@@ -117,7 +135,7 @@ export const useBilling = ({ onReady, onUnhandledError }: UseBillingOptions) => 
         isInitializing,
         methodId,
         showNoAddressesWarning,
-        updateBillingAddress: checkoutService.updateBillingAddress,
+        updateBillingAddress,
         updateCheckout: checkoutService.updateCheckout,
     };
 };

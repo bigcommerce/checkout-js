@@ -6,6 +6,8 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import { isEqual, omit } from 'lodash';
 
+import getAddressExtraFields from './getAddressExtraFields';
+
 type ComparableAddress = CustomerAddress | Address | BillingAddress | AddressRequestBody;
 type ComparableAddressFields = keyof CustomerAddress | keyof Address | keyof BillingAddress;
 
@@ -54,18 +56,11 @@ function normalizeAddress(address: ComparableAddress) {
         'label',
     ];
 
-    const b2bExtraFields = 'b2b' in address ? address.b2b?.extraFields : undefined;
-
     return omit(
         {
             ...address,
             customFields: (address.customFields || []).filter(({ fieldValue }) => !!fieldValue),
-            // Normalize `extraFields` so an unchanged address compares equal instead of
-            // refiring update calls. Company addresses carry them nested under `b2b`, so
-            // lift those for comparison. Guards against any future path where one side has
-            // `[]` and the other omits it (e.g. backend behavior flips again, or a
-            // saved/customer address arrives with `[]`).
-            extraFields: b2bExtraFields ?? address.extraFields ?? [],
+            extraFields: getAddressExtraFields(address),
         },
         ignoredFields,
     );
