@@ -3,6 +3,7 @@ import {
     createCheckoutService,
     createEmbeddedCheckoutMessenger,
     type EmbeddedCheckoutMessenger,
+    type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
 import userEvent from '@testing-library/user-event';
 import { noop } from 'lodash';
@@ -42,6 +43,8 @@ import {
     createEmbeddedCheckoutSupport,
 } from '../embeddedCheckout';
 
+import { type PaymentContextProps } from './PaymentContext';
+
 // Controllable billing save for the themeV2 pre-submit gate. Other tests keep
 // themeV2 off, so the block never renders and this stays unused there.
 
@@ -65,6 +68,32 @@ jest.mock('./billingForm', () => {
     };
 });
 
+// Lets a test call PaymentContext methods (disableSubmit / hidePaymentSubmitButton)
+// without needing a real payment method integration. PaymentRedeemables always
+// renders alongside the payment form, regardless of the selected method or theme.
+let mockPaymentContextEffect: ((context: PaymentContextProps) => void) | undefined;
+
+jest.mock('./PaymentRedeemables', () => {
+    const ReactActual = require('react');
+
+    const { default: PaymentContextActual } = require('./PaymentContext');
+
+    const PaymentRedeemablesMock = () => {
+        const context = ReactActual.useContext(PaymentContextActual);
+
+        ReactActual.useEffect(() => {
+            mockPaymentContextEffect?.(context);
+        }, []);
+
+        return null;
+    };
+
+    return {
+        __esModule: true,
+        default: PaymentRedeemablesMock,
+    };
+});
+
 describe('Payment step', () => {
     let checkout: CheckoutPageNodeObject;
     let CheckoutTest: FunctionComponent<CheckoutProps>;
@@ -82,6 +111,7 @@ describe('Payment step', () => {
     afterEach(() => {
         checkout.resetHandlers();
         sessionStorage.clear();
+        mockPaymentContextEffect = undefined;
     });
 
     afterAll(() => {
@@ -288,6 +318,33 @@ describe('Payment step', () => {
                 screen.getByRole('button', { name: /place order/i }).hasAttribute('disabled'),
             ).toBeTruthy(),
         );
+    });
+
+    it('does not submit the order when disableSubmit is called for another method right after the selected one', async () => {
+        checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
+
+        // "instore" ("Pay in Store") is the preset's default selected method.
+        // disableSubmit only reads id/gateway, so minimal stand-ins are enough.
+        // Calling disableSubmit for a second, different method straight after it
+        // used to wipe out the first method's disabled state before Payment
+        // re-rendered.
+        const instoreMethod = { id: 'instore', gateway: null } as unknown as PaymentMethod;
+        const codMethod = { id: 'cod', gateway: null } as unknown as PaymentMethod;
+
+        mockPaymentContextEffect = (context) => {
+            context.disableSubmit(instoreMethod, true);
+            context.disableSubmit(codMethod, true);
+        };
+
+        const submitOrderSpy = jest.spyOn(checkoutService, 'submitOrder');
+
+        render(<CheckoutTest {...defaultProps} />);
+
+        await checkout.waitForPaymentStep();
+
+        await userEvent.click(screen.getByText('Place Order'));
+
+        expect(submitOrderSpy).not.toHaveBeenCalled();
     });
 
     it('goes back to billing step after unmounting the component', async () => {
