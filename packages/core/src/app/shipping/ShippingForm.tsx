@@ -1,4 +1,3 @@
-import { type Cart } from '@bigcommerce/checkout-sdk';
 import React, { useEffect } from 'react';
 
 import { useCapabilities, useExtensions } from '@bigcommerce/checkout/contexts';
@@ -51,8 +50,7 @@ const ShippingForm = ({
     const {
         userJourney: { hasAddressLabel },
     } = useCapabilities();
-    // cart.companyName exists in the API response but is not yet in the SDK types.
-    const cartCompanyName = (cart as Cart & { companyName?: string })?.companyName ?? '';
+    const cartCompanyName = cart?.companyName ?? '';
 
     useEffect(() => {
         if (shippingFormRenderTimestamp) {
