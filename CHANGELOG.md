@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.841.0](https://github.com/bigcommerce/checkout-js/compare/v1.840.5...v1.841.0) (2026-07-21)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10067 add address label field feature when capability is ON ([#3173](https://github.com/bigcommerce/checkout-js/issues/3173)) ([236251b](https://github.com/bigcommerce/checkout-js/commit/236251b6b2f047e6a9671b4c823fc5102b150736))
+
 ### [1.840.5](https://github.com/bigcommerce/checkout-js/compare/v1.840.4...v1.840.5) (2026-07-21)
 
 
