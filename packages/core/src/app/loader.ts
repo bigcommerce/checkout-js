@@ -30,28 +30,6 @@ export interface LoadFilesResult {
     renderOrderConfirmation(options: RenderOrderConfirmationOptions): void;
 }
 
-const DIAGNOSTIC_PREFIX = '[checkout-js]';
-
-function prefetchWithConsistentCrossOrigin(
-    tags: Array<{ as: 'script' | 'style'; href: string }>,
-): void {
-    tags.forEach(({ as, href }) => {
-        const link = document.createElement('link');
-
-        link.setAttribute('rel', 'prefetch');
-        link.setAttribute('as', as);
-        link.setAttribute('href', href);
-        link.setAttribute('crossorigin', 'anonymous');
-
-        link.addEventListener('error', () => {
-            // eslint-disable-next-line no-console
-            console.error(`${DIAGNOSTIC_PREFIX} Failed to prefetch:`, href);
-        });
-
-        document.head.appendChild(link);
-    });
-}
-
 export function loadFiles(options?: LoadFilesOptions): Promise<LoadFilesResult> {
     const publicPath = configurePublicPath(options && options.publicPath);
     const isConsistentCrossOriginFixEnabled = Boolean(options?.isConsistentCrossOriginFixEnabled);
@@ -94,81 +72,58 @@ export function loadFiles(options?: LoadFilesOptions): Promise<LoadFilesResult> 
         ),
     );
 
-    if (isConsistentCrossOriginFixEnabled) {
-        prefetchWithConsistentCrossOrigin(
-            jsDynamicChunks.map((path) => ({
-                as: 'script',
-                href: joinPaths(publicPath, path),
-            })),
-        );
+    const preloadOptions = {
+        prefetch: true,
+        ...(isConsistentCrossOriginFixEnabled && { crossOrigin: 'anonymous' as const }),
+    };
 
-        prefetchWithConsistentCrossOrigin(
-            cssDynamicChunks.map((path) => ({
-                as: 'style',
-                href: joinPaths(publicPath, path),
-            })),
-        );
-    } else {
-        getScriptLoader().preloadScripts(
-            jsDynamicChunks.map((path) => joinPaths(publicPath, path)),
-            { prefetch: true },
-        );
+    getScriptLoader().preloadScripts(
+        jsDynamicChunks.map((path) => joinPaths(publicPath, path)),
+        preloadOptions,
+    );
 
-        getStylesheetLoader().preloadStylesheets(
-            cssDynamicChunks.map((path) => joinPaths(publicPath, path)),
-            { prefetch: true },
-        );
-    }
+    getStylesheetLoader().preloadStylesheets(
+        cssDynamicChunks.map((path) => joinPaths(publicPath, path)),
+        preloadOptions,
+    );
 
     const languageConfig = isLanguageWindow(window)
         ? window.language
         : { locale: 'en', locales: {}, translations: {} };
 
-    const filesPromise: Promise<LoadFilesResult> = Promise.all([
-        getDefaultTranslations(languageConfig.locale),
-        scripts,
-        stylesheets,
-    ]).then(([defaultTranslations]) => {
-        if (!isRecordContainingKey(window, LIBRARY_NAME)) {
-            throw new Error(`'${LIBRARY_NAME}' property is not available in window.`);
-        }
+    return Promise.all([getDefaultTranslations(languageConfig.locale), scripts, stylesheets]).then(
+        ([defaultTranslations]) => {
+            if (!isRecordContainingKey(window, LIBRARY_NAME)) {
+                throw new Error(`'${LIBRARY_NAME}' property is not available in window.`);
+            }
 
-        const appExport = window[LIBRARY_NAME];
+            const appExport = window[LIBRARY_NAME];
 
-        if (!isAppExport(appExport)) {
-            throw new Error(
-                'The functions required to bootstrap the application are not available.',
-            );
-        }
+            if (!isAppExport(appExport)) {
+                throw new Error(
+                    'The functions required to bootstrap the application are not available.',
+                );
+            }
 
-        const { renderCheckout, renderOrderConfirmation, initializeLanguageService } = appExport;
+            const { renderCheckout, renderOrderConfirmation, initializeLanguageService } =
+                appExport;
 
-        initializeLanguageService({
-            ...languageConfig,
-            defaultTranslations,
-        });
+            initializeLanguageService({
+                ...languageConfig,
+                defaultTranslations,
+            });
 
-        return {
-            appVersion,
-            renderCheckout: async (renderOptions) => {
-                await yieldToMain();
-                renderCheckout({ publicPath, ...renderOptions });
-            },
-            renderOrderConfirmation: async (renderOptions) => {
-                await yieldToMain();
-                renderOrderConfirmation({ publicPath, ...renderOptions });
-            },
-        };
-    });
-
-    if (!isConsistentCrossOriginFixEnabled) {
-        return filesPromise;
-    }
-
-    return filesPromise.catch((error) => {
-        // eslint-disable-next-line no-console
-        console.error(`${DIAGNOSTIC_PREFIX} Failed to bootstrap checkout:`, error);
-
-        throw error;
-    });
+            return {
+                appVersion,
+                renderCheckout: async (renderOptions) => {
+                    await yieldToMain();
+                    renderCheckout({ publicPath, ...renderOptions });
+                },
+                renderOrderConfirmation: async (renderOptions) => {
+                    await yieldToMain();
+                    renderOrderConfirmation({ publicPath, ...renderOptions });
+                },
+            };
+        },
+    );
 }

@@ -70,10 +70,6 @@ describe('loadFiles', () => {
     afterEach(() => {
         jest.restoreAllMocks();
 
-        document.head.querySelectorAll('link[rel="prefetch"]').forEach((link) => {
-            link.remove();
-        });
-
         delete (global as any).MANIFEST_JSON;
         delete (global as any).LIBRARY_NAME;
         delete (global as any).checkout;
@@ -142,75 +138,21 @@ describe('loadFiles', () => {
     });
 
     describe('when isConsistentCrossOriginFixEnabled is true', () => {
-        it('does not use script-loader to prefetch dynamic JS or CSS chunks', async () => {
-            await loadFiles({ ...options, isConsistentCrossOriginFixEnabled: true });
-
-            expect(getScriptLoader().preloadScripts).not.toHaveBeenCalled();
-            expect(getStylesheetLoader().preloadStylesheets).not.toHaveBeenCalled();
-        });
-
         it('prefetches dynamic JS chunks with crossorigin matching the real chunk requests', async () => {
             await loadFiles({ ...options, isConsistentCrossOriginFixEnabled: true });
 
-            const links = document.head.querySelectorAll<HTMLLinkElement>(
-                'link[rel="prefetch"][as="script"]',
+            expect(getScriptLoader().preloadScripts).toHaveBeenCalledWith(
+                ['https://cdn.foo.bar/step-a.js', 'https://cdn.foo.bar/step-b.js'],
+                { prefetch: true, crossOrigin: 'anonymous' },
             );
-
-            expect(links).toHaveLength(2);
-            expect(links[0]).toHaveAttribute('href', 'https://cdn.foo.bar/step-a.js');
-            expect(links[0]).toHaveAttribute('crossorigin', 'anonymous');
-            expect(links[1]).toHaveAttribute('href', 'https://cdn.foo.bar/step-b.js');
-            expect(links[1]).toHaveAttribute('crossorigin', 'anonymous');
         });
 
         it('prefetches dynamic CSS chunks with crossorigin matching the real chunk requests', async () => {
             await loadFiles({ ...options, isConsistentCrossOriginFixEnabled: true });
 
-            const links = document.head.querySelectorAll<HTMLLinkElement>(
-                'link[rel="prefetch"][as="style"]',
-            );
-
-            expect(links).toHaveLength(2);
-            expect(links[0]).toHaveAttribute('href', 'https://cdn.foo.bar/step-a.css');
-            expect(links[0]).toHaveAttribute('crossorigin', 'anonymous');
-            expect(links[1]).toHaveAttribute('href', 'https://cdn.foo.bar/step-b.css');
-            expect(links[1]).toHaveAttribute('crossorigin', 'anonymous');
-        });
-
-        it('omits integrity from prefetch links since browsers ignore it and SRI is checked on the real chunk requests', async () => {
-            await loadFiles({ ...options, isConsistentCrossOriginFixEnabled: true });
-
-            const links = document.head.querySelectorAll<HTMLLinkElement>('link[rel="prefetch"]');
-
-            expect(links).toHaveLength(4);
-            links.forEach((link) => {
-                expect(link).not.toHaveAttribute('integrity');
-            });
-        });
-
-        it('logs a failure tied to the specific prefetch link that failed, without a page-wide listener', async () => {
-            const consoleErrorSpy = jest
-                .spyOn(console, 'error')
-                .mockImplementation(() => undefined);
-            const addEventListenerSpy = jest.spyOn(window, 'addEventListener');
-
-            await loadFiles({ ...options, isConsistentCrossOriginFixEnabled: true });
-
-            expect(addEventListenerSpy).not.toHaveBeenCalledWith('error', expect.anything());
-            expect(addEventListenerSpy).not.toHaveBeenCalledWith(
-                'unhandledrejection',
-                expect.anything(),
-            );
-
-            const [failingLink] = document.head.querySelectorAll<HTMLLinkElement>(
-                'link[rel="prefetch"][as="script"]',
-            );
-
-            failingLink.dispatchEvent(new Event('error'));
-
-            expect(consoleErrorSpy).toHaveBeenCalledWith(
-                '[checkout-js] Failed to prefetch:',
-                'https://cdn.foo.bar/step-a.js',
+            expect(getStylesheetLoader().preloadStylesheets).toHaveBeenCalledWith(
+                ['https://cdn.foo.bar/step-a.css', 'https://cdn.foo.bar/step-b.css'],
+                { prefetch: true, crossOrigin: 'anonymous' },
             );
         });
     });
@@ -271,43 +213,6 @@ describe('loadFiles', () => {
             locale: expect.any(String),
             locales: expect.any(Object),
             translations: expect.any(Object),
-        });
-    });
-
-    describe('bootstrap diagnostics', () => {
-        it('does not log anything when isConsistentCrossOriginFixEnabled is off, preserving existing behavior', async () => {
-            const consoleErrorSpy = jest
-                .spyOn(console, 'error')
-                .mockImplementation(() => undefined);
-            const bootstrapError = new Error('vendor.js failed to load');
-
-            jest.spyOn(getScriptLoader(), 'loadScript').mockImplementation((src: string) =>
-                src.includes('vendor.js') ? Promise.reject(bootstrapError) : Promise.resolve(),
-            );
-
-            await expect(loadFiles(options)).rejects.toThrow(bootstrapError);
-
-            expect(consoleErrorSpy).not.toHaveBeenCalled();
-        });
-
-        it('logs a clear, greppable message and still rejects if bootstrapping fails when isConsistentCrossOriginFixEnabled is on', async () => {
-            const consoleErrorSpy = jest
-                .spyOn(console, 'error')
-                .mockImplementation(() => undefined);
-            const bootstrapError = new Error('vendor.js failed to load');
-
-            jest.spyOn(getScriptLoader(), 'loadScript').mockImplementation((src: string) =>
-                src.includes('vendor.js') ? Promise.reject(bootstrapError) : Promise.resolve(),
-            );
-
-            await expect(
-                loadFiles({ ...options, isConsistentCrossOriginFixEnabled: true }),
-            ).rejects.toThrow(bootstrapError);
-
-            expect(consoleErrorSpy).toHaveBeenCalledWith(
-                '[checkout-js] Failed to bootstrap checkout:',
-                bootstrapError,
-            );
         });
     });
 });
