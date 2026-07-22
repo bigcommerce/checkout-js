@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.841.3](https://github.com/bigcommerce/checkout-js/compare/v1.841.2...v1.841.3) (2026-07-22)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10247 Update shouldSaveAddress ([#3186](https://github.com/bigcommerce/checkout-js/issues/3186)) ([6588156](https://github.com/bigcommerce/checkout-js/commit/65881567a186694e786a4cbede3deb238dc8cee1))
+
 ### [1.841.2](https://github.com/bigcommerce/checkout-js/compare/v1.841.1...v1.841.2) (2026-07-22)
 
 
