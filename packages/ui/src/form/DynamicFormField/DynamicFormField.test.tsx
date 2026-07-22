@@ -27,9 +27,13 @@ jest.mock('@intl-tel-input/react', () => ({
     >(({ inputProps, onChangeNumber, value }, ref) => {
         useImperativeHandle(ref, () => ({
             getInstance: () => ({
+                getNumber: () => '',
                 getSelectedCountryData: mockGetSelectedCountryData,
+                isActive: () => true,
                 isValidNumber: mockIsValidNumber,
+                promise: Promise.resolve(),
                 setCountry: mockSetCountry,
+                setNumber: jest.fn(),
             }),
         }));
 

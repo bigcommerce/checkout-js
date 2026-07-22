@@ -2,6 +2,7 @@ import IntlTelInput, { type IntlTelInputRef } from '@intl-tel-input/react';
 import 'intl-tel-input/styles';
 import classNames from 'classnames';
 import { type FieldProps } from 'formik';
+import { noop } from 'lodash';
 import React, {
     type FunctionComponent,
     type RefObject,
@@ -35,6 +36,32 @@ export const PhoneInput: FunctionComponent<PhoneInputProps> = ({
 
     const currentValue = value ? String(value) : '';
 
+    const currentValueRef = useRef(currentValue);
+
+    currentValueRef.current = currentValue;
+
+    // sync initial Formik value ourselves
+    // the library's value prop has a bug with stale values that caused an infinite loop
+    // see #incident-20260711-2475 for details
+    useEffect(() => {
+        const intlTelInputInstance = intlTelInputRef.current?.getInstance();
+
+        if (!intlTelInputInstance) {
+            return;
+        }
+
+        void intlTelInputInstance.promise
+            .then(() => {
+                const latestValue = currentValueRef.current;
+
+                if (intlTelInputInstance.getNumber() !== latestValue) {
+                    intlTelInputInstance.setNumber(latestValue);
+                }
+            })
+            .catch(noop);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentValue]);
+
     useEffect(() => {
         if (!selectedCountry || value || isPhoneCountryAutoSetRef.current) {
             return;
@@ -50,8 +77,6 @@ export const PhoneInput: FunctionComponent<PhoneInputProps> = ({
             const intlTelInputInstance = intlTelInputRef.current?.getInstance();
 
             if (intlTelInputInstance) {
-                // library's internal instance can have stale digits in edge cases (bug on their side)
-                intlTelInputInstance.setNumber('');
                 intlTelInputInstance.setCountry(selectedCountryInIsoFormat);
                 isPhoneCountryAutoSetRef.current = true;
             }
@@ -65,13 +90,13 @@ export const PhoneInput: FunctionComponent<PhoneInputProps> = ({
     const handleChangeNumber = useCallback(
         (newPhoneNumber: string) => {
             // Ignore no-op emissions fired by the library itself
-            if (newPhoneNumber === currentValue) {
+            if (newPhoneNumber === currentValueRef.current) {
                 return;
             }
 
             void setFieldValue(name, newPhoneNumber);
         },
-        [name, setFieldValue, currentValue],
+        [name, setFieldValue],
     );
 
     return (
@@ -101,7 +126,6 @@ export const PhoneInput: FunctionComponent<PhoneInputProps> = ({
                 ref={intlTelInputRef}
                 separateDialCode={false}
                 strictRejectAnimation={false}
-                value={currentValue}
             />
         </span>
     );
