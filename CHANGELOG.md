@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.842.0](https://github.com/bigcommerce/checkout-js/compare/v1.841.4...v1.842.0) (2026-07-22)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10115 Prevent loading dynamic chunks without crossorigin ([#3168](https://github.com/bigcommerce/checkout-js/issues/3168)) ([9b3a9d2](https://github.com/bigcommerce/checkout-js/commit/9b3a9d262e0a9bdada67d262e65e1bb5a43b1677))
+
 ### [1.841.4](https://github.com/bigcommerce/checkout-js/compare/v1.841.3...v1.841.4) (2026-07-22)
 
 ### [1.841.3](https://github.com/bigcommerce/checkout-js/compare/v1.841.2...v1.841.3) (2026-07-22)
