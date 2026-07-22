@@ -16,6 +16,7 @@ export interface CustomCheckoutWindow extends Window {
         publicPath?: string;
         sentryConfig?: BrowserOptions;
         permalinkStatus?: OrderPermalinkStatus | null;
+        isConsistentCrossOriginFixEnabled?: boolean;
     };
 }
 
@@ -30,9 +31,18 @@ function isCustomCheckoutWindow(window: Window): window is CustomCheckoutWindow 
         throw new Error('Checkout config is missing.');
     }
 
-    const { renderOrderConfirmation, renderCheckout } = await loadFiles();
+    const { renderOrderConfirmation, renderCheckout } = await loadFiles({
+        isConsistentCrossOriginFixEnabled: Boolean(
+            window.checkoutConfig.isConsistentCrossOriginFixEnabled,
+        ),
+    });
 
-    const { orderId, checkoutId, ...appProps } = window.checkoutConfig;
+    const {
+        orderId,
+        checkoutId,
+        isConsistentCrossOriginFixEnabled: _isConsistentCrossOriginFixEnabled,
+        ...appProps
+    } = window.checkoutConfig;
 
     if (orderId) {
         renderOrderConfirmation({ ...appProps, orderId });

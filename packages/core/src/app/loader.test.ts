@@ -25,6 +25,8 @@ describe('loadFiles', () => {
     let appExports: AppExport;
 
     beforeEach(() => {
+        jest.clearAllMocks();
+
         options = {
             publicPath: 'https://cdn.foo.bar/',
         };
@@ -66,6 +68,8 @@ describe('loadFiles', () => {
     });
 
     afterEach(() => {
+        jest.restoreAllMocks();
+
         delete (global as any).MANIFEST_JSON;
         delete (global as any).LIBRARY_NAME;
         delete (global as any).checkout;
@@ -131,6 +135,26 @@ describe('loadFiles', () => {
             ['https://cdn.foo.bar/step-a.css', 'https://cdn.foo.bar/step-b.css'],
             { prefetch: true },
         );
+    });
+
+    describe('when isConsistentCrossOriginFixEnabled is true', () => {
+        it('prefetches dynamic JS chunks with crossorigin matching the real chunk requests', async () => {
+            await loadFiles({ ...options, isConsistentCrossOriginFixEnabled: true });
+
+            expect(getScriptLoader().preloadScripts).toHaveBeenCalledWith(
+                ['https://cdn.foo.bar/step-a.js', 'https://cdn.foo.bar/step-b.js'],
+                { prefetch: true, crossOrigin: 'anonymous' },
+            );
+        });
+
+        it('prefetches dynamic CSS chunks with crossorigin matching the real chunk requests', async () => {
+            await loadFiles({ ...options, isConsistentCrossOriginFixEnabled: true });
+
+            expect(getStylesheetLoader().preloadStylesheets).toHaveBeenCalledWith(
+                ['https://cdn.foo.bar/step-a.css', 'https://cdn.foo.bar/step-b.css'],
+                { prefetch: true, crossOrigin: 'anonymous' },
+            );
+        });
     });
 
     it('resolves with app version', async () => {

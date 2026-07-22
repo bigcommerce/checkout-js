@@ -21,6 +21,7 @@ export interface AssetManifest {
 
 export interface LoadFilesOptions {
     publicPath?: string;
+    isConsistentCrossOriginFixEnabled?: boolean;
 }
 
 export interface LoadFilesResult {
@@ -31,6 +32,8 @@ export interface LoadFilesResult {
 
 export function loadFiles(options?: LoadFilesOptions): Promise<LoadFilesResult> {
     const publicPath = configurePublicPath(options && options.publicPath);
+    const isConsistentCrossOriginFixEnabled = Boolean(options?.isConsistentCrossOriginFixEnabled);
+
     const {
         appVersion,
         css = [],
@@ -69,14 +72,19 @@ export function loadFiles(options?: LoadFilesOptions): Promise<LoadFilesResult> 
         ),
     );
 
+    const preloadOptions = {
+        prefetch: true,
+        ...(isConsistentCrossOriginFixEnabled && { crossOrigin: 'anonymous' as const }),
+    };
+
     getScriptLoader().preloadScripts(
         jsDynamicChunks.map((path) => joinPaths(publicPath, path)),
-        { prefetch: true },
+        preloadOptions,
     );
 
     getStylesheetLoader().preloadStylesheets(
         cssDynamicChunks.map((path) => joinPaths(publicPath, path)),
-        { prefetch: true },
+        preloadOptions,
     );
 
     const languageConfig = isLanguageWindow(window)
