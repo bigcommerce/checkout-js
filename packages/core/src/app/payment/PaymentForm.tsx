@@ -289,6 +289,7 @@ const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProp
     values,
 }) => {
     const { setSubmitted } = useContext(FormContext);
+    const { themeV2 } = useThemeContext();
 
     const handlePaymentMethodSelect = useCallback(
         (method: PaymentMethod) => {
@@ -318,7 +319,7 @@ const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProp
     return (
         <Fieldset
             legend={
-                <Legend>
+                <Legend hidden={themeV2}>
                     <TranslatedString id="payment.payment_methods_text" />
                 </Legend>
             }
