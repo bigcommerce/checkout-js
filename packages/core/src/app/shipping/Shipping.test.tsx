@@ -384,6 +384,59 @@ describe('Shipping step', () => {
             ).toBeInTheDocument();
         });
 
+        it('does not flag a saved customer address to be saved again when completing the shipping step', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithMultiShippingCart);
+
+            jest.spyOn(checkoutService, 'updateShippingAddress');
+            jest.spyOn(checkoutService, 'updateBillingAddress');
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForShippingStep();
+
+            checkout.updateCheckout(
+                'post',
+                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments',
+                {
+                    ...checkoutWithBillingEmail,
+                    consignments: [
+                        {
+                            ...consignment,
+                            selectedShippingOption: undefined,
+                        },
+                    ],
+                },
+            );
+            checkout.updateCheckout(
+                'put',
+                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/consignments/consignment-1',
+                {
+                    ...checkoutWithShipping,
+                },
+            );
+            checkout.updateCheckout(
+                'put',
+                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/billing-address/billing-address-id*',
+                {
+                    ...checkoutWithShippingAndBilling,
+                },
+            );
+
+            await userEvent.click(screen.getByTestId('address-select-button'));
+            await userEvent.click(screen.getByText(/111 Testing Rd/i));
+
+            await userEvent.click(screen.getByRole('button', { name: 'Continue' }));
+
+            await checkout.waitForPaymentStep();
+
+            expect(checkoutService.updateShippingAddress).not.toHaveBeenCalledWith(
+                expect.objectContaining({ shouldSaveAddress: true }),
+            );
+            expect(checkoutService.updateBillingAddress).toHaveBeenCalledWith(
+                expect.objectContaining({ shouldSaveAddress: false }),
+            );
+        });
+
         it('enters new address for the customer with saved address and completes the shipping step', async () => {
             const config = {
                 ...checkoutSettings,

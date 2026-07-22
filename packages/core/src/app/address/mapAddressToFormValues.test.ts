@@ -1,5 +1,6 @@
-import { type Address, type FormField } from '@bigcommerce/checkout-sdk';
+import { type Address, type CustomerAddress, type FormField } from '@bigcommerce/checkout-sdk';
 
+import { getAddress, getCustomerAddressB2B } from './address.mock';
 import { getFormFields } from './formField.mock';
 import mapAddressToFormValues from './mapAddressToFormValues';
 
@@ -145,6 +146,52 @@ describe('mapAddressToFormValues', () => {
             const result = mapAddressToFormValues(fields, address);
 
             expect(result.extraFields?.b2bExtraField_100).toBe('Default Corp');
+        });
+
+        it('reads extra field values from b2b.extraFields for a company address', () => {
+            const fields: FormField[] = [...getFormFields(), extraField];
+
+            const address: CustomerAddress = {
+                ...getAddress(),
+                id: 1,
+                type: 'residential',
+                b2b: getCustomerAddressB2B({
+                    extraFields: [{ fieldId: '100', fieldValue: 'Company Corp' }],
+                }),
+            };
+
+            const result = mapAddressToFormValues(fields, address);
+
+            expect(result.extraFields?.b2bExtraField_100).toBe('Company Corp');
+        });
+    });
+
+    describe('shouldSaveAddress', () => {
+        it('defaults to true when no address is provided', () => {
+            const result = mapAddressToFormValues(getFormFields());
+
+            expect(result.shouldSaveAddress).toBe(true);
+        });
+
+        it('keeps the explicit shouldSaveAddress value of a checkout address', () => {
+            const result = mapAddressToFormValues(getFormFields(), {
+                ...getAddress(),
+                shouldSaveAddress: false,
+            });
+
+            expect(result.shouldSaveAddress).toBe(false);
+        });
+
+        it('seeds false for a saved customer address', () => {
+            const address: CustomerAddress = {
+                ...getAddress(),
+                id: 1,
+                type: 'residential',
+            };
+
+            const result = mapAddressToFormValues(getFormFields(), address);
+
+            expect(result.shouldSaveAddress).toBe(false);
         });
     });
 });

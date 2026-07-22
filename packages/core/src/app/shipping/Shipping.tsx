@@ -8,6 +8,7 @@ import { AddressFormSkeleton, ConfirmationModal } from '@bigcommerce/checkout/ui
 
 import {
     AddressType,
+    getShouldSaveAddress,
     isEqualAddress,
     mapAddressFromFormValues,
     setDefaultAddress,
@@ -157,7 +158,7 @@ function Shipping({
 
         if (
             !isEqualAddress(updatedShippingAddress, shippingAddress) ||
-            shippingAddress?.shouldSaveAddress !== updatedShippingAddress?.shouldSaveAddress
+            getShouldSaveAddress(shippingAddress) !== getShouldSaveAddress(updatedShippingAddress)
         ) {
             promises.push(updateShippingAddress(updatedShippingAddress || {}));
         }
