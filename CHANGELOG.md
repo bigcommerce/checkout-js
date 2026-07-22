@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.841.2](https://github.com/bigcommerce/checkout-js/compare/v1.841.1...v1.841.2) (2026-07-22)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10206 Do not pass value unconditionally to phone input ([#3172](https://github.com/bigcommerce/checkout-js/issues/3172)) ([2a780dc](https://github.com/bigcommerce/checkout-js/commit/2a780dc30c53d6f18cfb20d152cff73895ed058a))
+
 ### [1.841.1](https://github.com/bigcommerce/checkout-js/compare/v1.841.0...v1.841.1) (2026-07-22)
 
 ## [1.841.0](https://github.com/bigcommerce/checkout-js/compare/v1.840.5...v1.841.0) (2026-07-21)
