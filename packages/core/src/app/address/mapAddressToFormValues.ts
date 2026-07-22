@@ -9,6 +9,7 @@ import {
 import { DynamicFormFieldType } from '@bigcommerce/checkout/ui';
 
 import getAddressExtraFields from './getAddressExtraFields';
+import getShouldSaveAddress from './getShouldSaveAddress';
 
 export type AddressFormValues = Pick<
     Address,
@@ -77,8 +78,7 @@ export default function mapAddressToFormValues(
         }, {} as AddressFormValues),
     };
 
-    values.shouldSaveAddress =
-        address && address.shouldSaveAddress !== undefined ? address.shouldSaveAddress : true;
+    values.shouldSaveAddress = getShouldSaveAddress(address);
 
     if (address?.label !== undefined) {
         values.label = address.label;
