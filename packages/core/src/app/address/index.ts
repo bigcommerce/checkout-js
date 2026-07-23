@@ -1,7 +1,6 @@
 export { default as mapAddressToFormValues, AddressFormValues } from './mapAddressToFormValues';
 export { decodeAddressLabel, encodeAddressForWrite } from './addressLabelUtils';
 export { default as AddressLabelFormField } from './AddressLabelFormField';
-export { default as useAddressLabelDecoder } from './useAddressLabelDecoder';
 export { default as mapAddressFromFormValues } from './mapAddressFromFormValues';
 export { default as AddressForm } from './AddressForm';
 export { default as AddressFormModal } from './AddressFormModal';

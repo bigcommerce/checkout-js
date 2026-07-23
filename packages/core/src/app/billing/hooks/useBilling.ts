@@ -5,9 +5,9 @@ import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 
 import {
     AddressType,
+    decodeAddressLabel,
     encodeAddressForWrite,
     setDefaultAddress,
-    useAddressLabelDecoder,
 } from '../../address';
 import getBillingMethodId from '../getBillingMethodId';
 
@@ -60,7 +60,6 @@ export const useBilling = ({ onReady, onUnhandledError }: UseBillingOptions) => 
         userJourney: { hasAddressExtraFields, hasAddressLabel, hasCompanyAddressBook },
         billing: { restrictManualAddressEntry },
     } = useCapabilities();
-    const decode = useAddressLabelDecoder();
     // Write boundary for the address label: folds the label into `company` (and drops the
     // client-only `label`) just before the request leaves the app. Idempotent and a no-op unless the
     // capability is on, so every billing write that routes through useBilling is covered.
@@ -81,7 +80,7 @@ export const useBilling = ({ onReady, onUnhandledError }: UseBillingOptions) => 
     const isInitializing = isLoadingBillingCountries || isApplyingDefaultAddress;
 
     const customerMessage = checkout.customerMessage;
-    const billingAddress = getBillingAddress();
+    const billingAddress = decodeAddressLabel(getBillingAddress(), hasAddressLabel);
     const methodId = getBillingMethodId(checkout);
 
     const hasAddresses = Boolean(customer.addresses && customer.addresses.length > 0);
@@ -108,7 +107,7 @@ export const useBilling = ({ onReady, onUnhandledError }: UseBillingOptions) => 
                         type: AddressType.Billing,
                         currentAddress: getBillingAddress(),
                         addresses: customer.addresses,
-                        decode,
+                        decode: (address) => decodeAddressLabel(address, hasAddressLabel),
                         updateAddress: updateBillingAddress,
                     });
                 }

@@ -4,7 +4,7 @@ import React, { type FunctionComponent } from 'react';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { AddressFormSkeleton, Legend } from '@bigcommerce/checkout/ui';
 
-import { isEqualAddress, mapAddressFromFormValues, useAddressLabelDecoder } from '../../address';
+import { isEqualAddress, mapAddressFromFormValues } from '../../address';
 import { type BillingFormValues } from '../../billing/billingFormConfig';
 import { useBilling } from '../../billing/hooks/useBilling';
 
@@ -37,7 +37,6 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
         updateBillingAddress,
         updateCheckout,
     } = useBilling({ onUnhandledError });
-    const decode = useAddressLabelDecoder();
 
     const handleBillingSameAsShippingChange = (checked: boolean) => {
         onBillingSameAsShippingChange(checked);
@@ -97,7 +96,7 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
                     </Legend>
                 </div>
                 <PaymentBillingForm
-                    billingAddress={decode(billingAddress)}
+                    billingAddress={billingAddress}
                     customerMessage={customerMessage}
                     getFields={getFields}
                     isBillingSameAsShipping={isBillingSameAsShipping}

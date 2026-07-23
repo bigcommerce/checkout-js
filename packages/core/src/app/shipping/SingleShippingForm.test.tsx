@@ -40,6 +40,7 @@ describe('SingleShippingForm', () => {
         shippingAddress: getShippingAddress(),
         customerMessage: '',
         cartHasChanged: false,
+        hasAddressLabel: false,
         isBillingSameAsShipping: false,
         isInitialValueLoaded: true,
         shippingFormRenderTimestamp: undefined,

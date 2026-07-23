@@ -1,15 +1,16 @@
-import { useCapabilities, useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
-import { Fieldset, LoadingOverlay } from '@bigcommerce/checkout/ui';
 import { type Address, type Consignment, type FormField } from '@bigcommerce/checkout-sdk';
 import React, { type ReactElement } from 'react';
+
+import { useCapabilities, useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
+import { Fieldset, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import {
     AddressForm,
     AddressSelect,
     AddressType,
+    decodeAddressLabel,
     isValidCustomerAddress,
     reorderAddressFormFields,
-    useAddressLabelDecoder,
 } from '../address';
 import { connectFormik, type ConnectFormikProps } from '../common/form';
 
@@ -47,12 +48,12 @@ const ShippingAddressForm = ({
     const { themeV2 } = useThemeContext();
     const {
         shipping: { hideSaveToAddressBookCheck, restrictManualAddressEntry },
+        userJourney: { hasAddressLabel },
     } = useCapabilities();
-    const decode = useAddressLabelDecoder();
 
     const rawAddresses = customer?.addresses || [];
-    const addresses = rawAddresses.map(decode);
-    const decodedShippingAddress = decode(shippingAddress);
+    const addresses = rawAddresses.map((address) => decodeAddressLabel(address, hasAddressLabel));
+    const decodedShippingAddress = decodeAddressLabel(shippingAddress, hasAddressLabel);
     const shouldShowSaveAddress = !hideSaveToAddressBookCheck && !customer?.isGuest;
 
     const setFieldValue = (fieldName: string, fieldValue: string) => {
