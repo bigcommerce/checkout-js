@@ -28,6 +28,14 @@
             margin: spacing("single") 0;
         }
         
+        // :not(:last-child) keeps collapsed steps unaffected
+        .checkout-step--shipping,
+        .checkout-step--payment {
+            .checkout-view-header:not(:last-child) {
+                margin-bottom: spacing("half");
+            }
+        }
+
         .stepHeader {
             flex-wrap: wrap;
             padding: 0;
