@@ -22,8 +22,8 @@ import {
     AddressForm,
     AddressSelect,
     AddressType,
+    decodeAddressLabel,
     isValidCustomerAddress,
-    useAddressLabelDecoder,
 } from '../address';
 import { OrderComments } from '../orderComments';
 import { getShippableItemsCount } from '../shipping';
@@ -72,8 +72,8 @@ const BillingForm = ({
     }));
     const {
         billing: { hideSaveToAddressBookCheck, restrictManualAddressEntry },
+        userJourney: { hasAddressLabel },
     } = useCapabilities();
-    const decode = useAddressLabelDecoder();
 
     if (!config || !customer || !cart) {
         throw new Error('checkout data is not available');
@@ -92,7 +92,9 @@ const BillingForm = ({
     const rawBillingAddresses =
         isGuest && isPayPalFastlaneEnabled ? paypalFastlaneAddresses : rawAddresses;
 
-    const billingAddresses = rawBillingAddresses.map(decode);
+    const billingAddresses = rawBillingAddresses.map((address) =>
+        decodeAddressLabel(address, hasAddressLabel),
+    );
 
     const hasAddresses = rawBillingAddresses.length > 0;
     const hasValidCustomerAddress =

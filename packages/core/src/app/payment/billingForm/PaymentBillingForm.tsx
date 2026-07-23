@@ -11,8 +11,8 @@ import {
     AddressForm,
     AddressSelect,
     AddressType,
+    decodeAddressLabel,
     isValidCustomerAddress,
-    useAddressLabelDecoder,
 } from '../../address';
 import {
     type BillingFormValues,
@@ -71,8 +71,8 @@ const PaymentBillingFormComponent = ({
     const {
         billing: { hideSaveToAddressBookCheck, restrictManualAddressEntry },
         shipping: { hideBillingSameAsShippingCheck },
+        userJourney: { hasAddressLabel },
     } = useCapabilities();
-    const decode = useAddressLabelDecoder();
 
     if (!config || !customer || !cart) {
         throw new Error('checkout data is not available');
@@ -90,7 +90,9 @@ const PaymentBillingFormComponent = ({
     const rawBillingAddresses =
         isGuest && isPayPalFastlaneEnabled ? paypalFastlaneAddresses : customer.addresses;
 
-    const billingAddresses = rawBillingAddresses.map(decode);
+    const billingAddresses = rawBillingAddresses.map((address) =>
+        decodeAddressLabel(address, hasAddressLabel),
+    );
 
     const hasAddresses = rawBillingAddresses.length > 0;
     const hasValidCustomerAddress =

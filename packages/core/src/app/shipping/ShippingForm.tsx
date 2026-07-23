@@ -50,7 +50,6 @@ const ShippingForm = ({
     const {
         userJourney: { hasAddressLabel },
     } = useCapabilities();
-    const cartCompanyName = cart?.companyName ?? '';
 
     useEffect(() => {
         if (shippingFormRenderTimestamp) {
@@ -100,7 +99,6 @@ const ShippingForm = ({
         getMultiShippingForm()
     ) : (
         <SingleShippingForm
-            cartCompanyName={cartCompanyName}
             cartHasChanged={cartHasChanged}
             customerMessage={customerMessage}
             getFields={getFields}

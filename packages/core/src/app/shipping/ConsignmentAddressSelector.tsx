@@ -9,9 +9,9 @@ import {
     type AddressFormValues,
     AddressSelect,
     AddressType,
+    decodeAddressLabel,
     isValidAddress,
     mapAddressFromFormValues,
-    useAddressLabelDecoder,
 } from '../address';
 import { ErrorModal } from '../common/error';
 import { EMPTY_ARRAY } from '../common/utility';
@@ -43,9 +43,8 @@ const ConsignmentAddressSelector = ({
     const [createCustomerAddressError, setCreateCustomerAddressError] = useState<Error>();
 
     const {
-        userJourney: { hasCompanyAddressBook },
+        userJourney: { hasCompanyAddressBook, hasAddressLabel },
     } = useCapabilities();
-    const decode = useAddressLabelDecoder();
 
     const {
         getFields,
@@ -57,13 +56,16 @@ const ConsignmentAddressSelector = ({
     } = useShipping();
 
     // TODO: add filter for addresses
-    const addresses = (customer.addresses || EMPTY_ARRAY).map(decode);
-    const decodedSelectedAddress = selectedAddress && decode(selectedAddress);
+    const addresses = (customer.addresses || EMPTY_ARRAY).map((address) =>
+        decodeAddressLabel(address, hasAddressLabel),
+    );
+    const decodedSelectedAddress =
+        selectedAddress && decodeAddressLabel(selectedAddress, hasAddressLabel);
 
     const isGuest = customer.isGuest;
 
     const handleSelectAddress = async (rawAddress: Address) => {
-        const address = decode(rawAddress);
+        const address = decodeAddressLabel(rawAddress, hasAddressLabel);
 
         if (!isValidAddress(address, getFields(address.countryCode), true)) {
             return onUnhandledError(new AssignItemInvalidAddressError());

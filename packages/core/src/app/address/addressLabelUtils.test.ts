@@ -11,32 +11,38 @@ import {
 } from './addressLabelUtils';
 
 describe('decodeAddressLabel', () => {
-    it('splits a label out of company when no b2b label is present', () => {
+    it('splits the label out of company', () => {
         const address = { company: 'Acme/ Acme Corp' } as Address;
 
-        expect(decodeAddressLabel(address)).toMatchObject({
+        expect(decodeAddressLabel(address, true)).toMatchObject({
             label: 'Acme',
             company: 'Acme Corp',
         });
     });
 
-    it('prefers b2b.label over a company-embedded label', () => {
+    it('derives the label from company and ignores b2b.label', () => {
         const address = {
-            company: 'Acme Corp',
-            b2b: { label: 'HQ' },
+            company: 'HQ/ Acme Corp',
+            b2b: { label: 'Different' },
         } as CustomerAddress;
 
-        expect(decodeAddressLabel(address)).toMatchObject({
+        expect(decodeAddressLabel(address, true)).toMatchObject({
             label: 'HQ',
             company: 'Acme Corp',
         });
     });
 
-    it('is idempotent when called twice, even without a b2b label', () => {
+    it('passes the address through untouched when the capability is off', () => {
         const address = { company: 'Acme/ Acme Corp' } as Address;
 
-        const decodedOnce = decodeAddressLabel(address);
-        const decodedTwice = decodeAddressLabel(decodedOnce);
+        expect(decodeAddressLabel(address, false)).toBe(address);
+    });
+
+    it('is idempotent when called twice', () => {
+        const address = { company: 'Acme/ Acme Corp' } as Address;
+
+        const decodedOnce = decodeAddressLabel(address, true);
+        const decodedTwice = decodeAddressLabel(decodedOnce, true);
 
         expect(decodedTwice).toMatchObject({
             label: 'Acme',
@@ -58,8 +64,8 @@ describe('encodeAddressForWrite', () => {
     it('survives a decode -> select -> decode -> encode round trip without losing the label', () => {
         const raw = { company: 'Acme/ Acme Corp' } as Address;
 
-        const selected = decodeAddressLabel(raw);
-        const reDecoded = decodeAddressLabel(selected);
+        const selected = decodeAddressLabel(raw, true);
+        const reDecoded = decodeAddressLabel(selected, true);
         const encoded = encodeAddressForWrite(reDecoded);
 
         expect(encoded.company).toBe(joinLabelAndCompany('Acme', 'Acme Corp'));
