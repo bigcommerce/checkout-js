@@ -13,11 +13,13 @@ import { CSSTransition } from 'react-transition-group';
 import { isMobileView, MobileView } from '@bigcommerce/checkout/ui';
 
 import CheckoutStepHeader from './CheckoutStepHeader';
+import CheckoutStepHeaderActionContext from './CheckoutStepHeaderActionContext';
 import type CheckoutStepType from './CheckoutStepType';
 
 export interface CheckoutStepProps {
     children?: ReactNode;
     heading?: ReactNode;
+    headerAction?: ReactNode;
     isActive?: boolean;
     isBusy: boolean;
     isComplete?: boolean;
@@ -32,6 +34,7 @@ export interface CheckoutStepProps {
 const CheckoutStep = ({
     children,
     heading,
+    headerAction,
     isActive,
     isBusy,
     isComplete,
@@ -43,6 +46,7 @@ const CheckoutStep = ({
     onExpanded = noop,
 }: CheckoutStepProps): ReactElement => {
     const [isClosed, setIsClosed] = useState(true);
+    const [contextHeaderAction, setContextHeaderAction] = useState<ReactNode>(null);
 
     const containerRef = useRef<HTMLLIElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
@@ -164,43 +168,50 @@ const CheckoutStep = ({
             })}
             ref={containerRef}
         >
-            <div className="checkout-view-header">
-                <CheckoutStepHeader
-                    heading={heading}
-                    isActive={isActive}
-                    isComplete={isComplete}
-                    isEditable={isEditable}
-                    onEdit={onEdit}
-                    summary={summary}
-                    type={type}
-                />
-            </div>
-
-            {suggestion && isClosed && !isActive && (
-                <div className="checkout-suggestion" data-test="step-suggestion">
-                    {suggestion}
+            <CheckoutStepHeaderActionContext.Provider value={setContextHeaderAction}>
+                <div className="checkout-view-header">
+                    <CheckoutStepHeader
+                        headerAction={headerAction ?? contextHeaderAction}
+                        heading={heading}
+                        isActive={isActive}
+                        isComplete={isComplete}
+                        isEditable={isEditable}
+                        onEdit={onEdit}
+                        summary={summary}
+                        type={type}
+                    />
                 </div>
-            )}
 
-            <MobileView>
-                {(matched) => (
-                    <CSSTransition
-                        addEndListener={handleTransitionEnd}
-                        classNames="checkout-view-content"
-                        enter={!matched}
-                        exit={!matched}
-                        in={isActive}
-                        mountOnEnter
-                        onExited={onAnimationEnd}
-                        timeout={{}}
-                        unmountOnExit
-                    >
-                        <div aria-busy={isBusy} className="checkout-view-content" ref={contentRef}>
-                            {isActive ? children : null}
-                        </div>
-                    </CSSTransition>
+                {suggestion && isClosed && !isActive && (
+                    <div className="checkout-suggestion" data-test="step-suggestion">
+                        {suggestion}
+                    </div>
                 )}
-            </MobileView>
+
+                <MobileView>
+                    {(matched) => (
+                        <CSSTransition
+                            addEndListener={handleTransitionEnd}
+                            classNames="checkout-view-content"
+                            enter={!matched}
+                            exit={!matched}
+                            in={isActive}
+                            mountOnEnter
+                            onExited={onAnimationEnd}
+                            timeout={{}}
+                            unmountOnExit
+                        >
+                            <div
+                                aria-busy={isBusy}
+                                className="checkout-view-content"
+                                ref={contentRef}
+                            >
+                                {isActive ? children : null}
+                            </div>
+                        </CSSTransition>
+                    )}
+                </MobileView>
+            </CheckoutStepHeaderActionContext.Provider>
         </li>
     );
 };

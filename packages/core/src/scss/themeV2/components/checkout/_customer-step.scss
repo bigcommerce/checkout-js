@@ -11,14 +11,15 @@
         }
     }
 
-    @include themeV2-desktop {
-        .customerEmail-container {
-            display: flex;
-            flex-direction: row;
+    @include themeV2-mobile {
+        .customerEmail-body {
+            width: 100%;
         }
 
-        .customerEmail-body {
-            width: 80%;
+        .customerEmail-action {
+            margin: 0;
+            padding-left: 0;
+            width: 100%;
         }
     }
 }

@@ -42,7 +42,7 @@
 
         .stepHeader {
             flex-wrap: wrap;
-            padding: 0;
+            padding: 0 0 spacing("single");
 
             .stepHeader-body {
                 order: 3;
@@ -54,6 +54,17 @@
             .stepHeader-actions {
                 margin-left: auto;
                 align-self: flex-start;
+            }
+
+            .stepHeader-actions--cta {
+                align-self: center;
+
+                .body-regular,
+                .body-cta {
+                    font-family: $fontFamily-montserrat;
+                    font-size: $fontSize-smallest;
+                    font-weight: $fontWeight-medium;
+                }
             }
 
             .stepHeader-figure {

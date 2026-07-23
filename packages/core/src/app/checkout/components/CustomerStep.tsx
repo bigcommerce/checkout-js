@@ -1,5 +1,6 @@
 import React, { lazy } from 'react';
 
+import { useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { LazyContainer } from '@bigcommerce/checkout/ui';
 
@@ -9,6 +10,7 @@ import {
     CustomerInfo,
     type CustomerProps,
     type CustomerSignOutEvent,
+    CustomerViewType,
 } from '../../customer';
 import { isEmbedded } from '../../embeddedCheckout';
 import CheckoutStep from '../CheckoutStep';
@@ -52,9 +54,54 @@ const CustomerStep: React.FC<CustomerStepProps> = ({
     onUnhandledError,
     onWalletButtonClick,
 }) => {
+    const { themeV2 } = useThemeContext();
+    const { selectedState } = useCheckout(
+        ({
+            data: { getConfig },
+            statuses: { isContinuingAsGuest, isExecutingPaymentMethodCheckout },
+        }) => ({
+            config: getConfig(),
+            isContinuingAsGuest: isContinuingAsGuest(),
+            isExecutingPaymentMethodCheckout: isExecutingPaymentMethodCheckout(),
+        }),
+    );
+    const { config, isContinuingAsGuest, isExecutingPaymentMethodCheckout } = selectedState;
+
+    const handleShowLogin = () => {
+        if (config?.checkoutSettings.shouldRedirectToStorefrontForAuth) {
+            window.location.assign(
+                `${config.links.loginLink}?redirectTo=${config.links.checkoutLink}`,
+            );
+
+            return;
+        }
+
+        onChangeViewType?.(CustomerViewType.Login);
+    };
+
+    const headerAction =
+        themeV2 &&
+        viewType === CustomerViewType.Guest &&
+        !isContinuingAsGuest &&
+        !isExecutingPaymentMethodCheckout ? (
+            <span className="body-regular">
+                <TranslatedString id="customer.login_text" />{' '}
+                <a
+                    data-test="customer-continue-button"
+                    id="checkout-customer-login"
+                    onClick={handleShowLogin}
+                    role="button"
+                    tabIndex={0}
+                >
+                    <TranslatedString id="customer.login_action" />
+                </a>
+            </span>
+        ) : null;
+
     return (
         <CheckoutStep
             {...step}
+            headerAction={headerAction}
             heading={<TranslatedString id="customer.customer_heading" />}
             key={step.type}
             onEdit={onEdit}
