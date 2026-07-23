@@ -34,7 +34,7 @@ function splitCompanyLabel<T extends Address>(address: T): T {
  * `label` (idempotent); otherwise pass the address through untouched. */
 export function decodeAddressLabel<T extends Address | undefined>(
     address: T,
-    hasAddressLabel?: boolean,
+    hasAddressLabel: boolean,
 ): T {
     return hasAddressLabel && address ? splitCompanyLabel(address) : address;
 }
