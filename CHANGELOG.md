@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.843.0](https://github.com/bigcommerce/checkout-js/compare/v1.842.1...v1.843.0) (2026-07-23)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10185 Remove checkout step subheaders for themeV2 ([#3190](https://github.com/bigcommerce/checkout-js/issues/3190)) ([3ffd7dd](https://github.com/bigcommerce/checkout-js/commit/3ffd7dd357257419c8f85aab766f18cf36d415a6))
+
 ### [1.842.1](https://github.com/bigcommerce/checkout-js/compare/v1.842.0...v1.842.1) (2026-07-23)
 
 
