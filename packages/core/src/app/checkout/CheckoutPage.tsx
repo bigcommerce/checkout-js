@@ -103,6 +103,7 @@ export interface WithCheckoutProps {
     isGuestEnabled: boolean;
     isLoadingCheckout: boolean;
     isPending: boolean;
+    isPersistingB2BMetadata: boolean;
     isPriceHiddenFromGuests: boolean;
     isShowingWalletButtonsOnTop: boolean;
     isShippingDiscountDisplayEnabled: boolean;
@@ -144,6 +145,7 @@ const Checkout = ({
     language,
     cartUrl,
     isPending,
+    isPersistingB2BMetadata,
     isPriceHiddenFromGuests,
     containerId,
     embeddedStylesheet,
@@ -703,7 +705,9 @@ const Checkout = ({
         };
     }, []);
 
-    if (state.isRedirecting) {
+    // The payment step unmounts once the order is placed, so show the confirmation skeleton
+    // while B2B metadata persists to avoid a blank page.
+    if (state.isRedirecting || isPersistingB2BMetadata) {
         return <OrderConfirmationPageSkeleton />;
     }
 

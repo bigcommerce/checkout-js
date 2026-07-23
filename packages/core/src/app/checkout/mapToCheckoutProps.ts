@@ -56,6 +56,7 @@ export default function mapToCheckoutProps({
         isLoadingCheckout: statuses.isLoadingCheckout(),
         isShippingDiscountDisplayEnabled,
         isPending: statuses.isPending(),
+        isPersistingB2BMetadata: statuses.isPersistingB2BMetadata(),
         isPriceHiddenFromGuests,
         isShowingWalletButtonsOnTop: walletButtonsOnTopFlag,
         loadCheckout: checkoutService.loadCheckout,
