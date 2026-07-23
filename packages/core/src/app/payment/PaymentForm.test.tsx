@@ -110,6 +110,16 @@ describe('PaymentForm', () => {
         expect(screen.getByTestId('providers-section-on-top-of-payments-list')).toBeInTheDocument();
     });
 
+    it('keeps payment method radios keyboard-operable while a payment method is initializing', () => {
+        render(<PaymentFormTest {...defaultProps} isInitializingPayment={true} />);
+
+        const radios = screen.getAllByRole('radio');
+
+        expect(radios).toHaveLength(2);
+        radios.forEach((radio) => expect(radio).toBeEnabled());
+        expect(screen.getByTestId('loading-overlay')).toBeInTheDocument();
+    });
+
     it('renders terms and conditions field if copy is provided', () => {
         const textAcceptTerms = 'Accept terms';
 
