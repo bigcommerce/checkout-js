@@ -2,7 +2,6 @@ import { type Consignment } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import React, { type FunctionComponent, memo } from 'react';
 
-import { TranslatedString } from '@bigcommerce/checkout/locale';
 import {
     isPayPalFastlaneAddress,
     PoweredByPayPalFastlaneLabel,
@@ -47,18 +46,12 @@ const StaticConsignmentV2: FunctionComponent<StaticConsignmentV2Props> = ({
             )}
         >
             <div className="flex-column shipping-address-container">
-                <p className="title">
-                    <TranslatedString id="shipping.shipping_address_heading" />
-                </p>
                 <StaticAddress address={address} type={AddressType.Shipping} />
                 {showPayPalFastlaneAddressLabel && <PoweredByPayPalFastlaneLabel />}
             </div>
 
             {selectedShippingOption && (
                 <div className="flex-column shipping-method">
-                    <p className="title">
-                        <TranslatedString id="shipping.shipping_method_label" />
-                    </p>
                     <div className="shippingOption shippingOption--alt shippingOption--selected">
                         <StaticShippingOption
                             displayAdditionalInformation={false}
