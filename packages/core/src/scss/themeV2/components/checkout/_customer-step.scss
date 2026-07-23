@@ -14,6 +14,10 @@
     @include themeV2-mobile {
         .customerEmail-body {
             width: 100%;
+
+            > *:last-child {
+                margin-bottom: spacing("single");
+            }
         }
 
         .customerEmail-action {
