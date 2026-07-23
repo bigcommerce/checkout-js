@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.842.1](https://github.com/bigcommerce/checkout-js/compare/v1.842.0...v1.842.1) (2026-07-23)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10227 Decouple new phone component from fastlane ([#3171](https://github.com/bigcommerce/checkout-js/issues/3171)) ([316594e](https://github.com/bigcommerce/checkout-js/commit/316594e162f44917359c1f1aa2d1793fd14ff30c))
+
 ## [1.842.0](https://github.com/bigcommerce/checkout-js/compare/v1.841.4...v1.842.0) (2026-07-22)
 
 
