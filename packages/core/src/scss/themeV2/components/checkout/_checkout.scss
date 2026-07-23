@@ -36,6 +36,10 @@
             }
         }
 
+        .shipping-header:not(:has(> :not(.is-srOnly))) {
+            padding-bottom: 0;
+        }
+
         .stepHeader {
             flex-wrap: wrap;
             padding: 0;
