@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.844.0](https://github.com/bigcommerce/checkout-js/compare/v1.843.0...v1.844.0) (2026-07-23)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10067 address label cleanup after api changes on customer address company ([#3191](https://github.com/bigcommerce/checkout-js/issues/3191)) ([c098074](https://github.com/bigcommerce/checkout-js/commit/c09807449686e74affe2b350ba4c77a01f5eb4ed))
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10067 show loading skeleton during persisting b2b meta data ([#3192](https://github.com/bigcommerce/checkout-js/issues/3192)) ([8032794](https://github.com/bigcommerce/checkout-js/commit/80327946a0e587bc731c182c453eb262de65f2e7))
+
 ## [1.843.0](https://github.com/bigcommerce/checkout-js/compare/v1.842.1...v1.843.0) (2026-07-23)
 
 
