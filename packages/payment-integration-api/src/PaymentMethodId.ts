@@ -53,6 +53,7 @@ enum PaymentMethodId {
     BigCommercePaymentsVenmo = 'bigcommerce_payments_venmo',
     BigCommercePaymentsFastLane = 'bigcommerce_payments_fastlane',
     BigCommercePaymentsGooglePay = 'googlepay_bigcommerce_payments',
+    BigCommercePaymentsInvoices = 'bigcommerce_payments_invoices',
     Qpay = 'qpay',
     Quadpay = 'quadpay',
     Ratepay = 'ratepay',
