@@ -12,6 +12,7 @@ import {
     type CustomerSignOutEvent,
     CustomerViewType,
 } from '../../customer';
+import attemptStorefrontLoginRedirect from '../../customer/attemptStorefrontLoginRedirect';
 import { isEmbedded } from '../../embeddedCheckout';
 import CheckoutStep from '../CheckoutStep';
 import type CheckoutStepType from '../CheckoutStepType';
@@ -68,11 +69,7 @@ const CustomerStep: React.FC<CustomerStepProps> = ({
     const { config, isContinuingAsGuest, isExecutingPaymentMethodCheckout } = selectedState;
 
     const handleShowLogin = () => {
-        if (config?.checkoutSettings.shouldRedirectToStorefrontForAuth) {
-            window.location.assign(
-                `${config.links.loginLink}?redirectTo=${config.links.checkoutLink}`,
-            );
-
+        if (attemptStorefrontLoginRedirect(config)) {
             return;
         }
 

@@ -13,7 +13,7 @@ import { CSSTransition } from 'react-transition-group';
 import { isMobileView, MobileView } from '@bigcommerce/checkout/ui';
 
 import CheckoutStepHeader from './CheckoutStepHeader';
-import CheckoutStepHeaderActionContext from './CheckoutStepHeaderActionContext';
+import { CheckoutStepHeaderActionContext } from './CheckoutStepHeaderActionContext';
 import type CheckoutStepType from './CheckoutStepType';
 
 export interface CheckoutStepProps {

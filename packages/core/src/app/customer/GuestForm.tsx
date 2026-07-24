@@ -21,6 +21,7 @@ import {
 
 import { getPrivacyPolicyValidationSchema, PrivacyPolicyField } from '../privacyPolicy';
 
+import attemptStorefrontLoginRedirect from './attemptStorefrontLoginRedirect';
 import EmailField from './EmailField';
 import SubscribeField from './SubscribeField';
 import { SubscribeSessionStorage } from './SubscribeSessionStorage';
@@ -96,15 +97,8 @@ const GuestForm: FunctionComponent<
         return null;
     }
 
-    const {
-        checkoutSettings: { shouldRedirectToStorefrontForAuth },
-        links: { checkoutLink, loginLink },
-    } = config;
-
     const handleLogin: () => void = () => {
-        if (shouldRedirectToStorefrontForAuth) {
-            window.location.assign(`${loginLink}?redirectTo=${checkoutLink}`);
-
+        if (attemptStorefrontLoginRedirect(config)) {
             return;
         }
 

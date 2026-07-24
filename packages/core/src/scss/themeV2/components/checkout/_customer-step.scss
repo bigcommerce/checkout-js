@@ -5,12 +5,6 @@
         }
     }
 
-    .customer-login-link {
-        @include themeV2 {
-            margin-top: #{spacing("half") + spacing("third")};
-        }
-    }
-
     @include themeV2-mobile {
         .customerEmail-body {
             width: 100%;

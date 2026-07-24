@@ -1,12 +1,10 @@
 import { createContext, type ReactNode, useContext } from 'react';
 
-export type SetCheckoutStepHeaderAction = (action: ReactNode) => void;
+type SetCheckoutStepHeaderAction = (action: ReactNode) => void;
 
 const noop: SetCheckoutStepHeaderAction = () => {};
 
-const CheckoutStepHeaderActionContext = createContext<SetCheckoutStepHeaderAction>(noop);
-
-export default CheckoutStepHeaderActionContext;
+export const CheckoutStepHeaderActionContext = createContext<SetCheckoutStepHeaderAction>(noop);
 
 export function useSetCheckoutStepHeaderAction(): SetCheckoutStepHeaderAction {
     return useContext(CheckoutStepHeaderActionContext);
