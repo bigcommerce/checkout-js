@@ -59,14 +59,24 @@ const CustomerStep: React.FC<CustomerStepProps> = ({
     const { selectedState } = useCheckout(
         ({
             data: { getConfig },
-            statuses: { isContinuingAsGuest, isExecutingPaymentMethodCheckout },
+            statuses: {
+                isContinuingAsGuest,
+                isExecutingPaymentMethodCheckout,
+                isInitializingCustomer,
+            },
         }) => ({
             config: getConfig(),
             isContinuingAsGuest: isContinuingAsGuest(),
             isExecutingPaymentMethodCheckout: isExecutingPaymentMethodCheckout(),
+            isInitializingCustomer: isInitializingCustomer(),
         }),
     );
-    const { config, isContinuingAsGuest, isExecutingPaymentMethodCheckout } = selectedState;
+    const {
+        config,
+        isContinuingAsGuest,
+        isExecutingPaymentMethodCheckout,
+        isInitializingCustomer,
+    } = selectedState;
 
     const handleShowLogin = () => {
         if (attemptStorefrontLoginRedirect(config)) {
@@ -80,7 +90,8 @@ const CustomerStep: React.FC<CustomerStepProps> = ({
         themeV2 &&
         viewType === CustomerViewType.Guest &&
         !isContinuingAsGuest &&
-        !isExecutingPaymentMethodCheckout ? (
+        !isExecutingPaymentMethodCheckout &&
+        !isInitializingCustomer ? (
             <span className="body-regular">
                 <TranslatedString id="customer.login_text" />{' '}
                 <a
