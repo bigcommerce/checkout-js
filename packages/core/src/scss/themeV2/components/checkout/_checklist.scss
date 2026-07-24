@@ -40,6 +40,16 @@
     }
 }
 
+.form-checklist-body {
+    @include themeV2 {
+        margin-left: $checklist-pip-spacing--small;
+
+        @include breakpoint("small") {
+            margin-left: $checklist-pip-spacing;
+        }
+    }
+}
+
 .form-checklist-checkbox {
     @include themeV2 {
         &:focus ~ .form-label {

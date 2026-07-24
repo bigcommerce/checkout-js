@@ -83,13 +83,17 @@
 
         .layout-main {
             width: grid-calc(7, $total-columns);
+            padding-right: remCalc(30px);
+        }
+
+        .checkout-steps {
+            padding-right: 0;
         }
     }
 
     @include themeV2-widescreen {
         .layout-main {
             width: grid-calc(8, $total-columns);
-            padding-right: spacing("single");
         }
     }
 }

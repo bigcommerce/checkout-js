@@ -62,6 +62,7 @@
 
     @include themeV2-desktop {
         width: grid-calc(5, $total-columns);
+        padding-left: remCalc(30px);
         padding-right: spacing("single");
         position: sticky;
         right: auto;
