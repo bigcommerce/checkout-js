@@ -171,7 +171,10 @@ const CheckoutStep = ({
             <CheckoutStepHeaderActionContext.Provider value={setContextHeaderAction}>
                 <div className="checkout-view-header">
                     <CheckoutStepHeader
-                        headerAction={headerAction ?? contextHeaderAction}
+                        // Context wins: it's set by a lazy-loaded descendant once mounted, and
+                        // supersedes any synchronous placeholder passed in via the headerAction
+                        // prop (e.g. ShippingStep's placeholder before Shipping/ShippingHeader load).
+                        headerAction={contextHeaderAction ?? headerAction}
                         heading={heading}
                         isActive={isActive}
                         isComplete={isComplete}
