@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.845.0](https://github.com/bigcommerce/checkout-js/compare/v1.844.0...v1.845.0) (2026-07-24)
+
+
+### Features
+
+* **payment:** PAYPAL-6795 fixed payment submit button behavior ([09b28f8](https://github.com/bigcommerce/checkout-js/commit/09b28f8a7a24e572541cf0e5c1911e00390584cb))
+
+
+### Bug Fixes
+
+* **payment:** resolve prettier/lint formatting errors in Payment.tsx and Payment.test.tsx ([68bd422](https://github.com/bigcommerce/checkout-js/commit/68bd422ec5962300e6fc5815e2a5b153a0f0b686))
+
 ## [1.844.0](https://github.com/bigcommerce/checkout-js/compare/v1.843.0...v1.844.0) (2026-07-23)
 
 
