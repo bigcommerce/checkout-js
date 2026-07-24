@@ -139,7 +139,7 @@
     "conventional-recommended-bump": "^6.0.0",
     "core-js": "^3.45.0",
     "core-js-compat": "^3.45.0",
-    "css-loader": "^3.1.0",
+    "css-loader": "^7.1.4",
     "dotenv": "^16.0.0",
     "ejs": "^3.1.10",
     "esbuild-loader": "^4.3.0",
