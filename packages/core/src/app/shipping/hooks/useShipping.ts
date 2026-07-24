@@ -15,9 +15,9 @@ import { encodeAddressForWrite } from '../../address';
 import { EMPTY_ARRAY } from '../../common/utility';
 import getBackorderCount from '../../order/getBackorderCount';
 import getProviderWithCustomCheckout from '../../payment/getProviderWithCustomCheckout';
-import getShippableItemsCount from '../getShippableItemsCount';
 import getShippingMethodId from '../getShippingMethodId';
 import hasPromotionalItems from '../hasPromotionalItems';
+import shouldShowMultiShippingToggle from '../shouldShowMultiShippingToggle';
 
 const deleteConsignmentsSelector = createSelector(
     ({ checkoutService: { deleteConsignment } }: CheckoutContextProps) => deleteConsignment,
@@ -147,8 +147,7 @@ export const useShipping = () => {
         isDeletingConsignment() ||
         isLoadingCheckout();
 
-    const shippableItemsCount = getShippableItemsCount(cart);
-    const shouldShowMultiShipping = hasMultiShippingEnabled && !methodId && shippableItemsCount > 1;
+    const shouldShowMultiShipping = shouldShowMultiShippingToggle(checkout, config, cart);
 
     const shippingAddress =
         !shouldShowMultiShipping && consignments.length > 1 ? undefined : getShippingAddress();

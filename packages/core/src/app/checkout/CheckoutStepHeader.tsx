@@ -11,6 +11,7 @@ import type CheckoutStepType from './CheckoutStepType';
 
 export interface CheckoutStepHeaderProps {
     heading: ReactNode;
+    headerAction?: ReactNode;
     isActive?: boolean;
     isComplete?: boolean;
     isEditable?: boolean;
@@ -21,6 +22,7 @@ export interface CheckoutStepHeaderProps {
 
 const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
     heading,
+    headerAction,
     isActive,
     isComplete,
     isEditable,
@@ -87,6 +89,15 @@ const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
                     >
                         <TranslatedString id="common.edit_action" />
                     </Button>
+                </div>
+            )}
+
+            {isActive && headerAction && (
+                <div
+                    className="stepHeader-actions stepHeader-actions--cta stepHeader-column"
+                    data-test="step-header-action"
+                >
+                    {headerAction}
                 </div>
             )}
         </div>

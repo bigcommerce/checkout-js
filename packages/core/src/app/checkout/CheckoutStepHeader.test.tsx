@@ -83,4 +83,16 @@ describe('CheckoutStepHeader', () => {
 
         expect(screen.queryByTestId('step-complete-icon')).not.toBeInTheDocument();
     });
+
+    it('renders headerAction if step is active', () => {
+        render(<CheckoutStepHeader {...defaultProps} headerAction="Sign in now" isActive />);
+
+        expect(screen.getByTestId('step-header-action')).toHaveTextContent('Sign in now');
+    });
+
+    it('does not render headerAction if step is not active', () => {
+        render(<CheckoutStepHeader {...defaultProps} headerAction="Sign in now" />);
+
+        expect(screen.queryByTestId('step-header-action')).not.toBeInTheDocument();
+    });
 });

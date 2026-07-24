@@ -5,20 +5,19 @@
         }
     }
 
-    .customer-login-link {
-        @include themeV2 {
-            margin-top: #{spacing("half") + spacing("third")};
-        }
-    }
-
-    @include themeV2-desktop {
-        .customerEmail-container {
-            display: flex;
-            flex-direction: row;
-        }
-
+    @include themeV2-mobile {
         .customerEmail-body {
-            width: 80%;
+            width: 100%;
+
+            > *:last-child {
+                margin-bottom: spacing("single");
+            }
+        }
+
+        .customerEmail-action {
+            margin: 0;
+            padding-left: 0;
+            width: 100%;
         }
     }
 }

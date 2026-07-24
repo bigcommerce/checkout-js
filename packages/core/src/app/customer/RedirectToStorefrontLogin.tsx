@@ -4,6 +4,8 @@ import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { Button, ButtonVariant } from '@bigcommerce/checkout/ui';
 
+import attemptStorefrontLoginRedirect from './attemptStorefrontLoginRedirect';
+
 interface RedirectToStorefrontLoginProps {
     isDisabled: boolean;
     isLoading: boolean;
@@ -19,10 +21,8 @@ export const RedirectToStorefrontLogin: React.FC<RedirectToStorefrontLoginProps>
         return null;
     }
 
-    const { checkoutLink, loginLink } = config.links;
-
     const handleRedirect = () => {
-        return window.location.assign(`${loginLink}?redirectTo=${checkoutLink}`);
+        attemptStorefrontLoginRedirect(config);
     };
 
     return (
