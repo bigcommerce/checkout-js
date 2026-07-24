@@ -248,6 +248,20 @@ describe('PaymentBillingForm', () => {
             expect(screen.queryByTestId('billingSameAsShipping')).not.toBeInTheDocument();
         });
 
+        it('hides the toggle and shows the address fields for a digital-only cart', () => {
+            const cart = getCart();
+
+            jest.spyOn(checkoutState.data, 'getCart').mockReturnValue({
+                ...cart,
+                lineItems: { ...cart.lineItems, physicalItems: [] },
+            });
+
+            renderForm({ ...defaultProps, isBillingSameAsShipping: true });
+
+            expect(screen.queryByTestId('billingSameAsShipping')).not.toBeInTheDocument();
+            expect(screen.getByText('First Name')).toBeInTheDocument();
+        });
+
         it('stays unchecked and does not re-fire on a billing address reinitialize', async () => {
             const onBillingSameAsShippingChange = jest.fn();
             const props = {

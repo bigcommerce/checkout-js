@@ -103,10 +103,11 @@ const PaymentBillingFormComponent = ({
             getFields(billingAddress.countryCode),
         );
     const { enableOrderComments } = config.checkoutSettings;
-    const shouldShowOrderComments = enableOrderComments && getShippableItemsCount(cart) < 1;
+    const hasShippableItems = getShippableItemsCount(cart) > 0;
+    const shouldShowOrderComments = enableOrderComments && !hasShippableItems;
     const shouldShowSaveAddress = !hideSaveToAddressBookCheck && !isGuest;
     const shouldShowBillingSameAsShipping =
-        !shouldRenderStaticAddress && !hideBillingSameAsShippingCheck;
+        !shouldRenderStaticAddress && !hideBillingSameAsShippingCheck && hasShippableItems;
     const isBillingAddressCollapsed =
         shouldShowBillingSameAsShipping && values.billingSameAsShipping;
 
