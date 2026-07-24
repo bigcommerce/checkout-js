@@ -267,41 +267,41 @@ const Payment = (
         return null;
     };
 
-  const disableSubmit = (method: PaymentMethod, disabled = true): void => {
-    const uniqueId = getUniquePaymentMethodId(method.id, method.gateway);
+    const disableSubmit = (method: PaymentMethod, disabled = true): void => {
+        const uniqueId = getUniquePaymentMethodId(method.id, method.gateway);
 
-    setState((prevState) => {
-      if (prevState.shouldDisableSubmit[uniqueId] === disabled) {
-        return prevState;
-      }
+        setState((prevState) => {
+            if (prevState.shouldDisableSubmit[uniqueId] === disabled) {
+                return prevState;
+            }
 
-      return {
-        ...prevState,
-        shouldDisableSubmit: {
-          ...prevState.shouldDisableSubmit,
-          [uniqueId]: disabled,
-        },
-      };
-    });
-  };
+            return {
+                ...prevState,
+                shouldDisableSubmit: {
+                    ...prevState.shouldDisableSubmit,
+                    [uniqueId]: disabled,
+                },
+            };
+        });
+    };
 
-  const hidePaymentSubmitButton = (method: PaymentMethod, disabled = true): void => {
-    const uniqueId = getUniquePaymentMethodId(method.id, method.gateway);
+    const hidePaymentSubmitButton = (method: PaymentMethod, disabled = true): void => {
+        const uniqueId = getUniquePaymentMethodId(method.id, method.gateway);
 
-    setState((prevState) => {
-      if (prevState.shouldHidePaymentSubmitButton[uniqueId] === disabled) {
-        return prevState;
-      }
+        setState((prevState) => {
+            if (prevState.shouldHidePaymentSubmitButton[uniqueId] === disabled) {
+                return prevState;
+            }
 
-      return {
-        ...prevState,
-        shouldHidePaymentSubmitButton: {
-          ...prevState.shouldHidePaymentSubmitButton,
-          [uniqueId]: disabled,
-        },
-      };
-    });
-  };
+            return {
+                ...prevState,
+                shouldHidePaymentSubmitButton: {
+                    ...prevState.shouldHidePaymentSubmitButton,
+                    [uniqueId]: disabled,
+                },
+            };
+        });
+    };
 
     const handleBeforeUnload = (event: BeforeUnloadEvent): string | undefined => {
         const { defaultMethod, isSubmittingOrder, language } = props;
