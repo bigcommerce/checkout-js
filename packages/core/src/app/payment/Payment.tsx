@@ -269,36 +269,38 @@ const Payment = (
 
     const disableSubmit = (method: PaymentMethod, disabled = true): void => {
         const uniqueId = getUniquePaymentMethodId(method.id, method.gateway);
-        const { shouldDisableSubmit } = state;
 
-        if (shouldDisableSubmit[uniqueId] === disabled) {
-            return;
-        }
+        setState((prevState) => {
+            if (prevState.shouldDisableSubmit[uniqueId] === disabled) {
+                return prevState;
+            }
 
-        setState((prevState) => ({
-            ...prevState,
-            shouldDisableSubmit: {
-                ...shouldDisableSubmit,
-                [uniqueId]: disabled,
-            },
-        }));
+            return {
+                ...prevState,
+                shouldDisableSubmit: {
+                    ...prevState.shouldDisableSubmit,
+                    [uniqueId]: disabled,
+                },
+            };
+        });
     };
 
     const hidePaymentSubmitButton = (method: PaymentMethod, disabled = true): void => {
         const uniqueId = getUniquePaymentMethodId(method.id, method.gateway);
-        const { shouldHidePaymentSubmitButton } = state;
 
-        if (shouldHidePaymentSubmitButton[uniqueId] === disabled) {
-            return;
-        }
+        setState((prevState) => {
+            if (prevState.shouldHidePaymentSubmitButton[uniqueId] === disabled) {
+                return prevState;
+            }
 
-        setState((prevState) => ({
-            ...prevState,
-            shouldHidePaymentSubmitButton: {
-                ...shouldHidePaymentSubmitButton,
-                [uniqueId]: disabled,
-            },
-        }));
+            return {
+                ...prevState,
+                shouldHidePaymentSubmitButton: {
+                    ...prevState.shouldHidePaymentSubmitButton,
+                    [uniqueId]: disabled,
+                },
+            };
+        });
     };
 
     const handleBeforeUnload = (event: BeforeUnloadEvent): string | undefined => {
