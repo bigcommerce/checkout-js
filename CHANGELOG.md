@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.845.2](https://github.com/bigcommerce/checkout-js/compare/v1.845.1...v1.845.2) (2026-07-27)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10187 Reduce order summary gap and payment margin for themeV2 ([#3193](https://github.com/bigcommerce/checkout-js/issues/3193)) ([bf5b005](https://github.com/bigcommerce/checkout-js/commit/bf5b0059ee389c32b5f8fc8b0bac83ef6c6b6be0))
+
 ### [1.845.1](https://github.com/bigcommerce/checkout-js/compare/v1.845.0...v1.845.1) (2026-07-27)
 
 
