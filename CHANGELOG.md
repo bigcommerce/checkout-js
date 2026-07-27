@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.845.1](https://github.com/bigcommerce/checkout-js/compare/v1.845.0...v1.845.1) (2026-07-27)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10153 Always render billing step for digital items in themeV2 ([#3194](https://github.com/bigcommerce/checkout-js/issues/3194)) ([da1dca8](https://github.com/bigcommerce/checkout-js/commit/da1dca8f7f37eba96eb685d93f899665e6d0629d))
+
 ## [1.845.0](https://github.com/bigcommerce/checkout-js/compare/v1.844.0...v1.845.0) (2026-07-24)
 
 
