@@ -194,6 +194,33 @@ describe('GoogleAutocomplete', () => {
             expect(mockGetNewApiSuggestions).toHaveBeenCalledTimes(1);
         });
 
+        it('debounces suggestions into a single legacy call after falling back', async () => {
+            mockGetNewApiSuggestions.mockRejectedValue(gRpcPermissionDeniedErrorMock);
+
+            render(<GoogleAutocomplete {...defaultProps} />);
+
+            const input = screen.getByRole('textbox');
+
+            // First request is denied by the new API and falls back to legacy with the same input.
+            await userEvent.type(input, '1');
+            await screen.findByText('123 Legacy St, New York');
+            expect(mockGetLegacyApiSuggestions).toHaveBeenCalledTimes(1);
+            expect(mockGetLegacyApiSuggestions).toHaveBeenCalledWith(
+                expect.objectContaining({ input: '1' }),
+                expect.any(Function),
+            );
+
+            // Subsequent keystrokes collapse into one more legacy request with the final input.
+            await userEvent.type(input, '234');
+
+            await waitFor(() => expect(mockGetLegacyApiSuggestions).toHaveBeenCalledTimes(2));
+            expect(mockGetLegacyApiSuggestions).toHaveBeenLastCalledWith(
+                expect.objectContaining({ input: '1234' }),
+                expect.any(Function),
+            );
+            expect(mockGetNewApiSuggestions).toHaveBeenCalledTimes(1);
+        });
+
         it('keeps retrying the new API on later input after a transient failure, without falling back', async () => {
             mockGetNewApiSuggestions.mockRejectedValue(gRpcSomeOtherErrorMock);
 

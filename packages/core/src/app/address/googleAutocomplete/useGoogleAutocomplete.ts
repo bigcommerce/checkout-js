@@ -208,7 +208,11 @@ export function useGoogleAutocomplete({
         [],
     );
 
-    useEffect(() => () => debouncedFetchSuggestions.cancel(), [debouncedFetchSuggestions]);
+    useEffect(() => {
+        return () => {
+            debouncedFetchSuggestions.cancel();
+        };
+    }, [debouncedFetchSuggestions]);
 
     const handleChange = (input: string) => {
         onChange(input, false);
