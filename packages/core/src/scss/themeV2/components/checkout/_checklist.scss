@@ -43,15 +43,25 @@
 .form-checklist-body {
     @include themeV2 {
         margin-left: $checklist-pip-spacing--small;
+        margin-right: $checklist-pip-spacing--small;
 
         @include breakpoint("small") {
             margin-left: $checklist-pip-spacing;
+            margin-right: $checklist-pip-spacing;
         }
     }
 }
 
 .form-checklist-checkbox {
     @include themeV2 {
+        & ~ .form-label {
+            padding-right: $checklist-pip-spacing--small;
+
+            @include breakpoint("small") {
+                padding-right: $checklist-pip-spacing;
+            }
+        }
+
         &:focus ~ .form-label {
             box-shadow: $checklist-focus-boxShadow;
         }
