@@ -21,6 +21,10 @@
             margin-top: #{spacing('base') + spacing('base')};
         }
 
+        .discountBanner {
+            margin-top: 2rem;
+        }
+
         .checkout-step {
             background-color: $color-white;
             border-bottom: none;
