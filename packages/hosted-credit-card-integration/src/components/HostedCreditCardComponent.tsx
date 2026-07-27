@@ -7,6 +7,7 @@ import { createBlueSnapDirectCreditCardPaymentStrategy } from '@bigcommerce/chec
 import { createCBAMPGSPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/cba-mpgs';
 import { createCheckoutComCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/checkoutcom-custom';
 import { createCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/credit-card';
+import { createSagePayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/sagepay';
 import { createTDOnlineMartPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/td-bank';
 import { compact, forIn } from 'lodash';
 import React, { type FunctionComponent, type ReactNode, useCallback, useState } from 'react';
@@ -59,6 +60,10 @@ const HostedCreditCardComponent: FunctionComponent<HostedCreditCardComponentProp
     const isCBAMPGSResolverEnabled =
         checkoutState.data.getConfig()?.checkoutSettings.features?.[
             'PI-4748.cba_resolver_configuration'
+        ] ?? false;
+    const isSagePayResolverEnabled =
+        checkoutState.data.getConfig()?.checkoutSettings.features?.[
+            'PI-4754.sage_pay_resolver_configuration'
         ] ?? false;
 
     const { setFieldTouched, setFieldValue, setSubmitted, submitForm } = paymentForm;
@@ -276,6 +281,7 @@ const HostedCreditCardComponent: FunctionComponent<HostedCreditCardComponentProp
                         createCreditCardPaymentStrategy,
                         createBlueSnapDirectCreditCardPaymentStrategy,
                         ...(isCBAMPGSResolverEnabled ? [createCBAMPGSPaymentStrategy] : []),
+                        ...(isSagePayResolverEnabled ? [createSagePayPaymentStrategy] : []),
                         createTDOnlineMartPaymentStrategy,
                         createCheckoutComCreditCardPaymentStrategy,
                     ],
@@ -302,6 +308,7 @@ const HostedCreditCardComponent: FunctionComponent<HostedCreditCardComponentProp
                 initializePayment,
                 isHostedFormEnabled,
                 isCBAMPGSResolverEnabled,
+                isSagePayResolverEnabled,
                 language,
             ],
         );
