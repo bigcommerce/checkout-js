@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.846.0](https://github.com/bigcommerce/checkout-js/compare/v1.845.2...v1.846.0) (2026-07-27)
+
+
+### Features
+
+* **paymnet:** Migrate SagePay to Resolver Configuration ([#3169](https://github.com/bigcommerce/checkout-js/issues/3169)) ([edede5e](https://github.com/bigcommerce/checkout-js/commit/edede5e81f06b923ce1a9d2fdfdae672b873765a))
+
 ### [1.845.2](https://github.com/bigcommerce/checkout-js/compare/v1.845.1...v1.845.2) (2026-07-27)
 
 
