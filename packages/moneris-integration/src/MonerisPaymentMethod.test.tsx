@@ -33,7 +33,10 @@ import {
 } from '@bigcommerce/checkout/test-mocks';
 import { act } from '@bigcommerce/checkout/test-utils';
 
+import getMonerisIframeStyles from './getMonerisIframeStyles';
 import MonerisPaymentMethod from './MonerisPaymentMethod';
+
+jest.mock('./getMonerisIframeStyles', () => jest.fn());
 
 describe('when using Moneris payment', () => {
     let method: PaymentMethod;
@@ -44,6 +47,15 @@ describe('when using Moneris payment', () => {
     let PaymentMethodTest: FunctionComponent<PaymentMethodProps>;
     let paymentForm: PaymentFormService;
 
+    const monerisIframeStyles = {
+        cssBody: 'font-family: "Open Sans", sans-serif;background: transparent;',
+        cssTextbox: 'border-radius: 4px;width: 100%;',
+        cssTextboxCardNumber: 'width: 100%;',
+        cssTextboxExpiryDate: 'width: 120px;',
+        cssTextboxCVV: 'width: 80px;',
+        cssInputLabel: 'font-weight: 500;',
+    };
+
     beforeEach(() => {
         paymentForm = getPaymentFormServiceMock();
 
@@ -51,6 +63,8 @@ describe('when using Moneris payment', () => {
         checkoutState = checkoutService.getState();
         localeContext = createLocaleContext(getStoreConfig());
         method = { ...getPaymentMethod(), id: PaymentMethodId.Moneris };
+
+        jest.mocked(getMonerisIframeStyles).mockResolvedValue(monerisIframeStyles);
 
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
 
@@ -88,34 +102,40 @@ describe('when using Moneris payment', () => {
 
     afterEach(() => {
         jest.clearAllMocks();
-        jest.resetAllMocks();
     });
 
-    it('renders as hosted widget method', () => {
+    it('renders as hosted widget method', async () => {
         render(<PaymentMethodTest {...defaultProps} />);
 
-        expect(checkoutService.initializePayment).toHaveBeenCalledWith({
-            methodId: 'moneris',
-            integrations: [createMonerisPaymentStrategy],
-            moneris: {
-                containerId: 'moneris-iframe-container',
-                options: undefined,
-            },
+        await act(async () => {
+            await Promise.resolve();
         });
+
+        expect(checkoutService.initializePayment).toHaveBeenCalledWith(
+            expect.objectContaining({
+                methodId: 'moneris',
+                integrations: [createMonerisPaymentStrategy],
+                moneris: expect.objectContaining({
+                    containerId: 'moneris-iframe-container',
+                    style: monerisIframeStyles,
+                }),
+            }),
+        );
     });
 
-    it('initializes method with required config when no instruments', () => {
+    it('initializes method with required config when no instruments', async () => {
         jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue(undefined);
 
         render(<PaymentMethodTest {...defaultProps} />);
 
-        expect(checkoutService.initializePayment).toHaveBeenCalledWith({
-            methodId: 'moneris',
-            integrations: [createMonerisPaymentStrategy],
-            moneris: {
-                containerId: 'moneris-iframe-container',
-                options: undefined,
-            },
+        await act(async () => {
+            await Promise.resolve();
+        });
+
+        expect(getMonerisIframeStyles).toHaveBeenCalledWith({
+            cardNumberContainerId: 'moneris-ccNumber',
+            cardExpiryContainerId: 'moneris-ccExpiry',
+            cardCodeContainerId: 'moneris-ccCvv',
         });
     });
 
@@ -142,25 +162,28 @@ describe('when using Moneris payment', () => {
             await new Promise((resolve) => setTimeout(resolve, 0));
         });
 
-        expect(checkoutService.initializePayment).toHaveBeenCalledWith({
-            gatewayId: undefined,
-            methodId: 'moneris',
-            integrations: [createMonerisPaymentStrategy],
-            moneris: {
-                containerId: 'moneris-iframe-container',
-                form: {
-                    fields: {
-                        cardCodeVerification: undefined,
-                        cardNumberVerification: undefined,
+        expect(checkoutService.initializePayment).toHaveBeenCalledWith(
+            expect.objectContaining({
+                gatewayId: undefined,
+                methodId: 'moneris',
+                integrations: [createMonerisPaymentStrategy],
+                moneris: expect.objectContaining({
+                    containerId: 'moneris-iframe-container',
+                    style: monerisIframeStyles,
+                    form: {
+                        fields: {
+                            cardCodeVerification: undefined,
+                            cardNumberVerification: undefined,
+                        },
+                        onBlur: expect.any(Function),
+                        onCardTypeChange: expect.any(Function),
+                        onEnter: expect.any(Function),
+                        onFocus: expect.any(Function),
+                        onValidate: expect.any(Function),
+                        styles: {},
                     },
-                    onBlur: expect.any(Function),
-                    onCardTypeChange: expect.any(Function),
-                    onEnter: expect.any(Function),
-                    onFocus: expect.any(Function),
-                    onValidate: expect.any(Function),
-                    styles: {},
-                },
-            },
-        });
+                }),
+            }),
+        );
     });
 });
