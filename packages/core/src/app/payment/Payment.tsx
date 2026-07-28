@@ -70,6 +70,7 @@ import {
 import { getB2BMetadataPayload } from './b2bMetadataForPostOrder';
 import { mapToB2BOrderRequestBody } from './b2bMetadataForSubmitOrder';
 import CartStockPositionsChangedModal from './CartStockPositionsChangedModal';
+import getPaymentMethodsSignature from './getPaymentMethodsSignature';
 import mapSubmitOrderErrorMessage, { mapSubmitOrderErrorTitle } from './mapSubmitOrderErrorMessage';
 import mapToOrderRequestBody from './mapToOrderRequestBody';
 import PaymentContext, { type EnsureBillingAddressSaved } from './PaymentContext';
@@ -647,11 +648,16 @@ const Payment = (
             return;
         }
 
-        setState((prevState) => ({ ...prevState, isReady: false }));
-
+        // POC — this used to toggle isReady false→true around every reload,
+        // which unmounts the entire PaymentForm (including any hosted card
+        // iframe) via the ChecklistSkeleton below, even when the set of
+        // available payment methods hasn't actually changed (e.g. a coupon
+        // that only changes the order total). PaymentForm is now keyed off
+        // the actual methods signature (see render), so it only remounts
+        // when that set genuinely changes — we no longer need to force it
+        // here, and skipping the toggle avoids the disruptive reload for
+        // the common case.
         await loadPaymentMethodsOrThrow();
-
-        setState((prevState) => ({ ...prevState, isReady: true }));
     };
 
     const getContextValue = memoizeOne(() => {
@@ -762,6 +768,9 @@ const Payment = (
     const { selectedMethod = props.defaultMethod } = state;
     const uniqueSelectedMethodId =
         selectedMethod && getUniquePaymentMethodId(selectedMethod.id, selectedMethod.gateway);
+    // POC: only remount PaymentForm when the actual set of available payment
+    // methods changes, not on every render/reload of this component.
+    const paymentMethodsSignature = getPaymentMethodsSignature(props.methods);
     // themeV2 embeds the billing form in the payment step. Disable "Place Order"
     // while its billing address is loading or being persisted (initialization,
     // address-book change, or the pre-submit save), so a click can't silently
@@ -790,6 +799,7 @@ const Payment = (
                     isStoreCreditApplied={props.isStoreCreditApplied}
                     isTermsConditionsRequired={props.isTermsConditionsRequired}
                     isUsingMultiShipping={props.isUsingMultiShipping}
+                    key={paymentMethodsSignature}
                     methods={props.methods}
                     onBillingSameAsShippingChange={props.onBillingSameAsShippingChange}
                     onMethodSelect={setSelectedMethod}

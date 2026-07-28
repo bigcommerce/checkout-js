@@ -49,6 +49,7 @@ import { type EmbeddedCheckoutStylesheet, isEmbedded } from '../embeddedCheckout
 import { hasSelectedShippingOptions, isUsingMultiShipping } from '../shipping';
 import { ShippingOptionExpiredError } from '../shipping/shippingOption';
 
+import attemptSilentShippingOptionRecovery from './attemptSilentShippingOptionRecovery';
 import type CheckoutStepStatus from './CheckoutStepStatus';
 import CheckoutStepType from './CheckoutStepType';
 import type CheckoutSupport from './CheckoutSupport';
@@ -187,6 +188,20 @@ const Checkout = ({
     }>({
         hasSelectedShippingOptions: state.hasSelectedShippingOptions,
     });
+    // POC: last-known-good consignments, used to silently recover a shipping
+    // option (see handleConsignmentsUpdated) instead of always bouncing the
+    // shopper back to the Shipping step when a coupon changes the cart total.
+    //
+    // This is intentionally NOT kept in sync via the render-time "Update
+    // refs" block below. `consignments` is fed by a separate subscription
+    // (useCheckout, via mapToCheckoutProps) from the one driving this
+    // handler (subscribeToConsignments) — if that other subscription's
+    // re-render lands first, a render-time write here would already
+    // reflect the *new* consignments by the time handleConsignmentsUpdated
+    // reads it as "previous", defeating the safety checks in
+    // attemptSilentShippingOptionRecovery. Instead, handleConsignmentsUpdated
+    // updates this ref itself, from the event data it receives directly.
+    const consignmentsRef = useRef<Consignment[] | undefined>(consignments);
 
     const navigateToStep = useCallback(
         (type: CheckoutStepType, options?: { isDefault?: boolean }): void => {
@@ -311,9 +326,16 @@ const Checkout = ({
             defaultStepType,
         } = stateRef.current;
 
-        const newHasSelectedShippingOptions = hasSelectedShippingOptions(
-            data.getConsignments() || [],
-        );
+        // Capture the true "previous" consignments before advancing the ref
+        // below — see the comment on consignmentsRef's declaration for why
+        // this can't be synced during render instead.
+        const previousConsignments = consignmentsRef.current || [];
+
+        const newConsignments = data.getConsignments() || [];
+
+        consignmentsRef.current = newConsignments;
+
+        const newHasSelectedShippingOptions = hasSelectedShippingOptions(newConsignments);
 
         const isDefaultStepPaymentOrBilling =
             !activeStepType &&
@@ -325,16 +347,53 @@ const Checkout = ({
                 findIndex(stepsRef.current, { type: activeStepType }) ||
             isDefaultStepPaymentOrBilling;
 
-        if (
-            shouldShowShippingOptionExpiredError({
-                prevHasSelectedShippingOptions,
-                newHasSelectedShippingOptions,
-                isShippingStepFinished,
-                isSigningOut: statuses.isSigningOut(),
-            })
-        ) {
-            navigateToStep(CheckoutStepType.Shipping);
-            setState((prevState) => ({ ...prevState, error: new ShippingOptionExpiredError() }));
+        const isShippingOptionExpired = shouldShowShippingOptionExpiredError({
+            prevHasSelectedShippingOptions,
+            newHasSelectedShippingOptions,
+            isShippingStepFinished,
+            isSigningOut: statuses.isSigningOut(),
+        });
+
+        if (isShippingOptionExpired) {
+            // POC — instead of immediately bouncing the shopper back to Shipping
+            // (which unmounts Payment and, for hosted-field gateways, destroys the
+            // card iframe), first try to silently recover a valid shipping option.
+
+            attemptSilentShippingOptionRecovery(
+                previousConsignments,
+                newConsignments,
+                (consignmentId, shippingOptionId, options) =>
+                    checkoutService.selectConsignmentShippingOption(
+                        consignmentId,
+                        shippingOptionId,
+                        options,
+                    ),
+                () => checkoutService.getState().data.getConsignments(),
+            )
+                .then((didReselect) => {
+                    if (!didReselect) {
+                        navigateToStep(CheckoutStepType.Shipping);
+                        setState((prevState) => ({
+                            ...prevState,
+                            error: new ShippingOptionExpiredError(),
+                        }));
+                    }
+
+                    setState((prevState) => ({
+                        ...prevState,
+                        hasSelectedShippingOptions: didReselect,
+                    }));
+                })
+                .catch(() => {
+                    navigateToStep(CheckoutStepType.Shipping);
+                    setState((prevState) => ({
+                        ...prevState,
+                        error: new ShippingOptionExpiredError(),
+                        hasSelectedShippingOptions: false,
+                    }));
+                });
+
+            return;
         }
 
         setState((prevState) => ({
