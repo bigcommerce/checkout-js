@@ -1,7 +1,10 @@
 $element-border-radius: remCalc(12px);
 
 @include themeV2 {
-    .button, .shippingOptions-panel {
+    .button,
+    .shippingOptions-panel,
+    .alertBox,
+    .modal {
         border-radius: $element-border-radius;
     }
 }

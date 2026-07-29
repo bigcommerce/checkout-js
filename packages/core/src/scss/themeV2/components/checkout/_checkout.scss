@@ -16,6 +16,7 @@
             .sub-header {
                 color: $color-greyDark;
                 margin-top: spacing("half");
+                margin-bottom: 0;
             }
         }
 
@@ -69,7 +70,7 @@
             }
 
             .stepHeader-figure {
-                align-items: flex-end;
+                align-items: center;
             }
         }
 
