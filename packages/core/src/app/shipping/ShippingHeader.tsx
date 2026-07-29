@@ -44,52 +44,28 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
         shouldShowMultiShipping && !isMultiShippingMode && cartHasPromotionalItems;
 
     const modeToggleLink = useMemo(() => {
-        if (showConfirmationModal) {
-            return (
-                <a
-                    className="body-cta"
-                    data-test="shipping-mode-toggle"
-                    href="#"
-                    onClick={preventDefault(() => setIsSingleShippingConfirmationModalOpen(true))}
-                >
-                    <TranslatedString id="shipping.ship_to_single" />
-                </a>
-            );
+        if (!shouldShowMultiShipping) {
+            return null;
         }
 
-        if (showMultiShippingUnavailableModal) {
-            return (
-                <a
-                    className="body-cta"
-                    data-test="shipping-mode-toggle"
-                    href="#"
-                    onClick={preventDefault(() => setIsMultiShippingUnavailableModalOpen(true))}
-                >
-                    <TranslatedString id="shipping.ship_to_multi" />
-                </a>
-            );
-        }
+        const handleClick = showConfirmationModal
+            ? () => setIsSingleShippingConfirmationModalOpen(true)
+            : showMultiShippingUnavailableModal
+              ? () => setIsMultiShippingUnavailableModalOpen(true)
+              : onMultiShippingChange;
 
-        if (shouldShowMultiShipping) {
-            return (
-                <a
-                    className="body-cta"
-                    data-test="shipping-mode-toggle"
-                    href="#"
-                    onClick={preventDefault(onMultiShippingChange)}
-                >
-                    <TranslatedString
-                        id={
-                            isMultiShippingMode
-                                ? 'shipping.ship_to_single'
-                                : 'shipping.ship_to_multi'
-                        }
-                    />
-                </a>
-            );
-        }
-
-        return null;
+        return (
+            <a
+                className="body-cta"
+                data-test="shipping-mode-toggle"
+                href="#"
+                onClick={preventDefault(handleClick)}
+            >
+                <TranslatedString
+                    id={isMultiShippingMode ? 'shipping.ship_to_single' : 'shipping.ship_to_multi'}
+                />
+            </a>
+        );
     }, [
         showConfirmationModal,
         showMultiShippingUnavailableModal,
