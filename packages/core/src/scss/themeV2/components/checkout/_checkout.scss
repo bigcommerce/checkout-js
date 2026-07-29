@@ -62,12 +62,19 @@
 
             .stepHeader-actions--cta {
                 align-self: center;
+                margin-left: 0;
+                width: 100%;
 
                 .body-regular,
                 .body-cta {
                     font-family: $fontFamily-montserrat;
                     font-size: $fontSize-smallest;
                     font-weight: $fontWeight-medium;
+                }
+
+                @include breakpoint("small") {
+                    margin-left: auto;
+                    width: auto;
                 }
             }
 
