@@ -115,7 +115,7 @@ function Shipping({
         void initializeShipping();
     }, []);
 
-    const handleMultiShippingModeSwitch = async () => {
+    const handleMultiShippingModeSwitch = useCallback(async () => {
         try {
             setIsInitializing(true);
 
@@ -143,7 +143,17 @@ function Shipping({
         }
 
         onToggleMultiShipping();
-    };
+    }, [
+        isMultiShippingMode,
+        consignments,
+        hasCompanyAddressBook,
+        customer,
+        decode,
+        updateShippingAddress,
+        deleteConsignments,
+        onUnhandledError,
+        onToggleMultiShipping,
+    ]);
 
     const handleSwitchToSingleShipping = useCallback(async () => {
         setIsMultiShippingUnavailableModalOpen(false);
