@@ -22,7 +22,7 @@
             display: block;
             margin-top: 0;
             margin-bottom: 0;
-            border-radius: remCalc(12px);
+            border-radius: $element-border-radius;
         }
 
         .cart-priceItem:last-child {

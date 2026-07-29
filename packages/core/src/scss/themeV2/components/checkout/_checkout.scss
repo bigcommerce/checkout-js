@@ -15,7 +15,7 @@
         .checkout-separator {
             .sub-header {
                 color: $color-greyDark;
-                margin-top: #{spacing("half")};
+                margin-top: spacing("half");
             }
         }
 
@@ -37,7 +37,7 @@
             border-bottom: none;
             padding: #{spacing("base")} #{spacing("base") + spacing("base")};
             margin: spacing("single") 0;
-            border-radius: remCalc(12px);
+            border-radius: $element-border-radius;
         }
         
         // :not(:last-child) keeps collapsed steps unaffected
@@ -75,7 +75,7 @@
 
         .checkout-button-container {
             padding: 0 #{spacing("base") + spacing("base")};
-            margin-top: #{spacing("single")};
+            margin-top: spacing("single");
         }
     }
 
