@@ -7,22 +7,20 @@
         .form-checklist-item {
             border: 1px solid $color-greyMedium;
             margin: spacing("sixth") 0;
+            border-radius: $element-border-radius;
 
             &:first-child {
                 margin-top: 0;
-                border-top-right-radius: remCalc(12px);
-                border-top-left-radius: remCalc(12px);
             }
 
             &:last-child {
                 margin-bottom: 0;
-                border-bottom-right-radius: remCalc(12px);
-                border-bottom-left-radius: remCalc(12px);
             }         
         }
 
         .form-checklist-item--selected {
             border: $input-border-width $input-border-style $color-black;
+            background-color: $color-highlightLightest;
         }
 
         .form-checklist-header {
