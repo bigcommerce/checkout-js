@@ -50,7 +50,7 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
                             <TranslatedString id="shipping.shipping_method_label" />
                         </Legend>
                         {defaultShippingExpectationMessage && (
-                            <p className="shipping-ExpectationMessage">
+                            <p className="shipping-ExpectationMessage" data-test="shipping-expectation-message">
                                 {defaultShippingExpectationMessage}
                             </p>
                         )}
