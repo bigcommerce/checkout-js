@@ -6,15 +6,18 @@
 
         .form-checklist-item {
             border: 1px solid $color-greyMedium;
-            border-radius: spacing("sixth");
             margin: spacing("sixth") 0;
 
             &:first-child {
                 margin-top: 0;
+                border-top-right-radius: remCalc(12px);
+                border-top-left-radius: remCalc(12px);
             }
 
             &:last-child {
                 margin-bottom: 0;
+                border-bottom-right-radius: remCalc(12px);
+                border-bottom-left-radius: remCalc(12px);
             }         
         }
 
