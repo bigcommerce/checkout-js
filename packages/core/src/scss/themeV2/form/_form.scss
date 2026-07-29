@@ -3,7 +3,7 @@
 // =============================================================================
 
 @include themeV2 {
-    .form-input {
+    .form-input, .form-select {
         border-radius: $element-border-radius;
     }
 
