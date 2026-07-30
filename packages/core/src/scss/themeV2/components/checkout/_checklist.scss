@@ -6,8 +6,8 @@
 
         .form-checklist-item {
             border: 1px solid $color-greyMedium;
-            border-radius: spacing("sixth");
             margin: spacing("sixth") 0;
+            border-radius: $element-border-radius;
 
             &:first-child {
                 margin-top: 0;
@@ -20,6 +20,7 @@
 
         .form-checklist-item--selected {
             border: $input-border-width $input-border-style $color-black;
+            background-color: $color-highlightLightest;
         }
 
         .form-checklist-header {

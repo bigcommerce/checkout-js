@@ -22,6 +22,7 @@
             display: block;
             margin-top: 0;
             margin-bottom: 0;
+            border-radius: $element-border-radius;
         }
 
         .cart-priceItem:last-child {
@@ -35,6 +36,10 @@
             justify-content: space-between;
             padding: spacing("base") #{spacing("base") + spacing("base")};
             width: 100%;
+
+            .sub-header {
+                margin-bottom: 0;
+            }
         }
 
         .cart-summary-header {

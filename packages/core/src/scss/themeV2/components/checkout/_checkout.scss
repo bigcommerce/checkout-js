@@ -11,10 +11,17 @@
         .layout-main {
             padding: 0;
         }
+        
+        .checkout-separator {
+            .sub-header {
+                color: $color-greyDark;
+                margin: 0;
+            }
+        }
 
         .checkout-separator::before,
         .checkout-separator::after {
-            background-color: $color-black;
+            background-color: $color-greyDark;
         }
         
         .checkout-steps {
@@ -30,6 +37,7 @@
             border-bottom: none;
             padding: #{spacing("base")} #{spacing("base") + spacing("base")};
             margin: spacing("single") 0;
+            border-radius: $element-border-radius;
         }
         
         // :not(:last-child) keeps collapsed steps unaffected
@@ -61,12 +69,13 @@
             }
 
             .stepHeader-figure {
-                align-items: flex-end;
+                align-items: center;
             }
         }
 
         .checkout-button-container {
             padding: 0 #{spacing("base") + spacing("base")};
+            margin-top: spacing("single");
         }
     }
 
@@ -78,7 +87,7 @@
         }
 
         .checkout-button-container {
-            padding: 0 #{spacing('double') + spacing('double')} 0 0;
+            padding: 0;
         }
     }
 

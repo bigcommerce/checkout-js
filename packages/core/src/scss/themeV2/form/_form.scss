@@ -3,9 +3,14 @@
 // =============================================================================
 
 @include themeV2 {
+    .form-input, .form-select {
+        border-radius: $element-border-radius;
+    }
+
     .floating-select,
     .floating-input {
         background-color: $color-secondaryDark;
+        border-radius: $element-border-radius;
     }
 
     .form-field:not(.form-field--error) .floating-input:not(:focus),
