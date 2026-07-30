@@ -1,21 +1,9 @@
-import {
-    type Checkout,
-    type LineItemMap,
-    type ShopperCurrency as ShopperCurrencyType,
-    type StoreCurrency,
-} from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
-import React, {
-    type FunctionComponent,
-    type KeyboardEvent,
-    type ReactNode,
-    useMemo,
-    useState,
-} from 'react';
+import React, { type FunctionComponent, type KeyboardEvent, useMemo, useState } from 'react';
 
 import { useCheckout, useLocale } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { IconChevronDown, IconChevronUp, IconGiftCertificate } from '@bigcommerce/checkout/ui';
+import { IconChevronDown, IconChevronUp } from '@bigcommerce/checkout/ui';
 
 import { ShopperCurrency } from '../currency';
 import getItemsCount from '../order/getItemsCount';
@@ -24,21 +12,11 @@ import OrderSummary from '../order/OrderSummary';
 import { removeBundledItems } from '../order/removeBundledItems';
 
 import { CartHeaderLink } from './CartHeaderLink';
+import { CartSummaryItemImage } from './CartSummaryItemImage';
 import mapToCartSummaryProps from './mapToCartSummaryProps';
-import { type RedeemableProps } from './Redeemable';
 import withRedeemable from './withRedeemable';
 
-export type WithCheckoutCartSummaryProps = {
-    checkout: Checkout;
-    cartUrl: string;
-    storeCurrency: StoreCurrency;
-    shopperCurrency: ShopperCurrencyType;
-    storeCreditAmount?: number;
-    isBuyNowCart: boolean;
-    isShippingDiscountDisplayEnabled: boolean;
-} & RedeemableProps;
-
-export interface CartSummaryDrawerV2Props {
+interface CartSummaryDrawerV2Props {
     isMultiShippingMode: boolean;
 }
 
@@ -62,8 +40,9 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({
     }
 
     const { cartUrl, isBuyNowCart, checkout, shopperCurrency } = props;
+    const cartHeading = language.translate('cart.cart_heading');
 
-    const toggleSheet = () => setIsExpanded(!isExpanded);
+    const toggleSheet = () => setIsExpanded((currentState) => !currentState);
     const closeSheet = () => setIsExpanded(false);
 
     const handleBarKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
@@ -108,7 +87,7 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({
                     })}
                 >
                     <div className="cart-summary-image-wrapper">
-                        {getImage(nonBundledLineItems)}
+                        <CartSummaryItemImage lineItems={nonBundledLineItems} />
                     </div>
                 </figure>
                 <div className="cart-summary-bar-body">
@@ -132,7 +111,7 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({
             </div>
             <section
                 aria-hidden={!isExpanded}
-                aria-label={language.translate('cart.cart_heading')}
+                aria-label={cartHeading}
                 className="cart-summary-sheet"
                 data-test="cart-summary-sheet"
                 id="cart-summary-sheet"
@@ -154,23 +133,5 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({
         </div>
     );
 };
-
-function getImage(lineItems: LineItemMap): ReactNode {
-    const productWithImage = lineItems.physicalItems[0] || lineItems.digitalItems[0];
-
-    if (productWithImage && productWithImage.imageUrl) {
-        return (
-            <img
-                alt={productWithImage.name}
-                data-test="cart-item-image"
-                src={productWithImage.imageUrl}
-            />
-        );
-    }
-
-    if (lineItems.giftCertificates.length) {
-        return <IconGiftCertificate />;
-    }
-}
 
 export default CartSummaryDrawerV2;
