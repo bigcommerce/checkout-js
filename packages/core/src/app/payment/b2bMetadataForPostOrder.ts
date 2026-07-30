@@ -11,7 +11,7 @@ import {
     type B2BPaymentFormValues,
     getRecordValue,
     getStringValue,
-    hasNonEmptyExtraFieldValue,
+    hasValidOrderExtraFieldValue,
 } from './b2bMetadata';
 
 type B2BMetadataExtraField = NonNullable<PersistB2BMetadataOptions['extraFields']>[number];
@@ -37,7 +37,7 @@ const mapOrderExtraFieldsValues = (
     fieldLabels: FieldLabelLookup,
 ): B2BMetadataExtraField[] =>
     Object.entries(formExtraFields)
-        .filter(hasNonEmptyExtraFieldValue)
+        .filter(hasValidOrderExtraFieldValue)
         .map(([fieldName, fieldValue]) => ({
             // The API expects the field label, but form values are keyed by field name (id).
             fieldName: getExtraFieldLabel(fieldName, fieldLabels),

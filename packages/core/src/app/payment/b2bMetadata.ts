@@ -15,12 +15,12 @@ export const getRecordValue = (value: unknown): Record<string, unknown> | undefi
         ? (value as Record<string, unknown>)
         : undefined;
 
-export const hasNonEmptyExtraFieldValue = (
+export const hasValidOrderExtraFieldValue = (
     entry: [string, unknown],
 ): entry is [string, string | number] => {
     const value = entry[1];
 
-    return typeof value === 'number' || (typeof value === 'string' && value !== '');
+    return typeof value === 'number' || typeof value === 'string';
 };
 
 export const storeB2BPaymentValues = ({
