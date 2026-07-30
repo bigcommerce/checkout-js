@@ -7,8 +7,4 @@ $element-border-radius: remCalc(12px);
     .modal {
         border-radius: $element-border-radius;
     }
-
-    .alertBox.alertBox--error {
-        padding: 0 spacing("quarter");
-    }
 }
