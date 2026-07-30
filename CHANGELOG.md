@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.847.1](https://github.com/bigcommerce/checkout-js/compare/v1.847.0...v1.847.1) (2026-07-30)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10282 Send Empty Extra Fields ([#3204](https://github.com/bigcommerce/checkout-js/issues/3204)) ([480e487](https://github.com/bigcommerce/checkout-js/commit/480e48730ae10b883b03634b9274feafa910f6e8))
+
 ## [1.847.0](https://github.com/bigcommerce/checkout-js/compare/v1.846.8...v1.847.0) (2026-07-30)
 
 
