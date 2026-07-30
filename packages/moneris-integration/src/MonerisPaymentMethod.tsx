@@ -71,15 +71,12 @@ const MonerisPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     const cardNumberStyleContainerId = getHostedFieldId('ccNumber');
     const cardExpiryStyleContainerId = getHostedFieldId('ccExpiry');
     const cardCodeStyleContainerId = getHostedFieldId('ccCvv');
-
     const styleSamplerClassName = 'form-ccFields form-ccFields--without-card-name';
 
     const initializeMonerisPayment: HostedWidgetComponentProps['initializePayment'] = useCallback(
         async (options: PaymentInitializeOptions, selectedInstrument) => {
-            const style = await getMonerisIframeStyles({
+            const style = getMonerisIframeStyles({
                 cardNumberContainerId: cardNumberStyleContainerId,
-                cardExpiryContainerId: cardExpiryStyleContainerId,
-                cardCodeContainerId: cardCodeStyleContainerId,
             });
 
             const paymentConfig = {
@@ -97,8 +94,6 @@ const MonerisPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             return checkoutService.initializePayment(paymentConfig);
         },
         [
-            cardCodeStyleContainerId,
-            cardExpiryStyleContainerId,
             cardNumberStyleContainerId,
             containerId,
             getHostedFormOptions,

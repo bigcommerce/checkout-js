@@ -64,7 +64,7 @@ describe('when using Moneris payment', () => {
         localeContext = createLocaleContext(getStoreConfig());
         method = { ...getPaymentMethod(), id: PaymentMethodId.Moneris };
 
-        jest.mocked(getMonerisIframeStyles).mockResolvedValue(monerisIframeStyles);
+        jest.mocked(getMonerisIframeStyles).mockReturnValue(monerisIframeStyles);
 
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
 
@@ -134,8 +134,6 @@ describe('when using Moneris payment', () => {
 
         expect(getMonerisIframeStyles).toHaveBeenCalledWith({
             cardNumberContainerId: 'moneris-ccNumber',
-            cardExpiryContainerId: 'moneris-ccExpiry',
-            cardCodeContainerId: 'moneris-ccCvv',
         });
     });
 
