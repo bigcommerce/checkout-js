@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.847.0](https://github.com/bigcommerce/checkout-js/compare/v1.846.8...v1.847.0) (2026-07-30)
+
+
+### Features
+
+* **other:** CHECKOUT-10272 Make corners rounded for various UI elements ([#3202](https://github.com/bigcommerce/checkout-js/issues/3202)) ([cd35c15](https://github.com/bigcommerce/checkout-js/commit/cd35c154c72c99775a0fa4660f9ba872a7597623))
+
 ### [1.846.8](https://github.com/bigcommerce/checkout-js/compare/v1.846.7...v1.846.8) (2026-07-29)
 
 ### [1.846.7](https://github.com/bigcommerce/checkout-js/compare/v1.846.6...v1.846.7) (2026-07-29)
