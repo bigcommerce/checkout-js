@@ -13,7 +13,7 @@ import React, {
     useState,
 } from 'react';
 
-import { useCheckout } from '@bigcommerce/checkout/contexts';
+import { useCheckout, useLocale } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { IconChevronDown, IconChevronUp, IconGiftCertificate } from '@bigcommerce/checkout/ui';
 
@@ -47,6 +47,7 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({
 }) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
+    const { language } = useLocale();
     const checkoutContext = useCheckout();
     const props = mapToCartSummaryProps(checkoutContext);
 
@@ -131,6 +132,7 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({
             </div>
             <section
                 aria-hidden={!isExpanded}
+                aria-label={language.translate('cart.cart_heading')}
                 className="cart-summary-sheet"
                 data-test="cart-summary-sheet"
                 id="cart-summary-sheet"
