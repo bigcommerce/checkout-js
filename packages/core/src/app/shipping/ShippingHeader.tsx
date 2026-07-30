@@ -48,11 +48,19 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
             return null;
         }
 
-        const handleClick = showConfirmationModal
-            ? () => setIsSingleShippingConfirmationModalOpen(true)
-            : showMultiShippingUnavailableModal
-              ? () => setIsMultiShippingUnavailableModalOpen(true)
-              : onMultiShippingChange;
+        const getHandleClick = () => {
+            if (showConfirmationModal) {
+                return () => setIsSingleShippingConfirmationModalOpen(true);
+            }
+
+            if (showMultiShippingUnavailableModal) {
+                return () => setIsMultiShippingUnavailableModalOpen(true);
+            }
+
+            return onMultiShippingChange;
+        };
+
+        const handleClick = getHandleClick();
 
         return (
             <a
