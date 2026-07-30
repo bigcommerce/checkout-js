@@ -1,21 +1,27 @@
 import {
     type Checkout,
+    type LineItemMap,
     type ShopperCurrency as ShopperCurrencyType,
     type StoreCurrency,
 } from '@bigcommerce/checkout-sdk';
-import React, { type FunctionComponent, useRef, useState } from 'react';
+import classNames from 'classnames';
+import React, {
+    type FunctionComponent,
+    type KeyboardEvent,
+    type ReactNode,
+    useMemo,
+    useState,
+} from 'react';
 
 import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import {
-    CollapseCSSTransition,
-    IconArrowLeft,
-    IconChevronDown,
-    IconChevronUp,
-} from '@bigcommerce/checkout/ui';
+import { IconChevronDown, IconChevronUp, IconGiftCertificate } from '@bigcommerce/checkout/ui';
 
 import { ShopperCurrency } from '../currency';
+import getItemsCount from '../order/getItemsCount';
+import getLineItemsCount from '../order/getLineItemsCount';
 import OrderSummary from '../order/OrderSummary';
+import { removeBundledItems } from '../order/removeBundledItems';
 
 import { CartHeaderLink } from './CartHeaderLink';
 import mapToCartSummaryProps from './mapToCartSummaryProps';
@@ -41,58 +47,128 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({
 }) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
-    const nodeRef = useRef<HTMLDivElement>(null);
-
     const checkoutContext = useCheckout();
     const props = mapToCartSummaryProps(checkoutContext);
 
-    if (!props) {
+    const lineItems = props?.checkout.cart.lineItems;
+    const nonBundledLineItems = useMemo(
+        () => (lineItems ? removeBundledItems(lineItems) : undefined),
+        [lineItems],
+    );
+
+    if (!props || !nonBundledLineItems) {
         return null;
     }
 
-    const { cartUrl, isBuyNowCart, checkout } = props;
+    const { cartUrl, isBuyNowCart, checkout, shopperCurrency } = props;
+
+    const toggleSheet = () => setIsExpanded(!isExpanded);
+    const closeSheet = () => setIsExpanded(false);
+
+    const handleBarKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            toggleSheet();
+        }
+    };
+
+    const handleRootKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+        if (event.key === 'Escape' && isExpanded) {
+            closeSheet();
+        }
+    };
 
     return (
-        <div className="cart-summary-drawer">
-            <div className="cart-summary-header">
-                <IconArrowLeft />
-                <CartHeaderLink
-                    cartUrl={cartUrl}
-                    isBuyNowCart={isBuyNowCart}
-                    isMultiShippingMode={isMultiShippingMode}
-                    label={<TranslatedString id="cart.go_to_cart_action" />}
-                />
-            </div>
-            <button
+        <div
+            className={classNames('cart-summary-drawer', {
+                'cart-summary-drawer--open': isExpanded,
+            })}
+            onKeyDown={handleRootKeyDown}
+        >
+            <div
+                aria-hidden="true"
+                className="cart-summary-backdrop"
+                data-test="cart-summary-backdrop"
+                onClick={closeSheet}
+            />
+            <div
+                aria-controls="cart-summary-sheet"
                 aria-expanded={isExpanded}
-                className="cart-summary-toggle"
-                onClick={() => setIsExpanded(!isExpanded)}
+                className="cart-summary-collapsed-bar optimizedCheckout-orderSummary"
+                data-test="cart-summary-collapsed-bar"
+                onClick={toggleSheet}
+                onKeyDown={handleBarKeyDown}
+                role="button"
+                tabIndex={0}
             >
-                <span className="body-regular">
+                <figure
+                    className={classNames('cart-summary-figure', {
+                        'cart-summary-figure--stack': getLineItemsCount(nonBundledLineItems) > 1,
+                    })}
+                >
+                    <div className="cart-summary-image-wrapper">
+                        {getImage(nonBundledLineItems)}
+                    </div>
+                </figure>
+                <div className="cart-summary-bar-body">
+                    <span className="body-regular">
+                        <TranslatedString
+                            data={{ count: getItemsCount(nonBundledLineItems) }}
+                            id="cart.item_count_text"
+                        />
+                    </span>
+                    <span className="sub-header">
+                        <ShopperCurrency amount={checkout.outstandingBalance} /> (
+                        {shopperCurrency.code})
+                    </span>
+                </div>
+                <span className="cart-summary-bar-toggle-label body-regular">
                     <TranslatedString
-                        id={
-                            isExpanded
-                                ? 'cart.hide_order_summary_action'
-                                : 'cart.show_order_summary_action'
-                        }
+                        id={isExpanded ? 'cart.hide_details_action' : 'cart.show_details_action'}
                     />
-                    {isExpanded ? <IconChevronUp /> : <IconChevronDown />}
+                    {isExpanded ? <IconChevronDown /> : <IconChevronUp />}
                 </span>
-                <span className="sub-header">
-                    <ShopperCurrency amount={checkout.outstandingBalance} />
-                </span>
-            </button>
-            <CollapseCSSTransition isVisible={isExpanded} nodeRef={nodeRef}>
-                <div className="cart-summary-content" ref={nodeRef}>
+            </div>
+            <section
+                aria-hidden={!isExpanded}
+                className="cart-summary-sheet"
+                data-test="cart-summary-sheet"
+                id="cart-summary-sheet"
+            >
+                <div className="cart-summary-sheet-handle" />
+                <div className="cart-summary-sheet-content">
                     {withRedeemable(OrderSummary)({
                         ...props,
-                        headerLink: null,
-                        showHeader: false,
+                        headerLink: (
+                            <CartHeaderLink
+                                cartUrl={cartUrl}
+                                isBuyNowCart={isBuyNowCart}
+                                isMultiShippingMode={isMultiShippingMode}
+                            />
+                        ),
                     })}
                 </div>
-            </CollapseCSSTransition>
+            </section>
         </div>
     );
 };
+
+function getImage(lineItems: LineItemMap): ReactNode {
+    const productWithImage = lineItems.physicalItems[0] || lineItems.digitalItems[0];
+
+    if (productWithImage && productWithImage.imageUrl) {
+        return (
+            <img
+                alt={productWithImage.name}
+                data-test="cart-item-image"
+                src={productWithImage.imageUrl}
+            />
+        );
+    }
+
+    if (lineItems.giftCertificates.length) {
+        return <IconGiftCertificate />;
+    }
+}
 
 export default CartSummaryDrawerV2;

@@ -95,6 +95,7 @@
             "shipping_text": "Shipping",
             "gift_wrapping_text": "Gift Wrapping",
             "show_details_action": "Show Details",
+            "hide_details_action": "Hide Details",
             "store_credit_text": "Store Credit",
             "subtotal_text": "Subtotal",
             "taxes_text": "Taxes",
