@@ -38,10 +38,13 @@ describe('b2bMetadataForPostOrder', () => {
             ]);
         });
 
-        it('omits fields with empty values', () => {
+        it('keeps fields with empty values', () => {
             expect(
                 getOrderExtraFieldsValues({ field_25: '', field_26: 'Finance' }, orderExtraFields),
-            ).toEqual([{ fieldName: 'Department', fieldValue: 'Finance' }]);
+            ).toEqual([
+                { fieldName: 'Cost Centre', fieldValue: '' },
+                { fieldName: 'Department', fieldValue: 'Finance' },
+            ]);
         });
 
         it('returns an empty array when there are no form values', () => {

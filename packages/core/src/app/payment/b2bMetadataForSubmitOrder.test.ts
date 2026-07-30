@@ -24,7 +24,7 @@ describe('b2bMetadataForSubmitOrder', () => {
             });
         });
 
-        it('omits empty and non-scalar extra field values', () => {
+        it('omits values that are not strings or numbers but keeps empty strings', () => {
             expect(
                 mapToB2BOrderRequestBody({
                     orderExtraFields: {
@@ -34,7 +34,12 @@ describe('b2bMetadataForSubmitOrder', () => {
                         filled: 'value',
                     },
                 }),
-            ).toEqual({ orderExtraFields: [{ fieldId: 'filled', fieldValue: 'value' }] });
+            ).toEqual({
+                orderExtraFields: [
+                    { fieldId: 'empty', fieldValue: '' },
+                    { fieldId: 'filled', fieldValue: 'value' },
+                ],
+            });
         });
 
         it('omits the keys when the values are empty or missing', () => {
