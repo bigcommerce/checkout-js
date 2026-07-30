@@ -36,13 +36,13 @@ const INPUT_STYLE_PROPERTIES = [
 const LABEL_STYLE_PROPERTIES = ['color', 'fontFamily', 'fontWeight'];
 
 const CSS_BODY_LAYOUT =
-    'margin: 0; padding: 24px 0; box-sizing: border-box; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; row-gap: 24px; column-gap: 8px;';
+    'margin: 0; padding: 20px 0 0; box-sizing: border-box; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; row-gap: 30px; column-gap: 20px;';
 
 const CSS_INPUT_LABEL_LAYOUT =
-    'justify-self: start; align-self: start; font-size: 0.75rem; line-height: 1; pointer-events: none; z-index: 1; transform: translateY(-100%);';
+    'justify-self: start; align-self: start; font-size: 0.75rem; line-height: 1; pointer-events: none; z-index: 1; transform: translateY(-160%);';
 
 const CSS_TEXTBOX_LAYOUT =
-    'justify-self: stretch; align-self: stretch; width: 100%; box-sizing: border-box;';
+    'justify-self: stretch; align-self: stretch; width: 100%; box-sizing: border-box; padding: 0 12px;';
 
 const CSS_GRID_PLACEMENT = {
     cardNumberLabel: 'grid-column: 1 / 3; grid-row: 1;',
