@@ -10,9 +10,11 @@ interface CartSummaryItemImageProps {
 export const CartSummaryItemImage: FunctionComponent<CartSummaryItemImageProps> = ({
     lineItems,
 }) => {
-    const productWithImage = lineItems.physicalItems[0] || lineItems.digitalItems[0];
+    const productWithImage = [...lineItems.physicalItems, ...lineItems.digitalItems].find(
+        (item) => item.imageUrl,
+    );
 
-    if (productWithImage && productWithImage.imageUrl) {
+    if (productWithImage) {
         return (
             <img
                 alt={productWithImage.name}

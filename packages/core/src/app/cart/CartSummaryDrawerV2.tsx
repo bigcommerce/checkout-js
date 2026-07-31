@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { type FunctionComponent, type KeyboardEvent, useMemo, useState } from 'react';
+import React, { type FunctionComponent, type KeyboardEvent, useState } from 'react';
 
 import { useCheckout, useLocale } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -29,17 +29,12 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({
     const checkoutContext = useCheckout();
     const props = mapToCartSummaryProps(checkoutContext);
 
-    const lineItems = props?.checkout.cart.lineItems;
-    const nonBundledLineItems = useMemo(
-        () => (lineItems ? removeBundledItems(lineItems) : undefined),
-        [lineItems],
-    );
-
-    if (!props || !nonBundledLineItems) {
+    if (!props) {
         return null;
     }
 
     const { cartUrl, isBuyNowCart, checkout, shopperCurrency } = props;
+    const nonBundledLineItems = removeBundledItems(checkout.cart.lineItems);
     const cartHeading = language.translate('cart.cart_heading');
 
     const toggleSheet = () => setIsExpanded((currentState) => !currentState);

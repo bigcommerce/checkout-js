@@ -60,12 +60,30 @@ describe('CartSummaryItemImage Component', () => {
         expect(document.querySelector('svg')).toBeInTheDocument();
     });
 
-    it('renders nothing when first item has no image and there are no gift certificates', () => {
+    it('falls back to the next item with an image when first physical item has none', () => {
+        render(
+            <CartSummaryItemImage
+                lineItems={{
+                    physicalItems: [{ ...getPhysicalItem(), imageUrl: '' }],
+                    digitalItems: [getDigitalItem()],
+                    giftCertificates: [],
+                    customItems: [],
+                }}
+            />,
+        );
+
+        expect(screen.getByTestId('cart-item-image')).toHaveAttribute(
+            'src',
+            getDigitalItem().imageUrl,
+        );
+    });
+
+    it('renders nothing when no item has an image and there are no gift certificates', () => {
         const { container } = render(
             <CartSummaryItemImage
                 lineItems={{
                     physicalItems: [{ ...getPhysicalItem(), imageUrl: '' }],
-                    digitalItems: [],
+                    digitalItems: [{ ...getDigitalItem(), imageUrl: '' }],
                     giftCertificates: [],
                     customItems: [],
                 }}
