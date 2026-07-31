@@ -170,31 +170,6 @@
         .cart-priceItem:last-child {
             margin-bottom: 0;
         }
-
-        .cart-summary-toggle {
-            background-color: $color-white;
-            border-bottom: none;
-            display: flex;
-            justify-content: space-between;
-            padding: spacing("base") #{spacing("base") + spacing("base")};
-            width: 100%;
-
-            .sub-header {
-                margin-bottom: 0;
-            }
-        }
-
-        .cart-summary-header {
-            background-color: container("fill", "dark");
-            padding: spacing("base") spacing("single");
-            font-weight: bold;
-            display: flex;
-            gap: spacing("quarter");
-
-            svg {
-                fill: $color-highlightDarkest;
-            }
-        }
     }
 
     @include themeV2-mobile {
