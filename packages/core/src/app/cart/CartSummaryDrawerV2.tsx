@@ -85,19 +85,20 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({
                     className={classNames('cart-summary-figure', {
                         'cart-summary-figure--stack': getLineItemsCount(nonBundledLineItems) > 1,
                     })}
+                    data-test="cart-summary-figure"
                 >
                     <div className="cart-summary-image-wrapper">
                         <CartSummaryItemImage lineItems={nonBundledLineItems} />
                     </div>
                 </figure>
                 <div className="cart-summary-bar-body">
-                    <span className="body-regular">
+                    <span className="body-regular" data-test="cart-item-count">
                         <TranslatedString
                             data={{ count: getItemsCount(nonBundledLineItems) }}
                             id="cart.item_count_text"
                         />
                     </span>
-                    <span className="sub-header">
+                    <span className="sub-header" data-test="cart-outstanding-balance">
                         <ShopperCurrency amount={checkout.outstandingBalance} /> (
                         {shopperCurrency.code})
                     </span>
