@@ -1,6 +1,6 @@
 import React, { type FunctionComponent, useState } from 'react';
 
-import { useLocale } from '@bigcommerce/checkout/contexts';
+import { useLocale, useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import {
     Alert,
@@ -17,6 +17,7 @@ import { ManageCouponsAndGiftCertificates } from './ManageCouponsAndGiftCertific
 
 export const CouponForm: FunctionComponent = () => {
     const [code, setCode] = useState<string>('');
+    const { themeV2 } = useThemeContext();
 
     const { language } = useLocale();
     const {
@@ -89,7 +90,7 @@ export const CouponForm: FunctionComponent = () => {
             </div>
             <div className="applied-coupons-list">
                 {Boolean(couponError) && (
-                    <Alert additionalClassName="no-padding" type={AlertType.Error}>
+                    <Alert additionalClassName={themeV2 ? '' : 'no-padding'} type={AlertType.Error}>
                         <ul className="applied-coupon-error-message">
                             <li>
                                 <span>{couponError}</span>

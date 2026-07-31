@@ -11,12 +11,11 @@
         color: $color-secondaryDarkest;
     }
 
-    // optimizedCheckout-headingSecondary
     .sub-header {
         font-size: $fontSize-smaller;
+        margin-bottom: spacing("half");
     }
 
-    // optimizedCheckout-contentPrimary
     .body-regular, .body-cta, .body-thin, .body-medium, .body-bold {
         color: $color-black;
         font-family: $fontFamily-montserrat;

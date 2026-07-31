@@ -20,6 +20,12 @@
     @include themeV2-desktop {
         .product-figure {
             max-width: none;
+            width: 20%;
+            padding-right: spacing("single");
+
+            img {
+                border-radius: $element-border-radius;
+            }
         }
     }
 }

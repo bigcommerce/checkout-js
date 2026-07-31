@@ -4,7 +4,7 @@ import {
     type B2BPaymentFormValues,
     getRecordValue,
     getStringValue,
-    hasNonEmptyExtraFieldValue,
+    hasValidOrderExtraFieldValue,
 } from './b2bMetadata';
 
 type B2BOrderRequestExtraField = NonNullable<OrderRequestBody['orderExtraFields']>[number];
@@ -21,7 +21,7 @@ const toRawExtraFieldId = (fieldName: string): string =>
 
 const getOrderExtraFieldValues = (value: unknown): B2BOrderRequestExtraField[] =>
     Object.entries(getRecordValue(value) ?? {})
-        .filter(hasNonEmptyExtraFieldValue)
+        .filter(hasValidOrderExtraFieldValue)
         .map(([fieldName, fieldValue]) => ({
             fieldId: toRawExtraFieldId(fieldName),
             fieldValue,
