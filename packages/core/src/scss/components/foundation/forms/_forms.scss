@@ -56,18 +56,26 @@
 
         .floating-input,
         .floating-select {
-            font-size: $floating-label-font-size--default;
+            font-size: 16px;
             height: $floating-label-input-height;
             padding-bottom: 0;
             padding-left: $input-horizontalPadding;
             padding-right: $input-horizontalPadding;
             padding-top: $input-verticalPadding * 1.5;
 
+            @include breakpoint("small") {
+                font-size: $floating-label-font-size--default;
+            }
+
             &.floating-form-field-input {
                 color: $color-black;
                 font-family: $fontFamily-montserrat;
-                font-size: $fontSize-smallest;
+                font-size: 16px;
                 font-weight: $fontWeight-normal;
+
+                @include breakpoint("small") {
+                    font-size: $fontSize-smallest;
+                }
             }
         }
 
@@ -161,6 +169,12 @@
     }
 
     .form-input {
+        font-size: 16px;
+
+        @include breakpoint("small") {
+            font-size: $input-font-size;
+        }
+
         &:focus,
         &--focus {
             box-shadow: $input-focus-boxShadow, $input-box-shadow;
@@ -248,7 +262,12 @@
         -webkit-appearance: none; // 2
         background-image: none;
         border-radius: $input-border-radius;
+        font-size: 16px;
         padding: $input-verticalPadding $select-paddingRight $input-verticalPadding $input-horizontalPadding;
+
+        @include breakpoint("small") {
+            font-size: $input-font-size;
+        }
     }
     // scss-lint:enable ImportantRule
 }
