@@ -100,18 +100,18 @@ const Customer: React.FC<CustomerProps> = ({
                 ) {
                     // TODO: Split out into separate chunks so they can be lazy loaded
                     await customerData.actions.initializeCustomer({
-                      methodId: customerData.data.providerWithCustomCheckout,
-                      integrations: [
-                        createBigCommercePaymentsFastlaneCustomerStrategy,
-                        createBraintreeFastlaneCustomerStrategy,
-                        createPayPalCommerceFastlaneCustomerStrategy,
-                        createBoltCustomerStrategy,
-                        createStripeUPECustomerStrategy,
-                        createStripeLinkV2CustomerStrategy,
-                      ],
-                      onErrorLog: (error: Error) => {
-                        errorLogger?.log(error);
-                      },
+                        methodId: customerData.data.providerWithCustomCheckout,
+                        integrations: [
+                            createBigCommercePaymentsFastlaneCustomerStrategy,
+                            createBraintreeFastlaneCustomerStrategy,
+                            createPayPalCommerceFastlaneCustomerStrategy,
+                            createBoltCustomerStrategy,
+                            createStripeUPECustomerStrategy,
+                            createStripeLinkV2CustomerStrategy,
+                        ],
+                        onErrorLog: (error: Error) => {
+                            errorLogger?.log(error);
+                        },
                     });
                 }
             } catch (error) {

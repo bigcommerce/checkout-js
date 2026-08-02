@@ -1,9 +1,9 @@
 import {
-  type CheckoutSelectors,
-  type CheckoutService,
-  ErrorLogger,
-  type LanguageService,
-  type PaymentMethod,
+    type CheckoutSelectors,
+    type CheckoutService,
+    type ErrorLogger,
+    type LanguageService,
+    type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
 
 import type PaymentFormService from './PaymentFormService';
