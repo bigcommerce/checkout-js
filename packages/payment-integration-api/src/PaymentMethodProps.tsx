@@ -1,8 +1,9 @@
 import {
-    type CheckoutSelectors,
-    type CheckoutService,
-    type LanguageService,
-    type PaymentMethod,
+  type CheckoutSelectors,
+  type CheckoutService,
+  ErrorLogger,
+  type LanguageService,
+  type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
 
 import type PaymentFormService from './PaymentFormService';
@@ -14,5 +15,6 @@ export default interface PaymentMethodProps {
     checkoutState: CheckoutSelectors;
     paymentForm: PaymentFormService;
     language: LanguageService;
+    errorLogger?: ErrorLogger;
     onUnhandledError(error: Error): void;
 }
