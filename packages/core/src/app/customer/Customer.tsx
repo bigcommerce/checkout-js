@@ -110,7 +110,7 @@ const Customer: React.FC<CustomerProps> = ({
                             createStripeLinkV2CustomerStrategy,
                         ],
                         onErrorLog: (error: Error) => {
-                          errorLogger.log(error);
+                          errorLogger?.log(error);
                         }
                     });
                 }
