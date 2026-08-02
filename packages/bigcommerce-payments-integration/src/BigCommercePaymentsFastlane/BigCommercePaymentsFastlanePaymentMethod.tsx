@@ -13,6 +13,7 @@ import { isErrorWithTranslationKey } from '@bigcommerce/checkout/utility';
 import BigCommercePaymentsFastlaneForm from './components/BigCommercePaymentsFastlaneForm';
 
 import './BigCommercePaymentsFastlanePaymentMethod.scss';
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 
 export interface BigCommercePaymentsFastlaneCardComponentRef {
     renderPayPalCardComponent?: (container: string) => void;
@@ -30,6 +31,7 @@ const BigCommercePaymentsFastlanePaymentMethod: FunctionComponent<PaymentMethodP
     const paypalCardComponentRef = useRef<BigCommercePaymentsFastlaneCardComponentRef>({});
 
     const { isLoadingPaymentMethod, isInitializingPayment } = checkoutState.statuses;
+    const { errorLogger } = useCheckout();
 
     const initializePaymentOrThrow = async () => {
         try {
@@ -60,6 +62,10 @@ const BigCommercePaymentsFastlanePaymentMethod: FunctionComponent<PaymentMethodP
 
                         return onUnhandledError(finalError);
                     },
+                  //@ts-ignore
+                    onErrorLog: (error: Error)=> {
+                      errorLogger?.log(error);
+                    }
                 },
             });
         } catch (error) {
