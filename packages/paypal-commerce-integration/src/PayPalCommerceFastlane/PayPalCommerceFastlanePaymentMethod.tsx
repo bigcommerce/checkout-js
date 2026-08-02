@@ -61,7 +61,7 @@ const PayPalCommerceFastlanePaymentMethod: FunctionComponent<PaymentMethodProps>
 
                         return onUnhandledError(finalError);
                     },
-
+                  //@ts-ignore
                     onErrorLog: (error: Error) => {
                         errorLogger?.log(error);
                     }
