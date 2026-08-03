@@ -63,7 +63,7 @@
             padding-right: $input-horizontalPadding;
             padding-top: $input-verticalPadding * 1.5;
 
-            @include breakpoint("small") {
+            @media (min-width: $screen-small) and (min-height: $screen-small-landscape-height) {
                 font-size: $floating-label-font-size--default;
             }
 
@@ -73,7 +73,7 @@
                 font-size: $input-font-size--mobile-min;
                 font-weight: $fontWeight-normal;
 
-                @include breakpoint("small") {
+                @media (min-width: $screen-small) and (min-height: $screen-small-landscape-height) {
                     font-size: $fontSize-smallest;
                 }
             }
@@ -171,7 +171,7 @@
     .form-input {
         font-size: $input-font-size--mobile-min;
 
-        @include breakpoint("small") {
+        @media (min-width: $screen-small) and (min-height: $screen-small-landscape-height) {
             font-size: $input-font-size;
         }
 
@@ -182,6 +182,14 @@
 
         &.form-input--withIcon {
             padding-right: #{$input-formIcon-width + spacing("single")};
+        }
+    }
+
+    .themeV2 .form-input.body-regular {
+        font-size: $input-font-size--mobile-min;
+
+        @media (min-width: $screen-small) and (min-height: $screen-small-landscape-height) {
+            font-size: $fontSize-base;
         }
     }
 
@@ -265,7 +273,7 @@
         font-size: $input-font-size--mobile-min;
         padding: $input-verticalPadding $select-paddingRight $input-verticalPadding $input-horizontalPadding;
 
-        @include breakpoint("small") {
+        @media (min-width: $screen-small) and (min-height: $screen-small-landscape-height) {
             font-size: $input-font-size;
         }
     }
