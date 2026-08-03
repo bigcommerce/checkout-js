@@ -155,6 +155,58 @@ describe('GoogleAutocomplete', () => {
             }
         });
 
+        it('drops an in-flight suggestions response that resolves after a suggestion is picked', async () => {
+            jest.useFakeTimers();
+
+            const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
+            const staleSuggestions = [
+                { id: 'stale-place', label: '123 Stale St', value: '123 Stale St' },
+            ];
+
+            let resolveSecondFetch: ((value: unknown) => void) | undefined;
+
+            mockGetNewApiSuggestions
+                .mockImplementationOnce(() => Promise.resolve(newApiSuggestions))
+                .mockImplementationOnce(
+                    () =>
+                        new Promise((resolve) => {
+                            resolveSecondFetch = resolve;
+                        }),
+                );
+
+            try {
+                render(<GoogleAutocomplete {...defaultProps} />);
+
+                const input = screen.getByRole('textbox');
+
+                await user.type(input, '123');
+                await screen.findByText('123 New API Ave');
+
+                // The next keystroke starts a second fetch that stays in flight
+                await user.type(input, '4');
+
+                act(() => {
+                    jest.advanceTimersByTime(300);
+                });
+
+                expect(mockGetNewApiSuggestions).toHaveBeenCalledTimes(2);
+
+                await user.click(screen.getByText('123 New API Ave'));
+                await waitFor(() => expect(defaultProps.onSelect).toHaveBeenCalled());
+
+                // The in-flight response must not repopulate the dropdown after selection
+                await act(async () => {
+                    resolveSecondFetch?.(staleSuggestions);
+                });
+
+                // a new request should give a new suggestion list
+                await user.type(input, '5');
+                expect(screen.queryByText('123 Stale St')).not.toBeInTheDocument();
+            } finally {
+                jest.useRealTimers();
+            }
+        });
+
         it('calls onSelect with the new API place result when a suggestion is picked', async () => {
             render(<GoogleAutocomplete {...defaultProps} />);
 

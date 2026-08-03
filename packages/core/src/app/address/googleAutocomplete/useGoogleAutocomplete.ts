@@ -122,8 +122,6 @@ export function useGoogleAutocomplete({
                 return;
             }
 
-            newApiInputRef.current = input;
-
             service
                 .getSuggestions(input, types, componentRestrictions)
                 .then((results) => {
@@ -206,6 +204,7 @@ export function useGoogleAutocomplete({
 
     const handleSelect = (item: AutocompleteItem) => {
         debouncedFetchSuggestions.cancel();
+        newApiInputRef.current = undefined;
 
         if (isUsingLegacyApi()) {
             legacyApi.select(item);
@@ -228,9 +227,10 @@ export function useGoogleAutocomplete({
 
         setAutocompleteValue(input);
 
+        newApiInputRef.current = input;
+
         if (!input) {
             debouncedFetchSuggestions.cancel();
-            newApiInputRef.current = input;
             setItems([]);
 
             return;
