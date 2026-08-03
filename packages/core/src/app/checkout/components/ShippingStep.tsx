@@ -1,11 +1,13 @@
 import type { Cart, Consignment } from '@bigcommerce/checkout-sdk/essential';
 import React, { lazy } from 'react';
 
+import { useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { AddressFormSkeleton, LazyContainer } from '@bigcommerce/checkout/ui';
 
 import { retry } from '../../common/utility';
 import { type ShippingProps, ShippingSummary } from '../../shipping';
+import { shouldShowMultiShippingToggle } from '../../shipping/utils';
 import CheckoutStep from '../CheckoutStep';
 import type CheckoutStepType from '../CheckoutStepType';
 
@@ -45,13 +47,33 @@ const ShippingStep: React.FC<ShippingStepProps> = ({
     onUnhandledError,
     setIsMultishippingMode,
 }) => {
+    const { themeV2 } = useThemeContext();
+    const {
+        selectedState: { checkout, config },
+    } = useCheckout(({ data }) => ({
+        checkout: data.getCheckout(),
+        config: data.getConfig(),
+    }));
+
     if (!cart) {
         return null;
     }
 
+    const shouldShowHeaderAction =
+        themeV2 && checkout && config && shouldShowMultiShippingToggle(checkout, config, cart);
+
+    const headerAction = shouldShowHeaderAction ? (
+        <span className="body-cta" data-test="shipping-mode-toggle">
+            <TranslatedString
+                id={isMultiShippingMode ? 'shipping.ship_to_single' : 'shipping.ship_to_multi'}
+            />
+        </span>
+    ) : null;
+
     return (
         <CheckoutStep
             {...step}
+            headerAction={headerAction}
             heading={<TranslatedString id="shipping.shipping_heading" />}
             key={step.type}
             onEdit={onEdit}

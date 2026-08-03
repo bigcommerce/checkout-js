@@ -15,6 +15,10 @@ export {
     useCapabilities,
 } from './capabilities';
 export { PaymentFormContext, usePaymentFormContext, PaymentFormProvider } from './paymentForm';
+export {
+    CheckoutStepHeaderActionContext,
+    useSetCheckoutStepHeaderAction,
+} from './checkoutStepHeaderAction';
 
 export type { AnalyticsContextProps, AnalyticsEvents } from './analytics/AnalyticsContext';
 export type { ExtensionAction, ExtensionServiceInterface } from './extension/ExtensionType';
