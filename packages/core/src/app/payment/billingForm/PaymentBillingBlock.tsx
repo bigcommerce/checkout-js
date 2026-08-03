@@ -59,7 +59,9 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
     };
 
     // The store's countryCode is stale while an update is in flight; guarding
-    // on it would drop a quick flip back to the original country.
+    // on it would drop a quick flip back to the original country. Only
+    // meaningful while a request is pending — it is cleared once it settles,
+    // so billing changes made via other paths aren't wrongly vetoed.
     const lastRequestedCountryCodeRef = useRef<string | undefined>();
 
     // Persisting the form values (not the store address) keeps typed fields
@@ -81,14 +83,18 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
             countryCode,
             stateOrProvince: '',
             stateOrProvinceCode: '',
-        }).catch((error) => {
-            // Fall back to the store's country so a retry isn't skipped.
-            lastRequestedCountryCodeRef.current = undefined;
-
-            if (error instanceof Error) {
-                onUnhandledError(error);
-            }
-        });
+        })
+            .catch((error) => {
+                if (error instanceof Error) {
+                    onUnhandledError(error);
+                }
+            })
+            .finally(() => {
+                // Unless a newer request has taken over the ref.
+                if (lastRequestedCountryCodeRef.current === countryCode) {
+                    lastRequestedCountryCodeRef.current = undefined;
+                }
+            });
     };
 
     // Persist without navigating — the payment step's "Place Order" is the only

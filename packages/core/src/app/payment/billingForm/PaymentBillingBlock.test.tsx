@@ -348,6 +348,34 @@ describe('PaymentBillingBlock', () => {
             );
         });
 
+        it('persists a change back to a previously requested country once the first persist settles', async () => {
+            // Store stays US throughout, as if an external update (address book,
+            // same as shipping) reverted the country after the first persist.
+            jest.spyOn(checkoutState.data, 'getBillingAddress').mockReturnValue(
+                getBillingAddress(),
+            );
+
+            render(<PaymentBillingBlockTest />);
+
+            await screen.findByTestId('trigger-persist');
+
+            const { orderComment: _orderComment, ...addressValues } = mockPersistValues;
+
+            act(() => {
+                mockCapturedProps.onBillingCountryChange('CA', addressValues);
+            });
+
+            await new Promise((resolve) => process.nextTick(resolve));
+
+            act(() => {
+                mockCapturedProps.onBillingCountryChange('CA', addressValues);
+            });
+
+            await new Promise((resolve) => process.nextTick(resolve));
+
+            expect(checkoutService.updateBillingAddress).toHaveBeenCalledTimes(2);
+        });
+
         it('allows retrying the same country after a failed persist', async () => {
             const error = new Error('update failed');
 
