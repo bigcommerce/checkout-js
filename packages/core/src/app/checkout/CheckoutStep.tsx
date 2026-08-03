@@ -10,10 +10,10 @@ import React, {
 } from 'react';
 import { CSSTransition } from 'react-transition-group';
 
+import { CheckoutStepHeaderActionContext } from '@bigcommerce/checkout/contexts';
 import { isMobileView, MobileView } from '@bigcommerce/checkout/ui';
 
 import CheckoutStepHeader from './CheckoutStepHeader';
-import { CheckoutStepHeaderActionContext } from './CheckoutStepHeaderActionContext';
 import type CheckoutStepType from './CheckoutStepType';
 
 export interface CheckoutStepProps {

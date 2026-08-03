@@ -3,12 +3,10 @@ import classNames from 'classnames';
 import React, { type FunctionComponent, memo, useEffect, useMemo, useState } from 'react';
 
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
-import { useThemeContext } from '@bigcommerce/checkout/contexts';
+import { useSetCheckoutStepHeaderAction, useThemeContext } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { ConfirmationModal, Legend } from '@bigcommerce/checkout/ui';
-
-import { useSetCheckoutStepHeaderAction } from '../checkout/CheckoutStepHeaderActionContext';
 
 import './ShippingHeader.scss';
 
