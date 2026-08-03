@@ -5,7 +5,7 @@ import React from 'react';
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
 import { CheckoutProvider, ExtensionProvider, LocaleContext } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
-import { configure, render, screen, within } from '@bigcommerce/checkout/test-utils';
+import { configure, render, screen, waitFor, within } from '@bigcommerce/checkout/test-utils';
 
 import { getCheckout } from '../checkout/checkouts.mock';
 import { createErrorLogger } from '../common/error';
@@ -44,12 +44,15 @@ describe('CartSummaryDrawerV2 Component', () => {
 
     const expectSheetOpen = () => {
         expect(getCollapsedBar()).toHaveAttribute('aria-expanded', 'true');
-        expect(getSheet()).toHaveAttribute('aria-hidden', 'false');
+        expect(getSheet()).toBeInTheDocument();
     };
 
-    const expectSheetClosed = () => {
+    const expectSheetClosed = async () => {
         expect(getCollapsedBar()).toHaveAttribute('aria-expanded', 'false');
-        expect(getSheet()).toHaveAttribute('aria-hidden', 'true');
+
+        await waitFor(() =>
+            expect(screen.queryByTestId('cart-summary-sheet')).not.toBeInTheDocument(),
+        );
     };
 
     it('renders collapsed bar with item count, outstanding balance and product image', () => {
@@ -103,7 +106,7 @@ describe('CartSummaryDrawerV2 Component', () => {
     it('toggles the sheet when the collapsed bar is clicked', async () => {
         renderComponent();
 
-        expectSheetClosed();
+        await expectSheetClosed();
 
         await userEvent.click(getCollapsedBar());
 
@@ -111,7 +114,7 @@ describe('CartSummaryDrawerV2 Component', () => {
 
         await userEvent.click(getCollapsedBar());
 
-        expectSheetClosed();
+        await expectSheetClosed();
     });
 
     it('toggles the sheet with Enter and Space keys', async () => {
@@ -125,9 +128,15 @@ describe('CartSummaryDrawerV2 Component', () => {
 
         expectSheetOpen();
 
-        await userEvent.keyboard(' ');
+        await userEvent.keyboard('{Escape}');
 
-        expectSheetClosed();
+        await expectSheetClosed();
+
+        expect(getCollapsedBar()).toHaveFocus();
+
+        await userEvent.keyboard('[Space]');
+
+        expectSheetOpen();
     });
 
     it('closes the sheet with the Escape key', async () => {
@@ -139,7 +148,7 @@ describe('CartSummaryDrawerV2 Component', () => {
 
         await userEvent.keyboard('{Escape}');
 
-        expectSheetClosed();
+        await expectSheetClosed();
     });
 
     it('closes the sheet when the backdrop is clicked', async () => {
@@ -151,6 +160,6 @@ describe('CartSummaryDrawerV2 Component', () => {
 
         await userEvent.click(screen.getByTestId('cart-summary-backdrop'));
 
-        expectSheetClosed();
+        await expectSheetClosed();
     });
 });

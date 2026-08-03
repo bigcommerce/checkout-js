@@ -20,20 +20,29 @@
         }
 
         .cart-summary-backdrop {
-            background-color: rgba($color-black, 0.4);
-            bottom: 0;
-            left: 0;
+            pointer-events: auto;
+
+            &::before {
+                background-color: rgba($color-black, 0.4);
+                bottom: 0;
+                content: "";
+                left: 0;
+                opacity: 0;
+                position: fixed;
+                right: 0;
+                top: 0;
+                touch-action: none;
+                transition: opacity $animation-collapse-transitionSpeed $animation-collapse-transitionCurve;
+                z-index: -1;
+            }
+        }
+
+        .cart-summary-backdrop--afterOpen::before {
+            opacity: 1;
+        }
+
+        .cart-summary-backdrop--beforeClose::before {
             opacity: 0;
-            pointer-events: none;
-            position: fixed;
-            right: 0;
-            top: 0;
-            touch-action: none;
-            transition:
-                opacity $animation-collapse-transitionSpeed $animation-collapse-transitionCurve,
-                visibility 0s linear $animation-collapse-transitionSpeed;
-            visibility: hidden;
-            z-index: -1;
         }
 
         .cart-summary-collapsed-bar {
@@ -113,12 +122,18 @@
             flex-direction: column;
             max-height: calc(100vh / 1.5);
             max-height: calc(100dvh / 1.5);
+            outline: none;
             pointer-events: auto;
             transform: translateY(100%);
-            transition:
-                transform $animation-collapse-transitionSpeed $animation-collapse-transitionCurve,
-                visibility 0s linear $animation-collapse-transitionSpeed;
-            visibility: hidden;
+            transition: transform $animation-collapse-transitionSpeed $animation-collapse-transitionCurve;
+        }
+
+        .cart-summary-sheet--afterOpen {
+            transform: translateY(0);
+        }
+
+        .cart-summary-sheet--beforeClose {
+            transform: translateY(100%);
         }
 
         .cart-summary-sheet-handle {
@@ -137,23 +152,8 @@
             padding: 0 spacing("single") spacing("single");
         }
 
-        .cart-summary-drawer--open {
-            .cart-summary-backdrop {
-                opacity: 1;
-                pointer-events: auto;
-                transition: opacity $animation-collapse-transitionSpeed $animation-collapse-transitionCurve;
-                visibility: visible;
-            }
-
-            .cart-summary-sheet {
-                transform: translateY(0);
-                transition: transform $animation-collapse-transitionSpeed $animation-collapse-transitionCurve;
-                visibility: visible;
-            }
-        }
-
         @media (prefers-reduced-motion: reduce) {
-            .cart-summary-backdrop,
+            .cart-summary-backdrop::before,
             .cart-summary-sheet {
                 transition: none;
             }
@@ -197,7 +197,7 @@
     }
 }
 
-body:has(.themeV2 .cart-summary-drawer--open) {
+body.has-activeCartSummarySheet {
     overflow: hidden;
 }
 

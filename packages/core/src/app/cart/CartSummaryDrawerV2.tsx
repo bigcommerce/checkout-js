@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import React, { type FunctionComponent, type KeyboardEvent, useState } from 'react';
+import ReactModal from 'react-modal';
 
 import { useCheckout, useLocale } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -16,6 +17,9 @@ import { CartSummaryItemImage } from './CartSummaryItemImage';
 import mapToCartSummaryProps from './mapToCartSummaryProps';
 import withRedeemable from './withRedeemable';
 
+// Must match $animation-collapse-transitionSpeed in scss settings
+const SHEET_TRANSITION_DURATION = 600;
+
 interface CartSummaryDrawerV2Props {
     isMultiShippingMode: boolean;
 }
@@ -23,6 +27,7 @@ interface CartSummaryDrawerV2Props {
 const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({
     isMultiShippingMode,
 }) => {
+    const [rootElement, setRootElement] = useState<HTMLDivElement | null>(null);
     const [isExpanded, setIsExpanded] = useState(false);
 
     const { language } = useLocale();
@@ -37,7 +42,7 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({
     const nonBundledLineItems = removeBundledItems(checkout.cart.lineItems);
     const cartHeading = language.translate('cart.cart_heading');
 
-    const handleSheetClick = () => {
+    const toggleSheet = () => {
         setIsExpanded((currentState) => !currentState);
     };
 
@@ -48,35 +53,18 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({
     const handleBarKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
         if (event.key === 'Enter' || event.key === ' ') {
             event.preventDefault();
-            handleSheetClick();
-        }
-    };
-
-    const handleRootKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-        if (event.key === 'Escape' && isExpanded) {
-            closeSheet();
+            toggleSheet();
         }
     };
 
     return (
-        <div
-            className={classNames('cart-summary-drawer', {
-                'cart-summary-drawer--open': isExpanded,
-            })}
-            onKeyDown={handleRootKeyDown}
-        >
-            <div
-                aria-hidden="true"
-                className="cart-summary-backdrop"
-                data-test="cart-summary-backdrop"
-                onClick={closeSheet}
-            />
+        <div className="cart-summary-drawer" ref={setRootElement}>
             <div
                 aria-controls="cart-summary-sheet"
                 aria-expanded={isExpanded}
                 className="cart-summary-collapsed-bar optimizedCheckout-orderSummary"
                 data-test="cart-summary-collapsed-bar"
-                onClick={handleSheetClick}
+                onClick={toggleSheet}
                 onKeyDown={handleBarKeyDown}
                 role="button"
                 tabIndex={0}
@@ -110,27 +98,52 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({
                     {isExpanded ? <IconChevronDown /> : <IconChevronUp />}
                 </span>
             </div>
-            <section
-                aria-hidden={!isExpanded}
-                aria-label={cartHeading}
-                className="cart-summary-sheet"
-                data-test="cart-summary-sheet"
-                id="cart-summary-sheet"
-            >
-                <div className="cart-summary-sheet-handle" />
-                <div className="cart-summary-sheet-content">
-                    {withRedeemable(OrderSummary)({
-                        ...props,
-                        headerLink: (
-                            <CartHeaderLink
-                                cartUrl={cartUrl}
-                                isBuyNowCart={isBuyNowCart}
-                                isMultiShippingMode={isMultiShippingMode}
-                            />
-                        ),
-                    })}
-                </div>
-            </section>
+            {rootElement && (
+                <ReactModal
+                    ariaHideApp={false}
+                    bodyOpenClassName="has-activeCartSummarySheet"
+                    className={{
+                        base: 'cart-summary-sheet',
+                        afterOpen: 'cart-summary-sheet--afterOpen',
+                        beforeClose: 'cart-summary-sheet--beforeClose',
+                    }}
+                    closeTimeoutMS={SHEET_TRANSITION_DURATION}
+                    contentElement={(contentProps, children) => (
+                        <div {...contentProps} data-test="cart-summary-sheet">
+                            {children}
+                        </div>
+                    )}
+                    contentLabel={cartHeading}
+                    id="cart-summary-sheet"
+                    isOpen={isExpanded}
+                    onRequestClose={closeSheet}
+                    overlayClassName={{
+                        base: 'cart-summary-backdrop',
+                        afterOpen: 'cart-summary-backdrop--afterOpen',
+                        beforeClose: 'cart-summary-backdrop--beforeClose',
+                    }}
+                    overlayElement={(overlayProps, contentElement) => (
+                        <div {...overlayProps} data-test="cart-summary-backdrop">
+                            {contentElement}
+                        </div>
+                    )}
+                    parentSelector={() => rootElement}
+                >
+                    <div className="cart-summary-sheet-handle" />
+                    <div className="cart-summary-sheet-content">
+                        {withRedeemable(OrderSummary)({
+                            ...props,
+                            headerLink: (
+                                <CartHeaderLink
+                                    cartUrl={cartUrl}
+                                    isBuyNowCart={isBuyNowCart}
+                                    isMultiShippingMode={isMultiShippingMode}
+                                />
+                            ),
+                        })}
+                    </div>
+                </ReactModal>
+            )}
         </div>
     );
 };
