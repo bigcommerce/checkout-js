@@ -58,15 +58,12 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
         }
     };
 
-    // The store's countryCode is stale while an update is in flight; guarding
-    // on it would drop a quick flip back to the original country. Only
-    // meaningful while a request is pending — it is cleared once it settles,
-    // so billing changes made via other paths aren't wrongly vetoed.
+    // The store's countryCode lags while an update is in flight, so guard on
+    // the pending request instead; cleared on settle so it can't go stale.
     const lastRequestedCountryCodeRef = useRef<string | undefined>();
 
-    // Persisting the form values (not the store address) keeps typed fields
-    // alive through the Formik reinitialize that follows; stateOrProvince is
-    // country-specific so it must be cleared.
+    // Persist the form values (not the store address) so typed fields survive
+    // the Formik reinitialize; stateOrProvince is country-specific, so clear it.
     const handleBillingCountryChange = (countryCode: string, addressValues: AddressFormValues) => {
         const lastCountryCode =
             lastRequestedCountryCodeRef.current ?? getBillingAddress()?.countryCode;
@@ -79,7 +76,6 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
 
         updateBillingAddress({
             ...mapAddressFromFormValues(addressValues),
-            // Must win — addressValues may still carry the old country.
             countryCode,
             stateOrProvince: '',
             stateOrProvinceCode: '',
@@ -90,7 +86,6 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
                 }
             })
             .finally(() => {
-                // Unless a newer request has taken over the ref.
                 if (lastRequestedCountryCodeRef.current === countryCode) {
                     lastRequestedCountryCodeRef.current = undefined;
                 }
