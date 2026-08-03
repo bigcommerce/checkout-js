@@ -17,7 +17,6 @@ describe('getMonerisIframeStyles', () => {
                 return {
                     color: 'rgb(95, 95, 95)',
                     fontFamily: '"Open Sans", sans-serif',
-                    fontSize: '13px',
                     fontWeight: '500',
                 };
             }
@@ -26,14 +25,16 @@ describe('getMonerisIframeStyles', () => {
                 const inputStyles: Record<string, string> = {
                     backgroundColor: 'rgb(255, 255, 255)',
                     border: '1px solid rgb(221, 221, 221)',
+                    borderColor: 'rgb(221, 221, 221)',
                     borderRadius: '4px',
+                    borderStyle: 'solid',
+                    borderWidth: '1px',
                     color: 'rgb(51, 51, 51)',
                     fontFamily: '"Open Sans", sans-serif',
                     fontSize: '13px',
                     fontWeight: '400',
                     height: '45px',
                     outline: '0',
-                    padding: '12px 16px',
                 };
 
                 if (inputStyles[property]) {
@@ -61,7 +62,7 @@ describe('getMonerisIframeStyles', () => {
         expect(styles.cssBody).toContain('background: transparent;');
 
         expect(styles.cssTextbox).toContain('justify-self: stretch;');
-        expect(styles.cssTextbox).toContain('padding-top: 1.3em;');
+        expect(styles.cssTextbox).toContain('padding: 0 12px;');
         expect(styles.cssTextbox).toContain('border-radius: 4px;');
         expect(styles.cssTextbox).not.toContain('padding: 12px 16px;');
 

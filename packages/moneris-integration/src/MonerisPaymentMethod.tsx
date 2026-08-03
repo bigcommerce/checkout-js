@@ -93,12 +93,7 @@ const MonerisPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
             return checkoutService.initializePayment(paymentConfig);
         },
-        [
-            cardNumberStyleContainerId,
-            containerId,
-            getHostedFormOptions,
-            checkoutService,
-        ],
+        [cardNumberStyleContainerId, containerId, getHostedFormOptions, checkoutService],
     );
 
     const validateInstrument = (_shouldShowNumber: boolean, selectedInstrument: CardInstrument) => {
