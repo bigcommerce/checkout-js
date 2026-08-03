@@ -157,6 +157,8 @@ export default function getMonerisIframeStyles({
 
         if (onError) {
             onError(error);
+        } else {
+            console.error(error, { containerId: cardNumberContainerId });
         }
 
         return buildMonerisIframeStyles({}, {});

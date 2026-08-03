@@ -70,8 +70,6 @@ const MonerisPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     );
 
     const cardNumberStyleContainerId = getHostedFieldId('ccNumber');
-    const cardExpiryStyleContainerId = getHostedFieldId('ccExpiry');
-    const cardCodeStyleContainerId = getHostedFieldId('ccCvv');
     const styleSamplerClassName = 'form-ccFields form-ccFields--without-card-name';
 
     const initializeMonerisPayment: HostedWidgetComponentProps['initializePayment'] = useCallback(
@@ -115,12 +113,6 @@ const MonerisPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                     <div className="form-field form-field--ccNumber">
                         <div id={cardNumberStyleContainerId} />
                     </div>
-                    <div className="form-field form-field--ccExpiry">
-                        <div id={cardExpiryStyleContainerId} />
-                    </div>
-                    <div className="form-ccFields-field form-ccFields-field--ccCvv">
-                        <div id={cardCodeStyleContainerId} />
-                    </div>
                 </div>
             </div>
         );
@@ -145,6 +137,7 @@ const MonerisPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                 isSignedIn={some(checkout?.payments, { providerId: method.id })}
                 loadInstruments={checkoutService.loadInstruments}
                 method={method}
+                onUnhandledError={onUnhandledError}
                 setFieldValue={setFieldValue}
                 setSubmit={setSubmit}
                 setValidationSchema={setValidationSchema}

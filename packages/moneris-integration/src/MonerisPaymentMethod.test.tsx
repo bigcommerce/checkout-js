@@ -138,6 +138,20 @@ describe('when using Moneris payment', () => {
         });
     });
 
+    it('calls onUnhandledError when payment initialization fails', async () => {
+        const error = new Error('Initialization failed');
+
+        jest.spyOn(checkoutService, 'initializePayment').mockRejectedValue(error);
+
+        render(<PaymentMethodTest {...defaultProps} />);
+
+        await act(async () => {
+            await Promise.resolve();
+        });
+
+        expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(error);
+    });
+
     it('initializes method with required config with vaulted instruments', async () => {
         jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
         jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue(getInstruments());
