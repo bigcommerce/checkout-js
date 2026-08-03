@@ -81,13 +81,46 @@ describe('getMonerisIframeStyles', () => {
         expect(styles.cssLabelCVV).toBe('grid-column: 2; grid-row: 2;');
     });
 
-    it('throws when style probe elements are missing', () => {
+    it('returns layout-only styles and logs when style probe elements are missing', () => {
+        const onError = jest.fn();
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
+
         document.body.innerHTML = '';
 
-        expect(() =>
-            getMonerisIframeStyles({
-                cardNumberContainerId: 'moneris-cc-number',
+        const styles = getMonerisIframeStyles({
+            cardNumberContainerId: 'moneris-cc-number',
+        });
+
+        expect(styles.cssBody).toContain('display: grid;');
+        expect(styles.cssBody).toContain('background: transparent;');
+        expect(styles.cssBody).not.toContain('font-family:');
+
+        expect(styles.cssTextbox).toContain('padding: 0 12px;');
+        expect(styles.cssTextbox).not.toContain('border-radius:');
+
+        expect(styles.cssInputLabel).toContain('font-size: 0.75rem;');
+        expect(styles.cssInputLabel).not.toContain('font-weight:');
+
+        expect(consoleErrorSpy).toHaveBeenCalledWith(
+            expect.objectContaining({
+                message:
+                    'Unable to retrieve input styles as the provided container ID is not valid.',
             }),
-        ).toThrow('Unable to retrieve input styles as the provided container ID is not valid.');
+            { containerId: 'moneris-cc-number' },
+        );
+
+        getMonerisIframeStyles({
+            cardNumberContainerId: 'moneris-cc-number',
+            onError,
+        });
+
+        expect(onError).toHaveBeenCalledWith(
+            expect.objectContaining({
+                message:
+                    'Unable to retrieve input styles as the provided container ID is not valid.',
+            }),
+        );
+
+        consoleErrorSpy.mockRestore();
     });
 });

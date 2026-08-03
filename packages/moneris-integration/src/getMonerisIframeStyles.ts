@@ -16,6 +16,7 @@ export interface MonerisIframeStyles {
 
 export interface GetMonerisIframeStylesOptions {
     cardNumberContainerId: string;
+    onError?: (error: Error) => void;
 }
 
 const INPUT_STYLE_PROPERTIES = [
@@ -58,18 +59,10 @@ function getStylesFromElement(element: HTMLElement, properties: string[]): Recor
 }
 
 function getStylesFromContainer(
-    containerId: string,
+    container: HTMLElement,
     properties: string[],
     className = 'form-input optimizedCheckout-form-input',
 ): Record<string, string> {
-    const container = document.getElementById(containerId);
-
-    if (!container) {
-        throw new Error(
-            'Unable to retrieve input styles as the provided container ID is not valid.',
-        );
-    }
-
     const probe = document.createElement('div');
 
     probe.className = className;
@@ -82,15 +75,7 @@ function getStylesFromContainer(
     return styles;
 }
 
-function getLabelStyles(containerId: string): Record<string, string> {
-    const container = document.getElementById(containerId);
-
-    if (!container) {
-        throw new Error(
-            'Unable to retrieve input styles as the provided container ID is not valid.',
-        );
-    }
-
+function getLabelStyles(container: HTMLElement): Record<string, string> {
     const field = document.createElement('div');
     const label = document.createElement('label');
 
@@ -130,11 +115,10 @@ function toCssString(styles: Record<string, string>, properties: string[]): stri
         .join('');
 }
 
-export default function getMonerisIframeStyles({
-    cardNumberContainerId,
-}: GetMonerisIframeStylesOptions): MonerisIframeStyles {
-    const inputStyles = getStylesFromContainer(cardNumberContainerId, INPUT_STYLE_PROPERTIES);
-
+function buildMonerisIframeStyles(
+    inputStyles: Record<string, string>,
+    labelStyles: Record<string, string>,
+): MonerisIframeStyles {
     const cssTextbox = `${CSS_TEXTBOX_LAYOUT}${toCssString(
         {
             ...inputStyles,
@@ -145,7 +129,6 @@ export default function getMonerisIframeStyles({
 
     const cssBody = `${CSS_BODY_LAYOUT}${toCssString(inputStyles, ['fontFamily'])}background: transparent;`;
 
-    const labelStyles = sanitizeLabelStyles(getLabelStyles(cardNumberContainerId));
     const cssInputLabel = `${CSS_INPUT_LABEL_LAYOUT}${toCssString(labelStyles, LABEL_STYLE_PROPERTIES)}`;
 
     return {
@@ -159,4 +142,28 @@ export default function getMonerisIframeStyles({
         cssLabelExpiryDate: CSS_GRID_PLACEMENT.expiryDateLabel,
         cssLabelCVV: CSS_GRID_PLACEMENT.cvvLabel,
     };
+}
+
+export default function getMonerisIframeStyles({
+    cardNumberContainerId,
+    onError,
+}: GetMonerisIframeStylesOptions): MonerisIframeStyles {
+    const container = document.getElementById(cardNumberContainerId);
+
+    if (!container) {
+        const error = new Error(
+            'Unable to retrieve input styles as the provided container ID is not valid.',
+        );
+
+        if (onError) {
+            onError(error);
+        }
+
+        return buildMonerisIframeStyles({}, {});
+    }
+
+    const inputStyles = getStylesFromContainer(container, INPUT_STYLE_PROPERTIES);
+    const labelStyles = sanitizeLabelStyles(getLabelStyles(container));
+
+    return buildMonerisIframeStyles(inputStyles, labelStyles);
 }

@@ -29,6 +29,7 @@ const MonerisPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     checkoutState,
     checkoutService,
     method,
+    onUnhandledError,
     ...rest
 }) => {
     const containerId = 'moneris-iframe-container';
@@ -77,6 +78,7 @@ const MonerisPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         async (options: PaymentInitializeOptions, selectedInstrument) => {
             const style = getMonerisIframeStyles({
                 cardNumberContainerId: cardNumberStyleContainerId,
+                onError: onUnhandledError,
             });
 
             const paymentConfig = {
@@ -93,7 +95,13 @@ const MonerisPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
             return checkoutService.initializePayment(paymentConfig);
         },
-        [cardNumberStyleContainerId, containerId, getHostedFormOptions, checkoutService],
+        [
+            cardNumberStyleContainerId,
+            containerId,
+            getHostedFormOptions,
+            checkoutService,
+            onUnhandledError,
+        ],
     );
 
     const validateInstrument = (_shouldShowNumber: boolean, selectedInstrument: CardInstrument) => {
