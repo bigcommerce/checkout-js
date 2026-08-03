@@ -37,13 +37,18 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({
     const nonBundledLineItems = removeBundledItems(checkout.cart.lineItems);
     const cartHeading = language.translate('cart.cart_heading');
 
-    const toggleSheet = () => setIsExpanded((currentState) => !currentState);
-    const closeSheet = () => setIsExpanded(false);
+    const handleSheetClick = () => {
+        setIsExpanded((currentState) => !currentState);
+    };
+
+    const closeSheet = () => {
+        setIsExpanded(false);
+    };
 
     const handleBarKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
         if (event.key === 'Enter' || event.key === ' ') {
             event.preventDefault();
-            toggleSheet();
+            handleSheetClick();
         }
     };
 
@@ -71,7 +76,7 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({
                 aria-expanded={isExpanded}
                 className="cart-summary-collapsed-bar optimizedCheckout-orderSummary"
                 data-test="cart-summary-collapsed-bar"
-                onClick={toggleSheet}
+                onClick={handleSheetClick}
                 onKeyDown={handleBarKeyDown}
                 role="button"
                 tabIndex={0}
