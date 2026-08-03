@@ -17,7 +17,7 @@ import {
     type WithLanguageProps,
 } from '@bigcommerce/checkout/locale';
 import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
-import { Fieldset, Form, FormContext, Legend } from '@bigcommerce/checkout/ui';
+import { Fieldset, Form, FormContext, Legend, LoadingOverlay } from '@bigcommerce/checkout/ui';
 import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
 import { getTranslateAddressError } from '../address';
@@ -56,6 +56,7 @@ export interface PaymentFormProps {
     isBillingSameAsShipping?: boolean;
     isEmbedded?: boolean;
     isInitializingPayment?: boolean;
+    isReloadingPaymentMethods?: boolean;
     isTermsConditionsRequired?: boolean;
     isUsingMultiShipping?: boolean;
     isStoreCreditApplied: boolean;
@@ -89,6 +90,7 @@ const PaymentForm: FunctionComponent<
     isEmbedded,
     isInitializingPayment,
     isPaymentDataRequired,
+    isReloadingPaymentMethods,
     isTermsConditionsRequired,
     isStoreCreditApplied,
     isUsingMultiShipping,
@@ -187,17 +189,21 @@ const PaymentForm: FunctionComponent<
                 ))}
 
             {!isEmpty(methods) && (
-                <PaymentMethodListFieldset
-                    isEmbedded={isEmbedded}
-                    isInitializingPayment={isInitializingPayment}
-                    isPaymentDataRequired={isPaymentDataRequired}
-                    isUsingMultiShipping={isUsingMultiShipping}
-                    methods={methods}
-                    onMethodSelect={onMethodSelect}
-                    onUnhandledError={onUnhandledError}
-                    resetForm={resetForm}
-                    values={values}
-                />
+                // Default LoadingOverlay mode keeps the list mounted, so typed
+                // payment details and hosted-field iframes survive the reload.
+                <LoadingOverlay isLoading={isReloadingPaymentMethods ?? false}>
+                    <PaymentMethodListFieldset
+                        isEmbedded={isEmbedded}
+                        isInitializingPayment={isInitializingPayment}
+                        isPaymentDataRequired={isPaymentDataRequired}
+                        isUsingMultiShipping={isUsingMultiShipping}
+                        methods={methods}
+                        onMethodSelect={onMethodSelect}
+                        onUnhandledError={onUnhandledError}
+                        resetForm={resetForm}
+                        values={values}
+                    />
+                </LoadingOverlay>
             )}
 
             {themeV2 && (

@@ -1,10 +1,10 @@
 import type { CheckoutSelectors } from '@bigcommerce/checkout-sdk';
-import React, { type FunctionComponent } from 'react';
+import React, { type FunctionComponent, useRef } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { AddressFormSkeleton, Legend } from '@bigcommerce/checkout/ui';
 
-import { isEqualAddress, mapAddressFromFormValues } from '../../address';
+import { type AddressFormValues, isEqualAddress, mapAddressFromFormValues } from '../../address';
 import { type BillingFormValues } from '../../billing/billingFormConfig';
 import { useBilling } from '../../billing/hooks/useBilling';
 
@@ -58,6 +58,39 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
         }
     };
 
+    // The store's countryCode is stale while an update is in flight; guarding
+    // on it would drop a quick flip back to the original country.
+    const lastRequestedCountryCodeRef = useRef<string | undefined>();
+
+    // Persisting the form values (not the store address) keeps typed fields
+    // alive through the Formik reinitialize that follows; stateOrProvince is
+    // country-specific so it must be cleared.
+    const handleBillingCountryChange = (countryCode: string, addressValues: AddressFormValues) => {
+        const lastCountryCode =
+            lastRequestedCountryCodeRef.current ?? getBillingAddress()?.countryCode;
+
+        if (lastCountryCode === countryCode) {
+            return;
+        }
+
+        lastRequestedCountryCodeRef.current = countryCode;
+
+        updateBillingAddress({
+            ...mapAddressFromFormValues(addressValues),
+            // Must win — addressValues may still carry the old country.
+            countryCode,
+            stateOrProvince: '',
+            stateOrProvinceCode: '',
+        }).catch((error) => {
+            // Fall back to the store's country so a retry isn't skipped.
+            lastRequestedCountryCodeRef.current = undefined;
+
+            if (error instanceof Error) {
+                onUnhandledError(error);
+            }
+        });
+    };
+
     // Persist without navigating — the payment step's "Place Order" is the only
     // submit. Called by PaymentBillingForm's pre-submit save;
     const handlePersist = async ({
@@ -102,6 +135,7 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
                     isBillingSameAsShipping={isBillingSameAsShipping}
                     isLoading={isInitializing}
                     methodId={methodId}
+                    onBillingCountryChange={handleBillingCountryChange}
                     onBillingSameAsShippingChange={handleBillingSameAsShippingChange}
                     onPersist={handlePersist}
                     onUnhandledError={onUnhandledError}

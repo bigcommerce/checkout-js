@@ -2,7 +2,9 @@ import {
     type CheckoutSelectors,
     type CheckoutService,
     createCheckoutService,
+    type FormField,
 } from '@bigcommerce/checkout-sdk';
+import userEvent from '@testing-library/user-event';
 import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';
 
@@ -86,6 +88,7 @@ describe('PaymentBillingForm', () => {
             getFields: () => getFormFields(),
             isBillingSameAsShipping: false,
             isLoading: false,
+            onBillingCountryChange: jest.fn(),
             onBillingSameAsShippingChange: jest.fn(),
             onPersist,
             onUnhandledError: noop,
@@ -104,6 +107,7 @@ describe('PaymentBillingForm', () => {
     it('does not render its own <form> element', () => {
         renderForm(defaultProps);
 
+        // eslint-disable-next-line testing-library/no-node-access
         expect(document.querySelector('form')).not.toBeInTheDocument();
     });
 
@@ -132,6 +136,7 @@ describe('PaymentBillingForm', () => {
             ...getCustomer(),
             isGuest: false,
         });
+
         // Keep updateBillingAddress in flight so isResettingAddress stays true.
         const updateBillingAddress = jest.fn().mockReturnValue(new Promise(() => undefined));
 
@@ -200,6 +205,59 @@ describe('PaymentBillingForm', () => {
 
         await expect(capturedEnsureBillingAddressSaved?.()).resolves.toBe(false);
         expect(onUnhandledError).toHaveBeenCalledWith(error);
+    });
+
+    describe('billing country change', () => {
+        // getFormFields() has no countryCode field; AddressForm needs a dropdown
+        // one to render a country select.
+        const getFieldsWithCountry = (): FormField[] => [
+            ...getFormFields(),
+            {
+                custom: false,
+                default: '',
+                fieldType: 'dropdown',
+                id: 'field_country',
+                label: 'Country',
+                name: 'countryCode',
+                options: {
+                    helperLabel: 'Choose a Country',
+                    items: [
+                        { label: 'United States', value: 'US' },
+                        { label: 'Canada', value: 'CA' },
+                    ],
+                },
+                required: true,
+                type: 'array',
+            },
+        ];
+
+        it('notifies onBillingCountryChange with the new country and the current form values', async () => {
+            renderForm({ ...defaultProps, getFields: getFieldsWithCountry });
+
+            await userEvent.clear(screen.getByTestId('firstNameInput-text'));
+            await userEvent.type(screen.getByTestId('firstNameInput-text'), 'Jane');
+
+            await userEvent.selectOptions(screen.getByTestId('countryCodeInput-select'), 'CA');
+
+            expect(defaultProps.onBillingCountryChange).toHaveBeenCalledWith(
+                'CA',
+                expect.objectContaining({ firstName: 'Jane' }),
+            );
+
+            const [, addressValues] = (defaultProps.onBillingCountryChange as jest.Mock).mock
+                .calls[0];
+
+            expect(addressValues).not.toHaveProperty('billingSameAsShipping');
+            expect(addressValues).not.toHaveProperty('orderComment');
+        });
+
+        it('does not notify onBillingCountryChange when a non-country field changes', async () => {
+            renderForm({ ...defaultProps, getFields: getFieldsWithCountry });
+
+            await userEvent.type(screen.getByTestId('firstNameInput-text'), 'Jane');
+
+            expect(defaultProps.onBillingCountryChange).not.toHaveBeenCalled();
+        });
     });
 
     describe('billing same as shipping toggle', () => {
