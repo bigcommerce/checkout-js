@@ -147,6 +147,7 @@
 
         .cart-summary-sheet-content {
             -webkit-overflow-scrolling: touch;
+            min-height: 0;
             overflow-y: auto;
             overscroll-behavior: contain;
             padding: 0 spacing("single") spacing("single");
