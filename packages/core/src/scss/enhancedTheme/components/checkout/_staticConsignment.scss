@@ -1,11 +1,11 @@
 .staticConsignment {
-    @include themeV2-mobile-tablet-only {
+    @include enhancedTheme-mobile-tablet-only {
         .shipping-method {
             padding-top: spacing("half");
         }
     }
 
-    @include themeV2 {
+    @include enhancedTheme {
         padding-top: spacing("quarter");
 
         .shippingOption {

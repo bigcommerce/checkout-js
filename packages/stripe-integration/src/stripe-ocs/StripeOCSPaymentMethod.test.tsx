@@ -76,7 +76,7 @@ describe('when using Stripe OCS payment', () => {
     let onToggleMock: jest.Mock;
     let accordionContextValues: AccordionContextProps;
     let themeContextValueMock: {
-        themeV2: boolean;
+        enhancedTheme: boolean;
     };
     let getAppearanceForOCSElementMock: jest.Mock;
 
@@ -102,7 +102,7 @@ describe('when using Stripe OCS payment', () => {
             selectedItemId: methodSelectorPrefix,
         };
         themeContextValueMock = {
-            themeV2: false,
+            enhancedTheme: false,
         };
 
         getAppearanceForOCSElementMock = jest.fn(() => {
@@ -434,9 +434,9 @@ describe('when using Stripe OCS payment', () => {
             );
         });
 
-        it('should initialize with accordion layout for themeV2', () => {
+        it('should initialize with accordion layout for enhancedTheme', () => {
             themeContextValueMock = {
-                themeV2: true,
+                enhancedTheme: true,
             };
 
             render(<PaymentMethodTest {...defaultProps} method={method} />);
@@ -467,7 +467,7 @@ describe('when using Stripe OCS payment', () => {
             );
             expect(getAppearanceForOCSElementMock).toHaveBeenCalledWith(
                 expectedContainerId,
-                CheckoutTheme.THEME_V2,
+                CheckoutTheme.ENHANCED_THEME,
             );
         });
     });
@@ -706,8 +706,8 @@ describe('when using Stripe OCS payment', () => {
             );
         });
 
-        it('should render currency selector styles for non-themeV2', () => {
-            themeContextValueMock = { themeV2: false };
+        it('should render currency selector styles for non-enhancedTheme', () => {
+            themeContextValueMock = { enhancedTheme: false };
 
             render(<PaymentMethodTest {...defaultProps} method={method} />);
 
@@ -721,8 +721,8 @@ describe('when using Stripe OCS payment', () => {
             );
         });
 
-        it('should render currency selector styles for themeV2', () => {
-            themeContextValueMock = { themeV2: true };
+        it('should render currency selector styles for enhancedTheme', () => {
+            themeContextValueMock = { enhancedTheme: true };
 
             render(<PaymentMethodTest {...defaultProps} method={method} />);
 

@@ -1,5 +1,5 @@
 .form-checklist {
-    @include themeV2 {
+    @include enhancedTheme {
         border: none;
         display: flex;
         flex-direction: column;
@@ -42,7 +42,7 @@
 }
 
 .form-checklist-body {
-    @include themeV2 {
+    @include enhancedTheme {
         margin-left: $checklist-pip-spacing--small;
         margin-right: $checklist-pip-spacing--small;
 
@@ -54,7 +54,7 @@
 }
 
 .form-checklist-checkbox {
-    @include themeV2 {
+    @include enhancedTheme {
         & ~ .form-label {
             padding-right: $checklist-pip-spacing--small;
 
@@ -85,7 +85,7 @@
 
 // Payment provider title
 .paymentProviderHeader-container {
-    @include themeV2 {
+    @include enhancedTheme {
         flex: 1;
     }
 }

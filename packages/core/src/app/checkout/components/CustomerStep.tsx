@@ -55,7 +55,7 @@ const CustomerStep: React.FC<CustomerStepProps> = ({
     onUnhandledError,
     onWalletButtonClick,
 }) => {
-    const { themeV2 } = useThemeContext();
+    const { enhancedTheme } = useThemeContext();
     const {
         selectedState: {
             config,
@@ -81,7 +81,7 @@ const CustomerStep: React.FC<CustomerStepProps> = ({
     const isCustomerBusy =
         isContinuingAsGuest || isExecutingPaymentMethodCheckout || isInitializingCustomer;
     const shouldShowHeaderAction =
-        themeV2 && viewType === CustomerViewType.Guest && !isCustomerBusy;
+        enhancedTheme && viewType === CustomerViewType.Guest && !isCustomerBusy;
 
     const headerAction = shouldShowHeaderAction ? (
         <span className="body-regular">

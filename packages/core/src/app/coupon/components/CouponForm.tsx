@@ -17,7 +17,7 @@ import { ManageCouponsAndGiftCertificates } from './ManageCouponsAndGiftCertific
 
 export const CouponForm: FunctionComponent = () => {
     const [code, setCode] = useState<string>('');
-    const { themeV2 } = useThemeContext();
+    const { enhancedTheme } = useThemeContext();
 
     const { language } = useLocale();
     const {
@@ -90,7 +90,7 @@ export const CouponForm: FunctionComponent = () => {
             </div>
             <div className="applied-coupons-list">
                 {Boolean(couponError) && (
-                    <Alert additionalClassName={themeV2 ? '' : 'no-padding'} type={AlertType.Error}>
+                    <Alert additionalClassName={enhancedTheme ? '' : 'no-padding'} type={AlertType.Error}>
                         <ul className="applied-coupon-error-message">
                             <li>
                                 <span>{couponError}</span>

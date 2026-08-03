@@ -1,5 +1,5 @@
 .layout-cart {
-    @include themeV2 {
+    @include enhancedTheme {
         padding: 0;
         order: -1;
 
@@ -177,11 +177,11 @@
         }
     }
 
-    @include themeV2-mobile {
+    @include enhancedTheme-mobile {
         @include grid-column(12);
     }
 
-    @include themeV2-desktop {
+    @include enhancedTheme-desktop {
         width: grid-calc(5, $total-columns);
         padding-left: remCalc(30px);
         padding-right: spacing("single");
@@ -197,7 +197,7 @@
         }
     }
 
-    @include themeV2-widescreen {
+    @include enhancedTheme-widescreen {
         width: grid-calc(4, $total-columns);
     }
 }
@@ -206,6 +206,6 @@ body.has-activeCartSummarySheet {
     overflow: hidden;
 }
 
-.themeV2:has(.cart-summary-collapsed-bar) .layout {
+.enhancedTheme:has(.cart-summary-collapsed-bar) .layout {
     padding-bottom: #{5 * spacing("single")};
 }

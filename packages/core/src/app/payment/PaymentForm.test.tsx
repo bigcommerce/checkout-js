@@ -50,11 +50,11 @@ describe('PaymentForm', () => {
     let defaultProps: PaymentFormProps;
     let localeContext: LocaleContextType;
     let paymentContext: PaymentContextProps;
-    let themeV2: boolean;
+    let enhancedTheme: boolean;
     let PaymentFormTest: FunctionComponent<PaymentFormProps>;
 
     beforeEach(() => {
-        themeV2 = false;
+        enhancedTheme = false;
         defaultProps = {
             isStoreCreditApplied: true,
             defaultMethodId: getPaymentMethod().id,
@@ -83,7 +83,7 @@ describe('PaymentForm', () => {
             <CheckoutProvider checkoutService={checkoutService}>
                 <PaymentContext.Provider value={paymentContext}>
                     <LocaleContext.Provider value={localeContext}>
-                        <ThemeContext.Provider value={{ themeV2 }}>
+                        <ThemeContext.Provider value={{ enhancedTheme }}>
                             <Formik initialValues={null} onSubmit={noop}>
                                 <ExtensionProvider extensionService={extensionService}>
                                     <PaymentForm {...props} />
@@ -488,17 +488,17 @@ describe('PaymentForm', () => {
         });
     });
 
-    describe('billing-in-payment scaffold (themeV2)', () => {
-        it('renders the placeholder billing block when themeV2 is enabled', () => {
-            themeV2 = true;
+    describe('billing-in-payment scaffold (enhancedTheme)', () => {
+        it('renders the placeholder billing block when enhancedTheme is enabled', () => {
+            enhancedTheme = true;
 
             render(<PaymentFormTest {...defaultProps} />);
 
             expect(screen.getByTestId('payment-billing-block')).toBeInTheDocument();
         });
 
-        it('does not render the billing block when themeV2 is disabled', () => {
-            themeV2 = false;
+        it('does not render the billing block when enhancedTheme is disabled', () => {
+            enhancedTheme = false;
 
             render(<PaymentFormTest {...defaultProps} />);
 

@@ -95,11 +95,11 @@ const AddressFormModal: FunctionComponent<AddressFormModalProps> = ({
     onRequestClose,
     ...addressFormProps
 }) => {
-    const { themeV2 } = useThemeContext();
+    const { enhancedTheme } = useThemeContext();
 
     return (
         <Modal
-            additionalModalClassName={classNames('modal--medium', 'modal--address', { themeV2 })}
+            additionalModalClassName={classNames('modal--medium', 'modal--address', { enhancedTheme })}
             header={
                 <ModalHeader>
                     <TranslatedString id="address.add_address_heading" />

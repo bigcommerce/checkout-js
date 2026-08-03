@@ -1,6 +1,6 @@
 $element-border-radius: remCalc(12px);
 
-@include themeV2 {
+@include enhancedTheme {
     background-color: $color-secondaryDarker;
 
     .button,

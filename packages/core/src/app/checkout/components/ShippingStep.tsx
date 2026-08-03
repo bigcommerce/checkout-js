@@ -47,7 +47,7 @@ const ShippingStep: React.FC<ShippingStepProps> = ({
     onUnhandledError,
     setIsMultishippingMode,
 }) => {
-    const { themeV2 } = useThemeContext();
+    const { enhancedTheme } = useThemeContext();
     const {
         selectedState: { checkout, config },
     } = useCheckout(({ data }) => ({
@@ -60,7 +60,7 @@ const ShippingStep: React.FC<ShippingStepProps> = ({
     }
 
     const shouldShowHeaderAction =
-        themeV2 && checkout && config && shouldShowMultiShippingToggle(checkout, config, cart);
+        enhancedTheme && checkout && config && shouldShowMultiShippingToggle(checkout, config, cart);
 
     const headerAction = shouldShowHeaderAction ? (
         <span className="body-cta" data-test="shipping-mode-toggle">
