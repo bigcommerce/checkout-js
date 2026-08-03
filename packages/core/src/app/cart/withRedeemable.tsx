@@ -43,6 +43,9 @@ export default function withRedeemable(
                 showHeader={showHeader}
                 storeCreditAmount={storeCreditAmount}
                 storeCurrency={storeCurrency}
+                // Surcharging: assumes the BE Fees API recomputes outstandingBalance to include
+                // the surcharge. Until that endpoint is implemented on the BE, no surcharge is
+                // applied, so this is just the normal total.
                 total={checkout.outstandingBalance}
             />
         );

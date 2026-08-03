@@ -13,6 +13,12 @@ import isOrderFee from './isOrderFee';
 import OrderSummaryDiscount from './OrderSummaryDiscount';
 import OrderSummaryPrice from './OrderSummaryPrice';
 
+// SMust match SURCHARGE_FEE_NAME in the SDK surcharge handler.
+const SURCHARGE_FEE_NAME = 'corporate_card_surcharge';
+
+const isSurchargeFee = (fee: Fee | OrderFee): boolean =>
+    'name' in fee && fee.name === SURCHARGE_FEE_NAME;
+
 export interface OrderSummarySubtotalsProps {
     coupons: Coupon[];
     giftCertificates?: GiftCertificate[];
@@ -46,6 +52,13 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
     onRemovedGiftCertificate,
     onRemovedCoupon,
 }) => {
+    // Surcharging: render the surcharge as its own labelled row, alongside shipping /
+    // handling; keep other fees in the generic loop below.
+    // NOTE: the surcharge fee comes from the BE Fees API (Checkout.fees). Until that endpoint
+    // is implemented on the BE, no surcharge fee is present, so this row simply won't render.
+    const surchargeFee = (fees ?? []).find(isSurchargeFee);
+    const otherFees = (fees ?? []).filter((fee) => !isSurchargeFee(fee)) as typeof fees;
+
     return (
         <>
             <OrderSummaryPrice
@@ -110,7 +123,16 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
                 />
             )}
 
-            {fees?.map((fee, index) => (
+            {/* Surcharge placeholder — shown once applied in-flight. */}
+            {!!surchargeFee && (
+                <OrderSummaryPrice
+                    amount={surchargeFee.cost}
+                    label={<TranslatedString id="cart.surcharge_text" />}
+                    testId="cart-surcharge"
+                />
+            )}
+
+            {otherFees?.map((fee, index) => (
                 <OrderSummaryPrice
                     amount={fee.cost}
                     key={index}
