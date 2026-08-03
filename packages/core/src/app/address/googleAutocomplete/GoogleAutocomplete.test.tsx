@@ -1,5 +1,5 @@
 import userEvent from '@testing-library/user-event';
-import React from 'react';
+import React, { act } from 'react';
 
 import { render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
@@ -122,6 +122,37 @@ describe('GoogleAutocomplete', () => {
 
             expect(mockGetNewApiSuggestions).not.toHaveBeenCalled();
             expect(screen.queryByText('123 New API Ave')).not.toBeInTheDocument();
+        });
+
+        it('cancels a pending suggestions request when a suggestion is picked before the debounce elapses', async () => {
+            jest.useFakeTimers();
+
+            const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
+
+            try {
+                render(<GoogleAutocomplete {...defaultProps} />);
+
+                const input = screen.getByRole('textbox');
+
+                await user.type(input, '123');
+                await screen.findByText('123 New API Ave');
+                expect(mockGetNewApiSuggestions).toHaveBeenCalledTimes(1);
+
+                // Schedule one more API call after getting suggestions
+                await user.type(input, '4');
+                await user.click(screen.getByText('123 New API Ave'));
+
+                await waitFor(() => expect(defaultProps.onSelect).toHaveBeenCalled());
+
+                act(() => {
+                    jest.advanceTimersByTime(400);
+                });
+
+                // Make sure second suggestions call is cancelled
+                expect(mockGetNewApiSuggestions).toHaveBeenCalledTimes(1);
+            } finally {
+                jest.useRealTimers();
+            }
         });
 
         it('calls onSelect with the new API place result when a suggestion is picked', async () => {

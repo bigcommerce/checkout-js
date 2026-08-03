@@ -166,16 +166,6 @@ export function useGoogleAutocomplete({
         },
     };
 
-    const handleSelect = (item: AutocompleteItem) => {
-        if (isUsingLegacyApi()) {
-            legacyApi.select(item);
-
-            return;
-        }
-
-        newApi.select(item);
-    };
-
     const resetAutocomplete = (): void => {
         setItems([]);
         setAutoComplete('off');
@@ -213,6 +203,18 @@ export function useGoogleAutocomplete({
             debouncedFetchSuggestions.cancel();
         };
     }, [debouncedFetchSuggestions]);
+
+    const handleSelect = (item: AutocompleteItem) => {
+        debouncedFetchSuggestions.cancel();
+
+        if (isUsingLegacyApi()) {
+            legacyApi.select(item);
+
+            return;
+        }
+
+        newApi.select(item);
+    };
 
     const handleChange = (input: string) => {
         onChange(input, false);
