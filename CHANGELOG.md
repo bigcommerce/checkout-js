@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.852.0](https://github.com/bigcommerce/checkout-js/compare/v1.851.0...v1.852.0) (2026-08-04)
+
+
+### Features
+
+* **payment:** PAYPAL-6933 fix to the implementation of the isComplete ([4b17b05](https://github.com/bigcommerce/checkout-js/commit/4b17b05a9ffc256c3bcc6f91dacac0e32b1512e2))
+
 ## [1.851.0](https://github.com/bigcommerce/checkout-js/compare/v1.850.0...v1.851.0) (2026-08-04)
 
 
