@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.849.0](https://github.com/bigcommerce/checkout-js/compare/v1.848.0...v1.849.0) (2026-08-04)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10216 reload payment method list on billing country change ([#3210](https://github.com/bigcommerce/checkout-js/issues/3210)) ([443e13c](https://github.com/bigcommerce/checkout-js/commit/443e13ca34589a67932969412afffca2470a1747))
+
 ## [1.848.0](https://github.com/bigcommerce/checkout-js/compare/v1.847.4...v1.848.0) (2026-08-04)
 
 
