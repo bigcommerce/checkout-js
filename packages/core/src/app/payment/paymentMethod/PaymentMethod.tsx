@@ -59,7 +59,11 @@ const PaymentMethodComponent: FunctionComponent<
     const { method } = props;
 
     if (method.id === PaymentMethodId.Humm || method.type === PaymentMethodProviderType.Hosted) {
-        const sentryMessage = `DataHostedPaymentMethod Hosted/Humm ${JSON.stringify(method)}`;
+        const sentryMessage = `DataHostedPaymentMethod Hosted/Humm ${JSON.stringify({
+            gateway: method.gateway,
+            id: method.id,
+            type: method.type,
+        })}`;
 
         return (
             <>
@@ -78,7 +82,11 @@ const PaymentMethodComponent: FunctionComponent<
         method.method === PaymentMethodType.CreditCard ||
         method.type === PaymentMethodProviderType.Api
     ) {
-        const sentryMessage = `DataHostedCreditCardPaymentMethod ${JSON.stringify(method)}`;
+        const sentryMessage = `DataHostedCreditCardPaymentMethod ${JSON.stringify({
+            gateway: method.gateway,
+            id: method.id,
+            type: method.type,
+        })}`;
 
         return (
             <>
