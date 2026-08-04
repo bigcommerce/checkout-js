@@ -77,9 +77,13 @@ const PaymentMethodList: FunctionComponent<
 
     const handleSelect = useCallback(
         (value: string) => {
+            if (isInitializingPayment) {
+                return;
+            }
+
             onSelect(getPaymentMethodFromListValue(methods, value));
         },
-        [methods, onSelect],
+        [isInitializingPayment, methods, onSelect],
     );
 
     return (

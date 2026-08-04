@@ -120,6 +120,24 @@ describe('PaymentForm', () => {
         expect(screen.getByTestId('loading-overlay')).toBeInTheDocument();
     });
 
+    it('does not trigger payment method selection when a radio is activated while a payment method is initializing', () => {
+        const onMethodSelect = jest.fn();
+
+        render(
+            <PaymentFormTest
+                {...defaultProps}
+                isInitializingPayment={true}
+                onMethodSelect={onMethodSelect}
+            />,
+        );
+
+        const radios = screen.getAllByRole('radio');
+
+        fireEvent.click(radios[1]);
+
+        expect(onMethodSelect).not.toHaveBeenCalled();
+    });
+
     it('renders terms and conditions field if copy is provided', () => {
         const textAcceptTerms = 'Accept terms';
 
