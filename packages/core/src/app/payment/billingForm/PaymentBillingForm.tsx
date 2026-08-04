@@ -39,7 +39,7 @@ export interface PaymentBillingFormProps {
     // so the pre-submit ensureBillingAddressSaved can block the order.
     onPersist(values: BillingFormValues): Promise<void>;
     onBillingSameAsShippingChange(isBillingSameAsShipping: boolean): void;
-    // Lets the block persist the new country so payment methods re-filter.
+    // Let the block persist the new country so payment methods re-filter.
     onBillingCountryChange(countryCode: string, addressValues: AddressFormValues): void;
     onUnhandledError(error: Error): void;
     updateBillingAddress(address: Partial<Address>): Promise<unknown>;
