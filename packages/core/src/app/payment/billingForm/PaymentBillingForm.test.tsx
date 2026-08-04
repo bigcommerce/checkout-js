@@ -104,15 +104,6 @@ describe('PaymentBillingForm', () => {
         expect(screen.queryByRole('button', { name: 'Continue' })).not.toBeInTheDocument();
     });
 
-    it('overlays the address form while the billing address is being updated', () => {
-        jest.spyOn(checkoutState.statuses, 'isUpdatingBillingAddress').mockReturnValue(true);
-
-        renderForm(defaultProps);
-
-        expect(screen.getByTestId('loading-overlay')).toBeInTheDocument();
-        expect(screen.getByText('First Name')).toBeInTheDocument();
-    });
-
     it('does not render its own <form> element', () => {
         renderForm(defaultProps);
 

@@ -47,7 +47,7 @@ import {
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
-import { ChecklistSkeleton } from '@bigcommerce/checkout/ui';
+import { ChecklistSkeleton, LoadingOverlay } from '@bigcommerce/checkout/ui';
 import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
 import { withAnalytics } from '../analytics';
@@ -862,54 +862,56 @@ const Payment = (
     return (
         <PaymentContext.Provider value={getContextValue()}>
             <ChecklistSkeleton isLoading={!state.isReady}>
-                <PaymentForm
-                    additionalField={props.capabilities.payment.additionalField}
-                    availableStoreCredit={props.availableStoreCredit}
-                    defaultGatewayId={props.defaultMethod?.gateway}
-                    defaultMethodId={props.defaultMethod?.id || ''}
-                    didExceedSpamLimit={state.didExceedSpamLimit}
-                    disableStoreCredit={disableStoreCredit}
-                    isBillingSameAsShipping={props.isBillingSameAsShipping}
-                    isEmbedded={props.isEmbedded}
-                    isInitializingPayment={props.isInitializingPayment}
-                    isPaymentDataRequired={props.isPaymentDataRequired}
-                    isReloadingPaymentMethods={isReloadingPaymentMethods}
-                    isStoreCreditApplied={props.isStoreCreditApplied}
-                    isTermsConditionsRequired={props.isTermsConditionsRequired}
-                    isUsingMultiShipping={props.isUsingMultiShipping}
-                    methods={props.methods}
-                    methodsRefreshAlert={methodsRefreshAlert}
-                    onBillingSameAsShippingChange={props.onBillingSameAsShippingChange}
-                    onMethodSelect={handleMethodSelect}
-                    onMethodsRefreshAlertDismiss={dismissMethodsRefreshAlert}
-                    onStoreCreditChange={handleStoreCreditChange}
-                    onSubmit={handleSubmit}
-                    onUnhandledError={handleError}
-                    orderExtraFields={props.orderExtraFields}
-                    selectedMethod={state.selectedMethod || props.defaultMethod}
-                    shouldDisableSubmit={
-                        (uniqueSelectedMethodId &&
-                            state.shouldDisableSubmit[uniqueSelectedMethodId]) ||
-                        isBillingFormBusy ||
-                        isReloadingPaymentMethods ||
-                        undefined
-                    }
-                    shouldExecuteSpamCheck={props.shouldExecuteSpamCheck}
-                    shouldHidePaymentSubmitButton={
-                        (uniqueSelectedMethodId &&
-                            props.isPaymentDataRequired() &&
-                            state.shouldHidePaymentSubmitButton[uniqueSelectedMethodId]) ||
-                        undefined
-                    }
-                    termsConditionsText={props.termsConditionsText}
-                    termsConditionsUrl={props.termsConditionsUrl}
-                    usableStoreCredit={props.usableStoreCredit}
-                    validationSchema={
-                        (uniqueSelectedMethodId &&
-                            validationSchemasRef.current[uniqueSelectedMethodId]) ||
-                        undefined
-                    }
-                />
+                <LoadingOverlay isLoading={isBillingFormBusy || isReloadingPaymentMethods}>
+                    <PaymentForm
+                        additionalField={props.capabilities.payment.additionalField}
+                        availableStoreCredit={props.availableStoreCredit}
+                        defaultGatewayId={props.defaultMethod?.gateway}
+                        defaultMethodId={props.defaultMethod?.id || ''}
+                        didExceedSpamLimit={state.didExceedSpamLimit}
+                        disableStoreCredit={disableStoreCredit}
+                        isBillingSameAsShipping={props.isBillingSameAsShipping}
+                        isEmbedded={props.isEmbedded}
+                        isInitializingPayment={props.isInitializingPayment}
+                        isPaymentDataRequired={props.isPaymentDataRequired}
+                        isReloadingPaymentMethods={isReloadingPaymentMethods}
+                        isStoreCreditApplied={props.isStoreCreditApplied}
+                        isTermsConditionsRequired={props.isTermsConditionsRequired}
+                        isUsingMultiShipping={props.isUsingMultiShipping}
+                        methods={props.methods}
+                        methodsRefreshAlert={methodsRefreshAlert}
+                        onBillingSameAsShippingChange={props.onBillingSameAsShippingChange}
+                        onMethodSelect={handleMethodSelect}
+                        onMethodsRefreshAlertDismiss={dismissMethodsRefreshAlert}
+                        onStoreCreditChange={handleStoreCreditChange}
+                        onSubmit={handleSubmit}
+                        onUnhandledError={handleError}
+                        orderExtraFields={props.orderExtraFields}
+                        selectedMethod={state.selectedMethod || props.defaultMethod}
+                        shouldDisableSubmit={
+                            (uniqueSelectedMethodId &&
+                                state.shouldDisableSubmit[uniqueSelectedMethodId]) ||
+                            isBillingFormBusy ||
+                            isReloadingPaymentMethods ||
+                            undefined
+                        }
+                        shouldExecuteSpamCheck={props.shouldExecuteSpamCheck}
+                        shouldHidePaymentSubmitButton={
+                            (uniqueSelectedMethodId &&
+                                props.isPaymentDataRequired() &&
+                                state.shouldHidePaymentSubmitButton[uniqueSelectedMethodId]) ||
+                            undefined
+                        }
+                        termsConditionsText={props.termsConditionsText}
+                        termsConditionsUrl={props.termsConditionsUrl}
+                        usableStoreCredit={props.usableStoreCredit}
+                        validationSchema={
+                            (uniqueSelectedMethodId &&
+                                validationSchemasRef.current[uniqueSelectedMethodId]) ||
+                            undefined
+                        }
+                    />
+                </LoadingOverlay>
             </ChecklistSkeleton>
 
             {renderOrderErrorModal()}

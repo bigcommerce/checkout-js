@@ -25,7 +25,7 @@ import {
     type WithLanguageProps,
 } from '@bigcommerce/checkout/locale';
 import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
-import { Fieldset, Form, FormContext, Legend, LoadingOverlay } from '@bigcommerce/checkout/ui';
+import { Fieldset, Form, FormContext, Legend } from '@bigcommerce/checkout/ui';
 import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
 import { getTranslateAddressError } from '../address';
@@ -228,19 +228,17 @@ const PaymentForm: FunctionComponent<
                 ))}
 
             {!isEmpty(methods) && (
-                <LoadingOverlay isLoading={isReloadingPaymentMethods ?? false}>
-                    <PaymentMethodListFieldset
-                        isEmbedded={isEmbedded}
-                        isInitializingPayment={isInitializingPayment}
-                        isPaymentDataRequired={isPaymentDataRequired}
-                        isUsingMultiShipping={isUsingMultiShipping}
-                        methods={methods}
-                        onMethodSelect={onMethodSelect}
-                        onUnhandledError={onUnhandledError}
-                        resetForm={resetForm}
-                        values={values}
-                    />
-                </LoadingOverlay>
+                <PaymentMethodListFieldset
+                    isEmbedded={isEmbedded}
+                    isInitializingPayment={isInitializingPayment}
+                    isPaymentDataRequired={isPaymentDataRequired}
+                    isUsingMultiShipping={isUsingMultiShipping}
+                    methods={methods}
+                    onMethodSelect={onMethodSelect}
+                    onUnhandledError={onUnhandledError}
+                    resetForm={resetForm}
+                    values={values}
+                />
             )}
 
             {themeV2 && (

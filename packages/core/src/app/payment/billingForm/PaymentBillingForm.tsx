@@ -240,16 +240,14 @@ const PaymentBillingFormComponent = ({
 
                         {!restrictManualAddressEntry && !hasValidCustomerAddress && (
                             <AddressFormSkeleton isLoading={isResettingAddress}>
-                                <LoadingOverlay isLoading={isUpdatingBillingAddress}>
-                                    <AddressForm
-                                        countryCode={values.countryCode}
-                                        formFields={editableFormFields}
-                                        onChange={handleAddressFieldChange}
-                                        setFieldValue={setFieldValue}
-                                        shouldShowSaveAddress={shouldShowSaveAddress}
-                                        type={AddressType.Billing}
-                                    />
-                                </LoadingOverlay>
+                                <AddressForm
+                                    countryCode={values.countryCode}
+                                    formFields={editableFormFields}
+                                    onChange={handleAddressFieldChange}
+                                    setFieldValue={setFieldValue}
+                                    shouldShowSaveAddress={shouldShowSaveAddress}
+                                    type={AddressType.Billing}
+                                />
                             </AddressFormSkeleton>
                         )}
                     </Fieldset>
