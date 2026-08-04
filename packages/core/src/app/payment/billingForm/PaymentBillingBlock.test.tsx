@@ -139,7 +139,13 @@ describe('PaymentBillingBlock', () => {
         expect(mockCapturedProps.isBillingSameAsShipping).toBe(true);
     });
 
-    it('copies the shipping address to billing when the toggle is checked', async () => {
+    it('copies the shipping address to billing without its empty email when the toggle is checked', async () => {
+        const shippingAddressWithEmptyEmail = { ...getShippingAddress(), email: '' };
+
+        jest.spyOn(checkoutState.data, 'getShippingAddress').mockReturnValue(
+            shippingAddressWithEmptyEmail,
+        );
+
         render(<PaymentBillingBlockTest />);
 
         await screen.findByTestId('trigger-persist');

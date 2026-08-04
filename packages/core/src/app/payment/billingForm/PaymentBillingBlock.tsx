@@ -1,4 +1,5 @@
 import type { CheckoutSelectors } from '@bigcommerce/checkout-sdk';
+import { omit } from 'lodash';
 import React, { type FunctionComponent, useRef } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -48,7 +49,9 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
         const shippingAddress = getShippingAddress();
 
         if (shippingAddress && !isEqualAddress(shippingAddress, getBillingAddress())) {
-            updateBillingAddress(shippingAddress).catch((error) => {
+            // The consignment address carries email: '' — sent as-is it overwrites
+            // the guest email; omitted, the SDK falls back to the stored one.
+            updateBillingAddress(omit(shippingAddress, 'email')).catch((error) => {
                 onBillingSameAsShippingChange(false);
 
                 if (error instanceof Error) {
