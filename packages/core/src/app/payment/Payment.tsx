@@ -70,12 +70,14 @@ import {
 import { getB2BMetadataPayload } from './b2bMetadataForPostOrder';
 import { mapToB2BOrderRequestBody } from './b2bMetadataForSubmitOrder';
 import CartStockPositionsChangedModal from './CartStockPositionsChangedModal';
+import getPaymentMethodsRefreshAlert from './getPaymentMethodsRefreshAlert';
 import mapSubmitOrderErrorMessage, { mapSubmitOrderErrorTitle } from './mapSubmitOrderErrorMessage';
 import mapToOrderRequestBody from './mapToOrderRequestBody';
 import PaymentContext, { type EnsureBillingAddressSaved } from './PaymentContext';
 import PaymentForm from './PaymentForm';
 import { getUniquePaymentMethodId, PaymentMethodProviderType } from './paymentMethod';
 import { getFilteredPaymentMethodsWithDefault } from './paymentMethodFilters';
+import { type PaymentMethodsRefreshAlertData } from './PaymentMethodsRefreshAlert';
 
 export interface PaymentProps {
     capabilities: Capabilities;
@@ -159,10 +161,20 @@ const Payment = (
     });
 
     const [isCartStockRefreshComplete, setIsCartStockRefreshComplete] = useState(false);
+    const [methodsRefreshAlert, setMethodsRefreshAlert] = useState<
+        PaymentMethodsRefreshAlertData | undefined
+    >();
 
     const isReadyRef = useRef(state.isReady);
     const grandTotalChangeUnsubscribe = useRef<() => void>();
     const billingAddressChangeUnsubscribe = useRef<() => void>();
+    // Live selection for the mount-effect subscription, whose closures are stale.
+    const selectedMethodRef = useRef<PaymentMethod | undefined>();
+    // TODO: CHECKOUT-10199 remove this temporary fix. A removed method's unmount
+    // deinitialize rejects with missing_data (its data is already gone);
+    // handleError swallows those inside this window — a timestamp, because the
+    // rejection can land before or after the reload's continuation.
+    const suppressMethodRemovedErrorUntilRef = useRef(0);
     const validationSchemasRef = useRef<validationSchemas>({});
     const lastFormValuesRef = useRef<PaymentFormValues | null>(null);
     // Set by the themeV2 billing form. Awaited before submitOrder so the order
@@ -396,6 +408,13 @@ const Payment = (
             return;
         }
 
+        // TODO: CHECKOUT-10199 remove this temporary fix
+        if (type === 'missing_data' && Date.now() < suppressMethodRemovedErrorUntilRef.current) {
+            errorLogger.log(error);
+
+            return;
+        }
+
         return onUnhandledError(error);
     }, []);
 
@@ -559,6 +578,8 @@ const Payment = (
         analyticsTracker.selectedPaymentMethod(methodName, methodId);
     };
 
+    const dismissMethodsRefreshAlert = useCallback(() => setMethodsRefreshAlert(undefined), []);
+
     const setSelectedMethod = useCallback((method?: PaymentMethod): void => {
         const { selectedMethod } = state;
 
@@ -572,6 +593,14 @@ const Payment = (
 
         setState((prevState) => ({ ...prevState, selectedMethod: method }));
     }, []);
+
+    const handleMethodSelect = useCallback(
+        (method: PaymentMethod): void => {
+            dismissMethodsRefreshAlert();
+            setSelectedMethod(method);
+        },
+        [dismissMethodsRefreshAlert, setSelectedMethod],
+    );
 
     const setSubmit = (
         method: PaymentMethod,
@@ -613,15 +642,22 @@ const Payment = (
         [],
     );
 
-    const loadPaymentMethodsOrThrow = async (): Promise<void> => {
+    const loadPaymentMethodsOrThrow = async (billingCountryChange?: {
+        previousSelectedMethod?: PaymentMethod;
+    }): Promise<void> => {
         const { loadPaymentMethods, onUnhandledError = noop } = props;
+
+        // The rejection can beat the await, so arm before the fetch; disarmed below.
+        if (billingCountryChange) {
+            suppressMethodRemovedErrorUntilRef.current = Date.now() + 5000;
+        }
 
         try {
             const updatedState = await loadPaymentMethods();
             const checkout = updatedState.data.getCheckout();
             const config = updatedState.data.getConfig();
             const methods = updatedState.data.getPaymentMethods() || EMPTY_ARRAY;
-            const defaultMethod =
+            const filteredMethodsWithDefault =
                 checkout && config
                     ? getFilteredPaymentMethodsWithDefault({
                           checkout,
@@ -630,12 +666,30 @@ const Payment = (
                           methods,
                           paymentProviderCustomer: updatedState.data.getPaymentProviderCustomer(),
                           capabilities: props.capabilities,
-                      }).defaultMethod
+                      })
                     : undefined;
-            const selectedMethod = state.selectedMethod || defaultMethod;
+            const defaultMethod = filteredMethodsWithDefault?.defaultMethod;
+            // state.selectedMethod is stale in the mount-effect closures.
+            const selectedMethod = selectedMethodRef.current || defaultMethod;
 
             if (selectedMethod) {
                 trackSelectedPaymentMethod(selectedMethod);
+            }
+
+            // Derived from the resolved state so it can't race prop updates.
+            if (billingCountryChange) {
+                const refreshAlert = getPaymentMethodsRefreshAlert({
+                    billingAddress: updatedState.data.getBillingAddress(),
+                    language: props.language,
+                    previousSelectedMethod: billingCountryChange.previousSelectedMethod,
+                    refreshedMethods: filteredMethodsWithDefault?.filteredMethods ?? [],
+                });
+
+                if (!refreshAlert.removedMethodName) {
+                    suppressMethodRemovedErrorUntilRef.current = 0;
+                }
+
+                setMethodsRefreshAlert(refreshAlert);
             }
         } catch (error) {
             onUnhandledError(error);
@@ -648,6 +702,9 @@ const Payment = (
         if (!isReady) {
             return;
         }
+
+        // Any refresh note on display describes a list this reload replaces.
+        dismissMethodsRefreshAlert();
 
         setState((prevState) => ({ ...prevState, isReady: false }));
 
@@ -669,6 +726,10 @@ const Payment = (
     useEffect(() => {
         isReadyRef.current = state.isReady;
     }, [state.isReady]);
+
+    useEffect(() => {
+        selectedMethodRef.current = state.selectedMethod || props.defaultMethod;
+    }, [state.selectedMethod, props.defaultMethod]);
 
     useEffect(() => {
         const init = async () => {
@@ -750,7 +811,10 @@ const Payment = (
 
                         lastCountryCode = countryCode;
 
-                        void loadPaymentMethodsOrThrow();
+                        // Snapshot now — defaultMethod re-derives before the reload lands.
+                        void loadPaymentMethodsOrThrow({
+                            previousSelectedMethod: selectedMethodRef.current,
+                        });
                     },
                     ({ data }) => data.getBillingAddress()?.countryCode,
                 );
@@ -824,8 +888,10 @@ const Payment = (
                     isTermsConditionsRequired={props.isTermsConditionsRequired}
                     isUsingMultiShipping={props.isUsingMultiShipping}
                     methods={props.methods}
+                    methodsRefreshAlert={methodsRefreshAlert}
                     onBillingSameAsShippingChange={props.onBillingSameAsShippingChange}
-                    onMethodSelect={setSelectedMethod}
+                    onMethodSelect={handleMethodSelect}
+                    onMethodsRefreshAlertDismiss={dismissMethodsRefreshAlert}
                     onStoreCreditChange={handleStoreCreditChange}
                     onSubmit={handleSubmit}
                     onUnhandledError={handleError}

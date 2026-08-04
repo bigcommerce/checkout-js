@@ -38,6 +38,10 @@ import {
     PaymentMethodList,
     usePoMethodDisabledReason,
 } from './paymentMethod';
+import {
+    PaymentMethodsRefreshAlert,
+    type PaymentMethodsRefreshAlertData,
+} from './PaymentMethodsRefreshAlert';
 import PaymentRedeemables from './PaymentRedeemables';
 import PaymentSubmitButton from './PaymentSubmitButton';
 import { ProvidersSectionOnTopOfPaymentsList } from './ProvidersSectionOnTopOfPaymentsList';
@@ -61,6 +65,7 @@ export interface PaymentFormProps {
     isUsingMultiShipping?: boolean;
     isStoreCreditApplied: boolean;
     methods: PaymentMethod[];
+    methodsRefreshAlert?: PaymentMethodsRefreshAlertData;
     orderExtraFields?: FormField[];
     selectedMethod?: PaymentMethod;
     shouldShowStoreCredit?: boolean;
@@ -74,6 +79,7 @@ export interface PaymentFormProps {
     isPaymentDataRequired(): boolean;
     onBillingSameAsShippingChange?(isBillingSameAsShipping: boolean): void;
     onMethodSelect?(method: PaymentMethod): void;
+    onMethodsRefreshAlertDismiss?(): void;
     onStoreCreditChange?(useStoreCredit?: boolean): void;
     onSubmit?(values: PaymentFormValues): void;
     onUnhandledError?(error: Error): void;
@@ -96,8 +102,10 @@ const PaymentForm: FunctionComponent<
     isUsingMultiShipping,
     language,
     methods,
+    methodsRefreshAlert,
     onBillingSameAsShippingChange,
     onMethodSelect,
+    onMethodsRefreshAlertDismiss,
     onStoreCreditChange,
     onUnhandledError,
     orderExtraFields,
@@ -172,6 +180,13 @@ const PaymentForm: FunctionComponent<
                     name="useStoreCredit"
                     onChange={onStoreCreditChange}
                     usableStoreCredit={usableStoreCredit}
+                />
+            )}
+
+            {methodsRefreshAlert && (
+                <PaymentMethodsRefreshAlert
+                    alert={methodsRefreshAlert}
+                    onDismiss={onMethodsRefreshAlertDismiss ?? noop}
                 />
             )}
 
