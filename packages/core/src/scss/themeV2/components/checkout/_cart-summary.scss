@@ -64,7 +64,7 @@
 
         .cart-summary-figure {
             border: 1px solid $color-greyMedium;
-            border-radius: spacing("sixth");
+            border-radius: $element-border-radius;
             height: remCalc(50px);
             margin: 0;
             min-width: remCalc(50px);
@@ -74,7 +74,7 @@
 
         .cart-summary-figure--stack::after {
             border: 1px solid $color-greyMedium;
-            border-radius: spacing("sixth");
+            border-radius: $element-border-radius;
             bottom: remCalc(-4px);
             content: "";
             left: remCalc(4px);
@@ -86,7 +86,7 @@
 
         .cart-summary-image-wrapper {
             background-color: $color-white;
-            border-radius: spacing("sixth");
+            border-radius: $element-border-radius;
             display: flex;
             height: 100%;
             overflow: hidden;
