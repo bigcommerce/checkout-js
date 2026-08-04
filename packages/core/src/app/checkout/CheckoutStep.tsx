@@ -167,7 +167,7 @@ const CheckoutStep = ({
         <li
             className={classNames('checkout-step', 'optimizedCheckout-checkoutStep', {
                 [`checkout-step--${type}`]: !!type,
-                'checkout-step--current': isActive || isComplete,
+                'checkout-step--current': isActive,
             })}
             ref={containerRef}
         >

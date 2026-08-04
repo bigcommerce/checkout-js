@@ -66,7 +66,6 @@
     .form-checkbox + .form-label,
     .form-radio + .form-label {
         &.body-regular {
-            color: $color-black;
             font-size: $fontSize-base;
             font-weight: $fontWeight-normal;
         }

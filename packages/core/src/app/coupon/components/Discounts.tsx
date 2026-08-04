@@ -91,10 +91,10 @@ export const Discounts: FunctionComponent = () => {
     return (
         <div data-test="cart-subtotal">
             <div aria-live="polite" className="cart-priceItem optimizedCheckout-contentPrimary">
-                <span className="cart-priceItem-label">
+                <span className="cart-priceItem-label body-regular">
                     <TranslatedString id="cart.subtotal_text" />
                 </span>
-                <span className="cart-priceItem-value" data-test="cart-price-value">
+                <span className="cart-priceItem-value body-medium" data-test="cart-price-value">
                     <ShopperCurrency amount={subtotal} />
                 </span>
             </div>
