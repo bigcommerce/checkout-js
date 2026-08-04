@@ -134,7 +134,6 @@ describe('when using Moneris payment', () => {
 
         expect(getMonerisIframeStyles).toHaveBeenCalledWith({
             cardNumberContainerId: 'moneris-ccNumber',
-            onError: defaultProps.onUnhandledError,
         });
     });
 

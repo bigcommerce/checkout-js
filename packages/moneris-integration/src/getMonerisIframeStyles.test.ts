@@ -82,7 +82,6 @@ describe('getMonerisIframeStyles', () => {
     });
 
     it('returns layout-only styles and logs when style probe elements are missing', () => {
-        const onError = jest.fn();
         const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
 
         document.body.innerHTML = '';
@@ -102,23 +101,8 @@ describe('getMonerisIframeStyles', () => {
         expect(styles.cssInputLabel).not.toContain('font-weight:');
 
         expect(consoleErrorSpy).toHaveBeenCalledWith(
-            expect.objectContaining({
-                message:
-                    'Unable to retrieve input styles as the provided container ID is not valid.',
-            }),
+            'Unable to retrieve input styles as the provided container ID is not valid.',
             { containerId: 'moneris-cc-number' },
-        );
-
-        getMonerisIframeStyles({
-            cardNumberContainerId: 'moneris-cc-number',
-            onError,
-        });
-
-        expect(onError).toHaveBeenCalledWith(
-            expect.objectContaining({
-                message:
-                    'Unable to retrieve input styles as the provided container ID is not valid.',
-            }),
         );
 
         consoleErrorSpy.mockRestore();

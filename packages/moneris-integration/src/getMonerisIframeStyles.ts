@@ -16,7 +16,6 @@ export interface MonerisIframeStyles {
 
 export interface GetMonerisIframeStylesOptions {
     cardNumberContainerId: string;
-    onError?: (error: Error) => void;
 }
 
 const INPUT_STYLE_PROPERTIES = [
@@ -146,20 +145,14 @@ function buildMonerisIframeStyles(
 
 export default function getMonerisIframeStyles({
     cardNumberContainerId,
-    onError,
 }: GetMonerisIframeStylesOptions): MonerisIframeStyles {
     const container = document.getElementById(cardNumberContainerId);
 
     if (!container) {
-        const error = new Error(
+        console.error(
             'Unable to retrieve input styles as the provided container ID is not valid.',
+            { containerId: cardNumberContainerId },
         );
-
-        if (onError) {
-            onError(error);
-        } else {
-            console.error(error, { containerId: cardNumberContainerId });
-        }
 
         return buildMonerisIframeStyles({}, {});
     }
