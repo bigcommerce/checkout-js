@@ -31,6 +31,7 @@ import {
     StoreInstrumentFieldset,
 } from '@bigcommerce/checkout/instrument-utils';
 import {
+    CaptureMessageComponent,
     type CardInstrumentFieldsetValues,
     type PaymentMethodProps,
 } from '@bigcommerce/checkout/payment-integration-api';
@@ -365,6 +366,8 @@ export const CreditCardPaymentMethodComponent = (
 
     const storeConfig = getStoreConfig();
 
+    const SentryMessage = methodProp ? `DataCreditCardFieldset ${JSON.stringify(methodProp)}` : '';
+
     if (!storeConfig) {
         throw Error('Unable to get config or customer');
     }
@@ -396,12 +399,15 @@ export const CreditCardPaymentMethodComponent = (
                 )}
 
                 {shouldShowCreditCardFieldset && !cardFieldset && (
-                    <CreditCardFieldset
-                        shouldShowCardCodeField={
-                            methodProp.config.cardCode || methodProp.config.cardCode === null
-                        }
-                        shouldShowCustomerCodeField={methodProp.config.requireCustomerCode}
-                    />
+                    <>
+                        <CaptureMessageComponent message={SentryMessage} />
+                        <CreditCardFieldset
+                            shouldShowCardCodeField={
+                                methodProp.config.cardCode || methodProp.config.cardCode === null
+                            }
+                            shouldShowCustomerCodeField={methodProp.config.requireCustomerCode}
+                        />
+                    </>
                 )}
 
                 {shouldShowCreditCardFieldset && cardFieldset}

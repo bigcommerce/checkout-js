@@ -10,6 +10,7 @@ import { createNoPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/
 import React, { type FunctionComponent, lazy, memo, Suspense } from 'react';
 
 import { type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
+import { CaptureMessageComponent } from '@bigcommerce/checkout/payment-integration-api';
 
 import { withCheckout } from '../../checkout';
 
@@ -58,10 +59,15 @@ const PaymentMethodComponent: FunctionComponent<
     const { method } = props;
 
     if (method.id === PaymentMethodId.Humm || method.type === PaymentMethodProviderType.Hosted) {
+        const sentryMessage = `DataHostedPaymentMethod Hosted/Humm ${JSON.stringify(method)}`;
+
         return (
-            <Suspense>
-                <HostedPaymentMethod {...props} />
-            </Suspense>
+            <>
+                <CaptureMessageComponent message={sentryMessage} />
+                <Suspense>
+                    <HostedPaymentMethod {...props} />
+                </Suspense>
+            </>
         );
     }
 
@@ -72,10 +78,15 @@ const PaymentMethodComponent: FunctionComponent<
         method.method === PaymentMethodType.CreditCard ||
         method.type === PaymentMethodProviderType.Api
     ) {
+        const sentryMessage = `DataHostedCreditCardPaymentMethod ${JSON.stringify(method)}`;
+
         return (
-            <Suspense>
-                <HostedCreditCardPaymentMethod {...props} />
-            </Suspense>
+            <>
+                <CaptureMessageComponent message={sentryMessage} />
+                <Suspense>
+                    <HostedCreditCardPaymentMethod {...props} />
+                </Suspense>
+            </>
         );
     }
 
