@@ -208,8 +208,6 @@ describe('PaymentBillingForm', () => {
     });
 
     describe('billing country change', () => {
-        // getFormFields() has no countryCode field; AddressForm needs a dropdown
-        // one to render a country select.
         const getFieldsWithCountry = (): FormField[] => [
             ...getFormFields(),
             {

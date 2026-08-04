@@ -58,12 +58,8 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
         }
     };
 
-    // The store's countryCode lags while an update is in flight, so guard on
-    // the pending request instead; cleared on settle so it can't go stale.
     const lastRequestedCountryCodeRef = useRef<string | undefined>();
 
-    // Persist the form values (not the store address) so typed fields survive
-    // the Formik reinitialize; stateOrProvince is country-specific, so clear it.
     const handleBillingCountryChange = (countryCode: string, addressValues: AddressFormValues) => {
         const lastCountryCode =
             lastRequestedCountryCodeRef.current ?? getBillingAddress()?.countryCode;

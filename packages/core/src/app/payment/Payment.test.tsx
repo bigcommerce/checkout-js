@@ -69,8 +69,6 @@ jest.mock('./billingForm', () => {
                 context?.setEnsureBillingAddressSaved(mockEnsureBillingAddressSaved);
             }, [context]);
 
-            // Uncontrolled probe input: its DOM value survives only if this
-            // subtree is never unmounted.
             return ReactActual.createElement(
                 'div',
                 { 'data-test': 'payment-billing-block' },
@@ -314,8 +312,6 @@ describe('Payment step', () => {
     });
 
     describe('billing country change (themeV2)', () => {
-        // The fixture billing address is AU; the countryCode subscription only
-        // sees a change if the PUT response carries the new country.
         const mockBillingAddressPut = (countryCode: string, country: string) => {
             checkout.updateCheckout('put', '/checkouts/*/billing-address/*', {
                 ...checkoutWithShippingAndBilling,
@@ -493,7 +489,6 @@ describe('Payment step', () => {
             await checkout.waitForPaymentStep();
 
             mockBillingAddressPut('US', 'United States');
-            // The refreshed list no longer contains the selected Pay in Store.
             checkout.setRequestHandler(
                 rest.get('/api/storefront/payments', (_, res, ctx) =>
                     res(ctx.json(payments.filter(({ id }) => id !== 'instore'))),
@@ -509,8 +504,6 @@ describe('Payment step', () => {
                     "Payment options reloaded for United States as the billing country. Pay in Store isn't available in this country, please select another payment method.",
                 ),
             ).toBeInTheDocument();
-            // Focus lands on the alert unless CheckoutStep's own focus
-            // management moves it to the first method input — both are fine.
             await waitFor(() => {
                 // eslint-disable-next-line testing-library/no-node-access
                 const activeElement = document.activeElement;
@@ -566,7 +559,6 @@ describe('Payment step', () => {
 
             await screen.findByTestId('payment-methods-refresh-alert');
 
-            // Grand-total change, same billing country — only the cart-total reload fires.
             checkout.updateCheckout('put', '/checkout/*', {
                 ...checkoutWithShippingAndBilling,
                 billingAddress: {

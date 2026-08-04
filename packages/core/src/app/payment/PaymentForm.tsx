@@ -204,8 +204,6 @@ const PaymentForm: FunctionComponent<
                 ))}
 
             {!isEmpty(methods) && (
-                // Default LoadingOverlay mode keeps the list mounted, so typed
-                // payment details and hosted-field iframes survive the reload.
                 <LoadingOverlay isLoading={isReloadingPaymentMethods ?? false}>
                     <PaymentMethodListFieldset
                         isEmbedded={isEmbedded}

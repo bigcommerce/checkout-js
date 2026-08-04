@@ -39,7 +39,6 @@ export interface PaymentBillingFormProps {
     // so the pre-submit ensureBillingAddressSaved can block the order.
     onPersist(values: BillingFormValues): Promise<void>;
     onBillingSameAsShippingChange(isBillingSameAsShipping: boolean): void;
-    // Let the block persist the new country so payment methods re-filter.
     onBillingCountryChange(countryCode: string, addressValues: AddressFormValues): void;
     onUnhandledError(error: Error): void;
     updateBillingAddress(address: Partial<Address>): Promise<unknown>;
@@ -189,8 +188,6 @@ const PaymentBillingFormComponent = ({
         void handleSelectAddress({});
     };
 
-    // `values.countryCode` may still hold the previous country when onChange
-    // fires, so the new country travels as the first argument.
     const handleAddressFieldChange = useCallback(
         (fieldName: string, value: string | string[]) => {
             if (fieldName === 'countryCode' && typeof value === 'string' && value) {

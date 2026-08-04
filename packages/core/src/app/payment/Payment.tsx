@@ -168,12 +168,8 @@ const Payment = (
     const isReadyRef = useRef(state.isReady);
     const grandTotalChangeUnsubscribe = useRef<() => void>();
     const billingAddressChangeUnsubscribe = useRef<() => void>();
-    // Live selection for the mount-effect subscription, whose closures are stale.
     const selectedMethodRef = useRef<PaymentMethod | undefined>();
-    // TODO: CHECKOUT-10199 remove this temporary fix. A removed method's unmount
-    // deinitialize rejects with missing_data (its data is already gone);
-    // handleError swallows those inside this window — a timestamp, because the
-    // rejection can land before or after the reload's continuation.
+    // TODO: CHECKOUT-10199 remove this temporary fix
     const suppressMethodRemovedErrorUntilRef = useRef(0);
     const validationSchemasRef = useRef<validationSchemas>({});
     const lastFormValuesRef = useRef<PaymentFormValues | null>(null);
@@ -647,7 +643,6 @@ const Payment = (
     }): Promise<void> => {
         const { loadPaymentMethods, onUnhandledError = noop } = props;
 
-        // The rejection can beat the await, so arm before the fetch; disarmed below.
         if (billingCountryChange) {
             suppressMethodRemovedErrorUntilRef.current = Date.now() + 5000;
         }
@@ -669,14 +664,12 @@ const Payment = (
                       })
                     : undefined;
             const defaultMethod = filteredMethodsWithDefault?.defaultMethod;
-            // state.selectedMethod is stale in the mount-effect closures.
             const selectedMethod = selectedMethodRef.current || defaultMethod;
 
             if (selectedMethod) {
                 trackSelectedPaymentMethod(selectedMethod);
             }
 
-            // Derived from the resolved state so it can't race prop updates.
             if (billingCountryChange) {
                 const refreshAlert = getPaymentMethodsRefreshAlert({
                     billingAddress: updatedState.data.getBillingAddress(),
@@ -692,6 +685,10 @@ const Payment = (
                 setMethodsRefreshAlert(refreshAlert);
             }
         } catch (error) {
+            if (billingCountryChange) {
+                suppressMethodRemovedErrorUntilRef.current = 0;
+            }
+
             onUnhandledError(error);
         }
     };
@@ -703,7 +700,6 @@ const Payment = (
             return;
         }
 
-        // Any refresh note on display describes a list this reload replaces.
         dismissMethodsRefreshAlert();
 
         setState((prevState) => ({ ...prevState, isReady: false }));
@@ -795,10 +791,7 @@ const Payment = (
                 ({ data }) => data.getCheckout()?.outstandingBalance,
             );
 
-            // Reload the server-filtered method list when the billing country changes.
             if (themeV2) {
-                // subscribe() also fires immediately and on unfiltered store
-                // notifications, so only react to a real country change.
                 let lastCountryCode = props.billingAddress?.countryCode;
 
                 billingAddressChangeUnsubscribe.current = checkoutServiceSubscribe(
@@ -811,7 +804,6 @@ const Payment = (
 
                         lastCountryCode = countryCode;
 
-                        // Snapshot now — defaultMethod re-derives before the reload lands.
                         void loadPaymentMethodsOrThrow({
                             previousSelectedMethod: selectedMethodRef.current,
                         });
@@ -865,8 +857,6 @@ const Payment = (
         (props.isLoadingBillingCountries ||
             props.isUpdatingBillingAddress ||
             props.isUpdatingCheckout);
-    // The in-place reload keeps the form mounted, so block submit and overlay
-    // the method list until the refreshed, country-filtered methods land.
     const isReloadingPaymentMethods = themeV2 && props.isLoadingPaymentMethods;
 
     return (

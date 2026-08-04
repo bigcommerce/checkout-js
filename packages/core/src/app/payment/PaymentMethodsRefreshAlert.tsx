@@ -8,7 +8,6 @@ import './PaymentMethodsRefreshAlert.scss';
 
 export interface PaymentMethodsRefreshAlertData {
     countryName: string;
-    // Set when the refresh dropped the selection; switches the message variant.
     removedMethodName?: string;
 }
 
@@ -30,7 +29,6 @@ export const PaymentMethodsRefreshAlert: FunctionComponent<PaymentMethodsRefresh
 
     useEffect(() => {
         if (removedMethodName) {
-            // The shopper must act, so move focus (and the viewport) here.
             containerRef.current?.focus();
 
             return;
