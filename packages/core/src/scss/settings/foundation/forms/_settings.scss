@@ -49,6 +49,11 @@ $floating-label-transition:          all 0.15s cubic-bezier(0.13, 0.615, 0.315, 
 // $input-font-family:               inherit;
 $input-font-color:                   $body-font-color;
 $input-font-size:                    fontSize("base");
+
+// Minimum font-size required on mobile to prevent browsers on iOS 
+// from auto-zooming the viewport when a form field is focused 
+$input-font-size--mobile-min:        16px;
+
 $input-bg-color:                     color("whites", "bright");
 $input-focus-bg-color:               color("whites", "bright");
 $input-border-color:                 container("borderColor", "dark");
