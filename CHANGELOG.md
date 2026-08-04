@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.848.0](https://github.com/bigcommerce/checkout-js/compare/v1.847.4...v1.848.0) (2026-08-04)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10286 Prevent iOS auto-zoom on mobile form fields ([975fafb](https://github.com/bigcommerce/checkout-js/commit/975fafbd22d7e1e561c0408d321d903d565bd86e))
+* **checkout:** CHECKOUT-10286 Prevent iOS auto-zoom on mobile form fields ([29109a3](https://github.com/bigcommerce/checkout-js/commit/29109a3c4532c637b6ede401dd67fa387d2df705))
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10286 Close mobile zoom gaps for themeV2 and landscape ([8ee7538](https://github.com/bigcommerce/checkout-js/commit/8ee7538399f2c8689b6e8fb34d0c99afc657b047))
+
 ### [1.847.4](https://github.com/bigcommerce/checkout-js/compare/v1.847.3...v1.847.4) (2026-08-04)
 
 ### [1.847.3](https://github.com/bigcommerce/checkout-js/compare/v1.847.2...v1.847.3) (2026-08-03)
