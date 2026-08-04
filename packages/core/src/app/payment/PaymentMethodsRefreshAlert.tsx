@@ -28,8 +28,16 @@ export const PaymentMethodsRefreshAlert: FunctionComponent<PaymentMethodsRefresh
     onDismissRef.current = onDismiss;
 
     useEffect(() => {
+        const container = containerRef.current;
+
+        try {
+            container?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } catch {
+            container?.scrollIntoView();
+        }
+
         if (removedMethodName) {
-            containerRef.current?.focus();
+            container?.focus({ preventScroll: true });
 
             return;
         }

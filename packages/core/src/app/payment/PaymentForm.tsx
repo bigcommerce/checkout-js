@@ -6,7 +6,15 @@ import {
 } from '@bigcommerce/checkout-sdk/essential';
 import { type FormikProps, type FormikState, withFormik, type WithFormikConfig } from 'formik';
 import { isEmpty, noop, omitBy } from 'lodash';
-import React, { type FunctionComponent, memo, useCallback, useContext, useMemo } from 'react';
+import React, {
+    type FunctionComponent,
+    memo,
+    useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+    useRef,
+} from 'react';
 import { object, type ObjectSchema, string } from 'yup';
 
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
@@ -162,6 +170,20 @@ const PaymentForm: FunctionComponent<
     const hideSubmitPaymentButton =
         shouldHidePaymentSubmitButton || (isPaymentDataRequired() && isEmpty(methods));
 
+    const methodListRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!isReloadingPaymentMethods) {
+            return;
+        }
+
+        try {
+            methodListRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } catch {
+            methodListRef.current?.scrollIntoView();
+        }
+    }, [isReloadingPaymentMethods]);
+
     if (shouldExecuteSpamCheck) {
         return (
             <SpamProtectionField
@@ -183,12 +205,14 @@ const PaymentForm: FunctionComponent<
                 />
             )}
 
-            {methodsRefreshAlert && (
-                <PaymentMethodsRefreshAlert
-                    alert={methodsRefreshAlert}
-                    onDismiss={onMethodsRefreshAlertDismiss ?? noop}
-                />
-            )}
+            <div ref={methodListRef}>
+                {methodsRefreshAlert && (
+                    <PaymentMethodsRefreshAlert
+                        alert={methodsRefreshAlert}
+                        onDismiss={onMethodsRefreshAlertDismiss ?? noop}
+                    />
+                )}
+            </div>
 
             {isEmpty(methods) &&
                 (isPaymentDataRequired() ? (

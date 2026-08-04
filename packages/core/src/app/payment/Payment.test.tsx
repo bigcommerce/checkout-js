@@ -312,6 +312,12 @@ describe('Payment step', () => {
     });
 
     describe('billing country change (themeV2)', () => {
+        const scrollIntoViewMock = jest.fn();
+
+        beforeAll(() => {
+            window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
+        });
+
         const mockBillingAddressPut = (countryCode: string, country: string) => {
             checkout.updateCheckout('put', '/checkouts/*/billing-address/*', {
                 ...checkoutWithShippingAndBilling,
@@ -326,6 +332,7 @@ describe('Payment step', () => {
         };
 
         beforeEach(() => {
+            scrollIntoViewMock.mockClear();
             mockEnsureBillingAddressSaved = jest.fn<Promise<boolean>, []>().mockResolvedValue(true);
         });
 
@@ -410,6 +417,7 @@ describe('Payment step', () => {
             });
 
             expect(placeOrderButton.disabled).toBe(true);
+            expect(scrollIntoViewMock).toHaveBeenCalled();
 
             await act(async () => {
                 resolvePaymentsResponse();
@@ -488,6 +496,10 @@ describe('Payment step', () => {
 
             await checkout.waitForPaymentStep();
 
+            await waitFor(() => {
+                expect(screen.getByRole('radio', { name: 'Pay in Store' })).toHaveFocus();
+            });
+
             mockBillingAddressPut('US', 'United States');
             checkout.setRequestHandler(
                 rest.get('/api/storefront/payments', (_, res, ctx) =>
@@ -505,13 +517,7 @@ describe('Payment step', () => {
                 ),
             ).toBeInTheDocument();
             await waitFor(() => {
-                // eslint-disable-next-line testing-library/no-node-access
-                const activeElement = document.activeElement;
-
-                expect(
-                    activeElement === screen.getByTestId('payment-methods-refresh-alert') ||
-                        activeElement === screen.getByRole('radio', { name: 'Cash on Delivery' }),
-                ).toBe(true);
+                expect(screen.getByTestId('payment-methods-refresh-alert')).toHaveFocus();
             });
         });
 
