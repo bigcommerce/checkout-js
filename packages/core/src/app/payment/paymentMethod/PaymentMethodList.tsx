@@ -77,13 +77,9 @@ const PaymentMethodList: FunctionComponent<
 
     const handleSelect = useCallback(
         (value: string) => {
-            if (isInitializingPayment) {
-                return;
-            }
-
             onSelect(getPaymentMethodFromListValue(methods, value));
         },
-        [isInitializingPayment, methods, onSelect],
+        [methods, onSelect],
     );
 
     return (
@@ -115,6 +111,7 @@ const PaymentMethodList: FunctionComponent<
                                     method === chequeMethod ? chequeDisabledReason : undefined
                                 }
                                 isEmbedded={isEmbedded}
+                                isInitializingPayment={isInitializingPayment}
                                 isUsingMultiShipping={isUsingMultiShipping}
                                 key={value}
                                 method={method}
@@ -132,6 +129,7 @@ const PaymentMethodList: FunctionComponent<
 interface PaymentMethodListItemProps {
     disabledReason?: PoDisabledReason;
     isEmbedded?: boolean;
+    isInitializingPayment?: boolean;
     isUsingMultiShipping?: boolean;
     method: PaymentMethod;
     value: string;
@@ -141,6 +139,7 @@ interface PaymentMethodListItemProps {
 const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
     disabledReason,
     isEmbedded,
+    isInitializingPayment,
     isUsingMultiShipping,
     method,
     onUnhandledError,
@@ -178,6 +177,7 @@ const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
             content={renderPaymentMethod}
             htmlId={`radio-${value}`}
             isDisabled={Boolean(disabledReason)}
+            isReadOnly={isInitializingPayment}
             label={renderPaymentMethodTitle}
             value={value}
         />
