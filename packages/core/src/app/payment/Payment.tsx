@@ -107,6 +107,7 @@ interface WithCheckoutPaymentProps {
     finalizeOrderError?: Error;
     isInitializingPayment: boolean;
     isLoadingBillingCountries: boolean;
+    isLoadingPaymentMethods: boolean;
     isSubmittingOrder: boolean;
     isStoreCreditApplied: boolean;
     isTermsConditionsRequired: boolean;
@@ -161,6 +162,7 @@ const Payment = (
 
     const isReadyRef = useRef(state.isReady);
     const grandTotalChangeUnsubscribe = useRef<() => void>();
+    const billingAddressChangeUnsubscribe = useRef<() => void>();
     const validationSchemasRef = useRef<validationSchemas>({});
     const lastFormValuesRef = useRef<PaymentFormValues | null>(null);
     // Set by the themeV2 billing form. Awaited before submitOrder so the order
@@ -732,6 +734,28 @@ const Payment = (
                 ({ data }) => data.getCheckout()?.outstandingBalance,
             );
 
+            // Reload the server-filtered method list when the billing country changes.
+            if (themeV2) {
+                // subscribe() also fires immediately and on unfiltered store
+                // notifications, so only react to a real country change.
+                let lastCountryCode = props.billingAddress?.countryCode;
+
+                billingAddressChangeUnsubscribe.current = checkoutServiceSubscribe(
+                    ({ data }) => {
+                        const countryCode = data.getBillingAddress()?.countryCode;
+
+                        if (countryCode === lastCountryCode) {
+                            return;
+                        }
+
+                        lastCountryCode = countryCode;
+
+                        void loadPaymentMethodsOrThrow();
+                    },
+                    ({ data }) => data.getBillingAddress()?.countryCode,
+                );
+            }
+
             window.addEventListener('beforeunload', handleBeforeUnload);
             setState((prevState) => ({ ...prevState, isReady: true }));
             onReady();
@@ -744,6 +768,11 @@ const Payment = (
                 if (grandTotalChangeUnsubscribe.current) {
                     grandTotalChangeUnsubscribe.current();
                     grandTotalChangeUnsubscribe.current = undefined;
+                }
+
+                if (billingAddressChangeUnsubscribe.current) {
+                    billingAddressChangeUnsubscribe.current();
+                    billingAddressChangeUnsubscribe.current = undefined;
                 }
 
                 window.removeEventListener('beforeunload', handleBeforeUnload);
@@ -772,6 +801,9 @@ const Payment = (
         (props.isLoadingBillingCountries ||
             props.isUpdatingBillingAddress ||
             props.isUpdatingCheckout);
+    // The in-place reload keeps the form mounted, so block submit and overlay
+    // the method list until the refreshed, country-filtered methods land.
+    const isReloadingPaymentMethods = themeV2 && props.isLoadingPaymentMethods;
 
     return (
         <PaymentContext.Provider value={getContextValue()}>
@@ -787,6 +819,7 @@ const Payment = (
                     isEmbedded={props.isEmbedded}
                     isInitializingPayment={props.isInitializingPayment}
                     isPaymentDataRequired={props.isPaymentDataRequired}
+                    isReloadingPaymentMethods={isReloadingPaymentMethods}
                     isStoreCreditApplied={props.isStoreCreditApplied}
                     isTermsConditionsRequired={props.isTermsConditionsRequired}
                     isUsingMultiShipping={props.isUsingMultiShipping}
@@ -802,6 +835,7 @@ const Payment = (
                         (uniqueSelectedMethodId &&
                             state.shouldDisableSubmit[uniqueSelectedMethodId]) ||
                         isBillingFormBusy ||
+                        isReloadingPaymentMethods ||
                         undefined
                     }
                     shouldExecuteSpamCheck={props.shouldExecuteSpamCheck}
@@ -853,6 +887,7 @@ export function mapToPaymentProps(
         statuses: {
             isInitializingPayment,
             isLoadingBillingCountries,
+            isLoadingPaymentMethods,
             isSubmittingOrder,
             isUpdatingBillingAddress,
             isUpdatingCheckout,
@@ -918,6 +953,7 @@ export function mapToPaymentProps(
         loadCheckout: checkoutService.loadCheckout,
         isInitializingPayment: isInitializingPayment(),
         isLoadingBillingCountries: isLoadingBillingCountries(),
+        isLoadingPaymentMethods: isLoadingPaymentMethods(),
         isPaymentDataRequired,
         isStoreCreditApplied,
         isSubmittingOrder: isSubmittingOrder(),

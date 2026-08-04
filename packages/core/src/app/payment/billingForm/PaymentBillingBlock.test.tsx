@@ -272,6 +272,159 @@ describe('PaymentBillingBlock', () => {
         });
     });
 
+    describe('billing country change', () => {
+        it('persists the current form values with the new country and cleared state', async () => {
+            jest.spyOn(checkoutState.data, 'getBillingAddress').mockReturnValue(
+                getBillingAddress(),
+            );
+
+            render(<PaymentBillingBlockTest />);
+
+            await screen.findByTestId('trigger-persist');
+
+            const { orderComment: _orderComment, ...addressValues } = mockPersistValues;
+
+            act(() => {
+                mockCapturedProps.onBillingCountryChange('CA', addressValues);
+            });
+
+            await new Promise((resolve) => process.nextTick(resolve));
+
+            expect(checkoutService.updateBillingAddress).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    firstName: getBillingAddress().firstName,
+                    countryCode: 'CA',
+                    stateOrProvince: '',
+                    stateOrProvinceCode: '',
+                }),
+            );
+        });
+
+        it('does not persist when the billing country is unchanged', async () => {
+            jest.spyOn(checkoutState.data, 'getBillingAddress').mockReturnValue(
+                getBillingAddress(),
+            );
+
+            render(<PaymentBillingBlockTest />);
+
+            await screen.findByTestId('trigger-persist');
+
+            const { orderComment: _orderComment, ...addressValues } = mockPersistValues;
+
+            act(() => {
+                mockCapturedProps.onBillingCountryChange('US', addressValues);
+            });
+
+            await new Promise((resolve) => process.nextTick(resolve));
+
+            expect(checkoutService.updateBillingAddress).not.toHaveBeenCalled();
+        });
+
+        it('persists a flip back to the original country while the first update is in flight', async () => {
+            jest.spyOn(checkoutState.data, 'getBillingAddress').mockReturnValue(
+                getBillingAddress(),
+            );
+            // Keep the first update in flight so the store still has 'US'.
+            jest.spyOn(checkoutService, 'updateBillingAddress').mockReturnValue(
+                new Promise(() => undefined),
+            );
+
+            render(<PaymentBillingBlockTest />);
+
+            await screen.findByTestId('trigger-persist');
+
+            const { orderComment: _orderComment, ...addressValues } = mockPersistValues;
+
+            act(() => {
+                mockCapturedProps.onBillingCountryChange('CA', addressValues);
+            });
+            act(() => {
+                mockCapturedProps.onBillingCountryChange('US', addressValues);
+            });
+
+            expect(checkoutService.updateBillingAddress).toHaveBeenCalledTimes(2);
+            expect(checkoutService.updateBillingAddress).toHaveBeenLastCalledWith(
+                expect.objectContaining({ countryCode: 'US' }),
+            );
+        });
+
+        it('persists a change back to a previously requested country once the first persist settles', async () => {
+            // Store stays US throughout, as if an external update (address book,
+            // same as shipping) reverted the country after the first persist.
+            jest.spyOn(checkoutState.data, 'getBillingAddress').mockReturnValue(
+                getBillingAddress(),
+            );
+
+            render(<PaymentBillingBlockTest />);
+
+            await screen.findByTestId('trigger-persist');
+
+            const { orderComment: _orderComment, ...addressValues } = mockPersistValues;
+
+            act(() => {
+                mockCapturedProps.onBillingCountryChange('CA', addressValues);
+            });
+
+            await new Promise((resolve) => process.nextTick(resolve));
+
+            act(() => {
+                mockCapturedProps.onBillingCountryChange('CA', addressValues);
+            });
+
+            await new Promise((resolve) => process.nextTick(resolve));
+
+            expect(checkoutService.updateBillingAddress).toHaveBeenCalledTimes(2);
+        });
+
+        it('allows retrying the same country after a failed persist', async () => {
+            const error = new Error('update failed');
+
+            jest.spyOn(checkoutState.data, 'getBillingAddress').mockReturnValue(
+                getBillingAddress(),
+            );
+            jest.spyOn(checkoutService, 'updateBillingAddress').mockRejectedValueOnce(error);
+
+            render(<PaymentBillingBlockTest />);
+
+            await screen.findByTestId('trigger-persist');
+
+            const { orderComment: _orderComment, ...addressValues } = mockPersistValues;
+
+            act(() => {
+                mockCapturedProps.onBillingCountryChange('CA', addressValues);
+            });
+
+            await waitFor(() => expect(onUnhandledError).toHaveBeenCalledWith(error));
+
+            act(() => {
+                mockCapturedProps.onBillingCountryChange('CA', addressValues);
+            });
+
+            expect(checkoutService.updateBillingAddress).toHaveBeenCalledTimes(2);
+        });
+
+        it('reports a failed country-change persist via onUnhandledError', async () => {
+            const error = new Error('update failed');
+
+            jest.spyOn(checkoutState.data, 'getBillingAddress').mockReturnValue(
+                getBillingAddress(),
+            );
+            jest.spyOn(checkoutService, 'updateBillingAddress').mockRejectedValue(error);
+
+            render(<PaymentBillingBlockTest />);
+
+            await screen.findByTestId('trigger-persist');
+
+            const { orderComment: _orderComment, ...addressValues } = mockPersistValues;
+
+            act(() => {
+                mockCapturedProps.onBillingCountryChange('CA', addressValues);
+            });
+
+            await waitFor(() => expect(onUnhandledError).toHaveBeenCalledWith(error));
+        });
+    });
+
     it('keeps the billing form mounted (with isLoading) while billing is still loading', async () => {
         jest.spyOn(checkoutService, 'loadBillingAddressFields').mockReturnValue(
             new Promise(() => undefined),

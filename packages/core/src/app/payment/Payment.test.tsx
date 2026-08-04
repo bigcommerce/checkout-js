@@ -1,4 +1,5 @@
 import {
+    type BillingAddress,
     type CheckoutService,
     createCheckoutService,
     createEmbeddedCheckoutMessenger,
@@ -63,7 +64,13 @@ jest.mock('./billingForm', () => {
                 context?.setEnsureBillingAddressSaved(mockEnsureBillingAddressSaved);
             }, [context]);
 
-            return ReactActual.createElement('div', { 'data-test': 'payment-billing-block' });
+            // Uncontrolled probe input: its DOM value survives only if this
+            // subtree is never unmounted.
+            return ReactActual.createElement(
+                'div',
+                { 'data-test': 'payment-billing-block' },
+                ReactActual.createElement('input', { 'data-test': 'billing-block-probe' }),
+            );
         },
     };
 });
@@ -99,6 +106,20 @@ describe('Payment step', () => {
     let defaultProps: CheckoutProps;
     let embeddedMessengerMock: EmbeddedCheckoutMessenger;
     let analyticsTracker: Partial<AnalyticsEvents>;
+
+    const themeV2Config = {
+        ...checkoutSettings,
+        storeConfig: {
+            ...checkoutSettings.storeConfig,
+            checkoutSettings: {
+                ...checkoutSettings.storeConfig.checkoutSettings,
+                checkoutUserExperienceSettings: {
+                    ...checkoutSettings.storeConfig.checkoutSettings.checkoutUserExperienceSettings,
+                    checkoutV2Theme: true,
+                },
+            },
+        },
+    };
 
     beforeAll(() => {
         checkout = new CheckoutPageNodeObject();
@@ -225,21 +246,6 @@ describe('Payment step', () => {
     });
 
     it('does not place the order when embedded billing (themeV2) is invalid', async () => {
-        const themeV2Config = {
-            ...checkoutSettings,
-            storeConfig: {
-                ...checkoutSettings.storeConfig,
-                checkoutSettings: {
-                    ...checkoutSettings.storeConfig.checkoutSettings,
-                    checkoutUserExperienceSettings: {
-                        ...checkoutSettings.storeConfig.checkoutSettings
-                            .checkoutUserExperienceSettings,
-                        checkoutV2Theme: true,
-                    },
-                },
-            },
-        };
-
         mockEnsureBillingAddressSaved = jest.fn<Promise<boolean>, []>().mockResolvedValue(false);
 
         const location = window.location;
@@ -271,21 +277,6 @@ describe('Payment step', () => {
     });
 
     it('disables Place Order while the embedded billing (themeV2) address is being persisted', async () => {
-        const themeV2Config = {
-            ...checkoutSettings,
-            storeConfig: {
-                ...checkoutSettings.storeConfig,
-                checkoutSettings: {
-                    ...checkoutSettings.storeConfig.checkoutSettings,
-                    checkoutUserExperienceSettings: {
-                        ...checkoutSettings.storeConfig.checkoutSettings
-                            .checkoutUserExperienceSettings,
-                        checkoutV2Theme: true,
-                    },
-                },
-            },
-        };
-
         mockEnsureBillingAddressSaved = jest.fn<Promise<boolean>, []>().mockResolvedValue(true);
 
         checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
@@ -315,6 +306,164 @@ describe('Payment step', () => {
                 screen.getByRole('button', { name: /place order/i }).hasAttribute('disabled'),
             ).toBeTruthy(),
         );
+    });
+
+    describe('billing country change (themeV2)', () => {
+        // The fixture billing address is AU; the countryCode subscription only
+        // sees a change if the PUT response carries the new country.
+        const mockBillingAddressPut = (countryCode: string, country: string) => {
+            checkout.updateCheckout('put', '/checkouts/*/billing-address/*', {
+                ...checkoutWithShippingAndBilling,
+                billingAddress: {
+                    ...checkoutWithShippingAndBilling.billingAddress,
+                    country,
+                    countryCode,
+                    stateOrProvince: '',
+                    stateOrProvinceCode: '',
+                } as BillingAddress,
+            });
+        };
+
+        beforeEach(() => {
+            mockEnsureBillingAddressSaved = jest.fn<Promise<boolean>, []>().mockResolvedValue(true);
+        });
+
+        it('does not reload payment methods on initial load', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                config: themeV2Config,
+            });
+
+            const loadPaymentMethodsSpy = jest.spyOn(checkoutService, 'loadPaymentMethods');
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            expect(loadPaymentMethodsSpy).toHaveBeenCalledTimes(1);
+        });
+
+        it('reloads payment methods in place when the billing country changes', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                config: themeV2Config,
+            });
+
+            const loadPaymentMethodsSpy = jest.spyOn(checkoutService, 'loadPaymentMethods');
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            const initialCalls = loadPaymentMethodsSpy.mock.calls.length;
+
+            await userEvent.type(screen.getByTestId('billing-block-probe'), 'still-mounted');
+
+            mockBillingAddressPut('US', 'United States');
+
+            await act(async () => {
+                await checkoutService.updateBillingAddress({ countryCode: 'US' });
+            });
+
+            await waitFor(() =>
+                expect(loadPaymentMethodsSpy).toHaveBeenCalledTimes(initialCalls + 1),
+            );
+
+            expect(screen.getByTestId<HTMLInputElement>('billing-block-probe').value).toBe(
+                'still-mounted',
+            );
+            expect(screen.getByRole('radio', { name: 'Pay in Store' })).toBeInTheDocument();
+        });
+
+        it('disables Place Order and overlays the method list while the reload is in flight', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                config: themeV2Config,
+            });
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            mockBillingAddressPut('US', 'United States');
+
+            let resolvePaymentsResponse!: () => void;
+            const paymentsResponseBlocker = new Promise<void>((resolve) => {
+                resolvePaymentsResponse = resolve;
+            });
+
+            checkout.setRequestHandler(
+                rest.get('/api/storefront/payments', async (_, res, ctx) => {
+                    await paymentsResponseBlocker;
+
+                    return res(ctx.json(payments));
+                }),
+            );
+
+            await act(async () => {
+                await checkoutService.updateBillingAddress({ countryCode: 'US' });
+            });
+
+            await screen.findByTestId('loading-overlay');
+
+            const placeOrderButton = screen.getByRole<HTMLButtonElement>('button', {
+                name: /place order/i,
+            });
+
+            expect(placeOrderButton.disabled).toBe(true);
+
+            await act(async () => {
+                resolvePaymentsResponse();
+            });
+
+            await waitFor(() =>
+                expect(screen.queryByTestId('loading-overlay')).not.toBeInTheDocument(),
+            );
+            expect(placeOrderButton.disabled).toBe(false);
+        });
+
+        it('does not reload payment methods for a billing update that keeps the same country', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                config: themeV2Config,
+            });
+
+            const loadPaymentMethodsSpy = jest.spyOn(checkoutService, 'loadPaymentMethods');
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            const initialCalls = loadPaymentMethodsSpy.mock.calls.length;
+
+            mockBillingAddressPut('AU', 'Australia');
+
+            await act(async () => {
+                await checkoutService.updateBillingAddress({});
+            });
+
+            expect(loadPaymentMethodsSpy).toHaveBeenCalledTimes(initialCalls);
+        });
+
+        it('stops watching the billing country after unmount', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                config: themeV2Config,
+            });
+
+            const loadPaymentMethodsSpy = jest.spyOn(checkoutService, 'loadPaymentMethods');
+
+            const { unmount } = render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            const initialCalls = loadPaymentMethodsSpy.mock.calls.length;
+
+            unmount();
+
+            mockBillingAddressPut('US', 'United States');
+
+            await act(async () => {
+                await checkoutService.updateBillingAddress({ countryCode: 'US' });
+            });
+
+            expect(loadPaymentMethodsSpy).toHaveBeenCalledTimes(initialCalls);
+        });
     });
 
     it('does not submit the order when disableSubmit is called for another method right after the selected one', async () => {
