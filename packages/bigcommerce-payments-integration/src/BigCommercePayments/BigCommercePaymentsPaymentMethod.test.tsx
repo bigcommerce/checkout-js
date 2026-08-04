@@ -144,5 +144,13 @@ describe('BigCommercePaymentsPaymentMethod', () => {
 
             expect(checkoutService.loadInstruments).not.toHaveBeenCalled();
         });
+
+        it('should load instruments if isComplete is false', () => {
+            props.method.initializationData.isComplete = false;
+
+            render(<BigCommercePaymentsPaymentMethodMock {...props} />);
+
+            expect(checkoutService.loadInstruments).toHaveBeenCalled();
+        });
     });
 });
