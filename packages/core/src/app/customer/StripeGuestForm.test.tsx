@@ -9,7 +9,9 @@ import StripeGuestForm, { type StripeGuestFormProps } from './StripeGuestForm';
 
 describe('StripeGuestForm', () => {
     let defaultProps: StripeGuestFormProps;
-    let TestComponent: FunctionComponent<Partial<StripeGuestFormProps> & { enhancedTheme?: boolean }>;
+    let TestComponent: FunctionComponent<
+        Partial<StripeGuestFormProps> & { enhancedTheme?: boolean }
+    >;
     const handleContinueAsGuest = jest.fn();
     const dummyElement = document.createElement('div');
 

@@ -84,7 +84,7 @@ const CustomerStep: React.FC<CustomerStepProps> = ({
         enhancedTheme && viewType === CustomerViewType.Guest && !isCustomerBusy;
 
     const headerAction = shouldShowHeaderAction ? (
-        <span className="body-regular">
+        <span className="optimizedCheckout-contentPrimary body-regular">
             <TranslatedString id="customer.login_text" />{' '}
             <a
                 data-test="customer-continue-button"

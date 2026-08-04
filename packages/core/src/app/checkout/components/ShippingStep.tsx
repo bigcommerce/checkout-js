@@ -60,7 +60,10 @@ const ShippingStep: React.FC<ShippingStepProps> = ({
     }
 
     const shouldShowHeaderAction =
-        enhancedTheme && checkout && config && shouldShowMultiShippingToggle(checkout, config, cart);
+        enhancedTheme &&
+        checkout &&
+        config &&
+        shouldShowMultiShippingToggle(checkout, config, cart);
 
     const headerAction = shouldShowHeaderAction ? (
         <span className="body-cta" data-test="shipping-mode-toggle">

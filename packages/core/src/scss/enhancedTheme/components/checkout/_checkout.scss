@@ -1,7 +1,3 @@
-@include enhancedTheme {
-    background-color: $color-secondaryDarker;
-}
-
 .layout {
     @include enhancedTheme {
         padding: 0;
@@ -14,7 +10,6 @@
         
         .checkout-separator {
             .sub-header {
-                color: $color-greyDark;
                 margin: 0;
             }
         }
@@ -33,7 +28,6 @@
         }
 
         .checkout-step {
-            background-color: $color-white;
             border-bottom: none;
             padding: #{spacing("base")} #{spacing("base") + spacing("base")};
             margin: spacing("single") 0;

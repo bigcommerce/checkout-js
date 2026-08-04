@@ -135,7 +135,7 @@ const AllocateItemsModal: FunctionComponent<
     const modalFooter = (
         <>
             <Button
-                className="body-medium"
+                className="optimizedCheckout-contentPrimary body-medium"
                 disabled={isLoading}
                 onClick={onRequestClose}
                 variant={ButtonVariant.Secondary}
@@ -143,7 +143,7 @@ const AllocateItemsModal: FunctionComponent<
                 <TranslatedString id="shipping.multishipping_items_allocate_cancel" />
             </Button>
             <Button
-                className="body-medium"
+                className="optimizedCheckout-contentPrimary body-medium"
                 disabled={!hasItemsAssigned && !dirty}
                 isLoading={isLoading}
                 onClick={submitForm}
@@ -171,7 +171,7 @@ const AllocateItemsModal: FunctionComponent<
                             id="shipping.multishipping_consignment_index_heading"
                         />
                     </ModalHeader>
-                    <h4 className="body-medium">{getAddressContent(address)}</h4>
+                    <h4 className="optimizedCheckout-contentPrimary body-medium">{getAddressContent(address)}</h4>
                 </>
             }
             isOpen={isOpen}
@@ -201,7 +201,7 @@ const AllocateItemsModal: FunctionComponent<
                 {hasUnassignedItems ? (
                     <>
                         <div className="left-to-allocate-items-table-actions">
-                            <p className="body-regular">
+                            <p className="optimizedCheckout-contentPrimary body-regular">
                                 {allocatedOrSelectedItemsMessage}
                                 {unassignedItems.hasSplitItems && <ItemSplitTooltip />}
                             </p>

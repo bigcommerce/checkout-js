@@ -40,8 +40,8 @@ const CheckoutInitializer: React.FC<CheckoutInitializerProps> = (props) => {
             createEmbeddedMessenger={props.createEmbeddedMessenger}
             embeddedStylesheet={props.embeddedStylesheet}
             embeddedSupport={props.embeddedSupport}
-            errorLogger={props.errorLogger}
             enhancedTheme={enhancedTheme}
+            errorLogger={props.errorLogger}
         />
     );
 };

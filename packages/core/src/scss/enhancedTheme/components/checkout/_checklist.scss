@@ -15,7 +15,7 @@
 
             &:last-child {
                 margin-bottom: 0;
-            }         
+            }
         }
 
         .form-checklist-item--selected {
@@ -70,12 +70,7 @@
         & ~ .form-label::before {
             border: 2px $input-border-style $input-border-color;
         }
-    
-        &:checked ~ .form-label::before {
-            border-color: $color-black;
-            background-color: $color-black;
-        }
-    
+
         &:checked ~ .form-label::after {
             background-color: $color-white;
         }

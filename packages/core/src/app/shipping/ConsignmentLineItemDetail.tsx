@@ -39,12 +39,14 @@ export const ConsignmentLineItemContent = ({
     return (
         <span
             className={classNames(
+                'optimizedCheckout-contentPrimary',
                 { 'body-regular': !isMultiShippingSummary },
                 { 'sub-text': isMultiShippingSummary },
             )}
         >
             <span
                 className={classNames(
+                    'optimizedCheckout-contentPrimary',
                     { 'body-bold': !isMultiShippingSummary },
                     { 'sub-text-bold': isMultiShippingSummary },
                 )}
@@ -55,6 +57,7 @@ export const ConsignmentLineItemContent = ({
             {shouldDisplayBackorderQuantity && (
                 <span
                     className={classNames(
+                        'optimizedCheckout-contentSecondary',
                         { 'body-thin': !isMultiShippingSummary },
                         { 'sub-text-medium': isMultiShippingSummary },
                     )}

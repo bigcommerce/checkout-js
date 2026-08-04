@@ -50,11 +50,11 @@ const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
                 />
 
                 <h2
-                    className={classNames(
-                        'stepHeader-title optimizedCheckout-headingPrimary',
-                        { header: isActive || isComplete },
-                        { 'header-secondary': !isActive && !isComplete },
-                    )}
+                    className={classNames('stepHeader-title', {
+                        'header optimizedCheckout-headingPrimary': isActive || isComplete,
+                        'header-secondary optimizedCheckout-headingSecondary':
+                            !isActive && !isComplete,
+                    })}
                 >
                     {heading}
                 </h2>
@@ -82,7 +82,7 @@ const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
                 <div className="stepHeader-actions stepHeader-column">
                     <Button
                         aria-expanded={isActive}
-                        className="body-regular"
+                        className="optimizedCheckout-contentPrimary body-regular"
                         size={ButtonSize.Tiny}
                         testId="step-edit-button"
                         variant={ButtonVariant.Secondary}

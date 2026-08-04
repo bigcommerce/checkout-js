@@ -18,7 +18,7 @@ const PrivacyPolicyFieldset: FunctionComponent<{ url: string }> = ({ url }) => (
 );
 
 const PrivacyPolicyAutoConsent: FunctionComponent<{ url: string }> = ({ url }) => (
-    <p className="body-regular">
+    <p className="optimizedCheckout-contentPrimary body-regular">
         <TranslatedHtml data={{ url }} id="privacy_policy_auto_consent.label" />
     </p>
 );

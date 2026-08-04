@@ -58,14 +58,14 @@ const CartStockPositionsChangedModal: FunctionComponent<CartStockPositionsChange
             footer={
                 <>
                     <Button
-                        className="body-medium"
+                        className="optimizedCheckout-contentPrimary body-medium"
                         onClick={onRequestClose}
                         variant={ButtonVariant.Secondary}
                     >
                         <TranslatedString id="common.back_action" />
                     </Button>
                     <Button
-                        className="body-medium"
+                        className="optimizedCheckout-contentPrimary body-medium"
                         onClick={onPlaceOrder}
                         variant={ButtonVariant.Primary}
                     >

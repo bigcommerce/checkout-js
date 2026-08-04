@@ -108,7 +108,7 @@ const NewConsignment = ({
 
     return (
         <div className="consignment-container">
-            <div className="consignment-header sub-header">
+            <div className="consignment-header optimizedCheckout-headingSecondary sub-header">
                 <h3>
                     <TranslatedString
                         data={{ consignmentNumber }}
@@ -135,7 +135,7 @@ const NewConsignment = ({
                         unassignedItems={unassignedItems}
                     />
                     <div className="new-consignment-line-item-header">
-                        <h3 className="body-bold">
+                        <h3 className="optimizedCheckout-contentPrimary body-bold">
                             <TranslatedString id="shipping.multishipping_no_item_allocated_message" />
                         </h3>
                         <a

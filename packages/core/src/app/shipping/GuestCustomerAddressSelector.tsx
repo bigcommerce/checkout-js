@@ -20,7 +20,7 @@ const GuestCustomerAddressSelector = ({
         <div className="guest-consignment-line-item-header">
             {!selectedAddress ? (
                 <>
-                    <h3 className="body-bold">
+                    <h3 className="optimizedCheckout-contentPrimary body-bold">
                         <TranslatedString id="shipping.guest_multishipping_no_shipping_address_message" />
                     </h3>
                     <a

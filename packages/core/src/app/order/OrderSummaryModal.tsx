@@ -165,7 +165,7 @@ const OrderSummaryModal: FunctionComponent<
                     storeCurrencyCode={storeCurrency.code}
                 />
                 {isTotalDiscountVisible && totalDiscount && (
-                    <div className="total-savings">
+                    <div className="total-savings optimizedCheckout-contentSecondary">
                         <TranslatedHtml
                             data={{ totalDiscount: currency.toCustomerCurrency(totalDiscount) }}
                             id="redeemable.total_savings_text"

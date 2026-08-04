@@ -1,8 +1,6 @@
 $element-border-radius: remCalc(12px);
 
 @include enhancedTheme {
-    background-color: $color-secondaryDarker;
-
     .button,
     .shippingOptions-panel,
     .alertBox,
