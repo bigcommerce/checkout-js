@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.854.1](https://github.com/bigcommerce/checkout-js/compare/v1.854.0...v1.854.1) (2026-08-05)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10281 Fetch Shipping Options when Changing Extra Field ([#3221](https://github.com/bigcommerce/checkout-js/issues/3221)) ([966d7da](https://github.com/bigcommerce/checkout-js/commit/966d7da6d6132db7dbb338b0498fd403cfde9eaa))
+* **checkout:** CHECKOUT-10297 Adjust styling so that phone flag is centered ([#3222](https://github.com/bigcommerce/checkout-js/issues/3222)) ([d92497e](https://github.com/bigcommerce/checkout-js/commit/d92497e2d108dd9233d586cf5569ef885f90710b))
+
 ## [1.854.0](https://github.com/bigcommerce/checkout-js/compare/v1.853.0...v1.854.0) (2026-08-05)
 
 
