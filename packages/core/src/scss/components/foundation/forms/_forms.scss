@@ -89,6 +89,10 @@
             position: relative;
             width: 100%;
 
+            input.iti__tel-input {
+                float: none;
+            }
+
             .iti__selected-country-primary {
                 // remove default background to align with out form style
                 background-color: transparent !important;
@@ -102,7 +106,7 @@
         .iti-wrapper {
             display: block;
 
-            .iti__country-container {
+            .iti__country-container:has(+ input.floating-input) {
                 top: $input-verticalPadding * 1.5;
                 bottom: auto;
                 height: $floating-label-input-height - $input-verticalPadding * 1.5;
