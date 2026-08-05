@@ -82,11 +82,40 @@ const PaymentMethodComponent: FunctionComponent<
         method.method === PaymentMethodType.CreditCard ||
         method.type === PaymentMethodProviderType.Api
     ) {
-        const sentryMessage = `DataHostedCreditCardPaymentMethod ${JSON.stringify({
-            gateway: method.gateway,
-            id: method.id,
-            type: method.type,
-        })}`;
+        const knownMethods: Array<{ gateway: string | null; id: string; type: string }> = [
+            { gateway: null, id: 'authorizenet', type: PaymentMethodProviderType.Api },
+            { gateway: null, id: 'cybersourcev2', type: PaymentMethodProviderType.Api },
+            { gateway: null, id: 'ewayrapid', type: PaymentMethodProviderType.Api },
+            { gateway: null, id: 'nmi', type: PaymentMethodProviderType.Api },
+            { gateway: null, id: 'bigpaypay', type: PaymentMethodProviderType.Api },
+            { gateway: null, id: 'usaepay', type: PaymentMethodProviderType.Api },
+            { gateway: null, id: 'googlepay', type: PaymentMethodProviderType.Api },
+            { gateway: null, id: 'quickbooks', type: PaymentMethodProviderType.Api },
+            { gateway: null, id: 'orbital', type: PaymentMethodProviderType.Api },
+            { gateway: null, id: 'stripe', type: PaymentMethodProviderType.Api },
+            { gateway: null, id: 'firstdatae4v14', type: PaymentMethodProviderType.Api },
+            { gateway: null, id: 'cybersource', type: PaymentMethodProviderType.Api },
+            { gateway: null, id: 'hps', type: PaymentMethodProviderType.Api },
+            { gateway: null, id: 'clover', type: PaymentMethodProviderType.Api },
+            { gateway: null, id: 'elavon', type: PaymentMethodProviderType.Api },
+            { gateway: null, id: 'bnz', type: PaymentMethodProviderType.Api },
+            { gateway: null, id: 'vantivcore', type: PaymentMethodProviderType.Api },
+        ];
+
+        const isKnownMethod = knownMethods.some(
+            (knownMethod) =>
+                knownMethod.gateway === method.gateway &&
+                knownMethod.id === method.id &&
+                knownMethod.type === method.type,
+        );
+
+        const sentryMessage = isKnownMethod
+            ? ''
+            : `DataHostedCreditCardPaymentMethod ${JSON.stringify({
+                  gateway: method.gateway,
+                  id: method.id,
+                  type: method.type,
+              })}`;
 
         return (
             <>
