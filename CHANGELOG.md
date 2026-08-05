@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.853.0](https://github.com/bigcommerce/checkout-js/compare/v1.852.0...v1.853.0) (2026-08-05)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10267 Update cart summary UI for mobile enhanced theme ([#3205](https://github.com/bigcommerce/checkout-js/issues/3205)) ([4f0f057](https://github.com/bigcommerce/checkout-js/commit/4f0f05764a610daedc1d1129c0c975086fbd036f))
+
 ## [1.852.0](https://github.com/bigcommerce/checkout-js/compare/v1.851.0...v1.852.0) (2026-08-04)
 
 
