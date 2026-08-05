@@ -8,6 +8,10 @@
 
         .product-figure {
             max-width: remCalc(80px);
+
+            img {
+                border-radius: $element-border-radius;
+            }
         }
     }
 
@@ -22,10 +26,6 @@
             max-width: none;
             width: 20%;
             padding-right: spacing("single");
-
-            img {
-                border-radius: $element-border-radius;
-            }
         }
     }
 }
