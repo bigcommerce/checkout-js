@@ -11,6 +11,7 @@ import { Fieldset, Form } from '@bigcommerce/checkout/ui';
 import {
     type AddressFormValues,
     decodeAddressLabel,
+    getAddressExtraFields,
     getAddressFormFieldsValidationSchema,
     getTranslateAddressError,
     isEqualAddress,
@@ -202,6 +203,12 @@ const SingleShippingForm: React.FC<
                     updatedShippingAddress?.customFields,
                 ) || includeShippingOptions;
         }
+
+        newIncludeShippingOptions =
+            !isEqual(
+                getAddressExtraFields(currentShippingAddress),
+                getAddressExtraFields(updatedShippingAddress),
+            ) || newIncludeShippingOptions;
 
         if (
             !updatedShippingAddress ||
