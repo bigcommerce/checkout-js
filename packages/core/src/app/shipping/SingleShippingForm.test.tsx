@@ -1,4 +1,4 @@
-import { createCheckoutService } from '@bigcommerce/checkout-sdk';
+import { type Address, createCheckoutService, type FormField } from '@bigcommerce/checkout-sdk';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
@@ -27,6 +27,28 @@ describe('SingleShippingForm', () => {
     const checkoutService = createCheckoutService();
     const extensionService = new ExtensionService(checkoutService, createErrorLogger());
     const addressFormFields = getAddressFormFields().filter(({ custom }) => !custom);
+
+    const extraFormField: FormField = {
+        custom: false,
+        default: '',
+        fieldType: 'dropdown',
+        id: 'b2bExtraField_11',
+        label: 'Dropdown extra field',
+        name: 'b2bExtraField_11',
+        options: {
+            items: [
+                { label: 'a', value: 'a' },
+                { label: 'b', value: 'b' },
+            ],
+        },
+        required: true,
+        type: 'array',
+    };
+
+    const shippingAddressWithExtraFields: Address = {
+        ...getShippingAddress(),
+        extraFields: [{ fieldId: '11', fieldValue: 'a' }],
+    };
 
     const mockUseShipping = useShipping as jest.MockedFunction<typeof useShipping>;
 
@@ -200,6 +222,76 @@ describe('SingleShippingForm', () => {
                 params: {
                     include: {
                         'consignments.availableShippingOptions': true,
+                    },
+                },
+            },
+        );
+    });
+
+    it('calls updateAddress including shipping options if extra fields are updated and shipping options have already been requested', async () => {
+        const updateShippingAddress = jest.fn();
+
+        mockUseShipping.mockReturnValue({ ...defaultUseShippingValues, updateShippingAddress });
+        renderSingleShippingFormComponent({
+            shippingAddress: shippingAddressWithExtraFields,
+            getFields: () => [...addressFormFields, extraFormField],
+        });
+
+        await userEvent.clear(screen.getByTestId('addressLine2Input-text'));
+        await userEvent.keyboard('foo 1');
+
+        await new Promise((resolve) => setTimeout(resolve, waitingDelay));
+
+        await userEvent.selectOptions(screen.getByTestId('b2bExtraField_11Input-select'), 'b');
+
+        await new Promise((resolve) => setTimeout(resolve, waitingDelay));
+
+        expect(updateShippingAddress).toHaveBeenCalledTimes(2);
+        expect(updateShippingAddress).toHaveBeenLastCalledWith(
+            {
+                ...getShippingAddress(),
+                address2: 'foo 1',
+                extraFields: [{ fieldId: '11', fieldValue: 'b' }],
+            },
+            {
+                params: {
+                    include: {
+                        'consignments.availableShippingOptions': true,
+                    },
+                },
+            },
+        );
+    });
+
+    it('calls updateAddress without shipping options if extra fields are unchanged and shipping options have already been requested', async () => {
+        const updateShippingAddress = jest.fn();
+
+        mockUseShipping.mockReturnValue({ ...defaultUseShippingValues, updateShippingAddress });
+        renderSingleShippingFormComponent({
+            shippingAddress: shippingAddressWithExtraFields,
+            getFields: () => [...addressFormFields, extraFormField],
+        });
+
+        await userEvent.clear(screen.getByTestId('addressLine2Input-text'));
+        await userEvent.keyboard('foo1');
+
+        await new Promise((resolve) => setTimeout(resolve, waitingDelay));
+
+        await userEvent.clear(screen.getByTestId('addressLine2Input-text'));
+        await userEvent.keyboard('foo2');
+
+        await new Promise((resolve) => setTimeout(resolve, waitingDelay));
+
+        expect(updateShippingAddress).toHaveBeenLastCalledWith(
+            {
+                ...getShippingAddress(),
+                address2: 'foo2',
+                extraFields: [{ fieldId: '11', fieldValue: 'a' }],
+            },
+            {
+                params: {
+                    include: {
+                        'consignments.availableShippingOptions': false,
                     },
                 },
             },
