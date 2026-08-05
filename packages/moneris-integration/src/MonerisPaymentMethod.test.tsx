@@ -32,6 +32,7 @@ import {
     getStoreConfig,
 } from '@bigcommerce/checkout/test-mocks';
 import { act } from '@bigcommerce/checkout/test-utils';
+import { ErrorLevelType, type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 
 import getMonerisIframeStyles from './getMonerisIframeStyles';
 import MonerisPaymentMethod from './MonerisPaymentMethod';
@@ -46,6 +47,7 @@ describe('when using Moneris payment', () => {
     let localeContext: LocaleContextType;
     let PaymentMethodTest: FunctionComponent<PaymentMethodProps>;
     let paymentForm: PaymentFormService;
+    let errorLogger: ErrorLogger;
 
     const monerisIframeStyles = {
         cssBody: 'font-family: "Open Sans", sans-serif;background: transparent;',
@@ -78,6 +80,8 @@ describe('when using Moneris payment', () => {
 
         jest.spyOn(checkoutService, 'loadInstruments').mockResolvedValue(checkoutState);
 
+        errorLogger = { log: jest.fn() };
+
         defaultProps = {
             method,
             checkoutService,
@@ -88,7 +92,7 @@ describe('when using Moneris payment', () => {
         };
 
         PaymentMethodTest = (props) => (
-            <CheckoutProvider checkoutService={checkoutService}>
+            <CheckoutProvider checkoutService={checkoutService} errorLogger={errorLogger}>
                 <PaymentFormContext.Provider value={{ paymentForm }}>
                     <LocaleContext.Provider value={localeContext}>
                         <Formik initialValues={{}} onSubmit={noop}>
@@ -134,7 +138,35 @@ describe('when using Moneris payment', () => {
 
         expect(getMonerisIframeStyles).toHaveBeenCalledWith({
             cardNumberContainerId: 'moneris-ccNumber',
+            onMissingStyleContainer: expect.any(Function),
         });
+    });
+
+    it('logs missing style probe containers to errorLogger without interrupting checkout', async () => {
+        const styleProbeError = new Error(
+            'Unable to retrieve input styles as the provided container ID is not valid.',
+        );
+
+        jest.mocked(getMonerisIframeStyles).mockImplementation(({ onMissingStyleContainer }) => {
+            onMissingStyleContainer?.(styleProbeError);
+
+            return monerisIframeStyles;
+        });
+
+        render(<PaymentMethodTest {...defaultProps} />);
+
+        await act(async () => {
+            await Promise.resolve();
+        });
+
+        expect(errorLogger.log).toHaveBeenCalledWith(
+            styleProbeError,
+            { errorCode: 'monerisStyleProbe' },
+            ErrorLevelType.Warning,
+            { containerId: 'moneris-ccNumber' },
+        );
+        expect(defaultProps.onUnhandledError).not.toHaveBeenCalled();
+        expect(checkoutService.initializePayment).toHaveBeenCalled();
     });
 
     it('calls onUnhandledError when payment initialization fails', async () => {

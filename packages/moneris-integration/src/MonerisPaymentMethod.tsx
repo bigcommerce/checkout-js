@@ -3,6 +3,8 @@ import { createMonerisPaymentStrategy } from '@bigcommerce/checkout-sdk/integrat
 import { compact, some } from 'lodash';
 import React, { type FunctionComponent, useCallback } from 'react';
 
+import { useCheckout } from '@bigcommerce/checkout/contexts';
+import { ErrorLevelType } from '@bigcommerce/checkout/error-handling-utils';
 import {
     getHostedInstrumentValidationSchema,
     useHostedCreditCard,
@@ -33,6 +35,7 @@ const MonerisPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     ...rest
 }) => {
     const containerId = 'moneris-iframe-container';
+    const { errorLogger } = useCheckout();
 
     const { getHostedStoredCardValidationFieldset, getHostedFormOptions } = useHostedCreditCard({
         checkoutState,
@@ -72,10 +75,20 @@ const MonerisPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     const cardNumberStyleContainerId = getHostedFieldId('ccNumber');
     const styleSamplerClassName = 'form-ccFields form-ccFields--without-card-name';
 
+    const logMissingStyleContainer = useCallback(
+        (error: Error) => {
+            errorLogger?.log(error, { errorCode: 'monerisStyleProbe' }, ErrorLevelType.Warning, {
+                containerId: cardNumberStyleContainerId,
+            });
+        },
+        [cardNumberStyleContainerId, errorLogger],
+    );
+
     const initializeMonerisPayment: HostedWidgetComponentProps['initializePayment'] = useCallback(
         async (options: PaymentInitializeOptions, selectedInstrument) => {
             const style = getMonerisIframeStyles({
                 cardNumberContainerId: cardNumberStyleContainerId,
+                onMissingStyleContainer: logMissingStyleContainer,
             });
 
             const paymentConfig = {
@@ -92,7 +105,13 @@ const MonerisPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
             return checkoutService.initializePayment(paymentConfig);
         },
-        [cardNumberStyleContainerId, containerId, getHostedFormOptions, checkoutService],
+        [
+            cardNumberStyleContainerId,
+            containerId,
+            getHostedFormOptions,
+            checkoutService,
+            logMissingStyleContainer,
+        ],
     );
 
     const validateInstrument = (_shouldShowNumber: boolean, selectedInstrument: CardInstrument) => {
