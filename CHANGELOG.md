@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.855.2](https://github.com/bigcommerce/checkout-js/compare/v1.855.1...v1.855.2) (2026-08-06)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10300 Render legacy component for phone fields with maxLength ([#3226](https://github.com/bigcommerce/checkout-js/issues/3226)) ([78e2f75](https://github.com/bigcommerce/checkout-js/commit/78e2f7515d4dccfc4b24c40e6161f110a91f5a02))
+
 ### [1.855.1](https://github.com/bigcommerce/checkout-js/compare/v1.855.0...v1.855.1) (2026-08-06)
 
 ## [1.855.0](https://github.com/bigcommerce/checkout-js/compare/v1.854.1...v1.855.0) (2026-08-06)
