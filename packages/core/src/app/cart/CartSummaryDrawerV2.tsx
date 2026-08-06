@@ -58,7 +58,7 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({
     };
 
     return (
-        <div className="cart-summary-drawer" ref={setRootElement}>
+        <div className="cart-summary-drawer enhancedTheme" ref={setRootElement}>
             <div
                 aria-controls="cart-summary-sheet"
                 aria-expanded={isExpanded}
@@ -91,12 +91,12 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({
                         {shopperCurrency.code})
                     </span>
                 </div>
-                <span className="cart-summary-bar-toggle-label body-regular">
+                <a className="cart-summary-bar-toggle-label body-regular">
                     <TranslatedString
                         id={isExpanded ? 'cart.hide_details_action' : 'cart.show_details_action'}
                     />
                     {isExpanded ? <IconChevronDown /> : <IconChevronUp />}
-                </span>
+                </a>
             </div>
             {rootElement && (
                 <ReactModal
@@ -118,7 +118,7 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({
                     isOpen={isExpanded}
                     onRequestClose={closeSheet}
                     overlayClassName={{
-                        base: 'cart-summary-backdrop',
+                        base: 'cart-summary-backdrop optimizedCheckout-orderSummary',
                         afterOpen: 'cart-summary-backdrop--afterOpen',
                         beforeClose: 'cart-summary-backdrop--beforeClose',
                     }}

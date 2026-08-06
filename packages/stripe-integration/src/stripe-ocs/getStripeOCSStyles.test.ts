@@ -568,7 +568,10 @@ describe('getStripeOCSStyles', () => {
                 },
             });
 
-            const appearance = getAppearanceForOCSElement(containerId, CheckoutTheme.ENHANCED_THEME);
+            const appearance = getAppearanceForOCSElement(
+                containerId,
+                CheckoutTheme.ENHANCED_THEME,
+            );
 
             expect(appearance.rules?.['.ToggleItem']).not.toHaveProperty('borderRadius');
         });
