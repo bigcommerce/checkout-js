@@ -3,6 +3,7 @@ import {
     type Capabilities,
     type Cart,
     type CartStockPositionsChangedError,
+    type CheckoutPayment,
     type CheckoutSelectors,
     type CheckoutService,
     type Consignment,
@@ -44,7 +45,7 @@ import {
     useCapabilities,
     useThemeContext,
 } from '@bigcommerce/checkout/contexts';
-import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
+import { ErrorLevelType, type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { ChecklistSkeleton, LoadingOverlay } from '@bigcommerce/checkout/ui';
@@ -118,6 +119,7 @@ interface WithCheckoutPaymentProps {
     methods: PaymentMethod[];
     orderExtraFields?: FormField[];
     orderId?: number;
+    payments?: CheckoutPayment[];
     shouldExecuteSpamCheck: boolean;
     shouldLocaliseErrorMessages: boolean;
     submitOrderError?: Error;
@@ -730,16 +732,60 @@ const Payment = (
     useEffect(() => {
         const init = async () => {
             const {
+                cart,
+                errorLogger,
                 finalizeOrderIfNeeded,
                 onFinalize = noop,
                 onFinalizeError = noop,
                 onReady = noop,
                 onUnhandledError = noop,
                 orderId,
+                payments,
                 refreshB2BPaymentMethods,
                 usableStoreCredit,
                 checkoutServiceSubscribe,
             } = props;
+
+            // Diagnostic logging: shoppers redirected back from
+            // Afterpay sometimes land with no order created and no server-side trace.
+            const isReturningFromAfterpay = () =>
+                typeof document !== 'undefined' && /afterpay\.com/i.test(document.referrer || '');
+
+            const logAfterpayRedirectOutcome = (error?: unknown) => {
+                if (!isReturningFromAfterpay()) {
+                    return;
+                }
+
+                const isExpectedSkip =
+                    isErrorWithType(error) && error.type === 'order_finalization_not_required';
+                const outcome = !error ? 'success' : isExpectedSkip ? 'skipped' : 'failure';
+
+                // `payments` (checkout.payments) is already loaded by the time Payment mounts,
+                // unlike the payment methods list, so read the attempted method straight off the
+                // HOSTED payment record rather than off `defaultMethod`, which is still empty at
+                // this point (loadPaymentMethodsOrThrow hasn't resolved yet).
+                const hostedPayment = (payments || []).find(
+                    (payment) => payment.providerType === 'PAYMENT_TYPE_HOSTED',
+                );
+
+                const meta = {
+                    stage: 'afterpay-redirect-finalize',
+                    outcome,
+                    errorType: isErrorWithType(error) ? error.type : undefined,
+                    methodId: hostedPayment?.providerId,
+                    gatewayId: hostedPayment?.gatewayId,
+                    cartId: cart?.id,
+                    hasHostedPayment: Boolean(hostedPayment),
+                };
+
+                if (outcome === 'failure' && error instanceof Error) {
+                    errorLogger.log(error, undefined, ErrorLevelType.Warning, meta);
+                } else {
+                    errorLogger.logMessage?.(
+                        `Afterpay redirect-back finalize: ${JSON.stringify(meta)}`,
+                    );
+                }
+            };
 
             if (!disableStoreCredit && usableStoreCredit) {
                 await handleStoreCreditChange(true);
@@ -778,8 +824,11 @@ const Payment = (
 
                 await persistB2BMetadataIfNeeded();
 
+                logAfterpayRedirectOutcome();
                 onFinalize(order?.orderId);
             } catch (error) {
+                logAfterpayRedirectOutcome(error);
+
                 if (isErrorWithType(error) && error.type !== 'order_finalization_not_required') {
                     onFinalizeError(error);
                 }
@@ -1022,6 +1071,7 @@ export function mapToPaymentProps(
         methods: filteredMethods,
         orderExtraFields,
         orderId: checkout.orderId,
+        payments: checkout.payments,
         refreshB2BPaymentMethods: checkoutService.refreshB2BPaymentMethods,
         submitB2BMetadata: checkoutService.persistB2BMetadata,
         shouldExecuteSpamCheck: checkout.shouldExecuteSpamCheck,
