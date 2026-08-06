@@ -1,8 +1,10 @@
+@import "../../scss/Base";
+
 .paymentMethodsRefreshAlert {
     outline: none;
 
     .alertBox {
-        padding-right: 3rem;
+        padding-right: spacing("double");
         position: relative;
     }
 
@@ -13,7 +15,7 @@
         line-height: 0;
         padding: 0;
         position: absolute;
-        right: 0.75rem;
-        top: 0.75rem;
+        right: spacing("half");
+        top: spacing("half");
     }
 }
