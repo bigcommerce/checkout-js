@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.856.0](https://github.com/bigcommerce/checkout-js/compare/v1.855.3...v1.856.0) (2026-08-06)
+
+
+### Features
+
+* **payment:** PI-5532 [Afterpay] [FE] Create logs for tracking post-redirect actions ([#3223](https://github.com/bigcommerce/checkout-js/issues/3223)) ([69f8e8d](https://github.com/bigcommerce/checkout-js/commit/69f8e8db4f3a2aca84b0058046a9ca6c85df54f5))
+
 ### [1.855.3](https://github.com/bigcommerce/checkout-js/compare/v1.855.2...v1.855.3) (2026-08-06)
 
 ### [1.855.2](https://github.com/bigcommerce/checkout-js/compare/v1.855.1...v1.855.2) (2026-08-06)
