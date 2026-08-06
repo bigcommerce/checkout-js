@@ -54,7 +54,9 @@ const StaticShippingOption: React.FunctionComponent<StaticShippingOptionProps> =
                     />
                 )}
             </span>
-            <span className="shippingOption-price optimizedCheckout-contentPrimary body-medium">{renderShippingPrice()}</span>
+            <span className="shippingOption-price optimizedCheckout-contentPrimary body-medium">
+                {renderShippingPrice()}
+            </span>
         </div>
     );
 };

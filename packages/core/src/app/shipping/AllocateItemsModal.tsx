@@ -171,7 +171,9 @@ const AllocateItemsModal: FunctionComponent<
                             id="shipping.multishipping_consignment_index_heading"
                         />
                     </ModalHeader>
-                    <h4 className="optimizedCheckout-contentPrimary body-medium">{getAddressContent(address)}</h4>
+                    <h4 className="optimizedCheckout-contentPrimary body-medium">
+                        {getAddressContent(address)}
+                    </h4>
                 </>
             }
             isOpen={isOpen}
