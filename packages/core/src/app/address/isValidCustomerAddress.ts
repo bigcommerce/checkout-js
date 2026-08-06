@@ -9,8 +9,17 @@ export default function isValidCustomerAddress(
     addresses: CustomerAddress[],
     formFields: FormField[],
     validateMaxLength?: boolean,
+    isNewPhoneValidationComponentEnabled?: boolean,
 ): boolean {
-    if (!address || !isValidAddress(address, formFields, validateMaxLength)) {
+    if (
+        !address ||
+        !isValidAddress(
+            address,
+            formFields,
+            validateMaxLength,
+            isNewPhoneValidationComponentEnabled,
+        )
+    ) {
         return false;
     }
 

@@ -16,7 +16,6 @@ import { isIso2 } from '../../utils';
 interface PhoneInputProps extends FieldProps<string> {
     id: string;
     autocomplete?: string;
-    maxLength?: number;
     isFloatingLabelEnabled?: boolean;
     selectedCountry?: string;
     intlTelInputRef: RefObject<IntlTelInputRef>;
@@ -27,7 +26,6 @@ export const PhoneInput: FunctionComponent<PhoneInputProps> = ({
     form: { setFieldValue },
     id,
     autocomplete,
-    maxLength,
     isFloatingLabelEnabled,
     selectedCountry,
     intlTelInputRef,
@@ -109,7 +107,6 @@ export const PhoneInput: FunctionComponent<PhoneInputProps> = ({
                     ...{ 'data-test': `${id}-text` },
                     autoComplete: autocomplete,
                     id,
-                    maxLength,
                     name,
                     onBlur,
                     className: classNames('form-input optimizedCheckout-form-input', {

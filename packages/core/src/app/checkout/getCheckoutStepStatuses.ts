@@ -6,7 +6,7 @@ import { isThemeV2Enabled } from '@bigcommerce/checkout/contexts';
 import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
 import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
-import { isValidAddress } from '../address';
+import { getIsNewPhoneValidationExperimentEnabled, isValidAddress } from '../address';
 import { EMPTY_ARRAY } from '../common/utility';
 import { SUPPORTED_METHODS } from '../customer';
 import { PaymentMethodId } from '../payment/paymentMethod';
@@ -201,8 +201,16 @@ const getShippingStepStatus = createSelector(
     },
     ({ data }: CheckoutSelectors) => data.getConfig(),
     (shippingAddress, consignments, cart, shippingAddressFields, config) => {
+        const isNewPhoneValidationExperimentEnabled = getIsNewPhoneValidationExperimentEnabled(
+            config?.checkoutSettings,
+        );
         const hasAddress = shippingAddress
-            ? isValidAddress(shippingAddress, shippingAddressFields, true)
+            ? isValidAddress(
+                  shippingAddress,
+                  shippingAddressFields,
+                  true,
+                  isNewPhoneValidationExperimentEnabled,
+              )
             : false;
         const hasOptions = consignments ? hasSelectedShippingOptions(consignments) : false;
         const hasUnassignedItems =

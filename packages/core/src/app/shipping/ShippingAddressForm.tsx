@@ -9,6 +9,7 @@ import {
     AddressSelect,
     AddressType,
     decodeAddressLabel,
+    getIsNewPhoneValidationExperimentEnabled,
     isValidCustomerAddress,
     reorderAddressFormFields,
 } from '../address';
@@ -43,8 +44,8 @@ const ShippingAddressForm = ({
     onFieldChange,
 }: ShippingAddressFormProps & ConnectFormikProps<SingleShippingFormValues>): ReactElement => {
     const {
-        selectedState: { customer },
-    } = useCheckout(({ data }) => ({ customer: data.getCustomer() }));
+        selectedState: { customer, config },
+    } = useCheckout(({ data }) => ({ customer: data.getCustomer(), config: data.getConfig() }));
     const { themeV2 } = useThemeContext();
     const {
         shipping: { hideSaveToAddressBookCheck, restrictManualAddressEntry },
@@ -85,11 +86,15 @@ const ShippingAddressForm = ({
     };
 
     const hasAddresses = rawAddresses.length > 0;
+    const isNewPhoneValidationExperimentEnabled = getIsNewPhoneValidationExperimentEnabled(
+        config?.checkoutSettings,
+    );
     const hasValidCustomerAddress = isValidCustomerAddress(
         decodedShippingAddress,
         addresses,
         formFields,
         validateMaxLength,
+        isNewPhoneValidationExperimentEnabled,
     );
 
     const sortedFormFields = themeV2 ? reorderAddressFormFields(formFields) : formFields;

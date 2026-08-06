@@ -43,6 +43,7 @@ export interface SingleShippingFormProps {
     shippingAddress?: Address;
     shippingAutosaveDelay?: number;
     isInitialValueLoaded: boolean;
+    isNewPhoneValidationComponentEnabled?: boolean;
     shippingFormRenderTimestamp?: number;
     getFields(countryCode?: string): FormField[];
     onSubmit(values: SingleShippingFormValues): void;
@@ -356,6 +357,7 @@ export default withLanguage(
             language,
             getFields,
             methodId,
+            isNewPhoneValidationComponentEnabled,
         }: SingleShippingFormProps & WithLanguageProps) =>
             shouldHaveCustomValidation(methodId)
                 ? object({
@@ -380,6 +382,7 @@ export default withLanguage(
                               language,
                               formFields: getFields(formValues?.countryCode),
                               validateMaxLength: true,
+                              isNewPhoneValidationComponentEnabled,
                           }),
                       ),
                   }),

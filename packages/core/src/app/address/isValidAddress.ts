@@ -7,8 +7,13 @@ export default function isValidAddress(
     address: Address,
     formFields: FormField[],
     validateMaxLength?: boolean,
+    isNewPhoneValidationComponentEnabled?: boolean,
 ): boolean {
-    const addressSchema = getAddressFormFieldsValidationSchema({ formFields, validateMaxLength });
+    const addressSchema = getAddressFormFieldsValidationSchema({
+        formFields,
+        validateMaxLength,
+        isNewPhoneValidationComponentEnabled,
+    });
 
     return addressSchema.isValidSync(mapAddressToFormValues(formFields, address));
 }

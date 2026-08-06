@@ -12,6 +12,7 @@ export interface AddressFormFieldsValidationSchemaOptions {
     formFields: FormField[];
     language?: LanguageService;
     validateMaxLength?: boolean;
+    isNewPhoneValidationComponentEnabled?: boolean;
 }
 
 export function getTranslateAddressError(
@@ -95,10 +96,12 @@ export default memoize(function getAddressFormFieldsValidationSchema({
     formFields,
     language,
     validateMaxLength,
+    isNewPhoneValidationComponentEnabled,
 }: AddressFormFieldsValidationSchemaOptions): ObjectSchema<FormFieldValues> {
     return getFormFieldsValidationSchema({
         formFields,
         translate: getTranslateAddressError(formFields, language),
         validateMaxLength,
+        isNewPhoneValidationComponentEnabled,
     });
 });

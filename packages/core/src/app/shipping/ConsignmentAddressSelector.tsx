@@ -53,6 +53,7 @@ const ConsignmentAddressSelector = ({
         createCustomerAddress,
         customer,
         getConsignments: getPreviousConsignments,
+        isNewPhoneValidationComponentEnabled,
     } = useShipping();
 
     // TODO: add filter for addresses
@@ -67,7 +68,14 @@ const ConsignmentAddressSelector = ({
     const handleSelectAddress = async (rawAddress: Address) => {
         const address = decodeAddressLabel(rawAddress, hasAddressLabel);
 
-        if (!isValidAddress(address, getFields(address.countryCode), true)) {
+        if (
+            !isValidAddress(
+                address,
+                getFields(address.countryCode),
+                true,
+                isNewPhoneValidationComponentEnabled,
+            )
+        ) {
             return onUnhandledError(new AssignItemInvalidAddressError());
         }
 

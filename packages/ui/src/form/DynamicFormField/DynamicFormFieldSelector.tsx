@@ -98,7 +98,6 @@ export const DynamicFormFieldSelector: FunctionComponent<DynamicFormFieldSelecto
                     id={id}
                     isFloatingLabelEnabled={isFloatingLabelEnabled}
                     label={label}
-                    maxLength={maxLength || undefined}
                     name={name}
                     onChange={onChange}
                     selectedCountry={selectedCountry}

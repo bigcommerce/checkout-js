@@ -13,23 +13,13 @@ export interface PhoneFormFieldProps {
     label: ReactNode;
     name: string;
     autocomplete?: string;
-    maxLength?: number;
     isFloatingLabelEnabled?: boolean;
     selectedCountry?: string;
     onChange?(value: string): void;
 }
 
 export const PhoneFormField: FunctionComponent<PhoneFormFieldProps> = memo(
-    ({
-        id,
-        label,
-        name,
-        autocomplete,
-        maxLength,
-        isFloatingLabelEnabled,
-        selectedCountry,
-        onChange,
-    }) => {
+    ({ id, label, name, autocomplete, isFloatingLabelEnabled, selectedCountry, onChange }) => {
         const { language } = useLocale();
         const intlTelInputRef = useRef<IntlTelInputRef>(null);
 
@@ -63,11 +53,10 @@ export const PhoneFormField: FunctionComponent<PhoneFormFieldProps> = memo(
                     id={id}
                     intlTelInputRef={intlTelInputRef}
                     isFloatingLabelEnabled={isFloatingLabelEnabled}
-                    maxLength={maxLength}
                     selectedCountry={selectedCountry}
                 />
             ),
-            [autocomplete, id, isFloatingLabelEnabled, maxLength, selectedCountry],
+            [autocomplete, id, isFloatingLabelEnabled, selectedCountry],
         );
 
         return (

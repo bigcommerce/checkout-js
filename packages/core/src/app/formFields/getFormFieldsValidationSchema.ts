@@ -17,6 +17,7 @@ export default memoize(function getFormFieldsValidationSchema({
     formFields,
     translate = () => undefined,
     validateMaxLength = false,
+    isNewPhoneValidationComponentEnabled = false,
 }: FormFieldsValidationSchemaOptions): ObjectSchema<FormFieldValues> {
     return object({
         ...formFields
@@ -31,16 +32,22 @@ export default memoize(function getFormFieldsValidationSchema({
                             .required(translate('required', { label, name }));
                     }
 
-                    if (validateMaxLength && maxLength) {
-                        schema[name] = schema[name].max(
-                            maxLength,
-                            translate('max', { label, name, max: maxLength }),
-                        );
-                    } else if ((name === 'address1' || name === 'address2') && maxLength) {
-                        schema[name] = schema[name].max(
-                            maxLength,
-                            translate('max', { label, name, max: maxLength }),
-                        );
+                    // skip validation for new phone component as it already has validation
+                    const isNewPhoneValidationComponent =
+                        name === 'phone' && isNewPhoneValidationComponentEnabled;
+
+                    if (!isNewPhoneValidationComponent) {
+                        if (validateMaxLength && maxLength) {
+                            schema[name] = schema[name].max(
+                                maxLength,
+                                translate('max', { label, name, max: maxLength }),
+                            );
+                        } else if ((name === 'address1' || name === 'address2') && maxLength) {
+                            schema[name] = schema[name].max(
+                                maxLength,
+                                translate('max', { label, name, max: maxLength }),
+                            );
+                        }
                     }
 
                     schema[name] = schema[name].matches(

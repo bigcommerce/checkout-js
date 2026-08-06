@@ -28,6 +28,7 @@ export interface FormFieldsValidationSchemaOptions {
     formFields: FormField[];
     translate?: TranslateValidationErrorFunction;
     validateMaxLength?: boolean;
+    isNewPhoneValidationComponentEnabled?: boolean;
 }
 
 export interface CustomFormFieldValues {

@@ -9,6 +9,7 @@ export { default as AddressType } from './AddressType';
 export { default as StaticAddress } from './StaticAddress';
 export { default as isValidAddress } from './isValidAddress';
 export { default as isValidCustomerAddress } from './isValidCustomerAddress';
+export { getIsNewPhoneValidationExperimentEnabled } from './isNewPhoneValidationExperimentEnabled';
 export { default as isEqualAddress } from './isEqualAddress';
 export { default as getAddressExtraFields } from './getAddressExtraFields';
 export { default as setDefaultAddress } from './setDefaultAddress';

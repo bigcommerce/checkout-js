@@ -11,7 +11,7 @@ import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instru
 import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
 import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
-import { encodeAddressForWrite } from '../../address';
+import { encodeAddressForWrite, getIsNewPhoneValidationExperimentEnabled } from '../../address';
 import { EMPTY_ARRAY } from '../../common/utility';
 import getBackorderCount from '../../order/getBackorderCount';
 import getProviderWithCustomCheckout from '../../payment/getProviderWithCustomCheckout';
@@ -156,6 +156,10 @@ export const useShipping = () => {
         config.checkoutSettings.providerWithCustomCheckout,
     );
 
+    const isNewPhoneValidationComponentEnabled = getIsNewPhoneValidationExperimentEnabled(
+        config.checkoutSettings,
+    );
+
     const showDefaultShippingExpectationPrompt =
         config.inventorySettings?.shouldDisplayBackorderMessagesOnStorefront &&
         config.inventorySettings?.showDefaultShippingExpectationPrompt &&
@@ -253,6 +257,7 @@ export const useShipping = () => {
             'CHECKOUT-9630.no_countries_error_on_checkout',
             true,
         ),
+        isNewPhoneValidationComponentEnabled,
         isShippingStepPending: isShippingStepPending(),
         loadShippingAddressFields: checkoutService.loadShippingAddressFields,
         loadBillingAddressFields: checkoutService.loadBillingAddressFields,

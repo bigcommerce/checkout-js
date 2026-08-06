@@ -41,6 +41,7 @@ const ShippingForm = ({
         getFields,
         hasMultiShippingEnabled,
         isNoCountriesErrorOnCheckoutEnabled,
+        isNewPhoneValidationComponentEnabled,
         methodId,
         shippingAddress,
     } = useShipping();
@@ -105,6 +106,7 @@ const ShippingForm = ({
             hasAddressLabel={hasAddressLabel}
             isBillingSameAsShipping={isBillingSameAsShipping}
             isInitialValueLoaded={isInitialValueLoaded}
+            isNewPhoneValidationComponentEnabled={isNewPhoneValidationComponentEnabled}
             methodId={methodId}
             onSubmit={onSingleShippingSubmit}
             onUnhandledError={onUnhandledError}
