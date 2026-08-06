@@ -287,6 +287,30 @@ describe('DynamicFormField Component', () => {
             });
         });
 
+        it('renders the legacy phone input when the field has a max length, even when the experiment is enabled', async () => {
+            mockIsValidNumber.mockReturnValue(false);
+
+            const { container } = renderMockFormField({
+                field: { ...phoneFieldMock, maxLength: 10 },
+                isNewPhoneValidationExperimentEnabled: true,
+            });
+
+            const input = screen.getByTestId('phone-text');
+
+            expect(input).toHaveAttribute('type', 'tel');
+            expect(input).toHaveAttribute('maxlength', '10');
+            // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
+            expect(container.querySelector('.iti-wrapper')).not.toBeInTheDocument();
+
+            // The legacy input does not apply IntlTelInput phone validation
+            fireEvent.change(input, { target: { value: '123' } });
+            await userEvent.click(screen.getByText('Submit'));
+
+            await waitFor(() => {
+                expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+            });
+        });
+
         it('does not validate phone for non-telephone fields even when experiment is enabled', async () => {
             mockIsValidNumber.mockReturnValue(false);
 
