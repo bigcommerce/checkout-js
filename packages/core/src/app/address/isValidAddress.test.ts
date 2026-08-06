@@ -1,5 +1,5 @@
 import { getAddress } from './address.mock';
-import { getFormFields } from './formField.mock';
+import { getAddressFormFields, getFormFields } from './formField.mock';
 import isValidAddress from './isValidAddress';
 
 describe('isValidAddress()', () => {
@@ -93,6 +93,28 @@ describe('isValidAddress()', () => {
                     formFieldsWithMaxLength,
                 ),
             ).toBe(false);
+        });
+    });
+
+    describe('phone max length validation', () => {
+        const mockFormFieldsWithPhoneMaxLength = getAddressFormFields().map((field) =>
+            field.name === 'phone' ? { ...field, maxLength: 8 } : field,
+        );
+
+        it('returns false if phone exceeds max length and max length validation is on', () => {
+            expect(isValidAddress(getAddress(), mockFormFieldsWithPhoneMaxLength, true)).toBe(
+                false,
+            );
+        });
+
+        it('returns true if phone exceeds max length but the new phone validation component is enabled', () => {
+            expect(isValidAddress(getAddress(), mockFormFieldsWithPhoneMaxLength, true, true)).toBe(
+                true,
+            );
+        });
+
+        it('returns true if phone exceeds max length but max length validation is off', () => {
+            expect(isValidAddress(getAddress(), mockFormFieldsWithPhoneMaxLength)).toBe(true);
         });
     });
 });

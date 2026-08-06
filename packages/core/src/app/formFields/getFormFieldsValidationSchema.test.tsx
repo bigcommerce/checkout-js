@@ -1,6 +1,6 @@
 import { type ObjectSchema, type ValidationError } from 'yup';
 
-import { getFormFields } from '../address/formField.mock';
+import { getAddressFormFields, getFormFields } from '../address/formField.mock';
 import { getShippingAddress } from '../shipping/shipping-addresses.mock';
 
 import { type TranslateValidationErrorFunction } from './getCustomFormFieldsValidationSchema';
@@ -410,6 +410,97 @@ describe('getFormFieldsValidationSchema', () => {
                 max: 3,
             });
             expect(errors).toBe('firstName must be at most 3 characters');
+        });
+    });
+
+    describe('isNewPhoneValidationComponentEnabled option', () => {
+        const mockFormFieldsWithPhoneMaxLength = getAddressFormFields().map((field) =>
+            field.name === 'phone' ? { ...field, maxLength: 8 } : field,
+        );
+
+        it('does not validate phone max length when the new phone validation component is enabled', async () => {
+            const schema = getFormFieldsValidationSchema({
+                formFields: mockFormFieldsWithPhoneMaxLength,
+                translate,
+                validateMaxLength: true,
+                isNewPhoneValidationComponentEnabled: true,
+            });
+            const spy = jest.fn();
+
+            await schema
+                .validate({
+                    ...getShippingAddress(),
+                    phone: '555-555-5555',
+                })
+                .then(spy);
+
+            expect(spy).toHaveBeenCalled();
+        });
+
+        it('validates phone max length when the new phone validation component is disabled', async () => {
+            const schema = getFormFieldsValidationSchema({
+                formFields: mockFormFieldsWithPhoneMaxLength,
+                translate,
+                validateMaxLength: true,
+                isNewPhoneValidationComponentEnabled: false,
+            });
+
+            const errors = await schema
+                .validate({
+                    ...getShippingAddress(),
+                    phone: '555-555-5555',
+                })
+                .catch((error: ValidationError) => error.message);
+
+            expect(translate).toHaveBeenCalledWith('max', {
+                label: 'Phone',
+                name: 'phone',
+                max: 8,
+            });
+            expect(errors).toBe('phone must be at most 8 characters');
+        });
+
+        it('still validates max length of other fields when the new phone validation component is enabled', async () => {
+            const mockFormFieldsWithFirstNameMaxLength = mockFormFieldsWithPhoneMaxLength.map(
+                (field) => (field.name === 'firstName' ? { ...field, maxLength: 3 } : field),
+            );
+            const schema = getFormFieldsValidationSchema({
+                formFields: mockFormFieldsWithFirstNameMaxLength,
+                translate,
+                validateMaxLength: true,
+                isNewPhoneValidationComponentEnabled: true,
+            });
+
+            const errors = await schema
+                .validate({
+                    ...getShippingAddress(),
+                    firstName: 'LongFirstName',
+                    phone: '555-555-5555',
+                })
+                .catch((error: ValidationError) => error.message);
+
+            expect(errors).toBe('firstName must be at most 3 characters');
+        });
+
+        it('still validates that phone is required when the new phone validation component is enabled', async () => {
+            const mockFormFieldsWithRequiredPhone = mockFormFieldsWithPhoneMaxLength.map((field) =>
+                field.name === 'phone' ? { ...field, required: true } : field,
+            );
+            const schema = getFormFieldsValidationSchema({
+                formFields: mockFormFieldsWithRequiredPhone,
+                translate,
+                validateMaxLength: true,
+                isNewPhoneValidationComponentEnabled: true,
+            });
+
+            const errors = await schema
+                .validate({
+                    ...getShippingAddress(),
+                    phone: '',
+                })
+                .catch((error: ValidationError) => error.message);
+
+            expect(errors).toBe('phone is a required field');
         });
     });
 });

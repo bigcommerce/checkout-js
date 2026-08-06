@@ -437,6 +437,74 @@ describe('getCheckoutStepStatuses()', () => {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             expect(find(steps, { type: CheckoutStepType.Shipping })!.isEditable).toBe(false);
         });
+
+        describe('phone number exceeding max length', () => {
+            const mockFormFieldsWithPhoneMaxLength = getAddressFormFields().map((field) =>
+                field.name === 'phone' ? { ...field, maxLength: 8 } : field,
+            );
+
+            beforeEach(() => {
+                jest.spyOn(state.data, 'getShippingAddress').mockReturnValue(getShippingAddress());
+
+                jest.spyOn(state.data, 'getCart').mockReturnValue(getCart());
+
+                jest.spyOn(state.data, 'getConsignments').mockReturnValue([getConsignment()]);
+
+                jest.spyOn(state.data, 'getShippingAddressFields').mockReturnValue(
+                    mockFormFieldsWithPhoneMaxLength,
+                );
+            });
+
+            it('is marked as incomplete if new phone validation experiment is off', () => {
+                jest.spyOn(state.data, 'getConfig').mockReturnValue(getStoreConfig());
+
+                const steps = getCheckoutStepStatuses(state);
+
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                expect(find(steps, { type: CheckoutStepType.Shipping })!.isComplete).toBe(false);
+            });
+
+            it('is marked as complete if new phone validation experiment is on', () => {
+                const config = getStoreConfig();
+
+                jest.spyOn(state.data, 'getConfig').mockReturnValue({
+                    ...config,
+                    checkoutSettings: {
+                        ...config.checkoutSettings,
+                        features: {
+                            ...config.checkoutSettings.features,
+                            'CHECKOUT-9019.use_new_phone_number_validation': true,
+                        },
+                    },
+                });
+
+                const steps = getCheckoutStepStatuses(state);
+
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                expect(find(steps, { type: CheckoutStepType.Shipping })!.isComplete).toBe(true);
+            });
+
+            it('is marked as incomplete if provider is PayPal Fastlane even when the experiment is on', () => {
+                const config = getStoreConfig();
+
+                jest.spyOn(state.data, 'getConfig').mockReturnValue({
+                    ...config,
+                    checkoutSettings: {
+                        ...config.checkoutSettings,
+                        providerWithCustomCheckout: 'braintree',
+                        features: {
+                            ...config.checkoutSettings.features,
+                            'CHECKOUT-9019.use_new_phone_number_validation': true,
+                        },
+                    },
+                });
+
+                const steps = getCheckoutStepStatuses(state);
+
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                expect(find(steps, { type: CheckoutStepType.Shipping })!.isComplete).toBe(false);
+            });
+        });
     });
 
     describe('payment step', () => {
