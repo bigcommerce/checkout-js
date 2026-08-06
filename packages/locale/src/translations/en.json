@@ -331,6 +331,8 @@
             "payment_method_unavailable_error": "This payment provider is temporarily unavailable. Please try again later.",
             "payment_not_required_text": "Payment is not required for this order.",
             "payment_methods_unavailable_error": "We're unable to load payment methods at the moment. Please try again later or contact the store for assistance.",
+            "payment_methods_reloaded_method_unavailable_text": "Payment options reloaded for {countryName} as the billing country. {methodName} isn't available in this country, please select another payment method.",
+            "payment_methods_updated_for_country_text": "Payment options updated for {countryName} as the billing country.",
             "paypal_complete_action": "Complete order",
             "paypal_continue_action": "Continue with PayPal",
             "paypal_pay_later_complete_action": "Complete order",

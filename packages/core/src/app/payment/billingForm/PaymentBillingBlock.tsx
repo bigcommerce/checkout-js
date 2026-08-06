@@ -1,4 +1,5 @@
 import type { CheckoutSelectors } from '@bigcommerce/checkout-sdk';
+import { omit } from 'lodash';
 import React, { type FunctionComponent, useRef } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -48,7 +49,9 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
         const shippingAddress = getShippingAddress();
 
         if (shippingAddress && !isEqualAddress(shippingAddress, getBillingAddress())) {
-            updateBillingAddress(shippingAddress).catch((error) => {
+            // The consignment address carries email: '' — sent as-is it overwrites
+            // the guest email; omitted, the SDK falls back to the stored one.
+            updateBillingAddress(omit(shippingAddress, 'email')).catch((error) => {
                 onBillingSameAsShippingChange(false);
 
                 if (error instanceof Error) {
@@ -58,12 +61,8 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
         }
     };
 
-    // The store's countryCode lags while an update is in flight, so guard on
-    // the pending request instead; cleared on settle so it can't go stale.
     const lastRequestedCountryCodeRef = useRef<string | undefined>();
 
-    // Persist the form values (not the store address) so typed fields survive
-    // the Formik reinitialize; stateOrProvince is country-specific, so clear it.
     const handleBillingCountryChange = (countryCode: string, addressValues: AddressFormValues) => {
         const lastCountryCode =
             lastRequestedCountryCodeRef.current ?? getBillingAddress()?.countryCode;

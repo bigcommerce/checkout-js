@@ -139,7 +139,13 @@ describe('PaymentBillingBlock', () => {
         expect(mockCapturedProps.isBillingSameAsShipping).toBe(true);
     });
 
-    it('copies the shipping address to billing when the toggle is checked', async () => {
+    it('copies the shipping address to billing without its empty email when the toggle is checked', async () => {
+        const shippingAddressWithEmptyEmail = { ...getShippingAddress(), email: '' };
+
+        jest.spyOn(checkoutState.data, 'getShippingAddress').mockReturnValue(
+            shippingAddressWithEmptyEmail,
+        );
+
         render(<PaymentBillingBlockTest />);
 
         await screen.findByTestId('trigger-persist');
@@ -324,7 +330,6 @@ describe('PaymentBillingBlock', () => {
             jest.spyOn(checkoutState.data, 'getBillingAddress').mockReturnValue(
                 getBillingAddress(),
             );
-            // Keep the first update in flight so the store still has 'US'.
             jest.spyOn(checkoutService, 'updateBillingAddress').mockReturnValue(
                 new Promise(() => undefined),
             );
@@ -349,8 +354,6 @@ describe('PaymentBillingBlock', () => {
         });
 
         it('persists a change back to a previously requested country once the first persist settles', async () => {
-            // Store stays US throughout, as if an external update (address book,
-            // same as shipping) reverted the country after the first persist.
             jest.spyOn(checkoutState.data, 'getBillingAddress').mockReturnValue(
                 getBillingAddress(),
             );

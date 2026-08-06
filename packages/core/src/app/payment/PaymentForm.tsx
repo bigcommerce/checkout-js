@@ -6,7 +6,15 @@ import {
 } from '@bigcommerce/checkout-sdk/essential';
 import { type FormikProps, type FormikState, withFormik, type WithFormikConfig } from 'formik';
 import { isEmpty, noop, omitBy } from 'lodash';
-import React, { type FunctionComponent, memo, useCallback, useContext, useMemo } from 'react';
+import React, {
+    type FunctionComponent,
+    memo,
+    useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+    useRef,
+} from 'react';
 import { object, type ObjectSchema, string } from 'yup';
 
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
@@ -17,7 +25,7 @@ import {
     type WithLanguageProps,
 } from '@bigcommerce/checkout/locale';
 import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
-import { Fieldset, Form, FormContext, Legend, LoadingOverlay } from '@bigcommerce/checkout/ui';
+import { Fieldset, Form, FormContext, Legend } from '@bigcommerce/checkout/ui';
 import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
 import { getTranslateAddressError } from '../address';
@@ -38,6 +46,10 @@ import {
     PaymentMethodList,
     usePoMethodDisabledReason,
 } from './paymentMethod';
+import {
+    PaymentMethodsRefreshAlert,
+    type PaymentMethodsRefreshAlertData,
+} from './PaymentMethodsRefreshAlert';
 import PaymentRedeemables from './PaymentRedeemables';
 import PaymentSubmitButton from './PaymentSubmitButton';
 import { ProvidersSectionOnTopOfPaymentsList } from './ProvidersSectionOnTopOfPaymentsList';
@@ -61,6 +73,7 @@ export interface PaymentFormProps {
     isUsingMultiShipping?: boolean;
     isStoreCreditApplied: boolean;
     methods: PaymentMethod[];
+    methodsRefreshAlert?: PaymentMethodsRefreshAlertData;
     orderExtraFields?: FormField[];
     selectedMethod?: PaymentMethod;
     shouldShowStoreCredit?: boolean;
@@ -74,6 +87,7 @@ export interface PaymentFormProps {
     isPaymentDataRequired(): boolean;
     onBillingSameAsShippingChange?(isBillingSameAsShipping: boolean): void;
     onMethodSelect?(method: PaymentMethod): void;
+    onMethodsRefreshAlertDismiss?(): void;
     onStoreCreditChange?(useStoreCredit?: boolean): void;
     onSubmit?(values: PaymentFormValues): void;
     onUnhandledError?(error: Error): void;
@@ -96,8 +110,10 @@ const PaymentForm: FunctionComponent<
     isUsingMultiShipping,
     language,
     methods,
+    methodsRefreshAlert,
     onBillingSameAsShippingChange,
     onMethodSelect,
+    onMethodsRefreshAlertDismiss,
     onStoreCreditChange,
     onUnhandledError,
     orderExtraFields,
@@ -154,6 +170,20 @@ const PaymentForm: FunctionComponent<
     const hideSubmitPaymentButton =
         shouldHidePaymentSubmitButton || (isPaymentDataRequired() && isEmpty(methods));
 
+    const methodListRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!isReloadingPaymentMethods) {
+            return;
+        }
+
+        try {
+            methodListRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } catch {
+            methodListRef.current?.scrollIntoView();
+        }
+    }, [isReloadingPaymentMethods]);
+
     if (shouldExecuteSpamCheck) {
         return (
             <SpamProtectionField
@@ -175,6 +205,15 @@ const PaymentForm: FunctionComponent<
                 />
             )}
 
+            <div ref={methodListRef}>
+                {methodsRefreshAlert && (
+                    <PaymentMethodsRefreshAlert
+                        alert={methodsRefreshAlert}
+                        onDismiss={onMethodsRefreshAlertDismiss ?? noop}
+                    />
+                )}
+            </div>
+
             {isEmpty(methods) &&
                 (isPaymentDataRequired() ? (
                     <NoPaymentMethods
@@ -189,21 +228,17 @@ const PaymentForm: FunctionComponent<
                 ))}
 
             {!isEmpty(methods) && (
-                // Default LoadingOverlay mode keeps the list mounted, so typed
-                // payment details and hosted-field iframes survive the reload.
-                <LoadingOverlay isLoading={isReloadingPaymentMethods ?? false}>
-                    <PaymentMethodListFieldset
-                        isEmbedded={isEmbedded}
-                        isInitializingPayment={isInitializingPayment}
-                        isPaymentDataRequired={isPaymentDataRequired}
-                        isUsingMultiShipping={isUsingMultiShipping}
-                        methods={methods}
-                        onMethodSelect={onMethodSelect}
-                        onUnhandledError={onUnhandledError}
-                        resetForm={resetForm}
-                        values={values}
-                    />
-                </LoadingOverlay>
+                <PaymentMethodListFieldset
+                    isEmbedded={isEmbedded}
+                    isInitializingPayment={isInitializingPayment}
+                    isPaymentDataRequired={isPaymentDataRequired}
+                    isUsingMultiShipping={isUsingMultiShipping}
+                    methods={methods}
+                    onMethodSelect={onMethodSelect}
+                    onUnhandledError={onUnhandledError}
+                    resetForm={resetForm}
+                    values={values}
+                />
             )}
 
             {themeV2 && (

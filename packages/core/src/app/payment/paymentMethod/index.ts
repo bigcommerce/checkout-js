@@ -9,6 +9,7 @@ export {
     parseUniquePaymentMethodId,
 } from './getUniquePaymentMethodId';
 export { default as getPaymentMethodName } from './getPaymentMethodName';
+export { default as hasPaymentMethodWithId } from './hasPaymentMethodWithId';
 export { usePoMethodDisabledReason } from './usePoMethodDisabledReason';
 export { isHostedCreditCardFieldsetValues } from './HostedCreditCardFieldsetValues';
 export {

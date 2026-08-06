@@ -47,7 +47,7 @@ import {
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
-import { ChecklistSkeleton } from '@bigcommerce/checkout/ui';
+import { ChecklistSkeleton, LoadingOverlay } from '@bigcommerce/checkout/ui';
 import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
 import { withAnalytics } from '../analytics';
@@ -70,12 +70,14 @@ import {
 import { getB2BMetadataPayload } from './b2bMetadataForPostOrder';
 import { mapToB2BOrderRequestBody } from './b2bMetadataForSubmitOrder';
 import CartStockPositionsChangedModal from './CartStockPositionsChangedModal';
+import getPaymentMethodsRefreshAlert from './getPaymentMethodsRefreshAlert';
 import mapSubmitOrderErrorMessage, { mapSubmitOrderErrorTitle } from './mapSubmitOrderErrorMessage';
 import mapToOrderRequestBody from './mapToOrderRequestBody';
 import PaymentContext, { type EnsureBillingAddressSaved } from './PaymentContext';
 import PaymentForm from './PaymentForm';
 import { getUniquePaymentMethodId, PaymentMethodProviderType } from './paymentMethod';
 import { getFilteredPaymentMethodsWithDefault } from './paymentMethodFilters';
+import { type PaymentMethodsRefreshAlertData } from './PaymentMethodsRefreshAlert';
 
 export interface PaymentProps {
     capabilities: Capabilities;
@@ -159,10 +161,16 @@ const Payment = (
     });
 
     const [isCartStockRefreshComplete, setIsCartStockRefreshComplete] = useState(false);
+    const [methodsRefreshAlert, setMethodsRefreshAlert] = useState<
+        PaymentMethodsRefreshAlertData | undefined
+    >();
 
     const isReadyRef = useRef(state.isReady);
     const grandTotalChangeUnsubscribe = useRef<() => void>();
     const billingAddressChangeUnsubscribe = useRef<() => void>();
+    const selectedMethodRef = useRef<PaymentMethod | undefined>();
+    // TODO: CHECKOUT-10199 remove this temporary fix
+    const suppressMethodRemovedErrorUntilRef = useRef(0);
     const validationSchemasRef = useRef<validationSchemas>({});
     const lastFormValuesRef = useRef<PaymentFormValues | null>(null);
     // Set by the themeV2 billing form. Awaited before submitOrder so the order
@@ -396,6 +404,13 @@ const Payment = (
             return;
         }
 
+        // TODO: CHECKOUT-10199 remove this temporary fix
+        if (type === 'missing_data' && Date.now() < suppressMethodRemovedErrorUntilRef.current) {
+            errorLogger.log(error);
+
+            return;
+        }
+
         return onUnhandledError(error);
     }, []);
 
@@ -559,6 +574,8 @@ const Payment = (
         analyticsTracker.selectedPaymentMethod(methodName, methodId);
     };
 
+    const dismissMethodsRefreshAlert = useCallback(() => setMethodsRefreshAlert(undefined), []);
+
     const setSelectedMethod = useCallback((method?: PaymentMethod): void => {
         const { selectedMethod } = state;
 
@@ -572,6 +589,14 @@ const Payment = (
 
         setState((prevState) => ({ ...prevState, selectedMethod: method }));
     }, []);
+
+    const handleMethodSelect = useCallback(
+        (method: PaymentMethod): void => {
+            dismissMethodsRefreshAlert();
+            setSelectedMethod(method);
+        },
+        [dismissMethodsRefreshAlert, setSelectedMethod],
+    );
 
     const setSubmit = (
         method: PaymentMethod,
@@ -613,15 +638,21 @@ const Payment = (
         [],
     );
 
-    const loadPaymentMethodsOrThrow = async (): Promise<void> => {
+    const loadPaymentMethodsOrThrow = async (billingCountryChange?: {
+        previousSelectedMethod?: PaymentMethod;
+    }): Promise<void> => {
         const { loadPaymentMethods, onUnhandledError = noop } = props;
+
+        if (billingCountryChange) {
+            suppressMethodRemovedErrorUntilRef.current = Date.now() + 5000;
+        }
 
         try {
             const updatedState = await loadPaymentMethods();
             const checkout = updatedState.data.getCheckout();
             const config = updatedState.data.getConfig();
             const methods = updatedState.data.getPaymentMethods() || EMPTY_ARRAY;
-            const defaultMethod =
+            const filteredMethodsWithDefault =
                 checkout && config
                     ? getFilteredPaymentMethodsWithDefault({
                           checkout,
@@ -630,14 +661,34 @@ const Payment = (
                           methods,
                           paymentProviderCustomer: updatedState.data.getPaymentProviderCustomer(),
                           capabilities: props.capabilities,
-                      }).defaultMethod
+                      })
                     : undefined;
-            const selectedMethod = state.selectedMethod || defaultMethod;
+            const defaultMethod = filteredMethodsWithDefault?.defaultMethod;
+            const selectedMethod = selectedMethodRef.current || defaultMethod;
 
             if (selectedMethod) {
                 trackSelectedPaymentMethod(selectedMethod);
             }
+
+            if (billingCountryChange) {
+                const refreshAlert = getPaymentMethodsRefreshAlert({
+                    billingAddress: updatedState.data.getBillingAddress(),
+                    language: props.language,
+                    previousSelectedMethod: billingCountryChange.previousSelectedMethod,
+                    refreshedMethods: filteredMethodsWithDefault?.filteredMethods ?? [],
+                });
+
+                if (!refreshAlert.removedMethodName) {
+                    suppressMethodRemovedErrorUntilRef.current = 0;
+                }
+
+                setMethodsRefreshAlert(refreshAlert);
+            }
         } catch (error) {
+            if (billingCountryChange) {
+                suppressMethodRemovedErrorUntilRef.current = 0;
+            }
+
             onUnhandledError(error);
         }
     };
@@ -648,6 +699,8 @@ const Payment = (
         if (!isReady) {
             return;
         }
+
+        dismissMethodsRefreshAlert();
 
         setState((prevState) => ({ ...prevState, isReady: false }));
 
@@ -669,6 +722,10 @@ const Payment = (
     useEffect(() => {
         isReadyRef.current = state.isReady;
     }, [state.isReady]);
+
+    useEffect(() => {
+        selectedMethodRef.current = state.selectedMethod || props.defaultMethod;
+    }, [state.selectedMethod, props.defaultMethod]);
 
     useEffect(() => {
         const init = async () => {
@@ -734,10 +791,7 @@ const Payment = (
                 ({ data }) => data.getCheckout()?.outstandingBalance,
             );
 
-            // Reload the server-filtered method list when the billing country changes.
             if (themeV2) {
-                // subscribe() also fires immediately and on unfiltered store
-                // notifications, so only react to a real country change.
                 let lastCountryCode = props.billingAddress?.countryCode;
 
                 billingAddressChangeUnsubscribe.current = checkoutServiceSubscribe(
@@ -750,7 +804,9 @@ const Payment = (
 
                         lastCountryCode = countryCode;
 
-                        void loadPaymentMethodsOrThrow();
+                        void loadPaymentMethodsOrThrow({
+                            previousSelectedMethod: selectedMethodRef.current,
+                        });
                     },
                     ({ data }) => data.getBillingAddress()?.countryCode,
                 );
@@ -801,59 +857,61 @@ const Payment = (
         (props.isLoadingBillingCountries ||
             props.isUpdatingBillingAddress ||
             props.isUpdatingCheckout);
-    // The in-place reload keeps the form mounted, so block submit and overlay
-    // the method list until the refreshed, country-filtered methods land.
     const isReloadingPaymentMethods = themeV2 && props.isLoadingPaymentMethods;
 
     return (
         <PaymentContext.Provider value={getContextValue()}>
             <ChecklistSkeleton isLoading={!state.isReady}>
-                <PaymentForm
-                    additionalField={props.capabilities.payment.additionalField}
-                    availableStoreCredit={props.availableStoreCredit}
-                    defaultGatewayId={props.defaultMethod?.gateway}
-                    defaultMethodId={props.defaultMethod?.id || ''}
-                    didExceedSpamLimit={state.didExceedSpamLimit}
-                    disableStoreCredit={disableStoreCredit}
-                    isBillingSameAsShipping={props.isBillingSameAsShipping}
-                    isEmbedded={props.isEmbedded}
-                    isInitializingPayment={props.isInitializingPayment}
-                    isPaymentDataRequired={props.isPaymentDataRequired}
-                    isReloadingPaymentMethods={isReloadingPaymentMethods}
-                    isStoreCreditApplied={props.isStoreCreditApplied}
-                    isTermsConditionsRequired={props.isTermsConditionsRequired}
-                    isUsingMultiShipping={props.isUsingMultiShipping}
-                    methods={props.methods}
-                    onBillingSameAsShippingChange={props.onBillingSameAsShippingChange}
-                    onMethodSelect={setSelectedMethod}
-                    onStoreCreditChange={handleStoreCreditChange}
-                    onSubmit={handleSubmit}
-                    onUnhandledError={handleError}
-                    orderExtraFields={props.orderExtraFields}
-                    selectedMethod={state.selectedMethod || props.defaultMethod}
-                    shouldDisableSubmit={
-                        (uniqueSelectedMethodId &&
-                            state.shouldDisableSubmit[uniqueSelectedMethodId]) ||
-                        isBillingFormBusy ||
-                        isReloadingPaymentMethods ||
-                        undefined
-                    }
-                    shouldExecuteSpamCheck={props.shouldExecuteSpamCheck}
-                    shouldHidePaymentSubmitButton={
-                        (uniqueSelectedMethodId &&
-                            props.isPaymentDataRequired() &&
-                            state.shouldHidePaymentSubmitButton[uniqueSelectedMethodId]) ||
-                        undefined
-                    }
-                    termsConditionsText={props.termsConditionsText}
-                    termsConditionsUrl={props.termsConditionsUrl}
-                    usableStoreCredit={props.usableStoreCredit}
-                    validationSchema={
-                        (uniqueSelectedMethodId &&
-                            validationSchemasRef.current[uniqueSelectedMethodId]) ||
-                        undefined
-                    }
-                />
+                <LoadingOverlay isLoading={isBillingFormBusy || isReloadingPaymentMethods}>
+                    <PaymentForm
+                        additionalField={props.capabilities.payment.additionalField}
+                        availableStoreCredit={props.availableStoreCredit}
+                        defaultGatewayId={props.defaultMethod?.gateway}
+                        defaultMethodId={props.defaultMethod?.id || ''}
+                        didExceedSpamLimit={state.didExceedSpamLimit}
+                        disableStoreCredit={disableStoreCredit}
+                        isBillingSameAsShipping={props.isBillingSameAsShipping}
+                        isEmbedded={props.isEmbedded}
+                        isInitializingPayment={props.isInitializingPayment}
+                        isPaymentDataRequired={props.isPaymentDataRequired}
+                        isReloadingPaymentMethods={isReloadingPaymentMethods}
+                        isStoreCreditApplied={props.isStoreCreditApplied}
+                        isTermsConditionsRequired={props.isTermsConditionsRequired}
+                        isUsingMultiShipping={props.isUsingMultiShipping}
+                        methods={props.methods}
+                        methodsRefreshAlert={methodsRefreshAlert}
+                        onBillingSameAsShippingChange={props.onBillingSameAsShippingChange}
+                        onMethodSelect={handleMethodSelect}
+                        onMethodsRefreshAlertDismiss={dismissMethodsRefreshAlert}
+                        onStoreCreditChange={handleStoreCreditChange}
+                        onSubmit={handleSubmit}
+                        onUnhandledError={handleError}
+                        orderExtraFields={props.orderExtraFields}
+                        selectedMethod={state.selectedMethod || props.defaultMethod}
+                        shouldDisableSubmit={
+                            (uniqueSelectedMethodId &&
+                                state.shouldDisableSubmit[uniqueSelectedMethodId]) ||
+                            isBillingFormBusy ||
+                            isReloadingPaymentMethods ||
+                            undefined
+                        }
+                        shouldExecuteSpamCheck={props.shouldExecuteSpamCheck}
+                        shouldHidePaymentSubmitButton={
+                            (uniqueSelectedMethodId &&
+                                props.isPaymentDataRequired() &&
+                                state.shouldHidePaymentSubmitButton[uniqueSelectedMethodId]) ||
+                            undefined
+                        }
+                        termsConditionsText={props.termsConditionsText}
+                        termsConditionsUrl={props.termsConditionsUrl}
+                        usableStoreCredit={props.usableStoreCredit}
+                        validationSchema={
+                            (uniqueSelectedMethodId &&
+                                validationSchemasRef.current[uniqueSelectedMethodId]) ||
+                            undefined
+                        }
+                    />
+                </LoadingOverlay>
             </ChecklistSkeleton>
 
             {renderOrderErrorModal()}

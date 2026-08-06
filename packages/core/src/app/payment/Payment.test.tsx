@@ -34,7 +34,12 @@ import {
     orderResponse,
     payments,
 } from '@bigcommerce/checkout/test-framework';
-import { renderWithoutWrapper as render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
+import {
+    renderWithoutWrapper as render,
+    screen,
+    waitFor,
+    within,
+} from '@bigcommerce/checkout/test-utils';
 import { B2BSessionStorage } from '@bigcommerce/checkout/utility';
 
 import Checkout, { type CheckoutProps } from '../checkout/Checkout';
@@ -64,8 +69,6 @@ jest.mock('./billingForm', () => {
                 context?.setEnsureBillingAddressSaved(mockEnsureBillingAddressSaved);
             }, [context]);
 
-            // Uncontrolled probe input: its DOM value survives only if this
-            // subtree is never unmounted.
             return ReactActual.createElement(
                 'div',
                 { 'data-test': 'payment-billing-block' },
@@ -309,8 +312,12 @@ describe('Payment step', () => {
     });
 
     describe('billing country change (themeV2)', () => {
-        // The fixture billing address is AU; the countryCode subscription only
-        // sees a change if the PUT response carries the new country.
+        const scrollIntoViewMock = jest.fn();
+
+        beforeAll(() => {
+            window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
+        });
+
         const mockBillingAddressPut = (countryCode: string, country: string) => {
             checkout.updateCheckout('put', '/checkouts/*/billing-address/*', {
                 ...checkoutWithShippingAndBilling,
@@ -325,10 +332,11 @@ describe('Payment step', () => {
         };
 
         beforeEach(() => {
+            scrollIntoViewMock.mockClear();
             mockEnsureBillingAddressSaved = jest.fn<Promise<boolean>, []>().mockResolvedValue(true);
         });
 
-        it('does not reload payment methods on initial load', async () => {
+        it('does not reload payment methods or show the refresh note on initial load', async () => {
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
                 config: themeV2Config,
             });
@@ -340,6 +348,7 @@ describe('Payment step', () => {
             await checkout.waitForPaymentStep();
 
             expect(loadPaymentMethodsSpy).toHaveBeenCalledTimes(1);
+            expect(screen.queryByTestId('payment-methods-refresh-alert')).not.toBeInTheDocument();
         });
 
         it('reloads payment methods in place when the billing country changes', async () => {
@@ -408,6 +417,7 @@ describe('Payment step', () => {
             });
 
             expect(placeOrderButton.disabled).toBe(true);
+            expect(scrollIntoViewMock).toHaveBeenCalled();
 
             await act(async () => {
                 resolvePaymentsResponse();
@@ -439,6 +449,165 @@ describe('Payment step', () => {
             });
 
             expect(loadPaymentMethodsSpy).toHaveBeenCalledTimes(initialCalls);
+        });
+
+        it('shows a dismissible note when the list refreshes and the selection survives', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                config: themeV2Config,
+            });
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            mockBillingAddressPut('US', 'United States');
+
+            await act(async () => {
+                await checkoutService.updateBillingAddress({ countryCode: 'US' });
+            });
+
+            expect(
+                await screen.findByText(
+                    'Payment options updated for United States as the billing country.',
+                ),
+            ).toBeInTheDocument();
+            expect(
+                screen.getByRole('radio', { name: 'Pay in Store', checked: true }),
+            ).toBeInTheDocument();
+
+            await act(async () =>
+                userEvent.click(
+                    within(screen.getByTestId('payment-methods-refresh-alert')).getByRole(
+                        'button',
+                        { name: 'Close' },
+                    ),
+                ),
+            );
+
+            expect(screen.queryByTestId('payment-methods-refresh-alert')).not.toBeInTheDocument();
+        });
+
+        it('prompts to select another method when the selection is gone after the refresh', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                config: themeV2Config,
+            });
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            await waitFor(() => {
+                expect(screen.getByRole('radio', { name: 'Pay in Store' })).toHaveFocus();
+            });
+
+            mockBillingAddressPut('US', 'United States');
+            checkout.setRequestHandler(
+                rest.get('/api/storefront/payments', (_, res, ctx) =>
+                    res(ctx.json(payments.filter(({ id }) => id !== 'instore'))),
+                ),
+            );
+
+            await act(async () => {
+                await checkoutService.updateBillingAddress({ countryCode: 'US' });
+            });
+
+            expect(
+                await screen.findByText(
+                    "Payment options reloaded for United States as the billing country. Pay in Store isn't available in this country, please select another payment method.",
+                ),
+            ).toBeInTheDocument();
+            await waitFor(() => {
+                expect(screen.getByTestId('payment-methods-refresh-alert')).toHaveFocus();
+            });
+        });
+
+        it('re-tracks the shopper selection, not the default method, after a country reload', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                config: themeV2Config,
+            });
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            await act(async () =>
+                userEvent.click(screen.getByRole('radio', { name: 'Cash on Delivery' })),
+            );
+
+            mockBillingAddressPut('US', 'United States');
+
+            await act(async () => {
+                await checkoutService.updateBillingAddress({ countryCode: 'US' });
+            });
+
+            await waitFor(() =>
+                expect(analyticsTracker.selectedPaymentMethod).toHaveBeenLastCalledWith(
+                    'Cash on Delivery',
+                    'cod',
+                ),
+            );
+        });
+
+        it('clears the refresh note when the methods reload for a cart total change', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                config: themeV2Config,
+            });
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            mockBillingAddressPut('US', 'United States');
+
+            await act(async () => {
+                await checkoutService.updateBillingAddress({ countryCode: 'US' });
+            });
+
+            await screen.findByTestId('payment-methods-refresh-alert');
+
+            checkout.updateCheckout('put', '/checkout/*', {
+                ...checkoutWithShippingAndBilling,
+                billingAddress: {
+                    ...checkoutWithShippingAndBilling.billingAddress,
+                    country: 'United States',
+                    countryCode: 'US',
+                } as BillingAddress,
+                grandTotal: checkoutWithShippingAndBilling.grandTotal + 1,
+            });
+
+            await act(async () => {
+                await checkoutService.updateCheckout({ customerMessage: 'gift wrap please' });
+            });
+
+            await waitFor(() =>
+                expect(
+                    screen.queryByTestId('payment-methods-refresh-alert'),
+                ).not.toBeInTheDocument(),
+            );
+        });
+
+        it('dismisses the refresh note once the shopper selects a payment method', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                config: themeV2Config,
+            });
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            mockBillingAddressPut('US', 'United States');
+
+            await act(async () => {
+                await checkoutService.updateBillingAddress({ countryCode: 'US' });
+            });
+
+            await screen.findByTestId('payment-methods-refresh-alert');
+
+            await act(async () =>
+                userEvent.click(screen.getByRole('radio', { name: 'Cash on Delivery' })),
+            );
+
+            expect(screen.queryByTestId('payment-methods-refresh-alert')).not.toBeInTheDocument();
         });
 
         it('stops watching the billing country after unmount', async () => {
