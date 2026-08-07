@@ -1,11 +1,10 @@
 $element-border-radius: remCalc(12px);
 
-@include themeV2 {
-    background-color: $color-secondaryDarker;
-
+@include enhancedTheme {
     .button,
     .shippingOptions-panel,
-    .alertBox{
+    .alertBox,
+    .applied-coupons-list ul {
         border-radius: $element-border-radius;
     }
 }

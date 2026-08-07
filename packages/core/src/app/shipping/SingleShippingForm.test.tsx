@@ -440,10 +440,10 @@ describe('SingleShippingForm', () => {
         expect(screen.queryByTestId('billingSameAsShipping')).not.toBeInTheDocument();
     });
 
-    it('does not render billing same as shipping checkbox under themeV2', async () => {
-        // Under themeV2 the toggle moves to the payment step's billing block.
+    it('does not render billing same as shipping checkbox under enhancedTheme', async () => {
+        // Under enhancedTheme the toggle moves to the payment step's billing block.
         render(
-            <ThemeContext.Provider value={{ themeV2: true }}>
+            <ThemeContext.Provider value={{ enhancedTheme: true }}>
                 {createSingleShippingFormComponent()}
             </ThemeContext.Provider>,
         );

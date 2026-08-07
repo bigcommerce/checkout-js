@@ -30,7 +30,7 @@ const CartStockPositionsChangedModal: FunctionComponent<CartStockPositionsChange
     onPlaceOrder,
     onRequestClose,
 }) => {
-    const { themeV2 } = useThemeContext();
+    const { enhancedTheme } = useThemeContext();
 
     const changedItemsToShow = useMemo(
         () => getChangedItemsToShow(cart, changedLineItemIds),
@@ -53,19 +53,19 @@ const CartStockPositionsChangedModal: FunctionComponent<CartStockPositionsChange
     return (
         <Modal
             additionalModalClassName={classNames('cart-stock-positions-changed-modal', {
-                themeV2,
+                enhancedTheme,
             })}
             footer={
                 <>
                     <Button
-                        className="body-medium"
+                        className="optimizedCheckout-contentPrimary body-medium"
                         onClick={onRequestClose}
                         variant={ButtonVariant.Secondary}
                     >
                         <TranslatedString id="common.back_action" />
                     </Button>
                     <Button
-                        className="body-medium"
+                        className="optimizedCheckout-contentPrimary body-medium"
                         onClick={onPlaceOrder}
                         variant={ButtonVariant.Primary}
                     >

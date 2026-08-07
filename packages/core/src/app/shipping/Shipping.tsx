@@ -236,7 +236,7 @@ function Shipping({
 
     if (showWarningMessage) {
         return (
-            <div className="no-addresses-warning body-regular">
+            <div className="no-addresses-warning optimizedCheckout-contentPrimary body-regular">
                 <TranslatedString id="shipping.no_shipping_addresses_warning" />
             </div>
         );

@@ -68,7 +68,6 @@
             }
 
             &.floating-form-field-input {
-                color: $color-black;
                 font-family: $fontFamily-montserrat;
                 font-size: $input-font-size--mobile-min;
                 font-weight: $fontWeight-normal;
@@ -189,7 +188,7 @@
         }
     }
 
-    .themeV2 .form-input.body-regular {
+    .enhancedTheme .form-input.body-regular {
         font-size: $input-font-size--mobile-min;
 
         @media (min-width: $screen-small) and (min-height: $screen-small-landscape-height) {

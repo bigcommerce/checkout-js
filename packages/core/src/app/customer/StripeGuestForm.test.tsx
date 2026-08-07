@@ -9,7 +9,9 @@ import StripeGuestForm, { type StripeGuestFormProps } from './StripeGuestForm';
 
 describe('StripeGuestForm', () => {
     let defaultProps: StripeGuestFormProps;
-    let TestComponent: FunctionComponent<Partial<StripeGuestFormProps> & { themeV2?: boolean }>;
+    let TestComponent: FunctionComponent<
+        Partial<StripeGuestFormProps> & { enhancedTheme?: boolean }
+    >;
     const handleContinueAsGuest = jest.fn();
     const dummyElement = document.createElement('div');
 
@@ -42,8 +44,8 @@ describe('StripeGuestForm', () => {
         }));
         jest.spyOn(document, 'getElementById').mockReturnValue(dummyElement);
 
-        TestComponent = ({ themeV2 = false, ...props }) => (
-            <ThemeContext.Provider value={{ themeV2 }}>
+        TestComponent = ({ enhancedTheme = false, ...props }) => (
+            <ThemeContext.Provider value={{ enhancedTheme }}>
                 <StripeGuestForm {...defaultProps} {...props} />
             </ThemeContext.Provider>
         );
@@ -56,7 +58,7 @@ describe('StripeGuestForm', () => {
     });
 
     it('matches snapshot with theme v2', () => {
-        const view = render(<TestComponent themeV2={true} />);
+        const view = render(<TestComponent enhancedTheme={true} />);
 
         expect(view).toMatchSnapshot();
     });

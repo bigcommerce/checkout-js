@@ -74,14 +74,17 @@ const CustomerInfo: FunctionComponent<CustomerInfoProps & WithCheckoutCustomerIn
 
     return (
         <div className="customerView" data-test="checkout-customer-info">
-            <div className="customerView-body body-regular" data-test="customer-info">
+            <div
+                className="customerView-body optimizedCheckout-contentPrimary body-regular"
+                data-test="customer-info"
+            >
                 {email}
             </div>
 
             <div className="customerView-actions">
                 {isSignedIn && (
                     <Button
-                        className="body-regular"
+                        className="optimizedCheckout-contentPrimary body-regular"
                         isLoading={isSigningOut}
                         onClick={handleSignOut}
                         size={ButtonSize.Tiny}

@@ -30,7 +30,7 @@ const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
     summary,
     type,
 }) => {
-    const { themeV2 } = useThemeContext();
+    const { enhancedTheme } = useThemeContext();
 
     return (
         <div
@@ -50,17 +50,17 @@ const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
                 />
 
                 <h2
-                    className={classNames(
-                        'stepHeader-title optimizedCheckout-headingPrimary',
-                        { header: isActive || isComplete },
-                        { 'header-secondary': !isActive && !isComplete },
-                    )}
+                    className={classNames('stepHeader-title', {
+                        'header optimizedCheckout-headingPrimary': isActive || isComplete,
+                        'header-secondary optimizedCheckout-headingSecondary':
+                            !isActive && !isComplete,
+                    })}
                 >
                     {heading}
                 </h2>
             </div>
 
-            {themeV2 && !isActive && isComplete && (
+            {enhancedTheme && !isActive && isComplete && (
                 <div
                     className="stepHeader-body stepHeader-column optimizedCheckout-contentPrimary body-regular"
                     data-test="step-info"
@@ -69,7 +69,7 @@ const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
                 </div>
             )}
 
-            {!themeV2 && (
+            {!enhancedTheme && (
                 <div
                     className="stepHeader-body stepHeader-column optimizedCheckout-contentPrimary"
                     data-test="step-info"
@@ -82,7 +82,7 @@ const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
                 <div className="stepHeader-actions stepHeader-column">
                     <Button
                         aria-expanded={isActive}
-                        className="body-regular"
+                        className="optimizedCheckout-contentPrimary body-regular"
                         size={ButtonSize.Tiny}
                         testId="step-edit-button"
                         variant={ButtonVariant.Secondary}

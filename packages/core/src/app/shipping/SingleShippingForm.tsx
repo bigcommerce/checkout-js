@@ -90,7 +90,7 @@ const SingleShippingForm: React.FC<
     const {
         shipping: { hideBillingSameAsShippingCheck },
     } = useCapabilities();
-    const { themeV2 } = useThemeContext();
+    const { enhancedTheme } = useThemeContext();
     const {
         consignments,
         deinitializeShippingMethod: deinitialize,
@@ -289,7 +289,7 @@ const SingleShippingForm: React.FC<
 
     const shouldShowBillingSameAsShipping =
         !hideBillingSameAsShippingCheck &&
-        !themeV2 &&
+        !enhancedTheme &&
         !PAYMENT_METHOD_VALID.some((method) => method === methodId);
 
     return (

@@ -211,7 +211,7 @@ const LoginForm: FunctionComponent<
                         />
                     ) : (
                         <Button
-                            className="body-bold"
+                            className="optimizedCheckout-contentPrimary body-bold"
                             disabled={isSigningIn() || isExecutingPaymentMethodCheckout()}
                             id="checkout-customer-continue"
                             isLoading={isSigningIn() || isExecutingPaymentMethodCheckout()}

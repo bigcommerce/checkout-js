@@ -27,10 +27,10 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
         useState(false);
     const [isMultiShippingUnavailableModalOpen, setIsMultiShippingUnavailableModalOpen] =
         useState(false);
-    const { themeV2 } = useThemeContext();
+    const { enhancedTheme } = useThemeContext();
     const setHeaderAction = useSetCheckoutStepHeaderAction();
 
-    const isSubheaderHidden = themeV2 && !isMultiShippingMode;
+    const isSubheaderHidden = enhancedTheme && !isMultiShippingMode;
 
     const handleShipToSingleConfirmation = () => {
         setIsSingleShippingConfirmationModalOpen(false);
@@ -81,7 +81,7 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
     ]);
 
     useEffect(() => {
-        if (!themeV2) {
+        if (!enhancedTheme) {
             setHeaderAction(null);
 
             return;
@@ -90,7 +90,7 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
         setHeaderAction(modeToggleLink);
 
         return () => setHeaderAction(null);
-    }, [themeV2, modeToggleLink, setHeaderAction]);
+    }, [enhancedTheme, modeToggleLink, setHeaderAction]);
 
     return (
         <>
@@ -106,7 +106,7 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
                     />
                 </Legend>
 
-                {!themeV2 && modeToggleLink}
+                {!enhancedTheme && modeToggleLink}
             </div>
 
             {showConfirmationModal && (

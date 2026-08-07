@@ -2,46 +2,46 @@
 // THEME V2 MIXINS
 // =============================================================================
 
-@mixin themeV2 {
-  @at-root .themeV2 #{&} {
+@mixin enhancedTheme {
+  @at-root .enhancedTheme #{&} {
     @content;
   }
 }
 
-@mixin themeV2-mobile {
-    @at-root .themeV2 #{&} {
+@mixin enhancedTheme-mobile {
+    @at-root .enhancedTheme #{&} {
         @include breakpoint("small") {
             @content;
         }
     }
 }
 
-@mixin themeV2-mobile-tablet-only {
-    @at-root .themeV2 #{&} {
+@mixin enhancedTheme-mobile-tablet-only {
+    @at-root .enhancedTheme #{&} {
         @media (max-width: 767px) {
             @content;
         }
     }
 }
 
-@mixin themeV2-tablet {
-    .themeV2 & {
+@mixin enhancedTheme-tablet {
+    .enhancedTheme & {
         @include breakpoint("medium") {
             @content;
         }
     }
 }
 
-@mixin themeV2-desktop {
-    .themeV2 & {
+@mixin enhancedTheme-desktop {
+    .enhancedTheme & {
         @include breakpoint("large") {
             @content;
         }
     }
 }
 
-@mixin themeV2-widescreen {
-    .themeV2 & {
+@mixin enhancedTheme-widescreen {
+    .enhancedTheme & {
         @include breakpoint("xlarge") {
             @content;
         }

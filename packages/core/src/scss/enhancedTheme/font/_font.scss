@@ -1,14 +1,10 @@
-@include themeV2 {
+@include enhancedTheme {
+
     // optimizedCheckout-headingPrimary
     .header, .header-secondary, .sub-header {
-        color: $color-black;
         font-family: $fontFamily-montserrat;
         font-size: $fontSize-large;
         font-weight: $fontWeight-bold;
-    }
-
-    .header-secondary {
-        color: $color-secondaryDarkest;
     }
 
     .sub-header {
@@ -17,14 +13,9 @@
     }
 
     .body-regular, .body-cta, .body-thin, .body-medium, .body-bold {
-        color: $color-black;
         font-family: $fontFamily-montserrat;
         font-size: $fontSize-base;
         font-weight: $fontWeight-normal;
-    }
-
-    .body-cta {
-        color: $color-highlightDarkest;
     }
 
     .body-medium {
@@ -33,7 +24,6 @@
 
     .body-thin {
         font-weight: $fontWeight-thin;
-        color: $color-secondaryDarkest;
     }
 
     .body-bold {
@@ -41,14 +31,12 @@
     }
 
     .sub-text, .sub-text-medium, .sub-text-bold {
-        color: $color-black;
         font-family: $fontFamily-montserrat;
         font-size: $fontSize-tiny;
         font-weight: $fontWeight-normal;
     }
 
     .sub-text-medium {
-        color: $color-secondaryDarkest;
         font-weight: $fontWeight-medium;
     }
 
@@ -56,17 +44,10 @@
         font-weight: $fontWeight-bold;
     }
 
-    // overrides
-    .body-bold, .body-medium, .sub-header {
-        &.button--primary:not(:disabled){
-            color: $color-white;
-        }
-    }
 
     .form-checkbox + .form-label,
     .form-radio + .form-label {
         &.body-regular {
-            color: $color-black;
             font-size: $fontSize-base;
             font-weight: $fontWeight-normal;
         }
@@ -83,16 +64,9 @@
 
     .body-medium {
         small {
-            color: $color-black;
             font-family: $fontFamily-montserrat;
             font-size: $fontSize-base;
             font-weight: $fontWeight-medium;
-        }
-    }
-
-    .add-consignment-button {
-        &.body-regular {
-            color: $color-black;
         }
     }
 
