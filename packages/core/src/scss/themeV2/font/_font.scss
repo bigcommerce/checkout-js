@@ -69,6 +69,12 @@
         }
     }
 
+    #checkout-customer-continue,
+    #stripe-checkout-customer-continue,
+    #checkout-shipping-continue {
+        text-transform: none;
+    }
+
     .form-checkbox + .form-label,
     .form-radio + .form-label {
         &.body-regular {

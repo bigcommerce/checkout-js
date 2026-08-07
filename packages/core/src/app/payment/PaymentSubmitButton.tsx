@@ -33,8 +33,13 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
         isComplete,
         isPaymentDataRequired,
     }) => {
+        const { themeV2 } = useThemeContext();
+        const placeOrderActionId = themeV2
+            ? 'payment.place_order_action_v2'
+            : 'payment.place_order_action';
+
         if (!isPaymentDataRequired) {
-            return <TranslatedString id="payment.place_order_action" />;
+            return <TranslatedString id={placeOrderActionId} />;
         }
 
         if (methodName && initialisationStrategyType === 'none') {
@@ -49,7 +54,7 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
             return (
                 <>
                     <IconBolt additionalClassName="payment-submit-button-bolt-icon" />
-                    <TranslatedString id="payment.place_order_action" />
+                    <TranslatedString id={placeOrderActionId} />
                 </>
             );
         }
@@ -72,7 +77,7 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
         if (methodType === PaymentMethodType.Paypal) {
             const continueActionId =
                 methodId === PaymentMethodId.PaypalCommerce
-                    ? 'payment.place_order_action'
+                    ? placeOrderActionId
                     : 'payment.paypal_continue_action';
 
             return (
@@ -111,7 +116,7 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
             return <TranslatedString id="payment.klarna_continue_action" />;
         }
 
-        return <TranslatedString id="payment.place_order_action" />;
+        return <TranslatedString id={placeOrderActionId} />;
     },
 );
 
