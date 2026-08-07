@@ -6,14 +6,17 @@ export const getContinueAsGuestButtonLabelId = (
     themeV2: boolean,
     cart?: Cart,
     config?: StoreConfig,
+    isShippingStepComplete = false,
 ): string => {
     if (!themeV2) {
         return 'customer.continue';
     }
 
-    const isDigitalOnlyCart = !itemsRequireShipping(cart, config);
+    const isDigitalItemsOnlyCart = !itemsRequireShipping(cart, config);
 
-    return isDigitalOnlyCart
+    const isSkippingShippingStep = isDigitalItemsOnlyCart || isShippingStepComplete;
+
+    return isSkippingShippingStep
         ? 'common.continue_to_payment_action'
         : 'customer.continue_to_shipping_action';
 };

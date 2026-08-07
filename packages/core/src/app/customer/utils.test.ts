@@ -18,18 +18,30 @@ describe('getContinueAsGuestButtonLabelId()', () => {
         expect(getContinueAsGuestButtonLabelId(false, cart, config)).toBe('customer.continue');
     });
 
-    it('returns continue to shipping label when themeV2 is enabled and items require shipping', () => {
+    it('returns continue to shipping label when shipping step is not skipped', () => {
         expect(getContinueAsGuestButtonLabelId(true, cart, config)).toBe(
             'customer.continue_to_shipping_action',
         );
     });
 
-    it('returns continue to payment label when themeV2 is enabled and cart is digital only', () => {
+    it('returns continue to payment label when cart has digital items only', () => {
         cart.lineItems.physicalItems = [];
         cart.lineItems.customItems = [];
 
         expect(getContinueAsGuestButtonLabelId(true, cart, config)).toBe(
             'common.continue_to_payment_action',
+        );
+    });
+
+    it('returns continue to payment label when shipping step is complete', () => {
+        expect(getContinueAsGuestButtonLabelId(true, cart, config, true)).toBe(
+            'common.continue_to_payment_action',
+        );
+    });
+
+    it('returns generic continue label when themeV2 is disabled even if shipping step is complete', () => {
+        expect(getContinueAsGuestButtonLabelId(false, cart, config, true)).toBe(
+            'customer.continue',
         );
     });
 });

@@ -7,6 +7,7 @@ import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
 import { isPayPalFastlaneMethod } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 import type CheckoutStepStatus from '../checkout/CheckoutStepStatus';
+import { isShippingStepComplete } from '../checkout/getCheckoutStepStatuses';
 import getProviderWithCustomCheckout from '../payment/getProviderWithCustomCheckout';
 
 import CheckoutButtonList from './CheckoutButtonList';
@@ -94,7 +95,12 @@ export const GuestFormContainer: React.FC<GuestFormContainerProps> = ({
 
     const customCheckoutProvider = getProviderWithCustomCheckout(providerWithCustomCheckout);
 
-    const continueAsGuestButtonLabelId = getContinueAsGuestButtonLabelId(themeV2, cart, config);
+    const continueAsGuestButtonLabelId = getContinueAsGuestButtonLabelId(
+        themeV2,
+        cart,
+        config,
+        isShippingStepComplete(checkoutState),
+    );
 
     const checkoutButtons =
         isWalletButtonsOnTop || !isPaymentDataRequired() ? null : (
