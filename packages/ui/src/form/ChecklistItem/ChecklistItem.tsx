@@ -18,7 +18,6 @@ export interface ChecklistItemProps {
     content?: ReactNode;
     htmlId?: string;
     isDisabled?: boolean;
-    // Unlike isDisabled, keeps the input focusable while blocking selection.
     isReadOnly?: boolean;
     label: ReactNode | ((isSelected: boolean) => ReactNode);
     value: string;
