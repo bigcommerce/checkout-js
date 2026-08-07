@@ -57,10 +57,22 @@
     }
 
     // overrides
-    .body-bold, .body-medium, .sub-header {
+    .body-bold, .body-medium, .sub-header, .header {
         &.button--primary:not(:disabled){
             color: $color-white;
         }
+    }
+
+    .header {
+        &.button--primary {
+            text-transform: none;
+        }
+    }
+
+    #checkout-customer-continue,
+    #stripe-checkout-customer-continue,
+    #checkout-shipping-continue {
+        text-transform: none;
     }
 
     .form-checkbox + .form-label,

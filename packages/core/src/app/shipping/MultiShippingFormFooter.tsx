@@ -1,5 +1,6 @@
 import React, { type FunctionComponent } from 'react';
 
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { Alert, AlertType, Button, ButtonVariant, Form } from '@bigcommerce/checkout/ui';
 
@@ -18,6 +19,8 @@ const MultiShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
     isLoading,
     cartHasChanged,
 }) => {
+    const { themeV2 } = useThemeContext();
+
     return (
         <Form>
             {cartHasChanged && (
@@ -38,7 +41,11 @@ const MultiShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
                     type="submit"
                     variant={ButtonVariant.Primary}
                 >
-                    <TranslatedString id="common.continue_action" />
+                    <TranslatedString
+                        id={
+                            themeV2 ? 'common.continue_to_payment_action' : 'common.continue_action'
+                        }
+                    />
                 </Button>
             </div>
         </Form>
