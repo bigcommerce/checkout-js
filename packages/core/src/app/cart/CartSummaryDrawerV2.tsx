@@ -91,12 +91,12 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({
                         {shopperCurrency.code})
                     </span>
                 </div>
-                <a className="cart-summary-bar-toggle-label body-regular">
+                <span className="cart-summary-bar-toggle-label body-regular optimizedCheckout-orderSummary-toggle">
                     <TranslatedString
                         id={isExpanded ? 'cart.hide_details_action' : 'cart.show_details_action'}
                     />
                     {isExpanded ? <IconChevronDown /> : <IconChevronUp />}
-                </a>
+                </span>
             </div>
             {rootElement && (
                 <ReactModal
