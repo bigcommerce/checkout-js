@@ -5,7 +5,8 @@
         flex-direction: column;
 
         .form-checklist-item {
-            border: 1px solid $color-greyMedium;
+            border-width: 1px;
+            border-style: solid;
             margin: spacing("sixth") 0;
             border-radius: $element-border-radius;
 
@@ -19,8 +20,8 @@
         }
 
         .form-checklist-item--selected {
-            border: $input-border-width $input-border-style $color-black;
-            background-color: $color-highlightLightest;
+            border-width: $input-border-width;
+            border-style: $input-border-style;
         }
 
         .form-checklist-header {
