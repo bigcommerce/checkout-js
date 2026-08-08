@@ -1,10 +1,13 @@
 import { createOfflinePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/offline';
-import { type FunctionComponent, useEffect } from 'react';
+import React, { type FunctionComponent, useEffect } from 'react';
 
 import {
+    getPaymentFormFields,
     type PaymentMethodProps,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
+
+import PaymentFormFields from './PaymentFormFields';
 
 const OfflinePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     method,
@@ -46,7 +49,13 @@ const OfflinePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         };
     }, [checkoutService, method.gateway, method.id, onUnhandledError]);
 
-    return null;
+    const formFields = getPaymentFormFields(method.initializationData?.formFieldsData);
+
+    if (!formFields.length) {
+        return null;
+    }
+
+    return <PaymentFormFields fields={formFields} />;
 };
 
 export default toResolvableComponent(OfflinePaymentMethod, [
