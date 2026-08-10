@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.858.0](https://github.com/bigcommerce/checkout-js/compare/v1.857.0...v1.858.0) (2026-08-10)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10208 Accessibility - payment radio buttons keyboard operable ([20cc0cf](https://github.com/bigcommerce/checkout-js/commit/20cc0cfae06555e84f20734fb86be25dce226a5e))
+* **checkout:** CHECKOUT-10208 Guard payment method selection during initialisation ([8d8aac1](https://github.com/bigcommerce/checkout-js/commit/8d8aac1f4dd9b32892dcc349aa7632751d95369a))
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10208 Block payment method selection during init without disabling radios ([2ee2a08](https://github.com/bigcommerce/checkout-js/commit/2ee2a085a10cf0f50ddc4e802ae1a25e742da699))
+* **checkout:** CHECKOUT-10208 Remove redundant comment on isReadOnly prop ([a7354d5](https://github.com/bigcommerce/checkout-js/commit/a7354d561a1b0cecad9de0da38fe759491da8113))
+
 ## [1.857.0](https://github.com/bigcommerce/checkout-js/compare/v1.856.0...v1.857.0) (2026-08-06)
 
 
