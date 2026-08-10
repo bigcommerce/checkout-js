@@ -182,33 +182,6 @@ describe('AddressSelect component', () => {
         expect(onSelectAddress).not.toHaveBeenCalled();
     });
 
-    it('renders searchable address dropdown when company address book is enabled', () => {
-        const storeConfig = getStoreConfig();
-        const configWithCompanyAddressBook = {
-            ...storeConfig,
-            checkoutSettings: {
-                ...storeConfig.checkoutSettings,
-                capabilities: {
-                    ...defaultCapabilities,
-                    userJourney: {
-                        ...defaultCapabilities.userJourney,
-                        hasCompanyAddressBook: true,
-                    },
-                },
-            },
-        };
-
-        jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(
-            configWithCompanyAddressBook,
-        );
-
-        renderAddressSelect();
-
-        fireEvent.click(screen.getByTestId('address-select-button'));
-
-        expect(screen.getByRole('textbox', { name: 'Search addresses' })).toBeInTheDocument();
-    });
-
     it('shows Powered By PP Fastlane label', () => {
         const defaultStoreConfig = getStoreConfig();
 

@@ -1,5 +1,9 @@
 import '@testing-library/jest-dom';
-import { type CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
+import {
+    type CheckoutService,
+    createCheckoutService,
+    type CustomerAddress,
+} from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React from 'react';
 
@@ -16,7 +20,7 @@ import { getStoreConfig } from '../config/config.mock';
 import { getB2BCustomer } from '../customer/customers.mock';
 import { getCountries } from '../geography/countries.mock';
 
-import { getAddress } from './address.mock';
+import { getAddress, getCustomerAddressB2B } from './address.mock';
 import AddressType from './AddressType';
 import {
     SearchableAddressSelectComponent,
@@ -33,6 +37,17 @@ describe('SearchableAddressSelectComponent', () => {
         onUseNewAddress: noop,
         type: AddressType.Billing,
     };
+
+    const searchableAddresses: CustomerAddress[] = [
+        ...getB2BCustomer().addresses,
+        ...[100, 101, 102].map((id) => ({
+            ...getAddress(),
+            id,
+            type: 'commercial',
+            address1: `${id} Extra Billing Way`,
+            b2b: getCustomerAddressB2B({ isBilling: true }),
+        })),
+    ];
 
     const renderComponent = (props?: Partial<SearchableAddressSelectProps>) => {
         render(
@@ -65,14 +80,21 @@ describe('SearchableAddressSelectComponent', () => {
         expect(screen.getByText('Enter a new address')).toBeInTheDocument();
     });
 
-    it('renders search input with placeholder and aria-label', () => {
-        renderComponent();
+    it('renders search input with placeholder and aria-label when enough addresses exist', () => {
+        renderComponent({ addresses: searchableAddresses });
 
         const searchInput = screen.getByRole('textbox', { name: 'Search addresses' });
 
         expect(searchInput).toBeInTheDocument();
         expect(searchInput).toHaveAttribute('aria-label', 'Search addresses');
         expect(searchInput).toHaveAttribute('placeholder', 'Search addresses');
+    });
+
+    it('does not render search input when there are not enough addresses', () => {
+        renderComponent();
+
+        expect(screen.queryByTestId('address-select-search')).not.toBeInTheDocument();
+        expect(screen.queryByRole('textbox', { name: 'Search addresses' })).not.toBeInTheDocument();
     });
 
     it('calls onUseNewAddress with selectedAddress when "Enter a new address" is clicked', () => {
@@ -111,9 +133,7 @@ describe('SearchableAddressSelectComponent', () => {
     });
 
     it('filters addresses when user types in search input', () => {
-        const addresses = getB2BCustomer().addresses;
-
-        renderComponent({ addresses });
+        renderComponent({ addresses: searchableAddresses });
 
         const searchInput = screen.getByRole('textbox', { name: 'Search addresses' });
         const initialOptionCount = screen.getAllByTestId('address-select-option').length;
