@@ -6,7 +6,15 @@ import {
 } from '@bigcommerce/checkout-sdk/essential';
 import { type FormikProps, type FormikState, withFormik, type WithFormikConfig } from 'formik';
 import { isEmpty, noop, omitBy } from 'lodash';
-import React, { type FunctionComponent, memo, useCallback, useContext, useMemo } from 'react';
+import React, {
+    type FunctionComponent,
+    memo,
+    useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+    useRef,
+} from 'react';
 import { object, type ObjectSchema, string } from 'yup';
 
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
@@ -38,6 +46,10 @@ import {
     PaymentMethodList,
     usePoMethodDisabledReason,
 } from './paymentMethod';
+import {
+    PaymentMethodsRefreshAlert,
+    type PaymentMethodsRefreshAlertData,
+} from './PaymentMethodsRefreshAlert';
 import PaymentRedeemables from './PaymentRedeemables';
 import PaymentSubmitButton from './PaymentSubmitButton';
 import { ProvidersSectionOnTopOfPaymentsList } from './ProvidersSectionOnTopOfPaymentsList';
@@ -56,10 +68,12 @@ export interface PaymentFormProps {
     isBillingSameAsShipping?: boolean;
     isEmbedded?: boolean;
     isInitializingPayment?: boolean;
+    isReloadingPaymentMethods?: boolean;
     isTermsConditionsRequired?: boolean;
     isUsingMultiShipping?: boolean;
     isStoreCreditApplied: boolean;
     methods: PaymentMethod[];
+    methodsRefreshAlert?: PaymentMethodsRefreshAlertData;
     orderExtraFields?: FormField[];
     selectedMethod?: PaymentMethod;
     shouldShowStoreCredit?: boolean;
@@ -73,6 +87,7 @@ export interface PaymentFormProps {
     isPaymentDataRequired(): boolean;
     onBillingSameAsShippingChange?(isBillingSameAsShipping: boolean): void;
     onMethodSelect?(method: PaymentMethod): void;
+    onMethodsRefreshAlertDismiss?(): void;
     onStoreCreditChange?(useStoreCredit?: boolean): void;
     onSubmit?(values: PaymentFormValues): void;
     onUnhandledError?(error: Error): void;
@@ -89,13 +104,16 @@ const PaymentForm: FunctionComponent<
     isEmbedded,
     isInitializingPayment,
     isPaymentDataRequired,
+    isReloadingPaymentMethods,
     isTermsConditionsRequired,
     isStoreCreditApplied,
     isUsingMultiShipping,
     language,
     methods,
+    methodsRefreshAlert,
     onBillingSameAsShippingChange,
     onMethodSelect,
+    onMethodsRefreshAlertDismiss,
     onStoreCreditChange,
     onUnhandledError,
     orderExtraFields,
@@ -152,6 +170,20 @@ const PaymentForm: FunctionComponent<
     const hideSubmitPaymentButton =
         shouldHidePaymentSubmitButton || (isPaymentDataRequired() && isEmpty(methods));
 
+    const methodListRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!isReloadingPaymentMethods) {
+            return;
+        }
+
+        try {
+            methodListRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } catch {
+            methodListRef.current?.scrollIntoView();
+        }
+    }, [isReloadingPaymentMethods]);
+
     if (shouldExecuteSpamCheck) {
         return (
             <SpamProtectionField
@@ -172,6 +204,15 @@ const PaymentForm: FunctionComponent<
                     usableStoreCredit={usableStoreCredit}
                 />
             )}
+
+            <div ref={methodListRef}>
+                {methodsRefreshAlert && (
+                    <PaymentMethodsRefreshAlert
+                        alert={methodsRefreshAlert}
+                        onDismiss={onMethodsRefreshAlertDismiss ?? noop}
+                    />
+                )}
+            </div>
 
             {isEmpty(methods) &&
                 (isPaymentDataRequired() ? (

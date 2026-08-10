@@ -1,9 +1,9 @@
 import { ExtensionRegion } from '@bigcommerce/checkout-sdk/essential';
 import classNames from 'classnames';
-import React, { type FunctionComponent, memo, useState } from 'react';
+import React, { type FunctionComponent, memo, useEffect, useMemo, useState } from 'react';
 
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
-import { useThemeContext } from '@bigcommerce/checkout/contexts';
+import { useSetCheckoutStepHeaderAction, useThemeContext } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { ConfirmationModal, Legend } from '@bigcommerce/checkout/ui';
@@ -28,6 +28,7 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
     const [isMultiShippingUnavailableModalOpen, setIsMultiShippingUnavailableModalOpen] =
         useState(false);
     const { themeV2 } = useThemeContext();
+    const setHeaderAction = useSetCheckoutStepHeaderAction();
 
     const isSubheaderHidden = themeV2 && !isMultiShippingMode;
 
@@ -39,6 +40,57 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
     const showConfirmationModal = shouldShowMultiShipping && isMultiShippingMode;
     const showMultiShippingUnavailableModal =
         shouldShowMultiShipping && !isMultiShippingMode && cartHasPromotionalItems;
+
+    const modeToggleLink = useMemo(() => {
+        if (!shouldShowMultiShipping) {
+            return null;
+        }
+
+        const getHandleClick = () => {
+            if (showConfirmationModal) {
+                return () => setIsSingleShippingConfirmationModalOpen(true);
+            }
+
+            if (showMultiShippingUnavailableModal) {
+                return () => setIsMultiShippingUnavailableModalOpen(true);
+            }
+
+            return onMultiShippingChange;
+        };
+
+        const handleClick = getHandleClick();
+
+        return (
+            <a
+                className="body-cta"
+                data-test="shipping-mode-toggle"
+                href="#"
+                onClick={preventDefault(handleClick)}
+            >
+                <TranslatedString
+                    id={isMultiShippingMode ? 'shipping.ship_to_single' : 'shipping.ship_to_multi'}
+                />
+            </a>
+        );
+    }, [
+        showConfirmationModal,
+        showMultiShippingUnavailableModal,
+        shouldShowMultiShipping,
+        isMultiShippingMode,
+        onMultiShippingChange,
+    ]);
+
+    useEffect(() => {
+        if (!themeV2) {
+            setHeaderAction(null);
+
+            return;
+        }
+
+        setHeaderAction(modeToggleLink);
+
+        return () => setHeaderAction(null);
+    }, [themeV2, modeToggleLink, setHeaderAction]);
 
     return (
         <>
@@ -54,69 +106,29 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
                     />
                 </Legend>
 
-                {showConfirmationModal && (
-                    <>
-                        <ConfirmationModal
-                            action={handleShipToSingleConfirmation}
-                            actionButtonLabel={<TranslatedString id="common.proceed_action" />}
-                            headerId="shipping.ship_to_single_action"
-                            isModalOpen={isSingleShippingConfirmationModalOpen}
-                            messageId="shipping.ship_to_single_message"
-                            onRequestClose={() => setIsSingleShippingConfirmationModalOpen(false)}
-                        />
-                        <a
-                            className="body-cta"
-                            data-test="shipping-mode-toggle"
-                            href="#"
-                            onClick={preventDefault(() =>
-                                setIsSingleShippingConfirmationModalOpen(true),
-                            )}
-                        >
-                            <TranslatedString id="shipping.ship_to_single" />
-                        </a>
-                    </>
-                )}
-                {showMultiShippingUnavailableModal && (
-                    <>
-                        <ConfirmationModal
-                            action={() => setIsMultiShippingUnavailableModalOpen(false)}
-                            actionButtonLabel={<TranslatedString id="common.back_action" />}
-                            headerId="shipping.multishipping_unavailable_action"
-                            isModalOpen={isMultiShippingUnavailableModalOpen}
-                            messageId="shipping.multishipping_unavailable_message"
-                            onRequestClose={() => setIsMultiShippingUnavailableModalOpen(false)}
-                        />
-                        <a
-                            className="body-cta"
-                            data-test="shipping-mode-toggle"
-                            href="#"
-                            onClick={preventDefault(() =>
-                                setIsMultiShippingUnavailableModalOpen(true),
-                            )}
-                        >
-                            <TranslatedString id="shipping.ship_to_multi" />
-                        </a>
-                    </>
-                )}
-                {!showConfirmationModal &&
-                    !showMultiShippingUnavailableModal &&
-                    shouldShowMultiShipping && (
-                        <a
-                            className="body-cta"
-                            data-test="shipping-mode-toggle"
-                            href="#"
-                            onClick={preventDefault(onMultiShippingChange)}
-                        >
-                            <TranslatedString
-                                id={
-                                    isMultiShippingMode
-                                        ? 'shipping.ship_to_single'
-                                        : 'shipping.ship_to_multi'
-                                }
-                            />
-                        </a>
-                    )}
+                {!themeV2 && modeToggleLink}
             </div>
+
+            {showConfirmationModal && (
+                <ConfirmationModal
+                    action={handleShipToSingleConfirmation}
+                    actionButtonLabel={<TranslatedString id="common.proceed_action" />}
+                    headerId="shipping.ship_to_single_action"
+                    isModalOpen={isSingleShippingConfirmationModalOpen}
+                    messageId="shipping.ship_to_single_message"
+                    onRequestClose={() => setIsSingleShippingConfirmationModalOpen(false)}
+                />
+            )}
+            {showMultiShippingUnavailableModal && (
+                <ConfirmationModal
+                    action={() => setIsMultiShippingUnavailableModalOpen(false)}
+                    actionButtonLabel={<TranslatedString id="common.back_action" />}
+                    headerId="shipping.multishipping_unavailable_action"
+                    isModalOpen={isMultiShippingUnavailableModalOpen}
+                    messageId="shipping.multishipping_unavailable_message"
+                    onRequestClose={() => setIsMultiShippingUnavailableModalOpen(false)}
+                />
+            )}
         </>
     );
 };

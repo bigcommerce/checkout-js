@@ -23,7 +23,7 @@ const BigCommercePaymentsPaymentMethod: FunctionComponent<PaymentMethodProps> = 
         },
         method: {
             config: { isVaultingEnabled },
-            initializationData: { ...isComplete },
+            initializationData: { isComplete },
         },
         method,
         checkoutService,
@@ -58,7 +58,7 @@ const BigCommercePaymentsPaymentMethod: FunctionComponent<PaymentMethodProps> = 
         if (shouldLoadInstruments) {
             void loadInstrumentsOrThrow();
         }
-    });
+    }, []);
 
     if (!isPaymentDataRequired()) {
         return null;

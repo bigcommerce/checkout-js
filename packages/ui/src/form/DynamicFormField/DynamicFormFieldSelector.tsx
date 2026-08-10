@@ -45,8 +45,10 @@ export const DynamicFormFieldSelector: FunctionComponent<DynamicFormFieldSelecto
         selectedCountry,
         onChange,
     }) => {
+        // skipped for stores with maxLength as it caused formatting issues
         const isNewPhoneFieldWithValidation =
             isNewPhoneValidationExperimentEnabled &&
+            !maxLength &&
             dynamicFormFieldType === DynamicFormFieldType.TELEPHONE;
 
         const renderInput = useCallback(

@@ -9,6 +9,7 @@ import { AddressFormSkeleton, Fieldset, LoadingOverlay } from '@bigcommerce/chec
 
 import {
     AddressForm,
+    type AddressFormValues,
     AddressSelect,
     AddressType,
     decodeAddressLabel,
@@ -38,6 +39,7 @@ export interface PaymentBillingFormProps {
     // so the pre-submit ensureBillingAddressSaved can block the order.
     onPersist(values: BillingFormValues): Promise<void>;
     onBillingSameAsShippingChange(isBillingSameAsShipping: boolean): void;
+    onBillingCountryChange(countryCode: string, addressValues: AddressFormValues): void;
     onUnhandledError(error: Error): void;
     updateBillingAddress(address: Partial<Address>): Promise<unknown>;
 }
@@ -53,6 +55,7 @@ const PaymentBillingFormComponent = ({
     values,
     onPersist,
     onBillingSameAsShippingChange,
+    onBillingCountryChange,
     onUnhandledError,
     updateBillingAddress,
 }: PaymentBillingFormProps & WithLanguageProps & FormikProps<PaymentBillingFormValues>) => {
@@ -185,6 +188,21 @@ const PaymentBillingFormComponent = ({
         void handleSelectAddress({});
     };
 
+    const handleAddressFieldChange = useCallback(
+        (fieldName: string, value: string | string[]) => {
+            if (fieldName === 'countryCode' && typeof value === 'string' && value) {
+                const {
+                    billingSameAsShipping: _billingSameAsShipping,
+                    orderComment: _orderComment,
+                    ...addressValues
+                } = values;
+
+                onBillingCountryChange(value, addressValues);
+            }
+        },
+        [onBillingCountryChange, values],
+    );
+
     return (
         <div className="checkout-billing-form" data-test="checkout-billing-form">
             {shouldShowBillingSameAsShipping && (
@@ -225,6 +243,7 @@ const PaymentBillingFormComponent = ({
                                 <AddressForm
                                     countryCode={values.countryCode}
                                     formFields={editableFormFields}
+                                    onChange={handleAddressFieldChange}
                                     setFieldValue={setFieldValue}
                                     shouldShowSaveAddress={shouldShowSaveAddress}
                                     type={AddressType.Billing}

@@ -1,10 +1,11 @@
 import type { CheckoutSelectors } from '@bigcommerce/checkout-sdk';
-import React, { type FunctionComponent } from 'react';
+import { omit } from 'lodash';
+import React, { type FunctionComponent, useRef } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { AddressFormSkeleton, Legend } from '@bigcommerce/checkout/ui';
 
-import { isEqualAddress, mapAddressFromFormValues } from '../../address';
+import { type AddressFormValues, isEqualAddress, mapAddressFromFormValues } from '../../address';
 import { type BillingFormValues } from '../../billing/billingFormConfig';
 import { useBilling } from '../../billing/hooks/useBilling';
 
@@ -48,7 +49,9 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
         const shippingAddress = getShippingAddress();
 
         if (shippingAddress && !isEqualAddress(shippingAddress, getBillingAddress())) {
-            updateBillingAddress(shippingAddress).catch((error) => {
+            // The consignment address carries email: '' — sent as-is it overwrites
+            // the guest email; omitted, the SDK falls back to the stored one.
+            updateBillingAddress(omit(shippingAddress, 'email')).catch((error) => {
                 onBillingSameAsShippingChange(false);
 
                 if (error instanceof Error) {
@@ -56,6 +59,36 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
                 }
             });
         }
+    };
+
+    const lastRequestedCountryCodeRef = useRef<string | undefined>();
+
+    const handleBillingCountryChange = (countryCode: string, addressValues: AddressFormValues) => {
+        const lastCountryCode =
+            lastRequestedCountryCodeRef.current ?? getBillingAddress()?.countryCode;
+
+        if (lastCountryCode === countryCode) {
+            return;
+        }
+
+        lastRequestedCountryCodeRef.current = countryCode;
+
+        updateBillingAddress({
+            ...mapAddressFromFormValues(addressValues),
+            countryCode,
+            stateOrProvince: '',
+            stateOrProvinceCode: '',
+        })
+            .catch((error) => {
+                if (error instanceof Error) {
+                    onUnhandledError(error);
+                }
+            })
+            .finally(() => {
+                if (lastRequestedCountryCodeRef.current === countryCode) {
+                    lastRequestedCountryCodeRef.current = undefined;
+                }
+            });
     };
 
     // Persist without navigating — the payment step's "Place Order" is the only
@@ -102,6 +135,7 @@ export const PaymentBillingBlock: FunctionComponent<PaymentBillingBlockProps> = 
                     isBillingSameAsShipping={isBillingSameAsShipping}
                     isLoading={isInitializing}
                     methodId={methodId}
+                    onBillingCountryChange={handleBillingCountryChange}
                     onBillingSameAsShippingChange={handleBillingSameAsShippingChange}
                     onPersist={handlePersist}
                     onUnhandledError={onUnhandledError}
