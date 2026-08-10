@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.860.0](https://github.com/bigcommerce/checkout-js/compare/v1.859.0...v1.860.0) (2026-08-10)
+
+
+### Features
+
+* **payment:** PI-5384 [AdyenV3] [FE] Disable Place order button when Adyen script is not loaded ([#3234](https://github.com/bigcommerce/checkout-js/issues/3234)) ([49b6642](https://github.com/bigcommerce/checkout-js/commit/49b6642a53f4b1096f93b0d29f72dcfaebed3e53))
+
 ## [1.859.0](https://github.com/bigcommerce/checkout-js/compare/v1.858.0...v1.859.0) (2026-08-10)
 
 
