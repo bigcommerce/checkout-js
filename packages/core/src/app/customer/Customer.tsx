@@ -80,7 +80,7 @@ const Customer: React.FC<CustomerProps> = ({
     const { analyticsTracker } = useAnalytics();
 
     const customerData = useCustomer();
-    const { errorLogger } = useCheckout();
+    const { errorLogger } = useCheckout(() => undefined);
 
     // Initialize draftEmail on mount
     useEffect(() => {

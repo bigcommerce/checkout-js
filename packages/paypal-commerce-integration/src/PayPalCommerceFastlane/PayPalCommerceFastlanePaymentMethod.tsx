@@ -30,7 +30,7 @@ const PayPalCommerceFastlanePaymentMethod: FunctionComponent<PaymentMethodProps>
     const paypalCardComponentRef = useRef<PayPalFastlaneCardComponentRef>({});
 
     const { isLoadingPaymentMethod, isInitializingPayment } = checkoutState.statuses;
-    const { errorLogger } = useCheckout();
+    const { errorLogger } = useCheckout(() => undefined);
 
     const initializePaymentOrThrow = async () => {
         try {
