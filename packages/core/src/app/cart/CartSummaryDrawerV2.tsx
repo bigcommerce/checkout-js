@@ -58,7 +58,7 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({
     };
 
     return (
-        <div className="cart-summary-drawer enhancedTheme" ref={setRootElement}>
+        <div className="cart-summary-drawer enhancedThemeV1" ref={setRootElement}>
             <div
                 aria-controls="cart-summary-sheet"
                 aria-expanded={isExpanded}

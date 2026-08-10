@@ -2,7 +2,7 @@ import { type StoreConfig } from '@bigcommerce/checkout-sdk/essential';
 
 import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
-export const isEnhancedThemeEnabled = (config?: StoreConfig): boolean => {
+export const isEnhancedThemeV1Enabled = (config?: StoreConfig): boolean => {
     if (!config?.checkoutSettings) {
         return false;
     }

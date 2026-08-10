@@ -51,8 +51,8 @@ import {
 
 import { type PaymentContextProps } from './PaymentContext';
 
-// Controllable billing save for the enhancedTheme pre-submit gate. Other tests keep
-// enhancedTheme off, so the block never renders and this stays unused there.
+// Controllable billing save for the enhancedThemeV1 pre-submit gate. Other tests keep
+// enhancedThemeV1 off, so the block never renders and this stays unused there.
 
 let mockEnsureBillingAddressSaved: jest.Mock<Promise<boolean>>;
 
@@ -248,8 +248,8 @@ describe('Payment step', () => {
         expect(window.location.replace).toHaveBeenCalledWith('/order-confirmation');
     });
 
-    it('does not place the order when embedded billing (enhancedTheme) is invalid', async () => {
-        const enhancedThemeConfig = {
+    it('does not place the order when embedded billing (enhancedThemeV1) is invalid', async () => {
+        const enhancedThemeV1Config = {
             ...checkoutSettings,
             storeConfig: {
                 ...checkoutSettings.storeConfig,
@@ -278,7 +278,7 @@ describe('Payment step', () => {
         });
 
         checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
-            config: enhancedThemeConfig,
+            config: enhancedThemeV1Config,
         });
 
         const submitOrderSpy = jest.spyOn(checkoutService, 'submitOrder');
@@ -294,8 +294,8 @@ describe('Payment step', () => {
         expect(window.location.replace).not.toHaveBeenCalled();
     });
 
-    it('disables Place Order while the embedded billing (enhancedTheme) address is being persisted', async () => {
-        const enhancedThemeConfig = {
+    it('disables Place Order while the embedded billing (enhancedThemeV1) address is being persisted', async () => {
+        const enhancedThemeV1Config = {
             ...checkoutSettings,
             storeConfig: {
                 ...checkoutSettings.storeConfig,
@@ -313,7 +313,7 @@ describe('Payment step', () => {
         mockEnsureBillingAddressSaved = jest.fn<Promise<boolean>, []>().mockResolvedValue(true);
 
         checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
-            config: enhancedThemeConfig,
+            config: enhancedThemeV1Config,
         });
 
         // Keep the billing-address update in flight so isUpdatingBillingAddress

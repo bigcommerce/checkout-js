@@ -1,5 +1,5 @@
 .layout {
-    @include enhancedTheme {
+    @include enhancedThemeV1 {
         padding: 0;
         display: flex;
         flex-direction: column;
@@ -91,7 +91,7 @@
         }
     }
 
-    @include enhancedTheme-mobile {
+    @include enhancedThemeV1-mobile {
         padding: 0 #{spacing("single")} #{5 * spacing("single")};
 
         .layout-main {
@@ -103,7 +103,7 @@
         }
     }
 
-    @include enhancedTheme-desktop {
+    @include enhancedThemeV1-desktop {
         display: block;
 
         .layout-main {
@@ -116,7 +116,7 @@
         }
     }
 
-    @include enhancedTheme-widescreen {
+    @include enhancedThemeV1-widescreen {
         .layout-main {
             width: grid-calc(8, $total-columns);
         }

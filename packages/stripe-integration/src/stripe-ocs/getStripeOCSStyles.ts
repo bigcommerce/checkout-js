@@ -6,12 +6,12 @@ import type { StripeAppearanceOptions, StripeCustomFont } from '../stripe-types'
 
 export enum CheckoutTheme {
     DEFAULT = 'default',
-    ENHANCED_THEME = 'enhancedTheme',
+    ENHANCED_THEME_V1 = 'enhancedThemeV1',
 }
 
 const radioIconInnerScaleList: Record<CheckoutTheme, number> = {
     [CheckoutTheme.DEFAULT]: 0.66,
-    [CheckoutTheme.ENHANCED_THEME]: 0.36,
+    [CheckoutTheme.ENHANCED_THEME_V1]: 0.36,
 };
 
 const getStylesFromElement = (
@@ -194,11 +194,11 @@ export const getAppearanceForOCSElement = (
 
     const toggleItemBorderRadius = {
         [CheckoutTheme.DEFAULT]: '4px',
-        [CheckoutTheme.ENHANCED_THEME]: formChecklistStyles['border-radius'],
+        [CheckoutTheme.ENHANCED_THEME_V1]: formChecklistStyles['border-radius'],
     };
     const toggleItemSelectedBorderColor = {
         [CheckoutTheme.DEFAULT]: radioInnerChecked['background-color'],
-        [CheckoutTheme.ENHANCED_THEME]: accordionSelectedHeaderStyles['border-color'],
+        [CheckoutTheme.ENHANCED_THEME_V1]: accordionSelectedHeaderStyles['border-color'],
     };
 
     return {

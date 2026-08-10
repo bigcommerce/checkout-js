@@ -73,7 +73,7 @@ export interface CheckoutProps {
     embeddedStylesheet: EmbeddedCheckoutStylesheet;
     embeddedSupport: CheckoutSupport;
     errorLogger: ErrorLogger;
-    enhancedTheme?: boolean;
+    enhancedThemeV1?: boolean;
     createEmbeddedMessenger(options: EmbeddedCheckoutMessengerOptions): EmbeddedCheckoutMessenger;
 }
 
@@ -151,7 +151,7 @@ const Checkout = ({
     embeddedStylesheet,
     loadPaymentMethodByIds,
     subscribeToConsignments,
-    enhancedTheme,
+    enhancedThemeV1,
 }: CheckoutPageProps): ReactElement => {
     const capabilities = useCapabilities();
     const {
@@ -430,13 +430,13 @@ const Checkout = ({
         (isBillingSameAsShipping: boolean): void => {
             setState((prev) => ({ ...prev, isBillingSameAsShipping }));
 
-            if (isBillingSameAsShipping || enhancedTheme) {
+            if (isBillingSameAsShipping || enhancedThemeV1) {
                 navigateToNextIncompleteStep();
             } else {
                 navigateToStep(CheckoutStepType.Billing);
             }
         },
-        [navigateToNextIncompleteStep, navigateToStep, enhancedTheme],
+        [navigateToNextIncompleteStep, navigateToStep, enhancedThemeV1],
     );
 
     const handleBillingSameAsShippingChange = useCallback(
@@ -743,7 +743,7 @@ const Checkout = ({
             className={classNames(
                 'remove-checkout-step-numbers',
                 { 'is-embedded': isEmbedded() },
-                { enhancedTheme },
+                { enhancedThemeV1 },
             )}
             data-test="checkout-page-container"
             id="checkout-page-container"

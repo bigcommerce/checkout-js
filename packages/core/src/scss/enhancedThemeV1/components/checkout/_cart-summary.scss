@@ -1,5 +1,5 @@
 .layout-cart {
-    @include enhancedTheme {
+    @include enhancedThemeV1 {
         padding: 0;
         order: -1;
 
@@ -171,11 +171,11 @@
         }
     }
 
-    @include enhancedTheme-mobile {
+    @include enhancedThemeV1-mobile {
         @include grid-column(12);
     }
 
-    @include enhancedTheme-desktop {
+    @include enhancedThemeV1-desktop {
         width: grid-calc(5, $total-columns);
         padding-left: remCalc(30px);
         padding-right: spacing("single");
@@ -191,7 +191,7 @@
         }
     }
 
-    @include enhancedTheme-widescreen {
+    @include enhancedThemeV1-widescreen {
         width: grid-calc(4, $total-columns);
     }
 }
@@ -200,6 +200,6 @@ body.has-activeCartSummarySheet {
     overflow: hidden;
 }
 
-.enhancedTheme:has(.cart-summary-collapsed-bar) .layout {
+.enhancedThemeV1:has(.cart-summary-collapsed-bar) .layout {
     padding-bottom: #{5 * spacing("single")};
 }

@@ -7,9 +7,9 @@ import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integratio
 export type EnsureBillingAddressSaved = () => Promise<boolean>;
 
 export interface PaymentContextProps {
-    // Lets the enhancedTheme payment billing form set a callback the payment submit
+    // Lets the enhancedThemeV1 payment billing form set a callback the payment submit
     // awaits, so the order can't finalize against a stale billing address. Pass
-    // null to clear it. Optional: only the enhancedTheme billing form uses it.
+    // null to clear it. Optional: only the enhancedThemeV1 billing form uses it.
     setEnsureBillingAddressSaved?(
         ensureBillingAddressSaved: EnsureBillingAddressSaved | null,
     ): void;

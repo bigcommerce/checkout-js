@@ -45,7 +45,7 @@ const ShippingAddressForm = ({
     const {
         selectedState: { customer },
     } = useCheckout(({ data }) => ({ customer: data.getCustomer() }));
-    const { enhancedTheme } = useThemeContext();
+    const { enhancedThemeV1 } = useThemeContext();
     const {
         shipping: { hideSaveToAddressBookCheck, restrictManualAddressEntry },
         userJourney: { hasAddressLabel },
@@ -92,7 +92,7 @@ const ShippingAddressForm = ({
         validateMaxLength,
     );
 
-    const sortedFormFields = enhancedTheme ? reorderAddressFormFields(formFields) : formFields;
+    const sortedFormFields = enhancedThemeV1 ? reorderAddressFormFields(formFields) : formFields;
 
     return (
         <Fieldset id="checkoutShippingAddress">

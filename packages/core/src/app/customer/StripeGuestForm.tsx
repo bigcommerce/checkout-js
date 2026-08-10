@@ -78,7 +78,7 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
     const [authentication, setAuthentication] = useState(false);
     const [isStripeLoading, setIsStripeLoading] = useState(true);
     const [isNewAuth, setIsNewAuth] = useState(false);
-    const { enhancedTheme } = useThemeContext();
+    const { enhancedThemeV1 } = useThemeContext();
     const handleOnClickSubmitButton = () => {
         onContinueAsGuest({
             email: emailValue,
@@ -236,7 +236,7 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
                                     <BasicFormField name="shouldSubscribe" render={renderField} />
                                 )}
 
-                                {enhancedTheme && privacyPolicyUrl && (
+                                {enhancedThemeV1 && privacyPolicyUrl && (
                                     <PrivacyPolicyField
                                         isExpressPrivacyPolicy={isExpressPrivacyPolicy}
                                         url={privacyPolicyUrl}
@@ -248,7 +248,7 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
                                 {(!authentication || (authentication && !isNewAuth)) && (
                                     <Button
                                         className={classNames({
-                                            'stripeCustomerEmail-button': !enhancedTheme,
+                                            'stripeCustomerEmail-button': !enhancedThemeV1,
                                         })}
                                         disabled={continueAsAGuestButton}
                                         id="stripe-checkout-customer-continue"
@@ -263,14 +263,14 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
                             </div>
                         </div>
 
-                        {!enhancedTheme && privacyPolicyUrl && (
+                        {!enhancedThemeV1 && privacyPolicyUrl && (
                             <PrivacyPolicyField
                                 isExpressPrivacyPolicy={isExpressPrivacyPolicy}
                                 url={privacyPolicyUrl}
                             />
                         )}
 
-                        {!enhancedTheme && !isLoading && (
+                        {!enhancedThemeV1 && !isLoading && (
                             <p>
                                 <TranslatedString id="customer.login_text" />{' '}
                                 <a

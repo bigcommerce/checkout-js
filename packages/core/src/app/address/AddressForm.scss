@@ -1,5 +1,5 @@
 @import "../../scss/Base";
-@import "../../scss/enhancedTheme/mixins";
+@import "../../scss/enhancedThemeV1/mixins";
 
 .checkout-address:has(.floating-form-field) {
     margin-left: -0.5 * $floating-form-field-spacing;
@@ -54,7 +54,7 @@
     .dynamic-form-field--province,
     .dynamic-form-field--provinceCode,
     .dynamic-form-field--city {
-        @include enhancedTheme {
+        @include enhancedThemeV1 {
             @include breakpoint("small") {
                 flex-basis: 33.33%;
             }

@@ -66,7 +66,7 @@ const OrderSummaryModal: FunctionComponent<
         checkout: data.getCheckout(),
         order: data.getOrder(),
     }));
-    const { enhancedTheme } = useThemeContext();
+    const { enhancedThemeV1 } = useThemeContext();
     const { checkoutSettings } = config ?? {};
 
     const isMultiCouponEnabled = isExperimentEnabled(
@@ -123,7 +123,7 @@ const OrderSummaryModal: FunctionComponent<
             additionalBodyClassName="cart-modal-body optimizedCheckout-orderSummary"
             additionalHeaderClassName="cart-modal-header optimizedCheckout-orderSummary with-continue-button"
             additionalModalClassName={classNames('optimizedCheckout-cart-modal', {
-                enhancedTheme,
+                enhancedThemeV1,
             })}
             footer={continueButton}
             header={renderHeader({

@@ -2,7 +2,7 @@ import { type CheckoutPayment, type CheckoutSelectors } from '@bigcommerce/check
 import { compact } from 'lodash';
 import { createSelector } from 'reselect';
 
-import { isEnhancedThemeEnabled } from '@bigcommerce/checkout/contexts';
+import { isEnhancedThemeV1Enabled } from '@bigcommerce/checkout/contexts';
 import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
 import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
@@ -99,7 +99,7 @@ const getBillingStepStatus = createSelector(
     },
     ({ data }: CheckoutSelectors) => data.getConfig(),
     (checkout, billingAddress, billingAddressFields, config) => {
-        if (isEnhancedThemeEnabled(config)) {
+        if (isEnhancedThemeV1Enabled(config)) {
             return undefined;
         }
 

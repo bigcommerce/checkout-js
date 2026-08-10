@@ -480,7 +480,7 @@ describe('getCheckoutStepStatuses()', () => {
         ]);
     });
 
-    describe('enhancedTheme (billing captured on the payment step)', () => {
+    describe('enhancedThemeV1 (billing captured on the payment step)', () => {
         const getEnhancedThemeConfig = () => ({
             ...getStoreConfig(),
             checkoutSettings: {

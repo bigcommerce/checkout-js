@@ -1,6 +1,6 @@
 $element-border-radius: remCalc(12px);
 
-@include enhancedTheme {
+@include enhancedThemeV1 {
     .button,
     .shippingOptions-panel,
     .alertBox,

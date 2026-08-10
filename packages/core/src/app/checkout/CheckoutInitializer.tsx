@@ -28,7 +28,7 @@ export interface CheckoutInitializerProps {
 const CheckoutInitializer: React.FC<CheckoutInitializerProps> = (props) => {
     const { checkoutId, initialState } = props;
     const { isLoadingCheckout } = useLoadCheckout(checkoutId, initialState);
-    const { enhancedTheme } = useThemeContext();
+    const { enhancedThemeV1 } = useThemeContext();
 
     if (isLoadingCheckout) {
         return <CheckoutPageSkeleton />;
@@ -40,7 +40,7 @@ const CheckoutInitializer: React.FC<CheckoutInitializerProps> = (props) => {
             createEmbeddedMessenger={props.createEmbeddedMessenger}
             embeddedStylesheet={props.embeddedStylesheet}
             embeddedSupport={props.embeddedSupport}
-            enhancedTheme={enhancedTheme}
+            enhancedThemeV1={enhancedThemeV1}
             errorLogger={props.errorLogger}
         />
     );

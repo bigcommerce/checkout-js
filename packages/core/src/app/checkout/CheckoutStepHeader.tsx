@@ -30,7 +30,7 @@ const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
     summary,
     type,
 }) => {
-    const { enhancedTheme } = useThemeContext();
+    const { enhancedThemeV1 } = useThemeContext();
 
     return (
         <div
@@ -60,7 +60,7 @@ const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
                 </h2>
             </div>
 
-            {enhancedTheme && !isActive && isComplete && (
+            {enhancedThemeV1 && !isActive && isComplete && (
                 <div
                     className="stepHeader-body stepHeader-column optimizedCheckout-contentPrimary body-regular"
                     data-test="step-info"
@@ -69,7 +69,7 @@ const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
                 </div>
             )}
 
-            {!enhancedTheme && (
+            {!enhancedThemeV1 && (
                 <div
                     className="stepHeader-body stepHeader-column optimizedCheckout-contentPrimary"
                     data-test="step-info"

@@ -2,7 +2,7 @@ import React, { type ReactNode } from 'react';
 
 import { useCheckout } from '../checkout';
 
-import { isEnhancedThemeEnabled } from './isEnhancedThemeEnabled';
+import { isEnhancedThemeV1Enabled } from './isEnhancedThemeV1Enabled';
 import ThemeContext from './ThemeContext';
 
 export interface ThemeProviderProps {
@@ -12,7 +12,7 @@ export interface ThemeProviderProps {
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     const { selectedState: config } = useCheckout((state) => state.data.getConfig());
 
-    const enhancedTheme = isEnhancedThemeEnabled(config);
+    const enhancedThemeV1 = isEnhancedThemeV1Enabled(config);
 
-    return <ThemeContext.Provider value={{ enhancedTheme }}>{children}</ThemeContext.Provider>;
+    return <ThemeContext.Provider value={{ enhancedThemeV1 }}>{children}</ThemeContext.Provider>;
 };

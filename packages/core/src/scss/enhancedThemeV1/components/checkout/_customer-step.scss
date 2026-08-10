@@ -1,11 +1,11 @@
 .checkout-step--customer {
     #checkout-customer-returning {
-        @include enhancedTheme {
+        @include enhancedThemeV1 {
             margin-top: spacing("single");
         }
     }
 
-    @include enhancedTheme-mobile {
+    @include enhancedThemeV1-mobile {
         .customerEmail-body {
             width: 100%;
 

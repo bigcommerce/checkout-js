@@ -173,7 +173,7 @@ const Payment = (
     const suppressMethodRemovedErrorUntilRef = useRef(0);
     const validationSchemasRef = useRef<validationSchemas>({});
     const lastFormValuesRef = useRef<PaymentFormValues | null>(null);
-    // Set by the enhancedTheme billing form. Awaited before submitOrder so the order
+    // Set by the enhancedThemeV1 billing form. Awaited before submitOrder so the order
     // can't finalize before the entered billing address is validated and saved.
     const ensureBillingAddressSavedRef: MutableRefObject<EnsureBillingAddressSaved | null> =
         useRef(null);
@@ -182,7 +182,7 @@ const Payment = (
         orderConfirmation: { persistB2BMetadata, invoiceRedirect },
         userJourney: { disableStoreCredit },
     } = useCapabilities();
-    const { enhancedTheme } = useThemeContext();
+    const { enhancedThemeV1 } = useThemeContext();
 
     const renderCartStockPositionsChangedModal = (
         error: CartStockPositionsChangedError,
@@ -505,7 +505,7 @@ const Payment = (
                 return customSubmit(orderValues);
             }
 
-            // Ensure any pending enhancedTheme billing edit is saved before placing
+            // Ensure any pending enhancedThemeV1 billing edit is saved before placing
             // the order. If billing is invalid, block the order — errors are
             // surfaced inline by the billing form.
             const ensureBillingAddressSaved = ensureBillingAddressSavedRef.current;
@@ -791,7 +791,7 @@ const Payment = (
                 ({ data }) => data.getCheckout()?.outstandingBalance,
             );
 
-            if (enhancedTheme) {
+            if (enhancedThemeV1) {
                 let lastCountryCode = props.billingAddress?.countryCode;
 
                 billingAddressChangeUnsubscribe.current = checkoutServiceSubscribe(
@@ -847,17 +847,17 @@ const Payment = (
     const { selectedMethod = props.defaultMethod } = state;
     const uniqueSelectedMethodId =
         selectedMethod && getUniquePaymentMethodId(selectedMethod.id, selectedMethod.gateway);
-    // enhancedTheme embeds the billing form in the payment step. Disable "Place Order"
+    // enhancedThemeV1 embeds the billing form in the payment step. Disable "Place Order"
     // while its billing address is loading or being persisted (initialization,
     // address-book change, or the pre-submit save), so a click can't silently
-    // no-op or trigger a duplicate order submission. Scoped to enhancedTheme because
+    // no-op or trigger a duplicate order submission. Scoped to enhancedThemeV1 because
     // only that layout owns the embedded billing form.
     const isBillingFormBusy =
-        enhancedTheme &&
+        enhancedThemeV1 &&
         (props.isLoadingBillingCountries ||
             props.isUpdatingBillingAddress ||
             props.isUpdatingCheckout);
-    const isReloadingPaymentMethods = enhancedTheme && props.isLoadingPaymentMethods;
+    const isReloadingPaymentMethods = enhancedThemeV1 && props.isLoadingPaymentMethods;
 
     return (
         <PaymentContext.Provider value={getContextValue()}>

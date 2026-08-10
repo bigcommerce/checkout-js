@@ -47,7 +47,7 @@ const ShippingStep: React.FC<ShippingStepProps> = ({
     onUnhandledError,
     setIsMultishippingMode,
 }) => {
-    const { enhancedTheme } = useThemeContext();
+    const { enhancedThemeV1 } = useThemeContext();
     const {
         selectedState: { checkout, config },
     } = useCheckout(({ data }) => ({
@@ -60,7 +60,7 @@ const ShippingStep: React.FC<ShippingStepProps> = ({
     }
 
     const shouldShowHeaderAction =
-        enhancedTheme &&
+        enhancedThemeV1 &&
         checkout &&
         config &&
         shouldShowMultiShippingToggle(checkout, config, cart);
