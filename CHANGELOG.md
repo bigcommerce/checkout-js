@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.860.1](https://github.com/bigcommerce/checkout-js/compare/v1.860.0...v1.860.1) (2026-08-10)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10310 Exclude stores with phone placeholders from feature rollout ([#3232](https://github.com/bigcommerce/checkout-js/issues/3232)) ([5aebfb6](https://github.com/bigcommerce/checkout-js/commit/5aebfb67434cf01c47481fee744a5ed307495774))
+
 ## [1.860.0](https://github.com/bigcommerce/checkout-js/compare/v1.859.0...v1.860.0) (2026-08-10)
 
 
