@@ -173,6 +173,37 @@ const AdyenV3PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         ],
     );
 
+    // HostedWidgetPaymentComponent calls `initializePayment` from a few places (mount, switching
+    // instruments, adding a new card) that can race each other, so this token makes sure only
+    // the most recent attempt's outcome ends up touching disableSubmit.
+    const activeInitAttemptRef = useRef<object>();
+
+    const initializeAdyenPaymentWithSubmitGuard: HostedWidgetComponentProps['initializePayment'] =
+        useCallback(
+            async (options, selectedInstrument) => {
+                const token = {};
+
+                activeInitAttemptRef.current = token;
+
+                try {
+                    const result = await initializeAdyenPayment(options, selectedInstrument);
+
+                    if (activeInitAttemptRef.current === token) {
+                        paymentForm.disableSubmit(method, false);
+                    }
+
+                    return result;
+                } catch (error) {
+                    if (activeInitAttemptRef.current === token) {
+                        paymentForm.disableSubmit(method, true);
+                    }
+
+                    throw error;
+                }
+            },
+            [initializeAdyenPayment, method, paymentForm],
+        );
+
     useEffect(() => {
         if (!isGrouped) {
             return;
@@ -292,7 +323,7 @@ const AdyenV3PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                         checkoutState={checkoutState}
                         containerId={containerId}
                         hideContentWhenSignedOut
-                        initializePayment={initializeAdyenPayment}
+                        initializePayment={initializeAdyenPaymentWithSubmitGuard}
                         isAccountInstrument={isAccountInstrument()}
                         isModalVisible={isAdditionalActionContentModalVisible}
                         language={language}

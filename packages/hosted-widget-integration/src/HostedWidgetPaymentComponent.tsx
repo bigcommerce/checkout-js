@@ -125,7 +125,6 @@ const HostedWidgetPaymentComponent = ({
     onUnhandledError = noop,
     deinitializeCustomer,
     deinitializePayment,
-    disableSubmit,
     setSubmit,
     initializeCustomer,
     initializePayment,
@@ -148,10 +147,6 @@ const HostedWidgetPaymentComponent = ({
     const [isAddingNewCard, setIsAddingNewCard] = useState(false);
     const [selectedInstrumentId, setSelectedInstrumentId] = useState<string | undefined>(undefined);
     const instrumentsRef = useRef<PaymentInstrument[]>(instruments);
-    // Shared by the mount init effect, the reInit effect, and handleUseNewCard - whichever of
-    // them starts an attempt most recently owns this token, so an older attempt settling later
-    // (from any of the three) can tell it's been superseded and skip touching disableSubmit.
-    const activeInitAttemptRef = useRef<object>();
 
     useEffect(() => {
         instrumentsRef.current = instruments;
@@ -226,13 +221,24 @@ const HostedWidgetPaymentComponent = ({
         [instruments, selectedInstrumentId, getDefaultInstrumentId],
     );
 
-    // Re-initialization (deinitializePayment + initializeMethod, guarded against stale
-    // attempts) is handled by the reInit effect below, which also runs when isAddingNewCard
-    // changes - this just flips the state that effect is watching.
-    const handleUseNewCard = useCallback(() => {
+    const handleUseNewCard = useCallback(async () => {
         setIsAddingNewCard(true);
         setSelectedInstrumentId(undefined);
-    }, []);
+
+        if (deinitializePayment) {
+            await deinitializePayment({
+                gatewayId: method.gateway,
+                methodId: method.id,
+            });
+        }
+
+        if (initializePayment) {
+            await initializePayment({
+                gatewayId: method.gateway,
+                methodId: method.id,
+            });
+        }
+    }, [method, deinitializePayment, initializePayment]);
 
     const handleSelectInstrument = useCallback((id: string) => {
         setIsAddingNewCard(false);
@@ -333,10 +339,6 @@ const HostedWidgetPaymentComponent = ({
     const shouldShowAccountInstrument = instruments[0] && isBankAccountInstrument(instruments[0]);
 
     useEffect(() => {
-        const token = {};
-
-        activeInitAttemptRef.current = token;
-
         const init = async () => {
             setValidationSchema(method, getValidationSchema());
 
@@ -346,17 +348,7 @@ const HostedWidgetPaymentComponent = ({
                 }
 
                 await initializeMethod();
-
-                if (activeInitAttemptRef.current === token) {
-                    disableSubmit(method, false);
-                }
             } catch (error: unknown) {
-                if (activeInitAttemptRef.current !== token) {
-                    return;
-                }
-
-                disableSubmit(method, true);
-
                 if (error instanceof Error) {
                     onUnhandledError(error);
                 }
@@ -366,10 +358,6 @@ const HostedWidgetPaymentComponent = ({
         void init();
 
         return () => {
-            if (activeInitAttemptRef.current === token) {
-                activeInitAttemptRef.current = undefined;
-            }
-
             const deInit = async () => {
                 setValidationSchema(method, null);
                 setSubmit(method, null);
@@ -400,7 +388,6 @@ const HostedWidgetPaymentComponent = ({
     const instrumentsLength = useRef(instruments.length);
     const isPaymentDataRequiredRef = useRef(isPaymentDataRequired);
     const selectedInstrumentIdRef = useRef(selectedInstrumentId);
-    const isAddingNewCardRef = useRef(isAddingNewCard);
 
     useEffect(() => {
         if (isInitialRenderRef.current) {
@@ -409,26 +396,7 @@ const HostedWidgetPaymentComponent = ({
             return;
         }
 
-        const shouldReInit =
-            selectedInstrumentIdRef.current !== selectedInstrumentId ||
-            (Number(instrumentsLength.current) > 0 && instruments.length === 0) ||
-            isPaymentDataRequiredRef.current !== isPaymentDataRequired ||
-            isAddingNewCardRef.current !== isAddingNewCard;
-
-        selectedInstrumentIdRef.current = selectedInstrumentId;
-        instrumentsLength.current = instruments.length;
-        isPaymentDataRequiredRef.current = isPaymentDataRequired;
-        isAddingNewCardRef.current = isAddingNewCard;
-
-        if (!shouldReInit) {
-            return;
-        }
-
         setValidationSchema(method, getValidationSchema());
-
-        const token = {};
-
-        activeInitAttemptRef.current = token;
 
         const reInit = async () => {
             try {
@@ -440,25 +408,25 @@ const HostedWidgetPaymentComponent = ({
                 }
 
                 await initializeMethod();
-
-                if (activeInitAttemptRef.current === token) {
-                    disableSubmit(method, false);
-                }
             } catch (error: unknown) {
-                if (activeInitAttemptRef.current !== token) {
-                    return;
-                }
-
-                disableSubmit(method, true);
-
                 if (error instanceof Error) {
                     onUnhandledError(error);
                 }
             }
         };
 
-        void reInit();
-    }, [selectedInstrumentId, instruments, isPaymentDataRequired, isAddingNewCard]);
+        if (
+            selectedInstrumentIdRef.current !== selectedInstrumentId ||
+            (Number(instrumentsLength.current) > 0 && instruments.length === 0) ||
+            isPaymentDataRequiredRef.current !== isPaymentDataRequired
+        ) {
+            selectedInstrumentIdRef.current = selectedInstrumentId;
+            instrumentsLength.current = instruments.length;
+            isPaymentDataRequiredRef.current = isPaymentDataRequired;
+
+            void reInit();
+        }
+    }, [selectedInstrumentId, instruments, isPaymentDataRequired]);
 
     if (!shouldShow) {
         return <div style={{ display: 'none' }} />;
