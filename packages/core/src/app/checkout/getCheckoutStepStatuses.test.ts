@@ -481,7 +481,7 @@ describe('getCheckoutStepStatuses()', () => {
     });
 
     describe('enhancedThemeV1 (billing captured on the payment step)', () => {
-        const getEnhancedThemeConfig = () => ({
+        const getEnhancedThemeV1Config = () => ({
             ...getStoreConfig(),
             checkoutSettings: {
                 ...getStoreConfig().checkoutSettings,
@@ -497,7 +497,7 @@ describe('getCheckoutStepStatuses()', () => {
         });
 
         beforeEach(() => {
-            jest.spyOn(state.data, 'getConfig').mockReturnValue(getEnhancedThemeConfig());
+            jest.spyOn(state.data, 'getConfig').mockReturnValue(getEnhancedThemeV1Config());
         });
 
         it('omits the standalone billing step', () => {
