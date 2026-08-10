@@ -178,19 +178,29 @@ const AdyenV3PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             return;
         }
 
+        let isCurrent = true;
+
         paymentForm.setValidationSchema(method, null);
         paymentForm.setSubmit(method, null);
+        paymentForm.disableSubmit(method, false);
 
         void initializeAdyenPayment({
             methodId: component,
             gatewayId: method.gateway,
         }).catch((error: unknown) => {
+            if (!isCurrent) {
+                return;
+            }
+
+            paymentForm.disableSubmit(method, true);
+
             if (error instanceof Error) {
                 onUnhandledError(error);
             }
         });
 
         return () => {
+            isCurrent = false;
             paymentForm.setValidationSchema(method, null);
             paymentForm.setSubmit(method, null);
 
