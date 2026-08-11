@@ -34,7 +34,7 @@ const MultiCheckboxControl: FunctionComponent<MultiCheckboxControlProps> = ({
     );
 
     return (
-        <ul className="multiCheckbox--controls body-regular">
+        <ul className="multiCheckbox--controls optimizedCheckout-contentPrimary body-regular">
             <li className="multiCheckbox--control">
                 <TranslatedString id="address.select" />
             </li>

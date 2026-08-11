@@ -66,7 +66,7 @@ const OrderSummaryModal: FunctionComponent<
         checkout: data.getCheckout(),
         order: data.getOrder(),
     }));
-    const { themeV2 } = useThemeContext();
+    const { enhancedThemeV1 } = useThemeContext();
     const { checkoutSettings } = config ?? {};
 
     const isMultiCouponEnabled = isExperimentEnabled(
@@ -123,7 +123,7 @@ const OrderSummaryModal: FunctionComponent<
             additionalBodyClassName="cart-modal-body optimizedCheckout-orderSummary"
             additionalHeaderClassName="cart-modal-header optimizedCheckout-orderSummary with-continue-button"
             additionalModalClassName={classNames('optimizedCheckout-cart-modal', {
-                themeV2,
+                enhancedThemeV1,
             })}
             footer={continueButton}
             header={renderHeader({
@@ -165,7 +165,7 @@ const OrderSummaryModal: FunctionComponent<
                     storeCurrencyCode={storeCurrency.code}
                 />
                 {isTotalDiscountVisible && totalDiscount && (
-                    <div className="total-savings">
+                    <div className="total-savings optimizedCheckout-contentSecondary">
                         <TranslatedHtml
                             data={{ totalDiscount: currency.toCustomerCurrency(totalDiscount) }}
                             id="redeemable.total_savings_text"

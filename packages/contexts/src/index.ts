@@ -1,4 +1,4 @@
-export { useThemeContext, ThemeContext, ThemeProvider, isThemeV2Enabled } from './theme';
+export { useThemeContext, ThemeContext, ThemeProvider, isEnhancedThemeV1Enabled } from './theme';
 export {
     AnalyticsContext,
     AnalyticsProvider,

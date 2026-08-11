@@ -106,7 +106,7 @@ const ConsignmentLineItem: FunctionComponent<ConsignmentLineItemProps> = ({
             />
             <div className="consignment-line-item-header">
                 <div>
-                    <h3 className="body-bold">
+                    <h3 className="optimizedCheckout-contentPrimary body-bold">
                         <TranslatedString
                             data={{ count: itemsCount }}
                             id="shipping.multishipping_item_allocated_message"

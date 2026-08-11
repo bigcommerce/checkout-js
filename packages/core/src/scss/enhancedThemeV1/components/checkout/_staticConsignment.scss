@@ -1,0 +1,21 @@
+.staticConsignment {
+    @include enhancedThemeV1-mobile-tablet-only {
+        .shipping-method {
+            padding-top: spacing("half");
+        }
+    }
+
+    @include enhancedThemeV1 {
+        padding-top: spacing("quarter");
+
+        .shippingOption {
+            border: 0;
+            margin-top: 0;
+            padding-top: 0;
+        }
+
+        .shipping-address-container {
+            width: 60%;
+        }
+    }
+}

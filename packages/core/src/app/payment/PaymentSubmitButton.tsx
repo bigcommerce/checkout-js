@@ -152,7 +152,7 @@ const PaymentSubmitButton: FunctionComponent<
     brandName,
     isComplete,
 }) => {
-    const { themeV2 } = useThemeContext();
+    const { enhancedThemeV1 } = useThemeContext();
 
     return (
         <Button
@@ -171,7 +171,7 @@ const PaymentSubmitButton: FunctionComponent<
             isLoading={isSubmitting}
             size={ButtonSize.Large}
             type="submit"
-            variant={themeV2 ? ButtonVariant.Primary : ButtonVariant.Action}
+            variant={enhancedThemeV1 ? ButtonVariant.Primary : ButtonVariant.Action}
         >
             <PaymentSubmitButtonText
                 brandName={brandName}

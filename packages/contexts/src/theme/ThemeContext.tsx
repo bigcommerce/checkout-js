@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react';
 
 export interface ThemeContextProps {
-    themeV2: boolean;
+    enhancedThemeV1: boolean;
 }
 
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);

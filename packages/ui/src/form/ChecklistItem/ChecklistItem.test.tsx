@@ -2,7 +2,7 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
-import { render, screen } from '@bigcommerce/checkout/test-utils';
+import { fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
 
 import AccordionContext from '../../accordion/AccordionContext';
 import { ChecklistContext } from '../Checklist/Checklist';
@@ -35,5 +35,19 @@ describe('ChecklistItem', () => {
         renderChecklistItem({ isDisabled: true });
 
         expect(screen.getByRole('radio')).toBeDisabled();
+    });
+
+    it('keeps the radio input focusable but ignores selection when isReadOnly is true', () => {
+        renderChecklistItem({ isReadOnly: true });
+
+        const radio = screen.getByRole('radio');
+
+        expect(radio).toBeEnabled();
+        expect(radio).toHaveAttribute('aria-disabled', 'true');
+        expect(radio).not.toBeChecked();
+
+        fireEvent.click(radio);
+
+        expect(radio).not.toBeChecked();
     });
 });
