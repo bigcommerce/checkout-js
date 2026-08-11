@@ -49,41 +49,41 @@ const BraintreePaypalPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             const { onUnhandledError, method, paymentForm } = rest;
 
             return checkoutService.initializePayment({
-              ...defaultOptions,
-              integrations: [createBraintreePaypalPaymentStrategy],
-              braintree: {
-                containerId: '#checkout-payment-continue',
-                submitForm: () => {
-                  paymentForm.setSubmitted(true);
-                  paymentForm.submitForm();
-                },
-                onError: (error: Error) => {
-                  if (error.message === 'INSTRUMENT_DECLINED') {
-                    onUnhandledError?.(new InstrumentDeclinedError());
-                  } else {
-                    onUnhandledError?.(error);
-                  }
-                },
-                onValidate: async (resolve: () => void, reject: () => void): Promise<void> => {
-                  const keysValidation = await validateForm();
+                ...defaultOptions,
+                integrations: [createBraintreePaypalPaymentStrategy],
+                braintree: {
+                    containerId: '#checkout-payment-continue',
+                    submitForm: () => {
+                        paymentForm.setSubmitted(true);
+                        paymentForm.submitForm();
+                    },
+                    onError: (error: Error) => {
+                        if (error.message === 'INSTRUMENT_DECLINED') {
+                            onUnhandledError?.(new InstrumentDeclinedError());
+                        } else {
+                            onUnhandledError?.(error);
+                        }
+                    },
+                    onValidate: async (resolve: () => void, reject: () => void): Promise<void> => {
+                        const keysValidation = await validateForm();
 
-                  if (keysValidation.length) {
-                    paymentForm.setSubmitted(true);
-                    keysValidation.forEach((key) => paymentForm.setFieldTouched(key));
+                        if (keysValidation.length) {
+                            paymentForm.setSubmitted(true);
+                            keysValidation.forEach((key) => paymentForm.setFieldTouched(key));
 
-                    return reject();
-                  }
+                            return reject();
+                        }
 
-                  return resolve();
+                        return resolve();
+                    },
+                    onInitButton: async (actions: ButtonActions) => {
+                        buttonActionsRef.current = actions;
+                        await validateButton();
+                    },
+                    onRenderButton: () => {
+                        paymentForm.hidePaymentSubmitButton(method, true);
+                    },
                 },
-                onInitButton: async (actions: ButtonActions) => {
-                  buttonActionsRef.current = actions;
-                  await validateButton();
-                },
-                onRenderButton: () => {
-                  paymentForm.hidePaymentSubmitButton(method, true);
-                },
-              },
             });
         },
         [rest, checkoutService],
