@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.863.1](https://github.com/bigcommerce/checkout-js/compare/v1.863.0...v1.863.1) (2026-08-11)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10266 Adjust checkout step button naming for enhanced theme ([#3230](https://github.com/bigcommerce/checkout-js/issues/3230)) ([437ab0b](https://github.com/bigcommerce/checkout-js/commit/437ab0b6d7cb2db135f8f3eeed798a4e137f5ad6))
+
 ## [1.863.0](https://github.com/bigcommerce/checkout-js/compare/v1.862.0...v1.863.0) (2026-08-11)
 
 
