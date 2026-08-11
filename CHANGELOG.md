@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.861.0](https://github.com/bigcommerce/checkout-js/compare/v1.860.1...v1.861.0) (2026-08-11)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10198 update themeV2 styles to work with dark variant from cornerstone ([#3228](https://github.com/bigcommerce/checkout-js/issues/3228)) ([b44a9f4](https://github.com/bigcommerce/checkout-js/commit/b44a9f4e2edd4853ef3b62daabb4d03fac957138))
+
 ### [1.860.1](https://github.com/bigcommerce/checkout-js/compare/v1.860.0...v1.860.1) (2026-08-10)
 
 
