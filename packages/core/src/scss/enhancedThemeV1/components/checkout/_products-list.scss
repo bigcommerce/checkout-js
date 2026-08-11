@@ -1,5 +1,5 @@
 .productList {
-    @include themeV2 {
+    @include enhancedThemeV1 {
         .product-body {
             align-self: center;
             order: unset;
@@ -15,13 +15,13 @@
         }
     }
 
-    @include themeV2-mobile {
+    @include enhancedThemeV1-mobile {
         .product-body {
             align-self: flex-start;
         }
     }
 
-    @include themeV2-desktop {
+    @include enhancedThemeV1-desktop {
         .product-figure {
             max-width: none;
             width: 20%;

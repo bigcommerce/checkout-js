@@ -40,7 +40,7 @@ const ConsignmentListItem: FunctionComponent<ConsignmentListItemProps> = ({
 
     return (
         <div className="consignment-container">
-            <div className="consignment-header sub-header">
+            <div className="consignment-header optimizedCheckout-headingSecondary sub-header">
                 <h3>
                     <TranslatedString
                         data={{ consignmentNumber }}

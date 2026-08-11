@@ -27,7 +27,7 @@ export const RedirectToStorefrontLogin: React.FC<RedirectToStorefrontLoginProps>
 
     return (
         <Button
-            className="body-bold"
+            className="optimizedCheckout-contentPrimary body-bold"
             disabled={isDisabled}
             id="checkout-customer-continue"
             isLoading={isLoading}

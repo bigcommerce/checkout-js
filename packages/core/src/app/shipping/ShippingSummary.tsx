@@ -20,7 +20,7 @@ const ShippingSummary: FunctionComponent<ShippingSummaryProps> = ({
     consignments,
     cart,
 }) => {
-    const { themeV2 } = useThemeContext();
+    const { enhancedThemeV1 } = useThemeContext();
 
     if (isMultiShippingMode) {
         return (
@@ -43,7 +43,7 @@ const ShippingSummary: FunctionComponent<ShippingSummaryProps> = ({
         <>
             {consignments.map((consignment) => (
                 <div className="staticConsignmentContainer" key={consignment.id}>
-                    {themeV2 ? (
+                    {enhancedThemeV1 ? (
                         <StaticConsignmentV2
                             consignment={consignment}
                             isShippingDiscountDisplayEnabled={isShippingDiscountDisplayEnabled}

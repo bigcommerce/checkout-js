@@ -163,7 +163,7 @@ const CartActions = ({
 }): ReactElement => (
     <div className="cart-actions">
         <button
-            className="button button--tertiary button--tiny optimizedCheckout-buttonSecondary sub-text-medium"
+            className="button button--tertiary button--tiny optimizedCheckout-buttonSecondary optimizedCheckout-contentSecondary sub-text-medium"
             onClick={onSwitch}
             type="button"
         >

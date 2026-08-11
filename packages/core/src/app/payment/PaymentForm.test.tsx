@@ -50,11 +50,11 @@ describe('PaymentForm', () => {
     let defaultProps: PaymentFormProps;
     let localeContext: LocaleContextType;
     let paymentContext: PaymentContextProps;
-    let themeV2: boolean;
+    let enhancedThemeV1: boolean;
     let PaymentFormTest: FunctionComponent<PaymentFormProps>;
 
     beforeEach(() => {
-        themeV2 = false;
+        enhancedThemeV1 = false;
         defaultProps = {
             isStoreCreditApplied: true,
             defaultMethodId: getPaymentMethod().id,
@@ -83,7 +83,7 @@ describe('PaymentForm', () => {
             <CheckoutProvider checkoutService={checkoutService}>
                 <PaymentContext.Provider value={paymentContext}>
                     <LocaleContext.Provider value={localeContext}>
-                        <ThemeContext.Provider value={{ themeV2 }}>
+                        <ThemeContext.Provider value={{ enhancedThemeV1 }}>
                             <Formik initialValues={null} onSubmit={noop}>
                                 <ExtensionProvider extensionService={extensionService}>
                                     <PaymentForm {...props} />
@@ -519,17 +519,17 @@ describe('PaymentForm', () => {
         });
     });
 
-    describe('billing-in-payment scaffold (themeV2)', () => {
-        it('renders the placeholder billing block when themeV2 is enabled', () => {
-            themeV2 = true;
+    describe('billing-in-payment scaffold (enhancedThemeV1)', () => {
+        it('renders the placeholder billing block when enhancedThemeV1 is enabled', () => {
+            enhancedThemeV1 = true;
 
             render(<PaymentFormTest {...defaultProps} />);
 
             expect(screen.getByTestId('payment-billing-block')).toBeInTheDocument();
         });
 
-        it('does not render the billing block when themeV2 is disabled', () => {
-            themeV2 = false;
+        it('does not render the billing block when enhancedThemeV1 is disabled', () => {
+            enhancedThemeV1 = false;
 
             render(<PaymentFormTest {...defaultProps} />);
 

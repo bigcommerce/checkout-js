@@ -1,5 +1,5 @@
 .layout-cart {
-    @include themeV2 {
+    @include enhancedThemeV1 {
         padding: 0;
         order: -1;
 
@@ -47,8 +47,8 @@
 
         .cart-summary-collapsed-bar {
             align-items: center;
-            background-color: $color-white;
-            border-top: 1px solid $color-greyMedium;
+            border-top-width: 1px;
+            border-top-style: solid;
             cursor: pointer;
             display: flex;
             gap: spacing("half");
@@ -109,18 +109,12 @@
 
         .cart-summary-bar-toggle-label {
             align-items: center;
-            color: $color-highlightDarkest;
             display: flex;
             gap: spacing("quarter");
             margin-left: auto;
-
-            svg {
-                fill: $color-highlightDarkest;
-            }
         }
 
         .cart-summary-sheet {
-            background-color: $color-white;
             border-radius: remCalc(16px) remCalc(16px) 0 0;
             display: flex;
             flex-direction: column;
@@ -177,11 +171,11 @@
         }
     }
 
-    @include themeV2-mobile {
+    @include enhancedThemeV1-mobile {
         @include grid-column(12);
     }
 
-    @include themeV2-desktop {
+    @include enhancedThemeV1-desktop {
         width: grid-calc(5, $total-columns);
         padding-left: remCalc(30px);
         padding-right: spacing("single");
@@ -197,7 +191,7 @@
         }
     }
 
-    @include themeV2-widescreen {
+    @include enhancedThemeV1-widescreen {
         width: grid-calc(4, $total-columns);
     }
 }
@@ -206,6 +200,6 @@ body.has-activeCartSummarySheet {
     overflow: hidden;
 }
 
-.themeV2:has(.cart-summary-collapsed-bar) .layout {
+.enhancedThemeV1:has(.cart-summary-collapsed-bar) .layout {
     padding-bottom: #{5 * spacing("single")};
 }

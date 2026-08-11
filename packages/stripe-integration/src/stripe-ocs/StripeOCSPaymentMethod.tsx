@@ -47,7 +47,7 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         selectedItemId,
     );
     const [isOCSLoading, setIsOCSLoading] = useState(false);
-    const { themeV2 } = useThemeContext();
+    const { enhancedThemeV1 } = useThemeContext();
     const methodSelector = `${method.gateway}-${method.id}`;
     const containerId = `${methodSelector}-component-field`;
     const currencySelectorContainerId = `${methodSelector}-provider-section-on-top-of-payments-list`;
@@ -115,7 +115,7 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         async (options: PaymentInitializeOptions) => {
             setIsOCSLoading(true);
 
-            const theme = themeV2 ? CheckoutTheme.THEME_V2 : CheckoutTheme.DEFAULT;
+            const theme = enhancedThemeV1 ? CheckoutTheme.ENHANCED_THEME_V1 : CheckoutTheme.DEFAULT;
 
             return checkoutService.initializePayment({
                 ...options,
@@ -128,7 +128,7 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                         defaultCollapsed: selectedItemId !== methodSelector,
                         radios: 'always',
                         linkInAccordion: true,
-                        spacedAccordionItems: !!themeV2,
+                        spacedAccordionItems: !!enhancedThemeV1,
                         visibleAccordionItemsCount: 0,
                     },
                     appearance: getAppearanceForOCSElement(containerId, theme),
@@ -149,7 +149,7 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             selectedItemId,
             methodSelector,
             isCustomChecklistItem,
-            themeV2,
+            enhancedThemeV1,
             checkoutService,
             onUnhandledError,
             renderSubmitButton,
@@ -179,7 +179,7 @@ const StripeOCSPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             }
         `;
 
-        return themeV2 ? (
+        return enhancedThemeV1 ? (
             <style>
                 {`
                     .custom-checklist-item#radio-${methodSelector} {

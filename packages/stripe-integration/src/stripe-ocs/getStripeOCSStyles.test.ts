@@ -189,8 +189,10 @@ describe('getStripeOCSStyles', () => {
             });
         });
 
-        it('returns the correct styles for the OCS element and themeV2', () => {
-            expect(getAppearanceForOCSElement(containerId, CheckoutTheme.THEME_V2)).toEqual({
+        it('returns the correct styles for the OCS element and enhancedThemeV1', () => {
+            expect(
+                getAppearanceForOCSElement(containerId, CheckoutTheme.ENHANCED_THEME_V1),
+            ).toEqual({
                 variables: {
                     colorPrimary: '0 0 5px rgba(0, 0, 0, 0.5)',
                     colorBackground: 'white',
@@ -441,7 +443,9 @@ describe('getStripeOCSStyles', () => {
                 },
             });
 
-            expect(getAppearanceForOCSElement(containerId, CheckoutTheme.THEME_V2)).toEqual(
+            expect(
+                getAppearanceForOCSElement(containerId, CheckoutTheme.ENHANCED_THEME_V1),
+            ).toEqual(
                 expect.objectContaining({
                     rules: expect.objectContaining({
                         '.RadioIconInner': {
@@ -463,7 +467,9 @@ describe('getStripeOCSStyles', () => {
                 },
             });
 
-            expect(getAppearanceForOCSElement(containerId, CheckoutTheme.THEME_V2)).toEqual(
+            expect(
+                getAppearanceForOCSElement(containerId, CheckoutTheme.ENHANCED_THEME_V1),
+            ).toEqual(
                 expect.objectContaining({
                     rules: expect.objectContaining({
                         '.RadioIconInner': {
@@ -528,7 +534,7 @@ describe('getStripeOCSStyles', () => {
             );
         });
 
-        it('uses form checklist border radius and accordion selected border color for ToggleItem in themeV2', () => {
+        it('uses form checklist border radius and accordion selected border color for ToggleItem in enhancedThemeV1', () => {
             mockGetAppliedStyles({
                 ...defaultStyles,
                 [`#${containerId}--accordion-header.optimizedCheckout-form-checklist-item`]: {
@@ -543,7 +549,9 @@ describe('getStripeOCSStyles', () => {
                 },
             });
 
-            expect(getAppearanceForOCSElement(containerId, CheckoutTheme.THEME_V2)).toEqual(
+            expect(
+                getAppearanceForOCSElement(containerId, CheckoutTheme.ENHANCED_THEME_V1),
+            ).toEqual(
                 expect.objectContaining({
                     rules: expect.objectContaining({
                         '.ToggleItem': expect.objectContaining({
@@ -557,7 +565,7 @@ describe('getStripeOCSStyles', () => {
             );
         });
 
-        it('omits ToggleItem borderRadius for themeV2 when form checklist border radius is missing', () => {
+        it('omits ToggleItem borderRadius for enhancedThemeV1 when form checklist border radius is missing', () => {
             mockGetAppliedStyles({
                 ...defaultStyles,
                 [`#${containerId}--accordion-header.optimizedCheckout-form-checklist-item`]: {
@@ -568,7 +576,10 @@ describe('getStripeOCSStyles', () => {
                 },
             });
 
-            const appearance = getAppearanceForOCSElement(containerId, CheckoutTheme.THEME_V2);
+            const appearance = getAppearanceForOCSElement(
+                containerId,
+                CheckoutTheme.ENHANCED_THEME_V1,
+            );
 
             expect(appearance.rules?.['.ToggleItem']).not.toHaveProperty('borderRadius');
         });

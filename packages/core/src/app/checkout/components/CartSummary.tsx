@@ -42,13 +42,13 @@ export interface CartSummaryProps {
 }
 
 export const CartSummary: React.FC<CartSummaryProps> = ({ isMultiShippingMode }) => {
-    const { themeV2 } = useThemeContext();
+    const { enhancedThemeV1 } = useThemeContext();
 
     return (
         <MobileView>
             {(matched) => {
                 if (matched) {
-                    if (themeV2) {
+                    if (enhancedThemeV1) {
                         return (
                             <LazyContainer loadingSkeleton={<></>}>
                                 <aside aria-label="Cart Summary" className="layout-cart">
