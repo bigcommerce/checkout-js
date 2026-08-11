@@ -1,8 +1,4 @@
-import {
-    type Address,
-    type AddressRequestBody,
-    type CustomerAddress,
-} from '@bigcommerce/checkout-sdk';
+import { type Address, type AddressRequestBody } from '@bigcommerce/checkout-sdk';
 
 import {
     decodeAddressLabel,
@@ -16,18 +12,6 @@ describe('decodeAddressLabel', () => {
 
         expect(decodeAddressLabel(address, true)).toMatchObject({
             label: 'Acme',
-            company: 'Acme Corp',
-        });
-    });
-
-    it('derives the label from company and ignores b2b.label', () => {
-        const address = {
-            company: 'HQ/ Acme Corp',
-            b2b: { label: 'Different' },
-        } as CustomerAddress;
-
-        expect(decodeAddressLabel(address, true)).toMatchObject({
-            label: 'HQ',
             company: 'Acme Corp',
         });
     });

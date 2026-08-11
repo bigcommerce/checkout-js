@@ -155,7 +155,7 @@ describe('mapAddressToFormValues', () => {
                 ...getAddress(),
                 id: 1,
                 type: 'residential',
-                b2b: getCustomerAddressB2B({
+                ...getCustomerAddressB2B({
                     extraFields: [{ fieldId: '100', fieldValue: 'Company Corp' }],
                 }),
             };

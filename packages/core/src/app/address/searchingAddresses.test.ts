@@ -69,7 +69,7 @@ describe('searchingAddresses', () => {
     it('matches on extraFields string value', () => {
         const address: CustomerAddress = {
             ...baseAddress,
-            b2b: getCustomerAddressB2B({
+            ...getCustomerAddressB2B({
                 extraFields: [{ fieldId: 'ef_1', fieldValue: 'extra-value' }],
             }),
         };
@@ -81,7 +81,7 @@ describe('searchingAddresses', () => {
     it('matches on extraFields numeric value', () => {
         const address: CustomerAddress = {
             ...baseAddress,
-            b2b: getCustomerAddressB2B({
+            ...getCustomerAddressB2B({
                 extraFields: [{ fieldId: 'ef_2', fieldValue: 99 }],
             }),
         };

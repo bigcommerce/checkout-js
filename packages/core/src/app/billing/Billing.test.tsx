@@ -602,7 +602,7 @@ describe('Billing step', () => {
         const customerWithCompanyBillingAddress = {
             ...customer,
             addresses: [
-                { ...shippingAddress3, id: 3, b2b: getCustomerAddressB2B({ isBilling: true }) },
+                { ...shippingAddress3, id: 3, ...getCustomerAddressB2B({ isBilling: true }) },
             ],
         };
         const checkoutWithCompanyBillingAddress = {

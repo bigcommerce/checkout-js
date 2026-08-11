@@ -52,7 +52,10 @@ function normalizeAddress(address: ComparableAddress) {
         'type',
         'email',
         'country',
-        'b2b',
+        'isShipping',
+        'isBilling',
+        'isDefaultShipping',
+        'isDefaultBilling',
         'label',
     ];
 
