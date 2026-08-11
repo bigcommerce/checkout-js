@@ -149,9 +149,10 @@ export function useCompanyAddressSearch({
             return addressesByType;
         }
 
-        const matchingAddresses = searchResults
-            ? searchResults.filter(matchesType)
-            : searchingAddresses(addressesByType, searchQuery);
+        const matchingAddresses =
+            searchResults && searchResults.length > 0
+                ? searchResults.filter(matchesType)
+                : searchingAddresses(addressesByType, searchQuery);
 
         return matchingAddresses.slice(0, COMPANY_ADDRESS_SEARCH_LIMIT);
     }, [addressesByType, matchesType, searchQuery, searchResults, shouldShowSearch]);

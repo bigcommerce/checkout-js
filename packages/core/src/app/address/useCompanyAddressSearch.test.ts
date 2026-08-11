@@ -249,6 +249,26 @@ describe('useCompanyAddressSearch', () => {
         expect(result.current.filteredAddresses).toEqual([billingAddresses[0]]);
     });
 
+    it('falls back to local filtering when the previous search returned no results', async () => {
+        searchCompanyAddresses.mockResolvedValue(createSearchResult([]));
+
+        const { result, rerender } = renderCompanyAddressSearch({
+            addresses: billingAddresses,
+            searchQuery: '',
+            type: AddressType.Billing,
+        });
+
+        rerender({ addresses: billingAddresses, searchQuery: 'zzz', type: AddressType.Billing });
+
+        await advanceSearchDebounce();
+
+        expect(result.current.filteredAddresses).toEqual([]);
+
+        rerender({ addresses: billingAddresses, searchQuery: 'main', type: AddressType.Billing });
+
+        expect(result.current.filteredAddresses).toEqual([billingAddresses[0]]);
+    });
+
     it('ignores search results for outdated queries', async () => {
         const firstSearch = createDeferred<CompanyAddressSearchResult>();
         const secondSearch = createDeferred<CompanyAddressSearchResult>();
