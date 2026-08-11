@@ -99,7 +99,7 @@ const CheckoutButtonContainer: FunctionComponent<
                 isPaymentStepActive ? { position: 'absolute', left: '0', top: '-100%' } : undefined
             }
         >
-            <p className="sub-header">
+            <p className="optimizedCheckout-headingSecondary sub-header">
                 <TranslatedString id="remote.start_with_text" />
             </p>
             <div className="checkout-buttons-auto-layout">
@@ -111,7 +111,7 @@ const CheckoutButtonContainer: FunctionComponent<
                 </WalletButtonsContainerSkeleton>
             </div>
             <div className="checkout-separator">
-                <span className="sub-header">
+                <span className="optimizedCheckout-headingSecondary sub-header">
                     <TranslatedString id="remote.or_text" />
                 </span>
             </div>

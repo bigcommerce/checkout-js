@@ -1,0 +1,10 @@
+$element-border-radius: remCalc(12px);
+
+@include enhancedThemeV1 {
+    .button,
+    .shippingOptions-panel,
+    .alertBox,
+    .applied-coupons-list ul {
+        border-radius: $element-border-radius;
+    }
+}

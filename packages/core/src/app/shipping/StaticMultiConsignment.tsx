@@ -49,7 +49,7 @@ const StaticMultiConsignment: FunctionComponent<StaticMultiConsignmentProps> = (
 
     return (
         <div className="staticMultiConsignment">
-            <h3 className="staticMultiConsignment-header body-bold">
+            <h3 className="staticMultiConsignment-header optimizedCheckout-contentPrimary body-bold">
                 <TranslatedString
                     data={{ consignmentNumber }}
                     id="shipping.multishipping_consignment_index_heading"
@@ -57,19 +57,19 @@ const StaticMultiConsignment: FunctionComponent<StaticMultiConsignmentProps> = (
             </h3>
 
             <div className="checkout-address--static">
-                <p className="address-entry sub-text">
+                <p className="address-entry optimizedCheckout-contentPrimary sub-text">
                     <span className="first-name">{`${address.firstName} `}</span>
                     <span className="family-name">{address.lastName}</span>
                 </p>
                 <div className="address-details">
-                    <p className="street-address address-entry sub-text">
+                    <p className="street-address address-entry optimizedCheckout-contentPrimary sub-text">
                         <span className="address-line-1">{address.address1}</span>
                         {address.address2 && (
                             <span className="address-line-2">{`, ${address.address2}`}</span>
                         )}
                     </p>
 
-                    <p className="address-entry sub-text">
+                    <p className="address-entry optimizedCheckout-contentPrimary sub-text">
                         {address.city && <span className="locality">{address.city}</span>}
                         {address.localizedProvince && (
                             <span className="region">{`, ${address.localizedProvince}`}</span>
@@ -87,7 +87,7 @@ const StaticMultiConsignment: FunctionComponent<StaticMultiConsignmentProps> = (
             {showPayPalFastlaneAddressLabel && <PoweredByPayPalFastlaneLabel />}
 
             <div className="staticConsignment-items">
-                <span className="body-bold">
+                <span className="optimizedCheckout-contentPrimary body-bold">
                     <TranslatedString
                         data={{ count: getLineItemsCount(lineItems) }}
                         id="cart.item_count_text"

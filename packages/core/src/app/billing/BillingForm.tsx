@@ -169,7 +169,7 @@ const BillingForm = ({
 
             <div className="form-actions">
                 <Button
-                    className="body-bold"
+                    className="optimizedCheckout-contentPrimary body-bold"
                     disabled={isUpdating || isResettingAddress}
                     id="checkout-billing-continue"
                     isLoading={isUpdating || isResettingAddress}

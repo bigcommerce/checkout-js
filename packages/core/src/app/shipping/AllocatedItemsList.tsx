@@ -18,7 +18,7 @@ interface AllocatedItemsListProps {
 const AllocatedItemsList = ({ assignedItems, onUnassignItem }: AllocatedItemsListProps) => {
     return (
         <div className="allocated-line-items">
-            <h3 className="body-bold">
+            <h3 className="optimizedCheckout-contentPrimary body-bold">
                 <TranslatedString
                     data={{ count: assignedItems.shippableItemsCount }}
                     id="shipping.multishipping_item_allocated_message"

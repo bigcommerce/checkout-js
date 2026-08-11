@@ -23,15 +23,15 @@ const LeftToAllocateItemsTable: FunctionComponent<LeftToAllocateItemsTableProps>
         <table className="table left-to-allocate-items-table">
             <thead>
                 <tr>
-                    <th className="body-medium">
+                    <th className="optimizedCheckout-contentPrimary body-medium">
                         <TranslatedString id="shipping.multishipping_left_to_allocate_items_table_item" />
                     </th>
                     {!isMobileView && (
-                        <th className="body-medium">
+                        <th className="optimizedCheckout-contentPrimary body-medium">
                             <TranslatedString id="shipping.multishipping_left_to_allocate_items_table_left_to_allocate" />
                         </th>
                     )}
-                    <th className="body-medium">
+                    <th className="optimizedCheckout-contentPrimary body-medium">
                         <TranslatedString id="shipping.multishipping_left_to_allocate_items_table_quantity" />
                     </th>
                 </tr>

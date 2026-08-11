@@ -131,7 +131,7 @@ const MultiShippingForm: FunctionComponent<MultiShippingFormProps> = ({
             )}
             {hasUnassignedItems && (
                 <Button
-                    className="body-regular add-consignment-button"
+                    className="optimizedCheckout-contentPrimary body-regular add-consignment-button"
                     onClick={handleAddShippingDestination}
                     variant={ButtonVariant.Secondary}
                 >

@@ -41,7 +41,7 @@ export const MultiShippingOptions = ({
 
     return (
         <div>
-            <h3 className="shipping-option-header body-bold">
+            <h3 className="shipping-option-header optimizedCheckout-contentPrimary body-bold">
                 <TranslatedString id="shipping.shipping_method_label" />
             </h3>
             {(!consignment.availableShippingOptions ||

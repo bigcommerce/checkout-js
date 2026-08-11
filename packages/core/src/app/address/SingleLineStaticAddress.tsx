@@ -35,7 +35,9 @@ const SingleLineStaticAddress = ({ address }: SingleLineStaticAddressProps) => {
 
     return !isValid ? null : (
         <div className="vcard checkout-address--static" data-test="static-address">
-            <p className="address-entry body-regular">{getAddressContent(address)}</p>
+            <p className="address-entry optimizedCheckout-contentPrimary body-regular">
+                {getAddressContent(address)}
+            </p>
         </div>
     );
 };

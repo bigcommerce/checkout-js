@@ -77,7 +77,7 @@ const GuestForm: FunctionComponent<
     setFieldValue,
 }) => {
     const { selectedState: config } = useCheckout(({ data }) => data.getConfig());
-    const { themeV2 } = useThemeContext();
+    const { enhancedThemeV1 } = useThemeContext();
 
     const renderField = useCallback(
         (fieldProps: FieldProps<boolean>) => (
@@ -131,7 +131,7 @@ const GuestForm: FunctionComponent<
                             <BasicFormField name="shouldSubscribe" render={renderField} />
                         )}
 
-                        {themeV2 && privacyPolicyUrl && (
+                        {enhancedThemeV1 && privacyPolicyUrl && (
                             <PrivacyPolicyField
                                 isExpressPrivacyPolicy={isExpressPrivacyPolicy}
                                 url={privacyPolicyUrl}
@@ -146,7 +146,7 @@ const GuestForm: FunctionComponent<
                     >
                         <Button
                             className={classNames('body-bold', {
-                                'customerEmail-button': !themeV2,
+                                'customerEmail-button': !enhancedThemeV1,
                             })}
                             id="checkout-customer-continue"
                             isLoading={isLoading}
@@ -159,14 +159,14 @@ const GuestForm: FunctionComponent<
                     </div>
                 </div>
 
-                {!themeV2 && privacyPolicyUrl && (
+                {!enhancedThemeV1 && privacyPolicyUrl && (
                     <PrivacyPolicyField
                         isExpressPrivacyPolicy={isExpressPrivacyPolicy}
                         url={privacyPolicyUrl}
                     />
                 )}
 
-                {!themeV2 && !isLoading && (
+                {!enhancedThemeV1 && !isLoading && (
                     <p className="customer-login-link">
                         <TranslatedString id="customer.login_text" />{' '}
                         <a
