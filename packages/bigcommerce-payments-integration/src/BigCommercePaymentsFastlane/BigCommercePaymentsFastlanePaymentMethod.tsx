@@ -2,6 +2,7 @@ import { type CardInstrument } from '@bigcommerce/checkout-sdk';
 import { createBigCommercePaymentsFastlanePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bigcommerce-payments';
 import React, { type FunctionComponent, useEffect, useRef } from 'react';
 
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 import {
     type PaymentMethodProps,
     type PaymentMethodResolveId,
@@ -13,7 +14,6 @@ import { isErrorWithTranslationKey } from '@bigcommerce/checkout/utility';
 import BigCommercePaymentsFastlaneForm from './components/BigCommercePaymentsFastlaneForm';
 
 import './BigCommercePaymentsFastlanePaymentMethod.scss';
-import { useCheckout } from '@bigcommerce/checkout/contexts';
 
 export interface BigCommercePaymentsFastlaneCardComponentRef {
     renderPayPalCardComponent?: (container: string) => void;
@@ -31,38 +31,41 @@ const BigCommercePaymentsFastlanePaymentMethod: FunctionComponent<PaymentMethodP
     const paypalCardComponentRef = useRef<BigCommercePaymentsFastlaneCardComponentRef>({});
 
     const { isLoadingPaymentMethod, isInitializingPayment } = checkoutState.statuses;
-    const { errorLogger } = useCheckout(() => undefined)
+    const { errorLogger } = useCheckout(() => undefined);
 
     const initializePaymentOrThrow = async () => {
         try {
             await checkoutService.initializePayment({
-              methodId: method.id,
-              integrations: [createBigCommercePaymentsFastlanePaymentStrategy],
-              bigcommerce_payments_fastlane: {
-                onInit: (renderPayPalCardComponent) => {
-                  paypalCardComponentRef.current.renderPayPalCardComponent =
-                    renderPayPalCardComponent;
-                },
-                onChange: (showPayPalCardSelector) => {
-                  paypalCardComponentRef.current.showPayPalCardSelector = showPayPalCardSelector;
-                },
-                onError: (error: unknown) => {
-                  let finalError: Error;
+                methodId: method.id,
+                integrations: [createBigCommercePaymentsFastlanePaymentStrategy],
+                bigcommerce_payments_fastlane: {
+                    onInit: (renderPayPalCardComponent) => {
+                        paypalCardComponentRef.current.renderPayPalCardComponent =
+                            renderPayPalCardComponent;
+                    },
+                    onChange: (showPayPalCardSelector) => {
+                        paypalCardComponentRef.current.showPayPalCardSelector =
+                            showPayPalCardSelector;
+                    },
+                    onError: (error: unknown) => {
+                        let finalError: Error;
 
-                  if (isErrorWithTranslationKey(error)) {
-                    finalError = new Error(language.translate(error.translationKey));
-                  } else if (error instanceof Error) {
-                    finalError = error;
-                  } else {
-                    finalError = new Error(language.translate('payment.errors.general_error'));
-                  }
+                        if (isErrorWithTranslationKey(error)) {
+                            finalError = new Error(language.translate(error.translationKey));
+                        } else if (error instanceof Error) {
+                            finalError = error;
+                        } else {
+                            finalError = new Error(
+                                language.translate('payment.errors.general_error'),
+                            );
+                        }
 
-                  return onUnhandledError(finalError);
+                        return onUnhandledError(finalError);
+                    },
+                    onErrorLog: (error: unknown) => {
+                        errorLogger?.log(error instanceof Error ? error : new Error(String(error)));
+                    },
                 },
-                onErrorLog: (error: unknown) => {
-                  errorLogger?.log(error instanceof Error ? error : new Error(String(error)));
-                },
-              },
             });
         } catch (error) {
             if (error instanceof Error) {
