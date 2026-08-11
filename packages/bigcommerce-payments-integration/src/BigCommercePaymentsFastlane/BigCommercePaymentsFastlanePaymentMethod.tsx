@@ -2,6 +2,7 @@ import { type CardInstrument } from '@bigcommerce/checkout-sdk';
 import { createBigCommercePaymentsFastlanePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bigcommerce-payments';
 import React, { type FunctionComponent, useEffect, useRef } from 'react';
 
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 import {
     type PaymentMethodProps,
     type PaymentMethodResolveId,
@@ -30,6 +31,7 @@ const BigCommercePaymentsFastlanePaymentMethod: FunctionComponent<PaymentMethodP
     const paypalCardComponentRef = useRef<BigCommercePaymentsFastlaneCardComponentRef>({});
 
     const { isLoadingPaymentMethod, isInitializingPayment } = checkoutState.statuses;
+    const { errorLogger } = useCheckout(() => undefined);
 
     const initializePaymentOrThrow = async () => {
         try {
@@ -59,6 +61,9 @@ const BigCommercePaymentsFastlanePaymentMethod: FunctionComponent<PaymentMethodP
                         }
 
                         return onUnhandledError(finalError);
+                    },
+                    onErrorLog: (error: unknown) => {
+                        errorLogger?.log(error instanceof Error ? error : new Error(String(error)));
                     },
                 },
             });
