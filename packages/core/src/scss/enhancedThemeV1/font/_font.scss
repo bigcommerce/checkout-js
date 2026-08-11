@@ -44,13 +44,6 @@
         font-weight: $fontWeight-bold;
     }
 
-    // overrides
-    .body-bold, .body-medium, .sub-header, .header {
-        &.button--primary:not(:disabled){
-            color: $color-white;
-        }
-    }
-
     .header {
         &.button--primary {
             text-transform: none;
