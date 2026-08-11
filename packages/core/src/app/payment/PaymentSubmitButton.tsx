@@ -33,8 +33,8 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
         isComplete,
         isPaymentDataRequired,
     }) => {
-        const { themeV2 } = useThemeContext();
-        const placeOrderActionId = themeV2
+        const { enhancedThemeV1 } = useThemeContext();
+        const placeOrderActionId = enhancedThemeV1
             ? 'payment.place_order_action_v2'
             : 'payment.place_order_action';
 
@@ -162,7 +162,7 @@ const PaymentSubmitButton: FunctionComponent<
                         methodId as PaymentMethodId,
                     ),
                 },
-                themeV2 ? 'header' : 'sub-header',
+                enhancedThemeV1 ? 'header' : 'sub-header',
             )}
             data-test="payment-submit-button"
             disabled={isInitializing || isSubmitting || isDisabled}

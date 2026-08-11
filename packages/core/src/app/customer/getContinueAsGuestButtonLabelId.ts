@@ -3,12 +3,12 @@ import { type Cart, type StoreConfig } from '@bigcommerce/checkout-sdk';
 import { itemsRequireShipping } from '../shipping';
 
 export const getContinueAsGuestButtonLabelId = (
-    themeV2: boolean,
+    enhancedThemeV1: boolean,
     cart?: Cart,
     config?: StoreConfig,
     isShippingStepComplete = false,
 ): string => {
-    if (!themeV2) {
+    if (!enhancedThemeV1) {
         return 'customer.continue';
     }
 

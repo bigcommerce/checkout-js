@@ -49,7 +49,7 @@ export const GuestFormContainer: React.FC<GuestFormContainerProps> = ({
     onWalletButtonClick,
     onUnhandledError,
 }) => {
-    const { themeV2 } = useThemeContext();
+    const { enhancedThemeV1 } = useThemeContext();
     const { checkoutState, checkoutService } = useCheckout(
         ({
             data: { isPaymentDataRequired, getConfig, getCart },
@@ -96,7 +96,7 @@ export const GuestFormContainer: React.FC<GuestFormContainerProps> = ({
     const customCheckoutProvider = getProviderWithCustomCheckout(providerWithCustomCheckout);
 
     const continueAsGuestButtonLabelId = getContinueAsGuestButtonLabelId(
-        themeV2,
+        enhancedThemeV1,
         cart,
         config,
         isShippingStepComplete(checkoutState),

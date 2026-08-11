@@ -19,7 +19,7 @@ const MultiShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
     isLoading,
     cartHasChanged,
 }) => {
-    const { themeV2 } = useThemeContext();
+    const { enhancedThemeV1 } = useThemeContext();
 
     return (
         <Form>
@@ -43,7 +43,9 @@ const MultiShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
                 >
                     <TranslatedString
                         id={
-                            themeV2 ? 'common.continue_to_payment_action' : 'common.continue_action'
+                            enhancedThemeV1
+                                ? 'common.continue_to_payment_action'
+                                : 'common.continue_action'
                         }
                     />
                 </Button>
