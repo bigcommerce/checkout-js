@@ -45,7 +45,7 @@ describe('SearchableAddressSelectComponent', () => {
             id,
             type: 'commercial',
             address1: `${id} Extra Billing Way`,
-            b2b: getCustomerAddressB2B({ isBilling: true }),
+            ...getCustomerAddressB2B({ isBilling: true }),
         })),
     ];
 

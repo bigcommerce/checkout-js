@@ -40,14 +40,11 @@ function mapToCustomerAddress(address: CompanyAddress): CustomerAddress {
         phone: address.phone ?? '',
         label: address.label ?? undefined,
         customFields: [],
-        b2b: {
-            isShipping: address.isShipping ?? false,
-            isBilling: address.isBilling ?? false,
-            isDefaultShipping: address.isDefaultShipping ?? false,
-            isDefaultBilling: address.isDefaultBilling ?? false,
-            label: address.label ?? '',
-            extraFields: [],
-        },
+        isShipping: address.isShipping ?? false,
+        isBilling: address.isBilling ?? false,
+        isDefaultShipping: address.isDefaultShipping ?? false,
+        isDefaultBilling: address.isDefaultBilling ?? false,
+        extraFields: [],
     };
 }
 
@@ -69,8 +66,8 @@ export function useCompanyAddressSearch({
     const matchesType = useCallback(
         (address: CustomerAddress) =>
             type === AddressType.Shipping
-                ? Boolean(address.b2b?.isShipping)
-                : Boolean(address.b2b?.isBilling),
+                ? Boolean(address.isShipping)
+                : Boolean(address.isBilling),
         [type],
     );
 

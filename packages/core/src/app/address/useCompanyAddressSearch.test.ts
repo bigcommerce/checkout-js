@@ -35,7 +35,7 @@ describe('useCompanyAddressSearch', () => {
         ...getAddress(),
         id,
         type: 'commercial',
-        b2b: getCustomerAddressB2B({ isBilling: true }),
+        ...getCustomerAddressB2B({ isBilling: true }),
         ...overrides,
     });
 
@@ -110,7 +110,7 @@ describe('useCompanyAddressSearch', () => {
     it('returns addresses matching the step type and hides search below the limit', async () => {
         const addresses = [
             ...billingAddresses.slice(0, 3),
-            createCustomerAddress(7, { b2b: getCustomerAddressB2B({ isShipping: true }) }),
+            createCustomerAddress(7, getCustomerAddressB2B({ isShipping: true })),
         ];
 
         const { result, rerender } = renderCompanyAddressSearch({
@@ -189,14 +189,14 @@ describe('useCompanyAddressSearch', () => {
                 address1: '999 Company Way',
                 address2: '',
                 phone: '',
-                b2b: expect.objectContaining({ isBilling: true }),
+                isBilling: true,
             }),
         );
     });
 
     it('passes the shipping filter when searching on the shipping step', async () => {
         const shippingAddresses = [1, 2, 3, 4, 5].map((id) =>
-            createCustomerAddress(id, { b2b: getCustomerAddressB2B({ isShipping: true }) }),
+            createCustomerAddress(id, getCustomerAddressB2B({ isShipping: true })),
         );
 
         const { rerender } = renderCompanyAddressSearch({
