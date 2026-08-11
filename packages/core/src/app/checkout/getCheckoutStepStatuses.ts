@@ -8,7 +8,7 @@ import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
 import { isValidAddress } from '../address';
 import { EMPTY_ARRAY } from '../common/utility';
-import { SUPPORTED_METHODS } from '../customer';
+import { SUPPORTED_METHODS } from '../customer/getSupportedMethods';
 import { PaymentMethodId } from '../payment/paymentMethod';
 import {
     hasSelectedShippingOptions,
@@ -278,5 +278,9 @@ const getCheckoutStepStatuses = createSelector(
         });
     },
 );
+
+export function isShippingStepComplete(checkoutState: CheckoutSelectors): boolean {
+    return getShippingStepStatus(checkoutState).isComplete;
+}
 
 export default getCheckoutStepStatuses;

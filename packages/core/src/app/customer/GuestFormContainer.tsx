@@ -1,15 +1,17 @@
 import { type Cart } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
-import { useCheckout } from '@bigcommerce/checkout/contexts';
+import { useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
 import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
 import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
 import { isPayPalFastlaneMethod } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 import type CheckoutStepStatus from '../checkout/CheckoutStepStatus';
+import { isShippingStepComplete } from '../checkout/getCheckoutStepStatuses';
 import getProviderWithCustomCheckout from '../payment/getProviderWithCustomCheckout';
 
 import CheckoutButtonList from './CheckoutButtonList';
+import { getContinueAsGuestButtonLabelId } from './getContinueAsGuestButtonLabelId';
 import GuestForm, { type GuestFormValues } from './GuestForm';
 import StripeGuestForm from './StripeGuestForm';
 
@@ -47,6 +49,7 @@ export const GuestFormContainer: React.FC<GuestFormContainerProps> = ({
     onWalletButtonClick,
     onUnhandledError,
 }) => {
+    const { enhancedThemeV1 } = useThemeContext();
     const { checkoutState, checkoutService } = useCheckout(
         ({
             data: { isPaymentDataRequired, getConfig, getCart },
@@ -92,6 +95,13 @@ export const GuestFormContainer: React.FC<GuestFormContainerProps> = ({
 
     const customCheckoutProvider = getProviderWithCustomCheckout(providerWithCustomCheckout);
 
+    const continueAsGuestButtonLabelId = getContinueAsGuestButtonLabelId(
+        enhancedThemeV1,
+        cart,
+        config,
+        isShippingStepComplete(checkoutState),
+    );
+
     const checkoutButtons =
         isWalletButtonsOnTop || !isPaymentDataRequired() ? null : (
             <CheckoutButtonList
@@ -110,7 +120,7 @@ export const GuestFormContainer: React.FC<GuestFormContainerProps> = ({
             <StripeGuestForm
                 canSubscribe={canSubscribe}
                 checkoutButtons={checkoutButtons}
-                continueAsGuestButtonLabelId="customer.continue"
+                continueAsGuestButtonLabelId={continueAsGuestButtonLabelId}
                 defaultShouldSubscribe={isSubscribed}
                 deinitialize={deinitializeCustomer}
                 email={email}
@@ -135,7 +145,7 @@ export const GuestFormContainer: React.FC<GuestFormContainerProps> = ({
         <GuestForm
             canSubscribe={canSubscribe}
             checkoutButtons={checkoutButtons}
-            continueAsGuestButtonLabelId="customer.continue"
+            continueAsGuestButtonLabelId={continueAsGuestButtonLabelId}
             defaultShouldSubscribe={isSubscribed}
             email={email}
             isExpressPrivacyPolicy={isExpressPrivacyPolicy}

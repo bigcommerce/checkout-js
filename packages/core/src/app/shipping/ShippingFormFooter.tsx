@@ -2,6 +2,7 @@ import { ExtensionRegion } from '@bigcommerce/checkout-sdk/essential';
 import React, { type FunctionComponent } from 'react';
 
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import {
     Alert,
@@ -39,6 +40,8 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
     isLoading,
     shippingFormRenderTimestamp,
 }) => {
+    const { enhancedThemeV1 } = useThemeContext();
+
     return (
         <>
             <Extension region={ExtensionRegion.ShippingShippingAddressFormAfter} />
@@ -85,7 +88,13 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
                     type="submit"
                     variant={ButtonVariant.Primary}
                 >
-                    <TranslatedString id="common.continue_action" />
+                    <TranslatedString
+                        id={
+                            enhancedThemeV1
+                                ? 'common.continue_to_payment_action'
+                                : 'common.continue_action'
+                        }
+                    />
                 </Button>
             </div>
         </>

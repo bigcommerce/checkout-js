@@ -44,6 +44,17 @@
         font-weight: $fontWeight-bold;
     }
 
+    .header {
+        &.button--primary {
+            text-transform: none;
+        }
+    }
+
+    #checkout-customer-continue,
+    #stripe-checkout-customer-continue,
+    #checkout-shipping-continue {
+        text-transform: none;
+    }
 
     .form-checkbox + .form-label,
     .form-radio + .form-label {

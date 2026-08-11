@@ -287,7 +287,7 @@ describe('Payment step', () => {
 
         await checkout.waitForPaymentStep();
 
-        await act(async () => userEvent.click(screen.getByText('Place Order')));
+        await act(async () => userEvent.click(screen.getByText('Place order')));
 
         expect(mockEnsureBillingAddressSaved).toHaveBeenCalled();
         expect(submitOrderSpy).not.toHaveBeenCalled();
