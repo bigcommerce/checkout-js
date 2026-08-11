@@ -3,7 +3,7 @@ import { type Cart, type StoreConfig } from '@bigcommerce/checkout-sdk';
 import { getCart } from '../cart/carts.mock';
 import { getStoreConfig } from '../config/config.mock';
 
-import { getContinueAsGuestButtonLabelId } from './utils';
+import { getContinueAsGuestButtonLabelId } from './getContinueAsGuestButtonLabelId';
 
 describe('getContinueAsGuestButtonLabelId()', () => {
     let cart: Cart;

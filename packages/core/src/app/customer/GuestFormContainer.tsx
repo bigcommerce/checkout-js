@@ -11,9 +11,9 @@ import { isShippingStepComplete } from '../checkout/getCheckoutStepStatuses';
 import getProviderWithCustomCheckout from '../payment/getProviderWithCustomCheckout';
 
 import CheckoutButtonList from './CheckoutButtonList';
+import { getContinueAsGuestButtonLabelId } from './getContinueAsGuestButtonLabelId';
 import GuestForm, { type GuestFormValues } from './GuestForm';
 import StripeGuestForm from './StripeGuestForm';
-import { getContinueAsGuestButtonLabelId } from './utils';
 
 interface GuestFormContainerProps {
     email?: string;
