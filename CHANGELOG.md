@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.862.0](https://github.com/bigcommerce/checkout-js/compare/v1.861.1...v1.862.0) (2026-08-11)
+
+
+### Features
+
+* **payment:** PAYPAL-6856 added onErrorLog callback ([c16ef6a](https://github.com/bigcommerce/checkout-js/commit/c16ef6ae037bde48b63902a9c876b73d4a0864b9))
+* **payment:** PAYPAL-6856 added onErrorLog callback ([bdd7583](https://github.com/bigcommerce/checkout-js/commit/bdd7583248b08a1c949030e1bf57b03384818df5))
+* **payment:** PAYPAL-6856 added onErrorLog callback ([348d990](https://github.com/bigcommerce/checkout-js/commit/348d990b73ff9e79ef301c214ed1fb09f49077bb))
+* **payment:** PAYPAL-6856 added onErrorLog callback ([4f45def](https://github.com/bigcommerce/checkout-js/commit/4f45defaa638f14c60bd773f94863d6139e7713e))
+* **payment:** PAYPAL-6856 added onErrorLog callback ([1a685a4](https://github.com/bigcommerce/checkout-js/commit/1a685a415bdd21398a7ffa4119956ce78e0a532a))
+* **payment:** PAYPAL-6856 PPCP FL  added onErrorLog callback ([eea074b](https://github.com/bigcommerce/checkout-js/commit/eea074b94a4a4cbe8112fe71b3267e7596f0c792))
+
 ### [1.861.1](https://github.com/bigcommerce/checkout-js/compare/v1.861.0...v1.861.1) (2026-08-11)
 
 ## [1.861.0](https://github.com/bigcommerce/checkout-js/compare/v1.860.1...v1.861.0) (2026-08-11)
