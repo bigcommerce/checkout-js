@@ -22,18 +22,18 @@ export default async function setDefaultAddress({
     }
 
     const isShipping = type === AddressType.Shipping;
-    const defaultAddress = addresses?.find(({ b2b }) =>
+    const defaultAddress = addresses?.find((address) =>
         isShipping
-            ? b2b?.isShipping && b2b.isDefaultShipping
-            : b2b?.isBilling && b2b.isDefaultBilling,
+            ? address.isShipping && address.isDefaultShipping
+            : address.isBilling && address.isDefaultBilling,
     );
 
     if (!defaultAddress) {
         return;
     }
 
-    // Book entries carry the B2B label in `b2b.label`; decode lifts it into `label` (no-op when the
-    // capability is off). The caller's `updateAddress` wrapper folds it into `company` on write.
+    // decode splits the B2B label out of `company` into `label` (no-op when the capability is
+    // off). The caller's `updateAddress` wrapper folds it back into `company` on write.
     try {
         await updateAddress(decode(defaultAddress));
     } catch {

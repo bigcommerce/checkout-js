@@ -1158,7 +1158,7 @@ describe('Shipping step', () => {
                         {
                             ...shippingAddress,
                             id: 1,
-                            b2b: getCustomerAddressB2B({ isShipping: true }),
+                            ...getCustomerAddressB2B({ isShipping: true }),
                         },
                     ],
                 },

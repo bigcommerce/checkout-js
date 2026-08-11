@@ -9,7 +9,7 @@ describe('setDefaultAddress', () => {
         ...getAddress(),
         id: 1,
         type: 'residential',
-        b2b: getCustomerAddressB2B({ isShipping: true, isBilling: true }),
+        ...getCustomerAddressB2B({ isShipping: true, isBilling: true }),
         ...overrides,
     });
 
@@ -23,7 +23,7 @@ describe('setDefaultAddress', () => {
         it('applies the default address', async () => {
             const defaultAddress = getCustomerAddress({
                 id: 7,
-                b2b: getCustomerAddressB2B({ isShipping: true, isDefaultShipping: true }),
+                ...getCustomerAddressB2B({ isShipping: true, isDefaultShipping: true }),
             });
 
             await setDefaultAddress({
@@ -52,7 +52,7 @@ describe('setDefaultAddress', () => {
 
             const defaultAddress = getCustomerAddress({
                 id: 7,
-                b2b: getCustomerAddressB2B({ isShipping: true, isDefaultShipping: true }),
+                ...getCustomerAddressB2B({ isShipping: true, isDefaultShipping: true }),
             });
 
             await expect(
@@ -68,11 +68,11 @@ describe('setDefaultAddress', () => {
         it('only considers default addresses of the requested type', async () => {
             const billingOnlyDefault = getCustomerAddress({
                 id: 50,
-                b2b: getCustomerAddressB2B({ isBilling: true, isDefaultBilling: true }),
+                ...getCustomerAddressB2B({ isBilling: true, isDefaultBilling: true }),
             });
             const shippingDefault = getCustomerAddress({
                 id: 42,
-                b2b: getCustomerAddressB2B({ isShipping: true, isDefaultShipping: true }),
+                ...getCustomerAddressB2B({ isShipping: true, isDefaultShipping: true }),
             });
 
             await setDefaultAddress({
@@ -94,7 +94,7 @@ describe('setDefaultAddress', () => {
                 addresses: [
                     getCustomerAddress({
                         id: 7,
-                        b2b: getCustomerAddressB2B({
+                        ...getCustomerAddressB2B({
                             isShipping: true,
                             isDefaultShipping: true,
                         }),
