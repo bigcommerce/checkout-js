@@ -1,6 +1,6 @@
 import { memoizeOne } from '@bigcommerce/memoize';
 import { type FieldProps } from 'formik';
-import { kebabCase, noop } from 'lodash';
+import { kebabCase } from 'lodash';
 import React, {
     type FunctionComponent,
     memo,
@@ -18,14 +18,12 @@ export interface ChecklistItemProps {
     content?: ReactNode;
     htmlId?: string;
     isDisabled?: boolean;
-    isReadOnly?: boolean;
     label: ReactNode | ((isSelected: boolean) => ReactNode);
     value: string;
 }
 
 const ChecklistItem: FunctionComponent<ChecklistItemProps> = ({
     isDisabled,
-    isReadOnly,
     value,
     content,
     htmlId = kebabCase(value),
@@ -39,17 +37,15 @@ const ChecklistItem: FunctionComponent<ChecklistItemProps> = ({
         memoizeOne((isSelected: boolean) => ({ field }: FieldProps) => (
             <ChecklistItemInput
                 {...field}
-                aria-disabled={isReadOnly || undefined}
                 disabled={isDisabled}
                 id={htmlId}
                 isSelected={field.value === value}
-                onChange={isReadOnly ? noop : field.onChange}
                 value={value}
             >
                 {label instanceof Function ? label(isSelected) : label}
             </ChecklistItemInput>
         )),
-        [htmlId, isDisabled, isReadOnly, label, value],
+        [htmlId, isDisabled, label, value],
     );
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
