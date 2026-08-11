@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.863.0](https://github.com/bigcommerce/checkout-js/compare/v1.862.0...v1.863.0) (2026-08-11)
+
+
+### Features
+
+* **payment:** PAYPAL-6856 added onErrorLog callback for BCP FL ([8f59eb4](https://github.com/bigcommerce/checkout-js/commit/8f59eb42a1f3771e845472809208081ea962342c))
+
 ## [1.862.0](https://github.com/bigcommerce/checkout-js/compare/v1.861.1...v1.862.0) (2026-08-11)
 
 
