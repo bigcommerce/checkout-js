@@ -12,6 +12,7 @@ import { FormContext, LoadingOverlay } from '@bigcommerce/checkout/ui';
 import BraintreeFastlaneForm from './components/BraintreeFastlaneForm';
 
 import './BraintreeFastlanePaymentMethod.scss';
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 
 export interface BraintreeFastlaneComponentRef {
     renderPayPalCardComponent?: (container: string) => void;
@@ -28,25 +29,29 @@ const BraintreeFastlanePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     const paypalFastlaneComponentRef = useRef<BraintreeFastlaneComponentRef>({});
 
     const { isLoadingPaymentMethod, isInitializingPayment } = checkoutState.statuses;
+    const { errorLogger } = useCheckout(() => undefined);
 
     const initializePaymentOrThrow = async () => {
         try {
             await checkoutService.initializePayment({
-                methodId: method.id,
-                integrations: [createBraintreeFastlanePaymentStrategy],
-                braintreefastlane: {
-                    onInit: (renderPayPalCardComponent) => {
-                        paypalFastlaneComponentRef.current.renderPayPalCardComponent =
-                            renderPayPalCardComponent;
-                    },
-                    onChange: (showPayPalCardSelector) => {
-                        paypalFastlaneComponentRef.current.showPayPalCardSelector =
-                            showPayPalCardSelector;
-                    },
-                    onError: (error: Error) => {
-                        onUnhandledError(error);
-                    },
+              methodId: method.id,
+              integrations: [createBraintreeFastlanePaymentStrategy],
+              braintreefastlane: {
+                onInit: (renderPayPalCardComponent) => {
+                  paypalFastlaneComponentRef.current.renderPayPalCardComponent =
+                    renderPayPalCardComponent;
                 },
+                onChange: (showPayPalCardSelector) => {
+                  paypalFastlaneComponentRef.current.showPayPalCardSelector =
+                    showPayPalCardSelector;
+                },
+                onError: (error: Error) => {
+                  onUnhandledError(error);
+                },
+                onErrorLog: (error: unknown) => {
+                  errorLogger?.log(error instanceof Error ? error : new Error(String(error)));
+                },
+              },
             });
         } catch (error) {
             if (error instanceof Error) {
