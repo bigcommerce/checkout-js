@@ -7,4 +7,50 @@ $element-border-radius: remCalc(12px);
     .applied-coupons-list ul {
         border-radius: $element-border-radius;
     }
+
+    // Optimized Checkout fallback styles
+    background-color: $color-background;
+
+    .optimizedCheckout-form-checklist-checkbox:checked ~ .optimizedCheckout-form-label::before {
+        background-color: $color-black;
+        border-color: $color-black;
+    }
+
+    .optimizedCheckout-form-checklist-checkbox:checked ~ .optimizedCheckout-form-label::after {
+        background-color: $color-white;
+    }
+
+    .optimizedCheckout-form-checklist {
+        .optimizedCheckout-form-checklist-item {
+            border-color: $color-greyMedium;
+        }
+
+        .optimizedCheckout-form-checklist-item--selected {
+            border-color: $color-black;
+        }
+    }
+
+    .optimizedCheckout-contentPrimary {
+        .optimizedCheckout-checkoutStep {
+            background-color: transparentize($color-white, 0.5);
+
+            &.checkout-step--current {
+                background-color: $color-white;
+            }
+
+            &:not(.checkout-step--current) .optimizedCheckout-buttonSecondary {
+                background-color: transparent;
+            }
+        }
+    }
+
+    .optimizedCheckout-orderSummary {
+        .optimizedCheckout-orderSummary-toggle {
+            color: $color-highlightDarkest;
+        }
+
+        svg {
+            fill: $color-highlightDarkest;
+        }
+    }
 }
