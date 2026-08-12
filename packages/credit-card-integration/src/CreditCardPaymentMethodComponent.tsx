@@ -367,11 +367,7 @@ export const CreditCardPaymentMethodComponent = (
     const storeConfig = getStoreConfig();
 
     const SentryMessage = methodProp
-        ? `DataCreditCardFieldset component ${JSON.stringify({
-              gateway: methodProp.gateway,
-              id: methodProp.id,
-              type: methodProp.type,
-          })}`
+        ? `DataCreditCardFieldset component gateway=${methodProp.gateway} id=${methodProp.id} type=${methodProp.type}`
         : '';
 
     if (!storeConfig) {
