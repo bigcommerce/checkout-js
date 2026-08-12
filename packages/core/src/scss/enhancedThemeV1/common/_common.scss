@@ -47,10 +47,10 @@ $element-border-radius: remCalc(12px);
     .optimizedCheckout-orderSummary {
         .optimizedCheckout-orderSummary-toggle {
             color: $color-highlightDarkest;
-        }
 
-        svg {
-            fill: $color-highlightDarkest;
+            svg {
+                fill: $color-highlightDarkest;
+            }
         }
     }
 }
