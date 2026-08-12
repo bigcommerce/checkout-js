@@ -28,8 +28,6 @@ describe('CartSummary Component', () => {
     const applyCoupon = jest.fn();
     const applyGiftCertificate = jest.fn();
     const clearError = jest.fn();
-    const onRemovedCoupon = jest.fn();
-    const onRemovedGiftCertificate = jest.fn();
     const minPurchaseError = {
         errors: [{ code: 'min_purchase' }],
     } as RequestError;
@@ -70,8 +68,6 @@ describe('CartSummary Component', () => {
                 applyGiftCertificate={applyGiftCertificate}
                 clearError={clearError}
                 isApplyingRedeemable={true}
-                onRemovedCoupon={onRemovedCoupon}
-                onRemovedGiftCertificate={onRemovedGiftCertificate}
                 shouldCollapseCouponCode={false}
             />,
         );
@@ -94,8 +90,6 @@ describe('CartSummary Component', () => {
                 applyGiftCertificate={applyGiftCertificate}
                 clearError={clearError}
                 isApplyingRedeemable={true}
-                onRemovedCoupon={onRemovedCoupon}
-                onRemovedGiftCertificate={onRemovedGiftCertificate}
                 shouldCollapseCouponCode={false}
             />,
         );
@@ -111,8 +105,6 @@ describe('CartSummary Component', () => {
                 applyGiftCertificate={applyGiftCertificate}
                 clearError={clearError}
                 isApplyingRedeemable={true}
-                onRemovedCoupon={onRemovedCoupon}
-                onRemovedGiftCertificate={onRemovedGiftCertificate}
                 shouldCollapseCouponCode={false}
             />,
         );
@@ -128,8 +120,6 @@ describe('CartSummary Component', () => {
                 applyGiftCertificate={applyGiftCertificate}
                 clearError={clearError}
                 isApplyingRedeemable={true}
-                onRemovedCoupon={onRemovedCoupon}
-                onRemovedGiftCertificate={onRemovedGiftCertificate}
                 shouldCollapseCouponCode={false}
             />,
         );
@@ -144,8 +134,6 @@ describe('CartSummary Component', () => {
                 applyCoupon={applyCoupon}
                 applyGiftCertificate={applyGiftCertificate}
                 clearError={clearError}
-                onRemovedCoupon={onRemovedCoupon}
-                onRemovedGiftCertificate={onRemovedGiftCertificate}
                 shouldCollapseCouponCode={true}
             />
         );
@@ -199,8 +187,6 @@ describe('CartSummary Component', () => {
                 applyCoupon={applyCoupon}
                 applyGiftCertificate={applyGiftCertificate}
                 clearError={clearError}
-                onRemovedCoupon={onRemovedCoupon}
-                onRemovedGiftCertificate={onRemovedGiftCertificate}
                 shouldCollapseCouponCode={true}
             />,
         );
@@ -228,8 +214,6 @@ describe('CartSummary Component', () => {
                     clearError={clearError}
                     disableCoupon={true}
                     disableGiftCertificate={true}
-                    onRemovedCoupon={onRemovedCoupon}
-                    onRemovedGiftCertificate={onRemovedGiftCertificate}
                     shouldCollapseCouponCode={false}
                 />,
             );
@@ -244,8 +228,6 @@ describe('CartSummary Component', () => {
                     applyGiftCertificate={applyGiftCertificate}
                     clearError={clearError}
                     disableGiftCertificate={true}
-                    onRemovedCoupon={onRemovedCoupon}
-                    onRemovedGiftCertificate={onRemovedGiftCertificate}
                     shouldCollapseCouponCode={false}
                 />,
             );
@@ -260,8 +242,6 @@ describe('CartSummary Component', () => {
                     applyGiftCertificate={applyGiftCertificate}
                     clearError={clearError}
                     disableCoupon={true}
-                    onRemovedCoupon={onRemovedCoupon}
-                    onRemovedGiftCertificate={onRemovedGiftCertificate}
                     shouldCollapseCouponCode={false}
                 />,
             );
@@ -280,8 +260,6 @@ describe('CartSummary Component', () => {
                     applyGiftCertificate={applyGiftCertificate}
                     clearError={clearError}
                     disableGiftCertificate={true}
-                    onRemovedCoupon={onRemovedCoupon}
-                    onRemovedGiftCertificate={onRemovedGiftCertificate}
                     shouldCollapseCouponCode={false}
                 />,
             );
@@ -302,8 +280,6 @@ describe('CartSummary Component', () => {
                     applyGiftCertificate={applyGiftCertificate}
                     clearError={clearError}
                     disableCoupon={true}
-                    onRemovedCoupon={onRemovedCoupon}
-                    onRemovedGiftCertificate={onRemovedGiftCertificate}
                     shouldCollapseCouponCode={false}
                 />,
             );
@@ -331,8 +307,6 @@ describe('CartSummary Component', () => {
                 applyGiftCertificate={applyGiftCertificate}
                 clearError={clearError}
                 isApplyingRedeemable={false}
-                onRemovedCoupon={onRemovedCoupon}
-                onRemovedGiftCertificate={onRemovedGiftCertificate}
                 shouldCollapseCouponCode={false}
             />,
         );

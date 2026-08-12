@@ -16,22 +16,18 @@ import {
     Modal,
     ModalHeader,
 } from '@bigcommerce/checkout/ui';
-import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
-import { NewOrderSummarySubtotals } from '../coupon';
+import { OrderSummarySubtotals, type OrderSummarySubtotalsProps } from '../coupon';
 import { ShopperCurrency } from '../currency';
 
 import OrderModalSummarySubheader from './OrderModalSummarySubheader';
 import OrderSummaryItems from './OrderSummaryItems';
 import OrderSummaryPrice from './OrderSummaryPrice';
 import OrderSummarySection from './OrderSummarySection';
-import OrderSummarySubtotals, { type OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
 import OrderSummaryTotal from './OrderSummaryTotal';
 import { removeBundledItems } from './removeBundledItems';
 
 export interface OrderSummaryDrawerProps {
-    children: ReactNode;
-    additionalLineItems?: ReactNode;
     items: LineItemMap;
     total: number;
     storeCurrency: StoreCurrency;
@@ -45,7 +41,6 @@ export interface OrderSummaryDrawerProps {
 const OrderSummaryModal: FunctionComponent<
     OrderSummaryDrawerProps & OrderSummarySubtotalsProps
 > = ({
-    additionalLineItems,
     isTaxIncluded,
     taxes,
     onRequestClose,
@@ -60,36 +55,19 @@ const OrderSummaryModal: FunctionComponent<
 }) => {
     const { currency } = useLocale();
     const {
-        selectedState: { config, checkout, order },
+        selectedState: { checkout, order },
     } = useCheckout(({ data }) => ({
-        config: data.getConfig(),
         checkout: data.getCheckout(),
         order: data.getOrder(),
     }));
     const { enhancedThemeV1 } = useThemeContext();
-    const { checkoutSettings } = config ?? {};
-
-    const isMultiCouponEnabled = isExperimentEnabled(
-        checkoutSettings,
-        'CHECKOUT-9674.multi_coupon_cart_checkout',
-        false,
-    );
-    const isMultiCouponEnabledForCheckout = isMultiCouponEnabled && !!checkout;
-    const isMultiCouponEnabledForOrder = isMultiCouponEnabled && !checkout && !!order;
 
     if (!currency) {
         return null;
     }
 
-    let totalDiscount;
-
-    if (isMultiCouponEnabledForCheckout) {
-        totalDiscount = checkout.totalDiscount;
-    }
-
-    if (isMultiCouponEnabledForOrder) {
-        totalDiscount = order.totalDiscount;
-    }
+    const isOrderConfirmation = !checkout && !!order;
+    const totalDiscount = checkout ? checkout.totalDiscount : order?.totalDiscount;
 
     const displayInclusiveTax = isTaxIncluded && taxes && taxes.length > 0;
     const isTotalDiscountVisible = Boolean(totalDiscount && totalDiscount > 0);
@@ -138,26 +116,15 @@ const OrderSummaryModal: FunctionComponent<
             <OrderSummarySection>
                 <OrderSummaryItems displayLineItemsCount={false} items={items} />
             </OrderSummarySection>
-            {isMultiCouponEnabledForCheckout || isMultiCouponEnabledForOrder ? (
-                <NewOrderSummarySubtotals
-                    fees={orderSummarySubtotalsProps.fees}
-                    giftWrappingAmount={orderSummarySubtotalsProps.giftWrappingAmount}
-                    handlingAmount={orderSummarySubtotalsProps.handlingAmount}
-                    isOrderConfirmation={!!isMultiCouponEnabledForOrder}
-                    isTaxIncluded={isTaxIncluded}
-                    storeCreditAmount={orderSummarySubtotalsProps.storeCreditAmount}
-                    taxes={taxes}
-                />
-            ) : (
-                <OrderSummarySection>
-                    <OrderSummarySubtotals
-                        isTaxIncluded={isTaxIncluded}
-                        taxes={taxes}
-                        {...orderSummarySubtotalsProps}
-                    />
-                    {additionalLineItems}
-                </OrderSummarySection>
-            )}
+            <OrderSummarySubtotals
+                fees={orderSummarySubtotalsProps.fees}
+                giftWrappingAmount={orderSummarySubtotalsProps.giftWrappingAmount}
+                handlingAmount={orderSummarySubtotalsProps.handlingAmount}
+                isOrderConfirmation={isOrderConfirmation}
+                isTaxIncluded={isTaxIncluded}
+                storeCreditAmount={orderSummarySubtotalsProps.storeCreditAmount}
+                taxes={taxes}
+            />
             <OrderSummarySection>
                 <OrderSummaryTotal
                     orderAmount={total}

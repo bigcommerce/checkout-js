@@ -138,6 +138,7 @@ export function getOrderWithShippingDiscount(): Order {
         coupons: [getShippingCoupon()],
         shippingCostTotal: 10,
         shippingCostBeforeDiscount: 20,
+        comparisonShippingCost: 12,
         payments: [getGatewayOrderPayment()],
     };
 }

@@ -9,12 +9,12 @@ import React, { type FunctionComponent, memo, type ReactNode, useCallback, useMe
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { IconGiftCertificate, ModalTrigger } from '@bigcommerce/checkout/ui';
 
+import { type OrderSummarySubtotalsProps } from '../coupon';
 import { ShopperCurrency } from '../currency';
 
 import getItemsCount from './getItemsCount';
 import getLineItemsCount from './getLineItemsCount';
 import OrderSummaryModal from './OrderSummaryModal';
-import { type OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
 import { removeBundledItems } from './removeBundledItems';
 
 export interface OrderSummaryDrawerProps {
@@ -23,29 +23,19 @@ export interface OrderSummaryDrawerProps {
     headerLink: ReactNode;
     storeCurrency: StoreCurrency;
     shopperCurrency: ShopperCurrencyType;
-    additionalLineItems?: ReactNode;
 }
 
 const OrderSummaryDrawer: FunctionComponent<
     OrderSummaryDrawerProps & OrderSummarySubtotalsProps
 > = ({
-    additionalLineItems,
-    coupons,
-    discountAmount,
-    giftCertificates,
     handlingAmount,
     headerLink,
     isTaxIncluded,
     lineItems,
-    onRemovedCoupon,
-    onRemovedGiftCertificate,
-    shippingAmount,
-    shippingAmountBeforeDiscount,
     shopperCurrency,
     storeCreditAmount,
     giftWrappingAmount,
     storeCurrency,
-    subtotalAmount,
     taxes,
     total,
     fees,
@@ -56,46 +46,28 @@ const OrderSummaryDrawer: FunctionComponent<
         (props: any) => (
             <OrderSummaryModal
                 {...props}
-                additionalLineItems={additionalLineItems}
-                coupons={coupons}
-                discountAmount={discountAmount}
                 fees={fees}
-                giftCertificates={giftCertificates}
                 giftWrappingAmount={giftWrappingAmount}
                 handlingAmount={handlingAmount}
                 headerLink={headerLink}
                 isTaxIncluded={isTaxIncluded}
                 items={lineItems}
-                onRemovedCoupon={onRemovedCoupon}
-                onRemovedGiftCertificate={onRemovedGiftCertificate}
-                shippingAmount={shippingAmount}
-                shippingAmountBeforeDiscount={shippingAmountBeforeDiscount}
                 shopperCurrency={shopperCurrency}
                 storeCreditAmount={storeCreditAmount}
                 storeCurrency={storeCurrency}
-                subtotalAmount={subtotalAmount}
                 taxes={taxes}
                 total={total}
             />
         ),
         [
-            additionalLineItems,
-            coupons,
-            discountAmount,
-            giftCertificates,
             handlingAmount,
             headerLink,
             isTaxIncluded,
             lineItems,
-            onRemovedCoupon,
-            onRemovedGiftCertificate,
             giftWrappingAmount,
-            shippingAmount,
-            shippingAmountBeforeDiscount,
             shopperCurrency,
             storeCreditAmount,
             storeCurrency,
-            subtotalAmount,
             taxes,
             total,
             fees,

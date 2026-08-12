@@ -15,12 +15,11 @@ import { getStoreConfig } from '../config/config.mock';
 
 import mapToOrderSummarySubtotalsProps from './mapToOrderSummarySubtotalsProps';
 import { getOrder, getOrderWithShippingDiscount } from './orders.mock';
-import OrderSummary, { type OrderSummaryProps } from './OrderSummary';
-import { type OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
+import OrderSummary from './OrderSummary';
 import PrintLink from './PrintLink';
 
 let order: Order;
-let OrderSummaryTest: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsProps>;
+let OrderSummaryTest: FunctionComponent;
 
 jest.mock('../currency', () => ({
     ShopperCurrency: ({ amount }: { amount: number }) => (
@@ -40,6 +39,8 @@ describe('OrderSummary', () => {
         beforeEach(() => {
             order = getOrder();
 
+            jest.spyOn(checkoutState.data, 'getOrder').mockReturnValue(order);
+
             OrderSummaryTest = () => (
                 <CheckoutProvider checkoutService={checkoutService}>
                     <ExtensionProvider extensionService={extensionService}>
@@ -48,7 +49,7 @@ describe('OrderSummary', () => {
                             languageService={languageService}
                         >
                             <OrderSummary
-                                {...mapToOrderSummarySubtotalsProps(order, true)}
+                                {...mapToOrderSummarySubtotalsProps(order)}
                                 headerLink={<PrintLink />}
                                 lineItems={order.lineItems}
                                 shopperCurrency={getStoreConfig().shopperCurrency}
@@ -66,8 +67,12 @@ describe('OrderSummary', () => {
 
             expect(screen.getByText('Order Summary')).toBeInTheDocument();
             expect(screen.getByText('2 Items')).toBeInTheDocument();
-            expect(screen.getByText(order.coupons[0].code)).toBeInTheDocument();
-            expect(screen.getByText(order.coupons[1].code)).toBeInTheDocument();
+
+            const couponsInOrderSummary = screen.getAllByTestId('cart-coupon');
+
+            expect(couponsInOrderSummary).toHaveLength(2);
+            expect(couponsInOrderSummary[0]).toHaveTextContent(order.coupons[0].code);
+            expect(couponsInOrderSummary[1]).toHaveTextContent(order.coupons[1].code);
             expect(
                 screen.getByRole('heading', {
                     name: `1 x ${order.lineItems.giftCertificates[0].name}`,
@@ -90,6 +95,8 @@ describe('OrderSummary', () => {
                 isTaxIncluded: true,
             };
 
+            jest.spyOn(checkoutState.data, 'getOrder').mockReturnValue(taxIncludedOrder);
+
             const { container } = render(
                 <CheckoutProvider checkoutService={checkoutService}>
                     <ExtensionProvider extensionService={extensionService}>
@@ -98,7 +105,7 @@ describe('OrderSummary', () => {
                             languageService={languageService}
                         >
                             <OrderSummary
-                                {...mapToOrderSummarySubtotalsProps(taxIncludedOrder, true)}
+                                {...mapToOrderSummarySubtotalsProps(taxIncludedOrder)}
                                 headerLink={<PrintLink />}
                                 lineItems={taxIncludedOrder.lineItems}
                                 shopperCurrency={getStoreConfig().shopperCurrency}
@@ -112,8 +119,12 @@ describe('OrderSummary', () => {
 
             expect(screen.getByText('Order Summary')).toBeInTheDocument();
             expect(screen.getByText('2 Items')).toBeInTheDocument();
-            expect(screen.getByText(taxIncludedOrder.coupons[0].code)).toBeInTheDocument();
-            expect(screen.getByText(taxIncludedOrder.coupons[1].code)).toBeInTheDocument();
+
+            const couponsInOrderSummary = screen.getAllByTestId('cart-coupon');
+
+            expect(couponsInOrderSummary).toHaveLength(2);
+            expect(couponsInOrderSummary[0]).toHaveTextContent(taxIncludedOrder.coupons[0].code);
+            expect(couponsInOrderSummary[1]).toHaveTextContent(taxIncludedOrder.coupons[1].code);
             expect(
                 screen.getByRole('heading', {
                     name: `1 x ${taxIncludedOrder.lineItems.giftCertificates[0].name}`,
@@ -129,6 +140,8 @@ describe('OrderSummary', () => {
         it('displays the original shipping price as a strikethrough in the summary section.', () => {
             const order = getOrderWithShippingDiscount();
 
+            jest.spyOn(checkoutState.data, 'getOrder').mockReturnValue(order);
+
             render(
                 <CheckoutProvider checkoutService={checkoutService}>
                     <LocaleProvider
@@ -137,7 +150,7 @@ describe('OrderSummary', () => {
                     >
                         <ExtensionProvider extensionService={extensionService}>
                             <OrderSummary
-                                {...mapToOrderSummarySubtotalsProps(order, true)}
+                                {...mapToOrderSummarySubtotalsProps(order)}
                                 headerLink={<PrintLink />}
                                 lineItems={order.lineItems}
                                 shopperCurrency={getStoreConfig().shopperCurrency}
@@ -161,45 +174,6 @@ describe('OrderSummary', () => {
             const couponDetailInOrderSummary = screen.getByTestId('cart-coupon');
 
             expect(couponDetailInOrderSummary).toHaveTextContent('279F507D817E3E7');
-            expect(couponDetailInOrderSummary).toHaveTextContent('3');
-        });
-
-        it('does not display strikethrough shipping discount when experiment is off', () => {
-            const order = getOrderWithShippingDiscount();
-
-            render(
-                <CheckoutProvider checkoutService={checkoutService}>
-                    <LocaleProvider
-                        checkoutService={checkoutService}
-                        languageService={languageService}
-                    >
-                        <ExtensionProvider extensionService={extensionService}>
-                            <OrderSummary
-                                {...mapToOrderSummarySubtotalsProps(order, false)}
-                                headerLink={<PrintLink />}
-                                lineItems={order.lineItems}
-                                shopperCurrency={getStoreConfig().shopperCurrency}
-                                storeCurrency={getStoreConfig().currency}
-                                total={order.orderAmount}
-                            />
-                        </ExtensionProvider>
-                    </LocaleProvider>
-                </CheckoutProvider>,
-            );
-
-            expect(screen.getByText('Order Summary')).toBeInTheDocument();
-            expect(screen.getByText('2 Items')).toBeInTheDocument();
-
-            const shippingCostInOrderSummary = screen.getByTestId('cart-shipping');
-
-            expect(shippingCostInOrderSummary).toHaveTextContent('Shipping');
-            expect(shippingCostInOrderSummary).toHaveTextContent('20');
-            expect(shippingCostInOrderSummary).not.toHaveTextContent('15');
-
-            const couponDetailInOrderSummary = screen.getByTestId('cart-coupon');
-
-            expect(couponDetailInOrderSummary).toHaveTextContent('279F507D817E3E7');
-            expect(couponDetailInOrderSummary).toHaveTextContent('3');
         });
     });
 });

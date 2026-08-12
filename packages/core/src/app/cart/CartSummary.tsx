@@ -6,18 +6,16 @@ import OrderSummary from '../order/OrderSummary';
 
 import { CartHeaderLink } from './CartHeaderLink';
 import mapToCartSummaryProps from './mapToCartSummaryProps';
-import { type RedeemableProps } from './Redeemable';
 import withRedeemable from './withRedeemable';
 
-export type WithCheckoutCartSummaryProps = {
+export interface WithCheckoutCartSummaryProps {
     checkout: Checkout;
     cartUrl: string;
     storeCurrency: StoreCurrency;
     shopperCurrency: ShopperCurrency;
     storeCreditAmount?: number;
     isBuyNowCart: boolean;
-    isShippingDiscountDisplayEnabled: boolean;
-} & RedeemableProps;
+}
 
 const CartSummary: FunctionComponent<
     WithCheckoutCartSummaryProps & {
