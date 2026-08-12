@@ -34,7 +34,7 @@ describe('useCompanyAddressSearch', () => {
     ): CustomerAddress => ({
         ...getAddress(),
         id,
-        type: 'commercial',
+        type: 'company',
         ...getCustomerAddressB2B({ isBilling: true }),
         ...overrides,
     });
@@ -107,37 +107,13 @@ describe('useCompanyAddressSearch', () => {
         jest.useRealTimers();
     });
 
-    it('returns addresses matching the step type and hides search below the limit', async () => {
-        const addresses = [
-            ...billingAddresses.slice(0, 3),
-            createCustomerAddress(7, getCustomerAddressB2B({ isShipping: true })),
-        ];
-
-        const { result, rerender } = renderCompanyAddressSearch({
-            addresses,
-            searchQuery: '',
-            type: AddressType.Billing,
-        });
-
-        expect(result.current.shouldShowSearch).toBe(false);
-        expect(result.current.filteredAddresses).toEqual(billingAddresses.slice(0, 3));
-
-        rerender({ addresses, searchQuery: 'main', type: AddressType.Billing });
-
-        await advanceSearchDebounce();
-
-        expect(searchCompanyAddresses).not.toHaveBeenCalled();
-        expect(result.current.filteredAddresses).toEqual(billingAddresses.slice(0, 3));
-    });
-
-    it('shows search and caps the address list at the limit', () => {
+    it('caps the address list at the limit', () => {
         const { result } = renderCompanyAddressSearch({
             addresses: billingAddresses,
             searchQuery: '',
             type: AddressType.Billing,
         });
 
-        expect(result.current.shouldShowSearch).toBe(true);
         expect(result.current.filteredAddresses).toHaveLength(COMPANY_ADDRESS_SEARCH_LIMIT);
         expect(searchCompanyAddresses).not.toHaveBeenCalled();
     });
@@ -185,7 +161,7 @@ describe('useCompanyAddressSearch', () => {
         expect(result.current.filteredAddresses[1]).toEqual(
             expect.objectContaining({
                 id: 999,
-                type: 'commercial',
+                type: 'company',
                 address1: '999 Company Way',
                 address2: '',
                 phone: '',

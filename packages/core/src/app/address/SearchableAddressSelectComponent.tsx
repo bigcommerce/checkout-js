@@ -29,7 +29,7 @@ export const SearchableAddressSelectComponent: FunctionComponent<SearchableAddre
 
     const restrictManualAddressEntry = useRestrictManualAddressEntry(type);
 
-    const { filteredAddresses, shouldShowSearch } = useCompanyAddressSearch({
+    const { filteredAddresses } = useCompanyAddressSearch({
         addresses,
         searchQuery,
         type,
@@ -50,12 +50,10 @@ export const SearchableAddressSelectComponent: FunctionComponent<SearchableAddre
                     selectedAddress={selectedAddress}
                 />
             )}
-            {shouldShowSearch && (
-                <AddressSelectSearchItem
-                    onSearchChange={handleSearchChange}
-                    searchQuery={searchQuery}
-                />
-            )}
+            <AddressSelectSearchItem
+                onSearchChange={handleSearchChange}
+                searchQuery={searchQuery}
+            />
             {filteredAddresses.map((address) => (
                 <li
                     className="dropdown-menu-item dropdown-menu-item--select"

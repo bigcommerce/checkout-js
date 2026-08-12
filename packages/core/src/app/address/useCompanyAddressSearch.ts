@@ -19,13 +19,16 @@ export interface CompanyAddressSearchProps {
 
 export interface CompanyAddressSearchState {
     filteredAddresses: CustomerAddress[];
-    shouldShowSearch: boolean;
+}
+
+export function matchesAddressType(address: CustomerAddress, type: AddressType): boolean {
+    return type === AddressType.Shipping ? Boolean(address.isShipping) : Boolean(address.isBilling);
 }
 
 function mapToCustomerAddress(address: CompanyAddress): CustomerAddress {
     return {
         id: address.entityId,
-        type: 'commercial',
+        type: 'company',
         firstName: address.firstName,
         lastName: address.lastName,
         company: '',
@@ -64,16 +67,11 @@ export function useCompanyAddressSearch({
     propsRef.current = { addresses, searchQuery, type };
 
     const matchesType = useCallback(
-        (address: CustomerAddress) =>
-            type === AddressType.Shipping
-                ? Boolean(address.isShipping)
-                : Boolean(address.isBilling),
+        (address: CustomerAddress) => matchesAddressType(address, type),
         [type],
     );
 
     const addressesByType = useMemo(() => addresses.filter(matchesType), [addresses, matchesType]);
-
-    const shouldShowSearch = addressesByType.length >= COMPANY_ADDRESS_SEARCH_LIMIT;
 
     useEffect(() => {
         debouncedSearchRef.current = debounce(async (query: string) => {
@@ -127,7 +125,6 @@ export function useCompanyAddressSearch({
         const debouncedSearch = debouncedSearchRef.current;
 
         if (
-            !shouldShowSearch ||
             !debouncedSearch ||
             (searchResults === undefined && searchQuery === '') // don't search on initial loading
         ) {
@@ -139,20 +136,16 @@ export function useCompanyAddressSearch({
         if (!searchQuery) {
             debouncedSearch.flush();
         }
-    }, [searchQuery, shouldShowSearch]);
+    }, [searchQuery]);
 
     const filteredAddresses = useMemo(() => {
-        if (!shouldShowSearch) {
-            return addressesByType;
-        }
-
         const matchingAddresses =
             searchResults && searchResults.length > 0
                 ? searchResults.filter(matchesType)
                 : searchingAddresses(addressesByType, searchQuery);
 
         return matchingAddresses.slice(0, COMPANY_ADDRESS_SEARCH_LIMIT);
-    }, [addressesByType, matchesType, searchQuery, searchResults, shouldShowSearch]);
+    }, [addressesByType, matchesType, searchQuery, searchResults]);
 
-    return { filteredAddresses, shouldShowSearch };
+    return { filteredAddresses };
 }
