@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.864.0](https://github.com/bigcommerce/checkout-js/compare/v1.863.1...v1.864.0) (2026-08-12)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10198 add fallback colors for new theme ([#3244](https://github.com/bigcommerce/checkout-js/issues/3244)) ([6997d97](https://github.com/bigcommerce/checkout-js/commit/6997d97e2d77df99581dd1cf5143fe769918c98c))
+
 ### [1.863.1](https://github.com/bigcommerce/checkout-js/compare/v1.863.0...v1.863.1) (2026-08-11)
 
 
