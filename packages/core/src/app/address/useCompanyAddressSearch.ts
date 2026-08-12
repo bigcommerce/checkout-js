@@ -17,7 +17,7 @@ export interface CompanyAddressSearchProps {
     type: AddressType;
 }
 
-export interface CompanyAddressSearchState {
+interface CompanyAddressSearchState {
     filteredAddresses: CustomerAddress[];
 }
 
@@ -56,7 +56,7 @@ export function useCompanyAddressSearch({
     searchQuery,
     type,
 }: CompanyAddressSearchProps): CompanyAddressSearchState {
-    const { checkoutService } = useCheckout();
+    const { checkoutService } = useCheckout(() => undefined);
     const [searchResults, setSearchResults] = useState<CustomerAddress[] | undefined>(undefined);
 
     const propsRef = useRef({ addresses, searchQuery, type });

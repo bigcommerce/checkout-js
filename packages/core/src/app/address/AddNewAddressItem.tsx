@@ -4,7 +4,7 @@ import React, { type FunctionComponent } from 'react';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
-export interface AddNewAddressItemProps {
+interface AddNewAddressItemProps {
     selectedAddress?: Address;
     onUseNewAddress(currentAddress?: Address): void;
 }

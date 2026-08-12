@@ -3,7 +3,7 @@ import React, { type ChangeEvent, type FunctionComponent } from 'react';
 import { useLocale } from '@bigcommerce/checkout/contexts';
 import { TextInput } from '@bigcommerce/checkout/ui';
 
-export interface AddressSelectSearchItemProps {
+interface AddressSelectSearchItemProps {
     searchQuery: string;
     onSearchChange(event: ChangeEvent<HTMLInputElement>): void;
 }
