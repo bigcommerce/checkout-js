@@ -16,6 +16,8 @@ describe('BigCommercePaymentsInvoicesPaymentMethod', () => {
     beforeEach(() => {
         checkoutService = createCheckoutService();
 
+        jest.spyOn(checkoutService.getState().data, 'isPaymentDataRequired').mockReturnValue(true);
+
         defaultProps = {
             method: getBigCommercePaymentsInvoicesMethod(),
             checkoutService,
@@ -47,7 +49,9 @@ describe('BigCommercePaymentsInvoicesPaymentMethod', () => {
 
         render(<BigCommercePaymentsInvoicesPaymentMethod {...defaultProps} />);
 
-        await expect(checkoutService.initializePayment).rejects.toThrow('test error');
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        expect(defaultProps.onUnhandledError).toHaveBeenCalled();
     });
 
     it('deinitializes payment method when component unmounts', () => {
@@ -72,8 +76,36 @@ describe('BigCommercePaymentsInvoicesPaymentMethod', () => {
 
         const { unmount } = render(<BigCommercePaymentsInvoicesPaymentMethod {...defaultProps} />);
 
+        await new Promise((resolve) => process.nextTick(resolve));
+
         unmount();
 
-        await expect(checkoutService.deinitializePayment).rejects.toThrow('test error');
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        expect(defaultProps.onUnhandledError).toHaveBeenCalled();
+    });
+
+    it('does not initialize payment method when payment data is not required', () => {
+        jest.spyOn(defaultProps.checkoutState.data, 'isPaymentDataRequired').mockReturnValue(false);
+        jest.spyOn(checkoutService, 'initializePayment').mockResolvedValue(
+            checkoutService.getState(),
+        );
+
+        render(<BigCommercePaymentsInvoicesPaymentMethod {...defaultProps} />);
+
+        expect(checkoutService.initializePayment).not.toHaveBeenCalled();
+    });
+
+    it('does not deinitialize payment method on unmount when payment data is not required', () => {
+        jest.spyOn(defaultProps.checkoutState.data, 'isPaymentDataRequired').mockReturnValue(false);
+        jest.spyOn(checkoutService, 'deinitializePayment').mockResolvedValue(
+            checkoutService.getState(),
+        );
+
+        const { unmount } = render(<BigCommercePaymentsInvoicesPaymentMethod {...defaultProps} />);
+
+        unmount();
+
+        expect(checkoutService.deinitializePayment).not.toHaveBeenCalled();
     });
 });

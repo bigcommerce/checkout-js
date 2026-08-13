@@ -10,9 +10,16 @@ import {
 const BigCommercePaymentsInvoicesPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     method,
     checkoutService,
+    checkoutState,
     onUnhandledError,
 }) => {
+    const isPaymentDataRequired = checkoutState.data.isPaymentDataRequired();
+
     useEffect(() => {
+        if (!isPaymentDataRequired) {
+            return;
+        }
+
         const initializePayment = async () => {
             try {
                 await checkoutService.initializePayment({
@@ -45,7 +52,7 @@ const BigCommercePaymentsInvoicesPaymentMethod: FunctionComponent<PaymentMethodP
 
             void deinitializePayment();
         };
-    }, [checkoutService, method.gateway, method.id, onUnhandledError]);
+    }, [checkoutService, method.gateway, method.id, onUnhandledError, isPaymentDataRequired]);
 
     return null;
 };
