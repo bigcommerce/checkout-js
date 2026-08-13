@@ -7,6 +7,7 @@ const IconCardUnionPaySvg: FunctionComponent = () => (
         aria-labelledby="iconCardUnionPayTitle"
         fill="none"
         height="24"
+        role="img"
         viewBox="0 0 35 24"
         width="35"
         xmlns="http://www.w3.org/2000/svg"
