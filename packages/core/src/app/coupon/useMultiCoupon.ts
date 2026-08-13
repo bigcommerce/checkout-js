@@ -81,11 +81,12 @@ export const useMultiCoupon = (): UseMultiCouponValues => {
 
     const appliedCoupons = coupons ?? EMPTY_ARRAY;
 
-    const giftCertificatesFromCorrectSource =
-        !checkout && order ? mapFromPayments(order.payments ?? []) : giftCertificates;
+    const giftCertificatesFromCheckoutOrOrder = checkout
+        ? giftCertificates
+        : mapFromPayments(order?.payments ?? []);
 
     const appliedGiftCertificates =
-        giftCertificatesFromCorrectSource?.map(({ code, used }) => ({
+        giftCertificatesFromCheckoutOrOrder?.map(({ code, used }) => ({
             code,
             amount: used,
         })) ?? EMPTY_ARRAY;
