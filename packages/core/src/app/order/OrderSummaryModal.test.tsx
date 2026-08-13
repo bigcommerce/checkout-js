@@ -21,11 +21,13 @@ jest.mock('./OrderSummaryPrice', () => (props: any) => <span {...props} />);
 describe('OrderSummaryModal', () => {
     const checkoutService = createCheckoutService();
     const checkoutState = checkoutService.getState();
+    const languageService = getLanguageService();
 
     beforeEach(() => {
         order = getOrder();
 
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
+        jest.spyOn(checkoutState.data, 'getOrder').mockReturnValue(order);
     });
 
     afterEach(() => {
@@ -35,26 +37,32 @@ describe('OrderSummaryModal', () => {
 
     it('renders order summary', () => {
         render(
-            <OrderSummaryModal
-                isOpen={true}
-                {...mapToOrderSummarySubtotalsProps(order, true)}
-                additionalLineItems="foo"
-                items={order.lineItems}
-                shopperCurrency={getStoreConfig().shopperCurrency}
-                storeCurrency={getStoreConfig().currency}
-                total={order.orderAmount}
-            />,
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleProvider checkoutService={checkoutService} languageService={languageService}>
+                    <OrderSummaryModal
+                        isOpen={true}
+                        {...mapToOrderSummarySubtotalsProps(order)}
+                        items={order.lineItems}
+                        shopperCurrency={getStoreConfig().shopperCurrency}
+                        storeCurrency={getStoreConfig().currency}
+                        total={order.orderAmount}
+                    />
+                </LocaleProvider>
+            </CheckoutProvider>,
         );
 
         expect(screen.getByText('Order Summary')).toBeInTheDocument();
-        expect(screen.getByText(order.coupons[0].code)).toBeInTheDocument();
-        expect(screen.getByText(order.coupons[1].code)).toBeInTheDocument();
+
+        const couponsInOrderSummary = screen.getAllByTestId('cart-coupon');
+
+        expect(couponsInOrderSummary).toHaveLength(2);
+        expect(couponsInOrderSummary[0]).toHaveTextContent(order.coupons[0].code);
+        expect(couponsInOrderSummary[1]).toHaveTextContent(order.coupons[1].code);
         expect(
             screen.getByRole('heading', {
                 name: `1 x ${order.lineItems.giftCertificates[0].name}`,
             }),
         ).toBeInTheDocument();
-        expect(screen.getByText('foo')).toBeInTheDocument();
         expect(screen.getByText('Close')).toBeInTheDocument();
     });
 
@@ -65,20 +73,33 @@ describe('OrderSummaryModal', () => {
                 isTaxIncluded: true,
             };
 
+            jest.spyOn(checkoutState.data, 'getOrder').mockReturnValue(taxIncludedOrder);
+
             render(
-                <OrderSummaryModal
-                    {...mapToOrderSummarySubtotalsProps(taxIncludedOrder, true)}
-                    isOpen={true}
-                    items={taxIncludedOrder.lineItems}
-                    shopperCurrency={getStoreConfig().shopperCurrency}
-                    storeCurrency={getStoreConfig().currency}
-                    total={taxIncludedOrder.orderAmount}
-                />,
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <LocaleProvider
+                        checkoutService={checkoutService}
+                        languageService={languageService}
+                    >
+                        <OrderSummaryModal
+                            {...mapToOrderSummarySubtotalsProps(taxIncludedOrder)}
+                            isOpen={true}
+                            items={taxIncludedOrder.lineItems}
+                            shopperCurrency={getStoreConfig().shopperCurrency}
+                            storeCurrency={getStoreConfig().currency}
+                            total={taxIncludedOrder.orderAmount}
+                        />
+                    </LocaleProvider>
+                </CheckoutProvider>,
             );
 
             expect(screen.getByText('Order Summary')).toBeInTheDocument();
-            expect(screen.getByText(taxIncludedOrder.coupons[0].code)).toBeInTheDocument();
-            expect(screen.getByText(taxIncludedOrder.coupons[1].code)).toBeInTheDocument();
+
+            const couponsInOrderSummary = screen.getAllByTestId('cart-coupon');
+
+            expect(couponsInOrderSummary).toHaveLength(2);
+            expect(couponsInOrderSummary[0]).toHaveTextContent(taxIncludedOrder.coupons[0].code);
+            expect(couponsInOrderSummary[1]).toHaveTextContent(taxIncludedOrder.coupons[1].code);
             expect(
                 screen.getByRole('heading', {
                     name: `1 x ${taxIncludedOrder.lineItems.giftCertificates[0].name}`,
@@ -139,7 +160,7 @@ describe('OrderSummaryModal', () => {
                 <CheckoutProvider checkoutService={checkoutService}>
                     <LocaleContext.Provider value={localeContext}>
                         <OrderSummaryModal
-                            {...mapToOrderSummarySubtotalsProps(getOrder(), true)}
+                            {...mapToOrderSummarySubtotalsProps(getOrder())}
                             isOpen={true}
                             items={bundleItems}
                             shopperCurrency={getStoreConfig().shopperCurrency}
@@ -191,19 +212,21 @@ describe('OrderSummaryModal', () => {
             });
 
             render(
-                <LocaleProvider
-                    checkoutService={checkoutService}
-                    languageService={getLanguageService()}
-                >
-                    <OrderSummaryModal
-                        {...mapToOrderSummarySubtotalsProps(getOrder(), true)}
-                        isOpen={true}
-                        items={getOrder().lineItems}
-                        shopperCurrency={getStoreConfig().shopperCurrency}
-                        storeCurrency={getStoreConfig().currency}
-                        total={getOrder().orderAmount}
-                    />
-                </LocaleProvider>,
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <LocaleProvider
+                        checkoutService={checkoutService}
+                        languageService={languageService}
+                    >
+                        <OrderSummaryModal
+                            {...mapToOrderSummarySubtotalsProps(getOrder())}
+                            isOpen={true}
+                            items={getOrder().lineItems}
+                            shopperCurrency={getStoreConfig().shopperCurrency}
+                            storeCurrency={getStoreConfig().currency}
+                            total={getOrder().orderAmount}
+                        />
+                    </LocaleProvider>
+                </CheckoutProvider>,
             );
 
             expect(screen.getByRole('button', { name: 'RETURN TO CHECKOUT' })).toBeInTheDocument();

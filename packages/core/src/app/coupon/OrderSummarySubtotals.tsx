@@ -12,7 +12,7 @@ import { AppliedGiftCertificates, CouponForm, Discounts } from './components';
 import { useMultiCoupon } from './useMultiCoupon';
 import { getRedeemableLabelId } from './utils';
 
-interface MultiCouponProps {
+export interface OrderSummarySubtotalsProps {
     fees?: Fee[] | OrderFee[];
     giftWrappingAmount?: number;
     handlingAmount?: number;
@@ -22,7 +22,7 @@ interface MultiCouponProps {
     isOrderConfirmation?: boolean;
 }
 
-const NewOrderSummarySubtotals: FunctionComponent<MultiCouponProps> = ({
+const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
     fees,
     giftWrappingAmount,
     handlingAmount,
@@ -132,4 +132,4 @@ const NewOrderSummarySubtotals: FunctionComponent<MultiCouponProps> = ({
     );
 };
 
-export default NewOrderSummarySubtotals;
+export default OrderSummarySubtotals;

@@ -22,7 +22,7 @@ import { render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 import { createErrorLogger } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
 
-import NewOrderSummarySubtotals from './NewOrderSummarySubtotals';
+import OrderSummarySubtotals from './OrderSummarySubtotals';
 import { useMultiCoupon } from './useMultiCoupon';
 
 jest.mock('./useMultiCoupon');
@@ -31,7 +31,7 @@ jest.mock('@bigcommerce/checkout/contexts', () => ({
     useCapabilities: jest.fn(),
 }));
 
-describe('NewOrderSummarySubtotals', () => {
+describe('OrderSummarySubtotals', () => {
     const checkoutService = createCheckoutService();
     const checkoutState = checkoutService.getState();
     const extensionService = new ExtensionService(checkoutService, createErrorLogger());
@@ -72,7 +72,7 @@ describe('NewOrderSummarySubtotals', () => {
                         checkoutService={checkoutService}
                         languageService={languageService}
                     >
-                        <NewOrderSummarySubtotals {...props} />
+                        <OrderSummarySubtotals {...props} />
                     </LocaleProvider>
                 </ExtensionProvider>
             </CheckoutProvider>,

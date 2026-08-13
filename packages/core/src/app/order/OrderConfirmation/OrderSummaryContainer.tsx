@@ -31,12 +31,10 @@ interface OrderSummaryContainerProps {
     order: Order;
     currency: StoreCurrency;
     shopperCurrency: ShopperCurrency;
-    isShippingDiscountDisplayEnabled: boolean;
 }
 
 export const OrderSummaryContainer = ({
     currency,
-    isShippingDiscountDisplayEnabled,
     order,
     shopperCurrency,
 }: OrderSummaryContainerProps): ReactElement => (
@@ -46,10 +44,7 @@ export const OrderSummaryContainer = ({
                 return (
                     <LazyContainer loadingSkeleton={<></>}>
                         <OrderSummaryDrawer
-                            {...mapToOrderSummarySubtotalsProps(
-                                order,
-                                isShippingDiscountDisplayEnabled,
-                            )}
+                            {...mapToOrderSummarySubtotalsProps(order)}
                             headerLink={<PrintLink className="modal-header-link cart-modal-link" />}
                             lineItems={order.lineItems}
                             shopperCurrency={shopperCurrency}
@@ -65,10 +60,7 @@ export const OrderSummaryContainer = ({
                     <aside className="layout-cart">
                         <OrderSummary
                             headerLink={<PrintLink />}
-                            {...mapToOrderSummarySubtotalsProps(
-                                order,
-                                isShippingDiscountDisplayEnabled,
-                            )}
+                            {...mapToOrderSummarySubtotalsProps(order)}
                             lineItems={order.lineItems}
                             shopperCurrency={shopperCurrency}
                             storeCurrency={currency}
