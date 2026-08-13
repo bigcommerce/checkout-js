@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.864.1](https://github.com/bigcommerce/checkout-js/compare/v1.864.0...v1.864.1) (2026-08-13)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10316 Resolve WebDav issues ([#3241](https://github.com/bigcommerce/checkout-js/issues/3241)) ([65b434b](https://github.com/bigcommerce/checkout-js/commit/65b434b4cf57d94b661a73977883e2b396c8754d))
+
 ## [1.864.0](https://github.com/bigcommerce/checkout-js/compare/v1.863.1...v1.864.0) (2026-08-12)
 
 
