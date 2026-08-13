@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.865.0](https://github.com/bigcommerce/checkout-js/compare/v1.864.3...v1.865.0) (2026-08-13)
+
+
+### Features
+
+* **payment:** PAYPAL-6856 added error callback for BT FL ([692347a](https://github.com/bigcommerce/checkout-js/commit/692347a4f7d2c79d557c556214f853f130785f73))
+
 ### [1.864.3](https://github.com/bigcommerce/checkout-js/compare/v1.864.2...v1.864.3) (2026-08-13)
 
 
