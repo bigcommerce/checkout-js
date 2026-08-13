@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.864.3](https://github.com/bigcommerce/checkout-js/compare/v1.864.2...v1.864.3) (2026-08-13)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-10325 Fix Flaky Test ([#3247](https://github.com/bigcommerce/checkout-js/issues/3247)) ([f7341d5](https://github.com/bigcommerce/checkout-js/commit/f7341d50142302ee26d0e945b1761c315ab3fcc4))
+* **checkout:** CHECKOUT-10325 Remove Multi-coupon Experiment ([#3246](https://github.com/bigcommerce/checkout-js/issues/3246)) ([22e1543](https://github.com/bigcommerce/checkout-js/commit/22e154378226e6611a960799a483b787a6f4ebc1))
+
 ### [1.864.2](https://github.com/bigcommerce/checkout-js/compare/v1.864.1...v1.864.2) (2026-08-13)
 
 
