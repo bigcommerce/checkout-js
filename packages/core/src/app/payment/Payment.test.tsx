@@ -549,6 +549,146 @@ describe('Payment step', () => {
             await waitFor(() => {
                 expect(screen.getByTestId('payment-methods-refresh-alert')).toHaveFocus();
             });
+
+            expect(
+                await screen.findByRole('radio', { name: 'Cash on Delivery', checked: true }),
+            ).toBeInTheDocument();
+        });
+
+        it('falls back to the default method when the selected method is removed by the refresh', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                config: themeV2Config,
+            });
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            // Move off the default method so the fallback is observable.
+            await act(async () =>
+                userEvent.click(screen.getByRole('radio', { name: 'Cash on Delivery' })),
+            );
+
+            expect(
+                screen.getByRole('radio', { name: 'Cash on Delivery', checked: true }),
+            ).toBeInTheDocument();
+
+            mockBillingAddressPut('US', 'United States');
+            checkout.setRequestHandler(
+                rest.get('/api/storefront/payments', (_, res, ctx) =>
+                    res(ctx.json(payments.filter(({ id }) => id !== 'cod'))),
+                ),
+            );
+
+            await act(async () => {
+                await checkoutService.updateBillingAddress({ countryCode: 'US' });
+            });
+
+            expect(
+                await screen.findByRole('radio', { name: 'Pay in Store', checked: true }),
+            ).toBeInTheDocument();
+            expect(
+                screen.queryByRole('radio', { name: 'Cash on Delivery' }),
+            ).not.toBeInTheDocument();
+
+            // The automatic fallback must not dismiss the refresh alert...
+            expect(screen.getByTestId('payment-methods-refresh-alert')).toBeInTheDocument();
+            // ...nor surface an error modal from deinitializing the removed method.
+            expect(screen.queryByText("Something's gone wrong")).not.toBeInTheDocument();
+        });
+
+        // The cart total path unmounts the payment form behind the loading skeleton, so
+        // the fallback here comes from the remount re-seeding Formik rather than from
+        // the effect in PaymentForm.
+        it('falls back to the default method after a cart total reload', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                config: themeV2Config,
+            });
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            await act(async () =>
+                userEvent.click(screen.getByRole('radio', { name: 'Cash on Delivery' })),
+            );
+
+            checkout.setRequestHandler(
+                rest.get('/api/storefront/payments', (_, res, ctx) =>
+                    res(ctx.json(payments.filter(({ id }) => id !== 'cod'))),
+                ),
+            );
+
+            checkout.updateCheckout('put', '/checkout/*', {
+                ...checkoutWithShippingAndBilling,
+                grandTotal: checkoutWithShippingAndBilling.grandTotal + 1,
+            });
+
+            await act(async () => {
+                await checkoutService.updateCheckout({ customerMessage: 'gift wrap please' });
+            });
+
+            expect(
+                await screen.findByRole('radio', { name: 'Pay in Store', checked: true }),
+            ).toBeInTheDocument();
+            expect(screen.queryByText("Something's gone wrong")).not.toBeInTheDocument();
+        });
+
+        it('falls back to the default method when the order is rejected with payment_method_invalid', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                config: themeV2Config,
+            });
+
+            const loadPaymentMethodsSpy = jest.spyOn(checkoutService, 'loadPaymentMethods');
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            await act(async () =>
+                userEvent.click(screen.getByRole('radio', { name: 'Cash on Delivery' })),
+            );
+
+            const callsBeforeSubmit = loadPaymentMethodsSpy.mock.calls.length;
+
+            checkout.setRequestHandler(
+                // Shaped as an internal error response so the SDK maps it to a
+                // PaymentMethodInvalidError (type: 'payment_method_invalid').
+                rest.post('/internalapi/v1/checkout/order', (_, res, ctx) =>
+                    res(
+                        ctx.status(400),
+                        ctx.json({
+                            errors: {},
+                            status: 400,
+                            title: 'Payment method is invalid.',
+                            type: 'invalid_payment_provider',
+                        }),
+                    ),
+                ),
+            );
+            checkout.setRequestHandler(
+                rest.get('/api/storefront/payments', (_, res, ctx) =>
+                    res(ctx.json(payments.filter(({ id }) => id !== 'cod'))),
+                ),
+            );
+
+            await act(async () => {
+                await userEvent.click(screen.getByText('Place Order'));
+            });
+
+            await waitFor(() =>
+                expect(loadPaymentMethodsSpy.mock.calls.length).toBeGreaterThan(callsBeforeSubmit),
+            );
+
+            expect(
+                await screen.findByRole('radio', { name: 'Pay in Store', checked: true }),
+            ).toBeInTheDocument();
+
+            // Only the intended payment_method_invalid modal - tearing down the removed
+            // method must not add a MissingPaymentMethod error on top of it.
+            expect(screen.getByRole('dialog')).toHaveTextContent(
+                'The selected payment method is no longer valid. Click OK to see the most up-to-date payment methods.',
+            );
         });
 
         it('re-tracks the shopper selection, not the default method, after a country reload', async () => {

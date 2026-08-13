@@ -536,4 +536,65 @@ describe('PaymentForm', () => {
             expect(screen.queryByTestId('payment-billing-block')).not.toBeInTheDocument();
         });
     });
+
+    describe('when the selected method is removed from the list', () => {
+        const authorizenet = getPaymentMethod();
+        const cybersource = { ...getPaymentMethod(), id: 'cybersource' };
+
+        it('falls back to the default method', () => {
+            const onMethodSelect = jest.fn();
+
+            const { rerender } = render(
+                <PaymentFormTest
+                    {...defaultProps}
+                    methods={[authorizenet, cybersource]}
+                    onMethodSelect={onMethodSelect}
+                />,
+            );
+
+            fireEvent.click(screen.getAllByRole('radio')[1]);
+
+            expect(screen.getAllByRole('radio')[1]).toBeChecked();
+            expect(onMethodSelect).toHaveBeenCalledWith(cybersource, { isAutomatic: false });
+
+            onMethodSelect.mockClear();
+
+            rerender(
+                <PaymentFormTest
+                    {...defaultProps}
+                    methods={[authorizenet]}
+                    onMethodSelect={onMethodSelect}
+                />,
+            );
+
+            expect(screen.getByRole('radio')).toBeChecked();
+            expect(onMethodSelect).toHaveBeenCalledWith(authorizenet, { isAutomatic: true });
+        });
+
+        it('leaves the selection alone while it is still in the list', () => {
+            const onMethodSelect = jest.fn();
+
+            const { rerender } = render(
+                <PaymentFormTest
+                    {...defaultProps}
+                    methods={[authorizenet, cybersource]}
+                    onMethodSelect={onMethodSelect}
+                />,
+            );
+
+            fireEvent.click(screen.getAllByRole('radio')[1]);
+            onMethodSelect.mockClear();
+
+            rerender(
+                <PaymentFormTest
+                    {...defaultProps}
+                    methods={[authorizenet, cybersource]}
+                    onMethodSelect={onMethodSelect}
+                />,
+            );
+
+            expect(screen.getAllByRole('radio')[1]).toBeChecked();
+            expect(onMethodSelect).not.toHaveBeenCalled();
+        });
+    });
 });

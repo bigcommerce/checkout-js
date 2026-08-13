@@ -75,8 +75,12 @@ import getPaymentMethodsRefreshAlert from './getPaymentMethodsRefreshAlert';
 import mapSubmitOrderErrorMessage, { mapSubmitOrderErrorTitle } from './mapSubmitOrderErrorMessage';
 import mapToOrderRequestBody from './mapToOrderRequestBody';
 import PaymentContext, { type EnsureBillingAddressSaved } from './PaymentContext';
-import PaymentForm from './PaymentForm';
-import { getUniquePaymentMethodId, PaymentMethodProviderType } from './paymentMethod';
+import PaymentForm, { type PaymentMethodSelectOptions } from './PaymentForm';
+import {
+    getUniquePaymentMethodId,
+    hasPaymentMethodWithId,
+    PaymentMethodProviderType,
+} from './paymentMethod';
 import { getFilteredPaymentMethodsWithDefault } from './paymentMethodFilters';
 import { type PaymentMethodsRefreshAlertData } from './PaymentMethodsRefreshAlert';
 
@@ -171,8 +175,6 @@ const Payment = (
     const grandTotalChangeUnsubscribe = useRef<() => void>();
     const billingAddressChangeUnsubscribe = useRef<() => void>();
     const selectedMethodRef = useRef<PaymentMethod | undefined>();
-    // TODO: CHECKOUT-10199 remove this temporary fix
-    const suppressMethodRemovedErrorUntilRef = useRef(0);
     const validationSchemasRef = useRef<validationSchemas>({});
     const lastFormValuesRef = useRef<PaymentFormValues | null>(null);
     // Set by the enhancedThemeV1 billing form. Awaited before submitOrder so the order
@@ -406,13 +408,6 @@ const Payment = (
             return;
         }
 
-        // TODO: CHECKOUT-10199 remove this temporary fix
-        if (type === 'missing_data' && Date.now() < suppressMethodRemovedErrorUntilRef.current) {
-            errorLogger.log(error);
-
-            return;
-        }
-
         return onUnhandledError(error);
     }, []);
 
@@ -579,22 +574,26 @@ const Payment = (
     const dismissMethodsRefreshAlert = useCallback(() => setMethodsRefreshAlert(undefined), []);
 
     const setSelectedMethod = useCallback((method?: PaymentMethod): void => {
-        const { selectedMethod } = state;
+        setState((prevState) => {
+            if (prevState.selectedMethod === method) {
+                return prevState;
+            }
 
-        if (selectedMethod === method) {
-            return;
-        }
+            if (method) {
+                trackSelectedPaymentMethod(method);
+            }
 
-        if (method) {
-            trackSelectedPaymentMethod(method);
-        }
-
-        setState((prevState) => ({ ...prevState, selectedMethod: method }));
+            return { ...prevState, selectedMethod: method };
+        });
     }, []);
 
     const handleMethodSelect = useCallback(
-        (method: PaymentMethod): void => {
-            dismissMethodsRefreshAlert();
+        (method: PaymentMethod, options?: PaymentMethodSelectOptions): void => {
+            // The alert about a removed method must outlive the automatic fallback selection.
+            if (!options?.isAutomatic) {
+                dismissMethodsRefreshAlert();
+            }
+
             setSelectedMethod(method);
         },
         [dismissMethodsRefreshAlert, setSelectedMethod],
@@ -645,10 +644,6 @@ const Payment = (
     }): Promise<void> => {
         const { loadPaymentMethods, onUnhandledError = noop } = props;
 
-        if (billingCountryChange) {
-            suppressMethodRemovedErrorUntilRef.current = Date.now() + 5000;
-        }
-
         try {
             const updatedState = await loadPaymentMethods();
             const checkout = updatedState.data.getCheckout();
@@ -680,17 +675,9 @@ const Payment = (
                     refreshedMethods: filteredMethodsWithDefault?.filteredMethods ?? [],
                 });
 
-                if (!refreshAlert.removedMethodName) {
-                    suppressMethodRemovedErrorUntilRef.current = 0;
-                }
-
                 setMethodsRefreshAlert(refreshAlert);
             }
         } catch (error) {
-            if (billingCountryChange) {
-                suppressMethodRemovedErrorUntilRef.current = 0;
-            }
-
             onUnhandledError(error);
         }
     };
@@ -728,6 +715,22 @@ const Payment = (
     useEffect(() => {
         selectedMethodRef.current = state.selectedMethod || props.defaultMethod;
     }, [state.selectedMethod, props.defaultMethod]);
+
+    // Custom checklist items (Stripe OCS) render outside the checklist and never report
+    // a selection change, so PaymentForm's fallback cannot update this on its own.
+    useEffect(() => {
+        const { selectedMethod } = state;
+
+        if (
+            selectedMethod &&
+            !hasPaymentMethodWithId(
+                props.methods,
+                getUniquePaymentMethodId(selectedMethod.id, selectedMethod.gateway),
+            )
+        ) {
+            setSelectedMethod(props.defaultMethod);
+        }
+    }, [props.methods, props.defaultMethod, state.selectedMethod, setSelectedMethod]);
 
     useEffect(() => {
         const init = async () => {
