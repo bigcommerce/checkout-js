@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.864.2](https://github.com/bigcommerce/checkout-js/compare/v1.864.1...v1.864.2) (2026-08-13)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10299 Get gift certificates from payments for order page ([#3245](https://github.com/bigcommerce/checkout-js/issues/3245)) ([d3e9fb0](https://github.com/bigcommerce/checkout-js/commit/d3e9fb05835d3092b54c506be7a87a73a5fab30e))
+
 ### [1.864.1](https://github.com/bigcommerce/checkout-js/compare/v1.864.0...v1.864.1) (2026-08-13)
 
 
