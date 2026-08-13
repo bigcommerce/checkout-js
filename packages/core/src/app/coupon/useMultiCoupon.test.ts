@@ -10,6 +10,7 @@ import {
 } from '@bigcommerce/checkout/test-mocks';
 
 import { getCheckout } from '../checkout/checkouts.mock';
+import { getGatewayOrderPayment, getOrder } from '../order/orders.mock';
 
 import { useMultiCoupon } from './useMultiCoupon';
 
@@ -186,6 +187,42 @@ describe('useMultiCoupon', () => {
             const { result } = renderHook(() => useMultiCoupon());
 
             expect(result.current.appliedGiftCertificates).toEqual([]);
+        });
+
+        describe('on order confirmation page', () => {
+            beforeEach(() => {
+                checkoutState.data.getCheckout.mockReturnValue(undefined);
+                checkoutState.data.getGiftCertificates.mockReturnValue(undefined);
+                checkoutState.data.getOrder.mockReturnValue(getOrder());
+            });
+
+            it('returns gift certificates mapped from order payments', () => {
+                const { result } = renderHook(() => useMultiCoupon());
+
+                expect(result.current.appliedGiftCertificates).toEqual([{ code: 'gc', amount: 7 }]);
+            });
+
+            it('ignores non gift certificate payments', () => {
+                const order = getOrder();
+
+                order.payments = [getGatewayOrderPayment()];
+                checkoutState.data.getOrder.mockReturnValue(order);
+
+                const { result } = renderHook(() => useMultiCoupon());
+
+                expect(result.current.appliedGiftCertificates).toEqual([]);
+            });
+
+            it('returns empty array when order has no payments', () => {
+                const order = getOrder();
+
+                order.payments = undefined;
+                checkoutState.data.getOrder.mockReturnValue(order);
+
+                const { result } = renderHook(() => useMultiCoupon());
+
+                expect(result.current.appliedGiftCertificates).toEqual([]);
+            });
         });
     });
 

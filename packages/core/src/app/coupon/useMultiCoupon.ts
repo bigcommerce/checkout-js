@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useCapabilities, useCheckout, useLocale } from '@bigcommerce/checkout/contexts';
 
 import { EMPTY_ARRAY } from '../common/utility';
+import { mapFromPayments } from '../giftCertificate';
 import { hasSelectedShippingOptions } from '../shipping';
 
 import { type AppliedGiftCertificateInfo } from './components';
@@ -80,8 +81,12 @@ export const useMultiCoupon = (): UseMultiCouponValues => {
 
     const appliedCoupons = coupons ?? EMPTY_ARRAY;
 
+    const giftCertificatesFromCheckoutOrOrder = checkout
+        ? giftCertificates
+        : mapFromPayments(order?.payments ?? []);
+
     const appliedGiftCertificates =
-        giftCertificates?.map(({ code, used }) => ({
+        giftCertificatesFromCheckoutOrOrder?.map(({ code, used }) => ({
             code,
             amount: used,
         })) ?? EMPTY_ARRAY;
