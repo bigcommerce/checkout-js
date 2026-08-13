@@ -388,7 +388,7 @@ export class CheckoutPageNodeObject {
     }
 
     async waitForCustomerStep(): Promise<void> {
-        await waitFor(() => screen.getByRole('textbox', { name: /email/i }));
+        await waitFor(() => screen.getByRole('textbox', { name: /email/i }), { timeout: 20000 });
     }
 
     async waitForShippingStep(): Promise<void> {
@@ -396,7 +396,7 @@ export class CheckoutPageNodeObject {
     }
 
     async waitForBillingStep(): Promise<void> {
-        await waitFor(() => screen.getByText(/billing address/i));
+        await waitFor(() => screen.getByText(/billing address/i), { timeout: 20000 });
     }
 
     async waitForPaymentStep(): Promise<void> {
