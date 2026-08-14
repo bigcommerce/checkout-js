@@ -24,7 +24,6 @@ const Shipping = lazy(() =>
 export interface ShippingStepProps extends ShippingProps {
     cart?: Cart;
     consignments: Consignment[];
-    isShippingDiscountDisplayEnabled: boolean;
     onEdit(type: CheckoutStepType): void;
     onExpanded(type: CheckoutStepType): void;
 }
@@ -36,7 +35,6 @@ const ShippingStep: React.FC<ShippingStepProps> = ({
     consignments,
     isBillingSameAsShipping,
     isMultiShippingMode,
-    isShippingDiscountDisplayEnabled,
     onEdit,
     onExpanded,
     navigateNextStep,
@@ -86,7 +84,6 @@ const ShippingStep: React.FC<ShippingStepProps> = ({
                     cart={cart}
                     consignments={consignments}
                     isMultiShippingMode={isMultiShippingMode}
-                    isShippingDiscountDisplayEnabled={isShippingDiscountDisplayEnabled}
                 />
             }
         >
