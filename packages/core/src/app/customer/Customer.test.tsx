@@ -379,7 +379,7 @@ describe('Customer Component', () => {
                 res(
                     ctx.status(403),
                     ctx.json({
-                        type: 'about:blank',
+                        type: 'existing_customer_require_login',
                         title: 'Sign in to Your Account',
                         detail: 'This email is already associated to an account. Please login to continue.',
                     }),

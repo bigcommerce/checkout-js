@@ -238,7 +238,11 @@ const Customer: React.FC<CustomerProps> = ({
                     return onChangeViewType(CustomerViewType.EnforcedLogin);
                 }
 
-                if (isErrorWithType(error) && error.status === 403) {
+                if (
+                    isErrorWithType(error) &&
+                    error.status === 403 &&
+                    error.body?.type === 'existing_customer_require_login'
+                ) {
                     return onChangeViewType(CustomerViewType.CancellableEnforcedLogin);
                 }
 
