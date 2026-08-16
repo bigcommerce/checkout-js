@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.865.1](https://github.com/bigcommerce/checkout-js/compare/v1.865.0...v1.865.1) (2026-08-16)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10288 Add role="img" to credit card SVG icons ([44a44ea](https://github.com/bigcommerce/checkout-js/commit/44a44eacc922cadc1021d5a2372e972729f7ccc2))
+
 ## [1.865.0](https://github.com/bigcommerce/checkout-js/compare/v1.864.3...v1.865.0) (2026-08-13)
 
 
