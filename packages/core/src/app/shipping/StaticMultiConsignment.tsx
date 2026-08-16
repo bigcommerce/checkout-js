@@ -20,14 +20,12 @@ interface StaticMultiConsignmentProps {
     consignment: Consignment;
     cart: Cart;
     consignmentNumber: number;
-    isShippingDiscountDisplayEnabled: boolean;
 }
 
 const StaticMultiConsignment: FunctionComponent<StaticMultiConsignmentProps> = ({
     consignment,
     cart,
     consignmentNumber,
-    isShippingDiscountDisplayEnabled,
 }) => {
     const { selectedState: shippingCountries } = useCheckout(({ data }) =>
         data.getShippingCountries(),
@@ -103,11 +101,7 @@ const StaticMultiConsignment: FunctionComponent<StaticMultiConsignmentProps> = (
                         <StaticShippingOption
                             displayAdditionalInformation={false}
                             method={selectedShippingOption}
-                            shippingCostAfterDiscount={
-                                isShippingDiscountDisplayEnabled
-                                    ? comparisonShippingCost
-                                    : undefined
-                            }
+                            shippingCostAfterDiscount={comparisonShippingCost}
                         />
                     </div>
                 </div>
