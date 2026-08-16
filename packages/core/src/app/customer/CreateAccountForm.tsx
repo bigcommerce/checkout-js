@@ -31,7 +31,7 @@ import getPasswordRequirements from './getPasswordRequirements';
 
 import './CreateAccountForm.scss';
 
-export interface CreateAccountFormProps {
+interface CreateAccountFormProps {
     formFields: FormField[];
     createAccountError?: Error;
     isCreatingAccount?: boolean;

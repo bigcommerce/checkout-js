@@ -3,7 +3,7 @@ import React, { type FunctionComponent, memo, Suspense } from 'react';
 import { getPaymentMethodIconComponent } from './mapFromPaymentMethodCardType';
 import { IconSize } from './IconContainer';
 
-export interface CreditCardIconProps {
+interface CreditCardIconProps {
     cardType?: string;
 }
 

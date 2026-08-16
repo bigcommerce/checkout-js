@@ -21,7 +21,7 @@ const ADDRESS_LABEL_FIELD: FormField = {
     type: 'string',
 };
 
-export interface AddressLabelFormFieldProps {
+interface AddressLabelFormFieldProps {
     // The company field from the address schema — rendered next to the label.
     field: FormField;
     parentFieldName?: string;

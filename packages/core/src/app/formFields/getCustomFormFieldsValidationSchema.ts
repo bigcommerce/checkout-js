@@ -34,7 +34,7 @@ export interface CustomFormFieldValues {
     customFields: CustomFormFields;
 }
 
-export interface CustomFormFields {
+interface CustomFormFields {
     [id: string]: string | string[] | number;
 }
 

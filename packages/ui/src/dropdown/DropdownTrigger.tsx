@@ -13,7 +13,7 @@ import {
     MICRO_APP_NG_CHECKOUT_ROOT_NODE_ID,
 } from '@bigcommerce/checkout/payment-integration-api';
 
-export interface DropdownTriggerProps {
+interface DropdownTriggerProps {
     placement?: Placement;
     dropdown: ReactNode;
     children?: ReactNode;

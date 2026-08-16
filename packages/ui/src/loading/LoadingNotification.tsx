@@ -2,7 +2,7 @@ import React, { type FunctionComponent, memo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
-export interface LoadingNotificationProps {
+interface LoadingNotificationProps {
     isLoading: boolean;
 }
 

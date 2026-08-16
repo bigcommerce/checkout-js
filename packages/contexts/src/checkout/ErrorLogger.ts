@@ -1,5 +1,3 @@
-import type { BrowserOptions } from '@sentry/browser';
-
 export default interface ErrorLogger {
     /**
      * Logs an error in, tagging it with an error code.
@@ -13,28 +11,18 @@ export default interface ErrorLogger {
     logMessage?(message: string): void;
 }
 
-export interface ErrorLoggerOptions {
-    errorTypes?: string[];
-    publicPath?: string;
-    sampleRate?: number;
-}
-
-export interface ErrorLoggerServiceConfig {
-    sentry?: BrowserOptions;
-}
-
-export interface ErrorTags {
+interface ErrorTags {
     /**
      * A code that identifies uniquely each error type
      */
     errorCode: string;
 }
 
-export interface ErrorMeta {
+interface ErrorMeta {
     [key: string]: unknown;
 }
 
-export enum ErrorLevelType {
+enum ErrorLevelType {
     Info = 'info',
     Warning = 'warning',
     Error = 'error',

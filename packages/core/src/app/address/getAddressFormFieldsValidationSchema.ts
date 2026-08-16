@@ -8,7 +8,7 @@ import {
     type TranslateValidationErrorFunction,
 } from '../formFields';
 
-export interface AddressFormFieldsValidationSchemaOptions {
+interface AddressFormFieldsValidationSchemaOptions {
     formFields: FormField[];
     language?: LanguageService;
     validateMaxLength?: boolean;

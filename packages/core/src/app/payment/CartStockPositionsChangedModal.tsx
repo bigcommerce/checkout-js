@@ -13,7 +13,7 @@ import {
     groupChangedItemsByConsignment,
 } from './cartStockPositionsChangedUtils';
 
-export interface CartStockPositionsChangedModalProps {
+interface CartStockPositionsChangedModalProps {
     cart?: Cart;
     changedLineItemIds?: Array<string | number>;
     consignments?: Consignment[];

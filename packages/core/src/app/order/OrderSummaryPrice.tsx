@@ -22,11 +22,6 @@ export interface OrderSummaryPriceProps {
     isOrderTotal?: boolean;
 }
 
-export interface OrderSummaryPriceState {
-    highlight: boolean;
-    previousAmount?: number;
-}
-
 function getDisplayValue(amount?: number | null, zeroLabel?: ReactNode): ReactNode | number {
     const notYetSetSymbol = '--';
 

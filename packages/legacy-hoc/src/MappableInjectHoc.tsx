@@ -16,5 +16,3 @@ export type MappableInjectHoc<TContextProps> = <TMappedProps, TOwnProps>(
         | MapToProps<TContextProps, TMappedProps, TOwnProps>
         | MapToPropsFactory<TContextProps, TMappedProps, TOwnProps>,
 ) => InjectHoc<TMappedProps, TOwnProps>;
-
-export default MappableInjectHoc;

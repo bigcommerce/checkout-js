@@ -23,7 +23,7 @@ import { StaticAddress } from '../address/';
 
 import './StaticAddressEditable.scss';
 
-export interface StaticAddressEditableProps {
+interface StaticAddressEditableProps {
     address: Address;
     buttonId: string;
     formFields: FormField[];

@@ -3,7 +3,7 @@ import React, { type FunctionComponent, type InputHTMLAttributes } from 'react';
 import { Input } from '../Input';
 import { Label } from '../Label';
 
-export interface ChecklistItemInputProps extends InputHTMLAttributes<HTMLInputElement> {
+interface ChecklistItemInputProps extends InputHTMLAttributes<HTMLInputElement> {
     isSelected: boolean;
 }
 

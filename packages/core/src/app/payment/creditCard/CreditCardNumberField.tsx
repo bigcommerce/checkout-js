@@ -17,7 +17,7 @@ import { FormField, IconLock, TextInput } from '@bigcommerce/checkout/ui';
 
 import formatCreditCardNumber from './formatCreditCardNumber';
 
-export interface CreditCardNumberFieldProps {
+interface CreditCardNumberFieldProps {
     name: string;
 }
 

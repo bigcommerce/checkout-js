@@ -1,7 +1,7 @@
 import { type FormikProps, type FormikValues, withFormik, type WithFormikConfig } from 'formik';
 import React, { type ComponentType, useEffect, useRef } from 'react';
 
-export interface WithFormikExtendedProps {
+interface WithFormikExtendedProps {
     isInitialValueLoaded?: boolean;
 }
 

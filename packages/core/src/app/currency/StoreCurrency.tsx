@@ -2,7 +2,7 @@ import React, { type FunctionComponent } from 'react';
 
 import { withCurrency, type WithCurrencyProps } from '@bigcommerce/checkout/locale';
 
-export interface StoreCurrencyProps {
+interface StoreCurrencyProps {
     amount: number;
 }
 

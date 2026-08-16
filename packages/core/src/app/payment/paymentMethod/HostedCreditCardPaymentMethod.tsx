@@ -19,7 +19,7 @@ import CreditCardPaymentMethod, {
     type CreditCardPaymentMethodProps,
 } from './CreditCardPaymentMethod';
 
-export type HostedCreditCardPaymentMethodProps = Omit<
+type HostedCreditCardPaymentMethodProps = Omit<
     CreditCardPaymentMethodProps,
     | 'cardFieldset'
     | 'cardValidationSchema'

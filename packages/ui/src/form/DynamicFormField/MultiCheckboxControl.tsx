@@ -6,7 +6,7 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import './MultiCheckboxControl.scss';
 
-export interface MultiCheckboxControlProps {
+interface MultiCheckboxControlProps {
     testId?: string;
     onSelectedAll(): void;
     onSelectedNone(): void;

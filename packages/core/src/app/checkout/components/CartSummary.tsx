@@ -37,11 +37,11 @@ const CartSummaryDrawerV2 = lazy(() =>
     ),
 );
 
-export interface CartSummaryProps {
+interface CartSummaryProps {
     isMultiShippingMode: boolean;
 }
 
-export const CartSummary: React.FC<CartSummaryProps> = ({ isMultiShippingMode }) => {
+const CartSummary: React.FC<CartSummaryProps> = ({ isMultiShippingMode }) => {
     const { enhancedThemeV1 } = useThemeContext();
 
     return (

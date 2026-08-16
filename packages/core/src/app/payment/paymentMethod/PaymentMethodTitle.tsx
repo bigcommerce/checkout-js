@@ -35,7 +35,7 @@ import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodType from './PaymentMethodType';
 import { type PoDisabledReason } from './usePoMethodDisabledReason';
 
-export interface PaymentMethodTitleProps {
+interface PaymentMethodTitleProps {
     method: PaymentMethod;
     isSelected?: boolean;
     disabledReason?: PoDisabledReason;

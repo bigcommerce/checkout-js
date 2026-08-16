@@ -9,7 +9,7 @@ import React, {
     useState,
 } from 'react';
 
-export interface ModalTriggerProps {
+interface ModalTriggerProps {
     children(props: { onClick: MouseEventHandler; onKeyPress: KeyboardEventHandler }): ReactNode;
     modal(props: ModalTriggerModalProps): ReactNode;
 }

@@ -20,7 +20,7 @@ const CheckoutButtonV1Resolver = lazy(
     () => import(/* webpackChunkName: "wallet-button-v1-resolver" */ './WalletButtonV1Resolver'),
 );
 
-export interface CheckoutButtonListProps {
+interface CheckoutButtonListProps {
     hideText?: boolean;
     isInitializing?: boolean;
     methodIds?: string[];

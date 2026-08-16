@@ -4,7 +4,7 @@ import { type PopoverListItem } from '../popover';
 
 import type AutocompleteItem from './autocomplete-item';
 
-export const highlightItem = (item: AutocompleteItem): ReactChild[] | ReactChild => {
+const highlightItem = (item: AutocompleteItem): ReactChild[] | ReactChild => {
     if (!item.highlightedSlices || !item.highlightedSlices.length) {
         return item.label;
     }

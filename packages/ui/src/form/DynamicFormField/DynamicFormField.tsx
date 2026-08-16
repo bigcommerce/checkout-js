@@ -10,12 +10,12 @@ import { Label } from '../Label';
 import { DynamicFormFieldSelector } from './DynamicFormFieldSelector';
 import DynamicFormFieldType from './DynamicFormFieldType';
 
-export interface DynamicFormFieldOption {
+interface DynamicFormFieldOption {
     code: string;
     name: string;
 }
 
-export interface DynamicFormFieldProps {
+interface DynamicFormFieldProps {
     field: FormFieldType;
     inputId?: string;
     extraClass?: string;

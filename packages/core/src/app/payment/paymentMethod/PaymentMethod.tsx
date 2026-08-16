@@ -28,7 +28,7 @@ import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodProviderType from './PaymentMethodProviderType';
 import PaymentMethodType from './PaymentMethodType';
 
-export interface PaymentMethodProps {
+interface PaymentMethodProps {
     method: PaymentMethod;
     isEmbedded?: boolean;
     isUsingMultiShipping?: boolean;
@@ -36,7 +36,7 @@ export interface PaymentMethodProps {
     submitForm?(): void;
 }
 
-export interface WithCheckoutPaymentMethodProps {
+interface WithCheckoutPaymentMethodProps {
     isInitializing: boolean;
     deinitializeCustomer(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
     deinitializePayment(options: PaymentRequestOptions): Promise<CheckoutSelectors>;

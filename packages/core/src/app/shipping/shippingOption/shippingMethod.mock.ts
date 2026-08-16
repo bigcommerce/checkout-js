@@ -27,17 +27,3 @@ export function getShippingOptionPickUpStore(): ShippingOption {
         type: 'shipping_pickupinstore',
     };
 }
-
-export function getShippingOptionFlagRate(): ShippingOption {
-    return {
-        additionalDescription: '$20 per order',
-        description: 'Flat Rate - $20 per order',
-        id: '0:61d4bb52f746477e1d4fb411221318c3',
-        imageUrl: '',
-        isRecommended: true,
-        cost: 20,
-        costAfterDiscount: 20,
-        transitTime: '',
-        type: 'shipping_flatrate',
-    };
-}

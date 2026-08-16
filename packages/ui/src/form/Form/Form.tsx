@@ -6,7 +6,7 @@ import React, { createRef, type FunctionComponent, memo, useCallback, useRef } f
 
 import { type FormContextType, FormProvider } from '../contexts';
 
-export interface FormProps extends FormikFormProps {
+interface FormProps extends FormikFormProps {
     testId?: string;
 }
 

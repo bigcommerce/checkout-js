@@ -64,7 +64,7 @@ function shouldHaveCustomValidation(methodId?: string): boolean {
     return Boolean(methodId && !methodIdsWithoutCustomValidation.includes(methodId));
 }
 
-export const SHIPPING_AUTOSAVE_DELAY = 1700;
+const SHIPPING_AUTOSAVE_DELAY = 1700;
 
 const PAYMENT_METHOD_VALID = ['amazonpay'];
 

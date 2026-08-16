@@ -6,7 +6,7 @@ import { FormField, IconHelp, IconLock, TextInput, TooltipTrigger } from '@bigco
 
 import CreditCardCodeTooltip from './CreditCardCodeTooltip';
 
-export interface CreditCardCodeFieldProps {
+interface CreditCardCodeFieldProps {
     name: string;
 }
 

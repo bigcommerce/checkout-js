@@ -13,7 +13,7 @@ import { CapabilitiesProvider, CapabilitiesProviderV2 } from '../capabilities';
 import CheckoutContext from './CheckoutContext';
 import type ErrorLogger from './ErrorLogger';
 
-export interface CheckoutProviderProps {
+interface CheckoutProviderProps {
     checkoutService: CheckoutService;
     children: ReactNode;
     errorLogger?: ErrorLogger;
