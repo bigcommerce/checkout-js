@@ -26,10 +26,13 @@ import { CHECKOUT_ROOT_NODE_ID } from '@bigcommerce/checkout/payment-integration
 import {
     CheckoutPageNodeObject,
     CheckoutPreset,
+    checkoutSettings,
     checkoutWithBillingEmail,
+    checkoutWithShippingAndBilling,
     checkoutWithShippingDiscount,
     consignmentAutomaticDiscount,
     consignmentCouponDiscount,
+    shippingAddress,
 } from '@bigcommerce/checkout/test-framework';
 import { renderWithoutWrapper as render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 import { CannotCreatePersonalAccountSessionStorage } from '@bigcommerce/checkout/utility';
@@ -716,6 +719,78 @@ describe('Checkout', () => {
                     writable: true,
                 });
             }
+        });
+    });
+
+    describe('billing same as shipping checkbox', () => {
+        it('unchecks the checkbox on reload when the saved billing address differs from shipping', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            await userEvent.click(screen.getAllByRole('button', { name: 'Edit' })[1]);
+            await checkout.waitForShippingStep();
+
+            expect(
+                screen
+                    .queryByLabelText('My billing address is the same as my shipping address.')
+                    ?.hasAttribute('checked'),
+            ).toBeFalsy();
+        });
+
+        it('keeps the checkbox checked on reload when the saved billing address matches shipping', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                checkout: {
+                    ...checkoutWithShippingAndBilling,
+                    billingAddress: {
+                        id: 'billing-address-id',
+                        email: 'test@example.com',
+                        shouldSaveAddress: true,
+                        ...shippingAddress,
+                    },
+                },
+            });
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            await userEvent.click(screen.getAllByRole('button', { name: 'Edit' })[1]);
+            await checkout.waitForShippingStep();
+
+            // eslint-disable-next-line jest-dom/prefer-to-have-attribute
+            expect(
+                screen
+                    .getByLabelText('My billing address is the same as my shipping address.')
+                    .hasAttribute('checked'),
+            ).toBeTruthy();
+        });
+
+        it('seeds the checkbox from the store setting when the billing address is not set yet', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithBillingEmail, {
+                config: {
+                    ...checkoutSettings,
+                    storeConfig: {
+                        ...checkoutSettings.storeConfig,
+                        checkoutSettings: {
+                            ...checkoutSettings.storeConfig.checkoutSettings,
+                            checkoutBillingSameAsShippingEnabled: false,
+                        },
+                    },
+                },
+            });
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForShippingStep();
+
+            expect(
+                screen
+                    .queryByLabelText('My billing address is the same as my shipping address.')
+                    ?.hasAttribute('checked'),
+            ).toBeFalsy();
         });
     });
 

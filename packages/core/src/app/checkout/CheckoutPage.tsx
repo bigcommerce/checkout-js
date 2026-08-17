@@ -61,6 +61,7 @@ import {
     ShippingStep,
 } from './components';
 import { deleteCartOnExit } from './deleteCartOnExit';
+import getInitialBillingSameAsShipping from './getInitialBillingSameAsShipping';
 import useB2BToken from './hooks/useB2BToken';
 import { mapCheckoutComponentErrorMessage } from './mapErrorMessage';
 import mapToCheckoutProps from './mapToCheckoutProps';
@@ -645,6 +646,8 @@ const Checkout = ({
 
                 const consignments = data.getConsignments();
                 const cart = data.getCart();
+                const initialBillingAddress = data.getBillingAddress();
+                const initialShippingAddress = data.getShippingAddress();
 
                 const hasMultiShippingEnabled =
                     data.getConfig()?.checkoutSettings.hasMultiShippingEnabled;
@@ -660,7 +663,11 @@ const Checkout = ({
 
                 setState((prevState) => ({
                     ...prevState,
-                    isBillingSameAsShipping: checkoutBillingSameAsShippingEnabled,
+                    isBillingSameAsShipping: getInitialBillingSameAsShipping({
+                        billingAddress: initialBillingAddress,
+                        shippingAddress: initialShippingAddress,
+                        defaultValue: checkoutBillingSameAsShippingEnabled,
+                    }),
                     isSubscribed: defaultNewsletterSignupOption,
                 }));
 
