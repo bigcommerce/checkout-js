@@ -76,7 +76,7 @@ describe('cartStockPositionsChangedUtils', () => {
                 },
             };
 
-            const result = getChangedItemsToShow(cart, [child.id as string]);
+            const result = getChangedItemsToShow(cart, [child.id]);
 
             expect(result).toHaveLength(1);
             expect(result[0].id).toBe(parent.id);
@@ -93,7 +93,7 @@ describe('cartStockPositionsChangedUtils', () => {
                 },
             };
 
-            const result = getChangedItemsToShow(cart, [parent.id as string, child.id as string]);
+            const result = getChangedItemsToShow(cart, [parent.id, child.id]);
 
             expect(result).toHaveLength(1);
             expect(result[0].id).toBe(parent.id);

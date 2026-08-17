@@ -208,8 +208,8 @@ const OrderSummaryItems = ({
     const backorderCount = getBackorderCount(items);
     const shouldDisplayBackorderDetails =
         !!config?.inventorySettings?.shouldDisplayBackorderMessagesOnStorefront &&
-        (!!config?.inventorySettings?.showQuantityOnBackorder ||
-            !!config?.inventorySettings?.showBackorderMessage);
+        (config?.inventorySettings?.showQuantityOnBackorder ||
+            config?.inventorySettings?.showBackorderMessage);
     const showBackorderSwitch = shouldDisplayBackorderDetails && backorderCount > 0;
 
     const expandBackorderDetails = showBackorderSwitch && showBackorderDetails;

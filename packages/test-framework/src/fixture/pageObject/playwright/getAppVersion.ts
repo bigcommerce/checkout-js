@@ -13,7 +13,7 @@ export function getAppVersion(): string {
     const manifest: unknown = JSON.parse(manifestContent);
 
     if (hasAppVersion(manifest)) {
-        appVersion = String(manifest.appVersion);
+        appVersion = manifest.appVersion;
 
         return appVersion;
     }

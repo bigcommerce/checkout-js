@@ -53,7 +53,7 @@ export function getGoogleAutocompletePlaceMock(): google.maps.places.PlaceResult
                 types: ['postal_code'],
             },
         ],
-    } as google.maps.places.PlaceResult;
+    };
 }
 
 export function getGoogleAutocompleteNZPlaceMock(): google.maps.places.PlaceResult {
@@ -101,7 +101,7 @@ export function getGoogleAutocompleteNZPlaceMock(): google.maps.places.PlaceResu
                 types: ['postal_code'],
             },
         ],
-    } as google.maps.places.PlaceResult;
+    };
 }
 
 export function getGoogleAutocompleteUKPlaceMock(): google.maps.places.PlaceResult {
@@ -149,7 +149,7 @@ export function getGoogleAutocompleteUKPlaceMock(): google.maps.places.PlaceResu
                 types: ['postal_code'],
             },
         ],
-    } as google.maps.places.PlaceResult;
+    };
 }
 
 export function getGoogleAutocompleteCAPlaceMockWithSubLocality(): google.maps.places.PlaceResult {
@@ -202,7 +202,7 @@ export function getGoogleAutocompleteCAPlaceMockWithSubLocality(): google.maps.p
                 types: ['postal_code'],
             },
         ],
-    } as google.maps.places.PlaceResult;
+    };
 }
 
 export function getGoogleAutocompleteCAPlaceMockWithLocality(): google.maps.places.PlaceResult {
@@ -245,5 +245,5 @@ export function getGoogleAutocompleteCAPlaceMockWithLocality(): google.maps.plac
                 types: ['postal_code'],
             },
         ],
-    } as google.maps.places.PlaceResult;
+    };
 }

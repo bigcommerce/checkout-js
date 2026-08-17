@@ -204,10 +204,8 @@ const LoginForm: FunctionComponent<
                 <div className="form-actions">
                     {shouldRedirectToStorefrontForAuth ? (
                         <RedirectToStorefrontLogin
-                            isDisabled={Boolean(
-                                isSigningIn() || isExecutingPaymentMethodCheckout(),
-                            )}
-                            isLoading={Boolean(isSigningIn() || isExecutingPaymentMethodCheckout())}
+                            isDisabled={isSigningIn() || isExecutingPaymentMethodCheckout()}
+                            isLoading={isSigningIn() || isExecutingPaymentMethodCheckout()}
                         />
                     ) : (
                         <Button
