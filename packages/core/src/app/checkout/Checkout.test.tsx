@@ -28,6 +28,7 @@ import {
     CheckoutPreset,
     checkoutSettings,
     checkoutWithBillingEmail,
+    checkoutWithShipping,
     checkoutWithShippingAndBilling,
     checkoutWithShippingDiscount,
     consignmentAutomaticDiscount,
@@ -791,6 +792,74 @@ describe('Checkout', () => {
                     .queryByLabelText('My billing address is the same as my shipping address.')
                     ?.hasAttribute('checked'),
             ).toBeFalsy();
+        });
+
+        it('unchecks the checkbox after the billing step saves an address that differs from shipping', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShipping);
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForBillingStep();
+            await checkout.fillAddressForm();
+
+            checkout.updateCheckout(
+                'put',
+                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/billing-address/billing-address-id*',
+                {
+                    ...checkoutWithShippingAndBilling,
+                },
+            );
+
+            await userEvent.click(screen.getByRole('button', { name: 'Continue' }));
+            await checkout.waitForPaymentStep();
+
+            await userEvent.click(screen.getAllByRole('button', { name: 'Edit' })[1]);
+            await checkout.waitForShippingStep();
+
+            expect(
+                screen
+                    .queryByLabelText('My billing address is the same as my shipping address.')
+                    ?.hasAttribute('checked'),
+            ).toBeFalsy();
+        });
+
+        it('rechecks the checkbox after the billing step saves an address that matches shipping', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            await userEvent.click(screen.getAllByRole('button', { name: 'Edit' })[2]);
+            await checkout.waitForBillingStep();
+            await checkout.fillAddressForm();
+
+            checkout.updateCheckout(
+                'put',
+                '/checkouts/xxxxxxxxxx-xxxx-xxax-xxxx-xxxxxx/billing-address/billing-address-id*',
+                {
+                    ...checkoutWithShipping,
+                    billingAddress: {
+                        id: 'billing-address-id',
+                        email: 'test@example.com',
+                        shouldSaveAddress: true,
+                        ...shippingAddress,
+                    },
+                },
+            );
+
+            await userEvent.click(screen.getByRole('button', { name: 'Continue' }));
+            await checkout.waitForPaymentStep();
+
+            await userEvent.click(screen.getAllByRole('button', { name: 'Edit' })[1]);
+            await checkout.waitForShippingStep();
+
+            // eslint-disable-next-line jest-dom/prefer-to-have-attribute
+            expect(
+                screen
+                    .getByLabelText('My billing address is the same as my shipping address.')
+                    .hasAttribute('checked'),
+            ).toBeTruthy();
         });
     });
 

@@ -445,6 +445,24 @@ const Checkout = ({
         [],
     );
 
+    // The billing step has no same-as-shipping checkbox, so re-derive the flag
+    // from the just-saved addresses; read them at call time as the props
+    // captured before the billing update are stale.
+    const handleBillingNextStep = useCallback((): void => {
+        const { data: currentData } = checkoutService.getState();
+
+        setState((prev) => ({
+            ...prev,
+            isBillingSameAsShipping: getInitialBillingSameAsShipping({
+                billingAddress: currentData.getBillingAddress(),
+                shippingAddress: currentData.getShippingAddress(),
+                defaultValue: prev.isBillingSameAsShipping,
+            }),
+        }));
+
+        navigateToNextIncompleteStep();
+    }, [checkoutService, navigateToNextIncompleteStep]);
+
     const handleShippingSignIn = useCallback((): void => {
         setCustomerViewType(CustomerViewType.Login);
     }, [setCustomerViewType]);
@@ -530,7 +548,7 @@ const Checkout = ({
                 return (
                     <BillingStep
                         billingAddress={billingAddress}
-                        navigateNextStep={navigateToNextIncompleteStep}
+                        navigateNextStep={handleBillingNextStep}
                         onEdit={handleEditStep}
                         onExpanded={handleExpanded}
                         onReady={handleReady}
