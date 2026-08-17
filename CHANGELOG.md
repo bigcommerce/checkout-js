@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.865.2](https://github.com/bigcommerce/checkout-js/compare/v1.865.1...v1.865.2) (2026-08-17)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-10329 Remove isShippingDiscountDisplayEnabled ([#3251](https://github.com/bigcommerce/checkout-js/issues/3251)) ([c8c58e7](https://github.com/bigcommerce/checkout-js/commit/c8c58e731146546b3888f1b6e08f764dbd383528))
+
 ### [1.865.1](https://github.com/bigcommerce/checkout-js/compare/v1.865.0...v1.865.1) (2026-08-16)
 
 
