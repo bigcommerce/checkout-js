@@ -541,7 +541,7 @@ describe('PaymentForm', () => {
         const authorizenet = getPaymentMethod();
         const cybersource = { ...getPaymentMethod(), id: 'cybersource' };
 
-        it('falls back to the default method', () => {
+        it('re-points the form at the selection made by the parent', () => {
             const onMethodSelect = jest.fn();
 
             const { rerender } = render(
@@ -549,26 +549,58 @@ describe('PaymentForm', () => {
                     {...defaultProps}
                     methods={[authorizenet, cybersource]}
                     onMethodSelect={onMethodSelect}
+                    selectedMethod={authorizenet}
                 />,
             );
 
             fireEvent.click(screen.getAllByRole('radio')[1]);
 
             expect(screen.getAllByRole('radio')[1]).toBeChecked();
-            expect(onMethodSelect).toHaveBeenCalledWith(cybersource, { isAutomatic: false });
+            expect(onMethodSelect).toHaveBeenCalledWith(cybersource);
 
             onMethodSelect.mockClear();
 
+            // Payment applies the fallback and hands the new selection down.
             rerender(
                 <PaymentFormTest
                     {...defaultProps}
                     methods={[authorizenet]}
                     onMethodSelect={onMethodSelect}
+                    selectedMethod={authorizenet}
                 />,
             );
 
             expect(screen.getByRole('radio')).toBeChecked();
-            expect(onMethodSelect).toHaveBeenCalledWith(authorizenet, { isAutomatic: true });
+            expect(onMethodSelect).toHaveBeenCalledWith(authorizenet);
+        });
+
+        it('stays put while the parent selection is not yet in the list', () => {
+            const onMethodSelect = jest.fn();
+
+            const { rerender } = render(
+                <PaymentFormTest
+                    {...defaultProps}
+                    methods={[authorizenet, cybersource]}
+                    onMethodSelect={onMethodSelect}
+                    selectedMethod={cybersource}
+                />,
+            );
+
+            fireEvent.click(screen.getAllByRole('radio')[1]);
+            onMethodSelect.mockClear();
+
+            // The parent selection is stale for one commit during a removal.
+            rerender(
+                <PaymentFormTest
+                    {...defaultProps}
+                    methods={[authorizenet]}
+                    onMethodSelect={onMethodSelect}
+                    selectedMethod={cybersource}
+                />,
+            );
+
+            expect(screen.getByRole('radio')).not.toBeChecked();
+            expect(onMethodSelect).not.toHaveBeenCalled();
         });
 
         it('leaves the selection alone while it is still in the list', () => {

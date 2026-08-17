@@ -75,7 +75,7 @@ import getPaymentMethodsRefreshAlert from './getPaymentMethodsRefreshAlert';
 import mapSubmitOrderErrorMessage, { mapSubmitOrderErrorTitle } from './mapSubmitOrderErrorMessage';
 import mapToOrderRequestBody from './mapToOrderRequestBody';
 import PaymentContext, { type EnsureBillingAddressSaved } from './PaymentContext';
-import PaymentForm, { type PaymentMethodSelectOptions } from './PaymentForm';
+import PaymentForm from './PaymentForm';
 import {
     getUniquePaymentMethodId,
     hasPaymentMethodWithId,
@@ -459,7 +459,6 @@ const Payment = (
         async (values: PaymentFormValues) => {
             const {
                 defaultMethod,
-                loadPaymentMethods,
                 checkoutServiceSubscribe,
                 isPaymentDataRequired,
                 onCartChangedError = noop,
@@ -545,7 +544,7 @@ const Payment = (
                 analyticsTracker.paymentRejected();
 
                 if (isErrorWithType(error) && error.type === 'payment_method_invalid') {
-                    return loadPaymentMethods();
+                    return loadPaymentMethodsOrThrow();
                 }
 
                 if (isCartChangedError(error)) {
@@ -574,23 +573,24 @@ const Payment = (
     const dismissMethodsRefreshAlert = useCallback(() => setMethodsRefreshAlert(undefined), []);
 
     const setSelectedMethod = useCallback((method?: PaymentMethod): void => {
-        setState((prevState) => {
-            if (prevState.selectedMethod === method) {
-                return prevState;
-            }
-
-            if (method) {
-                trackSelectedPaymentMethod(method);
-            }
-
-            return { ...prevState, selectedMethod: method };
-        });
+        setState((prevState) =>
+            prevState.selectedMethod === method
+                ? prevState
+                : { ...prevState, selectedMethod: method },
+        );
     }, []);
 
     const handleMethodSelect = useCallback(
-        (method: PaymentMethod, options?: PaymentMethodSelectOptions): void => {
-            // The alert about a removed method must outlive the automatic fallback selection.
-            if (!options?.isAutomatic) {
+        (method: PaymentMethod): void => {
+            const currentMethod = selectedMethodRef.current;
+            // The fallback echoes back here as a reselection of the already-current
+            // method; only a change of method should dismiss the removed-method alert.
+            const isReselection =
+                !!currentMethod &&
+                getUniquePaymentMethodId(currentMethod.id, currentMethod.gateway) ===
+                    getUniquePaymentMethodId(method.id, method.gateway);
+
+            if (!isReselection) {
                 dismissMethodsRefreshAlert();
             }
 
@@ -660,12 +660,6 @@ const Payment = (
                           capabilities: props.capabilities,
                       })
                     : undefined;
-            const defaultMethod = filteredMethodsWithDefault?.defaultMethod;
-            const selectedMethod = selectedMethodRef.current || defaultMethod;
-
-            if (selectedMethod) {
-                trackSelectedPaymentMethod(selectedMethod);
-            }
 
             if (billingCountryChange) {
                 const refreshAlert = getPaymentMethodsRefreshAlert({
@@ -716,20 +710,41 @@ const Payment = (
         selectedMethodRef.current = state.selectedMethod || props.defaultMethod;
     }, [state.selectedMethod, props.defaultMethod]);
 
-    // Custom checklist items (Stripe OCS) render outside the checklist and never report
-    // a selection change, so PaymentForm's fallback cannot update this on its own.
+    // The only analytics emitter for method selection: keyed on the id string so it
+    // fires exactly when the effective selection changes, never on object identity.
+    const effectiveSelectedMethod = state.selectedMethod || props.defaultMethod;
+    const trackedSelectedMethodId = effectiveSelectedMethod
+        ? getUniquePaymentMethodId(effectiveSelectedMethod.id, effectiveSelectedMethod.gateway)
+        : undefined;
+
+    useEffect(() => {
+        if (effectiveSelectedMethod) {
+            trackSelectedPaymentMethod(effectiveSelectedMethod);
+        }
+    }, [trackedSelectedMethodId]);
+
+    // Owns the fallback when a methods reload drops the selected method; PaymentForm
+    // follows through its selectedMethod prop.
     useEffect(() => {
         const { selectedMethod } = state;
+        const { defaultMethod, methods } = props;
 
         if (
-            selectedMethod &&
-            !hasPaymentMethodWithId(
-                props.methods,
+            !selectedMethod ||
+            hasPaymentMethodWithId(
+                methods,
                 getUniquePaymentMethodId(selectedMethod.id, selectedMethod.gateway),
             )
         ) {
-            setSelectedMethod(props.defaultMethod);
+            return;
         }
+
+        // Keep the selection when a transiently empty list leaves nothing to fall back to.
+        if (!defaultMethod) {
+            return;
+        }
+
+        setSelectedMethod(defaultMethod);
     }, [props.methods, props.defaultMethod, state.selectedMethod, setSelectedMethod]);
 
     useEffect(() => {

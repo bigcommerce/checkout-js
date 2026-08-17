@@ -59,11 +59,6 @@ import { StoreCreditField, StoreCreditOverlay } from './storeCredit';
 
 import './PaymentForm.scss';
 
-export interface PaymentMethodSelectOptions {
-    // True when selected by the removed-method fallback rather than the shopper.
-    isAutomatic?: boolean;
-}
-
 export interface PaymentFormProps {
     additionalField?: Capabilities['payment']['additionalField'];
     availableStoreCredit?: number;
@@ -92,7 +87,7 @@ export interface PaymentFormProps {
     validationSchema?: ObjectSchema<Partial<PaymentFormValues>>;
     isPaymentDataRequired(): boolean;
     onBillingSameAsShippingChange?(isBillingSameAsShipping: boolean): void;
-    onMethodSelect?(method: PaymentMethod, options?: PaymentMethodSelectOptions): void;
+    onMethodSelect?(method: PaymentMethod): void;
     onMethodsRefreshAlertDismiss?(): void;
     onStoreCreditChange?(useStoreCredit?: boolean): void;
     onSubmit?(values: PaymentFormValues): void;
@@ -104,8 +99,6 @@ const PaymentForm: FunctionComponent<
 > = ({
     additionalField,
     availableStoreCredit = 0,
-    defaultGatewayId,
-    defaultMethodId,
     disableStoreCredit = false,
     didExceedSpamLimit,
     isBillingSameAsShipping,
@@ -127,6 +120,7 @@ const PaymentForm: FunctionComponent<
     orderExtraFields,
     resetForm,
     selectedMethod,
+    setFieldValue,
     shouldDisableSubmit,
     shouldHidePaymentSubmitButton,
     shouldExecuteSpamCheck,
@@ -237,8 +231,6 @@ const PaymentForm: FunctionComponent<
 
             {!isEmpty(methods) && (
                 <PaymentMethodListFieldset
-                    defaultGatewayId={defaultGatewayId}
-                    defaultMethodId={defaultMethodId}
                     isEmbedded={isEmbedded}
                     isInitializingPayment={isInitializingPayment}
                     isPaymentDataRequired={isPaymentDataRequired}
@@ -247,6 +239,11 @@ const PaymentForm: FunctionComponent<
                     onMethodSelect={onMethodSelect}
                     onUnhandledError={onUnhandledError}
                     resetForm={resetForm}
+                    selectedMethodUniqueId={
+                        selectedMethod &&
+                        getUniquePaymentMethodId(selectedMethod.id, selectedMethod.gateway)
+                    }
+                    setFieldValue={setFieldValue}
                     values={values}
                 />
             )}
@@ -317,22 +314,20 @@ const PaymentMethodSubmitButtonContainer: FunctionComponent = () => {
 };
 
 interface PaymentMethodListFieldsetProps {
-    defaultGatewayId?: string;
-    defaultMethodId: string;
     isEmbedded?: boolean;
     isInitializingPayment?: boolean;
     isUsingMultiShipping?: boolean;
     methods: PaymentMethod[];
+    selectedMethodUniqueId?: string;
     values: PaymentFormValues;
     isPaymentDataRequired(): boolean;
-    onMethodSelect?(method: PaymentMethod, options?: PaymentMethodSelectOptions): void;
+    onMethodSelect?(method: PaymentMethod): void;
     onUnhandledError?(error: Error): void;
     resetForm(nextValues?: Partial<FormikState<PaymentFormValues>>): void;
+    setFieldValue(field: string, value: string): void;
 }
 
 const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProps> = ({
-    defaultGatewayId,
-    defaultMethodId,
     isEmbedded,
     isInitializingPayment,
     isPaymentDataRequired,
@@ -341,54 +336,40 @@ const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProp
     onMethodSelect = noop,
     onUnhandledError,
     resetForm,
+    selectedMethodUniqueId,
     values,
+    setFieldValue,
 }) => {
     const { setSubmitted } = useContext(FormContext);
     const { enhancedThemeV1 } = useThemeContext();
 
-    // The checklist reports fallback and shopper selections through the same callback;
-    // this marks the next arrival of this id as the fallback's.
-    const automaticSelectionIdRef = useRef<string>();
-
-    const selectMethod = useCallback(
-        (uniquePaymentMethodId: string) => {
-            resetForm({
-                values: {
-                    ...values,
-                    ccCustomerCode: '',
-                    ccCvv: '',
-                    ccDocument: '',
-                    customerEmail: '',
-                    customerMobile: '',
-                    ccExpiry: '',
-                    ccName: '',
-                    ccNumber: '',
-                    instrumentId: '',
-                    paymentProviderRadio: uniquePaymentMethodId,
-                    shouldCreateAccount: true,
-                    shouldSaveInstrument: false,
-                },
-            });
-            setSubmitted(false);
-        },
-        [values, resetForm, setSubmitted],
-    );
-
     const handlePaymentMethodSelect = useCallback(
         (method: PaymentMethod) => {
-            const uniquePaymentMethodId = getUniquePaymentMethodId(method.id, method.gateway);
-            const isAutomatic = automaticSelectionIdRef.current === uniquePaymentMethodId;
+            const updatedValues = {
+                ...values,
+                ccCustomerCode: '',
+                ccCvv: '',
+                ccDocument: '',
+                customerEmail: '',
+                customerMobile: '',
+                ccExpiry: '',
+                ccName: '',
+                ccNumber: '',
+                instrumentId: '',
+                paymentProviderRadio: getUniquePaymentMethodId(method.id, method.gateway),
+                shouldCreateAccount: true,
+                shouldSaveInstrument: false,
+            };
 
-            automaticSelectionIdRef.current = undefined;
-
-            selectMethod(uniquePaymentMethodId);
-            onMethodSelect(method, { isAutomatic });
+            resetForm({ values: updatedValues });
+            setSubmitted(false);
+            onMethodSelect(method);
         },
-        [selectMethod, onMethodSelect],
+        [values, onMethodSelect, resetForm, setSubmitted],
     );
 
-    // A payment methods reload can drop the method the shopper had selected; fall back to
-    // the default. The checklist picks the change up and expands the new method's form.
+    // When a reload drops the selected method, re-point the form at the fallback that
+    // Payment decided on; the checklist picks the value change up from there.
     useEffect(() => {
         if (
             !values.paymentProviderRadio ||
@@ -397,17 +378,16 @@ const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProp
             return;
         }
 
-        const fallbackId = getUniquePaymentMethodId(defaultMethodId, defaultGatewayId);
-
-        // `selectMethod` changes identity on every `values` change, so writing an id that
-        // is not in the list would re-run this effect without end.
-        if (!fallbackId || !hasPaymentMethodWithId(methods, fallbackId)) {
+        if (
+            !selectedMethodUniqueId ||
+            selectedMethodUniqueId === values.paymentProviderRadio ||
+            !hasPaymentMethodWithId(methods, selectedMethodUniqueId)
+        ) {
             return;
         }
 
-        automaticSelectionIdRef.current = fallbackId;
-        selectMethod(fallbackId);
-    }, [values.paymentProviderRadio, methods, defaultMethodId, defaultGatewayId, selectMethod]);
+        setFieldValue('paymentProviderRadio', selectedMethodUniqueId);
+    }, [values.paymentProviderRadio, methods, selectedMethodUniqueId, setFieldValue]);
 
     return (
         <Fieldset
