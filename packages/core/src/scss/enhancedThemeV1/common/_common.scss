@@ -8,6 +8,10 @@ $element-border-radius: remCalc(12px);
         border-radius: $element-border-radius;
     }
 
+    &.modal {
+        border-radius: $element-border-radius;
+    }
+
     // Optimized Checkout fallback styles
     background-color: $color-background;
 
