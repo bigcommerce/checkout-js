@@ -42,9 +42,7 @@ const Modal: FunctionComponent<ModalProps> = ({
     shouldShowCloseButton = false,
     ...rest
 }) => {
-    const themeContext = useContext(ThemeContext);
-
-    const isEnhancedThemeV1 = themeContext?.enhancedThemeV1;
+    const { enhancedThemeV1 } = useContext(ThemeContext) ?? {};
 
     const handleClose = useCallback(
         (event: MouseEvent | KeyboardEvent) => {
@@ -61,7 +59,7 @@ const Modal: FunctionComponent<ModalProps> = ({
             className={{
                 base: classNames(
                     'modal optimizedCheckout-contentPrimary',
-                    { enhancedThemeV1: isEnhancedThemeV1 },
+                    { enhancedThemeV1 },
                     additionalModalClassName,
                 ),
                 afterOpen: 'modal--afterOpen',
