@@ -6,10 +6,12 @@ import React, {
     type MouseEvent,
     type ReactNode,
     useCallback,
+    useContext,
 } from 'react';
 import ReactModal from 'react-modal';
 import { type Omit } from 'utility-types';
 
+import { ThemeContext } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 
 import { IconClose } from '../icon';
@@ -40,6 +42,10 @@ const Modal: FunctionComponent<ModalProps> = ({
     shouldShowCloseButton = false,
     ...rest
 }) => {
+    const themeContext = useContext(ThemeContext);
+
+    const isEnhancedThemeV1 = themeContext?.enhancedThemeV1;
+
     const handleClose = useCallback(
         (event: MouseEvent | KeyboardEvent) => {
             onRequestClose(event);
@@ -55,6 +61,7 @@ const Modal: FunctionComponent<ModalProps> = ({
             className={{
                 base: classNames(
                     'modal optimizedCheckout-contentPrimary',
+                    { enhancedThemeV1: isEnhancedThemeV1 },
                     additionalModalClassName,
                 ),
                 afterOpen: 'modal--afterOpen',
