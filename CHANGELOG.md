@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.868.0](https://github.com/bigcommerce/checkout-js/compare/v1.867.0...v1.868.0) (2026-08-18)
+
+
+### Features
+
+* **payment:** PI-5626 Enable cybersource test url ([#3257](https://github.com/bigcommerce/checkout-js/issues/3257)) ([2d420d7](https://github.com/bigcommerce/checkout-js/commit/2d420d743fe31845b8a7f610cd8ea5f75eb5d649))
+
 ## [1.867.0](https://github.com/bigcommerce/checkout-js/compare/v1.866.2...v1.867.0) (2026-08-18)
 
 
