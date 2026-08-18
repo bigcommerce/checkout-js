@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.867.0](https://github.com/bigcommerce/checkout-js/compare/v1.866.2...v1.867.0) (2026-08-18)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10199 select default method on refetch payment list ([#3248](https://github.com/bigcommerce/checkout-js/issues/3248)) ([b2432e1](https://github.com/bigcommerce/checkout-js/commit/b2432e1ccbb80784ee46da2ad1d7dbafb800005a))
+
 ### [1.866.2](https://github.com/bigcommerce/checkout-js/compare/v1.866.1...v1.866.2) (2026-08-18)
 
 
