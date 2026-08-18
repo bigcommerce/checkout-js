@@ -42,9 +42,9 @@ import { getInitialOrderExtraFieldsValues, OrderExtraFieldsFieldset } from './or
 import {
     getPaymentMethodName,
     getUniquePaymentMethodId,
-    hasPaymentMethodWithId,
     PaymentMethodId,
     PaymentMethodList,
+    useFallbackWhenMethodRemoved,
     usePoMethodDisabledReason,
 } from './paymentMethod';
 import {
@@ -368,26 +368,12 @@ const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProp
         [values, onMethodSelect, resetForm, setSubmitted],
     );
 
-    // When a reload drops the selected method, re-point the form at the fallback that
-    // Payment decided on; the checklist picks the value change up from there.
-    useEffect(() => {
-        if (
-            !values.paymentProviderRadio ||
-            hasPaymentMethodWithId(methods, values.paymentProviderRadio)
-        ) {
-            return;
-        }
-
-        if (
-            !selectedMethodUniqueId ||
-            selectedMethodUniqueId === values.paymentProviderRadio ||
-            !hasPaymentMethodWithId(methods, selectedMethodUniqueId)
-        ) {
-            return;
-        }
-
-        setFieldValue('paymentProviderRadio', selectedMethodUniqueId);
-    }, [values.paymentProviderRadio, methods, selectedMethodUniqueId, setFieldValue]);
+    useFallbackWhenMethodRemoved(
+        methods,
+        values.paymentProviderRadio,
+        selectedMethodUniqueId,
+        (fallbackUniqueId) => setFieldValue('paymentProviderRadio', fallbackUniqueId),
+    );
 
     return (
         <Fieldset

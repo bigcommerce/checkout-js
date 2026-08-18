@@ -78,8 +78,9 @@ import PaymentContext, { type EnsureBillingAddressSaved } from './PaymentContext
 import PaymentForm from './PaymentForm';
 import {
     getUniquePaymentMethodId,
-    hasPaymentMethodWithId,
+    isSamePaymentMethod,
     PaymentMethodProviderType,
+    useFallbackWhenMethodRemoved,
 } from './paymentMethod';
 import { getFilteredPaymentMethodsWithDefault } from './paymentMethodFilters';
 import { type PaymentMethodsRefreshAlertData } from './PaymentMethodsRefreshAlert';
@@ -583,12 +584,8 @@ const Payment = (
     const handleMethodSelect = useCallback(
         (method: PaymentMethod): void => {
             const currentMethod = selectedMethodRef.current;
-            // The fallback echoes back here as a reselection of the already-current
-            // method; only a change of method should dismiss the removed-method alert.
-            const isReselection =
-                !!currentMethod &&
-                getUniquePaymentMethodId(currentMethod.id, currentMethod.gateway) ===
-                    getUniquePaymentMethodId(method.id, method.gateway);
+            // The fallback echoes back here as a reselection; it must not dismiss the alert.
+            const isReselection = !!currentMethod && isSamePaymentMethod(currentMethod, method);
 
             if (!isReselection) {
                 dismissMethodsRefreshAlert();
@@ -710,8 +707,7 @@ const Payment = (
         selectedMethodRef.current = state.selectedMethod || props.defaultMethod;
     }, [state.selectedMethod, props.defaultMethod]);
 
-    // The only analytics emitter for method selection: keyed on the id string so it
-    // fires exactly when the effective selection changes, never on object identity.
+    // The only analytics emitter for method selection.
     const effectiveSelectedMethod = state.selectedMethod || props.defaultMethod;
     const trackedSelectedMethodId = effectiveSelectedMethod
         ? getUniquePaymentMethodId(effectiveSelectedMethod.id, effectiveSelectedMethod.gateway)
@@ -723,29 +719,16 @@ const Payment = (
         }
     }, [trackedSelectedMethodId]);
 
-    // Owns the fallback when a methods reload drops the selected method; PaymentForm
-    // follows through its selectedMethod prop.
-    useEffect(() => {
-        const { selectedMethod } = state;
-        const { defaultMethod, methods } = props;
-
-        if (
-            !selectedMethod ||
-            hasPaymentMethodWithId(
-                methods,
-                getUniquePaymentMethodId(selectedMethod.id, selectedMethod.gateway),
-            )
-        ) {
-            return;
-        }
-
-        // Keep the selection when a transiently empty list leaves nothing to fall back to.
-        if (!defaultMethod) {
-            return;
-        }
-
-        setSelectedMethod(defaultMethod);
-    }, [props.methods, props.defaultMethod, state.selectedMethod, setSelectedMethod]);
+    useFallbackWhenMethodRemoved(
+        props.methods,
+        state.selectedMethod
+            ? getUniquePaymentMethodId(state.selectedMethod.id, state.selectedMethod.gateway)
+            : undefined,
+        props.defaultMethod
+            ? getUniquePaymentMethodId(props.defaultMethod.id, props.defaultMethod.gateway)
+            : undefined,
+        () => setSelectedMethod(props.defaultMethod),
+    );
 
     useEffect(() => {
         const init = async () => {
