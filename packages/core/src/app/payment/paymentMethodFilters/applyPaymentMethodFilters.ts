@@ -8,6 +8,7 @@ import { stripeMethodsFiltering } from '@bigcommerce/checkout/stripe-utils';
 
 import { boltAndBraintreeFilter } from './boltAndBraintreeFilter';
 import { checkPaymentMethodFilter } from './checkPaymentMethodFilter';
+import { mobileOnlyMethodFilter } from './mobileOnlyMethodFilter';
 import { multiShippingFilter } from './multiShippingFilter';
 import { selectedHostedPaymentFilter } from './selectedHostedPaymentFilter';
 
@@ -15,6 +16,7 @@ import { selectedHostedPaymentFilter } from './selectedHostedPaymentFilter';
 // collapse the list to a single method when a hosted payment is already in flight.
 const FILTERS: PaymentMethodFilter[] = [
     checkPaymentMethodFilter,
+    mobileOnlyMethodFilter,
     stripeMethodsFiltering,
     boltAndBraintreeFilter,
     multiShippingFilter,

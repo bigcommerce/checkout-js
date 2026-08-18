@@ -76,7 +76,12 @@ import mapSubmitOrderErrorMessage, { mapSubmitOrderErrorTitle } from './mapSubmi
 import mapToOrderRequestBody from './mapToOrderRequestBody';
 import PaymentContext, { type EnsureBillingAddressSaved } from './PaymentContext';
 import PaymentForm from './PaymentForm';
-import { getUniquePaymentMethodId, PaymentMethodProviderType } from './paymentMethod';
+import {
+    getUniquePaymentMethodId,
+    isSamePaymentMethod,
+    PaymentMethodProviderType,
+    useFallbackWhenMethodRemoved,
+} from './paymentMethod';
 import { getFilteredPaymentMethodsWithDefault } from './paymentMethodFilters';
 import { type PaymentMethodsRefreshAlertData } from './PaymentMethodsRefreshAlert';
 
@@ -171,8 +176,6 @@ const Payment = (
     const grandTotalChangeUnsubscribe = useRef<() => void>();
     const billingAddressChangeUnsubscribe = useRef<() => void>();
     const selectedMethodRef = useRef<PaymentMethod | undefined>();
-    // TODO: CHECKOUT-10199 remove this temporary fix
-    const suppressMethodRemovedErrorUntilRef = useRef(0);
     const validationSchemasRef = useRef<validationSchemas>({});
     const lastFormValuesRef = useRef<PaymentFormValues | null>(null);
     // Set by the enhancedThemeV1 billing form. Awaited before submitOrder so the order
@@ -406,13 +409,6 @@ const Payment = (
             return;
         }
 
-        // TODO: CHECKOUT-10199 remove this temporary fix
-        if (type === 'missing_data' && Date.now() < suppressMethodRemovedErrorUntilRef.current) {
-            errorLogger.log(error);
-
-            return;
-        }
-
         return onUnhandledError(error);
     }, []);
 
@@ -464,7 +460,6 @@ const Payment = (
         async (values: PaymentFormValues) => {
             const {
                 defaultMethod,
-                loadPaymentMethods,
                 checkoutServiceSubscribe,
                 isPaymentDataRequired,
                 onCartChangedError = noop,
@@ -550,7 +545,7 @@ const Payment = (
                 analyticsTracker.paymentRejected();
 
                 if (isErrorWithType(error) && error.type === 'payment_method_invalid') {
-                    return loadPaymentMethods();
+                    return loadPaymentMethodsOrThrow();
                 }
 
                 if (isCartChangedError(error)) {
@@ -579,22 +574,23 @@ const Payment = (
     const dismissMethodsRefreshAlert = useCallback(() => setMethodsRefreshAlert(undefined), []);
 
     const setSelectedMethod = useCallback((method?: PaymentMethod): void => {
-        const { selectedMethod } = state;
-
-        if (selectedMethod === method) {
-            return;
-        }
-
-        if (method) {
-            trackSelectedPaymentMethod(method);
-        }
-
-        setState((prevState) => ({ ...prevState, selectedMethod: method }));
+        setState((prevState) =>
+            prevState.selectedMethod === method
+                ? prevState
+                : { ...prevState, selectedMethod: method },
+        );
     }, []);
 
     const handleMethodSelect = useCallback(
         (method: PaymentMethod): void => {
-            dismissMethodsRefreshAlert();
+            const currentMethod = selectedMethodRef.current;
+            // The fallback echoes back here as a reselection; it must not dismiss the alert.
+            const isReselection = !!currentMethod && isSamePaymentMethod(currentMethod, method);
+
+            if (!isReselection) {
+                dismissMethodsRefreshAlert();
+            }
+
             setSelectedMethod(method);
         },
         [dismissMethodsRefreshAlert, setSelectedMethod],
@@ -645,10 +641,6 @@ const Payment = (
     }): Promise<void> => {
         const { loadPaymentMethods, onUnhandledError = noop } = props;
 
-        if (billingCountryChange) {
-            suppressMethodRemovedErrorUntilRef.current = Date.now() + 5000;
-        }
-
         try {
             const updatedState = await loadPaymentMethods();
             const checkout = updatedState.data.getCheckout();
@@ -665,12 +657,6 @@ const Payment = (
                           capabilities: props.capabilities,
                       })
                     : undefined;
-            const defaultMethod = filteredMethodsWithDefault?.defaultMethod;
-            const selectedMethod = selectedMethodRef.current || defaultMethod;
-
-            if (selectedMethod) {
-                trackSelectedPaymentMethod(selectedMethod);
-            }
 
             if (billingCountryChange) {
                 const refreshAlert = getPaymentMethodsRefreshAlert({
@@ -680,17 +666,9 @@ const Payment = (
                     refreshedMethods: filteredMethodsWithDefault?.filteredMethods ?? [],
                 });
 
-                if (!refreshAlert.removedMethodName) {
-                    suppressMethodRemovedErrorUntilRef.current = 0;
-                }
-
                 setMethodsRefreshAlert(refreshAlert);
             }
         } catch (error) {
-            if (billingCountryChange) {
-                suppressMethodRemovedErrorUntilRef.current = 0;
-            }
-
             onUnhandledError(error);
         }
     };
@@ -728,6 +706,29 @@ const Payment = (
     useEffect(() => {
         selectedMethodRef.current = state.selectedMethod || props.defaultMethod;
     }, [state.selectedMethod, props.defaultMethod]);
+
+    // The only analytics emitter for method selection.
+    const effectiveSelectedMethod = state.selectedMethod || props.defaultMethod;
+    const trackedSelectedMethodId = effectiveSelectedMethod
+        ? getUniquePaymentMethodId(effectiveSelectedMethod.id, effectiveSelectedMethod.gateway)
+        : undefined;
+
+    useEffect(() => {
+        if (effectiveSelectedMethod) {
+            trackSelectedPaymentMethod(effectiveSelectedMethod);
+        }
+    }, [trackedSelectedMethodId]);
+
+    useFallbackWhenMethodRemoved(
+        props.methods,
+        state.selectedMethod
+            ? getUniquePaymentMethodId(state.selectedMethod.id, state.selectedMethod.gateway)
+            : undefined,
+        props.defaultMethod
+            ? getUniquePaymentMethodId(props.defaultMethod.id, props.defaultMethod.gateway)
+            : undefined,
+        () => setSelectedMethod(props.defaultMethod),
+    );
 
     useEffect(() => {
         const init = async () => {
