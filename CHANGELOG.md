@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.868.2](https://github.com/bigcommerce/checkout-js/compare/v1.868.1...v1.868.2) (2026-08-19)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10342 Fix multi-shipping modal alignment ([#3259](https://github.com/bigcommerce/checkout-js/issues/3259)) ([ed89977](https://github.com/bigcommerce/checkout-js/commit/ed899776227b88a7ab71d50c7ada1ac531920ceb))
+
 ### [1.868.1](https://github.com/bigcommerce/checkout-js/compare/v1.868.0...v1.868.1) (2026-08-19)
 
 

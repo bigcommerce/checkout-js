@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "appVersion": "1.868.1",
+  "appVersion": "1.868.2",
   "dynamicChunks": {
     "js": [
       "182-9d6c0fdd.js",
@@ -100,7 +100,7 @@
       "pay-pal-payments-pro-payment-method-21ba1791.css",
       "payment-4035110b.css",
       "ppsdkpayment-method-21ba1791.css",
-      "shipping-d86eb49a.css",
+      "shipping-45b31d80.css",
       "stripe-link-v2-button-21ba1791.css",
       "stripe-ocspayment-method-21ba1791.css",
       "vendor-async-b61cddce.css",
@@ -108,7 +108,7 @@
     ]
   },
   "js": [
-    "runtime-2593b86b.js",
+    "runtime-c125fa36.js",
     "transients-b44365fb.js",
     "vendor-initial-62b17308.js",
     "checkout-2a394763.js"
@@ -208,8 +208,8 @@
     "ppsdkpayment-method-21ba1791.css": "sha256-OwjgrptbccEF3PPYfeZ3fTl0akJter+SxoKnP0zIue4= sha384-nEYSyTqeAGP7gacTSjggQ4+V2YCPp6gHy1d9SznpAvNfQFjqRqapLs50n9qebV71 sha512-6OwJvcfBpuf4I/6ysyBeG6d2Ld171HNE04s5NranrKEUANW2sp0w3cd4nQeGw4iuYyGdln0PwBixQfrVEY22cg==",
     "ppsdkpayment-method-e81614a3.js": "sha256-BdbqznJSccjFZfeNV2J5DzMHb2ACnlAubl+yOACz+ZQ= sha384-HAuuu8c1WuoefFWSYTyY6ZdwRwkQ3lmnlgy/jcF5h8mn0v3XdPcnX0rijN4Fy7cP sha512-/85NQfqFbmSos7C7xW9UizADaDjlzAxVQ2rXf/OhgfMG6YO1g4P1e2CHtN6GUexylZMXFGmv17cKZetEsvsR5Q==",
     "react-datepicker-83e40aa4.js": "sha256-Bh5t4zYe3Nt4dFtDe/cfV0O2bPRE7aH2uR08YkdsJoc= sha384-5ejHXIiBF4r3KuALHbvRH2AqTUVpI/p0vViJ1EP4XeG0bYLH/dmW/nVX7/HZZ037 sha512-jaodvyDCPNnAT4MUhSsTTkG1urwbWZl/WqXTFkcKre3Z35rJUaRRmhYhArBlguxBVJHH/Ugz4nPNWYWsvpdpEQ==",
-    "runtime-2593b86b.js": "sha256-wbRdLwD5+fWPgn1NAhBFyhTBy3q3vvBKveer0mJPTcY= sha384-k+LDWiX9OdIqKEZkC1fwkekkvnY92Qq3EYEuk8hrgXq/jxEGIBXU0tjr4p+Rlvj4 sha512-NhFCKiu0jNSMvBi/7b+ucuqxpQvnlGlMEaVyHXm34io1H7atBKNKhmO0rsJQn2ZQddK4FxPoOJwntwbNLsyW/w==",
-    "shipping-d86eb49a.css": "sha256-5LnTUI69d4v68RDK5YN9U1bLTZSArk+DJg0tb1w0ZXk= sha384-o78mHPwR3jNKFu+tNkWAS27KNBYOYw3yKqk6rWbOp7PJvMVOkFRXMWFek2aVf4yf sha512-AlxdHaKL7B5LRkg90akSRcUw3EHOJB05bWGN9oroxyiSJBran0j6uiEW3ILCRjcE3y7DmtNm2eKYpQdPwoBSlg==",
+    "runtime-c125fa36.js": "sha256-Y8XfAD6iISibHDnjVP0ZsFvqqn8UHVIrGvuBKDZagwQ= sha384-3zfSXn4DzSdsQYi2EGG4Qj+xbrYoDs9E75NAfshKW5XkE/nn1CPnDqsl05NAc9eo sha512-8b10UFNMujjpvUCQuTro2aO0JxaiA5sk198Btz8ZVKUDxyKn0dbp4mBZn8j1m3XjBUy7cYuZVATECqKraTiUWA==",
+    "shipping-45b31d80.css": "sha256-TAAOwgX/vqf/ktEXgFsPvl6C2czQxtZerlgX6HKG3Tw= sha384-kmbowl3+xo2E4coOBYeerLP+tEXAilmzduXvZ38yWfVWBALAs49sEOzNwtPsEugr sha512-3kJ5eTb/WU6Fr+3Y3VsNB/KGmGJOX6P6AjfJorEPxha59fsLMdrRexQucQZ7gaIuK7UFJXRMhhRszZ+Xb90ndw==",
     "shipping-3a66f9c4.js": "sha256-2yepPaJC4xRxlAwNhxwatZvoNmZtQrcqcJzQjAiV588= sha384-WjFZcC0Cr6DLtiF+HgdmKPLcYDEKakrllcIwBgQlzN4Nt2rvITyefshO7Nzvccrh sha512-/BjCGUMbXUszAE6H/7gmI3he6tH1cTYig8ixdMA82U4nDDHkjW1HFp7F3vUi4hHFs4QmfkFCf5qr241nXD/YRA==",
     "square-v2-payment-method-f8fc6124.js": "sha256-CJYWPxiEJIq8gqHLZjIEr4qKSb8c2piAGurdnDak2WE= sha384-c/FtseHXMzyDeZDJ/yb5BkRL0yBQj32ORbt3cUIxJV9numLOxsW6UvI4xDGJhFQf sha512-H2fJEQRGZSqLzbUfn/bzr9N/DfJwVgF+BUT9ZMAnYb4uuTbme7WBNJ3f1qPW9hycHRo45gMbUYTF5rdmSs2Jvg==",
     "stripe-link-v2-button-21ba1791.css": "sha256-OwjgrptbccEF3PPYfeZ3fTl0akJter+SxoKnP0zIue4= sha384-nEYSyTqeAGP7gacTSjggQ4+V2YCPp6gHy1d9SznpAvNfQFjqRqapLs50n9qebV71 sha512-6OwJvcfBpuf4I/6ysyBeG6d2Ld171HNE04s5NranrKEUANW2sp0w3cd4nQeGw4iuYyGdln0PwBixQfrVEY22cg==",
