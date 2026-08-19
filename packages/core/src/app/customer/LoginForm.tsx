@@ -1,9 +1,13 @@
 import { type FormikProps, withFormik } from 'formik';
 import { noop } from 'lodash';
-import React, { type FunctionComponent, memo, useCallback } from 'react';
+import React, { type FunctionComponent, memo, useCallback, useEffect } from 'react';
 import { object, string } from 'yup';
 
-import { useCheckout } from '@bigcommerce/checkout/contexts';
+import {
+    useCheckout,
+    useSetCheckoutStepHeaderAction,
+    useThemeContext,
+} from '@bigcommerce/checkout/contexts';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import {
     TranslatedHtml,
@@ -65,6 +69,8 @@ const LoginForm: FunctionComponent<
     isFloatingLabelEnabled,
     viewType = CustomerViewType.Login,
 }) => {
+    const { enhancedThemeV1 } = useThemeContext();
+    const setHeaderAction = useSetCheckoutStepHeaderAction();
     const { checkoutState } = useCheckout(
         ({
             data: { getCart, getConfig },
@@ -99,6 +105,31 @@ const LoginForm: FunctionComponent<
     } = config;
 
     const isBuyNowCart = cart.source === 'BUY_NOW';
+
+    const showContinueAsGuestHeaderAction =
+        enhancedThemeV1 && canCancel && viewType === CustomerViewType.Login;
+
+    useEffect(() => {
+        if (!showContinueAsGuestHeaderAction) {
+            setHeaderAction(null);
+
+            return;
+        }
+
+        setHeaderAction(
+            <a
+                className="body-cta"
+                data-test="customer-continue-as-guest-link"
+                href="#"
+                id="checkout-customer-continue-as-guest"
+                onClick={preventDefault(onCancel)}
+            >
+                <TranslatedString id="customer.continue_checkout_as_guest_action" />
+            </a>,
+        );
+
+        return () => setHeaderAction(null);
+    }, [showContinueAsGuestHeaderAction, onCancel, setHeaderAction]);
 
     const changeEmailLink = useCallback(() => {
         if (!email) {
@@ -191,14 +222,16 @@ const LoginForm: FunctionComponent<
                                 </a>
                             )}
                     </span>
-                    {viewType === CustomerViewType.Login && shouldShowCreateAccountLink && (
-                        <span>
-                            <TranslatedLink
-                                id="customer.create_account_to_continue_text"
-                                onClick={onCreateAccount}
-                            />
-                        </span>
-                    )}
+                    {!enhancedThemeV1 &&
+                        viewType === CustomerViewType.Login &&
+                        shouldShowCreateAccountLink && (
+                            <span>
+                                <TranslatedLink
+                                    id="customer.create_account_to_continue_text"
+                                    onClick={onCreateAccount}
+                                />
+                            </span>
+                        )}
                 </p>
 
                 <div className="form-actions">
@@ -219,7 +252,13 @@ const LoginForm: FunctionComponent<
                             type="submit"
                             variant={ButtonVariant.Primary}
                         >
-                            <TranslatedString id="customer.sign_in_action" />
+                            <TranslatedString
+                                id={
+                                    enhancedThemeV1
+                                        ? 'customer.sign_in_action_v2'
+                                        : 'customer.sign_in_action'
+                                }
+                            />
                         </Button>
                     )}
 
@@ -235,9 +274,24 @@ const LoginForm: FunctionComponent<
                         </a>
                     )}
 
+                    {enhancedThemeV1 &&
+                        viewType === CustomerViewType.Login &&
+                        shouldShowCreateAccountLink && (
+                            <a
+                                className="button optimizedCheckout-buttonSecondary body-bold"
+                                data-test="customer-create-account-button"
+                                href="#"
+                                id="checkout-customer-create-account"
+                                onClick={preventDefault(onCreateAccount)}
+                            >
+                                <TranslatedString id="customer.create_account_instead_action" />
+                            </a>
+                        )}
+
                     {canCancel &&
                         viewType !== CustomerViewType.EnforcedLogin &&
-                        viewType !== CustomerViewType.SuggestedLogin && (
+                        viewType !== CustomerViewType.SuggestedLogin &&
+                        !(enhancedThemeV1 && viewType === CustomerViewType.Login) && (
                             <a
                                 className="button optimizedCheckout-buttonSecondary body-bold"
                                 data-test="customer-cancel-button"
