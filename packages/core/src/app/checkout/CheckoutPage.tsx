@@ -61,7 +61,7 @@ import {
     ShippingStep,
 } from './components';
 import { deleteCartOnExit } from './deleteCartOnExit';
-import getInitialBillingSameAsShipping from './getInitialBillingSameAsShipping';
+import { getInitialBillingSameAsShipping } from './getInitialBillingSameAsShipping';
 import useB2BToken from './hooks/useB2BToken';
 import { mapCheckoutComponentErrorMessage } from './mapErrorMessage';
 import mapToCheckoutProps from './mapToCheckoutProps';

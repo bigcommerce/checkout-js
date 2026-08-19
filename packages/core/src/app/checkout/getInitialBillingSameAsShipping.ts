@@ -2,14 +2,14 @@ import { type Address, type BillingAddress } from '@bigcommerce/checkout-sdk/ess
 
 import { isEmptyAddress, isEqualAddress } from '../address';
 
-export interface GetInitialBillingSameAsShippingOptions {
+interface GetInitialBillingSameAsShippingOptions {
     billingAddress?: BillingAddress;
     shippingAddress?: Address;
     defaultValue: boolean;
 }
 
 // Seed from the persisted addresses when they exist; fresh checkouts fall back to the store setting.
-export default function getInitialBillingSameAsShipping({
+export function getInitialBillingSameAsShipping({
     billingAddress,
     shippingAddress,
     defaultValue,

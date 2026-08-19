@@ -1,7 +1,7 @@
 import { getEmptyBillingAddress } from '../billing/billingAddresses.mock';
 
 import { getAddress } from './address.mock';
-import isEmptyAddress from './isEmptyAddress';
+import { isEmptyAddress } from './isEmptyAddress';
 
 describe('isEmptyAddress', () => {
     it('returns true when the address is undefined', () => {

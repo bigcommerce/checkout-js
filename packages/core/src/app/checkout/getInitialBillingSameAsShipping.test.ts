@@ -1,7 +1,7 @@
 import { getAddress } from '../address/address.mock';
 import { getBillingAddress, getEmptyBillingAddress } from '../billing/billingAddresses.mock';
 
-import getInitialBillingSameAsShipping from './getInitialBillingSameAsShipping';
+import { getInitialBillingSameAsShipping } from './getInitialBillingSameAsShipping';
 
 describe('getInitialBillingSameAsShipping', () => {
     it('returns the store default when there is no shipping address', () => {

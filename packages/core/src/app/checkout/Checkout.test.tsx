@@ -4,6 +4,7 @@ import {
     createEmbeddedCheckoutMessenger,
     type EmbeddedCheckoutMessenger,
 } from '@bigcommerce/checkout-sdk';
+import * as jestDomMatchers from '@testing-library/jest-dom/matchers';
 import userEvent from '@testing-library/user-event';
 import { noop } from 'lodash';
 import React, { act, type FunctionComponent } from 'react';
@@ -46,6 +47,10 @@ import {
 import { getCountries } from '../geography/countries.mock';
 
 import Checkout, { type CheckoutProps } from './Checkout';
+
+// The test-framework import above loads Playwright's expect, whose Locator-only matchers
+// (e.g. toBeChecked) shadow jest-dom's in the shared matcher registry; restore jest-dom's.
+expect.extend(jestDomMatchers);
 
 describe('Checkout', () => {
     let checkout: CheckoutPageNodeObject;
@@ -735,10 +740,8 @@ describe('Checkout', () => {
             await checkout.waitForShippingStep();
 
             expect(
-                screen
-                    .queryByLabelText('My billing address is the same as my shipping address.')
-                    ?.hasAttribute('checked'),
-            ).toBeFalsy();
+                screen.getByLabelText('My billing address is the same as my shipping address.'),
+            ).not.toBeChecked();
         });
 
         it('keeps the checkbox checked on reload when the saved billing address matches shipping', async () => {
@@ -761,12 +764,9 @@ describe('Checkout', () => {
             await userEvent.click(screen.getAllByRole('button', { name: 'Edit' })[1]);
             await checkout.waitForShippingStep();
 
-            // eslint-disable-next-line jest-dom/prefer-to-have-attribute
             expect(
-                screen
-                    .getByLabelText('My billing address is the same as my shipping address.')
-                    .hasAttribute('checked'),
-            ).toBeTruthy();
+                screen.getByLabelText('My billing address is the same as my shipping address.'),
+            ).toBeChecked();
         });
 
         it('seeds the checkbox from the store setting when the billing address is not set yet', async () => {
@@ -788,10 +788,8 @@ describe('Checkout', () => {
             await checkout.waitForShippingStep();
 
             expect(
-                screen
-                    .queryByLabelText('My billing address is the same as my shipping address.')
-                    ?.hasAttribute('checked'),
-            ).toBeFalsy();
+                screen.getByLabelText('My billing address is the same as my shipping address.'),
+            ).not.toBeChecked();
         });
 
         it('unchecks the checkbox after the billing step saves an address that differs from shipping', async () => {
@@ -817,10 +815,8 @@ describe('Checkout', () => {
             await checkout.waitForShippingStep();
 
             expect(
-                screen
-                    .queryByLabelText('My billing address is the same as my shipping address.')
-                    ?.hasAttribute('checked'),
-            ).toBeFalsy();
+                screen.getByLabelText('My billing address is the same as my shipping address.'),
+            ).not.toBeChecked();
         });
 
         it('rechecks the checkbox after the billing step saves an address that matches shipping', async () => {
@@ -854,12 +850,9 @@ describe('Checkout', () => {
             await userEvent.click(screen.getAllByRole('button', { name: 'Edit' })[1]);
             await checkout.waitForShippingStep();
 
-            // eslint-disable-next-line jest-dom/prefer-to-have-attribute
             expect(
-                screen
-                    .getByLabelText('My billing address is the same as my shipping address.')
-                    .hasAttribute('checked'),
-            ).toBeTruthy();
+                screen.getByLabelText('My billing address is the same as my shipping address.'),
+            ).toBeChecked();
         });
     });
 

@@ -1,7 +1,7 @@
 import { type ComparableAddress, normalizeAddress } from './isEqualAddress';
 
 // Empty = no shopper-entered content, e.g. a guest billing address holding only an email.
-export default function isEmptyAddress(address?: ComparableAddress): boolean {
+export function isEmptyAddress(address?: ComparableAddress): boolean {
     if (!address) {
         return true;
     }
