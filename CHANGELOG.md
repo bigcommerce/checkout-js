@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.868.1](https://github.com/bigcommerce/checkout-js/compare/v1.868.0...v1.868.1) (2026-08-19)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10306 Use 403 error type to render customer login ([#3252](https://github.com/bigcommerce/checkout-js/issues/3252)) ([dc1745d](https://github.com/bigcommerce/checkout-js/commit/dc1745d15da6ff40ed9efe5b048443a2b4a40cdc))
+
 ## [1.868.0](https://github.com/bigcommerce/checkout-js/compare/v1.867.0...v1.868.0) (2026-08-18)
 
 
