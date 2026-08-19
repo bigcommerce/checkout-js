@@ -62,6 +62,18 @@ export function removeBundledItems(lineItems: LineItemMap): LineItemMap {
     };
 }
 
+export function getNonBundledItems(
+    items: LineItemMap,
+    orderBundledItems?: Pick<LineItemMap, 'physicalItems' | 'digitalItems'>,
+): {
+    nonBundledItems: LineItemMap;
+    bundleItemsMap: Map<string | number, Array<PhysicalItem | DigitalItem>>;
+} {
+    return orderBundledItems
+        ? buildBundleItemsMapFromOrder(items, orderBundledItems)
+        : removeAndBundleItemsTogether(items);
+}
+
 export function removeAndBundleItemsTogether(items: LineItemMap): {
     nonBundledItems: LineItemMap;
     bundleItemsMap: Map<string | number, Array<PhysicalItem | DigitalItem>>;
