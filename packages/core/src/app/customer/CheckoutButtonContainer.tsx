@@ -1,7 +1,11 @@
 import { type CheckoutSelectors, type CheckoutService } from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent, lazy, memo, Suspense } from 'react';
 
-import { type CheckoutContextProps, useLocale } from '@bigcommerce/checkout/contexts';
+import {
+    type CheckoutContextProps,
+    useCapabilities,
+    useLocale,
+} from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { WalletButtonsContainerSkeleton } from '@bigcommerce/checkout/ui';
 import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
@@ -46,6 +50,13 @@ const CheckoutButtonContainer: FunctionComponent<
     onWalletButtonClick,
 }) => {
     const { language } = useLocale();
+    const {
+        userJourney: { disableWalletButtons },
+    } = useCapabilities();
+
+    if (disableWalletButtons) {
+        return null;
+    }
 
     try {
         checkEmbeddedSupport(availableMethodIds);
