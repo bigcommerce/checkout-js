@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.870.0](https://github.com/bigcommerce/checkout-js/compare/v1.869.0...v1.870.0) (2026-08-20)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10303 Fix `Same as shipping address` checkbox to be accurate ([#3254](https://github.com/bigcommerce/checkout-js/issues/3254)) ([f798567](https://github.com/bigcommerce/checkout-js/commit/f79856778c2efb25d67e6d476a166265becd4d09))
+
 ## [1.869.0](https://github.com/bigcommerce/checkout-js/compare/v1.868.2...v1.869.0) (2026-08-19)
 
 
