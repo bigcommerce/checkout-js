@@ -29,7 +29,6 @@ export { default as IconCardVisa } from './IconCardVisa';
 export { default as IconCardUnionPay } from './IconCardUnionPay';
 export { default as IconCardTroy } from './IconCardTroy';
 export { default as IconCheck } from './IconCheck';
-export { default as IconCheckBold } from './IconCheckBold';
 export { default as IconChevronUp } from './IconChevronUp';
 export { default as IconChevronDown } from './IconChevronDown';
 export { default as IconClose } from './IconClose';

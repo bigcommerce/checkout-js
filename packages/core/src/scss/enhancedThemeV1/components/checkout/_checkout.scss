@@ -53,7 +53,7 @@
             }
 
             div.stepHeader-counter.icon.stepHeader-counter--complete {
-                @include square(20);
+                @include square($checkoutStep-completeCheck-size);
 
                 background-color: $color-stepCompleteCheck;
                 display: block;

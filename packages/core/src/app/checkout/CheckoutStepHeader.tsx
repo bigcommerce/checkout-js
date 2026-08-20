@@ -5,13 +5,7 @@ import React, { type FunctionComponent, memo, type ReactNode } from 'react';
 import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import {
-    Button,
-    ButtonSize,
-    ButtonVariant,
-    IconCheck,
-    IconCheckBold,
-} from '@bigcommerce/checkout/ui';
+import { Button, ButtonSize, ButtonVariant, IconCheck } from '@bigcommerce/checkout/ui';
 
 import type CheckoutStepType from './CheckoutStepType';
 
@@ -37,7 +31,6 @@ const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
     type,
 }) => {
     const { enhancedThemeV1 } = useThemeContext();
-    const CheckIcon = enhancedThemeV1 ? IconCheckBold : IconCheck;
 
     return (
         <div
@@ -48,7 +41,7 @@ const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
             onClick={preventDefault(isEditable && onEdit ? () => onEdit(type) : noop)}
         >
             <div className="stepHeader-figure stepHeader-column">
-                <CheckIcon
+                <IconCheck
                     additionalClassName={classNames(
                         'stepHeader-counter',
                         'optimizedCheckout-step',
