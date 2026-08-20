@@ -88,6 +88,11 @@
         .checkout-button-container {
             padding: 0 #{spacing("base") + spacing("base")};
             margin-top: spacing("single");
+            text-align: center;
+
+            .checkoutRemote {
+                place-items: center;
+            }
         }
     }
 
