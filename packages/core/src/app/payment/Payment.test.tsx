@@ -118,7 +118,7 @@ describe('Payment step', () => {
                 ...checkoutSettings.storeConfig.checkoutSettings,
                 checkoutUserExperienceSettings: {
                     ...checkoutSettings.storeConfig.checkoutSettings.checkoutUserExperienceSettings,
-                    checkoutV2Theme: true,
+                    enhancedCheckoutThemeV1: true,
                 },
             },
         },
@@ -258,7 +258,7 @@ describe('Payment step', () => {
                     checkoutUserExperienceSettings: {
                         ...checkoutSettings.storeConfig.checkoutSettings
                             .checkoutUserExperienceSettings,
-                        checkoutV2Theme: true,
+                        enhancedCheckoutThemeV1: true,
                     },
                 },
             },
@@ -304,7 +304,7 @@ describe('Payment step', () => {
                     checkoutUserExperienceSettings: {
                         ...checkoutSettings.storeConfig.checkoutSettings
                             .checkoutUserExperienceSettings,
-                        checkoutV2Theme: true,
+                        enhancedCheckoutThemeV1: true,
                     },
                 },
             },

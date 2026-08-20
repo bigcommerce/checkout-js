@@ -491,7 +491,7 @@ describe('getCheckoutStepStatuses()', () => {
                 },
                 checkoutUserExperienceSettings: {
                     ...getStoreConfig().checkoutSettings.checkoutUserExperienceSettings,
-                    checkoutV2Theme: true,
+                    enhancedCheckoutThemeV1: true,
                 },
             },
         });
