@@ -12,10 +12,15 @@ import {
 } from '@bigcommerce/checkout/ui';
 
 import { useMultiCoupon } from '../useMultiCoupon';
+import { getCouponErrorMessage } from '../utils';
 
 import { ManageCouponsAndGiftCertificates } from './ManageCouponsAndGiftCertificates';
 
-export const CouponForm: FunctionComponent = () => {
+export interface CouponFormProps {
+    idPrefix?: string;
+}
+
+export const CouponForm: FunctionComponent<CouponFormProps> = ({ idPrefix = '' }) => {
     const [code, setCode] = useState<string>('');
     const { enhancedThemeV1 } = useThemeContext();
 
@@ -40,6 +45,8 @@ export const CouponForm: FunctionComponent = () => {
 
     const submitForm = async () => {
         if (!code) {
+            setCouponError(language.translate('redeemable.code_required_error'));
+
             return;
         }
 
@@ -49,8 +56,17 @@ export const CouponForm: FunctionComponent = () => {
             setCode('');
         } catch (error) {
             if (error instanceof Error) {
-                setCouponError(error.message);
+                setCouponError(getCouponErrorMessage(error, language));
             }
+        }
+    };
+
+    // This input can render inside the payment <form>; Enter must not submit it.
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+
+            void submitForm();
         }
     };
 
@@ -59,19 +75,20 @@ export const CouponForm: FunctionComponent = () => {
             <div
                 className="coupon-form"
                 data-test="redeemable-collapsable"
-                id="coupon-form-collapsable"
+                id={`${idPrefix}coupon-form-collapsable`}
             >
-                <label className="is-srOnly" htmlFor="redeemableCode">
+                <label className="is-srOnly" htmlFor={`${idPrefix}redeemableCode`}>
                     <TranslatedString id="redeemable.toggle_action" />
                 </label>
                 <TextInput
                     additionalClassName="form-input optimizedCheckout-form-input coupon-input"
                     aria-label={language.translate('redeemable.code_label')}
                     disabled={isCouponFormDisabled}
-                    id="redeemableCode"
+                    id={`${idPrefix}redeemableCode`}
                     name="redeemableCode"
                     onChange={handleTextInputChange}
                     onClick={clearErrorOnClick}
+                    onKeyDown={handleKeyDown}
                     placeholder={language.translate('redeemable.coupon_placeholder')}
                     testId="redeemableEntry-input"
                     value={code}
@@ -79,7 +96,7 @@ export const CouponForm: FunctionComponent = () => {
                 <Button
                     className="coupon-button optimizedCheckout-contentPrimary body-bold"
                     disabled={isCouponFormDisabled}
-                    id="applyRedeemableButton"
+                    id={`${idPrefix}applyRedeemableButton`}
                     isLoading={isApplyingCouponOrGiftCertificate}
                     onClick={submitForm}
                     testId="redeemableEntry-submit"

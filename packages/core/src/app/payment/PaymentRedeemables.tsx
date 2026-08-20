@@ -1,32 +1,61 @@
 import React, { type FunctionComponent, memo } from 'react';
 
-import { useCapabilities } from '@bigcommerce/checkout/contexts';
+import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { Fieldset, Legend } from '@bigcommerce/checkout/ui';
+import { Fieldset, Legend, MobileView } from '@bigcommerce/checkout/ui';
+import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
 import { mapToRedeemableProps, Redeemable, type RedeemableProps } from '../cart';
 import { withCheckout } from '../checkout';
+import { CollapsibleCouponForm } from '../coupon/components';
+
+// TODO: temporary flag name; replace once the real experiment is created.
+export const UNIFIED_PAYMENT_COUPON_FORM_FLAG = 'CHECKOUT-10307.unified_payment_coupon_form';
 
 const PaymentRedeemables: FunctionComponent<RedeemableProps> = (redeemableProps) => {
     const {
         userJourney: { disableCoupon, disableGiftCertificate },
     } = useCapabilities();
 
+    const { selectedState: config } = useCheckout(({ data }) => data.getConfig());
+    const isUnifiedCouponFormEnabled = isExperimentEnabled(
+        config?.checkoutSettings,
+        UNIFIED_PAYMENT_COUPON_FORM_FLAG,
+        false,
+    );
+
+    const legend = (
+        <Legend hidden>
+            <TranslatedString id="payment.redeemable_payments_text" />
+        </Legend>
+    );
+
+    if (!isUnifiedCouponFormEnabled) {
+        return (
+            <Fieldset additionalClassName="redeemable-payments" legend={legend}>
+                <Redeemable
+                    {...redeemableProps}
+                    disableCoupon={disableCoupon}
+                    disableGiftCertificate={disableGiftCertificate}
+                />
+            </Fieldset>
+        );
+    }
+
+    if (disableCoupon && disableGiftCertificate) {
+        return null;
+    }
+
     return (
-        <Fieldset
-            additionalClassName="redeemable-payments"
-            legend={
-                <Legend hidden>
-                    <TranslatedString id="payment.redeemable_payments_text" />
-                </Legend>
+        <MobileView>
+            {(matched) =>
+                matched && (
+                    <Fieldset additionalClassName="redeemable-payments" legend={legend}>
+                        <CollapsibleCouponForm idPrefix="payment-" />
+                    </Fieldset>
+                )
             }
-        >
-            <Redeemable
-                {...redeemableProps}
-                disableCoupon={disableCoupon}
-                disableGiftCertificate={disableGiftCertificate}
-            />
-        </Fieldset>
+        </MobileView>
     );
 };
 
