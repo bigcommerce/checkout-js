@@ -110,7 +110,7 @@ describe('Payment step', () => {
     let embeddedMessengerMock: EmbeddedCheckoutMessenger;
     let analyticsTracker: Partial<AnalyticsEvents>;
 
-    const themeV2Config = {
+    const enhancedThemeV1Config = {
         ...checkoutSettings,
         storeConfig: {
             ...checkoutSettings.storeConfig,
@@ -341,7 +341,7 @@ describe('Payment step', () => {
         );
     });
 
-    describe('billing country change (themeV2)', () => {
+    describe('billing country change (enhancedThemeV1)', () => {
         const scrollIntoViewMock = jest.fn();
 
         beforeAll(() => {
@@ -368,7 +368,7 @@ describe('Payment step', () => {
 
         it('does not reload payment methods or show the refresh note on initial load', async () => {
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
-                config: themeV2Config,
+                config: enhancedThemeV1Config,
             });
 
             const loadPaymentMethodsSpy = jest.spyOn(checkoutService, 'loadPaymentMethods');
@@ -383,7 +383,7 @@ describe('Payment step', () => {
 
         it('reloads payment methods in place when the billing country changes', async () => {
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
-                config: themeV2Config,
+                config: enhancedThemeV1Config,
             });
 
             const loadPaymentMethodsSpy = jest.spyOn(checkoutService, 'loadPaymentMethods');
@@ -414,7 +414,7 @@ describe('Payment step', () => {
 
         it('disables Place Order and overlays the method list while the reload is in flight', async () => {
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
-                config: themeV2Config,
+                config: enhancedThemeV1Config,
             });
 
             render(<CheckoutTest {...defaultProps} />);
@@ -461,7 +461,7 @@ describe('Payment step', () => {
 
         it('does not reload payment methods for a billing update that keeps the same country', async () => {
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
-                config: themeV2Config,
+                config: enhancedThemeV1Config,
             });
 
             const loadPaymentMethodsSpy = jest.spyOn(checkoutService, 'loadPaymentMethods');
@@ -483,7 +483,7 @@ describe('Payment step', () => {
 
         it('shows a dismissible note when the list refreshes and the selection survives', async () => {
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
-                config: themeV2Config,
+                config: enhancedThemeV1Config,
             });
 
             render(<CheckoutTest {...defaultProps} />);
@@ -519,7 +519,7 @@ describe('Payment step', () => {
 
         it('prompts to select another method when the selection is gone after the refresh', async () => {
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
-                config: themeV2Config,
+                config: enhancedThemeV1Config,
             });
 
             render(<CheckoutTest {...defaultProps} />);
@@ -549,11 +549,69 @@ describe('Payment step', () => {
             await waitFor(() => {
                 expect(screen.getByTestId('payment-methods-refresh-alert')).toHaveFocus();
             });
+
+            expect(
+                await screen.findByRole('radio', { name: 'Cash on Delivery', checked: true }),
+            ).toBeInTheDocument();
         });
 
-        it('re-tracks the shopper selection, not the default method, after a country reload', async () => {
+        it('falls back to the default method when the selected method is removed by the refresh', async () => {
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
-                config: themeV2Config,
+                config: enhancedThemeV1Config,
+            });
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            // Move off the default method so the fallback is observable.
+            await act(async () =>
+                userEvent.click(screen.getByRole('radio', { name: 'Cash on Delivery' })),
+            );
+
+            expect(
+                screen.getByRole('radio', { name: 'Cash on Delivery', checked: true }),
+            ).toBeInTheDocument();
+
+            jest.mocked(analyticsTracker.selectedPaymentMethod)?.mockClear();
+
+            mockBillingAddressPut('US', 'United States');
+            checkout.setRequestHandler(
+                rest.get('/api/storefront/payments', (_, res, ctx) =>
+                    res(ctx.json(payments.filter(({ id }) => id !== 'cod'))),
+                ),
+            );
+
+            await act(async () => {
+                await checkoutService.updateBillingAddress({ countryCode: 'US' });
+            });
+
+            expect(
+                await screen.findByRole('radio', { name: 'Pay in Store', checked: true }),
+            ).toBeInTheDocument();
+            expect(
+                screen.queryByRole('radio', { name: 'Cash on Delivery' }),
+            ).not.toBeInTheDocument();
+
+            // The automatic fallback must not dismiss the refresh alert...
+            expect(screen.getByTestId('payment-methods-refresh-alert')).toBeInTheDocument();
+            // ...nor surface an error modal from deinitializing the removed method.
+            expect(screen.queryByText("Something's gone wrong")).not.toBeInTheDocument();
+
+            // Exactly one analytics event for the fallback, despite the checklist echo.
+            expect(analyticsTracker.selectedPaymentMethod).toHaveBeenCalledTimes(1);
+            expect(analyticsTracker.selectedPaymentMethod).toHaveBeenCalledWith(
+                'Pay in Store',
+                'instore',
+            );
+        });
+
+        // The cart total path unmounts the payment form behind the loading skeleton, so
+        // the fallback here comes from the remount re-seeding Formik rather than from
+        // the effect in PaymentForm.
+        it('falls back to the default method after a cart total reload', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                config: enhancedThemeV1Config,
             });
 
             render(<CheckoutTest {...defaultProps} />);
@@ -564,23 +622,113 @@ describe('Payment step', () => {
                 userEvent.click(screen.getByRole('radio', { name: 'Cash on Delivery' })),
             );
 
+            checkout.setRequestHandler(
+                rest.get('/api/storefront/payments', (_, res, ctx) =>
+                    res(ctx.json(payments.filter(({ id }) => id !== 'cod'))),
+                ),
+            );
+
+            checkout.updateCheckout('put', '/checkout/*', {
+                ...checkoutWithShippingAndBilling,
+                grandTotal: checkoutWithShippingAndBilling.grandTotal + 1,
+            });
+
+            await act(async () => {
+                await checkoutService.updateCheckout({ customerMessage: 'gift wrap please' });
+            });
+
+            expect(
+                await screen.findByRole('radio', { name: 'Pay in Store', checked: true }),
+            ).toBeInTheDocument();
+            expect(screen.queryByText("Something's gone wrong")).not.toBeInTheDocument();
+        });
+
+        it('falls back to the default method when the order is rejected with payment_method_invalid', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                config: enhancedThemeV1Config,
+            });
+
+            const loadPaymentMethodsSpy = jest.spyOn(checkoutService, 'loadPaymentMethods');
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            await act(async () =>
+                userEvent.click(screen.getByRole('radio', { name: 'Cash on Delivery' })),
+            );
+
+            const callsBeforeSubmit = loadPaymentMethodsSpy.mock.calls.length;
+
+            checkout.setRequestHandler(
+                // Shaped as an internal error response so the SDK maps it to a
+                // PaymentMethodInvalidError (type: 'payment_method_invalid').
+                rest.post('/internalapi/v1/checkout/order', (_, res, ctx) =>
+                    res(
+                        ctx.status(400),
+                        ctx.json({
+                            errors: {},
+                            status: 400,
+                            title: 'Payment method is invalid.',
+                            type: 'invalid_payment_provider',
+                        }),
+                    ),
+                ),
+            );
+            checkout.setRequestHandler(
+                rest.get('/api/storefront/payments', (_, res, ctx) =>
+                    res(ctx.json(payments.filter(({ id }) => id !== 'cod'))),
+                ),
+            );
+
+            await act(async () => {
+                await userEvent.click(screen.getByText(/place order/i));
+            });
+
+            await waitFor(() =>
+                expect(loadPaymentMethodsSpy.mock.calls.length).toBeGreaterThan(callsBeforeSubmit),
+            );
+
+            expect(
+                await screen.findByRole('radio', { name: 'Pay in Store', checked: true }),
+            ).toBeInTheDocument();
+
+            // Only the intended payment_method_invalid modal - tearing down the removed
+            // method must not add a MissingPaymentMethod error on top of it.
+            expect(screen.getByRole('dialog')).toHaveTextContent(
+                'The selected payment method is no longer valid. Click OK to see the most up-to-date payment methods.',
+            );
+        });
+
+        it('does not re-track the selection when it survives a country reload', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
+                config: enhancedThemeV1Config,
+            });
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            await act(async () =>
+                userEvent.click(screen.getByRole('radio', { name: 'Cash on Delivery' })),
+            );
+
+            jest.mocked(analyticsTracker.selectedPaymentMethod)?.mockClear();
+
             mockBillingAddressPut('US', 'United States');
 
             await act(async () => {
                 await checkoutService.updateBillingAddress({ countryCode: 'US' });
             });
 
-            await waitFor(() =>
-                expect(analyticsTracker.selectedPaymentMethod).toHaveBeenLastCalledWith(
-                    'Cash on Delivery',
-                    'cod',
-                ),
-            );
+            await screen.findByTestId('payment-methods-refresh-alert');
+
+            expect(analyticsTracker.selectedPaymentMethod).not.toHaveBeenCalled();
         });
 
         it('clears the refresh note when the methods reload for a cart total change', async () => {
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
-                config: themeV2Config,
+                config: enhancedThemeV1Config,
             });
 
             render(<CheckoutTest {...defaultProps} />);
@@ -618,7 +766,7 @@ describe('Payment step', () => {
 
         it('dismisses the refresh note once the shopper selects a payment method', async () => {
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
-                config: themeV2Config,
+                config: enhancedThemeV1Config,
             });
 
             render(<CheckoutTest {...defaultProps} />);
@@ -642,7 +790,7 @@ describe('Payment step', () => {
 
         it('stops watching the billing country after unmount', async () => {
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
-                config: themeV2Config,
+                config: enhancedThemeV1Config,
             });
 
             const loadPaymentMethodsSpy = jest.spyOn(checkoutService, 'loadPaymentMethods');

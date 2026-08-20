@@ -106,7 +106,6 @@ export interface WithCheckoutProps {
     isPersistingB2BMetadata: boolean;
     isPriceHiddenFromGuests: boolean;
     isShowingWalletButtonsOnTop: boolean;
-    isShippingDiscountDisplayEnabled: boolean;
     loginUrl: string;
     cartUrl: string;
     createAccountUrl: string;
@@ -136,7 +135,6 @@ const Checkout = ({
     isGuestEnabled,
     isShowingWalletButtonsOnTop,
     hasCartChanged,
-    isShippingDiscountDisplayEnabled,
     clearError,
     error,
     steps,
@@ -514,7 +512,6 @@ const Checkout = ({
                         consignments={consignments || []}
                         isBillingSameAsShipping={isBillingSameAsShipping}
                         isMultiShippingMode={isMultiShippingMode}
-                        isShippingDiscountDisplayEnabled={isShippingDiscountDisplayEnabled}
                         navigateNextStep={handleShippingNextStep}
                         onCreateAccount={handleShippingCreateAccount}
                         onEdit={handleEditStep}

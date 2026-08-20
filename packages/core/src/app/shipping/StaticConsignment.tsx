@@ -14,13 +14,9 @@ import './StaticConsignment.scss';
 
 interface StaticConsignmentProps {
     consignment: Consignment;
-    isShippingDiscountDisplayEnabled: boolean;
 }
 
-const StaticConsignment: FunctionComponent<StaticConsignmentProps> = ({
-    consignment,
-    isShippingDiscountDisplayEnabled,
-}) => {
+const StaticConsignment: FunctionComponent<StaticConsignmentProps> = ({ consignment }) => {
     const { paypalFastlaneAddresses } = usePayPalFastlaneAddress();
 
     const {
@@ -45,11 +41,7 @@ const StaticConsignment: FunctionComponent<StaticConsignmentProps> = ({
                         <StaticShippingOption
                             displayAdditionalInformation={false}
                             method={selectedShippingOption}
-                            shippingCostAfterDiscount={
-                                isShippingDiscountDisplayEnabled
-                                    ? comparisonShippingCost
-                                    : undefined
-                            }
+                            shippingCostAfterDiscount={comparisonShippingCost}
                         />
                     </div>
                 </div>

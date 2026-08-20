@@ -14,7 +14,7 @@ describe('getContinueAsGuestButtonLabelId()', () => {
         config = getStoreConfig();
     });
 
-    it('returns generic continue label when themeV2 is disabled', () => {
+    it('returns generic continue label when enhancedThemeV1 is disabled', () => {
         expect(getContinueAsGuestButtonLabelId(false, cart, config)).toBe('customer.continue');
     });
 
@@ -39,7 +39,7 @@ describe('getContinueAsGuestButtonLabelId()', () => {
         );
     });
 
-    it('returns generic continue label when themeV2 is disabled even if shipping step is complete', () => {
+    it('returns generic continue label when enhancedThemeV1 is disabled even if shipping step is complete', () => {
         expect(getContinueAsGuestButtonLabelId(false, cart, config, true)).toBe(
             'customer.continue',
         );

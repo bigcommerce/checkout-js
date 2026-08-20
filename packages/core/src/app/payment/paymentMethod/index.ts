@@ -8,6 +8,8 @@ export {
 } from './getUniquePaymentMethodId';
 export { default as getPaymentMethodName } from './getPaymentMethodName';
 export { default as hasPaymentMethodWithId } from './hasPaymentMethodWithId';
+export { default as isSamePaymentMethod } from './isSamePaymentMethod';
+export { default as useFallbackWhenMethodRemoved } from './useFallbackWhenMethodRemoved';
 export { usePoMethodDisabledReason } from './usePoMethodDisabledReason';
 export {
     default as CreditCardFieldsetValues,

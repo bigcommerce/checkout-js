@@ -7,11 +7,12 @@ const IconCardElectronSvg: FunctionComponent = () => (
         aria-labelledby="iconCardElectronTitle"
         fill="none"
         height="48"
+        role="img"
         viewBox="0 0 70 48"
         width="70"
         xmlns="http://www.w3.org/2000/svg"
     >
-        <title id="iconCardDiscoverTitle">Electron</title>
+        <title id="iconCardElectronTitle">Electron</title>
         <rect fill="#293381" height="47" rx="5.5" stroke="#D9D9D9" width="69" x="0.5" y="0.5" />
         <path
             clipRule="evenodd"

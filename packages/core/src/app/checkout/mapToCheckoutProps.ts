@@ -2,7 +2,6 @@ import { type CheckoutSelectors, type CustomError } from '@bigcommerce/checkout-
 import { createSelector } from 'reselect';
 
 import { type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
-import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
 import { EMPTY_ARRAY } from '../common/utility';
 
@@ -40,10 +39,6 @@ export default function mapToCheckoutProps({
     );
 
     const walletButtonsOnTopFlag = Boolean(checkoutUserExperienceSettings.walletButtonsOnTop);
-    const isShippingDiscountDisplayEnabled = isExperimentEnabled(
-        data.getConfig()?.checkoutSettings,
-        'PROJECT-6643.enable_shipping_discounts_in_orders',
-    );
 
     return {
         billingAddress: data.getBillingAddress(),
@@ -54,7 +49,6 @@ export default function mapToCheckoutProps({
         hasCartChanged: submitOrderError && submitOrderError.type === 'cart_changed', // TODO: Need to clear the error once it's displayed
         isGuestEnabled,
         isLoadingCheckout: statuses.isLoadingCheckout(),
-        isShippingDiscountDisplayEnabled,
         isPending: statuses.isPending(),
         isPersistingB2BMetadata: statuses.isPersistingB2BMetadata(),
         isPriceHiddenFromGuests,

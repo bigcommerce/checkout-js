@@ -6,7 +6,11 @@ import {
 import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';
 
-import { CheckoutProvider, LocaleProvider } from '@bigcommerce/checkout/contexts';
+import {
+    CheckoutProvider,
+    defaultCapabilities,
+    LocaleProvider,
+} from '@bigcommerce/checkout/contexts';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
 import { type CheckoutButtonProps } from '@bigcommerce/checkout/payment-integration-api';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
@@ -107,6 +111,33 @@ describe('CheckoutButtonContainer', () => {
         const { container } = renderCheckoutButtonContainer();
 
         expect(container).toBeEmptyDOMElement();
+    });
+
+    it('does not render when the disableWalletButtons capability is enabled', () => {
+        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
+            ...getStoreConfig(),
+            checkoutSettings: {
+                ...getStoreConfig().checkoutSettings,
+                remoteCheckoutProviders: ['applepay'],
+                capabilities: {
+                    ...defaultCapabilities,
+                    userJourney: {
+                        ...defaultCapabilities.userJourney,
+                        disableWalletButtons: true,
+                    },
+                },
+            },
+        });
+
+        const { container } = renderCheckoutButtonContainer();
+
+        expect(container).toBeEmptyDOMElement();
+    });
+
+    it('renders wallet buttons when disableWalletButtons capability is absent', async () => {
+        renderCheckoutButtonContainer();
+
+        expect(await screen.findByTestId('applepayCheckoutButton')).toBeInTheDocument();
     });
 
     it('does not render when payment data is not required', () => {

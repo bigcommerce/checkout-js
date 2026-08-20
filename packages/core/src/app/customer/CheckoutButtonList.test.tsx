@@ -1,24 +1,40 @@
+import {
+    type CheckoutSelectors,
+    type CheckoutService,
+    createCheckoutService,
+} from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React from 'react';
 
+import { CheckoutProvider, defaultCapabilities } from '@bigcommerce/checkout/contexts';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../config/config.mock';
 
-import CheckoutButtonList from './CheckoutButtonList';
+import CheckoutButtonList, { type CheckoutButtonListProps } from './CheckoutButtonList';
 
 describe('CheckoutButtonList', () => {
-    const checkoutSettings = getStoreConfig().checkoutSettings;
+    let checkoutService: CheckoutService;
+    let checkoutState: CheckoutSelectors;
+
+    const renderCheckoutButtonList = (props: Partial<CheckoutButtonListProps> = {}) =>
+        render(
+            <CheckoutProvider checkoutService={checkoutService}>
+                <CheckoutButtonList deinitialize={noop} initialize={noop} {...props} />
+            </CheckoutProvider>,
+        );
+
+    beforeEach(() => {
+        checkoutService = createCheckoutService();
+        checkoutState = checkoutService.getState();
+
+        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
+    });
 
     it('filters out unsupported methods', async () => {
-        render(
-            <CheckoutButtonList
-                checkoutSettings={checkoutSettings}
-                deinitialize={noop}
-                initialize={noop}
-                methodIds={['applepay', 'amazonpay', 'braintreevisacheckout']}
-            />,
-        );
+        renderCheckoutButtonList({
+            methodIds: ['applepay', 'amazonpay', 'braintreevisacheckout'],
+        });
 
         expect(await screen.findByTestId('applepayCheckoutButton')).toBeInTheDocument();
         expect(
@@ -28,42 +44,50 @@ describe('CheckoutButtonList', () => {
     });
 
     it('does not crash when no methods are passed', () => {
-        render(
-            <CheckoutButtonList
-                checkoutSettings={checkoutSettings}
-                deinitialize={noop}
-                initialize={noop}
-            />,
-        );
+        renderCheckoutButtonList();
 
         expect(screen.queryByText('Or continue with')).not.toBeInTheDocument();
     });
 
     it('does not render if there are no supported methods', () => {
-        render(
-            <CheckoutButtonList
-                checkoutSettings={checkoutSettings}
-                deinitialize={noop}
-                initialize={noop}
-                methodIds={['foobar']}
-            />,
-        );
+        renderCheckoutButtonList({ methodIds: ['foobar'] });
 
         expect(screen.queryByText('Or continue with')).not.toBeInTheDocument();
     });
 
     it('does not render the translated string when initializing', () => {
-        render(
-            <CheckoutButtonList
-                checkoutSettings={checkoutSettings}
-                deinitialize={noop}
-                initialize={noop}
-                isInitializing={true}
-                methodIds={['amazonpay', 'braintreevisacheckout']}
-            />,
-        );
+        renderCheckoutButtonList({
+            isInitializing: true,
+            methodIds: ['amazonpay', 'braintreevisacheckout'],
+        });
 
         expect(screen.queryByText('Or continue with')).not.toBeInTheDocument();
+    });
+
+    it('does not render wallet buttons when the disableWalletButtons capability is true', () => {
+        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
+            ...getStoreConfig(),
+            checkoutSettings: {
+                ...getStoreConfig().checkoutSettings,
+                capabilities: {
+                    ...defaultCapabilities,
+                    userJourney: {
+                        ...defaultCapabilities.userJourney,
+                        disableWalletButtons: true,
+                    },
+                },
+            },
+        });
+
+        const { container } = renderCheckoutButtonList({ methodIds: ['applepay'] });
+
+        expect(container).toBeEmptyDOMElement();
+    });
+
+    it('renders wallet buttons when the disableWalletButtons capability is absent', async () => {
+        renderCheckoutButtonList({ methodIds: ['applepay'] });
+
+        expect(await screen.findByTestId('applepayCheckoutButton')).toBeInTheDocument();
     });
 
     it('notifies parent if methods are incompatible with Embedded Checkout', () => {
@@ -73,16 +97,11 @@ describe('CheckoutButtonList', () => {
             throw new Error();
         });
 
-        render(
-            <CheckoutButtonList
-                checkEmbeddedSupport={checkEmbeddedSupport}
-                checkoutSettings={checkoutSettings}
-                deinitialize={noop}
-                initialize={noop}
-                methodIds={methodIds}
-                onError={onError}
-            />,
-        );
+        renderCheckoutButtonList({
+            checkEmbeddedSupport,
+            methodIds,
+            onError,
+        });
 
         expect(checkEmbeddedSupport).toHaveBeenCalledWith(methodIds);
 

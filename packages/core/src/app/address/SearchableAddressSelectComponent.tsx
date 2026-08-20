@@ -1,14 +1,13 @@
 import { type Address, type CustomerAddress } from '@bigcommerce/checkout-sdk';
-import React, { type ChangeEvent, type FunctionComponent, useMemo, useState } from 'react';
+import React, { type ChangeEvent, type FunctionComponent, useState } from 'react';
 
-import { useLocale } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
-import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { TextInput } from '@bigcommerce/checkout/ui';
 
-import AddressType from './AddressType';
-import { searchingAddresses } from './searchingAddresses';
+import { AddNewAddressItem } from './AddNewAddressItem';
+import { AddressSelectSearchItem } from './AddressSelectSearchItem';
+import type AddressType from './AddressType';
 import StaticAddress from './StaticAddress';
+import { useCompanyAddressSearch } from './useCompanyAddressSearch';
 import { useRestrictManualAddressEntry } from './useRestrictManualAddressEntry';
 
 export interface SearchableAddressSelectProps {
@@ -28,16 +27,13 @@ export const SearchableAddressSelectComponent: FunctionComponent<SearchableAddre
 }) => {
     const [searchQuery, setSearchQuery] = useState('');
 
-    const { language } = useLocale();
     const restrictManualAddressEntry = useRestrictManualAddressEntry(type);
 
-    const filteredAddresses = useMemo(() => {
-        const addressesByType = addresses.filter((address) =>
-            type === AddressType.Shipping ? address.isShipping : address.isBilling,
-        );
-
-        return searchingAddresses(addressesByType, searchQuery);
-    }, [addresses, searchQuery, type]);
+    const { filteredAddresses } = useCompanyAddressSearch({
+        addresses,
+        searchQuery,
+        type,
+    });
 
     const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(e.target.value);
@@ -49,32 +45,15 @@ export const SearchableAddressSelectComponent: FunctionComponent<SearchableAddre
             id="addressDropdown"
         >
             {!restrictManualAddressEntry && (
-                <li className="dropdown-menu-item dropdown-menu-item--select">
-                    <a
-                        data-test="add-new-address"
-                        href="#"
-                        onClick={preventDefault(() => onUseNewAddress(selectedAddress))}
-                    >
-                        <TranslatedString id="address.enter_address_action" />
-                    </a>
-                </li>
-            )}
-            {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
-            <li
-                className="dropdown-menu-item"
-                data-test="address-select-search"
-                onClick={(e) => e.stopPropagation()}
-            >
-                <TextInput
-                    aria-label={language.translate('address.search_addresses')}
-                    data-test="address-select-search-input"
-                    name="searchAddresses"
-                    onChange={handleSearchChange}
-                    placeholder={language.translate('address.search_addresses')}
-                    type="text"
-                    value={searchQuery}
+                <AddNewAddressItem
+                    onUseNewAddress={onUseNewAddress}
+                    selectedAddress={selectedAddress}
                 />
-            </li>
+            )}
+            <AddressSelectSearchItem
+                onSearchChange={handleSearchChange}
+                searchQuery={searchQuery}
+            />
             {filteredAddresses.map((address) => (
                 <li
                     className="dropdown-menu-item dropdown-menu-item--select"

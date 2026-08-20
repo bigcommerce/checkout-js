@@ -42,3 +42,28 @@ export function getPaypalCreditPaymentMethod(): PaymentMethod {
     };
 }
 
+export function getMobilePaymentMethod(): PaymentMethod {
+    return {
+        id: 'authorizenetMobile',
+        gateway: undefined,
+        logoUrl: '',
+        method: 'credit-card',
+        supportedCards: ['VISA', 'AMEX', 'MC'],
+        initializationData: {
+            showOnlyOnMobileDevices: true,
+        },
+        config: {
+            displayName: 'Authorizenet',
+            cardCode: true,
+            enablePaypal: undefined,
+            hasDefaultStoredInstrument: false,
+            helpText: '',
+            is3dsEnabled: undefined,
+            isVisaCheckoutEnabled: undefined,
+            merchantId: undefined,
+            testMode: false,
+        },
+        type: 'PAYMENT_TYPE_API',
+        skipRedirectConfirmationAlert: false,
+    };
+}

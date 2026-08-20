@@ -1,6 +1,7 @@
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
+import { ThemeContext } from '@bigcommerce/checkout/contexts';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import Modal, { type ModalProps } from './Modal';
@@ -47,5 +48,25 @@ describe('Modal', () => {
         render(<Modal {...defaultProps} footer="Footer" />);
 
         expect(screen.getByTestId('modal-footer')).toHaveTextContent('Footer');
+    });
+
+    it('adds enhancedThemeV1 class when enhanced theme is enabled', () => {
+        render(
+            <ThemeContext.Provider value={{ enhancedThemeV1: true }}>
+                <Modal {...defaultProps} />
+            </ThemeContext.Provider>,
+        );
+
+        expect(screen.getByRole('dialog')).toHaveClass('enhancedThemeV1');
+    });
+
+    it('does not add enhancedThemeV1 class when enhanced theme is disabled', () => {
+        render(
+            <ThemeContext.Provider value={{ enhancedThemeV1: false }}>
+                <Modal {...defaultProps} />
+            </ThemeContext.Provider>,
+        );
+
+        expect(screen.getByRole('dialog')).not.toHaveClass('enhancedThemeV1');
     });
 });

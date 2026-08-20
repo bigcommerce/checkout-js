@@ -111,9 +111,7 @@ describe('SearchableAddressSelectComponent', () => {
     });
 
     it('filters addresses when user types in search input', () => {
-        const addresses = getB2BCustomer().addresses;
-
-        renderComponent({ addresses });
+        renderComponent();
 
         const searchInput = screen.getByRole('textbox', { name: 'Search addresses' });
         const initialOptionCount = screen.getAllByTestId('address-select-option').length;

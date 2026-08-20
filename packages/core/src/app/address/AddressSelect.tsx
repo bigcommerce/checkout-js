@@ -1,5 +1,5 @@
 import { type Address, type CustomerAddress } from '@bigcommerce/checkout-sdk';
-import React, { memo, type ReactNode } from 'react';
+import React, { memo, type ReactNode, useMemo } from 'react';
 
 import { useCapabilities } from '@bigcommerce/checkout/contexts';
 import {
@@ -13,6 +13,7 @@ import { AddressSelectComponent } from './AddressSelectComponent';
 import type AddressType from './AddressType';
 import isEqualAddress from './isEqualAddress';
 import { SearchableAddressSelectComponent } from './SearchableAddressSelectComponent';
+import { COMPANY_ADDRESS_SEARCH_LIMIT, matchesAddressType } from './useCompanyAddressSearch';
 
 import './AddressSelect.scss';
 
@@ -40,6 +41,17 @@ const AddressSelect = ({
     } = useCapabilities();
     const { shouldShowPayPalFastlaneLabel } = usePayPalFastlaneAddress();
 
+    const dropdownAddresses = useMemo(
+        () =>
+            hasCompanyAddressBook
+                ? addresses.filter((address) => matchesAddressType(address, type))
+                : addresses,
+        [addresses, hasCompanyAddressBook, type],
+    );
+
+    const shouldShowSearch =
+        hasCompanyAddressBook && dropdownAddresses.length >= COMPANY_ADDRESS_SEARCH_LIMIT;
+
     const handleSelectAddress = (newAddress: Address) => {
         if (!isEqualAddress(selectedAddress, newAddress)) {
             onSelectAddress(newAddress);
@@ -55,7 +67,7 @@ const AddressSelect = ({
             <div className="dropdown--select">
                 <DropdownTrigger
                     dropdown={
-                        hasCompanyAddressBook ? (
+                        shouldShowSearch ? (
                             <SearchableAddressSelectComponent
                                 addresses={addresses}
                                 onSelectAddress={handleSelectAddress}
@@ -65,7 +77,7 @@ const AddressSelect = ({
                             />
                         ) : (
                             <AddressSelectComponent
-                                addresses={addresses}
+                                addresses={dropdownAddresses}
                                 onSelectAddress={handleSelectAddress}
                                 onUseNewAddress={handleUseNewAddress}
                                 selectedAddress={selectedAddress}
