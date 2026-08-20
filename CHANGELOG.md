@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.871.0](https://github.com/bigcommerce/checkout-js/compare/v1.870.0...v1.871.0) (2026-08-20)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10304 minor ui-ux fixes ([#3260](https://github.com/bigcommerce/checkout-js/issues/3260)) ([c1b74fd](https://github.com/bigcommerce/checkout-js/commit/c1b74fd3164af514843008f562e0a1e3de87573c))
+* **checkout:** CHECKOUT-10304 UI-UX changes for customer login form for enhancedThemev1 ([#3262](https://github.com/bigcommerce/checkout-js/issues/3262)) ([e505fe1](https://github.com/bigcommerce/checkout-js/commit/e505fe1d51485bfc0d2e279cfb4e3a1301fe7487))
+* **checkout:** CHECKOUT-10304 ui-ux changes for order summary for enhancedThemev1 ([#3261](https://github.com/bigcommerce/checkout-js/issues/3261)) ([9af75b7](https://github.com/bigcommerce/checkout-js/commit/9af75b79ca713dadde03921462ef8b5c81227891))
+
 ## [1.870.0](https://github.com/bigcommerce/checkout-js/compare/v1.869.0...v1.870.0) (2026-08-20)
 
 
