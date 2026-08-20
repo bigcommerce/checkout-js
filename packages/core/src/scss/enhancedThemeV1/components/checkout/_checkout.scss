@@ -46,14 +46,26 @@
             padding-bottom: 0;
         }
 
-        // Collapsed (inactive) steps get a smaller title; the active step
-        // keeps the default header size.
         .checkout-step:not(.checkout-step--current) {
             .stepHeader-title {
                 font-size: $fontSize-smaller;
-                // The base theme's 9rem min-width pushes the check icon far
-                // away from short titles.
                 min-width: 0;
+            }
+
+            div.stepHeader-counter.icon.stepHeader-counter--complete {
+                @include square(20);
+
+                background-color: $color-stepCompleteCheck;
+                display: block;
+                margin-left: spacing("third");
+                order: 1;
+                transform: none;
+
+                svg {
+                    fill: $color-white;
+                    height: 100%;
+                    width: 100%;
+                }
             }
         }
 
@@ -61,34 +73,8 @@
             flex-wrap: wrap;
             padding: 0 0 spacing("single");
 
-            // Overrides the global .remove-checkout-step-numbers rule, which
-            // hides the step counter icon: completed steps show a green check
-            // after the title, incomplete steps show nothing.
             div.stepHeader-counter.icon {
                 display: none;
-
-                &.stepHeader-counter--complete {
-                    @include square(20);
-
-                    background-color: $color-stepCompleteCheck;
-                    display: block;
-                    margin-left: spacing("third");
-                    order: 1;
-                    transform: none;
-
-                    svg {
-                        fill: $color-white;
-                        height: 100%;
-                        width: 100%;
-
-                        // Stroke on top of the fill makes the check bolder
-                        // than the stock icon glyph.
-                        path {
-                            stroke: $color-white;
-                            stroke-width: 1.5;
-                        }
-                    }
-                }
             }
 
             .stepHeader-body {

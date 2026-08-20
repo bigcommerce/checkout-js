@@ -79,6 +79,7 @@ export {
     IconCardUnionPay,
     IconCardVisa,
     IconCheck,
+    IconCheckBold,
     IconClose,
     IconCloseWithBorder,
     IconBitCoin,
