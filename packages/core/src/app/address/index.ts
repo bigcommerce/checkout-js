@@ -10,6 +10,7 @@ export { default as StaticAddress } from './StaticAddress';
 export { default as isValidAddress } from './isValidAddress';
 export { default as isValidCustomerAddress } from './isValidCustomerAddress';
 export { default as isEqualAddress } from './isEqualAddress';
+export { isEmptyAddress } from './isEmptyAddress';
 export { default as getAddressExtraFields } from './getAddressExtraFields';
 export { default as setDefaultAddress } from './setDefaultAddress';
 export { default as getShouldSaveAddress } from './getShouldSaveAddress';
