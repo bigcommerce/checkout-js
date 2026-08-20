@@ -137,7 +137,9 @@
         "customer": {
             "continue_as_guest_action": "Continue as guest",
             "continue_as_stripe_customer_action": "Continue with Link",
+            "continue_checkout_as_guest_action": "Continue checkout as a guest",
             "create_account_action": "Create Account",
+            "create_account_instead_action": "Create an account instead",
             "continue": "Continue",
             "continue_to_shipping_action": "Continue to Shipping",
             "set_password_action": "Save Password",
@@ -183,6 +185,7 @@
             "reset_password_before_login_error": "Sign-in is currently unavailable. You will receive an e-mail in the next 5 minutes with instructions for resetting your password. If you don't receive this e-mail, please check your junk mail folder or contact us for further assistance.",
             "returning_customer_text": "Returning Customer",
             "sign_in_action": "Sign In",
+            "sign_in_action_v2": "Sign in",
             "sign_in_error": "The email or password you entered is not valid.",
             "sign_in_throttled_error": "Due to excessive login attempts, please wait 10 seconds before attempting to log in again.",
             "sign_out_action": "Sign Out",
