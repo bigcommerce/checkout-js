@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.872.1](https://github.com/bigcommerce/checkout-js/compare/v1.872.0...v1.872.1) (2026-08-20)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10344 Add object has own polyfill ([#3267](https://github.com/bigcommerce/checkout-js/issues/3267)) ([3ccc2f6](https://github.com/bigcommerce/checkout-js/commit/3ccc2f63bbf37ab0b72e2b898f265e38279a3b4e))
+
 ## [1.872.0](https://github.com/bigcommerce/checkout-js/compare/v1.871.0...v1.872.0) (2026-08-20)
 
 
