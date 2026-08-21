@@ -156,18 +156,19 @@ describe('CheckoutButtonContainer', () => {
         expect(await screen.findByTestId('applepayCheckoutButton')).toBeInTheDocument();
     });
 
-    it('renders the unstable network message when the wallet button chunk fails to load', async () => {
+    it('renders nothing for the buttons and removes the skeleton when the wallet button chunk fails to load', async () => {
         jest.mocked(resolveCheckoutButton).mockReturnValue(undefined);
 
         renderCheckoutButtonContainer();
 
-        const errorMessage = await screen.findByText(/the server is taking too long to respond/i);
-
-        expect(errorMessage).toBeInTheDocument();
-
         await waitFor(() => {
             expect(document.querySelector('.walletbuttons-skeleton')).not.toBeInTheDocument();
         });
+
+        expect(
+            screen.queryByText(/the server is taking too long to respond/i),
+        ).not.toBeInTheDocument();
+        expect(document.querySelector('.checkoutRemote')).toBeEmptyDOMElement();
     });
 
     it('does not render when payment data is not required', () => {

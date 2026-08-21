@@ -83,7 +83,11 @@ const CheckoutButtonContainer: FunctionComponent<
 
             if (!ResolvedCheckoutButton) {
                 return (
-                    <LazyContainer key={methodId} onError={handleChunkLoadError}>
+                    <LazyContainer
+                        errorFallback={null}
+                        key={methodId}
+                        onError={handleChunkLoadError}
+                    >
                         <CheckoutButtonV1Resolver
                             deinitialize={checkoutService.deinitializeCustomer}
                             initialize={checkoutService.initializeCustomer}
@@ -98,7 +102,7 @@ const CheckoutButtonContainer: FunctionComponent<
             }
 
             return (
-                <LazyContainer key={methodId} onError={handleChunkLoadError}>
+                <LazyContainer errorFallback={null} key={methodId} onError={handleChunkLoadError}>
                     <ResolvedCheckoutButton
                         checkoutService={checkoutService}
                         checkoutState={checkoutState}

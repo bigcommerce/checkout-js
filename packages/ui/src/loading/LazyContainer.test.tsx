@@ -48,21 +48,25 @@ describe('LazyContainer', () => {
             expect(onError).toHaveBeenCalledWith(error);
         });
 
-        it('rethrows errors that are not chunk load errors', () => {
-            const error = new Error('Something else');
-            const onError = jest.fn();
+        it('renders nothing when errorFallback is null', () => {
+            const error = new Error('Loading chunk failed');
+
+            error.name = 'ChunkLoadError';
+
             const Child: FunctionComponent = () => {
                 throw error;
             };
 
-            expect(() =>
-                render(
-                    <LazyContainer onError={onError}>
-                        <Child />
-                    </LazyContainer>,
-                ),
-            ).toThrow(error);
-            expect(onError).not.toHaveBeenCalled();
+            const { container } = render(
+                <LazyContainer errorFallback={null}>
+                    <Child />
+                </LazyContainer>,
+            );
+
+            expect(
+                screen.queryByText(/the server is taking too long to respond/i),
+            ).not.toBeInTheDocument();
+            expect(container).toBeEmptyDOMElement();
         });
     });
 });
