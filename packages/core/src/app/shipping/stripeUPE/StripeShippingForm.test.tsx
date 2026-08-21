@@ -3,7 +3,12 @@ import userEvent from '@testing-library/user-event';
 import React, { act } from 'react';
 
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
-import { CheckoutProvider, ExtensionProvider, LocaleContext } from '@bigcommerce/checkout/contexts';
+import {
+    CheckoutProvider,
+    ExtensionProvider,
+    LocaleContext,
+    ThemeContext,
+} from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
@@ -65,16 +70,17 @@ describe('StripeShippingForm', () => {
         deleteConsignments: jest.fn(),
     };
 
-    const renderContainer = (props = {}) =>
-        render(
-            <CheckoutProvider checkoutService={checkoutService}>
-                <LocaleContext.Provider value={localeContext}>
-                    <ExtensionProvider extensionService={extensionService}>
-                        <StripeShippingForm {...defaultProps} {...props} />
-                    </ExtensionProvider>
-                </LocaleContext.Provider>
-            </CheckoutProvider>,
-        );
+    const createContainer = (props = {}) => (
+        <CheckoutProvider checkoutService={checkoutService}>
+            <LocaleContext.Provider value={localeContext}>
+                <ExtensionProvider extensionService={extensionService}>
+                    <StripeShippingForm {...defaultProps} {...props} />
+                </ExtensionProvider>
+            </LocaleContext.Provider>
+        </CheckoutProvider>
+    );
+
+    const renderContainer = (props = {}) => render(createContainer(props));
 
     beforeEach(() => {
         checkoutState = checkoutService.getState();
@@ -99,6 +105,23 @@ describe('StripeShippingForm', () => {
         expect(defaultProps.getFields).toHaveBeenCalledWith('US');
         // eslint-disable-next-line testing-library/no-node-access,testing-library/no-container
         expect(container.querySelector('#StripeUpeShipping')).toBeInTheDocument();
+    });
+
+    it('renders billing same as shipping checkbox', async () => {
+        renderContainer({ isLoading: false });
+
+        expect(screen.getByTestId('billingSameAsShipping')).toBeInTheDocument();
+    });
+
+    it('does not render billing same as shipping checkbox under enhancedThemeV1', async () => {
+        // Under enhancedThemeV1 the toggle moves to the payment step's billing block.
+        render(
+            <ThemeContext.Provider value={{ enhancedThemeV1: true }}>
+                {createContainer({ isLoading: false })}
+            </ThemeContext.Provider>,
+        );
+
+        expect(screen.queryByTestId('billingSameAsShipping')).not.toBeInTheDocument();
     });
 
     it('disables submit button when loading', async () => {
