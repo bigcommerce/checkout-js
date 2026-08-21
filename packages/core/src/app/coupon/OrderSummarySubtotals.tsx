@@ -1,16 +1,13 @@
 import type { Fee, OrderFee, Tax } from '@bigcommerce/checkout-sdk';
-import React, { type FunctionComponent, useRef, useState } from 'react';
+import React, { type FunctionComponent } from 'react';
 
 import { useCapabilities } from '@bigcommerce/checkout/contexts';
-import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { CollapseCSSTransition } from '@bigcommerce/checkout/ui';
 
 import { isOrderFee, OrderSummaryDiscount, OrderSummaryPrice } from '../order';
 
-import { AppliedGiftCertificates, CouponForm, Discounts } from './components';
+import { AppliedGiftCertificates, CollapsibleCouponForm, Discounts } from './components';
 import { useMultiCoupon } from './useMultiCoupon';
-import { getRedeemableLabelId } from './utils';
 
 export interface OrderSummarySubtotalsProps {
     fees?: Fee[] | OrderFee[];
@@ -33,7 +30,6 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
 }) => {
     const {
         appliedGiftCertificates,
-        isCouponFormCollapsed,
         uiDetails: { shipping, shippingBeforeDiscount },
     } = useMultiCoupon();
 
@@ -41,35 +37,11 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
         userJourney: { disableCoupon, disableGiftCertificate },
     } = useCapabilities();
 
-    const [isCouponFormVisible, setIsCouponFormVisible] = useState(!isCouponFormCollapsed);
-    const couponFormRef = useRef<HTMLDivElement>(null);
-
-    const toggleCouponForm = () => {
-        setIsCouponFormVisible((prevState) => !prevState);
-    };
-
     return (
         <>
             {!isOrderConfirmation && !(disableCoupon && disableGiftCertificate) && (
                 <section className="cart-section optimizedCheckout-orderSummary-cartSection">
-                    <a
-                        aria-controls="coupon-form-collapsable"
-                        aria-expanded={isCouponFormVisible}
-                        className="redeemable-label body-cta"
-                        data-test="redeemable-label"
-                        href="#"
-                        onClick={preventDefault(toggleCouponForm)}
-                    >
-                        <TranslatedString
-                            id={getRedeemableLabelId(disableGiftCertificate, disableCoupon)}
-                        />
-                    </a>
-
-                    <CollapseCSSTransition isVisible={isCouponFormVisible} nodeRef={couponFormRef}>
-                        <div className="coupon-form-wrapper" ref={couponFormRef}>
-                            <CouponForm />
-                        </div>
-                    </CollapseCSSTransition>
+                    <CollapsibleCouponForm />
                 </section>
             )}
             <section className="subtotals-with-multi-coupon cart-section optimizedCheckout-orderSummary-cartSection">
