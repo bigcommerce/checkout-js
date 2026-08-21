@@ -11,9 +11,8 @@ export const isEnhancedThemeV1Enabled = (config?: StoreConfig): boolean => {
         config.checkoutSettings,
         'CHECKOUT-7962.update_font_style_on_checkout_page',
     );
-    const newThemeSettingEnabled = Boolean(
-        config.checkoutSettings.checkoutUserExperienceSettings.checkoutV2Theme ?? false,
-    );
+    const newThemeSettingEnabled =
+        config.checkoutSettings.checkoutUserExperienceSettings.checkoutV2Theme ?? false;
 
     return newThemeSettingEnabled && newThemeExperimentEnabled;
 };

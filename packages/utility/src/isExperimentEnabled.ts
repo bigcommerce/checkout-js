@@ -5,5 +5,5 @@ export default function isExperimentEnabled(
     experimentName: string,
     fallbackValue = true,
 ): boolean {
-    return Boolean(checkoutSettings?.features[experimentName] ?? fallbackValue);
+    return checkoutSettings?.features[experimentName] ?? fallbackValue;
 }

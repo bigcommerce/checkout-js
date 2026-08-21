@@ -11,8 +11,8 @@ import {
 } from '@bigcommerce/checkout/payment-integration-api';
 import { WalletButtonPaymentMethodComponent } from '@bigcommerce/checkout/wallet-button-integration';
 
-import GooglePayPaymentMethodComponent from './GooglePayPaymentMethodComponent';
 import googlePayIntegrations from './googlePayIntegrations';
+import GooglePayPaymentMethodComponent from './GooglePayPaymentMethodComponent';
 
 const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     checkoutService,
@@ -35,7 +35,7 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     const wasPaymentSelectedAtMountRef = useRef(isPaymentSelected);
 
     const features = getConfig()?.checkoutSettings.features ?? {};
-    const isDirectPayEnabled = Boolean(features['PI-5111.google_pay_direct_pay_on_click'] ?? false);
+    const isDirectPayEnabled = features['PI-5111.google_pay_direct_pay_on_click'] ?? false;
 
     const initializeGooglePayPayment = useCallback(
         (defaultOptions: PaymentInitializeOptions) => {
