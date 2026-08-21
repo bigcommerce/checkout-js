@@ -65,7 +65,7 @@
         }
 
         &:focus ~ .form-label {
-            box-shadow: $checklist-focus-boxShadow;
+            box-shadow: none;
         }
 
         & ~ .form-label::before {

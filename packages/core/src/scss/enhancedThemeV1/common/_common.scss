@@ -4,6 +4,7 @@ $element-border-radius: remCalc(12px);
     .button,
     .shippingOptions-panel,
     .alertBox,
+    .discountBanner .alertBox,
     .applied-coupons-list ul,
     &.modal {
         border-radius: $element-border-radius;
