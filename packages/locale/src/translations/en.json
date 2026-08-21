@@ -467,6 +467,7 @@
                 "not_found": "We're experiencing difficulty processing your transaction. Please try again later.",
                 "payment_config_error": "Something went wrong on the server. Please try again at a later time.",
                 "payment_config_not_found": "Something went wrong on the server. Please try again at a later time.",
+                "payment_method_no_longer_available": "This payment method is no longer available. Please choose another payment method.",
                 "pending_review": "Your transaction was authorized, but is being held for review by the merchant.",
                 "pickup_card": "Your card cannot be used to make this payment. Please contact your card issuer, or try using a different card.",
                 "processing_error": "We're experiencing difficulty processing your transaction. Please try again later.",
