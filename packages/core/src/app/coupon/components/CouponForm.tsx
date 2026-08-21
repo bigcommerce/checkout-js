@@ -12,7 +12,6 @@ import {
 } from '@bigcommerce/checkout/ui';
 
 import { useMultiCoupon } from '../useMultiCoupon';
-import { getCouponErrorMessage } from '../utils';
 
 import { ManageCouponsAndGiftCertificates } from './ManageCouponsAndGiftCertificates';
 
@@ -56,7 +55,7 @@ export const CouponForm: FunctionComponent<CouponFormProps> = ({ idPrefix = '' }
             setCode('');
         } catch (error) {
             if (error instanceof Error) {
-                setCouponError(getCouponErrorMessage(error, language));
+                setCouponError(error.message);
             }
         }
     };

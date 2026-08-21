@@ -9,9 +9,6 @@ import { mapToRedeemableProps, Redeemable, type RedeemableProps } from '../cart'
 import { withCheckout } from '../checkout';
 import { CollapsibleCouponForm } from '../coupon/components';
 
-// TODO: temporary flag name; replace once the real experiment is created.
-export const UNIFIED_PAYMENT_COUPON_FORM_FLAG = 'CHECKOUT-10307.unified_payment_coupon_form';
-
 const PaymentRedeemables: FunctionComponent<RedeemableProps> = (redeemableProps) => {
     const {
         userJourney: { disableCoupon, disableGiftCertificate },
@@ -20,7 +17,7 @@ const PaymentRedeemables: FunctionComponent<RedeemableProps> = (redeemableProps)
     const { selectedState: config } = useCheckout(({ data }) => data.getConfig());
     const isUnifiedCouponFormEnabled = isExperimentEnabled(
         config?.checkoutSettings,
-        UNIFIED_PAYMENT_COUPON_FORM_FLAG,
+        'CHECKOUT-10307.unified_payment_coupon_form',
         false,
     );
 

@@ -16,7 +16,7 @@ import { getStoreConfig } from '../config/config.mock';
 import { useMultiCoupon } from '../coupon/useMultiCoupon';
 import { getUseMultiCouponMock } from '../coupon/useMultiCoupon.mock';
 
-import PaymentRedeemables, { UNIFIED_PAYMENT_COUPON_FORM_FLAG } from './PaymentRedeemables';
+import PaymentRedeemables from './PaymentRedeemables';
 
 jest.mock('../coupon/useMultiCoupon');
 jest.mock('@bigcommerce/checkout/contexts', () => ({
@@ -42,7 +42,7 @@ describe('PaymentRedeemables', () => {
                 ...storeConfig.checkoutSettings,
                 features: {
                     ...storeConfig.checkoutSettings.features,
-                    [UNIFIED_PAYMENT_COUPON_FORM_FLAG]: isEnabled,
+                    'CHECKOUT-10307.unified_payment_coupon_form': isEnabled,
                 },
             },
         };

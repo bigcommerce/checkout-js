@@ -90,25 +90,6 @@ describe('CouponForm', () => {
         expect(defaultMockReturn.setCouponError).toHaveBeenCalledWith('Invalid coupon code');
     });
 
-    // Exhaustive code-to-message mapping is covered by getCouponErrorMessage.test.ts;
-    // this only proves the form routes failures through that mapping.
-    it('maps error codes to shopper facing messages', async () => {
-        const user = userEvent.setup();
-
-        jest.mocked(defaultMockReturn.applyCouponOrGiftCertificate).mockRejectedValueOnce(
-            Object.assign(new Error('Request failed'), { errors: [{ code: 'min_purchase' }] }),
-        );
-
-        renderComponent();
-
-        await user.type(screen.getByTestId('redeemableEntry-input'), 'BADCODE');
-        await user.click(screen.getByTestId('redeemableEntry-submit'));
-
-        expect(defaultMockReturn.setCouponError).toHaveBeenCalledWith(
-            'Your order does not meet the minimum total for this coupon code to be applied.',
-        );
-    });
-
     it('renders coupon error message', () => {
         mockUseMultiCoupon.mockReturnValue({
             ...defaultMockReturn,
