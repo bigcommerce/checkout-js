@@ -10,11 +10,16 @@ import LoadingSpinner from './LoadingSpinner';
 export interface LazyContainerProps {
     children?: ReactNode;
     loadingSkeleton?: ReactNode;
+    onError?: (error: Error) => void;
 }
 
 const filterError = (error: Error) => error.name === 'ChunkLoadError';
 
-const LazyContainer: FunctionComponent<LazyContainerProps> = ({ loadingSkeleton, children }) => (
+const LazyContainer: FunctionComponent<LazyContainerProps> = ({
+    loadingSkeleton,
+    children,
+    onError,
+}) => (
     <ErrorBoundary
         fallback={
             <div className="lazyContainer-error">
@@ -22,6 +27,7 @@ const LazyContainer: FunctionComponent<LazyContainerProps> = ({ loadingSkeleton,
             </div>
         }
         filter={filterError}
+        onError={onError}
     >
         <Suspense fallback={loadingSkeleton || <LoadingSpinner isLoading />}>{children}</Suspense>
     </ErrorBoundary>

@@ -13,7 +13,7 @@ import {
 } from '@bigcommerce/checkout/contexts';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
 import { type CheckoutButtonProps } from '@bigcommerce/checkout/payment-integration-api';
-import { render, screen } from '@bigcommerce/checkout/test-utils';
+import { render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../config/config.mock';
 
@@ -161,9 +161,13 @@ describe('CheckoutButtonContainer', () => {
 
         renderCheckoutButtonContainer();
 
-        expect(
-            await screen.findByText(/the server is taking too long to respond/i),
-        ).toBeInTheDocument();
+        const errorMessage = await screen.findByText(/the server is taking too long to respond/i);
+
+        expect(errorMessage).toBeInTheDocument();
+
+        await waitFor(() => {
+            expect(document.querySelector('.walletbuttons-skeleton')).not.toBeInTheDocument();
+        });
     });
 
     it('does not render when payment data is not required', () => {
