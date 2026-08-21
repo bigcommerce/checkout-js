@@ -46,9 +46,36 @@
             padding-bottom: 0;
         }
 
+        .checkout-step:not(.checkout-step--current) {
+            .stepHeader-title {
+                font-size: $fontSize-smaller;
+                min-width: 0;
+            }
+
+            div.stepHeader-counter.icon.stepHeader-counter--complete {
+                @include square($checkoutStep-completeCheck-size);
+
+                background-color: $color-stepCompleteCheck;
+                display: block;
+                margin-left: spacing("third");
+                order: 1;
+                transform: none;
+
+                svg {
+                    fill: $color-white;
+                    height: 100%;
+                    width: 100%;
+                }
+            }
+        }
+
         .stepHeader {
             flex-wrap: wrap;
             padding: 0 0 spacing("single");
+
+            div.stepHeader-counter.icon {
+                display: none;
+            }
 
             .stepHeader-body {
                 order: 3;
