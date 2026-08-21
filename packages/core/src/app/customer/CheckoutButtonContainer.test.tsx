@@ -13,12 +13,13 @@ import {
 } from '@bigcommerce/checkout/contexts';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
 import { type CheckoutButtonProps } from '@bigcommerce/checkout/payment-integration-api';
-import { render, screen } from '@bigcommerce/checkout/test-utils';
+import { render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../config/config.mock';
 
 import CheckoutButtonContainer from './CheckoutButtonContainer';
 import { getCustomer, getGuestCustomer } from './customers.mock';
+import resolveCheckoutButton from './resolveCheckoutButton';
 
 const MockCheckoutButton: FunctionComponent<CheckoutButtonProps> = ({ containerId }) => (
     <div data-test={containerId} />
@@ -27,6 +28,19 @@ const MockCheckoutButton: FunctionComponent<CheckoutButtonProps> = ({ containerI
 jest.mock('./resolveCheckoutButton', () => ({
     __esModule: true,
     default: jest.fn(() => MockCheckoutButton),
+}));
+
+jest.mock('./WalletButtonV1Resolver', () => {
+    const error = new Error('Loading chunk wallet-button-v1-resolver failed');
+
+    error.name = 'ChunkLoadError';
+
+    throw error;
+});
+
+jest.mock('../common/utility', () => ({
+    ...jest.requireActual('../common/utility'),
+    retry: jest.fn((fn: () => Promise<unknown>) => fn()),
 }));
 
 describe('CheckoutButtonContainer', () => {
@@ -51,6 +65,8 @@ describe('CheckoutButtonContainer', () => {
         );
 
     beforeEach(() => {
+        jest.mocked(resolveCheckoutButton).mockImplementation(() => MockCheckoutButton);
+
         checkoutService = createCheckoutService();
         checkoutState = checkoutService.getState();
 
@@ -138,6 +154,21 @@ describe('CheckoutButtonContainer', () => {
         renderCheckoutButtonContainer();
 
         expect(await screen.findByTestId('applepayCheckoutButton')).toBeInTheDocument();
+    });
+
+    it('renders nothing for the buttons and removes the skeleton when the wallet button chunk fails to load', async () => {
+        jest.mocked(resolveCheckoutButton).mockReturnValue(undefined);
+
+        renderCheckoutButtonContainer();
+
+        await waitFor(() => {
+            expect(document.querySelector('.walletbuttons-skeleton')).not.toBeInTheDocument();
+        });
+
+        expect(
+            screen.queryByText(/the server is taking too long to respond/i),
+        ).not.toBeInTheDocument();
+        expect(document.querySelector('.checkoutRemote')).toBeEmptyDOMElement();
     });
 
     it('does not render when payment data is not required', () => {

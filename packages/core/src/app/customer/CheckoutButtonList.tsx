@@ -16,12 +16,16 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { LazyContainer } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../checkout';
+import { retry } from '../common/utility';
 
 import { getSupportedMethodIds } from './getSupportedMethods';
 import resolveCheckoutButton from './resolveCheckoutButton';
 
-const CheckoutButtonV1Resolver = lazy(
-    () => import(/* webpackChunkName: "wallet-button-v1-resolver" */ './WalletButtonV1Resolver'),
+const CheckoutButtonV1Resolver = lazy(() =>
+    retry(
+        () =>
+            import(/* webpackChunkName: "wallet-button-v1-resolver" */ './WalletButtonV1Resolver'),
+    ),
 );
 
 export interface CheckoutButtonListProps {
@@ -90,7 +94,7 @@ const CheckoutButtonList: FunctionComponent<
 
             if (!ResolvedCheckoutButton) {
                 return (
-                    <LazyContainer key={methodId}>
+                    <LazyContainer errorFallback={null} key={methodId}>
                         <CheckoutButtonV1Resolver
                             deinitialize={deinitialize}
                             initialize={initialize}
@@ -105,7 +109,7 @@ const CheckoutButtonList: FunctionComponent<
             }
 
             return (
-                <LazyContainer key={methodId}>
+                <LazyContainer errorFallback={null} key={methodId}>
                     <ResolvedCheckoutButton
                         checkoutService={checkoutService}
                         checkoutState={checkoutState}

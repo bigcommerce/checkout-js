@@ -1,5 +1,5 @@
 import { type CheckoutSelectors, type CheckoutService } from '@bigcommerce/checkout-sdk';
-import React, { type FunctionComponent, lazy, memo, Suspense } from 'react';
+import React, { type FunctionComponent, lazy, memo, useState } from 'react';
 
 import {
     type CheckoutContextProps,
@@ -7,16 +7,20 @@ import {
     useLocale,
 } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { WalletButtonsContainerSkeleton } from '@bigcommerce/checkout/ui';
+import { LazyContainer, WalletButtonsContainerSkeleton } from '@bigcommerce/checkout/ui';
 import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
 import { withCheckout } from '../checkout';
+import { retry } from '../common/utility';
 
 import { getSupportedMethodIds } from './getSupportedMethods';
 import resolveCheckoutButton from './resolveCheckoutButton';
 
-const CheckoutButtonV1Resolver = lazy(
-    () => import(/* webpackChunkName: "wallet-button-v1-resolver" */ './WalletButtonV1Resolver'),
+const CheckoutButtonV1Resolver = lazy(() =>
+    retry(
+        () =>
+            import(/* webpackChunkName: "wallet-button-v1-resolver" */ './WalletButtonV1Resolver'),
+    ),
 );
 
 interface CheckoutButtonContainerProps {
@@ -53,6 +57,11 @@ const CheckoutButtonContainer: FunctionComponent<
     const {
         userJourney: { disableWalletButtons },
     } = useCapabilities();
+    const [hasChunkLoadError, setHasChunkLoadError] = useState(false);
+
+    const handleChunkLoadError = () => {
+        setHasChunkLoadError(true);
+    };
 
     if (disableWalletButtons) {
         return null;
@@ -74,7 +83,11 @@ const CheckoutButtonContainer: FunctionComponent<
 
             if (!ResolvedCheckoutButton) {
                 return (
-                    <Suspense key={methodId}>
+                    <LazyContainer
+                        errorFallback={null}
+                        key={methodId}
+                        onError={handleChunkLoadError}
+                    >
                         <CheckoutButtonV1Resolver
                             deinitialize={checkoutService.deinitializeCustomer}
                             initialize={checkoutService.initializeCustomer}
@@ -84,12 +97,12 @@ const CheckoutButtonContainer: FunctionComponent<
                             onClick={onWalletButtonClick}
                             onError={onUnhandledError}
                         />
-                    </Suspense>
+                    </LazyContainer>
                 );
             }
 
             return (
-                <Suspense key={methodId}>
+                <LazyContainer errorFallback={null} key={methodId} onError={handleChunkLoadError}>
                     <ResolvedCheckoutButton
                         checkoutService={checkoutService}
                         checkoutState={checkoutState}
@@ -99,7 +112,7 @@ const CheckoutButtonContainer: FunctionComponent<
                         onUnhandledError={onUnhandledError}
                         onWalletButtonClick={onWalletButtonClick}
                     />
-                </Suspense>
+                </LazyContainer>
             );
         });
 
@@ -116,7 +129,7 @@ const CheckoutButtonContainer: FunctionComponent<
             <div className="checkout-buttons-auto-layout">
                 <WalletButtonsContainerSkeleton
                     buttonsCount={availableMethodIds.length}
-                    isLoading={isLoading}
+                    isLoading={isLoading && !hasChunkLoadError}
                 >
                     <div className="checkoutRemote">{renderButtons()}</div>
                 </WalletButtonsContainerSkeleton>

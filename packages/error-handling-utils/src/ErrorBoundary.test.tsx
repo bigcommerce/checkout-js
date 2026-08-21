@@ -53,6 +53,40 @@ describe('ErrorBoundary', () => {
         expect(logger.log).not.toHaveBeenCalledWith(error);
     });
 
+    it('calls onError if provided', () => {
+        const error = new Error();
+        const onError = jest.fn();
+        const Child: FunctionComponent = () => {
+            throw error;
+        };
+
+        render(
+            <ErrorBoundary onError={onError}>
+                <Child />
+            </ErrorBoundary>,
+        );
+
+        expect(onError).toHaveBeenCalledWith(error);
+    });
+
+    it('does not call onError if filter returns false', () => {
+        const error = new Error();
+        const onError = jest.fn();
+        const Child: FunctionComponent = () => {
+            throw error;
+        };
+        const filterError = ({ name }: Error) => name === 'TypeError';
+
+        expect(() =>
+            render(
+                <ErrorBoundary filter={filterError} onError={onError}>
+                    <Child />
+                </ErrorBoundary>,
+            ),
+        ).toThrow(error);
+        expect(onError).not.toHaveBeenCalled();
+    });
+
     it('renders fallback component if provided', () => {
         const Child: FunctionComponent = () => {
             throw new Error();
