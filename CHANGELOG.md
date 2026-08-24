@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.873.0](https://github.com/bigcommerce/checkout-js/compare/v1.872.3...v1.873.0) (2026-08-24)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10351 update order summary padding and white background backdrop issue ([#3275](https://github.com/bigcommerce/checkout-js/issues/3275)) ([b94d8cd](https://github.com/bigcommerce/checkout-js/commit/b94d8cd57d59579e593f02bdebf7511d320ec782))
+
 ### [1.872.3](https://github.com/bigcommerce/checkout-js/compare/v1.872.2...v1.872.3) (2026-08-24)
 
 
