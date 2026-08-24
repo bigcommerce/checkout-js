@@ -5,7 +5,7 @@ import { IconHelp, TooltipTrigger } from '@bigcommerce/checkout/ui';
 
 import CreditCardCodeTooltip from './CreditCardCodeTooltip';
 
-const CreditCardCodeTooltipTrigger: FunctionComponent = () => {
+export const CreditCardCodeTooltipTrigger: FunctionComponent = () => {
     const { language } = useLocale();
 
     return (
@@ -20,5 +20,3 @@ const CreditCardCodeTooltipTrigger: FunctionComponent = () => {
         </TooltipTrigger>
     );
 };
-
-export default CreditCardCodeTooltipTrigger;

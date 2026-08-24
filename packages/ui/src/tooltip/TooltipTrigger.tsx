@@ -26,7 +26,7 @@ const TooltipTrigger: React.FC<TooltipTriggerProps> = ({
     tooltip,
 }) => {
     const [shouldShow, setShouldShow] = useState(false);
-    const isPointerOverTooltip = useRef(false);
+    const isPointerOverTooltipRef = useRef(false);
     const tooltipId = useId();
 
     const handleShow: ReactEventHandler<HTMLElement> = () => {
@@ -34,18 +34,18 @@ const TooltipTrigger: React.FC<TooltipTriggerProps> = ({
     };
 
     const handleHide: ReactEventHandler<HTMLElement> = () => {
-        isPointerOverTooltip.current = false;
+        isPointerOverTooltipRef.current = false;
         setShouldShow(false);
     };
 
     const handleBlur: ReactEventHandler<HTMLElement> = () => {
-        if (!isPointerOverTooltip.current) {
+        if (!isPointerOverTooltipRef.current) {
             setShouldShow(false);
         }
     };
 
     const handleTooltipEnter: ReactEventHandler<HTMLElement> = () => {
-        isPointerOverTooltip.current = true;
+        isPointerOverTooltipRef.current = true;
         setShouldShow(true);
     };
 
@@ -57,7 +57,7 @@ const TooltipTrigger: React.FC<TooltipTriggerProps> = ({
     const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
         if (event.key === 'Escape' && shouldShow) {
             event.stopPropagation();
-            isPointerOverTooltip.current = false;
+            isPointerOverTooltipRef.current = false;
             setShouldShow(false);
         }
     };
