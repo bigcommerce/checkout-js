@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.872.3](https://github.com/bigcommerce/checkout-js/compare/v1.872.2...v1.872.3) (2026-08-24)
+
+
+### Bug Fixes
+
+* **checkout:** add check for globalHandlersIntegration method on sentry object ([#3274](https://github.com/bigcommerce/checkout-js/issues/3274)) ([62524c5](https://github.com/bigcommerce/checkout-js/commit/62524c5f0520b3c220030dac5614119a464e48b4))
+
 ### [1.872.2](https://github.com/bigcommerce/checkout-js/compare/v1.872.1...v1.872.2) (2026-08-23)
 
 
