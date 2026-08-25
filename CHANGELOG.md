@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.876.0](https://github.com/bigcommerce/checkout-js/compare/v1.875.0...v1.876.0) (2026-08-25)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10307 Replicate coupon field in payment step as cart summary ([#3265](https://github.com/bigcommerce/checkout-js/issues/3265)) ([bcd5850](https://github.com/bigcommerce/checkout-js/commit/bcd585085dcb6b85c203b2c04ffa013112ff6ef7))
+
 ## [1.875.0](https://github.com/bigcommerce/checkout-js/compare/v1.874.0...v1.875.0) (2026-08-25)
 
 
