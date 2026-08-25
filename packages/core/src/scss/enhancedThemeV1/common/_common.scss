@@ -1,5 +1,23 @@
 $element-border-radius: remCalc(12px);
 
+// Stretch the checkout page container to the bottom of the viewport;
+// modals also carry .enhancedThemeV1, hence the container id
+body:has(#checkout-page-container.enhancedThemeV1) {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+
+    > :has(#checkout-page-container) {
+        display: flex;
+        flex-direction: column;
+        flex: 1 0 auto;
+    }
+
+    #checkout-page-container {
+        flex: 1 0 auto;
+    }
+}
+
 @include enhancedThemeV1 {
     .button,
     .shippingOptions-panel,
