@@ -47,6 +47,7 @@ body:has(#checkout-page-container.enhancedThemeV1) {
 
         .optimizedCheckout-form-checklist-item--selected {
             border-color: $color-black;
+            background-color: $color-highlightLightest;
         }
     }
 
