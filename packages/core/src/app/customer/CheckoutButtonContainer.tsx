@@ -34,7 +34,6 @@ interface WithCheckoutCheckoutButtonContainerProps {
     availableMethodIds: string[];
     checkoutState: CheckoutSelectors;
     checkoutService: CheckoutService;
-    isLoading: boolean;
 }
 
 const paypalCommerceIds = ['paypalcommerce', 'paypalcommercecredit', 'paypalcommercevenmo'];
@@ -48,7 +47,6 @@ const CheckoutButtonContainer: FunctionComponent<
     checkoutService,
     checkoutState,
     checkEmbeddedSupport,
-    isLoading,
     isPaymentStepActive,
     onUnhandledError,
     onWalletButtonClick,
@@ -57,10 +55,12 @@ const CheckoutButtonContainer: FunctionComponent<
     const {
         userJourney: { disableWalletButtons },
     } = useCapabilities();
-    const [hasChunkLoadError, setHasChunkLoadError] = useState(false);
+    const [failedMethodIds, setFailedMethodIds] = useState<string[]>([]);
 
-    const handleChunkLoadError = () => {
-        setHasChunkLoadError(true);
+    const handleChunkLoadError = (methodId: string) => () => {
+        setFailedMethodIds((previousIds) =>
+            previousIds.includes(methodId) ? previousIds : [...previousIds, methodId],
+        );
     };
 
     if (disableWalletButtons) {
@@ -72,6 +72,18 @@ const CheckoutButtonContainer: FunctionComponent<
     } catch (error) {
         return null;
     }
+
+    const {
+        statuses: { isInitializedCustomer },
+        errors: { getInitializeCustomerError },
+    } = checkoutState;
+
+    const isLoading = availableMethodIds.some(
+        (methodId) =>
+            !failedMethodIds.includes(methodId) &&
+            !getInitializeCustomerError(methodId) &&
+            !isInitializedCustomer(methodId),
+    );
 
     const renderButtons = () =>
         availableMethodIds.map((methodId) => {
@@ -86,7 +98,7 @@ const CheckoutButtonContainer: FunctionComponent<
                     <LazyContainer
                         errorFallback={null}
                         key={methodId}
-                        onError={handleChunkLoadError}
+                        onError={handleChunkLoadError(methodId)}
                     >
                         <CheckoutButtonV1Resolver
                             deinitialize={checkoutService.deinitializeCustomer}
@@ -102,7 +114,11 @@ const CheckoutButtonContainer: FunctionComponent<
             }
 
             return (
-                <LazyContainer errorFallback={null} key={methodId} onError={handleChunkLoadError}>
+                <LazyContainer
+                    errorFallback={null}
+                    key={methodId}
+                    onError={handleChunkLoadError(methodId)}
+                >
                     <ResolvedCheckoutButton
                         checkoutService={checkoutService}
                         checkoutState={checkoutState}
@@ -129,7 +145,7 @@ const CheckoutButtonContainer: FunctionComponent<
             <div className="checkout-buttons-auto-layout">
                 <WalletButtonsContainerSkeleton
                     buttonsCount={availableMethodIds.length}
-                    isLoading={isLoading && !hasChunkLoadError}
+                    isLoading={isLoading}
                 >
                     <div className="checkoutRemote">{renderButtons()}</div>
                 </WalletButtonsContainerSkeleton>
@@ -149,8 +165,6 @@ function mapToCheckoutButtonContainerProps({
 }: CheckoutContextProps): WithCheckoutCheckoutButtonContainerProps | null {
     const {
         data: { getConfig, getCustomer, isPaymentDataRequired, getPaymentMethods },
-        statuses: { isInitializedCustomer },
-        errors: { getInitializeCustomerError },
     } = checkoutState;
     const config = getConfig();
     const providers = config?.checkoutSettings.remoteCheckoutProviders ?? [];
@@ -172,17 +186,10 @@ function mapToCheckoutButtonContainerProps({
         return null;
     }
 
-    const isLoading =
-        availableMethodIds.filter(
-            (methodId) =>
-                Boolean(getInitializeCustomerError(methodId)) || isInitializedCustomer(methodId),
-        ).length !== availableMethodIds.length;
-
     return {
         checkoutService,
         checkoutState,
         availableMethodIds,
-        isLoading,
     };
 }
 

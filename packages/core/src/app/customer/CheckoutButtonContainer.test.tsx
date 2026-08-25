@@ -171,6 +171,28 @@ describe('CheckoutButtonContainer', () => {
         expect(document.querySelector('.checkoutRemote')).toBeEmptyDOMElement();
     });
 
+    it('keeps the skeleton when a chunk fails while other wallet buttons are still initializing', async () => {
+        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
+            ...getStoreConfig(),
+            checkoutSettings: {
+                ...getStoreConfig().checkoutSettings,
+                remoteCheckoutProviders: ['applepay', 'braintreepaypal'],
+            },
+        });
+        jest.mocked(resolveCheckoutButton).mockImplementation(({ id }) =>
+            id === 'applepay' ? undefined : MockCheckoutButton,
+        );
+
+        renderCheckoutButtonContainer();
+
+        // The spinner for the unresolved button disappears once its chunk fails to load.
+        await waitFor(() => {
+            expect(document.querySelector('.loadingSpinner')).not.toBeInTheDocument();
+        });
+
+        expect(document.querySelector('.walletbuttons-skeleton')).toBeInTheDocument();
+    });
+
     it('does not render when payment data is not required', () => {
         jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(false);
 
