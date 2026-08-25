@@ -44,8 +44,10 @@ const {
     order: data.getOrder(),
 }));
 
-// ✅ Only need non-reactive context (checkoutService, errorLogger, etc.) —
-// pass a no-op selector so the component never re-renders on state changes
+// ✅ No-op selector — only for two cases where subscribing adds nothing:
+//    1. Calling service methods only (checkoutService, errorLogger).
+//    2. Reading state once on mount for initial local state (see useLoadCheckout).
+// NOT an escape hatch: if the component renders from checkout state, use a real selector
 const { checkoutService } = useCheckout(() => undefined);
 
 // ❌ Wrong — bare call subscribes to ALL state changes
