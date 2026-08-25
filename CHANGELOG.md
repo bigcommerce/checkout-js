@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.875.0](https://github.com/bigcommerce/checkout-js/compare/v1.874.0...v1.875.0) (2026-08-25)
+
+
+### Features
+
+* **payment:** hide billing same as shipping toggle in Stripe UPE shipping form under enhanced theme ([#3273](https://github.com/bigcommerce/checkout-js/issues/3273)) ([592938c](https://github.com/bigcommerce/checkout-js/commit/592938c1308c0eacf66ad11d3006f83441e7637c))
+
 ## [1.874.0](https://github.com/bigcommerce/checkout-js/compare/v1.873.0...v1.874.0) (2026-08-25)
 
 
