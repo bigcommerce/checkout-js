@@ -101,7 +101,7 @@ describe('CouponForm', () => {
         expect(screen.getByText('Invalid coupon code')).toBeInTheDocument();
     });
 
-    it('renders default ids without prefix', () => {
+    it('renders default ids without a form instance id', () => {
         renderComponent();
 
         expect(screen.getByTestId('redeemable-collapsable')).toHaveAttribute(
@@ -115,8 +115,8 @@ describe('CouponForm', () => {
         );
     });
 
-    it('renders prefixed ids when idPrefix is provided', () => {
-        renderComponent({ idPrefix: 'payment-' });
+    it('renders prefixed ids when a form instance id is provided', () => {
+        renderComponent({ formInstanceId: 'payment-' });
 
         expect(screen.getByTestId('redeemable-collapsable')).toHaveAttribute(
             'id',

@@ -48,7 +48,7 @@ const PaymentRedeemables: FunctionComponent<RedeemableProps> = (redeemableProps)
             {(matched) =>
                 matched && (
                     <Fieldset additionalClassName="redeemable-payments" legend={legend}>
-                        <CollapsibleCouponForm idPrefix="payment-" />
+                        <CollapsibleCouponForm formInstanceId="payment-" />
                     </Fieldset>
                 )
             }

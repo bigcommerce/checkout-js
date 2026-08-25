@@ -11,11 +11,11 @@ import { getRedeemableLabelId } from '../utils';
 import { CouponForm } from './CouponForm';
 
 interface CollapsibleCouponFormProps {
-    idPrefix?: string;
+    formInstanceId?: string;
 }
 
 export const CollapsibleCouponForm: FunctionComponent<CollapsibleCouponFormProps> = ({
-    idPrefix = '',
+    formInstanceId = '',
 }) => {
     const { isCouponFormCollapsed } = useMultiCoupon();
 
@@ -33,7 +33,7 @@ export const CollapsibleCouponForm: FunctionComponent<CollapsibleCouponFormProps
     return (
         <>
             <a
-                aria-controls={`${idPrefix}coupon-form-collapsable`}
+                aria-controls={`${formInstanceId}coupon-form-collapsable`}
                 aria-expanded={isCouponFormVisible}
                 className="redeemable-label body-cta"
                 data-test="redeemable-label"
@@ -47,7 +47,7 @@ export const CollapsibleCouponForm: FunctionComponent<CollapsibleCouponFormProps
 
             <CollapseCSSTransition isVisible={isCouponFormVisible} nodeRef={couponFormRef}>
                 <div className="coupon-form-wrapper" ref={couponFormRef}>
-                    <CouponForm idPrefix={idPrefix} />
+                    <CouponForm formInstanceId={formInstanceId} />
                 </div>
             </CollapseCSSTransition>
         </>

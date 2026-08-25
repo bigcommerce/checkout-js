@@ -16,10 +16,10 @@ import { useMultiCoupon } from '../useMultiCoupon';
 import { ManageCouponsAndGiftCertificates } from './ManageCouponsAndGiftCertificates';
 
 export interface CouponFormProps {
-    idPrefix?: string;
+    formInstanceId?: string;
 }
 
-export const CouponForm: FunctionComponent<CouponFormProps> = ({ idPrefix = '' }) => {
+export const CouponForm: FunctionComponent<CouponFormProps> = ({ formInstanceId = '' }) => {
     const [code, setCode] = useState<string>('');
     const { enhancedThemeV1 } = useThemeContext();
 
@@ -74,16 +74,16 @@ export const CouponForm: FunctionComponent<CouponFormProps> = ({ idPrefix = '' }
             <div
                 className="coupon-form"
                 data-test="redeemable-collapsable"
-                id={`${idPrefix}coupon-form-collapsable`}
+                id={`${formInstanceId}coupon-form-collapsable`}
             >
-                <label className="is-srOnly" htmlFor={`${idPrefix}redeemableCode`}>
+                <label className="is-srOnly" htmlFor={`${formInstanceId}redeemableCode`}>
                     <TranslatedString id="redeemable.toggle_action" />
                 </label>
                 <TextInput
                     additionalClassName="form-input optimizedCheckout-form-input coupon-input"
                     aria-label={language.translate('redeemable.code_label')}
                     disabled={isCouponFormDisabled}
-                    id={`${idPrefix}redeemableCode`}
+                    id={`${formInstanceId}redeemableCode`}
                     name="redeemableCode"
                     onChange={handleTextInputChange}
                     onClick={clearErrorOnClick}
@@ -95,7 +95,7 @@ export const CouponForm: FunctionComponent<CouponFormProps> = ({ idPrefix = '' }
                 <Button
                     className="coupon-button optimizedCheckout-contentPrimary body-bold"
                     disabled={isCouponFormDisabled}
-                    id={`${idPrefix}applyRedeemableButton`}
+                    id={`${formInstanceId}applyRedeemableButton`}
                     isLoading={isApplyingCouponOrGiftCertificate}
                     onClick={submitForm}
                     testId="redeemableEntry-submit"
