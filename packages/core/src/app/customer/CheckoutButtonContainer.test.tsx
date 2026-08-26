@@ -13,8 +13,9 @@ import {
 } from '@bigcommerce/checkout/contexts';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
 import { type CheckoutButtonProps } from '@bigcommerce/checkout/payment-integration-api';
-import { render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
+import { retry } from '../common/utility';
 import { getStoreConfig } from '../config/config.mock';
 
 import CheckoutButtonContainer from './CheckoutButtonContainer';
@@ -156,41 +157,15 @@ describe('CheckoutButtonContainer', () => {
         expect(await screen.findByTestId('applepayCheckoutButton')).toBeInTheDocument();
     });
 
-    it('renders nothing for the buttons and removes the skeleton when the wallet button chunk fails to load', async () => {
+    it('retries loading the wallet button chunk and shows the network error message when it still fails', async () => {
         jest.mocked(resolveCheckoutButton).mockReturnValue(undefined);
 
         renderCheckoutButtonContainer();
 
-        await waitFor(() => {
-            expect(document.querySelector('.walletbuttons-skeleton')).not.toBeInTheDocument();
-        });
-
         expect(
-            screen.queryByText(/the server is taking too long to respond/i),
-        ).not.toBeInTheDocument();
-        expect(document.querySelector('.checkoutRemote')).toBeEmptyDOMElement();
-    });
-
-    it('keeps the skeleton when a chunk fails while other wallet buttons are still initializing', async () => {
-        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
-            ...getStoreConfig(),
-            checkoutSettings: {
-                ...getStoreConfig().checkoutSettings,
-                remoteCheckoutProviders: ['applepay', 'braintreepaypal'],
-            },
-        });
-        jest.mocked(resolveCheckoutButton).mockImplementation(({ id }) =>
-            id === 'applepay' ? undefined : MockCheckoutButton,
-        );
-
-        renderCheckoutButtonContainer();
-
-        // The spinner for the unresolved button disappears once its chunk fails to load.
-        await waitFor(() => {
-            expect(document.querySelector('.loadingSpinner')).not.toBeInTheDocument();
-        });
-
-        expect(document.querySelector('.walletbuttons-skeleton')).toBeInTheDocument();
+            await screen.findByText(/the server is taking too long to respond/i),
+        ).toBeInTheDocument();
+        expect(retry).toHaveBeenCalledTimes(1);
     });
 
     it('does not render when payment data is not required', () => {

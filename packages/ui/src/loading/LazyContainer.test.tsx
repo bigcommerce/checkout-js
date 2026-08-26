@@ -1,4 +1,4 @@
-import React, { type FunctionComponent } from 'react';
+import React from 'react';
 
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
@@ -15,58 +15,5 @@ describe('LazyContainer', () => {
         );
 
         expect(screen.getByText('Test')).toBeInTheDocument();
-    });
-
-    describe('when a child throws ChunkLoadError', () => {
-        beforeEach(() => {
-            jest.spyOn(console, 'error').mockImplementation();
-        });
-
-        afterEach(() => {
-            jest.spyOn(console, 'error').mockRestore();
-        });
-
-        it('renders the unstable network fallback and calls onError', () => {
-            const error = new Error('Loading chunk failed');
-
-            error.name = 'ChunkLoadError';
-
-            const onError = jest.fn();
-            const Child: FunctionComponent = () => {
-                throw error;
-            };
-
-            render(
-                <LazyContainer onError={onError}>
-                    <Child />
-                </LazyContainer>,
-            );
-
-            expect(
-                screen.getByText(/the server is taking too long to respond/i),
-            ).toBeInTheDocument();
-            expect(onError).toHaveBeenCalledWith(error);
-        });
-
-        it('renders nothing when errorFallback is null', () => {
-            const error = new Error('Loading chunk failed');
-
-            error.name = 'ChunkLoadError';
-
-            const Child: FunctionComponent = () => {
-                throw error;
-            };
-
-            const { container } = render(
-                <LazyContainer errorFallback={null}>
-                    <Child />
-                </LazyContainer>,
-            );
-
-            expect(
-                screen.queryByText(/the server is taking too long to respond/i),
-            ).not.toBeInTheDocument();
-            expect(container).toBeEmptyDOMElement();
-        });
     });
 });

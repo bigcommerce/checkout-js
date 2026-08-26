@@ -6,8 +6,7 @@ export interface ErrorBoundaryProps {
     children?: ReactNode;
     fallback?: ReactNode;
     errorLogger?: ErrorLogger;
-    filter?: (error: Error) => boolean;
-    onError?: (error: Error) => void;
+    filter?(error: Error): boolean;
 }
 
 interface ErrorBoundaryState {
@@ -23,14 +22,10 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     state: ErrorBoundaryState = {};
 
     componentDidCatch(error: Error): void {
-        const { filter = () => true, errorLogger, onError } = this.props;
+        const { filter = () => true, errorLogger } = this.props;
 
         if (!filter(error)) {
             throw error;
-        }
-
-        if (onError) {
-            onError(error);
         }
 
         // Adding errorCode with value `ErrorBoundary` to collect usage statistics of ErrorBoundary

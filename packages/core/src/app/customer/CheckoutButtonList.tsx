@@ -94,7 +94,7 @@ const CheckoutButtonList: FunctionComponent<
 
             if (!ResolvedCheckoutButton) {
                 return (
-                    <LazyContainer errorFallback={null} key={methodId}>
+                    <LazyContainer key={methodId}>
                         <CheckoutButtonV1Resolver
                             deinitialize={deinitialize}
                             initialize={initialize}
@@ -109,7 +109,7 @@ const CheckoutButtonList: FunctionComponent<
             }
 
             return (
-                <LazyContainer errorFallback={null} key={methodId}>
+                <LazyContainer key={methodId}>
                     <ResolvedCheckoutButton
                         checkoutService={checkoutService}
                         checkoutState={checkoutState}

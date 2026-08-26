@@ -1,5 +1,5 @@
 import { type CheckoutSelectors, type CheckoutService } from '@bigcommerce/checkout-sdk';
-import React, { type FunctionComponent, lazy, memo, useState } from 'react';
+import React, { type FunctionComponent, lazy, memo, Suspense } from 'react';
 
 import {
     type CheckoutContextProps,
@@ -34,6 +34,7 @@ interface WithCheckoutCheckoutButtonContainerProps {
     availableMethodIds: string[];
     checkoutState: CheckoutSelectors;
     checkoutService: CheckoutService;
+    isLoading: boolean;
 }
 
 const paypalCommerceIds = ['paypalcommerce', 'paypalcommercecredit', 'paypalcommercevenmo'];
@@ -47,6 +48,7 @@ const CheckoutButtonContainer: FunctionComponent<
     checkoutService,
     checkoutState,
     checkEmbeddedSupport,
+    isLoading,
     isPaymentStepActive,
     onUnhandledError,
     onWalletButtonClick,
@@ -55,13 +57,6 @@ const CheckoutButtonContainer: FunctionComponent<
     const {
         userJourney: { disableWalletButtons },
     } = useCapabilities();
-    const [failedMethodIds, setFailedMethodIds] = useState<string[]>([]);
-
-    const handleChunkLoadError = (methodId: string) => () => {
-        setFailedMethodIds((previousIds) =>
-            previousIds.includes(methodId) ? previousIds : [...previousIds, methodId],
-        );
-    };
 
     if (disableWalletButtons) {
         return null;
@@ -73,18 +68,6 @@ const CheckoutButtonContainer: FunctionComponent<
         return null;
     }
 
-    const {
-        statuses: { isInitializedCustomer },
-        errors: { getInitializeCustomerError },
-    } = checkoutState;
-
-    const isLoading = availableMethodIds.some(
-        (methodId) =>
-            !failedMethodIds.includes(methodId) &&
-            !getInitializeCustomerError(methodId) &&
-            !isInitializedCustomer(methodId),
-    );
-
     const renderButtons = () =>
         availableMethodIds.map((methodId) => {
             if (isPaymentStepActive && isPayPalCommerce(methodId)) {
@@ -95,11 +78,7 @@ const CheckoutButtonContainer: FunctionComponent<
 
             if (!ResolvedCheckoutButton) {
                 return (
-                    <LazyContainer
-                        errorFallback={null}
-                        key={methodId}
-                        onError={handleChunkLoadError(methodId)}
-                    >
+                    <Suspense key={methodId}>
                         <CheckoutButtonV1Resolver
                             deinitialize={checkoutService.deinitializeCustomer}
                             initialize={checkoutService.initializeCustomer}
@@ -109,16 +88,12 @@ const CheckoutButtonContainer: FunctionComponent<
                             onClick={onWalletButtonClick}
                             onError={onUnhandledError}
                         />
-                    </LazyContainer>
+                    </Suspense>
                 );
             }
 
             return (
-                <LazyContainer
-                    errorFallback={null}
-                    key={methodId}
-                    onError={handleChunkLoadError(methodId)}
-                >
+                <Suspense key={methodId}>
                     <ResolvedCheckoutButton
                         checkoutService={checkoutService}
                         checkoutState={checkoutState}
@@ -128,7 +103,7 @@ const CheckoutButtonContainer: FunctionComponent<
                         onUnhandledError={onUnhandledError}
                         onWalletButtonClick={onWalletButtonClick}
                     />
-                </LazyContainer>
+                </Suspense>
             );
         });
 
@@ -139,22 +114,24 @@ const CheckoutButtonContainer: FunctionComponent<
                 isPaymentStepActive ? { position: 'absolute', left: '0', top: '-100%' } : undefined
             }
         >
-            <p className="optimizedCheckout-headingSecondary sub-header">
-                <TranslatedString id="remote.start_with_text" />
-            </p>
-            <div className="checkout-buttons-auto-layout">
-                <WalletButtonsContainerSkeleton
-                    buttonsCount={availableMethodIds.length}
-                    isLoading={isLoading}
-                >
-                    <div className="checkoutRemote">{renderButtons()}</div>
-                </WalletButtonsContainerSkeleton>
-            </div>
-            <div className="checkout-separator">
-                <span className="optimizedCheckout-headingSecondary sub-header">
-                    <TranslatedString id="remote.or_text" />
-                </span>
-            </div>
+            <LazyContainer>
+                <p className="optimizedCheckout-headingSecondary sub-header">
+                    <TranslatedString id="remote.start_with_text" />
+                </p>
+                <div className="checkout-buttons-auto-layout">
+                    <WalletButtonsContainerSkeleton
+                        buttonsCount={availableMethodIds.length}
+                        isLoading={isLoading}
+                    >
+                        <div className="checkoutRemote">{renderButtons()}</div>
+                    </WalletButtonsContainerSkeleton>
+                </div>
+                <div className="checkout-separator">
+                    <span className="optimizedCheckout-headingSecondary sub-header">
+                        <TranslatedString id="remote.or_text" />
+                    </span>
+                </div>
+            </LazyContainer>
         </div>
     );
 };
@@ -165,6 +142,8 @@ function mapToCheckoutButtonContainerProps({
 }: CheckoutContextProps): WithCheckoutCheckoutButtonContainerProps | null {
     const {
         data: { getConfig, getCustomer, isPaymentDataRequired, getPaymentMethods },
+        statuses: { isInitializedCustomer },
+        errors: { getInitializeCustomerError },
     } = checkoutState;
     const config = getConfig();
     const providers = config?.checkoutSettings.remoteCheckoutProviders ?? [];
@@ -186,10 +165,17 @@ function mapToCheckoutButtonContainerProps({
         return null;
     }
 
+    const isLoading =
+        availableMethodIds.filter(
+            (methodId) =>
+                Boolean(getInitializeCustomerError(methodId)) || isInitializedCustomer(methodId),
+        ).length !== availableMethodIds.length;
+
     return {
         checkoutService,
         checkoutState,
         availableMethodIds,
+        isLoading,
     };
 }
 
