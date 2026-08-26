@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.880.0](https://github.com/bigcommerce/checkout-js/compare/v1.879.0...v1.880.0) (2026-08-26)
+
+
+### Features
+
+* **payment:** PI-5491 Add error message for payment methods that are no longer available ([bbfe4cd](https://github.com/bigcommerce/checkout-js/commit/bbfe4cdb7642d1dc79544ac2fcdd7fb5a8171a83))
+
 ## [1.879.0](https://github.com/bigcommerce/checkout-js/compare/v1.878.0...v1.879.0) (2026-08-26)
 
 

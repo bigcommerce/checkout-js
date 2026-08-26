@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "appVersion": "1.879.0",
+  "appVersion": "1.880.0",
   "dynamicChunks": {
     "js": [
       "273-a4fdaebd.js",
@@ -113,7 +113,7 @@
     "transients-b860ecad.js",
     "polyfill-e955f287.js",
     "vendor-initial-62b17308.js",
-    "checkout-c2f631dc.js"
+    "checkout-334f8a40.js"
   ],
   "css": [
     "checkout-4caf47c3.css"
@@ -154,7 +154,7 @@
     "cart-summary-8d646b1c.js": "sha256-4cKRCCzTKfrWHXOER7JVkNKxY3zhev/4V73VWX39H5U= sha384-vpGMcrDZxRNfTN+LUoVBnaxB6ZGO85Fce/vNX2CA62MPdC6mLK/nB9Qlr4lzrZA3 sha512-e6i1FUwJJyGc6d6nqgrKSdxVZASZx5rgnDWT3N4p0Cf1Zhe0Q9Qt0g1KDNSXSSG6eiV+KMSPzhxDRbg3PmZ4Yg==",
     "checkout-button-a1aeb1de.js": "sha256-E4LpuVTROur7durXt6PE2htCPy9IDl4WZN5tXpvM0eA= sha384-tLoFG+ugnu1C5SLh4RCGss6GHQHMCGLwPoXOu0yJaAYYGEfvyA4yQ9YK+Ca8KfBc sha512-tH+vy8aW1mOALv3esF5yYzLCu9BQBzyfKSSIrHll4STiMsmDZA1b7x1K2aVInOAJe0WJh2hiQP3eQPEnIRzY9w==",
     "checkout-4caf47c3.css": "sha256-vRg70OdHI3E7XtZS9hFEk0ZkAncnHWaWuxAUHby6bpU= sha384-/AoOARrbiz6lR2sKL5vZ+LnzjWL6+qjgVDd1qTfl0ADzjfgA06Fhu5wTs5ixvZ8X sha512-uAToxmS+qnwLITzEJe+YvstkE4WAsLUPhWcmbDPpqnXcD3O04Dr2p6HB3x8juS9+XUZ25emsZhwI//VMFCMZ2w==",
-    "checkout-c2f631dc.js": "sha256-0BNEtVzx5xvWra5TSLD3xVQp/QUc/X8WedIu6wBx9rY= sha384-s2Eg4TwLR8SYEs2lDy1tPzHh2nfiZI2bE8U29onH6Nx0XTs6KP787jc0to8ci3Z4 sha512-4WVRbTIMvdg248oPWkJRZq6qNdaforCvLmDgzJY2HRBvWhwXNlweAufSDXQ/odcbb8Bnd07Y11ye+4qZHy5MXA==",
+    "checkout-334f8a40.js": "sha256-z509f0+0ch7wyjPBlLI/RSPtoVIkFY8uId8+k7B9pcs= sha384-peJCQvzLLkYFTvoWGyyuXOpWlTj44CPZvIan8dXH4AlBeM/mHhoY/6J8+zXgP2Xq sha512-/G+/sssUiCEVpNqqtnp/zX7xO5S3xanAJeb9O4fHEQOiDjD76Oz0EK4GxxK8M7lMBMEuuo0qb3bVvv+3lfg9Bw==",
     "checkoutcom-custom-payment-method-21ba1791.css": "sha256-OwjgrptbccEF3PPYfeZ3fTl0akJter+SxoKnP0zIue4= sha384-nEYSyTqeAGP7gacTSjggQ4+V2YCPp6gHy1d9SznpAvNfQFjqRqapLs50n9qebV71 sha512-6OwJvcfBpuf4I/6ysyBeG6d2Ld171HNE04s5NranrKEUANW2sp0w3cd4nQeGw4iuYyGdln0PwBixQfrVEY22cg==",
     "checkoutcom-custom-payment-method-029d15b2.js": "sha256-+52R2bRvL1hEhAr+v4aqz306MgGtYsP35nJPFkCUlYs= sha384-KyS8K4Pss8+riTOOZ3FQtmQWypjq9uPR53ZyVZ0QmeKkpeaBOAPPBCPqUnkaA1tB sha512-Yu5GFfWamVBpBs+0DgDJOmAG8WU4es3Ye/XOG9aVZcgrfgEepBf7f+bjrVtV8aOK64kJJfpCnrZMjiUaiEvv1w==",
     "cheque-payment-method-38640126.css": "sha256-5Yy0y2q70cr3h1AcwMKSwpMSQQkgmyF7XVvXfYGuZp4= sha384-Sv0w93lEnPMIWYpUdlTmqVSss8CHZUe/Zo7gt02FX7HITngjsWv0MCP5QdaveDpm sha512-OHzLqMWKAFJeP4LhcURDgRqbkw2Ol8prb9XEv+7nrpKiBE1/2SmmAXNjy3gvBDDUCiTrqrduaX+u9MFQ4M2RAA==",
