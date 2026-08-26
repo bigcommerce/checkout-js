@@ -9,7 +9,6 @@ import {
 } from '@bigcommerce/checkout/contexts';
 import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
 import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
-import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
 import { encodeAddressForWrite } from '../../address';
 import { EMPTY_ARRAY } from '../../common/utility';
@@ -248,11 +247,6 @@ export const useShipping = () => {
         isGuest: customer.isGuest,
         isInitializing: isLoadingShippingCountries() || isLoadingShippingOptions(),
         isLoading,
-        isNoCountriesErrorOnCheckoutEnabled: isExperimentEnabled(
-            config.checkoutSettings,
-            'CHECKOUT-9630.no_countries_error_on_checkout',
-            true,
-        ),
         isShippingStepPending: isShippingStepPending(),
         loadShippingAddressFields: checkoutService.loadShippingAddressFields,
         loadBillingAddressFields: checkoutService.loadBillingAddressFields,

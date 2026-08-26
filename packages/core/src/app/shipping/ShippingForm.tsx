@@ -40,7 +40,6 @@ const ShippingForm = ({
         customerMessage,
         getFields,
         hasMultiShippingEnabled,
-        isNoCountriesErrorOnCheckoutEnabled,
         methodId,
         shippingAddress,
     } = useShipping();
@@ -64,7 +63,7 @@ const ShippingForm = ({
     }, [shippingFormRenderTimestamp]);
 
     useEffect(() => {
-        if (isInitialValueLoaded && countries.length === 0 && isNoCountriesErrorOnCheckoutEnabled) {
+        if (isInitialValueLoaded && countries.length === 0) {
             onUnhandledError(
                 new CustomError({
                     name: 'no_countries_available',
@@ -91,7 +90,7 @@ const ShippingForm = ({
         );
     };
 
-    if (isInitialValueLoaded && countries.length === 0 && isNoCountriesErrorOnCheckoutEnabled) {
+    if (isInitialValueLoaded && countries.length === 0) {
         return null;
     }
 

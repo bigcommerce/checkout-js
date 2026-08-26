@@ -980,21 +980,8 @@ describe('Shipping step', () => {
     });
 
     describe('No countries available error handling', () => {
-        it('calls onUnhandledError when no countries are available and experiment is enabled', async () => {
-            const config = {
-                ...checkoutSettings,
-                storeConfig: {
-                    ...checkoutSettings.storeConfig,
-                    checkoutSettings: {
-                        ...checkoutSettings.storeConfig.checkoutSettings,
-                        features: {
-                            'CHECKOUT-9630.no_countries_error_on_checkout': true,
-                        },
-                    },
-                },
-            };
-
-            checkoutService = checkout.use(CheckoutPreset.CheckoutWithBillingEmail, { config });
+        it('calls onUnhandledError when no countries are available', async () => {
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithBillingEmail);
 
             jest.spyOn(checkoutService.getState().data, 'getShippingCountries').mockReturnValue([]);
 
@@ -1021,41 +1008,6 @@ describe('Shipping step', () => {
                     }),
                 );
             });
-        });
-
-        it('does not call onUnhandledError when no countries are available but experiment is disabled', async () => {
-            const config = {
-                ...checkoutSettings,
-                storeConfig: {
-                    ...checkoutSettings.storeConfig,
-                    checkoutSettings: {
-                        ...checkoutSettings.storeConfig.checkoutSettings,
-                        features: {
-                            'CHECKOUT-9630.no_countries_error_on_checkout': false,
-                        },
-                    },
-                },
-            };
-
-            checkoutService = checkout.use(CheckoutPreset.CheckoutWithBillingEmail, { config });
-
-            // Mock getShippingCountries to return empty array
-            jest.spyOn(checkoutService.getState().data, 'getShippingCountries').mockReturnValue([]);
-
-            // Spy on errorLogger to verify error handling
-            jest.spyOn(defaultProps.errorLogger, 'log');
-
-            render(<CheckoutTest {...defaultProps} />);
-
-            await checkout.waitForShippingStep();
-
-            // Verify that error was NOT logged when experiment is disabled
-            expect(defaultProps.errorLogger.log).not.toHaveBeenCalledWith(
-                expect.objectContaining({
-                    name: 'no_countries_available',
-                    type: 'custom',
-                }),
-            );
         });
     });
 

@@ -24,7 +24,6 @@ export const getUseShippingTestMock: () => ReturnType<typeof useShipping> = () =
     isGuest: false,
     isInitializing: false,
     isLoading: false,
-    isNoCountriesErrorOnCheckoutEnabled: false,
     isShippingStepPending: false,
     loadBillingAddressFields: jest.fn(),
     loadShippingAddressFields: jest.fn(),
