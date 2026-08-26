@@ -1,7 +1,6 @@
 $element-border-radius: remCalc(12px);
 
-// Stretch the checkout page container to the bottom of the viewport;
-// modals also carry .enhancedThemeV1, hence the container id
+// Modals also carry .enhancedThemeV1, hence the container id
 body:has(#checkout-page-container.enhancedThemeV1) {
     display: flex;
     flex-direction: column;
