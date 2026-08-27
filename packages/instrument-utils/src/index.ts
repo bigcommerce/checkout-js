@@ -19,6 +19,7 @@ export {
     configureCardValidator,
     CreditCardCodeField,
     CreditCardCodeTooltip,
+    CreditCardCodeTooltipTrigger,
     CreditCardCustomerCodeField,
     CreditCardExpiryField,
     CreditCardFieldset,
