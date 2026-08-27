@@ -12,7 +12,7 @@ export interface CheckoutProviderProps {
     errorLogger?: ErrorLogger;
 }
 
-const CheckoutProviderV2: React.FC<CheckoutProviderProps> = ({
+const CheckoutProvider: React.FC<CheckoutProviderProps> = ({
     checkoutService,
     errorLogger,
     children,
@@ -31,10 +31,6 @@ const CheckoutProviderV2: React.FC<CheckoutProviderProps> = ({
             <CapabilitiesProviderV2>{children}</CapabilitiesProviderV2>
         </CheckoutContext.Provider>
     );
-};
-
-const CheckoutProvider: React.FC<CheckoutProviderProps> = ({ ...props }) => {
-    return <CheckoutProviderV2 {...props} />;
 };
 
 export default CheckoutProvider;

@@ -8,12 +8,7 @@ export {
 export { ExtensionProvider, ExtensionActionType, withExtension, useExtensions } from './extension';
 export { LocaleContext, LocaleProvider, useLocale } from './locale';
 export { CheckoutContext, CheckoutProvider, useCheckout } from './checkout';
-export {
-    CapabilitiesContext,
-    CapabilitiesProviderV2,
-    defaultCapabilities,
-    useCapabilities,
-} from './capabilities';
+export { CapabilitiesContext, defaultCapabilities, useCapabilities } from './capabilities';
 export { PaymentFormContext, usePaymentFormContext, PaymentFormProvider } from './paymentForm';
 export {
     CheckoutStepHeaderActionContext,

@@ -2,12 +2,7 @@ import { createCheckoutService } from '@bigcommerce/checkout-sdk/essential';
 import { render, type RenderOptions } from '@testing-library/react';
 import React, { type ReactElement } from 'react';
 
-import {
-    CapabilitiesProviderV2,
-    CheckoutProvider,
-    LocaleContext,
-    ThemeProvider,
-} from '@bigcommerce/checkout/contexts';
+import { CheckoutProvider, LocaleContext, ThemeProvider } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
@@ -23,9 +18,7 @@ const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
 
 const WithCapabilitiesProvider = ({ children }: { children: React.ReactNode }) => {
     return (
-        <CheckoutProvider checkoutService={createCheckoutService()}>
-            <CapabilitiesProviderV2>{children}</CapabilitiesProviderV2>
-        </CheckoutProvider>
+        <CheckoutProvider checkoutService={createCheckoutService()}>{children}</CheckoutProvider>
     );
 };
 
