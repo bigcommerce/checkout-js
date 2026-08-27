@@ -21,7 +21,7 @@ export function useCheckout<T>(
         throw new Error('useCheckout must be used within a CheckoutContextProvider');
     }
 
-    const { checkoutService, checkoutState, isCheckoutHookExperimentEnabled } = context;
+    const { checkoutService } = context;
 
     const selectFnRef = useRef(selectFn);
 
@@ -32,7 +32,7 @@ export function useCheckout<T>(
     const subscribe = useCallback(
         (onStoreChange: () => void) => {
             const unsubscribe = checkoutService.subscribe(onStoreChange, (state) => {
-                if (selectFnRef.current && isCheckoutHookExperimentEnabled) {
+                if (selectFnRef.current) {
                     return selectFnRef.current(state);
                 }
 
@@ -41,14 +41,14 @@ export function useCheckout<T>(
 
             return unsubscribe;
         },
-        [checkoutService, isCheckoutHookExperimentEnabled],
+        [checkoutService],
     );
 
     const stateSnapshot = useSyncExternalStore(subscribe, () => checkoutService.getState());
 
     return {
         ...context,
-        checkoutState: isCheckoutHookExperimentEnabled ? stateSnapshot : checkoutState,
+        checkoutState: stateSnapshot,
         selectedState: selectFn ? selectFn(stateSnapshot) : undefined,
     };
 }
