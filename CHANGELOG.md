@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.880.2](https://github.com/bigcommerce/checkout-js/compare/v1.880.1...v1.880.2) (2026-08-27)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10193 Add retry to checkout-button-resolver ([#3270](https://github.com/bigcommerce/checkout-js/issues/3270)) ([1b3081e](https://github.com/bigcommerce/checkout-js/commit/1b3081e3de1c86f3eaf911663841da7de4823b82))
+
 ### [1.880.1](https://github.com/bigcommerce/checkout-js/compare/v1.880.0...v1.880.1) (2026-08-27)
 
 ## [1.880.0](https://github.com/bigcommerce/checkout-js/compare/v1.879.0...v1.880.0) (2026-08-26)
