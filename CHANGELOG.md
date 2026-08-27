@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.881.0](https://github.com/bigcommerce/checkout-js/compare/v1.880.2...v1.881.0) (2026-08-27)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10284 Apply review feedback ([1f93d5f](https://github.com/bigcommerce/checkout-js/commit/1f93d5f0a6ec38de58ae8e5694513f1926845ed9))
+* **checkout:** CHECKOUT-10284 Make tooltip triggers keyboard accessible ([d0d7e7d](https://github.com/bigcommerce/checkout-js/commit/d0d7e7df7616cc1a647facec373912a0c8b6039a))
+
 ### [1.880.2](https://github.com/bigcommerce/checkout-js/compare/v1.880.1...v1.880.2) (2026-08-27)
 
 
