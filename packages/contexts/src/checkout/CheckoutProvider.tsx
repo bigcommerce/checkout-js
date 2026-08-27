@@ -1,7 +1,7 @@
 import { type CheckoutService } from '@bigcommerce/checkout-sdk';
 import React, { type ReactNode, useMemo } from 'react';
 
-import { CapabilitiesProviderV2 } from '../capabilities';
+import { CapabilitiesProvider } from '../capabilities';
 
 import CheckoutContext from './CheckoutContext';
 import type ErrorLogger from './ErrorLogger';
@@ -28,7 +28,7 @@ const CheckoutProvider: React.FC<CheckoutProviderProps> = ({
 
     return (
         <CheckoutContext.Provider value={contextValue}>
-            <CapabilitiesProviderV2>{children}</CapabilitiesProviderV2>
+            <CapabilitiesProvider>{children}</CapabilitiesProvider>
         </CheckoutContext.Provider>
     );
 };
