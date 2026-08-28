@@ -343,6 +343,39 @@ describe('OrderSummaryItems', () => {
         });
     });
 
+    describe('line item ordering', () => {
+        it('renders physical items sorted by variantId ascending', () => {
+            renderOrderSummaryItems({
+                displayLineItemsCount: true,
+                items: {
+                    customItems: [],
+                    physicalItems: [
+                        {
+                            ...getPhysicalItem(),
+                            id: '1',
+                            name: 'High Variant Item',
+                            variantId: 71,
+                        },
+                        {
+                            ...getPhysicalItem(),
+                            id: '2',
+                            name: 'Low Variant Item',
+                            variantId: 5,
+                        },
+                    ],
+                    digitalItems: [],
+                    giftCertificates: [],
+                },
+            });
+
+            const headings = screen.getAllByRole('heading').map((heading) => heading.textContent);
+
+            expect(headings.indexOf('1 x Low Variant Item')).toBeLessThan(
+                headings.indexOf('1 x High Variant Item'),
+            );
+        });
+    });
+
     describe('when it has 5 line items or more', () => {
         const fiveOrMoreItemsProps: OrderSummaryItemsProps = {
             displayLineItemsCount: true,
