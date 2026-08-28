@@ -1,0 +1,88 @@
+.loadingDots {
+    @include enhancedThemeV1 {
+        align-items: baseline;
+        display: inline-flex;
+        gap: remCalc(2px);
+
+        .loadingDots-dot {
+            animation: loadingDotsPulse $animation-loadingDots-pulseSpeed ease-in-out infinite;
+            opacity: 0.25;
+
+            &:nth-child(2) {
+                animation-delay: $animation-loadingDots-stagger;
+            }
+
+            &:nth-child(3) {
+                animation-delay: $animation-loadingDots-stagger * 2;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .loadingDots-dot {
+                animation: none;
+                opacity: 1;
+            }
+        }
+    }
+}
+
+.priceTicker-exit {
+    @include enhancedThemeV1 {
+        animation: priceTickerSlideOut $animation-priceTicker-slideSpeed ease-in both;
+        display: inline-block;
+
+        @media (prefers-reduced-motion: reduce) {
+            animation: none;
+        }
+    }
+}
+
+.priceTicker-enter {
+    @include enhancedThemeV1 {
+        animation: priceTickerSlideIn $animation-priceTicker-slideSpeed ease-out both;
+        display: inline-block;
+
+        @media (prefers-reduced-motion: reduce) {
+            animation: none;
+        }
+    }
+}
+
+// Keyframes must stay outside the enhancedThemeV1 mixin: Sass does not hoist
+// them out of the generated `.enhancedThemeV1 …` selector.
+@keyframes loadingDotsPulse {
+    0%,
+    100% {
+        opacity: 0.25;
+        transform: translateY(0);
+    }
+
+    40% {
+        opacity: 1;
+        transform: translateY(remCalc(-2px));
+    }
+}
+
+@keyframes priceTickerSlideOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(-0.6em);
+    }
+}
+
+@keyframes priceTickerSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(0.6em);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

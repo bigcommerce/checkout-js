@@ -1,5 +1,5 @@
 /* istanbul ignore file */
-export { CollapseCSSTransition } from './animation';
+export { CollapseCSSTransition, prefersReducedMotion } from './animation';
 export { Alert, AlertType } from './alert';
 export {
     Accordion,
@@ -105,7 +105,13 @@ export {
     IconChevronUp,
     IconArrowLeft,
 } from './icon';
-export { LazyContainer, LoadingNotification, LoadingOverlay, LoadingSpinner } from './loading';
+export {
+    LazyContainer,
+    LoadingDots,
+    LoadingNotification,
+    LoadingOverlay,
+    LoadingSpinner,
+} from './loading';
 export {
     ConfirmationModal,
     Modal,
