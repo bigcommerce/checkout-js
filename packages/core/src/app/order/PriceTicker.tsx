@@ -2,7 +2,7 @@ import React, { type FunctionComponent, type ReactNode } from 'react';
 
 import { LoadingDots } from '@bigcommerce/checkout/ui';
 
-import { type PriceChangeTicker } from './usePriceChangeTicker';
+import { type PriceChangeTicker, PriceTickerPhase } from './usePriceChangeTicker';
 
 export interface PriceTickerProps {
     ticker: PriceChangeTicker;
@@ -12,17 +12,19 @@ export interface PriceTickerProps {
 export const PriceTicker: FunctionComponent<PriceTickerProps> = ({ ticker, children }) => {
     const { phase } = ticker;
 
-    if (phase === 'idle') {
+    if (phase === PriceTickerPhase.Idle) {
         return <>{children}</>;
     }
 
-    if (phase === 'dots') {
+    if (phase === PriceTickerPhase.Dots) {
         return <LoadingDots />;
     }
 
     return (
         <span
-            className={phase === 'exiting' ? 'priceTicker-exit' : 'priceTicker-enter'}
+            className={
+                phase === PriceTickerPhase.Exiting ? 'priceTicker-exit' : 'priceTicker-enter'
+            }
             data-test="price-ticker"
         >
             {children}

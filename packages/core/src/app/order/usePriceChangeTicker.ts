@@ -2,7 +2,12 @@ import { useLayoutEffect, useRef, useState } from 'react';
 
 import { prefersReducedMotion } from '@bigcommerce/checkout/ui';
 
-export type PriceTickerPhase = 'idle' | 'exiting' | 'dots' | 'entering';
+export enum PriceTickerPhase {
+    Idle = 'idle',
+    Exiting = 'exiting',
+    Dots = 'dots',
+    Entering = 'entering',
+}
 
 export interface PriceChangeTicker {
     phase: PriceTickerPhase;
@@ -22,7 +27,7 @@ export const usePriceChangeTicker = (
     amount: number | null | undefined,
     isEnabled = true,
 ): PriceChangeTicker => {
-    const [phase, setPhase] = useState<PriceTickerPhase>('idle');
+    const [phase, setPhase] = useState(PriceTickerPhase.Idle);
     const previousAmount = useRef(amount);
     const exitingAmount = useRef(amount);
 
@@ -34,12 +39,18 @@ export const usePriceChangeTicker = (
 
         if (isEnabled && hasAmountChanged && oldAmount != null && !prefersReducedMotion()) {
             exitingAmount.current = oldAmount;
-            setPhase('exiting');
+            setPhase(PriceTickerPhase.Exiting);
 
             const timers = [
-                setTimeout(() => setPhase('dots'), SLIDE_DURATION),
-                setTimeout(() => setPhase('entering'), SLIDE_DURATION + DOTS_DURATION),
-                setTimeout(() => setPhase('idle'), SLIDE_DURATION + DOTS_DURATION + SLIDE_DURATION),
+                setTimeout(() => setPhase(PriceTickerPhase.Dots), SLIDE_DURATION),
+                setTimeout(
+                    () => setPhase(PriceTickerPhase.Entering),
+                    SLIDE_DURATION + DOTS_DURATION,
+                ),
+                setTimeout(
+                    () => setPhase(PriceTickerPhase.Idle),
+                    SLIDE_DURATION + DOTS_DURATION + SLIDE_DURATION,
+                ),
             ];
 
             return () => timers.forEach((timer) => clearTimeout(timer));
@@ -47,11 +58,11 @@ export const usePriceChangeTicker = (
 
         // A non-animating change must still reset a phase left over from a
         // cancelled in-flight animation, or the ticker wedges showing dots.
-        setPhase('idle');
+        setPhase(PriceTickerPhase.Idle);
     }, [amount, isEnabled]);
 
     return {
         phase,
-        displayAmount: phase === 'exiting' ? exitingAmount.current : amount,
+        displayAmount: phase === PriceTickerPhase.Exiting ? exitingAmount.current : amount,
     };
 };
