@@ -224,7 +224,7 @@ describe('OrderSummaryPrice', () => {
                 addEventListener: noop,
                 removeListener: noop,
                 removeEventListener: noop,
-            } as unknown as MediaQueryList);
+            });
 
             const { rerender } = renderTestComponent(initialProps, { enhancedThemeV1: true });
 
