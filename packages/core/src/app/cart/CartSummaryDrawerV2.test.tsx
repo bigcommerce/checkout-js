@@ -186,6 +186,29 @@ describe('CartSummaryDrawerV2 Component', () => {
         await expectSheetClosed();
     });
 
+    it('reopens the sheet when toggled during the close transition after a swipe dismiss', async () => {
+        renderComponent();
+
+        await userEvent.click(getCollapsedBar());
+
+        expectSheetOpen();
+
+        const handle = screen.getByTestId('cart-summary-sheet-handle');
+
+        fireEvent.pointerDown(handle, { pointerId: 1, clientY: 100 });
+        fireEvent.pointerUp(handle, { pointerId: 1, clientY: 200 });
+
+        expect(getCollapsedBar()).toHaveAttribute('aria-expanded', 'false');
+        expect(getSheet()).toHaveStyle({ transform: 'translateY(100%)' });
+
+        await userEvent.click(getCollapsedBar());
+
+        expectSheetOpen();
+
+        expect(getSheet()).not.toHaveStyle({ transform: 'translateY(100%)' });
+        expect(getSheet()).toHaveClass('cart-summary-sheet--afterOpen');
+    });
+
     it('keeps the sheet open when the handle swipe is too short', async () => {
         renderComponent();
 

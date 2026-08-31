@@ -35,7 +35,10 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({
         setIsExpanded(false);
     };
 
-    const { setSheetElement, handleProps: sheetHandleProps } = useSheetDismissDrag(closeSheet);
+    const { setSheetElement, handleProps: sheetHandleProps } = useSheetDismissDrag(
+        isExpanded,
+        closeSheet,
+    );
 
     const { language } = useLocale();
     const checkoutContext = useCheckout();

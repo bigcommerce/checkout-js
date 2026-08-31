@@ -1,4 +1,4 @@
-import { type PointerEvent as ReactPointerEvent, useRef } from 'react';
+import { type PointerEvent as ReactPointerEvent, useEffect, useRef } from 'react';
 
 const DRAG_CLOSE_DISTANCE = 40;
 
@@ -14,9 +14,20 @@ interface SheetDismissDrag {
     };
 }
 
-export const useSheetDismissDrag = (onDismiss: () => void): SheetDismissDrag => {
+export const useSheetDismissDrag = (isOpen: boolean, onDismiss: () => void): SheetDismissDrag => {
     const sheetRef = useRef<HTMLDivElement | null>(null);
     const dragStartY = useRef<number | null>(null);
+
+    // react-modal reuses the sheet node when reopened during the close transition,
+    // so the swipe dismiss's inline styles must be cleared to let the classes apply
+    useEffect(() => {
+        const sheet = sheetRef.current;
+
+        if (isOpen && sheet) {
+            sheet.style.transition = '';
+            sheet.style.transform = '';
+        }
+    }, [isOpen]);
 
     const setSheetElement = (element: HTMLDivElement | null) => {
         sheetRef.current = element;
