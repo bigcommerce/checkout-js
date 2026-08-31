@@ -49,7 +49,7 @@
   "homepage": "https://github.com/bigcommerce/checkout-js#readme",
   "dependencies": {
     "@bigcommerce/checkout-sdk": "^1.964.2",
-    "@bigcommerce/citadel": "^2.15.1",
+    "@bigcommerce/citadel": "^2.16.1",
     "@bigcommerce/form-poster": "^1.2.2",
     "@bigcommerce/memoize": "^1.0.0",
     "@bigcommerce/request-sender": "^1.2.4",
