@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "appVersion": "1.882.0",
+  "appVersion": "1.882.1",
   "dynamicChunks": {
     "js": [
       "273-5b0eb755.js",
@@ -117,7 +117,7 @@
     "checkout-784493f1.js"
   ],
   "css": [
-    "checkout-b7669602.css"
+    "checkout-ebecf58b.css"
   ],
   "integrity": {
     "273-5b0eb755.js": "sha256-7UkaNvBk2oOxyK43gW0BBQSi8k40Pn+DzkST49r2+sk= sha384-MMed5zmBOMIGrAh7YTJZa+qMEptLIm9plbQ3Mea8AAKPLBF/fnwZkwKZCB3h1zy6 sha512-vMclgJwJ9Hp0qii/7WQj1Nhgp3naOHDj7C/Ud7VQNcsYtbEoeOlOQZ3k08Vdo1GTJdJhfMF0Q6LuJx/55LBohQ==",
@@ -155,7 +155,7 @@
     "cart-summary-drawer-bdeead78.js": "sha256-sLf/8rBEWmvBd/6cp9pcBPpu4fMFgNuXqW55WdC/poQ= sha384-D+VGCO9FlGxeDFCTeAJnVqaPWmUEDfN043j90C72XgXRi6DtN1YRwLLmVmKSMRea sha512-jmkFrjPFopO988Fm/FuRcjQ2l7tA9GNmbzDXIGG6xoshzZ4YWb3TNKLtfEaVLYwYNWYFnPoTJfiRl5T3hNeIcg==",
     "cart-summary-8d646b1c.js": "sha256-4cKRCCzTKfrWHXOER7JVkNKxY3zhev/4V73VWX39H5U= sha384-vpGMcrDZxRNfTN+LUoVBnaxB6ZGO85Fce/vNX2CA62MPdC6mLK/nB9Qlr4lzrZA3 sha512-e6i1FUwJJyGc6d6nqgrKSdxVZASZx5rgnDWT3N4p0Cf1Zhe0Q9Qt0g1KDNSXSSG6eiV+KMSPzhxDRbg3PmZ4Yg==",
     "checkout-button-a1aeb1de.js": "sha256-E4LpuVTROur7durXt6PE2htCPy9IDl4WZN5tXpvM0eA= sha384-tLoFG+ugnu1C5SLh4RCGss6GHQHMCGLwPoXOu0yJaAYYGEfvyA4yQ9YK+Ca8KfBc sha512-tH+vy8aW1mOALv3esF5yYzLCu9BQBzyfKSSIrHll4STiMsmDZA1b7x1K2aVInOAJe0WJh2hiQP3eQPEnIRzY9w==",
-    "checkout-b7669602.css": "sha256-rXkTuq8yDVLNN3uYrJLA+TKr1ejnQbpdrxNRLaHCWZU= sha384-Zx/CleVl2WPKd4YZkRg3jH/GCsFrTKyIWsuYePnO7Dj8qyHJF9UkknGCxD3swUCc sha512-yZBpfJcscsUkg3IG7eGCzCJiEQtrL1yWfdcSwIhY+Abmwy+TnZjsXV1GxtZtaSfTZf8hmiICNoPeA9cFJokKwQ==",
+    "checkout-ebecf58b.css": "sha256-W8uBU22ELvWZeIqyTwrlLyb5rXWfvxzrjgiIV3nlocM= sha384-E8yej+/tDtv637nb0eFHg3F7Udyx8ZPnAqPd4srWEpFSlLlgewf44xF9ffmtNhYX sha512-tpyiH67tzAuyPD6UBd5sWevCaf6GBaQPgRLdF/yvijcY81Ln7ub7vKmAjr8p1Sym55lvQTI2gBiHklJLfk/cCA==",
     "checkout-784493f1.js": "sha256-ZyfcrFqyRbaSG5E+tkCZ0S1es0rMGLUUr35TGTYyifw= sha384-vZ+6d2hBBG/GgQgM5SsH1gE7n9IzpRSNDmna8VVLOR/xcnJqlSz0TnBll+uS6KFF sha512-W8nHAp6H5tlp/6FKaN9XfRuNc9g8TzgVXE0vRexjCsYJdA9yww2Voa8CuW6NcY/I1b5TIj+DbyMuWS45tAP8LA==",
     "checkoutcom-custom-payment-method-21ba1791.css": "sha256-OwjgrptbccEF3PPYfeZ3fTl0akJter+SxoKnP0zIue4= sha384-nEYSyTqeAGP7gacTSjggQ4+V2YCPp6gHy1d9SznpAvNfQFjqRqapLs50n9qebV71 sha512-6OwJvcfBpuf4I/6ysyBeG6d2Ld171HNE04s5NranrKEUANW2sp0w3cd4nQeGw4iuYyGdln0PwBixQfrVEY22cg==",
     "checkoutcom-custom-payment-method-029d15b2.js": "sha256-+52R2bRvL1hEhAr+v4aqz306MgGtYsP35nJPFkCUlYs= sha384-KyS8K4Pss8+riTOOZ3FQtmQWypjq9uPR53ZyVZ0QmeKkpeaBOAPPBCPqUnkaA1tB sha512-Yu5GFfWamVBpBs+0DgDJOmAG8WU4es3Ye/XOG9aVZcgrfgEepBf7f+bjrVtV8aOK64kJJfpCnrZMjiUaiEvv1w==",
