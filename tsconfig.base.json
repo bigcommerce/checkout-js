@@ -8,11 +8,13 @@
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
+    "ignoreDeprecations": "6.0",
     "incremental": true,
     "jsx": "react",
     "lib": ["dom", "dom.iterable", "esnext", "scripthost"],
     "module": "esnext",
     "moduleResolution": "bundler",
+    "noUncheckedSideEffectImports": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "paths": {
@@ -115,6 +117,7 @@
     "strict": true,
     "strictNullChecks": true,
     "stripInternal": true,
-    "target": "es2015"
+    "target": "es2015",
+    "types": ["node", "jest", "google.maps", "applepayjs"]
   }
 }
