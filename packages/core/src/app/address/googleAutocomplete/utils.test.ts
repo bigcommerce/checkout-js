@@ -19,6 +19,24 @@ describe('restoreStreetNumberSuffix()', () => {
         );
     });
 
+    it('returns the street unchanged when the prediction has a "unit" prefix and no extra suffix', () => {
+        expect(restoreStreetNumberSuffix('4/28 Beach Street', 'unit 4/28 Beach Street')).toBe(
+            '4/28 Beach Street',
+        );
+    });
+
+    it('restores a letter suffix when the prediction has a "unit" prefix', () => {
+        expect(restoreStreetNumberSuffix('4/28 Beach Street', 'unit 4/28a Beach St')).toBe(
+            '4/28a Beach Street',
+        );
+    });
+
+    it('restores a letter suffix when the subpremise contains a space', () => {
+        expect(restoreStreetNumberSuffix('shop 2/34 Bayford Street', 'shop 2/34a Bayford St')).toBe(
+            'shop 2/34a Bayford Street',
+        );
+    });
+
     it('returns the street unchanged when the street numbers already match', () => {
         expect(restoreStreetNumberSuffix('34 Bayford Street', '34 Bayford St')).toBe(
             '34 Bayford Street',

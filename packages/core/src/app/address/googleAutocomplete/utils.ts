@@ -11,31 +11,45 @@ export const toAutocompleteItems = (
     }));
 };
 
+const hasDigits = (token: string): boolean => {
+    return /\d/.test(token);
+};
+
 export const restoreStreetNumberSuffix = (
-    placeDetailsStreet: string,
-    selectedAutocompleteText?: string,
+    placeDetailsAddress: string,
+    selectedAutocompleteAddress?: string,
 ): string => {
-    if (!placeDetailsStreet || !selectedAutocompleteText) {
-        return placeDetailsStreet;
+    if (!placeDetailsAddress || !selectedAutocompleteAddress) {
+        return placeDetailsAddress;
     }
 
-    const [streetNumber, ...rest] = placeDetailsStreet.split(' ');
-    const [autocompleteNumber] = selectedAutocompleteText.split(' ');
+    const placeDetailsTokens = placeDetailsAddress.split(' ');
+    const selectedAutocompleteTokens = selectedAutocompleteAddress.split(' ');
 
-    if (
-        !streetNumber ||
-        !autocompleteNumber ||
-        autocompleteNumber.length <= streetNumber.length ||
-        !autocompleteNumber.toLowerCase().startsWith(streetNumber.toLowerCase())
-    ) {
-        return placeDetailsStreet;
+    const placeDetailsStreetNumberIndex = placeDetailsTokens.findIndex(hasDigits);
+    const autocompleteStreetNumber = selectedAutocompleteTokens.find(hasDigits);
+
+    if (placeDetailsStreetNumberIndex === -1 || !autocompleteStreetNumber) {
+        return placeDetailsAddress;
     }
 
-    const suffix = autocompleteNumber.slice(streetNumber.length);
+    const placeDetailsStreetNumber = placeDetailsTokens[placeDetailsStreetNumberIndex];
 
-    if (!/^[a-z]{1,2}$/i.test(suffix)) {
-        return placeDetailsStreet;
+    const extendsPlaceDetailsStreetNumber = autocompleteStreetNumber
+        .toLowerCase()
+        .startsWith(placeDetailsStreetNumber.toLowerCase());
+
+    if (!extendsPlaceDetailsStreetNumber) {
+        return placeDetailsAddress;
     }
 
-    return [autocompleteNumber, ...rest].join(' ');
+    const lostLetterSuffix = autocompleteStreetNumber.slice(placeDetailsStreetNumber.length);
+
+    if (!/^[a-z]{1,2}$/i.test(lostLetterSuffix)) {
+        return placeDetailsAddress;
+    }
+
+    placeDetailsTokens[placeDetailsStreetNumberIndex] = autocompleteStreetNumber;
+
+    return placeDetailsTokens.join(' ');
 };
