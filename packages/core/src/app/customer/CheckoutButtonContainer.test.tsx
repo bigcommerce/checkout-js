@@ -6,15 +6,21 @@ import {
 import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';
 
-import { CheckoutProvider, LocaleProvider } from '@bigcommerce/checkout/contexts';
+import {
+    CheckoutProvider,
+    defaultCapabilities,
+    LocaleProvider,
+} from '@bigcommerce/checkout/contexts';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
 import { type CheckoutButtonProps } from '@bigcommerce/checkout/payment-integration-api';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
+import { retry } from '../common/utility';
 import { getStoreConfig } from '../config/config.mock';
 
 import CheckoutButtonContainer from './CheckoutButtonContainer';
 import { getCustomer, getGuestCustomer } from './customers.mock';
+import resolveCheckoutButton from './resolveCheckoutButton';
 
 const MockCheckoutButton: FunctionComponent<CheckoutButtonProps> = ({ containerId }) => (
     <div data-test={containerId} />
@@ -23,6 +29,19 @@ const MockCheckoutButton: FunctionComponent<CheckoutButtonProps> = ({ containerI
 jest.mock('./resolveCheckoutButton', () => ({
     __esModule: true,
     default: jest.fn(() => MockCheckoutButton),
+}));
+
+jest.mock('./WalletButtonV1Resolver', () => {
+    const error = new Error('Loading chunk wallet-button-v1-resolver failed');
+
+    error.name = 'ChunkLoadError';
+
+    throw error;
+});
+
+jest.mock('../common/utility', () => ({
+    ...jest.requireActual('../common/utility'),
+    retry: jest.fn((fn: () => Promise<unknown>) => fn()),
 }));
 
 describe('CheckoutButtonContainer', () => {
@@ -47,6 +66,8 @@ describe('CheckoutButtonContainer', () => {
         );
 
     beforeEach(() => {
+        jest.mocked(resolveCheckoutButton).mockImplementation(() => MockCheckoutButton);
+
         checkoutService = createCheckoutService();
         checkoutState = checkoutService.getState();
 
@@ -107,6 +128,44 @@ describe('CheckoutButtonContainer', () => {
         const { container } = renderCheckoutButtonContainer();
 
         expect(container).toBeEmptyDOMElement();
+    });
+
+    it('does not render when the disableWalletButtons capability is enabled', () => {
+        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
+            ...getStoreConfig(),
+            checkoutSettings: {
+                ...getStoreConfig().checkoutSettings,
+                remoteCheckoutProviders: ['applepay'],
+                capabilities: {
+                    ...defaultCapabilities,
+                    userJourney: {
+                        ...defaultCapabilities.userJourney,
+                        disableWalletButtons: true,
+                    },
+                },
+            },
+        });
+
+        const { container } = renderCheckoutButtonContainer();
+
+        expect(container).toBeEmptyDOMElement();
+    });
+
+    it('renders wallet buttons when disableWalletButtons capability is absent', async () => {
+        renderCheckoutButtonContainer();
+
+        expect(await screen.findByTestId('applepayCheckoutButton')).toBeInTheDocument();
+    });
+
+    it('retries loading the wallet button chunk and shows the network error message when it still fails', async () => {
+        jest.mocked(resolveCheckoutButton).mockReturnValue(undefined);
+
+        renderCheckoutButtonContainer();
+
+        expect(
+            await screen.findByText(/the server is taking too long to respond/i),
+        ).toBeInTheDocument();
+        expect(retry).toHaveBeenCalledTimes(1);
     });
 
     it('does not render when payment data is not required', () => {

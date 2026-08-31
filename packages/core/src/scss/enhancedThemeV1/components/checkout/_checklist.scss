@@ -65,19 +65,11 @@
         }
 
         &:focus ~ .form-label {
-            box-shadow: $checklist-focus-boxShadow;
+            box-shadow: none;
         }
 
         & ~ .form-label::before {
             border: 2px $input-border-style $input-border-color;
         }
-    }
-}
-
-
-// Payment provider title
-.paymentProviderHeader-container {
-    @include enhancedThemeV1 {
-        flex: 1;
     }
 }

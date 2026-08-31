@@ -27,7 +27,7 @@ import mapFromDigital from './mapFromDigital';
 import mapFromGiftCertificate from './mapFromGiftCertificate';
 import mapFromPhysical from './mapFromPhysical';
 import OrderSummaryItem from './OrderSummaryItem';
-import { buildBundleItemsMapFromOrder, removeAndBundleItemsTogether } from './removeBundledItems';
+import { getNonBundledItems } from './removeBundledItems';
 
 // Module-scoped to survive the responsive remount. Safe as MobileView mounts only one instance at a time.
 let backorderDetailsExpanded = false;
@@ -214,9 +214,7 @@ const OrderSummaryItems = ({
 
     const expandBackorderDetails = showBackorderSwitch && showBackorderDetails;
 
-    const { nonBundledItems, bundleItemsMap } = order?.bundledItems
-        ? buildBundleItemsMapFromOrder(items, order.bundledItems)
-        : removeAndBundleItemsTogether(items);
+    const { nonBundledItems, bundleItemsMap } = getNonBundledItems(items, order?.bundledItems);
 
     const collapsedLimit = isSmallScreen()
         ? COLLAPSED_ITEMS_LIMIT_SMALL_SCREEN

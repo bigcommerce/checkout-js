@@ -4,6 +4,7 @@
         order: -1;
 
         .cart-summary-drawer {
+            background: none;
             border: none;
             box-shadow: none;
             bottom: 0;
@@ -148,7 +149,7 @@
             min-height: 0;
             overflow-y: auto;
             overscroll-behavior: contain;
-            padding: 0 spacing("single") spacing("single");
+            padding-bottom: spacing("single");
         }
 
         @media (prefers-reduced-motion: reduce) {

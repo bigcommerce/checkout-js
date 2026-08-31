@@ -61,6 +61,7 @@ import {
     ShippingStep,
 } from './components';
 import { deleteCartOnExit } from './deleteCartOnExit';
+import { getInitialBillingSameAsShipping } from './getInitialBillingSameAsShipping';
 import useB2BToken from './hooks/useB2BToken';
 import { mapCheckoutComponentErrorMessage } from './mapErrorMessage';
 import mapToCheckoutProps from './mapToCheckoutProps';
@@ -444,6 +445,24 @@ const Checkout = ({
         [],
     );
 
+    // The billing step has no same-as-shipping checkbox, so re-derive the flag
+    // from the just-saved addresses; read them at call time as the props
+    // captured before the billing update are stale.
+    const handleBillingNextStep = useCallback((): void => {
+        const { data: currentData } = checkoutService.getState();
+
+        setState((prev) => ({
+            ...prev,
+            isBillingSameAsShipping: getInitialBillingSameAsShipping({
+                billingAddress: currentData.getBillingAddress(),
+                shippingAddress: currentData.getShippingAddress(),
+                defaultValue: prev.isBillingSameAsShipping,
+            }),
+        }));
+
+        navigateToNextIncompleteStep();
+    }, [checkoutService, navigateToNextIncompleteStep]);
+
     const handleShippingSignIn = useCallback((): void => {
         setCustomerViewType(CustomerViewType.Login);
     }, [setCustomerViewType]);
@@ -529,7 +548,7 @@ const Checkout = ({
                 return (
                     <BillingStep
                         billingAddress={billingAddress}
-                        navigateNextStep={navigateToNextIncompleteStep}
+                        navigateNextStep={handleBillingNextStep}
                         onEdit={handleEditStep}
                         onExpanded={handleExpanded}
                         onReady={handleReady}
@@ -645,6 +664,8 @@ const Checkout = ({
 
                 const consignments = data.getConsignments();
                 const cart = data.getCart();
+                const initialBillingAddress = data.getBillingAddress();
+                const initialShippingAddress = data.getShippingAddress();
 
                 const hasMultiShippingEnabled =
                     data.getConfig()?.checkoutSettings.hasMultiShippingEnabled;
@@ -660,7 +681,11 @@ const Checkout = ({
 
                 setState((prevState) => ({
                     ...prevState,
-                    isBillingSameAsShipping: checkoutBillingSameAsShippingEnabled,
+                    isBillingSameAsShipping: getInitialBillingSameAsShipping({
+                        billingAddress: initialBillingAddress,
+                        shippingAddress: initialShippingAddress,
+                        defaultValue: checkoutBillingSameAsShippingEnabled,
+                    }),
                     isSubscribed: defaultNewsletterSignupOption,
                 }));
 

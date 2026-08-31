@@ -103,7 +103,7 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({
                     ariaHideApp={false}
                     bodyOpenClassName="has-activeCartSummarySheet"
                     className={{
-                        base: 'cart-summary-sheet',
+                        base: 'cart-summary-sheet optimizedCheckout-orderSummary',
                         afterOpen: 'cart-summary-sheet--afterOpen',
                         beforeClose: 'cart-summary-sheet--beforeClose',
                     }}
@@ -118,7 +118,7 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({
                     isOpen={isExpanded}
                     onRequestClose={closeSheet}
                     overlayClassName={{
-                        base: 'cart-summary-backdrop optimizedCheckout-orderSummary',
+                        base: 'cart-summary-backdrop',
                         afterOpen: 'cart-summary-backdrop--afterOpen',
                         beforeClose: 'cart-summary-backdrop--beforeClose',
                     }}

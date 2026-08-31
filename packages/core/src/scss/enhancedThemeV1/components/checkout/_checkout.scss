@@ -46,9 +46,36 @@
             padding-bottom: 0;
         }
 
+        .checkout-step:not(.checkout-step--current) {
+            .stepHeader-title {
+                font-size: $fontSize-smaller;
+                min-width: 0;
+            }
+
+            div.stepHeader-counter.icon.stepHeader-counter--complete {
+                @include square($checkoutStep-completeCheck-size);
+
+                background-color: $color-stepCompleteCheck;
+                display: block;
+                margin-left: spacing("third");
+                order: 1;
+                transform: none;
+
+                svg {
+                    fill: $color-white;
+                    height: 100%;
+                    width: 100%;
+                }
+            }
+        }
+
         .stepHeader {
             flex-wrap: wrap;
-            padding: 0 0 spacing("single");
+            padding: 0;
+
+            div.stepHeader-counter.icon {
+                display: none;
+            }
 
             .stepHeader-body {
                 order: 3;
@@ -85,9 +112,19 @@
             }
         }
 
+        // :not(:last-child) keeps collapsed step titles vertically centred
+        .checkout-view-header:not(:last-child) .stepHeader {
+            padding-bottom: spacing("single");
+        }
+
         .checkout-button-container {
             padding: 0 #{spacing("base") + spacing("base")};
             margin-top: spacing("single");
+            text-align: center;
+
+            .checkoutRemote {
+                place-items: center;
+            }
         }
     }
 

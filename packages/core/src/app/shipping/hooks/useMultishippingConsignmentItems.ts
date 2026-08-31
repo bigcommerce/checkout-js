@@ -2,6 +2,7 @@ import { type Consignment, type LineItemMap } from '@bigcommerce/checkout-sdk';
 
 import { useCheckout } from '@bigcommerce/checkout/contexts';
 
+import { removeBundledItems } from '../../order/removeBundledItems';
 import {
     LineItemType,
     type MultiShippingConsignmentData,
@@ -13,15 +14,6 @@ import { generateItemHash } from '../utils';
 interface MultiShippingConsignmentItemsHook {
     unassignedItems: MultiShippingTableData;
     consignmentList: MultiShippingConsignmentData[];
-}
-
-// TODO: consolidate this from /app/order/removeBundledItems
-function removeBundledItems(lineItems: LineItemMap): LineItemMap {
-    return {
-        ...lineItems,
-        physicalItems: lineItems.physicalItems.filter((item) => typeof item.parentId !== 'string'),
-        digitalItems: lineItems.digitalItems.filter((item) => typeof item.parentId !== 'string'),
-    };
 }
 
 const calculateShippableItemsCount = (items: MultiShippingTableItemWithType[]): number => {

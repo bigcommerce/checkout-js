@@ -542,13 +542,16 @@ describe('Customer Guest', () => {
         expect(onChangeViewType).not.toHaveBeenCalled();
     });
 
-    it('shows cancellable enforced login if API returns 403 error', async () => {
-        const email = faker.internet.email();
+    it('shows cancellable enforced login if API returns 403 error for an existing customer', async () => {
+        const mockEmail = faker.internet.email();
         const onChangeViewType = jest.fn();
 
         jest.spyOn(checkoutService, 'continueAsGuest').mockRejectedValue({
             type: 'error',
             status: 403,
+            body: {
+                type: 'existing_customer_require_login',
+            },
         });
 
         const { rerender } = render(
@@ -563,12 +566,12 @@ describe('Customer Guest', () => {
             localeContext.language.translate('customer.email_label'),
         );
 
-        await userEvent.type(emailField, email);
-        await userEvent.click(
-            screen.getByRole('button', {
-                name: localeContext.language.translate('customer.continue'),
-            }),
-        );
+        const continueButton = screen.getByRole('button', {
+            name: localeContext.language.translate('customer.continue'),
+        });
+
+        await userEvent.type(emailField, mockEmail);
+        await userEvent.click(continueButton);
 
         expect(onChangeViewType).toHaveBeenCalledWith(CustomerViewType.CancellableEnforcedLogin);
 
@@ -578,8 +581,45 @@ describe('Customer Guest', () => {
 
         expect(
             screen.getByText(
-                `Looks like you have an account. Please sign in to proceed with ${email}, or use another email.`,
+                `Looks like you have an account. Please sign in to proceed with ${mockEmail}, or use another email.`,
             ),
         ).toBeInTheDocument();
+    });
+
+    it('triggers generic error callback instead of enforcing login 403 response does not have a specific type', async () => {
+        const mockEmail = faker.internet.email();
+        const onChangeViewType = jest.fn();
+        const handleError = jest.fn();
+
+        jest.spyOn(checkoutService, 'continueAsGuest').mockRejectedValue({
+            type: 'error',
+            status: 403,
+            body: {
+                type: 'about:blank',
+            },
+        });
+
+        render(
+            <CustomerTest
+                onChangeViewType={onChangeViewType}
+                onContinueAsGuestError={handleError}
+                viewType={CustomerViewType.Guest}
+                {...defaultProps}
+            />,
+        );
+
+        const emailField = screen.getByLabelText(
+            localeContext.language.translate('customer.email_label'),
+        );
+
+        const continueButton = screen.getByRole('button', {
+            name: localeContext.language.translate('customer.continue'),
+        });
+
+        await userEvent.type(emailField, mockEmail);
+        await userEvent.click(continueButton);
+
+        expect(onChangeViewType).not.toHaveBeenCalled();
+        expect(handleError).toHaveBeenCalled();
     });
 });

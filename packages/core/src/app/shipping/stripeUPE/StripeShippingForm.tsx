@@ -4,7 +4,7 @@ import { noop } from 'lodash';
 import React, { useCallback, useState } from 'react';
 import { lazy, object } from 'yup';
 
-import { useCapabilities } from '@bigcommerce/checkout/contexts';
+import { useCapabilities, useThemeContext } from '@bigcommerce/checkout/contexts';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { Fieldset, Form } from '@bigcommerce/checkout/ui';
 
@@ -62,6 +62,7 @@ const StripeShippingForm: React.FC<
         shouldShowOrderComments,
         updateShippingAddress: updateAddress,
     } = useShipping();
+    const { enhancedThemeV1 } = useThemeContext();
 
     const [isUpdatingShippingData] = useState(false);
 
@@ -108,6 +109,8 @@ const StripeShippingForm: React.FC<
         [values, setValues, onUnhandledError],
     );
 
+    const shouldShowBillingSameAsShipping = !hideBillingSameAsShippingCheck && !enhancedThemeV1;
+
     return (
         <Form autoComplete="on">
             <Fieldset>
@@ -126,9 +129,11 @@ const StripeShippingForm: React.FC<
                     step={step}
                 />
 
-                <div className="form-body">
-                    {!hideBillingSameAsShippingCheck && <BillingSameAsShippingField />}
-                </div>
+                {shouldShowBillingSameAsShipping && (
+                    <div className="form-body">
+                        <BillingSameAsShippingField />
+                    </div>
+                )}
             </Fieldset>
 
             <ShippingFormFooter

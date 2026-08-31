@@ -7,17 +7,25 @@ import {
 import { noop } from 'lodash';
 import React, { type FunctionComponent, lazy, memo } from 'react';
 
-import { type CheckoutContextProps, useLocale } from '@bigcommerce/checkout/contexts';
+import {
+    type CheckoutContextProps,
+    useCapabilities,
+    useLocale,
+} from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { LazyContainer } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../checkout';
+import { retry } from '../common/utility';
 
 import { getSupportedMethodIds } from './getSupportedMethods';
 import resolveCheckoutButton from './resolveCheckoutButton';
 
-const CheckoutButtonV1Resolver = lazy(
-    () => import(/* webpackChunkName: "wallet-button-v1-resolver" */ './WalletButtonV1Resolver'),
+const CheckoutButtonV1Resolver = lazy(() =>
+    retry(
+        () =>
+            import(/* webpackChunkName: "wallet-button-v1-resolver" */ './WalletButtonV1Resolver'),
+    ),
 );
 
 export interface CheckoutButtonListProps {
@@ -51,7 +59,15 @@ const CheckoutButtonList: FunctionComponent<
     onError,
 }) => {
     const { language } = useLocale();
+    const {
+        userJourney: { disableWalletButtons },
+    } = useCapabilities();
     const paymentMethods = checkoutState.data.getPaymentMethods();
+
+    if (disableWalletButtons) {
+        return null;
+    }
+
     const supportedMethodIds = getSupportedMethodIds(methodIds, paymentMethods);
 
     if (supportedMethodIds.length === 0) {
