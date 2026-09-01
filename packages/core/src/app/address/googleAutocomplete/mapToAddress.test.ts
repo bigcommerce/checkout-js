@@ -22,14 +22,29 @@ describe('mapToAddress()', () => {
         });
     });
 
-    it('restores a street number suffix stripped by place details for AU addresses', () => {
+    it('restores a street number suffix stripped by place details for AU addresses, upper-cased per Australia Post', () => {
         const address = mapToAddress(
             getGoogleAutocompleteAUPlaceMock(),
             getCountries(),
             '34a Bayford Street',
         );
 
-        expect(address.address1).toBe('34a Bayford Street');
+        expect(address.address1).toBe('34A Bayford Street');
+    });
+
+    it('upper-cases a lowercase street number suffix returned by place details for AU addresses', () => {
+        const mockGooglePlace = getGoogleAutocompleteAUPlaceMock();
+
+        mockGooglePlace.address_components = (mockGooglePlace.address_components ?? []).map(
+            (component) =>
+                component.types.includes('street_number')
+                    ? { ...component, long_name: '34b', short_name: '34b' }
+                    : component,
+        );
+
+        const address = mapToAddress(mockGooglePlace, getCountries(), '34b Bayford Street');
+
+        expect(address.address1).toBe('34B Bayford Street');
     });
 
     it('keeps the place details street when the prediction has no extra suffix', () => {

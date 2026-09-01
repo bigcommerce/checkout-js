@@ -45,11 +45,12 @@ export const restoreStreetNumberSuffix = (
 
     const lostLetterSuffix = autocompleteStreetNumber.slice(placeDetailsStreetNumber.length);
 
-    if (!/^[a-z]{1,2}$/i.test(lostLetterSuffix)) {
+    if (!/^[a-z]$/i.test(lostLetterSuffix)) {
         return placeDetailsAddress;
     }
 
-    placeDetailsTokens[placeDetailsStreetNumberIndex] = autocompleteStreetNumber;
+    placeDetailsTokens[placeDetailsStreetNumberIndex] =
+        `${placeDetailsStreetNumber}${lostLetterSuffix.toUpperCase()}`;
 
     return placeDetailsTokens.join(' ');
 };
