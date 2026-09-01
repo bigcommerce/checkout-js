@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.883.1](https://github.com/bigcommerce/checkout-js/compare/v1.883.0...v1.883.1) (2026-09-01)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-10368 Update Company GQL Search ([#3294](https://github.com/bigcommerce/checkout-js/issues/3294)) ([fb88a96](https://github.com/bigcommerce/checkout-js/commit/fb88a963aeeca5a1580ec0d0f687b78ea90eed92))
+
 ## [1.883.0](https://github.com/bigcommerce/checkout-js/compare/v1.882.2...v1.883.0) (2026-08-31)
 
 
