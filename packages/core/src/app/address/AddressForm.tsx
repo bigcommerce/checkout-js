@@ -2,7 +2,12 @@ import { type FormField, isExtraField } from '@bigcommerce/checkout-sdk/essentia
 import { forIn, noop } from 'lodash';
 import React, { useCallback, useEffect, useRef } from 'react';
 
-import { useCapabilities, useCheckout, useLocale } from '@bigcommerce/checkout/contexts';
+import {
+    useCapabilities,
+    useCheckout,
+    useLocale,
+    useThemeContext,
+} from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { isPayPalFastlaneMethod } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import {
@@ -31,6 +36,7 @@ import {
     getAddressFormFieldLegacyName,
 } from './getAddressFormFieldInputId';
 import { GoogleAutocompleteFormField, mapToAddress } from './googleAutocomplete';
+import { moveCountryFieldToTop } from './moveCountryFieldToTop';
 import './AddressForm.scss';
 
 const AddressForm: React.FC<AddressFormProps> = ({
@@ -47,6 +53,7 @@ const AddressForm: React.FC<AddressFormProps> = ({
         userJourney: { hasCompanyAddressBook, hasAddressLabel },
     } = useCapabilities();
     const { language } = useLocale();
+    const { enhancedThemeV1 } = useThemeContext();
     const {
         selectedState: { config, countries },
     } = useCheckout(({ data }) => ({
@@ -77,6 +84,8 @@ const AddressForm: React.FC<AddressFormProps> = ({
         false,
     );
     const countriesWithAutocomplete = ['US', 'CA', 'AU', 'NZ', 'GB'];
+    // Field order comes from the API; the enhanced theme only pins the country field first
+    const sortedFormFields = enhancedThemeV1 ? moveCountryFieldToTop(formFields) : formFields;
 
     const containerRef = useRef<HTMLDivElement>(null);
     const nextElementRef = useRef<HTMLElement | null>(null);
@@ -164,7 +173,7 @@ const AddressForm: React.FC<AddressFormProps> = ({
         <>
             <Fieldset>
                 <div className="checkout-address" ref={containerRef}>
-                    {formFields.map((field) => {
+                    {sortedFormFields.map((field) => {
                         if (field.hidden) return null;
 
                         const addressFieldName = field.name;
