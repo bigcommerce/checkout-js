@@ -49,7 +49,8 @@ export const useSheetDismissDrag = (isOpen: boolean, onDismiss: () => void): She
             return;
         }
 
-        const offset = Math.max(0, event.clientY - dragStartY.current);
+        const dragDistance = event.clientY - dragStartY.current;
+        const offset = Math.max(0, dragDistance);
 
         sheet.style.transform = `translateY(${offset}px)`;
     };
@@ -61,9 +62,11 @@ export const useSheetDismissDrag = (isOpen: boolean, onDismiss: () => void): She
             return;
         }
 
+        const dragDistance = event.clientY - dragStartY.current;
+
         sheet.style.transition = '';
 
-        if (event.clientY - dragStartY.current > DRAG_CLOSE_DISTANCE) {
+        if (dragDistance > DRAG_CLOSE_DISTANCE) {
             // Must match the sheet's closing transform so the slide continues from the drop position
             sheet.style.transform = 'translateY(100%)';
             onDismiss();
