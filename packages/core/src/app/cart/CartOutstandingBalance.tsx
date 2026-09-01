@@ -2,7 +2,7 @@ import React, { type FunctionComponent } from 'react';
 
 import { ShopperCurrency } from '../currency';
 import { PriceTicker } from '../order/PriceTicker';
-import { usePriceChangeTicker } from '../order/usePriceChangeTicker';
+import { PriceTickerPhase, usePriceChangeTicker } from '../order/usePriceChangeTicker';
 
 export interface CartOutstandingBalanceProps {
     amount: number;
@@ -14,17 +14,17 @@ export const CartOutstandingBalance: FunctionComponent<CartOutstandingBalancePro
     amount,
     currencyCode,
 }) => {
-    const ticker = usePriceChangeTicker(amount);
+    const { phase, displayAmount } = usePriceChangeTicker(amount);
 
     return (
         <span
-            aria-busy={ticker.phase !== 'idle' || undefined}
+            aria-busy={phase !== PriceTickerPhase.Idle || undefined}
             aria-live="polite"
             className="sub-header"
             data-test="cart-outstanding-balance"
         >
-            <PriceTicker ticker={ticker}>
-                <ShopperCurrency amount={ticker.displayAmount ?? amount} /> ({currencyCode})
+            <PriceTicker phase={phase}>
+                <ShopperCurrency amount={displayAmount ?? amount} /> ({currencyCode})
             </PriceTicker>
         </span>
     );
