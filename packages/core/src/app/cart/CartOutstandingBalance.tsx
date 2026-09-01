@@ -4,21 +4,22 @@ import { ShopperCurrency } from '../currency';
 import { PriceTicker } from '../order/PriceTicker';
 import { PriceTickerPhase, usePriceChangeTicker } from '../order/usePriceChangeTicker';
 
-export interface CartOutstandingBalanceProps {
+interface CartOutstandingBalanceProps {
     amount: number;
     currencyCode: string;
 }
 
-// Owns the ticker state so phase changes re-render only this span, not the drawer.
 export const CartOutstandingBalance: FunctionComponent<CartOutstandingBalanceProps> = ({
     amount,
     currencyCode,
 }) => {
+    // Keep the ticker state here so phase changes re-render only this span, not the drawer.
     const { phase, displayAmount } = usePriceChangeTicker(amount);
+    const isPriceUpdating = phase !== PriceTickerPhase.Idle || undefined;
 
     return (
         <span
-            aria-busy={phase !== PriceTickerPhase.Idle || undefined}
+            aria-busy={isPriceUpdating}
             aria-live="polite"
             className="sub-header"
             data-test="cart-outstanding-balance"
