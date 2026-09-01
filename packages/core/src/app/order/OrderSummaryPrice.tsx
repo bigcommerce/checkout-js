@@ -8,7 +8,7 @@ import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { ShopperCurrency } from '../currency';
 
 import { PriceTicker } from './PriceTicker';
-import { usePriceChangeTicker } from './usePriceChangeTicker';
+import { PriceTickerPhase, usePriceChangeTicker } from './usePriceChangeTicker';
 
 export interface OrderSummaryPriceProps {
     children?: ReactNode;
@@ -64,9 +64,8 @@ const OrderSummaryPrice: FC<OrderSummaryPriceProps> = ({
     );
     const { enhancedThemeV1 } = useThemeContext();
 
-    const ticker = usePriceChangeTicker(amount, enhancedThemeV1);
-    const { phase, displayAmount } = ticker;
-    const showDots = phase === 'dots';
+    const { phase, displayAmount } = usePriceChangeTicker(amount, enhancedThemeV1);
+    const showDots = phase === PriceTickerPhase.Dots;
     const displayValue = getDisplayValue(displayAmount, zeroLabel);
 
     useEffect(() => {
@@ -98,7 +97,7 @@ const OrderSummaryPrice: FC<OrderSummaryPriceProps> = ({
 
     const priceRow = (
         <div
-            aria-busy={phase !== 'idle' || undefined}
+            aria-busy={phase !== PriceTickerPhase.Idle || undefined}
             aria-live="polite"
             className={classNames('cart-priceItem', 'optimizedCheckout-contentPrimary', className)}
         >
@@ -147,7 +146,7 @@ const OrderSummaryPrice: FC<OrderSummaryPriceProps> = ({
                     )}
 
                 <span data-test="cart-price-value">
-                    <PriceTicker ticker={ticker}>
+                    <PriceTicker phase={phase}>
                         {isNumberValue(displayValue) ? (
                             <ShopperCurrency amount={displayValue} />
                         ) : (

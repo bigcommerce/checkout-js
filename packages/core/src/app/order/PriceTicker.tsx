@@ -2,16 +2,14 @@ import React, { type FunctionComponent, type ReactNode } from 'react';
 
 import { LoadingDots } from '@bigcommerce/checkout/ui';
 
-import { type PriceChangeTicker, PriceTickerPhase } from './usePriceChangeTicker';
+import { PriceTickerPhase } from './usePriceChangeTicker';
 
 export interface PriceTickerProps {
-    ticker: PriceChangeTicker;
+    phase: PriceTickerPhase;
     children: ReactNode;
 }
 
-export const PriceTicker: FunctionComponent<PriceTickerProps> = ({ ticker, children }) => {
-    const { phase } = ticker;
-
+export const PriceTicker: FunctionComponent<PriceTickerProps> = ({ phase, children }) => {
     if (phase === PriceTickerPhase.Idle) {
         return <>{children}</>;
     }
