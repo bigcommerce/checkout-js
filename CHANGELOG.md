@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.884.0](https://github.com/bigcommerce/checkout-js/compare/v1.883.2...v1.884.0) (2026-09-01)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10353 show loading dots animation for price updates in desktop view order summary ([#3285](https://github.com/bigcommerce/checkout-js/issues/3285)) ([763187f](https://github.com/bigcommerce/checkout-js/commit/763187f255e66c58e385433a2b7d39db2f2a3003))
+
 ### [1.883.2](https://github.com/bigcommerce/checkout-js/compare/v1.883.1...v1.883.2) (2026-09-01)
 
 ### [1.883.1](https://github.com/bigcommerce/checkout-js/compare/v1.883.0...v1.883.1) (2026-09-01)
