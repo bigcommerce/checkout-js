@@ -1,5 +1,3 @@
-import type InjectHoc from './InjectHoc';
-
 export type MapToProps<TContextProps, TMappedProps, TOwnProps> = (
     context: TContextProps,
     props: TOwnProps,
@@ -10,11 +8,3 @@ export type MapToPropsFactory<TContextProps, TMappedProps, TOwnProps> = () => Ma
     TMappedProps,
     TOwnProps
 >;
-
-export type MappableInjectHoc<TContextProps> = <TMappedProps, TOwnProps>(
-    mapToProps:
-        | MapToProps<TContextProps, TMappedProps, TOwnProps>
-        | MapToPropsFactory<TContextProps, TMappedProps, TOwnProps>,
-) => InjectHoc<TMappedProps, TOwnProps>;
-
-export default MappableInjectHoc;
