@@ -6,13 +6,13 @@ import { useCheckout, useLocale } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { IconChevronDown, IconChevronUp } from '@bigcommerce/checkout/ui';
 
-import { ShopperCurrency } from '../currency';
 import getItemsCount from '../order/getItemsCount';
 import getLineItemsCount from '../order/getLineItemsCount';
 import OrderSummary from '../order/OrderSummary';
 import { removeBundledItems } from '../order/removeBundledItems';
 
 import { CartHeaderLink } from './CartHeaderLink';
+import { CartOutstandingBalance } from './CartOutstandingBalance';
 import { CartSummaryItemImage } from './CartSummaryItemImage';
 import mapToCartSummaryProps from './mapToCartSummaryProps';
 import withRedeemable from './withRedeemable';
@@ -86,10 +86,10 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({
                             id="cart.item_count_text"
                         />
                     </span>
-                    <span className="sub-header" data-test="cart-outstanding-balance">
-                        <ShopperCurrency amount={checkout.outstandingBalance} /> (
-                        {shopperCurrency.code})
-                    </span>
+                    <CartOutstandingBalance
+                        amount={checkout.outstandingBalance}
+                        currencyCode={shopperCurrency.code}
+                    />
                 </div>
                 <span className="cart-summary-bar-toggle-label body-regular optimizedCheckout-orderSummary-toggle">
                     <TranslatedString

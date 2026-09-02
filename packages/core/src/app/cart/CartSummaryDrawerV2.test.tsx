@@ -5,7 +5,7 @@ import React from 'react';
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
 import { CheckoutProvider, ExtensionProvider, LocaleContext } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
-import { configure, render, screen, waitFor, within } from '@bigcommerce/checkout/test-utils';
+import { act, configure, render, screen, waitFor, within } from '@bigcommerce/checkout/test-utils';
 
 import { getCheckout } from '../checkout/checkouts.mock';
 import { createErrorLogger } from '../common/error';
@@ -25,18 +25,25 @@ describe('CartSummaryDrawerV2 Component', () => {
         const extensionService = new ExtensionService(checkoutService, createErrorLogger());
 
         jest.spyOn(checkoutService.getState().data, 'getCustomer').mockReturnValue(getCustomer());
-        jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue(checkout);
         jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(getStoreConfig());
 
-        return render(
+        const getCheckoutMock = jest
+            .spyOn(checkoutService.getState().data, 'getCheckout')
+            .mockReturnValue(checkout);
+
+        const buildUi = () => (
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
                     <ExtensionProvider extensionService={extensionService}>
                         <CartSummaryDrawerV2 isMultiShippingMode={false} />
                     </ExtensionProvider>
                 </LocaleContext.Provider>
-            </CheckoutProvider>,
+            </CheckoutProvider>
         );
+
+        const view = render(buildUi());
+
+        return { ...view, getCheckoutMock, rerenderComponent: () => view.rerender(buildUi()) };
     };
 
     const getCollapsedBar = () => screen.getByTestId('cart-summary-collapsed-bar');
@@ -161,5 +168,42 @@ describe('CartSummaryDrawerV2 Component', () => {
         await userEvent.click(screen.getByTestId('cart-summary-backdrop'));
 
         await expectSheetClosed();
+    });
+
+    it('slides the old balance out, shows dots, then slides the new balance in', () => {
+        jest.useFakeTimers();
+
+        try {
+            const checkout = getCheckout();
+            const { getCheckoutMock, rerenderComponent } = renderComponent(checkout);
+
+            expect(screen.queryByTestId('loading-dots')).not.toBeInTheDocument();
+
+            getCheckoutMock.mockReturnValue({ ...checkout, outstandingBalance: 300 });
+            rerenderComponent();
+
+            const balance = screen.getByTestId('cart-outstanding-balance');
+
+            expect(screen.queryByTestId('loading-dots')).not.toBeInTheDocument();
+            expect(balance).toHaveTextContent('$212.80 (USD)');
+
+            act(() => {
+                jest.advanceTimersByTime(200);
+            });
+
+            expect(within(balance).getByTestId('loading-dots')).toBeInTheDocument();
+            expect(balance).toHaveAttribute('aria-busy', 'true');
+            expect(balance).not.toHaveTextContent('$');
+            expect(balance).not.toHaveTextContent('(USD)');
+
+            act(() => {
+                jest.advanceTimersByTime(1200);
+            });
+
+            expect(screen.queryByTestId('loading-dots')).not.toBeInTheDocument();
+            expect(balance).toHaveTextContent('$336.00 (USD)');
+        } finally {
+            jest.useRealTimers();
+        }
     });
 });
