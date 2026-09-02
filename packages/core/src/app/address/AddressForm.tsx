@@ -126,7 +126,7 @@ const AddressForm: React.FC<AddressFormProps> = ({
         (place: google.maps.places.PlaceResult, item: AutocompleteItem) => {
             const { value: autocompleteValue } = item;
 
-            const address = mapToAddress(place, countries);
+            const address = mapToAddress(place, countries, autocompleteValue);
 
             forIn(address, (value, fieldName) => {
                 if (fieldName === AUTOCOMPLETE_FIELD_NAME && value === undefined) {
