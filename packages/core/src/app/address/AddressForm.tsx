@@ -84,7 +84,6 @@ const AddressForm: React.FC<AddressFormProps> = ({
         false,
     );
     const countriesWithAutocomplete = ['US', 'CA', 'AU', 'NZ', 'GB'];
-    // Field order comes from the API; the enhanced theme only pins the country field first
     const sortedFormFields = enhancedThemeV1 ? moveCountryFieldToTop(formFields) : formFields;
 
     const containerRef = useRef<HTMLDivElement>(null);
