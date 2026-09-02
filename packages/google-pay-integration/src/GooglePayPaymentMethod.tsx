@@ -23,7 +23,7 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 }) => {
     const {
         checkoutState: {
-            data: { getCheckout, getConfig },
+            data: { getCheckout },
         },
     } = useCheckout();
 
@@ -33,9 +33,6 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     // Capture whether Google Pay was already selected at mount time
     // (PDP/Cart/Customer step button)
     const wasPaymentSelectedAtMountRef = useRef(isPaymentSelected);
-
-    const features = getConfig()?.checkoutSettings.features ?? {};
-    const isDirectPayEnabled = features['PI-5111.google_pay_direct_pay_on_click'] ?? false;
 
     const initializeGooglePayPayment = useCallback(
         (defaultOptions: PaymentInitializeOptions) => {
@@ -159,7 +156,7 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         [checkoutService, method, onUnhandledError],
     );
 
-    if (isDirectPayEnabled && !wasPaymentSelectedAtMountRef.current) {
+    if (!wasPaymentSelectedAtMountRef.current) {
         return (
             <GooglePayPaymentMethodComponent
                 {...rest}
