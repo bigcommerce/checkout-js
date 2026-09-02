@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.886.0](https://github.com/bigcommerce/checkout-js/compare/v1.885.7...v1.886.0) (2026-09-02)
+
+
+### Features
+
+* **other:** LOCAL-1444 delivery translation ([#3293](https://github.com/bigcommerce/checkout-js/issues/3293)) ([77e8473](https://github.com/bigcommerce/checkout-js/commit/77e847374afa5528bdaf5bb25a71237d067f59eb))
+
 ### [1.885.7](https://github.com/bigcommerce/checkout-js/compare/v1.885.6...v1.885.7) (2026-09-02)
 
 ### [1.885.6](https://github.com/bigcommerce/checkout-js/compare/v1.885.5...v1.885.6) (2026-09-02)
