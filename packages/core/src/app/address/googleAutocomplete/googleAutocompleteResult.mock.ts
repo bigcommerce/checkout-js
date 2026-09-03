@@ -53,7 +53,45 @@ export function getGoogleAutocompletePlaceMock(): google.maps.places.PlaceResult
                 types: ['postal_code'],
             },
         ],
-    } as google.maps.places.PlaceResult;
+    };
+}
+
+export function getGoogleAutocompleteAUPlaceMock(): google.maps.places.PlaceResult {
+    return {
+        name: '34 Bayford St',
+        address_components: [
+            {
+                long_name: '34',
+                short_name: '34',
+                types: ['street_number'],
+            },
+            {
+                long_name: 'Bayford Street',
+                short_name: 'Bayford St',
+                types: ['route'],
+            },
+            {
+                long_name: 'Birkdale',
+                short_name: 'Birkdale',
+                types: ['locality', 'political'],
+            },
+            {
+                long_name: 'Queensland',
+                short_name: 'QLD',
+                types: ['administrative_area_level_1', 'political'],
+            },
+            {
+                long_name: 'Australia',
+                short_name: 'AU',
+                types: ['country', 'political'],
+            },
+            {
+                long_name: '4159',
+                short_name: '4159',
+                types: ['postal_code'],
+            },
+        ],
+    };
 }
 
 export function getGoogleAutocompleteNZPlaceMock(): google.maps.places.PlaceResult {
@@ -101,7 +139,7 @@ export function getGoogleAutocompleteNZPlaceMock(): google.maps.places.PlaceResu
                 types: ['postal_code'],
             },
         ],
-    } as google.maps.places.PlaceResult;
+    };
 }
 
 export function getGoogleAutocompleteUKPlaceMock(): google.maps.places.PlaceResult {
@@ -149,7 +187,7 @@ export function getGoogleAutocompleteUKPlaceMock(): google.maps.places.PlaceResu
                 types: ['postal_code'],
             },
         ],
-    } as google.maps.places.PlaceResult;
+    };
 }
 
 export function getGoogleAutocompleteCAPlaceMockWithSubLocality(): google.maps.places.PlaceResult {
@@ -202,7 +240,7 @@ export function getGoogleAutocompleteCAPlaceMockWithSubLocality(): google.maps.p
                 types: ['postal_code'],
             },
         ],
-    } as google.maps.places.PlaceResult;
+    };
 }
 
 export function getGoogleAutocompleteCAPlaceMockWithLocality(): google.maps.places.PlaceResult {
@@ -245,5 +283,5 @@ export function getGoogleAutocompleteCAPlaceMockWithLocality(): google.maps.plac
                 types: ['postal_code'],
             },
         ],
-    } as google.maps.places.PlaceResult;
+    };
 }

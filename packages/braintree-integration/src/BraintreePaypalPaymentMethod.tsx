@@ -1,8 +1,8 @@
 import { type PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import { createBraintreePaypalPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
 import React, { type FunctionComponent, useCallback, useEffect, useRef } from 'react';
-import { InstrumentDeclinedError } from '@bigcommerce/checkout/error-handling-utils';
 
+import { InstrumentDeclinedError } from '@bigcommerce/checkout/error-handling-utils';
 import { HostedPaymentComponent } from '@bigcommerce/checkout/hosted-payment-integration';
 import {
     type PaymentMethodProps,

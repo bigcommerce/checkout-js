@@ -670,7 +670,7 @@ describe('OrderSummarySubtotals', () => {
                     type: 'custom_fee',
                     source: 'test',
                     customerDisplayName: 'Order Fee',
-                } as OrderFee,
+                },
             ];
 
             renderComponent({ fees });

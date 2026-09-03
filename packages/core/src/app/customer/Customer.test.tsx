@@ -189,8 +189,8 @@ describe('Customer Component', () => {
         await userEvent.click(screen.getByText('Create an account'));
         await userEvent.click(screen.getByText('Cancel'));
         await userEvent.click(screen.getByText('Create an account'));
-        await userEvent.type(await screen.findByLabelText('First Name'), faker.name.firstName());
-        await userEvent.type(await screen.findByLabelText('Last Name'), faker.name.lastName());
+        await userEvent.type(await screen.findByLabelText('First Name'), faker.person.firstName());
+        await userEvent.type(await screen.findByLabelText('Last Name'), faker.person.lastName());
         await userEvent.type(await screen.findByLabelText('Email'), customerEmail);
         await userEvent.type(await screen.findByLabelText('Password'), 'abc');
         await userEvent.click(screen.getByText('Create Account'));

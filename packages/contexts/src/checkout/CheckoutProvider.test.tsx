@@ -5,6 +5,7 @@ import React from 'react';
 import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
 import { defaultCapabilities, useCapabilities } from '../capabilities';
+
 import CheckoutProvider from './CheckoutProvider';
 
 describe('CheckoutProvider', () => {

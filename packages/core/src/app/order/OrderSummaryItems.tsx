@@ -130,12 +130,12 @@ const ProductList = ({
     const summaryItems = [
         ...items.physicalItems
             .slice()
-            .sort((item) => item.variantId)
+            .sort((a, b) => a.variantId - b.variantId)
             .map((item) => mapFromPhysical(item, bundleItemsMap)),
         ...items.giftCertificates.slice().map(mapFromGiftCertificate),
         ...items.digitalItems
             .slice()
-            .sort((item) => item.variantId)
+            .sort((a, b) => a.variantId - b.variantId)
             .map((item) => mapFromDigital(item, bundleItemsMap)),
         ...(items.customItems || []).map(mapFromCustom),
     ].slice(0, isExpanded ? undefined : collapsedLimit);
@@ -208,8 +208,8 @@ const OrderSummaryItems = ({
     const backorderCount = getBackorderCount(items);
     const shouldDisplayBackorderDetails =
         !!config?.inventorySettings?.shouldDisplayBackorderMessagesOnStorefront &&
-        (!!config?.inventorySettings?.showQuantityOnBackorder ||
-            !!config?.inventorySettings?.showBackorderMessage);
+        (config?.inventorySettings?.showQuantityOnBackorder ||
+            config?.inventorySettings?.showBackorderMessage);
     const showBackorderSwitch = shouldDisplayBackorderDetails && backorderCount > 0;
 
     const expandBackorderDetails = showBackorderSwitch && showBackorderDetails;

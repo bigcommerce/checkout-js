@@ -5,7 +5,15 @@ import React from 'react';
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
 import { CheckoutProvider, ExtensionProvider, LocaleContext } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
-import { configure, render, screen, waitFor, within } from '@bigcommerce/checkout/test-utils';
+import {
+    act,
+    configure,
+    fireEvent,
+    render,
+    screen,
+    waitFor,
+    within,
+} from '@bigcommerce/checkout/test-utils';
 
 import { getCheckout } from '../checkout/checkouts.mock';
 import { createErrorLogger } from '../common/error';
@@ -20,23 +28,35 @@ configure({ testIdAttribute: 'data-test' });
 describe('CartSummaryDrawerV2 Component', () => {
     const localeContext = createLocaleContext(getStoreConfig());
 
+    beforeAll(() => {
+        // jsdom lacks PointerEvent; a MouseEvent stand-in lets fireEvent carry clientY
+        window.PointerEvent = MouseEvent as unknown as typeof PointerEvent;
+    });
+
     const renderComponent = (checkout: Checkout = getCheckout()) => {
         const checkoutService = createCheckoutService();
         const extensionService = new ExtensionService(checkoutService, createErrorLogger());
 
         jest.spyOn(checkoutService.getState().data, 'getCustomer').mockReturnValue(getCustomer());
-        jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue(checkout);
         jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(getStoreConfig());
 
-        return render(
+        const getCheckoutMock = jest
+            .spyOn(checkoutService.getState().data, 'getCheckout')
+            .mockReturnValue(checkout);
+
+        const buildUi = () => (
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
                     <ExtensionProvider extensionService={extensionService}>
                         <CartSummaryDrawerV2 isMultiShippingMode={false} />
                     </ExtensionProvider>
                 </LocaleContext.Provider>
-            </CheckoutProvider>,
+            </CheckoutProvider>
         );
+
+        const view = render(buildUi());
+
+        return { ...view, getCheckoutMock, rerenderComponent: () => view.rerender(buildUi()) };
     };
 
     const getCollapsedBar = () => screen.getByTestId('cart-summary-collapsed-bar');
@@ -151,6 +171,59 @@ describe('CartSummaryDrawerV2 Component', () => {
         await expectSheetClosed();
     });
 
+    it('closes the sheet when the handle is swiped down', async () => {
+        renderComponent();
+
+        await userEvent.click(getCollapsedBar());
+
+        expectSheetOpen();
+
+        const handle = screen.getByTestId('cart-summary-sheet-handle');
+
+        fireEvent.pointerDown(handle, { pointerId: 1, clientY: 100 });
+        fireEvent.pointerUp(handle, { pointerId: 1, clientY: 200 });
+
+        await expectSheetClosed();
+    });
+
+    it('reopens the sheet when toggled during the close transition after a swipe dismiss', async () => {
+        renderComponent();
+
+        await userEvent.click(getCollapsedBar());
+
+        expectSheetOpen();
+
+        const handle = screen.getByTestId('cart-summary-sheet-handle');
+
+        fireEvent.pointerDown(handle, { pointerId: 1, clientY: 100 });
+        fireEvent.pointerUp(handle, { pointerId: 1, clientY: 200 });
+
+        expect(getCollapsedBar()).toHaveAttribute('aria-expanded', 'false');
+        expect(getSheet()).toHaveStyle({ transform: 'translateY(100%)' });
+
+        await userEvent.click(getCollapsedBar());
+
+        expectSheetOpen();
+
+        expect(getSheet()).not.toHaveStyle({ transform: 'translateY(100%)' });
+        expect(getSheet()).toHaveClass('cart-summary-sheet--afterOpen');
+    });
+
+    it('keeps the sheet open when the handle swipe is too short', async () => {
+        renderComponent();
+
+        await userEvent.click(getCollapsedBar());
+
+        expectSheetOpen();
+
+        const handle = screen.getByTestId('cart-summary-sheet-handle');
+
+        fireEvent.pointerDown(handle, { pointerId: 1, clientY: 100 });
+        fireEvent.pointerUp(handle, { pointerId: 1, clientY: 120 });
+
+        expectSheetOpen();
+    });
+
     it('closes the sheet when the backdrop is clicked', async () => {
         renderComponent();
 
@@ -161,5 +234,42 @@ describe('CartSummaryDrawerV2 Component', () => {
         await userEvent.click(screen.getByTestId('cart-summary-backdrop'));
 
         await expectSheetClosed();
+    });
+
+    it('slides the old balance out, shows dots, then slides the new balance in', () => {
+        jest.useFakeTimers();
+
+        try {
+            const checkout = getCheckout();
+            const { getCheckoutMock, rerenderComponent } = renderComponent(checkout);
+
+            expect(screen.queryByTestId('loading-dots')).not.toBeInTheDocument();
+
+            getCheckoutMock.mockReturnValue({ ...checkout, outstandingBalance: 300 });
+            rerenderComponent();
+
+            const balance = screen.getByTestId('cart-outstanding-balance');
+
+            expect(screen.queryByTestId('loading-dots')).not.toBeInTheDocument();
+            expect(balance).toHaveTextContent('$212.80 (USD)');
+
+            act(() => {
+                jest.advanceTimersByTime(200);
+            });
+
+            expect(within(balance).getByTestId('loading-dots')).toBeInTheDocument();
+            expect(balance).toHaveAttribute('aria-busy', 'true');
+            expect(balance).not.toHaveTextContent('$');
+            expect(balance).not.toHaveTextContent('(USD)');
+
+            act(() => {
+                jest.advanceTimersByTime(1200);
+            });
+
+            expect(screen.queryByTestId('loading-dots')).not.toBeInTheDocument();
+            expect(balance).toHaveTextContent('$336.00 (USD)');
+        } finally {
+            jest.useRealTimers();
+        }
     });
 });

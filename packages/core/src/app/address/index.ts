@@ -14,7 +14,6 @@ export { isEmptyAddress } from './isEmptyAddress';
 export { default as getAddressExtraFields } from './getAddressExtraFields';
 export { default as setDefaultAddress } from './setDefaultAddress';
 export { default as getShouldSaveAddress } from './getShouldSaveAddress';
-export { reorderAddressFormFields } from './reorderAddressFormFields';
 export {
     default as getAddressFormFieldsValidationSchema,
     getTranslateAddressError,

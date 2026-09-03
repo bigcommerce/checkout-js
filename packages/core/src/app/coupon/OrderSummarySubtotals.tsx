@@ -71,20 +71,20 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
                     />
                 )}
 
-                {fees?.map((fee, index) => (
+                {fees?.map((fee) => (
                     <OrderSummaryPrice
                         amount={fee.cost}
-                        key={index}
+                        key={fee.id}
                         label={isOrderFee(fee) ? fee.customerDisplayName : fee.displayName}
                         testId="cart-fees"
                     />
                 ))}
 
                 {!isTaxIncluded &&
-                    (taxes || []).map((tax, index) => (
+                    (taxes || []).map((tax) => (
                         <OrderSummaryPrice
                             amount={tax.amount}
-                            key={index}
+                            key={tax.name}
                             label={tax.name}
                             testId="cart-taxes"
                         />

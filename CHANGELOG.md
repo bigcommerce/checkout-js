@@ -2,6 +2,99 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.888.2](https://github.com/bigcommerce/checkout-js/compare/v1.888.1...v1.888.2) (2026-09-03)
+
+### [1.888.1](https://github.com/bigcommerce/checkout-js/compare/v1.888.0...v1.888.1) (2026-09-03)
+
+## [1.888.0](https://github.com/bigcommerce/checkout-js/compare/v1.887.0...v1.888.0) (2026-09-03)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10366 allow address fields to be reordered for enhancedTheme ([#3295](https://github.com/bigcommerce/checkout-js/issues/3295)) ([04f8829](https://github.com/bigcommerce/checkout-js/commit/04f88291c3adc74561a4e04b125b2813c939ca1a))
+
+## [1.887.0](https://github.com/bigcommerce/checkout-js/compare/v1.886.1...v1.887.0) (2026-09-03)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10327 Link email validation error to its input ([df667c9](https://github.com/bigcommerce/checkout-js/commit/df667c9436d0a19d74164c30f461c9064ef83292))
+* **checkout:** CHECKOUT-10348 make the grey bar on order summary slidable ([#3290](https://github.com/bigcommerce/checkout-js/issues/3290)) ([ba8f304](https://github.com/bigcommerce/checkout-js/commit/ba8f304a74dbcfb712a390d10c7a2e2b34318232))
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10328 Google Autocomplete dropping suffix from AU addresses ([#3288](https://github.com/bigcommerce/checkout-js/issues/3288)) ([0f89b1c](https://github.com/bigcommerce/checkout-js/commit/0f89b1c0328be88e4ed2fe2b0ed81a92046158ff))
+* **checkout:** CHECKOUT-10328 Resolve lint issue related to autocomplete ([#3305](https://github.com/bigcommerce/checkout-js/issues/3305)) ([66e374a](https://github.com/bigcommerce/checkout-js/commit/66e374a0c4afce7bf9d3b44af4eecf4a58eac5c3))
+
+### [1.886.1](https://github.com/bigcommerce/checkout-js/compare/v1.886.0...v1.886.1) (2026-09-02)
+
+## [1.886.0](https://github.com/bigcommerce/checkout-js/compare/v1.885.7...v1.886.0) (2026-09-02)
+
+
+### Features
+
+* **other:** LOCAL-1444 delivery translation ([#3293](https://github.com/bigcommerce/checkout-js/issues/3293)) ([77e8473](https://github.com/bigcommerce/checkout-js/commit/77e847374afa5528bdaf5bb25a71237d067f59eb))
+
+### [1.885.7](https://github.com/bigcommerce/checkout-js/compare/v1.885.6...v1.885.7) (2026-09-02)
+
+### [1.885.6](https://github.com/bigcommerce/checkout-js/compare/v1.885.5...v1.885.6) (2026-09-02)
+
+### [1.885.5](https://github.com/bigcommerce/checkout-js/compare/v1.885.4...v1.885.5) (2026-09-02)
+
+### [1.885.4](https://github.com/bigcommerce/checkout-js/compare/v1.885.3...v1.885.4) (2026-09-02)
+
+### [1.885.3](https://github.com/bigcommerce/checkout-js/compare/v1.885.2...v1.885.3) (2026-09-02)
+
+### [1.885.2](https://github.com/bigcommerce/checkout-js/compare/v1.885.1...v1.885.2) (2026-09-02)
+
+### [1.885.1](https://github.com/bigcommerce/checkout-js/compare/v1.885.0...v1.885.1) (2026-09-02)
+
+## [1.885.0](https://github.com/bigcommerce/checkout-js/compare/v1.884.1...v1.885.0) (2026-09-02)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10353 show loading dots animation for price updates in mobile view order summary ([#3286](https://github.com/bigcommerce/checkout-js/issues/3286)) ([c9c9702](https://github.com/bigcommerce/checkout-js/commit/c9c9702e802c3092411bf5f9583c369ea5485cee))
+
+### [1.884.1](https://github.com/bigcommerce/checkout-js/compare/v1.884.0...v1.884.1) (2026-09-01)
+
+## [1.884.0](https://github.com/bigcommerce/checkout-js/compare/v1.883.2...v1.884.0) (2026-09-01)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10353 show loading dots animation for price updates in desktop view order summary ([#3285](https://github.com/bigcommerce/checkout-js/issues/3285)) ([763187f](https://github.com/bigcommerce/checkout-js/commit/763187f255e66c58e385433a2b7d39db2f2a3003))
+
+### [1.883.2](https://github.com/bigcommerce/checkout-js/compare/v1.883.1...v1.883.2) (2026-09-01)
+
+### [1.883.1](https://github.com/bigcommerce/checkout-js/compare/v1.883.0...v1.883.1) (2026-09-01)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-10368 Update Company GQL Search ([#3294](https://github.com/bigcommerce/checkout-js/issues/3294)) ([fb88a96](https://github.com/bigcommerce/checkout-js/commit/fb88a963aeeca5a1580ec0d0f687b78ea90eed92))
+
+## [1.883.0](https://github.com/bigcommerce/checkout-js/compare/v1.882.2...v1.883.0) (2026-08-31)
+
+
+### Features
+
+* **paymnet:** Migrate CyberSource v2 to Resolver Configuration ([#3151](https://github.com/bigcommerce/checkout-js/issues/3151)) ([99b91e7](https://github.com/bigcommerce/checkout-js/commit/99b91e7570b7ea096eff7654866158366ad05964))
+
+### [1.882.2](https://github.com/bigcommerce/checkout-js/compare/v1.882.1...v1.882.2) (2026-08-31)
+
+### [1.882.1](https://github.com/bigcommerce/checkout-js/compare/v1.882.0...v1.882.1) (2026-08-31)
+
+## [1.882.0](https://github.com/bigcommerce/checkout-js/compare/v1.881.1...v1.882.0) (2026-08-31)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10353 add loading dots animation for price updates in enhancedThemeV1 ([#3282](https://github.com/bigcommerce/checkout-js/issues/3282)) ([fae54a3](https://github.com/bigcommerce/checkout-js/commit/fae54a3dc1accf84f19e8777c8c075779fe61e71))
+
+### [1.881.1](https://github.com/bigcommerce/checkout-js/compare/v1.881.0...v1.881.1) (2026-08-31)
+
 ## [1.881.0](https://github.com/bigcommerce/checkout-js/compare/v1.880.2...v1.881.0) (2026-08-27)
 
 

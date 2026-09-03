@@ -13,6 +13,7 @@ import {
     CheckoutProvider,
     LocaleContext,
     type LocaleContextType,
+    ThemeContext,
 } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
@@ -41,14 +42,19 @@ describe('AddressForm Component', () => {
     let localeContext: LocaleContextType;
     let formFields: FormField[];
 
-    const renderAddressFormComponent = (addressFormProps: AddressFormProps): void => {
+    const renderAddressFormComponent = (
+        addressFormProps: AddressFormProps,
+        { enhancedThemeV1 = false }: { enhancedThemeV1?: boolean } = {},
+    ): void => {
         render(
             <CheckoutProvider checkoutService={checkoutService}>
-                <LocaleContext.Provider value={localeContext}>
-                    <Formik initialValues={{}} onSubmit={noop}>
-                        <AddressForm {...addressFormProps} />
-                    </Formik>
-                </LocaleContext.Provider>
+                <ThemeContext.Provider value={{ enhancedThemeV1 }}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <Formik initialValues={{}} onSubmit={noop}>
+                            <AddressForm {...addressFormProps} />
+                        </Formik>
+                    </LocaleContext.Provider>
+                </ThemeContext.Provider>
             </CheckoutProvider>,
         );
     };
@@ -197,6 +203,70 @@ describe('AddressForm Component', () => {
 
             expect(screen.queryByTestId('intl-tel-input-mock')).not.toBeInTheDocument();
             expect(screen.getByTestId('phoneInput-text')).toBeInTheDocument();
+        });
+    });
+
+    describe('address field order', () => {
+        const countryFormFieldMock = {
+            custom: false,
+            default: '',
+            fieldType: 'text',
+            id: 'field_11',
+            label: 'Country',
+            name: 'countryCode',
+            required: true,
+        } as FormField;
+
+        const getRenderedFieldNames = () =>
+            screen
+                .getAllByTestId(/Input-(text|select)$/)
+                .map((element) =>
+                    element.getAttribute('data-test')?.replace(/Input-(text|select)$/, ''),
+                );
+
+        it('pins country field first and keeps the given order when enhanced theme is enabled', () => {
+            renderAddressFormComponent(
+                {
+                    formFields: [
+                        ...formFields.slice(0, 2),
+                        countryFormFieldMock,
+                        ...formFields.slice(2),
+                    ],
+                },
+                { enhancedThemeV1: true },
+            );
+
+            expect(getRenderedFieldNames()).toEqual([
+                'countryCode',
+                'firstName',
+                'lastName',
+                'addressLine1',
+                'addressLine2',
+                'field_25',
+                'field_27',
+                'field_31',
+            ]);
+        });
+
+        it('renders fields in the given order when enhanced theme is disabled', () => {
+            renderAddressFormComponent({
+                formFields: [
+                    ...formFields.slice(0, 2),
+                    countryFormFieldMock,
+                    ...formFields.slice(2),
+                ],
+            });
+
+            expect(getRenderedFieldNames()).toEqual([
+                'firstName',
+                'lastName',
+                'countryCode',
+                'addressLine1',
+                'addressLine2',
+                'field_25',
+                'field_27',
+                'field_31',
+            ]);
         });
     });
 });
