@@ -91,7 +91,7 @@ export function getGoogleAutocompleteAUPlaceMock(): google.maps.places.PlaceResu
                 types: ['postal_code'],
             },
         ],
-    } as google.maps.places.PlaceResult;
+    };
 }
 
 export function getGoogleAutocompleteNZPlaceMock(): google.maps.places.PlaceResult {
