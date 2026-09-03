@@ -209,4 +209,15 @@ body.has-activeCartSummarySheet {
 
 .enhancedThemeV1:has(.cart-summary-collapsed-bar) .layout {
     padding-bottom: #{5 * spacing("single")};
+    position: relative;
+}
+
+// iOS Safari drags position: fixed elements along with the visual viewport
+// while the on-screen keyboard is open, leaving the collapsed bar floating
+// mid-page. While a checkout field has focus (i.e. the keyboard is up), anchor
+// the bar to the bottom of the page content instead, matching Chrome, where
+// the bar stays behind the keyboard until the page is scrolled to the end.
+// Scoping to .layout-main excludes the coupon field inside the open sheet.
+.enhancedThemeV1:has(.layout-main input:not([type="checkbox"], [type="radio"]):focus, .layout-main select:focus, .layout-main textarea:focus) .cart-summary-drawer {
+    position: absolute;
 }
