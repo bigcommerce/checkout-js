@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.888.0](https://github.com/bigcommerce/checkout-js/compare/v1.887.0...v1.888.0) (2026-09-03)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10366 allow address fields to be reordered for enhancedTheme ([#3295](https://github.com/bigcommerce/checkout-js/issues/3295)) ([04f8829](https://github.com/bigcommerce/checkout-js/commit/04f88291c3adc74561a4e04b125b2813c939ca1a))
+
 ## [1.887.0](https://github.com/bigcommerce/checkout-js/compare/v1.886.1...v1.887.0) (2026-09-03)
 
 
