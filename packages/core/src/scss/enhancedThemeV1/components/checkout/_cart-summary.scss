@@ -135,12 +135,18 @@
             transform: translateY(100%);
         }
 
+        .cart-summary-sheet-handle-region {
+            cursor: grab;
+            flex-shrink: 0;
+            padding: spacing("half") 0;
+            touch-action: none;
+        }
+
         .cart-summary-sheet-handle {
             background-color: $color-greyMedium;
             border-radius: remCalc(2px);
-            flex-shrink: 0;
             height: remCalc(4px);
-            margin: spacing("half") auto;
+            margin: 0 auto;
             width: remCalc(40px);
         }
 

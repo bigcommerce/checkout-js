@@ -15,6 +15,7 @@ import { CartHeaderLink } from './CartHeaderLink';
 import { CartOutstandingBalance } from './CartOutstandingBalance';
 import { CartSummaryItemImage } from './CartSummaryItemImage';
 import mapToCartSummaryProps from './mapToCartSummaryProps';
+import { useSheetDismissDrag } from './useSheetDismissDrag';
 import withRedeemable from './withRedeemable';
 
 // Must match $animation-collapse-transitionSpeed in scss settings
@@ -30,6 +31,15 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({
     const [rootElement, setRootElement] = useState<HTMLDivElement | null>(null);
     const [isExpanded, setIsExpanded] = useState(false);
 
+    const closeSheet = () => {
+        setIsExpanded(false);
+    };
+
+    const { setSheetElement, handleProps: sheetHandleProps } = useSheetDismissDrag(
+        isExpanded,
+        closeSheet,
+    );
+
     const { language } = useLocale();
     const checkoutContext = useCheckout();
     const props = mapToCartSummaryProps(checkoutContext);
@@ -44,10 +54,6 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({
 
     const toggleSheet = () => {
         setIsExpanded((currentState) => !currentState);
-    };
-
-    const closeSheet = () => {
-        setIsExpanded(false);
     };
 
     const handleBarKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
@@ -114,6 +120,7 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({
                         </div>
                     )}
                     contentLabel={cartHeading}
+                    contentRef={setSheetElement}
                     id="cart-summary-sheet"
                     isOpen={isExpanded}
                     onRequestClose={closeSheet}
@@ -129,7 +136,13 @@ const CartSummaryDrawerV2: FunctionComponent<CartSummaryDrawerV2Props> = ({
                     )}
                     parentSelector={() => rootElement}
                 >
-                    <div className="cart-summary-sheet-handle" />
+                    <div
+                        className="cart-summary-sheet-handle-region"
+                        data-test="cart-summary-sheet-handle"
+                        {...sheetHandleProps}
+                    >
+                        <div className="cart-summary-sheet-handle" />
+                    </div>
                     <div className="cart-summary-sheet-content">
                         {withRedeemable(OrderSummary)({
                             ...props,

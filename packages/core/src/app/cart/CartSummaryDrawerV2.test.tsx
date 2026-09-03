@@ -5,7 +5,15 @@ import React from 'react';
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
 import { CheckoutProvider, ExtensionProvider, LocaleContext } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
-import { act, configure, render, screen, waitFor, within } from '@bigcommerce/checkout/test-utils';
+import {
+    act,
+    configure,
+    fireEvent,
+    render,
+    screen,
+    waitFor,
+    within,
+} from '@bigcommerce/checkout/test-utils';
 
 import { getCheckout } from '../checkout/checkouts.mock';
 import { createErrorLogger } from '../common/error';
@@ -19,6 +27,11 @@ configure({ testIdAttribute: 'data-test' });
 
 describe('CartSummaryDrawerV2 Component', () => {
     const localeContext = createLocaleContext(getStoreConfig());
+
+    beforeAll(() => {
+        // jsdom lacks PointerEvent; a MouseEvent stand-in lets fireEvent carry clientY
+        window.PointerEvent = MouseEvent as unknown as typeof PointerEvent;
+    });
 
     const renderComponent = (checkout: Checkout = getCheckout()) => {
         const checkoutService = createCheckoutService();
@@ -156,6 +169,59 @@ describe('CartSummaryDrawerV2 Component', () => {
         await userEvent.keyboard('{Escape}');
 
         await expectSheetClosed();
+    });
+
+    it('closes the sheet when the handle is swiped down', async () => {
+        renderComponent();
+
+        await userEvent.click(getCollapsedBar());
+
+        expectSheetOpen();
+
+        const handle = screen.getByTestId('cart-summary-sheet-handle');
+
+        fireEvent.pointerDown(handle, { pointerId: 1, clientY: 100 });
+        fireEvent.pointerUp(handle, { pointerId: 1, clientY: 200 });
+
+        await expectSheetClosed();
+    });
+
+    it('reopens the sheet when toggled during the close transition after a swipe dismiss', async () => {
+        renderComponent();
+
+        await userEvent.click(getCollapsedBar());
+
+        expectSheetOpen();
+
+        const handle = screen.getByTestId('cart-summary-sheet-handle');
+
+        fireEvent.pointerDown(handle, { pointerId: 1, clientY: 100 });
+        fireEvent.pointerUp(handle, { pointerId: 1, clientY: 200 });
+
+        expect(getCollapsedBar()).toHaveAttribute('aria-expanded', 'false');
+        expect(getSheet()).toHaveStyle({ transform: 'translateY(100%)' });
+
+        await userEvent.click(getCollapsedBar());
+
+        expectSheetOpen();
+
+        expect(getSheet()).not.toHaveStyle({ transform: 'translateY(100%)' });
+        expect(getSheet()).toHaveClass('cart-summary-sheet--afterOpen');
+    });
+
+    it('keeps the sheet open when the handle swipe is too short', async () => {
+        renderComponent();
+
+        await userEvent.click(getCollapsedBar());
+
+        expectSheetOpen();
+
+        const handle = screen.getByTestId('cart-summary-sheet-handle');
+
+        fireEvent.pointerDown(handle, { pointerId: 1, clientY: 100 });
+        fireEvent.pointerUp(handle, { pointerId: 1, clientY: 120 });
+
+        expectSheetOpen();
     });
 
     it('closes the sheet when the backdrop is clicked', async () => {
