@@ -1,0 +1,52 @@
+{
+  "version": 2,
+  "appVersion": "1.887.0",
+  "dynamicChunks": {
+    "js": [
+      "auto-loader-1.887.0.js",
+      "translations-da-1.887.0.js",
+      "translations-de-1.887.0.js",
+      "translations-en-1.887.0.js",
+      "translations-es-419-1.887.0.js",
+      "translations-es-ar-1.887.0.js",
+      "translations-es-cl-1.887.0.js",
+      "translations-es-co-1.887.0.js",
+      "translations-es-mx-1.887.0.js",
+      "translations-es-pe-1.887.0.js",
+      "translations-es-1.887.0.js",
+      "translations-fr-1.887.0.js",
+      "translations-it-1.887.0.js",
+      "translations-ja-1.887.0.js",
+      "translations-nl-1.887.0.js",
+      "translations-no-1.887.0.js",
+      "translations-pt-br-1.887.0.js",
+      "translations-pt-1.887.0.js",
+      "translations-sv-1.887.0.js"
+    ]
+  },
+  "js": [
+    "loader-1.887.0.js"
+  ],
+  "integrity": {
+    "auto-loader-1.887.0.js": "sha256-UNMi3/45L0ap9Vj6VbgARr7ZBvf7cUThNwG9nutsHoE= sha384-PXHw3CuCtJq86yhUdUiB8eRyDRzjdkxk7Eafn648OG5lBtAivVwY3KigLEuNZ5Ft sha512-lIol8M4r2jHYwTaKb9RSqW6c5jc1y8vkgDSm/Ma1jllangwTLpsw3LlRJ9+WXXb3yPWqUOWGWdxWqqq4gp8ZrA==",
+    "loader-1.887.0.js": "sha256-zATWA3JywSNTn0v0+zz3vuT+UPVaHDMl+EjM/sDsC9Q= sha384-27KXx7WwWo0IB06JuBgCErOpiBxgAE4WP0L0mwLVlnZglsC1bJ8aKSwwNwagy/Dc sha512-qWw4oMbwWfwfSf7Vk4j4GP3mLAvHsALynVxEvRiBB7EXTAF93dovZoPdpH04vKWoWnnD5tSEgPEYc215xxY0ow==",
+    "translations-da-1.887.0.js": "sha256-eU/EfXRUI77bYW7PJI7Z3SbhKQT1aIEYSqSkoWhJ8Ro= sha384-eYTkzVqubX9jFoHrrpGDgfGTNJiRWmv1d911W0j+UDcf5joGb4EeBMHBHDqTg7LE sha512-6X8S0AqWU7K5VGosrDsi4RwHFI6+6kUba3ZVWx+ZRKBkRJ7PL2rBJuaFR8PtCGuK8HsYuz32GtqRPKskupO/lA==",
+    "translations-de-1.887.0.js": "sha256-qp+93Pb00IzL6oGBzPrHFp+pGjKAOc8zg7LiX0vQ5+Y= sha384-HXFIYLH/6LJLt2I0IglIjqW8Ad4BG+0C+HzZVjhZmyRkTf/CetDp36XqHBzJpuul sha512-HREW+dgPQLS3TA0a9MTirVGe+Rt5SlShMJatI5dY8rcH8NFPWeS8S5Q4TODmmomjWdbhKoyPdjplObH7myjTlQ==",
+    "translations-en-1.887.0.js": "sha256-kzrFfWgMAuhW91mpMaKob+AwwKDF8KZGq8cs0kIwpeo= sha384-lKtNftyUpFBqVpjS8DJMD2xGXokZBaIjIyTfyMpd5eJzEEsT09CJPH3qMDJyUA5j sha512-Inb2Si9/4QTQ07zY92sBPgetMTxC866bn3TnFC6YtU0C2G2SESGUJBRw8B6mw5AYu9NdanOrQPLhNhPXDaDmHA==",
+    "translations-es-419-1.887.0.js": "sha256-F93uL7i7x0plT4Wemz3ojdxB1iV18hv+emdx9XIp4bA= sha384-osVrhUaArZ2eRFRiOM6NtdwS1L+yc0vWGA7kERSzEQ0moejLgVqPB2yLuIT7QLNn sha512-buLuVu7Y5VA07y6twC571/czN7os55W3QWmfg+Ishl5/7WapVHH1p0hngWRRH7z3hSyZA4dtd7rYQJ5Zm/wJtQ==",
+    "translations-es-ar-1.887.0.js": "sha256-rOtteR6glK99eNm/krHM1MuKDgE0J2MCmYZ5TiiHxLg= sha384-tslt9jOYUiR9N9BohNX8bnzfDxjEW53AtvslZHxOfsO47R8ok8uyXAQHrzXlA4mn sha512-Gt7Dib2GdSxF3xcXTJmHiAkrRUa0/F6SotceGsF9P9qJTmWRagsRcv0YYLyR7zbzRlpS19HKiGx7q9TVnYkXsw==",
+    "translations-es-cl-1.887.0.js": "sha256-ag7Th5ZPb2cM93AYOeKxqKmSF4P//7L2TqKbMe0LuaI= sha384-t33V2ZIkHzoh3t81BQEOcVJCINc2XkowAhtblXIge7ELV4GXMaAAmmJQ3W0MRlSO sha512-ELkUsoIzowRvHA81vxyJ1M1/Rg7FkBu+sNVD6B6fIRRLxXfKTqxlaKgUj7NNORkQiyRgs1KNRQnz4EPEi2HEZg==",
+    "translations-es-co-1.887.0.js": "sha256-mFij3V4orS8Ms/D2UOiImfcUcAqOeeHZpC2ki+nQS6Y= sha384-U40T9AUhGWBM8R8YXy6R3NXeTjla7AooD2v+Hk/ile6Hh1WjLND1Q0Hh/fG+RgBv sha512-M8fvxs5ES3EyN4lMfxko7jMeUCW4YlvLnJy51Ze6CbXO76hbN05f/aViLBmAtIUO29bqwvR0gDrGdHAPKd+kbA==",
+    "translations-es-mx-1.887.0.js": "sha256-4rzFZ8Hlvlt/jnN3o8zCCNq2CjufPHwA6IL5vlwys2A= sha384-b80iiUOECtFcC05IuSFIWohZYJ0gLb/SMQdeapJm/Lg44J2PMJ4QPSlN1gkysaze sha512-oZDmLlZPT8UkJD9Zq9oZcB/UiC3HSgTai9nTNawuvUZ+Rm/pTtVmqWB7z4T6mzzZFI9eAXhXNT+g/cHJQkERvA==",
+    "translations-es-pe-1.887.0.js": "sha256-Pp0iKqA82o2I8fJbzEEskwhqbGT4gPhluETHZq36cuA= sha384-8RsmunphfAKBf+TRML2/QxaSpr90fLZT3y6O/US3v5ihBReiqF9MUmZSSohgedNv sha512-A8xe4iEN+2GfZHCTG8wxOGPs324xNnGUQ/diyWmhOqGqY/3HYaji9ciSqSRs+obShSTtySD7/CAKa0IzeFy6Sg==",
+    "translations-es-1.887.0.js": "sha256-5+2eFF38S0UzsCrZRsvgk7t5V4eZHtPE1Bj2mUScTUg= sha384-sjiT01nls6KtwhsCFYhzMDiVwi2Ibwa2WS2wcfyEwhx6p4O4JuyqfuVSK+e3itEN sha512-QuZd6T+echWyoFPvR35Bmw4uoLd5gO5sE5lY82cPA2vBxmITjAch/jRqGGp9TAUVQU/yJXTqNSD6xdic1MzrAg==",
+    "translations-fr-1.887.0.js": "sha256-EQumRd45VxBEZRzBchhGw3LwPwwH+r2fixGwjV8Dioo= sha384-BRVTJYfSXv63olK+dVZCdcjbQ4nfnCUnM4Z4XnuH80tyB4CmSu8Ppm91jEnYs4wz sha512-d0V7fgbwAkacsYRPmTRsKp8orUujbiUHcImsoyn+vm6Wf8D1cAGE34TG+Friq2iV+Ouh5FrNy2Vzw9SOYsb1Qg==",
+    "translations-it-1.887.0.js": "sha256-6lQTIQSdUhWS+zBNSVcMsowrdiU0i/H+QcMjjHL92SI= sha384-wg1XEF07nCh+2zgZFOMqGVd52LqGtTE5lk9tMyr8sJr/4cnz2zFf1t2ZzNmKyqeq sha512-mdUHQ8XZVc40U3MQC+uALvA/8eV6yA4WVSqZt2LRcjK0y+kfVF/pL5Ia5hSntiKv4fHEBfhq3qnhNeTcuGa+8g==",
+    "translations-ja-1.887.0.js": "sha256-xA7CzaLwHamVt+2cVHgxbEi6VvKGrGqEuCS+BsaPT/s= sha384-g9ATUf40XGqvuIZc72+vsU5++0LACb3T7I9F9zFRAmQEju3ErOJgYf/rSgVDdoRd sha512-40rRTrSDNdGtEnaC+g85O9zpGowB04hPSpYc2UfTLPSIjBj3fsg5XePDE2gg7VEpqQOUQuLWpECJ3wYZoNW7Qw==",
+    "translations-nl-1.887.0.js": "sha256-wDAI5avrne/p10rFogSsLvPiM4tWBud4DDhVcPY7F4c= sha384-uvI8fmJr1XfsZKf+p5VKMFVxvpqGhcsBw3318rsd32Dy07k3SvOBhf03TCctnH9f sha512-jM7lryR4dgL0uh53hF7ghKEMkIbqsTAdJ63lJ9hRXDmCH6HTMi0um02GSEWgh7/M3ThGrkb7A2FRsb85WMdAoA==",
+    "translations-no-1.887.0.js": "sha256-MhWTtk8RXFVgmgJgTM50M3DLP9AJPNTsACy3E4E/Fco= sha384-ZzZcAFP8AdAm5J59OecbhnOPOODMF4dJ9XBjWUTlgkLooCYGs6p1y8Xbn0bi9Mfd sha512-Ajhb4H9gIaJUbmqxB/9p4uihhvdhdM+cy8NKdB6v+xBoVqhZ6Tuf28f/8cMbBZCtFh8Rfh/fwgrtkibhYUBOLg==",
+    "translations-pt-br-1.887.0.js": "sha256-Aa7epNhouMpNugCJHspsDzLexIdzKek7hI4DnWCVoHU= sha384-WGC9YFEMo3dBNqn0GlOBhPGu0Xawd54rX8LqaYBfnY85HqvYBWnecDERWFRUVC+Q sha512-qU6/93jO2lplQVzdDfJjIXts0zgcXu+3SkQlIRyqEHQ+HVwJ/FQPFVdJmuPAwPNMNZMRM4T0e1b0b8x7MPNNHQ==",
+    "translations-pt-1.887.0.js": "sha256-f+03MWhE3qonGglLAnOGgDF5S3LvI1Ul6uzJt63I+eY= sha384-kDw4OqjFr+dAnxIYjhsVEIrnjUdIHNWbbR/N7bzTMNALleZhEjqYA0DRBtXGI5kc sha512-EKp4+rNxFMnG3kKqjLpFJ2bZJuRjryXquMaLCUrm6TFwYzHfKsearkHyvstyqP0jhZIO9rMrIkwjklQijjZFCw==",
+    "translations-sv-1.887.0.js": "sha256-q1ep7bt6wD/9isyUcdhNG/Q5lvdz99Se8495baMUBxE= sha384-hKusjrs4bv+wMIf6Eh8nGT3tQOZKWpraPftGV9zEAtHeVA8RjPa9dgGE1JTBZqt+ sha512-njgtb6jYy8H42Llub9TcuQRvFWvm7ie68WlD21Ji3OTG0jJpDT0x4Ph8hyLzYv5S5qm45rkB0pSVJuPVIRjMxQ=="
+  }
+}

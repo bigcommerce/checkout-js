@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.887.0](https://github.com/bigcommerce/checkout-js/compare/v1.886.1...v1.887.0) (2026-09-03)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10327 Link email validation error to its input ([df667c9](https://github.com/bigcommerce/checkout-js/commit/df667c9436d0a19d74164c30f461c9064ef83292))
+* **checkout:** CHECKOUT-10348 make the grey bar on order summary slidable ([#3290](https://github.com/bigcommerce/checkout-js/issues/3290)) ([ba8f304](https://github.com/bigcommerce/checkout-js/commit/ba8f304a74dbcfb712a390d10c7a2e2b34318232))
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10328 Google Autocomplete dropping suffix from AU addresses ([#3288](https://github.com/bigcommerce/checkout-js/issues/3288)) ([0f89b1c](https://github.com/bigcommerce/checkout-js/commit/0f89b1c0328be88e4ed2fe2b0ed81a92046158ff))
+* **checkout:** CHECKOUT-10328 Resolve lint issue related to autocomplete ([#3305](https://github.com/bigcommerce/checkout-js/issues/3305)) ([66e374a](https://github.com/bigcommerce/checkout-js/commit/66e374a0c4afce7bf9d3b44af4eecf4a58eac5c3))
+
 ### [1.886.1](https://github.com/bigcommerce/checkout-js/compare/v1.886.0...v1.886.1) (2026-09-02)
 
 ## [1.886.0](https://github.com/bigcommerce/checkout-js/compare/v1.885.7...v1.886.0) (2026-09-02)
