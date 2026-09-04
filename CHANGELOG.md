@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.890.0](https://github.com/bigcommerce/checkout-js/compare/v1.889.1...v1.890.0) (2026-09-04)
+
+
+### Features
+
+* **checkout:** Add version to Cart and Checkout interfaces ([#3311](https://github.com/bigcommerce/checkout-js/issues/3311)) ([b66a2f9](https://github.com/bigcommerce/checkout-js/commit/b66a2f9086e46305cc44fcc685c4b6497b222996))
+
 ### [1.889.1](https://github.com/bigcommerce/checkout-js/compare/v1.889.0...v1.889.1) (2026-09-04)
 
 ## [1.889.0](https://github.com/bigcommerce/checkout-js/compare/v1.888.2...v1.889.0) (2026-09-03)
