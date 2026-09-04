@@ -43,6 +43,7 @@ export function getCheckout(): Checkout {
         totalDiscount: 0,
         comparisonShippingCost: 20,
         fees: [],
+        version: 0,
     };
 }
 
