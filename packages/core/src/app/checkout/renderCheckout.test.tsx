@@ -1,4 +1,4 @@
-import React, { type FunctionComponent } from 'react';
+import React, { act, type FunctionComponent } from 'react';
 
 import { configurePublicPath } from '../common/bundler';
 
@@ -53,8 +53,16 @@ describe('renderCheckout()', () => {
         publicPath = '';
     });
 
+    it('throws when container element does not exist', () => {
+        expect(() => {
+            renderCheckout({ ...options, containerId: 'non-existent-id' });
+        }).toThrow('Unable to find checkout container: #non-existent-id');
+    });
+
     it('configures public path before mounting app component', () => {
-        renderCheckout(options);
+        act(() => {
+            renderCheckout(options);
+        });
 
         expect(configurePublicPath).toHaveBeenCalledWith(options.publicPath);
 
@@ -62,13 +70,17 @@ describe('renderCheckout()', () => {
     });
 
     it('passes props to app component', () => {
-        renderCheckout(options);
+        act(() => {
+            renderCheckout(options);
+        });
 
         expect(CheckoutApp).toHaveBeenCalledWith(options, {});
     });
 
     it('does not configure `whyDidYouRender` if not in development mode', () => {
-        renderCheckout(options);
+        act(() => {
+            renderCheckout(options);
+        });
 
         expect(require('@welldone-software/why-did-you-render')).not.toHaveBeenCalled();
 
@@ -80,7 +92,9 @@ describe('renderCheckout()', () => {
 
         process.env.NODE_ENV = 'development';
 
-        renderCheckout(options);
+        act(() => {
+            renderCheckout(options);
+        });
 
         expect(require('@welldone-software/why-did-you-render')).toHaveBeenCalledWith(React, {
             trackAllPureComponents: false,
