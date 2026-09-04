@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { useExtensions } from '@bigcommerce/checkout/contexts';
+import { useCapabilities, useExtensions } from '@bigcommerce/checkout/contexts';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
 
 import { CustomError } from '../common/error';
@@ -38,22 +38,18 @@ const ShippingForm = ({
         consignments,
         countries,
         customerMessage,
-        defaultShippingExpectationMessage,
-        deleteConsignments,
-        deinitializeShippingMethod: deinitialize,
         getFields,
         hasMultiShippingEnabled,
-        isLoading,
-        initializeShippingMethod: initialize,
-        isShippingStepPending,
         isNoCountriesErrorOnCheckoutEnabled,
         methodId,
-        shouldShowOrderComments,
         shippingAddress,
-        validateMaxLength,
-        updateShippingAddress: updateAddress
     } = useShipping();
-    const { extensionState: { shippingFormRenderTimestamp } } = useExtensions();
+    const {
+        extensionState: { shippingFormRenderTimestamp },
+    } = useExtensions();
+    const {
+        userJourney: { hasAddressLabel },
+    } = useCapabilities();
 
     useEffect(() => {
         if (shippingFormRenderTimestamp) {
@@ -69,23 +65,30 @@ const ShippingForm = ({
 
     useEffect(() => {
         if (isInitialValueLoaded && countries.length === 0 && isNoCountriesErrorOnCheckoutEnabled) {
-            onUnhandledError(new CustomError({
-                name: 'no_countries_available',
-                message: getLanguageService().translate('shipping.no_countries_available_message'),
-                title: getLanguageService().translate('shipping.no_countries_available_heading'),
-            }));
+            onUnhandledError(
+                new CustomError({
+                    name: 'no_countries_available',
+                    message: getLanguageService().translate(
+                        'shipping.no_countries_available_message',
+                    ),
+                    title: getLanguageService().translate(
+                        'shipping.no_countries_available_heading',
+                    ),
+                }),
+            );
         }
     }, [isInitialValueLoaded, countries.length]);
 
     const getMultiShippingForm = () => {
-        return <MultiShippingForm
-            cartHasChanged={cartHasChanged}
-            customerMessage={customerMessage}
-            defaultCountryCode={shippingAddress?.countryCode}
-            isLoading={isLoading}
-            onSubmit={onMultiShippingSubmit}
-            onUnhandledError={onUnhandledError}
-        />;
+        return (
+            <MultiShippingForm
+                cartHasChanged={cartHasChanged}
+                customerMessage={customerMessage}
+                defaultCountryCode={shippingAddress?.countryCode}
+                onSubmit={onMultiShippingSubmit}
+                onUnhandledError={onUnhandledError}
+            />
+        );
     };
 
     if (isInitialValueLoaded && countries.length === 0 && isNoCountriesErrorOnCheckoutEnabled) {
@@ -97,25 +100,16 @@ const ShippingForm = ({
     ) : (
         <SingleShippingForm
             cartHasChanged={cartHasChanged}
-            consignments={consignments}
             customerMessage={customerMessage}
-            defaultShippingExpectationMessage={defaultShippingExpectationMessage}
-            deinitialize={deinitialize}
-            deleteConsignments={deleteConsignments}
             getFields={getFields}
-            initialize={initialize}
+            hasAddressLabel={hasAddressLabel}
             isBillingSameAsShipping={isBillingSameAsShipping}
             isInitialValueLoaded={isInitialValueLoaded}
-            isLoading={isLoading}
-            isShippingStepPending={isShippingStepPending}
             methodId={methodId}
             onSubmit={onSingleShippingSubmit}
             onUnhandledError={onUnhandledError}
             shippingAddress={shippingAddress}
             shippingFormRenderTimestamp={shippingFormRenderTimestamp}
-            shouldShowOrderComments={shouldShowOrderComments}
-            updateAddress={updateAddress}
-            validateMaxLength={validateMaxLength}
         />
     );
 };

@@ -1,6 +1,7 @@
 export {
     AccountInstrumentFieldset,
     AccountInstrumentSelect,
+    AutoVaultingDisclaimer,
     CardInstrumentFieldset,
     getInstrumentValidationSchema,
     InstrumentSelect,
@@ -18,6 +19,7 @@ export {
     configureCardValidator,
     CreditCardCodeField,
     CreditCardCodeTooltip,
+    CreditCardCodeTooltipTrigger,
     CreditCardCustomerCodeField,
     CreditCardExpiryField,
     CreditCardFieldset,
@@ -39,6 +41,7 @@ export {
     assertIsCardInstrument,
     isAccountInstrument,
     isAchInstrument,
+    isPaymentMethodAutoVaultingInstruments,
     isSepaInstrument,
     isBankAccountInstrument,
     isCardInstrument,

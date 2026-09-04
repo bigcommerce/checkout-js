@@ -1,0 +1,81 @@
+// =============================================================================
+// SWITCH COMPONENT
+// =============================================================================
+
+// geometry
+$switch-w:        remCalc(36px);
+$switch-h:        remCalc(20px);
+$switch-pad:      remCalc(2px);
+$switch-thumb-sz: remCalc(16px);
+$switch-travel:   remCalc(16px);
+
+.switch {
+    display: inline-flex;
+    align-items: center;
+    gap: remCalc(6px);
+    font-family: $fontFamily-sans;
+    cursor: pointer;
+    user-select: none;
+
+    &__input {
+        position: absolute;
+        width: remCalc(1px);
+        height: remCalc(1px);
+        margin: remCalc(-1px);
+        padding: 0;
+        border: 0;
+        clip: rect(0 0 0 0);
+        clip-path: inset(50%);
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    &__track {
+        position: relative;
+        flex: none;
+        width: $switch-w;
+        height: $switch-h;
+        border-radius: remCalc(999px);
+        background: rgba(color("greys", "darkest"), 0.28);
+        transition: background .2s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    &__thumb {
+        position: absolute;
+        top: $switch-pad;
+        left: $switch-pad;
+        width: $switch-thumb-sz;
+        height: $switch-thumb-sz;
+        border-radius: 50%;
+        background: color("whites", "bright");
+        box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+        transition: transform .18s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    // --- checked ------------------------------------------------------------
+    &__input:checked + .switch__track {
+        background: $color-black;
+    }
+    &__input:checked + .switch__track .switch__thumb {
+        transform: translateX($switch-travel);
+    }
+
+    // --- focus ring (keyboard only) ----------------------------------------
+    &__input:focus-visible + .switch__track {
+        box-shadow: 0 0 0 2px #fff, 0 0 0 4px $color-highlight;
+    }
+
+    // --- disabled -----------------------------------------------------------
+    &__input:disabled + .switch__track {
+        opacity: .45;
+        cursor: not-allowed;
+    }
+    &:has(&__input:disabled) {
+        cursor: not-allowed;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .switch__track,
+    .switch__thumb { transition: none; }
+}

@@ -9,7 +9,6 @@ import React, { type FunctionComponent, PureComponent, type ReactNode, useCallba
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { CreditCardIcon, DropdownTrigger } from '@bigcommerce/checkout/ui';
 
-
 import mapFromInstrumentCardType from './mapFromInstrumentCardType';
 
 export interface InstrumentSelectProps extends FieldProps<string> {

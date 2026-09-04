@@ -22,7 +22,6 @@ import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../../checkout';
 import { connectFormik, type ConnectFormikProps } from '../../common/form';
-import { withForm, type WithFormProps } from '../../ui/form';
 import {
     configureCardValidator,
     CreditCardFieldset,
@@ -39,6 +38,7 @@ import {
     isInstrumentFeatureAvailable,
 } from '../storedInstrument';
 import StoreInstrumentFieldset from '../StoreInstrumentFieldset';
+import withForm, { type WithFormProps } from '../withForm';
 import withPayment, { type WithPaymentProps } from '../withPayment';
 
 import type CreditCardFieldsetValues from './CreditCardFieldsetValues';
@@ -180,7 +180,6 @@ class CreditCardPaymentMethod extends Component<
                     },
                     this.getSelectedInstrument(),
                 );
-
             } catch (error) {
                 onUnhandledError(error);
             }
@@ -215,7 +214,10 @@ class CreditCardPaymentMethod extends Component<
 
         return (
             <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
-                <div className="paymentMethod paymentMethod--creditCard" data-test='credit-cart-payment-method'>
+                <div
+                    className="paymentMethod paymentMethod--creditCard"
+                    data-test="credit-cart-payment-method"
+                >
                     {shouldShowInstrumentFieldset && (
                         <CardInstrumentFieldset
                             instruments={instruments}

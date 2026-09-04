@@ -88,10 +88,7 @@ describe('boltAndBraintreeFilter', () => {
         const other: PaymentMethod = { ...getPaymentMethod(), id: 'authorizenet' };
 
         expect(
-            boltAndBraintreeFilter.apply(
-                [boltVisible, boltHidden, braintreeLocal, other],
-                context,
-            ),
+            boltAndBraintreeFilter.apply([boltVisible, boltHidden, braintreeLocal, other], context),
         ).toEqual([boltVisible, other]);
     });
 });

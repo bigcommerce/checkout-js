@@ -25,6 +25,7 @@ import { ContinueButton } from './ContinueButton';
 import { OrderSummaryContainer } from './OrderSummaryContainer';
 
 interface OrderConfirmationPageProps {
+    cannotCreatePersonalAccount: boolean;
     order: Order;
     supportEmail: string;
     supportPhoneNumber: string | undefined;
@@ -38,17 +39,16 @@ interface OrderConfirmationPageProps {
     siteLink: string;
     currency: StoreCurrency;
     shopperCurrency: ShopperCurrency;
-    isShippingDiscountDisplayEnabled: boolean;
     error: Error | undefined;
     onErrorModalClose(): void;
 }
 
 export const OrderConfirmationPage = ({
+    cannotCreatePersonalAccount,
     currency,
     customerCanBeCreated,
     error,
     hasSignedUp,
-    isShippingDiscountDisplayEnabled,
     isSigningUp,
     onErrorModalClose,
     onSignUp,
@@ -85,7 +85,7 @@ export const OrderConfirmationPage = ({
                     </OrderConfirmationSection>
                 )}
 
-                {shouldShowPasswordForm && !hasSignedUp && (
+                {!cannotCreatePersonalAccount && shouldShowPasswordForm && !hasSignedUp && (
                     <GuestSignUpForm
                         customerCanBeCreated={customerCanBeCreated}
                         isSigningUp={isSigningUp}
@@ -95,11 +95,7 @@ export const OrderConfirmationPage = ({
                 )}
 
                 {hasSignedUp &&
-                    (order?.customerId ? (
-                        <PasswordSavedSuccessAlert />
-                    ) : (
-                        <SignedUpSuccessAlert />
-                    ))}
+                    (order?.customerId ? <PasswordSavedSuccessAlert /> : <SignedUpSuccessAlert />)}
 
                 <ContinueButton siteLink={siteLink} />
             </div>
@@ -107,7 +103,6 @@ export const OrderConfirmationPage = ({
 
         <OrderSummaryContainer
             currency={currency}
-            isShippingDiscountDisplayEnabled={isShippingDiscountDisplayEnabled}
             order={order}
             shopperCurrency={shopperCurrency}
         />
@@ -115,4 +110,3 @@ export const OrderConfirmationPage = ({
         <ErrorModal error={error} onClose={onErrorModalClose} shouldShowErrorCode={false} />
     </div>
 );
-

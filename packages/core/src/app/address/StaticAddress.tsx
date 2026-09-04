@@ -7,11 +7,12 @@ import {
 import { isEmpty } from 'lodash';
 import React, { type FunctionComponent, memo } from 'react';
 
-import { type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
+import { type CheckoutContextProps, useCapabilities } from '@bigcommerce/checkout/contexts';
 import { localizeAddress } from '@bigcommerce/checkout/locale';
 
 import { withCheckout } from '../checkout';
 
+import { joinLabelAndCompany } from './addressLabelUtils';
 import AddressType from './AddressType';
 
 import './StaticAddress.scss';
@@ -31,39 +32,43 @@ interface WithCheckoutStaticAddressProps {
 
 const StaticAddress: FunctionComponent<
     StaticAddressEditableProps & WithCheckoutStaticAddressProps
-    > = ({
-        countries,
-        address: addressWithoutLocalization,
-    }) => {
-
+> = ({ countries, address: addressWithoutLocalization }) => {
+    const {
+        userJourney: { hasAddressLabel },
+    } = useCapabilities();
     const address = localizeAddress(addressWithoutLocalization, countries);
     const isValid = !isEmpty(address);
+
+    const companyDisplay =
+        hasAddressLabel && address.label
+            ? joinLabelAndCompany(address.label, address.company)
+            : address.company;
 
     return !isValid ? null : (
         <div className="vcard checkout-address--static" data-test="static-address">
             {(address.firstName || address.lastName) && (
-                <p className="fn address-entry body-regular">
+                <p className="fn address-entry optimizedCheckout-contentPrimary body-regular">
                     <span className="first-name">{`${address.firstName} `}</span>
                     <span className="family-name">{address.lastName}</span>
                 </p>
             )}
 
-            {(address.phone || address.company) && (
-                <p className="address-entry body-regular">
-                    <span className="company-name">{`${address.company} `}</span>
+            {(address.phone || companyDisplay) && (
+                <p className="address-entry optimizedCheckout-contentPrimary body-regular">
+                    <span className="company-name">{`${companyDisplay} `}</span>
                     <span className="tel">{address.phone}</span>
                 </p>
             )}
 
             <div className="adr">
-                <p className="street-address address-entry body-regular">
+                <p className="street-address address-entry optimizedCheckout-contentPrimary body-regular">
                     <span className="address-line-1">{`${address.address1} `}</span>
                     {address.address2 && (
                         <span className="address-line-2">{` / ${address.address2}`}</span>
                     )}
                 </p>
 
-                <p className="address-entry body-regular">
+                <p className="address-entry optimizedCheckout-contentPrimary body-regular">
                     {address.city && <span className="locality">{`${address.city}, `}</span>}
                     {address.localizedProvince && (
                         <span className="region">{`${address.localizedProvince}, `}</span>
@@ -91,9 +96,7 @@ export function mapToStaticAddressProps(
     } = context;
 
     return {
-        countries: type === AddressType.Billing
-            ? getBillingCountries()
-            : getShippingCountries(),
+        countries: type === AddressType.Billing ? getBillingCountries() : getShippingCountries(),
     };
 }
 

@@ -1,9 +1,12 @@
 import { type CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
-import { expect } from '@playwright/test';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
-import { CheckoutProvider, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
+import {
+    CheckoutProvider,
+    LocaleContext,
+    type LocaleContextType,
+} from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
@@ -15,7 +18,10 @@ import {
 } from '../cart/lineItem.mock';
 import { getStoreConfig } from '../config/config.mock';
 
-import OrderSummaryItems, { type OrderSummaryItemsProps } from './OrderSummaryItems';
+import OrderSummaryItems, {
+    type OrderSummaryItemsProps,
+    setBackorderDetailsExpanded,
+} from './OrderSummaryItems';
 
 describe('OrderSummaryItems', () => {
     let checkoutService: CheckoutService;
@@ -27,7 +33,7 @@ describe('OrderSummaryItems', () => {
                 <LocaleContext.Provider value={localeContext}>
                     <OrderSummaryItems {...props} />
                 </LocaleContext.Provider>
-            </CheckoutProvider>
+            </CheckoutProvider>,
         );
     };
 
@@ -43,9 +49,17 @@ describe('OrderSummaryItems', () => {
                 showQuantityOnHand: false,
                 showBackorderAvailabilityPrompt: false,
                 backorderAvailabilityPrompt: null,
+                showDefaultShippingExpectationPrompt: false,
+                defaultShippingExpectationPrompt: null,
                 shouldDisplayBackorderMessagesOnStorefront: true,
             },
         });
+    });
+
+    afterEach(() => {
+        // The toggle selection is held in a module-scoped value so it can survive the
+        // responsive remount; reset it between tests to avoid leaking state.
+        setBackorderDetailsExpanded(false);
     });
 
     describe('backorder quantity text', () => {
@@ -71,7 +85,9 @@ describe('OrderSummaryItems', () => {
             });
 
             expect(screen.getByTestId('cart-backorder-link')).toBeInTheDocument();
-            expect(screen.getByTestId('cart-backorder-link')).toHaveTextContent('Show backorder details');
+            expect(screen.getByTestId('cart-backorder-link')).toHaveTextContent(
+                'Backorder details',
+            );
         });
 
         it('renders backorder details link from physical items only when digital items have no backorders', () => {
@@ -90,7 +106,9 @@ describe('OrderSummaryItems', () => {
                 },
             });
 
-            expect(screen.getByTestId('cart-backorder-link')).toHaveTextContent('Show backorder details');
+            expect(screen.getByTestId('cart-backorder-link')).toHaveTextContent(
+                'Backorder details',
+            );
         });
 
         it('does not render backorder details link when no items have backorder quantities', () => {
@@ -146,6 +164,134 @@ describe('OrderSummaryItems', () => {
         });
     });
 
+    describe('backorder details toggle on mobile and desktop, and persistence', () => {
+        const backorderItems = {
+            customItems: [],
+            physicalItems: [
+                {
+                    ...getPhysicalItem(),
+                    stockPosition: { quantityBackordered: 3 },
+                },
+            ],
+            digitalItems: [],
+            giftCertificates: [],
+        };
+
+        it('renders the toggle on desktop', () => {
+            renderOrderSummaryItems({
+                displayLineItemsCount: true,
+                items: backorderItems,
+            });
+
+            expect(screen.getByTestId('cart-backorder-link')).toBeInTheDocument();
+        });
+
+        it('renders the toggle on the mobile cart modal', () => {
+            renderOrderSummaryItems({
+                displayLineItemsCount: false,
+                items: backorderItems,
+            });
+
+            expect(screen.getByTestId('cart-backorder-link')).toBeInTheDocument();
+            expect(screen.queryByTestId('cart-count-total')).not.toBeInTheDocument();
+        });
+
+        it('defaults to off on a fresh mount', () => {
+            renderOrderSummaryItems({
+                displayLineItemsCount: true,
+                items: backorderItems,
+            });
+
+            expect(screen.getByRole('switch')).not.toBeChecked();
+        });
+
+        it('persists the selection when the component is remounted across the breakpoint', async () => {
+            const { unmount } = renderOrderSummaryItems({
+                displayLineItemsCount: true,
+                items: backorderItems,
+            });
+
+            await userEvent.click(screen.getByRole('switch'));
+
+            expect(screen.getByRole('switch')).toBeChecked();
+
+            // Simulate the MobileView breakpoint swap: the current subtree unmounts and a
+            // fresh instance (here the mobile variant) mounts in its place.
+            unmount();
+
+            renderOrderSummaryItems({
+                displayLineItemsCount: false,
+                items: backorderItems,
+            });
+
+            expect(screen.getByRole('switch')).toBeChecked();
+        });
+    });
+
+    describe('backorder details for bundle items', () => {
+        const bundleProps: OrderSummaryItemsProps = {
+            displayLineItemsCount: true,
+            items: {
+                customItems: [],
+                physicalItems: [
+                    {
+                        ...getPhysicalItem(),
+                        id: '666',
+                        options: [
+                            {
+                                name: 'Pick List',
+                                nameId: 1,
+                                value: 'Bundled Hat',
+                                valueId: 3,
+                                attributeId: 'attr-picklist',
+                            },
+                        ],
+                    },
+                    {
+                        ...getPhysicalItem(),
+                        id: '777',
+                        name: 'Bundled Hat',
+                        parentId: '666',
+                        addedByAttributeId: 'attr-picklist',
+                        stockPosition: {
+                            quantityBackordered: 2,
+                            quantityOnHand: 3,
+                            quantityOutOfStock: 0,
+                            backorderMessage: 'Ships in 5 days',
+                        },
+                    },
+                ],
+                digitalItems: [],
+                giftCertificates: [],
+            },
+        };
+
+        it('renders the parent item and hides the bundle child as a separate line item', () => {
+            renderOrderSummaryItems(bundleProps);
+
+            expect(
+                screen.getByRole('heading', { name: `1 x ${getPhysicalItem().name}` }),
+            ).toBeInTheDocument();
+            expect(
+                screen.queryByRole('heading', { name: '1 x Bundled Hat' }),
+            ).not.toBeInTheDocument();
+        });
+
+        it('shows the bundled child backorder details when the toggle is turned on', async () => {
+            renderOrderSummaryItems(bundleProps);
+
+            // Collapsed by default — the backorder line is not mounted yet.
+            expect(screen.queryByTestId('cart-item-backorder-qty')).not.toBeInTheDocument();
+
+            await userEvent.click(screen.getByTestId('cart-backorder-link'));
+
+            expect(screen.getByTestId('cart-item-backorder-qty')).toBeInTheDocument();
+            expect(screen.getByTestId('cart-item-backorder-message')).toHaveTextContent(
+                'Ships in 5 days',
+            );
+        });
+    });
+
     describe('when it has 4 line items or less', () => {
         it('renders total count', () => {
             renderOrderSummaryItems({
@@ -172,8 +318,12 @@ describe('OrderSummaryItems', () => {
                 },
             });
 
-            expect(screen.getByRole('heading', { name: '1 x Canvas Laundry Cart' })).toBeInTheDocument();
-            expect(screen.getByRole('heading', { name: '1 x $100 Gift Certificate' })).toBeInTheDocument();
+            expect(
+                screen.getByRole('heading', { name: '1 x Canvas Laundry Cart' }),
+            ).toBeInTheDocument();
+            expect(
+                screen.getByRole('heading', { name: '1 x $100 Gift Certificate' }),
+            ).toBeInTheDocument();
             expect(screen.getByRole('heading', { name: '1 x Digital Book' })).toBeInTheDocument();
             expect(screen.getByRole('heading', { name: '2 x Custom item' })).toBeInTheDocument();
         });
@@ -190,6 +340,39 @@ describe('OrderSummaryItems', () => {
             });
 
             expect(screen.queryByText('See All')).not.toBeInTheDocument();
+        });
+    });
+
+    describe('line item ordering', () => {
+        it('renders physical items sorted by variantId ascending', () => {
+            renderOrderSummaryItems({
+                displayLineItemsCount: true,
+                items: {
+                    customItems: [],
+                    physicalItems: [
+                        {
+                            ...getPhysicalItem(),
+                            id: '1',
+                            name: 'High Variant Item',
+                            variantId: 71,
+                        },
+                        {
+                            ...getPhysicalItem(),
+                            id: '2',
+                            name: 'Low Variant Item',
+                            variantId: 5,
+                        },
+                    ],
+                    digitalItems: [],
+                    giftCertificates: [],
+                },
+            });
+
+            const headings = screen.getAllByRole('heading').map((heading) => heading.textContent);
+
+            expect(headings.indexOf('1 x Low Variant Item')).toBeLessThan(
+                headings.indexOf('1 x High Variant Item'),
+            );
         });
     });
 
@@ -220,7 +403,6 @@ describe('OrderSummaryItems', () => {
         });
 
         describe('when action is clicked', () => {
-
             it('shows the rest of the items', async () => {
                 const { container } = renderOrderSummaryItems(fiveOrMoreItemsProps);
 

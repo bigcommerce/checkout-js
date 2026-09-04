@@ -2,11 +2,13 @@ import { type CheckoutPayment, type CheckoutSelectors } from '@bigcommerce/check
 import { compact } from 'lodash';
 import { createSelector } from 'reselect';
 
+import { isEnhancedThemeV1Enabled } from '@bigcommerce/checkout/contexts';
 import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
+import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
 import { isValidAddress } from '../address';
-import { EMPTY_ARRAY, isExperimentEnabled } from '../common/utility';
-import { SUPPORTED_METHODS } from '../customer';
+import { EMPTY_ARRAY } from '../common/utility';
+import { SUPPORTED_METHODS } from '../customer/getSupportedMethods';
 import { PaymentMethodId } from '../payment/paymentMethod';
 import {
     hasSelectedShippingOptions,
@@ -27,8 +29,14 @@ const getStripeLinkAndCheckoutPageIsReloaded = (
     shouldUseStripeLinkByMinimumAmount: boolean,
     providerWithCustomCheckout?: string | null,
 ) => {
-    return !isUsingWallet && providerWithCustomCheckout === PaymentMethodId.StripeUPE && hasEmail && isGuest && shouldUseStripeLinkByMinimumAmount;
-}
+    return (
+        !isUsingWallet &&
+        providerWithCustomCheckout === PaymentMethodId.StripeUPE &&
+        hasEmail &&
+        isGuest &&
+        shouldUseStripeLinkByMinimumAmount
+    );
+};
 
 const getCustomerStepStatus = createSelector(
     ({ data }: CheckoutSelectors) => data.getCheckout(),
@@ -44,8 +52,8 @@ const getCustomerStepStatus = createSelector(
         );
         const isUsingWallet =
             checkout && checkout.payments
-                ? checkout.payments.some(
-                    (payment: CheckoutPayment) => SUPPORTED_METHODS.includes(payment.providerId),
+                ? checkout.payments.some((payment: CheckoutPayment) =>
+                      SUPPORTED_METHODS.includes(payment.providerId),
                   )
                 : false;
         const isGuest = !!(customer && customer.isGuest);
@@ -90,14 +98,18 @@ const getBillingStepStatus = createSelector(
             : EMPTY_ARRAY;
     },
     ({ data }: CheckoutSelectors) => data.getConfig(),
-    (checkout, billingAddress, billingAddressFields) => {
+    (checkout, billingAddress, billingAddressFields, config) => {
+        if (isEnhancedThemeV1Enabled(config)) {
+            return undefined;
+        }
+
         const hasAddress = billingAddress
             ? isValidAddress(billingAddress, billingAddressFields)
             : false;
         const isUsingWallet =
             checkout && checkout.payments
-                ? checkout.payments.some(
-                      (payment) => SUPPORTED_METHODS.includes(payment.providerId),
+                ? checkout.payments.some((payment) =>
+                      SUPPORTED_METHODS.includes(payment.providerId),
                   )
                 : false;
         const isComplete = hasAddress || isUsingWallet;
@@ -125,9 +137,12 @@ const getBillingStepStatus = createSelector(
             };
         }
 
-        const isUsingGooglePay = (checkout && checkout.payments
-                ? checkout.payments.some((payment) => (payment?.providerId || '').startsWith('googlepay'))
-                : false);
+        const isUsingGooglePay =
+            checkout && checkout.payments
+                ? checkout.payments.some((payment) =>
+                      (payment?.providerId || '').startsWith('googlepay'),
+                  )
+                : false;
 
         if (isUsingGooglePay) {
             return {
@@ -141,17 +156,16 @@ const getBillingStepStatus = createSelector(
 
         const isUsingPaypal =
             checkout && checkout.payments
-                ? checkout.payments.some(
-                    (payment) =>
-                        [
-                            'braintreepaypal',
-                            'braintreepaypalcredit',
-                            'braintreevenmo',
-                            'paypalcommerce',
-                            'paypalcommercecredit',
-                            'paypalcommercevenmo'
-                        ]
-                            .includes(payment.providerId))
+                ? checkout.payments.some((payment) =>
+                      [
+                          'braintreepaypal',
+                          'braintreepaypalcredit',
+                          'braintreevenmo',
+                          'paypalcommerce',
+                          'paypalcommercecredit',
+                          'paypalcommercevenmo',
+                      ].includes(payment.providerId),
+                  )
                 : false;
 
         if (isUsingPaypal) {
@@ -187,14 +201,8 @@ const getShippingStepStatus = createSelector(
     },
     ({ data }: CheckoutSelectors) => data.getConfig(),
     (shippingAddress, consignments, cart, shippingAddressFields, config) => {
-        const validateMaxLength =
-            isExperimentEnabled(
-                config?.checkoutSettings,
-                'CHECKOUT-9768.form_fields_max_length_validation',
-                false
-            );
         const hasAddress = shippingAddress
-            ? isValidAddress(shippingAddress, shippingAddressFields, validateMaxLength)
+            ? isValidAddress(shippingAddress, shippingAddressFields, true)
             : false;
         const hasOptions = consignments ? hasSelectedShippingOptions(consignments) : false;
         const hasUnassignedItems =
@@ -270,5 +278,9 @@ const getCheckoutStepStatuses = createSelector(
         });
     },
 );
+
+export function isShippingStepComplete(checkoutState: CheckoutSelectors): boolean {
+    return getShippingStepStatus(checkoutState).isComplete;
+}
 
 export default getCheckoutStepStatuses;

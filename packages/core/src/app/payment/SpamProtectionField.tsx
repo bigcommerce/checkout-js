@@ -13,16 +13,14 @@ export interface SpamProtectionFieldProps {
 
 const SpamProtectionField = ({
     didExceedSpamLimit,
-    onUnhandledError
+    onUnhandledError,
 }: SpamProtectionFieldProps): JSX.Element => {
     const [shouldShowRetryButton, setShouldShowRetryButton] = useState(false);
 
     const {
         checkoutService: { executeSpamCheck },
-        checkoutState: { statuses }
-    } = useCheckout();
-
-    const isExecutingSpamCheck = statuses.isExecutingSpamCheck();
+        selectedState: isExecutingSpamCheck,
+    } = useCheckout(({ statuses }) => statuses.isExecutingSpamCheck());
 
     const verify: () => void = async () => {
         try {
@@ -31,7 +29,11 @@ const SpamProtectionField = ({
             setShouldShowRetryButton(true);
 
             // Notify the parent component if the user experiences a problem other than cancelling the reCaptcha challenge.
-            if (isErrorWithType(error) && error.type !== 'spam_protection_challenge_not_completed' && onUnhandledError) {
+            if (
+                isErrorWithType(error) &&
+                error.type !== 'spam_protection_challenge_not_completed' &&
+                onUnhandledError
+            ) {
                 onUnhandledError(error);
             }
         }
@@ -65,8 +67,8 @@ const SpamProtectionField = ({
                         </a>
                     </div>
                 )}
-            </LoadingOverlay >
-        </div >
+            </LoadingOverlay>
+        </div>
     );
 };
 

@@ -1,5 +1,5 @@
-@import "../ui/Base";
-@import "../../scss/themeV2/mixins";
+@import "../../scss/Base";
+@import "../../scss/enhancedThemeV1/mixins";
 
 .checkout-address:has(.floating-form-field) {
     margin-left: -0.5 * $floating-form-field-spacing;
@@ -36,7 +36,9 @@
     .dynamic-form-field--firstName,
     .dynamic-form-field--lastName,
     .dynamic-form-field--phone,
-    .dynamic-form-field--city {
+    .dynamic-form-field--city,
+    .dynamic-form-field--addressLabel,
+    .dynamic-form-field--labelCompany {
         @include breakpoint("small") {
             flex-basis: 50%;
         }
@@ -52,7 +54,7 @@
     .dynamic-form-field--province,
     .dynamic-form-field--provinceCode,
     .dynamic-form-field--city {
-        @include themeV2 {
+        @include enhancedThemeV1 {
             @include breakpoint("small") {
                 flex-basis: 33.33%;
             }

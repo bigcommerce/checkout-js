@@ -2,8 +2,7 @@ import { noop } from 'lodash';
 import React from 'react';
 
 import { render, screen } from '@bigcommerce/checkout/test-utils';
-
-import { MOBILE_MAX_WIDTH } from '../ui/responsive';
+import { MOBILE_MAX_WIDTH } from '@bigcommerce/checkout/ui';
 
 import CheckoutStep, { type CheckoutStepProps } from './CheckoutStep';
 import CheckoutStepType from './CheckoutStepType';
@@ -22,7 +21,7 @@ describe('CheckoutStep', () => {
             isBusy: false,
             isActive: true,
             type: CheckoutStepType.Customer,
-            onExpanded: jest.fn()
+            onExpanded: jest.fn(),
         };
 
         isMobile = false;
@@ -42,7 +41,7 @@ describe('CheckoutStep', () => {
                     addEventListener: noop,
                     removeListener: noop,
                     removeEventListener: noop,
-                } as MediaQueryList),
+                }) as MediaQueryList,
         );
     });
 
@@ -60,8 +59,8 @@ describe('CheckoutStep', () => {
         render(
             <CheckoutStep {...defaultProps}>
                 <input data-test="first-input" type="text" />
-                <input type="number"/>
-            </CheckoutStep>
+                <input type="number" />
+            </CheckoutStep>,
         );
 
         jest.runAllTimers();
@@ -82,10 +81,7 @@ describe('CheckoutStep', () => {
 
         jest.runAllTimers();
 
-        const expectedPosition =
-            container.offsetHeight +
-            window.scrollY -
-            window.innerHeight / 5;
+        const expectedPosition = container.offsetHeight + window.scrollY - window.innerHeight / 5;
 
         expect(window.scrollTo).toHaveBeenCalledWith(0, expectedPosition);
     });
@@ -146,25 +142,19 @@ describe('CheckoutStep', () => {
     });
 
     it('renders suggestion if step is inactive', () => {
-        render(
-            <CheckoutStep {...defaultProps} isActive={false} suggestion="Billing suggestion" />,
-        );
+        render(<CheckoutStep {...defaultProps} isActive={false} suggestion="Billing suggestion" />);
 
-        expect(screen.getByTestId('step-suggestion')).toHaveTextContent('Billing suggestion')
+        expect(screen.getByTestId('step-suggestion')).toHaveTextContent('Billing suggestion');
     });
 
     it('does not render suggestion if step is active', () => {
-        render(
-            <CheckoutStep {...defaultProps} suggestion="Billing suggestion" />,
-        );
+        render(<CheckoutStep {...defaultProps} suggestion="Billing suggestion" />);
 
         expect(screen.queryByTestId('step-suggestion')).not.toBeInTheDocument();
     });
 
     it('does not render suggestion if its not provided', () => {
-        render(
-            <CheckoutStep {...defaultProps} isActive={false} suggestion={undefined} />,
-        );
+        render(<CheckoutStep {...defaultProps} isActive={false} suggestion={undefined} />);
 
         expect(screen.queryByTestId('step-suggestion')).not.toBeInTheDocument();
     });
@@ -179,5 +169,4 @@ describe('CheckoutStep', () => {
 
         expect(window.scrollTo).not.toHaveBeenCalled();
     });
-
 });

@@ -1,6 +1,6 @@
-import { type LineItemOption } from '@bigcommerce/checkout-sdk';
+import { type LineItemOption, type PhysicalItem } from '@bigcommerce/checkout-sdk';
 
-import { getDigitalItem } from '../cart/lineItem.mock';
+import { getDigitalItem, getPhysicalItem } from '../cart/lineItem.mock';
 
 import mapFromDigital from './mapFromDigital';
 
@@ -25,5 +25,105 @@ describe('mapFromDigital()', () => {
         expect(productOptions[0].testId).toBe('cart-item-digital-product');
 
         expect(productOptions[0].content).toMatchSnapshot();
+    });
+
+    describe('with bundleItemsMap', () => {
+        it('marks pick-list option as isMainBundledItem true with stockPosition', () => {
+            const bundledChild = {
+                ...getPhysicalItem(),
+                id: '777',
+                name: 'Bundled Product',
+                parentId: '667',
+                addedByAttributeId: 'attr-picklist',
+                stockPosition: {
+                    quantityBackordered: 2,
+                    quantityOnHand: 3,
+                    quantityOutOfStock: 0,
+                    backorderMessage: 'Ships in 5 days',
+                },
+            } as unknown as PhysicalItem;
+
+            const item = {
+                ...getDigitalItem(),
+                id: '667',
+                options: [
+                    {
+                        name: 'Color',
+                        nameId: 10,
+                        value: 'Red',
+                        valueId: 1,
+                        attributeId: 'attr-color',
+                    },
+                    {
+                        name: 'Pick List Option',
+                        nameId: 11,
+                        value: 'Item A',
+                        valueId: 2,
+                        attributeId: 'attr-picklist',
+                    },
+                ] as LineItemOption[],
+            };
+
+            const bundleItemsMap = new Map<string | number, PhysicalItem[]>([
+                ['667', [bundledChild]],
+            ]);
+
+            const { productOptions = [] } = mapFromDigital(item, bundleItemsMap);
+            const itemOptions = productOptions.filter(
+                (o) => o.testId === 'cart-item-product-option',
+            );
+
+            expect(itemOptions).toHaveLength(2);
+
+            const pickListOption = itemOptions.find((o) => o.name === 'Pick List Option:');
+            const colorOption = itemOptions.find((o) => o.name === 'Color:');
+
+            expect(pickListOption?.isMainBundledItem).toBe(true);
+            expect(pickListOption?.stockPosition?.quantityBackordered).toBe(2);
+            expect(pickListOption?.stockPosition?.quantityOnHand).toBe(3);
+            expect(pickListOption?.stockPosition?.backorderMessage).toBe('Ships in 5 days');
+
+            expect(colorOption?.isMainBundledItem).toBe(false);
+            expect(colorOption?.stockPosition).toBeUndefined();
+        });
+
+        it('preserves options without attributeId', () => {
+            const item = {
+                ...getDigitalItem(),
+                id: '667',
+                options: [
+                    { name: 'Size', nameId: 10, value: 'Large', valueId: 1 },
+                ] as LineItemOption[],
+            };
+
+            const bundleItemsMap = new Map<string | number, PhysicalItem[]>();
+
+            const { productOptions = [] } = mapFromDigital(item, bundleItemsMap);
+            const itemOptions = productOptions.filter(
+                (o) => o.testId === 'cart-item-product-option',
+            );
+
+            expect(itemOptions).toHaveLength(1);
+            expect(itemOptions[0].isMainBundledItem).toBe(false);
+        });
+
+        it('does not return bundledItems', () => {
+            const bundledChild = {
+                ...getPhysicalItem(),
+                id: '777',
+                parentId: '667',
+                addedByAttributeId: 'attr-picklist',
+            } as unknown as PhysicalItem;
+
+            const item = { ...getDigitalItem(), id: '667', options: [] as LineItemOption[] };
+
+            const bundleItemsMap = new Map<string | number, PhysicalItem[]>([
+                ['667', [bundledChild]],
+            ]);
+
+            const { bundledItems } = mapFromDigital(item, bundleItemsMap);
+
+            expect(bundledItems).toBeUndefined();
+        });
     });
 });

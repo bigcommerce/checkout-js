@@ -3,7 +3,7 @@ import React, { type FunctionComponent } from 'react';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import HostedCreditCardCodeField from './HostedCreditCardCodeField';
-import HostedCreditCardExpiryField from "./HostedCreditCardExpiryField";
+import HostedCreditCardExpiryField from './HostedCreditCardExpiryField';
 import HostedCreditCardNumberField from './HostedCreditCardNumberField';
 
 export interface HostedCreditCardValidationProps {

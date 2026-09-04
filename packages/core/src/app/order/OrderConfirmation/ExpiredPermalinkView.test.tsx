@@ -12,9 +12,7 @@ import { ExpiredPermalinkView } from './ExpiredPermalinkView';
 const localeContext = createLocaleContext(getStoreConfig());
 
 const Wrapper = ({ children }: { children: ReactNode }) => (
-    <LocaleContext.Provider value={localeContext}>
-        {children}
-    </LocaleContext.Provider>
+    <LocaleContext.Provider value={localeContext}>{children}</LocaleContext.Provider>
 );
 
 describe('ExpiredPermalinkView', () => {
@@ -30,9 +28,15 @@ describe('ExpiredPermalinkView', () => {
     it('renders expired message', () => {
         render(<ExpiredPermalinkView {...defaultProps} />, { wrapper: Wrapper });
 
-        expect(screen.getByText(localeContext.language.translate('order_confirmation.expired_token.heading'))).toBeInTheDocument();
         expect(
-            screen.getByText(localeContext.language.translate('order_confirmation.expired_token.description')),
+            screen.getByText(
+                localeContext.language.translate('order_confirmation.expired_token.heading'),
+            ),
+        ).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                localeContext.language.translate('order_confirmation.expired_token.description'),
+            ),
         ).toBeInTheDocument();
     });
 
@@ -40,7 +44,11 @@ describe('ExpiredPermalinkView', () => {
         render(<ExpiredPermalinkView {...defaultProps} />, { wrapper: Wrapper });
 
         expect(
-            screen.getByRole('button', { name: localeContext.language.translate('order_confirmation.expired_token.resend_action') }),
+            screen.getByRole('button', {
+                name: localeContext.language.translate(
+                    'order_confirmation.expired_token.resend_action',
+                ),
+            }),
         ).toBeInTheDocument();
     });
 
@@ -49,7 +57,11 @@ describe('ExpiredPermalinkView', () => {
 
         render(<ExpiredPermalinkView {...defaultProps} />, { wrapper: Wrapper });
 
-        const button = screen.getByRole('button', { name: localeContext.language.translate('order_confirmation.expired_token.resend_action') });
+        const button = screen.getByRole('button', {
+            name: localeContext.language.translate(
+                'order_confirmation.expired_token.resend_action',
+            ),
+        });
 
         await userEvent.click(button);
 
@@ -63,11 +75,19 @@ describe('ExpiredPermalinkView', () => {
 
         render(<ExpiredPermalinkView {...defaultProps} />, { wrapper: Wrapper });
 
-        const button = screen.getByRole('button', { name: localeContext.language.translate('order_confirmation.expired_token.resend_action') });
+        const button = screen.getByRole('button', {
+            name: localeContext.language.translate(
+                'order_confirmation.expired_token.resend_action',
+            ),
+        });
 
         await userEvent.click(button);
 
-        expect(screen.getByRole('button', { name: localeContext.language.translate('order_confirmation.expired_token.sending') })).toBeDisabled();
+        expect(
+            screen.getByRole('button', {
+                name: localeContext.language.translate('order_confirmation.expired_token.sending'),
+            }),
+        ).toBeDisabled();
     });
 
     it('shows success message after successful resend', async () => {
@@ -75,17 +95,31 @@ describe('ExpiredPermalinkView', () => {
 
         render(<ExpiredPermalinkView {...defaultProps} />, { wrapper: Wrapper });
 
-        const button = screen.getByRole('button', { name: localeContext.language.translate('order_confirmation.expired_token.resend_action') });
+        const button = screen.getByRole('button', {
+            name: localeContext.language.translate(
+                'order_confirmation.expired_token.resend_action',
+            ),
+        });
 
         await userEvent.click(button);
 
         await waitFor(() => {
             expect(
-                screen.getByText(localeContext.language.translate('order_confirmation.expired_token.resend_success')),
+                screen.getByText(
+                    localeContext.language.translate(
+                        'order_confirmation.expired_token.resend_success',
+                    ),
+                ),
             ).toBeInTheDocument();
         });
 
-        expect(screen.queryByRole('button', { name: localeContext.language.translate('order_confirmation.expired_token.resend_action') })).not.toBeInTheDocument();
+        expect(
+            screen.queryByRole('button', {
+                name: localeContext.language.translate(
+                    'order_confirmation.expired_token.resend_action',
+                ),
+            }),
+        ).not.toBeInTheDocument();
     });
 
     it('shows translated error message when resend fails', async () => {
@@ -93,13 +127,21 @@ describe('ExpiredPermalinkView', () => {
 
         render(<ExpiredPermalinkView {...defaultProps} />, { wrapper: Wrapper });
 
-        const button = screen.getByRole('button', { name: localeContext.language.translate('order_confirmation.expired_token.resend_action') });
+        const button = screen.getByRole('button', {
+            name: localeContext.language.translate(
+                'order_confirmation.expired_token.resend_action',
+            ),
+        });
 
         await userEvent.click(button);
 
         await waitFor(() => {
             expect(
-                screen.getByText(localeContext.language.translate('order_confirmation.expired_token.resend_error')),
+                screen.getByText(
+                    localeContext.language.translate(
+                        'order_confirmation.expired_token.resend_error',
+                    ),
+                ),
             ).toBeInTheDocument();
         });
     });

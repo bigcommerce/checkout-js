@@ -1,7 +1,7 @@
-export { B2BExtraFieldsSessionStorage } from './B2BExtraFieldsSessionStorage';
 export { default as mapAddressToFormValues, AddressFormValues } from './mapAddressToFormValues';
+export { decodeAddressLabel, encodeAddressForWrite } from './addressLabelUtils';
+export { default as AddressLabelFormField } from './AddressLabelFormField';
 export { default as mapAddressFromFormValues } from './mapAddressFromFormValues';
-export { default as stripExtraFieldsFromAddress } from './stripExtraFieldsFromAddress';
 export { default as AddressForm } from './AddressForm';
 export { default as AddressFormModal } from './AddressFormModal';
 export { default as AddressSelect } from './AddressSelect';
@@ -10,7 +10,10 @@ export { default as StaticAddress } from './StaticAddress';
 export { default as isValidAddress } from './isValidAddress';
 export { default as isValidCustomerAddress } from './isValidCustomerAddress';
 export { default as isEqualAddress } from './isEqualAddress';
-export { reorderAddressFormFields } from './reorderAddressFormFields';
+export { isEmptyAddress } from './isEmptyAddress';
+export { default as getAddressExtraFields } from './getAddressExtraFields';
+export { default as setDefaultAddress } from './setDefaultAddress';
+export { default as getShouldSaveAddress } from './getShouldSaveAddress';
 export {
     default as getAddressFormFieldsValidationSchema,
     getTranslateAddressError,

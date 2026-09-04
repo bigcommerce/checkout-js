@@ -1,4 +1,23 @@
-import { type Address } from '@bigcommerce/checkout-sdk';
+import { type Address, type CustomerAddress } from '@bigcommerce/checkout-sdk';
+
+type CustomerAddressB2BFields = Pick<
+    CustomerAddress,
+    'isShipping' | 'isBilling' | 'isDefaultShipping' | 'isDefaultBilling' | 'label' | 'extraFields'
+>;
+
+export function getCustomerAddressB2B(
+    overrides: Partial<CustomerAddressB2BFields> = {},
+): CustomerAddressB2BFields {
+    return {
+        isShipping: false,
+        isBilling: false,
+        isDefaultShipping: false,
+        isDefaultBilling: false,
+        label: '',
+        extraFields: [],
+        ...overrides,
+    };
+}
 
 export function getAddress(): Address {
     return {

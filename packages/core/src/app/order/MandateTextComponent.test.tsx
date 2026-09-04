@@ -8,7 +8,7 @@ import { getLanguageService } from '@bigcommerce/checkout/locale';
 
 import { MandateTextComponent, type MandateTextComponentProps } from './MandateTextComponent';
 
-describe('MandateTextComponent',  () => {
+describe('MandateTextComponent', () => {
     let MandateTextComponentTest: FunctionComponent<MandateTextComponentProps>;
     let checkoutService: CheckoutService;
     let props: MandateTextComponentProps;
@@ -21,7 +21,7 @@ describe('MandateTextComponent',  () => {
                 payment_reference: 'GDU856858',
             },
             methodId: 'ratepay',
-            providerId: 'paypalcommercealternativemethod'
+            providerId: 'paypalcommercealternativemethod',
         };
         checkoutService = createCheckoutService();
 
@@ -30,19 +30,19 @@ describe('MandateTextComponent',  () => {
                 checkoutService={checkoutService}
                 languageService={getLanguageService()}
             >
-                <MandateTextComponent {...props}/>
+                <MandateTextComponent {...props} />
             </LocaleProvider>
-        )
+        );
     });
 
     it('do not render component if mandateText is empty', () => {
         const props = {
             mandateText: {},
             methodId: 'ratepay',
-            providerId: 'paypalcommercealternativemethod'
+            providerId: 'paypalcommercealternativemethod',
         };
 
-        render(<MandateTextComponentTest {...props}/>);
+        render(<MandateTextComponentTest {...props} />);
 
         const list = screen.queryAllByRole('list');
 
@@ -50,7 +50,7 @@ describe('MandateTextComponent',  () => {
     });
 
     it('renders proper count of li', async () => {
-        render(<MandateTextComponentTest {...props}/>);
+        render(<MandateTextComponentTest {...props} />);
 
         const items = await screen.findAllByRole('listitem');
 
@@ -58,26 +58,29 @@ describe('MandateTextComponent',  () => {
     });
 
     it('renders proper translation keys and values', async () => {
-        const expectedFirstListItemKey = 'optimized_checkout.order_confirmation.mandate.paypalcommercealternativemethod.ratepay.account_holder_name';
-        const expectedSecondListItemKey = 'optimized_checkout.order_confirmation.mandate.paypalcommercealternativemethod.ratepay.iban';
-        const expectedThirdListItemKey = 'optimized_checkout.order_confirmation.mandate.paypalcommercealternativemethod.ratepay.payment_reference';
+        const expectedFirstListItemKey =
+            'optimized_checkout.order_confirmation.mandate.paypalcommercealternativemethod.ratepay.account_holder_name';
+        const expectedSecondListItemKey =
+            'optimized_checkout.order_confirmation.mandate.paypalcommercealternativemethod.ratepay.iban';
+        const expectedThirdListItemKey =
+            'optimized_checkout.order_confirmation.mandate.paypalcommercealternativemethod.ratepay.payment_reference';
 
-        render(<MandateTextComponentTest {...props}/>);
+        render(<MandateTextComponentTest {...props} />);
 
         // First li
         const firstItem = await screen.findByTestId('order-confirmation-mandate-text-list-item-0');
         const firstItemKey = firstItem?.textContent?.split(':')[0];
-        const firstItemValue =  firstItem?.textContent?.split(':')[1];
+        const firstItemValue = firstItem?.textContent?.split(':')[1];
 
         // Second li
         const secondItem = await screen.findByTestId('order-confirmation-mandate-text-list-item-1');
         const secondItemKey = secondItem?.textContent?.split(':')[0];
-        const secondItemValue =  secondItem?.textContent?.split(':')[1];
+        const secondItemValue = secondItem?.textContent?.split(':')[1];
 
         // Third li
         const thirdItem = await screen.findByTestId('order-confirmation-mandate-text-list-item-2');
         const thirdItemKey = thirdItem?.textContent?.split(':')[0];
-        const thirdItemValue =  thirdItem?.textContent?.split(':')[1]
+        const thirdItemValue = thirdItem?.textContent?.split(':')[1];
 
         expect(firstItemKey).toEqual(expectedFirstListItemKey);
         expect(secondItemKey).toEqual(expectedSecondListItemKey);

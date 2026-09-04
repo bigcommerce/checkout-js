@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
 
-import { CreditCardCodeTooltip } from '@bigcommerce/checkout/instrument-utils';
+import { CreditCardCodeTooltipTrigger } from '@bigcommerce/checkout/instrument-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { IconHelp, IconLock, TooltipTrigger } from '@bigcommerce/checkout/ui';
+import { IconLock } from '@bigcommerce/checkout/ui';
 
 export interface StripeV3CustomCardFormProps {
     options: {
@@ -65,11 +65,7 @@ const StripeV3CustomCardForm: React.FunctionComponent<StripeV3CustomCardFormProp
                 htmlFor={options.cardCvcElementOptions.containerId}
             >
                 <TranslatedString id="payment.credit_card_cvv_label" />
-                <TooltipTrigger placement="top-start" tooltip={<CreditCardCodeTooltip />}>
-                    <span className="has-tip">
-                        <IconHelp />
-                    </span>
-                </TooltipTrigger>
+                <CreditCardCodeTooltipTrigger />
             </label>
             <div
                 className={classNames(

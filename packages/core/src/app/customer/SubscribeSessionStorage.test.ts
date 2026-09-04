@@ -1,4 +1,4 @@
-import { SubscribeSessionStorage } from "./SubscribeSessionStorage";
+import { SubscribeSessionStorage } from './SubscribeSessionStorage';
 
 describe('SubscribeSessionStorage', () => {
     it('sets, gets and removes subscribe status successfully', () => {

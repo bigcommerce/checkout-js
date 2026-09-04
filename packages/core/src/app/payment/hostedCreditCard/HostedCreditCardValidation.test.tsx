@@ -66,7 +66,9 @@ describe('HostedCreditCardValidation', () => {
         render(<HostedCreditCardValidationTest cardExpiryId="cardExpiry" />);
 
         expect(
-            screen.getByText(localeContext.language.translate('payment.credit_card_expiration_label')),
+            screen.getByText(
+                localeContext.language.translate('payment.credit_card_expiration_label'),
+            ),
         ).toBeInTheDocument();
     });
 
@@ -74,7 +76,9 @@ describe('HostedCreditCardValidation', () => {
         render(<HostedCreditCardValidationTest cardNumberId="cardCode" />);
 
         expect(
-            screen.queryByText(localeContext.language.translate('payment.credit_card_expiration_label')),
+            screen.queryByText(
+                localeContext.language.translate('payment.credit_card_expiration_label'),
+            ),
         ).not.toBeInTheDocument();
     });
 });

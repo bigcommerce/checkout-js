@@ -39,6 +39,12 @@ export interface GoogleAutocompleteWindow extends Window {
     };
 }
 
+// Satisfied by both legacy API (GoogleAutocompleteScriptLoader via`@bigcommerce/script-loader`)
+// and by new API (NewGooglePlacesApiScriptLoader's via importLibrary path)
+export interface GoogleMapsPlacesScriptLoader {
+    loadMapsSdk(apiKey: string): Promise<GoogleMapsSdk>;
+}
+
 export type GoogleAddressFieldType =
     | 'postal_town'
     | 'administrative_area_level_1'

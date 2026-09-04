@@ -337,6 +337,35 @@ describe('CreditCardPaymentMethod', () => {
             ).toBeInTheDocument();
         });
 
+        it('silently falls back to the card form when loading instruments fails with a 40x', async () => {
+            jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue([]);
+            jest.spyOn(checkoutService, 'loadInstruments').mockRejectedValue({ status: 401 });
+
+            render(<CreditCardPaymentMethodTest {...defaultProps} method={vaultedMethod} />);
+
+            expect(
+                await screen.findByRole('textbox', { name: 'Credit Card Number' }),
+            ).toBeInTheDocument();
+            expect(defaultProps.onUnhandledError).not.toHaveBeenCalled();
+        });
+
+        it('mounts and calls onUnhandledError when loading instruments fails with a non-40x error', async () => {
+            const error = Object.assign(new Error('Server error'), { status: 500 });
+
+            jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue([]);
+            jest.spyOn(checkoutService, 'loadInstruments').mockRejectedValue(error);
+
+            render(<CreditCardPaymentMethodTest {...defaultProps} method={vaultedMethod} />);
+
+            expect(
+                await screen.findByRole('textbox', { name: 'Credit Card Number' }),
+            ).toBeInTheDocument();
+
+            await waitFor(() => {
+                expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(error);
+            });
+        });
+
         it('deletes the last stored instrument and shows "use new card" view', async () => {
             const instruments = getInstruments();
             const singleInstrument = [instruments[0]];

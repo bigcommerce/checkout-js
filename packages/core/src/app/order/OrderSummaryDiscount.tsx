@@ -49,6 +49,6 @@ const OrderSummaryDiscount: FunctionComponent<OrderSummaryDiscountProps> = ({
             )}
         </OrderSummaryPrice>
     );
-}
+};
 
 export default memo(OrderSummaryDiscount);

@@ -1,0 +1,31 @@
+.productList {
+    @include enhancedThemeV1 {
+        .product-body {
+            align-self: center;
+            order: unset;
+            width: 50%;
+        }
+
+        .product-figure {
+            max-width: remCalc(80px);
+
+            img {
+                border-radius: $element-border-radius;
+            }
+        }
+    }
+
+    @include enhancedThemeV1-mobile {
+        .product-body {
+            align-self: flex-start;
+        }
+    }
+
+    @include enhancedThemeV1-desktop {
+        .product-figure {
+            max-width: none;
+            width: 20%;
+            padding-right: spacing("single");
+        }
+    }
+}

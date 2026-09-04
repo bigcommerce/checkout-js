@@ -7,14 +7,18 @@ import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getFormFields } from '../formField.mock';
 
-import GoogleAutocompleteFormField, { type GoogleAutocompleteFormFieldProps } from './GoogleAutocompleteFormField';
+import GoogleAutocompleteFormField, {
+    type GoogleAutocompleteFormFieldProps,
+} from './GoogleAutocompleteFormField';
 
 describe('GoogleAutocompleteFormField', () => {
     let defaultProps: GoogleAutocompleteFormFieldProps;
     let addressField: FormField;
 
     beforeEach(() => {
-        addressField = getFormFields().find((field) => field.name === 'address1') as unknown as FormField;
+        addressField = getFormFields().find(
+            (field) => field.name === 'address1',
+        ) as unknown as FormField;
 
         defaultProps = {
             apiKey: 'test-api-key',
@@ -30,7 +34,7 @@ describe('GoogleAutocompleteFormField', () => {
         render(
             <Formik initialValues={{}} onSubmit={jest.fn()}>
                 <GoogleAutocompleteFormField {...defaultProps} />
-            </Formik>
+            </Formik>,
         );
 
         const inputElement = screen.getByPlaceholderText(/NO PO BOX/i);
@@ -40,17 +44,14 @@ describe('GoogleAutocompleteFormField', () => {
 
     it('calls onSelect when a place is selected', async () => {
         render(
-            <Formik
-                initialValues={{ address1: '' }}
-                onSubmit={jest.fn()}
-            >
+            <Formik initialValues={{ address1: '' }} onSubmit={jest.fn()}>
                 {({ setFieldValue }) => (
                     <GoogleAutocompleteFormField
                         {...defaultProps}
                         onChange={(value) => setFieldValue('address1', value)}
                     />
                 )}
-            </Formik>
+            </Formik>,
         );
 
         const inputElement: HTMLInputElement = screen.getByPlaceholderText(/NO PO BOX/i);
@@ -68,10 +69,7 @@ describe('GoogleAutocompleteFormField', () => {
         };
 
         render(
-            <Formik
-                initialValues={{ address1: '' }}
-                onSubmit={jest.fn()}
-            >
+            <Formik initialValues={{ address1: '' }} onSubmit={jest.fn()}>
                 {({ setFieldValue }) => (
                     <GoogleAutocompleteFormField
                         {...defaultProps}
@@ -79,7 +77,7 @@ describe('GoogleAutocompleteFormField', () => {
                         onChange={(value) => setFieldValue('address1', value)}
                     />
                 )}
-            </Formik>
+            </Formik>,
         );
 
         const inputElement: HTMLInputElement = screen.getByPlaceholderText(/NO PO BOX/i);

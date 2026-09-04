@@ -1,0 +1,49 @@
+// =============================================================================
+// THEME V2 MIXINS
+// =============================================================================
+
+@mixin enhancedThemeV1 {
+  @at-root .enhancedThemeV1 #{&} {
+    @content;
+  }
+}
+
+@mixin enhancedThemeV1-mobile {
+    @at-root .enhancedThemeV1 #{&} {
+        @include breakpoint("small") {
+            @content;
+        }
+    }
+}
+
+@mixin enhancedThemeV1-mobile-tablet-only {
+    @at-root .enhancedThemeV1 #{&} {
+        @media (max-width: 767px) {
+            @content;
+        }
+    }
+}
+
+@mixin enhancedThemeV1-tablet {
+    .enhancedThemeV1 & {
+        @include breakpoint("medium") {
+            @content;
+        }
+    }
+}
+
+@mixin enhancedThemeV1-desktop {
+    .enhancedThemeV1 & {
+        @include breakpoint("large") {
+            @content;
+        }
+    }
+}
+
+@mixin enhancedThemeV1-widescreen {
+    .enhancedThemeV1 & {
+        @include breakpoint("xlarge") {
+            @content;
+        }
+    }
+}

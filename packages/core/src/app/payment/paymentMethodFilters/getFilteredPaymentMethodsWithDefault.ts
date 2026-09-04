@@ -7,8 +7,12 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import { find } from 'lodash';
 
-import { isExperimentEnabled } from '../../common/utility';
-import { GROUPED_METHOD_ID_PREFIXES, groupPaymentMethodsByPrefix } from '../groupPaymentMethodsByPrefix';
+import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
+
+import {
+    GROUPED_METHOD_ID_PREFIXES,
+    groupPaymentMethodsByPrefix,
+} from '../groupPaymentMethodsByPrefix';
 import { PaymentMethodProviderType } from '../paymentMethod';
 
 import { applyPaymentMethodFilters } from './applyPaymentMethodFilters';

@@ -1,7 +1,7 @@
 import React, { type FunctionComponent } from 'react';
 
-import { fireEvent, render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 import { ThemeContext } from '@bigcommerce/checkout/contexts';
+import { fireEvent, render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
 import CheckoutStepType from '../checkout/CheckoutStepType';
 
@@ -9,7 +9,9 @@ import StripeGuestForm, { type StripeGuestFormProps } from './StripeGuestForm';
 
 describe('StripeGuestForm', () => {
     let defaultProps: StripeGuestFormProps;
-    let TestComponent: FunctionComponent<Partial<StripeGuestFormProps> & { themeV2?: boolean }>;
+    let TestComponent: FunctionComponent<
+        Partial<StripeGuestFormProps> & { enhancedThemeV1?: boolean }
+    >;
     const handleContinueAsGuest = jest.fn();
     const dummyElement = document.createElement('div');
 
@@ -31,7 +33,7 @@ describe('StripeGuestForm', () => {
                 isComplete: false,
                 isEditable: false,
                 isRequired: true,
-                type: CheckoutStepType.Customer
+                type: CheckoutStepType.Customer,
             },
         };
 
@@ -40,15 +42,11 @@ describe('StripeGuestForm', () => {
                 return { color: '#cccccc' };
             },
         }));
-        jest.spyOn(document, 'getElementById')
-            .mockReturnValue(dummyElement);
+        jest.spyOn(document, 'getElementById').mockReturnValue(dummyElement);
 
-        TestComponent = ({ themeV2 = false, ...props }) => (
-            <ThemeContext.Provider value={{ themeV2 }}>
-                <StripeGuestForm
-                    {...defaultProps}
-                    {...props}
-                />
+        TestComponent = ({ enhancedThemeV1 = false, ...props }) => (
+            <ThemeContext.Provider value={{ enhancedThemeV1 }}>
+                <StripeGuestForm {...defaultProps} {...props} />
             </ThemeContext.Provider>
         );
     });
@@ -60,18 +58,13 @@ describe('StripeGuestForm', () => {
     });
 
     it('matches snapshot with theme v2', () => {
-        const view = render(<TestComponent themeV2={true} />);
+        const view = render(<TestComponent enhancedThemeV1={true} />);
 
         expect(view).toMatchSnapshot();
     });
 
     it('disables "continue as guest" button when isLoading is true', () => {
-        render(
-            <TestComponent
-                isLoading={true}
-                onContinueAsGuest={jest.fn()}
-            />
-        );
+        render(<TestComponent isLoading={true} onContinueAsGuest={jest.fn()} />);
 
         const button = screen.getByTestId('stripe-customer-continue-as-guest-button');
 
@@ -85,7 +78,7 @@ describe('StripeGuestForm', () => {
                 isLoading={true}
                 onContinueAsGuest={jest.fn()}
                 requiresMarketingConsent={false}
-            />
+            />,
         );
 
         expect(screen.getByTestId('should-subscribe-checkbox')).toBeChecked();
@@ -112,10 +105,10 @@ describe('StripeGuestForm', () => {
 
         await waitFor(() => {
             expect(handleContinueAsGuest).toHaveBeenCalledWith({
-                "email": "",
-                "shouldSubscribe": true
+                email: '',
+                shouldSubscribe: true,
             });
-        })
+        });
     });
 
     it('initializes stripeGuestForm when component mounts', () => {
@@ -123,7 +116,7 @@ describe('StripeGuestForm', () => {
             options.stripeupe.onEmailChange('cosmefulanito@cosme.mx', true);
             options.stripeupe.isLoading(true);
             options.stripeupe?.getStyles();
-        })
+        });
         render(<TestComponent {...defaultProps} />);
 
         expect(defaultProps.initialize).toHaveBeenCalled();
@@ -138,12 +131,7 @@ describe('StripeGuestForm', () => {
     });
 
     it('renders form with initial values', () => {
-        render(
-            <TestComponent
-                defaultShouldSubscribe={true}
-                email="test@bigcommerce.com"
-            />
-        );
+        render(<TestComponent defaultShouldSubscribe={true} email="test@bigcommerce.com" />);
 
         expect(screen.getByTestId('should-subscribe-checkbox')).toBeChecked();
     });
@@ -151,11 +139,7 @@ describe('StripeGuestForm', () => {
     it('notifies when user clicks on "sign in" button', () => {
         const handleShowLogin = jest.fn();
 
-        render(
-            <TestComponent
-                onShowLogin={handleShowLogin}
-            />
-        );
+        render(<TestComponent onShowLogin={handleShowLogin} />);
 
         const customerContinueButton = screen.getByTestId('customer-continue-button');
 
@@ -165,22 +149,13 @@ describe('StripeGuestForm', () => {
     });
 
     it('renders newsletter field if store allows newsletter subscription', () => {
-        render(
-            <TestComponent
-                canSubscribe={true}
-            />
-        );
+        render(<TestComponent canSubscribe={true} />);
 
         expect(screen.getByTestId('should-subscribe-checkbox')).toBeInTheDocument();
     });
 
     it('renders marketing consent field', () => {
-        render(
-            <TestComponent
-                canSubscribe={true}
-                requiresMarketingConsent={true}
-            />
-        );
+        render(<TestComponent canSubscribe={true} requiresMarketingConsent={true} />);
 
         expect(screen.getByTestId('should-subscribe-checkbox')).toBeInTheDocument();
     });
@@ -202,32 +177,22 @@ describe('StripeGuestForm', () => {
     });
 
     it('renders privacy policy field', () => {
-        render(
-            <TestComponent
-                privacyPolicyUrl="foo"
-            />
-        );
+        render(<TestComponent privacyPolicyUrl="foo" />);
 
         expect(screen.getByTestId('privacy-policy-checkbox')).toBeInTheDocument();
     });
 
     it('does not render "sign in" button when loading', () => {
-        render(
-            <TestComponent
-                isLoading={true}
-            />
-        );
+        render(<TestComponent isLoading={true} />);
 
         expect(screen.queryByTestId('customer-continue-button')).not.toBeInTheDocument();
     });
 
     it('shows different action button label if another label id was provided', () => {
-        render(
-            <TestComponent
-                continueAsGuestButtonLabelId="customer.continue"
-            />
-        );
+        render(<TestComponent continueAsGuestButtonLabelId="customer.continue" />);
 
-        expect(screen.getByTestId('customer-continue-button')).not.toHaveTextContent('Continue as guest');
+        expect(screen.getByTestId('customer-continue-button')).not.toHaveTextContent(
+            'Continue as guest',
+        );
     });
 });

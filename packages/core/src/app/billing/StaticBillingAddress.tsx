@@ -3,7 +3,11 @@ import React, { type FunctionComponent, memo } from 'react';
 
 import { type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { isPayPalFastlaneAddress, PoweredByPayPalFastlaneLabel, usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
+import {
+    isPayPalFastlaneAddress,
+    PoweredByPayPalFastlaneLabel,
+    usePayPalFastlaneAddress,
+} from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 import { AddressType, StaticAddress } from '../address';
 import { withCheckout } from '../checkout';

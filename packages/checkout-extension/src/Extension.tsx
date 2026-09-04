@@ -11,13 +11,12 @@ interface ExtensionProps {
 
 export const Extension = ({ region }: ExtensionProps): ReactNode | null => {
     const {
-        checkoutState: {
-            data: { getExtensions, getConfig, getCheckout },
-        },
-    } = useCheckout();
-    const extensions = getExtensions();
-    const config = getConfig();
-    const checkout = getCheckout();
+        selectedState: { extensions, config, checkout },
+    } = useCheckout(({ data }) => ({
+        extensions: data.getExtensions(),
+        config: data.getConfig(),
+        checkout: data.getCheckout(),
+    }));
     const { extensionService } = useExtensions();
     const isRegionEnabled =
         extensions && config && checkout && extensionService.isRegionEnabled(region);

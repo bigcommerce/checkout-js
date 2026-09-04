@@ -2,6 +2,7 @@ import { type CardInstrument } from '@bigcommerce/checkout-sdk';
 import { createBraintreeFastlanePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
 import React, { type FunctionComponent, useEffect, useRef } from 'react';
 
+import { useCheckout } from '@bigcommerce/checkout/contexts';
 import {
     type PaymentMethodProps,
     type PaymentMethodResolveId,
@@ -28,6 +29,7 @@ const BraintreeFastlanePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     const paypalFastlaneComponentRef = useRef<BraintreeFastlaneComponentRef>({});
 
     const { isLoadingPaymentMethod, isInitializingPayment } = checkoutState.statuses;
+    const { errorLogger } = useCheckout(() => undefined);
 
     const initializePaymentOrThrow = async () => {
         try {
@@ -45,6 +47,9 @@ const BraintreeFastlanePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                     },
                     onError: (error: Error) => {
                         onUnhandledError(error);
+                    },
+                    onErrorLog: (error: unknown) => {
+                        errorLogger?.log(error instanceof Error ? error : new Error(String(error)));
                     },
                 },
             });

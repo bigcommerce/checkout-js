@@ -53,11 +53,17 @@ function appConfig(options, argv) {
             cache: {
                 type: 'filesystem',
             },
+            snapshot: {
+                managedPaths: [
+                    /^(.+?[\\/]node_modules[\\/](?!\.cache)(?!@bigcommerce[\\/]checkout-sdk)(?:@.+?[\\/])?.+?)(?:[\\/].*)?$/,
+                ],
+            },
             devtool: isProduction ? 'source-map' : 'eval-source-map',
             resolve: {
                 alias,
                 extensions: ['.ts', '.tsx', '.js'],
                 mainFields: ['browser', 'module', 'main'],
+                symlinks: false,
             },
             optimization: {
                 runtimeChunk: 'single',
@@ -134,6 +140,7 @@ function appConfig(options, argv) {
                     enabled: isProduction,
                 }),
                 new StyleLintPlugin({
+                    files: 'packages/**/*.{scss,sass,css}',
                     fix: !isProduction,
                     cache: true,
                     cacheLocation: join(process.cwd(), 'node_modules/.cache/'),
@@ -171,11 +178,12 @@ function appConfig(options, argv) {
             ].filter(Boolean),
             module: {
                 rules: [
-                    ...(isProduction ?  [{
+                    {
                         test: /\.[tj]sx?$/,
                         enforce: 'pre',
                         loader: require.resolve('source-map-loader'),
-                    }]: []),
+                        include: /[\\/]node_modules[\\/]@bigcommerce[\\/]checkout-sdk[\\/]/,
+                    },
                     {
                         test: /\.tsx?$/,
                         include: tsLoaderIncludes,
@@ -216,6 +224,14 @@ function appConfig(options, argv) {
                         ],
                     },
                     {
+                        test: /\.css$/,
+                        use: [
+                            isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
+                            'css-loader',
+                        ],
+                        sideEffects: true,
+                    },
+                    {
                         test: /\.scss$/,
                         use: [
                             isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
@@ -253,7 +269,7 @@ function appConfig(options, argv) {
                         sideEffects: true,
                     },
                     {
-                        test: /\.(gif|png|jpe?g|svg)$/i,
+                        test: /\.(gif|png|jpe?g|svg|webp)$/i,
                         use: [
                             {
                                 loader: 'file-loader',
@@ -294,11 +310,17 @@ function loaderConfig(options, argv) {
                 ),
             },
             mode,
+            snapshot: {
+                managedPaths: [
+                    /^(.+?[\\/]node_modules[\\/](?!\.cache)(?!@bigcommerce[\\/]checkout-sdk)(?:@.+?[\\/])?.+?)(?:[\\/].*)?$/,
+                ],
+            },
             devtool: isProduction ? 'source-map' : 'eval-source-map',
             resolve: {
                 alias,
                 extensions: ['.ts', '.tsx', '.js'],
                 mainFields: ['module', 'browser', 'main'],
+                symlinks: false,
             },
             output: {
                 path: isProduction ? join(__dirname, 'dist') : join(__dirname, 'build'),
@@ -403,6 +425,7 @@ function loaderConfig(options, argv) {
                             join(__dirname, 'packages', 'legacy-hoc', 'src'),
                             join(__dirname, 'packages', 'locale', 'src'),
                             join(__dirname, 'packages', 'test-mocks', 'src'),
+                            join(__dirname, 'packages', 'utility', 'src'),
                         ],
                         use: [
                             {

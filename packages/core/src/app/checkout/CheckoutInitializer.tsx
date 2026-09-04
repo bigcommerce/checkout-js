@@ -1,7 +1,7 @@
 import {
     type CheckoutInitialState,
     type EmbeddedCheckoutMessenger,
-    type EmbeddedCheckoutMessengerOptions
+    type EmbeddedCheckoutMessengerOptions,
 } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
@@ -25,23 +25,25 @@ export interface CheckoutInitializerProps {
     createEmbeddedMessenger(options: EmbeddedCheckoutMessengerOptions): EmbeddedCheckoutMessenger;
 }
 
-const CheckoutInitializer:React.FC<CheckoutInitializerProps>= (props) => {
+const CheckoutInitializer: React.FC<CheckoutInitializerProps> = (props) => {
     const { checkoutId, initialState } = props;
     const { isLoadingCheckout } = useLoadCheckout(checkoutId, initialState);
-    const { themeV2 } = useThemeContext();
+    const { enhancedThemeV1 } = useThemeContext();
 
     if (isLoadingCheckout) {
         return <CheckoutPageSkeleton />;
     }
 
-    return <CheckoutPage
+    return (
+        <CheckoutPage
             {...props}
             createEmbeddedMessenger={props.createEmbeddedMessenger}
             embeddedStylesheet={props.embeddedStylesheet}
             embeddedSupport={props.embeddedSupport}
+            enhancedThemeV1={enhancedThemeV1}
             errorLogger={props.errorLogger}
-            themeV2={themeV2}
-        />;
+        />
+    );
 };
 
 export default CheckoutInitializer;

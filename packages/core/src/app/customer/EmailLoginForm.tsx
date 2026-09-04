@@ -12,10 +12,16 @@ import {
     withLanguage,
     type WithLanguageProps,
 } from '@bigcommerce/checkout/locale';
-import { Alert, AlertType, Button, ButtonVariant, LoadingSpinner } from '@bigcommerce/checkout/ui';
-
-import { Form } from '../ui/form';
-import { Modal, ModalHeader } from '../ui/modal';
+import {
+    Alert,
+    AlertType,
+    Button,
+    ButtonVariant,
+    Form,
+    LoadingSpinner,
+    Modal,
+    ModalHeader,
+} from '@bigcommerce/checkout/ui';
 
 import EmailField from './EmailField';
 import getEmailValidationSchema from './getEmailValidationSchema';
@@ -50,7 +56,7 @@ const EmailLoginForm: FunctionComponent<
     isFloatingLabelEnabled,
     values: { email: formEmail },
 }) => {
-    const { themeV2 } = useThemeContext();
+    const { enhancedThemeV1 } = useThemeContext();
 
     const modalHeaderStringId = useMemo(() => {
         if (emailHasBeenRequested) {
@@ -190,7 +196,7 @@ const EmailLoginForm: FunctionComponent<
     return (
         <Modal
             additionalBodyClassName="modal--withText"
-            additionalModalClassName={classNames("modal--medium", { "themeV2": themeV2 })}
+            additionalModalClassName={classNames('modal--medium', { enhancedThemeV1 })}
             header={
                 <ModalHeader>
                     <TranslatedString id={modalHeaderStringId} />

@@ -75,6 +75,14 @@ describe('HostedCreditCardFieldset', () => {
         expect(screen.getByRole('textbox', { name: 'foobar' })).toBeInTheDocument();
     });
 
+    it('renders the fieldset with the credit-card spacing modifier class', () => {
+        const { container } = render(<HostedCreditCardFieldsetTest {...defaultProps} />);
+
+        expect(container.querySelector('fieldset')).toHaveClass(
+            'form-fieldset--creditCardFieldset',
+        );
+    });
+
     it('renders field container with focus styles', () => {
         const { container } = render(
             <HostedCreditCardFieldsetTest {...defaultProps} focusedFieldType="cardNumber" />,

@@ -1,4 +1,9 @@
-import { type AccountInstrument, type AchInstrument, type BankInstrument, type PayPalInstrument } from '@bigcommerce/checkout-sdk';
+import {
+    type AccountInstrument,
+    type AchInstrument,
+    type BankInstrument,
+    type PayPalInstrument,
+} from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { type FieldProps } from 'formik';
 import { find, noop } from 'lodash';

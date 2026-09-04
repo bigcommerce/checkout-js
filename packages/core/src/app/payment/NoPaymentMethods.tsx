@@ -7,11 +7,7 @@ interface NoPaymentMethodsProps {
 }
 
 export const NoPaymentMethods = ({ message }: NoPaymentMethodsProps): ReactElement => (
-    <ChecklistSkeleton
-        additionalClassName="noPaymentMethods-skeleton"
-        isLoading={false}
-        rows={2}
-    >
+    <ChecklistSkeleton additionalClassName="noPaymentMethods-skeleton" isLoading={false} rows={2}>
         <div className="noPaymentMethods-panel optimizedCheckout-overlay">
             <p
                 aria-live="polite"

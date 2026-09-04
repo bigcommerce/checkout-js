@@ -1,6 +1,16 @@
-import { useCallback, useContext, useEffect, useRef, useSyncExternalStore } from 'react';
-import CheckoutContext, { type CheckoutContextProps } from './CheckoutContext';
 import { type CheckoutSelectors } from '@bigcommerce/checkout-sdk';
+import { useCallback, useContext, useEffect, useRef, useSyncExternalStore } from 'react';
+
+import CheckoutContext, { type CheckoutContextProps } from './CheckoutContext';
+
+export function useCheckout(): CheckoutContextProps & { selectedState: undefined };
+export function useCheckout<T>(
+    selectFn: (state: CheckoutSelectors) => T,
+): CheckoutContextProps & { selectedState: T };
+// TODO: Remove this overload when withCheckout HOC is deprecated
+export function useCheckout<T>(
+    selectFn: ((state: CheckoutSelectors) => T) | undefined,
+): CheckoutContextProps & { selectedState: T | undefined };
 
 export function useCheckout<T>(
     selectFn?: (state: CheckoutSelectors) => T,
@@ -11,7 +21,7 @@ export function useCheckout<T>(
         throw new Error('useCheckout must be used within a CheckoutContextProvider');
     }
 
-    const { checkoutService, checkoutState, isCheckoutHookExperimentEnabled } = context;
+    const { checkoutService } = context;
 
     const selectFnRef = useRef(selectFn);
 
@@ -22,7 +32,7 @@ export function useCheckout<T>(
     const subscribe = useCallback(
         (onStoreChange: () => void) => {
             const unsubscribe = checkoutService.subscribe(onStoreChange, (state) => {
-                if (selectFnRef.current && isCheckoutHookExperimentEnabled) {
+                if (selectFnRef.current) {
                     return selectFnRef.current(state);
                 }
 
@@ -31,14 +41,14 @@ export function useCheckout<T>(
 
             return unsubscribe;
         },
-        [checkoutService, isCheckoutHookExperimentEnabled],
+        [checkoutService],
     );
 
     const stateSnapshot = useSyncExternalStore(subscribe, () => checkoutService.getState());
 
     return {
         ...context,
-        checkoutState: isCheckoutHookExperimentEnabled ? stateSnapshot : checkoutState,
+        checkoutState: stateSnapshot,
         selectedState: selectFn ? selectFn(stateSnapshot) : undefined,
     };
 }

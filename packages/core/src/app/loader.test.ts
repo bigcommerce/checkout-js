@@ -25,6 +25,8 @@ describe('loadFiles', () => {
     let appExports: AppExport;
 
     beforeEach(() => {
+        jest.clearAllMocks();
+
         options = {
             publicPath: 'https://cdn.foo.bar/',
         };
@@ -56,21 +58,18 @@ describe('loadFiles', () => {
             renderOrderConfirmation: jest.fn(),
             initializeLanguageService: jest.fn(),
         };
-        (global as any).PRELOAD_ASSETS = [
-            'step-a.js',
-            'step-b.js',
-            'step-a.css',
-            'step-b.css',
-        ];
+        (global as any).PRELOAD_ASSETS = ['step-a.js', 'step-b.js', 'step-a.css', 'step-b.css'];
 
         (global as any).scheduler = {
             yield() {
                 return new Promise((resolve) => process.nextTick(resolve));
-            }
+            },
         };
     });
 
     afterEach(() => {
+        jest.restoreAllMocks();
+
         delete (global as any).MANIFEST_JSON;
         delete (global as any).LIBRARY_NAME;
         delete (global as any).checkout;
@@ -98,20 +97,26 @@ describe('loadFiles', () => {
     it('loads required CSS files listed in manifest', async () => {
         await loadFiles(options);
 
-        expect(getStylesheetLoader().loadStylesheet).toHaveBeenCalledWith('https://cdn.foo.bar/vendor.css', {
-            prepend: true,
-            attributes: {
-                crossorigin: 'anonymous',
-                integrity: 'hash-vendor-css',
+        expect(getStylesheetLoader().loadStylesheet).toHaveBeenCalledWith(
+            'https://cdn.foo.bar/vendor.css',
+            {
+                prepend: true,
+                attributes: {
+                    crossorigin: 'anonymous',
+                    integrity: 'hash-vendor-css',
+                },
             },
-        });
-        expect(getStylesheetLoader().loadStylesheet).toHaveBeenCalledWith('https://cdn.foo.bar/main.css', {
-            prepend: true,
-            attributes: {
-                crossorigin: 'anonymous',
-                integrity: 'hash-main-css',
+        );
+        expect(getStylesheetLoader().loadStylesheet).toHaveBeenCalledWith(
+            'https://cdn.foo.bar/main.css',
+            {
+                prepend: true,
+                attributes: {
+                    crossorigin: 'anonymous',
+                    integrity: 'hash-main-css',
+                },
             },
-        });
+        );
     });
 
     it('prefetches dynamic JS chunks listed in manifest', async () => {
@@ -130,6 +135,26 @@ describe('loadFiles', () => {
             ['https://cdn.foo.bar/step-a.css', 'https://cdn.foo.bar/step-b.css'],
             { prefetch: true },
         );
+    });
+
+    describe('when isConsistentCrossOriginFixEnabled is true', () => {
+        it('prefetches dynamic JS chunks with crossorigin matching the real chunk requests', async () => {
+            await loadFiles({ ...options, isConsistentCrossOriginFixEnabled: true });
+
+            expect(getScriptLoader().preloadScripts).toHaveBeenCalledWith(
+                ['https://cdn.foo.bar/step-a.js', 'https://cdn.foo.bar/step-b.js'],
+                { prefetch: true, crossOrigin: 'anonymous' },
+            );
+        });
+
+        it('prefetches dynamic CSS chunks with crossorigin matching the real chunk requests', async () => {
+            await loadFiles({ ...options, isConsistentCrossOriginFixEnabled: true });
+
+            expect(getStylesheetLoader().preloadStylesheets).toHaveBeenCalledWith(
+                ['https://cdn.foo.bar/step-a.css', 'https://cdn.foo.bar/step-b.css'],
+                { prefetch: true, crossOrigin: 'anonymous' },
+            );
+        });
     });
 
     it('resolves with app version', async () => {

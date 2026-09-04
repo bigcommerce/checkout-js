@@ -5,7 +5,7 @@ import { defaultCapabilities } from '@bigcommerce/checkout/contexts';
 import { getCheckout, getCheckoutPayment } from '../../checkout/checkouts.mock';
 import { getStoreConfig } from '../../config/config.mock';
 import { getPaymentMethod } from '../payment-methods.mock';
-import { PaymentMethodId, PaymentMethodProviderType } from '../paymentMethod';
+import { PaymentMethodId } from '../paymentMethod';
 
 import { getFilteredPaymentMethodsWithDefault } from './getFilteredPaymentMethodsWithDefault';
 
@@ -139,28 +139,6 @@ describe('getFilteredPaymentMethodsWithDefault', () => {
 
         expect(filteredMethods).toEqual([]);
         expect(defaultMethod).toBeUndefined();
-    });
-
-    it('excludes PPSDK methods when capabilities.payment.excludePPSDK is true', () => {
-        const ppsdk = buildMethod({
-            id: 'ppsdk-provider',
-            type: PaymentMethodProviderType.PPSDK,
-        });
-        const authorizenet = buildMethod({ id: 'authorizenet' });
-
-        const { defaultMethod, filteredMethods } = getFilteredPaymentMethodsWithDefault({
-            capabilities: {
-                ...defaultCapabilities,
-                payment: { ...defaultCapabilities.payment, excludePPSDK: true },
-            },
-            checkout: getCheckout(),
-            checkoutSettings,
-            getPaymentMethod: jest.fn(),
-            methods: [ppsdk, authorizenet],
-        });
-
-        expect(filteredMethods).toEqual([authorizenet]);
-        expect(defaultMethod).toEqual(authorizenet);
     });
 
     it('groups facilypay_* methods when PAYMENTS-5142.payment_method_grouping is enabled', () => {

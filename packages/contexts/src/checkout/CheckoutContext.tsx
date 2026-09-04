@@ -7,7 +7,6 @@ export interface CheckoutContextProps {
     checkoutService: CheckoutService;
     checkoutState: CheckoutSelectors;
     errorLogger?: ErrorLogger;
-    isCheckoutHookExperimentEnabled?: boolean;
 }
 
 const CheckoutContext = createContext<CheckoutContextProps | undefined>(undefined);

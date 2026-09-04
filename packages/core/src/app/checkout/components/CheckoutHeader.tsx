@@ -8,6 +8,7 @@ import { EMPTY_ARRAY } from '../../common/utility';
 import { CheckoutButtonContainer } from '../../customer';
 import { PromotionBannerList } from '../../promotion';
 import CheckoutStepType from '../CheckoutStepType';
+
 import { BackorderQuantitiesChangedBanner } from './BackorderQuantitiesChangedBanner';
 
 export interface CheckoutHeaderProps {
@@ -27,16 +28,19 @@ export const CheckoutHeader: React.FC<CheckoutHeaderProps> = ({
     onUnhandledError,
     onWalletButtonClick,
 }) => {
-    const { checkoutState } = useCheckout();
+    const {
+        selectedState: { checkout, config, flashMessages },
+    } = useCheckout(({ data }) => ({
+        checkout: data.getCheckout(),
+        config: data.getConfig(),
+        flashMessages: data.getFlashMessages('warning'),
+    }));
     const { extensionState } = useExtensions();
 
-    const { data } = checkoutState;
+    const { promotions = EMPTY_ARRAY } = checkout || {};
 
-    const { promotions = EMPTY_ARRAY } = data.getCheckout() || {};
-
-    const config = data.getConfig();
     const isShowingWalletButtonsOnTop = Boolean(
-        config?.checkoutSettings?.checkoutUserExperienceSettings?.walletButtonsOnTop
+        config?.checkoutSettings?.checkoutUserExperienceSettings?.walletButtonsOnTop,
     );
 
     const isPaymentStepActive = activeStepType
@@ -45,7 +49,7 @@ export const CheckoutHeader: React.FC<CheckoutHeaderProps> = ({
 
     return (
         <>
-            <BackorderQuantitiesChangedBanner message={data.getFlashMessages('warning')?.[0]?.message} />
+            <BackorderQuantitiesChangedBanner message={flashMessages?.[0]?.message} />
             <LoadingNotification isLoading={extensionState.isShowingLoadingIndicator} />
             <PromotionBannerList promotions={promotions} />
             {isShowingWalletButtonsOnTop && buttonConfigs?.length > 0 && (

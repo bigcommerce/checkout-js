@@ -15,6 +15,7 @@ import React, { type ReactElement, type ReactNode, useEffect, useRef, useState }
 import { type ObjectSchema } from 'yup';
 
 import {
+    AutoVaultingDisclaimer,
     CardInstrumentFieldset,
     configureCardValidator,
     CreditCardFieldset,
@@ -26,9 +27,11 @@ import {
     isInstrumentCardCodeRequiredSelector,
     isInstrumentCardNumberRequiredSelector,
     isInstrumentFeatureAvailable,
+    isPaymentMethodAutoVaultingInstruments,
     StoreInstrumentFieldset,
 } from '@bigcommerce/checkout/instrument-utils';
 import {
+    CaptureMessageComponent,
     type CardInstrumentFieldsetValues,
     type PaymentMethodProps,
 } from '@bigcommerce/checkout/payment-integration-api';
@@ -56,6 +59,7 @@ interface CreditCardPaymentMethodDerivedProps {
     isInstrumentFeatureAvailable: boolean;
     isLoadingInstruments: boolean;
     isPaymentDataRequired: boolean;
+    shouldShowAutoVaultingDisclaimer: boolean;
     shouldShowInstrumentFieldset: boolean;
     isInstrumentCardCodeRequired(instrument: Instrument, method: PaymentMethod): boolean;
     isInstrumentCardNumberRequired(instrument: Instrument, method: PaymentMethod): boolean;
@@ -114,6 +118,7 @@ export const CreditCardPaymentMethodComponent = (
             isInstrumentFeatureAvailable: isInstrumentFeatureAvailableFlag,
             isLoadingInstruments: isLoadingInstrumentsProp(),
             isPaymentDataRequired: isPaymentDataRequired(),
+            shouldShowAutoVaultingDisclaimer: isPaymentMethodAutoVaultingInstruments(method),
             shouldShowInstrumentFieldset:
                 isInstrumentFeatureAvailableFlag && instruments.length > 0,
         };
@@ -343,6 +348,7 @@ export const CreditCardPaymentMethodComponent = (
         isInstrumentCardNumberRequired: isInstrumentCardNumberRequiredProp,
         isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
         isLoadingInstruments,
+        shouldShowAutoVaultingDisclaimer,
         shouldShowInstrumentFieldset,
     } = getCreditCardPaymentMethodDerivedProps();
 
@@ -359,6 +365,10 @@ export const CreditCardPaymentMethodComponent = (
         : false;
 
     const storeConfig = getStoreConfig();
+
+    const SentryMessage = methodProp
+        ? `DataCreditCardFieldset component gateway=${methodProp.gateway} id=${methodProp.id} type=${methodProp.type}`
+        : '';
 
     if (!storeConfig) {
         throw Error('Unable to get config or customer');
@@ -391,12 +401,15 @@ export const CreditCardPaymentMethodComponent = (
                 )}
 
                 {shouldShowCreditCardFieldset && !cardFieldset && (
-                    <CreditCardFieldset
-                        shouldShowCardCodeField={
-                            methodProp.config.cardCode || methodProp.config.cardCode === null
-                        }
-                        shouldShowCustomerCodeField={methodProp.config.requireCustomerCode}
-                    />
+                    <>
+                        <CaptureMessageComponent message={SentryMessage} />
+                        <CreditCardFieldset
+                            shouldShowCardCodeField={
+                                methodProp.config.cardCode || methodProp.config.cardCode === null
+                            }
+                            shouldShowCustomerCodeField={methodProp.config.requireCustomerCode}
+                        />
+                    </>
                 )}
 
                 {shouldShowCreditCardFieldset && cardFieldset}
@@ -406,6 +419,10 @@ export const CreditCardPaymentMethodComponent = (
                         instrumentId={selectedInstrument && selectedInstrument.bigpayToken}
                         instruments={outerInstruments}
                     />
+                )}
+
+                {shouldShowAutoVaultingDisclaimer && shouldShowCreditCardFieldset && (
+                    <AutoVaultingDisclaimer />
                 )}
             </div>
         </LoadingOverlay>

@@ -20,21 +20,20 @@ describe('getShippingMethodId', () => {
             checkoutSettings: {
                 ...configDefault.checkoutSettings,
                 providerWithCustomCheckout,
-            }
-        }
+            },
+        };
 
         jest.spyOn(getPreselectedPayment, 'default').mockReturnValue(
             preselectedPaymentId
                 ? {
-                    ...getCheckoutPayment(),
-                    providerId: preselectedPaymentId,
-                }
+                      ...getCheckoutPayment(),
+                      providerId: preselectedPaymentId,
+                  }
                 : undefined,
-
         );
 
         return [checkoutDefault, config];
-    }
+    };
 
     afterEach(() => {
         jest.clearAllMocks();
@@ -49,13 +48,17 @@ describe('getShippingMethodId', () => {
     it('returns shipping method id from provider with custom checkout', () => {
         const [checkout, config] = mockOptions(PaymentMethodId.BraintreeAcceleratedCheckout);
 
-        expect(getShippingMethodId(checkout, config)).toBe(PaymentMethodId.BraintreeAcceleratedCheckout);
+        expect(getShippingMethodId(checkout, config)).toBe(
+            PaymentMethodId.BraintreeAcceleratedCheckout,
+        );
     });
 
     it('returns shipping method id from provider with custom checkout (PayPal Commerce Accelerated Checkout check)', () => {
         const [checkout, config] = mockOptions(PaymentMethodId.PayPalCommerceAcceleratedCheckout);
 
-        expect(getShippingMethodId(checkout, config)).toBe(PaymentMethodId.PayPalCommerceAcceleratedCheckout);
+        expect(getShippingMethodId(checkout, config)).toBe(
+            PaymentMethodId.PayPalCommerceAcceleratedCheckout,
+        );
     });
 
     it('returns shipping method id from preselected payment method', () => {

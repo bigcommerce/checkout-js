@@ -4,9 +4,8 @@ import { type FieldProps } from 'formik';
 import React, { type FunctionComponent, memo, useCallback, useMemo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { type AutocompleteItem } from '@bigcommerce/checkout/ui';
+import { type AutocompleteItem, FormField, Label } from '@bigcommerce/checkout/ui';
 
-import { FormField, Label } from '../../ui/form';
 import {
     getAddressFormFieldInputId,
     getAddressFormFieldLabelId,
@@ -22,6 +21,7 @@ export interface GoogleAutocompleteFormFieldProps {
     nextElement?: HTMLElement;
     parentFieldName?: string;
     isFloatingLabelEnabled?: boolean;
+    isNewPlacesApiEnabled?: boolean;
     onSelect(place: google.maps.places.PlaceResult, item: AutocompleteItem): void;
     onToggleOpen?(state: { inputValue: string; isOpen: boolean }): void;
     onChange(value: string, isOpen: boolean): void;
@@ -38,6 +38,7 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
     onChange,
     onToggleOpen,
     isFloatingLabelEnabled,
+    isNewPlacesApiEnabled,
 }) => {
     const fieldName = parentFieldName ? `${parentFieldName}.${name}` : name;
 
@@ -47,10 +48,9 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
 
     const inputProps = useMemo(
         () => ({
-            className: classNames(
-                'form-input optimizedCheckout-form-input',
-                { 'floating-input floating-form-field-input': isFloatingLabelEnabled },
-            ),
+            className: classNames('form-input optimizedCheckout-form-input', {
+                'floating-input floating-form-field-input': isFloatingLabelEnabled,
+            }),
             id: getAddressFormFieldInputId(name),
             'aria-labelledby': labelId,
             placeholder: isFloatingLabelEnabled ? ' ' : placeholder,
@@ -70,6 +70,7 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
                 isAutocompleteEnabled={
                     countryCode ? supportedCountries.includes(countryCode) : false
                 }
+                isNewPlacesApiEnabled={isNewPlacesApiEnabled}
                 nextElement={nextElement}
                 onChange={onChange}
                 onSelect={onSelect}
@@ -80,6 +81,7 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
             apiKey,
             countryCode,
             inputProps,
+            isNewPlacesApiEnabled,
             nextElement,
             onChange,
             onSelect,
@@ -89,8 +91,12 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
     );
 
     const renderLabel = isFloatingLabelEnabled ? null : (
-        <Label additionalClassName="body-regular" htmlFor={inputProps.id} id={labelId}
-            isFloatingLabelEnabled={isFloatingLabelEnabled}>
+        <Label
+            additionalClassName="body-regular"
+            htmlFor={inputProps.id}
+            id={labelId}
+            isFloatingLabelEnabled={isFloatingLabelEnabled}
+        >
             {labelContent}
         </Label>
     );

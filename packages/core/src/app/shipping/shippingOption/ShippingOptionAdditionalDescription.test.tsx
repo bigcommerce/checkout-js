@@ -13,10 +13,11 @@ describe('ShippingOptionAdditionalDescription Component', () => {
     const languageService = getLanguageService();
 
     it('renders additional description', () => {
-        render(<LocaleProvider
-                    checkoutService={checkoutService}
-                    languageService={languageService}
-                ><ShippingOptionAdditionalDescription description="Test this" /></LocaleProvider>);
+        render(
+            <LocaleProvider checkoutService={checkoutService} languageService={languageService}>
+                <ShippingOptionAdditionalDescription description="Test this" />
+            </LocaleProvider>,
+        );
 
         expect(screen.getByText('Test this')).toBeInTheDocument();
     });
@@ -25,17 +26,19 @@ describe('ShippingOptionAdditionalDescription Component', () => {
         const longDescription = 'This is a really long description, it just goes on and on and on';
 
         render(
-            <LocaleProvider
-                    checkoutService={checkoutService}
-                    languageService={languageService}
-                ><ShippingOptionAdditionalDescription
-                description={longDescription}/></LocaleProvider>,
+            <LocaleProvider checkoutService={checkoutService} languageService={languageService}>
+                <ShippingOptionAdditionalDescription description={longDescription} />
+            </LocaleProvider>,
         );
 
-        expect(screen.getByText(longDescription)).toHaveClass('shippingOption-additionalDescription--collapsed');
+        expect(screen.getByText(longDescription)).toHaveClass(
+            'shippingOption-additionalDescription--collapsed',
+        );
 
         await userEvent.click(screen.getByText('Show more'));
 
-        expect(screen.getByText(longDescription)).toHaveClass('shippingOption-additionalDescription--expanded');
+        expect(screen.getByText(longDescription)).toHaveClass(
+            'shippingOption-additionalDescription--expanded',
+        );
     });
 });

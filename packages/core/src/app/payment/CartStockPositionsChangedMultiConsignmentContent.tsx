@@ -17,9 +17,9 @@ export interface CartStockPositionsChangedMultiConsignmentContentProps {
     consignmentGroups: CartStockPositionsChangedConsignmentGroup[];
 }
 
-const CartStockPositionsChangedMultiConsignmentContent: FunctionComponent<CartStockPositionsChangedMultiConsignmentContentProps> = ({
-    consignmentGroups,
-}) => (
+const CartStockPositionsChangedMultiConsignmentContent: FunctionComponent<
+    CartStockPositionsChangedMultiConsignmentContentProps
+> = ({ consignmentGroups }) => (
     <div
         className="cart-stock-positions-changed-modal-groups"
         data-test="cart-stock-positions-changed-groups"
@@ -37,13 +37,13 @@ const CartStockPositionsChangedMultiConsignmentContent: FunctionComponent<CartSt
                         className="cart-stock-positions-changed-modal-destination"
                         data-test="cart-stock-positions-changed-destination"
                     >
-                        <span className="body-bold">
+                        <span className="optimizedCheckout-contentPrimary body-bold">
                             <TranslatedString
                                 data={{ consignmentNumber }}
                                 id="cart.cart_stock_modal_destination"
                             />
                         </span>
-                        <span className="body-medium">{` (${address})`}</span>
+                        <span className="optimizedCheckout-contentPrimary body-medium">{` (${address})`}</span>
                     </h3>
                     <CartStockPositionsChangedItemList items={items} />
                 </div>

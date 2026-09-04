@@ -90,6 +90,16 @@ export function getBigCommercePaymentsVenmoMethod() {
     };
 }
 
+export function getBigCommercePaymentsInvoicesMethod() {
+    const bigCommercePayments = getBigCommercePaymentsMethod();
+
+    return {
+        ...bigCommercePayments,
+        id: 'bigcommerce_payments_invoices',
+        method: 'bigcommerce_payments_invoices',
+    };
+}
+
 export function getBigCommercePaymentsAPMsMethod() {
     const bigcommercePayments = getBigCommercePaymentsMethod();
 

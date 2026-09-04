@@ -1,4 +1,8 @@
-import { type GatewayOrderPayment, type GiftCertificateOrderPayment, type Order } from '@bigcommerce/checkout-sdk';
+import {
+    type GatewayOrderPayment,
+    type GiftCertificateOrderPayment,
+    type Order,
+} from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent, memo } from 'react';
 
 import { TranslatedHtml } from '@bigcommerce/checkout/locale';
@@ -45,9 +49,7 @@ const OrderStatus: FunctionComponent<OrderStatusProps> = ({
                     supportPhoneNumber={supportPhoneNumber}
                 />
             </p>
-            <PaymentsWithMandates
-                paymentsWithMandates={paymentsWithMandates}
-            />
+            <PaymentsWithMandates paymentsWithMandates={paymentsWithMandates} />
             {order.hasDigitalItems && (
                 <p data-test="order-confirmation-digital-items-text">
                     <TranslatedHtml

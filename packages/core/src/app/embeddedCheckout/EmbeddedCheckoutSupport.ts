@@ -5,7 +5,10 @@ import { type CheckoutSupport } from '../checkout';
 import { EmbeddedCheckoutUnsupportedError } from './errors';
 
 export default class EmbeddedCheckoutSupport implements CheckoutSupport {
-    constructor(private unsupportedMethods: string[], private langService: LanguageService) {}
+    constructor(
+        private unsupportedMethods: string[],
+        private langService: LanguageService,
+    ) {}
 
     isSupported(...ids: string[]): boolean {
         const unsupportedMethods = ids.filter((id) => this.unsupportedMethods.includes(id));

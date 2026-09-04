@@ -14,7 +14,6 @@ describe('getInstrumentValidationSchema()', () => {
         language = createLanguageService();
 
         jest.spyOn(language, 'translate').mockImplementation((key) => key);
-
     });
 
     it('does not throw error if data is valid', () => {

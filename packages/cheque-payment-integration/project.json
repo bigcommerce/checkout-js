@@ -1,0 +1,20 @@
+{
+  "name": "cheque-payment-integration",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/cheque-payment-integration/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/packages/cheque-payment-integration"],
+      "options": {
+        "jestConfig": "packages/cheque-payment-integration/jest.config.js"
+      }
+    }
+  },
+  "tags": ["scope:integration"]
+}

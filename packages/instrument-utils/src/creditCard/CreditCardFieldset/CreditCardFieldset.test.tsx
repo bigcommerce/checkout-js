@@ -39,4 +39,21 @@ describe('CreditCardFieldset', () => {
             screen.getByRole('textbox', { name: 'Customer Code (Optional)' }),
         ).toBeInTheDocument();
     });
+
+    it('renders the fieldset with the credit-card spacing modifier class', () => {
+        const localeContext = createLocaleContext(getStoreConfig());
+
+        render(
+            <LocaleContext.Provider value={localeContext}>
+                <Formik initialValues={{}} onSubmit={noop}>
+                    <CreditCardFieldset />
+                </Formik>
+            </LocaleContext.Provider>,
+        );
+
+        const fieldset = screen.getByRole('group');
+
+        expect(fieldset).toHaveClass('creditCardFieldset');
+        expect(fieldset).toHaveClass('form-fieldset--creditCardFieldset');
+    });
 });

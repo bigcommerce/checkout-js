@@ -29,11 +29,8 @@ const StaticShippingOption: React.FunctionComponent<StaticShippingOptionProps> =
             );
         }
 
-        return (
-            <ShopperCurrency amount={method.cost} />
-        )
-
-    }
+        return <ShopperCurrency amount={method.cost} />;
+    };
 
     return (
         <div className="shippingOption shippingOption--alt" data-test="static-shipping-option">
@@ -46,7 +43,7 @@ const StaticShippingOption: React.FunctionComponent<StaticShippingOptionProps> =
                     />
                 </span>
             )}
-            <span className="shippingOption-desc body-medium">
+            <span className="shippingOption-desc optimizedCheckout-contentPrimary body-medium">
                 {method.description}
                 {method.transitTime && (
                     <span className="shippingOption-transitTime">{method.transitTime}</span>
@@ -57,7 +54,7 @@ const StaticShippingOption: React.FunctionComponent<StaticShippingOptionProps> =
                     />
                 )}
             </span>
-            <span className="shippingOption-price body-medium">
+            <span className="shippingOption-price optimizedCheckout-contentPrimary body-medium">
                 {renderShippingPrice()}
             </span>
         </div>

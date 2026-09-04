@@ -9,9 +9,7 @@ import { ProvidersSectionOnTopOfPaymentsList } from './ProvidersSectionOnTopOfPa
 
 describe('ProvidersSectionOnTopOfPaymentsList', () => {
     it('returns null when methods array is empty', () => {
-        const { container } = render(
-            <ProvidersSectionOnTopOfPaymentsList methods={[]} />,
-        );
+        const { container } = render(<ProvidersSectionOnTopOfPaymentsList methods={[]} />);
 
         expect(container).toBeEmptyDOMElement();
     });
@@ -22,9 +20,7 @@ describe('ProvidersSectionOnTopOfPaymentsList', () => {
             initializationData: {},
         };
 
-        const { container } = render(
-            <ProvidersSectionOnTopOfPaymentsList methods={[method]} />,
-        );
+        const { container } = render(<ProvidersSectionOnTopOfPaymentsList methods={[method]} />);
 
         expect(container).toBeEmptyDOMElement();
     });
@@ -35,9 +31,7 @@ describe('ProvidersSectionOnTopOfPaymentsList', () => {
             initializationData: undefined,
         };
 
-        const { container } = render(
-            <ProvidersSectionOnTopOfPaymentsList methods={[method]} />,
-        );
+        const { container } = render(<ProvidersSectionOnTopOfPaymentsList methods={[method]} />);
 
         expect(container).toBeEmptyDOMElement();
     });
@@ -50,9 +44,7 @@ describe('ProvidersSectionOnTopOfPaymentsList', () => {
             initializationData: { hasSectionOnTopOfPaymentsList: true },
         };
 
-        render(
-            <ProvidersSectionOnTopOfPaymentsList methods={[method]} />,
-        );
+        render(<ProvidersSectionOnTopOfPaymentsList methods={[method]} />);
 
         expect(
             screen.getByTestId('stripe-provider-section-on-top-of-payments-list'),
@@ -67,9 +59,7 @@ describe('ProvidersSectionOnTopOfPaymentsList', () => {
             initializationData: { hasSectionOnTopOfPaymentsList: true },
         };
 
-        render(
-            <ProvidersSectionOnTopOfPaymentsList methods={[method]} />,
-        );
+        render(<ProvidersSectionOnTopOfPaymentsList methods={[method]} />);
 
         expect(
             screen.getByTestId('stripeupe-card-provider-section-on-top-of-payments-list'),
@@ -92,9 +82,7 @@ describe('ProvidersSectionOnTopOfPaymentsList', () => {
         };
 
         render(
-            <ProvidersSectionOnTopOfPaymentsList
-                methods={[eligibleMethod, ineligibleMethod]}
-            />,
+            <ProvidersSectionOnTopOfPaymentsList methods={[eligibleMethod, ineligibleMethod]} />,
         );
 
         expect(
@@ -120,9 +108,7 @@ describe('ProvidersSectionOnTopOfPaymentsList', () => {
             initializationData: { hasSectionOnTopOfPaymentsList: true },
         };
 
-        render(
-            <ProvidersSectionOnTopOfPaymentsList methods={[method1, method2]} />,
-        );
+        render(<ProvidersSectionOnTopOfPaymentsList methods={[method1, method2]} />);
 
         expect(
             screen.getByTestId('stripeupe-card-provider-section-on-top-of-payments-list'),

@@ -1,12 +1,14 @@
-import {
-  type CheckoutSelectors,
-  createCheckoutService,
-} from '@bigcommerce/checkout-sdk';
+import { type CheckoutSelectors, createCheckoutService } from '@bigcommerce/checkout-sdk';
 import userEvent from '@testing-library/user-event';
 import React, { act } from 'react';
 
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
-import { CheckoutProvider, ExtensionProvider, LocaleContext } from '@bigcommerce/checkout/contexts';
+import {
+    CheckoutProvider,
+    ExtensionProvider,
+    LocaleContext,
+    ThemeContext,
+} from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
@@ -16,6 +18,8 @@ import CheckoutStepType from '../../checkout/CheckoutStepType';
 import ConsoleErrorLogger from '../../common/error/ConsoleErrorLogger';
 import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
+import { useShipping } from '../hooks/useShipping';
+import { getUseShippingTestMock } from '../hooks/useShipping.mock';
 import { getShippingAddress } from '../shipping-addresses.mock';
 
 import { type StripeShippingEvent } from './stripe-types';
@@ -23,10 +27,8 @@ import StripeShippingForm from './StripeShippingForm';
 
 let hasSelectedShippingOptionsReturn = false;
 
-jest.mock(
-    '../hasSelectedShippingOptions',
-    () => () => hasSelectedShippingOptionsReturn,
-);
+jest.mock('../hasSelectedShippingOptions', () => () => hasSelectedShippingOptionsReturn);
+jest.mock('../hooks/useShipping');
 
 describe('StripeShippingForm', () => {
     const addressFormFields = getAddressFormFields().filter(({ custom }) => !custom);
@@ -37,9 +39,9 @@ describe('StripeShippingForm', () => {
     const localeContext = createLocaleContext(getStoreConfig());
     let checkoutState: CheckoutSelectors;
 
-    const initialize = jest.fn();
+    const mockUseShipping = useShipping as jest.MockedFunction<typeof useShipping>;
 
-    checkoutService.initializeShipping = initialize;
+    const defaultUseShippingValues = getUseShippingTestMock();
 
     const defaultProps = {
         isShippingMethodLoading: false,
@@ -58,58 +60,79 @@ describe('StripeShippingForm', () => {
         shippingAddress: rest,
         customerMessage: '',
         addresses: [],
-        shouldShowOrderComments: true,
         consignments: [],
         cartHasChanged: false,
-        isLoading: false,
         isShippingStepPending: false,
         onSubmit: jest.fn(),
         getFields: jest.fn(() => addressFormFields),
         onUnhandledError: jest.fn(),
         signOut: jest.fn(),
-        updateAddress: jest.fn(),
         deleteConsignments: jest.fn(),
     };
 
-   const renderContainer = (props = {}) => render(
-     <CheckoutProvider checkoutService={checkoutService}>
-         <LocaleContext.Provider value={localeContext}>
-             <ExtensionProvider extensionService={extensionService}>
-                 <StripeShippingForm {...defaultProps} {...props} />
-             </ExtensionProvider>
-         </LocaleContext.Provider>
-     </CheckoutProvider>
-     );
+    const createContainer = (props = {}) => (
+        <CheckoutProvider checkoutService={checkoutService}>
+            <LocaleContext.Provider value={localeContext}>
+                <ExtensionProvider extensionService={extensionService}>
+                    <StripeShippingForm {...defaultProps} {...props} />
+                </ExtensionProvider>
+            </LocaleContext.Provider>
+        </CheckoutProvider>
+    );
 
-   beforeEach(() => {
-     checkoutState = checkoutService.getState();
-     jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
-     jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue(getCheckout());
-   })
+    const renderContainer = (props = {}) => render(createContainer(props));
 
-   afterEach(() => {
-       jest.clearAllMocks();
-   })
+    beforeEach(() => {
+        checkoutState = checkoutService.getState();
+        jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
+        jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue(getCheckout());
+        mockUseShipping.mockReturnValue(defaultUseShippingValues);
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
 
     it('renders form with a correct parameters', async () => {
+        const initializeShippingMethod = jest.fn();
+
+        mockUseShipping.mockReturnValue({ ...defaultUseShippingValues, initializeShippingMethod });
+
         const { container } = renderContainer({ isLoading: false });
 
-        expect(initialize).toHaveBeenCalled();
+        expect(initializeShippingMethod).toHaveBeenCalled();
         expect(defaultProps.getFields).toHaveBeenCalledTimes(2);
-        expect(defaultProps.getFields).toHaveBeenCalledWith("US");
+        expect(defaultProps.getFields).toHaveBeenCalledWith('US');
         // eslint-disable-next-line testing-library/no-node-access,testing-library/no-container
         expect(container.querySelector('#StripeUpeShipping')).toBeInTheDocument();
     });
 
+    it('renders billing same as shipping checkbox', async () => {
+        renderContainer({ isLoading: false });
+
+        expect(screen.getByTestId('billingSameAsShipping')).toBeInTheDocument();
+    });
+
+    it('does not render billing same as shipping checkbox under enhancedThemeV1', async () => {
+        // Under enhancedThemeV1 the toggle moves to the payment step's billing block.
+        render(
+            <ThemeContext.Provider value={{ enhancedThemeV1: true }}>
+                {createContainer({ isLoading: false })}
+            </ThemeContext.Provider>,
+        );
+
+        expect(screen.queryByTestId('billingSameAsShipping')).not.toBeInTheDocument();
+    });
+
     it('disables submit button when loading', async () => {
-       hasSelectedShippingOptionsReturn = true;
-       renderContainer({ isLoading: true });
+        hasSelectedShippingOptionsReturn = true;
+        renderContainer({ isLoading: true });
 
-       const button = screen.getByRole('button', { name: /continue/i });
+        const button = screen.getByRole('button', { name: /continue/i });
 
-       expect(button).toBeInTheDocument();
-       expect(button).toBeDisabled();
-   })
+        expect(button).toBeInTheDocument();
+        expect(button).toBeDisabled();
+    });
 
     it('disables submit button if form is not valid', async () => {
         hasSelectedShippingOptionsReturn = true;
@@ -120,12 +143,10 @@ describe('StripeShippingForm', () => {
 
         expect(button).toBeInTheDocument();
 
-        await userEvent.click(
-            button,
-        );
+        await userEvent.click(button);
 
         expect(defaultProps.onSubmit).toHaveBeenCalledTimes(0);
-    })
+    });
 
     it('submits a form by clicking a button', async () => {
         hasSelectedShippingOptionsReturn = true;
@@ -136,19 +157,26 @@ describe('StripeShippingForm', () => {
 
         expect(button).toBeInTheDocument();
 
-       await userEvent.click(
-            button,
-        );
+        await userEvent.click(button);
 
-       expect(defaultProps.onSubmit).toHaveBeenCalledTimes(1);
-       expect(defaultProps.onSubmit).toHaveBeenCalledWith({
-           billingSameAsShipping: false,
-           orderComment: "",
-           shippingAddress: { ...defaultProps.shippingAddress },
-       });
-    })
+        expect(defaultProps.onSubmit).toHaveBeenCalledTimes(1);
+        expect(defaultProps.onSubmit).toHaveBeenCalledWith({
+            billingSameAsShipping: false,
+            orderComment: '',
+            shippingAddress: { ...defaultProps.shippingAddress },
+        });
+    });
 
     it('calls updateAddress correctly', async () => {
+        const initializeShippingMethod = jest.fn();
+        const updateShippingAddress = jest.fn();
+
+        mockUseShipping.mockReturnValue({
+            ...defaultUseShippingValues,
+            initializeShippingMethod,
+            updateShippingAddress,
+        });
+
         const address = {
             line1: '12345 Testing',
             line2: 'Main str',
@@ -156,7 +184,7 @@ describe('StripeShippingForm', () => {
             state: 'State',
             country: 'United States',
             postal_code: '95545',
-        }
+        };
 
         const shippingChangeEvent: StripeShippingEvent = {
             elementType: '',
@@ -168,37 +196,44 @@ describe('StripeShippingForm', () => {
                 firstName: 'John',
                 lastName: 'Doe',
                 address,
-            }
-        }
+            },
+        };
 
         renderContainer({ isLoading: false });
 
         await act(async () => {
-            const { stripeupe } = initialize.mock.calls[0][0];
+            const { stripeupe } = initializeShippingMethod.mock.calls[0][0];
 
             await stripeupe.onChangeShipping(shippingChangeEvent);
         });
 
-        expect(defaultProps.updateAddress).toHaveBeenCalledWith({
-            "address1": "12345 Testing",
-            "address2": "Main str",
-            "city": "City",
-            "company": "",
-            "country": "United States",
-            "countryCode": "United States",
-            "customFields": [],
-            "firstName": "John",
-            "lastName": "Doe",
-            "phone": "555-444-5555",
-            "postalCode": "95545",
-            "shouldSaveAddress": true,
-            "stateOrProvince": "State",
-            "stateOrProvinceCode": "State",
+        expect(updateShippingAddress).toHaveBeenCalledWith({
+            address1: '12345 Testing',
+            address2: 'Main str',
+            city: 'City',
+            company: '',
+            country: 'United States',
+            countryCode: 'United States',
+            customFields: [],
+            firstName: 'John',
+            lastName: 'Doe',
+            phone: '555-444-5555',
+            postalCode: '95545',
+            shouldSaveAddress: true,
+            stateOrProvince: 'State',
+            stateOrProvinceCode: 'State',
         });
     });
 
     it('catches an error if something is wrong', async () => {
-        defaultProps.updateAddress.mockRejectedValue(new Error('update failed'));
+        const initializeShippingMethod = jest.fn();
+        const updateShippingAddress = jest.fn().mockRejectedValue(new Error('update failed'));
+
+        mockUseShipping.mockReturnValue({
+            ...defaultUseShippingValues,
+            initializeShippingMethod,
+            updateShippingAddress,
+        });
 
         const address = {
             line1: '12345 Testing',
@@ -207,7 +242,7 @@ describe('StripeShippingForm', () => {
             state: 'State',
             country: 'United States',
             postal_code: '95545',
-        }
+        };
 
         const shippingChangeEvent: StripeShippingEvent = {
             elementType: '',
@@ -219,17 +254,17 @@ describe('StripeShippingForm', () => {
                 firstName: 'John',
                 lastName: 'Doe',
                 address,
-            }
-        }
+            },
+        };
 
         renderContainer({ isLoading: false });
 
         await act(async () => {
-            const { stripeupe } = initialize.mock.calls[0][0];
+            const { stripeupe } = initializeShippingMethod.mock.calls[0][0];
 
             await stripeupe.onChangeShipping(shippingChangeEvent);
         });
 
         expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(expect.any(Error));
-    })
+    });
 });

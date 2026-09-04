@@ -1,9 +1,12 @@
 import React, { type FunctionComponent, useState } from 'react';
+
 import { Alert, AlertType, IconClose } from '@bigcommerce/checkout/ui';
 
 import './BackorderQuantitiesChangedBanner.scss';
 
-export const BackorderQuantitiesChangedBanner: FunctionComponent<{ message?: string }> = ({ message }) => {
+export const BackorderQuantitiesChangedBanner: FunctionComponent<{ message?: string }> = ({
+    message,
+}) => {
     const [isDismissed, setIsDismissed] = useState(false);
 
     if (isDismissed || !message) {
@@ -11,7 +14,10 @@ export const BackorderQuantitiesChangedBanner: FunctionComponent<{ message?: str
     }
 
     return (
-        <div className="checkout-backorder-quantities-banner" data-test="backorder-quantities-changed-banner">
+        <div
+            className="checkout-backorder-quantities-banner"
+            data-test="backorder-quantities-changed-banner"
+        >
             <Alert
                 additionalClassName="checkout-backorder-quantities-banner--alert"
                 type={AlertType.Info}

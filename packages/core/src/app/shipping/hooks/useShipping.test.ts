@@ -63,9 +63,15 @@ describe('useShipping', () => {
     };
 
     beforeEach(() => {
-        jest.spyOn(contexts, 'useCheckout').mockReturnValue({ checkoutState, checkoutService } as any);
+        jest.spyOn(contexts, 'useCheckout').mockReturnValue({
+            checkoutState,
+            checkoutService,
+        } as any);
         jest.spyOn(contexts, 'useCapabilities').mockReturnValue(defaultCapabilities);
-        jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({ id: 'checkout', customerMessage: 'msg' } as any);
+        jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
+            id: 'checkout',
+            customerMessage: 'msg',
+        } as any);
     });
 
     afterEach(() => {
@@ -79,33 +85,20 @@ describe('useShipping', () => {
         expect(result.current.customer).toEqual(getCustomer());
         expect(result.current.shouldShowOrderComments).toBe(true);
         expect(result.current.shouldShowMultiShipping).toBe(false);
-        expect(result.current.validateMaxLength).toBe(false);
     });
 
     describe('shouldShowMultiShipping', () => {
         beforeEach(() => {
-            jest.spyOn(checkoutState.data, 'getCart').mockReturnValue(
-                {
-                    ...getCart(),
-                    lineItems: {
-                        ...getCart().lineItems,
-                        physicalItems: [
-                            {
-                                ...getCart().lineItems.physicalItems[0],
-                                quantity: 2,
-                            },
-                        ],
-                    },
-                }
-            );
-            jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
-                ...getStoreConfig(),
-                checkoutSettings: {
-                    ...getStoreConfig().checkoutSettings,
-                    features: {
-                        ...getStoreConfig().checkoutSettings?.features,
-                        'CHECKOUT-9768.form_fields_max_length_validation': true,
-                    },
+            jest.spyOn(checkoutState.data, 'getCart').mockReturnValue({
+                ...getCart(),
+                lineItems: {
+                    ...getCart().lineItems,
+                    physicalItems: [
+                        {
+                            ...getCart().lineItems.physicalItems[0],
+                            quantity: 2,
+                        },
+                    ],
                 },
             });
         });
@@ -168,33 +161,6 @@ describe('useShipping', () => {
         });
     });
 
-    describe('validateMaxLength', () => {
-        it('is false when experiment is not enabled', () => {
-            const { result } = renderHook(() => useShipping());
-
-            expect(result.current.validateMaxLength).toBe(false);
-        });
-
-        it('is true when CHECKOUT-9768.form_fields_max_length_validation experiment is enabled', () => {
-            const config = getStoreConfig();
-
-            jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
-                ...config,
-                checkoutSettings: {
-                    ...config.checkoutSettings,
-                    features: {
-                        ...config.checkoutSettings.features,
-                        'CHECKOUT-9768.form_fields_max_length_validation': true,
-                    },
-                },
-            });
-
-            const { result } = renderHook(() => useShipping());
-
-            expect(result.current.validateMaxLength).toBe(true);
-        });
-    });
-
     describe('getFields', () => {
         const extraFields = [
             {
@@ -250,15 +216,47 @@ describe('useShipping', () => {
         });
     });
 
-    it('shouldRenderStripeForm is true if providerWithCustomCheckout is StripeUPE and shouldUseStripeLinkByMinimumAmount returns true', () => {
+    describe('shippingAddress', () => {
+        const customerExtraFields = [{ fieldId: '100', fieldValue: 'Acme Corp' }];
 
-        jest.mock(
-            '@bigcommerce/checkout/instrument-utils',
-            () => ({
-                ...jest.requireActual('@bigcommerce/checkout/instrument-utils'),
-                shouldUseStripeLinkByMinimumAmount: jest.fn().mockResolvedValue(true),
-            }),
-        );
+        it('returns the shippingAddress from checkout state, including its extraFields', () => {
+            jest.spyOn(checkoutState.data, 'getShippingAddress').mockReturnValue({
+                ...getShippingAddress(),
+                extraFields: customerExtraFields,
+            });
+
+            const { result } = renderHook(() => useShipping());
+
+            expect(result.current.shippingAddress?.extraFields).toEqual(customerExtraFields);
+        });
+
+        it('does not graft extraFields from the customer address book', () => {
+            jest.spyOn(checkoutState.data, 'getShippingAddress').mockReturnValue(
+                getShippingAddress(),
+            );
+            jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue({
+                ...getCustomer(),
+                addresses: [
+                    {
+                        ...getShippingAddress(),
+                        id: 5,
+                        type: 'residential',
+                        extraFields: customerExtraFields,
+                    },
+                ],
+            });
+
+            const { result } = renderHook(() => useShipping());
+
+            expect(result.current.shippingAddress?.extraFields).toBeUndefined();
+        });
+    });
+
+    it('shouldRenderStripeForm is true if providerWithCustomCheckout is StripeUPE and shouldUseStripeLinkByMinimumAmount returns true', () => {
+        jest.mock('@bigcommerce/checkout/instrument-utils', () => ({
+            ...jest.requireActual('@bigcommerce/checkout/instrument-utils'),
+            shouldUseStripeLinkByMinimumAmount: jest.fn().mockResolvedValue(true),
+        }));
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
             ...getStoreConfig(),
             checkoutSettings: {

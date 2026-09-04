@@ -11,7 +11,10 @@ interface ConsignmentDetailsProps {
     consignment: Consignment;
 }
 
-export const ConsignmentDetails = ({ cart, consignment }: ConsignmentDetailsProps): ReactElement => (
+export const ConsignmentDetails = ({
+    cart,
+    consignment,
+}: ConsignmentDetailsProps): ReactElement => (
     <div className="staticConsignment">
         <strong>
             <TranslatedString id="shipping.shipping_address_heading" />

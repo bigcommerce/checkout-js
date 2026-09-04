@@ -7,9 +7,9 @@ export interface CartStockPositionsChangedItemListProps {
     items: PhysicalItem[];
 }
 
-const CartStockPositionsChangedItemList: FunctionComponent<CartStockPositionsChangedItemListProps> = ({
-    items,
-}) => (
+const CartStockPositionsChangedItemList: FunctionComponent<
+    CartStockPositionsChangedItemListProps
+> = ({ items }) => (
     <ul className="productList" data-test="cart-stock-positions-changed-items">
         {items.map((item) => (
             <CartStockPositionsChangedItem item={item} key={item.id} />

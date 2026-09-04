@@ -1,4 +1,3 @@
-
 import {
     type CardInstrument,
     type CheckoutSelectors,
@@ -9,7 +8,11 @@ import {
 import userEvent from '@testing-library/user-event';
 import React, { type FunctionComponent } from 'react';
 
-import { CheckoutProvider, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
+import {
+    CheckoutProvider,
+    LocaleContext,
+    type LocaleContextType,
+} from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { getYear } from '@bigcommerce/checkout/test-mocks';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
@@ -125,7 +128,6 @@ describe('ManageInstrumentsModal', () => {
 
         // eslint-disable-next-line testing-library/no-node-access
         expect(document.querySelector('.ReactModalPortal')).toBeInTheDocument();
-
     });
 
     it.skip('shows confirmation message before deleting instrument', async () => {
@@ -133,7 +135,13 @@ describe('ManageInstrumentsModal', () => {
 
         await userEvent.click(screen.getAllByText('Delete')[0]);
 
-        expect(await screen.findByText(localeContext.language.translate('payment.instrument_manage_modal_confirmation_label'))).toBeInTheDocument();
+        expect(
+            await screen.findByText(
+                localeContext.language.translate(
+                    'payment.instrument_manage_modal_confirmation_label',
+                ),
+            ),
+        ).toBeInTheDocument();
     });
 
     it.skip('shows list of instruments if user decides to cancel their action', async () => {

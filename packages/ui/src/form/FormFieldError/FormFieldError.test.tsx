@@ -1,55 +1,108 @@
-import userEvent from '@testing-library/user-event';
-import { Formik } from 'formik';
+import { ErrorMessage, useFormikContext } from 'formik';
 import React from 'react';
 
 import { render, screen } from '@bigcommerce/checkout/test-utils';
-
-import { BasicFormField } from '../BasicFormField';
-import { FormContext } from '../contexts';
+import { FormContext } from '@bigcommerce/checkout/ui';
 
 import FormFieldError, { type FormFieldErrorProps } from './FormFieldError';
 
-describe('FormFieldError', () => {
-    let defaultProps: FormFieldErrorProps;
+// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+jest.mock('formik', () => ({
+    ...jest.requireActual('formik'),
+    useFormikContext: jest.fn(),
+    ErrorMessage: jest.fn(({ render: renderFn }: { render: (msg: string) => React.ReactNode }) =>
+        renderFn('Test error message'),
+    ),
+}));
 
-    beforeEach(() => {
-        defaultProps = {
-            name: 'foobar',
-            errorId: '',
-        };
+describe('FormFieldError', () => {
+    const defaultProps: FormFieldErrorProps = {
+        name: 'testField',
+        testId: 'test-field-error',
+        errorId: 'test-error-id',
+    };
+
+    const mockFormikContext = (errors = {}, touched = {}) => {
+        (useFormikContext as jest.Mock).mockReturnValue({
+            errors,
+            touched,
+        });
+    };
+
+    afterEach(() => {
+        jest.clearAllMocks();
     });
 
-    it('renders formfielderror component with message', async () => {
-        const { container } = render(
+    it('renders error message when there is an error', () => {
+        mockFormikContext({ testField: 'Error message' }, { testField: true });
+
+        render(
             <FormContext.Provider value={{ isSubmitted: true, setSubmitted: jest.fn() }}>
-                <Formik
-                    initialValues={{ foobar: '' }}
-                    onSubmit={jest.fn()}
-                    render={() => (
-                        <>
-                            <BasicFormField
-                                name="foobar"
-                                testId="input"
-                                validate={() => 'Invalid'}
-                            />
-                            <FormFieldError {...defaultProps} />
-                        </>
-                    )}
-                />
+                <FormFieldError {...defaultProps} />
             </FormContext.Provider>,
         );
 
-        // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-        const inputElement = container.querySelector('input[name="foobar"]');
+        expect(screen.getByRole('alert')).toHaveTextContent('Test error message');
+    });
 
-        expect(inputElement).toBeInTheDocument();
+    it('does not render error message when field is not touched', () => {
+        mockFormikContext({ testField: 'Error message' }, { testField: false });
 
-        if (inputElement) {
-            await userEvent.type(inputElement, 'test');
-        }
+        render(
+            <FormContext.Provider value={{ isSubmitted: true, setSubmitted: jest.fn() }}>
+                <FormFieldError {...defaultProps} />
+            </FormContext.Provider>,
+        );
 
-        await userEvent.tab();
+        expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    });
 
-        expect(screen.getByText('Invalid')).toBeInTheDocument();
+    it('renders hidden span when there is no error', () => {
+        mockFormikContext({}, {});
+
+        render(
+            <FormContext.Provider value={{ isSubmitted: false, setSubmitted: jest.fn() }}>
+                <FormFieldError {...defaultProps} />
+            </FormContext.Provider>,
+        );
+
+        const hiddenSpan = screen.getByTestId('test-field-error').querySelector('.is-srOnly');
+
+        expect(hiddenSpan).toBeInTheDocument();
+        expect(hiddenSpan).toHaveAttribute('aria-hidden', 'true');
+    });
+
+    it('passes correct props to ErrorMessage component', () => {
+        mockFormikContext({ testField: 'Error message' }, { testField: true });
+
+        render(
+            <FormContext.Provider value={{ isSubmitted: true, setSubmitted: jest.fn() }}>
+                <FormFieldError {...defaultProps} />
+            </FormContext.Provider>,
+        );
+
+        expect(ErrorMessage).toHaveBeenCalledWith(
+            expect.objectContaining({
+                name: defaultProps.name,
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                render: expect.any(Function),
+            }),
+            {},
+        );
+    });
+
+    it('renders with proper accessibility attributes', () => {
+        mockFormikContext({ testField: 'Error message' }, { testField: true });
+
+        render(
+            <FormContext.Provider value={{ isSubmitted: true, setSubmitted: jest.fn() }}>
+                <FormFieldError {...defaultProps} />
+            </FormContext.Provider>,
+        );
+
+        const alertLabel = screen.getByRole('alert');
+
+        expect(alertLabel).toHaveAttribute('aria-live', 'polite');
+        expect(alertLabel).toHaveAttribute('id', defaultProps.errorId);
     });
 });

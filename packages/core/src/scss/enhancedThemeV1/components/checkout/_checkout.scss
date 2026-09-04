@@ -1,0 +1,161 @@
+.layout {
+    @include enhancedThemeV1 {
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+
+        .layout-main {
+            padding: 0;
+        }
+        
+        .checkout-separator {
+            .sub-header {
+                margin: 0;
+            }
+        }
+
+        .checkout-separator::before,
+        .checkout-separator::after {
+            background-color: $color-greyDark;
+        }
+        
+        .checkout-steps {
+            margin-top: #{spacing('base') + spacing('base')};
+        }
+
+        .discountBanner {
+            margin-top: 2rem;
+        }
+
+        .checkout-step {
+            border-bottom: none;
+            padding: #{spacing("base")} #{spacing("base") + spacing("base")};
+            margin: spacing("single") 0;
+            border-radius: $element-border-radius;
+        }
+        
+        // :not(:last-child) keeps collapsed steps unaffected
+        .checkout-step--shipping,
+        .checkout-step--payment {
+            .checkout-view-header:not(:last-child) {
+                margin-bottom: spacing("half");
+            }
+        }
+
+        .shipping-header:not(:has(> :not(.is-srOnly))) {
+            padding-bottom: 0;
+        }
+
+        .checkout-step:not(.checkout-step--current) {
+            .stepHeader-title {
+                font-size: $fontSize-smaller;
+                min-width: 0;
+            }
+
+            div.stepHeader-counter.icon.stepHeader-counter--complete {
+                @include square($checkoutStep-completeCheck-size);
+
+                background-color: $color-stepCompleteCheck;
+                display: block;
+                margin-left: spacing("third");
+                order: 1;
+                transform: none;
+
+                svg {
+                    fill: $color-white;
+                    height: 100%;
+                    width: 100%;
+                }
+            }
+        }
+
+        .stepHeader {
+            flex-wrap: wrap;
+            padding: 0;
+
+            div.stepHeader-counter.icon {
+                display: none;
+            }
+
+            .stepHeader-body {
+                order: 3;
+                width: 100%;
+                margin-left: 0;
+                margin-top: remCalc(10px);
+            }
+
+            .stepHeader-actions {
+                margin-left: auto;
+                align-self: flex-start;
+            }
+
+            .stepHeader-actions--cta {
+                align-self: center;
+                margin-left: 0;
+                width: 100%;
+
+                .body-regular,
+                .body-cta {
+                    font-family: $fontFamily-montserrat;
+                    font-size: $fontSize-smallest;
+                    font-weight: $fontWeight-medium;
+                }
+
+                @include breakpoint("small") {
+                    margin-left: auto;
+                    width: auto;
+                }
+            }
+
+            .stepHeader-figure {
+                align-items: center;
+            }
+        }
+
+        // :not(:last-child) keeps collapsed step titles vertically centred
+        .checkout-view-header:not(:last-child) .stepHeader {
+            padding-bottom: spacing("single");
+        }
+
+        .checkout-button-container {
+            padding: 0 #{spacing("base") + spacing("base")};
+            margin-top: spacing("single");
+            text-align: center;
+
+            .checkoutRemote {
+                place-items: center;
+            }
+        }
+    }
+
+    @include enhancedThemeV1-mobile {
+        padding: 0 #{spacing("single")} #{5 * spacing("single")};
+
+        .layout-main {
+            @include grid-column(12);
+        }
+
+        .checkout-button-container {
+            padding: 0;
+        }
+    }
+
+    @include enhancedThemeV1-desktop {
+        display: block;
+
+        .layout-main {
+            width: grid-calc(7, $total-columns);
+            padding-right: remCalc(30px);
+        }
+
+        .checkout-steps {
+            padding-right: 0;
+        }
+    }
+
+    @include enhancedThemeV1-widescreen {
+        .layout-main {
+            width: grid-calc(8, $total-columns);
+        }
+    }
+}

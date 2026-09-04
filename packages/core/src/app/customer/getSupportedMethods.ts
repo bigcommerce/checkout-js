@@ -1,3 +1,5 @@
+import { type PaymentMethod } from '@bigcommerce/checkout-sdk';
+
 const APPLE_PAY = 'applepay';
 
 // TODO: The API should tell UI which payment method offers its own checkout button
@@ -32,6 +34,15 @@ export const SUPPORTED_METHODS: string[] = [
     'googlepay_bigcommerce_payments',
 ];
 
-export const getSupportedMethodIds = (methodIds: string[]): string[] => {
-    return methodIds.filter((methodId) => SUPPORTED_METHODS.includes(methodId));
-}
+export const getSupportedMethodIds = (
+    requestedMethodIds: string[],
+    loadedPaymentMethods: PaymentMethod[] = [],
+): string[] => {
+    const hiddenMethodIds = loadedPaymentMethods
+        .filter((method) => method.initializationData?.isHidden)
+        .map((method) => method.id);
+
+    return requestedMethodIds.filter(
+        (methodId) => SUPPORTED_METHODS.includes(methodId) && !hiddenMethodIds.includes(methodId),
+    );
+};

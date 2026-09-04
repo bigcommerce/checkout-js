@@ -57,6 +57,12 @@ describe('StoreInstrumentFieldset', () => {
         );
     });
 
+    it('renders the fieldset with the stored-instrument spacing modifier class', () => {
+        render(<StoreInstrumentFieldsetTest instruments={[]} />);
+
+        expect(screen.getByRole('group')).toHaveClass('form-fieldset--storedInstrument');
+    });
+
     describe('when there are no previously stored instruments', () => {
         describe('when using a new card', () => {
             it('shows the "save card" input', () => {

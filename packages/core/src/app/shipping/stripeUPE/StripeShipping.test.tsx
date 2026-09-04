@@ -1,11 +1,14 @@
-import {
-  type CheckoutSelectors,
-  createCheckoutService,
-} from '@bigcommerce/checkout-sdk';
+import { type CheckoutSelectors, createCheckoutService } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
-import { type AnalyticsEvents, AnalyticsProviderMock, CheckoutProvider, ExtensionProvider, LocaleProvider } from '@bigcommerce/checkout/contexts';
+import {
+    type AnalyticsEvents,
+    AnalyticsProviderMock,
+    CheckoutProvider,
+    ExtensionProvider,
+    LocaleProvider,
+} from '@bigcommerce/checkout/contexts';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
 import { render } from '@bigcommerce/checkout/test-utils';
 
@@ -26,9 +29,9 @@ describe('Stripe Shipping Component', () => {
     let checkoutState: CheckoutSelectors;
     let analyticsTracker: Partial<AnalyticsEvents>;
 
-   checkoutService.initializeShipping = initialize;
+    checkoutService.initializeShipping = initialize;
 
-  const defaultProps: StripeShippingProps = {
+    const defaultProps: StripeShippingProps = {
         isInitializing: false,
         step: {
             isActive: true,
@@ -49,37 +52,37 @@ describe('Stripe Shipping Component', () => {
     };
 
     beforeEach(() => {
-      checkoutState = checkoutService.getState();
-      analyticsTracker = {
-          checkoutBegin: jest.fn(),
-          trackStepViewed: jest.fn(),
-          trackStepCompleted: jest.fn(),
-          exitCheckout: jest.fn(),
-      };
-      jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
-      jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue(getCheckout());
-      jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
-      jest.spyOn(checkoutState.data, 'getCart').mockReturnValue(getCart());
+        checkoutState = checkoutService.getState();
+        analyticsTracker = {
+            checkoutBegin: jest.fn(),
+            trackStepViewed: jest.fn(),
+            trackStepCompleted: jest.fn(),
+            exitCheckout: jest.fn(),
+        };
+        jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
+        jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue(getCheckout());
+        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
+        jest.spyOn(checkoutState.data, 'getCart').mockReturnValue(getCart());
     });
 
     it('loads shipping data  when component is mounted', async () => {
-      const { container } = render(
-        <CheckoutProvider checkoutService={checkoutService}>
-            <LocaleProvider
-                checkoutService={checkoutService}
-                languageService={getLanguageService()}
-            >
-            <AnalyticsProviderMock analyticsTracker={analyticsTracker}>
-                <ExtensionProvider extensionService={extensionService}>
-                <StripeShipping {...defaultProps} />
-              </ExtensionProvider>
-            </AnalyticsProviderMock>
-          </LocaleProvider>
-        </CheckoutProvider>,
-      );
+        const { container } = render(
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleProvider
+                    checkoutService={checkoutService}
+                    languageService={getLanguageService()}
+                >
+                    <AnalyticsProviderMock analyticsTracker={analyticsTracker}>
+                        <ExtensionProvider extensionService={extensionService}>
+                            <StripeShipping {...defaultProps} />
+                        </ExtensionProvider>
+                    </AnalyticsProviderMock>
+                </LocaleProvider>
+            </CheckoutProvider>,
+        );
 
-      // eslint-disable-next-line testing-library/no-container
-      expect(container.querySelector('.address-form-skeleton')).toBeInTheDocument();
-      expect(initialize).toHaveBeenCalled();
+        // eslint-disable-next-line testing-library/no-container
+        expect(container.querySelector('.address-form-skeleton')).toBeInTheDocument();
+        expect(initialize).toHaveBeenCalled();
     });
 });

@@ -1,0 +1,143 @@
+@include enhancedThemeV1 {
+
+    // optimizedCheckout-headingPrimary
+    .header, .header-secondary, .sub-header {
+        font-family: $fontFamily-montserrat;
+        font-size: $fontSize-large;
+        font-weight: $fontWeight-bold;
+    }
+
+    .sub-header {
+        font-size: $fontSize-smaller;
+        margin-bottom: spacing("half");
+    }
+
+    .body-regular, .body-cta, .body-thin, .body-medium, .body-bold {
+        font-family: $fontFamily-montserrat;
+        font-size: $fontSize-base;
+        font-weight: $fontWeight-normal;
+    }
+
+    .body-medium {
+        font-weight: $fontWeight-medium;
+    }
+
+    .body-thin {
+        font-weight: $fontWeight-thin;
+    }
+
+    .body-bold {
+        font-weight: $fontWeight-bold;
+    }
+
+    .sub-text, .sub-text-medium, .sub-text-bold {
+        font-family: $fontFamily-montserrat;
+        font-size: $fontSize-tiny;
+        font-weight: $fontWeight-normal;
+    }
+
+    .sub-text-medium {
+        font-weight: $fontWeight-medium;
+    }
+
+    .sub-text-bold {
+        font-weight: $fontWeight-bold;
+    }
+
+    .sub-header {
+        &.button--primary {
+            text-transform: none;
+        }
+    }
+
+    #checkout-customer-continue,
+    #stripe-checkout-customer-continue,
+    #checkout-shipping-continue,
+    #checkout-customer-create-account,
+    #checkout-customer-create,
+    #checkout-customer-cancel {
+        text-transform: none;
+    }
+
+    .form-checkbox + .form-label,
+    .form-radio + .form-label {
+        &.body-regular {
+            font-size: $fontSize-base;
+            font-weight: $fontWeight-normal;
+        }
+    }
+
+    .shippingOptionLabel, .shippingOption--selected {
+        .shippingOption-price, .shippingOption-desc {
+            &.body-medium {
+                font-size: $fontSize-base;
+                font-weight: $fontWeight-medium;
+            }
+        }
+    }
+
+    .body-medium {
+        small {
+            font-family: $fontFamily-montserrat;
+            font-size: $fontSize-base;
+            font-weight: $fontWeight-medium;
+        }
+    }
+
+    .consignment-line-item-list li .body-regular {
+        .line-item-options {
+            color: $color-secondaryDarkest;
+        }
+    }
+
+    &.modal.modal--afterOpen {
+        background-color: $color-white;
+
+        &.allocate-items-modal .modal-body {
+            .left-to-allocate-items-table .left-to-allocate-item-name-container {
+                .left-to-allocate-item-name {
+                    &.body-regular {
+                        font-weight: fontWeight("normal");
+                        color: $color-black;
+                    }
+                }
+
+                .left-to-allocate-item-option {
+                    &.sub-text-medium {
+                        font-size: fontSize("tiny");
+                    }
+                }
+            }
+
+            .allocated-line-items .allocated-line-items-list li {
+                .body-regular {
+                    .line-item-options {
+                        color: $color-secondaryDarkest;
+                    }
+                }
+            }
+        }
+    }
+
+    .staticMultiConsignment {
+        .staticMultiConsignment-header {
+            &.body-bold {
+                font-size: fontSize("base");
+            }
+        }
+
+        .staticConsignment-items {
+            .sub-text {
+                .line-item-options {
+                    color: $color-secondaryDarkest;
+                }
+            }
+        }
+    }
+
+    .applied-discounts-list {
+        .cart-priceItem-label-info.sub-text {
+            color: $color-totalSavingsHighlight;
+        }
+    }
+}

@@ -8,13 +8,10 @@ import React, { type ReactElement, useEffect, useRef, useState } from 'react';
 import { useAnalytics, useCheckout } from '@bigcommerce/checkout/contexts';
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { OrderConfirmationPageSkeleton } from '@bigcommerce/checkout/ui';
+import { CannotCreatePersonalAccountSessionStorage } from '@bigcommerce/checkout/utility';
 
-import { isExperimentEnabled } from '../../common/utility';
 import { type EmbeddedCheckoutStylesheet } from '../../embeddedCheckout';
-import {
-    type CreatedCustomer,
-    type SignUpFormValues,
-} from '../../guestSignup';
+import { type CreatedCustomer, type SignUpFormValues } from '../../guestSignup';
 import {
     AccountCreationFailedError,
     AccountCreationRequirementsError,
@@ -59,18 +56,22 @@ export const OrderConfirmation = ({
     const embeddedMessengerRef = useRef<EmbeddedCheckoutMessenger | undefined>();
 
     const {
-        checkoutState: {
-            data: { getOrder, getConfig },
-            statuses: { isLoadingOrder },
-        },
-        checkoutService: {
-            loadOrder,
-        },
-    } = useCheckout();
+        selectedState: { order, config, isLoadingOrder },
+        checkoutService: { loadOrder },
+    } = useCheckout(({ data, statuses }) => ({
+        order: data.getOrder(),
+        config: data.getConfig(),
+        isLoadingOrder: statuses.isLoadingOrder(),
+    }));
     const { analyticsTracker } = useAnalytics();
+    const [cannotCreatePersonalAccount, setCannotCreatePersonalAccount] = useState(false);
 
-    const config = getConfig();
-    const order = getOrder();
+    useEffect(() => {
+        setCannotCreatePersonalAccount(
+            CannotCreatePersonalAccountSessionStorage.getCannotCreatePersonalAccount(),
+        );
+        CannotCreatePersonalAccountSessionStorage.removeCannotCreatePersonalAccount();
+    }, []);
 
     const handleUnhandledError = (e: Error) => {
         setError(e);
@@ -88,7 +89,10 @@ export const OrderConfirmation = ({
     const handleSignUp = ({ password, confirmPassword }: SignUpFormValues) => {
         const shopperConfig = config && config.shopperConfig;
         const passwordRequirements =
-            (shopperConfig && shopperConfig.passwordRequirements && shopperConfig.passwordRequirements.error) || '';
+            (shopperConfig &&
+                shopperConfig.passwordRequirements &&
+                shopperConfig.passwordRequirements.error) ||
+            '';
 
         setIsSigningUp(true);
 
@@ -122,7 +126,10 @@ export const OrderConfirmation = ({
     };
 
     useEffect(() => {
-        if (permalinkStatus === OrderPermalinkStatus.Expired || permalinkStatus === OrderPermalinkStatus.RateLimited) {
+        if (
+            permalinkStatus === OrderPermalinkStatus.Expired ||
+            permalinkStatus === OrderPermalinkStatus.RateLimited
+        ) {
             return;
         }
 
@@ -147,13 +154,12 @@ export const OrderConfirmation = ({
         return <RateLimitedPermalinkView />;
     }
 
-    if (!order || !config || isLoadingOrder()) {
+    if (!order || !config || isLoadingOrder) {
         return <OrderConfirmationPageSkeleton />;
     }
 
     const paymentInstructions = getPaymentInstructions(order);
     const {
-        checkoutSettings,
         currency,
         shopperConfig,
         shopperCurrency,
@@ -162,18 +168,14 @@ export const OrderConfirmation = ({
     } = config;
     const shouldShowPasswordForm = order.customerCanBeCreated;
     const customerCanBeCreated = !order.customerId;
-    const isShippingDiscountDisplayEnabled = isExperimentEnabled(
-        checkoutSettings,
-        'PROJECT-6643.enable_shipping_discounts_in_orders',
-    );
 
     return (
         <OrderConfirmationPage
+            cannotCreatePersonalAccount={cannotCreatePersonalAccount}
             currency={currency}
             customerCanBeCreated={customerCanBeCreated}
             error={error}
             hasSignedUp={hasSignedUp}
-            isShippingDiscountDisplayEnabled={isShippingDiscountDisplayEnabled}
             isSigningUp={isSigningUp}
             onErrorModalClose={handleErrorModalClose}
             onSignUp={handleSignUp}

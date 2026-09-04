@@ -29,6 +29,7 @@ const HostedCreditCardFieldset: FunctionComponent<HostedCreditCardFieldsetProps>
     focusedFieldType,
 }) => (
     <Fieldset
+        additionalClassName="form-fieldset--creditCardFieldset"
         legend={
             <Legend hidden>
                 <TranslatedString id="payment.credit_card_text" />

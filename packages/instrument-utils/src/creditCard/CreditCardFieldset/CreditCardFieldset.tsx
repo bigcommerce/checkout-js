@@ -22,7 +22,7 @@ const CreditCardFieldset: FunctionComponent<CreditCardFieldsetProps> = ({
     shouldShowCustomerCodeField,
 }) => (
     <Fieldset
-        additionalClassName="creditCardFieldset"
+        additionalClassName="creditCardFieldset form-fieldset--creditCardFieldset"
         legend={
             <Legend hidden>
                 <TranslatedString id="payment.credit_card_text" />

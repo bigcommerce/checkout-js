@@ -1,15 +1,27 @@
 import React, { type FunctionComponent, useState } from 'react';
 
-import { useLocale } from '@bigcommerce/checkout/contexts';
+import { useLocale, useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { Alert, AlertType, Button, ButtonVariant, IconRemoveCoupon, TextInput } from '@bigcommerce/checkout/ui';
+import {
+    Alert,
+    AlertType,
+    Button,
+    ButtonVariant,
+    IconRemoveCoupon,
+    TextInput,
+} from '@bigcommerce/checkout/ui';
 
 import { useMultiCoupon } from '../useMultiCoupon';
 
 import { ManageCouponsAndGiftCertificates } from './ManageCouponsAndGiftCertificates';
 
-export const CouponForm: FunctionComponent = () => {
+export interface CouponFormProps {
+    formInstanceId?: string;
+}
+
+export const CouponForm: FunctionComponent<CouponFormProps> = ({ formInstanceId = '' }) => {
     const [code, setCode] = useState<string>('');
+    const { enhancedThemeV1 } = useThemeContext();
 
     const { language } = useLocale();
     const {
@@ -32,6 +44,8 @@ export const CouponForm: FunctionComponent = () => {
 
     const submitForm = async () => {
         if (!code) {
+            setCouponError(language.translate('redeemable.code_required_error'));
+
             return;
         }
 
@@ -46,52 +60,68 @@ export const CouponForm: FunctionComponent = () => {
         }
     };
 
+    // This input can render inside the payment <form>; Enter must not submit it.
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+
+            void submitForm();
+        }
+    };
+
     return (
         <>
             <div
                 className="coupon-form"
                 data-test="redeemable-collapsable"
-                id="coupon-form-collapsable"
+                id={`${formInstanceId}coupon-form-collapsable`}
             >
-                <label className="is-srOnly" htmlFor="redeemableCode">
+                <label className="is-srOnly" htmlFor={`${formInstanceId}redeemableCode`}>
                     <TranslatedString id="redeemable.toggle_action" />
                 </label>
                 <TextInput
                     additionalClassName="form-input optimizedCheckout-form-input coupon-input"
                     aria-label={language.translate('redeemable.code_label')}
                     disabled={isCouponFormDisabled}
-                    id="redeemableCode"
+                    id={`${formInstanceId}redeemableCode`}
                     name="redeemableCode"
                     onChange={handleTextInputChange}
                     onClick={clearErrorOnClick}
+                    onKeyDown={handleKeyDown}
                     placeholder={language.translate('redeemable.coupon_placeholder')}
                     testId="redeemableEntry-input"
                     value={code}
                 />
                 <Button
-                    className="coupon-button body-bold"
+                    className="coupon-button optimizedCheckout-contentPrimary body-bold"
                     disabled={isCouponFormDisabled}
-                    id="applyRedeemableButton"
+                    id={`${formInstanceId}applyRedeemableButton`}
                     isLoading={isApplyingCouponOrGiftCertificate}
                     onClick={submitForm}
                     testId="redeemableEntry-submit"
                     variant={ButtonVariant.Secondary}
                 >
-                    <TranslatedString id="redeemable.apply_action"/>
+                    <TranslatedString id="redeemable.apply_action" />
                 </Button>
             </div>
             <div className="applied-coupons-list">
-                {Boolean(couponError) &&
-                    <Alert additionalClassName="no-padding" type={AlertType.Error}>
+                {Boolean(couponError) && (
+                    <Alert
+                        additionalClassName={enhancedThemeV1 ? '' : 'no-padding'}
+                        type={AlertType.Error}
+                    >
                         <ul className="applied-coupon-error-message">
-                            <span>{couponError}</span>
-                            <span onClick={() => setCouponError(null)}><IconRemoveCoupon /></span>
+                            <li>
+                                <span>{couponError}</span>
+                                <span onClick={() => setCouponError(null)}>
+                                    <IconRemoveCoupon />
+                                </span>
+                            </li>
                         </ul>
                     </Alert>
-                }
+                )}
                 <ManageCouponsAndGiftCertificates />
             </div>
         </>
     );
 };
-

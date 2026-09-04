@@ -2,17 +2,23 @@ import { type Capabilities } from '@bigcommerce/checkout-sdk/essential';
 
 export const defaultCapabilities: Capabilities = {
     userJourney: {
+        disableCoupon: false,
         disableEditCart: false,
+        disableGiftCertificate: false,
+        disableStoreCredit: false,
+        disableWalletButtons: false,
         hasCompanyAddressBook: false,
         hasAddressExtraFields: false,
+        hasOrderExtraFields: false,
         requiresB2BToken: false,
+        hasAddressLabel: false,
+        quoteConfig: null,
     },
     customer: {
         superAdminCompanySelector: false,
     },
     shipping: {
         restrictManualAddressEntry: false,
-        prefillCompanyAddress: false,
         hideSaveToAddressBookCheck: false,
         hideBillingSameAsShippingCheck: false,
     },
@@ -21,18 +27,15 @@ export const defaultCapabilities: Capabilities = {
         hideSaveToAddressBookCheck: false,
     },
     payment: {
-        paymentMethodFiltering: false,
-        b2bPaymentMethodFilter: false,
-        poPaymentMethod: false,
-        additionalPaymentNotes: false,
-        excludeOfflineForInvoice: false,
-        excludePPSDK: false,
+        b2bPaymentMethodFilterType: null,
+        invoicePaymentComment: false,
+        poConfig: null,
+        additionalField: null,
+        hideCheckPaymentMethod: false,
     },
     orderConfirmation: {
-        orderSummary: false,
+        cannotCreatePersonalAccount: false,
         persistB2BMetadata: false,
-        storeQuoteId: false,
-        storeInvoiceReference: false,
         invoiceRedirect: false,
     },
 };

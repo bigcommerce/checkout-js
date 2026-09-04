@@ -3,9 +3,14 @@ import { noop } from 'lodash';
 import React, { type ReactElement, type ReactNode, type SyntheticEvent } from 'react';
 
 import { TranslatedHtml, TranslatedString } from '@bigcommerce/checkout/locale';
-import { Button, ButtonSize, IconError, IconSize } from '@bigcommerce/checkout/ui';
-
-import { Modal, ModalHeader } from '../../ui/modal';
+import {
+    Button,
+    ButtonSize,
+    IconError,
+    IconSize,
+    Modal,
+    ModalHeader,
+} from '@bigcommerce/checkout/ui';
 
 import computeErrorCode from './computeErrorCode';
 import ErrorCode from './ErrorCode';
@@ -46,10 +51,7 @@ const ErrorModal = ({
 
     const renderHeader = (): ReactNode => (
         <ModalHeader>
-            <IconError
-                additionalClassName="icon--error modal-header-icon"
-                size={IconSize.Small}
-            />
+            <IconError additionalClassName="icon--error modal-header-icon" size={IconSize.Small} />
             <span aria-live="assertive" role="alert">
                 {title || <TranslatedString id="common.error_heading" />}
             </span>
@@ -58,9 +60,7 @@ const ErrorModal = ({
 
     const renderBody = (): ReactNode => (
         <>
-            {error && isHtmlError(error) &&
-                <TranslatedHtml id={error.data.translationKey} />
-            }
+            {error && isHtmlError(error) && <TranslatedHtml id={error.data.translationKey} />}
             {message && (
                 <p aria-live="assertive" id="errorModalMessage" role="alert">
                     {message}

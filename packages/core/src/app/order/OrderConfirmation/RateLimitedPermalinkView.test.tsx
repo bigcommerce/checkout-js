@@ -11,9 +11,7 @@ import { RateLimitedPermalinkView } from './RateLimitedPermalinkView';
 const localeContext = createLocaleContext(getStoreConfig());
 
 const Wrapper = ({ children }: { children: ReactNode }) => (
-    <LocaleContext.Provider value={localeContext}>
-        {children}
-    </LocaleContext.Provider>
+    <LocaleContext.Provider value={localeContext}>{children}</LocaleContext.Provider>
 );
 
 describe('RateLimitedPermalinkView', () => {
@@ -21,7 +19,9 @@ describe('RateLimitedPermalinkView', () => {
         render(<RateLimitedPermalinkView />, { wrapper: Wrapper });
 
         expect(
-            screen.getByText(localeContext.language.translate('order_confirmation.rate_limited.heading')),
+            screen.getByText(
+                localeContext.language.translate('order_confirmation.rate_limited.heading'),
+            ),
         ).toBeInTheDocument();
     });
 
@@ -29,7 +29,9 @@ describe('RateLimitedPermalinkView', () => {
         render(<RateLimitedPermalinkView />, { wrapper: Wrapper });
 
         expect(
-            screen.getByText(localeContext.language.translate('order_confirmation.rate_limited.message')),
+            screen.getByText(
+                localeContext.language.translate('order_confirmation.rate_limited.message'),
+            ),
         ).toBeInTheDocument();
     });
 });

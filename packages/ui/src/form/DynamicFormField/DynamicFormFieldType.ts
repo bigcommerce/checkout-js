@@ -1,6 +1,6 @@
 enum DynamicFormFieldType {
     TELEPHONE = 'tel',
-    DROPDOWM = 'dropdown',
+    DROPDOWN = 'dropdown',
     NUMBER = 'number',
     PASSWORD = 'password',
     CHECKBOX = 'checkbox',

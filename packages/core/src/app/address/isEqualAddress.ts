@@ -6,7 +6,9 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import { isEqual, omit } from 'lodash';
 
-type ComparableAddress = CustomerAddress | Address | BillingAddress | AddressRequestBody;
+import getAddressExtraFields from './getAddressExtraFields';
+
+export type ComparableAddress = CustomerAddress | Address | BillingAddress | AddressRequestBody;
 type ComparableAddressFields = keyof CustomerAddress | keyof Address | keyof BillingAddress;
 
 export default function isEqualAddress(
@@ -41,7 +43,7 @@ function isSameState(address1: ComparableAddress, address2: ComparableAddress): 
     );
 }
 
-function normalizeAddress(address: ComparableAddress) {
+export function normalizeAddress(address: ComparableAddress) {
     const ignoredFields: ComparableAddressFields[] = [
         'id',
         'shouldSaveAddress',
@@ -50,12 +52,18 @@ function normalizeAddress(address: ComparableAddress) {
         'type',
         'email',
         'country',
+        'isShipping',
+        'isBilling',
+        'isDefaultShipping',
+        'isDefaultBilling',
+        'label',
     ];
 
     return omit(
         {
             ...address,
             customFields: (address.customFields || []).filter(({ fieldValue }) => !!fieldValue),
+            extraFields: getAddressExtraFields(address),
         },
         ignoredFields,
     );

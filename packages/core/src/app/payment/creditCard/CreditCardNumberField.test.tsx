@@ -28,7 +28,7 @@ describe('CreditCardNumberField', () => {
         render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={initialValues} onSubmit={noop}>
-                    <CreditCardNumberField name="ccNumber"/>
+                    <CreditCardNumberField name="ccNumber" />
                 </Formik>
             </LocaleContext.Provider>,
         );
@@ -42,7 +42,7 @@ describe('CreditCardNumberField', () => {
         render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={initialValues} onSubmit={noop}>
-                    <CreditCardNumberField name="ccNumber"/>
+                    <CreditCardNumberField name="ccNumber" />
                 </Formik>
             </LocaleContext.Provider>,
         );
@@ -56,17 +56,23 @@ describe('CreditCardNumberField', () => {
         render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={initialValues} onSubmit={noop}>
-                    <CreditCardNumberField name="ccNumber"/>
+                    <CreditCardNumberField name="ccNumber" />
                 </Formik>
             </LocaleContext.Provider>,
         );
 
-        await userEvent.type(screen.getByLabelText('Credit Card Number'), '4111 1111 1111 1111111 999999');
+        await userEvent.type(
+            screen.getByLabelText('Credit Card Number'),
+            '4111 1111 1111 1111111 999999',
+        );
 
         expect(screen.getByLabelText('Credit Card Number')).toHaveValue('4111 1111 1111 1111111');
 
         await userEvent.clear(screen.getByLabelText('Credit Card Number'));
-        await userEvent.type(screen.getByLabelText('Credit Card Number'), '3782 822463 10005 999999');
+        await userEvent.type(
+            screen.getByLabelText('Credit Card Number'),
+            '3782 822463 10005 999999',
+        );
 
         expect(screen.getByLabelText('Credit Card Number')).toHaveValue('3782 822463 10005');
     });

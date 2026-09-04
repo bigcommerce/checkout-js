@@ -6,7 +6,7 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 import getItemsCount from './getItemsCount';
 
 export interface OrderModalSummarySubheaderProps {
-    items: LineItemMap
+    items: LineItemMap;
     amountWithCurrency: ReactNode;
     shopperCurrencyCode: string;
     storeCurrencyCode: string;
@@ -22,11 +22,12 @@ const OrderModalSummarySubheader: FunctionComponent<OrderModalSummarySubheaderPr
     const hasDifferentCurrency = shopperCurrencyCode !== storeCurrencyCode;
     const itemsText = itemsCount === 1 ? 'cart.item' : 'cart.items';
 
-    return <>
-        {itemsCount} <TranslatedString id={itemsText} /> | {amountWithCurrency} {
-            hasDifferentCurrency && <span>({shopperCurrencyCode})</span>
-        }
-    </>;
+    return (
+        <>
+            {itemsCount} <TranslatedString id={itemsText} /> | {amountWithCurrency}{' '}
+            {hasDifferentCurrency && <span>({shopperCurrencyCode})</span>}
+        </>
+    );
 };
 
 export default memo(OrderModalSummarySubheader);

@@ -12,7 +12,12 @@ import { faker } from '@faker-js/faker';
 import userEvent from '@testing-library/user-event';
 import React, { type FunctionComponent } from 'react';
 
-import { AnalyticsProviderMock, CheckoutProvider, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
+import {
+    AnalyticsProviderMock,
+    CheckoutProvider,
+    LocaleContext,
+    type LocaleContextType,
+} from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { getCart, getCheckout, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 import { render, screen, within } from '@bigcommerce/checkout/test-utils';
@@ -86,32 +91,36 @@ describe('Registered Customer', () => {
         render(<CustomerTest viewType={CustomerViewType.Login} {...defaultProps} />);
 
         expect(screen.getByTestId('checkout-customer-returning')).toBeInTheDocument();
-        expect(screen.getByLabelText(
-            localeContext.language.translate('customer.email_label'),
-        )).toBeInTheDocument();
+        expect(
+            screen.getByLabelText(localeContext.language.translate('customer.email_label')),
+        ).toBeInTheDocument();
 
-        await userEvent.type(screen.getByLabelText(
-            localeContext.language.translate('customer.email_label'),
-        ), email);
+        await userEvent.type(
+            screen.getByLabelText(localeContext.language.translate('customer.email_label')),
+            email,
+        );
 
-        expect(screen.getByLabelText(
-            localeContext.language.translate('customer.password_label'),
-        )).toBeInTheDocument();
+        expect(
+            screen.getByLabelText(localeContext.language.translate('customer.password_label')),
+        ).toBeInTheDocument();
 
-        await userEvent.type(screen.getByLabelText(
-            localeContext.language.translate('customer.password_label'),
-        ), password);
+        await userEvent.type(
+            screen.getByLabelText(localeContext.language.translate('customer.password_label')),
+            password,
+        );
 
-        await userEvent.click(screen.getByRole('button', {
-            name: localeContext.language.translate('customer.sign_in_action')
-        }));
+        await userEvent.click(
+            screen.getByRole('button', {
+                name: localeContext.language.translate('customer.sign_in_action'),
+            }),
+        );
 
         expect(checkoutService.signInCustomer).toHaveBeenCalledWith(
-          {
-            email,
-            password,
-          },
-          { methodId: undefined },
+            {
+                email,
+                password,
+            },
+            { methodId: undefined },
         );
     });
 
@@ -125,23 +134,30 @@ describe('Registered Customer', () => {
         expect(screen.getByTestId('checkout-customer-returning')).toBeInTheDocument();
 
         const invalidEmail = 'test@test.';
-        const emailField = screen.getByLabelText(localeContext.language.translate('customer.email_label'));
+        const emailField = screen.getByLabelText(
+            localeContext.language.translate('customer.email_label'),
+        );
 
         expect(emailField).toBeInTheDocument();
         await userEvent.type(emailField, invalidEmail);
-        expect(screen.getByLabelText(
-            localeContext.language.translate('customer.password_label'),
-        )).toBeInTheDocument();
+        expect(
+            screen.getByLabelText(localeContext.language.translate('customer.password_label')),
+        ).toBeInTheDocument();
 
-        await userEvent.type(screen.getByLabelText(
-            localeContext.language.translate('customer.password_label'),
-        ), password);
+        await userEvent.type(
+            screen.getByLabelText(localeContext.language.translate('customer.password_label')),
+            password,
+        );
 
-        await userEvent.click(screen.getByRole('button', {
-            name: localeContext.language.translate('customer.sign_in_action')
-        }));
+        await userEvent.click(
+            screen.getByRole('button', {
+                name: localeContext.language.translate('customer.sign_in_action'),
+            }),
+        );
 
-        expect(screen.getByText(localeContext.language.translate('customer.email_invalid_error'))).toBeInTheDocument();
+        expect(
+            screen.getByText(localeContext.language.translate('customer.email_invalid_error')),
+        ).toBeInTheDocument();
         expect(checkoutService.signInCustomer).not.toHaveBeenCalled();
     });
 
@@ -153,19 +169,24 @@ describe('Registered Customer', () => {
         render(<CustomerTest viewType={CustomerViewType.Login} {...defaultProps} />);
 
         expect(screen.getByTestId('checkout-customer-returning')).toBeInTheDocument();
-        expect(screen.getByLabelText(
-            localeContext.language.translate('customer.email_label')
-        )).toBeInTheDocument();
+        expect(
+            screen.getByLabelText(localeContext.language.translate('customer.email_label')),
+        ).toBeInTheDocument();
 
-        await userEvent.type(screen.getByLabelText(
-            localeContext.language.translate('customer.email_label')
-        ), email);
+        await userEvent.type(
+            screen.getByLabelText(localeContext.language.translate('customer.email_label')),
+            email,
+        );
 
-        await userEvent.click(screen.getByRole('button', {
-            name: localeContext.language.translate('customer.sign_in_action')
-        }));
+        await userEvent.click(
+            screen.getByRole('button', {
+                name: localeContext.language.translate('customer.sign_in_action'),
+            }),
+        );
 
-        expect(screen.getByText(localeContext.language.translate('customer.password_required_error'))).toBeInTheDocument();
+        expect(
+            screen.getByText(localeContext.language.translate('customer.password_required_error')),
+        ).toBeInTheDocument();
         expect(checkoutService.signInCustomer).not.toHaveBeenCalled();
     });
 
@@ -186,36 +207,44 @@ describe('Registered Customer', () => {
         render(<CustomerTest viewType={CustomerViewType.Login} {...defaultProps} />);
 
         expect(screen.getByTestId('checkout-customer-returning')).toBeInTheDocument();
-        expect(screen.getByLabelText(
-            localeContext.language.translate('customer.email_label'),
-        )).toBeInTheDocument();
+        expect(
+            screen.getByLabelText(localeContext.language.translate('customer.email_label')),
+        ).toBeInTheDocument();
 
-        await userEvent.type(screen.getByLabelText(
-            localeContext.language.translate('customer.email_label'),
-        ), email);
+        await userEvent.type(
+            screen.getByLabelText(localeContext.language.translate('customer.email_label')),
+            email,
+        );
 
-        expect(screen.getByLabelText(
-            localeContext.language.translate('customer.password_label'),
-        )).toBeInTheDocument();
+        expect(
+            screen.getByLabelText(localeContext.language.translate('customer.password_label')),
+        ).toBeInTheDocument();
 
-        await userEvent.type(screen.getByLabelText(
-            localeContext.language.translate('customer.password_label'),
-        ), password);
+        await userEvent.type(
+            screen.getByLabelText(localeContext.language.translate('customer.password_label')),
+            password,
+        );
 
-        await userEvent.click(screen.getByRole('button', {
-            name: localeContext.language.translate('customer.sign_in_action')
-        }));
+        await userEvent.click(
+            screen.getByRole('button', {
+                name: localeContext.language.translate('customer.sign_in_action'),
+            }),
+        );
 
         expect(checkoutService.signInCustomer).toHaveBeenCalledWith(
-          {
-            email,
-            password,
-          },
-          { methodId: undefined },
+            {
+                email,
+                password,
+            },
+            { methodId: undefined },
         );
-        expect(screen.getByText(localeContext.language.translate('customer.sign_in_error'))).toBeInTheDocument();
+        expect(
+            screen.getByText(localeContext.language.translate('customer.sign_in_error')),
+        ).toBeInTheDocument();
 
-        const cancelButton = screen.getByRole('link', { name: localeContext.language.translate('common.cancel_action') });
+        const cancelButton = screen.getByRole('link', {
+            name: localeContext.language.translate('common.cancel_action'),
+        });
 
         await userEvent.click(cancelButton);
 
@@ -226,17 +255,26 @@ describe('Registered Customer', () => {
         const handleChangeViewType = jest.fn();
         const email = faker.internet.email();
 
-        const { rerender } = render(<CustomerTest viewType={CustomerViewType.Login} {...defaultProps} onChangeViewType={handleChangeViewType} />);
+        const { rerender } = render(
+            <CustomerTest
+                viewType={CustomerViewType.Login}
+                {...defaultProps}
+                onChangeViewType={handleChangeViewType}
+            />,
+        );
 
-        expect(screen.getByLabelText(
-            localeContext.language.translate('customer.email_label'),
-        )).toBeInTheDocument();
+        expect(
+            screen.getByLabelText(localeContext.language.translate('customer.email_label')),
+        ).toBeInTheDocument();
 
-        await userEvent.type(screen.getByLabelText(
-            localeContext.language.translate('customer.email_label'),
-        ), email);
+        await userEvent.type(
+            screen.getByLabelText(localeContext.language.translate('customer.email_label')),
+            email,
+        );
 
-        const cancelButton = screen.getByRole('link', { name: localeContext.language.translate('common.cancel_action') });
+        const cancelButton = screen.getByRole('link', {
+            name: localeContext.language.translate('common.cancel_action'),
+        });
 
         expect(cancelButton).toBeInTheDocument();
 
@@ -244,16 +282,26 @@ describe('Registered Customer', () => {
 
         expect(handleChangeViewType).toHaveBeenCalledWith(CustomerViewType.Guest);
 
-        rerender(<CustomerTest viewType={CustomerViewType.Guest} {...defaultProps} onChangeViewType={handleChangeViewType} />);
+        rerender(
+            <CustomerTest
+                viewType={CustomerViewType.Guest}
+                {...defaultProps}
+                onChangeViewType={handleChangeViewType}
+            />,
+        );
 
         expect(screen.getByTestId('checkout-customer-guest')).toBeInTheDocument();
-        expect(screen.getByLabelText(localeContext.language.translate('customer.email_label'))).toHaveValue(email);
+        expect(
+            screen.getByLabelText(localeContext.language.translate('customer.email_label')),
+        ).toHaveValue(email);
     });
 
     it('verify forget password link', async () => {
         render(<CustomerTest viewType={CustomerViewType.Login} {...defaultProps} />);
 
-        const forgotPasswordLink = screen.getByText(localeContext.language.translate('customer.forgot_password_action'));
+        const forgotPasswordLink = screen.getByText(
+            localeContext.language.translate('customer.forgot_password_action'),
+        );
 
         expect(forgotPasswordLink).toBeInTheDocument();
         expect(forgotPasswordLink).toHaveAttribute('href', config.links.forgotPasswordLink);
@@ -262,13 +310,15 @@ describe('Registered Customer', () => {
     it('does not display sign in link anchor tag', async () => {
         render(<CustomerTest viewType={CustomerViewType.Login} {...defaultProps} />);
 
-        expect(screen.queryByText(localeContext.language.translate('login_email.text'))).not.toBeInTheDocument();
+        expect(
+            screen.queryByText(localeContext.language.translate('login_email.text')),
+        ).not.toBeInTheDocument();
     });
 
     it('displays an error if email is not registered for a sign in link', async () => {
         jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue({
             ...config,
-            checkoutSettings: { ...config.checkoutSettings, isSignInEmailEnabled: true }
+            checkoutSettings: { ...config.checkoutSettings, isSignInEmailEnabled: true },
         });
         jest.spyOn(checkoutService, 'sendSignInEmail').mockRejectedValue({
             type: 'unknown_error',
@@ -284,9 +334,11 @@ describe('Registered Customer', () => {
 
         await userEvent.click(signInLinkButton);
 
-        expect(screen.getByText(localeContext.language.translate('login_email.text'))).toBeInTheDocument();
+        expect(
+            screen.getByText(localeContext.language.translate('login_email.text')),
+        ).toBeInTheDocument();
 
-        const modal = screen.getByTestId("modal-body");
+        const modal = screen.getByTestId('modal-body');
 
         expect(modal).toBeInTheDocument();
 
@@ -300,13 +352,15 @@ describe('Registered Customer', () => {
 
         await userEvent.click(submitButton);
 
-        expect(screen.getByText(localeContext.language.translate('login_email.error_not_found'))).toBeInTheDocument();
+        expect(
+            screen.getByText(localeContext.language.translate('login_email.error_not_found')),
+        ).toBeInTheDocument();
     });
 
     it('displays an error if there is a server error for a sign in link', async () => {
         jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue({
             ...config,
-            checkoutSettings: { ...config.checkoutSettings, isSignInEmailEnabled: true }
+            checkoutSettings: { ...config.checkoutSettings, isSignInEmailEnabled: true },
         });
         jest.spyOn(checkoutService, 'sendSignInEmail').mockRejectedValue({
             type: 'unknown_error',
@@ -322,9 +376,11 @@ describe('Registered Customer', () => {
 
         await userEvent.click(signInLinkButton);
 
-        expect(screen.getByText(localeContext.language.translate('login_email.text'))).toBeInTheDocument();
+        expect(
+            screen.getByText(localeContext.language.translate('login_email.text')),
+        ).toBeInTheDocument();
 
-        const modal = screen.getByTestId("modal-body");
+        const modal = screen.getByTestId('modal-body');
 
         expect(modal).toBeInTheDocument();
 
@@ -338,13 +394,15 @@ describe('Registered Customer', () => {
 
         await userEvent.click(submitButton);
 
-        expect(screen.getByText(localeContext.language.translate('login_email.error_server'))).toBeInTheDocument();
+        expect(
+            screen.getByText(localeContext.language.translate('login_email.error_server')),
+        ).toBeInTheDocument();
     });
 
     it('displays message to check email if customer is registered and sign in link is clicked', async () => {
         jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue({
             ...config,
-            checkoutSettings: { ...config.checkoutSettings, isSignInEmailEnabled: true }
+            checkoutSettings: { ...config.checkoutSettings, isSignInEmailEnabled: true },
         });
         jest.spyOn(checkoutService, 'sendSignInEmail').mockResolvedValue({} as CheckoutSelectors);
         jest.spyOn(checkoutService.getState().data, 'getSignInEmail').mockReturnValue({
@@ -358,9 +416,11 @@ describe('Registered Customer', () => {
 
         await userEvent.click(signInLinkButton);
 
-        expect(screen.getByText(localeContext.language.translate('login_email.text'))).toBeInTheDocument();
+        expect(
+            screen.getByText(localeContext.language.translate('login_email.text')),
+        ).toBeInTheDocument();
 
-        const modal = screen.getByTestId("modal-body");
+        const modal = screen.getByTestId('modal-body');
 
         expect(modal).toBeInTheDocument();
 
@@ -374,13 +434,15 @@ describe('Registered Customer', () => {
 
         await userEvent.click(submitButton);
 
-        expect(screen.getByText(localeContext.language.translate('login_email.sent_text'))).toBeInTheDocument();
+        expect(
+            screen.getByText(localeContext.language.translate('login_email.sent_text')),
+        ).toBeInTheDocument();
     });
 
     it('displays message to reset password if customer is registered and sign in link request is made too many times', async () => {
         jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue({
             ...config,
-            checkoutSettings: { ...config.checkoutSettings, isSignInEmailEnabled: true }
+            checkoutSettings: { ...config.checkoutSettings, isSignInEmailEnabled: true },
         });
         jest.spyOn(checkoutService, 'sendSignInEmail').mockResolvedValue({} as CheckoutSelectors);
         jest.spyOn(checkoutService.getState().data, 'getSignInEmail').mockReturnValue({
@@ -394,9 +456,11 @@ describe('Registered Customer', () => {
 
         await userEvent.click(signInLinkButton);
 
-        expect(screen.getByText(localeContext.language.translate('login_email.text'))).toBeInTheDocument();
+        expect(
+            screen.getByText(localeContext.language.translate('login_email.text')),
+        ).toBeInTheDocument();
 
-        const modal = screen.getByTestId("modal-body");
+        const modal = screen.getByTestId('modal-body');
 
         expect(modal).toBeInTheDocument();
 
@@ -410,7 +474,11 @@ describe('Registered Customer', () => {
 
         await userEvent.click(submitButton);
 
-        expect(screen.getByText(localeContext.language.translate('customer.reset_password_before_login_error'))).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                localeContext.language.translate('customer.reset_password_before_login_error'),
+            ),
+        ).toBeInTheDocument();
     });
 
     it('does not render sign-in email link in embedded checkout', () => {
@@ -432,13 +500,15 @@ describe('Registered Customer', () => {
             cart: {
                 ...getCheckout().cart,
                 source: 'BUY_NOW',
-            }
+            },
         };
 
         jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue(buyNowCheckout);
 
         render(<CustomerTest viewType={CustomerViewType.Login} {...defaultProps} />);
 
-        expect(screen.queryByText(localeContext.language.translate('login_email.link'))).not.toBeInTheDocument();
+        expect(
+            screen.queryByText(localeContext.language.translate('login_email.link')),
+        ).not.toBeInTheDocument();
     });
 });

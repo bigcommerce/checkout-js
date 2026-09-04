@@ -20,13 +20,16 @@ const Form: FunctionComponent<FormProps> = ({ className, testId, ...rest }) => {
             return;
         }
 
+        // :not selectors are used to make focus on error to be on phone input and not country search
         const errorInputSelectors = [
-            '.form-field--error input',
+            '.form-field--error input:not([type="search"]):not([type="hidden"])',
             '.form-field--error textarea',
             '.form-field--error select',
         ];
 
-        const erroredFormField = current.querySelector<HTMLElement>(errorInputSelectors.join(', '));
+        const erroredFormField = Array.from(
+            current.querySelectorAll<HTMLElement>(errorInputSelectors.join(', ')),
+        ).find((el) => el.offsetParent !== null);
 
         if (erroredFormField) {
             erroredFormField.focus({ preventScroll: true });

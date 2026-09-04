@@ -9,8 +9,7 @@ const itemsRequireShipping = (cart?: Cart, config?: StoreConfig) => {
         return true;
     }
 
-    if (config && cart.lineItems.customItems
-    ) {
+    if (config && cart.lineItems.customItems) {
         return cart.lineItems.customItems.length > 0;
     }
 

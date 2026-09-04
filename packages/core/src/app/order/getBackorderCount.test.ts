@@ -1,8 +1,4 @@
-import {
-    type DigitalItem,
-    type PhysicalItem,
-    type StockPosition,
-} from '@bigcommerce/checkout-sdk';
+import { type DigitalItem, type PhysicalItem, type StockPosition } from '@bigcommerce/checkout-sdk';
 
 import { getDigitalItem, getPhysicalItem } from '../cart/lineItem.mock';
 

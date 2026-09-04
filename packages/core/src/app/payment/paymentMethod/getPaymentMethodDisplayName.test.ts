@@ -60,4 +60,15 @@ describe('getPaymentMethodDisplayName()', () => {
             language.translate('payment.open_banking_display_name_text'),
         );
     });
+
+    it('returns translated "Pay by Invoice" display name for BigCommerce Payments Invoices', () => {
+        const method = {
+            ...getPaymentMethod(),
+            id: PaymentMethodId.BigCommercePaymentsInvoices,
+        };
+
+        expect(getPaymentMethodDisplayName(language)(method)).toEqual(
+            language.translate('payment.invoices_display_name_text'),
+        );
+    });
 });

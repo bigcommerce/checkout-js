@@ -2,7 +2,7 @@ import React, { type FunctionComponent } from 'react';
 
 import './Tooltip.scss';
 
-export interface TooltipProps {
+interface TooltipProps {
     children: React.ReactNode;
     testId?: string;
 }

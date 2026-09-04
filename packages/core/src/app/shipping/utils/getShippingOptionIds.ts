@@ -1,4 +1,4 @@
-import { type ShippingOptionsFormProps } from "../shippingOption/ShippingOptionsForm";
+import { type ShippingOptionsFormProps } from '../shippingOption/ShippingOptionsForm';
 
 export const getShippingOptionIds = ({ consignments }: ShippingOptionsFormProps) => {
     const shippingOptionIds: { [id: string]: string } = {};

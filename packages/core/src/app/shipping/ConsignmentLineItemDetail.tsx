@@ -17,39 +17,60 @@ const renderProductOptionDetails = (item: MultiShippingTableItemWithType | Physi
         return null;
     }
 
-    return (<span className="line-item-options">{` - ${item.options.map(option => option.value).join(' / ')}`}</span>);
-}
+    return (
+        <span className="line-item-options">{` - ${item.options.map((option) => option.value).join(' / ')}`}</span>
+    );
+};
 
-export const ConsignmentLineItemContent = ({ item, isMultiShippingSummary = false }: { item: MultiShippingTableItemWithType | PhysicalItem; isMultiShippingSummary?: boolean }) => {
-    const { checkoutState } = useCheckout();
-    const config = checkoutState.data.getConfig();
+export const ConsignmentLineItemContent = ({
+    item,
+    isMultiShippingSummary = false,
+}: {
+    item: MultiShippingTableItemWithType | PhysicalItem;
+    isMultiShippingSummary?: boolean;
+}) => {
+    const { selectedState: config } = useCheckout(({ data }) => data.getConfig());
+
     const shouldDisplayBackorderQuantity =
         !!config?.inventorySettings?.shouldDisplayBackorderMessagesOnStorefront &&
         config?.inventorySettings?.showQuantityOnBackorder &&
         !!item.stockPosition?.quantityBackordered;
-    
-    return <span
-        className={classNames(
-            { 'body-regular': !isMultiShippingSummary },
-            { 'sub-text': isMultiShippingSummary },)
-        }>
-        <span className={classNames(
-            { 'body-bold': !isMultiShippingSummary },
-            { 'sub-text-bold': isMultiShippingSummary },)
-        }>
-            {`${item.quantity} x `}
-        </span>
-        {item.name} {shouldDisplayBackorderQuantity &&
+
+    return (
+        <span
+            className={classNames(
+                'optimizedCheckout-contentPrimary',
+                { 'body-regular': !isMultiShippingSummary },
+                { 'sub-text': isMultiShippingSummary },
+            )}
+        >
             <span
                 className={classNames(
-                    { 'body-thin': !isMultiShippingSummary },
-                    { 'sub-text-medium': isMultiShippingSummary },
+                    'optimizedCheckout-contentPrimary',
+                    { 'body-bold': !isMultiShippingSummary },
+                    { 'sub-text-bold': isMultiShippingSummary },
                 )}
             >
-                <TranslatedString data={{ count: item.stockPosition?.quantityBackordered }} id="shipping.multishipping_backordered_quantity" />
-            </span>}
-        {renderProductOptionDetails(item)}
-    </span>;
+                {`${item.quantity} x `}
+            </span>
+            {item.name}{' '}
+            {shouldDisplayBackorderQuantity && (
+                <span
+                    className={classNames(
+                        'optimizedCheckout-contentSecondary',
+                        { 'body-thin': !isMultiShippingSummary },
+                        { 'sub-text-medium': isMultiShippingSummary },
+                    )}
+                >
+                    <TranslatedString
+                        data={{ count: item.stockPosition?.quantityBackordered }}
+                        id="shipping.multishipping_backordered_quantity"
+                    />
+                </span>
+            )}
+            {renderProductOptionDetails(item)}
+        </span>
+    );
 };
 
 const ConsignmentLineItemDetail: FunctionComponent<ConsignmentLineItemDetailProps> = ({
@@ -58,12 +79,15 @@ const ConsignmentLineItemDetail: FunctionComponent<ConsignmentLineItemDetailProp
 }) => {
     return (
         <ul className="consignment-line-item-list">
-        {lineItems.map((item) => (
-            <li key={item.id}>
-                <ConsignmentLineItemContent isMultiShippingSummary={isMultiShippingSummary} item={item} />
-            </li>
-        ))}
-    </ul>
+            {lineItems.map((item) => (
+                <li key={item.id}>
+                    <ConsignmentLineItemContent
+                        isMultiShippingSummary={isMultiShippingSummary}
+                        item={item}
+                    />
+                </li>
+            ))}
+        </ul>
     );
 };
 

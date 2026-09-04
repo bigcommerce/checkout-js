@@ -1,0 +1,17 @@
+.checkout-step--customer {
+    @include enhancedThemeV1-mobile {
+        .customerEmail-body {
+            width: 100%;
+
+            > *:last-child {
+                margin-bottom: spacing("single");
+            }
+        }
+
+        .customerEmail-action {
+            margin: 0;
+            padding-left: 0;
+            width: 100%;
+        }
+    }
+}

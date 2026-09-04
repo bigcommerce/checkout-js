@@ -4,42 +4,35 @@ import React, { type FunctionComponent } from 'react';
 import { withCheckout } from '../checkout';
 import OrderSummary from '../order/OrderSummary';
 
-import EditLink from './EditLink';
+import { CartHeaderLink } from './CartHeaderLink';
 import mapToCartSummaryProps from './mapToCartSummaryProps';
-import { type RedeemableProps } from './Redeemable';
 import withRedeemable from './withRedeemable';
-import { useCapabilities } from '@bigcommerce/checkout/contexts';
-import { hideEditCartLink } from '@bigcommerce/checkout/utility';
 
-export type WithCheckoutCartSummaryProps = {
+export interface WithCheckoutCartSummaryProps {
     checkout: Checkout;
     cartUrl: string;
     storeCurrency: StoreCurrency;
     shopperCurrency: ShopperCurrency;
     storeCreditAmount?: number;
     isBuyNowCart: boolean;
-    isShippingDiscountDisplayEnabled: boolean;
-} & RedeemableProps;
+}
 
 const CartSummary: FunctionComponent<
     WithCheckoutCartSummaryProps & {
         isMultiShippingMode: boolean;
     }
-    > = ({ cartUrl, isMultiShippingMode, isBuyNowCart, ...props }) => {
-    const { userJourney: { disableEditCart } } = useCapabilities();
-
-    const headerLink = hideEditCartLink(isBuyNowCart, disableEditCart) ? null : (
-        <EditLink
-            isMultiShippingMode={isMultiShippingMode}
-            url={cartUrl}
-        />
-    );
-
+> = ({ cartUrl, isMultiShippingMode, isBuyNowCart, ...props }) => {
     return withRedeemable(OrderSummary)({
         ...props,
         cartUrl,
         isBuyNowCart,
-        headerLink,
+        headerLink: (
+            <CartHeaderLink
+                cartUrl={cartUrl}
+                isBuyNowCart={isBuyNowCart}
+                isMultiShippingMode={isMultiShippingMode}
+            />
+        ),
     });
 };
 

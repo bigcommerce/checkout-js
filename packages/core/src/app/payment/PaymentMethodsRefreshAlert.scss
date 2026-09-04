@@ -1,0 +1,21 @@
+@import "../../scss/Base";
+
+.paymentMethodsRefreshAlert {
+    outline: none;
+
+    .alertBox {
+        padding-right: spacing("double");
+        position: relative;
+    }
+
+    &-closeButton {
+        background: none;
+        border: 0;
+        cursor: pointer;
+        line-height: 0;
+        padding: 0;
+        position: absolute;
+        right: spacing("half");
+        top: spacing("half");
+    }
+}

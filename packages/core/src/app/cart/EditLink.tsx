@@ -7,17 +7,38 @@ import { ConfirmationModal } from '@bigcommerce/checkout/ui';
 
 export interface EditLinkProps {
     className?: string;
-    isMultiShippingMode: boolean;
-    url: string;
+    url?: string;
+    isInvoiceRedirectEnabled?: boolean;
+    isMultiShippingMode?: boolean;
     label?: React.ReactNode;
 }
 
-const EditLink: FunctionComponent<EditLinkProps> = ({ className, url, isMultiShippingMode, label }) => {
+const EditLink: FunctionComponent<EditLinkProps> = ({
+    className,
+    url = '',
+    isMultiShippingMode = false,
+    isInvoiceRedirectEnabled = false,
+    label,
+}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const gotoCartPage = () => {
         window.location.assign(url);
     };
+
+    if (isInvoiceRedirectEnabled) {
+        return (
+            <a
+                className={classNames(className || 'cart-header-link', 'body-cta')}
+                data-test="cart-edit-link"
+                href="/account.php?action=order_status/#/invoice"
+                id="cart-edit-link"
+                target="_top"
+            >
+                {label || <TranslatedString id="cart.back_to_invoices" />}
+            </a>
+        );
+    }
 
     if (isMultiShippingMode) {
         return (
@@ -30,8 +51,7 @@ const EditLink: FunctionComponent<EditLinkProps> = ({ className, url, isMultiShi
                     onRequestClose={() => setIsModalOpen(false)}
                 />
                 <a
-                    className={classNames((className || 'cart-header-link'),
-                        'body-cta')}
+                    className={classNames(className || 'cart-header-link', 'body-cta')}
                     data-test="cart-edit-link"
                     href="#"
                     id="cart-edit-link"
@@ -45,8 +65,7 @@ const EditLink: FunctionComponent<EditLinkProps> = ({ className, url, isMultiShi
 
     return (
         <a
-            className={classNames((className || 'cart-header-link'),
-               'body-cta')}
+            className={classNames(className || 'cart-header-link', 'body-cta')}
             data-test="cart-edit-link"
             href={url}
             id="cart-edit-link"

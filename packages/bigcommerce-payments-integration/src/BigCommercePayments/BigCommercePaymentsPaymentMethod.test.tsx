@@ -79,6 +79,8 @@ describe('BigCommercePaymentsPaymentMethod', () => {
         beforeEach(() => {
             props.method.config.isVaultingEnabled = true;
 
+            jest.spyOn(checkoutService, 'getState').mockReturnValue(checkoutState);
+
             jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue([accountInstrument]);
 
             jest.spyOn(checkoutService, 'initializePayment').mockResolvedValue(checkoutState);
@@ -143,6 +145,14 @@ describe('BigCommercePaymentsPaymentMethod', () => {
             render(<BigCommercePaymentsPaymentMethodMock {...props} />);
 
             expect(checkoutService.loadInstruments).not.toHaveBeenCalled();
+        });
+
+        it('should load instruments if isComplete is false', () => {
+            props.method.initializationData.isComplete = false;
+
+            render(<BigCommercePaymentsPaymentMethodMock {...props} />);
+
+            expect(checkoutService.loadInstruments).toHaveBeenCalled();
         });
     });
 });

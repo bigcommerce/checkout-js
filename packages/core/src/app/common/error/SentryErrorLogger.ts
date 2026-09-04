@@ -53,27 +53,33 @@ export default class SentryErrorLogger implements ErrorLogger {
         this.dsn = config.dsn || '';
 
         window.sentryOnLoad = async () => {
+            const integrations =
+                typeof Sentry.globalHandlersIntegration === 'function'
+                    ? [
+                          Sentry.globalHandlersIntegration({
+                              onerror: false,
+                              onunhandledrejection: true,
+                          }),
+                      ]
+                    : [];
+
             Sentry.init({
                 sampleRate,
                 beforeSend: this.handleBeforeSend.bind(this),
-                denyUrls: [
-                    ...(config.denyUrls || []),
-                    'polyfill~checkout',
-                ],
-                integrations: [
-                    Sentry.globalHandlersIntegration({
-                        onerror: false,
-                        onunhandledrejection: true,
-                    }),
-                ],
+                denyUrls: [...(config.denyUrls || []), 'polyfill~checkout'],
+                integrations,
                 ...config,
             });
 
-            const rewriteFramesIntegration = await Sentry.lazyLoadIntegration('rewriteFramesIntegration');
+            const rewriteFramesIntegration = await Sentry.lazyLoadIntegration(
+                'rewriteFramesIntegration',
+            );
 
-            Sentry.addIntegration(rewriteFramesIntegration({
-                iteratee: this.handleRewriteFrame.bind(this),
-            }));
+            Sentry.addIntegration(
+                rewriteFramesIntegration({
+                    iteratee: this.handleRewriteFrame.bind(this),
+                }),
+            );
         };
     }
 
@@ -97,9 +103,7 @@ export default class SentryErrorLogger implements ErrorLogger {
         });
     }
 
-    logMessage(
-        message: string,
-    ): void {
+    logMessage(message: string): void {
         this.loadSentry().then(() => {
             Sentry.captureMessage(message);
         });
@@ -112,12 +116,15 @@ export default class SentryErrorLogger implements ErrorLogger {
 
         const key = /https:\/\/(.+)@.+\//.exec(this.dsn)?.[1] ?? '';
 
-        this.loaderPromise = getScriptLoader().loadScript(`https://js.sentry-cdn.com/${key}.min.js`, {
-            attributes: {
-                crossorigin: 'anonymous',
+        this.loaderPromise = getScriptLoader().loadScript(
+            `https://js.sentry-cdn.com/${key}.min.js`,
+            {
+                attributes: {
+                    crossorigin: 'anonymous',
+                },
+                async: false,
             },
-            async: false,
-        });
+        );
 
         return this.loaderPromise;
     }
@@ -161,13 +168,18 @@ export default class SentryErrorLogger implements ErrorLogger {
                 return false;
             }
 
-            return exception.stacktrace.frames.every((frame) =>
-                frame.filename?.startsWith(FILENAME_PREFIX) || frame.filename?.startsWith(this.publicPath),
+            return exception.stacktrace.frames.every(
+                (frame) =>
+                    frame.filename?.startsWith(FILENAME_PREFIX) ||
+                    frame.filename?.startsWith(this.publicPath),
             );
         });
     }
 
-    private handleBeforeSend: (event: ErrorEvent, hint: EventHint) => ErrorEvent | null = (event, hint) => {
+    private handleBeforeSend: (event: ErrorEvent, hint: EventHint) => ErrorEvent | null = (
+        event,
+        hint,
+    ) => {
         if (event.exception) {
             if (
                 !this.shouldReportExceptions(

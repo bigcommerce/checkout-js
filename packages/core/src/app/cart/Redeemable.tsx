@@ -2,90 +2,106 @@ import { type CheckoutSelectors, type RequestError } from '@bigcommerce/checkout
 import { memoizeOne } from '@bigcommerce/memoize';
 import { type FieldProps, type FormikProps, withFormik } from 'formik';
 import { noop } from 'lodash';
-import React, { type FunctionComponent, type KeyboardEvent, memo, type ReactNode, useCallback } from 'react';
+import React, {
+    type FunctionComponent,
+    type KeyboardEvent,
+    memo,
+    type ReactNode,
+    useCallback,
+} from 'react';
 import { object, string } from 'yup';
 
 import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
-import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { Alert, AlertType, Button, ButtonVariant, type FormContextType, FormProvider } from '@bigcommerce/checkout/ui';
+import {
+    TranslatedString,
+    withLanguage,
+    type WithLanguageProps,
+} from '@bigcommerce/checkout/locale';
+import {
+    Alert,
+    AlertType,
+    Button,
+    ButtonVariant,
+    type FormContextType,
+    FormField,
+    FormProvider,
+    Label,
+    TextInput,
+    Toggle,
+} from '@bigcommerce/checkout/ui';
 
-import { FormField, Label, TextInput } from '../ui/form';
-import { Toggle } from '../ui/toggle';
-
-import AppliedRedeemables, { type AppliedRedeemablesProps } from './AppliedRedeemables';
+import { getRedeemableLabelId } from '../coupon/utils';
 
 export interface RedeemableFormValues {
     redeemableCode: string;
 }
 
-export type ReedemableChildrenProps = Pick<
-    RedeemableProps,
-    | 'onRemovedCoupon'
-    | 'onRemovedGiftCertificate'
-    | 'isRemovingGiftCertificate'
-    | 'isRemovingCoupon'
-    | 'coupons'
-    | 'giftCertificates'
->;
-
-export type RedeemableProps = {
+export interface RedeemableProps {
     appliedRedeemableError?: RequestError;
+    disableCoupon?: boolean;
+    disableGiftCertificate?: boolean;
     isApplyingRedeemable?: boolean;
     isRemovingRedeemable?: boolean;
     removedRedeemableError?: RequestError;
-    showAppliedRedeemables?: boolean;
     shouldCollapseCouponCode?: boolean;
     applyCoupon(code: string): Promise<CheckoutSelectors>;
     applyGiftCertificate(code: string): Promise<CheckoutSelectors>;
     clearError(error: Error): void;
-} & AppliedRedeemablesProps;
+}
 
 const Redeemable: FunctionComponent<
     RedeemableProps & WithLanguageProps & FormikProps<RedeemableFormValues>
-    > = ({ shouldCollapseCouponCode, showAppliedRedeemables, ...formProps }) => {
-
-        return (
-            <Toggle openByDefault={!shouldCollapseCouponCode}>
-                {({ toggle, isOpen }): ReactNode => (
-                    <>
-                        {shouldCollapseCouponCode && (
-                            <a
-                                aria-controls="redeemable-collapsable"
-                                aria-expanded={isOpen}
-                                className="redeemable-label body-cta"
-                                data-test="redeemable-label"
-                                href="#"
-                                onClick={preventDefault(toggle)}
-                            >
-                                <TranslatedString id="redeemable.toggle_action" />
-                            </a>
-                        )}
-                        {!shouldCollapseCouponCode && (
-                            <div className="redeemable-label body-cta">
-                                <TranslatedString id="redeemable.toggle_action" />
-                            </div>
-                        )}
-                        {(isOpen || !shouldCollapseCouponCode) && (
-                            <div data-test="redeemable-collapsable" id="redeemable-collapsable">
-                                <RedeemableForm {...formProps} />
-                                {showAppliedRedeemables && <AppliedRedeemables {...formProps} />}
-                            </div>
-                        )}
-                    </>
-                )}
-            </Toggle>
-        );
+> = ({ disableCoupon, disableGiftCertificate, shouldCollapseCouponCode, ...formProps }) => {
+    if (disableCoupon && disableGiftCertificate) {
+        return null;
     }
+
+    const toggleLabelId = getRedeemableLabelId(disableGiftCertificate, disableCoupon);
+
+    return (
+        <Toggle openByDefault={!shouldCollapseCouponCode}>
+            {({ toggle, isOpen }): ReactNode => (
+                <>
+                    {shouldCollapseCouponCode && (
+                        <a
+                            aria-controls="redeemable-collapsable"
+                            aria-expanded={isOpen}
+                            className="redeemable-label body-cta"
+                            data-test="redeemable-label"
+                            href="#"
+                            onClick={preventDefault(toggle)}
+                        >
+                            <TranslatedString id={toggleLabelId} />
+                        </a>
+                    )}
+                    {!shouldCollapseCouponCode && (
+                        <div className="redeemable-label body-cta">
+                            <TranslatedString id={toggleLabelId} />
+                        </div>
+                    )}
+                    {(isOpen || !shouldCollapseCouponCode) && (
+                        <div data-test="redeemable-collapsable" id="redeemable-collapsable">
+                            <RedeemableForm {...formProps} />
+                        </div>
+                    )}
+                </>
+            )}
+        </Toggle>
+    );
+};
 
 const RedeemableForm: FunctionComponent<
     Partial<RedeemableProps> & FormikProps<RedeemableFormValues> & WithLanguageProps
 > = ({ appliedRedeemableError, isApplyingRedeemable, clearError = noop, submitForm, language }) => {
+    // Keeping it as a function intentionally to have memoizeOne behavior unchanged
     const {
         checkoutState: {
-            statuses: { isSubmittingOrder }
-        }
-    } = useCheckout();
+            statuses: { isSubmittingOrder },
+        },
+    } = useCheckout(({ statuses }) => ({
+        isSubmittingOrder: statuses.isSubmittingOrder(),
+    }));
 
     const handleSubmitForm = (setSubmitted: FormContextType['setSubmitted']) => {
         if (isSubmittingOrder()) {
@@ -94,7 +110,7 @@ const RedeemableForm: FunctionComponent<
 
         setSubmitted(true);
         submitForm();
-    }
+    };
 
     const handleKeyDown = useCallback(
         memoizeOne((setSubmitted: FormContextType['setSubmitted']) => (event: KeyboardEvent) => {
@@ -143,40 +159,42 @@ const RedeemableForm: FunctionComponent<
 
     const renderInput = useCallback(
         (setSubmitted: FormContextType['setSubmitted']) =>
-            ({ field }: FieldProps) =>
-                (
-                    <>
-                        {appliedRedeemableError &&
-                            appliedRedeemableError.errors &&
-                            appliedRedeemableError.errors[0] && (
-                                <Alert type={AlertType.Error}>
-                                    {renderErrorMessage(appliedRedeemableError.errors[0].code, appliedRedeemableError.errors[0].message)}
-                                </Alert>
-                            )}
+            ({ field }: FieldProps) => (
+                <>
+                    {appliedRedeemableError &&
+                        appliedRedeemableError.errors &&
+                        appliedRedeemableError.errors[0] && (
+                            <Alert type={AlertType.Error}>
+                                {renderErrorMessage(
+                                    appliedRedeemableError.errors[0].code,
+                                    appliedRedeemableError.errors[0].message,
+                                )}
+                            </Alert>
+                        )}
 
-                        <div className="form-prefixPostfix">
-                            <TextInput
-                                {...field}
-                                aria-label={language.translate('redeemable.code_label')}
-                                className="form-input optimizedCheckout-form-input"
-                                onKeyDown={handleKeyDown(setSubmitted)}
-                                testId="redeemableEntry-input"
-                            />
+                    <div className="form-prefixPostfix">
+                        <TextInput
+                            {...field}
+                            aria-label={language.translate('redeemable.code_label')}
+                            className="form-input optimizedCheckout-form-input"
+                            onKeyDown={handleKeyDown(setSubmitted)}
+                            testId="redeemableEntry-input"
+                        />
 
-                            <Button
-                                className="form-prefixPostfix-button--postfix body-bold"
-                                disabled={isSubmittingOrder()}
-                                id="applyRedeemableButton"
-                                isLoading={isApplyingRedeemable}
-                                onClick={handleSubmit(setSubmitted)}
-                                testId="redeemableEntry-submit"
-                                variant={ButtonVariant.Secondary}
-                            >
-                                <TranslatedString id="redeemable.apply_action" />
-                            </Button>
-                        </div>
-                    </>
-                ),
+                        <Button
+                            className="form-prefixPostfix-button--postfix optimizedCheckout-contentPrimary body-bold"
+                            disabled={isSubmittingOrder()}
+                            id="applyRedeemableButton"
+                            isLoading={isApplyingRedeemable}
+                            onClick={handleSubmit(setSubmitted)}
+                            testId="redeemableEntry-submit"
+                            variant={ButtonVariant.Secondary}
+                        >
+                            <TranslatedString id="redeemable.apply_action" />
+                        </Button>
+                    </div>
+                </>
+            ),
         [
             appliedRedeemableError,
             handleKeyDown,
@@ -216,19 +234,35 @@ export default withLanguage(
 
         async handleSubmit(
             { redeemableCode },
-            { props: { applyCoupon, applyGiftCertificate, clearError } },
+            {
+                props: {
+                    applyCoupon,
+                    applyGiftCertificate,
+                    clearError,
+                    disableCoupon,
+                    disableGiftCertificate,
+                },
+            },
         ) {
             const code = redeemableCode.trim();
 
-            try {
-                await applyGiftCertificate(code);
-            } catch (error) {
-                if (error instanceof Error) {
-                    clearError(error);
-                }
+            if (!disableGiftCertificate) {
+                try {
+                    await applyGiftCertificate(code);
 
-                applyCoupon(code);
+                    return;
+                } catch (error) {
+                    if (disableCoupon) {
+                        throw error;
+                    }
+
+                    if (error instanceof Error) {
+                        clearError(error);
+                    }
+                }
             }
+
+            await applyCoupon(code);
         },
 
         validationSchema({ language }: RedeemableProps & WithLanguageProps) {

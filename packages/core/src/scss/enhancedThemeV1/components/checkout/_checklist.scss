@@ -1,0 +1,75 @@
+.form-checklist {
+    @include enhancedThemeV1 {
+        border: none;
+        display: flex;
+        flex-direction: column;
+
+        .form-checklist-item {
+            border-width: 1px;
+            border-style: solid;
+            margin: spacing("sixth") 0;
+            border-radius: $element-border-radius;
+
+            &:first-child {
+                margin-top: 0;
+            }
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        .form-checklist-item--selected {
+            border-width: $input-border-width;
+            border-style: $input-border-style;
+        }
+
+        .form-checklist-header {
+            .form-label {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+
+                .shippingOptionLabel {
+                    width: 100%;
+                }
+            }
+
+            .shippingOption-desc {
+                font-weight: $fontWeight-bold;
+            }
+        }
+    }
+}
+
+.form-checklist-body {
+    @include enhancedThemeV1 {
+        margin-left: $checklist-pip-spacing--small;
+        margin-right: $checklist-pip-spacing--small;
+
+        @include breakpoint("small") {
+            margin-left: $checklist-pip-spacing;
+            margin-right: $checklist-pip-spacing;
+        }
+    }
+}
+
+.form-checklist-checkbox {
+    @include enhancedThemeV1 {
+        & ~ .form-label {
+            padding-right: $checklist-pip-spacing--small;
+
+            @include breakpoint("small") {
+                padding-right: $checklist-pip-spacing;
+            }
+        }
+
+        &:focus ~ .form-label {
+            box-shadow: none;
+        }
+
+        & ~ .form-label::before {
+            border: 2px $input-border-style $input-border-color;
+        }
+    }
+}

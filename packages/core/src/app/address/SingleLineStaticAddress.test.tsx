@@ -11,7 +11,10 @@ import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getAddress } from './address.mock';
 import AddressType from './AddressType';
-import SingleLineStaticAddress, { getAddressContent, type SingleLineStaticAddressProps } from './SingleLineStaticAddress';
+import SingleLineStaticAddress, {
+    getAddressContent,
+    type SingleLineStaticAddressProps,
+} from './SingleLineStaticAddress';
 
 describe('SingleLineStaticAddress Component', () => {
     let SingleLineStaticAddressTest: FunctionComponent<SingleLineStaticAddressProps>;
@@ -43,9 +46,11 @@ describe('SingleLineStaticAddress Component', () => {
     });
 
     it('renders component if required fields for shipping address are not missing', () => {
-        render(<SingleLineStaticAddressTest {...defaultProps} type={AddressType.Shipping} />,);
+        render(<SingleLineStaticAddressTest {...defaultProps} type={AddressType.Shipping} />);
 
-        expect(screen.getByText(defaultProps.address.address1, { exact: false })).toBeInTheDocument();
+        expect(
+            screen.getByText(defaultProps.address.address1, { exact: false }),
+        ).toBeInTheDocument();
     });
 
     it('renders component if only custom fields are missing', () => {

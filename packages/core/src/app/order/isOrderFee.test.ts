@@ -1,29 +1,29 @@
-import { type Fee } from "@bigcommerce/checkout-sdk";
+import { type Fee } from '@bigcommerce/checkout-sdk';
 
-import isOrderFee from "./isOrderFee";
-import { getOrderFee } from "./orders.mock";
+import isOrderFee from './isOrderFee';
+import { getOrderFee } from './orders.mock';
 
 describe('isOrderFee()', () => {
-  describe('when the fee is an order fee', () => {
-    it('returns true', () => {
-      const orderFee = getOrderFee();
+    describe('when the fee is an order fee', () => {
+        it('returns true', () => {
+            const orderFee = getOrderFee();
 
-      expect(isOrderFee(orderFee)).toBe(true);
+            expect(isOrderFee(orderFee)).toBe(true);
+        });
     });
-  });
 
-  describe('when the fee is not an order fee', () => {
-    it('returns false', () => {
-      const nonOrderFee: Fee = {
-        id: '0',
-        cost: 2.0,
-        name: 'some name',
-        displayName: 'display name',
-        type: 'custom_fee',
-        source: 'some source',
-      };
+    describe('when the fee is not an order fee', () => {
+        it('returns false', () => {
+            const nonOrderFee: Fee = {
+                id: '0',
+                cost: 2.0,
+                name: 'some name',
+                displayName: 'display name',
+                type: 'custom_fee',
+                source: 'some source',
+            };
 
-      expect(isOrderFee(nonOrderFee)).toBe(false);
+            expect(isOrderFee(nonOrderFee)).toBe(false);
+        });
     });
-  });
 });

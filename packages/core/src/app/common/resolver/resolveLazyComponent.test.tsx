@@ -12,7 +12,10 @@ describe('resolveComponent', () => {
 
     let props: TestingProps;
     let components: Record<string, ComponentType<TestingProps>>;
-    let registry: Record<string, Array<{ id?: string; gateway?: string; type?: string; default?: boolean }>>;
+    let registry: Record<
+        string,
+        Array<{ id?: string; gateway?: string; type?: string; default?: boolean }>
+    >;
 
     beforeEach(() => {
         props = {
@@ -91,15 +94,19 @@ describe('resolveComponent', () => {
             Default: [{ default: true }],
         };
 
-        expect(resolveLazyComponent({ id: 'hello_world' }, { ...components, Default }, registryWithDefault)).toEqual(
-            Default,
-        );
+        expect(
+            resolveLazyComponent(
+                { id: 'hello_world' },
+                { ...components, Default },
+                registryWithDefault,
+            ),
+        ).toEqual(Default);
     });
 
     it('returns correct component for an entry', () => {
         const Component = toResolvableComponent(
             ({ message }: TestingProps) => <div>Foo: {message}</div>,
-            [{ id: 'credit_card', gateway: 'bluesnap' }]
+            [{ id: 'credit_card', gateway: 'bluesnap' }],
         );
         const registryWithComponent: Record<string, Array<{ id?: string; gateway?: string }>> = {
             Component: [{ id: 'credit_card', gateway: 'bluesnap' }],
@@ -108,19 +115,19 @@ describe('resolveComponent', () => {
         const CreditCard = resolveLazyComponent(
             { id: 'credit_card' },
             { Component },
-            registryWithComponent
+            registryWithComponent,
         );
 
         const Bluesnap = resolveLazyComponent(
             { id: 'credit_card' },
             { Component },
-            registryWithComponent
+            registryWithComponent,
         );
 
         const CheckoutCom = resolveLazyComponent(
             { id: 'credit_card', gateway: 'checkoutcom' },
             { Component },
-            registryWithComponent
+            registryWithComponent,
         );
 
         expect(CreditCard).toBeDefined();
@@ -131,7 +138,7 @@ describe('resolveComponent', () => {
     it('returns correct component for an gateway/methodId key if registry is only done by gateway', () => {
         const GatewayComponent = toResolvableComponent(
             ({ message }: TestingProps) => <div>Foo: {message}</div>,
-            [{ gateway: 'somegateway' }]
+            [{ gateway: 'somegateway' }],
         );
         const registryWithComponent: Record<string, Array<{ id?: string; gateway?: string }>> = {
             GatewayComponent: [{ gateway: 'somegateway' }],
@@ -140,19 +147,19 @@ describe('resolveComponent', () => {
         const AGateway = resolveLazyComponent(
             { id: 'test', gateway: 'somegateway' },
             { GatewayComponent },
-            registryWithComponent
+            registryWithComponent,
         );
 
         const BGateway = resolveLazyComponent(
             { id: 'bar', gateway: 'somegateway' },
             { GatewayComponent },
-            registryWithComponent
+            registryWithComponent,
         );
 
         const CGateway = resolveLazyComponent(
             { id: 'foo', gateway: 'somegateway' },
             { GatewayComponent },
-            registryWithComponent
+            registryWithComponent,
         );
 
         expect(AGateway).toBeDefined();

@@ -47,7 +47,7 @@ export function getTranslateAddressError(
             return language.translate(`address.custom_required_error`, { label });
         }
 
-        const field = formFields.find(f => f.name === name);
+        const field = formFields.find((f) => f.name === name);
 
         if ((type === 'max' || type === 'min') && field?.type === 'integer') {
             const fieldMin = field?.min;
@@ -55,19 +55,25 @@ export function getTranslateAddressError(
 
             // If both min and max are present, show range message
             if (fieldMin !== undefined && fieldMax !== undefined) {
-                return language.translate(`address.custom_range_error`, { 
-                    label, 
-                    min: fieldMin, 
-                    max: fieldMax 
+                return language.translate(`address.custom_range_error`, {
+                    label,
+                    min: fieldMin,
+                    max: fieldMax,
                 });
             }
 
             if (type === 'max' && fieldMax !== undefined) {
-                return language.translate(`address.custom_max_number_error`, { label, max: fieldMax });
+                return language.translate(`address.custom_max_number_error`, {
+                    label,
+                    max: fieldMax,
+                });
             }
 
             if (type === 'min' && fieldMin !== undefined) {
-                return language.translate(`address.custom_min_number_error`, { label, min: fieldMin });
+                return language.translate(`address.custom_min_number_error`, {
+                    label,
+                    min: fieldMin,
+                });
             }
         }
 

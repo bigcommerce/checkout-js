@@ -1,4 +1,8 @@
-import { type CheckoutSelectors, type Consignment, type ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
+import {
+    type CheckoutSelectors,
+    type Consignment,
+    type ShippingRequestOptions,
+} from '@bigcommerce/checkout-sdk';
 
 const createShippingOptionsMap = (consignments: Consignment[]): Map<string, string | undefined> => {
     return new Map(
@@ -12,7 +16,7 @@ export const setRecommendedOrMissingShippingOption = async (
     selectConsignmentShippingOption: (
         consignmentId: string,
         shippingOptionId: string,
-        options?: ShippingRequestOptions<object>,
+        options?: ShippingRequestOptions,
     ) => Promise<CheckoutSelectors>,
 ): Promise<void> => {
     const previousShippingOptions = createShippingOptionsMap(previousConsignment);

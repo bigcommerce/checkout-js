@@ -59,6 +59,39 @@ describe('Autocomplete Component', () => {
         expect(container.innerHTML).toContain('vfoo');
     });
 
+    it('preserves cursor position when typing after an autocomplete selection', async () => {
+        const initialValues = { value: '' };
+
+        render(
+            <Formik initialValues={initialValues} onSubmit={jest.fn()}>
+                {({ values, setFieldValue }) => (
+                    <Autocomplete
+                        initialValue={values.value}
+                        items={items}
+                        onChange={(val) => setFieldValue('value', val)}
+                        onSelect={(val) => setFieldValue('value', val?.value)}
+                    />
+                )}
+            </Formik>,
+        );
+
+        // Select 'foo' from the list → Formik sets value to 'vfoo'
+        await userEvent.type(screen.getByRole('textbox'), 'foo');
+        await userEvent.click(screen.getByText('foo'));
+
+        // Re-render passes new initialValue; place cursor at position 1 (between 'v' and 'f')
+        const input = screen.getByRole('textbox');
+
+        input.focus();
+        (input as HTMLInputElement).setSelectionRange(1, 1);
+
+        // Type 'x' — onChange updates Formik → initialValue becomes 'vxfoo';
+        // useLayoutEffect must restore cursor to 2, not let it jump to end (5)
+        await userEvent.keyboard('x');
+
+        expect((input as HTMLInputElement).selectionStart).toBe(2);
+    });
+
     it('select item by keyboard', async () => {
         const initialValues = { value: '' };
 

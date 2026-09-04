@@ -19,7 +19,7 @@ describe('GoogleAutocompleteScriptLoader', () => {
                 (window as GoogleAutocompleteWindow).google = {
                     maps: {
                         places: {},
-                    } as any,
+                    },
                 };
 
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

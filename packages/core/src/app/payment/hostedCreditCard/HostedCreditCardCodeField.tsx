@@ -1,10 +1,15 @@
 import React, { type FunctionComponent, useCallback, useMemo } from 'react';
 
+import { useLocale } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { IconHelp, IconLock } from '@bigcommerce/checkout/ui';
+import {
+    FormField,
+    IconHelp,
+    IconLock,
+    TextInputIframeContainer,
+    TooltipTrigger,
+} from '@bigcommerce/checkout/ui';
 
-import { FormField, TextInputIframeContainer } from '../../ui/form';
-import { TooltipTrigger } from '../../ui/tooltip';
 import { CreditCardCodeTooltip } from '../creditCard';
 
 export interface HostedCreditCardCodeFieldProps {
@@ -18,6 +23,8 @@ const HostedCreditCardCodeField: FunctionComponent<HostedCreditCardCodeFieldProp
     id,
     name,
 }) => {
+    const { language } = useLocale();
+
     const renderInput = useCallback(
         () => (
             <>
@@ -38,14 +45,18 @@ const HostedCreditCardCodeField: FunctionComponent<HostedCreditCardCodeFieldProp
             <>
                 <TranslatedString id="payment.credit_card_cvv_label" />
 
-                <TooltipTrigger placement="top-start" tooltip={<CreditCardCodeTooltip />}>
+                <TooltipTrigger
+                    ariaLabel={language.translate('payment.credit_card_cvv_help_action')}
+                    placement="top-start"
+                    tooltip={<CreditCardCodeTooltip />}
+                >
                     <span className="has-tip">
                         <IconHelp />
                     </span>
                 </TooltipTrigger>
             </>
         ),
-        [],
+        [language],
     );
 
     return (

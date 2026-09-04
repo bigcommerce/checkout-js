@@ -1,15 +1,15 @@
-import { type CurrencyService } from "@bigcommerce/checkout-sdk";
-import React from "react";
+import { type CurrencyService } from '@bigcommerce/checkout-sdk';
+import React from 'react';
 
-import { LocaleContext, type LocaleContextType } from "@bigcommerce/checkout/contexts";
-import { createLocaleContext } from "@bigcommerce/checkout/locale";
-import { render, screen } from "@bigcommerce/checkout/test-utils";
+import { LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
+import { createLocaleContext } from '@bigcommerce/checkout/locale';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import { getDigitalItem, getPhysicalItem } from "../cart/lineItem.mock";
-import { getStoreConfig } from "../config/config.mock";
-import { ShopperCurrency } from "../currency";
+import { getDigitalItem, getPhysicalItem } from '../cart/lineItem.mock';
+import { getStoreConfig } from '../config/config.mock';
+import { ShopperCurrency } from '../currency';
 
-import OrderModalSummarySubheader from "./OrderModalSummarySubheader";
+import OrderModalSummarySubheader from './OrderModalSummarySubheader';
 
 describe('OrderModalSummarySubheader', () => {
     let localeContext: LocaleContextType;
@@ -36,16 +36,20 @@ describe('OrderModalSummarySubheader', () => {
                     shopperCurrencyCode="USD"
                     storeCurrencyCode="USD"
                 />
-            </LocaleContext.Provider>
+            </LocaleContext.Provider>,
         );
 
-        expect(screen.getByText(`1 ${localeContext.language.translate('cart.item')} | ${currencyService.toCustomerCurrency(100)}`)).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                `1 ${localeContext.language.translate('cart.item')} | ${currencyService.toCustomerCurrency(100)}`,
+            ),
+        ).toBeInTheDocument();
     });
 
     it('when shopper has same currency as the store and multiple items, text id passed is cart.items', () => {
         const multipleItems = {
             ...items,
-            digitalItems: [getDigitalItem()]
+            digitalItems: [getDigitalItem()],
         };
 
         render(
@@ -56,10 +60,14 @@ describe('OrderModalSummarySubheader', () => {
                     shopperCurrencyCode="USD"
                     storeCurrencyCode="USD"
                 />
-            </LocaleContext.Provider>
+            </LocaleContext.Provider>,
         );
 
-        expect(screen.getByText(`2 ${localeContext.language.translate('cart.items')} | ${currencyService.toCustomerCurrency(100)}`)).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                `2 ${localeContext.language.translate('cart.items')} | ${currencyService.toCustomerCurrency(100)}`,
+            ),
+        ).toBeInTheDocument();
     });
 
     it('displays shopper currency in summary if different than store currency', () => {
@@ -73,10 +81,14 @@ describe('OrderModalSummarySubheader', () => {
                     shopperCurrencyCode={shopperCurrencyCode}
                     storeCurrencyCode="USD"
                 />
-            </LocaleContext.Provider>
+            </LocaleContext.Provider>,
         );
 
-        expect(screen.getByText(`1 ${localeContext.language.translate('cart.item')} | ${currencyService.toCustomerCurrency(100)}`)).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                `1 ${localeContext.language.translate('cart.item')} | ${currencyService.toCustomerCurrency(100)}`,
+            ),
+        ).toBeInTheDocument();
         expect(screen.getByText(`(${shopperCurrencyCode})`)).toBeInTheDocument();
     });
 });

@@ -1,12 +1,51 @@
 import { createLanguageService, type FormField as FormFieldType } from '@bigcommerce/checkout-sdk';
+import userEvent from '@testing-library/user-event';
 import { Formik } from 'formik';
-import React from 'react';
+import React, { forwardRef, useImperativeHandle } from 'react';
 
 import { LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { render, screen } from '@bigcommerce/checkout/test-utils';
+import { fireEvent, render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
+
+import { FormProvider } from '../contexts';
 
 import DynamicFormField from './DynamicFormField';
+
+const mockIsValidNumber = jest.fn();
+const mockSetCountry = jest.fn();
+const mockGetSelectedCountryData = jest.fn();
+
+jest.mock('@intl-tel-input/react', () => ({
+    __esModule: true,
+    default: forwardRef<
+        unknown,
+        {
+            inputProps?: Record<string, unknown>;
+            onChangeNumber?: (value: string) => void;
+            value?: string;
+        }
+    >(({ inputProps, onChangeNumber, value }, ref) => {
+        useImperativeHandle(ref, () => ({
+            getInstance: () => ({
+                getNumber: () => '',
+                getSelectedCountryData: mockGetSelectedCountryData,
+                isActive: () => true,
+                isValidNumber: mockIsValidNumber,
+                promise: Promise.resolve(),
+                setCountry: mockSetCountry,
+                setNumber: jest.fn(),
+            }),
+        }));
+
+        return (
+            <input
+                {...inputProps}
+                onChange={(e) => onChangeNumber?.(e.target.value)}
+                value={value ?? ''}
+            />
+        );
+    }),
+}));
 
 describe('DynamicFormField Component', () => {
     const localeContext: LocaleContextType = { language: createLanguageService() };
@@ -64,7 +103,7 @@ describe('DynamicFormField Component', () => {
             </LocaleContext.Provider>,
         );
 
-        // eslint-disable-next-line testing-library/no-container
+        // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
         expect(container.querySelector('.dynamic-form-field--addressLine1')).toBeInTheDocument();
     });
 
@@ -99,7 +138,7 @@ describe('DynamicFormField Component', () => {
         expect(
             screen.getByText(localeContext.language.translate('address.address_line_1_label')),
         ).toBeInTheDocument();
-        // eslint-disable-next-line testing-library/no-container
+        // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
         expect(container.querySelector('.optimizedCheckout-contentSecondary')).toBeNull();
     });
 
@@ -117,5 +156,202 @@ describe('DynamicFormField Component', () => {
         expect(
             screen.getByText(localeContext.language.translate('common.optional_text')),
         ).toBeInTheDocument();
+    });
+
+    describe('phone validation with isNewPhoneValidationExperimentEnabled', () => {
+        // Phone field: fieldType 'text' + name containing 'phone' resolves to TELEPHONE internally
+        const phoneFieldMock: FormFieldType = {
+            custom: false,
+            default: '',
+            fieldType: 'text',
+            id: 'field_phone',
+            label: 'Phone Number',
+            name: 'phone',
+            required: false,
+        };
+
+        const nonPhoneFieldMock: FormFieldType = {
+            custom: false,
+            default: '',
+            fieldType: 'text',
+            id: 'field_firstname',
+            label: 'First Name',
+            name: 'firstName',
+            required: false,
+        };
+
+        const localeContextMock: LocaleContextType = {
+            language: createLanguageService(),
+            date: { inputFormat: 'dd/MM/yyyy' },
+        };
+
+        const renderMockFormField = (overrides: {
+            field: FormFieldType;
+            isNewPhoneValidationExperimentEnabled: boolean;
+            placeholder?: string;
+        }) =>
+            render(
+                <LocaleContext.Provider value={localeContextMock}>
+                    <Formik initialValues={{ phone: '' }} onSubmit={jest.fn()}>
+                        {({ submitForm }) => (
+                            <FormProvider initialIsSubmitted>
+                                <DynamicFormField
+                                    field={overrides.field}
+                                    isNewPhoneValidationExperimentEnabled={
+                                        overrides.isNewPhoneValidationExperimentEnabled
+                                    }
+                                    placeholder={overrides.placeholder}
+                                />
+                                <button onClick={submitForm} type="button">
+                                    Submit
+                                </button>
+                            </FormProvider>
+                        )}
+                    </Formik>
+                </LocaleContext.Provider>,
+            );
+
+        beforeEach(() => {
+            mockGetSelectedCountryData.mockClear();
+            mockIsValidNumber.mockClear();
+            mockSetCountry.mockClear();
+        });
+
+        it('shows a validation error when the phone number is invalid and the experiment is enabled', async () => {
+            mockGetSelectedCountryData.mockReturnValue({ iso2: 'us' });
+            mockIsValidNumber.mockReturnValue(false);
+
+            renderMockFormField({
+                field: { ...phoneFieldMock, required: true },
+                isNewPhoneValidationExperimentEnabled: true,
+            });
+
+            fireEvent.change(screen.getByTestId('phone-text'), {
+                target: { value: '123' },
+            });
+            await userEvent.click(screen.getByText('Submit'));
+
+            await waitFor(() => {
+                expect(screen.getByRole('alert')).toBeInTheDocument();
+            });
+        });
+
+        it('does not show a validation error when the phone number is valid', async () => {
+            mockGetSelectedCountryData.mockReturnValue({ iso2: 'us' });
+            mockIsValidNumber.mockReturnValue(true);
+
+            renderMockFormField({
+                field: { ...phoneFieldMock, required: true },
+                isNewPhoneValidationExperimentEnabled: true,
+            });
+
+            fireEvent.change(screen.getByTestId('phone-text'), {
+                target: { value: '+15551234567' },
+            });
+            await userEvent.click(screen.getByText('Submit'));
+
+            await waitFor(() => {
+                expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+            });
+        });
+
+        it('does not show a validation error when the phone field is empty', async () => {
+            // there is a required check already, so no need to check validity in addition
+            mockIsValidNumber.mockReturnValue(false);
+
+            renderMockFormField({
+                field: phoneFieldMock,
+                isNewPhoneValidationExperimentEnabled: true,
+            });
+
+            // Leave value empty, submit directly
+            await userEvent.click(screen.getByText('Submit'));
+
+            await waitFor(() => {
+                expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+            });
+        });
+
+        it('does not validate phone when the experiment flag is disabled', async () => {
+            mockIsValidNumber.mockReturnValue(false);
+
+            renderMockFormField({
+                field: phoneFieldMock,
+                isNewPhoneValidationExperimentEnabled: false,
+            });
+
+            // Experiment off: IntlTelInput is not rendered, regular tel input is used instead
+            fireEvent.change(screen.getByRole('textbox'), { target: { value: '123' } });
+            await userEvent.click(screen.getByText('Submit'));
+
+            await waitFor(() => {
+                expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+            });
+        });
+
+        it('renders the legacy phone input when the field has a max length, even when the experiment is enabled', async () => {
+            mockIsValidNumber.mockReturnValue(false);
+
+            const { container } = renderMockFormField({
+                field: { ...phoneFieldMock, maxLength: 10 },
+                isNewPhoneValidationExperimentEnabled: true,
+            });
+
+            const input = screen.getByTestId('phone-text');
+
+            expect(input).toHaveAttribute('type', 'tel');
+            expect(input).toHaveAttribute('maxlength', '10');
+            // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
+            expect(container.querySelector('.iti-wrapper')).not.toBeInTheDocument();
+
+            // The legacy input does not apply IntlTelInput phone validation
+            fireEvent.change(input, { target: { value: '123' } });
+            await userEvent.click(screen.getByText('Submit'));
+
+            await waitFor(() => {
+                expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+            });
+        });
+
+        it('renders the legacy phone input when the field has a placeholder, even when the experiment is enabled', async () => {
+            mockIsValidNumber.mockReturnValue(false);
+
+            const { container } = renderMockFormField({
+                field: { ...phoneFieldMock, default: '1231232' },
+                isNewPhoneValidationExperimentEnabled: true,
+                placeholder: '1231232',
+            });
+
+            const input = screen.getByTestId('phone-text');
+
+            expect(input).toHaveAttribute('type', 'tel');
+            expect(input).toHaveAttribute('placeholder', '1231232');
+            // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
+            expect(container.querySelector('.iti-wrapper')).not.toBeInTheDocument();
+
+            // The legacy input does not apply IntlTelInput phone validation
+            fireEvent.change(input, { target: { value: '123' } });
+            await userEvent.click(screen.getByText('Submit'));
+
+            await waitFor(() => {
+                expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+            });
+        });
+
+        it('does not validate phone for non-telephone fields even when experiment is enabled', async () => {
+            mockIsValidNumber.mockReturnValue(false);
+
+            renderMockFormField({
+                field: nonPhoneFieldMock,
+                isNewPhoneValidationExperimentEnabled: true,
+            });
+
+            fireEvent.change(screen.getByRole('textbox'), { target: { value: 'John' } });
+            await userEvent.click(screen.getByText('Submit'));
+
+            await waitFor(() => {
+                expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+            });
+        });
     });
 });

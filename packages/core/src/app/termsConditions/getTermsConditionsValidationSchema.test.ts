@@ -7,7 +7,7 @@ describe('getTermsConditionsValidationSchema', () => {
 
     beforeEach(() => {
         language = {
-            translate: jest.fn((key:string) => key),
+            translate: jest.fn((key: string) => key),
         } as unknown as LanguageService;
     });
 
@@ -29,7 +29,9 @@ describe('getTermsConditionsValidationSchema', () => {
         });
 
         await expect(schema.validate({ terms: true })).resolves.toEqual({ terms: true });
-        await expect(schema.validate({ terms: false })).rejects.toThrow('terms_and_conditions.agreement_required_error');
+        await expect(schema.validate({ terms: false })).rejects.toThrow(
+            'terms_and_conditions.agreement_required_error',
+        );
         await expect(schema.validate({})).resolves.toEqual({});
     });
 
@@ -39,7 +41,11 @@ describe('getTermsConditionsValidationSchema', () => {
             language,
         });
 
-        await expect(schema.validate({ terms: false })).rejects.toThrow('terms_and_conditions.agreement_required_error');
-        expect(language.translate).toHaveBeenCalledWith('terms_and_conditions.agreement_required_error');
+        await expect(schema.validate({ terms: false })).rejects.toThrow(
+            'terms_and_conditions.agreement_required_error',
+        );
+        expect(language.translate).toHaveBeenCalledWith(
+            'terms_and_conditions.agreement_required_error',
+        );
     });
 });

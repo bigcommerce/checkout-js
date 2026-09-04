@@ -23,7 +23,9 @@ const PromotionBannerList: FunctionComponent<PromotionBannerListProps> = ({ prom
         <div className="discountBanner">
             <ul className="discountBannerList">
                 {banners.map((banner, index) => (
-                    <PromotionBanner key={index} message={banner.text} />
+                    <li key={index}>
+                        <PromotionBanner message={banner.text} />
+                    </li>
                 ))}
             </ul>
         </div>

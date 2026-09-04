@@ -12,12 +12,14 @@ import { getShippingOptionIds } from '../utils';
 
 import { ConsignmentDetails } from './MultiShippingConsignmentDetails';
 import { NoShippingOptions } from './NoShippingOption';
-import { type ShippingOptionsProps, type WithCheckoutShippingOptionsProps } from './ShippingOptions';
+import {
+    type ShippingOptionsProps,
+    type WithCheckoutShippingOptionsProps,
+} from './ShippingOptions';
 import ShippingOptionsList from './ShippingOptionsList';
 import './ShippingOptionsForm.scss';
 
-export type ShippingOptionsFormProps = ShippingOptionsProps &
-    WithCheckoutShippingOptionsProps;
+export type ShippingOptionsFormProps = ShippingOptionsProps & WithCheckoutShippingOptionsProps;
 
 export interface ShippingOptionsFormValues {
     shippingOptionIds: {
@@ -25,7 +27,9 @@ export interface ShippingOptionsFormValues {
     };
 }
 
-const ShippingOptionsForm = (props: ShippingOptionsFormProps & FormikProps<ShippingOptionsFormValues>): ReactElement => {
+const ShippingOptionsForm = (
+    props: ShippingOptionsFormProps & FormikProps<ShippingOptionsFormValues>,
+): ReactElement => {
     const {
         consignments,
         cart,
@@ -38,7 +42,7 @@ const ShippingOptionsForm = (props: ShippingOptionsFormProps & FormikProps<Shipp
         subscribeToConsignments,
         setFieldValue,
         shippingFormRenderTimestamp,
-        setValues
+        setValues,
     } = props;
     const { analyticsTracker } = useAnalytics();
 
@@ -64,7 +68,7 @@ const ShippingOptionsForm = (props: ShippingOptionsFormProps & FormikProps<Shipp
 
         await selectShippingOption(id, defaultShippingOption.id);
         setFieldValue(`shippingOptionIds.${id}`, defaultShippingOption.id);
-    }
+    };
 
     useEffect(() => {
         const unsubscribe = subscribeToConsignments(selectDefaultShippingOptions);
@@ -83,7 +87,7 @@ const ShippingOptionsForm = (props: ShippingOptionsFormProps & FormikProps<Shipp
     }, [consignments, shouldShowShippingOptions]);
 
     useEffect(() => {
-        if(shippingFormRenderTimestamp){
+        if (shippingFormRenderTimestamp) {
             setValues(getShippingOptionIds(props));
         }
     }, [shippingFormRenderTimestamp]);

@@ -1,16 +1,23 @@
+import { type AddressRequestBody } from '@bigcommerce/checkout-sdk';
 import { useCallback } from 'react';
 import { createSelector } from 'reselect';
 
-import { type CheckoutContextProps, useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
+import {
+    type CheckoutContextProps,
+    useCapabilities,
+    useCheckout,
+} from '@bigcommerce/checkout/contexts';
 import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
 import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
+import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
-import { EMPTY_ARRAY, isExperimentEnabled } from '../../common/utility';
+import { encodeAddressForWrite } from '../../address';
+import { EMPTY_ARRAY } from '../../common/utility';
 import getBackorderCount from '../../order/getBackorderCount';
 import getProviderWithCustomCheckout from '../../payment/getProviderWithCustomCheckout';
-import getShippableItemsCount from '../getShippableItemsCount';
 import getShippingMethodId from '../getShippingMethodId';
 import hasPromotionalItems from '../hasPromotionalItems';
+import { shouldShowMultiShippingToggle } from '../utils';
 
 const deleteConsignmentsSelector = createSelector(
     ({ checkoutService: { deleteConsignment } }: CheckoutContextProps) => deleteConsignment,
@@ -27,8 +34,60 @@ const deleteConsignmentsSelector = createSelector(
 );
 
 export const useShipping = () => {
-    const { checkoutState, checkoutService } = useCheckout();
-    const { userJourney: { hasAddressExtraFields } } = useCapabilities();
+    const { checkoutState, checkoutService } = useCheckout(
+        ({
+            data: {
+                getCart,
+                getCheckout,
+                getConfig,
+                getCustomer,
+                getConsignments,
+                getShippingAddress,
+                getBillingAddress,
+                getShippingAddressFields,
+                getShippingCountries,
+                getAddressExtraFields,
+            },
+            statuses: {
+                isShippingStepPending,
+                isSelectingShippingOption,
+                isLoadingShippingOptions,
+                isUpdatingConsignment,
+                isCreatingConsignments,
+                isCreatingCustomerAddress,
+                isLoadingShippingCountries,
+                isUpdatingBillingAddress,
+                isUpdatingCheckout,
+                isDeletingConsignment,
+                isLoadingCheckout,
+            },
+        }) => ({
+            cart: getCart(),
+            checkout: getCheckout(),
+            config: getConfig(),
+            customer: getCustomer(),
+            consignments: getConsignments(),
+            shippingAddress: getShippingAddress(),
+            billingAddress: getBillingAddress(),
+            shippingCountries: getShippingCountries(),
+            isShippingStepPending: isShippingStepPending(),
+            isSelectingShippingOption: isSelectingShippingOption(),
+            isLoadingShippingOptions: isLoadingShippingOptions(),
+            isUpdatingConsignment: isUpdatingConsignment(),
+            isCreatingConsignments: isCreatingConsignments(),
+            isCreatingCustomerAddress: isCreatingCustomerAddress(),
+            isLoadingShippingCountries: isLoadingShippingCountries(),
+            isUpdatingBillingAddress: isUpdatingBillingAddress(),
+            isUpdatingCheckout: isUpdatingCheckout(),
+            isDeletingConsignment: isDeletingConsignment(),
+            isLoadingCheckout: isLoadingCheckout(),
+            getShippingAddressFields,
+            getAddressExtraFields,
+        }),
+    );
+    const {
+        userJourney: { hasAddressExtraFields, hasAddressLabel },
+    } = useCapabilities();
 
     const {
         data: {
@@ -60,7 +119,7 @@ export const useShipping = () => {
 
     const checkout = getCheckout();
     const config = getConfig();
-    const consignments = getConsignments() || [];
+    const consignments = getConsignments() || EMPTY_ARRAY;
     const customer = getCustomer();
     const cart = getCart();
 
@@ -72,6 +131,7 @@ export const useShipping = () => {
         checkoutSettings: {
             enableOrderComments,
             hasMultiShippingEnabled,
+            shippingQuoteFailedMessage,
         },
     } = config;
 
@@ -87,9 +147,7 @@ export const useShipping = () => {
         isDeletingConsignment() ||
         isLoadingCheckout();
 
-    const shippableItemsCount = getShippableItemsCount(cart);
-    const shouldShowMultiShipping =
-        hasMultiShippingEnabled && !methodId && shippableItemsCount > 1;
+    const shouldShowMultiShipping = shouldShowMultiShippingToggle(checkout, config, cart);
 
     const shippingAddress =
         !shouldShowMultiShipping && consignments.length > 1 ? undefined : getShippingAddress();
@@ -99,25 +157,75 @@ export const useShipping = () => {
     );
 
     const showDefaultShippingExpectationPrompt =
-      config.inventorySettings?.shouldDisplayBackorderMessagesOnStorefront &&
-      config.inventorySettings?.showDefaultShippingExpectationPrompt &&
-      getBackorderCount(cart.lineItems) > 0;
-    const defaultShippingExpectationPrompt = config.inventorySettings?.defaultShippingExpectationPrompt ?? undefined;
+        config.inventorySettings?.shouldDisplayBackorderMessagesOnStorefront &&
+        config.inventorySettings?.showDefaultShippingExpectationPrompt &&
+        getBackorderCount(cart.lineItems) > 0;
+    const defaultShippingExpectationPrompt =
+        config.inventorySettings?.defaultShippingExpectationPrompt ?? undefined;
 
-    const getFieldsWithExtraFields = useCallback((countryCode?: string) => {
-        const addressFields = getShippingAddressFields(countryCode || '');
+    const getFieldsWithExtraFields = useCallback(
+        (countryCode?: string) => {
+            const addressFields = getShippingAddressFields(countryCode || '');
 
-        if (!hasAddressExtraFields) {
-            return addressFields;
-        }
+            if (!hasAddressExtraFields) {
+                return addressFields;
+            }
 
-        const addressExtraFields = getAddressExtraFields();
+            const addressExtraFields = getAddressExtraFields();
 
-        return [...addressFields, ...addressExtraFields];
-    }, [getShippingAddressFields, getAddressExtraFields, hasAddressExtraFields]);
+            return [...addressFields, ...addressExtraFields];
+        },
+        [getShippingAddressFields, getAddressExtraFields, hasAddressExtraFields],
+    );
+
+    // Write boundary for the address label: callers pass decoded addresses, these wrappers encode
+    // just before the request leaves the app (idempotent, no-op unless the capability is on).
+    const encodeAddr = useCallback(
+        <T extends Partial<AddressRequestBody> | undefined>(address: T): T =>
+            address && hasAddressLabel ? encodeAddressForWrite(address) : address,
+        [hasAddressLabel],
+    );
+    const encodeConsignmentReq = useCallback(
+        <T extends { address?: AddressRequestBody; shippingAddress?: AddressRequestBody }>(
+            req: T,
+        ): T =>
+            hasAddressLabel
+                ? {
+                      ...req,
+                      address: encodeAddr(req.address),
+                      shippingAddress: encodeAddr(req.shippingAddress),
+                  }
+                : req,
+        [encodeAddr, hasAddressLabel],
+    );
+
+    const assignItem = useCallback(
+        (...args: Parameters<typeof checkoutService.assignItemsToAddress>) => {
+            const [req, ...rest] = args;
+
+            return checkoutService.assignItemsToAddress(encodeConsignmentReq(req), ...rest);
+        },
+        [checkoutService, encodeConsignmentReq],
+    );
+    const updateShippingAddress = useCallback(
+        (...args: Parameters<typeof checkoutService.updateShippingAddress>) => {
+            const [address, ...rest] = args;
+
+            return checkoutService.updateShippingAddress(encodeAddr(address), ...rest);
+        },
+        [checkoutService, encodeAddr],
+    );
+    const updateConsignment = useCallback(
+        (...args: Parameters<typeof checkoutService.updateConsignment>) => {
+            const [req, ...rest] = args;
+
+            return checkoutService.updateConsignment(encodeConsignmentReq(req), ...rest);
+        },
+        [checkoutService, encodeConsignmentReq],
+    );
 
     return {
-        assignItem: checkoutService.assignItemsToAddress,
+        assignItem,
         billingAddress: getBillingAddress(),
         cart,
         cartHasPromotionalItems: hasPromotionalItems(cart),
@@ -126,7 +234,9 @@ export const useShipping = () => {
         customer,
         customerMessage: checkout.customerMessage,
         createCustomerAddress: checkoutService.createCustomerAddress,
-        defaultShippingExpectationMessage: showDefaultShippingExpectationPrompt ? defaultShippingExpectationPrompt : undefined,
+        defaultShippingExpectationMessage: showDefaultShippingExpectationPrompt
+            ? defaultShippingExpectationPrompt
+            : undefined,
         deinitializeShippingMethod: checkoutService.deinitializeShipping,
         deleteConsignments: deleteConsignmentsSelector({
             checkoutService,
@@ -138,7 +248,11 @@ export const useShipping = () => {
         isGuest: customer.isGuest,
         isInitializing: isLoadingShippingCountries() || isLoadingShippingOptions(),
         isLoading,
-        isNoCountriesErrorOnCheckoutEnabled: isExperimentEnabled(config.checkoutSettings, 'CHECKOUT-9630.no_countries_error_on_checkout', true),
+        isNoCountriesErrorOnCheckoutEnabled: isExperimentEnabled(
+            config.checkoutSettings,
+            'CHECKOUT-9630.no_countries_error_on_checkout',
+            true,
+        ),
         isShippingStepPending: isShippingStepPending(),
         loadShippingAddressFields: checkoutService.loadShippingAddressFields,
         loadBillingAddressFields: checkoutService.loadBillingAddressFields,
@@ -148,12 +262,17 @@ export const useShipping = () => {
         shippingAddress,
         shouldShowMultiShipping,
         shouldShowOrderComments: enableOrderComments,
+        shippingQuoteFailedMessage,
+        selectConsignmentShippingOption: checkoutService.selectConsignmentShippingOption,
         signOut: checkoutService.signOutCustomer,
         unassignItem: checkoutService.unassignItemsToAddress,
         updateBillingAddress: checkoutService.updateBillingAddress,
         updateCheckout: checkoutService.updateCheckout,
-        updateShippingAddress: checkoutService.updateShippingAddress,
-        shouldRenderStripeForm: providerWithCustomCheckout === PaymentMethodId.StripeUPE && shouldUseStripeLinkByMinimumAmount(cart),
-        validateMaxLength: isExperimentEnabled(config.checkoutSettings, 'CHECKOUT-9768.form_fields_max_length_validation', false),
+        updateShippingAddress,
+        updateConsignment,
+        getConsignments,
+        shouldRenderStripeForm:
+            providerWithCustomCheckout === PaymentMethodId.StripeUPE &&
+            shouldUseStripeLinkByMinimumAmount(cart),
     };
-}
+};

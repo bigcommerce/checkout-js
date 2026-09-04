@@ -4,7 +4,11 @@ import { faker } from '@faker-js/faker';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
-import { CheckoutProvider, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
+import {
+    CheckoutProvider,
+    LocaleContext,
+    type LocaleContextType,
+} from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
@@ -31,7 +35,7 @@ describe('AddressFormModal Component', () => {
                 <LocaleContext.Provider value={localeContext}>
                     <AddressFormModal {...defaultProps} {...props} />
                 </LocaleContext.Provider>
-            </CheckoutProvider>
+            </CheckoutProvider>,
         );
     };
 
@@ -118,12 +122,28 @@ describe('AddressFormModal Component', () => {
         );
     });
 
+    it('does not show save address checkbox when shouldShowSaveAddress is false', () => {
+        renderAddressFormModal({ shouldShowSaveAddress: false });
+
+        expect(
+            screen.queryByLabelText('Save this address in my address book.'),
+        ).not.toBeInTheDocument();
+    });
+
+    it('shows save address checkbox when shouldShowSaveAddress is true', () => {
+        renderAddressFormModal({ shouldShowSaveAddress: true });
+
+        expect(screen.getByLabelText('Save this address in my address book.')).toBeInTheDocument();
+    });
+
     it('renders prefilled address form in the modal when selectedAddress is present', () => {
-        const address = JSON.parse(JSON.stringify({
-            firstName: faker.name.firstName(),
-            lastName: faker.name.lastName(),
-            address1: faker.address.streetAddress(),
-        }));
+        const address = JSON.parse(
+            JSON.stringify({
+                firstName: faker.person.firstName(),
+                lastName: faker.person.lastName(),
+                address1: faker.location.streetAddress(),
+            }),
+        );
 
         renderAddressFormModal({ selectedAddress: address });
 

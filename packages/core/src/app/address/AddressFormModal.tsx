@@ -5,11 +5,19 @@ import React, { type FunctionComponent } from 'react';
 import { lazy } from 'yup';
 
 import { useThemeContext } from '@bigcommerce/checkout/contexts';
-import { TranslatedString, withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { Button, ButtonVariant, LoadingOverlay } from '@bigcommerce/checkout/ui';
-
-import { Form } from '../ui/form';
-import { Modal, ModalHeader } from '../ui/modal';
+import {
+    TranslatedString,
+    withLanguage,
+    type WithLanguageProps,
+} from '@bigcommerce/checkout/locale';
+import {
+    Button,
+    ButtonVariant,
+    Form,
+    LoadingOverlay,
+    Modal,
+    ModalHeader,
+} from '@bigcommerce/checkout/ui';
 
 import AddressForm from './AddressForm';
 import AddressType from './AddressType';
@@ -25,7 +33,6 @@ export interface AddressFormProps {
     isLoading: boolean;
     shouldShowSaveAddress?: boolean;
     defaultCountryCode?: string;
-    storageKey?: string;
     getFields(countryCode?: string): FormField[];
     onSaveAddress(address: AddressFormValues): void;
     onRequestClose?(): void;
@@ -34,26 +41,18 @@ export interface AddressFormProps {
 
 const SaveAddress: FunctionComponent<
     AddressFormProps & WithLanguageProps & FormikProps<AddressFormValues>
-> = ({
-    getFields,
-    values,
-    setFieldValue,
-    isLoading,
-    onRequestClose,
-}) => (
+> = ({ getFields, values, setFieldValue, isLoading, onRequestClose, shouldShowSaveAddress }) => (
     <Form autoComplete="on">
         <LoadingOverlay isLoading={isLoading}>
             <AddressForm
                 countryCode={values.countryCode}
                 formFields={getFields(values.countryCode)}
                 setFieldValue={setFieldValue}
-                shouldShowSaveAddress={false}
+                shouldShowSaveAddress={shouldShowSaveAddress}
                 type={AddressType.Shipping}
             />
             <div className="form-actions">
-                <Button
-                    onClick={onRequestClose}
-                    variant={ButtonVariant.Secondary}>
+                <Button onClick={onRequestClose} variant={ButtonVariant.Secondary}>
                     <TranslatedString id="common.cancel_action" />
                 </Button>
 
@@ -75,11 +74,10 @@ const SaveAddressForm = withLanguage(
         handleSubmit: (values, { props: { onSaveAddress } }) => {
             onSaveAddress(values);
         },
-        mapPropsToValues: ({ getFields, selectedAddress, storageKey }) =>
+        mapPropsToValues: ({ getFields, selectedAddress }) =>
             mapAddressToFormValues(
                 getFields(selectedAddress && selectedAddress.countryCode),
                 selectedAddress,
-                storageKey,
             ),
         validationSchema: ({ language, getFields }: AddressFormProps & WithLanguageProps) =>
             lazy<Partial<AddressFormValues>>((values) =>
@@ -97,11 +95,13 @@ const AddressFormModal: FunctionComponent<AddressFormModalProps> = ({
     onRequestClose,
     ...addressFormProps
 }) => {
-    const { themeV2 } = useThemeContext();
+    const { enhancedThemeV1 } = useThemeContext();
 
     return (
         <Modal
-            additionalModalClassName={classNames("modal--medium", { "themeV2": themeV2 })}
+            additionalModalClassName={classNames('modal--medium', 'modal--address', {
+                enhancedThemeV1,
+            })}
             header={
                 <ModalHeader>
                     <TranslatedString id="address.add_address_heading" />
@@ -115,6 +115,6 @@ const AddressFormModal: FunctionComponent<AddressFormModalProps> = ({
             <SaveAddressForm {...addressFormProps} onRequestClose={onRequestClose} />
         </Modal>
     );
-}
+};
 
 export default AddressFormModal;

@@ -7,16 +7,26 @@ import {
 import { noop } from 'lodash';
 import React, { type FunctionComponent, lazy, memo } from 'react';
 
-import { type CheckoutContextProps, useLocale } from '@bigcommerce/checkout/contexts';
+import {
+    type CheckoutContextProps,
+    useCapabilities,
+    useLocale,
+} from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { LazyContainer } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../checkout';
+import { retry } from '../common/utility';
 
 import { getSupportedMethodIds } from './getSupportedMethods';
 import resolveCheckoutButton from './resolveCheckoutButton';
 
-const CheckoutButtonV1Resolver = lazy(() => import(/* webpackChunkName: "wallet-button-v1-resolver" */'./WalletButtonV1Resolver'));
+const CheckoutButtonV1Resolver = lazy(() =>
+    retry(
+        () =>
+            import(/* webpackChunkName: "wallet-button-v1-resolver" */ './WalletButtonV1Resolver'),
+    ),
+);
 
 export interface CheckoutButtonListProps {
     hideText?: boolean;
@@ -34,7 +44,9 @@ interface WithCheckoutCheckoutButtonListProps {
     checkoutService: CheckoutService;
 }
 
-const CheckoutButtonList: FunctionComponent<WithCheckoutCheckoutButtonListProps & CheckoutButtonListProps> = ({
+const CheckoutButtonList: FunctionComponent<
+    WithCheckoutCheckoutButtonListProps & CheckoutButtonListProps
+> = ({
     checkoutService,
     checkoutState,
     hideText = false,
@@ -47,7 +59,16 @@ const CheckoutButtonList: FunctionComponent<WithCheckoutCheckoutButtonListProps 
     onError,
 }) => {
     const { language } = useLocale();
-    const supportedMethodIds = getSupportedMethodIds(methodIds);
+    const {
+        userJourney: { disableWalletButtons },
+    } = useCapabilities();
+    const paymentMethods = checkoutState.data.getPaymentMethods();
+
+    if (disableWalletButtons) {
+        return null;
+    }
+
+    const supportedMethodIds = getSupportedMethodIds(methodIds, paymentMethods);
 
     if (supportedMethodIds.length === 0) {
         return null;
@@ -69,35 +90,37 @@ const CheckoutButtonList: FunctionComponent<WithCheckoutCheckoutButtonListProps 
 
     const renderButtons = () => {
         return supportedMethodIds.map((methodId) => {
-            const ResolvedCheckoutButton = resolveCheckoutButton(
-                { id: methodId },
-            );
+            const ResolvedCheckoutButton = resolveCheckoutButton({ id: methodId });
 
             if (!ResolvedCheckoutButton) {
-                return <LazyContainer key={methodId}>
-                    <CheckoutButtonV1Resolver
-                        deinitialize={deinitialize}
-                        initialize={initialize}
-                        isShowingWalletButtonsOnTop={false}
-                        key={methodId}
-                        methodId={methodId}
-                        onClick={onClick}
-                        onError={onClick}
-                    />
-                </LazyContainer>
+                return (
+                    <LazyContainer key={methodId}>
+                        <CheckoutButtonV1Resolver
+                            deinitialize={deinitialize}
+                            initialize={initialize}
+                            isShowingWalletButtonsOnTop={false}
+                            key={methodId}
+                            methodId={methodId}
+                            onClick={onClick}
+                            onError={onClick}
+                        />
+                    </LazyContainer>
+                );
             }
 
-            return <LazyContainer key={methodId}>
-                <ResolvedCheckoutButton
-                    checkoutService={checkoutService}
-                    checkoutState={checkoutState}
-                    containerId={`${methodId}CheckoutButton`}
-                    language={language}
-                    methodId={methodId}
-                    onUnhandledError={onClick}
-                    onWalletButtonClick={onClick}
-                />
-            </LazyContainer>;
+            return (
+                <LazyContainer key={methodId}>
+                    <ResolvedCheckoutButton
+                        checkoutService={checkoutService}
+                        checkoutState={checkoutState}
+                        containerId={`${methodId}CheckoutButton`}
+                        language={language}
+                        methodId={methodId}
+                        onUnhandledError={onClick}
+                        onWalletButtonClick={onClick}
+                    />
+                </LazyContainer>
+            );
         });
     };
 
@@ -109,16 +132,14 @@ const CheckoutButtonList: FunctionComponent<WithCheckoutCheckoutButtonListProps 
                 </p>
             )}
 
-            <div className="checkoutRemote">
-                {renderButtons()}
-            </div>
+            <div className="checkoutRemote">{renderButtons()}</div>
         </>
     );
 };
 
 function mapToCheckoutButtonListProps({
-  checkoutState,
-  checkoutService,
+    checkoutState,
+    checkoutService,
 }: CheckoutContextProps): WithCheckoutCheckoutButtonListProps | null {
     return {
         checkoutService,

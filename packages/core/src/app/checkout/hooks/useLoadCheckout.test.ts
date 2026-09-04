@@ -1,6 +1,6 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
 
-import { useCheckout , useExtensions } from '@bigcommerce/checkout/contexts';
+import { useCheckout, useExtensions } from '@bigcommerce/checkout/contexts';
 
 import { getCheckout } from '../checkouts.mock';
 

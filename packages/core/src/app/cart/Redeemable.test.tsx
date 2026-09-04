@@ -1,8 +1,17 @@
-import { type CheckoutSelectors, type CheckoutService, createCheckoutService, type RequestError } from '@bigcommerce/checkout-sdk';
+import {
+    type CheckoutSelectors,
+    type CheckoutService,
+    createCheckoutService,
+    type RequestError,
+} from '@bigcommerce/checkout-sdk';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
-import { CheckoutContext, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
+import {
+    CheckoutContext,
+    LocaleContext,
+    type LocaleContextType,
+} from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
@@ -19,8 +28,6 @@ describe('CartSummary Component', () => {
     const applyCoupon = jest.fn();
     const applyGiftCertificate = jest.fn();
     const clearError = jest.fn();
-    const onRemovedCoupon = jest.fn();
-    const onRemovedGiftCertificate = jest.fn();
     const minPurchaseError = {
         errors: [{ code: 'min_purchase' }],
     } as RequestError;
@@ -50,7 +57,7 @@ describe('CartSummary Component', () => {
         localeContext = createLocaleContext(getStoreConfig());
         checkoutService = createCheckoutService();
         checkoutState = checkoutService.getState();
-        translate=localeContext.language.translate;
+        translate = localeContext.language.translate;
     });
 
     it('renders errors when coupon code is not collapsed', () => {
@@ -61,8 +68,6 @@ describe('CartSummary Component', () => {
                 applyGiftCertificate={applyGiftCertificate}
                 clearError={clearError}
                 isApplyingRedeemable={true}
-                onRemovedCoupon={onRemovedCoupon}
-                onRemovedGiftCertificate={onRemovedGiftCertificate}
                 shouldCollapseCouponCode={false}
             />,
         );
@@ -71,21 +76,23 @@ describe('CartSummary Component', () => {
 
         expect(submit).toHaveClass('is-loading');
         expect(submit).toBeDisabled();
-        expect(screen.getByText(translate('redeemable.coupon_min_order_total'))).toBeInTheDocument();
+        expect(
+            screen.getByText(translate('redeemable.coupon_min_order_total')),
+        ).toBeInTheDocument();
         expect(screen.queryByTestId('redeemable-label')).not.toBeInTheDocument();
         expect(screen.getByTestId('redeemableEntry-input')).toBeInTheDocument();
         expect(screen.getByLabelText('Gift Certificate or Coupon Code')).toBeInTheDocument();
 
-        rerender(<RedeemableTestComponent
-            appliedRedeemableError={notApplicableError}
-            applyCoupon={applyCoupon}
-            applyGiftCertificate={applyGiftCertificate}
-            clearError={clearError}
-            isApplyingRedeemable={true}
-            onRemovedCoupon={onRemovedCoupon}
-            onRemovedGiftCertificate={onRemovedGiftCertificate}
-            shouldCollapseCouponCode={false}
-        />);
+        rerender(
+            <RedeemableTestComponent
+                appliedRedeemableError={notApplicableError}
+                applyCoupon={applyCoupon}
+                applyGiftCertificate={applyGiftCertificate}
+                clearError={clearError}
+                isApplyingRedeemable={true}
+                shouldCollapseCouponCode={false}
+            />,
+        );
 
         expect(screen.getByText(translate('redeemable.coupon_location_error'))).toBeInTheDocument();
     });
@@ -98,8 +105,6 @@ describe('CartSummary Component', () => {
                 applyGiftCertificate={applyGiftCertificate}
                 clearError={clearError}
                 isApplyingRedeemable={true}
-                onRemovedCoupon={onRemovedCoupon}
-                onRemovedGiftCertificate={onRemovedGiftCertificate}
                 shouldCollapseCouponCode={false}
             />,
         );
@@ -115,8 +120,6 @@ describe('CartSummary Component', () => {
                 applyGiftCertificate={applyGiftCertificate}
                 clearError={clearError}
                 isApplyingRedeemable={true}
-                onRemovedCoupon={onRemovedCoupon}
-                onRemovedGiftCertificate={onRemovedGiftCertificate}
                 shouldCollapseCouponCode={false}
             />,
         );
@@ -125,15 +128,15 @@ describe('CartSummary Component', () => {
     });
 
     describe('when coupon code is collapsed', () => {
-        const TestComponent = () => <RedeemableTestComponent
-            appliedRedeemableError={appliedError}
-            applyCoupon={applyCoupon}
-            applyGiftCertificate={applyGiftCertificate}
-            clearError={clearError}
-            onRemovedCoupon={onRemovedCoupon}
-            onRemovedGiftCertificate={onRemovedGiftCertificate}
-            shouldCollapseCouponCode={true}
-        />;
+        const TestComponent = () => (
+            <RedeemableTestComponent
+                appliedRedeemableError={appliedError}
+                applyCoupon={applyCoupon}
+                applyGiftCertificate={applyGiftCertificate}
+                clearError={clearError}
+                shouldCollapseCouponCode={true}
+            />
+        );
 
         it('renders redeemable toggle link', () => {
             render(<TestComponent />);
@@ -157,7 +160,9 @@ describe('CartSummary Component', () => {
 
                 await userEvent.click(submit);
 
-                expect(screen.getByTestId('redeemable-code-field-error-message')).toBeInTheDocument();
+                expect(
+                    screen.getByTestId('redeemable-code-field-error-message'),
+                ).toBeInTheDocument();
             });
 
             it('applies a coupon with clicking Apply button', async () => {
@@ -166,7 +171,7 @@ describe('CartSummary Component', () => {
                 applyGiftCertificate.mockRejectedValue(new Error());
 
                 await userEvent.click(screen.getByTestId('redeemable-label'));
-                await userEvent.type(screen.getByTestId('redeemableEntry-input'),' foo {enter}');
+                await userEvent.type(screen.getByTestId('redeemableEntry-input'), ' foo {enter}');
                 await userEvent.click(screen.getByTestId('redeemableEntry-submit'));
 
                 expect(clearError).toHaveBeenCalledWith(appliedError);
@@ -182,8 +187,6 @@ describe('CartSummary Component', () => {
                 applyCoupon={applyCoupon}
                 applyGiftCertificate={applyGiftCertificate}
                 clearError={clearError}
-                onRemovedCoupon={onRemovedCoupon}
-                onRemovedGiftCertificate={onRemovedGiftCertificate}
                 shouldCollapseCouponCode={true}
             />,
         );
@@ -196,6 +199,97 @@ describe('CartSummary Component', () => {
 
         expect(screen.getByTestId('redeemable-code-field-error-message')).toBeInTheDocument();
         expect(screen.getByText(translate('redeemable.code_required_error'))).toBeInTheDocument();
+    });
+
+    describe('disableCoupon and disableGiftCertificate props', () => {
+        beforeEach(() => {
+            jest.clearAllMocks();
+        });
+
+        it('returns null when both disableCoupon and disableGiftCertificate are true', () => {
+            const { container } = render(
+                <RedeemableTestComponent
+                    applyCoupon={applyCoupon}
+                    applyGiftCertificate={applyGiftCertificate}
+                    clearError={clearError}
+                    disableCoupon={true}
+                    disableGiftCertificate={true}
+                    shouldCollapseCouponCode={false}
+                />,
+            );
+
+            expect(container).toBeEmptyDOMElement();
+        });
+
+        it('shows "Coupon" label when disableGiftCertificate is true', () => {
+            render(
+                <RedeemableTestComponent
+                    applyCoupon={applyCoupon}
+                    applyGiftCertificate={applyGiftCertificate}
+                    clearError={clearError}
+                    disableGiftCertificate={true}
+                    shouldCollapseCouponCode={false}
+                />,
+            );
+
+            expect(screen.getByText(translate('redeemable.coupon_text'))).toBeInTheDocument();
+        });
+
+        it('shows "Gift certificate" label when disableCoupon is true', () => {
+            render(
+                <RedeemableTestComponent
+                    applyCoupon={applyCoupon}
+                    applyGiftCertificate={applyGiftCertificate}
+                    clearError={clearError}
+                    disableCoupon={true}
+                    shouldCollapseCouponCode={false}
+                />,
+            );
+
+            expect(
+                screen.getByText(translate('redeemable.gift_certificate_text')),
+            ).toBeInTheDocument();
+        });
+
+        it('calls only applyCoupon when disableGiftCertificate is true and form is submitted', async () => {
+            applyCoupon.mockResolvedValue(undefined);
+
+            render(
+                <RedeemableTestComponent
+                    applyCoupon={applyCoupon}
+                    applyGiftCertificate={applyGiftCertificate}
+                    clearError={clearError}
+                    disableGiftCertificate={true}
+                    shouldCollapseCouponCode={false}
+                />,
+            );
+
+            await userEvent.type(screen.getByTestId('redeemableEntry-input'), 'MYCODE');
+            await userEvent.click(screen.getByTestId('redeemableEntry-submit'));
+
+            expect(applyCoupon).toHaveBeenCalledWith('MYCODE');
+            expect(applyGiftCertificate).not.toHaveBeenCalled();
+        });
+
+        it('calls only applyGiftCertificate when disableCoupon is true and form is submitted', async () => {
+            applyGiftCertificate.mockResolvedValue(undefined);
+
+            render(
+                <RedeemableTestComponent
+                    applyCoupon={applyCoupon}
+                    applyGiftCertificate={applyGiftCertificate}
+                    clearError={clearError}
+                    disableCoupon={true}
+                    shouldCollapseCouponCode={false}
+                />,
+            );
+
+            await userEvent.type(screen.getByTestId('redeemableEntry-input'), 'GIFTCODE');
+            await userEvent.click(screen.getByTestId('redeemableEntry-submit'));
+
+            expect(applyGiftCertificate).toHaveBeenCalledWith('GIFTCODE');
+            expect(applyCoupon).not.toHaveBeenCalled();
+        });
     });
 
     it('disables apply button when payment is submitting', async () => {
@@ -213,8 +307,6 @@ describe('CartSummary Component', () => {
                 applyGiftCertificate={applyGiftCertificate}
                 clearError={clearError}
                 isApplyingRedeemable={false}
-                onRemovedCoupon={onRemovedCoupon}
-                onRemovedGiftCertificate={onRemovedGiftCertificate}
                 shouldCollapseCouponCode={false}
             />,
         );

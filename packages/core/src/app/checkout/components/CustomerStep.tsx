@@ -1,5 +1,6 @@
 import React, { lazy } from 'react';
 
+import { useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { LazyContainer } from '@bigcommerce/checkout/ui';
 
@@ -9,7 +10,9 @@ import {
     CustomerInfo,
     type CustomerProps,
     type CustomerSignOutEvent,
+    CustomerViewType,
 } from '../../customer';
+import { attemptStorefrontLoginRedirect } from '../../customer/attemptStorefrontLoginRedirect';
 import { isEmbedded } from '../../embeddedCheckout';
 import CheckoutStep from '../CheckoutStep';
 import type CheckoutStepType from '../CheckoutStepType';
@@ -52,20 +55,59 @@ const CustomerStep: React.FC<CustomerStepProps> = ({
     onUnhandledError,
     onWalletButtonClick,
 }) => {
+    const { enhancedThemeV1 } = useThemeContext();
+    const {
+        selectedState: {
+            config,
+            isContinuingAsGuest,
+            isExecutingPaymentMethodCheckout,
+            isInitializingCustomer,
+        },
+    } = useCheckout(({ data, statuses }) => ({
+        config: data.getConfig(),
+        isContinuingAsGuest: statuses.isContinuingAsGuest(),
+        isExecutingPaymentMethodCheckout: statuses.isExecutingPaymentMethodCheckout(),
+        isInitializingCustomer: statuses.isInitializingCustomer(),
+    }));
+
+    const handleShowLogin = () => {
+        if (attemptStorefrontLoginRedirect(config)) {
+            return;
+        }
+
+        onChangeViewType?.(CustomerViewType.Login);
+    };
+
+    const isCustomerBusy =
+        isContinuingAsGuest || isExecutingPaymentMethodCheckout || isInitializingCustomer;
+    const shouldShowHeaderAction =
+        enhancedThemeV1 && viewType === CustomerViewType.Guest && !isCustomerBusy;
+
+    const headerAction = shouldShowHeaderAction ? (
+        <span className="optimizedCheckout-contentPrimary body-regular">
+            <TranslatedString id="customer.login_text" />{' '}
+            <a
+                data-test="customer-continue-button"
+                id="checkout-customer-login"
+                onClick={handleShowLogin}
+                role="button"
+                tabIndex={0}
+            >
+                <TranslatedString id="customer.login_action" />
+            </a>
+        </span>
+    ) : null;
+
     return (
         <CheckoutStep
             {...step}
+            headerAction={headerAction}
             heading={<TranslatedString id="customer.customer_heading" />}
             key={step.type}
             onEdit={onEdit}
             onExpanded={onExpanded}
             suggestion={<CheckoutSuggestion />}
-            summary={
-                <CustomerInfo
-                    onSignOut={onSignOut}
-                    onSignOutError={onSignOutError}
-                />
-            }
+            summary={<CustomerInfo onSignOut={onSignOut} onSignOutError={onSignOutError} />}
         >
             <LazyContainer>
                 <Customer

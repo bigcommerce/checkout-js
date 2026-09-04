@@ -1,4 +1,8 @@
-import { type Consignment, type LineItemOption, type PhysicalItem } from "@bigcommerce/checkout-sdk";
+import {
+    type Consignment,
+    type LineItemOption,
+    type PhysicalItem,
+} from '@bigcommerce/checkout-sdk';
 
 export enum LineItemType {
     Physical,
@@ -27,7 +31,7 @@ export interface MultiShippingTableData {
     hasDigitalItems: boolean;
     hasSplitItems: boolean;
     shippableItemsCount: number;
-};
+}
 
 export interface MultiShippingConsignmentData extends Consignment, MultiShippingTableData {
     consignmentNumber: number;

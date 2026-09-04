@@ -35,13 +35,13 @@ describe('CartSummary Component', () => {
             </CheckoutProvider>,
         );
 
-        await userEvent.click(screen.getByText(
-            localeContext.language.translate('cart.show_details_action'),
-        ));
+        await userEvent.click(
+            screen.getByText(localeContext.language.translate('cart.show_details_action')),
+        );
 
-        expect(screen.getByText(
-            localeContext.language.translate('cart.edit_cart_action'),
-        )).toBeInTheDocument();
+        expect(
+            screen.getByText(localeContext.language.translate('cart.edit_cart_action')),
+        ).toBeInTheDocument();
     });
 
     it('renders OrderSummaryDrawer without Edit Cart link for Buy Now carts', async () => {
@@ -49,11 +49,13 @@ describe('CartSummary Component', () => {
         const localeContext = createLocaleContext(getStoreConfig());
 
         jest.spyOn(checkoutService.getState().data, 'getCustomer').mockReturnValue(getCustomer());
-        jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue({ ...getCheckout(),
-        cart: {
-            ...getCheckout().cart,
-            source: "BUY_NOW",
-        } });
+        jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue({
+            ...getCheckout(),
+            cart: {
+                ...getCheckout().cart,
+                source: 'BUY_NOW',
+            },
+        });
         jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(getStoreConfig());
 
         render(
@@ -64,12 +66,12 @@ describe('CartSummary Component', () => {
             </CheckoutProvider>,
         );
 
-        await userEvent.click(screen.getByText(
-            localeContext.language.translate('cart.show_details_action'),
-        ));
+        await userEvent.click(
+            screen.getByText(localeContext.language.translate('cart.show_details_action')),
+        );
 
         expect(
-          screen.queryByText(localeContext.language.translate('cart.edit_cart_action')),
+            screen.queryByText(localeContext.language.translate('cart.edit_cart_action')),
         ).not.toBeInTheDocument();
     });
 });

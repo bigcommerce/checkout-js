@@ -3,13 +3,17 @@ import { type CheckoutService, createCheckoutService } from '@bigcommerce/checko
 import { noop } from 'lodash';
 import React from 'react';
 
-import { CheckoutProvider, LocaleContext, type LocaleContextType } from '@bigcommerce/checkout/contexts';
+import {
+    CheckoutProvider,
+    LocaleContext,
+    type LocaleContextType,
+} from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getCheckout } from '../checkout/checkouts.mock';
 import { getStoreConfig } from '../config/config.mock';
-import { getCustomer } from '../customer/customers.mock';
+import { getB2BCustomer } from '../customer/customers.mock';
 import { getCountries } from '../geography/countries.mock';
 
 import { getAddress } from './address.mock';
@@ -24,7 +28,7 @@ describe('SearchableAddressSelectComponent', () => {
     let localeContext: LocaleContextType;
 
     const defaultProps: SearchableAddressSelectProps = {
-        addresses: getCustomer().addresses,
+        addresses: getB2BCustomer().addresses,
         onSelectAddress: noop,
         onUseNewAddress: noop,
         type: AddressType.Billing,
@@ -36,7 +40,7 @@ describe('SearchableAddressSelectComponent', () => {
                 <LocaleContext.Provider value={localeContext}>
                     <SearchableAddressSelectComponent {...defaultProps} {...props} />
                 </LocaleContext.Provider>
-            </CheckoutProvider>
+            </CheckoutProvider>,
         );
     };
 
@@ -46,8 +50,12 @@ describe('SearchableAddressSelectComponent', () => {
 
         jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue(getCheckout());
         jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(getStoreConfig());
-        jest.spyOn(checkoutService.getState().data, 'getBillingCountries').mockReturnValue(getCountries());
-        jest.spyOn(checkoutService.getState().data, 'getShippingCountries').mockReturnValue(getCountries());
+        jest.spyOn(checkoutService.getState().data, 'getBillingCountries').mockReturnValue(
+            getCountries(),
+        );
+        jest.spyOn(checkoutService.getState().data, 'getShippingCountries').mockReturnValue(
+            getCountries(),
+        );
     });
 
     it('renders "Enter a new address" link when addresses exist', () => {
@@ -90,7 +98,8 @@ describe('SearchableAddressSelectComponent', () => {
 
     it('calls onSelectAddress with selected address when an address option is clicked', () => {
         const onSelectAddress = jest.fn();
-        const addresses = getCustomer().addresses;
+        const addresses = getB2BCustomer().addresses;
+        const billingAddresses = addresses.filter((address) => address.isBilling);
 
         renderComponent({ onSelectAddress, addresses });
 
@@ -98,13 +107,11 @@ describe('SearchableAddressSelectComponent', () => {
 
         fireEvent.click(firstOptionAction);
 
-        expect(onSelectAddress).toHaveBeenCalledWith(addresses[0]);
+        expect(onSelectAddress).toHaveBeenCalledWith(billingAddresses[0]);
     });
 
     it('filters addresses when user types in search input', () => {
-        const addresses = getCustomer().addresses;
-
-        renderComponent({ addresses });
+        renderComponent();
 
         const searchInput = screen.getByRole('textbox', { name: 'Search addresses' });
         const initialOptionCount = screen.getAllByTestId('address-select-option').length;
@@ -117,11 +124,29 @@ describe('SearchableAddressSelectComponent', () => {
         expect(screen.getByText('Invalid Address')).toBeInTheDocument();
     });
 
-    it('renders all addresses when search query is empty', () => {
-        const addresses = getCustomer().addresses;
+    it('renders only billing addresses on the billing step', () => {
+        const addresses = getB2BCustomer().addresses;
+        const billingAddresses = addresses.filter((address) => address.isBilling);
 
-        renderComponent({ addresses });
+        renderComponent({ addresses, type: AddressType.Billing });
 
-        expect(screen.getAllByTestId('address-select-option')).toHaveLength(addresses.length);
+        expect(screen.getAllByTestId('address-select-option')).toHaveLength(
+            billingAddresses.length,
+        );
+        expect(screen.queryByText('Shipping Only Way')).not.toBeInTheDocument();
+        expect(screen.getByText(/Billing Only Way/)).toBeInTheDocument();
+    });
+
+    it('renders only shipping addresses on the shipping step', () => {
+        const addresses = getB2BCustomer().addresses;
+        const shippingAddresses = addresses.filter((address) => address.isShipping);
+
+        renderComponent({ addresses, type: AddressType.Shipping });
+
+        expect(screen.getAllByTestId('address-select-option')).toHaveLength(
+            shippingAddresses.length,
+        );
+        expect(screen.queryByText('Billing Only Way')).not.toBeInTheDocument();
+        expect(screen.getByText(/Shipping Only Way/)).toBeInTheDocument();
     });
 });

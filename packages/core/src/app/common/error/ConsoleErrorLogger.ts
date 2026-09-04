@@ -1,8 +1,8 @@
 import {
-  ErrorLevelType,
-  type ErrorLogger,
-  type ErrorMeta,
-  type ErrorTags,
+    ErrorLevelType,
+    type ErrorLogger,
+    type ErrorMeta,
+    type ErrorTags,
 } from '@bigcommerce/checkout/error-handling-utils';
 
 export interface ConsoleErrorLoggerOptions {

@@ -1,4 +1,10 @@
-import { type CheckoutSettings, type Customer, type PaymentMethod, type PaymentMethodConfig, type StoreConfig } from '@bigcommerce/checkout-sdk';
+import {
+    type CheckoutSettings,
+    type Customer,
+    type PaymentMethod,
+    type PaymentMethodConfig,
+    type StoreConfig,
+} from '@bigcommerce/checkout-sdk';
 
 export interface IsInstrumentFeatureAvailableState {
     config: StoreConfig;
@@ -26,6 +32,9 @@ export default function isInstrumentFeatureAvailable({
     return true;
 }
 
-function isVaultingNotEnabled(checkoutSettings: CheckoutSettings, paymentMethodConfig: PaymentMethodConfig): boolean {
+function isVaultingNotEnabled(
+    checkoutSettings: CheckoutSettings,
+    paymentMethodConfig: PaymentMethodConfig,
+): boolean {
     return !checkoutSettings.isCardVaultingEnabled || !paymentMethodConfig.isVaultingEnabled;
 }

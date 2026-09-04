@@ -1,5 +1,5 @@
 import { Formik, type FormikHelpers as FormikActions, type FormikProps } from 'formik';
-import React  from 'react';
+import React from 'react';
 
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
@@ -18,7 +18,7 @@ const TestComponent: React.FC<TestProps> = ({ count, formik }) => (
 );
 
 describe('connectFormik', () => {
-    let ConnectedTestComponent: React.ComponentType<Omit<TestProps, "formik">>;
+    let ConnectedTestComponent: React.ComponentType<Omit<TestProps, 'formik'>>;
 
     beforeEach(() => {
         ConnectedTestComponent = connectFormik(TestComponent);
@@ -28,22 +28,25 @@ describe('connectFormik', () => {
         render(
             <Formik initialValues={{ testValue: 'test' }} onSubmit={jest.fn()}>
                 <ConnectedTestComponent count={1} />
-            </Formik>
+            </Formik>,
         );
 
         expect(screen.getByText('test')).toBeInTheDocument();
-
     });
 
     it('should update the wrapped component when formik values change', () => {
         let setFieldValue: FormikActions<{ testValue: string }>['setFieldValue'] = jest.fn();
 
         render(
-            <Formik initialValues={{ testValue: 'initialValue' }} onSubmit={jest.fn()} render={(formik) => {
-                setFieldValue = formik.setFieldValue;
+            <Formik
+                initialValues={{ testValue: 'initialValue' }}
+                onSubmit={jest.fn()}
+                render={(formik) => {
+                    setFieldValue = formik.setFieldValue;
 
-                return <ConnectedTestComponent count={1} />;
-            }} />
+                    return <ConnectedTestComponent count={1} />;
+                }}
+            />,
         );
 
         expect(screen.getByText('initialValue')).toBeInTheDocument();
@@ -57,7 +60,7 @@ describe('connectFormik', () => {
         const { rerender } = render(
             <Formik initialValues={{ testValue: 'sameValue' }} onSubmit={jest.fn()}>
                 <ConnectedTestComponent count={1} />
-            </Formik>
+            </Formik>,
         );
 
         const initialRender = screen.getByText('sameValue');
@@ -65,7 +68,7 @@ describe('connectFormik', () => {
         rerender(
             <Formik initialValues={{ testValue: 'sameValue' }} onSubmit={jest.fn()}>
                 <ConnectedTestComponent count={1} />
-            </Formik>
+            </Formik>,
         );
 
         const afterRender = screen.getByText('sameValue');

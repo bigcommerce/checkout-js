@@ -1,7 +1,10 @@
 import { type FormField } from '@bigcommerce/checkout-sdk';
 
 import { type TranslateValidationErrorFunction } from './getCustomFormFieldsValidationSchema';
-import getAddressExtraFieldsValidationSchema from './getAddressExtraFieldsValidationSchema';
+import {
+    getAddressExtraFieldsValidationSchema,
+    getOrderExtraFieldsValidationSchema,
+} from './getExtraFieldsValidationSchema';
 
 describe('getAddressExtraFieldsValidationSchema', () => {
     let translate: TranslateValidationErrorFunction;
@@ -71,7 +74,7 @@ describe('getAddressExtraFieldsValidationSchema', () => {
                 required: true,
                 type: 'integer',
                 max: 100,
-            } as FormField,
+            },
         ];
 
         it('validates required integer field', async () => {
@@ -142,7 +145,7 @@ describe('getAddressExtraFieldsValidationSchema', () => {
                     name: 'b2bExtraField_400',
                     required: false,
                     type: 'integer',
-                } as FormField,
+                },
             ];
 
             const schema = getAddressExtraFieldsValidationSchema({ formFields, translate });
@@ -152,5 +155,47 @@ describe('getAddressExtraFieldsValidationSchema', () => {
 
             expect(spy).toHaveBeenCalled();
         });
+    });
+});
+
+describe('getOrderExtraFieldsValidationSchema', () => {
+    let translate: TranslateValidationErrorFunction;
+
+    const formFields: FormField[] = [
+        {
+            custom: false,
+            default: '',
+            id: 'b2bExtraField_500',
+            label: 'PO Number',
+            name: 'b2bExtraField_500',
+            required: true,
+            maxLength: 10,
+        },
+    ];
+
+    beforeEach(() => {
+        translate = jest.fn();
+    });
+
+    it('validates fields nested under the orderExtraFields key', async () => {
+        const schema = getOrderExtraFieldsValidationSchema({ formFields, translate });
+        const error = await schema
+            .validate({ orderExtraFields: { b2bExtraField_500: '' } })
+            .catch((e) => e.message);
+
+        expect(translate).toHaveBeenCalledWith('required', {
+            name: 'b2bExtraField_500',
+            label: 'PO Number',
+        });
+        expect(error).toBeDefined();
+    });
+
+    it('passes for a valid value under orderExtraFields', async () => {
+        const schema = getOrderExtraFieldsValidationSchema({ formFields, translate });
+        const spy = jest.fn();
+
+        await schema.validate({ orderExtraFields: { b2bExtraField_500: 'PO-123' } }).then(spy);
+
+        expect(spy).toHaveBeenCalled();
     });
 });

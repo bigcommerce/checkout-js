@@ -1,5 +1,5 @@
 import getGoogleAutocompleteScriptLoader from './getGoogleAutocompleteScriptLoader';
-import type GoogleAutocompleteScriptLoader from './GoogleAutocompleteScriptLoader';
+import { type GoogleMapsPlacesScriptLoader } from './googleAutocompleteTypes';
 
 export default class GoogleAutocompleteService {
     private _autocompletePromise?: Promise<google.maps.places.AutocompleteService>;
@@ -7,7 +7,7 @@ export default class GoogleAutocompleteService {
 
     constructor(
         private _apiKey: string,
-        private _scriptLoader: GoogleAutocompleteScriptLoader = getGoogleAutocompleteScriptLoader(),
+        private _scriptLoader: GoogleMapsPlacesScriptLoader = getGoogleAutocompleteScriptLoader(),
     ) {}
 
     getAutocompleteService(): Promise<google.maps.places.AutocompleteService> {

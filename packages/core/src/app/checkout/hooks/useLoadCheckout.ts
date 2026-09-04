@@ -5,9 +5,16 @@ import { useCheckout, useExtensions } from '@bigcommerce/checkout/contexts';
 
 import { yieldToMain } from '../../common/utility';
 
-export const useLoadCheckout = (checkoutId: string, initialState?: CheckoutInitialState): {isLoadingCheckout: boolean} => {
-    const { checkoutService, checkoutState: { data } } = useCheckout();
-    const [ isLoadingCheckout, setIsLoadingCheckout ] = useState(!data.getCheckout());
+export const useLoadCheckout = (
+    checkoutId: string,
+    initialState?: CheckoutInitialState,
+): { isLoadingCheckout: boolean } => {
+    // no reason to subscribe to getCheckout() here because we only use it to set isLoadingCheckout state on mount
+    const {
+        checkoutService,
+        checkoutState: { data },
+    } = useCheckout(() => undefined);
+    const [isLoadingCheckout, setIsLoadingCheckout] = useState(!data.getCheckout());
     const { extensionService } = useExtensions();
 
     const fetchData = async () => {
@@ -35,7 +42,7 @@ export const useLoadCheckout = (checkoutId: string, initialState?: CheckoutIniti
 
                 const delay = attemptSequence ** 2 * 1000;
 
-                await new Promise(resolve => setTimeout(resolve, delay));
+                await new Promise((resolve) => setTimeout(resolve, delay));
 
                 await attemptFetch(attemptSequence + 1);
             }
@@ -48,7 +55,7 @@ export const useLoadCheckout = (checkoutId: string, initialState?: CheckoutIniti
         await yieldToMain();
         await checkoutService.hydrateInitialState(initialState);
         setIsLoadingCheckout(false);
-    }
+    };
 
     useEffect(() => {
         if (!isLoadingCheckout) {

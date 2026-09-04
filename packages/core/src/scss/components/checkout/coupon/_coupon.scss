@@ -44,8 +44,6 @@
     }
 
     .coupon-button {
-        border-color: $color-primaryDark;
-        color: $color-primaryDark;
         flex-shrink: 0;
         margin-bottom: 0;
     }
@@ -59,6 +57,10 @@
     .alertBox-icon {
         padding-right: 0;
         padding-left: spacing('quarter');
+    }
+
+    ul > li {
+        display: contents;
     }
 
     ul {

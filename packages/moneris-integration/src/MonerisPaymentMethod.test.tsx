@@ -18,6 +18,7 @@ import {
     PaymentFormContext,
     type PaymentFormService,
 } from '@bigcommerce/checkout/contexts';
+import { ErrorLevelType, type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import {
     PaymentMethodId,
@@ -33,7 +34,10 @@ import {
 } from '@bigcommerce/checkout/test-mocks';
 import { act } from '@bigcommerce/checkout/test-utils';
 
+import getMonerisIframeStyles from './getMonerisIframeStyles';
 import MonerisPaymentMethod from './MonerisPaymentMethod';
+
+jest.mock('./getMonerisIframeStyles', () => jest.fn());
 
 describe('when using Moneris payment', () => {
     let method: PaymentMethod;
@@ -43,6 +47,16 @@ describe('when using Moneris payment', () => {
     let localeContext: LocaleContextType;
     let PaymentMethodTest: FunctionComponent<PaymentMethodProps>;
     let paymentForm: PaymentFormService;
+    let errorLogger: ErrorLogger;
+
+    const monerisIframeStyles = {
+        cssBody: 'font-family: "Open Sans", sans-serif;background: transparent;',
+        cssTextbox: 'border-radius: 4px;width: 100%;',
+        cssTextboxCardNumber: 'width: 100%;',
+        cssTextboxExpiryDate: 'width: 120px;',
+        cssTextboxCVV: 'width: 80px;',
+        cssInputLabel: 'font-weight: 500;',
+    };
 
     beforeEach(() => {
         paymentForm = getPaymentFormServiceMock();
@@ -51,6 +65,8 @@ describe('when using Moneris payment', () => {
         checkoutState = checkoutService.getState();
         localeContext = createLocaleContext(getStoreConfig());
         method = { ...getPaymentMethod(), id: PaymentMethodId.Moneris };
+
+        jest.mocked(getMonerisIframeStyles).mockReturnValue(monerisIframeStyles);
 
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
 
@@ -64,6 +80,8 @@ describe('when using Moneris payment', () => {
 
         jest.spyOn(checkoutService, 'loadInstruments').mockResolvedValue(checkoutState);
 
+        errorLogger = { log: jest.fn() };
+
         defaultProps = {
             method,
             checkoutService,
@@ -74,7 +92,7 @@ describe('when using Moneris payment', () => {
         };
 
         PaymentMethodTest = (props) => (
-            <CheckoutProvider checkoutService={checkoutService}>
+            <CheckoutProvider checkoutService={checkoutService} errorLogger={errorLogger}>
                 <PaymentFormContext.Provider value={{ paymentForm }}>
                     <LocaleContext.Provider value={localeContext}>
                         <Formik initialValues={{}} onSubmit={noop}>
@@ -88,35 +106,81 @@ describe('when using Moneris payment', () => {
 
     afterEach(() => {
         jest.clearAllMocks();
-        jest.resetAllMocks();
     });
 
-    it('renders as hosted widget method', () => {
+    it('renders as hosted widget method', async () => {
         render(<PaymentMethodTest {...defaultProps} />);
 
-        expect(checkoutService.initializePayment).toHaveBeenCalledWith({
-            methodId: 'moneris',
-            integrations: [createMonerisPaymentStrategy],
-            moneris: {
-                containerId: 'moneris-iframe-container',
-                options: undefined,
-            },
+        await act(async () => {
+            await Promise.resolve();
         });
+
+        expect(checkoutService.initializePayment).toHaveBeenCalledWith(
+            expect.objectContaining({
+                methodId: 'moneris',
+                integrations: [createMonerisPaymentStrategy],
+                moneris: expect.objectContaining({
+                    containerId: 'moneris-iframe-container',
+                    style: monerisIframeStyles,
+                }),
+            }),
+        );
     });
 
-    it('initializes method with required config when no instruments', () => {
+    it('initializes method with required config when no instruments', async () => {
         jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue(undefined);
 
         render(<PaymentMethodTest {...defaultProps} />);
 
-        expect(checkoutService.initializePayment).toHaveBeenCalledWith({
-            methodId: 'moneris',
-            integrations: [createMonerisPaymentStrategy],
-            moneris: {
-                containerId: 'moneris-iframe-container',
-                options: undefined,
-            },
+        await act(async () => {
+            await Promise.resolve();
         });
+
+        expect(getMonerisIframeStyles).toHaveBeenCalledWith({
+            cardNumberContainerId: 'moneris-ccNumber',
+            onMissingStyleContainer: expect.any(Function),
+        });
+    });
+
+    it('logs missing style probe containers to errorLogger without interrupting checkout', async () => {
+        const styleProbeError = new Error(
+            'Unable to retrieve input styles as the provided container ID is not valid.',
+        );
+
+        jest.mocked(getMonerisIframeStyles).mockImplementation(({ onMissingStyleContainer }) => {
+            onMissingStyleContainer?.(styleProbeError);
+
+            return monerisIframeStyles;
+        });
+
+        render(<PaymentMethodTest {...defaultProps} />);
+
+        await act(async () => {
+            await Promise.resolve();
+        });
+
+        expect(errorLogger.log).toHaveBeenCalledWith(
+            styleProbeError,
+            { errorCode: 'monerisStyleProbe' },
+            ErrorLevelType.Warning,
+            { containerId: 'moneris-ccNumber' },
+        );
+        expect(defaultProps.onUnhandledError).not.toHaveBeenCalled();
+        expect(checkoutService.initializePayment).toHaveBeenCalled();
+    });
+
+    it('calls onUnhandledError when payment initialization fails', async () => {
+        const error = new Error('Initialization failed');
+
+        jest.spyOn(checkoutService, 'initializePayment').mockRejectedValue(error);
+
+        render(<PaymentMethodTest {...defaultProps} />);
+
+        await act(async () => {
+            await Promise.resolve();
+        });
+
+        expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(error);
     });
 
     it('initializes method with required config with vaulted instruments', async () => {
@@ -142,25 +206,28 @@ describe('when using Moneris payment', () => {
             await new Promise((resolve) => setTimeout(resolve, 0));
         });
 
-        expect(checkoutService.initializePayment).toHaveBeenCalledWith({
-            gatewayId: undefined,
-            methodId: 'moneris',
-            integrations: [createMonerisPaymentStrategy],
-            moneris: {
-                containerId: 'moneris-iframe-container',
-                form: {
-                    fields: {
-                        cardCodeVerification: undefined,
-                        cardNumberVerification: undefined,
+        expect(checkoutService.initializePayment).toHaveBeenCalledWith(
+            expect.objectContaining({
+                gatewayId: undefined,
+                methodId: 'moneris',
+                integrations: [createMonerisPaymentStrategy],
+                moneris: expect.objectContaining({
+                    containerId: 'moneris-iframe-container',
+                    style: monerisIframeStyles,
+                    form: {
+                        fields: {
+                            cardCodeVerification: undefined,
+                            cardNumberVerification: undefined,
+                        },
+                        onBlur: expect.any(Function),
+                        onCardTypeChange: expect.any(Function),
+                        onEnter: expect.any(Function),
+                        onFocus: expect.any(Function),
+                        onValidate: expect.any(Function),
+                        styles: {},
                     },
-                    onBlur: expect.any(Function),
-                    onCardTypeChange: expect.any(Function),
-                    onEnter: expect.any(Function),
-                    onFocus: expect.any(Function),
-                    onValidate: expect.any(Function),
-                    styles: {},
-                },
-            },
-        });
+                }),
+            }),
+        );
     });
 });

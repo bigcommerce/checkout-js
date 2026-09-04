@@ -1,0 +1,76 @@
+$element-border-radius: remCalc(12px);
+
+// Modals also carry .enhancedThemeV1, hence the container id
+body:has(#checkout-page-container.enhancedThemeV1) {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+
+    > :has(#checkout-page-container) {
+        display: flex;
+        flex-direction: column;
+        flex: 1 0 auto;
+    }
+
+    #checkout-page-container {
+        flex: 1 0 auto;
+    }
+}
+
+@include enhancedThemeV1 {
+    .button,
+    .shippingOptions-panel,
+    .alertBox,
+    .discountBanner .alertBox,
+    .applied-coupons-list ul,
+    &.modal {
+        border-radius: $element-border-radius;
+    }
+
+    // Optimized Checkout fallback styles
+    background-color: $color-background;
+
+    .optimizedCheckout-form-checklist-checkbox:checked ~ .optimizedCheckout-form-label::before {
+        background-color: $color-black;
+        border-color: $color-black;
+    }
+
+    .optimizedCheckout-form-checklist-checkbox:checked ~ .optimizedCheckout-form-label::after {
+        background-color: $color-white;
+    }
+
+    .optimizedCheckout-form-checklist {
+        .optimizedCheckout-form-checklist-item {
+            border-color: $color-greyMedium;
+        }
+
+        .optimizedCheckout-form-checklist-item--selected {
+            border-color: $color-black;
+            background-color: $color-highlightLightest;
+        }
+    }
+
+    .optimizedCheckout-contentPrimary {
+        .optimizedCheckout-checkoutStep {
+            background-color: transparentize($color-white, 0.5);
+
+            &.checkout-step--current {
+                background-color: $color-white;
+            }
+
+            &:not(.checkout-step--current) .optimizedCheckout-buttonSecondary {
+                background-color: transparent;
+            }
+        }
+    }
+
+    .optimizedCheckout-orderSummary {
+        .optimizedCheckout-orderSummary-toggle {
+            color: $color-highlightDarkest;
+
+            svg {
+                fill: $color-highlightDarkest;
+            }
+        }
+    }
+}

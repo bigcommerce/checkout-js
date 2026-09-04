@@ -1,1 +1,1 @@
-declare const Sentry:typeof import("@sentry/browser");
+declare const Sentry: typeof import('@sentry/browser');

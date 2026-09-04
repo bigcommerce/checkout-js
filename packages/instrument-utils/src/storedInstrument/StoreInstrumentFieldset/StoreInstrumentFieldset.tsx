@@ -51,7 +51,7 @@ const StoreInstrumentFieldset: FunctionComponent<StoreInstrumentFieldsetProps> =
     const { showSave, showSetAsDefault, setAsDefaultEnabled } = useProps(props, paymentForm);
 
     return (
-        <Fieldset>
+        <Fieldset additionalClassName="form-fieldset--storedInstrument">
             {showSave && <InstrumentStorageField isAccountInstrument={isAccountInstrument} />}
 
             {showSetAsDefault && (

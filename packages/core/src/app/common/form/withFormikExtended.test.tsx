@@ -4,9 +4,7 @@ import React, { act, type ComponentType } from 'react';
 import { object, string } from 'yup';
 
 import { render, screen } from '@bigcommerce/checkout/test-utils';
-import { Button, Input, Label } from '@bigcommerce/checkout/ui';
-
-import { Form } from '../../ui/form';
+import { Button, Form, Input, Label } from '@bigcommerce/checkout/ui';
 
 import withFormikExtended from './withFormikExtended';
 

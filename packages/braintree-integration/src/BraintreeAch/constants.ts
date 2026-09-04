@@ -51,7 +51,7 @@ export const defaultBraintreeAchFormFields: FormField[] = [
         id: BraintreeAchFieldType.AccountType,
         label: 'Account Type',
         required: true,
-        fieldType: DynamicFormFieldType.DROPDOWM,
+        fieldType: DynamicFormFieldType.DROPDOWN,
         options: {
             items: accountTypeOptions,
         },
@@ -78,7 +78,7 @@ export const defaultBraintreeAchFormFields: FormField[] = [
         id: BraintreeAchFieldType.OwnershipType,
         label: 'Ownership Type',
         required: true,
-        fieldType: DynamicFormFieldType.DROPDOWM,
+        fieldType: DynamicFormFieldType.DROPDOWN,
         options: {
             items: ownershipTypeOptions,
         },

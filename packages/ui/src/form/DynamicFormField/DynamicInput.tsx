@@ -61,7 +61,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
     );
 
     switch (fieldType) {
-        case DynamicFormFieldType.DROPDOWM:
+        case DynamicFormFieldType.DROPDOWN:
             return (
                 <>
                     <div

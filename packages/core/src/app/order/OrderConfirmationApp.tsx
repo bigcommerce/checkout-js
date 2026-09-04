@@ -1,10 +1,19 @@
-import { createCheckoutService, createEmbeddedCheckoutMessenger } from '@bigcommerce/checkout-sdk/essential';
+import {
+    createCheckoutService,
+    createEmbeddedCheckoutMessenger,
+} from '@bigcommerce/checkout-sdk/essential';
 import type { BrowserOptions } from '@sentry/browser';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import ReactModal from 'react-modal';
 
 import { ExtensionService } from '@bigcommerce/checkout/checkout-extension';
-import { AnalyticsProvider, CheckoutProvider, ExtensionProvider, LocaleProvider, ThemeProvider } from '@bigcommerce/checkout/contexts';
+import {
+    AnalyticsProvider,
+    CheckoutProvider,
+    ExtensionProvider,
+    LocaleProvider,
+    ThemeProvider,
+} from '@bigcommerce/checkout/contexts';
 import { ErrorBoundary } from '@bigcommerce/checkout/error-handling-utils';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
 
@@ -34,20 +43,28 @@ const OrderConfirmationApp: React.FC<OrderConfirmationAppProps> = ({
     permalinkStatus,
 }) => {
     const accountService = useMemo(() => new AccountService(), []);
-    const errorLogger = useMemo(() => createErrorLogger(
-        { sentry: sentryConfig },
-        {
-            errorTypes: ['UnrecoverableError'],
-            publicPath,
-            sampleRate: sentrySampleRate || 0.1,
-        },
-    ), []);
+    const errorLogger = useMemo(
+        () =>
+            createErrorLogger(
+                { sentry: sentryConfig },
+                {
+                    errorTypes: ['UnrecoverableError'],
+                    publicPath,
+                    sampleRate: sentrySampleRate || 0.1,
+                },
+            ),
+        [],
+    );
     const languageService = useMemo(() => getLanguageService(), []);
-    const checkoutService = useMemo(() => createCheckoutService({
-        locale: languageService.getLocale(),
-        shouldWarnMutation: process.env.NODE_ENV === 'development',
-        errorLogger,
-    }), []);
+    const checkoutService = useMemo(
+        () =>
+            createCheckoutService({
+                locale: languageService.getLocale(),
+                shouldWarnMutation: process.env.NODE_ENV === 'development',
+                errorLogger,
+            }),
+        [],
+    );
     const extensionService = useMemo(() => new ExtensionService(checkoutService, errorLogger), []);
     const embeddedStylesheet = useMemo(() => createEmbeddedCheckoutStylesheet(), []);
 

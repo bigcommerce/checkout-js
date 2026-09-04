@@ -1,9 +1,16 @@
 import { act, renderHook } from '@testing-library/react';
 
-import { useCheckout, useLocale } from '@bigcommerce/checkout/contexts';
-import { getConsignment, getDigitalItem, getLocaleContext, getPhysicalItem, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
+import { useCapabilities, useCheckout, useLocale } from '@bigcommerce/checkout/contexts';
+import {
+    getConsignment,
+    getDigitalItem,
+    getLocaleContext,
+    getPhysicalItem,
+    getStoreConfig,
+} from '@bigcommerce/checkout/test-mocks';
 
 import { getCheckout } from '../checkout/checkouts.mock';
+import { getGatewayOrderPayment, getOrder } from '../order/orders.mock';
 
 import { useMultiCoupon } from './useMultiCoupon';
 
@@ -42,11 +49,24 @@ describe('useMultiCoupon', () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
-        (useCheckout as jest.Mock).mockReturnValue({
+        (useCheckout as jest.Mock).mockImplementation(() => ({
             checkoutService,
-            checkoutState,
-        });
+            selectedState: {
+                config: checkoutState.data.getConfig(),
+                checkout: checkoutState.data.getCheckout(),
+                order: checkoutState.data.getOrder(),
+                coupons: checkoutState.data.getCoupons(),
+                giftCertificates: checkoutState.data.getGiftCertificates(),
+                isSubmittingOrder: checkoutState.statuses.isSubmittingOrder(),
+                isPending: checkoutState.statuses.isPending(),
+                isApplyingCoupon: checkoutState.statuses.isApplyingCoupon(),
+                isApplyingGiftCertificate: checkoutState.statuses.isApplyingGiftCertificate(),
+            },
+        }));
         (useLocale as jest.Mock).mockReturnValue(getLocaleContext());
+        (useCapabilities as jest.Mock).mockReturnValue({
+            userJourney: { disableCoupon: false, disableGiftCertificate: false },
+        });
         checkoutState.data.getConfig.mockReturnValue(getStoreConfig());
         checkoutState.data.getCheckout.mockReturnValue(getCheckout());
         checkoutState.data.getCoupons.mockReturnValue([]);
@@ -81,7 +101,7 @@ describe('useMultiCoupon', () => {
         checkoutState.data.getConfig.mockReturnValue(undefined);
 
         expect(() => renderHook(() => useMultiCoupon())).toThrow(
-            'Checkout or order is not available'
+            'Checkout or order is not available',
         );
     });
 
@@ -89,7 +109,7 @@ describe('useMultiCoupon', () => {
         checkoutState.data.getConfig.mockReturnValue({});
 
         expect(() => renderHook(() => useMultiCoupon())).toThrow(
-            'Checkout or order is not available'
+            'Checkout or order is not available',
         );
     });
 
@@ -98,7 +118,7 @@ describe('useMultiCoupon', () => {
         checkoutState.data.getOrder.mockReturnValue(undefined);
 
         expect(() => renderHook(() => useMultiCoupon())).toThrow(
-            'Checkout or order is not available'
+            'Checkout or order is not available',
         );
     });
 
@@ -168,6 +188,42 @@ describe('useMultiCoupon', () => {
 
             expect(result.current.appliedGiftCertificates).toEqual([]);
         });
+
+        describe('on order confirmation page', () => {
+            beforeEach(() => {
+                checkoutState.data.getCheckout.mockReturnValue(undefined);
+                checkoutState.data.getGiftCertificates.mockReturnValue(undefined);
+                checkoutState.data.getOrder.mockReturnValue(getOrder());
+            });
+
+            it('returns gift certificates mapped from order payments', () => {
+                const { result } = renderHook(() => useMultiCoupon());
+
+                expect(result.current.appliedGiftCertificates).toEqual([{ code: 'gc', amount: 7 }]);
+            });
+
+            it('ignores non gift certificate payments', () => {
+                const order = getOrder();
+
+                order.payments = [getGatewayOrderPayment()];
+                checkoutState.data.getOrder.mockReturnValue(order);
+
+                const { result } = renderHook(() => useMultiCoupon());
+
+                expect(result.current.appliedGiftCertificates).toEqual([]);
+            });
+
+            it('returns empty array when order has no payments', () => {
+                const order = getOrder();
+
+                order.payments = undefined;
+                checkoutState.data.getOrder.mockReturnValue(order);
+
+                const { result } = renderHook(() => useMultiCoupon());
+
+                expect(result.current.appliedGiftCertificates).toEqual([]);
+            });
+        });
     });
 
     describe('applyCouponOrGiftCertificate', () => {
@@ -230,6 +286,129 @@ describe('useMultiCoupon', () => {
             expect(applyCoupon).toHaveBeenCalledTimes(1);
         });
 
+        describe('disableGiftCertificate is true', () => {
+            beforeEach(() => {
+                (useCapabilities as jest.Mock).mockReturnValue({
+                    userJourney: { disableCoupon: false, disableGiftCertificate: true },
+                });
+            });
+
+            it('calls only applyCoupon, skips applyGiftCertificate', async () => {
+                const code = 'COUPON123';
+
+                applyCoupon.mockResolvedValue(undefined);
+
+                const { result } = renderHook(() => useMultiCoupon());
+
+                await act(async () => {
+                    await result.current.applyCouponOrGiftCertificate(code);
+                });
+
+                expect(applyCoupon).toHaveBeenCalledWith(code);
+                expect(applyCoupon).toHaveBeenCalledTimes(1);
+                expect(applyGiftCertificate).not.toHaveBeenCalled();
+            });
+
+            it('propagates error if applyCoupon fails', async () => {
+                const code = 'COUPON123';
+                const error = new Error('Invalid coupon');
+
+                applyCoupon.mockRejectedValue(error);
+
+                const { result } = renderHook(() => useMultiCoupon());
+
+                await expect(
+                    act(async () => {
+                        await result.current.applyCouponOrGiftCertificate(code);
+                    }),
+                ).rejects.toThrow('Invalid coupon');
+
+                expect(applyCoupon).toHaveBeenCalledWith(code);
+                expect(applyGiftCertificate).not.toHaveBeenCalled();
+            });
+
+            it('propagates error if applyCoupon fails with non-Error instance', async () => {
+                const code = 'COUPON123';
+                const error = 'Invalid coupon string';
+
+                applyCoupon.mockRejectedValue(error);
+
+                const { result } = renderHook(() => useMultiCoupon());
+
+                await expect(
+                    act(async () => {
+                        await result.current.applyCouponOrGiftCertificate(code);
+                    }),
+                ).rejects.toBe(error);
+
+                expect(applyCoupon).toHaveBeenCalledWith(code);
+                expect(clearError).not.toHaveBeenCalled();
+                expect(applyGiftCertificate).not.toHaveBeenCalled();
+            });
+        });
+
+        describe('disableCoupon is true', () => {
+            beforeEach(() => {
+                (useCapabilities as jest.Mock).mockReturnValue({
+                    userJourney: { disableCoupon: true, disableGiftCertificate: false },
+                });
+            });
+
+            it('calls only applyGiftCertificate, skips applyCoupon', async () => {
+                const code = 'GIFT123';
+
+                applyGiftCertificate.mockResolvedValue(undefined);
+
+                const { result } = renderHook(() => useMultiCoupon());
+
+                await act(async () => {
+                    await result.current.applyCouponOrGiftCertificate(code);
+                });
+
+                expect(applyGiftCertificate).toHaveBeenCalledWith(code);
+                expect(applyGiftCertificate).toHaveBeenCalledTimes(1);
+                expect(applyCoupon).not.toHaveBeenCalled();
+            });
+
+            it('propagates error if applyGiftCertificate fails, does not fall back to applyCoupon', async () => {
+                const code = 'GIFT123';
+                const error = new Error('Invalid gift certificate');
+
+                applyGiftCertificate.mockRejectedValue(error);
+
+                const { result } = renderHook(() => useMultiCoupon());
+
+                await expect(
+                    act(async () => {
+                        await result.current.applyCouponOrGiftCertificate(code);
+                    }),
+                ).rejects.toThrow('Invalid gift certificate');
+
+                expect(applyGiftCertificate).toHaveBeenCalledWith(code);
+                expect(clearError).not.toHaveBeenCalled();
+                expect(applyCoupon).not.toHaveBeenCalled();
+            });
+
+            it('propagates error if applyGiftCertificate fails with non-Error instance, does not fall back to applyCoupon', async () => {
+                const code = 'GIFT123';
+                const error = 'Invalid gift certificate string';
+
+                applyGiftCertificate.mockRejectedValue(error);
+
+                const { result } = renderHook(() => useMultiCoupon());
+
+                await expect(
+                    act(async () => {
+                        await result.current.applyCouponOrGiftCertificate(code);
+                    }),
+                ).rejects.toBe(error);
+
+                expect(applyGiftCertificate).toHaveBeenCalledWith(code);
+                expect(clearError).not.toHaveBeenCalled();
+                expect(applyCoupon).not.toHaveBeenCalled();
+            });
+        });
+
         it('propagates error when both gift certificate and coupon fail', async () => {
             const code = 'INVALID123';
             const giftCertificateError = new Error('Invalid gift certificate');
@@ -244,7 +423,7 @@ describe('useMultiCoupon', () => {
             await expect(
                 act(async () => {
                     await result.current.applyCouponOrGiftCertificate(code);
-                })
+                }),
             ).rejects.toThrow('Invalid coupon');
 
             expect(applyGiftCertificate).toHaveBeenCalledWith(code);
@@ -372,18 +551,19 @@ describe('useMultiCoupon', () => {
     });
 
     describe('uiDetails', () => {
-
         it('returns correct uiDetails structure when consignments information is complete', () => {
             const checkout = {
                 ...getCheckout(),
-                consignments: [{
-                    ...getConsignment(),
-                    lineItemIds: [
-                        getPhysicalItem().id.toString(),
-                        getDigitalItem().id.toString(),
-                    ]
-                }],
-            }
+                consignments: [
+                    {
+                        ...getConsignment(),
+                        lineItemIds: [
+                            getPhysicalItem().id.toString(),
+                            getDigitalItem().id.toString(),
+                        ],
+                    },
+                ],
+            };
 
             checkoutState.data.getCheckout.mockReturnValue(checkout);
 
@@ -397,9 +577,11 @@ describe('useMultiCoupon', () => {
             expect(result.current.uiDetails.subtotal).toBe(checkout.subtotal);
             expect(result.current.uiDetails.discounts).toBe(checkout.displayDiscountTotal);
             expect(result.current.uiDetails.shipping).toBe(checkout.comparisonShippingCost);
-            expect(result.current.uiDetails.shippingBeforeDiscount).toBe(checkout.shippingCostBeforeDiscount);
+            expect(result.current.uiDetails.shippingBeforeDiscount).toBe(
+                checkout.shippingCostBeforeDiscount,
+            );
         });
-        
+
         it('returns correct uiDetails structure when consignments information is incomplete', () => {
             const checkout = getCheckout();
 
@@ -428,7 +610,7 @@ describe('useMultiCoupon', () => {
                 const { result } = renderHook(() => useMultiCoupon());
 
                 const autoPromotion = result.current.uiDetails.discountItems.find(
-                    item => item.amount === 10 && item.name.includes('auto_promotion')
+                    (item) => item.amount === 10 && item.name.includes('auto_promotion'),
                 );
 
                 expect(autoPromotion).toBeDefined();
@@ -445,7 +627,7 @@ describe('useMultiCoupon', () => {
                 const { result } = renderHook(() => useMultiCoupon());
 
                 const manualDiscount = result.current.uiDetails.discountItems.find(
-                    item => item.amount === 15 && item.name.includes('manual_discount')
+                    (item) => item.amount === 15 && item.name.includes('manual_discount'),
                 );
 
                 expect(manualDiscount).toBeDefined();
@@ -470,7 +652,7 @@ describe('useMultiCoupon', () => {
                 const { result } = renderHook(() => useMultiCoupon());
 
                 const couponItem = result.current.uiDetails.discountItems.find(
-                    item => item.name === 'Save 10% (SAVE10)'
+                    (item) => item.name === 'Save 10% (SAVE10)',
                 );
 
                 expect(couponItem).toBeDefined();
@@ -486,14 +668,14 @@ describe('useMultiCoupon', () => {
                         couponType: 'promotion',
                         discountedAmount: 20,
                         id: '1',
-                    } as typeof checkout.coupons[0],
+                    } as (typeof checkout.coupons)[0],
                 ];
                 checkoutState.data.getCheckout.mockReturnValue(checkout);
 
                 const { result } = renderHook(() => useMultiCoupon());
 
                 const couponItem = result.current.uiDetails.discountItems.find(
-                    item => item.name === 'SAVE10'
+                    (item) => item.name === 'SAVE10',
                 );
 
                 expect(couponItem).toBeDefined();
@@ -519,15 +701,21 @@ describe('useMultiCoupon', () => {
                 const { result } = renderHook(() => useMultiCoupon());
 
                 expect(result.current.uiDetails.discountItems).toHaveLength(3);
-                expect(result.current.uiDetails.discountItems.some(
-                    item => item.amount === 10 && item.name.includes('auto_promotion')
-                )).toBe(true);
-                expect(result.current.uiDetails.discountItems.some(
-                    item => item.amount === 15 && item.name.includes('manual_discount')
-                )).toBe(true);
-                expect(result.current.uiDetails.discountItems.some(
-                    item => item.name === 'Save 10% (SAVE10)'
-                )).toBe(true);
+                expect(
+                    result.current.uiDetails.discountItems.some(
+                        (item) => item.amount === 10 && item.name.includes('auto_promotion'),
+                    ),
+                ).toBe(true);
+                expect(
+                    result.current.uiDetails.discountItems.some(
+                        (item) => item.amount === 15 && item.name.includes('manual_discount'),
+                    ),
+                ).toBe(true);
+                expect(
+                    result.current.uiDetails.discountItems.some(
+                        (item) => item.name === 'Save 10% (SAVE10)',
+                    ),
+                ).toBe(true);
             });
 
             it('excludes auto promotion when orderBasedAutoDiscountTotal is 0', () => {
@@ -538,8 +726,8 @@ describe('useMultiCoupon', () => {
 
                 const { result } = renderHook(() => useMultiCoupon());
 
-                const autoPromotion = result.current.uiDetails.discountItems.find(
-                    item => item.name.includes('auto_promotion')
+                const autoPromotion = result.current.uiDetails.discountItems.find((item) =>
+                    item.name.includes('auto_promotion'),
                 );
 
                 expect(autoPromotion).toBeUndefined();
@@ -553,8 +741,8 @@ describe('useMultiCoupon', () => {
 
                 const { result } = renderHook(() => useMultiCoupon());
 
-                const manualDiscount = result.current.uiDetails.discountItems.find(
-                    item => item.name.includes('manual_discount')
+                const manualDiscount = result.current.uiDetails.discountItems.find((item) =>
+                    item.name.includes('manual_discount'),
                 );
 
                 expect(manualDiscount).toBeUndefined();
@@ -562,4 +750,3 @@ describe('useMultiCoupon', () => {
         });
     });
 });
-

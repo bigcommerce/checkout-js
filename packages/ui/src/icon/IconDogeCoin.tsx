@@ -7,6 +7,7 @@ const IconDogeCoinSvg: FunctionComponent = () => (
         aria-labelledby="iconDogeCoinTitle"
         fill="none"
         height="48"
+        role="img"
         viewBox="0 0 70 48"
         width="70"
         xmlns="http://www.w3.org/2000/svg"

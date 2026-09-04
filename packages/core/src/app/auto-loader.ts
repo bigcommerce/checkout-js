@@ -2,6 +2,12 @@ import type { BrowserOptions } from '@sentry/browser';
 
 import { loadFiles } from './loader';
 
+enum OrderPermalinkStatus {
+    Valid = 'valid',
+    Expired = 'expired',
+    RateLimited = 'rate_limited',
+}
+
 export interface CustomCheckoutWindow extends Window {
     checkoutConfig: {
         containerId: string;
@@ -9,8 +15,8 @@ export interface CustomCheckoutWindow extends Window {
         checkoutId?: string;
         publicPath?: string;
         sentryConfig?: BrowserOptions;
-        permalinkStatus?: 'valid' | 'expired' | 'rate_limited' | null;
-        rollOutLazyPaymentStrategies?: boolean;
+        permalinkStatus?: OrderPermalinkStatus | null;
+        isConsistentCrossOriginFixEnabled?: boolean;
     };
 }
 
@@ -25,9 +31,18 @@ function isCustomCheckoutWindow(window: Window): window is CustomCheckoutWindow 
         throw new Error('Checkout config is missing.');
     }
 
-    const { renderOrderConfirmation, renderCheckout } = await loadFiles();
+    const { renderOrderConfirmation, renderCheckout } = await loadFiles({
+        isConsistentCrossOriginFixEnabled: Boolean(
+            window.checkoutConfig.isConsistentCrossOriginFixEnabled,
+        ),
+    });
 
-    const { orderId, checkoutId, ...appProps } = window.checkoutConfig;
+    const {
+        orderId,
+        checkoutId,
+        isConsistentCrossOriginFixEnabled: _isConsistentCrossOriginFixEnabled,
+        ...appProps
+    } = window.checkoutConfig;
 
     if (orderId) {
         renderOrderConfirmation({ ...appProps, orderId });

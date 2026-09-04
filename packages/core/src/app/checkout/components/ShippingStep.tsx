@@ -1,11 +1,13 @@
 import type { Cart, Consignment } from '@bigcommerce/checkout-sdk/essential';
 import React, { lazy } from 'react';
 
+import { useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { AddressFormSkeleton, LazyContainer } from '@bigcommerce/checkout/ui';
 
 import { retry } from '../../common/utility';
 import { type ShippingProps, ShippingSummary } from '../../shipping';
+import { shouldShowMultiShippingToggle } from '../../shipping/utils';
 import CheckoutStep from '../CheckoutStep';
 import type CheckoutStepType from '../CheckoutStepType';
 
@@ -22,7 +24,6 @@ const Shipping = lazy(() =>
 export interface ShippingStepProps extends ShippingProps {
     cart?: Cart;
     consignments: Consignment[];
-    isShippingDiscountDisplayEnabled: boolean;
     onEdit(type: CheckoutStepType): void;
     onExpanded(type: CheckoutStepType): void;
 }
@@ -34,7 +35,6 @@ const ShippingStep: React.FC<ShippingStepProps> = ({
     consignments,
     isBillingSameAsShipping,
     isMultiShippingMode,
-    isShippingDiscountDisplayEnabled,
     onEdit,
     onExpanded,
     navigateNextStep,
@@ -45,13 +45,36 @@ const ShippingStep: React.FC<ShippingStepProps> = ({
     onUnhandledError,
     setIsMultishippingMode,
 }) => {
+    const { enhancedThemeV1 } = useThemeContext();
+    const {
+        selectedState: { checkout, config },
+    } = useCheckout(({ data }) => ({
+        checkout: data.getCheckout(),
+        config: data.getConfig(),
+    }));
+
     if (!cart) {
         return null;
     }
 
+    const shouldShowHeaderAction =
+        enhancedThemeV1 &&
+        checkout &&
+        config &&
+        shouldShowMultiShippingToggle(checkout, config, cart);
+
+    const headerAction = shouldShowHeaderAction ? (
+        <span className="body-cta" data-test="shipping-mode-toggle">
+            <TranslatedString
+                id={isMultiShippingMode ? 'shipping.ship_to_single' : 'shipping.ship_to_multi'}
+            />
+        </span>
+    ) : null;
+
     return (
         <CheckoutStep
             {...step}
+            headerAction={headerAction}
             heading={<TranslatedString id="shipping.shipping_heading" />}
             key={step.type}
             onEdit={onEdit}
@@ -61,7 +84,6 @@ const ShippingStep: React.FC<ShippingStepProps> = ({
                     cart={cart}
                     consignments={consignments}
                     isMultiShippingMode={isMultiShippingMode}
-                    isShippingDiscountDisplayEnabled={isShippingDiscountDisplayEnabled}
                 />
             }
         >
@@ -85,4 +107,3 @@ const ShippingStep: React.FC<ShippingStepProps> = ({
 };
 
 export default ShippingStep;
-

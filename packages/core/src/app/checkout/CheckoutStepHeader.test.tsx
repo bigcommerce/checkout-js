@@ -55,7 +55,7 @@ describe('CheckoutStepHeader', () => {
     it('triggers callback when clicked', async () => {
         const handleEdit = jest.fn();
 
-        render(<CheckoutStepHeader {...defaultProps} isEditable onEdit={handleEdit}/>);
+        render(<CheckoutStepHeader {...defaultProps} isEditable onEdit={handleEdit} />);
 
         await userEvent.click(screen.getByRole('heading'));
 
@@ -65,7 +65,7 @@ describe('CheckoutStepHeader', () => {
     it('does not trigger callback when clicked if step is not editable', async () => {
         const handleEdit = jest.fn();
 
-        render(<CheckoutStepHeader {...defaultProps} onEdit={handleEdit}/>);
+        render(<CheckoutStepHeader {...defaultProps} onEdit={handleEdit} />);
 
         await userEvent.click(screen.getByRole('heading'));
 
@@ -76,11 +76,23 @@ describe('CheckoutStepHeader', () => {
         const { container } = render(<CheckoutStepHeader {...defaultProps} isComplete />);
 
         expect(container.querySelector('.stepHeader-counter--complete')).toBeInTheDocument();
- });
+    });
 
     it('does not render "complete" icon if step is incomplete', () => {
         render(<CheckoutStepHeader {...defaultProps} />);
 
         expect(screen.queryByTestId('step-complete-icon')).not.toBeInTheDocument();
+    });
+
+    it('renders headerAction if step is active', () => {
+        render(<CheckoutStepHeader {...defaultProps} headerAction="Sign in now" isActive />);
+
+        expect(screen.getByTestId('step-header-action')).toHaveTextContent('Sign in now');
+    });
+
+    it('does not render headerAction if step is not active', () => {
+        render(<CheckoutStepHeader {...defaultProps} headerAction="Sign in now" />);
+
+        expect(screen.queryByTestId('step-header-action')).not.toBeInTheDocument();
     });
 });

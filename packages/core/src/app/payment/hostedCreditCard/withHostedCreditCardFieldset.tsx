@@ -5,7 +5,13 @@ import {
     type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
 import { compact, forIn } from 'lodash';
-import React, { type ComponentType, type FunctionComponent, type ReactNode, useCallback, useState } from 'react';
+import React, {
+    type ComponentType,
+    type FunctionComponent,
+    type ReactNode,
+    useCallback,
+    useState,
+} from 'react';
 import { type ObjectSchema } from 'yup';
 
 import { type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
@@ -15,7 +21,6 @@ import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integratio
 
 import { withCheckout } from '../../checkout';
 import { connectFormik, type ConnectFormikProps } from '../../common/form';
-import { withForm, type WithFormProps } from '../../ui/form';
 import {
     CreditCardCustomerCodeField,
     CreditCardInputStylesType,
@@ -26,6 +31,7 @@ import {
     isInstrumentCardNumberRequiredSelector,
     isInstrumentFeatureAvailable,
 } from '../storedInstrument';
+import withForm, { type WithFormProps } from '../withForm';
 
 import getHostedCreditCardValidationSchema, {
     type HostedCreditCardValidationSchemaShape,

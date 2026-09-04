@@ -1,7 +1,11 @@
 import { type Consignment } from '@bigcommerce/checkout-sdk';
 import React, { type FunctionComponent, memo } from 'react';
 
-import { isPayPalFastlaneAddress, PoweredByPayPalFastlaneLabel, usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
+import {
+    isPayPalFastlaneAddress,
+    PoweredByPayPalFastlaneLabel,
+    usePayPalFastlaneAddress,
+} from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 import { AddressType, StaticAddress } from '../address';
 
@@ -10,17 +14,20 @@ import './StaticConsignment.scss';
 
 interface StaticConsignmentProps {
     consignment: Consignment;
-    isShippingDiscountDisplayEnabled: boolean;
 }
 
-const StaticConsignment: FunctionComponent<StaticConsignmentProps> = ({
-    consignment, 
-    isShippingDiscountDisplayEnabled,
-}) => {
+const StaticConsignment: FunctionComponent<StaticConsignmentProps> = ({ consignment }) => {
     const { paypalFastlaneAddresses } = usePayPalFastlaneAddress();
-    
-    const { shippingAddress: address, selectedShippingOption, comparisonShippingCost } = consignment;
-    const showPayPalFastlaneAddressLabel = isPayPalFastlaneAddress(address, paypalFastlaneAddresses);
+
+    const {
+        shippingAddress: address,
+        selectedShippingOption,
+        comparisonShippingCost,
+    } = consignment;
+    const showPayPalFastlaneAddressLabel = isPayPalFastlaneAddress(
+        address,
+        paypalFastlaneAddresses,
+    );
 
     return (
         <div className="staticConsignment">
@@ -34,7 +41,7 @@ const StaticConsignment: FunctionComponent<StaticConsignmentProps> = ({
                         <StaticShippingOption
                             displayAdditionalInformation={false}
                             method={selectedShippingOption}
-                            shippingCostAfterDiscount={isShippingDiscountDisplayEnabled ? comparisonShippingCost : undefined}
+                            shippingCostAfterDiscount={comparisonShippingCost}
                         />
                     </div>
                 </div>

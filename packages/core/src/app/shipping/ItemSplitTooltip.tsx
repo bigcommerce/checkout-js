@@ -1,20 +1,21 @@
-import React, { type FunctionComponent } from "react";
+import React, { type FunctionComponent } from 'react';
 
-import { TranslatedString } from "@bigcommerce/checkout/locale";
-import { IconHelp, TooltipTrigger } from "@bigcommerce/checkout/ui";
+import { useLocale } from '@bigcommerce/checkout/contexts';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { IconHelp, Tooltip, TooltipTrigger } from '@bigcommerce/checkout/ui';
 
-import { Tooltip } from "../ui/tooltip";
-import "./ItemSplitTooltip.scss";
+import './ItemSplitTooltip.scss';
 
 export const ItemSplitTooltip: FunctionComponent = () => {
+    const { language } = useLocale();
+
     return (
         <TooltipTrigger
+            ariaLabel={language.translate('shipping.multishipping_item_split_tooltip_action')}
             placement="right-start"
             tooltip={
                 <Tooltip>
-                    <TranslatedString
-                        id="shipping.multishipping_item_split_tooltip_message"
-                    />
+                    <TranslatedString id="shipping.multishipping_item_split_tooltip_message" />
                 </Tooltip>
             }
         >
@@ -22,5 +23,5 @@ export const ItemSplitTooltip: FunctionComponent = () => {
                 <IconHelp />
             </span>
         </TooltipTrigger>
-    )
+    );
 };

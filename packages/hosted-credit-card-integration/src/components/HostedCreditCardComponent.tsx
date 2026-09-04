@@ -4,8 +4,14 @@ import {
     type LegacyHostedFormOptions,
 } from '@bigcommerce/checkout-sdk';
 import { createBlueSnapDirectCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bluesnap-direct';
+import { createCBAMPGSPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/cba-mpgs';
 import { createCheckoutComCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/checkoutcom-custom';
 import { createCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/credit-card';
+import { createSagePayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/sagepay';
+import {
+    createCyberSourcePaymentStrategy,
+    createCyberSourceV2PaymentStrategy,
+} from '@bigcommerce/checkout-sdk/integrations/cybersource';
 import { createTDOnlineMartPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/td-bank';
 import { compact, forIn } from 'lodash';
 import React, { type FunctionComponent, type ReactNode, useCallback, useState } from 'react';
@@ -32,6 +38,18 @@ export interface HostedCreditCardComponentProps extends PaymentMethodProps {
     initializePayment?: CheckoutService['initializePayment'];
 }
 
+const HOSTED_FIELD_INIT_TIMEOUT_MS = 30000;
+
+function withTimeout<T>(promise: Promise<T>, ms: number, timeoutError: Error): Promise<T> {
+    let timer: ReturnType<typeof setTimeout>;
+
+    const timeoutPromise = new Promise<never>((_resolve, reject) => {
+        timer = setTimeout(() => reject(timeoutError), ms);
+    });
+
+    return Promise.race([promise, timeoutPromise]).finally(() => clearTimeout(timer));
+}
+
 const HostedCreditCardComponent: FunctionComponent<HostedCreditCardComponentProps> = ({
     method,
     checkoutService,
@@ -43,12 +61,26 @@ const HostedCreditCardComponent: FunctionComponent<HostedCreditCardComponentProp
 }) => {
     const [focusedFieldType, setFocusedFieldType] = useState<string>();
 
+    const isCBAMPGSResolverEnabled =
+        checkoutState.data.getConfig()?.checkoutSettings.features?.[
+            'PI-4748.cba_resolver_configuration'
+        ] ?? false;
+    const isSagePayResolverEnabled =
+        checkoutState.data.getConfig()?.checkoutSettings.features?.[
+            'PI-4754.sage_pay_resolver_configuration'
+        ] ?? false;
+
+    const isCyberSourceResolverEnabled =
+        checkoutState.data.getConfig()?.checkoutSettings.features?.[
+            'PI-4749.cyber_source_resolver_configuration'
+        ] ?? false;
+
     const { setFieldTouched, setFieldValue, setSubmitted, submitForm } = paymentForm;
     const isInstrumentCardCodeRequiredProp = isInstrumentCardCodeRequiredSelector(checkoutState);
     const isInstrumentCardNumberRequiredProp =
         isInstrumentCardNumberRequiredSelector(checkoutState);
     const {
-        config: { cardCode, showCardHolderName },
+        config: { cardCode, isHostedFormEnabled, showCardHolderName },
     } = method;
     const isCardCodeRequired = cardCode || cardCode === null;
     const isCardHolderNameRequired = showCardHolderName ?? true;
@@ -252,21 +284,46 @@ const HostedCreditCardComponent: FunctionComponent<HostedCreditCardComponentProp
     const initializeHostedCreditCardPayment: CreditCardPaymentMethodProps['initializePayment'] =
         useCallback(
             async (options, selectedInstrument) => {
-                return initializePayment({
+                const initializeOptions = {
                     ...options,
                     integrations: [
                         createCreditCardPaymentStrategy,
                         createBlueSnapDirectCreditCardPaymentStrategy,
+                        ...(isCBAMPGSResolverEnabled ? [createCBAMPGSPaymentStrategy] : []),
+                        ...(isSagePayResolverEnabled ? [createSagePayPaymentStrategy] : []),
+                        ...(isCyberSourceResolverEnabled
+                            ? [createCyberSourcePaymentStrategy, createCyberSourceV2PaymentStrategy]
+                            : []),
                         createTDOnlineMartPaymentStrategy,
                         createCheckoutComCreditCardPaymentStrategy,
                     ],
-                    creditCard: {
-                        form: await getHostedFormOptions(selectedInstrument),
-                        bigpayToken: selectedInstrument?.bigpayToken,
-                    },
-                });
+                    ...(isHostedFormEnabled && {
+                        creditCard: {
+                            form: await getHostedFormOptions(selectedInstrument),
+                            bigpayToken: selectedInstrument?.bigpayToken,
+                        },
+                    }),
+                };
+
+                if (!isHostedFormEnabled) {
+                    return initializePayment(initializeOptions);
+                }
+
+                return withTimeout(
+                    initializePayment(initializeOptions),
+                    HOSTED_FIELD_INIT_TIMEOUT_MS,
+                    new Error(language.translate('payment.payment_method_unavailable_error')),
+                );
             },
-            [getHostedFormOptions, initializePayment],
+            [
+                getHostedFormOptions,
+                initializePayment,
+                isHostedFormEnabled,
+                isCBAMPGSResolverEnabled,
+                isSagePayResolverEnabled,
+                language,
+                isCyberSourceResolverEnabled,
+            ],
         );
 
     const hostedStoredCardValidationSchema = getHostedInstrumentValidationSchema({ language });
@@ -283,13 +340,15 @@ const HostedCreditCardComponent: FunctionComponent<HostedCreditCardComponentProp
     return (
         <CreditCardPaymentMethodComponent
             {...props}
-            cardFieldset={hostedFieldset}
-            cardValidationSchema={hostedValidationSchema}
+            {...(isHostedFormEnabled && {
+                cardFieldset: hostedFieldset,
+                cardValidationSchema: hostedValidationSchema,
+                getHostedFormOptions,
+                getStoredCardValidationFieldset: getHostedStoredCardValidationFieldset,
+                storedCardValidationSchema: hostedStoredCardValidationSchema,
+            })}
             deinitializePayment={checkoutService.deinitializePayment}
-            getHostedFormOptions={getHostedFormOptions}
-            getStoredCardValidationFieldset={getHostedStoredCardValidationFieldset}
             initializePayment={initializeHostedCreditCardPayment}
-            storedCardValidationSchema={hostedStoredCardValidationSchema}
         />
     );
 };

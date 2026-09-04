@@ -1,6 +1,12 @@
 import AddressSelector from './AddressSelector';
-import AddressSelectorFactory from "./AddressSelectorFactory";
-import { getGoogleAutocompleteCAPlaceMockWithLocality, getGoogleAutocompleteCAPlaceMockWithSubLocality, getGoogleAutocompleteNZPlaceMock, getGoogleAutocompletePlaceMock, getGoogleAutocompleteUKPlaceMock } from './googleAutocompleteResult.mock';
+import AddressSelectorFactory from './AddressSelectorFactory';
+import {
+    getGoogleAutocompleteCAPlaceMockWithLocality,
+    getGoogleAutocompleteCAPlaceMockWithSubLocality,
+    getGoogleAutocompleteNZPlaceMock,
+    getGoogleAutocompletePlaceMock,
+    getGoogleAutocompleteUKPlaceMock,
+} from './googleAutocompleteResult.mock';
 
 describe('AddressSelector', () => {
     let googleAutoCompleteResponseMock: google.maps.places.PlaceResult;

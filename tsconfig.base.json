@@ -8,11 +8,13 @@
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
+    "ignoreDeprecations": "6.0",
     "incremental": true,
     "jsx": "react",
     "lib": ["dom", "dom.iterable", "esnext", "scripthost"],
     "module": "esnext",
     "moduleResolution": "bundler",
+    "noUncheckedSideEffectImports": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "paths": {
@@ -67,6 +69,9 @@
       "@bigcommerce/checkout/instrument-utils": ["packages/instrument-utils/src/index.ts"],
       "@bigcommerce/checkout/klarna-integration": ["packages/klarna-integration/src/index.ts"],
       "@bigcommerce/checkout/legacy-hoc": ["packages/legacy-hoc/src/index.ts"],
+      "@bigcommerce/checkout/cheque-payment-integration": [
+        "packages/cheque-payment-integration/src/index.ts"
+      ],
       "@bigcommerce/checkout/locale": ["packages/locale/src/index.ts"],
       "@bigcommerce/checkout/mollie-integration": ["packages/mollie-integration/src/index.ts"],
       "@bigcommerce/checkout/moneris-integration": ["packages/moneris-integration/src/index.ts"],
@@ -112,6 +117,7 @@
     "strict": true,
     "strictNullChecks": true,
     "stripInternal": true,
-    "target": "es2015"
+    "target": "es2015",
+    "types": ["node", "jest", "google.maps", "applepayjs"]
   }
 }

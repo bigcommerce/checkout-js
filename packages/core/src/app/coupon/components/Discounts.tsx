@@ -1,7 +1,12 @@
 import React, { type FunctionComponent, useRef, useState } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { CollapseCSSTransition, IconCoupon, IconDownArrow, IconUpArrow } from '@bigcommerce/checkout/ui';
+import {
+    CollapseCSSTransition,
+    IconCoupon,
+    IconDownArrow,
+    IconUpArrow,
+} from '@bigcommerce/checkout/ui';
 
 import { ShopperCurrency } from '../../currency';
 import { type DiscountItem, useMultiCoupon } from '../useMultiCoupon';
@@ -10,15 +15,22 @@ const DiscountItems: FunctionComponent<{ coupons: DiscountItem[] }> = ({ coupons
     <>
         {coupons.map((coupon) => (
             <div data-test={coupon.testId} key={coupon.name}>
-                <div
-                    aria-live="polite"
-                    className="cart-priceItem optimizedCheckout-contentPrimary"
-                >
+                <div aria-live="polite" className="cart-priceItem optimizedCheckout-contentPrimary">
                     <div>
-                        <span className="cart-priceItem-label body-regular"><IconCoupon />{coupon.name}</span>
-                        {coupon.showMaxLimitInfo && <span className="sub-text cart-priceItem-label-info"><TranslatedString id="redeemable.maximum_discount_applied_text" /></span>}
+                        <span className="cart-priceItem-label optimizedCheckout-contentPrimary body-regular">
+                            <IconCoupon />
+                            {coupon.name}
+                        </span>
+                        {coupon.showMaxLimitInfo && (
+                            <span className="optimizedCheckout-contentPrimary sub-text cart-priceItem-label-info">
+                                <TranslatedString id="redeemable.maximum_discount_applied_text" />
+                            </span>
+                        )}
                     </div>
-                    <span className="cart-priceItem-value body-medium" data-test="cart-price-value">
+                    <span
+                        className="cart-priceItem-value optimizedCheckout-contentPrimary body-medium"
+                        data-test="cart-price-value"
+                    >
                         -<ShopperCurrency amount={coupon.amount} />
                     </span>
                 </div>
@@ -27,7 +39,10 @@ const DiscountItems: FunctionComponent<{ coupons: DiscountItem[] }> = ({ coupons
     </>
 );
 
-const DiscountsCollapsible: FunctionComponent<{ discounts: number; discountItems: DiscountItem[] }> = ({ discounts, discountItems }) => {
+const DiscountsCollapsible: FunctionComponent<{
+    discounts: number;
+    discountItems: DiscountItem[];
+}> = ({ discounts, discountItems }) => {
     const [isCouponDiscountsVisible, setIsCouponDiscountsVisible] = useState(true);
     const discountsRef = useRef<HTMLDivElement>(null);
 
@@ -39,14 +54,22 @@ const DiscountsCollapsible: FunctionComponent<{ discounts: number; discountItems
                 aria-live="polite"
                 className="coupon-discount-toggle cart-priceItem optimizedCheckout-contentPrimary"
                 onClick={() => setIsCouponDiscountsVisible(!isCouponDiscountsVisible)}
+                onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        setIsCouponDiscountsVisible(!isCouponDiscountsVisible);
+                    }
+                }}
+                role="button"
+                tabIndex={0}
             >
-                <span className="cart-priceItem-label body-regular">
+                <span className="cart-priceItem-label optimizedCheckout-contentPrimary body-regular">
                     <div className="toggle-button">
                         <TranslatedString id="redeemable.discounts_text" />
                         {isCouponDiscountsVisible ? <IconDownArrow /> : <IconUpArrow />}
                     </div>
                 </span>
-                <span className="cart-priceItem-value body-medium">
+                <span className="cart-priceItem-value optimizedCheckout-contentPrimary body-medium">
                     -<ShopperCurrency amount={discounts} />
                 </span>
             </div>
@@ -65,20 +88,19 @@ const DiscountsCollapsible: FunctionComponent<{ discounts: number; discountItems
 
 export const Discounts: FunctionComponent = () => {
     const {
-        uiDetails: {
-            subtotal,
-            discounts,
-            discountItems,
-        },
+        uiDetails: { subtotal, discounts, discountItems },
     } = useMultiCoupon();
 
     return (
         <div data-test="cart-subtotal">
             <div aria-live="polite" className="cart-priceItem optimizedCheckout-contentPrimary">
-                <span className="cart-priceItem-label">
+                <span className="cart-priceItem-label optimizedCheckout-contentPrimary body-regular">
                     <TranslatedString id="cart.subtotal_text" />
                 </span>
-                <span className="cart-priceItem-value" data-test="cart-price-value">
+                <span
+                    className="cart-priceItem-value optimizedCheckout-contentPrimary body-medium"
+                    data-test="cart-price-value"
+                >
                     <ShopperCurrency amount={subtotal} />
                 </span>
             </div>

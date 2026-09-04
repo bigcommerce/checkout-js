@@ -42,7 +42,9 @@ describe('CardInstrumentFieldset', () => {
                 </Formik>
             </LocaleContext.Provider>,
         );
-        expect(screen.getByText(`Visa ending in ${getInstruments().find(isCardInstrument)?.last4}`)).toBeInTheDocument();
+        expect(
+            screen.getByText(`Visa ending in ${getInstruments().find(isCardInstrument)?.last4}`),
+        ).toBeInTheDocument();
         expect(screen.getByText(`Expires 02/${getYear(1)}`)).toBeInTheDocument();
         expect(screen.getByTestId('instrument-select')).toBeInTheDocument();
     });

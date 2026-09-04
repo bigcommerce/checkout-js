@@ -19,9 +19,11 @@ describe('OrderConfirmationApp', () => {
     });
 
     it('renders app without crashing', async () => {
-        const { container } = render(<div id={defaultProps.containerId}>
-            <OrderConfirmationApp {...defaultProps} />
-        </div>);
+        const { container } = render(
+            <div id={defaultProps.containerId}>
+                <OrderConfirmationApp {...defaultProps} />
+            </div>,
+        );
 
         // eslint-disable-next-line testing-library/no-container
         expect(container.querySelector('.orderConfirmationApp')).toBeInTheDocument();

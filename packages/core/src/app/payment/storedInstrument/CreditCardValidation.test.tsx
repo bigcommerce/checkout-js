@@ -29,7 +29,9 @@ describe('CreditCardValidation', () => {
             </LocaleContext.Provider>,
         );
 
-        expect(screen.getByText('Please re-enter your card number to authorize this transaction.')).toBeInTheDocument();
+        expect(
+            screen.getByText('Please re-enter your card number to authorize this transaction.'),
+        ).toBeInTheDocument();
         expect(screen.getByLabelText('CVV')).toBeInTheDocument();
         expect(screen.getByLabelText('Credit Card Number')).toBeInTheDocument();
     });
