@@ -159,6 +159,9 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         [checkoutService, method, onUnhandledError],
     );
 
+    console.log(isDirectPayEnabled, 'console.log(isDirectPayEnabled)')
+    console.log(!wasPaymentSelectedAtMountRef.current, ' !wasPaymentSelectedAtMountRef.current,')
+
     if (isDirectPayEnabled && !wasPaymentSelectedAtMountRef.current) {
         return (
             <GooglePayPaymentMethodComponent
