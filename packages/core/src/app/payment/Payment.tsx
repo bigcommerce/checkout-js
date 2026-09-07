@@ -12,6 +12,7 @@ import {
     type OrderRequestBody,
     type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
+// import { createAdyenV3PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/adyen';
 import { createAfterpayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/afterpay';
 import { createBlueSnapV2PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bluesnap-direct';
 import { createCBAMPGSPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/cba-mpgs';
@@ -23,6 +24,20 @@ import {
     createCheckoutComSepaPaymentStrategy,
 } from '@bigcommerce/checkout-sdk/integrations/checkoutcom-custom';
 import { createClearpayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/clearpay';
+import {
+    createGooglePayAdyenV2PaymentStrategy,
+    createGooglePayAdyenV3PaymentStrategy,
+    createGooglePayAuthorizeNetPaymentStrategy,
+    createGooglePayBigCommercePaymentsPaymentStrategy,
+    createGooglePayBraintreePaymentStrategy,
+    createGooglePayCheckoutComPaymentStrategy,
+    createGooglePayCybersourcePaymentStrategy,
+    createGooglePayOrbitalPaymentStrategy,
+    createGooglePayPPCPPaymentStrategy,
+    createGooglePayStripePaymentStrategy,
+    createGooglePayTdOnlineMartPaymentStrategy,
+    createGooglePayWorldpayAccessPaymentStrategy,
+} from '@bigcommerce/checkout-sdk/integrations/google-pay';
 import { createOffsitePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/offsite';
 import { createPaypalExpressPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/paypal-express';
 import { createSagePayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/sagepay';
@@ -808,6 +823,7 @@ const Payment = (
             try {
                 const state = await finalizeOrderIfNeeded({
                     integrations: [
+                        // createAdyenV3PaymentStrategy,
                         createAfterpayPaymentStrategy,
                         createBlueSnapV2PaymentStrategy,
                         createCBAMPGSPaymentStrategy,
@@ -817,6 +833,18 @@ const Payment = (
                         createCheckoutComIdealPaymentStrategy,
                         createCheckoutComSepaPaymentStrategy,
                         createClearpayPaymentStrategy,
+                        createGooglePayAdyenV2PaymentStrategy,
+                        createGooglePayAdyenV3PaymentStrategy,
+                        createGooglePayAuthorizeNetPaymentStrategy,
+                        createGooglePayBigCommercePaymentsPaymentStrategy,
+                        createGooglePayBraintreePaymentStrategy,
+                        createGooglePayCheckoutComPaymentStrategy,
+                        createGooglePayCybersourcePaymentStrategy,
+                        createGooglePayOrbitalPaymentStrategy,
+                        createGooglePayPPCPPaymentStrategy,
+                        createGooglePayStripePaymentStrategy,
+                        createGooglePayTdOnlineMartPaymentStrategy,
+                        createGooglePayWorldpayAccessPaymentStrategy,
                         createOffsitePaymentStrategy,
                         createPaypalExpressPaymentStrategy,
                         createSagePayPaymentStrategy,
