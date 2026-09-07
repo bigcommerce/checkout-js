@@ -1,3 +1,4 @@
+import { type ShippingOption } from '@bigcommerce/checkout-sdk';
 import {
     createGooglePayAdyenV2CustomerStrategy,
     createGooglePayAdyenV3CustomerStrategy,
@@ -59,8 +60,14 @@ const GooglePayButton: FunctionComponent<CheckoutButtonProps> = (props) => {
         createGooglePayTdOnlineMartCustomerStrategy,
     ];
 
+    const filterAvailableShippingOptions = (shippingOptions: ShippingOption[]) =>
+        Promise.resolve(
+            shippingOptions.filter((option) => option.type !== 'shipping_pickupinstore'),
+        );
+
     return (
         <CheckoutButton
+            additionalInitializationOptions={{ filterAvailableShippingOptions }}
             checkoutButtonContainerClass="google-pay-top-button"
             integrations={integrations}
             {...props}

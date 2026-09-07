@@ -61,6 +61,7 @@ describe('ApplePayButton', () => {
                     subtotalLabel: defaultProps.language.translate('cart.subtotal_text'),
                     onPaymentAuthorize: navigateToOrderConfirmation,
                     onError: defaultProps.onUnhandledError,
+                    filterAvailableShippingOptions: expect.any(Function),
                 },
             }),
             {},

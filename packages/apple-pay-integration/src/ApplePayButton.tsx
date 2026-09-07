@@ -1,3 +1,4 @@
+import { type ShippingOption } from '@bigcommerce/checkout-sdk';
 import { createApplePayCustomerStrategy } from '@bigcommerce/checkout-sdk/integrations/apple-pay';
 import React, { type FunctionComponent } from 'react';
 
@@ -14,11 +15,17 @@ const ApplePayButton: FunctionComponent<CheckoutButtonProps> = (props) => {
 
     const integrations = [createApplePayCustomerStrategy];
 
+    const filterAvailableShippingOptions = (shippingOptions: ShippingOption[]) =>
+        Promise.resolve(
+            shippingOptions.filter((option) => option.type !== 'shipping_pickupinstore'),
+        );
+
     const additionalInitializationOptions = {
         shippingLabel: language.translate('cart.shipping_text'),
         subtotalLabel: language.translate('cart.subtotal_text'),
         onPaymentAuthorize: navigateToOrderConfirmation,
         onError: onUnhandledError,
+        filterAvailableShippingOptions,
     };
 
     return (
