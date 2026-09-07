@@ -27,6 +27,16 @@ describe('mapSubmitOrderErrorMessage()', () => {
         expect(message).toEqual(translate('payment.payment_method_disabled_error'));
     });
 
+    it('returns correct message when bank declined authentication', () => {
+        const message = mapSubmitOrderErrorMessage(
+            { type: 'bank_declined_authentication' },
+            translate,
+            false,
+        );
+
+        expect(message).toEqual(translate('payment.errors.bank_declined_authentication'));
+    });
+
     it('returns correct message when shopping cart changed', () => {
         const message = mapSubmitOrderErrorMessage({ type: 'cart_changed' }, translate, false);
 
