@@ -198,7 +198,8 @@
     },
     "@bigcommerce/eslint-config": {
       "typescript": "$typescript"
-    }
+    },
+    "babel-plugin-macros": "3.1.0"
   },
   "sideEffects": [
     "**/wdyr.ts",
