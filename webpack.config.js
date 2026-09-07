@@ -270,14 +270,11 @@ function appConfig(options, argv) {
                     },
                     {
                         test: /\.(gif|png|jpe?g|svg|webp)$/i,
+                        type: 'asset/resource',
+                        generator: {
+                            filename: `static/${outputFilename}[ext]`,
+                        },
                         use: [
-                            {
-                                loader: 'file-loader',
-                                options: {
-                                    name: `${outputFilename}.[ext]`,
-                                    outputPath: 'static',
-                                },
-                            },
                             {
                                 loader: 'image-webpack-loader',
                                 options: {
