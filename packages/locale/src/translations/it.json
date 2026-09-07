@@ -494,7 +494,8 @@
                 "unsupported_request": "Non è stato possibile elaborare il pagamento perché i dati forniti per la transazione non sono validi.",
                 "user_authorization_error": "Si è verificato un problema durante l'elaborazione del pagamento. Contattaci.",
                 "vaulting_service_unavailable": "Il servizio di vaulting non è attualmente disponibile.",
-                "voided_transaction": "Impossibile elaborare il pagamento in quanto la transazione è già stata annullata. Riprova o contattaci."
+                "voided_transaction": "Impossibile elaborare il pagamento in quanto la transazione è già stata annullata. Riprova o contattaci.",
+                "bank_declined_authentication": "Your bank declined authentication, please use a different card."
             },
             "ratepay": {
                 "payment_method_title": "Pagamento contro fattura",

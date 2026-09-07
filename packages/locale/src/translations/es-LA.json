@@ -494,7 +494,8 @@
                 "unsupported_request": "No se puede procesar el pago porque se proporcionaron datos no válidos con la transacción.",
                 "user_authorization_error": "Hubo un error al procesar su pago. Póngase en contacto con nosotros.",
                 "vaulting_service_unavailable": "El servicio de bóveda no está disponible actualmente.",
-                "voided_transaction": "Su pago no pudo ser procesado debido a que la transacción ya se anuló. Inténtelo de nuevo o póngase en contacto con nosotros."
+                "voided_transaction": "Su pago no pudo ser procesado debido a que la transacción ya se anuló. Inténtelo de nuevo o póngase en contacto con nosotros.",
+                "bank_declined_authentication": "Your bank declined authentication, please use a different card."
             },
             "ratepay": {
                 "payment_method_title": "Pagar por factura",
