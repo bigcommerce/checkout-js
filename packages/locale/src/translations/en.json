@@ -494,7 +494,8 @@
                 "unsupported_request": "Unable to process the payment because invalid data was supplied with the transaction.",
                 "user_authorization_error": "There was an error while processing your payment. Please contact us.",
                 "vaulting_service_unavailable": "Vaulting service is currently not available.",
-                "voided_transaction": "Unable to process your payment because the transaction has already been voided. Please try again or contact us."
+                "voided_transaction": "Unable to process your payment because the transaction has already been voided. Please try again or contact us.",
+                "bank_declined_authentication": "Your bank declined authentication, please use a different card."
             },
             "ratepay": {
                 "payment_method_title": "Pay upon Invoice",

@@ -119,42 +119,22 @@ describe('loadFiles', () => {
         );
     });
 
-    it('prefetches dynamic JS chunks listed in manifest', async () => {
+    it('prefetches dynamic JS chunks with crossorigin matching the real chunk requests', async () => {
         await loadFiles(options);
 
         expect(getScriptLoader().preloadScripts).toHaveBeenCalledWith(
             ['https://cdn.foo.bar/step-a.js', 'https://cdn.foo.bar/step-b.js'],
-            { prefetch: true },
+            { prefetch: true, crossOrigin: 'anonymous' },
         );
     });
 
-    it('prefetches dynamic CSS chunks listed in manifest', async () => {
+    it('prefetches dynamic CSS chunks with crossorigin matching the real chunk requests', async () => {
         await loadFiles(options);
 
         expect(getStylesheetLoader().preloadStylesheets).toHaveBeenCalledWith(
             ['https://cdn.foo.bar/step-a.css', 'https://cdn.foo.bar/step-b.css'],
-            { prefetch: true },
+            { prefetch: true, crossOrigin: 'anonymous' },
         );
-    });
-
-    describe('when isConsistentCrossOriginFixEnabled is true', () => {
-        it('prefetches dynamic JS chunks with crossorigin matching the real chunk requests', async () => {
-            await loadFiles({ ...options, isConsistentCrossOriginFixEnabled: true });
-
-            expect(getScriptLoader().preloadScripts).toHaveBeenCalledWith(
-                ['https://cdn.foo.bar/step-a.js', 'https://cdn.foo.bar/step-b.js'],
-                { prefetch: true, crossOrigin: 'anonymous' },
-            );
-        });
-
-        it('prefetches dynamic CSS chunks with crossorigin matching the real chunk requests', async () => {
-            await loadFiles({ ...options, isConsistentCrossOriginFixEnabled: true });
-
-            expect(getStylesheetLoader().preloadStylesheets).toHaveBeenCalledWith(
-                ['https://cdn.foo.bar/step-a.css', 'https://cdn.foo.bar/step-b.css'],
-                { prefetch: true, crossOrigin: 'anonymous' },
-            );
-        });
     });
 
     it('resolves with app version', async () => {

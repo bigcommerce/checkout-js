@@ -223,6 +223,7 @@ const checkout: Checkout = {
         createdTime: timeString,
         updatedTime: timeString,
         locale: 'en',
+        version: 0,
     },
     consignments: [],
     orderId: undefined,

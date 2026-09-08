@@ -1,6 +1,6 @@
 {
   "name": "@bigcommerce/checkout",
-  "version": "1.888.2",
+  "version": "1.892.1",
   "private": true,
   "description": "Browser-based application providing a seamless UI for BigCommerce shoppers to complete their checkout.",
   "license": "MIT",
@@ -48,7 +48,7 @@
   "prettier": "@bigcommerce/eslint-config/prettier",
   "homepage": "https://github.com/bigcommerce/checkout-js#readme",
   "dependencies": {
-    "@bigcommerce/checkout-sdk": "^1.968.2",
+    "@bigcommerce/checkout-sdk": "^1.974.0",
     "@bigcommerce/citadel": "^2.16.1",
     "@bigcommerce/form-poster": "^1.2.2",
     "@bigcommerce/memoize": "^1.0.0",
@@ -99,7 +99,7 @@
     "yup": "0.30.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.0",
+    "@babel/core": "^7.29.7",
     "@babel/preset-env": "^7.9.0",
     "@bigcommerce/eslint-config": "^2.6.1",
     "@bigcommerce/eslint-plugin": "^1.4.0",
@@ -134,12 +134,12 @@
     "@typescript-eslint/parser": "^8.0.0",
     "babel-loader": "^8.0.6",
     "blueimp-md5": "^2.19.0",
-    "browserslist": "^4.25.2",
+    "browserslist": "^4.28.9",
     "circular-dependency-plugin": "^5.2.0",
     "conventional-recommended-bump": "^6.0.0",
     "core-js": "^3.45.0",
     "core-js-compat": "^3.45.0",
-    "css-loader": "^3.1.0",
+    "css-loader": "^7.1.5",
     "dotenv": "^16.0.0",
     "ejs": "^3.1.10",
     "esbuild-loader": "^4.5.0",
@@ -152,7 +152,6 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-testing-library": "^5.11.0",
     "fast-json-stable-stringify": "^2.1.0",
-    "file-loader": "^6.2.0",
     "glob": "^8.0.1",
     "http-server": "^14.1.1",
     "image-webpack-loader": "^8.1.0",
@@ -174,7 +173,7 @@
     "source-map-loader": "^0.2.4",
     "speed-measure-webpack-plugin": "^1.5.0",
     "standard-version": "^9.5.0",
-    "style-loader": "^0.23.1",
+    "style-loader": "^4.0.0",
     "stylelint": "^15.10.1",
     "stylelint-config-standard-scss": "^7.0.1",
     "stylelint-order": "^6.0.3",
@@ -198,7 +197,8 @@
     },
     "@bigcommerce/eslint-config": {
       "typescript": "$typescript"
-    }
+    },
+    "babel-plugin-macros": "3.1.0"
   },
   "sideEffects": [
     "**/wdyr.ts",
