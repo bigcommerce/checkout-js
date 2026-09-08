@@ -66,28 +66,6 @@ describe('when using Google Pay payment', () => {
     };
     const onUnhandledError = jest.fn();
 
-    const storeConfigWithDirectPayDisabled = {
-        ...getStoreConfig(),
-        checkoutSettings: {
-            ...getStoreConfig().checkoutSettings,
-            features: {
-                ...getStoreConfig().checkoutSettings.features,
-                'PI-5111.google_pay_direct_pay_on_click': false,
-            },
-        },
-    };
-
-    const storeConfigWithDirectPayEnabled = {
-        ...getStoreConfig(),
-        checkoutSettings: {
-            ...getStoreConfig().checkoutSettings,
-            features: {
-                ...getStoreConfig().checkoutSettings.features,
-                'PI-5111.google_pay_direct_pay_on_click': true,
-            },
-        },
-    };
-
     beforeEach(() => {
         checkoutService = createCheckoutService();
         checkoutState = checkoutService.getState();
@@ -111,9 +89,7 @@ describe('when using Google Pay payment', () => {
             language: localeContext.language,
         };
 
-        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(
-            storeConfigWithDirectPayDisabled,
-        );
+        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
 
         jest.spyOn(checkoutService, 'deinitializePayment').mockResolvedValue(checkoutState);
 
@@ -132,7 +108,16 @@ describe('when using Google Pay payment', () => {
         );
     });
 
-    describe('when Direct Pay is disabled', () => {
+    describe('when payment is already selected at mount (wallet button flow)', () => {
+        beforeEach(() => {
+            // The wallet button branch only renders when Google Pay was already
+            // selected at mount time, so reflect the current method id in checkout.
+            jest.spyOn(checkoutState.data, 'getCheckout').mockImplementation(() => ({
+                ...getCheckout(),
+                payments: [{ ...getCheckoutPayment(), providerId: method.id }],
+            }));
+        });
+
         it('initializes payment method when component mounts', () => {
             render(<GooglePayPaymentMethodTest {...defaultProps} />);
 
@@ -161,7 +146,7 @@ describe('when using Google Pay payment', () => {
 
             expect(
                 screen.getByText(
-                    defaultProps.language.translate('remote.sign_in_action', {
+                    defaultProps.language.translate('remote.sign_out_action', {
                         providerName: getPaymentMethodName(defaultProps.language)(
                             defaultProps.method,
                         ),
@@ -293,13 +278,7 @@ describe('when using Google Pay payment', () => {
         });
     });
 
-    describe('when Direct Pay is enabled', () => {
-        beforeEach(() => {
-            jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(
-                storeConfigWithDirectPayEnabled,
-            );
-        });
-
+    describe('when payment is not selected at mount (Direct Pay flow)', () => {
         it('does not render the wallet button', () => {
             render(<GooglePayPaymentMethodTest {...defaultProps} />);
 
@@ -356,11 +335,7 @@ describe('when using Google Pay payment', () => {
             });
         });
 
-        it('renders the wallet UI with a sign-out option regardless of the feature flag', () => {
-            jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(
-                storeConfigWithDirectPayEnabled,
-            );
-
+        it('renders the wallet UI with a sign-out option', () => {
             render(<GooglePayPaymentMethodTest {...defaultProps} />);
 
             expect(
