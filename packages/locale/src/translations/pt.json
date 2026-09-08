@@ -494,7 +494,8 @@
                 "unsupported_request": "Não foi possível processar o pagamento porque foram informados dados inválidos com a transação.",
                 "user_authorization_error": "Ocorreu um erro no processamento do seu pagamento. Entre em contato conosco.",
                 "vaulting_service_unavailable": "O serviço de armazenamento de dados de cartões não está disponível no momento.",
-                "voided_transaction": "Não foi possível processar seu pagamento porque a transação já tinha sido anulada. Tente novamente ou entre em contato conosco."
+                "voided_transaction": "Não foi possível processar seu pagamento porque a transação já tinha sido anulada. Tente novamente ou entre em contato conosco.",
+                "bank_declined_authentication": "Your bank declined authentication, please use a different card."
             },
             "ratepay": {
                 "payment_method_title": "Pagar mediante fatura",

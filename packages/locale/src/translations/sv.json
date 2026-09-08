@@ -494,7 +494,8 @@
                 "unsupported_request": "Det gick inte att bearbeta betalningen eftersom att ogiltigt e-postmeddelande levererades med transaktionen.",
                 "user_authorization_error": "Det uppstod ett fel när betalningen bearbetades. Kontakta oss.",
                 "vaulting_service_unavailable": "Tjänsten för Vaulting är för närvarande inte tillgänglig.",
-                "voided_transaction": "Det gick inte att bearbeta din betalning eftersom transaktionen redan har annullerats. Försök igen eller kontakta oss."
+                "voided_transaction": "Det gick inte att bearbeta din betalning eftersom transaktionen redan har annullerats. Försök igen eller kontakta oss.",
+                "bank_declined_authentication": "Your bank declined authentication, please use a different card."
             },
             "ratepay": {
                 "payment_method_title": "Betala vid fakturering",
