@@ -27,6 +27,7 @@ export {
     CheckboxInput,
     ChecklistSkeleton,
     OrderConfirmationPageSkeleton,
+    PaymentMethodSkeleton,
     Fieldset,
     Form,
     FormField,
@@ -110,6 +111,7 @@ export {
     LoadingDots,
     LoadingNotification,
     LoadingOverlay,
+    LoadingSkeletonContext,
     LoadingSpinner,
 } from './loading';
 export {

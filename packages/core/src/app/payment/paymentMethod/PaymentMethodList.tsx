@@ -2,8 +2,14 @@ import { type PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { find, noop } from 'lodash';
 import React, { type FunctionComponent, memo, useCallback, useMemo } from 'react';
 
-import { useCheckout, useLocale } from '@bigcommerce/checkout/contexts';
-import { Checklist, ChecklistItem, LoadingOverlay } from '@bigcommerce/checkout/ui';
+import { useCheckout, useLocale, useThemeContext } from '@bigcommerce/checkout/contexts';
+import {
+    Checklist,
+    ChecklistItem,
+    LoadingOverlay,
+    LoadingSkeletonContext,
+    PaymentMethodSkeleton,
+} from '@bigcommerce/checkout/ui';
 
 import { connectFormik, type ConnectFormikProps } from '../../common/form';
 
@@ -22,6 +28,8 @@ export interface PaymentMethodListProps {
     onSelect?(method: PaymentMethod): void;
     onUnhandledError?(error: Error): void;
 }
+
+const paymentMethodSkeleton = <PaymentMethodSkeleton />;
 
 function getPaymentMethodFromListValue(methods: PaymentMethod[], value: string): PaymentMethod {
     const { gatewayId: gateway, methodId: id } = parseUniquePaymentMethodId(value);
@@ -47,6 +55,7 @@ const PaymentMethodList: FunctionComponent<
 }) => {
     const { language } = useLocale();
     const { selectedState: config } = useCheckout(({ data }) => data.getConfig());
+    const { enhancedThemeV1 } = useThemeContext();
 
     const chequeMethod = find(methods, { id: 'cheque' });
     const chequeDisabledReason = usePoMethodDisabledReason(chequeMethod);
@@ -81,37 +90,49 @@ const PaymentMethodList: FunctionComponent<
         [methods, onSelect],
     );
 
+    const checklist = (
+        <Checklist
+            defaultSelectedItemId={values.paymentProviderRadio}
+            name="paymentProviderRadio"
+            onSelect={handleSelect}
+        >
+            {methods.map((method) => {
+                const value = getUniquePaymentMethodId(method.id, method.gateway);
+
+                return (
+                    <PaymentMethodListItem
+                        disabledReason={method === chequeMethod ? chequeDisabledReason : undefined}
+                        isEmbedded={isEmbedded}
+                        isInitializingPayment={isInitializingPayment}
+                        isUsingMultiShipping={isUsingMultiShipping}
+                        key={value}
+                        method={method}
+                        onUnhandledError={onUnhandledError}
+                        value={value}
+                    />
+                );
+            })}
+        </Checklist>
+    );
+
     return (
         <>
             <div aria-live="assertive" className="is-srOnly" role="status">
                 {titleText}
             </div>
-            <LoadingOverlay isLoading={Boolean(isInitializingPayment)}>
-                <Checklist
-                    defaultSelectedItemId={values.paymentProviderRadio}
-                    name="paymentProviderRadio"
-                    onSelect={handleSelect}
-                >
-                    {methods.map((method) => {
-                        const value = getUniquePaymentMethodId(method.id, method.gateway);
-
-                        return (
-                            <PaymentMethodListItem
-                                disabledReason={
-                                    method === chequeMethod ? chequeDisabledReason : undefined
-                                }
-                                isEmbedded={isEmbedded}
-                                isInitializingPayment={isInitializingPayment}
-                                isUsingMultiShipping={isUsingMultiShipping}
-                                key={value}
-                                method={method}
-                                onUnhandledError={onUnhandledError}
-                                value={value}
-                            />
-                        );
-                    })}
-                </Checklist>
-            </LoadingOverlay>
+            {enhancedThemeV1 ? (
+                // enhancedThemeV1 keeps the method list visible while a method
+                // initializes: no spinner veil, and the initializing method's
+                // fields render as a skeleton (items stay read-only via
+                // isReadOnly until initialization finishes).
+                <LoadingSkeletonContext.Provider value={paymentMethodSkeleton}>
+                    {checklist}
+                </LoadingSkeletonContext.Provider>
+            ) : (
+                <LoadingOverlay isLoading={Boolean(isInitializingPayment)}>
+                    {checklist}
+                </LoadingOverlay>
+            )}
         </>
     );
 };

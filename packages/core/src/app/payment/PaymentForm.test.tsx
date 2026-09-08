@@ -141,6 +141,36 @@ describe('PaymentForm', () => {
         expect(radios[1]).not.toBeChecked();
     });
 
+    it('does not render the loading overlay while a payment method is initializing in enhancedThemeV1', () => {
+        enhancedThemeV1 = true;
+
+        render(<PaymentFormTest {...defaultProps} isInitializingPayment={true} />);
+
+        expect(screen.queryByTestId('loading-overlay')).not.toBeInTheDocument();
+        expect(screen.getAllByRole('radio')).toHaveLength(2);
+    });
+
+    it('keeps payment methods unselectable while a payment method is initializing in enhancedThemeV1', () => {
+        enhancedThemeV1 = true;
+
+        const onMethodSelect = jest.fn();
+
+        render(
+            <PaymentFormTest
+                {...defaultProps}
+                isInitializingPayment={true}
+                onMethodSelect={onMethodSelect}
+            />,
+        );
+
+        const radios = screen.getAllByRole('radio');
+
+        fireEvent.click(radios[1]);
+
+        expect(onMethodSelect).not.toHaveBeenCalled();
+        expect(radios[1]).not.toBeChecked();
+    });
+
     it('renders terms and conditions field if copy is provided', () => {
         const textAcceptTerms = 'Accept terms';
 

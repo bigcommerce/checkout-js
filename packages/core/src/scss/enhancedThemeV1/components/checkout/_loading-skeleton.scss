@@ -1,0 +1,42 @@
+// =============================================================================
+// PAYMENT METHOD LOADING SKELETON
+// =============================================================================
+
+// Shown inside an initializing payment method instead of the loading spinner.
+// Only rendered under enhancedThemeV1 (see PaymentMethodList).
+.payment-method-skeleton {
+    @include enhancedThemeV1 {
+        padding: spacing("half") 0;
+
+        div {
+            animation: $loading-skeleton-grey-box-animation;
+            background: $loading-skeleton-grey-box-color;
+            border-radius: $global-radius;
+            display: block;
+        }
+
+        .payment-method-skeleton--label {
+            height: remCalc(10px);
+            margin-bottom: spacing("single");
+            width: 25%;
+        }
+
+        .payment-method-skeleton--fields {
+            animation: none;
+            background: none;
+            border-radius: 0;
+            display: flex;
+            gap: spacing("single");
+        }
+
+        .payment-method-skeleton--field-large {
+            flex: 3;
+            height: $floating-label-input-height;
+        }
+
+        .payment-method-skeleton--field-small {
+            flex: 1;
+            height: $floating-label-input-height;
+        }
+    }
+}
