@@ -71,5 +71,16 @@
         & ~ .form-label::before {
             border: 2px $input-border-style $input-border-color;
         }
+
+        // Payment methods stay read-only (not disabled) while initializing,
+        // so they remain focusable — but should still look non-interactive.
+        &.form-checklist-checkbox--disabled ~ .form-label {
+            cursor: not-allowed;
+
+            &::before,
+            &::after {
+                opacity: $checkRadio-disabled-opacity;
+            }
+        }
     }
 }

@@ -2,41 +2,75 @@
 // PAYMENT METHOD LOADING SKELETON
 // =============================================================================
 
+// The shared grey/lightest-grey pulse ($loading-skeleton-grey-box-animation)
+// is tuned for a white background. A selected payment method under
+// enhancedThemeV1 sits on $color-highlightLightest (a pale lavender), which
+// is close enough in luminance to make that pulse nearly invisible, so this
+// skeleton uses its own darker pair of greys instead.
+@keyframes payment-method-skeleton-pulse {
+    0%, 100% {
+        background-color: color("greys", "lighter");
+    }
+
+    50% {
+        background-color: mix(color("greys", "light"), color("greys", "medium"), 50%);
+    }
+}
+
 // Shown inside an initializing payment method instead of the loading spinner.
 // Only rendered under enhancedThemeV1 (see PaymentMethodList).
+// Each row mirrors a row of the real credit card fieldset (e.g. card number +
+// expiration, or name on card + CVV): a label sits directly above its own
+// field so the skeleton lines up with the fields it is standing in for.
 .payment-method-skeleton {
     @include enhancedThemeV1 {
         padding: spacing("half") 0;
 
         div {
-            animation: $loading-skeleton-grey-box-animation;
-            background: $loading-skeleton-grey-box-color;
+            animation: payment-method-skeleton-pulse 4000ms infinite cubic-bezier(0.13, 0.615, 0.315, 0.915);
+            background: color("greys", "lighter");
             border-radius: $global-radius;
             display: block;
         }
 
-        .payment-method-skeleton--label {
-            height: remCalc(10px);
-            margin-bottom: spacing("single");
-            width: 25%;
-        }
-
-        .payment-method-skeleton--fields {
+        .payment-method-skeleton--row {
             animation: none;
             background: none;
             border-radius: 0;
             display: flex;
             gap: spacing("single");
+
+            &:not(:last-child) {
+                margin-bottom: spacing("single");
+            }
         }
 
-        .payment-method-skeleton--field-large {
-            flex: 3;
-            height: $floating-label-input-height;
+        .payment-method-skeleton--field-group {
+            animation: none;
+            background: none;
+            border-radius: 0;
         }
 
-        .payment-method-skeleton--field-small {
+        .payment-method-skeleton--field-group-large {
             flex: 1;
+        }
+
+        .payment-method-skeleton--field-group-small {
+            // Roughly matches the real CVV/expiry field's width (~105px)
+            // instead of stretching to fill the remaining row width.
+            flex: 0 0 remCalc(105px);
+        }
+
+        .payment-method-skeleton--label {
+            height: remCalc(10px);
+            margin-bottom: spacing("half");
+            width: 40%;
+        }
+
+        .payment-method-skeleton--field-large,
+        .payment-method-skeleton--field-small {
             height: $floating-label-input-height;
+            width: 100%;
         }
     }
 }
