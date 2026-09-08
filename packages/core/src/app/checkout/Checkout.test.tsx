@@ -22,6 +22,7 @@ import {
     LocaleProvider,
     ThemeProvider,
 } from '@bigcommerce/checkout/contexts';
+import { replaceLocation } from '@bigcommerce/checkout/dom-utils';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
 import { CHECKOUT_ROOT_NODE_ID } from '@bigcommerce/checkout/payment-integration-api';
 import {
@@ -52,6 +53,11 @@ import Checkout, { type CheckoutProps } from './Checkout';
 // (e.g. toBeChecked) shadow jest-dom's in the shared matcher registry; restore jest-dom's.
 expect.extend(jestDomMatchers);
 
+jest.mock('@bigcommerce/checkout/dom-utils', () => ({
+    ...jest.requireActual('@bigcommerce/checkout/dom-utils'),
+    replaceLocation: jest.fn(),
+}));
+
 describe('Checkout', () => {
     let checkout: CheckoutPageNodeObject;
     let CheckoutTest: FunctionComponent<
@@ -78,6 +84,8 @@ describe('Checkout', () => {
 
     beforeEach(() => {
         window.scrollTo = jest.fn();
+
+        (replaceLocation as jest.Mock).mockClear();
 
         checkoutService = createCheckoutService();
         extensionService = new ExtensionService(checkoutService, createErrorLogger());
@@ -609,122 +617,78 @@ describe('Checkout', () => {
         });
 
         it('redirects to B2B buyer portal after payment when invoiceRedirect capability is enabled', async () => {
-            const originalLocation = window.location;
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
 
-            Object.defineProperty(window, 'location', {
-                value: {
-                    // eslint-disable-next-line @typescript-eslint/no-misused-spread
-                    ...window.location,
-                    replace: jest.fn(),
+            jest.spyOn(checkoutService, 'submitOrder').mockResolvedValue({
+                data: {
+                    getOrder: () => ({ orderId: 123 }) as any,
                 },
-                configurable: true,
-                writable: true,
+            } as any);
+            jest.spyOn(checkoutService, 'refreshB2BPaymentMethods').mockResolvedValue({} as any);
+            jest.spyOn(checkoutService, 'persistB2BMetadata').mockResolvedValue({} as any);
+
+            const getState = checkoutService.getState.bind(checkoutService);
+
+            jest.spyOn(checkoutService, 'getState').mockImplementation(() => {
+                const state = getState();
+
+                state.data.getB2BContext = () => ({ receiptId: '123' });
+
+                return state;
             });
 
-            try {
-                checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
+            const invoiceRedirectCapabilities = {
+                ...defaultCapabilities,
+                orderConfirmation: {
+                    ...defaultCapabilities.orderConfirmation,
+                    invoiceRedirect: true,
+                    persistB2BMetadata: true,
+                },
+            };
 
-                jest.spyOn(checkoutService, 'submitOrder').mockResolvedValue({
-                    data: {
-                        getOrder: () => ({ orderId: 123 }) as any,
-                    },
-                } as any);
-                jest.spyOn(checkoutService, 'refreshB2BPaymentMethods').mockResolvedValue(
-                    {} as any,
+            render(<CheckoutTest {...defaultProps} capabilities={invoiceRedirectCapabilities} />);
+
+            await checkout.waitForPaymentStep();
+
+            await userEvent.click(screen.getByText(/place order/i));
+
+            await waitFor(() => {
+                expect(replaceLocation).toHaveBeenCalledWith(
+                    'https://store.url/#/invoice?receiptId=123',
                 );
-                jest.spyOn(checkoutService, 'persistB2BMetadata').mockResolvedValue({} as any);
-
-                const getState = checkoutService.getState.bind(checkoutService);
-
-                jest.spyOn(checkoutService, 'getState').mockImplementation(() => {
-                    const state = getState();
-
-                    state.data.getB2BContext = () => ({ receiptId: '123' });
-
-                    return state;
-                });
-
-                const invoiceRedirectCapabilities = {
-                    ...defaultCapabilities,
-                    orderConfirmation: {
-                        ...defaultCapabilities.orderConfirmation,
-                        invoiceRedirect: true,
-                        persistB2BMetadata: true,
-                    },
-                };
-
-                render(
-                    <CheckoutTest {...defaultProps} capabilities={invoiceRedirectCapabilities} />,
-                );
-
-                await checkout.waitForPaymentStep();
-
-                await userEvent.click(screen.getByText(/place order/i));
-
-                await waitFor(() => {
-                    expect(window.location.replace).toHaveBeenCalledWith(
-                        'https://store.url/#/invoice?receiptId=123',
-                    );
-                });
-            } finally {
-                Object.defineProperty(window, 'location', {
-                    value: originalLocation,
-                    configurable: true,
-                    writable: true,
-                });
-            }
+            });
         });
 
         it('persists cannotCreatePersonalAccount to session storage when navigating to order confirmation', async () => {
-            const originalLocation = window.location;
+            checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
 
-            Object.defineProperty(window, 'location', {
-                value: {
-                    // eslint-disable-next-line @typescript-eslint/no-misused-spread
-                    ...window.location,
-                    replace: jest.fn(),
+            jest.spyOn(checkoutService, 'submitOrder').mockResolvedValue({
+                data: {
+                    getOrder: () => ({ orderId: 123 }) as any,
                 },
-                configurable: true,
-                writable: true,
+            } as any);
+
+            const capabilities = {
+                ...defaultCapabilities,
+                orderConfirmation: {
+                    ...defaultCapabilities.orderConfirmation,
+                    cannotCreatePersonalAccount: true,
+                },
+            };
+
+            render(<CheckoutTest {...defaultProps} capabilities={capabilities} />);
+
+            await checkout.waitForPaymentStep();
+
+            await userEvent.click(screen.getByText(/place order/i));
+
+            await waitFor(() => {
+                expect(
+                    CannotCreatePersonalAccountSessionStorage.getCannotCreatePersonalAccount(),
+                ).toBe(true);
             });
-
-            try {
-                checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
-
-                jest.spyOn(checkoutService, 'submitOrder').mockResolvedValue({
-                    data: {
-                        getOrder: () => ({ orderId: 123 }) as any,
-                    },
-                } as any);
-
-                const capabilities = {
-                    ...defaultCapabilities,
-                    orderConfirmation: {
-                        ...defaultCapabilities.orderConfirmation,
-                        cannotCreatePersonalAccount: true,
-                    },
-                };
-
-                render(<CheckoutTest {...defaultProps} capabilities={capabilities} />);
-
-                await checkout.waitForPaymentStep();
-
-                await userEvent.click(screen.getByText(/place order/i));
-
-                await waitFor(() => {
-                    expect(
-                        CannotCreatePersonalAccountSessionStorage.getCannotCreatePersonalAccount(),
-                    ).toBe(true);
-                });
-                expect(window.location.replace).toHaveBeenCalled();
-            } finally {
-                CannotCreatePersonalAccountSessionStorage.removeCannotCreatePersonalAccount();
-                Object.defineProperty(window, 'location', {
-                    value: originalLocation,
-                    configurable: true,
-                    writable: true,
-                });
-            }
+            expect(replaceLocation).toHaveBeenCalled();
+            CannotCreatePersonalAccountSessionStorage.removeCannotCreatePersonalAccount();
         });
     });
 

@@ -45,6 +45,7 @@ import {
     useCapabilities,
     useThemeContext,
 } from '@bigcommerce/checkout/contexts';
+import { assignTopLocation, replaceLocation } from '@bigcommerce/checkout/dom-utils';
 import { ErrorLevelType, type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { type PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
@@ -351,7 +352,7 @@ const Payment = (
             errorType === 'provider_fatal_error' ||
             errorType === 'order_could_not_be_finalized_error'
         ) {
-            window.location.replace(cartUrl || '/');
+            replaceLocation(cartUrl || '/');
         }
 
         if (errorType === 'tax_provider_unavailable') {
@@ -366,7 +367,7 @@ const Payment = (
             const { body, headers, status } = error;
 
             if (body.type === 'provider_error' && headers.location) {
-                window.top?.location.assign(headers.location);
+                assignTopLocation(headers.location);
             }
 
             // Reload the checkout object to get the latest `shouldExecuteSpamCheck` value,

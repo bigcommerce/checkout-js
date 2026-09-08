@@ -30,6 +30,12 @@ import {
     useCheckout,
     withExtension,
 } from '@bigcommerce/checkout/contexts';
+import {
+    assignTopLocation,
+    replaceLocation,
+    replaceTopLocation,
+    setTopLocationHref,
+} from '@bigcommerce/checkout/dom-utils';
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { OrderConfirmationPageSkeleton } from '@bigcommerce/checkout/ui';
@@ -264,7 +270,7 @@ const Checkout = ({
         if (invoiceRedirect && b2bContext?.receiptId) {
             const { links: { siteLink = '' } = {} } = data.getConfig() || {};
 
-            window.location.replace(`${siteLink}/#/invoice?receiptId=${b2bContext.receiptId}`);
+            replaceLocation(`${siteLink}/#/invoice?receiptId=${b2bContext.receiptId}`);
 
             return;
         }
@@ -287,7 +293,7 @@ const Checkout = ({
         (customerViewType: CustomerViewType): void => {
             if (customerViewType === CustomerViewType.CreateAccount && isEmbedded()) {
                 if (window.top) {
-                    window.top.location.replace(createAccountUrl);
+                    replaceTopLocation(createAccountUrl);
                 }
 
                 return;
@@ -390,7 +396,7 @@ const Checkout = ({
     const handleSignOut = useCallback(
         ({ isCartEmpty }: CustomerSignOutEvent): void => {
             if (isPriceHiddenFromGuests && window.top) {
-                window.top.location.href = cartUrl;
+                setTopLocationHref(cartUrl);
 
                 return;
             }
@@ -407,7 +413,7 @@ const Checkout = ({
                 setState((prevState) => ({ ...prevState, isCartEmpty: true }));
 
                 if (!isEmbedded() && window.top) {
-                    window.top.location.assign(loginUrl);
+                    assignTopLocation(loginUrl);
 
                     return;
                 }
