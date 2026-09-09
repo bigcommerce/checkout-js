@@ -457,6 +457,64 @@ describe('WalletButtonPaymentMethod', () => {
 
                 expect(disableSubmit).toHaveBeenLastCalledWith(freshMethod, false);
             });
+
+            it('relabels the edit action as "try again" instead of "select a different card"', () => {
+                jest.spyOn(checkoutState.errors, 'getSubmitOrderError').mockReturnValue(
+                    new Error('Payment was declined'),
+                );
+
+                render(<WalletButtonPaymentMethodTest {...defaultProps} shouldShowEditButton />);
+
+                expect(
+                    screen.getByText(
+                        localeContext.language.translate('remote.retry_same_card_action'),
+                    ),
+                ).toBeInTheDocument();
+                expect(
+                    screen.queryByText(
+                        localeContext.language.translate('remote.select_different_card_action'),
+                    ),
+                ).not.toBeInTheDocument();
+            });
+
+            it('reverts the edit action back to its default label once a fresh token is available', () => {
+                jest.spyOn(checkoutState.errors, 'getSubmitOrderError').mockReturnValue(
+                    new Error('Payment was declined'),
+                );
+
+                const { rerender } = render(
+                    <WalletButtonPaymentMethodTest {...defaultProps} shouldShowEditButton />,
+                );
+
+                expect(
+                    screen.getByText(
+                        localeContext.language.translate('remote.retry_same_card_action'),
+                    ),
+                ).toBeInTheDocument();
+
+                const freshMethod = merge({}, defaultProps.method, {
+                    initializationData: { nonce: 'nonce-2' },
+                });
+
+                rerender(
+                    <WalletButtonPaymentMethodTest
+                        {...defaultProps}
+                        method={freshMethod}
+                        shouldShowEditButton
+                    />,
+                );
+
+                expect(
+                    screen.getByText(
+                        localeContext.language.translate('remote.select_different_card_action'),
+                    ),
+                ).toBeInTheDocument();
+                expect(
+                    screen.queryByText(
+                        localeContext.language.translate('remote.retry_same_card_action'),
+                    ),
+                ).not.toBeInTheDocument();
+            });
         });
     });
 });

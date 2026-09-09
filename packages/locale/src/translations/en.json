@@ -540,6 +540,7 @@
             "continue_with_text": "Or continue with",
             "or_text": "OR",
             "payment_method_error": "There was an error retrieving your remote payment method. Please try again.",
+            "retry_same_card_action": "Try again",
             "select_different_card_action": "Select a different card",
             "session_error": "Your remote session has expired. Please log in again.",
             "shipping_address_error": "There was an error retrieving your remote shipping address. Please try again.",

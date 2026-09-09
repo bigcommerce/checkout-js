@@ -6,9 +6,10 @@ import {
     type PaymentRequestOptions,
 } from '@bigcommerce/checkout-sdk';
 import { noop, some } from 'lodash';
-import React, { type ReactNode, useCallback, useEffect, useRef } from 'react';
+import React, { type ReactNode, useCallback, useEffect, useState } from 'react';
 
 import { useCheckout } from '@bigcommerce/checkout/contexts';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { type PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
@@ -102,21 +103,30 @@ const WalletButtonPaymentMethodComponent: React.FC<WalletButtonPaymentMethodProp
     // token was declined and keep "Place Order" disabled for it, until the
     // shopper goes through the wallet button again for a fresh one (the
     // "Edit"/re-select action already offered below).
+    //
+    // This is state (rather than a ref) deliberately: it also drives the
+    // "Edit"/re-select action's label below, so updating it needs to
+    // trigger a re-render - a ref's mutation wouldn't.
     const currentNonce = getNonce(method.initializationData);
-    const declinedNonceRef = useRef<string>();
+    const [declinedNonce, setDeclinedNonce] = useState<string>();
 
     useEffect(() => {
         if (submitOrderError || finalizeOrderError) {
-            declinedNonceRef.current = currentNonce;
+            setDeclinedNonce(currentNonce);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [submitOrderError, finalizeOrderError]);
 
+    // Once the current token has been declined, the shopper isn't limited to
+    // picking a different card - going through the wallet button again with
+    // the same card gets them a fresh, usable token just as well - so the
+    // "Edit"/re-select action's label below is adjusted to make that clear
+    // instead of implying only a different card would work.
+    const hasDeclinedPaymentData = declinedNonce !== undefined && declinedNonce === currentNonce;
+
     const toggleSubmit = () => {
         const { disableSubmit } = paymentForm;
         const currentIsPaymentDataRequired = isPaymentDataRequired();
-        const hasDeclinedPaymentData =
-            declinedNonceRef.current !== undefined && declinedNonceRef.current === currentNonce;
         const hasValidWalletData =
             normalizeWalletPaymentData(method.initializationData) || !currentIsPaymentDataRequired;
 
@@ -187,7 +197,13 @@ const WalletButtonPaymentMethodComponent: React.FC<WalletButtonPaymentMethodProp
                         buttonId={buttonId}
                         cardName={cardName}
                         editButtonClassName={editButtonClassName}
-                        editButtonLabel={editButtonLabel}
+                        editButtonLabel={
+                            hasDeclinedPaymentData ? (
+                                <TranslatedString id="remote.retry_same_card_action" />
+                            ) : (
+                                editButtonLabel
+                            )
+                        }
                         method={method}
                         onSignOut={handleSignOut}
                         shouldShowEditButton={shouldShowEditButton}
