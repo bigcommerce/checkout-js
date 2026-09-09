@@ -7,6 +7,7 @@ import { noop } from 'lodash';
 import React, { type FunctionComponent } from 'react';
 
 import { type CheckoutContextProps } from '@bigcommerce/checkout/contexts';
+import { assignLocation } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { Button, ButtonSize, ButtonVariant } from '@bigcommerce/checkout/ui';
 
@@ -50,7 +51,7 @@ const CustomerInfo: FunctionComponent<CustomerInfoProps & WithCheckoutCustomerIn
     const handleSignOut: () => Promise<void> = async () => {
         try {
             if (shouldRedirectToStorefrontForAuth) {
-                window.location.assign(`${logoutLink}?redirectTo=${checkoutLink}`);
+                assignLocation(`${logoutLink}?redirectTo=${checkoutLink}`);
 
                 return;
             }
