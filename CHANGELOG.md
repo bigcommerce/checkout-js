@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.895.0](https://github.com/bigcommerce/checkout-js/compare/v1.894.0...v1.895.0) (2026-09-09)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10374 Change 'Continue to Payment' and 'Continue to Shipping' to sentence case ([#3326](https://github.com/bigcommerce/checkout-js/issues/3326)) ([4423d19](https://github.com/bigcommerce/checkout-js/commit/4423d19efa534561d8c82271d8303f661c28bf99))
+
 ## [1.894.0](https://github.com/bigcommerce/checkout-js/compare/v1.893.0...v1.894.0) (2026-09-08)
 
 
