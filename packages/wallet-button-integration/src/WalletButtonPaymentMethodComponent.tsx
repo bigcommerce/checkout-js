@@ -6,7 +6,7 @@ import {
     type PaymentRequestOptions,
 } from '@bigcommerce/checkout-sdk';
 import { noop, some } from 'lodash';
-import React, { type ReactNode, useCallback, useEffect } from 'react';
+import React, { type ReactNode, useCallback, useEffect, useRef } from 'react';
 
 import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { type PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
@@ -15,6 +15,21 @@ import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 import normalizeWalletPaymentData from './normalizeWalletPaymentData';
 import PaymentView from './PaymentView';
 import SignInView from './SignInView';
+
+// `initializationData` is a schema-less object (see normalizeWalletPaymentData),
+// so guard our way to the `nonce` field rather than casting.
+const getNonce = (initializationData: unknown): string | undefined => {
+    if (
+        typeof initializationData === 'object' &&
+        initializationData !== null &&
+        'nonce' in initializationData &&
+        typeof initializationData.nonce === 'string'
+    ) {
+        return initializationData.nonce;
+    }
+
+    return undefined;
+};
 
 export interface WalletButtonPaymentMethodProps {
     paymentForm: PaymentFormService;
@@ -57,6 +72,15 @@ const WalletButtonPaymentMethodComponent: React.FC<WalletButtonPaymentMethodProp
         },
     } = useCheckout();
 
+    // Scoped selector: only re-run when the order/finalize error actually
+    // changes, rather than on every checkout state change.
+    const {
+        selectedState: { submitOrderError, finalizeOrderError },
+    } = useCheckout(({ errors }) => ({
+        submitOrderError: errors.getSubmitOrderError(),
+        finalizeOrderError: errors.getFinalizeOrderError(),
+    }));
+
     const billingAddress = getBillingAddress();
     const checkout = getCheckout();
 
@@ -70,14 +94,33 @@ const WalletButtonPaymentMethodComponent: React.FC<WalletButtonPaymentMethodProp
     const cardName =
         walletPaymentData && [billingAddress.firstName, billingAddress.lastName].join(' ');
 
+    // Wallet providers like Google Pay hand out a single-use token/nonce
+    // each time the shopper completes their native payment sheet. Once a
+    // payment attempt using that token has been declined, it's spent -
+    // resubmitting it just fails again with a generic error. The storefront
+    // has no way to invalidate it server-side, so instead remember which
+    // token was declined and keep "Place Order" disabled for it, until the
+    // shopper goes through the wallet button again for a fresh one (the
+    // "Edit"/re-select action already offered below).
+    const currentNonce = getNonce(method.initializationData);
+    const declinedNonceRef = useRef<string>();
+
+    useEffect(() => {
+        if (submitOrderError || finalizeOrderError) {
+            declinedNonceRef.current = currentNonce;
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [submitOrderError, finalizeOrderError]);
+
     const toggleSubmit = () => {
         const { disableSubmit } = paymentForm;
         const currentIsPaymentDataRequired = isPaymentDataRequired();
+        const hasDeclinedPaymentData =
+            declinedNonceRef.current !== undefined && declinedNonceRef.current === currentNonce;
+        const hasValidWalletData =
+            normalizeWalletPaymentData(method.initializationData) || !currentIsPaymentDataRequired;
 
-        if (
-            normalizeWalletPaymentData(method.initializationData) ||
-            !currentIsPaymentDataRequired
-        ) {
+        if (!hasDeclinedPaymentData && hasValidWalletData) {
             disableSubmit(method, false);
         } else {
             disableSubmit(method, true);
