@@ -12,7 +12,6 @@ import {
     type OrderRequestBody,
     type PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
-// import { createAdyenV3PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/adyen';
 import { createAfterpayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/afterpay';
 import { createBlueSnapV2PaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/bluesnap-direct';
 import { createCBAMPGSPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/cba-mpgs';
@@ -823,7 +822,6 @@ const Payment = (
             try {
                 const state = await finalizeOrderIfNeeded({
                     integrations: [
-                        // createAdyenV3PaymentStrategy,
                         createAfterpayPaymentStrategy,
                         createBlueSnapV2PaymentStrategy,
                         createCBAMPGSPaymentStrategy,
