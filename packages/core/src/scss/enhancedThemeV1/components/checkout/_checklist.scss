@@ -72,8 +72,7 @@
             border: 2px $input-border-style $input-border-color;
         }
 
-        // Payment methods stay read-only (not disabled) while initializing,
-        // so they remain focusable — but should still look non-interactive.
+        // payments radio buttons should look non-interactive while initializing
         &:disabled ~ .form-label,
         &[aria-disabled="true"] ~ .form-label {
             cursor: not-allowed;

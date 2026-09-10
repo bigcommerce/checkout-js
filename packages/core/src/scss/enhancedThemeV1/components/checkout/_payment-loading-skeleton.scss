@@ -1,12 +1,3 @@
-// =============================================================================
-// PAYMENT METHOD LOADING SKELETON
-// =============================================================================
-
-// The shared grey/lightest-grey pulse ($loading-skeleton-grey-box-animation)
-// is tuned for a white background. A selected payment method under
-// enhancedThemeV1 sits on $color-highlightLightest (a pale lavender), which
-// is close enough in luminance to make that pulse nearly invisible, so this
-// skeleton uses its own darker pair of greys instead.
 @keyframes payment-method-skeleton-pulse {
     0%, 100% {
         background-color: color("greys", "lighter");
@@ -17,11 +8,6 @@
     }
 }
 
-// Shown inside an initializing payment method instead of the loading spinner.
-// Only rendered under enhancedThemeV1 (see PaymentMethodList).
-// Each row mirrors a row of the real credit card fieldset (e.g. card number +
-// expiration, or name on card + CVV): a label sits directly above its own
-// field so the skeleton lines up with the fields it is standing in for.
 .payment-method-skeleton {
     @include enhancedThemeV1 {
         padding: spacing("half") 0;
@@ -56,8 +42,6 @@
         }
 
         .payment-method-skeleton--field-group-small {
-            // Roughly matches the real CVV/expiry field's width (~105px)
-            // instead of stretching to fill the remaining row width.
             flex: 0 0 remCalc(105px);
         }
 
