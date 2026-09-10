@@ -31,6 +31,7 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     const isPaymentSelected = checkout ? some(checkout.payments, { providerId: method.id }) : false;
 
     // Capture whether Google Pay was already selected at mount time
+    // (PDP/Cart/Customer step button)
     const wasPaymentSelectedAtMountRef = useRef(isPaymentSelected);
 
     const initializeGooglePayPayment = useCallback(
