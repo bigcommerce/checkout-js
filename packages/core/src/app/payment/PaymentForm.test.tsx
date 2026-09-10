@@ -171,6 +171,14 @@ describe('PaymentForm', () => {
         expect(radios[1]).not.toBeChecked();
     });
 
+    it('renders the payment method skeleton for the initializing method in enhancedThemeV1', () => {
+        enhancedThemeV1 = true;
+
+        render(<PaymentFormTest {...defaultProps} isInitializingPayment={true} />);
+
+        expect(screen.getByTestId('payment-method-skeleton')).toBeInTheDocument();
+    });
+
     it('renders terms and conditions field if copy is provided', () => {
         const textAcceptTerms = 'Accept terms';
 

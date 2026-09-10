@@ -1,6 +1,5 @@
-import React, { type FunctionComponent, type ReactNode, useContext } from 'react';
+import React, { type FunctionComponent, type ReactNode } from 'react';
 
-import { LoadingSkeletonContext } from './LoadingSkeletonContext';
 import LoadingSpinner from './LoadingSpinner';
 
 export interface LoadingOverlayProps {
@@ -18,10 +17,7 @@ const LoadingOverlay: FunctionComponent<LoadingOverlayProps> = ({
     unmountContentWhenLoading,
     isLoading,
 }) => {
-    const loadingSkeletonFallback = useContext(LoadingSkeletonContext);
-    const loadingUI = loadingSkeleton || loadingSkeletonFallback || (
-        <LoadingSpinner isLoading={true} />
-    );
+    const loadingUI = loadingSkeleton || <LoadingSpinner isLoading={true} />;
 
     if (hideContentWhenLoading || unmountContentWhenLoading) {
         return (

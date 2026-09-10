@@ -7,7 +7,6 @@ import {
     Checklist,
     ChecklistItem,
     LoadingOverlay,
-    LoadingSkeletonContext,
     PaymentMethodSkeleton,
 } from '@bigcommerce/checkout/ui';
 
@@ -121,13 +120,9 @@ const PaymentMethodList: FunctionComponent<
                 {titleText}
             </div>
             {enhancedThemeV1 ? (
-                // enhancedThemeV1 keeps the method list visible while a method
-                // initializes: no spinner veil, and the initializing method's
-                // fields render as a skeleton (items stay read-only via
-                // isReadOnly until initialization finishes).
-                <LoadingSkeletonContext.Provider value={paymentMethodSkeleton}>
-                    {checklist}
-                </LoadingSkeletonContext.Provider>
+                // enhancedThemeV1 keeps the method list visible while a method initializes:
+                // no spinner veil. The skeleton is applied per-item in PaymentMethodListItem.
+                checklist
             ) : (
                 <LoadingOverlay isLoading={Boolean(isInitializingPayment)}>
                     {checklist}
@@ -168,13 +163,14 @@ const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
             />
         );
 
-        // enhancedThemeV1 has no spinner veil over the list, so stand in a
-        // skeleton (from LoadingSkeletonContext) for the selected method's
-        // fields while it initializes. Doing it here works for every
-        // integration, whether or not it forwards isInitializing to its own
-        // LoadingOverlay.
+        // enhancedThemeV1 has no spinner veil over the list, so stand in a skeleton for the
+        // selected method's fields while it initializes.
         return enhancedThemeV1 ? (
-            <LoadingOverlay hideContentWhenLoading isLoading={Boolean(isInitializingPayment)}>
+            <LoadingOverlay
+                hideContentWhenLoading
+                isLoading={Boolean(isInitializingPayment)}
+                loadingSkeleton={paymentMethodSkeleton}
+            >
                 {paymentMethod}
             </LoadingOverlay>
         ) : (

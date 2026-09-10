@@ -111,7 +111,6 @@ export {
     LoadingDots,
     LoadingNotification,
     LoadingOverlay,
-    LoadingSkeletonContext,
     LoadingSpinner,
 } from './loading';
 export {

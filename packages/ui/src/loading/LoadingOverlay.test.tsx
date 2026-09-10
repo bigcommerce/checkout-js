@@ -4,7 +4,6 @@ import '@testing-library/jest-dom';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import LoadingOverlay from './LoadingOverlay';
-import { LoadingSkeletonContext } from './LoadingSkeletonContext';
 
 describe('LoadingOverlay', () => {
     it('should render the loading overlay', () => {
@@ -51,49 +50,5 @@ describe('LoadingOverlay', () => {
         render(<LoadingOverlay isLoading={false} />);
 
         expect(screen.queryByTestId('loading-overlay')).not.toBeInTheDocument();
-    });
-
-    it('renders the skeleton provided via LoadingSkeletonContext instead of the spinner when hiding content', () => {
-        render(
-            <LoadingSkeletonContext.Provider value={<div data-test="context-skeleton" />}>
-                <LoadingOverlay hideContentWhenLoading={true} isLoading={true}>
-                    <div>Content</div>
-                </LoadingOverlay>
-            </LoadingSkeletonContext.Provider>,
-        );
-
-        expect(screen.getByTestId('context-skeleton')).toBeInTheDocument();
-        expect(screen.queryByRole('status')).not.toBeInTheDocument();
-        expect(screen.getByText('Content')).not.toBeVisible();
-    });
-
-    it('prefers the loadingSkeleton prop over the LoadingSkeletonContext skeleton', () => {
-        render(
-            <LoadingSkeletonContext.Provider value={<div data-test="context-skeleton" />}>
-                <LoadingOverlay
-                    hideContentWhenLoading={true}
-                    isLoading={true}
-                    loadingSkeleton={<div data-test="prop-skeleton" />}
-                >
-                    <div>Content</div>
-                </LoadingOverlay>
-            </LoadingSkeletonContext.Provider>,
-        );
-
-        expect(screen.getByTestId('prop-skeleton')).toBeInTheDocument();
-        expect(screen.queryByTestId('context-skeleton')).not.toBeInTheDocument();
-    });
-
-    it('does not use the LoadingSkeletonContext skeleton for the overlay variant', () => {
-        render(
-            <LoadingSkeletonContext.Provider value={<div data-test="context-skeleton" />}>
-                <LoadingOverlay isLoading={true}>
-                    <div>Content</div>
-                </LoadingOverlay>
-            </LoadingSkeletonContext.Provider>,
-        );
-
-        expect(screen.getByTestId('loading-overlay')).toBeInTheDocument();
-        expect(screen.queryByTestId('context-skeleton')).not.toBeInTheDocument();
     });
 });
