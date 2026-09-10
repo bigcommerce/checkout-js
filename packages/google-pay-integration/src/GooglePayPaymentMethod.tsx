@@ -31,11 +31,6 @@ const GooglePayPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     const isPaymentSelected = checkout ? some(checkout.payments, { providerId: method.id }) : false;
 
     // Capture whether Google Pay was already selected at mount time
-    // (PDP/Cart/Customer step button). The wallet-button UI (with its
-    // sign-out option) is only kept for that Express Entry case - everywhere
-    // else, Google Pay should only ever show its own branded button, never
-    // hand off to the generic "Place Order" button. The wallet-button
-    // approach is deprecated for the regular (non-Express-Entry) flow.
     const wasPaymentSelectedAtMountRef = useRef(isPaymentSelected);
 
     const initializeGooglePayPayment = useCallback(

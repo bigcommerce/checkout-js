@@ -17,8 +17,6 @@ import normalizeWalletPaymentData from './normalizeWalletPaymentData';
 import PaymentView from './PaymentView';
 import SignInView from './SignInView';
 
-// `initializationData` is a schema-less object (see normalizeWalletPaymentData),
-// so guard our way to the `nonce` field rather than casting.
 const getNonce = (initializationData: unknown): string | undefined => {
     if (
         typeof initializationData === 'object' &&
@@ -73,8 +71,6 @@ const WalletButtonPaymentMethodComponent: React.FC<WalletButtonPaymentMethodProp
         },
     } = useCheckout();
 
-    // Scoped selector: only re-run when the order/finalize error actually
-    // changes, rather than on every checkout state change.
     const {
         selectedState: { submitOrderError, finalizeOrderError },
     } = useCheckout(({ errors }) => ({
@@ -95,18 +91,6 @@ const WalletButtonPaymentMethodComponent: React.FC<WalletButtonPaymentMethodProp
     const cardName =
         walletPaymentData && [billingAddress.firstName, billingAddress.lastName].join(' ');
 
-    // Wallet providers like Google Pay hand out a single-use token/nonce
-    // each time the shopper completes their native payment sheet. Once a
-    // payment attempt using that token has been declined, it's spent -
-    // resubmitting it just fails again with a generic error. The storefront
-    // has no way to invalidate it server-side, so instead remember which
-    // token was declined and keep "Place Order" disabled for it, until the
-    // shopper goes through the wallet button again for a fresh one (the
-    // "Edit"/re-select action already offered below).
-    //
-    // This is state (rather than a ref) deliberately: it also drives the
-    // "Edit"/re-select action's label below, so updating it needs to
-    // trigger a re-render - a ref's mutation wouldn't.
     const currentNonce = getNonce(method.initializationData);
     const [declinedNonce, setDeclinedNonce] = useState<string>();
 
@@ -117,11 +101,6 @@ const WalletButtonPaymentMethodComponent: React.FC<WalletButtonPaymentMethodProp
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [submitOrderError, finalizeOrderError]);
 
-    // Once the current token has been declined, the shopper isn't limited to
-    // picking a different card - going through the wallet button again with
-    // the same card gets them a fresh, usable token just as well - so the
-    // "Edit"/re-select action's label below is adjusted to make that clear
-    // instead of implying only a different card would work.
     const hasDeclinedPaymentData = declinedNonce !== undefined && declinedNonce === currentNonce;
 
     const toggleSubmit = () => {
