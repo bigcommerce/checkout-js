@@ -101,6 +101,7 @@ const PaymentMethodList: FunctionComponent<
                         disabledReason={method === chequeMethod ? chequeDisabledReason : undefined}
                         isEmbedded={isEmbedded}
                         isInitializingPayment={isInitializingPayment}
+                        isSelected={value === values.paymentProviderRadio}
                         isUsingMultiShipping={isUsingMultiShipping}
                         key={value}
                         method={method}
@@ -132,6 +133,7 @@ interface PaymentMethodListItemProps {
     disabledReason?: PoDisabledReason;
     isEmbedded?: boolean;
     isInitializingPayment?: boolean;
+    isSelected: boolean;
     isUsingMultiShipping?: boolean;
     method: PaymentMethod;
     value: string;
@@ -142,12 +144,14 @@ const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
     disabledReason,
     isEmbedded,
     isInitializingPayment,
+    isSelected,
     isUsingMultiShipping,
     method,
     onUnhandledError,
     value,
 }) => {
     const { enhancedThemeV1 } = useThemeContext();
+    const isCustomChecklistItem = Boolean(method.initializationData?.isCustomChecklistItem);
 
     const renderPaymentMethod = useMemo(() => {
         const paymentMethod = (
@@ -159,10 +163,11 @@ const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
             />
         );
 
-        return enhancedThemeV1 ? (
+        // Custom checklist items manage their own loading UI
+        return enhancedThemeV1 && !isCustomChecklistItem ? (
             <LoadingOverlay
                 hideContentWhenLoading
-                isLoading={Boolean(isInitializingPayment)}
+                isLoading={isSelected && Boolean(isInitializingPayment)}
                 loadingSkeleton={<PaymentMethodSkeleton />}
             >
                 {paymentMethod}
@@ -172,8 +177,10 @@ const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
         );
     }, [
         enhancedThemeV1,
+        isCustomChecklistItem,
         isEmbedded,
         isInitializingPayment,
+        isSelected,
         isUsingMultiShipping,
         method,
         onUnhandledError,
@@ -191,7 +198,7 @@ const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
         [disabledReason, method],
     );
 
-    if (method.initializationData?.isCustomChecklistItem) {
+    if (isCustomChecklistItem) {
         return <CustomChecklistItem content={renderPaymentMethod} htmlId={`radio-${value}`} />;
     }
 
