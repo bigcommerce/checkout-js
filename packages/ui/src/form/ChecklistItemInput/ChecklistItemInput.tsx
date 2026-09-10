@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import React, { type FunctionComponent, type InputHTMLAttributes } from 'react';
 
 import { Input } from '../Input';
@@ -12,20 +11,13 @@ const ChecklistItemInput: FunctionComponent<ChecklistItemInputProps> = ({
     id,
     isSelected,
     children,
-    disabled,
-    'aria-disabled': ariaDisabled,
     ...props
 }) => (
     <>
         <Input
             {...props}
-            aria-disabled={ariaDisabled}
             checked={isSelected}
-            className={classNames(
-                'form-checklist-checkbox optimizedCheckout-form-checklist-checkbox',
-                { 'form-checklist-checkbox--disabled': disabled || ariaDisabled === true },
-            )}
-            disabled={disabled}
+            className="form-checklist-checkbox optimizedCheckout-form-checklist-checkbox"
             id={id}
             type="radio"
         />

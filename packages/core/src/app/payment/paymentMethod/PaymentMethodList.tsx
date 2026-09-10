@@ -156,8 +156,10 @@ const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
     onUnhandledError,
     value,
 }) => {
+    const { enhancedThemeV1 } = useThemeContext();
+
     const renderPaymentMethod = useMemo(() => {
-        return (
+        const paymentMethod = (
             <PaymentMethodV2
                 isEmbedded={isEmbedded}
                 isUsingMultiShipping={isUsingMultiShipping}
@@ -165,7 +167,27 @@ const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
                 onUnhandledError={onUnhandledError || noop}
             />
         );
-    }, [isEmbedded, isUsingMultiShipping, method, onUnhandledError]);
+
+        // enhancedThemeV1 has no spinner veil over the list, so stand in a
+        // skeleton (from LoadingSkeletonContext) for the selected method's
+        // fields while it initializes. Doing it here works for every
+        // integration, whether or not it forwards isInitializing to its own
+        // LoadingOverlay.
+        return enhancedThemeV1 ? (
+            <LoadingOverlay hideContentWhenLoading isLoading={Boolean(isInitializingPayment)}>
+                {paymentMethod}
+            </LoadingOverlay>
+        ) : (
+            paymentMethod
+        );
+    }, [
+        enhancedThemeV1,
+        isEmbedded,
+        isInitializingPayment,
+        isUsingMultiShipping,
+        method,
+        onUnhandledError,
+    ]);
 
     const renderPaymentMethodTitle = useCallback(
         (isSelected: boolean) => (

@@ -74,7 +74,8 @@
 
         // Payment methods stay read-only (not disabled) while initializing,
         // so they remain focusable — but should still look non-interactive.
-        &.form-checklist-checkbox--disabled ~ .form-label {
+        &:disabled ~ .form-label,
+        &[aria-disabled="true"] ~ .form-label {
             cursor: not-allowed;
 
             &::before,
