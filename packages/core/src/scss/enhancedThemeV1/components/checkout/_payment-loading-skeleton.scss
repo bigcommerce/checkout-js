@@ -15,46 +15,6 @@
         div {
             animation: payment-method-skeleton-pulse 4000ms infinite cubic-bezier(0.13, 0.615, 0.315, 0.915);
             background: color("greys", "lighter");
-            border-radius: $global-radius;
-            display: block;
-        }
-
-        .payment-method-skeleton--row {
-            animation: none;
-            background: none;
-            border-radius: 0;
-            display: flex;
-            gap: spacing("single");
-
-            &:not(:last-child) {
-                margin-bottom: spacing("single");
-            }
-        }
-
-        .payment-method-skeleton--field-group {
-            animation: none;
-            background: none;
-            border-radius: 0;
-        }
-
-        .payment-method-skeleton--field-group-large {
-            flex: 1;
-        }
-
-        .payment-method-skeleton--field-group-small {
-            flex: 0 0 remCalc(105px);
-        }
-
-        .payment-method-skeleton--label {
-            height: remCalc(10px);
-            margin-bottom: spacing("half");
-            width: 40%;
-        }
-
-        .payment-method-skeleton--field-large,
-        .payment-method-skeleton--field-small {
-            height: $floating-label-input-height;
-            width: 100%;
         }
     }
 }
