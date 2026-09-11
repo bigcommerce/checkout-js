@@ -24,7 +24,7 @@ export interface ManageInstrumentsModalProps {
     onRequestClose?(): void;
 }
 
-export interface ManageInstrumentsModalState {
+interface ManageInstrumentsModalState {
     isConfirmingDelete: boolean;
     selectedInstrumentId?: string;
 }
@@ -200,7 +200,7 @@ class ManageInstrumentsModal extends Component<
     };
 }
 
-export function mapFromCheckoutProps({
+function mapFromCheckoutProps({
     checkoutService,
     checkoutState,
 }: CheckoutContextProps): WithCheckoutProps | null {

@@ -14,7 +14,7 @@ import PaymentMethodTitle, { getPaymentMethodTitle } from './PaymentMethodTitle'
 import PaymentMethodV2 from './PaymentMethodV2';
 import { type PoDisabledReason, usePoMethodDisabledReason } from './usePoMethodDisabledReason';
 
-export interface PaymentMethodListProps {
+interface PaymentMethodListProps {
     isEmbedded?: boolean;
     isInitializingPayment?: boolean;
     isUsingMultiShipping?: boolean;

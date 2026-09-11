@@ -9,7 +9,7 @@ import Modal from './Modal';
 import './ModalLink.scss';
 import ModalTrigger, { type ModalTriggerModalProps } from './ModalTrigger';
 
-export interface ModalLinkProps {
+interface ModalLinkProps {
     header: ReactNode;
     body: ReactNode;
     children?: ReactNode;

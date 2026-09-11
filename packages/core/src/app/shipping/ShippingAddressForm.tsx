@@ -15,7 +15,7 @@ import { connectFormik, type ConnectFormikProps } from '../common/form';
 
 import { type SingleShippingFormValues } from './SingleShippingForm';
 
-export interface ShippingAddressFormProps {
+interface ShippingAddressFormProps {
     address?: Address;
     consignments: Consignment[];
     isLoading: boolean;

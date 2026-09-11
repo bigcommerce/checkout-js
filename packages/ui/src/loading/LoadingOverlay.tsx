@@ -2,7 +2,7 @@ import React, { type FunctionComponent, type ReactNode } from 'react';
 
 import LoadingSpinner from './LoadingSpinner';
 
-export interface LoadingOverlayProps {
+interface LoadingOverlayProps {
     isLoading: boolean;
     hideContentWhenLoading?: boolean;
     unmountContentWhenLoading?: boolean;

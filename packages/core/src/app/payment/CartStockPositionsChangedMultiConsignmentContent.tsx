@@ -13,7 +13,7 @@ export interface CartStockPositionsChangedConsignmentGroup {
     items: PhysicalItem[];
 }
 
-export interface CartStockPositionsChangedMultiConsignmentContentProps {
+interface CartStockPositionsChangedMultiConsignmentContentProps {
     consignmentGroups: CartStockPositionsChangedConsignmentGroup[];
 }
 

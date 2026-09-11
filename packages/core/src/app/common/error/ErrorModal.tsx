@@ -20,7 +20,7 @@ import isRequestError from './isRequestError';
 
 import { type CustomError } from './index';
 
-export interface ErrorModalProps {
+interface ErrorModalProps {
     error?: Error | RequestError | CustomError;
     message?: ReactNode;
     title?: ReactNode;

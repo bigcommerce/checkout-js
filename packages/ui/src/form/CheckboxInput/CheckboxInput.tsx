@@ -4,7 +4,7 @@ import React, { forwardRef, type ReactNode, type Ref } from 'react';
 import { Input, type InputProps } from '../Input';
 import { Label } from '../Label';
 
-export interface CheckboxInputProps extends InputProps {
+interface CheckboxInputProps extends InputProps {
     additionalClassName?: string;
     label: ReactNode;
     value: string;

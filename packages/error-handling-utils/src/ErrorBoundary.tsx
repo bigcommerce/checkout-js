@@ -2,7 +2,7 @@ import { Component, type ReactNode } from 'react';
 
 import type ErrorLogger from './ErrorLogger';
 
-export interface ErrorBoundaryProps {
+interface ErrorBoundaryProps {
     children?: ReactNode;
     fallback?: ReactNode;
     errorLogger?: ErrorLogger;

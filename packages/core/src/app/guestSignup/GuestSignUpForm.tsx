@@ -13,7 +13,7 @@ import { type PasswordRequirements } from '../customer';
 
 import SignUpPasswordField from './SignUpPasswordField';
 
-export interface SignUpFormProps {
+interface SignUpFormProps {
     isSigningUp?: boolean;
     customerCanBeCreated: boolean;
     passwordRequirements: PasswordRequirements;

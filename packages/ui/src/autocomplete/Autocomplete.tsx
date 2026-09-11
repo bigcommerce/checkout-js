@@ -15,7 +15,7 @@ export interface InputPropsType {
     maxLength: number | undefined;
 }
 
-export interface AutocompleteProps {
+interface AutocompleteProps {
     initialValue?: string;
     initialHighlightedIndex?: number;
     defaultHighlightedIndex?: number;

@@ -26,7 +26,7 @@ import {
 import EmailField from './EmailField';
 import getEmailValidationSchema from './getEmailValidationSchema';
 
-export interface EmailLoginFormProps {
+interface EmailLoginFormProps {
     email?: string;
     isOpen: boolean;
     isSendingEmail?: boolean;

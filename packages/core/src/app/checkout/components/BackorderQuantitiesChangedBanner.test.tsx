@@ -3,7 +3,7 @@ import React from 'react';
 
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import BackorderQuantitiesChangedBanner from './BackorderQuantitiesChangedBanner';
+import { BackorderQuantitiesChangedBanner } from './BackorderQuantitiesChangedBanner';
 
 describe('BackorderQuantitiesChangedBanner', () => {
     const defaultMessage = 'The backorder quantities for some items have changed.';

@@ -28,7 +28,7 @@ import {
 import StoreInstrumentFieldset from '../StoreInstrumentFieldset';
 import withPayment, { type WithPaymentProps } from '../withPayment';
 
-export interface HostedPaymentMethodProps {
+interface HostedPaymentMethodProps {
     description?: ReactNode;
     isInitializing?: boolean;
     isUsingMultiShipping?: boolean;

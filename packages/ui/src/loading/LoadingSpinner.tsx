@@ -1,6 +1,6 @@
 import React, { type FunctionComponent, memo } from 'react';
 
-export interface LoadingSpinnerProps {
+interface LoadingSpinnerProps {
     isLoading: boolean;
 }
 

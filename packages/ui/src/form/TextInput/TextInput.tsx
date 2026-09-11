@@ -3,7 +3,7 @@ import React, { forwardRef, type Ref } from 'react';
 
 import { Input, type InputProps } from '../Input';
 
-export interface TextInputProps extends InputProps {
+interface TextInputProps extends InputProps {
     additionalClassName?: string;
     appearFocused?: boolean;
     type?: 'text' | 'password' | 'tel' | 'email' | 'number';
