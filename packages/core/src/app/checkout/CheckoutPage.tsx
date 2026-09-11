@@ -32,6 +32,7 @@ import {
 } from '@bigcommerce/checkout/contexts';
 import {
     assignTopLocation,
+    reloadLocation,
     replaceLocation,
     replaceTopLocation,
     setTopLocationHref,
@@ -469,6 +470,16 @@ const Checkout = ({
         navigateToNextIncompleteStep();
     }, [checkoutService, navigateToNextIncompleteStep]);
 
+    const handleCustomerAuthenticated = useCallback((): void => {
+        if (capabilities.customer.reloadPageAfterSignIn) {
+            reloadLocation();
+
+            return;
+        }
+
+        navigateToNextIncompleteStep();
+    }, [navigateToNextIncompleteStep]);
+
     const handleShippingSignIn = useCallback((): void => {
         setCustomerViewType(CustomerViewType.Login);
     }, [setCustomerViewType]);
@@ -510,14 +521,14 @@ const Checkout = ({
                         checkEmbeddedSupport={checkEmbeddedSupport}
                         isSubscribed={isSubscribed}
                         isWalletButtonsOnTop={isShowingWalletButtonsOnTop}
-                        onAccountCreated={navigateToNextIncompleteStep}
+                        onAccountCreated={handleCustomerAuthenticated}
                         onChangeViewType={setCustomerViewType}
                         onContinueAsGuest={navigateToNextIncompleteStep}
                         onContinueAsGuestError={handleError}
                         onEdit={handleEditStep}
                         onExpanded={handleExpanded}
                         onReady={handleReady}
-                        onSignIn={navigateToNextIncompleteStep}
+                        onSignIn={handleCustomerAuthenticated}
                         onSignInError={handleError}
                         onSignOut={handleSignOut}
                         onSignOutError={handleError}

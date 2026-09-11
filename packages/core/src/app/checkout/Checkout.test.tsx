@@ -22,7 +22,7 @@ import {
     LocaleProvider,
     ThemeProvider,
 } from '@bigcommerce/checkout/contexts';
-import { replaceLocation } from '@bigcommerce/checkout/dom-utils';
+import { reloadLocation, replaceLocation } from '@bigcommerce/checkout/dom-utils';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
 import { CHECKOUT_ROOT_NODE_ID } from '@bigcommerce/checkout/payment-integration-api';
 import {
@@ -55,6 +55,7 @@ expect.extend(jestDomMatchers);
 
 jest.mock('@bigcommerce/checkout/dom-utils', () => ({
     ...jest.requireActual('@bigcommerce/checkout/dom-utils'),
+    reloadLocation: jest.fn(),
     replaceLocation: jest.fn(),
 }));
 
@@ -86,6 +87,7 @@ describe('Checkout', () => {
         window.scrollTo = jest.fn();
 
         (replaceLocation as jest.Mock).mockClear();
+        (reloadLocation as jest.Mock).mockClear();
 
         checkoutService = createCheckoutService();
         extensionService = new ExtensionService(checkoutService, createErrorLogger());
@@ -357,6 +359,133 @@ describe('Checkout', () => {
             await screen.findByText('test@example.com');
 
             expect(screen.getByText('test@example.com')).toBeInTheDocument();
+        });
+
+        describe('reloadPageAfterSignIn capability', () => {
+            const reloadCapabilities = {
+                ...defaultCapabilities,
+                customer: {
+                    ...defaultCapabilities.customer,
+                    reloadPageAfterSignIn: true,
+                },
+            };
+
+            const showLoginForm = async () => {
+                await act(async () => {
+                    await userEvent.click(await screen.findByText('Sign in now'));
+                });
+            };
+
+            const submitLoginForm = async () => {
+                await act(async () => {
+                    await userEvent.type(screen.getByLabelText('Email'), 'test@example.com');
+                    await userEvent.type(screen.getByLabelText('Password'), 'Password123');
+                    await userEvent.click(screen.getByRole('button', { name: 'Sign In' }));
+                });
+            };
+
+            const submitCreateAccountForm = async () => {
+                await act(async () => {
+                    await userEvent.click(await screen.findByText('Create an account'));
+                });
+
+                await act(async () => {
+                    await userEvent.type(screen.getByLabelText('First Name'), 'Foo');
+                    await userEvent.type(screen.getByLabelText('Last Name'), 'Bar');
+                    await userEvent.type(screen.getByLabelText('Email'), 'test@example.com');
+                    await userEvent.type(screen.getByLabelText('Password'), 'Password123');
+                    await userEvent.type(screen.getByLabelText('Referral Code'), 'ABC');
+                    await userEvent.click(screen.getByRole('button', { name: 'Create Account' }));
+                });
+            };
+
+            const stepCompletedCount = () =>
+                (analyticsTracker.trackStepCompleted as jest.Mock).mock.calls.length;
+
+            beforeEach(() => {
+                jest.spyOn(checkoutService, 'signInCustomer').mockResolvedValue(
+                    checkoutService.getState(),
+                );
+                jest.spyOn(checkoutService, 'createCustomerAccount').mockResolvedValue(
+                    checkoutService.getState(),
+                );
+            });
+
+            it('reloads the page after signing in when the capability is enabled', async () => {
+                render(<CheckoutTest {...defaultProps} capabilities={reloadCapabilities} />);
+
+                await checkout.waitForCustomerStep();
+                await showLoginForm();
+
+                const stepsCompleted = stepCompletedCount();
+
+                await submitLoginForm();
+
+                expect(checkoutService.signInCustomer).toHaveBeenCalled();
+                expect(reloadLocation).toHaveBeenCalled();
+                expect(stepCompletedCount()).toBe(stepsCompleted);
+            });
+
+            it('navigates to the next step after signing in when the capability is disabled', async () => {
+                render(<CheckoutTest {...defaultProps} />);
+
+                await checkout.waitForCustomerStep();
+                await showLoginForm();
+
+                const stepsCompleted = stepCompletedCount();
+
+                await submitLoginForm();
+
+                expect(checkoutService.signInCustomer).toHaveBeenCalled();
+                expect(reloadLocation).not.toHaveBeenCalled();
+                expect(stepCompletedCount()).toBeGreaterThan(stepsCompleted);
+            });
+
+            it('reloads the page after creating an account when the capability is enabled', async () => {
+                render(<CheckoutTest {...defaultProps} capabilities={reloadCapabilities} />);
+
+                await checkout.waitForCustomerStep();
+                await showLoginForm();
+
+                const stepsCompleted = stepCompletedCount();
+
+                await submitCreateAccountForm();
+
+                expect(checkoutService.createCustomerAccount).toHaveBeenCalled();
+                expect(reloadLocation).toHaveBeenCalled();
+                expect(stepCompletedCount()).toBe(stepsCompleted);
+            });
+
+            it('navigates to the next step after creating an account when the capability is disabled', async () => {
+                render(<CheckoutTest {...defaultProps} />);
+
+                await checkout.waitForCustomerStep();
+                await showLoginForm();
+
+                const stepsCompleted = stepCompletedCount();
+
+                await submitCreateAccountForm();
+
+                expect(checkoutService.createCustomerAccount).toHaveBeenCalled();
+                expect(reloadLocation).not.toHaveBeenCalled();
+                expect(stepCompletedCount()).toBeGreaterThan(stepsCompleted);
+            });
+
+            it('does not reload the page when the shopper continues as a guest', async () => {
+                render(<CheckoutTest {...defaultProps} capabilities={reloadCapabilities} />);
+
+                await checkout.waitForCustomerStep();
+
+                const stepsCompleted = stepCompletedCount();
+
+                await act(async () => {
+                    await userEvent.type(screen.getByLabelText('Email'), 'test@example.com');
+                    await userEvent.click(screen.getByText('Continue'));
+                });
+
+                expect(reloadLocation).not.toHaveBeenCalled();
+                expect(stepCompletedCount()).toBeGreaterThan(stepsCompleted);
+            });
         });
 
         it('renders checkout button container with ApplePay', async () => {
