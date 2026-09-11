@@ -71,5 +71,16 @@
         & ~ .form-label::before {
             border: 2px $input-border-style $input-border-color;
         }
+
+        // payments radio buttons should look non-interactive while initializing
+        &:disabled ~ .form-label,
+        &[aria-disabled="true"] ~ .form-label {
+            cursor: not-allowed;
+
+            &::before,
+            &::after {
+                opacity: $checkRadio-disabled-opacity;
+            }
+        }
     }
 }

@@ -2,8 +2,13 @@ import { type PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { find, noop } from 'lodash';
 import React, { type FunctionComponent, memo, useCallback, useMemo } from 'react';
 
-import { useCheckout, useLocale } from '@bigcommerce/checkout/contexts';
-import { Checklist, ChecklistItem, LoadingOverlay } from '@bigcommerce/checkout/ui';
+import { useCheckout, useLocale, useThemeContext } from '@bigcommerce/checkout/contexts';
+import {
+    Checklist,
+    ChecklistItem,
+    LoadingOverlay,
+    PaymentMethodSkeleton,
+} from '@bigcommerce/checkout/ui';
 
 import { connectFormik, type ConnectFormikProps } from '../../common/form';
 
@@ -47,6 +52,7 @@ const PaymentMethodList: FunctionComponent<
 }) => {
     const { language } = useLocale();
     const { selectedState: config } = useCheckout(({ data }) => data.getConfig());
+    const { enhancedThemeV1 } = useThemeContext();
 
     const chequeMethod = find(methods, { id: 'cheque' });
     const chequeDisabledReason = usePoMethodDisabledReason(chequeMethod);
@@ -81,37 +87,44 @@ const PaymentMethodList: FunctionComponent<
         [methods, onSelect],
     );
 
+    const checklist = (
+        <Checklist
+            defaultSelectedItemId={values.paymentProviderRadio}
+            name="paymentProviderRadio"
+            onSelect={handleSelect}
+        >
+            {methods.map((method) => {
+                const value = getUniquePaymentMethodId(method.id, method.gateway);
+
+                return (
+                    <PaymentMethodListItem
+                        disabledReason={method === chequeMethod ? chequeDisabledReason : undefined}
+                        isEmbedded={isEmbedded}
+                        isInitializingPayment={isInitializingPayment}
+                        isSelected={value === values.paymentProviderRadio}
+                        isUsingMultiShipping={isUsingMultiShipping}
+                        key={value}
+                        method={method}
+                        onUnhandledError={onUnhandledError}
+                        value={value}
+                    />
+                );
+            })}
+        </Checklist>
+    );
+
     return (
         <>
             <div aria-live="assertive" className="is-srOnly" role="status">
                 {titleText}
             </div>
-            <LoadingOverlay isLoading={Boolean(isInitializingPayment)}>
-                <Checklist
-                    defaultSelectedItemId={values.paymentProviderRadio}
-                    name="paymentProviderRadio"
-                    onSelect={handleSelect}
-                >
-                    {methods.map((method) => {
-                        const value = getUniquePaymentMethodId(method.id, method.gateway);
-
-                        return (
-                            <PaymentMethodListItem
-                                disabledReason={
-                                    method === chequeMethod ? chequeDisabledReason : undefined
-                                }
-                                isEmbedded={isEmbedded}
-                                isInitializingPayment={isInitializingPayment}
-                                isUsingMultiShipping={isUsingMultiShipping}
-                                key={value}
-                                method={method}
-                                onUnhandledError={onUnhandledError}
-                                value={value}
-                            />
-                        );
-                    })}
-                </Checklist>
-            </LoadingOverlay>
+            {enhancedThemeV1 ? (
+                checklist
+            ) : (
+                <LoadingOverlay isLoading={Boolean(isInitializingPayment)}>
+                    {checklist}
+                </LoadingOverlay>
+            )}
         </>
     );
 };
@@ -120,6 +133,7 @@ interface PaymentMethodListItemProps {
     disabledReason?: PoDisabledReason;
     isEmbedded?: boolean;
     isInitializingPayment?: boolean;
+    isSelected: boolean;
     isUsingMultiShipping?: boolean;
     method: PaymentMethod;
     value: string;
@@ -130,13 +144,17 @@ const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
     disabledReason,
     isEmbedded,
     isInitializingPayment,
+    isSelected,
     isUsingMultiShipping,
     method,
     onUnhandledError,
     value,
 }) => {
+    const { enhancedThemeV1 } = useThemeContext();
+    const isCustomChecklistItem = Boolean(method.initializationData?.isCustomChecklistItem);
+
     const renderPaymentMethod = useMemo(() => {
-        return (
+        const paymentMethod = (
             <PaymentMethodV2
                 isEmbedded={isEmbedded}
                 isUsingMultiShipping={isUsingMultiShipping}
@@ -144,7 +162,29 @@ const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
                 onUnhandledError={onUnhandledError || noop}
             />
         );
-    }, [isEmbedded, isUsingMultiShipping, method, onUnhandledError]);
+
+        // Custom checklist items manage their own loading UI
+        return enhancedThemeV1 && !isCustomChecklistItem ? (
+            <LoadingOverlay
+                hideContentWhenLoading
+                isLoading={isSelected && Boolean(isInitializingPayment)}
+                loadingSkeleton={<PaymentMethodSkeleton />}
+            >
+                {paymentMethod}
+            </LoadingOverlay>
+        ) : (
+            paymentMethod
+        );
+    }, [
+        enhancedThemeV1,
+        isCustomChecklistItem,
+        isEmbedded,
+        isInitializingPayment,
+        isSelected,
+        isUsingMultiShipping,
+        method,
+        onUnhandledError,
+    ]);
 
     const renderPaymentMethodTitle = useCallback(
         (isSelected: boolean) => (
@@ -158,7 +198,7 @@ const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
         [disabledReason, method],
     );
 
-    if (method.initializationData?.isCustomChecklistItem) {
+    if (isCustomChecklistItem) {
         return <CustomChecklistItem content={renderPaymentMethod} htmlId={`radio-${value}`} />;
     }
 

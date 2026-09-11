@@ -1,0 +1,20 @@
+@keyframes payment-method-skeleton-pulse {
+    0%, 100% {
+        background-color: color("greys", "lighter");
+    }
+
+    50% {
+        background-color: mix(color("greys", "light"), color("greys", "medium"), 50%);
+    }
+}
+
+.payment-method-skeleton {
+    @include enhancedThemeV1 {
+        padding: spacing("half") 0;
+
+        div {
+            animation: payment-method-skeleton-pulse 4000ms infinite cubic-bezier(0.13, 0.615, 0.315, 0.915);
+            background: color("greys", "lighter");
+        }
+    }
+}
