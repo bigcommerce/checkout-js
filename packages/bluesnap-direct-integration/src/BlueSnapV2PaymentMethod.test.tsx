@@ -5,11 +5,10 @@ import {
     createLanguageService,
     type PaymentInitializeOptions,
 } from '@bigcommerce/checkout-sdk';
-import { act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
-import React, { type FunctionComponent } from 'react';
+import React, { act, type FunctionComponent } from 'react';
 
 import {
     CheckoutProvider,
@@ -108,9 +107,11 @@ describe('when using BlueSnapV2 payment', () => {
 
         iframe.setAttribute('data-test', 'my-iframe');
 
-        act(() => initializeOptions.bluesnapv2?.onLoad(iframe, jest.fn()));
+        act(() => {
+            initializeOptions.bluesnapv2?.onLoad(iframe, jest.fn());
+        });
 
-        await new Promise((resolve) => process.nextTick(resolve));
+        await screen.findByTestId('my-iframe');
 
         const user = userEvent.setup();
 
@@ -120,7 +121,7 @@ describe('when using BlueSnapV2 payment', () => {
         expect(screen.getByTestId('my-iframe')).toBeInTheDocument();
     });
 
-    it('renders modal but does not append bluesnap payment page because is empty', async () => {
+    it('renders modal but does not append bluesnap payment page because is empty', () => {
         render(<BlueSnapV2PaymentMethodTest />);
 
         const initializeOptions = initializePayment.mock.calls[0][0];
@@ -128,8 +129,6 @@ describe('when using BlueSnapV2 payment', () => {
         act(() => {
             initializeOptions.bluesnapv2?.onLoad(undefined, jest.fn());
         });
-
-        await new Promise((resolve) => process.nextTick(resolve));
 
         expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
         expect(screen.queryByTestId('modal-body')).not.toBeInTheDocument();
@@ -152,7 +151,6 @@ describe('when using BlueSnapV2 payment', () => {
 
         const user = userEvent.setup();
 
-        await new Promise((resolve) => process.nextTick(resolve));
         await user.click(screen.getByText('Close'));
 
         expect(cancelBlueSnapV2Payment).toHaveBeenCalledTimes(1);
