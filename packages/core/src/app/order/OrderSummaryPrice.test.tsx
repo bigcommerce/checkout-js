@@ -190,6 +190,27 @@ describe('OrderSummaryPrice', () => {
             expect(screen.getByTestId('cart-price-value-superscript')).toHaveTextContent('*');
         });
 
+        it('does not strike through an undiscounted price while the old one slides out', () => {
+            const props = { ...initialProps, amountBeforeDiscount: 10 };
+            const { rerender } = renderTestComponent(props, { enhancedThemeV1: true });
+
+            rerender(
+                buildTestComponent(
+                    { ...props, amount: 15, amountBeforeDiscount: 15 },
+                    { enhancedThemeV1: true },
+                ),
+            );
+
+            expect(screen.getByTestId('price-ticker')).toHaveClass('priceTicker-exit');
+            expect(screen.getByTestId('ShopperCurrency')).toHaveTextContent('10');
+
+            act(() => {
+                jest.advanceTimersByTime(1600);
+            });
+
+            expect(screen.getByTestId('ShopperCurrency')).toHaveTextContent('15');
+        });
+
         it('recovers to the new price when the amount becomes unavailable mid-animation', () => {
             const { rerender } = renderTestComponent(initialProps, { enhancedThemeV1: true });
 
