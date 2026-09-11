@@ -41,7 +41,7 @@ interface CartSummaryProps {
     isMultiShippingMode: boolean;
 }
 
-const CartSummary: React.FC<CartSummaryProps> = ({ isMultiShippingMode }) => {
+export const CartSummary: React.FC<CartSummaryProps> = ({ isMultiShippingMode }) => {
     const { enhancedThemeV1 } = useThemeContext();
 
     return (

@@ -1,4 +1,4 @@
 import CheckoutInitializer from './CheckoutInitializer';
 
 export default CheckoutInitializer;
-export { CheckoutProps, WithCheckoutProps } from './CheckoutPage';
+export { CheckoutProps, CheckoutState, WithCheckoutProps } from './CheckoutPage';

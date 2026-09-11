@@ -84,7 +84,7 @@ export interface CheckoutProps {
     createEmbeddedMessenger(options: EmbeddedCheckoutMessengerOptions): EmbeddedCheckoutMessenger;
 }
 
-interface CheckoutState {
+export interface CheckoutState {
     activeStepType?: CheckoutStepType;
     isBillingSameAsShipping: boolean;
     customerViewType?: CustomerViewType;
