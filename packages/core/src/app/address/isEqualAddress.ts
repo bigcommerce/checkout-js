@@ -8,7 +8,7 @@ import { isEqual, omit } from 'lodash';
 
 import getAddressExtraFields from './getAddressExtraFields';
 
-type ComparableAddress = CustomerAddress | Address | BillingAddress | AddressRequestBody;
+export type ComparableAddress = CustomerAddress | Address | BillingAddress | AddressRequestBody;
 type ComparableAddressFields = keyof CustomerAddress | keyof Address | keyof BillingAddress;
 
 export default function isEqualAddress(
@@ -43,7 +43,7 @@ function isSameState(address1: ComparableAddress, address2: ComparableAddress): 
     );
 }
 
-function normalizeAddress(address: ComparableAddress) {
+export function normalizeAddress(address: ComparableAddress) {
     const ignoredFields: ComparableAddressFields[] = [
         'id',
         'shouldSaveAddress',

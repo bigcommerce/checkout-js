@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`OrderSummaryPrice when has non-zero amount and has only required props renders additional elements/props 1`] = `
 <body>

@@ -44,5 +44,8 @@ export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>
             id: 'sagepay',
             experiment: 'PI-4754_sage_pay_resolver_configuration',
         },
+        { id: 'cybersource', experiment: 'PI-4749_cyber_source_resolver_configuration' },
+        { id: 'cybersourcev2', experiment: 'PI-4749_cyber_source_resolver_configuration' },
+        { id: 'bnz', experiment: 'PI-4749_cyber_source_resolver_configuration' },
     ],
 );

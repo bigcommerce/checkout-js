@@ -148,10 +148,10 @@ const OrderSummaryModal: FunctionComponent<
                     >
                         <TranslatedString id="tax.inclusive_label" />
                     </h5>
-                    {(taxes || []).map((tax, index) => (
+                    {(taxes || []).map((tax) => (
                         <OrderSummaryPrice
                             amount={tax.amount}
-                            key={index}
+                            key={tax.name}
                             label={tax.name}
                             testId="cart-taxes"
                         />

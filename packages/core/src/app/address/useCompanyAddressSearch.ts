@@ -82,7 +82,7 @@ export function useCompanyAddressSearch({
                     await checkoutService.getB2BToken();
                 }
 
-                const { company } = await checkoutService.searchCompanyAddresses(query, {
+                const { customer } = await checkoutService.searchCompanyAddresses(query, {
                     first: COMPANY_ADDRESS_SEARCH_LIMIT,
                     ...(propsRef.current.type === AddressType.Shipping
                         ? { isShipping: true }
@@ -93,7 +93,9 @@ export function useCompanyAddressSearch({
                     return;
                 }
 
-                if (!company) {
+                const activeCompany = customer?.activeCompany;
+
+                if (!activeCompany) {
                     setSearchResults(undefined);
 
                     return;
@@ -104,7 +106,7 @@ export function useCompanyAddressSearch({
                 );
 
                 setSearchResults(
-                    (company.addresses.edges ?? []).map(
+                    (activeCompany.addresses.edges ?? []).map(
                         ({ node }) =>
                             addressesById.get(node.entityId) ?? mapToCustomerAddress(node),
                     ),

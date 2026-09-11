@@ -427,13 +427,13 @@ describe('Multi-shipping', () => {
 
         const address = JSON.parse(
             JSON.stringify({
-                firstName: faker.name.firstName(),
-                lastName: faker.name.lastName(),
-                address1: faker.address.streetAddress(),
-                city: faker.address.city(),
+                firstName: faker.person.firstName(),
+                lastName: faker.person.lastName(),
+                address1: faker.location.streetAddress(),
+                city: faker.location.city(),
                 countryCode: 'AU',
                 stateOrProvinceCode: faker.helpers.arrayElement(['NSW', 'VIC', 'QLD', 'TAS']),
-                postalCode: faker.address.zipCode(),
+                postalCode: faker.location.zipCode(),
             }),
         );
 

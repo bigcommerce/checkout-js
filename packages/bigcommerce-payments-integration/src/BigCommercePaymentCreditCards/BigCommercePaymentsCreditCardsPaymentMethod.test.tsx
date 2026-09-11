@@ -353,7 +353,9 @@ describe('BigCommercePaymentsCreditCardPaymentMethod', () => {
 
         render(<PaymentMethodTest {...defaultProps} />);
 
-        expect(screen.getByLabelText(/CVV|Security Code|Card Code/i)).toBeInTheDocument();
+        expect(
+            screen.getByRole('textbox', { name: /CVV|Security Code|Card Code/i }),
+        ).toBeInTheDocument();
     });
 
     it('calls onUnhandledError if error occurs during initializePayment', async () => {

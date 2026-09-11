@@ -23,7 +23,7 @@ describe('OrderExtraFieldsFieldset', () => {
         required: true,
         fieldType: 'text',
         type: 'string',
-    } as FormField;
+    };
 
     const anotherExtraField: FormField = {
         custom: false,
@@ -34,7 +34,7 @@ describe('OrderExtraFieldsFieldset', () => {
         required: true,
         fieldType: 'text',
         type: 'string',
-    } as FormField;
+    };
 
     const nonExtraField: FormField = {
         custom: false,
@@ -45,7 +45,7 @@ describe('OrderExtraFieldsFieldset', () => {
         required: true,
         fieldType: 'text',
         type: 'string',
-    } as FormField;
+    };
 
     const dropdownExtraField: FormField = {
         custom: false,
@@ -62,7 +62,7 @@ describe('OrderExtraFieldsFieldset', () => {
                 { value: 'low', label: 'Low' },
             ],
         },
-    } as FormField;
+    };
 
     const hiddenExtraField: FormField = {
         custom: false,
@@ -74,7 +74,7 @@ describe('OrderExtraFieldsFieldset', () => {
         required: true,
         fieldType: 'text',
         type: 'string',
-    } as FormField;
+    };
 
     const renderFieldset = (formFields: FormField[]) =>
         render(

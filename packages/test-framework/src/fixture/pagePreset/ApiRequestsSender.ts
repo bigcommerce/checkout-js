@@ -1,5 +1,5 @@
 import { type Cart, type Checkout } from '@bigcommerce/checkout-sdk';
-import { faker } from '@faker-js/faker';
+import { en, en_AU, en_US, Faker } from '@faker-js/faker';
 import { type Page } from '@playwright/test';
 
 import { getStoreUrl } from '../';
@@ -7,11 +7,17 @@ import { getStoreUrl } from '../';
 import { ApiContextFactory } from './ApiContextFactory';
 import { Locales } from './types';
 
+const fakerByLocale: Record<Locales, Faker> = {
+    [Locales.US]: new Faker({ locale: [en_US, en] }),
+    [Locales.AU]: new Faker({ locale: [en_AU, en] }),
+};
+
 /**
  * @internal
  */
 export class ApiRequestsSender {
     private readonly apiContextFactory: ApiContextFactory;
+    private readonly faker: Faker;
     private readonly page: Page;
     private readonly storeUrl: string;
     private readonly startTime: number;
@@ -21,8 +27,7 @@ export class ApiRequestsSender {
         this.page = page;
         this.storeUrl = getStoreUrl();
         this.apiContextFactory = new ApiContextFactory();
-
-        faker.setLocale(fakerLocale);
+        this.faker = fakerByLocale[fakerLocale];
 
         // hack for BC dev store's root certificate issue during recording HAR
         // https://stackoverflow.com/questions/31673587/error-unable-to-verify-the-first-certificate-in-nodejs
@@ -56,7 +61,7 @@ export class ApiRequestsSender {
 
         const apiContext = await this.apiContextFactory.create(this.page, this.storeUrl);
         const checkout = await this.getCheckoutOrThrow();
-        const email = faker.internet.email('checkout');
+        const email = this.faker.internet.email({ firstName: 'checkout' });
 
         await apiContext.post(`./checkouts/${checkout.id}/billing-address`, {
             data: { email },
@@ -83,18 +88,18 @@ export class ApiRequestsSender {
         // Set shipping address
         console.log(`  - Setting shipping address`);
 
-        const stateCode = faker.address.stateAbbr();
+        const stateCode = this.faker.location.state({ abbreviated: true });
         const address = {
-            firstName: faker.name.firstName(),
-            lastName: faker.name.lastName(),
-            company: faker.company.companyName(),
-            phone: faker.phone.phoneNumber('##########'),
-            address1: faker.address.streetName(),
-            address2: faker.address.secondaryAddress(),
-            city: faker.address.cityName(),
+            firstName: this.faker.person.firstName(),
+            lastName: this.faker.person.lastName(),
+            company: this.faker.company.name(),
+            phone: this.faker.string.numeric(10),
+            address1: this.faker.location.street(),
+            address2: this.faker.location.secondaryAddress(),
+            city: this.faker.location.city(),
             countryCode,
             stateOrProvince: '',
-            postalCode: faker.address.zipCodeByState(stateCode),
+            postalCode: this.getZipCodeByState(stateCode),
             shouldSaveAddress: true,
             stateOrProvinceCode: stateCode,
             customFields: [],
@@ -148,17 +153,17 @@ export class ApiRequestsSender {
             `./checkouts/${checkout.id}/billing-address/${billingAddressId ?? ''}`,
             {
                 data: {
-                    firstName: faker.name.firstName(),
-                    lastName: faker.name.lastName(),
-                    email: faker.internet.email('checkout'),
-                    company: faker.company.companyName(),
-                    address1: faker.address.streetName(),
-                    address2: faker.address.secondaryAddress(),
-                    phone: faker.phone.phoneNumber('##########'),
-                    city: faker.address.cityName(),
+                    firstName: this.faker.person.firstName(),
+                    lastName: this.faker.person.lastName(),
+                    email: this.faker.internet.email({ firstName: 'checkout' }),
+                    company: this.faker.company.name(),
+                    address1: this.faker.location.street(),
+                    address2: this.faker.location.secondaryAddress(),
+                    phone: this.faker.string.numeric(10),
+                    city: this.faker.location.city(),
                     stateOrProvinceCode: stateCode,
                     countryCode,
-                    postalCode: faker.address.zipCodeByState(stateCode),
+                    postalCode: this.getZipCodeByState(stateCode),
                 },
             },
         );
@@ -174,6 +179,12 @@ export class ApiRequestsSender {
         const time = Math.ceil((Date.now() - this.startTime) / 1000);
 
         console.log(`\x1b[32m\n  ${message} \x1b[0m\x1b[2m(${time}s)\x1b[0m`);
+    }
+
+    private getZipCodeByState(state: string): string {
+        return this.faker.rawDefinitions.location?.postcode_by_state
+            ? this.faker.location.zipCode({ state })
+            : this.faker.location.zipCode();
     }
 
     private async getCheckoutIdOrThrow(): Promise<string> {

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { type FunctionComponent, memo, useState } from 'react';
 
-import { preventDefault } from '@bigcommerce/checkout/dom-utils';
+import { assignLocation, preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { ConfirmationModal } from '@bigcommerce/checkout/ui';
 
@@ -23,7 +23,7 @@ const EditLink: FunctionComponent<EditLinkProps> = ({
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const gotoCartPage = () => {
-        window.location.assign(url);
+        assignLocation(url);
     };
 
     if (isInvoiceRedirectEnabled) {

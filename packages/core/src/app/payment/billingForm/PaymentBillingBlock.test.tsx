@@ -13,6 +13,7 @@ import {
     defaultCapabilities,
     LocaleContext,
     type LocaleContextType,
+    ThemeProvider,
 } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 
@@ -66,7 +67,7 @@ describe('PaymentBillingBlock', () => {
         mockPersistValues = {
             ...mapAddressToFormValues(formFields, getBillingAddress()),
             orderComment: getCheckout().customerMessage,
-        } as BillingFormValues;
+        };
 
         jest.spyOn(checkoutService, 'loadBillingAddressFields').mockResolvedValue(checkoutState);
         jest.spyOn(checkoutService, 'updateBillingAddress').mockResolvedValue(checkoutState);
@@ -87,16 +88,18 @@ describe('PaymentBillingBlock', () => {
 
             return (
                 <CheckoutProvider checkoutService={checkoutService}>
-                    <LocaleContext.Provider value={localeContext}>
-                        <CapabilitiesContext.Provider value={defaultCapabilities}>
-                            <PaymentBillingBlock
-                                isBillingSameAsShipping={isBillingSameAsShipping}
-                                methodId={methodId}
-                                onBillingSameAsShippingChange={setIsBillingSameAsShipping}
-                                onUnhandledError={onUnhandledError}
-                            />
-                        </CapabilitiesContext.Provider>
-                    </LocaleContext.Provider>
+                    <ThemeProvider>
+                        <LocaleContext.Provider value={localeContext}>
+                            <CapabilitiesContext.Provider value={defaultCapabilities}>
+                                <PaymentBillingBlock
+                                    isBillingSameAsShipping={isBillingSameAsShipping}
+                                    methodId={methodId}
+                                    onBillingSameAsShippingChange={setIsBillingSameAsShipping}
+                                    onUnhandledError={onUnhandledError}
+                                />
+                            </CapabilitiesContext.Provider>
+                        </LocaleContext.Provider>
+                    </ThemeProvider>
                 </CheckoutProvider>
             );
         };

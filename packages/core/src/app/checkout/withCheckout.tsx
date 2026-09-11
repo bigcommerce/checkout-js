@@ -7,7 +7,6 @@ import {
     useCheckout,
 } from '@bigcommerce/checkout/contexts';
 import {
-    createMappableInjectHoc,
     type MapToProps,
     type MapToPropsFactory,
     type MatchedProps,
@@ -23,10 +22,6 @@ function isMapToPropsFactory<TContextProps, TMappedProps, TOwnProps>(
     return mapToProps.length === 0;
 }
 
-const withCheckoutV1 = createMappableInjectHoc(CheckoutContext, {
-    displayNamePrefix: 'WithCheckout',
-});
-
 const withCheckout = <TMappedProps, TOwnProps>(
     mapToPropsOrFactory:
         | MapToProps<CheckoutContextProps, TMappedProps, TOwnProps>
@@ -38,8 +33,6 @@ const withCheckout = <TMappedProps, TOwnProps>(
         const InnerDecoratedComponent: React.FunctionComponent<TProps> = memo((props) => (
             <OriginalComponent {...props} />
         ));
-
-        const InnerDecoratedComponentV1 = withCheckoutV1(mapToPropsOrFactory)(OriginalComponent);
 
         const DecoratedComponent: React.FunctionComponent<Omit<TProps, keyof TMappedProps>> = (
             props,
@@ -54,31 +47,26 @@ const withCheckout = <TMappedProps, TOwnProps>(
                 [],
             );
 
-            const { selectedState, isCheckoutHookExperimentEnabled } =
-                useCheckout<TMappedProps | null>(
-                    contextSnapshot
-                        ? (state) => {
-                              const contextForMapping: CheckoutContextProps = {
-                                  ...contextSnapshot,
-                                  checkoutState: state,
-                              };
+            const { selectedState } = useCheckout<TMappedProps | null>(
+                contextSnapshot
+                    ? (state) => {
+                          const contextForMapping: CheckoutContextProps = {
+                              ...contextSnapshot,
+                              checkoutState: state,
+                          };
 
-                              return mapToProps(contextForMapping, props as unknown as TOwnProps);
-                          }
-                        : undefined,
-                );
+                          return mapToProps(contextForMapping, props as unknown as TOwnProps);
+                      }
+                    : undefined,
+            );
 
-            if (isCheckoutHookExperimentEnabled) {
-                if (!selectedState) {
-                    return null;
-                }
-
-                const mergedProps = { ...selectedState, ...props } as unknown as TProps;
-
-                return <InnerDecoratedComponent {...mergedProps} />;
+            if (!selectedState) {
+                return null;
             }
 
-            return <InnerDecoratedComponentV1 {...props} />;
+            const mergedProps = { ...selectedState, ...props } as unknown as TProps;
+
+            return <InnerDecoratedComponent {...mergedProps} />;
         };
 
         if (OriginalComponent) {

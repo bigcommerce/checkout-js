@@ -8,7 +8,7 @@ export class PaymentStepAsGuest implements CheckoutPagePreset {
     constructor(
         private currency = 'USD',
         private countryCode?: string,
-        private locale: string = Locales.US,
+        private locale: Locales = Locales.US,
     ) {}
     async apply(page: Page): Promise<void> {
         const api = new ApiRequestsSender(page, this.locale);

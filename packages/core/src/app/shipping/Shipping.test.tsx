@@ -739,9 +739,30 @@ describe('Shipping step', () => {
 
         await checkout.fillAddressForm();
         await userEvent.type(screen.getByLabelText('Custom Text'), 'Custom Text');
+
+        // jsdom implements Element.matches via nwsapi, whose matchesNative() falls back to
+        // node.matches, so :modal recurses until the stack overflows and the error is
+        // swallowed (~213ms per call). It is always false in jsdom, and @floating-ui probes
+        // it on every element it positions while the datepicker calendar is open.
+        const originalMatches = Element.prototype.matches;
+
+        Object.defineProperty(Element.prototype, 'matches', {
+            configurable: true,
+            writable: true,
+            value(this: Element, selectors: string): boolean {
+                return selectors === ':modal' ? false : originalMatches.call(this, selectors);
+            },
+        });
+
         await userEvent.click(screen.getByPlaceholderText('DD/MM/YYYY'));
         await userEvent.type(screen.getByPlaceholderText('DD/MM/YYYY'), '01/01/2015');
         await userEvent.keyboard('{enter}');
+
+        Object.defineProperty(Element.prototype, 'matches', {
+            configurable: true,
+            writable: true,
+            value: originalMatches,
+        });
 
         expect(screen.getByPlaceholderText('DD/MM/YYYY')).toHaveDisplayValue('01/01/2020');
 

@@ -417,7 +417,7 @@ const HostedWidgetPaymentComponent = ({
 
         if (
             selectedInstrumentIdRef.current !== selectedInstrumentId ||
-            (Number(instrumentsLength.current) > 0 && instruments.length === 0) ||
+            (instrumentsLength.current > 0 && instruments.length === 0) ||
             isPaymentDataRequiredRef.current !== isPaymentDataRequired
         ) {
             selectedInstrumentIdRef.current = selectedInstrumentId;
@@ -477,9 +477,7 @@ const HostedWidgetPaymentComponent = ({
                     <StoreInstrumentFieldset
                         instrumentId={effectiveSelectedInstrumentId}
                         instruments={instruments}
-                        isAccountInstrument={Boolean(
-                            isAccountInstrument || shouldShowAccountInstrument,
-                        )}
+                        isAccountInstrument={isAccountInstrument || shouldShowAccountInstrument}
                     />
                 )}
 

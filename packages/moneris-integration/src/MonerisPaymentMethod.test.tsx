@@ -18,6 +18,7 @@ import {
     PaymentFormContext,
     type PaymentFormService,
 } from '@bigcommerce/checkout/contexts';
+import { ErrorLevelType, type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import {
     PaymentMethodId,
@@ -32,7 +33,6 @@ import {
     getStoreConfig,
 } from '@bigcommerce/checkout/test-mocks';
 import { act } from '@bigcommerce/checkout/test-utils';
-import { ErrorLevelType, type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 
 import getMonerisIframeStyles from './getMonerisIframeStyles';
 import MonerisPaymentMethod from './MonerisPaymentMethod';

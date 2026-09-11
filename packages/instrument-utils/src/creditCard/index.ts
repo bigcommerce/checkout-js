@@ -2,6 +2,7 @@
 export { default as configureCardValidator } from './configureCardValidator';
 export { default as CreditCardCodeField } from './CreditCardCodeField';
 export { default as CreditCardCodeTooltip } from './CreditCardCodeTooltip';
+export { CreditCardCodeTooltipTrigger } from './CreditCardCodeTooltipTrigger';
 export { default as CreditCardCustomerCodeField } from './CreditCardCustomerCodeField';
 export { default as CreditCardExpiryField } from './CreditCardExpiryField';
 export { default as CreditCardFieldsetValues } from './CreditCardFieldsetValues';

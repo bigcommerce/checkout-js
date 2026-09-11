@@ -13,10 +13,8 @@ import { getCustomer } from '../customer/customers.mock';
 import CartSummaryDrawer from './CartSummaryDrawer';
 
 describe('CartSummary Component', () => {
-    Object.defineProperty(window, 'location', {
-        value: {
-            pathname: '/checkout',
-        },
+    beforeEach(() => {
+        window.history.replaceState({}, '', '/checkout');
     });
 
     it('renders OrderSummaryDrawer with Edit Cart link', async () => {

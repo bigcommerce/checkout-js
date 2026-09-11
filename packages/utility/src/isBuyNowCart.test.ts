@@ -4,13 +4,7 @@ import isBuyNowCart from './isBuyNowCart';
 
 describe('isBuyNowCart', () => {
     const redefineWindowLocation = (pathname: string, search = '') => {
-        Object.defineProperty(window, 'location', {
-            value: {
-                pathname,
-                search,
-            },
-            writable: true,
-        });
+        window.history.replaceState({}, '', `/${pathname}${search}`);
     };
 
     it('returns true when the last path name is not "checkout" or "embedded-checkout"', () => {

@@ -53,16 +53,21 @@ export default class SentryErrorLogger implements ErrorLogger {
         this.dsn = config.dsn || '';
 
         window.sentryOnLoad = async () => {
+            const integrations =
+                typeof Sentry.globalHandlersIntegration === 'function'
+                    ? [
+                          Sentry.globalHandlersIntegration({
+                              onerror: false,
+                              onunhandledrejection: true,
+                          }),
+                      ]
+                    : [];
+
             Sentry.init({
                 sampleRate,
                 beforeSend: this.handleBeforeSend.bind(this),
                 denyUrls: [...(config.denyUrls || []), 'polyfill~checkout'],
-                integrations: [
-                    Sentry.globalHandlersIntegration({
-                        onerror: false,
-                        onunhandledrejection: true,
-                    }),
-                ],
+                integrations,
                 ...config,
             });
 

@@ -1,7 +1,7 @@
 import { type Address, type Consignment, type FormField } from '@bigcommerce/checkout-sdk';
 import React, { type ReactElement } from 'react';
 
-import { useCapabilities, useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
+import { useCapabilities, useCheckout } from '@bigcommerce/checkout/contexts';
 import { Fieldset, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import {
@@ -10,7 +10,6 @@ import {
     AddressType,
     decodeAddressLabel,
     isValidCustomerAddress,
-    reorderAddressFormFields,
 } from '../address';
 import { connectFormik, type ConnectFormikProps } from '../common/form';
 
@@ -45,7 +44,6 @@ const ShippingAddressForm = ({
     const {
         selectedState: { customer },
     } = useCheckout(({ data }) => ({ customer: data.getCustomer() }));
-    const { enhancedThemeV1 } = useThemeContext();
     const {
         shipping: { hideSaveToAddressBookCheck, restrictManualAddressEntry },
         userJourney: { hasAddressLabel },
@@ -92,8 +90,6 @@ const ShippingAddressForm = ({
         validateMaxLength,
     );
 
-    const sortedFormFields = enhancedThemeV1 ? reorderAddressFormFields(formFields) : formFields;
-
     return (
         <Fieldset id="checkoutShippingAddress">
             {hasAddresses && (
@@ -117,7 +113,7 @@ const ShippingAddressForm = ({
                     <AddressForm
                         countryCode={formAddress && formAddress.countryCode}
                         fieldName={addressFieldName}
-                        formFields={sortedFormFields}
+                        formFields={formFields}
                         onAutocompleteToggle={handleAutocompleteToggle}
                         onChange={handleChange}
                         setFieldValue={setFieldValue}

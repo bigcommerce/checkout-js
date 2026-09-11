@@ -1,5 +1,5 @@
-import { CustomError } from '@bigcommerce/checkout/payment-integration-api';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
+import { CustomError } from '@bigcommerce/checkout/payment-integration-api';
 
 export default class InstrumentDeclinedError extends CustomError {
     constructor() {

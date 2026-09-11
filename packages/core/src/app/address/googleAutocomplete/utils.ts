@@ -10,3 +10,47 @@ export const toAutocompleteItems = (
         id: result.place_id,
     }));
 };
+
+const hasDigits = (token: string): boolean => {
+    return /\d/.test(token);
+};
+
+export const restoreStreetNumberSuffix = (
+    placeDetailsAddress: string,
+    selectedAutocompleteAddress?: string,
+): string => {
+    if (!placeDetailsAddress || !selectedAutocompleteAddress) {
+        return placeDetailsAddress;
+    }
+
+    const placeDetailsTokens = placeDetailsAddress.split(' ');
+    const selectedAutocompleteTokens = selectedAutocompleteAddress.split(' ');
+
+    const placeDetailsStreetNumberIndex = placeDetailsTokens.findIndex(hasDigits);
+    const autocompleteStreetNumber = selectedAutocompleteTokens.find(hasDigits);
+
+    if (placeDetailsStreetNumberIndex === -1 || !autocompleteStreetNumber) {
+        return placeDetailsAddress;
+    }
+
+    const placeDetailsStreetNumber = placeDetailsTokens[placeDetailsStreetNumberIndex];
+
+    const extendsPlaceDetailsStreetNumber = autocompleteStreetNumber
+        .toLowerCase()
+        .startsWith(placeDetailsStreetNumber.toLowerCase());
+
+    if (!extendsPlaceDetailsStreetNumber) {
+        return placeDetailsAddress;
+    }
+
+    const lostLetterSuffix = autocompleteStreetNumber.slice(placeDetailsStreetNumber.length);
+
+    if (!/^[a-z]$/i.test(lostLetterSuffix)) {
+        return placeDetailsAddress;
+    }
+
+    placeDetailsTokens[placeDetailsStreetNumberIndex] =
+        `${placeDetailsStreetNumber}${lostLetterSuffix.toUpperCase()}`;
+
+    return placeDetailsTokens.join(' ');
+};

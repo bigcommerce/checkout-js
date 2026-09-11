@@ -38,7 +38,7 @@ export default function mapToCheckoutProps({
         },
     );
 
-    const walletButtonsOnTopFlag = Boolean(checkoutUserExperienceSettings.walletButtonsOnTop);
+    const walletButtonsOnTopFlag = checkoutUserExperienceSettings.walletButtonsOnTop;
 
     return {
         billingAddress: data.getBillingAddress(),

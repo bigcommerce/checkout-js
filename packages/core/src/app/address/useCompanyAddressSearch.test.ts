@@ -55,10 +55,12 @@ describe('useCompanyAddressSearch', () => {
     });
 
     const createSearchResult = (nodes: CompanyAddress[]): CompanyAddressSearchResult => ({
-        company: {
-            addresses: {
-                edges: nodes.map((node) => ({ node })),
-                pageInfo: { hasNextPage: false },
+        customer: {
+            activeCompany: {
+                addresses: {
+                    edges: nodes.map((node) => ({ node })),
+                    pageInfo: { hasNextPage: false },
+                },
             },
         },
     });

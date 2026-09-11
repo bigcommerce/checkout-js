@@ -2,9 +2,8 @@ import { type PaymentMethod } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import React from 'react';
 
-import { CreditCardCodeTooltip } from '@bigcommerce/checkout/instrument-utils';
+import { CreditCardCodeTooltipTrigger } from '@bigcommerce/checkout/instrument-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { IconHelp, TooltipTrigger } from '@bigcommerce/checkout/ui';
 
 import MollieAPMCustomForm from './MollieAPMCustomForm';
 
@@ -68,11 +67,7 @@ const MollieCustomCardForm: React.FunctionComponent<MollieCustomCardFormProps> =
                     htmlFor={options.cardCvcElementOptions.containerId}
                 >
                     <TranslatedString id="payment.credit_card_cvv_label" />
-                    <TooltipTrigger placement="top-start" tooltip={<CreditCardCodeTooltip />}>
-                        <span className="has-tip">
-                            <IconHelp />
-                        </span>
-                    </TooltipTrigger>
+                    <CreditCardCodeTooltipTrigger />
                 </label>
                 <div
                     className={classNames('form-input', 'optimizedCheckout-form-input')}

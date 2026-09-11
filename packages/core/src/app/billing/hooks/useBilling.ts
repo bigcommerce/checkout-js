@@ -83,7 +83,7 @@ export const useBilling = ({ onReady, onUnhandledError }: UseBillingOptions) => 
     const billingAddress = decodeAddressLabel(getBillingAddress(), hasAddressLabel);
     const methodId = getBillingMethodId(checkout);
 
-    const hasAddresses = Boolean(customer.addresses && customer.addresses.length > 0);
+    const hasAddresses = customer.addresses && customer.addresses.length > 0;
     const showNoAddressesWarning = restrictManualAddressEntry && !hasAddresses;
 
     const getFields = useCallback(

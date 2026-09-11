@@ -14,6 +14,7 @@ import {
     LocaleContext,
     type LocaleContextType,
 } from '@bigcommerce/checkout/contexts';
+import { assignLocation } from '@bigcommerce/checkout/dom-utils';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
@@ -26,6 +27,11 @@ import { getConsignment } from '../shipping/consignment.mock';
 import CartSummary from './CartSummary';
 import CartSummaryDrawer from './CartSummaryDrawer';
 
+jest.mock('@bigcommerce/checkout/dom-utils', () => ({
+    ...jest.requireActual('@bigcommerce/checkout/dom-utils'),
+    assignLocation: jest.fn(),
+}));
+
 describe('Edit Cart Component', () => {
     let checkoutService: CheckoutService;
     let extensionService: ExtensionServiceInterface;
@@ -33,13 +39,8 @@ describe('Edit Cart Component', () => {
     let localeContext: LocaleContextType;
 
     beforeEach(() => {
-        Object.defineProperty(window, 'location', {
-            value: {
-                assign: jest.fn(),
-                pathname: '/checkout',
-            },
-            writable: true,
-        });
+        jest.clearAllMocks();
+        window.history.replaceState({}, '', '/checkout');
 
         localeContext = createLocaleContext(getStoreConfig());
         checkoutService = createCheckoutService();
@@ -74,9 +75,7 @@ describe('Edit Cart Component', () => {
         expect(screen.getAllByRole('alert')).toHaveLength(2);
         screen.getByText('Confirm').click();
 
-        expect(window.location.assign).toHaveBeenCalledWith(
-            'https://store-k1drp8k8.bcapp.dev/cart.php',
-        );
+        expect(assignLocation).toHaveBeenCalledWith('https://store-k1drp8k8.bcapp.dev/cart.php');
     });
 
     it('renders confirmation modal when using multi-shipping and CartSummaryDawer', () => {
@@ -96,8 +95,6 @@ describe('Edit Cart Component', () => {
         expect(screen.getAllByRole('alert')).toHaveLength(2);
         screen.getByText('Confirm').click();
 
-        expect(window.location.assign).toHaveBeenCalledWith(
-            'https://store-k1drp8k8.bcapp.dev/cart.php',
-        );
+        expect(assignLocation).toHaveBeenCalledWith('https://store-k1drp8k8.bcapp.dev/cart.php');
     });
 });

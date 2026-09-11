@@ -48,3 +48,10 @@ export { default as BigCommercePaymentsVenmoPaymentMethod } from './BigCommerceP
  *
  * */
 export { default as BigCommercePaymentsRatePayPaymentMethod } from './BigCommercePaymentsRatePay/BigCommercePaymentsRatePayPaymentMethod';
+
+/**
+ *
+ * BigCommerce Payments Invoices
+ *
+ * */
+export { default as BigCommercePaymentsInvoicesPaymentMethod } from './BigCommercePaymentsInvoices/BigCommercePaymentsInvoicesPaymentMethod';

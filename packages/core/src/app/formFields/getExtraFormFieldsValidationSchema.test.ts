@@ -74,7 +74,7 @@ describe('getAddressExtraFieldsValidationSchema', () => {
                 required: true,
                 type: 'integer',
                 max: 100,
-            } as FormField,
+            },
         ];
 
         it('validates required integer field', async () => {
@@ -145,7 +145,7 @@ describe('getAddressExtraFieldsValidationSchema', () => {
                     name: 'b2bExtraField_400',
                     required: false,
                     type: 'integer',
-                } as FormField,
+                },
             ];
 
             const schema = getAddressExtraFieldsValidationSchema({ formFields, translate });

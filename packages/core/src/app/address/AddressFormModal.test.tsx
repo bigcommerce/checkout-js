@@ -139,9 +139,9 @@ describe('AddressFormModal Component', () => {
     it('renders prefilled address form in the modal when selectedAddress is present', () => {
         const address = JSON.parse(
             JSON.stringify({
-                firstName: faker.name.firstName(),
-                lastName: faker.name.lastName(),
-                address1: faker.address.streetAddress(),
+                firstName: faker.person.firstName(),
+                lastName: faker.person.lastName(),
+                address1: faker.location.streetAddress(),
             }),
         );
 

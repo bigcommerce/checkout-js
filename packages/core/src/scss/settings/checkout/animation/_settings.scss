@@ -9,3 +9,8 @@ $animation-collapse-transitionProperty: max-height;
 $animation-collapse-transitionSpeed: 600ms;
 $animation-collapse-transition: $animation-collapse-transitionProperty $animation-collapse-transitionSpeed $animation-collapse-transitionCurve;
 
+// Must match SLIDE_DURATION / DOT_PULSE_DURATION / DOT_STAGGER in usePriceChangeTicker.ts
+$animation-priceTicker-slideSpeed: 200ms;
+$animation-loadingDots-pulseSpeed: 900ms;
+$animation-loadingDots-stagger: 150ms;
+

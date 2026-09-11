@@ -62,6 +62,18 @@ export function removeBundledItems(lineItems: LineItemMap): LineItemMap {
     };
 }
 
+export function getNonBundledItems(
+    items: LineItemMap,
+    orderBundledItems?: Pick<LineItemMap, 'physicalItems' | 'digitalItems'>,
+): {
+    nonBundledItems: LineItemMap;
+    bundleItemsMap: Map<string | number, Array<PhysicalItem | DigitalItem>>;
+} {
+    return orderBundledItems
+        ? buildBundleItemsMapFromOrder(items, orderBundledItems)
+        : removeAndBundleItemsTogether(items);
+}
+
 export function removeAndBundleItemsTogether(items: LineItemMap): {
     nonBundledItems: LineItemMap;
     bundleItemsMap: Map<string | number, Array<PhysicalItem | DigitalItem>>;
@@ -72,7 +84,7 @@ export function removeAndBundleItemsTogether(items: LineItemMap): {
         ...items,
         physicalItems: items.physicalItems.filter((item) => {
             if (typeof item.parentId === 'string') {
-                const key = String(item.parentId);
+                const key = item.parentId;
                 const existing = bundleItemsMap.get(key);
 
                 bundleItemsMap.set(key, existing ? [...existing, item] : [item]);
@@ -84,7 +96,7 @@ export function removeAndBundleItemsTogether(items: LineItemMap): {
         }),
         digitalItems: items.digitalItems.filter((item) => {
             if (typeof item.parentId === 'string') {
-                const key = String(item.parentId);
+                const key = item.parentId;
                 const existing = bundleItemsMap.get(key);
 
                 bundleItemsMap.set(key, existing ? [...existing, item] : [item]);

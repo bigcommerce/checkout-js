@@ -7,16 +7,20 @@ import {
     useLocale,
 } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { WalletButtonsContainerSkeleton } from '@bigcommerce/checkout/ui';
+import { LazyContainer, WalletButtonsContainerSkeleton } from '@bigcommerce/checkout/ui';
 import { isExperimentEnabled } from '@bigcommerce/checkout/utility';
 
 import { withCheckout } from '../checkout';
+import { retry } from '../common/utility';
 
 import { getSupportedMethodIds } from './getSupportedMethods';
 import resolveCheckoutButton from './resolveCheckoutButton';
 
-const CheckoutButtonV1Resolver = lazy(
-    () => import(/* webpackChunkName: "wallet-button-v1-resolver" */ './WalletButtonV1Resolver'),
+const CheckoutButtonV1Resolver = lazy(() =>
+    retry(
+        () =>
+            import(/* webpackChunkName: "wallet-button-v1-resolver" */ './WalletButtonV1Resolver'),
+    ),
 );
 
 interface CheckoutButtonContainerProps {
@@ -110,22 +114,24 @@ const CheckoutButtonContainer: FunctionComponent<
                 isPaymentStepActive ? { position: 'absolute', left: '0', top: '-100%' } : undefined
             }
         >
-            <p className="optimizedCheckout-headingSecondary sub-header">
-                <TranslatedString id="remote.start_with_text" />
-            </p>
-            <div className="checkout-buttons-auto-layout">
-                <WalletButtonsContainerSkeleton
-                    buttonsCount={availableMethodIds.length}
-                    isLoading={isLoading}
-                >
-                    <div className="checkoutRemote">{renderButtons()}</div>
-                </WalletButtonsContainerSkeleton>
-            </div>
-            <div className="checkout-separator">
-                <span className="optimizedCheckout-headingSecondary sub-header">
-                    <TranslatedString id="remote.or_text" />
-                </span>
-            </div>
+            <LazyContainer>
+                <p className="optimizedCheckout-headingSecondary sub-header">
+                    <TranslatedString id="remote.start_with_text" />
+                </p>
+                <div className="checkout-buttons-auto-layout">
+                    <WalletButtonsContainerSkeleton
+                        buttonsCount={availableMethodIds.length}
+                        isLoading={isLoading}
+                    >
+                        <div className="checkoutRemote">{renderButtons()}</div>
+                    </WalletButtonsContainerSkeleton>
+                </div>
+                <div className="checkout-separator">
+                    <span className="optimizedCheckout-headingSecondary sub-header">
+                        <TranslatedString id="remote.or_text" />
+                    </span>
+                </div>
+            </LazyContainer>
         </div>
     );
 };

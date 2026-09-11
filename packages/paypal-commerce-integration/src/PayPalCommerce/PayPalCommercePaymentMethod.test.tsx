@@ -85,6 +85,8 @@ describe('PayPalCommercePaymentMethod', () => {
         beforeEach(() => {
             props.method.config.isVaultingEnabled = true;
 
+            jest.spyOn(checkoutService, 'getState').mockReturnValue(checkoutState);
+
             jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue([accountInstrument]);
 
             jest.spyOn(checkoutService, 'initializePayment').mockResolvedValue(checkoutState);

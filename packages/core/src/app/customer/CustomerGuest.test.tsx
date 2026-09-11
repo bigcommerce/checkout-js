@@ -126,6 +126,8 @@ describe('Customer Guest', () => {
         );
 
         expect(emailField).toBeInTheDocument();
+        expect(emailField).toHaveAttribute('aria-invalid', 'false');
+
         await userEvent.type(emailField, invalidEmail);
 
         await userEvent.click(
@@ -137,6 +139,11 @@ describe('Customer Guest', () => {
         expect(
             screen.getByLabelText(localeContext.language.translate('customer.email_invalid_error')),
         ).toBeInTheDocument();
+
+        expect(emailField).toHaveAttribute('aria-invalid', 'true');
+        expect(emailField).toHaveAccessibleDescription(
+            localeContext.language.translate('customer.email_invalid_error'),
+        );
 
         expect(checkoutService.continueAsGuest).not.toHaveBeenCalled();
 

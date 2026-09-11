@@ -1,10 +1,12 @@
 import { type Address, type Country, type Region } from '@bigcommerce/checkout-sdk';
 
 import AddressSelectorFactory from './AddressSelectorFactory';
+import { restoreStreetNumberSuffix } from './utils';
 
 export default function mapToAddress(
     autocompleteData: google.maps.places.PlaceResult,
     countries: Country[] = [],
+    autocompleteValue?: string,
 ): Partial<Address> {
     if (!autocompleteData || !autocompleteData.address_components) {
         return {};
@@ -17,10 +19,13 @@ export default function mapToAddress(
     const street2 = accessor.getStreet2();
 
     // TODO: Apply this fix for US, UK and CA addresses too.
-    const steet1 = countryCode === 'AU' ? accessor.getStreet() : undefined;
+    const street1 =
+        countryCode === 'AU'
+            ? restoreStreetNumberSuffix(accessor.getStreet(), autocompleteValue)
+            : undefined;
 
     return {
-        address1: steet1,
+        address1: street1,
         address2: street2,
         city: accessor.getCity(),
         countryCode,

@@ -200,8 +200,7 @@ describe('AccountInstrumentSelect', () => {
             <Component selectedInstrumentId={defaultProps.selectedInstrumentId} show={true} />,
         );
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        screen.getByRole('form').submit();
+        fireEvent.submit(screen.getByRole('form'));
 
         await new Promise((resolve) => process.nextTick(resolve));
 
@@ -215,8 +214,7 @@ describe('AccountInstrumentSelect', () => {
 
         jest.runOnlyPendingTimers();
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        screen.getByRole('form').submit();
+        fireEvent.submit(screen.getByRole('form'));
 
         await new Promise((resolve) => process.nextTick(resolve));
 

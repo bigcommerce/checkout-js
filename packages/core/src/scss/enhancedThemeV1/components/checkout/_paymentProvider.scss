@@ -1,0 +1,11 @@
+.paymentProviderHeader-container {
+    @include enhancedThemeV1 {
+        flex: 1;
+    }
+}
+
+.paymentProviderHeader-name.sub-header {
+    @include enhancedThemeV1 {
+        margin-bottom: 0;
+    }
+}
