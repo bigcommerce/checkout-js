@@ -15,6 +15,7 @@ export const defaultCapabilities: Capabilities = {
         quoteConfig: null,
     },
     customer: {
+        reloadPageAfterSignIn: false,
         superAdminCompanySelector: false,
     },
     shipping: {

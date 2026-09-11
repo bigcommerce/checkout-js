@@ -3,6 +3,7 @@ export { isTopWindow } from './isTopWindow';
 export {
     assignLocation,
     assignTopLocation,
+    reloadLocation,
     replaceLocation,
     replaceTopLocation,
     setTopLocationHref,

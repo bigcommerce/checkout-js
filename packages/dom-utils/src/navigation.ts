@@ -6,6 +6,10 @@ export function replaceLocation(url: string): void {
     window.location.replace(url);
 }
 
+export function reloadLocation(): void {
+    window.location.reload();
+}
+
 export function assignTopLocation(url: string): void {
     window.top?.location.assign(url);
 }
