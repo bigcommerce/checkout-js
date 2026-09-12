@@ -6,15 +6,29 @@ import {
     type PaymentRequestOptions,
 } from '@bigcommerce/checkout-sdk';
 import { noop, some } from 'lodash';
-import React, { type ReactNode, useCallback, useEffect } from 'react';
+import React, { type ReactNode, useCallback, useEffect, useState } from 'react';
 
 import { useCheckout } from '@bigcommerce/checkout/contexts';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { type PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import normalizeWalletPaymentData from './normalizeWalletPaymentData';
 import PaymentView from './PaymentView';
 import SignInView from './SignInView';
+
+const getNonce = (initializationData: unknown): string | undefined => {
+    if (
+        typeof initializationData === 'object' &&
+        initializationData !== null &&
+        'nonce' in initializationData &&
+        typeof initializationData.nonce === 'string'
+    ) {
+        return initializationData.nonce;
+    }
+
+    return undefined;
+};
 
 export interface WalletButtonPaymentMethodProps {
     paymentForm: PaymentFormService;
@@ -57,6 +71,13 @@ const WalletButtonPaymentMethodComponent: React.FC<WalletButtonPaymentMethodProp
         },
     } = useCheckout();
 
+    const {
+        selectedState: { submitOrderError, finalizeOrderError },
+    } = useCheckout(({ errors }) => ({
+        submitOrderError: errors.getSubmitOrderError(),
+        finalizeOrderError: errors.getFinalizeOrderError(),
+    }));
+
     const billingAddress = getBillingAddress();
     const checkout = getCheckout();
 
@@ -70,14 +91,25 @@ const WalletButtonPaymentMethodComponent: React.FC<WalletButtonPaymentMethodProp
     const cardName =
         walletPaymentData && [billingAddress.firstName, billingAddress.lastName].join(' ');
 
+    const currentNonce = getNonce(method.initializationData);
+    const [declinedNonce, setDeclinedNonce] = useState<string>();
+
+    useEffect(() => {
+        if (submitOrderError || finalizeOrderError) {
+            setDeclinedNonce(currentNonce);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [submitOrderError, finalizeOrderError]);
+
+    const hasDeclinedPaymentData = declinedNonce !== undefined && declinedNonce === currentNonce;
+
     const toggleSubmit = () => {
         const { disableSubmit } = paymentForm;
         const currentIsPaymentDataRequired = isPaymentDataRequired();
+        const hasValidWalletData =
+            normalizeWalletPaymentData(method.initializationData) || !currentIsPaymentDataRequired;
 
-        if (
-            normalizeWalletPaymentData(method.initializationData) ||
-            !currentIsPaymentDataRequired
-        ) {
+        if (!hasDeclinedPaymentData && hasValidWalletData) {
             disableSubmit(method, false);
         } else {
             disableSubmit(method, true);
@@ -144,7 +176,13 @@ const WalletButtonPaymentMethodComponent: React.FC<WalletButtonPaymentMethodProp
                         buttonId={buttonId}
                         cardName={cardName}
                         editButtonClassName={editButtonClassName}
-                        editButtonLabel={editButtonLabel}
+                        editButtonLabel={
+                            hasDeclinedPaymentData ? (
+                                <TranslatedString id="remote.retry_same_card_action" />
+                            ) : (
+                                editButtonLabel
+                            )
+                        }
                         method={method}
                         onSignOut={handleSignOut}
                         shouldShowEditButton={shouldShowEditButton}

@@ -23,6 +23,20 @@ import {
     createCheckoutComSepaPaymentStrategy,
 } from '@bigcommerce/checkout-sdk/integrations/checkoutcom-custom';
 import { createClearpayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/clearpay';
+import {
+    createGooglePayAdyenV2PaymentStrategy,
+    createGooglePayAdyenV3PaymentStrategy,
+    createGooglePayAuthorizeNetPaymentStrategy,
+    createGooglePayBigCommercePaymentsPaymentStrategy,
+    createGooglePayBraintreePaymentStrategy,
+    createGooglePayCheckoutComPaymentStrategy,
+    createGooglePayCybersourcePaymentStrategy,
+    createGooglePayOrbitalPaymentStrategy,
+    createGooglePayPPCPPaymentStrategy,
+    createGooglePayStripePaymentStrategy,
+    createGooglePayTdOnlineMartPaymentStrategy,
+    createGooglePayWorldpayAccessPaymentStrategy,
+} from '@bigcommerce/checkout-sdk/integrations/google-pay';
 import { createOffsitePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/offsite';
 import { createPaypalExpressPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/paypal-express';
 import { createSagePayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/sagepay';
@@ -817,6 +831,18 @@ const Payment = (
                         createCheckoutComIdealPaymentStrategy,
                         createCheckoutComSepaPaymentStrategy,
                         createClearpayPaymentStrategy,
+                        createGooglePayAdyenV2PaymentStrategy,
+                        createGooglePayAdyenV3PaymentStrategy,
+                        createGooglePayAuthorizeNetPaymentStrategy,
+                        createGooglePayBigCommercePaymentsPaymentStrategy,
+                        createGooglePayBraintreePaymentStrategy,
+                        createGooglePayCheckoutComPaymentStrategy,
+                        createGooglePayCybersourcePaymentStrategy,
+                        createGooglePayOrbitalPaymentStrategy,
+                        createGooglePayPPCPPaymentStrategy,
+                        createGooglePayStripePaymentStrategy,
+                        createGooglePayTdOnlineMartPaymentStrategy,
+                        createGooglePayWorldpayAccessPaymentStrategy,
                         createOffsitePaymentStrategy,
                         createPaypalExpressPaymentStrategy,
                         createSagePayPaymentStrategy,
