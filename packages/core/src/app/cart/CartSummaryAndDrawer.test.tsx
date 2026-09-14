@@ -70,7 +70,7 @@ describe('Edit Cart Component', () => {
             </CheckoutProvider>,
         );
 
-        screen.getByText('Edit Cart').click();
+        screen.getByText('Edit cart').click();
         expect(screen.getByRole('link', { name: 'Close' })).toBeInTheDocument();
         expect(screen.getAllByRole('alert')).toHaveLength(2);
         screen.getByText('Confirm').click();
@@ -89,8 +89,8 @@ describe('Edit Cart Component', () => {
             </CheckoutProvider>,
         );
 
-        screen.getByText('Show Details').click();
-        screen.getByText('Edit Cart').click();
+        screen.getByText('Show details').click();
+        screen.getByText('Edit cart').click();
         expect(screen.getAllByRole('link', { name: 'Close' })).toHaveLength(2);
         expect(screen.getAllByRole('alert')).toHaveLength(2);
         screen.getByText('Confirm').click();

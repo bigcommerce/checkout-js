@@ -163,7 +163,7 @@ describe('WalletButtonPaymentMethod', () => {
 
     it('does not render sign out link', () => {
         render(<WalletButtonPaymentMethodTest {...defaultProps} />);
-        expect(screen.queryByText('Sign Out')).not.toBeInTheDocument();
+        expect(screen.queryByText('Sign out')).not.toBeInTheDocument();
     });
 
     it('disables submit button', () => {
