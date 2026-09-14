@@ -243,7 +243,7 @@ describe('Customer Component', () => {
         await userEvent.click(screen.getByText('Create Account'));
 
         expect(await screen.findByText(customerEmail)).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Sign Out' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Sign out' })).toBeInTheDocument();
     });
 
     it('changes from guest to login view and logs in', async () => {
@@ -282,7 +282,7 @@ describe('Customer Component', () => {
         await checkout.waitForShippingStep();
 
         expect(await screen.findByText(email)).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Sign Out' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Sign out' })).toBeInTheDocument();
     });
 
     it('calls onContinueAsGuestError when empty cart error is thrown', async () => {

@@ -1,6 +1,7 @@
 import type { CheckoutSelectors } from '@bigcommerce/checkout-sdk';
 import React, { type ReactElement } from 'react';
 
+import { useThemeContext } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { AddressFormSkeleton, Legend } from '@bigcommerce/checkout/ui';
 
@@ -27,6 +28,7 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }: BillingProps):
         updateBillingAddress,
         updateCheckout,
     } = useBilling({ onReady, onUnhandledError });
+    const { enhancedThemeV1 } = useThemeContext();
 
     const handleSubmit = async ({
         orderComment,
@@ -68,7 +70,13 @@ const Billing = ({ navigateNextStep, onReady, onUnhandledError }: BillingProps):
             <div className="checkout-form">
                 <div className="form-legend-container">
                     <Legend testId="billing-address-heading">
-                        <TranslatedString id="billing.billing_address_heading" />
+                        <TranslatedString
+                            id={
+                                enhancedThemeV1
+                                    ? 'billing.billing_address_heading_v2'
+                                    : 'billing.billing_address_heading'
+                            }
+                        />
                     </Legend>
                 </div>
                 <BillingForm
