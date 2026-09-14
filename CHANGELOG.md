@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.896.1](https://github.com/bigcommerce/checkout-js/compare/v1.896.0...v1.896.1) (2026-09-14)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10410 Use amount and not displayAmount for comparison ([#3332](https://github.com/bigcommerce/checkout-js/issues/3332)) ([8b3ca30](https://github.com/bigcommerce/checkout-js/commit/8b3ca30b8c93f3c47a3c3da5b41d63c203735247))
+
 ## [1.896.0](https://github.com/bigcommerce/checkout-js/compare/v1.895.5...v1.896.0) (2026-09-11)
 
 
