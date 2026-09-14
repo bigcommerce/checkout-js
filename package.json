@@ -77,7 +77,7 @@
     "credit-card-type": "^8.0.0",
     "dompurify": "^3.4.13",
     "downshift": "^7.6.0",
-    "formik": "^2.4.6",
+    "formik": "^2.4.9",
     "intl-tel-input": "^28.1.0",
     "jest-each": "^29.7.0",
     "local-storage-fallback": "^4.1.1",
