@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.896.2](https://github.com/bigcommerce/checkout-js/compare/v1.896.1...v1.896.2) (2026-09-14)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-10412 Adjust steps padding for small mobile screens ([#3334](https://github.com/bigcommerce/checkout-js/issues/3334)) ([279e3b6](https://github.com/bigcommerce/checkout-js/commit/279e3b6c03fb94526939b2fd3e11906a58129bab))
+
 ### [1.896.1](https://github.com/bigcommerce/checkout-js/compare/v1.896.0...v1.896.1) (2026-09-14)
 
 
