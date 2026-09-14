@@ -418,6 +418,10 @@ const Checkout = ({
 
                     return;
                 }
+            } else if (capabilities.customer.reloadPageAfterSignIn) {
+                reloadLocation();
+
+                return;
             }
 
             navigateToStep(CheckoutStepType.Customer);
