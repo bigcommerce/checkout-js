@@ -487,6 +487,10 @@ describe('Checkout', () => {
                 expect(stepCompletedCount()).toBeGreaterThan(stepsCompleted);
             });
 
+            afterEach(() => {
+                window.history.replaceState({}, '', '/');
+            });
+
             const signOut = async () => {
                 jest.spyOn(checkoutService, 'signOutCustomer').mockResolvedValue(
                     checkoutService.getState(),
@@ -520,6 +524,28 @@ describe('Checkout', () => {
                 expect(checkoutService.signOutCustomer).toHaveBeenCalled();
                 expect(reloadLocation).not.toHaveBeenCalled();
                 expect(await screen.findByTestId('checkout-customer-guest')).toBeInTheDocument();
+            });
+
+            it('renders the empty cart message instead of reloading when the cart is gone after signing out', async () => {
+                window.history.replaceState({}, '', '/embedded-checkout');
+
+                checkoutService = checkout.use(CheckoutPreset.CheckoutWithLoggedInCustomer);
+
+                render(<CheckoutTest {...defaultProps} capabilities={reloadCapabilities} />);
+
+                await checkout.waitForShippingStep();
+
+                jest.spyOn(checkoutService, 'signOutCustomer').mockRejectedValue({
+                    type: 'checkout_not_available',
+                });
+
+                await act(async () => {
+                    await userEvent.click(await screen.findByTestId('sign-out-link'));
+                });
+
+                expect(reloadLocation).not.toHaveBeenCalled();
+                expect(screen.queryByTestId('checkout-customer-guest')).not.toBeInTheDocument();
+                expect(screen.queryByTestId('sign-out-link')).not.toBeInTheDocument();
             });
         });
 

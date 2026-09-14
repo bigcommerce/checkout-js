@@ -418,9 +418,7 @@ const Checkout = ({
 
                     return;
                 }
-            }
-
-            if (capabilities.customer.reloadPageAfterSignIn) {
+            } else if (capabilities.customer.reloadPageAfterSignIn) {
                 reloadLocation();
 
                 return;
