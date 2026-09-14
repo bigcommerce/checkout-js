@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.897.0](https://github.com/bigcommerce/checkout-js/compare/v1.896.3...v1.897.0) (2026-09-14)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10407 Improve reloadPageAfterSignIn ([#3335](https://github.com/bigcommerce/checkout-js/issues/3335)) ([78f8ab3](https://github.com/bigcommerce/checkout-js/commit/78f8ab3609572a78fb01eb575908a6cda27ad7d2))
+
 ### [1.896.3](https://github.com/bigcommerce/checkout-js/compare/v1.896.2...v1.896.3) (2026-09-14)
 
 ### [1.896.2](https://github.com/bigcommerce/checkout-js/compare/v1.896.1...v1.896.2) (2026-09-14)
