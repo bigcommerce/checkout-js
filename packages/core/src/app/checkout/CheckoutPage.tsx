@@ -420,6 +420,12 @@ const Checkout = ({
                 }
             }
 
+            if (capabilities.customer.reloadPageAfterSignIn) {
+                reloadLocation();
+
+                return;
+            }
+
             navigateToStep(CheckoutStepType.Customer);
         },
         [
