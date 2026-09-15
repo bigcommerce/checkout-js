@@ -15,6 +15,7 @@ import {
 
 import { OrderComments } from '../orderComments';
 
+import { ShippingExpectationMessage } from './ShippingExpectationMessage';
 import { ShippingOptions } from './shippingOption';
 
 export interface ShippingFormFooterProps {
@@ -58,11 +59,7 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
                                 }
                             />
                         </Legend>
-                        {defaultShippingExpectationMessage && (
-                            <p className="shipping-ExpectationMessage">
-                                {defaultShippingExpectationMessage}
-                            </p>
-                        )}
+                        <ShippingExpectationMessage message={defaultShippingExpectationMessage} />
 
                         {cartHasChanged && (
                             <Alert type={AlertType.Error}>
