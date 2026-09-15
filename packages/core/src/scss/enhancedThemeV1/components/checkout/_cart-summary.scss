@@ -210,3 +210,9 @@ body.has-activeCartSummarySheet {
 .enhancedThemeV1:has(.cart-summary-collapsed-bar) .layout {
     padding-bottom: #{5 * spacing("single")};
 }
+
+.cart-taxItem--subtotal {
+    @include enhancedThemeV1 {
+        margin-top: remCalc(10px);
+    }
+}
