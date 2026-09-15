@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.898.0](https://github.com/bigcommerce/checkout-js/compare/v1.897.0...v1.898.0) (2026-09-15)
+
+
+### Features
+
+* **inventory:** BACK-883 Shipping expectation prompt to display in multi address shipping ([d5573ca](https://github.com/bigcommerce/checkout-js/commit/d5573ca9ef6cac8b406a28a330e03e8aa85738ce))
+
 ## [1.897.0](https://github.com/bigcommerce/checkout-js/compare/v1.896.3...v1.897.0) (2026-09-14)
 
 
