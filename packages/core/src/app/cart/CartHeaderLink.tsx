@@ -5,6 +5,8 @@ import { hideEditCartLink } from '@bigcommerce/checkout/utility';
 
 import EditLink from './EditLink';
 
+const BUYER_PORTAL_INVOICE_LIST_URL = '/account.php?action=order_status/#/invoice';
+
 interface CartHeaderLinkProps {
     cartUrl: string;
     isBuyNowCart: boolean;
@@ -22,14 +24,15 @@ export const CartHeaderLink: FunctionComponent<CartHeaderLinkProps> = ({
 }) => {
     const {
         userJourney: { disableEditCart, invoiceConfig },
+        orderConfirmation: { invoiceRedirect },
     } = useCapabilities();
 
-    if (invoiceConfig?.invoiceListUrl) {
+    if (invoiceRedirect) {
         return (
             <EditLink
                 className={className}
                 isInvoiceRedirectEnabled={true}
-                url={invoiceConfig.invoiceListUrl}
+                url={invoiceConfig?.invoiceListUrl ?? BUYER_PORTAL_INVOICE_LIST_URL}
             />
         );
     }

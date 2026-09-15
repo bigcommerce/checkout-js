@@ -74,6 +74,8 @@ import { mapCheckoutComponentErrorMessage } from './mapErrorMessage';
 import mapToCheckoutProps from './mapToCheckoutProps';
 import { shouldShowShippingOptionExpiredError } from './shouldShowShippingOptionExpiredError';
 
+const BUYER_PORTAL_RECEIPT_URL_TEMPLATE = '/#/invoice?receiptId={receiptId}';
+
 export interface CheckoutProps {
     checkoutId: string;
     containerId: string;
@@ -268,10 +270,10 @@ const Checkout = ({
 
         const b2bContext = checkoutService.getState().data.getB2BContext();
 
-        const receiptUrlTemplate = invoiceConfig?.receiptUrlTemplate;
-
-        if (receiptUrlTemplate && b2bContext?.receiptId) {
+        if (invoiceRedirect && b2bContext?.receiptId) {
             const { links: { siteLink = '' } = {} } = data.getConfig() || {};
+            const receiptUrlTemplate =
+                invoiceConfig?.receiptUrlTemplate ?? BUYER_PORTAL_RECEIPT_URL_TEMPLATE;
 
             replaceLocation(
                 `${siteLink}${receiptUrlTemplate.replace('{receiptId}', b2bContext.receiptId)}`,

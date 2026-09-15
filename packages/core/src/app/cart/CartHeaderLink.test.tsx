@@ -38,10 +38,14 @@ describe('CartHeaderLink', () => {
         localeContext = createLocaleContext(getStoreConfig());
     });
 
-    const renderComponent = (userJourney: Partial<Capabilities['userJourney']>) => {
+    const renderComponent = (
+        userJourney: Partial<Capabilities['userJourney']>,
+        invoiceRedirect = true,
+    ) => {
         mockUseCapabilities.mockReturnValue({
             ...defaultCapabilities,
             userJourney: { ...defaultCapabilities.userJourney, ...userJourney },
+            orderConfirmation: { ...defaultCapabilities.orderConfirmation, invoiceRedirect },
         });
 
         return render(
@@ -70,14 +74,23 @@ describe('CartHeaderLink', () => {
         expect(screen.getByTestId('cart-edit-link')).toHaveAttribute('href', '/invoices');
     });
 
-    it('links to the cart when invoiceConfig is unavailable', () => {
+    it('falls back to the buyer portal invoice list url when invoiceConfig is unavailable', () => {
         renderComponent({ invoiceConfig: null });
+
+        expect(screen.getByTestId('cart-edit-link')).toHaveAttribute(
+            'href',
+            '/account.php?action=order_status/#/invoice',
+        );
+    });
+
+    it('links to the cart when the invoice redirect capability is disabled', () => {
+        renderComponent({ invoiceConfig: null }, false);
 
         expect(screen.getByTestId('cart-edit-link')).toHaveAttribute('href', '/cart.php');
     });
 
-    it('renders no link when invoiceConfig is unavailable and editing the cart is disabled', () => {
-        renderComponent({ invoiceConfig: null, disableEditCart: true });
+    it('renders no link when the invoice redirect capability is disabled and editing the cart is disabled', () => {
+        renderComponent({ invoiceConfig: null, disableEditCart: true }, false);
 
         expect(screen.queryByTestId('cart-edit-link')).not.toBeInTheDocument();
     });

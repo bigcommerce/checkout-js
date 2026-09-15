@@ -748,6 +748,7 @@ describe('Checkout', () => {
 
         const placeOrderWithInvoiceConfig = async (
             invoiceConfig: Capabilities['userJourney']['invoiceConfig'],
+            invoiceRedirect = true,
         ) => {
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
 
@@ -780,7 +781,7 @@ describe('Checkout', () => {
                         },
                         orderConfirmation: {
                             ...defaultCapabilities.orderConfirmation,
-                            invoiceRedirect: true,
+                            invoiceRedirect,
                             persistB2BMetadata: true,
                         },
                     }}
@@ -818,8 +819,18 @@ describe('Checkout', () => {
             });
         });
 
-        it('navigates to the order confirmation page when invoiceConfig is unavailable', async () => {
+        it('falls back to the buyer portal invoice page when invoiceConfig is unavailable', async () => {
             await placeOrderWithInvoiceConfig(null);
+
+            await waitFor(() => {
+                expect(replaceLocation).toHaveBeenCalledWith(
+                    'https://store.url/#/invoice?receiptId=123',
+                );
+            });
+        });
+
+        it('navigates to the order confirmation page when the invoice redirect capability is disabled', async () => {
+            await placeOrderWithInvoiceConfig(null, false);
 
             await waitFor(() => {
                 expect(replaceLocation).toHaveBeenCalled();
