@@ -6,14 +6,13 @@ import {
     type PaymentRequestOptions,
 } from '@bigcommerce/checkout-sdk';
 import { noop, some } from 'lodash';
-import React, { type ReactNode, useCallback, useEffect, useState } from 'react';
+import React, { type ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 
 import { useCheckout } from '@bigcommerce/checkout/contexts';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import {
     isGooglePayHandleUnsuccessful3dsCheckExperimentOn,
     type PaymentFormService,
-    PaymentMethodType,
 } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
@@ -26,8 +25,10 @@ const WALLET_TOKEN_INVALIDATION_IGNORED_ERROR_TYPES = new Set([
     'payment_cancelled',
     'payment_invalid_form',
     'spam_protection_not_completed',
+    'spam_protection_failed',
     'invalid_hosted_form_value',
     'cart_consistency',
+    'cart_changed',
     'cart_stock_positions_changed',
     'tax_provider_unavailable',
     'missing_shipping_method',
@@ -36,16 +37,31 @@ const WALLET_TOKEN_INVALIDATION_IGNORED_ERROR_TYPES = new Set([
     'timeout',
 ]);
 
+const getErrorType = (error: unknown): string | undefined => {
+    if (
+        typeof error === 'object' &&
+        error !== null &&
+        'type' in error &&
+        typeof error.type === 'string'
+    ) {
+        return error.type;
+    }
+
+    return undefined;
+};
+
 const isWalletTokenInvalidationError = (error: unknown): boolean => {
     if (!error) {
         return false;
     }
 
+    const errorType = getErrorType(error);
+    const errorBodyType =
+        typeof error === 'object' && 'body' in error ? getErrorType(error.body) : undefined;
+
     if (
-        typeof error === 'object' &&
-        'type' in error &&
-        typeof error.type === 'string' &&
-        WALLET_TOKEN_INVALIDATION_IGNORED_ERROR_TYPES.has(error.type)
+        (errorType && WALLET_TOKEN_INVALIDATION_IGNORED_ERROR_TYPES.has(errorType)) ||
+        (errorBodyType && WALLET_TOKEN_INVALIDATION_IGNORED_ERROR_TYPES.has(errorBodyType))
     ) {
         return false;
     }
@@ -121,7 +137,7 @@ const WalletButtonPaymentMethodComponent: React.FC<WalletButtonPaymentMethodProp
     }));
 
     const isHandleUnsuccessful3dsCheckExperimentOn =
-        method.method === PaymentMethodType.GooglePay &&
+        method.id.startsWith('googlepay') &&
         isGooglePayHandleUnsuccessful3dsCheckExperimentOn(checkoutSettings);
 
     const billingAddress = getBillingAddress();
@@ -138,20 +154,28 @@ const WalletButtonPaymentMethodComponent: React.FC<WalletButtonPaymentMethodProp
         walletPaymentData && [billingAddress.firstName, billingAddress.lastName].join(' ');
 
     const currentNonce = getNonce(method.initializationData);
-    const [declinedNonce, setDeclinedNonce] = useState<string>();
+    const previousNonceRef = useRef(currentNonce);
+    const previousNonce = previousNonceRef.current;
+
+    useEffect(() => {
+        previousNonceRef.current = currentNonce;
+    });
+
+    const [declined, setDeclined] = useState<{ nonce: string | undefined } | null>(null);
 
     useEffect(() => {
         if (
             isHandleUnsuccessful3dsCheckExperimentOn &&
+            isPaymentSelected &&
             (isWalletTokenInvalidationError(submitOrderError) ||
                 isWalletTokenInvalidationError(finalizeOrderError))
         ) {
-            setDeclinedNonce(currentNonce);
+            setDeclined({ nonce: previousNonce });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [submitOrderError, finalizeOrderError]);
 
-    const hasDeclinedPaymentData = declinedNonce !== undefined && declinedNonce === currentNonce;
+    const hasDeclinedPaymentData = declined !== null && declined.nonce === currentNonce;
 
     const toggleSubmit = () => {
         const { disableSubmit } = paymentForm;

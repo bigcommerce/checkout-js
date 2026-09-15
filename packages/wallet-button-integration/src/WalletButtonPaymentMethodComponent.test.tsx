@@ -390,11 +390,17 @@ describe('WalletButtonPaymentMethod', () => {
             beforeEach(() => {
                 defaultProps = merge({}, defaultProps, {
                     method: {
+                        id: 'googlepaycheckoutcom',
                         method: PaymentMethodType.GooglePay,
                         initializationData: {
                             nonce: 'nonce-1',
                         },
                     },
+                });
+
+                jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
+                    ...getCheckout(),
+                    payments: [{ ...getCheckoutPayment(), providerId: defaultProps.method.id }],
                 });
 
                 jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
@@ -434,6 +440,84 @@ describe('WalletButtonPaymentMethod', () => {
                 } = defaultProps;
 
                 expect(disableSubmit).toHaveBeenLastCalledWith(defaultProps.method, true);
+            });
+
+            it('disables submit for a genuine finalize decline shaped as a generic RequestError', () => {
+                jest.spyOn(checkoutState.errors, 'getFinalizeOrderError').mockReturnValue(
+                    Object.assign(new Error('Payment was declined'), {
+                        type: 'request',
+                        body: { type: 'processing_error' },
+                    }),
+                );
+
+                render(<WalletButtonPaymentMethodTest {...defaultProps} />);
+
+                const {
+                    paymentForm: { disableSubmit },
+                } = defaultProps;
+
+                expect(disableSubmit).toHaveBeenLastCalledWith(defaultProps.method, true);
+            });
+
+            it('does not disable submit when a finalize error\'s body indicates a non-decline reason, even though its own type is the generic "request"', () => {
+                jest.spyOn(checkoutState.errors, 'getFinalizeOrderError').mockReturnValue(
+                    Object.assign(new Error('Cart changed'), {
+                        type: 'request',
+                        body: { type: 'cart_changed' },
+                    }),
+                );
+
+                render(<WalletButtonPaymentMethodTest {...defaultProps} />);
+
+                const {
+                    paymentForm: { disableSubmit },
+                } = defaultProps;
+
+                expect(disableSubmit).toHaveBeenLastCalledWith(defaultProps.method, false);
+            });
+
+            it("does not mark a fresh nonce as declined just because it changed in the same render as the error (e.g. after the SDK's stale-token reload)", () => {
+                const { rerender } = render(<WalletButtonPaymentMethodTest {...defaultProps} />);
+
+                const freshMethod = merge({}, defaultProps.method, {
+                    initializationData: { nonce: 'nonce-2' },
+                });
+
+                jest.spyOn(checkoutState.errors, 'getSubmitOrderError').mockReturnValue(
+                    new Error('Payment was declined'),
+                );
+
+                rerender(<WalletButtonPaymentMethodTest {...defaultProps} method={freshMethod} />);
+
+                const {
+                    paymentForm: { disableSubmit },
+                } = defaultProps;
+
+                expect(disableSubmit).toHaveBeenLastCalledWith(freshMethod, false);
+            });
+
+            it('fails closed (not open) when the declined nonce itself was undefined', () => {
+                const methodWithoutNonce = {
+                    ...defaultProps.method,
+                    initializationData: {
+                        // eslint-disable-next-line @typescript-eslint/naming-convention
+                        card_information: { number: '1111', type: 'Visa' },
+                    },
+                };
+
+                jest.spyOn(checkoutState.errors, 'getSubmitOrderError').mockReturnValue(
+                    new Error('Payment was declined'),
+                );
+
+                render(
+                    <WalletButtonPaymentMethodTest {...defaultProps} method={methodWithoutNonce} />,
+                );
+
+                const {
+                    paymentForm: { disableSubmit },
+                } = defaultProps;
+
+                expect(disableSubmit).toHaveBeenLastCalledWith(methodWithoutNonce, true);
             });
 
             it('keeps submit button disabled across re-renders while the token has not changed', () => {
@@ -606,7 +690,13 @@ describe('WalletButtonPaymentMethod', () => {
                 );
 
                 const visaCheckoutMethod = merge({}, defaultProps.method, {
+                    id: 'braintreevisacheckout',
                     method: PaymentMethodType.VisaCheckout,
+                });
+
+                jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
+                    ...getCheckout(),
+                    payments: [{ ...getCheckoutPayment(), providerId: visaCheckoutMethod.id }],
                 });
 
                 render(
