@@ -1,3 +1,9 @@
+@import '../Base';
+
 .tooltip-trigger {
     cursor: help;
+}
+
+.tooltip-popper {
+    z-index: zIndex("highest");
 }
