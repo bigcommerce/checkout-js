@@ -3,7 +3,7 @@ import React, { type FunctionComponent, type ReactNode, useId } from 'react';
 
 import { IconError, IconInfo, IconSuccess } from '../icon';
 
-export interface AlertProps {
+interface AlertProps {
     additionalClassName?: string;
     icon?: ReactNode;
     testId?: string;

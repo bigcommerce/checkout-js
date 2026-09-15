@@ -7,7 +7,7 @@ import React, { type ReactElement, useEffect } from 'react';
 
 const WALLET_BUTTON_HEIGHT = 40;
 
-export interface CheckoutButtonProps {
+interface CheckoutButtonProps {
     containerId: string;
     methodId: string;
     isShowingWalletButtonsOnTop?: boolean;

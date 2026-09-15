@@ -5,7 +5,7 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import getItemsCount from './getItemsCount';
 
-export interface OrderModalSummarySubheaderProps {
+interface OrderModalSummarySubheaderProps {
     items: LineItemMap;
     amountWithCurrency: ReactNode;
     shopperCurrencyCode: string;

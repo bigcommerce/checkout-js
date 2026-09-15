@@ -971,7 +971,7 @@ const Payment = (
     );
 };
 
-export function mapToPaymentProps(
+function mapToPaymentProps(
     { checkoutService, checkoutState }: CheckoutContextProps,
     { capabilities }: PaymentProps,
 ): WithCheckoutPaymentProps | null {

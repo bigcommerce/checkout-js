@@ -21,7 +21,7 @@ import './ShippingOptionsForm.scss';
 
 export type ShippingOptionsFormProps = ShippingOptionsProps & WithCheckoutShippingOptionsProps;
 
-export interface ShippingOptionsFormValues {
+interface ShippingOptionsFormValues {
     shippingOptionIds: {
         [shippingOptionIds: string]: string;
     };

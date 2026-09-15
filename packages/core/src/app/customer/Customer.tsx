@@ -46,7 +46,7 @@ export interface CustomerProps {
     onWalletButtonClick?(methodName: string): void;
 }
 
-export interface CustomerState {
+interface CustomerState {
     isEmailLoginFormOpen: boolean;
     isReady: boolean;
     hasRequestedLoginEmail: boolean;

@@ -3,7 +3,7 @@ import React, { type FunctionComponent, useCallback } from 'react';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { FormField, TextInputIframeContainer } from '@bigcommerce/checkout/ui';
 
-export interface HostedCreditCardExpiryFieldProps {
+interface HostedCreditCardExpiryFieldProps {
     appearFocused: boolean;
     id: string;
     name: string;

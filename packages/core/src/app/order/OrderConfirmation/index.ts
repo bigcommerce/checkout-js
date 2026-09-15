@@ -1,6 +1,1 @@
-export {
-    OrderConfirmation,
-    OrderPermalinkStatus,
-    type OrderConfirmationProps,
-} from './OrderConfirmation';
-export { ExpiredPermalinkView } from './ExpiredPermalinkView';
+export { OrderConfirmation, OrderPermalinkStatus } from './OrderConfirmation';

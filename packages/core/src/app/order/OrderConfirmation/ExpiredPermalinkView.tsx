@@ -76,5 +76,3 @@ export const ExpiredPermalinkView: FunctionComponent<ExpiredPermalinkViewProps> 
         </div>
     );
 };
-
-export default ExpiredPermalinkView;

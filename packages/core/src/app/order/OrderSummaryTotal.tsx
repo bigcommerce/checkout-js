@@ -8,7 +8,7 @@ import {
 
 import OrderSummaryPrice from './OrderSummaryPrice';
 
-export interface OrderSummaryTotalProps {
+interface OrderSummaryTotalProps {
     orderAmount: number;
     shopperCurrencyCode: string;
     storeCurrencyCode: string;

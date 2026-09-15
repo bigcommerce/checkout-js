@@ -13,7 +13,7 @@ import shallowEqual from 'shallowequal';
 
 import { FormFieldContainer } from '../FormFieldContainer';
 
-export interface BasicFormFieldProps extends FieldConfig {
+interface BasicFormFieldProps extends FieldConfig {
     additionalClassName?: string;
     className?: string;
     testId?: string;

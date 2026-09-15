@@ -2,7 +2,7 @@ import React, { type FunctionComponent, type ReactNode } from 'react';
 
 import './Popover.scss';
 
-export interface PopoverProps {
+interface PopoverProps {
     children?: ReactNode;
 }
 
