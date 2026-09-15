@@ -1,4 +1,5 @@
 import {
+    type Capabilities,
     type CheckoutService,
     createCheckoutService,
     createEmbeddedCheckoutMessenger,
@@ -806,7 +807,10 @@ describe('Checkout', () => {
             });
         });
 
-        it('redirects to B2B buyer portal after payment when invoiceRedirect capability is enabled', async () => {
+        const placeOrderWithInvoiceConfig = async (
+            invoiceConfig: Capabilities['userJourney']['invoiceConfig'],
+            invoiceRedirect = true,
+        ) => {
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
 
             jest.spyOn(checkoutService, 'submitOrder').mockResolvedValue({
@@ -827,26 +831,73 @@ describe('Checkout', () => {
                 return state;
             });
 
-            const invoiceRedirectCapabilities = {
-                ...defaultCapabilities,
-                orderConfirmation: {
-                    ...defaultCapabilities.orderConfirmation,
-                    invoiceRedirect: true,
-                    persistB2BMetadata: true,
-                },
-            };
-
-            render(<CheckoutTest {...defaultProps} capabilities={invoiceRedirectCapabilities} />);
+            render(
+                <CheckoutTest
+                    {...defaultProps}
+                    capabilities={{
+                        ...defaultCapabilities,
+                        userJourney: {
+                            ...defaultCapabilities.userJourney,
+                            invoiceConfig,
+                        },
+                        orderConfirmation: {
+                            ...defaultCapabilities.orderConfirmation,
+                            invoiceRedirect,
+                            persistB2BMetadata: true,
+                        },
+                    }}
+                />,
+            );
 
             await checkout.waitForPaymentStep();
 
             await userEvent.click(screen.getByText(/place order/i));
+        };
+
+        it('redirects to the buyer portal invoice page after payment', async () => {
+            await placeOrderWithInvoiceConfig({
+                invoiceListUrl: '/account.php?action=order_status/#/invoice',
+                receiptUrlTemplate: '/#/invoice?receiptId={receiptId}',
+            });
 
             await waitFor(() => {
                 expect(replaceLocation).toHaveBeenCalledWith(
                     'https://store.url/#/invoice?receiptId=123',
                 );
             });
+        });
+
+        it('redirects to the legacy theme invoice receipt page after payment', async () => {
+            await placeOrderWithInvoiceConfig({
+                invoiceListUrl: '/invoices',
+                receiptUrlTemplate: '/invoice-payment-receipt/?id={receiptId}',
+            });
+
+            await waitFor(() => {
+                expect(replaceLocation).toHaveBeenCalledWith(
+                    'https://store.url/invoice-payment-receipt/?id=123',
+                );
+            });
+        });
+
+        it('falls back to the buyer portal invoice page when invoiceConfig is unavailable', async () => {
+            await placeOrderWithInvoiceConfig(null);
+
+            await waitFor(() => {
+                expect(replaceLocation).toHaveBeenCalledWith(
+                    'https://store.url/#/invoice?receiptId=123',
+                );
+            });
+        });
+
+        it('navigates to the order confirmation page when the invoice redirect capability is disabled', async () => {
+            await placeOrderWithInvoiceConfig(null, false);
+
+            await waitFor(() => {
+                expect(replaceLocation).toHaveBeenCalled();
+            });
+
+            expect(replaceLocation).not.toHaveBeenCalledWith(expect.stringContaining('/invoice'));
         });
 
         it('persists cannotCreatePersonalAccount to session storage when navigating to order confirmation', async () => {

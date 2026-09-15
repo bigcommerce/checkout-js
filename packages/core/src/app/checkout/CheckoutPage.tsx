@@ -74,6 +74,8 @@ import { mapCheckoutComponentErrorMessage } from './mapErrorMessage';
 import mapToCheckoutProps from './mapToCheckoutProps';
 import { shouldShowShippingOptionExpiredError } from './shouldShowShippingOptionExpiredError';
 
+const BUYER_PORTAL_RECEIPT_URL_TEMPLATE = '/#/invoice?receiptId={receiptId}';
+
 export interface CheckoutProps {
     checkoutId: string;
     containerId: string;
@@ -161,7 +163,7 @@ const Checkout = ({
 }: CheckoutPageProps): ReactElement => {
     const capabilities = useCapabilities();
     const {
-        userJourney: { requiresB2BToken, quoteConfig },
+        userJourney: { requiresB2BToken, quoteConfig, invoiceConfig },
         orderConfirmation: { cannotCreatePersonalAccount, invoiceRedirect },
     } = capabilities;
     const { fetchB2BToken } = useB2BToken();
@@ -270,8 +272,12 @@ const Checkout = ({
 
         if (invoiceRedirect && b2bContext?.receiptId) {
             const { links: { siteLink = '' } = {} } = data.getConfig() || {};
+            const receiptUrlTemplate =
+                invoiceConfig?.receiptUrlTemplate ?? BUYER_PORTAL_RECEIPT_URL_TEMPLATE;
 
-            replaceLocation(`${siteLink}/#/invoice?receiptId=${b2bContext.receiptId}`);
+            replaceLocation(
+                `${siteLink}${receiptUrlTemplate.replace('{receiptId}', b2bContext.receiptId)}`,
+            );
 
             return;
         }

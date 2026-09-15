@@ -31,7 +31,7 @@ const EditLink: FunctionComponent<EditLinkProps> = ({
             <a
                 className={classNames(className || 'cart-header-link', 'body-cta')}
                 data-test="cart-edit-link"
-                href="/account.php?action=order_status/#/invoice"
+                href={url}
                 id="cart-edit-link"
                 target="_top"
             >
