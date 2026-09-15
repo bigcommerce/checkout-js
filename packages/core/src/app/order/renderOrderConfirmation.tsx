@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 import { configurePublicPath } from '../common/bundler';
 
@@ -29,12 +29,19 @@ export default function renderOrderConfirmation({
         });
     }
 
-    ReactDOM.render(
+    const container = document.getElementById(containerId);
+
+    if (!container) {
+        throw new Error(`Unable to find order confirmation container: #${containerId}`);
+    }
+
+    const root = createRoot(container);
+
+    root.render(
         <OrderConfirmationApp
             containerId={containerId}
             publicPath={configuredPublicPath}
             {...props}
         />,
-        document.getElementById(containerId),
     );
 }
