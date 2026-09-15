@@ -7,11 +7,11 @@ import { createBlueSnapDirectCreditCardPaymentStrategy } from '@bigcommerce/chec
 import { createCBAMPGSPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/cba-mpgs';
 import { createCheckoutComCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/checkoutcom-custom';
 import { createCreditCardPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/credit-card';
-import { createSagePayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/sagepay';
 import {
     createCyberSourcePaymentStrategy,
     createCyberSourceV2PaymentStrategy,
 } from '@bigcommerce/checkout-sdk/integrations/cybersource';
+import { createSagePayPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/sagepay';
 import { createTDOnlineMartPaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/td-bank';
 import { compact, forIn } from 'lodash';
 import React, { type FunctionComponent, type ReactNode, useCallback, useState } from 'react';
@@ -60,20 +60,6 @@ const HostedCreditCardComponent: FunctionComponent<HostedCreditCardComponentProp
     initializePayment: initializePaymentProp,
 }) => {
     const [focusedFieldType, setFocusedFieldType] = useState<string>();
-
-    const isCBAMPGSResolverEnabled =
-        checkoutState.data.getConfig()?.checkoutSettings.features?.[
-            'PI-4748.cba_resolver_configuration'
-        ] ?? false;
-    const isSagePayResolverEnabled =
-        checkoutState.data.getConfig()?.checkoutSettings.features?.[
-            'PI-4754.sage_pay_resolver_configuration'
-        ] ?? false;
-
-    const isCyberSourceResolverEnabled =
-        checkoutState.data.getConfig()?.checkoutSettings.features?.[
-            'PI-4749.cyber_source_resolver_configuration'
-        ] ?? false;
 
     const { setFieldTouched, setFieldValue, setSubmitted, submitForm } = paymentForm;
     const isInstrumentCardCodeRequiredProp = isInstrumentCardCodeRequiredSelector(checkoutState);
@@ -289,11 +275,10 @@ const HostedCreditCardComponent: FunctionComponent<HostedCreditCardComponentProp
                     integrations: [
                         createCreditCardPaymentStrategy,
                         createBlueSnapDirectCreditCardPaymentStrategy,
-                        ...(isCBAMPGSResolverEnabled ? [createCBAMPGSPaymentStrategy] : []),
-                        ...(isSagePayResolverEnabled ? [createSagePayPaymentStrategy] : []),
-                        ...(isCyberSourceResolverEnabled
-                            ? [createCyberSourcePaymentStrategy, createCyberSourceV2PaymentStrategy]
-                            : []),
+                        createCBAMPGSPaymentStrategy,
+                        createSagePayPaymentStrategy,
+                        createCyberSourcePaymentStrategy,
+                        createCyberSourceV2PaymentStrategy,
                         createTDOnlineMartPaymentStrategy,
                         createCheckoutComCreditCardPaymentStrategy,
                     ],
@@ -315,15 +300,7 @@ const HostedCreditCardComponent: FunctionComponent<HostedCreditCardComponentProp
                     new Error(language.translate('payment.payment_method_unavailable_error')),
                 );
             },
-            [
-                getHostedFormOptions,
-                initializePayment,
-                isHostedFormEnabled,
-                isCBAMPGSResolverEnabled,
-                isSagePayResolverEnabled,
-                language,
-                isCyberSourceResolverEnabled,
-            ],
+            [getHostedFormOptions, initializePayment, isHostedFormEnabled, language],
         );
 
     const hostedStoredCardValidationSchema = getHostedInstrumentValidationSchema({ language });
