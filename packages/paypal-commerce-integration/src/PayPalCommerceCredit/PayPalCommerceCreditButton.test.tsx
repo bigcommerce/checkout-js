@@ -43,6 +43,7 @@ describe('PayPalCommerceCreditButton', () => {
             integrations: [createPayPalCommerceCreditCustomerStrategy],
             paypalcommercecredit: {
                 container: 'paypalcommercecredit-button-container',
+                filterAvailableShippingOptions: expect.any(Function),
                 onClick: expect.any(Function),
                 onComplete: expect.any(Function),
                 onError: expect.any(Function),

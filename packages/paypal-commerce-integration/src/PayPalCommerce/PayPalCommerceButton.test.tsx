@@ -43,6 +43,7 @@ describe('PayPalCommerceButton', () => {
             integrations: [createPayPalCommerceCustomerStrategy],
             paypalcommerce: {
                 container: 'paypalcommerce-button-container',
+                filterAvailableShippingOptions: expect.any(Function),
                 onClick: expect.any(Function),
                 onComplete: expect.any(Function),
                 onError: expect.any(Function),

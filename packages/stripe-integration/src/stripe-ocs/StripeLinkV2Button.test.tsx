@@ -46,6 +46,7 @@ describe('StripeLinkV2Button', () => {
                 container: 'stripe-link',
                 methodId: 'optimized_checkout',
                 gatewayId: 'stripeocs',
+                filterAvailableShippingOptions: expect.any(Function),
                 onClick: expect.any(Function),
                 onComplete: expect.any(Function),
                 onUnhandledError: expect.any(Function),
