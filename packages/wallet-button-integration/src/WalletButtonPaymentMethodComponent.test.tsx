@@ -16,7 +16,10 @@ import {
     type PaymentFormService,
 } from '@bigcommerce/checkout/contexts';
 import { createLocaleContext } from '@bigcommerce/checkout/locale';
-import { getPaymentMethodName } from '@bigcommerce/checkout/payment-integration-api';
+import {
+    getPaymentMethodName,
+    PaymentMethodType,
+} from '@bigcommerce/checkout/payment-integration-api';
 import {
     getAddress,
     getCheckout,
@@ -64,6 +67,8 @@ describe('WalletButtonPaymentMethod', () => {
         jest.spyOn(checkoutState.data, 'getBillingAddress').mockReturnValue(billingAddress);
 
         jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(true);
+
+        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
 
         WalletButtonPaymentMethodTest = (props) => (
             <CheckoutProvider checkoutService={checkoutService}>
@@ -379,6 +384,241 @@ describe('WalletButtonPaymentMethod', () => {
             await new Promise((resolve) => process.nextTick(resolve));
 
             expect(handleSignOutError).toHaveBeenCalledWith(expect.any(Error));
+        });
+
+        describe('when a payment attempt using the current token was declined', () => {
+            beforeEach(() => {
+                defaultProps = merge({}, defaultProps, {
+                    method: {
+                        method: PaymentMethodType.GooglePay,
+                        initializationData: {
+                            nonce: 'nonce-1',
+                        },
+                    },
+                });
+
+                jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
+                    ...getStoreConfig(),
+                    checkoutSettings: {
+                        ...getStoreConfig().checkoutSettings,
+                        features: {
+                            'PI-5643.google_pay_handle_unsuccessful_3ds_check': true,
+                        },
+                    },
+                });
+            });
+
+            it('disables submit button when a submit order error is present', () => {
+                jest.spyOn(checkoutState.errors, 'getSubmitOrderError').mockReturnValue(
+                    new Error('Payment was declined'),
+                );
+
+                render(<WalletButtonPaymentMethodTest {...defaultProps} />);
+
+                const {
+                    paymentForm: { disableSubmit },
+                } = defaultProps;
+
+                expect(disableSubmit).toHaveBeenLastCalledWith(defaultProps.method, true);
+            });
+
+            it('disables submit button when a finalize order error is present', () => {
+                jest.spyOn(checkoutState.errors, 'getFinalizeOrderError').mockReturnValue(
+                    new Error('Payment was declined'),
+                );
+
+                render(<WalletButtonPaymentMethodTest {...defaultProps} />);
+
+                const {
+                    paymentForm: { disableSubmit },
+                } = defaultProps;
+
+                expect(disableSubmit).toHaveBeenLastCalledWith(defaultProps.method, true);
+            });
+
+            it('keeps submit button disabled across re-renders while the token has not changed', () => {
+                jest.spyOn(checkoutState.errors, 'getSubmitOrderError').mockReturnValue(
+                    new Error('Payment was declined'),
+                );
+
+                const { rerender } = render(<WalletButtonPaymentMethodTest {...defaultProps} />);
+
+                rerender(<WalletButtonPaymentMethodTest {...defaultProps} />);
+
+                const {
+                    paymentForm: { disableSubmit },
+                } = defaultProps;
+
+                expect(disableSubmit).toHaveBeenLastCalledWith(defaultProps.method, true);
+            });
+
+            it('re-enables submit button once a fresh token is available', () => {
+                jest.spyOn(checkoutState.errors, 'getSubmitOrderError').mockReturnValue(
+                    new Error('Payment was declined'),
+                );
+
+                const { rerender } = render(<WalletButtonPaymentMethodTest {...defaultProps} />);
+
+                const {
+                    paymentForm: { disableSubmit },
+                } = defaultProps;
+
+                expect(disableSubmit).toHaveBeenLastCalledWith(defaultProps.method, true);
+
+                const freshMethod = merge({}, defaultProps.method, {
+                    initializationData: { nonce: 'nonce-2' },
+                });
+
+                rerender(<WalletButtonPaymentMethodTest {...defaultProps} method={freshMethod} />);
+
+                expect(disableSubmit).toHaveBeenLastCalledWith(freshMethod, false);
+            });
+
+            it('relabels the edit action as "try again" instead of "select a different card"', () => {
+                jest.spyOn(checkoutState.errors, 'getSubmitOrderError').mockReturnValue(
+                    new Error('Payment was declined'),
+                );
+
+                render(<WalletButtonPaymentMethodTest {...defaultProps} shouldShowEditButton />);
+
+                expect(
+                    screen.getByText(
+                        localeContext.language.translate('remote.retry_same_card_action'),
+                    ),
+                ).toBeInTheDocument();
+                expect(
+                    screen.queryByText(
+                        localeContext.language.translate('remote.select_different_card_action'),
+                    ),
+                ).not.toBeInTheDocument();
+            });
+
+            it('does not disable submit button when finalize order error is order_finalization_not_required', () => {
+                jest.spyOn(checkoutState.errors, 'getFinalizeOrderError').mockReturnValue(
+                    Object.assign(
+                        new Error('The current order does not need to be finalized at this stage.'),
+                        {
+                            type: 'order_finalization_not_required',
+                        },
+                    ),
+                );
+
+                render(<WalletButtonPaymentMethodTest {...defaultProps} />);
+
+                const {
+                    paymentForm: { disableSubmit },
+                } = defaultProps;
+
+                expect(disableSubmit).toHaveBeenLastCalledWith(defaultProps.method, false);
+            });
+
+            it('reverts the edit action back to its default label once a fresh token is available', () => {
+                jest.spyOn(checkoutState.errors, 'getSubmitOrderError').mockReturnValue(
+                    new Error('Payment was declined'),
+                );
+
+                const { rerender } = render(
+                    <WalletButtonPaymentMethodTest {...defaultProps} shouldShowEditButton />,
+                );
+
+                expect(
+                    screen.getByText(
+                        localeContext.language.translate('remote.retry_same_card_action'),
+                    ),
+                ).toBeInTheDocument();
+
+                const freshMethod = merge({}, defaultProps.method, {
+                    initializationData: { nonce: 'nonce-2' },
+                });
+
+                rerender(
+                    <WalletButtonPaymentMethodTest
+                        {...defaultProps}
+                        method={freshMethod}
+                        shouldShowEditButton
+                    />,
+                );
+
+                expect(
+                    screen.getByText(
+                        localeContext.language.translate('remote.select_different_card_action'),
+                    ),
+                ).toBeInTheDocument();
+                expect(
+                    screen.queryByText(
+                        localeContext.language.translate('remote.retry_same_card_action'),
+                    ),
+                ).not.toBeInTheDocument();
+            });
+
+            describe('when the PI-5643.google_pay_handle_unsuccessful_3ds_check experiment is off', () => {
+                beforeEach(() => {
+                    jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
+                        ...getStoreConfig(),
+                        checkoutSettings: {
+                            ...getStoreConfig().checkoutSettings,
+                            features: {
+                                'PI-5643.google_pay_handle_unsuccessful_3ds_check': false,
+                            },
+                        },
+                    });
+                });
+
+                it('does not disable submit button when a submit order error is present', () => {
+                    jest.spyOn(checkoutState.errors, 'getSubmitOrderError').mockReturnValue(
+                        new Error('Payment was declined'),
+                    );
+
+                    render(<WalletButtonPaymentMethodTest {...defaultProps} />);
+
+                    const {
+                        paymentForm: { disableSubmit },
+                    } = defaultProps;
+
+                    expect(disableSubmit).toHaveBeenLastCalledWith(defaultProps.method, false);
+                });
+
+                it('keeps the default edit action label instead of "try again"', () => {
+                    jest.spyOn(checkoutState.errors, 'getSubmitOrderError').mockReturnValue(
+                        new Error('Payment was declined'),
+                    );
+
+                    render(
+                        <WalletButtonPaymentMethodTest {...defaultProps} shouldShowEditButton />,
+                    );
+
+                    expect(
+                        screen.getByText(
+                            localeContext.language.translate('remote.select_different_card_action'),
+                        ),
+                    ).toBeInTheDocument();
+                    expect(
+                        screen.queryByText(
+                            localeContext.language.translate('remote.retry_same_card_action'),
+                        ),
+                    ).not.toBeInTheDocument();
+                });
+            });
+
+            it('does not disable submit button for a non-Google-Pay wallet method even when the experiment is on', () => {
+                jest.spyOn(checkoutState.errors, 'getSubmitOrderError').mockReturnValue(
+                    new Error('Payment was declined'),
+                );
+
+                const visaCheckoutMethod = merge({}, defaultProps.method, {
+                    method: PaymentMethodType.VisaCheckout,
+                });
+
+                render(
+                    <WalletButtonPaymentMethodTest {...defaultProps} method={visaCheckoutMethod} />,
+                );
+
+                const {
+                    paymentForm: { disableSubmit },
+                } = defaultProps;
+
+                expect(disableSubmit).toHaveBeenLastCalledWith(visaCheckoutMethod, false);
+            });
         });
     });
 });
