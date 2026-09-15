@@ -36,6 +36,8 @@ describe('CheckoutButton', () => {
             foobar: {
                 container: 'button-container',
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                filterAvailableShippingOptions: expect.any(Function),
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 onClick: expect.any(Function),
                 onUnhandledError: defaultProps.onUnhandledError,
             },
@@ -69,6 +71,8 @@ describe('CheckoutButton', () => {
             foobar: {
                 container: 'button-container',
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                filterAvailableShippingOptions: expect.any(Function),
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 onClick: expect.any(Function),
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 onComplete: expect.any(Function),
@@ -83,6 +87,70 @@ describe('CheckoutButton', () => {
                 },
             },
         });
+    });
+
+    it.each(['applepay', 'googlepaystripeupe', 'stripeocs'])(
+        'initializeCustomer is called with a shipping options filter for %s',
+        (methodId) => {
+            jest.spyOn(checkoutService, 'initializeCustomer').mockResolvedValue(
+                checkoutService.getState(),
+            );
+
+            render(<CheckoutButton {...defaultProps} methodId={methodId} />);
+
+            expect(checkoutService.initializeCustomer).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                    [methodId]: expect.objectContaining({
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                        filterAvailableShippingOptions: expect.any(Function),
+                    }),
+                }),
+            );
+        },
+    );
+
+    it('initializeCustomer is called with a shipping options filter for wallets that ignore it', () => {
+        jest.spyOn(checkoutService, 'initializeCustomer').mockResolvedValue(
+            checkoutService.getState(),
+        );
+
+        render(<CheckoutButton {...defaultProps} methodId="amazonpay" />);
+
+        expect(checkoutService.initializeCustomer).toHaveBeenCalledWith({
+            methodId: 'amazonpay',
+            amazonpay: {
+                container: 'button-container',
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                filterAvailableShippingOptions: expect.any(Function),
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                onClick: expect.any(Function),
+                onUnhandledError: defaultProps.onUnhandledError,
+            },
+        });
+    });
+
+    it('an explicitly provided shipping options filter takes precedence over the global one', () => {
+        const filterAvailableShippingOptions = jest.fn();
+
+        jest.spyOn(checkoutService, 'initializeCustomer').mockResolvedValue(
+            checkoutService.getState(),
+        );
+
+        render(
+            <CheckoutButton
+                {...defaultProps}
+                additionalInitializationOptions={{ filterAvailableShippingOptions }}
+                methodId="applepay"
+            />,
+        );
+
+        expect(checkoutService.initializeCustomer).toHaveBeenCalledWith(
+            expect.objectContaining({
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                applepay: expect.objectContaining({ filterAvailableShippingOptions }),
+            }),
+        );
     });
 
     it('deinitializeCustomer is called when component is unmounted', () => {

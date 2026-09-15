@@ -43,6 +43,7 @@ describe('BigcommercePaymentsPayLaterButton', () => {
             integrations: [createBigCommercePaymentsPayLaterCustomerStrategy],
             bigcommerce_payments_paylater: {
                 container: 'bigcommerce-payments-paylater-button-container',
+                filterAvailableShippingOptions: expect.any(Function),
                 onClick: expect.any(Function),
                 onComplete: expect.any(Function),
                 onError: expect.any(Function),

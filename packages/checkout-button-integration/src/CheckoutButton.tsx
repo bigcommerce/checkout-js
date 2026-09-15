@@ -6,6 +6,8 @@ import {
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 
+import { resolveWalletShippingOptionsFilter } from './resolveWalletShippingOptionsFilter';
+
 const CheckoutButton: FunctionComponent<CheckoutButtonProps> = ({
     checkoutService: { deinitializeCustomer, initializeCustomer },
     checkoutButtonContainerClass,
@@ -25,6 +27,7 @@ const CheckoutButton: FunctionComponent<CheckoutButtonProps> = ({
                     container: containerId,
                     onUnhandledError,
                     onClick: () => onWalletButtonClick(methodId),
+                    filterAvailableShippingOptions: resolveWalletShippingOptionsFilter(methodId),
                     ...additionalInitializationOptions,
                 },
             });
