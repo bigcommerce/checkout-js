@@ -21,12 +21,17 @@ export const CartHeaderLink: FunctionComponent<CartHeaderLinkProps> = ({
     label,
 }) => {
     const {
-        userJourney: { disableEditCart },
-        orderConfirmation: { invoiceRedirect },
+        userJourney: { disableEditCart, invoiceConfig },
     } = useCapabilities();
 
-    if (invoiceRedirect) {
-        return <EditLink className={className} isInvoiceRedirectEnabled={true} />;
+    if (invoiceConfig?.invoiceListUrl) {
+        return (
+            <EditLink
+                className={className}
+                isInvoiceRedirectEnabled={true}
+                url={invoiceConfig.invoiceListUrl}
+            />
+        );
     }
 
     if (hideEditCartLink(isBuyNowCart, disableEditCart)) {

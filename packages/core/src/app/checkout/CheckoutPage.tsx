@@ -161,7 +161,7 @@ const Checkout = ({
 }: CheckoutPageProps): ReactElement => {
     const capabilities = useCapabilities();
     const {
-        userJourney: { requiresB2BToken, quoteConfig },
+        userJourney: { requiresB2BToken, quoteConfig, invoiceConfig },
         orderConfirmation: { cannotCreatePersonalAccount, invoiceRedirect },
     } = capabilities;
     const { fetchB2BToken } = useB2BToken();
@@ -268,10 +268,14 @@ const Checkout = ({
 
         const b2bContext = checkoutService.getState().data.getB2BContext();
 
-        if (invoiceRedirect && b2bContext?.receiptId) {
+        const receiptUrlTemplate = invoiceConfig?.receiptUrlTemplate;
+
+        if (receiptUrlTemplate && b2bContext?.receiptId) {
             const { links: { siteLink = '' } = {} } = data.getConfig() || {};
 
-            replaceLocation(`${siteLink}/#/invoice?receiptId=${b2bContext.receiptId}`);
+            replaceLocation(
+                `${siteLink}${receiptUrlTemplate.replace('{receiptId}', b2bContext.receiptId)}`,
+            );
 
             return;
         }
