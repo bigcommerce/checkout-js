@@ -888,6 +888,77 @@ describe('MultiShippingForm Component', () => {
         });
     });
 
+    describe('shipping expectation message', () => {
+        const shippingExpectationMessage = 'Backordered items ship when available';
+
+        const baseInventorySettings = {
+            shouldDisplayBackorderMessagesOnStorefront: true,
+            showDefaultShippingExpectationPrompt: true,
+            defaultShippingExpectationPrompt: shippingExpectationMessage,
+            showQuantityOnBackorder: false,
+            showBackorderMessage: false,
+            showQuantityOnHand: false,
+            showBackorderAvailabilityPrompt: false,
+            backorderAvailabilityPrompt: null,
+        };
+
+        beforeEach(() => {
+            jest.spyOn(checkoutState.data, 'getCart').mockReturnValue({
+                ...getCart(),
+                lineItems: {
+                    ...getCart().lineItems,
+                    physicalItems: [
+                        {
+                            ...getPhysicalItem(),
+                            stockPosition: { quantityBackordered: 2 },
+                        },
+                    ],
+                },
+            });
+        });
+
+        it('renders message when backorder settings are enabled and cart has backordered items', () => {
+            jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
+                ...getStoreConfig(),
+                inventorySettings: baseInventorySettings,
+            });
+
+            render(
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <ExtensionProvider extensionService={extensionService}>
+                            <MultiShippingForm {...defaultProps} />
+                        </ExtensionProvider>
+                    </LocaleContext.Provider>
+                </CheckoutProvider>,
+            );
+
+            expect(screen.getByText(shippingExpectationMessage)).toBeInTheDocument();
+        });
+
+        it('does not render message when backorder display is disabled', () => {
+            jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
+                ...getStoreConfig(),
+                inventorySettings: {
+                    ...baseInventorySettings,
+                    shouldDisplayBackorderMessagesOnStorefront: false,
+                },
+            });
+
+            render(
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <ExtensionProvider extensionService={extensionService}>
+                            <MultiShippingForm {...defaultProps} />
+                        </ExtensionProvider>
+                    </LocaleContext.Provider>
+                </CheckoutProvider>,
+            );
+
+            expect(screen.queryByText(shippingExpectationMessage)).not.toBeInTheDocument();
+        });
+    });
+
     describe('NewConsignment empty cart error handling', () => {
         it('calls onUnhandledError when empty cart error is thrown during item allocation', async () => {
             const emptyCartError = {
