@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.899.0](https://github.com/bigcommerce/checkout-js/compare/v1.898.2...v1.899.0) (2026-09-16)
+
+
+### Features
+
+* **checkout:** CHECKOUT-10411 add margin and fix cvv tooltip z-index ([#3341](https://github.com/bigcommerce/checkout-js/issues/3341)) ([731713b](https://github.com/bigcommerce/checkout-js/commit/731713b245c121e8417eaf765d3ba6845d9aad69))
+
 ### [1.898.2](https://github.com/bigcommerce/checkout-js/compare/v1.898.1...v1.898.2) (2026-09-15)
 
 ### [1.898.1](https://github.com/bigcommerce/checkout-js/compare/v1.898.0...v1.898.1) (2026-09-15)

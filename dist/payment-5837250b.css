@@ -7,7 +7,7 @@
 .dropdown--select{cursor:pointer;position:relative}.dropdown-toggle--select{color:#282c30;margin-bottom:0;min-height:3rem;padding:1rem 1rem;text-align:left;text-transform:none;width:100%}.dropdown-toggle--select:focus,.dropdown-toggle--select:hover{border-color:#00abc9}.dropdown-menu-item--select{border-bottom:1px solid #e1e6eb}.dropdown-menu-item--select :last-of-type{border-bottom:0}.dropdown-menu-item--select:focus{border:1px solid #e1e6eb;border-color:#00abc9;outline:none}
 .paymentMethodsRefreshAlert{outline:none}.paymentMethodsRefreshAlert .alertBox{padding-right:3rem;position:relative}.paymentMethodsRefreshAlert-closeButton{background:none;border:0;cursor:pointer;line-height:0;padding:0;position:absolute;right:.75rem;top:.75rem}
 .tooltip--basic{display:block;left:auto;position:relative;visibility:inherit;width:auto}
-.tooltip-trigger{cursor:help}
+.tooltip-trigger{cursor:help}.tooltip-popper{z-index:500}
 .checkout-step--payment .dynamic-form-field.floating-form-field{margin-bottom:8px}
 
-/*# sourceMappingURL=payment-67e6cbb9.css.map*/
+/*# sourceMappingURL=payment-5837250b.css.map*/
