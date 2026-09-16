@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.900.0](https://github.com/bigcommerce/checkout-js/compare/v1.899.1...v1.900.0) (2026-09-16)
+
+
+### Features
+
+* **payment:** PI-5464 [FE] Remove experiment 'PI-4748_cba_resolver_configuration' ([#3344](https://github.com/bigcommerce/checkout-js/issues/3344)) ([a131a55](https://github.com/bigcommerce/checkout-js/commit/a131a5532d0d00205a5968dec64475329b0a2b14))
+
 ### [1.899.1](https://github.com/bigcommerce/checkout-js/compare/v1.899.0...v1.899.1) (2026-09-16)
 
 ## [1.899.0](https://github.com/bigcommerce/checkout-js/compare/v1.898.2...v1.899.0) (2026-09-16)
