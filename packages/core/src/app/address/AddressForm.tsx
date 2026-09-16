@@ -65,8 +65,14 @@ const AddressForm: React.FC<AddressFormProps> = ({
     const isFloatingLabelEnabledValue = config
         ? isFloatingLabelEnabled(config.checkoutSettings)
         : false;
+    const isPhoneValidationLDFlagEnabled = isExperimentEnabled(
+        config?.checkoutSettings,
+        'CHECKOUT-9019.use_new_phone_number_validation',
+        false,
+    );
     const isPhoneNumberValidationEnabled =
-        config?.checkoutSettings.isPhoneNumberValidationEnabled ?? false;
+        (config?.checkoutSettings.isPhoneNumberValidationEnabled ?? false) &&
+        isPhoneValidationLDFlagEnabled;
     const isNewGooglePlacesApiEnabled = isExperimentEnabled(
         config?.checkoutSettings,
         'CHECKOUT-10026.new_google_places_api',
