@@ -30,6 +30,13 @@ import {
     useCheckout,
     withExtension,
 } from '@bigcommerce/checkout/contexts';
+import {
+    assignTopLocation,
+    reloadLocation,
+    replaceLocation,
+    replaceTopLocation,
+    setTopLocationHref,
+} from '@bigcommerce/checkout/dom-utils';
 import { type ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { withLanguage, type WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { OrderConfirmationPageSkeleton } from '@bigcommerce/checkout/ui';
@@ -66,6 +73,8 @@ import useB2BToken from './hooks/useB2BToken';
 import { mapCheckoutComponentErrorMessage } from './mapErrorMessage';
 import mapToCheckoutProps from './mapToCheckoutProps';
 import { shouldShowShippingOptionExpiredError } from './shouldShowShippingOptionExpiredError';
+
+const BUYER_PORTAL_RECEIPT_URL_TEMPLATE = '/#/invoice?receiptId={receiptId}';
 
 export interface CheckoutProps {
     checkoutId: string;
@@ -154,7 +163,7 @@ const Checkout = ({
 }: CheckoutPageProps): ReactElement => {
     const capabilities = useCapabilities();
     const {
-        userJourney: { requiresB2BToken, quoteConfig },
+        userJourney: { requiresB2BToken, quoteConfig, invoiceConfig },
         orderConfirmation: { cannotCreatePersonalAccount, invoiceRedirect },
     } = capabilities;
     const { fetchB2BToken } = useB2BToken();
@@ -263,8 +272,12 @@ const Checkout = ({
 
         if (invoiceRedirect && b2bContext?.receiptId) {
             const { links: { siteLink = '' } = {} } = data.getConfig() || {};
+            const receiptUrlTemplate =
+                invoiceConfig?.receiptUrlTemplate ?? BUYER_PORTAL_RECEIPT_URL_TEMPLATE;
 
-            window.location.replace(`${siteLink}/#/invoice?receiptId=${b2bContext.receiptId}`);
+            replaceLocation(
+                `${siteLink}${receiptUrlTemplate.replace('{receiptId}', b2bContext.receiptId)}`,
+            );
 
             return;
         }
@@ -287,7 +300,7 @@ const Checkout = ({
         (customerViewType: CustomerViewType): void => {
             if (customerViewType === CustomerViewType.CreateAccount && isEmbedded()) {
                 if (window.top) {
-                    window.top.location.replace(createAccountUrl);
+                    replaceTopLocation(createAccountUrl);
                 }
 
                 return;
@@ -390,7 +403,7 @@ const Checkout = ({
     const handleSignOut = useCallback(
         ({ isCartEmpty }: CustomerSignOutEvent): void => {
             if (isPriceHiddenFromGuests && window.top) {
-                window.top.location.href = cartUrl;
+                setTopLocationHref(cartUrl);
 
                 return;
             }
@@ -407,10 +420,14 @@ const Checkout = ({
                 setState((prevState) => ({ ...prevState, isCartEmpty: true }));
 
                 if (!isEmbedded() && window.top) {
-                    window.top.location.assign(loginUrl);
+                    assignTopLocation(loginUrl);
 
                     return;
                 }
+            } else if (capabilities.customer.reloadPageAfterSignIn) {
+                reloadLocation();
+
+                return;
             }
 
             navigateToStep(CheckoutStepType.Customer);
@@ -463,6 +480,16 @@ const Checkout = ({
         navigateToNextIncompleteStep();
     }, [checkoutService, navigateToNextIncompleteStep]);
 
+    const handleCustomerAuthenticated = useCallback((): void => {
+        if (capabilities.customer.reloadPageAfterSignIn) {
+            reloadLocation();
+
+            return;
+        }
+
+        navigateToNextIncompleteStep();
+    }, [navigateToNextIncompleteStep]);
+
     const handleShippingSignIn = useCallback((): void => {
         setCustomerViewType(CustomerViewType.Login);
     }, [setCustomerViewType]);
@@ -504,14 +531,14 @@ const Checkout = ({
                         checkEmbeddedSupport={checkEmbeddedSupport}
                         isSubscribed={isSubscribed}
                         isWalletButtonsOnTop={isShowingWalletButtonsOnTop}
-                        onAccountCreated={navigateToNextIncompleteStep}
+                        onAccountCreated={handleCustomerAuthenticated}
                         onChangeViewType={setCustomerViewType}
                         onContinueAsGuest={navigateToNextIncompleteStep}
                         onContinueAsGuestError={handleError}
                         onEdit={handleEditStep}
                         onExpanded={handleExpanded}
                         onReady={handleReady}
-                        onSignIn={navigateToNextIncompleteStep}
+                        onSignIn={handleCustomerAuthenticated}
                         onSignInError={handleError}
                         onSignOut={handleSignOut}
                         onSignOutError={handleError}

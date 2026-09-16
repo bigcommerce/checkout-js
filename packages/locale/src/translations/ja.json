@@ -494,7 +494,8 @@
                 "unsupported_request": "取引に無効なデータが提供されたため、支払を処理することができません。",
                 "user_authorization_error": "支払処理中にエラーが発生しました。 お問い合わせください。",
                 "vaulting_service_unavailable": "Vaultingサービスは現在使用できません。",
-                "voided_transaction": "取引がすでに非アクティブ化されて支払を処理できません。 再試行するか、当社にお問い合わせください。"
+                "voided_transaction": "取引がすでに非アクティブ化されて支払を処理できません。 再試行するか、当社にお問い合わせください。",
+                "bank_declined_authentication": "Your bank declined authentication, please use a different card."
             },
             "ratepay": {
                 "payment_method_title": "請求書払い",

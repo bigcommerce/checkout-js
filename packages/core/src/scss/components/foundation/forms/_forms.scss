@@ -163,7 +163,9 @@
         }
     }
 
-    .form-field:not(.form-field--error) {
+    // Excluded from the enhanced theme, where field borders follow the
+    // merchant's Optimized Checkout colours instead.
+    body:not(:has(.enhancedThemeV1)) .form-field:not(.form-field--error) {
         .floating-input:not(:focus),
         .floating-select:not(:focus),
         .floating-textarea {

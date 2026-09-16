@@ -1,5 +1,7 @@
 import { noop } from 'lodash';
 
+import { replaceLocation } from '@bigcommerce/checkout/dom-utils';
+
 import isBuyNowCart from './isBuyNowCart';
 
 export default function navigateToOrderConfirmation(orderId?: number): Promise<never> {
@@ -11,7 +13,7 @@ export default function navigateToOrderConfirmation(orderId?: number): Promise<n
         url = `${window.location.pathname.replace(/\/$/, '')}/order-confirmation`;
     }
 
-    window.location.replace(url);
+    replaceLocation(url);
 
     return new Promise(noop);
 }

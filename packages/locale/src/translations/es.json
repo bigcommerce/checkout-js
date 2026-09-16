@@ -494,7 +494,8 @@
                 "unsupported_request": "No se puede procesar el pago debido a que los datos que se han proporcionado con la transacción no son válidos.",
                 "user_authorization_error": "Hubo un error al procesar su pago. Póngase en contacto con nosotros.",
                 "vaulting_service_unavailable": "El servicio de almacenamiento no está disponible en este momento.",
-                "voided_transaction": "Su pago no pudo ser procesado debido a que la transacción ya se anuló. Inténtelo de nuevo o póngase en contacto con nosotros."
+                "voided_transaction": "Su pago no pudo ser procesado debido a que la transacción ya se anuló. Inténtelo de nuevo o póngase en contacto con nosotros.",
+                "bank_declined_authentication": "Your bank declined authentication, please use a different card."
             },
             "ratepay": {
                 "payment_method_title": "Pagar tras recibir la factura",

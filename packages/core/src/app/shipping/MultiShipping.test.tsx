@@ -494,7 +494,7 @@ describe('Multi-shipping', () => {
 
             await userEvent.type(screen.getByLabelText('Postal Code'), address.postalCode);
 
-            await userEvent.click(screen.getByText('Save Address'));
+            await userEvent.click(screen.getByText('Save address'));
 
             expect(screen.getByText(getAddressContent(address))).toBeInTheDocument();
 
@@ -536,7 +536,7 @@ describe('Multi-shipping', () => {
         expect(screen.getByLabelText('Last Name')).toHaveDisplayValue(address.lastName);
 
         await userEvent.type(screen.getByLabelText('First Name'), ' Updated');
-        await userEvent.click(screen.getByText('Save Address'));
+        await userEvent.click(screen.getByText('Save address'));
 
         expect(screen.getByText(getAddressContent(updatedAddress))).toBeInTheDocument();
     });

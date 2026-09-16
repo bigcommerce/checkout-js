@@ -378,10 +378,7 @@ describe('OrderConfirmation', () => {
 
             requestSenderInstance.post = mockPost;
 
-            Object.defineProperty(window, 'location', {
-                value: { search: '?orderToken=abc123' },
-                writable: true,
-            });
+            window.history.replaceState({}, '', '/checkout?orderToken=abc123');
 
             render(
                 <ComponentTest {...defaultProps} permalinkStatus={OrderPermalinkStatus.Expired} />,
@@ -398,7 +395,9 @@ describe('OrderConfirmation', () => {
             await waitFor(() => {
                 expect(mockPost).toHaveBeenCalledWith(
                     '/api/storefront/orders/regenerate-permalink',
-                    { body: { orderToken: 'abc123' } },
+                    {
+                        body: { orderToken: 'abc123' },
+                    },
                 );
             });
         });
@@ -409,10 +408,7 @@ describe('OrderConfirmation', () => {
 
             requestSenderInstance.post = mockPost;
 
-            Object.defineProperty(window, 'location', {
-                value: { search: '?orderToken=abc123' },
-                writable: true,
-            });
+            window.history.replaceState({}, '', '/checkout?orderToken=abc123');
 
             render(
                 <ComponentTest {...defaultProps} permalinkStatus={OrderPermalinkStatus.Expired} />,
@@ -438,10 +434,7 @@ describe('OrderConfirmation', () => {
         });
 
         it('shows error message when orderToken is missing', async () => {
-            Object.defineProperty(window, 'location', {
-                value: { search: '' },
-                writable: true,
-            });
+            window.history.replaceState({}, '', '/checkout');
 
             render(
                 <ComponentTest {...defaultProps} permalinkStatus={OrderPermalinkStatus.Expired} />,

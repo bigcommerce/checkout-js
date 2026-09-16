@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`autoExport() export matching members from files to another file as lazy components 1`] = `
 "import { lazy } from 'react';

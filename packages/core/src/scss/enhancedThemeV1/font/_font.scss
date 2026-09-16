@@ -44,18 +44,7 @@
         font-weight: $fontWeight-bold;
     }
 
-    .sub-header {
-        &.button--primary {
-            text-transform: none;
-        }
-    }
-
-    #checkout-customer-continue,
-    #stripe-checkout-customer-continue,
-    #checkout-shipping-continue,
-    #checkout-customer-create-account,
-    #checkout-customer-create,
-    #checkout-customer-cancel {
+    .button {
         text-transform: none;
     }
 

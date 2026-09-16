@@ -494,7 +494,8 @@
                 "unsupported_request": "Die Zahlung konnte nicht verarbeitet werden, weil bei der Transaktion ungültige Daten angegeben wurden.",
                 "user_authorization_error": "Bei der Verarbeitung Ihrer Zahlung ist ein Fehler aufgetreten. Bitte nehmen Sie Kontakt zu uns auf.",
                 "vaulting_service_unavailable": "Der Card-Vaulting-Service ist zurzeit nicht verfügbar",
-                "voided_transaction": "Ihre Zahlung kann nicht verarbeitet werden, da die Transaktion bereits storniert wurde. Bitte versuchen Sie es erneut oder nehmen Sie Kontakt zu uns auf."
+                "voided_transaction": "Ihre Zahlung kann nicht verarbeitet werden, da die Transaktion bereits storniert wurde. Bitte versuchen Sie es erneut oder nehmen Sie Kontakt zu uns auf.",
+                "bank_declined_authentication": "Your bank declined authentication, please use a different card."
             },
             "ratepay": {
                 "payment_method_title": "Zahlung auf Rechnung",

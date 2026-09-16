@@ -494,7 +494,8 @@
                 "unsupported_request": "Kan ikke behandle betalingen fordi ugyldige data ble oppgitt med transaksjonen.",
                 "user_authorization_error": "Det oppsto en feil under behandling av betalingen. Vennligst kontakt oss.",
                 "vaulting_service_unavailable": "Hvelvtjenesten er for øyeblikket ikke tilgjengelig.",
-                "voided_transaction": "Kunne ikke behandle betalingen din fordi transaksjonen allerede er annullert. Vennligst prøv igjen eller kontakt oss."
+                "voided_transaction": "Kunne ikke behandle betalingen din fordi transaksjonen allerede er annullert. Vennligst prøv igjen eller kontakt oss.",
+                "bank_declined_authentication": "Your bank declined authentication, please use a different card."
             },
             "ratepay": {
                 "payment_method_title": "Betal ved faktura",

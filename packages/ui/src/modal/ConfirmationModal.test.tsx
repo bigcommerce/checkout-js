@@ -19,7 +19,7 @@ describe('ConfirmationModal', () => {
             />,
         );
 
-        expect(screen.getByText('Edit Cart')).toBeInTheDocument();
+        expect(screen.getByText('Edit cart')).toBeInTheDocument();
         expect(
             screen.getByText(
                 'New items will default to Shipping Destination #1. Reallocate if you want them shipped to other destinations.',

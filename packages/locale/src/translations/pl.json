@@ -494,7 +494,8 @@
                 "unsupported_request": "Nie można przetworzyć płatności, ponieważ w transakcji podano nieprawidłowe dane.",
                 "user_authorization_error": "Podczas przetwarzania Twojej płatności wystąpił błąd. Skontaktuj się z nami.",
                 "vaulting_service_unavailable": "Usługa sklepienia nie jest obecnie dostępna.",
-                "voided_transaction": "Nie można przetworzyć płatności, ponieważ transakcja została już unieważniona. Spróbuj ponownie lub skontaktuj się z nami."
+                "voided_transaction": "Nie można przetworzyć płatności, ponieważ transakcja została już unieważniona. Spróbuj ponownie lub skontaktuj się z nami.",
+                "bank_declined_authentication": "Your bank declined authentication, please use a different card."
             },
             "ratepay": {
                 "payment_method_title": "Płatność na podstawie faktury",

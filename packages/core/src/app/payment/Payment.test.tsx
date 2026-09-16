@@ -22,6 +22,7 @@ import {
     LocaleProvider,
     ThemeProvider,
 } from '@bigcommerce/checkout/contexts';
+import { replaceLocation } from '@bigcommerce/checkout/dom-utils';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
 import { CHECKOUT_ROOT_NODE_ID } from '@bigcommerce/checkout/payment-integration-api';
 import {
@@ -55,6 +56,11 @@ import { type PaymentContextProps } from './PaymentContext';
 // enhancedThemeV1 off, so the block never renders and this stays unused there.
 
 let mockEnsureBillingAddressSaved: jest.Mock<Promise<boolean>>;
+
+jest.mock('@bigcommerce/checkout/dom-utils', () => ({
+    ...jest.requireActual('@bigcommerce/checkout/dom-utils'),
+    replaceLocation: jest.fn(),
+}));
 
 jest.mock('./billingForm', () => {
     const ReactActual = require('react');
@@ -142,6 +148,8 @@ describe('Payment step', () => {
     beforeEach(() => {
         window.scrollTo = jest.fn();
 
+        (replaceLocation as jest.Mock).mockClear();
+
         checkoutService = createCheckoutService();
         extensionService = new ExtensionService(checkoutService, createErrorLogger());
         embeddedMessengerMock = createEmbeddedCheckoutMessenger({
@@ -214,17 +222,6 @@ describe('Payment step', () => {
             rest.get('/api/storefront/orders/*', (_, res, ctx) => res(ctx.json(orderResponse))),
         );
 
-        const location = window.location;
-
-        Object.defineProperty(window, 'location', {
-            value: {
-                // eslint-disable-next-line @typescript-eslint/no-misused-spread
-                ...location,
-                replace: jest.fn(),
-            },
-            writable: true,
-        });
-
         checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
 
         render(<CheckoutTest {...defaultProps} />);
@@ -245,7 +242,7 @@ describe('Payment step', () => {
 
         await act(async () => userEvent.click(screen.getByText('Place Order')));
 
-        expect(window.location.replace).toHaveBeenCalledWith('/order-confirmation');
+        expect(replaceLocation).toHaveBeenCalledWith('/order-confirmation');
     });
 
     it('does not place the order when embedded billing (enhancedThemeV1) is invalid', async () => {
@@ -266,17 +263,6 @@ describe('Payment step', () => {
 
         mockEnsureBillingAddressSaved = jest.fn<Promise<boolean>, []>().mockResolvedValue(false);
 
-        const location = window.location;
-
-        Object.defineProperty(window, 'location', {
-            value: {
-                // eslint-disable-next-line @typescript-eslint/no-misused-spread
-                ...location,
-                replace: jest.fn(),
-            },
-            writable: true,
-        });
-
         checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
             config: enhancedThemeV1Config,
         });
@@ -291,7 +277,7 @@ describe('Payment step', () => {
 
         expect(mockEnsureBillingAddressSaved).toHaveBeenCalled();
         expect(submitOrderSpy).not.toHaveBeenCalled();
-        expect(window.location.replace).not.toHaveBeenCalled();
+        expect(replaceLocation).not.toHaveBeenCalled();
     });
 
     it('disables Place Order while the embedded billing (enhancedThemeV1) address is being persisted', async () => {
@@ -509,7 +495,9 @@ describe('Payment step', () => {
                 userEvent.click(
                     within(screen.getByTestId('payment-methods-refresh-alert')).getByRole(
                         'button',
-                        { name: 'Close' },
+                        {
+                            name: 'Close',
+                        },
                     ),
                 ),
             );
@@ -1295,17 +1283,6 @@ describe('Payment step', () => {
                 rest.get('/api/storefront/orders/*', (_, res, ctx) => res(ctx.json(orderResponse))),
             );
 
-            const location = window.location;
-
-            Object.defineProperty(window, 'location', {
-                value: {
-                    // eslint-disable-next-line @typescript-eslint/no-misused-spread
-                    ...location,
-                    replace: jest.fn(),
-                },
-                writable: true,
-            });
-
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
                 config: createConfigWithPersistB2BMetadata(),
                 checkout: {
@@ -1345,17 +1322,6 @@ describe('Payment step', () => {
             checkout.setRequestHandler(
                 rest.get('/api/storefront/orders/*', (_, res, ctx) => res(ctx.json(orderResponse))),
             );
-
-            const location = window.location;
-
-            Object.defineProperty(window, 'location', {
-                value: {
-                    // eslint-disable-next-line @typescript-eslint/no-misused-spread
-                    ...location,
-                    replace: jest.fn(),
-                },
-                writable: true,
-            });
 
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling);
 
@@ -1424,17 +1390,6 @@ describe('Payment step', () => {
         });
 
         it('persists B2B metadata after finalizing the order on mount when persistB2BMetadata capability is enabled', async () => {
-            const location = window.location;
-
-            Object.defineProperty(window, 'location', {
-                value: {
-                    // eslint-disable-next-line @typescript-eslint/no-misused-spread
-                    ...location,
-                    replace: jest.fn(),
-                },
-                writable: true,
-            });
-
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
                 config: createConfigWithPersistB2BMetadata(),
                 checkout: {
@@ -1470,17 +1425,6 @@ describe('Payment step', () => {
         });
 
         it('persists the address extra fields from the checkout object after finalizing on mount', async () => {
-            const location = window.location;
-
-            Object.defineProperty(window, 'location', {
-                value: {
-                    // eslint-disable-next-line @typescript-eslint/no-misused-spread
-                    ...location,
-                    replace: jest.fn(),
-                },
-                writable: true,
-            });
-
             const { billingAddress } = checkoutWithShippingAndBilling;
             const [consignment] = checkoutWithShippingAndBilling.consignments;
 
@@ -1559,17 +1503,6 @@ describe('Payment step', () => {
                 rest.get('/api/storefront/orders/*', (_, res, ctx) => res(ctx.json(orderResponse))),
             );
 
-            const location = window.location;
-
-            Object.defineProperty(window, 'location', {
-                value: {
-                    // eslint-disable-next-line @typescript-eslint/no-misused-spread
-                    ...location,
-                    replace: jest.fn(),
-                },
-                writable: true,
-            });
-
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
                 config: createConfigWithPersistB2BMetadata(),
                 checkout: {
@@ -1612,17 +1545,6 @@ describe('Payment step', () => {
         });
 
         it('persists B2B metadata with isInvoice true and the captured form values when the invoiceRedirect capability is enabled', async () => {
-            const location = window.location;
-
-            Object.defineProperty(window, 'location', {
-                value: {
-                    // eslint-disable-next-line @typescript-eslint/no-misused-spread
-                    ...location,
-                    replace: jest.fn(),
-                },
-                writable: true,
-            });
-
             B2BSessionStorage.setPaymentValues({ invoicePaymentComment: 'Invoice me' });
 
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
@@ -1674,17 +1596,6 @@ describe('Payment step', () => {
         });
 
         it('clears B2B sessionStorage even when persisting metadata fails', async () => {
-            const location = window.location;
-
-            Object.defineProperty(window, 'location', {
-                value: {
-                    // eslint-disable-next-line @typescript-eslint/no-misused-spread
-                    ...location,
-                    replace: jest.fn(),
-                },
-                writable: true,
-            });
-
             B2BSessionStorage.setAddressIds({ billingAddressId: 111, shippingAddressId: 222 });
 
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
@@ -1720,17 +1631,6 @@ describe('Payment step', () => {
         });
 
         it('does not persist B2B metadata after finalizing the order on mount when persistB2BMetadata capability is disabled', async () => {
-            const location = window.location;
-
-            Object.defineProperty(window, 'location', {
-                value: {
-                    // eslint-disable-next-line @typescript-eslint/no-misused-spread
-                    ...location,
-                    replace: jest.fn(),
-                },
-                writable: true,
-            });
-
             checkoutService = checkout.use(CheckoutPreset.CheckoutWithShippingAndBilling, {
                 checkout: {
                     ...checkoutWithShippingAndBilling,

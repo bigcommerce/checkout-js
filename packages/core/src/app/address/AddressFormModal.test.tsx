@@ -80,7 +80,7 @@ describe('AddressFormModal Component', () => {
     it('shows validation errors when address form required fields are empty', async () => {
         renderAddressFormModal();
 
-        await userEvent.click(screen.getByText('Save Address'));
+        await userEvent.click(screen.getByText('Save address'));
 
         await new Promise((resolve) => process.nextTick(resolve));
 
@@ -88,7 +88,7 @@ describe('AddressFormModal Component', () => {
         expect(screen.getByText('Last Name is required')).toBeInTheDocument();
 
         await userEvent.clear(screen.getByTestId('addressLine1Input-text'));
-        await userEvent.click(screen.getByText('Save Address'));
+        await userEvent.click(screen.getByText('Save address'));
 
         expect(await screen.findByText('Address is required')).toBeInTheDocument();
     });
@@ -105,7 +105,7 @@ describe('AddressFormModal Component', () => {
         await userEvent.click(screen.getByTestId('addressLine1Input-text'));
         await userEvent.clear(screen.getByTestId('addressLine1Input-text'));
         await userEvent.keyboard('MockedAddress');
-        await userEvent.click(screen.getByText('Save Address'));
+        await userEvent.click(screen.getByText('Save address'));
 
         await new Promise((resolve) => process.nextTick(resolve));
 
@@ -126,14 +126,14 @@ describe('AddressFormModal Component', () => {
         renderAddressFormModal({ shouldShowSaveAddress: false });
 
         expect(
-            screen.queryByLabelText('Save this address in my address book.'),
+            screen.queryByLabelText('Save this address in my address book'),
         ).not.toBeInTheDocument();
     });
 
     it('shows save address checkbox when shouldShowSaveAddress is true', () => {
         renderAddressFormModal({ shouldShowSaveAddress: true });
 
-        expect(screen.getByLabelText('Save this address in my address book.')).toBeInTheDocument();
+        expect(screen.getByLabelText('Save this address in my address book')).toBeInTheDocument();
     });
 
     it('renders prefilled address form in the modal when selectedAddress is present', () => {

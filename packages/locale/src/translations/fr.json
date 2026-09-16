@@ -494,7 +494,8 @@
                 "unsupported_request": "Impossible de traiter le paiement car des données invalides ont été indiquées lors de la transaction.",
                 "user_authorization_error": "Une erreur s'est produite lors du traitement de votre paiement. Veuillez nous contacter.",
                 "vaulting_service_unavailable": "Le service de sauvegarde sécurisée est actuellement indisponible.",
-                "voided_transaction": "Impossible de traiter votre paiement car la transaction a déjà été annulée. Veuillez réessayer, ou contactez-nous."
+                "voided_transaction": "Impossible de traiter votre paiement car la transaction a déjà été annulée. Veuillez réessayer, ou contactez-nous.",
+                "bank_declined_authentication": "Your bank declined authentication, please use a different card."
             },
             "ratepay": {
                 "payment_method_title": "Paiement sur facture",

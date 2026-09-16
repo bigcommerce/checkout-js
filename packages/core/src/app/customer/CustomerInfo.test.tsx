@@ -7,6 +7,7 @@ import userEvent from '@testing-library/user-event';
 import React, { type FunctionComponent } from 'react';
 
 import { CheckoutProvider, LocaleProvider } from '@bigcommerce/checkout/contexts';
+import { assignLocation } from '@bigcommerce/checkout/dom-utils';
 import { getLanguageService } from '@bigcommerce/checkout/locale';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
@@ -16,6 +17,11 @@ import { getStoreConfig } from '../config/config.mock';
 
 import CustomerInfo, { type CustomerInfoProps } from './CustomerInfo';
 import { getCustomer, getGuestCustomer } from './customers.mock';
+
+jest.mock('@bigcommerce/checkout/dom-utils', () => ({
+    ...jest.requireActual('@bigcommerce/checkout/dom-utils'),
+    assignLocation: jest.fn(),
+}));
 
 describe('CustomerInfo', () => {
     let CustomerInfoTest: FunctionComponent<CustomerInfoProps>;
@@ -135,15 +141,6 @@ describe('CustomerInfo', () => {
         });
 
         it('redirects to storefront when experiment on and shouldRedirectToStorefrontForAuth is true', async () => {
-            Object.defineProperty(window, 'location', {
-                writable: true,
-                value: {
-                    // eslint-disable-next-line @typescript-eslint/no-misused-spread
-                    ...window.location,
-                    assign: jest.fn(),
-                },
-            });
-
             jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
                 ...getStoreConfig(),
                 checkoutSettings: {
@@ -159,7 +156,7 @@ describe('CustomerInfo', () => {
 
             await userEvent.click(screen.getByTestId('sign-out-link'));
 
-            expect(window.location.assign).toHaveBeenCalledWith(
+            expect(assignLocation).toHaveBeenCalledWith(
                 `${expectedLogoutLink}?redirectTo=${expectedCheckoutLink}`,
             );
         });

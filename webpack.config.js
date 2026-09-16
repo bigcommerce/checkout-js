@@ -58,6 +58,11 @@ function appConfig(options, argv) {
                     /^(.+?[\\/]node_modules[\\/](?!\.cache)(?!@bigcommerce[\\/]checkout-sdk)(?:@.+?[\\/])?.+?)(?:[\\/].*)?$/,
                 ],
             },
+            // Watchpack only watches a symlinked package's real path when this is on,
+            // so without it edits to a linked checkout-sdk never invalidate the build.
+            watchOptions: {
+                followSymlinks: true,
+            },
             devtool: isProduction ? 'source-map' : 'eval-source-map',
             resolve: {
                 alias,
