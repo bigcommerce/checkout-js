@@ -213,6 +213,6 @@ body.has-activeCartSummarySheet {
 
 .cart-taxItem--subtotal {
     @include enhancedThemeV1 {
-        margin-top: remCalc(10px);
+        margin-top: spacing("half");
     }
 }
