@@ -21,7 +21,7 @@ const Shipping = lazy(() =>
     ),
 );
 
-export interface ShippingStepProps extends ShippingProps {
+interface ShippingStepProps extends ShippingProps {
     cart?: Cart;
     consignments: Consignment[];
     onEdit(type: CheckoutStepType): void;

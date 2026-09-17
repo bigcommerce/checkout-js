@@ -10,7 +10,7 @@ import isUsingMultiShipping from './isUsingMultiShipping';
 import MultiShippingForm, { type MultiShippingFormValues } from './MultiShippingForm';
 import SingleShippingForm, { type SingleShippingFormValues } from './SingleShippingForm';
 
-export interface ShippingFormProps {
+interface ShippingFormProps {
     cartHasChanged: boolean;
     isBillingSameAsShipping: boolean;
     isMultiShippingMode: boolean;

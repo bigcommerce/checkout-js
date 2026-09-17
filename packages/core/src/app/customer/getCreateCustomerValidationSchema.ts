@@ -20,7 +20,7 @@ export type CreateAccountFormValues = {
     token?: string;
 } & CustomFormFieldValues;
 
-export interface CreateCustomerValidationSchema {
+interface CreateCustomerValidationSchema {
     formFields: FormField[];
     language: LanguageService;
     passwordRequirements: PasswordRequirements;

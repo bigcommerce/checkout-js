@@ -4,7 +4,7 @@ import React, { forwardRef, type ReactNode, type Ref } from 'react';
 import Input, { type InputProps } from '../Input/Input';
 import Label from '../Label/Label';
 
-export interface RadioInputProps extends InputProps {
+interface RadioInputProps extends InputProps {
     additionalClassName?: string;
     label: ReactNode;
     value: string;

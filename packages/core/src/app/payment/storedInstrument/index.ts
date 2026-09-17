@@ -1,14 +1,9 @@
 export { default as isInstrumentFeatureAvailable } from './isInstrumentFeatureAvailable';
 export { default as getInstrumentValidationSchema } from './getInstrumentValidationSchema';
-export { default as isInstrumentCardCodeRequired } from './isInstrumentCardCodeRequired';
 export { default as isInstrumentCardCodeRequiredSelector } from './isInstrumentCardCodeRequiredSelector';
-export { default as isInstrumentCardNumberRequired } from './isInstrumentCardNumberRequired';
 export { default as isInstrumentCardNumberRequiredSelector } from './isInstrumentCardNumberRequiredSelector';
 export { default as AccountInstrumentFieldset } from './AccountInstrumentFieldset';
-export {
-    default as CardInstrumentFieldset,
-    UntrustedShippingCardVerificationType,
-} from './CardInstrumentFieldset';
+export { default as CardInstrumentFieldset } from './CardInstrumentFieldset';
 export { default as CardInstrumentFieldsetValues } from './CardInstrumentFieldsetValues';
 export { default as CreditCardValidation } from './CreditCardValidation';
 export { default as isCardInstrument } from './isCardInstrument';

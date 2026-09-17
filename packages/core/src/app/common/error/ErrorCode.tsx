@@ -4,7 +4,7 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import './ErrorCode.scss';
 
-export interface ErrorCodeProps {
+interface ErrorCodeProps {
     code: string;
     label?: ReactNode;
 }

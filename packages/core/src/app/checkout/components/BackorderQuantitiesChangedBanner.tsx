@@ -36,5 +36,3 @@ export const BackorderQuantitiesChangedBanner: FunctionComponent<{ message?: str
         </div>
     );
 };
-
-export default BackorderQuantitiesChangedBanner;

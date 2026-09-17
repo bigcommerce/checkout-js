@@ -4,7 +4,7 @@ import React, { type FunctionComponent, memo } from 'react';
 import PromotionBanner from './PromotionBanner';
 import './PromotionBannerList.scss';
 
-export interface PromotionBannerListProps {
+interface PromotionBannerListProps {
     promotions?: Promotion[];
 }
 

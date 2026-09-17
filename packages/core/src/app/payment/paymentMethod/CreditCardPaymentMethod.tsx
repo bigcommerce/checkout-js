@@ -29,7 +29,6 @@ import {
 } from '../creditCard';
 import {
     CardInstrumentFieldset,
-    type CardInstrumentFieldsetValues,
     CreditCardValidation,
     getInstrumentValidationSchema,
     isCardInstrument,
@@ -40,8 +39,6 @@ import {
 import StoreInstrumentFieldset from '../StoreInstrumentFieldset';
 import withForm, { type WithFormProps } from '../withForm';
 import withPayment, { type WithPaymentProps } from '../withPayment';
-
-import type CreditCardFieldsetValues from './CreditCardFieldsetValues';
 
 export interface CreditCardPaymentMethodProps {
     isInitializing?: boolean;
@@ -58,8 +55,6 @@ export interface CreditCardPaymentMethodProps {
     ): Promise<CheckoutSelectors>;
     onUnhandledError?(error: Error): void;
 }
-
-export type CreditCardPaymentMethodValues = CreditCardFieldsetValues | CardInstrumentFieldsetValues;
 
 interface WithCheckoutCreditCardPaymentMethodProps {
     instruments: CardInstrument[];

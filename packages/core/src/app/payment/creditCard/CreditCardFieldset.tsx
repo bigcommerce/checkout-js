@@ -9,7 +9,7 @@ import CreditCardExpiryField from './CreditCardExpiryField';
 import CreditCardNameField from './CreditCardNameField';
 import CreditCardNumberField from './CreditCardNumberField';
 
-export interface CreditCardFieldsetProps {
+interface CreditCardFieldsetProps {
     shouldShowCardCodeField?: boolean;
     shouldShowCustomerCodeField?: boolean;
     shouldShowSaveCardField?: boolean;

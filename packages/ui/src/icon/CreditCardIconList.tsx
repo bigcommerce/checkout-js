@@ -3,7 +3,7 @@ import React, { type FunctionComponent, memo } from 'react';
 
 import { CreditCardIcon, filterInstrumentTypes } from './';
 
-export interface CreditCardIconListProps {
+interface CreditCardIconListProps {
     selectedCardType?: string;
     cardTypes: string[];
 }

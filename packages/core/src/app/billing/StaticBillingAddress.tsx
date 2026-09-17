@@ -13,7 +13,7 @@ import { AddressType, StaticAddress } from '../address';
 import { withCheckout } from '../checkout';
 import { EMPTY_ARRAY } from '../common/utility';
 
-export interface StaticBillingAddressProps {
+interface StaticBillingAddressProps {
     address: Address;
 }
 
@@ -45,7 +45,7 @@ const StaticBillingAddress: FunctionComponent<
     );
 };
 
-export function mapToStaticBillingAddressProps(
+function mapToStaticBillingAddressProps(
     { checkoutState }: CheckoutContextProps,
     { address }: StaticBillingAddressProps,
 ): WithCheckoutStaticBillingAddressProps | null {

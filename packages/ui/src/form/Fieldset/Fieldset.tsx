@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { type FieldsetHTMLAttributes, forwardRef, type ReactNode, type Ref } from 'react';
 
-export interface FieldsetProps extends FieldsetHTMLAttributes<HTMLFieldSetElement> {
+interface FieldsetProps extends FieldsetHTMLAttributes<HTMLFieldSetElement> {
     additionalClassName?: string;
     testId?: string;
     legend?: ReactNode;

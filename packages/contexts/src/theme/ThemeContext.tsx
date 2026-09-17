@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 
-export interface ThemeContextProps {
+interface ThemeContextProps {
     enhancedThemeV1: boolean;
 }
 

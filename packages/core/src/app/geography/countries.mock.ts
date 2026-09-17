@@ -4,7 +4,7 @@ export function getCountries(): Country[] {
     return [getAustralia(), getUnitedStates(), getJapan()];
 }
 
-export function getAustralia(): Country {
+function getAustralia(): Country {
     return {
         code: 'AU',
         name: 'Australia',
@@ -17,7 +17,7 @@ export function getAustralia(): Country {
     };
 }
 
-export function getUnitedStates(): Country {
+function getUnitedStates(): Country {
     return {
         code: 'US',
         name: 'United States',
@@ -30,7 +30,7 @@ export function getUnitedStates(): Country {
     };
 }
 
-export function getJapan(): Country {
+function getJapan(): Country {
     return {
         code: 'JP',
         name: 'Japan',

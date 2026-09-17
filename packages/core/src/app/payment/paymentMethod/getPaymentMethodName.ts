@@ -34,7 +34,7 @@ export default function getPaymentMethodName(
     };
 }
 
-export function getTranslatedPaymentMethodName(
+function getTranslatedPaymentMethodName(
     language: LanguageService,
 ): (method: PaymentMethod) => string | undefined {
     return (method) => {

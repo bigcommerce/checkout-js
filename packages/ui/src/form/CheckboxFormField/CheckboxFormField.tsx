@@ -6,7 +6,7 @@ import { BasicFormField } from '../BasicFormField';
 import { CheckboxInput } from '../CheckboxInput';
 import { FormFieldError } from '../FormFieldError';
 
-export interface CheckboxFormFieldProps {
+interface CheckboxFormFieldProps {
     additionalClassName?: string;
     disabled?: boolean;
     name: string;

@@ -2,7 +2,7 @@ import React, { type FunctionComponent, memo } from 'react';
 
 import './PopoverList.scss';
 
-export interface PopoverListProps {
+interface PopoverListProps {
     menuProps?: React.HTMLAttributes<HTMLElement>;
     highlightedIndex?: number;
     getItemProps?: (index: number, itemId: string) => React.HTMLAttributes<HTMLElement>;

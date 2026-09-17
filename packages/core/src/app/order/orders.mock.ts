@@ -155,7 +155,7 @@ export function getGatewayOrderPayment(): GatewayOrderPayment {
     };
 }
 
-export function getGatewayOrderPaymentWithMandateId(): GatewayOrderPayment {
+function getGatewayOrderPaymentWithMandateId(): GatewayOrderPayment {
     return {
         providerId: 'checkoutcom',
         description: 'SEPA Direct Debit (via Checkout.com)',
@@ -171,7 +171,7 @@ export function getGatewayOrderPaymentWithMandateId(): GatewayOrderPayment {
     };
 }
 
-export function getGatewayOrderPaymentWithMandateURL(): GatewayOrderPayment {
+function getGatewayOrderPaymentWithMandateURL(): GatewayOrderPayment {
     return {
         providerId: 'checkoutcom',
         description: 'SEPA Direct Debit (via Checkout.com)',

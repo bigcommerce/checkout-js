@@ -3,7 +3,7 @@ import React, { type FunctionComponent, memo } from 'react';
 
 import { Alert, AlertType, IconTag } from '@bigcommerce/checkout/ui';
 
-export interface PromotionBannerProps {
+interface PromotionBannerProps {
     message: string;
 }
 
