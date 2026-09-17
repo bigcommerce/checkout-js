@@ -2,7 +2,7 @@ import { type CardInstrument } from '@bigcommerce/checkout-sdk';
 import { createBraintreeFastlanePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/braintree';
 import React, { type FunctionComponent, useEffect, useRef } from 'react';
 
-import { useCheckout } from '@bigcommerce/checkout/contexts';
+import { useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
 import {
     type PaymentMethodProps,
     type PaymentMethodResolveId,
@@ -30,27 +30,44 @@ const BraintreeFastlanePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
     const { isLoadingPaymentMethod, isInitializingPayment } = checkoutState.statuses;
     const { errorLogger } = useCheckout(() => undefined);
+    const { enhancedThemeV1 } = useThemeContext();
 
     const initializePaymentOrThrow = async () => {
         try {
+            const braintreeFastlaneCallbacks = {
+                onInit: (renderPayPalCardComponent: BraintreeFastlaneComponentRef['renderPayPalCardComponent']) => {
+                    paypalFastlaneComponentRef.current.renderPayPalCardComponent =
+                        renderPayPalCardComponent;
+                },
+                onChange: (showPayPalCardSelector: BraintreeFastlaneComponentRef['showPayPalCardSelector']) => {
+                    paypalFastlaneComponentRef.current.showPayPalCardSelector =
+                        showPayPalCardSelector;
+                },
+                onError: (error: Error) => {
+                    onUnhandledError(error);
+                },
+                onErrorLog: (error: unknown) => {
+                    errorLogger?.log(error instanceof Error ? error : new Error(String(error)));
+                },
+            };
+
+            const braintreeFastlaneStyles = enhancedThemeV1 ? {
+                styles: {
+                    root: {
+                        backgroundColorPrimary: '#f4f6ff',
+                    },
+                    input: {
+                        borderRadius: '12px',
+                    },
+                },
+            } : {};
+
             await checkoutService.initializePayment({
                 methodId: method.id,
                 integrations: [createBraintreeFastlanePaymentStrategy],
                 braintreefastlane: {
-                    onInit: (renderPayPalCardComponent) => {
-                        paypalFastlaneComponentRef.current.renderPayPalCardComponent =
-                            renderPayPalCardComponent;
-                    },
-                    onChange: (showPayPalCardSelector) => {
-                        paypalFastlaneComponentRef.current.showPayPalCardSelector =
-                            showPayPalCardSelector;
-                    },
-                    onError: (error: Error) => {
-                        onUnhandledError(error);
-                    },
-                    onErrorLog: (error: unknown) => {
-                        errorLogger?.log(error instanceof Error ? error : new Error(String(error)));
-                    },
+                    ...braintreeFastlaneCallbacks,
+                    ...braintreeFastlaneStyles,
                 },
             });
         } catch (error) {

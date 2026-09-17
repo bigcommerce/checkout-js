@@ -2,7 +2,7 @@ import { type CardInstrument } from '@bigcommerce/checkout-sdk';
 import { createPayPalCommerceFastlanePaymentStrategy } from '@bigcommerce/checkout-sdk/integrations/paypal-commerce';
 import React, { type FunctionComponent, useEffect, useRef } from 'react';
 
-import { useCheckout } from '@bigcommerce/checkout/contexts';
+import { useCheckout, useThemeContext } from '@bigcommerce/checkout/contexts';
 import {
     type PaymentMethodProps,
     type PaymentMethodResolveId,
@@ -31,39 +31,56 @@ const PayPalCommerceFastlanePaymentMethod: FunctionComponent<PaymentMethodProps>
 
     const { isLoadingPaymentMethod, isInitializingPayment } = checkoutState.statuses;
     const { errorLogger } = useCheckout(() => undefined);
+    const { enhancedThemeV1 } = useThemeContext();
 
     const initializePaymentOrThrow = async () => {
         try {
+            const paypalCommerceFastlaneCallbacks = {
+                onInit: (renderPayPalCardComponent: PayPalFastlaneCardComponentRef['renderPayPalCardComponent']) => {
+                    paypalCardComponentRef.current.renderPayPalCardComponent =
+                        renderPayPalCardComponent;
+                },
+                onChange: (showPayPalCardSelector: PayPalFastlaneCardComponentRef['showPayPalCardSelector']) => {
+                    paypalCardComponentRef.current.showPayPalCardSelector =
+                        showPayPalCardSelector;
+                },
+                onError: (error: unknown) => {
+                    let finalError: Error;
+
+                    if (isErrorWithTranslationKey(error)) {
+                        finalError = new Error(language.translate(error.translationKey));
+                    } else if (error instanceof Error) {
+                        finalError = error;
+                    } else {
+                        finalError = new Error(
+                            language.translate('payment.errors.general_error'),
+                        );
+                    }
+
+                    return onUnhandledError(finalError);
+                },
+                onErrorLog: (error: unknown) => {
+                    errorLogger?.log(error instanceof Error ? error : new Error(String(error)));
+                },
+            };
+
+            const paypalCommerceFastlaneStyles =  enhancedThemeV1 ? {
+                styles: {
+                    root: {
+                        backgroundColorPrimary: '#f4f6ff',
+                    },
+                    input: {
+                        borderRadius: '12px',
+                    },
+                },
+            } : {};
+
             await checkoutService.initializePayment({
                 methodId: method.id,
                 integrations: [createPayPalCommerceFastlanePaymentStrategy],
                 paypalcommercefastlane: {
-                    onInit: (renderPayPalCardComponent) => {
-                        paypalCardComponentRef.current.renderPayPalCardComponent =
-                            renderPayPalCardComponent;
-                    },
-                    onChange: (showPayPalCardSelector) => {
-                        paypalCardComponentRef.current.showPayPalCardSelector =
-                            showPayPalCardSelector;
-                    },
-                    onError: (error: unknown) => {
-                        let finalError: Error;
-
-                        if (isErrorWithTranslationKey(error)) {
-                            finalError = new Error(language.translate(error.translationKey));
-                        } else if (error instanceof Error) {
-                            finalError = error;
-                        } else {
-                            finalError = new Error(
-                                language.translate('payment.errors.general_error'),
-                            );
-                        }
-
-                        return onUnhandledError(finalError);
-                    },
-                    onErrorLog: (error: unknown) => {
-                        errorLogger?.log(error instanceof Error ? error : new Error(String(error)));
-                    },
+                    ...paypalCommerceFastlaneCallbacks,
+                    ...paypalCommerceFastlaneStyles,
                 },
             });
         } catch (error) {
