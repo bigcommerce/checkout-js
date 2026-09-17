@@ -153,34 +153,59 @@ describe('AddressForm Component', () => {
         expect(onChange).toHaveBeenCalledWith(fieldId, fieldValue);
     });
 
-    describe('new phone number validation experiment', () => {
+    describe('new phone number validation setting and experiment', () => {
         const phoneFormFieldMock = {
             fieldType: 'text',
             id: 'phone',
             name: 'phone',
         } as FormField;
 
-        const getConfigMockWithPhoneExperimentTrue = (
-            providerWithCustomCheckout: string | null = null,
-        ) => {
+        const getConfigMockWithPhoneValidation = ({
+            isPhoneNumberValidationEnabled,
+            isExperimentEnabled = false,
+            providerWithCustomCheckout = null,
+        }: {
+            isPhoneNumberValidationEnabled: boolean;
+            isExperimentEnabled?: boolean;
+            providerWithCustomCheckout?: string | null;
+        }) => {
             const config = getStoreConfig();
 
             return {
                 ...config,
                 checkoutSettings: {
                     ...config.checkoutSettings,
+                    isPhoneNumberValidationEnabled,
                     features: {
                         ...config.checkoutSettings.features,
-                        'CHECKOUT-9019.use_new_phone_number_validation': true,
+                        'CHECKOUT-9019.use_new_phone_number_validation': isExperimentEnabled,
                     },
                     providerWithCustomCheckout,
                 },
             };
         };
 
+        it('renders new phone number field when setting and experiment are both true', () => {
+            jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(
+                getConfigMockWithPhoneValidation({
+                    isPhoneNumberValidationEnabled: true,
+                    isExperimentEnabled: true,
+                }),
+            );
+
+            renderAddressFormComponent({ formFields: [...formFields, phoneFormFieldMock] });
+
+            expect(screen.getByTestId('intl-tel-input-mock')).toBeInTheDocument();
+            expect(screen.queryByTestId('phoneInput-text')).not.toBeInTheDocument();
+        });
+
         it('renders legacy phone field when PayPal Fastlane powers custom checkout', () => {
             jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(
-                getConfigMockWithPhoneExperimentTrue('bigcommerce_payments_fastlane'),
+                getConfigMockWithPhoneValidation({
+                    isPhoneNumberValidationEnabled: true,
+                    isExperimentEnabled: true,
+                    providerWithCustomCheckout: 'bigcommerce_payments_fastlane',
+                }),
             );
 
             renderAddressFormComponent({ formFields: [...formFields, phoneFormFieldMock] });
@@ -191,13 +216,70 @@ describe('AddressForm Component', () => {
 
         it('renders new phone number field when custom checkout provider is not PayPal Fastlane', () => {
             jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(
-                getConfigMockWithPhoneExperimentTrue('100%_definitely_not_fastlane'),
+                getConfigMockWithPhoneValidation({
+                    isPhoneNumberValidationEnabled: true,
+                    isExperimentEnabled: true,
+                    providerWithCustomCheckout: '100%_definitely_not_fastlane',
+                }),
             );
 
             renderAddressFormComponent({ formFields: [...formFields, phoneFormFieldMock] });
 
             expect(screen.getByTestId('intl-tel-input-mock')).toBeInTheDocument();
             expect(screen.queryByTestId('phoneInput-text')).not.toBeInTheDocument();
+        });
+
+        it('renders legacy phone field when setting is true but experiment is false', () => {
+            jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(
+                getConfigMockWithPhoneValidation({
+                    isPhoneNumberValidationEnabled: true,
+                    isExperimentEnabled: false,
+                }),
+            );
+
+            renderAddressFormComponent({ formFields: [...formFields, phoneFormFieldMock] });
+
+            expect(screen.queryByTestId('intl-tel-input-mock')).not.toBeInTheDocument();
+            expect(screen.getByTestId('phoneInput-text')).toBeInTheDocument();
+        });
+
+        it('renders legacy phone field when experiment is true but setting is false', () => {
+            jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(
+                getConfigMockWithPhoneValidation({
+                    isPhoneNumberValidationEnabled: false,
+                    isExperimentEnabled: true,
+                }),
+            );
+
+            renderAddressFormComponent({ formFields: [...formFields, phoneFormFieldMock] });
+
+            expect(screen.queryByTestId('intl-tel-input-mock')).not.toBeInTheDocument();
+            expect(screen.getByTestId('phoneInput-text')).toBeInTheDocument();
+        });
+
+        it('renders legacy phone field when setting and experiment are both false', () => {
+            jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(
+                getConfigMockWithPhoneValidation({
+                    isPhoneNumberValidationEnabled: false,
+                    isExperimentEnabled: false,
+                }),
+            );
+
+            renderAddressFormComponent({ formFields: [...formFields, phoneFormFieldMock] });
+
+            expect(screen.queryByTestId('intl-tel-input-mock')).not.toBeInTheDocument();
+            expect(screen.getByTestId('phoneInput-text')).toBeInTheDocument();
+        });
+
+        it('renders legacy phone field when setting and experiment are missing from config', () => {
+            jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(
+                getStoreConfig(),
+            );
+
+            renderAddressFormComponent({ formFields: [...formFields, phoneFormFieldMock] });
+
+            expect(screen.queryByTestId('intl-tel-input-mock')).not.toBeInTheDocument();
+            expect(screen.getByTestId('phoneInput-text')).toBeInTheDocument();
         });
     });
 

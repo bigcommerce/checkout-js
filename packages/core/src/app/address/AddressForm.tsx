@@ -70,14 +70,16 @@ const AddressForm: React.FC<AddressFormProps> = ({
     const isPayPalFastlaneEnabled = isPayPalFastlaneMethod(
         getProviderWithCustomCheckout(config?.checkoutSettings.providerWithCustomCheckout),
     );
+    const isPhoneValidationExperimentEnabled = isExperimentEnabled(
+        config?.checkoutSettings,
+        'CHECKOUT-9019.use_new_phone_number_validation',
+        false,
+    );
     // PayPal Fastlane stores keep the legacy phone input for now, due to incident
-    const isNewPhoneValidationExperimentEnabled =
+    const isPhoneNumberValidationEnabled =
         !isPayPalFastlaneEnabled &&
-        isExperimentEnabled(
-            config?.checkoutSettings,
-            'CHECKOUT-9019.use_new_phone_number_validation',
-            false,
-        );
+        (config?.checkoutSettings.isPhoneNumberValidationEnabled ?? false) &&
+        isPhoneValidationExperimentEnabled;
     const isNewGooglePlacesApiEnabled = isExperimentEnabled(
         config?.checkoutSettings,
         'CHECKOUT-10026.new_google_places_api',
@@ -236,9 +238,7 @@ const AddressForm: React.FC<AddressFormProps> = ({
                                 inputId={getAddressFormFieldInputId(addressFieldName)}
                                 // stateOrProvince can sometimes be a dropdown or input, so relying on id is not sufficient
                                 isFloatingLabelEnabled={isFloatingLabelEnabledValue}
-                                isNewPhoneValidationExperimentEnabled={
-                                    isNewPhoneValidationExperimentEnabled
-                                }
+                                isPhoneNumberValidationEnabled={isPhoneNumberValidationEnabled}
                                 key={`${field.id}-${field.name}`}
                                 label={
                                     field.custom || isExtraField(field) ? (
